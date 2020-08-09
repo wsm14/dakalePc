@@ -1,0 +1,99 @@
+@import '~antd/es/style/themes/default.less';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c2c2c2;
+  background-clip: padding-box;
+  min-height: 28px;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// 兼容IE11
+@media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
+  body .ant-design-pro > .ant-layout {
+    min-height: 100vh;
+  }
+}
+
+.dkl_green_btn {
+  background: #70b603;
+  outline: 0;
+  color: white;
+  border-color: #70b603;
+  &:hover,
+  &:focus,
+  &:active {
+    outline: 0;
+    color: white;
+    background: #7ccc00;
+    border-color: #7ccc00;
+  }
+}
+
+.dkl_orange_btn {
+  background: #e6b732;
+  outline: 0;
+  color: white;
+  border-color: #e6b732;
+  &:hover,
+  &:focus,
+  &:active {
+    outline: 0;
+    color: white;
+    background: #dcac3f;
+    border-color: #dcac3f;
+  }
+}
