@@ -1,72 +1,145 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { MATCH_STATUS } from '@/common/constant';
+import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import MarketCardActivitySetStore from './MarketCardActivitySetStore';
+import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
+
+// 搜索参数
+const searchItems = [
+  {
+    label: '商家名称',
+    name: 'dates',
+  },
+];
 
 const MarketCardActivityDetail = (props) => {
-  const { marketCardMorning, loading, dispatch, setKey } = props;
+  const { marketCardActivity, loading, dispatch, params, setShow } = props;
 
   const childRef = useRef();
 
   // table 表头
   const getColumns = [
     {
-      title: '用户ID',
+      title: '商家名称',
       align: 'center',
       dataIndex: 'startDate',
-      render: (val) => `${val}期`,
     },
     {
-      title: '用户名',
+      title: '所在城市',
       align: 'center',
       dataIndex: 'signBeanAmount',
     },
     {
-      title: '挑战状态',
+      title: '所在区域',
       align: 'center',
       dataIndex: 'signAmount',
-      render: (val) => MATCH_STATUS[val],
     },
     {
-      title: '本期收益（卡豆）',
+      title: '详细地址',
       align: 'center',
       dataIndex: 'totalBeanAmount',
-      render: (val) => val || '--',
     },
     {
-      title: '报名时间',
+      title: '活动商品',
       align: 'center',
       dataIndex: 'targetUserAmount',
     },
     {
-      title: '打卡时间',
+      title: '原价',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => val || '--',
+    },
+    {
+      title: '活动价',
+      align: 'center',
+      dataIndex: 'stastus',
+    },
+    {
+      title: '活动数量',
+      align: 'center',
+      dataIndex: 'statsus',
+    },
+    {
+      title: '已售',
+      align: 'center',
+      dataIndex: 'staatus',
+      render: (val) => val || 0,
+    },
+    {
+      title: '已核销',
+      align: 'center',
+      dataIndex: 'staatuss',
+      render: (val) => val || 0,
+    },
+    {
+      title: '操作',
+      align: 'right',
+      dataIndex: 'id',
+      render: (val, record) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'own',
+              title: '核销明细',
+            },
+            {
+              type: 'own',
+              title: '订单明细',
+            },
+            {
+              type: 'own',
+              title: '优惠券',
+              click: () => handleSetActive('coupon'),
+            },
+          ]}
+        />
+      ),
     },
   ];
 
+  const setprops = { dispatch, childRef };
+
+  // 设置 活动商家 | 优惠券
+  const handleSetActive = (type) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: {
+        store: MarketCardActivitySetStore(setprops),
+        coupon: MarketCardActivitySetCoupon(setprops),
+      }[type],
+    });
+  };
+
+  const btnExtra = (
+    <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive('store')}>
+      新增
+    </Button>
+  );
+
   return (
     <DataTableBlock
-      title={<>早起挑战赛-报名详情</>}
+      title={params.name}
       extra={
-        <Button className="dkl_orange_btn" key="2" onClick={setKey}>
+        <Button className="dkl_orange_btn" key="2" onClick={() => setShow({ key: 'home' })}>
           返回
         </Button>
       }
       cRef={childRef}
       loading={loading}
+      btnExtra={btnExtra}
       columns={getColumns}
+      searchItems={searchItems}
       rowKey={(record) => `${record.startDate}`}
-      params={{ matchType: 'wakeUp' }}
-      dispatchType="marketCardMorning/fetchGetList"
-      {...marketCardMorning}
+      params={{ id: params.id }}
+      dispatchType="marketCardActivity/fetchGetActiveDetail"
+      {...marketCardActivity}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ marketCardMorning, loading }) => ({
-  marketCardMorning,
-  loading: loading.models.marketCardMorning,
+export default connect(({ marketCardActivity, loading }) => ({
+  marketCardActivity,
+  loading: loading.models.marketCardActivity,
 }))(MarketCardActivityDetail);

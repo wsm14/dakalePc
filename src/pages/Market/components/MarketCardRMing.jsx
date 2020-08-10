@@ -105,7 +105,8 @@ const MarketCardRMing = (props) => {
       params={{ matchType }}
       dispatchType="marketCardRMing/fetchGetList"
       {...marketCardRMing}
-    ></DataTableBlock>
+    >
+    </DataTableBlock>
   );
 };
 

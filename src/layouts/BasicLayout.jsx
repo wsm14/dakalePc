@@ -5,9 +5,10 @@
  */
 import React, { useEffect, useState } from 'react';
 import ProLayout from '@ant-design/pro-layout';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
+import { Button } from 'antd';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import DrawerModalForm from '@/components/DrawerModalForm';
 import iconEnum from '@/common/iconEnum';
@@ -47,6 +48,7 @@ const BasicLayout = (props) => {
 
   const [rootSubmenuKeys] = useState([]); // 菜单一级keys
   const [openKeys, setOpenKeys] = useState([]); // 菜单展开的keys
+  const [title, setTitle] = useState('');
 
   const menuDataRender = (menuList, keys = true) => {
     return menuList.map((item) => {
@@ -121,14 +123,16 @@ const BasicLayout = (props) => {
         }
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
-      breadcrumbRender={(routers = []) => [...routers]}
+      // breadcrumbRender={(routers = []) => [...routers]}
       itemRender={(route, params, routes, paths) => {
-        const first = routes.path === route.path;
-        return first ? (
-          <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-        ) : (
-          <span>{route.breadcrumbName}</span>
-        );
+        // const first = routes.path === route.path;
+        // setTitle(routes.map((item) => item.breadcrumbName).join(' / '));
+        // return first ? (
+        //   <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+        // ) : (
+        //   <span>{route.breadcrumbName}</span>
+        // );
+        return false;
       }}
       // footerRender={() => defaultFooterDom}
       menuDataRender={menuDataRender}
@@ -137,7 +141,28 @@ const BasicLayout = (props) => {
       {...settings}
     >
       <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-        <PageContainer title={false}>{children}</PageContainer>
+        <RouteContext.Consumer>
+          {(value) => {
+            const { breadcrumb } = value;
+            console.log(breadcrumb.routes);
+            // 用户的标题
+            return (
+              <PageContainer
+                subTitle={title}
+                title={false}
+                extra={[
+                  <Button key="3">操作</Button>,
+                  <Button key="2">操作</Button>,
+                  <Button key="1" type="primary">
+                    主操作
+                  </Button>,
+                ]}
+              >
+                {children}
+              </PageContainer>
+            );
+          }}
+        </RouteContext.Consumer>
       </RouteAuthority>
       <DrawerModalForm></DrawerModalForm>
     </ProLayout>

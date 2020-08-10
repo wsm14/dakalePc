@@ -10,6 +10,8 @@ import {
   Upload,
   Modal,
   Cascader,
+  Switch,
+  Divider,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -23,7 +25,6 @@ import moment from 'moment';
  * @formItems 表单内容数组
  * @layout 表单排版 参考antd Form
  * @initialValues 表单参数默认值
- * @imgFileList upload默认参数
  *
  */
 
@@ -81,15 +82,13 @@ const FormCondition = ({
     formItems.map((item, i) => {
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
-          fileobj[item.name] = {
-            fileList: !Array.isArray(initialValues[item.name])
-              ? initialValues[item.name].length > 0
-                ? [imgold(initialValues[item.name], i)]
-                : []
-              : item.initialValue.map((items) => imgold(items)),
-          };
+          fileobj[item.name] = !Array.isArray(initialValues[item.name])
+            ? initialValues[item.name] && initialValues[item.name].length > 0
+              ? [imgold(initialValues[item.name], i)]
+              : []
+            : initialValues[item.name].map((items, i) => imgold(items, i));
         } else {
-          fileobj[item.name] = { fileList: [] };
+          fileobj[item.name] = [];
         }
       }
     });
@@ -124,7 +123,6 @@ const FormCondition = ({
       let initialValue = {};
       const placeholder = item.placeholder || `请输入${item.label}`;
       let rules = item.rules || [{ required: true, message: `请输入${item.label}` }];
-
       // 默认input
       let component = <Input placeholder={placeholder} addonAfter={item.addonAfter || ''} />;
 
@@ -135,7 +133,7 @@ const FormCondition = ({
       }
       // textArea 输入
       if (item.type === 'textArea') {
-        component = <Input.TextArea placeholder={placeholder} />;
+        component = <Input.TextArea placeholder={placeholder} rows={4} />;
       }
       // 时间
       if (item.type === 'timePicker') {
@@ -160,9 +158,9 @@ const FormCondition = ({
             //   moment(moment().startOf('month')).subtract(1, 'day'),
             // ]}
             disabledDate={disabledDate}
-            renderExtraFooter={() =>
-              '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
-            }
+            // renderExtraFooter={() =>
+            //   '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
+            // }
           />
         );
       }
@@ -171,7 +169,7 @@ const FormCondition = ({
         rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
         const { select } = item;
         component = (
-          <Select placeholder={item.placeholder || `请选择`}>
+          <Select placeholder={item.placeholder || `请选择${item.label}`}>
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -218,9 +216,13 @@ const FormCondition = ({
             showSearch={{
               filter,
             }}
-            placeholder="选择"
+            placeholder="请选择"
           />
         );
+      }
+      // 级联选择
+      if (item.type === 'switch') {
+        component = <Switch />;
       }
       // 上传文件
       if (item.type === 'upload') {
@@ -230,21 +232,31 @@ const FormCondition = ({
           <Upload
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-card"
-            fileList={fileLists[item.name].fileList}
+            fileList={fileLists[item.name]}
             onPreview={handlePreview}
-            onChange={({ fileList }) => setFileLists({ ...fileLists, [item.name]: fileList })}
+            onChange={({ fileList }) => {
+              setFileLists({ ...fileLists, [item.name]: fileList });
+            }}
           >
-            {fileLists[item.name].fileList.length < (item.maxFile || 999) && uploadButton}
+            {fileLists[item.name].length < (item.maxFile || 999) && uploadButton}
           </Upload>
         );
       }
+      if (item.title)
+        children.push(
+          <Divider orientation="left" key={`${item.label}${item.i}`}>
+            {item.title}
+          </Divider>,
+        );
+
       children.push(
         <FormItem
           label={item.label}
           name={item.name}
           extra={item.extra}
           key={`${item.label}${item.name}`}
-          rules={rules}
+          rules={[...rules, ...(item.addRules || [])]}
+          valuePropName={item.valuePropName}
           {...initialValue}
         >
           {component}
