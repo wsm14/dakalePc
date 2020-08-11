@@ -281,6 +281,7 @@ const FormCondition = ({
       scrollToFirstError
       initialValues={formValue}
       layout={layout}
+      preserve={false}
     >
       {formItems.length ? getFields() : ''}
       <Modal
