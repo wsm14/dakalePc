@@ -120,7 +120,16 @@ const FormCondition = ({
     const children = [];
 
     formItems.forEach((item, i) => {
-      const { select = [], name = '', type = 'input', label = '' } = item;
+      const {
+        title = '',
+        label = '',
+        name = '',
+        type = 'input',
+        select = [],
+        extra,
+        addRules,
+        valuePropName,
+      } = item;
 
       let initialValue = {};
       let rules = item.rules || [{ required: true, message: `请确认${label}` }];
@@ -208,17 +217,15 @@ const FormCondition = ({
               setFileLists({ ...fileLists, [name]: fileList });
             }}
           >
-            {fileLists[name] &&
-              fileLists[name].length < (item.maxFile || 999) &&
-              uploadButton}
+            {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
           </Upload>
         ),
       }[type];
 
-      if (item.title) {
+      if (title) {
         children.push(
           <Divider orientation="left" key={`${label}${i}`}>
-            {item.title}
+            {title}
           </Divider>,
         );
       }
@@ -227,10 +234,10 @@ const FormCondition = ({
         <FormItem
           label={label}
           name={name}
-          extra={item.extra}
+          extra={extra}
           key={`${label}${name}`}
-          rules={[...rules, ...(item.addRules || [])]}
-          valuePropName={item.valuePropName}
+          rules={[...rules, ...(addRules || [])]}
+          valuePropName={valuePropName}
           {...initialValue}
         >
           {component}
@@ -259,10 +266,10 @@ const FormCondition = ({
     >
       {formItems.length ? getFields() : ''}
       <Modal
-        visible={previewVisible}
         title={previewTitle}
-        footer={null}
+        visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
+        footer={null}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
