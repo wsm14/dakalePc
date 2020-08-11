@@ -169,5 +169,5 @@ const MarketCardActivityDetail = (props) => {
 
 export default connect(({ marketCardActivity, loading }) => ({
   marketCardActivity,
-  loading: loading.models.marketCardActivity,
+  loading: loading.effects['marketCardActivity/fetchGetActiveDetail'],
 }))(MarketCardActivityDetail);

@@ -4,9 +4,9 @@ export default {
   namespace: 'marketCardActivity',
 
   state: {
-    active: { list: [{ name: '盛夏钜惠', id: 1 }], total: 0 },
-    detail: { list: [{ name: '盛夏钜惠', id: 1 }], total: 0 },
-    detailPay: { list: [{ name: '盛夏钜惠', id: 1 }], total: 0 },
+    active: { list: [], total: 0 },
+    detail: { list: [], total: 0 },
+    detailPay: { list: [], total: 0 },
   },
 
   reducers: {
@@ -19,18 +19,18 @@ export default {
   },
 
   effects: {
-    // *fetchGetList({ payload }, { call, put }) {
-    //   const response = yield call(fetchMarketActivity, payload);
-    //   if (!response) return;
-    //   const { content } = response;
-    //   yield put({
-    //     type: 'save',
-    //     payload: {
-    //       list: content.record,
-    //       total: content.total,
-    //     },
-    //   });
-    // },
+    *fetchGetList({ payload }, { call, put }) {
+      // const response = yield call(fetchMarketActivity, payload);
+      // if (!response) return;
+      // const { content } = response;
+      // yield put({
+      //   type: 'save',
+      //   payload: {
+      //     list: content.record,
+      //     total: content.total,
+      //   },
+      // });
+    },
     *fetchGetActiveDetail({ payload }, { call, put }) {
       // const response = yield call(fetchGetActiveDetail, payload);
       // if (!response) return;
