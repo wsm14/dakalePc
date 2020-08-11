@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
 import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
+import MarketCardActivityDetailPay from './MarketCardActivityDetailPay';
 
 // 搜索参数
 const searchItems = [
@@ -16,6 +17,7 @@ const searchItems = [
 
 const MarketCardActivityDetail = (props) => {
   const { marketCardActivity, loading, dispatch, params, setShow } = props;
+  const [visible, setVisible] = useState('');
 
   const childRef = useRef();
 
@@ -83,10 +85,12 @@ const MarketCardActivityDetail = (props) => {
             {
               type: 'own',
               title: '核销明细',
+              click: () => setVisible({ type: 'destory', record }),
             },
             {
               type: 'own',
               title: '订单明细',
+              click: () => setVisible({ type: 'order', record }),
             },
             {
               type: 'own',
@@ -146,17 +150,20 @@ const MarketCardActivityDetail = (props) => {
   );
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      btnExtra={btnExtra}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.startDate}`}
-      params={{ id: params.id }}
-      dispatchType="marketCardActivity/fetchGetActiveDetail"
-      {...marketCardActivity}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        btnExtra={btnExtra}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.startDate}`}
+        params={{ id: params.id }}
+        dispatchType="marketCardActivity/fetchGetActiveDetail"
+        {...marketCardActivity.detail}
+      ></DataTableBlock>
+      <MarketCardActivityDetailPay visible={visible} setVisible={setVisible} />
+    </>
   );
 };
 

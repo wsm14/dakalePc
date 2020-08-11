@@ -104,7 +104,7 @@ const MarketCardActivity = (props) => {
               searchItems={searchItems}
               rowKey={(record) => `${record.startDate}`}
               dispatchType="marketCardActivity/fetchGetList"
-              {...marketCardActivity}
+              {...marketCardActivity.active}
             ></DataTableBlock>
           ),
           detail: (

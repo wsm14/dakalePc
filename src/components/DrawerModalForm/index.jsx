@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Drawer, Modal, Button, Space, Form } from 'antd';
-import FormCondition from '@/components/FormCondition';
-import DescriptionsCondition from '@/components/DescriptionsCondition';
+import DescriptionsCondition from '../DescriptionsCondition';
+import FormCondition from '../FormCondition';
 
 /**
  *
