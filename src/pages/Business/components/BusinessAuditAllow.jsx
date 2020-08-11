@@ -8,10 +8,7 @@ export default (merchantName) => ({
       label: '抽佣比例',
       name: 'commissionRatio',
       addonAfter: '%',
-      rules: [
-        { pattern: /^\d+$/, message: `请输入数字` },
-        { required: true, message: `请输入抽佣比例` },
-      ],
+      addRules: [{ pattern: /^\d+$/, message: `请输入数字` }],
     },
   ],
 });

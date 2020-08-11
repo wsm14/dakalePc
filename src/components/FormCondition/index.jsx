@@ -54,7 +54,7 @@ const uploadButton = (
   </div>
 );
 
-// 城市搜索筛选
+// Cascader搜索筛选
 const filter = (inputValue, path) => {
   return path.some((option) => option.name.indexOf(inputValue) > -1);
 };
@@ -120,36 +120,26 @@ const FormCondition = ({
     const children = [];
 
     formItems.forEach((item, i) => {
-      let initialValue = {};
-      const placeholder = item.placeholder || `请输入${item.label}`;
-      let rules = item.rules || [{ required: true, message: `请输入${item.label}` }];
-      // 默认input
-      let component = <Input placeholder={placeholder} addonAfter={item.addonAfter || ''} />;
+      const { select = [], name = '', type = 'input', label = '' } = item;
 
-      // 判断类型
-      // 数字
-      if (item.type === 'number') {
-        component = <InputNumber style={{ width: '100%' }} placeholder={placeholder} />;
-      }
-      // textArea 输入
-      if (item.type === 'textArea') {
-        component = <Input.TextArea placeholder={placeholder} rows={4} />;
-      }
-      // 时间
-      if (item.type === 'timePicker') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        component = (
+      let initialValue = {};
+      let rules = item.rules || [{ required: true, message: `请确认${label}` }];
+      const placeholder = item.placeholder || `请输入${label}`;
+
+      // 判断类型 默认input
+
+      let component = {
+        input: <Input placeholder={placeholder} addonAfter={item.addonAfter || ''} />,
+        number: <InputNumber style={{ width: '100%' }} placeholder={placeholder} />,
+        textArea: <Input.TextArea placeholder={placeholder} rows={4} />,
+        timePicker: (
           <TimePicker.RangePicker
             style={{ width: '100%' }}
             format={item.format || 'HH:mm'}
             allowClear={false}
           />
-        );
-      }
-      // 日期
-      if (item.type === 'rangePicker') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        component = (
+        ),
+        rangePicker: (
           <RangePicker
             style={{ width: '100%' }}
             allowClear={false}
@@ -157,19 +147,14 @@ const FormCondition = ({
             //   moment(moment().startOf('month')).subtract(1, 'month'),
             //   moment(moment().startOf('month')).subtract(1, 'day'),
             // ]}
-            disabledDate={disabledDate}
+            // disabledDate={disabledDate}
             // renderExtraFooter={() =>
             //   '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
             // }
           />
-        );
-      }
-      // select选择期
-      if (item.type === 'select' && item.select) {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        const { select } = item;
-        component = (
-          <Select placeholder={item.placeholder || `请选择${item.label}`}>
+        ),
+        select: (
+          <Select placeholder={item.placeholder || `请选择${label}`}>
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -183,12 +168,8 @@ const FormCondition = ({
               }
             })}
           </Select>
-        );
-      }
-      // 单选
-      if (item.type === 'radio' && item.select) {
-        const { select } = item;
-        component = (
+        ),
+        radio: (
           <Radio.Group onChange={item.onChange} disabled={item.disabled}>
             {select.map((data, j) => {
               if (data) {
@@ -203,58 +184,51 @@ const FormCondition = ({
               }
             })}
           </Radio.Group>
-        );
-      }
-      // 级联选择
-      if (item.type === 'cascader') {
-        component = (
+        ),
+        cascader: (
           <Cascader
             allowClear={false}
             fieldNames={item.options}
-            options={item.select}
+            options={select}
             expandTrigger="hover"
             showSearch={{
               filter,
             }}
-            placeholder="请选择"
+            placeholder={item.placeholder || `请选择${label}`}
           />
-        );
-      }
-      // 级联选择
-      if (item.type === 'switch') {
-        component = <Switch />;
-      }
-      // 上传文件
-      if (item.type === 'upload') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        initialValue = { initialValue: item.initialValue };
-        component = (
+        ),
+        switch: <Switch />,
+        upload: (
           <Upload
             action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-card"
-            fileList={fileLists[item.name]}
+            fileList={fileLists[name]}
             onPreview={handlePreview}
             onChange={({ fileList }) => {
-              setFileLists({ ...fileLists, [item.name]: fileList });
+              setFileLists({ ...fileLists, [name]: fileList });
             }}
           >
-            {fileLists[item.name].length < (item.maxFile || 999) && uploadButton}
+            {fileLists[name] &&
+              fileLists[name].length < (item.maxFile || 999) &&
+              uploadButton}
           </Upload>
-        );
-      }
-      if (item.title)
+        ),
+      }[type];
+
+      if (item.title) {
         children.push(
-          <Divider orientation="left" key={`${item.label}${item.i}`}>
+          <Divider orientation="left" key={`${label}${i}`}>
             {item.title}
           </Divider>,
         );
+      }
 
       children.push(
         <FormItem
-          label={item.label}
-          name={item.name}
+          label={label}
+          name={name}
           extra={item.extra}
-          key={`${item.label}${item.name}`}
+          key={`${label}${name}`}
           rules={[...rules, ...(item.addRules || [])]}
           valuePropName={item.valuePropName}
           {...initialValue}
@@ -277,11 +251,11 @@ const FormCondition = ({
   return (
     <Form
       form={form}
-      {...formItemLayout}
-      scrollToFirstError
-      initialValues={formValue}
       layout={layout}
+      initialValues={formValue}
+      {...formItemLayout}
       preserve={false}
+      scrollToFirstError
     >
       {formItems.length ? getFields() : ''}
       <Modal

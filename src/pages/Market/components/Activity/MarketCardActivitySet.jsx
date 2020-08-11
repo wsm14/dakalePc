@@ -34,14 +34,10 @@ const MarketCardActivitySet = (props) => {
         label: '活动链接',
         name: 'walkStepCount',
         extra: '跳转进入的H5活动页面链接',
-        rules: [
+        addRules: [
           {
             type: 'url',
             message: '请输入正确链接格式',
-          },
-          {
-            required: true,
-            message: '请输入活动链接',
           },
         ],
       },
