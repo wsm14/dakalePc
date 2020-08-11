@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { MATCH_STATUS } from '@/common/constant';
@@ -10,7 +10,9 @@ const MarketCardRMing = (props) => {
   const { marketCardRMing, loading, dispatch, setKey, matchType } = props;
 
   const childRef = useRef();
+
   const prop = { childRef, dispatch };
+
   const propInfo = {
     wakeUp: { payload: MarketMatchMorningSet(prop), title: '早起挑战赛' },
     step: { payload: MarketMatchRuningSet(prop), title: '步数挑战赛' },
@@ -82,6 +84,33 @@ const MarketCardRMing = (props) => {
     });
   };
 
+  // 头部添加面包屑 按钮
+  const handlePageShowBtn = () => {
+    dispatch({
+      type: 'global/saveTitle',
+      payload: {
+        pageTitle: [propInfo.title],
+        pageBtn: (
+          <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
+            返回
+          </Button>
+        ),
+      },
+    });
+  };
+
+  // 头部添加按钮返回
+  const handlePageBtnBack = () => {
+    setKey('home');
+    dispatch({
+      type: 'global/closeTitle',
+    });
+  };
+
+  useEffect(() => {
+    handlePageShowBtn();
+  }, []);
+
   const btnExtra = [
     <Button className="dkl_green_btn" key="1" onClick={handleSetMatch}>
       设置
@@ -90,23 +119,16 @@ const MarketCardRMing = (props) => {
 
   return (
     <DataTableBlock
-      title={propInfo.title}
-      extra={
-        <Button className="dkl_orange_btn" key="2" onClick={() => setKey('home')}>
-          返回
-        </Button>
-      }
       cRef={childRef}
       loading={loading}
+      btnExtra={btnExtra}
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.startDate}`}
-      btnExtra={btnExtra}
       params={{ matchType }}
       dispatchType="marketCardRMing/fetchGetList"
       {...marketCardRMing}
-    >
-    </DataTableBlock>
+    ></DataTableBlock>
   );
 };
 

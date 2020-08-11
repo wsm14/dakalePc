@@ -112,6 +112,33 @@ const MarketCardActivityDetail = (props) => {
     });
   };
 
+  // 头部添加面包屑 按钮
+  const handlePageShowBtn = () => {
+    dispatch({
+      type: 'global/saveTitle',
+      payload: {
+        pageTitle: [params.name],
+        pageBtn: (
+          <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
+            返回
+          </Button>
+        ),
+      },
+    });
+  };
+
+  // 头部添加按钮返回
+  const handlePageBtnBack = () => {
+    setShow({ key: 'home' });
+    dispatch({
+      type: 'global/closeTitle',
+    });
+  };
+
+  useEffect(() => {
+    handlePageShowBtn();
+  }, []);
+
   const btnExtra = (
     <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive('store')}>
       新增
@@ -120,12 +147,6 @@ const MarketCardActivityDetail = (props) => {
 
   return (
     <DataTableBlock
-      title={params.name}
-      extra={
-        <Button className="dkl_orange_btn" key="2" onClick={() => setShow({ key: 'home' })}>
-          返回
-        </Button>
-      }
       cRef={childRef}
       loading={loading}
       btnExtra={btnExtra}

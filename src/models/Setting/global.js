@@ -3,9 +3,10 @@ const GlobalModel = {
   state: {
     collapsed: false,
     notices: [],
+    pageTitle: [],
+    pageBtn: [],
   },
-  effects: {
-  },
+  effects: {},
   reducers: {
     changeLayoutCollapsed(
       state = {
@@ -15,6 +16,12 @@ const GlobalModel = {
       { payload },
     ) {
       return { ...state, collapsed: payload };
+    },
+    saveTitle(state, { payload }) {
+      return { ...state, ...payload };
+    },
+    closeTitle(state, { payload }) {
+      return { ...state, pageTitle: [], pageBtn: [] };
     },
   },
   subscriptions: {

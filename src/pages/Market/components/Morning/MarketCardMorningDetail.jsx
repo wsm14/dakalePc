@@ -47,14 +47,36 @@ const MarketCardMorningDetail = (props) => {
     },
   ];
 
+  // 头部添加面包屑 按钮
+  const handlePageShowBtn = () => {
+    dispatch({
+      type: 'global/saveTitle',
+      payload: {
+        pageTitle: ['早起挑战赛-报名详情'],
+        pageBtn: (
+          <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
+            返回
+          </Button>
+        ),
+      },
+    });
+  };
+
+  // 头部添加按钮返回
+  const handlePageBtnBack = () => {
+    setKey();
+    dispatch({
+      type: 'global/closeTitle',
+    });
+  };
+
+  useEffect(() => {
+    handlePageShowBtn();
+  }, []);
+
   return (
     <DataTableBlock
-      title={<>早起挑战赛-报名详情 期数：2020.07.22期 报名人数：120人 完成目标人数：100</>}
-      extra={
-        <Button className="dkl_orange_btn" key="2" onClick={setKey}>
-          返回
-        </Button>
-      }
+      title={<>期数：2020.07.22期 报名人数：120人 完成目标人数：100</>}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
