@@ -209,9 +209,9 @@ const FormCondition = ({
         switch: <Switch />,
         upload: (
           <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-card"
             fileList={fileLists[name]}
+            beforeUpload={() => false}
             onPreview={handlePreview}
             onChange={({ fileList }) => {
               setFileLists({ ...fileLists, [name]: fileList });

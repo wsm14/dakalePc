@@ -135,11 +135,15 @@ const BasicLayout = (props) => {
         <RouteContext.Consumer>
           {(value) => {
             const { breadcrumb } = value;
+            console.log(breadcrumb, value);
             return (
               <PageContainer
-                subTitle={`${breadcrumb.routes.map((item) => item.breadcrumbName).join(' / ')}
+                subTitle={
+                  breadcrumb.routes &&
+                  `${breadcrumb.routes.map((item) => item.breadcrumbName).join(' / ')}
                   ${pageTitle.length > 0 ? ' / ' : ''}
-                  ${pageTitle.join(' / ')}`}
+                  ${pageTitle.join(' / ')}`
+                }
                 title={false}
                 extra={pageBtn}
               >
