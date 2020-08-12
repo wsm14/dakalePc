@@ -177,7 +177,7 @@ const FormCondition = ({
             //   moment(moment().startOf('month')).subtract(1, 'month'),
             //   moment(moment().startOf('month')).subtract(1, 'day'),
             // ]}
-            // disabledDate={disabledDate}
+            disabledDate={item.disabledDate}
             // renderExtraFooter={() =>
             //   '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
             // }

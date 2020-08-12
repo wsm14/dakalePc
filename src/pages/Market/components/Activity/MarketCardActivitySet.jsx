@@ -1,8 +1,10 @@
+import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const MarketCardActivitySet = (props) => {
   const { dispatch, childRef } = props;
 
+  // 新增活动
   const fetchMarketActivityAdd = (values) => {
     const {
       activityBeginTime: time,
@@ -13,15 +15,13 @@ const MarketCardActivitySet = (props) => {
       activityBeginTime: time[0].format('YYYY-MM-DD 00:00:00'),
       activityEndTime: time[1].format('YYYY-MM-DD 00:00:00'),
     };
-    console.log(payload);
     aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
-      console.log(1, res);
+      dispatch({
+        type: 'marketCardActivity/fetchMarketActivityAdd',
+        payload: { ...payload, activityBanner: res.toString() },
+        callback: () => childRef.current.fetchGetData(),
+      });
     });
-    // dispatch({
-    //   type: 'marketCardActivity/fetchMarketActivityAdd',
-    //   payload: values,
-    //   callback: () => childRef.current.fetchGetData(),
-    // });
   };
 
   return {
@@ -38,12 +38,13 @@ const MarketCardActivitySet = (props) => {
         label: '活动时间',
         type: 'rangePicker',
         name: 'activityBeginTime',
+        disabledDate: (time) => time && time < moment().endOf('day'),
       },
       {
         label: 'banner图',
         type: 'upload',
         name: 'activityBanner',
-        maxFile: 3,
+        maxFile: 1,
       },
       {
         label: '活动链接',
