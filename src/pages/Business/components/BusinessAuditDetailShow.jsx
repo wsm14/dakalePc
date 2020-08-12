@@ -16,24 +16,24 @@ const UserDetailShow = (props) => {
   // 审核通过
   const handleMerAuditAllow = () => {
     // 是否存在城市合伙人判断
-    // if (!Number(hasPartner))
-    //   Modal.info({
-    //     title: '审核失败',
-    //     content: '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人',
-    //     okText: '确认',
-    //     cancelText: '取消',
-    //   });
-    // else {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: {
-        loading,
-        title: `审核通过 - ${merchantName} `,
-        ...BusinessAuditAllow(merchantName),
-        onFinish: (val) => fetchMerSaleAudit({ ...val, verifyStatus: 3 }),
-      },
-    });
-    // }
+    if (!Number(hasPartner))
+      Modal.info({
+        title: '审核失败',
+        content: '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人',
+        okText: '确认',
+        cancelText: '取消',
+      });
+    else {
+      dispatch({
+        type: 'drawerForm/show',
+        payload: {
+          loading,
+          title: `审核通过 - ${merchantName} `,
+          ...BusinessAuditAllow(merchantName),
+          onFinish: (val) => fetchMerSaleAudit({ ...val, verifyStatus: 3 }),
+        },
+      });
+    }
   };
 
   // 审核驳回

@@ -14,6 +14,7 @@ import {
   Divider,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import imageCompress from '@/utils/imageCompress';
 import moment from 'moment';
 
 /**
@@ -103,6 +104,26 @@ const FormCondition = ({
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+  };
+
+  /**
+   * 选择图片上传配置
+   */
+  const handleUpProps = (name) => {
+    return {
+      accept: 'image/*',
+      onChange: (value) => {
+        const { fileList } = value;
+        if (!value.file.status) {
+          imageCompress(value.file).then(({ file }) => {
+            fileList[fileList.length - 1].originFileObj = file;
+            setFileLists({ ...fileLists, [name]: fileList });
+          });
+        } else {
+          setFileLists({ ...fileLists, [name]: fileList });
+        }
+      },
+    };
   };
 
   // 预览图片
@@ -213,9 +234,7 @@ const FormCondition = ({
             fileList={fileLists[name]}
             beforeUpload={() => false}
             onPreview={handlePreview}
-            onChange={({ fileList }) => {
-              setFileLists({ ...fileLists, [name]: fileList });
-            }}
+            {...handleUpProps(name)}
           >
             {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
           </Upload>

@@ -26,16 +26,15 @@
  */
 
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 
 const HandleSetTable = (props) => {
-
   const { formItems } = props;
 
   const getFields = () => {
     const children = [];
     formItems.forEach((item, index) => {
-      const { type, title = '按钮', visible = true } = item;
+      const { type = 'button', title = '按钮', pop = false, visible = true } = item;
 
       let btnText = '';
       if (type === 'own') {
@@ -57,7 +56,7 @@ const HandleSetTable = (props) => {
         btnText = '审核';
       }
 
-      const component =
+      let component =
         type === 'text' ? (
           { title }
         ) : (
@@ -65,6 +64,22 @@ const HandleSetTable = (props) => {
             {btnText}
           </Button>
         );
+      component = pop ? (
+        <Popconfirm
+          placement="top"
+          title={`确认${btnText}？`}
+          onConfirm={item.click}
+          okText="确认"
+          cancelText="取消"
+          key={`pop${type}${index}`}
+        >
+          <Button type="link" size="small">
+            {btnText}
+          </Button>
+        </Popconfirm>
+      ) : (
+        component
+      );
       children.push(visible && component);
     });
     return children;

@@ -44,8 +44,8 @@ const imageCompress = (file, signet = false) => {
           u8arr[n] = bstr.charCodeAt(n);
         }
         fileblob = new Blob([u8arr], { type: mime });
-        const blob = new File([fileblob], file.name, { type: mime }); // 后台需要文件名 转换回来
-        resolve({ blob, base64 });
+        const file = new File([fileblob], file.name, { type: mime }); // 后台需要文件名 转换回来
+        resolve({ file, base64 });
       };
     };
   });

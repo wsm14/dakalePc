@@ -135,7 +135,6 @@ const BasicLayout = (props) => {
         <RouteContext.Consumer>
           {(value) => {
             const { breadcrumb } = value;
-            console.log(breadcrumb, value);
             return (
               <PageContainer
                 subTitle={

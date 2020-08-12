@@ -121,7 +121,7 @@ const MarketCardActivityDetail = (props) => {
     dispatch({
       type: 'global/saveTitle',
       payload: {
-        pageTitle: [params.name],
+        pageTitle: ['活动商家'],
         pageBtn: (
           <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
             返回

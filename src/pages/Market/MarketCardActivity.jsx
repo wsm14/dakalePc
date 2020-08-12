@@ -17,11 +17,11 @@ const MarketCardActivity = (props) => {
   const searchItems = [
     {
       label: '活动名称',
-      name: 'date',
+      name: 'activityName',
     },
     {
       label: '活动状态',
-      name: 'date2',
+      name: 'activityStatus',
       type: 'select',
       select: { list: ACTIVITY_STATUS },
     },
@@ -32,12 +32,12 @@ const MarketCardActivity = (props) => {
     {
       title: '活动名称',
       align: 'center',
-      dataIndex: 'startDate',
+      dataIndex: 'activityName',
     },
     {
       title: '活动描述',
       align: 'center',
-      dataIndex: 'signBeanAmount',
+      dataIndex: 'description',
     },
     {
       title: '活动商家',
@@ -48,17 +48,18 @@ const MarketCardActivity = (props) => {
     {
       title: '活动时间',
       align: 'center',
-      dataIndex: 'totalBeanAmount',
+      dataIndex: 'activityBeginTime',
+      render: (val, record) => `${val} - ${record.activityEndTime}`,
     },
     {
       title: '活动状态',
       align: 'center',
-      dataIndex: 'targetUserAmount',
-      render: (val) => (val ? val : '--'),
+      dataIndex: 'activityStatus',
+      render: (val) => ACTIVITY_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'activityIdString',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
@@ -69,13 +70,24 @@ const MarketCardActivity = (props) => {
             },
             {
               type: 'own',
+              pop: true,
               title: '下架',
+              click: () => fetchMarketActivityCancel({ activityId: val }),
             },
           ]}
         />
       ),
     },
   ];
+
+  // 活动下架
+  const fetchMarketActivityCancel = (payload) => {
+    dispatch({
+      type: 'marketCardActivity/fetchMarketActivityCancel',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
 
   // 设置活动
   const handleSetActive = () => {
@@ -102,7 +114,7 @@ const MarketCardActivity = (props) => {
               btnExtra={btnExtra}
               columns={getColumns}
               searchItems={searchItems}
-              rowKey={(record) => `${record.startDate}`}
+              rowKey={(record) => record.activityIdString}
               dispatchType="marketCardActivity/fetchGetList"
               {...marketCardActivity.active}
             ></DataTableBlock>
@@ -121,5 +133,5 @@ const MarketCardActivity = (props) => {
 
 export default connect(({ marketCardActivity, loading }) => ({
   marketCardActivity,
-  loading: loading.models.marketCardActivity,
+  loading: loading.effects['marketCardActivity/fetchGetList'],
 }))(MarketCardActivity);
