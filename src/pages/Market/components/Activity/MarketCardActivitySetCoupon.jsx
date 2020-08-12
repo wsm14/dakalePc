@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const MarketCardActivitySetCoupon = (props) => {
   const { dispatch, childRef, marketCouponId } = props;
 
@@ -40,6 +42,7 @@ const MarketCardActivitySetCoupon = (props) => {
         extra: '输入天数，自领取成功之后该天数内有效',
         addonAfter: '天',
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '请输入正确天数' }],
+        disabledDate: (time) => time && time < moment().endOf('day'),
       },
       {
         title: '设置领券关联',

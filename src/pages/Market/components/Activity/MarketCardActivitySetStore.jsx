@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form } from 'antd';
@@ -19,6 +20,7 @@ const MarketCardActivitySetStore = (props) => {
   const { typeList } = marketCardActivity;
 
   const [form] = Form.useForm();
+  const [payNum, setPayNum] = useState(true);
 
   useEffect(() => {
     dispatch({
@@ -137,6 +139,30 @@ const MarketCardActivitySetStore = (props) => {
       label: '原价',
       type: 'number',
       name: 'originPrice',
+    },
+    {
+      label: '有效期',
+      type: 'rangePicker',
+      name: 'originPrisce',
+      name: 'activityBeginTime',
+      disabledDate: (time) => time && time < moment().endOf('day'),
+    },
+    {
+      label: '限购',
+      name: 'acti2veDays',
+      type: 'radio',
+      select: ['限购', '不限'],
+      onChange: (e) => {
+        setPayNum(e.target.value === '1');
+        form.setFieldsValue({ acti2veDayss: '' });
+      },
+    },
+    {
+      label: '每人每天限购',
+      type: 'number',
+      name: 'acti2veDayss',
+      disabled: payNum,
+      rules: [{ required: !payNum, message: `请确认每人每天限购数量` }],
     },
     {
       type: 'textArea',

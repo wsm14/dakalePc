@@ -158,8 +158,20 @@ const FormCondition = ({
       // 判断类型 默认input
 
       let component = {
-        input: <Input placeholder={placeholder} addonAfter={item.addonAfter || ''} />,
-        number: <InputNumber style={{ width: '100%' }} placeholder={placeholder} />,
+        input: (
+          <Input
+            placeholder={placeholder}
+            addonAfter={item.addonAfter || ''}
+            disabled={item.disabled}
+          />
+        ),
+        number: (
+          <InputNumber
+            disabled={item.disabled}
+            style={{ width: '100%' }}
+            placeholder={placeholder}
+          />
+        ),
         textArea: <Input.TextArea placeholder={placeholder} rows={4} />,
         timePicker: (
           <TimePicker.RangePicker
