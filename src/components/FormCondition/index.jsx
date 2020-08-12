@@ -72,7 +72,6 @@ const FormCondition = ({
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
-  resetValue,
 }) => {
   const [formValue] = useState(initialValues);
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -184,7 +183,17 @@ const FormCondition = ({
           />
         ),
         select: (
-          <Select placeholder={item.placeholder || `请选择${label}`}>
+          <Select
+            showSearch
+            disabled={item.disabled}
+            defaultActiveFirstOption={false}
+            filterOption={item.filterOption || false}
+            onSearch={item.onSearch}
+            onChange={item.onChange}
+            placeholder={item.placeholder || `请选择${label}`}
+            style={{ width: '100%' }}
+            notFoundContent={null}
+          >
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -239,6 +248,7 @@ const FormCondition = ({
             {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
           </Upload>
         ),
+        children: item.children,
       }[type];
 
       if (title) {
@@ -266,19 +276,11 @@ const FormCondition = ({
     return children;
   };
 
-  const handleReset = () => {
-    form.resetFields();
-  };
-
-  useEffect(() => {
-    handleReset();
-  }, [resetValue]);
-
   return (
     <Form
       form={form}
       layout={layout}
-      initialValues={formValue}
+      initialValues={initialValues}
       {...formItemLayout}
       preserve={false}
       scrollToFirstError

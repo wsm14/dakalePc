@@ -116,7 +116,7 @@ const MarketCardActivityDetailPay = (props) => {
         searchItems={visible && propItem.searchItems}
         rowKey={(record) => `${record.startDate}`}
         // params={{ id: params.id }}
-        dispatchType="marketCardActivity/fetchGetActiveDetailPay"
+        dispatchType="marketCardActivity/fetchGetActiveDetailPays"
         componentSize="middle"
         {...marketCardActivity.detailPay}
       ></DataTableBlock>

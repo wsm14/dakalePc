@@ -1,10 +1,14 @@
 const MarketCardActivitySetCoupon = (props) => {
-  const { dispatch, childRef } = props;
+  const { dispatch, childRef, marketCouponId } = props;
 
-  const fetchRuningSet = (values) => {
+  const fetchGetFormData = (values) => {
+    const { mark, moment } = values;
+    const couponChannels = [];
+    if (mark) couponChannels.push('mark');
+    if (moment) couponChannels.push('moment');
     dispatch({
-      type: 'marketCardActivity/fetchMarketMatchRuningSet',
-      payload: values,
+      type: 'marketCardActivity/fetchMarketActivityCouponSet',
+      payload: { ...values, marketCouponId, couponChannels: couponChannels.toString() },
       callback: () => childRef.current.fetchGetData(),
     });
   };
@@ -18,21 +22,21 @@ const MarketCardActivitySetCoupon = (props) => {
       {
         label: '券类型',
         type: 'select',
-        name: 'walkSignBea1nAmount',
-        select: [],
+        name: 'couponType',
+        select: ['抵扣券'],
       },
       {
         label: '券名称',
-        name: 'walkSignBea2nAmou2nt',
+        name: 'couponName',
       },
       {
         label: '券金额',
         type: 'number',
-        name: 'walkStepCount',
+        name: 'couponValue',
       },
       {
         label: '有效期',
-        name: 'walkStepCsount',
+        name: 'activeDays',
         extra: '输入天数，自领取成功之后该天数内有效',
         addonAfter: '天',
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '请输入正确天数' }],
@@ -42,16 +46,18 @@ const MarketCardActivitySetCoupon = (props) => {
         label: '关联到店打卡',
         type: 'switch',
         valuePropName: 'checked',
-        name: 'walkStepCousnt',
+        name: 'mark',
+        rules: [],
       },
       {
         label: '关联看分享',
         type: 'switch',
         valuePropName: 'checked',
-        name: 'walkStepCosusnt',
+        name: 'moment',
+        rules: [],
       },
     ],
-    onFinish: fetchRuningSet,
+    onFinish: fetchGetFormData,
     ...props,
   };
 };

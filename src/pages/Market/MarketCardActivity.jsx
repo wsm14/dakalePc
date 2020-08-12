@@ -42,7 +42,7 @@ const MarketCardActivity = (props) => {
     {
       title: '活动商家',
       align: 'center',
-      dataIndex: 'signAmount',
+      dataIndex: 'activityCount',
       render: (val) => (val ? val : '--'),
     },
     {
@@ -72,6 +72,7 @@ const MarketCardActivity = (props) => {
               type: 'own',
               pop: true,
               title: '下架',
+              visible: record.activityStatus !== '2',
               click: () => fetchMarketActivityCancel({ activityId: val }),
             },
           ]}

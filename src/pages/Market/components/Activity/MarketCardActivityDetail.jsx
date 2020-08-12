@@ -11,13 +11,14 @@ import MarketCardActivityDetailPay from './MarketCardActivityDetailPay';
 const searchItems = [
   {
     label: '商家名称',
-    name: 'dates',
+    name: 'merchantName',
   },
 ];
 
 const MarketCardActivityDetail = (props) => {
   const { marketCardActivity, loading, dispatch, params, setShow } = props;
   const [visible, setVisible] = useState('');
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -26,59 +27,59 @@ const MarketCardActivityDetail = (props) => {
     {
       title: '商家名称',
       align: 'center',
-      dataIndex: 'startDate',
+      dataIndex: 'merchantName',
     },
     {
       title: '所在城市',
       align: 'center',
-      dataIndex: 'signBeanAmount',
+      dataIndex: 'merchantCity',
     },
     {
       title: '所在区域',
       align: 'center',
-      dataIndex: 'signAmount',
+      dataIndex: 'merchantDistrict',
     },
     {
       title: '详细地址',
       align: 'center',
-      dataIndex: 'totalBeanAmount',
+      dataIndex: 'merchantAddress',
     },
     {
       title: '活动商品',
       align: 'center',
-      dataIndex: 'targetUserAmount',
+      dataIndex: 'goodsName',
     },
     {
       title: '原价',
       align: 'center',
-      dataIndex: 'status',
+      dataIndex: 'originPrice',
     },
     {
       title: '活动价',
       align: 'center',
-      dataIndex: 'stastus',
+      dataIndex: 'currentPrice',
     },
     {
       title: '活动数量',
       align: 'center',
-      dataIndex: 'statsus',
+      dataIndex: 'totalCount',
     },
     {
       title: '已售',
       align: 'center',
-      dataIndex: 'staatus',
+      dataIndex: 'soldCount',
       render: (val) => val || 0,
     },
     {
       title: '已核销',
       align: 'center',
-      dataIndex: 'staatuss',
+      dataIndex: 'verifiedCount',
       render: (val) => val || 0,
     },
     {
       title: '操作',
       align: 'right',
-      dataIndex: 'id',
+      dataIndex: 'marketCouponIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
@@ -95,7 +96,7 @@ const MarketCardActivityDetail = (props) => {
             {
               type: 'own',
               title: '优惠券',
-              click: () => handleSetActive('coupon'),
+              click: () => handleSetActive(val),
             },
           ]}
         />
@@ -106,13 +107,10 @@ const MarketCardActivityDetail = (props) => {
   const setprops = { dispatch, childRef };
 
   // 设置 活动商家 | 优惠券
-  const handleSetActive = (type) => {
+  const handleSetActive = (marketCouponId) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: {
-        store: MarketCardActivitySetStore(setprops),
-        coupon: MarketCardActivitySetCoupon(setprops),
-      }[type],
+      payload: MarketCardActivitySetCoupon({ dispatch, childRef, marketCouponId }),
     });
   };
 
@@ -144,7 +142,7 @@ const MarketCardActivityDetail = (props) => {
   }, []);
 
   const btnExtra = (
-    <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive('store')}>
+    <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
       新增
     </Button>
   );
@@ -157,12 +155,18 @@ const MarketCardActivityDetail = (props) => {
         btnExtra={btnExtra}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.startDate}`}
-        params={{ id: params.id }}
+        rowKey={(record) => record.marketCouponIdString}
+        params={{ activityId: params.activityIdString }}
         dispatchType="marketCardActivity/fetchGetActiveDetail"
         {...marketCardActivity.detail}
       ></DataTableBlock>
       <MarketCardActivityDetailPay visible={visible} setVisible={setVisible} />
+      <MarketCardActivitySetStore
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+        storeId={params.activityIdString}
+      ></MarketCardActivitySetStore>
     </>
   );
 };
