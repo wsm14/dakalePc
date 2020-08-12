@@ -1,14 +1,22 @@
+import aliOssUpload from '@/utils/aliOssUpload';
+
 const MarketCardActivitySet = (props) => {
   const { dispatch, childRef } = props;
 
   const fetchMarketActivityAdd = (values) => {
-    const { activityBeginTime: time } = values;
+    const {
+      activityBeginTime: time,
+      activityBanner: { fileList },
+    } = values;
     const payload = {
       ...values,
       activityBeginTime: time[0].format('YYYY-MM-DD 00:00:00'),
       activityEndTime: time[1].format('YYYY-MM-DD 00:00:00'),
     };
     console.log(payload);
+    aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
+      console.log(1, res);
+    });
     // dispatch({
     //   type: 'marketCardActivity/fetchMarketActivityAdd',
     //   payload: values,

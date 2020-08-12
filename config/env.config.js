@@ -12,6 +12,10 @@ export default {
         target: 'http://192.168.0.143:6020/',
         changeOrigin: true,
       },
+      '/common': {
+        target: 'https://devgateway.dakale.net/',
+        changeOrigin: true,
+      },
     },
   },
   test: {

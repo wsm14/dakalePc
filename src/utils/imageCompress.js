@@ -4,15 +4,15 @@ const ctx = canvas.getContext('2d');
 
 /**
  * 图片压缩
- * @param {*} file 本地文件流 signet 是否加水印
+ * @param {*} files 本地文件流 signet 是否加水印
  * @param {*} return 返回Promise对象 .then返回压缩后的 blob对象 base64对象
  */
-const imageCompress = (file, signet = false) => {
+const imageCompress = (files, signet = false) => {
   let fileblob = {};
   let base64 = '';
   return new Promise(resolve => {
     const fr = new FileReader();
-    fr.readAsDataURL(file);
+    fr.readAsDataURL(files);
     fr.onload = () => {
       const img = new Image();
       img.src = fr.result;
@@ -44,7 +44,7 @@ const imageCompress = (file, signet = false) => {
           u8arr[n] = bstr.charCodeAt(n);
         }
         fileblob = new Blob([u8arr], { type: mime });
-        const file = new File([fileblob], file.name, { type: mime }); // 后台需要文件名 转换回来
+        const file = new File([fileblob], files.name, { type: mime }); // 后台需要文件名 转换回来
         resolve({ file, base64 });
       };
     };
