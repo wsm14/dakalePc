@@ -15,11 +15,11 @@ export default {
   namespace: 'marketCardActivity',
 
   state: {
-    active: { list: [{ name: 1 }], total: 0 },
-    detail: { list: [{ name: 2 }], total: 0 },
-    detailPay: { list: [{ name: 3 }], total: 0 },
-    merchantList: { list: [{ name: 4 }], total: 0 },
-    typeList: [{ name: 5 }],
+    active: { list: [], total: 0 },
+    detail: { list: [], total: 0 },
+    detailPay: { list: [], total: 0 },
+    merchantList: { list: [], total: 0 },
+    typeList: [],
   },
 
   reducers: {
@@ -51,6 +51,7 @@ export default {
             list: content.activityList,
             total: content.total,
           },
+          detail: { list: [], total: 0 },
         },
       });
     },
@@ -110,8 +111,19 @@ export default {
     *fetchGetCouponInfo({ payload, callback }, { call, put }) {
       const response = yield call(fetchStoreGoodsCouponInfo, payload);
       if (!response) return;
-      const { content } = response;
-      callback({ initialValues: content, ...payload });
+      const {
+        content: { marketCouponDeduct },
+      } = response;
+      const { couponChannels: ccls = '', couponName = '' } = marketCouponDeduct;
+      const initialValues = !couponName
+        ? ''
+        : {
+            ...marketCouponDeduct,
+            couponType: '0',
+            mark: ccls.indexOf('mark') > -1,
+            moment: ccls.indexOf('moment') > -1,
+          };
+      callback({ initialValues, ...payload });
     },
     *fetchMarketActivityAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchMarketActivityAdd, payload);

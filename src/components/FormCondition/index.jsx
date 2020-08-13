@@ -294,7 +294,7 @@ const FormCondition = ({
       layout={layout}
       initialValues={initialValues}
       {...formItemLayout}
-      scrollToFirstError
+      scrollToFirstError={true}
     >
       {formItems.length ? getFields() : ''}
       <Modal

@@ -37,7 +37,7 @@ export async function fetchStoreGoodsType(params) {
 
 // get 获取优惠券详情
 export async function fetchStoreGoodsCouponInfo(params) {
-  return request('/admin/marketingActivity/listActivity', {
+  return request('/admin/marketCoupon/getMarketCouponDeduct', {
     params,
   });
 }

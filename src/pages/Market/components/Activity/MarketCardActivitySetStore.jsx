@@ -161,7 +161,7 @@ const MarketCardActivitySetStore = (props) => {
       select: ['限购', '不限'],
       onChange: (e) => {
         setLimitStaut(e.target.value === '1');
-        form.setFieldsValue({ acti2veDayss: '' });
+        form.setFieldsValue({ acquireLimitNum: '' });
       },
     },
     {

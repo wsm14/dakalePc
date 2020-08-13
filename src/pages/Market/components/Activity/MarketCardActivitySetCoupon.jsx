@@ -64,6 +64,7 @@ const MarketCardActivitySetCoupon = (props) => {
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '请输入正确天数' }],
         disabledDate: (time) => time && time < moment().endOf('day'),
         disabled: !!initialValues,
+        render: (val) => `自领取成功之后 ${val} 天内有效`
       },
       {
         title: '设置领券关联',
