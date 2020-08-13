@@ -104,8 +104,6 @@ const MarketCardActivityDetail = (props) => {
     },
   ];
 
-  const setprops = { dispatch, childRef };
-
   // 设置 活动商家 | 优惠券
   const handleSetActive = (marketCouponId) => {
     dispatch({

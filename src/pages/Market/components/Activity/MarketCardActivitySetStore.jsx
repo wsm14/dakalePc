@@ -1,7 +1,7 @@
-import moment from 'moment';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form } from 'antd';
+import moment from 'moment';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -20,7 +20,7 @@ const MarketCardActivitySetStore = (props) => {
   const { typeList } = marketCardActivity;
 
   const [form] = Form.useForm();
-  const [payNum, setPayNum] = useState(true);
+  const [limitStaut, setLimitStaut] = useState(true);
 
   useEffect(() => {
     dispatch({
@@ -34,11 +34,15 @@ const MarketCardActivitySetStore = (props) => {
       const {
         allImgs: { fileList: afile },
         couponBanner: { fileList: bfile },
+        activeBeginDate: time,
+        acquireLimit: limit,
+        acquireLimitNum: limitNum,
         categoryCustomId,
         goodsName,
         originPrice,
       } = values;
 
+      // 上传图片到oss -> 提交表单
       aliOssUpload([afile[0].originFileObj, bfile[0].originFileObj]).then((res) => {
         dispatch({
           type: 'marketCardActivity/fetchMarketActivityStoreSet',
@@ -53,6 +57,9 @@ const MarketCardActivitySetStore = (props) => {
             },
             allImgs: res[0],
             couponBanner: res[1],
+            acquireLimit: { 0: limitNum, 1: '' }[limit],
+            activeBeginDate: time[0].format('YYYY-MM-DD 00:00:00'),
+            activeEndDate: time[1].format('YYYY-MM-DD 00:00:00'),
           },
           callback: () => {
             onClose();
@@ -144,25 +151,25 @@ const MarketCardActivitySetStore = (props) => {
       label: '有效期',
       type: 'rangePicker',
       name: 'originPrisce',
-      name: 'activityBeginTime',
+      name: 'activeBeginDate',
       disabledDate: (time) => time && time < moment().endOf('day'),
     },
     {
       label: '限购',
-      name: 'acti2veDays',
       type: 'radio',
+      name: 'acquireLimit',
       select: ['限购', '不限'],
       onChange: (e) => {
-        setPayNum(e.target.value === '1');
+        setLimitStaut(e.target.value === '1');
         form.setFieldsValue({ acti2veDayss: '' });
       },
     },
     {
       label: '每人每天限购',
       type: 'number',
-      name: 'acti2veDayss',
-      disabled: payNum,
-      rules: [{ required: !payNum, message: `请确认每人每天限购数量` }],
+      name: 'acquireLimitNum',
+      disabled: limitStaut,
+      rules: [{ required: !limitStaut, message: `请确认每人每天限购数量` }],
     },
     {
       type: 'textArea',
@@ -200,7 +207,7 @@ const MarketCardActivitySetStore = (props) => {
         </div>
       }
     >
-      <FormCondition formItems={formItems} form={form} loading={loading}></FormCondition>
+      <FormCondition formItems={formItems} form={form} loading={loading} />
     </Drawer>
   );
 };
