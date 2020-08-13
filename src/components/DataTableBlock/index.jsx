@@ -22,7 +22,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @params 搜索时默认参数
  * @CardNone 是否需要Card包裹 默认true
  * @extra card 右上角
- * @componentSize 组件大小 small default middle 
+ * @componentSize 组件大小 small default middle
  */
 
 const DataTableBlockComponent = ({
@@ -109,6 +109,7 @@ const DataTableBlockComponent = ({
         ></SearchCondition>
       )}
       <Table
+        scroll={{ x: 'max-content' }}
         size={componentSize}
         rowKey={rowKey}
         loading={loading}

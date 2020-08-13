@@ -31,6 +31,7 @@ const MarketCardActivityDetail = (props) => {
     {
       title: '商家名称',
       align: 'center',
+      fixed: 'left',
       dataIndex: 'merchantName',
     },
     {
@@ -83,6 +84,7 @@ const MarketCardActivityDetail = (props) => {
     {
       title: '操作',
       align: 'right',
+      fixed: 'right',
       dataIndex: 'marketCouponIdString',
       render: (val, record) => (
         <HandleSetTable

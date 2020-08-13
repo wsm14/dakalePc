@@ -15,11 +15,11 @@ export default {
   namespace: 'marketCardActivity',
 
   state: {
-    active: { list: [], total: 0 },
-    detail: { list: [], total: 0 },
-    detailPay: { list: [], total: 0 },
-    merchantList: { list: [], total: 0 },
-    typeList: [],
+    active: { list: [{ name: 1 }], total: 0 },
+    detail: { list: [{ name: 2 }], total: 0 },
+    detailPay: { list: [{ name: 3 }], total: 0 },
+    merchantList: { list: [{ name: 4 }], total: 0 },
+    typeList: [{ name: 5 }],
   },
 
   reducers: {
