@@ -15,8 +15,9 @@ export default {
     },
   },
   test: {
+    // https://web-new.dakale.net/dev/page/bannerShare/goodsStoreDaka.html
     define: {
-      APIURL: 'http://192.168.0.143:6020/',
+      APIURL: 'https://devgateway.dakale.net',
     },
     proxy: {
       '/api/': {
@@ -28,7 +29,7 @@ export default {
   // 生产环境proxy代理 不生效
   prod: {
     define: {
-      APIURL: 'https://devgateway.dakale.net/',
+      APIURL: 'https://devgateway.dakale.net',
     },
   },
 };
