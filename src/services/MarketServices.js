@@ -42,6 +42,20 @@ export async function fetchStoreGoodsCouponInfo(params) {
   });
 }
 
+// get 兑换券订单明细
+export async function fetchStoreOrderDetail(params) {
+  return request('/admin/marketCoupon/listMarketCouponOrder', {
+    params,
+  });
+}
+
+// get 兑换券核销明细
+export async function fetchStoreCouponDestoryDetail(params) {
+  return request('/admin/marketCoupon/listUserMarketCoupon', {
+    params,
+  });
+}
+
 // post 营销活动下架
 export function fetchMarketActivityCancel(data) {
   return request('/admin/marketingActivity/updateActivity', {

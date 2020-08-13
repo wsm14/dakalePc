@@ -22,7 +22,7 @@ const GlobalHeaderRight = (props) => {
       <Avatar />
       {REACT_APP_ENV !== "prod" && (
         <span>
-          <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
+          <Tag color={ENVTagColor[REACT_APP_ENV || 'dev']}>{REACT_APP_ENV || 'dev'}</Tag>
         </span>
       )}
     </div>

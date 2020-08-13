@@ -9,6 +9,7 @@ import { history } from 'umi';
 
 notification.config({
   duration: 3,
+  placement: 'topRight',
 });
 
 const codeMessage = {

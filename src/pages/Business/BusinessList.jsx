@@ -38,6 +38,7 @@ const BusinessListComponent = (props) => {
   const getColumns = [
     {
       title: '商户ID',
+      fixed: 'left',
       dataIndex: 'merchantId',
     },
     {
@@ -83,7 +84,8 @@ const BusinessListComponent = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      align: 'center',
+      fixed: 'right',
+      align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[

@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
@@ -48,6 +49,11 @@ const MarketCardActivityDetail = (props) => {
       title: '详细地址',
       align: 'center',
       dataIndex: 'merchantAddress',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '活动商品',
@@ -158,7 +164,7 @@ const MarketCardActivityDetail = (props) => {
 
   const btnExtra = (
     <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
-      新增商家
+      新增
     </Button>
   );
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Space, Row, Col, Input, Button, Select, DatePicker, InputNumber } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
-import { TIME_UNIX_E, TIME_UNIX_S } from '@/common/constant';
 import moment from 'moment';
 import styles from './index.less';
 
@@ -115,11 +114,12 @@ const SearchCondition = (props) => {
     formItems.forEach((item) => {
       if (values[item.name]) {
         if (item.type === 'datePicker') formObj[item.name] = values[item.name].format('YYYY-MM-DD');
-        if (item.type === 'rangePicker')
-          formObj[item.name] = [
-            Number(TIME_UNIX_S(values.times[0])),
-            Number(TIME_UNIX_E(values.times[1])),
-          ];
+        else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
+          formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
+          formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
+        }
+      } else {
+        delete values[item.name];
       }
     });
     handleSearch({ ...values, ...formObj });

@@ -36,6 +36,9 @@ export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
+// 卡券状态
+export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
+
 // 默认起始结束时间
 const now = new Date();
 export const INIT_END_TIME = moment(now, 'YYYY-MM-DD');

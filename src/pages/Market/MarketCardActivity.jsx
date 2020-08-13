@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
@@ -35,9 +36,14 @@ const MarketCardActivity = (props) => {
       dataIndex: 'activityName',
     },
     {
-      title: '活动描述',
+      title: '活动简述',
       align: 'center',
       dataIndex: 'description',
+      render: (val) => (
+        <Ellipsis length={15} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '活动商家',

@@ -9,6 +9,8 @@ import {
   fetchMarketActivityStoreName,
   fetchStoreGoodsType,
   fetchStoreGoodsCouponInfo,
+  fetchStoreOrderDetail,
+  fetchStoreCouponDestoryDetail,
 } from '@/services/MarketServices';
 
 export default {
@@ -70,14 +72,28 @@ export default {
       });
     },
     *fetchGetActiveDetailPay({ payload }, { call, put }) {
-      const response = yield call(fetchMarketActivityStore, payload);
+      const response = yield call(fetchStoreOrderDetail, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
           detailPay: {
-            list: content.marketCouponList,
+            list: content.orderList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchActiveDestoryDetail({ payload }, { call, put }) {
+      const response = yield call(fetchStoreCouponDestoryDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailPay: {
+            list: content.orderList,
             total: content.total,
           },
         },
