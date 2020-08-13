@@ -8,22 +8,24 @@ import FormCondition from '../FormCondition';
  *
  * form 弹窗表单结构
  * 2020年8月4日 11:40:01 Dong
+ * 2020年8月13日 10:47:55 Dong
  *
  * @type  弹窗类型 Drawer / Modal
  * @showType  表单类型 info / form
  * @title 弹窗标题
  * @width 弹窗宽度
  * @visible 弹窗显示隐藏
+ * @formItems form表单内容
  * @okText 确认按钮文字
  * @cancelText 取消按钮文字
- * @loadingModels 请求监听的model名
- * @formItems form表单内容
  * @initialValues form表单参数默认值
  * @imgFileList upload默认参数
- * @onFinish 确认提交参数方法
- * @onShow 打开弹窗方法
- * @onClose 关闭弹窗方法
+ * @loadingModels 请求监听的model名
  * @maskClosable 点击蒙版是否关闭
+ * @footerShow 底部额外按钮显示隐藏
+ * @footerBtn 底部额外按钮数组方法 返回loading
+ * @onFinish 确认提交参数方法
+ * @onClose 关闭弹窗方法
  *
  */
 
@@ -42,6 +44,7 @@ const DrawerModalForm = ({
   loadingModels,
   loading,
   maskClosable = true,
+  footerShow = true,
   footerBtn = () => [],
   onFinish = () => {},
   onClose,
@@ -92,7 +95,7 @@ const DrawerModalForm = ({
           <div style={{ textAlign: 'right' }}>
             <Space>
               <Button onClick={onClose || handleClose}>{cancelText}</Button>
-              {
+              {footerShow &&
                 {
                   false: (
                     <Button onClick={handleFinish} type="primary" loading={loadings}>
@@ -112,8 +115,8 @@ const DrawerModalForm = ({
                         return item.btn;
                       } else return item;
                     }),
-                }[!!footerBtn().length]
-              }
+                  null: '',
+                }[!!footerBtn().length]}
             </Space>
           </div>
         }

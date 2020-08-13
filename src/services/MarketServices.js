@@ -35,6 +35,13 @@ export async function fetchStoreGoodsType(params) {
   });
 }
 
+// get 获取优惠券详情
+export async function fetchStoreGoodsCouponInfo(params) {
+  return request('/admin/marketingActivity/listActivity', {
+    params,
+  });
+}
+
 // post 营销活动下架
 export function fetchMarketActivityCancel(data) {
   return request('/admin/marketingActivity/updateActivity', {

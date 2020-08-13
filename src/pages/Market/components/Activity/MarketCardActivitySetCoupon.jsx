@@ -1,40 +1,60 @@
 import moment from 'moment';
 
 const MarketCardActivitySetCoupon = (props) => {
-  const { dispatch, childRef, marketCouponId } = props;
+  const {
+    dispatch,
+    childRef,
+    payload: { marketCouponId, initialValues },
+  } = props;
 
+  // 提交表单
   const fetchGetFormData = (values) => {
     const { mark, moment } = values;
-    const couponChannels = [];
-    if (mark) couponChannels.push('mark');
-    if (moment) couponChannels.push('moment');
+    const couponBtn = [];
+    if (mark) couponBtn.push('mark');
+    if (moment) couponBtn.push('moment');
     dispatch({
       type: 'marketCardActivity/fetchMarketActivityCouponSet',
-      payload: { ...values, marketCouponId, couponChannels: couponChannels.toString() },
+      payload: { ...values, marketCouponId, couponChannels: couponBtn.toString() },
       callback: () => childRef.current.fetchGetData(),
     });
   };
 
+  const { couponChannels: ccls = '' } = initialValues;
+
+  const cclsIndexOf = (val) => ({ true: '开启', false: '关闭' }[ccls.indexOf(val) > -1]);
+
+  const drawerType = {
+    true: { showType: 'info', title: '查看优惠券', footerShow: false },
+    false: { showType: 'form', title: '新增优惠券', footerShow: true },
+  }[!!initialValues];
+
   return {
     type: 'Drawer',
-    showType: 'form',
-    title: '新增优惠券',
+    showType: drawerType.showType,
+    title: drawerType.title,
     loadingModels: 'marketCardActivity',
+    initialValues: initialValues || { couponType: '0' },
+    footerShow: drawerType.footerShow,
     formItems: [
       {
         label: '券类型',
         type: 'select',
         name: 'couponType',
         select: ['抵扣券'],
+        disabled: true,
+        render: () => '抵扣券',
       },
       {
         label: '券名称',
         name: 'couponName',
+        disabled: !!initialValues,
       },
       {
         label: '券金额',
         type: 'number',
         name: 'couponValue',
+        disabled: !!initialValues,
       },
       {
         label: '有效期',
@@ -43,6 +63,7 @@ const MarketCardActivitySetCoupon = (props) => {
         addonAfter: '天',
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '请输入正确天数' }],
         disabledDate: (time) => time && time < moment().endOf('day'),
+        disabled: !!initialValues,
       },
       {
         title: '设置领券关联',
@@ -51,6 +72,8 @@ const MarketCardActivitySetCoupon = (props) => {
         valuePropName: 'checked',
         name: 'mark',
         rules: [],
+        disabled: !!initialValues,
+        render: () => cclsIndexOf('mark'),
       },
       {
         label: '关联看分享',
@@ -58,6 +81,8 @@ const MarketCardActivitySetCoupon = (props) => {
         valuePropName: 'checked',
         name: 'moment',
         rules: [],
+        disabled: !!initialValues,
+        render: () => cclsIndexOf('moment'),
       },
     ],
     onFinish: fetchGetFormData,

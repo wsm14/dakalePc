@@ -8,17 +8,18 @@ import {
   fetchMarketActivityCouponSet,
   fetchMarketActivityStoreName,
   fetchStoreGoodsType,
+  fetchStoreGoodsCouponInfo,
 } from '@/services/MarketServices';
 
 export default {
   namespace: 'marketCardActivity',
 
   state: {
-    active: { list: [], total: 0 },
-    detail: { list: [], total: 0 },
-    detailPay: { list: [], total: 0 },
-    merchantList: { list: [], total: 0 },
-    typeList: [],
+    active: { list: [{ name: 1 }], total: 0 },
+    detail: { list: [{ name: 2 }], total: 0 },
+    detailPay: { list: [{ name: 3 }], total: 0 },
+    merchantList: { list: [{ name: 4 }], total: 0 },
+    typeList: [{ name: 5 }],
   },
 
   reducers: {
@@ -105,6 +106,12 @@ export default {
           typeList: content.categoryCustomList,
         },
       });
+    },
+    *fetchGetCouponInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchStoreGoodsCouponInfo, payload);
+      if (!response) return;
+      const { content } = response;
+      callback({ initialValues: content, ...payload });
     },
     *fetchMarketActivityAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchMarketActivityAdd, payload);

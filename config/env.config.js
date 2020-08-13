@@ -9,7 +9,7 @@ export default {
         changeOrigin: true,
       },
       '/admin': {
-        target: 'http://192.168.0.143:6020/',
+        target: 'https://devgateway.dakale.net/',
         changeOrigin: true,
       },
       '/common': {

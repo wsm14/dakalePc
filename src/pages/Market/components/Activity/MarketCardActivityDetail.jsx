@@ -17,10 +17,14 @@ const searchItems = [
 
 const MarketCardActivityDetail = (props) => {
   const { marketCardActivity, loading, dispatch, params, setShow } = props;
+
+  const childRef = useRef();
   const [visible, setVisible] = useState('');
   const [visibleSet, setVisibleSet] = useState(false);
 
-  const childRef = useRef();
+  const loadings =
+    loading.effects['marketCardActivity/fetchGetActiveDetail'] ||
+    loading.effects['marketCardActivity/fetchGetCouponInfo'];
 
   // table 表头
   const getColumns = [
@@ -96,7 +100,7 @@ const MarketCardActivityDetail = (props) => {
             {
               type: 'own',
               title: '优惠券',
-              click: () => handleSetActive(val),
+              click: () => fetchGetCouponInfo(val),
             },
           ]}
         />
@@ -104,11 +108,22 @@ const MarketCardActivityDetail = (props) => {
     },
   ];
 
-  // 设置 活动商家 | 优惠券
-  const handleSetActive = (marketCouponId) => {
+  // 获取优惠券详情
+  const fetchGetCouponInfo = (marketCouponId) => {
+    dispatch({
+      type: 'marketCardActivity/fetchGetCouponInfo',
+      payload: { marketCouponId },
+      callback: handleSetActive,
+    });
+  };
+
+  // 设置/查看 优惠券
+  const handleSetActive = (payload) => {
+    // const payload = { initialValues: '', marketCouponId };
+    const obj = { dispatch, childRef, payload };
     dispatch({
       type: 'drawerForm/show',
-      payload: MarketCardActivitySetCoupon({ dispatch, childRef, marketCouponId }),
+      payload: MarketCardActivitySetCoupon(obj),
     });
   };
 
@@ -149,7 +164,7 @@ const MarketCardActivityDetail = (props) => {
     <>
       <DataTableBlock
         cRef={childRef}
-        loading={loading}
+        loading={loadings}
         btnExtra={btnExtra}
         columns={getColumns}
         searchItems={searchItems}
@@ -171,5 +186,5 @@ const MarketCardActivityDetail = (props) => {
 
 export default connect(({ marketCardActivity, loading }) => ({
   marketCardActivity,
-  loading: loading.effects['marketCardActivity/fetchGetActiveDetail'],
+  loading,
 }))(MarketCardActivityDetail);

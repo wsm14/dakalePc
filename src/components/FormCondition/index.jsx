@@ -248,7 +248,7 @@ const FormCondition = ({
             placeholder={item.placeholder || `请选择${label}`}
           />
         ),
-        switch: <Switch />,
+        switch: <Switch disabled={item.disabled} />,
         upload: (
           <Upload
             listType="picture-card"
@@ -294,7 +294,6 @@ const FormCondition = ({
       layout={layout}
       initialValues={initialValues}
       {...formItemLayout}
-      preserve={false}
       scrollToFirstError
     >
       {formItems.length ? getFields() : ''}
