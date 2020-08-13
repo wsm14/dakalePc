@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Button, Input } from 'antd';
+
 // import QRCode from "qrcode-react";
 // import { PHONE_PATTERN } from '@/common/regExp';
 import style from './style.less';
