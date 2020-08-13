@@ -4,10 +4,6 @@ export default {
       APIURL: '', // 使用proxy代理 不配置
     },
     proxy: {
-      '/merchant': {
-        target: 'https://devgateway.dakale.net/',
-        changeOrigin: true,
-      },
       '/admin': {
         target: 'http://192.168.0.143:6020/',
         changeOrigin: true,
@@ -20,7 +16,7 @@ export default {
   },
   test: {
     define: {
-      APIURL: 'http://192.168.0.102:3500',
+      APIURL: 'http://192.168.0.143:6020/',
     },
     proxy: {
       '/api/': {
