@@ -7,6 +7,10 @@ import { notification, Modal } from 'antd';
 import { encrypt } from './utils';
 import { history } from 'umi';
 
+notification.config({
+  duration: 3,
+});
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',

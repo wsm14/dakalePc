@@ -102,7 +102,7 @@ const MarketCardActivityDetail = (props) => {
             {
               type: 'own',
               title: '优惠券',
-              click: () => fetchGetCouponInfo(val),
+              click: () => fetchGetCouponInfo(val, record.merchantName),
             },
           ]}
         />
@@ -111,10 +111,10 @@ const MarketCardActivityDetail = (props) => {
   ];
 
   // 获取优惠券详情
-  const fetchGetCouponInfo = (marketCouponId) => {
+  const fetchGetCouponInfo = (marketCouponId, merchantName) => {
     dispatch({
       type: 'marketCardActivity/fetchGetCouponInfo',
-      payload: { marketCouponId },
+      payload: { marketCouponId, merchantName },
       callback: handleSetActive,
     });
   };
@@ -134,7 +134,7 @@ const MarketCardActivityDetail = (props) => {
     dispatch({
       type: 'global/saveTitle',
       payload: {
-        pageTitle: ['活动商家'],
+        pageTitle: [params.activityName],
         pageBtn: (
           <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
             返回
@@ -158,7 +158,7 @@ const MarketCardActivityDetail = (props) => {
 
   const btnExtra = (
     <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
-      新增
+      新增商家
     </Button>
   );
 

@@ -6,13 +6,13 @@ import DataTableBlock from '@/components/DataTableBlock';
 const MarketCardActivityDetailPay = (props) => {
   const { marketCardActivity, loading, visible, setVisible } = props;
 
-  const { type = '' } = visible;
+  const { type = '', record = '' } = visible;
   const childRef = useRef();
 
   // 搜索参数
   const propItem = {
     destory: {
-      title: '核销明细',
+      title: `核销明细 - ${record.merchantName}`,
       searchItems: [
         {
           label: '核销日期',
@@ -51,7 +51,7 @@ const MarketCardActivityDetailPay = (props) => {
       ],
     },
     order: {
-      title: '订单明细',
+      title: `订单明细 - ${record.merchantName}`,
       searchItems: [
         {
           label: '购买日期',

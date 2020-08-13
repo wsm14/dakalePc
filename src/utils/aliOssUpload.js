@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { notification, message } from 'antd';
 import oss from 'ali-oss';
 import request from './request';
 
@@ -9,6 +9,7 @@ import request from './request';
  */
 
 const notificationInfo = () => {
+  message.destroy();
   notification.info({
     message: '温馨提示',
     description: '文件上传失败',
@@ -17,12 +18,16 @@ const notificationInfo = () => {
 
 const aliOssUpload = (fileArray = '') => {
   if (!fileArray) return false;
+  message.loading('文件上传中......', 0);
   // 向后台获取oss凭证
   return request('/common/oss/getOssPolicy', {
     params: { uploadType: 'resource' },
   })
     .then((res) => {
-      if (!res) return;
+      if (!res) {
+        message.destroy();
+        return;
+      }
       const {
         content: { accessKeyId, accessKeySecret, securityToken: stsToken, bucket, folder, host },
       } = res;
@@ -50,7 +55,10 @@ const aliOssUpload = (fileArray = '') => {
           } = putres;
           if (status === 200 && statusCode === 200) {
             return host + fileName;
-          } else return false;
+          } else {
+            message.destroy();
+            return false;
+          }
         });
       };
       return ossput;
@@ -78,6 +86,7 @@ const aliOssUpload = (fileArray = '') => {
           fileUrlArray.push(res);
         });
       }
+      message.destroy();
       // 返回url数组
       return fileUrlArray;
     });

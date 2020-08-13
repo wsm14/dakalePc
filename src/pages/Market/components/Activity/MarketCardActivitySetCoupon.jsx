@@ -4,7 +4,7 @@ const MarketCardActivitySetCoupon = (props) => {
   const {
     dispatch,
     childRef,
-    payload: { marketCouponId, initialValues },
+    payload: { marketCouponId, initialValues, merchantName },
   } = props;
 
   // 提交表单
@@ -32,7 +32,7 @@ const MarketCardActivitySetCoupon = (props) => {
   return {
     type: 'Drawer',
     showType: drawerType.showType,
-    title: drawerType.title,
+    title: `${drawerType.title} - ${merchantName}`,
     loadingModels: 'marketCardActivity',
     initialValues: initialValues || { couponType: '0' },
     footerShow: drawerType.footerShow,
@@ -64,7 +64,7 @@ const MarketCardActivitySetCoupon = (props) => {
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '请输入正确天数' }],
         disabledDate: (time) => time && time < moment().endOf('day'),
         disabled: !!initialValues,
-        render: (val) => `自领取成功之后 ${val} 天内有效`
+        render: (val) => `自领取成功之后 ${val} 天内有效`,
       },
       {
         title: '设置领券关联',
