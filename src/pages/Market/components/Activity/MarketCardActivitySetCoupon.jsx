@@ -60,7 +60,7 @@ const MarketCardActivitySetCoupon = (props) => {
         label: '有效期',
         name: 'activeDays',
         extra: '输入天数，自领取成功之后该天数内有效',
-        addonAfter: '天',
+        suffix: '天',
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '请输入正确天数' }],
         disabledDate: (time) => time && time < moment().endOf('day'),
         disabled: !!initialValues,

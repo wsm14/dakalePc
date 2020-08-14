@@ -33,6 +33,7 @@ const MarketCardActivitySet = (props) => {
       {
         label: '活动名称',
         name: 'activityName',
+        maxLength: 20,
       },
       {
         label: '活动时间',
@@ -61,6 +62,7 @@ const MarketCardActivitySet = (props) => {
         type: 'textArea',
         label: '活动简述',
         name: 'description',
+        maxLength: 20,
       },
     ],
     onFinish: fetchMarketActivityAdd,

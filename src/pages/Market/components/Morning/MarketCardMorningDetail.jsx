@@ -54,7 +54,7 @@ const MarketCardMorningDetail = (props) => {
       payload: {
         pageTitle: ['早起挑战赛-报名详情'],
         pageBtn: (
-          <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
+          <Button type="danger" onClick={handlePageBtnBack}>
             返回
           </Button>
         ),

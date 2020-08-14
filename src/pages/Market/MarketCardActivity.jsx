@@ -34,13 +34,18 @@ const MarketCardActivity = (props) => {
       title: '活动名称',
       align: 'center',
       dataIndex: 'activityName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '活动简述',
       align: 'center',
       dataIndex: 'description',
       render: (val) => (
-        <Ellipsis length={15} tooltip>
+        <Ellipsis length={10} tooltip>
           {val}
         </Ellipsis>
       ),

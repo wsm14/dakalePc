@@ -19,22 +19,22 @@ export default [
         path: '/user',
         redirect: '/user/list',
       },
-      {
-        name: '城市运营中心',
-        path: '/cityom',
-        routes: [
-          {
-            path: '/cityom/list2',
-            name: '合伙人列表',
-            component: './User/UserList',
-          },
-          {
-            path: '/cityom/list',
-            name: '加盟申请',
-            component: './User/UserList',
-          },
-        ],
-      },
+      // {
+      //   name: '城市运营中心',
+      //   path: '/cityom',
+      //   routes: [
+      //     {
+      //       path: '/cityom/list2',
+      //       name: '合伙人列表',
+      //       component: './User/UserList',
+      //     },
+      //     {
+      //       path: '/cityom/list',
+      //       name: '加盟申请',
+      //       component: './User/UserList',
+      //     },
+      //   ],
+      // },
       {
         name: '用户管理',
         path: '/user',

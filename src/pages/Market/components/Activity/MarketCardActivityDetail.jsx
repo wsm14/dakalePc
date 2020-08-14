@@ -142,7 +142,7 @@ const MarketCardActivityDetail = (props) => {
       payload: {
         pageTitle: [params.activityName],
         pageBtn: (
-          <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
+          <Button type="danger" onClick={handlePageBtnBack}>
             返回
           </Button>
         ),

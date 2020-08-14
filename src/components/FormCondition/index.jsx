@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -73,10 +73,10 @@ const FormCondition = ({
   layout = 'horizontal',
   initialValues = {},
 }) => {
-  const [formValue] = useState(initialValues);
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
+  const [totalNum, setTotalNum] = useState({}); // 字数计算
+  const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
+  const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
+  const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
   const [fileLists, setFileLists] = useState(() => {
     const fileobj = {};
     formItems.map((item, i) => {
@@ -93,7 +93,7 @@ const FormCondition = ({
       }
     });
     return fileobj;
-  });
+  }); // 文件控制列表
 
   // 图片获取预览base64
   const getBase64 = (file) => {
@@ -146,14 +146,22 @@ const FormCondition = ({
         name = '',
         type = 'input',
         select = [],
-        extra,
         addRules,
         valuePropName,
+        maxLength,
       } = item;
+
+      let { extra } = item;
 
       let initialValue = {};
       let rules = item.rules || [{ required: true, message: `请确认${label}` }];
       const placeholder = item.placeholder || `请输入${label}`;
+
+      const dataNum =
+        maxLength &&
+        `${
+          totalNum[name] || (initialValues[name] && `${initialValues[name]}`.length) || 0
+        }/${maxLength}`;
 
       // 判断类型 默认input
 
@@ -161,8 +169,14 @@ const FormCondition = ({
         input: (
           <Input
             placeholder={placeholder}
-            addonAfter={item.addonAfter || ''}
+            suffix={item.suffix || ''}
+            maxLength={maxLength}
+            addonAfter={dataNum}
             disabled={item.disabled}
+            onChange={(e) => {
+              if (item.onChange) item.onChange(e);
+              setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
+            }}
           />
         ),
         number: (
@@ -172,7 +186,14 @@ const FormCondition = ({
             placeholder={placeholder}
           />
         ),
-        textArea: <Input.TextArea placeholder={placeholder} rows={4} />,
+        textArea: (
+          <Input.TextArea
+            placeholder={placeholder}
+            rows={3}
+            maxLength={maxLength}
+            onChange={(e) => setTotalNum({ ...totalNum, [item.name]: e.target.value.length })}
+          />
+        ),
         timePicker: (
           <TimePicker.RangePicker
             style={{ width: '100%' }}
@@ -263,6 +284,15 @@ const FormCondition = ({
         children: item.children,
       }[type];
 
+      if (type === 'textArea') {
+        extra = maxLength && (
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1, paddingRight: 5 }}>{extra}</div>
+            {dataNum}
+          </div>
+        );
+      }
+
       if (title) {
         children.push(
           <Divider orientation="left" key={`${label}${i}`}>
@@ -286,6 +316,15 @@ const FormCondition = ({
       );
     });
     return children;
+  };
+
+  useEffect(() => {
+    return componentWillUnmount;
+  }, []);
+
+  // 组件销毁执行
+  const componentWillUnmount = () => {
+    form.resetFields();
   };
 
   return (
