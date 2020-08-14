@@ -24,6 +24,7 @@ const MarketCardActivitySetCoupon = (props) => {
 
   const cclsIndexOf = (val) => ({ true: '开启', false: '关闭' }[ccls.indexOf(val) > -1]);
 
+  // 默认值参数 则显示info详情，否则添加表单
   const drawerType = {
     true: { showType: 'info', title: '查看优惠券', footerShow: false },
     false: { showType: 'form', title: '新增优惠券', footerShow: true },
@@ -48,14 +49,14 @@ const MarketCardActivitySetCoupon = (props) => {
       {
         label: '券名称',
         name: 'couponName',
-        disabled: !!initialValues,
         maxLength: 20,
+        render: (val) => val || '活动已下架，未添加',
       },
       {
         label: '券金额',
         type: 'number',
         name: 'couponValue',
-        disabled: !!initialValues,
+        render: (val) => val || '活动已下架，未添加',
       },
       {
         label: '有效期',
@@ -63,8 +64,7 @@ const MarketCardActivitySetCoupon = (props) => {
         extra: '输入天数，自领取成功之后该天数内有效',
         suffix: '天',
         addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '天数应为整数' }],
-        disabled: !!initialValues,
-        render: (val) => `自领取成功之后 ${val} 天内有效`,
+        render: (val) => (val ? `自领取成功之后 ${val} 天内有效` : '活动已下架，未添加'),
       },
       {
         title: '设置领券关联',
@@ -73,7 +73,6 @@ const MarketCardActivitySetCoupon = (props) => {
         valuePropName: 'checked',
         name: 'mark',
         rules: [],
-        disabled: !!initialValues,
         render: () => cclsIndexOf('mark'),
       },
       {
@@ -82,7 +81,6 @@ const MarketCardActivitySetCoupon = (props) => {
         valuePropName: 'checked',
         name: 'moment',
         rules: [],
-        disabled: !!initialValues,
         render: () => cclsIndexOf('moment'),
       },
     ],

@@ -132,7 +132,9 @@ export default {
       } = response;
       const { couponChannels: ccls = '', couponName = '' } = marketCouponDeduct;
       const initialValues = !couponName
-        ? ''
+        ? payload.status
+          ? ""
+          : {}
         : {
             ...marketCouponDeduct,
             couponType: '0',

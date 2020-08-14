@@ -4,10 +4,10 @@ const ctx = canvas.getContext('2d');
 
 /**
  * 图片压缩
- * @param {*} files 本地文件流 signet 是否加水印
+ * @param {*} files 本地文件流
  * @param {*} return 返回Promise对象 .then返回压缩后的 blob对象 base64对象
  */
-const imageCompress = (files, signet = false) => {
+const imageCompress = (files) => {
   let fileblob = {};
   let base64 = '';
   return new Promise(resolve => {

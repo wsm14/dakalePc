@@ -60,7 +60,7 @@ const MarketCardActivityDetail = (props) => {
       align: 'center',
       dataIndex: 'goodsName',
       render: (val) => (
-        <Ellipsis length={15} tooltip>
+        <Ellipsis length={10} tooltip>
           {val}
         </Ellipsis>
       ),
@@ -121,11 +121,11 @@ const MarketCardActivityDetail = (props) => {
     },
   ];
 
-  // 获取优惠券详情
+  // 获取优惠券详情status != 2 表示活动上架 可添加
   const fetchGetCouponInfo = (marketCouponId, merchantName) => {
     dispatch({
       type: 'marketCardActivity/fetchGetCouponInfo',
-      payload: { marketCouponId, merchantName },
+      payload: { marketCouponId, merchantName, status: params.activityStatus !== '2' },
       callback: handleSetActive,
     });
   };
@@ -178,7 +178,7 @@ const MarketCardActivityDetail = (props) => {
       <DataTableBlock
         cRef={childRef}
         loading={loadings}
-        btnExtra={btnExtra}
+        btnExtra={params.activityStatus !== '2' && btnExtra}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => record.marketCouponIdString}
