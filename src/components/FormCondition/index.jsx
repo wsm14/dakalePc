@@ -225,7 +225,6 @@ const FormCondition = ({
             onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}
             style={{ width: '100%' }}
-            notFoundContent={null}
           >
             {select.map((data, j) => {
               if (data) {

@@ -49,6 +49,7 @@ const MarketCardActivitySetCoupon = (props) => {
         label: '券名称',
         name: 'couponName',
         disabled: !!initialValues,
+        maxLength: 20,
       },
       {
         label: '券金额',

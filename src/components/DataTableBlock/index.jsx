@@ -46,7 +46,7 @@ const DataTableBlockComponent = ({
   const [param] = useState(params);
   const [searchData, setSearchData] = useState({}); // 搜索参数
   const [current, setNum] = useState(1); // 页码
-  const [pageSize, setSize] = useState(10); // 每页条数
+  const [pageSize, setSize] = useState(20); // 每页条数
 
   // 获取列表
   const fetchGetList = () => {

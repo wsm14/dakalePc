@@ -59,6 +59,11 @@ const MarketCardActivityDetail = (props) => {
       title: '活动商品',
       align: 'center',
       dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={15} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '原价',
