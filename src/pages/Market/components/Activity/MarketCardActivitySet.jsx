@@ -39,7 +39,7 @@ const MarketCardActivitySet = (props) => {
         label: '活动时间',
         type: 'rangePicker',
         name: 'activityBeginTime',
-        disabledDate: (time) => time && time < moment().endOf('day'),
+        disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
       },
       {
         label: 'banner图',

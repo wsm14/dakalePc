@@ -155,7 +155,7 @@ const MarketCardActivitySetStore = (props) => {
       type: 'rangePicker',
       name: 'originPrisce',
       name: 'activeBeginDate',
-      disabledDate: (time) => time && time < moment().endOf('day'),
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '限购',
