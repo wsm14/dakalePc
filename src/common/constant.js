@@ -16,14 +16,6 @@ export const ACCOUNT_STATUS = ['禁用', '启用'];
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
 
-// 用户类型
-export const ACCOUNT_TYPE = {
-  user: '普通用户',
-  merchant: '商户',
-  business: '平台运营账号',
-  subsidy: '补贴账号',
-};
-
 // 商铺状态
 export const BUSINESS_STATUS = ['暂停营业', '营业'];
 

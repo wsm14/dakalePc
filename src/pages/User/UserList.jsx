@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS, ACCOUNT_TYPE } from '@/common/constant';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import UserDetailShow from './components/UserDetailShow';
 
 const UserListComponent = (props) => {
@@ -13,18 +13,8 @@ const UserListComponent = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '用户ID',
-      name: 'userId',
-    },
-    {
-      label: '用户手机号',
+      label: '注册手机号',
       name: 'mobile',
-    },
-    {
-      label: '账号状态',
-      name: 'status',
-      type: 'select',
-      select: { list: ACCOUNT_STATUS },
     },
   ];
 
@@ -36,7 +26,7 @@ const UserListComponent = (props) => {
       dataIndex: 'userIdString',
     },
     {
-      title: '手机号',
+      title: '注册手机号',
       align: 'center',
       dataIndex: 'mobile',
       render: (val) => val || '暂未授权',
@@ -53,19 +43,13 @@ const UserListComponent = (props) => {
       render: (val) => ({ M: '女', F: '男', '': '--' }[val]),
     },
     {
-      title: '身份',
-      align: 'left',
-      dataIndex: 'userType',
-      render: (val) => ACCOUNT_TYPE[val],
-    },
-    {
       title: '实名认证',
       align: 'center',
       dataIndex: 'realNameStatus',
       render: (val) => REAL_NAME_STATUS[val],
     },
     {
-      title: '邀请码',
+      title: '常住地',
       align: 'center',
       dataIndex: 'parentUserIdString',
       render: (val) => val || '-',
