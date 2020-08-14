@@ -32,6 +32,7 @@ const UserListComponent = (props) => {
   const getColumns = [
     {
       title: '用户ID',
+      fixed: 'left',
       dataIndex: 'userIdString',
     },
     {
@@ -49,7 +50,7 @@ const UserListComponent = (props) => {
       title: '性别',
       align: 'left',
       dataIndex: 'gender',
-      render: (val) => ({ M: '女', F: '男' }[val]),
+      render: (val) => ({ M: '女', F: '男', '': '--' }[val]),
     },
     {
       title: '身份',
@@ -83,7 +84,8 @@ const UserListComponent = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      align: 'center',
+      align: 'right',
+      fixed: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[

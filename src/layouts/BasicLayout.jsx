@@ -5,7 +5,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import ProLayout from '@ant-design/pro-layout';
-import { PageContainer } from '@ant-design/pro-layout';
+import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
@@ -42,6 +42,8 @@ const BasicLayout = (props) => {
     location = {
       pathname: '/',
     },
+    pageTitle,
+    pageBtn,
     menuList,
   } = props;
 
@@ -58,21 +60,6 @@ const BasicLayout = (props) => {
       return localItem;
     });
   };
-  /**
-   * constructor
-   */
-
-  // const [menuData, setMenuData] = useState([]);
-
-  // useEffect(() => {
-  //   // 这里是一个演示用法
-  //   // 真实项目中建议使用 dva dispatch 或者 umi-request
-  //   fetch('/api/example.json')
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setMenuData(data || []);
-  //     });
-  // }, []);
 
   useEffect(() => {
     if (dispatch) {
@@ -97,6 +84,12 @@ const BasicLayout = (props) => {
     }
   };
 
+  const handleCloseTitle = () => {
+    dispatch({
+      type: 'global/closeTitle',
+    });
+  };
+
   // 菜单展开方法
   const onOpenChange = (openKey) => {
     const latestOpenKey = openKey.find((key) => openKeys.indexOf(key) === -1);
@@ -112,23 +105,25 @@ const BasicLayout = (props) => {
     <ProLayout
       openKeys={openKeys}
       onOpenChange={onOpenChange}
+      onPageChange={handleCloseTitle}
       logo={logo}
       onCollapse={handleMenuCollapse}
-      // onMenuHeaderClick={() => history.push('/')}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || !menuItemProps.path) {
           return defaultDom;
         }
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
-      breadcrumbRender={(routers = []) => [...routers]}
+      // breadcrumbRender={(routers = []) => [...routers]}
       itemRender={(route, params, routes, paths) => {
-        const first = routes.path === route.path;
-        return first ? (
-          <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-        ) : (
-          <span>{route.breadcrumbName}</span>
-        );
+        // const first = routes.path === route.path;
+        // setTitle(routes.map((item) => item.breadcrumbName).join(' / '));
+        // return first ? (
+        //   <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+        // ) : (
+        //   <span>{route.breadcrumbName}</span>
+        // );
+        return false;
       }}
       // footerRender={() => defaultFooterDom}
       menuDataRender={menuDataRender}
@@ -137,7 +132,25 @@ const BasicLayout = (props) => {
       {...settings}
     >
       <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-        <PageContainer title={false}>{children}</PageContainer>
+        <RouteContext.Consumer>
+          {(value) => {
+            const { breadcrumb } = value;
+            return (
+              <PageContainer
+                subTitle={
+                  breadcrumb.routes &&
+                  `${breadcrumb.routes.map((item) => item.breadcrumbName).join(' / ')}
+                  ${pageTitle.length > 0 ? ' / ' : ''}
+                  ${pageTitle.join(' / ')}`
+                }
+                title={false}
+                extra={pageBtn}
+              >
+                {children}
+              </PageContainer>
+            );
+          }}
+        </RouteContext.Consumer>
       </RouteAuthority>
       <DrawerModalForm></DrawerModalForm>
     </ProLayout>
@@ -147,5 +160,7 @@ const BasicLayout = (props) => {
 export default connect(({ global, settings, userInfo }) => ({
   collapsed: global.collapsed,
   menuList: userInfo.menuList,
+  pageTitle: global.pageTitle,
+  pageBtn: global.pageBtn,
   settings,
 }))(BasicLayout);

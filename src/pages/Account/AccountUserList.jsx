@@ -61,7 +61,8 @@ const AccountUserList = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      align: 'center',
+      fixed: 'right',
+      align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[

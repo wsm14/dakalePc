@@ -7,6 +7,11 @@ import { notification, Modal } from 'antd';
 import { encrypt } from './utils';
 import { history } from 'umi';
 
+notification.config({
+  duration: 3,
+  placement: 'topRight',
+});
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -56,7 +61,7 @@ const errorHandler = (error) => {
 const request = extend({
   errorHandler,
   // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie 'include','same-origin'
+  credentials: 'same-origin', // 默认请求是否带上cookie 'include','same-origin'
 });
 
 // request拦截器, 改变url 或 options.

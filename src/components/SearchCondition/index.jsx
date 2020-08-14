@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Space, Row, Col, Input, Button, Select, DatePicker, InputNumber } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
-import { TIME_UNIX_E, TIME_UNIX_S } from '@/common/constant';
 import moment from 'moment';
 import styles from './index.less';
 
@@ -28,7 +27,7 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const SearchCondition = (props) => {
-  const { formItems, size, handleSearch, resetValue, btnExtra = '' } = props;
+  const { formItems, handleSearch, resetValue, btnExtra = '', componentSize = 'default' } = props;
 
   const [form] = Form.useForm();
 
@@ -37,24 +36,20 @@ const SearchCondition = (props) => {
 
   const getFields = () => {
     const len = formItems.length;
-    const count = expand ? len : size === 'small' ? 6 : 4;
+    const count = expand ? len : componentSize !== 'default' ? 6 : 4;
     const children = [];
     formItems.forEach((item, i) => {
       let initialValue = '';
       const placeholder = item.placeholder || '';
       let component = (
-        <Input
-          placeholder={placeholder || `请输入${item.label}`}
-          style={{ width: '100%' }}
-          size={size}
-        />
+        <Input placeholder={placeholder || `请输入${item.label}`} style={{ width: '100%' }} />
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
         const { select } = item;
         initialValue = select.defaultValue || '';
         component = (
-          <Select style={{ width: '100%' }} placeholder={item.placeholder || `请选择`} size={size}>
+          <Select style={{ width: '100%' }} placeholder={item.placeholder || `请选择`}>
             <Option value={initialValue}>全部</Option>
             {select.list.map((data, j) => {
               if (data) {
@@ -73,13 +68,12 @@ const SearchCondition = (props) => {
       }
       if (item.type === 'number') {
         initialValue = item.initialValue ? `${item.initialValue}` : '';
-        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} size={size} />;
+        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} />;
       }
       if (item.type === 'rangePicker') {
         initialValue = item.defaultValue || [];
         component = (
           <RangePicker
-            size={size}
             style={{ width: '100%' }}
             allowClear={false}
             defaultPickerValue={[
@@ -102,16 +96,11 @@ const SearchCondition = (props) => {
       formValue[item.name] = initialValue;
       children.push(
         <Col
-          size={size}
-          span={size === 'small' ? (item.type === 'rangePicker' ? 5 : 4) : 6}
+          span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
           key={i}
           style={{ display: i < count ? 'inline' : 'none' }}
         >
-          <FormItem
-            label={item.label}
-            style={{ paddingBottom: size === 'small' ? 0 : 8 }}
-            name={item.name}
-          >
+          <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>
             {component}
           </FormItem>
         </Col>,
@@ -125,11 +114,12 @@ const SearchCondition = (props) => {
     formItems.forEach((item) => {
       if (values[item.name]) {
         if (item.type === 'datePicker') formObj[item.name] = values[item.name].format('YYYY-MM-DD');
-        if (item.type === 'rangePicker')
-          formObj[item.name] = [
-            Number(TIME_UNIX_S(values.times[0])),
-            Number(TIME_UNIX_E(values.times[1])),
-          ];
+        else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
+          formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
+          formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
+        }
+      } else {
+        delete values[item.name];
       }
     });
     handleSearch({ ...values, ...formObj });
@@ -149,15 +139,13 @@ const SearchCondition = (props) => {
   const search = (span) => (
     <div style={{ textAlign: 'right' }}>
       <Space>
-        <Button type="primary" htmlType="submit" size={size}>
+        <Button type="primary" htmlType="submit">
           查询
         </Button>
-        <Button onClick={handleReset} size={size}>
-          重置
-        </Button>
+        <Button onClick={handleReset}>重置</Button>
         {btnExtra}
       </Space>
-      {len > (size === 'small' ? 6 : 4) ? (
+      {len > (componentSize !== 'default' ? 6 : 4) ? (
         <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
           {expand ? '收起' : '展开'}
           {expand ? <UpOutlined /> : <DownOutlined />}
@@ -169,6 +157,7 @@ const SearchCondition = (props) => {
   return (
     <Form
       form={form}
+      size={componentSize}
       initialValues={formValue}
       layout="horizontal"
       className={styles.form}
@@ -178,7 +167,7 @@ const SearchCondition = (props) => {
         <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
           {getFields()}
         </Row>
-        {search(size === 'small' ? 3 : 24 - len * 6 - 1)}
+        {search(24 - len * 6 - 1)}
       </div>
     </Form>
   );

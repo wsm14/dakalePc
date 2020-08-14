@@ -43,10 +43,12 @@ const CircleMasterList = (props) => {
     {
       title: "商户ID",
       dataIndex: "userId",
+      fixed: 'left',
     },
     {
       title: "商家名称",
       align: "center",
+      fixed: 'left',
       dataIndex: "phoneNumber",
       render: (val) => val || "暂未授权",
     },
@@ -92,7 +94,8 @@ const CircleMasterList = (props) => {
     {
       title: "操作",
       dataIndex: "id",
-      align: "center",
+      fixed: 'right',
+      align: "right",
       render: (val, record) => (
         <HandleSetTable
           formItems={[

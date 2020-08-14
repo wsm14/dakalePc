@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Form,
   Input,
@@ -10,8 +10,11 @@ import {
   Upload,
   Modal,
   Cascader,
+  Switch,
+  Divider,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import imageCompress from '@/utils/imageCompress';
 import moment from 'moment';
 
 /**
@@ -23,7 +26,6 @@ import moment from 'moment';
  * @formItems 表单内容数组
  * @layout 表单排版 参考antd Form
  * @initialValues 表单参数默认值
- * @imgFileList upload默认参数
  *
  */
 
@@ -53,7 +55,7 @@ const uploadButton = (
   </div>
 );
 
-// 城市搜索筛选
+// Cascader搜索筛选
 const filter = (inputValue, path) => {
   return path.some((option) => option.name.indexOf(inputValue) > -1);
 };
@@ -70,7 +72,6 @@ const FormCondition = ({
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
-  resetValue,
 }) => {
   const [formValue] = useState(initialValues);
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -81,15 +82,13 @@ const FormCondition = ({
     formItems.map((item, i) => {
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
-          fileobj[item.name] = {
-            fileList: !Array.isArray(initialValues[item.name])
-              ? initialValues[item.name].length > 0
-                ? [imgold(initialValues[item.name], i)]
-                : []
-              : item.initialValue.map((items) => imgold(items)),
-          };
+          fileobj[item.name] = !Array.isArray(initialValues[item.name])
+            ? initialValues[item.name] && initialValues[item.name].length > 0
+              ? [imgold(initialValues[item.name], i)]
+              : []
+            : initialValues[item.name].map((items, i) => imgold(items, i));
         } else {
-          fileobj[item.name] = { fileList: [] };
+          fileobj[item.name] = [];
         }
       }
     });
@@ -104,6 +103,26 @@ const FormCondition = ({
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+  };
+
+  /**
+   * 选择图片上传配置
+   */
+  const handleUpProps = (name) => {
+    return {
+      accept: 'image/*',
+      onChange: (value) => {
+        const { fileList } = value;
+        if (!value.file.status) {
+          imageCompress(value.file).then(({ file }) => {
+            fileList[fileList.length - 1].originFileObj = file;
+            setFileLists({ ...fileLists, [name]: fileList });
+          });
+        } else {
+          setFileLists({ ...fileLists, [name]: fileList });
+        }
+      },
+    };
   };
 
   // 预览图片
@@ -121,37 +140,47 @@ const FormCondition = ({
     const children = [];
 
     formItems.forEach((item, i) => {
+      const {
+        title = '',
+        label = '',
+        name = '',
+        type = 'input',
+        select = [],
+        extra,
+        addRules,
+        valuePropName,
+      } = item;
+
       let initialValue = {};
-      const placeholder = item.placeholder || `请输入${item.label}`;
-      let rules = item.rules || [{ required: true, message: `请输入${item.label}` }];
+      let rules = item.rules || [{ required: true, message: `请确认${label}` }];
+      const placeholder = item.placeholder || `请输入${label}`;
 
-      // 默认input
-      let component = <Input placeholder={placeholder} addonAfter={item.addonAfter || ''} />;
+      // 判断类型 默认input
 
-      // 判断类型
-      // 数字
-      if (item.type === 'number') {
-        component = <InputNumber style={{ width: '100%' }} placeholder={placeholder} />;
-      }
-      // textArea 输入
-      if (item.type === 'textArea') {
-        component = <Input.TextArea placeholder={placeholder} />;
-      }
-      // 时间
-      if (item.type === 'timePicker') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        component = (
+      let component = {
+        input: (
+          <Input
+            placeholder={placeholder}
+            addonAfter={item.addonAfter || ''}
+            disabled={item.disabled}
+          />
+        ),
+        number: (
+          <InputNumber
+            disabled={item.disabled}
+            style={{ width: '100%' }}
+            placeholder={placeholder}
+          />
+        ),
+        textArea: <Input.TextArea placeholder={placeholder} rows={4} />,
+        timePicker: (
           <TimePicker.RangePicker
             style={{ width: '100%' }}
             format={item.format || 'HH:mm'}
             allowClear={false}
           />
-        );
-      }
-      // 日期
-      if (item.type === 'rangePicker') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        component = (
+        ),
+        rangePicker: (
           <RangePicker
             style={{ width: '100%' }}
             allowClear={false}
@@ -159,19 +188,24 @@ const FormCondition = ({
             //   moment(moment().startOf('month')).subtract(1, 'month'),
             //   moment(moment().startOf('month')).subtract(1, 'day'),
             // ]}
-            disabledDate={disabledDate}
-            renderExtraFooter={() =>
-              '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
-            }
+            disabledDate={item.disabledDate}
+            // renderExtraFooter={() =>
+            //   '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
+            // }
           />
-        );
-      }
-      // select选择期
-      if (item.type === 'select' && item.select) {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        const { select } = item;
-        component = (
-          <Select placeholder={item.placeholder || `请选择`}>
+        ),
+        select: (
+          <Select
+            showSearch
+            disabled={item.disabled}
+            defaultActiveFirstOption={false}
+            filterOption={item.filterOption || false}
+            onSearch={item.onSearch}
+            onChange={item.onChange}
+            placeholder={item.placeholder || `请选择${label}`}
+            style={{ width: '100%' }}
+            notFoundContent={null}
+          >
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -185,12 +219,8 @@ const FormCondition = ({
               }
             })}
           </Select>
-        );
-      }
-      // 单选
-      if (item.type === 'radio' && item.select) {
-        const { select } = item;
-        component = (
+        ),
+        radio: (
           <Radio.Group onChange={item.onChange} disabled={item.disabled}>
             {select.map((data, j) => {
               if (data) {
@@ -205,46 +235,50 @@ const FormCondition = ({
               }
             })}
           </Radio.Group>
-        );
-      }
-      // 级联选择
-      if (item.type === 'cascader') {
-        component = (
+        ),
+        cascader: (
           <Cascader
             allowClear={false}
             fieldNames={item.options}
-            options={item.select}
+            options={select}
             expandTrigger="hover"
             showSearch={{
               filter,
             }}
-            placeholder="选择"
+            placeholder={item.placeholder || `请选择${label}`}
           />
-        );
-      }
-      // 上传文件
-      if (item.type === 'upload') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        initialValue = { initialValue: item.initialValue };
-        component = (
+        ),
+        switch: <Switch disabled={item.disabled} />,
+        upload: (
           <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
             listType="picture-card"
-            fileList={fileLists[item.name].fileList}
+            fileList={fileLists[name]}
+            beforeUpload={() => false}
             onPreview={handlePreview}
-            onChange={({ fileList }) => setFileLists({ ...fileLists, [item.name]: fileList })}
+            {...handleUpProps(name)}
           >
-            {fileLists[item.name].fileList.length < (item.maxFile || 999) && uploadButton}
+            {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
           </Upload>
+        ),
+        children: item.children,
+      }[type];
+
+      if (title) {
+        children.push(
+          <Divider orientation="left" key={`${label}${i}`}>
+            {title}
+          </Divider>,
         );
       }
+
       children.push(
         <FormItem
-          label={item.label}
-          name={item.name}
-          extra={item.extra}
-          key={`${item.label}${item.name}`}
-          rules={rules}
+          label={label}
+          name={name}
+          extra={extra}
+          key={`${label}${name}`}
+          rules={[...rules, ...(addRules || [])]}
+          valuePropName={valuePropName}
           {...initialValue}
         >
           {component}
@@ -254,28 +288,20 @@ const FormCondition = ({
     return children;
   };
 
-  const handleReset = () => {
-    form.resetFields();
-  };
-
-  useEffect(() => {
-    handleReset();
-  }, [resetValue]);
-
   return (
     <Form
       form={form}
-      {...formItemLayout}
-      scrollToFirstError
-      initialValues={formValue}
       layout={layout}
+      initialValues={initialValues}
+      {...formItemLayout}
+      scrollToFirstError={true}
     >
       {formItems.length ? getFields() : ''}
       <Modal
-        visible={previewVisible}
         title={previewTitle}
-        footer={null}
+        visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
+        footer={null}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>

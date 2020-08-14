@@ -4,19 +4,20 @@ export default {
       APIURL: '', // 使用proxy代理 不配置
     },
     proxy: {
-      '/merchant': {
-        target: 'https://devgateway.dakale.net/',
-        changeOrigin: true,
-      },
       '/admin': {
         target: 'http://192.168.0.143:6020/',
+        changeOrigin: true,
+      },
+      '/common': {
+        target: 'https://devgateway.dakale.net/',
         changeOrigin: true,
       },
     },
   },
   test: {
+    // https://web-new.dakale.net/dev/page/bannerShare/goodsStoreDaka.html
     define: {
-      APIURL: 'http://192.168.0.102:3500',
+      APIURL: 'https://devgateway.dakale.net',
     },
     proxy: {
       '/api/': {
@@ -28,7 +29,7 @@ export default {
   // 生产环境proxy代理 不生效
   prod: {
     define: {
-      APIURL: 'https://devgateway.dakale.net/',
+      APIURL: 'https://devgateway.dakale.net',
     },
   },
 };

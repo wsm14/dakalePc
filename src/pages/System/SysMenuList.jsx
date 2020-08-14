@@ -66,7 +66,7 @@ const SysMenuList = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userId}`}
-        dispatchType="sysMenuList/fetchGetList"
+        dispatchType="sysMenuList/fetchGetList2"
         params={{ type: 1 }}
         {...sysMenuList}
       ></DataTableBlock>
@@ -78,7 +78,7 @@ const SysMenuList = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userId}`}
-        dispatchType="sysMenuList/fetchGetList"
+        dispatchType="sysMenuList/fetchGetList2"
         {...sysMenuList}
       ></DataTableBlock>
     </>
