@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
-import BusinessAuditDetailShow from './components/BusinessAuditDetailShow';
+import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 
 const BusinessAuditList = (props) => {
   const { businessAuditList, loading, dispatch } = props;

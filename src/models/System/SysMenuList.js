@@ -5,10 +5,7 @@ export default {
 
   state: {
     list: [],
-    pageSize: 20,
     total: 0,
-    current: 1,
-    lastPage: 1,
   },
 
   reducers: {

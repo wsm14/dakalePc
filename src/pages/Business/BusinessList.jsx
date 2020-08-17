@@ -3,7 +3,8 @@ import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
-import BusinessDetailShow from './components/BusinessDetailShow';
+import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
+import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
 
 const BusinessListComponent = (props) => {
   const { businessList, loading, dispatch } = props;
@@ -13,12 +14,18 @@ const BusinessListComponent = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商户ID',
+      label: '商户名称',
       name: 'merchantId',
     },
     {
       label: '商家账号',
       name: 'mobile',
+    },
+    {
+      label: '商户类型',
+      name: 'businessStsatus',
+      type: 'select',
+      select: { list: [] },
     },
     {
       label: '经营状态',
@@ -30,6 +37,11 @@ const BusinessListComponent = (props) => {
       label: '店铺状态',
       name: 'status',
       type: 'select',
+      select: { list: ACCOUNT_STATUS },
+    },
+    {
+      label: '抽佣比例',
+      name: 'stssatus',
       select: { list: ACCOUNT_STATUS },
     },
   ];
@@ -117,15 +129,18 @@ const BusinessListComponent = (props) => {
   };
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.merchantId}`}
-      dispatchType="businessList/fetchGetList"
-      {...businessList}
-    ></DataTableBlock>
+    <>
+      <BusinessTotalInfo></BusinessTotalInfo>
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.merchantId}`}
+        dispatchType="businessList/fetchGetLists"
+        {...businessList}
+      ></DataTableBlock>
+    </>
   );
 };
 
