@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Button, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import SysRoleInfoSet from './components/Role/SysRoleInfoSet';
 
 const SysRoleList = (props) => {
   const { sysRoleList, loading, dispatch } = props;
@@ -23,12 +24,12 @@ const SysRoleList = (props) => {
       title: '状态',
       align: 'left',
       dataIndex: 'status',
-      render: (val) => (
+      render: (val, record) => (
         <Switch
           checkedChildren="启"
           unCheckedChildren="停"
           checked={val === '1'}
-          // onClick={() => fetchMenuState(record)}
+          onClick={() => fetchGetRoleInfo({ roleId: record.id })}
         />
       ),
     },
@@ -41,7 +42,7 @@ const SysRoleList = (props) => {
           formItems={[
             {
               type: 'edit',
-              //   click: () => setShowCoach(record),
+              click: () => fetchGetRoleInfo({ roleId: val }, record),
             },
             {
               type: 'own',
@@ -54,10 +55,43 @@ const SysRoleList = (props) => {
     },
   ];
 
+  // 获取角色信息 传递第二个参数角色信息就是修改 没传递就是修改角色状态
+  const fetchGetRoleInfo = (payload, record) => {
+    dispatch({
+      type: 'sysRoleList/fetchGetRoleInfo',
+      payload,
+      callback: record ? () => handleSysRoleSet(record) : fetchRoleEdit,
+    });
+  };
+
+  // 修改角色状态
+  const fetchRoleEdit = (payload) => {
+    dispatch({
+      type: 'sysRoleList/fetchRoleEdit',
+      payload: {
+        ...payload,
+        status: Number(!Number(payload.status)),
+      },
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
+  // 新增/修改角色
+  const handleSysRoleSet = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: SysRoleInfoSet({ dispatch, childRef, initialValues }),
+    });
+  };
+
   return (
     <DataTableBlock
       CardNone={false}
-      btnExtra={<Button className="dkl_green_btn">新增</Button>}
+      btnExtra={
+        <Button className="dkl_green_btn" onClick={() => handleSysRoleSet()}>
+          新增
+        </Button>
+      }
       cRef={childRef}
       loading={loading}
       columns={getColumns}

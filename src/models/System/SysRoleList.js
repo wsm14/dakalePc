@@ -1,4 +1,5 @@
-import { fetchRoleList } from '@/services/SystemServices';
+import { notification } from 'antd';
+import { fetchRoleList, fetchGetRoleInfo, fetchRoleEdit } from '@/services/SystemServices';
 
 export default {
   namespace: 'sysRoleList',
@@ -30,22 +31,20 @@ export default {
         },
       });
     },
-    // *fetchUserOrder({ payload, callback }, { call, put }) {
-    //   const response = yield call(fetchUserOrder, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       userOrder: {
-    //         list: data.list,
-    //         total: data.total,
-    //         current: data.pageNum,
-    //         pageSize: data.pageSize
-    //       }
-    //     }
-    //   });
-    //   callback();
-    // }
+    *fetchGetRoleInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetRoleInfo, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.roleInfo);
+    },
+    *fetchRoleEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchRoleEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '角色修改成功',
+      });
+      callback();
+    },
   },
 };

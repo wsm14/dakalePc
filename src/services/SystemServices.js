@@ -13,3 +13,18 @@ export function fetchRoleList(params) {
     params,
   });
 }
+
+// get 获取角色信息
+export function fetchGetRoleInfo(params) {
+  return request('/admin/auth/getRoleInfo', {
+    params,
+  });
+}
+
+// post 新增修改角色信息
+export function fetchRoleEdit(data) {
+  return request('/admin/auth/saveAuthRole', {
+    method: 'POST',
+    data,
+  });
+}

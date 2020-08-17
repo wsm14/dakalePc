@@ -149,6 +149,7 @@ const FormCondition = ({
         addRules,
         valuePropName,
         maxLength,
+        visible = true,
       } = item;
 
       let { extra } = item;
@@ -301,17 +302,19 @@ const FormCondition = ({
       }
 
       children.push(
-        <FormItem
-          label={label}
-          name={name}
-          extra={extra}
-          key={`${label}${name}`}
-          rules={[...rules, ...(addRules || [])]}
-          valuePropName={valuePropName}
-          {...initialValue}
-        >
-          {component}
-        </FormItem>,
+        visible && (
+          <FormItem
+            label={label}
+            name={name}
+            extra={extra}
+            key={`${label}${name}`}
+            rules={[...rules, ...(addRules || [])]}
+            valuePropName={valuePropName}
+            {...initialValue}
+          >
+            {component}
+          </FormItem>
+        ),
       );
     });
     return children;
