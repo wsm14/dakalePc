@@ -127,7 +127,7 @@ const MarketCardActivityDetailPay = (props) => {
         columns={visible && propItem.getColumns}
         searchItems={visible && propItem.searchItems}
         rowKey={(record) => `${record[propItem.rowKey]}`}
-        params={{ merchantId: record.marketCouponIdString }}
+        params={{ merchantId: record.merchantIdString }}
         dispatchType={visible && propItem.dispatchType}
         componentSize="middle"
         {...marketCardActivity.detailPay}

@@ -27,7 +27,13 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const SearchCondition = (props) => {
-  const { formItems, handleSearch, resetValue, btnExtra = '', componentSize = 'default' } = props;
+  const {
+    searchItems: formItems,
+    handleSearch,
+    resetValue,
+    btnExtra = '',
+    componentSize = 'default',
+  } = props;
 
   const [form] = Form.useForm();
 

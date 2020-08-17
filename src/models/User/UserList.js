@@ -7,6 +7,8 @@ export default {
   state: {
     list: [],
     total: 0,
+    totalData: {},
+    totalSperadData: {},
   },
 
   reducers: {
@@ -36,6 +38,28 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.userDetail);
+    },
+    *fetchUserTotal({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUserDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content,
+        },
+      });
+    },
+    *fetchUserTotalSperad({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUserDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalSperadData: content,
+        },
+      });
     },
     *fetchUserStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchUserStatus, payload);

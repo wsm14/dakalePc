@@ -103,7 +103,7 @@ const DataTableBlockComponent = ({
       {searchItems && (
         <SearchCondition
           componentSize={componentSize}
-          formItems={searchItems}
+          searchItems={searchItems}
           handleSearch={handleSearch}
           btnExtra={btnExtra}
         ></SearchCondition>

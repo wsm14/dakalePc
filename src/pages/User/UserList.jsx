@@ -4,6 +4,8 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import UserDetailShow from './components/UserDetailShow';
+import UserListTotalInfo from './components/UserList/UserTotalInfo';
+import UserTotalSpread from './components/UserList/UserTotalSpread';
 
 const UserListComponent = (props) => {
   const { userList, loading, dispatch } = props;
@@ -101,15 +103,19 @@ const UserListComponent = (props) => {
   };
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userIdString}`}
-      dispatchType="userList/fetchGetList"
-      {...userList}
-    ></DataTableBlock>
+    <>
+      <UserListTotalInfo></UserListTotalInfo>
+      <UserTotalSpread></UserTotalSpread>
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userIdString}`}
+        dispatchType="userList/fetchGetList"
+        {...userList}
+      ></DataTableBlock>
+    </>
   );
 };
 
