@@ -14,6 +14,13 @@ export function fetchRoleList(params) {
   });
 }
 
+// get 获取管理员列表
+export function fetchSysAccountList(params) {
+  return request('/admin/auth/listAdmin', {
+    params,
+  });
+}
+
 // get 获取角色信息
 export function fetchGetRoleInfo(params) {
   return request('/admin/auth/getRoleInfo', {
@@ -21,9 +28,24 @@ export function fetchGetRoleInfo(params) {
   });
 }
 
+// get 获取管理员账户信息
+export function fetchGetAccountInfo(params) {
+  return request('/admin/auth/getAdminInfo', {
+    params,
+  });
+}
+
 // post 新增修改角色信息
 export function fetchRoleEdit(data) {
   return request('/admin/auth/saveAuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 新增修改管理员帐号
+export function fetchAccountEdit(data) {
+  return request('/admin/auth/saveAuthAdmin', {
     method: 'POST',
     data,
   });

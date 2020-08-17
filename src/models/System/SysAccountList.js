@@ -1,14 +1,16 @@
-// import { fetchUserList, fetchUserOrder } from "@/services/SystemServices";
+import { notification } from 'antd';
+import {
+  fetchSysAccountList,
+  fetchAccountEdit,
+  fetchGetAccountInfo,
+} from '@/services/SystemServices';
 
 export default {
-  namespace: "sysAccountList",
+  namespace: 'sysAccountList',
 
   state: {
     list: [],
-    pageSize: 20,
     total: 0,
-    current: 1,
-    lastPage: 1,
   },
 
   reducers: {
@@ -21,37 +23,32 @@ export default {
   },
 
   effects: {
-    // *fetchAppUserList({ payload }, { call, put }) {
-    //   const response = yield call(fetchUserList, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       list: data.list,
-    //       total: data.total,
-    //       current: data.pageNum,
-    //       pageSize: data.pageSize,
-    //       lastPage: data.lastPage
-    //     }
-    //   });
-    // },
-    // *fetchUserOrder({ payload, callback }, { call, put }) {
-    //   const response = yield call(fetchUserOrder, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       userOrder: {
-    //         list: data.list,
-    //         total: data.total,
-    //         current: data.pageNum,
-    //         pageSize: data.pageSize
-    //       }
-    //     }
-    //   });
-    //   callback();
-    // }
+    *fetchGetList({ payload }, { call, put }) {
+      const response = yield call(fetchSysAccountList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          list: content.adminList,
+          total: content.totalCount,
+        },
+      });
+    },
+    *fetchGetAccountInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetAccountInfo, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.adminInfo);
+    },
+    *fetchAccountEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAccountEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '管理员设定成功',
+      });
+      callback();
+    },
   },
 };

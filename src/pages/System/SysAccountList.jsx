@@ -3,6 +3,7 @@ import { Button, Card } from 'antd';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import SysAccountInfoSet from './components/Account/SysAccountInfoSet';
 import SysRoleList from './SysRoleList';
 
 const tabList = [
@@ -17,7 +18,7 @@ const tabList = [
 ];
 
 const SysAccountSet = (props) => {
-  const { sysAccountSet, loading } = props;
+  const { sysAccountList, loading, dispatch } = props;
   const [tabkey, setTabKey] = useState('tab1');
 
   const childRef = useRef();
@@ -38,12 +39,12 @@ const SysAccountSet = (props) => {
   const getColumns = [
     {
       title: '姓名',
-      dataIndex: 'userId',
+      dataIndex: 'truename',
     },
     {
       title: '账号',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'username',
     },
     {
       title: '角色',
@@ -53,7 +54,7 @@ const SysAccountSet = (props) => {
     {
       title: '手机号',
       align: 'left',
-      dataIndex: 'orderTotal',
+      dataIndex: 'mobile',
       render: (val) => val || '--',
     },
     {
@@ -72,7 +73,7 @@ const SysAccountSet = (props) => {
           formItems={[
             {
               type: 'edit',
-              //   click: () => setShowCoach(record),
+              click: () => fetchGetAccountInfo({ adminId: val }),
             },
             {
               type: 'del',
@@ -84,6 +85,23 @@ const SysAccountSet = (props) => {
     },
   ];
 
+  // 获取管理员账户信息
+  const fetchGetAccountInfo = (payload) => {
+    dispatch({
+      type: 'sysAccountList/fetchGetAccountInfo',
+      payload,
+      callback: handleSysAccountSet,
+    });
+  };
+
+  // 新增/修改 管理员帐号
+  const handleSysAccountSet = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: SysAccountInfoSet({ dispatch, childRef, initialValues }),
+    });
+  };
+
   const contentList = {
     tab1: (
       <DataTableBlock
@@ -92,10 +110,14 @@ const SysAccountSet = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        btnExtra={<Button className="dkl_green_btn">新增</Button>}
-        rowKey={(record) => `${record.userId}`}
-        dispatchType="sysAccountSet/fetchAppUserList"
-        {...sysAccountSet}
+        btnExtra={
+          <Button className="dkl_green_btn" onClick={() => handleSysAccountSet()}>
+            新增
+          </Button>
+        }
+        rowKey={(record) => `${record.id}`}
+        dispatchType="sysAccountList/fetchGetList"
+        {...sysAccountList}
       ></DataTableBlock>
     ),
     tab2: <SysRoleList></SysRoleList>,
@@ -108,7 +130,7 @@ const SysAccountSet = (props) => {
   );
 };
 
-export default connect(({ sysAccountSet, loading }) => ({
-  sysAccountSet,
-  loading: loading.models.sysAccountSet,
+export default connect(({ sysAccountList, loading }) => ({
+  sysAccountList,
+  loading: loading.models.sysAccountList,
 }))(SysAccountSet);
