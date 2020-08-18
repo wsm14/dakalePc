@@ -40,9 +40,14 @@ const BusinessListComponent = (props) => {
       select: { list: ACCOUNT_STATUS },
     },
     {
+      label: '城市',
+      type: 'city',
+      changeOnSelect: true,
+      name: 'city',
+    },
+    {
       label: '抽佣比例',
       name: 'stssatus',
-      select: { list: ACCOUNT_STATUS },
     },
   ];
 

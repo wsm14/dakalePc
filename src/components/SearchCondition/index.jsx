@@ -1,8 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Space, Row, Col, Input, Button, Select, DatePicker, InputNumber } from 'antd';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import {
+  Form,
+  Space,
+  Row,
+  Col,
+  Input,
+  Button,
+  Select,
+  DatePicker,
+  InputNumber,
+  Cascader,
+} from 'antd';
+import { UpOutlined, DownOutlined } from '@ant-design/icons';
+import CITYJSON from '@/common/city';
 import styles from './index.less';
+
+const options = {
+  label: 'name',
+  value: 'code',
+  children: 'areaList',
+};
+
+// 城市搜索筛选
+const filter = (inputValue, path) => {
+  return path.some((option) => option.name.indexOf(inputValue) > -1);
+};
 
 const disTime = moment('2020-03-01');
 // 限制选择时间
@@ -98,6 +121,19 @@ const SearchCondition = (props) => {
       }
       if (item.type === 'datePicker') {
         component = <DatePicker style={{ width: '100%' }} allowClear={false} />;
+      }
+      if (item.type === 'city') {
+        component = (
+          <Cascader
+            changeOnSelect={item.changeOnSelect || false}
+            disabled={item.disabled}
+            options={item.options || CITYJSON}
+            fieldNames={options}
+            expandTrigger="hover"
+            showSearch={{ filter }}
+            placeholder="选择城市"
+          />
+        );
       }
       formValue[item.name] = initialValue;
       children.push(
