@@ -2,7 +2,7 @@ import { Button, Modal } from 'antd';
 import { BUSINESS_STATUS, ACCOUNT_STATUS } from '@/common/constant';
 
 const UserDetailShow = (props) => {
-  const { dispatch, childRef, initialValues, loading } = props;
+  const { dispatch, childRef, initialValues } = props;
   const {
     status,
     businessStatus,
@@ -54,39 +54,47 @@ const UserDetailShow = (props) => {
     title: '商户详情',
     loadingModels: 'businessList',
     formItems: [
-      { label: '商户头像', name: 'profile', type: 'upload' },
-      { label: '商家ID', name: 'merchantId', render: (val) => val || '-' },
-      { label: '店铺名称', name: 'merchantName' },
-      { label: '商家类型', name: 'topCategoryName' },
-      { label: '商家账号', name: 'mobile' },
-      { label: '人均消费', name: 'perCapitaConsumption', render: (val) => val || '-' },
-      { label: '营业时间段', name: 'businessTime', render: (val) => val || '-' },
-      { label: '商家电话', name: 'telephone' },
-      { label: '经营品类', name: 'categoryName' },
-      { label: '商家地址', name: 'address' },
+      { label: '所在城市', name: 'profisle' },
+      { label: '门店名称', name: 'merchantName' },
+      { label: '门店电话', name: 'telephone' },
       { label: '所在商圈', name: 'businessHub' },
-      // { label: '绑定银行卡', name: 'bankName' },
+      { label: '门店地址', name: 'address' },
+      { label: '品牌名称', name: 'topCategoryName' },
+      { label: '经营品类', name: 'categoryName' },
+      { label: '平台服务费', name: 'categosryName' },
+      { label: '联系人信息', name: 'mobilse' },
       {
         label: '经营状态',
         name: 'businessStatus',
         render: (val) => (val ? BUSINESS_STATUS[val] : '-'),
       },
       { label: '店铺状态', name: 'status', render: (val) => ACCOUNT_STATUS[val] },
-      {
-        label: '资质证照',
-        name: 'businessLicense',
-        type: 'upload',
-        initialValue: limg && [
-          JSON.parse(limg).businessLicenseImg,
-          JSON.parse(pimg).businessPermitImg,
-        ],
-      },
       { label: '店铺门头照', name: 'coverImg', type: 'upload' },
       {
         label: '店铺内景照',
         name: 'interiorImg',
         type: 'upload',
         initialValue: interiorImg && interiorImg.split(','),
+      },
+      {
+        label: '营业执照',
+        name: 'businessLicenseImg',
+        type: 'upload',
+        initialValue: limg && JSON.parse(limg).businessLicenseImg,
+        children: `aasdas`,
+      },
+      {
+        label: '经营许可证',
+        name: 'businessLicense',
+        type: 'upload',
+        initialValue: pimg && JSON.parse(pimg).businessPermitImg,
+        children: `aasdas`,
+      },
+      {
+        label: '其他证明',
+        name: 'businesssLiscense',
+        type: 'upload',
+        initialValue: pimg && JSON.parse(pimg).businessPermitImg,
       },
     ],
     footerBtn: (loading) => [

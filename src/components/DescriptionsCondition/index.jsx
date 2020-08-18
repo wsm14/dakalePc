@@ -81,6 +81,7 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
         ) : (
           initialValues[item.name]
         )}
+        {item.children && <div>{item.children}</div>}
       </Descriptions.Item>
     ));
 
