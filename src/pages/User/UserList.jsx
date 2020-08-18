@@ -29,7 +29,6 @@ const UserListComponent = (props) => {
     },
     {
       title: '注册手机号',
-      align: 'center',
       dataIndex: 'mobile',
       render: (val) => val || '暂未授权',
     },
@@ -40,7 +39,7 @@ const UserListComponent = (props) => {
     },
     {
       title: '性别',
-      align: 'left',
+      align: 'center',
       dataIndex: 'gender',
       render: (val) => ({ M: '女', F: '男', '': '--' }[val]),
     },

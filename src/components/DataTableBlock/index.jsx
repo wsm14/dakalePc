@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { connect } from 'dva';
-import { Table, Card, Space, Button } from 'antd';
+import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 
 /**
@@ -20,6 +20,8 @@ import SearchCondition from '@/components/SearchCondition';
  * @title 图表标题
  * @style card style
  * @params 搜索时默认参数
+ * @pParams 保存分页 搜索数据保存
+ * @setParams 保存分页 搜索数据
  * @CardNone 是否需要Card包裹 默认true
  * @extra card 右上角
  * @componentSize 组件大小 small default middle
@@ -39,14 +41,16 @@ const DataTableBlockComponent = ({
   title,
   cRef,
   params,
+  pParams = {},
+  setParams,
   CardNone = true,
   extra,
   componentSize = 'default',
 }) => {
-  const [param] = useState(params);
-  const [searchData, setSearchData] = useState({}); // 搜索参数
-  const [current, setNum] = useState(1); // 页码
-  const [pageSize, setSize] = useState(20); // 每页条数
+  
+  const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
+  const [current, setNum] = useState(pParams.page || 1); // 页码
+  const [pageSize, setSize] = useState(pParams.limit || 20); // 每页条数
 
   // 获取列表
   const fetchGetList = () => {
@@ -56,7 +60,7 @@ const DataTableBlockComponent = ({
         page: current,
         limit: pageSize,
         ...searchData,
-        ...param,
+        ...params,
       },
     });
   };
@@ -89,8 +93,14 @@ const DataTableBlockComponent = ({
     },
   }));
 
+  // 保存搜索参数
+  const handleSaveParams = () => {
+    if (typeof setParams === 'function') setParams({ page: current, limit: pageSize, searchData });
+  };
+
   useEffect(() => {
     fetchGetList();
+    return handleSaveParams;
   }, [current, pageSize, searchData]);
 
   const tabContent = (
@@ -105,6 +115,7 @@ const DataTableBlockComponent = ({
           componentSize={componentSize}
           searchItems={searchItems}
           handleSearch={handleSearch}
+          initialValues={searchData}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}

@@ -15,7 +15,6 @@ export default {
     },
   },
   test: {
-    // https://web-new.dakale.net/dev/page/bannerShare/goodsStoreDaka.html
     define: {
       APIURL: 'https://devgateway.dakale.net',
     },

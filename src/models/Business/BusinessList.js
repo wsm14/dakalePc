@@ -43,6 +43,17 @@ export default {
       const { content } = response;
       callback(content.merchantDetail);
     },
+    *fetchBusinessTotal({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content.userMerchantList,
+        },
+      });
+    },
     *fetchSetStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantStatus, payload);
       if (!response) return;

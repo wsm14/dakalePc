@@ -53,15 +53,15 @@ const SearchCondition = (props) => {
   const {
     searchItems: formItems,
     handleSearch,
-    resetValue,
     btnExtra = '',
     componentSize = 'default',
+    initialValues = {},
   } = props;
 
   const [form] = Form.useForm();
 
   const [expand, setExpand] = useState(false);
-  const [formValue] = useState({});
+  const [formValue] = useState(initialValues);
 
   const getFields = () => {
     const len = formItems.length;
@@ -172,10 +172,6 @@ const SearchCondition = (props) => {
   };
 
   const toggle = () => setExpand(!expand);
-
-  useEffect(() => {
-    handleReset();
-  }, [resetValue]);
 
   const len = formItems.length;
   const search = (span) => (

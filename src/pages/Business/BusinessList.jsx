@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
+import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
@@ -59,13 +60,13 @@ const BusinessListComponent = (props) => {
       dataIndex: 'merchantId',
     },
     {
-      title: '商家名称',
-      align: 'center',
+      title: '商户名称',
+      fixed: 'left',
       dataIndex: 'merchantName',
       render: (val) => val || '暂未授权',
     },
     {
-      title: '商家账号',
+      title: '商户账号',
       align: 'center',
       dataIndex: 'mobile',
     },
@@ -85,6 +86,16 @@ const BusinessListComponent = (props) => {
       title: '详细地址',
       align: 'center',
       dataIndex: 'address',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
+    },
+    {
+      title: '抽佣比例',
+      align: 'right',
+      dataIndex: 'addsress',
     },
     {
       title: '经营状态',

@@ -68,21 +68,22 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData }) => {
     },
   ];
 
-  // 获取用户详情
-  const fetchUserDetail = (userId) => {
+  // 获取商户统计数据
+  const fetchBusinessTotal = (userId) => {
     dispatch({
-      type: 'userList/fetchUserTotal',
+      type: 'businessList/fetchBusinessTotal',
       payload: { userId },
-      callback: handleShowUserDetail,
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // fetchBusinessTotal()
+  }, []);
 
   return (
     <>
       <Card style={{ marginBottom: 16 }}>
-        <SearchCondition searchItems={searchItems} handleSearch={fetchUserDetail}></SearchCondition>
+        <SearchCondition searchItems={searchItems} handleSearch={fetchBusinessTotal}></SearchCondition>
         <Row gutter={16} align="middle">
           <Col span={12}>
             <Spin spinning={!!loading}>
@@ -102,5 +103,5 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData }) => {
 
 export default connect(({ businessList, loading }) => ({
   totalData: businessList.totalData,
-  loading: loading.effects['businessList/fetchUserTotalSperad'],
+  loading: loading.effects['businessList/fetchBusinessTotal'],
 }))(BusinessTotalInfo);
