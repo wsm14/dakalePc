@@ -20,6 +20,14 @@ const MarketCardPeasPark = () => {
                 <div style={{ backgroundColor: '#bfbf00' }} onClick={() => setKey('morning')}>
                   早起挑战赛
                 </div>
+                <div style={{ backgroundColor: '#8080ff' }}>答题挑战</div>
+                <div style={{ backgroundColor: '#ec808d' }}>卡豆果园</div>
+                <div style={{ backgroundColor: '#c280ff' }}>节日主题</div>
+                <div style={{ color: 'black', border: '1px solid #e6e6e6' }}>乐园公告</div>
+                <div style={{ color: 'black', border: '1px solid #e6e6e6' }}>成就勋章</div>
+                <div></div>
+                <div></div>
+                <div></div>
               </div>
             </Card>
           ),
