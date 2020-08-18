@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 
 const BusinessAuditList = (props) => {
-  const { businessAuditList, loading, dispatch } = props;
+  const { businessAudit, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -32,6 +33,7 @@ const BusinessAuditList = (props) => {
   const getColumns = [
     {
       title: '商家名称',
+      fixed: 'left',
       dataIndex: 'merchantName',
     },
     {
@@ -55,7 +57,16 @@ const BusinessAuditList = (props) => {
       title: '详细地址',
       align: 'center',
       dataIndex: 'address',
-      render: (val) => val || '-',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '--'}
+        </Ellipsis>
+      ),
+    },
+    {
+      title: '服务费',
+      align: 'right',
+      dataIndex: 'applyTime',
     },
     {
       title: '申请时间',
@@ -77,14 +88,19 @@ const BusinessAuditList = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      fixed: 'right',
       align: 'right',
+      fixed: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'check',
               visible: record.verifyStatus === '1',
+              click: () => fetchGetDetail(record.userMerchantVerifyId),
+            },
+            {
+              type: 'eye',
+              visible: record.verifyStatus === '2',
               click: () => fetchGetDetail(record.userMerchantVerifyId),
             },
           ]}
@@ -117,13 +133,13 @@ const BusinessAuditList = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.userMerchantVerifyId}`}
-      dispatchType="businessAuditList/fetchGetList"
-      {...businessAuditList}
+      dispatchType="businessAudit/fetchGetList"
+      {...businessAudit}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ businessAuditList, loading }) => ({
-  businessAuditList,
-  loading: loading.models.businessAuditList,
+export default connect(({ businessAudit, loading }) => ({
+  businessAudit,
+  loading: loading.models.businessAudit,
 }))(BusinessAuditList);

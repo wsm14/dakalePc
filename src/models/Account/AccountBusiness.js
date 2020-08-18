@@ -1,7 +1,7 @@
 // import { fetchUserList, fetchUserOrder } from "@/services/AccountServices";
 
 export default {
-  namespace: "accountBusinessList",
+  namespace: "accountBusiness",
 
   state: {
     list: [],

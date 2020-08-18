@@ -1,7 +1,7 @@
-// import { fetchUserList, fetchUserOrder } from "@/services/CircleServices";
+// import { fetchUserList, fetchUserOrder } from "@/services/AccountServices";
 
 export default {
-  namespace: "circleMasterList",
+  namespace: "accountUser",
 
   state: {
     list: [],

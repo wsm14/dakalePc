@@ -6,7 +6,7 @@ import {
 } from '@/services/BusinessServices';
 
 export default {
-  namespace: 'businessAuditList',
+  namespace: 'businessBrand',
 
   state: {
     list: [],

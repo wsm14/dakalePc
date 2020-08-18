@@ -41,7 +41,7 @@ export default [
         routes: [
           {
             path: '/user/list',
-            name: '用户列表',
+            name: '用户数据',
             component: './User/UserList',
           },
         ],
@@ -58,7 +58,12 @@ export default [
           {
             path: '/business/audit',
             name: '审核列表',
-            component: './Business/BusinessAuditList',
+            component: './Business/BusinessAudit',
+          },
+          {
+            path: '/business/brand',
+            name: '品牌',
+            component: './Business/BusinessBrand',
           },
         ],
       },
@@ -94,14 +99,14 @@ export default [
         path: '/account',
         routes: [
           {
-            path: '/account/userlist',
+            path: '/account/user',
             name: '用户账户',
-            component: './Account/AccountUserList',
+            component: './Account/AccountUser',
           },
           {
-            path: '/account/businesslist',
+            path: '/account/business',
             name: '商家账户',
-            component: './Account/AccountBusinessList',
+            component: './Account/AccountBusiness',
           },
         ],
       },

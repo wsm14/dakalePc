@@ -1,6 +1,5 @@
-export default (merchantName, loading) => ({
+export default (merchantName) => ({
   type: 'Modal',
-  loading,
   showType: 'form',
   width: 520,
   maskClosable: false,

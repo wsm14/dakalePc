@@ -21,6 +21,7 @@ const DonutChart = (props) => {
     label: {
       visible: true,
       type: 'inner',
+      style: { stroke: '', fill: 'white' },
     },
   };
 
