@@ -61,7 +61,6 @@ const SearchCondition = (props) => {
   const [form] = Form.useForm();
 
   const [expand, setExpand] = useState(false);
-  const [formValue] = useState(initialValues);
 
   const getFields = () => {
     const len = formItems.length;
@@ -135,7 +134,7 @@ const SearchCondition = (props) => {
           />
         );
       }
-      formValue[item.name] = initialValue;
+
       children.push(
         <Col
           span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
@@ -171,10 +170,14 @@ const SearchCondition = (props) => {
     form.resetFields();
   };
 
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, []);
+
   const toggle = () => setExpand(!expand);
 
   const len = formItems.length;
-  const search = (span) => (
+  const search = (
     <div style={{ textAlign: 'right' }}>
       <Space>
         <Button type="primary" htmlType="submit">
@@ -196,7 +199,6 @@ const SearchCondition = (props) => {
     <Form
       form={form}
       size={componentSize}
-      initialValues={formValue}
       layout="horizontal"
       className={styles.form}
       onFinish={handleSearchsOver}
@@ -205,7 +207,7 @@ const SearchCondition = (props) => {
         <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
           {getFields()}
         </Row>
-        {search(24 - len * 6 - 1)}
+        {search}
       </div>
     </Form>
   );

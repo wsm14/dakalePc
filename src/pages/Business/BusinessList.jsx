@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
+import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import { Button } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
 
@@ -121,6 +122,10 @@ const BusinessListComponent = (props) => {
               type: 'info',
               click: () => fetchGetDetail(record.merchantId),
             },
+            {
+              type: 'set',
+              click: () => fetchGetDetail(record.merchantId),
+            },
           ]}
         />
       ),
@@ -146,14 +151,20 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
-      <BusinessTotalInfo></BusinessTotalInfo>
+      <BusinessTotalInfo
+        btnExtra={
+          <Button className="dkl_green_btn" key="1">
+            新增商户
+          </Button>
+        }
+      ></BusinessTotalInfo>
       <DataTableBlock
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.merchantId}`}
-        dispatchType="businessList/fetchGetLists"
+        dispatchType="businessList/fetchGetList"
         {...businessList}
       ></DataTableBlock>
     </>

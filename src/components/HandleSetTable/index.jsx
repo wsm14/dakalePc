@@ -43,6 +43,9 @@ const HandleSetTable = (props) => {
       if (type === 'info') {
         btnText = '详情';
       }
+      if (type === 'set') {
+        btnText = '设置';
+      }
       if (type === 'eye') {
         btnText = '查看';
       }
