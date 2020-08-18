@@ -184,7 +184,7 @@ const MarketCardActivitySetStore = (props) => {
     },
     {
       type: 'textArea',
-      label: '购买须知',
+      label: '使用规则',
       name: 'description',
     },
   ];

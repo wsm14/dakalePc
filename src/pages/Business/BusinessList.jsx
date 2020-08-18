@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import { Button } from 'antd';
@@ -7,11 +7,13 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
+import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 
 const BusinessListComponent = (props) => {
   const { businessList, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState({});
 
   // 搜索参数
   const searchItems = [
@@ -124,7 +126,7 @@ const BusinessListComponent = (props) => {
             },
             {
               type: 'set',
-              click: () => fetchGetDetail(record.merchantId),
+              click: () => setVisible({ show: true, record }),
             },
           ]}
         />
@@ -141,7 +143,7 @@ const BusinessListComponent = (props) => {
     });
   };
 
-  // 用户详情展示
+  // 商户详情展示
   const handleShowUserDetail = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
@@ -167,6 +169,11 @@ const BusinessListComponent = (props) => {
         dispatchType="businessList/fetchGetList"
         {...businessList}
       ></DataTableBlock>
+      <BusinessAwardSet
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible('')}
+      ></BusinessAwardSet>
     </>
   );
 };

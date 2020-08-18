@@ -241,6 +241,22 @@ const FormCondition = ({
             })}
           </Select>
         ),
+        tags: (
+          <Select mode="tags" showSearch style={{ width: '100%' }} tokenSeparators={[',', '，']}>
+            {select.map((data, j) => {
+              if (data) {
+                // 兼容数组
+                const value = !data.value ? `${j}` : data.value;
+                const name = data.value ? data.name : data;
+                return (
+                  <Option key={j} value={value}>
+                    {name}
+                  </Option>
+                );
+              }
+            })}
+          </Select>
+        ),
         radio: (
           <Radio.Group onChange={item.onChange} disabled={item.disabled}>
             {select.map((data, j) => {
@@ -285,7 +301,7 @@ const FormCondition = ({
       }[type];
 
       if (type === 'textArea') {
-        extra = maxLength && (
+        extra = (extra || maxLength) && (
           <div style={{ display: 'flex' }}>
             <div style={{ flex: 1, paddingRight: 5 }}>{extra}</div>
             {dataNum}

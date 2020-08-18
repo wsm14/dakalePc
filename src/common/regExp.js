@@ -16,3 +16,9 @@ export const NUM_INT = /^\+?[1-9]\d*$/;
 
 // 判断是否有空格
 export const SPACE_PATTERN = /^[^\s]+$/;
+
+// 限制逗号最多两个
+export const COMMA_TWO_PATTERN = /^([^，]*，?[^，]*){0,2}$/;
+
+// 不允许逗号开头结尾
+export const COMMA_SE_PATTERN = /([^!，])(?<![，])$/;
