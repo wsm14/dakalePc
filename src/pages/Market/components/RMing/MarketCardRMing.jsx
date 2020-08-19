@@ -4,9 +4,9 @@ import { Button } from 'antd';
 import { MATCH_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketRMTotalInfo from './MarketRMTotalInfo';
-import MarketMatchMorningSet from './RMing/MarketMatchMorningSet';
-import MarketMatchRuningSet from './RMing/MarketMatchRuningSet';
-import MarketCardRMingJoinDetail from './RMing/MarketCardRMingJoinDetail';
+import MarketMatchMorningSet from './MarketMatchMorningSet';
+import MarketMatchRuningSet from './MarketMatchRuningSet';
+import MarketCardRMingJoinDetail from './MarketCardRMingJoinDetail';
 
 const MarketCardRMing = (props) => {
   const { marketCardRMing, loading, dispatch, setKey, matchType } = props;

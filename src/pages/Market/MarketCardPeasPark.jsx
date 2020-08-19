@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Card, message, Badge } from 'antd';
-import MarketCardRMing from './components/MarketCardRMing';
-import MarketCardMorningDetail from './components/RMing/MarketCardRMingJoinDetail';
+import { Card, Badge } from 'antd';
+import MarketCardRMing from './components/RMing/MarketCardRMing';
 import style from './styles.less';
 
 const MarketCardPeasPark = () => {
@@ -74,7 +73,7 @@ const MarketCardPeasPark = () => {
           ),
           morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" />,
           runing: <MarketCardRMing setKey={setKey} matchType="step" />,
-          morningdetail: <MarketCardMorningDetail setKey={() => setKey('morning')} />,
+          notice: <MarketCardRMing setKey={setKey} matchType="step" />,
         }[key]
       }
     </>

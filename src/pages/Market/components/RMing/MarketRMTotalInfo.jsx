@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Statistic, Card, Row, Col, Spin } from 'antd';
-import styles from './style.less';
+import styles from '../style.less';
 
 const UserTotalInfo = ({ dispatch, loading, totalData, matchType }) => {
   const data = [
