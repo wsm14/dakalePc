@@ -43,7 +43,7 @@ export default {
       const { content } = response;
       callback(content.merchantDetail);
     },
-    *fetchBusinessTotal({ payload, callback }, { call, put }) {
+    *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
       const { content } = response;

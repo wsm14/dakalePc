@@ -1,15 +1,21 @@
-// import {HTTP_GET, HTTP_POST} from '../utils/request';
-// export function sendSms(data) {
-//   return HTTP_POST('/common/sms/sendSms',data)
-// }
-// //验证码接口
-// export function loginUserByVerification(data) {
-//   return HTTP_POST('/merchant/auth/loginUserByVerification',data)
-// }
-// //登录接口
-// export function sendCode(data) {
-//   return HTTP_GET('/merchant/auth/qrCodePreLogin',data)
-// }
-// export function loginCode(data) {
-//   return HTTP_POST('/merchant/auth/loginUserByQrCode',data)
-// }
+import request from '@/utils/request';
+
+// get 用户账户 - 账户列表
+export async function fetchAccountUserList() {
+  return request('/admin/auth/getOwnInfos');
+}
+
+// get 用户账户 - 获取统计信息
+export async function fetchAccountUserTotal() {
+  return request('/admin/auth/getOwnInfo');
+}
+
+// get 商家账户 - 账户列表
+export async function fetchAccountBusinessList() {
+  return request('/admin/auth/getOwnInfos');
+}
+
+// get 商家账户 - 获取统计信息
+export async function fetchAccountBusinessTotal() {
+  return request('/admin/auth/getOwnInfo');
+}

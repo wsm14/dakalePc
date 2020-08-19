@@ -119,11 +119,6 @@ export default [
             name: '问题反馈',
             component: './CustomerCenter/CustomerFeedBack',
           },
-          {
-            path: '/customer/telephone',
-            name: '客服电话',
-            component: './CustomerCenter/CustomerTelephone',
-          },
         ],
       },
       {

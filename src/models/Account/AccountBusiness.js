@@ -1,11 +1,12 @@
-// import { fetchUserList, fetchUserOrder } from "@/services/AccountServices";
+import { fetchAccountBusinessList, fetchAccountBusinessTotal } from '@/services/AccountServices';
 
 export default {
-  namespace: "accountBusiness",
+  namespace: 'accountBusiness',
 
   state: {
     list: [],
     total: 0,
+    totalData: {},
   },
 
   reducers: {
@@ -18,37 +19,28 @@ export default {
   },
 
   effects: {
-    // *fetchAppUserList({ payload }, { call, put }) {
-    //   const response = yield call(fetchUserList, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       list: data.list,
-    //       total: data.total,
-    //       current: data.pageNum,
-    //       pageSize: data.pageSize,
-    //       lastPage: data.lastPage
-    //     }
-    //   });
-    // },
-    // *fetchUserOrder({ payload, callback }, { call, put }) {
-    //   const response = yield call(fetchUserOrder, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       userOrder: {
-    //         list: data.list,
-    //         total: data.total,
-    //         current: data.pageNum,
-    //         pageSize: data.pageSize
-    //       }
-    //     }
-    //   });
-    //   callback();
-    // }
+    *fetchGetList({ payload }, { call, put }) {
+      const response = yield call(fetchAccountBusinessList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          list: content.list,
+          total: data.total,
+        },
+      });
+    },
+    *fetchBusinessTotal({ payload }, { call, put }) {
+      const response = yield call(fetchAccountBusinessTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content.userMerchantList,
+        },
+      });
+    },
   },
 };

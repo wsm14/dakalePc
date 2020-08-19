@@ -39,7 +39,7 @@ export default {
       const { content } = response;
       callback(content.userDetail);
     },
-    *fetchUserTotal({ payload, callback }, { call, put }) {
+    *fetchUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchUserDetail, payload);
       if (!response) return;
       const { content } = response;
@@ -50,7 +50,7 @@ export default {
         },
       });
     },
-    *fetchUserTotalSperad({ payload, callback }, { call, put }) {
+    *fetchUserTotalSperad({ payload }, { call, put }) {
       const response = yield call(fetchUserDetail, payload);
       if (!response) return;
       const { content } = response;
