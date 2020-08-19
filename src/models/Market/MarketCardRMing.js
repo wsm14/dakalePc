@@ -11,6 +11,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    totalData: {},
   },
 
   reducers: {

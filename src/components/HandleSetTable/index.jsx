@@ -34,7 +34,8 @@ const HandleSetTable = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, index) => {
-      const { type = 'button', title = '按钮', pop = false, visible = true } = item;
+      const { type = 'button', title = '按钮', visible = true } = item;
+      let { pop = false } = item;
 
       let btnText = '';
       if (type === 'own') {
@@ -53,6 +54,7 @@ const HandleSetTable = (props) => {
         btnText = '编辑';
       }
       if (type === 'del') {
+        pop = true;
         btnText = '删除';
       }
       if (type === 'check') {

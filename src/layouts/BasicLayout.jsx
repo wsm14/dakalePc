@@ -5,6 +5,7 @@
  */
 import React, { useEffect, useState } from 'react';
 import ProLayout from '@ant-design/pro-layout';
+import { Affix } from 'antd';
 import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
@@ -144,7 +145,7 @@ const BasicLayout = (props) => {
                   ${pageTitle.join(' / ')}`
                 }
                 title={false}
-                extra={pageBtn}
+                extra={<Affix offsetTop={60}>{pageBtn}</Affix>}
               >
                 {children}
               </PageContainer>

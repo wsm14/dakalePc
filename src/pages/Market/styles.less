@@ -6,6 +6,11 @@
   align-items: baseline;
   & > div {
     width: 18%;
+    height: 130px;
+  }
+  .park_item {
+    cursor: pointer;
+    width: 18%;
     height: 150px;
     display: flex;
     align-items: center;
@@ -14,5 +19,19 @@
     font-size: 20px;
     border-radius: 4px;
     color: rgb(255, 255, 255);
+  }
+  :global {
+    .ant-ribbon-wrapper {
+      cursor: pointer;
+      width: 18%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .park_item_no {
+    width: 100% !important;
+    height: 100%;
   }
 }

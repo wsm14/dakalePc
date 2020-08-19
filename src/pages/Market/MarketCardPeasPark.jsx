@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card } from 'antd';
+import { Card, message, Badge } from 'antd';
 import MarketCardRMing from './components/MarketCardRMing';
 import MarketCardMorningDetail from './components/Morning/MarketCardMorningDetail';
 import style from './styles.less';
@@ -14,17 +14,58 @@ const MarketCardPeasPark = () => {
           home: (
             <Card>
               <div className={style.park_box}>
-                <div style={{ backgroundColor: '#f59a23' }} onClick={() => setKey('runing')}>
+                <div
+                  className={style.park_item}
+                  style={{ backgroundColor: '#f59a23' }}
+                  onClick={() => setKey('runing')}
+                >
                   步数挑战赛
                 </div>
-                <div style={{ backgroundColor: '#bfbf00' }} onClick={() => setKey('morning')}>
+                <div
+                  className={style.park_item}
+                  style={{ backgroundColor: '#bfbf00' }}
+                  onClick={() => setKey('morning')}
+                >
                   早起挑战赛
                 </div>
-                <div style={{ backgroundColor: '#8080ff' }}>答题挑战</div>
-                <div style={{ backgroundColor: '#ec808d' }}>卡豆果园</div>
-                <div style={{ backgroundColor: '#c280ff' }}>节日主题</div>
-                <div style={{ color: 'black', border: '1px solid #e6e6e6' }}>乐园公告</div>
-                <div style={{ color: 'black', border: '1px solid #e6e6e6' }}>成就勋章</div>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ backgroundColor: '#8080ff' }}
+                  >
+                    答题挑战
+                  </div>
+                </Badge.Ribbon>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ backgroundColor: '#ec808d' }}
+                  >
+                    卡豆果园
+                  </div>
+                </Badge.Ribbon>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ backgroundColor: '#c280ff' }}
+                  >
+                    节日主题
+                  </div>
+                </Badge.Ribbon>
+                <div
+                  className={style.park_item}
+                  style={{ color: 'black', border: '1px solid #e6e6e6' }}
+                >
+                  乐园公告
+                </div>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ color: 'black', border: '1px solid #e6e6e6' }}
+                  >
+                    成就勋章
+                  </div>
+                </Badge.Ribbon>
                 <div></div>
                 <div></div>
                 <div></div>

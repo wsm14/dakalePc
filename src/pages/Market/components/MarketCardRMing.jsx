@@ -5,6 +5,7 @@ import { MATCH_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketMatchMorningSet from './Morning/MarketMatchMorningSet';
 import MarketMatchRuningSet from './Runing/MarketMatchRuningSet';
+import MarketRMTotalInfo from './MarketRMTotalInfo';
 
 const MarketCardRMing = (props) => {
   const { marketCardRMing, loading, dispatch, setKey, matchType } = props;
@@ -14,8 +15,91 @@ const MarketCardRMing = (props) => {
   const prop = { childRef, dispatch };
 
   const propInfo = {
-    wakeUp: { payload: MarketMatchMorningSet(prop), title: '早起挑战赛' },
-    step: { payload: MarketMatchRuningSet(prop), title: '步数挑战赛' },
+    wakeUp: {
+      payload: MarketMatchMorningSet(prop),
+      title: '早起挑战赛',
+      getColumns: [
+        {
+          title: '期数',
+          align: 'center',
+          dataIndex: 'startDate',
+          render: (val) => `${val}期`,
+        },
+        {
+          title: '报名卡豆',
+          align: 'center',
+          dataIndex: 'signBeanAmount',
+        },
+        {
+          title: '已报名人数',
+          align: 'center',
+          dataIndex: 'signAmount',
+          render: (val) => (val ? val : '--'),
+        },
+        {
+          title: '奖池卡豆',
+          align: 'center',
+          dataIndex: 'totalBeanAmount',
+        },
+        {
+          title: '完成目标人数',
+          align: 'center',
+          dataIndex: 'targetUserAmount',
+          render: (val) => (val ? val : '--'),
+        },
+        {
+          title: '状态',
+          align: 'center',
+          dataIndex: 'status',
+          render: (val) => MATCH_STATUS[val],
+        },
+      ],
+    },
+    step: {
+      payload: MarketMatchRuningSet(prop),
+      title: '步数挑战赛',
+      getColumns: [
+        {
+          title: '期数',
+          align: 'center',
+          dataIndex: 'startDate',
+          render: (val) => `${val}期`,
+        },
+        {
+          title: '报名卡豆',
+          align: 'center',
+          dataIndex: 'signBeanAmount',
+        },
+        {
+          title: '已报名人数',
+          align: 'center',
+          dataIndex: 'signAmount',
+          render: (val) => (val ? val : '--'),
+        },
+        {
+          title: '奖池卡豆',
+          align: 'center',
+          dataIndex: 'totalBeanAmount',
+        },
+        {
+          title: '目标步数（步）',
+          align: 'center',
+          dataIndex: 'to2talBeanAmount',
+        },
+        {
+          title: '完成目标人数',
+          align: 'center',
+          dataIndex: 'targetUserAmount',
+          render: (val) => (val ? val : '--'),
+        },
+        {
+          title: '状态',
+          align: 'center',
+          dataIndex: 'status',
+          render: (val) => MATCH_STATUS[val],
+        },
+      ],
+    },
   }[matchType];
 
   // 搜索参数
@@ -24,44 +108,6 @@ const MarketCardRMing = (props) => {
       label: '期数',
       type: 'datePicker',
       name: 'date',
-    },
-  ];
-
-  // table 表头
-  const getColumns = [
-    {
-      title: '期数',
-      align: 'center',
-      dataIndex: 'startDate',
-      render: (val) => `${val}期`,
-    },
-    {
-      title: '报名卡豆',
-      align: 'center',
-      dataIndex: 'signBeanAmount',
-    },
-    {
-      title: '已报名人数',
-      align: 'center',
-      dataIndex: 'signAmount',
-      render: (val) => (val ? val : '--'),
-    },
-    {
-      title: '奖池卡豆',
-      align: 'center',
-      dataIndex: 'totalBeanAmount',
-    },
-    {
-      title: '完成目标人数',
-      align: 'center',
-      dataIndex: 'targetUserAmount',
-      render: (val) => (val ? val : '--'),
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status',
-      render: (val) => MATCH_STATUS[val],
     },
   ];
 
@@ -118,17 +164,20 @@ const MarketCardRMing = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      btnExtra={btnExtra}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.startDate}`}
-      params={{ matchType }}
-      dispatchType="marketCardRMing/fetchGetList"
-      {...marketCardRMing}
-    ></DataTableBlock>
+    <>
+      <MarketRMTotalInfo matchType={matchType} />
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        btnExtra={btnExtra}
+        columns={propInfo.getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.startDate}`}
+        params={{ matchType }}
+        dispatchType="marketCardRMing/fetchGetList"
+        {...marketCardRMing}
+      ></DataTableBlock>
+    </>
   );
 };
 

@@ -164,6 +164,12 @@ const MarketCardActivityDetail = (props) => {
   };
 
   useEffect(() => {
+    dispatch({
+      type: 'marketCardActivity/clearDetailPay',
+    });
+  }, [visible]);
+
+  useEffect(() => {
     handlePageShowBtn();
   }, []);
 
