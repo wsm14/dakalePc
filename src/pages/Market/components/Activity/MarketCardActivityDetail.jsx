@@ -146,11 +146,11 @@ const MarketCardActivityDetail = (props) => {
       type: 'global/saveTitle',
       payload: {
         pageTitle: [params.activityName],
-        pageBtn: (
-          <Button type="danger" onClick={handlePageBtnBack}>
+        pageBtn: [
+          <Button type="danger" key='btn' onClick={handlePageBtnBack}>
             返回
-          </Button>
-        ),
+          </Button>,
+        ],
       },
     });
   };

@@ -49,7 +49,9 @@ const DataTableBlockComponent = ({
 }) => {
   const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
   const [current, setNum] = useState(pParams.page || 1); // 页码
-  const [pageSize, setSize] = useState(pParams.limit || 20); // 每页条数
+  const [pageSize, setSize] = useState(
+    pParams.limit || { default: 20, middle: 10, small: 10 }[componentSize],
+  ); // 每页条数
 
   // 获取列表
   const fetchGetList = () => {

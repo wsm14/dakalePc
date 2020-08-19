@@ -1,46 +1,52 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { MATCH_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
-import MarketMatchMorningSet from './Morning/MarketMatchMorningSet';
-import MarketMatchRuningSet from './Runing/MarketMatchRuningSet';
 import MarketRMTotalInfo from './MarketRMTotalInfo';
+import MarketMatchMorningSet from './RMing/MarketMatchMorningSet';
+import MarketMatchRuningSet from './RMing/MarketMatchRuningSet';
+import MarketCardRMingJoinDetail from './RMing/MarketCardRMingJoinDetail';
 
 const MarketCardRMing = (props) => {
   const { marketCardRMing, loading, dispatch, setKey, matchType } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState('');
 
   const prop = { childRef, dispatch };
+
+  const columns = [
+    {
+      title: '期数',
+      align: 'center',
+      dataIndex: 'startDate',
+      render: (val) => `${val}期`,
+    },
+    {
+      title: '报名卡豆',
+      align: 'center',
+      dataIndex: 'signBeanAmount',
+    },
+    {
+      title: '已报名人数',
+      align: 'center',
+      dataIndex: 'signAmount',
+      render: (val, record) => (val ? <a onClick={() => setVisible({ record })}>{val}</a> : '--'),
+    },
+    {
+      title: '奖池卡豆',
+      align: 'center',
+      dataIndex: 'totalBeanAmount',
+    },
+  ];
 
   const propInfo = {
     wakeUp: {
       payload: MarketMatchMorningSet(prop),
       title: '早起挑战赛',
       getColumns: [
-        {
-          title: '期数',
-          align: 'center',
-          dataIndex: 'startDate',
-          render: (val) => `${val}期`,
-        },
-        {
-          title: '报名卡豆',
-          align: 'center',
-          dataIndex: 'signBeanAmount',
-        },
-        {
-          title: '已报名人数',
-          align: 'center',
-          dataIndex: 'signAmount',
-          render: (val) => (val ? val : '--'),
-        },
-        {
-          title: '奖池卡豆',
-          align: 'center',
-          dataIndex: 'totalBeanAmount',
-        },
+        ...columns,
         {
           title: '完成目标人数',
           align: 'center',
@@ -59,28 +65,7 @@ const MarketCardRMing = (props) => {
       payload: MarketMatchRuningSet(prop),
       title: '步数挑战赛',
       getColumns: [
-        {
-          title: '期数',
-          align: 'center',
-          dataIndex: 'startDate',
-          render: (val) => `${val}期`,
-        },
-        {
-          title: '报名卡豆',
-          align: 'center',
-          dataIndex: 'signBeanAmount',
-        },
-        {
-          title: '已报名人数',
-          align: 'center',
-          dataIndex: 'signAmount',
-          render: (val) => (val ? val : '--'),
-        },
-        {
-          title: '奖池卡豆',
-          align: 'center',
-          dataIndex: 'totalBeanAmount',
-        },
+        ...columns,
         {
           title: '目标步数（步）',
           align: 'center',
@@ -113,21 +98,21 @@ const MarketCardRMing = (props) => {
 
   // 获取挑战卡豆详情
   const handleMorningDetail = () => {
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: MarketMatchMorningSet({
-    //     dispatch,
-    //     childRef,
-    //   }),
-    // });
+    dispatch({
+      type: 'drawerForm/show',
+      payload: MarketMatchMorningSet({
+        dispatch,
+        childRef,
+      }),
+    });
   };
 
   // 设置挑战卡豆数
   const handleSetMatch = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: propInfo.payload,
-    });
+    // dispatch({
+    //   type: 'marketCardRMing/fetchMarketMatchJoin',
+    //   payload: propInfo.payload,
+    // });
   };
 
   // 头部添加面包屑 按钮
@@ -136,11 +121,11 @@ const MarketCardRMing = (props) => {
       type: 'global/saveTitle',
       payload: {
         pageTitle: [propInfo.title],
-        pageBtn: (
-          <Button type="danger" onClick={handlePageBtnBack}>
+        pageBtn: [
+          <Button type="danger" key="btn" onClick={handlePageBtnBack}>
             返回
-          </Button>
-        ),
+          </Button>,
+        ],
       },
     });
   };
@@ -175,8 +160,9 @@ const MarketCardRMing = (props) => {
         rowKey={(record) => `${record.startDate}`}
         params={{ matchType }}
         dispatchType="marketCardRMing/fetchGetList"
-        {...marketCardRMing}
+        {...marketCardRMing.matchList}
       ></DataTableBlock>
+      <MarketCardRMingJoinDetail matchType={matchType} visible={visible} setVisible={setVisible} />
     </>
   );
 };

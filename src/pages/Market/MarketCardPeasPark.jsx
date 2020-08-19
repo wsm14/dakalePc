@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, message, Badge } from 'antd';
 import MarketCardRMing from './components/MarketCardRMing';
-import MarketCardMorningDetail from './components/Morning/MarketCardMorningDetail';
+import MarketCardMorningDetail from './components/RMing/MarketCardRMingJoinDetail';
 import style from './styles.less';
 
 const MarketCardPeasPark = () => {

@@ -25,6 +25,9 @@ export const BUSINESS_STATUS_AUDIT = [false, '审核中', '审核驳回', '审�
 // 挑战赛状态
 export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 
+// 用户挑战赛状态
+export const MATCH_USER_STATUS = ['已取消', '已报名', '已完成', '已领奖'];
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 

@@ -7,6 +7,13 @@ export async function fetchMarketMatch(params) {
   });
 }
 
+// get 挑战赛报名列表
+export async function fetchMarketMatchJoin(params) {
+  return request('/admin/marketingManagement/listUserMatch', {
+    params,
+  });
+}
+
 // get 营销活动列表
 export async function fetchMarketActivity(params) {
   return request('/admin/marketingActivity/listActivity', {

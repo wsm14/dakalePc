@@ -145,7 +145,7 @@ const BasicLayout = (props) => {
                   ${pageTitle.join(' / ')}`
                 }
                 title={false}
-                extra={<Affix offsetTop={60}>{pageBtn}</Affix>}
+                extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
               >
                 {children}
                 <BackTop />

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
 import { ACTIVE_COUPON_STATUS } from '@/common/constant';
@@ -8,7 +8,6 @@ const MarketCardActivityDetailPay = (props) => {
   const { marketCardActivity, loading, visible, setVisible } = props;
 
   const { type = '', record = '' } = visible;
-  const childRef = useRef();
 
   const loadings =
     loading.effects['marketCardActivity/fetchGetActiveDetailPay'] ||
@@ -114,7 +113,6 @@ const MarketCardActivityDetailPay = (props) => {
 
   const tableProps = {
     CardNone: false,
-    cRef: childRef,
     loading: loadings,
     columns: visible && propItem.getColumns,
     searchItems: visible && propItem.searchItems,
