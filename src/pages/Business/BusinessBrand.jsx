@@ -63,7 +63,7 @@ const BusinessBrandComponent = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.merchantId}`}
+      rowKey={(record) => `${record.merchantName}`}
       dispatchType="businessBrand/fetchGetList"
       {...businessBrand}
     ></DataTableBlock>

@@ -4,7 +4,7 @@ import HandleSetTable from "@/components/HandleSetTable";
 import DataTableBlock from "@/components/DataTableBlock";
 
 const AccountBusinessList = (props) => {
-  const { accountBusinessList, loading } = props;
+  const { accountBusiness, loading } = props;
 
   const childRef = useRef();
 
@@ -99,13 +99,13 @@ const AccountBusinessList = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.userId}`}
-      dispatchType="accountBusinessList/fetchAppUserList"
-      {...accountBusinessList}
+      dispatchType="accountBusiness/fetchAppUserList"
+      {...accountBusiness}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ accountBusinessList, loading }) => ({
-  accountBusinessList,
-  loading: loading.models.accountBusinessList,
+export default connect(({ accountBusiness, loading }) => ({
+  accountBusiness,
+  loading: loading.models.accountBusiness,
 }))(AccountBusinessList);

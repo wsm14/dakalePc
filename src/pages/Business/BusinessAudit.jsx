@@ -112,7 +112,7 @@ const BusinessAuditList = (props) => {
   // 获取商家详情
   const fetchGetDetail = (userMerchantVerifyId) => {
     dispatch({
-      type: 'businessAuditList/fetchMerchantAuditDetail',
+      type: 'businessAudit/fetchMerchantAuditDetail',
       payload: { userMerchantVerifyId },
       callback: (val) => handleShowUserDetail(val, userMerchantVerifyId),
     });

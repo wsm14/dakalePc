@@ -45,10 +45,10 @@ const UserDetailShow = (props) => {
     });
   };
 
-  // 审核方法
+  // 审核
   const fetchMerSaleAudit = (val) => {
     dispatch({
-      type: 'businessAuditList/fetchMerSaleAudit',
+      type: 'businessAudit/fetchMerSaleAudit',
       payload: { ...val, id },
       callback: () => childRef.current.fetchGetData(),
     });
@@ -59,7 +59,7 @@ const UserDetailShow = (props) => {
     showType: 'info',
     width: 600,
     title: '商户详情',
-    loadingModels: 'businessAuditList',
+    loadingModels: 'businessAudit',
     formItems: [
       { label: '所在城市', name: 'profisle' },
       { label: '门店名称', name: 'merchantName' },
