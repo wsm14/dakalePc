@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Badge } from 'antd';
 import MarketCardRMing from './components/RMing/MarketCardRMing';
+import MarketCardNotice from './components/Notice/MarketCardNotice';
 import style from './styles.less';
 
 const MarketCardPeasPark = () => {
@@ -54,6 +55,7 @@ const MarketCardPeasPark = () => {
                 <div
                   className={style.park_item}
                   style={{ color: 'black', border: '1px solid #e6e6e6' }}
+                  onClick={() => setKey('notice')}
                 >
                   乐园公告
                 </div>
@@ -71,9 +73,9 @@ const MarketCardPeasPark = () => {
               </div>
             </Card>
           ),
-          morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" />,
-          runing: <MarketCardRMing setKey={setKey} matchType="step" />,
-          notice: <MarketCardRMing setKey={setKey} matchType="step" />,
+          runing: <MarketCardRMing setKey={setKey} matchType="step" title="步数挑战赛"/>,
+          morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" title="早起挑战赛"/>,
+          notice: <MarketCardNotice setKey={setKey} title="乐园公告"/>,
         }[key]
       }
     </>

@@ -34,6 +34,9 @@ export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 // 卡券状态
 export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 
+// 卡豆乐园 公告状态
+export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
+
 // 默认起始结束时间
 const now = new Date();
 export const INIT_END_TIME = moment(now, 'YYYY-MM-DD');

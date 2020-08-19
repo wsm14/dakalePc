@@ -60,6 +60,10 @@ const HandleSetTable = (props) => {
       if (type === 'check') {
         btnText = '审核';
       }
+      if (type === 'send') {
+        pop = true;
+        btnText = '发布';
+      }
 
       let component =
         type === 'text' ? (

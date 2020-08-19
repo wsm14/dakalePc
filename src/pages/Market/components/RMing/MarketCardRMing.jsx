@@ -9,7 +9,7 @@ import MarketMatchRuningSet from './MarketMatchRuningSet';
 import MarketCardRMingJoinDetail from './MarketCardRMingJoinDetail';
 
 const MarketCardRMing = (props) => {
-  const { marketCardRMing, loading, dispatch, setKey, matchType } = props;
+  const { marketCardRMing, title, loading, dispatch, setKey, matchType } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
@@ -43,8 +43,8 @@ const MarketCardRMing = (props) => {
 
   const propInfo = {
     wakeUp: {
-      payload: MarketMatchMorningSet(prop),
       title: '早起挑战赛',
+      payload: MarketMatchMorningSet(prop),
       getColumns: [
         ...columns,
         {
@@ -62,8 +62,8 @@ const MarketCardRMing = (props) => {
       ],
     },
     step: {
-      payload: MarketMatchRuningSet(prop),
       title: '步数挑战赛',
+      payload: MarketMatchRuningSet(prop),
       getColumns: [
         ...columns,
         {
@@ -120,7 +120,7 @@ const MarketCardRMing = (props) => {
     dispatch({
       type: 'global/saveTitle',
       payload: {
-        pageTitle: [propInfo.title],
+        pageTitle: [title],
         pageBtn: [
           <Button type="danger" key="btn" onClick={handlePageBtnBack}>
             返回
