@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
-import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
+import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
 
 const MarketCardActivity = (props) => {
   const { marketCardActivity, loading, dispatch } = props;
@@ -106,7 +106,7 @@ const MarketCardActivity = (props) => {
   const handleSetActive = () => {
     dispatch({
       type: 'drawerForm/show',
-      payload: MarketCardActivitySet({ dispatch, childRef }),
+      payload: marketCardActivitySet({ dispatch, childRef }),
     });
   };
 

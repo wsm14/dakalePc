@@ -3,7 +3,7 @@ import { Button, Card } from 'antd';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import SysAccountInfoSet from './components/Account/SysAccountInfoSet';
+import sysAccountInfoSet from './components/Account/SysAccountInfoSet';
 import SysRoleList from './SysRoleList';
 
 const tabList = [
@@ -98,7 +98,7 @@ const SysAccountSet = (props) => {
   const handleSysAccountSet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: SysAccountInfoSet({ dispatch, childRef, initialValues }),
+      payload: sysAccountInfoSet({ dispatch, childRef, initialValues }),
     });
   };
 

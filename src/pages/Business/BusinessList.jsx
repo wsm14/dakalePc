@@ -5,7 +5,7 @@ import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
+import businessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 
@@ -147,7 +147,7 @@ const BusinessListComponent = (props) => {
   const handleShowUserDetail = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: BusinessDetailShow({ dispatch, childRef, initialValues }),
+      payload: businessDetailShow({ dispatch, childRef, initialValues }),
     });
   };
 

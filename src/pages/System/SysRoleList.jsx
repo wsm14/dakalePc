@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import SysRoleInfoSet from './components/Role/SysRoleInfoSet';
+import sysRoleInfoSet from './components/Role/SysRoleInfoSet';
 
 const SysRoleList = (props) => {
   const { sysRoleList, loading, dispatch } = props;
@@ -80,7 +80,7 @@ const SysRoleList = (props) => {
   const handleSysRoleSet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: SysRoleInfoSet({ dispatch, childRef, initialValues }),
+      payload: sysRoleInfoSet({ dispatch, childRef, initialValues }),
     });
   };
 

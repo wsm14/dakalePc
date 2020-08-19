@@ -4,8 +4,8 @@ import { Button } from 'antd';
 import { MATCH_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketRMTotalInfo from './MarketRMTotalInfo';
-import MarketMatchMorningSet from './MarketMatchMorningSet';
-import MarketMatchRuningSet from './MarketMatchRuningSet';
+import marketMatchMorningSet from './MarketMatchMorningSet';
+import marketMatchRuningSet from './MarketMatchRuningSet';
 import MarketCardRMingJoinDetail from './MarketCardRMingJoinDetail';
 
 const MarketCardRMing = (props) => {
@@ -15,6 +15,15 @@ const MarketCardRMing = (props) => {
   const [visible, setVisible] = useState('');
 
   const prop = { childRef, dispatch };
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '期数',
+      type: 'datePicker',
+      name: 'date',
+    },
+  ];
 
   const columns = [
     {
@@ -44,7 +53,7 @@ const MarketCardRMing = (props) => {
   const propInfo = {
     wakeUp: {
       title: '早起挑战赛',
-      payload: MarketMatchMorningSet(prop),
+      payload: marketMatchMorningSet(prop),
       getColumns: [
         ...columns,
         {
@@ -63,7 +72,7 @@ const MarketCardRMing = (props) => {
     },
     step: {
       title: '步数挑战赛',
-      payload: MarketMatchRuningSet(prop),
+      payload: marketMatchRuningSet(prop),
       getColumns: [
         ...columns,
         {
@@ -86,26 +95,6 @@ const MarketCardRMing = (props) => {
       ],
     },
   }[matchType];
-
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '期数',
-      type: 'datePicker',
-      name: 'date',
-    },
-  ];
-
-  // 获取挑战卡豆详情
-  const handleMorningDetail = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: MarketMatchMorningSet({
-        dispatch,
-        childRef,
-      }),
-    });
-  };
 
   // 设置挑战卡豆数
   const handleSetMatch = () => {

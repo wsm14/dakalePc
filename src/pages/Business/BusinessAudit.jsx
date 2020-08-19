@@ -4,7 +4,7 @@ import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
+import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 
 const BusinessAuditList = (props) => {
   const { businessAudit, loading, dispatch } = props;
@@ -122,7 +122,7 @@ const BusinessAuditList = (props) => {
   const handleShowUserDetail = (initialValues, mreId) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: BusinessAuditDetailShow({ dispatch, childRef, initialValues, mreId, loading }),
+      payload: businessAuditDetailShow({ dispatch, childRef, initialValues, mreId, loading }),
     });
   };
 

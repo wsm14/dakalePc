@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import NoticeImgShow from './NoticeImgShow';
-// import MarketMatchMorningSet from './MarketMatchMorningSet';
+import marketCardNoticeSet from './MarketCardNoticeSet';
 
 const MarketCardNotice = (props) => {
   const { marketCardNotice, title, loading, dispatch, setKey } = props;
@@ -61,18 +61,30 @@ const MarketCardNotice = (props) => {
             {
               type: 'del',
               visible: record.status === '0',
-              click: () => setVisible({ type: 'order', record }),
+              click: () => fetchNoticePush(val, 'del'),
             },
             {
               type: 'send',
               visible: record.status === '0',
-              click: () => fetchGetCouponInfo(val, record.merchantName),
+              click: () => fetchNoticePush(val, 'push'),
             },
           ]}
         />
       ),
     },
   ];
+
+  // 公告发布 / 删除
+  const fetchNoticePush = (val, type) => {
+    dispatch({
+      type: {
+        push: 'marketCardNotice/fetchNoticePush',
+        del: 'marketCardNotice/fetchNoticeDel',
+      }[type],
+      payload: { val },
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
 
   // 头部添加面包屑 按钮
   const handlePageShowBtn = () => {
@@ -97,12 +109,20 @@ const MarketCardNotice = (props) => {
     });
   };
 
+  // 新增公告表单
+  const handleNoticeAdd = () => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: marketCardNoticeSet({ dispatch, childRef }),
+    });
+  };
+
   useEffect(() => {
     handlePageShowBtn();
   }, []);
 
   const btnExtra = [
-    <Button className="dkl_green_btn" key="1" onClick={handlePageShowBtn}>
+    <Button className="dkl_green_btn" key="1" onClick={handleNoticeAdd}>
       新增公告
     </Button>,
   ];

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
-import UserDetailShow from './components/UserDetailShow';
+import userDetailShow from './components/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
 
@@ -97,7 +97,7 @@ const UserListComponent = (props) => {
   const handleShowUserDetail = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: UserDetailShow({ dispatch, childRef, initialValues }),
+      payload: userDetailShow({ dispatch, childRef, initialValues }),
     });
   };
 

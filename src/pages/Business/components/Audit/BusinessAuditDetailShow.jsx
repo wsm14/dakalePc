@@ -1,5 +1,5 @@
 import { Button, Modal } from 'antd';
-import BusinessAuditRefuse from './BusinessAuditRefuse';
+import businessAuditRefuse from './BusinessAuditRefuse';
 
 const UserDetailShow = (props) => {
   const { dispatch, childRef, initialValues, mreId: id, loading } = props;
@@ -39,7 +39,7 @@ const UserDetailShow = (props) => {
       type: 'drawerForm/show',
       payload: {
         title: `审核驳回 - ${merchantName}`,
-        ...BusinessAuditRefuse(),
+        ...businessAuditRefuse(),
         onFinish: (val) => fetchMerSaleAudit({ ...val, verifyStatus: 2 }),
       },
     });

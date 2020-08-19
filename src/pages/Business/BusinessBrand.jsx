@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import { BUSINESS_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessBrandSet from './components/Brand/BusinessBrandSet';
+import businessBrandSet from './components/Brand/BusinessBrandSet';
 
 const BusinessBrandComponent = (props) => {
   const { businessBrand, loading, dispatch } = props;
@@ -48,7 +48,7 @@ const BusinessBrandComponent = (props) => {
   const handleBrandSet = () => {
     dispatch({
       type: 'drawerForm/show',
-      payload: BusinessBrandSet({ dispatch, childRef }),
+      payload: businessBrandSet({ dispatch, childRef }),
     });
   };
 

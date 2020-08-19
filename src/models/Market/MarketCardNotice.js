@@ -1,5 +1,10 @@
 import { notification } from 'antd';
-import { fetchUserList, fetchUserStatus } from '@/services/UserServices';
+import {
+  fetchMarketNoticeList,
+  fetchMarketNoticeAdd,
+  fetchMarketNoticePush,
+  fetchMarketNoticeDel,
+} from '@/services/MarketServices';
 
 export default {
   namespace: 'marketCardNotice',
@@ -20,7 +25,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchUserList, payload);
+      const response = yield call(fetchMarketNoticeList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -31,12 +36,30 @@ export default {
         },
       });
     },
-    *fetchUserStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchUserStatus, payload);
+    *fetchMarketNoticeAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMarketNoticeAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '用户状态修改成功',
+        description: '公告新增成功',
+      });
+      callback();
+    },
+    *fetchNoticePush({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMarketNoticePush, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '公告发布成功',
+      });
+      callback();
+    },
+    *fetchNoticeDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMarketNoticeDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '公告删除成功',
       });
       callback();
     },
