@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 import { MATCH_USER_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
+import MasterOrderDetail from './MasterOrderDetail';
 
 const MasterDetail = (props) => {
   const { circleMaster, loading, visible, setVisible } = props;
@@ -128,8 +129,8 @@ const MasterDetail = (props) => {
         {
           title: '关联订单',
           align: 'center',
-          dataIndex: 'process',
-          render: (val) => val || '--',
+          dataIndex: 'order',
+          render: (val, record) => <MasterOrderDetail order={val} />,
         },
       ],
     },

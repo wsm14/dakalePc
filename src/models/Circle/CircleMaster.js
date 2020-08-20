@@ -4,6 +4,7 @@ import {
   fetchMasterFamily,
   fetchMasterShop,
   fetchMasterIncomeDetails,
+  fetchMasterIncomeOrderDetails,
 } from '@/services/CircleServices';
 
 export default {
@@ -13,6 +14,7 @@ export default {
     master: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     totalData: {},
+    orderDetail: {},
   },
 
   reducers: {
@@ -69,6 +71,17 @@ export default {
         type: 'save',
         payload: {
           totalData: content.userMerchantList,
+        },
+      });
+    },
+    *fetchGetOrderDetails({ payload }, { call, put }) {
+      const response = yield call(fetchMasterIncomeOrderDetails, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          orderDetail: content.userMerchantList,
         },
       });
     },

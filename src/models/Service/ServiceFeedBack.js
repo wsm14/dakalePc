@@ -1,7 +1,7 @@
 // import { fetchUserList, fetchUserOrder } from "@/services/CustomerCenterServices";
 
 export default {
-  namespace: "customerFeedBack",
+  namespace: "serviceFeedBack",
 
   state: {
     list: [],

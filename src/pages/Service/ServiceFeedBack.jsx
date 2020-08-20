@@ -3,7 +3,7 @@ import { connect } from "dva";
 import HandleSetTable from "@/components/HandleSetTable";
 import DataTableBlock from "@/components/DataTableBlock";
 
-const CustomerFeedBack = (props) => {
+const ServiceFeedBack = (props) => {
   const { customerFeedBack, loading } = props;
 
   const childRef = useRef();
@@ -98,4 +98,4 @@ const CustomerFeedBack = (props) => {
 export default connect(({ customerFeedBack, loading }) => ({
   customerFeedBack,
   loading: loading.models.customerFeedBack,
-}))(CustomerFeedBack);
+}))(ServiceFeedBack);

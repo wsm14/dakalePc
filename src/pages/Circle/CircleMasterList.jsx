@@ -104,7 +104,6 @@ const CircleMasterList = (props) => {
         rowKey={(record) => `${record.userId}`}
         dispatchType="circleMaster/fetchGetList"
         {...circleMaster.master}
-        list={[{ name: 1, aa: 1, bb: 2 }]}
       ></DataTableBlock>
       <MasterDetail visible={visible} setVisible={setVisible} />
     </>

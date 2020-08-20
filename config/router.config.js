@@ -112,12 +112,12 @@ export default [
       },
       {
         name: '客服中心',
-        path: '/customer',
+        path: '/service',
         routes: [
           {
-            path: '/customer/feedback',
+            path: '/service/feedback',
             name: '问题反馈',
-            component: './CustomerCenter/CustomerFeedBack',
+            component: './Service/ServiceFeedBack',
           },
         ],
       },

@@ -34,3 +34,11 @@ export async function fetchMasterIncomeDetails(params) {
     params,
   });
 }
+
+// post 家主列表 - 收益明细 - 订单详情
+export function fetchMasterIncomeOrderDetails(data) {
+  return request('/admin/userManagement/fetchMerchantStatus', {
+    method: 'POST',
+    data,
+  });
+}
