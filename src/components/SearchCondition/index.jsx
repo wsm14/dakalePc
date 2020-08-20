@@ -110,11 +110,11 @@ const SearchCondition = (props) => {
             ]}
             disabledDate={disabledDate}
             ranges={item.ranges || ranges}
-            renderExtraFooter={() => (
-              <div className={styles.shop_dateInfo}>
-                开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
-              </div>
-            )}
+            // renderExtraFooter={() => (
+            //   <div className={styles.shop_dateInfo}>
+            //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
+            //   </div>
+            // )}
           />
         );
       }

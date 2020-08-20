@@ -27,9 +27,6 @@ export default {
         payload: {
           list: data.list,
           total: data.total,
-          current: data.pageNum,
-          pageSize: data.pageSize,
-          lastPage: data.lastPage,
         },
       });
     },

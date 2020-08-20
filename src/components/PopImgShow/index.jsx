@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popover } from 'antd';
 
-const NoticeImgShow = (props) => {
+const PopImgShow = (props) => {
   const { url } = props;
 
   return (
@@ -20,4 +20,4 @@ const NoticeImgShow = (props) => {
   );
 };
 
-export default NoticeImgShow;
+export default PopImgShow;

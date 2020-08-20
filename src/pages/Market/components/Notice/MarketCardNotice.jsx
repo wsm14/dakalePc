@@ -3,9 +3,9 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import NoticeImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import NoticeImgShow from './NoticeImgShow';
 import marketCardNoticeSet from './MarketCardNoticeSet';
 
 const MarketCardNotice = (props) => {

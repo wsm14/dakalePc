@@ -50,3 +50,41 @@ export function fetchAccountEdit(data) {
     data,
   });
 }
+
+// get App设置 - 图片列表
+export function fetchBannerList(params) {
+  return request('/admin/auth/saveAasdauthRodle', {
+    params,
+  });
+}
+
+// get App设置 - 获取图片详情
+export function fetchBannerDetail(params) {
+  return request('/admin/auth/saveAuthRodle', {
+    params,
+  });
+}
+
+// post App设置 - 图片下架
+export function fetchBannerStatus(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post App设置 - 图片删除
+export function fetchBannerDel(data) {
+  return request('/admin/auth/saveAuthdsfRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post App设置 - 图片新增
+export function fetchBannerSet(data) {
+  return request('/admin/auth/saveAuthdsfRole', {
+    method: 'POST',
+    data,
+  });
+}
