@@ -66,26 +66,26 @@ const MasterTotalInfo = ({ dispatch, loading, totalData }) => {
 
   return (
     <>
-      <Row gutter={16} align="middle">
+      <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-          <Card style={{ marginBottom: 16 }} bodyStyle={{ padding: 0 }}>
+          <Card bodyStyle={{ padding: 0, height: 276 }}>
             <Spin spinning={!!loading}>
               <Donut data={data} totalLabel="总家主数" height={276} />
             </Spin>
           </Card>
         </Col>
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
-          <Card style={{ marginBottom: 16 }} bodyStyle={{ padding: 0 }}>
+          <Card bodyStyle={{ padding: 0, height: 276 }}>
             <Spin spinning={!!loading}>
               <Donut data={data2} totalLabel="累计收益卡豆" height={276} />
             </Spin>
           </Card>
         </Col>
       </Row>
-      <Row gutter={16} align="middle">
+      <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
         {rankingData.map((data) => (
           <Col xl={8} lg={12} md={12} sm={24} xs={24}>
-            <Card style={{ marginBottom: 16 }} bodyStyle={{ height: 267 }} loading={loading}>
+            <Card bodyStyle={{ height: 267 }} loading={loading}>
               <div className={styles.salesRank}>
                 <h4 className={styles.rankingTitle}>{data.title}</h4>
                 <ul className={styles.rankingList}>
