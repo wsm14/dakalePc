@@ -73,9 +73,9 @@ const MarketCardPeasPark = () => {
               </div>
             </Card>
           ),
-          runing: <MarketCardRMing setKey={setKey} matchType="step" title="步数挑战赛"/>,
-          morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" title="早起挑战赛"/>,
-          notice: <MarketCardNotice setKey={setKey} title="乐园公告"/>,
+          runing: <MarketCardRMing setKey={setKey} matchType="step" title="步数挑战赛" />,
+          morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" title="早起挑战赛" />,
+          notice: <MarketCardNotice setKey={setKey} title="乐园公告" />,
         }[key]
       }
     </>

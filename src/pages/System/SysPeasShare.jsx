@@ -81,7 +81,6 @@ const SysPeasShare = (props) => {
       rowKey={(record) => `${record.userId}`}
       dispatchType="sysPeasShare/fetchGetList"
       {...sysPeasShare}
-      list={[{ name: 1 }]}
     ></DataTableBlock>
   );
 };

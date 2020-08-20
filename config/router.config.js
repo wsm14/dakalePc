@@ -136,6 +136,11 @@ export default [
             component: './System/SysTradeList',
           },
           {
+            path: '/system/checkIn',
+            name: '打卡设置',
+            component: './System/SysCheckIn',
+          },
+          {
             path: '/system/peasShare',
             name: '卡豆分享',
             component: './System/SysPeasShare',

@@ -126,3 +126,48 @@ export function fetchPeasShareDel(data) {
     data,
   });
 }
+
+// get 打卡设置 - 打卡列表
+export function fetchCheckInList(params) {
+  return request('/admin/auth/saveAuthRodle', {
+    params,
+  });
+}
+
+// get 打卡设置 - 文案列表
+export function fetchCheckInTextList(params) {
+  return request('/admin/auth/saveAuthRodle', {
+    params,
+  });
+}
+
+// get 打卡设置 - 图片列表
+export function fetchCheckInImgList(params) {
+  return request('/admin/auth/saveAuthRodle', {
+    params,
+  });
+}
+
+// get 打卡设置 - 打卡列表编辑
+export function fetchCheckInEdit(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 打卡设置 - 文案编辑
+export function fetchCheckInTextEdit(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 打卡设置 - 图片编辑
+export function fetchCheckInImgEdit(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
