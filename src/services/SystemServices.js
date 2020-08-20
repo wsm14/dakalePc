@@ -88,3 +88,41 @@ export function fetchBannerSet(data) {
     data,
   });
 }
+
+// get 卡豆分享 - 列表
+export function fetchPeasShareList(params) {
+  return request('/admin/auth/saveAuthRodle', {
+    params,
+  });
+}
+
+// get 卡豆分享 - 获取修改详情
+export function fetchPeasShareDetail(params) {
+  return request('/admin/auth/saveAuthRodle', {
+    params,
+  });
+}
+
+// post 卡豆分享 - 新增
+export function fetchPeasShareAdd(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 卡豆分享 - 修改
+export function fetchPeasShareEdit(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 卡豆分享 - 删除
+export function fetchPeasShareDel(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}

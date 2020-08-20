@@ -148,7 +148,6 @@ const SysAppSet = (props) => {
         rowKey={(record) => `${record.userId}`}
         dispatchType="sysAppList/fetchGetList"
         {...sysAppList}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
       <SysAppSetForm
         cRef={childRef}

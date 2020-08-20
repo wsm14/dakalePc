@@ -136,6 +136,11 @@ export default [
             component: './System/SysTradeList',
           },
           {
+            path: '/system/peasShare',
+            name: '卡豆分享',
+            component: './System/SysPeasShare',
+          },
+          {
             path: '/system/accountset',
             name: '帐号设置',
             component: './System/SysAccountList',
