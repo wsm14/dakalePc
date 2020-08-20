@@ -115,6 +115,10 @@ const MarketCardActivityDetail = (props) => {
               title: '优惠券',
               click: () => fetchGetCouponInfo(val, record.merchantName),
             },
+            // {
+            //   type: 'info',
+            //   click: () => setVisible({ type: 'destory', record }),
+            // },
           ]}
         />
       ),
@@ -147,7 +151,7 @@ const MarketCardActivityDetail = (props) => {
       payload: {
         pageTitle: [params.activityName],
         pageBtn: [
-          <Button type="danger" key='btn' onClick={handlePageBtnBack}>
+          <Button type="danger" key="btn" onClick={handlePageBtnBack}>
             返回
           </Button>,
         ],

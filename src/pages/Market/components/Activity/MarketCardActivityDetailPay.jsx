@@ -7,7 +7,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 const MarketCardActivityDetailPay = (props) => {
   const { marketCardActivity, loading, visible, setVisible } = props;
 
-  const { type = '', record = '' } = visible;
+  const { type = 'destory', record = '' } = visible;
 
   const loadings =
     loading.effects['marketCardActivity/fetchGetActiveDetailPay'] ||
@@ -114,20 +114,20 @@ const MarketCardActivityDetailPay = (props) => {
   const tableProps = {
     CardNone: false,
     loading: loadings,
-    columns: visible && propItem.getColumns,
-    searchItems: visible && propItem.searchItems,
+    columns: propItem.getColumns,
+    searchItems: propItem.searchItems,
     params: {
       merchantId: record.merchantIdString,
       marketCouponId: record.marketCouponIdString,
     },
-    dispatchType: visible && propItem.dispatchType,
+    dispatchType: propItem.dispatchType,
     componentSize: 'middle',
     ...marketCardActivity.detailPay,
   };
 
   return (
     <Modal
-      title={visible && propItem.title}
+      title={propItem.title}
       width={1150}
       destroyOnClose
       footer={null}
