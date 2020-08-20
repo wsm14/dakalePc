@@ -4,7 +4,7 @@ import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
-const UserTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
+const UserTotalInfo = ({ dispatch, loading, totalData }) => {
   // 搜索参数
   const searchItems = [
     {
@@ -93,7 +93,6 @@ const UserTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
       <SearchCondition
         searchItems={searchItems}
         handleSearch={fetchBusinessTotal}
-        btnExtra={btnExtra}
       ></SearchCondition>
       <Row gutter={16} align="middle">
         <Col span={12}>

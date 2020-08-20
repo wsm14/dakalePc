@@ -1,15 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
-import MasterDetail from './components/Master/MasterDetail';
+import MasterDetailList from './components/Master/MasterDetailList';
 
 const CircleMasterList = (props) => {
-  const { circleMaster, loading, dispatch } = props;
+  const { masterList, loading, dispatch } = props;
 
-  const childRef = useRef();
   const [visible, setVisible] = useState('');
 
   // 搜索参数
@@ -97,20 +96,19 @@ const CircleMasterList = (props) => {
     <>
       <MasterTotalInfo />
       <DataTableBlock
-        cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userId}`}
         dispatchType="circleMaster/fetchGetList"
-        {...circleMaster.master}
+        {...masterList}
       ></DataTableBlock>
-      <MasterDetail visible={visible} setVisible={setVisible} />
+      <MasterDetailList visible={visible} setVisible={setVisible} />
     </>
   );
 };
 
 export default connect(({ circleMaster, loading }) => ({
-  circleMaster,
+  masterList: circleMaster.masterList,
   loading: loading.effects['circleMaster/fetchGetList'],
 }))(CircleMasterList);

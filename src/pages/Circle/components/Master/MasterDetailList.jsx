@@ -7,7 +7,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 import MasterOrderDetail from './MasterOrderDetail';
 
 const MasterDetail = (props) => {
-  const { circleMaster, loading, visible, setVisible } = props;
+  const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'family', record = '' } = visible;
 
@@ -15,6 +15,7 @@ const MasterDetail = (props) => {
   const propItem = {
     family: {
       title: `家人明显 - 家主ID：0001 用户/商户名：小王 累计邀请家人：1200人`,
+      rowKey: '',
       getColumns: [
         {
           title: '用户ID',
@@ -52,6 +53,7 @@ const MasterDetail = (props) => {
     },
     shop: {
       title: `家主明显 - 家主ID：0001 用户/商户名：小王的店 累计邀请家店：1200家`,
+      rowKey: '',
       getColumns: [
         {
           title: '商户ID',
@@ -98,6 +100,7 @@ const MasterDetail = (props) => {
     },
     income: {
       title: `收益明细 - 家主ID：0001 用户/商户名：小王 累计收益：1200卡豆`,
+      rowKey: '',
       getColumns: [
         {
           title: '日期',
@@ -153,13 +156,13 @@ const MasterDetail = (props) => {
         params={{ type }}
         dispatchType="circleMaster/fetchDetailList"
         componentSize="middle"
-        {...circleMaster.detailList}
+        {...detailList}
       ></DataTableBlock>
     </Modal>
   );
 };
 
 export default connect(({ circleMaster, loading }) => ({
-  circleMaster,
+  detailList: circleMaster.detailList,
   loading: loading.effects['circleMaster/fetchDetailList'],
 }))(MasterDetail);

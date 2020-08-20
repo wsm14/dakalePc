@@ -14,6 +14,27 @@ export async function fetchAccountUserTotal(params) {
   });
 }
 
+// get 用户账户 - 卡豆明细
+export async function fetchUserPeasDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}
+
+// get 用户账户 - 充值记录
+export async function fetchUserRechargeDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}
+
+// get 用户账户 - 订单详情
+export async function fetchUserOrderDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}
+
 // get 商家账户 - 账户列表
 export async function fetchAccountBusinessList(params) {
   return request('/admin/auth/getOwnInfos', {

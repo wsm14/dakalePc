@@ -1,13 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import UserTotalInfo from './components/User/UserTotalInfo';
+import UserDetailList from './components/User/UserDetailList';
 
 const AccountUserList = (props) => {
-  const { accountUser, loading } = props;
+  const { userlist, loading, dispatch } = props;
 
-  const childRef = useRef();
+  const [visible, setVisible] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -32,33 +33,37 @@ const AccountUserList = (props) => {
       align: 'center',
       fixed: 'left',
       dataIndex: 'phoneNumber',
+      render: (val) => val || '--',
     },
     {
       title: '累计收益（卡豆）',
       align: 'right',
       dataIndex: 'orderCount',
+      render: (val) => val || 0,
     },
     {
       title: '累计充值',
       align: 'right',
       dataIndex: 'orderTotal',
-      render: (val) => `￥${val}`,
+      render: (val) => val || 0,
     },
     {
       title: '累计支出（卡豆）',
       align: 'right',
       dataIndex: 'parkName',
-      render: (val) => val || '-',
+      render: (val) => val || 0,
     },
     {
       title: '累计支出（金额）',
       align: 'right',
       dataIndex: 'addTimeStamp',
+      render: (val) => val || 0,
     },
     {
       title: '当前余额（卡豆）',
       align: 'right',
       dataIndex: 'addTimeStamp',
+      render: (val) => val || 0,
     },
     {
       title: '操作',
@@ -71,12 +76,12 @@ const AccountUserList = (props) => {
             {
               type: 'own',
               title: '卡豆明细',
-              //   click: () => setShowCoach(record),
+              click: () => setVisible({ type: 'peas', record }),
             },
             {
               type: 'own',
               title: '充值记录',
-              //   click: () => setShowCoach(record),
+              click: () => setVisible({ type: 'recharge', record }),
             },
           ]}
         />
@@ -84,23 +89,29 @@ const AccountUserList = (props) => {
     },
   ];
 
+  useEffect(() => {
+    dispatch({
+      type: 'accountUser/clearDetail',
+    });
+  }, [visible]);
+
   return (
     <>
       <UserTotalInfo></UserTotalInfo>
       <DataTableBlock
-        cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userId}`}
         dispatchType="accountUser/fetchGetList"
-        {...accountUser}
+        {...userlist}
       ></DataTableBlock>
+      <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
     </>
   );
 };
 
 export default connect(({ accountUser, loading }) => ({
-  accountUser,
-  loading: loading.models.accountUser,
+  userlist: accountUser.userlist,
+  loading: loading.effects['accountUser/fetchGetList'],
 }))(AccountUserList);

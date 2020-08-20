@@ -11,7 +11,7 @@ export default {
   namespace: 'circleMaster',
 
   state: {
-    master: { list: [], total: 0 },
+    masterList: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     totalData: {},
     orderDetail: {},
