@@ -1,13 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
+import BusinessDetailList from './components/Business/BusinessDetailList';
 
 const AccountBusinessList = (props) => {
-  const { accountBusiness, loading } = props;
+  const { list, loading, dispatch } = props;
 
-  const childRef = useRef();
+  const [visible, setVisible] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -75,17 +76,17 @@ const AccountBusinessList = (props) => {
             {
               type: 'own',
               title: '卡豆明细',
-              //   click: () => setShowCoach(record),
+              click: () => setVisible({ type: 'peas', record }),
             },
             {
               type: 'own',
               title: '提现记录',
-              //   click: () => setShowCoach(record),
+              click: () => setVisible({ type: 'collect', record }),
             },
             {
               type: 'own',
               title: '充值记录',
-              //   click: () => setShowCoach(record),
+              click: () => setVisible({ type: 'recharge', record }),
             },
           ]}
         />
@@ -93,23 +94,29 @@ const AccountBusinessList = (props) => {
     },
   ];
 
+  useEffect(() => {
+    dispatch({
+      type: 'accountUser/clearDetail',
+    });
+  }, [visible]);
+
   return (
     <>
       <BusinessTotalInfo></BusinessTotalInfo>
       <DataTableBlock
-        cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userId}`}
         dispatchType="accountBusiness/fetchGetList"
-        {...accountBusiness}
+        {...list}
       ></DataTableBlock>
+      <BusinessDetailList visible={visible} setVisible={setVisible}></BusinessDetailList>
     </>
   );
 };
 
 export default connect(({ accountBusiness, loading }) => ({
-  accountBusiness,
-  loading: loading.models.accountBusiness,
+  list: accountBusiness.list,
+  loading: loading.effects['accountBusiness/fetchGetList'],
 }))(AccountBusinessList);

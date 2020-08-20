@@ -1,11 +1,18 @@
-import { fetchAccountBusinessList, fetchAccountBusinessTotal } from '@/services/AccountServices';
+import {
+  fetchAccountBusinessList,
+  fetchAccountBusinessTotal,
+  fetchBusinessPeasDetail,
+  fetchBusinessCollectDetail,
+  fetchBusinessRechargeDetail,
+  fetchBusinessOrderDetail,
+} from '@/services/AccountServices';
 
 export default {
   namespace: 'accountBusiness',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    detailList: { list: [], total: 0 },
     totalData: {},
   },
 
@@ -14,6 +21,13 @@ export default {
       return {
         ...state,
         ...payload,
+      };
+    },
+    clearDetail(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        detailPay: { list: [], total: 0 },
       };
     },
   },
@@ -26,8 +40,25 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.list,
-          total: data.total,
+          list: { list: content.list, total: data.total },
+        },
+      });
+    },
+    *fetchDetailList({ payload }, { call, put }) {
+      const { type } = payload;
+      const inter = {
+        peas: fetchBusinessPeasDetail, // 卡豆明细
+        collect: fetchBusinessCollectDetail, // 提现记录
+        recharge: fetchBusinessRechargeDetail, // 充值记录
+      }[type];
+      delete payload.type;
+      const response = yield call(inter, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: { list: content.userMerchantList, total: content.total },
         },
       });
     },
@@ -39,6 +70,17 @@ export default {
         type: 'save',
         payload: {
           totalData: content.userMerchantList,
+        },
+      });
+    },
+    *fetchGetOrderDetails({ payload }, { call, put }) {
+      const response = yield call(fetchBusinessOrderDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          orderDetail: content.userMerchantList,
         },
       });
     },

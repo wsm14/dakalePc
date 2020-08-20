@@ -2,104 +2,18 @@ import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
 import { MATCH_USER_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
-import MasterOrderDetail from './MasterOrderDetail';
+import BusinessOrderDetail from './BusinessOrderDetail';
 
-const MasterDetail = (props) => {
+const BusinessDetailList = (props) => {
   const { detailList, loading, visible, setVisible } = props;
 
-  const { type = 'family', record = '' } = visible;
+  const { type = 'peas', record = '' } = visible;
 
   // table
   const propItem = {
-    family: {
-      title: `家人明细 - 家主ID：0001 用户/商户名：小王 累计邀请家人：1200人`,
-      rowKey: '',
-      getColumns: [
-        {
-          title: '用户ID',
-          align: 'center',
-          dataIndex: 'userId',
-        },
-        {
-          title: '昵称',
-          align: 'center',
-          dataIndex: 'username',
-        },
-        {
-          title: '手机号',
-          align: 'center',
-          dataIndex: 'status',
-        },
-        {
-          title: '性别',
-          align: 'center',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => MATCH_USER_STATUS[val],
-        },
-        {
-          title: '坐标',
-          align: 'center',
-          dataIndex: 'signDate',
-        },
-        {
-          title: '注册时间',
-          align: 'center',
-          dataIndex: 'process',
-          render: (val) => val || '--',
-        },
-      ],
-    },
-    shop: {
-      title: `家主明细 - 家主ID：0001 用户/商户名：小王的店 累计邀请家店：1200家`,
-      rowKey: '',
-      getColumns: [
-        {
-          title: '商户ID',
-          align: 'center',
-          dataIndex: 'userId',
-        },
-        {
-          title: '商家名称',
-          align: 'center',
-          dataIndex: 'username',
-        },
-        {
-          title: '商家账号',
-          align: 'center',
-          dataIndex: 'status',
-        },
-        {
-          title: '商家类型',
-          align: 'center',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => MATCH_USER_STATUS[val],
-        },
-        {
-          title: '所在城市',
-          align: 'center',
-          dataIndex: 'signDate',
-        },
-        {
-          title: '详细地址',
-          align: 'center',
-          dataIndex: 'process',
-          render: (val) => (
-            <Ellipsis length={10} tooltip>
-              {val || '-'}
-            </Ellipsis>
-          ),
-        },
-        {
-          title: '入驻时间',
-          align: 'center',
-          dataIndex: 'processs',
-        },
-      ],
-    },
-    income: {
-      title: `收益明细 - 家主ID：0001 用户/商户名：小王 累计收益：1200卡豆`,
+    peas: {
+      title: `卡豆明细 - 商户ID：0001 商户名称：小王的店`,
       rowKey: '',
       getColumns: [
         {
@@ -113,27 +27,118 @@ const MasterDetail = (props) => {
           dataIndex: 'username',
         },
         {
-          title: '卡豆明细',
+          title: '关联用户',
           align: 'center',
           dataIndex: 'status',
         },
         {
-          title: '关联用户',
+          title: '卡豆明细',
           align: 'center',
           dataIndex: 'earnBeanAmount',
-          render: (val) => val || '--',
+          render: (val) => MATCH_USER_STATUS[val],
         },
         {
-          title: '关联商户',
+          title: '收支状态',
           align: 'center',
           dataIndex: 'signDate',
-          render: (val) => val || '--',
         },
         {
           title: '关联订单',
           align: 'center',
           dataIndex: 'order',
-          render: (val, record) => <MasterOrderDetail order={val} />,
+          render: (val, record) => <BusinessOrderDetail order={val} />,
+        },
+      ],
+    },
+    collect: {
+      title: `提现记录 - 商户ID：0001 商户名称：小王的店 累计充值：1200元`,
+      rowKey: '',
+      getColumns: [
+        {
+          title: '日期',
+          dataIndex: 'userId',
+        },
+        {
+          title: '充值单号',
+          dataIndex: 'username',
+        },
+        {
+          title: '订单流水',
+          dataIndex: 'status',
+        },
+        {
+          title: '充值卡豆数',
+          align: 'right',
+          dataIndex: 'earnBeanAmount',
+          render: (val) => MATCH_USER_STATUS[val],
+        },
+        {
+          title: '充值金额',
+          align: 'right',
+          dataIndex: 'signDate',
+        },
+        {
+          title: '支付方式',
+          align: 'center',
+          dataIndex: 'process',
+          render: (val) => MATCH_USER_STATUS[val],
+        },
+        {
+          title: '支付状态',
+          align: 'center',
+          dataIndex: 'processss',
+          render: (val) => MATCH_USER_STATUS[val],
+        },
+        {
+          title: '卡豆状态',
+          align: 'center',
+          dataIndex: 'procsesss',
+          render: (val) => MATCH_USER_STATUS[val],
+        },
+      ],
+    },
+    recharge: {
+      title: `充值记录 - 商户ID：0001 商户名称：小王 累计提现：1200元（12000卡豆）`,
+      rowKey: '',
+      getColumns: [
+        {
+          title: '提现日期',
+          align: 'center',
+          dataIndex: 'userId',
+        },
+        {
+          title: '提现单号',
+          align: 'center',
+          dataIndex: 'username',
+        },
+        {
+          title: '订单流水',
+          align: 'center',
+          dataIndex: 'status',
+        },
+        {
+          title: '提现卡豆',
+          align: 'center',
+          dataIndex: 'earnBeanAmount',
+          render: (val) => val || '--',
+        },
+        {
+          title: '提现到',
+          align: 'center',
+          dataIndex: 'signDate',
+          render: (val) => val || '--',
+        },
+        {
+          title: '提现状态',
+          align: 'center',
+          dataIndex: 'sigsnDate',
+          render: (val) => val || '--',
+        },
+        {
+          title: '到账日期',
+          align: 'center',
+          dataIndex: 'signDate',
+          render: (val) => val || '--',
         },
       ],
     },
@@ -154,7 +159,7 @@ const MasterDetail = (props) => {
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
         params={{ type }}
-        dispatchType="circleMaster/fetchDetailList"
+        dispatchType="accountBusiness/fetchDetailList"
         componentSize="middle"
         {...detailList}
       ></DataTableBlock>
@@ -162,7 +167,7 @@ const MasterDetail = (props) => {
   );
 };
 
-export default connect(({ circleMaster, loading }) => ({
-  detailList: circleMaster.detailList,
-  loading: loading.effects['circleMaster/fetchDetailList'],
-}))(MasterDetail);
+export default connect(({ accountBusiness, loading }) => ({
+  detailList: accountBusiness.detailList,
+  loading: loading.effects['accountBusiness/fetchDetailList'],
+}))(BusinessDetailList);

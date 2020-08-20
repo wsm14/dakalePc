@@ -48,3 +48,31 @@ export async function fetchAccountBusinessTotal(params) {
     params,
   });
 }
+
+// get 商家账户 - 卡豆明细
+export async function fetchBusinessPeasDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}
+
+// get 商家账户 - 提现记录
+export async function fetchBusinessCollectDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}
+
+// get 商家账户 - 充值记录
+export async function fetchBusinessRechargeDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}
+
+// get 商家账户 - 订单详情
+export async function fetchBusinessOrderDetail(params) {
+  return request('/admin/auth/getOwnInfo', {
+    params,
+  });
+}

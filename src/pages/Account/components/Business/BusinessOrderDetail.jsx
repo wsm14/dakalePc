@@ -3,14 +3,14 @@ import { connect } from 'dva';
 import { Spin, Popover } from 'antd';
 import styles from '../style.less';
 
-const UserOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
+const BusinessOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
   const [visible, setVisible] = useState(false);
 
   // 获取详情
   const fetchGetDetail = () => {
     if (!visible)
       dispatch({
-        type: 'accountUser/fetchGetOrderDetails',
+        type: 'accountBusiness/fetchGetOrderDetails',
         payload: { order },
       });
   };
@@ -63,7 +63,7 @@ const UserOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
   );
 };
 
-export default connect(({ circleMaster, loading }) => ({
-  orderDetail: circleMaster.orderDetail,
-  loading: loading.effects['circleMaster/fetchGetOrderDetails'],
-}))(UserOrderDetail);
+export default connect(({ accountBusiness, loading }) => ({
+  orderDetail: accountBusiness.orderDetail,
+  loading: loading.effects['accountBusiness/fetchGetOrderDetails'],
+}))(BusinessOrderDetail);

@@ -11,6 +11,7 @@ const MasterOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
     if (!visible)
       dispatch({
         type: 'circleMaster/fetchGetOrderDetails',
+        payload: { order },
       });
   };
 
@@ -34,11 +35,15 @@ const MasterOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
       </div>
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>卡豆抵扣：</span>
-        <span className={styles.master_order_itemContent}>{orderDetail.name}卡豆（-￥{orderDetail.name}）</span>
+        <span className={styles.master_order_itemContent}>
+          {orderDetail.name}卡豆（-￥{orderDetail.name}）
+        </span>
       </div>
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>优惠券：</span>
-        <span className={styles.master_order_itemContent}>{orderDetail.name}元抵扣券（-￥{orderDetail.name}）</span>
+        <span className={styles.master_order_itemContent}>
+          {orderDetail.name}元抵扣券（-￥{orderDetail.name}）
+        </span>
       </div>
       <div className={styles.master_order_item} style={{ marginTop: 15 }}>
         <span className={styles.master_order_itemTitle}>实际支付：</span>
