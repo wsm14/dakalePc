@@ -1,7 +1,14 @@
-// import { fetchUserList, fetchUserOrder } from "@/services/SystemServices";
+import { notification } from 'antd';
+import {
+  fetchTradeList,
+  fetchTradeDetail,
+  fetchTradeAdd,
+  fetchTradeDel,
+  fetchTradeEdit,
+} from '@/services/SystemServices';
 
 export default {
-  namespace: "sysTradeList",
+  namespace: 'sysTradeList',
 
   state: {
     list: [],
@@ -18,37 +25,50 @@ export default {
   },
 
   effects: {
-    // *fetchAppUserList({ payload }, { call, put }) {
-    //   const response = yield call(fetchUserList, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       list: data.list,
-    //       total: data.total,
-    //       current: data.pageNum,
-    //       pageSize: data.pageSize,
-    //       lastPage: data.lastPage
-    //     }
-    //   });
-    // },
-    // *fetchUserOrder({ payload, callback }, { call, put }) {
-    //   const response = yield call(fetchUserOrder, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       userOrder: {
-    //         list: data.list,
-    //         total: data.total,
-    //         current: data.pageNum,
-    //         pageSize: data.pageSize
-    //       }
-    //     }
-    //   });
-    //   callback();
-    // }
+    *fetchGetList({ payload }, { call, put }) {
+      const response = yield call(fetchTradeList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          list: content.list,
+          total: content.total,
+        },
+      });
+    },
+    *fetchTradeDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
+    },
+    *fetchTradeAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增类目成功',
+      });
+      callback();
+    },
+    *fetchTradeEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '修改类目成功',
+      });
+      callback();
+    },
+    *fetchTradeDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '删除类目成功',
+      });
+      callback();
+    },
   },
 };

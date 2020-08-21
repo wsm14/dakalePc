@@ -148,7 +148,7 @@ export function fetchCheckInImgList(params) {
   });
 }
 
-// get 打卡设置 - 打卡列表编辑
+// post 打卡设置 - 打卡列表编辑
 export function fetchCheckInEdit(data) {
   return request('/admin/auth/saveAfuthRole', {
     method: 'POST',
@@ -156,7 +156,7 @@ export function fetchCheckInEdit(data) {
   });
 }
 
-// get 打卡设置 - 文案编辑
+// post 打卡设置 - 文案编辑
 export function fetchCheckInTextEdit(data) {
   return request('/admin/auth/saveAfuthRole', {
     method: 'POST',
@@ -164,8 +164,46 @@ export function fetchCheckInTextEdit(data) {
   });
 }
 
-// get 打卡设置 - 图片编辑
+// post 打卡设置 - 图片编辑
 export function fetchCheckInImgEdit(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 行业设置 - 列表
+export function fetchTradeList(params) {
+  return request('/admin/auth/saveAfuthRole', {
+    params,
+  });
+}
+
+// get 行业设置 - 类目详情
+export function fetchTradeDetail(params) {
+  return request('/admin/auth/saveAfuthRole', {
+    params,
+  });
+}
+
+// post 行业设置 - 新增类目
+export function fetchTradeAdd(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 行业设置 - 修改类目
+export function fetchTradeEdit(data) {
+  return request('/admin/auth/saveAfuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 行业设置 - 删除类目
+export function fetchTradeDel(data) {
   return request('/admin/auth/saveAfuthRole', {
     method: 'POST',
     data,
