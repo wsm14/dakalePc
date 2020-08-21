@@ -23,6 +23,13 @@ export default {
         ...payload,
       };
     },
+    clearDetail(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        detailList: { list: [], total: 0 },
+      };
+    },
   },
 
   effects: {

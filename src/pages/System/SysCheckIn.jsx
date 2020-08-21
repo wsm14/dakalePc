@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -67,6 +67,12 @@ const SysCheckIn = (props) => {
       payload: checkInSet({ dispatch, childRef, initialValues }),
     });
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'sysCheckIn/clearDetail',
+    });
+  }, [visible]);
 
   return (
     <>

@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import tradeCategorySet from './components/Trade/TradeCategorySet';
+import TradeDetailList from './components/Trade/TradeDetailList';
 
 const SysTradeSet = (props) => {
-  const { sysTradeList, loading, dispatch } = props;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -29,13 +31,15 @@ const SysTradeSet = (props) => {
       title: '平台服务费',
       align: 'center',
       dataIndex: 'phoneNumber',
-      render: (val, record) => !record.pid && <a>设置</a>,
+      render: (val, record) =>
+        !record.pid && <a onClick={() => setVisible({ type: 'platform', record })}>设置</a>,
     },
     {
       title: '特色服务',
       align: 'center',
       dataIndex: 'orderCount',
-      render: (val, record) => !record.pid && <a>设置</a>,
+      render: (val, record) =>
+        !record.pid && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>,
     },
     {
       title: '操作',
@@ -90,40 +94,49 @@ const SysTradeSet = (props) => {
     });
   };
 
+  useEffect(() => {
+    dispatch({
+      type: 'sysTradeList/clearDetail',
+    });
+  }, [visible]);
+
   return (
-    <DataTableBlock
-      cRef={childRef}
-      btnExtra={[
-        <Button className="dkl_green_btn" key="1">
-          基础设施
-        </Button>,
-        <Button className="dkl_green_btn" key="2" onClick={() => handleTradeCategorySet()}>
-          新增类目
-        </Button>,
-      ]}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userId}`}
-      dispatchType="sysTradeList/fetchGetList"
-      {...sysTradeList}
-      list={[
-        {
-          userId: '餐饮',
-          phoneNumber: 1,
-          pid: '',
-          children: [
-            { userId: '美食', pid: '1', children: [{ userId: 12322, pid: '1' }] },
-            { userId: '小吃', pid: '1', children: [{ userId: '小吃店', pid: '1' }] },
-          ],
-        },
-        { userId: '娱乐', phoneNumber: 2, children: [{ userId: 11233, pid: '1' }] },
-      ]}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        cRef={childRef}
+        btnExtra={[
+          <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ type: 'base' })}>
+            基础设施
+          </Button>,
+          <Button className="dkl_green_btn" key="2" onClick={() => handleTradeCategorySet()}>
+            新增类目
+          </Button>,
+        ]}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userId}`}
+        dispatchType="sysTradeList/fetchGetList"
+        {...list}
+        list={[
+          {
+            userId: '餐饮',
+            phoneNumber: 1,
+            pid: '',
+            children: [
+              { userId: '美食', pid: '1', children: [{ userId: 12322, pid: '1' }] },
+              { userId: '小吃', pid: '1', children: [{ userId: '小吃店', pid: '1' }] },
+            ],
+          },
+          { userId: '娱乐', phoneNumber: 2, children: [{ userId: 11233, pid: '1' }] },
+        ]}
+      ></DataTableBlock>
+      <TradeDetailList visible={visible} setVisible={setVisible}></TradeDetailList>
+    </>
   );
 };
 
 export default connect(({ sysTradeList, loading }) => ({
-  sysTradeList,
+  list: sysTradeList.list,
   loading: loading.models.sysTradeList,
 }))(SysTradeSet);

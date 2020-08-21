@@ -5,14 +5,17 @@ import {
   fetchTradeAdd,
   fetchTradeDel,
   fetchTradeEdit,
+  fetchTradeBaseList,
+  fetchTradePlatformList,
+  fetchTradeSpecialList
 } from '@/services/SystemServices';
 
 export default {
   namespace: 'sysTradeList',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    detailList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -20,6 +23,13 @@ export default {
       return {
         ...state,
         ...payload,
+      };
+    },
+    clearDetail(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        detailList: { list: [], total: 0 },
       };
     },
   },
@@ -32,8 +42,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.list,
-          total: content.total,
+          list: { list: content.roleList, total: content.totalCount },
         },
       });
     },
@@ -42,6 +51,24 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content);
+    },
+    *fetchDetailList({ payload }, { call, put }) {
+      const { type } = payload;
+      const inter = {
+        base: fetchTradeBaseList, // 基础设施
+        platform: fetchTradePlatformList, // 平台服务费
+        special: fetchTradeSpecialList, // 特色服务
+      }[type];
+      delete payload.type;
+      const response = yield call(inter, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: { list: content.roleList, total: content.totalCount },
+        },
+      });
     },
     *fetchTradeAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeAdd, payload);

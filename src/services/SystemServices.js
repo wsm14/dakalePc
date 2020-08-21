@@ -186,6 +186,27 @@ export function fetchTradeDetail(params) {
   });
 }
 
+// get 行业设置 - 基础设施列表
+export function fetchTradeBaseList(params) {
+  return request('/admin/auth/saveAfuthRole', {
+    params,
+  });
+}
+
+// get 行业设置 - 平台服务费列表
+export function fetchTradePlatformList(params) {
+  return request('/admin/auth/saveAfuthRole', {
+    params,
+  });
+}
+
+// get 行业设置 - 特色服务列表
+export function fetchTradeSpecialList(params) {
+  return request('/admin/auth/saveAfuthRole', {
+    params,
+  });
+}
+
 // post 行业设置 - 新增类目
 export function fetchTradeAdd(data) {
   return request('/admin/auth/saveAfuthRole', {
