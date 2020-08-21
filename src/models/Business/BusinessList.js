@@ -4,6 +4,9 @@ import {
   fetchMerchantDetail,
   fetchMerchantStatus,
   fetchMerSaleStatus,
+  fetchMerchantSet,
+  fetchMerchantAdd,
+  fetchSearchBrand,
 } from '@/services/BusinessServices';
 
 export default {
@@ -13,6 +16,7 @@ export default {
     list: [],
     total: 0,
     totalData: {},
+    brandList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -37,6 +41,20 @@ export default {
         },
       });
     },
+    *fetchSearchBrand({ payload }, { call, put }) {
+      const response = yield call(fetchSearchBrand, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          brandList: {
+            list: content.brandList,
+            total: content.total,
+          },
+        },
+      });
+    },
     *fetchMerchantDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
@@ -53,6 +71,24 @@ export default {
           totalData: content.userMerchantList,
         },
       });
+    },
+    *fetchMerchantAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家新增成功',
+      });
+      callback();
+    },
+    *fetchMerchantSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家设置成功',
+      });
+      callback();
     },
     *fetchSetStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantStatus, payload);

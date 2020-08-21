@@ -1,5 +1,3 @@
-import { PHONE_PATTERN } from '@/common/regExp';
-
 const SysAccountInfoSet = (props) => {
   const { dispatch, childRef, initialValues = {} } = props;
 

@@ -90,12 +90,6 @@ const UserDetailShow = (props) => {
         initialValue: pimg && JSON.parse(pimg).businessPermitImg,
         children: `aasdas`,
       },
-      {
-        label: '其他证明',
-        name: 'businesssLiscense',
-        type: 'upload',
-        initialValue: pimg && JSON.parse(pimg).businessPermitImg,
-      },
     ],
     footerBtn: (loading) => [
       <Button key="1" type="primary" onClick={handleMerSaleStatus} loading={loading}>

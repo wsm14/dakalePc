@@ -82,11 +82,16 @@ const FormCondition = ({
     formItems.map((item, i) => {
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
-          fileobj[item.name] = !Array.isArray(initialValues[item.name])
-            ? initialValues[item.name] && initialValues[item.name].length > 0
-              ? [imgold(initialValues[item.name], i)]
+          const fileArrar = initialValues[item.name];
+          if (fileArrar && !!fileArrar.fileList) {
+            fileobj[item.name] = fileArrar.fileList;
+            return;
+          }
+          fileobj[item.name] = !Array.isArray(fileArrar)
+            ? fileArrar && fileArrar.length > 0
+              ? [imgold(fileArrar, i)]
               : []
-            : initialValues[item.name].map((items, i) => imgold(items, i));
+            : fileArrar.map((items, i) => imgold(items, i));
         } else {
           fileobj[item.name] = [];
         }
@@ -317,9 +322,12 @@ const FormCondition = ({
         );
       }
 
+      const req = {};
+      if (item.required) req.required = item.required;
       children.push(
         visible && (
           <FormItem
+            {...req}
             label={label}
             name={name}
             extra={extra}
@@ -359,6 +367,7 @@ const FormCondition = ({
         visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
+        zIndex={20001}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>

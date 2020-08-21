@@ -25,7 +25,7 @@ const BusinessAwardSet = (props) => {
     form.validateFields().then((values) => {
       console.log(values);
       // dispatch({
-      //   type: 'marketCardActivity/fetchMarketActivityStoreSet',
+      //   type: 'businessList/fetchMerchantSet',
       //   payload: {
       //     ...values,
       //   },
@@ -116,7 +116,6 @@ const BusinessAwardSet = (props) => {
   );
 };
 
-export default connect(({ businessList, loading }) => ({
-  businessList,
-  loading: loading.models.businessList,
+export default connect(({ loading }) => ({
+  loading: loading.effects['businessList/fetchMerchantSet'],
 }))(BusinessAwardSet);

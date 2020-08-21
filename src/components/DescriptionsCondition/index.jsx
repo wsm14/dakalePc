@@ -94,6 +94,7 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
         visible={previewVisible}
         title={previewTitle}
         footer={null}
+        zIndex={20001}
         onCancel={() => setPreviewVisible(false)}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />

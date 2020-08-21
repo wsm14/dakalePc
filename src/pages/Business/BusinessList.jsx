@@ -7,6 +7,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
+import BusinessAdd from './components/BusinessList/BusinessAdd';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 
 const BusinessListComponent = (props) => {
@@ -14,6 +15,7 @@ const BusinessListComponent = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState({});
+  const [visibleAdd, setVisibleAdd] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -155,7 +157,7 @@ const BusinessListComponent = (props) => {
     <>
       <BusinessTotalInfo
         btnExtra={
-          <Button className="dkl_green_btn" key="1">
+          <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
             新增商户
           </Button>
         }
@@ -169,6 +171,11 @@ const BusinessListComponent = (props) => {
         dispatchType="businessList/fetchGetList"
         {...businessList}
       ></DataTableBlock>
+      <BusinessAdd
+        cRef={childRef}
+        visible={visibleAdd}
+        onClose={() => setVisibleAdd(false)}
+      ></BusinessAdd>
       <BusinessAwardSet
         cRef={childRef}
         visible={visible}
