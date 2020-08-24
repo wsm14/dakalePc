@@ -24,12 +24,17 @@ export default [
         path: '/cityom',
         routes: [
           {
-            path: '/cityom/list2',
-            name: '合伙人列表',
+            path: '/cityom/provCo',
+            name: '省级公司',
+            component: './CityOm/ProvCompany',
+          },
+          {
+            path: '/cityom/partner',
+            name: '城市合伙人',
             component: './User/UserList',
           },
           {
-            path: '/cityom/list',
+            path: '/cityom/join',
             name: '加盟申请',
             component: './User/UserList',
           },

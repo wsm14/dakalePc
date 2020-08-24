@@ -367,7 +367,7 @@ const FormCondition = ({
         visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
-        zIndex={20001}
+        zIndex={1024}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>

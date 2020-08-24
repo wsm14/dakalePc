@@ -119,7 +119,9 @@ const SearchCondition = (props) => {
         );
       }
       if (item.type === 'datePicker') {
-        component = <DatePicker style={{ width: '100%' }} allowClear={false} />;
+        component = (
+          <DatePicker style={{ width: '100%' }} allowClear={false} picker={item.picker || 'date'} />
+        );
       }
       if (item.type === 'city') {
         component = (
