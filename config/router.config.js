@@ -36,7 +36,7 @@ export default [
           {
             path: '/cityom/join',
             name: '加盟申请',
-            component: './User/UserList',
+            component: './CityOm/FranchiseApplication',
           },
         ],
       },

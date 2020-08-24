@@ -76,7 +76,7 @@ const HandleSetTable = (props) => {
       component = pop ? (
         <Popconfirm
           placement="top"
-          title={`确认${btnText}？`}
+          title={item.popText || `确认${btnText}？`}
           onConfirm={item.click}
           okText="确认"
           cancelText="取消"
