@@ -1,14 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import sysRoleInfoSet from './components/Role/SysRoleInfoSet';
+import SysRoleAllocation from './components/Role/SysRoleAllocation';
 
 const SysRoleList = (props) => {
   const { sysRoleList, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState('');
 
   // table 表头
   const getColumns = [
@@ -47,7 +49,7 @@ const SysRoleList = (props) => {
             {
               type: 'own',
               title: '配置',
-              //   click: () => setShowCoach(record),
+              click: () => setVisible({show:true , record}),
             },
             {
               type: 'del',
@@ -100,21 +102,28 @@ const SysRoleList = (props) => {
   };
 
   return (
-    <DataTableBlock
-      CardNone={false}
-      btnExtra={
-        <Button className="dkl_green_btn" onClick={() => handleSysRoleSet()}>
-          新增
-        </Button>
-      }
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      rowKey={(record) => `${record.id}`}
-      dispatchType="sysRoleList/fetchGetList"
-      params={{ type: 1 }}
-      {...sysRoleList}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        CardNone={false}
+        btnExtra={
+          <Button className="dkl_green_btn" onClick={() => handleSysRoleSet()}>
+            新增
+          </Button>
+        }
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        rowKey={(record) => `${record.id}`}
+        dispatchType="sysRoleList/fetchGetList"
+        params={{ type: 1 }}
+        {...sysRoleList}
+      ></DataTableBlock>
+      <SysRoleAllocation
+        cRef={childRef}
+        visible={visible}
+        setVisible={() => setVisible('')}
+      ></SysRoleAllocation>
+    </>
   );
 };
 
