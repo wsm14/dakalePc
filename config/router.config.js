@@ -31,7 +31,7 @@ export default [
           {
             path: '/cityom/partner',
             name: '城市合伙人',
-            component: './User/UserList',
+            component: './CityOm/CityPartner',
           },
           {
             path: '/cityom/join',

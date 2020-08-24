@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
-import ProvCompanyTotalInfo from './IncomeTotal';
+import CityPartnerTotalInfo from './IncomeTotal';
 
-const ProvCompanyDetailList = (props) => {
+const CityPartnerDetailList = (props) => {
   const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'withdraw', record = '' } = visible;
@@ -67,6 +67,7 @@ const ProvCompanyDetailList = (props) => {
           title: '到账日期',
           align: 'center',
           dataIndex: 'process',
+          render: (val) => (val ? val : '--'),
         },
       ],
     },
@@ -93,19 +94,19 @@ const ProvCompanyDetailList = (props) => {
               searchItems={propItem.searchItems}
               columns={propItem.getColumns}
               rowKey={(row) => `${row[propItem.rowKey]}`}
-              dispatchType="provCompany/fetchWithdrawList"
+              dispatchType="cityPartner/fetchWithdrawList"
               componentSize="middle"
               {...detailList}
             ></DataTableBlock>
           ),
-          income: <ProvCompanyTotalInfo></ProvCompanyTotalInfo>,
+          income: <CityPartnerTotalInfo></CityPartnerTotalInfo>,
         }[type]
       }
     </Modal>
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  detailList: provCompany.detailList,
-  loading: loading.models.provCompany,
-}))(ProvCompanyDetailList);
+export default connect(({ cityPartner, loading }) => ({
+  detailList: cityPartner.detailList,
+  loading: loading.models.cityPartner,
+}))(CityPartnerDetailList);
