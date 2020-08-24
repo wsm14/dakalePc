@@ -43,6 +43,14 @@ export function fetchRoleEdit(data) {
   });
 }
 
+// post 帐号设置 - 角色 - 删除角色
+export function fetchRoleDel(data) {
+  return request('/admin/auth/saveAuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 帐号设置 - 帐号 - 新增修改管理员帐号
 export function fetchAccountEdit(data) {
   return request('/admin/auth/saveAuthAdmin', {

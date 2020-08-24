@@ -36,7 +36,7 @@ const SysRoleList = (props) => {
     {
       title: '操作',
       dataIndex: 'id',
-      align: 'center',
+      align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
@@ -48,6 +48,10 @@ const SysRoleList = (props) => {
               type: 'own',
               title: '配置',
               //   click: () => setShowCoach(record),
+            },
+            {
+              type: 'del',
+              click: () => fetchRoleDel(record),
             },
           ]}
         />
@@ -71,6 +75,17 @@ const SysRoleList = (props) => {
       payload: {
         ...payload,
         status: Number(!Number(payload.status)),
+      },
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
+  // 删除角色
+  const fetchRoleDel = (payload) => {
+    dispatch({
+      type: 'sysRoleList/fetchRoleDel',
+      payload: {
+        ...payload,
       },
       callback: () => childRef.current.fetchGetData(),
     });
