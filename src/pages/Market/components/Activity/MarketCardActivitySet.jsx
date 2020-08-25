@@ -64,6 +64,11 @@ const MarketCardActivitySet = (props) => {
         name: 'description',
         maxLength: 20,
       },
+      {
+        label: '活动类型',
+        name: 'activitySubType',
+        maxLength: 20,
+      },
     ],
     onFinish: fetchMarketActivityAdd,
     ...props,
