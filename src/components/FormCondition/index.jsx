@@ -236,7 +236,7 @@ const FormCondition = ({
               if (data) {
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
-                const name = data.value ? data.name : data;
+                const name = data.name ? data.name : data;
                 return (
                   <Option key={j} value={value}>
                     {name}

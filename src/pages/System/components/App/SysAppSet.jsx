@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form } from 'antd';
+import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -16,19 +18,21 @@ const SysAppSet = (props) => {
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
       const {
-        allImgs: { fileList: afile },
-        activeBeginDate: time,
+        coverImg: { fileList: afile },
+        beginDate: time,
+        jumpType,
       } = values;
 
       // 上传图片到oss -> 提交表单
-      aliOssUpload([afile[0].originFileObj, bfile[0].originFileObj]).then((res) => {
+      aliOssUpload(afile[0].originFileObj).then((res) => {
         dispatch({
           type: 'sysAppList/fetchBannerSet',
           payload: {
             ...values,
-            allImgs: res[0],
-            activeBeginDate: time[0].format('YYYY-MM-DD 00:00:00'),
-            activeEndDate: time[1].format('YYYY-MM-DD 00:00:00'),
+            jumpType: jumpType === '无' ? '' : jumpType,
+            coverImg: res[0],
+            beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
+            endDate: time[1].format('YYYY-MM-DD 00:00:00'),
           },
           callback: () => {
             onClose();
@@ -44,39 +48,39 @@ const SysAppSet = (props) => {
       label: '图片上传',
       type: 'upload',
       maxFile: 1,
-      name: 'couponBanner',
+      name: 'coverImg',
     },
     {
       label: '图片位置',
       type: 'select',
-      name: 'categoryCustomId',
-      select: [].map((item) => ({
-        value: item.categoryCustomId,
-        name: item.categoryName,
-      })),
+      name: 'bannerType',
+      select: BANNER_TYPE,
     },
     {
       type: 'textArea',
       label: '图片说明',
-      name: 'descriptiosn',
+      name: 'description',
+    },
+    {
+      type: 'rangePicker',
+      label: '展示时间',
+      name: 'beginDate',
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '跳转类型',
       type: 'select',
-      name: 'catesgoryCustsdomId',
-      select: [].map((item) => ({
-        value: item.categoryCustomId,
-        name: item.categoryName,
-      })),
-      onChange: (e) => {
-        setShowUrl(e.target.value === '1');
+      name: 'jumpType',
+      select: BANNER_JUMP_TYPE,
+      onChange: (value) => {
+        setShowUrl(value !== '无');
         form.setFieldsValue({ descsdription: '' });
       },
     },
     {
       label: '跳转链接',
       visible: showUrl,
-      name: 'descsdription',
+      name: 'jumpUrl',
     },
   ];
 

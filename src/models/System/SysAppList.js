@@ -1,10 +1,9 @@
 import { notification } from 'antd';
 import {
   fetchBannerList,
-  fetchBannerStatus,
-  fetchBannerDel,
   fetchBannerSet,
   fetchBannerDetail,
+  fetchBannerStatusDel,
 } from '@/services/SystemServices';
 
 export default {
@@ -43,21 +42,13 @@ export default {
       const { content } = response;
       callback(content);
     },
-    *fetchBannerStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchBannerStatus, payload);
+    *fetchBannerStatusDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchBannerStatusDel, payload);
       if (!response) return;
+      const { bannerStatus } = payload;
       notification.success({
         message: '温馨提示',
-        description: '占位图下架成功',
-      });
-      callback();
-    },
-    *fetchBannerDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchBannerDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '占位图删除成功',
+        description: `占位图${bannerStatus === 0 ? '下架' : '删除'}成功`,
       });
       callback();
     },

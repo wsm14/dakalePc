@@ -37,6 +37,24 @@ export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 // 卡豆乐园 公告状态
 export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 
+// Banner状态
+export const BANNER_STATUS = ['下架', '上架'];
+
+// Banner类型
+export const BANNER_TYPE = [
+  { value: 'main', name: '首页' },
+  { value: 'merchant', name: '到店打卡' },
+  { value: 'person', name: '个人' },
+  { value: 'near', name: '周边' },
+];
+
+// Banner跳转类型
+export const BANNER_JUMP_TYPE = [
+  { value: '无', name: '无' },
+  { value: 'H5', name: 'H5' },
+  { value: '内部', name: '内部' },
+];
+
 // 默认起始结束时间
 const now = new Date();
 export const INIT_END_TIME = moment(now, 'YYYY-MM-DD');

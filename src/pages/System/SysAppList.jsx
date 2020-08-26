@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { MARKET_NOTICE_STATUS } from '@/common/constant';
+import { BANNER_STATUS, BANNER_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -18,15 +18,15 @@ const SysAppSet = (props) => {
   const searchItems = [
     {
       label: '位置',
-      name: 'userMobile1',
+      name: 'bannerType',
       type: 'select',
-      select: { list: [1, 2] },
+      select: { list: BANNER_TYPE },
     },
     {
       label: '状态',
-      name: 'usesrMobile1',
+      name: 'bannerStatus',
       type: 'select',
-      select: { list: [1, 2] },
+      select: { list: BANNER_STATUS },
     },
   ];
 
@@ -34,13 +34,13 @@ const SysAppSet = (props) => {
   const getColumns = [
     {
       title: '占位图',
-      dataIndex: 'userId',
+      dataIndex: 'coverImg',
       render: (val) => <PopImgShow url={val} />,
     },
     {
       title: '图片说明',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'description',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val}
@@ -50,17 +50,17 @@ const SysAppSet = (props) => {
     {
       title: '位置',
       align: 'center',
-      dataIndex: 'orderCount',
+      dataIndex: 'bannerType',
     },
     {
       title: '跳转类型',
       align: 'center',
-      dataIndex: 'orderTotal',
+      dataIndex: 'jumpType',
     },
     {
       title: '跳转链接',
       align: 'center',
-      dataIndex: 'orderaTsotal',
+      dataIndex: 'jumpUrl',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val}
@@ -70,17 +70,18 @@ const SysAppSet = (props) => {
     {
       title: '展示时间',
       align: 'center',
-      dataIndex: 'orderasdTotal',
+      dataIndex: 'beginDate',
+      render: (val, record) => `${val} ~ ${record.endDate}`,
     },
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'ordsderTotal',
-      render: (val) => MARKET_NOTICE_STATUS[val],
+      dataIndex: 'bannerStatus',
+      render: (val) => BANNER_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'bannerIdString',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
@@ -90,7 +91,7 @@ const SysAppSet = (props) => {
               pop: true,
               title: '下架',
               visible: record.activityStatus !== '2',
-              click: () => fetchBannerStatus({ activityId: val }),
+              click: () => fetchBannerStatusDel({ bannerIdString: val, bannerStatus: 0 }),
             },
             {
               type: 'edit',
@@ -98,7 +99,7 @@ const SysAppSet = (props) => {
             },
             {
               type: 'del',
-              click: () => fetchBannerDel(record),
+              click: () => fetchBannerStatusDel({ bannerIdString: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -116,18 +117,9 @@ const SysAppSet = (props) => {
   };
 
   // 占位图下架
-  const fetchBannerStatus = (payload) => {
+  const fetchBannerStatusDel = (payload) => {
     dispatch({
-      type: 'sysAppList/fetchBannerStatus',
-      payload,
-      callback: () => childRef.current.fetchGetData(),
-    });
-  };
-
-  // 占位图删除
-  const fetchBannerDel = (payload) => {
-    dispatch({
-      type: 'sysAppList/fetchBannerDel',
+      type: 'sysAppList/fetchBannerStatusDel',
       payload,
       callback: () => childRef.current.fetchGetData(),
     });
@@ -145,7 +137,7 @@ const SysAppSet = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.bannerIdString}`}
         dispatchType="sysAppList/fetchGetList"
         {...sysAppList}
       ></DataTableBlock>

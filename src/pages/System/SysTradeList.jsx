@@ -25,21 +25,21 @@ const SysTradeSet = (props) => {
     {
       title: '行业类目',
       align: 'center',
-      dataIndex: 'userId',
+      dataIndex: 'categoryName',
     },
     {
       title: '平台服务费',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'parentId',
       render: (val, record) =>
-        !record.pid && <a onClick={() => setVisible({ type: 'platform', record })}>设置</a>,
+        !val && <a onClick={() => setVisible({ type: 'platform', record })}>设置</a>,
     },
     {
       title: '特色服务',
       align: 'center',
       dataIndex: 'orderCount',
       render: (val, record) =>
-        !record.pid && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>,
+        !record.parentId && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>,
     },
     {
       title: '操作',
@@ -115,21 +115,10 @@ const SysTradeSet = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.id}`}
         dispatchType="sysTradeList/fetchGetList"
         {...list}
-        list={[
-          {
-            userId: '餐饮',
-            phoneNumber: 1,
-            pid: '',
-            children: [
-              { userId: '美食', pid: '1', children: [{ userId: 12322, pid: '1' }] },
-              { userId: '小吃', pid: '1', children: [{ userId: '小吃店', pid: '1' }] },
-            ],
-          },
-          { userId: '娱乐', phoneNumber: 2, children: [{ userId: 11233, pid: '1' }] },
-        ]}
+        expandable={{ childrenColumnName: ['categoryDTOList'] }}
       ></DataTableBlock>
       <TradeDetailList visible={visible} setVisible={setVisible}></TradeDetailList>
     </>

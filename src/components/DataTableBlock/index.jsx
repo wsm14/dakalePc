@@ -46,6 +46,7 @@ const DataTableBlockComponent = ({
   CardNone = true,
   extra,
   componentSize = 'default',
+  expandable,
 }) => {
   const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
   const [current, setNum] = useState(pParams.page || 1); // 页码
@@ -121,6 +122,7 @@ const DataTableBlockComponent = ({
         ></SearchCondition>
       )}
       <Table
+        expandable={expandable}
         scroll={{ x: 'max-content' }}
         size={componentSize}
         rowKey={rowKey}

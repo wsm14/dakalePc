@@ -61,7 +61,7 @@ export function fetchAccountEdit(data) {
 
 // get App设置 - 图片列表
 export function fetchBannerList(params) {
-  return request('/admin/auth/saveAasdauthRodle', {
+  return request('/admin/systemIndustry/listCategory', {
     params,
   });
 }
@@ -73,17 +73,9 @@ export function fetchBannerDetail(params) {
   });
 }
 
-// post App设置 - 图片下架
-export function fetchBannerStatus(data) {
-  return request('/admin/auth/saveAfuthRole', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post App设置 - 图片删除
-export function fetchBannerDel(data) {
-  return request('/admin/auth/saveAuthdsfRole', {
+// post App设置 - 图片下架/图片删除
+export function fetchBannerStatusDel(data) {
+  return request('/admin/SystemConfig/updateBannerMarketPlatform', {
     method: 'POST',
     data,
   });
@@ -91,7 +83,7 @@ export function fetchBannerDel(data) {
 
 // post App设置 - 图片新增
 export function fetchBannerSet(data) {
-  return request('/admin/auth/saveAuthdsfRole', {
+  return request('/admin/SystemConfig/saveBannerMarketPlatform', {
     method: 'POST',
     data,
   });
@@ -182,7 +174,7 @@ export function fetchCheckInImgEdit(data) {
 
 // get 行业设置 - 列表
 export function fetchTradeList(params) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemIndustry/listCategory', {
     params,
   });
 }

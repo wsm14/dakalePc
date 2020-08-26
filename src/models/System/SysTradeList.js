@@ -42,7 +42,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.roleList, total: content.totalCount },
+          list: { list: content.categoryDTOList },
         },
       });
     },
