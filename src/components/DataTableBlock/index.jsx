@@ -56,15 +56,16 @@ const DataTableBlockComponent = ({
 
   // 获取列表
   const fetchGetList = () => {
-    dispatch({
-      type: dispatchType,
-      payload: {
-        page: current,
-        limit: pageSize,
-        ...searchData,
-        ...params,
-      },
-    });
+    if (dispatchType)
+      dispatch({
+        type: dispatchType,
+        payload: {
+          page: current,
+          limit: pageSize,
+          ...searchData,
+          ...params,
+        },
+      });
   };
 
   // 搜索

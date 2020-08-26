@@ -7,7 +7,9 @@ import {
   fetchTradeEdit,
   fetchTradeBaseList,
   fetchTradePlatformList,
-  fetchTradeSpecialList
+  fetchTradeSpecialList,
+  fetchTradeBaseSet,
+  fetchTradeSpecialSet,
 } from '@/services/SystemServices';
 
 export default {
@@ -46,6 +48,17 @@ export default {
         },
       });
     },
+    *fetchTradePlatformList({ payload }, { call, put }) {
+      const response = yield call(fetchTradePlatformList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: { list: content.merchantSettleList },
+        },
+      });
+    },
     *fetchTradeDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeDetail, payload);
       if (!response) return;
@@ -56,7 +69,6 @@ export default {
       const { type } = payload;
       const inter = {
         base: fetchTradeBaseList, // 基础设施
-        platform: fetchTradePlatformList, // 平台服务费
         special: fetchTradeSpecialList, // 特色服务
       }[type];
       delete payload.type;
@@ -66,9 +78,31 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.roleList, total: content.totalCount },
+          detailList: {
+            list: content[
+              { base: 'infrastructures', special: 'specialService' }[type]
+            ].map((item) => ({ name: item, value: item })),
+          },
         },
       });
+    },
+    *fetchTradeBaseSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeBaseSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '基础设施设置成功',
+      });
+      callback();
+    },
+    *fetchTradeSpecialSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeSpecialSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特色服务设置成功',
+      });
+      callback();
     },
     *fetchTradeAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeAdd, payload);

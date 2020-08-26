@@ -63,7 +63,7 @@ const SysAppSet = (props) => {
       dataIndex: 'jumpUrl',
       render: (val) => (
         <Ellipsis length={10} tooltip>
-          {val}
+          {val || '--'}
         </Ellipsis>
       ),
     },

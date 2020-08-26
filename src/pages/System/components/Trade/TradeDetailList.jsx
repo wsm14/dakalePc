@@ -1,87 +1,73 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { Modal } from 'antd';
-import NoticeImgShow from '@/components/PopImgShow';
+import { Modal, Button } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-// import checkInDetailSet from './CheckInDetailSet';
+import tradeBaseSet from './TradeBaseSet';
 
-const CheckInDetailList = (props) => {
+const TradeBaseSet = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
 
   const { type = 'base', record = '' } = visible;
 
   const childRef = useRef();
 
-  // 新增 修改
-  const handlePeasShareSet = (initialValues) => {
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: checkInDetailSet({ dispatch, childRef, initialValues, CeditType: type }),
-    // });
+  //  新增 修改
+  const handleDataSet = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: tradeBaseSet({
+        dispatch,
+        childRef,
+        initialValues,
+        detailList,
+        categoryId: record.id,
+        CeditType: type,
+      }),
+    });
+  };
+
+  // 删除参数
+  const fetchDataDel = (value) => {
+    dispatch({
+      type: propItem.setUrl,
+      payload: {
+        [propItem.keyName]: detailList.list
+          .map((item) => item.name)
+          .filter((item) => item != value),
+        categoryId: record.id,
+      },
+      callback: () => childRef.current.fetchGetData(),
+    });
   };
 
   // table
   const propItem = {
     base: {
       title: `基础设施`,
-      rowKey: '',
+      rowKey: 'name',
+      keyName: 'infrastructures',
+      setUrl: 'sysTradeList/fetchTradeBaseSet',
       getColumns: [
         {
           title: '设施',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'name',
         },
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'process',
+          dataIndex: 'value',
           render: (val) => (
             <HandleSetTable
               formItems={[
                 {
                   type: 'edit',
-                  click: () => handlePeasShareSet(record),
+                  click: () => handleDataSet({ name: val }),
                 },
                 {
                   type: 'del',
-                  click: () => handlePeasShareSet(record),
-                },
-              ]}
-            />
-          ),
-        },
-      ],
-    },
-    platform: {
-      title: `平台服务费`,
-      rowKey: '',
-      getColumns: [
-        {
-          title: '服务费设置',
-          align: 'center',
-          dataIndex: 'userId',
-          render: (val) => <NoticeImgShow url={val} />,
-        },
-        {
-          title: '操作',
-          align: 'center',
-          dataIndex: 'processs',
-          render: (val, record) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'own',
-                  title: '新增服务费',
-                  click: () => handlePeasShareSet(record),
-                },
-                {
-                  type: 'edit',
-                  click: () => handlePeasShareSet(record),
-                },
-                {
-                  type: 'del',
-                  click: () => handlePeasShareSet(record),
+                  click: () => fetchDataDel(val),
                 },
               ]}
             />
@@ -91,28 +77,29 @@ const CheckInDetailList = (props) => {
     },
     special: {
       title: `特色服务`,
-      rowKey: '',
+      rowKey: 'name',
+      keyName: 'specialService',
+      setUrl: 'sysTradeList/fetchTradeSpecialSet',
       getColumns: [
         {
           title: '特色服务',
           align: 'center',
-          dataIndex: 'userId',
-          render: (val) => <NoticeImgShow url={val} />,
+          dataIndex: 'name',
         },
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'processs',
+          dataIndex: 'value',
           render: (val, record) => (
             <HandleSetTable
               formItems={[
                 {
                   type: 'edit',
-                  click: () => handlePeasShareSet(record),
+                  click: () => handleDataSet({ name: val }),
                 },
                 {
                   type: 'del',
-                  click: () => handlePeasShareSet(record),
+                  click: () => fetchDataDel(val),
                 },
               ]}
             />
@@ -132,16 +119,20 @@ const CheckInDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <DataTableBlock
+        btnExtra={
+          <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
+            新增
+          </Button>
+        }
         cRef={childRef}
         CardNone={false}
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type }}
-        dispatchType="sysCheckIn/fetchDetailList"
+        params={{ type, categoryId: record.id }}
+        dispatchType="sysTradeList/fetchDetailList"
         componentSize="middle"
         {...detailList}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
     </Modal>
   );
@@ -150,4 +141,4 @@ const CheckInDetailList = (props) => {
 export default connect(({ sysTradeList, loading }) => ({
   detailList: sysTradeList.detailList,
   loading: loading.effects['sysTradeList/fetchDetailList'],
-}))(CheckInDetailList);
+}))(TradeBaseSet);

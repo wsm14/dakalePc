@@ -61,7 +61,7 @@ export function fetchAccountEdit(data) {
 
 // get App设置 - 图片列表
 export function fetchBannerList(params) {
-  return request('/admin/systemIndustry/listCategory', {
+  return request('/admin/SystemConfig/listBannerMarketPlatform', {
     params,
   });
 }
@@ -188,22 +188,38 @@ export function fetchTradeDetail(params) {
 
 // get 行业设置 - 基础设施列表
 export function fetchTradeBaseList(params) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemIndustry/getInfrastructure', {
     params,
   });
 }
 
 // get 行业设置 - 平台服务费列表
 export function fetchTradePlatformList(params) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemIndustry/listConfigMerchantSettle', {
     params,
   });
 }
 
 // get 行业设置 - 特色服务列表
 export function fetchTradeSpecialList(params) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemIndustry/getCategorySpecialService', {
     params,
+  });
+}
+
+// post 行业设置 - 基础设施 - 新增修改删除
+export function fetchTradeBaseSet(data) {
+  return request('/admin/systemIndustry/updateInfrastructure', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 行业设置 - 特色服务 - 新增修改删除
+export function fetchTradeSpecialSet(data) {
+  return request('/admin/systemIndustry/updateCategorySpecialService', {
+    method: 'POST',
+    data,
   });
 }
 

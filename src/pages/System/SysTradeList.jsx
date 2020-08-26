@@ -5,12 +5,14 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import tradeCategorySet from './components/Trade/TradeCategorySet';
 import TradeDetailList from './components/Trade/TradeDetailList';
+import TradePlatformDetailList from './components/Trade/TradePlatformDetailList';
 
 const SysTradeSet = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
+  const [pvisible, setPVisible] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -31,8 +33,7 @@ const SysTradeSet = (props) => {
       title: '平台服务费',
       align: 'center',
       dataIndex: 'parentId',
-      render: (val, record) =>
-        !val && <a onClick={() => setVisible({ type: 'platform', record })}>设置</a>,
+      render: (val, record) => !val && <a onClick={() => setPVisible({ record })}>设置</a>,
     },
     {
       title: '特色服务',
@@ -98,7 +99,7 @@ const SysTradeSet = (props) => {
     dispatch({
       type: 'sysTradeList/clearDetail',
     });
-  }, [visible]);
+  }, [visible, pvisible]);
 
   return (
     <>
@@ -121,11 +122,15 @@ const SysTradeSet = (props) => {
         expandable={{ childrenColumnName: ['categoryDTOList'] }}
       ></DataTableBlock>
       <TradeDetailList visible={visible} setVisible={setVisible}></TradeDetailList>
+      <TradePlatformDetailList
+        visible={pvisible}
+        setVisible={setPVisible}
+      ></TradePlatformDetailList>
     </>
   );
 };
 
 export default connect(({ sysTradeList, loading }) => ({
   list: sysTradeList.list,
-  loading: loading.models.sysTradeList,
+  loading: loading.effects['sysTradeList/fetchGetList'],
 }))(SysTradeSet);
