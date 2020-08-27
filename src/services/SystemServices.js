@@ -149,17 +149,17 @@ export function fetchCheckInEdit(data) {
   });
 }
 
-// post 打卡设置 - 文案编辑
-export function fetchCheckInTextEdit(data) {
-  return request('/admin/auth/saveAfuthRole', {
+// post 打卡设置 - 图片 文案编辑
+export function fetchCheckInTextImgEdit(data) {
+  return request('/admin/systemConfig/updateConfigMarkContent', {
     method: 'POST',
     data,
   });
 }
 
-// post 打卡设置 - 图片编辑
-export function fetchCheckInImgEdit(data) {
-  return request('/admin/auth/saveAfuthRole', {
+// post 打卡设置 - 图片 文案新增
+export function fetchCheckInTextImgAdd(data) {
+  return request('/admin/systemConfig/addConfigMarkContent', {
     method: 'POST',
     data,
   });

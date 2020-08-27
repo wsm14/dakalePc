@@ -14,6 +14,7 @@ const PopImgShow = (props) => {
           backgroundImage: `url(${url})`,
           display: 'inline-block',
           backgroundSize: 'cover',
+          backgroundPosition: 'center',
         }}
       ></div>
     </Popover>

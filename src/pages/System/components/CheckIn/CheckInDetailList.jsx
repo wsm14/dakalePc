@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import NoticeImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -14,34 +14,39 @@ const CheckInDetailList = (props) => {
   const childRef = useRef();
 
   // 新增 修改
-  const handlePeasShareSet = (initialValues) => {
+  const handleCheckInDetailSet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: checkInDetailSet({ dispatch, childRef, initialValues, CeditType: type }),
+      payload: checkInDetailSet({
+        dispatch,
+        childRef,
+        initialValues,
+        CeditType: type,
+        configMarkId: record.markConfigIdString,
+      }),
     });
   };
 
   // table
   const propItem = {
     words: {
-      title: `文案素材`,
-      rowKey: '',
+      title: `文案素材 - ${record.markDesc}`,
       getColumns: [
         {
           title: '分享文案',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'content',
         },
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'process',
-          render: (val) => (
+          dataIndex: 'configMarkContentIdString',
+          render: (val, row) => (
             <HandleSetTable
               formItems={[
                 {
                   type: 'edit',
-                  click: () => handlePeasShareSet(record),
+                  click: () => handleCheckInDetailSet(row),
                 },
               ]}
             />
@@ -50,25 +55,24 @@ const CheckInDetailList = (props) => {
       ],
     },
     image: {
-      title: `图片素材`,
-      rowKey: '',
+      title: `图片素材 - ${record.markDesc}`,
       getColumns: [
         {
           title: '分享图片',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'content',
           render: (val) => <NoticeImgShow url={val} />,
         },
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'processs',
-          render: (val, record) => (
+          dataIndex: 'configMarkContentIdString',
+          render: (val, row) => (
             <HandleSetTable
               formItems={[
                 {
                   type: 'edit',
-                  click: () => handlePeasShareSet(record),
+                  click: () => handleCheckInDetailSet(row),
                 },
               ]}
             />
@@ -89,15 +93,28 @@ const CheckInDetailList = (props) => {
     >
       <DataTableBlock
         cRef={childRef}
+        btnExtra={
+          {
+            words: detailList.list.length < 6 && (
+              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                新增
+              </Button>
+            ),
+            image: detailList.list.length < 3 && (
+              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                新增
+              </Button>
+            ),
+          }[type]
+        }
         CardNone={false}
         loading={loading}
         columns={propItem.getColumns}
-        rowKey={(row) => `${row[propItem.rowKey]}`}
+        rowKey={(row) => `${row.configMarkContentIdString}`}
         params={{ type, configMarkId: record.markConfigIdString }}
         dispatchType="sysCheckIn/fetchDetailList"
         componentSize="middle"
         {...detailList}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
     </Modal>
   );

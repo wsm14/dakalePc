@@ -3,8 +3,8 @@ import {
   fetchCheckInList,
   fetchCheckInImgTextList,
   fetchCheckInEdit,
-  fetchCheckInTextEdit,
-  fetchCheckInImgEdit,
+  fetchCheckInTextImgAdd,
+  fetchCheckInTextImgEdit,
 } from '@/services/SystemServices';
 
 export default {
@@ -50,7 +50,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.roleList, total: content.totalCount },
+          detailList: { list: content.recordList, total: content.totalCount },
         },
       });
     },
@@ -63,21 +63,21 @@ export default {
       });
       callback();
     },
-    *fetchCheckInTextEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchCheckInTextEdit, payload);
+    *fetchCheckInTextImgEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCheckInTextImgEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '文案修改成功',
+        description: '素材修改成功',
       });
       callback();
     },
-    *fetchCheckInImgEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchCheckInImgEdit, payload);
+    *fetchCheckInTextImgAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCheckInTextImgAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '图片修改成功',
+        description: '素材新增成功',
       });
       callback();
     },
