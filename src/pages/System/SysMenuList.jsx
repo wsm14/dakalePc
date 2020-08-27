@@ -8,16 +8,16 @@ import DataTableBlock from '@/components/DataTableBlock';
 const tabList = [
   {
     key: 'admin',
-    tab: '后台菜单',
+    tab: '后台',
   },
   {
     key: 'merchant',
-    tab: '商家菜单',
+    tab: '商家',
   },
 ];
 
 const SysMenuList = (props) => {
-  const { sysMenuList, loading, loadingAdmin, dispatch } = props;
+  const { sysMenuList, loading } = props;
 
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('admin');
@@ -65,7 +65,12 @@ const SysMenuList = (props) => {
   }, [tabkey]);
 
   return (
-    <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
+    <Card
+      tabBarExtraContent={<Button className="dkl_green_btn">新增</Button>}
+      tabList={tabList}
+      activeTabKey={tabkey}
+      onTabChange={(key) => setTabKey(key)}
+    >
       <DataTableBlock
         CardNone={false}
         cRef={childRef}
