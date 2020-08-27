@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
+import { CHECKIN_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import checkInSet from './components/CheckIn/CheckInSet';
@@ -16,26 +17,32 @@ const SysCheckIn = (props) => {
   const getColumns = [
     {
       title: '打卡',
-      dataIndex: 'userId',
+      dataIndex: 'markDesc',
     },
     {
       title: '类型',
       align: 'center',
-      dataIndex: 'phoneasdNumber',
+      dataIndex: 'markType',
+      render: (val) => CHECKIN_TYPE.filter((item) => item.value === val)[0].name,
     },
     {
       title: '打卡时间段',
       align: 'center',
-      dataIndex: 'phonasdeNumber',
+      dataIndex: 'markBeginTime',
+      render: (val, record) =>
+        record.markSubType === 'customize'
+          ? '--'
+          : { health: '--', habit: `${val} ~ ${record.markEndTime}` }[record.markType],
     },
     {
       title: '寄语',
       align: 'center',
-      dataIndex: 'phoneasdaNumber',
+      dataIndex: 'remark',
+      render: (val, record) => (record.markSubType === 'customize' ? '--' : val),
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'markConfigIdString',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
@@ -43,15 +50,16 @@ const SysCheckIn = (props) => {
             {
               type: 'own',
               title: '图片素材',
-              click: () => setVisible({ type: 'img', record }),
+              click: () => setVisible({ type: 'image', record }),
             },
             {
               type: 'own',
               title: '文案素材',
-              click: () => setVisible({ type: 'text', record }),
+              click: () => setVisible({ type: 'words', record }),
             },
             {
               type: 'edit',
+              visible: record.markSubType !== 'customize',
               click: () => handlePeasShareSet(record),
             },
           ]}
@@ -61,10 +69,14 @@ const SysCheckIn = (props) => {
   ];
 
   // 新增 修改
-  const handlePeasShareSet = (initialValues) => {
+  const handlePeasShareSet = (rowData) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: checkInSet({ dispatch, childRef, initialValues }),
+      payload: checkInSet({
+        dispatch,
+        childRef,
+        rowData,
+      }),
     });
   };
 
@@ -80,10 +92,9 @@ const SysCheckIn = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.markConfigIdString}`}
         dispatchType="sysCheckIn/fetchGetList"
         {...list}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
       <CheckInDetailList visible={visible} setVisible={setVisible} />
     </>

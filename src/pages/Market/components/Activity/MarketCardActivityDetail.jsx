@@ -30,6 +30,17 @@ const MarketCardActivityDetail = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '活动商品',
+      align: 'center',
+      fixed: 'left',
+      dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
+    },
+    {
       title: '商家名称',
       align: 'center',
       fixed: 'left',
@@ -49,16 +60,6 @@ const MarketCardActivityDetail = (props) => {
       title: '详细地址',
       align: 'center',
       dataIndex: 'merchantAddress',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
-    },
-    {
-      title: '活动商品',
-      align: 'center',
-      dataIndex: 'goodsName',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val}

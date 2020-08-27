@@ -129,28 +129,21 @@ export function fetchPeasShareDel(data) {
 
 // get 打卡设置 - 打卡列表
 export function fetchCheckInList(params) {
-  return request('/admin/auth/saveAuthRodle', {
+  return request('/admin/systemConfig/listMarkConfig', {
     params,
   });
 }
 
-// get 打卡设置 - 文案列表
-export function fetchCheckInTextList(params) {
-  return request('/admin/auth/saveAuthRodle', {
-    params,
-  });
-}
-
-// get 打卡设置 - 图片列表
-export function fetchCheckInImgList(params) {
-  return request('/admin/auth/saveAuthRodle', {
+// get 打卡设置 - 图片文案列表
+export function fetchCheckInImgTextList(params) {
+  return request('/admin/systemConfig/listConfigMarkContent', {
     params,
   });
 }
 
 // post 打卡设置 - 打卡列表编辑
 export function fetchCheckInEdit(data) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemConfig/updateMarkConfig', {
     method: 'POST',
     data,
   });

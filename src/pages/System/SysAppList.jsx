@@ -51,6 +51,7 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
+      render: (val) => BANNER_TYPE.filter((item) => item.value === val)[0].name,
     },
     {
       title: '跳转类型',
@@ -61,11 +62,6 @@ const SysAppSet = (props) => {
       title: '跳转链接',
       align: 'center',
       dataIndex: 'jumpUrl',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
     },
     {
       title: '展示时间',

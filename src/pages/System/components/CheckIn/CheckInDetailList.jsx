@@ -9,7 +9,7 @@ import checkInDetailSet from './CheckInDetailSet';
 const CheckInDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
 
-  const { type = 'text', record = '' } = visible;
+  const { type = 'words', record = '' } = visible;
 
   const childRef = useRef();
 
@@ -23,7 +23,7 @@ const CheckInDetailList = (props) => {
 
   // table
   const propItem = {
-    text: {
+    words: {
       title: `文案素材`,
       rowKey: '',
       getColumns: [
@@ -49,7 +49,7 @@ const CheckInDetailList = (props) => {
         },
       ],
     },
-    img: {
+    image: {
       title: `图片素材`,
       rowKey: '',
       getColumns: [
@@ -93,7 +93,7 @@ const CheckInDetailList = (props) => {
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type }}
+        params={{ type, configMarkId: record.markConfigIdString }}
         dispatchType="sysCheckIn/fetchDetailList"
         componentSize="middle"
         {...detailList}

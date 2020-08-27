@@ -1,8 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchCheckInList,
-  fetchCheckInTextList,
-  fetchCheckInImgList,
+  fetchCheckInImgTextList,
   fetchCheckInEdit,
   fetchCheckInTextEdit,
   fetchCheckInImgEdit,
@@ -40,18 +39,12 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.roleList, total: content.totalCount },
+          list: { list: content.recordList, total: content.totalCount },
         },
       });
     },
     *fetchDetailList({ payload }, { call, put }) {
-      const { type } = payload;
-      const inter = {
-        text: fetchCheckInTextList, // 文案
-        img: fetchCheckInImgList, // 图片
-      }[type];
-      delete payload.type;
-      const response = yield call(inter, payload);
+      const response = yield call(fetchCheckInImgTextList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -66,7 +59,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '寄语修改成功',
+        description: '打卡内容修改成功',
       });
       callback();
     },

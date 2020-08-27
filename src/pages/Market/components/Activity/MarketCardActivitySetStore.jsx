@@ -153,7 +153,6 @@ const MarketCardActivitySetStore = (props) => {
     {
       label: '有效期',
       type: 'rangePicker',
-      name: 'originPrisce',
       name: 'activeBeginDate',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },

@@ -55,6 +55,12 @@ export const BANNER_JUMP_TYPE = [
   { value: '内部', name: '内部' },
 ];
 
+// Banner类型
+export const CHECKIN_TYPE = [
+  { value: 'health', name: '健康打卡' },
+  { value: 'habit', name: '习惯打卡' },
+];
+
 // 默认起始结束时间
 const now = new Date();
 export const INIT_END_TIME = moment(now, 'YYYY-MM-DD');
