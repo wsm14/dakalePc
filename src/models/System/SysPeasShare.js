@@ -1,7 +1,6 @@
 import { notification } from 'antd';
 import {
   fetchPeasShareList,
-  fetchPeasShareDetail,
   fetchPeasShareAdd,
   fetchPeasShareEdit,
   fetchPeasShareDel,
@@ -32,23 +31,17 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.roleList,
+          list: content.recordList,
           total: content.totalCount,
         },
       });
-    },
-    *fetchPeasShareDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchPeasShareDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.roleInfo);
     },
     *fetchPeasShareAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchPeasShareAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新增成功',
+        description: '卡豆分享新增成功',
       });
       callback();
     },
@@ -57,7 +50,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '修改成功',
+        description: '卡豆分享修改成功',
       });
       callback();
     },
@@ -66,7 +59,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '删除成功',
+        description: '卡豆分享删除成功',
       });
       callback();
     },

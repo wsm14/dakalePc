@@ -91,21 +91,14 @@ export function fetchBannerSet(data) {
 
 // get 卡豆分享 - 列表
 export function fetchPeasShareList(params) {
-  return request('/admin/auth/saveAuthRodle', {
-    params,
-  });
-}
-
-// get 卡豆分享 - 获取修改详情
-export function fetchPeasShareDetail(params) {
-  return request('/admin/auth/saveAuthRodle', {
+  return request('/admin/systemConfig/listConfigMoment', {
     params,
   });
 }
 
 // post 卡豆分享 - 新增
 export function fetchPeasShareAdd(data) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemConfig/saveConfigMoment', {
     method: 'POST',
     data,
   });
@@ -113,7 +106,7 @@ export function fetchPeasShareAdd(data) {
 
 // post 卡豆分享 - 修改
 export function fetchPeasShareEdit(data) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemConfig/updateConfigMoment', {
     method: 'POST',
     data,
   });

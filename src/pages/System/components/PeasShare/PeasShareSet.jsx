@@ -1,12 +1,17 @@
 import { NUM_INT } from '@/common/regExp';
 
 const PeasShareSet = (props) => {
-  const { dispatch, childRef } = props;
+  const { dispatch, childRef, initialValues = {} } = props;
 
-  const fetchRuningSet = (values) => {
+  const fetchPeasShareAdd = (values) => {
+    const payload = {
+      true: { type: 'sysPeasShare/fetchPeasShareAdd' },
+      false: { type: 'sysPeasShare/fetchPeasShareEdit' },
+    }[!Object.keys(initialValues).length];
+
     dispatch({
-      type: 'sysPeasShare/fetchPeasShareAdd',
-      payload: values,
+      type: payload.type,
+      payload: { ...initialValues, ...values },
       callback: () => childRef.current.fetchGetData(),
     });
   };
@@ -19,18 +24,18 @@ const PeasShareSet = (props) => {
     formItems: [
       {
         label: '观看时长',
-        name: 'walkSignBeanAmount',
+        name: 'watchTime',
         suffix: '秒',
         addRules: [{ pattern: NUM_INT, message: '观看时长应为整数' }],
       },
       {
         label: '最低卡豆数',
-        name: 'walkStepCount',
+        name: 'limitBean',
         suffix: '个',
         addRules: [{ pattern: NUM_INT, message: '最低卡豆数应为整数' }],
       },
     ],
-    onFinish: fetchRuningSet,
+    onFinish: fetchPeasShareAdd,
     ...props,
   };
 };

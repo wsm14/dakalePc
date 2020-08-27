@@ -14,23 +14,23 @@ const SysPeasShare = (props) => {
   const getColumns = [
     {
       title: '观看时长',
-      dataIndex: 'userId',
+      dataIndex: 'watchTime',
     },
     {
       title: '最低卡豆数',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'limitBean',
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'configMomentIdString',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => fetchBannerDetail(record),
+              click: () => handlePeasShareSet(record),
             },
             {
               type: 'del',
@@ -41,15 +41,6 @@ const SysPeasShare = (props) => {
       ),
     },
   ];
-
-  // 获取详情
-  const fetchBannerDetail = (payload) => {
-    dispatch({
-      type: 'sysPeasShare/fetchBannerDetail',
-      payload,
-      callback: (info) => handlePeasShareSet(info),
-    });
-  };
 
   // 删除
   const fetchPeasShareDel = (payload) => {
@@ -78,7 +69,7 @@ const SysPeasShare = (props) => {
       }
       loading={loading}
       columns={getColumns}
-      rowKey={(record) => `${record.userId}`}
+      rowKey={(record) => `${record.configMomentIdString}`}
       dispatchType="sysPeasShare/fetchGetList"
       {...sysPeasShare}
     ></DataTableBlock>
