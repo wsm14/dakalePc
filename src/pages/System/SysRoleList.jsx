@@ -12,6 +12,20 @@ const SysRoleList = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState('');
 
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '角色名称',
+      name: 'userMobile1',
+    },
+    {
+      label: '角色状态',
+      name: 'userMobile1',
+      type: 'select',
+      select: { list: [] },
+    },
+  ];
+
   // table 表头
   const getColumns = [
     {
@@ -49,7 +63,7 @@ const SysRoleList = (props) => {
             {
               type: 'own',
               title: '配置',
-              click: () => setVisible({show:true , record}),
+              click: () => setVisible({ show: true, record }),
             },
             {
               type: 'del',
@@ -112,6 +126,7 @@ const SysRoleList = (props) => {
         }
         cRef={childRef}
         loading={loading}
+        searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.id}`}
         dispatchType="sysRoleList/fetchGetList"

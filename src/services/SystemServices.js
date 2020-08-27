@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-// get 帐号设置 - 帐号 -  获取登录账户权限菜单
+// get 菜单设置 - 菜单 - 获取菜单
 export function fetchMenuList(params) {
-  return request('/merchant/auth/getAccessTree', {
+  return request('/admin/auth/listAllAccess', {
     params,
   });
 }

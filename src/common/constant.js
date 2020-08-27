@@ -13,6 +13,9 @@ export const AMAP_KEY = 'b71a4ssaasdasdsssacb0b1b7';
 // 用户状态
 export const ACCOUNT_STATUS = ['禁用', '启用'];
 
+// 菜单状态
+export const MENU_STATUS = ['禁用', '启用'];
+
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
 

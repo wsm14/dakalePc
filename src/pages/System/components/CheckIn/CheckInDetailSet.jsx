@@ -4,11 +4,13 @@ const CheckInDetailSet = (props) => {
   const { dispatch, childRef, CeditType, configMarkId, initialValues = {} } = props;
 
   const fetchSysCheckIn = (values) => {
-    const { content } = values;
-    const payload = {
-      true: { type: 'sysCheckIn/fetchCheckInTextImgAdd' },
-      false: { type: 'sysCheckIn/fetchCheckInTextImgEdit' },
-    }[!Object.keys(initialValues).length];
+    const defineSet = {
+      type: {
+        true: 'sysCheckIn/fetchCheckInTextImgAdd',
+        false: 'sysCheckIn/fetchCheckInTextImgEdit',
+      }[!Object.keys(initialValues).length],
+      callback: () => childRef.current.fetchGetData(),
+    };
 
     const defineDate = {
       ...initialValues,
@@ -16,18 +18,17 @@ const CheckInDetailSet = (props) => {
       configMarkId,
     };
 
+    const { content } = values;
     if (typeof content === 'string') {
       dispatch({
-        type: payload.type,
+        ...defineSet,
         payload: { ...defineDate, ...values },
-        callback: () => childRef.current.fetchGetData(),
       });
     } else {
       aliOssUpload(content.fileList.map((item) => item.originFileObj)).then((res) => {
         dispatch({
-          type: payload.type,
+          ...defineSet,
           payload: { ...defineDate, content: res.toString() },
-          callback: () => childRef.current.fetchGetData(),
         });
       });
     }

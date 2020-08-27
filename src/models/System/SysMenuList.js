@@ -4,8 +4,7 @@ export default {
   namespace: 'sysMenuList',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
   },
 
   reducers: {
@@ -21,12 +20,11 @@ export default {
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchMenuList, payload);
       if (!response) return;
-      const { data } = response;
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: data.list,
-          total: data.total,
+          list: { list: content.accessList, total: content.accessList.length },
         },
       });
     },
