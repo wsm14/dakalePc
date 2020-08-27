@@ -129,7 +129,12 @@ const MarketCardActivityDetail = (props) => {
   const fetchGetCouponInfo = (marketCouponId, merchantName) => {
     dispatch({
       type: 'marketCardActivity/fetchGetCouponInfo',
-      payload: { marketCouponId, merchantName, status: params.activityStatus !== '2' },
+      payload: {
+        marketCouponId,
+        merchantName,
+        status: params.activityStatus !== '2',
+        activityId: params.activityIdString,
+      },
       callback: handleSetActive,
     });
   };

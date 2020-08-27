@@ -2,7 +2,7 @@ const TradeCategorySet = (props) => {
   const { dispatch, childRef, initialValues = {} } = props;
 
   // 提交表单
-  const fetchRoleEdit = (payload) => {
+  const fetchDataEdit = (payload) => {
     const editType = !Object.keys(initialValues).length;
     dispatch({
       type: { true: 'sysTradeList/fetchTradeAdd', false: 'sysTradeList/fetchTradeEdit' }[editType],
@@ -37,7 +37,7 @@ const TradeCategorySet = (props) => {
         maxLength: 20,
       },
     ],
-    onFinish: fetchRoleEdit,
+    onFinish: fetchDataEdit,
     ...props,
   };
 };

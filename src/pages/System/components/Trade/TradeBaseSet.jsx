@@ -17,7 +17,7 @@ const TradeCategorySet = (props) => {
   }[CeditType];
 
   // 提交表单
-  const fetchRoleEdit = (values) => {
+  const fetchDataEdit = (values) => {
     const payload = !Object.keys(initialValues).length
       ? [...listData, values.name]
       : listData.map((item) => {
@@ -46,7 +46,7 @@ const TradeCategorySet = (props) => {
         maxLength: 20,
       },
     ],
-    onFinish: fetchRoleEdit,
+    onFinish: fetchDataEdit,
     ...props,
   };
 };

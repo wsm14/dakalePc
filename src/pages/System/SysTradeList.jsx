@@ -18,7 +18,7 @@ const SysTradeSet = (props) => {
   const searchItems = [
     {
       label: '行业名称',
-      name: 'userMobile1',
+      name: 'categoryName',
     },
   ];
 

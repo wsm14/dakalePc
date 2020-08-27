@@ -2,7 +2,7 @@ const MarketCardActivitySetCoupon = (props) => {
   const {
     dispatch,
     childRef,
-    payload: { marketCouponId, initialValues, merchantName },
+    payload: { marketCouponId, initialValues, merchantName, activityId },
   } = props;
 
   // 提交表单
@@ -13,7 +13,7 @@ const MarketCardActivitySetCoupon = (props) => {
     if (moment) couponBtn.push('moment');
     dispatch({
       type: 'marketCardActivity/fetchMarketActivityCouponSet',
-      payload: { ...values, marketCouponId, couponChannels: couponBtn.toString() },
+      payload: { ...values, marketCouponId, couponChannels: couponBtn.toString(), activityId },
       callback: () => childRef.current.fetchGetData(),
     });
   };

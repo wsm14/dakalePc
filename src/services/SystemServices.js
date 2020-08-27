@@ -223,6 +223,14 @@ export function fetchTradeSpecialSet(data) {
   });
 }
 
+// post 行业设置 - 平台服务费 - 新增修改删除
+export function fetchTradePlatformSet(data) {
+  return request('/admin/systemIndustry/upsertConfigMerchantSettle', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 行业设置 - 新增类目
 export function fetchTradeAdd(data) {
   return request('/admin/auth/saveAfuthRole', {

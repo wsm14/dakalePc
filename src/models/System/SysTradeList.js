@@ -10,6 +10,7 @@ import {
   fetchTradeSpecialList,
   fetchTradeBaseSet,
   fetchTradeSpecialSet,
+  fetchTradePlatformSet,
 } from '@/services/SystemServices';
 
 export default {
@@ -101,6 +102,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特色服务设置成功',
+      });
+      callback();
+    },
+    *fetchTradePlatformSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradePlatformSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '平台服务费设置成功',
       });
       callback();
     },
