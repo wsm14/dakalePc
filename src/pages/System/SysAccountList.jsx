@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import sysAccountInfoSet from './components/Account/SysAccountInfoSet';
+import SysAccountRoleSet from './components/Account/SysAccountRoleSet';
 import SysRoleList from './SysRoleList';
 
 const tabList = [
@@ -19,7 +20,12 @@ const tabList = [
 
 const SysAccountSet = (props) => {
   const { sysAccountList, loading, dispatch } = props;
+
   const [tabkey, setTabKey] = useState('tab1');
+  const [visible, setVisible] = useState({
+    show: false,
+    record: {},
+  });
 
   const childRef = useRef();
 
@@ -49,7 +55,7 @@ const SysAccountSet = (props) => {
     {
       title: '角色',
       align: 'left',
-      dataIndex: 'orderCount',
+      dataIndex: 'idString',
     },
     {
       title: '手机号',
@@ -65,12 +71,17 @@ const SysAccountSet = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'idString',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
+            {
+              type: 'own',
+              title: '配置角色',
+              click: () => fetchAccountRoleTree(val),
+            },
             {
               type: 'edit',
               click: () => fetchGetAccountInfo({ adminId: val }),
@@ -84,6 +95,24 @@ const SysAccountSet = (props) => {
       ),
     },
   ];
+
+  // 获取管理员权限列表
+  const fetchAccountRoleTree = (idString) => {
+    dispatch({
+      type: 'sysAccountList/fetchAccountRoleTree',
+      callback: () => fetchGetAccountRole({ adminId: idString }),
+    });
+  };
+
+  // id获取管理员角色权限列 打开配置
+  const fetchGetAccountRole = (record) => {
+    dispatch({
+      type: 'sysAccountList/fetchGetAccountRole',
+      payload: record,
+      callback: (value) =>
+        setVisible({ show: true, record: { roleIdList: value, ownerId: record.adminId } }),
+    });
+  };
 
   // 获取管理员账户信息
   const fetchGetAccountInfo = (payload) => {
@@ -104,21 +133,33 @@ const SysAccountSet = (props) => {
 
   const contentList = {
     tab1: (
-      <DataTableBlock
-        CardNone={false}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleSysAccountSet()}>
-            新增
-          </Button>
-        }
-        rowKey={(record) => `${record.id}`}
-        dispatchType="sysAccountList/fetchGetList"
-        {...sysAccountList}
-      ></DataTableBlock>
+      <>
+        <DataTableBlock
+          CardNone={false}
+          cRef={childRef}
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          btnExtra={
+            <Button className="dkl_green_btn" onClick={() => handleSysAccountSet()}>
+              新增
+            </Button>
+          }
+          rowKey={(record) => `${record.idString}`}
+          dispatchType="sysAccountList/fetchGetList"
+          {...sysAccountList}
+        ></DataTableBlock>
+        <SysAccountRoleSet
+          cRef={childRef}
+          visible={visible}
+          setVisible={() =>
+            setVisible({
+              show: false,
+              record: {},
+            })
+          }
+        ></SysAccountRoleSet>
+      </>
     ),
     tab2: <SysRoleList></SysRoleList>,
   };

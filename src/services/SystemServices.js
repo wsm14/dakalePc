@@ -29,6 +29,20 @@ export function fetchSysAccountList(params) {
   });
 }
 
+// get 帐号设置 - 帐号 - 角色权限列
+export function fetchAccountRoleTree(params) {
+  return request('/admin/auth/listAllInUseRole', {
+    params,
+  });
+}
+
+// get 帐号设置 - 帐号 - id获取管理员角色权限列
+export function fetchGetAccountRole(params) {
+  return request('/admin/auth/listAuthAdminRoleByAdminId', {
+    params,
+  });
+}
+
 // get 帐号设置 - 帐号 - 获取管理员账户信息
 export function fetchGetAccountInfo(params) {
   return request('/admin/auth/getAdminInfo', {
@@ -39,6 +53,14 @@ export function fetchGetAccountInfo(params) {
 // post 帐号设置 - 帐号 - 新增修改管理员帐号
 export function fetchAccountEdit(data) {
   return request('/admin/auth/saveAuthAdmin', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 帐号设置 - 帐号 - 保存管理员角色信息
+export function fetchAccountRoleEdit(data) {
+  return request('/admin/auth/insertAdminRoleBatch', {
     method: 'POST',
     data,
   });
@@ -73,7 +95,7 @@ export function fetchRoleEdit(data) {
   });
 }
 
-// post 帐号设置 - 角色 - 角色页面设置
+// post 帐号设置 - 角色 - 角色拥有页面设置
 export function fetchRoleMenuSet(data) {
   return request('/admin/auth/insertRoleAccessBatch', {
     method: 'POST',

@@ -91,10 +91,12 @@ const SysAppSet = (props) => {
             },
             {
               type: 'edit',
+              visible: record.activityStatus !== '2',
               click: () => fetchBannerDetail(record),
             },
             {
               type: 'del',
+              visible: record.activityStatus !== '2',
               click: () => fetchBannerStatusDel({ bannerIdString: val, deleteFlag: 0 }),
             },
           ]}

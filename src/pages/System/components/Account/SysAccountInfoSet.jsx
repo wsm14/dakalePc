@@ -1,8 +1,8 @@
-const SysAccountInfoSet = (props) => {
+const SysAccountRoleSet = (props) => {
   const { dispatch, childRef, initialValues = {} } = props;
 
   // 新增修改角色 传id修改 不传id新增
-  const fetchRoleEdit = (payload) => {
+  const fetchEdit = (payload) => {
     dispatch({
       type: 'sysAccountList/fetchAccountEdit',
       payload: { ...initialValues, ...payload },
@@ -37,9 +37,9 @@ const SysAccountInfoSet = (props) => {
         select: ['禁用', '启用'],
       },
     ],
-    onFinish: fetchRoleEdit,
+    onFinish: fetchEdit,
     ...props,
   };
 };
 
-export default SysAccountInfoSet;
+export default SysAccountRoleSet;

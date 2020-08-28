@@ -3,6 +3,9 @@ import {
   fetchSysAccountList,
   fetchAccountEdit,
   fetchGetAccountInfo,
+  fetchAccountRoleTree,
+  fetchGetAccountRole,
+  fetchAccountRoleEdit,
 } from '@/services/SystemServices';
 
 export default {
@@ -11,6 +14,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    roleList: [],
   },
 
   reducers: {
@@ -35,11 +39,29 @@ export default {
         },
       });
     },
+    *fetchAccountRoleTree({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAccountRoleTree, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          roleList: content.roleList,
+        },
+      });
+      callback();
+    },
     *fetchGetAccountInfo({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetAccountInfo, payload);
       if (!response) return;
       const { content } = response;
       callback(content.adminInfo);
+    },
+    *fetchGetAccountRole({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetAccountRole, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.roleList.map((item) => item.idString));
     },
     *fetchAccountEdit({ payload, callback }, { call, put }) {
       const response = yield call(fetchAccountEdit, payload);
@@ -47,6 +69,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '管理员设定成功',
+      });
+      callback();
+    },
+    *fetchAccountRoleEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAccountRoleEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '管理员角色设置成功',
       });
       callback();
     },

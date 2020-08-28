@@ -130,11 +130,11 @@ const SysRoleAllocation = (props) => {
   });
 
   useEffect(() => {
-    if (visible) {
+    if (show) {
       setTreeKey(treeKeyList);
       form.setFieldsValue({ accessIdList: idList });
     }
-  }, [visible]);
+  }, [show]);
 
   return (
     <Modal
