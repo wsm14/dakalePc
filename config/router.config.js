@@ -16,10 +16,6 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       {
-        path: '/user',
-        redirect: '/user/list',
-      },
-      {
         name: '城市运营中心',
         path: '/cityom',
         routes: [

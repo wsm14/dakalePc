@@ -7,33 +7,12 @@ import React, { useEffect, useState } from 'react';
 import ProLayout from '@ant-design/pro-layout';
 import { Affix, BackTop } from 'antd';
 import { PageContainer, RouteContext } from '@ant-design/pro-layout';
-import { Link, connect } from 'umi';
+import { Link, connect, useLocation } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import DrawerModalForm from '@/components/DrawerModalForm';
 import iconEnum from '@/common/iconEnum';
 import logo from '../../public/favicon.png';
-
-/**
- * use Authorized check all menu item
- */
-
-// const menuDataRender = (menuList) =>
-//   menuList.map((item) => {
-//     const {
-//       accessName: name,
-//       accessIcon: icon,
-//       accessUrl: path,
-//       subAuthAccessDTOList: routes,
-//     } = item;
-//     const localItem = {
-//       name,
-//       icon: iconEnum[icon],
-//       path,
-//       routes: routes ? menuDataRender(routes) : undefined,
-//     };
-//     return localItem;
-//   });
 
 const BasicLayout = (props) => {
   const {
@@ -48,15 +27,43 @@ const BasicLayout = (props) => {
     menuList,
   } = props;
 
-  const [rootSubmenuKeys] = useState([]); // 菜单一级keys
-  const [openKeys, setOpenKeys] = useState([]); // 菜单展开的keys
+  const match = useLocation();
+  const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]); // 菜单一级keys
+  const [selectedKeys, setSelectedKeys] = useState([match.pathname]); // 菜单点亮的keys
+  const [openKeys, setOpenKeys] = useState(() => {
+    const obj = match.pathname.split('/');
+    return [`/${obj[1]}`];
+  }); // 菜单展开的keys
 
-  const menuDataRender = (menuList, keys = true) => {
-    return menuList.map((item) => {
-      if (keys) rootSubmenuKeys.push(item.path);
+  // 本地菜单
+  // const menuDataRender = (menuList, keys = true) => {
+  //   return menuList.map((item) => {
+  //     if (keys) rootSubmenuKeys.push(item.path);
+  //     const localItem = {
+  //       ...item,
+  //       children: item.children ? menuDataRender(item.children, false) : undefined,
+  //     };
+  //     return localItem;
+  //   });
+  // };
+
+  // 动态菜单
+  const menuDataRender = (menu, keys = true) => {
+    return menu.map((item) => {
+      const {
+        accessName: name,
+        accessIcon: icon,
+        accessUrl: path,
+        subAuthAccessDTOList: routes,
+      } = item;
+      if (keys) {
+        rootSubmenuKeys.push(path);
+      }
       const localItem = {
-        ...item,
-        children: item.children ? menuDataRender(item.children, false) : undefined,
+        name,
+        icon: iconEnum[icon],
+        path,
+        routes: routes ? menuDataRender(routes, false) : undefined,
       };
       return localItem;
     });
@@ -72,6 +79,7 @@ const BasicLayout = (props) => {
       });
     }
   }, []);
+
   /**
    * init variables
    */
@@ -94,6 +102,7 @@ const BasicLayout = (props) => {
   // 菜单展开方法
   const onOpenChange = (openKey) => {
     const latestOpenKey = openKey.find((key) => openKeys.indexOf(key) === -1);
+    setRootSubmenuKeys(Array.from(new Set(rootSubmenuKeys)));
     // setOpenKeys([latestOpenKey]);
     if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
       setOpenKeys(openKeys);
@@ -105,6 +114,8 @@ const BasicLayout = (props) => {
   return (
     <ProLayout
       openKeys={openKeys}
+      selectedKeys={selectedKeys}
+      menuProps={{ onClick: (val) => setSelectedKeys(val.keyPath) }}
       onOpenChange={onOpenChange}
       onPageChange={handleCloseTitle}
       logo={logo}
@@ -127,7 +138,8 @@ const BasicLayout = (props) => {
         return false;
       }}
       // footerRender={() => defaultFooterDom}
-      menuDataRender={menuDataRender}
+      // menuDataRender={menuDataRender}
+      menuDataRender={() => menuDataRender(menuList)}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}

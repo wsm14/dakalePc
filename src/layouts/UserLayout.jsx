@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './UserLayout.less';
 
 const UserLayout = (props) => {
-  const isLoading = props.loading.effects['login/login'];
+  const isLoading = props.loading.effects['login/login'] || props.loading.effects['userInfo/fetchGetAuthMenuTree'];
 
   return (
     <div className={styles.dakale_user_container}>
