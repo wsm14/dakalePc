@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { Button, Switch } from 'antd';
+import { Button, Form, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import sysRoleInfoSet from './components/Role/SysRoleInfoSet';
@@ -9,8 +9,12 @@ import SysRoleAllocation from './components/Role/SysRoleAllocation';
 const SysRoleList = (props) => {
   const { sysRoleList, loading, dispatch } = props;
 
+  const [form] = Form.useForm();
   const childRef = useRef();
-  const [visible, setVisible] = useState('');
+  const [visible, setVisible] = useState({
+    show: false,
+    record: {},
+  });
 
   // 搜索参数
   const searchItems = [
@@ -63,7 +67,7 @@ const SysRoleList = (props) => {
             {
               type: 'own',
               title: '配置',
-              click: () => setVisible({ show: true, record }),
+              click: () => fetchGetRoleTree({ roleId: val, roleType: record.ownerType }),
             },
             {
               type: 'del',
@@ -74,6 +78,16 @@ const SysRoleList = (props) => {
       ),
     },
   ];
+
+  // 获取角色配置信息
+  const fetchGetRoleTree = (payload) => {
+    dispatch({
+      type: 'sysRoleList/fetchGetRoleTree',
+      payload,
+      callback: (record) =>
+        setVisible({ show: true, record: { ...record, roleId: payload.roleId } }),
+    });
+  };
 
   // 获取角色信息 传递第二个参数角色信息就是修改 没传递就是修改角色状态
   const fetchGetRoleInfo = (payload, record) => {
@@ -135,8 +149,14 @@ const SysRoleList = (props) => {
       ></DataTableBlock>
       <SysRoleAllocation
         cRef={childRef}
+        form={form}
         visible={visible}
-        setVisible={() => setVisible('')}
+        setVisible={() =>
+          setVisible({
+            show: false,
+            record: {},
+          })
+        }
       ></SysRoleAllocation>
     </>
   );

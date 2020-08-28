@@ -1,102 +1,101 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Modal, Form, Checkbox } from 'antd';
+import { Modal, Checkbox, Form } from 'antd';
 import styles from './style.less';
 
-// 表单排版
-const formItemLayout = {
-  labelCol: {
-    sm: { span: 6 },
-  },
-  wrapperCol: {
-    sm: { span: 16 },
-  },
-};
-
 const SysRoleAllocation = (props) => {
-  const { visible, initialValues, dataList = [], setVisible } = props;
+  const { visible, setVisible, loading, dispatch, cRef, form } = props;
 
-  const { show = false, record = '' } = visible;
+  const {
+    show = false,
+    record: { idList = [], accessList = [], treeKeyList, roleId = '' },
+  } = visible;
 
-  const [form] = Form.useForm();
-  const [treeKey] = useState(() =>
-    dataList.map((item) => ({ [item.id]: item.children.map((ctiem) => ctiem.id) })),
-  );
+  const [treeKey, setTreeKey] = useState(treeKeyList);
 
   // 确认
-  const handleUpdata = (close) => {
-    form.validateFields().then((values) => {
-      console.log(form.getFieldsValue());
-      // dispatch({
-      //   type: 'businessList/fetchMerchantSet',
-      //   payload: {
-      //     ...values,
-      //   },
-      //   callback: () => {
-      //     onClose();
-      //     cRef.current.fetchGetData();
-      //   },
-      // });
+  const handleUpdata = () => {
+    form.validateFields().then(() => {
+      dispatch({
+        type: 'sysRoleList/fetchRoleMenuSet',
+        payload: {
+          roleId,
+          ...form.getFieldsValue(),
+        },
+        callback: () => {
+          setVisible();
+          cRef.current.fetchGetData();
+        },
+      });
     });
   };
 
+  // 获取点击的父级以及所有子级id
   let parentIdObj = [];
   const mapCheckedKeys = (arr) => {
     arr.map((item) => {
-      parentIdObj.push(item.id);
-      if (item.children) {
-        mapCheckedKeys(item.children);
+      parentIdObj.push(item.idString);
+      if (item.subAuthAccessDTOList) {
+        mapCheckedKeys(item.subAuthAccessDTOList);
       }
     });
     return parentIdObj;
   };
 
-  const handleSelectFirst = (e, item, pid, arr) => {
-    const oldData = form.getFieldsValue().tiA;
+  // 点击选择方法 没写选择中间态
+  const handleSelectFirst = (e, item, pid) => {
+    const oldData = form.getFieldsValue().accessIdList; // 获取当前选择id组
     let ary = [];
-    ary = mapCheckedKeys([item]);
+    ary = mapCheckedKeys([item]); // 获取点击的父级以及所有子级id
     setTimeout(() => {
+      let accessIdList = [];
+      // 子级选择后 父级同时选择
       if (pid && e.target.checked) {
-        form.setFieldsValue({
-          tiA: Array.from(new Set([...oldData, item.id, pid])).filter((i) => i),
-        });
+        accessIdList = Array.from(new Set([...oldData, item.idString, pid])).filter((i) => i);
       } else if (pid && !e.target.checked) {
+        // 子级取消 父级弱存在子级选择 则不取消否则同时取消
         const treeObj = treeKey.filter((items) => items[pid])[0][pid];
-        const newArr = form.getFieldsValue().tiA;
+        const newArr = form.getFieldsValue().accessIdList;
         const keylength = treeObj.filter((key) => newArr.indexOf(key) > -1).length;
         if (!keylength) {
-          form.setFieldsValue({
-            tiA: Array.from(new Set([...newArr])).filter((i) => i !== pid),
-          });
+          accessIdList = Array.from(new Set([...newArr])).filter((i) => i !== pid);
+          form.setFieldsValue({ accessIdList });
         }
         return;
       } else if (e.target.checked) {
-        form.setFieldsValue({ tiA: Array.from(new Set([...oldData, ...ary])).filter((i) => i) });
+        // 选择父级同时选择所有子级
+        accessIdList = Array.from(new Set([...oldData, ...ary])).filter((i) => i);
         parentIdObj = [];
       } else {
-        form.setFieldsValue({ tiA: oldData.filter((id) => ary.indexOf(id) === -1) });
+        // 取消父级同时取消所有子级
+        accessIdList = oldData.filter((id) => ary.indexOf(id) === -1);
         parentIdObj = [];
       }
+      form.setFieldsValue({ accessIdList });
     }, 0);
   };
 
-  const checkForm = dataList.map((item) => (
-    <React.Fragment key={item.name}>
-      <tr>
-        <td>
-          <Checkbox value={item.id} onChange={(e) => handleSelectFirst(e, item)}>
-            {item.name}
-          </Checkbox>
-        </td>
-        <td>
-          <Checkbox
-            value={item.children[0].id}
-            onChange={(e) => handleSelectFirst(e, item.children[0], item.id)}
-          >
-            {item.children[0].name}
-          </Checkbox>
-        </td>
-        {/* <td>
+  // 列表内容遍历
+  const checkForm = accessList.map((item) => {
+    const { subAuthAccessDTOList: children, accessName: name } = item;
+
+    return (
+      <React.Fragment key={name}>
+        <tr>
+          <td>
+            <Checkbox value={item.idString} onChange={(e) => handleSelectFirst(e, item)}>
+              {name}
+            </Checkbox>
+          </td>
+          <td>
+            <Checkbox
+              value={children[0].idString}
+              onChange={(e) => handleSelectFirst(e, children[0], item.idString)}
+            >
+              {children[0].accessName}
+            </Checkbox>
+          </td>
+          {/* <td>
           {item.children[0].children &&
             item.children[0].children.map((btn) => (
               <Checkbox value={btn.id} key={btn.name}>
@@ -104,16 +103,19 @@ const SysRoleAllocation = (props) => {
               </Checkbox>
             ))}
         </td> */}
-      </tr>
-      {item.children.slice(1).map((other) => (
-        <tr key={other.name}>
-          <td></td>
-          <td>
-            <Checkbox value={other.id} onChange={(e) => handleSelectFirst(e, other, item.id)}>
-              {other.name}
-            </Checkbox>
-          </td>
-          {/* <td>
+        </tr>
+        {children.slice(1).map((other) => (
+          <tr key={other.accessName}>
+            <td></td>
+            <td>
+              <Checkbox
+                value={other.idString}
+                onChange={(e) => handleSelectFirst(e, other, item.idString)}
+              >
+                {other.accessName}
+              </Checkbox>
+            </td>
+            {/* <td>
             {other.children &&
               other.children.map((btn) => (
                 <Checkbox value={btn.id} key={btn.name}>
@@ -121,10 +123,18 @@ const SysRoleAllocation = (props) => {
                 </Checkbox>
               ))}
           </td> */}
-        </tr>
-      ))}
-    </React.Fragment>
-  ));
+          </tr>
+        ))}
+      </React.Fragment>
+    );
+  });
+
+  useEffect(() => {
+    if (visible) {
+      setTreeKey(treeKeyList);
+      form.setFieldsValue({ accessIdList: idList });
+    }
+  }, [visible]);
 
   return (
     <Modal
@@ -135,15 +145,10 @@ const SysRoleAllocation = (props) => {
       onCancel={setVisible}
       onOk={() => handleUpdata()}
       maskClosable={false}
+      confirmLoading={loading}
     >
-      <Form
-        form={form}
-        layout="horizontal"
-        initialValues={initialValues || { tiA: [] }}
-        {...formItemLayout}
-        scrollToFirstError={true}
-      >
-        <Form.Item name="tiA" noStyle>
+      <Form form={form} preserve={false} layout="horizontal" scrollToFirstError={true}>
+        <Form.Item name="accessIdList" noStyle>
           <Checkbox.Group style={{ width: '100%' }}>
             <table className={styles.tree_table}>
               <thead>
@@ -162,4 +167,6 @@ const SysRoleAllocation = (props) => {
   );
 };
 
-export default SysRoleAllocation;
+export default connect(({ loading }) => ({
+  loading: loading.models.sysRoleList,
+}))(SysRoleAllocation);
