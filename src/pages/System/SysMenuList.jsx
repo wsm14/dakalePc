@@ -4,6 +4,7 @@ import { Button, Badge, Card } from 'antd';
 import { MENU_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import sysMenuSet from './components/Menu/SysMenuSet';
 
 const tabList = [
   {
@@ -17,13 +18,17 @@ const tabList = [
 ];
 
 const SysMenuList = (props) => {
-  const { sysMenuList, loading } = props;
+  const { sysMenuList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('admin');
 
   // table 表头
   const getColumns = [
+    {
+      title: '菜单ID',
+      dataIndex: 'authAccessId',
+    },
     {
       title: '菜单名称',
       dataIndex: 'accessName',
@@ -48,7 +53,7 @@ const SysMenuList = (props) => {
           formItems={[
             {
               type: 'edit',
-              //   click: () => setShowCoach(record),
+              click: () => fetchGetMenuDetail({ accessId: val }),
             },
             {
               type: 'del',
@@ -60,13 +65,34 @@ const SysMenuList = (props) => {
     },
   ];
 
+  // 获取菜单信息
+  const fetchGetMenuDetail = (payload) => {
+    dispatch({
+      type: 'sysMenuList/fetchGetMenuDetail',
+      payload,
+      callback: handleSysMenuSet,
+    });
+  };
+
+  // 新增/修改
+  const handleSysMenuSet = (initialValues = { authType: '2', status: '1', ownerType: tabkey }) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: sysMenuSet({ dispatch, childRef, initialValues }),
+    });
+  };
+
   useEffect(() => {
     childRef.current.fetchGetData();
   }, [tabkey]);
 
   return (
     <Card
-      tabBarExtraContent={<Button className="dkl_green_btn">新增</Button>}
+      tabBarExtraContent={
+        <Button className="dkl_green_btn" onClick={() => handleSysMenuSet()}>
+          新增
+        </Button>
+      }
       tabList={tabList}
       activeTabKey={tabkey}
       onTabChange={(key) => setTabKey(key)}
@@ -79,7 +105,6 @@ const SysMenuList = (props) => {
         rowKey={(record) => `${record.authAccessId}`}
         dispatchType="sysMenuList/fetchGetList"
         params={{ roleType: tabkey }}
-        pParams={{ limit: 10 }}
         {...sysMenuList.list}
       ></DataTableBlock>
     </Card>
@@ -88,5 +113,5 @@ const SysMenuList = (props) => {
 
 export default connect(({ sysMenuList, loading }) => ({
   sysMenuList,
-  loading: loading.effects['sysMenuList/fetchGetList'],
+  loading: loading.models.sysMenuList,
 }))(SysMenuList);

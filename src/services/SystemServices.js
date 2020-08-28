@@ -7,6 +7,21 @@ export function fetchMenuList(params) {
   });
 }
 
+// get 菜单设置 - 菜单 - 获取菜单信息
+export function fetchGetMenuDetail(params) {
+  return request('/admin/auth/getAccessById', {
+    params,
+  });
+}
+
+// post 菜单设置 - 菜单 - 新增 修改
+export function fetchMenuSet(data) {
+  return request('/admin/auth/saveAuthAccess', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 帐号设置 - 角色 - 获取角色列表
 export function fetchRoleList(params) {
   return request('/admin/auth/listRole', {

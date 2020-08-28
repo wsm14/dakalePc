@@ -1,4 +1,5 @@
-import { fetchMenuList } from '@/services/SystemServices';
+import { notification } from 'antd';
+import { fetchMenuList, fetchGetMenuDetail, fetchMenuSet } from '@/services/SystemServices';
 
 export default {
   namespace: 'sysMenuList',
@@ -28,22 +29,20 @@ export default {
         },
       });
     },
-    // *fetchUserOrder({ payload, callback }, { call, put }) {
-    //   const response = yield call(fetchUserOrder, payload);
-    //   if (!response) return;
-    //   const { data } = response;
-    //   yield put({
-    //     type: "save",
-    //     payload: {
-    //       userOrder: {
-    //         list: data.list,
-    //         total: data.total,
-    //         current: data.pageNum,
-    //         pageSize: data.pageSize
-    //       }
-    //     }
-    //   });
-    //   callback();
-    // }
+    *fetchGetMenuDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetMenuDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.accessInfo);
+    },
+    *fetchMenuSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMenuSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '菜单设置成功',
+      });
+      callback();
+    },
   },
 };

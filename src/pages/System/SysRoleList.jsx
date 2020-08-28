@@ -67,7 +67,7 @@ const SysRoleList = (props) => {
             },
             {
               type: 'del',
-              click: () => fetchRoleDel(record),
+              // click: () => fetchRoleDel(record),
             },
           ]}
         />

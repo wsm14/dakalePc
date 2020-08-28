@@ -91,7 +91,7 @@ const DrawerModalForm = ({
         {...modalProps}
         onClose={onClose || handleClose}
         bodyStyle={{ paddingBottom: 80 }}
-        zIndex={1012}
+        zIndex={1005}
         footer={
           <div style={{ textAlign: 'right' }}>
             <Space>
