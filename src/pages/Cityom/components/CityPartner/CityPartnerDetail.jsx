@@ -105,6 +105,15 @@ const CityPartnerDetail = (props) => {
         label: '绑定手机号',
         name: 'assasdada',
       },
+      {
+        title: '帐号密码',
+        label: '登录帐号',
+        name: 'asdsasdks',
+      },
+      {
+        label: '登录密码',
+        name: 'asasadasdas',
+      },
     ],
     onFinish: fetchGetFormData,
     footerBtn: () =>

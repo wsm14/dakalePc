@@ -22,7 +22,7 @@ const SysRoleList = (props) => {
       label: '角色状态',
       name: 'userMobile1',
       type: 'select',
-      select: { list: [] },
+      select: { list: ['停用', '启用'] },
     },
   ];
 

@@ -80,9 +80,9 @@ const DataTableBlockComponent = ({
     current,
     pageSize,
     showTotal: () => `共${total}项`,
-    showQuickJumper: true,
+    showQuickJumper: pageSize > 100 ? false : true,
     hideOnSinglePage: total > 0 ? false : true,
-    showSizeChanger: true,
+    showSizeChanger: pageSize > 100 ? false : true,
     onChange: (page, pagesize) => {
       setNum(page);
       setSize(pagesize);
