@@ -149,8 +149,11 @@ const SearchCondition = (props) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
-        if (item.type === 'datePicker') formObj[item.name] = values[item.name].format('YYYY-MM-DD');
-        else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
+        if (item.type === 'datePicker') {
+          formObj[item.name] = values[item.name].format(
+            item.picker === 'year' ? 'YYYY' : 'YYYY-MM-DD',
+          );
+        } else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
         } else if (item.type === 'city') {

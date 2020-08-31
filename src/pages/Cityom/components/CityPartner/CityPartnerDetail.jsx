@@ -42,9 +42,21 @@ const CityPartnerDetail = (props) => {
     });
   };
 
+  // 修改状态
+  const fetchEditStatus = (partnerStatus) => {
+    dispatch({
+      type: 'cityPartner/fetchCityPartnerStatus',
+      payload: {
+        partnerId: initialValues.partnerIdString,
+        partnerStatus,
+      },
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
   // 默认值参数 则显示info详情，否则添加表单
   const drawerType = {
-    true: { showType: 'info', title: '合伙人详情', footerShow: false },
+    true: { showType: 'info', title: '合伙人详情', footerShow: true },
     false: { showType: 'form', title: '新增合伙人', footerShow: true },
   }[!!initialValues];
 
@@ -158,18 +170,36 @@ const CityPartnerDetail = (props) => {
       },
     ],
     onFinish: fetchGetFormData,
-    footerBtn: () =>
+    footerBtn: (loadings) =>
       ({
         false: [
-          <Button key="1" type="primary" visible={true}>
-            冻结
-          </Button>,
-          <Button key="2" type="primary" visible={true}>
-            解约
-          </Button>,
+          {
+            btn: (
+              <Button key="1" loadings={loadings} type="primary" onClick={() => fetchEditStatus(1)}>
+                冻结
+              </Button>
+            ),
+            visible: initialValues.partnerStatus === '0',
+          },
+          {
+            btn: (
+              <Button key="2" loadings={loadings} type="primary" onClick={() => fetchEditStatus(0)}>
+                解冻
+              </Button>
+            ),
+            visible: initialValues.partnerStatus === '1',
+          },
+          {
+            btn: (
+              <Button key="3" loadings={loadings} type="primary" onClick={() => fetchEditStatus(2)}>
+                解约
+              </Button>
+            ),
+            visible: initialValues.partnerStatus !== '2',
+          },
         ],
         true: [],
-      }[drawerType.footerShow]),
+      }[drawerType.showType !== 'info']),
     ...props,
   };
 };

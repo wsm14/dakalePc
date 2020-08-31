@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
+import { WITHDRAW_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import CityPartnerTotalInfo from './IncomeTotal';
 
@@ -18,55 +19,56 @@ const CityPartnerDetailList = (props) => {
         {
           label: '提现日期',
           type: 'datePicker',
-          name: 'userMobile1s',
+          name: 'withdrawalDate',
         },
         {
           type: 'datePicker',
           label: '到账日期',
-          name: 'userMosbile1s',
+          name: 'finishTime',
         },
         {
           label: '提现状态',
-          name: 'userMo',
           type: 'select',
-          select: { list: [] },
+          name: 'withdrawStatus',
+          select: { list: WITHDRAW_STATUS },
         },
       ],
       getColumns: [
         {
           title: '提现日期',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'createTime',
         },
         {
           title: '提现单号',
           align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'withdrawalSn',
         },
         {
           title: '订单流水',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'incomeSn',
         },
         {
           title: '提现卡豆',
           align: 'center',
-          dataIndex: 'earnBeanAmount',
+          dataIndex: 'withdrawalBeanAmount',
         },
         {
           title: '提现到',
           align: 'center',
-          dataIndex: 'signDate',
+          dataIndex: 'withdrawalChannelName',
         },
         {
           title: '提现状态',
           align: 'center',
-          dataIndex: 'process',
+          dataIndex: 'status',
+          render: (val) => WITHDRAW_STATUS[val],
         },
         {
           title: '到账日期',
           align: 'center',
-          dataIndex: 'process',
+          dataIndex: 'finishTime',
           render: (val) => (val ? val : '--'),
         },
       ],
@@ -94,12 +96,13 @@ const CityPartnerDetailList = (props) => {
               searchItems={propItem.searchItems}
               columns={propItem.getColumns}
               rowKey={(row) => `${row[propItem.rowKey]}`}
-              dispatchType="cityPartner/fetchWithdrawList"
+              params={{ partnerId: record.partnerIdString }}
+              dispatchType="cityPartner/fetchCityWithdrawDetail"
               componentSize="middle"
               {...detailList}
             ></DataTableBlock>
           ),
-          income: <CityPartnerTotalInfo></CityPartnerTotalInfo>,
+          income: <CityPartnerTotalInfo record={record}></CityPartnerTotalInfo>,
         }[type]
       }
     </Modal>

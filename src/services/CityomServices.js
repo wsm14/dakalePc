@@ -43,9 +43,31 @@ export function fetchCityPartnerList(params) {
   });
 }
 
+// get 城市合伙人 - 收益数据
+export function fetchCityIncomeDetail(params) {
+  return request('/admin/cityOperationManagement/listStatisticPartnerBeanDetail', {
+    params,
+  });
+}
+
+// get 城市合伙人 - 提现申请
+export function fetchCityWithdrawDetail(params) {
+  return request('/admin/cityOperationManagement/listPartnerWithdraw', {
+    params,
+  });
+}
+
 // post 城市合伙人 - 新增
 export function fetchCityPartnerAdd(data) {
   return request('/admin/cityOperationManagement/savePartner', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 城市合伙人 - 冻结/解除
+export function fetchCityPartnerStatus(data) {
+  return request('/admin/cityOperationManagement/updatePartner', {
     method: 'POST',
     data,
   });

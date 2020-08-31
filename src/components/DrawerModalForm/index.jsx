@@ -50,9 +50,7 @@ const DrawerModalForm = ({
   onClose,
 }) => {
   const [form] = Form.useForm();
-
   const loadings = loading.models[loadingModels];
-
   // 弹出层统一配置
   const modalProps = {
     title,

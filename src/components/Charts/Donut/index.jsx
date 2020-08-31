@@ -3,15 +3,22 @@ import { Donut } from '@ant-design/charts';
 import autoHeight from '../autoHeight';
 
 const DonutChart = (props) => {
-  const { height = 0, data, description, totalLabel } = props;
+  const {
+    height = 0,
+    data,
+    description,
+    totalLabel,
+    angleField = 'value',
+    colorField = 'type',
+  } = props;
   const config = {
     data,
     forceFit: true,
     height: height,
     radius: 1,
     description: description || false,
-    angleField: 'value',
-    colorField: 'type',
+    angleField,
+    colorField,
     tooltip: true,
     statistic: {
       visible: true,

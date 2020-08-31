@@ -2,8 +2,9 @@ import { notification } from 'antd';
 import {
   fetchCityPartnerList,
   fetchCityPartnerAdd,
-  fetchWithdrawList,
-  fetchIncomeDetail,
+  fetchCityPartnerStatus,
+  fetchCityWithdrawDetail,
+  fetchCityIncomeDetail,
 } from '@/services/CityomServices';
 
 export default {
@@ -13,7 +14,7 @@ export default {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     totalData: [],
-    inconmeTotalData: [],
+    inconmeTotalData: { recordList: [], totalBean: 0 },
   },
 
   reducers: {
@@ -44,28 +45,28 @@ export default {
         },
       });
     },
-    *fetchWithdrawList({ payload }, { call, put }) {
-      const response = yield call(fetchWithdrawList, payload);
+    *fetchCityWithdrawDetail({ payload }, { call, put }) {
+      const response = yield call(fetchCityWithdrawDetail, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
           detailList: {
-            list: content.brandList,
+            list: content.recordList,
             total: content.total,
           },
         },
       });
     },
-    *fetchIncomeDetail({ payload }, { call, put }) {
-      const response = yield call(fetchIncomeDetail, payload);
+    *fetchCityIncomeDetail({ payload }, { call, put }) {
+      const response = yield call(fetchCityIncomeDetail, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          totalData: content.userMerchantList,
+          inconmeTotalData: { recordList: content.recordList, totalBean: content.totalBean },
         },
       });
     },
@@ -75,6 +76,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '合伙人添加成功',
+      });
+      callback();
+    },
+    *fetchCityPartnerStatus({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityPartnerStatus, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '合伙人状态修改成功',
       });
       callback();
     },

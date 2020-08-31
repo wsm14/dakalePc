@@ -13,6 +13,12 @@ export const AMAP_KEY = 'b71a4ssaasdasdsssacb0b1b7';
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 
+// 提现状态
+export const WITHDRAW_STATUS = [false, false, '处理中', '成功', '失败'];
+
+// 加盟申请状态
+export const CITY_PARTNER_STATUS = ['正常', '冻结', '解约'];
+
 // 用户状态
 export const ACCOUNT_STATUS = ['禁用', '启用'];
 
