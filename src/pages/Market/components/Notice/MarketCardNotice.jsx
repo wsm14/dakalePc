@@ -61,7 +61,7 @@ const MarketCardNotice = (props) => {
             {
               type: 'del',
               visible: record.status === '0',
-              click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 1 }, 'del'),
+              click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 0 }, 'del'),
             },
             {
               type: 'send',
