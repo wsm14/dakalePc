@@ -40,8 +40,9 @@ const BusinessAdd = (props) => {
         dispatch({
           type: 'businessList/fetchMerchantAdd',
           payload: {
-            ...values,
+            ...payload,
             ...beasInfo,
+            activityBanner: res.toString(),
           },
           callback: () => {
             onClose();

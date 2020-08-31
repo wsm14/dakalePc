@@ -17,21 +17,14 @@ const CheckInDetailSet = (props) => {
       type: CeditType,
       configMarkId,
     };
-
     const { content } = values;
-    if (typeof content === 'string') {
+    aliOssUpload(content).then((res) => {
       dispatch({
         ...defineSet,
-        payload: { ...defineDate, ...values },
+        payload: { ...defineDate, content: res.toString() },
       });
-    } else {
-      aliOssUpload(content.fileList.map((item) => item.originFileObj)).then((res) => {
-        dispatch({
-          ...defineSet,
-          payload: { ...defineDate, content: res.toString() },
-        });
-      });
-    }
+    });
+    // }
   };
 
   const formItem = {
@@ -52,7 +45,7 @@ const CheckInDetailSet = (props) => {
           label: '图片上传',
           name: 'content',
           type: 'upload',
-          maxFile: 1,
+          maxFile: 3,
         },
       ],
     },

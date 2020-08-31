@@ -62,6 +62,7 @@ const SysAppSet = (props) => {
       title: '跳转链接',
       align: 'center',
       dataIndex: 'jumpUrl',
+      render: (val) => val || '--',
     },
     {
       title: '展示时间',

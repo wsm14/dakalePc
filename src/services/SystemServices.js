@@ -113,7 +113,7 @@ export function fetchRoleDel(data) {
 
 // get App设置 - 图片列表
 export function fetchBannerList(params) {
-  return request('/admin/SystemConfig/listBannerMarketPlatform', {
+  return request('/admin/systemConfig/listBannerMarketPlatform', {
     params,
   });
 }
@@ -127,7 +127,7 @@ export function fetchBannerDetail(params) {
 
 // post App设置 - 图片下架/图片删除
 export function fetchBannerStatusDel(data) {
-  return request('/admin/SystemConfig/updateBannerMarketPlatform', {
+  return request('/admin/systemConfig/updateBannerMarketPlatform', {
     method: 'POST',
     data,
   });
@@ -135,7 +135,7 @@ export function fetchBannerStatusDel(data) {
 
 // post App设置 - 图片新增
 export function fetchBannerSet(data) {
-  return request('/admin/SystemConfig/saveBannerMarketPlatform', {
+  return request('/admin/systemConfig/saveBannerMarketPlatform', {
     method: 'POST',
     data,
   });

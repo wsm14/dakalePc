@@ -16,8 +16,24 @@ export async function fetchMarketMatchJoin(params) {
 
 // get 卡豆乐园 - 公告列表
 export async function fetchMarketNoticeList(params) {
-  return request('/admin/marketCoupon/listMarketCoupon', {
+  return request('/admin/marketingManagement/listConfigAnnounce', {
     params,
+  });
+}
+
+// post 卡豆乐园 - 公告新增
+export function fetchMarketNoticeAdd(data) {
+  return request('/admin/marketingManagement/saveConfigAnnounce', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 卡豆乐园 - 公告发布 删除 修改
+export function fetchMarketNoticeSet(data) {
+  return request('/admin/marketingManagement/updateConfigAnnounce', {
+    method: 'POST',
+    data,
   });
 }
 
@@ -112,30 +128,6 @@ export function fetchMarketMatchMorningSet(data) {
 
 // post 卡豆乐园 - 步数挑战赛设置
 export function fetchMarketMatchRuningSet(data) {
-  return request('/admin/marketingManagement/updateMatchWalk', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 卡豆乐园 - 公告新增
-export function fetchMarketNoticeAdd(data) {
-  return request('/admin/marketingManagement/updateMatchWalk', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 卡豆乐园 - 公告发布
-export function fetchMarketNoticePush(data) {
-  return request('/admin/marketingManagement/updateMatchWalk', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 卡豆乐园 - 公告删除
-export function fetchMarketNoticeDel(data) {
   return request('/admin/marketingManagement/updateMatchWalk', {
     method: 'POST',
     data,

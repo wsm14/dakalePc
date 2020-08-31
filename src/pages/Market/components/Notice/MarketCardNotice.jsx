@@ -17,7 +17,7 @@ const MarketCardNotice = (props) => {
   const searchItems = [
     {
       label: '公告说明',
-      name: 'date',
+      name: 'description',
     },
   ];
 
@@ -26,13 +26,13 @@ const MarketCardNotice = (props) => {
       title: '缩略图',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'startDate',
+      dataIndex: 'image',
       render: (val) => <NoticeImgShow url={val} />,
     },
     {
       title: '公告说明',
       align: 'center',
-      dataIndex: 'signBeanAmount',
+      dataIndex: 'description',
       render: (val) => (
         <Ellipsis length={15} tooltip>
           {val || '--'}
@@ -49,24 +49,24 @@ const MarketCardNotice = (props) => {
       title: '操作',
       align: 'right',
       fixed: 'right',
-      dataIndex: 'id',
+      dataIndex: 'configAnnounceIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
               visible: record.status === '0',
-              click: () => setVisible({ type: 'destory', record }),
+              click: () => handleNoticeSet(record),
             },
             {
               type: 'del',
               visible: record.status === '0',
-              click: () => fetchNoticePush(val, 'del'),
+              click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 1 }, 'del'),
             },
             {
               type: 'send',
               visible: record.status === '0',
-              click: () => fetchNoticePush(val, 'push'),
+              click: () => fetchNoticePush({ configAnnounceId: val, status: 1 }, 'push'),
             },
           ]}
         />
@@ -77,11 +77,8 @@ const MarketCardNotice = (props) => {
   // 公告发布 / 删除
   const fetchNoticePush = (val, type) => {
     dispatch({
-      type: {
-        push: 'marketCardNotice/fetchNoticePush',
-        del: 'marketCardNotice/fetchNoticeDel',
-      }[type],
-      payload: { val },
+      type: 'marketCardNotice/fetchNoticeSet',
+      payload: { ...val, type },
       callback: () => childRef.current.fetchGetData(),
     });
   };
@@ -109,11 +106,11 @@ const MarketCardNotice = (props) => {
     });
   };
 
-  // 新增公告表单
-  const handleNoticeAdd = () => {
+  // 设置公告表单
+  const handleNoticeSet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: marketCardNoticeSet({ dispatch, childRef }),
+      payload: marketCardNoticeSet({ dispatch, childRef, initialValues }),
     });
   };
 
@@ -122,7 +119,7 @@ const MarketCardNotice = (props) => {
   }, []);
 
   const btnExtra = [
-    <Button className="dkl_green_btn" key="1" onClick={handleNoticeAdd}>
+    <Button className="dkl_green_btn" key="1" onClick={() => handleNoticeSet()}>
       新增公告
     </Button>,
   ];
@@ -134,7 +131,7 @@ const MarketCardNotice = (props) => {
       btnExtra={btnExtra}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.startDate}`}
+      rowKey={(record) => `${record.configAnnounceIdString}`}
       dispatchType="marketCardNotice/fetchGetList"
       {...marketCardNotice}
     ></DataTableBlock>

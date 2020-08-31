@@ -4,7 +4,14 @@ import request from './request';
 
 /**
  * oss 文件上传
- * @param {*} file 本地文件流 数组或单文件
+ * @param {*} file 本地文件流 数组或单文件或路径（原样即刻返回）
+ * file 可以是
+ * 'http://img.com'
+ * File[100]
+ * ['http://img.com']
+ * [File[100],File[100]]
+ * {file:File[100], fileList: [{originFileObj:File[100]},{originFileObj:File[100]}]}
+ * {file:File[100], fileList: [{url:'http://img.com'},{originFileObj:File[100]}]}
  * @param {*} return 返回Promise对象 .then返回 上传后的url数组
  */
 
@@ -16,8 +23,18 @@ const notificationInfo = () => {
   });
 };
 
-const aliOssUpload = (fileArray = '') => {
-  if (!fileArray) return false;
+const aliOssUpload = (file = '', fieldNames = {}) => {
+  const { listKey = 'fileList', originFileObj = 'originFileObj', url = 'url' } = fieldNames;
+  let fileArray = [];
+  if (typeof file === 'string') {
+    return new Promise((resolve) => resolve(file));
+  } else if (Array.isArray(file)) {
+    fileArray = file;
+  } else if (file instanceof Blob || file instanceof File) {
+    fileArray = file;
+  } else {
+    fileArray = file[listKey].map((item) => item[originFileObj] || item[url]);
+  }
   message.loading('文件上传中......', 0);
   // 向后台获取oss凭证
   return request('/common/oss/getOssPolicy', {
@@ -69,13 +86,17 @@ const aliOssUpload = (fileArray = '') => {
       // 文件数组遍历上传 单个文件直接上传
       if (Array.isArray(fileArray)) {
         for (const item of fileArray) {
-          await ossput(item).then((res) => {
-            if (!res) {
-              notificationInfo();
-              return;
-            }
-            fileUrlArray.push(res);
-          });
+          if (typeof item === 'string') {
+            fileUrlArray.push(item);
+          } else {
+            await ossput(item).then((res) => {
+              if (!res) {
+                notificationInfo();
+                return;
+              }
+              fileUrlArray.push(res);
+            });
+          }
         }
       } else {
         await ossput(fileArray).then((res) => {

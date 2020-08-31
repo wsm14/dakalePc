@@ -2,8 +2,7 @@ import { notification } from 'antd';
 import {
   fetchMarketNoticeList,
   fetchMarketNoticeAdd,
-  fetchMarketNoticePush,
-  fetchMarketNoticeDel,
+  fetchMarketNoticeSet,
 } from '@/services/MarketServices';
 
 export default {
@@ -31,7 +30,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.record,
+          list: content.recordList,
           total: content.total,
         },
       });
@@ -45,21 +44,23 @@ export default {
       });
       callback();
     },
-    *fetchNoticePush({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMarketNoticePush, payload);
+    *fetchNoticeEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMarketNoticeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '公告发布成功',
+        description: '公告修改成功',
       });
       callback();
     },
-    *fetchNoticeDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMarketNoticeDel, payload);
+    *fetchNoticeSet({ payload, callback }, { call, put }) {
+      const { type } = payload;
+      delete payload.type;
+      const response = yield call(fetchMarketNoticeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '公告删除成功',
+        description: `公告${type === 'del' ? '删除' : '发布'}成功`,
       });
       callback();
     },

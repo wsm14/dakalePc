@@ -1,19 +1,24 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const MarketCardNoticeSet = (props) => {
-  const { dispatch, childRef } = props;
-
+  const { dispatch, childRef, initialValues = {} } = props;
+  const { configAnnounceIdString: configAnnounceId } = initialValues;
   // 公告新增
   const fetchMarketNoticeAdd = (values) => {
-    const {
-      activityBanner: { fileList },
-    } = values;
+    const { image } = values;
 
-    aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
+    const defineSet = {
+      type: {
+        true: 'marketCardNotice/fetchMarketNoticeAdd',
+        false: 'marketCardNotice/fetchNoticeEdit',
+      }[!Object.keys(initialValues).length],
+      callback: () => childRef.current.fetchGetData(),
+    };
+
+    aliOssUpload(image).then((res) => {
       dispatch({
-        type: 'marketCardNotice/fetchMarketNoticeAdd',
-        payload: { ...payload, activityBanner: res.toString() },
-        callback: () => childRef.current.fetchGetData(),
+        ...defineSet,
+        payload: { configAnnounceId, ...values, image: res.toString() },
       });
     });
   };
@@ -21,18 +26,18 @@ const MarketCardNoticeSet = (props) => {
   return {
     type: 'Drawer',
     showType: 'form',
-    title: '公告新增',
+    title: `公告${!Object.keys(initialValues).length ? '新增' : '修改'}`,
     loadingModels: 'marketCardNotice',
     formItems: [
       {
         label: '上传公告图',
         type: 'upload',
-        name: 'activityBanner',
+        name: 'image',
         maxFile: 1,
       },
       {
         label: '公告说明',
-        name: 'activityBeginTime',
+        name: 'description',
         type: 'textArea',
         maxLength: 20,
       },
