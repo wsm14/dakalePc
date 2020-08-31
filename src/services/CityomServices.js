@@ -35,3 +35,18 @@ export function fetchProvComAdd(data) {
     data,
   });
 }
+
+// get 加盟申请 - 列表
+export function fetchFranchiseAppList(params) {
+  return request('/admin/cityOperationManagement/listUserApply', {
+    params,
+  });
+}
+
+// get 加盟申请 - 处理
+export function fetchFranchiseHandle(data) {
+  return request('/admin/cityOperationManagement/updateUserApply', {
+    method: 'POST',
+    data,
+  });
+}

@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'dva';
+import { FRANCHISE_APP_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -7,23 +8,22 @@ const FranchiseApplication = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState('');
 
   // 搜索参数
   const searchItems = [
     {
       label: '手机号',
-      name: 'userMosbile1s',
+      name: 'mobile',
     },
     {
       label: '姓名',
-      name: 'userMobile1',
+      name: 'username',
     },
     {
       label: '申请状态',
-      name: 'userMo',
+      name: 'handled',
       type: 'select',
-      select: { list: [] },
+      select: { list: FRANCHISE_APP_STATUS },
     },
   ];
 
@@ -31,49 +31,50 @@ const FranchiseApplication = (props) => {
   const getColumns = [
     {
       title: '编号',
-      dataIndex: 'userId',
+      dataIndex: 'userApplyIdString',
       fixed: 'left',
     },
     {
       title: '姓名',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'name',
     },
     {
       title: '手机号',
       align: 'center',
-      dataIndex: 'orderCount',
+      dataIndex: 'phoneNumber',
     },
     {
       title: '意向代理城市',
       align: 'center',
-      dataIndex: 'aa',
+      dataIndex: 'intentionalProxyCity',
     },
     {
       title: '目前从事行业',
       align: 'right',
-      dataIndex: 'bb',
+      dataIndex: 'engageIndustry',
     },
     {
       title: '申请时间',
       align: 'right',
-      dataIndex: 'addTimeasdStamp',
+      dataIndex: 'createTime',
     },
     {
       title: '申请状态',
       align: 'right',
-      dataIndex: 'addsadTimeStamp',
+      dataIndex: 'handled',
+      render: (val) => FRANCHISE_APP_STATUS[val],
     },
     {
       title: '处理时间',
       align: 'right',
-      dataIndex: 'addTsdaimeStamp',
+      dataIndex: 'handleTime',
       render: (val) => (val ? val : '--'),
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'companyName',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
@@ -82,10 +83,10 @@ const FranchiseApplication = (props) => {
             {
               type: 'own',
               title: '处理',
-              visible: true,
+              visible: record.handled === '0',
               pop: true,
               popText: '加盟申请是否已处理？',
-              click: () => setVisible({ type: 'income', record }),
+              click: () => fetchFranchiseHandle(record.userApplyIdString),
             },
           ]}
         />
@@ -94,11 +95,11 @@ const FranchiseApplication = (props) => {
   ];
 
   // 获取公司详情
-  const fetchProvComDetail = () => {
+  const fetchFranchiseHandle = (userApplyId) => {
     dispatch({
-      type: 'provCompany/fetchProvComDetail',
-      payload: {},
-      callback: handleSetActive,
+      type: 'franchiseApp/fetchFranchiseHandle',
+      payload: { userApplyId },
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -108,15 +109,14 @@ const FranchiseApplication = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.userId}`}
-      dispatchType="provCompany/fetchGetList"
+      rowKey={(record) => `${record.userApplyIdString}`}
+      dispatchType="franchiseApp/fetchGetList"
       {...list}
-      list={[{ name: 1 }]}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  list: provCompany.list,
-  loading: loading.effects['provCompany/fetchGetList'],
+export default connect(({ franchiseApp, loading }) => ({
+  list: franchiseApp.list,
+  loading: loading.effects['franchiseApp/fetchGetList'],
 }))(FranchiseApplication);
