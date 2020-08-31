@@ -2,7 +2,6 @@ import { notification } from 'antd';
 import {
   fetchBannerList,
   fetchBannerSet,
-  fetchBannerDetail,
   fetchBannerStatusDel,
 } from '@/services/SystemServices';
 
@@ -35,12 +34,6 @@ export default {
           total: content.total,
         },
       });
-    },
-    *fetchBannerDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchBannerDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content);
     },
     *fetchBannerStatusDel({ payload, callback }, { call, put }) {
       const response = yield call(fetchBannerStatusDel, payload);

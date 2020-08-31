@@ -93,7 +93,7 @@ const SysAppSet = (props) => {
             {
               type: 'edit',
               visible: record.activityStatus !== '2',
-              click: () => fetchBannerDetail(record),
+              click: () => setVisibleSet({ show: true, info: record }),
             },
             {
               type: 'del',
@@ -105,15 +105,6 @@ const SysAppSet = (props) => {
       ),
     },
   ];
-
-  // 获取图片详情
-  const fetchBannerDetail = (payload) => {
-    dispatch({
-      type: 'sysAppList/fetchBannerDetail',
-      payload,
-      callback: (info) => setVisibleSet({ show: true, info }),
-    });
-  };
 
   // 占位图下架
   const fetchBannerStatusDel = (payload) => {

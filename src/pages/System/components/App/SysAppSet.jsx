@@ -10,7 +10,6 @@ const SysAppSet = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
 
   const { show = false, info = '' } = visible;
-
   const [form] = Form.useForm();
   const [showUrl, setShowUrl] = useState(false);
 
@@ -108,7 +107,22 @@ const SysAppSet = (props) => {
         </div>
       }
     >
-      <FormCondition initialValues={info} formItems={formItems} form={form} loading={loading} />
+      <FormCondition
+        initialValues={
+          info
+            ? {
+                ...info,
+                beginDate: [
+                  moment(info.beginDate, 'YYYY-MM-DD'),
+                  moment(info.endDate, 'YYYY-MM-DD'),
+                ],
+              }
+            : {}
+        }
+        formItems={formItems}
+        form={form}
+        loading={loading}
+      />
     </Drawer>
   );
 };

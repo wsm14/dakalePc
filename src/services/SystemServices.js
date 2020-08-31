@@ -118,13 +118,6 @@ export function fetchBannerList(params) {
   });
 }
 
-// get App设置 - 获取图片详情
-export function fetchBannerDetail(params) {
-  return request('/admin/auth/saveAuthRodle', {
-    params,
-  });
-}
-
 // post App设置 - 图片下架/图片删除
 export function fetchBannerStatusDel(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {

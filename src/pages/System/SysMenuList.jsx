@@ -22,6 +22,7 @@ const SysMenuList = (props) => {
 
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('admin');
+  const [one, setOne] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -83,7 +84,9 @@ const SysMenuList = (props) => {
   };
 
   useEffect(() => {
-    childRef.current.fetchGetData();
+    if (one) {
+      childRef.current.fetchGetData();
+    }
   }, [tabkey]);
 
   return (
@@ -95,7 +98,10 @@ const SysMenuList = (props) => {
       }
       tabList={tabList}
       activeTabKey={tabkey}
-      onTabChange={(key) => setTabKey(key)}
+      onTabChange={(key) => {
+        setTabKey(key);
+        setOne(true);
+      }}
     >
       <DataTableBlock
         CardNone={false}
@@ -105,7 +111,7 @@ const SysMenuList = (props) => {
         rowKey={(record) => `${record.authAccessId}`}
         dispatchType="sysMenuList/fetchGetList"
         params={{ roleType: tabkey }}
-        pParams={{ limit: 200 }}
+        pParams={{ limit: 101 }}
         {...sysMenuList.list}
       ></DataTableBlock>
     </Card>
