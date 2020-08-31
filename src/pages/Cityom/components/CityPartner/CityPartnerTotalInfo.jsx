@@ -9,7 +9,7 @@ const CityPartnerTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
   const searchItems = [
     {
       label: '区域',
-      type: 'rangePicker',
+      type: 'city',
       name: 'mobile',
     },
   ];

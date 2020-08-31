@@ -16,15 +16,9 @@ import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
 import styles from './index.less';
 
-const options = {
-  label: 'name',
-  value: 'code',
-  children: 'areaList',
-};
-
 // 城市搜索筛选
 const filter = (inputValue, path) => {
-  return path.some((option) => option.name.indexOf(inputValue) > -1);
+  return path.some((option) => option.label.indexOf(inputValue) > -1);
 };
 
 const disTime = moment('2020-03-01');
@@ -129,7 +123,6 @@ const SearchCondition = (props) => {
             changeOnSelect={item.changeOnSelect || false}
             disabled={item.disabled}
             options={item.options || CITYJSON}
-            fieldNames={options}
             expandTrigger="hover"
             showSearch={{ filter }}
             placeholder="选择城市"
@@ -160,6 +153,9 @@ const SearchCondition = (props) => {
         else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
+        } else if (item.type === 'city') {
+          item.valuesKey.map((item, i) => (formObj[item] = values.city[i]));
+          delete values[item.name];
         }
       } else {
         delete values[item.name];

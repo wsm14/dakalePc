@@ -15,6 +15,7 @@ import {
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
+import CITYJSON from '@/common/city';
 import moment from 'moment';
 
 /**
@@ -57,7 +58,7 @@ const uploadButton = (
 
 // Cascader搜索筛选
 const filter = (inputValue, path) => {
-  return path.some((option) => option.name.indexOf(inputValue) > -1);
+  return path.some((option) => option.label.indexOf(inputValue) > -1);
 };
 
 // 限制选择时间
@@ -73,6 +74,7 @@ const FormCondition = ({
   layout = 'horizontal',
   initialValues = {},
 }) => {
+  const [cityObj, setCityObj] = useState({}); // 城市选择内容
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -155,6 +157,7 @@ const FormCondition = ({
         valuePropName,
         maxLength,
         visible = true,
+        hidden = false,
       } = item;
 
       let { extra } = item;
@@ -282,11 +285,10 @@ const FormCondition = ({
           <Cascader
             allowClear={false}
             fieldNames={item.options}
-            options={select}
+            options={item.select || CITYJSON}
             expandTrigger="hover"
-            showSearch={{
-              filter,
-            }}
+            onChange={(val, sele) => form.setFieldsValue({ [`city${item.name}`]: sele })}
+            showSearch={{ filter }}
             placeholder={item.placeholder || `请选择${label}`}
           />
         ),
@@ -335,6 +337,7 @@ const FormCondition = ({
             rules={[...rules, ...(addRules || [])]}
             valuePropName={valuePropName}
             {...initialValue}
+            hidden={hidden}
           >
             {component}
           </FormItem>

@@ -1,5 +1,7 @@
 import { Button } from 'antd';
+import CITYJSON from '@/common/city';
 import { PHONE_PATTERN } from '@/common/regExp';
+import aliOssUpload from '@/utils/aliOssUpload';
 
 const CityPartnerDetail = (props) => {
   const {
@@ -10,14 +12,33 @@ const CityPartnerDetail = (props) => {
 
   // 提交表单
   const fetchGetFormData = (values) => {
-    const { mark, moment } = values;
-    const couponBtn = [];
-    if (mark) couponBtn.push('mark');
-    if (moment) couponBtn.push('moment');
-    dispatch({
-      type: 'cityPartner/fetchProvComAdd',
-      payload: { ...values, couponChannels: couponBtn.toString() },
-      callback: () => childRef.current.fetchGetData(),
+    const {
+      businessLicense: { fileList: bfile },
+      identityPicture: { fileList: ifile },
+      joinTime: time,
+      citydistrictCode: city,
+      bankAreaCode,
+    } = values;
+    aliOssUpload({ fileList: [...bfile, ...ifile] }).then((res) => {
+      delete values.citydistrictCode;
+      dispatch({
+        type: 'cityPartner/fetchCityPartnerAdd',
+        payload: {
+          ...values,
+          businessLicense: res.slice(0, bfile.length).toString(),
+          identityPicture: res.slice(ifile.length).toString(),
+          joinTime: time[0].format('YYYY-MM-DD'),
+          joinEndTime: time[0].format('YYYY-MM-DD'),
+          bankAreaCode: bankAreaCode.toString(),
+          province_code: city[0].value,
+          province_name: city[0].label,
+          cityCode: city[1].value,
+          cityName: city[1].label,
+          districtCode: city[2].value,
+          districtName: city[2].label,
+        },
+        callback: () => childRef.current.fetchGetData(),
+      });
     });
   };
 
@@ -37,82 +58,103 @@ const CityPartnerDetail = (props) => {
     formItems: [
       {
         label: '姓名',
-        name: 'couponType',
-        render: () => '抵扣券',
+        name: 'partnerName',
       },
       {
         label: '手机号',
-        name: 'couponName',
+        name: 'partnerMobile',
         addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
       },
       {
         label: '身份证号',
         type: 'number',
-        name: 'couponValue',
+        name: 'identityCard',
       },
       {
         label: '企业名称',
-        name: 'activeDays',
+        name: 'companyName',
+      },
+      {
+        label: '企业地址',
+        name: 'address',
       },
       {
         label: '营业执照',
         type: 'upload',
-        name: 'mark',
+        name: 'businessLicense',
+        maxFile: 3,
       },
       {
         label: '身份证',
         type: 'upload',
-        name: 'marks',
+        name: 'identityPicture',
+        maxFile: 2,
+        show: false,
       },
       {
         label: '代理区域',
-        type: 'select',
-        name: 'marssks',
+        type: 'cascader',
+        name: 'districtCode',
+        render: (val, row) => `${row.provinceName} - ${row.cityName} - ${row.districtName}`,
+      },
+      {
+        label: '代理区域收集字段',
+        hidden: true,
+        show: false,
+        name: 'citydistrictCode',
       },
       {
         label: '加盟日期',
         type: 'rangePicker',
-        name: 'ada',
+        name: 'joinTime',
+        render: (val, row) => `${row.joinTime} ~ ${row.joinEndTime}`,
       },
       {
         label: '签约金额',
         type: 'number',
-        name: 'aasdada',
+        name: 'bond',
       },
       {
         title: '银行账号',
         label: '银行',
-        type: 'select',
-        name: 'asdsks',
+        name: 'bankName',
       },
       {
         label: '银行卡号',
-        name: 'asasdas',
+        name: 'bankNumber',
       },
       {
-        label: '开户城市',
-        name: 'as',
+        label: '开户省',
+        type: 'cascader',
+        select: CITYJSON.map((item) => {
+          if (item.level === '1') return { ...item, children: false };
+        }),
+        name: 'bankAreaCode',
       },
       {
-        label: '开户支行',
-        name: 'asssdda',
+        label: '行号',
+        name: 'bankSwiftCode',
       },
       {
         label: '开户姓名',
-        name: 'assda',
+        name: 'bankAccountName',
       },
       {
-        label: '绑定手机号',
-        name: 'assasdada',
+        label: '账号性质',
+        type: 'radio',
+        name: 'bankAccountType',
+        select: ['对私', '对公'],
+        render: (val, row) => ['对私', '对公'][val],
       },
       {
         title: '帐号密码',
         label: '登录帐号',
-        name: 'asdsasdks',
+        name: 'account',
       },
       {
         label: '登录密码',
-        name: 'asasadasdas',
+        name: 'password',
+        show: false,
       },
     ],
     onFinish: fetchGetFormData,

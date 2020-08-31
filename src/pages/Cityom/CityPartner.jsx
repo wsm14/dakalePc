@@ -17,21 +17,21 @@ const CityPartner = (props) => {
   const searchItems = [
     {
       label: '企业名称',
-      name: 'userMobile1s',
+      name: 'companyName',
     },
     {
       label: '手机号',
-      name: 'userMosbile1s',
+      name: 'mobile',
     },
     {
       label: '姓名',
-      name: 'userMobile1',
+      name: 'partnerName',
     },
     {
       label: '区域',
-      name: 'userMo',
-      type: 'select',
-      select: { list: [] },
+      name: 'city',
+      type: 'city',
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 
@@ -39,55 +39,55 @@ const CityPartner = (props) => {
   const getColumns = [
     {
       title: '姓名',
-      dataIndex: 'userId',
       fixed: 'left',
+      dataIndex: 'partnerName',
     },
     {
       title: '手机号',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'partnerMobile',
     },
     {
       title: '企业名称',
       align: 'center',
-      dataIndex: 'orderCount',
+      dataIndex: 'companyName',
     },
     {
       title: '代理区域',
       align: 'center',
-      dataIndex: 'aa',
+      dataIndex: 'districtName',
     },
     {
       title: '所在城市',
       align: 'center',
-      dataIndex: 'aaas',
+      dataIndex: 'cityName',
     },
     {
       title: '区域店铺数',
       align: 'center',
-      dataIndex: 'aaasdas',
+      dataIndex: 'merchantCount',
     },
     {
       title: '累计收益',
       align: 'right',
-      dataIndex: 'bb',
+      dataIndex: 'totalIncome',
     },
     {
       title: '累计提现',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'totalWithdrawal',
     },
     {
       title: '加盟日期',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'joinTime',
     },
     {
       title: '操作',
-      dataIndex: 'id',
       fixed: 'right',
       align: 'right',
+      dataIndex: 'partnerIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
@@ -103,7 +103,7 @@ const CityPartner = (props) => {
             },
             {
               type: 'info',
-              click: () => fetchProvComDetail({ type: 'income', record }),
+              click: () => handleSetActive(record),
             },
           ]}
         />
@@ -111,20 +111,11 @@ const CityPartner = (props) => {
     },
   ];
 
-  // 获取公司详情
-  const fetchProvComDetail = () => {
-    dispatch({
-      type: 'cityPartner/fetchProvComDetail',
-      payload: {},
-      callback: handleSetActive,
-    });
-  };
-
   // 设置
-  const handleSetActive = (initialValues) => {
+  const handleSetActive = (initialValues = '') => {
     dispatch({
       type: 'drawerForm/show',
-      payload: cityPartnerSet({ dispatch, childRef, payload: { initialValues: '' } }),
+      payload: cityPartnerSet({ dispatch, childRef, payload: { initialValues } }),
     });
   };
 
@@ -148,10 +139,9 @@ const CityPartner = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.partnerIdString}`}
         dispatchType="cityPartner/fetchGetList"
         {...list}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
       <CityPartnerDetailList visible={visible} setVisible={setVisible} />
     </>

@@ -36,6 +36,21 @@ export function fetchProvComAdd(data) {
   });
 }
 
+// get 城市合伙人 - 列表
+export function fetchCityPartnerList(params) {
+  return request('/admin/cityOperationManagement/listPartner', {
+    params,
+  });
+}
+
+// post 城市合伙人 - 新增
+export function fetchCityPartnerAdd(data) {
+  return request('/admin/cityOperationManagement/savePartner', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 加盟申请 - 列表
 export function fetchFranchiseAppList(params) {
   return request('/admin/cityOperationManagement/listUserApply', {
@@ -43,7 +58,7 @@ export function fetchFranchiseAppList(params) {
   });
 }
 
-// get 加盟申请 - 处理
+// post 加盟申请 - 处理
 export function fetchFranchiseHandle(data) {
   return request('/admin/cityOperationManagement/updateUserApply', {
     method: 'POST',

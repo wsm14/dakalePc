@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Descriptions, Upload, Modal } from 'antd';
+import { split } from 'lodash';
 
 /**
  *
@@ -48,6 +49,9 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
    * @param {*} fileObj 图片路径
    */
   const handleProps = (fileObj = '', name) => {
+    if (fileObj.indexOf(',') > -1) {
+      fileObj = fileObj.split(',');
+    }
     return {
       showUploadList: {
         showRemoveIcon: false,
@@ -65,25 +69,30 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
 
   // 遍历表单
   const getFields = () =>
-    formItems.map((item, i) => (
-      <Descriptions.Item label={item.label} key={`${item.label}${i}`}>
-        {item.type === 'upload' ? (
-          <Upload
-            {...handleProps(
-              item.initialValue ? item.initialValue : initialValues[item.name],
-              item.label,
+    formItems.map((item, i) => {
+      const { show = true } = item;
+      return (
+        show && (
+          <Descriptions.Item label={item.label} key={`${item.label}${i}`}>
+            {item.type === 'upload' ? (
+              <Upload
+                {...handleProps(
+                  item.initialValue ? item.initialValue : initialValues[item.name],
+                  item.label,
+                )}
+              />
+            ) : item.render ? (
+              item.render(initialValues[item.name], initialValues)
+            ) : item.initialValue ? (
+              item.initialValue
+            ) : (
+              initialValues[item.name]
             )}
-          />
-        ) : item.render ? (
-          item.render(initialValues[item.name], initialValues)
-        ) : item.initialValue ? (
-          item.initialValue
-        ) : (
-          initialValues[item.name]
-        )}
-        {item.children && <div>{item.children}</div>}
-      </Descriptions.Item>
-    ));
+            {item.children && <div>{item.children}</div>}
+          </Descriptions.Item>
+        )
+      );
+    });
 
   return (
     <>
