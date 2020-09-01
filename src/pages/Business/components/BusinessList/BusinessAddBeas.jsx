@@ -10,13 +10,11 @@ const BusinessAddBeas = (props) => {
   const [areaMust, setAreaMust] = useState(false);
   const [priceList, setPriceList] = useState([]);
 
-  // 选择商家后搜索商品分类
-  const handleSearchBrand = (merchantId) => {
+  // 获取品牌
+  const fetchGetBrandList = () => {
     dispatch({
-      type: 'businessList/fetchSearchBrand',
-      payload: {
-        merchantId,
-      },
+      type: 'businessBrand/fetchGetList',
+      payload: { page: 1, limit: 999 },
     });
   };
 
@@ -29,6 +27,10 @@ const BusinessAddBeas = (props) => {
       },
     });
   };
+
+  useEffect(() => {
+    fetchGetBrandList();
+  }, []);
 
   useEffect(() => {
     if (platformList.length)
@@ -59,11 +61,10 @@ const BusinessAddBeas = (props) => {
               filterOption={false}
               style={{ width: '70%', marginRight: 10 }}
               disabled={!brandMust}
-              onSearch={handleSearchBrand}
             >
-              {[{ name: 1, value: 2 }].map((item) => (
-                <Select.Option key={item.value} value={item.value}>
-                  {item.name}
+              {brandList.map((item) => (
+                <Select.Option key={item.id} value={item.id}>
+                  {item.brandName}
                 </Select.Option>
               ))}
             </Select>
@@ -162,9 +163,9 @@ const BusinessAddBeas = (props) => {
   return <FormCondition formItems={formItems} initialValues={initialValues} form={form} />;
 };
 
-export default connect(({ businessList, sysTradeList, loading }) => ({
+export default connect(({ businessBrand, sysTradeList, loading }) => ({
   loading,
   platformList: sysTradeList.detailList.list,
-  brandList: businessList.brandList.list,
+  brandList: businessBrand.list,
   tradeList: sysTradeList.list.list,
 }))(BusinessAddBeas);
