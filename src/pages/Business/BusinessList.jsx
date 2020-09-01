@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -11,7 +11,7 @@ import BusinessAdd from './components/BusinessList/BusinessAdd';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 
 const BusinessListComponent = (props) => {
-  const { businessList, loading, dispatch } = props;
+  const { businessList, tradeList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState({});
@@ -21,71 +21,67 @@ const BusinessListComponent = (props) => {
   const searchItems = [
     {
       label: '商户名称',
-      name: 'merchantId',
+      name: 'merchantName',
     },
     {
-      label: '商家账号',
-      name: 'mobile',
+      label: '商户账号',
+      name: 'account',
     },
     {
       label: '商户类型',
-      name: 'businessStsatus',
+      name: 'topCategoryId',
       type: 'select',
-      select: { list: [] },
+      loading: loading.models.sysTradeList,
+      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
     },
     {
       label: '经营状态',
+      name: 'status',
+      type: 'select',
+      select: { list: BUSINESS_DO_STATUS },
+    },
+    {
+      label: '店铺状态',
       name: 'businessStatus',
       type: 'select',
       select: { list: BUSINESS_STATUS },
     },
     {
-      label: '店铺状态',
-      name: 'status',
-      type: 'select',
-      select: { list: ACCOUNT_STATUS },
-    },
-    {
       label: '城市',
       type: 'city',
-      changeOnSelect: true,
       name: 'city',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '抽佣比例',
-      name: 'stssatus',
+      name: 'commissionRatio',
+    },
+    {
+      label: '账号状态',
+      name: 'status',
+      type: 'select',
+      select: { list: BUSINESS_ACCOUNT_STATUS },
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '商户ID',
+      title: '商户账号',
       fixed: 'left',
-      dataIndex: 'merchantId',
+      dataIndex: 'account',
     },
     {
-      title: '商户名称',
+      title: '商户简称',
       fixed: 'left',
       dataIndex: 'merchantName',
       render: (val) => val || '暂未授权',
     },
     {
-      title: '商户账号',
-      align: 'center',
-      dataIndex: 'mobile',
-    },
-    {
-      title: '商家类型',
-      align: 'center',
-      dataIndex: 'topCategoryName',
-      render: (val) => val || '-',
-    },
-    {
       title: '所在城市',
       align: 'center',
       dataIndex: 'cityName',
-      render: (val) => val || '-',
     },
     {
       title: '详细地址',
@@ -98,25 +94,44 @@ const BusinessListComponent = (props) => {
       ),
     },
     {
-      title: '抽佣比例',
-      align: 'right',
-      dataIndex: 'addsress',
+      title: '经营类目',
+      align: 'center',
+      dataIndex: 'categoryName',
+      render: (val) => val || '-',
+    },
+    {
+      title: '经营面积',
+      align: 'center',
+      dataIndex: 'businessArea',
+      render: (val) => val || '--',
+    },
+    {
+      title: '服务费',
+      align: 'center',
+      dataIndex: 'commissionRatio',
+      render: (val) => `${val}%`,
+    },
+    {
+      title: '账号状态',
+      align: 'center',
+      dataIndex: 'accountStatus',
+      render: (val) => BUSINESS_ACCOUNT_STATUS[val],
     },
     {
       title: '经营状态',
       align: 'center',
-      dataIndex: 'businessStatus',
-      render: (val) => BUSINESS_STATUS[val],
+      dataIndex: 'bankStatus',
+      render: (val) => BUSINESS_DO_STATUS[val],
     },
     {
       title: '店铺状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => ACCOUNT_STATUS[val],
+      render: (val) => BUSINESS_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'userMerchantIdString',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
@@ -136,6 +151,13 @@ const BusinessListComponent = (props) => {
     },
   ];
 
+  // 品牌类型列表
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
   // 获取商家详情
   const fetchGetDetail = (merchantId) => {
     dispatch({
@@ -153,6 +175,10 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   return (
     <>
       <BusinessTotalInfo
@@ -164,10 +190,10 @@ const BusinessListComponent = (props) => {
       ></BusinessTotalInfo>
       <DataTableBlock
         cRef={childRef}
-        loading={loading}
+        loading={loading.models.businessList}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.merchantId}`}
+        rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="businessList/fetchGetList"
         {...businessList}
       ></DataTableBlock>
@@ -185,7 +211,8 @@ const BusinessListComponent = (props) => {
   );
 };
 
-export default connect(({ businessList, loading }) => ({
+export default connect(({ businessList, sysTradeList, loading }) => ({
   businessList,
-  loading: loading.models.businessList,
+  tradeList: sysTradeList.list.list,
+  loading,
 }))(BusinessListComponent);

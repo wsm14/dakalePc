@@ -31,8 +31,14 @@ export const MENU_STATUS = ['禁用', '启用'];
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
 
-// 商铺状态
-export const BUSINESS_STATUS = ['暂停营业', '营业'];
+// 商户 营业状态
+export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
+
+// 商户 账户状态
+export const BUSINESS_ACCOUNT_STATUS = ['未激活', '已激活'];
+
+// 商户 店铺状态
+export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = [false, '审核中', '审核驳回', '审核通过'];

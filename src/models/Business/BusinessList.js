@@ -36,8 +36,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.userMerchantList,
-          total: content.total,
+          list: content.recordList,
         },
       });
     },
