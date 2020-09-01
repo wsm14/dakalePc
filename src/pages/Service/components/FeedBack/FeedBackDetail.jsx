@@ -11,15 +11,15 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
   const description = [
     {
       label: '反馈人',
-      name: 'wakeUpSignBeanAmount',
+      name: 'userName',
     },
     {
       label: '反馈时间',
-      name: 'wakeUpSigmount',
+      name: 'createTime',
     },
     {
       label: '内容描述',
-      name: 'wakeeanAmount',
+      name: 'problemDesc',
     },
   ];
 
@@ -27,7 +27,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     {
       type: 'textArea',
       label: '回复内容',
-      name: 'description',
+      name: 'replay',
       maxLength: 100,
     },
   ];
@@ -37,6 +37,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
       dispatch({
         type: 'serviceFeedBack/fetchFeedBackPush',
         payload: {
+          feedbackId: info.feedbackIdString,
           ...values,
         },
         callback: () => {
@@ -60,9 +61,11 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={onClose}>关闭</Button>
-            <Button onClick={handleFinish} type="primary" loading={loading}>
-              确认回复
-            </Button>
+            {info && info.status !== '2' && (
+              <Button onClick={handleFinish} type="primary" loading={loading}>
+                确认回复
+              </Button>
+            )}
           </Space>
         </div>
       }
@@ -72,17 +75,29 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
         <DescriptionsCondition
           formItems={[
             {
+              label: '回复人',
+              name: 'operator',
+              render: (val) => (val ? val : '暂无'),
+            },
+            {
+              label: '回复时间',
+              name: 'replayTime',
+              render: (val) => (val ? val : '暂无'),
+            },
+            {
               label: '客服回复',
-              name: 'wakeUpSignBeanAmount',
+              name: 'replay',
               render: (val) => (val ? val : '暂无'),
             },
           ]}
           initialValues={info}
         ></DescriptionsCondition>
       </div>
-      <div style={{ position: 'fixed', width: 512, bottom: 60 }}>
-        <FormCondition formItems={formItems} form={form} />
-      </div>
+      {info && info.status !== '2' && (
+        <div style={{ position: 'fixed', width: 512, bottom: 60 }}>
+          <FormCondition formItems={formItems} form={form} />
+        </div>
+      )}
     </Drawer>
   );
 };

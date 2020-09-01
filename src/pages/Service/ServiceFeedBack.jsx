@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { ACTIVITY_STATUS } from '@/common/constant';
+import { FEEDBACK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -16,13 +16,13 @@ const ServiceFeedBack = (props) => {
   const searchItems = [
     {
       label: '反馈人',
-      name: 'userMobile1s',
+      name: 'username',
     },
     {
       label: '问题状态',
-      name: 'userMosbile1s',
+      name: 'status',
       type: 'select',
-      select: { list: ACTIVITY_STATUS },
+      select: { list: FEEDBACK_STATUS },
     },
   ];
 
@@ -30,17 +30,18 @@ const ServiceFeedBack = (props) => {
   const getColumns = [
     {
       title: '反馈人',
-      dataIndex: 'userId',
+      dataIndex: 'userName',
     },
     {
       title: '身份',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'userType',
+      render: (val) => (val === 'user' ? '用户' : '商家'),
     },
     {
       title: '问题描述',
       align: 'left',
-      dataIndex: 'orderCount',
+      dataIndex: 'problemDesc',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val}
@@ -50,59 +51,51 @@ const ServiceFeedBack = (props) => {
     {
       title: '反馈时间',
       align: 'left',
-      dataIndex: 'orderTotal',
+      dataIndex: 'createTime',
     },
     {
       title: '问题状态',
       align: 'left',
-      dataIndex: 'parkName',
-      render: (val) => ACTIVITY_STATUS[val],
+      dataIndex: 'status',
+      render: (val) => FEEDBACK_STATUS[val],
     },
     {
       title: '操作人',
       align: 'center',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'operator',
       render: (val) => (val ? val : '--'),
     },
     {
       title: '操作时间',
       align: 'center',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'replayTime',
       render: (val) => (val ? val : '--'),
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'feedbackIdString',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => (
+      render: (val, info) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
               title: '查看',
-              click: () => fetchFeedBackDetail(val),
+              visible: info.status === '2',
+              click: () => setVisible({ show: true, info }),
             },
             {
               type: 'own',
               title: '回复',
-              click: () => fetchFeedBackDetail(val),
+              visible: info.status !== '2',
+              click: () => setVisible({ show: true, info }),
             },
           ]}
         />
       ),
     },
   ];
-
-  // 获取反馈详情
-  const fetchFeedBackDetail = (val) => {
-    console.log(val);
-    // dispatch({
-    //   type: 'serviceFeedBack/fetchFeedBackDetail',
-    //   payload: { val },
-    //   callback: (info) => setVisible({show: true, info}),
-    // });
-  };
 
   return (
     <>
@@ -111,10 +104,9 @@ const ServiceFeedBack = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.feedbackIdString}`}
         dispatchType="serviceFeedBack/fetchGetList"
         {...list}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
       <FeedBackDetail
         cRef={childRef}
