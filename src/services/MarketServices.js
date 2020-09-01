@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// get 卡豆乐园 - 挑战赛 - 统计数据
+export async function fetchMarketRMTotal(params) {
+  return request('/admin/marketingManagement/matchStatistic', {
+    params,
+  });
+}
+
 // get 卡豆乐园 - 挑战赛列表
 export async function fetchMarketMatch(params) {
   return request('/admin/marketingManagement/pageUserMatchByDateAndType', {

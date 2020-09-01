@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchMarketMatch,
+  fetchMarketRMTotal,
   fetchMarketMatchJoin,
   fetchMarketMatchMorningSet,
   fetchMarketMatchRuningSet,
@@ -33,6 +34,17 @@ export default {
         type: 'save',
         payload: {
           matchList: { list: content.record, total: content.total },
+        },
+      });
+    },
+    *fetchMarketRMTotal({ payload }, { call, put }) {
+      const response = yield call(fetchMarketRMTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content,
         },
       });
     },
