@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
-import { MATCH_USER_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
 import MasterOrderDetail from './MasterOrderDetail';
@@ -14,13 +13,13 @@ const MasterDetail = (props) => {
   // table
   const propItem = {
     family: {
-      title: `家人明细 - 家主ID：0001 用户/商户名：小王 累计邀请家人：1200人`,
-      rowKey: '',
+      title: `家人明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计邀请家人：${record.totalFamilyUser}人`,
+      rowKey: 'userIdString',
       getColumns: [
         {
           title: '用户ID',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'userIdString',
         },
         {
           title: '昵称',
@@ -30,61 +29,59 @@ const MasterDetail = (props) => {
         {
           title: '手机号',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'mobile',
         },
         {
           title: '性别',
           align: 'center',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'gender',
+          render: (val) => ({ M: '女', F: '男', '': '--' }[val]),
         },
         {
           title: '坐标',
           align: 'center',
-          dataIndex: 'signDate',
+          dataIndex: 'residentAddress',
         },
         {
           title: '注册时间',
           align: 'center',
-          dataIndex: 'process',
-          render: (val) => val || '--',
+          dataIndex: 'createTime',
         },
       ],
     },
     shop: {
-      title: `家主明细 - 家主ID：0001 用户/商户名：小王的店 累计邀请家店：1200家`,
-      rowKey: '',
+      title: `家店明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计邀请家店：${record.totalFamilyMerchant}家`,
+      rowKey: 'userMerchantIdString',
       getColumns: [
         {
           title: '商户ID',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'userMerchantIdString',
         },
         {
           title: '商家名称',
           align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'merchantName',
         },
         {
           title: '商家账号',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'account',
         },
         {
           title: '商家类型',
           align: 'center',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'topCategoryName',
         },
         {
           title: '所在城市',
           align: 'center',
-          dataIndex: 'signDate',
+          dataIndex: 'cityName',
         },
         {
           title: '详细地址',
           align: 'center',
-          dataIndex: 'process',
+          dataIndex: 'address',
           render: (val) => (
             <Ellipsis length={10} tooltip>
               {val || '-'}
@@ -94,46 +91,46 @@ const MasterDetail = (props) => {
         {
           title: '入驻时间',
           align: 'center',
-          dataIndex: 'processs',
+          dataIndex: 'createTime',
         },
       ],
     },
     income: {
-      title: `收益明细 - 家主ID：0001 用户/商户名：小王 累计收益：1200卡豆`,
-      rowKey: '',
+      title: `收益明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计收益：${record.totalAdd}卡豆`,
+      rowKey: 'detailOrder',
       getColumns: [
         {
           title: '日期',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'createTime',
         },
         {
           title: '事件',
           align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'detailTitle',
         },
         {
           title: '卡豆明细',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'beanAmount',
         },
         {
           title: '关联用户',
           align: 'center',
-          dataIndex: 'earnBeanAmount',
+          dataIndex: 'relatedUser',
           render: (val) => val || '--',
         },
         {
           title: '关联商户',
           align: 'center',
-          dataIndex: 'signDate',
+          dataIndex: 'relatedMerchant',
           render: (val) => val || '--',
         },
         {
           title: '关联订单',
           align: 'center',
-          dataIndex: 'order',
-          render: (val, record) => <MasterOrderDetail order={val} />,
+          dataIndex: 'detailOrder',
+          render: (val) => <MasterOrderDetail order={val} />,
         },
       ],
     },
@@ -153,7 +150,11 @@ const MasterDetail = (props) => {
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type }}
+        params={{
+          type,
+          userType: record.userType,
+          [{ family: 'ownerId', shop: 'ownerId', income: 'identifyId' }[type]]: record.id,
+        }}
         dispatchType="circleMaster/fetchDetailList"
         componentSize="middle"
         {...detailList}

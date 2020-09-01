@@ -76,6 +76,12 @@ export const CHECKIN_TYPE = [
   { value: 'habit', name: '习惯打卡' },
 ];
 
+// 用户类型
+export const MASTER_TYPE = [
+  { value: 'user', name: '用户' },
+  { value: 'merchant', name: '商家' },
+];
+
 // 默认起始结束时间
 const now = new Date();
 export const INIT_END_TIME = moment(now, 'YYYY-MM-DD');

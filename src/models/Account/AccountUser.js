@@ -27,7 +27,7 @@ export default {
       return {
         ...state,
         ...payload,
-        detailPay: { list: [], total: 0 },
+        detailList: { list: [], total: 0 },
       };
     },
   },

@@ -1,6 +1,6 @@
 import {
-  fetchMasterList,
   fetchMasterTotal,
+  fetchMasterList,
   fetchMasterFamily,
   fetchMasterShop,
   fetchMasterIncomeDetails,
@@ -28,7 +28,7 @@ export default {
       return {
         ...state,
         ...payload,
-        detailPay: { list: [], total: 0 },
+        detailList: { list: [], total: 0 },
       };
     },
   },
@@ -41,7 +41,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          master: { list: content.userMerchantList, total: content.total },
+          masterList: { list: content.voList, total: content.total },
         },
       });
     },
@@ -59,7 +59,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.userMerchantList, total: content.total },
+          detailList: { list: content.recordList, total: content.total },
         },
       });
     },

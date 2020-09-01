@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
+import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { ACCOUNT_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
 import MasterDetailList from './components/Master/MasterDetailList';
 
@@ -15,17 +15,17 @@ const CircleMasterList = (props) => {
   const searchItems = [
     {
       label: '身份',
-      name: 'userMobile1s',
+      name: 'userType',
       type: 'select',
-      select: { list: ACCOUNT_STATUS },
+      select: { list: MASTER_TYPE },
     },
     {
       label: '商户名',
-      name: 'userMosbile1s',
+      name: 'name',
     },
     {
       label: '手机号',
-      name: 'userMobile1',
+      name: 'mobile',
     },
   ];
 
@@ -33,39 +33,39 @@ const CircleMasterList = (props) => {
   const getColumns = [
     {
       title: '名称',
-      dataIndex: 'userId',
       fixed: 'left',
+      dataIndex: 'name',
     },
     {
       title: '身份',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'phoneNumber',
-      render: (val) => BUSINESS_STATUS[val],
+      dataIndex: 'userType',
+      render: (val) => (val === 'user' ? '用户' : '商户'),
     },
     {
       title: '手机号',
       align: 'center',
-      dataIndex: 'orderCount',
+      dataIndex: 'mobile',
     },
     {
       title: '家人数',
       align: 'right',
-      dataIndex: 'aa',
+      dataIndex: 'totalFamilyUser',
       render: (val, record) =>
         val > 0 ? <a onClick={() => setVisible({ type: 'family', record })}>{val}</a> : 0,
     },
     {
       title: '家店数',
       align: 'right',
-      dataIndex: 'bb',
+      dataIndex: 'totalFamilyMerchant',
       render: (val, record) =>
         val > 0 ? <a onClick={() => setVisible({ type: 'shop', record })}>{val}</a> : 0,
     },
     {
       title: '累计收益（卡豆）',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'totalAdd',
     },
     {
       title: '操作',
@@ -99,7 +99,8 @@ const CircleMasterList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.id}`}
+        params={{ userType: 'user' }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
       ></DataTableBlock>

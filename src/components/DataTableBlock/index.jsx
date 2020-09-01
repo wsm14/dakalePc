@@ -62,8 +62,8 @@ const DataTableBlockComponent = ({
         payload: {
           page: current,
           limit: pageSize,
-          ...searchData,
           ...params,
+          ...searchData,
         },
       });
   };

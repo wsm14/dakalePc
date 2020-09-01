@@ -84,7 +84,7 @@ const MasterTotalInfo = ({ dispatch, loading, totalData }) => {
       </Row>
       <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
         {rankingData.map((data) => (
-          <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+          <Col key={data.title} xl={8} lg={12} md={12} sm={24} xs={24}>
             <Card bodyStyle={{ height: 267 }} loading={loading}>
               <div className={styles.salesRank}>
                 <h4 className={styles.rankingTitle}>{data.title}</h4>
