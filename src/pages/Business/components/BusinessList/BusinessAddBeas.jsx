@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Form, Select, Switch } from 'antd';
-import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
-import QuestionTooltip from '@/components/QuestionTooltip';
 
 const BusinessAddBeas = (props) => {
-  const { dispatch, initialValues, form, loading, brandList } = props;
+  const { dispatch, initialValues = {}, form, loading, brandList, platformList, tradeList } = props;
 
   const [brandMust, setBrandMust] = useState(!initialValues.otherBrand);
+  const [areaMust, setAreaMust] = useState(false);
+  const [priceList, setPriceList] = useState([]);
 
   // 选择商家后搜索商品分类
   const handleSearchBrand = (merchantId) => {
@@ -20,16 +20,38 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取平台服务费
+  const fetchGetPlatform = (categoryId) => {
+    dispatch({
+      type: 'sysTradeList/fetchTradePlatformList',
+      payload: {
+        categoryId,
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (platformList.length)
+      if (platformList[0].type === 'no') {
+        setPriceList(
+          platformList[0].merchantSettleObjects.map((item) => ({
+            value: item.serviceFee,
+            name: `${item.serviceFee}%`,
+          })),
+        );
+      }
+  }, [platformList]);
+
   const formItems = [
     {
       title: '01 商户信息',
       label: '品牌名称',
       type: 'children',
       rules: 'false',
-      required: true,
+      required: false,
       children: (
         <>
-          <Form.Item name="brand" noStyle rules={[{ required: brandMust, message: '请选择品牌' }]}>
+          <Form.Item name="brand" noStyle rules={[{ required: false, message: '请选择品牌' }]}>
             <Select
               showSearch
               placeholder="请搜索并选择你所属的品牌"
@@ -60,35 +82,14 @@ const BusinessAddBeas = (props) => {
       ),
     },
     {
-      label: '商户名称',
+      label: '商户简称',
       name: 'activityBseginTime',
-      placeholder: '请输入营业执照上的名称',
-    },
-    {
-      label: '经营类目',
-      type: 'select',
-      type: 'cascader',
-      name: 'description',
-      select: [],
-    },
-    {
-      label: '店铺面积',
-      type: 'select',
-      name: 'dessdcription',
-      select: [2],
-    },
-    {
-      label: '服务费',
-      type: 'select',
-      name: 'dession',
-      select: [3],
+      placeholder: '如：一点点城西店',
     },
     {
       label: '省市区',
-      type: 'select',
       type: 'cascader',
       name: 'dessioasdn',
-      select: [],
     },
     {
       label: '详细地址',
@@ -100,32 +101,7 @@ const BusinessAddBeas = (props) => {
       type: 'number',
     },
     {
-      title: '02 联系人信息',
-      label: '姓名',
-      name: 'dedaasdn',
-    },
-    {
-      label: '手机号',
-      name: 'dedaddsdn',
-      type: 'number',
-      addRules: [{ pattern: PHONE_PATTERN, message: '请填写正确手机号' }],
-    },
-    {
-      title: '03 店铺照片信息',
-      label: (
-        <QuestionTooltip
-          title="店铺门头照"
-          type="eye"
-          placement="right"
-          overlayStyle={{ maxWidth: 350 }}
-          content={
-            <img
-              src="https://resource.dakale.net/image/029C99E2-0E1E-417F-811E-E06C22D622FA.jpg"
-              style={{ width: '100%' }}
-            ></img>
-          }
-        />
-      ),
+      label: '店铺门头照',
       name: 'deasddaasdn',
       type: 'upload',
       maxFile: 1,
@@ -133,39 +109,62 @@ const BusinessAddBeas = (props) => {
       rules: [{ required: true, message: `请确认店铺门头照` }],
     },
     {
-      label: (
-        <QuestionTooltip
-          title="店内实景照"
-          type="eye"
-          overlayStyle={{ maxWidth: 350 }}
-          placement="right"
-          content={
-            <img
-              src="https://resource.dakale.net/image/029C99E2-0E1E-417F-811E-E06C22D622FA.jpg"
-              style={{ width: '100%' }}
-            ></img>
-          }
-        />
-      ),
+      label: '店内实景照',
       name: 'dedasdaaddsdn',
       type: 'upload',
       maxFile: 3,
       extra: '最多上传 3 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
       rules: [{ required: true, message: `请确认店内实景照` }],
     },
+    {
+      label: '经营类目',
+      type: 'cascader',
+      name: 'description',
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'id', children: 'categoryDTOList' },
+      onChange: (val) => {
+        setPriceList([]);
+        setAreaMust(val[0] === 1);
+        fetchGetPlatform(val[0]);
+        form.setFieldsValue({ dession: undefined });
+      },
+    },
+    {
+      label: '店铺面积',
+      type: 'select',
+      visible: areaMust,
+      loading: loading.models.sysTradeList,
+      name: 'dessdcription',
+      select: platformList.map((item) => ({
+        value: item.configMerchantSettleIdString,
+        name: item.typeContent,
+      })),
+      onChange: (val) => {
+        form.setFieldsValue({ dession: undefined });
+        const plist = platformList.filter((i) => i.configMerchantSettleIdString === val)[0];
+        setPriceList(
+          plist.merchantSettleObjects.map((item) => ({
+            value: item.serviceFee,
+            name: `${item.serviceFee}%`,
+          })),
+        );
+      },
+    },
+    {
+      label: '服务费',
+      type: 'select',
+      name: 'dession',
+      loading: loading.models.sysTradeList,
+      select: priceList,
+    },
   ];
 
-  return (
-    <FormCondition
-      formItems={formItems}
-      initialValues={initialValues}
-      form={form}
-      loading={loading}
-    />
-  );
+  return <FormCondition formItems={formItems} initialValues={initialValues} form={form} />;
 };
 
-export default connect(({ businessList, loading }) => ({
+export default connect(({ businessList, sysTradeList, loading }) => ({
+  loading,
+  platformList: sysTradeList.detailList.list,
   brandList: businessList.brandList.list,
-  loading: loading.models.businessList,
+  tradeList: sysTradeList.list.list,
 }))(BusinessAddBeas);

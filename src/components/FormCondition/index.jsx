@@ -57,8 +57,8 @@ const uploadButton = (
 );
 
 // Cascader搜索筛选
-const filter = (inputValue, path) => {
-  return path.some((option) => option.label.indexOf(inputValue) > -1);
+const filter = (inputValue, path, label = 'label') => {
+  return path.some((option) => option[label].indexOf(inputValue) > -1);
 };
 
 // 限制选择时间
@@ -227,6 +227,7 @@ const FormCondition = ({
         select: (
           <Select
             showSearch
+            loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}
             filterOption={item.filterOption || false}
@@ -284,11 +285,15 @@ const FormCondition = ({
         cascader: (
           <Cascader
             allowClear={false}
-            fieldNames={item.options}
+            fieldNames={item.fieldNames}
             options={item.select || CITYJSON}
             expandTrigger="hover"
             onChange={(val, sele) => form.setFieldsValue({ [`city${item.name}`]: sele })}
-            showSearch={{ filter }}
+            showSearch={{
+              filter: (inputValue, path) =>
+                filter(inputValue, path, item.fieldNames ? item.fieldNames.label : 'label'),
+            }}
+            onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}
           />
         ),
