@@ -71,7 +71,13 @@ const SearchCondition = (props) => {
         const { select } = item;
         initialValue = select.defaultValue || '';
         component = (
-          <Select style={{ width: '100%' }} placeholder={item.placeholder || `请选择`}>
+          <Select
+            showSearch
+            optionFilterProp="children"
+            loading={item.loading}
+            style={{ width: '100%' }}
+            placeholder={item.placeholder || `请选择`}
+          >
             <Option value={initialValue}>全部</Option>
             {select.list.map((data, j) => {
               if (data) {

@@ -74,3 +74,19 @@ export function fetchMerSaleAudit(data) {
     data,
   });
 }
+
+// get 品牌 - 品牌列表
+export function fetchMerBrandList(params) {
+  return request('/admin/merchantManagement/listConfigBrand', {
+    params,
+  });
+}
+
+// post 品牌 - 品牌新增
+export function fetchMerBrandAdd(data) {
+  return request('/admin/merchantManagement/saveConfigBrand', {
+    method: 'POST',
+    data,
+  });
+}
+

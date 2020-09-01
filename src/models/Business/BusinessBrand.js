@@ -1,8 +1,7 @@
 import { notification } from 'antd';
 import {
-  fetchMerchantAuditList,
-  fetchMerchantAuditDetail,
-  fetchMerSaleAudit,
+  fetchMerBrandList,
+  fetchMerBrandAdd,
 } from '@/services/BusinessServices';
 
 export default {
@@ -24,29 +23,23 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchMerchantAuditList, payload);
+      const response = yield call(fetchMerBrandList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: content.merchantVerifyList,
+          list: content.recordList,
           total: content.total,
         },
       });
     },
-    *fetchMerchantAuditDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerchantAuditDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.userMerchantVerify);
-    },
-    *fetchMerSaleAudit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerSaleAudit, payload);
+    *fetchMerBrandAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerBrandAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商家审核完成',
+        description: '品牌新增成功',
       });
       callback();
     },

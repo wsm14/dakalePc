@@ -1,26 +1,26 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { BUSINESS_STATUS } from '@/common/constant';
+import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessBrandSet from './components/Brand/BusinessBrandSet';
 
 const BusinessBrandComponent = (props) => {
-  const { businessBrand, loading, dispatch } = props;
+  const { businessBrand, tradeList, loading, dispatch } = props;
 
   const childRef = useRef();
-
   // 搜索参数
   const searchItems = [
     {
       label: '品牌名称',
-      name: 'merchantId',
+      name: 'brandName',
     },
     {
       label: '品牌类型',
       name: 'businessStatus',
+      loading: loading.models.sysTradeList,
       type: 'select',
-      select: { list: BUSINESS_STATUS },
+      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
     },
   ];
 
@@ -29,28 +29,39 @@ const BusinessBrandComponent = (props) => {
     {
       title: '品牌logo',
       align: 'center',
-      dataIndex: 'merchantId',
+      dataIndex: 'brandLogo',
+      render: (val) => <PopImgShow url={val} />,
     },
     {
       title: '品牌名',
       align: 'center',
-      dataIndex: 'merchantName',
-      render: (val) => val || '暂未授权',
+      dataIndex: 'brandName',
     },
     {
       title: '品牌类型',
       align: 'center',
-      dataIndex: 'mobile',
+      dataIndex: 'categoryName',
     },
   ];
+
+  // 品牌类型列表
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
 
   // 品牌新增
   const handleBrandSet = () => {
     dispatch({
       type: 'drawerForm/show',
-      payload: businessBrandSet({ dispatch, childRef }),
+      payload: businessBrandSet({ dispatch, childRef, tradeList }),
     });
   };
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
 
   return (
     <DataTableBlock
@@ -60,17 +71,18 @@ const BusinessBrandComponent = (props) => {
         </Button>
       }
       cRef={childRef}
-      loading={loading}
+      loading={loading.models.businessBrand}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.merchantName}`}
+      rowKey={(record) => `${record.id}`}
       dispatchType="businessBrand/fetchGetList"
       {...businessBrand}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ businessBrand, loading }) => ({
+export default connect(({ businessBrand, sysTradeList, loading }) => ({
   businessBrand,
-  loading: loading.models.businessBrand,
+  tradeList: sysTradeList.list.list,
+  loading,
 }))(BusinessBrandComponent);

@@ -1,18 +1,20 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const BusinessBrandSet = (props) => {
-  const { dispatch, childRef } = props;
+  const { dispatch, childRef, tradeList } = props;
 
-  // 新增活动
-  const fetchMarketActivityAdd = (values) => {
-    const {
-      activityBanner: { fileList },
-    } = values;
+  // 新增
+  const fetchMerBrandAdd = (values) => {
+    const { brandLogo, categoryId } = values;
 
-    aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
+    aliOssUpload(brandLogo).then((res) => {
       dispatch({
-        type: 'businessBrand/fetchMarketActivityAdd',
-        payload: { ...payload, activityBanner: res.toString() },
+        type: 'businessBrand/fetchMerBrandAdd',
+        payload: {
+          ...values,
+          categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
+          brandLogo: res.toString(),
+        },
         callback: () => childRef.current.fetchGetData(),
       });
     });
@@ -27,21 +29,21 @@ const BusinessBrandSet = (props) => {
       {
         label: '品牌logo',
         type: 'upload',
-        name: 'activityBanner',
+        name: 'brandLogo',
         maxFile: 1,
       },
       {
         label: '品牌名',
-        name: 'activityBeginTime',
+        name: 'brandName',
       },
       {
         label: '品牌类型',
         type: 'select',
-        name: 'categoryCustomId',
-        select: [],
+        name: 'categoryId',
+        select: tradeList.map((item) => ({ name: item.categoryName, value: item.id })),
       },
     ],
-    onFinish: fetchMarketActivityAdd,
+    onFinish: fetchMerBrandAdd,
     ...props,
   };
 };
