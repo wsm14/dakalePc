@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form } from 'antd';
 import BusinessAddBeas from './BusinessAddBeas';

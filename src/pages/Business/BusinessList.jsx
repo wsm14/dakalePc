@@ -139,7 +139,7 @@ const BusinessListComponent = (props) => {
           formItems={[
             {
               type: 'info',
-              click: () => fetchGetDetail(record.merchantId),
+              click: () => fetchGetDetail(val),
             },
             {
               type: 'set',

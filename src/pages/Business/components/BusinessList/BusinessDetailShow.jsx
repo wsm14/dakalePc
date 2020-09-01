@@ -1,21 +1,37 @@
-import { Button, Modal } from 'antd';
-import { BUSINESS_STATUS, ACCOUNT_STATUS } from '@/common/constant';
+import React from 'react';
+import { connect } from 'dva';
+import { Drawer, Button, Space, Form } from 'antd';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 
-const UserDetailShow = (props) => {
-  const { dispatch, childRef, initialValues } = props;
-  const {
-    status,
-    businessStatus,
-    merchantId,
-    interiorImg,
-    businessLicense: limg,
-    businessPermit: pimg,
-  } = initialValues;
+const BusinessDetailShow = (props) => {
+  const { dispatch, childRef, initialValues, onClose } = props;
 
-  const statusNum = Number(status);
-  const businessStatusNum = Number(businessStatus);
-  const statusText = !statusNum ? '启用' : '禁用';
-  const businessStatusText = !businessStatusNum ? '营业' : '停业';
+  const [form] = Form.useForm();
+
+  // 提交
+  const fetchFormData = () => {
+    form.validateFields().then((values) => {
+      console.log(values);
+      // dispatch({
+      //   type: 'businessList/fetchMerchantSet',
+      //   payload: {
+      //     ...values,
+      //   },
+      //   callback: () => {
+      //     onClose();
+      //     cRef.current.fetchGetData();
+      //   },
+      // });
+    });
+  };
+
+  const modalProps = {
+    title: `设置 - ${record.merchantName}`,
+    width: 560,
+    visible,
+    maskClosable: true,
+    destroyOnClose: true,
+  };
 
   const handleMerStatus = () => {
     Modal.confirm({
@@ -47,60 +63,32 @@ const UserDetailShow = (props) => {
     });
   };
 
-  return {
-    type: 'Drawer',
-    showType: 'info',
-    width: 600,
-    title: '商户详情',
-    loadingModels: 'businessList',
-    formItems: [
-      { label: '所在城市', name: 'profisle' },
-      { label: '门店名称', name: 'merchantName' },
-      { label: '门店电话', name: 'telephone' },
-      { label: '所在商圈', name: 'businessHub' },
-      { label: '门店地址', name: 'address' },
-      { label: '品牌名称', name: 'topCategoryName' },
-      { label: '经营品类', name: 'categoryName' },
-      { label: '平台服务费', name: 'categosryName' },
-      { label: '联系人信息', name: 'mobilse' },
-      {
-        label: '经营状态',
-        name: 'businessStatus',
-        render: (val) => (val ? BUSINESS_STATUS[val] : '-'),
-      },
-      { label: '店铺状态', name: 'status', render: (val) => ACCOUNT_STATUS[val] },
-      { label: '店铺门头照', name: 'coverImg', type: 'upload' },
-      {
-        label: '店铺内景照',
-        name: 'interiorImg',
-        type: 'upload',
-        initialValue: interiorImg && interiorImg.split(','),
-      },
-      {
-        label: '营业执照',
-        name: 'businessLicenseImg',
-        type: 'upload',
-        initialValue: limg && JSON.parse(limg).businessLicenseImg,
-        children: `aasdas`,
-      },
-      {
-        label: '经营许可证',
-        name: 'businessLicense',
-        type: 'upload',
-        initialValue: pimg && JSON.parse(pimg).businessPermitImg,
-        children: `aasdas`,
-      },
-    ],
-    footerBtn: (loading) => [
-      <Button key="1" type="primary" onClick={handleMerSaleStatus} loading={loading}>
-        {businessStatusText}
-      </Button>,
-      <Button key="2" type="primary" onClick={handleMerStatus} loading={loading}>
-        {statusText}
-      </Button>,
-    ],
-    ...props,
-  };
+  return (
+    <Drawer
+      {...modalProps}
+      onClose={onClose}
+      bodyStyle={{ paddingBottom: 80 }}
+      footer={
+        <div style={{ textAlign: 'right' }}>
+          <Space>
+            <Button onClick={onClose}>取消</Button>
+            <Button type="primary" loading={loading}>
+              确认
+            </Button>
+          </Space>
+        </div>
+      }
+    >
+      {/* <DescriptionsCondition
+        formItems={formItems}
+        initialValues={initialValues}
+        form={form}
+        loading={loading}
+      /> */}
+    </Drawer>
+  );
 };
 
-export default UserDetailShow;
+export default connect(({ loading }) => ({
+  loading: loading.effects['businessList/fetchMerchantSet'],
+}))(BusinessDetailShow);
