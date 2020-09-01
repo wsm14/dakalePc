@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form } from 'antd';
 import { NUM_INT } from '@/common/regExp';
-import moment from 'moment';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 

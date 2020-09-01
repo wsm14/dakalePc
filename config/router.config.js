@@ -62,6 +62,11 @@ export default [
             component: './Business/BusinessAudit',
           },
           {
+            path: '/business/register',
+            name: '注册列表',
+            component: './Business/BusinessRegister',
+          },
+          {
             path: '/business/brand',
             name: '品牌',
             component: './Business/BusinessBrand',

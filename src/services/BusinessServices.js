@@ -90,3 +90,9 @@ export function fetchMerBrandAdd(data) {
   });
 }
 
+// get 注册列表 - 列表
+export function fetchMerRegisterList(params) {
+  return request('/admin/merchantManagement/listConfigBrand', {
+    params,
+  });
+}

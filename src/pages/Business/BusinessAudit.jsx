@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'dva';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -14,12 +14,8 @@ const BusinessAuditList = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商家名称',
+      label: '商户简称',
       name: 'merchantName',
-    },
-    {
-      label: '商家账号',
-      name: 'mobile',
     },
     {
       label: '审核状态',
@@ -32,21 +28,15 @@ const BusinessAuditList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商家名称',
-      fixed: 'left',
-      dataIndex: 'merchantName',
-    },
-    {
       title: '商家账号',
-      align: 'center',
+      fixed: 'left',
       dataIndex: 'mobile',
       render: (val) => val || '暂未授权',
     },
     {
-      title: '商家类型',
-      align: 'center',
-      dataIndex: 'topCategoryName',
-      render: (val) => val || '-',
+      title: '商户简称',
+      fixed: 'left',
+      dataIndex: 'merchantName',
     },
     {
       title: '所在城市',
@@ -64,9 +54,21 @@ const BusinessAuditList = (props) => {
       ),
     },
     {
-      title: '服务费',
+      title: '经营类目',
+      align: 'center',
+      dataIndex: 'topCategoryName',
+    },
+    {
+      title: '经营面积',
       align: 'right',
       dataIndex: 'applyTime',
+      render: (val) => val || '--',
+    },
+    {
+      title: '服务费',
+      align: 'right',
+      dataIndex: 'applyasTime',
+      render: (val, record) => `2%（赠送2000卡豆）`,
     },
     {
       title: '申请时间',
