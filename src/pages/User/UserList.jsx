@@ -8,7 +8,7 @@ import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
 
 const UserListComponent = (props) => {
-  const { userList, loading, dispatch } = props;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -52,7 +52,7 @@ const UserListComponent = (props) => {
     {
       title: '常住地',
       align: 'center',
-      dataIndex: 'parentUserIdString',
+      dataIndex: 'residentAddress',
       render: (val) => val || '-',
     },
     {
@@ -68,9 +68,9 @@ const UserListComponent = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
       align: 'right',
       fixed: 'right',
+      dataIndex: 'parentUserIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
@@ -111,14 +111,15 @@ const UserListComponent = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
+        params={{ mobile: '' }}
         dispatchType="userList/fetchGetList"
-        {...userList}
+        list={list}
       ></DataTableBlock>
     </>
   );
 };
 
 export default connect(({ userList, loading }) => ({
-  userList,
-  loading: loading.models.userList,
+  list: userList.list,
+  loading: loading.effects['userList/fetchGetList'],
 }))(UserListComponent);

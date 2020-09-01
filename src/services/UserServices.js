@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 // get 用户列表 - 用户列表
 export function fetchUserList(params) {
-  return request('/admin/userManagement/listUser', {
+  return request('/admin/userManagement/getUserByMobile', {
     params,
   });
 }

@@ -6,7 +6,6 @@ export default {
 
   state: {
     list: [],
-    total: 0,
     totalData: {},
     totalSperadData: {},
   },
@@ -28,8 +27,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.record,
-          total: content.total,
+          list: content.user.userIdString ? [content.user] : [],
         },
       });
     },

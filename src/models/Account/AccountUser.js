@@ -40,7 +40,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          userlist: { list: content.list, total: data.total },
+          userlist: { list: [content.user], total: content.total },
         },
       });
     },
