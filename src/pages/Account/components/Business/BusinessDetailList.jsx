@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
-import { MATCH_USER_STATUS } from '@/common/constant';
+import { COLLECT_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessOrderDetail from './BusinessOrderDetail';
 
@@ -13,18 +13,18 @@ const BusinessDetailList = (props) => {
   // table
   const propItem = {
     peas: {
-      title: `卡豆明细 - 商户ID：0001 商户名称：小王的店`,
-      rowKey: '',
+      title: `卡豆明细 - 商户ID：${record.userMerchantIdString} 商户名称：${record.merchantName}`,
+      rowKey: 'createTime',
       getColumns: [
         {
           title: '日期',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'createTime',
         },
         {
           title: '事件',
           align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'detailTitle',
         },
         {
           title: '关联用户',
@@ -34,13 +34,14 @@ const BusinessDetailList = (props) => {
         {
           title: '卡豆明细',
           align: 'center',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'beanAmount',
+          render: (val, row) => `${row.detailType === 'add' ? '+' : '-'}${val}`,
         },
         {
           title: '收支状态',
           align: 'center',
-          dataIndex: 'signDate',
+          dataIndex: 'detailType',
+          render: (val) => (val === 'add' ? '收入' : '支出'),
         },
         {
           title: '关联订单',
@@ -51,94 +52,92 @@ const BusinessDetailList = (props) => {
       ],
     },
     collect: {
-      title: `提现记录 - 商户ID：0001 商户名称：小王的店 累计充值：1200元`,
-      rowKey: '',
-      getColumns: [
-        {
-          title: '日期',
-          dataIndex: 'userId',
-        },
-        {
-          title: '充值单号',
-          dataIndex: 'username',
-        },
-        {
-          title: '订单流水',
-          dataIndex: 'status',
-        },
-        {
-          title: '充值卡豆数',
-          align: 'right',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => MATCH_USER_STATUS[val],
-        },
-        {
-          title: '充值金额',
-          align: 'right',
-          dataIndex: 'signDate',
-        },
-        {
-          title: '支付方式',
-          align: 'center',
-          dataIndex: 'process',
-          render: (val) => MATCH_USER_STATUS[val],
-        },
-        {
-          title: '支付状态',
-          align: 'center',
-          dataIndex: 'processss',
-          render: (val) => MATCH_USER_STATUS[val],
-        },
-        {
-          title: '卡豆状态',
-          align: 'center',
-          dataIndex: 'procsesss',
-          render: (val) => MATCH_USER_STATUS[val],
-        },
-      ],
-    },
-    recharge: {
-      title: `充值记录 - 商户ID：0001 商户名称：小王 累计提现：1200元（12000卡豆）`,
-      rowKey: '',
+      title: `提现记录 - 商户ID：${record.userMerchantIdString} 商户名称：${
+        record.merchantName
+      } 累计提现：${record.totalConsume / 100}元（${record.totalConsume}卡豆）`,
+      rowKey: 'withdrawalSn',
       getColumns: [
         {
           title: '提现日期',
-          align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'createTime',
         },
         {
           title: '提现单号',
-          align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'incomeSn',
         },
         {
           title: '订单流水',
-          align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'withdrawalSn',
         },
         {
           title: '提现卡豆',
-          align: 'center',
-          dataIndex: 'earnBeanAmount',
-          render: (val) => val || '--',
+          align: 'right',
+          dataIndex: 'withdrawalBeanAmount',
         },
         {
           title: '提现到',
-          align: 'center',
-          dataIndex: 'signDate',
-          render: (val) => val || '--',
+          align: 'right',
+          dataIndex: 'withdrawalChannelName',
         },
         {
           title: '提现状态',
           align: 'center',
-          dataIndex: 'sigsnDate',
-          render: (val) => val || '--',
+          dataIndex: 'status',
+          render: (val) => COLLECT_STATUS[val],
         },
         {
           title: '到账日期',
           align: 'center',
-          dataIndex: 'signDate',
-          render: (val) => val || '--',
+          dataIndex: 'finishTime',
+        },
+      ],
+    },
+    recharge: {
+      title: `充值记录 - 商户ID：${record.userMerchantIdString} 商户名称：${record.merchantName} 累计充值：${record.totalCharge}元`,
+      rowKey: 'orderSn',
+      getColumns: [
+        {
+          title: '日期',
+          align: 'center',
+          dataIndex: 'payTime',
+        },
+        {
+          title: '充值单号',
+          align: 'center',
+          dataIndex: 'orderSn',
+        },
+        {
+          title: '订单流水',
+          align: 'center',
+          dataIndex: 'paySn',
+        },
+        {
+          title: '充值卡豆数',
+          align: 'center',
+          dataIndex: 'beanAmount',
+        },
+        {
+          title: '充值金额',
+          align: 'center',
+          dataIndex: 'totalFee',
+        },
+        {
+          title: '支付方式',
+          align: 'center',
+          dataIndex: 'payType',
+          render: (val) => (val === 'wx_lite' ? '微信' : '支付宝'),
+        },
+        {
+          title: '支付状态',
+          align: 'center',
+          dataIndex: 'beanStatus',
+          render: () => '支付成功',
+        },
+        {
+          title: '卡豆状态',
+          align: 'center',
+          dataIndex: 'status',
+          render: () => '已到账',
         },
       ],
     },
@@ -158,7 +157,14 @@ const BusinessDetailList = (props) => {
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type }}
+        params={{
+          type,
+          ...{
+            peas: { merchantId: record.userMerchantIdString },
+            collect: { merchantId: record.userMerchantIdString },
+            recharge: { userId: record.userMerchantIdString, userType: 'merchant' },
+          }[type],
+        }}
         dispatchType="accountBusiness/fetchDetailList"
         componentSize="middle"
         {...detailList}

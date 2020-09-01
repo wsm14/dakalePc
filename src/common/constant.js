@@ -46,6 +46,9 @@ export const MATCH_USER_STATUS = ['已取消', '已报名', '已完成', '已领
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
+// 提现状态
+export const COLLECT_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
+
 // 卡券状态
 export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 

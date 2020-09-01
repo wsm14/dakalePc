@@ -37,7 +37,7 @@ export async function fetchUserOrderDetail(params) {
 
 // get 商家账户 - 账户列表
 export async function fetchAccountBusinessList(params) {
-  return request('/admin/auth/getOwnInfos', {
+  return request('/admin/accountManagement/getMerchantDetail', {
     params,
   });
 }
@@ -51,21 +51,21 @@ export async function fetchAccountBusinessTotal(params) {
 
 // get 商家账户 - 卡豆明细
 export async function fetchBusinessPeasDetail(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/listMerchantBeanDetail', {
     params,
   });
 }
 
 // get 商家账户 - 提现记录
 export async function fetchBusinessCollectDetail(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/listMerchantWithdrawalDetail', {
     params,
   });
 }
 
 // get 商家账户 - 充值记录
 export async function fetchBusinessRechargeDetail(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/listUserChargeRecord', {
     params,
   });
 }

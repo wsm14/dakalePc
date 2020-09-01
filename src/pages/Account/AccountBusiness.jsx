@@ -14,15 +14,15 @@ const AccountBusinessList = (props) => {
   const searchItems = [
     {
       label: '商户名称',
-      name: 'userMosbile1s',
+      name: 'merchantName',
     },
     {
       label: '商户帐号',
-      name: 'userMobile1s',
+      name: 'account',
     },
     {
       label: '手机号',
-      name: 'usesrMobile1s',
+      name: 'mobile',
     },
   ];
 
@@ -30,40 +30,39 @@ const AccountBusinessList = (props) => {
   const getColumns = [
     {
       title: '商户ID',
-      dataIndex: 'userId',
+      fixed: 'left',
+      dataIndex: 'userMerchantIdString',
     },
     {
       title: '商户名称',
-      fixed: 'left',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'merchantName',
     },
     {
       title: '商户帐号',
       align: 'center',
-      dataIndex: 'phoneNsumber',
+      dataIndex: 'account',
     },
     {
       title: '累计收益（卡豆）',
       align: 'right',
-      dataIndex: 'orderCount',
+      dataIndex: 'totalAdd',
     },
     {
       title: '累计充值（卡豆）',
       align: 'right',
-      dataIndex: 'orderTotal',
-      render: (val) => `￥${val}`,
+      dataIndex: 'totalCharge',
     },
     {
       title: '累计提现（卡豆）',
       align: 'right',
-      dataIndex: 'parkName',
+      dataIndex: 'totalConsume',
       render: (val) => val || '-',
     },
     {
       title: '当前余额（卡豆）',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'bean',
     },
     {
       title: '操作',
@@ -96,7 +95,7 @@ const AccountBusinessList = (props) => {
 
   useEffect(() => {
     dispatch({
-      type: 'accountUser/clearDetail',
+      type: 'accountBusiness/clearDetail',
     });
   }, [visible]);
 
@@ -107,7 +106,7 @@ const AccountBusinessList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="accountBusiness/fetchGetList"
         {...list}
       ></DataTableBlock>

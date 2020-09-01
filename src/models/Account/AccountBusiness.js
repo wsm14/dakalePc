@@ -14,6 +14,7 @@ export default {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     totalData: {},
+    orderDetail: {},
   },
 
   reducers: {
@@ -40,7 +41,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.list, total: data.total },
+          list: { list: content.merchantList },
         },
       });
     },
@@ -58,7 +59,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.userMerchantList, total: content.total },
+          detailList: { list: content.recordList, total: content.total },
         },
       });
     },
