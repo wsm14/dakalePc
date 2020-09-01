@@ -9,7 +9,7 @@ const BusinessRegisterComponent = (props) => {
   const searchItems = [
     {
       label: '注册手机号',
-      name: 'brandName',
+      name: 'mobile',
     },
   ];
 
@@ -18,17 +18,18 @@ const BusinessRegisterComponent = (props) => {
     {
       title: '注册手机号',
       align: 'center',
-      dataIndex: 'brandLogo',
+      dataIndex: 'mobile',
     },
     {
       title: '推荐人手机号',
       align: 'center',
-      dataIndex: 'brandName',
+      dataIndex: 'parentMobile',
+      render: (val) => val || '--',
     },
     {
       title: '注册时间',
       align: 'center',
-      dataIndex: 'categoryName',
+      dataIndex: 'createTime',
     },
   ];
 
@@ -37,7 +38,7 @@ const BusinessRegisterComponent = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.id}`}
+      rowKey={(record) => `${record.userMerchantIdString}`}
       dispatchType="businessRegister/fetchGetList"
       {...businessRegister}
     ></DataTableBlock>
