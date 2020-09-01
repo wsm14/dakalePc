@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 // get 用户账户 - 账户列表
 export async function fetchAccountUserList(params) {
-  return request('/admin/userManagement/getUserByMobile', {
+  return request('/admin/accountManagement/getUserDetail', {
     params,
   });
 }
@@ -16,14 +16,14 @@ export async function fetchAccountUserTotal(params) {
 
 // get 用户账户 - 卡豆明细
 export async function fetchUserPeasDetail(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/listUserBeanDetail', {
     params,
   });
 }
 
 // get 用户账户 - 充值记录
 export async function fetchUserRechargeDetail(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/listUserChargeRecord', {
     params,
   });
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
-import { MATCH_USER_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import UserOrderDetail from './UserOrderDetail';
 
@@ -13,87 +12,88 @@ const UserDetailList = (props) => {
   // table
   const propItem = {
     peas: {
-      title: `卡豆明细 - 用户ID：0001 用户昵称：小王`,
-      rowKey: '',
+      title: `卡豆明细 - 用户ID：${record.userIdString} 用户昵称：${record.username}`,
+      rowKey: 'createTime',
       getColumns: [
         {
           title: '日期',
           align: 'center',
-          dataIndex: 'userId',
+          dataIndex: 'createTime',
         },
         {
           title: '事件',
           align: 'center',
-          dataIndex: 'username',
+          dataIndex: 'detailTitle',
         },
         {
           title: '关联店铺',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'detailContent',
         },
         {
           title: '卡豆明细',
           align: 'center',
-          dataIndex: 'earnBeanAmount',
+          dataIndex: 'beanAmount',
+          render: (val, row) => `${row.detailType === 'add' ? '+' : '-'}${val}`,
         },
         {
           title: '收支状态',
           align: 'center',
-          dataIndex: 'signDate',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'detailType',
+          render: (val) => (val === 'add' ? '收入' : '支出'),
         },
         {
           title: '关联订单',
           align: 'center',
-          dataIndex: 'order',
+          dataIndex: 'identification',
           render: (val) => <UserOrderDetail order={val}></UserOrderDetail>,
         },
       ],
     },
     recharge: {
-      title: `充值记录 - 用户ID：0001 用户昵称：小王 累计充值：1200元`,
-      rowKey: '',
+      title: `充值记录 - 用户ID：${record.userIdString} 用户昵称：${record.username} 累计充值：${record.totalCharge}元`,
+      rowKey: 'orderSn',
       getColumns: [
         {
           title: '日期',
-          dataIndex: 'userId',
+          dataIndex: 'payTime',
         },
         {
           title: '充值单号',
-          dataIndex: 'username',
+          dataIndex: 'orderSn',
         },
         {
           title: '订单流水',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'paySn',
         },
         {
           title: '充值卡豆数',
           align: 'right',
-          dataIndex: 'earnBeanAmount',
+          dataIndex: 'beanAmount',
         },
         {
           title: '充值金额',
           align: 'right',
-          dataIndex: 'signDate',
+          dataIndex: 'totalFee',
         },
         {
           title: '支付方式',
           align: 'center',
-          dataIndex: 'process',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'payType',
+          render: (val) => (val === 'wx_lite' ? '微信' : '支付宝'),
         },
         {
           title: '支付状态',
           align: 'center',
-          dataIndex: 'processs',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'beanStatus',
+          render: () => '支付成功',
         },
         {
           title: '卡豆状态',
           align: 'center',
-          dataIndex: 'processs',
-          render: (val) => MATCH_USER_STATUS[val],
+          dataIndex: 'status',
+          render: () => '已到账',
         },
       ],
     },
@@ -113,7 +113,7 @@ const UserDetailList = (props) => {
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type }}
+        params={{ type, userId: record.userIdString }}
         dispatchType="accountUser/fetchDetailList"
         componentSize="middle"
         {...detailList}

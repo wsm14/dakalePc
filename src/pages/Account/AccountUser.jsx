@@ -14,11 +14,11 @@ const AccountUserList = (props) => {
   const searchItems = [
     {
       label: '用户昵称',
-      name: 'userMosbile1s',
+      name: 'username',
     },
     {
       label: '手机号',
-      name: 'userMobisle1s',
+      name: 'mobile',
     },
   ];
 
@@ -26,43 +26,37 @@ const AccountUserList = (props) => {
   const getColumns = [
     {
       title: '用户ID',
-      dataIndex: 'userId',
+      fixed: 'left',
+      dataIndex: 'userIdString',
     },
     {
       title: '用户昵称',
       align: 'center',
-      fixed: 'left',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'username',
       render: (val) => val || '--',
     },
     {
       title: '累计收益（卡豆）',
       align: 'right',
-      dataIndex: 'orderCount',
+      dataIndex: 'totalAdd',
       render: (val) => val || 0,
     },
     {
       title: '累计充值',
       align: 'right',
-      dataIndex: 'orderTotal',
-      render: (val) => val || 0,
-    },
-    {
-      title: '累计支出（卡豆）',
-      align: 'right',
-      dataIndex: 'parkName',
+      dataIndex: 'totalCharge',
       render: (val) => val || 0,
     },
     {
       title: '累计支出（金额）',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'totalConsume',
       render: (val) => val || 0,
     },
     {
       title: '当前余额（卡豆）',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'bean',
       render: (val) => val || 0,
     },
     {
@@ -102,7 +96,7 @@ const AccountUserList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.userIdString}`}
         dispatchType="accountUser/fetchGetList"
         {...userlist}
       ></DataTableBlock>
