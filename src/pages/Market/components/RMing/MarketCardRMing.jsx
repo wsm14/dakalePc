@@ -98,10 +98,10 @@ const MarketCardRMing = (props) => {
 
   // 设置挑战卡豆数
   const handleSetMatch = () => {
-    // dispatch({
-    //   type: 'marketCardRMing/fetchMarketMatchJoin',
-    //   payload: propInfo.payload,
-    // });
+    dispatch({
+      type: 'drawerForm/show',
+      payload: propInfo.payload,
+    });
   };
 
   // 头部添加面包屑 按钮
