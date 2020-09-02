@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Space, Form, Tabs, Input } from 'antd';
+import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const { TabPane } = Tabs;
@@ -8,7 +8,18 @@ const { TabPane } = Tabs;
 const BusinessDetailShow = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
 
-  const { businessLicenseObject: blobj = {}, bankBindingInfo: bkInfo = {} } = visible;
+  const {
+    businessLicenseObject: blobj = {},
+    bankBindingInfo: bkInfo = {},
+    userMerchantIdString: merchantId,
+    businessStatus,
+    status,
+  } = visible;
+
+  const statusNum = Number(status);
+  const businessStatusNum = Number(businessStatus);
+  const statusText = !statusNum ? '启用' : '禁用';
+  const businessStatusText = !businessStatusNum ? '恢复营业' : '停业';
 
   const [form] = Form.useForm();
 
@@ -17,37 +28,33 @@ const BusinessDetailShow = (props) => {
     dispatch({
       type: 'businessList/fetchMerSetBandCode',
       payload: {
-        merchantId: visible.userMerchantIdString,
+        merchantId,
         ...values,
       },
     });
   };
 
-  const handleMerStatus = () => {
+  // acc帐号状态 sale营业状态 恢复营业status 给1 只有停业用 businessStatus 0
+  const handleMerStatus = (type) => {
+    if (type === 'sale' && businessStatusNum === 0) type = 'hsale';
+    const propsItem = {
+      hsale: { title: '恢复营业', payload: { status: 1 } },
+      sale: { title: '停业', payload: { businessStatus: 0 } },
+      acc: { title: statusText, payload: { status: Number(!statusNum) } },
+    }[type];
+
     Modal.confirm({
-      title: `确认对该店铺 ${statusText}`,
+      title: `确认对该店铺 ${propsItem.title}`,
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
         dispatch({
           type: 'businessList/fetchSetStatus',
-          payload: { merchantId, status: Number(!statusNum) },
-          callback: () => cRef.current.fetchGetData(),
-        });
-      },
-    });
-  };
-
-  const handleMerSaleStatus = () => {
-    Modal.confirm({
-      title: `确认对该店铺 ${businessStatusText}`,
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-          type: 'businessList/fetchMerSaleStatus',
-          payload: { merchantId, status: Number(!businessStatusNum) },
-          callback: () => cRef.current.fetchGetData(),
+          payload: { merchantId, ...propsItem.payload },
+          callback: () => {
+            onClose();
+            cRef.current.fetchGetData();
+          },
         });
       },
     });
@@ -186,8 +193,11 @@ const BusinessDetailShow = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={onClose}>取消</Button>
-            <Button type="primary" loading={loading}>
-              确认
+            <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loading}>
+              {businessStatusText}
+            </Button>
+            <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loading}>
+              {statusText}
             </Button>
           </Space>
         </div>

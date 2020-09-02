@@ -38,17 +38,9 @@ export function fetchMerchantSet(data) {
   });
 }
 
-// post 商户数据 - 商家 经营状态修改
-export function fetchMerSaleStatus(data) {
-  return request('/admin/userManagement/fetchMerchantStatus', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 商户数据 - 商家 店铺状态修改
+// post 商户数据 - 商家 店铺状态 经营状态 修改
 export function fetchMerchantStatus(data) {
-  return request('/admin/userManagement/fetchMerchantStatus', {
+  return request('/admin/merchantManagement/updateUserMerchant', {
     method: 'POST',
     data,
   });

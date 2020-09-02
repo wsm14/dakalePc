@@ -4,7 +4,6 @@ import {
   fetchMerchantDetail,
   fetchMerSetBandCode,
   fetchMerchantStatus,
-  fetchMerSaleStatus,
   fetchMerchantSet,
   fetchMerchantAdd,
 } from '@/services/BusinessServices';
@@ -89,15 +88,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '商家店铺状态修改成功',
-      });
-      callback();
-    },
-    *fetchMerSaleStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerSaleStatus, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '商家经营状态修改成功',
       });
       callback();
     },

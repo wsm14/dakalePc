@@ -37,13 +37,13 @@ const BusinessListComponent = (props) => {
     },
     {
       label: '经营状态',
-      name: 'status',
+      name: 'businessStatus',
       type: 'select',
       select: { list: BUSINESS_DO_STATUS },
     },
     {
       label: '店铺状态',
-      name: 'businessStatus',
+      name: 'status',
       type: 'select',
       select: { list: BUSINESS_STATUS },
     },
@@ -60,7 +60,7 @@ const BusinessListComponent = (props) => {
     },
     {
       label: '账号状态',
-      name: 'status',
+      name: 'bankStatus',
       type: 'select',
       select: { list: BUSINESS_ACCOUNT_STATUS },
     },
@@ -121,7 +121,7 @@ const BusinessListComponent = (props) => {
     {
       title: '经营状态',
       align: 'center',
-      dataIndex: 'bankStatus',
+      dataIndex: 'businessStatus',
       render: (val) => BUSINESS_DO_STATUS[val],
     },
     {
