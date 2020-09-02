@@ -17,6 +17,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
 import CITYJSON from '@/common/city';
 import moment from 'moment';
+import { isArray } from 'lodash';
 
 /**
  *
@@ -84,6 +85,11 @@ const FormCondition = ({
     formItems.map((item, i) => {
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
+          if (Array.isArray(item.name)) {
+            const urlfile = initialValues[item.name[0]][item.name[1]];
+            fileobj[item.name[1]] = [imgold(urlfile, i)];
+            return;
+          }
           const fileArrar = initialValues[item.name];
           if (fileArrar && !!fileArrar.fileList) {
             fileobj[item.name] = fileArrar.fileList;
@@ -91,7 +97,9 @@ const FormCondition = ({
           }
           fileobj[item.name] = !Array.isArray(fileArrar)
             ? fileArrar && fileArrar.length > 0
-              ? [imgold(fileArrar, i)]
+              ? fileArrar.indexOf(',') > -1
+                ? fileArrar.split(',').map((items, i) => imgold(items, i))
+                : [imgold(fileArrar, i)]
               : []
             : fileArrar.map((items, i) => imgold(items, i));
         } else {
@@ -306,12 +314,14 @@ const FormCondition = ({
         upload: (
           <Upload
             listType="picture-card"
-            fileList={fileLists[name]}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
             beforeUpload={() => false}
             onPreview={handlePreview}
-            {...handleUpProps(name, item.onChange)}
+            {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
           >
-            {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
+              uploadButton}
           </Upload>
         ),
         children: item.children,

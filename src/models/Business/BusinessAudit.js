@@ -3,6 +3,7 @@ import {
   fetchMerchantAuditList,
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
+  fetchMerSaleAuditAllow,
 } from '@/services/BusinessServices';
 
 export default {
@@ -39,14 +40,47 @@ export default {
       const response = yield call(fetchMerchantAuditDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.userMerchantVerify);
+      const {
+        provinceCode: p,
+        cityCode: c,
+        districtCode: d,
+        categoryNode,
+        brandName,
+        bondBean,
+        commissionRatio,
+        topCategoryName,
+        categoryName,
+      } = content.userMerchantVerify;
+      const categoryNodeArr = categoryNode.split('.');
+      const initialValues = {
+        ...content.userMerchantVerify,
+        provinceCode: [p, c, d],
+        topCategoryName: [Number(categoryNodeArr[0]), Number(categoryNodeArr[1])],
+        otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
+        bondBean: { value: bondBean, key: commissionRatio },
+        categoryName: [
+          { id: Number(categoryNodeArr[0]), name: topCategoryName },
+          { id: Number(categoryNodeArr[1]), name: categoryName },
+        ],
+        commissionRatio: bondBean,
+      };
+      callback(initialValues);
     },
     *fetchMerSaleAudit({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerSaleAudit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商家审核完成',
+        description: '商家审核驳回成功',
+      });
+      callback();
+    },
+    *fetchMerSaleAuditAllow({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerSaleAuditAllow, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家审核通过成功',
       });
       callback();
     },

@@ -44,7 +44,7 @@ export const BUSINESS_ACCOUNT_STATUS = [false, false, '未激活', '已激活'];
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // '待审核', '审核中', '审核驳回', '审核通过'
-export const BUSINESS_STATUS_AUDIT = [false, '审核中', '审核驳回', '审核通过'];
+export const BUSINESS_STATUS_AUDIT = ['未审核', '审核中', '审核驳回', '审核通过'];
 
 // 挑战赛状态
 export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];

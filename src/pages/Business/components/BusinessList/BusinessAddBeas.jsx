@@ -9,7 +9,7 @@ const BusinessAddBeas = (props) => {
     dispatch,
     amap,
     onSearchAddress,
-    initialValues = {},
+    initialValues = { provinceCode: [], topCategoryName: ['', ''] },
     form,
     loading,
     brandList,
@@ -17,11 +17,12 @@ const BusinessAddBeas = (props) => {
     tradeList,
   } = props;
 
-  const [brandMust, setBrandMust] = useState(!initialValues.otherBrand);
-  const [areaMust, setAreaMust] = useState(false);
+  const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
+  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] === 1);
   const [priceList, setPriceList] = useState([]);
-  const [selectCity, setSelectCity] = useState([]);
+  const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(false);
+  const [categId, setCategId] = useState(initialValues.businessArea);
 
   // 获取品牌
   const fetchGetBrandList = () => {
@@ -38,25 +39,37 @@ const BusinessAddBeas = (props) => {
       payload: {
         categoryId,
       },
+      callback: (val) => {
+        if (val[0].type === 'no') {
+          setPriceList(
+            val[0].merchantSettleObjects.map((item) => ({
+              value: item.freeBean,
+              name: `${item.serviceFee}%`,
+              key: item.serviceFee,
+            })),
+          );
+        } else if (categId) {
+          const plist = val.filter((i) => i.configMerchantSettleIdString === categId)[0];
+          setPriceList(
+            plist.merchantSettleObjects
+              ? plist.merchantSettleObjects.map((item) => ({
+                  value: item.freeBean,
+                  name: `${item.serviceFee}%`,
+                  key: item.serviceFee,
+                }))
+              : [],
+          );
+        }
+      },
     });
   };
 
   useEffect(() => {
     fetchGetBrandList();
+    if (initialValues) {
+      fetchGetPlatform(initialValues.topCategoryName[0]);
+    }
   }, []);
-
-  useEffect(() => {
-    if (platformList.length)
-      if (platformList[0].type === 'no') {
-        setPriceList(
-          platformList[0].merchantSettleObjects.map((item) => ({
-            value: item.freeBean,
-            name: `${item.serviceFee}%`,
-            key: item.serviceFee,
-          })),
-        );
-      }
-  }, [platformList]);
 
   const formItems = [
     {
@@ -177,13 +190,16 @@ const BusinessAddBeas = (props) => {
       })),
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
+        setCategId(val);
         const plist = platformList.filter((i) => i.configMerchantSettleIdString === val)[0];
         setPriceList(
-          plist.merchantSettleObjects.map((item) => ({
-            value: item.freeBean,
-            name: `${item.serviceFee}%`,
-            key: item.serviceFee,
-          })),
+          plist.merchantSettleObjects
+            ? plist.merchantSettleObjects.map((item) => ({
+                value: item.freeBean,
+                name: `${item.serviceFee}%`,
+                key: item.serviceFee,
+              }))
+            : [],
         );
       },
     },

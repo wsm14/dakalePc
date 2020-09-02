@@ -152,7 +152,7 @@ const BusinessListComponent = (props) => {
     },
   ];
 
-  // 品牌类型列表
+  // 经营类目
   const fetchTradeList = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',

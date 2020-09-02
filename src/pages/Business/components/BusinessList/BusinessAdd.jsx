@@ -1,29 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form, message } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
+import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessAddBeas from './BusinessAddBeas';
 import BusinessAddQuality from './BusinessAddQuality';
-import aliOssUpload from '@/utils/aliOssUpload';
+import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 
 const BusinessAdd = (props) => {
-  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { dispatch, cRef, visible, initialValues = false, onClose, loading } = props;
+
+  const {
+    lnt = 116.407526,
+    lat = 39.90403,
+    provinceCode,
+    provinceName,
+    cityName,
+    cityCode,
+    districtCode,
+    districtName,
+  } = initialValues;
 
   const [form] = Form.useForm();
-  const [location, setLocation] = useState([116.407526, 39.90403]); // [经度, 纬度]
+  const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
   const [selectCity, setSelectCity] = useState([]); // 选择城市
+
+  useEffect(() => {
+    if (initialValues)
+      setSelectCity([
+        { value: provinceCode[1], label: provinceName },
+        { value: cityCode, label: cityName },
+        { value: districtCode, label: districtName },
+      ]);
+  }, [initialValues]);
 
   // 提交
   const fetchFormData = () => {
     form.validateFields().then((values) => {
-      const {
-        categoryName: cobj,
-        bondBean: bobj,
-        coverImg: { fileList: cfileList },
-        interiorImg: { fileList },
-        otherBrand,
-      } = values;
+      const { categoryName: cobj, bondBean: bobj, coverImg, interiorImg, otherBrand } = values;
       const payload = {
         ...values,
         brandName: otherBrand ? '其他品牌' : values.brandName,
@@ -43,21 +58,23 @@ const BusinessAdd = (props) => {
         lnt: location[0],
         lat: location[1],
       };
-      aliOssUpload([
-        cfileList[0].originFileObj,
-        ...fileList.map((item) => item.originFileObj),
-      ]).then((res) => {
-        dispatch({
-          type: 'businessList/fetchMerchantAdd',
-          payload: {
-            ...payload,
-            coverImg: res[0],
-            interiorImg: res.slice(1).toString(),
-          },
-          callback: () => {
-            onClose();
-            cRef.current.fetchGetData();
-          },
+      aliOssUpload(coverImg).then((cres) => {
+        payload.coverImg = cres.toString();
+        aliOssUpload(interiorImg).then((res) => {
+          dispatch({
+            type: {
+              false: 'businessList/fetchMerchantAdd',
+              true: 'businessList/fetchMerSaleAuditAllow',
+            }[!!initialValues],
+            payload: {
+              ...payload,
+              interiorImg: res.toString(),
+            },
+            callback: () => {
+              onClose();
+              cRef.current.fetchGetData();
+            },
+          });
         });
       });
     });
@@ -69,9 +86,8 @@ const BusinessAdd = (props) => {
       setAmpShow(false);
       return;
     }
-    setSelectCity(city);
     let cityname = '';
-    city.map((item) => {
+    (typeof city[1] === 'object' ? city : selectCity).map((item) => {
       cityname += item.label;
       return true;
     });
@@ -91,6 +107,7 @@ const BusinessAdd = (props) => {
               const latitude = parseFloat(geocodes[1]); // 纬度
               setLocation([longitude, latitude]);
               setAmpShow(true);
+              setSelectCity(typeof city[1] === 'object' ? city : selectCity);
             }
           });
         }
@@ -130,15 +147,32 @@ const BusinessAdd = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchFormData} type="primary" loading={loading}>
-              提交审核
-            </Button>
+            {!initialValues && (
+              <Button onClick={fetchFormData} type="primary" loading={loading}>
+                提交审核
+              </Button>
+            )}
+            {initialValues && (
+              <>
+                <Button onClick={fetchFormData} type="primary" loading={loading}>
+                  审核驳回
+                </Button>
+                <Button onClick={fetchFormData} type="primary" loading={loading}>
+                  审核通过
+                </Button>
+              </>
+            )}
           </Space>
         </div>
       }
     >
-      <BusinessAddBeas form={form} amap={amap} onSearchAddress={onSearchAddress} />
-      <BusinessAddQuality form={form} />
+      <BusinessAddBeas
+        form={form}
+        amap={amap}
+        onSearchAddress={onSearchAddress}
+        initialValues={initialValues}
+      />
+      <BusinessAddQuality form={form} initialValues={initialValues} />
     </Drawer>
   );
 };

@@ -4,9 +4,13 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const BusinessAddQuality = (props) => {
-  const { dispatch, initialValues = {}, form } = props;
-
-  const [disabledInfo, setDisabledInfo] = useState(!initialValues.businessLicenseImg);
+  const {
+    dispatch,
+    initialValues = { businessLicenseObject: { businessLicenseImg: '' } },
+    form,
+  } = props;
+  const { businessLicenseObject: blimg = { businessLicenseImg: '' } } = initialValues;
+  const [disabledInfo, setDisabledInfo] = useState(blimg && !blimg.businessLicenseImg);
 
   // 上传图片返回url ocr识别营业执照
   const fetchMerBusinessUpload = (file) => {

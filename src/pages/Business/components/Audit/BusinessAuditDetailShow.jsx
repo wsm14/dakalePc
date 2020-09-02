@@ -3,8 +3,7 @@ const BusinessAuditDetailShow = (props) => {
     type: 'Drawer',
     showType: 'info',
     width: 600,
-    title: '商户详情',
-    loadingModels: 'businessAudit',
+    title: '商户驳回详情',
     formItems: [
       {
         label: '商户简称',

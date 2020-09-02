@@ -49,7 +49,7 @@ export default {
         },
       });
     },
-    *fetchTradePlatformList({ payload }, { call, put }) {
+    *fetchTradePlatformList({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradePlatformList, payload);
       if (!response) return;
       const { content } = response;
@@ -59,6 +59,7 @@ export default {
           detailList: { list: content.merchantSettleList },
         },
       });
+      if (callback) callback(content.merchantSettleList);
     },
     *fetchTradeDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeDetail, payload);

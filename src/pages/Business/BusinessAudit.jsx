@@ -1,15 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
+import BusinessEdit from './components/BusinessList/BusinessAdd';
 
 const BusinessAuditList = (props) => {
   const { businessAudit, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -117,28 +119,47 @@ const BusinessAuditList = (props) => {
     dispatch({
       type: 'businessAudit/fetchMerchantAuditDetail',
       payload: { userMerchantVerifyId },
-      callback: (val) => handleShowUserDetail(val, userMerchantVerifyId),
+      callback: (record) => setVisible({ record }),
     });
   };
 
   // 用户详情展示
-  const handleShowUserDetail = (initialValues, mreId) => {
+  const handleShowUserDetail = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: businessAuditDetailShow({ dispatch, childRef, initialValues, mreId }),
+      payload: businessAuditDetailShow({ initialValues }),
     });
   };
 
+  // 经营类目
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userMerchantVerifyId}`}
-      dispatchType="businessAudit/fetchGetList"
-      {...businessAudit}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userMerchantVerifyId}`}
+        dispatchType="businessAudit/fetchGetList"
+        {...businessAudit}
+      ></DataTableBlock>
+      <BusinessEdit
+        cRef={childRef}
+        visible={visible}
+        initialValues={visible.record}
+        onClose={() => setVisible(false)}
+      ></BusinessEdit>
+    </>
   );
 };
 
