@@ -5,7 +5,7 @@ import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import businessDetailShow from './components/BusinessList/BusinessDetailShow';
+import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
 import BusinessAdd from './components/BusinessList/BusinessAdd';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
@@ -16,6 +16,7 @@ const BusinessListComponent = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState({});
   const [visibleAdd, setVisibleAdd] = useState(false);
+  const [visibleDetail, setVisibleDetail] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -114,8 +115,8 @@ const BusinessListComponent = (props) => {
     {
       title: '账号状态',
       align: 'center',
-      dataIndex: 'accountStatus',
-      render: (val) => BUSINESS_ACCOUNT_STATUS[val],
+      dataIndex: 'bankStatus',
+      render: (val) => (val === '3' ? '已激活' : '未激活'),
     },
     {
       title: '经营状态',
@@ -168,12 +169,7 @@ const BusinessListComponent = (props) => {
   };
 
   // 商户详情展示
-  const handleShowUserDetail = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessDetailShow({ dispatch, childRef, initialValues }),
-    });
-  };
+  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
 
   useEffect(() => {
     fetchTradeList();
@@ -190,7 +186,10 @@ const BusinessListComponent = (props) => {
       ></BusinessTotalInfo>
       <DataTableBlock
         cRef={childRef}
-        loading={loading.models.businessList}
+        loading={
+          loading.effects['businessList/fetchGetList'] ||
+          loading.effects['businessList/fetchMerchantDetail']
+        }
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userMerchantIdString}`}
@@ -207,6 +206,11 @@ const BusinessListComponent = (props) => {
         visible={visible}
         onClose={() => setVisible('')}
       ></BusinessAwardSet>
+      <BusinessDetailShow
+        cRef={childRef}
+        visible={visibleDetail}
+        onClose={() => setVisibleDetail(false)}
+      ></BusinessDetailShow>
     </>
   );
 };

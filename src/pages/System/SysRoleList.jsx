@@ -69,10 +69,6 @@ const SysRoleList = (props) => {
               title: '配置',
               click: () => fetchGetRoleTree({ roleId: val, roleType: record.ownerType }),
             },
-            {
-              type: 'del',
-              // click: () => fetchRoleDel(record),
-            },
           ]}
         />
       ),

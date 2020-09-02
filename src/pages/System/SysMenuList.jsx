@@ -40,11 +40,11 @@ const SysMenuList = (props) => {
       dataIndex: 'status',
       render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={MENU_STATUS[val]} />,
     },
-    {
-      title: '菜单路径',
-      align: 'center',
-      dataIndex: 'orderCount',
-    },
+    // {
+    //   title: '菜单路径',
+    //   align: 'center',
+    //   dataIndex: 'orderCount',
+    // },
     {
       title: '操作',
       dataIndex: 'authAccessId',
@@ -55,10 +55,6 @@ const SysMenuList = (props) => {
             {
               type: 'edit',
               click: () => fetchGetMenuDetail({ accessId: val }),
-            },
-            {
-              type: 'del',
-              //   click: () => setShowCoach(record),
             },
           ]}
         />

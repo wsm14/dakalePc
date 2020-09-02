@@ -86,10 +86,6 @@ const SysAccountSet = (props) => {
               type: 'edit',
               click: () => fetchGetAccountInfo({ adminId: val }),
             },
-            {
-              type: 'del',
-              //   click: () => setShowCoach(record),
-            },
           ]}
         />
       ),

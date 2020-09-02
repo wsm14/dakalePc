@@ -14,18 +14,19 @@ export function fetchMerchantDetail(params) {
   });
 }
 
-// post 商户数据 - 商家新增
-export function fetchMerchantAdd(data) {
-  return request('/admin/userManagement/fetchMerchantStatus', {
+// post 商户数据 - 商家 设置开户行号
+export function fetchMerSetBandCode(data) {
+  return request('/admin/merchantManagement/updateMerchantBankSwiftCode', {
     method: 'POST',
     data,
   });
 }
 
-// get 商户数据 - 搜索品牌
-export function fetchSearchBrand(params) {
-  return request('/admin/merchantManagement/merchantCredentialsInfo', {
-    params,
+// post 商户数据 - 商家新增
+export function fetchMerchantAdd(data) {
+  return request('/admin/userManagement/fetchMerchantStatus', {
+    method: 'POST',
+    data,
   });
 }
 

@@ -8,7 +8,7 @@ import moment from 'moment';
 export const AUTH_SECRET_KEY = '733828mtizndu2cshfp1468889281801r9uv0aaji10';
 
 // 高德地图key
-export const AMAP_KEY = 'b71a4ssaasdasdsssacb0b1b7';
+export const AMAP_KEY = '10bf2d27f2ac06516314029c3e887799';
 
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
@@ -31,11 +31,14 @@ export const MENU_STATUS = ['禁用', '启用'];
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
 
+// 商户 银行账户
+export const BUSINESS_BAND_STATUS = [false, '对公', '对私'];
+
 // 商户 营业状态
 export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
 
-// 商户 账户状态
-export const BUSINESS_ACCOUNT_STATUS = ['未激活', '已激活'];
+// 商户 账户状态(银行卡绑定状态)
+export const BUSINESS_ACCOUNT_STATUS = [false, false, '未激活', '已激活'];
 
 // 商户 店铺状态
 export const BUSINESS_STATUS = ['禁用', '启用'];

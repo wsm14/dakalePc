@@ -8,22 +8,20 @@ const SysRoleAllocation = (props) => {
   const { show = false, record } = visible;
 
   const { roleIdList = [] } = record;
-  
+
   const [form] = Form.useForm();
   const [indeterminate, setIndeterminate] = useState(false);
   const [checked, setChecked] = useState(false);
 
   // 确认
   const handleUpdata = () => {
-    form.validateFields().then(() => {
-      dispatch({
-        type: 'sysAccountList/fetchAccountRoleEdit',
-        payload: { ...record, ...form.getFieldsValue() },
-        callback: () => {
-          setVisible();
-          cRef.current.fetchGetData();
-        },
-      });
+    dispatch({
+      type: 'sysAccountList/fetchAccountRoleEdit',
+      payload: { ...record, ...form.getFieldsValue() },
+      callback: () => {
+        setVisible();
+        cRef.current.fetchGetData();
+      },
     });
   };
 

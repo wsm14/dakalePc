@@ -2,11 +2,11 @@ import { notification } from 'antd';
 import {
   fetchMerchantList,
   fetchMerchantDetail,
+  fetchMerSetBandCode,
   fetchMerchantStatus,
   fetchMerSaleStatus,
   fetchMerchantSet,
   fetchMerchantAdd,
-  fetchSearchBrand,
 } from '@/services/BusinessServices';
 
 export default {
@@ -40,20 +40,6 @@ export default {
         },
       });
     },
-    *fetchSearchBrand({ payload }, { call, put }) {
-      const response = yield call(fetchSearchBrand, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          brandList: {
-            list: content.brandList,
-            total: content.total,
-          },
-        },
-      });
-    },
     *fetchMerchantDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
@@ -69,6 +55,14 @@ export default {
         payload: {
           totalData: content.userMerchantList,
         },
+      });
+    },
+    *fetchMerSetBandCode({ payload }, { call, put }) {
+      const response = yield call(fetchMerSetBandCode, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '开户行号设置成功',
       });
     },
     *fetchMerchantAdd({ payload, callback }, { call, put }) {

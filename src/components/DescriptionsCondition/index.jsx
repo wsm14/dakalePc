@@ -74,19 +74,23 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
       return (
         show && (
           <Descriptions.Item label={item.label} key={`${item.label}${i}`}>
-            {item.type === 'upload' ? (
-              <Upload
-                {...handleProps(
-                  item.initialValue ? item.initialValue : initialValues[item.name],
-                  item.label,
-                )}
-              />
-            ) : item.render ? (
-              item.render(initialValues[item.name], initialValues)
-            ) : item.initialValue ? (
-              item.initialValue
+            {initialValues ? (
+              item.type === 'upload' ? (
+                <Upload
+                  {...handleProps(
+                    item.initialValue ? item.initialValue : initialValues[item.name],
+                    item.label,
+                  )}
+                />
+              ) : item.render ? (
+                item.render(initialValues[item.name], initialValues)
+              ) : item.initialValue ? (
+                item.initialValue
+              ) : (
+                initialValues[item.name]
+              )
             ) : (
-              initialValues[item.name]
+              ''
             )}
             {item.children && <div>{item.children}</div>}
           </Descriptions.Item>
