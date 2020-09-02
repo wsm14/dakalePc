@@ -17,7 +17,7 @@ const BusinessAwardSet = (props) => {
   const [inputShow, setInputShow] = useState({ arrive: true, share: true });
 
   useEffect(() => {
-    setInputShow({ arrive: true, share: true });
+    setInputShow({ arrive: !!Number(record.markSetFlag), share: !!Number(record.momentSetFlag) });
   }, [visible]);
 
   // 提交
@@ -71,11 +71,15 @@ const BusinessAwardSet = (props) => {
     {
       type: 'textArea',
       label: '商家标签',
-      name: 'tags',
-      extra: '多个用“，”隔开，最多三个',
+      name: 'tag',
+      extra: (
+        <>
+          多个用 英文 “ , ”（逗号） 隔开，最多三个；<br></br>例：人气商家,景观店家,热门商家
+        </>
+      ),
       rules: [
         { pattern: COMMA_TWO_PATTERN, message: `最多输入三个标签` },
-        { pattern: COMMA_SE_PATTERN, message: `请勿以“，”开头和结尾` },
+        { pattern: COMMA_SE_PATTERN, message: `请勿以英文 “ , ”开头和结尾` },
       ],
     },
   ];
