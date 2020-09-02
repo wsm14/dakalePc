@@ -4,6 +4,7 @@ import {
   fetchMerchantDetail,
   fetchMerSetBandCode,
   fetchMerchantStatus,
+  fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
 } from '@/services/BusinessServices';
@@ -55,6 +56,12 @@ export default {
           totalData: content.userMerchantList,
         },
       });
+    },
+    *fetchMerBusinessOcr({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerBusinessOcr, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
     },
     *fetchMerSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchMerSetBandCode, payload);

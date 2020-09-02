@@ -14,6 +14,13 @@ export function fetchMerchantDetail(params) {
   });
 }
 
+// get 商户数据 - OCR识别营业执照
+export function fetchMerBusinessOcr(params) {
+  return request('/common/ocr/businessLicense', {
+    params,
+  });
+}
+
 // post 商户数据 - 商家 设置开户行号
 export function fetchMerSetBandCode(data) {
   return request('/admin/merchantManagement/updateMerchantBankSwiftCode', {
@@ -24,7 +31,7 @@ export function fetchMerSetBandCode(data) {
 
 // post 商户数据 - 商家新增
 export function fetchMerchantAdd(data) {
-  return request('/admin/userManagement/fetchMerchantStatus', {
+  return request('/admin/userMerchantVerify/saveUserMerchantVerify', {
     method: 'POST',
     data,
   });
@@ -32,7 +39,7 @@ export function fetchMerchantAdd(data) {
 
 // post 商户数据 - 商家 设置
 export function fetchMerchantSet(data) {
-  return request('/admin/userManagement/fetchMerchantStatus', {
+  return request('/admin/merchantManagement/updateMerchantBeanSet', {
     method: 'POST',
     data,
   });

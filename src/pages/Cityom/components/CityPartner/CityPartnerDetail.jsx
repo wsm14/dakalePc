@@ -16,11 +16,11 @@ const CityPartnerDetail = (props) => {
       businessLicense: { fileList: bfile },
       identityPicture: { fileList: ifile },
       joinTime: time,
-      citydistrictCode: city,
+      CascaderdistrictCode: city,
       bankAreaCode,
     } = values;
     aliOssUpload({ fileList: [...bfile, ...ifile] }).then((res) => {
-      delete values.citydistrictCode;
+      delete values.CascaderdistrictCode;
       dispatch({
         type: 'cityPartner/fetchCityPartnerAdd',
         payload: {
@@ -113,7 +113,7 @@ const CityPartnerDetail = (props) => {
         label: '代理区域收集字段',
         hidden: true,
         show: false,
-        name: 'citydistrictCode',
+        name: 'CascaderdistrictCode',
       },
       {
         label: '加盟日期',

@@ -8,6 +8,9 @@ const { TabPane } = Tabs;
 const BusinessDetailShow = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
 
+  const loadings = loading.effects['businessList/fetchSetStatus'];
+  const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
+
   const {
     businessLicenseObject: blobj = {},
     bankBindingInfo: bkInfo = {},
@@ -193,10 +196,10 @@ const BusinessDetailShow = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={onClose}>取消</Button>
-            <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loading}>
+            <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
               {businessStatusText}
             </Button>
-            <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loading}>
+            <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
               {statusText}
             </Button>
           </Space>
@@ -225,7 +228,12 @@ const BusinessDetailShow = (props) => {
             >
               <Input placeholder="请输入开户行号"></Input>
             </Form.Item>
-            <Button style={{ marginLeft: 80 }} type="primary" loading={loading} htmlType="submit">
+            <Button
+              style={{ marginLeft: 80 }}
+              type="primary"
+              loading={loadingSave}
+              htmlType="submit"
+            >
               保存
             </Button>
           </Form>
@@ -236,5 +244,5 @@ const BusinessDetailShow = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['businessList/fetchMerSetBandCode'],
+  loading,
 }))(BusinessDetailShow);

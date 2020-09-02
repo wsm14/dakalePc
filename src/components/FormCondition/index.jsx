@@ -115,7 +115,7 @@ const FormCondition = ({
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name) => {
+  const handleUpProps = (name, onChange) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -125,6 +125,7 @@ const FormCondition = ({
             fileList[fileList.length - 1].originFileObj = file;
             setFileLists({ ...fileLists, [name]: fileList });
           });
+          if (onChange) onChange(value);
         } else {
           setFileLists({ ...fileLists, [name]: fileList });
         }
@@ -182,6 +183,7 @@ const FormCondition = ({
             maxLength={maxLength}
             addonAfter={dataNum}
             disabled={item.disabled}
+            onBlur={item.onBlur}
             onChange={(e) => {
               if (item.onChange) item.onChange(e);
               setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
@@ -198,7 +200,8 @@ const FormCondition = ({
         textArea: (
           <Input.TextArea
             placeholder={placeholder}
-            rows={3}
+            rows={5}
+            disabled={item.disabled}
             maxLength={maxLength}
             onChange={(e) => setTotalNum({ ...totalNum, [item.name]: e.target.value.length })}
           />
@@ -242,7 +245,7 @@ const FormCondition = ({
                 const value = !data.value ? `${j}` : data.value;
                 const name = data.name ? data.name : data;
                 return (
-                  <Option key={j} value={value}>
+                  <Option key={data.key || j} value={value}>
                     {name}
                   </Option>
                 );
@@ -288,12 +291,14 @@ const FormCondition = ({
             fieldNames={item.fieldNames}
             options={item.select || CITYJSON}
             expandTrigger="hover"
-            onChange={(val, sele) => form.setFieldsValue({ [`city${item.name}`]: sele })}
+            onChange={(val, sele) => {
+              form.setFieldsValue({ [`Cascader${item.name}`]: sele });
+              if (item.onChange) item.onChange(sele);
+            }}
             showSearch={{
               filter: (inputValue, path) =>
                 filter(inputValue, path, item.fieldNames ? item.fieldNames.label : 'label'),
             }}
-            onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}
           />
         ),
@@ -304,12 +309,13 @@ const FormCondition = ({
             fileList={fileLists[name]}
             beforeUpload={() => false}
             onPreview={handlePreview}
-            {...handleUpProps(name)}
+            {...handleUpProps(name, item.onChange)}
           >
             {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
           </Upload>
         ),
         children: item.children,
+        noForm: '',
       }[type];
 
       if (type === 'textArea') {
@@ -319,6 +325,11 @@ const FormCondition = ({
             {dataNum}
           </div>
         );
+      }
+
+      if (type === 'noForm') {
+        children.push(visible && item.children);
+        return;
       }
 
       if (title) {

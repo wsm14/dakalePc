@@ -23,33 +23,31 @@ const BusinessAwardSet = (props) => {
   // 提交
   const fetchFormData = () => {
     form.validateFields().then((values) => {
-      console.log(values);
-      // dispatch({
-      //   type: 'businessList/fetchMerchantSet',
-      //   payload: {
-      //     ...values,
-      //   },
-      //   callback: () => {
-      //     onClose();
-      //     cRef.current.fetchGetData();
-      //   },
-      // });
+      dispatch({
+        type: 'businessList/fetchMerchantSet',
+        payload: {
+          merchantId: record.userMerchantIdString,
+          ...values,
+        },
+        callback: () => {
+          onClose();
+          cRef.current.fetchGetData();
+        },
+      });
     });
   };
-
-  const initialValues = { activityName: '0', activityUrl: '0' };
 
   const formItems = [
     {
       label: '到店打卡卡豆',
-      name: 'activityName',
+      name: 'markSetFlag',
       type: 'radio',
-      select: ['商家自定义', '平台固定'],
-      onChange: (e) => setInputShow({ ...inputShow, arrive: e.target.value === '0' }),
+      select: ['平台固定', '商家自定义'],
+      onChange: (e) => setInputShow({ ...inputShow, arrive: e.target.value === '1' }),
     },
     {
       label: '平台固定卡豆数',
-      name: 'activityBeginTime',
+      name: 'markBean',
       type: 'number',
       disabled: inputShow.arrive,
       visible: !inputShow.arrive,
@@ -57,14 +55,14 @@ const BusinessAwardSet = (props) => {
     },
     {
       label: '图文视频分享',
-      name: 'activityUrl',
+      name: 'momentSetFlag',
       type: 'radio',
-      select: ['商家自定义', '平台固定'],
-      onChange: (e) => setInputShow({ ...inputShow, share: e.target.value === '0' }),
+      select: ['平台固定', '商家自定义'],
+      onChange: (e) => setInputShow({ ...inputShow, share: e.target.value === '1' }),
     },
     {
       label: '平台固定卡豆数',
-      name: 'activityBseginTime',
+      name: 'momentSetBean',
       type: 'number',
       disabled: inputShow.share,
       visible: !inputShow.share,
@@ -73,7 +71,7 @@ const BusinessAwardSet = (props) => {
     {
       type: 'textArea',
       label: '商家标签',
-      name: 'description',
+      name: 'tags',
       extra: '多个用“，”隔开，最多三个',
       rules: [
         { pattern: COMMA_TWO_PATTERN, message: `最多输入三个标签` },
@@ -106,12 +104,7 @@ const BusinessAwardSet = (props) => {
         </div>
       }
     >
-      <FormCondition
-        formItems={formItems}
-        initialValues={initialValues}
-        form={form}
-        loading={loading}
-      />
+      <FormCondition formItems={formItems} initialValues={record} form={form} loading={loading} />
     </Drawer>
   );
 };

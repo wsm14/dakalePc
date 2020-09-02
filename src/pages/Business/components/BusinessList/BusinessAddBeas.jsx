@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Form, Select, Switch } from 'antd';
+import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 
 const BusinessAddBeas = (props) => {
-  const { dispatch, initialValues = {}, form, loading, brandList, platformList, tradeList } = props;
+  const {
+    dispatch,
+    amap,
+    onSearchAddress,
+    initialValues = {},
+    form,
+    loading,
+    brandList,
+    platformList,
+    tradeList,
+  } = props;
 
   const [brandMust, setBrandMust] = useState(!initialValues.otherBrand);
   const [areaMust, setAreaMust] = useState(false);
   const [priceList, setPriceList] = useState([]);
+  const [selectCity, setSelectCity] = useState([]);
+  const [ampShow, setAmpShow] = useState(false);
 
   // 获取品牌
   const fetchGetBrandList = () => {
@@ -37,8 +50,9 @@ const BusinessAddBeas = (props) => {
       if (platformList[0].type === 'no') {
         setPriceList(
           platformList[0].merchantSettleObjects.map((item) => ({
-            value: item.serviceFee,
+            value: item.freeBean,
             name: `${item.serviceFee}%`,
+            key: item.serviceFee,
           })),
         );
       }
@@ -53,17 +67,17 @@ const BusinessAddBeas = (props) => {
       required: false,
       children: (
         <>
-          <Form.Item name="brand" noStyle rules={[{ required: false, message: '请选择品牌' }]}>
+          <Form.Item name="brandName" noStyle rules={[{ required: false, message: '请选择品牌' }]}>
             <Select
               showSearch
-              placeholder="请搜索并选择你所属的品牌"
+              placeholder="请搜索或选择所属的品牌"
               defaultActiveFirstOption={false}
               filterOption={false}
               style={{ width: '70%', marginRight: 10 }}
               disabled={!brandMust}
             >
               {brandList.map((item) => (
-                <Select.Option key={item.id} value={item.id}>
+                <Select.Option key={item.brandName} value={item.brandName}>
                   {item.brandName}
                 </Select.Option>
               ))}
@@ -75,7 +89,7 @@ const BusinessAddBeas = (props) => {
               unCheckedChildren="其他品牌"
               onChange={() => {
                 setBrandMust(!brandMust);
-                form.setFieldsValue({ brand: undefined });
+                form.setFieldsValue({ brandName: undefined });
               }}
             />
           </Form.Item>
@@ -83,27 +97,39 @@ const BusinessAddBeas = (props) => {
       ),
     },
     {
+      label: '注册帐号',
+      name: 'mobile',
+      addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号' }],
+    },
+    {
       label: '商户简称',
-      name: 'activityBseginTime',
+      name: 'merchantName',
       placeholder: '如：一点点城西店',
     },
     {
       label: '省市区',
       type: 'cascader',
-      name: 'dessioasdn',
+      name: 'provinceCode',
+      onChange: setSelectCity,
     },
     {
       label: '详细地址',
-      name: 'dedn',
+      name: 'address',
+      disabled: !selectCity.length,
+      onBlur: (e) => onSearchAddress(e.target.value, selectCity, setAmpShow),
+    },
+    {
+      type: 'noForm',
+      visible: ampShow,
+      children: amap,
     },
     {
       label: '商户电话',
-      name: 'dedasdn',
-      type: 'number',
+      name: 'telephone',
     },
     {
       label: '店铺门头照',
-      name: 'deasddaasdn',
+      name: 'coverImg',
       type: 'upload',
       maxFile: 1,
       extra: '最多上传 1 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
@@ -111,7 +137,7 @@ const BusinessAddBeas = (props) => {
     },
     {
       label: '店内实景照',
-      name: 'dedasdaaddsdn',
+      name: 'interiorImg',
       type: 'upload',
       maxFile: 3,
       extra: '最多上传 3 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
@@ -120,33 +146,43 @@ const BusinessAddBeas = (props) => {
     {
       label: '经营类目',
       type: 'cascader',
-      name: 'description',
+      name: 'topCategoryName',
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'id', children: 'categoryDTOList' },
       onChange: (val) => {
         setPriceList([]);
-        setAreaMust(val[0] === 1);
-        fetchGetPlatform(val[0]);
-        form.setFieldsValue({ dession: undefined });
+        setAreaMust(val[0].id === 1);
+        fetchGetPlatform(val[0].id);
+        form.setFieldsValue({
+          categoryName: val,
+          businessArea: undefined,
+          commissionRatio: undefined,
+        });
       },
+    },
+    {
+      label: '经营类目储存',
+      name: 'categoryName',
+      hidden: true,
     },
     {
       label: '店铺面积',
       type: 'select',
       visible: areaMust,
       loading: loading.models.sysTradeList,
-      name: 'dessdcription',
+      name: 'businessArea',
       select: platformList.map((item) => ({
         value: item.configMerchantSettleIdString,
         name: item.typeContent,
       })),
       onChange: (val) => {
-        form.setFieldsValue({ dession: undefined });
+        form.setFieldsValue({ commissionRatio: undefined });
         const plist = platformList.filter((i) => i.configMerchantSettleIdString === val)[0];
         setPriceList(
           plist.merchantSettleObjects.map((item) => ({
-            value: item.serviceFee,
+            value: item.freeBean,
             name: `${item.serviceFee}%`,
+            key: item.serviceFee,
           })),
         );
       },
@@ -154,9 +190,16 @@ const BusinessAddBeas = (props) => {
     {
       label: '服务费',
       type: 'select',
-      name: 'dession',
+      name: 'commissionRatio',
+      disabled: loading.models.sysTradeList,
       loading: loading.models.sysTradeList,
       select: priceList,
+      onChange: (val, row) => form.setFieldsValue({ bondBean: row }),
+    },
+    {
+      label: '赠送卡豆数',
+      name: 'bondBean',
+      hidden: true,
     },
   ];
 

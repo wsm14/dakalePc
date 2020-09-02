@@ -8,7 +8,7 @@ import moment from 'moment';
 export const AUTH_SECRET_KEY = '733828mtizndu2cshfp1468889281801r9uv0aaji10';
 
 // 高德地图key
-export const AMAP_KEY = '10bf2d27f2ac06516314029c3e887799';
+export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
