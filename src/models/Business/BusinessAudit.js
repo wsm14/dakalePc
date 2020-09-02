@@ -30,7 +30,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.merchantVerifyList,
+          list: content.recordList,
           total: content.total,
         },
       });

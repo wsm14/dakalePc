@@ -30,7 +30,7 @@ const BusinessAuditList = (props) => {
     {
       title: '商家账号',
       fixed: 'left',
-      dataIndex: 'mobile',
+      dataIndex: 'account',
       render: (val) => val || '暂未授权',
     },
     {
@@ -57,18 +57,19 @@ const BusinessAuditList = (props) => {
       title: '经营类目',
       align: 'center',
       dataIndex: 'topCategoryName',
+      render: (val, row) => `${val}${row.categoryName}`,
     },
     {
       title: '经营面积',
       align: 'right',
-      dataIndex: 'applyTime',
+      dataIndex: 'businessArea',
       render: (val) => val || '--',
     },
     {
       title: '服务费',
       align: 'right',
-      dataIndex: 'applyasTime',
-      render: (val, record) => `2%（赠送2000卡豆）`,
+      dataIndex: 'commissionRatio',
+      render: (val, row) => `${val}%（赠送${row.bondBean}卡豆）`,
     },
     {
       title: '申请时间',
@@ -78,8 +79,8 @@ const BusinessAuditList = (props) => {
     {
       title: '审核时间',
       align: 'center',
-      dataIndex: 'applyTime',
-      render: (val) => val || '-',
+      dataIndex: 'verifyTime',
+      render: (val) => val || '--',
     },
     {
       title: '审核状态',
@@ -89,7 +90,7 @@ const BusinessAuditList = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'userMerchantVerifyId',
       align: 'right',
       fixed: 'right',
       render: (val, record) => (
@@ -98,12 +99,12 @@ const BusinessAuditList = (props) => {
             {
               type: 'check',
               visible: record.verifyStatus === '1',
-              click: () => fetchGetDetail(record.userMerchantVerifyId),
+              click: () => fetchGetDetail(val),
             },
             {
               type: 'eye',
               visible: record.verifyStatus === '2',
-              click: () => fetchGetDetail(record.userMerchantVerifyId),
+              click: () => handleShowUserDetail(record),
             },
           ]}
         />
@@ -124,7 +125,7 @@ const BusinessAuditList = (props) => {
   const handleShowUserDetail = (initialValues, mreId) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: businessAuditDetailShow({ dispatch, childRef, initialValues, mreId, loading }),
+      payload: businessAuditDetailShow({ dispatch, childRef, initialValues, mreId }),
     });
   };
 
