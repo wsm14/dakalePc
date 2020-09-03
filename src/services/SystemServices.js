@@ -174,21 +174,21 @@ export function fetchPeasShareDel(data) {
 
 // get 打卡设置 - 打卡列表
 export function fetchCheckInList(params) {
-  return request('/admin/systemConfig/listMarkConfig', {
+  return request('/admin/healthLife/listUserHealthLife', {
     params,
   });
 }
 
 // get 打卡设置 - 图片文案列表
 export function fetchCheckInImgTextList(params) {
-  return request('/admin/systemConfig/listConfigMarkContent', {
+  return request('/admin/healthLife/listUserHealthListWords', {
     params,
   });
 }
 
 // post 打卡设置 - 打卡列表编辑
 export function fetchCheckInEdit(data) {
-  return request('/admin/systemConfig/updateMarkConfig', {
+  return request('/admin/healthLife/updateUserHealthLifeStyleMarkTime', {
     method: 'POST',
     data,
   });
@@ -196,15 +196,7 @@ export function fetchCheckInEdit(data) {
 
 // post 打卡设置 - 图片 文案编辑
 export function fetchCheckInTextImgEdit(data) {
-  return request('/admin/systemConfig/updateConfigMarkContent', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 打卡设置 - 图片 文案新增
-export function fetchCheckInTextImgAdd(data) {
-  return request('/admin/systemConfig/addConfigMarkContent', {
+  return request('/admin/healthLife/updateUserHealthLifeStyleContent', {
     method: 'POST',
     data,
   });

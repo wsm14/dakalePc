@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { CHECKIN_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import checkInSet from './components/CheckIn/CheckInSet';
@@ -17,28 +16,28 @@ const SysCheckIn = (props) => {
   const getColumns = [
     {
       title: '打卡',
-      dataIndex: 'markDesc',
+      dataIndex: 'subIdentifyValue',
     },
     {
       title: '类型',
       align: 'center',
-      dataIndex: 'markType',
-      render: (val) => CHECKIN_TYPE.filter((item) => item.value === val)[0].name,
+      dataIndex: 'identify',
+      render: (val) => (val === 'health' ? '健康打卡' : '习惯打卡'),
     },
     {
       title: '打卡时间段',
       align: 'center',
-      dataIndex: 'markBeginTime',
+      dataIndex: 'beginMark',
       render: (val, record) =>
-        record.markSubType === 'customize'
-          ? '--'
-          : { health: '--', habit: `${val} ~ ${record.markEndTime}` }[record.markType],
+        ({ care: '--', custom: '--', health: '--', habit: `${val} ~ ${record.endMark}` }[
+          record.identify
+        ]),
     },
     {
       title: '寄语',
       align: 'center',
-      dataIndex: 'remark',
-      render: (val, record) => (record.markSubType === 'customize' ? '--' : val),
+      dataIndex: 'letter',
+      render: (val, record) => (record.identify === 'custom' ? '--' : val),
     },
     {
       title: '操作',
@@ -55,7 +54,7 @@ const SysCheckIn = (props) => {
             {
               type: 'own',
               title: '文案素材',
-              click: () => setVisible({ type: 'words', record }),
+              click: () => setVisible({ type: 'text', record }),
             },
             {
               type: 'edit',
@@ -92,7 +91,7 @@ const SysCheckIn = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.markConfigIdString}`}
+        rowKey={(record) => `${record.subIdentify}`}
         dispatchType="sysCheckIn/fetchGetList"
         {...list}
       ></DataTableBlock>

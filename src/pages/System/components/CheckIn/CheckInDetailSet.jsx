@@ -1,22 +1,19 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const CheckInDetailSet = (props) => {
-  const { dispatch, childRef, CeditType, configMarkId, initialValues = {} } = props;
+  const { dispatch, childRef, CeditType, initialValues = {} } = props;
 
   const fetchSysCheckIn = (values) => {
     const defineSet = {
-      type: {
-        true: 'sysCheckIn/fetchCheckInTextImgAdd',
-        false: 'sysCheckIn/fetchCheckInTextImgEdit',
-      }[!Object.keys(initialValues).length],
+      type: 'sysCheckIn/fetchCheckInTextImgEdit',
       callback: () => childRef.current.fetchGetData(),
     };
 
     const defineDate = {
       ...initialValues,
       type: CeditType,
-      configMarkId,
     };
+
     const { content } = values;
     aliOssUpload(content).then((res) => {
       dispatch({
@@ -24,11 +21,10 @@ const CheckInDetailSet = (props) => {
         payload: { ...defineDate, content: res.toString() },
       });
     });
-    // }
   };
 
   const formItem = {
-    words: {
+    text: {
       title: '分享文案编辑',
       formItems: [
         {
@@ -45,7 +41,7 @@ const CheckInDetailSet = (props) => {
           label: '图片上传',
           name: 'content',
           type: 'upload',
-          maxFile: 3,
+          maxFile: 1,
         },
       ],
     },

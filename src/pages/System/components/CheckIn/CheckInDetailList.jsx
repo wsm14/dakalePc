@@ -9,7 +9,7 @@ import checkInDetailSet from './CheckInDetailSet';
 const CheckInDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
 
-  const { type = 'words', record = '' } = visible;
+  const { type = 'text', record = '' } = visible;
 
   const childRef = useRef();
 
@@ -29,8 +29,8 @@ const CheckInDetailList = (props) => {
 
   // table
   const propItem = {
-    words: {
-      title: `文案素材 - ${record.markDesc}`,
+    text: {
+      title: `文案素材 - ${record.subIdentifyValue}`,
       getColumns: [
         {
           title: '分享文案',
@@ -40,7 +40,7 @@ const CheckInDetailList = (props) => {
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'configMarkContentIdString',
+          dataIndex: 'identify',
           render: (val, row) => (
             <HandleSetTable
               formItems={[
@@ -55,7 +55,7 @@ const CheckInDetailList = (props) => {
       ],
     },
     image: {
-      title: `图片素材 - ${record.markDesc}`,
+      title: `图片素材 - ${record.subIdentifyValue}`,
       getColumns: [
         {
           title: '分享图片',
@@ -66,7 +66,7 @@ const CheckInDetailList = (props) => {
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'configMarkContentIdString',
+          dataIndex: 'identify',
           render: (val, row) => (
             <HandleSetTable
               formItems={[
@@ -93,25 +93,15 @@ const CheckInDetailList = (props) => {
     >
       <DataTableBlock
         cRef={childRef}
-        btnExtra={
-          {
-            words: detailList.list.length < 6 && (
-              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                新增
-              </Button>
-            ),
-            image: detailList.list.length < 3 && (
-              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                新增
-              </Button>
-            ),
-          }[type]
-        }
         CardNone={false}
         loading={loading}
         columns={propItem.getColumns}
-        rowKey={(row) => `${row.configMarkContentIdString}`}
-        params={{ type, configMarkId: record.markConfigIdString }}
+        rowKey={(row) => `${row.content}`}
+        params={{
+          contentType: type,
+          identify: record.identify,
+          subIdentify: record.subIdentify,
+        }}
         dispatchType="sysCheckIn/fetchDetailList"
         componentSize="middle"
         {...detailList}

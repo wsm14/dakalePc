@@ -3,7 +3,6 @@ import {
   fetchCheckInList,
   fetchCheckInImgTextList,
   fetchCheckInEdit,
-  fetchCheckInTextImgAdd,
   fetchCheckInTextImgEdit,
 } from '@/services/SystemServices';
 
@@ -50,7 +49,16 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.recordList, total: content.totalCount },
+          detailList: {
+            list: content.recordList.map((item) => ({
+              content: item,
+              originContent: item,
+              identify: content.identify,
+              subIdentify: content.subIdentify,
+              contentType: content.contentType,
+            })),
+            total: content.total,
+          },
         },
       });
     },
@@ -69,15 +77,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '素材修改成功',
-      });
-      callback();
-    },
-    *fetchCheckInTextImgAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchCheckInTextImgAdd, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '素材新增成功',
       });
       callback();
     },

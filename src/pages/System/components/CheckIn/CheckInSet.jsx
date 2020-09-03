@@ -5,15 +5,16 @@ const CheckInSet = (props) => {
 
   const fetchSysCheckIn = (values) => {
     let times = {};
-    if (rowData.markType !== 'health') {
-      const { markBeginTime: time } = values;
-      times = { markBeginTime: time[0].format('HH:mm'), markEndTime: time[1].format('HH:mm') };
+    if (rowData.identify === 'habit') {
+      const { beginMark: time } = values;
+      times = { beginMark: time[0].format('HH:mm'), endMark: time[1].format('HH:mm') };
     }
     dispatch({
       type: 'sysCheckIn/fetchCheckInEdit',
       payload: {
         ...values,
-        marketConfigId: rowData.markConfigIdString,
+        identify: rowData.identify,
+        subIdentify: rowData.subIdentify,
         ...times,
       },
       callback: () => childRef.current.fetchGetData(),
@@ -26,19 +27,19 @@ const CheckInSet = (props) => {
     title: '打卡编辑',
     loadingModels: 'sysCheckIn',
     initialValues: {
-      markBeginTime: [moment(rowData.markBeginTime, 'HH:mm'), moment(rowData.markEndTime, 'HH:mm')],
-      remark: rowData.remark,
+      beginMark: [moment(rowData.beginMark, 'HH:mm'), moment(rowData.endMark, 'HH:mm')],
+      letter: rowData.letter,
     },
     formItems: [
       {
         label: '打卡时间',
         type: 'timePicker',
-        visible: rowData.markType !== 'health',
-        name: 'markBeginTime',
+        visible: rowData.identify === 'habit',
+        name: 'beginMark',
       },
       {
         label: '寄语',
-        name: 'remark',
+        name: 'letter',
         type: 'textArea',
       },
     ],
