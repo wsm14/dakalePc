@@ -29,7 +29,7 @@ const TradePlatformSet = (props) => {
       title: `服务费设置`,
       name: 'specialService',
       url: 'sysTradeList/fetchTradePlatformSet',
-      payload: rowData,
+      payload: { ...rowData },
     },
   }[CeditType];
 
@@ -43,11 +43,16 @@ const TradePlatformSet = (props) => {
       // 新增服务费
       if (configMerchantSettleId) {
         const { merchantSettleObjects: pObj = [] } = rowData;
-        objdata = { merchantSettleObjects: [...pObj, values] };
+        objdata = {
+          categoryId,
+          configMerchantSettleId: rowData.configMerchantSettleIdString,
+          merchantSettleObjects: [...pObj, values],
+        };
       } else {
         // 修改服务费
         const { merchantSettleObjects: pObj = [] } = rowData;
         objdata = {
+          configMerchantSettleId: rowData.configMerchantSettleIdString,
           merchantSettleObjects: pObj.map((item) => {
             if (item.serviceFee === initialValues.serviceFee) {
               return values;

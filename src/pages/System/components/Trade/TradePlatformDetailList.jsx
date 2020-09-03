@@ -32,18 +32,20 @@ const TradePlatformDetailList = (props) => {
   const fetchDataDel = (value) => {
     dispatch({
       type: 'sysTradeList/fetchTradePlatformSet',
-      payload: { configMerchantSettleId: value },
+      payload: { configMerchantSettleId: value, deleteFlag: 0 },
       callback: () => childRef.current.fetchGetData(),
     });
   };
 
   // 删除服务费
   const fetchDataRowDel = (value, data) => {
-    const { merchantSettleObjects: pObj = [] } = data;
+    const { merchantSettleObjects: pObj = [], configMerchantSettleIdString } = data;
     dispatch({
       type: 'sysTradeList/fetchTradePlatformSet',
       payload: {
         ...data,
+        categoryId: record.id,
+        configMerchantSettleId: configMerchantSettleIdString,
         merchantSettleObjects: pObj.filter((item) => item.serviceFee !== value.serviceFee),
       },
       callback: () => childRef.current.fetchGetData(),

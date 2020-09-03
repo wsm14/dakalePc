@@ -130,6 +130,7 @@ const CityPartnerDetail = (props) => {
         title: '银行账号',
         label: '银行',
         name: 'bankName',
+        render: (val, row) => row.bankType,
       },
       {
         label: '银行卡号',

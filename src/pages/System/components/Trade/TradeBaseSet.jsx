@@ -28,7 +28,11 @@ const TradeCategorySet = (props) => {
         });
     dispatch({
       type: propItem.url,
-      payload: { [propItem.name]: payload, categoryId },
+      payload: {
+        [propItem.name]: payload,
+        categoryId,
+        configMerchantSettleId: initialValues.configMerchantSettleIdString,
+      },
       callback: () => childRef.current.fetchGetData(),
     });
   };
