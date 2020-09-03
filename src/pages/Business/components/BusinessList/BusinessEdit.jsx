@@ -7,6 +7,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
 import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
+import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 
 const BusinessAdd = (props) => {
   const { dispatch, cRef, visible, initialValues = false, onClose, loading } = props;
@@ -16,6 +17,7 @@ const BusinessAdd = (props) => {
   const [form] = Form.useForm();
   const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
   const [selectCity, setSelectCity] = useState([]); // 选择城市
+  const [visibleAllow, setVisibleAllow] = useState(false);
 
   useEffect(() => {
     if (initialValues) {
@@ -31,7 +33,7 @@ const BusinessAdd = (props) => {
   }, [initialValues]);
 
   // 提交
-  const fetchFormData = () => {
+  const fetchFormData = (auditInfo = {}) => {
     form.validateFields().then((values) => {
       const { categoryName: cobj, bondBean: bobj, coverImg, interiorImg, otherBrand } = values;
       const payload = {
@@ -52,6 +54,7 @@ const BusinessAdd = (props) => {
         bondBean: bobj.value,
         lnt: location[0],
         lat: location[1],
+        ...auditInfo,
       };
       aliOssUpload(coverImg).then((cres) => {
         payload.coverImg = cres.toString();
@@ -59,13 +62,14 @@ const BusinessAdd = (props) => {
           dispatch({
             type: {
               false: 'businessList/fetchMerchantAdd',
-              true: 'businessList/fetchMerSaleAuditAllow',
+              true: 'businessAudit/fetchMerSaleAuditAllow',
             }[!!initialValues],
             payload: {
               ...payload,
               interiorImg: res.toString(),
             },
             callback: () => {
+              if (auditInfo.verifyStatus) setVisibleAllow(false);
               onClose();
               cRef.current.fetchGetData();
             },
@@ -161,7 +165,15 @@ const BusinessAdd = (props) => {
                   审核驳回
                 </Button>
                 {initialValues.hasPartner === '1' && (
-                  <Button onClick={fetchFormData} type="primary" loading={loading}>
+                  <Button
+                    onClick={() => {
+                      form.validateFields().then((values) => {
+                        setVisibleAllow(true);
+                      });
+                    }}
+                    type="primary"
+                    loading={loading}
+                  >
                     审核通过
                   </Button>
                 )}
@@ -178,6 +190,16 @@ const BusinessAdd = (props) => {
         initialValues={initialValues}
       />
       <BusinessAddQuality form={form} initialValues={initialValues} />
+      {initialValues && (
+        <BusinessAuditAllow
+          visible={visibleAllow}
+          onClose={() => setVisibleAllow(false)}
+          merchantName={initialValues.merchantName}
+          merchantVerifyId={initialValues.merchantVerifyIdString}
+          fetchFormData={fetchFormData}
+          categoryId={form.getFieldValue('topCategoryName')}
+        />
+      )}
     </Drawer>
   );
 };

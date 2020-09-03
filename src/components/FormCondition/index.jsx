@@ -12,6 +12,8 @@ import {
   Cascader,
   Switch,
   Divider,
+  Checkbox,
+  Spin,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
@@ -234,6 +236,7 @@ const FormCondition = ({
             // }
           />
         ),
+        checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} />,
         select: (
           <Select
             showSearch

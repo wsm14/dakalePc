@@ -67,7 +67,7 @@ export default {
       const { content } = response;
       callback(content);
     },
-    *fetchDetailList({ payload }, { call, put }) {
+    *fetchDetailList({ payload, callback }, { call, put }) {
       const { type } = payload;
       const inter = {
         base: fetchTradeBaseList, // 基础设施
@@ -87,6 +87,13 @@ export default {
           },
         },
       });
+      if (callback)
+        callback(
+          content[{ base: 'infrastructures', special: 'specialService' }[type]].map((item) => ({
+            label: item,
+            value: item,
+          })),
+        );
     },
     *fetchTradeBaseSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeBaseSet, payload);
