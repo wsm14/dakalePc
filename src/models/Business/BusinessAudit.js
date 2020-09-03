@@ -44,6 +44,9 @@ export default {
         provinceCode: p,
         cityCode: c,
         districtCode: d,
+        provinceName: pN,
+        cityName: cN,
+        districtName: dN,
         categoryNode,
         brandName,
         bondBean,
@@ -55,6 +58,11 @@ export default {
       const initialValues = {
         ...content.userMerchantVerify,
         provinceCode: [p, c, d],
+        selectCity: [
+          { value: p, label: pN },
+          { value: c, label: cN },
+          { value: d, label: dN },
+        ],
         topCategoryName: [Number(categoryNodeArr[0]), Number(categoryNodeArr[1])],
         otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
         bondBean: { value: bondBean, key: commissionRatio },

@@ -49,7 +49,7 @@ const BusinessAddBeas = (props) => {
             })),
           );
         } else if (categId) {
-          const plist = val.filter((i) => i.configMerchantSettleIdString === categId)[0];
+          const plist = val.filter((i) => i.typeContent === categId)[0];
           setPriceList(
             plist.merchantSettleObjects
               ? plist.merchantSettleObjects.map((item) => ({
@@ -185,13 +185,13 @@ const BusinessAddBeas = (props) => {
       loading: loading.models.sysTradeList,
       name: 'businessArea',
       select: platformList.map((item) => ({
-        value: item.configMerchantSettleIdString,
+        value: item.typeContent,
         name: item.typeContent,
       })),
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
         setCategId(val);
-        const plist = platformList.filter((i) => i.configMerchantSettleIdString === val)[0];
+        const plist = platformList.filter((i) => i.typeContent === val)[0];
         setPriceList(
           plist.merchantSettleObjects
             ? plist.merchantSettleObjects.map((item) => ({

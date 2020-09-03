@@ -1,38 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Space, Form, message } from 'antd';
+import { Drawer, Button, Space, Form, message, Modal } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
-import BusinessAddBeas from './BusinessAddBeas';
-import BusinessAddQuality from './BusinessAddQuality';
+import BusinessAddBeas from './Edit/BusinessEditBeas';
+import BusinessAddQuality from './Edit/BusinessEditQuality';
 import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 
 const BusinessAdd = (props) => {
   const { dispatch, cRef, visible, initialValues = false, onClose, loading } = props;
 
-  const {
-    lnt = 116.407526,
-    lat = 39.90403,
-    provinceCode,
-    provinceName,
-    cityName,
-    cityCode,
-    districtCode,
-    districtName,
-  } = initialValues;
+  const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
   const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
   const [selectCity, setSelectCity] = useState([]); // 选择城市
 
   useEffect(() => {
-    if (initialValues)
-      setSelectCity([
-        { value: provinceCode[1], label: provinceName },
-        { value: cityCode, label: cityName },
-        { value: districtCode, label: districtName },
-      ]);
+    if (initialValues) {
+      setSelectCity(initialValues.selectCity);
+      if (initialValues.hasPartner !== '1') {
+        Modal.warning({
+          title: '提醒',
+          content:
+            '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
+        });
+      }
+    }
   }, [initialValues]);
 
   // 提交
@@ -77,6 +72,14 @@ const BusinessAdd = (props) => {
           });
         });
       });
+    });
+  };
+
+  // 审核驳回
+  const fetchAuditRefuse = () => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: businessAuditRefuse({ dispatch, cRef, initialValues, onClose }),
     });
   };
 
@@ -131,7 +134,7 @@ const BusinessAdd = (props) => {
   );
 
   const modalProps = {
-    title: `新增商户`,
+    title: `${initialValues ? '审核' : '新增'}商户`,
     width: 600,
     visible,
     maskClosable: false,
@@ -154,12 +157,14 @@ const BusinessAdd = (props) => {
             )}
             {initialValues && (
               <>
-                <Button onClick={fetchFormData} type="primary" loading={loading}>
+                <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
                   审核驳回
                 </Button>
-                <Button onClick={fetchFormData} type="primary" loading={loading}>
-                  审核通过
-                </Button>
+                {initialValues.hasPartner === '1' && (
+                  <Button onClick={fetchFormData} type="primary" loading={loading}>
+                    审核通过
+                  </Button>
+                )}
               </>
             )}
           </Space>

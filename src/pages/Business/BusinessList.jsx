@@ -7,7 +7,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
-import BusinessAdd from './components/BusinessList/BusinessAdd';
+import BusinessAdd from './components/BusinessList/BusinessEdit';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 
 const BusinessListComponent = (props) => {

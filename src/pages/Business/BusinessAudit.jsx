@@ -5,7 +5,7 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
-import BusinessEdit from './components/BusinessList/BusinessAdd';
+import BusinessEdit from './components/BusinessList/BusinessEdit';
 
 const BusinessAuditList = (props) => {
   const { businessAudit, loading, dispatch } = props;

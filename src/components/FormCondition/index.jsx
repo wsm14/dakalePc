@@ -17,7 +17,6 @@ import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
 import CITYJSON from '@/common/city';
 import moment from 'moment';
-import { isArray } from 'lodash';
 
 /**
  *
@@ -75,7 +74,6 @@ const FormCondition = ({
   layout = 'horizontal',
   initialValues = {},
 }) => {
-  const [cityObj, setCityObj] = useState({}); // 城市选择内容
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -83,27 +81,28 @@ const FormCondition = ({
   const [fileLists, setFileLists] = useState(() => {
     const fileobj = {};
     formItems.map((item, i) => {
+      const { name } = item;
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
-          if (Array.isArray(item.name)) {
-            const urlfile = initialValues[item.name[0]][item.name[1]];
-            fileobj[item.name[1]] = [imgold(urlfile, i)];
+          if (Array.isArray(name)) {
+            const urlfile = initialValues[name[0]][name[1]];
+            fileobj[name[1]] = [imgold(urlfile, i)];
             return;
           }
-          const fileArrar = initialValues[item.name];
+          const fileArrar = initialValues[name];
           if (fileArrar && !!fileArrar.fileList) {
-            fileobj[item.name] = fileArrar.fileList;
+            fileobj[name] = fileArrar.fileList;
             return;
           }
-          fileobj[item.name] = !Array.isArray(fileArrar)
+          fileobj[name] = !Array.isArray(fileArrar)
             ? fileArrar && fileArrar.length > 0
               ? fileArrar.indexOf(',') > -1
-                ? fileArrar.split(',').map((items, i) => imgold(items, i))
+                ? fileArrar.split(',').map((v, i) => imgold(v, i))
                 : [imgold(fileArrar, i)]
               : []
-            : fileArrar.map((items, i) => imgold(items, i));
+            : fileArrar.map((v, i) => imgold(v, i));
         } else {
-          fileobj[item.name] = [];
+          fileobj[Array.isArray(name) ? name[1] : name] = [];
         }
       }
     });
