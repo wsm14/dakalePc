@@ -9,6 +9,7 @@ import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
 import BusinessAdd from './components/BusinessList/BusinessEdit';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
+import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, loading, dispatch } = props;
@@ -168,6 +169,14 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  // 设置商家端登录验证码
+  const handleVCodeSet = () => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
+    });
+  };
+
   // 商户详情展示
   const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
 
@@ -179,9 +188,14 @@ const BusinessListComponent = (props) => {
     <>
       <BusinessTotalInfo
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
-            新增商户
-          </Button>
+          <>
+            <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+              新增商户
+            </Button>
+            <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
+              设置商家验证码
+            </Button>
+          </>
         }
       ></BusinessTotalInfo>
       <DataTableBlock

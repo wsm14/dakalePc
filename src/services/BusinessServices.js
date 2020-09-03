@@ -53,6 +53,14 @@ export function fetchMerchantStatus(data) {
   });
 }
 
+// post 商户数据 - 设置商家端验证码
+export function fetchMerVerificationCodeSet(data) {
+  return request('/admin/merchantManagement/setMerchantLogonCode', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 商户审核 - 商户审核列表
 export function fetchMerchantAuditList(params) {
   return request('/admin/merchantManagement/listMerchantVerify', {

@@ -7,6 +7,7 @@ import {
   fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
+  fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
 
 export default {
@@ -97,6 +98,14 @@ export default {
         description: '商家店铺状态修改成功',
       });
       callback();
+    },
+    *fetchMerVerificationCodeSet({ payload }, { call, put }) {
+      const response = yield call(fetchMerVerificationCodeSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '验证码设置成功',
+      });
     },
   },
 };
