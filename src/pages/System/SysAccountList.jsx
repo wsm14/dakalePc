@@ -52,11 +52,11 @@ const SysAccountSet = (props) => {
       align: 'center',
       dataIndex: 'username',
     },
-    {
-      title: '角色',
-      align: 'left',
-      dataIndex: 'idString',
-    },
+    // {
+    //   title: '角色',
+    //   align: 'left',
+    //   dataIndex: 'idString',
+    // },
     {
       title: '手机号',
       align: 'left',
