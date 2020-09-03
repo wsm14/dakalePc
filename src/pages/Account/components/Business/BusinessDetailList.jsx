@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Modal } from 'antd';
 import { COLLECT_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessOrderDetail from './BusinessOrderDetail';
+import BusinessOrderDetail from '../CheckOrderDetail';
 
 const BusinessDetailList = (props) => {
   const { detailList, loading, visible, setVisible } = props;

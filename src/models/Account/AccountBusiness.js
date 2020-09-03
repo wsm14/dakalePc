@@ -4,7 +4,6 @@ import {
   fetchBusinessPeasDetail,
   fetchBusinessCollectDetail,
   fetchBusinessRechargeDetail,
-  fetchBusinessOrderDetail,
 } from '@/services/AccountServices';
 
 export default {
@@ -14,7 +13,6 @@ export default {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     totalData: {},
-    orderDetail: {},
   },
 
   reducers: {
@@ -71,17 +69,6 @@ export default {
         type: 'save',
         payload: {
           totalData: content.userMerchantList,
-        },
-      });
-    },
-    *fetchGetOrderDetails({ payload }, { call, put }) {
-      const response = yield call(fetchBusinessOrderDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          orderDetail: content.userMerchantList,
         },
       });
     },

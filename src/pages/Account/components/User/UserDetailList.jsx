@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
-import UserOrderDetail from './UserOrderDetail';
+import UserOrderDetail from '../CheckOrderDetail';
 
 const UserDetailList = (props) => {
   const { detailList, loading, visible, setVisible } = props;

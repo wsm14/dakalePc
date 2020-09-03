@@ -3,7 +3,6 @@ import {
   fetchAccountUserList,
   fetchUserPeasDetail,
   fetchUserRechargeDetail,
-  fetchUserOrderDetail,
 } from '@/services/AccountServices';
 
 export default {
@@ -13,7 +12,6 @@ export default {
     userlist: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     totalData: {},
-    orderDetail: {},
   },
 
   reducers: {
@@ -69,17 +67,6 @@ export default {
         type: 'save',
         payload: {
           totalData: content.userMerchantList,
-        },
-      });
-    },
-    *fetchGetOrderDetails({ payload }, { call, put }) {
-      const response = yield call(fetchUserOrderDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          orderDetail: content.userMerchantList,
         },
       });
     },

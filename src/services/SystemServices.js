@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// get 全部的订单查询
+export function fetchOrderDetail(params) {
+  return request('/admin/accountManagement/getRelatedOrderDetail', {
+    params,
+  });
+}
+
 // get 菜单设置 - 菜单 - 获取菜单
 export function fetchMenuList(params) {
   return request('/admin/auth/listAllAccess', {
