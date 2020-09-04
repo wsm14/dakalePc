@@ -8,7 +8,6 @@ const BusinessVideoComponent = (props) => {
   const { businessVideo, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState({ show: false, url: '' });
 
   // 搜索参数
   const searchItems = [
