@@ -1,10 +1,8 @@
 import { notification } from 'antd';
 import {
   fetchTradeList,
-  fetchTradeDetail,
   fetchTradeAdd,
-  fetchTradeDel,
-  fetchTradeEdit,
+  fetchTradeSet,
   fetchTradeBaseList,
   fetchTradePlatformList,
   fetchTradeSpecialList,
@@ -60,12 +58,6 @@ export default {
         },
       });
       if (callback) callback(content.merchantSettleList);
-    },
-    *fetchTradeDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchTradeDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content);
     },
     *fetchDetailList({ payload, callback }, { call, put }) {
       const { type } = payload;
@@ -131,21 +123,12 @@ export default {
       });
       callback();
     },
-    *fetchTradeEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchTradeEdit, payload);
+    *fetchTradeSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchTradeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '修改类目成功',
-      });
-      callback();
-    },
-    *fetchTradeDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchTradeDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '删除类目成功',
+        description: `${payload.isDelete ? '删除' : '修改'}类目成功`,
       });
       callback();
     },

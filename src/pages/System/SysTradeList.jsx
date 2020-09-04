@@ -44,44 +44,55 @@ const SysTradeSet = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'categoryIdString',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => handleTradeCategoryDetail(record),
+              click: () =>
+                handleTradeCategorySet({ categoryId: val, categoryName: record.categoryName }),
             },
             {
               type: 'del',
-              click: () => fetchTradeDel(record),
+              visible: !record.categoryDTOList,
+              click: () => fetchTradeDel({ categoryId: val, isDelete: 1 }),
             },
             {
               type: 'own',
-              visible: !!record.children,
+              visible: record.parentId === 0,
               title: '添加子类目',
-              //   click: () => setShowCoach(record),
+              click: () =>
+                handleTradeCategorySet({
+                  parentId: val,
+                  parentName: record.categoryName,
+                  node: `${val}`,
+                  type: 'second',
+                }),
             },
+            // {
+            //   type: 'own',
+            //   visible: record.parentId !== 0 && !record.categoryDTOList,
+            //   title: '添加子类目',
+            //   click: () =>
+            //     handleTradeCategorySet({
+            //       parentId: val,
+            //       parentName: record.categoryName,
+            //       node: `${val}.${record.parentId}`,
+            //       type: 'third',
+            //     }),
+            // },
           ]}
         />
       ),
     },
   ];
 
-  // 获取详情
-  const handleTradeCategoryDetail = (values) => {
-    dispatch({
-      type: 'sysTradeList/fetchTradeDetail',
-      payload: values,
-      callback: (val) => handleTradeCategorySet(val),
-    });
-  };
-
   // 删除类目
   const fetchTradeDel = (values) => {
     dispatch({
-      type: 'sysTradeList/fetchTradeDel',
+      type: 'sysTradeList/fetchTradeSet',
       payload: values,
       callback: () => childRef.current.fetchGetData(),
     });
@@ -109,7 +120,11 @@ const SysTradeSet = (props) => {
           <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ type: 'base' })}>
             基础设施
           </Button>,
-          <Button className="dkl_green_btn" key="2" onClick={() => handleTradeCategorySet()}>
+          <Button
+            className="dkl_green_btn"
+            key="2"
+            onClick={() => handleTradeCategorySet({ parentId: 0, node: '0', type: 'first' })}
+          >
             新增类目
           </Button>,
         ]}

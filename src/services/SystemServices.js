@@ -209,13 +209,6 @@ export function fetchTradeList(params) {
   });
 }
 
-// get 行业设置 - 类目详情
-export function fetchTradeDetail(params) {
-  return request('/admin/auth/saveAfuthRole', {
-    params,
-  });
-}
-
 // get 行业设置 - 基础设施列表
 export function fetchTradeBaseList(params) {
   return request('/admin/systemIndustry/getInfrastructure', {
@@ -263,23 +256,15 @@ export function fetchTradePlatformSet(data) {
 
 // post 行业设置 - 新增类目
 export function fetchTradeAdd(data) {
-  return request('/admin/auth/saveAfuthRole', {
+  return request('/admin/systemIndustry/saveCategory', {
     method: 'POST',
     data,
   });
 }
 
-// post 行业设置 - 修改类目
-export function fetchTradeEdit(data) {
-  return request('/admin/auth/saveAfuthRole', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 行业设置 - 删除类目
-export function fetchTradeDel(data) {
-  return request('/admin/auth/saveAfuthRole', {
+// post 行业设置 - 删除 修改类目
+export function fetchTradeSet(data) {
+  return request('/admin/systemIndustry/updateCategory', {
     method: 'POST',
     data,
   });
