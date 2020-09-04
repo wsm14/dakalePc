@@ -16,6 +16,7 @@ const SysCheckIn = (props) => {
   const getColumns = [
     {
       title: '打卡',
+      fixed: 'left',
       dataIndex: 'subIdentifyValue',
     },
     {
@@ -43,6 +44,7 @@ const SysCheckIn = (props) => {
       title: '操作',
       dataIndex: 'markConfigIdString',
       align: 'right',
+      fixed: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[

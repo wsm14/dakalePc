@@ -34,6 +34,7 @@ const SysAppSet = (props) => {
   const getColumns = [
     {
       title: '占位图',
+      fixed: 'left',
       dataIndex: 'coverImg',
       render: (val) => <PopImgShow url={val} />,
     },
@@ -80,6 +81,7 @@ const SysAppSet = (props) => {
       title: '操作',
       dataIndex: 'bannerIdString',
       align: 'right',
+      fixed: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[

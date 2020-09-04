@@ -34,6 +34,7 @@ const MarketCardActivity = (props) => {
     {
       title: '活动名称',
       align: 'center',
+      fixed: 'left',
       dataIndex: 'activityName',
       render: (val) => (
         <Ellipsis length={10} tooltip>
@@ -72,6 +73,7 @@ const MarketCardActivity = (props) => {
     {
       title: '操作',
       dataIndex: 'activityIdString',
+      fixed: 'right',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable

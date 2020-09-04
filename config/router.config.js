@@ -66,11 +66,11 @@ export default [
             name: '注册列表',
             component: './Business/BusinessRegister',
           },
-          {
-            path: '/business/video',
-            name: '视频列表',
-            component: './Business/BusinessVideo',
-          },
+          // {
+          //   path: '/business/video',
+          //   name: '视频列表',
+          //   component: './Business/BusinessVideo',
+          // },
           {
             path: '/business/brand',
             name: '品牌',

@@ -26,6 +26,7 @@ const SysTradeSet = (props) => {
   const getColumns = [
     {
       title: '行业类目',
+      fixed: 'left',
       align: 'center',
       dataIndex: 'categoryName',
     },
@@ -45,6 +46,7 @@ const SysTradeSet = (props) => {
     {
       title: '操作',
       dataIndex: 'categoryIdString',
+      fixed: 'right',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable

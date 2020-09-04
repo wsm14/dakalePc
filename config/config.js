@@ -7,7 +7,7 @@ import define from './env.config';
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
-  hash: true,
+  hash: false,
   history: { type: 'hash' },
   antd: {},
   dva: {
