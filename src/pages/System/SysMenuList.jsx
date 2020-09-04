@@ -75,7 +75,11 @@ const SysMenuList = (props) => {
   const handleSysMenuSet = (initialValues = { authType: '2', status: '1', ownerType: tabkey }) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: sysMenuSet({ dispatch, childRef, initialValues }),
+      payload: sysMenuSet({
+        dispatch,
+        childRef,
+        initialValues: { ...initialValues, pid: initialValues.pidString },
+      }),
     });
   };
 
