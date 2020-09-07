@@ -12,12 +12,8 @@ const BusinessVideoComponent = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商户账号',
-      name: 'account',
-    },
-    {
-      label: '商户名称',
-      name: 'merchantName',
+      label: '商户手机号',
+      name: 'mobile',
     },
   ];
 
@@ -26,12 +22,20 @@ const BusinessVideoComponent = (props) => {
     {
       title: '封面图',
       fixed: 'left',
-      dataIndex: 'account',
+      dataIndex: 'frontImage',
       render: (val) => <PopImgShow url={val} />,
     },
     {
+      title: '标题',
+      dataIndex: 'title',
+    },
+    {
+      title: '发布人',
+      dataIndex: 'username',
+    },
+    {
       title: '操作',
-      dataIndex: 'userMerchantIdString',
+      dataIndex: 'merchantIdString',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
@@ -39,7 +43,7 @@ const BusinessVideoComponent = (props) => {
           formItems={[
             {
               type: 'del',
-              click: () => fetchMerVideoDel(val),
+              click: () => fetchMerVideoDel(record),
             },
           ]}
         />
@@ -47,12 +51,12 @@ const BusinessVideoComponent = (props) => {
     },
   ];
 
-  // 获取商家详情
-  const fetchMerVideoDel = (merchantId) => {
+  // 删除视屏
+  const fetchMerVideoDel = (record) => {
     dispatch({
       type: 'businessVideo/fetchMerVideoDel',
-      payload: { merchantId },
-      callback: childRef.current.fetchGetData(),
+      payload: { merchantId: record.merchantIdString, momentId: record.userMomentIdString },
+      callback: () => childRef.current.fetchGetData(),
     });
   };
 
@@ -62,7 +66,7 @@ const BusinessVideoComponent = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.userMerchantIdString}`}
+      rowKey={(record) => `${record.userMomentIdString}`}
       dispatchType="businessVideo/fetchGetList"
       {...businessVideo}
     ></DataTableBlock>

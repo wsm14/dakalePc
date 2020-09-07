@@ -122,7 +122,7 @@ export function fetchMerVideoList(params) {
 
 // post 视屏列表 - 删除
 export function fetchMerVideoDel(data) {
-  return request('/admin/merchantManagement/saveConfigBrand', {
+  return request('/admin/marketingManagement/closeUserMoment', {
     method: 'POST',
     data,
   });
