@@ -4,55 +4,33 @@ import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 
 const UserTotalSpread = ({ dispatch, loading, totalData }) => {
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '',
-      type: 'rangePicker',
-      name: 'mobile',
-    },
-  ];
+  const dataCity = totalData.city.map((item) => ({ type: item.cityName, value: item.count }));
 
-  const data = [
-    {
-      type: '杭州',
-      value: totalData.all || 0,
-    },
-    {
-      type: '北京',
-      value: totalData.all || 0,
-    },
-    {
-      type: '上海',
-      value: totalData.all || 0,
-    },
-  ];
-
-  const data2 = [
+  const dataSex = [
     {
       type: '男',
-      value: totalData.all || 0,
+      value: totalData.userGenderMale || 0,
     },
     {
       type: '女',
-      value: totalData.all || 0,
+      value: totalData.userGenderFemale || 0,
     },
     {
       type: '未知',
-      value: totalData.all || 0,
+      value: totalData.userGenderUnknown || 0,
     },
   ];
 
-  // 获取用户详情
-  const fetchUserDetail = (userId) => {
+  // 获取用户统计
+  const fetchUserTotalSperad = () => {
     dispatch({
-      type: 'userList/fetchUserTotal',
-      payload: { userId },
-      callback: handleShowUserDetail,
+      type: 'userList/fetchUserTotalSperad',
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchUserTotalSperad();
+  }, []);
 
   const styles = { padding: 0 };
 
@@ -61,14 +39,14 @@ const UserTotalSpread = ({ dispatch, loading, totalData }) => {
       <Col span={12}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={data} totalLabel="城市"/>
+            <Donut data={dataCity} totalLabel="城市" />
           </Card>
         </Spin>
       </Col>
       <Col span={12}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={data2} totalLabel="性别"/>
+            <Donut data={dataSex} totalLabel="性别" />
           </Card>
         </Spin>
       </Col>

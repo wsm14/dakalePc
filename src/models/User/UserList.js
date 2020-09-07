@@ -1,5 +1,12 @@
 import { notification } from 'antd';
-import { fetchUserList, fetchUserDetail, fetchUserStatus } from '@/services/UserServices';
+import {
+  fetchUserList,
+  fetchUserDetail,
+  fetchUserStatus,
+  fetchUserTotal,
+  fetchUserAddTotal,
+  fetchUserCityTotal,
+} from '@/services/UserServices';
 
 export default {
   namespace: 'userList',
@@ -7,7 +14,7 @@ export default {
   state: {
     list: [],
     totalData: {},
-    totalSperadData: {},
+    totalSperadData: { city: [] },
   },
 
   reducers: {
@@ -38,18 +45,25 @@ export default {
       callback(content.userDetail);
     },
     *fetchUserTotal({ payload }, { call, put }) {
-      const response = yield call(fetchUserDetail, payload);
+      const response = yield call(fetchUserTotal, payload);
+      const responseTow = yield call(fetchUserAddTotal, payload);
       if (!response) return;
+      if (!responseTow) return;
       const { content } = response;
+      const { content: contentTwo } = responseTow;
+      const {
+        userRealNameCount: userAddRealNameCount = 0,
+        userTopUpCount: userAddTopUpCount = 0,
+      } = contentTwo;
       yield put({
         type: 'save',
         payload: {
-          totalData: content,
+          totalData: { ...content, userAddRealNameCount, userAddTopUpCount },
         },
       });
     },
     *fetchUserTotalSperad({ payload }, { call, put }) {
-      const response = yield call(fetchUserDetail, payload);
+      const response = yield call(fetchUserCityTotal, payload);
       if (!response) return;
       const { content } = response;
       yield put({

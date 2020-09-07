@@ -10,39 +10,39 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
     {
       label: '',
       type: 'rangePicker',
-      name: 'mobile',
-      end: 'mobileend'
+      name: 'beginDate',
+      end: 'endDate',
     },
   ];
 
   const data = [
     {
       type: '实名用户',
-      value: totalData.all || 0,
+      value: totalData.userAddRealNameCount || 0,
     },
     {
       type: '充值用户',
-      value: totalData.all || 0,
+      value: totalData.userAddTopUpCount || 0,
     },
   ];
 
   // 获取用户详情
-  const fetchUserDetail = (val) => {
-    console.log(val);
-    // dispatch({
-    //   type: 'userList/fetchUserTotal',
-    //   payload: { userId },
-    //   callback: handleShowUserDetail,
-    // });
+  const fetchUserTotal = (val) => {
+    dispatch({
+      type: 'userList/fetchUserTotal',
+      payload: val,
+    });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchUserTotal();
+  }, []);
 
   const styles = { padding: 0 };
 
   return (
     <Card style={{ marginBottom: 16 }}>
-      <SearchCondition searchItems={searchItems} handleSearch={fetchUserDetail}></SearchCondition>
+      <SearchCondition searchItems={searchItems} handleSearch={fetchUserTotal}></SearchCondition>
       <Row gutter={16} align="middle">
         <Col span={12}>
           <Spin spinning={!!loading}>
@@ -63,19 +63,22 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
           <Card bordered={false} bodyStyle={styles} loading={loading}>
             <Row gutter={[16, 16]} span={12} align="middle" style={{ height: 276 }}>
               <Col span={8}>
-                <Statistic title="总注册数" value={totalData.all}></Statistic>
+                <Statistic title="总注册数" value={totalData.userTotalRegister}></Statistic>
               </Col>
               <Col span={8}>
-                <Statistic title="总实名认证" value={totalData.all}></Statistic>
+                <Statistic title="总实名认证" value={totalData.userRealNameCount}></Statistic>
               </Col>
               <Col span={8}>
-                <Statistic title="总充值用户" value={totalData.all}></Statistic>
+                <Statistic title="总充值用户" value={totalData.userTopUpCount}></Statistic>
               </Col>
               <Col span={8}>
-                <Statistic title="今日新增实名用户" value={totalData.all}></Statistic>
+                <Statistic
+                  title="今日新增实名用户"
+                  value={totalData.userAddRealNameCount}
+                ></Statistic>
               </Col>
               <Col span={8}>
-                <Statistic title="今日新增充值用户" value={totalData.all}></Statistic>
+                <Statistic title="今日新增充值用户" value={totalData.userAddTopUpCount}></Statistic>
               </Col>
             </Row>
           </Card>

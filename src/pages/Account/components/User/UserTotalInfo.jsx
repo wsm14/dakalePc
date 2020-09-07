@@ -85,7 +85,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
   };
 
   useEffect(() => {
-    // fetchBusinessTotal()
+    // fetchBusinessTotal();
   }, []);
 
   return (
