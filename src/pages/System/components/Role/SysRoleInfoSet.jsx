@@ -5,7 +5,7 @@ const SysRoleInfoSet = (props) => {
   const fetchRoleEdit = (payload) => {
     dispatch({
       type: 'sysRoleList/fetchRoleEdit',
-      payload: { ...initialValues, ...payload },
+      payload: { roleId: initialValues.idString, ...initialValues, ...payload },
       callback: () => childRef.current.fetchGetData(),
     });
   };
@@ -33,7 +33,7 @@ const SysRoleInfoSet = (props) => {
         label: '角色类型',
         name: 'roleType',
         type: 'radio',
-        visible: !initialValues.id,
+        visible: !initialValues.idString,
         select: [
           { name: '经理', value: 'manager' },
           { name: '普通员工', value: 'common' },

@@ -1,9 +1,5 @@
 import { notification } from 'antd';
-import {
-  fetchBannerList,
-  fetchBannerSet,
-  fetchBannerStatusDel,
-} from '@/services/SystemServices';
+import { fetchBannerList, fetchBannerSet, fetchBannerStatusDel } from '@/services/SystemServices';
 
 export default {
   namespace: 'sysAppList',
@@ -34,6 +30,16 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchBannerEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchBannerStatusDel, payload);
+      if (!response) return;
+      const { bannerStatus } = payload;
+      notification.success({
+        message: '温馨提示',
+        description: `占位图修改成功`,
+      });
+      callback();
     },
     *fetchBannerStatusDel({ payload, callback }, { call, put }) {
       const response = yield call(fetchBannerStatusDel, payload);

@@ -4,7 +4,6 @@ import {
   fetchGetRoleInfo,
   fetchGetRoleTree,
   fetchRoleEdit,
-  fetchRoleDel,
   fetchRoleMenuSet,
 } from '@/services/SystemServices';
 
@@ -73,15 +72,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '角色配置权限成功',
-      });
-      callback();
-    },
-    *fetchRoleDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchRoleDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '角色删除成功',
       });
       callback();
     },

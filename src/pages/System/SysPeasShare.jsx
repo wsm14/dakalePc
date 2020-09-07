@@ -15,6 +15,7 @@ const SysPeasShare = (props) => {
     {
       title: '观看时长',
       dataIndex: 'watchTime',
+      render: (val) => `${val}秒`,
     },
     {
       title: '最低卡豆数',
@@ -34,7 +35,7 @@ const SysPeasShare = (props) => {
             },
             {
               type: 'del',
-              click: () => fetchPeasShareDel(record),
+              click: () => fetchPeasShareDel(val),
             },
           ]}
         />
@@ -43,10 +44,10 @@ const SysPeasShare = (props) => {
   ];
 
   // 删除
-  const fetchPeasShareDel = (payload) => {
+  const fetchPeasShareDel = (val) => {
     dispatch({
-      type: 'sysPeasShare/fetchPeasShareDel',
-      payload,
+      type: 'sysPeasShare/fetchPeasShareEdit',
+      payload: { configMomentId: val, deleteFlag: 0 },
       callback: () => childRef.current.fetchGetData(),
     });
   };

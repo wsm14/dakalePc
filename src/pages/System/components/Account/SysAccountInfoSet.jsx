@@ -5,7 +5,7 @@ const SysAccountRoleSet = (props) => {
   const fetchEdit = (payload) => {
     dispatch({
       type: 'sysAccountList/fetchAccountEdit',
-      payload: { ...initialValues, ...payload },
+      payload: { id: initialValues.idString, ...initialValues, ...payload },
       callback: () => childRef.current.fetchGetData(),
     });
   };

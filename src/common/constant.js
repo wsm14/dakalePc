@@ -67,6 +67,9 @@ export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 // Banner状态
 export const BANNER_STATUS = ['下架', '上架'];
 
+// Banner展示状态
+export const BANNER_SHOW_STATUS = ['未上架', '展示中', '已下架'];
+
 // Banner类型
 export const BANNER_TYPE = [
   { value: 'main', name: '首页' },

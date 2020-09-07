@@ -11,7 +11,7 @@ const PeasShareSet = (props) => {
 
     dispatch({
       type: payload.type,
-      payload: { ...initialValues, ...values },
+      payload: { configMomentId: initialValues.configMomentIdString, ...initialValues, ...values },
       callback: () => childRef.current.fetchGetData(),
     });
   };

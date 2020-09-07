@@ -33,11 +33,11 @@ const SysAccountSet = (props) => {
   const searchItems = [
     {
       label: '姓名',
-      name: 'userMobile1',
+      name: 'truename',
     },
     {
       label: '账号',
-      name: 'userMobile1',
+      name: 'username',
     },
   ];
 

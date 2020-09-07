@@ -110,14 +110,6 @@ export function fetchRoleMenuSet(data) {
   });
 }
 
-// post 帐号设置 - 角色 - 删除角色
-export function fetchRoleDel(data) {
-  return request('/admin/auth/saveAuthRole', {
-    method: 'POST',
-    data,
-  });
-}
-
 // get App设置 - 图片列表
 export function fetchBannerList(params) {
   return request('/admin/systemConfig/listBannerMarketPlatform', {
@@ -125,7 +117,7 @@ export function fetchBannerList(params) {
   });
 }
 
-// post App设置 - 图片下架/图片删除
+// post App设置 - 图片下架/图片删除 修改
 export function fetchBannerStatusDel(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {
     method: 'POST',
@@ -156,17 +148,9 @@ export function fetchPeasShareAdd(data) {
   });
 }
 
-// post 卡豆分享 - 修改
+// post 卡豆分享 - 修改 删除
 export function fetchPeasShareEdit(data) {
   return request('/admin/systemConfig/updateConfigMoment', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 卡豆分享 - 删除
-export function fetchPeasShareDel(data) {
-  return request('/admin/auth/saveAfuthRole', {
     method: 'POST',
     data,
   });

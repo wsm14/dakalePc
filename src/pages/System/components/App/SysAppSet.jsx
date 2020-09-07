@@ -16,20 +16,17 @@ const SysAppSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const {
-        coverImg: { fileList: afile },
-        beginDate: time,
-        jumpType,
-      } = values;
+      const { coverImg, beginDate: time, jumpType } = values;
 
       // 上传图片到oss -> 提交表单
-      aliOssUpload(afile[0].originFileObj).then((res) => {
+      aliOssUpload(coverImg).then((res) => {
         dispatch({
-          type: 'sysAppList/fetchBannerSet',
+          type: { true: 'sysAppList/fetchBannerSet', false: 'sysAppList/fetchBannerEdit' }[!info],
           payload: {
+            bannerId: info.bannerIdString,
             ...values,
             jumpType: jumpType === '无' ? '' : jumpType,
-            coverImg: res[0],
+            coverImg: res.toString(),
             beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
             endDate: time[1].format('YYYY-MM-DD 00:00:00'),
           },
@@ -112,6 +109,7 @@ const SysAppSet = (props) => {
           info
             ? {
                 ...info,
+                jumpType: info.jumpType ? info.jumpType : '无',
                 beginDate: [
                   moment(info.beginDate, 'YYYY-MM-DD'),
                   moment(info.endDate, 'YYYY-MM-DD'),

@@ -20,11 +20,11 @@ const SysRoleList = (props) => {
   const searchItems = [
     {
       label: '角色名称',
-      name: 'userMobile1',
+      name: 'roleName',
     },
     {
       label: '角色状态',
-      name: 'userMobile1',
+      name: 'status',
       type: 'select',
       select: { list: ['停用', '启用'] },
     },
@@ -33,12 +33,17 @@ const SysRoleList = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '角色ID',
+      dataIndex: 'idString',
+    },
+    {
       title: '角色名称',
       dataIndex: 'roleName',
     },
     {
       title: '备注',
       dataIndex: 'remark',
+      render: (val) => val || '--',
     },
     {
       title: '状态',
@@ -49,25 +54,26 @@ const SysRoleList = (props) => {
           checkedChildren="启"
           unCheckedChildren="停"
           checked={val === '1'}
-          onClick={() => fetchGetRoleInfo({ roleId: record.id })}
+          onClick={() => fetchGetRoleInfo({ roleId: record.idString })}
         />
       ),
     },
     {
       title: '操作',
-      dataIndex: 'id',
       align: 'right',
+      dataIndex: 'id',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => fetchGetRoleInfo({ roleId: val }, record),
+              click: () => fetchGetRoleInfo({ roleId: record.idString }, record),
             },
             {
               type: 'own',
               title: '配置',
-              click: () => fetchGetRoleTree({ roleId: val, roleType: record.ownerType }),
+              click: () =>
+                fetchGetRoleTree({ roleId: record.idString, roleType: record.ownerType }),
             },
           ]}
         />
@@ -100,18 +106,8 @@ const SysRoleList = (props) => {
       type: 'sysRoleList/fetchRoleEdit',
       payload: {
         ...payload,
+        id: payload.idString,
         status: Number(!Number(payload.status)),
-      },
-      callback: () => childRef.current.fetchGetData(),
-    });
-  };
-
-  // 删除角色
-  const fetchRoleDel = (payload) => {
-    dispatch({
-      type: 'sysRoleList/fetchRoleDel',
-      payload: {
-        ...payload,
       },
       callback: () => childRef.current.fetchGetData(),
     });
@@ -138,7 +134,7 @@ const SysRoleList = (props) => {
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}
-        rowKey={(record) => `${record.id}`}
+        rowKey={(record) => `${record.idString}`}
         dispatchType="sysRoleList/fetchGetList"
         params={{ type: 1 }}
         {...sysRoleList}

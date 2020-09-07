@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { BANNER_STATUS, BANNER_TYPE } from '@/common/constant';
+import { BANNER_STATUS, BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -58,6 +58,7 @@ const SysAppSet = (props) => {
       title: '跳转类型',
       align: 'center',
       dataIndex: 'jumpType',
+      render: (val) => val || '无',
     },
     {
       title: '跳转链接',
@@ -74,8 +75,8 @@ const SysAppSet = (props) => {
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'bannerStatus',
-      render: (val) => BANNER_STATUS[val],
+      dataIndex: 'showStatus',
+      render: (val) => BANNER_SHOW_STATUS[val],
     },
     {
       title: '操作',
@@ -89,18 +90,18 @@ const SysAppSet = (props) => {
               type: 'own',
               pop: true,
               title: '下架',
-              visible: record.activityStatus !== '2',
-              click: () => fetchBannerStatusDel({ bannerIdString: val, bannerStatus: 0 }),
+              visible: record.bannerStatus === '1',
+              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
             },
             {
               type: 'edit',
-              visible: record.activityStatus !== '2',
+              visible: record.bannerStatus === '1',
               click: () => setVisibleSet({ show: true, info: record }),
             },
             {
               type: 'del',
-              visible: record.activityStatus !== '2',
-              click: () => fetchBannerStatusDel({ bannerIdString: val, deleteFlag: 0 }),
+              visible: record.bannerStatus === '1',
+              click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
             },
           ]}
         />

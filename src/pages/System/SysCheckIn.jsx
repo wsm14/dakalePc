@@ -38,7 +38,8 @@ const SysCheckIn = (props) => {
       title: '寄语',
       align: 'center',
       dataIndex: 'letter',
-      render: (val, record) => (record.identify === 'custom' ? '--' : val),
+      // render: (val, record) =>
+      //   ({ care: val, custom: val, health: val, habit: val }[record.identify]),
     },
     {
       title: '操作',

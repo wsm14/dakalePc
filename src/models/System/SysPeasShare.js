@@ -3,7 +3,6 @@ import {
   fetchPeasShareList,
   fetchPeasShareAdd,
   fetchPeasShareEdit,
-  fetchPeasShareDel,
 } from '@/services/SystemServices';
 
 export default {
@@ -48,18 +47,10 @@ export default {
     *fetchPeasShareEdit({ payload, callback }, { call, put }) {
       const response = yield call(fetchPeasShareEdit, payload);
       if (!response) return;
+      const { deleteFlag } = payload;
       notification.success({
         message: '温馨提示',
-        description: '卡豆分享修改成功',
-      });
-      callback();
-    },
-    *fetchPeasShareDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchPeasShareDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '卡豆分享删除成功',
+        description: `卡豆分享${deleteFlag === 0 ? '删除' : '修改'}成功`,
       });
       callback();
     },
