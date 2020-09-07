@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Statistic, Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const UserTotalInfo = ({ dispatch, loading, totalData }) => {
+  const [shwoTime, setShowTime] = useState(true);
   // 搜索参数
   const searchItems = [
     {
@@ -27,7 +28,9 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
   ];
 
   // 获取用户详情
-  const fetchUserTotal = (val) => {
+  const fetchUserTotal = (val = {}) => {
+    const { beginDate = '' } = val;
+    setShowTime(!beginDate);
     dispatch({
       type: 'userList/fetchUserTotal',
       payload: val,
@@ -51,7 +54,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
                 data={data}
                 height={295}
                 description={{
-                  visible: true,
+                  visible: shwoTime,
                   text: '今日新增',
                   alignTo: 'right',
                 }}
