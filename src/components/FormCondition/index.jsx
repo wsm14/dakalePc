@@ -301,6 +301,7 @@ const FormCondition = ({
             fieldNames={item.fieldNames}
             options={item.select || CITYJSON}
             expandTrigger="hover"
+            changeOnSelect={item.changeOnSelect || false}
             onChange={(val, sele) => {
               form.setFieldsValue({ [`Cascader${item.name}`]: sele });
               if (item.onChange) item.onChange(sele);

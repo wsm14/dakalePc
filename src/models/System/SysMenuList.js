@@ -32,6 +32,7 @@ export default {
 
   state: {
     list: [],
+    allMenu: [],
     total: 0,
   },
 
@@ -50,10 +51,12 @@ export default {
       if (!response) return;
       const { content } = response;
       const newList = menuDataTree(content.accessList);
+      console.log(newList);
       yield put({
         type: 'save',
         payload: {
           list: newList,
+          allMenu: content.accessList.sort((a, b) => a.pidString === '0'),
           total: content.accessList.length,
         },
       });

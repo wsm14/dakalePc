@@ -1,22 +1,17 @@
 const SysMenuSet = (props) => {
-  const { dispatch, childRef, sysMenuList, initialValues } = props;
+  const { dispatch, allMenu, initialValues, handleCallback } = props;
 
   // 新增修改 传id修改 不传id新增
   const fetchMenuEdit = (payload) => {
     dispatch({
       type: 'sysMenuList/fetchMenuSet',
-      payload: { ...initialValues, id: initialValues.accessId, ...payload },
-      callback: () => {
-        childRef.current.fetchGetData();
-        fetchGetAuthMenuTree();
+      payload: {
+        ...initialValues,
+        id: initialValues.accessId,
+        ...payload,
+        pid: payload.pid[payload.pid.length - 1],
       },
-    });
-  };
-
-  // 获取权限树
-  const fetchGetAuthMenuTree = () => {
-    dispatch({
-      type: 'userInfo/fetchGetAuthMenuTree',
+      callback: handleCallback,
     });
   };
 
@@ -48,7 +43,7 @@ const SysMenuSet = (props) => {
         hidden: !!initialValues.type,
         select: [
           { name: '无', value: '0' },
-          ...sysMenuList.map((item) => ({ name: item.accessName, value: item.authAccessId })),
+          ...allMenu.map((item) => ({ name: item.accessName, value: item.authAccessId })),
         ],
       },
       {

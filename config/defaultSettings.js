@@ -10,7 +10,7 @@ const proSettings = {
   menu: {
     locale: false,
   },
-  title: '后台管理系统',
+  title: '哒卡乐运营后台',
   pwa: false,
   iconfontUrl: '',
 };

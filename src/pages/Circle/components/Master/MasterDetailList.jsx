@@ -35,7 +35,7 @@ const MasterDetail = (props) => {
           title: '性别',
           align: 'center',
           dataIndex: 'gender',
-          render: (val) => ({ M: '女', F: '男', '': '--' }[val]),
+          render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
         },
         {
           title: '坐标',

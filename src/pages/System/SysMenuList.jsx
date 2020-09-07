@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'dva';
-import { Button, Badge, Card } from 'antd';
+import { Button, Badge, Card, Switch } from 'antd';
 import { MENU_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -38,7 +38,15 @@ const SysMenuList = (props) => {
       title: '菜单状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={MENU_STATUS[val]} />,
+      // render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={MENU_STATUS[val]} />,
+      render: (val, record) => (
+        <Switch
+          checkedChildren="启"
+          unCheckedChildren="停"
+          checked={val === '1'}
+          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+        />
+      ),
     },
     // {
     //   title: '菜单路径',
@@ -76,12 +84,38 @@ const SysMenuList = (props) => {
   ];
 
   // 获取菜单信息
-  const fetchGetMenuDetail = (payload) => {
+  const fetchGetMenuDetail = (payload, val = undefined) => {
     dispatch({
       type: 'sysMenuList/fetchGetMenuDetail',
       payload,
-      callback: handleSysMenuSet,
+      callback: val === undefined ? handleSysMenuSet : fetchSetMenuStatus,
     });
+  };
+
+  // 修改角色状态
+  const fetchSetMenuStatus = (payload) => {
+    dispatch({
+      type: 'sysMenuList/fetchMenuSet',
+      payload: {
+        ...payload,
+        pid: payload.pidString,
+        id: payload.accessId,
+        status: Number(!Number(payload.status)),
+      },
+      callback: handleCallback,
+    });
+  };
+
+  // 获取权限树
+  const fetchGetAuthMenuTree = () => {
+    dispatch({
+      type: 'userInfo/fetchGetAuthMenuTree',
+    });
+  };
+
+  const handleCallback = () => {
+    childRef.current.fetchGetData();
+    if (tabkey === 'admin') fetchGetAuthMenuTree();
   };
 
   // 新增/修改
@@ -90,9 +124,9 @@ const SysMenuList = (props) => {
       type: 'drawerForm/show',
       payload: sysMenuSet({
         dispatch,
-        childRef,
-        sysMenuList: sysMenuList.list,
+        allMenu: sysMenuList.allMenu,
         initialValues: { pid: initialValues.pidString, ...initialValues },
+        handleCallback,
       }),
     });
   };
