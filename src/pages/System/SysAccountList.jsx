@@ -65,9 +65,8 @@ const SysAccountSet = (props) => {
     },
     {
       title: '创建时间',
-      align: 'left',
-      dataIndex: 'orderTotal',
-      render: (val) => val || '--',
+      align: 'center',
+      dataIndex: 'createTime',
     },
     {
       title: '操作',
