@@ -68,7 +68,7 @@ const SearchCondition = (props) => {
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
-        const { select } = item;
+        const { select, allItem = true } = item;
         initialValue = select.defaultValue || '';
         component = (
           <Select
@@ -78,7 +78,7 @@ const SearchCondition = (props) => {
             style={{ width: '100%' }}
             placeholder={item.placeholder || `请选择`}
           >
-            <Option value={initialValue}>全部</Option>
+            {allItem && <Option value={initialValue}>全部</Option>}
             {select.list.map((data, j) => {
               if (data) {
                 // 兼容数组

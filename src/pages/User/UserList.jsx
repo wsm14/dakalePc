@@ -50,7 +50,7 @@ const UserListComponent = (props) => {
       render: (val) => REAL_NAME_STATUS[val],
     },
     {
-      title: '常住地',
+      title: '常驻地',
       align: 'center',
       dataIndex: 'residentAddress',
       render: (val) => val || '-',

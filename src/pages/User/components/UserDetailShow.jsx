@@ -38,7 +38,7 @@ const UserDetailShow = (props) => {
       { label: '身份证号', name: 'cardNumber', render: (val) => val || '无' },
       { label: '生日', name: 'birthday', render: (val) => val || '--' },
       { label: '家主手机号', name: 'parentUserMobile', render: (val) => val || '无' },
-      { label: '常住地', name: 'residentAddress', render: (val) => val || '--' },
+      { label: '常驻地', name: 'residentAddress', render: (val) => val || '--' },
       { label: '学校', name: 'school', render: (val) => val || '--' },
       { label: '学历', name: 'education', render: (val) => val || '--' },
       { label: '注册时间', name: 'createTime' },

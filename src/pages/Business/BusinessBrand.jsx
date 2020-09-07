@@ -17,7 +17,7 @@ const BusinessBrandComponent = (props) => {
     },
     {
       label: '品牌类型',
-      name: 'businessStatus',
+      name: 'categoryId',
       loading: loading.models.sysTradeList,
       type: 'select',
       select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },

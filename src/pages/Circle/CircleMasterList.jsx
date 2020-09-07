@@ -17,6 +17,7 @@ const CircleMasterList = (props) => {
       label: '身份',
       name: 'userType',
       type: 'select',
+      allItem: false,
       select: { list: MASTER_TYPE },
     },
     {
@@ -101,6 +102,7 @@ const CircleMasterList = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.id}`}
         params={{ userType: 'user' }}
+        pParams={{ searchData: { userType: 'user' } }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
       ></DataTableBlock>
