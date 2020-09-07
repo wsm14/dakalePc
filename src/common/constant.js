@@ -88,7 +88,7 @@ export const BANNER_JUMP_TYPE = [
 // 用户类型
 export const MASTER_TYPE = [
   { value: 'user', name: '用户' },
-  { value: 'merchant', name: '商家' },
+  { value: 'merchant', name: '商户' },
 ];
 
 // 默认起始结束时间
