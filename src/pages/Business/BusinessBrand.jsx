@@ -74,7 +74,7 @@ const BusinessBrandComponent = (props) => {
       loading={loading.models.businessBrand}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.id}`}
+      rowKey={(record) => `${record.configBrandIdString}`}
       dispatchType="businessBrand/fetchGetList"
       {...businessBrand}
     ></DataTableBlock>
