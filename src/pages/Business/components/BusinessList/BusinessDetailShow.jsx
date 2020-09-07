@@ -93,7 +93,10 @@ const BusinessDetailShow = (props) => {
     {
       label: '平台服务费',
       name: 'commissionRatio',
-      render: (val, row) => `${val}%`,
+      render: (val, row) =>
+        `${row.businessArea ? `面积${row.businessArea}平方 - ` : ''}${val}%（赠送卡豆${
+          row.bondBean
+        }）`,
     },
     {
       label: '门头照',
