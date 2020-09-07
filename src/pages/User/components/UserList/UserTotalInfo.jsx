@@ -18,11 +18,11 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
 
   const data = [
     {
-      type: '实名用户',
+      type: '今日新增实名用户',
       value: totalData.userAddRealNameCount || 0,
     },
     {
-      type: '充值用户',
+      type: '今日新增充值用户',
       value: totalData.userAddTopUpCount || 0,
     },
   ];
@@ -53,11 +53,6 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
               <Donut
                 data={data}
                 height={295}
-                description={{
-                  visible: shwoTime,
-                  text: '今日新增',
-                  alignTo: 'right',
-                }}
               />
             </Card>
           </Spin>
