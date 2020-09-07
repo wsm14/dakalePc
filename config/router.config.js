@@ -130,6 +130,11 @@ export default [
             name: '问题反馈',
             component: './Service/ServiceFeedBack',
           },
+          {
+            path: '/service/news',
+            name: '新闻动态',
+            component: './Service/ServiceNews',
+          },
         ],
       },
       {

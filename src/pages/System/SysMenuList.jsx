@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'dva';
-import { Button, Badge, Card, Switch } from 'antd';
-import { MENU_STATUS } from '@/common/constant';
+import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import sysMenuSet from './components/Menu/SysMenuSet';
@@ -38,7 +37,6 @@ const SysMenuList = (props) => {
       title: '菜单状态',
       align: 'center',
       dataIndex: 'status',
-      // render: (val) => <Badge status={val === '1' ? 'success' : 'error'} text={MENU_STATUS[val]} />,
       render: (val, record) => (
         <Switch
           checkedChildren="启"

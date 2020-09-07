@@ -9,7 +9,6 @@ const SysMenuSet = (props) => {
         ...initialValues,
         id: initialValues.accessId,
         ...payload,
-        pid: payload.pid[payload.pid.length - 1],
       },
       callback: handleCallback,
     });

@@ -90,17 +90,17 @@ const SysAppSet = (props) => {
               type: 'own',
               pop: true,
               title: '下架',
-              visible: record.bannerStatus === '1',
+              visible: record.showStatus === '1',
               click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
             },
             {
               type: 'edit',
-              visible: record.bannerStatus === '1',
+              visible: record.showStatus !== '2',
               click: () => setVisibleSet({ show: true, info: record }),
             },
             {
               type: 'del',
-              visible: record.bannerStatus === '1',
+              visible: record.showStatus !== '2',
               click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
             },
           ]}

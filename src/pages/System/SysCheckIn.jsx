@@ -51,8 +51,13 @@ const SysCheckIn = (props) => {
           formItems={[
             {
               type: 'own',
-              title: '图片素材',
+              title: '分享图片',
               click: () => setVisible({ type: 'image', styleType: 'share', record }),
+            },
+            {
+              type: 'own',
+              title: '打卡图片',
+              click: () => setVisible({ type: 'image', styleType: 'mark', record }),
             },
             {
               type: 'own',
