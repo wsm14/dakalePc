@@ -26,10 +26,10 @@ const SysMenuList = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '菜单ID',
-      dataIndex: 'authAccessId',
-    },
+    // {
+    //   title: '菜单ID',
+    //   dataIndex: 'authAccessId',
+    // },
     {
       title: '菜单名称',
       dataIndex: 'accessName',
@@ -56,6 +56,19 @@ const SysMenuList = (props) => {
               type: 'edit',
               click: () => fetchGetMenuDetail({ accessId: val }),
             },
+            {
+              type: 'own',
+              title: '添加',
+              click: () =>
+                handleSysMenuSet({
+                  menuName: record.accessName,
+                  pid: val,
+                  authType: '2',
+                  status: '1',
+                  ownerType: tabkey,
+                  type: 'addChildren',
+                }),
+            },
           ]}
         />
       ),
@@ -78,7 +91,8 @@ const SysMenuList = (props) => {
       payload: sysMenuSet({
         dispatch,
         childRef,
-        initialValues: { ...initialValues, pid: initialValues.pidString },
+        sysMenuList: sysMenuList.list,
+        initialValues: { pid: initialValues.pidString, ...initialValues },
       }),
     });
   };
@@ -112,7 +126,7 @@ const SysMenuList = (props) => {
         dispatchType="sysMenuList/fetchGetList"
         params={{ roleType: tabkey }}
         pParams={{ limit: 101 }}
-        {...sysMenuList.list}
+        {...sysMenuList}
       ></DataTableBlock>
     </Card>
   );

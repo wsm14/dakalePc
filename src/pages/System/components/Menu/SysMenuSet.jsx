@@ -1,5 +1,5 @@
 const SysMenuSet = (props) => {
-  const { dispatch, childRef, initialValues } = props;
+  const { dispatch, childRef, sysMenuList, initialValues } = props;
 
   // 新增修改 传id修改 不传id新增
   const fetchMenuEdit = (payload) => {
@@ -23,7 +23,7 @@ const SysMenuSet = (props) => {
   return {
     type: 'Drawer',
     showType: 'form',
-    title: '菜单设置',
+    title: `菜单设置 - ${initialValues.menuName || initialValues.accessName || '新增'}`,
     loadingModels: 'sysMenuList',
     initialValues,
     formItems: [
@@ -42,8 +42,14 @@ const SysMenuSet = (props) => {
         name: 'accessUrl',
       },
       {
-        label: '父节点ID',
+        label: '父节点',
         name: 'pid',
+        type: 'select',
+        hidden: !!initialValues.type,
+        select: [
+          { name: '无', value: '0' },
+          ...sysMenuList.map((item) => ({ name: item.accessName, value: item.authAccessId })),
+        ],
       },
       {
         label: '权重',
@@ -53,8 +59,9 @@ const SysMenuSet = (props) => {
       {
         label: '资源类别',
         name: 'ownerType',
+        hidden: true,
         type: 'radio',
-        visible: !initialValues.id,
+        visible: !!initialValues.type,
         select: [
           { name: '后台管理', value: 'admin' },
           { name: '商家管理', value: 'merchant' },
