@@ -9,7 +9,7 @@ import checkInDetailSet from './CheckInDetailSet';
 const CheckInDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
 
-  const { type = 'text', record = '' } = visible;
+  const { type = 'text', styleType = 'share', record = '' } = visible;
 
   const childRef = useRef();
 
@@ -22,7 +22,7 @@ const CheckInDetailList = (props) => {
         childRef,
         initialValues,
         CeditType: type,
-        configMarkId: record.markConfigIdString,
+        id: initialValues.idString,
       }),
     });
   };
@@ -30,17 +30,17 @@ const CheckInDetailList = (props) => {
   // table
   const propItem = {
     text: {
-      title: `文案素材 - ${record.subIdentifyValue}`,
+      title: `${{ share: '分享文案', mark: '打卡文案' }[styleType]} - ${record.subIdentifyValue}`,
       getColumns: [
         {
-          title: '分享文案',
+          title: '文案',
           align: 'center',
           dataIndex: 'content',
         },
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'identify',
+          dataIndex: 'idString',
           render: (val, row) => (
             <HandleSetTable
               formItems={[
@@ -66,7 +66,7 @@ const CheckInDetailList = (props) => {
         {
           title: '操作',
           align: 'center',
-          dataIndex: 'identify',
+          dataIndex: 'idString',
           render: (val, row) => (
             <HandleSetTable
               formItems={[
@@ -96,9 +96,10 @@ const CheckInDetailList = (props) => {
         CardNone={false}
         loading={loading}
         columns={propItem.getColumns}
-        rowKey={(row) => `${row.content}`}
+        rowKey={(row) => `${row.idString}`}
         params={{
           contentType: type,
+          styleType,
           identify: record.identify,
           subIdentify: record.subIdentify,
         }}

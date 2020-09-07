@@ -52,12 +52,17 @@ const SysCheckIn = (props) => {
             {
               type: 'own',
               title: '图片素材',
-              click: () => setVisible({ type: 'image', record }),
+              click: () => setVisible({ type: 'image', styleType: 'share', record }),
             },
             {
               type: 'own',
-              title: '文案素材',
-              click: () => setVisible({ type: 'text', record }),
+              title: '分享文案',
+              click: () => setVisible({ type: 'text', styleType: 'share', record }),
+            },
+            {
+              type: 'own',
+              title: '打卡文案',
+              click: () => setVisible({ type: 'text', styleType: 'mark', record }),
             },
             {
               type: 'edit',

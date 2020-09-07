@@ -50,13 +50,7 @@ export default {
         type: 'save',
         payload: {
           detailList: {
-            list: content.recordList.map((item) => ({
-              content: item,
-              originContent: item,
-              identify: content.identify,
-              subIdentify: content.subIdentify,
-              contentType: content.contentType,
-            })),
+            list: content.recordList,
             total: content.total,
           },
         },

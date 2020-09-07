@@ -1,7 +1,7 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const CheckInDetailSet = (props) => {
-  const { dispatch, childRef, CeditType, initialValues = {} } = props;
+  const { dispatch, childRef, CeditType, initialValues = {}, id } = props;
 
   const fetchSysCheckIn = (values) => {
     const defineSet = {
@@ -9,23 +9,18 @@ const CheckInDetailSet = (props) => {
       callback: () => childRef.current.fetchGetData(),
     };
 
-    const defineDate = {
-      ...initialValues,
-      type: CeditType,
-    };
-
     const { content } = values;
     aliOssUpload(content).then((res) => {
       dispatch({
         ...defineSet,
-        payload: { ...defineDate, content: res.toString() },
+        payload: { id, content: res.toString() },
       });
     });
   };
 
   const formItem = {
     text: {
-      title: '分享文案编辑',
+      title: '文案编辑',
       formItems: [
         {
           label: '文案',
@@ -35,7 +30,7 @@ const CheckInDetailSet = (props) => {
       ],
     },
     image: {
-      title: '分享图片编辑',
+      title: '图片编辑',
       formItems: [
         {
           label: '图片上传',
