@@ -29,7 +29,8 @@ const BusinessDetailList = (props) => {
         {
           title: '关联用户',
           align: 'center',
-          dataIndex: 'status',
+          dataIndex: 'detailContent',
+          render: (val) => val || '--',
         },
         {
           title: '卡豆明细',
@@ -46,7 +47,7 @@ const BusinessDetailList = (props) => {
         {
           title: '关联订单',
           align: 'center',
-          dataIndex: 'order',
+          dataIndex: 'identification',
           render: (val, record) => <BusinessOrderDetail order={val} />,
         },
       ],

@@ -29,6 +29,7 @@ const UserDetailList = (props) => {
           title: '关联店铺',
           align: 'center',
           dataIndex: 'detailContent',
+          render: (val) => val || '--',
         },
         {
           title: '卡豆明细',
