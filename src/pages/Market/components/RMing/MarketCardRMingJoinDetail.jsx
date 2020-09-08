@@ -66,7 +66,7 @@ const MarketCardRMingJoinDetail = (props) => {
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.userId}`}
-        params={{ matchType }}
+        params={{ matchType, date: record.startDate }}
         dispatchType="marketCardRMing/fetchMarketMatchJoin"
         componentSize="middle"
         {...marketCardRMing.joinList}

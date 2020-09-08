@@ -157,7 +157,7 @@ const BusinessDetailList = (props) => {
         CardNone={false}
         loading={loading}
         columns={propItem.getColumns}
-        rowKey={(row) => `${row[propItem.rowKey]}`}
+        rowKey={(row, i) => `${row[propItem.rowKey] + i}`}
         params={{
           type,
           ...{

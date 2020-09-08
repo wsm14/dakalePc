@@ -113,7 +113,7 @@ const UserDetailList = (props) => {
         CardNone={false}
         loading={loading}
         columns={propItem.getColumns}
-        rowKey={(row) => `${row[propItem.rowKey]}`}
+        rowKey={(row, i) => `${row[propItem.rowKey] + i}`}
         params={{ type, userType: 'user', userId: record.userIdString }}
         dispatchType="accountUser/fetchDetailList"
         componentSize="middle"

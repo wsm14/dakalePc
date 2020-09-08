@@ -147,7 +147,7 @@ const MarketCardRMing = (props) => {
         columns={propInfo.getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.startDate}`}
-        params={{ matchType }}
+        params={{ matchType, limit: 2 }}
         dispatchType="marketCardRMing/fetchGetList"
         {...marketCardRMing.matchList}
       ></DataTableBlock>
