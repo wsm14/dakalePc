@@ -37,7 +37,7 @@ const BusinessAuditAllow = (props) => {
             allImages,
             tags,
             businessTime,
-            porperty: { service, speacial },
+            property: { service, speacial },
           } = values;
           aliOssUpload(allImages).then((res) => {
             const selectTime = values.allTime
@@ -55,7 +55,7 @@ const BusinessAuditAllow = (props) => {
               businessTime: selectTime.toString(),
               allImages: res.toString(),
               tags: tags.toString(),
-              porperty: {
+              property: {
                 service: service.toString(),
                 speacial: speacial.toString(),
               },
@@ -177,14 +177,14 @@ const BusinessAuditAllow = (props) => {
     {
       label: '店铺服务',
       type: 'checkbox',
-      name: ['porperty', 'service'],
+      name: ['property', 'service'],
       loading: loading.effects['sysTradeList/fetchDetailList'],
       select: serviceLsit || [],
     },
     {
       label: '特色服务',
       type: 'checkbox',
-      name: ['porperty', 'speacial'],
+      name: ['property', 'speacial'],
       loading: loading.effects['sysTradeList/fetchDetailList'],
       select: speacialLsit || [],
     },

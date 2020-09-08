@@ -101,7 +101,7 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
-      <BusinessTotalInfo></BusinessTotalInfo>
+      {/* <BusinessTotalInfo></BusinessTotalInfo> */}
       <DataTableBlock
         loading={loading}
         columns={getColumns}

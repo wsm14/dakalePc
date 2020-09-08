@@ -127,14 +127,19 @@ const CityPartner = (props) => {
 
   return (
     <>
-      <CityPartnerTotalInfo
+      {/* <CityPartnerTotalInfo
         btnExtra={
           <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
             新增合伙人
           </Button>
         }
-      ></CityPartnerTotalInfo>
+      ></CityPartnerTotalInfo> */}
       <DataTableBlock
+        btnExtra={
+          <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
+            新增合伙人
+          </Button>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}

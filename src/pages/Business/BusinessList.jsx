@@ -186,7 +186,7 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
-      <BusinessTotalInfo
+      {/* <BusinessTotalInfo
         btnExtra={
           <>
             <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
@@ -197,8 +197,18 @@ const BusinessListComponent = (props) => {
             </Button>
           </>
         }
-      ></BusinessTotalInfo>
+      ></BusinessTotalInfo> */}
       <DataTableBlock
+        btnExtra={
+          <>
+            <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+              新增商户
+            </Button>
+            <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
+              设置商家验证码
+            </Button>
+          </>
+        }
         cRef={childRef}
         loading={
           loading.effects['businessList/fetchGetList'] ||
