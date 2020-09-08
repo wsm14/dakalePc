@@ -1,6 +1,7 @@
 import { notification, message } from 'antd';
 import oss from 'ali-oss';
 import request from './request';
+import { uuid } from './utils';
 
 /**
  * oss 文件上传
@@ -60,11 +61,8 @@ const aliOssUpload = (file = '', fieldNames = {}) => {
 
       // oss 上传
       const ossput = (file) => {
-        // 获取随机值
-        let random = Math.random().toString(36).substr(2, 15);
         // 设置路径+随机文件名
-        let fileName =
-          folder + '/' + random + '_' + file['name'].replaceAll(/[\u4e00-\u9fa5]/g, '');
+        let fileName = folder + '/' + uuid() + file['name'].replace(/.+\./, '.');
         // 提交文件
         return client.put(fileName, file).then((putres) => {
           const {

@@ -21,6 +21,7 @@ const BusinessAdd = (props) => {
 
   useEffect(() => {
     if (initialValues) {
+      setLocation([lnt, lat]);
       setSelectCity(initialValues.selectCity);
       if (initialValues.hasPartner !== '1') {
         Modal.warning({
@@ -94,6 +95,7 @@ const BusinessAdd = (props) => {
       return;
     }
     let cityname = '';
+    if (typeof city[1] !== 'object') city = selectCity;
     (typeof city[1] === 'object' ? city : selectCity).map((item) => {
       cityname += item.label;
       return true;
@@ -112,6 +114,7 @@ const BusinessAdd = (props) => {
               const geocodes = list[0].location.split(',');
               const longitude = parseFloat(geocodes[0]); // 经度
               const latitude = parseFloat(geocodes[1]); // 纬度
+              console.log(city[1].label, [longitude, latitude]);
               setLocation([longitude, latitude]);
               setAmpShow(true);
               setSelectCity(typeof city[1] === 'object' ? city : selectCity);

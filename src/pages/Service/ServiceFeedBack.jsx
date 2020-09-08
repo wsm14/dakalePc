@@ -7,7 +7,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 
 const ServiceFeedBack = (props) => {
-  const { list, loading, dispatch } = props;
+  const { list, loading } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);

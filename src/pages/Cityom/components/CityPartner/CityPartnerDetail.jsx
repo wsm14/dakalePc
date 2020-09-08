@@ -1,4 +1,4 @@
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import CITYJSON from '@/common/city';
 import { PHONE_PATTERN } from '@/common/regExp';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -44,13 +44,19 @@ const CityPartnerDetail = (props) => {
 
   // 修改状态
   const fetchEditStatus = (partnerStatus) => {
-    dispatch({
-      type: 'cityPartner/fetchCityPartnerStatus',
-      payload: {
-        partnerId: initialValues.partnerIdString,
-        partnerStatus,
+    Modal.confirm({
+      title: '确认修改合伙人状态？',
+      zIndex: 10006,
+      onOk: () => {
+        dispatch({
+          type: 'cityPartner/fetchCityPartnerStatus',
+          payload: {
+            partnerId: initialValues.partnerIdString,
+            partnerStatus,
+          },
+          callback: () => childRef.current.fetchGetData(),
+        });
       },
-      callback: () => childRef.current.fetchGetData(),
     });
   };
 
@@ -79,7 +85,6 @@ const CityPartnerDetail = (props) => {
       },
       {
         label: '身份证号',
-        type: 'number',
         name: 'identityCard',
       },
       {

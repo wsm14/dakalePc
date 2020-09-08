@@ -42,7 +42,14 @@ const TradePlatformSet = (props) => {
       objdata = { typeContent: `${values.areaMin}-${values.areaMax}` };
     } else if (CeditType === 3) {
       // 新增服务费
-      if (configMerchantSettleId) {
+      if (rowData === undefined) {
+        objdata = {
+          categoryId,
+          merchantSettleObjects: values,
+          type: 'no',
+          typeContent: '',
+        };
+      } else if (configMerchantSettleId) {
         const { merchantSettleObjects: pObj = [] } = rowData;
         objdata = {
           categoryId,

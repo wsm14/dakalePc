@@ -75,6 +75,7 @@ const FormCondition = ({
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
+  formItemLayouts = {},
 }) => {
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
@@ -210,7 +211,7 @@ const FormCondition = ({
         textArea: (
           <Input.TextArea
             placeholder={placeholder}
-            rows={5}
+            rows={item.rows || 5}
             disabled={item.disabled}
             maxLength={maxLength}
             onChange={(e) => setTotalNum({ ...totalNum, [item.name]: e.target.value.length })}
@@ -392,6 +393,7 @@ const FormCondition = ({
       layout={layout}
       initialValues={initialValues}
       {...formItemLayout}
+      {...formItemLayouts}
       scrollToFirstError={true}
     >
       {formItems.length ? getFields() : ''}

@@ -57,10 +57,12 @@ const BusinessAuditAllow = (props) => {
               tags: tags.toString(),
               property: {
                 service: service.toString(),
-                speacial: speacial.toString(),
+                speacial: speacial ? speacial.toString() : '',
               },
             };
-            fetchFormData(info);
+            console.log(info);
+
+            // fetchFormData(info);
           });
         },
       });
@@ -185,6 +187,7 @@ const BusinessAuditAllow = (props) => {
       label: '特色服务',
       type: 'checkbox',
       name: ['property', 'speacial'],
+      rules: [{ required: false }],
       loading: loading.effects['sysTradeList/fetchDetailList'],
       select: speacialLsit || [],
     },

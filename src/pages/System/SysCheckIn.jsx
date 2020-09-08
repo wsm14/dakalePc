@@ -38,8 +38,8 @@ const SysCheckIn = (props) => {
       title: '寄语',
       align: 'center',
       dataIndex: 'letter',
-      // render: (val, record) =>
-      //   ({ care: val, custom: val, health: val, habit: val }[record.identify]),
+      render: (val, record) =>
+        ({ care: '--', custom: '--', health: '--', habit: val }[record.identify]),
     },
     {
       title: '操作',
@@ -49,6 +49,11 @@ const SysCheckIn = (props) => {
       render: (val, record) => (
         <HandleSetTable
           formItems={[
+            {
+              type: 'edit',
+              visible: record.identify === 'habit',
+              click: () => handlePeasShareSet(record),
+            },
             {
               type: 'own',
               title: '分享图片',
@@ -68,11 +73,6 @@ const SysCheckIn = (props) => {
               type: 'own',
               title: '打卡文案',
               click: () => setVisible({ type: 'text', styleType: 'mark', record }),
-            },
-            {
-              type: 'edit',
-              visible: record.markSubType !== 'customize',
-              click: () => handlePeasShareSet(record),
             },
           ]}
         />

@@ -140,36 +140,34 @@ const TradePlatformDetailList = (props) => {
     },
   ];
 
-  const propsItem = detailList.list[0]
-    ? {
-        true: {
-          columns: columns(),
-          rowKey: 'freeBean',
-          list: detailList.list[0].merchantSettleObjects,
-          btnExtra: (
-            <Button
-              className="dkl_green_btn"
-              onClick={() => handleDataSet(3, '', 999, detailList.list[0])}
-            >
-              新增
-            </Button>
-          ),
-        },
-        false: {
-          columns: getColumns,
-          rowKey: 'configMerchantSettleIdString',
-          list: detailList.list,
-          btnExtra: (
-            <Button className="dkl_green_btn" onClick={() => handleDataSet(1)}>
-              新增面积
-            </Button>
-          ),
-          expandable: {
-            expandedRowRender: (data) => rowTable(data.merchantSettleObjects, data),
-          },
-        },
-      }[detailList.list[0].type === 'no']
-    : {};
+  const propsItem = {
+    true: {
+      columns: columns(),
+      rowKey: 'freeBean',
+      list: detailList.list.length ? detailList.list[0].merchantSettleObjects : [],
+      btnExtra: (
+        <Button
+          className="dkl_green_btn"
+          onClick={() => handleDataSet(3, '', 999, detailList.list[0])}
+        >
+          新增
+        </Button>
+      ),
+    },
+    false: {
+      columns: getColumns,
+      rowKey: 'configMerchantSettleIdString',
+      list: detailList.list,
+      btnExtra: (
+        <Button className="dkl_green_btn" onClick={() => handleDataSet(1)}>
+          新增面积
+        </Button>
+      ),
+      expandable: {
+        expandedRowRender: (data) => rowTable(data.merchantSettleObjects, data),
+      },
+    },
+  }[!detailList.list.length ? true : detailList.list[0].type === 'no'];
 
   return (
     <Modal
@@ -186,7 +184,7 @@ const TradePlatformDetailList = (props) => {
         CardNone={false}
         loading={loading}
         columns={propsItem.columns}
-        rowKey={(row) => `${row[propsItem.rowKey]}`}
+        rowKey={(row, i) => `${row[propsItem.rowKey] + i}`}
         params={{ categoryId: record.id }}
         dispatchType="sysTradeList/fetchTradePlatformList"
         componentSize="middle"

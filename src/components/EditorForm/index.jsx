@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Editor from 'wangeditor';
+// import Editor from 'wangeditor-dx/release/wangEditor';
 import { Spin, Modal, Alert } from 'antd';
 // import router from 'umi/router';
 import PropTypes from 'prop-types';
@@ -19,13 +20,13 @@ const TEXT_SET_TOOL = [
   'foreColor', // 文字颜色
   'backColor', // 背景颜色
   'link', // 插入链接
-  'list', // 列表
+  // 'list', // 列表
   'justify', // 对齐方式
   // 'quote', // 引用
   // 'emoticon', // 表情
   'image', // 插入图片
   'table', // 表格
-  'video', // 插入视频
+  // 'video', // 插入视频
   // 'code', // 插入代码
   'undo', // 撤销
   'redo', // 重复
@@ -71,7 +72,6 @@ const EditorForm = ({
     const elem = refFa.current;
     editor = new Editor(elemtb, elem);
     editor.customConfig.menus = TEXT_SET_TOOL;
-    // eslint-disable-next-line no-undef
     editor.customConfig.uploadImgServer = `${APIURL}${fileApi}`; // 上传服务器api
     editor.customConfig.uploadFileName = 'files'; // 上传formdata参数名
     editor.customConfig.uploadImgMaxSize = (maxImgSize / 1000) * 1024 * 1024; // 图片大小限制
@@ -213,4 +213,3 @@ const EditorForm = ({
 };
 
 export default EditorForm;
-// export default connect()(EditorForm);

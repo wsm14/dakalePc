@@ -21,7 +21,7 @@ const TradeBaseSet = (props) => {
         childRef,
         initialValues,
         detailList,
-        categoryId: record.id,
+        categoryId: record.categoryIdString,
         CeditType: type,
       }),
     });
@@ -35,7 +35,7 @@ const TradeBaseSet = (props) => {
         [propItem.keyName]: detailList.list
           .map((item) => item.name)
           .filter((item) => item != value),
-        categoryId: record.id,
+        categoryId: record.categoryIdString,
       },
       callback: () => childRef.current.fetchGetData(),
     });
@@ -129,7 +129,7 @@ const TradeBaseSet = (props) => {
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type, categoryId: record.id }}
+        params={{ type, categoryId: record.categoryIdString }}
         dispatchType="sysTradeList/fetchDetailList"
         componentSize="middle"
         {...detailList}

@@ -1,15 +1,29 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { NEWS_STATUS } from '@/common/constant';
+import { Card } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import BusinessVideoSet from './components/BusinessVideo/BusinessVideoSet';
+
+const tabList = [
+  {
+    key: 'tab1',
+    tab: '动态列表',
+  },
+  {
+    key: 'tab2',
+    tab: '新增动态',
+  },
+];
 
 const ServiceNewsComponent = (props) => {
   const { serviceNews, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [tabkey, setTabKey] = useState('tab1');
 
   // table 表头
   const getColumns = [
@@ -86,15 +100,25 @@ const ServiceNewsComponent = (props) => {
     });
   };
 
+  const contentList = {
+    tab1: (
+      <DataTableBlock
+        CardNone={false}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        rowKey={(record) => `${record.newsIdString}`}
+        dispatchType="serviceNews/fetchGetList"
+        {...serviceNews}
+      ></DataTableBlock>
+    ),
+    tab2: <BusinessVideoSet setTabKey={setTabKey}></BusinessVideoSet>,
+  };
+
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      rowKey={(record) => `${record.newsIdString}`}
-      dispatchType="serviceNews/fetchGetList"
-      {...serviceNews}
-    ></DataTableBlock>
+    <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
+      {contentList[tabkey]}
+    </Card>
   );
 };
 
