@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'dva';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
-const BusinessVideoComponent = (props) => {
+const ServiceBusinessVideo = (props) => {
   const { businessVideo, loading, dispatch } = props;
 
   const childRef = useRef();
@@ -80,4 +80,4 @@ const BusinessVideoComponent = (props) => {
 export default connect(({ businessVideo, loading }) => ({
   businessVideo,
   loading: loading.models.businessVideo,
-}))(BusinessVideoComponent);
+}))(ServiceBusinessVideo);

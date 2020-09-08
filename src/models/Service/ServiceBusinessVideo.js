@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchMerVideoList, fetchMerVideoDel } from '@/services/BusinessServices';
+import { fetchMerVideoList, fetchMerVideoDel } from '@/services/ServiceServices';
 
 export default {
   namespace: 'businessVideo',

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { BANNER_STATUS, BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
+import { BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -24,9 +24,9 @@ const SysAppSet = (props) => {
     },
     {
       label: '状态',
-      name: 'bannerStatus',
+      name: 'showStatus',
       type: 'select',
-      select: { list: BANNER_STATUS },
+      select: { list: BANNER_SHOW_STATUS },
     },
   ];
 

@@ -19,20 +19,11 @@ export const WITHDRAW_STATUS = [false, false, '处理中', '成功', '失败'];
 // 反馈状态
 export const FEEDBACK_STATUS = [false, '处理中', '已解答'];
 
-// 加盟申请状态
-export const CITY_PARTNER_STATUS = ['正常', '冻结', '解约'];
-
 // 用户状态
 export const ACCOUNT_STATUS = ['禁用', '启用'];
 
-// 菜单状态
-export const MENU_STATUS = ['禁用', '启用'];
-
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
-
-// 商户 银行账户
-export const BUSINESS_BAND_STATUS = [false, '对公', '对私'];
 
 // 商户 营业状态
 export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
@@ -63,9 +54,6 @@ export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 
 // 卡豆乐园 公告状态
 export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
-
-// Banner状态
-export const BANNER_STATUS = ['下架', '上架'];
 
 // Banner展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];

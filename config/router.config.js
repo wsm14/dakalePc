@@ -67,11 +67,6 @@ export default [
             component: './Business/BusinessRegister',
           },
           {
-            path: '/business/video',
-            name: '视频列表',
-            component: './Business/BusinessVideo',
-          },
-          {
             path: '/business/brand',
             name: '品牌',
             component: './Business/BusinessBrand',
@@ -134,6 +129,11 @@ export default [
             path: '/service/news',
             name: '新闻动态',
             component: './Service/ServiceNews',
+          },
+          {
+            path: '/service/businessVideo',
+            name: '商户视频',
+            component: './Service/ServiceBusinessVideo',
           },
         ],
       },
