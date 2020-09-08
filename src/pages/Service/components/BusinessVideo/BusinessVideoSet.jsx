@@ -11,7 +11,7 @@ const BusinessVideoSet = (props) => {
 
   const [form] = Form.useForm();
   const [titleNum, setTitleNum] = useState(0); // 输入标题
-  const [content, setContent] = useState(); // 输入的富文本内容
+  const [content, setContent] = useState(''); // 输入的富文本内容
 
   // 上传图片到oss -> 提交表单
   const onFinish = () => {
@@ -78,7 +78,7 @@ const BusinessVideoSet = (props) => {
             wrapperCol: null,
           }}
         ></FormCondition>
-        <Button type="primary" onClick={onFinish} loading={loading}>
+        <Button disabled={!content.length} type="primary" onClick={onFinish} loading={loading}>
           确定添加
         </Button>
       </Col>

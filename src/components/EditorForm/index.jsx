@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Editor from 'wangeditor';
 // import Editor from 'wangeditor-dx/release/wangEditor';
-import { Spin, Modal, Alert } from 'antd';
-// import router from 'umi/router';
+import { Modal } from 'antd';
 import PropTypes from 'prop-types';
+import imageCompress from '@/utils/imageCompress';
+import aliOssUpload from '@/utils/aliOssUpload';
 import styles from './style.less';
 
 let editor = '';
@@ -35,7 +36,7 @@ const TEXT_SET_TOOL = [
 const EditorForm = ({
   content,
   fileApi = '/admin/file/uploads',
-  maxImgSize = 500,
+  maxImgSize = 1000,
   AllImgSize = 5000,
   editClass,
   contentClass,
@@ -45,7 +46,7 @@ const EditorForm = ({
   EditorForm.defaultProps = {
     content: '',
     fileApi: '/admin/file/uploads',
-    maxImgSize: 500,
+    maxImgSize: 1000,
     AllImgSize: 5000,
     editClass: undefined,
     contentClass: undefined,
@@ -63,17 +64,14 @@ const EditorForm = ({
 
   const refTb = useRef(null);
   const refFa = useRef(null);
-  const [spinning, setSpinning] = useState(false); // 富文本内容上传图片等待
-  const [imgsize, setImgsize] = useState(0); // 图片已上传大小
-  const [imgsizeobj, setImgsizeobj] = useState([]); // 图片已上传url 和 size 保存
 
   const setEditor = () => {
     const elemtb = refTb.current;
     const elem = refFa.current;
     editor = new Editor(elemtb, elem);
     editor.customConfig.menus = TEXT_SET_TOOL;
-    editor.customConfig.uploadImgServer = `${APIURL}${fileApi}`; // 上传服务器api
-    editor.customConfig.uploadFileName = 'files'; // 上传formdata参数名
+    // editor.customConfig.uploadImgServer = `${APIURL}${fileApi}`; // 上传服务器api
+    // editor.customConfig.uploadFileName = 'files'; // 上传formdata参数名
     editor.customConfig.uploadImgMaxSize = (maxImgSize / 1000) * 1024 * 1024; // 图片大小限制
     editor.customConfig.withCredentials = true; // 跨域传递 cookie
     editor.customConfig.pasteIgnoreImg = true; // 忽略粘贴内容中的图片
@@ -84,11 +82,6 @@ const EditorForm = ({
     editor.customConfig.onchange = (html) => {
       if (setContent) setContent(html === '<p><br></p>' ? '' : html);
       // 填充html数据后获取剩余图片数据
-      const imgsave = imgsizeobj.filter((item) => html.indexOf(item.url) !== -1);
-      // 计算富文本内图片大小
-      setImgsize(imgsave.length ? imgsave.map((items) => items.size).reduce((a, b) => a + b) : 0);
-      // 保存剩余图片数据
-      setImgsizeobj(imgsave);
     }; // 回显 保存 html
     editor.customConfig.pasteTextHandle = (contents) => {
       // 赋值粘贴文本a标签替换
@@ -104,90 +97,24 @@ const EditorForm = ({
         .replace(/\s+/g, '');
       return newtext;
     };
-    // // 自定义上传请求
-    // editor.customConfig.customUploadImg = (files, insert) => {
-    //   // 上传文件前获取文件大小数据
-    //   const allSize = files.map(item => item.size / 1024).reduce((a, b) => a + b);
-    //   // 已保存图片文件大小
-    //   const size = imgsizeobj.length
-    //     ? imgsizeobj.map(items => items.size).reduce((a, b) => a + b)
-    //     : 0;
-    //   // 计算大小防止过大
-    //   setSpinning(true);
-    //   if (size + allSize > AllImgSize) {
-    //     return {
-    //       prevent: true,
-    //       msg: `图片大小超过${AllImgSize}kb`,
-    //     };
-    //   }
-    //   const formData = new FormData();
-    //   files.forEach(item => {
-    //     formData.append('files', item);
-    //   });
-    //   dispatch({
-    //     type: 'storeInfo/fetchFileUpload',
-    //     payload: formData,
-    //     callback: data => {
-    //       // eslint-disable-next-line array-callback-return
-    //       data.map(item => {
-    //         insert(item.fileUrl);
-    //         // 插入图片保存该图片唯一URL 和大小 用于识别计算
-    //         imgsizeobj.push({
-    //           url: item.fileUrl,
-    //           size: item.fileSize * 1024,
-    //         });
-    //       });
-    //       setSpinning(false);
-    //     },
-    //   });
-    //   return undefined;
-    // };
-    editor.customConfig.uploadImgHooks = {
-      before(xhr, editors, files) {
-        // 上传文件前获取文件大小数据
-        const allSize = files.map((item) => item.size / 1024).reduce((a, b) => a + b);
-        // 已保存图片文件大小
-        const size = imgsizeobj.length
-          ? imgsizeobj.map((items) => items.size).reduce((a, b) => a + b)
-          : 0;
-        // 计算大小防止过大
-        setSpinning(true);
-        if (size + allSize > AllImgSize) {
-          return {
-            prevent: true,
-            msg: `图片大小超过${AllImgSize}kb`,
-          };
-        }
-        return undefined;
-      },
-      // 回显 插入 图片
-      customInsert(insertImg, result) {
-        const { data: imgdata, code, message } = result;
-        if (code === 21008 || code === 21001) {
-          Modal.warning({
-            title: message,
-            okText: code === 21008 ? '去登录' : '确定',
-            onOk: () => {
-              Modal.destroyAll();
-              // router.push('/user/login');
-            },
-          });
-          return;
-        }
-        setSpinning(false);
-        // eslint-disable-next-line array-callback-return
-        imgdata.map((item) => {
-          insertImg(item.fileUrl);
-          // 插入图片保存该图片唯一URL 和大小 用于识别计算
-          imgsizeobj.push({
-            url: item.fileUrl,
-            size: item.fileSize * 1024,
-          });
-        });
-      },
+    editor.customConfig.customUploadImg = function (files, insert) {
+      // files 是 input 中选中的文件列表
+      const fileArr = [];
+      files.map((item, i) =>
+        imageCompress(item).then(({ file }) => {
+          fileArr.push(file);
+          if (i === files.length - 1) {
+            aliOssUpload(fileArr).then((res) => {
+              // 上传代码返回结果之后，将图片插入到编辑器中
+              res.map((item) => {
+                insert(item);
+              });
+            });
+          }
+        }),
+      );
     };
     editor.customConfig.customAlert = (info) => {
-      setSpinning(false);
       // info 是需要提示的内容
       Modal.info({
         title: info,
@@ -202,13 +129,11 @@ const EditorForm = ({
   }, []);
 
   return (
-    <Spin tip="上传图片中，请勿操作..." spinning={spinning}>
-      <div className={`${styles.editor} ${editClass}`}>
-        <div ref={refTb} className={styles.toolbar} />
-        <div className={styles.padd} />
-        <div ref={refFa} className={`${styles.content} ${contentClass}`} />
-      </div>
-    </Spin>
+    <div className={`${styles.editor} ${editClass}`}>
+      <div ref={refTb} className={styles.toolbar} />
+      <div className={styles.padd} />
+      <div ref={refFa} className={`${styles.content} ${contentClass}`} />
+    </div>
   );
 };
 

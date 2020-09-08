@@ -90,12 +90,12 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
       <Row gutter={16} align="middle">
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Donut data={data} totalLabel="总商户数" height={276} />
+            <Donut data={data} totalLabel="开发中" height={276} />
           </Spin>
         </Col>
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Donut data={data2} height={276} />
+            <Donut data={data2} totalLabel="开发中"  height={276} />
           </Spin>
         </Col>
       </Row>

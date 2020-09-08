@@ -39,31 +39,29 @@ const BusinessAuditAllow = (props) => {
             businessTime,
             property: { service, speacial },
           } = values;
-          aliOssUpload(allImages).then((res) => {
-            const selectTime = values.allTime
-              ? '0:00-23:59'
-              : timeItem.map(
-                  (item) =>
-                    `${businessTime[item][0].format('HH:mm')}-${businessTime[item][1].format(
-                      'HH:mm',
-                    )}`,
-                );
-            const info = {
-              merchantVerifyId,
-              verifyStatus: 3,
-              perCapitaConsumption: values.perCapitaConsumption,
-              businessTime: selectTime.toString(),
-              allImages: res.toString(),
-              tags: tags.toString(),
-              property: {
-                service: service.toString(),
-                speacial: speacial ? speacial.toString() : '',
-              },
-            };
-            console.log(info);
-
-            // fetchFormData(info);
-          });
+          // aliOssUpload(allImages).then((res) => {
+          const selectTime = values.allTime
+            ? '0:00-23:59'
+            : timeItem.map(
+                (item) =>
+                  `${businessTime[item][0].format('HH:mm')}-${businessTime[item][1].format(
+                    'HH:mm',
+                  )}`,
+              );
+          const info = {
+            merchantVerifyId,
+            verifyStatus: 3,
+            perCapitaConsumption: values.perCapitaConsumption,
+            businessTime: selectTime.toString(),
+            // allImages: '',
+            tags: tags.toString(),
+            property: {
+              service: service.toString(),
+              speacial: speacial ? speacial.toString() : '',
+            },
+          };
+          fetchFormData(info);
+          // });
         },
       });
     });
@@ -107,12 +105,12 @@ const BusinessAuditAllow = (props) => {
   }, [categoryId]);
 
   const formItems = [
-    {
-      label: '店铺主图',
-      name: 'allImages',
-      type: 'upload',
-      maxFile: 2,
-    },
+    // {
+    //   label: '店铺主图',
+    //   name: 'allImages',
+    //   type: 'upload',
+    //   maxFile: 3,
+    // },
     {
       label: '人均消费',
       name: 'perCapitaConsumption',
