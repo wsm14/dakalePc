@@ -50,6 +50,7 @@ const SearchCondition = (props) => {
     btnExtra = '',
     componentSize = 'default',
     initialValues = {},
+    NoSearch = false,
   } = props;
 
   const [form] = Form.useForm();
@@ -170,7 +171,13 @@ const SearchCondition = (props) => {
         delete values[item.name];
       }
     });
-    handleSearch({ ...values, ...formObj });
+    if (NoSearch) {
+      if (Object.keys(values).length) {
+        handleSearch({ ...values, ...formObj });
+      }
+    } else {
+      handleSearch({ ...values, ...formObj });
+    }
   };
 
   const handleReset = () => {

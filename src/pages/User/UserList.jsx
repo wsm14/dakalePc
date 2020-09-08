@@ -111,6 +111,7 @@ const UserListComponent = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
+        NoSearch={true}
         dispatchType="userList/fetchGetList"
         list={list}
       ></DataTableBlock>

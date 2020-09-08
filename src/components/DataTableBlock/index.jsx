@@ -46,8 +46,10 @@ const DataTableBlockComponent = ({
   CardNone = true,
   extra,
   componentSize = 'default',
+  NoSearch = false,
   expandable,
 }) => {
+  const [first, setFirst] = useState(NoSearch); // first No search
   const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
   const [current, setNum] = useState(pParams.page || 1); // 页码
   const [pageSize, setSize] = useState(
@@ -102,7 +104,11 @@ const DataTableBlockComponent = ({
   };
 
   useEffect(() => {
-    fetchGetList();
+    if (!first) {
+      fetchGetList();
+    } else {
+      setFirst(false);
+    }
     return handleSaveParams;
   }, [current, pageSize, searchData]);
 
@@ -119,6 +125,7 @@ const DataTableBlockComponent = ({
           searchItems={searchItems}
           handleSearch={handleSearch}
           initialValues={searchData}
+          NoSearch={NoSearch}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}
