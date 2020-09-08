@@ -3,6 +3,7 @@ import {
   fetchCheckInList,
   fetchCheckInImgTextList,
   fetchCheckInEdit,
+  fetchCheckInTextImgAdd,
   fetchCheckInTextImgEdit,
 } from '@/services/SystemServices';
 
@@ -71,6 +72,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '素材修改成功',
+      });
+      callback();
+    },
+    *fetchCheckInTextImgAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCheckInTextImgAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '素材新增成功',
       });
       callback();
     },

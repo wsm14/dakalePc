@@ -1,11 +1,14 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const CheckInDetailSet = (props) => {
-  const { dispatch, childRef, CeditType, initialValues = {}, id } = props;
-
+  const { dispatch, childRef, CeditType, record = {}, id } = props;
+  
   const fetchSysCheckIn = (values) => {
     const defineSet = {
-      type: 'sysCheckIn/fetchCheckInTextImgEdit',
+      type: {
+        true: 'sysCheckIn/fetchCheckInTextImgAdd',
+        false: 'sysCheckIn/fetchCheckInTextImgEdit',
+      }[!id],
       callback: () => childRef.current.fetchGetData(),
     };
 
@@ -13,7 +16,10 @@ const CheckInDetailSet = (props) => {
     aliOssUpload(content).then((res) => {
       dispatch({
         ...defineSet,
-        payload: { id, content: res.toString() },
+        payload: {
+          false: { id, content: res.toString() },
+          true: { ...record, content: res.toString() },
+        }[!id],
       });
     });
   };

@@ -14,7 +14,8 @@ const CheckInDetailList = (props) => {
   const childRef = useRef();
 
   // 新增 修改
-  const handleCheckInDetailSet = (initialValues) => {
+  const handleCheckInDetailSet = (initialValues = {}) => {
+    const { idString } = initialValues;
     dispatch({
       type: 'drawerForm/show',
       payload: checkInDetailSet({
@@ -22,7 +23,8 @@ const CheckInDetailList = (props) => {
         childRef,
         initialValues,
         CeditType: type,
-        id: initialValues.idString,
+        record: { styleType, ...record, contentType: type },
+        id: idString,
       }),
     });
   };
@@ -92,6 +94,20 @@ const CheckInDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <DataTableBlock
+        btnExtra={
+          {
+            text: detailList.list.length < 6 && (
+              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                新增
+              </Button>
+            ),
+            image: detailList.list.length < 3 && (
+              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                新增
+              </Button>
+            ),
+          }[type]
+        }
         cRef={childRef}
         CardNone={false}
         loading={loading}

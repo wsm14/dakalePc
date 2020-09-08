@@ -186,6 +186,14 @@ export function fetchCheckInTextImgEdit(data) {
   });
 }
 
+// post 打卡设置 - 图片 文案新增
+export function fetchCheckInTextImgAdd(data) {
+  return request('/admin/healthLife/saveUserHealthLifeStyleContent', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 行业设置 - 列表
 export function fetchTradeList(params) {
   return request('/admin/systemIndustry/listCategory', {

@@ -50,10 +50,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
         <Col span={12}>
           <Spin spinning={!!loading}>
             <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-              <Donut
-                data={data}
-                height={295}
-              />
+              <Donut data={data} height={276} />
             </Card>
           </Spin>
         </Col>

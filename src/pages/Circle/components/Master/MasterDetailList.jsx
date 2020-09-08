@@ -97,7 +97,7 @@ const MasterDetail = (props) => {
     },
     income: {
       title: `收益明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计收益：${record.totalAdd}卡豆`,
-      rowKey: 'detailOrder',
+      rowKey: 'createTime',
       getColumns: [
         {
           title: '日期',

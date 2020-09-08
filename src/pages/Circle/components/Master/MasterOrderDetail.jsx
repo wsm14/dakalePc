@@ -6,9 +6,7 @@ import styles from '../style.less';
 const MasterOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
   const [visible, setVisible] = useState(false);
 
-  const {
-    orderGoodsList: { goodsName },
-  } = orderDetail;
+  const { orderGoodsList } = orderDetail;
 
   // 获取详情
   const fetchGetDetail = () => {
@@ -23,7 +21,9 @@ const MasterOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
     <div className={styles.master_order}>
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>订单商品：</span>
-        <span className={styles.master_order_itemContent}>{goodsName}</span>
+        <span className={styles.master_order_itemContent}>
+          {orderDetail.orderGoodsList && orderGoodsList.goodsName}
+        </span>
       </div>
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>消费店铺：</span>
