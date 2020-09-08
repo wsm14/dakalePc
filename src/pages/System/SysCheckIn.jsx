@@ -22,7 +22,8 @@ const SysCheckIn = (props) => {
       title: '类型',
       align: 'center',
       dataIndex: 'identify',
-      render: (val) => (val === 'health' ? '健康打卡' : '习惯打卡'),
+      render: (val) =>
+        ({ care: '关爱打卡', custom: '自定义打卡', health: '健康打卡', habit: `习惯打卡` }[val]),
     },
     {
       title: '打卡时间段',

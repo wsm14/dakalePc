@@ -26,7 +26,7 @@ const BusinessVerificationCodeSet = (props) => {
         label: '验证码',
         name: 'smsCode',
         extra: '验证码为四位数字',
-        addRules: [{ pattern: /^\d{4}$/, message: '验证码为四位数字' }],
+        addRules: [{ pattern: new RegExp(/^\d{4}$/), message: '验证码为四位数字' }],
       },
     ],
     onFinish: fetchMerBrandAdd,

@@ -136,6 +136,7 @@ const FormCondition = ({
           });
           if (onChange) onChange(value);
         } else {
+          if (!fileList.length) form.setFieldsValue({ [name]: undefined });
           setFileLists({ ...fileLists, [name]: fileList });
         }
       },

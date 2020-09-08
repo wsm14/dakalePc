@@ -1,3 +1,4 @@
+import { NUM_INT } from '@/common/regExp';
 import { Form, InputNumber } from 'antd';
 const TradePlatformSet = (props) => {
   const {
@@ -107,14 +108,14 @@ const TradePlatformSet = (props) => {
         name: 'serviceFee',
         suffix: '%',
         visible: CeditType === 3,
-        addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '服务费比例应为整数' }],
+        addRules: [{ pattern: NUM_INT, message: '服务费比例应为整数' }],
       },
       {
         label: '赠送卡豆',
         name: 'freeBean',
         suffix: '个',
         visible: CeditType === 3,
-        addRules: [{ pattern: /^\+?[1-9]\d*$/, message: '赠送卡豆应为整数' }],
+        addRules: [{ pattern: NUM_INT, message: '赠送卡豆应为整数' }],
       },
     ],
     onFinish: fetchDataEdit,
