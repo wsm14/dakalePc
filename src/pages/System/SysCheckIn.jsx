@@ -9,7 +9,6 @@ const SysCheckIn = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-
   const [visible, setVisible] = useState('');
 
   // table 表头

@@ -51,7 +51,6 @@ export default {
       if (!response) return;
       const { content } = response;
       const newList = menuDataTree(content.accessList);
-      console.log(newList);
       yield put({
         type: 'save',
         payload: {
