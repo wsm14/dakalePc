@@ -24,3 +24,8 @@ export const COMMA_TWO_PATTERN = new RegExp(/^([^,]*,?[^,]*){0,2}$/);
 
 // 不允许逗号开头结尾
 export const COMMA_SE_PATTERN = new RegExp(/([^!,])(?<![,])$/);
+
+// 判断url
+export const URL_PATTERN = new RegExp(
+  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+);

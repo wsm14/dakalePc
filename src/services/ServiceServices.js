@@ -29,3 +29,26 @@ export function fetchMerVideoDel(data) {
     data,
   });
 }
+
+// get 新闻动态 - 列表
+export async function fetchNewsList(params) {
+  return request('/admin/news/listNews', {
+    params,
+  });
+}
+
+// post 视屏列表 - 新增
+export function fetchNewsEdit(data) {
+  return request('/admin/news/saveNews', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视屏列表 - 下架
+export function fetchNewsStatus(data) {
+  return request('/admin/news/updateNews', {
+    method: 'POST',
+    data,
+  });
+}

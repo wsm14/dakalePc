@@ -55,6 +55,9 @@ export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 // 卡豆乐园 公告状态
 export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 
+// 新闻动态状态
+export const NEWS_STATUS = ['下架', '上架'];
+
 // Banner展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 
