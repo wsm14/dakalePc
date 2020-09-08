@@ -10,11 +10,9 @@ const BusinessAddQuality = (props) => {
     form,
   } = props;
   const { businessLicenseObject: blimg = { businessLicenseImg: '' } } = initialValues;
-  const [disabledInfo, setDisabledInfo] = useState(blimg && !blimg.businessLicenseImg);
 
   // 上传图片返回url ocr识别营业执照
   const fetchMerBusinessUpload = (file) => {
-    setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       dispatch({
         type: 'businessList/fetchMerBusinessOcr',
@@ -32,7 +30,6 @@ const BusinessAddQuality = (props) => {
               businessScope: val.business,
             },
           });
-          setDisabledInfo(false);
         },
       });
     });
@@ -49,27 +46,22 @@ const BusinessAddQuality = (props) => {
     },
     {
       label: '商户名称',
-      disabled: disabledInfo,
       name: ['businessLicenseObject', 'businessName'],
     },
     {
       label: '统一社会信用代码',
-      disabled: disabledInfo,
       name: ['businessLicenseObject', 'socialCreditCode'],
     },
     {
       label: '注册地址',
-      disabled: disabledInfo,
       name: ['businessLicenseObject', 'signInAddress'],
     },
     {
       label: '营业期限',
-      disabled: disabledInfo,
       name: ['businessLicenseObject', 'validityPeriod'],
     },
     {
       label: '经营范围',
-      disabled: disabledInfo,
       type: 'textArea',
       name: ['businessLicenseObject', 'businessScope'],
     },

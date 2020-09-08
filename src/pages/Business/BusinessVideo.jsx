@@ -15,6 +15,10 @@ const BusinessVideoComponent = (props) => {
       label: '商户手机号',
       name: 'mobile',
     },
+    {
+      label: '商户名称',
+      name: 'merchantName',
+    },
   ];
 
   // table 表头
