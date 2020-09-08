@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -25,6 +25,12 @@ const BusinessDetailShow = (props) => {
   const businessStatusText = !businessStatusNum ? '恢复营业' : '停业';
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (visible) {
+      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
+    }
+  }, [visible]);
 
   // 设置开户行号
   const fetchMerSetBandCode = (values) => {
@@ -220,9 +226,6 @@ const BusinessDetailShow = (props) => {
             form={form}
             preserve={false}
             onFinish={fetchMerSetBandCode}
-            initialValues={{
-              bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '',
-            }}
           >
             <Form.Item
               name="bankSwiftCode"
