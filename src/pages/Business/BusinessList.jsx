@@ -186,7 +186,20 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
-      <BusinessTotalInfo
+      <div style={{ textAlign: 'right', marginBottom: 10 }}>
+        <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+          新增商户
+        </Button>
+        <Button
+          className="dkl_green_btn"
+          key="1"
+          onClick={handleVCodeSet}
+          style={{ marginLeft: 10 }}
+        >
+          设置商家验证码
+        </Button>
+      </div>
+      {/* <BusinessTotalInfo
         btnExtra={
           <>
             <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
@@ -197,7 +210,7 @@ const BusinessListComponent = (props) => {
             </Button>
           </>
         }
-      ></BusinessTotalInfo>
+      ></BusinessTotalInfo> */}
       <DataTableBlock
         cRef={childRef}
         loading={

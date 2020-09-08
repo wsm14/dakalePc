@@ -104,7 +104,7 @@ const UserListComponent = (props) => {
   return (
     <>
       <UserListTotalInfo></UserListTotalInfo>
-      <UserTotalSpread></UserTotalSpread>
+      {/* <UserTotalSpread></UserTotalSpread> */}
       <DataTableBlock
         cRef={childRef}
         loading={loading}
