@@ -162,7 +162,7 @@ const CityPartnerDetail = (props) => {
         type: 'radio',
         name: 'bankAccountType',
         select: [false, '对私', '对公'],
-        render: (val, row) => [false, '对私', '对公'][val],
+        render: (val) => [false, '对私', '对公'][Number(val)],
       },
       {
         title: '帐号密码',
