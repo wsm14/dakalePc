@@ -192,7 +192,7 @@ const BusinessListComponent = (props) => {
         </Button>
         <Button
           className="dkl_green_btn"
-          key="1"
+          key="2"
           onClick={handleVCodeSet}
           style={{ marginLeft: 10 }}
         >

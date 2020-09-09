@@ -161,8 +161,8 @@ const CityPartnerDetail = (props) => {
         label: '账号性质',
         type: 'radio',
         name: 'bankAccountType',
-        select: ['对私', '对公'],
-        render: (val, row) => ['对私', '对公'][val],
+        select: [false, '对私', '对公'],
+        render: (val, row) => [false, '对私', '对公'][val],
       },
       {
         title: '帐号密码',

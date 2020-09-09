@@ -48,10 +48,10 @@ const BusinessAddBeas = (props) => {
               key: item.serviceFee,
             })),
           );
-        } else if (categId) {
+        } else if (categId && val[0].type !== 'no') {
           const plist = val.filter((i) => i.typeContent === categId)[0];
           setPriceList(
-            plist.merchantSettleObjects
+            plist && plist.merchantSettleObjects
               ? plist.merchantSettleObjects.map((item) => ({
                   value: item.freeBean,
                   name: `${item.serviceFee}%`,
@@ -224,7 +224,7 @@ const BusinessAddBeas = (props) => {
 
 export default connect(({ businessBrand, sysTradeList, loading }) => ({
   loading,
-  platformList: sysTradeList.detailList.list,
+  platformList: sysTradeList.platFormList.list,
   brandList: businessBrand.list,
   tradeList: sysTradeList.list.list,
 }))(BusinessAddBeas);

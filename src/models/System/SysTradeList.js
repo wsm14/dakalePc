@@ -17,6 +17,7 @@ export default {
   state: {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
+    platFormList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -54,7 +55,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.merchantSettleList },
+          platFormList: { list: content.merchantSettleList },
         },
       });
       if (callback) callback(content.merchantSettleList);

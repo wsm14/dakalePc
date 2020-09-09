@@ -196,6 +196,6 @@ const TradePlatformDetailList = (props) => {
 };
 
 export default connect(({ sysTradeList, loading }) => ({
-  detailList: sysTradeList.detailList,
+  detailList: sysTradeList.platFormList,
   loading: loading.effects['sysTradeList/fetchTradePlatformList'],
 }))(TradePlatformDetailList);
