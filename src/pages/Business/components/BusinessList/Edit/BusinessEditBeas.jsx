@@ -160,6 +160,9 @@ const BusinessAddBeas = (props) => {
         {
           validator: (rule, value) => {
             const { fileList } = value;
+            if (typeof value === 'string') {
+              return Promise.resolve();
+            }
             if (fileList.length < 3) {
               return Promise.reject('至少上传 3 张图');
             }
