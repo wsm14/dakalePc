@@ -14,6 +14,11 @@ const BusinessAddQuality = (props) => {
   // 上传图片返回url ocr识别营业执照
   const fetchMerBusinessUpload = (file) => {
     aliOssUpload(file).then((res) => {
+      form.setFieldsValue({
+        businessLicenseObject: {
+          businessLicenseImg: res.toString(),
+        },
+      });
       dispatch({
         type: 'businessList/fetchMerBusinessOcr',
         payload: {
@@ -22,7 +27,6 @@ const BusinessAddQuality = (props) => {
         callback: (val) => {
           form.setFieldsValue({
             businessLicenseObject: {
-              businessLicenseImg: res.toString(),
               businessName: val.name,
               socialCreditCode: val.regNum,
               signInAddress: val.address,
