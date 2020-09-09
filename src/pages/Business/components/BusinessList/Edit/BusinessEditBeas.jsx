@@ -153,8 +153,20 @@ const BusinessAddBeas = (props) => {
       name: 'interiorImg',
       type: 'upload',
       maxFile: 5,
-      extra: '最多上传 5 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
+      extra:
+        '至少上传 3 张图，至多上传 5 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
       rules: [{ required: true, message: `请确认店内实景照` }],
+      addRules: [
+        {
+          validator: (rule, value) => {
+            const { fileList } = value;
+            if (fileList.length < 3) {
+              return Promise.reject('至少上传 3 张图');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '经营类目',

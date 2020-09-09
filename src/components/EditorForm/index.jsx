@@ -81,7 +81,6 @@ const EditorForm = ({
     editor.customConfig.pasteFilterStyle = true;
     editor.customConfig.onchange = (html) => {
       if (setContent) setContent(html === '<p><br></p>' ? '' : html);
-      // 填充html数据后获取剩余图片数据
     }; // 回显 保存 html
     editor.customConfig.pasteTextHandle = (contents) => {
       // 赋值粘贴文本a标签替换
