@@ -17,6 +17,11 @@ const BusinessAddQuality = (props) => {
       form.setFieldsValue({
         businessLicenseObject: {
           businessLicenseImg: res.toString(),
+          businessName: 0,
+          socialCreditCode: 0,
+          signInAddress: 0,
+          validityPeriod: 0,
+          businessScope: 0,
         },
       });
       dispatch({
