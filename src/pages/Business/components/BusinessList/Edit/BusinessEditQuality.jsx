@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -21,7 +21,7 @@ const BusinessAddQuality = (props) => {
           socialCreditCode: 0,
           signInAddress: 0,
           validityPeriod: 0,
-          businessScope: 0,
+          businessScope: '0',
         },
       });
       dispatch({
