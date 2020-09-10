@@ -8,7 +8,7 @@ import { encrypt } from './utils';
 import { history } from 'umi';
 
 notification.config({
-  duration: 3,
+  duration: 2,
   placement: 'topRight',
 });
 
