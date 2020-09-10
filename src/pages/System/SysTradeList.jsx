@@ -137,6 +137,7 @@ const SysTradeSet = (props) => {
         dispatchType="sysTradeList/fetchGetList"
         {...list}
         expandable={{ childrenColumnName: ['categoryDTOList'] }}
+        pagination={false}
       ></DataTableBlock>
       <TradeDetailList visible={visible} setVisible={setVisible}></TradeDetailList>
       <TradePlatformDetailList

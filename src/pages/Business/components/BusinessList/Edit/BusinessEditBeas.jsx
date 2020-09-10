@@ -40,7 +40,10 @@ const BusinessAddBeas = (props) => {
         categoryId,
       },
       callback: (val) => {
-        if (val[0].type === 'no') {
+        // 过滤未设置服务费
+        if (!val[0]) {
+          setPriceList([]);
+        } else if (val[0].type === 'no') {
           setPriceList(
             val[0].merchantSettleObjects.map((item) => ({
               value: item.freeBean,
@@ -175,7 +178,7 @@ const BusinessAddBeas = (props) => {
       label: '经营类目',
       type: 'cascader',
       name: 'topCategoryName',
-      select: tradeList,
+      select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'id', children: 'categoryDTOList' },
       onChange: (val) => {
         setPriceList([]);

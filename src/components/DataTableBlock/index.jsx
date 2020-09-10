@@ -48,6 +48,7 @@ const DataTableBlockComponent = ({
   componentSize = 'default',
   NoSearch = false,
   expandable,
+  pagination,
 }) => {
   const [first, setFirst] = useState(NoSearch); // first No search
   const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
@@ -137,7 +138,7 @@ const DataTableBlockComponent = ({
         loading={loading}
         dataSource={list}
         columns={columns}
-        pagination={paginationProps}
+        pagination={pagination === false ? false : paginationProps}
       />
     </>
   );
