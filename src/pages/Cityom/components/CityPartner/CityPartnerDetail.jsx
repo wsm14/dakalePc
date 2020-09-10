@@ -28,7 +28,7 @@ const CityPartnerDetail = (props) => {
           businessLicense: res.slice(0, bfile.length).toString(),
           identityPicture: res.slice(ifile.length).toString(),
           joinTime: time[0].format('YYYY-MM-DD'),
-          joinEndTime: time[0].format('YYYY-MM-DD'),
+          joinEndTime: time[1].format('YYYY-MM-DD'),
           bankAreaCode: bankAreaCode.toString(),
           province_code: city[0].value,
           province_name: city[0].label,
@@ -148,6 +148,10 @@ const CityPartnerDetail = (props) => {
           if (item.level === '1') return { ...item, children: false };
         }),
         name: 'bankAreaCode',
+        render: (val, row) => {
+          const city = CITYJSON.filter((item) => item.value == val);
+          return city.length ? city[0].label : val;
+        },
       },
       {
         label: '行号',

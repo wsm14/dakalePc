@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import CityPartnerDetailList from './components/CityPartner/CityPartnerDetailList';
-import CityPartnerTotalInfo from './components/CityPartner/CityPartnerTotalInfo';
+// import CityPartnerTotalInfo from './components/CityPartner/CityPartnerTotalInfo';
 import cityPartnerSet from './components/CityPartner/CityPartnerDetail';
 
 const CityPartner = (props) => {

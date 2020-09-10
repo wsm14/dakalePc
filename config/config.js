@@ -18,6 +18,7 @@ export default defineConfig({
     // default zh-CN
     default: 'zh-CN',
   },
+  lessLoader: { javascriptEnabled: true },
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },

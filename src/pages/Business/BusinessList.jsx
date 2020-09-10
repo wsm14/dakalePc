@@ -1,15 +1,17 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
-import BusinessTotalInfo from './components/BusinessList/BusinessTotalInfo';
 import BusinessAdd from './components/BusinessList/BusinessEdit';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
+
+// const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, loading, dispatch } = props;
@@ -199,18 +201,20 @@ const BusinessListComponent = (props) => {
           设置商家验证码
         </Button>
       </div>
-      {/* <BusinessTotalInfo
-        btnExtra={
-          <>
-            <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
-              新增商户
-            </Button>
-            <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
-              设置商家验证码
-            </Button>
-          </>
-        }
-      ></BusinessTotalInfo> */}
+      {/* <Suspense fallback={<CardLoading></CardLoading>}>
+        <BusinessTotalInfo
+          btnExtra={
+            <>
+              <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+                新增商户
+              </Button>
+              <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
+                设置商家验证码
+              </Button>
+            </>
+          }
+        ></BusinessTotalInfo>
+      </Suspense> */}
       <DataTableBlock
         cRef={childRef}
         loading={

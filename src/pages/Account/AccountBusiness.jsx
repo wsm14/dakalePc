@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
+// import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
 import BusinessDetailList from './components/Business/BusinessDetailList';
 
 const AccountBusinessList = (props) => {
