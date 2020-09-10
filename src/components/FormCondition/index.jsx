@@ -318,6 +318,7 @@ const FormCondition = ({
         switch: <Switch disabled={item.disabled} />,
         upload: (
           <Upload
+            multiple={item.multiple || false}
             listType="picture-card"
             fileList={fileLists[Array.isArray(name) ? name[1] : name]}
             beforeUpload={() => false}

@@ -155,6 +155,7 @@ const BusinessAddBeas = (props) => {
       label: '店内实景照',
       name: 'interiorImg',
       type: 'upload',
+      multiple: true,
       maxFile: 5,
       extra:
         '至少上传 3 张图，至多上传 5 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
