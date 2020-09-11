@@ -36,7 +36,18 @@ const BusinessAdd = (props) => {
   // 提交
   const fetchFormData = (auditInfo = {}) => {
     form.validateFields().then((values) => {
-      const { categoryName: cobj, bondBean: bobj, coverImg, interiorImg, otherBrand } = values;
+      const {
+        categoryName: cobj,
+        bondBean: bobj,
+        coverImg,
+        interiorImg,
+        otherBrand,
+        businessLicenseObject: { businessLicenseImg: bimg },
+      } = values;
+      if (typeof bimg !== 'string') {
+        message.warn('请重新上传营业执照', 1.5);
+        return;
+      }
       const payload = {
         ...values,
         brandName: otherBrand ? '其他品牌' : values.brandName,
