@@ -12,6 +12,10 @@ export default {
         target: 'https://devgateway.dakale.net/',
         changeOrigin: true,
       },
+      '/media': {
+        target: 'https://static.dingtalk.com/',
+        changeOrigin: true,
+      },
     },
   },
   test: {

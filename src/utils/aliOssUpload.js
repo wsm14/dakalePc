@@ -62,7 +62,9 @@ const aliOssUpload = (file = '', fieldNames = {}) => {
       // oss 上传
       const ossput = (file) => {
         // 设置路径+随机文件名
-        let fileName = folder + '/' + uuid() + file['name'].replace(/.+\./, '.');
+        const fileNameText = file['name'];
+        let fileName = folder + '/' + uuid() + '.png';
+        // fileNameText ? fileNameText.replace(/.+\./, '.') :
         // 提交文件
         return client.put(fileName, file).then((putres) => {
           const {

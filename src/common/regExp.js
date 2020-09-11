@@ -7,7 +7,7 @@
 export const WORD_NUM_PATTERN = /^[A-Za-z0-9_]{6,24}$/;
 
 // 电话号码
-export const PHONE_PATTERN = '^1[3456789]d{9}$';
+export const PHONE_PATTERN = /^1[3456789]\d{9}$/;
 
 // 全数字
 export const NUM_PATTERN = /^\d+$/;

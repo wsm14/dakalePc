@@ -88,8 +88,12 @@ const FormCondition = ({
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
+            if (!initialValues[name[0]]) {
+              fileobj[name[1]] = [];
+              return;
+            }
             const urlfile = initialValues[name[0]][name[1]];
-            fileobj[name[1]] = [imgold(urlfile, i)];
+            fileobj[name[1]] = urlfile ? [imgold(urlfile, i)] : [];
             return;
           }
           const fileArrar = initialValues[name];
