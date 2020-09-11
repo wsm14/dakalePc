@@ -71,6 +71,11 @@ export default [
             name: '品牌',
             component: './Business/BusinessBrand',
           },
+          {
+            path: '/business/excel',
+            name: 'excel',
+            component: './Business/BusinessExcelList',
+          },
         ],
       },
       {

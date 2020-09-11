@@ -5,7 +5,7 @@ const SysRoleInfoSet = (props) => {
   const fetchRoleEdit = (payload) => {
     dispatch({
       type: 'sysRoleList/fetchRoleEdit',
-      payload: { roleId: initialValues.idString, ...initialValues, ...payload },
+      payload: { id: initialValues.idString, ...initialValues, ...payload },
       callback: () => childRef.current.fetchGetData(),
     });
   };

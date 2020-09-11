@@ -79,7 +79,17 @@ const BusinessAwardSet = (props) => {
       ),
       rules: [
         { pattern: COMMA_TWO_PATTERN, message: `最多输入三个标签` },
-        { pattern: COMMA_SE_PATTERN, message: `请勿以英文 “ , ”开头和结尾` },
+        {
+          validator: (rule, value) => {
+            if (value.substr(0, 1) == ',') {
+              return Promise.reject('请勿以 “ , ” 开头');
+            }
+            if (value.substr(value.length - 1, 1) == ',') {
+              return Promise.reject('请勿以 “ , ” 结尾');
+            }
+            return Promise.resolve();
+          },
+        },
       ],
     },
   ];
