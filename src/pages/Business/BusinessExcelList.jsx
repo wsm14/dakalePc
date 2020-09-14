@@ -39,6 +39,11 @@ const BusinessExcelList = (props) => {
       render: (val) => (val !== '无' ? <div style={{ color: 'red' }}>{val}</div> : ''),
     },
     {
+      title: '是否已录',
+      dataIndex: 'status',
+      render: (val) => (val ? <div style={{ color: 'green' }}>已录</div> : ''),
+    },
+    {
       title: '操作',
       dataIndex: 'userMerchantIdString',
       fixed: 'right',
@@ -48,6 +53,7 @@ const BusinessExcelList = (props) => {
           formItems={[
             {
               type: 'edit',
+              visible: !record.status,
               click: () => {
                 aliOssUpload(record.interiorImg).then((res) => {
                   setInitialValues({
@@ -195,6 +201,8 @@ const BusinessExcelList = (props) => {
         visible={initialValues.show}
         onClose={() => setInitialValues({ show: false, value: {} })}
         initialValues={initialValues.value}
+        dataSource={dataSource}
+        setDataSource={setDataSource}
       ></BusinessAdd>
     </>
   );

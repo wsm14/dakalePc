@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form, message } from 'antd';
 import { Map, Marker } from 'react-amap';
@@ -6,10 +6,17 @@ import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
-import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 
 const BusinessAdd = (props) => {
-  const { dispatch, cRef, visible, initialValues = false, onClose, loading } = props;
+  const {
+    dispatch,
+    visible,
+    dataSource,
+    setDataSource,
+    initialValues = false,
+    onClose,
+    loading,
+  } = props;
 
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
@@ -62,6 +69,9 @@ const BusinessAdd = (props) => {
               interiorImg: res.toString(),
             },
             callback: () => {
+              dataSource.map((cValue) => {
+                if (cValue.merchantName === values.merchantName) cValue.status = true;
+              });
               onClose();
             },
           });

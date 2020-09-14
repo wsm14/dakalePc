@@ -1,0 +1,44 @@
+@white: #ffffff;
+
+.active_Template_Left {
+  overflow: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 65px;
+  min-width: 250px;
+  border-right: 1px solid #d9d9d9;
+  background-color: @white;
+  padding-bottom: 67px;
+  &::-webkit-scrollbar {
+    width: 3px !important;
+    height: 6px;
+  }
+
+  :global {
+    .ant-collapse-borderless {
+      background-color: @white;
+      border: 0;
+    }
+  }
+}
+
+.active_Template_content {
+  width: 375px;
+  margin: auto;
+  padding: 20px 0;
+  height: 100%;
+  .previewer_component {
+    width: 375px;
+    margin: auto;
+    position: relative;
+    display: flex;
+    min-height: 100%;
+    height: 757px;
+    background-color: #eeeeee;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  }
+  .previewer_null {
+    
+  }
+}

@@ -143,6 +143,27 @@ export default [
         ],
       },
       {
+        name: '活动设置',
+        path: '/active',
+        routes: [
+          {
+            path: '/active/template',
+            name: '活动模版',
+            component: './Active/ActiveTemplate',
+          },
+          {
+            path: '/active/allocation',
+            name: '活动配置',
+            component: './Active/ActiveAllocation',
+          },
+          {
+            path: '/active/list',
+            name: '活动列表',
+            component: './Active/ActiveList',
+          },
+        ],
+      },
+      {
         name: '系统设置',
         path: '/system',
         routes: [
