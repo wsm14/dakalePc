@@ -34,7 +34,8 @@ const HandleSetTable = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, index) => {
-      const { type = 'button', title = '按钮', pop = false, visible = true } = item;
+      const { type = 'button', title = '按钮', visible = true } = item;
+      let { pop = false } = item;
 
       let btnText = '';
       if (type === 'own') {
@@ -43,6 +44,9 @@ const HandleSetTable = (props) => {
       if (type === 'info') {
         btnText = '详情';
       }
+      if (type === 'set') {
+        btnText = '设置';
+      }
       if (type === 'eye') {
         btnText = '查看';
       }
@@ -50,10 +54,15 @@ const HandleSetTable = (props) => {
         btnText = '编辑';
       }
       if (type === 'del') {
+        pop = true;
         btnText = '删除';
       }
       if (type === 'check') {
         btnText = '审核';
+      }
+      if (type === 'send') {
+        pop = true;
+        btnText = '发布';
       }
 
       let component =
@@ -67,7 +76,7 @@ const HandleSetTable = (props) => {
       component = pop ? (
         <Popconfirm
           placement="top"
-          title={`确认${btnText}？`}
+          title={item.popText || `确认${btnText}？`}
           onConfirm={item.click}
           okText="确认"
           cancelText="取消"

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form } from 'antd';
-import moment from 'moment';
+import { NUM_INT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -110,6 +111,7 @@ const MarketCardActivitySetStore = (props) => {
     {
       label: '活动商品',
       name: 'goodsName',
+      maxLength: 20,
     },
     {
       label: '商品分类',
@@ -136,6 +138,7 @@ const MarketCardActivitySetStore = (props) => {
       label: '活动数量',
       type: 'number',
       name: 'totalCount',
+      addRules: [{ pattern: NUM_INT, message: '活动数量应为整数' }],
     },
     {
       label: '活动价',
@@ -150,9 +153,8 @@ const MarketCardActivitySetStore = (props) => {
     {
       label: '有效期',
       type: 'rangePicker',
-      name: 'originPrisce',
       name: 'activeBeginDate',
-      disabledDate: (time) => time && time < moment().endOf('day'),
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '限购',
@@ -169,7 +171,10 @@ const MarketCardActivitySetStore = (props) => {
       type: 'number',
       name: 'acquireLimitNum',
       disabled: limitStaut,
-      rules: [{ required: !limitStaut, message: `请确认每人每天限购数量` }],
+      rules: [
+        { required: !limitStaut, message: `请确认每人每天限购数量` },
+        { pattern: NUM_INT, message: '限购数量应为整数' },
+      ],
     },
     {
       type: 'textArea',
@@ -178,7 +183,7 @@ const MarketCardActivitySetStore = (props) => {
     },
     {
       type: 'textArea',
-      label: '购买须知',
+      label: '使用规则',
       name: 'description',
     },
   ];

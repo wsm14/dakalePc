@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
 import { ACTIVE_COUPON_STATUS } from '@/common/constant';
@@ -7,8 +7,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 const MarketCardActivityDetailPay = (props) => {
   const { marketCardActivity, loading, visible, setVisible } = props;
 
-  const { type = '', record = '' } = visible;
-  const childRef = useRef();
+  const { type = 'destory', record = '' } = visible;
 
   const loadings =
     loading.effects['marketCardActivity/fetchGetActiveDetailPay'] ||
@@ -19,13 +18,13 @@ const MarketCardActivityDetailPay = (props) => {
     destory: {
       title: `核销明细 - ${record.merchantName}`,
       dispatchType: 'marketCardActivity/fetchActiveDestoryDetail',
-      rowKey: 'verificationTime',
+      rowKey: 'receiveTime',
       searchItems: [
         {
           label: '核销日期',
           type: 'rangePicker',
           name: 'verifiedBeginDate',
-          end: 'verifiedEndDate'
+          end: 'verifiedEndDate',
         },
         {
           label: '券状态',
@@ -106,32 +105,36 @@ const MarketCardActivityDetailPay = (props) => {
           title: '现金支付',
           align: 'center',
           dataIndex: 'payFee',
+          render: (val) => val || '0',
         },
       ],
     },
   }[type];
 
+  const tableProps = {
+    CardNone: false,
+    loading: loadings,
+    columns: propItem.getColumns,
+    searchItems: propItem.searchItems,
+    params: {
+      merchantId: record.merchantIdString,
+      marketCouponId: record.marketCouponIdString,
+    },
+    dispatchType: propItem.dispatchType,
+    componentSize: 'middle',
+    ...marketCardActivity.detailPay,
+  };
+
   return (
     <Modal
-      title={visible && propItem.title}
+      title={propItem.title}
       width={1150}
       destroyOnClose
       footer={null}
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
-        CardNone={false}
-        cRef={childRef}
-        loading={loadings}
-        columns={visible && propItem.getColumns}
-        searchItems={visible && propItem.searchItems}
-        rowKey={(record) => `${record[propItem.rowKey]}`}
-        params={{ merchantId: record.marketCouponIdString }}
-        dispatchType={visible && propItem.dispatchType}
-        componentSize="middle"
-        {...marketCardActivity.detailPay}
-      ></DataTableBlock>
+      <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
   );
 };

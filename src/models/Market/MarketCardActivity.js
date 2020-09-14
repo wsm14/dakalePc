@@ -31,6 +31,13 @@ export default {
         ...payload,
       };
     },
+    clearDetailPay(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        detailPay: { list: [], total: 0 },
+      };
+    },
     clearMerchantList(state, { payload }) {
       return {
         ...state,
@@ -93,7 +100,7 @@ export default {
         type: 'save',
         payload: {
           detailPay: {
-            list: content.orderList,
+            list: content.userCouponList,
             total: content.total,
           },
         },
@@ -132,7 +139,9 @@ export default {
       } = response;
       const { couponChannels: ccls = '', couponName = '' } = marketCouponDeduct;
       const initialValues = !couponName
-        ? ''
+        ? payload.status
+          ? ''
+          : {}
         : {
             ...marketCouponDeduct,
             couponType: '0',

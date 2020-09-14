@@ -1,55 +1,79 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'dva';
+import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import sysMenuSet from './components/Menu/SysMenuSet';
+
+const tabList = [
+  {
+    key: 'admin',
+    tab: '后台',
+  },
+  {
+    key: 'merchant',
+    tab: '商家',
+  },
+];
 
 const SysMenuList = (props) => {
   const { sysMenuList, loading, dispatch } = props;
 
   const childRef = useRef();
-
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '姓名',
-      name: 'userMobile1',
-    },
-    {
-      label: '账号',
-      name: 'userMob2ile1',
-    },
-  ];
+  const [tabkey, setTabKey] = useState('admin');
+  const [one, setOne] = useState(false);
 
   // table 表头
   const getColumns = [
+    // {
+    //   title: '菜单ID',
+    //   dataIndex: 'authAccessId',
+    // },
     {
       title: '菜单名称',
-      dataIndex: 'userId',
+      dataIndex: 'accessName',
     },
     {
       title: '菜单状态',
       align: 'center',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'status',
+      render: (val, record) => (
+        <Switch
+          checkedChildren="启"
+          unCheckedChildren="停"
+          checked={val === '1'}
+          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+        />
+      ),
     },
-    {
-      title: '菜单路径',
-      align: 'left',
-      dataIndex: 'orderCount',
-    },
+    // {
+    //   title: '菜单路径',
+    //   align: 'center',
+    //   dataIndex: 'orderCount',
+    // },
     {
       title: '操作',
-      dataIndex: 'id',
-      align: 'center',
+      dataIndex: 'authAccessId',
+      align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              //   click: () => setShowCoach(record),
+              click: () => fetchGetMenuDetail({ accessId: val }),
             },
             {
-              type: 'del',
-              //   click: () => setShowCoach(record),
+              type: 'own',
+              title: '添加',
+              click: () =>
+                handleSysMenuSet({
+                  menuName: record.accessName,
+                  pid: val,
+                  authType: '2',
+                  status: '1',
+                  ownerType: tabkey,
+                  type: 'addChildren',
+                }),
             },
           ]}
         />
@@ -57,31 +81,86 @@ const SysMenuList = (props) => {
     },
   ];
 
+  // 获取菜单信息
+  const fetchGetMenuDetail = (payload, val = undefined) => {
+    dispatch({
+      type: 'sysMenuList/fetchGetMenuDetail',
+      payload,
+      callback: val === undefined ? handleSysMenuSet : fetchSetMenuStatus,
+    });
+  };
+
+  // 修改角色状态
+  const fetchSetMenuStatus = (payload) => {
+    dispatch({
+      type: 'sysMenuList/fetchMenuSet',
+      payload: {
+        ...payload,
+        pid: payload.pidString,
+        id: payload.accessId,
+        status: Number(!Number(payload.status)),
+      },
+      callback: handleCallback,
+    });
+  };
+
+  // 获取权限树
+  const fetchGetAuthMenuTree = () => {
+    dispatch({
+      type: 'userInfo/fetchGetAuthMenuTree',
+    });
+  };
+
+  const handleCallback = () => {
+    childRef.current.fetchGetData();
+    if (tabkey === 'admin') fetchGetAuthMenuTree();
+  };
+
+  // 新增/修改
+  const handleSysMenuSet = (initialValues = { authType: '2', status: '1', ownerType: tabkey }) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: sysMenuSet({
+        dispatch,
+        allMenu: sysMenuList.allMenu,
+        initialValues: { pid: initialValues.pidString, ...initialValues },
+        handleCallback,
+      }),
+    });
+  };
+
+  useEffect(() => {
+    if (one) {
+      childRef.current.fetchGetData();
+    }
+  }, [tabkey]);
+
   return (
-    <>
+    <Card
+      tabBarExtraContent={
+        <Button className="dkl_green_btn" onClick={() => handleSysMenuSet()}>
+          新增
+        </Button>
+      }
+      tabList={tabList}
+      activeTabKey={tabkey}
+      onTabChange={(key) => {
+        setTabKey(key);
+        setOne(true);
+      }}
+    >
       <DataTableBlock
-        title="后台菜单"
+        CardNone={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
-        dispatchType="sysMenuList/fetchGetList2"
-        params={{ type: 1 }}
+        rowKey={(record) => `${record.authAccessId}`}
+        dispatchType="sysMenuList/fetchGetList"
+        params={{ roleType: tabkey }}
+        pParams={{ limit: 101 }}
         {...sysMenuList}
       ></DataTableBlock>
-      <DataTableBlock
-        title="商家菜单"
-        style={{ marginTop: 20 }}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
-        dispatchType="sysMenuList/fetchGetList2"
-        {...sysMenuList}
-      ></DataTableBlock>
-    </>
+    </Card>
   );
 };
 

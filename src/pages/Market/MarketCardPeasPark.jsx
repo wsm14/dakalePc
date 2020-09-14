@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Card } from 'antd';
-import MarketCardRMing from './components/MarketCardRMing';
-import MarketCardMorningDetail from './components/Morning/MarketCardMorningDetail';
+import { Card, Badge } from 'antd';
+import MarketCardRMing from './components/RMing/MarketCardRMing';
+import MarketCardNotice from './components/Notice/MarketCardNotice';
 import style from './styles.less';
 
 const MarketCardPeasPark = () => {
@@ -14,18 +14,68 @@ const MarketCardPeasPark = () => {
           home: (
             <Card>
               <div className={style.park_box}>
-                <div style={{ backgroundColor: '#f59a23' }} onClick={() => setKey('runing')}>
+                <div
+                  className={style.park_item}
+                  style={{ backgroundColor: '#f59a23' }}
+                  onClick={() => setKey('runing')}
+                >
                   步数挑战赛
                 </div>
-                <div style={{ backgroundColor: '#bfbf00' }} onClick={() => setKey('morning')}>
+                <div
+                  className={style.park_item}
+                  style={{ backgroundColor: '#bfbf00' }}
+                  onClick={() => setKey('morning')}
+                >
                   早起挑战赛
                 </div>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ backgroundColor: '#8080ff' }}
+                  >
+                    答题挑战
+                  </div>
+                </Badge.Ribbon>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ backgroundColor: '#ec808d' }}
+                  >
+                    卡豆果园
+                  </div>
+                </Badge.Ribbon>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ backgroundColor: '#c280ff' }}
+                  >
+                    节日主题
+                  </div>
+                </Badge.Ribbon>
+                <div
+                  className={style.park_item}
+                  style={{ color: 'black', border: '1px solid #e6e6e6' }}
+                  onClick={() => setKey('notice')}
+                >
+                  乐园公告
+                </div>
+                <Badge.Ribbon text="开发中">
+                  <div
+                    className={`${style.park_item} ${style.park_item_no} `}
+                    style={{ color: 'black', border: '1px solid #e6e6e6' }}
+                  >
+                    成就勋章
+                  </div>
+                </Badge.Ribbon>
+                <div></div>
+                <div></div>
+                <div></div>
               </div>
             </Card>
           ),
-          morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" />,
-          runing: <MarketCardRMing setKey={setKey} matchType="step" />,
-          morningdetail: <MarketCardMorningDetail setKey={() => setKey('morning')} />,
+          runing: <MarketCardRMing setKey={setKey} matchType="step" title="步数挑战赛" />,
+          morning: <MarketCardRMing setKey={setKey} matchType="wakeUp" title="早起挑战赛" />,
+          notice: <MarketCardNotice setKey={setKey} title="乐园公告" />,
         }[key]
       }
     </>

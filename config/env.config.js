@@ -5,17 +5,20 @@ export default {
     },
     proxy: {
       '/admin': {
-        target: 'http://192.168.0.143:6020/',
+        target: 'https://devgateway.dakale.net/', // http://192.168.0.143:6020/
         changeOrigin: true,
       },
       '/common': {
         target: 'https://devgateway.dakale.net/',
         changeOrigin: true,
       },
+      '/media': {
+        target: 'https://static.dingtalk.com/',
+        changeOrigin: true,
+      },
     },
   },
   test: {
-    // https://web-new.dakale.net/dev/page/bannerShare/goodsStoreDaka.html
     define: {
       APIURL: 'https://devgateway.dakale.net',
     },
@@ -29,7 +32,7 @@ export default {
   // 生产环境proxy代理 不生效
   prod: {
     define: {
-      APIURL: 'https://devgateway.dakale.net',
+      APIURL: 'https://gateway1.dakale.net',
     },
   },
 };

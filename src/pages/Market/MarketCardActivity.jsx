@@ -6,13 +6,14 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
-import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
+import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
 
 const MarketCardActivity = (props) => {
   const { marketCardActivity, loading, dispatch } = props;
 
   const childRef = useRef();
   const [show, setShow] = useState({ key: 'home', record: '' });
+  const [params, setParams] = useState({});
 
   // 搜索参数
   const searchItems = [
@@ -33,14 +34,20 @@ const MarketCardActivity = (props) => {
     {
       title: '活动名称',
       align: 'center',
+      fixed: 'left',
       dataIndex: 'activityName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '活动简述',
       align: 'center',
       dataIndex: 'description',
       render: (val) => (
-        <Ellipsis length={15} tooltip>
+        <Ellipsis length={10} tooltip>
           {val}
         </Ellipsis>
       ),
@@ -66,6 +73,7 @@ const MarketCardActivity = (props) => {
     {
       title: '操作',
       dataIndex: 'activityIdString',
+      fixed: 'right',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
@@ -100,7 +108,7 @@ const MarketCardActivity = (props) => {
   const handleSetActive = () => {
     dispatch({
       type: 'drawerForm/show',
-      payload: MarketCardActivitySet({ dispatch, childRef }),
+      payload: marketCardActivitySet({ dispatch, childRef }),
     });
   };
 
@@ -121,6 +129,8 @@ const MarketCardActivity = (props) => {
               btnExtra={btnExtra}
               columns={getColumns}
               searchItems={searchItems}
+              pParams={params}
+              setParams={setParams}
               rowKey={(record) => record.activityIdString}
               dispatchType="marketCardActivity/fetchGetList"
               {...marketCardActivity.active}

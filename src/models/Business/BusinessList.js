@@ -2,8 +2,12 @@ import { notification } from 'antd';
 import {
   fetchMerchantList,
   fetchMerchantDetail,
+  fetchMerSetBandCode,
   fetchMerchantStatus,
-  fetchMerSaleStatus,
+  fetchMerBusinessOcr,
+  fetchMerchantSet,
+  fetchMerchantAdd,
+  fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
 
 export default {
@@ -11,10 +15,9 @@ export default {
 
   state: {
     list: [],
-    pageSize: 20,
     total: 0,
-    current: 1,
-    lastPage: 1,
+    totalData: {},
+    brandList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -34,8 +37,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.userMerchantList,
-          total: content.total,
+          list: content.recordList,
         },
       });
     },
@@ -44,6 +46,49 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.merchantDetail);
+    },
+    *fetchBusinessTotal({ payload }, { call, put }) {
+      const response = yield call(fetchMerchantDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content.userMerchantList,
+        },
+      });
+    },
+    *fetchMerBusinessOcr({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerBusinessOcr, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content);
+    },
+    *fetchMerSetBandCode({ payload }, { call, put }) {
+      const response = yield call(fetchMerSetBandCode, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '开户行号设置成功',
+      });
+    },
+    *fetchMerchantAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家新增成功',
+      });
+      callback();
+    },
+    *fetchMerchantSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家设置成功',
+      });
+      callback();
     },
     *fetchSetStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantStatus, payload);
@@ -54,14 +99,13 @@ export default {
       });
       callback();
     },
-    *fetchMerSaleStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerSaleStatus, payload);
+    *fetchMerVerificationCodeSet({ payload }, { call, put }) {
+      const response = yield call(fetchMerVerificationCodeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商家经营状态修改成功',
+        description: '验证码设置成功',
       });
-      callback();
     },
   },
 };

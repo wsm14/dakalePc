@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './UserLayout.less';
 
 const UserLayout = (props) => {
-  const isLoading = props.loading.effects['login/login'];
+  const isLoading = props.loading.effects['login/login'] || props.loading.effects['userInfo/fetchGetAuthMenuTree'];
 
   return (
     <div className={styles.dakale_user_container}>
@@ -13,7 +13,7 @@ const UserLayout = (props) => {
         <div className={styles.dakale_user_title}>
           <div className={styles.dakale_user_logo}></div>
           <div className={styles.dakale_user_liner}></div>
-          <div className={styles.dakale_user_font}>后台管理系统</div>
+          <div className={styles.dakale_user_font}>哒卡乐运营后台</div>
         </div>
       </div>
       <div className={styles.dakale_user_content}>

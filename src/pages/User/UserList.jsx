@@ -2,29 +2,21 @@ import React, { useRef } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS, ACCOUNT_TYPE } from '@/common/constant';
-import UserDetailShow from './components/UserDetailShow';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
+import userDetailShow from './components/UserDetailShow';
+import UserListTotalInfo from './components/UserList/UserTotalInfo';
+import UserTotalSpread from './components/UserList/UserTotalSpread';
 
 const UserListComponent = (props) => {
-  const { userList, loading, dispatch } = props;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
 
   // 搜索参数
   const searchItems = [
     {
-      label: '用户ID',
-      name: 'userId',
-    },
-    {
-      label: '用户手机号',
+      label: '注册手机号',
       name: 'mobile',
-    },
-    {
-      label: '账号状态',
-      name: 'status',
-      type: 'select',
-      select: { list: ACCOUNT_STATUS },
     },
   ];
 
@@ -36,8 +28,7 @@ const UserListComponent = (props) => {
       dataIndex: 'userIdString',
     },
     {
-      title: '手机号',
-      align: 'center',
+      title: '注册手机号',
       dataIndex: 'mobile',
       render: (val) => val || '暂未授权',
     },
@@ -48,15 +39,9 @@ const UserListComponent = (props) => {
     },
     {
       title: '性别',
-      align: 'left',
+      align: 'center',
       dataIndex: 'gender',
-      render: (val) => ({ M: '女', F: '男', '': '--' }[val]),
-    },
-    {
-      title: '身份',
-      align: 'left',
-      dataIndex: 'userType',
-      render: (val) => ACCOUNT_TYPE[val],
+      render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
     },
     {
       title: '实名认证',
@@ -65,9 +50,9 @@ const UserListComponent = (props) => {
       render: (val) => REAL_NAME_STATUS[val],
     },
     {
-      title: '邀请码',
+      title: '常驻地',
       align: 'center',
-      dataIndex: 'parentUserIdString',
+      dataIndex: 'residentAddress',
       render: (val) => val || '-',
     },
     {
@@ -83,9 +68,9 @@ const UserListComponent = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
       align: 'right',
       fixed: 'right',
+      dataIndex: 'parentUserIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
@@ -112,24 +97,29 @@ const UserListComponent = (props) => {
   const handleShowUserDetail = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: UserDetailShow({ dispatch, childRef, initialValues }),
+      payload: userDetailShow({ dispatch, childRef, initialValues }),
     });
   };
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userIdString}`}
-      dispatchType="userList/fetchGetList"
-      {...userList}
-    ></DataTableBlock>
+    <>
+      <UserListTotalInfo></UserListTotalInfo>
+      {/* <UserTotalSpread></UserTotalSpread> */}
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userIdString}`}
+        NoSearch={true}
+        dispatchType="userList/fetchGetList"
+        list={list}
+      ></DataTableBlock>
+    </>
   );
 };
 
 export default connect(({ userList, loading }) => ({
-  userList,
-  loading: loading.models.userList,
+  list: userList.list,
+  loading: loading.effects['userList/fetchGetList'],
 }))(UserListComponent);

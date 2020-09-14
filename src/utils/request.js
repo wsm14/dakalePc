@@ -8,7 +8,7 @@ import { encrypt } from './utils';
 import { history } from 'umi';
 
 notification.config({
-  duration: 3,
+  duration: 2,
   placement: 'topRight',
 });
 
@@ -28,7 +28,7 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
-  '2001': '用户身份过期请重新登录',
+  '2001': '管理员账号不存在',
   '5005': '用户身份失效请重新登录',
 };
 
@@ -41,7 +41,7 @@ const errorHandler = (error) => {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
+      message: `请求错误 ${status}`,
       description: errorText,
     });
     return false;
@@ -89,7 +89,7 @@ request.interceptors.response.use(async (response) => {
   const { success, resultCode = '', resultDesc = '' } = data;
   if (resultCode === '5005' || resultCode === '2001') {
     Modal.warning({
-      title: codeMessage[resultCode],
+      title: resultDesc,
       okText: '去登录',
       onOk: () => {
         Modal.destroyAll();

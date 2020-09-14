@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { history } from 'umi';
 import { Form, Button, Input } from 'antd';
+import { getPageQuery } from '@/utils/utils';
 
 // import QRCode from "qrcode-react";
 // import { PHONE_PATTERN } from '@/common/regExp';
@@ -15,7 +17,37 @@ const LoginItem = ({ prop, loading }) => {
     prop.dispatch({
       type: 'login/login',
       payload: values,
+      callback: fetchGetAuthMenuTree,
     });
+  };
+
+  // 获取权限树
+  const fetchGetAuthMenuTree = () => {
+    prop.dispatch({
+      type: 'userInfo/fetchGetAuthMenuTree',
+      callback: fetchLoginRedirect,
+    });
+  };
+
+  // 登录重定向
+  const fetchLoginRedirect = (list) => {
+    const urlParams = new URL(window.location.href);
+    const params = getPageQuery();
+    let { redirect } = params;
+    if (redirect) {
+      const redirectUrlParams = new URL(redirect);
+      if (redirectUrlParams.origin === urlParams.origin) {
+        redirect = redirect.substr(urlParams.origin.length);
+        if (redirect.match(/^\/.*#/)) {
+          redirect = redirect.substr(redirect.indexOf('#') + 1);
+        }
+      }
+    }
+    if (list[0].subAuthAccessDTOList.length) {
+      history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
+    } else {
+      history.replace(redirect || list[0].accessUrl);
+    }
   };
 
   useEffect(() => {

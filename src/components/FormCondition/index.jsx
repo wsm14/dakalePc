@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -12,9 +12,12 @@ import {
   Cascader,
   Switch,
   Divider,
+  Checkbox,
+  Spin,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
+import CITYJSON from '@/common/city';
 import moment from 'moment';
 
 /**
@@ -56,8 +59,8 @@ const uploadButton = (
 );
 
 // Cascader搜索筛选
-const filter = (inputValue, path) => {
-  return path.some((option) => option.name.indexOf(inputValue) > -1);
+const filter = (inputValue, path, label = 'label') => {
+  return path.some((option) => option[label].indexOf(inputValue) > -1);
 };
 
 // 限制选择时间
@@ -72,28 +75,46 @@ const FormCondition = ({
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
+  formItemLayouts = {},
 }) => {
-  const [formValue] = useState(initialValues);
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
+  const [totalNum, setTotalNum] = useState({}); // 字数计算
+  const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
+  const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
+  const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
   const [fileLists, setFileLists] = useState(() => {
     const fileobj = {};
     formItems.map((item, i) => {
+      const { name } = item;
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
-          fileobj[item.name] = !Array.isArray(initialValues[item.name])
-            ? initialValues[item.name] && initialValues[item.name].length > 0
-              ? [imgold(initialValues[item.name], i)]
+          if (Array.isArray(name)) {
+            if (!initialValues[name[0]]) {
+              fileobj[name[1]] = [];
+              return;
+            }
+            const urlfile = initialValues[name[0]][name[1]];
+            fileobj[name[1]] = urlfile ? [imgold(urlfile, i)] : [];
+            return;
+          }
+          const fileArrar = initialValues[name];
+          if (fileArrar && !!fileArrar.fileList) {
+            fileobj[name] = fileArrar.fileList;
+            return;
+          }
+          fileobj[name] = !Array.isArray(fileArrar)
+            ? fileArrar && fileArrar.length > 0
+              ? fileArrar.indexOf(',') > -1
+                ? fileArrar.split(',').map((v, i) => imgold(v, i))
+                : [imgold(fileArrar, i)]
               : []
-            : initialValues[item.name].map((items, i) => imgold(items, i));
+            : fileArrar.map((v, i) => imgold(v, i));
         } else {
-          fileobj[item.name] = [];
+          fileobj[Array.isArray(name) ? name[1] : name] = [];
         }
       }
     });
     return fileobj;
-  });
+  }); // 文件控制列表
 
   // 图片获取预览base64
   const getBase64 = (file) => {
@@ -108,7 +129,7 @@ const FormCondition = ({
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name) => {
+  const handleUpProps = (name, onChange) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -116,9 +137,14 @@ const FormCondition = ({
         if (!value.file.status) {
           imageCompress(value.file).then(({ file }) => {
             fileList[fileList.length - 1].originFileObj = file;
+            // 临时
+            fileList.map((i) => (i.status = 'done'));
+            // end
             setFileLists({ ...fileLists, [name]: fileList });
           });
+          if (onChange) onChange(value);
         } else {
+          if (!fileList.length) form.setFieldsValue({ [name]: undefined });
           setFileLists({ ...fileLists, [name]: fileList });
         }
       },
@@ -146,14 +172,24 @@ const FormCondition = ({
         name = '',
         type = 'input',
         select = [],
-        extra,
         addRules,
         valuePropName,
+        maxLength,
+        visible = true,
+        hidden = false,
       } = item;
+
+      let { extra } = item;
 
       let initialValue = {};
       let rules = item.rules || [{ required: true, message: `请确认${label}` }];
       const placeholder = item.placeholder || `请输入${label}`;
+
+      const dataNum =
+        maxLength &&
+        `${
+          totalNum[name] || (initialValues[name] && `${initialValues[name]}`.length) || 0
+        }/${maxLength}`;
 
       // 判断类型 默认input
 
@@ -161,8 +197,15 @@ const FormCondition = ({
         input: (
           <Input
             placeholder={placeholder}
-            addonAfter={item.addonAfter || ''}
+            suffix={item.suffix || ''}
+            maxLength={maxLength}
+            addonAfter={dataNum}
             disabled={item.disabled}
+            onBlur={item.onBlur}
+            onChange={(e) => {
+              if (item.onChange) item.onChange(e);
+              setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
+            }}
           />
         ),
         number: (
@@ -172,7 +215,15 @@ const FormCondition = ({
             placeholder={placeholder}
           />
         ),
-        textArea: <Input.TextArea placeholder={placeholder} rows={4} />,
+        textArea: (
+          <Input.TextArea
+            placeholder={placeholder}
+            rows={item.rows || 5}
+            disabled={item.disabled}
+            maxLength={maxLength}
+            onChange={(e) => setTotalNum({ ...totalNum, [item.name]: e.target.value.length })}
+          />
+        ),
         timePicker: (
           <TimePicker.RangePicker
             style={{ width: '100%' }}
@@ -194,9 +245,11 @@ const FormCondition = ({
             // }
           />
         ),
+        checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} />,
         select: (
           <Select
             showSearch
+            loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}
             filterOption={item.filterOption || false}
@@ -204,8 +257,23 @@ const FormCondition = ({
             onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}
             style={{ width: '100%' }}
-            notFoundContent={null}
           >
+            {select.map((data, j) => {
+              if (data) {
+                // 兼容数组
+                const value = !data.value ? `${j}` : data.value;
+                const name = data.name ? data.name : data;
+                return (
+                  <Option key={data.key || j} value={value}>
+                    {name}
+                  </Option>
+                );
+              }
+            })}
+          </Select>
+        ),
+        tags: (
+          <Select mode="tags" showSearch style={{ width: '100%' }} tokenSeparators={[',', '，']}>
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -239,11 +307,17 @@ const FormCondition = ({
         cascader: (
           <Cascader
             allowClear={false}
-            fieldNames={item.options}
-            options={select}
+            fieldNames={item.fieldNames}
+            options={item.select || CITYJSON}
             expandTrigger="hover"
+            changeOnSelect={item.changeOnSelect || false}
+            onChange={(val, sele) => {
+              form.setFieldsValue({ [`Cascader${item.name}`]: sele });
+              if (item.onChange) item.onChange(sele);
+            }}
             showSearch={{
-              filter,
+              filter: (inputValue, path) =>
+                filter(inputValue, path, item.fieldNames ? item.fieldNames.label : 'label'),
             }}
             placeholder={item.placeholder || `请选择${label}`}
           />
@@ -251,17 +325,59 @@ const FormCondition = ({
         switch: <Switch disabled={item.disabled} />,
         upload: (
           <Upload
+            multiple={item.multiple || false}
             listType="picture-card"
-            fileList={fileLists[name]}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
             beforeUpload={() => false}
             onPreview={handlePreview}
-            {...handleUpProps(name)}
+            {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
+            // 临时
+            showUploadList={item.showUploadList}
+            onDownload={(file) => {
+              const newArr = [
+                fileLists[name].filter((i) => i.url === file.url)[0],
+                ...fileLists[name].filter((i) => i.url !== file.url),
+              ];
+              setFileLists({
+                ...fileLists,
+                [name]: newArr,
+              });
+              const urlValue = form.getFieldValue(name);
+              if (typeof urlValue === 'string') {
+                form.setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
+              } else {
+                form.setFieldsValue({
+                  [name]: {
+                    file: urlValue.file,
+                    fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
+                  },
+                });
+              }
+            }}
+            // end
           >
-            {fileLists[name] && fileLists[name].length < (item.maxFile || 999) && uploadButton}
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
+              uploadButton}
           </Upload>
         ),
         children: item.children,
+        noForm: '',
       }[type];
+
+      if (type === 'textArea') {
+        extra = (extra || maxLength) && (
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1, paddingRight: 5 }}>{extra}</div>
+            {dataNum}
+          </div>
+        );
+      }
+
+      if (type === 'noForm') {
+        children.push(visible && item.children);
+        return;
+      }
 
       if (title) {
         children.push(
@@ -271,21 +387,36 @@ const FormCondition = ({
         );
       }
 
+      const req = {};
+      if (item.required) req.required = item.required;
       children.push(
-        <FormItem
-          label={label}
-          name={name}
-          extra={extra}
-          key={`${label}${name}`}
-          rules={[...rules, ...(addRules || [])]}
-          valuePropName={valuePropName}
-          {...initialValue}
-        >
-          {component}
-        </FormItem>,
+        visible && (
+          <FormItem
+            {...req}
+            label={label}
+            name={name}
+            extra={extra}
+            key={`${label}${name}`}
+            rules={[...rules, ...(addRules || [])]}
+            valuePropName={valuePropName}
+            {...initialValue}
+            hidden={hidden}
+          >
+            {component}
+          </FormItem>
+        ),
       );
     });
     return children;
+  };
+
+  useEffect(() => {
+    return componentWillUnmount;
+  }, []);
+
+  // 组件销毁执行
+  const componentWillUnmount = () => {
+    form.resetFields();
   };
 
   return (
@@ -294,6 +425,7 @@ const FormCondition = ({
       layout={layout}
       initialValues={initialValues}
       {...formItemLayout}
+      {...formItemLayouts}
       scrollToFirstError={true}
     >
       {formItems.length ? getFields() : ''}
@@ -302,6 +434,7 @@ const FormCondition = ({
         visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
+        zIndex={1009}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>

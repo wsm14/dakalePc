@@ -1,6 +1,8 @@
 import { notification } from 'antd';
 import {
   fetchMarketMatch,
+  fetchMarketRMTotal,
+  fetchMarketMatchJoin,
   fetchMarketMatchMorningSet,
   fetchMarketMatchRuningSet,
 } from '@/services/MarketServices';
@@ -9,8 +11,9 @@ export default {
   namespace: 'marketCardRMing',
 
   state: {
-    list: [],
-    total: 0,
+    matchList: { list: [], total: 0 },
+    joinList: { list: [], total: 0 },
+    totalData: {},
   },
 
   reducers: {
@@ -30,8 +33,29 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.record,
-          total: content.total,
+          matchList: { list: content.record, total: content.total },
+        },
+      });
+    },
+    *fetchMarketRMTotal({ payload }, { call, put }) {
+      const response = yield call(fetchMarketRMTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content,
+        },
+      });
+    },
+    *fetchMarketMatchJoin({ payload }, { call, put }) {
+      const response = yield call(fetchMarketMatchJoin, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          joinList: { list: content.record, total: content.total },
         },
       });
     },

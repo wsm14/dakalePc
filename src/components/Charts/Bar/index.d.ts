@@ -1,15 +1,12 @@
 import * as React from 'react';
-export interface IBarProps {
-  title: React.ReactNode;
-  color?: string;
-  padding?: [number, number, number, number];
-  height: number;
+export interface ITimelineChartProps {
   data: Array<{
-    x: string;
-    y: number;
+    type: number;
+    value: number;
   }>;
-  autoLabel?: boolean;
-  style?: React.CSSProperties;
+  xyField?: { xField: string; yField: string };
+  meta?: { type?: { alias: string }; value?: { alias: string } };
+  height?: number;
 }
 
-export default class Bar extends React.Component<IBarProps, any> {}
+export default class TimelineChart extends React.Component<ITimelineChartProps, any> {}

@@ -33,12 +33,13 @@ const MarketCardActivitySet = (props) => {
       {
         label: '活动名称',
         name: 'activityName',
+        maxLength: 20,
       },
       {
         label: '活动时间',
         type: 'rangePicker',
         name: 'activityBeginTime',
-        disabledDate: (time) => time && time < moment().endOf('day'),
+        disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
       },
       {
         label: 'banner图',
@@ -61,6 +62,12 @@ const MarketCardActivitySet = (props) => {
         type: 'textArea',
         label: '活动简述',
         name: 'description',
+        maxLength: 20,
+      },
+      {
+        label: '活动类型',
+        name: 'activitySubType',
+        maxLength: 20,
       },
     ],
     onFinish: fetchMarketActivityAdd,

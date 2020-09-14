@@ -30,6 +30,17 @@ const MarketCardActivityDetail = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '活动商品',
+      align: 'center',
+      fixed: 'left',
+      dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
+    },
+    {
       title: '商家名称',
       align: 'center',
       fixed: 'left',
@@ -54,11 +65,6 @@ const MarketCardActivityDetail = (props) => {
           {val}
         </Ellipsis>
       ),
-    },
-    {
-      title: '活动商品',
-      align: 'center',
-      dataIndex: 'goodsName',
     },
     {
       title: '原价',
@@ -110,17 +116,26 @@ const MarketCardActivityDetail = (props) => {
               title: '优惠券',
               click: () => fetchGetCouponInfo(val, record.merchantName),
             },
+            // {
+            //   type: 'info',
+            //   click: () => setVisible({ type: 'destory', record }),
+            // },
           ]}
         />
       ),
     },
   ];
 
-  // 获取优惠券详情
+  // 获取优惠券详情status != 2 表示活动上架 可添加
   const fetchGetCouponInfo = (marketCouponId, merchantName) => {
     dispatch({
       type: 'marketCardActivity/fetchGetCouponInfo',
-      payload: { marketCouponId, merchantName },
+      payload: {
+        marketCouponId,
+        merchantName,
+        status: params.activityStatus !== '2',
+        activityId: params.activityIdString,
+      },
       callback: handleSetActive,
     });
   };
@@ -141,11 +156,11 @@ const MarketCardActivityDetail = (props) => {
       type: 'global/saveTitle',
       payload: {
         pageTitle: [params.activityName],
-        pageBtn: (
-          <Button className="dkl_orange_btn" onClick={handlePageBtnBack}>
+        pageBtn: [
+          <Button type="danger" key="btn" onClick={handlePageBtnBack}>
             返回
-          </Button>
-        ),
+          </Button>,
+        ],
       },
     });
   };
@@ -157,6 +172,12 @@ const MarketCardActivityDetail = (props) => {
       type: 'global/closeTitle',
     });
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'marketCardActivity/clearDetailPay',
+    });
+  }, [visible]);
 
   useEffect(() => {
     handlePageShowBtn();
@@ -173,7 +194,7 @@ const MarketCardActivityDetail = (props) => {
       <DataTableBlock
         cRef={childRef}
         loading={loadings}
-        btnExtra={btnExtra}
+        btnExtra={params.activityStatus !== '2' && btnExtra}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => record.marketCouponIdString}

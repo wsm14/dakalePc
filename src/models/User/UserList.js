@@ -1,12 +1,20 @@
 import { notification } from 'antd';
-import { fetchUserList, fetchUserDetail, fetchUserStatus } from '@/services/UserServices';
+import {
+  fetchUserList,
+  fetchUserDetail,
+  fetchUserStatus,
+  fetchUserTotal,
+  fetchUserAddTotal,
+  fetchUserCityTotal,
+} from '@/services/UserServices';
 
 export default {
   namespace: 'userList',
 
   state: {
     list: [],
-    total: 0,
+    totalData: {},
+    totalSperadData: { city: [] },
   },
 
   reducers: {
@@ -26,8 +34,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.record,
-          total: content.total,
+          list: content.user.userIdString ? [content.user] : [],
         },
       });
     },
@@ -36,6 +43,35 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.userDetail);
+    },
+    *fetchUserTotal({ payload }, { call, put }) {
+      const response = yield call(fetchUserTotal, payload);
+      const responseTow = yield call(fetchUserAddTotal, payload);
+      if (!response) return;
+      if (!responseTow) return;
+      const { content } = response;
+      const { content: contentTwo } = responseTow;
+      const {
+        userRealNameCount: userAddRealNameCount = 0,
+        userTopUpCount: userAddTopUpCount = 0,
+      } = contentTwo;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: { ...content, userAddRealNameCount, userAddTopUpCount },
+        },
+      });
+    },
+    *fetchUserTotalSperad({ payload }, { call, put }) {
+      const response = yield call(fetchUserCityTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalSperadData: content,
+        },
+      });
     },
     *fetchUserStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchUserStatus, payload);

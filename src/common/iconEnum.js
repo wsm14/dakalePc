@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  HeatMapOutlined,
   UserOutlined,
   ShopOutlined,
   SmileOutlined,
@@ -7,16 +8,19 @@ import {
   SolutionOutlined,
   WhatsAppOutlined,
   SettingOutlined,
+  CrownOutlined,
 } from '@ant-design/icons';
 
 const iconEnum = {
+  cityom: <HeatMapOutlined />,
   user: <UserOutlined />,
   business: <ShopOutlined />,
   market: <SmileOutlined />,
   circle: <UserSwitchOutlined />,
   account: <SolutionOutlined />,
-  customer: <WhatsAppOutlined />,
+  service: <WhatsAppOutlined />,
   system: <SettingOutlined />,
+  active: <CrownOutlined />,
 };
 
 export default iconEnum;

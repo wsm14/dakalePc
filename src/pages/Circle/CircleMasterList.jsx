@@ -1,107 +1,85 @@
-import React, { useRef } from "react";
-import { connect } from "dva";
-import HandleSetTable from "@/components/HandleSetTable";
-import DataTableBlock from "@/components/DataTableBlock";
-import { ACCOUNT_STATUS, BUSINESS_STATUS } from "@/common/constant";
+import React, { useEffect, useState } from 'react';
+import { connect } from 'dva';
+import { MASTER_TYPE } from '@/common/constant';
+import HandleSetTable from '@/components/HandleSetTable';
+import DataTableBlock from '@/components/DataTableBlock';
+import MasterTotalInfo from './components/Master/MasterTotalInfo';
+import MasterDetailList from './components/Master/MasterDetailList';
 
 const CircleMasterList = (props) => {
-  const { circleMasterList, loading } = props;
+  const { masterList, loading, dispatch } = props;
 
-  const childRef = useRef();
-
-  // 调用子组件方法
-  // const fetchGetData = () => {
-  //   childRef.current.fetchGetData();
-  // };
+  const [visible, setVisible] = useState('');
 
   // 搜索参数
   const searchItems = [
     {
-      label: "商户ID",
-      name: "userMobile1s",
+      label: '身份',
+      name: 'userType',
+      type: 'select',
+      allItem: false,
+      select: { list: MASTER_TYPE },
     },
     {
-      label: "商家账号",
-      name: "userMosbile1s",
+      label: '商户名',
+      name: 'name',
     },
     {
-      label: "账号状态",
-      name: "userMobile1",
-      type: "select",
-      select: { list: ACCOUNT_STATUS },
-    },
-    {
-      label: "经营状态",
-      name: "userMobile1",
-      type: "select",
-      select: { list: BUSINESS_STATUS },
+      label: '手机号',
+      name: 'mobile',
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: "商户ID",
-      dataIndex: "userId",
+      title: '名称',
       fixed: 'left',
+      dataIndex: 'name',
     },
     {
-      title: "商家名称",
-      align: "center",
+      title: '身份',
+      align: 'center',
       fixed: 'left',
-      dataIndex: "phoneNumber",
-      render: (val) => val || "暂未授权",
+      dataIndex: 'userType',
+      render: (val) => (val === 'user' ? '用户' : '商户'),
     },
     {
-      title: "商家账号",
-      align: "center",
-      dataIndex: "orderCount",
+      title: '手机号',
+      align: 'center',
+      dataIndex: 'mobile',
     },
     {
-      title: "商家类型",
-      align: "center",
-      dataIndex: "orderTotal",
-      render: (val) => `￥${val}`,
+      title: '家人数',
+      align: 'right',
+      dataIndex: 'totalFamilyUser',
+      render: (val, record) =>
+        val > 0 ? <a onClick={() => setVisible({ type: 'family', record })}>{val}</a> : 0,
     },
     {
-      title: "所在城市",
-      align: "center",
-      dataIndex: "parkName",
-      render: (val) => val || "-",
+      title: '家店数',
+      align: 'right',
+      dataIndex: 'totalFamilyMerchant',
+      render: (val, record) =>
+        val > 0 ? <a onClick={() => setVisible({ type: 'shop', record })}>{val}</a> : 0,
     },
     {
-      title: "详细地址",
-      align: "center",
-      dataIndex: "addTimeStamp",
+      title: '累计收益（卡豆）',
+      align: 'right',
+      dataIndex: 'totalAdd',
     },
     {
-      title: "家主手机",
-      align: "center",
-      dataIndex: "addTimeStamp",
-    },
-    {
-      title: "经营状态",
-      align: "center",
-      dataIndex: "addTimeStamp",
-      render: (val) => val || "-",
-    },
-    {
-      title: "店铺状态",
-      align: "center",
-      dataIndex: "addTimeStamp",
-      render: (val) => BUSINESS_STATUS[val],
-    },
-    {
-      title: "操作",
-      dataIndex: "id",
+      title: '操作',
+      dataIndex: 'id',
       fixed: 'right',
-      align: "right",
+      align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
-              type: "info",
-              //   click: () => setShowCoach(record),
+              type: 'own',
+              title: '收益明细',
+              click: () => setVisible({ type: 'income', record }),
             },
           ]}
         />
@@ -109,20 +87,31 @@ const CircleMasterList = (props) => {
     },
   ];
 
+  useEffect(() => {
+    dispatch({
+      type: 'circleMaster/clearDetail',
+    });
+  }, [visible]);
+
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userId}`}
-      dispatchType="circleMasterList/fetchAppUserList"
-      {...circleMasterList}
-    ></DataTableBlock>
+    <>
+      {/* <MasterTotalInfo /> */}
+      <DataTableBlock
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.id}`}
+        params={{ userType: 'user' }}
+        pParams={{ searchData: { userType: 'user' } }}
+        dispatchType="circleMaster/fetchGetList"
+        {...masterList}
+      ></DataTableBlock>
+      <MasterDetailList visible={visible} setVisible={setVisible} />
+    </>
   );
 };
 
-export default connect(({ circleMasterList, loading }) => ({
-  circleMasterList,
-  loading: loading.models.circleMasterList,
+export default connect(({ circleMaster, loading }) => ({
+  masterList: circleMaster.masterList,
+  loading: loading.effects['circleMaster/fetchGetList'],
 }))(CircleMasterList);

@@ -15,7 +15,7 @@ export async function fetchQueryCurrent() {
 
 // get 获取登录账户权限菜单
 export function fetchGetAuthMenuTree(params) {
-  // return request('/merchant/auth/getAccessTree', {
-  //   params,
-  // });
+  return request('/admin/auth/getAccessTree', {
+    params,
+  });
 }

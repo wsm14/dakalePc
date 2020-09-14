@@ -50,9 +50,7 @@ const DrawerModalForm = ({
   onClose,
 }) => {
   const [form] = Form.useForm();
-
   const loadings = loading.models[loadingModels];
-
   // 弹出层统一配置
   const modalProps = {
     title,
@@ -91,6 +89,7 @@ const DrawerModalForm = ({
         {...modalProps}
         onClose={onClose || handleClose}
         bodyStyle={{ paddingBottom: 80 }}
+        zIndex={1005}
         footer={
           <div style={{ textAlign: 'right' }}>
             <Space>

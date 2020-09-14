@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { connect } from 'dva';
-import { Table, Card, Space, Button } from 'antd';
+import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 
 /**
@@ -20,6 +20,8 @@ import SearchCondition from '@/components/SearchCondition';
  * @title 图表标题
  * @style card style
  * @params 搜索时默认参数
+ * @pParams 保存分页 搜索数据保存
+ * @setParams 保存分页 搜索数据
  * @CardNone 是否需要Card包裹 默认true
  * @extra card 右上角
  * @componentSize 组件大小 small default middle
@@ -39,26 +41,34 @@ const DataTableBlockComponent = ({
   title,
   cRef,
   params,
+  pParams = {},
+  setParams,
   CardNone = true,
   extra,
   componentSize = 'default',
+  NoSearch = false,
+  expandable,
+  pagination,
 }) => {
-  const [param] = useState(params);
-  const [searchData, setSearchData] = useState({}); // 搜索参数
-  const [current, setNum] = useState(1); // 页码
-  const [pageSize, setSize] = useState(10); // 每页条数
+  const [first, setFirst] = useState(NoSearch); // first No search
+  const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
+  const [current, setNum] = useState(pParams.page || 1); // 页码
+  const [pageSize, setSize] = useState(
+    pParams.limit || { default: 20, middle: 10, small: 10 }[componentSize],
+  ); // 每页条数
 
   // 获取列表
   const fetchGetList = () => {
-    dispatch({
-      type: dispatchType,
-      payload: {
-        page: current,
-        limit: pageSize,
-        ...searchData,
-        ...param,
-      },
-    });
+    if (dispatchType)
+      dispatch({
+        type: dispatchType,
+        payload: {
+          page: current,
+          limit: pageSize,
+          ...params,
+          ...searchData,
+        },
+      });
   };
 
   // 搜索
@@ -73,9 +83,9 @@ const DataTableBlockComponent = ({
     current,
     pageSize,
     showTotal: () => `共${total}项`,
-    showQuickJumper: true,
+    showQuickJumper: pageSize > 100 ? false : true,
     hideOnSinglePage: total > 0 ? false : true,
-    showSizeChanger: true,
+    showSizeChanger: pageSize > 100 ? false : true,
     onChange: (page, pagesize) => {
       setNum(page);
       setSize(pagesize);
@@ -89,8 +99,18 @@ const DataTableBlockComponent = ({
     },
   }));
 
+  // 保存搜索参数
+  const handleSaveParams = () => {
+    if (typeof setParams === 'function') setParams({ page: current, limit: pageSize, searchData });
+  };
+
   useEffect(() => {
-    fetchGetList();
+    if (!first) {
+      fetchGetList();
+    } else {
+      setFirst(false);
+    }
+    return handleSaveParams;
   }, [current, pageSize, searchData]);
 
   const tabContent = (
@@ -103,19 +123,22 @@ const DataTableBlockComponent = ({
       {searchItems && (
         <SearchCondition
           componentSize={componentSize}
-          formItems={searchItems}
+          searchItems={searchItems}
           handleSearch={handleSearch}
+          initialValues={searchData}
+          NoSearch={NoSearch}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}
       <Table
+        expandable={expandable}
         scroll={{ x: 'max-content' }}
         size={componentSize}
         rowKey={rowKey}
         loading={loading}
         dataSource={list}
         columns={columns}
-        pagination={paginationProps}
+        pagination={pagination === false ? false : paginationProps}
       />
     </>
   );

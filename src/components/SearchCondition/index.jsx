@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Space, Row, Col, Input, Button, Select, DatePicker, InputNumber } from 'antd';
-import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import {
+  Form,
+  Space,
+  Row,
+  Col,
+  Input,
+  Button,
+  Select,
+  DatePicker,
+  InputNumber,
+  Cascader,
+} from 'antd';
+import { UpOutlined, DownOutlined } from '@ant-design/icons';
+import CITYJSON from '@/common/city';
 import styles from './index.less';
+
+// 城市搜索筛选
+const filter = (inputValue, path) => {
+  return path.some((option) => option.label.indexOf(inputValue) > -1);
+};
 
 const disTime = moment('2020-03-01');
 // 限制选择时间
@@ -27,12 +44,18 @@ const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const SearchCondition = (props) => {
-  const { formItems, handleSearch, resetValue, btnExtra = '', componentSize = 'default' } = props;
+  const {
+    searchItems: formItems,
+    handleSearch,
+    btnExtra = '',
+    componentSize = 'default',
+    initialValues = {},
+    NoSearch = false,
+  } = props;
 
   const [form] = Form.useForm();
 
   const [expand, setExpand] = useState(false);
-  const [formValue] = useState({});
 
   const getFields = () => {
     const len = formItems.length;
@@ -46,11 +69,17 @@ const SearchCondition = (props) => {
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
-        const { select } = item;
+        const { select, allItem = true } = item;
         initialValue = select.defaultValue || '';
         component = (
-          <Select style={{ width: '100%' }} placeholder={item.placeholder || `请选择`}>
-            <Option value={initialValue}>全部</Option>
+          <Select
+            showSearch
+            optionFilterProp="children"
+            loading={item.loading}
+            style={{ width: '100%' }}
+            placeholder={item.placeholder || `请选择`}
+          >
+            {allItem && <Option value={initialValue}>全部</Option>}
             {select.list.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -82,18 +111,32 @@ const SearchCondition = (props) => {
             ]}
             disabledDate={disabledDate}
             ranges={item.ranges || ranges}
-            renderExtraFooter={() => (
-              <div className={styles.shop_dateInfo}>
-                开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
-              </div>
-            )}
+            // renderExtraFooter={() => (
+            //   <div className={styles.shop_dateInfo}>
+            //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
+            //   </div>
+            // )}
           />
         );
       }
       if (item.type === 'datePicker') {
-        component = <DatePicker style={{ width: '100%' }} allowClear={false} />;
+        component = (
+          <DatePicker style={{ width: '100%' }} allowClear={false} picker={item.picker || 'date'} />
+        );
       }
-      formValue[item.name] = initialValue;
+      if (item.type === 'city') {
+        component = (
+          <Cascader
+            changeOnSelect={item.changeOnSelect || false}
+            disabled={item.disabled}
+            options={item.options || CITYJSON}
+            expandTrigger="hover"
+            showSearch={{ filter }}
+            placeholder="选择城市"
+          />
+        );
+      }
+
       children.push(
         <Col
           span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
@@ -113,30 +156,42 @@ const SearchCondition = (props) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
-        if (item.type === 'datePicker') formObj[item.name] = values[item.name].format('YYYY-MM-DD');
-        else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
+        if (item.type === 'datePicker') {
+          formObj[item.name] = values[item.name].format(
+            item.picker === 'year' ? 'YYYY' : 'YYYY-MM-DD',
+          );
+        } else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
+        } else if (item.type === 'city') {
+          item.valuesKey.map((item, i) => (formObj[item] = values.city[i]));
+          delete values[item.name];
         }
       } else {
         delete values[item.name];
       }
     });
-    handleSearch({ ...values, ...formObj });
+    if (NoSearch) {
+      if (Object.keys(values).length) {
+        handleSearch({ ...values, ...formObj });
+      }
+    } else {
+      handleSearch({ ...values, ...formObj });
+    }
   };
 
   const handleReset = () => {
     form.resetFields();
   };
 
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, []);
+
   const toggle = () => setExpand(!expand);
 
-  useEffect(() => {
-    handleReset();
-  }, [resetValue]);
-
   const len = formItems.length;
-  const search = (span) => (
+  const search = (
     <div style={{ textAlign: 'right' }}>
       <Space>
         <Button type="primary" htmlType="submit">
@@ -158,7 +213,6 @@ const SearchCondition = (props) => {
     <Form
       form={form}
       size={componentSize}
-      initialValues={formValue}
       layout="horizontal"
       className={styles.form}
       onFinish={handleSearchsOver}
@@ -167,7 +221,7 @@ const SearchCondition = (props) => {
         <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
           {getFields()}
         </Row>
-        {search(24 - len * 6 - 1)}
+        {search}
       </div>
     </Form>
   );

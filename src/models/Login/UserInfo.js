@@ -16,7 +16,7 @@ export default {
         payload: content.adminInfo,
       });
     },
-    *fetchGetAuthMenuTree({ payload }, { call, put }) {
+    *fetchGetAuthMenuTree({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetAuthMenuTree, payload);
       if (!response) return;
       const { content } = response;
@@ -26,6 +26,7 @@ export default {
           menuList: content.accessList,
         },
       });
+      if (callback) callback(content.accessList);
     },
   },
   reducers: {
