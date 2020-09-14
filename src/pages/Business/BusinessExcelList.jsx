@@ -159,22 +159,6 @@ const BusinessExcelList = (props) => {
         };
       });
       setDataSource(dataSources);
-      console.log(dataSources);
-      // urlToBase64(dataSources[0].imgArr.split('https://static.dingtalk.com')[1]).then((res) => {
-      //   let fileblob = {};
-      //   const arr = res.split(',');
-      //   const mime = arr[0].match(/:(.*?);/)[1];
-      //   const bstr = atob(arr[1]);
-      //   let n = bstr.length;
-      //   const u8arr = new Uint8Array(n);
-      //   // eslint-disable-next-line no-plusplus
-      //   while (n--) {
-      //     u8arr[n] = bstr.charCodeAt(n);
-      //   }
-      //   fileblob = new Blob([u8arr], { type: mime });
-      //   const file = new File([fileblob], '22', { type: mime });
-      //   console.log(file);
-      // });
     };
     // 以二进制方式打开文件
     fileReader.readAsBinaryString(file.file);
@@ -204,7 +188,7 @@ const BusinessExcelList = (props) => {
       <BusinessAdd
         cRef={childRef}
         visible={initialValues.show}
-        onClose={() => setVisibleAdd(false)}
+        onClose={() => setInitialValues({ show: false, value: {} })}
         initialValues={initialValues.value}
       ></BusinessAdd>
     </>

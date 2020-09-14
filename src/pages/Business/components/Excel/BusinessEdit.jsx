@@ -17,10 +17,6 @@ const BusinessAdd = (props) => {
   const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
   const [selectCity, setSelectCity] = useState([]); // 选择城市
 
-  useEffect(() => {
-    if (visible) console.log('edit', initialValues);
-  }, [visible]);
-
   // 提交
   const fetchFormData = (auditInfo = {}) => {
     form.validateFields().then((values) => {
@@ -60,17 +56,13 @@ const BusinessAdd = (props) => {
         payload.coverImg = cres.toString();
         aliOssUpload(interiorImg).then((res) => {
           dispatch({
-            type: {
-              false: 'businessList/fetchMerchantAdd',
-              true: 'businessAudit/fetchMerSaleAuditAllow',
-            }[!!initialValues],
+            type: 'businessList/fetchMerchantAdd',
             payload: {
               ...payload,
               interiorImg: res.toString(),
             },
             callback: () => {
               onClose();
-              cRef.current.fetchGetData();
             },
           });
         });
