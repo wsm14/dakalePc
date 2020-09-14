@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Space, Form, message, Modal } from 'antd';
+import { Drawer, Button, Space, Form, message } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -96,7 +96,6 @@ const BusinessAdd = (props) => {
               const geocodes = list[0].location.split(',');
               const longitude = parseFloat(geocodes[0]); // 经度
               const latitude = parseFloat(geocodes[1]); // 纬度
-              console.log(city[1].label, [longitude, latitude]);
               setLocation([longitude, latitude]);
               setAmpShow(true);
               setSelectCity(typeof city[1] === 'object' ? city : selectCity);

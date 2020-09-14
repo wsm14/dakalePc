@@ -8,10 +8,9 @@ import * as XLSX from 'xlsx';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const BusinessExcelList = (props) => {
-  const { loading, tradeList, dispatch } = props;
+  const { loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visibleAdd, setVisibleAdd] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [initialValues, setInitialValues] = useState(false);
 
@@ -25,28 +24,6 @@ const BusinessExcelList = (props) => {
   useEffect(() => {
     fetchTradeList();
   }, []);
-
-  const urlToBase64 = (url) => {
-    return new Promise((resolve, reject) => {
-      let image = new Image();
-      image.crossOrigin = '';
-      image.src = url;
-      image.onload = function () {
-        let canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
-        // 将图片插入画布并开始绘制
-        canvas.getContext('2d').drawImage(image, 0, 0);
-        // result
-        let result = canvas.toDataURL('image/jpg');
-        resolve(result);
-      };
-      // 图片加载失败的错误处理
-      image.onerror = () => {
-        console.log(false);
-      };
-    });
-  };
 
   // table 表头
   const getColumns = [
@@ -86,6 +63,33 @@ const BusinessExcelList = (props) => {
     },
   ];
 
+  const urlToBase64 = (url) => {
+    return new Promise((resolve, reject) => {
+      let image = new Image();
+      image.crossOrigin = '';
+      image.src = url;
+      image.onload = function () {
+        let canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        const w = image.width;
+        const h = image.height;
+        const scale = h / w;
+        canvas.width = 375;
+        canvas.height = 375 * scale;
+        context.clearRect(0, 0, 375, 375 * scale);
+        // 将图片插入画布并开始绘制
+        context.drawImage(image, 0, 0, 375, 375 * scale);
+        // result
+        let result = canvas.toDataURL('image/jpg');
+        resolve(result);
+      };
+      // 图片加载失败的错误处理
+      image.onerror = () => {
+        console.log(false);
+      };
+    });
+  };
+
   const uploadFilesChange = (file) => {
     // 通过FileReader对象读取文件
     let data = {};
@@ -105,7 +109,7 @@ const BusinessExcelList = (props) => {
             data[sheet] = tempData.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
           }
         }
-        message.success('上传成功！');
+        message.success('导入Excel成功！');
       } catch (e) {
         message.error('文件类型不正确！');
       }
@@ -131,8 +135,8 @@ const BusinessExcelList = (props) => {
           item['图片']
             .split('https://static.dingtalk.com')
             .filter((i) => i)
-            .map((url, i) => {
-              urlToBase64(url).then((res) => {
+            .forEach(async (url, i) => {
+              await urlToBase64(url).then((res) => {
                 let fileblob = {};
                 const arr = res.split(',');
                 const mime = arr[0].match(/:(.*?);/)[1];
@@ -144,7 +148,7 @@ const BusinessExcelList = (props) => {
                 }
                 fileblob = new Blob([u8arr], { type: mime });
                 const file = new File([fileblob], url + '.jpg', { type: mime });
-                imgArr.push(file);
+                imgArr.splice(i, 0, file);
               });
             });
         }
@@ -166,6 +170,7 @@ const BusinessExcelList = (props) => {
 
   return (
     <>
+      <span style={{ color: 'red' }}>临时页面</span>
       <DataTableBlock
         btnExtra={
           <Upload

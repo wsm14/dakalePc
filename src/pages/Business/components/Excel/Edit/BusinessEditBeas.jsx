@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Form, Select, Switch } from 'antd';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
+import { VerticalAlignTopOutlined } from '@ant-design/icons';
 
 const BusinessAddBeas = (props) => {
   const {
@@ -124,12 +125,24 @@ const BusinessAddBeas = (props) => {
       type: 'cascader',
       name: 'provinceCode',
       onChange: setSelectCity,
+      extra: (
+        <>
+          <span style={{ color: 'red' }}>
+            （这里可以搜索）选完省市区点击下 【详细地址】，获取经纬度
+          </span>
+        </>
+      ),
     },
     {
       label: '详细地址',
       name: 'address',
       disabled: !selectCity.length,
       onBlur: (e) => onSearchAddress(e.target.value, selectCity, setAmpShow),
+      extra: (
+        <>
+          <span style={{ color: 'red' }}>点这里！跳出地图就可以</span>
+        </>
+      ),
     },
     {
       type: 'noForm',
@@ -154,9 +167,17 @@ const BusinessAddBeas = (props) => {
       type: 'upload',
       multiple: true,
       maxFile: 5,
-      extra:
-        '至少上传 3 张图，至多上传 5 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
+      extra: (
+        <>
+          <span style={{ color: 'red' }}>图片置顶是中间按钮，临时 硬加</span> 至少上传 3
+          张图，至多上传 5 张图片
+        </>
+      ),
       rules: [{ required: true, message: `请确认店内实景照` }],
+      showUploadList: {
+        showDownloadIcon: true,
+        downloadIcon: <VerticalAlignTopOutlined style={{ color: '#fff' }} />,
+      },
       addRules: [
         {
           validator: (rule, value) => {

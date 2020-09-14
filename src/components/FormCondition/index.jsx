@@ -137,6 +137,9 @@ const FormCondition = ({
         if (!value.file.status) {
           imageCompress(value.file).then(({ file }) => {
             fileList[fileList.length - 1].originFileObj = file;
+            // 临时
+            fileList.map((i) => (i.status = 'done'));
+            // end
             setFileLists({ ...fileLists, [name]: fileList });
           });
           if (onChange) onChange(value);
@@ -328,6 +331,30 @@ const FormCondition = ({
             beforeUpload={() => false}
             onPreview={handlePreview}
             {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
+            // 临时
+            showUploadList={item.showUploadList}
+            onDownload={(file) => {
+              const newArr = [
+                fileLists[name].filter((i) => i.url === file.url)[0],
+                ...fileLists[name].filter((i) => i.url !== file.url),
+              ];
+              setFileLists({
+                ...fileLists,
+                [name]: newArr,
+              });
+              const urlValue = form.getFieldValue(name);
+              if (typeof urlValue === 'string') {
+                form.setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
+              } else {
+                form.setFieldsValue({
+                  [name]: {
+                    file: urlValue.file,
+                    fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
+                  },
+                });
+              }
+            }}
+            // end
           >
             {fileLists[Array.isArray(name) ? name[1] : name] &&
               fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&

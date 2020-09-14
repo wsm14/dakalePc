@@ -173,6 +173,12 @@ const BusinessAuditAllow = (props) => {
           ))}
         </>
       ),
+      // 临时
+      extra: REACT_APP_ENV !== 'prod' && (
+        <>
+          <span style={{ color: 'red' }}>可以键入 说明：05:00 回车 23:59 回车</span>
+        </>
+      ),
     },
     {
       label: '店铺服务',

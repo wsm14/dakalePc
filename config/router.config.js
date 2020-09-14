@@ -73,7 +73,7 @@ export default [
           },
           {
             path: '/business/excel',
-            name: 'excel',
+            name: 'excel（临时）',
             component: './Business/BusinessExcelList',
           },
         ],
