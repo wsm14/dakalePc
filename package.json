@@ -28,7 +28,6 @@
     "ali-oss": "^6.10.0",
     "antd": "^4.4.0",
     "classnames": "^2.2.6",
-    "js-export-excel": "^1.1.4",
     "lodash": "^4.17.11",
     "md5": "^2.3.0",
     "moment": "^2.25.3",
