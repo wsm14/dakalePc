@@ -132,7 +132,7 @@ const BusinessExcelList = (props) => {
         if (!item['店铺地址']) {
           error += ' 详细地址';
         }
-        if (!item['门店电话']) {
+        if (!item['门店电话'] && !item['负责人手机']) {
           error += ' 商户电话';
         }
         if (!item['图片']) {
@@ -163,7 +163,7 @@ const BusinessExcelList = (props) => {
           mobile: item['负责人手机'],
           merchantName: item['店铺名'],
           address: item['店铺地址'],
-          telephone: item['门店电话'],
+          telephone: item['门店电话'] || item['负责人手机'],
           interiorImg: imgArr,
           error,
         };
