@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="click" style="height: 300px; width: 100%; background-color: aqua">
+      img
+    </div>
+    <div
+      id="click2"
+      style="height: 150px; width: 100%; background-color: bisque"
+    >
+      img
+    </div>
+  </body>
+  <script>
+    document.getElementById('click').onclick = function () {
+      top.postMessage({ type: 'img', top: 8, height: 300 }, '*'); //window.postMessage
+    };
+    document.getElementById('click2').onclick = function () {
+      top.postMessage({ type: 'text', top: 308, height: 150 }, '*'); //window.postMessage
+    };
+
+    // 回调函数
+    function receiveMessageFromIndex(event) {
+      console.log('received data from parent：', event.data);
+    }
+
+    window.addEventListener('message', receiveMessageFromIndex, false);
+  </script>
+</html>
