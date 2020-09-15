@@ -8,7 +8,7 @@ const ActiveTemplate = () => {
   const cardItem = [
     {
       img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-      templateUrl: 'http://192.168.0.132:8081/page/demo.html',
+      templateUrl: 'http://192.168.101.70:8080/Untitled2.html',
       id: '1',
       title: '活动模版1',
     },

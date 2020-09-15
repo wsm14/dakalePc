@@ -2,7 +2,7 @@ import React, { useEffect, useState, useReducer, createContext } from 'react';
 import { Drawer } from 'antd';
 import ActiveHeardTitle from './heard';
 import ActivetTemplateLeft from './left';
-import ActiveTemplateContent from './content';
+import ActiveTemplateContent from './content/IframeContent';
 
 const TemplateContext = createContext();
 
@@ -26,6 +26,11 @@ const ActiveTemplate = (props) => {
         return {
           ...state,
           ...action.payload,
+        };
+      case 'showActiveEditor':
+        return {
+          ...state,
+          showActiveEditor: action.payload,
         };
       default:
         return state;

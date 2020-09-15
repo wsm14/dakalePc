@@ -41,6 +41,7 @@
 }
 
 .active_Template_content {
+  position: relative;
   width: 375px;
   margin: auto;
   padding: 20px 0;
@@ -67,4 +68,31 @@
       border: none;
     }
   }
+}
+
+.previewer_active_warp {
+  width: 375px;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  .previewer_active_mask {
+    border: 3px solid #3089dc;
+    width: 100%;
+    left: 0;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+}
+
+.previewer_active_editor {
+  position: absolute;
+  top: 100px;
+  width: 330px;
+  min-height: 300px;
+  left: calc((50% + 55px) + 187.5px);
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
 }

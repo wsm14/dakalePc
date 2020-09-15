@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Collapse, Radio } from 'antd';
 import { PictureOutlined, FontSizeOutlined } from '@ant-design/icons';
 import styles from '../style.less';
@@ -10,9 +10,21 @@ const ActiveTemplateLeft = (props) => {
   const { moduleData, dispatchData, componentsShow } = useContext(context);
 
   const { showPanel } = moduleData;
+  const [radioValue, setRadioValue] = useState('');
+
+  useEffect(() => {
+    setRadioValue('');
+  }, [showPanel]);
 
   const handlePanelChange = (e) => {
-    console.log(e.target.value);
+    setRadioValue(e.target.value);
+    dispatchData({
+      type: 'showActiveEditor',
+      payload: {
+        moduleId: 1,
+        type: e.target.value,
+      },
+    });
   };
 
   const panelItem = [
@@ -49,10 +61,19 @@ const ActiveTemplateLeft = (props) => {
     <>
       {componentsShow && (
         <div className={styles.active_Template_Left}>
-          <Collapse bordered={false}>
+          <Collapse bordered={false} activeKey={[showPanel]}>
             {panelItem.map((item) => (
-              <Panel header={item.header} key={item.header} disabled={showPanel !== item.type}>
-                <Radio.Group className={styles.aT_Left_RadioGroup} onChange={handlePanelChange}>
+              <Panel
+                forceRender
+                header={item.header}
+                key={item.type}
+                disabled={showPanel !== item.type}
+              >
+                <Radio.Group
+                  value={radioValue}
+                  className={styles.aT_Left_RadioGroup}
+                  onChange={handlePanelChange}
+                >
                   {item.children.map((children) => (
                     <Radio.Button value={children.type} key={children.text}>
                       <div className={styles.aT_Left_RadioGroup_icon}>{children.icon}</div>
