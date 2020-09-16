@@ -1,6 +1,10 @@
 import React from 'react';
 import styles from '../style.less';
 
+/**
+ * iframe 选择区域高亮
+ * @activeInfo {*}  定位信息
+ */
 const IframeActive = (props) => {
   const { activeInfo } = props;
 

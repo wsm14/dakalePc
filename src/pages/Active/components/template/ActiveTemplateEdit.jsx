@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useReducer, createContext } from 'react';
 import { Drawer } from 'antd';
+import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import ActiveHeardTitle from './heard';
 import ActivetTemplateLeft from './left';
 import ActiveTemplateContent from './content/IframeContent';
@@ -14,32 +15,13 @@ const TemplateContext = createContext();
 const ActiveTemplate = (props) => {
   const { visible, onClose } = props;
 
+  const [moduleData, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [componentsShow, setComponentsShow] = useState(false);
-  const [moduleData, dispatchData] = useReducer((state, action) => {
-    switch (action.type) {
-      case 'save':
-        return {
-          ...state,
-          ...action.payload,
-        };
-      case 'showPanel':
-        return {
-          ...state,
-          ...action.payload,
-        };
-      case 'showActiveEditor':
-        return {
-          ...state,
-          showActiveEditor: action.payload,
-        };
-      default:
-        return state;
-    }
-  }, {});
 
   // 拦截页面关闭刷新
   useEffect(() => {
     if (visible.show) {
+      dispatchData({ type: 'initialize' });
       dispatchData({ type: 'save', payload: visible });
       // const listener = (ev) => {
       //   ev.preventDefault();
@@ -63,7 +45,7 @@ const ActiveTemplate = (props) => {
       visible={visible.show}
       afterVisibleChange={(show) => setComponentsShow(show)}
     >
-      <TemplateContext.Provider value={{ moduleData, dispatchData, componentsShow }}>
+      <TemplateContext.Provider value={{ ...moduleData, dispatchData, componentsShow }}>
         <ActivetTemplateLeft context={TemplateContext}></ActivetTemplateLeft>
         <ActiveTemplateContent context={TemplateContext}></ActiveTemplateContent>
       </TemplateContext.Provider>

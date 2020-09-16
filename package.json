@@ -37,6 +37,7 @@
     "qs": "^6.9.0",
     "react": "^16.8.6",
     "react-amap": "^1.2.8",
+    "react-cropper": "^2.1.4",
     "react-dom": "^16.8.6",
     "react-helmet-async": "^1.0.4",
     "umi": "^3.2.0",

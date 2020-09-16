@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Cropper from 'react-cropper'; // 引入Cropper
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import 'cropperjs/dist/cropper.css';
 
 import styles from './index.less';
@@ -19,13 +18,13 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio }) => {
     imgRatio: PropTypes.number,
   };
 
-  const cropperRef = useRef(null);
   const [src, setSrc] = useState(null);
+  const [cropper, setCropper] = useState();
 
   useEffect(() => {
     if (uploadedImageFile) {
       const fileReader = new FileReader();
-      fileReader.onload = e => {
+      fileReader.onload = (e) => {
         const dataURL = e.target.result;
         setSrc(dataURL);
       };
@@ -33,17 +32,17 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio }) => {
     }
   }, [uploadedImageFile]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = () => {
     const filename = uploadedImageFile;
     // TODO: 这里可以尝试修改上传图片的尺寸
-    cropperRef.current.getCroppedCanvas().toBlob(async blob => {
+    cropper.getCroppedCanvas().toBlob(async (blob) => {
       // 把选中裁切好的的图片传出去
       const file = new File([blob], filename.name, { type: filename.type });
       onSubmit(file);
       // 关闭弹窗
-      onClose();
+      onClose(true);
     });
-  }, [onClose, onSubmit]);
+  };
 
   return (
     <div className={styles.hooks_cropper_modal}>
@@ -52,13 +51,14 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio }) => {
           <Cropper
             src={src}
             className={styles.cropper}
-            ref={cropperRef}
             // Cropper.js options
-            checkCrossOrigin={false}
             viewMode={1}
             zoomable={false}
             aspectRatio={imgRatio || NaN} // 固定为1:1  可以自己设置比例, 默认情况为自由比例
             preview=".cropper_preview"
+            onInitialized={(instance) => {
+              setCropper(instance);
+            }}
           />
         </div>
         <div className={styles.preview_container}>

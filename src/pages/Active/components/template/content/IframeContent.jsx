@@ -7,20 +7,26 @@ import styles from '../style.less';
 
 const ActiveTemplateIframe = (props) => {
   const { context } = props;
+  const { info, showPanel, dispatchData, componentsShow } = useContext(context);
 
   const contentIFrameRef = useRef();
   const [iframeShow, setIframeShow] = useState(true); // iframe 加载等待
-  const [activeInfo, setActiveInfo] = useState({ top: 0, height: 0 }); // iframe 选择区域高亮
-  const { moduleData, dispatchData, componentsShow } = useContext(context);
-  const { info } = moduleData;
 
   useEffect(() => {
     const receiveMessageFromIndex = (e) => {
       if (e != undefined) {
-        console.log('received data from iframe', e.data);
-        setActiveInfo(e.data);
-        dispatchData({ type: 'save', payload: { showPanel: e.data.type } });
-        dispatchData({ type: 'showActiveEditor', payload: { type: '' } });
+        console.log('from iframe：', e.data);
+        const { type } = e.data;
+        switch (type) {
+          case 'select':
+            dispatchData({ type: 'showPanel', payload: e.data.payload });
+            dispatchData({ type: 'showEditor', payload: { type: '' } });
+            return;
+          case 'query':
+            return;
+          default:
+            return false;
+        }
       }
     };
     // 监听message事件;
@@ -31,16 +37,29 @@ const ActiveTemplateIframe = (props) => {
   }, []);
 
   // 向 iframe 发送数据
-  const handleSendMessage = () => {
-    contentIFrameRef.current.contentWindow.postMessage(1233, '*');
+  const handleSendMessageTitle = () => {
+    contentIFrameRef.current.contentWindow.postMessage(
+      {
+        type: 'save',
+        payload: {
+          id: '.page_lever3',
+          type: 'title',
+          content: {
+            data: '测试标题传递',
+            link: '',
+            linkType: '',
+          },
+        },
+      },
+      '*',
+    );
   };
 
   return (
     <div className={styles.active_Template_content}>
-      <button onClick={handleSendMessage}>send message to iframe</button>
       <IframeActiveEdit context={context}></IframeActiveEdit>
       <div className={styles.previewer_component}>
-        <IframeActive activeInfo={activeInfo}></IframeActive>
+        <IframeActive activeInfo={showPanel}></IframeActive>
         {componentsShow && (
           <Spin spinning={iframeShow} indicator={<LoadingOutlined style={{ fontSize: 24 }} />}>
             <div className={styles.previewer_wrap}>

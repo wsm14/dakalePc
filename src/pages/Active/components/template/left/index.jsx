@@ -1,76 +1,45 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Collapse, Radio } from 'antd';
-import { PictureOutlined, FontSizeOutlined } from '@ant-design/icons';
+import panelItem from './panelItem';
 import styles from '../style.less';
 
 const { Panel } = Collapse;
 
 const ActiveTemplateLeft = (props) => {
   const { context } = props;
-  const { moduleData, dispatchData, componentsShow } = useContext(context);
+  const {
+    // 组件选项打开类型
+    showPanel: { id, ptype },
+    showEditor,
+    dispatchData,
+    componentsShow,
+  } = useContext(context);
 
-  const { showPanel } = moduleData;
-  const [radioValue, setRadioValue] = useState('');
-
-  useEffect(() => {
-    setRadioValue('');
-  }, [showPanel]);
-
+  // 选择组件 向reducer储存当前选择组件，显示组件编辑面板
   const handlePanelChange = (e) => {
-    setRadioValue(e.target.value);
     dispatchData({
-      type: 'showActiveEditor',
+      type: 'showEditor',
       payload: {
-        moduleId: 1,
+        id, // 需要编辑的组件id
         type: e.target.value,
       },
     });
   };
 
-  const panelItem = [
-    {
-      header: '图片类',
-      type: 'img',
-      children: [
-        {
-          icon: <PictureOutlined style={{ fontSize: 24 }} />,
-          text: '单张图片',
-          type: 'solaImg',
-        },
-        {
-          icon: <PictureOutlined style={{ fontSize: 24 }} />,
-          text: '轮播图片',
-          type: 'carouseal',
-        },
-      ],
-    },
-    {
-      header: '文本类',
-      type: 'text',
-      children: [
-        {
-          icon: <FontSizeOutlined style={{ fontSize: 24 }} />,
-          text: '标题',
-          type: 'title',
-        },
-      ],
-    },
-  ];
-
   return (
     <>
       {componentsShow && (
         <div className={styles.active_Template_Left}>
-          <Collapse bordered={false} activeKey={[showPanel]}>
+          <Collapse bordered={false} activeKey={[ptype]}>
             {panelItem.map((item) => (
               <Panel
                 forceRender
                 header={item.header}
                 key={item.type}
-                disabled={showPanel !== item.type}
+                disabled={ptype !== item.ptype}
               >
                 <Radio.Group
-                  value={radioValue}
+                  value={showEditor.type}
                   className={styles.aT_Left_RadioGroup}
                   onChange={handlePanelChange}
                 >

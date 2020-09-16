@@ -5,10 +5,17 @@ import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 const ActiveTemplate = () => {
   const [visible, setVisible] = useState({ show: false, info: {} });
 
+  /**
+   * 模版选项
+   * @img 封面图片
+   * @templateUrl 模版链接
+   * @id 模版id
+   * @title 模版说明标题
+   */
   const cardItem = [
     {
       img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-      templateUrl: 'http://192.168.101.70:8080/Untitled2.html',
+      templateUrl: 'https://web-new.dakale.net/dakale-web-exercise/page/demo.html',
       id: '1',
       title: '活动模版1',
     },
