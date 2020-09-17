@@ -7,6 +7,8 @@ import {
   fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
+  fetchMerchantTotal,
+  fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
 
@@ -16,7 +18,7 @@ export default {
   state: {
     list: [],
     total: 0,
-    totalData: {},
+    totalData: { chartsLeft: {}, chartsRight: [] },
     brandList: { list: [], total: 0 },
   },
 
@@ -48,13 +50,25 @@ export default {
       callback(content.merchantDetail);
     },
     *fetchBusinessTotal({ payload }, { call, put }) {
-      const response = yield call(fetchMerchantDetail, payload);
-      if (!response) return;
+      const response = yield call(fetchMerchantTotal);
+      const response2 = yield call(fetchMerchantTotalCategory, payload);
+      if (!response && !response2) return;
       const { content } = response;
+      const { content: content2 = {} } = response2;
+      const {
+        parentMerchant = 0,
+        childMerchant = 0,
+        merchantSettle = 0,
+        categoryMerchantCount = [],
+      } = content2;
+      
       yield put({
         type: 'save',
         payload: {
-          totalData: content.userMerchantList,
+          totalData: {
+            chartsLeft: { ...content, parentMerchant, childMerchant, merchantSettle },
+            chartsRight: categoryMerchantCount,
+          },
         },
       });
     },

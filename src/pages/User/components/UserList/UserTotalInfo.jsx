@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Statistic, Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
+const dDate = moment().subtract(1, 'day');
+
 const UserTotalInfo = ({ dispatch, loading, totalData }) => {
-  const [shwoTime, setShowTime] = useState(true);
   // 搜索参数
   const searchItems = [
     {
@@ -13,6 +15,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
       type: 'rangePicker',
       name: 'beginDate',
       end: 'endDate',
+      disabledDate: (current) => current && current > moment().endOf('day').subtract(1, 'day'),
     },
   ];
 
@@ -28,9 +31,9 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
   ];
 
   // 获取用户详情
-  const fetchUserTotal = (val = {}) => {
-    const { beginDate = '' } = val;
-    setShowTime(!beginDate);
+  const fetchUserTotal = (
+    val = { beginDate: dDate.format('YYYY-MM-DD'), endDate: dDate.format('YYYY-MM-DD') },
+  ) => {
     dispatch({
       type: 'userList/fetchUserTotal',
       payload: val,
@@ -45,7 +48,13 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
 
   return (
     <Card style={{ marginBottom: 16 }}>
-      <SearchCondition searchItems={searchItems} handleSearch={fetchUserTotal}></SearchCondition>
+      <SearchCondition
+        searchItems={searchItems}
+        handleSearch={fetchUserTotal}
+        initialValues={{
+          beginDate: [dDate, dDate],
+        }}
+      ></SearchCondition>
       <Row gutter={16} align="middle">
         <Col span={12}>
           <Spin spinning={!!loading}>

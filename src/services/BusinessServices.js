@@ -7,6 +7,18 @@ export function fetchMerchantList(params) {
   });
 }
 
+// get 商户数据 - 统计数据 总商家/流失/活跃
+export function fetchMerchantTotal() {
+  return request('/admin/merchantManagement/getMerchantStatistic');
+}
+
+// get 商户数据 - 统计数据 新入驻/家主/家店/行业
+export function fetchMerchantTotalCategory(params) {
+  return request('/admin/merchantManagement/getMerchantStatisticByDate', {
+    params,
+  });
+}
+
 // get 商户数据 - 商户详情
 export function fetchMerchantDetail(params) {
   return request('/admin/merchantManagement/merchantCredentialsInfo', {

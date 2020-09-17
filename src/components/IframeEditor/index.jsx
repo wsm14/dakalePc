@@ -18,6 +18,7 @@ const validateMessages = {
 const IframeEditor = (props) => {
   const { type, showPanel, onClose, onSave } = props;
 
+  console.log(showPanel);
   // 判断组件是否配置
   if (typeof IEditor[type] === 'undefined') {
     message.error('组件不存在，或未配置');
@@ -28,8 +29,8 @@ const IframeEditor = (props) => {
 
   // 保存事件
   const handleSaveData = () => {
-    form.validateFields().then((values) => {
-      onSave(values);
+    form.validateFields().then((content) => {
+      onSave({ id: showPanel.id, type, content });
     });
   };
 

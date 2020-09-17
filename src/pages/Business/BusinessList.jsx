@@ -11,7 +11,7 @@ import BusinessAdd from './components/BusinessList/BusinessEdit';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 
-// const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
+const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, loading, dispatch } = props;
@@ -188,20 +188,7 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
-      <div style={{ textAlign: 'right', marginBottom: 10 }}>
-        <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
-          新增商户
-        </Button>
-        <Button
-          className="dkl_green_btn"
-          key="2"
-          onClick={handleVCodeSet}
-          style={{ marginLeft: 10 }}
-        >
-          设置商家验证码
-        </Button>
-      </div>
-      {/* <Suspense fallback={<CardLoading></CardLoading>}>
+      <Suspense fallback={<CardLoading></CardLoading>}>
         <BusinessTotalInfo
           btnExtra={
             <>
@@ -214,7 +201,7 @@ const BusinessListComponent = (props) => {
             </>
           }
         ></BusinessTotalInfo>
-      </Suspense> */}
+      </Suspense>
       <DataTableBlock
         cRef={childRef}
         loading={

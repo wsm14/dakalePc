@@ -109,8 +109,8 @@ const SearchCondition = (props) => {
               moment(moment().startOf('month')).subtract(1, 'month'),
               moment(moment().startOf('month')).subtract(1, 'day'),
             ]}
-            disabledDate={disabledDate}
-            ranges={item.ranges || ranges}
+            disabledDate={item.disabledDate || disabledDate}
+            ranges={item.ranges || item.disabledDate ? '' : ranges}
             // renderExtraFooter={() => (
             //   <div className={styles.shop_dateInfo}>
             //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
