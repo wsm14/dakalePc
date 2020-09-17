@@ -12,24 +12,36 @@ const ActiveTemplateIframe = (props) => {
   const iframeRef = useRef();
   const [iframeShow, setIframeShow] = useState(true); // iframe 加载等待
 
-  useEffect(() => {
-    const receiveMessageFromIndex = (e) => {
-      if (e != undefined) {
-        console.log('from iframe：', e.data);
-        const { type } = e.data;
-        switch (type) {
-          case 'select':
-            dispatchData({ type: 'showPanel', payload: e.data.payload });
-            dispatchData({ type: 'showEditor', payload: { type: '' } });
-            return;
-          case 'query':
-            return;
-          default:
-            return false;
-        }
+  // ifarme选择回调
+  const handleIframeClick = (e) => {
+    console.log('from iframe：', e.data);
+    dispatchData({
+      type: 'showPanel',
+      payload: e.data.payload,
+    });
+    dispatchData({
+      type: 'showEditor',
+      payload: { type: '' },
+    });
+  };
+
+  // 监听message事件;
+  const receiveMessageFromIndex = (e) => {
+    if (e != undefined) {
+      const { type } = e.data;
+      switch (type) {
+        case 'select':
+          handleIframeClick(e);
+          return;
+        case 'query':
+          return;
+        default:
+          return false;
       }
-    };
-    // 监听message事件;
+    }
+  };
+
+  useEffect(() => {
     window.addEventListener('message', receiveMessageFromIndex, false);
     return () => {
       window.removeEventListener('message', receiveMessageFromIndex);

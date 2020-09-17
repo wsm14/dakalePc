@@ -1,20 +1,21 @@
 import React, { useImperativeHandle } from 'react';
 import EditorForm from '../editorForm';
 import aliOssUpload from '@/utils/aliOssUpload';
-import styles from '../index.less';
 
-const SolaImg = (props) => {
+const Carouseal = (props) => {
   const { form, initialValues, showPanel, cRef } = props;
   const formItems = [
     {
       label: '图片',
-      name: 'data',
-      type: 'upload',
-      required: true,
+      name: '',
+      type: 'carouseal',
       isCut: true,
       ratio: 375 / showPanel.height,
       maxFile: 1,
-      className: styles.ifame_solaImg,
+      children: {
+        dname: ['content[0]', 'data'],
+        lname: ['content[0]', 'link'],
+      },
     },
     {
       label: '链接',
@@ -25,10 +26,11 @@ const SolaImg = (props) => {
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     getContent: () => {
-      return form.validateFields().then((content) => {
-        return aliOssUpload(content.data).then((res) => {
-          return { ...content, data: res.toString() };
-        });
+      form.validateFields().then((content) => {
+        console.log(content);
+        // return aliOssUpload(content.data).then((res) => {
+        //   return { ...content, data: res.toString() };
+        // });
       });
     },
   }));
@@ -36,4 +38,4 @@ const SolaImg = (props) => {
   return <EditorForm formItems={formItems} initialValues={initialValues} form={form}></EditorForm>;
 };
 
-export default SolaImg;
+export default Carouseal;

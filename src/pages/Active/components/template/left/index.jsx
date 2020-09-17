@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Collapse, Radio } from 'antd';
 import panelItem from './panelItem';
 import styles from '../style.less';
@@ -10,10 +10,26 @@ const ActiveTemplateLeft = (props) => {
   const {
     // 组件选项打开类型
     showPanel: { id, ptype },
+    moduleData,
     showEditor,
     dispatchData,
     componentsShow,
   } = useContext(context);
+
+  // 当组件显示时判断数据是否已经输入过 输入过则显示
+  useEffect(() => {
+    const checkData = moduleData.filter((i) => i.id === id);
+    if (checkData.length) {
+      dispatchData({
+        type: 'showEditor',
+        payload: {
+          id: checkData[0].id, // 需要编辑的组件id
+          type: checkData[0].type,
+          moduleEditData: { ...checkData[0].content },
+        },
+      });
+    }
+  }, [id]);
 
   // 选择组件 向reducer储存当前选择组件，显示组件编辑面板
   const handlePanelChange = (e) => {

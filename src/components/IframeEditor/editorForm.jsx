@@ -77,6 +77,15 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
     });
     return fileobj;
   }); // 文件控制列表
+  const [carousealfile, setCarousealfile] = useState(() => {
+    const fileobj = {};
+    formItems.map((item, i) => {
+      if (item.type === 'carouseal') {
+        fileobj[item.children.dname[1]] = [];
+      }
+    });
+    return fileobj;
+  }); // 文件控制列表
 
   // 图片获取预览base64
   const getBase64 = (file) => {
@@ -88,19 +97,20 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
     });
   };
 
-  const handleCutImg = (name) => (file) => {
-    const newimg = fileLists[name];
+  const handleCutImg = (name, setFunction) => (file) => {
+    const fName = Array.isArray(name) ? name[1] : name;
+    const newimg = Array.isArray(name) ? carousealfile[fName] : fileLists[fName];
     imageCompress(file).then(({ file, base64 }) => {
       newimg[newimg.length - 1].originFileObj = file;
       newimg[newimg.length - 1].thumbUrl = base64;
-      setFileLists({ ...fileLists, [name]: newimg });
+      setFunction({ ...fileLists, [fName]: newimg });
     });
   };
 
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name, itemobj) => {
+  const handleUpProps = (name, itemobj, setFunction) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -114,13 +124,15 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
                 fileRido: itemobj.ratio,
                 visible: true,
                 name,
+                setFunction,
               });
             }
           });
-          setFileLists({ ...fileLists, [name]: fileList });
+          const fName = Array.isArray(name) ? name[1] : name;
+          setFunction({ ...fileLists, [fName]: fileList });
         } else {
           if (!fileList.length) form.setFieldsValue({ [name]: undefined });
-          setFileLists({ ...fileLists, [name]: fileList });
+          setFunction({ ...fileLists, [name]: fileList });
         }
       },
     };
@@ -238,10 +250,11 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
           <Upload
             multiple={item.multiple || false}
             listType="picture-card"
+            className={item.className}
             fileList={fileLists[Array.isArray(name) ? name[1] : name]}
             beforeUpload={() => false}
             onPreview={handlePreview}
-            {...handleUpProps(Array.isArray(name) ? name[1] : name, item)}
+            {...handleUpProps(Array.isArray(name) ? name[1] : name, item, setFileLists)}
           >
             {fileLists[Array.isArray(name) ? name[1] : name] &&
               fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
@@ -251,6 +264,28 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
         children: item.children,
         noForm: '',
       }[type];
+
+      if (type === 'carouseal') {
+        component = (
+          <>
+            <Form.Item name={item.children.dname} noStyle rules={[{ required: true }]}>
+              <Upload
+                multiple={item.multiple || false}
+                listType="picture-card"
+                className={item.className}
+                fileList={carousealfile[item.children.dname[1]]}
+                beforeUpload={() => false}
+                onPreview={handlePreview}
+                {...handleUpProps(item.children.dname, item, setCarousealfile)}
+              >
+                {carousealfile[item.children.dname[1]] &&
+                  carousealfile[item.children.dname[1]].length < 1 &&
+                  uploadButton}
+              </Upload>
+            </Form.Item>
+          </>
+        );
+      }
 
       if (type === 'textArea') {
         extra = (extra || maxLength) && (
@@ -301,12 +336,17 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
       fileOld.pop();
     }
     setImgcut({ file: {}, visible: false });
-    console.log(file);
   };
 
   return (
     <>
-      <Form form={form} preserve={false} layout="vertical" validateMessages={validateMessages}>
+      <Form
+        form={form}
+        preserve={false}
+        initialValues={initialValues}
+        layout="vertical"
+        validateMessages={validateMessages}
+      >
         {formItems.length ? getFields() : ''}
       </Form>
       <Modal
@@ -329,7 +369,7 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
         <ImgCutView
           imgRatio={imgcut.fileRido || NaN}
           uploadedImageFile={imgcut.file}
-          onSubmit={handleCutImg(imgcut.name)}
+          onSubmit={handleCutImg(imgcut.name, imgcut.setFunction)}
           onClose={(file) => handleCloseCut(imgcut.name, file)}
         />
       </Modal>

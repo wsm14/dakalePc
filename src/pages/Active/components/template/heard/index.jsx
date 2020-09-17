@@ -3,11 +3,11 @@ import { Button, Space, Row, Col } from 'antd';
 
 const ActiveTemplateHrard = (props) => {
   const { onClose, context } = props;
-  const { moduleList } = useContext(context);
+  const { moduleData } = useContext(context);
 
   // 提交模版数据
   const handleSaveModuleData = () => {
-    console.log(moduleList);
+    console.log(moduleData);
   };
   
   return (

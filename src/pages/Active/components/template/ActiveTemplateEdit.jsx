@@ -9,13 +9,13 @@ const TemplateContext = createContext();
 
 /**
  * @componentsShow 控制组件内子组件显示时间 Drawer afterVisibleChange后回调显示防止渲染卡顿
- * @moduleData 局部Reducer 此组件内公共参数
+ * @moduleReducer 局部Reducer 此组件内公共参数
  */
 
 const ActiveTemplate = (props) => {
   const { visible, onClose } = props;
 
-  const [moduleData, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
+  const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [componentsShow, setComponentsShow] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const ActiveTemplate = (props) => {
   }, [visible.show]);
 
   return (
-    <TemplateContext.Provider value={{ ...moduleData, dispatchData, componentsShow }}>
+    <TemplateContext.Provider value={{ ...moduleReducer, dispatchData, componentsShow }}>
       <Drawer
         destroyOnClose
         bodyStyle={{ backgroundColor: '#f4f4f4' }}
