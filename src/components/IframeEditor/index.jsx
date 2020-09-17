@@ -1,13 +1,8 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button, Space, Form, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { IEditor } from './editorModule';
 import styles from './index.less';
-
-// 全局校验说明
-const validateMessages = {
-  required: '当前数据为空，请填写完整',
-};
 
 /**
  * 编辑模板
@@ -18,7 +13,7 @@ const validateMessages = {
 const IframeEditor = (props) => {
   const { type, showPanel, onClose, onSave } = props;
 
-  console.log(showPanel);
+  const cRef = useRef();
   // 判断组件是否配置
   if (typeof IEditor[type] === 'undefined') {
     message.error('组件不存在，或未配置');
@@ -29,9 +24,20 @@ const IframeEditor = (props) => {
 
   // 保存事件
   const handleSaveData = () => {
-    form.validateFields().then((content) => {
-      onSave({ id: showPanel.id, type, content });
-    });
+    cRef.current
+      .getContent()
+      .then((content) => {
+        onSave({ id: showPanel.id, type, content });
+      })
+      .then(() => {
+        message.success({
+          content: '保存成功！',
+          className: 'custom-class',
+          style: {
+            marginTop: '30vh',
+          },
+        });
+      });
   };
 
   return (
@@ -43,14 +49,7 @@ const IframeEditor = (props) => {
             <CloseOutlined onClick={onClose} />
           </div>
           <div className={styles.editor_content}>
-            <Form
-              form={form}
-              preserve={false}
-              layout="vertical"
-              validateMessages={validateMessages}
-            >
-              <EditorContent form={form} showPanel={showPanel}></EditorContent>
-            </Form>
+            <EditorContent cRef={cRef} form={form} showPanel={showPanel}></EditorContent>
           </div>
           <div className={styles.editor_footer}>
             <Space>

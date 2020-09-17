@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Space, Row, Col } from 'antd';
 
 const ActiveTemplateHrard = (props) => {
-  const { onClose } = props;
+  const { onClose, context } = props;
+  const { moduleList } = useContext(context);
 
+  // 提交模版数据
+  const handleSaveModuleData = () => {
+    console.log(moduleList);
+  };
+  
   return (
     <>
       <Row align="middle">
@@ -11,7 +17,9 @@ const ActiveTemplateHrard = (props) => {
         <Col>
           <Space>
             <Button onClick={onClose}>关闭</Button>
-            <Button type="primary">保存</Button>
+            <Button type="primary" onClick={handleSaveModuleData}>
+              保存
+            </Button>
           </Space>
         </Col>
       </Row>

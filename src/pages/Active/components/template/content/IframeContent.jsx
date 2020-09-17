@@ -9,7 +9,7 @@ const ActiveTemplateIframe = (props) => {
   const { context } = props;
   const { info, showPanel, dispatchData, componentsShow } = useContext(context);
 
-  const contentIFrameRef = useRef();
+  const iframeRef = useRef();
   const [iframeShow, setIframeShow] = useState(true); // iframe 加载等待
 
   useEffect(() => {
@@ -36,35 +36,16 @@ const ActiveTemplateIframe = (props) => {
     };
   }, []);
 
-  // 向 iframe 发送数据
-  const handleSendMessageTitle = () => {
-    contentIFrameRef.current.contentWindow.postMessage(
-      {
-        type: 'save',
-        payload: {
-          id: '.page_lever3',
-          type: 'title',
-          content: {
-            data: '测试标题传递',
-            link: '',
-            linkType: '',
-          },
-        },
-      },
-      '*',
-    );
-  };
-
   return (
     <div className={styles.active_Template_content}>
-      <IframeActiveEdit context={context}></IframeActiveEdit>
+      <IframeActiveEdit context={context} iref={iframeRef}></IframeActiveEdit>
       <div className={styles.previewer_component}>
         <IframeActive activeInfo={showPanel}></IframeActive>
         {componentsShow && (
           <Spin spinning={iframeShow} indicator={<LoadingOutlined style={{ fontSize: 24 }} />}>
             <div className={styles.previewer_wrap}>
               <iframe
-                ref={contentIFrameRef}
+                ref={iframeRef}
                 onLoad={() => setIframeShow(false)}
                 scrolling="no"
                 src={`${info.templateUrl}`}

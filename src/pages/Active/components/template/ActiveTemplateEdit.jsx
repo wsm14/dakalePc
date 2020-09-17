@@ -18,38 +18,40 @@ const ActiveTemplate = (props) => {
   const [moduleData, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [componentsShow, setComponentsShow] = useState(false);
 
-  // 拦截页面关闭刷新
   useEffect(() => {
     if (visible.show) {
+      // 初始化数据
       dispatchData({ type: 'initialize' });
-      dispatchData({ type: 'save', payload: visible });
-      // const listener = (ev) => {
-      //   ev.preventDefault();
-      //   ev.returnValue = '文章要保存哦，确定离开吗？';
-      // };
-      // window.addEventListener('beforeunload', listener);
-      // return () => {
-      //   window.removeEventListener('beforeunload', listener);
-      // };
+      // 保存选择模版信息
+      dispatchData({ type: 'saveInfo', payload: visible });
+      // 拦截页面关闭刷新
+      const listener = (ev) => {
+        ev.preventDefault();
+        ev.returnValue = '数据不保存，确定离开吗？';
+      };
+      window.addEventListener('beforeunload', listener);
+      return () => {
+        window.removeEventListener('beforeunload', listener);
+      };
     }
   }, [visible.show]);
 
   return (
-    <Drawer
-      destroyOnClose
-      bodyStyle={{ backgroundColor: '#f4f4f4' }}
-      title={<ActiveHeardTitle onClose={onClose}></ActiveHeardTitle>}
-      height={'100%'}
-      placement="top"
-      closable={false}
-      visible={visible.show}
-      afterVisibleChange={(show) => setComponentsShow(show)}
-    >
-      <TemplateContext.Provider value={{ ...moduleData, dispatchData, componentsShow }}>
+    <TemplateContext.Provider value={{ ...moduleData, dispatchData, componentsShow }}>
+      <Drawer
+        destroyOnClose
+        bodyStyle={{ backgroundColor: '#f4f4f4' }}
+        title={<ActiveHeardTitle onClose={onClose} context={TemplateContext}></ActiveHeardTitle>}
+        height={'100%'}
+        placement="top"
+        closable={false}
+        visible={visible.show}
+        afterVisibleChange={(show) => setComponentsShow(show)}
+      >
         <ActivetTemplateLeft context={TemplateContext}></ActivetTemplateLeft>
         <ActiveTemplateContent context={TemplateContext}></ActiveTemplateContent>
-      </TemplateContext.Provider>
-    </Drawer>
+      </Drawer>
+    </TemplateContext.Provider>
   );
 };
 

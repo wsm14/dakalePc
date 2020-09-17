@@ -13,6 +13,11 @@ import imageCompress from '@/utils/imageCompress';
  *
  */
 
+// 全局校验说明
+const validateMessages = {
+  required: '当前数据为空，请填写完整',
+};
+
 // 图片默认值
 const imgold = (url, uid) => ({
   uid: `-${uid}`,
@@ -301,7 +306,9 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
 
   return (
     <>
-      {formItems.length ? getFields() : ''}
+      <Form form={form} preserve={false} layout="vertical" validateMessages={validateMessages}>
+        {formItems.length ? getFields() : ''}
+      </Form>
       <Modal
         title={previewTitle}
         visible={previewVisible}

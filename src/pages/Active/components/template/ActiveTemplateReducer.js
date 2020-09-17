@@ -23,19 +23,24 @@ export const reducerValue = {
     id: '', // 组件id
     type: '', // 组件类型
   },
+  // 模版数据
+  moduleList: [],
 };
 
 /**
  * reducer 处理
- * @type {*}  save 储存选择的模版信息
+ * @type {*}  initialize 数据重置
+ *            saveInfo 储存选择的模版信息
  *            showPanel 展示组件选择面板
  *            showEditor 展示组件编辑面板
+ *            closeEditor 关闭编辑面板
+ *            saveModuleData 存储模版编辑数据
  */
 export const fetchReducerEdit = (state, action) => {
   switch (action.type) {
     case 'initialize':
       return reducerValue;
-    case 'save':
+    case 'saveInfo':
       return {
         ...state,
         ...action.payload,
@@ -56,6 +61,11 @@ export const fetchReducerEdit = (state, action) => {
         ...state,
         showPanel: { height: 0, ptype: '' },
         showEditor: { type: '' },
+      };
+    case 'saveModuleData':
+      return {
+        ...state,
+        moduleList: [...state.moduleList, action.payload],
       };
     default:
       return state;
