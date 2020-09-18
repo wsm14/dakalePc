@@ -33,11 +33,17 @@ const ActiveTemplateLeft = (props) => {
 
   // 选择组件 向reducer储存当前选择组件，显示组件编辑面板
   const handlePanelChange = (e) => {
+    const checkData = moduleData.filter((i) => i.id === id);
     dispatchData({
       type: 'showEditor',
       payload: {
         id, // 需要编辑的组件id
         type: e.target.value,
+        moduleEditData: checkData.length
+          ? checkData[0].type === e.target.value
+            ? checkData[0].content
+            : undefined
+          : undefined,
       },
     });
   };
