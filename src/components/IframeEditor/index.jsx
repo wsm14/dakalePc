@@ -24,7 +24,7 @@ const IframeEditor = (props) => {
   const [form] = Form.useForm();
   const EditorContent = IEditor[type];
 
-  console.log('initialValues', initialValues);
+  console.log('ifame initialValues', initialValues);
 
   // 保存事件
   const handleSaveData = () => {
@@ -44,8 +44,6 @@ const IframeEditor = (props) => {
         });
       });
   };
-
-  console.log(showPanel.top);
 
   return (
     <>
