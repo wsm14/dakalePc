@@ -6,7 +6,7 @@ import styles from './index.less';
 
 /**
  * 编辑模板
- * @type {*} 组件编辑的类型
+ * @type 组件编辑的类型
  * @onClose 关闭事件
  * @onSave 保存回调
  * @initialValues 默认值
@@ -24,28 +24,33 @@ const IframeEditor = (props) => {
   const [form] = Form.useForm();
   const EditorContent = IEditor[type];
 
+  console.log('initialValues', initialValues);
+
   // 保存事件
   const handleSaveData = () => {
-    cRef.current.getContent();
-    // .then((content) => {
-    //   onSave({ id: showPanel.id, type, content });
-    // })
-    // .then(() => {
-    //   message.destroy();
-    //   message.success({
-    //     content: '保存成功！',
-    //     className: 'custom-class',
-    //     style: {
-    //       marginTop: '30vh',
-    //     },
-    //   });
-    // });
+    cRef.current
+      .getContent()
+      .then((content) => {
+        onSave({ id: showPanel.id, type, content });
+      })
+      .then(() => {
+        message.destroy();
+        message.success({
+          content: '保存成功！',
+          className: 'custom-class',
+          style: {
+            marginTop: '30vh',
+          },
+        });
+      });
   };
+
+  console.log(showPanel.top);
 
   return (
     <>
       {type && (
-        <div className={styles.previewer_active_editor}>
+        <div className={styles.previewer_active_editor} style={{ top: showPanel.top + 20 }}>
           <div className={styles.editor_title}>
             <div className={styles.editor_title_con}>模块编辑</div>
             <CloseOutlined onClick={onClose} />

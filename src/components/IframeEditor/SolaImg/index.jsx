@@ -1,7 +1,7 @@
 import React, { useImperativeHandle } from 'react';
 import EditorForm from '../editorForm';
 import aliOssUpload from '@/utils/aliOssUpload';
-import styles from '../index.less';
+import styles from './index.less';
 
 const SolaImg = (props) => {
   const { form, initialValues, showPanel, cRef } = props;

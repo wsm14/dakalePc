@@ -77,15 +77,6 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
     });
     return fileobj;
   }); // 文件控制列表
-  const [carousealfile, setCarousealfile] = useState(() => {
-    const fileobj = {};
-    formItems.map((item, i) => {
-      if (item.type === 'carouseal') {
-        fileobj[item.children.dname[1]] = [];
-      }
-    });
-    return fileobj;
-  }); // 文件控制列表
 
   // 图片获取预览base64
   const getBase64 = (file) => {
@@ -98,8 +89,8 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
   };
 
   const handleCutImg = (name, setFunction) => (file) => {
-    const fName = Array.isArray(name) ? name[1] : name;
-    const newimg = Array.isArray(name) ? carousealfile[fName] : fileLists[fName];
+    const fName = name;
+    const newimg = fileLists[fName];
     imageCompress(file).then(({ file, base64 }) => {
       newimg[newimg.length - 1].originFileObj = file;
       newimg[newimg.length - 1].thumbUrl = base64;
@@ -265,28 +256,6 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
         noForm: '',
       }[type];
 
-      if (type === 'carouseal') {
-        component = (
-          <>
-            <Form.Item name={item.children.dname} noStyle rules={[{ required: true }]}>
-              <Upload
-                multiple={item.multiple || false}
-                listType="picture-card"
-                className={item.className}
-                fileList={carousealfile[item.children.dname[1]]}
-                beforeUpload={() => false}
-                onPreview={handlePreview}
-                {...handleUpProps(item.children.dname, item, setCarousealfile)}
-              >
-                {carousealfile[item.children.dname[1]] &&
-                  carousealfile[item.children.dname[1]].length < 1 &&
-                  uploadButton}
-              </Upload>
-            </Form.Item>
-          </>
-        );
-      }
-
       if (type === 'textArea') {
         extra = (extra || maxLength) && (
           <div style={{ display: 'flex' }}>
@@ -334,6 +303,7 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
     if (typeof file !== 'boolean') {
       const fileOld = fileLists[name];
       fileOld.pop();
+      if (!fileOld.length) form.setFieldsValue({ [name]: undefined });
     }
     setImgcut({ file: {}, visible: false });
   };
@@ -363,7 +333,8 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
         title="裁剪图片"
         width={950}
         visible={imgcut.visible}
-        onCancel={() => handleCloseCut(imgcut.name)}
+        maskClosable={false}
+        closable={false}
         footer={null}
       >
         <ImgCutView

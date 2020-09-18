@@ -25,7 +25,7 @@ const ActiveTemplateLeft = (props) => {
         payload: {
           id: checkData[0].id, // 需要编辑的组件id
           type: checkData[0].type,
-          moduleEditData: { ...checkData[0].content },
+          moduleEditData: checkData[0].content,
         },
       });
     }
