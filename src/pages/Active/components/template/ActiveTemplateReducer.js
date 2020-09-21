@@ -2,14 +2,20 @@
  * reducer 默认值
  */
 export const reducerValue = {
+  show: false, // 模版编辑是否显示
   // 模版信息
   info: {
     img: '', // 模版封面
     templateUrl: '', // 模版url
     id: '', // 模版id
     title: '活动模版', // 模版名字
+    activeName: '', // 活动名称
   },
-  show: false, // 模版编辑是否显示
+  showActive: {
+    activeUrl: '', // 活动的url路径
+    activePreviewQr: true, // 活动的qr显示
+    activeHtml: '', // 活动的html
+  },
   // 组件选项打开类型
   showPanel: {
     id: '', // 组件id
@@ -47,10 +53,14 @@ export const fetchReducerEdit = (state, action) => {
         ...state,
         ...action.payload,
       };
+    case 'showActive':
+      return {
+        ...state,
+        showActive: { ...state.showActive, ...action.payload },
+      };
     case 'showPanel':
       return {
         ...state,
-        ...action.payload,
         showPanel: action.payload,
       };
     case 'showEditor':

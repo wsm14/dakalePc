@@ -24,19 +24,34 @@ const notificationInfo = () => {
   });
 };
 
-const aliOssUpload = (file = '', fieldNames = {}) => {
-  const { listKey = 'fileList', originFileObj = 'originFileObj', url = 'url' } = fieldNames;
+const aliOssUpload = (
+  file = '',
+  fieldNames = {},
+  apiType = 'image',
+  oldFileName,
+  ossType = 'put',
+) => {
+  const {
+    listKey = 'fileList',
+    originFileObj = 'originFileObj',
+    url = 'url',
+    type = '.html',
+  } = fieldNames;
   let fileArray = [];
-  if (typeof file === 'string') {
-    return new Promise((resolve) => resolve(file));
-  } else if (Array.isArray(file)) {
-    fileArray = file;
-  } else if (file instanceof Blob || file instanceof File) {
-    fileArray = file;
-  } else {
-    fileArray = file[listKey].map((item) => item[originFileObj] || item[url]);
+
+  if (ossType === 'put') {
+    if (typeof file === 'string') {
+      return new Promise((resolve) => resolve(file));
+    } else if (Array.isArray(file)) {
+      fileArray = file;
+    } else if (file instanceof Blob || file instanceof File) {
+      fileArray = file;
+    } else {
+      fileArray = file[listKey].map((item) => item[originFileObj] || item[url]);
+    }
+    message.loading('文件上传中......', 0);
   }
-  message.loading('文件上传中......', 0);
+
   // 向后台获取oss凭证
   return request('/common/oss/getOssPolicy', {
     params: { uploadType: 'resource' },
@@ -60,29 +75,52 @@ const aliOssUpload = (file = '', fieldNames = {}) => {
       });
 
       // oss 上传
-      const ossput = (file) => {
+      const ossCallback = (file) => {
+        // 文件名
+        const fileType = {
+          false: uuid(),
+          true: oldFileName,
+        }[!!oldFileName];
+        // 文件储存路径
+        const fileUrl = { image: folder, active: 'dev/active/page' }[apiType];
+        // 文件后缀
+        const fileSuffix = apiType === 'active' ? type : file['name'].replace(/.+\./, '.');
+
         // 设置路径+随机文件名
-        const fileNameText = file['name'];
-        // 临时
-        let fileName = folder + '/' + uuid() + '.jpg';
-        // fileNameText ? fileNameText.replace(/.+\./, '.') :
-        // end
+        let fileName = fileUrl + '/' + fileType + fileSuffix;
+
+        // // 临时
+        // let fileName = folder + '/' + uuid() + '.jpg';
+        // // end
         // 提交文件
-        return client.put(fileName, file).then((putres) => {
-          const {
-            res: { status, statusCode },
-          } = putres;
-          if (status === 200 && statusCode === 200) {
-            return host + fileName;
-          } else {
+        if (ossType === 'put') {
+          return client.put(fileName, file).then((putres) => {
+            const {
+              res: { status, statusCode },
+            } = putres;
+            if (status === 200 && statusCode === 200) {
+              return host + fileName;
+            } else {
+              message.destroy();
+              return false;
+            }
+          });
+        }
+        if (ossType === 'delete') {
+          return client.delete(fileName).then((res) => {
+            console.log(res);
             message.destroy();
             return false;
-          }
-        });
+          });
+        }
       };
-      return ossput;
+      return ossCallback;
     })
-    .then(async (ossput) => {
+    .then(async (ossCallback) => {
+      if (ossType === 'delete') {
+        ossCallback();
+        return;
+      }
       // 返回文件url数组
       const fileUrlArray = [];
       // 文件数组遍历上传 单个文件直接上传
@@ -91,7 +129,7 @@ const aliOssUpload = (file = '', fieldNames = {}) => {
           if (typeof item === 'string') {
             fileUrlArray.push(item);
           } else {
-            await ossput(item).then((res) => {
+            await ossCallback(item).then((res) => {
               if (!res) {
                 notificationInfo();
                 return;
@@ -101,7 +139,7 @@ const aliOssUpload = (file = '', fieldNames = {}) => {
           }
         }
       } else {
-        await ossput(fileArray).then((res) => {
+        await ossCallback(fileArray).then((res) => {
           if (!res) {
             notificationInfo();
             return;

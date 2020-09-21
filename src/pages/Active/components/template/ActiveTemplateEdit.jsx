@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, createContext } from 'react';
+import React, { useEffect, useState, useRef, useReducer, createContext } from 'react';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import ActiveHeardTitle from './heard';
@@ -15,6 +15,7 @@ const TemplateContext = createContext();
 const ActiveTemplate = (props) => {
   const { visible, onClose } = props;
 
+  const iframeRef = useRef();
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [componentsShow, setComponentsShow] = useState(false);
 
@@ -37,7 +38,7 @@ const ActiveTemplate = (props) => {
   }, [visible.show]);
 
   return (
-    <TemplateContext.Provider value={{ ...moduleReducer, dispatchData, componentsShow }}>
+    <TemplateContext.Provider value={{ ...moduleReducer, iframeRef, dispatchData, componentsShow }}>
       <Drawer
         destroyOnClose
         bodyStyle={{ backgroundColor: '#f4f4f4' }}

@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { connect } from 'dva';
 import { Card, Row, Col } from 'antd';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
+import activeTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
-const ActiveTemplate = () => {
+const ActiveTemplate = (props) => {
+  const { dispatch } = props;
+
   const [visible, setVisible] = useState({ show: false, info: {} });
 
   /**
@@ -15,11 +19,23 @@ const ActiveTemplate = () => {
   const cardItem = [
     {
       img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-      templateUrl: 'https://web-new.dakale.net/dakale-web-exercise/page/demo.html',
+      templateUrl: 'https://resource-new.dakale.net/dev/active/template/demo.html',
       id: '1',
       title: '活动模版1',
     },
   ];
+
+  // 设置活动名称
+  const handleSetActiveName = (item) => {
+    const callback = (activeName) => {
+      setVisible({ show: true, info: { ...item, activeName } });
+      dispatch({ type: 'drawerForm/close' });
+    };
+    dispatch({
+      type: 'drawerForm/show',
+      payload: activeTemplateNameSet({ callback }),
+    });
+  };
 
   return (
     <>
@@ -29,9 +45,7 @@ const ActiveTemplate = () => {
             <Col key={item.id}>
               <Card
                 cover={<img alt="example" src={item.img} />}
-                actions={[
-                  <div onClick={() => setVisible({ show: true, info: item })}>使用模版</div>,
-                ]}
+                actions={[<div onClick={() => handleSetActiveName(item)}>使用模版</div>]}
               >
                 {item.title}
               </Card>
@@ -44,4 +58,4 @@ const ActiveTemplate = () => {
   );
 };
 
-export default ActiveTemplate;
+export default connect()(ActiveTemplate);
