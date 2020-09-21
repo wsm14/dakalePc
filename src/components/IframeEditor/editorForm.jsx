@@ -225,7 +225,7 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
-                const value = !data.value ? `${j}` : `${data.value}`;
+                const value = typeof data == 'string' ? `${j}` : `${data.value}`;
                 const name = data.name ? data.name : data;
                 return (
                   <Radio key={j} value={value}>

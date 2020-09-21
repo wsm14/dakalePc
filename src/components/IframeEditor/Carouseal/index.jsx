@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { Form, Input, Upload, Button, Space, Modal } from 'antd';
+import { Tabs, Form, Input, Upload, Button, Space, Modal } from 'antd';
 import {
   MinusCircleOutlined,
   PlusOutlined,
@@ -9,6 +9,7 @@ import {
 import aliOssUpload from '@/utils/aliOssUpload';
 import ImgCutView from '@/components/ImgCut';
 import imageCompress from '@/utils/imageCompress';
+import SourceSet from './source';
 import styles from './index.less';
 
 // 全局校验说明
@@ -26,6 +27,8 @@ const imgold = (url, uid) => ({
 
 const Carouseal = (props) => {
   const { form, initialValues, showPanel, cRef } = props;
+
+  const [tabs, setTabs] = useState(1);
   const [imgcut, setImgcut] = useState({ file: {}, visible: false });
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -105,14 +108,19 @@ const Carouseal = (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: () => {
       return form.validateFields().then((values) => {
-        const fileArr = values.content.map((item) => {
-          if (typeof item.data === 'string') return item.data;
-          else return item.data.fileList[0].originFileObj;
-        });
-        return aliOssUpload(fileArr).then((res) => {
-          const newdata = values.content.map((item, i) => ({ ...item, data: res[i].toString() }));
-          return newdata;
-        });
+        if (tabs == 1) {
+          if (!values.content) return false;
+          const fileArr = values.content.map((item) => {
+            if (typeof item.data === 'string') return item.data;
+            else return item.data.fileList[0].originFileObj;
+          });
+          return aliOssUpload(fileArr).then((res) => {
+            const newdata = values.content.map((item, i) => ({ ...item, data: res[i].toString() }));
+            return newdata;
+          });
+        } else {
+          console.log(values);
+        }
       });
     },
   }));
@@ -128,80 +136,86 @@ const Carouseal = (props) => {
 
   return (
     <>
-      <Form
-        form={form}
-        initialValues={
-          initialValues
-            ? { content: initialValues }
-            : {
-                content: [{ data: undefined, link: undefined }],
-              }
-        }
-        layout="vertical"
-        validateMessages={validateMessages}
-      >
-        <Form.List name="content">
-          {(fields, { add, remove, move }) => {
-            return (
-              <>
-                {fields.map((field, i) => (
-                  <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
-                    <div className={styles.ifame_btnArr}>
-                      <UpSquareOutlined
-                        onClick={() => {
-                          move(field.name, field.name - 1);
-                        }}
-                      />
-                      <DownSquareOutlined
-                        onClick={() => {
-                          move(field.name, field.name + 1);
-                        }}
-                      />
-                    </div>
-                    <Form.Item
-                      name={[field.name, 'data']}
-                      fieldKey={[field.fieldKey, 'data']}
-                      rules={[{ required: true }]}
-                    >
-                      <Upload
-                        listType="picture-card"
-                        fileList={fileLists[field.key]}
-                        beforeUpload={() => false}
-                        onPreview={handlePreview}
-                        {...handleUpProps(field.key)}
-                      >
-                        {!fileLists[field.key] && <PlusOutlined />}
-                      </Upload>
-                    </Form.Item>
-                    <Form.Item name={[field.name, 'link']} fieldKey={[field.fieldKey, 'link']}>
-                      <Input placeholder="输入合法链接" />
-                    </Form.Item>
-                    {fields.length > 1 && (
-                      <MinusCircleOutlined
-                        style={{ marginBottom: 8 }}
-                        onClick={() => {
-                          remove(field.name);
-                        }}
-                      />
-                    )}
-                  </Space>
-                ))}
-                <Form.Item>
-                  <Button
-                    disabled={fields.length === 5}
-                    onClick={() => {
-                      add();
-                    }}
-                    block
-                  >
-                    <PlusOutlined /> {fields.length} / {5} 添加
-                  </Button>
-                </Form.Item>
-              </>
-            );
-          }}
-        </Form.List>
-      </Form>
+      <Tabs type="card" onChange={setTabs}>
+        <Tabs.TabPane tab="自定义" key="1">
+          {tabs == 1 && (
+            <Form
+              form={form}
+              initialValues={initialValues ? { content: initialValues } : {}}
+              layout="vertical"
+              validateMessages={validateMessages}
+            >
+              <Form.List name="content">
+                {(fields, { add, remove, move }) => {
+                  return (
+                    <>
+                      {fields.map((field, i) => (
+                        <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
+                          <div className={styles.ifame_btnArr}>
+                            <UpSquareOutlined
+                              onClick={() => {
+                                move(field.name, field.name - 1);
+                              }}
+                            />
+                            <DownSquareOutlined
+                              onClick={() => {
+                                move(field.name, field.name + 1);
+                              }}
+                            />
+                          </div>
+                          <Form.Item
+                            name={[field.name, 'data']}
+                            fieldKey={[field.fieldKey, 'data']}
+                            rules={[{ required: true }]}
+                          >
+                            <Upload
+                              listType="picture-card"
+                              fileList={fileLists[field.key]}
+                              beforeUpload={() => false}
+                              onPreview={handlePreview}
+                              {...handleUpProps(field.key)}
+                            >
+                              {!fileLists[field.key] && <PlusOutlined />}
+                            </Upload>
+                          </Form.Item>
+                          <Form.Item
+                            name={[field.name, 'link']}
+                            fieldKey={[field.fieldKey, 'link']}
+                          >
+                            <Input placeholder="输入合法链接" />
+                          </Form.Item>
+                          {fields.length > 1 && (
+                            <MinusCircleOutlined
+                              style={{ marginBottom: 8 }}
+                              onClick={() => {
+                                remove(field.name);
+                              }}
+                            />
+                          )}
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          disabled={fields.length === 5}
+                          onClick={() => {
+                            add();
+                          }}
+                          block
+                        >
+                          <PlusOutlined /> {fields.length} / {5} 添加
+                        </Button>
+                      </Form.Item>
+                    </>
+                  );
+                }}
+              </Form.List>
+            </Form>
+          )}
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="数据源" key="2">
+          {tabs == 2 && <SourceSet form={form} initialValues={initialValues}></SourceSet>}
+        </Tabs.TabPane>
+      </Tabs>
       <Modal
         title={previewTitle}
         visible={previewVisible}

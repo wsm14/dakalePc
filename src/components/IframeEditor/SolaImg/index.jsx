@@ -1,10 +1,15 @@
-import React, { useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
+import { Tabs } from 'antd';
 import EditorForm from '../editorForm';
 import aliOssUpload from '@/utils/aliOssUpload';
+import SourceSet from './source';
 import styles from './index.less';
 
 const SolaImg = (props) => {
   const { form, initialValues, showPanel, cRef } = props;
+  const [linkType, setLinkType] = useState('');
+  const [tabs, setTabs] = useState(1);
+
   const formItems = [
     {
       label: '图片',
@@ -17,8 +22,34 @@ const SolaImg = (props) => {
       className: styles.ifame_solaImg,
     },
     {
+      label: '跳转形式',
+      name: 'linkType',
+      type: 'radio',
+      select: [
+        { value: '', name: '无' },
+        { value: 'h5', name: 'h5' },
+        { value: 'navite', name: 'App页面' },
+      ],
+      onChange: (e) => {
+        form.setFieldsValue({ link: undefined });
+        setLinkType(e.target.value);
+      },
+    },
+    {
       label: '链接',
       name: 'link',
+      visible: linkType == 'h5',
+    },
+    {
+      label: 'App页面',
+      type: 'select',
+      name: 'link',
+      select: [
+        { value: '', name: '商家页面' },
+        { value: 'h5', name: '商品页面' },
+        { value: 'navite', name: '卡豆乐园' },
+      ],
+      visible: linkType == 'navite',
     },
   ];
 
@@ -33,7 +64,18 @@ const SolaImg = (props) => {
     },
   }));
 
-  return <EditorForm formItems={formItems} initialValues={initialValues} form={form}></EditorForm>;
+  return (
+    <Tabs type="card" onChange={setTabs}>
+      <Tabs.TabPane tab="自定义" key="1">
+        {tabs == 1 && (
+          <EditorForm formItems={formItems} initialValues={initialValues} form={form}></EditorForm>
+        )}
+      </Tabs.TabPane>
+      <Tabs.TabPane tab="数据源" key="2">
+        {tabs == 2 && <SourceSet form={form} initialValues={initialValues}></SourceSet>}
+      </Tabs.TabPane>
+    </Tabs>
+  );
 };
 
 export default SolaImg;

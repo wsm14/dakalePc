@@ -31,9 +31,12 @@ const IframeEditor = (props) => {
     cRef.current
       .getContent()
       .then((content) => {
+        if (!content) return false;
         onSave({ id: showPanel.id, type, content });
+        return true;
       })
-      .then(() => {
+      .then((res) => {
+        if (!res) return;
         message.destroy();
         message.success({
           content: '保存成功！',
