@@ -61,13 +61,15 @@ export default {
         merchantSettle = 0,
         categoryMerchantCount = [],
       } = content2;
-      
+
       yield put({
         type: 'save',
         payload: {
           totalData: {
             chartsLeft: { ...content, parentMerchant, childMerchant, merchantSettle },
-            chartsRight: categoryMerchantCount,
+            chartsRight: categoryMerchantCount.length
+              ? categoryMerchantCount
+              : [{ categoryName: '无', count: 0 }],
           },
         },
       });

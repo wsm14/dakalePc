@@ -213,6 +213,7 @@ const SearchCondition = (props) => {
     <Form
       form={form}
       size={componentSize}
+      initialValues={initialValues}
       layout="horizontal"
       className={styles.form}
       onFinish={handleSearchsOver}
