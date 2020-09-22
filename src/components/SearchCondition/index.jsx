@@ -11,20 +11,11 @@ import {
   DatePicker,
   InputNumber,
   Cascader,
+  Grid,
 } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
 import styles from './index.less';
-
-// 表单排版
-const formItemLayout = {
-  // labelCol: {
-  //   sm: { span: 10 },
-  // },
-  // wrapperCol: {
-  //   sm: { span: 14 },
-  // },
-};
 
 // 城市搜索筛选
 const filter = (inputValue, path) => {
@@ -52,6 +43,7 @@ const ranges = {
 const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const { useBreakpoint } = Grid;
 
 const SearchCondition = (props) => {
   const {
@@ -64,12 +56,20 @@ const SearchCondition = (props) => {
   } = props;
 
   const [form] = Form.useForm();
+  const screens = useBreakpoint();
 
   const [expand, setExpand] = useState(false);
 
+  const len = formItems.length;
+  // 不同屏幕大小显示个数
+  let count = 2;
+  if (screens.xxl) {
+    count = 4;
+  } else if (screens.xl) {
+    count = 3;
+  }
+
   const getFields = () => {
-    const len = formItems.length;
-    const count = expand ? len : componentSize !== 'default' ? 6 : 4;
     const children = [];
     formItems.forEach((item, i) => {
       let initialValue = '';
@@ -147,11 +147,15 @@ const SearchCondition = (props) => {
         );
       }
 
+      const colcount = expand ? len : count;
+
       children.push(
         <Col
-          span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
+          // span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
+          lg={componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
+          xl={item.type === 'rangePicker' || item.type === 'datePicker' ? 10 : i < colcount ? 8 : 0}
+          xxl={componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
           key={i}
-          style={{ display: i < count ? 'inline' : 'none' }}
         >
           <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>
             {component}
@@ -200,30 +204,30 @@ const SearchCondition = (props) => {
 
   const toggle = () => setExpand(!expand);
 
-  const len = formItems.length;
-  const search = (
-    <div style={{ textAlign: 'right' }}>
-      <Space>
-        <Button type="primary" htmlType="submit">
-          查询
-        </Button>
-        <Button onClick={handleReset}>重置</Button>
-        {btnExtra}
-      </Space>
-      {len > (componentSize !== 'default' ? 6 : 4) ? (
-        <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
-          {expand ? '收起' : '展开'}
-          {expand ? <UpOutlined /> : <DownOutlined />}
-        </a>
-      ) : null}
-    </div>
-  );
+  const search = () => {
+    return (
+      <div style={{ textAlign: 'right' }}>
+        <Space>
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+          <Button onClick={handleReset}>重置</Button>
+          {btnExtra}
+        </Space>
+        {len > (componentSize !== 'default' ? 6 : count) ? (
+          <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
+            {expand ? '收起' : '展开'}
+            {expand ? <UpOutlined /> : <DownOutlined />}
+          </a>
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <Form
       form={form}
       size={componentSize}
-      {...formItemLayout}
       layout="horizontal"
       className={styles.form}
       onFinish={handleSearchsOver}
@@ -232,7 +236,7 @@ const SearchCondition = (props) => {
         <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
           {getFields()}
         </Row>
-        {search}
+        {search()}
       </div>
     </Form>
   );
