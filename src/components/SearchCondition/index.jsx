@@ -16,6 +16,16 @@ import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
 import styles from './index.less';
 
+// 表单排版
+const formItemLayout = {
+  // labelCol: {
+  //   sm: { span: 10 },
+  // },
+  // wrapperCol: {
+  //   sm: { span: 14 },
+  // },
+};
+
 // 城市搜索筛选
 const filter = (inputValue, path) => {
   return path.some((option) => option.label.indexOf(inputValue) > -1);
@@ -213,6 +223,7 @@ const SearchCondition = (props) => {
     <Form
       form={form}
       size={componentSize}
+      {...formItemLayout}
       layout="horizontal"
       className={styles.form}
       onFinish={handleSearchsOver}

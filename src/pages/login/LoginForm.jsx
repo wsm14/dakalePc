@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { history } from 'umi';
-import { Form, Button, Input } from 'antd';
+import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 
 // import QRCode from "qrcode-react";
@@ -42,6 +42,13 @@ const LoginItem = ({ prop, loading }) => {
           redirect = redirect.substr(redirect.indexOf('#') + 1);
         }
       }
+    }
+    if (!list.length) {
+      notification.info({
+        message: '提示',
+        description: '帐号权限未配置，请联系管理员设置',
+      });
+      return;
     }
     if (list[0].subAuthAccessDTOList.length) {
       history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
