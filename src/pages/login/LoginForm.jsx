@@ -73,7 +73,7 @@ const LoginItem = ({ prop, loading }) => {
             ]}
             className={style.dakale_user_form_item}
           >
-            <Input placeholder="请输入您的帐号" maxLength="11" />
+            <Input placeholder="请输入您的帐号" />
           </FormItem>
           <FormItem
             label="密码"

@@ -78,11 +78,13 @@ const SysAccountSet = (props) => {
           formItems={[
             {
               type: 'own',
+              visible: record.username !== 'administrator',
               title: '配置角色',
               click: () => fetchAccountRoleTree(val),
             },
             {
               type: 'edit',
+              visible: record.username !== 'administrator',
               click: () => fetchGetAccountInfo({ adminId: val }),
             },
           ]}
