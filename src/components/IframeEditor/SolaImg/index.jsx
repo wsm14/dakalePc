@@ -7,8 +7,9 @@ import styles from './index.less';
 
 const SolaImg = (props) => {
   const { form, initialValues, showPanel, cRef } = props;
-  const [linkType, setLinkType] = useState('');
-  const [tabs, setTabs] = useState(1);
+
+  const [tabs, setTabs] = useState(initialValues && initialValues.apiUrl ? '2' : '1');
+  const [linkType, setLinkType] = useState((initialValues && initialValues.linkType) || '');
 
   const formItems = [
     {
@@ -65,7 +66,7 @@ const SolaImg = (props) => {
   }));
 
   return (
-    <Tabs type="card" onChange={setTabs}>
+    <Tabs type="card" onChange={setTabs} activeKey={tabs}>
       <Tabs.TabPane tab="自定义" key="1">
         {tabs == 1 && (
           <EditorForm formItems={formItems} initialValues={initialValues} form={form}></EditorForm>

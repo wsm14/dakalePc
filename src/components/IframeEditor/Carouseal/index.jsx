@@ -28,13 +28,13 @@ const imgold = (url, uid) => ({
 const Carouseal = (props) => {
   const { form, initialValues, showPanel, cRef } = props;
 
-  const [tabs, setTabs] = useState(1);
+  const [tabs, setTabs] = useState(initialValues && initialValues.apiUrl ? '2' : '1');
   const [imgcut, setImgcut] = useState({ file: {}, visible: false });
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
   const [fileLists, setFileLists] = useState(() => {
-    if (!initialValues) return {};
+    if (!initialValues || initialValues.apiUrl) return {};
     const fileobj = initialValues.map((item, i) => [imgold(item.data, i)]);
     return { ...fileobj };
   }); // 文件控制列表
@@ -108,8 +108,7 @@ const Carouseal = (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: () => {
       return form.validateFields().then((values) => {
-        if (tabs == 1) {
-          if (!values.content) return false;
+        if (!values.apiUrl) {
           const fileArr = values.content.map((item) => {
             if (typeof item.data === 'string') return item.data;
             else return item.data.fileList[0].originFileObj;
@@ -119,7 +118,7 @@ const Carouseal = (props) => {
             return newdata;
           });
         } else {
-          console.log(values);
+          return values;
         }
       });
     },
@@ -136,7 +135,7 @@ const Carouseal = (props) => {
 
   return (
     <>
-      <Tabs type="card" onChange={setTabs}>
+      <Tabs type="card" onChange={setTabs} activeKey={tabs}>
         <Tabs.TabPane tab="自定义" key="1">
           {tabs == 1 && (
             <Form

@@ -24,15 +24,14 @@ const IframeEditor = (props) => {
   const [form] = Form.useForm();
   const EditorContent = IEditor[type];
 
-  console.log('ifame initialValues', initialValues);
-
   // 保存事件
   const handleSaveData = () => {
     cRef.current
       .getContent()
       .then((content) => {
         if (!content) return false;
-        onSave({ id: showPanel.id, type, content });
+        const messageType = content.apiUrl ? 'script' : 'save';
+        onSave({ id: showPanel.id, type, messageType, content });
         return true;
       })
       .then((res) => {

@@ -7,12 +7,11 @@ const SourceSet = (props) => {
   const formItems = [
     {
       label: '数据源',
-      name: 'data',
+      name: 'apiUrl',
       required: true,
       type: 'select',
-      name: 'link',
       select: [
-        { value: 'aaa', name: '当季热卖' },
+        { value: '/name', name: '当季热卖' },
         { value: 'h5', name: '热门商品' },
         { value: 'navite', name: '卡豆乐园' },
       ],

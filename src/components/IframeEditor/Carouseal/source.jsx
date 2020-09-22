@@ -6,8 +6,20 @@ const SourceSet = (props) => {
 
   const formItems = [
     {
+      label: '数据源',
+      type: 'select',
+      required: true,
+      name: 'apiUrl',
+      select: [
+        { value: 'aaa', name: '当季热卖' },
+        { value: 'h5', name: '热门商品' },
+        { value: 'navite', name: '热销爆款' },
+        { value: 'nae', name: '潜力新品' },
+      ],
+    },
+    {
       label: '显示数量',
-      name: 'datasda',
+      name: ['param', 'num'],
       required: true,
       type: 'select',
       select: [
@@ -16,18 +28,6 @@ const SourceSet = (props) => {
         { value: '3', name: '3' },
         { value: '4', name: '4' },
         { value: '5', name: '5' },
-      ],
-    },
-    {
-      label: '数据源',
-      type: 'select',
-      required: true,
-      name: 'link',
-      select: [
-        { value: 'aaa', name: '当季热卖' },
-        { value: 'h5', name: '热门商品' },
-        { value: 'navite', name: '热销爆款' },
-        { value: 'nae', name: '潜力新品' },
       ],
     },
   ];

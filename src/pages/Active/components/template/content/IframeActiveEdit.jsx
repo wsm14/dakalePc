@@ -15,7 +15,8 @@ const IframeActiveEdit = (props) => {
 
   // 向 iframe 发送数据
   const handleSendMessage = (values) => {
-    iref.current.contentWindow.postMessage({ type: 'save', payload: values }, '*');
+    console.log('send to iframe', { type: values.messageType, payload: values });
+    iref.current.contentWindow.postMessage({ type: values.messageType, payload: values }, '*');
     dispatchData({ type: 'saveModuleData', payload: values });
     handleCloseEdit();
   };
