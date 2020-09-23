@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Collapse, Radio } from 'antd';
 import panelItem from './panelItem';
 import styles from '../style.less';
@@ -16,8 +16,11 @@ const ActiveTemplateLeft = (props) => {
     componentsShow,
   } = useContext(context);
 
+  const [pActive, setPactive] = useState([ptype]);
+
   // 当组件显示时判断数据是否已经输入过 输入过则显示
   useEffect(() => {
+    setPactive([ptype]);
     const checkData = moduleData.filter((i) => i.id === id);
     if (checkData.length) {
       dispatchData({
@@ -52,18 +55,19 @@ const ActiveTemplateLeft = (props) => {
     <>
       {componentsShow && (
         <div className={styles.active_Template_Left}>
-          <Collapse bordered={false} activeKey={[ptype]}>
+          <Collapse bordered={false} activeKey={pActive} onChange={(val) => setPactive(val)}>
             {panelItem.map((item) => (
               <Panel
                 forceRender
                 header={item.header}
                 key={item.type}
-                disabled={ptype !== item.ptype}
+                // disabled={ptype !== item.ptype}
               >
                 <Radio.Group
                   value={showEditor.type}
                   className={styles.aT_Left_RadioGroup}
                   onChange={handlePanelChange}
+                  disabled={ptype !== item.type}
                 >
                   {item.children.map((children) => (
                     <Radio.Button value={children.type} key={children.text}>
