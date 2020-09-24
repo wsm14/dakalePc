@@ -72,6 +72,16 @@ export default [
             component: './Business/BusinessBrand',
           },
           {
+            path: '/business/settled',
+            name: '入驻查询',
+            component: './Business/BusinessSettled',
+          },
+          {
+            path: '/business/bindBank',
+            name: '绑定查询',
+            component: './Business/BusinessBindBank',
+          },
+          {
             path: '/business/excel',
             name: 'excel（临时）',
             component: './Business/BusinessExcelList',

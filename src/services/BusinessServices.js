@@ -124,3 +124,17 @@ export function fetchMerRegisterList(params) {
     params,
   });
 }
+
+// get 入驻查询 - 列表
+export function fetchMerSettledList(params) {
+  return request('/admin/merchantManagement/getMerchantSettle', {
+    params,
+  });
+}
+
+// get 绑定查询 - 列表
+export function fetchMerBindBankList(params) {
+  return request('/admin/merchantManagement/getMerchantBankStatusOk', {
+    params,
+  });
+}
