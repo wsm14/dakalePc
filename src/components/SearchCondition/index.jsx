@@ -17,6 +17,16 @@ import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
 import styles from './index.less';
 
+/**
+ *
+ * @searchItems {*} 搜索数组
+ * @handleSearch {*} 搜索回调
+ * @btnExtra {*} 额外按钮
+ * @componentSize {*} 组件大小
+ * @initialValues {*} 默认值
+ * @NoSearch {*} 无搜索内容时 不搜索
+ */
+
 // 城市搜索筛选
 const filter = (inputValue, path) => {
   return path.some((option) => option.label.indexOf(inputValue) > -1);
@@ -61,6 +71,7 @@ const SearchCondition = (props) => {
   const [expand, setExpand] = useState(false);
 
   const len = formItems.length;
+  
   // 不同屏幕大小显示个数
   let count = 2;
   if (screens.xxl) {
@@ -109,6 +120,8 @@ const SearchCondition = (props) => {
         initialValue = item.initialValue ? `${item.initialValue}` : '';
         component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} />;
       }
+
+      // 时间区间搜索
       if (item.type === 'rangePicker') {
         initialValue = item.defaultValue || [];
         component = (
@@ -129,11 +142,15 @@ const SearchCondition = (props) => {
           />
         );
       }
+
+      // 时间搜索 picker
       if (item.type === 'datePicker') {
         component = (
           <DatePicker style={{ width: '100%' }} allowClear={false} picker={item.picker || 'date'} />
         );
       }
+
+      // 城市类型
       if (item.type === 'city') {
         component = (
           <Cascader
@@ -149,9 +166,9 @@ const SearchCondition = (props) => {
 
       const colcount = expand ? len : count;
 
+      // 排版填充
       children.push(
         <Col
-          // span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
           lg={componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
           xl={item.type === 'rangePicker' || item.type === 'datePicker' ? 10 : i < colcount ? 8 : 0}
           xxl={componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
@@ -166,10 +183,12 @@ const SearchCondition = (props) => {
     return children;
   };
 
+  // 搜索
   const handleSearchsOver = (values) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
+        // 判断类型 时间类型处理
         if (item.type === 'datePicker') {
           formObj[item.name] = values[item.name].format(
             item.picker === 'year' ? 'YYYY' : 'YYYY-MM-DD',
@@ -178,22 +197,28 @@ const SearchCondition = (props) => {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
         } else if (item.type === 'city') {
+          // 判断类型 城市类型处理
           item.valuesKey.map((item, i) => (formObj[item] = values.city[i]));
           delete values[item.name];
         }
       } else {
+        // 删除不存在值的key
         delete values[item.name];
       }
     });
+    // 搜索回调
     if (NoSearch) {
+      // NoSearch为true时 无搜索值的不请求
       if (Object.keys(values).length) {
         handleSearch({ ...values, ...formObj });
       }
     } else {
+      // 默认请求
       handleSearch({ ...values, ...formObj });
     }
   };
 
+  // 重置
   const handleReset = () => {
     form.resetFields();
   };
@@ -202,6 +227,7 @@ const SearchCondition = (props) => {
     form.setFieldsValue(initialValues);
   }, []);
 
+  // 展开
   const toggle = () => setExpand(!expand);
 
   const search = () => {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Descriptions, Upload, Modal } from 'antd';
-import { split } from 'lodash';
 
 /**
  *
@@ -8,7 +7,7 @@ import { split } from 'lodash';
  * 2020年8月4日 15:35:24 Dong
  *
  * @formItems 表单内容数组
- *
+ * @initialValues 默认值
  */
 
 // 图片默认值

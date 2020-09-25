@@ -6,6 +6,14 @@ import 'cropperjs/dist/cropper.css';
 
 import styles from './index.less';
 
+/**
+ * 裁剪图片
+ * @uploadedImageFile {*} 裁剪的文件源
+ * @onClose 关闭事件
+ * @onSubmit 确认裁剪回调
+ * @imgRatio 裁剪比例
+ */
+
 const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio }) => {
   ImgCutModal.defaultProps = {
     imgRatio: NaN,

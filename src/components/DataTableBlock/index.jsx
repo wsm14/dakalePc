@@ -25,14 +25,17 @@ import SearchCondition from '@/components/SearchCondition';
  * @CardNone 是否需要Card包裹 默认true
  * @extra card 右上角
  * @componentSize 组件大小 small default middle
+ * @NoSearch 刚打开是否请求 默认false 请求接口
+ * @expandable
+ * @pagination 分页是否显示 赋值false不显示
  */
 
 const DataTableBlockComponent = ({
+  dispatch,
   dispatchType,
   columns,
   searchItems,
   loading,
-  dispatch,
   rowKey,
   list,
   total,
