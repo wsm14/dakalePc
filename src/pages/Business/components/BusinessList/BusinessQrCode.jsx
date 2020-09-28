@@ -18,12 +18,16 @@ const BusinessQrCode = (props) => {
   return (
     <Modal {...modalProps} destroyOnClose onOk={onClose} onCancel={onClose}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div style={{ border: '1px solid #d2d2d2', padding: 5 }}>
-          <QRCode
-            value={`${payUrl}${visible.userMerchantIdString}&timestamp=${new Date().getTime()}`}
-            size={500} //二维码的宽高尺寸
-            fgColor="#000000" //二维码的颜色
-          />
+        <div style={{ border: '1px solid #d2d2d2', padding: 5, width: 510 }}>
+          {visible.bankStatus === '3' ? (
+            <QRCode
+              value={`${payUrl}${visible.userMerchantIdString}&timestamp=${new Date().getTime()}`}
+              size={500} //二维码的宽高尺寸
+              fgColor="#000000" //二维码的颜色
+            />
+          ) : (
+            <div style={{ textAlign: 'center' }}>未激活</div>
+          )}
           <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>支付二维码</div>
         </div>
         <div style={{ border: '1px solid #d2d2d2', padding: 5 }}>
