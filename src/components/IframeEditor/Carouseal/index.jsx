@@ -5,8 +5,10 @@ import {
   PlusOutlined,
   UpSquareOutlined,
   DownSquareOutlined,
+  SearchOutlined,
 } from '@ant-design/icons';
 import aliOssUpload from '@/utils/aliOssUpload';
+import SearchUrl from '../searchData';
 import ImgCutView from '@/components/ImgCut';
 import imageCompress from '@/utils/imageCompress';
 import SourceSet from './source';
@@ -33,6 +35,7 @@ const Carouseal = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
+  const [visibleUrl, setVisibleUrl] = useState(false);
   const [fileLists, setFileLists] = useState(() => {
     if (!initialValues || initialValues.apiUrl) return {};
     const fileobj = initialValues.map((item, i) => [imgold(item.data, i)]);
@@ -71,8 +74,8 @@ const Carouseal = (props) => {
 
   const handleCloseCut = (name, file = false) => {
     if (typeof file !== 'boolean') {
-      setFileLists({ ...fileLists, [name]: undefined });
       form.getFieldValue('content')[name].data = undefined;
+      setFileLists({ ...fileLists, [name]: undefined });
     }
     setImgcut({ file: {}, visible: false });
   };
@@ -133,6 +136,17 @@ const Carouseal = (props) => {
     form.resetFields();
   };
 
+  const itemName = [
+    {
+      title: '活动名称',
+      dataIndex: 'account',
+    },
+    {
+      title: '活动链接',
+      dataIndex: 'merchantName',
+    },
+  ];
+
   return (
     <>
       <Tabs type="card" onChange={setTabs} activeKey={tabs}>
@@ -178,10 +192,22 @@ const Carouseal = (props) => {
                             </Upload>
                           </Form.Item>
                           <Form.Item
-                            name={[field.name, 'link']}
-                            fieldKey={[field.fieldKey, 'link']}
+                            name={[field.name, 'path']}
+                            fieldKey={[field.fieldKey, 'path']}
                           >
-                            <Input placeholder="输入合法链接" />
+                            <Input
+                              placeholder="输入合法链接"
+                              addonAfter={
+                                <SearchOutlined
+                                  onClick={() => {
+                                    const saveData = form.getFieldValue('content')[field.fieldKey];
+                                    if (!saveData)
+                                      form.getFieldValue('content')[field.fieldKey] = {};
+                                    setVisibleUrl({ show: true, key: field.fieldKey });
+                                  }}
+                                />
+                              }
+                            />
                           </Form.Item>
                           {fields.length > 1 && (
                             <MinusCircleOutlined
@@ -238,8 +264,20 @@ const Carouseal = (props) => {
           uploadedImageFile={imgcut.file}
           onSubmit={handleCutImg(imgcut.name)}
           onClose={(file) => handleCloseCut(imgcut.name, file)}
+          hiddenClose={true}
         />
       </Modal>
+      <SearchUrl
+        searchApi="businessList/fetchGetList"
+        searchName="merchantName"
+        itemkey="userMerchantIdString"
+        itemName={itemName}
+        visible={visibleUrl.show}
+        onOk={(path) => {
+          form.getFieldValue('content')[visibleUrl.key].path = path;
+        }}
+        onCancel={() => setVisibleUrl({ show: false })}
+      ></SearchUrl>
     </>
   );
 };

@@ -8,6 +8,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessAdd from './components/BusinessList/BusinessEdit';
+import BusinessQrCode from './components/BusinessList/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 
@@ -20,6 +21,7 @@ const BusinessListComponent = (props) => {
   const [visible, setVisible] = useState({});
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [visibleDetail, setVisibleDetail] = useState(false);
+  const [visibleQrcode, setVisibleQrcode] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -142,6 +144,11 @@ const BusinessListComponent = (props) => {
         <HandleSetTable
           formItems={[
             {
+              title: '获取二维码',
+              type: 'own',
+              click: () => setVisibleQrcode(record),
+            },
+            {
               type: 'info',
               click: () => fetchGetDetail(val),
             },
@@ -229,6 +236,10 @@ const BusinessListComponent = (props) => {
         visible={visibleDetail}
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
+      <BusinessQrCode
+        visible={visibleQrcode}
+        onClose={() => setVisibleQrcode('')}
+      ></BusinessQrCode>
     </>
   );
 };

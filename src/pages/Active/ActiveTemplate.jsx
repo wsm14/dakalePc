@@ -19,7 +19,7 @@ const ActiveTemplate = (props) => {
   const cardItem = [
     {
       img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-      templateUrl: `https://resource-new.dakale.net/dev/active/template/demo.html?times=${new Date().getTime()}`,
+      templateUrl: `https://resource-new.dakale.net/dev/active/template/demo.html?demo=1&times=${new Date().getTime()}`,
       id: '1',
       title: '活动模版1',
     },

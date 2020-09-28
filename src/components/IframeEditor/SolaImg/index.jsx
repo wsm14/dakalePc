@@ -3,6 +3,9 @@ import { Tabs } from 'antd';
 import EditorForm from '../editorForm';
 import aliOssUpload from '@/utils/aliOssUpload';
 import SourceSet from './source';
+import SearchData from '../searchData';
+import SearchUrl from '../searchData';
+import { SearchOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
 const SolaImg = (props) => {
@@ -10,6 +13,9 @@ const SolaImg = (props) => {
 
   const [tabs, setTabs] = useState(initialValues && initialValues.apiUrl ? '2' : '1');
   const [linkType, setLinkType] = useState((initialValues && initialValues.linkType) || '');
+  const [linkPath, setLinkPath] = useState((initialValues && initialValues.path) || '');
+  const [visibleMerchant, setVisibleMerchant] = useState(false);
+  const [visibleUrl, setVisibleUrl] = useState(false);
 
   const formItems = [
     {
@@ -29,28 +35,46 @@ const SolaImg = (props) => {
       select: [
         { value: '', name: '无' },
         { value: 'h5', name: 'h5' },
-        { value: 'navite', name: 'App页面' },
+        { value: 'native', name: 'App页面' },
       ],
       onChange: (e) => {
-        form.setFieldsValue({ link: undefined });
+        form.setFieldsValue({ path: undefined });
         setLinkType(e.target.value);
+        setLinkPath('');
       },
     },
     {
       label: '链接',
-      name: 'link',
+      name: 'path',
       visible: linkType == 'h5',
+      addonAfter: <SearchOutlined onClick={() => setVisibleUrl(true)} />,
     },
     {
       label: 'App页面',
       type: 'select',
-      name: 'link',
+      name: 'path',
+      visible: linkType == 'native',
+      onChange: (value) => {
+        form.setFieldsValue({ data: '' });
+        setLinkPath(value);
+        if (value === 'goMerchantBox') setVisibleMerchant(true);
+      },
       select: [
-        { value: '', name: '商家页面' },
-        { value: 'h5', name: '商品页面' },
-        { value: 'navite', name: '卡豆乐园' },
+        { value: 'ShopClockList', name: '好店必打卡' },
+        { value: 'InviteFriendRelease', name: '邀请好友' },
+        { value: 'MomentList', name: '分享好友' },
+        { value: 'goMerchantBox', name: '店铺首页' },
+        { value: 'goPathUP', name: '早起挑战赛' },
+        { value: 'goPathStep', name: '步数挑战赛' },
       ],
-      visible: linkType == 'navite',
+    },
+    {
+      label: '数据',
+      name: 'param',
+      required: true,
+      visible: linkPath == 'goMerchantBox',
+      addonAfter: <SearchOutlined onClick={() => setVisibleMerchant(true)} />,
+      disabled: true,
     },
   ];
 
@@ -65,12 +89,49 @@ const SolaImg = (props) => {
     },
   }));
 
+  const itemName = [
+    {
+      title: '商户账号',
+      dataIndex: 'account',
+    },
+    {
+      title: '商户简称',
+      dataIndex: 'merchantName',
+    },
+    {
+      title: '所在城市',
+      dataIndex: 'cityName',
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+    },
+  ];
+
   return (
     <Tabs type="card" onChange={setTabs} activeKey={tabs}>
       <Tabs.TabPane tab="自定义" key="1">
         {tabs == 1 && (
           <EditorForm formItems={formItems} initialValues={initialValues} form={form}></EditorForm>
         )}
+        <SearchData
+          searchApi="businessList/fetchGetList"
+          searchName="merchantName"
+          itemkey="userMerchantIdString"
+          itemName={itemName}
+          visible={visibleMerchant}
+          onOk={(param) => form.setFieldsValue({ param })}
+          onCancel={() => setVisibleMerchant(false)}
+        ></SearchData>
+        <SearchUrl
+          searchApi="businessList/fetchGetList"
+          searchName="merchantName"
+          itemkey="userMerchantIdString"
+          itemName={itemName}
+          visible={visibleUrl}
+          onOk={(path) => form.setFieldsValue({ path })}
+          onCancel={() => setVisibleUrl(false)}
+        ></SearchUrl>
       </Tabs.TabPane>
       <Tabs.TabPane tab="数据源" key="2">
         {tabs == 2 && <SourceSet form={form} initialValues={initialValues}></SourceSet>}

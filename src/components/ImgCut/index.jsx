@@ -14,7 +14,7 @@ import styles from './index.less';
  * @imgRatio 裁剪比例
  */
 
-const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio }) => {
+const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio, hiddenClose }) => {
   ImgCutModal.defaultProps = {
     imgRatio: NaN,
   };
@@ -75,9 +75,11 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio }) => {
             <button type="button" className={styles.submit_button} onClick={handleSubmit}>
               确认
             </button>
-            <button type="button" className={styles.submit_button_end} onClick={onClose}>
-              取消
-            </button>
+            {!hiddenClose && (
+              <button type="button" className={styles.submit_button_end} onClick={onClose}>
+                取消
+              </button>
+            )}
           </div>
         </div>
       </div>

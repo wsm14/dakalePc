@@ -32,7 +32,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
+    *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantList, payload);
       if (!response) return;
       const { content } = response;
@@ -42,6 +42,7 @@ export default {
           list: content.recordList,
         },
       });
+      if (callback) callback(content.recordList);
     },
     *fetchMerchantDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantDetail, payload);
