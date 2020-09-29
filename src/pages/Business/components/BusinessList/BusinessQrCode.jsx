@@ -8,7 +8,7 @@ const BusinessQrCode = (props) => {
 
   const modalProps = {
     title: `商户二维码 - ${visible.merchantName}`,
-    width: 1080,
+    width: 790,
     visible: !!visible,
   };
 
@@ -18,11 +18,11 @@ const BusinessQrCode = (props) => {
   return (
     <Modal {...modalProps} destroyOnClose onOk={onClose} onCancel={onClose}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div style={{ border: '1px solid #d2d2d2', padding: 5, width: 510 }}>
+        <div style={{ border: '1px solid #d2d2d2', padding: 5, width: 360 }}>
           {visible.bankStatus === '3' ? (
             <QRCode
               value={`${payUrl}${visible.userMerchantIdString}&timestamp=${new Date().getTime()}`}
-              size={500} //二维码的宽高尺寸
+              size={350} //二维码的宽高尺寸
               fgColor="#000000" //二维码的颜色
             />
           ) : (
@@ -33,7 +33,7 @@ const BusinessQrCode = (props) => {
         <div style={{ border: '1px solid #d2d2d2', padding: 5 }}>
           <QRCode
             value={`${dakaUrl}${visible.userMerchantIdString}&timestamp=${new Date().getTime()}`}
-            size={500} //二维码的宽高尺寸
+            size={350} //二维码的宽高尺寸
             fgColor="#000000" //二维码的颜色
           />
           <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>打卡二维码</div>
