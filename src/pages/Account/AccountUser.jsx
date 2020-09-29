@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-// import UserTotalInfo from './components/User/UserTotalInfo';
+import UserTotalInfo from './components/User/UserTotalInfo';
 import UserDetailList from './components/User/UserDetailList';
 
 const AccountUserList = (props) => {

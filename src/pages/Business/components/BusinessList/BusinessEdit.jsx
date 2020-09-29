@@ -207,6 +207,7 @@ const BusinessAdd = (props) => {
       {initialValues && (
         <BusinessAuditAllow
           visible={visibleAllow}
+          initialValues={initialValues}
           onClose={() => setVisibleAllow(false)}
           merchantName={initialValues.merchantName}
           merchantVerifyId={initialValues.merchantVerifyIdString}
