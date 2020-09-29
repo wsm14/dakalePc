@@ -197,10 +197,10 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
         select: (
           <Select
             showSearch
+            optionFilterProp="children"
             loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}
-            filterOption={item.filterOption || false}
             onSearch={item.onSearch}
             onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}

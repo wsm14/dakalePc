@@ -50,7 +50,10 @@ const IframeEditor = (props) => {
   return (
     <>
       {type && (
-        <div className={styles.previewer_active_editor} style={{ top: 20 }}>
+        <div
+          className={styles.previewer_active_editor}
+          style={{ top: 20, width: type !== 'carouseal' ? 330 : 380 }}
+        >
           <div className={styles.editor_title}>
             <div className={styles.editor_title_con}>模块编辑</div>
             <CloseOutlined onClick={onClose} />

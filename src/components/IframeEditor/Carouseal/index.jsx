@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { Tabs, Form, Input, Upload, Button, Space, Modal } from 'antd';
+import { Tabs, Form, Input, Radio, Upload, Button, Space, Modal, Select } from 'antd';
 import {
   MinusCircleOutlined,
   PlusOutlined,
@@ -8,7 +8,9 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import aliOssUpload from '@/utils/aliOssUpload';
+import { NATIVE_PATH_TYPE } from '../nativePath';
 import SearchUrl from '../searchData';
+import SearchData from '../searchData';
 import ImgCutView from '@/components/ImgCut';
 import imageCompress from '@/utils/imageCompress';
 import SourceSet from './source';
@@ -16,7 +18,7 @@ import styles from './index.less';
 
 // 全局校验说明
 const validateMessages = {
-  required: '请上传图片',
+  required: '请完善数据',
 };
 
 // 图片默认值
@@ -35,6 +37,7 @@ const Carouseal = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
+  const [visibleMerchant, setVisibleMerchant] = useState(false);
   const [visibleUrl, setVisibleUrl] = useState(false);
   const [fileLists, setFileLists] = useState(() => {
     if (!initialValues || initialValues.apiUrl) return {};
@@ -180,6 +183,7 @@ const Carouseal = (props) => {
                             name={[field.name, 'data']}
                             fieldKey={[field.fieldKey, 'data']}
                             rules={[{ required: true }]}
+                            style={{ flex: 1 }}
                           >
                             <Upload
                               listType="picture-card"
@@ -191,27 +195,112 @@ const Carouseal = (props) => {
                               {!fileLists[field.key] && <PlusOutlined />}
                             </Upload>
                           </Form.Item>
-                          <Form.Item
-                            name={[field.name, 'path']}
-                            fieldKey={[field.fieldKey, 'path']}
-                          >
-                            <Input
-                              placeholder="输入合法链接"
-                              addonAfter={
-                                <SearchOutlined
-                                  onClick={() => {
-                                    const saveData = form.getFieldValue('content')[field.fieldKey];
-                                    if (!saveData)
-                                      form.getFieldValue('content')[field.fieldKey] = {};
-                                    setVisibleUrl({ show: true, key: field.fieldKey });
+                          <Form.Item shouldUpdate>
+                            {({ getFieldValue }) => {
+                              const linkType = getFieldValue('content')[field.name];
+                              return (
+                                <div
+                                  style={{
+                                    height:
+                                      linkType && linkType.path === 'goMerchantBox' ? 120 : 'auto',
                                   }}
-                                />
-                              }
-                            />
+                                >
+                                  <Form.Item
+                                    name={[field.name, 'linkType']}
+                                    fieldKey={[field.fieldKey, 'linkType']}
+                                  >
+                                    <Radio.Group
+                                      onChange={() => {
+                                        const saveData = form.getFieldValue('content')[field.name];
+                                        if (!saveData)
+                                          form.getFieldValue('content')[field.name] = {};
+                                        form.getFieldValue('content')[field.name].path = undefined;
+                                      }}
+                                    >
+                                      <Radio value="">无</Radio>
+                                      <Radio value="h5">h5</Radio>
+                                      <Radio value="native">App页面</Radio>
+                                    </Radio.Group>
+                                  </Form.Item>
+                                  {linkType &&
+                                    {
+                                      '': null,
+                                      h5: (
+                                        <Form.Item
+                                          name={[field.name, 'path']}
+                                          fieldKey={[field.fieldKey, 'path']}
+                                        >
+                                          <Input
+                                            placeholder="输入合法链接"
+                                            addonAfter={
+                                              <SearchOutlined
+                                                onClick={() =>
+                                                  setVisibleUrl({
+                                                    show: true,
+                                                    key: field.name,
+                                                  })
+                                                }
+                                              />
+                                            }
+                                          />
+                                        </Form.Item>
+                                      ),
+                                      native: (
+                                        <Form.Item
+                                          name={[field.name, 'path']}
+                                          fieldKey={[field.fieldKey, 'path']}
+                                        >
+                                          <Select
+                                            showSearch
+                                            defaultActiveFirstOption={false}
+                                            optionFilterProp="children"
+                                            placeholder="请选择"
+                                            style={{ width: '100%' }}
+                                            onChange={(value) => {
+                                              if (value === 'goMerchantBox')
+                                                setVisibleMerchant({
+                                                  show: true,
+                                                  key: field.name,
+                                                });
+                                            }}
+                                          >
+                                            {NATIVE_PATH_TYPE.map((data) => {
+                                              return (
+                                                <Select.Option key={data.value} value={data.value}>
+                                                  {data.name}
+                                                </Select.Option>
+                                              );
+                                            })}
+                                          </Select>
+                                        </Form.Item>
+                                      ),
+                                    }[linkType.linkType]}
+                                  {linkType && linkType.path === 'goMerchantBox' ? (
+                                    <Form.Item
+                                      name={[field.name, 'param']}
+                                      rules={[{ required: true }]}
+                                      fieldKey={[field.fieldKey, 'param']}
+                                    >
+                                      <Input
+                                        placeholder="数据"
+                                        disabled={true}
+                                        addonAfter={
+                                          <SearchOutlined
+                                            onClick={() => {
+                                              setVisibleMerchant({ show: true, key: field.name });
+                                            }}
+                                          />
+                                        }
+                                      />
+                                    </Form.Item>
+                                  ) : null}
+                                </div>
+                              );
+                            }}
                           </Form.Item>
                           {fields.length > 1 && (
                             <MinusCircleOutlined
-                              style={{ marginBottom: 8 }}
+                              style={{ marginBottom: 12 }}
                               onClick={() => {
                                 remove(field.name);
                               }}
@@ -267,6 +356,34 @@ const Carouseal = (props) => {
           hiddenClose={true}
         />
       </Modal>
+      <SearchData
+        searchApi="businessList/fetchGetList"
+        searchName="merchantName"
+        itemkey="userMerchantIdString"
+        itemName={[
+          {
+            title: '商户账号',
+            dataIndex: 'account',
+          },
+          {
+            title: '商户简称',
+            dataIndex: 'merchantName',
+          },
+          {
+            title: '所在城市',
+            dataIndex: 'cityName',
+          },
+          {
+            title: '详细地址',
+            dataIndex: 'address',
+          },
+        ]}
+        visible={visibleMerchant.show}
+        onOk={(param) => {
+          form.getFieldValue('content')[visibleMerchant.key].param = param;
+        }}
+        onCancel={() => setVisibleMerchant({ show: false })}
+      ></SearchData>
       <SearchUrl
         searchApi="businessList/fetchGetList"
         searchName="merchantName"

@@ -6,6 +6,7 @@ import SourceSet from './source';
 import SearchData from '../searchData';
 import SearchUrl from '../searchData';
 import { SearchOutlined } from '@ant-design/icons';
+import { NATIVE_PATH_TYPE } from '../nativePath';
 import styles from './index.less';
 
 const SolaImg = (props) => {
@@ -55,18 +56,11 @@ const SolaImg = (props) => {
       name: 'path',
       visible: linkType == 'native',
       onChange: (value) => {
-        form.setFieldsValue({ data: '' });
+        form.setFieldsValue({ param: '' });
         setLinkPath(value);
         if (value === 'goMerchantBox') setVisibleMerchant(true);
       },
-      select: [
-        { value: 'ShopClockList', name: '好店必打卡' },
-        { value: 'InviteFriendRelease', name: '邀请好友' },
-        { value: 'MomentList', name: '分享好友' },
-        { value: 'goMerchantBox', name: '店铺首页' },
-        { value: 'goPathUP', name: '早起挑战赛' },
-        { value: 'goPathStep', name: '步数挑战赛' },
-      ],
+      select: NATIVE_PATH_TYPE,
     },
     {
       label: '数据',

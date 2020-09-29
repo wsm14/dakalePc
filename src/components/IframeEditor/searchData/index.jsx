@@ -17,6 +17,8 @@ const Merchant = (props) => {
 
   const [cardItem, setCardItem] = useState([]);
 
+  const load = loading.effects[searchApi];
+
   // 获取详情
   const fetchGetDetail = (value) => {
     dispatch({
@@ -28,11 +30,7 @@ const Merchant = (props) => {
 
   return (
     <Modal title="搜索数据" destroyOnClose visible={visible} footer={null} onCancel={onCancel}>
-      <Input.Search
-        placeholder=""
-        loading={loading.models[searchApi]}
-        onSearch={(val) => fetchGetDetail(val)}
-      />
+      <Input.Search placeholder="" loading={load} onSearch={(val) => fetchGetDetail(val)} />
       <Row gutter={[20, 20]} style={{ marginTop: 20, maxHeight: 600, overflow: 'auto' }}>
         {cardItem.map((item) => (
           <Col key={item[itemkey]}>
