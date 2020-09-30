@@ -1,13 +1,24 @@
 .ifame_doubleImg {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  background: #f9f9f9;
+  padding: 8px 8px 0;
   :global {
+    .ant-upload-picture-card-wrapper {
+      display: block;
+    }
     .ant-upload.ant-upload-select-picture-card {
-      width: 100%;
-      height: 204px;
+      width: 70px;
+      height: 62px;
+      margin: 0;
+      background-color: #f4f4f4;
     }
     .ant-upload-list-picture-card-container,
     .ant-upload-list-picture-card .ant-upload-list-item {
-      width: 100%;
-      height: 204px;
+      width: 70px;
+      height: 62px;
+      margin: 0;
     }
     .ant-upload-list-item-thumbnail img {
       width: 100%;
@@ -15,4 +26,12 @@
       object-fit: contain;
     }
   }
+}
+
+.ifame_btnArr {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 62px;
+  margin-bottom: 8px;
 }

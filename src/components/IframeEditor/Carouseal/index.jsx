@@ -153,6 +153,7 @@ const Carouseal = (props) => {
                     <>
                       {fields.map((field, i) => (
                         <FormListContent
+                          key={field.fieldKey}
                           form={form}
                           fields={fields}
                           field={field}

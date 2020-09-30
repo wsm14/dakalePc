@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Button, Space, Form, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import { IEditor } from './editorModule';
@@ -24,6 +24,10 @@ const IframeEditor = (props) => {
   const [form] = Form.useForm();
   const EditorContent = IEditor[type];
 
+  useEffect(() => {
+    form.resetFields()
+  }, [type]);
+
   // 保存事件
   const handleSaveData = () => {
     cRef.current
@@ -47,12 +51,14 @@ const IframeEditor = (props) => {
       });
   };
 
+  const widthSet = ['carouseal', 'doubleImg'];
+
   return (
     <>
       {type && (
         <div
           className={styles.previewer_active_editor}
-          style={{ top: 20, width: type !== 'carouseal' ? 330 : 380 }}
+          style={{ top: 20, width: widthSet.indexOf(type) < -1 ? 330 : 380 }}
         >
           <div className={styles.editor_title}>
             <div className={styles.editor_title_con}>模块编辑</div>
@@ -60,6 +66,7 @@ const IframeEditor = (props) => {
           </div>
           <div className={styles.editor_content}>
             <EditorContent
+              key={type}
               cRef={cRef}
               form={form}
               initialValues={initialValues}
