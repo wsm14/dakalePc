@@ -1,13 +1,13 @@
-import { PictureOutlined, FontSizeOutlined } from '@ant-design/icons';
-  /**
-   * 类型选项
-   * @header 类型名称
-   * @type 大类名称
-   * @children 组件选项
-   * @icon  组件图标
-   * @text  组件名称
-   * @type  组件类型
-   */
+import { PictureOutlined, FontSizeOutlined, AppstoreOutlined } from '@ant-design/icons';
+/**
+ * 类型选项
+ * @header 类型名称
+ * @type 大类名称
+ * @children 组件选项
+ * @icon  组件图标
+ * @text  组件名称
+ * @type  组件类型
+ */
 const panelItem = [
   {
     header: '图片类',
@@ -22,6 +22,11 @@ const panelItem = [
         icon: <PictureOutlined style={{ fontSize: 24 }} />,
         text: '轮播图片',
         type: 'carouseal',
+      },
+      {
+        icon: <AppstoreOutlined style={{ fontSize: 24 }} />,
+        text: '双列图片',
+        type: 'doubleImg',
       },
     ],
   },

@@ -6,7 +6,7 @@ const IframeActiveEdit = (props) => {
 
   const { showEditor, showPanel, dispatchData } = useContext(context);
 
-  const { type, name, moduleEditData } = showEditor;
+  const { type, name, moduleEditData, id } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => {
@@ -25,6 +25,7 @@ const IframeActiveEdit = (props) => {
     <>
       {type && (
         <IframeEditor
+          key={id}
           showPanel={showPanel}
           type={type}
           name={name}

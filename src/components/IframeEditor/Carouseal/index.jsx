@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { Tabs, Form, Button, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import aliOssUpload from '@/utils/aliOssUpload';
-import SearchUrl from '../searchData';
-import SearchData from '../searchData';
-import ImgCutView from '@/components/ImgCut';
 import imageCompress from '@/utils/imageCompress';
-import SourceSet from './source';
+import aliOssUpload from '@/utils/aliOssUpload';
+import ImgCutView from '@/components/ImgCut';
 import FormListContent from './formList';
+import SourceSet from './source';
+import SearchData from '../searchData/searchDataContent';
 
 // 全局校验说明
 const validateMessages = {
@@ -30,8 +29,12 @@ const Carouseal = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
-  const [visibleMerchant, setVisibleMerchant] = useState(false); // 搜索商家回显
-  const [visibleUrl, setVisibleUrl] = useState(false); // 搜索活动回显
+  const [visibleSearch, setVisibleSearch] = useState({
+    visible: false,
+    key: '',
+    name: '',
+    type: '',
+  });
   const [fileLists, setFileLists] = useState(() => {
     if (!initialValues || initialValues.apiUrl) return {};
     const fileobj = initialValues.map((item, i) => [imgold(item.data, i)]);
@@ -133,36 +136,6 @@ const Carouseal = (props) => {
     form.resetFields();
   };
 
-  const itemNameUrl = [
-    {
-      title: '活动名称',
-      dataIndex: 'account',
-    },
-    {
-      title: '活动链接',
-      dataIndex: 'merchantName',
-    },
-  ];
-
-  const itemName = [
-    {
-      title: '商户账号',
-      dataIndex: 'account',
-    },
-    {
-      title: '商户简称',
-      dataIndex: 'merchantName',
-    },
-    {
-      title: '所在城市',
-      dataIndex: 'cityName',
-    },
-    {
-      title: '详细地址',
-      dataIndex: 'address',
-    },
-  ];
-
   return (
     <>
       <Tabs type="card" onChange={setTabs} activeKey={tabs}>
@@ -188,8 +161,7 @@ const Carouseal = (props) => {
                           move={move}
                           handlePreview={handlePreview}
                           handleUpProps={handleUpProps}
-                          setVisibleUrl={setVisibleUrl}
-                          setVisibleMerchant={setVisibleMerchant}
+                          setVisibleSearch={setVisibleSearch}
                         ></FormListContent>
                       ))}
                       <Form.Item>
@@ -241,27 +213,13 @@ const Carouseal = (props) => {
         />
       </Modal>
       <SearchData
-        searchApi="businessList/fetchGetList"
-        searchName="merchantName"
-        itemkey="userMerchantIdString"
-        itemName={itemName}
-        visible={visibleMerchant.show}
+        form={form}
+        {...visibleSearch}
         onOk={(param) => {
-          form.getFieldValue('content')[visibleMerchant.key].param = param;
+          form.getFieldValue('content')[visibleSearch.key][visibleSearch.name] = param;
         }}
-        onCancel={() => setVisibleMerchant({ show: false })}
+        onCancel={() => setVisibleSearch({ show: false })}
       ></SearchData>
-      <SearchUrl
-        searchApi="businessList/fetchGetList"
-        searchName="merchantName"
-        itemkey="userMerchantIdString"
-        itemName={itemNameUrl}
-        visible={visibleUrl.show}
-        onOk={(path) => {
-          form.getFieldValue('content')[visibleUrl.key].path = path;
-        }}
-        onCancel={() => setVisibleUrl({ show: false })}
-      ></SearchUrl>
     </>
   );
 };

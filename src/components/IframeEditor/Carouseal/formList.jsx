@@ -20,8 +20,7 @@ const formList = (props) => {
     move,
     handleUpProps,
     handlePreview,
-    setVisibleUrl,
-    setVisibleMerchant,
+    setVisibleSearch,
   } = props;
 
   return (
@@ -86,9 +85,11 @@ const formList = (props) => {
                         addonAfter={
                           <SearchOutlined
                             onClick={() =>
-                              setVisibleUrl({
-                                show: true,
+                              setVisibleSearch({
+                                visible: true,
                                 key: field.name,
+                                name: 'path',
+                                type: 'url',
                               })
                             }
                           />
@@ -106,9 +107,11 @@ const formList = (props) => {
                         style={{ width: '100%' }}
                         onChange={(value) => {
                           if (value === 'goMerchantBox')
-                            setVisibleMerchant({
-                              show: true,
+                            setVisibleSearch({
+                              visible: true,
                               key: field.name,
+                              name: 'param',
+                              type: 'merchant',
                             });
                         }}
                       >
@@ -135,7 +138,12 @@ const formList = (props) => {
                     addonAfter={
                       <SearchOutlined
                         onClick={() => {
-                          setVisibleMerchant({ show: true, key: field.name });
+                          setVisibleSearch({
+                            visible: true,
+                            key: field.name,
+                            name: 'param',
+                            type: 'merchant',
+                          });
                         }}
                       />
                     }

@@ -3,18 +3,20 @@ import { Tabs } from 'antd';
 import EditorForm from '../editorForm';
 import aliOssUpload from '@/utils/aliOssUpload';
 import SourceSet from './source';
-import SearchData from '../searchData/searchDataContent';
+import SearchData from '../searchData';
+import SearchUrl from '../searchData';
 import { SearchOutlined } from '@ant-design/icons';
 import { NATIVE_PATH_TYPE } from '../nativePath';
 import styles from './index.less';
 
-const SolaImg = (props) => {
+const DoubleImg = (props) => {
   const { form, initialValues, showPanel, cRef } = props;
 
   const [tabs, setTabs] = useState(initialValues && initialValues.apiUrl ? '2' : '1');
   const [linkType, setLinkType] = useState((initialValues && initialValues.linkType) || '');
   const [linkPath, setLinkPath] = useState((initialValues && initialValues.path) || '');
-  const [visibleSearch, setVisibleSearch] = useState({ visible: false, valueName: '', type: '' });
+  const [visibleMerchant, setVisibleMerchant] = useState(false);
+  const [visibleUrl, setVisibleUrl] = useState(false);
 
   const formItems = [
     {
@@ -25,7 +27,7 @@ const SolaImg = (props) => {
       isCut: true,
       ratio: 375 / showPanel.height,
       maxFile: 1,
-      className: styles.ifame_solaImg,
+      className: styles.ifame_doubleImg,
     },
     {
       label: '跳转形式',
@@ -46,11 +48,7 @@ const SolaImg = (props) => {
       label: '链接',
       name: 'path',
       visible: linkType == 'h5',
-      addonAfter: (
-        <SearchOutlined
-          onClick={() => setVisibleSearch({ visible: true, valueName: 'path', type: 'url' })}
-        />
-      ),
+      addonAfter: <SearchOutlined onClick={() => setVisibleUrl(true)} />,
     },
     {
       label: 'App页面',
@@ -60,8 +58,7 @@ const SolaImg = (props) => {
       onChange: (value) => {
         form.setFieldsValue({ param: '' });
         setLinkPath(value);
-        if (value === 'goMerchantBox')
-          setVisibleSearch({ visible: true, valueName: 'param', type: 'merchant' });
+        if (value === 'goMerchantBox') setVisibleMerchant(true);
       },
       select: NATIVE_PATH_TYPE,
     },
@@ -70,11 +67,7 @@ const SolaImg = (props) => {
       name: 'param',
       required: true,
       visible: linkPath == 'goMerchantBox',
-      addonAfter: (
-        <SearchOutlined
-          onClick={() => setVisibleSearch({ visible: true, valueName: 'param', type: 'merchant' })}
-        />
-      ),
+      addonAfter: <SearchOutlined onClick={() => setVisibleMerchant(true)} />,
       disabled: true,
     },
   ];
@@ -90,6 +83,25 @@ const SolaImg = (props) => {
     },
   }));
 
+  const itemName = [
+    {
+      title: '商户账号',
+      dataIndex: 'account',
+    },
+    {
+      title: '商户简称',
+      dataIndex: 'merchantName',
+    },
+    {
+      title: '所在城市',
+      dataIndex: 'cityName',
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+    },
+  ];
+
   return (
     <Tabs type="card" onChange={setTabs} activeKey={tabs}>
       <Tabs.TabPane tab="自定义" key="1">
@@ -97,10 +109,23 @@ const SolaImg = (props) => {
           <EditorForm formItems={formItems} initialValues={initialValues} form={form}></EditorForm>
         )}
         <SearchData
-          form={form}
-          {...visibleSearch}
-          onCancel={() => setVisibleSearch({ show: false })}
+          searchApi="businessList/fetchGetList"
+          searchName="merchantName"
+          itemkey="userMerchantIdString"
+          itemName={itemName}
+          visible={visibleMerchant}
+          onOk={(param) => form.setFieldsValue({ param })}
+          onCancel={() => setVisibleMerchant(false)}
         ></SearchData>
+        <SearchUrl
+          searchApi="businessList/fetchGetList"
+          searchName="merchantName"
+          itemkey="userMerchantIdString"
+          itemName={itemName}
+          visible={visibleUrl}
+          onOk={(path) => form.setFieldsValue({ path })}
+          onCancel={() => setVisibleUrl(false)}
+        ></SearchUrl>
       </Tabs.TabPane>
       <Tabs.TabPane tab="数据源" key="2">
         {tabs == 2 && <SourceSet form={form} initialValues={initialValues}></SourceSet>}
@@ -109,4 +134,4 @@ const SolaImg = (props) => {
   );
 };
 
-export default SolaImg;
+export default DoubleImg;
