@@ -1,4 +1,9 @@
-import { PictureOutlined, FontSizeOutlined, AppstoreOutlined } from '@ant-design/icons';
+import {
+  PictureOutlined,
+  FontSizeOutlined,
+  AppstoreOutlined,
+  AlignLeftOutlined,
+} from '@ant-design/icons';
 /**
  * 类型选项
  * @header 类型名称
@@ -38,6 +43,11 @@ const panelItem = [
         icon: <FontSizeOutlined style={{ fontSize: 24 }} />,
         text: '标题',
         type: 'title',
+      },
+      {
+        icon: <AlignLeftOutlined style={{ fontSize: 24 }} />,
+        text: '文本',
+        type: 'textArea',
       },
     ],
   },

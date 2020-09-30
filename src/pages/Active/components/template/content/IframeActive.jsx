@@ -14,7 +14,7 @@ const IframeActive = (props) => {
     <>
       {height > 0 && (
         <div className={styles.previewer_active_warp}>
-          <div style={activeInfo} className={styles.previewer_active_mask}></div>
+          <div style={{ ...activeInfo, width: 375 }} className={styles.previewer_active_mask}></div>
         </div>
       )}
     </>

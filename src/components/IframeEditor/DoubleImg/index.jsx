@@ -92,7 +92,7 @@ const DoubleImg = (props) => {
             fileList[fileList.length - 1].originFileObj = file;
             setImgcut({
               file,
-              fileRido: 375 / showPanel.height,
+              fileRido: (showPanel.width / 2 - 10) / showPanel.height,
               visible: true,
               name,
             });

@@ -22,6 +22,7 @@ export const reducerValue = {
     type: '', // 组件类型
     top: 0, // 组件定位
     height: 0, // 组件高
+    width: 0, // 组件宽
     ptype: '', // 组件选项面板类型
   },
   // 组件编辑显示

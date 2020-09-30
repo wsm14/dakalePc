@@ -23,7 +23,7 @@ const SolaImg = (props) => {
       type: 'upload',
       required: true,
       isCut: true,
-      ratio: 375 / showPanel.height,
+      ratio: showPanel.width / showPanel.height,
       maxFile: 1,
       className: styles.ifame_solaImg,
     },
