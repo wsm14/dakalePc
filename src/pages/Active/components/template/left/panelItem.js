@@ -1,4 +1,5 @@
 import {
+  TableOutlined,
   PictureOutlined,
   FontSizeOutlined,
   AppstoreOutlined,
@@ -48,6 +49,17 @@ const panelItem = [
         icon: <AlignLeftOutlined style={{ fontSize: 24 }} />,
         text: '文本',
         type: 'textArea',
+      },
+    ],
+  },
+  {
+    header: '选项类',
+    type: 'select',
+    children: [
+      {
+        icon: <TableOutlined style={{ fontSize: 24 }} />,
+        text: '宫格选项',
+        type: 'square',
       },
     ],
   },

@@ -3,12 +3,14 @@ import doubleImg from './DoubleImg';
 import carouseal from './Carouseal';
 import title from './Title';
 import textArea from './TextArea';
+import square from './Square';
 
 const IEditor = {
   solaImg,
   doubleImg,
   title,
   carouseal,
-  textArea
+  textArea,
+  square
 };
 export { IEditor };
