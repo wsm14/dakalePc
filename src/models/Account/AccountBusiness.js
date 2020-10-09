@@ -13,21 +13,14 @@ const data1 = [
   },
 ];
 
-const data2 = [
-  {
-    statisticDesc: '无',
-    content: 0,
-  },
-];
-
 export default {
   namespace: 'accountBusiness',
 
   state: {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
-    indata: [],
-    outdata: [],
+    indata: data1,
+    outdata: data1,
     merchantTotalIncome: 0,
     merchantTotalOut: 0,
   },
@@ -108,7 +101,7 @@ export default {
                   content: Number(item.content),
                   statisticDesc: item.statisticDesc.replace('商家', ''),
                 }))
-            : data2,
+            : data1,
         },
       });
     },

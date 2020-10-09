@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
+import CardLoading from '@/components/CardLoading';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import UserTotalInfo from './components/User/UserTotalInfo';
 import UserDetailList from './components/User/UserDetailList';
+
+const UserTotalInfo = lazy(() => import('./components/User/UserTotalInfo'));
 
 const AccountUserList = (props) => {
   const { userlist, loading, dispatch } = props;
@@ -91,7 +93,9 @@ const AccountUserList = (props) => {
 
   return (
     <>
-      <UserTotalInfo></UserTotalInfo>
+      <Suspense fallback={<CardLoading></CardLoading>}>
+        <UserTotalInfo></UserTotalInfo>
+      </Suspense>
       <DataTableBlock
         loading={loading}
         columns={getColumns}

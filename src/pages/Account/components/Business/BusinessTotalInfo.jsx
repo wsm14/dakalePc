@@ -42,32 +42,30 @@ const BusinessTotalInfo = ({
         handleSearch={fetchBusinessTotal}
         btnExtra={btnExtra}
       ></SearchCondition>
-      <Row gutter={16} align="middle">
-        <Col span={12}>
-          商家累计收益：{merchantTotalIncome}
-          <Spin spinning={!!loading}>
+      <Spin spinning={!!loading}>
+        <Row gutter={16} align="middle">
+          <Col span={12}>
+            商家累计收益：{merchantTotalIncome}
             <Donut
               data={indata}
-              totalLabel="合计卡豆"
+              totalLabel="累计卡豆"
               height={276}
               angleField="content"
               colorField="statisticDesc"
             />
-          </Spin>
-        </Col>
-        <Col span={12}>
-          <Spin spinning={!!loading}>
+          </Col>
+          <Col span={12}>
             商家累计消费：{merchantTotalOut}
             <Donut
               data={outdata}
-              totalLabel="合计卡豆"
+              totalLabel="累计卡豆"
               height={276}
               angleField="content"
               colorField="statisticDesc"
             />
-          </Spin>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </Spin>
     </Card>
   );
 };

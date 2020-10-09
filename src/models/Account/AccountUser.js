@@ -12,13 +12,6 @@ const data1 = [
   },
 ];
 
-const data2 = [
-  {
-    statisticDesc: '无',
-    content: 0,
-  },
-];
-
 export default {
   namespace: 'accountUser',
 
@@ -28,7 +21,7 @@ export default {
     userTotalIn: 0,
     userTotalOut: 0,
     indata: data1,
-    outdata: data2,
+    outdata: data1,
   },
 
   reducers: {
@@ -106,7 +99,7 @@ export default {
                   content: Number(item.content),
                   statisticDesc: item.statisticDesc.replace('用户', ''),
                 }))
-            : data2,
+            : data1,
         },
       });
     },

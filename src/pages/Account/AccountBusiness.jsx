@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
+import CardLoading from '@/components/CardLoading';
 import BusinessDetailList from './components/Business/BusinessDetailList';
+
+const BusinessTotalInfo = lazy(() => import('./components/Business/BusinessTotalInfo'));
 
 const AccountBusinessList = (props) => {
   const { list, loading, dispatch } = props;
@@ -101,7 +103,9 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
-      <BusinessTotalInfo></BusinessTotalInfo>
+      <Suspense fallback={<CardLoading></CardLoading>}>
+        <BusinessTotalInfo></BusinessTotalInfo>
+      </Suspense>
       <DataTableBlock
         loading={loading}
         columns={getColumns}
