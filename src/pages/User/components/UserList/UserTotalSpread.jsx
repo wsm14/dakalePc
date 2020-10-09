@@ -4,7 +4,10 @@ import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 
 const UserTotalSpread = ({ dispatch, loading, totalData }) => {
-  const dataCity = totalData.city.map((item) => ({ type: item.cityName, value: item.count }));
+  const dataCity = totalData.city.map((item) => ({
+    type: item.cityName == 'unknown' ? '未知' : item.cityName,
+    value: item.count,
+  }));
 
   const dataSex = [
     {
