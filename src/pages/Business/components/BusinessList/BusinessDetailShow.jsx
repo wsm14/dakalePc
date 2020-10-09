@@ -136,7 +136,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '账户类型',
       name: 'bankAccountType',
-      render: (val) => (val === 1 ? '对公（企业/组织机构）' : '对私（个体工商户）'),
+      render: (val) => (val === '1' ? '对公（企业/组织机构）' : '对私（个体工商户）'),
     },
     {
       label: '开户许可证',

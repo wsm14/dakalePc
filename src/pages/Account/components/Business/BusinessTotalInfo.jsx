@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
+
+const dDate = moment().subtract(1, 'day');
 
 const BusinessTotalInfo = ({
   dispatch,
@@ -41,6 +44,9 @@ const BusinessTotalInfo = ({
         searchItems={searchItems}
         handleSearch={fetchBusinessTotal}
         btnExtra={btnExtra}
+        initialValues={{
+          beginDate: [dDate, dDate],
+        }}
       ></SearchCondition>
       <Spin spinning={!!loading}>
         <Row gutter={16} align="middle">
