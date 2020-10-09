@@ -2,7 +2,14 @@ import request from '@/utils/request';
 
 // get 家主列表 - 统计数据
 export async function fetchMasterTotal(params) {
-  return request('/admin/auth/getOwnInfos', {
+  return request('/admin/circleManagement/getFamilyStatistic', {
+    params,
+  });
+}
+
+// get 家主列表 - 统计数据
+export async function fetchMasterTotalList(params) {
+  return request('/admin/circleManagement/getFamilyRankStatistic', {
     params,
   });
 }

@@ -1,10 +1,18 @@
 import {
   fetchMasterTotal,
+  fetchMasterTotalList,
   fetchMasterList,
   fetchMasterFamily,
   fetchMasterShop,
   fetchMasterIncomeDetails,
 } from '@/services/CircleServices';
+
+const data1 = [
+  {
+    statisticDesc: '无',
+    content: 0,
+  },
+];
 
 export default {
   namespace: 'circleMaster',
@@ -12,7 +20,13 @@ export default {
   state: {
     masterList: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
-    totalData: {},
+    masterTotal: data1,
+    incomeTotal: data1,
+    totalListData: [
+      { type: 'childUserCount', rankList: [] },
+      { type: 'childMerchantCount', rankList: [] },
+      { type: 'familyEarnRank', rankList: [] },
+    ],
   },
 
   reducers: {
@@ -64,11 +78,30 @@ export default {
     *fetchMasterTotal({ payload }, { call, put }) {
       const response = yield call(fetchMasterTotal, payload);
       if (!response) return;
-      const { content } = response;
+      const { earn, parent } = response.content;
       yield put({
         type: 'save',
         payload: {
-          totalData: content.userMerchantList,
+          masterTotal: parent.map((item) => ({
+            content: Number(item.content),
+            statisticDesc: item.statisticDesc,
+          })),
+          incomeTotal: earn.map((item) => ({
+            content: Number(item.content),
+            statisticDesc: item.statisticDesc,
+          })),
+        },
+      });
+    },
+    *fetchMasterTotalList({ payload }, { call, put }) {
+      const response = yield call(fetchMasterTotalList, payload);
+      if (!response) return;
+      const { content } = response;
+      if (!content.records.length) return;
+      yield put({
+        type: 'save',
+        payload: {
+          totalListData: content.records,
         },
       });
     },

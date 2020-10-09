@@ -95,7 +95,7 @@ const CircleMasterList = (props) => {
 
   return (
     <>
-      {/* <MasterTotalInfo /> */}
+      <MasterTotalInfo />
       <DataTableBlock
         loading={loading}
         columns={getColumns}
