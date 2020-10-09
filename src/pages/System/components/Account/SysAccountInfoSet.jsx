@@ -27,6 +27,10 @@ const SysAccountRoleSet = (props) => {
         maxLength: 20,
       },
       {
+        label: '登录密码',
+        name: 'password',
+      },
+      {
         label: '手机号',
         name: 'mobile',
       },

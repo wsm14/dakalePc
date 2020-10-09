@@ -5,13 +5,30 @@ import {
   fetchUserRechargeDetail,
 } from '@/services/AccountServices';
 
+const data1 = [
+  {
+    statisticDesc: '无',
+    content: 0,
+  },
+];
+
+const data2 = [
+  {
+    statisticDesc: '无',
+    content: 0,
+  },
+];
+
 export default {
   namespace: 'accountUser',
 
   state: {
     userlist: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
-    totalData: {},
+    userTotalIn: 0,
+    userTotalOut: 0,
+    indata: data1,
+    outdata: data2,
   },
 
   reducers: {
@@ -62,11 +79,34 @@ export default {
     *fetchUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountUserTotal, payload);
       if (!response) return;
-      const { content } = response;
+      const { in: indata, out: outdata } = response.content;
+      const userTotalIn = indata.length
+        ? indata.filter((item) => item.statisticType == 'userTotalIn')[0].content
+        : 0;
+      const userTotalOut = outdata.length
+        ? outdata.filter((item) => item.statisticType == 'userTotalOut')[0].content
+        : 0;
       yield put({
         type: 'save',
         payload: {
-          totalData: content.userMerchantList,
+          userTotalIn,
+          userTotalOut,
+          indata: indata.length
+            ? indata
+                .filter((item) => item.statisticType != 'userTotalIn')
+                .map((item) => ({
+                  content: Number(item.content),
+                  statisticDesc: item.statisticDesc.replace('用户', ''),
+                }))
+            : data1,
+          outdata: outdata.length
+            ? outdata
+                .filter((item) => item.statisticType != 'userTotalOut')
+                .map((item) => ({
+                  content: Number(item.content),
+                  statisticDesc: item.statisticDesc.replace('用户', ''),
+                }))
+            : data2,
         },
       });
     },

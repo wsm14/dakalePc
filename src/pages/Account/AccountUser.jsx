@@ -91,7 +91,7 @@ const AccountUserList = (props) => {
 
   return (
     <>
-      {/* <UserTotalInfo></UserTotalInfo> */}
+      <UserTotalInfo></UserTotalInfo>
       <DataTableBlock
         loading={loading}
         columns={getColumns}

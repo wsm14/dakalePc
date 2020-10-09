@@ -51,9 +51,11 @@ const LoginItem = ({ prop, loading }) => {
       return;
     }
     if (list[0].subAuthAccessDTOList.length) {
-      history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
+      // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
+      history.replace(list[0].subAuthAccessDTOList[0].accessUrl);
     } else {
-      history.replace(redirect || list[0].accessUrl);
+      // history.replace(redirect || list[0].accessUrl);
+      history.replace(list[0].accessUrl);
     }
   };
 

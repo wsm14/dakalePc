@@ -6,13 +6,30 @@ import {
   fetchBusinessRechargeDetail,
 } from '@/services/AccountServices';
 
+const data1 = [
+  {
+    statisticDesc: '无',
+    content: 0,
+  },
+];
+
+const data2 = [
+  {
+    statisticDesc: '无',
+    content: 0,
+  },
+];
+
 export default {
   namespace: 'accountBusiness',
 
   state: {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
-    totalData: {},
+    indata: [],
+    outdata: [],
+    merchantTotalIncome: 0,
+    merchantTotalOut: 0,
   },
 
   reducers: {
@@ -64,11 +81,34 @@ export default {
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountBusinessTotal, payload);
       if (!response) return;
-      const { content } = response;
+      const { in: indata, out: outdata } = response.content;
+      const merchantTotalIncome = indata.length
+        ? indata.filter((item) => item.statisticType == 'merchantTotalIncome')[0].content
+        : 0;
+      const merchantTotalOut = outdata.length
+        ? outdata.filter((item) => item.statisticType == 'merchantTotalOut')[0].content
+        : 0;
       yield put({
         type: 'save',
         payload: {
-          totalData: content.userMerchantList,
+          merchantTotalIncome,
+          merchantTotalOut,
+          indata: indata.length
+            ? indata
+                .filter((item) => item.statisticType != 'merchantTotalIncome')
+                .map((item) => ({
+                  content: Number(item.content),
+                  statisticDesc: item.statisticDesc.replace('商家', ''),
+                }))
+            : data1,
+          outdata: outdata.length
+            ? outdata
+                .filter((item) => item.statisticType != 'merchantTotalOut')
+                .map((item) => ({
+                  content: Number(item.content),
+                  statisticDesc: item.statisticDesc.replace('商家', ''),
+                }))
+            : data2,
         },
       });
     },
