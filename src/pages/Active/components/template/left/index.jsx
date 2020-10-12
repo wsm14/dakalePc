@@ -35,12 +35,24 @@ const ActiveTemplateLeft = (props) => {
   }, [id]);
 
   // 选择组件 向reducer储存当前选择组件，显示组件编辑面板
-  const handlePanelChange = (e) => {
-    const checkData = moduleData.filter((i) => i.id === id);
+  const handlePanelChange = (e, ftype) => {
+    const nowID = ftype === 'public' ? e.target.value : id;
+    if (ftype === 'public') {
+      dispatchData({
+        type: 'showPanel',
+        payload: {
+          id: e.target.value, // 组件id
+          type: 'script', // 组件类型
+          height: 757, // 组件高
+          ptype: ftype, // 组件选项面板类型
+        },
+      });
+    }
+    const checkData = moduleData.filter((i) => i.id === nowID);
     dispatchData({
       type: 'showEditor',
       payload: {
-        id, // 需要编辑的组件id
+        id: nowID, // 需要编辑的组件id
         type: e.target.value,
         moduleEditData: checkData.length
           ? checkData[0].type === e.target.value
@@ -66,8 +78,8 @@ const ActiveTemplateLeft = (props) => {
                 <Radio.Group
                   value={showEditor.type}
                   className={styles.aT_Left_RadioGroup}
-                  onChange={handlePanelChange}
-                  disabled={ptype !== item.type}
+                  onChange={(e) => handlePanelChange(e, item.type)}
+                  disabled={ptype !== item.type && item.type !== 'public'}
                 >
                   {item.children.map((children) => (
                     <Radio.Button value={children.type} key={children.text}>

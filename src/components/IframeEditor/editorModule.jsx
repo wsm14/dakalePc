@@ -4,6 +4,7 @@ import carouseal from './Carouseal';
 import title from './Title';
 import textArea from './TextArea';
 import square from './Square';
+import userInfo from './UserInfo';
 
 const IEditor = {
   solaImg,
@@ -11,6 +12,7 @@ const IEditor = {
   title,
   carouseal,
   textArea,
-  square
+  square,
+  userInfo,
 };
 export { IEditor };

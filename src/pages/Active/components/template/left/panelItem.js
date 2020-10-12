@@ -1,4 +1,5 @@
 import {
+  UserOutlined,
   TableOutlined,
   PictureOutlined,
   FontSizeOutlined,
@@ -15,6 +16,17 @@ import {
  * @type  组件类型
  */
 const panelItem = [
+  {
+    header: '通用配置',
+    type: 'public',
+    children: [
+      {
+        icon: <UserOutlined style={{ fontSize: 24 }} />,
+        text: '获取信息',
+        type: 'userInfo',
+      },
+    ],
+  },
   {
     header: '图片类',
     type: 'img',

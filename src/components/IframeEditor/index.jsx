@@ -34,7 +34,7 @@ const IframeEditor = (props) => {
       .getContent()
       .then((content) => {
         if (!content) return false;
-        const messageType = content.apiUrl ? 'script' : 'save';
+        const messageType = content.apiUrl !== undefined ? 'script' : 'save';
         onSave({ id: showPanel.id, type, messageType, content });
         return true;
       })

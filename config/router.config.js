@@ -89,6 +89,22 @@ export default [
         ],
       },
       {
+        name: '哒人管理',
+        path: '/expert',
+        routes: [
+          {
+            path: '/expert/uaerlist',
+            name: '哒人列表',
+            component: './Market/MarketCardPeasPark',
+          },
+          {
+            path: '/expert/set',
+            name: '创作设置',
+            component: './Market/MarketCardActivity',
+          },
+        ],
+      },
+      {
         name: '营销管理',
         path: '/market',
         routes: [
