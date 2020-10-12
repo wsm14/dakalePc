@@ -7,10 +7,11 @@ import styles from '../style.less';
 
 const ActiveTemplateIframe = (props) => {
   const { context } = props;
-  const { info, showPanel, dispatchData, iframeRef, componentsShow } = useContext(context);
+  const { info, showPanel, dispatchData, iframeHeight, iframeRef, componentsShow } = useContext(
+    context,
+  );
 
   const [iframeShow, setIframeShow] = useState(true); // iframe 加载等待
-
 
   // ifarme 选择回调
   const handleIframeClick = (e) => {
@@ -32,6 +33,12 @@ const ActiveTemplateIframe = (props) => {
       switch (type) {
         case 'select':
           handleIframeClick(e);
+          return;
+        case 'getHeight':
+          dispatchData({
+            type: 'saveIFrameHeight',
+            payload: { iframeHeight: e.data.payload },
+          });
           return;
         case 'getHtml':
           dispatchData({
@@ -66,7 +73,7 @@ const ActiveTemplateIframe = (props) => {
                 onLoad={() => setIframeShow(false)}
                 scrolling="no"
                 src={`${info.templateUrl}`}
-                style={{ height: 757 }}
+                style={{ height: iframeHeight }}
               ></iframe>
             </div>
           </Spin>

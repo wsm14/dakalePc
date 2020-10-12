@@ -3,6 +3,7 @@
  */
 export const reducerValue = {
   show: false, // 模版编辑是否显示
+  iframeHeight: 757, // iframe高度
   // 模版信息
   info: {
     img: '', // 模版封面
@@ -49,6 +50,11 @@ export const fetchReducerEdit = (state, action) => {
   switch (action.type) {
     case 'initialize':
       return reducerValue;
+    case 'saveIFrameHeight':
+      return {
+        ...state,
+        ...action.payload,
+      };
     case 'saveInfo':
       return {
         ...state,

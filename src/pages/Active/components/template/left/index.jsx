@@ -10,6 +10,7 @@ const ActiveTemplateLeft = (props) => {
   const {
     // 组件选项打开类型
     showPanel: { id, ptype },
+    iframeHeight,
     moduleData,
     showEditor,
     dispatchData,
@@ -43,7 +44,7 @@ const ActiveTemplateLeft = (props) => {
         payload: {
           id: e.target.value, // 组件id
           type: 'script', // 组件类型
-          height: 757, // 组件高
+          height: iframeHeight, // 组件高
           ptype: ftype, // 组件选项面板类型
         },
       });

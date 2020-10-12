@@ -5,6 +5,7 @@ import {
   FontSizeOutlined,
   AppstoreOutlined,
   AlignLeftOutlined,
+  MenuOutlined,
 } from '@ant-design/icons';
 /**
  * 类型选项
@@ -72,6 +73,17 @@ const panelItem = [
         icon: <TableOutlined style={{ fontSize: 24 }} />,
         text: '宫格选项',
         type: 'square',
+      },
+    ],
+  },
+  {
+    header: '智能列表',
+    type: 'list',
+    children: [
+      {
+        icon: <MenuOutlined style={{ fontSize: 24 }} />,
+        text: '普通列表',
+        type: 'commonList',
       },
     ],
   },

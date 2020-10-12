@@ -5,6 +5,7 @@ import title from './Title';
 import textArea from './TextArea';
 import square from './Square';
 import userInfo from './UserInfo';
+import commonList from './CommonList';
 
 const IEditor = {
   solaImg,
@@ -14,5 +15,6 @@ const IEditor = {
   textArea,
   square,
   userInfo,
+  commonList,
 };
 export { IEditor };
