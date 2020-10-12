@@ -16,7 +16,10 @@ const ActiveTemplateHrard = (props) => {
       type: 'showActive',
       payload: { activePreviewQr: true },
     });
-    iframeRef.current.contentWindow.postMessage({ type: 'getHtml' }, '*');
+    iframeRef.current.contentWindow.postMessage(
+      { type: 'getHtml', payload: { name: info.activeName } },
+      '*',
+    );
   };
 
   // 获取activeUrl 文件名 覆盖原文件
