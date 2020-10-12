@@ -95,12 +95,17 @@ export default [
           {
             path: '/expert/uaerlist',
             name: '哒人列表',
-            component: './Market/MarketCardPeasPark',
+            component: './Expert/ExpertUserList',
           },
           {
             path: '/expert/set',
             name: '创作设置',
-            component: './Market/MarketCardActivity',
+            component: './Expert/ExpertSet',
+          },
+          {
+            path: '/expert/level',
+            name: '等级设置',
+            component: './Expert/ExpertLevel',
           },
         ],
       },

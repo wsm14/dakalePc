@@ -67,6 +67,7 @@ export const BANNER_TYPE = [
   { value: 'merchant', name: '到店打卡' },
   { value: 'person', name: '个人' },
   { value: 'near', name: '周边' },
+  { value: 'merchantMain', name: '商家主页' },
 ];
 
 // Banner跳转类型
