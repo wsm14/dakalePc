@@ -138,3 +138,26 @@ export function fetchMerBindBankList(params) {
     params,
   });
 }
+
+// get 支行设置 - 列表
+export function fetchMerBankSetList(params) {
+  return request('/admin/bankBranch/pageBankBranch', {
+    params,
+  });
+}
+
+// post 支行设置 - 新增
+export function fetchMerBankAdd(data) {
+  return request('/admin/bankBranch/saveBankBranch', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 支行设置 - 修改
+export function fetchMerBankEdit(data) {
+  return request('/admin/bankBranch/updateBankBranch', {
+    method: 'POST',
+    data,
+  });
+}

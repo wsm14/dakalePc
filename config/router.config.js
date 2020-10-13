@@ -67,6 +67,11 @@ export default [
             component: './Business/BusinessRegister',
           },
           {
+            path: '/business/bankSet',
+            name: '支行设置',
+            component: './Business/BusinessBankSet',
+          },
+          {
             path: '/business/brand',
             name: '品牌',
             component: './Business/BusinessBrand',

@@ -1,6 +1,6 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
-const BusinessBrandSet = (props) => {
+const BusinessBankSet = (props) => {
   const { dispatch, childRef, tradeList } = props;
 
   // 新增
@@ -48,4 +48,4 @@ const BusinessBrandSet = (props) => {
   };
 };
 
-export default BusinessBrandSet;
+export default BusinessBankSet;
