@@ -183,7 +183,7 @@ export default [
           },
           {
             path: '/service/limitPop',
-            name: '运营排除',
+            name: '人员排除',
             component: './Service/ServiceLimitPop',
           },
         ],
