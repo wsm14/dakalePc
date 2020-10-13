@@ -181,6 +181,11 @@ export default [
             name: '商户视频',
             component: './Service/ServiceBusinessVideo',
           },
+          {
+            path: '/service/limitPop',
+            name: '运营排除',
+            component: './Service/ServiceLimitPop',
+          },
         ],
       },
       {

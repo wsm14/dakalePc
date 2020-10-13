@@ -52,3 +52,18 @@ export function fetchNewsStatus(data) {
     data,
   });
 }
+
+// get 限制业务员 - 列表
+export async function fetchLimitPopList(params) {
+  return request('/admin/recommendReward/listRecommendReward', {
+    params,
+  });
+}
+
+// post 限制业务员 - 新增人员
+export function fetchLimitPopAdd(data) {
+  return request('/admin/recommendReward/saveRecommendReward', {
+    method: 'POST',
+    data,
+  });
+}
