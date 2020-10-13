@@ -252,11 +252,12 @@ const FormCondition = ({
             loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}
-            filterOption={item.filterOption || false}
+            filterOption={item.filterOption || true}
             onSearch={item.onSearch}
             onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}
             style={{ width: '100%' }}
+            optionFilterProp="children"
           >
             {select.map((data, j) => {
               if (data) {

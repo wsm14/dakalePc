@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchMerBankSetList,
+  fetchMerBankAll,
   fetchMerBankAdd,
   fetchMerBankEdit,
 } from '@/services/BusinessServices';
@@ -11,6 +12,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    bankTopArr: [],
   },
 
   reducers: {
@@ -32,6 +34,17 @@ export default {
         payload: {
           list: content.recordList,
           total: content.total,
+        },
+      });
+    },
+    *fetchMerBankTop({ payload }, { call, put }) {
+      const response = yield call(fetchMerBankAll, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          bankTopArr: content.bankNameList,
         },
       });
     },

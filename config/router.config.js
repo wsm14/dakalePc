@@ -37,6 +37,11 @@ export default [
         ],
       },
       {
+        name: '修改密码',
+        path: '/password',
+        component: './System/SysPassWord',
+      },
+      {
         name: '用户管理',
         path: '/user',
         routes: [

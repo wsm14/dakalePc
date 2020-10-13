@@ -146,6 +146,13 @@ export function fetchMerBankSetList(params) {
   });
 }
 
+// get 支行设置 - 总行列表
+export function fetchMerBankAll(params) {
+  return request('/admin/bankBranch/listBankName', {
+    params,
+  });
+}
+
 // post 支行设置 - 新增
 export function fetchMerBankAdd(data) {
   return request('/admin/bankBranch/saveBankBranch', {

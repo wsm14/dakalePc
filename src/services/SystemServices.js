@@ -261,3 +261,11 @@ export function fetchTradeSet(data) {
     data,
   });
 }
+
+// post 帐号设置 - 修改密码
+export function fetchPassWordEdit(data) {
+  return request('/admin/auth/changePassword', {
+    method: 'POST',
+    data,
+  });
+}

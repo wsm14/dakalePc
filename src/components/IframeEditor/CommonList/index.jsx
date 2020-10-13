@@ -12,7 +12,7 @@ const CommonList = (props) => {
       name: 'apiUrl',
       select: [
         { value: '/user/marketCoupon/listMarketCoupon', name: '当季热卖' },
-        { value: '/user/marketCoupon/listMarketCoupon', name: '热门商品' },
+        { value: '/user/userMerchant/recommendMerchantList', name: '推荐商家' },
         { value: '/user/marketCoupon/listMarketCoupon', name: '热销爆款' },
         { value: '/user/marketCoupon/listMarketCoupon', name: '潜力新品' },
       ],

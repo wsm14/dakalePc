@@ -1,14 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import bankSet from './components/BankSet/businessBankSet';
+import BankSet from './components/BankSet/businessBankSet';
 
 const BusinessBankSetContent = (props) => {
   const { businessBankSet, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState({ show: false, info: {} });
   // 搜索参数
   const searchItems = [
     {
@@ -37,7 +38,7 @@ const BusinessBankSetContent = (props) => {
           formItems={[
             {
               type: 'edit',
-              click: () => handleBankSet(record),
+              click: () => setVisible({ show: true, info: record }),
             },
           ]}
         />
@@ -45,29 +46,45 @@ const BusinessBankSetContent = (props) => {
     },
   ];
 
-  // 新增
-  const handleBankSet = (initialValues) => {
+  // 获取总行列表
+  const fetchMerBankTop = () => {
     dispatch({
-      type: 'drawerForm/show',
-      payload: bankSet({ dispatch, childRef, initialValues }),
+      type: 'businessBankSet/fetchMerBankTop',
     });
   };
 
+  useEffect(() => {
+    fetchMerBankTop();
+  }, []);
+
   return (
-    <DataTableBlock
-      btnExtra={
-        <Button className="dkl_green_btn" key="1" onClick={() => handleBankSet()}>
-          新增
-        </Button>
-      }
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.bankBranchIdString}`}
-      dispatchType="businessBankSet/fetchGetList"
-      {...businessBankSet}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        btnExtra={
+          <Button
+            className="dkl_green_btn"
+            key="1"
+            onClick={() => setVisible({ show: true, info: {} })}
+          >
+            新增
+          </Button>
+        }
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.bankBranchIdString}`}
+        dispatchType="businessBankSet/fetchGetList"
+        {...businessBankSet}
+      ></DataTableBlock>
+      <BankSet
+        cRef={childRef}
+        bankTopArr={businessBankSet.bankTopArr}
+        initialValues={visible.info}
+        visible={visible.show}
+        onClose={() => setVisible({ show: false, info: {} })}
+      ></BankSet>
+    </>
   );
 };
 

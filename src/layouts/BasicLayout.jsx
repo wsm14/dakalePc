@@ -34,7 +34,6 @@ const BasicLayout = (props) => {
     const obj = match.pathname.split('/');
     return [`/${obj[1]}`];
   }); // 菜单展开的keys
-
   // 本地菜单
   // const menuDataRender = (menuList, keys = true) => {
   //   return menuList.map((item) => {
@@ -68,6 +67,12 @@ const BasicLayout = (props) => {
       return localItem;
     });
   };
+
+  useEffect(() => {
+    if (match.pathname === '/password') {
+      setSelectedKeys([]);
+    }
+  }, [match]);
 
   useEffect(() => {
     if (dispatch) {
