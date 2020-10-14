@@ -4,7 +4,7 @@ import { Statistic, Card } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const ExpertUserList = (props) => {
-  const { list, loading, dispatch } = props;
+  const { list, loading, dispatch, userTotal } = props;
 
   const childRef = useRef();
 
@@ -39,24 +39,23 @@ const ExpertUserList = (props) => {
     {
       title: '粉丝数',
       align: 'center',
-      dataIndex: 'gender',
-      render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
+      dataIndex: 'follower',
     },
     {
       title: '关注数',
       align: 'center',
-      dataIndex: 'realNameStatus',
+      dataIndex: 'attention',
     },
     {
       title: '获赞与被收藏',
       align: 'center',
-      dataIndex: 'residentAddress',
-      render: (val) => val || '-',
+      dataIndex: 'likeAmount',
+      render: (val, record) => `${val} || ${record.collectionAmount}`,
     },
     {
       title: '推店数',
       align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'merchantCount',
     },
     {
       title: '解锁时间',
@@ -72,7 +71,7 @@ const ExpertUserList = (props) => {
         style={{ marginBottom: 16 }}
         bodyStyle={{ display: 'flex', alignItems: 'center', padding: '10px 24px' }}
       >
-        哒人总数： <Statistic value={1000}></Statistic>
+        哒人总数： <Statistic value={userTotal}></Statistic>
       </Card>
       <DataTableBlock
         cRef={childRef}
@@ -82,13 +81,13 @@ const ExpertUserList = (props) => {
         rowKey={(record) => `${record.userIdString}`}
         NoSearch={true}
         dispatchType="userList/fetchGetList"
-        list={list}
+        {...list}
       ></DataTableBlock>
     </>
   );
 };
 
-export default connect(({ userList, loading }) => ({
-  list: userList.list,
-  loading: loading.effects['userList/fetchGetList'],
+export default connect(({ expertUserList, loading }) => ({
+  ...expertUserList,
+  loading: loading.models.expertUserList,
 }))(ExpertUserList);
