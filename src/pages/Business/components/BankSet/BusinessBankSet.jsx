@@ -22,7 +22,7 @@ const BusinessBrandSet = (props) => {
         type: {
           false: 'businessBankSet/fetchMerBankAdd',
           true: 'businessBankSet/fetchMerBankEdit',
-        }[!!initialValues],
+        }[!!initialValues.bankBranchIdString],
         payload: {
           ...initialValues,
           bankBranchId: initialValues && initialValues.bankBranchIdString,
