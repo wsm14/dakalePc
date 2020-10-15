@@ -36,7 +36,11 @@ const ExpertSet = (props) => {
             {
               type: 'edit',
               visible: record.parentDomainId !== 0,
-              click: () => handleClassifySet({ domainId: val, domainName: record.domainName }),
+              click: () =>
+                handleClassifySet({
+                  ...record,
+                  parentDomainId: null,
+                }),
             },
             {
               type: 'del',
@@ -94,7 +98,7 @@ const ExpertSet = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.id}`}
+        rowKey={(record) => `${record.domainId}`}
         dispatchType="expertSet/fetchGetList"
         {...list}
         expandable={{ childrenColumnName: ['domainDTOList'] }}
