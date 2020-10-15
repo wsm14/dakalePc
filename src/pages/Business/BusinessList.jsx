@@ -197,6 +197,7 @@ const BusinessListComponent = (props) => {
     <>
       <Suspense fallback={<CardLoading></CardLoading>}>
         <BusinessTotalInfo
+          key="businessTotalInfo"
           btnExtra={
             <>
               <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
@@ -236,10 +237,7 @@ const BusinessListComponent = (props) => {
         visible={visibleDetail}
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
-      <BusinessQrCode
-        visible={visibleQrcode}
-        onClose={() => setVisibleQrcode('')}
-      ></BusinessQrCode>
+      <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
     </>
   );
 };

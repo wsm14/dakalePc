@@ -10,8 +10,10 @@ import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect, useLocation } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
+// import HeaderContent from '@/components/GlobalHeader/HeaderContent';
 import DrawerModalForm from '@/components/DrawerModalForm';
 import iconEnum from '@/common/iconEnum';
+import PageTab from './PageTab';
 import logo from '../../public/favicon.png';
 
 const BasicLayout = (props) => {
@@ -71,6 +73,8 @@ const BasicLayout = (props) => {
   useEffect(() => {
     if (match.pathname === '/password') {
       setSelectedKeys([]);
+    } else {
+      setSelectedKeys([match.pathname]);
     }
   }, [match]);
 
@@ -145,31 +149,16 @@ const BasicLayout = (props) => {
       // footerRender={() => defaultFooterDom}
       // menuDataRender={menuDataRender}
       menuDataRender={() => menuDataRender(menuList)}
+      // headerRender={() => <HeaderContent />}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
     >
       <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-        <RouteContext.Consumer>
-          {(value) => {
-            const { breadcrumb } = value;
-            return (
-              <PageContainer
-                subTitle={
-                  breadcrumb.routes &&
-                  `${breadcrumb.routes.map((item) => item.breadcrumbName).join(' / ')}
-                  ${pageTitle.length > 0 ? ' / ' : ''}
-                  ${pageTitle.join(' / ')}`
-                }
-                title={false}
-                extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
-              >
-                {children}
-                <BackTop />
-              </PageContainer>
-            );
-          }}
-        </RouteContext.Consumer>
+        <PageTab>
+          {children}
+          <BackTop />
+        </PageTab>
       </RouteAuthority>
       <DrawerModalForm></DrawerModalForm>
     </ProLayout>

@@ -78,7 +78,7 @@ export default [
           },
           {
             path: '/business/brand',
-            name: '品牌',
+            name: '品牌数据',
             component: './Business/BusinessBrand',
           },
           {
