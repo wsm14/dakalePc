@@ -64,7 +64,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
           </Spin>
         </Col> */}
         <Col span={12}>
-          <Card bordered={false} bodyStyle={styles} loading={loading}>
+          <Card bordered={false} bodyStyle={styles} loading={loading} style={{ height: 100 }}>
             <Row gutter={[16, 16]} span={12} align="middle" style={{ height: 100, marginLeft: 10 }}>
               <Col span={8}>
                 <Statistic
