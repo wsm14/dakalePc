@@ -16,9 +16,8 @@ const BusinessAddBeas = (props) => {
     platformList,
     tradeList,
   } = props;
-
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
-  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] === 1);
+  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
   const [priceList, setPriceList] = useState([]);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(false);
@@ -183,11 +182,11 @@ const BusinessAddBeas = (props) => {
       type: 'cascader',
       name: 'topCategoryName',
       select: tradeList.filter((i) => i.categoryDTOList),
-      fieldNames: { label: 'categoryName', value: 'id', children: 'categoryDTOList' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val) => {
         setPriceList([]);
-        setAreaMust(val[0].id === 1);
-        fetchGetPlatform(val[0].id);
+        setAreaMust(val[0].categoryIdString === 1);
+        fetchGetPlatform(val[0].categoryIdString);
         form.setFieldsValue({
           categoryName: val,
           businessArea: undefined,

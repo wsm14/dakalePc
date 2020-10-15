@@ -1,4 +1,3 @@
-import { notification } from 'antd';
 import { fetchExpertUserTotal, fetchExpertUserList } from '@/services/ExpertServices';
 
 export default {
@@ -26,7 +25,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.recordList },
+          list: { list: [content] },
         },
       });
     },

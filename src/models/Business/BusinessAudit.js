@@ -63,12 +63,12 @@ export default {
           { value: c, label: cN },
           { value: d, label: dN },
         ],
-        topCategoryName: [Number(categoryNodeArr[0]), Number(categoryNodeArr[1])],
+        topCategoryName: [categoryNodeArr[0], categoryNodeArr[1]],
         otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
         bondBean: { value: bondBean, key: commissionRatio },
         categoryName: [
-          { id: Number(categoryNodeArr[0]), name: topCategoryName },
-          { id: Number(categoryNodeArr[1]), name: categoryName },
+          { id: categoryNodeArr[0], name: topCategoryName },
+          { id: categoryNodeArr[1], name: categoryName },
         ],
         commissionRatio: bondBean,
       };

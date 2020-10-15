@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
 import { Statistic, Card } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -14,19 +14,10 @@ const ExpertUserList = (props) => {
       label: '手机号',
       name: 'mobile',
     },
-    {
-      label: '哒人号',
-      name: 'mobiles',
-    },
   ];
 
   // table 表头
   const getColumns = [
-    {
-      title: '哒人号',
-      fixed: 'left',
-      dataIndex: 'userIdString',
-    },
     {
       title: '手机号',
       dataIndex: 'mobile',
@@ -34,7 +25,7 @@ const ExpertUserList = (props) => {
     {
       title: '发布分享',
       align: 'left',
-      dataIndex: 'username',
+      dataIndex: 'momentCount',
     },
     {
       title: '粉丝数',
@@ -57,13 +48,18 @@ const ExpertUserList = (props) => {
       align: 'center',
       dataIndex: 'merchantCount',
     },
-    {
-      title: '解锁时间',
-      align: 'center',
-      dataIndex: 'status',
-      render: (val) => ACCOUNT_STATUS[val],
-    },
   ];
+
+  // 统计数
+  const fetchExpertUserTotal = () => {
+    dispatch({
+      type: 'expertUserList/fetchExpertUserTotal',
+    });
+  };
+
+  useEffect(() => {
+    fetchExpertUserTotal();
+  }, []);
 
   return (
     <>
@@ -80,7 +76,7 @@ const ExpertUserList = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
         NoSearch={true}
-        dispatchType="userList/fetchGetList"
+        dispatchType="expertUserList/fetchGetList"
         {...list}
       ></DataTableBlock>
     </>
