@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import CardLoading from '@/components/CardLoading';
@@ -16,6 +18,8 @@ const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessT
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, loading, dispatch } = props;
+
+  const match = useLocation();
 
   const childRef = useRef();
   const [visible, setVisible] = useState({});
@@ -195,33 +199,37 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
-      <Suspense fallback={<CardLoading></CardLoading>}>
-        <BusinessTotalInfo
-          key="businessTotalInfo"
-          btnExtra={
-            <>
-              <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
-                新增商户
-              </Button>
-              <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
-                设置商家验证码
-              </Button>
-            </>
-          }
-        ></BusinessTotalInfo>
-      </Suspense>
-      <DataTableBlock
-        cRef={childRef}
-        loading={
-          loading.effects['businessList/fetchGetList'] ||
-          loading.effects['businessList/fetchMerchantDetail']
-        }
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userMerchantIdString}`}
-        dispatchType="businessList/fetchGetList"
-        {...businessList}
-      ></DataTableBlock>
+      <KeepAlive name="商户数据" url={match.pathname} saveScrollPosition="screen">
+        <>
+          <Suspense fallback={<CardLoading></CardLoading>}>
+            <BusinessTotalInfo
+              key="businessTotalInfo"
+              btnExtra={
+                <>
+                  <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+                    新增商户
+                  </Button>
+                  <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
+                    设置商家验证码
+                  </Button>
+                </>
+              }
+            ></BusinessTotalInfo>
+          </Suspense>
+          <DataTableBlock
+            cRef={childRef}
+            loading={
+              loading.effects['businessList/fetchGetList'] ||
+              loading.effects['businessList/fetchMerchantDetail']
+            }
+            columns={getColumns}
+            searchItems={searchItems}
+            rowKey={(record) => `${record.userMerchantIdString}`}
+            dispatchType="businessList/fetchGetList"
+            {...businessList}
+          ></DataTableBlock>
+        </>
+      </KeepAlive>
       <BusinessAdd
         cRef={childRef}
         visible={visibleAdd}

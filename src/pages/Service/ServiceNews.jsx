@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { NEWS_STATUS } from '@/common/constant';
 import { Card } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
@@ -7,6 +9,8 @@ import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessVideoSet from './components/BusinessVideo/BusinessVideoSet';
+
+const match = useLocation();
 
 const tabList = [
   {

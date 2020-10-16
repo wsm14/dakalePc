@@ -1,6 +1,5 @@
 import React from 'react';
 import { Column } from '@ant-design/charts';
-import autoHeight from '../autoHeight';
 
 const ColumnChart = (props) => {
   const {
@@ -26,4 +25,4 @@ const ColumnChart = (props) => {
   return <Column {...config} />;
 };
 
-export default autoHeight()(ColumnChart);
+export default ColumnChart;

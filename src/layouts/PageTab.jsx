@@ -10,7 +10,6 @@ import { connect } from 'dva';
 import { history } from 'umi';
 import React, { Component } from 'react';
 import { message, Tabs, Menu, Dropdown, Tooltip } from 'antd';
-import PageTabs from './DraggableTabs';
 import pageTabStyle from './PageTab.less';
 
 const { TabPane } = Tabs;
@@ -21,7 +20,7 @@ const getTitle = (cb = () => {}) => {
     <div style={{ fontSize: 14, width: 380 }}>
       <div>1、点击鼠标右键可以操作标签页面；</div>
       <div>
-        2、双击标签页标题可以刷新当前页； 我已知道，
+        2、双击标签页标题可以刷新当前页； 
         <span
           style={{ cursor: 'pointer', textDecoration: 'underline' }}
           onClick={() => {
@@ -62,14 +61,6 @@ const menu = (obj) => {
         }}
       >
         <span title={`刷新-${title}`}>刷新当前页面</span>
-      </Menu.Item>
-      <Menu.Item
-        // onContextMenu={preventDefault}
-        onClick={() => {
-          window.location.reload(true);
-        }}
-      >
-        <span title="强制刷新浏览器">刷新浏览器</span>
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item
@@ -141,21 +132,16 @@ class App extends Component {
     const { pages } = this.state;
     const myPage = Object.assign([], pages);
     // 如果是新开标签页，push到tabs标签页数组中，并设置当前激活页面
-    if (pathname !== '/' && !pages.some((page) => page.key === pathname)) {
+    if (pathname !== '/' && !pages.some(page => page.key === pathname)) {
       myPage.push({ key: pathname, title: pageName, content: children });
     }
     const keys = {};
-    const newpage = myPage.map((item) => {
+    myPage.forEach(item => {
       const { key } = item;
-      if (key === pathname) {
-        keys[key] = key;
-        return { ...item, content: children };
-      } else {
-        return { ...item, content: [] };
-      }
+      keys[key] = key;
     });
     this.setState({
-      pages: newpage,
+      pages: myPage,
       activeKey: pathname,
       keys,
     });
@@ -222,7 +208,7 @@ class App extends Component {
 
     return (
       <div>
-        <PageTabs
+        <Tabs
           className={`page-tab ${pageTabStyle.page}`}
           hideAdd
           activeKey={activeKey}
@@ -266,7 +252,7 @@ class App extends Component {
               </TabPane>
             );
           })}
-        </PageTabs>
+        </Tabs>
       </div>
     );
   }

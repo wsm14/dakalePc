@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
@@ -10,6 +12,7 @@ import UserTotalSpread from './components/UserList/UserTotalSpread';
 const UserListComponent = (props) => {
   const { list, loading, dispatch } = props;
 
+  const match = useLocation();
   const childRef = useRef();
 
   // 搜索参数

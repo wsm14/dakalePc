@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import { BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -11,6 +13,7 @@ import SysAppSetForm from './components/App/SysAppSet';
 const SysAppSet = (props) => {
   const { sysAppList, loading, dispatch } = props;
 
+  const match = useLocation();
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
 

@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { FEEDBACK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -9,6 +11,7 @@ import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 const ServiceFeedBack = (props) => {
   const { list, loading } = props;
 
+  const match = useLocation();
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 

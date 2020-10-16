@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import RightContent from './RightContent';
+import KeepAliveTabs from './KeepAliveTabs';
 import styles from './index.less';
 
 const HeaderContent = (props) => {
@@ -8,7 +9,9 @@ const HeaderContent = (props) => {
 
   return (
     <div className={className}>
-      <div style={{ flex: 1 }}></div>
+      <div style={{ flex: 1 }}>
+        <KeepAliveTabs></KeepAliveTabs>
+      </div>
       <RightContent {...props}></RightContent>
     </div>
   );

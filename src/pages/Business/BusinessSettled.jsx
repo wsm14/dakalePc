@@ -1,11 +1,14 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessSettled = (props) => {
   const { businessSettled, loading } = props;
 
   const childRef = useRef();
+  const match = useLocation();
 
   // 搜索参数
   const searchItems = [

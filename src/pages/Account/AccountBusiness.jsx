@@ -1,5 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import CardLoading from '@/components/CardLoading';
@@ -10,6 +12,7 @@ const BusinessTotalInfo = lazy(() => import('./components/Business/BusinessTotal
 const AccountBusinessList = (props) => {
   const { list, loading, dispatch } = props;
 
+  const match = useLocation();
   const [visible, setVisible] = useState('');
 
   // 搜索参数
@@ -102,20 +105,22 @@ const AccountBusinessList = (props) => {
   }, [visible]);
 
   return (
-    <>
-      <Suspense fallback={<CardLoading></CardLoading>}>
-        <BusinessTotalInfo></BusinessTotalInfo>
-      </Suspense>
-      <DataTableBlock
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userMerchantIdString}`}
-        dispatchType="accountBusiness/fetchGetList"
-        {...list}
-      ></DataTableBlock>
-      <BusinessDetailList visible={visible} setVisible={setVisible}></BusinessDetailList>
-    </>
+    <KeepAlive name="商家账户" url={match.pathname} saveScrollPosition="screen">
+      <>
+        <Suspense fallback={<CardLoading></CardLoading>}>
+          <BusinessTotalInfo></BusinessTotalInfo>
+        </Suspense>
+        <DataTableBlock
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          rowKey={(record) => `${record.userMerchantIdString}`}
+          dispatchType="accountBusiness/fetchGetList"
+          {...list}
+        ></DataTableBlock>
+        <BusinessDetailList visible={visible} setVisible={setVisible}></BusinessDetailList>
+      </>
+    </KeepAlive>
   );
 };
 

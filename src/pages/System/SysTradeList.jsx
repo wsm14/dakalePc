@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -10,6 +12,7 @@ import TradePlatformDetailList from './components/Trade/TradePlatformDetailList'
 const SysTradeSet = (props) => {
   const { list, loading, dispatch } = props;
 
+  const match = useLocation();
   const childRef = useRef();
   const [visible, setVisible] = useState('');
   const [pvisible, setPVisible] = useState('');

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Donut } from '@ant-design/charts';
-import autoHeight from '../autoHeight';
 
 const DonutChart = (props) => {
   const {
@@ -35,4 +34,4 @@ const DonutChart = (props) => {
   return <Donut {...config} />;
 };
 
-export default autoHeight()(DonutChart);
+export default DonutChart;

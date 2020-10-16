@@ -1,5 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import CardLoading from '@/components/CardLoading';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -10,6 +12,7 @@ const UserTotalInfo = lazy(() => import('./components/User/UserTotalInfo'));
 const AccountUserList = (props) => {
   const { userlist, loading, dispatch } = props;
 
+  const match = useLocation();
   const [visible, setVisible] = useState('');
 
   // 搜索参数
@@ -92,20 +95,22 @@ const AccountUserList = (props) => {
   }, [visible]);
 
   return (
-    <>
-      <Suspense fallback={<CardLoading></CardLoading>}>
-        <UserTotalInfo></UserTotalInfo>
-      </Suspense>
-      <DataTableBlock
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userIdString}`}
-        dispatchType="accountUser/fetchGetList"
-        {...userlist}
-      ></DataTableBlock>
-      <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
-    </>
+    <KeepAlive name="用户账户" url={match.pathname} saveScrollPosition="screen">
+      <>
+        <Suspense fallback={<CardLoading></CardLoading>}>
+          <UserTotalInfo></UserTotalInfo>
+        </Suspense>
+        <DataTableBlock
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          rowKey={(record) => `${record.userIdString}`}
+          dispatchType="accountUser/fetchGetList"
+          {...userlist}
+        ></DataTableBlock>
+        <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
+      </>
+    </KeepAlive>
   );
 };
 

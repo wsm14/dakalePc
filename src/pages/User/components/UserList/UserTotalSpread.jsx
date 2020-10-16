@@ -42,14 +42,14 @@ const UserTotalSpread = ({ dispatch, loading, totalData }) => {
       <Col span={12}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={dataCity} totalLabel="城市" />
+            <Donut data={dataCity} totalLabel="城市" height={276} />
           </Card>
         </Spin>
       </Col>
       <Col span={12}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={dataSex} totalLabel="性别" />
+            <Donut data={dataSex} totalLabel="性别" height={276}/>
           </Card>
         </Spin>
       </Col>

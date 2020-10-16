@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { Statistic, Card } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 

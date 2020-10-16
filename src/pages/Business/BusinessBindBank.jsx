@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessBindBank = (props) => {
   const { businessBindBank, loading } = props;
 
+  const match = useLocation();
   const childRef = useRef();
 
   // 搜索参数

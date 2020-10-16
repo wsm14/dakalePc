@@ -22,6 +22,9 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
+  nodeModulesTransform: {
+    type: 'none',
+  },
   targets: {
     ie: 11,
   },

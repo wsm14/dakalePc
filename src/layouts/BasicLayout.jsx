@@ -10,11 +10,11 @@ import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect, useLocation } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
-// import HeaderContent from '@/components/GlobalHeader/HeaderContent';
+import HeaderContent from '@/components/GlobalHeader/HeaderContent';
 import DrawerModalForm from '@/components/DrawerModalForm';
 import iconEnum from '@/common/iconEnum';
-import PageTab from './PageTab';
 import logo from '../../public/favicon.png';
+import { AliveScope } from 'react-activation';
 
 const BasicLayout = (props) => {
   const {
@@ -121,47 +121,66 @@ const BasicLayout = (props) => {
   };
 
   return (
-    <ProLayout
-      openKeys={openKeys}
-      selectedKeys={selectedKeys}
-      menuProps={{ onClick: (val) => setSelectedKeys(val.keyPath) }}
-      onOpenChange={onOpenChange}
-      onPageChange={handleCloseTitle}
-      logo={logo}
-      onCollapse={handleMenuCollapse}
-      menuItemRender={(menuItemProps, defaultDom) => {
-        if (menuItemProps.isUrl || !menuItemProps.path) {
-          return defaultDom;
-        }
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
-      }}
-      // breadcrumbRender={(routers = []) => [...routers]}
-      itemRender={(route, params, routes, paths) => {
-        // const first = routes.path === route.path;
-        // setTitle(routes.map((item) => item.breadcrumbName).join(' / '));
-        // return first ? (
-        //   <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-        // ) : (
-        //   <span>{route.breadcrumbName}</span>
-        // );
-        return false;
-      }}
-      // footerRender={() => defaultFooterDom}
-      // menuDataRender={menuDataRender}
-      menuDataRender={() => menuDataRender(menuList)}
-      // headerRender={() => <HeaderContent />}
-      rightContentRender={() => <RightContent />}
-      {...props}
-      {...settings}
-    >
-      <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-        <PageTab>
+    <AliveScope>
+      <ProLayout
+        openKeys={openKeys}
+        selectedKeys={selectedKeys}
+        menuProps={{ onClick: (val) => setSelectedKeys(val.keyPath) }}
+        onOpenChange={onOpenChange}
+        onPageChange={handleCloseTitle}
+        logo={logo}
+        onCollapse={handleMenuCollapse}
+        menuItemRender={(menuItemProps, defaultDom) => {
+          if (menuItemProps.isUrl || !menuItemProps.path) {
+            return defaultDom;
+          }
+          return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        }}
+        // breadcrumbRender={(routers = []) => [...routers]}
+        itemRender={(route, params, routes, paths) => {
+          // const first = routes.path === route.path;
+          // setTitle(routes.map((item) => item.breadcrumbName).join(' / '));
+          // return first ? (
+          //   <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+          // ) : (
+          //   <span>{route.breadcrumbName}</span>
+          // );
+          return false;
+        }}
+        // footerRender={() => defaultFooterDom}
+        // menuDataRender={menuDataRender}
+        menuDataRender={() => menuDataRender(menuList)}
+        headerRender={() => <HeaderContent />}
+        rightContentRender={() => <RightContent />}
+        {...props}
+        {...settings}
+      >
+        <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
+          {/* <RouteContext.Consumer>
+            {(value) => {
+              const { breadcrumb } = value;
+              return (
+                <PageContainer
+                  subTitle={
+                    breadcrumb.routes &&
+                    `${breadcrumb.routes.map((item) => item.breadcrumbName).join(' / ')}
+                  ${pageTitle.length > 0 ? ' / ' : ''}
+                  ${pageTitle.join(' / ')}`
+                  }
+                  title={false}
+                  extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
+                >
+                  {children}
+                </PageContainer>
+              );
+            }}
+          </RouteContext.Consumer> */}
           {children}
-          <BackTop />
-        </PageTab>
-      </RouteAuthority>
-      <DrawerModalForm></DrawerModalForm>
-    </ProLayout>
+        </RouteAuthority>
+        <BackTop />
+        <DrawerModalForm></DrawerModalForm>
+      </ProLayout>
+    </AliveScope>
   );
 };
 

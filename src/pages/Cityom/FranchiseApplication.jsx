@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { FRANCHISE_APP_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -7,6 +9,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 const FranchiseApplication = (props) => {
   const { list, loading, dispatch } = props;
 
+  const match = useLocation();
   const childRef = useRef();
 
   // 搜索参数

@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
 import { Button, Upload, message } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -10,6 +12,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const BusinessExcelList = (props) => {
   const { loading, dispatch } = props;
 
+  const match = useLocation();
   const childRef = useRef();
   const [dataSource, setDataSource] = useState([]);
   const [initialValues, setInitialValues] = useState(false);
