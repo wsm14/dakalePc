@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -11,7 +9,6 @@ import MasterDetailList from './components/Master/MasterDetailList';
 const CircleMasterList = (props) => {
   const { masterList, loading, dispatch } = props;
 
-  const match = useLocation();
   const [visible, setVisible] = useState('');
 
   // 搜索参数
@@ -98,8 +95,8 @@ const CircleMasterList = (props) => {
 
   return (
     <>
-      <MasterTotalInfo />
       <DataTableBlock
+        keepName="家主列表"
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -108,7 +105,9 @@ const CircleMasterList = (props) => {
         pParams={{ searchData: { userType: 'user' } }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
-      ></DataTableBlock>
+      >
+        <MasterTotalInfo />
+      </DataTableBlock>
       <MasterDetailList visible={visible} setVisible={setVisible} />
     </>
   );

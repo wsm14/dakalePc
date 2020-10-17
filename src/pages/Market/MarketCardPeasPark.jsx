@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Card, Badge } from 'antd';
 import MarketCardRMing from './components/RMing/MarketCardRMing';
 import MarketCardNotice from './components/Notice/MarketCardNotice';
@@ -8,7 +6,6 @@ import style from './styles.less';
 
 const MarketCardPeasPark = () => {
   const [key, setKey] = useState('home');
-  const match = useLocation();
 
   return (
     <>

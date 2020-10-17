@@ -1,14 +1,10 @@
 import React from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessRegisterComponent = (props) => {
   const { businessRegister, loading } = props;
 
-  const match = useLocation();
-  
   // 搜索参数
   const searchItems = [
     {
@@ -39,6 +35,7 @@ const BusinessRegisterComponent = (props) => {
 
   return (
     <DataTableBlock
+      keepName="注册列表"
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}

@@ -1,8 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Card } from 'antd';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import sysAccountInfoSet from './components/Account/SysAccountInfoSet';
@@ -23,7 +21,6 @@ const tabList = [
 const SysAccountSet = (props) => {
   const { sysAccountList, loading, dispatch } = props;
 
-  const match = useLocation();
   const [tabkey, setTabKey] = useState('tab1');
   const [visible, setVisible] = useState({
     show: false,

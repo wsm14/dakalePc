@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button, Form, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -11,7 +9,6 @@ import SysRoleAllocation from './components/Role/SysRoleAllocation';
 const SysRoleList = (props) => {
   const { sysRoleList, loading, dispatch } = props;
 
-  const match = useLocation();
   const [form] = Form.useForm();
   const childRef = useRef();
   const [visible, setVisible] = useState({

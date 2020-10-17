@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Statistic, Card } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -64,24 +62,24 @@ const ExpertUserList = (props) => {
   }, []);
 
   return (
-    <>
+    <DataTableBlock
+      keepName="哒人列表"
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.userIdString}`}
+      NoSearch={true}
+      dispatchType="expertUserList/fetchGetList"
+      {...list}
+    >
       <Card
         style={{ marginBottom: 16 }}
         bodyStyle={{ display: 'flex', alignItems: 'center', padding: '10px 24px' }}
       >
         哒人总数： <Statistic value={userTotal}></Statistic>
       </Card>
-      <DataTableBlock
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userIdString}`}
-        NoSearch={true}
-        dispatchType="expertUserList/fetchGetList"
-        {...list}
-      ></DataTableBlock>
-    </>
+    </DataTableBlock>
   );
 };
 

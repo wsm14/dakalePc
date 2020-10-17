@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button, Card, Form, Input, Typography, Space } from 'antd';
 
 const { Title } = Typography;

@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -38,6 +36,7 @@ const ExpertLevel = (props) => {
 
   return (
     <DataTableBlock
+      keepName="等级设置"
       cRef={childRef}
       loading={loading}
       columns={getColumns}

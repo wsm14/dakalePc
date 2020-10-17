@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -10,7 +8,6 @@ import DataTableBlock from '@/components/DataTableBlock';
 const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
 
   // table 表头
@@ -69,17 +66,15 @@ const ActiveListComponent = (props) => {
   ];
 
   return (
-    <KeepAlive name="活动配置" url={match.pathname} saveScrollPosition="screen">
-      <DataTableBlock
-        CardNone={false}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        rowKey={(record) => `${record.newsIdString}`}
-        // dispatchType="activeList/fetchGetList"
-        {...activeList}
-      ></DataTableBlock>
-    </KeepAlive>
+    <DataTableBlock
+      CardNone={false}
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      rowKey={(record) => `${record.newsIdString}`}
+      // dispatchType="activeList/fetchGetList"
+      {...activeList}
+    ></DataTableBlock>
   );
 };
 

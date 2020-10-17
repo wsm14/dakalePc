@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -12,7 +10,6 @@ import BusinessEdit from './components/BusinessList/BusinessEdit';
 const BusinessAuditList = (props) => {
   const { businessAudit, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
@@ -147,17 +144,16 @@ const BusinessAuditList = (props) => {
 
   return (
     <>
-      <KeepAlive name="商户审核" url={match.pathname} saveScrollPosition="screen">
-        <DataTableBlock
-          cRef={childRef}
-          loading={loading}
-          columns={getColumns}
-          searchItems={searchItems}
-          rowKey={(record) => `${record.userMerchantVerifyId}`}
-          dispatchType="businessAudit/fetchGetList"
-          {...businessAudit}
-        ></DataTableBlock>
-      </KeepAlive>
+      <DataTableBlock
+        keepName="商户审核"
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userMerchantVerifyId}`}
+        dispatchType="businessAudit/fetchGetList"
+        {...businessAudit}
+      ></DataTableBlock>
       <BusinessEdit
         cRef={childRef}
         visible={visible}

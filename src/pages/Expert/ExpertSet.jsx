@@ -1,7 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -97,6 +95,7 @@ const ExpertSet = (props) => {
             新增
           </Button>,
         ]}
+        keepName="创作设置"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

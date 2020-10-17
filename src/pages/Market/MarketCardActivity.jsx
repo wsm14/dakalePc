@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -13,7 +11,6 @@ import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
 const MarketCardActivity = (props) => {
   const { marketCardActivity, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
   const [show, setShow] = useState({ key: 'home', record: '' });
   const [params, setParams] = useState({});
@@ -127,6 +124,7 @@ const MarketCardActivity = (props) => {
         {
           home: (
             <DataTableBlock
+              keepName="营销活动"
               cRef={childRef}
               loading={loading}
               btnExtra={btnExtra}

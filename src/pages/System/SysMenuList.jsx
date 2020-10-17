@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -21,7 +19,6 @@ const tabList = [
 const SysMenuList = (props) => {
   const { sysMenuList, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('admin');
   const [one, setOne] = useState(false);

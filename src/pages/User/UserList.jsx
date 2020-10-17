@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
@@ -12,7 +10,6 @@ import UserTotalSpread from './components/UserList/UserTotalSpread';
 const UserListComponent = (props) => {
   const { list, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
 
   // 搜索参数
@@ -105,20 +102,20 @@ const UserListComponent = (props) => {
   };
 
   return (
-    <>
+    <DataTableBlock
+      keepName="用户数据"
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.userIdString}`}
+      NoSearch={true}
+      dispatchType="userList/fetchGetList"
+      list={list}
+    >
       <UserListTotalInfo></UserListTotalInfo>
       <UserTotalSpread></UserTotalSpread>
-      <DataTableBlock
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userIdString}`}
-        NoSearch={true}
-        dispatchType="userList/fetchGetList"
-        list={list}
-      ></DataTableBlock>
-    </>
+    </DataTableBlock>
   );
 };
 

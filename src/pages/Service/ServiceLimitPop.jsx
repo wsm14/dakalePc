@@ -1,7 +1,5 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 import limitPopSet from './components/LimitPop/LimitPopSet';
@@ -9,7 +7,6 @@ import limitPopSet from './components/LimitPop/LimitPopSet';
 const ServiceLimitPop = (props) => {
   const { serviceLimitPop, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
   // 搜索参数
   const searchItems = [
@@ -50,22 +47,21 @@ const ServiceLimitPop = (props) => {
   };
 
   return (
-    <>
-      <DataTableBlock
-        btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
-            新增
-          </Button>
-        }
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.mobile}`}
-        dispatchType="serviceLimitPop/fetchGetList"
-        {...serviceLimitPop}
-      ></DataTableBlock>
-    </>
+    <DataTableBlock
+      btnExtra={
+        <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
+          新增
+        </Button>
+      }
+      keepName="人员排除"
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.mobile}`}
+      dispatchType="serviceLimitPop/fetchGetList"
+      {...serviceLimitPop}
+    ></DataTableBlock>
   );
 };
 

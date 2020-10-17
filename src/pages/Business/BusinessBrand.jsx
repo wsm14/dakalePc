@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
-import { useLocation } from 'umi';
-import { KeepAlive } from 'react-activation';
 import { Button } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -10,7 +8,6 @@ import businessBrandSet from './components/Brand/BusinessBrandSet';
 const BusinessBrandComponent = (props) => {
   const { businessBrand, tradeList, loading, dispatch } = props;
 
-  const match = useLocation();
   const childRef = useRef();
   // 搜索参数
   const searchItems = [
@@ -73,6 +70,7 @@ const BusinessBrandComponent = (props) => {
           新增
         </Button>
       }
+      keepName="品牌数据"
       cRef={childRef}
       loading={loading.models.businessBrand}
       columns={getColumns}

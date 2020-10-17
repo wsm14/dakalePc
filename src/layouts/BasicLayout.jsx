@@ -156,7 +156,7 @@ const BasicLayout = (props) => {
         {...settings}
       >
         <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-          {/* <RouteContext.Consumer>
+          <RouteContext.Consumer>
             {(value) => {
               const { breadcrumb } = value;
               return (
@@ -174,8 +174,7 @@ const BasicLayout = (props) => {
                 </PageContainer>
               );
             }}
-          </RouteContext.Consumer> */}
-          {children}
+          </RouteContext.Consumer>
         </RouteAuthority>
         <BackTop />
         <DrawerModalForm></DrawerModalForm>
