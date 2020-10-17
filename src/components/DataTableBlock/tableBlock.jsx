@@ -151,12 +151,12 @@ const TableBlockComponent = ({
 
   const tableCard = {
     true: (
-      <Card title={title} style={style} extra={extra}>
-        <>
-          {children}
+      <>
+        {children}
+        <Card title={title} style={style} extra={extra}>
           {tabContent}
-        </>
-      </Card>
+        </Card>
+      </>
     ),
     false: (
       <>

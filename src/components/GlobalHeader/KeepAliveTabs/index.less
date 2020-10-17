@@ -1,38 +1,39 @@
-.alive-tabs {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: #fff;
-  overflow: hidden;
-  white-space: nowrap;
-
-  li {
-    list-style: none;
-    cursor: pointer;
+.page {
+  & > div[class*='ant-tabs-content'] {
+    background-color: transparent;
+    padding: 0;
   }
+  & > div[class*='ant-tabs-bar'] {
+    margin: 0;
+  }
+  line-height: 2.0715;
+  :global(.ant-tabs-nav) {
+    margin: 0;
+  }
+}
 
-  li {
-    display: inline-block;
-    border-right: solid 1px #e6e6e6;
-    padding: 0 36px 0 20px;
-    position: relative;
-    transition: background 0.2s;
-
-    &.active {
-      background: rgba(#1890ff, 0.3);
+//main
+.tabPage {
+  & > div {
+    & > div[class*='ant-pro-page-header-wrap'] {
+      margin: 0 !important;
     }
-  }
-
-  .close-btn {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    font-size: 14px;
-    line-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    outline: none;
+    & > div {
+      & > div[class*='ant-pro-grid-content'] {
+        & > div[class*='ant-pro-page-header-wrap-children-content'] {
+          margin: 10px 0 !important;
+        }
+      }
+    }
+    & > div[class*='ant-spin-nested-loading'] {
+      height: 100%;
+      & > div[class*='ant-spin-container'] {
+        height: 100%;
+        & > iframe {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      }
+    }
   }
 }
