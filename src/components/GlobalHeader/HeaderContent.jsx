@@ -9,7 +9,7 @@ const HeaderContent = (props) => {
 
   return (
     <div className={className}>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, overflow: 'hidden' }}>
         <KeepAliveTabs></KeepAliveTabs>
       </div>
       <RightContent {...props}></RightContent>
