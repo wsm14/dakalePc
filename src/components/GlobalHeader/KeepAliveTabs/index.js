@@ -18,7 +18,7 @@ export default function KeepAliveTabs() {
       // 如果关闭激活中的 KeepAlive Tab，需要先离开当前路由
       // 触发 KeepAlive unactivated 后再进行 drop
       if (location.pathname == currentUrl) {
-        history.listen(() => {
+        const unlisten = history.listen(() => {
           setTimeout(() => {
             dropScope(currentName);
           }, 60);
@@ -26,6 +26,7 @@ export default function KeepAliveTabs() {
 
         // 前往排除当前 node 后的最后一个 tab
         history.push(cachingNodes.filter((item) => item.url !== currentUrl).pop().url);
+        unlisten();
       } else {
         dropScope(currentName);
       }
