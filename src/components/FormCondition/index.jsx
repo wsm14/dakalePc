@@ -197,9 +197,9 @@ const FormCondition = ({
         input: (
           <Input
             placeholder={placeholder}
-            suffix={item.suffix || ''}
+            suffix={dataNum || ''}
             maxLength={maxLength}
-            addonAfter={dataNum}
+            addonAfter={item.addonAfter}
             disabled={item.disabled}
             onBlur={item.onBlur}
             onChange={(e) => {

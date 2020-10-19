@@ -40,6 +40,7 @@ const ClassifyDetailSet = (props) => {
       {
         label: `话题名称`,
         name: 'topicName',
+        maxLength: 10,
       },
       {
         label: `描述`,

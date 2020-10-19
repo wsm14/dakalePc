@@ -25,13 +25,13 @@ const PeasShareSet = (props) => {
       {
         label: '观看时长',
         name: 'watchTime',
-        suffix: '秒',
+        addonAfter: '秒',
         addRules: [{ pattern: NUM_INT, message: '观看时长应为整数' }],
       },
       {
         label: '最低卡豆数',
         name: 'limitBean',
-        suffix: '个',
+        addonAfter: '个',
         addRules: [{ pattern: NUM_INT, message: '最低卡豆数应为整数' }],
       },
     ],

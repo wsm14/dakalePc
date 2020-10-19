@@ -113,14 +113,14 @@ const TradePlatformSet = (props) => {
       {
         label: '服务费比例',
         name: 'serviceFee',
-        suffix: '%',
+        addonAfter: '%',
         visible: CeditType === 3,
         addRules: [{ pattern: NUM_INT, message: '服务费比例应为整数' }],
       },
       {
         label: '赠送卡豆',
         name: 'freeBean',
-        suffix: '个',
+        addonAfter: '个',
         visible: CeditType === 3,
         addRules: [{ pattern: NUM_INT, message: '赠送卡豆应为整数' }],
       },

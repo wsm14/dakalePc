@@ -28,10 +28,6 @@ const ActiveListComponent = (props) => {
       ),
     },
     {
-      title: '活动位置',
-      dataIndex: 'description',
-    },
-    {
       title: '创建人',
       dataIndex: 'publisherName',
     },
