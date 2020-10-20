@@ -37,7 +37,6 @@ const ActiveAllocation = (props) => {
   return (
     <>
       <DataTableBlock
-        CardNone={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
