@@ -202,6 +202,7 @@ const FormCondition = ({
             addonAfter={item.addonAfter}
             disabled={item.disabled}
             onBlur={item.onBlur}
+            onPressEnter={item.onPressEnter}
             onChange={(e) => {
               if (item.onChange) item.onChange(e);
               setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
