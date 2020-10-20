@@ -183,9 +183,9 @@ const Carouseal = (props) => {
             </Form>
           )}
         </Tabs.TabPane>
-        <Tabs.TabPane tab="数据源" key="2">
+        {/* <Tabs.TabPane tab="数据源" key="2">
           {tabs == 2 && <SourceSet form={form} initialValues={initialValues}></SourceSet>}
-        </Tabs.TabPane>
+        </Tabs.TabPane> */}
       </Tabs>
       <Modal
         title={previewTitle}

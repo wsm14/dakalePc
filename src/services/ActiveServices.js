@@ -1,54 +1,67 @@
 import request from '@/utils/request';
 
-// get 问题反馈 - 列表
-export async function fetchFeedBackList(params) {
-  return request('/admin/marketCustomer/listUserFeedbackMarketPlatform', {
+// get 活动配置 - 列表
+export async function fetchAllocationList(params) {
+  return request('/admin/promotionPosition/listPosition', {
     params,
   });
 }
 
-// post 问题反馈 - 确认反馈
-export function fetchFeedBackPush(data) {
-  return request('/admin/marketCustomer/replayUserFeedback', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 视屏列表 - 列表
-export function fetchMerVideoList(params) {
-  return request('/admin/marketingManagement/listMerchantMoment', {
+// get 活动配置 - 配置列表
+export function fetchAllocationDetailList(params) {
+  return request('/admin/promotion/pagePromotion', {
     params,
   });
 }
 
-// post 视屏列表 - 删除
-export function fetchMerVideoDel(data) {
-  return request('/admin/marketingManagement/closeUserMoment', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 新闻动态 - 列表
-export async function fetchNewsList(params) {
-  return request('/admin/news/listNews', {
+// get 活动配置 - 原生页面列表
+export function fetchAllocationNative(params) {
+  return request('/admin/promotionNative/listNative', {
     params,
   });
 }
 
-// post 视屏列表 - 新增
-export function fetchNewsEdit(data) {
-  return request('/admin/news/saveNews', {
+// post 活动配置 - 上架下架
+export function fetchAllocationDetailStatus(data) {
+  return request('/admin/promotion/updatePromotion', {
     method: 'POST',
     data,
   });
 }
 
-// post 视屏列表 - 下架
-export function fetchNewsStatus(data) {
-  return request('/admin/news/updateNews', {
+// post 活动配置 - 活动新增配置
+export function fetchAllocationDetailAdd(data) {
+  return request('/admin/promotion/savePromotion', {
     method: 'POST',
     data,
+  });
+}
+
+// get 活动列表 - 列表
+export async function fetchActiveList(params) {
+  return request('/admin/promotionActivity/pagePromotionActivity', {
+    params,
+  });
+}
+
+// post 活动列表 - 新增修改
+export function fetchActiveEdit(data) {
+  return request('/admin/promotionActivity/savePromotionActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 数据源 - 商家
+export async function fetchSourceMerchant(params) {
+  return request('/admin/promotionData/pageUserMerchantInfo', {
+    params,
+  });
+}
+
+// get 数据源 - 商品
+export async function fetchSourceGoods(params) {
+  return request('/admin/promotionData/pageMerchantGoodsInfo', {
+    params,
   });
 }

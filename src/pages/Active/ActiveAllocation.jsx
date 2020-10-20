@@ -14,10 +14,11 @@ const ActiveAllocation = (props) => {
   const getColumns = [
     {
       title: '活动位置',
+      dataIndex: 'name',
     },
     {
       title: '操作',
-      dataIndex: 'newsIdString',
+      dataIndex: 'type',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable
@@ -40,10 +41,9 @@ const ActiveAllocation = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.newsIdString}`}
-        // dispatchType="activeList/fetchGetList"
+        rowKey={(record) => `${record.type}`}
+        dispatchType="activeAllocation/fetchGetList"
         {...activeAllocation}
-        list={[1]}
       ></DataTableBlock>
       <AllocationDetailList visible={visible} setVisible={setVisible}></AllocationDetailList>
     </>
@@ -52,5 +52,5 @@ const ActiveAllocation = (props) => {
 
 export default connect(({ activeAllocation, loading }) => ({
   activeAllocation,
-  loading: loading.models.activeAllocation,
+  loading: loading.effects['activeAllocation/fetchGetList'],
 }))(ActiveAllocation);

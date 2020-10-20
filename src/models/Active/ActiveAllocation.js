@@ -1,5 +1,11 @@
 import { notification } from 'antd';
-import { fetchNewsList, fetchNewsEdit, fetchNewsStatus } from '@/services/ActiveServices';
+import {
+  fetchAllocationList,
+  fetchAllocationNative,
+  fetchAllocationDetailAdd,
+  fetchAllocationDetailList,
+  fetchAllocationDetailStatus,
+} from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeAllocation',
@@ -7,6 +13,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    detailList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -20,32 +27,51 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchNewsList, payload);
+      const response = yield call(fetchAllocationList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
           list: content.recordList,
-          total: content.total,
         },
       });
     },
-    *fetchNewsEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchNewsEdit, payload);
+    *fetchAllocationDetail({ payload }, { call, put }) {
+      const response = yield call(fetchAllocationDetailList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchAllocationNative({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllocationNative, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.recordList);
+    },
+    *fetchAllocationDetailStatus({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllocationDetailStatus, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新闻动态编辑成功',
+        description: '活动配置修改成功',
       });
       callback();
     },
-    *fetchNewsStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchNewsStatus, payload);
+    *fetchAllocationDetailAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllocationDetailAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新闻动态下架成功',
+        description: '活动新增活动配置成功',
       });
       callback();
     },

@@ -4,17 +4,17 @@ import QRCode from 'qrcode.react';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ActiveTemplateHrard = (props) => {
-  const { onClose, context } = props;
+  const { onClose, context, dispatch, loading } = props;
 
   const { info, dispatchData, showActive, iframeRef } = useContext(context);
 
-  const { activeUrl, activeHtml, activePreviewQr } = showActive;
+  const { activeUrl, activeHtml, activePreviewQr, save } = showActive;
 
   // 提交模版数据
-  const handleSaveModuleData = () => {
+  const handleSaveModuleData = (save = true) => {
     dispatchData({
       type: 'showActive',
-      payload: { activePreviewQr: true },
+      payload: { activePreviewQr: true, save },
     });
     iframeRef.current.contentWindow.postMessage(
       { type: 'getHtml', payload: { name: info.activeName } },
@@ -36,10 +36,18 @@ const ActiveTemplateHrard = (props) => {
     if (activeUrl) fileUrl = getHtmlDocName();
     const blob = new Blob([moduleHtml], { type: 'text/html' });
     aliOssUpload(blob, '', 'active', fileUrl).then((res) => {
-      dispatchData({
-        type: 'showActive',
-        payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
-      });
+      if (!save) {
+        dispatchData({
+          type: 'showActive',
+          payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
+        });
+      } else {
+        dispatch({
+          type: 'activeTemplate/fetchActiveEdit',
+          payload: { jumpUrl: res.toString(), activityTitle: info.activeName },
+          callback: onClose,
+        });
+      }
     });
   };
 
@@ -56,7 +64,7 @@ const ActiveTemplateHrard = (props) => {
           <Popover
             placement="bottom"
             onVisibleChange={(v) => {
-              if (v) handleSaveModuleData();
+              if (v) handleSaveModuleData(false);
             }}
             content={
               <Spin spinning={activePreviewQr}>
@@ -91,7 +99,7 @@ const ActiveTemplateHrard = (props) => {
           >
             关闭
           </Button>
-          <Button type="primary" onClick={handleSaveModuleData}>
+          <Button type="primary" loading={loading} onClick={handleSaveModuleData}>
             保存
           </Button>
         </Space>

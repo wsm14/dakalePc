@@ -1,5 +1,7 @@
 import React from 'react';
 import SearchData from '../searchData';
+import QRCode from 'qrcode.react';
+import { Button, Popover } from 'antd';
 
 /**
  *
@@ -12,41 +14,38 @@ const SearchDataContent = (props) => {
   const { form, type, visible, onCancel, valueName, onOk } = props;
 
   const propsItem = {
-    merchant: {
-      searchApi: 'businessList/fetchGetList',
-      searchName: 'merchantName',
-      itemkey: 'userMerchantIdString',
-      itemName: [
-        {
-          title: '商户账号',
-          dataIndex: 'account',
-        },
-        {
-          title: '商户简称',
-          dataIndex: 'merchantName',
-        },
-        {
-          title: '所在城市',
-          dataIndex: 'cityName',
-        },
-        {
-          title: '详细地址',
-          dataIndex: 'address',
-        },
-      ],
-    },
     url: {
-      searchApi: 'businessList/fetchGetList',
-      searchName: 'merchantName',
-      itemkey: 'userMerchantIdString',
+      searchInput: false,
+      searchApi: 'activeTemplate/fetchActiveList',
+      itemkey: 'jumpUrl',
       itemName: [
         {
           title: '活动名称',
-          dataIndex: 'account',
+          dataIndex: 'activityTitle',
         },
         {
           title: '活动链接',
-          dataIndex: 'merchantName',
+          dataIndex: 'jumpUrl',
+          render: (val) => (
+            <Popover
+              placement="bottom"
+              content={
+                <div>
+                  <QRCode
+                    value={`${val}?timestamp=${new Date().getTime()}`} //value参数为生成二维码的链接
+                    size={150} //二维码的宽高尺寸
+                    fgColor="#000000" //二维码的颜色
+                  />
+                  <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
+                    请使用手机扫一扫预览
+                  </div>
+                </div>
+              }
+              trigger="click"
+            >
+              <Button>预览</Button>
+            </Popover>
+          ),
         },
       ],
     },

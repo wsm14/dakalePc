@@ -37,6 +37,7 @@ const DrawerModalForm = ({
   width = 560,
   visible = false,
   formItems = [],
+  newForm,
   okText = '确认',
   cancelText = '取消',
   initialValues = [],
@@ -65,7 +66,7 @@ const DrawerModalForm = ({
 
   // 确认提交
   const handleFinish = () =>
-    form.validateFields().then((values) => {
+    (newForm || form).validateFields().then((values) => {
       onFinish(values);
     });
 
@@ -76,7 +77,7 @@ const DrawerModalForm = ({
         imgFileList={imgFileList}
         initialValues={initialValues}
         formItems={formItems}
-        form={form}
+        form={newForm || form}
       ></FormCondition>
     ),
     info: <DescriptionsCondition formItems={formItems} initialValues={initialValues} />,

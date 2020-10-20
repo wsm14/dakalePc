@@ -1,5 +1,5 @@
 const ActiveTemplateNameSet = (props) => {
-  const { callback } = props;
+  const { callback, initialValues = {} } = props;
 
   // 提交表单
   const fetchGetFormData = (values) => {
@@ -10,6 +10,7 @@ const ActiveTemplateNameSet = (props) => {
     type: 'Modal',
     showType: 'form',
     title: '活动名称设置',
+    initialValues,
     formItems: [
       {
         label: '活动名称',

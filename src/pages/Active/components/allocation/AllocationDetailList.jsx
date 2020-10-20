@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Modal, Button } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import SearchData from './searchData/searchDataContent';
-import allocationSet from './AllocationSet';
+import AllocationSet from './AllocationSet';
 
 const AllocationDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
@@ -13,59 +13,65 @@ const AllocationDetailList = (props) => {
   const { record = '' } = visible;
 
   const childRef = useRef();
-  const [visibleSearch, setVisibleSearch] = useState({ visible: false, valueName: '', type: '' });
+  const [visibleSet, setVisibleSet] = useState({ show: false });
 
   const getColumns = [
     {
       title: '封面图片',
-      dataIndex: 'image',
+      dataIndex: 'promotionImage',
       render: (val) => <PopImgShow url={val} />,
     },
     {
       title: '活动名称',
-      dataIndex: 'topicName',
+      dataIndex: 'promotionName',
     },
     {
       title: '跳转类型',
-      dataIndex: 'topicN2ame',
+      dataIndex: 'jumpType',
     },
     {
       title: '跳转连接',
-      dataIndex: 'topicDesc',
+      dataIndex: 'jumpUrl',
+      render: (val, records) =>
+        ({
+          h5: (
+            <Ellipsis length={20} tooltip>
+              {val}
+            </Ellipsis>
+          ),
+          native: records.nativeName,
+        }[records.jumpType]),
+    },
+    {
+      title: '状态',
+      dataIndex: 'promotionStatus',
+      render: (val) => (val === '1' ? '上架' : '下架'),
     },
     {
       title: '操作',
       align: 'right',
-      dataIndex: 'topicIdString',
+      dataIndex: 'promotionIdString',
       render: (val, records) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
-              title: '上架',
-              visible: records.recommendFlag === '0',
-              click: () =>
-                handleClassifyDetailSet({
-                  domainId: record.domainId,
-                  topicId: val,
-                  recommendFlag: 1,
-                  topicName: records.topicName,
-                }),
+              pop: true,
+              visible: records.promotionStatus === '1',
+              title: '下架',
+              click: () => fetchAllocationDetailStatus({ promotionId: val, promotionStatus: 0 }),
             },
             {
               type: 'own',
-              title: '下架',
-              visible: records.recommendFlag === '1',
-              click: () =>
-                handleClassifyDetailSet({
-                  domainId: record.domainId,
-                  topicId: val,
-                  recommendFlag: 0,
-                }),
+              pop: true,
+              visible: records.promotionStatus === '0',
+              title: '上架',
+              click: () => fetchAllocationDetailStatus({ promotionId: val, promotionStatus: 1 }),
             },
             {
               type: 'edit',
-              click: () => handleDataSet({ topicId: val, ...records }),
+              click: () =>
+                setVisibleSet({ show: true, promotionId: val, records, position: record.type }),
             },
           ]}
         />
@@ -73,44 +79,11 @@ const AllocationDetailList = (props) => {
     },
   ];
 
-  //  新增 修改
-  const handleDataSet = (initialValues) => {
+  // 下架视频
+  const fetchAllocationDetailStatus = (payload) => {
     dispatch({
-      type: 'drawerForm/show',
-      payload: allocationSet({
-        dispatch,
-        childRef,
-        initialValues,
-        domainId: record.domainId,
-        setVisibleSearch,
-      }),
-    });
-  };
-
-  // 删除 设置
-  const handleClassifyDetailSet = (values) => {
-    if (values.recommendFlag) {
-      const listObj = detailList.list.filter((item) => item.recommendFlag == 1)[0];
-      if (listObj) {
-        Modal.confirm({
-          title: '话题推荐',
-          content: `是否替换 #${listObj.topicName}，将 #${values.topicName} 为推荐话题？`,
-          onOk() {
-            fetchClassifyDetailSet(values);
-          },
-          onCancel() {},
-        });
-      } else fetchClassifyDetailSet(values);
-    } else {
-      fetchClassifyDetailSet(values);
-    }
-  };
-
-  // 删除 设置 请求
-  const fetchClassifyDetailSet = (values) => {
-    dispatch({
-      type: 'expertSet/fetchClassifyDetailSet',
-      payload: values,
+      type: 'activeAllocation/fetchAllocationDetailStatus',
+      payload,
       callback: () => childRef.current.fetchGetData(),
     });
   };
@@ -118,7 +91,7 @@ const AllocationDetailList = (props) => {
   return (
     <>
       <Modal
-        title={`活动配置 - ${record.domainName}`}
+        title={`活动配置 - ${record.name}`}
         width={1150}
         destroyOnClose
         footer={null}
@@ -127,7 +100,10 @@ const AllocationDetailList = (props) => {
       >
         <DataTableBlock
           btnExtra={
-            <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisibleSet({ show: true, position: record.type })}
+            >
               新增
             </Button>
           }
@@ -135,23 +111,23 @@ const AllocationDetailList = (props) => {
           CardNone={false}
           loading={loading}
           columns={getColumns}
-          rowKey={(row) => `${row.topicIdString}`}
-          params={{ domainId: record.domainId }}
-          dispatchType="expertSet/fetchClassifyDetailList"
+          rowKey={(row) => `${row.promotionIdString}`}
+          params={{ position: record.type }}
+          dispatchType="activeAllocation/fetchAllocationDetail"
           componentSize="middle"
           {...detailList}
-          list={[1]}
         ></DataTableBlock>
       </Modal>
-      <SearchData
-        {...visibleSearch}
-        onCancel={() => setVisibleSearch({ show: false })}
-      ></SearchData>
+      <AllocationSet
+        {...visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet({ show: false })}
+      ></AllocationSet>
     </>
   );
 };
 
-export default connect(({ expertSet, loading }) => ({
-  detailList: expertSet.detailList,
-  loading: loading.effects['expertSet/fetchClassifyDetailList'],
+export default connect(({ activeAllocation, loading }) => ({
+  detailList: activeAllocation.detailList,
+  loading: loading.effects['activeAllocation/fetchAllocationDetail'],
 }))(AllocationDetailList);

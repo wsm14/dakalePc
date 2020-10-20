@@ -102,9 +102,9 @@ const SolaImg = (props) => {
           onCancel={() => setVisibleSearch({ show: false })}
         ></SearchData>
       </Tabs.TabPane>
-      <Tabs.TabPane tab="数据源" key="2">
+      {/* <Tabs.TabPane tab="数据源" key="2">
         {tabs == 2 && <SourceSet form={form} initialValues={initialValues}></SourceSet>}
-      </Tabs.TabPane>
+      </Tabs.TabPane> */}
     </Tabs>
   );
 };

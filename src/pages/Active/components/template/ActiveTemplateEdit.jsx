@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useReducer, createContext } from 'react';
+import { connect } from 'dva';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import ActiveHeardTitle from './heard';
@@ -13,7 +14,7 @@ const TemplateContext = createContext();
  */
 
 const ActiveTemplate = (props) => {
-  const { visible, onClose } = props;
+  const { visible, onClose, dispatch, loading } = props;
 
   const iframeRef = useRef();
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
@@ -42,7 +43,14 @@ const ActiveTemplate = (props) => {
       <Drawer
         destroyOnClose
         bodyStyle={{ backgroundColor: '#f4f4f4' }}
-        title={<ActiveHeardTitle onClose={onClose} context={TemplateContext}></ActiveHeardTitle>}
+        title={
+          <ActiveHeardTitle
+            loading={loading}
+            onClose={onClose}
+            dispatch={dispatch}
+            context={TemplateContext}
+          ></ActiveHeardTitle>
+        }
         height={'100%'}
         placement="top"
         closable={false}
@@ -56,4 +64,6 @@ const ActiveTemplate = (props) => {
   );
 };
 
-export default ActiveTemplate;
+export default connect(({ loading }) => ({
+  loading: loading.models.activeTemplate,
+}))(ActiveTemplate);
