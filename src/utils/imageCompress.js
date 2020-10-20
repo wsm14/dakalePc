@@ -10,7 +10,7 @@ const ctx = canvas.getContext('2d');
 const imageCompress = (files) => {
   let fileblob = {};
   let base64 = '';
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const fr = new FileReader();
     fr.readAsDataURL(files);
     fr.onload = () => {
@@ -31,7 +31,7 @@ const imageCompress = (files) => {
         ctx.drawImage(img, 0, 0, w, h);
 
         // 值越小，所绘制出的图像越模糊 默认 0.7
-        base64 = canvas.toDataURL('image/png', 0.7);
+        base64 = canvas.toDataURL(files.type || 'image/jpeg', 0.7);
         //  console.log(`压缩后：${base64.length / 1024}kb`);
         // base64转换blob
         const arr = base64.split(',');
