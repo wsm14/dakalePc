@@ -25,7 +25,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: [content] },
+          list: { list: content.mobile ? [content] : [] },
         },
       });
     },

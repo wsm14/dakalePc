@@ -37,6 +37,7 @@ const ClassifySet = (props) => {
         label: '内容分类',
         visible: initialValues.parentDomainId !== 0,
         name: 'domainName',
+        maxLength: 4,
       },
       {
         label: `图片`,

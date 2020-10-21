@@ -207,6 +207,11 @@ export default [
             name: '活动列表',
             component: './Active/ActiveList',
           },
+          {
+            path: '/active/param',
+            name: '参数配置',
+            component: './Active/ActiveParam',
+          },
         ],
       },
       {
