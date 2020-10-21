@@ -1,15 +1,22 @@
 import request from '@/utils/request';
 
-// get 活动配置 - 列表
+// get 版本列表 - 列表
 export async function fetchAllocationList(params) {
-  return request('/admin/promotionPosition/listPosition', {
+  return request('/common/positionVersion/listVersions', {
+    params,
+  });
+}
+
+// get 活动配置 - 广告位列表
+export function fetchAllocationPlaceList(params) {
+  return request('/common/promotion/listPromotionTypeByVersionId', {
     params,
   });
 }
 
 // get 活动配置 - 配置列表
 export function fetchAllocationDetailList(params) {
-  return request('/admin/promotion/pagePromotion', {
+  return request('/common/promotion/pagePromotionByVersionIdAndType', {
     params,
   });
 }
@@ -23,7 +30,7 @@ export function fetchAllocationNative(params) {
 
 // post 活动配置 - 上架下架
 export function fetchAllocationDetailStatus(data) {
-  return request('/admin/promotion/updatePromotion', {
+  return request('/common/promotion/updatePromotion', {
     method: 'POST',
     data,
   });
@@ -31,7 +38,7 @@ export function fetchAllocationDetailStatus(data) {
 
 // post 活动配置 - 活动新增配置
 export function fetchAllocationDetailAdd(data) {
-  return request('/admin/promotion/savePromotion', {
+  return request('/common/promotion/savePromotion', {
     method: 'POST',
     data,
   });

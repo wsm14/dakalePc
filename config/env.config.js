@@ -5,11 +5,11 @@ export default {
     },
     proxy: {
       '/admin': {
-        target: 'https://devgateway.dakale.net', // http://192.168.0.143:6020/
+        target: 'http://192.168.0.143:6020/', // http://192.168.0.143:6020/
         changeOrigin: true,
       },
       '/common': {
-        target: 'https://devgateway.dakale.net',
+        target: 'http://192.168.0.143:6020/',
         changeOrigin: true,
       },
       '/media': {

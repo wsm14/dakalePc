@@ -132,7 +132,7 @@ const TableBlockComponent = ({
           searchItems={searchItems}
           handleSearch={handleSearch}
           // initialValues={searchData}
-          NoSearch={NoSearch}
+          // NoSearch={NoSearch}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}

@@ -1,18 +1,23 @@
+import aliOssUpload from '@/utils/aliOssUpload';
+
 export default (props) => {
   const { dispatch, cRef, initialValues = {} } = props;
 
   // 审核驳回
   const fetchMerSaleAudit = (payload) => {
-    dispatch({
-      type: 'activeAllocation/fetchMerSaleAudit',
-      payload: {
-        merchantVerifyId: initialValues.merchantVerifyIdString,
-        verifyStatus: 2,
-        ...payload,
-      },
-      callback: () => {
-        cRef.current.fetchGetData();
-      },
+    const { promotionImage = '' } = values;
+    aliOssUpload(promotionImage).then((res) => {
+      dispatch({
+        type: 'activeAllocation/fetchMerSaleAudit',
+        payload: {
+          merchantVerifyId: initialValues.merchantVerifyIdString,
+          verifyStatus: 2,
+          ...payload,
+        },
+        callback: () => {
+          cRef.current.fetchGetData();
+        },
+      });
     });
   };
 
@@ -25,8 +30,18 @@ export default (props) => {
     onFinish: fetchMerSaleAudit,
     formItems: [
       {
-        label: '活动位置',
+        label: '名称',
         name: 'name',
+      },
+      {
+        label: '备注',
+        name: 'name1',
+      },
+      {
+        label: `位置图片`,
+        type: 'upload',
+        name: 'promotionImage',
+        maxFile: 1,
       },
       {
         label: '活动位置类型',

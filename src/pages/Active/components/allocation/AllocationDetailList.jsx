@@ -10,7 +10,7 @@ import AllocationSet from './AllocationSet';
 const AllocationDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
 
-  const { record = '' } = visible;
+  const { record = '', promotionVersionId } = visible;
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false });
@@ -71,7 +71,12 @@ const AllocationDetailList = (props) => {
             {
               type: 'edit',
               click: () =>
-                setVisibleSet({ show: true, promotionId: val, records, position: record.type }),
+                setVisibleSet({
+                  show: true,
+                  promotionId: val,
+                  records,
+                  promotionType: record.promotionType,
+                }),
             },
           ]}
         />
@@ -91,7 +96,7 @@ const AllocationDetailList = (props) => {
   return (
     <>
       <Modal
-        title={`活动配置 - ${record.name}`}
+        title={`活动配置 - ${record.promotionTypeName}`}
         width={1150}
         destroyOnClose
         footer={null}
@@ -102,7 +107,7 @@ const AllocationDetailList = (props) => {
           btnExtra={
             <Button
               className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, position: record.type })}
+              onClick={() => setVisibleSet({ show: true, promotionType: record.promotionType })}
             >
               新增
             </Button>
@@ -112,7 +117,7 @@ const AllocationDetailList = (props) => {
           loading={loading}
           columns={getColumns}
           rowKey={(row) => `${row.promotionIdString}`}
-          params={{ position: record.type }}
+          params={{ promotionVersionId, promotionType: record.promotionType }}
           dispatchType="activeAllocation/fetchAllocationDetail"
           componentSize="middle"
           {...detailList}

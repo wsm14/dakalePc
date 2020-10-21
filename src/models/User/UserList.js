@@ -28,6 +28,16 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
+      const { mobile } = payload;
+      if (!mobile) {
+        yield put({
+          type: 'save',
+          payload: {
+            list: [],
+          },
+        });
+        return;
+      }
       const response = yield call(fetchUserList, payload);
       if (!response) return;
       const { content } = response;
