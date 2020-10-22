@@ -77,6 +77,7 @@ const FormCondition = ({
   initialValues = {},
   formItemLayouts = {},
 }) => {
+  const [inlValues, setInValues] = useState(initialValues); // 默认值
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -413,11 +414,17 @@ const FormCondition = ({
   };
 
   useEffect(() => {
+    form.setFieldsValue(initialValues);
+    setInValues(initialValues);
+  }, [initialValues]);
+
+  useEffect(() => {
     return componentWillUnmount;
   }, []);
 
   // 组件销毁执行
   const componentWillUnmount = () => {
+    setInValues({});
     form.resetFields();
   };
 
@@ -425,7 +432,7 @@ const FormCondition = ({
     <Form
       form={form}
       layout={layout}
-      initialValues={initialValues}
+      initialValues={inlValues}
       {...formItemLayout}
       {...formItemLayouts}
       scrollToFirstError={true}

@@ -26,6 +26,10 @@ const ActiveTemplate = (props) => {
       dispatchData({ type: 'initialize' });
       // 保存选择模版信息
       dispatchData({ type: 'saveInfo', payload: visible });
+      // 保存修改的活动信息
+      if (visible.info.promotionActivityId) {
+        dispatchData({ type: 'showActive', payload: { activeUrl: visible.info.templateUrl } });
+      }
       // 拦截页面关闭刷新
       const listener = (ev) => {
         ev.preventDefault();

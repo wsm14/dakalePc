@@ -88,6 +88,11 @@ export const fetchReducerEdit = (state, action) => {
         ...state,
         moduleData: [...oldData, action.payload],
       };
+    case 'saveHtmlModuleData':
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

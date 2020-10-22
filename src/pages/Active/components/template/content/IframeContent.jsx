@@ -46,6 +46,12 @@ const ActiveTemplateIframe = (props) => {
             payload: { activeHtml: e.data.payload },
           });
           return;
+        case 'sendSaveData':
+          dispatchData({
+            type: 'saveHtmlModuleData',
+            payload: e.data.payload,
+          });
+          return;
         default:
           return false;
       }

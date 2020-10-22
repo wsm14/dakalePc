@@ -53,7 +53,11 @@ const ActiveTemplate = (props) => {
           ))}
         </Row>
       </Card>
-      <ActiveTemplateEdit visible={visible} onClose={() => setVisible(false)}></ActiveTemplateEdit>
+      <ActiveTemplateEdit
+        key="template"
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ActiveTemplateEdit>
     </>
   );
 };

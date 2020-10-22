@@ -21,7 +21,7 @@ const ActiveListComponent = (props) => {
     };
     dispatch({
       type: 'drawerForm/show',
-      payload: activeTemplateNameSet({ initialValues, callback }),
+      payload: activeTemplateNameSet({ initialValues, callback: (values) => callback(values) }),
     });
   };
 
@@ -57,27 +57,28 @@ const ActiveListComponent = (props) => {
         </Popover>
       ),
     },
-    // {
-    //   title: '操作',
-    //   dataIndex: 'promotionActivityIdString',
-    //   fixed: 'right',
-    //   align: 'right',
-    //   render: (val, record) => (
-    //     <HandleSetTable
-    //       formItems={[
-    //         {
-    //           type: 'edit',
-    //           title: '修改',
-    //           click: () =>
-    //             handleSetActiveName({
-    //               activeName: record.activityTitle,
-    //               templateUrl: record.jumpUrl,
-    //             }),
-    //         },
-    //       ]}
-    //     />
-    //   ),
-    // },
+    {
+      title: '操作',
+      dataIndex: 'promotionActivityIdString',
+      fixed: 'right',
+      align: 'right',
+      render: (val, record) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'edit',
+              title: '修改',
+              click: () =>
+                handleSetActiveName({
+                  promotionActivityId: val,
+                  activeName: record.activityTitle,
+                  templateUrl: `${record.jumpUrl}?demo=1&times=${new Date().getTime()}`,
+                }),
+            },
+          ]}
+        />
+      ),
+    },
   ];
 
   return (
@@ -90,7 +91,11 @@ const ActiveListComponent = (props) => {
         dispatchType="activeList/fetchGetList"
         {...activeList}
       ></DataTableBlock>
-      <ActiveTemplateEdit visible={visible} onClose={() => setVisible(false)}></ActiveTemplateEdit>
+      <ActiveTemplateEdit
+        key="templateEdit"
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ActiveTemplateEdit>
     </>
   );
 };

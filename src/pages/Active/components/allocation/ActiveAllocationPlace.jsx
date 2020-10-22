@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -39,8 +40,35 @@ const ActiveAllocationPlace = (props) => {
       render: (val) => <PopImgShow url={val} />,
     },
     {
+      title: '封面图片',
+      dataIndex: 'promotionImage',
+      render: (val) => <PopImgShow url={val} />,
+    },
+    {
+      title: '活动名称',
+      dataIndex: 'promotionName',
+    },
+    {
+      title: '跳转类型',
+      dataIndex: 'jumpType',
+    },
+    {
+      title: '跳转连接',
+      dataIndex: 'jumpUrl',
+      render: (val, records) =>
+        ({
+          h5: (
+            <Ellipsis length={20} tooltip>
+              {val}
+            </Ellipsis>
+          ),
+          native: records.nativeName,
+        }[records.jumpType]),
+    },
+    {
       title: '操作',
       dataIndex: 'promotionType',
+      fixed: 'right',
       align: 'right',
       render: (val, record) => (
         <HandleSetTable

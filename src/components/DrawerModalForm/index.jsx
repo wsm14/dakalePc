@@ -40,7 +40,7 @@ const DrawerModalForm = ({
   newForm,
   okText = '确认',
   cancelText = '取消',
-  initialValues = [],
+  initialValues = {},
   imgFileList = [],
   loadingModels,
   loading,

@@ -6,10 +6,9 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const ActiveTemplateHrard = (props) => {
   const { onClose, context, dispatch, loading } = props;
 
-  const { info, dispatchData, showActive, iframeRef } = useContext(context);
+  const { info, dispatchData, showActive, moduleData, iframeRef } = useContext(context);
 
   const { activeUrl, activeHtml, activePreviewQr, save } = showActive;
-
   // 提交模版数据
   const handleSaveModuleData = (save = true) => {
     dispatchData({
@@ -17,7 +16,7 @@ const ActiveTemplateHrard = (props) => {
       payload: { activePreviewQr: true, save },
     });
     iframeRef.current.contentWindow.postMessage(
-      { type: 'getHtml', payload: { name: info.activeName } },
+      { type: 'getHtml', payload: { name: info.activeName, moduleData } },
       '*',
     );
   };

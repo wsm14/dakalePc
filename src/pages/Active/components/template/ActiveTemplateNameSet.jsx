@@ -10,7 +10,7 @@ const ActiveTemplateNameSet = (props) => {
     type: 'Modal',
     showType: 'form',
     title: '活动名称设置',
-    initialValues,
+    initialValues: initialValues.activeName ? initialValues : { activeName: '' },
     formItems: [
       {
         label: '活动名称',
@@ -19,7 +19,6 @@ const ActiveTemplateNameSet = (props) => {
       },
     ],
     onFinish: fetchGetFormData,
-    ...props,
   };
 };
 

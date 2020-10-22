@@ -45,27 +45,27 @@ const ActiveAllocation = (props) => {
       align: 'center',
       dataIndex: 'createTime',
     },
-    {
-      title: '操作',
-      dataIndex: 'promotionVersionString',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            // {
-            //   type: 'own',
-            //   title: '添加位置',
-            //   click: () => handleSet({ record }),
-            // },
-            {
-              type: 'own',
-              title: '配置',
-              click: () => setVisibleSet({ show: true, promotionId: val, record }),
-            },
-          ]}
-        />
-      ),
-    },
+    // {
+    //   title: '操作',
+    //   dataIndex: 'promotionVersionString',
+    //   align: 'right',
+    //   render: (val, record) => (
+    //     <HandleSetTable
+    //       formItems={[
+    //         // {
+    //         //   type: 'own',
+    //         //   title: '添加位置',
+    //         //   click: () => handleSet({ record }),
+    //         // },
+    //         {
+    //           type: 'own',
+    //           title: '配置',
+    //           click: () => setVisibleSet({ show: true, promotionId: val, record }),
+    //         },
+    //       ]}
+    //     />
+    //   ),
+    // },
   ];
 
   // 获取配置详情列表
