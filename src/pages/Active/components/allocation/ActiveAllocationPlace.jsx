@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'dva';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -6,7 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const ActiveAllocationPlace = (props) => {
-  const { activeAllocationPlace, loading, promotionVersionId, showDetail } = props;
+  const { activeAllocationPlace, loading, userOs, promotionVersion, setVisibleSet } = props;
 
   const childRef = useRef();
 
@@ -27,21 +27,17 @@ const ActiveAllocationPlace = (props) => {
       dataIndex: 'promotionTypeName',
     },
     {
-      title: '位置',
-      dataIndex: 'promotionPage',
-    },
-    {
       title: '备注',
       dataIndex: 'promotionDesc',
     },
     {
-      title: '位置图片',
+      title: '展示位置',
       dataIndex: 'promotionImage',
       render: (val) => <PopImgShow url={val} />,
     },
     {
       title: '封面图片',
-      dataIndex: 'promotionImage',
+      dataIndex: 'promotionContent',
       render: (val) => <PopImgShow url={val} />,
     },
     {
@@ -67,16 +63,22 @@ const ActiveAllocationPlace = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'promotionType',
+      dataIndex: 'promotionIdString',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => (
+      render: (val, records) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
               title: '配置',
-              click: () => showDetail({ show: true, promotionVersionId, record }),
+              click: () =>
+                setVisibleSet({
+                  show: true,
+                  promotionId: val,
+                  records: { ...records, nativeId: Number(records.nativeIdString) },
+                  childRef,
+                }),
             },
           ]}
         />
@@ -94,7 +96,7 @@ const ActiveAllocationPlace = (props) => {
       loading={loading}
       columns={getColumns}
       rowKey={(record) => `${record.promotionType}`}
-      params={{ promotionVersionId }}
+      params={{ userOs, promotionVersion }}
       dispatchType="activeAllocationPlace/fetchGetList"
       {...activeAllocationPlace}
     ></DataTableBlock>

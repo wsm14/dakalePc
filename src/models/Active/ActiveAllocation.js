@@ -2,9 +2,7 @@ import { notification } from 'antd';
 import {
   fetchAllocationList,
   fetchAllocationNative,
-  fetchAllocationDetailAdd,
-  fetchAllocationDetailList,
-  fetchAllocationDetailStatus,
+  fetchAllocationSetEdit,
 } from '@/services/ActiveServices';
 
 export default {
@@ -33,21 +31,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-        },
-      });
-    },
-    *fetchAllocationDetail({ payload }, { call, put }) {
-      const response = yield call(fetchAllocationDetailList, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          detailList: {
-            list: content.recordList,
-            total: content.total,
-          },
+          list: content.recordList.map((version, id) => ({ version, id })),
         },
       });
     },
@@ -57,21 +41,12 @@ export default {
       const { content } = response;
       callback(content.recordList);
     },
-    *fetchAllocationDetailStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchAllocationDetailStatus, payload);
+    *fetchAllocationSetEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllocationSetEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '活动配置修改成功',
-      });
-      callback();
-    },
-    *fetchAllocationDetailAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchAllocationDetailAdd, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '活动新增活动配置成功',
+        description: '活动配置成功',
       });
       callback();
     },

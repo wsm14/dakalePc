@@ -7,7 +7,17 @@ import FormCondition from '@/components/FormCondition';
 import SearchData from './searchData/searchDataContent';
 
 const AllocationSet = (props) => {
-  const { loading, dispatch, childRef, records = {}, promotionId, position, show, onClose } = props;
+  const {
+    loading,
+    dispatch,
+    childRef,
+    records = {},
+    userOs,
+    promotionId,
+    position,
+    show,
+    onClose,
+  } = props;
 
   const [form] = Form.useForm();
   const [nativeList, setNativeList] = useState([]);
@@ -17,14 +27,18 @@ const AllocationSet = (props) => {
   // 提交表单
   const fetchDataEdit = () => {
     form.validateFields().then((values) => {
-      const { promotionImage = '' } = values;
-      aliOssUpload(promotionImage).then((res) => {
+      const { promotionContent = '' } = values;
+      aliOssUpload(promotionContent).then((res) => {
         dispatch({
-          type: {
-            true: 'activeAllocation/fetchAllocationDetailAdd',
-            false: 'activeAllocation/fetchAllocationDetailStatus',
-          }[!promotionId],
-          payload: { ...records, ...values, promotionId, position, promotionImage: res.toString() },
+          type: 'activeAllocation/fetchAllocationSetEdit',
+          payload: {
+            ...records,
+            ...values,
+            userOs,
+            promotionId,
+            position,
+            promotionContent: res.toString(),
+          },
           callback: () => {
             childRef.current.fetchGetData();
             onClose();
@@ -53,7 +67,7 @@ const AllocationSet = (props) => {
     {
       label: `封面图片`,
       type: 'upload',
-      name: 'promotionImage',
+      name: 'promotionContent',
       maxFile: 1,
     },
     {

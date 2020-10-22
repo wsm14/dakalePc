@@ -1,19 +1,34 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
+import { Button, Card } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import AllocationDetailList from './components/allocation/AllocationDetailList';
 import activeAllocationEdit from './components/allocation/ActiveAllocationEdit';
 import ActiveAllocationPlace from './components/allocation/ActiveAllocationPlace';
 import AllocationSet from './components/allocation/AllocationSet';
+
+const tabList = [
+  {
+    key: 'IOS',
+    tab: 'IOS',
+  },
+  {
+    key: 'android',
+    tab: 'Android',
+  },
+  {
+    key: 'wechat',
+    tab: '小程序',
+  },
+];
 
 const ActiveAllocation = (props) => {
   const { activeAllocation, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState('');
   const [visibleSet, setVisibleSet] = useState({ show: false });
   const [rowKey, setRowKey] = useState([]);
+  const [userOs, setUserOs] = useState('IOS');
 
   // 新增/修改
   const handleSet = (initialValues) => {
@@ -26,28 +41,13 @@ const ActiveAllocation = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: 'IOS',
-      dataIndex: 'iosVersion',
-      render: (val) => `< v${val}`,
-    },
-    {
-      title: 'Android',
-      dataIndex: 'androidVersion',
-      render: (val) => `< v${val}`,
-    },
-    {
-      title: '小程序',
-      dataIndex: 'appletVersion',
-      render: (val) => `< v${val}`,
-    },
-    {
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createTime',
+      title: '版本号',
+      dataIndex: 'version',
+      render: (val) => `v${val}`,
     },
     // {
     //   title: '操作',
-    //   dataIndex: 'promotionVersionString',
+    //   dataIndex: 'id',
     //   align: 'right',
     //   render: (val, record) => (
     //     <HandleSetTable
@@ -72,42 +72,55 @@ const ActiveAllocation = (props) => {
   const fetchGetAllocationPlace = (payload) => {
     dispatch({
       type: 'activeAllocationPlace/fetchGetList',
-      payload,
+      payload: {
+        page: 1,
+        limit: 10,
+        ...payload,
+      },
     });
   };
 
+  useEffect(() => {
+    childRef.current.fetchGetData();
+  }, [userOs]);
+
   return (
     <>
-      <DataTableBlock
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        rowKey={(record) => `${record.promotionVersionString}`}
-        dispatchType="activeAllocation/fetchGetList"
-        expandable={{
-          expandedRowKeys: rowKey,
-          onExpand: (expanded, record) => {
-            if (expanded) {
-              const { promotionVersionString: promotionVersionId } = record;
-              setRowKey([promotionVersionId]);
-              fetchGetAllocationPlace({ promotionVersionId });
-            } else {
-              setRowKey([]);
-            }
-          },
-          expandedRowRender: (record) => (
-            <ActiveAllocationPlace
-              promotionVersionId={record.promotionVersionString}
-              showDetail={setVisible}
-            />
-          ),
-        }}
-        {...activeAllocation}
-      ></DataTableBlock>
-      <AllocationDetailList visible={visible} setVisible={setVisible}></AllocationDetailList>
+      <Card tabList={tabList} activeTabKey={userOs} onTabChange={(key) => setUserOs(key)}>
+        <DataTableBlock
+          NoSearch={true}
+          CardNone={false}
+          cRef={childRef}
+          loading={loading}
+          columns={getColumns}
+          rowKey={(record) => `${record.version}`}
+          dispatchType="activeAllocation/fetchGetList"
+          params={{ userOs }}
+          expandable={{
+            expandedRowKeys: rowKey,
+            onExpand: (expanded, record) => {
+              if (expanded) {
+                const { version: promotionVersion } = record;
+                setRowKey([promotionVersion]);
+                fetchGetAllocationPlace({ userOs, promotionVersion });
+              } else {
+                setRowKey([]);
+              }
+            },
+            expandedRowRender: (record) => (
+              <ActiveAllocationPlace
+                userOs={userOs}
+                promotionVersion={record.version}
+                setVisibleSet={setVisibleSet}
+              />
+            ),
+          }}
+          {...activeAllocation}
+        ></DataTableBlock>
+      </Card>
       <AllocationSet
         {...visibleSet}
-        childRef={childRef}
+        userOs={userOs}
         onClose={() => setVisibleSet({ show: false })}
       ></AllocationSet>
     </>
