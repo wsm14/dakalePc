@@ -4,7 +4,7 @@ import QRCode from 'qrcode.react';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ActiveTemplateHrard = (props) => {
-  const { onClose, context, dispatch, loading } = props;
+  const { onClose, context, dispatch, loading, promotionActivityId } = props;
 
   const { info, dispatchData, showActive, moduleData, iframeRef } = useContext(context);
 
@@ -42,9 +42,11 @@ const ActiveTemplateHrard = (props) => {
         });
       } else {
         dispatch({
-          type: 'activeTemplate/fetchActiveEdit',
-          payload: { jumpUrl: res.toString(), activityTitle: info.activeName },
-          callback: onClose,
+          type: !promotionActivityId
+            ? 'activeTemplate/fetchActiveAdd'
+            : 'activeTemplate/fetchActiveEdit',
+          payload: { jumpUrl: res.toString(), promotionActivityId, activityTitle: info.activeName },
+          callback: () => onClose(),
         });
       }
     });
@@ -54,6 +56,12 @@ const ActiveTemplateHrard = (props) => {
   useEffect(() => {
     if (activeHtml) fetchSaveModuleData(activeHtml);
   }, [activeHtml]);
+
+  useEffect(() => {
+    return () => {
+      dispatchData({ type: 'initialize' });
+    };
+  }, []);
 
   return (
     <Row align="middle">

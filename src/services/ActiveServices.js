@@ -42,9 +42,17 @@ export async function fetchActiveList(params) {
   });
 }
 
-// post 活动列表 - 新增修改
-export function fetchActiveEdit(data) {
+// post 活动列表 - 新增
+export function fetchActiveAdd(data) {
   return request('/admin/promotionActivity/savePromotionActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 活动列表 - 修改
+export function fetchActiveEdit(data) {
+  return request('/admin/promotionActivity/updatePromotionActivity', {
     method: 'POST',
     data,
   });

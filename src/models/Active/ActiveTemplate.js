@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import {
+  fetchActiveAdd,
   fetchActiveEdit,
   fetchSourceMerchant,
   fetchSourceGoods,
@@ -24,12 +25,21 @@ export default {
   },
 
   effects: {
+    *fetchActiveAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchActiveAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增活动成功',
+      });
+      callback();
+    },
     *fetchActiveEdit({ payload, callback }, { call, put }) {
       const response = yield call(fetchActiveEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新增活动成功',
+        description: '修改活动成功',
       });
       callback();
     },

@@ -94,7 +94,10 @@ const ActiveListComponent = (props) => {
       <ActiveTemplateEdit
         key="templateEdit"
         visible={visible}
-        onClose={() => setVisible(false)}
+        onClose={() => {
+          childRef.current.fetchGetData();
+          setVisible(false);
+        }}
       ></ActiveTemplateEdit>
     </>
   );

@@ -49,6 +49,7 @@ const ActiveTemplate = (props) => {
         bodyStyle={{ backgroundColor: '#f4f4f4' }}
         title={
           <ActiveHeardTitle
+            promotionActivityId={visible.info && visible.info.promotionActivityId}
             loading={loading}
             onClose={onClose}
             dispatch={dispatch}
