@@ -106,7 +106,7 @@ const AllocationSet = (props) => {
   return (
     <>
       <Drawer
-        title={`活动设置`}
+        title={`活动设置：${records.promotionTypeName}`}
         width={600}
         visible={show}
         onClose={onClose}
@@ -124,6 +124,10 @@ const AllocationSet = (props) => {
         }
       >
         <FormCondition formItems={formItems} form={form} initialValues={records} />
+        <div style={{ paddingLeft: 67 }}>展示位置：</div>
+        <div style={{ textAlign: 'center' }}>
+          <img src={records.promotionImage} alt="" style={{ maxWidth: 250 }} />
+        </div>
       </Drawer>
       <SearchData
         form={form}

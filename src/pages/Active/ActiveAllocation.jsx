@@ -9,7 +9,7 @@ import AllocationSet from './components/allocation/AllocationSet';
 
 const tabList = [
   {
-    key: 'IOS',
+    key: 'iOS',
     tab: 'IOS',
   },
   {
@@ -28,7 +28,7 @@ const ActiveAllocation = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false });
   const [rowKey, setRowKey] = useState([]);
-  const [userOs, setUserOs] = useState('IOS');
+  const [userOs, setUserOs] = useState('iOS');
 
   // 新增/修改
   const handleSet = (initialValues) => {
