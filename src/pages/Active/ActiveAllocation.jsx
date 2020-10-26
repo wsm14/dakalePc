@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Button, Card } from 'antd';
-import HandleSetTable from '@/components/HandleSetTable';
+import { Card } from 'antd';
+// import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import activeAllocationEdit from './components/allocation/ActiveAllocationEdit';
 import ActiveAllocationPlace from './components/allocation/ActiveAllocationPlace';
