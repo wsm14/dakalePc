@@ -86,7 +86,14 @@ const ActiveAllocation = (props) => {
 
   return (
     <>
-      <Card tabList={tabList} activeTabKey={userOs} onTabChange={(key) => setUserOs(key)}>
+      <Card
+        tabList={tabList}
+        activeTabKey={userOs}
+        onTabChange={(key) => {
+          setUserOs(key);
+          setRowKey([]);
+        }}
+      >
         <DataTableBlock
           NoSearch={true}
           CardNone={false}
