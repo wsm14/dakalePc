@@ -36,11 +36,6 @@ const ActiveAllocationPlace = (props) => {
       render: (val) => <PopImgShow url={val} />,
     },
     {
-      title: '封面图片',
-      dataIndex: 'promotionContent',
-      render: (val) => <PopImgShow url={val} />,
-    },
-    {
       title: '活动名称',
       dataIndex: 'promotionName',
     },
@@ -76,7 +71,10 @@ const ActiveAllocationPlace = (props) => {
                 setVisibleSet({
                   show: true,
                   promotionId: val,
-                  records: { ...records, nativeId: Number(records.nativeIdString) },
+                  records: {
+                    ...records,
+                    nativeId: records.nativeIdString ? Number(records.nativeIdString) : '',
+                  },
                   childRef,
                 }),
             },

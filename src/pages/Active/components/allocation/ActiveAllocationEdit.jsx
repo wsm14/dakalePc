@@ -2,7 +2,6 @@ import aliOssUpload from '@/utils/aliOssUpload';
 
 export default (props) => {
   const { dispatch, cRef, initialValues = {} } = props;
-
   // 审核驳回
   const fetchMerSaleAudit = (payload) => {
     const { promotionImage = '' } = values;
