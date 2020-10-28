@@ -18,6 +18,7 @@ export default {
       },
     },
   },
+
   test: {
     define: {
       APIURL: 'https://devgateway.dakale.net',
@@ -27,6 +28,12 @@ export default {
         target: 'your pre url',
         changeOrigin: true,
       },
+    },
+  },
+  // 预发布环境
+  pre: {
+    define: {
+      APIURL: 'https://pregateway.dakale.net',
     },
   },
   // 生产环境proxy代理 不生效
