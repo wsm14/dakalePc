@@ -71,7 +71,7 @@ const SearchCondition = (props) => {
   const [expand, setExpand] = useState(false);
 
   const len = formItems.length;
-  
+
   // 不同屏幕大小显示个数
   let count = 2;
   if (screens.xxl) {
@@ -165,13 +165,13 @@ const SearchCondition = (props) => {
       }
 
       const colcount = expand ? len : count;
-
+      const pickerCheck = (item.type === 'rangePicker' || item.type === 'datePicker') && len < 4;
       // 排版填充
       children.push(
         <Col
-          lg={componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
-          xl={item.type === 'rangePicker' || item.type === 'datePicker' ? 10 : i < colcount ? 8 : 0}
-          xxl={componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
+          lg={pickerCheck ? 10 : componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
+          xl={pickerCheck ? 10 : i < colcount ? 8 : 0}
+          xxl={pickerCheck ? 8 : componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
           key={i}
         >
           <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>
