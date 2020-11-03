@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BusinessVideoSet from './components/BusinessVideo/BusinessVideoSet';
+import NewsSet from './components/News/NewsSet';
 
 const tabList = [
   {
@@ -103,7 +103,6 @@ const ServiceNewsComponent = (props) => {
   const contentList = {
     tab1: (
       <DataTableBlock
-        keepName="新闻动态"
         CardNone={false}
         cRef={childRef}
         loading={loading}
@@ -113,7 +112,7 @@ const ServiceNewsComponent = (props) => {
         {...serviceNews}
       ></DataTableBlock>
     ),
-    tab2: <BusinessVideoSet setTabKey={setTabKey}></BusinessVideoSet>,
+    tab2: <NewsSet setTabKey={setTabKey}></NewsSet>,
   };
 
   return (

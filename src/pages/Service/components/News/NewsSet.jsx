@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import styles from '../style.less';
 
-const BusinessVideoSet = (props) => {
+const NewsSet = (props) => {
   const { dispatch, loading, setTabKey } = props;
 
   const [form] = Form.useForm();
@@ -88,4 +88,4 @@ const BusinessVideoSet = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['businessList/fetchMerchantSet'],
-}))(BusinessVideoSet);
+}))(NewsSet);
