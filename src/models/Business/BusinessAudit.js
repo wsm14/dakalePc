@@ -67,8 +67,8 @@ export default {
         otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
         bondBean: { value: bondBean, key: commissionRatio },
         categoryName: [
-          { id: categoryNodeArr[0], name: topCategoryName },
-          { id: categoryNodeArr[1], name: categoryName },
+          { categoryIdString: categoryNodeArr[0], categoryName: topCategoryName },
+          { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
         ],
         commissionRatio: bondBean,
       };

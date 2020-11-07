@@ -19,20 +19,6 @@ const BusinessAdd = (props) => {
   const [selectCity, setSelectCity] = useState([]); // 选择城市
   const [visibleAllow, setVisibleAllow] = useState(false);
 
-  useEffect(() => {
-    if (initialValues) {
-      setLocation([lnt, lat]);
-      setSelectCity(initialValues.selectCity);
-      if (initialValues.hasPartner !== '1') {
-        Modal.warning({
-          title: '提醒',
-          content:
-            '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
-        });
-      }
-    }
-  }, [initialValues]);
-
   // 提交
   const fetchFormData = (auditInfo = {}) => {
     form.validateFields().then((values) => {
@@ -89,6 +75,21 @@ const BusinessAdd = (props) => {
         });
       });
     });
+  };
+
+  // 打开编辑框时默认值赋值
+  const handleInvalueEdit = () => {
+    if (initialValues) {
+      setLocation([lnt, lat]);
+      setSelectCity(initialValues.selectCity);
+      if (initialValues.hasPartner !== '1') {
+        Modal.warning({
+          title: '提醒',
+          content:
+            '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
+        });
+      }
+    }
   };
 
   // 审核驳回
@@ -163,6 +164,11 @@ const BusinessAdd = (props) => {
     <Drawer
       {...modalProps}
       onClose={onClose}
+      afterVisibleChange={(showEdit) => {
+        if (showEdit) {
+          handleInvalueEdit();
+        }
+      }}
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'right' }}>
