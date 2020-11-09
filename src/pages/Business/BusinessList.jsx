@@ -213,9 +213,9 @@ const BusinessListComponent = (props) => {
             key="businessTotalInfo"
             btnExtra={
               <>
-                <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+                {/* <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
                   新增商户
-                </Button>
+                </Button> */}
                 <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
                   设置商家验证码
                 </Button>
