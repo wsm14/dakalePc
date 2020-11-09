@@ -59,7 +59,7 @@ const BusinessAuditAllow = (props) => {
           } = values;
           // aliOssUpload(allImages).then((res) => {
           const selectTime = values.allTime
-            ? '0:00-23:59'
+            ? '00:00-23:59'
             : timeItem.map(
                 (item) =>
                   `${businessTime[item][0].format('HH:mm')}-${businessTime[item][1].format(
