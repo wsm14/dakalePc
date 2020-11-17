@@ -93,14 +93,14 @@ const BusinessAdd = (props) => {
       return true;
     });
     fetch(
-      `https://restapi.amap.com/v3/geocode/geo?key=${AMAP_KEY}&city=${city[1].label}&address=${
-        cityname + address
-      }`,
+      `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&citylimit=true&city=${
+        city[1].label
+      }&keywords=${cityname + address}`,
     )
       .then((res) => {
         if (res.ok) {
           res.json().then((data) => {
-            const list = data.geocodes;
+            const list = data.pois;
             if (list.length === 0) message.warn('未查询到地址信息', 1.5);
             else {
               const geocodes = list[0].location.split(',');

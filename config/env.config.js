@@ -13,7 +13,7 @@ export default {
         changeOrigin: true,
       },
       '/media': {
-        target: 'https://static.dingtalk.com/',
+        target: 'http://192.168.0.143:6020/',
         changeOrigin: true,
       },
     },

@@ -18,6 +18,7 @@ const BusinessAdd = (props) => {
   const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
   const [selectCity, setSelectCity] = useState([]); // 选择城市
   const [visibleAllow, setVisibleAllow] = useState(false);
+  const [marker, setMarker] = useState(true); // 浮标拖拽状态
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
@@ -106,6 +107,7 @@ const BusinessAdd = (props) => {
       setAmpShow(false);
       return;
     }
+    setMarker(false);
     let cityname = '';
     if (typeof city[1] !== 'object') city = selectCity;
     (typeof city[1] === 'object' ? city : selectCity).map((item) => {
@@ -113,14 +115,14 @@ const BusinessAdd = (props) => {
       return true;
     });
     fetch(
-      `https://restapi.amap.com/v3/geocode/geo?key=${AMAP_KEY}&city=${city[1].label}&address=${
+      `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&city=${city[1].label}&keywords=${
         cityname + address
       }`,
     )
       .then((res) => {
         if (res.ok) {
           res.json().then((data) => {
-            const list = data.geocodes;
+            const list = data.pois;
             if (list.length === 0) message.warn('未查询到地址信息', 1.5);
             else {
               const geocodes = list[0].location.split(',');
@@ -129,12 +131,23 @@ const BusinessAdd = (props) => {
               console.log(city[1].label, [longitude, latitude]);
               setLocation([longitude, latitude]);
               setAmpShow(true);
+              setMarker(true);
               setSelectCity(typeof city[1] === 'object' ? city : selectCity);
             }
           });
         }
       })
       .finally(() => {});
+  };
+
+  // 地图浮标移动定位
+  const handleMarkerEvents = {
+    dragend: (event) => {
+      const { lnglat } = event;
+      const latitude = parseFloat(lnglat.lat); // 维度
+      const longitude = parseFloat(lnglat.lng); // 经度
+      setLocation([longitude, latitude]);
+    },
   };
 
   const amap = (
@@ -147,7 +160,7 @@ const BusinessAdd = (props) => {
         keyboardEnable={false}
         touchZoom={false}
       >
-        <Marker position={location} />
+        <Marker clickable draggable={marker} position={location} events={handleMarkerEvents} />
       </Map>
     </div>
   );

@@ -20,7 +20,7 @@ const BusinessAddBeas = (props) => {
   const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
   const [priceList, setPriceList] = useState([]);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
-  const [ampShow, setAmpShow] = useState(false);
+  const [ampShow, setAmpShow] = useState(true);
   const [categId, setCategId] = useState(initialValues.businessArea);
 
   // 获取品牌
