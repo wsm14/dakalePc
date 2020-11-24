@@ -8,11 +8,23 @@ import sysMenuSet from './components/Menu/SysMenuSet';
 const tabList = [
   {
     key: 'admin',
-    tab: '后台',
+    tab: '运营',
   },
   {
     key: 'merchant',
     tab: '商家',
+  },
+  {
+    key: 'company',
+    tab: '省公司',
+  },
+  {
+    key: 'partner',
+    tab: '区县',
+  },
+  {
+    key: 'sell',
+    tab: '销售',
   },
 ];
 

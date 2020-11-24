@@ -136,10 +136,10 @@ const BusinessAuditAllow = (props) => {
     },
     {
       label: '营业时间',
-      type: 'children',
+      type: 'childrenOwn',
       rules: 'false',
       required: true,
-      children: (
+      childrenOwn: (
         <>
           {timeItem.map((item, i) => (
             <div className={styles.audit_picker_item} key={item}>

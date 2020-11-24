@@ -76,10 +76,10 @@ const BusinessAddBeas = (props) => {
     {
       title: '01 商户信息',
       label: '品牌名称',
-      type: 'children',
+      type: 'childrenOwn',
       rules: 'false',
       required: false,
-      children: (
+      childrenOwn: (
         <>
           <Form.Item name="brandName" noStyle rules={[{ required: false, message: '请选择品牌' }]}>
             <Select
@@ -147,7 +147,7 @@ const BusinessAddBeas = (props) => {
     {
       type: 'noForm',
       visible: ampShow,
-      children: amap,
+      childrenOwn: amap,
     },
     {
       label: '商户电话',

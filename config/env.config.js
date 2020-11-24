@@ -1,3 +1,6 @@
+const target = 'https://devgateway.dakale.net';
+// const target = 'http://192.168.0.117:6020/';
+
 export default {
   dev: {
     define: {
@@ -5,15 +8,15 @@ export default {
     },
     proxy: {
       '/admin': {
-        target: 'https://devgateway.dakale.net', // http://192.168.0.143:6020/
+        target,
         changeOrigin: true,
       },
       '/common': {
-        target: 'https://devgateway.dakale.net',
+        target,
         changeOrigin: true,
       },
       '/media': {
-        target: 'http://192.168.0.143:6020/',
+        target,
         changeOrigin: true,
       },
     },
