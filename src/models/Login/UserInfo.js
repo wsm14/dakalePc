@@ -5,7 +5,7 @@ import { fetchPassWordEdit } from '@/services/SystemServices';
 export default {
   namespace: 'userInfo',
   state: {
-    currentUser: {},
+    currentUser: {username:'test'},
     menuList: [],
   },
   effects: {
@@ -13,10 +13,10 @@ export default {
       const response = yield call(fetchQueryCurrent);
       if (!response) return;
       const { content } = response;
-      yield put({
-        type: 'saveCurrentUser',
-        payload: content.adminInfo,
-      });
+      // yield put({
+      //   type: 'saveCurrentUser',
+      //   payload: content.adminInfo,
+      // });
     },
     *fetchPassWordEdit({ payload }, { call }) {
       const response = yield call(fetchPassWordEdit, payload);
@@ -33,10 +33,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          menuList: content.accessList,
+          menuList: content.permissionTree,
         },
       });
-      if (callback) callback(content.accessList);
+      if (callback) callback(content.permissionTree);
     },
   },
   reducers: {

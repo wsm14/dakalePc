@@ -55,7 +55,7 @@ const BasicLayout = (props) => {
         accessName: name,
         accessIcon: icon,
         accessUrl: path,
-        subAuthAccessDTOList: routes,
+        childList: routes,
       } = item;
       if (keys) {
         rootSubmenuKeys.push(path);

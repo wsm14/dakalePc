@@ -50,9 +50,9 @@ const LoginItem = ({ prop, loading }) => {
       });
       return;
     }
-    if (list[0].subAuthAccessDTOList.length) {
+    if (list[0].childList.length) {
       // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
-      history.replace(list[0].subAuthAccessDTOList[0].accessUrl);
+      history.replace(list[0].childList[0].accessUrl);
     } else {
       // history.replace(redirect || list[0].accessUrl);
       history.replace(list[0].accessUrl);
@@ -75,7 +75,7 @@ const LoginItem = ({ prop, loading }) => {
         >
           <FormItem
             label="帐号"
-            name="username"
+            name="mobile"
             rules={[
               { required: true, message: '请填写正确帐号' },
               // { pattern: PHONE_PATTERN, message: '请填写正确帐号' },
