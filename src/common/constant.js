@@ -58,6 +58,17 @@ export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 // 新闻动态状态
 export const NEWS_STATUS = ['下架', '上架'];
 
+// 员工在职状态
+export const WORKER_JOB_TYPE = ['离职', '在职'];
+
+// 员工在职状态
+export const WORKER_ROLEDATA_TYPE = [
+  { value: 1, name: '本人' },
+  { value: 25, name: '本部门（不含下级部门）' },
+  { value: 50, name: '本部门及以下级部门 ' },
+  { value: 100, name: '全部' },
+];
+
 // Banner展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 

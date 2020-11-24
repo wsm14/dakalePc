@@ -215,6 +215,28 @@ export default [
         ],
       },
       {
+        name: '帐号管理',
+        icon: 'sign',
+        path: '/signAccount',
+        routes: [
+          {
+            path: '/signAccount/sale',
+            name: '运营后台帐号',
+            component: './SignAccount/AccountList',
+          },
+          {
+            path: '/signAccount/company',
+            name: '省公司帐号',
+            component: './SignAccount/CompanyAccount',
+          },
+          {
+            path: '/signAccount/partner',
+            name: '区县帐号',
+            component: './SignAccount/PartnerAccount',
+          },
+        ],
+      },
+      {
         name: '系统设置',
         path: '/system',
         routes: [
@@ -237,11 +259,6 @@ export default [
             path: '/system/peasShare',
             name: '卡豆分享',
             component: './System/SysPeasShare',
-          },
-          {
-            path: '/system/accountset',
-            name: '帐号设置',
-            component: './System/SysAccountList',
           },
           {
             path: '/system/pageset',

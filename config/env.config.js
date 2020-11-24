@@ -1,5 +1,7 @@
+
 const target = 'http://192.168.0.117:6020'
 // const target = 'https://devgateway.dakale.net'
+
 export default {
   dev: {
     define: {
@@ -7,7 +9,7 @@ export default {
     },
     proxy: {
       '/admin': {
-        target:  target, // http://192.168.0.143:6020/
+        target:  target,
         changeOrigin: true,
       },
       '/common': {
@@ -15,7 +17,7 @@ export default {
         changeOrigin: true,
       },
       '/media': {
-        target:  target,
+        target,
         changeOrigin: true,
       },
     },
