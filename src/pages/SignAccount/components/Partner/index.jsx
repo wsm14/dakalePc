@@ -1,8 +1,7 @@
-import React, { useState, } from 'react';
+import React, { useState } from 'react';
 import { Card } from 'antd';
 import UserList from './components/List/UserList';
 import RoleList from './components/List/RoleList';
-import SectionList from './components/List/SectionList';
 
 const tabList = [
   {
@@ -13,10 +12,6 @@ const tabList = [
     key: 'tab2',
     tab: '角色',
   },
-  {
-    key: 'tab3',
-    tab: '部门',
-  },
 ];
 
 const PublicAuditList = (props) => {
@@ -25,7 +20,6 @@ const PublicAuditList = (props) => {
   const contentList = {
     tab1: <UserList></UserList>,
     tab2: <RoleList></RoleList>,
-    tab3: <SectionList></SectionList>,
   };
 
   return (

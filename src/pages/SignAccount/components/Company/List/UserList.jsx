@@ -6,6 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import UserSetForm from '../Form/UserSetForm';
+import CITYJSON from '@/common/city';
 
 const { SubMenu } = Menu;
 
@@ -18,7 +19,7 @@ const UserList = (props) => {
   // 获取用户详情
   const fetchDetail = (payload) => {
     dispatch({
-      type: 'workerManageUser/fetchWMSUserDetail',
+      type: 'workerManageUser/fetchUserDetailsByCompany',
       payload,
       callback: (userInfo) => setVisible({ visible: true, userInfo }),
     });
@@ -27,7 +28,7 @@ const UserList = (props) => {
   // 用户修改
   const fetchEdit = (payload) => {
     dispatch({
-      type: 'workerManageUser/fetchWMSUserEdit',
+      type: 'workerManageUser/fetchUserEditByCompany',
       payload,
       callback: () => childRef.current.fetchGetData(),
     });
@@ -36,42 +37,60 @@ const UserList = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '用户姓名',
-      name: 'sellName',
-    },
-    {
-      label: '手机号',
-      name: 'mobile',
-    },
-    {
-      label: '在职状态',
-      name: 'sellStatus',
+      label: '分管省份',
       type: 'select',
-      select: { list: WORKER_JOB_TYPE },
+      select: {
+        list: CITYJSON.map(({value, label}) => ({value: label, name: label}))
+      }
+    },
+    {
+      label: '省公司名称',
+      name: 'companyName',
+    },
+    {
+      label: '联系人',
+      name: 'personName',
+    },
+    {
+      label: '登录账号',
+      name: 'account',
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '用户姓名',
-      dataIndex: 'sellName',
+      title: '省公司名称',
+      dataIndex: 'companyName',
     },
     {
-      title: '性别',
+      title: '分管省份',
       align: 'center',
-      dataIndex: 'gender',
-      render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
+      dataIndex: 'provinceName',
+    },
+    {
+      title: '登录账号',
+      align: 'center',
+      dataIndex: 'account',
+    },
+    {
+      title: '联系人姓名',
+      dataIndex: 'personName',
+    },
+    {
+      title: '联系人岗位',
+      dataIndex: 'post',
     },
     {
       title: '手机号',
-      align: 'center',
       dataIndex: 'mobile',
     },
     {
-      title: '部门',
-      dataIndex: 'departmentName',
+      title: '性别',
+      dataIndex: 'gender',
+      render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
     },
+
     {
       title: '角色',
       dataIndex: 'roleNames',
@@ -82,34 +101,26 @@ const UserList = (props) => {
       ),
     },
     {
-      title: '入职日期',
-      align: 'center',
-      dataIndex: 'entryDate',
-      render: (val) => val || '--',
+      title: '备注',
+      dataIndex: 'remark',
     },
-    {
-      title: '邮箱',
-      align: 'center',
-      dataIndex: 'email',
-      render: (val) => val || '--',
-    },
-    {
-      title: '在职状态',
-      align: 'center',
-      dataIndex: 'sellStatus',
-      render: (val) => WORKER_JOB_TYPE[val],
-    },
+    // {
+    //   title: '在职状态',
+    //   align: 'center',
+    //   dataIndex: 'sellStatus',
+    //   render: (val) => WORKER_JOB_TYPE[val],
+    // },
     {
       title: '启用状态',
       align: 'center',
       fixed: 'right',
-      dataIndex: 'useStatus',
+      dataIndex: 'status',
       render: (val, record) => (
         <Switch
           checkedChildren="启"
           unCheckedChildren="停"
           checked={val === '1'}
-          onClick={() => fetchEdit({ sellId: record.sellId, useStatus: 1 ^ val })}
+          onClick={() => fetchEdit({ authCompanyId: record.authCompanyId, status: 1 ^ val })}
         />
       ),
     },
@@ -117,13 +128,13 @@ const UserList = (props) => {
       title: '操作',
       align: 'right',
       fixed: 'right',
-      dataIndex: 'sellId',
-      render: (sellId) => (
+      dataIndex: 'authCompanyId',
+      render: (authCompanyId) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => fetchDetail({ sellId }),
+              click: () => fetchDetail({ authCompanyId }),
             },
           ]}
         />
@@ -144,9 +155,9 @@ const UserList = (props) => {
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}
-        rowKey={(record) => `${record.sellId}`}
-        dispatchType="workerManageUser/fetchGetList"
-        {...workerManageUser}
+        rowKey={(record) => `${record.authCompanyId}`}
+        dispatchType="workerManageUser/fetchUserListByCompany"
+        {...workerManageUser['companyList']}
       ></DataTableBlock>
       <UserSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></UserSetForm>
     </>

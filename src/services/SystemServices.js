@@ -9,21 +9,22 @@ export function fetchOrderDetail(params) {
 
 // get 菜单设置 - 菜单 - 获取菜单
 export function fetchMenuList(params) {
-  return request('/admin/auth/listAllAccess', {
+  console.log(params)
+  return request('/admin/access/listAllAccess', {
     params,
   });
 }
 
 // get 菜单设置 - 菜单 - 获取菜单信息
 export function fetchGetMenuDetail(params) {
-  return request('/admin/auth/getAccessById', {
+  return request('/admin/access/getAccessById', {
     params,
   });
 }
 
 // post 菜单设置 - 菜单 - 新增 修改
 export function fetchMenuSet(data) {
-  return request('/admin/auth/saveAuthAccess', {
+  return request('/admin/access/saveAuthAccess', {
     method: 'POST',
     data,
   });

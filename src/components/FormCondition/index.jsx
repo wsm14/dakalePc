@@ -316,6 +316,7 @@ const FormComponents = ({
             fieldNames={item.fieldNames}
             options={item.select || CITYJSON}
             expandTrigger="hover"
+            disabled={item.disabled}
             changeOnSelect={item.changeOnSelect || false}
             onChange={(val, sele) => {
               (form || formN).setFieldsValue({ [`Cascader${item.name}`]: sele });

@@ -168,7 +168,7 @@ const SysMenuList = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.authAccessId}`}
         dispatchType="sysMenuList/fetchGetList"
-        params={{ roleType: tabkey }}
+        params={{ ownerType: tabkey }}
         pParams={{ limit: 101 }}
         {...sysMenuList}
       ></DataTableBlock>

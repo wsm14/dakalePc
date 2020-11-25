@@ -4,7 +4,7 @@ import {
   fetchWMSRoleDetail,
   fetchWMSRoleAdd,
   fetchWMSRoleEdit,
-  fetchWMSRoleSelect,
+  // fetchWMSRoleSelect,
 } from '@/services/SignAccountServices';
 
 export default {
@@ -57,12 +57,12 @@ export default {
         selectedRowKeys,
       });
     },
-    *fetchWMSRoleSelect({ payload, callback }, { call }) {
-      const response = yield call(fetchWMSRoleSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.recordList);
-    },
+    // *fetchWMSRoleSelect({ payload, callback }, { call }) {
+    //   const response = yield call(fetchWMSRoleSelect, payload);
+    //   if (!response) return;
+    //   const { content } = response;
+    //   callback(content.recordList);
+    // },
     *fetchWMSRoleAdd({ payload, callback }, { call }) {
       const response = yield call(fetchWMSRoleAdd, payload);
       if (!response) return;

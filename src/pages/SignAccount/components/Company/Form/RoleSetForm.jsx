@@ -28,10 +28,11 @@ const RoleSetForm = (props) => {
           ? 'workerManageRole/fetchWMSRoleEdit' // 修改
           : 'workerManageRole/fetchWMSRoleAdd', // 新增
         payload: {
+          ownerType: 'company',
           ...userInfo,
           ...values,
-          roleName: roleName.label,
-          roleKey: roleName.key,
+          // roleName: roleName.label,
+          // roleKey: roleName.key,
           permissionObjects,
         },
         callback: () => {
@@ -43,22 +44,17 @@ const RoleSetForm = (props) => {
   };
 
   // 角色可选搜索
-  const fetchWMSRoleSelect = () => {
-    dispatch({
-      type: 'workerManageRole/fetchWMSRoleSelect',
-      callback: setSelectValue,
-    });
-  };
+  // const fetchWMSRoleSelect = () => {
+  //   dispatch({
+  //     type: 'workerManageRole/fetchWMSRoleSelect',
+  //     callback: setSelectValue,
+  //   });
+  // };
 
   const formItems = [
     {
       label: '角色名称',
       name: 'roleName',
-      type: 'select',
-      loading,
-      labelInValue: true,
-      visible: !userInfo.roleId,
-      select: selectValue.map((item) => ({ name: item.value, value: item.child })),
     },
     {
       label: '备注',
@@ -90,11 +86,11 @@ const RoleSetForm = (props) => {
     <Drawer
       {...modalProps}
       onClose={onClose}
-      afterVisibleChange={(show) => {
-        if (show) {
-          fetchWMSRoleSelect();
-        }
-      }}
+      // afterVisibleChange={(show) => {
+      //   if (show) {
+      //     fetchWMSRoleSelect();
+      //   }
+      // }}
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'center' }}>

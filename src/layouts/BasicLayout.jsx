@@ -27,8 +27,9 @@ const BasicLayout = (props) => {
     pageTitle,
     pageBtn,
     menuList,
+    loading
   } = props;
-
+  console.log(loading)
   const match = useLocation();
   const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]); // 菜单一级keys
   const [selectedKeys, setSelectedKeys] = useState([match.pathname]); // 菜单点亮的keys
@@ -47,9 +48,9 @@ const BasicLayout = (props) => {
   //     return localItem;
   //   });
   // };
-
   // 动态菜单
   const menuDataRender = (menu, keys = true) => {
+     console.log(menu)
     return menu.map((item) => {
       const {
         accessName: name,
@@ -149,7 +150,8 @@ const BasicLayout = (props) => {
         }}
         // footerRender={() => defaultFooterDom}
         // menuDataRender={menuDataRender}
-        menuDataRender={() => menuDataRender(menuList)}
+        menuDataRender={ () => menuDataRender(menuList)}
+        menu={{ loading }}
         headerRender={() => <HeaderContent />}
         rightContentRender={() => <RightContent />}
         {...props}
@@ -186,6 +188,7 @@ const BasicLayout = (props) => {
 export default connect(({ global, settings, userInfo }) => ({
   collapsed: global.collapsed,
   menuList: userInfo.menuList,
+  loading:userInfo.loading,
   pageTitle: global.pageTitle,
   pageBtn: global.pageBtn,
   settings,

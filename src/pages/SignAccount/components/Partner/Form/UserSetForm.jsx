@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { PHONE_PATTERN } from '@/common/regExp';
 import { WORKER_JOB_TYPE } from '@/common/constant';
-import { Drawer, Form, Button, Space, Transfer, Spin } from 'antd';
+import {Drawer, Form, Button, Space, Transfer, Spin, notification} from 'antd';
 import FormComponents from '@/components/FormCondition';
+import CITYJSON from '@/common/city';
+
 
 const UserSetForm = (props) => {
   const {
     workerManageUser,
     userInfo = {},
     childRef,
-    sectionList = [],
     dispatch,
     visible,
     onClose,
@@ -21,39 +22,17 @@ const UserSetForm = (props) => {
   const [form] = Form.useForm();
 
   const [roleIds, setRoleIds] = useState([]);
+  const [cityData, setCityData] = useState([]);
 
-  // 递归获取规则项目
-  const getParentId = (list, iid) => {
-    for (let o of list || []) {
-      if (o.departmentIdString == iid) return o;
-      const o_ = getParentId(o.children, iid);
-      if (o_) return o_;
-    }
-  };
 
   useEffect(() => {
     if (visible) setRoleIds(userInfo.roleIds ? userInfo.roleIds : []);
   }, [visible]);
 
-  useEffect(() => {
-    if (Object.keys(userInfo).length) {
-      const pid = getParentId(sectionList, userInfo.departmentId[0]);
-      if (pid) {
-        form.setFieldsValue({
-          departmentId:
-            pid.pidString == 0
-              ? [userInfo.departmentId[0]]
-              : [pid.pidString, userInfo.departmentId[0]],
-        });
-      }
-    }
-  }, [sectionList]);
-
   // 抽屉打开时请求选择参数
   const afterVisibleChange = (visible) => {
     if (visible) {
       fetchRoleList();
-      fetchSectionList();
     }
   };
 
@@ -61,34 +40,33 @@ const UserSetForm = (props) => {
   const fetchRoleList = (info) => {
     dispatch({
       type: 'workerManageUser/fetchWMSUserRoles',
-      callback: (parentLsit) => fetchDetySetTwo(info, parentLsit),
-    });
-  };
-
-  // 获取部门列表
-  const fetchSectionList = () => {
-    dispatch({
-      type: 'workerManageSection/fetchGetList',
       payload: {
-        departmentStatus: 1,
+        ownerType: 'partner'
       },
+      callback: (parentLsit) => fetchDetySetTwo(info, parentLsit),
     });
   };
 
   // 新增 / 修改角色
   const handleUpdata = () => {
+    if(roleIds.length === 0) {
+      return notification.warning({
+        message: '温馨提示',
+        description: '请配置角色',
+      });
+    }
     form.validateFields().then((values) => {
-      const { password, mobile, departmentId, entryDate } = values;
+      const { password, mobile} = values;
       dispatch({
-        type: userInfo.sellId
-          ? 'workerManageUser/fetchWMSUserEdit' // 修改
-          : 'workerManageUser/fetchWMSUserAdd', // 新增
+        type: userInfo.authPartnerId
+          ? 'workerManageUser/fetchUserEditByPartner' // 修改
+          : 'workerManageUser/fetchUserAddByPartner', // 新增
         payload: {
           ...userInfo,
           ...values,
-          entryDate: entryDate ? entryDate.format('YYYY-MM-DD') : '',
-          departmentId: departmentId[departmentId.length - 1],
-          password: password ? password : userInfo.sellId ? undefined : mobile.match(/.*(.{6})/)[1],
+          districtName: cityData[cityData.length-1].label,
+          districtCode:cityData[cityData.length-1].value,
+          password: password ? password : userInfo.authPartnerId ? undefined : mobile.match(/.*(.{6})/)[1],
           roleIds,
         },
         callback: () => {
@@ -101,21 +79,33 @@ const UserSetForm = (props) => {
 
   const formItems = [
     {
-      label: '用户姓名',
-      name: 'sellName',
+      label: '代理区县',
+      type: 'cascader',
+      name: 'districtName',
+      onChange: (value) => setCityData(value)
     },
     {
-      label: '性别',
-      name: 'gender',
-      type: 'radio',
-      select: [
-        { value: 'M', name: '男' },
-        { value: 'F', name: '女' },
-      ],
+      label: '代理公司名称',
+      name: 'companyName',
     },
     {
-      label: '登录手机号',
+      label: '联系人姓名',
+      name: 'personName',
+    },
+    {
+      label: '联系人岗位',
+      name: 'post',
+      rules: 'false'
+    },
+
+    {
+      label: '手机号',
       name: 'mobile',
+      addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
+    },
+    {
+      label: '登录账号',
+      name: 'account',
       addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
     },
     {
@@ -125,23 +115,13 @@ const UserSetForm = (props) => {
       placeholder: '不输入默认手机号后6位',
     },
     {
-      label: '入职日期',
-      type: 'dataPicker',
-      name: 'entryDate',
-      rules: [{ required: false }],
-    },
-    {
-      label: '邮箱地址',
-      name: 'email',
-      rules: 'false',
-    },
-    {
-      label: '部门',
-      name: 'departmentId',
-      type: 'cascader',
-      select: sectionList,
-      changeOnSelect: true,
-      fieldNames: { label: 'departmentName', value: 'departmentIdString' },
+      label: '性别',
+      name: 'gender',
+      type: 'radio',
+      select: [
+        { value: 'M', name: '男' },
+        { value: 'F', name: '女' },
+      ],
     },
     {
       label: '角色',
@@ -167,17 +147,10 @@ const UserSetForm = (props) => {
       ),
     },
     {
-      label: '状态',
-      name: 'sellStatus',
-      type: 'select',
-      visible: !!userInfo.sellId,
-      select: WORKER_JOB_TYPE,
-    },
-    {
       label: '启用状态',
-      name: 'useStatus',
+      name: 'status',
       type: 'radio',
-      visible: !!userInfo.sellId,
+      visible: !!userInfo.authPartnerId,
       select: ['停用', '启用'],
     },
   ];

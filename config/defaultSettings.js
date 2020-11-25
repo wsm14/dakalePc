@@ -7,9 +7,6 @@ const proSettings = {
   fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
-  menu: {
-    locale: false,
-  },
   title: '哒卡乐运营后台',
   pwa: false,
   iconfontUrl: '',

@@ -49,6 +49,10 @@ export default [
             path: '/user/list',
             name: '用户数据',
             component: './User/UserList',
+            buttons: [
+              { label: '查看', value: 'view' },
+              { label: '禁用', value: 'jinyong' },
+            ],
           },
         ],
       },

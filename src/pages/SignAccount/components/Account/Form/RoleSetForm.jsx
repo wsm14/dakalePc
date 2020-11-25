@@ -15,7 +15,7 @@ const RoleSetForm = (props) => {
   // 新增 / 修改角色
   const handleUpdata = () => {
     form.validateFields().then((values) => {
-      const { roleName = {} } = values;
+      // const { roleName = {} } = values;
       const rolesObj = tableRef.current.fetchGetData();
       const { selectedBtns, selectedDatas, selectedRowKeys } = rolesObj;
       const permissionObjects = selectedRowKeys.map((item) => ({
@@ -30,8 +30,9 @@ const RoleSetForm = (props) => {
         payload: {
           ...userInfo,
           ...values,
-          roleName: roleName.label,
-          roleKey: roleName.key,
+          ownerType: 'admin',
+          // roleName: roleName.label,
+          // roleKey: roleName.key,
           permissionObjects,
         },
         callback: () => {
@@ -42,23 +43,23 @@ const RoleSetForm = (props) => {
     });
   };
 
-  // 角色可选搜索
-  const fetchWMSRoleSelect = () => {
-    dispatch({
-      type: 'workerManageRole/fetchWMSRoleSelect',
-      callback: setSelectValue,
-    });
-  };
+  // // 角色可选搜索
+  // const fetchWMSRoleSelect = () => {
+  //   dispatch({
+  //     type: 'workerManageRole/fetchWMSRoleSelect',
+  //     callback: setSelectValue,
+  //   });
+  // };
 
   const formItems = [
     {
       label: '角色名称',
       name: 'roleName',
-      type: 'select',
-      loading,
-      labelInValue: true,
-      visible: !userInfo.roleId,
-      select: selectValue.map((item) => ({ name: item.value, value: item.child })),
+      // type: 'select',
+      // loading,
+      // labelInValue: true,
+      // visible: !userInfo.roleId,
+      // select: selectValue.map((item) => ({ name: item.value, value: item.child })),
     },
     {
       label: '备注',
@@ -90,11 +91,11 @@ const RoleSetForm = (props) => {
     <Drawer
       {...modalProps}
       onClose={onClose}
-      afterVisibleChange={(show) => {
-        if (show) {
-          fetchWMSRoleSelect();
-        }
-      }}
+      // afterVisibleChange={(show) => {
+      //   if (show) {
+      //     fetchWMSRoleSelect();
+      //   }
+      // }}
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'center' }}>

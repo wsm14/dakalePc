@@ -19,7 +19,7 @@ const RoleList = (props) => {
   const fetchGetTree = () => {
     dispatch({
       type: 'sysMenuList/fetchGetList',
-      payload: { roleType: 'sell', status: 1 },
+      payload: { ownerType: 'admin', status: 1 },
     });
   };
 
@@ -111,6 +111,7 @@ const RoleList = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.idString}`}
         dispatchType="workerManageRole/fetchGetList"
+        params={{ownerType: 'admin'}}
         {...workerManageRole}
       ></DataTableBlock>
       <RoleSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></RoleSetForm>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { PHONE_PATTERN } from '@/common/regExp';
 import { WORKER_JOB_TYPE } from '@/common/constant';
-import { Drawer, Form, Button, Space, Transfer, Spin } from 'antd';
+import {Drawer, Form, Button, Space, Transfer, Spin, notification} from 'antd';
 import FormComponents from '@/components/FormCondition';
 
 const UserSetForm = (props) => {
@@ -61,6 +61,9 @@ const UserSetForm = (props) => {
   const fetchRoleList = (info) => {
     dispatch({
       type: 'workerManageUser/fetchWMSUserRoles',
+      payload:{
+        ownerType: 'admin'
+      },
       callback: (parentLsit) => fetchDetySetTwo(info, parentLsit),
     });
   };
@@ -77,10 +80,16 @@ const UserSetForm = (props) => {
 
   // 新增 / 修改角色
   const handleUpdata = () => {
+    if(roleIds.length === 0) {
+      return notification.warning({
+        message: '温馨提示',
+        description: '请配置角色',
+      });
+    }
     form.validateFields().then((values) => {
       const { password, mobile, departmentId, entryDate } = values;
       dispatch({
-        type: userInfo.sellId
+        type: userInfo.authAdminId
           ? 'workerManageUser/fetchWMSUserEdit' // 修改
           : 'workerManageUser/fetchWMSUserAdd', // 新增
         payload: {
@@ -88,7 +97,7 @@ const UserSetForm = (props) => {
           ...values,
           entryDate: entryDate ? entryDate.format('YYYY-MM-DD') : '',
           departmentId: departmentId[departmentId.length - 1],
-          password: password ? password : userInfo.sellId ? undefined : mobile.match(/.*(.{6})/)[1],
+          password: password ? password : userInfo.authAdminId ? undefined : mobile.match(/.*(.{6})/)[1],
           roleIds,
         },
         callback: () => {
@@ -102,7 +111,7 @@ const UserSetForm = (props) => {
   const formItems = [
     {
       label: '用户姓名',
-      name: 'sellName',
+      name: 'adminName',
     },
     {
       label: '性别',
@@ -168,16 +177,16 @@ const UserSetForm = (props) => {
     },
     {
       label: '状态',
-      name: 'sellStatus',
+      name: 'workStatus',
       type: 'select',
-      visible: !!userInfo.sellId,
+      visible: !!userInfo.authAdminId,
       select: WORKER_JOB_TYPE,
     },
     {
       label: '启用状态',
-      name: 'useStatus',
+      name: 'status',
       type: 'radio',
-      visible: !!userInfo.sellId,
+      visible: !!userInfo.authAdminId,
       select: ['停用', '启用'],
     },
   ];

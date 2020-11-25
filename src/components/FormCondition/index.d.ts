@@ -44,7 +44,7 @@ export interface FormItems {
   parentKeys?: string[];
 }
 
-interface FormCondition extends Partial<> {
+interface FormCondition extends Partial<any>{
   form?: any;
   formItems?: FormItems[];
   layout?: 'horizontal' | 'inline' | 'vertical';

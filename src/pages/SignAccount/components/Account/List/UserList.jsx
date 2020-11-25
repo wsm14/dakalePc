@@ -39,7 +39,7 @@ const UserList = (props) => {
   const searchItems = [
     {
       label: '用户姓名',
-      name: 'sellName',
+      name: 'adminName',
     },
     {
       label: '手机号',
@@ -47,7 +47,7 @@ const UserList = (props) => {
     },
     {
       label: '在职状态',
-      name: 'sellStatus',
+      name: 'workStatus',
       type: 'select',
       select: { list: WORKER_JOB_TYPE },
     },
@@ -57,7 +57,7 @@ const UserList = (props) => {
   const getColumns = [
     {
       title: '用户姓名',
-      dataIndex: 'sellName',
+      dataIndex: 'adminName',
     },
     {
       title: '性别',
@@ -98,20 +98,20 @@ const UserList = (props) => {
     {
       title: '在职状态',
       align: 'center',
-      dataIndex: 'sellStatus',
+      dataIndex: 'workStatus',
       render: (val) => WORKER_JOB_TYPE[val],
     },
     {
       title: '启用状态',
       align: 'center',
       fixed: 'right',
-      dataIndex: 'useStatus',
+      dataIndex: 'status',
       render: (val, record) => (
         <Switch
           checkedChildren="启"
           unCheckedChildren="停"
           checked={val === '1'}
-          onClick={() => fetchEdit({ sellId: record.sellId, useStatus: 1 ^ val })}
+          onClick={() => fetchEdit({ authAdminId: record.authAdminId,status: 1 ^ val })}
         />
       ),
     },
@@ -119,13 +119,13 @@ const UserList = (props) => {
       title: '操作',
       align: 'right',
       fixed: 'right',
-      dataIndex: 'sellId',
-      render: (sellId) => (
+      dataIndex: 'authAdminId',
+      render: (authAdminId) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => fetchDetail({ sellId }),
+              click: () => fetchDetail({ authAdminId }),
             },
           ]}
         />
@@ -211,7 +211,7 @@ const UserList = (props) => {
           searchItems={searchItems}
           columns={getColumns}
           params={{ departmentIds }}
-          rowKey={(record) => `${record.sellId}`}
+          rowKey={(record) => `${record.authAdminId}`}
           dispatchType="workerManageUser/fetchGetList"
           {...workerManageUser}
         ></DataTableBlock>

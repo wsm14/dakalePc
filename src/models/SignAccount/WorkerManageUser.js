@@ -6,6 +6,14 @@ import {
   fetchWMSUserDetail,
   fetchWMSUserAdd,
   fetchWMSUserEdit,
+  fetchUserListByCompany,
+  fetchUserEditByCompany,
+  fetchUserDetailsByCompany,
+  fetchUserAddByCompany,
+  fetchUserAddByPartner,
+  fetchUserEditByPartner,
+  fetchUserListByPartner,
+  fetchUserDetailsByPartner
 } from '@/services/SignAccountServices';
 
 export default {
@@ -14,6 +22,10 @@ export default {
   state: {
     list: [],
     total: 0,
+    companyList: {
+      total: 0,
+      list: []
+    },
     rolesList: [],
   },
 
@@ -64,9 +76,9 @@ export default {
       const response = yield call(fetchWMSUserDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { entryDate, departmentId } = content.sellDetail;
+      const { entryDate, departmentId } = content.authAdminDetail;
       callback({
-        ...content.sellDetail,
+        ...content.authAdminDetail,
         entryDate: moment(entryDate),
         departmentId: [departmentId],
       });
@@ -80,12 +92,94 @@ export default {
       });
       callback();
     },
+    *fetchUserAddByCompany({ payload, callback }, { call }) {
+      const response = yield call(fetchUserAddByCompany, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '用户新增成功',
+      });
+      callback();
+    },
     *fetchWMSUserEdit({ payload, callback }, { call }) {
       const response = yield call(fetchWMSUserEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '用户修改成功',
+      });
+      callback();
+    },
+    *fetchUserEditByCompany({ payload, callback }, { call }) {
+      const response = yield call( fetchUserEditByCompany, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '用户修改成功',
+      });
+      callback();
+    },
+    *fetchUserListByCompany({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUserListByCompany, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          companyList: {
+            total: content.total,
+            list: content.recordList
+          },
+        },
+      });
+    },
+    *fetchUserDetailsByCompany({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUserDetailsByCompany, payload);
+      if (!response) return;
+      const { content } = response;
+      callback({
+        ...content.authCompanyDetail,
+      });
+    },
+    *fetchUserEditByPartner({ payload, callback }, { call }) {
+      const response = yield call(fetchUserEditByPartner, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '用户修改成功',
+      });
+      callback();
+    },
+    *fetchUserListByPartner({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUserListByPartner, payload);
+      if (!response) return;
+      const { content } = response;
+      console.log(content)
+      yield put({
+        type: 'save',
+        payload: {
+          partnerList: {
+            total: content.total,
+            list: content.recordList
+          },
+        },
+      });
+    },
+    *fetchUserDetailsByPartner({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUserDetailsByPartner, payload);
+      if (!response) return;
+      const { content } = response;
+      callback({
+        ...content.partnerDetail,
+        districtName:[]
+      });
+    },
+    *fetchUserAddByPartner({ payload, callback }, { call }) {
+      const response = yield call(fetchUserAddByPartner, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '用户新增成功',
       });
       callback();
     },
