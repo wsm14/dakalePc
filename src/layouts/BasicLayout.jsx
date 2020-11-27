@@ -29,7 +29,6 @@ const BasicLayout = (props) => {
     menuList,
     loading
   } = props;
-  console.log(loading)
   const match = useLocation();
   const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]); // 菜单一级keys
   const [selectedKeys, setSelectedKeys] = useState([match.pathname]); // 菜单点亮的keys
@@ -50,7 +49,6 @@ const BasicLayout = (props) => {
   // };
   // 动态菜单
   const menuDataRender = (menu, keys = true) => {
-     console.log(menu)
     return menu.map((item) => {
       const {
         accessName: name,

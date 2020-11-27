@@ -24,7 +24,7 @@ const iconEnum = {
   system: <SettingOutlined />,
   active: <CrownOutlined />,
   expert: <TeamOutlined />,
-  sign: <UsergroupAddOutlined />,
+  sign: <UsergroupAddOutlined/>,
 };
 
 export default iconEnum;

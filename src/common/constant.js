@@ -62,6 +62,19 @@ export const NEWS_STATUS = ['下架', '上架'];
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
 // 员工在职状态
+export const WORKER_BANK_TYPE = [{
+  label:'0',
+  value:'未绑定'
+},{
+  label:'1',
+  value:'审核中'
+},{
+  label:'2',
+  value:'绑定失败'
+},{
+  label:'3',
+  value:'绑定成功'
+}]
 export const WORKER_ROLEDATA_TYPE = [
   { value: 1, name: '本人' },
   { value: 25, name: '本部门（不含下级部门）' },
@@ -80,7 +93,11 @@ export const BANNER_TYPE = [
   { value: 'near', name: '周边' },
   { value: 'merchantMain', name: '商家主页' },
 ];
+export const SEX_TYPE = [
+  { value: 'M', name: '男' },
+  { value: 'F', name: '女' },
 
+];
 // Banner跳转类型
 export const BANNER_JUMP_TYPE = [
   { value: '无', name: '无' },

@@ -104,7 +104,6 @@ const UserSetForm = (props) => {
     {
       label: '登录账号',
       name: 'account',
-      addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
     },
     {
       label: '登录密码',

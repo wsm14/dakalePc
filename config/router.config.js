@@ -103,6 +103,22 @@ export default [
         ],
       },
       {
+        name: '集团管理',
+        path: '/group',
+        routes: [
+          {
+            path: '/group/list',
+            name: '集团列表',
+            component: './Group/list',
+            // buttons: [
+            //   { label: '查看', value: 'view' },
+            //   { label: '禁用', value: 'jinyong' },
+            // ],
+          },
+        ],
+      },
+
+      {
         name: '哒人管理',
         path: '/expert',
         routes: [
@@ -187,7 +203,7 @@ export default [
           },
           {
             path: '/service/limitPop',
-            name: '人员排除',
+            name: 'BD白名单',
             component: './Service/ServiceLimitPop',
           },
         ],

@@ -3,7 +3,7 @@ import request from '@/utils/request';
 // post 登录
 export function fakeAccountLogin(data) {
   console.log(data)
-  return request('/admin/auth/admin/login', {
+  return request('/admin/admin/account/login', {
     method: 'POST',
     data,
   });

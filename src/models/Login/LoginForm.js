@@ -16,9 +16,9 @@ const LoginForm = {
       if (!response) return;
 
       const {
-        content: { authAdmin },
+        content: { adminAccount },
       } = response;
-      window.sessionStorage.setItem('token', authAdmin.token);
+      window.sessionStorage.setItem('token', adminAccount.token);
       callback();
     },
 

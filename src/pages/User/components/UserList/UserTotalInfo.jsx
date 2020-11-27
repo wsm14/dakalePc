@@ -87,6 +87,27 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
             </Row>
           </Card>
         </Col>
+        <Col span={12}>
+          <Card bordered={false} bodyStyle={styles} loading={loading} style={{ height: 100 }}>
+            <Row gutter={[16, 16]} span={12} align="middle" style={{ height: 100, marginLeft: 10 }}>
+              <Col span={8}>
+                <Statistic
+                  title="总支付用户数"
+                  value={totalData.userAddRealNameCount + totalData.userAddTopUpCount}
+                ></Statistic>
+              </Col>
+              <Col span={8}>
+                <Statistic title="总到店打卡数" value={totalData.userTotalRegister}></Statistic>
+              </Col>
+              {/* <Col span={8}>
+                <Statistic title="总充值用户" value={totalData.userTopUpCount}></Statistic>
+              </Col> */}
+              {/* <Col span={8}>
+                <Statistic title="今日新增充值用户" value={totalData.userAddTopUpCount}></Statistic>
+              </Col> */}
+            </Row>
+          </Card>
+        </Col>
       </Row>
     </Card>
   );

@@ -121,6 +121,6 @@ const MasterTotalInfo = ({
 
 export default connect(({ circleMaster, loading }) => ({
   ...circleMaster,
-  loading: loading.effects['circleMaster/fetchMasterTotal'],
+    loading : loading.effects['circleMaster/fetchMasterTotal'],
   loading2: loading.effects['circleMaster/fetchMasterTotalList'],
 }))(MasterTotalInfo);

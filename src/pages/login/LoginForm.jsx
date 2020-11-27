@@ -50,12 +50,12 @@ const LoginItem = ({ prop, loading }) => {
       });
       return;
     }
-    if (list[0].childList.length) {
+    if (list[1].childList.length) {
       // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
-      history.replace(list[0].childList[0].accessUrl);
+      history.replace(list[1].childList[0].accessUrl);
     } else {
       // history.replace(redirect || list[0].accessUrl);
-      history.replace(list[0].accessUrl);
+      history.replace(list[1].accessUrl);
     }
   };
 
@@ -90,7 +90,7 @@ const LoginItem = ({ prop, loading }) => {
             rules={[{ required: true, message: '请填写密码' }]}
             style={{ marginBottom: 0 }}
           >
-            <Input.Password placeholder="请输入密码" type="passwprd" />
+            <Input.Password placeholder="请输入密码" type="password" />
           </FormItem>
           <Button
             className={style.dakale_Submit}
