@@ -10,12 +10,11 @@ import UserSetForm from '../Form/UserSetForm';
 const { SubMenu } = Menu;
 
 const UserList = (props) => {
-  const { loading, dispatch, workerManageUser, menuList } = props;
+  const { loading, dispatch, accountList, menuList } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [departmentIds, setDepartmentIds] = useState('');
-
 
   // 获取用户详情
   const fetchDetail = (payload) => {
@@ -111,7 +110,7 @@ const UserList = (props) => {
           checkedChildren="启"
           unCheckedChildren="停"
           checked={val === '1'}
-          onClick={() => fetchEdit({ authAdminId: record.authAdminId,status: 1 ^ val })}
+          onClick={() => fetchEdit({ authAdminId: record.authAdminId, status: 1 ^ val })}
         />
       ),
     },
@@ -140,50 +139,52 @@ const UserList = (props) => {
   // 获取部门列表
   const fetchSectionList = () => {
     dispatch({
-      type: 'workerManageSection/fetchGetList',
+      type: 'sectionSetting/fetchGetList',
       payload: {
         departmentStatus: 1,
+        clusterId: '0',
+        ownerType: 'admin',
       },
     });
   };
-  const routerMenu = (list,val) =>{
-    return list.map((item,index) => {
-      return item[val]?
-        (<SubMenu
+  const routerMenu = (list, val) => {
+    return list.map((item, index) => {
+      return item[val] ? (
+        <SubMenu
           onTitleClick={({ key }) => {
             let childrenId = '';
             if (item[val]) {
-              item[val].map(
-                (cid) => (childrenId += `,${cid.departmentIdString}`),
-              );
+              item[val].map((cid) => (childrenId += `,${cid.departmentIdString}`));
             }
+            console.log({ departmentIds: key + childrenId });
             childRef.current.fetchGetData({ departmentIds: key + childrenId });
             setDepartmentIds(key);
           }}
           key={item.departmentIdString}
           title={item.departmentName}
         >
-          {routerMenu(item[val],'children')}
-        </SubMenu>) : (
-          <Menu.Item key={item.departmentIdString}>{item.departmentName}</Menu.Item>
-        )
-    })
-  }
-  const filterOpenKeys = (list,val) => {
-   let arr = []
-   const lists =  list.filter(item => {
-      if(item[val]){
-       let a = filterOpenKeys(item[val],val)
-       arr.push(...a)
-       return true
+          {routerMenu(item[val], 'children')}
+        </SubMenu>
+      ) : (
+        <Menu.Item key={item.departmentIdString}>{item.departmentName}</Menu.Item>
+      );
+    });
+  };
+  const filterOpenKeys = (list, val) => {
+    let arr = [];
+    const lists = list.filter((item) => {
+      if (item[val]) {
+        let a = filterOpenKeys(item[val], val);
+        arr.push(...a);
+        return true;
       }
-    })
-   return [...lists,...arr]
-  }
+    });
+    return [...lists, ...arr];
+  };
   return (
     <div style={{ display: 'flex' }}>
       <Menu
-        openKeys={[...filterOpenKeys(menuList,'children').map(item => item.departmentIdString)]}
+        openKeys={[...filterOpenKeys(menuList, 'children').map((item) => item.departmentIdString)]}
         inlineCollapsed={false}
         defaultSelectedKeys={['-1']}
         onClick={(e) => {
@@ -193,10 +194,16 @@ const UserList = (props) => {
           setDepartmentIds(e.key == '-1' ? '' : e.key);
         }}
         mode="inline"
-        style={{ width: 200, marginRight: 24 }}
+        style={{
+          width: 200,
+          marginRight: 24,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          maxHeight: 770,
+        }}
       >
         <Menu.Item key="-1">所有部门</Menu.Item>
-        {menuList && routerMenu(menuList,'children')}
+        {menuList && routerMenu(menuList, 'children')}
       </Menu>
       <div style={{ flex: 1 }}>
         <DataTableBlock
@@ -211,9 +218,9 @@ const UserList = (props) => {
           searchItems={searchItems}
           columns={getColumns}
           params={{ departmentIds }}
-          rowKey={(record) => `${record.authAdminId}`}
-          dispatchType="workerManageUser/fetchGetList"
-          {...workerManageUser}
+          rowKey={(record) => `${record.adminAccountId}`}
+          dispatchType="accountList/fetchGetList"
+          {...accountList}
         ></DataTableBlock>
         <UserSetForm
           childRef={childRef}
@@ -225,10 +232,9 @@ const UserList = (props) => {
   );
 };
 
-export default connect(({ workerManageUser, workerManageSection, loading }) => ({
-  workerManageUser,
-  menuList: workerManageSection.list,
+export default connect(({ accountList, sectionSetting, loading }) => ({
+  accountList,
+  menuList: sectionSetting.list,
   loading:
-    loading.effects['workerManageUser/fetchGetList'] ||
-    loading.effects['workerManageUser/fetchWMSUserDetail'],
+    loading.effects['accountList/fetchGetList'] || loading.effects['sectionSetting/fetchGetList'],
 }))(UserList);

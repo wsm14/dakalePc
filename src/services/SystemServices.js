@@ -9,7 +9,6 @@ export function fetchOrderDetail(params) {
 
 // get 菜单设置 - 菜单 - 获取菜单
 export function fetchMenuList(params) {
-  console.log(params)
   return request('/admin/access/listAllAccess', {
     params,
   });

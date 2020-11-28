@@ -29,42 +29,55 @@ import SearchCondition from '@/components/SearchCondition';
  * @NoSearch 刚打开是否请求 默认false 请求接口
  * @expandable
  * @pagination 分页是否显示 赋值false不显示
+ * @scrollY 垂直滚动高度
+ * @scrollX 横向滚动
+ * @rowSelection
+ * @children
  */
 
-const TableBlockComponent = ({
-  dispatch,
-  dispatchType,
-  keepName,
-  columns,
-  searchItems,
-  loading,
-  rowKey,
-  list,
-  total,
-  btnExtra,
-  style,
-  title,
-  cRef,
-  params,
-  pParams = {},
-  setParams,
-  CardNone = true,
-  extra,
-  componentSize = 'default',
-  NoSearch = false,
-  expandable,
-  pagination,
-  children,
-}) => {
+const TableBlockComponent = (props) => {
+  const {
+    dispatch,
+    dispatchType,
+    scrollY,
+    scrollX = 'max-content',
+    keepName,
+    columns,
+    searchItems,
+    searchForm,
+    resetSearch,
+    loading,
+    rowKey,
+    list,
+    total,
+    btnExtra,
+    style,
+    bodyStyle,
+    CardTitle,
+    cRef,
+    params,
+    pParams = {},
+    setParams,
+    CardNone = true,
+    extra,
+    componentSize = 'default',
+    NoSearch = false,
+    expandable,
+    pagination,
+    rowSelection,
+    onRow,
+    children,
+  } = props;
+
   const [first, setFirst] = useState(NoSearch); // first No search
   const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
   const [current, setNum] = useState(pParams.page || 1); // 页码
   const [pageSize, setSize] = useState(
-    pParams.limit || { default: 20, middle: 10, small: 10 }[componentSize],
+    pParams.limit || { default: 10, middle: 10, small: 10 }[componentSize],
   ); // 每页条数
 
   // 获取列表
-  const fetchGetList = () => {
+  const fetchGetList = (data) => {
     if (dispatchType)
       dispatch({
         type: dispatchType,
@@ -73,6 +86,7 @@ const TableBlockComponent = ({
           limit: pageSize,
           ...params,
           ...searchData,
+          ...data,
         },
       });
   };
@@ -100,8 +114,9 @@ const TableBlockComponent = ({
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
-    fetchGetData: () => {
-      dispatch({ type: 'drawerForm/fetchClose', callback: fetchGetList });
+    fetchGetData: (data) => {
+      console.log(data);
+      dispatch({ type: 'drawerForm/fetchClose', callback: () => fetchGetList(data) });
     },
   }));
 
@@ -128,6 +143,8 @@ const TableBlockComponent = ({
       )}
       {searchItems && (
         <SearchCondition
+          searchForm={searchForm}
+          resetSearch={resetSearch}
           componentSize={componentSize}
           searchItems={searchItems}
           handleSearch={handleSearch}
@@ -137,14 +154,17 @@ const TableBlockComponent = ({
         ></SearchCondition>
       )}
       <Table
+        rowSelection={rowSelection}
         expandable={expandable}
-        scroll={{ x: 'max-content' }}
-        size={componentSize}
+        scroll={{ x: scrollX, y: scrollY }}
+        size={componentSize} // 'small' ||
         rowKey={rowKey}
         loading={loading}
         dataSource={list}
         columns={columns}
         pagination={pagination === false ? false : paginationProps}
+        onRow={onRow}
+        {...props}
       />
     </>
   );
@@ -153,7 +173,7 @@ const TableBlockComponent = ({
     true: (
       <>
         {children}
-        <Card title={title} style={style} extra={extra}>
+        <Card title={CardTitle} style={style} extra={extra} bodyStyle={bodyStyle}>
           {tabContent}
         </Card>
       </>

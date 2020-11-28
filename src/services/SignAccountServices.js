@@ -1,5 +1,46 @@
 import request from '@/utils/request';
 
+// 运营后台账号
+
+// get 任何系统 - 部门列表
+export function fetchAllSectionList(params) {
+  return request('/admin/department/listDepartment', {
+    params,
+  });
+}
+
+// post 任何系统 - 部门新增
+export function fetchAllSectionAdd(data) {
+  return request('/admin/department/saveDepartment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 任何系统 - 部门修改
+export function fetchAllSectionEdit(data) {
+  return request('/admin/department/updateDepartment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 任何系统 - 角色列表
+export function fetchAllRoleList(params) {
+  return request('/admin/role/listAuthRole', {
+    params,
+  });
+}
+
+// get 运营后台账号 - 用户列表
+export function fetchOwnAccountList(params) {
+  return request('/admin/admin/account/listAdminAccount', {
+    params,
+  });
+}
+
+// 运营后台账号 end
+
 // get 员工管理 - 用户列表
 export function fetchWMSUserList(params) {
   return request('/admin/auth/admin/listAuthAdmin', {

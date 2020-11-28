@@ -15,6 +15,7 @@ const TableEdit = (props) => {
     componentSize = 'default',
     children,
     handleEdit,
+    params,
     cRef,
   } = props;
 
@@ -41,6 +42,7 @@ const TableEdit = (props) => {
         payload: {
           page: current,
           limit: pageSize,
+          ...params,
           ...searchData,
         },
       });
@@ -65,7 +67,7 @@ const TableEdit = (props) => {
         dataIndex: col.dataIndex,
         required: col.required,
         title: col.title,
-        suffix:col.suffix,
+        suffix: col.suffix,
         handleSave: (val) => handleEdit(val),
       }),
     };

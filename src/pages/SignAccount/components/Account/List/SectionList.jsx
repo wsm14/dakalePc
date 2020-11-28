@@ -25,7 +25,7 @@ const SectionList = (props) => {
   };
 
   // table 表头
-  const getColumns =  [
+  const getColumns = [
     {
       title: '部门',
       width: 350,
@@ -74,7 +74,7 @@ const SectionList = (props) => {
               click: () =>
                 setVisible({
                   visible: true,
-                  userInfo: {
+                  setInfo: {
                     ...record,
                     weight: record.children
                       ? record.children[record.children.length - 1].weight + 1
@@ -94,9 +94,10 @@ const SectionList = (props) => {
         cRef={childRef}
         rowKey={(record) => `${record.departmentIdString}`}
         list={list}
-        dispatchType="workerManageSection/fetchGetList"
+        dispatchType="sectionSetting/fetchGetList"
         loading={loading}
         columns={getColumns}
+        params={{ clusterId: '0', ownerType: 'admin' }}
         handleEdit={fetchEdit}
       >
         <div style={{ marginBottom: 18, textAlign: 'right' }}>
@@ -106,7 +107,7 @@ const SectionList = (props) => {
             onClick={() =>
               setVisible({
                 visible: true,
-                userInfo: { weight: list.length ? list[list.length - 1].weight + 1 : 1 },
+                setInfo: { weight: list.length ? list[list.length - 1].weight + 1 : 1 },
               })
             }
           >
@@ -119,7 +120,7 @@ const SectionList = (props) => {
   );
 };
 
-export default connect(({ workerManageSection, loading }) => ({
-  list: workerManageSection.list,
-  loading: loading.models.workerManageSection,
+export default connect(({ sectionSetting, loading }) => ({
+  list: sectionSetting.list,
+  loading: loading.models.sectionSetting,
 }))(SectionList);

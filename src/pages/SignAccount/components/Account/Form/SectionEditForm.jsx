@@ -4,18 +4,20 @@ import { Drawer, Form, Button, Space } from 'antd';
 import FormComponents from '@/components/FormCondition';
 
 const SectionEdit = (props) => {
-  const { userInfo = {}, childRef, dispatch, visible, onClose, loading } = props;
+  const { setInfo = {}, childRef, dispatch, visible, onClose, loading } = props;
   const [form] = Form.useForm();
 
   // 新增
   const handleUpdata = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'workerManageSection/fetchWMSSectionAdd', // 新增
+        type: 'sectionSetting/fetchAllSectionAdd', // 新增
         payload: {
           ...values,
-          pid: userInfo.departmentIdString || 0,
-          weight: userInfo.weight,
+          pid: setInfo.departmentIdString || 0,
+          weight: setInfo.weight,
+          ownerType: 'admin',
+          clusterId: 0,
         },
         callback: () => {
           childRef.current.fetchGetData();
@@ -29,7 +31,7 @@ const SectionEdit = (props) => {
     {
       label: '部门名称',
       name: 'departmentName',
-      maxLength: 10
+      maxLength: 10,
     },
     {
       label: '备注',
@@ -41,7 +43,7 @@ const SectionEdit = (props) => {
   ];
 
   const modalProps = {
-    title: `部门设置 - ${userInfo.departmentName || '新增'}`,
+    title: `部门设置 - ${setInfo.departmentName || '新增'}`,
     width: 650,
     visible,
     maskClosable: true,
@@ -70,5 +72,5 @@ const SectionEdit = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.models.workerManageSection,
+  loading: loading.models.sectionSetting,
 }))(SectionEdit);
