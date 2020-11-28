@@ -1,7 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react';
 import { connect } from 'dva';
 import { Table, Checkbox, Select } from 'antd';
-import { WORKER_ROLEDATA_TYPE } from '@/common/constant';
+import { WORKER_ROLEDATA_TYPE, ROLE_BUTTON_TYPE } from '@/common/constant';
 import router from '../../../../../../config/router.config';
 
 const RoleTableForm = (props) => {
@@ -17,11 +17,13 @@ const RoleTableForm = (props) => {
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
-    fetchGetData: () => ({
-      selectedBtns,
-      selectedDatas,
-      selectedRowKeys: selectedPKeys,
-    }),
+    fetchGetData: () => {
+      return {
+        selectedBtns,
+        selectedDatas,
+        selectedRowKeys: selectedPKeys,
+      };
+    },
   }));
 
   // 递归获取规则项目
@@ -48,29 +50,29 @@ const RoleTableForm = (props) => {
     },
     {
       title: '数据权限',
-      dataIndex: 'pidString',
+      dataIndex: 'accessUrl',
       width: 150,
       render: (val, record) => {
-        const buttonsItem = getParentId(router[2].routes, record.accessUrl) || {};
-        const { data = true } = buttonsItem;
         return (
-          !record.children &&
-          data && (
+          !record.children && (
             <Select
               showSearch
               defaultValue="1"
-              value={selectedDatas[record.authAccessId]}
-              disabled={selectedRowKeys.indexOf(record.authAccessId) == -1}
-              onChange={(value) => handleSelectData({ [record.authAccessId]: value })}
+              value={selectedDatas[record.accessIdString]}
+              disabled={selectedRowKeys.indexOf(record.accessIdString) == -1}
+              onChange={(value) => handleSelectData({ [record.accessIdString]: value })}
               dropdownMatchSelectWidth={false}
               style={{ width: 150 }}
               optionFilterProp="children"
             >
-              {WORKER_ROLEDATA_TYPE.map((item) => (
-                <Select.Option value={`${item.value}`} key={item.value}>
-                  {item.name}
-                </Select.Option>
-              ))}
+              {/* 可选数据权限选项 */}
+              {WORKER_ROLEDATA_TYPE.filter((i) => i.value <= Number(record.dataType)).map(
+                (item) => (
+                  <Select.Option value={`${item.value}`} key={item.value}>
+                    {item.name}
+                  </Select.Option>
+                ),
+              )}
             </Select>
           )
         );
@@ -78,20 +80,29 @@ const RoleTableForm = (props) => {
     },
     {
       title: '操作权限',
-      dataIndex: 'authAccessId',
+      dataIndex: 'accessIdString',
       render: (val, record) => {
+        // const disabled = selectedRowKeys.indexOf(val) == -1;
+        // const buttonsItem = getParentId(router[2].routes, record.accessUrl);
+        // const checkBtnShow = buttonsItem && buttonsItem.buttons && buttonsItem.buttons.length;
         const disabled = selectedRowKeys.indexOf(val) == -1;
-        const buttonsItem = getParentId(router[2].routes, record.accessUrl);
-        const checkBtnShow = buttonsItem && buttonsItem.buttons && buttonsItem.buttons.length;
+        // 按钮映射回显
+        const buttonsItem = record.buttons
+          ? record.buttons.map((item) => ({
+              value: item,
+              label: ROLE_BUTTON_TYPE[item],
+            }))
+          : [];
+        const checkBtnShow = record.buttons;
         return checkBtnShow ? (
           <>
             <Checkbox
               disabled={disabled}
-              checked={selectedBtns[val] && selectedBtns[val].length == buttonsItem.buttons.length}
+              checked={selectedBtns[val] && selectedBtns[val].length == buttonsItem.length}
               onChange={(e) =>
                 // 全选操作，false 则值为空
                 handleSelectAll({
-                  [val]: e.target.checked ? buttonsItem.buttons.map((item) => item.value) : [],
+                  [val]: e.target.checked ? buttonsItem.map((item) => item.value) : [],
                 })
               }
             >
@@ -101,7 +112,7 @@ const RoleTableForm = (props) => {
             <Checkbox.Group
               disabled={disabled}
               value={selectedBtns[val]}
-              options={buttonsItem.buttons}
+              options={buttonsItem}
               onChange={(valKey) => handleSelectAll({ [val]: valKey })}
             />
           </>
@@ -113,34 +124,36 @@ const RoleTableForm = (props) => {
   ];
 
   return (
-    <Table
-      size="small"
-      loading={loading}
-      dataSource={treeList}
-      columns={getColumns}
-      rowKey={(record) => `${record.authAccessId}`}
-      pagination={false}
-      expandable={{
-        defaultExpandAllRows: true,
-      }}
-      rowSelection={{
-        fixed: true,
-        checkStrictly: false,
-        selectedRowKeys,
-        onChange: (val, record) => {
-          const newPid = Array.from(
-            new Set(record.map((item) => item.pidString).filter((i) => i != 0)),
-          );
-          const newPArr = Array.from(new Set([...val, ...newPid]));
-          setSelectedPKeys(newPArr);
-          setSelectedRowKeys(val);
-        },
-      }}
-    ></Table>
+    <>
+      <Table
+        size="small"
+        loading={loading}
+        dataSource={treeList}
+        columns={getColumns}
+        rowKey={(record) => `${record.accessUrl}`}
+        pagination={false}
+        expandable={{
+          defaultExpandAllRows: true,
+        }}
+        rowSelection={{
+          fixed: true,
+          checkStrictly: false,
+          selectedRowKeys,
+          onChange: (val, record) => {
+            const newPid = Array.from(
+              new Set(record.map((item) => item.pidString).filter((i) => i != 0)),
+            );
+            const newPArr = Array.from(new Set([...val, ...newPid]));
+            setSelectedPKeys(newPArr);
+            setSelectedRowKeys(val);
+          },
+        }}
+      ></Table>
+    </>
   );
 };
 
-export default connect(({ sysMenuList, loading }) => ({
-  treeList: sysMenuList.list,
-  loading: loading.models.sysMenuList,
+export default connect(({ roleSetting, loading }) => ({
+  treeList: roleSetting.userMenu,
+  loading: loading.models.roleSetting,
 }))(RoleTableForm);

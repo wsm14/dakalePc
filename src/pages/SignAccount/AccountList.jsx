@@ -33,7 +33,10 @@ const AccountOwn = (props) => {
       bordered={false}
       tabList={tabList}
       activeTabKey={tabkey}
-      onTabChange={(key) => setTabKey(key)}
+      onTabChange={(key) => {
+        console.log(key)
+        setTabKey(key);
+      }}
     >
       {contentList[tabkey]}
     </Card>

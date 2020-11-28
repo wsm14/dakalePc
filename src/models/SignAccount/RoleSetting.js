@@ -1,10 +1,38 @@
 import { notification } from 'antd';
 import {
   fetchAllRoleList,
-  fetchAllSectionAdd,
-  fetchAllSectionEdit,
-  fetchWMSRoleDetail,
+  fetchAllRoleSelect,
+  fetchAllRoleEdit,
+  fetchAllUserRoleDetail,
+  fetchAllGetRoleDetail,
+  fetchAllGetRoleFlag,
 } from '@/services/SignAccountServices';
+
+// 递归树菜单
+const userMenuDataTree = (menu, pid = '0') => {
+  let ch = '';
+  const children = menu.filter((i) => pid === i.pidString);
+  if (!children.length) return false;
+  return menu
+    .map((item) => {
+      if (item.pidString == '0' && pid == '0') {
+        ch = userMenuDataTree(menu, item.accessIdString);
+        const localItem = {
+          ...item,
+          children: ch ? ch.filter((i) => i) : false,
+        };
+        return localItem;
+      } else if (item.pidString != '0' && pid != '0' && pid === item.pidString) {
+        ch = userMenuDataTree(menu, item.accessIdString);
+        const childrens = {
+          ...item,
+          children: ch ? ch.filter((i) => i) : false,
+        };
+        return childrens;
+      }
+    })
+    .filter((i) => i);
+};
 
 export default {
   namespace: 'roleSetting',
@@ -12,6 +40,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    userMenu: [],
   },
 
   reducers: {
@@ -36,13 +65,53 @@ export default {
         },
       });
     },
-    *fetchWMSRoleDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchWMSRoleDetail, payload);
+    *fetchAllRoleSelect({ payload, callback }, { call }) {
+      const response = yield call(fetchAllRoleSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      callback &&
+        callback(
+          content.recordList.map((item) => ({
+            key: item.idString,
+            title: item.roleName,
+            description: item.roleName,
+          })),
+        );
+    },
+    *fetchAllRoleEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchAllRoleEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '角色修改成功',
+      });
+      callback();
+    },
+    *fetchAllUserRoleDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllUserRoleDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          userMenu: userMenuDataTree(content.permissionObjectList),
+        },
+      });
+      callback();
+    },
+    *fetchAllGetRoleFlag({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllGetRoleFlag, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.flag);
+    },
+    *fetchAllGetRoleDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchAllGetRoleDetail, payload);
       if (!response) return;
       const { content } = response;
       const { permissionObjects } = content.authRoleDetail;
       const getData = (key, val) => {
-        if (!permissionObjects.length) return [];
+        if (permissionObjects && !permissionObjects.length) return [];
         return Object.assign(...permissionObjects.map((item) => ({ [item[key]]: item[val] })));
       };
       const selectedBtns = getData('accessIdString', 'buttons');
@@ -55,24 +124,6 @@ export default {
         selectedDatas,
         selectedRowKeys,
       });
-    },
-    *fetchAllSectionAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchAllSectionAdd, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '部门新增成功',
-      });
-      callback();
-    },
-    *fetchAllSectionEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchAllSectionEdit, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '部门修改成功',
-      });
-      callback();
     },
   },
 };

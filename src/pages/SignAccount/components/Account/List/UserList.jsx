@@ -19,7 +19,7 @@ const UserList = (props) => {
   // 获取用户详情
   const fetchDetail = (payload) => {
     dispatch({
-      type: 'workerManageUser/fetchWMSUserDetail',
+      type: 'accountList/fetchOwnAccountDetail',
       payload,
       callback: (userInfo) => setVisible({ visible: true, userInfo }),
     });
@@ -28,7 +28,7 @@ const UserList = (props) => {
   // 用户修改
   const fetchEdit = (payload) => {
     dispatch({
-      type: 'workerManageUser/fetchWMSUserEdit',
+      type: 'accountList/fetchOwnAccountEdit',
       payload,
       callback: () => childRef.current.fetchGetData(),
     });
@@ -110,7 +110,7 @@ const UserList = (props) => {
           checkedChildren="启"
           unCheckedChildren="停"
           checked={val === '1'}
-          onClick={() => fetchEdit({ authAdminId: record.authAdminId, status: 1 ^ val })}
+          onClick={() => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val })}
         />
       ),
     },
@@ -118,13 +118,13 @@ const UserList = (props) => {
       title: '操作',
       align: 'right',
       fixed: 'right',
-      dataIndex: 'authAdminId',
-      render: (authAdminId) => (
+      dataIndex: 'adminAccountId',
+      render: (adminAccountId) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => fetchDetail({ authAdminId }),
+              click: () => fetchDetail({ adminAccountId }),
             },
           ]}
         />
@@ -235,6 +235,5 @@ const UserList = (props) => {
 export default connect(({ accountList, sectionSetting, loading }) => ({
   accountList,
   menuList: sectionSetting.list,
-  loading:
-    loading.effects['accountList/fetchGetList'] || loading.effects['sectionSetting/fetchGetList'],
+  loading: loading.models.accountList || loading.effects['sectionSetting/fetchGetList'],
 }))(UserList);

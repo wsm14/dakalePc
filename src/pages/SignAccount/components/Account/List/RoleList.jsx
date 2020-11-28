@@ -6,22 +6,10 @@ import DataTableBlock from '@/components/DataTableBlock';
 import RoleSetForm from '../Form/RoleSetForm';
 
 const RoleList = (props) => {
-  const { loading, dispatch, workerManageRole } = props;
+  const { loading, dispatch, roleSetting } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    fetchGetTree();
-  }, []);
-
-  // 获取菜单树
-  const fetchGetTree = () => {
-    dispatch({
-      type: 'sysMenuList/fetchGetList',
-      payload: { ownerType: 'admin', status: 1 },
-    });
-  };
 
   // 搜索参数
   const searchItems = [
@@ -31,19 +19,52 @@ const RoleList = (props) => {
     },
   ];
 
+  /**
+   * 获取用户权级
+   * 
+   * flag 为 1 的情况下获取本地菜单全部按钮
+   * 若payload存在则为 修改 调用fetchDetail获取 角色当前详情
+   * 若payload不存在 为新增 直接打开角色 新增修改表单
+   * flag 为 0 的情况下 
+   * 先调用 fetchGetUserMenu 获取用户可配置菜单数据
+   * 若payload存在则为 修改 后调用fetchDetail获取 用户当前角色详情返现
+   * 若payload不存在 为新增 直接打开新增修改表单 用fetchGetUserMenu 获取的数据渲染可选择的表格内容
+   */
+  const fetchFlag = (payload) => {
+    dispatch({
+      type: 'roleSetting/fetchAllGetRoleFlag',
+      payload: {
+        ownerType: 'admin',
+      },
+      callback: (flag) =>
+        ({
+          1: payload ? fetchDetail() : setVisible({ visible: true, userInfo }),
+          0: fetchGetUserMenu(payload, () => setVisible({ visible: true, userInfo })),
+        }[flag]),
+    });
+  };
+
   // 获取角色详情
   const fetchDetail = (payload) => {
     dispatch({
-      type: 'workerManageRole/fetchWMSRoleDetail',
+      type: 'roleSetting/fetchAllGetRoleDetail',
       payload,
       callback: (userInfo) => setVisible({ visible: true, userInfo }),
+    });
+  };
+
+  // 用户可配置菜单
+  const fetchGetUserMenu = (payload, callback) => {
+    dispatch({
+      type: 'roleSetting/fetchAllUserRoleDetail',
+      callback: callback ? callback : () => fetchDetail(payload),
     });
   };
 
   // 角色修改
   const fetchEdit = (payload) => {
     dispatch({
-      type: 'workerManageRole/fetchWMSRoleEdit',
+      type: 'roleSetting/fetchAllRoleEdit',
       payload,
       callback: () => childRef.current.fetchGetData(),
     });
@@ -88,7 +109,7 @@ const RoleList = (props) => {
             {
               type: 'own',
               title: '权限设置',
-              click: () => fetchDetail({ roleId: val }),
+              click: () => fetchGetUserMenu({ roleId: val }),
             },
           ]}
         />
@@ -100,7 +121,7 @@ const RoleList = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ visible: true })}>
+          <Button className="dkl_green_btn" key="1" onClick={fetchFlag}>
             新增
           </Button>
         }
@@ -109,20 +130,17 @@ const RoleList = (props) => {
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}
+        params={{ ownerType: 'admin', clusterId: '0' }}
         rowKey={(record) => `${record.idString}`}
-        dispatchType="workerManageRole/fetchGetList"
-        params={{ownerType: 'admin'}}
-        {...workerManageRole}
+        dispatchType="roleSetting/fetchGetList"
+        {...roleSetting}
       ></DataTableBlock>
       <RoleSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></RoleSetForm>
     </>
   );
 };
 
-export default connect(({ workerManageRole, loading }) => ({
-  workerManageRole,
-  loading:
-    loading.effects['workerManageRole/fetchGetList'] ||
-    loading.effects['workerManageRole/fetchWMSRoleDetail'] ||
-    loading.effects['sysMenuList/fetchGetList'],
+export default connect(({ roleSetting, loading }) => ({
+  roleSetting,
+  loading: loading.models.roleSetting,
 }))(RoleList);

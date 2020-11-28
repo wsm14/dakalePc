@@ -1,7 +1,5 @@
 import request from '@/utils/request';
 
-// 运营后台账号
-
 // get 任何系统 - 部门列表
 export function fetchAllSectionList(params) {
   return request('/admin/department/listDepartment', {
@@ -25,17 +23,78 @@ export function fetchAllSectionEdit(data) {
   });
 }
 
-// get 任何系统 - 角色列表
+// get 任何系统 - 角色列表 分页
 export function fetchAllRoleList(params) {
   return request('/admin/role/listAuthRole', {
     params,
   });
 }
 
+// get 任何系统 - 角色列表选择项
+export function fetchAllRoleSelect(params) {
+  return request('/admin/role/listAuthRoleAll', {
+    params,
+  });
+}
+
+// get 任何系统 - 获取用户可配置角色详情
+export function fetchAllUserRoleDetail(params) {
+  return request('/admin/role/currentRoleDetail', {
+    params,
+  });
+}
+
+// get 任何系统 - 获取角色详情
+export function fetchAllGetRoleDetail(params) {
+  return request('/admin/role/roleDetail', {
+    params,
+  });
+}
+
+// get 任何系统 - 用户权级等级
+export function fetchAllGetRoleFlag(params) {
+  return request('/admin/role/roleFlag', {
+    params,
+  });
+}
+
+// post 任何系统 - 角色列表修改
+export function fetchAllRoleEdit(data) {
+  return request('/admin/role/updateAuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 运营后台账号
+
 // get 运营后台账号 - 用户列表
 export function fetchOwnAccountList(params) {
   return request('/admin/admin/account/listAdminAccount', {
     params,
+  });
+}
+
+// get 运营后台账号 - 用户详情
+export function fetchOwnAccountDetail(params) {
+  return request('/admin/admin/account/getAdminAccountDetail', {
+    params,
+  });
+}
+
+// post 运营后台账号 - 用户新增
+export function fetchOwnAccountAdd(data) {
+  return request('/admin/admin/account/saveAdminAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 运营后台账号 - 用户修改
+export function fetchOwnAccountEdit(data) {
+  return request('/admin/admin/account/updateAdminAccount', {
+    method: 'POST',
+    data,
   });
 }
 

@@ -183,7 +183,7 @@ export function fetchTradeSet(data) {
 
 // post 帐号设置 - 修改密码
 export function fetchPassWordEdit(data) {
-  return request('/admin/auth/changePassword', {
+  return request('/admin/admin/account/updatePassword', {
     method: 'POST',
     data,
   });

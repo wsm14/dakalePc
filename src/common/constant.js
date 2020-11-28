@@ -62,19 +62,24 @@ export const NEWS_STATUS = ['下架', '上架'];
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
 // 员工在职状态
-export const WORKER_BANK_TYPE = [{
-  label:'0',
-  value:'未绑定'
-},{
-  label:'1',
-  value:'审核中'
-},{
-  label:'2',
-  value:'绑定失败'
-},{
-  label:'3',
-  value:'绑定成功'
-}]
+export const WORKER_BANK_TYPE = [
+  {
+    label: '0',
+    value: '未绑定',
+  },
+  {
+    label: '1',
+    value: '审核中',
+  },
+  {
+    label: '2',
+    value: '绑定失败',
+  },
+  {
+    label: '3',
+    value: '绑定成功',
+  },
+];
 export const WORKER_ROLEDATA_TYPE = [
   { value: 1, name: '本人' },
   { value: 25, name: '本部门（不含下级部门）' },
@@ -96,7 +101,6 @@ export const BANNER_TYPE = [
 export const SEX_TYPE = [
   { value: 'M', name: '男' },
   { value: 'F', name: '女' },
-
 ];
 // Banner跳转类型
 export const BANNER_JUMP_TYPE = [
@@ -110,6 +114,22 @@ export const MASTER_TYPE = [
   { value: 'user', name: '用户' },
   { value: 'merchant', name: '商户' },
 ];
+
+// 权限按钮映射
+export const ROLE_BUTTON_TYPE = {
+  view: '查看',
+  save: '新增',
+  update: '修改',
+  assignCostumer: '分配销售',
+  assignSale: '分配客服',
+  verify: '审核',
+  // 小程序按钮
+  claim: '认领',
+  addMerchant: '新增店铺',
+  addVisit: '新增拜访',
+  addAccompanyVisit: '新增陪访',
+  submitTrain: '上传培训情况',
+};
 
 // 默认起始结束时间
 const now = new Date();
@@ -174,10 +194,9 @@ export const TIME_UNIX_7E = () => {
 };
 
 export const filterList = (str) => {
-  if(!str){
-    return []
+  if (!str) {
+    return [];
+  } else {
+    return str.split(',');
   }
-  else {
-      return str.split(',')
-  }
-}
+};

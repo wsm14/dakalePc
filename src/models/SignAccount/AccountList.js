@@ -1,9 +1,10 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchOwnAccountList,
-  fetchWMSRoleDetail,
-  fetchWMSRoleAdd,
-  fetchWMSRoleEdit,
+  fetchOwnAccountAdd,
+  fetchOwnAccountEdit,
+  fetchOwnAccountDetail,
 } from '@/services/SignAccountServices';
 
 export default {
@@ -36,47 +37,32 @@ export default {
         },
       });
     },
-    *fetchWMSRoleDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchWMSRoleDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      const { permissionObjects } = content.authRoleDetail;
-      const getData = (key, val) => {
-        if (!permissionObjects.length) return [];
-        return Object.assign(...permissionObjects.map((item) => ({ [item[key]]: item[val] })));
-      };
-      const selectedBtns = getData('accessIdString', 'buttons');
-      const selectedDatas = getData('accessIdString', 'dataType');
-      const selectedRowKeys = permissionObjects.map((item) => item.accessIdString);
-      callback({
-        ...content.authRoleDetail,
-        roleId: content.authRoleDetail.roleIdString,
-        selectedBtns,
-        selectedDatas,
-        selectedRowKeys,
-      });
-    },
-    // *fetchWMSRoleSelect({ payload, callback }, { call }) {
-    //   const response = yield call(fetchWMSRoleSelect, payload);
-    //   if (!response) return;
-    //   const { content } = response;
-    //   callback(content.recordList);
-    // },
-    *fetchWMSRoleAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchWMSRoleAdd, payload);
+    *fetchOwnAccountAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchOwnAccountAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '角色新增成功',
+        description: '用户新增成功',
       });
       callback();
     },
-    *fetchWMSRoleEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchWMSRoleEdit, payload);
+    *fetchOwnAccountDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchOwnAccountDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const { entryDate, departmentId } = content.adminAccountDetail;
+      callback({
+        ...content.adminAccountDetail,
+        entryDate: moment(entryDate),
+        departmentId: [departmentId],
+      });
+    },
+    *fetchOwnAccountEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchOwnAccountEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '角色修改成功',
+        description: '用户修改成功',
       });
       callback();
     },

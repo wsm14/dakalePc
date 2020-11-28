@@ -2,25 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { PHONE_PATTERN } from '@/common/regExp';
 import { WORKER_JOB_TYPE } from '@/common/constant';
-import {Drawer, Form, Button, Space, Transfer, Spin, notification} from 'antd';
+import { Drawer, Form, Button, Space, Transfer, Spin, notification } from 'antd';
 import FormComponents from '@/components/FormCondition';
 
 const UserSetForm = (props) => {
-  const {
-    workerManageUser,
-    userInfo = {},
-    childRef,
-    sectionList = [],
-    dispatch,
-    visible,
-    onClose,
-    loading,
-  } = props;
-  const { rolesList } = workerManageUser;
+  const { userInfo = {}, childRef, sectionList = [], dispatch, visible, onClose, loading } = props;
 
   const [form] = Form.useForm();
 
   const [roleIds, setRoleIds] = useState([]);
+  const [roleSelectList, setRoleSelectList] = useState([]);
 
   // 递归获取规则项目
   const getParentId = (list, iid) => {
@@ -52,35 +43,37 @@ const UserSetForm = (props) => {
   // 抽屉打开时请求选择参数
   const afterVisibleChange = (visible) => {
     if (visible) {
-      fetchRoleList();
+      fetchAllRoleSelect();
       fetchSectionList();
     }
   };
 
-  // 获取角色列表
-  const fetchRoleList = (info) => {
+  // 获取角色选择项
+  const fetchAllRoleSelect = () => {
     dispatch({
-      type: 'workerManageUser/fetchWMSUserRoles',
-      payload:{
-        ownerType: 'admin'
+      type: 'roleSetting/fetchAllRoleSelect',
+      payload: {
+        ownerType: 'admin',
       },
-      callback: (parentLsit) => fetchDetySetTwo(info, parentLsit),
+      callback: setRoleSelectList,
     });
   };
 
   // 获取部门列表
   const fetchSectionList = () => {
     dispatch({
-      type: 'workerManageSection/fetchGetList',
+      type: 'sectionSetting/fetchGetList',
       payload: {
         departmentStatus: 1,
+        clusterId: '0',
+        ownerType: 'admin',
       },
     });
   };
 
-  // 新增 / 修改角色
+  // 新增 / 修改
   const handleUpdata = () => {
-    if(roleIds.length === 0) {
+    if (roleIds.length === 0) {
       return notification.warning({
         message: '温馨提示',
         description: '请配置角色',
@@ -89,15 +82,19 @@ const UserSetForm = (props) => {
     form.validateFields().then((values) => {
       const { password, mobile, departmentId, entryDate } = values;
       dispatch({
-        type: userInfo.authAdminId
-          ? 'workerManageUser/fetchWMSUserEdit' // 修改
-          : 'workerManageUser/fetchWMSUserAdd', // 新增
+        type: userInfo.adminAccountId
+          ? 'accountList/fetchOwnAccountEdit' // 修改
+          : 'accountList/fetchOwnAccountAdd', // 新增
         payload: {
           ...userInfo,
           ...values,
           entryDate: entryDate ? entryDate.format('YYYY-MM-DD') : '',
           departmentId: departmentId[departmentId.length - 1],
-          password: password ? password : userInfo.authAdminId ? undefined : mobile.match(/.*(.{6})/)[1],
+          password: password
+            ? password
+            : userInfo.adminAccountId
+            ? undefined
+            : mobile.match(/.*(.{6})/)[1],
           roleIds,
         },
         callback: () => {
@@ -162,7 +159,7 @@ const UserSetForm = (props) => {
           <Transfer
             showSearch
             targetKeys={roleIds}
-            dataSource={rolesList}
+            dataSource={roleSelectList}
             onChange={setRoleIds}
             titles={['可选', '已选']}
             operations={['添加', '删除']}
@@ -221,8 +218,7 @@ const UserSetForm = (props) => {
   );
 };
 
-export default connect(({ workerManageUser, workerManageSection, loading }) => ({
-  workerManageUser,
-  sectionList: workerManageSection.list,
-  loading: loading.models.workerManageUser,
+export default connect(({ sectionSetting, loading }) => ({
+  sectionList: sectionSetting.list,
+  loading: loading.models.sectionSetting,
 }))(UserSetForm);
