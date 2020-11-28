@@ -78,8 +78,8 @@ export default {
         }
       })
       notification.success({
-        message: '添加成功',
-        duration: 1500
+        message: '温馨提示',
+        description: '添加成功',
       })
       callback && callback()
     },
@@ -111,8 +111,8 @@ export default {
       const response = yield call(fetchMerchantBank, payload);
       if (!response) return;
       notification.success({
-        message: '添加成功',
-        duration: 1500
+        message: '温馨提示',
+        description: '添加成功',
       })
       const {content} = response;
       callback && callback(content)
@@ -133,8 +133,8 @@ export default {
       const response = yield call(fetchUpdateGroup, payload);
       if (!response) return;
       notification.success({
-        message: '修改成功',
-        duration: 1500
+        message: '温馨提示',
+        description: '修改成功',
       })
       callback && callback()
     },

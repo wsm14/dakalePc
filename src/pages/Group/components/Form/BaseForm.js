@@ -163,7 +163,7 @@ const BaseForm = (props) => {
     {
       label: '服务费比例',
       name: 'commissionRatio',
-      disabled: Object.keys(groupDetails).length !== 0 ? false : true,
+      disabled: Object.keys(groupDetails).length === 0 ? false : true,
     },
   ];
 

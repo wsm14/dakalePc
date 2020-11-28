@@ -115,7 +115,7 @@ const addGroups = (props) => {
             brandLogo: brandLogo.toString(),
             localImages: localImages.toString(),
             mainImages: mainImages.toString(),
-            ...roleIds
+            // ...roleIds
           },
           callback:() => callback()
         });
