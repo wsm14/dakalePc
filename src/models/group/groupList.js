@@ -7,7 +7,9 @@ import {
   fetchGetOcrIdCardBack,
   fetchGetOcrBusinessLicense,
   fetchMerchantBank,
-  fetchWMSUserRoles
+  fetchWMSUserRoles,
+  fetchGrounpDetails,
+  fetchUpdateGroup
 } from '@/services/groupServices';
 
 export default {
@@ -16,7 +18,9 @@ export default {
     list: {list: [], total: 0},
     visible: false,
     visible1: false,
-    rolesList: []
+    visible2:false,
+    rolesList: [],
+    groupDetails: {}
   },
 
   reducers: {
@@ -91,21 +95,18 @@ export default {
       const {content} = response;
       callback && callback(content)
     },
-
     *fetchGetOcrIdCardFront({payload, callback}, {call, put}) {
       const response = yield call(fetchGetOcrIdCardFront, payload);
       if (!response) return;
       const {content} = response;
       callback && callback(content)
     },
-
     *fetchGetOcrIdCardBack({payload, callback}, {call, put}) {
       const response = yield call(fetchGetOcrIdCardBack, payload);
       if (!response) return;
       const {content} = response;
       callback && callback(content)
     },
-
     *fetchMerchantBank({payload, callback}, {call, put}) {
       const response = yield call(fetchMerchantBank, payload);
       if (!response) return;
@@ -115,6 +116,27 @@ export default {
       })
       const {content} = response;
       callback && callback(content)
+    },
+    *fetchGrounpDetails({payload,callback}, {call, put}) {
+      const response = yield call(fetchGrounpDetails, payload);
+      if (!response) return;
+      const {content} = response;
+      yield put({
+        type: 'save',
+        payload: {
+          groupDetails: {...content},
+        },
+      });
+      callback && callback()
+    },
+    *fetchUpdateGroup({payload, callback}, {call, put}) {
+      const response = yield call(fetchUpdateGroup, payload);
+      if (!response) return;
+      notification.success({
+        message: '修改成功',
+        duration: 1500
+      })
+      callback && callback()
     },
   },
 };

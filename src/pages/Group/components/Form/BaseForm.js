@@ -10,14 +10,15 @@ const BaseForm = (props) => {
     tradeList,
     form,
     initialValues,
-    cRef
+    cRef,
+    groupDetails
   } = props
 
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
   const [address, setAddress] = useState({
     disable: true,
-    city: {},
+    city: [],
     latlnt:[]
   }); // [经度, 纬度]
   const [categoryObj,setCategoryObj] = useState({})
@@ -30,10 +31,10 @@ const BaseForm = (props) => {
     }
     const city = address.city;
     let cityname = '';
-    city.map((item) => {
-      cityname += item.label;
-      return true;
-    });
+      city.map((item) => {
+        cityname += item.label;
+        return true;
+      });
     fetch(
       `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&city=${city[1].label}&keywords=${
         cityname + addressData
@@ -64,14 +65,20 @@ const BaseForm = (props) => {
   useImperativeHandle(cRef, () => ({
     fetchAllData: () => {
       let cityList = address.city
+      let cityObj = {}
+      if(cityList.length > 0){
+        cityObj = {
+          provinceCode: cityList[0].value,
+          provinceName: cityList[0].label,
+          cityCode: cityList[1].value,
+          cityName: cityList[1].label,
+          districtCode: cityList[2].value,
+          districtName: cityList[2].label,
+        }
+      }
       return {
         ...categoryObj,
-        provinceCode: cityList[0].value,
-        provinceName: cityList[0].label,
-        cityCode: cityList[1].value,
-        cityName: cityList[1].label,
-        districtCode: cityList[2].value,
-        districtName: cityList[2].label,
+        ...cityObj,
         lat:address.latlnt[0],
         lnt:address.latlnt[1],
       }
@@ -106,7 +113,7 @@ const BaseForm = (props) => {
       }),message.success('保存新地址成功', 1.5),setMap(false)}} style={{position: 'absolute', top: 20, right: 20}}>确定</Button>
     </div>
   );
-
+  console.log(initialValues)
   const formItems = [
     {
       label: '集团名称',
@@ -115,7 +122,7 @@ const BaseForm = (props) => {
     {
       label: '经营类目',
       type: 'cascader',
-      name: 'topCategoryName',
+      name: 'topCategSelect',
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: {label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList'},
       onChange: (val) => {
@@ -126,7 +133,7 @@ const BaseForm = (props) => {
             categoryName,
             topCategoryId: val[1].categoryIdString,
             topCategoryName: val[1].categoryName,
-            categoryNode: parentId + '.' + val[1].parentId
+            categoryNode: categoryIdString + '.' + val[1].categoryIdString
           }
         )
         // form.setFieldsValue({
@@ -140,12 +147,12 @@ const BaseForm = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'provinceCode',
+      visible: Object.keys(groupDetails).length !== 0 ? false : true,
       onChange: (val) => {setAddress({...address, disable: false, city:val})}
     },
     {
       label: '详细地址',
       name: 'address',
-      disabled: address.disable,
       addonAfter: <a onClick={onSearchAddress}>查询</a>
     },
     {
@@ -156,6 +163,7 @@ const BaseForm = (props) => {
     {
       label: '服务费比例',
       name: 'commissionRatio',
+      disabled: Object.keys(groupDetails).length !== 0 ? false : true,
     },
   ];
 
@@ -165,6 +173,7 @@ const BaseForm = (props) => {
   )
 }
 
-export default connect(({sysTradeList}) => ({
-  tradeList: sysTradeList.list.list
+export default connect(({sysTradeList,groupSet}) => ({
+  tradeList: sysTradeList.list.list,
+  ...groupSet
 }))(BaseForm)

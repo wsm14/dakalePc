@@ -81,7 +81,6 @@ const legalForm = (props) => {
     {
       label: '法人身份证号码',
       name: 'legalCertId',
-      // rules: [{ required: true, message: `请确认店铺门头照` }],
     },
     {
       label: '法人身份有效期',

@@ -55,3 +55,16 @@ export function fetchWMSUserRoles(params) {
   });
 }
 //获取角色列表
+
+export function fetchGrounpDetails(params) {
+  return request('/admin/merchantGroup/merchantGroupDetail', {
+    params,
+  });
+}
+//获取集团详情
+export function fetchUpdateGroup(data) {
+  return request('/admin/merchantGroup/updateMerchantGroup', {
+    method: 'POST',
+    data,
+  });
+}

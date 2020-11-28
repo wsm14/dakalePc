@@ -6,7 +6,8 @@ import {connect} from 'umi'
 const userForm = (props) => {
   const {
     form,
-    initialValues
+    initialValues,
+    groupDetails
   } = props
 
   const formItems = [
@@ -18,6 +19,7 @@ const userForm = (props) => {
       label: '性别',
       name: 'gender',
       type:'radio',
+      visible: Object.keys(groupDetails).length !== 0 ? false : true,
       select: SEX_TYPE
     },
     {
@@ -27,10 +29,11 @@ const userForm = (props) => {
     },
   ];
 
-
   return (
     <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
   )
 }
 
-export default userForm
+export default connect(({groupSet}) => ({
+  ...groupSet,
+}))(userForm)

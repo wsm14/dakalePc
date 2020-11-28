@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {Button, Drawer, Space, Form, notification} from "antd";
 import FormCondition from "@/components/FormCondition";
 import Title from './title'
@@ -7,7 +7,7 @@ import LegalForm from './Form/LegalForm'
 import {connect} from 'umi'
 import {TIME_YMD} from '@/common/constant'
 import aliOssUpload from '@/utils/aliOssUpload';
-
+import moment from "moment";
 const addGroups = (props) => {
   const {
     onClose,
@@ -16,17 +16,28 @@ const addGroups = (props) => {
     dispatch,
     visible1,
     saveVisible,
-    merchantGroupId
+    merchantGroupId,
+    groupDetails
   } = props
+  const [initialValues,setInitialValues] = useState({})
+  useEffect(() => {
+    const{businessLicense,bankBindingInfo} = groupDetails
+    if(businessLicense && bankBindingInfo) {
+      setInitialValues({
+        ...businessLicense,
+        ...bankBindingInfo,
+        activeBeginDate:[moment(bankBindingInfo.startDate),moment(bankBindingInfo.legalCertIdExpires)]
+      })
+    }
+  },[groupDetails])
+
   const [form] = Form.useForm()
   const cRef = useRef()
-
   const fetchGetList = () => {
     dispatch({
       type: 'groupSet/fetchGetList'
     })
   }
-  console.log(merchantGroupId)
   const panelList = [{
     title: '对公账户信息',
     form: <ActiveSetForm cRef={cRef} form={form} initialValues={initialValues}/>,
@@ -66,6 +77,7 @@ const addGroups = (props) => {
          openAccountPermit,
          certFrontPhoto,
          certReversePhoto,
+         legalCertId
        } = obj
        dispatch({
         type: 'groupSet/fetchMerchantBank',
@@ -91,8 +103,9 @@ const addGroups = (props) => {
             certFrontPhoto,
             certReversePhoto,
             ...city,
-            startDate,
-            legalCertIdExpires,
+            startDate:startDate.replace(/-/g, ''),
+            legalCertIdExpires:legalCertIdExpires.replace(/-/g, ''),
+            legalCertId
           }
         },
         callback: callback
@@ -100,7 +113,6 @@ const addGroups = (props) => {
     })
 
   }
-  const initialValues = useState({})
   return (
     <>
       <Drawer
@@ -108,7 +120,13 @@ const addGroups = (props) => {
         width={660}
         visible={visible1}
         destroyOnClose={true}
-        afterVisibleChange={() => {}}
+        afterVisibleChange={(visible) => {
+          if(!visible){
+            saveVisible({
+              groupDetails: {}
+            })
+          }
+        }}
         onClose={onClose}
         bodyStyle={{paddingBottom: 80}}
         footer={

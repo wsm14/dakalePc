@@ -172,3 +172,12 @@ export const TIME_UNIX_E = (time) => {
 export const TIME_UNIX_7E = () => {
   return moment(moment().subtract(7, 'days').format('YYYY-MM-DD 00:00:00')).format('x');
 };
+
+export const filterList = (str) => {
+  if(!str){
+    return []
+  }
+  else {
+      return str.split(',')
+  }
+}

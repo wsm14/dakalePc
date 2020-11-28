@@ -4,7 +4,6 @@ import {Collapse} from 'antd';
 const {Panel} = Collapse;
 
 export default ({panelList = []}) => {
-  console.log(panelList)
   return (
     <Collapse defaultActiveKey={['基础信息','品牌信息','登录信息','联系人信息','店铺信息','对公账户信息','法人信息']}>
       {panelList.map(item => {

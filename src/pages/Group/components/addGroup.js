@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {Button, Drawer, Space, Form, notification} from "antd";
 import FormCondition from "@/components/FormCondition";
 import Title from './title'
@@ -9,24 +9,67 @@ import UserDetailsForm from './Form/userDetailsForm'
 import ShopDetailsForm from './Form/shopDetailsForm'
 import {connect} from 'umi'
 import aliOssUpload from '@/utils/aliOssUpload';
-
 const addGroups = (props) => {
   const {
     onClose,
-    fetchUpData,
     visible = false,
     dispatch,
-    saveVisible
+    saveVisible,
+    groupDetails
   } = props
   const [form] = Form.useForm()
   const cRef = useRef()
   const cRef1 = useRef()
+  const [initialValues,setInitialValues] = useState({})
+  const [bottomBtn,setBottom] = useState('add')
   const fetchGetList = () => {
     dispatch({
-      type: 'groupSet/fetchGetList'
+      type: 'groupSet/fetchGetList',
+      payload: {
+        page:1,
+        limit: 10,
+      }
     })
-
   }
+
+  useEffect(() => {
+    const{merchantGroupDTO} = groupDetails
+    if(merchantGroupDTO) {
+      const {categoryNode} = merchantGroupDTO
+      merchantGroupDTO.topCategSelect = categoryNode.split('.')
+      setInitialValues(merchantGroupDTO)
+      setBottom('update')
+    }
+    else {
+      setBottom('add')
+    }
+
+  },[groupDetails])
+
+  const Btn = {
+    add: ( <div style={{textAlign: 'right'}}>
+      <Space>
+        <Button onClick={() => fetchAddLists(() => {
+          saveVisible({visible:false});
+          fetchGetList();
+        })}>保存</Button>
+        <Button onClick={() => fetchAddLists(() => saveVisible({visible:false,visible1:true}))} type="primary">
+          下一步
+        </Button>
+      </Space>
+    </div>),
+    update: (<div style={{textAlign: 'right'}}>
+      <Space>
+        <Button onClick={() => saveVisible({visible:false})}>取消</Button>
+        <Button onClick={() => fetchUpdateGroup(() =>{
+          saveVisible({visible:false});
+          fetchGetList()
+        })} type="primary">
+          保存
+        </Button>
+      </Space>
+    </div>)
+  }[bottomBtn]
   const panelList = [{
     title: '基础信息',
     form: <BaseForm cRef={cRef} form={form} initialValues={initialValues}/>,
@@ -40,7 +83,6 @@ const addGroups = (props) => {
     form: <UserForm cRef={cRef1} form={form} initialValues={initialValues}/>,
     showArrow: false,
     disabled: true,
-
   }, {
     title: '联系人信息',
     form: <UserDetailsForm form={form} initialValues={initialValues}/>,
@@ -53,10 +95,9 @@ const addGroups = (props) => {
   }]
 
   const fetchAddLists = (callback) => {
-    const roleIds = cRef1.current.getRoleIds()
+    // const roleIds = cRef1.current.getRoleIds()
     form.validateFields().then(async (val) => {
       const payload = cRef.current.fetchAllData()
-
       const {lat, lnt} = payload
       if (!lat && !lnt) {
         return notification.error({
@@ -81,28 +122,42 @@ const addGroups = (props) => {
       }
     })
   }
-  const initialValues = useState({})
+  const fetchUpdateGroup = (callback) => {
+    form.validateFields().then(async (val) => {
+      const payload = cRef.current.fetchAllData()
+        let {brandLogo, localImages, mainImages} = val
+        brandLogo = await aliOssUpload(brandLogo)
+        localImages = await aliOssUpload(localImages)
+        mainImages = await aliOssUpload(mainImages)
+        dispatch({
+          type: 'groupSet/fetchUpdateGroup',
+          payload: {
+            ...groupDetails.merchantGroupDTO,
+            ...val, ...payload,
+            brandLogo: brandLogo.toString(),
+            localImages: localImages.toString(),
+            mainImages: mainImages.toString(),
+          },
+          callback:() => callback()
+        });
+    })
+  }
   return (
     <>
       <Drawer
-        title={`新增集团`}
+        title={Object.keys(groupDetails).length> 0 ?'修改集团信息':`新增集团`}
         width={850}
         visible={visible}
         destroyOnClose={true}
-        afterVisibleChange={() => {
-
+        afterVisibleChange={(visible) => {
+          console.log(visible)
+          if(!visible){
+            saveVisible({groupDetails:{}})}
         }}
         onClose={onClose}
         bodyStyle={{paddingBottom: 80}}
         footer={
-          <div style={{textAlign: 'right'}}>
-            <Space>
-              <Button onClick={() => fetchAddLists(() => saveVisible({visible:false}))}>保存</Button>
-              <Button onClick={() => fetchAddLists(() => saveVisible({visible:false,visible1:true}))} type="primary">
-                下一步
-              </Button>
-            </Space>
-          </div>
+          Btn
         }
       >
         <Title panelList={panelList}></Title>

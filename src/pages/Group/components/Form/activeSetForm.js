@@ -5,6 +5,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import styles from './../../style.less'
 import cityList from '@/common/city'
 import {TIME_YMD} from "@/common/constant"
+
 const activeForm = ({ form, initialValues, dispatch, cRef}) => {
   const fetchGetOcrBusinessLicense = (payload, callback) => {
     dispatch({
