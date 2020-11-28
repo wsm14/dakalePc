@@ -1,22 +1,5 @@
 import request from '@/utils/request';
 
-// 权限获取选择框
-
-// get 根据权限获取 - 部门列表
-export function fetchGetSectionRole(params) {
-  return request('/admin/department/listDepartmentByToken', {
-    params,
-  });
-}
-
-// get 根据权限获取 - 用户列表
-export function fetchGetUserRole(params) {
-  return request('/admin/auth/admin/listAuthAdminByName', {
-    params,
-  });
-}
-// end
-
 // get 员工管理 - 用户列表
 export function fetchWMSUserList(params) {
   return request('/admin/auth/admin/listAuthAdmin', {
@@ -114,27 +97,6 @@ export function fetchWMSSectionEdit(data) {
   });
 }
 
-// get 规则设置 - 获取规则菜单
-export function fetchRulesList(params) {
-  return request('/admin/sellRule/listSellRule', {
-    params,
-  });
-}
-
-// get 规则设置 - 获取规则列表
-export function fetchRulesDetail(params) {
-  return request('/admin/sellRuleDetail/listSellRuleDetail', {
-    params,
-  });
-}
-
-// post 规则设置 - 新增 / 修改规则
-export function fetchRulesEdit(data) {
-  return request('/admin/sellRuleDetail/saveSellRuleDetail', {
-    method: 'POST',
-    data,
-  });
-}
 export function fetchUserListByCompany(params) {
   return request('/admin/auth/company/listAuthCompany', {
     params,
