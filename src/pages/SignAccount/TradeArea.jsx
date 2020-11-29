@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Switch, Button, Card } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -13,18 +13,22 @@ const TradeArea = (props) => {
   const [visible, setVisible] = useState(null);
   const [selectCode, setSelectCode] = useState({
     provinceCode: '33',
+    provinceName: '浙江',
     cityCode: '3301',
+    cityName: '杭州',
     districtCode: '',
   });
 
   // 修改 / 新增
   const fetchSet = (values) => {
     const { businessHubId } = values;
-    const obj = { ...values, ...selectCode };
     dispatch({
       type: businessHubId ? 'tradeArea/fetchTradeAreaEdit' : 'tradeArea/fetchTradeAreaAdd',
-      payload: businessHubId ? values : obj,
-      callback: () => childRef.current.fetchGetData(),
+      payload: { ...values, provinceCode: selectCode.provinceCode },
+      callback: () => {
+        setVisible(null);
+        childRef.current.fetchGetData();
+      },
     });
   };
 
@@ -82,7 +86,7 @@ const TradeArea = (props) => {
           formItems={[
             {
               type: 'edit',
-              click: () => setData({ businessHubId: val, ...record }),
+              click: () => setData({ ...record, businessHubId: val }),
             },
           ]}
         />
@@ -96,8 +100,13 @@ const TradeArea = (props) => {
       fetchSet,
       onClose: () => setVisible(null),
       info: {
+        ...selectCode,
         ...info,
-        provinceCode: [selectCode.provinceCode, selectCode.cityCode, selectCode.districtCode],
+        provinceCode: [
+          selectCode.provinceCode,
+          selectCode.cityCode,
+          selectCode.districtCode || info.districtCode,
+        ],
       },
     });
   };
