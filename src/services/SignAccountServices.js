@@ -115,6 +115,33 @@ export function fetchOwnAccountEdit(data) {
 
 // 运营后台账号 end
 
+// 商圈
+
+// get 商圈管理 - 列表
+export function fetchTradeAreaList(params) {
+  return request('/common/businessHub/listBusinessHubAdmin', {
+    params,
+  });
+}
+
+// post 商圈管理 - 新增
+export function fetchTradeAreaAdd(data) {
+  return request('/common/businessHub/saveBusinessHub', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 商圈管理 - 修改
+export function fetchTradeAreaEdit(data) {
+  return request('/common/businessHub/updateBusinessHub', {
+    method: 'POST',
+    data,
+  });
+}
+
+// end
+
 // get 员工管理 - 用户列表
 export function fetchWMSUserList(params) {
   return request('/admin/auth/admin/listAuthAdmin', {
