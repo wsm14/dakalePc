@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Switch, Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -20,15 +20,16 @@ const RoleList = (props) => {
   ];
 
   /**
-   * 获取用户权级
-   * 
-   * flag 为 1 的情况下获取本地菜单全部按钮
-   * 若payload存在则为 修改 调用fetchDetail获取 角色当前详情
-   * 若payload不存在 为新增 直接打开角色 新增修改表单
-   * flag 为 0 的情况下 
+   * 获取当前用户权级
+   *
+   * flag 为 1 的情况下 拥有全部菜单配置权限
+   * 先获取系统全部菜单 （本地菜单映射全部按钮选项）
+   * 若 payload 存在则为 修改 调用 fetchDetail 获取 角色当前详情
+   * 若 payload 不存在 为新增 直接打开角色 新增修改表单
+   * flag 为 0 的情况下 被限制菜单权限
    * 先调用 fetchGetUserMenu 获取用户可配置菜单数据
-   * 若payload存在则为 修改 后调用fetchDetail获取 用户当前角色详情返现
-   * 若payload不存在 为新增 直接打开新增修改表单 用fetchGetUserMenu 获取的数据渲染可选择的表格内容
+   * 若 payload 存在则为 修改 后调用 fetchDetail 获取 用户当前角色详情返现
+   * 若 payload 不存在 为新增 直接打开新增修改表单 用 fetchGetUserMenu 获取的数据渲染可选择的表格内容
    */
   const fetchFlag = (payload) => {
     dispatch({
@@ -36,11 +37,27 @@ const RoleList = (props) => {
       payload: {
         ownerType: 'admin',
       },
-      callback: (flag) =>
-        ({
-          1: payload ? fetchDetail() : setVisible({ visible: true, userInfo }),
-          0: fetchGetUserMenu(payload, () => setVisible({ visible: true, userInfo })),
-        }[flag]),
+      callback: (flag) => {
+        const callback = () => setVisible({ visible: true, flag });
+        flag == 1 ? fetchGetMenuAll(payload, callback) : fetchGetUserMenu(payload, callback);
+      },
+    });
+  };
+
+  // 获取菜单树
+  const fetchGetMenuAll = (payload, callback) => {
+    dispatch({
+      type: 'roleSetting/fetchGetMenuAll',
+      payload: { ownerType: 'admin', status: 1 },
+      callback: payload ? () => fetchDetail(payload) : callback,
+    });
+  };
+
+  // 用户可配置菜单
+  const fetchGetUserMenu = (payload, callback) => {
+    dispatch({
+      type: 'roleSetting/fetchAllUserRoleDetail',
+      callback: payload ? () => fetchDetail(payload) : callback,
     });
   };
 
@@ -50,14 +67,6 @@ const RoleList = (props) => {
       type: 'roleSetting/fetchAllGetRoleDetail',
       payload,
       callback: (userInfo) => setVisible({ visible: true, userInfo }),
-    });
-  };
-
-  // 用户可配置菜单
-  const fetchGetUserMenu = (payload, callback) => {
-    dispatch({
-      type: 'roleSetting/fetchAllUserRoleDetail',
-      callback: callback ? callback : () => fetchDetail(payload),
     });
   };
 
@@ -103,13 +112,13 @@ const RoleList = (props) => {
       align: 'right',
       fixed: 'right',
       dataIndex: 'idString',
-      render: (val, record) => (
+      render: (val) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
               title: '权限设置',
-              click: () => fetchGetUserMenu({ roleId: val }),
+              click: () => fetchFlag({ roleId: val }),
             },
           ]}
         />
@@ -121,7 +130,7 @@ const RoleList = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={fetchFlag}>
+          <Button className="dkl_green_btn" key="1" onClick={() => fetchFlag()}>
             新增
           </Button>
         }

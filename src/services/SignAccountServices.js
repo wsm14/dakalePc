@@ -58,11 +58,26 @@ export function fetchAllGetRoleFlag(params) {
   });
 }
 
+// post 任何系统 - 角色列表新增
+export function fetchAllRoleAdd(data) {
+  return request('/admin/role/saveAuthRole', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 任何系统 - 角色列表修改
 export function fetchAllRoleEdit(data) {
   return request('/admin/role/updateAuthRole', {
     method: 'POST',
     data,
+  });
+}
+
+// get 任何系统 - 菜单 - 获取所有菜单
+export function fetchAllGetMenu(params) {
+  return request('/admin/access/listAllAccess', {
+    params,
   });
 }
 

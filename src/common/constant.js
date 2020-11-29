@@ -10,6 +10,23 @@ export const AUTH_SECRET_KEY = '733828mtizndu2cshfp1468889281801r9uv0aaji10';
 // 高德地图key
 export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 
+// 数据权限选项
+export const WORKER_ROLEDATA_TYPE = [
+  { value: 1, name: '本人' },
+  { value: 25, name: '本部门（不含下级部门）' },
+  { value: 50, name: '本部门及以下级部门 ' },
+  { value: 100, name: '全部' },
+];
+
+// 权限按钮映射
+export const ROLE_BUTTON_TYPE = {
+  view: '查看',
+  save: '新增',
+  update: '修改',
+  verify: '审核',
+  status: '状态',
+};
+
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 
@@ -80,12 +97,6 @@ export const WORKER_BANK_TYPE = [
     value: '绑定成功',
   },
 ];
-export const WORKER_ROLEDATA_TYPE = [
-  { value: 1, name: '本人' },
-  { value: 25, name: '本部门（不含下级部门）' },
-  { value: 50, name: '本部门及以下级部门 ' },
-  { value: 100, name: '全部' },
-];
 
 // Banner展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
@@ -114,22 +125,6 @@ export const MASTER_TYPE = [
   { value: 'user', name: '用户' },
   { value: 'merchant', name: '商户' },
 ];
-
-// 权限按钮映射
-export const ROLE_BUTTON_TYPE = {
-  view: '查看',
-  save: '新增',
-  update: '修改',
-  assignCostumer: '分配销售',
-  assignSale: '分配客服',
-  verify: '审核',
-  // 小程序按钮
-  claim: '认领',
-  addMerchant: '新增店铺',
-  addVisit: '新增拜访',
-  addAccompanyVisit: '新增陪访',
-  submitTrain: '上传培训情况',
-};
 
 // 默认起始结束时间
 const now = new Date();

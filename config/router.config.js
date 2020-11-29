@@ -16,13 +16,14 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       {
-        name: '城市运营中心',
+        name: '区县管理',
         path: '/cityom',
         routes: [
           {
             path: '/cityom/provCo',
             name: '省级公司',
             component: './CityOm/ProvCompany',
+            button: ['view', 'update', 'save', 'status'],
           },
           {
             path: '/cityom/partner',
@@ -49,10 +50,7 @@ export default [
             path: '/user/list',
             name: '用户数据',
             component: './User/UserList',
-            buttons: [
-              { label: '查看', value: 'view' },
-              { label: '禁用', value: 'jinyong' },
-            ],
+            buttons: ['view', 'status'],
           },
         ],
       },
@@ -94,11 +92,6 @@ export default [
             path: '/business/bindBank',
             name: '绑定查询',
             component: './Business/BusinessBindBank',
-          },
-          {
-            path: '/business/excel',
-            name: 'excel（临时）',
-            component: './Business/BusinessExcelList',
           },
         ],
       },
@@ -252,6 +245,11 @@ export default [
             path: '/signAccount/partner',
             name: '区县帐号',
             component: './SignAccount/PartnerAccount',
+          },
+          {
+            path: '/signAccount/tradeArea',
+            name: '商圈管理',
+            component: './SignAccount/TradeArea',
           },
         ],
       },

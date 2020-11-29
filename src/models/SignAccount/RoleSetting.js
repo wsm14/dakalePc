@@ -1,33 +1,35 @@
 import { notification } from 'antd';
 import {
+  fetchAllGetMenu,
   fetchAllRoleList,
+  fetchAllGetRoleFlag,
   fetchAllRoleSelect,
+  fetchAllRoleAdd,
   fetchAllRoleEdit,
   fetchAllUserRoleDetail,
   fetchAllGetRoleDetail,
-  fetchAllGetRoleFlag,
 } from '@/services/SignAccountServices';
 
 // 递归树菜单
-const userMenuDataTree = (menu, pid = '0') => {
+const userMenuDataTree = (menu, key, pid = '0') => {
   let ch = '';
   const children = menu.filter((i) => pid === i.pidString);
   if (!children.length) return false;
+  const getMenuItem = (menuItem) => {
+    ch = userMenuDataTree(menu, key, menuItem[key]);
+    return {
+      ...menuItem,
+      accessIdString: menuItem[key],
+      children: ch ? ch.filter((i) => i) : false,
+    };
+  };
   return menu
     .map((item) => {
       if (item.pidString == '0' && pid == '0') {
-        ch = userMenuDataTree(menu, item.accessIdString);
-        const localItem = {
-          ...item,
-          children: ch ? ch.filter((i) => i) : false,
-        };
+        const localItem = getMenuItem(item);
         return localItem;
       } else if (item.pidString != '0' && pid != '0' && pid === item.pidString) {
-        ch = userMenuDataTree(menu, item.accessIdString);
-        const childrens = {
-          ...item,
-          children: ch ? ch.filter((i) => i) : false,
-        };
+        const childrens = getMenuItem(item);
         return childrens;
       }
     })
@@ -41,6 +43,7 @@ export default {
     list: [],
     total: 0,
     userMenu: [],
+    serverMenu: [],
   },
 
   reducers: {
@@ -65,6 +68,19 @@ export default {
         },
       });
     },
+    *fetchGetMenuAll({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllGetMenu, payload);
+      if (!response) return;
+      const { content } = response;
+      const newList = userMenuDataTree(content.accessList, 'authAccessId');
+      yield put({
+        type: 'save',
+        payload: {
+          serverMenu: newList,
+        },
+      });
+      callback && callback();
+    },
     *fetchAllRoleSelect({ payload, callback }, { call }) {
       const response = yield call(fetchAllRoleSelect, payload);
       if (!response) return;
@@ -78,15 +94,6 @@ export default {
           })),
         );
     },
-    *fetchAllRoleEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchAllRoleEdit, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '角色修改成功',
-      });
-      callback();
-    },
     *fetchAllUserRoleDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchAllUserRoleDetail, payload);
       if (!response) return;
@@ -94,7 +101,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          userMenu: userMenuDataTree(content.permissionObjectList),
+          userMenu: userMenuDataTree(content.permissionObjectList, 'accessIdString'),
         },
       });
       callback();
@@ -124,6 +131,24 @@ export default {
         selectedDatas,
         selectedRowKeys,
       });
+    },
+    *fetchAllRoleAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchAllRoleAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '角色新增成功',
+      });
+      callback();
+    },
+    *fetchAllRoleEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchAllRoleEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '角色修改成功',
+      });
+      callback();
     },
   },
 };

@@ -1,23 +1,20 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'dva';
 import { Drawer, Form, Button, Space } from 'antd';
 import FormComponents from '@/components/FormCondition';
 import RoleTableForm from './RoleTableForm';
 
 const RoleSetForm = (props) => {
-  const { userInfo = {}, childRef, dispatch, visible, onClose, loading } = props;
+  const { userInfo = {}, flag, childRef, dispatch, visible, onClose, loading } = props;
 
-  const [form] = Form.useForm();
   const tableRef = useRef();
-
-  const [selectValue, setSelectValue] = useState([]);
+  const [form] = Form.useForm();
 
   // 新增 / 修改角色
   const handleUpdata = () => {
     form.validateFields().then((values) => {
-      // const { roleName = {} } = values;
       const rolesObj = tableRef.current.fetchGetData();
-      const { selectedBtns, selectedDatas, selectedRowKeys } = rolesObj;
+      const { selectedBtns, selectedDatas = {}, selectedRowKeys } = rolesObj;
       const permissionObjects = selectedRowKeys.map((item) => ({
         accessId: item,
         dataType: selectedDatas[item] || '1',
@@ -25,14 +22,12 @@ const RoleSetForm = (props) => {
       }));
       dispatch({
         type: userInfo.roleId
-          ? 'workerManageRole/fetchWMSRoleEdit' // 修改
-          : 'workerManageRole/fetchWMSRoleAdd', // 新增
+          ? 'roleSetting/fetchAllRoleEdit' // 修改
+          : 'roleSetting/fetchAllRoleAdd', // 新增
         payload: {
           ...userInfo,
           ...values,
           ownerType: 'admin',
-          // roleName: roleName.label,
-          // roleKey: roleName.key,
           permissionObjects,
         },
         callback: () => {
@@ -43,23 +38,10 @@ const RoleSetForm = (props) => {
     });
   };
 
-  // // 角色可选搜索
-  // const fetchWMSRoleSelect = () => {
-  //   dispatch({
-  //     type: 'workerManageRole/fetchWMSRoleSelect',
-  //     callback: setSelectValue,
-  //   });
-  // };
-
   const formItems = [
     {
       label: '角色名称',
       name: 'roleName',
-      // type: 'select',
-      // loading,
-      // labelInValue: true,
-      // visible: !userInfo.roleId,
-      // select: selectValue.map((item) => ({ name: item.value, value: item.child })),
     },
     {
       label: '备注',
@@ -71,11 +53,10 @@ const RoleSetForm = (props) => {
       label: '操作权限设置',
       name: 'roleIds',
       type: 'childrenOwn',
-      // required: true,
       rules: [{ required: false }],
       labelCol: { span: 24 },
       wrapperCol: { span: 24 },
-      childrenOwn: <RoleTableForm cRef={tableRef} userInfo={userInfo}></RoleTableForm>,
+      childrenOwn: <RoleTableForm cRef={tableRef} flag={flag} userInfo={userInfo}></RoleTableForm>,
     },
   ];
 
@@ -113,8 +94,7 @@ const RoleSetForm = (props) => {
   );
 };
 
-export default connect(({ workerManageRole, workerManageSection, loading }) => ({
-  workerManageRole,
-  sectionList: workerManageSection.list,
-  loading: loading.models.workerManageRole,
+export default connect(({ roleSetting, loading }) => ({
+  roleSetting,
+  loading: loading.models.roleSetting,
 }))(RoleSetForm);
