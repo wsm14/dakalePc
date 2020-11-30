@@ -53,7 +53,15 @@ const groupsDetails = (props) => {
     merchantGroupDTO
   } = groupDetails
   const [tabKey, setTabKey] = useState('tab1')
-
+  const btnShow = () => {
+    if(tabKey==='tab2'
+      && groupDetails.merchantGroupDTO
+      && (groupDetails.merchantGroupDTO.bankStatus === '3'
+      || groupDetails.merchantGroupDTO.bankStatus === '1')){
+        return false
+    }
+    return  true
+  }
   const fetchGrounpGoBtn = () => {
     if (tabKey === 'tab1') {
       saveVisible({
@@ -128,13 +136,18 @@ const groupsDetails = (props) => {
         onClose={onClose}
         bodyStyle={{paddingBottom: 80}}
         footer={
+
+          btnShow() &&
           <div style={{textAlign: 'right'}}>
             <Space>
               <Button onClick={() => {
                 saveVisible({
                   visible2: false,
-                  merchantGroupId: '',
+                  merchantGroupId: null,
                   groupDetails: {},
+                  merchantGroupDTO: {},
+                  businessLicense: {},
+                  bankBindingInfo: {},
                 })
               }}>取消</Button>
               <Button onClick={() => fetchGrounpGoBtn()} type="primary">
@@ -142,6 +155,7 @@ const groupsDetails = (props) => {
               </Button>
             </Space>
           </div>
+
         }
       >
         <Card

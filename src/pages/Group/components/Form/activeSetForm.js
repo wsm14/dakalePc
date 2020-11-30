@@ -50,6 +50,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
               signInAddress: address || '',
               validityPeriod: TIME_YMD(validPeriod) || '',
               businessScope: business || '',
+              cardName: name || '',
             })
           })
         }
@@ -93,7 +94,6 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
             console.log(res)
             const {enterpriseBankCheckId, enterpriseBankId, enterpriseBankName, enterpriseBankRegisterId, enterpriseNameCH, enterpriseOwner} = res
             form.setFieldsValue({
-              cardName: enterpriseNameCH || '',
               bankBranchName: enterpriseBankName
             })
           })

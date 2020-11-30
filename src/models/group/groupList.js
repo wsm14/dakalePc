@@ -11,6 +11,7 @@ import {
   fetchGrounpDetails,
   fetchUpdateGroup
 } from '@/services/groupServices';
+import moment from "moment";
 
 export default {
   namespace: 'groupSet',
@@ -18,9 +19,12 @@ export default {
     list: {list: [], total: 0},
     visible: false,
     visible1: false,
-    visible2:false,
+    visible2: false,
     rolesList: [],
-    groupDetails: {}
+    groupDetails: {},
+    merchantGroupDTO: {},
+    businessLicense: {},
+    bankBindingInfo: {},
   },
 
   reducers: {
@@ -44,7 +48,6 @@ export default {
       const response = yield call(fetchMerchantGroup, payload);
       if (!response) return;
       const {content} = response;
-      console.log(content)
       yield put({
         type: 'save',
         payload: {
@@ -70,11 +73,11 @@ export default {
     *fetchAddList({payload, callback}, {call, put}) {
       const response = yield call(fetchAddMerchantGroup, payload);
       if (!response) return;
-      const {merchantGroupId} = response
+      const {content} = response
       yield put({
-        type:'save',
+        type: 'save',
         payload: {
-          merchantGroupId
+          merchantGroupId:content.merchantGroupId
         }
       })
       notification.success({
@@ -117,14 +120,27 @@ export default {
       const {content} = response;
       callback && callback(content)
     },
-    *fetchGrounpDetails({payload,callback}, {call, put}) {
+    *fetchGrounpDetails({payload, callback}, {call, put}) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
       const {content} = response;
+      let activeBeginDate = [];
+      if(content.bankBindingInfo){
+        activeBeginDate = [moment(content.bankBindingInfo.startDate),moment(content.bankBindingInfo.legalCertIdExpires)]
+      }
       yield put({
         type: 'save',
         payload: {
           groupDetails: {...content},
+          merchantGroupDTO: {
+            ...content.merchantGroupDTO,
+            topCategSelect:content.merchantGroupDTO.categoryNode.split('.')
+          } || {},
+          businessLicense: content.businessLicense || {},
+          bankBindingInfo:{
+            ...content.bankBindingInfo,
+            activeBeginDate
+          }  || {},
         },
       });
       callback && callback()

@@ -15,6 +15,10 @@ const tabList = [
     tab: '商家',
   },
   {
+    key: '',
+    tab: '集团',
+  },
+  {
     key: 'company',
     tab: '省公司',
   },

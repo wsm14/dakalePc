@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
-  BUSINESS_ACCOUNT_STATUS,
-  BUSINESS_DO_STATUS,
-  BUSINESS_STATUS,
-  WORKER_BANK_TYPE,
+  WORKER_BANK_TYPE
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -16,7 +13,9 @@ import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/groupDetails';
 
 const tableList = (props) => {
-  const { dispatch, list, visible, visible1, merchantGroupId, visible2 } = props;
+  const { dispatch, list, visible, visible1, visible2,tradeList
+    // categoryDTOList
+  } = props;
   useEffect(() => {
     fetchMasterTotalList();
     fetchMasterManagementList();
@@ -58,7 +57,7 @@ const tableList = (props) => {
       callback: callback,
     });
   };
-
+  const childRef = useRef();
   const searchItems = [
     {
       label: '集团名称',
@@ -66,14 +65,15 @@ const tableList = (props) => {
     },
     {
       label: '经营类目',
-      name: 'categoryName',
+      name: 'categoryId',
       type: 'select',
+      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
     },
     {
       label: '账户状态',
-      name: 'status',
+      name: 'bankStatus',
       type: 'select',
-      select: { list: BUSINESS_STATUS },
+      select: { list: WORKER_BANK_TYPE.map((item) => ({ name: item.value, value: item.label})) },
     },
   ];
   // table 表头
@@ -218,7 +218,16 @@ const tableList = (props) => {
           <Button
             className="dkl_green_btn"
             key="1"
-            onClick={() => fetchSave({ visible: true, merchantGroupId: null })}
+            onClick={
+              () => fetchSave(
+                {
+                  visible: true,
+                  merchantGroupId: null,
+                  groupDetails: {},
+                  merchantGroupDTO: {},
+                  businessLicense: {},
+                  bankBindingInfo: {},
+                })}
           >
             新增
           </Button>
@@ -229,6 +238,7 @@ const tableList = (props) => {
         // }
         columns={getColumns}
         searchItems={searchItems}
+        cRef={childRef}
         rowKey={(record) => `${record.merchantGroupId}`}
         dispatchType="groupSet/fetchGetList"
         {...list}
@@ -236,20 +246,44 @@ const tableList = (props) => {
       <DrawerForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible}
-        onClose={() => fetchSave({ visible: false, merchantGroupId: {} })}
+        childRef={childRef}
+        onClose={() => fetchSave(
+          {
+          visible: false, merchantGroupId: null,
+          groupDetails: {},
+          merchantGroupDTO: {},
+          businessLicense: {},
+          bankBindingInfo: {},
+          })}
       ></DrawerForms>
 
       <SetDetailsForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible1}
-        onClose={() => fetchSave({ visible1: false })}
+        childRef={childRef}
+        onClose={() => fetchSave({
+          visible1: false,
+          groupDetails: {},
+          merchantGroupDTO: {},
+          businessLicense: {},
+          bankBindingInfo: {},
+        })}
       ></SetDetailsForms>
 
       {visible2 && (
         <GroupDetails
           saveVisible={(res) => fetchSave(res)}
           visible={visible2}
-          onClose={() => fetchSave({ visible2: false, groupDetails: {}, merchantGroupId: '' })}
+          onClose={() =>
+            fetchSave(
+              {
+                visible2: false,
+                merchantGroupId: null,
+                groupDetails: {},
+                merchantGroupDTO: {},
+                businessLicense: {},
+                bankBindingInfo: {},
+              })}
         ></GroupDetails>
       )}
     </>
@@ -259,5 +293,6 @@ export default connect(({ sysTradeList, groupSet, loading }) => ({
   ...sysTradeList,
   ...groupSet,
   loading: loading.models.groupSet,
+  tradeList: sysTradeList.list.list,
   categoryDTOList: sysTradeList.categoryDTOList,
 }))(tableList);
