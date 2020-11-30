@@ -50,12 +50,12 @@ const LoginItem = ({ prop, loading }) => {
       });
       return;
     }
-    if (list[1].childList.length) {
+    if (list[0].childList.length) {
       // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
-      history.replace(list[1].childList[0].accessUrl);
+      history.replace(list[0].childList[0].accessUrl);
     } else {
       // history.replace(redirect || list[0].accessUrl);
-      history.replace(list[1].accessUrl);
+      history.replace(list[0].accessUrl);
     }
   };
 

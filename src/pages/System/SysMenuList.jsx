@@ -15,7 +15,7 @@ const tabList = [
     tab: '商家',
   },
   {
-    key: '',
+    key: 'group',
     tab: '集团',
   },
   {
