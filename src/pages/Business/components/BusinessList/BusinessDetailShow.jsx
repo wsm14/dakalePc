@@ -6,7 +6,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { dispatch, cRef, visible = null, onClose, loading } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
@@ -190,7 +190,7 @@ const BusinessDetailShow = (props) => {
 
   const modalProps = {
     title: `商家详情`,
-    width: 600,
+    width: 800,
     visible,
     maskClosable: true,
     destroyOnClose: true,
