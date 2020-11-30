@@ -10,7 +10,7 @@ import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 
 const BusinessAdd = (props) => {
-  const { dispatch, cRef, visible, initialValues = false, onClose, loading } = props;
+  const { dispatch, cRef, visible, initialValues = false, onClose, loading, businessAudit } = props;
 
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
@@ -30,13 +30,20 @@ const BusinessAdd = (props) => {
         interiorImg,
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
+        businessHubIdString,
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
         return;
       }
+      const { hubList } = businessAudit;
+      const businessHubObj = hubList.filter(
+        (item) => item.businessHubIdString == businessHubIdString,
+      );
       const payload = {
         ...values,
+        businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',
+        businessHub: businessHubObj.length ? businessHubObj[0].businessHubName : '',
         brandName: otherBrand ? '其他品牌' : values.brandName,
         provinceCode: selectCity[0].value,
         provinceName: selectCity[0].label,
@@ -167,7 +174,7 @@ const BusinessAdd = (props) => {
 
   const modalProps = {
     title: `${initialValues ? '审核' : '新增'}商户`,
-    width: 600,
+    width: 700,
     visible,
     maskClosable: false,
     destroyOnClose: true,
@@ -238,6 +245,7 @@ const BusinessAdd = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ loading, businessAudit }) => ({
+  businessAudit,
   loading: loading.models.businessList,
 }))(BusinessAdd);

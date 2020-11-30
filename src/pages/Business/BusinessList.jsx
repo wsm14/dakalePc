@@ -10,6 +10,7 @@ import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessAdd from './components/BusinessList/BusinessEdit';
 import BusinessQrCode from './components/BusinessList/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
+import BusinessEdit from './components/BusinessList/HubEdit';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 
 const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
@@ -22,6 +23,7 @@ const BusinessListComponent = (props) => {
   const [visibleAdd, setVisibleAdd] = useState(false);
   const [visibleDetail, setVisibleDetail] = useState(false);
   const [visibleQrcode, setVisibleQrcode] = useState('');
+  const [visibleEdit, setVisibleEdit] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -149,6 +151,10 @@ const BusinessListComponent = (props) => {
               click: () => setVisibleQrcode(record),
             },
             {
+              type: 'edit',
+              click: () => fetchGetDetail(val, (info) => setVisibleEdit({ show: true, info })),
+            },
+            {
               type: 'info',
               click: () => fetchGetDetail(val),
             },
@@ -161,6 +167,7 @@ const BusinessListComponent = (props) => {
       ),
     },
   ];
+  // fetchMerchantEdit
 
   // 经营类目
   const fetchTradeList = () => {
@@ -170,11 +177,11 @@ const BusinessListComponent = (props) => {
   };
 
   // 获取商家详情
-  const fetchGetDetail = (merchantId) => {
+  const fetchGetDetail = (merchantId, callback) => {
     dispatch({
       type: 'businessList/fetchMerchantDetail',
       payload: { merchantId },
-      callback: handleShowUserDetail,
+      callback: (info) => (callback ? callback(info) : handleShowUserDetail(info)),
     });
   };
 
@@ -234,6 +241,11 @@ const BusinessListComponent = (props) => {
         visible={visible}
         onClose={() => setVisible('')}
       ></BusinessAwardSet>
+      <BusinessEdit
+        cRef={childRef}
+        visible={visibleEdit}
+        onClose={() => setVisibleEdit('')}
+      ></BusinessEdit>
       <BusinessDetailShow
         cRef={childRef}
         visible={visibleDetail}

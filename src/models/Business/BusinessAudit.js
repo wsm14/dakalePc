@@ -4,6 +4,7 @@ import {
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
   fetchMerSaleAuditAllow,
+  fetchWaitBusinessHub,
 } from '@/services/BusinessServices';
 
 export default {
@@ -35,6 +36,18 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchWaitBusinessHub({ payload, callback }, { call, put }) {
+      const response = yield call(fetchWaitBusinessHub, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          hubList: content.businessHubList,
+        },
+      });
+      callback(content.businessHubList);
     },
     *fetchMerchantAuditDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantAuditDetail, payload);

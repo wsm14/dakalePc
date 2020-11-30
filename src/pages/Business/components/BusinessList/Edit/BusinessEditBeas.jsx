@@ -22,6 +22,7 @@ const BusinessAddBeas = (props) => {
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(true);
   const [categId, setCategId] = useState(initialValues.businessArea);
+  const [hubList, setHubList] = useState([]);
 
   // 获取品牌
   const fetchGetBrandList = () => {
@@ -66,9 +67,19 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取详情
+  const fetchGetDetail = (payload) => {
+    dispatch({
+      type: 'businessAudit/fetchWaitBusinessHub',
+      payload,
+      callback: (info) => setHubList(info),
+    });
+  };
+
   useEffect(() => {
     fetchGetBrandList();
     if (initialValues) {
+      if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
       fetchGetPlatform(initialValues.topCategoryName[0]);
     }
   }, []);
@@ -125,7 +136,20 @@ const BusinessAddBeas = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'provinceCode',
-      onChange: setSelectCity,
+      onChange: (val) => {
+        fetchGetDetail({ districtCode: val[2].value });
+        setSelectCity(val);
+      },
+    },
+    {
+      label: '所属商圈',
+      name: 'businessHubIdString',
+      type: 'select',
+      select: hubList.map((item) => ({
+        name: item.businessHubName,
+        value: item.businessHubIdString,
+      })),
+      span: 2,
     },
     {
       label: '详细地址',

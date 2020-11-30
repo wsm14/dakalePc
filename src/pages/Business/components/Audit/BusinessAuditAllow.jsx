@@ -18,6 +18,7 @@ const BusinessAuditAllow = (props) => {
     merchantVerifyId,
     initialValues,
     fetchFormData,
+    businessAudit,
   } = props;
 
   const [form] = Form.useForm();
@@ -57,6 +58,7 @@ const BusinessAuditAllow = (props) => {
             businessTime,
             property: { service, speacial },
           } = values;
+
           // aliOssUpload(allImages).then((res) => {
           const selectTime = values.allTime
             ? '00:00-23:59'

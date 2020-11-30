@@ -7,6 +7,7 @@ import {
   fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
+  fetchMerchantEdit,
   fetchMerchantTotal,
   fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
@@ -48,7 +49,8 @@ export default {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.merchantDetail);
+      const { provinceCode, cityCode, districtCode } = content.merchantDetail;
+      callback({ ...content.merchantDetail, citycodeArr: [provinceCode, cityCode, districtCode] });
     },
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchMerchantTotal);
@@ -80,6 +82,15 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content);
+    },
+    *fetchMerchantEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家修改成功',
+      });
+      callback();
     },
     *fetchMerSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchMerSetBandCode, payload);

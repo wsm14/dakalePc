@@ -49,6 +49,14 @@ export function fetchMerchantAdd(data) {
   });
 }
 
+// post 商户数据 - 商家 修改
+export function fetchMerchantEdit(data) {
+  return request('/admin/merchantManagement/updateMerchant', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 商户数据 - 商家 设置
 export function fetchMerchantSet(data) {
   return request('/admin/merchantManagement/updateMerchantBeanSet', {
@@ -76,6 +84,13 @@ export function fetchMerVerificationCodeSet(data) {
 // get 商户审核 - 商户审核列表
 export function fetchMerchantAuditList(params) {
   return request('/admin/merchantManagement/listMerchantVerify', {
+    params,
+  });
+}
+
+// get 商户审核 - 商圈选项
+export function fetchWaitBusinessHub(params) {
+  return request('/common/businessHub/listBusinessHubByCode', {
     params,
   });
 }
