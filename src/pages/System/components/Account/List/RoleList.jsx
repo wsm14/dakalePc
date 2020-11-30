@@ -39,7 +39,7 @@ const RoleList = (props) => {
       },
       callback: (flag) => {
         const callback = () => setVisible({ visible: true, flag });
-        flag == 1 ? fetchGetMenuAll(payload, callback) : fetchGetUserMenu(payload, callback);
+        flag == 1 ? fetchGetMenuAll(payload, callback) : fetchGetUserMenu(payload, callback, flag);
       },
     });
   };
@@ -54,19 +54,19 @@ const RoleList = (props) => {
   };
 
   // 用户可配置菜单
-  const fetchGetUserMenu = (payload, callback) => {
+  const fetchGetUserMenu = (payload, callback, flag) => {
     dispatch({
       type: 'roleSetting/fetchAllUserRoleDetail',
-      callback: payload ? () => fetchDetail(payload) : callback,
+      callback: callback && payload ? () => fetchDetail(payload, flag) : callback,
     });
   };
 
   // 获取角色详情
-  const fetchDetail = (payload) => {
+  const fetchDetail = (payload, flag) => {
     dispatch({
       type: 'roleSetting/fetchAllGetRoleDetail',
       payload,
-      callback: (userInfo) => setVisible({ visible: true, userInfo }),
+      callback: (userInfo) => setVisible({ visible: true, userInfo, flag }),
     });
   };
 
