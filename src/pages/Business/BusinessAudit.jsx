@@ -46,6 +46,10 @@ const BusinessAuditList = (props) => {
       dataIndex: 'cityName',
     },
     {
+      label: '所属商圈',
+      name: 'businessHub',
+    },
+    {
       title: '详细地址',
       align: 'center',
       dataIndex: 'address',

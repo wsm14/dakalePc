@@ -88,6 +88,10 @@ const BusinessDetailShow = (props) => {
       name: 'address',
     },
     {
+      label: '所属商圈',
+      name: 'businessHub',
+    },
+    {
       label: '商户电话',
       name: 'telephone',
     },
