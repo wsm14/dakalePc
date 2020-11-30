@@ -132,6 +132,8 @@ export function fetchPassWordEdit(data) {
   });
 }
 
+// 权限设置
+
 // get 任何系统 - 部门列表
 export function fetchAllSectionList(params) {
   return request('/admin/department/listDepartment', {
@@ -212,6 +214,8 @@ export function fetchAllGetMenu(params) {
     params,
   });
 }
+
+// 权限设置 end
 
 // 运营后台账号
 

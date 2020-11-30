@@ -14,7 +14,7 @@ const SectionList = (props) => {
   // 部门修改
   const fetchEdit = (payload) => {
     dispatch({
-      type: 'workerManageSection/fetchWMSSectionEdit',
+      type: 'sectionSetting/fetchAllSectionEdit',
       payload: {
         ...payload,
         departmentId: payload.departmentIdString,
