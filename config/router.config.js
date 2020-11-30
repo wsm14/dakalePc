@@ -63,23 +63,6 @@ export default [
       //     },
       //   ],
       // },
-      // {
-      //   name: '帐号管理',
-      //   icon: 'sign',
-      //   path: '/signAccount',
-      //   routes: [
-      //     {
-      //       path: '/signAccount/company',
-      //       name: '省公司帐号',
-      //       component: './SignAccount/CompanyAccount',
-      //     },
-      //     {
-      //       path: '/signAccount/partner',
-      //       name: '区县帐号',
-      //       component: './SignAccount/PartnerAccount',
-      //     },
-      //   ],
-      // },
       {
         name: '用户管理',
         path: '/user',
