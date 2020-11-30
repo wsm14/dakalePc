@@ -40,7 +40,7 @@ export default [
       {
         name: '修改密码',
         path: '/password',
-        component: './System/SysPassWord',
+        component: './System/PassWord',
       },
       {
         name: '用户管理',
@@ -122,22 +122,7 @@ export default [
           },
         ],
       },
-      {
-        name: '营销管理',
-        path: '/market',
-        routes: [
-          {
-            path: '/market/cardpeaspark',
-            name: '卡豆乐园',
-            component: './Market/MarketCardPeasPark',
-          },
-          {
-            path: '/market/activity',
-            name: '营销活动',
-            component: './Market/MarketCardActivity',
-          },
-        ],
-      },
+
       {
         name: '圈层管理',
         path: '/circle',
@@ -149,48 +134,7 @@ export default [
           },
         ],
       },
-      {
-        name: '账户管理',
-        path: '/account',
-        routes: [
-          {
-            path: '/account/user',
-            name: '用户账户',
-            component: './Account/AccountUser',
-          },
-          {
-            path: '/account/business',
-            name: '商家账户',
-            component: './Account/AccountBusiness',
-          },
-        ],
-      },
-      {
-        name: '客服中心',
-        path: '/service',
-        routes: [
-          {
-            path: '/service/feedback',
-            name: '问题反馈',
-            component: './Service/ServiceFeedBack',
-          },
-          {
-            path: '/service/news',
-            name: '新闻动态',
-            component: './Service/ServiceNews',
-          },
-          {
-            path: '/service/businessVideo',
-            name: '商户视频',
-            component: './Service/ServiceBusinessVideo',
-          },
-          {
-            path: '/service/limitPop',
-            name: 'BD白名单',
-            component: './Service/ServiceLimitPop',
-          },
-        ],
-      },
+
       {
         name: '活动设置',
         path: '/active',
@@ -217,25 +161,97 @@ export default [
           },
         ],
       },
+      // {
+      //   name: '帐号管理',
+      //   icon: 'sign',
+      //   path: '/signAccount',
+      //   routes: [
+      //     {
+      //       path: '/signAccount/company',
+      //       name: '省公司帐号',
+      //       component: './SignAccount/CompanyAccount',
+      //     },
+      //     {
+      //       path: '/signAccount/partner',
+      //       name: '区县帐号',
+      //       component: './SignAccount/PartnerAccount',
+      //     },
+      //   ],
+      // },
       {
-        name: '帐号管理',
-        icon: 'sign',
-        path: '/signAccount',
+        name: '营销管理',
+        icon: 'market',
+        path: '/market',
         routes: [
           {
-            path: '/signAccount/company',
-            name: '省公司帐号',
-            component: './SignAccount/CompanyAccount',
+            path: '/market/cardpeaspark',
+            name: '卡豆乐园',
+            component: './Market/MarketCardPeasPark',
           },
           {
-            path: '/signAccount/partner',
-            name: '区县帐号',
-            component: './SignAccount/PartnerAccount',
+            path: '/market/activity',
+            name: '营销活动',
+            component: './Market/MarketCardActivity',
+          },
+          {
+            path: '/market/checkIn',
+            name: '打卡设置',
+            component: './Market/CheckInSet',
+          },
+          {
+            path: '/market/appset',
+            name: '广告管理',
+            component: './market/AppSetList',
           },
         ],
       },
       {
+        name: '账户管理',
+        icon: 'account',
+        path: '/account',
+        routes: [
+          {
+            path: '/account/user',
+            name: '用户账户',
+            component: './Account/AccountUser',
+          },
+          {
+            path: '/account/business',
+            name: '商家账户',
+            component: './Account/AccountBusiness',
+          },
+        ],
+      },
+      {
+        name: '客服中心',
+        icon: 'service',
+        path: '/service',
+        routes: [
+          {
+            path: '/service/news',
+            name: '新闻动态',
+            component: './Service/ServiceNews',
+          },
+          {
+            path: '/service/feedback',
+            name: '问题反馈',
+            component: './Service/ServiceFeedBack',
+          },
+          // {
+          //   path: '/service/businessVideo',
+          //   name: '商户视频',
+          //   component: './Service/ServiceBusinessVideo',
+          // },
+          // {
+          //   path: '/service/limitPop',
+          //   name: 'BD白名单',
+          //   component: './Service/ServiceLimitPop',
+          // },
+        ],
+      },
+      {
         name: '基础配置',
+        icon: 'system',
         path: '/system',
         routes: [
           {
@@ -263,7 +279,7 @@ export default [
           {
             path: '/system/tradeset',
             name: '行业管理',
-            component: './System/SysTradeList',
+            component: './System/TradeList',
           },
           {
             path: '/system/brand',
@@ -275,25 +291,15 @@ export default [
             name: '支行管理',
             component: './System/BusinessBankSet',
           },
-          // {
-          //   path: '/system/appset',
-          //   name: 'App设置',
-          //   component: './System/SysAppList',
-          // },
-          // {
-          //   path: '/system/checkIn',
-          //   name: '打卡设置',
-          //   component: './System/SysCheckIn',
-          // },
-          // {
-          //   path: '/system/peasShare',
-          //   name: '卡豆分享',
-          //   component: './System/SysPeasShare',
-          // },
+          {
+            path: '/system/peasShare',
+            name: '卡豆分享',
+            component: './System/PeasShare',
+          },
           {
             path: '/system/pageset',
             name: '菜单设置',
-            component: './System/SysMenuList',
+            component: './System/MenuList',
           },
         ],
       },

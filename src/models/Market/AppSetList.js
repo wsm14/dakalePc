@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchBannerList, fetchBannerSet, fetchBannerStatusDel } from '@/services/SystemServices';
+import { fetchBannerList, fetchBannerSet, fetchBannerStatusDel } from '@/services/MarketServices';
 
 export default {
   namespace: 'sysAppList',

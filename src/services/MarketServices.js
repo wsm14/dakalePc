@@ -140,3 +140,72 @@ export function fetchMarketMatchRuningSet(data) {
     data,
   });
 }
+
+// 打卡设置
+
+// get 打卡设置 - 打卡列表
+export function fetchCheckInList(params) {
+  return request('/admin/healthLife/listUserHealthLife', {
+    params,
+  });
+}
+
+// get 打卡设置 - 图片文案列表
+export function fetchCheckInImgTextList(params) {
+  return request('/admin/healthLife/listUserHealthListWords', {
+    params,
+  });
+}
+
+// post 打卡设置 - 打卡列表编辑
+export function fetchCheckInEdit(data) {
+  return request('/admin/healthLife/updateUserHealthLifeStyleMarkTime', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 打卡设置 - 图片 文案编辑
+export function fetchCheckInTextImgEdit(data) {
+  return request('/admin/healthLife/updateUserHealthLifeStyleContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 打卡设置 - 图片 文案新增
+export function fetchCheckInTextImgAdd(data) {
+  return request('/admin/healthLife/saveUserHealthLifeStyleContent', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 打卡设置 end
+
+// App设置
+
+// get App设置 - 图片列表
+export function fetchBannerList(params) {
+  return request('/admin/systemConfig/listBannerMarketPlatform', {
+    params,
+  });
+}
+
+// post App设置 - 图片下架/图片删除 修改
+export function fetchBannerStatusDel(data) {
+  return request('/admin/systemConfig/updateBannerMarketPlatform', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post App设置 - 图片新增
+export function fetchBannerSet(data) {
+  return request('/admin/systemConfig/saveBannerMarketPlatform', {
+    method: 'POST',
+    data,
+  });
+}
+
+// App设置 end

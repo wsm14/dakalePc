@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchTradeAreaList,

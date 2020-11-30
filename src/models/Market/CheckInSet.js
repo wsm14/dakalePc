@@ -5,7 +5,7 @@ import {
   fetchCheckInEdit,
   fetchCheckInTextImgAdd,
   fetchCheckInTextImgEdit,
-} from '@/services/SystemServices';
+} from '@/services/MarketServices';
 
 export default {
   namespace: 'sysCheckIn',
