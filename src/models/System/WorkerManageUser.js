@@ -14,7 +14,7 @@ import {
   fetchUserEditByPartner,
   fetchUserListByPartner,
   fetchUserDetailsByPartner
-} from '@/services/SignAccountServices';
+} from '@/services/SystemServices';
 
 export default {
   namespace: 'workerManageUser',

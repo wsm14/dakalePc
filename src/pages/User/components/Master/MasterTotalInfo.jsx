@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import numeral from 'numeral';
-import styles from '../style.less';
+import styles from './style.less';
 
 const MasterTotalInfo = ({
   dispatch,

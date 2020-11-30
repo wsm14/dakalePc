@@ -1,4 +1,5 @@
-import {notification} from 'antd';
+import { notification } from 'antd';
+import moment from 'moment';
 import {
   fetchMerchantGroup,
   fetchAddMerchantGroup,
@@ -9,14 +10,13 @@ import {
   fetchMerchantBank,
   fetchWMSUserRoles,
   fetchGrounpDetails,
-  fetchUpdateGroup
-} from '@/services/groupServices';
-import moment from "moment";
+  fetchUpdateGroup,
+} from '@/services/BusinessServices';
 
 export default {
   namespace: 'groupSet',
   state: {
-    list: {list: [], total: 0},
+    list: { list: [], total: 0 },
     visible: false,
     visible1: false,
     visible2: false,
@@ -28,131 +28,136 @@ export default {
   },
 
   reducers: {
-    save(state, {payload}) {
+    save(state, { payload }) {
       return {
         ...state,
         ...payload,
       };
     },
-    clearDetail(state, {payload}) {
+    clearDetail(state, { payload }) {
       return {
         ...state,
         ...payload,
-        detailList: {list: [], total: 0},
+        detailList: { list: [], total: 0 },
       };
     },
   },
 
   effects: {
-    *fetchGetList({payload}, {call, put}) {
+    *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchMerchantGroup, payload);
       if (!response) return;
-      const {content} = response;
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: {list: content.recordList || []},
+          list: { list: content.recordList || [] },
         },
       });
     },
-    *fetchWMSUserRoles({payload}, {call, put}) {
+    *fetchWMSUserRoles({ payload }, { call, put }) {
       const response = yield call(fetchWMSUserRoles, payload);
       if (!response) return;
-      const {content} = response;
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          rolesList: content.recordList.map(item => ({
+          rolesList: content.recordList.map((item) => ({
             key: item.idString,
             title: item.roleName,
             description: item.roleName,
-          }))
+          })),
         },
       });
     },
-    *fetchAddList({payload, callback}, {call, put}) {
+    *fetchAddList({ payload, callback }, { call, put }) {
       const response = yield call(fetchAddMerchantGroup, payload);
       if (!response) return;
-      const {content} = response
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          merchantGroupId:content.merchantGroupId
-        }
-      })
+          merchantGroupId: content.merchantGroupId,
+        },
+      });
       notification.success({
         message: '温馨提示',
         description: '添加成功',
-      })
-      callback && callback()
+      });
+      callback && callback();
     },
-    *fetchGetOcrBusinessLicense({payload, callback}, {call, put}) {
+    *fetchGetOcrBusinessLicense({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrBusinessLicense, payload);
       if (!response) return;
-      const {content} = response;
-      callback && callback(content)
+      const { content } = response;
+      callback && callback(content);
     },
-    *fetchGetOcrBankLicense({payload, callback}, {call, put}) {
+    *fetchGetOcrBankLicense({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrBankLicense, payload);
       if (!response) return;
-      const {content} = response;
-      callback && callback(content)
+      const { content } = response;
+      callback && callback(content);
     },
-    *fetchGetOcrIdCardFront({payload, callback}, {call, put}) {
+    *fetchGetOcrIdCardFront({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrIdCardFront, payload);
       if (!response) return;
-      const {content} = response;
-      callback && callback(content)
+      const { content } = response;
+      callback && callback(content);
     },
-    *fetchGetOcrIdCardBack({payload, callback}, {call, put}) {
+    *fetchGetOcrIdCardBack({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrIdCardBack, payload);
       if (!response) return;
-      const {content} = response;
-      callback && callback(content)
+      const { content } = response;
+      callback && callback(content);
     },
-    *fetchMerchantBank({payload, callback}, {call, put}) {
+    *fetchMerchantBank({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantBank, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '添加成功',
-      })
-      const {content} = response;
-      callback && callback(content)
+      });
+      const { content } = response;
+      callback && callback(content);
     },
-    *fetchGrounpDetails({payload, callback}, {call, put}) {
+    *fetchGrounpDetails({ payload, callback }, { call, put }) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
-      const {content} = response;
+      const { content } = response;
       let activeBeginDate = [];
-      if(content.bankBindingInfo){
-        activeBeginDate = [moment(content.bankBindingInfo.startDate),moment(content.bankBindingInfo.legalCertIdExpires)]
+      if (content.bankBindingInfo) {
+        activeBeginDate = [
+          moment(content.bankBindingInfo.startDate),
+          moment(content.bankBindingInfo.legalCertIdExpires),
+        ];
       }
       yield put({
         type: 'save',
         payload: {
-          groupDetails: {...content},
-          merchantGroupDTO: {
-            ...content.merchantGroupDTO,
-            topCategSelect:content.merchantGroupDTO.categoryNode.split('.')
-          } || {},
+          groupDetails: { ...content },
+          merchantGroupDTO:
+            {
+              ...content.merchantGroupDTO,
+              topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
+            } || {},
           businessLicense: content.businessLicense || {},
-          bankBindingInfo:{
-            ...content.bankBindingInfo,
-            activeBeginDate
-          }  || {},
+          bankBindingInfo:
+            {
+              ...content.bankBindingInfo,
+              activeBeginDate,
+            } || {},
         },
       });
-      callback && callback()
+      callback && callback();
     },
-    *fetchUpdateGroup({payload, callback}, {call, put}) {
+    *fetchUpdateGroup({ payload, callback }, { call, put }) {
       const response = yield call(fetchUpdateGroup, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '修改成功',
-      })
-      callback && callback()
+      });
+      callback && callback();
     },
   },
 };

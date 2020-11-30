@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchLimitPopList, fetchLimitPopAdd } from '@/services/ServiceServices';
+import { fetchLimitPopList, fetchLimitPopAdd } from '@/services/UserServices';
 
 export default {
   namespace: 'serviceLimitPop',

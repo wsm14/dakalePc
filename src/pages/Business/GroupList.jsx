@@ -1,19 +1,23 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  WORKER_BANK_TYPE
-} from '@/common/constant';
+import React, { useEffect, useRef, useState } from 'react';
+import { WORKER_BANK_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DrawerForms from './components/addGroup';
-import SetDetailsForms from './components/activateGroup';
+import DrawerForms from './components/Group/addGroup';
+import SetDetailsForms from './components/Group/activateGroup';
 import DataTableBlock from '@/components/DataTableBlock';
 import { Button, message } from 'antd';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
-import GroupDetails from './components/groupDetails';
+import GroupDetails from './components/Group/groupDetails';
 
 const tableList = (props) => {
-  const { dispatch, list, visible, visible1, visible2,tradeList
+  const {
+    dispatch,
+    list,
+    visible,
+    visible1,
+    visible2,
+    tradeList,
     // categoryDTOList
   } = props;
   useEffect(() => {
@@ -73,7 +77,7 @@ const tableList = (props) => {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select: { list: WORKER_BANK_TYPE.map((item) => ({ name: item.value, value: item.label})) },
+      select: { list: WORKER_BANK_TYPE.map((item) => ({ name: item.value, value: item.label })) },
     },
   ];
   // table 表头
@@ -218,16 +222,16 @@ const tableList = (props) => {
           <Button
             className="dkl_green_btn"
             key="1"
-            onClick={
-              () => fetchSave(
-                {
-                  visible: true,
-                  merchantGroupId: null,
-                  groupDetails: {},
-                  merchantGroupDTO: {},
-                  businessLicense: {},
-                  bankBindingInfo: {},
-                })}
+            onClick={() =>
+              fetchSave({
+                visible: true,
+                merchantGroupId: null,
+                groupDetails: {},
+                merchantGroupDTO: {},
+                businessLicense: {},
+                bankBindingInfo: {},
+              })
+            }
           >
             新增
           </Button>
@@ -247,27 +251,31 @@ const tableList = (props) => {
         saveVisible={(res) => fetchSave(res)}
         visible={visible}
         childRef={childRef}
-        onClose={() => fetchSave(
-          {
-          visible: false, merchantGroupId: null,
-          groupDetails: {},
-          merchantGroupDTO: {},
-          businessLicense: {},
-          bankBindingInfo: {},
-          })}
+        onClose={() =>
+          fetchSave({
+            visible: false,
+            merchantGroupId: null,
+            groupDetails: {},
+            merchantGroupDTO: {},
+            businessLicense: {},
+            bankBindingInfo: {},
+          })
+        }
       ></DrawerForms>
 
       <SetDetailsForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible1}
         childRef={childRef}
-        onClose={() => fetchSave({
-          visible1: false,
-          groupDetails: {},
-          merchantGroupDTO: {},
-          businessLicense: {},
-          bankBindingInfo: {},
-        })}
+        onClose={() =>
+          fetchSave({
+            visible1: false,
+            groupDetails: {},
+            merchantGroupDTO: {},
+            businessLicense: {},
+            bankBindingInfo: {},
+          })
+        }
       ></SetDetailsForms>
 
       {visible2 && (
@@ -275,15 +283,15 @@ const tableList = (props) => {
           saveVisible={(res) => fetchSave(res)}
           visible={visible2}
           onClose={() =>
-            fetchSave(
-              {
-                visible2: false,
-                merchantGroupId: null,
-                groupDetails: {},
-                merchantGroupDTO: {},
-                businessLicense: {},
-                bankBindingInfo: {},
-              })}
+            fetchSave({
+              visible2: false,
+              merchantGroupId: null,
+              groupDetails: {},
+              merchantGroupDTO: {},
+              businessLicense: {},
+              bankBindingInfo: {},
+            })
+          }
         ></GroupDetails>
       )}
     </>

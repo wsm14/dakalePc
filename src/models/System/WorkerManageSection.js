@@ -3,7 +3,7 @@ import {
   fetchWMSSectionList,
   fetchWMSSectionAdd,
   fetchWMSSectionEdit,
-} from '@/services/SignAccountServices';
+} from '@/services/SystemServices';
 
 export default {
   namespace: 'workerManageSection',

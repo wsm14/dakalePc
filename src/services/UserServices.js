@@ -42,3 +42,68 @@ export function fetchUserStatus(data) {
     data,
   });
 }
+
+// 家主列表
+
+// get 家主列表 - 统计数据
+export function fetchMasterTotal(params) {
+  return request('/admin/circleManagement/getFamilyStatistic', {
+    params,
+  });
+}
+
+// get 家主列表 - 统计数据
+export function fetchMasterTotalList(params) {
+  return request('/admin/circleManagement/getFamilyRankStatistic', {
+    params,
+  });
+}
+
+// get 家主列表 - 列表
+export function fetchMasterList(params) {
+  return request('/admin/circleManagement/getUserCircleDetail', {
+    params,
+  });
+}
+
+// get 家主列表 - 家人列表
+export function fetchMasterFamily(params) {
+  return request('/admin/circleManagement/listFamilyUser', {
+    params,
+  });
+}
+
+// get 家主列表 - 家店列表
+export function fetchMasterShop(params) {
+  return request('/admin/circleManagement/listFamilyMerchant', {
+    params,
+  });
+}
+
+// get 家主列表 - 收益明细
+export function fetchMasterIncomeDetails(params) {
+  return request('/admin/circleManagement/listBeanDetail', {
+    params,
+  });
+}
+
+// 家主列表 end
+
+// BD白名单
+
+// get 限制业务员 - 列表
+export async function fetchLimitPopList(params) {
+  return request('/admin/recommendReward/listRecommendReward', {
+    params,
+  });
+}
+
+// post 限制业务员 - 新增人员
+export function fetchLimitPopAdd(data) {
+  return request('/admin/recommendReward/saveRecommendReward', {
+    method: 'POST',
+    data,
+  });
+}
+
+// BD白名单 end

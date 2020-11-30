@@ -5,7 +5,7 @@ import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import FormCondition from '@/components/FormCondition';
 // import aliOssUpload from '@/utils/aliOssUpload';
 import moment from 'moment';
-import styles from '../style.less';
+import styles from './style.less';
 
 const BusinessAuditAllow = (props) => {
   const {

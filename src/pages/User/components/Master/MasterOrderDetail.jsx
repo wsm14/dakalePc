@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'dva';
 import { Spin, Popover } from 'antd';
-import styles from '../style.less';
+import styles from './style.less';
 
 const MasterOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
   const [visible, setVisible] = useState(false);

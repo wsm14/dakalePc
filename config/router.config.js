@@ -37,130 +37,32 @@ export default [
           },
         ],
       },
-      {
-        name: '修改密码',
-        path: '/password',
-        component: './System/PassWord',
-      },
-      {
-        name: '用户管理',
-        path: '/user',
-        routes: [
-          {
-            path: '/user/list',
-            name: '用户数据',
-            component: './User/UserList',
-            buttons: ['view', 'status'],
-          },
-        ],
-      },
-      {
-        name: '商户管理',
-        path: '/business',
-        routes: [
-          {
-            path: '/business/list',
-            name: '商户数据',
-            component: './Business/BusinessList',
-          },
-          {
-            path: '/business/audit',
-            name: '审核列表',
-            component: './Business/BusinessAudit',
-          },
-          {
-            path: '/business/register',
-            name: '注册列表',
-            component: './Business/BusinessRegister',
-          },
-
-          {
-            path: '/business/settled',
-            name: '入驻查询',
-            component: './Business/BusinessSettled',
-          },
-          {
-            path: '/business/bindBank',
-            name: '绑定查询',
-            component: './Business/BusinessBindBank',
-          },
-        ],
-      },
-      {
-        name: '集团管理',
-        path: '/group',
-        routes: [
-          {
-            path: '/group/list',
-            name: '集团列表',
-            component: './Group/list',
-            // buttons: [
-            //   { label: '查看', value: 'view' },
-            //   { label: '禁用', value: 'jinyong' },
-            // ],
-          },
-        ],
-      },
-      {
-        name: '哒人管理',
-        path: '/expert',
-        routes: [
-          {
-            path: '/expert/uaerlist',
-            name: '哒人列表',
-            component: './Expert/ExpertUserList',
-          },
-          {
-            path: '/expert/set',
-            name: '创作设置',
-            component: './Expert/ExpertSet',
-          },
-          {
-            path: '/expert/level',
-            name: '等级设置',
-            component: './Expert/ExpertLevel',
-          },
-        ],
-      },
-
-      {
-        name: '圈层管理',
-        path: '/circle',
-        routes: [
-          {
-            path: '/circle/masterlist',
-            name: '家主列表',
-            component: './Circle/CircleMasterList',
-          },
-        ],
-      },
-
-      {
-        name: '活动设置',
-        path: '/active',
-        routes: [
-          {
-            path: '/active/template',
-            name: '活动模版',
-            component: './Active/ActiveTemplate',
-          },
-          {
-            path: '/active/allocation',
-            name: '活动配置',
-            component: './Active/ActiveAllocation',
-          },
-          {
-            path: '/active/list',
-            name: '活动列表',
-            component: './Active/ActiveList',
-          },
-          {
-            path: '/active/param',
-            name: '参数配置',
-            component: './Active/ActiveParam',
-          },
-        ],
-      },
+      // {
+      //   name: '活动设置',
+      //   path: '/active',
+      //   routes: [
+      //     {
+      //       path: '/active/template',
+      //       name: '营销活动模版',
+      //       component: './Active/ActiveTemplate',
+      //     },
+      //     {
+      //       path: '/active/allocation',
+      //       name: '活动配置',
+      //       component: './Active/ActiveAllocation',
+      //     },
+      //     {
+      //       path: '/active/list',
+      //       name: '活动列表',
+      //       component: './Active/ActiveList',
+      //     },
+      //     {
+      //       path: '/active/param',
+      //       name: '参数配置',
+      //       component: './Active/ActiveParam',
+      //     },
+      //   ],
+      // },
       // {
       //   name: '帐号管理',
       //   icon: 'sign',
@@ -178,6 +80,86 @@ export default [
       //     },
       //   ],
       // },
+      {
+        name: '用户管理',
+        path: '/user',
+        routes: [
+          {
+            path: '/user/list',
+            name: '用户数据',
+            component: './User/UserList',
+            buttons: ['view', 'status'],
+          },
+          {
+            path: '/user/master',
+            name: '家主列表',
+            component: './User/CircleMasterList',
+          },
+          {
+            path: '/user/bdlimitPop',
+            name: 'BD白名单',
+            component: './User/BdLimitPop',
+          },
+        ],
+      },
+      {
+        name: '店铺管理',
+        path: '/business',
+        routes: [
+          {
+            path: '/business/register',
+            name: '注册列表',
+            component: './Business/BusinessRegister',
+          },
+          {
+            path: '/business/audit',
+            name: '审核列表',
+            component: './Business/BusinessAudit',
+          },
+          {
+            path: '/business/list',
+            name: '店铺数据',
+            component: './Business/BusinessList',
+          },
+          {
+            path: '/business/group',
+            name: '集团管理',
+            component: './business/GroupList',
+          },
+          {
+            path: '/business/settled',
+            name: '入驻查询',
+            component: './Business/BusinessSettled',
+          },
+          {
+            path: '/business/bindBank',
+            name: '绑定查询',
+            component: './Business/BusinessBindBank',
+          },
+        ],
+      },
+      {
+        name: '哒人管理',
+        icon: 'expert',
+        path: '/expert',
+        routes: [
+          {
+            path: '/expert/uaerlist',
+            name: '哒人列表',
+            component: './Expert/ExpertUserList',
+          },
+          {
+            path: '/expert/level',
+            name: '等级设置',
+            component: './Expert/ExpertLevel',
+          },
+          {
+            path: '/expert/set',
+            name: '话题设置',
+            component: './Expert/ExpertSet',
+          },
+        ],
+      },
       {
         name: '营销管理',
         icon: 'market',
@@ -237,16 +219,11 @@ export default [
             name: '问题反馈',
             component: './Service/ServiceFeedBack',
           },
-          // {
-          //   path: '/service/businessVideo',
-          //   name: '商户视频',
-          //   component: './Service/ServiceBusinessVideo',
-          // },
-          // {
-          //   path: '/service/limitPop',
-          //   name: 'BD白名单',
-          //   component: './Service/ServiceLimitPop',
-          // },
+          {
+            path: '/service/businessVideo',
+            name: '商户视频',
+            component: './Service/ServiceBusinessVideo',
+          },
         ],
       },
       {
@@ -257,20 +234,18 @@ export default [
           {
             path: '/system/account',
             name: '帐号权限管理',
-            component: './System/AccountList',
+            component: './System/AccountAdmin',
           },
-          // end
-          // {
-          //   path: '/System/account',
-          //   name: '省公司角色管理',
-          //   component: './System/AccountList',
-          // },
-          // {
-          //   path: '/System/account',
-          //   name: '区县角色管理',
-          //   component: './System/AccountList',
-          // },
-          // end
+          {
+            path: '/system/company',
+            name: '省公司帐号',
+            component: './System/AccountCompanyRole',
+          },
+          {
+            path: '/system/partner',
+            name: '区县帐号',
+            component: './System/AccountPartnerRole',
+          },
           {
             path: '/system/tradeArea',
             name: '商圈管理',
@@ -284,12 +259,12 @@ export default [
           {
             path: '/system/brand',
             name: '品牌管理',
-            component: './System/BusinessBrand',
+            component: './System/ManageBrand',
           },
           {
             path: '/system/bankSet',
             name: '支行管理',
-            component: './System/BusinessBankSet',
+            component: './System/ManageBank',
           },
           {
             path: '/system/peasShare',
@@ -302,6 +277,11 @@ export default [
             component: './System/MenuList',
           },
         ],
+      },
+      {
+        name: '修改密码',
+        path: '/password',
+        component: './System/PassWord',
       },
     ],
   },

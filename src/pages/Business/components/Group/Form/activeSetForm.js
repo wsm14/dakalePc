@@ -2,7 +2,7 @@ import React, {useState, useImperativeHandle} from "react";
 import {connect} from 'umi'
 import FormCondition from "@/components/FormCondition";
 import aliOssUpload from '@/utils/aliOssUpload';
-import styles from './../../style.less'
+import styles from '../style.less'
 import cityList from '@/common/city'
 import {TIME_YMD} from "@/common/constant"
 
