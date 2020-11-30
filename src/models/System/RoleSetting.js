@@ -8,7 +8,7 @@ import {
   fetchAllRoleEdit,
   fetchAllUserRoleDetail,
   fetchAllGetRoleDetail,
-} from '@/services/SignAccountServices';
+} from '@/services/SystemServices';
 
 // 递归树菜单
 const userMenuDataTree = (menu, key, pid = '0') => {

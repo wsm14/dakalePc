@@ -103,21 +103,6 @@ export function fetchMerSaleAudit(data) {
   });
 }
 
-// get 品牌 - 品牌列表
-export function fetchMerBrandList(params) {
-  return request('/admin/merchantManagement/listConfigBrand', {
-    params,
-  });
-}
-
-// post 品牌 - 品牌新增
-export function fetchMerBrandAdd(data) {
-  return request('/admin/merchantManagement/saveConfigBrand', {
-    method: 'POST',
-    data,
-  });
-}
-
 // get 注册列表 - 列表
 export function fetchMerRegisterList(params) {
   return request('/admin/merchantManagement/listMerchantUnVerified', {
@@ -136,35 +121,5 @@ export function fetchMerSettledList(params) {
 export function fetchMerBindBankList(params) {
   return request('/admin/merchantManagement/getMerchantBankStatusOk', {
     params,
-  });
-}
-
-// get 支行设置 - 列表
-export function fetchMerBankSetList(params) {
-  return request('/admin/bankBranch/pageBankBranch', {
-    params,
-  });
-}
-
-// get 支行设置 - 总行列表
-export function fetchMerBankAll(params) {
-  return request('/admin/bankBranch/listBankName', {
-    params,
-  });
-}
-
-// post 支行设置 - 新增
-export function fetchMerBankAdd(data) {
-  return request('/admin/bankBranch/saveBankBranch', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 支行设置 - 修改
-export function fetchMerBankEdit(data) {
-  return request('/admin/bankBranch/updateBankBranch', {
-    method: 'POST',
-    data,
   });
 }

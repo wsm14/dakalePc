@@ -73,16 +73,7 @@ export default [
             name: '注册列表',
             component: './Business/BusinessRegister',
           },
-          {
-            path: '/business/bankSet',
-            name: '支行设置',
-            component: './Business/BusinessBankSet',
-          },
-          {
-            path: '/business/brand',
-            name: '品牌数据',
-            component: './Business/BusinessBrand',
-          },
+
           {
             path: '/business/settled',
             name: '入驻查询',
@@ -232,11 +223,6 @@ export default [
         path: '/signAccount',
         routes: [
           {
-            path: '/signAccount/sale',
-            name: '运营后台帐号',
-            component: './SignAccount/AccountList',
-          },
-          {
             path: '/signAccount/company',
             name: '省公司帐号',
             component: './SignAccount/CompanyAccount',
@@ -246,37 +232,64 @@ export default [
             name: '区县帐号',
             component: './SignAccount/PartnerAccount',
           },
-          {
-            path: '/signAccount/tradeArea',
-            name: '商圈管理',
-            component: './SignAccount/TradeArea',
-          },
         ],
       },
       {
-        name: '系统设置',
+        name: '基础配置',
         path: '/system',
         routes: [
           {
-            path: '/system/appset',
-            name: 'App设置',
-            component: './System/SysAppList',
+            path: '/system/account',
+            name: '帐号权限管理',
+            component: './System/AccountList',
+          },
+          // end
+          // {
+          //   path: '/System/account',
+          //   name: '省公司角色管理',
+          //   component: './System/AccountList',
+          // },
+          // {
+          //   path: '/System/account',
+          //   name: '区县角色管理',
+          //   component: './System/AccountList',
+          // },
+          // end
+          {
+            path: '/system/tradeArea',
+            name: '商圈管理',
+            component: './System/TradeArea',
           },
           {
             path: '/system/tradeset',
-            name: '行业设置',
+            name: '行业管理',
             component: './System/SysTradeList',
           },
           {
-            path: '/system/checkIn',
-            name: '打卡设置',
-            component: './System/SysCheckIn',
+            path: '/system/brand',
+            name: '品牌管理',
+            component: './System/BusinessBrand',
           },
           {
-            path: '/system/peasShare',
-            name: '卡豆分享',
-            component: './System/SysPeasShare',
+            path: '/system/bankSet',
+            name: '支行管理',
+            component: './System/BusinessBankSet',
           },
+          // {
+          //   path: '/system/appset',
+          //   name: 'App设置',
+          //   component: './System/SysAppList',
+          // },
+          // {
+          //   path: '/system/checkIn',
+          //   name: '打卡设置',
+          //   component: './System/SysCheckIn',
+          // },
+          // {
+          //   path: '/system/peasShare',
+          //   name: '卡豆分享',
+          //   component: './System/SysPeasShare',
+          // },
           {
             path: '/system/pageset',
             name: '菜单设置',

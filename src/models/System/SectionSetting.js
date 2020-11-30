@@ -1,17 +1,15 @@
-import moment from 'moment';
 import { notification } from 'antd';
 import {
-  fetchTradeAreaList,
-  fetchTradeAreaAdd,
-  fetchTradeAreaEdit,
-} from '@/services/SignAccountServices';
+  fetchAllSectionList,
+  fetchAllSectionAdd,
+  fetchAllSectionEdit,
+} from '@/services/SystemServices';
 
 export default {
-  namespace: 'tradeArea',
+  namespace: 'sectionSetting',
 
   state: {
     list: [],
-    total: 0,
   },
 
   reducers: {
@@ -25,32 +23,31 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchTradeAreaList, payload);
+      const response = yield call(fetchAllSectionList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: content.recordList || [],
         },
       });
     },
-    *fetchTradeAreaAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchTradeAreaAdd, payload);
+    *fetchAllSectionAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchAllSectionAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商圈新增成功',
+        description: '部门新增成功',
       });
       callback();
     },
-    *fetchTradeAreaEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchTradeAreaEdit, payload);
+    *fetchAllSectionEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchAllSectionEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商圈修改成功',
+        description: '部门修改成功',
       });
       callback();
     },

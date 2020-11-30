@@ -1,8 +1,5 @@
 import { notification } from 'antd';
-import {
-  fetchMerBrandList,
-  fetchMerBrandAdd,
-} from '@/services/BusinessServices';
+import { fetchMerBrandList, fetchMerBrandAdd } from '@/services/SystemServices';
 
 export default {
   namespace: 'businessBrand',
