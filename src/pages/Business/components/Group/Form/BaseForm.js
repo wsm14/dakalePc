@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useImperativeHandle, useState,useEffect } from 'react';
 import { connect } from 'umi';
 import { message, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
@@ -7,7 +7,6 @@ import { Map, Marker } from 'react-amap';
 
 const BaseForm = (props) => {
   const { tradeList, form, initialValues, cRef, groupDetails } = props;
-
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
   const [address, setAddress] = useState({
@@ -19,11 +18,17 @@ const BaseForm = (props) => {
   // 设置类目
   const onSearchAddress = () => {
     const addressData = form.getFieldValue('address');
-    if (!addressData) {
-      message.info('请输入地址');
+    const city = address.city;
+    if(addressData &&  address.city.length===0 &&initialValues.lat &&initialValues.lnt){
+      setLocation([initialValues.lat,initialValues.lnt,])
+      console.log(initialValues.lnt,initialValues.lat,)
+      setMap(true)
       return;
     }
-    const city = address.city;
+    else if (!addressData || address.city.length===0) {
+       message.info('请选择省市区并输入地址');
+       return;
+    }
     let cityname = '';
     city.map((item) => {
       cityname += item.label;
@@ -65,8 +70,8 @@ const BaseForm = (props) => {
           provinceName: cityList[0].label,
           cityCode: cityList[1].value,
           cityName: cityList[1].label,
-          districtCode: cityList[2].value,
-          districtName: cityList[2].label,
+          districtCode: cityList[2].value||'',
+          districtName: cityList[2].label||'',
         };
       }
       return {
@@ -86,7 +91,19 @@ const BaseForm = (props) => {
       setLocation([longitude, latitude]);
     },
   };
-
+  // useEffect(() => {
+  //   if(initialValues&&initialValues.provinceCode){
+  //     setAddress({
+  //       ...address,
+  //       latlnt: [lnt, lat],
+  //       city: [
+  //         {value: provinceCode, label: provinceName, pid: "3", level: "1"},
+  //         {value: cityCode, label: cityName, pid: "33", level: "2"},
+  //         {value: districtCode, label: districtName, pid: "3301", level: "3"}
+  //       ]
+  //     })
+  //   }
+  // },[initialValues])
   const amap = (
     <div style={{ height: 240, marginBottom: 24, position: 'relative' }}>
       <Map
@@ -115,7 +132,6 @@ const BaseForm = (props) => {
       </Button>
     </div>
   );
-  console.log(initialValues);
   const formItems = [
     {
       label: '集团名称',
@@ -146,7 +162,7 @@ const BaseForm = (props) => {
     {
       label: '省市区',
       type: 'cascader',
-      name: 'provinceCode',
+      name: 'allCode',
       visible: Object.keys(groupDetails).length !== 0 ? false : true,
       onChange: (val) => {
         setAddress({ ...address, disable: false, city: val });
@@ -165,6 +181,10 @@ const BaseForm = (props) => {
     {
       label: '服务费比例',
       name: 'commissionRatio',
+      type: 'number',
+      rules: [{required: false}],
+      max: 99,
+      min: 1,
       disabled: Object.keys(groupDetails).length === 0 ? false : true,
     },
   ];

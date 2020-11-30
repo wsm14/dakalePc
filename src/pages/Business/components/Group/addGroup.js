@@ -25,6 +25,7 @@ const addGroups = (props) => {
   const [form] = Form.useForm();
   const cRef = useRef();
   const cRef1 = useRef();
+  const cRef2 = useRef()
   const [bottomBtn, setBottom] = useState('add');
   useEffect(() => {
     const { merchantGroupDTO } = groupDetails;
@@ -48,7 +49,6 @@ const addGroups = (props) => {
                   businessLicense: {},
                   bankBindingInfo: {}
                 });
-                saveVisible({visible: false, visible1: true})
                  childRef.current.fetchGetData();
               })
             }
@@ -107,7 +107,7 @@ const addGroups = (props) => {
     },
     {
       title: '品牌信息',
-      form: <ManagementForm form={form} initialValues={merchantGroupDTO}/>,
+      form: <ManagementForm form={form} cRef={cRef2} initialValues={merchantGroupDTO}/>,
     },
     {
       title: '登录信息',
@@ -132,6 +132,7 @@ const addGroups = (props) => {
     // const roleIds = cRef1.current.getRoleIds()
     form.validateFields().then(async (val) => {
       const payload = cRef.current.fetchAllData();
+      const payload1 = cRef2.current.getImage();
       const {lat, lnt} = payload;
       if (!lat && !lnt) {
         return notification.error({
@@ -147,7 +148,7 @@ const addGroups = (props) => {
           payload: {
             ...val,
             ...payload,
-            brandLogo: brandLogo.toString(),
+            ...payload1,
             localImages: localImages.toString(),
             mainImages: mainImages.toString(),
           },
@@ -160,6 +161,7 @@ const addGroups = (props) => {
     form.validateFields().then(async (val) => {
       console.log(val);
       const payload = cRef.current.fetchAllData();
+      const payload1 = cRef2.current.getImage();
       let {brandLogo, localImages, mainImages} = val;
       brandLogo = await aliOssUpload(brandLogo);
       localImages = await aliOssUpload(localImages);
@@ -170,7 +172,7 @@ const addGroups = (props) => {
           ...groupDetails.merchantGroupDTO,
           ...val,
           ...payload,
-          brandLogo: brandLogo.toString(),
+          ...payload1,
           localImages: localImages.toString(),
           mainImages: mainImages.toString(),
         },

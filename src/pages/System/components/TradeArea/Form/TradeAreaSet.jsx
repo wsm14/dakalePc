@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { connect } from 'dva';
 import { Drawer, Form, Button, Space, Select, Spin, Empty, message } from 'antd';
 import debounce from 'lodash/debounce';
@@ -17,6 +17,10 @@ const TradeAreaSet = (props) => {
   const [selectLocal, setSelectLocal] = useState('');
 
   const { provinceName, cityName, districtName } = info;
+
+  useEffect(()=>{
+    info.lat && setLocation([info.lnt,info.lat])
+  },[info])
 
   // 新增 / 修改
   const handleUpdata = () => {
@@ -54,7 +58,14 @@ const TradeAreaSet = (props) => {
         setFetching(false);
       });
   }, 500);
-
+  const handleMarkerEvents = {
+    dragend: (event) => {
+      const { lnglat } = event;
+      const latitude = parseFloat(lnglat.lat); // 维度
+      const longitude = parseFloat(lnglat.lng); // 经度
+      setLocation([longitude, latitude]);
+    },
+  };
   const amap = (
     <div key="map" style={{ height: 350, marginBottom: 24, position: 'relative' }}>
       <div
@@ -98,7 +109,7 @@ const TradeAreaSet = (props) => {
           <Button
             type="primary"
             onClick={() => {
-              if (!selectLocal) {
+              if (!selectLocal && location.length === 0) {
                 form.validateFields(['businessHubAddress']);
                 return;
               }
@@ -108,7 +119,6 @@ const TradeAreaSet = (props) => {
                 lnt: location[0],
               });
               setAmpShow(false);
-              setSelectLocal('');
             }}
           >
             确定
@@ -122,8 +132,9 @@ const TradeAreaSet = (props) => {
         doubleClickZoom={false}
         keyboardEnable={false}
         touchZoom={false}
+
       >
-        <Marker position={location} />
+        <Marker clickable draggable position={location} events={handleMarkerEvents} />
       </Map>
     </div>
   );
@@ -146,7 +157,7 @@ const TradeAreaSet = (props) => {
       addonAfter: (
         <a
           onClick={() => {
-            onSearchAddress();
+            // onSearchAddress();
             setAmpShow(true);
           }}
         >
@@ -154,7 +165,7 @@ const TradeAreaSet = (props) => {
         </a>
       ),
       placeholder: '请选择商圈地址',
-      disabled: true,
+      // disabled: true,
     },
     {
       type: 'noForm',

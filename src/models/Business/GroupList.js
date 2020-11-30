@@ -51,7 +51,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.recordList || [] },
+          list: { list: content.recordList || [],total:content.total},
         },
       });
     },
@@ -139,6 +139,7 @@ export default {
             {
               ...content.merchantGroupDTO,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
+              allCode: [content.merchantGroupDTO.provinceCode,content.merchantGroupDTO.cityCode,content.merchantGroupDTO.districtCode],
             } || {},
           businessLicense: content.businessLicense || {},
           bankBindingInfo:

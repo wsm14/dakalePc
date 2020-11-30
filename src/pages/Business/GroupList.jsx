@@ -20,6 +20,7 @@ const tableList = (props) => {
     tradeList,
     // categoryDTOList
   } = props;
+  console.log(list)
   useEffect(() => {
     fetchMasterTotalList();
     fetchMasterManagementList();

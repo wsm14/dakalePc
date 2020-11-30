@@ -1,6 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useImperativeHandle} from "react";
 import {connect} from 'umi'
 import FormCondition from "@/components/FormCondition";
+import PopImgShow from "@/components/PopImgShow";
+import {Image} from "antd";
 
 
 const ManagementForm = (props) => {
@@ -8,13 +10,54 @@ const ManagementForm = (props) => {
     list,
     form,
     initialValues,
+    cRef
   } = props
+  const [upload,setUpload] = useState('')
+  const [ImageShow,setImageShow] = useState(false)
+  const Images = (
+    <div style={{marginLeft:'18%',display:'flex',alignItems:'center',}}>
+      品牌LOGO: <div style={{marginLeft:'10px'}}><PopImgShow url={upload}></PopImgShow></div>
+    </div>
 
+  )
+  useImperativeHandle(cRef, () => ({
+    getImage: () => {
+      let obj = {}
+      if(upload.length>0){
+        obj = {
+          brandLogo: upload
+        }
+      }
+      return {
+        ...obj
+      }
+    }
+  }))
+
+  useEffect(() => {
+    if(upload !==''){
+      setImageShow(true)
+    }
+    else {
+      setImageShow(false)
+    }
+  },[upload])
+  useEffect(() => {
+    if(initialValues.brandLogo && initialValues.brandLogo.length >0){
+      setUpload(initialValues.brandLogo)
+      setImageShow(true)
+    }
+  },[initialValues])
   const formItems = [
     {
       label: '品牌',
       name: 'brandId',
       type: 'select',
+      rules: [{ required: false }],
+      onChange:(e,value)=> {
+       let url = list.filter(item => {return item.configBrandIdString === e})[0].brandLogo||''
+        setUpload(url)
+      },
       select: list.map((item) => ({name: item.brandName, value: item.configBrandIdString}))
       // loading,
       // labelInValue: true,
@@ -22,11 +65,16 @@ const ManagementForm = (props) => {
       // select: selectValue.map((item) => ({ name: item.value, value: item.child })),
     },
     {
-      label: '品牌LOGO',
-      name: 'brandLogo',
-      type: 'upload',
-      maxFile: 1,
-      extra: '最多上传 1 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
+
+      type: 'noForm',
+      visible: ImageShow,
+      childrenOwn: Images,
+      // label: '品牌LOGO',
+      // name: 'brandLogo',
+      // type: 'upload',
+      // rules: [{ required: false }],
+      // disable: false,
+      // maxFile: 1,
     },
   ];
 

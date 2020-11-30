@@ -136,11 +136,14 @@ const FormComponents = ({
       onChange: (value) => {
         const { fileList } = value;
         if (!value.file.status) {
+          const fileName = value.file.name;
           imageCompress(value.file).then(({ file }) => {
-            fileList[fileList.length - 1].originFileObj = file;
-            // 临时
-            fileList.map((i) => (i.status = 'done'));
-            // end
+            fileList.map((fi) => {
+              if (fi.name == fileName) {
+                fi.originFileObj = file;
+              }
+              return fi;
+            });
             setFileLists({ ...fileLists, [name]: fileList });
           });
           if (onChange) onChange(value);
@@ -217,6 +220,9 @@ const FormComponents = ({
             disabled={item.disabled}
             style={{ width: '100%' }}
             placeholder={placeholder}
+            style={{ width: '100%' }}
+            max={item.max}
+            min={item.min}
           />
         ),
         textArea: (
