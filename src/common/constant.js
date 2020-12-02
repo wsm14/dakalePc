@@ -81,26 +81,6 @@ export const NEWS_STATUS = ['下架', '上架'];
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
-// 员工在职状态
-export const WORKER_BANK_TYPE = [
-  {
-    label: '0',
-    value: '未绑定',
-  },
-  {
-    label: '1',
-    value: '审核中',
-  },
-  {
-    label: '2',
-    value: '绑定失败',
-  },
-  {
-    label: '3',
-    value: '绑定成功',
-  },
-];
-
 export const WORKER_BANK_STATUS = [
   {
     label: '0',

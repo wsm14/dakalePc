@@ -22,7 +22,7 @@ const BusinessDetailShow = (props) => {
   const statusNum = Number(status);
   const businessStatusNum = Number(businessStatus);
   const statusText = !statusNum ? '启用' : '禁用';
-  const businessStatusText = !businessStatusNum ? '恢复营业' : '停业';
+  const businessStatusText = !businessStatusNum ? '恢复营业' : '暂停营业';
 
   const [form] = Form.useForm();
 
@@ -47,7 +47,7 @@ const BusinessDetailShow = (props) => {
   const handleMerStatus = (type) => {
     if (type === 'sale' && businessStatusNum === 0) type = 'hsale';
     const propsItem = {
-      hsale: { title: '恢复营业', payload: { status: 1 } },
+      hsale: { title: '恢复营业', payload: { businessStatus: 1 } },
       sale: { title: '停业', payload: { businessStatus: 0 } },
       acc: { title: statusText, payload: { status: Number(!statusNum) } },
     }[type];
