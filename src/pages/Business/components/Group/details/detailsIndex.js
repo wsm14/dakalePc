@@ -73,6 +73,17 @@ export const shopDetails = [{
     type: 'textArea',
   },]
 
+export const management = [
+  {
+    label: '品牌',
+    name: 'brandName',
+  },
+  {
+    label: '品牌LOGO',
+    name: 'brandLogo',
+    type: 'upload',
+  },
+]
 export const active = [
   {
     label: '营业执照',
@@ -156,18 +167,6 @@ export const legal = [
   {
     label: '法人手机号',
     name: 'legalMp',
-  },
-]
-
-export const management = [
-  {
-    label: '品牌',
-    name: 'brandId',
-  },
-  {
-    label: '品牌LOGO',
-    name: 'brandLogo',
-    type: 'upload',
   },
 ]
 

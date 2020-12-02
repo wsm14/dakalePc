@@ -13,6 +13,9 @@ const ManagementForm = (props) => {
     cRef
   } = props
   const [upload,setUpload] = useState('')
+  const [uploadName,setUploadName] = useState({
+    upload:'',
+  })
   const [ImageShow,setImageShow] = useState(false)
   const Images = (
     <div style={{marginLeft:'18%',display:'flex',alignItems:'center',}}>
@@ -25,7 +28,8 @@ const ManagementForm = (props) => {
       let obj = {}
       if(upload.length>0){
         obj = {
-          brandLogo: upload
+          brandLogo: upload,
+          brandName: uploadName
         }
       }
       return {
@@ -56,7 +60,9 @@ const ManagementForm = (props) => {
       rules: [{ required: false }],
       onChange:(e,value)=> {
        let url = list.filter(item => {return item.configBrandIdString === e})[0].brandLogo||''
+       let brandName = list.filter(item => {return item.configBrandIdString === e})[0].brandName||''
         setUpload(url)
+        setUploadName(brandName)
       },
       select: list.map((item) => ({name: item.brandName, value: item.configBrandIdString}))
       // loading,
