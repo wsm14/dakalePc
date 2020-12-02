@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { WORKER_BANK_TYPE } from '@/common/constant';
+import { WORKER_BANK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
@@ -20,7 +20,6 @@ const tableList = (props) => {
     tradeList,
     // categoryDTOList
   } = props;
-  console.log(list)
   useEffect(() => {
     fetchMasterTotalList();
     fetchMasterManagementList();
@@ -78,7 +77,7 @@ const tableList = (props) => {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select: { list: WORKER_BANK_TYPE.map((item) => ({ name: item.value, value: item.label })) },
+      select: { list: WORKER_BANK_STATUS.map((item) => ({ name: item.value, value: item.label })) },
     },
   ];
   // table 表头
@@ -139,7 +138,7 @@ const tableList = (props) => {
       align: 'center',
       dataIndex: 'bankStatus',
       render: (val) =>
-        WORKER_BANK_TYPE.filter((item) => {
+        WORKER_BANK_STATUS.filter((item) => {
           return item.label === val;
         })[0].value,
     },

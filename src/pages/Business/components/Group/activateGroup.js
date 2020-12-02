@@ -11,13 +11,11 @@ import moment from 'moment';
 const addGroups = (props) => {
   const {
     onClose,
-    fetchUpData,
     visible = false,
     dispatch,
     visible1,
     saveVisible,
     merchantGroupId,
-    groupDetails,
     businessLicense,
     bankBindingInfo,
     childRef,
@@ -114,6 +112,7 @@ const addGroups = (props) => {
       });
     });
   };
+  console.log(businessLicense,bankBindingInfo)
   return (
     <>
       <Drawer
@@ -142,6 +141,7 @@ const addGroups = (props) => {
           </div>
         }
       >
+
         <Title panelList={panelList}></Title>
       </Drawer>
     </>

@@ -223,6 +223,9 @@ const FormComponents = ({
             style={{ width: '100%' }}
             max={item.max}
             min={item.min}
+            addonAfter={item.addonAfter}
+            prefix={item.prefix}
+            suffix={dataNum || item.suffix || ''}
           />
         ),
         textArea: (

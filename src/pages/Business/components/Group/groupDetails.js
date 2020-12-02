@@ -1,5 +1,5 @@
 import React, {useState, useRef} from "react";
-import {Button, Drawer, Space, Form, notification, Card, message} from "antd";
+import {Button, Drawer, Space, Form, notification, Card, message, Alert } from "antd";
 import Title from './title'
 import {connect} from 'umi'
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -48,9 +48,15 @@ const groupsDetails = (props) => {
     ];
   }
   const {
-    businessLicense,
-    bankBindingInfo,
-    merchantGroupDTO
+    businessLicense = {
+
+    },
+    bankBindingInfo = {
+
+    },
+    merchantGroupDTO = {
+
+    },
   } = groupDetails
   const [tabKey, setTabKey] = useState('tab1')
   const btnShow = () => {
@@ -61,6 +67,13 @@ const groupsDetails = (props) => {
         return false
     }
     return  true
+  }
+  const toastShow = () => {
+    if(tabKey==='tab2' && groupDetails.merchantGroupDTO.bankStatus === '2' && groupDetails.merchantGroupDTO.bankRejectReason){
+      return true
+    }
+
+    return  false
   }
   const fetchGrounpGoBtn = () => {
     if (tabKey === 'tab1') {
@@ -101,7 +114,6 @@ const groupsDetails = (props) => {
       title: '店铺信息',
       form: <DescriptionsCondition formItems={shopDetails}
                                    initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
-      extra: '(上传后可同步至旗下子商户)'
     }],
     tab2: [{
       title: '对公账户信息',
@@ -136,7 +148,6 @@ const groupsDetails = (props) => {
         onClose={onClose}
         bodyStyle={{paddingBottom: 80}}
         footer={
-
           btnShow() &&
           <div style={{textAlign: 'right'}}>
             <Space>
@@ -164,6 +175,13 @@ const groupsDetails = (props) => {
           activeTabKey={tabKey}
           onTabChange={(key) => setTabKey(key)}
         >
+          {toastShow() &&
+          <Alert
+            style={{marginBottom:'12px'}}
+            message={`失败原因：${merchantGroupDTO.bankRejectReason||''}`}
+            type="error"
+            showIcon
+          />}
           <Title panelList={panelList}></Title>
         </Card>
       </Drawer>
