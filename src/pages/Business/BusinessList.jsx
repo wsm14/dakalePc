@@ -28,19 +28,32 @@ const BusinessListComponent = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商户名称',
+      label: '店铺名称',
       name: 'merchantName',
     },
     {
-      label: '商户账号',
+      label: '店铺账号',
       name: 'account',
     },
     {
-      label: '商户类型',
+      label: '经营类型',
       name: 'topCategoryId',
       type: 'select',
       loading: loading.models.sysTradeList,
       select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
+    },
+    {
+      label: '账号状态',
+      name: 'bankStatus',
+      type: 'select',
+      select: { list: BUSINESS_ACCOUNT_STATUS },
+    },
+    {
+      label: '城市',
+      type: 'city',
+      name: 'city',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '经营状态',
@@ -55,36 +68,27 @@ const BusinessListComponent = (props) => {
       select: { list: BUSINESS_STATUS },
     },
     {
-      label: '城市',
-      type: 'city',
-      name: 'city',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-    {
       label: '抽佣比例',
       name: 'commissionRatio',
-    },
-    {
-      label: '账号状态',
-      name: 'bankStatus',
-      type: 'select',
-      select: { list: BUSINESS_ACCOUNT_STATUS },
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '商户账号',
+      title: '店铺账号',
       fixed: 'left',
       dataIndex: 'account',
     },
     {
-      title: '商户简称',
+      title: '店铺名称',
       fixed: 'left',
       dataIndex: 'merchantName',
-      render: (val) => val || '暂未授权',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '暂未授权'}
+        </Ellipsis>
+      ),
     },
     {
       title: '所在城市',
@@ -92,12 +96,8 @@ const BusinessListComponent = (props) => {
       dataIndex: 'cityName',
     },
     {
-      label: '所属商圈',
-      name: 'businessHub',
-    },
-    {
       title: '详细地址',
-      align: 'center',
+      align: 'right',
       dataIndex: 'address',
       render: (val) => (
         <Ellipsis length={10} tooltip>
@@ -106,22 +106,26 @@ const BusinessListComponent = (props) => {
       ),
     },
     {
-      title: '经营类目',
-      align: 'center',
-      dataIndex: 'categoryName',
-      render: (val) => val || '-',
+      label: '所属商圈',
+      name: 'businessHub',
     },
     {
-      title: '经营面积',
+      title: '经营类目',
       align: 'center',
-      dataIndex: 'businessArea',
+      dataIndex: 'topCategoryName',
+      render: (val, row) => `${val} / ${row.categoryName}`,
+    },
+    {
+      title: '入驻时间',
+      align: 'center',
+      dataIndex: 'settleTime',
       render: (val) => val || '--',
     },
     {
-      title: '服务费',
+      title: '激活时间',
       align: 'center',
-      dataIndex: 'commissionRatio',
-      render: (val) => `${val}%`,
+      dataIndex: 'activationTime',
+      render: (val) => val || '--',
     },
     {
       title: '账号状态',
@@ -155,12 +159,12 @@ const BusinessListComponent = (props) => {
               click: () => setVisibleQrcode(record),
             },
             {
-              type: 'edit',
-              click: () => fetchGetDetail(val, (info) => setVisibleEdit({ show: true, info })),
-            },
-            {
               type: 'info',
               click: () => fetchGetDetail(val),
+            },
+            {
+              type: 'edit',
+              click: () => fetchGetDetail(val, (info) => setVisibleEdit({ show: true, info })),
             },
             {
               type: 'set',

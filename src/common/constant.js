@@ -54,6 +54,9 @@ export const BUSINESS_STATUS = ['禁用', '启用'];
 // 商户 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['', '审核中', '审核驳回', ''];
 
+// 商户帐号状态
+export const BUSINESS_BANK_TYPE = ['未绑定', '审核中', '绑定失败', '绑定成功'];
+
 // 挑战赛状态
 export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 
@@ -77,27 +80,6 @@ export const NEWS_STATUS = ['下架', '上架'];
 
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
-
-// 员工在职状态
-export const WORKER_BANK_TYPE = [
-  {
-    label: '0',
-    value: '未绑定',
-  },
-  {
-    label: '1',
-    value: '审核中',
-  },
-  {
-    label: '2',
-    value: '绑定失败',
-  },
-  {
-    label: '3',
-    value: '绑定成功',
-  },
-];
-
 
 export const WORKER_BANK_STATUS = [
   {
