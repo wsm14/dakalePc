@@ -5,13 +5,13 @@ import { ACTIVE_COUPON_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessAuditDetailList = (props) => {
-  const { marketCardActivity, loading, visible = null, setVisible } = props;
+  const { businessAudit, loading, visible = null, setVisible } = props;
 
   const { type = 'detail', record = '' } = visible;
 
   const loadings =
-    loading.effects['marketCardActivity/fetchGetActiveDetailPay'] ||
-    loading.effects['marketCardActivity/fetchActiveDestoryDetail'];
+    loading.effects['businessAudit/fetchGetDetailList'] ||
+    loading.effects['businessAudit/fetchActiveDestoryDetail'];
 
   // 搜索参数
   const propItem = {
@@ -79,7 +79,7 @@ const BusinessAuditDetailList = (props) => {
     },
     dispatchType: propItem.dispatchType,
     componentSize: 'middle',
-    ...marketCardActivity.detailPay,
+    ...businessAudit.detailList,
   };
 
   return (
@@ -96,7 +96,7 @@ const BusinessAuditDetailList = (props) => {
   );
 };
 
-export default connect(({ marketCardActivity, loading }) => ({
-  marketCardActivity,
+export default connect(({ businessAudit, loading }) => ({
+  businessAudit,
   loading,
 }))(BusinessAuditDetailList);

@@ -81,9 +81,18 @@ export function fetchMerVerificationCodeSet(data) {
   });
 }
 
+// 审核列表
+
 // get 商户审核 - 商户审核列表
 export function fetchMerchantAuditList(params) {
   return request('/admin/merchantManagement/listMerchantVerify', {
+    params,
+  });
+}
+
+// get 商户审核 - 商户审核详情列表
+export function fetchMerchantAuditDetailList(params) {
+  return request('/admin/userMerchantVerifyRecord/listUserMerchantVerifyRecord', {
     params,
   });
 }
@@ -117,6 +126,8 @@ export function fetchMerSaleAudit(data) {
     data,
   });
 }
+
+// 审核列表 end
 
 // get 注册列表 - 列表
 export function fetchMerRegisterList(params) {

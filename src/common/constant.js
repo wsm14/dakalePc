@@ -52,7 +52,7 @@ export const BUSINESS_ACCOUNT_STATUS = [false, false, '未激活', '已激活'];
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // 商户 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
-export const BUSINESS_STATUS_AUDIT = ['', '审核中', '审核驳回', ''];
+export const BUSINESS_STATUS_AUDIT = [false, '审核中', '审核驳回', '审核通过'];
 
 // 商户 注册列表 状态
 export const BUSINESS_REGISTER_STATUS = ['未入驻', '已入驻', '未激活', '已激活'];

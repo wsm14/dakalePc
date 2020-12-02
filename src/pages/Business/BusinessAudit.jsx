@@ -107,8 +107,8 @@ const BusinessAuditList = (props) => {
             },
             {
               type: 'eye',
-              visible: record.verifyStatus === '2',
-              click: () => handleShowUserDetail(record),
+              visible: record.verifyStatus != '1',
+              click: () => setVisibleDetailList({ record }),
             },
           ]}
         />
@@ -152,9 +152,10 @@ const BusinessAuditList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        params={{ verifyStatus: 1 }}
         rowKey={(record) => `${record.userMerchantVerifyId}`}
         dispatchType="businessAudit/fetchGetList"
-        {...businessAudit}
+        {...businessAudit.list}
       ></DataTableBlock>
       <BusinessEdit
         cRef={childRef}

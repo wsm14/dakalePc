@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchMerchantAuditList,
+  fetchMerchantAuditDetailList,
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
   fetchMerSaleAuditAllow,
@@ -11,8 +12,11 @@ export default {
   namespace: 'businessAudit',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    detailList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -32,8 +36,24 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchGetDetailList({ payload }, { call, put }) {
+      const response = yield call(fetchMerchantAuditDetailList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: {
+            list: content.recordList,
+            total: content.total,
+          },
         },
       });
     },
