@@ -207,7 +207,7 @@ const BusinessListComponent = (props) => {
   return (
     <>
       <DataTableBlock
-        keepName="商户数据"
+        keepName="店铺数据"
         cRef={childRef}
         loading={
           loading.effects['businessList/fetchGetList'] ||

@@ -70,7 +70,7 @@ const BusinessBrandComponent = (props) => {
           新增
         </Button>
       }
-      keepName="品牌数据"
+      keepName="品牌管理"
       cRef={childRef}
       loading={loading.models.businessBrand}
       columns={getColumns}

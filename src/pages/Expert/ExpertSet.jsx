@@ -95,7 +95,7 @@ const ExpertSet = (props) => {
             新增
           </Button>,
         ]}
-        keepName="创作设置"
+        keepName="话题设置"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

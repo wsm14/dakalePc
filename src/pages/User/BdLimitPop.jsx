@@ -53,7 +53,7 @@ const ServiceLimitPop = (props) => {
           新增
         </Button>
       }
-      keepName="人员排除"
+      keepName="BD白名单"
       cRef={childRef}
       loading={loading}
       columns={getColumns}

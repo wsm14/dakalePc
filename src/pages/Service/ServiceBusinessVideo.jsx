@@ -66,7 +66,7 @@ const ServiceBusinessVideo = (props) => {
 
   return (
     <DataTableBlock
-      keepName="商户视屏"
+      keepName="商户视频"
       cRef={childRef}
       loading={loading}
       columns={getColumns}

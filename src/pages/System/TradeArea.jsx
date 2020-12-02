@@ -27,7 +27,7 @@ const TradeArea = (props) => {
       payload: { ...values, provinceCode: selectCode.provinceCode },
       callback: () => {
         setVisible(null);
-        childRef.current.fetchGetData();
+        childRef.current.fetchGetData({ ...selectCode });
       },
     });
   };

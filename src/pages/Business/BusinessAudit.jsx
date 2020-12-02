@@ -149,7 +149,7 @@ const BusinessAuditList = (props) => {
   return (
     <>
       <DataTableBlock
-        keepName="商户审核"
+        keepName="审核列表"
         cRef={childRef}
         loading={loading}
         columns={getColumns}
