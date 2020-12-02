@@ -72,7 +72,7 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
       const { show = true } = item;
       return (
         show && (
-          <Descriptions.Item label={item.label} key={`${item.label}${i}`}>
+          <Descriptions.Item label={item.label} key={`${item.label}${i}`} style={{ maxWidth: 500 }}>
             {initialValues ? (
               item.type === 'upload' ? (
                 <Upload

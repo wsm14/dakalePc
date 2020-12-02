@@ -1,6 +1,6 @@
 
-// const target = 'http://192.168.0.139:6020'
-const target = 'https://devgateway.dakale.net'
+const target = 'http://192.168.0.141:6020'
+// const target = 'https://devgateway.dakale.net'
 
 export default {
   dev: {
@@ -22,7 +22,6 @@ export default {
       },
     },
   },
-
   test: {
     define: {
       APIURL: 'https://devgateway.dakale.net',

@@ -54,6 +54,9 @@ export const BUSINESS_STATUS = ['禁用', '启用'];
 // 商户 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['', '审核中', '审核驳回', ''];
 
+// 商户 注册列表 状态
+export const BUSINESS_REGISTER_STATUS = ['未入驻', '已入驻', '未激活', '已激活'];
+
 // 挑战赛状态
 export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 
@@ -97,7 +100,6 @@ export const WORKER_BANK_TYPE = [
     value: '绑定成功',
   },
 ];
-
 
 export const WORKER_BANK_STATUS = [
   {

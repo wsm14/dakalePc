@@ -5,6 +5,7 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
+import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 
 const BusinessAuditList = (props) => {
@@ -12,12 +13,17 @@ const BusinessAuditList = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleDetailList, setVisibleDetailList] = useState(false);
 
   // 搜索参数
   const searchItems = [
     {
-      label: '商户简称',
+      label: '店铺简称',
       name: 'merchantName',
+    },
+    {
+      label: '店铺账号',
+      name: 'mobile',
     },
     {
       label: '审核状态',
@@ -30,28 +36,22 @@ const BusinessAuditList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商家账号',
+      title: '店铺账号',
       fixed: 'left',
       dataIndex: 'account',
       render: (val) => val || '暂未授权',
     },
     {
-      title: '商户简称',
+      title: '店铺简称',
       fixed: 'left',
       dataIndex: 'merchantName',
     },
     {
       title: '所在城市',
-      align: 'center',
       dataIndex: 'cityName',
     },
     {
-      label: '所属商圈',
-      name: 'businessHub',
-    },
-    {
       title: '详细地址',
-      align: 'center',
       dataIndex: 'address',
       render: (val) => (
         <Ellipsis length={10} tooltip>
@@ -60,22 +60,20 @@ const BusinessAuditList = (props) => {
       ),
     },
     {
+      label: '所属商圈',
+      name: 'businessHub',
+    },
+    {
       title: '经营类目',
       align: 'center',
       dataIndex: 'topCategoryName',
-      render: (val, row) => `${val}${row.categoryName}`,
+      render: (val, row) => `${val} / ${row.categoryName}`,
     },
     {
       title: '经营面积',
       align: 'right',
       dataIndex: 'businessArea',
-      render: (val) => val || '--',
-    },
-    {
-      title: '服务费',
-      align: 'right',
-      dataIndex: 'commissionRatio',
-      render: (val, row) => `${val}%（赠送${row.bondBean}卡豆）`,
+      render: (val) => (val ? `${val}m²` : '--'),
     },
     {
       title: '申请时间',
@@ -164,6 +162,10 @@ const BusinessAuditList = (props) => {
         initialValues={visible.record}
         onClose={() => setVisible(false)}
       ></BusinessEdit>
+      <BusinessAuditDetailList
+        visible={visibleDetailList}
+        setVisible={setVisibleDetailList}
+      ></BusinessAuditDetailList>
     </>
   );
 };
