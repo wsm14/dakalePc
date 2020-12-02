@@ -26,3 +26,7 @@ export const COMMA_TWO_PATTERN = /^([^,]*,?[^,]*){0,2}$/;
 
 // 判断url
 export const URL_PATTERN = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+
+export const NUM_PERCENTAGE = /^([1-9]\d?|100)$/
+// 1-99位数
+export const BANK_CARD = /^([1-9]{1})(\d{14}|\d{18})$/

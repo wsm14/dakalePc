@@ -5,6 +5,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import styles from '../style.less'
 import cityList from '@/common/city'
 import {TIME_YMD} from "@/common/constant"
+import {BANK_CARD, PHONE_PATTERN} from '@/common/regExp'
 
 const activeForm = ({ form, initialValues, dispatch, cRef}) => {
   const fetchGetOcrBusinessLicense = (payload, callback) => {
@@ -91,10 +92,10 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
         })
         if (imgUrl) {
           fetchGetOcrBankLicense({imageUrl: imgUrl[0]}, res => {
-            console.log(res)
-            const {enterpriseBankCheckId, enterpriseBankId, enterpriseBankName, enterpriseBankRegisterId, enterpriseNameCH, enterpriseOwner} = res
+            const {enterpriseBankCheckId, enterpriseBankId = '', enterpriseBankName, enterpriseBankRegisterId, enterpriseNameCH, enterpriseOwner} = res
             form.setFieldsValue({
-              bankBranchName: enterpriseBankName
+              bankBranchName: enterpriseBankName,
+              cardNo: enterpriseBankId
             })
           })
         }
@@ -108,6 +109,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
     {
       label: '银行卡号',
       name: 'cardNo',
+      addRules: [{ pattern: BANK_CARD, message: '请输入正确的银行卡号' }],
 
     },
     {

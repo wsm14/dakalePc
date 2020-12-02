@@ -124,7 +124,7 @@ const addGroups = (props) => {
     {
       title: '店铺信息',
       form: <ShopDetailsForm form={form} initialValues={merchantGroupDTO}/>,
-      extra: '(上传后可同步至旗下子商户)',
+      // extra: '(上传后可同步至旗下子商户)',
     },
   ];
 
@@ -159,7 +159,6 @@ const addGroups = (props) => {
   };
   const fetchUpdateGroup = (callback) => {
     form.validateFields().then(async (val) => {
-      console.log(val);
       const payload = cRef.current.fetchAllData();
       const payload1 = cRef2.current.getImage();
       let {brandLogo, localImages, mainImages} = val;

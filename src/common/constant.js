@@ -98,6 +98,26 @@ export const WORKER_BANK_TYPE = [
   },
 ];
 
+
+export const WORKER_BANK_STATUS = [
+  {
+    label: '0',
+    value: '未激活',
+  },
+  {
+    label: '1',
+    value: '审核中',
+  },
+  {
+    label: '2',
+    value: '激活失败',
+  },
+  {
+    label: '3',
+    value: '激活成功',
+  },
+];
+
 // Banner展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 

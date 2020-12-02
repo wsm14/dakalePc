@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { message, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import { AMAP_KEY } from '@/common/constant';
+import { NUM_PERCENTAGE } from '@/common/regExp'
 import { Map, Marker } from 'react-amap';
 
 const BaseForm = (props) => {
@@ -21,7 +22,6 @@ const BaseForm = (props) => {
     const city = address.city;
     if(addressData &&  address.city.length===0 &&initialValues.lat &&initialValues.lnt){
       setLocation([initialValues.lat,initialValues.lnt,])
-      console.log(initialValues.lnt,initialValues.lat,)
       setMap(true)
       return;
     }
@@ -181,10 +181,10 @@ const BaseForm = (props) => {
     {
       label: '服务费比例',
       name: 'commissionRatio',
-      type: 'number',
+      // type: 'number',
       rules: [{required: false}],
-      max: 99,
-      min: 1,
+      addRules: [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }],
+      addonAfter: '%',
       disabled: Object.keys(groupDetails).length === 0 ? false : true,
     },
   ];
