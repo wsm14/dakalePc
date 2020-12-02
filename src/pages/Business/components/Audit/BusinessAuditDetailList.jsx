@@ -1,82 +1,85 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
-import { ACTIVE_COUPON_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessAuditDetailList = (props) => {
-  const { businessAudit, loading, visible = null, setVisible } = props;
-
-  const { type = 'detail', record = '' } = visible;
-
-  const loadings =
-    loading.effects['businessAudit/fetchGetDetailList'] ||
-    loading.effects['businessAudit/fetchActiveDestoryDetail'];
+  const { businessAudit, loading, visible = false, setVisible } = props;
 
   // 搜索参数
   const propItem = {
-    detail: {
-      title: `订单明细 - ${record.merchantName}`,
-      dispatchType: 'marketCardActivity/fetchGetActiveDetailPay',
-      rowKey: 'orderSn',
-      searchItems: [
-        {
-          label: '购买日期',
-          type: 'rangePicker',
-          name: 'beginDate',
-          end: 'endDate',
-        },
-      ],
-      getColumns: [
-        {
-          title: '购买日期',
-          align: 'center',
-          dataIndex: 'payTime',
-        },
-        {
-          title: '订单号',
-          align: 'center',
-          dataIndex: 'orderSn',
-        },
-        {
-          title: '用户手机',
-          align: 'center',
-          dataIndex: 'mobile',
-        },
-        {
-          title: '用户昵称',
-          align: 'center',
-          dataIndex: 'userName',
-        },
-        {
-          title: '卡豆支付',
-          align: 'center',
-          dataIndex: 'beanFee',
-        },
-        {
-          title: '优惠券抵扣',
-          align: 'center',
-          dataIndex: 'couponDeduct',
-        },
-        {
-          title: '现金支付',
-          align: 'center',
-          dataIndex: 'payFee',
-          render: (val) => val || '0',
-        },
-      ],
-    },
-  }[type];
+    title: `审核记录`,
+    dispatchType: 'businessAudit/fetchGetDetailList',
+    rowKey: 'userMerchantVerifyRecordId',
+    searchItems: [
+      {
+        label: '店铺名称',
+        name: 'merchantName',
+      },
+      {
+        label: '审核人',
+        name: 'verifierName',
+      },
+    ],
+    getColumns: [
+      {
+        title: '店铺账号',
+        fixed: 'left',
+        dataIndex: 'account',
+        render: (val) => val || '暂未授权',
+      },
+      {
+        title: '店铺简称',
+        fixed: 'left',
+        dataIndex: 'merchantName',
+      },
+      {
+        title: '所在城市',
+        dataIndex: 'cityName',
+      },
+      {
+        title: '详细地址',
+        dataIndex: 'address',
+        render: (val) => (
+          <Ellipsis length={10} tooltip>
+            {val || '--'}
+          </Ellipsis>
+        ),
+      },
+      {
+        label: '所属商圈',
+        name: 'businessHub',
+      },
+      {
+        title: '经营类目',
+        align: 'center',
+        dataIndex: 'topCategoryName',
+        render: (val, row) => `${val} / ${row.categoryName}`,
+      },
+      {
+        title: '申请时间',
+        align: 'center',
+        dataIndex: 'applyTime',
+      },
+      {
+        title: '审核人',
+        align: 'center',
+        dataIndex: 'verifierName',
+      },
+      {
+        title: '审核时间',
+        align: 'center',
+        dataIndex: 'verifyTime',
+      },
+    ],
+  };
 
   const tableProps = {
     CardNone: false,
-    loading: loadings,
+    loading,
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,
-    params: {
-      merchantId: record.merchantIdString,
-      marketCouponId: record.marketCouponIdString,
-    },
     dispatchType: propItem.dispatchType,
     componentSize: 'middle',
     ...businessAudit.detailList,
@@ -89,7 +92,7 @@ const BusinessAuditDetailList = (props) => {
       destroyOnClose
       footer={null}
       visible={visible}
-      onCancel={() => setVisible('')}
+      onCancel={() => setVisible(false)}
     >
       <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
@@ -98,5 +101,5 @@ const BusinessAuditDetailList = (props) => {
 
 export default connect(({ businessAudit, loading }) => ({
   businessAudit,
-  loading,
+  loading: loading.effects['businessAudit/fetchGetDetailList'],
 }))(BusinessAuditDetailList);

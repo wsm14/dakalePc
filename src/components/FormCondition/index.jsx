@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   Form,
   Input,
@@ -16,9 +16,54 @@ import {
   Spin,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { DndProvider, useDrag, useDrop, createDndContext } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
 import imageCompress from '@/utils/imageCompress';
 import CITYJSON from '@/common/city';
 import moment from 'moment';
+
+const RNDContext = createDndContext(HTML5Backend);
+
+const type = 'DragableUploadList';
+
+const DragableUploadListItem = ({ originNode, moveRow, file, fileList }) => {
+  const ref = React.useRef();
+  const index = fileList.indexOf(file);
+  const [{ isOver, dropClassName }, drop] = useDrop({
+    accept: type,
+    collect: (monitor) => {
+      const { index: dragIndex } = monitor.getItem() || {};
+      if (dragIndex === index) {
+        return {};
+      }
+      return {
+        isOver: monitor.isOver(),
+        dropClassName: dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
+      };
+    },
+    drop: (item) => {
+      moveRow(item.index, index);
+    },
+  });
+  const [, drag] = useDrag({
+    item: { type, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  drop(drag(ref));
+
+  return (
+    <div
+      ref={ref}
+      className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ''}`}
+      style={{ cursor: 'move' }}
+    >
+      {originNode}
+    </div>
+  );
+};
 
 /**
  *
@@ -164,6 +209,22 @@ const FormComponents = ({
     setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
     setPreviewVisible(true);
   };
+
+  const moveRow = (dragIndex, hoverIndex, name) => {
+    const dragRow = fileLists[name][dragIndex];
+    console.log(dragIndex, hoverIndex, dragRow);
+    setFileLists({
+      ...fileLists,
+      [name]: update(fileLists[name], {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragRow],
+        ],
+      }),
+    });
+  };
+
+  const manager = useRef(RNDContext);
 
   // 遍历表单
   const getFields = () => {
@@ -340,42 +401,54 @@ const FormComponents = ({
         ),
         switch: <Switch disabled={item.disabled} />,
         upload: (
-          <Upload
-            multiple={item.multiple || false}
-            listType="picture-card"
-            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
-            beforeUpload={() => false}
-            onPreview={handlePreview}
-            {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
-            // 临时
-            showUploadList={item.showUploadList}
-            onDownload={(file) => {
-              const newArr = [
-                fileLists[name].filter((i) => i.url === file.url)[0],
-                ...fileLists[name].filter((i) => i.url !== file.url),
-              ];
-              setFileLists({
-                ...fileLists,
-                [name]: newArr,
-              });
-              const urlValue = (form || formN).getFieldValue(name);
-              if (typeof urlValue === 'string') {
-                (form || formN).setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
-              } else {
-                (form || formN).setFieldsValue({
-                  [name]: {
-                    file: urlValue.file,
-                    fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
-                  },
+          <DndProvider manager={manager.current.dragDropManager}>
+            <Upload
+              multiple={item.multiple || false}
+              listType="picture-card"
+              fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+              beforeUpload={() => false}
+              onPreview={handlePreview}
+              {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
+              // 临时
+              showUploadList={item.showUploadList}
+              itemRender={(originNode, file, currFileList) => {
+                return (
+                  <DragableUploadListItem
+                    originNode={originNode}
+                    file={file}
+                    fileList={currFileList}
+                    moveRow={(dragIndex, hoverIndex) => moveRow(dragIndex, hoverIndex, name)}
+                  />
+                );
+              }}
+              onDownload={(file) => {
+                const newArr = [
+                  fileLists[name].filter((i) => i.url === file.url)[0],
+                  ...fileLists[name].filter((i) => i.url !== file.url),
+                ];
+                setFileLists({
+                  ...fileLists,
+                  [name]: newArr,
                 });
-              }
-            }}
-            // end
-          >
-            {fileLists[Array.isArray(name) ? name[1] : name] &&
-              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
-              uploadButton}
-          </Upload>
+                const urlValue = (form || formN).getFieldValue(name);
+                if (typeof urlValue === 'string') {
+                  (form || formN).setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
+                } else {
+                  (form || formN).setFieldsValue({
+                    [name]: {
+                      file: urlValue.file,
+                      fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
+                    },
+                  });
+                }
+              }}
+              // end
+            >
+              {fileLists[Array.isArray(name) ? name[1] : name] &&
+                fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
+                uploadButton}
+            </Upload>
+          </DndProvider>
         ),
         childrenOwn: item.childrenOwn,
         noForm: '',

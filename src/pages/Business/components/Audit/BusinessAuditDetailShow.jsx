@@ -19,6 +19,10 @@ const BusinessAuditDetailShow = (props) => {
         name: 'address',
       },
       {
+        label: '所属商圈',
+        name: 'businessHub',
+      },
+      {
         label: '经营类目',
         name: 'topCategoryName',
         render: (val, row) => `${val} - ${row.categoryName}`,

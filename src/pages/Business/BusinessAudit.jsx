@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
+import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -108,7 +109,7 @@ const BusinessAuditList = (props) => {
             {
               type: 'eye',
               visible: record.verifyStatus != '1',
-              click: () => setVisibleDetailList({ record }),
+              click: () => handleShowUserDetail(record),
             },
           ]}
         />
@@ -148,6 +149,11 @@ const BusinessAuditList = (props) => {
     <>
       <DataTableBlock
         keepName="审核列表"
+        btnExtra={
+          <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
+            审核记录
+          </Button>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}

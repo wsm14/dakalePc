@@ -174,7 +174,7 @@ const BusinessAdd = (props) => {
 
   const modalProps = {
     title: `${initialValues ? '审核' : '新增'}商户`,
-    width: 700,
+    width: 800,
     visible,
     maskClosable: false,
     destroyOnClose: true,
