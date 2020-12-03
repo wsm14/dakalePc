@@ -41,7 +41,8 @@ const BusinessListComponent = (props) => {
       name: 'topCategoryId',
       options: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      valuesKey: ['topCategoryId', 'topCategory'],
+      valuesKey: ['topCategoryId', 'categoryId'],
+      placeholder: '选择经营类目',
     },
     {
       label: '账号状态',

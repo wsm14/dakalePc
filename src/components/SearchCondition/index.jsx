@@ -160,7 +160,7 @@ const SearchCondition = (props) => {
             expandTrigger="hover"
             showSearch={{ filter }}
             fieldNames={item.fieldNames}
-            placeholder="选择城市"
+            placeholder={item.placeholder || '选择城市'}
           />
         );
       }
