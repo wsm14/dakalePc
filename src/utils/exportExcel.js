@@ -19,8 +19,10 @@ const exportExcel = ({ header = [], data = [] }) => {
       const rowData = item[keys.key];
       // 头
       const rowHeader = keys.header;
+      // 值重置函数
+      const rowRender = keys.render;
       // 数据key映射
-      newData[rowHeader] = keys.render ? keys.render(rowData, item) : rowData;
+      newData[rowHeader] = rowRender ? rowRender(rowData, item) : rowData;
     });
     return newData;
   });
