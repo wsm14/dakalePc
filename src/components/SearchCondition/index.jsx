@@ -221,9 +221,7 @@ const SearchCondition = (props) => {
   };
 
   const getData = () => {
-    if (Object.values(form.getFieldsValue()).filter((i) => i).length) {
-      return handleSearchsOver(form.getFieldsValue(), 'data');
-    } else null;
+    return handleSearchsOver(form.getFieldsValue(), 'data');
   };
 
   // 重置

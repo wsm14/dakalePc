@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import exportExcel from '@/utils/exportExcel';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -190,6 +191,34 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  // 获取商家导出excel 数据
+  const fetchGetExcel = (payload) => {
+    const header = [
+      { key: 'account', header: '店铺账号' },
+      { key: 'merchantName', header: '店铺简称' },
+      { key: 'cityName', header: '所在城市' },
+      { key: 'address', header: '详细地址' },
+      { key: 'topCategoryName', header: '一级经营类目' },
+      { key: 'categoryName', header: '二级经营类目' },
+      { key: 'businessArea', header: '经营面积' },
+      { key: 'commissionRatio', header: '服务费', render: (val) => (val ? `${val}%` : '') },
+      { key: 'settleTime', header: '入驻时间' },
+      { key: 'activationTime', header: '激活时间' },
+      {
+        key: 'bankStatus',
+        header: '账号状态',
+        render: (val) => (val === '3' ? '已激活' : '未激活'),
+      },
+      { key: 'businessStatus', header: '经营状态', render: (val) => BUSINESS_DO_STATUS[val] },
+      { key: 'status', header: '店铺状态', render: (val) => BUSINESS_STATUS[val] },
+    ];
+    dispatch({
+      type: 'businessList/fetchMerchantGetExcel',
+      payload,
+      callback: (data) => exportExcel({ header, data }),
+    });
+  };
+
   // 设置商家端登录验证码
   const handleVCodeSet = () => {
     dispatch({
@@ -210,14 +239,15 @@ const BusinessListComponent = (props) => {
       <DataTableBlock
         keepName="店铺数据"
         btnExtra={({ get }) => (
-          <Button className="dkl_green_btn" key="1" onClick={() => console.log(get())}>
+          <Button className="dkl_green_btn" key="1" onClick={() => fetchGetExcel(get())}>
             导出
           </Button>
         )}
         cRef={childRef}
         loading={
           loading.effects['businessList/fetchGetList'] ||
-          loading.effects['businessList/fetchMerchantDetail']
+          loading.effects['businessList/fetchMerchantDetail'] ||
+          loading.effects['businessList/fetchMerchantGetExcel']
         }
         columns={getColumns}
         searchItems={searchItems}
