@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Modal } from 'antd';
 import FormCondition from '@/components/FormCondition';
 // import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessTimeSet from './BusinessTimeSet';

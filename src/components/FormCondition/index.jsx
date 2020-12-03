@@ -181,6 +181,7 @@ const FormComponents = ({
       accept: 'image/*',
       onChange: (value) => {
         const { fileList } = value;
+        console.log(value);
         if (!value.file.status) {
           const fileName = value.file.name;
           imageCompress(value.file).then(({ file }) => {
@@ -192,9 +193,11 @@ const FormComponents = ({
             });
             setFileLists({ ...fileLists, [name]: fileList });
           });
+          (form || formN).setFieldsValue({ [name]: value });
           if (onChange) onChange(value);
         } else {
           if (!fileList.length) (form || formN).setFieldsValue({ [name]: undefined });
+          else (form || formN).setFieldsValue({ [name]: value });
           setFileLists({ ...fileLists, [name]: fileList });
         }
       },
@@ -214,15 +217,27 @@ const FormComponents = ({
   const moveRow = (dragIndex, hoverIndex, name) => {
     const dragRow = fileLists[name][dragIndex];
     console.log(dragIndex, hoverIndex, dragRow);
+    const movefile = update(fileLists[name], {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, dragRow],
+      ],
+    });
     setFileLists({
       ...fileLists,
-      [name]: update(fileLists[name], {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, dragRow],
-        ],
-      }),
+      [name]: movefile,
     });
+    const urlValue = (form || formN).getFieldValue(name);
+    if (typeof urlValue === 'string') {
+      (form || formN).setFieldsValue({ [name]: movefile.map((i) => i.url).toString() });
+    } else {
+      (form || formN).setFieldsValue({
+        [name]: {
+          file: urlValue.file,
+          fileList: movefile,
+        },
+      });
+    }
   };
 
   const manager = useRef(RNDContext);
@@ -420,28 +435,6 @@ const FormComponents = ({
                   />
                 );
               }}
-              onDownload={(file) => {
-                const newArr = [
-                  fileLists[name].filter((i) => i.url === file.url)[0],
-                  ...fileLists[name].filter((i) => i.url !== file.url),
-                ];
-                setFileLists({
-                  ...fileLists,
-                  [name]: newArr,
-                });
-                const urlValue = (form || formN).getFieldValue(name);
-                if (typeof urlValue === 'string') {
-                  (form || formN).setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
-                } else {
-                  (form || formN).setFieldsValue({
-                    [name]: {
-                      file: urlValue.file,
-                      fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
-                    },
-                  });
-                }
-              }}
-              // end
             >
               {fileLists[Array.isArray(name) ? name[1] : name] &&
                 fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
