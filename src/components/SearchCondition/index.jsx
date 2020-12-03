@@ -185,7 +185,7 @@ const SearchCondition = (props) => {
   };
 
   // 搜索
-  const handleSearchsOver = (values) => {
+  const handleSearchsOver = (values, type) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
@@ -207,8 +207,9 @@ const SearchCondition = (props) => {
         delete values[item.name];
       }
     });
-    // 搜索回调
+    if (type == 'data') return { ...values, ...formObj };
     if (NoSearch) {
+      // 搜索回调
       // NoSearch为true时 无搜索值的不请求
       if (Object.keys(values).length) {
         handleSearch({ ...values, ...formObj });
@@ -217,6 +218,12 @@ const SearchCondition = (props) => {
       // 默认请求
       handleSearch({ ...values, ...formObj });
     }
+  };
+
+  const getData = () => {
+    if (Object.values(form.getFieldsValue()).filter((i) => i).length) {
+      return handleSearchsOver(form.getFieldsValue(), 'data');
+    } else null;
   };
 
   // 重置
@@ -239,7 +246,7 @@ const SearchCondition = (props) => {
             查询
           </Button>
           <Button onClick={handleReset}>重置</Button>
-          {btnExtra}
+          {typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
         </Space>
         {len > (componentSize !== 'default' ? 6 : count) ? (
           <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>

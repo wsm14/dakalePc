@@ -209,6 +209,11 @@ const BusinessListComponent = (props) => {
     <>
       <DataTableBlock
         keepName="店铺数据"
+        btnExtra={({ get }) => (
+          <Button className="dkl_green_btn" key="1" onClick={() => console.log(get())}>
+            导出
+          </Button>
+        )}
         cRef={childRef}
         loading={
           loading.effects['businessList/fetchGetList'] ||

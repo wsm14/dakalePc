@@ -1,8 +1,17 @@
 import request from '@/utils/request';
 
+// 店铺数据
+
 // get 商户数据 - 商户列表
 export function fetchMerchantList(params) {
   return request('/admin/merchantManagement/listMerchant', {
+    params,
+  });
+}
+
+// get 商户数据 - 商户列表
+export function fetchMerchantExportExcel(params) {
+  return request('/admin/merchantManagement/listMerchantImport', {
     params,
   });
 }
@@ -80,6 +89,8 @@ export function fetchMerVerificationCodeSet(data) {
     data,
   });
 }
+
+// 店铺数据 end
 
 // 审核列表
 

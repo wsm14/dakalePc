@@ -9,6 +9,7 @@ import {
   fetchMerchantAdd,
   fetchMerchantEdit,
   fetchMerchantTotal,
+  fetchMerchantExportExcel,
   fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
@@ -43,6 +44,12 @@ export default {
           list: content.recordList,
         },
       });
+      if (callback) callback(content.recordList);
+    },
+    *fetchMerchantGetExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchMerchantExportExcel, payload);
+      if (!response) return;
+      const { content } = response;
       if (callback) callback(content.recordList);
     },
     *fetchMerchantDetail({ payload, callback }, { call, put }) {
