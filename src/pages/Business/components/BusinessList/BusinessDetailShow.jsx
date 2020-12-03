@@ -134,6 +134,26 @@ const BusinessDetailShow = (props) => {
         </div>
       ),
     },
+    {
+      label: '人均消费',
+      name: 'perCapitaConsumption',
+    },
+    {
+      label: '营业时间',
+      name: 'businessTime',
+    },
+    {
+      label: '店铺服务',
+      name: ['property', 'service'],
+    },
+    {
+      label: '特色服务',
+      name: ['property', 'speacial'],
+    },
+    {
+      label: '店铺标签',
+      name: 'tags',
+    },
   ];
 
   const accountItems = [

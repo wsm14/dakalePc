@@ -49,10 +49,11 @@ export default {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { provinceCode, cityCode, districtCode } = content.merchantDetail;
-
+      const { provinceCode, cityCode, districtCode, property } = content.merchantDetail;
+      console.log(content.merchantDetail);
       callback({
         ...content.merchantDetail,
+        property: property ? JSON.parse(property) : '',
         citycodeArr: [provinceCode, cityCode, districtCode],
       });
     },

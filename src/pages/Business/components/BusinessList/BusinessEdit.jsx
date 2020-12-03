@@ -135,8 +135,8 @@ const BusinessAdd = (props) => {
             '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
         });
       }
-      setSkeletonType(false);
     }
+    setSkeletonType(false);
   };
 
   // 审核驳回
@@ -187,7 +187,7 @@ const BusinessAdd = (props) => {
   // 地图浮标移动定位
   const handleMarkerEvents = {
     dragend: (event) => {
-      console.log(event)
+      console.log(event);
       const { lnglat } = event;
       const latitude = parseFloat(lnglat.lat); // 维度
       const longitude = parseFloat(lnglat.lng); // 经度
@@ -218,10 +218,15 @@ const BusinessAdd = (props) => {
     destroyOnClose: true,
   };
 
+  const closeDrawer = () => {
+    setSkeletonType(true);
+    onClose();
+  };
+
   return (
     <Drawer
       {...modalProps}
-      onClose={onClose}
+      onClose={closeDrawer}
       afterVisibleChange={(showEdit) => {
         if (showEdit) {
           setSkeletonType(true);
@@ -235,7 +240,7 @@ const BusinessAdd = (props) => {
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={onClose}>取消</Button>
+            <Button onClick={closeDrawer}>取消</Button>
             {!initialValues && (
               <Button onClick={fetchFormData} type="primary" loading={loading}>
                 提交审核

@@ -36,7 +36,7 @@ const BusinessListComponent = (props) => {
       name: 'account',
     },
     {
-      label: '经营类型',
+      label: '经营类目',
       name: 'topCategoryId',
       type: 'select',
       loading: loading.models.sysTradeList,
@@ -49,7 +49,7 @@ const BusinessListComponent = (props) => {
       select: { list: BUSINESS_ACCOUNT_STATUS },
     },
     {
-      label: '城市',
+      label: '地址',
       type: 'city',
       name: 'city',
       changeOnSelect: true,
@@ -66,10 +66,6 @@ const BusinessListComponent = (props) => {
       name: 'status',
       type: 'select',
       select: { list: BUSINESS_STATUS },
-    },
-    {
-      label: '抽佣比例',
-      name: 'commissionRatio',
     },
   ];
 
@@ -175,7 +171,6 @@ const BusinessListComponent = (props) => {
       ),
     },
   ];
-  // fetchMerchantEdit
 
   // 经营类目
   const fetchTradeList = () => {
@@ -228,9 +223,9 @@ const BusinessListComponent = (props) => {
             key="businessTotalInfo"
             btnExtra={
               <>
-                {/* <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+                <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
                   新增商户
-                </Button> */}
+                </Button>
                 <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
                   设置商家验证码
                 </Button>

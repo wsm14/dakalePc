@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Descriptions, Upload, Modal, Image } from 'antd';
-import styles from './index.less'
+import styles from './index.less';
 
 /**
  *
@@ -99,14 +99,20 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
       const { show = true } = item;
       return (
         show && (
-          <Descriptions.Item label={item.label} key={`${item.label}${i}`} className={styles.descriptions_item}>
+          <Descriptions.Item
+            label={item.label}
+            key={`${item.label}${i}`}
+            className={styles.descriptions_item}
+          >
             {initialValues
-              ? item.type === 'upload'
-                ? imgShow(item.initialValue ? item.initialValue : initialValues[item.name])
-                : item.render
+              ? item.render
                 ? item.render(initialValues[item.name], initialValues)
+                : item.type === 'upload'
+                ? imgShow(item.initialValue ? item.initialValue : initialValues[item.name])
                 : item.initialValue
                 ? item.initialValue
+                : Array.isArray(item.name)
+                ? initialValues[item.name[0]][item.name[1]]
                 : initialValues[item.name]
               : ''}
             {item.children && <div>{item.children}</div>}
