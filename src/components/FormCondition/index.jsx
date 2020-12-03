@@ -22,6 +22,7 @@ import update from 'immutability-helper';
 import imageCompress from '@/utils/imageCompress';
 import CITYJSON from '@/common/city';
 import moment from 'moment';
+import './index.less';
 
 const RNDContext = createDndContext(HTML5Backend);
 
@@ -409,8 +410,6 @@ const FormComponents = ({
               beforeUpload={() => false}
               onPreview={handlePreview}
               {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
-              // 临时
-              showUploadList={item.showUploadList}
               itemRender={(originNode, file, currFileList) => {
                 return (
                   <DragableUploadListItem

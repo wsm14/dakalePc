@@ -15,13 +15,13 @@ const BusinessAddBeas = (props) => {
     brandList,
     platformList,
     tradeList,
+    setCategId,
   } = props;
+  
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
   const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
-  const [priceList, setPriceList] = useState([]);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(true);
-  const [categId, setCategId] = useState(initialValues.businessArea);
   const [hubList, setHubList] = useState([]);
 
   // 获取品牌
@@ -31,41 +31,6 @@ const BusinessAddBeas = (props) => {
       payload: { page: 1, limit: 999 },
     });
   };
-
-  // // 获取平台服务费
-  // const fetchGetPlatform = (categoryId) => {
-  //   dispatch({
-  //     type: 'sysTradeList/fetchTradePlatformList',
-  //     payload: {
-  //       categoryId,
-  //     },
-  //     callback: (val) => {
-  //       // 过滤未设置服务费
-  //       if (!val[0]) {
-  //         setPriceList([]);
-  //       } else if (val[0].type === 'no') {
-  //         setPriceList(
-  //           val[0].merchantSettleObjects.map((item) => ({
-  //             value: item.freeBean,
-  //             name: `${item.serviceFee}%`,
-  //             key: item.serviceFee,
-  //           })),
-  //         );
-  //       } else if (categId && val[0].type !== 'no') {
-  //         const plist = val.filter((i) => i.typeContent === categId)[0];
-  //         setPriceList(
-  //           plist && plist.merchantSettleObjects
-  //             ? plist.merchantSettleObjects.map((item) => ({
-  //                 value: item.freeBean,
-  //                 name: `${item.serviceFee}%`,
-  //                 key: item.serviceFee,
-  //               }))
-  //             : [],
-  //         );
-  //       }
-  //     },
-  //   });
-  // };
 
   // 获取详情
   const fetchGetDetail = (payload) => {
@@ -80,7 +45,6 @@ const BusinessAddBeas = (props) => {
     fetchGetBrandList();
     if (initialValues) {
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
-      // fetchGetPlatform(initialValues.topCategoryName[0]);
     }
   }, []);
 
@@ -93,7 +57,12 @@ const BusinessAddBeas = (props) => {
       required: false,
       childrenOwn: (
         <>
-          <Form.Item name="brandName" noStyle rules={[{ required: false, message: '请选择品牌' }]}>
+          <Form.Item
+            key="bandName"
+            name="brandName"
+            noStyle
+            rules={[{ required: false, message: '请选择品牌' }]}
+          >
             <Select
               showSearch
               placeholder="请搜索或选择所属的品牌"
@@ -109,7 +78,7 @@ const BusinessAddBeas = (props) => {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="otherBrand" noStyle valuePropName="checked">
+          <Form.Item key="otherBrand" name="otherBrand" noStyle valuePropName="checked">
             <Switch
               checkedChildren="其他品牌"
               unCheckedChildren="其他品牌"
@@ -208,9 +177,8 @@ const BusinessAddBeas = (props) => {
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val) => {
-        // setPriceList([]);
         setAreaMust(val[0].categoryName === '美食');
-        // fetchGetPlatform(val[0].categoryIdString);
+        setCategId(val[0].categoryIdString);
         form.setFieldsValue({
           categoryName: val,
           businessArea: undefined,
@@ -225,42 +193,17 @@ const BusinessAddBeas = (props) => {
     {
       label: '店铺面积',
       type: 'select',
+      name: 'businessArea',
       visible: areaMust,
       loading: loading.models.sysTradeList,
-      name: 'businessArea',
       select: platformList.map((item) => ({
         value: item.typeContent,
         name: item.typeContent,
       })),
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
-        setCategId(val);
-        const plist = platformList.filter((i) => i.typeContent === val)[0];
-        setPriceList(
-          plist.merchantSettleObjects
-            ? plist.merchantSettleObjects.map((item) => ({
-                value: item.freeBean,
-                name: `${item.serviceFee}%`,
-                key: item.serviceFee,
-              }))
-            : [],
-        );
       },
     },
-    // {
-    //   label: '服务费',
-    //   type: 'select',
-    //   name: 'commissionRatio',
-    //   disabled: loading.models.sysTradeList,
-    //   loading: loading.models.sysTradeList,
-    //   select: priceList,
-    //   onChange: (val, row) => form.setFieldsValue({ bondBean: row }),
-    // },
-    // {
-    //   label: '赠送卡豆数',
-    //   name: 'bondBean',
-    //   hidden: true,
-    // },
   ];
 
   return <FormCondition formItems={formItems} initialValues={initialValues} form={form} />;

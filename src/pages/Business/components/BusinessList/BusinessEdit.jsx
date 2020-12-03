@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Space, Form, message, Modal } from 'antd';
+import { Drawer, Button, Space, Form, message, Modal, Skeleton } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -15,17 +15,22 @@ const BusinessAdd = (props) => {
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
-  const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
-  const [selectCity, setSelectCity] = useState([]); // 选择城市
-  const [visibleAllow, setVisibleAllow] = useState(false);
-  const [marker, setMarker] = useState(true); // 浮标拖拽状态
+  // [经度, 纬度]
+  const [location, setLocation] = useState([lnt, lat]);
+  // 选择城市
+  const [selectCity, setSelectCity] = useState([]);
+  // 浮标拖拽状态
+  const [marker, setMarker] = useState(true);
+  // 骨架框显示
+  const [skeletonType, setSkeletonType] = useState(true);
+  // 经营类目
+  const [categId, setCategId] = useState('');
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
     form.validateFields().then((values) => {
       const {
         categoryName: cobj,
-        bondBean: bobj,
         coverImg,
         interiorImg,
         otherBrand,
@@ -56,8 +61,6 @@ const BusinessAdd = (props) => {
         categoryId: cobj[1].categoryIdString,
         categoryName: cobj[1].categoryName,
         categoryNode: `${cobj[0].categoryIdString}.${cobj[1].categoryIdString}`,
-        commissionRatio: bobj.key,
-        bondBean: bobj.value,
         lnt: location[0],
         lat: location[1],
         ...auditInfo,
@@ -75,13 +78,50 @@ const BusinessAdd = (props) => {
               interiorImg: res.toString(),
             },
             callback: () => {
-              if (auditInfo.verifyStatus) setVisibleAllow(false);
               onClose();
               cRef.current.fetchGetData();
             },
           });
         });
       });
+    });
+  };
+
+  // 审核通过
+  const fetchAuditAllow = (values) => {
+    Modal.confirm({
+      title: '审核通过',
+      content: '是否确认审核通过？',
+      onOk() {
+        const {
+          tags,
+          businessTime,
+          property: { service, speacial },
+        } = values;
+        // aliOssUpload(allImages).then((res) => {
+        const selectTime = values.allTime
+          ? '00:00-23:59'
+          : Object.values(businessTime)
+              .map((item) => {
+                if (item) return `${item[0].format('HH:mm')}-${item[1].format('HH:mm')}`;
+                else return false;
+              })
+              .filter((i) => i);
+        const info = {
+          merchantVerifyId: initialValues.merchantVerifyIdString,
+          verifyStatus: 3,
+          perCapitaConsumption: values.perCapitaConsumption,
+          businessTime: selectTime.toString(), // 营业时间
+          // allImages: '',
+          tags: tags.toString(),
+          property: {
+            service: service.toString(),
+            speacial: speacial ? speacial.toString() : '',
+          },
+        };
+        fetchFormData(info);
+        // });
+      },
     });
   };
 
@@ -97,6 +137,7 @@ const BusinessAdd = (props) => {
             '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
         });
       }
+      setSkeletonType(false);
     }
   };
 
@@ -158,7 +199,7 @@ const BusinessAdd = (props) => {
   };
 
   const amap = (
-    <div style={{ height: 240, marginBottom: 24 }}>
+    <div style={{ height: 240, marginBottom: 24 }} key="map">
       <Map
         amapkey={AMAP_KEY}
         zoom={19}
@@ -174,7 +215,7 @@ const BusinessAdd = (props) => {
 
   const modalProps = {
     title: `${initialValues ? '审核' : '新增'}商户`,
-    width: 800,
+    width: 700,
     visible,
     maskClosable: false,
     destroyOnClose: true,
@@ -186,7 +227,11 @@ const BusinessAdd = (props) => {
       onClose={onClose}
       afterVisibleChange={(showEdit) => {
         if (showEdit) {
+          setSkeletonType(true);
           handleInvalueEdit();
+          setCategId(initialValues.topCategoryId);
+        } else {
+          setSkeletonType(true);
         }
       }}
       bodyStyle={{ paddingBottom: 80 }}
@@ -208,7 +253,7 @@ const BusinessAdd = (props) => {
                   <Button
                     onClick={() => {
                       form.validateFields().then((values) => {
-                        setVisibleAllow(true);
+                        fetchAuditAllow(values);
                       });
                     }}
                     type="primary"
@@ -223,29 +268,27 @@ const BusinessAdd = (props) => {
         </div>
       }
     >
-      <BusinessAddBeas
-        form={form}
-        amap={amap}
-        onSearchAddress={onSearchAddress}
-        initialValues={initialValues}
-      />
-      <BusinessAddQuality form={form} initialValues={initialValues} />
-      {initialValues && (
-        <BusinessAuditAllow
-          visible={visibleAllow}
+      <Skeleton loading={skeletonType} active>
+        <BusinessAddBeas
+          form={form}
+          amap={amap}
+          setCategId={setCategId}
+          onSearchAddress={onSearchAddress}
           initialValues={initialValues}
-          onClose={() => setVisibleAllow(false)}
-          merchantName={initialValues.merchantName}
-          merchantVerifyId={initialValues.merchantVerifyIdString}
-          fetchFormData={fetchFormData}
-          categoryId={form.getFieldValue('topCategoryName')}
         />
-      )}
+        <BusinessAddQuality form={form} initialValues={initialValues} />
+        {initialValues && (
+          <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
+        )}
+      </Skeleton>
     </Drawer>
   );
 };
 
 export default connect(({ loading, businessAudit }) => ({
   businessAudit,
-  loading: loading.models.businessList,
+  loading:
+    loading.models.businessList ||
+    loading.effects['sysTradeList/fetchDetailList'] ||
+    loading.models.businessAudit,
 }))(BusinessAdd);

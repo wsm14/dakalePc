@@ -50,7 +50,11 @@ export default {
       if (!response) return;
       const { content } = response;
       const { provinceCode, cityCode, districtCode } = content.merchantDetail;
-      callback({ ...content.merchantDetail, citycodeArr: [provinceCode, cityCode, districtCode] });
+
+      callback({
+        ...content.merchantDetail,
+        citycodeArr: [provinceCode, cityCode, districtCode],
+      });
     },
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchMerchantTotal);

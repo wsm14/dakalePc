@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchMerchantAuditList,
@@ -86,6 +87,7 @@ export default {
         commissionRatio,
         topCategoryName,
         categoryName,
+        businessTime,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
       const initialValues = {
@@ -96,6 +98,16 @@ export default {
           { value: c, label: cN },
           { value: d, label: dN },
         ],
+        businessTimeObj: businessTime,
+        businessTime: Object.assign(
+          ...businessTime.split(',').map((item, i) => {
+            const timeArr = item.split('-');
+            return {
+              [`item5${i + 1}`]: [moment(timeArr[0], 'HH:mm'), moment(timeArr[1], 'HH:mm')],
+            };
+          }),
+        ),
+        topCategoryId: categoryNodeArr[0],
         topCategoryName: [categoryNodeArr[0], categoryNodeArr[1]],
         otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
         bondBean: { value: bondBean, key: commissionRatio },
