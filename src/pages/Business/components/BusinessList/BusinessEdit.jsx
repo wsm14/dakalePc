@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form, message, Modal, Skeleton } from 'antd';
 import { Map, Marker } from 'react-amap';
@@ -10,8 +10,17 @@ import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 
 const BusinessAdd = (props) => {
-  const { dispatch, cRef, visible, initialValues = false, onClose, loading, businessAudit } = props;
+  const {
+    dispatch,
+    cRef,
+    visible = {},
+    initialValues = false,
+    onClose,
+    loading,
+    businessAudit,
+  } = props;
 
+  const { type = 'add', show = false } = visible;
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
@@ -33,18 +42,38 @@ const BusinessAdd = (props) => {
         interiorImg,
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
+        businessTime,
         businessHubIdString,
+        tags,
+        property: { service, speacial },
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
         return;
       }
+
+      const selectTime = values.allTime
+        ? '00:00-23:59'
+        : Object.values(businessTime)
+            .map((item) => {
+              if (item) return `${item[0].format('HH:mm')}-${item[1].format('HH:mm')}`;
+              else return false;
+            })
+            .filter((i) => i);
+
       const { hubList } = businessAudit;
       const businessHubObj = hubList.filter(
         (item) => item.businessHubIdString == businessHubIdString,
       );
       const payload = {
         ...values,
+        property: {
+          service: service.toString(),
+          speacial: speacial ? speacial.toString() : '',
+        },
+        [type == 'edit' ? 'tag' : 'tags']: tags.toString(),
+        userMerchantId: initialValues.userMerchantIdString,
+        businessTime: selectTime.toString(), // 营业时间
         businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',
         businessHub: businessHubObj.length ? businessHubObj[0].businessHubName : '',
         brandName: otherBrand ? '其他品牌' : values.brandName,
@@ -66,11 +95,18 @@ const BusinessAdd = (props) => {
       aliOssUpload(coverImg).then((cres) => {
         payload.coverImg = cres.toString();
         aliOssUpload(interiorImg).then((res) => {
+          console.log(
+            JSON.stringify({
+              ...payload,
+              interiorImg: res.toString(),
+            }),
+          );
           dispatch({
             type: {
-              false: 'businessList/fetchMerchantAdd',
-              true: 'businessAudit/fetchMerSaleAuditAllow',
-            }[!!initialValues],
+              add: 'businessList/fetchMerchantAdd',
+              edit: 'businessList/fetchMerchantEdit',
+              audit: 'businessAudit/fetchMerSaleAuditAllow',
+            }[type],
             payload: {
               ...payload,
               interiorImg: res.toString(),
@@ -91,31 +127,11 @@ const BusinessAdd = (props) => {
       title: '审核通过',
       content: '是否确认审核通过？',
       onOk() {
-        const {
-          tags,
-          businessTime,
-          property: { service, speacial },
-        } = values;
         // aliOssUpload(allImages).then((res) => {
-        const selectTime = values.allTime
-          ? '00:00-23:59'
-          : Object.values(businessTime)
-              .map((item) => {
-                if (item) return `${item[0].format('HH:mm')}-${item[1].format('HH:mm')}`;
-                else return false;
-              })
-              .filter((i) => i);
         const info = {
           merchantVerifyId: initialValues.merchantVerifyIdString,
           verifyStatus: 3,
           perCapitaConsumption: values.perCapitaConsumption,
-          businessTime: selectTime.toString(), // 营业时间
-          // allImages: '',
-          tags: tags.toString(),
-          property: {
-            service: service.toString(),
-            speacial: speacial ? speacial.toString() : '',
-          },
         };
         fetchFormData(info);
         // });
@@ -128,7 +144,7 @@ const BusinessAdd = (props) => {
     if (initialValues) {
       setLocation([lnt, lat]);
       setSelectCity(initialValues.selectCity);
-      if (initialValues.hasPartner !== '1') {
+      if (type == 'audit' && initialValues.hasPartner !== '1') {
         Modal.warning({
           title: '提醒',
           content:
@@ -211,9 +227,9 @@ const BusinessAdd = (props) => {
   );
 
   const modalProps = {
-    title: `${initialValues ? '审核' : '新增'}商户`,
-    width: 700,
-    visible,
+    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}商户`,
+    width: 750,
+    visible: show,
     maskClosable: false,
     destroyOnClose: true,
   };
@@ -241,12 +257,17 @@ const BusinessAdd = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={closeDrawer}>取消</Button>
-            {!initialValues && (
-              <Button onClick={fetchFormData} type="primary" loading={loading}>
+            {type == 'edit' && (
+              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
+                修改
+              </Button>
+            )}
+            {type == 'add' && (
+              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
                 提交审核
               </Button>
             )}
-            {initialValues && (
+            {type == 'audit' && (
               <>
                 <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
                   审核驳回
@@ -274,14 +295,13 @@ const BusinessAdd = (props) => {
         <BusinessAddBeas
           form={form}
           amap={amap}
+          setType={type}
           setCategId={setCategId}
           onSearchAddress={onSearchAddress}
           initialValues={initialValues}
         />
         <BusinessAddQuality form={form} initialValues={initialValues} />
-        {initialValues && (
-          <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
-        )}
+        <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
       </Skeleton>
     </Drawer>
   );

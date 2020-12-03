@@ -122,7 +122,7 @@ const BusinessAuditList = (props) => {
     dispatch({
       type: 'businessAudit/fetchMerchantAuditDetail',
       payload: { userMerchantVerifyId },
-      callback: (record) => setVisible({ record }),
+      callback: (record) => setVisible({ type: 'audit', show: true, record }),
     });
   };
 

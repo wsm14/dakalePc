@@ -8,10 +8,9 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
-import BusinessAdd from './components/BusinessList/BusinessEdit';
 import BusinessQrCode from './components/BusinessList/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
-import BusinessEdit from './components/BusinessList/HubEdit';
+import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 
 const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
@@ -21,7 +20,6 @@ const BusinessListComponent = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState({});
-  const [visibleAdd, setVisibleAdd] = useState(false);
   const [visibleDetail, setVisibleDetail] = useState(false);
   const [visibleQrcode, setVisibleQrcode] = useState('');
   const [visibleEdit, setVisibleEdit] = useState('');
@@ -40,6 +38,7 @@ const BusinessListComponent = (props) => {
       label: '经营类目',
       type: 'cascader',
       name: 'topCategoryId',
+      changeOnSelect: true,
       options: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       valuesKey: ['topCategoryId', 'categoryId'],
@@ -163,7 +162,8 @@ const BusinessListComponent = (props) => {
             },
             {
               type: 'edit',
-              click: () => fetchGetDetail(val, (info) => setVisibleEdit({ show: true, info })),
+              click: () =>
+                fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
             },
             {
               type: 'set',
@@ -260,7 +260,11 @@ const BusinessListComponent = (props) => {
             key="businessTotalInfo"
             btnExtra={
               <>
-                <Button className="dkl_green_btn" key="1" onClick={() => setVisibleAdd(true)}>
+                <Button
+                  className="dkl_green_btn"
+                  key="1"
+                  onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
+                >
                   新增商户
                 </Button>
                 <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
@@ -271,11 +275,6 @@ const BusinessListComponent = (props) => {
           ></BusinessTotalInfo>
         </Suspense>
       </DataTableBlock>
-      <BusinessAdd
-        cRef={childRef}
-        visible={visibleAdd}
-        onClose={() => setVisibleAdd(false)}
-      ></BusinessAdd>
       <BusinessAwardSet
         cRef={childRef}
         visible={visible}
@@ -284,7 +283,8 @@ const BusinessListComponent = (props) => {
       <BusinessEdit
         cRef={childRef}
         visible={visibleEdit}
-        onClose={() => setVisibleEdit('')}
+        initialValues={visibleEdit.info}
+        onClose={() => setVisibleEdit(false)}
       ></BusinessEdit>
       <BusinessDetailShow
         cRef={childRef}

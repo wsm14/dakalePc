@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchMerchantList,
@@ -56,12 +57,57 @@ export default {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { provinceCode, cityCode, districtCode, property } = content.merchantDetail;
-      callback({
+      const {
+        provinceCode: p,
+        cityCode: c,
+        districtCode: d,
+        provinceName: pN,
+        cityName: cN,
+        districtName: dN,
+        categoryNode,
+        brandName,
+        topCategoryName,
+        categoryName,
+        businessTime,
+        property,
+        tag,
+      } = content.merchantDetail;
+      const categoryNodeArr = categoryNode.split('.');
+      const initialValues = {
         ...content.merchantDetail,
-        property: property ? JSON.parse(property) : '',
-        citycodeArr: [provinceCode, cityCode, districtCode],
-      });
+        provinceCode: [p, c, d],
+        selectCity: [
+          { value: p, label: pN },
+          { value: c, label: cN },
+          { value: d, label: dN },
+        ],
+        businessTimeObj: businessTime,
+        businessTime: Object.assign(
+          ...businessTime.split(',').map((item, i) => {
+            const timeArr = item.split('-');
+            return {
+              [`item5${i + 1}`]: [moment(timeArr[0], 'HH:mm'), moment(timeArr[1], 'HH:mm')],
+            };
+          }),
+        ),
+        topCategoryId: categoryNodeArr[0],
+        topCategoryName: [categoryNodeArr[0], categoryNodeArr[1]],
+        otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
+        categoryName: [
+          { categoryIdString: categoryNodeArr[0], categoryName: topCategoryName },
+          { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
+        ],
+        category: `${topCategoryName} - ${categoryName}`,
+        citycodeArr: [p, c, d],
+        property: property
+          ? {
+              service: JSON.parse(property).service.split(','),
+              speacial: JSON.parse(property).speacial.split(','),
+            }
+          : '',
+        tags: tag.split(','),
+      };
+      callback(initialValues);
     },
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchMerchantTotal);

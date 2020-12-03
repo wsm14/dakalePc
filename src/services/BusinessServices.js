@@ -60,7 +60,7 @@ export function fetchMerchantAdd(data) {
 
 // post 商户数据 - 商家 修改
 export function fetchMerchantEdit(data) {
-  return request('/admin/merchantManagement/updateMerchant', {
+  return request('/admin/merchantManagement/editMerchant', {
     method: 'POST',
     data,
   });

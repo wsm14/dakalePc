@@ -88,6 +88,7 @@ export default {
         topCategoryName,
         categoryName,
         businessTime,
+        tags,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
       const initialValues = {
@@ -116,6 +117,7 @@ export default {
           { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
         ],
         commissionRatio: bondBean,
+        tags: tags.split(','),
       };
       callback(initialValues);
     },

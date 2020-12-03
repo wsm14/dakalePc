@@ -16,12 +16,13 @@ const BusinessAddBeas = (props) => {
     platformList,
     tradeList,
     setCategId,
+    setType,
   } = props;
-  
+
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
   const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
-  const [ampShow, setAmpShow] = useState(true);
+  const [ampShow, setAmpShow] = useState(false);
   const [hubList, setHubList] = useState([]);
 
   // 获取品牌
@@ -29,6 +30,16 @@ const BusinessAddBeas = (props) => {
     dispatch({
       type: 'businessBrand/fetchGetList',
       payload: { page: 1, limit: 999 },
+    });
+  };
+
+  // 获取平台服务费
+  const fetchGetPlatform = (categoryId) => {
+    dispatch({
+      type: 'sysTradeList/fetchTradePlatformList',
+      payload: {
+        categoryId,
+      },
     });
   };
 
@@ -94,6 +105,7 @@ const BusinessAddBeas = (props) => {
     {
       label: '注册帐号',
       name: 'mobile',
+      visible: setType != 'edit',
       addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号' }],
     },
     {
@@ -108,6 +120,9 @@ const BusinessAddBeas = (props) => {
       onChange: (val) => {
         fetchGetDetail({ districtCode: val[2].value });
         setSelectCity(val);
+        form.setFieldsValue({
+          businessHubIdString: undefined,
+        });
       },
     },
     {
@@ -179,6 +194,7 @@ const BusinessAddBeas = (props) => {
       onChange: (val) => {
         setAreaMust(val[0].categoryName === '美食');
         setCategId(val[0].categoryIdString);
+        fetchGetPlatform(val[0].id);
         form.setFieldsValue({
           categoryName: val,
           businessArea: undefined,

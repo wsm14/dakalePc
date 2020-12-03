@@ -97,8 +97,7 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '经营类目',
-      name: 'topCategoryName',
-      render: (val, row) => `${val} - ${row.categoryName}`,
+      name: 'category',
     },
     {
       label: '平台服务费',
@@ -140,7 +139,7 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '营业时间',
-      name: 'businessTime',
+      name: 'businessTimeObj',
     },
     {
       label: '店铺服务',
