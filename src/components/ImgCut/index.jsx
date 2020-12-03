@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Cropper from 'react-cropper'; // 引入Cropper
+import { RotateLeftOutlined, RotateRightOutlined } from '@ant-design/icons';
 
 import 'cropperjs/dist/cropper.css';
 
@@ -14,7 +15,13 @@ import styles from './index.less';
  * @imgRatio 裁剪比例
  */
 
-const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio, hiddenClose }) => {
+const ImgCutModal = ({
+  uploadedImageFile,
+  onClose,
+  onSubmit = (file) => console.log(file),
+  imgRatio,
+  hiddenClose,
+}) => {
   ImgCutModal.defaultProps = {
     imgRatio: NaN,
   };
@@ -31,12 +38,15 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio, hiddenClo
 
   useEffect(() => {
     if (uploadedImageFile) {
-      const fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const dataURL = e.target.result;
-        setSrc(dataURL);
-      };
-      fileReader.readAsDataURL(uploadedImageFile);
+      if (typeof uploadedImageFile != 'string') {
+        const fileReader = new FileReader();
+        fileReader.onload = (e) => {
+          const dataURL = e.target.result;
+          setSrc(dataURL);
+        };
+        fileReader.readAsDataURL(uploadedImageFile);
+      }
+      setSrc(uploadedImageFile);
     }
   }, [uploadedImageFile]);
 
@@ -52,6 +62,26 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio, hiddenClo
     });
   };
 
+  // 旋转图片
+  const rotateImg = (type = 'left') => {
+    // console.log('旋转前', cropper.getImageData(), cropper.getCanvasData());
+    cropper.rotate(type == 'left' ? -90 : 90);
+    // const imgData = cropper.getImageData();
+    const canvasData = cropper.getCanvasData();
+    // console.log('旋转后', imgData, canvasData);
+    // 画布大小位置
+    cropper.setCanvasData({
+      left: 0,
+      top: 0,
+    });
+    // 裁剪框大小位置
+    cropper.setCropBoxData({
+      width: canvasData.naturalWidth,
+      height: canvasData.naturalHeight,
+    });
+    // console.log('调整后', cropper.getImageData(), cropper.getCanvasData());
+  };
+
   return (
     <div className={styles.hooks_cropper_modal}>
       <div className={styles.cropper_container_container}>
@@ -60,8 +90,10 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio, hiddenClo
             src={src}
             className={styles.cropper}
             // Cropper.js options
-            viewMode={1}
-            zoomable={false}
+            viewMode={2}
+            rotatable={true}
+            zoomable={true}
+            autoCropArea={1}
             aspectRatio={imgRatio || NaN} // 固定为1:1  可以自己设置比例, 默认情况为自由比例
             preview=".cropper_preview"
             onInitialized={(instance) => {
@@ -70,7 +102,23 @@ const ImgCutModal = ({ uploadedImageFile, onClose, onSubmit, imgRatio, hiddenClo
           />
         </div>
         <div className={styles.preview_container}>
-          <div className={`cropper_preview ${styles.cropper_preview}`} />
+          <div className={styles.cropper_preview_set_box}>
+            <div className={`cropper_preview ${styles.cropper_preview}`} />
+            <div>
+              <div className={styles.rotate_btn_box}>
+                <RotateLeftOutlined
+                  onClick={() => rotateImg('left')}
+                  className={styles.rotate_i_btn}
+                />
+              </div>
+              <div className={styles.rotate_btn_box}>
+                <RotateRightOutlined
+                  onClick={() => rotateImg('right')}
+                  className={styles.rotate_i_btn}
+                />
+              </div>
+            </div>
+          </div>
           <div className={styles.button_row}>
             <button type="button" className={styles.submit_button} onClick={handleSubmit}>
               确认

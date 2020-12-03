@@ -19,8 +19,6 @@ const BusinessAdd = (props) => {
   const [location, setLocation] = useState([lnt, lat]);
   // 选择城市
   const [selectCity, setSelectCity] = useState([]);
-  // 浮标拖拽状态
-  const [marker, setMarker] = useState(true);
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
   // 经营类目
@@ -155,7 +153,6 @@ const BusinessAdd = (props) => {
       setAmpShow(false);
       return;
     }
-    setMarker(false);
     let cityname = '';
     if (typeof city[1] !== 'object') city = selectCity;
     (typeof city[1] === 'object' ? city : selectCity).map((item) => {
@@ -179,7 +176,6 @@ const BusinessAdd = (props) => {
               console.log(city[1].label, [longitude, latitude]);
               setLocation([longitude, latitude]);
               setAmpShow(true);
-              setMarker(true);
               setSelectCity(typeof city[1] === 'object' ? city : selectCity);
             }
           });
@@ -191,6 +187,7 @@ const BusinessAdd = (props) => {
   // 地图浮标移动定位
   const handleMarkerEvents = {
     dragend: (event) => {
+      console.log(event)
       const { lnglat } = event;
       const latitude = parseFloat(lnglat.lat); // 维度
       const longitude = parseFloat(lnglat.lng); // 经度
@@ -208,7 +205,7 @@ const BusinessAdd = (props) => {
         keyboardEnable={false}
         touchZoom={false}
       >
-        <Marker clickable draggable={marker} position={location} events={handleMarkerEvents} />
+        <Marker clickable draggable position={location} events={handleMarkerEvents} />
       </Map>
     </div>
   );

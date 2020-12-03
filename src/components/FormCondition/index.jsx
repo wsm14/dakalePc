@@ -15,6 +15,7 @@ import {
   Checkbox,
   Spin,
 } from 'antd';
+import ImgCutView from '@/components/ImgCut';
 import { PlusOutlined } from '@ant-design/icons';
 import { DndProvider, useDrag, useDrop, createDndContext } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -192,8 +193,8 @@ const FormComponents = ({
               return fi;
             });
             setFileLists({ ...fileLists, [name]: fileList });
+            (form || formN).setFieldsValue({ [name]: { ...value, fileList } });
           });
-          (form || formN).setFieldsValue({ [name]: value });
           if (onChange) onChange(value);
         } else {
           if (!fileList.length) (form || formN).setFieldsValue({ [name]: undefined });
@@ -205,13 +206,31 @@ const FormComponents = ({
   };
 
   // 预览图片
-  const handlePreview = async (file) => {
+  const handlePreview = async (file, key) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
     setPreviewImage(file.url || file.preview);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    setPreviewTitle({ uid: file.uid, key });
     setPreviewVisible(true);
+  };
+
+  // 裁剪图片
+  const handleCutImg = (file) => {
+    const fName = previewTitle.key;
+    const uid = previewTitle.uid;
+    const newimg = fileLists[fName];
+    imageCompress(file).then(({ file, base64 }) => {
+      newimg.map((fi) => {
+        if (fi.uid == uid) {
+          fi.originFileObj = file;
+          fi.url = base64;
+        }
+        return fi;
+      });
+      console.log(newimg);
+      setFileLists({ ...fileLists, [fName]: newimg });
+    });
   };
 
   const moveRow = (dragIndex, hoverIndex, name) => {
@@ -423,7 +442,7 @@ const FormComponents = ({
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={() => false}
-              onPreview={handlePreview}
+              onPreview={(file) => handlePreview(file, name)}
               {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
               itemRender={(originNode, file, currFileList) => {
                 return (
@@ -518,6 +537,21 @@ const FormComponents = ({
       {formItems.length ? getFields() : ''}
       {children}
       <Modal
+        destroyOnClose
+        title="编辑图片"
+        width={950}
+        visible={previewVisible}
+        maskClosable={false}
+        onCancel={() => setPreviewVisible(false)}
+        footer={null}
+      >
+        <ImgCutView
+          uploadedImageFile={previewImage}
+          onSubmit={handleCutImg}
+          onClose={() => setPreviewVisible(false)}
+        />
+      </Modal>
+      {/* <Modal
         title={previewTitle}
         visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
@@ -525,7 +559,7 @@ const FormComponents = ({
         zIndex={1009}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+      </Modal> */}
     </Form>
   );
 };
