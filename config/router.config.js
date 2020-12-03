@@ -16,6 +16,23 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       {
+        name: '数据统计',
+        path: '/chart',
+        routes: [
+          {
+            path: '/chart/area',
+            name: '区域战报',
+            component: './User/UserList',
+            buttons: ['view', 'status'],
+          },
+          {
+            path: '/chart/block',
+            name: '数据概况',
+            component: './User/CircleMasterList',
+          },
+        ],
+      },
+      {
         name: '区县管理',
         path: '/cityom',
         routes: [
@@ -26,8 +43,8 @@ export default [
             button: ['view', 'update', 'save', 'status'],
           },
           {
-            path: '/cityom/partner',
-            name: '城市合伙人',
+            path: '/cityom/area',
+            name: '区县运营中心',
             component: './CityOm/CityPartner',
           },
           {
@@ -110,6 +127,26 @@ export default [
             component: './business/GroupList',
           },
           {
+            path: '/business/share',
+            name: '分享管理',
+            component: './business/GroupList',
+          },
+          {
+            path: '/business/goods',
+            name: '商品管理',
+            component: './business/GroupList',
+          },
+          {
+            path: '/business/orders',
+            name: '订单列表',
+            component: './business/GroupList',
+          },
+          {
+            path: '/business/refund',
+            name: '退款管理',
+            component: './business/GroupList',
+          },
+          {
             path: '/business/settled',
             name: '入驻查询',
             component: './Business/BusinessSettled',
@@ -127,7 +164,13 @@ export default [
         path: '/expert',
         routes: [
           {
+            path: '/expert/recommend',
+            name: '种草管理',
+            component: './Expert/ExpertUserList',
+          },
+          {
             path: '/expert/uaerlist',
+            //business talent
             name: '哒人列表',
             component: './Expert/ExpertUserList',
           },
