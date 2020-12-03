@@ -182,7 +182,6 @@ const FormComponents = ({
       accept: 'image/*',
       onChange: (value) => {
         const { fileList } = value;
-        console.log(value);
         if (!value.file.status) {
           const fileName = value.file.name;
           imageCompress(value.file).then(({ file }) => {
@@ -228,7 +227,6 @@ const FormComponents = ({
         }
         return fi;
       });
-      console.log(newimg);
       setFileLists({ ...fileLists, [fName]: newimg });
     });
   };
