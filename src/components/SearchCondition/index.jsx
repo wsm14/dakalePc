@@ -151,7 +151,7 @@ const SearchCondition = (props) => {
       }
 
       // 城市类型
-      if (item.type === 'city') {
+      if (item.type === 'cascader') {
         component = (
           <Cascader
             changeOnSelect={item.changeOnSelect || false}
@@ -159,6 +159,7 @@ const SearchCondition = (props) => {
             options={item.options || CITYJSON}
             expandTrigger="hover"
             showSearch={{ filter }}
+            fieldNames={item.fieldNames}
             placeholder="选择城市"
           />
         );
@@ -196,9 +197,9 @@ const SearchCondition = (props) => {
         } else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
-        } else if (item.type === 'city') {
+        } else if (item.type === 'cascader') {
           // 判断类型 城市类型处理
-          item.valuesKey.map((item, i) => (formObj[item] = values.city[i]));
+          item.valuesKey.map((key, i) => (formObj[key] = values[item.name][i]));
           delete values[item.name];
         }
       } else {

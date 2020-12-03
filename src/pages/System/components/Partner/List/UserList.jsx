@@ -37,7 +37,7 @@ const UserList = (props) => {
   const searchItems = [
     {
       label: '代理区县',
-      type: 'city',
+      type: 'cascader',
       name: 'city',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],

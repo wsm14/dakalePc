@@ -9,8 +9,8 @@ const CityPartnerTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
   const searchItems = [
     {
       label: '区域',
-      type: 'city',
-      name: 'mobile',
+      type: 'cascader',
+      name: 'city',
     },
   ];
 

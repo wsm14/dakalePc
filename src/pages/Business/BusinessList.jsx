@@ -37,10 +37,11 @@ const BusinessListComponent = (props) => {
     },
     {
       label: '经营类目',
+      type: 'cascader',
       name: 'topCategoryId',
-      type: 'select',
-      loading: loading.models.sysTradeList,
-      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
+      options: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      valuesKey: ['topCategoryId', 'topCategory'],
     },
     {
       label: '账号状态',
@@ -50,8 +51,8 @@ const BusinessListComponent = (props) => {
     },
     {
       label: '地址',
-      type: 'city',
       name: 'city',
+      type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },

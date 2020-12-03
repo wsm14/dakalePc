@@ -30,7 +30,7 @@ const CityPartner = (props) => {
     {
       label: '区域',
       name: 'city',
-      type: 'city',
+      type: 'cascader',
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
