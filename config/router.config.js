@@ -129,7 +129,7 @@ export default [
           {
             path: '/business/share',
             name: '分享管理',
-            component: './business/GroupList',
+            component: './Business/ShareManage',
           },
           {
             path: '/business/goods',

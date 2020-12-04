@@ -78,6 +78,15 @@ export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 // 新闻动态状态
 export const NEWS_STATUS = ['下架', '上架'];
 
+// 分享类型
+export const SHARE_TYPE = [
+  { value: 'video', name: '视频' },
+  { value: 'image', name: '图文' },
+];
+
+// 分享状态
+export const SHARE_STATUS = ['待审核', '已上架', '审核拒绝', '下架', '删除', '分享完成'];
+
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 

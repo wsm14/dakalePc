@@ -232,3 +232,12 @@ export function fetchUpdateGroup(data) {
 }
 
 // 集团管理 end
+
+// 分享管理
+
+// get 分享管理 - 分享列表
+export function fetchShareList(params) {
+  return request('/admin/marketingManagement/listMerchantMoment', {
+    params,
+  });
+}

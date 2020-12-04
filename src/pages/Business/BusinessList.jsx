@@ -5,7 +5,6 @@ import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/
 import exportExcel from '@/utils/exportExcel';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/BusinessQrCode';
