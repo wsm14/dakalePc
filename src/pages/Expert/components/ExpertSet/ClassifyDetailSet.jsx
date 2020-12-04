@@ -43,7 +43,7 @@ const ClassifyDetailSet = (props) => {
         maxLength: 10,
       },
       {
-        label: `描述`,
+        label: `说明`,
         name: 'topicDesc',
       },
     ],

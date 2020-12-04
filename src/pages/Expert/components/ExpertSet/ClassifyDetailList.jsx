@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -24,8 +24,19 @@ const ClassifyDetailList = (props) => {
       dataIndex: 'topicName',
     },
     {
-      title: '描述',
+      title: '说明',
       dataIndex: 'topicDesc',
+    },
+    {
+      title: '显示状态',
+      align: 'center',
+      dataIndex: 'status',
+      render: (val, record) => (
+        <Switch
+          checked={val == '1'}
+          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+        />
+      ),
     },
     {
       title: '推荐',

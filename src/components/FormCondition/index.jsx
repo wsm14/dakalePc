@@ -542,6 +542,7 @@ const FormComponents = ({
         maskClosable={false}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
+        zIndex={100000}
       >
         <ImgCutView
           uploadedImageFile={previewImage}

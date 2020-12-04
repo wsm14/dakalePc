@@ -1,13 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd';
+import { Button, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import classifySet from './components/UserList/ClassifySet';
-import ClassifyDetailList from './components/UserList/ClassifyDetailList';
+import classifySet from './components/ExpertSet/ClassifySet';
+import ClassifyDetailList from './components/ExpertSet/ClassifyDetailList';
 
 const ExpertSet = (props) => {
-  const { list, loading, dispatch } = props;
+  const { list, loading, dispatch, tradeList } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
@@ -18,6 +18,17 @@ const ExpertSet = (props) => {
       title: '哒人领域/内容分类',
       fixed: 'left',
       dataIndex: 'domainName',
+    },
+    {
+      title: '显示状态',
+      align: 'center',
+      dataIndex: 'status',
+      render: (val, record) => (
+        <Switch
+          checked={val == '1'}
+          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+        />
+      ),
     },
     {
       title: '话题',
@@ -60,6 +71,13 @@ const ExpertSet = (props) => {
     },
   ];
 
+  // 经营类目
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
   // 删除
   const fetchClassifyDel = (values) => {
     dispatch({
@@ -73,7 +91,7 @@ const ExpertSet = (props) => {
   const handleClassifySet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: classifySet({ dispatch, childRef, initialValues }),
+      payload: classifySet({ dispatch, tradeList, childRef, initialValues }),
     });
   };
 
@@ -81,6 +99,7 @@ const ExpertSet = (props) => {
     dispatch({
       type: 'expertSet/clearDetail',
     });
+    fetchTradeList();
   }, [visible]);
 
   return (
@@ -110,7 +129,8 @@ const ExpertSet = (props) => {
   );
 };
 
-export default connect(({ expertSet, loading }) => ({
+export default connect(({ expertSet, sysTradeList, loading }) => ({
   list: expertSet.list,
+  tradeList: sysTradeList.list.list,
   loading: loading.effects['expertSet/fetchGetList'],
 }))(ExpertSet);

@@ -181,7 +181,7 @@ export default [
           },
           {
             path: '/expert/set',
-            name: '话题设置',
+            name: '创作设置',
             component: './Expert/ExpertSet',
           },
         ],
