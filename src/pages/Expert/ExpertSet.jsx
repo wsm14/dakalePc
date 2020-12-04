@@ -41,33 +41,46 @@ const ExpertSet = (props) => {
       dataIndex: 'domainId',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: record.parentDomainId !== 0,
-              click: () =>
-                handleClassifySet({
-                  ...record,
-                  parentDomainId: null,
-                }),
-            },
-            {
-              type: 'del',
-              visible: record.parentDomainId !== 0,
-              click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
-            },
-            {
-              type: 'own',
-              visible: record.parentDomainId === 0,
-              title: '添加内容分类',
-              click: () =>
-                handleClassifySet({ parentDomainId: val, domainNameShow: record.domainName }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => {
+        const { topCategoryId: tcid, categoryId: cid } = record;
+        return (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'edit',
+                visible: record.parentDomainId !== 0,
+                click: () =>
+                  handleClassifySet(
+                    {
+                      ...record,
+                      category: [`${tcid}`, `${cid}`],
+                      parentDomainId: null,
+                    },
+                    record,
+                  ),
+              },
+              {
+                type: 'del',
+                visible: record.parentDomainId !== 0,
+                click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
+              },
+              {
+                type: 'own',
+                visible: record.parentDomainId === 0,
+                title: '添加内容分类',
+                click: () =>
+                  handleClassifySet(
+                    {
+                      parentDomainId: val,
+                      domainNameShow: record.domainName,
+                    },
+                    record,
+                  ),
+              },
+            ]}
+          />
+        );
+      },
     },
   ];
 
@@ -88,10 +101,10 @@ const ExpertSet = (props) => {
   };
 
   // 新增/修改 领域/内容分类
-  const handleClassifySet = (initialValues) => {
+  const handleClassifySet = (initialValues, rowDetail) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: classifySet({ dispatch, tradeList, childRef, initialValues }),
+      payload: classifySet({ dispatch, tradeList, childRef, initialValues, rowDetail }),
     });
   };
 

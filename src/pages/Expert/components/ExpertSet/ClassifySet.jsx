@@ -1,15 +1,32 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ClassifySet = (props) => {
-  const { dispatch, childRef, tradeList, initialValues = {} } = props;
+  const { dispatch, childRef, tradeList, initialValues = {}, rowDetail } = props;
+  console.log(rowDetail);
+  // 经营类目储存
+  let setData = {};
+
   // 提交表单
   const fetchDataEdit = (values) => {
     const { domainImage = '' } = values;
+    const { parentDomainId: pid } = initialValues;
     const editType = !initialValues.domainId;
+    const topCategoryId = pid == 0 ? setData.value : setData[0].categoryIdString;
+    const topCategoryName = pid == 0 ? setData.children : setData[0].categoryName;
+    const category = {
+      categoryNode:
+        pid == 0
+          ? `${topCategoryId}.${topCategoryId}`
+          : `${topCategoryId}.${setData[1].categoryIdString}`,
+      topCategoryId,
+      topCategoryName,
+      categoryId: pid == 0 ? topCategoryId : setData[1].categoryIdString,
+      categoryName: pid == 0 ? topCategoryName : setData[1].categoryName,
+    };
     aliOssUpload(domainImage).then((res) => {
       dispatch({
         type: { true: 'expertSet/fetchExpertAdd', false: 'expertSet/fetchClassifyEdit' }[editType],
-        payload: { ...initialValues, ...values, domainImage: res.toString() },
+        payload: { ...initialValues, ...values, ...category, domainImage: res.toString() },
         callback: () => childRef.current.fetchGetData(),
       });
     });
@@ -26,6 +43,16 @@ const ClassifySet = (props) => {
         label: '领域名称',
         visible: initialValues.parentDomainId == 0,
         name: 'domainName',
+      },
+      {
+        label: '行业类目',
+        type: 'select',
+        name: 'topCategoryName',
+        select: tradeList.map((i) => ({ name: i.categoryName, value: i.categoryIdString })),
+        visible: initialValues.parentDomainId == 0,
+        onChange: (val, item) => {
+          setData = item;
+        },
       },
       {
         label: '领域',
@@ -48,21 +75,19 @@ const ClassifySet = (props) => {
       },
       {
         label: '行业类目',
-        type: 'select',
-        name: 'topCategoryName',
-        select: tradeList.map((i) => ({ name: i.categoryName, value: i.categoryIdString })),
-        visible: initialValues.parentDomainId == 0,
-      },
-      {
-        label: '行业类目',
         type: 'cascader',
-        name: 'topCategoryName',
-        select: tradeList.filter((i) => i.categoryDTOList),
+        name: 'category',
+        select: tradeList.filter(
+          (i) => i.categoryDTOList && rowDetail && rowDetail.topCategoryId == i.categoryIdString,
+        ),
         visible: initialValues.parentDomainId !== 0,
         fieldNames: {
           label: 'categoryName',
           value: 'categoryIdString',
           children: 'categoryDTOList',
+        },
+        onChange: (val) => {
+          setData = val;
         },
       },
     ],
