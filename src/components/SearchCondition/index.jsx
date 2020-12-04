@@ -13,7 +13,7 @@ import {
   Cascader,
   Grid,
   Empty,
-  Spin
+  Spin,
 } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
@@ -101,10 +101,49 @@ const SearchCondition = (props) => {
             loading={item.loading}
             style={{ width: '100%' }}
             onSearch={item.onSearch}
+            onChange={item.onChange}
             allowClear={true}
             notFoundContent={
               item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
+            placeholder={item.placeholder || `请选择`}
+          >
+            {allItem && <Option value={initialValue}>全部</Option>}
+            {select.list.map((data, j) => {
+              if (data) {
+                // 兼容数组
+                const value = !data.value ? `${j}` : data.value;
+                const name = data.value ? data.name : data;
+                return (
+                  <Option key={j} value={value}>
+                    {name}
+                  </Option>
+                );
+              }
+            })}
+          </Select>
+        );
+      }
+      if (item.type === 'multiple' && item.select) {
+        const { select, allItem = false } = item;
+        initialValue = select.defaultValue || '';
+        component = (
+          <Select
+            showSearch
+            mode="multiple"
+            disabled={item.disabled}
+            defaultActiveFirstOption={false}
+            filterOption={true}
+            optionFilterProp="children"
+            loading={item.loading}
+            notFoundContent={
+              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }
+            style={{ width: '100%' }}
+            maxTagCount={2}
+            maxTagTextLength={2}
+            onSearch={item.onSearch}
+            onChange={item.onChange}
             placeholder={item.placeholder || `请选择`}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
@@ -205,6 +244,9 @@ const SearchCondition = (props) => {
         } else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
+        } else if (item.type === 'multiple') {
+          // 判断类型 多选框字符串传递
+          formObj[item.name] = values[item.name].toString();
         } else if (item.type === 'cascader') {
           // 判断类型 城市类型处理
           item.valuesKey.map((key, i) => (formObj[key] = values[item.name][i]));

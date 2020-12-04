@@ -1,4 +1,4 @@
-import { fetchClassifyList, fetchClassifyGetMre } from '@/services/BusinessServices';
+import { fetchGoodsGetClassify, fetchGoodsGetMre } from '@/services/BusinessServices';
 
 export default {
   namespace: 'classifyManage',
@@ -20,7 +20,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchClassifyList, payload);
+      const response = yield call(fetchGoodsGetClassify, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -32,7 +32,7 @@ export default {
       });
     },
     *fetchClassifyGetMre({ payload }, { call, put }) {
-      const response = yield call(fetchClassifyGetMre, payload);
+      const response = yield call(fetchGoodsGetMre, payload);
       if (!response) return;
       const { content } = response;
       yield put({

@@ -257,20 +257,39 @@ export function fetchRefundOrderList(params) {
 
 // 退款管理 end
 
-// 分类列表
+// 商品管理
+
+// get 商品管理 - 列表
+export function fetchGoodsList(params) {
+  return request('/admin/goodsManagement/listGoodsManagement', {
+    params,
+  });
+}
 
 // get 分类列表 - 搜索商家
-export function fetchClassifyGetMre(params) {
+export function fetchGoodsGetMre(params) {
   return request('/user/userMerchant/listMerchantBySearchConditions', {
     params,
   });
 }
 
-// get 分类列表 - 类别
-export function fetchClassifyList(params) {
+// get 商品管理 - 类别
+export function fetchGoodsGetClassify(params) {
   return request('/admin/categoryCustomManagement/listCategoryCustomByMerchant', {
     params,
   });
 }
+
+// post 商品管理 - 更新库存
+export function fetchUpdataStock(data) {
+  return request('/admin/goodsManagement/updateGoodsStockManagement', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 商品管理 end
+
+// 分类列表
 
 // 分类列表 end

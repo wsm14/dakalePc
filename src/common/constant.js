@@ -93,6 +93,9 @@ export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
 
+// 商品状态
+export const GOODS_TYPE = ['下架', '上架', '预售', '未发布'];
+
 // 订单属性
 export const ORDERS_ATTRIBUTES = [
   { name: '哒人带货', value: 'kolGoods' },

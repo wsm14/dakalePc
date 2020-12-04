@@ -317,6 +317,7 @@ const FormComponents = ({
             style={{ width: '100%' }}
             max={item.max}
             min={item.min}
+            precision={item.precision}
             addonAfter={item.addonAfter}
             prefix={item.prefix}
             suffix={dataNum || item.suffix || ''}

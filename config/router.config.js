@@ -134,7 +134,7 @@ export default [
           {
             path: '/business/goods',
             name: '商品管理',
-            component: './Business/GroupList',
+            component: './Business/GoodsManage',
           },
           {
             path: '/business/classify',
