@@ -1,21 +1,33 @@
 import request from '@/utils/request';
 
+// 哒人列表
+
 // get 达人列表 - 统计
-export async function fetchExpertUserTotal(params) {
+export function fetchExpertUserTotal(params) {
   return request('/admin/kol/countKol', {
     params,
   });
 }
 
 // get 达人列表 - 列表
-export async function fetchExpertUserList(params) {
+export function fetchExpertUserList(params) {
   return request('/admin/kol/getKol', {
     params,
   });
 }
 
+// post 达人列表 - 封停哒人
+export function fetchExpertStop(data) {
+  return request('/admin/kol/suspendKol', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 哒人列表 end
+
 // get 达人管理 - 创作设置
-export async function fetchExpertSetList(params) {
+export function fetchExpertSetList(params) {
   return request('/admin/domain/listDomain', {
     params,
   });

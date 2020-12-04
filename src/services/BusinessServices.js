@@ -245,3 +245,14 @@ export function fetchOrdersDetail(params) {
 }
 
 // 订单列表 end
+
+// 退款管理
+
+// get 退款管理 - 列表
+export function fetchRefundOrderList(params) {
+  return request('/admin/orderManagement/listRefundOrder', {
+    params,
+  });
+}
+
+// 退款管理 end

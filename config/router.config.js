@@ -124,7 +124,7 @@ export default [
           {
             path: '/business/group',
             name: '集团管理',
-            component: './business/GroupList',
+            component: './Business/GroupList',
           },
           {
             path: '/business/share',
@@ -134,7 +134,7 @@ export default [
           {
             path: '/business/goods',
             name: '商品管理',
-            component: './business/GroupList',
+            component: './Business/GroupList',
           },
           {
             path: '/business/orders',
@@ -144,7 +144,7 @@ export default [
           {
             path: '/business/refund',
             name: '退款管理',
-            component: './business/GroupList',
+            component: './Business/RefundOrder',
           },
           {
             path: '/business/settled',
