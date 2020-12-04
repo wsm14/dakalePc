@@ -11,7 +11,7 @@ export function fetchExpertUserTotal(params) {
 
 // get 达人列表 - 列表
 export function fetchExpertUserList(params) {
-  return request('/admin/kol/getKol', {
+  return request('/admin/kol/listKolManagement', {
     params,
   });
 }
@@ -19,6 +19,14 @@ export function fetchExpertUserList(params) {
 // post 达人列表 - 封停哒人
 export function fetchExpertStop(data) {
   return request('/admin/kol/suspendKol', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 达人列表 - 解封哒人
+export function fetchExpertOpen(data) {
+  return request('/admin/kol/unblockKol', {
     method: 'POST',
     data,
   });

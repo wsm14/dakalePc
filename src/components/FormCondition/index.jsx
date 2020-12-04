@@ -371,7 +371,7 @@ const FormComponents = ({
               if (data) {
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
-                const name = data.name ? data.name : '--';
+                const name = data.name ? data.name : typeof data == 'string' ? data : '--';
                 return (
                   <Option key={data.key || j} value={value}>
                     {name}

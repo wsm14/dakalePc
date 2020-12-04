@@ -63,6 +63,9 @@ export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 // 用户挑战赛状态
 export const MATCH_USER_STATUS = ['已取消', '已报名', '已完成', '已领奖'];
 
+// 哒人状态
+export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封停1周', '封停1月'];
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
