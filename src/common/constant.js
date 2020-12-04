@@ -87,6 +87,33 @@ export const SHARE_TYPE = [
 // 分享状态
 export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分享完成'];
 
+// 订单属性
+export const ORDERS_ATTRIBUTES = [
+  { name: '哒人带货', value: 'kolGoods' },
+  { name: '周边特惠', value: 'specialGoods' },
+];
+
+// 订单类型
+export const ORDERS_TYPE = [
+  { name: '扫码支付订单', value: 'scan' },
+  { name: '哒人带货', value: 'kolGoods' },
+  { name: '周边特惠', value: 'specialGoods' },
+];
+
+// 订单支付类型
+export const PAY_TYPE = { beanPay: '卡豆支付', wechat: '微信支付', alipay: '支付宝支付' };
+
+// 订单状态
+export const ORDERS_STATUS = [
+  '待支付',
+  '已支付',
+  '订单关闭',
+  '交易完成',
+  '已确认',
+  '预支付',
+  '退款中',
+];
+
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 

@@ -12,6 +12,10 @@ export default {
         target:  target,
         changeOrigin: true,
       },
+      '/user': {
+        target:  target,
+        changeOrigin: true,
+      },
       '/common': {
         target:  target,
         changeOrigin: true,

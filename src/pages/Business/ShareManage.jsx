@@ -42,7 +42,7 @@ const ShareManage = (props) => {
       payload: {
         identifyIdStr: val,
       },
-      callback: (detail) => setVisible({ show: true, detail }),
+      callback: (detail) => setVisibleHandle({ show: true, detail }),
     });
   };
 

@@ -5,7 +5,6 @@ import {
   fetchMerchantDetail,
   fetchMerSetBandCode,
   fetchMerchantStatus,
-  fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
   fetchMerchantEdit,
@@ -14,6 +13,7 @@ import {
   fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
+import { fetchGetOcrLicense } from '@/services/BaseServices';
 
 export default {
   namespace: 'businessList',
@@ -135,7 +135,7 @@ export default {
       });
     },
     *fetchMerBusinessOcr({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerBusinessOcr, payload);
+      const response = yield call(fetchGetOcrLicense, payload);
       if (!response) return;
       const { content } = response;
       callback(content);

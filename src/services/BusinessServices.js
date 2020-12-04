@@ -35,13 +35,6 @@ export function fetchMerchantDetail(params) {
   });
 }
 
-// get 商户数据 - OCR识别营业执照
-export function fetchMerBusinessOcr(params) {
-  return request('/common/ocr/businessLicense', {
-    params,
-  });
-}
-
 // post 商户数据 - 商家 设置开户行号
 export function fetchMerSetBandCode(data) {
   return request('/admin/merchantManagement/updateMerchantBankSwiftCode', {
@@ -104,13 +97,6 @@ export function fetchMerchantAuditList(params) {
 // get 商户审核 - 商户审核详情列表
 export function fetchMerchantAuditDetailList(params) {
   return request('/admin/userMerchantVerifyRecord/listUserMerchantVerifyRecord', {
-    params,
-  });
-}
-
-// get 商户审核 - 商圈选项
-export function fetchWaitBusinessHub(params) {
-  return request('/common/businessHub/listBusinessHubByCode', {
     params,
   });
 }
@@ -178,30 +164,6 @@ export function fetchAddMerchantGroup(data) {
   });
 }
 //新增集团
-export function fetchGetOcrBusinessLicense(params) {
-  return request('/common/ocr/businessLicense', {
-    params,
-  });
-}
-//ocr 印业执照
-export function fetchGetOcrBankLicense(params) {
-  return request('/common/ocr/bankLicense', {
-    params,
-  });
-}
-//ocr 开户行
-export function fetchGetOcrIdCardFront(params) {
-  return request('/common/ocr/idCardFront', {
-    params,
-  });
-}
-//ocr 身份证正面
-export function fetchGetOcrIdCardBack(params) {
-  return request('/common/ocr/idCardBack', {
-    params,
-  });
-}
-//ocr 身份证反面
 
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {
@@ -256,7 +218,7 @@ export function fetchShareHandleDetail(params) {
   });
 }
 
-// data 分享管理 - 下架分享
+// post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {
     method: 'POST',
@@ -265,3 +227,21 @@ export function fetchShareStatusClose(data) {
 }
 
 // 分享管理 end
+
+// 订单列表
+
+// get 订单列表 - 列表
+export function fetchOrdersList(params) {
+  return request('/admin/orderManagement/listOrder', {
+    params,
+  });
+}
+
+// get 订单列表 - 详情
+export function fetchOrdersDetail(params) {
+  return request('/admin/orderManagement/getOrderById', {
+    params,
+  });
+}
+
+// 订单列表 end

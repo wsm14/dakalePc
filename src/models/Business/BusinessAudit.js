@@ -6,8 +6,8 @@ import {
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
   fetchMerSaleAuditAllow,
-  fetchWaitBusinessHub,
 } from '@/services/BusinessServices';
+import { fetchGetHubSelect } from '@/services/BaseServices';
 
 export default {
   namespace: 'businessAudit',
@@ -59,7 +59,7 @@ export default {
       });
     },
     *fetchWaitBusinessHub({ payload, callback }, { call, put }) {
-      const response = yield call(fetchWaitBusinessHub, payload);
+      const response = yield call(fetchGetHubSelect, payload);
       if (!response) return;
       const { content } = response;
       yield put({

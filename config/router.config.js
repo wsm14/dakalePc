@@ -139,7 +139,7 @@ export default [
           {
             path: '/business/orders',
             name: '订单列表',
-            component: './business/GroupList',
+            component: './Business/OrdersList',
           },
           {
             path: '/business/refund',

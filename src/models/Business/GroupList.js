@@ -1,12 +1,14 @@
 import { notification } from 'antd';
 import moment from 'moment';
 import {
-  fetchMerchantGroup,
-  fetchAddMerchantGroup,
-  fetchGetOcrBankLicense,
+  fetchGetOcrLicense,
+  fetchGetOcrBank,
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
-  fetchGetOcrBusinessLicense,
+} from '@/services/BaseServices';
+import {
+  fetchMerchantGroup,
+  fetchAddMerchantGroup,
   fetchMerchantBank,
   fetchWMSUserRoles,
   fetchGrounpDetails,
@@ -51,7 +53,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.recordList || [],total:content.total},
+          list: { list: content.recordList || [], total: content.total },
         },
       });
     },
@@ -87,13 +89,13 @@ export default {
       callback && callback();
     },
     *fetchGetOcrBusinessLicense({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetOcrBusinessLicense, payload);
+      const response = yield call(fetchGetOcrLicense, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
     *fetchGetOcrBankLicense({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetOcrBankLicense, payload);
+      const response = yield call(fetchGetOcrBank, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
@@ -139,7 +141,11 @@ export default {
             {
               ...content.merchantGroupDTO,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
-              allCode: [content.merchantGroupDTO.provinceCode,content.merchantGroupDTO.cityCode,content.merchantGroupDTO.districtCode],
+              allCode: [
+                content.merchantGroupDTO.provinceCode,
+                content.merchantGroupDTO.cityCode,
+                content.merchantGroupDTO.districtCode,
+              ],
             } || {},
           businessLicense: content.businessLicense || {},
           bankBindingInfo:
