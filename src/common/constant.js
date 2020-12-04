@@ -85,7 +85,7 @@ export const SHARE_TYPE = [
 ];
 
 // 分享状态
-export const SHARE_STATUS = ['待审核', '已上架', '审核拒绝', '下架', '删除', '分享完成'];
+export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分享完成'];
 
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];

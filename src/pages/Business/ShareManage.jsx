@@ -109,7 +109,7 @@ const ShareManage = (props) => {
                 type: 'own',
                 pop: true,
                 title: '下架',
-                visible: status == 1,
+                visible: status == 1 || status == 5,
                 click: () => fetchGetDetail(val),
               },
               {
