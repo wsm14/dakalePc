@@ -34,6 +34,32 @@ export function fetchExpertOpen(data) {
 
 // 哒人列表 end
 
+// 种草管理
+
+// get 种草管理 - 列表
+export function fetchExpertRemdList(params) {
+  return request('/admin/kolMoments/listKolMomentsManagement', {
+    params,
+  });
+}
+
+// get 种草管理 - 详情
+export function fetchExpertRemdDetail(params) {
+  return request('/admin/kolMoments/kolMomentsDetail', {
+    params,
+  });
+}
+
+// post 种草管理 - 上下架
+export function fetchExpertRemdStatus(data) {
+  return request('/admin/kolMoments/kolMomentsDropOff', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 种草管理 end
+
 // get 达人管理 - 创作设置
 export function fetchExpertSetList(params) {
   return request('/admin/domain/listDomain', {

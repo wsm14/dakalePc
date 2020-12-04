@@ -87,8 +87,11 @@ export const SHARE_TYPE = [
   { value: 'image', name: '图文' },
 ];
 
-// 分享状态
+// 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分享完成'];
+
+// 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
+export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
 
 // 订单属性
 export const ORDERS_ATTRIBUTES = [

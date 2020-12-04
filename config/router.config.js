@@ -166,7 +166,7 @@ export default [
           {
             path: '/expert/recommend',
             name: '种草管理',
-            component: './Expert/ExpertUserList',
+            component: './Expert/ExpertRecommend',
           },
           {
             path: '/expert/uaerlist',

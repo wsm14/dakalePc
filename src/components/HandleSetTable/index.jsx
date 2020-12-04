@@ -42,6 +42,14 @@ const HandleSetTable = (props) => {
         pop = true;
         btnText = '发布';
       }
+      if (type === 'up') {
+        pop = true;
+        btnText = '上架';
+      }
+      if (type === 'down') {
+        pop = true;
+        btnText = '下架';
+      }
 
       let component =
         type === 'text' ? (
