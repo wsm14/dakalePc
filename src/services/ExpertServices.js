@@ -58,6 +58,21 @@ export function fetchExpertRemdStatus(data) {
   });
 }
 
+// get 种草管理 - 举报列表
+export function fetchExpertReportList(params) {
+  return request('/user/userReport/listUserReport', {
+    params,
+  });
+}
+
+// post 种草管理 - 举报列表 - 处理举报
+export function fetchExpertProcessReport(data) {
+  return request('/user/userReport/processUserReport', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 种草管理 end
 
 // get 达人管理 - 创作设置

@@ -1,17 +1,21 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import { Button } from 'antd';
 import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import RecommendDetail from './components/Recommend/RecommendDetail';
 import OrdersDetail from './components/Recommend/OrdersDetail';
+import ReportList from './components/Recommend/ReportList';
 
 const ExpertRecommend = (props) => {
   const { expertRecommend, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleDetailList, setVisibleDetailList] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -66,6 +70,11 @@ const ExpertRecommend = (props) => {
     {
       title: '哒人昵称',
       dataIndex: 'username',
+      render: (val) => (
+        <Ellipsis length={8} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '哒人等级',
@@ -119,6 +128,7 @@ const ExpertRecommend = (props) => {
     {
       title: '操作',
       align: 'right',
+      fixed: 'right',
       dataIndex: 'kolMomentsId',
       render: (kolMomentsId, record) => {
         const { status, userIdString } = record;
@@ -158,6 +168,11 @@ const ExpertRecommend = (props) => {
   return (
     <>
       <DataTableBlock
+        btnExtra={
+          <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
+            举报中心
+          </Button>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -167,11 +182,18 @@ const ExpertRecommend = (props) => {
         {...expertRecommend.list}
       ></DataTableBlock>
       <RecommendDetail visible={visible} onClose={() => setVisible(false)}></RecommendDetail>
+      <ReportList
+        setShowVisible={setVisible}
+        visible={visibleDetailList}
+        setVisible={setVisibleDetailList}
+      ></ReportList>
     </>
   );
 };
 
 export default connect(({ expertRecommend, loading }) => ({
   expertRecommend,
-  loading: loading.models.expertRecommend,
+  loading:
+    loading.effects['expertRecommend/fetchGetList'] ||
+    loading.effects['expertRecommend/fetchExpertRemdStatus'],
 }))(ExpertRecommend);

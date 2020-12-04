@@ -166,7 +166,6 @@ const ShareManage = (props) => {
   return (
     <>
       <DataTableBlock
-        keepName="绑定查询"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

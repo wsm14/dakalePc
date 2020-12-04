@@ -3,6 +3,8 @@ import {
   fetchExpertRemdList,
   fetchExpertRemdStatus,
   fetchExpertRemdDetail,
+  fetchExpertReportList,
+  fetchExpertProcessReport,
 } from '@/services/ExpertServices';
 
 export default {
@@ -10,6 +12,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    reportList: { list: [], total: 0 },
     detail: {},
   },
 
@@ -34,6 +37,17 @@ export default {
         },
       });
     },
+    *fetchGetReportList({ payload }, { call, put }) {
+      const response = yield call(fetchExpertReportList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          reportList: { list: content.recordList, total: content.total },
+        },
+      });
+    },
     *fetchExpertRemdDetail({ payload }, { call, put }) {
       const response = yield call(fetchExpertRemdDetail, payload);
       if (!response) return;
@@ -51,6 +65,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '状态修改成功',
+      });
+      callback();
+    },
+    *fetchExpertProcessReport({ payload, callback }, { call, put }) {
+      const response = yield call(fetchExpertProcessReport, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '举报处理成功',
       });
       callback();
     },
