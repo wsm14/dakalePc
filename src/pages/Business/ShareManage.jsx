@@ -1,21 +1,56 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { SHARE_TYPE, SHARE_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import closeRefuse from './components/Share/CloseRefuse';
+import ShareDetail from './components/Share/ShareDetail';
+import ShareHandleDetail from './components/Share/ShareHandleDetail';
 
 const ShareManage = (props) => {
-  const { shareManage, loading } = props;
+  const { shareManage, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false);
+  const [visibleHandle, setVisibleHandle] = useState(false);
+
+  // 下架
+  const fetchAuditRefuse = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: closeRefuse({ dispatch, childRef, initialValues }),
+    });
+  };
+
+  // 获取详情
+  const fetchShareDetail = (val, type) => {
+    dispatch({
+      type: 'shareManage/fetchShareDetail',
+      payload: {
+        userMomentIdString: val,
+      },
+      callback: (detail) => setVisible({ show: true, type, detail }),
+    });
+  };
+
+  // 获取操作日志详情
+  const fetchShareHandleDetail = (val) => {
+    dispatch({
+      type: 'shareManage/fetchShareHandleDetail',
+      payload: {
+        identifyIdStr: val,
+      },
+      callback: (detail) => setVisible({ show: true, detail }),
+    });
+  };
 
   // 搜索参数
   const searchItems = [
     {
       label: '内容标题',
-      name: 'beginDate',
+      name: 'title',
     },
     {
       label: '分享类型',
@@ -110,17 +145,16 @@ const ShareManage = (props) => {
                 pop: true,
                 title: '下架',
                 visible: status == 1 || status == 5,
-                click: () => fetchGetDetail(val),
+                click: () => fetchAuditRefuse(record),
               },
               {
                 type: 'info',
-                click: () =>
-                  fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                click: () => fetchShareDetail(val, record.contentType),
               },
               {
                 title: '操作记录',
                 type: 'own',
-                click: () => setVisible({ show: true, record }),
+                click: () => fetchShareHandleDetail(val),
               },
             ]}
           />
@@ -130,16 +164,23 @@ const ShareManage = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="绑定查询"
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userMomentIdString}`}
-      dispatchType="shareManage/fetchGetList"
-      {...shareManage}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        keepName="绑定查询"
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userMomentIdString}`}
+        dispatchType="shareManage/fetchGetList"
+        {...shareManage}
+      ></DataTableBlock>
+      <ShareDetail visible={visible} onClose={() => setVisible(false)}></ShareDetail>
+      <ShareHandleDetail
+        visible={visibleHandle}
+        onClose={() => setVisibleHandle(false)}
+      ></ShareHandleDetail>
+    </>
   );
 };
 

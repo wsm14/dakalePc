@@ -241,3 +241,27 @@ export function fetchShareList(params) {
     params,
   });
 }
+
+// get 分享管理 - 内容详情
+export function fetchShareDetail(params) {
+  return request('/admin/marketingManagement/getUserMomentsById', {
+    params,
+  });
+}
+
+// get 分享管理 - 操作记录
+export function fetchShareHandleDetail(params) {
+  return request('/user/logRecord/listLogRecord', {
+    params,
+  });
+}
+
+// data 分享管理 - 下架分享
+export function fetchShareStatusClose(data) {
+  return request('/admin/marketingManagement/closeUserMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 分享管理 end

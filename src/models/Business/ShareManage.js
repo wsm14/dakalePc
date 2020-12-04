@@ -1,4 +1,10 @@
-import { fetchShareList } from '@/services/BusinessServices';
+import { notification } from 'antd';
+import {
+  fetchShareList,
+  fetchShareStatusClose,
+  fetchShareDetail,
+  fetchShareHandleDetail,
+} from '@/services/BusinessServices';
 
 export default {
   namespace: 'shareManage',
@@ -29,6 +35,27 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchShareDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchShareDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.userMoments);
+    },
+    *fetchShareHandleDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchShareHandleDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.logRecordList);
+    },
+    *fetchStatusClose({ payload, callback }, { call }) {
+      const response = yield call(fetchShareStatusClose, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分享下架成功',
+      });
+      callback();
     },
   },
 };
