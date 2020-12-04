@@ -137,6 +137,11 @@ export default [
             component: './Business/GroupList',
           },
           {
+            path: '/business/classify',
+            name: '分类管理',
+            component: './Business/ClassifyManage',
+          },
+          {
             path: '/business/orders',
             name: '订单列表',
             component: './Business/OrdersList',

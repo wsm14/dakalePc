@@ -237,7 +237,7 @@ export function fetchOrdersList(params) {
   });
 }
 
-// get 订单列表 - 详情
+// get 订单列表 / 退款管理 - 详情
 export function fetchOrdersDetail(params) {
   return request('/admin/orderManagement/getOrderById', {
     params,
@@ -256,3 +256,21 @@ export function fetchRefundOrderList(params) {
 }
 
 // 退款管理 end
+
+// 分类列表
+
+// get 分类列表 - 搜索商家
+export function fetchClassifyGetMre(params) {
+  return request('/user/userMerchant/listMerchantBySearchConditions', {
+    params,
+  });
+}
+
+// get 分类列表 - 类别
+export function fetchClassifyList(params) {
+  return request('/admin/categoryCustomManagement/listCategoryCustomByMerchant', {
+    params,
+  });
+}
+
+// 分类列表 end

@@ -12,6 +12,8 @@ import {
   InputNumber,
   Cascader,
   Grid,
+  Empty,
+  Spin
 } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
@@ -98,6 +100,11 @@ const SearchCondition = (props) => {
             optionFilterProp="children"
             loading={item.loading}
             style={{ width: '100%' }}
+            onSearch={item.onSearch}
+            allowClear={true}
+            notFoundContent={
+              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }
             placeholder={item.placeholder || `请选择`}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
