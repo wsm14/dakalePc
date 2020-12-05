@@ -103,6 +103,7 @@ const SearchCondition = (props) => {
             onSearch={item.onSearch}
             onChange={item.onChange}
             allowClear={true}
+            dropdownMatchSelectWidth={false}
             notFoundContent={
               item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
@@ -114,9 +115,13 @@ const SearchCondition = (props) => {
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
                 const name = data.value ? data.name : data;
+                const otherData = data.otherData ? data.otherData : '';
                 return (
                   <Option key={j} value={value}>
                     {name}
+                    {otherData && (
+                      <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>
+                    )}
                   </Option>
                 );
               }

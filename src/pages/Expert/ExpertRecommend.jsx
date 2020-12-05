@@ -139,11 +139,6 @@ const ExpertRecommend = (props) => {
             <HandleSetTable
               formItems={[
                 {
-                  type: 'up',
-                  visible: status == 3,
-                  click: () => fetchExpertRemdStatus({ ...idObj, dropOffFlag: 1 }),
-                },
-                {
                   type: 'down',
                   visible: status == 1 || status == 5,
                   click: () => fetchExpertRemdStatus({ ...idObj, dropOffFlag: 0 }),

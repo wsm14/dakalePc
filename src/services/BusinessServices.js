@@ -266,16 +266,16 @@ export function fetchGoodsList(params) {
   });
 }
 
-// get 分类列表 - 搜索商家
+// get 商品管理 - 搜索商家
 export function fetchGoodsGetMre(params) {
   return request('/user/userMerchant/listMerchantBySearchConditions', {
     params,
   });
 }
 
-// get 商品管理 - 类别
+// get 商品管理 - 搜索类别
 export function fetchGoodsGetClassify(params) {
-  return request('/admin/categoryCustomManagement/listCategoryCustomByMerchant', {
+  return request('/admin/categoryCustomManagement/listCategoryCustomByMerchantId', {
     params,
   });
 }
@@ -291,5 +291,12 @@ export function fetchUpdataStock(data) {
 // 商品管理 end
 
 // 分类列表
+
+// get 分类列表 - 列表
+export function fetchClassifyList(params) {
+  return request('/admin/categoryCustomManagement/listCategoryCustom', {
+    params,
+  });
+}
 
 // 分类列表 end

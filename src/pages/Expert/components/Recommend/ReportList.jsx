@@ -118,7 +118,7 @@ const ReportList = (props) => {
       {
         title: '处理时间',
         align: 'center',
-        dataIndex: 'status',
+        dataIndex: 'processTime',
       },
       {
         title: '操作',

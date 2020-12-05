@@ -47,6 +47,7 @@ export default {
         payload: {
           mreSelect: content.userMerchantList.map((item) => ({
             name: item.merchantName,
+            otherData: item.address,
             value: item.merchantId,
           })),
         },
@@ -59,7 +60,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          classifySelect: content.recordList
+          classifySelect: content.categoryCustomDTOS
             .map((item) => ({
               name: item.categoryName,
               value: item.categoryCustomId,
