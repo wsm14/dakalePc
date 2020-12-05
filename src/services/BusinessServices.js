@@ -299,4 +299,12 @@ export function fetchClassifyList(params) {
   });
 }
 
+// post 分类列表 - 删除
+export function fetchClassifyDel(data) {
+  return request('/admin/categoryCustomManagement/removeCategoryCustom', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 分类列表 end

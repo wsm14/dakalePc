@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'dva';
 import debounce from 'lodash/debounce';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -7,6 +7,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 const ClassifyManageComponent = (props) => {
   const { classifyManage, loadings, loading, dispatch } = props;
 
+  const childRef = useRef();
   const { mreSelect } = classifyManage;
 
   // 搜索用户
@@ -22,6 +23,15 @@ const ClassifyManageComponent = (props) => {
     });
   }, 500);
 
+  // 分类删除
+  const fetchClassifyDel = (payload) => {
+    dispatch({
+      type: 'classifyManage/fetchClassifyDel',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
   // 搜索参数
   const searchItems = [
     {
@@ -34,14 +44,6 @@ const ClassifyManageComponent = (props) => {
       select: { list: mreSelect },
       placeholder: '请输入搜索',
     },
-    {
-      label: '分类名称',
-      name: 'parentMobile',
-      type: 'select',
-      allItem: false,
-      select: { list: [] },
-      placeholder: '请先选择店铺',
-    },
   ];
 
   // table 表头
@@ -53,40 +55,47 @@ const ClassifyManageComponent = (props) => {
     },
     {
       title: '分类名称',
-      align: 'center',
       dataIndex: 'categoryName',
       render: (val) => val || '--',
     },
     {
       title: '所属店铺',
-      align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'merchantName',
     },
     {
       title: '操作',
       fixed: 'right',
-      align: 'right',
+      align: 'center',
       dataIndex: 'categoryCustomId',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () =>
-                fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
-            },
-            {
-              type: 'del',
-              click: () => fetchGetDetail(val),
-            },
-          ]}
-        />
-      ),
+      render: (categoryCustomId, record) => {
+        const { merchantIdStr } = record;
+        return (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'edit',
+                click: () =>
+                  fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+              },
+              {
+                type: 'del',
+                popText: (
+                  <div>
+                    删除后，该数据将无法恢复<div>确定要删除吗？</div>
+                  </div>
+                ),
+                click: () => fetchClassifyDel({ categoryCustomId, merchantIdStr }),
+              },
+            ]}
+          />
+        );
+      },
     },
   ];
 
   return (
     <DataTableBlock
+      cRef={childRef}
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}

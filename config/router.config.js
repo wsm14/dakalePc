@@ -250,11 +250,6 @@ export default [
             name: '问题反馈',
             component: './Service/ServiceFeedBack',
           },
-          {
-            path: '/service/businessVideo',
-            name: '商户视频',
-            component: './Service/ServiceBusinessVideo',
-          },
         ],
       },
       {

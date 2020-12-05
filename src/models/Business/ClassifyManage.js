@@ -1,4 +1,5 @@
-import { fetchGoodsGetClassify, fetchGoodsGetMre } from '@/services/BusinessServices';
+import { notification } from 'antd';
+import { fetchClassifyList, fetchGoodsGetMre, fetchClassifyDel } from '@/services/BusinessServices';
 
 export default {
   namespace: 'classifyManage',
@@ -20,7 +21,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchGoodsGetClassify, payload);
+      const response = yield call(fetchClassifyList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -44,6 +45,15 @@ export default {
           })),
         },
       });
+    },
+    *fetchClassifyDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchClassifyDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分类删除成功',
+      });
+      callback();
     },
   },
 };

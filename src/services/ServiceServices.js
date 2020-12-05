@@ -15,21 +15,6 @@ export function fetchFeedBackPush(data) {
   });
 }
 
-// get 视屏列表 - 列表
-export function fetchMerVideoList(params) {
-  return request('/admin/marketingManagement/listMerchantMoment', {
-    params,
-  });
-}
-
-// post 视屏列表 - 删除
-export function fetchMerVideoDel(data) {
-  return request('/admin/marketingManagement/closeUserMoment', {
-    method: 'POST',
-    data,
-  });
-}
-
 // get 新闻动态 - 列表
 export async function fetchNewsList(params) {
   return request('/admin/news/listNews', {
