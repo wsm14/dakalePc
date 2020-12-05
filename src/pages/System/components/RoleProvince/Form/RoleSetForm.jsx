@@ -25,8 +25,8 @@ const RoleSetForm = (props) => {
       }));
       dispatch({
         type: userInfo.roleId
-          ? 'workerManageRole/fetchWMSRoleEdit' // 修改
-          : 'workerManageRole/fetchWMSRoleAdd', // 新增
+          ? 'roleProvinceArea/fetchWMSRoleEdit' // 修改
+          : 'roleProvinceArea/fetchWMSRoleAdd', // 新增
         payload: {
           ownerType: 'company',
           ...userInfo,
@@ -46,7 +46,7 @@ const RoleSetForm = (props) => {
   // 角色可选搜索
   // const fetchWMSRoleSelect = () => {
   //   dispatch({
-  //     type: 'workerManageRole/fetchWMSRoleSelect',
+  //     type: 'roleProvinceArea/fetchWMSRoleSelect',
   //     callback: setSelectValue,
   //   });
   // };
@@ -108,8 +108,7 @@ const RoleSetForm = (props) => {
   );
 };
 
-export default connect(({ workerManageRole, workerManageSection, loading }) => ({
-  workerManageRole,
-  sectionList: workerManageSection.list,
-  loading: loading.models.workerManageRole,
+export default connect(({ roleProvinceArea, loading }) => ({
+  roleProvinceArea,
+  loading: loading.models.roleProvinceArea,
 }))(RoleSetForm);

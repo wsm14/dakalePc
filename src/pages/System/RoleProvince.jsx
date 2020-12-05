@@ -3,10 +3,10 @@ import { connect } from 'umi';
 import { Switch, Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import RoleSetForm from '../Form/RoleSetForm';
+import RoleSetForm from './components/RoleProvince/Form/RoleSetForm';
 
-const RoleList = (props) => {
-  const { loading, dispatch, workerManageRole } = props;
+const ProvinceRole = (props) => {
+  const { loading, dispatch, roleProvinceArea } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -23,18 +23,10 @@ const RoleList = (props) => {
     });
   };
 
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '角色名称',
-      name: 'roleName',
-    },
-  ];
-
   // 获取角色详情
   const fetchDetail = (payload) => {
     dispatch({
-      type: 'workerManageRole/fetchWMSRoleDetail',
+      type: 'roleProvinceArea/fetchWMSRoleDetail',
       payload,
       callback: (userInfo) => setVisible({ visible: true, userInfo }),
     });
@@ -43,7 +35,7 @@ const RoleList = (props) => {
   // 角色修改
   const fetchEdit = (payload) => {
     dispatch({
-      type: 'workerManageRole/fetchWMSRoleEdit',
+      type: 'roleProvinceArea/fetchWMSRoleEdit',
       payload,
       callback: () => childRef.current.fetchGetData(),
     });
@@ -104,25 +96,23 @@ const RoleList = (props) => {
             新增
           </Button>
         }
-        CardNone={false}
         cRef={childRef}
         loading={loading}
-        searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.idString}`}
-        dispatchType="workerManageRole/fetchGetList"
-        params={{ownerType: 'company'}}
-        {...workerManageRole}
+        dispatchType="roleProvinceArea/fetchGetList"
+        params={{ ownerType: 'company' }}
+        {...roleProvinceArea}
       ></DataTableBlock>
       <RoleSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></RoleSetForm>
     </>
   );
 };
 
-export default connect(({ workerManageRole, loading }) => ({
-  workerManageRole,
+export default connect(({ roleProvinceArea, loading }) => ({
+  roleProvinceArea,
   loading:
-    loading.effects['workerManageRole/fetchGetList'] ||
-    loading.effects['workerManageRole/fetchWMSRoleDetail'] ||
+    loading.effects['roleProvinceArea/fetchGetList'] ||
+    loading.effects['roleProvinceArea/fetchWMSRoleDetail'] ||
     loading.effects['sysMenuList/fetchGetList'],
-}))(RoleList);
+}))(ProvinceRole);

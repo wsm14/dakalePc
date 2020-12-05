@@ -263,14 +263,14 @@ export default [
             component: './System/AccountAdmin',
           },
           {
-            path: '/system/company',
-            name: '省公司帐号',
-            component: './System/AccountCompanyRole',
+            path: '/system/provinceRole',
+            name: '省公司角色管理',
+            component: './System/RoleProvince',
           },
           {
-            path: '/system/partner',
-            name: '区县帐号',
-            component: './System/AccountPartnerRole',
+            path: '/system/areaRole',
+            name: '区县角色管理',
+            component: './System/RoleArea',
           },
           {
             path: '/system/tradeArea',

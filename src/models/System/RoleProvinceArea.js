@@ -7,7 +7,7 @@ import {
 } from '@/services/SystemServices';
 
 export default {
-  namespace: 'workerManageRole',
+  namespace: 'roleProvinceArea',
 
   state: {
     list: [],
