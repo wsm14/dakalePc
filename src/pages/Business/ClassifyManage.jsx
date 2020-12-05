@@ -1,16 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
+import { Button } from 'antd';
 import debounce from 'lodash/debounce';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import ClassifySet from './components/Classify/ClassifySet';
 
 const ClassifyManageComponent = (props) => {
   const { classifyManage, loadings, loading, dispatch } = props;
 
   const childRef = useRef();
   const { mreSelect } = classifyManage;
+  const [visible, setVisible] = useState(false);
 
-  // 搜索用户
+  // 搜索商户
   const fetchClassifyGetMre = debounce((keyword) => {
     if (!keyword) return;
     dispatch({
@@ -74,8 +77,7 @@ const ClassifyManageComponent = (props) => {
             formItems={[
               {
                 type: 'edit',
-                click: () =>
-                  fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                click: () => setVisible({ type: 'edit', detail: record }),
               },
               {
                 type: 'del',
@@ -94,15 +96,27 @@ const ClassifyManageComponent = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.categoryCustomId}`}
-      dispatchType="classifyManage/fetchGetList"
-      {...classifyManage}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        btnExtra={
+          <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ type: 'add' })}>
+            新增分类
+          </Button>
+        }
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.categoryCustomId}`}
+        dispatchType="classifyManage/fetchGetList"
+        {...classifyManage}
+      ></DataTableBlock>
+      <ClassifySet
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ClassifySet>
+    </>
   );
 };
 

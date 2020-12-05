@@ -1,5 +1,11 @@
 import { notification } from 'antd';
-import { fetchClassifyList, fetchGoodsGetMre, fetchClassifyDel } from '@/services/BusinessServices';
+import {
+  fetchClassifyList,
+  fetchGoodsGetMre,
+  fetchClassifyAdd,
+  fetchClassifyDel,
+  fetchClassifyEdit,
+} from '@/services/BusinessServices';
 
 export default {
   namespace: 'classifyManage',
@@ -8,6 +14,7 @@ export default {
     list: [],
     total: 0,
     mreSelect: [],
+    merFormSelect: [],
   },
 
   reducers: {
@@ -32,19 +39,40 @@ export default {
         },
       });
     },
-    *fetchClassifyGetMre({ payload }, { call, put }) {
+    *fetchClassifyGetMre({ payload, callback }, { call, put }) {
       const response = yield call(fetchGoodsGetMre, payload);
       if (!response) return;
       const { content } = response;
+      const { type } = payload;
       yield put({
         type: 'save',
         payload: {
-          mreSelect: content.userMerchantList.map((item) => ({
+          [type ? 'merFormSelect' : 'mreSelect']: content.userMerchantList.map((item) => ({
             name: item.merchantName,
+            otherData: item.address,
             value: item.merchantId,
           })),
         },
       });
+      callback && callback();
+    },
+    *fetchClassifyAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchClassifyAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分类新增成功',
+      });
+      callback();
+    },
+    *fetchClassifyEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchClassifyEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分类修改成功',
+      });
+      callback();
     },
     *fetchClassifyDel({ payload, callback }, { call, put }) {
       const response = yield call(fetchClassifyDel, payload);

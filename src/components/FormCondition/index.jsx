@@ -373,9 +373,11 @@ const FormComponents = ({
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
                 const name = data.name ? data.name : typeof data == 'string' ? data : '--';
+                const otherData = data.otherData ? data.otherData : '';
                 return (
                   <Option key={data.key || j} value={value}>
                     {name}
+                    {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
               }

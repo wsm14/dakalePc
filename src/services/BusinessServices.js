@@ -199,7 +199,7 @@ export function fetchUpdateGroup(data) {
 
 // get 分享管理 - 分享列表
 export function fetchShareList(params) {
-  return request('/admin/marketingManagement/listMerchantMoment', {
+  return request('/admin/marketingManagement/listMerchantMoments', {
     params,
   });
 }
@@ -299,6 +299,23 @@ export function fetchClassifyList(params) {
   });
 }
 
+
+// post 分类列表 - 新增
+export function fetchClassifyAdd(data) {
+  return request('/admin/categoryCustomManagement/createCategoryCustom', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 分类列表 - 修改
+export function fetchClassifyEdit(data) {
+  return request('/admin/categoryCustomManagement/editCategoryCustom', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 分类列表 - 删除
 export function fetchClassifyDel(data) {
   return request('/admin/categoryCustomManagement/removeCategoryCustom', {
@@ -306,5 +323,6 @@ export function fetchClassifyDel(data) {
     data,
   });
 }
+
 
 // 分类列表 end
