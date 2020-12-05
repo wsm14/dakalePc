@@ -27,7 +27,7 @@ const BasicLayout = (props) => {
     pageTitle,
     pageBtn,
     menuList,
-    loading
+    loading,
   } = props;
   const match = useLocation();
   const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]); // 菜单一级keys
@@ -50,12 +50,7 @@ const BasicLayout = (props) => {
   // 动态菜单
   const menuDataRender = (menu, keys = true) => {
     return menu.map((item) => {
-      const {
-        accessName: name,
-        accessIcon: icon,
-        accessUrl: path,
-        childList: routes,
-      } = item;
+      const { accessName: name, accessIcon: icon, accessUrl: path, childList: routes } = item;
       if (keys) {
         rootSubmenuKeys.push(path);
       }
@@ -109,6 +104,7 @@ const BasicLayout = (props) => {
 
   // 菜单展开方法
   const onOpenChange = (openKey) => {
+    console.log(openKey);
     const latestOpenKey = openKey.find((key) => openKeys.indexOf(key) === -1);
     setRootSubmenuKeys(Array.from(new Set(rootSubmenuKeys)));
     // setOpenKeys([latestOpenKey]);
@@ -148,7 +144,7 @@ const BasicLayout = (props) => {
         }}
         // footerRender={() => defaultFooterDom}
         // menuDataRender={menuDataRender}
-        menuDataRender={ () => menuDataRender(menuList)}
+        menuDataRender={() => menuDataRender(menuList)}
         menu={{ loading }}
         headerRender={() => <HeaderContent />}
         rightContentRender={() => <RightContent />}
@@ -186,7 +182,7 @@ const BasicLayout = (props) => {
 export default connect(({ global, settings, userInfo }) => ({
   collapsed: global.collapsed,
   menuList: userInfo.menuList,
-  loading:userInfo.loading,
+  loading: userInfo.loading,
   pageTitle: global.pageTitle,
   pageBtn: global.pageBtn,
   settings,

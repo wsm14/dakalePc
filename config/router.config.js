@@ -23,7 +23,7 @@ export default [
             path: '/chart/area',
             name: '区域战报',
             component: './User/UserList',
-            buttons: ['view', 'status'],
+            // buttons: ['view', 'status'],
           },
           {
             path: '/chart/block',
@@ -38,14 +38,13 @@ export default [
         routes: [
           {
             path: '/cityom/provCo',
-            name: '省级公司',
+            name: '省公司列表',
             component: './CityOm/ProvCompany',
-            button: ['view', 'update', 'save', 'status'],
           },
           {
             path: '/cityom/area',
             name: '区县运营中心',
-            component: './CityOm/CityPartner',
+            component: './CityOm/AreaCenter',
           },
           {
             path: '/cityom/join',
@@ -88,7 +87,6 @@ export default [
             path: '/user/list',
             name: '用户数据',
             component: './User/UserList',
-            buttons: ['view', 'status'],
           },
           {
             path: '/user/master',

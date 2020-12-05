@@ -18,6 +18,7 @@ const tableList = (props) => {
     visible1,
     visible2,
     tradeList,
+    loading,
     // categoryDTOList
   } = props;
   useEffect(() => {
@@ -236,10 +237,7 @@ const tableList = (props) => {
             新增
           </Button>
         }
-        // loading={
-        //   // loading.effects['businessList/fetchGetList'] ||
-        //   // loading.effects['businessList/fetchMerchantDetail']
-        // }
+        loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         cRef={childRef}

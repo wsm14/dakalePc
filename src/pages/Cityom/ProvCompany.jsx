@@ -3,8 +3,7 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import ProvCompanyDetailList from './components/ProvCompany/ProvCompanyDetailList';
-import provCompanySet from './components/ProvCompany/ProvCompanyDetail';
+import ProvCompanyDetailList from './components/Prov/ProvCompanyDetailList';
 
 const ProvCompany = (props) => {
   const { list, loading, dispatch } = props;

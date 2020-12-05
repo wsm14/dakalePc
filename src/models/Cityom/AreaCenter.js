@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import { fetchFranchiseAppList } from '@/services/CityomServices';
 
 export default {
-  namespace: 'provCompany',
+  namespace: 'areaCenter',
 
   state: {
     list: { list: [], total: 0 },
@@ -33,7 +33,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.userMerchantList, total: content.total },
+          list: { list: content.partnerList, total: content.total },
         },
       });
     },

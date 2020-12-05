@@ -3,9 +3,6 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import CityPartnerDetailList from './components/CityPartner/CityPartnerDetailList';
-// import CityPartnerTotalInfo from './components/CityPartner/CityPartnerTotalInfo';
-import cityPartnerSet from './components/CityPartner/CityPartnerDetail';
 
 const CityPartner = (props) => {
   const { list, loading, dispatch } = props;
@@ -121,19 +118,12 @@ const CityPartner = (props) => {
 
   useEffect(() => {
     dispatch({
-      type: 'cityPartner/clearDetail',
+      type: 'areaCenter/clearDetail',
     });
   }, [visible]);
 
   return (
     <>
-      {/* <CityPartnerTotalInfo
-        btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
-            新增合伙人
-          </Button>
-        }
-      ></CityPartnerTotalInfo> */}
       <DataTableBlock
         btnExtra={
           <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
@@ -145,15 +135,14 @@ const CityPartner = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.partnerIdString}`}
-        dispatchType="cityPartner/fetchGetList"
+        dispatchType="areaCenter/fetchGetList"
         {...list}
       ></DataTableBlock>
-      <CityPartnerDetailList visible={visible} setVisible={setVisible} />
     </>
   );
 };
 
-export default connect(({ cityPartner, loading }) => ({
-  list: cityPartner.list,
-  loading: loading.effects['cityPartner/fetchGetList'],
+export default connect(({ areaCenter, loading }) => ({
+  list: areaCenter.list,
+  loading: loading.effects['areaCenter/fetchGetList'],
 }))(CityPartner);
