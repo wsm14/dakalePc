@@ -296,6 +296,14 @@ export function fetchGoodsUpdataStatus(data) {
   });
 }
 
+// post 商品管理 - 新增
+export function fetchGoodsAdd(data) {
+  return request('/admin/goodsManagement/createGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 商品管理 - 删除
 export function fetchGoodsDel(data) {
   return request('/admin/goodsManagement/offShelfGoods', {

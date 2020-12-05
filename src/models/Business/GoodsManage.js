@@ -6,6 +6,7 @@ import {
   fetchGoodsGetClassify,
   fetchUpdataStock,
   fetchGoodsUpdataStatus,
+  fetchGoodsAdd,
   fetchGoodsDel,
   fetchGoodsGetDetail,
 } from '@/services/BusinessServices';
@@ -64,12 +65,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          classifySelect: content.categoryCustomDTOS
-            .map((item) => ({
-              name: item.categoryName,
-              value: item.categoryCustomId,
-            }))
-            .filter((i) => i.status == 1),
+          classifySelect: content.categoryCustomDTOS.map((item) => ({
+            name: item.categoryName,
+            value: item.categoryCustomId,
+          })),
         },
       });
     },
@@ -85,6 +84,15 @@ export default {
       const { content } = response;
       callback(content.goodsDTO);
     },
+    *fetchGoodsAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGoodsAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商品新增成功',
+      });
+      callback();
+    },
     *fetchGoodsUpdataStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchGoodsUpdataStatus, payload);
       if (!response) return;
@@ -95,7 +103,7 @@ export default {
       callback();
     },
     *fetchGoodsDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchUpdataStock, payload);
+      const response = yield call(fetchGoodsDel, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

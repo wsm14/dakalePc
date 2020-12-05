@@ -1,5 +1,6 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import GoodsSetTable from '../Form/components/GoodsSetTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
@@ -9,7 +10,7 @@ const GoodsDetail = (props) => {
     {
       label: '商品图片',
       type: 'upload',
-      name: 'goodsImg',
+      name: 'allImgs',
     },
     {
       label: '所属店铺',
@@ -26,6 +27,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: '单位',
+      show: detail.goodsType == 'single',
       name: 'goodsUnit',
     },
     {
@@ -38,7 +40,7 @@ const GoodsDetail = (props) => {
       render: (val, record) => `￥${val}`,
     },
     {
-      label: '单品介绍',
+      label: detail.goodsType == 'single' ? '单品介绍' : '套餐介绍',
       name: 'goodsDesc',
       render: (val, record) => (
         <div>
@@ -47,10 +49,18 @@ const GoodsDetail = (props) => {
             {record.goodsDescImg &&
               record.goodsDescImg
                 .split(',')
-                .map((item) => <img src={item} style={{ width: '100%', marginTop: 10 }}></img>)}
+                .map((item) => (
+                  <img key={item} src={item} style={{ width: '100%', marginTop: 10 }}></img>
+                ))}
           </div>
         </div>
       ),
+    },
+    {
+      label: '套餐内单品',
+      show: detail.goodsType == 'package',
+      name: 'packageGoods',
+      render: (val) => <GoodsSetTable detail={JSON.parse(val)}></GoodsSetTable>,
     },
   ];
 

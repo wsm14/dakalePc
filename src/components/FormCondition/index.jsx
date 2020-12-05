@@ -14,6 +14,7 @@ import {
   Divider,
   Checkbox,
   Spin,
+  Empty,
 } from 'antd';
 import ImgCutView from '@/components/ImgCut';
 import { PlusOutlined } from '@ant-design/icons';
@@ -85,7 +86,7 @@ const formItemLayout = {
     sm: { span: 6 },
   },
   wrapperCol: {
-    sm: { span: 16 },
+    sm: { span: 17 },
   },
 };
 
@@ -317,6 +318,7 @@ const FormComponents = ({
             style={{ width: '100%' }}
             max={item.max}
             min={item.min}
+            formatter={item.formatter}
             precision={item.precision}
             addonAfter={item.addonAfter}
             prefix={item.prefix}
@@ -364,6 +366,9 @@ const FormComponents = ({
             filterOption={item.filterOption || true}
             onSearch={item.onSearch}
             onChange={item.onChange}
+            notFoundContent={
+              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }
             placeholder={item.placeholder || `请选择${label}`}
             style={{ width: '100%' }}
             optionFilterProp="children"

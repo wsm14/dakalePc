@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import debounce from 'lodash/debounce';
+import { Button } from 'antd';
 import { GOODS_TYPE } from '@/common/constant';
+import debounce from 'lodash/debounce';
 import closeRefuse from './components/Goods/Form/CloseRefuse';
 import stockSet from './components/Goods/Form/StockSet';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -227,6 +228,15 @@ const GoodsManageComponent = (props) => {
   return (
     <>
       <DataTableBlock
+        btnExtra={
+          <Button
+            className="dkl_green_btn"
+            key="1"
+            onClick={() => setVisible({ type: 'addGoods' })}
+          >
+            新增
+          </Button>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -235,7 +245,11 @@ const GoodsManageComponent = (props) => {
         dispatchType="goodsManage/fetchGetList"
         {...goodsManage}
       ></DataTableBlock>
-      <GoodsDrawer visible={visible} onClose={() => setVisible(false)}></GoodsDrawer>
+      <GoodsDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></GoodsDrawer>
       <GoodsHandleDetail visible={visible} onClose={() => setVisible(false)}></GoodsHandleDetail>
     </>
   );
