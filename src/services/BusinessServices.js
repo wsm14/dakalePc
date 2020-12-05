@@ -211,13 +211,6 @@ export function fetchShareDetail(params) {
   });
 }
 
-// get 分享管理 - 操作记录
-export function fetchShareHandleDetail(params) {
-  return request('/user/logRecord/listLogRecord', {
-    params,
-  });
-}
-
 // post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {
@@ -288,6 +281,22 @@ export function fetchUpdataStock(data) {
   });
 }
 
+// post 商品管理 - 下架
+export function fetchGoodsUpdataStatus(data) {
+  return request('/admin/goodsManagement/offShelfGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 商品管理 - 删除
+export function fetchGoodsDel(data) {
+  return request('/admin/goodsManagement/offShelfGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 商品管理 end
 
 // 分类列表
@@ -298,7 +307,6 @@ export function fetchClassifyList(params) {
     params,
   });
 }
-
 
 // post 分类列表 - 新增
 export function fetchClassifyAdd(data) {
@@ -323,6 +331,5 @@ export function fetchClassifyDel(data) {
     data,
   });
 }
-
 
 // 分类列表 end

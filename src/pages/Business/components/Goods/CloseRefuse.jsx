@@ -4,10 +4,9 @@ export default (props) => {
   // 下架
   const fetchStatusClose = (payload) => {
     dispatch({
-      type: 'goodsManage/fetchStatusClose',
+      type: 'goodsManage/fetchGoodsUpdataStatus',
       payload: {
-        merchantId: initialValues.merchantIdString,
-        momentId: initialValues.userMomentIdString,
+        goodsIdString: initialValues.goodsIdString,
         ...payload,
       },
       callback: () => childRef.current.fetchGetData(),

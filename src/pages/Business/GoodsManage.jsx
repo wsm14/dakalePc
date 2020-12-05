@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import debounce from 'lodash/debounce';
 import { GOODS_TYPE } from '@/common/constant';
@@ -6,12 +6,14 @@ import closeRefuse from './components/Goods/CloseRefuse';
 import stockSet from './components/Goods/StockSet';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import GoodsHandleDetail from './components/Goods/HandleDetail';
 
 const GoodsManageComponent = (props) => {
   const { goodsManage, loadings, loading, dispatch } = props;
 
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
+  const [visible, setVisible] = useState(false);
 
   // 搜索商家
   const fetchClassifyGetMre = debounce((keyword) => {
@@ -52,6 +54,26 @@ const GoodsManageComponent = (props) => {
     dispatch({
       type: 'drawerForm/show',
       payload: stockSet({ dispatch, childRef, initialValues }),
+    });
+  };
+
+  // 获取操作日志详情
+  const fetchGoodsHandleDetail = (val) => {
+    dispatch({
+      type: 'goodsManage/fetchGoodsHandleDetail',
+      payload: {
+        identifyIdStr: val,
+      },
+      callback: (detail) => setVisible({ type: 'handleDetail', detail }),
+    });
+  };
+
+  // 商品删除
+  const fetchGoodsDel = (payload) => {
+    dispatch({
+      type: 'goodsManage/fetchGoodsDel',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
     });
   };
 
@@ -109,7 +131,6 @@ const GoodsManageComponent = (props) => {
     },
     {
       title: '商品名称',
-      align: 'center',
       dataIndex: 'goodsName',
     },
     {
@@ -175,8 +196,7 @@ const GoodsManageComponent = (props) => {
               {
                 type: 'del',
                 visible: status == 0,
-                click: () =>
-                  fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                click: () => fetchGoodsDel({ goodsIdString: val }),
               },
               {
                 type: 'down',
@@ -186,8 +206,7 @@ const GoodsManageComponent = (props) => {
               {
                 type: 'own',
                 title: '操作记录',
-                click: () =>
-                  fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                click: () => fetchGoodsHandleDetail(val),
               },
             ]}
           />
@@ -197,15 +216,18 @@ const GoodsManageComponent = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.goodsIdString}`}
-      dispatchType="goodsManage/fetchGetList"
-      {...goodsManage}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.goodsIdString}`}
+        dispatchType="goodsManage/fetchGetList"
+        {...goodsManage}
+      ></DataTableBlock>
+      <GoodsHandleDetail visible={visible} onClose={() => setVisible(false)}></GoodsHandleDetail>
+    </>
   );
 };
 

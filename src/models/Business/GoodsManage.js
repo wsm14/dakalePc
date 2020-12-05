@@ -1,9 +1,12 @@
 import { notification } from 'antd';
+import { fetchHandleDetail } from '@/services/BaseServices';
 import {
   fetchGoodsList,
   fetchGoodsGetMre,
   fetchGoodsGetClassify,
   fetchUpdataStock,
+  fetchGoodsUpdataStatus,
+  fetchGoodsDel,
 } from '@/services/BusinessServices';
 
 export default {
@@ -68,6 +71,30 @@ export default {
             .filter((i) => i.status == 1),
         },
       });
+    },
+    *fetchGoodsHandleDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchHandleDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.logRecordList);
+    },
+    *fetchGoodsUpdataStatus({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGoodsUpdataStatus, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商品下架成功',
+      });
+      callback();
+    },
+    *fetchGoodsDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchUpdataStock, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商品删除成功',
+      });
+      callback();
     },
     *fetchUpdataStock({ payload, callback }, { call, put }) {
       const response = yield call(fetchUpdataStock, payload);

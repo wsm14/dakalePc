@@ -1,9 +1,9 @@
 import { notification } from 'antd';
+import { fetchHandleDetail } from '@/services/BaseServices';
 import {
   fetchShareList,
   fetchShareStatusClose,
   fetchShareDetail,
-  fetchShareHandleDetail,
 } from '@/services/BusinessServices';
 
 export default {
@@ -43,7 +43,7 @@ export default {
       callback(content.userMoments);
     },
     *fetchShareHandleDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchShareHandleDetail, payload);
+      const response = yield call(fetchHandleDetail, payload);
       if (!response) return;
       const { content } = response;
       callback(content.logRecordList);

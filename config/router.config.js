@@ -33,7 +33,7 @@ export default [
         ],
       },
       {
-        name: '区县管理',
+        name: '加盟管理',
         path: '/cityom',
         routes: [
           {

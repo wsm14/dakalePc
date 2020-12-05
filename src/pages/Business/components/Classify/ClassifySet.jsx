@@ -34,7 +34,10 @@ const ClassifySet = (props) => {
 
   // 搜索商户
   const fetchClassifyGetMre = debounce((keyword) => {
-    if (!keyword) return;
+    if (!keyword) {
+      setEditLoading(false);
+      return;
+    }
     dispatch({
       type: 'classifyManage/fetchClassifyGetMre',
       payload: {

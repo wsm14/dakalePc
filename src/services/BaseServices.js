@@ -36,3 +36,10 @@ export function fetchGetHubSelect(params) {
     params,
   });
 }
+
+// get 日志记录
+export function fetchHandleDetail(params) {
+  return request('/user/logRecord/listLogRecord', {
+    params,
+  });
+}
