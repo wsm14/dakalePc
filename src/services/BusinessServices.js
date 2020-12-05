@@ -266,6 +266,13 @@ export function fetchGoodsGetMre(params) {
   });
 }
 
+// get 商品管理 - 商品详情
+export function fetchGoodsGetDetail(params) {
+  return request('/admin/goodsManagement/getGoodsById', {
+    params,
+  });
+}
+
 // get 商品管理 - 搜索类别
 export function fetchGoodsGetClassify(params) {
   return request('/admin/categoryCustomManagement/listCategoryCustomByMerchantId', {

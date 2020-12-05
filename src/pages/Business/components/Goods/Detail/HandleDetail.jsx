@@ -16,9 +16,14 @@ const GoodsHandleDetail = (props) => {
       onCancel={onClose}
     >
       <Steps direction="vertical" progressDot current={detail.length}>
-        {detail.map((item) => (
-          <Steps.Step key={item.identifyIdStr} title={item.createTime} description={item.content} />
-        ))}
+        {type == 'handleDetail' &&
+          detail.map((item) => (
+            <Steps.Step
+              key={item.identifyIdStr}
+              title={item.createTime}
+              description={item.content}
+            />
+          ))}
       </Steps>
     </Modal>
   );

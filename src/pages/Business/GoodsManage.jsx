@@ -2,11 +2,12 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import debounce from 'lodash/debounce';
 import { GOODS_TYPE } from '@/common/constant';
-import closeRefuse from './components/Goods/CloseRefuse';
-import stockSet from './components/Goods/StockSet';
+import closeRefuse from './components/Goods/Form/CloseRefuse';
+import stockSet from './components/Goods/Form/StockSet';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import GoodsHandleDetail from './components/Goods/HandleDetail';
+import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
+import GoodsDrawer from './components/Goods/GoodsDrawer';
 
 const GoodsManageComponent = (props) => {
   const { goodsManage, loadings, loading, dispatch } = props;
@@ -14,68 +15,6 @@ const GoodsManageComponent = (props) => {
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
   const [visible, setVisible] = useState(false);
-
-  // 搜索商家
-  const fetchClassifyGetMre = debounce((keyword) => {
-    if (!keyword) return;
-    dispatch({
-      type: 'goodsManage/fetchClassifyGetMre',
-      payload: {
-        limit: 999,
-        page: 1,
-        keyword,
-      },
-    });
-  }, 500);
-
-  // 搜索商家 后搜索类别
-  const fetchGetClassify = (merchantId) => {
-    if (!merchantId) return;
-    dispatch({
-      type: 'goodsManage/fetchGoodsGetClassify',
-      payload: {
-        limit: 999,
-        page: 1,
-        merchantId,
-      },
-    });
-  };
-
-  // 下架
-  const fetchAuditRefuse = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
-    });
-  };
-
-  // 库存
-  const fetchStockSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: stockSet({ dispatch, childRef, initialValues }),
-    });
-  };
-
-  // 获取操作日志详情
-  const fetchGoodsHandleDetail = (val) => {
-    dispatch({
-      type: 'goodsManage/fetchGoodsHandleDetail',
-      payload: {
-        identifyIdStr: val,
-      },
-      callback: (detail) => setVisible({ type: 'handleDetail', detail }),
-    });
-  };
-
-  // 商品删除
-  const fetchGoodsDel = (payload) => {
-    dispatch({
-      type: 'goodsManage/fetchGoodsDel',
-      payload,
-      callback: () => childRef.current.fetchGetData(),
-    });
-  };
 
   // 搜索参数
   const searchItems = [
@@ -184,8 +123,7 @@ const GoodsManageComponent = (props) => {
             formItems={[
               {
                 type: 'info',
-                click: () =>
-                  fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                click: () => fetchGoodsGetDetail({ goodsIdString: val }),
               },
               {
                 type: 'own',
@@ -215,6 +153,77 @@ const GoodsManageComponent = (props) => {
     },
   ];
 
+  // 搜索商家
+  const fetchClassifyGetMre = debounce((keyword) => {
+    if (!keyword) return;
+    dispatch({
+      type: 'goodsManage/fetchClassifyGetMre',
+      payload: {
+        limit: 999,
+        page: 1,
+        keyword,
+      },
+    });
+  }, 500);
+
+  // 搜索商家 后搜索类别
+  const fetchGetClassify = (merchantId) => {
+    if (!merchantId) return;
+    dispatch({
+      type: 'goodsManage/fetchGoodsGetClassify',
+      payload: {
+        limit: 999,
+        page: 1,
+        merchantId,
+      },
+    });
+  };
+
+  // 商品删除
+  const fetchGoodsDel = (payload) => {
+    dispatch({
+      type: 'goodsManage/fetchGoodsDel',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
+  // 下架
+  const fetchAuditRefuse = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: closeRefuse({ dispatch, childRef, initialValues }),
+    });
+  };
+
+  // 库存
+  const fetchStockSet = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: stockSet({ dispatch, childRef, initialValues }),
+    });
+  };
+
+  // 获取商品详情
+  const fetchGoodsGetDetail = (payload) => {
+    dispatch({
+      type: 'goodsManage/fetchGoodsGetDetail',
+      payload,
+      callback: (detail) => setVisible({ type: 'showDetail', detail }),
+    });
+  };
+
+  // 获取操作日志详情
+  const fetchGoodsHandleDetail = (val) => {
+    dispatch({
+      type: 'goodsManage/fetchGoodsHandleDetail',
+      payload: {
+        identifyIdStr: val,
+      },
+      callback: (detail) => setVisible({ type: 'handleDetail', detail }),
+    });
+  };
+
   return (
     <>
       <DataTableBlock
@@ -226,6 +235,7 @@ const GoodsManageComponent = (props) => {
         dispatchType="goodsManage/fetchGetList"
         {...goodsManage}
       ></DataTableBlock>
+      <GoodsDrawer visible={visible} onClose={() => setVisible(false)}></GoodsDrawer>
       <GoodsHandleDetail visible={visible} onClose={() => setVisible(false)}></GoodsHandleDetail>
     </>
   );

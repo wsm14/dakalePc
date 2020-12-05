@@ -7,6 +7,7 @@ import {
   fetchUpdataStock,
   fetchGoodsUpdataStatus,
   fetchGoodsDel,
+  fetchGoodsGetDetail,
 } from '@/services/BusinessServices';
 
 export default {
@@ -77,6 +78,12 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.logRecordList);
+    },
+    *fetchGoodsGetDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchGoodsGetDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.goodsDTO);
     },
     *fetchGoodsUpdataStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchGoodsUpdataStatus, payload);
