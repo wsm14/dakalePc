@@ -2,15 +2,15 @@ import aliOssUpload from '@/utils/aliOssUpload';
 
 const ClassifySet = (props) => {
   const { dispatch, childRef, tradeList, initialValues = {}, rowDetail } = props;
-  console.log(rowDetail);
+  
   // 经营类目储存
   let setData = {};
+  const editType = !initialValues.domainId;
 
   // 提交表单
   const fetchDataEdit = (values) => {
     const { domainImage = '' } = values;
     const { parentDomainId: pid } = initialValues;
-    const editType = !initialValues.domainId;
     const topCategoryId = pid == 0 ? setData.value : setData[0].categoryIdString;
     const topCategoryName = pid == 0 ? setData.children : setData[0].categoryName;
     const category = {
@@ -40,19 +40,20 @@ const ClassifySet = (props) => {
     initialValues,
     formItems: [
       {
-        label: '领域名称',
-        visible: initialValues.parentDomainId == 0,
-        name: 'domainName',
-      },
-      {
         label: '行业类目',
         type: 'select',
         name: 'topCategoryName',
+        disabled: !editType,
         select: tradeList.map((i) => ({ name: i.categoryName, value: i.categoryIdString })),
         visible: initialValues.parentDomainId == 0,
         onChange: (val, item) => {
           setData = item;
         },
+      },
+      {
+        label: '领域名称',
+        visible: initialValues.parentDomainId == 0,
+        name: 'domainName',
       },
       {
         label: '领域',
@@ -71,7 +72,6 @@ const ClassifySet = (props) => {
         type: 'upload',
         name: 'domainImage',
         maxFile: 1,
-        visible: initialValues.parentDomainId !== 0,
       },
       {
         label: '行业类目',

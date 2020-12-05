@@ -26,7 +26,12 @@ const ExpertSet = (props) => {
       render: (val, record) => (
         <Switch
           checked={val == '1'}
-          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+          onClick={() =>
+            fetchClassifyStatusEdit(
+              { domainId: record.domainId, status: 1 ^ Number(record.status) },
+              val,
+            )
+          }
         />
       ),
     },
@@ -42,31 +47,31 @@ const ExpertSet = (props) => {
       fixed: 'right',
       align: 'right',
       render: (val, record) => {
-        const { topCategoryId: tcid, categoryId: cid } = record;
+        const { topCategoryId: tcid, categoryId: cid, parentDomainId: pid } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'edit',
-                visible: record.parentDomainId !== 0,
+                // visible: record.parentDomainId !== 0,
                 click: () =>
                   handleClassifySet(
                     {
                       ...record,
                       category: [`${tcid}`, `${cid}`],
-                      parentDomainId: null,
+                      parentDomainId: pid == 0 ? 0 : null,
                     },
                     record,
                   ),
               },
               {
                 type: 'del',
-                visible: record.parentDomainId !== 0,
+                visible: pid !== 0,
                 click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
               },
               {
                 type: 'own',
-                visible: record.parentDomainId === 0,
+                visible: pid === 0,
                 title: '添加内容分类',
                 click: () =>
                   handleClassifySet(
@@ -83,6 +88,15 @@ const ExpertSet = (props) => {
       },
     },
   ];
+
+  // 状态修改
+  const fetchClassifyStatusEdit = (values) => {
+    dispatch({
+      type: 'expertSet/fetchClassifyEdit',
+      payload: values,
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
 
   // 经营类目
   const fetchTradeList = () => {
