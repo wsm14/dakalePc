@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
-import aliOssUpload from '@/utils/aliOssUpload';
-import AddDetail from './AddFrom/index';
+import AddDetail from './AddForm/index';
 
 const ProvCompanySet = (props) => {
   const { dispatch, cRef, visible = {}, setVisibleSet, loading } = props;
