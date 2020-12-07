@@ -164,7 +164,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '开户许可证',
       type: 'upload',
-      show: bkInfo.bankAccountType === 1,
+      visible: bkInfo.bankAccountType === 1,
       name: 'openAccountPermit',
     },
     {

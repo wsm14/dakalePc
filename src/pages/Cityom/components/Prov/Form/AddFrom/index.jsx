@@ -3,10 +3,12 @@ import BaseForm from './BaseForm';
 import ContactForm from './ContactForm';
 
 const AddFromSet = (props) => {
-  const { form } = props;
+  const { form, detail, type } = props;
 
   const formProps = {
     form,
+    detail,
+    type,
   };
 
   return (

@@ -9,6 +9,13 @@ export function fetchProvList(params) {
   });
 }
 
+// get 省公司列表 - 详情
+export function fetchProvDetail(params) {
+  return request('/admin/company/companyDetail', {
+    params,
+  });
+}
+
 // post 省公司列表 - 新增
 export function fetchProvAdd(data) {
   return request('/admin/company/saveCompany', {

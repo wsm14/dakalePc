@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import CITYJSON from '@/common/city';
@@ -13,6 +13,15 @@ const ProvCompany = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleSet, setVisibleSet] = useState(false);
+
+  // 获取省公司详情
+  const fetchProvDetail = (payload) => {
+    dispatch({
+      type: 'provCompany/fetchProvDetail',
+      payload,
+      callback: (detail) => setVisibleSet({ type: payload.type, show: true, detail }),
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -87,17 +96,17 @@ const ProvCompany = (props) => {
       fixed: 'right',
       align: 'right',
       dataIndex: 'companyId',
-      render: (val, record) => (
+      render: (companyId, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
               title: '收益数据',
-              click: () => setVisible({ type: 'income', record }),
+              click: () => setVisible({ type: 'income' }),
             },
             {
               type: 'info',
-              click: () => fetchProvComDetail({ type: 'income', record }),
+              click: () => fetchProvDetail({ type: 'detail', companyId }),
             },
           ]}
         />
@@ -137,5 +146,6 @@ const ProvCompany = (props) => {
 
 export default connect(({ provCompany, loading }) => ({
   list: provCompany.list,
-  loading: loading.effects['provCompany/fetchGetList'],
+  loading:
+    loading.effects['provCompany/fetchGetList'] || loading.effects['provCompany/fetchProvDetail'],
 }))(ProvCompany);

@@ -5,9 +5,9 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import AddDetail from './AddFrom/index';
 
 const ProvCompanySet = (props) => {
-  const { dispatch, cRef, visible = {}, initialValues = false, onClose, loading } = props;
+  const { dispatch, cRef, visible = {}, onClose, loading } = props;
 
-  const { type = 'add', show = false } = visible;
+  const { type = 'add', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
   // 骨架框显示
@@ -50,7 +50,7 @@ const ProvCompanySet = (props) => {
   };
 
   const modalProps = {
-    title: `${{ add: '新增省公司', edit: '编辑信息' }[type]}`,
+    title: `${{ add: '新增省公司', edit: '编辑信息', detail: '省公司详情' }[type]}`,
     width: 700,
     visible: show,
     maskClosable: false,
@@ -89,7 +89,12 @@ const ProvCompanySet = (props) => {
       }
     >
       <Skeleton loading={skeletonType} active>
-        <AddDetail form={form}></AddDetail>
+        {
+          {
+            add: <AddDetail form={form} type={type}></AddDetail>,
+            detail: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
+          }[type]
+        }
       </Skeleton>
     </Drawer>
   );

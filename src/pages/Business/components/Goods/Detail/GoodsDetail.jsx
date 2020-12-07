@@ -27,7 +27,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: '单位',
-      show: detail.goodsType == 'single',
+      visible: detail.goodsType == 'single',
       name: 'goodsUnit',
     },
     {
@@ -58,7 +58,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: '套餐内单品',
-      show: detail.goodsType == 'package',
+      visible: detail.goodsType == 'package',
       name: 'packageGoods',
       render: (val) => <GoodsSetTable detail={JSON.parse(val)}></GoodsSetTable>,
     },

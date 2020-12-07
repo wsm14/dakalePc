@@ -5,9 +5,10 @@ import { AMAP_KEY } from '@/common/constant';
 import { Map, Marker } from 'react-amap';
 import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const BaseForm = (props) => {
-  const { form, initialValues = {} } = props;
+  const { form, detail = {}, type } = props;
 
   const [map, setMap] = useState(false);
   // 地图上显示的 [经度, 纬度]
@@ -19,7 +20,7 @@ const BaseForm = (props) => {
       const { address, allCityName, lat, lnt } = values;
       const city = allCityName[1];
       // 当经纬度存在 且地址原值与现在输入框值相同的情况下地图显示当前储存的经纬度
-      if (lat && lnt && initialValues.address == address) {
+      if (lat && lnt && detail.address == address) {
         setLocation([lnt, lat]);
         setMap(true);
         return;
@@ -96,6 +97,7 @@ const BaseForm = (props) => {
       name: 'agentProvinceCode',
       select: CITYJSON.map((item) => ({ name: item.label, value: item.value })),
       onChange: (val, item) => form.setFieldsValue({ agentProvinceName: item.children[0] }),
+      render: (val, row) => row.agentProvinceName,
     },
     {
       label: '分管省份名字值',
@@ -109,6 +111,7 @@ const BaseForm = (props) => {
       onChange: (val) => {
         form.setFieldsValue({ allCityName: val.map((item) => item.label) });
       },
+      show: false,
     },
     {
       label: '企业所在地名字',
@@ -116,9 +119,10 @@ const BaseForm = (props) => {
       hidden: true,
     },
     {
-      label: '详细地址',
+      label: '企业地址',
       name: 'address',
       addonAfter: <a onClick={onSearchAddress}>查询</a>,
+      render: (val, row) => `${row.allCityName}${val}`,
     },
     {
       type: 'noForm',
@@ -150,7 +154,19 @@ const BaseForm = (props) => {
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+  return (
+    <>
+      {type != 'detail' ? (
+        <FormCondition formItems={formItems} form={form} initialValues={detail} />
+      ) : (
+        <DescriptionsCondition
+          title="基础信息"
+          formItems={formItems}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
+    </>
+  );
 };
 
 export default connect(() => ({}))(BaseForm);

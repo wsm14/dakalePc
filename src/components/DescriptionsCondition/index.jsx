@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Descriptions, Upload, Modal, Image } from 'antd';
+import { Descriptions, Image } from 'antd';
 import styles from './index.less';
 
 /**
@@ -19,7 +19,7 @@ const imgold = (url, uid, name) => ({
   url,
 });
 
-const DescriptionsCondition = ({ formItems = [], initialValues }) => {
+const DescriptionsCondition = ({ formItems = [], initialValues, title, column, style }) => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
@@ -96,9 +96,13 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
   // 遍历表单
   const getFields = () =>
     formItems.map((item, i) => {
-      const { show = true } = item;
+      // visible true 则显示 hidden false 显示 show true显示
+      // visible 和表单共用 hidden 和表单相反 show 独有
+      const { show = true, visible = true, hidden = false } = item;
       return (
-        show && (
+        show &&
+        visible &&
+        !hidden && (
           <Descriptions.Item
             label={item.label}
             key={`${item.label}${i}`}
@@ -123,10 +127,17 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
 
   return (
     <>
-      <Descriptions bordered column={1} size="small">
+      <Descriptions
+        title={title}
+        className={styles.descriptions_box}
+        bordered
+        column={column || 1}
+        size="small"
+        style={style}
+      >
         {formItems.length ? getFields() : ''}
       </Descriptions>
-      <Modal
+      {/* <Modal
         visible={previewVisible}
         title={previewTitle}
         footer={null}
@@ -134,7 +145,7 @@ const DescriptionsCondition = ({ formItems = [], initialValues }) => {
         onCancel={() => setPreviewVisible(false)}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
+      </Modal> */}
     </>
   );
 };

@@ -1,5 +1,10 @@
 import { notification } from 'antd';
-import { fetchProvList, fetchProvAdd, fetchProvEdit } from '@/services/CityomServices';
+import {
+  fetchProvList,
+  fetchProvDetail,
+  fetchProvAdd,
+  fetchProvEdit,
+} from '@/services/CityomServices';
 
 export default {
   namespace: 'provCompany',
@@ -29,6 +34,25 @@ export default {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchProvDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchProvDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const {
+        provinceCode,
+        cityCode,
+        districtCode,
+        provinceName,
+        cityName,
+        districtName,
+      } = content.companyDetail;
+      const detail = {
+        ...content.companyDetail,
+        allCityName: [provinceName, cityName, districtName],
+        allCityCode: [provinceCode, cityCode, districtCode],
+      };
+      callback(detail);
     },
     *fetchProvAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchProvAdd, payload);
