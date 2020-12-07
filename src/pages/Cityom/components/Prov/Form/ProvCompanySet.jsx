@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
+import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
 import AddDetail from './AddForm/index';
+import AccountForm from './AccountForm/CorporateAccount';
 
 const ProvCompanySet = (props) => {
-  const { dispatch, cRef, visible = {}, setVisibleSet, loading } = props;
+  const {
+    dispatch,
+    cRef,
+    visible = {},
+    detail = {},
+    setVisibleSet,
+    setVisibleAct,
+    loading,
+    loadingDetail,
+  } = props;
 
-  const { type = 'add', show = false, detail = {} } = visible;
+  const { type = 'add', show = false } = visible;
 
   const [form] = Form.useForm();
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
+  const [tabKey, setTabKey] = useState('1');
 
   // 提交数据
-  const handleUpData = () => {
+  const handleUpData = (next) => {
     form.validateFields().then((values) => {
       const { password, contactMobile, entryDate, allCityCode, allCityName, lat } = values;
       if (!lat) {
@@ -43,6 +54,9 @@ const ProvCompanySet = (props) => {
         callback: () => {
           closeDrawer();
           cRef.current.fetchGetData();
+          if (next == 'next') {
+            setVisibleAct({ type: 'add', show: true });
+          }
         },
       });
     });
@@ -104,14 +118,16 @@ const ProvCompanySet = (props) => {
                   <Button onClick={handleUpData} type="primary" loading={loading}>
                     保存
                   </Button>
-                  <Button onClick={closeDrawer} type="primary" loading={loading}>
+                  <Button onClick={() => handleUpData('next')} type="primary" loading={loading}>
                     下一步
                   </Button>
                 </Space>
               ),
               edit: (
                 <Space>
-                  <Button onClick={() => setVisibleSet({ ...visible, type: 'detail' })}>取消</Button>
+                  <Button onClick={() => setVisibleSet({ ...visible, type: 'detail' })}>
+                    取消
+                  </Button>
                   <Button onClick={handleUpData} type="primary" loading={loading}>
                     保存
                   </Button>
@@ -120,25 +136,38 @@ const ProvCompanySet = (props) => {
               detail: (
                 <Space>
                   <Button onClick={closeDrawer}>关闭</Button>
-                  <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
-                    解约
-                  </Button>
-                  {(detail.status == 0 || detail.status == 1) && (
+                  {tabKey == '1' && (
+                    <>
+                      <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                        解约
+                      </Button>
+                      {(detail.status == 0 || detail.status == 1) && (
+                        <Button
+                          onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                          type="primary"
+                          loading={loading}
+                        >
+                          {detail.status == 0 ? '冻结' : '启用'}
+                        </Button>
+                      )}
+                      <Button
+                        onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                        type="primary"
+                        loading={loading}
+                      >
+                        编辑
+                      </Button>
+                    </>
+                  )}
+                  {tabKey == '2' && (
                     <Button
-                      onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                      onClick={() => setVisibleAct({ type: 'edit', show: true })}
                       type="primary"
                       loading={loading}
                     >
-                      {detail.status == 0 ? '冻结' : '启用'}
+                      去编辑
                     </Button>
                   )}
-                  <Button
-                    onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                    type="primary"
-                    loading={loading}
-                  >
-                    编辑
-                  </Button>
                 </Space>
               ),
             }[type]
@@ -146,12 +175,24 @@ const ProvCompanySet = (props) => {
         </div>
       }
     >
-      <Skeleton loading={skeletonType} active>
+      <Skeleton loading={skeletonType || loadingDetail} active>
         {
           {
             add: <AddDetail form={form} type={type}></AddDetail>,
             edit: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
-            detail: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
+            detail: (
+              <Tabs defaultActiveKey="1" onChange={setTabKey}>
+                <Tabs.TabPane tab="省公司信息" key="1">
+                  <AddDetail form={form} type={type} detail={detail}></AddDetail>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="账户信息" key="2">
+                  {detail.ownerInfo && detail.ownerInfo.bankStatus == 2 && (
+                    <Alert message={detail.ownerInfo.bankRejectReason} type="error" />
+                  )}
+                  <AccountForm form={form} type={type} detail={detail}></AccountForm>
+                </Tabs.TabPane>
+              </Tabs>
+            ),
           }[type]
         }
       </Skeleton>
@@ -162,4 +203,5 @@ const ProvCompanySet = (props) => {
 export default connect(({ loading }) => ({
   loading:
     loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
+  loadingDetail: loading.effects['provCompany/fetchProvDetail'],
 }))(ProvCompanySet);

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'umi';
 import { SEX_TYPE } from '@/common/constant';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
@@ -79,4 +78,4 @@ const ContactForm = (props) => {
   );
 };
 
-export default connect(({}) => ({}))(ContactForm);
+export default ContactForm;

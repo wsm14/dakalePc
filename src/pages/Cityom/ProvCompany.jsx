@@ -6,6 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
+import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
 
 const ProvCompany = (props) => {
   const { list, loading, dispatch } = props;
@@ -13,13 +14,29 @@ const ProvCompany = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleSet, setVisibleSet] = useState(false);
+  const [visibleAct, setVisibleAct] = useState(false);
 
   // 获取省公司详情
   const fetchProvDetail = (payload) => {
     dispatch({
+      type: 'provCompany/close',
+    });
+    dispatch({
       type: 'provCompany/fetchProvDetail',
       payload,
-      callback: (detail) => setVisibleSet({ type: payload.type, show: true, detail }),
+      callback: () => fetchProvBankDetail(payload),
+    });
+  };
+
+  // 获取省公司账户详情
+  const fetchProvBankDetail = (payload) => {
+    dispatch({
+      type: 'provCompany/fetchProvBankDetail',
+      payload: {
+        ownerId: payload.companyId,
+        ownerType: 'company',
+      },
+      callback: () => setVisibleSet({ type: payload.type, show: true }),
     });
   };
 
@@ -122,7 +139,12 @@ const ProvCompany = (props) => {
           <Button
             className="dkl_green_btn"
             key="1"
-            onClick={() => setVisibleSet({ type: 'add', show: true })}
+            onClick={() => {
+              dispatch({
+                type: 'provCompany/close',
+              });
+              setVisibleSet({ type: 'add', show: true });
+            }}
           >
             新增
           </Button>
@@ -139,7 +161,13 @@ const ProvCompany = (props) => {
         cRef={childRef}
         visible={visibleSet}
         setVisibleSet={setVisibleSet}
+        setVisibleAct={setVisibleAct}
       ></ProvCompanySet>
+      <ProvAccountSet
+        cRef={childRef}
+        visible={visibleAct}
+        setVisibleSet={setVisibleAct}
+      ></ProvAccountSet>
     </>
   );
 };

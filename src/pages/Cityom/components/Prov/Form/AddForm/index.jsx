@@ -1,13 +1,14 @@
 import React from 'react';
+import { connect } from 'dva';
 import BaseForm from './BaseForm';
 import ContactForm from './ContactForm';
 
 const AddFromSet = (props) => {
-  const { form, detail, type } = props;
+  const { form, detailInfo = {}, type } = props;
 
   const formProps = {
     form,
-    detail,
+    detail: detailInfo,
     type,
   };
 
@@ -21,4 +22,6 @@ const AddFromSet = (props) => {
   );
 };
 
-export default AddFromSet;
+export default connect(({ provCompany }) => ({
+  detailInfo: provCompany.detail,
+}))(AddFromSet);

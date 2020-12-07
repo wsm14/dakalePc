@@ -108,11 +108,17 @@ const DescriptionsCondition = ({ formItems = [], initialValues, title, column, s
             key={`${item.label}${i}`}
             className={styles.descriptions_item}
           >
-            {initialValues
+            {initialValues && Object.keys(initialValues).length
               ? item.render
                 ? item.render(initialValues[item.name], initialValues)
                 : item.type === 'upload'
-                ? imgShow(item.initialValue ? item.initialValue : initialValues[item.name])
+                ? imgShow(
+                    item.initialValue
+                      ? item.initialValue
+                      : Array.isArray(item.name)
+                      ? initialValues[item.name[0]][item.name[1]]
+                      : initialValues[item.name],
+                  )
                 : item.initialValue
                 ? item.initialValue
                 : Array.isArray(item.name)

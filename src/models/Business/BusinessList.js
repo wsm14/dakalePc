@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { notification } from 'antd';
+import { fetchGetOcrLicense } from '@/services/BaseServices';
 import {
   fetchMerchantList,
   fetchMerchantDetail,
@@ -13,7 +14,6 @@ import {
   fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
-import { fetchGetOcrLicense } from '@/services/BaseServices';
 
 export default {
   namespace: 'businessList',

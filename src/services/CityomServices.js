@@ -16,6 +16,13 @@ export function fetchProvDetail(params) {
   });
 }
 
+// get 省公司列表 - 银行卡详情
+export function fetchProvBankDetail(params) {
+  return request('/admin/bankBindingInfo/getBankBindingInfo', {
+    params,
+  });
+}
+
 // post 省公司列表 - 新增
 export function fetchProvAdd(data) {
   return request('/admin/company/saveCompany', {
@@ -23,9 +30,18 @@ export function fetchProvAdd(data) {
     data,
   });
 }
-// get 省公司列表 - 修改
+
+// post 省公司列表 - 修改
 export function fetchProvEdit(data) {
   return request('/admin/company/updateCompany', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 省公司列表 - 设置修改银行卡详情
+export function fetchProvBankSet(data) {
+  return request('/admin/company/submitBankBindingInfo', {
     method: 'POST',
     data,
   });

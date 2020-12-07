@@ -93,7 +93,7 @@ const formItemLayout = {
 // 图片默认值
 const imgold = (url, uid) => ({
   uid: `-${uid}`,
-  name: 'image.png',
+  name: url,
   status: 'done',
   url,
 });
@@ -206,18 +206,20 @@ const FormComponents = ({
   };
 
   // 预览图片
-  const handlePreview = async (file, key) => {
+  const handlePreview = async (file, key, onChange) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
     setPreviewImage(file.url || file.preview);
-    setPreviewTitle({ uid: file.uid, key });
+    setPreviewTitle({ uid: file.uid, key, onChange });
     setPreviewVisible(true);
   };
 
   // 裁剪图片
   const handleCutImg = (file) => {
-    const fName = previewTitle.key;
+    const fName = Array.isArray(previewTitle.key)
+      ? previewTitle.key[previewTitle.key.length - 1]
+      : previewTitle.key;
     const uid = previewTitle.uid;
     const newimg = fileLists[fName];
     imageCompress(file).then(({ file, base64 }) => {
@@ -225,10 +227,17 @@ const FormComponents = ({
         if (fi.uid == uid) {
           fi.originFileObj = file;
           fi.url = base64;
+          fi.thumbUrl = base64;
         }
         return fi;
       });
       setFileLists({ ...fileLists, [fName]: newimg });
+      let onwFile = { [fName]: { file, fileList: newimg } };
+      if (Array.isArray(previewTitle.key)) {
+        onwFile = { [previewTitle.key[0]]: { [previewTitle.key[1]]: { file, fileList: newimg } } };
+      }
+      (form || formN).setFieldsValue(onwFile);
+      previewTitle.onChange && previewTitle.onChange(file);
     });
   };
 
@@ -448,7 +457,7 @@ const FormComponents = ({
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={() => false}
-              onPreview={(file) => handlePreview(file, name)}
+              onPreview={(file) => handlePreview(file, name, item.onChange)}
               {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
               itemRender={(originNode, file, currFileList) => {
                 return (

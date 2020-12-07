@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'umi';
 import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
 import { Map, Marker } from 'react-amap';
@@ -170,4 +169,4 @@ const BaseForm = (props) => {
   );
 };
 
-export default connect(() => ({}))(BaseForm);
+export default BaseForm;
