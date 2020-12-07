@@ -133,6 +133,7 @@ const BaseForm = (props) => {
       label: '加盟日期',
       type: 'dataPicker',
       name: 'entryDate',
+      render: (val) => val.format('YYYY-MM-DD'),
     },
     {
       label: '签约金额',

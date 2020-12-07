@@ -138,7 +138,7 @@ const ProvCompany = (props) => {
       <ProvCompanySet
         cRef={childRef}
         visible={visibleSet}
-        onClose={() => setVisibleSet(false)}
+        setVisibleSet={setVisibleSet}
       ></ProvCompanySet>
     </>
   );

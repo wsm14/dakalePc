@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchProvList,
@@ -46,9 +47,11 @@ export default {
         provinceName,
         cityName,
         districtName,
+        entryDate,
       } = content.companyDetail;
       const detail = {
         ...content.companyDetail,
+        entryDate: moment(entryDate),
         allCityName: [provinceName, cityName, districtName],
         allCityCode: [provinceCode, cityCode, districtCode],
       };

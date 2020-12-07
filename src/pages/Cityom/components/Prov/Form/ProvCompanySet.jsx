@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Space, Form, Skeleton, notification } from 'antd';
+import { Drawer, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import AddDetail from './AddFrom/index';
 
 const ProvCompanySet = (props) => {
-  const { dispatch, cRef, visible = {}, onClose, loading } = props;
+  const { dispatch, cRef, visible = {}, setVisibleSet, loading } = props;
 
   const { type = 'add', show = false, detail = {} } = visible;
 
@@ -49,6 +49,27 @@ const ProvCompanySet = (props) => {
     });
   };
 
+  // 修改省公司状态
+  const fetchProvEdit = (status) => {
+    Modal.confirm({
+      title: `确认${{ 0: '启用', 1: '冻结', 2: '解约' }[status]}？`,
+      onOk() {
+        dispatch({
+          type: 'provCompany/fetchProvEdit',
+          payload: {
+            companyId: detail.companyId,
+            status,
+          },
+          callback: () => {
+            closeDrawer();
+            cRef.current.fetchGetData();
+          },
+        });
+      },
+      onCancel() {},
+    });
+  };
+
   const modalProps = {
     title: `${{ add: '新增省公司', edit: '编辑信息', detail: '省公司详情' }[type]}`,
     width: 700,
@@ -59,7 +80,7 @@ const ProvCompanySet = (props) => {
 
   const closeDrawer = () => {
     setSkeletonType(true);
-    onClose();
+    setVisibleSet(false);
   };
 
   return (
@@ -76,15 +97,53 @@ const ProvCompanySet = (props) => {
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={closeDrawer}>取消</Button>
-            <Button onClick={handleUpData} type="primary" loading={loading}>
-              保存
-            </Button>
-            <Button onClick={closeDrawer} type="primary" loading={loading}>
-              下一步
-            </Button>
-          </Space>
+          {
+            {
+              add: (
+                <Space>
+                  <Button onClick={closeDrawer}>取消</Button>
+                  <Button onClick={handleUpData} type="primary" loading={loading}>
+                    保存
+                  </Button>
+                  <Button onClick={closeDrawer} type="primary" loading={loading}>
+                    下一步
+                  </Button>
+                </Space>
+              ),
+              edit: (
+                <Space>
+                  <Button onClick={() => setVisibleSet({ ...visible, type: 'detail' })}>取消</Button>
+                  <Button onClick={handleUpData} type="primary" loading={loading}>
+                    保存
+                  </Button>
+                </Space>
+              ),
+              detail: (
+                <Space>
+                  <Button onClick={closeDrawer}>关闭</Button>
+                  <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                    解约
+                  </Button>
+                  {(detail.status == 0 || detail.status == 1) && (
+                    <Button
+                      onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                      type="primary"
+                      loading={loading}
+                    >
+                      {detail.status == 0 ? '冻结' : '启用'}
+                    </Button>
+                  )}
+                  <Button
+                    onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                    type="primary"
+                    loading={loading}
+                  >
+                    编辑
+                  </Button>
+                </Space>
+              ),
+            }[type]
+          }
         </div>
       }
     >
@@ -92,6 +151,7 @@ const ProvCompanySet = (props) => {
         {
           {
             add: <AddDetail form={form} type={type}></AddDetail>,
+            edit: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
             detail: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
           }[type]
         }
