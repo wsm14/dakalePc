@@ -220,5 +220,5 @@ const UserSetForm = (props) => {
 
 export default connect(({ sectionSetting, loading }) => ({
   sectionList: sectionSetting.list,
-  loading: loading.models.sectionSetting,
+  loading: loading.models.accountList,
 }))(UserSetForm);

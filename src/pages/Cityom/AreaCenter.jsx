@@ -3,8 +3,9 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import ProvCompanyDetailList from './components/Area/ProvDetailList';
 
-const CityPartner = (props) => {
+const AreaCenter = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
@@ -14,21 +15,21 @@ const CityPartner = (props) => {
   const searchItems = [
     {
       label: '企业名称',
-      name: 'companyName',
+      name: 'userMobile1s',
     },
     {
       label: '手机号',
-      name: 'mobile',
+      name: 'userMosbile1s',
     },
     {
       label: '姓名',
-      name: 'partnerName',
+      name: 'userMobile1',
     },
     {
       label: '区域',
-      name: 'city',
-      type: 'cascader',
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      name: 'userMo',
+      type: 'select',
+      select: { list: [] },
     },
   ];
 
@@ -36,61 +37,51 @@ const CityPartner = (props) => {
   const getColumns = [
     {
       title: '姓名',
+      dataIndex: 'userId',
       fixed: 'left',
-      dataIndex: 'partnerName',
     },
     {
       title: '手机号',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'partnerMobile',
+      dataIndex: 'phoneNumber',
     },
     {
       title: '企业名称',
       align: 'center',
-      dataIndex: 'companyName',
+      dataIndex: 'orderCount',
     },
     {
-      title: '代理区域',
+      title: '代理省份',
       align: 'center',
-      dataIndex: 'districtName',
-    },
-    {
-      title: '所在城市',
-      align: 'center',
-      dataIndex: 'cityName',
-    },
-    {
-      title: '区域店铺数',
-      align: 'center',
-      dataIndex: 'merchantCount',
+      dataIndex: 'aa',
     },
     {
       title: '累计收益',
       align: 'right',
-      dataIndex: 'totalIncome',
+      dataIndex: 'bb',
     },
     {
       title: '累计提现',
       align: 'right',
-      dataIndex: 'totalWithdrawal',
+      dataIndex: 'addTimeStamp',
     },
     {
       title: '加盟日期',
       align: 'right',
-      dataIndex: 'joinTime',
+      dataIndex: 'addTimeStamp',
     },
     {
       title: '操作',
+      dataIndex: 'id',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'partnerIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
-              title: '收益数据',
+              title: '收益明细',
               click: () => setVisible({ type: 'income', record }),
             },
             {
@@ -100,7 +91,7 @@ const CityPartner = (props) => {
             },
             {
               type: 'info',
-              click: () => handleSetActive(record),
+              click: () => fetchProvComDetail({ type: 'income', record }),
             },
           ]}
         />
@@ -108,41 +99,52 @@ const CityPartner = (props) => {
     },
   ];
 
+  // 获取公司详情
+  const fetchProvComDetail = () => {
+    dispatch({
+      type: 'provCompany/fetchProvComDetail',
+      payload: {},
+      callback: handleSetActive,
+    });
+  };
+
   // 设置
-  const handleSetActive = (initialValues = '') => {
+  const handleSetActive = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: cityPartnerSet({ dispatch, childRef, payload: { initialValues } }),
+      payload: provCompanySet({ dispatch, childRef, payload: { initialValues: '' } }),
     });
   };
 
   useEffect(() => {
     dispatch({
-      type: 'areaCenter/clearDetail',
+      type: 'provCompany/clearDetail',
     });
   }, [visible]);
 
   return (
     <>
       <DataTableBlock
+        cRef={childRef}
         btnExtra={
           <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
-            新增合伙人
+            新增省级公司
           </Button>
         }
-        cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.partnerIdString}`}
-        dispatchType="areaCenter/fetchGetList"
+        rowKey={(record) => `${record.userId}`}
+        dispatchType="provCompany/fetchGetList"
         {...list}
+        list={[{ name: 1 }]}
       ></DataTableBlock>
+      <ProvCompanyDetailList visible={visible} setVisible={setVisible} />
     </>
   );
 };
 
-export default connect(({ areaCenter, loading }) => ({
-  list: areaCenter.list,
-  loading: loading.effects['areaCenter/fetchGetList'],
-}))(CityPartner);
+export default connect(({ provCompany, loading }) => ({
+  list: provCompany.list,
+  loading: loading.effects['provCompany/fetchGetList'],
+}))(AreaCenter);

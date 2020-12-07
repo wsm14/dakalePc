@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchFranchiseAppList } from '@/services/CityomServices';
+import { fetchProvList } from '@/services/CityomServices';
 
 export default {
   namespace: 'provCompany',
@@ -16,24 +16,17 @@ export default {
         ...payload,
       };
     },
-    clearDetail(state, { payload }) {
-      return {
-        ...state,
-        ...payload,
-        detailList: { list: [], total: 0 },
-      };
-    },
   },
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchFranchiseAppList, payload);
+      const response = yield call(fetchProvList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.userMerchantList, total: content.total },
+          list: { list: content.recordList, total: content.total },
         },
       });
     },
