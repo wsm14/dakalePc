@@ -1,6 +1,5 @@
 import request from '@/utils/request';
 
-
 // 省公司列表
 
 // get 省公司列表 - 列表
@@ -10,8 +9,23 @@ export function fetchProvList(params) {
   });
 }
 
+// post 省公司列表 - 新增
+export function fetchProvAdd(data) {
+  return request('/admin/company/saveCompany', {
+    method: 'POST',
+    data,
+  });
+}
+// get 省公司列表 - 修改
+export function fetchProvEdit(data) {
+  return request('/admin/company/updateCompany', {
+    method: 'POST',
+    data,
+  });
+}
 
 // 省公司列表 end
+
 // 加盟申请
 
 // get 加盟申请 - 列表
@@ -30,4 +44,3 @@ export function fetchFranchiseHandle(data) {
 }
 
 // 加盟申请 end
-

@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchProvList } from '@/services/CityomServices';
+import { fetchProvList, fetchProvAdd, fetchProvEdit } from '@/services/CityomServices';
 
 export default {
   namespace: 'provCompany',
@@ -29,6 +29,24 @@ export default {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchProvAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchProvAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '省公司新增成功',
+      });
+      callback();
+    },
+    *fetchProvEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchProvEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '省公司信息修改成功',
+      });
+      callback();
     },
   },
 };

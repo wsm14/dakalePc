@@ -4,13 +4,15 @@ import { Button } from 'antd';
 import CITYJSON from '@/common/city';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import ProvCompanyDetailList from './components/Prov/ProvDetailList';
+import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
+import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
 
 const ProvCompany = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -108,7 +110,11 @@ const ProvCompany = (props) => {
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
+          <Button
+            className="dkl_green_btn"
+            key="1"
+            onClick={() => setVisibleSet({ type: 'add', show: true })}
+          >
             新增
           </Button>
         }
@@ -120,6 +126,11 @@ const ProvCompany = (props) => {
         {...list}
       ></DataTableBlock>
       <ProvCompanyDetailList visible={visible} setVisible={setVisible} />
+      <ProvCompanySet
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></ProvCompanySet>
     </>
   );
 };

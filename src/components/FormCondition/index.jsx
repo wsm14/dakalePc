@@ -506,7 +506,8 @@ const FormComponents = ({
             rules={[...rules, ...(addRules || [])]}
             valuePropName={valuePropName}
             {...initialValue}
-            hidden={hidden}
+            normalize={item.normalize} // 组件值转换
+            hidden={hidden} // 隐藏表单仍然获取值
             labelCol={item.labelCol}
             wrapperCol={item.wrapperCol}
           >

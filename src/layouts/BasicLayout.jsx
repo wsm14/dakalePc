@@ -104,7 +104,7 @@ const BasicLayout = (props) => {
 
   // 菜单展开方法
   const onOpenChange = (openKey) => {
-    console.log(openKey);
+    
     const latestOpenKey = openKey.find((key) => openKeys.indexOf(key) === -1);
     setRootSubmenuKeys(Array.from(new Set(rootSubmenuKeys)));
     // setOpenKeys([latestOpenKey]);
