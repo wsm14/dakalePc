@@ -14,20 +14,22 @@ const AreaCenter = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '企业名称',
-      name: 'userMobile1s',
+      label: '代理公司名称',
+      name: 'partnerName',
     },
     {
-      label: '手机号',
-      name: 'userMosbile1s',
+      label: '代理区县',
+      type: 'cascader',
+      name: 'districtCode',
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
     },
     {
-      label: '姓名',
-      name: 'userMobile1',
+      label: '联系人姓名',
+      name: 'contactPerson',
     },
     {
-      label: '区域',
-      name: 'userMo',
+      label: '联系人电话',
+      name: 'contactMobile',
       type: 'select',
       select: { list: [] },
     },
