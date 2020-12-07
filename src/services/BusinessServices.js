@@ -199,7 +199,7 @@ export function fetchUpdateGroup(data) {
 
 // get 分享管理 - 分享列表
 export function fetchShareList(params) {
-  return request('/admin/marketingManagement/listMerchantMoments', {
+  return request('/admin/marketingManagement/listMerchantMoment', {
     params,
   });
 }
@@ -306,7 +306,7 @@ export function fetchGoodsAdd(data) {
 
 // post 商品管理 - 删除
 export function fetchGoodsDel(data) {
-  return request('/admin/goodsManagement/offShelfGoods', {
+  return request('/admin/goodsManagement/deleteGoods', {
     method: 'POST',
     data,
   });

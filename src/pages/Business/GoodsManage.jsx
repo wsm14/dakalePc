@@ -118,7 +118,7 @@ const GoodsManageComponent = (props) => {
       align: 'right',
       dataIndex: 'goodsIdString',
       render: (val, record) => {
-        const { status } = record;
+        const { status, merchantIdStr } = record;
         return (
           <HandleSetTable
             formItems={[
@@ -135,7 +135,7 @@ const GoodsManageComponent = (props) => {
               {
                 type: 'del',
                 visible: status == 0,
-                click: () => fetchGoodsDel({ goodsIdString: val }),
+                click: () => fetchGoodsDel({ goodsIdString: val, merchantIdStr }),
               },
               {
                 type: 'down',
