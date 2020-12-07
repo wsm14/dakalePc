@@ -7,6 +7,13 @@ export async function fetchFeedBackList(params) {
   });
 }
 
+// post 问题反馈 - 问题反馈详情
+export function fetchFeedBackDetail(params) {
+  return request('/admin/marketCustomer/getUserFeedbackDetail', {
+    params,
+  });
+}
+
 // post 问题反馈 - 确认反馈
 export function fetchFeedBackPush(data) {
   return request('/admin/marketCustomer/replayUserFeedback', {

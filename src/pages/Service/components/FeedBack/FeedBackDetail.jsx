@@ -10,16 +10,25 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
 
   const description = [
     {
-      label: '反馈人',
+      label: '提交人',
       name: 'userName',
     },
     {
-      label: '反馈时间',
+      label: '联系方式',
+      name: 'telephone',
+    },
+    {
+      label: '提交时间',
       name: 'createTime',
     },
     {
-      label: '内容描述',
+      label: '问题描述',
       name: 'problemDesc',
+    },
+    {
+      label: '图片',
+      type: 'upload',
+      name: 'problemImg',
     },
   ];
 
@@ -28,7 +37,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
       type: 'textArea',
       label: '回复内容',
       name: 'replay',
-      maxLength: 100,
+      maxLength: 240,
     },
   ];
 
@@ -37,7 +46,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
       dispatch({
         type: 'serviceFeedBack/fetchFeedBackPush',
         payload: {
-          feedbackId: info.feedbackIdString,
+          feedbackIdString: info.feedbackIdString,
           ...values,
         },
         callback: () => {
@@ -52,7 +61,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     <Drawer
       visible={show}
       title="问题详情"
-      width={560}
+      width={600}
       maskClosable
       destroyOnClose
       onClose={onClose}
@@ -71,28 +80,30 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
       }
     >
       <DescriptionsCondition formItems={description} initialValues={info}></DescriptionsCondition>
-      <div style={{ marginTop: 50 }}>
-        <DescriptionsCondition
-          formItems={[
-            {
-              label: '回复人',
-              name: 'operator',
-              render: (val) => (val ? val : '暂无'),
-            },
-            {
-              label: '回复时间',
-              name: 'replayTime',
-              render: (val) => (val ? val : '暂无'),
-            },
-            {
-              label: '客服回复',
-              name: 'replay',
-              render: (val) => (val ? val : '暂无'),
-            },
-          ]}
-          initialValues={info}
-        ></DescriptionsCondition>
-      </div>
+      {info && info.status == '2' && (
+        <div style={{ marginTop: 50 }}>
+          <DescriptionsCondition
+            formItems={[
+              {
+                label: '回复人',
+                name: 'operator',
+                render: (val) => (val ? val : '暂无'),
+              },
+              {
+                label: '回复时间',
+                name: 'replayTime',
+                render: (val) => (val ? val : '暂无'),
+              },
+              {
+                label: '客服回复',
+                name: 'replay',
+                render: (val) => (val ? val : '暂无'),
+              },
+            ]}
+            initialValues={info}
+          ></DescriptionsCondition>
+        </div>
+      )}
       {info && info.status !== '2' && (
         <div style={{ position: 'fixed', width: 512, bottom: 60 }}>
           <FormCondition formItems={formItems} form={form} />

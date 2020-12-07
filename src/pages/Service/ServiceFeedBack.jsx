@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { FEEDBACK_STATUS } from '@/common/constant';
+import { FEEDBACK_STATUS, FEEDBACK_USER_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 
 const ServiceFeedBack = (props) => {
-  const { list, loading } = props;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -36,7 +36,7 @@ const ServiceFeedBack = (props) => {
       title: '身份',
       align: 'center',
       dataIndex: 'userType',
-      render: (val) => (val === 'user' ? '用户' : '商家'),
+      render: (val) => FEEDBACK_USER_TYPE[val],
     },
     {
       title: '问题描述',
@@ -60,13 +60,13 @@ const ServiceFeedBack = (props) => {
       render: (val) => FEEDBACK_STATUS[val],
     },
     {
-      title: '操作人',
+      title: '回复人',
       align: 'center',
       dataIndex: 'operator',
       render: (val) => (val ? val : '--'),
     },
     {
-      title: '操作时间',
+      title: '回复时间',
       align: 'center',
       dataIndex: 'replayTime',
       render: (val) => (val ? val : '--'),
@@ -76,26 +76,35 @@ const ServiceFeedBack = (props) => {
       dataIndex: 'feedbackIdString',
       fixed: 'right',
       align: 'right',
-      render: (val, info) => (
+      render: (feedbackIdString, info) => (
         <HandleSetTable
           formItems={[
             {
               type: 'own',
               title: '查看',
               visible: info.status === '2',
-              click: () => setVisible({ show: true, info }),
+              click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
             {
               type: 'own',
               title: '回复',
               visible: info.status !== '2',
-              click: () => setVisible({ show: true, info }),
+              click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
           ]}
         />
       ),
     },
   ];
+
+  // 获取问题反馈详情
+  const fetchFeedBackDetail = (payload) => {
+    dispatch({
+      type: 'serviceFeedBack/fetchFeedBackDetail',
+      payload,
+      callback: (info) => setVisible({ show: true, info }),
+    });
+  };
 
   return (
     <>

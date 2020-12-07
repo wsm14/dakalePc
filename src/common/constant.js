@@ -36,6 +36,14 @@ export const WITHDRAW_STATUS = [false, false, '处理中', '成功', '失败'];
 // 反馈状态
 export const FEEDBACK_STATUS = [false, '处理中', '已解答'];
 
+// 反馈身份
+export const FEEDBACK_USER_TYPE = {
+  user: '用户',
+  merchant: '商家',
+  company: '省公司',
+  patner: '区县',
+};
+
 // 用户状态
 export const ACCOUNT_STATUS = ['禁用', '启用'];
 
