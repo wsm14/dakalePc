@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Drawer, Button, Space, Form, Skeleton } from 'antd';
 import AccountForm from './AccountForm/CorporateAccount';
 
-const ProvAccountSet = (props) => {
+const AreaAccountSet = (props) => {
   const {
     dispatch,
     visible = {},
@@ -12,7 +12,7 @@ const ProvAccountSet = (props) => {
     setVisibleSet,
     loading,
     loadingDetail,
-    companyId,
+    partnerId,
   } = props;
 
   const { type = 'add', show = false } = visible;
@@ -25,8 +25,8 @@ const ProvAccountSet = (props) => {
   const handleUpData = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'provCompany/fetchProvBankSet',
-        payload: { ownerId: companyId, ...values },
+        type: 'areaCenter/fetchAreaBankSet',
+        payload: { ownerId: partnerId, ...values },
         callback: () => {
           closeDrawer();
         },
@@ -59,6 +59,7 @@ const ProvAccountSet = (props) => {
           setSkeletonType(true);
         }
       }}
+      destroyOnClose
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'center' }}>
@@ -78,7 +79,7 @@ const ProvAccountSet = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  companyId: provCompany.companyId,
-  loading: loading.effects['provCompany/fetchProvBankSet'],
-}))(ProvAccountSet);
+export default connect(({ areaCenter, loading }) => ({
+  partnerId: areaCenter.partnerId,
+  loading: loading.effects['areaCenter/fetchAreaBankSet'],
+}))(AreaAccountSet);

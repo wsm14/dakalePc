@@ -93,7 +93,7 @@ const ProvCompanyDetailList = (props) => {
               searchItems={propItem.searchItems}
               columns={propItem.getColumns}
               rowKey={(row) => `${row[propItem.rowKey]}`}
-              dispatchType="provCompany/fetchWithdrawList"
+              dispatchType="areaCenter/fetchWithdrawList"
               componentSize="middle"
               {...detailList}
             ></DataTableBlock>
@@ -105,7 +105,7 @@ const ProvCompanyDetailList = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  detailList: provCompany.detailList,
-  loading: loading.models.provCompany,
+export default connect(({ areaCenter, loading }) => ({
+  detailList: areaCenter.detailList,
+  loading: loading.models.areaCenter,
 }))(ProvCompanyDetailList);

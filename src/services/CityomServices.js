@@ -49,6 +49,55 @@ export function fetchProvBankSet(data) {
 
 // 省公司列表 end
 
+// 区县运营中心
+
+// 区县运营中心 - 列表
+export function fetchAreaCenterList(params) {
+  return request('/admin/partner/listPartner', {
+    params,
+  });
+}
+
+// get 区县运营中心 - 详情
+export function fetchAreaDetail(params) {
+  return request('/admin/partner/getPartnerDetail', {
+    params,
+  });
+}
+
+// get 区县运营中心 - 银行卡详情
+export function fetchAreaBankDetail(params) {
+  return request('/admin/bankBindingInfo/getBankBindingInfo', {
+    params,
+  });
+}
+
+// post 区县运营中心 - 新增
+export function fetchAreaAdd(data) {
+  return request('/admin/partner/savePartner', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 区县运营中心 - 修改
+export function fetchAreaEdit(data) {
+  return request('/admin/partner/updatePartner', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 区县运营中心 - 设置修改银行卡详情
+export function fetchAreaBankSet(data) {
+  return request('/admin/partner/submitBankBindingInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 区县运营中心 end
+
 // 加盟申请
 
 // get 加盟申请 - 列表

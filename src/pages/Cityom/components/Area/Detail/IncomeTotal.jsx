@@ -97,7 +97,7 @@ const ProvCompanyTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
   );
 };
 
-export default connect(({ areaCenter, loading }) => ({
-  totalData: areaCenter.totalData,
-  loading: loading.effects['areaCenter/fetchIncomeDetail'],
+export default connect(({ provCompany, loading }) => ({
+  totalData: provCompany.totalData,
+  loading: loading.effects['provCompany/fetchIncomeDetail'],
 }))(ProvCompanyTotalInfo);

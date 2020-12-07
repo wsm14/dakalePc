@@ -1,15 +1,43 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import ProvCompanyDetailList from './components/Area/ProvDetailList';
+import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
+import AreaCompanySet from './components/Area/Form/AreaCompanySet';
+import AreaAccountSet from './components/Area/Form/AreaAccountSet';
 
 const AreaCenter = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [visibleSet, setVisibleSet] = useState(false);
+  const [visibleAct, setVisibleAct] = useState(false);
+
+  // 获取公司详情
+  const fetchAreaDetail = (payload) => {
+    dispatch({
+      type: 'areaCenter/close',
+    });
+    dispatch({
+      type: 'areaCenter/fetchAreaDetail',
+      payload,
+      callback: () => fetchAreaBankDetail(payload),
+    });
+  };
+
+  // 获取公司账户详情
+  const fetchAreaBankDetail = (payload) => {
+    dispatch({
+      type: 'areaCenter/fetchAreaBankDetail',
+      payload: {
+        ownerId: payload.partnerId,
+        ownerType: 'company',
+      },
+      callback: () => setVisibleSet({ type: payload.type, show: true }),
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -21,7 +49,7 @@ const AreaCenter = (props) => {
       label: '代理区县',
       type: 'cascader',
       name: 'districtCode',
-      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '联系人姓名',
@@ -30,70 +58,84 @@ const AreaCenter = (props) => {
     {
       label: '联系人电话',
       name: 'contactMobile',
-      type: 'select',
-      select: { list: [] },
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '姓名',
-      dataIndex: 'userId',
+      title: '序号',
+      dataIndex: 'districtName',
       fixed: 'left',
+      render: (val, row, i) => i + 1,
     },
     {
-      title: '手机号',
+      title: '代理区县',
+      fixed: 'left',
+      dataIndex: 'agentDistrictName',
+    },
+    {
+      title: '所属省公司',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'provinceName',
     },
     {
-      title: '企业名称',
+      title: '代理公司名称',
       align: 'center',
-      dataIndex: 'orderCount',
+      dataIndex: 'partnerName',
     },
     {
-      title: '代理省份',
+      title: '联系人姓名',
       align: 'center',
-      dataIndex: 'aa',
+      dataIndex: 'contactPerson',
     },
     {
-      title: '累计收益',
+      title: '联系人电话',
       align: 'right',
-      dataIndex: 'bb',
-    },
-    {
-      title: '累计提现',
-      align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'contactMobile',
     },
     {
       title: '加盟日期',
       align: 'right',
-      dataIndex: 'addTimeStamp',
+      dataIndex: 'entryDate',
+    },
+    {
+      title: '累计入驻店铺数',
+      align: 'right',
+      dataIndex: 'merchantCount',
+    },
+    {
+      title: '累计收益（卡豆）',
+      align: 'right',
+      dataIndex: 'totalIncome',
+    },
+    {
+      title: '累计提现（卡豆）',
+      align: 'right',
+      dataIndex: 'totalWithdrawal',
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'partnerId',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => (
+      render: (partnerId, record) => (
         <HandleSetTable
           formItems={[
-            {
-              type: 'own',
-              title: '收益明细',
-              click: () => setVisible({ type: 'income', record }),
-            },
-            {
-              type: 'own',
-              title: '提现记录',
-              click: () => setVisible({ type: 'withdraw', record }),
-            },
+            // {
+            //   type: 'own',
+            //   title: '收益明细',
+            //   click: () => setVisible({ type: 'income', record }),
+            // },
+            // {
+            //   type: 'own',
+            //   title: '提现记录',
+            //   click: () => setVisible({ type: 'withdraw', record }),
+            // },
             {
               type: 'info',
-              click: () => fetchProvComDetail({ type: 'income', record }),
+              click: () => fetchAreaDetail({ type: 'detail', partnerId }),
             },
           ]}
         />
@@ -101,52 +143,49 @@ const AreaCenter = (props) => {
     },
   ];
 
-  // 获取公司详情
-  const fetchProvComDetail = () => {
-    dispatch({
-      type: 'provCompany/fetchProvComDetail',
-      payload: {},
-      callback: handleSetActive,
-    });
-  };
-
-  // 设置
-  const handleSetActive = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: provCompanySet({ dispatch, childRef, payload: { initialValues: '' } }),
-    });
-  };
-
-  useEffect(() => {
-    dispatch({
-      type: 'provCompany/clearDetail',
-    });
-  }, [visible]);
-
   return (
     <>
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => handleSetActive()}>
-            新增省级公司
+          <Button
+            className="dkl_green_btn"
+            key="1"
+            onClick={() => {
+              dispatch({
+                type: 'areaCenter/close',
+              });
+              setVisibleSet({ type: 'add', show: true });
+            }}
+          >
+            新增
           </Button>
         }
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userId}`}
-        dispatchType="provCompany/fetchGetList"
+        rowKey={(record) => `${record.partnerId}`}
+        dispatchType="areaCenter/fetchGetList"
         {...list}
-        list={[{ name: 1 }]}
       ></DataTableBlock>
-      <ProvCompanyDetailList visible={visible} setVisible={setVisible} />
+      <AreaCompanyDetailList visible={visible} setVisible={setVisible} />
+      <AreaCompanySet
+        cRef={childRef}
+        visible={visibleSet}
+        setVisibleSet={setVisibleSet}
+        setVisibleAct={setVisibleAct}
+      ></AreaCompanySet>
+      <AreaAccountSet
+        cRef={childRef}
+        visible={visibleAct}
+        setVisibleSet={setVisibleSet}
+        setVisibleAct={setVisibleAct}
+      ></AreaAccountSet>
     </>
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  list: provCompany.list,
-  loading: loading.effects['provCompany/fetchGetList'],
+export default connect(({ areaCenter, loading }) => ({
+  list: areaCenter.list,
+  loading: loading.models.areaCenter,
 }))(AreaCenter);

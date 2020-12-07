@@ -4,7 +4,7 @@ import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 
-const ProvCompanySet = (props) => {
+const AreaCompanySet = (props) => {
   const {
     dispatch,
     cRef,
@@ -14,7 +14,7 @@ const ProvCompanySet = (props) => {
     setVisibleAct,
     loading,
     loadingDetail,
-    companyId,
+    partnerId,
   } = props;
 
   const { type = 'add', show = false } = visible;
@@ -27,7 +27,7 @@ const ProvCompanySet = (props) => {
   // 提交数据
   const handleUpData = (next) => {
     form.validateFields().then((values) => {
-      const { password, contactMobile, entryDate, allCityCode, allCityName, lat } = values;
+      const { password, contactMobile, entryDate, lat } = values;
       if (!lat) {
         notification.info({
           message: '温馨提示',
@@ -36,16 +36,10 @@ const ProvCompanySet = (props) => {
         return;
       }
       dispatch({
-        type: { add: 'provCompany/fetchProvAdd', edit: 'provCompany/fetchProvEdit' }[type],
+        type: { add: 'areaCenter/fetchAreaAdd', edit: 'areaCenter/fetchAreaEdit' }[type],
         payload: {
           ...values,
-          companyId,
-          provinceCode: allCityCode[0],
-          cityCode: allCityCode[1],
-          districtCode: allCityCode[2],
-          provinceName: allCityName[0],
-          cityName: allCityName[1],
-          districtName: allCityName[2],
+          partnerId,
           entryDate: entryDate.format('YYYY-MM-DD'),
           password: password
             ? password
@@ -65,12 +59,12 @@ const ProvCompanySet = (props) => {
   };
 
   // 修改省公司状态
-  const fetchProvEdit = (status) => {
+  const fetchAreaEdit = (status) => {
     Modal.confirm({
       title: `确认${{ 0: '启用', 1: '冻结', 2: '解约' }[status]}？`,
       onOk() {
         dispatch({
-          type: 'provCompany/fetchProvEdit',
+          type: 'areaCenter/fetchAreaEdit',
           payload: {
             companyId: detail.companyId,
             status,
@@ -86,7 +80,7 @@ const ProvCompanySet = (props) => {
   };
 
   const modalProps = {
-    title: `${{ add: '新增省公司', edit: '编辑信息', detail: '省公司详情' }[type]}`,
+    title: `${{ add: '新增', edit: '编辑信息', detail: '公司详情' }[type]}`,
     width: 700,
     visible: show,
     maskClosable: false,
@@ -140,12 +134,12 @@ const ProvCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                      <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
                         解约
                       </Button>
                       {(detail.status == 0 || detail.status == 1) && (
                         <Button
-                          onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                          onClick={() => fetchAreaEdit(1 ^ Number(detail.status))}
                           type="primary"
                           loading={loading}
                         >
@@ -184,7 +178,7 @@ const ProvCompanySet = (props) => {
             edit: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
             detail: (
               <Tabs defaultActiveKey="1" onChange={setTabKey}>
-                <Tabs.TabPane tab="省公司信息" key="1">
+                <Tabs.TabPane tab="公司信息" key="1">
                   <AddDetail form={form} type={type} detail={detail}></AddDetail>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="账户信息" key="2">
@@ -202,9 +196,9 @@ const ProvCompanySet = (props) => {
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  companyId: provCompany.companyId,
+export default connect(({ areaCenter, loading }) => ({
+  partnerId: areaCenter.partnerId,
   loading:
-    loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
-  loadingDetail: loading.effects['provCompany/fetchProvDetail'],
-}))(ProvCompanySet);
+    loading.effects['areaCenter/fetchAreaAdd'] || loading.effects['areaCenter/fetchAreaEdit'],
+  loadingDetail: loading.effects['areaCenter/fetchAreaDetail'],
+}))(AreaCompanySet);
