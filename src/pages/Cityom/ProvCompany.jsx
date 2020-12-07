@@ -166,7 +166,8 @@ const ProvCompany = (props) => {
       <ProvAccountSet
         cRef={childRef}
         visible={visibleAct}
-        setVisibleSet={setVisibleAct}
+        setVisibleSet={setVisibleSet}
+        setVisibleAct={setVisibleAct}
       ></ProvAccountSet>
     </>
   );
@@ -174,6 +175,5 @@ const ProvCompany = (props) => {
 
 export default connect(({ provCompany, loading }) => ({
   list: provCompany.list,
-  loading:
-    loading.effects['provCompany/fetchGetList'] || loading.effects['provCompany/fetchProvDetail'],
+  loading: loading.models.provCompany,
 }))(ProvCompany);

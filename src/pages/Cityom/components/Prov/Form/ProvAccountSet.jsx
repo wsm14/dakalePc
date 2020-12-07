@@ -9,6 +9,7 @@ const ProvAccountSet = (props) => {
     cRef,
     visible = {},
     detail = {},
+    setVisibleAct,
     setVisibleSet,
     loading,
     loadingDetail,
@@ -28,8 +29,8 @@ const ProvAccountSet = (props) => {
         type: 'provCompany/fetchProvBankSet',
         payload: { ownerId: companyId, ...values },
         callback: () => {
-          closeDrawer();
           if (type == 'edit') fetchProvBankDetail();
+          closeDrawer();
         },
       });
     });
@@ -40,7 +41,7 @@ const ProvAccountSet = (props) => {
     dispatch({
       type: 'provCompany/fetchProvBankDetail',
       payload: {
-        ownerId,
+        ownerId: companyId,
         ownerType: 'company',
       },
       callback: () => setVisibleSet({ type: payload.type, show: true }),
@@ -57,6 +58,7 @@ const ProvAccountSet = (props) => {
 
   const closeDrawer = () => {
     setSkeletonType(true);
+    setVisibleAct(false);
     setVisibleSet(false);
   };
 
@@ -92,6 +94,5 @@ const ProvAccountSet = (props) => {
 
 export default connect(({ provCompany, loading }) => ({
   companyId: provCompany.companyId,
-  loading:
-    loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],
+  loading: loading.effects['provCompany/fetchProvBankSet'],
 }))(ProvAccountSet);
