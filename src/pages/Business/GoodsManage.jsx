@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { GOODS_TYPE } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import debounce from 'lodash/debounce';
 import closeRefuse from './components/Goods/Form/CloseRefuse';
 import stockSet from './components/Goods/Form/StockSet';
@@ -72,6 +73,11 @@ const GoodsManageComponent = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '--'}
+        </Ellipsis>
+      ),
     },
     {
       title: '单位',
@@ -100,6 +106,11 @@ const GoodsManageComponent = (props) => {
       title: '所属店铺',
       align: 'center',
       dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '--'}
+        </Ellipsis>
+      ),
     },
     {
       title: '库存',
