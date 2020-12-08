@@ -11,9 +11,11 @@ import {
   CrownOutlined,
   TeamOutlined,
   UsergroupAddOutlined,
+  PieChartOutlined,
 } from '@ant-design/icons';
 
 const iconEnum = {
+  chart: <PieChartOutlined />,
   cityom: <HeatMapOutlined />,
   user: <UserOutlined />,
   business: <ShopOutlined />,
@@ -24,7 +26,7 @@ const iconEnum = {
   system: <SettingOutlined />,
   active: <CrownOutlined />,
   expert: <TeamOutlined />,
-  sign: <UsergroupAddOutlined/>,
+  sign: <UsergroupAddOutlined />,
 };
 
 export default iconEnum;
