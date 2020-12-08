@@ -66,13 +66,13 @@ const RefundOrder = (props) => {
     },
     {
       title: '退款原因',
-      dataIndex: 'refundReason',
+      dataIndex: 'closeReason',
     },
-    {
-      title: '处理时间',
-      align: 'center',
-      dataIndex: 'closeTime',
-    },
+    // {
+    //   title: '处理时间',
+    //   align: 'center',
+    //   dataIndex: 'closeTime',
+    // },
     {
       title: '状态',
       align: 'center',
