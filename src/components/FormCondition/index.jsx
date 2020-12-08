@@ -294,11 +294,12 @@ const FormComponents = ({
       let initialValue = {};
       let rules = item.rules || [{ required: true, message: `请确认${label}` }];
       const placeholder = item.placeholder || `请输入${label}`;
-
+      // Array.isArray(name) ? name[1] : name
+      const numtext = Array.isArray(name) ? initialValues[name[0]][name[1]] : initialValues[name];
       const dataNum =
         maxLength &&
         `${
-          totalNum[name] || (initialValues[name] && `${initialValues[name]}`.length) || 0
+          totalNum[Array.isArray(name) ? name[1] : name] || (numtext && `${numtext}`.length) || 0
         }/${maxLength}`;
 
       // 判断类型 默认input
@@ -316,7 +317,10 @@ const FormComponents = ({
             onPressEnter={item.onPressEnter}
             onChange={(e) => {
               if (item.onChange) item.onChange(e);
-              setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
+              setTotalNum({
+                ...totalNum,
+                [Array.isArray(name) ? name[1] : name]: e.target.value.length,
+              });
             }}
             style={item.style}
           />
@@ -342,7 +346,12 @@ const FormComponents = ({
             rows={item.rows || 5}
             disabled={item.disabled}
             maxLength={maxLength}
-            onChange={(e) => setTotalNum({ ...totalNum, [item.name]: e.target.value.length })}
+            onChange={(e) =>
+              setTotalNum({
+                ...totalNum,
+                [Array.isArray(name) ? name[1] : name]: e.target.value.length,
+              })
+            }
           />
         ),
         timePicker: (

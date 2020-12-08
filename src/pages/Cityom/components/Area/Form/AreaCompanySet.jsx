@@ -134,9 +134,11 @@ const AreaCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
-                        解约
-                      </Button>
+                      {detail.status != 2 && (
+                        <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
+                          解约
+                        </Button>
+                      )}
                       {(detail.status == 0 || detail.status == 1) && (
                         <Button
                           onClick={() => fetchAreaEdit(1 ^ Number(detail.status))}
@@ -146,13 +148,15 @@ const AreaCompanySet = (props) => {
                           {detail.status == 0 ? '冻结' : '启用'}
                         </Button>
                       )}
-                      <Button
-                        onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                        type="primary"
-                        loading={loading}
-                      >
-                        编辑
-                      </Button>
+                      {detail.status != 2 && (
+                        <Button
+                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                          type="primary"
+                          loading={loading}
+                        >
+                          编辑
+                        </Button>
+                      )}
                     </>
                   )}
                   {tabKey == '2' && (
