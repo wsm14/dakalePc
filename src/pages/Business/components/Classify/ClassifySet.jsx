@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 
 const ClassifySet = (props) => {
   const { dispatch, visible = {}, onClose, cRef, loading, classifyManage } = props;
-  const { type = '', detail } = visible;
+  const { type = '', detail = {} } = visible;
   const { merFormSelect } = classifyManage;
 
   const [form] = Form.useForm();
