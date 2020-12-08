@@ -46,6 +46,11 @@ const BusinessAuditList = (props) => {
       title: '店铺简称',
       fixed: 'left',
       dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '--'}
+        </Ellipsis>
+      ),
     },
     {
       title: '所在城市',

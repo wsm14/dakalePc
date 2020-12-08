@@ -295,7 +295,12 @@ const FormComponents = ({
       let rules = item.rules || [{ required: true, message: `请确认${label}` }];
       const placeholder = item.placeholder || `请输入${label}`;
       // Array.isArray(name) ? name[1] : name
-      const numtext = Array.isArray(name) ? initialValues[name[0]][name[1]] : initialValues[name];
+
+      const numtext = Array.isArray(name)
+        ? initialValues[name[0]]
+          ? initialValues[name[0]][name[1]]
+          : ''
+        : initialValues[name];
       const dataNum =
         maxLength &&
         `${

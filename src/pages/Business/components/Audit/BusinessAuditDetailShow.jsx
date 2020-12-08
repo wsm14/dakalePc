@@ -1,3 +1,4 @@
+import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 const BusinessAuditDetailShow = (props) => {
   return {
     type: 'Drawer',
@@ -43,11 +44,12 @@ const BusinessAuditDetailShow = (props) => {
       {
         label: '审核状态',
         name: 'verifyStatus',
-        render: () => `审核驳回`,
+        render: (val) => BUSINESS_STATUS_AUDIT[val],
       },
       {
         label: '驳回原因',
         name: 'rejectReason',
+        render: (val) => val || '--',
       },
     ],
     ...props,
