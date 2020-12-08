@@ -52,7 +52,10 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) => BANNER_TYPE.filter((item) => item.value === val)[0].name,
+      render: (val) =>
+        BANNER_TYPE.filter((item) => item.value === val)[0]
+          ? BANNER_TYPE.filter((item) => item.value === val)[0].name
+          : '--',
     },
     {
       title: '跳转类型',
