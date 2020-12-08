@@ -178,7 +178,7 @@ const FormComponents = ({
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name, onChange) => {
+  const handleUpProps = (name, onChange, maxFile) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -192,8 +192,10 @@ const FormComponents = ({
               }
               return fi;
             });
-            setFileLists({ ...fileLists, [name]: fileList });
-            (form || formN).setFieldsValue({ [name]: { ...value, fileList } });
+            setFileLists({ ...fileLists, [name]: fileList.slice(0, maxFile || 999) });
+            (form || formN).setFieldsValue({
+              [name]: { ...value, fileList: fileList.slice(0, maxFile || 999) },
+            });
           });
           if (onChange) onChange(value);
         } else {
@@ -453,12 +455,12 @@ const FormComponents = ({
         upload: (
           <DndProvider manager={manager.current.dragDropManager}>
             <Upload
-              multiple={item.multiple || false}
+              multiple={item.multiple || true}
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={() => false}
               onPreview={(file) => handlePreview(file, name, item.onChange)}
-              {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
+              {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange, item.maxFile)}
               itemRender={(originNode, file, currFileList) => {
                 return (
                   <DragableUploadListItem
