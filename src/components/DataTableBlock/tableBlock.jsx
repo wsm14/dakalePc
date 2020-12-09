@@ -18,7 +18,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @rowKey 每行id
  * @btnExtra 额外的按钮
  * @cRef 父组件获取子组件ref
- * @title 图表标题
+ * @CardTitle 图表标题
  * @style card style
  * @params 搜索时默认参数
  * @pParams 保存分页 搜索数据保存
@@ -71,22 +71,23 @@ const TableBlockComponent = (props) => {
 
   const [first, setFirst] = useState(NoSearch); // first No search
   const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
-  const [current, setNum] = useState(pParams.page || 1); // 页码
-  const [pageSize, setSize] = useState(
-    pParams.limit || { default: 10, middle: 10, small: 10 }[componentSize],
-  ); // 每页条数
+  const [tableParems, setTableParems] = useState({
+    page: pParams.page || 1, // 页码
+    limit: pParams.limit || { default: 10, middle: 10, small: 10 }[componentSize], // 每页条数
+    sortOrder: '', // 排序字段
+    sortField: '', // 排序规则 升降
+  }); // 表格参数
 
   // 获取列表
   const fetchGetList = (data) => {
     if (dispatchType)
       dispatch({
-        type: dispatchType,
+        type: dispatchType, // 请求接口
         payload: {
-          page: current,
-          limit: pageSize,
-          ...params,
-          ...searchData,
-          ...data,
+          ...tableParems, // 表格参数
+          ...params, // 默认参数
+          ...searchData, // 搜索参数
+          ...data, // 传递的搜索参数
         },
       });
   };
@@ -100,16 +101,25 @@ const TableBlockComponent = (props) => {
   // 分页
   const paginationProps = {
     total,
-    current,
-    pageSize,
+    current: tableParems.page,
+    pageSize: tableParems.limit,
     showTotal: () => `共${total}项`,
-    showQuickJumper: pageSize > 100 ? false : true,
+    showQuickJumper: tableParems.limit > 100 ? false : true,
     hideOnSinglePage: total > 0 ? false : true,
-    showSizeChanger: pageSize > 100 ? false : true,
-    onChange: (page, pagesize) => {
-      setNum(page);
-      setSize(pagesize);
-    },
+    showSizeChanger: tableParems.limit > 100 ? false : true,
+  };
+
+  // table change
+  const tableChange = (page, filters, sorter) => {
+    const { page: tpage, limit } = tableParems;
+    if (tpage == page.current && limit == page.pageSize) return false;
+    console.log(page, filters, sorter);
+    setTableParems({
+      page: page.current, // 页码
+      limit: page.pageSize, // 每页条数
+      // sortOrder: sorter.order, // 排序字段
+      // sortField: sorter.field, // 排序规则 升降
+    });
   };
 
   // 向父组件暴露方法
@@ -121,7 +131,8 @@ const TableBlockComponent = (props) => {
 
   // 保存搜索参数
   const handleSaveParams = () => {
-    if (typeof setParams === 'function') setParams({ page: current, limit: pageSize, searchData });
+    if (typeof setParams === 'function')
+      setParams({ page: tableParems.page, limit: tableParems.limit, searchData });
   };
 
   useEffect(() => {
@@ -131,7 +142,7 @@ const TableBlockComponent = (props) => {
       setFirst(false);
     }
     return handleSaveParams;
-  }, [current, pageSize, searchData]);
+  }, [tableParems, searchData]);
 
   const tabContent = (
     <>
@@ -163,6 +174,7 @@ const TableBlockComponent = (props) => {
         columns={columns}
         pagination={pagination === false ? false : paginationProps}
         onRow={onRow}
+        onChange={tableChange}
         {...props}
       />
     </>

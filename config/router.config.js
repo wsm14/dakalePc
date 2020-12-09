@@ -22,7 +22,7 @@ export default [
           {
             path: '/chart/area',
             name: '区域战报',
-            component: './User/UserList',
+            component: './Chart/AreaTotal',
             // buttons: ['view', 'status'],
           },
           {

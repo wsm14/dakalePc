@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { FEEDBACK_STATUS, FEEDBACK_USER_TYPE } from '@/common/constant';
+import { FEEDBACK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -34,13 +34,10 @@ const ServiceFeedBack = (props) => {
     },
     {
       title: '身份',
-      align: 'center',
-      dataIndex: 'userType',
-      render: (val) => FEEDBACK_USER_TYPE[val],
+      dataIndex: 'identity',
     },
     {
       title: '问题描述',
-      align: 'left',
       dataIndex: 'problemDesc',
       render: (val) => (
         <Ellipsis length={10} tooltip>
@@ -50,12 +47,12 @@ const ServiceFeedBack = (props) => {
     },
     {
       title: '反馈时间',
-      align: 'left',
+      align: 'center',
       dataIndex: 'createTime',
     },
     {
       title: '问题状态',
-      align: 'left',
+      align: 'center',
       dataIndex: 'status',
       render: (val) => FEEDBACK_STATUS[val],
     },

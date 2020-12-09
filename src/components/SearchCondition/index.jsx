@@ -97,7 +97,7 @@ const SearchCondition = (props) => {
         component = (
           <Select
             showSearch
-            optionFilterProp="children"
+            optionFilterProp="label"
             loading={item.loading}
             style={{ width: '100%' }}
             onSearch={item.onSearch}
