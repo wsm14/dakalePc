@@ -9,6 +9,7 @@ import {
   fetchAllUserRoleDetail,
   fetchAllGetRoleDetail,
 } from '@/services/SystemServices';
+import router from '../../../config/router.config';
 
 // 递归树菜单
 const userMenuDataTree = (menu, key, pid = '0') => {
@@ -44,6 +45,7 @@ export default {
     total: 0,
     userMenu: [],
     serverMenu: [],
+    flag: 0,
   },
 
   reducers: {
@@ -111,6 +113,12 @@ export default {
       const response = yield call(fetchAllGetRoleFlag, payload);
       if (!response) return;
       const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          flag: content.flag,
+        },
+      });
       callback(content.flag);
     },
     *fetchAllGetRoleDetail({ payload, callback }, { call, select }) {
@@ -126,13 +134,15 @@ export default {
       const accID = 'accessIdString';
       // 用户可选菜单
       const userMenu = yield select((state) => state.roleSetting.userMenu);
+      const serverMenu = yield select((state) => state.roleSetting.serverMenu);
+      const flag = yield select((state) => state.roleSetting.flag);
       // 用户已选数据按钮
       const selectedBtns = getData(accID, 'buttons');
       // 用户已选数据父级菜单id
       let selectedPKeys = [];
       // 用户已选数据菜单id
       let selectedRowKeys = authMenu.map((item) => item[accID]);
-      userMenu.map((item) => {
+      (flag != 1 ? userMenu : serverMenu).map((item) => {
         if (authMenu.some((menu) => menu[accID] == item[accID])) {
           if (
             !item.children.every((menuItem) =>
@@ -144,6 +154,7 @@ export default {
           selectedPKeys.push(item[accID]);
         }
       });
+      console.log(selectedBtns, selectedPKeys, userMenu);
       callback({
         ...content.authRoleDetail,
         roleId: content.authRoleDetail.roleIdString,
