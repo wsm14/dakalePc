@@ -13,10 +13,11 @@ const RoleTableForm = (props) => {
    * 调用接口获取菜单配置上限 按钮映射从菜单项目获取
    **/
   const { loading, userMenu, cRef, userInfo, serverMenu, flag = 1 } = props;
+
   // 选择的菜单
   const [selectedRowKeys, setSelectedRowKeys] = useState(userInfo.selectedRowKeys || []);
   // 选择的菜单ID
-  const [selectedPKeys, setSelectedPKeys] = useState(userInfo.selectedRowKeys || []);
+  const [selectedPKeys, setSelectedPKeys] = useState(userInfo.selectedPKeys || []);
   // 选择的按钮
   const [selectedBtns, setSelectedBtns] = useState(userInfo.selectedBtns || {});
   // // 选择的数据
@@ -28,7 +29,7 @@ const RoleTableForm = (props) => {
       return {
         selectedBtns,
         // selectedDatas,
-        selectedRowKeys: selectedPKeys,
+        selectedRowKeys: Array.from(new Set([...selectedPKeys, ...selectedRowKeys])),
       };
     },
   }));
@@ -156,7 +157,9 @@ const RoleTableForm = (props) => {
               new Set(record.map((item) => item.pidString).filter((i) => i != 0)),
             );
             const newPArr = Array.from(new Set([...val, ...newPid]));
+            // pid
             setSelectedPKeys(newPArr);
+            // 没有pid
             setSelectedRowKeys(val);
           },
         }}

@@ -9,7 +9,7 @@ const RoleTableForm = (props) => {
   // 选择的菜单
   const [selectedRowKeys, setSelectedRowKeys] = useState(userInfo.selectedRowKeys || []);
   // 选择的菜单ID
-  const [selectedPKeys, setSelectedPKeys] = useState(userInfo.selectedRowKeys || []);
+  const [selectedPKeys, setSelectedPKeys] = useState(userInfo.selectedPKeys || []);
   // 选择的按钮
   const [selectedBtns, setSelectedBtns] = useState(userInfo.selectedBtns || {});
   // 选择的数据
@@ -20,7 +20,7 @@ const RoleTableForm = (props) => {
     fetchGetData: () => ({
       selectedBtns,
       selectedDatas,
-      selectedRowKeys: selectedPKeys,
+      selectedRowKeys: Array.from(new Set([...selectedPKeys, ...selectedRowKeys])),
     }),
   }));
 

@@ -45,14 +45,34 @@ export default {
         if (!permissionObjects.length) return [];
         return Object.assign(...permissionObjects.map((item) => ({ [item[key]]: item[val] })));
       };
-      const selectedBtns = getData('accessIdString', 'buttons');
+      const accID = 'accessIdString';
+      // 用户可选菜单
+      const userMenu = yield select((state) => state.roleSetting.userMenu);
+      // 用户已选数据按钮
+      const selectedBtns = getData(accID, 'buttons');
       const selectedDatas = getData('accessIdString', 'dataType');
-      const selectedRowKeys = permissionObjects.map((item) => item.accessIdString);
+      // 用户已选数据父级菜单id
+      let selectedPKeys = [];
+      // 用户已选数据菜单id
+      let selectedRowKeys = authMenu.map((item) => item[accID]);
+      userMenu.map((item) => {
+        if (authMenu.some((menu) => menu[accID] == item[accID])) {
+          if (
+            !item.children.every((menuItem) =>
+              authMenu.some((menu) => menu[accID] == menuItem[accID]),
+            )
+          ) {
+            selectedRowKeys = selectedRowKeys.filter((i) => i != item[accID]);
+          }
+          selectedPKeys.push(item[accID]);
+        }
+      });
       callback({
         ...content.authRoleDetail,
         roleId: content.authRoleDetail.roleIdString,
         selectedBtns,
         selectedDatas,
+        selectedPKeys,
         selectedRowKeys,
       });
     },

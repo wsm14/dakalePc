@@ -101,6 +101,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
+          // 用户可选菜单
           userMenu: userMenuDataTree(content.permissionObjectList, 'accessIdString'),
         },
       });
@@ -112,23 +113,43 @@ export default {
       const { content } = response;
       callback(content.flag);
     },
-    *fetchAllGetRoleDetail({ payload, callback }, { call }) {
+    *fetchAllGetRoleDetail({ payload, callback }, { call, select }) {
       const response = yield call(fetchAllGetRoleDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { permissionObjects } = content.authRoleDetail;
+      const { permissionObjects: authMenu } = content.authRoleDetail;
+      // 用户已选数据整理
       const getData = (key, val) => {
-        if (permissionObjects && !permissionObjects.length) return [];
-        return Object.assign(...permissionObjects.map((item) => ({ [item[key]]: item[val] })));
+        if (authMenu && !authMenu.length) return [];
+        return Object.assign(...authMenu.map((item) => ({ [item[key]]: item[val] })));
       };
-      const selectedBtns = getData('accessIdString', 'buttons');
-      const selectedDatas = getData('accessIdString', 'dataType');
-      const selectedRowKeys = permissionObjects.map((item) => item.accessIdString);
+      const accID = 'accessIdString';
+      // 用户可选菜单
+      const userMenu = yield select((state) => state.roleSetting.userMenu);
+      // 用户已选数据按钮
+      const selectedBtns = getData(accID, 'buttons');
+      // 用户已选数据父级菜单id
+      let selectedPKeys = [];
+      // 用户已选数据菜单id
+      let selectedRowKeys = authMenu.map((item) => item[accID]);
+      userMenu.map((item) => {
+        if (authMenu.some((menu) => menu[accID] == item[accID])) {
+          if (
+            !item.children.every((menuItem) =>
+              authMenu.some((menu) => menu[accID] == menuItem[accID]),
+            )
+          ) {
+            selectedRowKeys = selectedRowKeys.filter((i) => i != item[accID]);
+          }
+          selectedPKeys.push(item[accID]);
+        }
+      });
       callback({
         ...content.authRoleDetail,
         roleId: content.authRoleDetail.roleIdString,
         selectedBtns,
-        selectedDatas,
+        // selectedDatas,
+        selectedPKeys,
         selectedRowKeys,
       });
     },
