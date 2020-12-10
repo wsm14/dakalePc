@@ -39,6 +39,14 @@ export function fetchProvEdit(data) {
   });
 }
 
+// post 省公司列表 - 修改帐号
+export function fetchProvAccountEdit(data) {
+  return request('/admin/company/account/updateCompanyAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 省公司列表 - 设置修改银行卡详情
 export function fetchProvBankSet(data) {
   return request('/admin/company/submitBankBindingInfo', {

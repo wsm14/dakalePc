@@ -11,6 +11,7 @@ import {
   fetchProvDetail,
   fetchProvAdd,
   fetchProvEdit,
+  fetchProvAccountEdit,
   fetchProvBankSet,
   fetchProvBankDetail,
 } from '@/services/CityomServices';
@@ -23,6 +24,7 @@ export default {
     detail: {},
     bankDetail: {},
     companyId: '',
+    companyAccountId: '',
   },
 
   reducers: {
@@ -35,6 +37,7 @@ export default {
     close(state) {
       return {
         ...state,
+        companyAccountId: '',
         companyId: '',
         detail: {},
         bankDetail: {},
@@ -96,10 +99,12 @@ export default {
         entryDate: moment(entryDate),
         allCityName: [provinceName, cityName, districtName],
         allCityCode: [provinceCode, cityCode, districtCode],
+        password: '',
       };
       yield put({
         type: 'save',
         payload: {
+          companyAccountId: detail.companyAccountId,
           companyId: detail.companyId,
           detail: detail,
         },
@@ -152,12 +157,19 @@ export default {
       });
       callback();
     },
-    *fetchProvEdit({ payload, callback }, { call, put }) {
+    *fetchProvEdit({ payload, callback }, { call, put, select }) {
+      const companyAccountId = yield select((state) => state.provCompany.companyAccountId);
+      const { companyId, gender, email, account, password } = payload;
+      const payloadAccont = { companyId, companyAccountId, gender, email, account, password };
       const response = yield call(fetchProvEdit, payload);
-      if (!response) return;
+      const response2 = yield call(fetchProvAccountEdit, payloadAccont);
+      if (!response || !response2) return;
       notification.success({
         message: '温馨提示',
         description: '省公司信息修改成功',
+      });
+      yield put({
+        type: 'close',
       });
       callback();
     },

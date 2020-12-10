@@ -45,7 +45,7 @@ const ContactForm = (props) => {
       name: 'password',
       show: false,
       rules: [{ required: false }],
-      placeholder: '不填写默认联系电话后6位',
+      placeholder: type == 'edit' ? '不填写则不修改' : '不填写默认联系电话后6位',
     },
   ];
 
