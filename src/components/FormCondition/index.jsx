@@ -119,6 +119,7 @@ const { Option } = Select;
 
 const FormComponents = ({
   form,
+  keyValue = 'formCon',
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
@@ -556,6 +557,7 @@ const FormComponents = ({
 
   return (
     <Form
+      key={keyValue}
       form={form || formN}
       layout={layout}
       initialValues={initialValues}

@@ -20,13 +20,14 @@ const AreaCompanySet = (props) => {
   const { type = 'add', show = false } = visible;
 
   const [form] = Form.useForm();
+  const [formAdd] = Form.useForm();
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
   const [tabKey, setTabKey] = useState('1');
 
   // 提交数据
   const handleUpData = (next) => {
-    form.validateFields().then((values) => {
+    (type == 'add' ? formAdd : form).validateFields().then((values) => {
       const { password, contactMobile, entryDate, lat } = values;
       if (!lat) {
         notification.info({
@@ -88,8 +89,13 @@ const AreaCompanySet = (props) => {
   };
 
   const closeDrawer = () => {
-    setSkeletonType(true);
-    setVisibleSet(false);
+    dispatch({
+      type: 'areaCenter/fetchCloseData',
+      callback: () => {
+        setSkeletonType(true);
+        setVisibleSet(false);
+      },
+    });
   };
 
   return (
@@ -178,18 +184,18 @@ const AreaCompanySet = (props) => {
       <Skeleton loading={skeletonType || loadingDetail} active>
         {
           {
-            add: <AddDetail form={form} type={type}></AddDetail>,
-            edit: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
+            add: <AddDetail form={formAdd} type={type}></AddDetail>,
+            edit: <AddDetail form={form} type={type}></AddDetail>,
             detail: (
               <Tabs defaultActiveKey="1" onChange={setTabKey}>
                 <Tabs.TabPane tab="公司信息" key="1">
-                  <AddDetail form={form} type={type} detail={detail}></AddDetail>
+                  <AddDetail form={form} type={type}></AddDetail>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="账户信息" key="2">
                   {detail.ownerInfo && detail.ownerInfo.bankStatus == 2 && (
                     <Alert message={detail.ownerInfo.bankRejectReason} type="error" />
                   )}
-                  <AccountForm form={form} type={type} detail={detail}></AccountForm>
+                  <AccountForm form={form} type={type}></AccountForm>
                 </Tabs.TabPane>
               </Tabs>
             ),

@@ -96,6 +96,14 @@ export function fetchAreaEdit(data) {
   });
 }
 
+// post 区县运营中心 - 帐号修改
+export function fetchAreaAccountEdit(data) {
+  return request('/admin/partner/account/updatePartnerAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 区县运营中心 - 设置修改银行卡详情
 export function fetchAreaBankSet(data) {
   return request('/admin/partner/submitBankBindingInfo', {

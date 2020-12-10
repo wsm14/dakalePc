@@ -153,9 +153,9 @@ const AreaCenter = (props) => {
             key="1"
             onClick={() => {
               dispatch({
-                type: 'areaCenter/close',
+                type: 'areaCenter/fetchCloseData',
+                callback: () => setVisibleSet({ type: 'add', show: true }),
               });
-              setVisibleSet({ type: 'add', show: true });
             }}
           >
             新增

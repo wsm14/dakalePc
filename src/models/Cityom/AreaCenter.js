@@ -11,6 +11,7 @@ import {
   fetchAreaDetail,
   fetchAreaAdd,
   fetchAreaEdit,
+  fetchAreaAccountEdit,
   fetchAreaBankSet,
   fetchAreaBankDetail,
 } from '@/services/CityomServices';
@@ -23,6 +24,7 @@ export default {
     detail: {},
     bankDetail: {},
     partnerId: '',
+    partnerAccountId: '',
   },
 
   reducers: {
@@ -36,6 +38,7 @@ export default {
       return {
         ...state,
         partnerId: '',
+        partnerAccountId: '',
         detail: {},
         bankDetail: {},
       };
@@ -43,6 +46,12 @@ export default {
   },
 
   effects: {
+    *fetchCloseData({ callback }, { put }) {
+      yield put({
+        type: 'close',
+      });
+      callback();
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchAreaCenterList, payload);
       if (!response) return;
@@ -90,17 +99,23 @@ export default {
         agentProvinceCode,
         agentCityCode,
         agentDistrictCode,
+        provinceName,
+        cityName,
+        districtName,
       } = content.partnerDetail;
       const detail = {
         ...content.partnerDetail,
         entryDate: moment(entryDate),
+        allCityName: [provinceName, cityName, districtName],
         allAgentCityCode: [agentProvinceCode, agentCityCode, agentDistrictCode],
         allCityCode: [provinceCode, cityCode, districtCode],
+        password: '',
       };
       yield put({
         type: 'save',
         payload: {
           partnerId: detail.partnerId,
+          partnerAccountId: detail.partnerAccountId,
           detail: detail,
         },
       });
@@ -152,12 +167,19 @@ export default {
       });
       callback();
     },
-    *fetchAreaEdit({ payload, callback }, { call, put }) {
+    *fetchAreaEdit({ payload, callback }, { call, put, select }) {
+      const partnerAccountId = yield select((state) => state.areaCenter.partnerAccountId);
+      const { partnerId, gender, email, account, password } = payload;
+      const payloadAccont = { partnerId, partnerAccountId, gender, email, account, password };
       const response = yield call(fetchAreaEdit, payload);
-      if (!response) return;
+      const response2 = yield call(fetchAreaAccountEdit, payloadAccont);
+      if (!response || !response2) return;
       notification.success({
         message: '温馨提示',
         description: '区县公司信息修改成功',
+      });
+      yield put({
+        type: 'close',
       });
       callback();
     },
