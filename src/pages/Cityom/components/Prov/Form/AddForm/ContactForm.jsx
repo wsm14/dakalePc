@@ -52,11 +52,7 @@ const ContactForm = (props) => {
   return (
     <>
       {type != 'detail' ? (
-        <FormCondition
-          formItems={[...formItems, ...loadingInfo]}
-          form={form}
-          initialValues={detail}
-        />
+        <FormCondition formItems={[...formItems, ...loadingInfo]} form={form} />
       ) : (
         // 详情返回
         <>

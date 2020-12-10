@@ -546,11 +546,8 @@ const FormComponents = ({
 
   useEffect(() => {
     (form || formN).setFieldsValue(initialValues);
-  }, [initialValues]);
-
-  useEffect(() => {
     return componentWillUnmount;
-  }, []);
+  }, [Object.keys(initialValues).length]);
 
   // 组件销毁执行
   const componentWillUnmount = () => {

@@ -46,6 +46,12 @@ export default {
   },
 
   effects: {
+    *fetchCloseData({ callback }, { put }) {
+      yield put({
+        type: 'close',
+      });
+      callback();
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchProvList, payload);
       if (!response) return;

@@ -141,9 +141,9 @@ const ProvCompany = (props) => {
             key="1"
             onClick={() => {
               dispatch({
-                type: 'provCompany/close',
+                type: 'provCompany/fetchCloseData',
+                callback: () => setVisibleSet({ type: 'add', show: true }),
               });
-              setVisibleSet({ type: 'add', show: true });
             }}
           >
             新增
