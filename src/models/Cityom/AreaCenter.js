@@ -115,7 +115,7 @@ export default {
         type: 'save',
         payload: {
           partnerId: detail.partnerId,
-          partnerAccountId: detail.partnerAccountId,
+          partnerAccountId: detail.partnerAccountId,  
           detail: detail,
         },
       });
