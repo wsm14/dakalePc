@@ -23,8 +23,8 @@ const SearchCard = ({ setSearchData, searchData, cityShow }) => {
   };
 
   // 选择时间
-  const handleSearchData = (time, provinceCode = '33') => {
-    setSearchData(time, provinceCode);
+  const handleSearchData = (time, areaCode) => {
+    setSearchData(time, areaCode);
     setSelectedTime(time);
   };
 
@@ -55,7 +55,7 @@ const SearchCard = ({ setSearchData, searchData, cityShow }) => {
       </div>
       {cityShow && (
         <Select
-          defaultValue={searchData.provinceCode}
+          defaultValue={searchData.areaCode}
           showSearch
           optionFilterProp="label"
           style={{ width: 150 }}
@@ -68,7 +68,7 @@ const SearchCard = ({ setSearchData, searchData, cityShow }) => {
       <DatePicker.RangePicker
         allowClear={false}
         value={selectedTime}
-        onChange={handleSearchData}
+        onChange={(val) => handleSearchData(val)}
         disabledDate={disabledDate}
         style={{
           width: 256,

@@ -1,5 +1,5 @@
 
-const target = 'http://192.168.0.103:6020'
+const target = 'http://192.168.0.28:6020'
 // const target = 'https://devgateway.dakale.net'
 
 export default {

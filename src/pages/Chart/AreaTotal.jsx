@@ -7,39 +7,45 @@ import SearchCard from './components/Area/Search/SearchCard';
 
 const tabList = [
   {
-    key: 'tab1',
+    key: 'provinceCode',
     tab: '省份排行',
   },
   {
-    key: 'tab2',
+    key: 'cityCode',
     tab: '城市排行',
   },
 ];
 
 const AreaTotalComponent = (props) => {
-  const [tabkey, setTabKey] = useState('tab1');
+  const [tabkey, setTabKey] = useState('provinceCode');
   const [searchData, setSearchData] = useState({
-    provinceCode: '33',
+    bucket: tabkey,
+    areaCode: '33',
     beginDate: moment().format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
   });
 
   // 选择时间
-  const handleSearchData = (time, provinceCode = '33') => {
+  const handleSearchData = (time, provinceCode) => {
     setSearchData({
-      provinceCode,
+      bucket: tabkey,
+      areaCode: provinceCode || searchData.areaCode,
       beginDate: time[0].format('YYYY-MM-DD'),
       endDate: time[1].format('YYYY-MM-DD'),
     });
   };
 
   const tableProps = {
-    searchData,
+    searchData: {
+      ...searchData,
+      bucket: tabkey,
+    },
+    tabkey,
   };
 
   const contentList = {
-    tab1: <ProvinceList {...tableProps}></ProvinceList>,
-    tab2: <CityList {...tableProps}></CityList>,
+    provinceCode: <ProvinceList {...tableProps}></ProvinceList>,
+    cityCode: <CityList {...tableProps}></CityList>,
   };
 
   return (
@@ -49,7 +55,7 @@ const AreaTotalComponent = (props) => {
       tabBarExtraContent={
         <SearchCard
           searchData={searchData}
-          cityShow={tabkey == 'tab2'}
+          cityShow={tabkey == 'cityCode'}
           setSearchData={handleSearchData}
         ></SearchCard>
       }

@@ -1,9 +1,12 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { connect } from 'dva';
+import CITYJSON from '@/common/city';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const DistrictListComponent = (props) => {
-  const { list, loading, dispatch } = props;
+  const { list, loading, searchData, cityCode } = props;
+
+  const { areaCode } = searchData;
 
   const childRef = useRef();
 
@@ -11,55 +14,66 @@ const DistrictListComponent = (props) => {
   const getColumns = [
     {
       title: '排名',
-      fixed: 'left',
       dataIndex: 'userIdString',
+      render: (val, row, i) => i + 1,
     },
     {
       title: '区县名称',
-      fixed: 'left',
-      dataIndex: 'mobile',
+      dataIndex: 'bucket',
+      render: (val) => {
+        const provArr = CITYJSON.filter((i) => i.value == areaCode)[0];
+        const cityArr = provArr.children.filter((i) => i.value == cityCode)[0];
+        const distrctArr = cityArr ? cityArr.children.filter((i) => i.value == val)[0] : '';
+        return distrctArr ? distrctArr.label : '--';
+      },
     },
     {
       title: '营收金额',
       align: 'right',
-      dataIndex: 'username',
-      sorter: (a, b) => a.merchantCount - b.merchantCount,
+      dataIndex: 'getFee',
+      render: (val, record) => record.verificationFee + record.scanOrder,
+      sorter: (a, b) => a.verificationFee + a.scanOrder - (b.verificationFee + b.scanOrder),
     },
     {
       title: '注册用户数',
       align: 'right',
-      dataIndex: 'residentAddress',
-      sorter: (a, b) => a.merchantCount - b.merchantCount,
+      dataIndex: 'registerCount',
+      sorter: (a, b) => a.registerCount - b.registerCount,
     },
     {
       title: '入驻店铺数',
       align: 'right',
-      dataIndex: 'createTime',
-      sorter: (a, b) => a.merchantCount - b.merchantCount,
+      dataIndex: 'settleCount',
+      sorter: (a, b) => a.settleCount - b.settleCount,
     },
     {
       title: '激活店铺数',
       align: 'right',
-      dataIndex: 'status',
-      sorter: (a, b) => a.merchantCount - b.merchantCount,
+      dataIndex: 'activeCount',
+      sorter: (a, b) => a.activeCount - b.activeCount,
     },
   ];
 
+  useEffect(() => {
+    childRef.current.fetchGetData({ ...searchData, bucket: 'districtCode', areaCode: cityCode });
+  }, [cityCode]);
+
   return (
     <DataTableBlock
+      NoSearch
       CardNone={false}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
-      rowKey={(record) => `${record.userIdString}`}
-      NoSearch={true}
-      dispatchType="userList/fetchGetList"
+      params={{ bucket: 'districtCode' }}
+      rowKey={(record) => `${record.bucket}`}
+      dispatchType="areaTotal/fetchGetList"
       list={list}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ userList, loading }) => ({
-  list: userList.list,
-  loading: loading.effects['userList/fetchGetList'],
+export default connect(({ areaTotal, loading }) => ({
+  list: areaTotal.districtList,
+  loading: loading.effects['areaTotal/fetchGetList'],
 }))(DistrictListComponent);
