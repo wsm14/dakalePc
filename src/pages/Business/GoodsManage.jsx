@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { GOODS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import debounce from 'lodash/debounce';
@@ -17,6 +17,7 @@ const GoodsManageComponent = (props) => {
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
   const [visible, setVisible] = useState(false);
+  const [merchantId, setMerchantId] = useState('');
 
   // 搜索参数
   const searchItems = [
@@ -32,7 +33,7 @@ const GoodsManageComponent = (props) => {
       allItem: false,
       onSearch: (val) => fetchClassifyGetMre(val),
       onChange: (val) => fetchGetClassify(val),
-      select: { list: mreSelect },
+      select: mreSelect,
       placeholder: '请输入店铺名称搜索',
     },
     {
@@ -40,7 +41,9 @@ const GoodsManageComponent = (props) => {
       name: 'customCategoryId',
       type: 'select',
       allItem: false,
+      disabled: !merchantId,
       loading: loadings.effects['goodsManage/fetchGoodsGetClassify'],
+      onFocus: () => !merchantId && message.warning('请先选择店铺！'),
       select: { list: classifySelect },
       placeholder: '请先选择店铺',
     },
@@ -180,6 +183,7 @@ const GoodsManageComponent = (props) => {
 
   // 搜索商家 后搜索类别
   const fetchGetClassify = (merchantId) => {
+    setMerchantId(merchantId);
     if (!merchantId) return;
     dispatch({
       type: 'goodsManage/fetchGoodsGetClassify',
@@ -248,6 +252,7 @@ const GoodsManageComponent = (props) => {
             新增
           </Button>
         }
+        resetSearch={() => setMerchantId('')}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

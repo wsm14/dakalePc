@@ -60,6 +60,7 @@ const { useBreakpoint } = Grid;
 const SearchCondition = (props) => {
   const {
     searchItems: formItems,
+    resetSearch = () => {},
     handleSearch,
     btnExtra = '',
     componentSize = 'default',
@@ -94,14 +95,16 @@ const SearchCondition = (props) => {
       if (item.type === 'select' && item.select) {
         const { select, allItem = true } = item;
         initialValue = select.defaultValue || '';
+        const selectList = Array.isArray(select) ? select : select.list;
         component = (
           <Select
             showSearch
-            optionFilterProp="label"
+            optionFilterProp="children"
             loading={item.loading}
             style={{ width: '100%' }}
             onSearch={item.onSearch}
             onChange={item.onChange}
+            onFocus={item.onFocus}
             allowClear={true}
             dropdownMatchSelectWidth={false}
             notFoundContent={
@@ -110,7 +113,7 @@ const SearchCondition = (props) => {
             placeholder={item.placeholder || `请选择`}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
-            {select.list.map((data, j) => {
+            {selectList.map((data, j) => {
               if (data) {
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
@@ -119,9 +122,7 @@ const SearchCondition = (props) => {
                 return (
                   <Option key={j} value={value}>
                     {name}
-                    {otherData && (
-                      <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>
-                    )}
+                    {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
               }
@@ -136,7 +137,6 @@ const SearchCondition = (props) => {
           <Select
             showSearch
             mode="multiple"
-            disabled={item.disabled}
             defaultActiveFirstOption={false}
             filterOption={true}
             optionFilterProp="children"
@@ -150,6 +150,7 @@ const SearchCondition = (props) => {
             onSearch={item.onSearch}
             onChange={item.onChange}
             placeholder={item.placeholder || `请选择`}
+            disabled={item.disabled}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
             {select.list.map((data, j) => {
@@ -282,6 +283,7 @@ const SearchCondition = (props) => {
   // 重置
   const handleReset = () => {
     form.resetFields();
+    if (resetSearch) resetSearch();
   };
 
   useEffect(() => {

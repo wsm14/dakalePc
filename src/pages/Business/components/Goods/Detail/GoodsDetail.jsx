@@ -22,7 +22,7 @@ const GoodsDetail = (props) => {
       render: (val) => (val == 'package' ? '套餐' : '单品'),
     },
     {
-      label: `${val == 'package' ? '套餐' : '单品'}名称`,
+      label: `${detail.goodsType == 'package' ? '套餐' : '单品'}名称`,
       name: 'goodsName',
     },
     {

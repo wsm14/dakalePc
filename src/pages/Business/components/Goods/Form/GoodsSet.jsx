@@ -126,7 +126,13 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
     },
   ];
 
-  return <FormCondition form={form} formItems={formItems}></FormCondition>;
+  return (
+    <FormCondition
+      form={form}
+      formItems={formItems}
+      initialValues={{ onSellFlag: '1' }}
+    ></FormCondition>
+  );
 };
 
 export default connect(({ goodsManage, loading }) => ({

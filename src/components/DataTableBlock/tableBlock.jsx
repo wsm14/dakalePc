@@ -75,25 +75,33 @@ const TableBlockComponent = (props) => {
     limit: pParams.limit || { default: 10, middle: 10, small: 10 }[componentSize], // 每页条数
     sortOrder: '', // 排序字段
     sortField: '', // 排序规则 升降
-    ...(pParams.searchData || {}), // 搜索控件参数
+    searchData: pParams.searchData || {}, // 搜索控件参数
   }); // 表格参数
 
   // 获取列表
   const fetchGetList = (data) => {
-    if (dispatchType)
+    if (dispatchType) {
+      const prams = {
+        ...tableParems, // 表格参数
+        ...params, // 默认参数
+        ...tableParems.searchData, // 搜索参数
+        ...data, // 传递的搜索参数
+      };
+      delete prams.searchData;
       dispatch({
         type: dispatchType, // 请求接口
-        payload: {
-          ...tableParems, // 表格参数
-          ...params, // 默认参数
-          ...data, // 传递的搜索参数
-        },
+        payload: prams,
       });
+    }
   };
 
   // 搜索
   const handleSearch = (value) => {
-    setTableParems({ ...tableParems, ...value, page: 1 });
+    setTableParems({
+      ...tableParems,
+      page: 1,
+      searchData: Object.keys(value).length ? value : {},
+    });
   };
 
   // 分页

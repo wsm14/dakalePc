@@ -12,6 +12,7 @@ const GoodsSetTable = ({ form, detail }) => {
     {
       title: '单品名称',
       dataIndex: 'goodsName',
+      width: 260,
     },
     {
       title: '数量',
