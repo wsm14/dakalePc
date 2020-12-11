@@ -34,7 +34,7 @@ export default {
       const response = yield call(fetchGetMerSettledExcel, payload);
       if (!response) return;
       const { content } = response;
-      if (callback) callback(content.recordList);
+      if (callback) callback(content.userMerchantDTOList);
     },
   },
 };

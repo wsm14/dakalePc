@@ -7,7 +7,7 @@ import exportExcel from '@/utils/exportExcel';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessSettled = (props) => {
-  const { businessSettled, loading } = props;
+  const { businessSettled, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -67,7 +67,7 @@ const BusinessSettled = (props) => {
     },
     {
       title: '类型',
-      dataIndex: 'merchantName',
+      dataIndex: 'type',
       render: (val) => val || '--',
     },
     {
@@ -155,7 +155,7 @@ const BusinessSettled = (props) => {
 
   // 导出excel 数据
   const fetchGetExcel = (payload) => {
-    const header = getColumns;
+    const header = getColumns.slice(1);
     dispatch({
       type: 'businessSettled/fetchMerchantGetExcel',
       payload,
