@@ -144,7 +144,7 @@ export function fetchMerSettledList(params) {
 
 // get 入驻查询 - 获取excel数据
 export function fetchGetMerSettledExcel(params) {
-  return request('/admin/merchantManagement/listMerchantSettleIn', {
+  return request('/admin/merchantManagement/importListMerchantSettleIn', {
     params,
   });
 }
