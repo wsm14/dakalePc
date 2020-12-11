@@ -23,6 +23,13 @@ export function fetchProvBankDetail(params) {
   });
 }
 
+// get 省公司列表  - 收益数据
+export function fetchProvBeanDetail(params) {
+  return request('/admin/cityOperationManagement/listStatisticCompanyBeanDetail', {
+    params,
+  });
+}
+
 // post 省公司列表 - 新增
 export function fetchProvAdd(data) {
   return request('/admin/company/saveCompany', {

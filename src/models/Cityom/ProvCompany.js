@@ -14,6 +14,7 @@ import {
   fetchProvAccountEdit,
   fetchProvBankSet,
   fetchProvBankDetail,
+  fetchProvBeanDetail,
 } from '@/services/CityomServices';
 
 export default {
@@ -25,6 +26,7 @@ export default {
     bankDetail: {},
     companyId: '',
     companyAccountId: '',
+    totalData: { list: [], total: 0 },
   },
 
   reducers: {
@@ -41,6 +43,7 @@ export default {
         companyId: '',
         detail: {},
         bankDetail: {},
+        totalData: { list: [], total: 0 },
       };
     },
   },
@@ -62,6 +65,18 @@ export default {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchProvBeanDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchProvBeanDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: { list: content.recordList, total: content.totalBean },
+        },
+      });
+      callback(payload.year);
     },
     *fetchGetOcrLicense({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrLicense, payload);

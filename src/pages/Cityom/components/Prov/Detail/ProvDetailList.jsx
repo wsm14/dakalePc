@@ -1,17 +1,16 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Modal } from 'antd';
 import ProvCompanyTotalInfo from './IncomeTotal';
 
 const ProvCompanyDetailList = (props) => {
-  const { detailList, loading, visible, setVisible } = props;
+  const { visible, setVisible } = props;
 
   const { type = 'income', record = '' } = visible;
 
   // table
   const propItem = {
     income: {
-      title: `收益数据`,
+      title: `收益数据 - ${record.companyName}`,
     },
   }[type];
 
@@ -24,12 +23,9 @@ const ProvCompanyDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <ProvCompanyTotalInfo></ProvCompanyTotalInfo>
+      <ProvCompanyTotalInfo companyId={record.companyId}></ProvCompanyTotalInfo>
     </Modal>
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  detailList: provCompany.detailList,
-  loading: loading.models.provCompany,
-}))(ProvCompanyDetailList);
+export default ProvCompanyDetailList;

@@ -119,7 +119,7 @@ const ProvCompany = (props) => {
             {
               type: 'own',
               title: '收益数据',
-              click: () => setVisible({ type: 'income' }),
+              click: () => setVisible({ type: 'income', record }),
             },
             {
               type: 'info',
