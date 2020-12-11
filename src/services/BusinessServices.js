@@ -133,12 +133,23 @@ export function fetchMerRegisterList(params) {
   });
 }
 
+// 入驻查询
+
 // get 入驻查询 - 列表
 export function fetchMerSettledList(params) {
-  return request('/admin/merchantManagement/getMerchantSettle', {
+  return request('/admin/merchantManagement/listMerchantSettleIn', {
     params,
   });
 }
+
+// get 入驻查询 - 获取excel数据
+export function fetchGetMerSettledExcel(params) {
+  return request('/admin/merchantManagement/listMerchantSettleIn', {
+    params,
+  });
+}
+
+// 入驻查询 end
 
 // 集团管理
 

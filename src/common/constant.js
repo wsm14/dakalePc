@@ -69,11 +69,17 @@ export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
 // 商户 账户状态(银行卡绑定状态)
 export const BUSINESS_ACCOUNT_STATUS = [false, false, '未激活', '已激活'];
 
+// 商户 账户激活状态
+export const MRE_ACCOUNT_STATUS = ['未绑定', '审核中', '绑定失败', '绑定成功'];
+
+// 商户 绑定激活查询排序
+export const MRE_SORT_STATUS = ['提交审核时间倒序', '按审核时间倒序', '按绑卡时间倒序'];
+
 // 商户 店铺状态
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // 商户 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
-export const BUSINESS_STATUS_AUDIT = [false, '审核中', '审核驳回', '审核通过'];
+export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];
 
 // 商户 注册列表 状态
 export const BUSINESS_REGISTER_STATUS = ['未入驻', '已入驻', '未激活', '已激活'];

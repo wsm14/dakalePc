@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
+import { MRE_ACCOUNT_STATUS, BUSINESS_STATUS_AUDIT, MRE_SORT_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import exportExcel from '@/utils/exportExcel';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -15,41 +16,44 @@ const BusinessSettled = (props) => {
     {
       label: '提审时间',
       type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
+      name: 'arraignmentTimeStart',
+      end: 'arraignmentTimeEnd',
     },
     {
       label: '绑卡日期',
       type: 'rangePicker',
-      name: 'beginDate2',
-      end: 'endDate2',
+      name: 'activationTimeStart',
+      end: 'activationTimeEnd',
     },
     {
-      label: '店铺',
-      name: 'beginDatse2',
-      placeholder: '请输入店铺账号、电话或名称',
+      label: '店铺名称',
+      name: 'merchantName',
+    },
+    {
+      label: '店铺帐号',
+      name: 'account',
     },
     {
       label: '审核状态',
-      name: 'status',
+      name: 'verifyStatus',
       type: 'select',
-      select: { list: [] },
+      select: { list: BUSINESS_STATUS_AUDIT },
     },
     {
       label: '激活状态',
-      name: 'stsatus',
+      name: 'activationStatus',
       type: 'select',
-      select: { list: [] },
+      select: { list: MRE_ACCOUNT_STATUS },
     },
     {
       label: '推荐人手机号',
-      name: 'phone',
+      name: 'parentMobile',
     },
     {
       label: '排序',
-      name: 'phosne',
+      name: 'sortField',
       type: 'select',
-      select: { list: [] },
+      select: { list: MRE_SORT_STATUS },
     },
   ];
 
@@ -59,17 +63,16 @@ const BusinessSettled = (props) => {
       title: '序号',
       fixed: 'left',
       dataIndex: 'id',
+      render: (val, row, i) => i + 1,
     },
     {
       title: '类型',
-      fixed: 'left',
       dataIndex: 'merchantName',
       render: (val) => val || '--',
     },
     {
       title: '店铺账号',
-      fixed: 'left',
-      dataIndex: 'username',
+      dataIndex: 'account',
     },
     {
       title: '店铺电话',
@@ -78,7 +81,7 @@ const BusinessSettled = (props) => {
     },
     {
       title: '店铺名称',
-      dataIndex: 'createTime',
+      dataIndex: 'merchantName',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val}
@@ -87,22 +90,22 @@ const BusinessSettled = (props) => {
     },
     {
       title: '一级类目',
-      dataIndex: 'STATUS',
+      dataIndex: 'topCategoryName',
       render: (val) => val || '--',
     },
     {
       title: '二级类目',
-      dataIndex: 'STATUS',
+      dataIndex: 'categoryName',
       render: (val) => val || '--',
     },
     {
       title: '所属商圈',
-      dataIndex: 'STATUS',
+      dataIndex: 'businessHub',
       render: (val) => val || '--',
     },
     {
       title: '店铺地址',
-      dataIndex: 'STATUS',
+      dataIndex: 'address',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val || '--'}
@@ -111,41 +114,41 @@ const BusinessSettled = (props) => {
     },
     {
       title: '提交审核日期',
-      dataIndex: 'STATUS',
+      dataIndex: 'submitVerifyTime',
     },
     {
       title: '审核状态',
-      dataIndex: 'STATUS',
-      render: (val) => val || '--',
+      dataIndex: 'verifyStatus',
+      render: (val) => BUSINESS_STATUS_AUDIT[val],
     },
     {
       title: '审核通过日期',
-      dataIndex: 'STATUS',
+      dataIndex: 'verifyTime',
       render: (val) => val || '--',
     },
     {
       title: '银行卡绑定日期',
-      dataIndex: 'STATUS',
+      dataIndex: 'activationTime',
       render: (val) => val || '--',
     },
     {
       title: '激活状态',
-      dataIndex: 'STATUS',
-      render: (val) => val || '--',
+      dataIndex: 'bankStatus',
+      render: (val) => MRE_ACCOUNT_STATUS[val],
     },
     {
       title: '关联BD',
-      dataIndex: 'STATUS',
+      dataIndex: 'salesperson',
       render: (val) => val || '--',
     },
     {
       title: '推店人名称',
-      dataIndex: 'STATUS',
+      dataIndex: 'parentName',
       render: (val) => val || '--',
     },
     {
       title: '推店人手机',
-      dataIndex: 'STATUS',
+      dataIndex: 'parentMobile',
       render: (val) => val || '--',
     },
   ];
@@ -154,7 +157,7 @@ const BusinessSettled = (props) => {
   const fetchGetExcel = (payload) => {
     const header = getColumns;
     dispatch({
-      type: 'businessList/fetchMerchantGetExcel',
+      type: 'businessSettled/fetchMerchantGetExcel',
       payload,
       callback: (data) => exportExcel({ header, data }),
     });
@@ -172,7 +175,7 @@ const BusinessSettled = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.id}`}
+      rowKey={(record) => `${record.userMerchantIdString}`}
       dispatchType="businessSettled/fetchGetList"
       {...businessSettled}
     ></DataTableBlock>
@@ -181,5 +184,5 @@ const BusinessSettled = (props) => {
 
 export default connect(({ businessSettled, loading }) => ({
   businessSettled,
-  loading: loading.effects['businessSettled/fetchGetList'],
+  loading: loading.models.businessSettled,
 }))(BusinessSettled);
