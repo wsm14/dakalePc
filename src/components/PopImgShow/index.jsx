@@ -31,10 +31,12 @@ const PopImgShow = ({ url, onClick }) => {
     <>
       {onClick ? (
         imgDiv
-      ) : (
+      ) : url ? (
         <Popover placement="right" content={<img src={url} alt="" style={{ maxWidth: 400 }} />}>
           {imgDiv}
         </Popover>
+      ) : (
+        ''
       )}
     </>
   );

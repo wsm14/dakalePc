@@ -146,7 +146,7 @@ const tableList = (props) => {
     {
       title: '操作',
       dataIndex: 'merchantGroupId',
-      align: 'left',
+      align: 'right',
       render: (val, record) =>
         record.bankStatus === '0' ? (
           <HandleSetTable

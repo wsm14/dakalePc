@@ -138,4 +138,15 @@ export function fetchExpertSortSet(data) {
   });
 }
 
-// 哒人列表 end
+// 排序机制 end
+
+// 等级设置
+
+// get 等级设置 - 列表
+export function fetchExpertLevelList(params) {
+  return request('/admin/userLevelManagement/listLevelConfig', {
+    params,
+  });
+}
+
+// 等级设置 end

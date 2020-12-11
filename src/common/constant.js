@@ -180,8 +180,9 @@ export const BANNER_TYPE = [
   { value: 'main', name: '首页' },
   { value: 'merchant', name: '到店打卡' },
   { value: 'person', name: '个人' },
-  { value: 'near', name: '周边' },
   { value: 'merchantMain', name: '商家主页' },
+  { value: 'mainSpecial', name: '周边特惠首页' },
+  { value: 'surroundingSpecial', name: '周边特惠列表' },
 ];
 export const SEX_TYPE = [
   { value: 'M', name: '男' },

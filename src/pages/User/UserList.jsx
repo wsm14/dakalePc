@@ -34,7 +34,6 @@ const UserListComponent = (props) => {
     },
     {
       title: '昵称',
-      align: 'left',
       dataIndex: 'username',
     },
     {
