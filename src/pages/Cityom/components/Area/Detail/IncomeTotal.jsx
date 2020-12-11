@@ -1,103 +1,54 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Spin } from 'antd';
 import { Bar } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
-const ProvCompanyTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
+const ProvCompanyTotalInfo = ({ dispatch, loading, partnerId, totalData }) => {
+  const [selectYear, setSelectYear] = useState(moment().format('YYYY'));
   // 搜索参数
   const searchItems = [
     {
       label: '年份',
       type: 'datePicker',
-      name: 'mobile',
+      name: 'year',
       picker: 'year',
     },
   ];
 
-  const data = [
-    {
-      type: '1月',
-      value: 38,
-    },
-    {
-      type: '2月',
-      value: 52,
-    },
-    {
-      type: '3月',
-      value: 61,
-    },
-    {
-      type: '4月',
-      value: 145,
-    },
-    {
-      type: '5月',
-      value: 48,
-    },
-    {
-      type: '6月',
-      value: 12,
-    },
-    {
-      type: '7月',
-      value: 32,
-    },
-    {
-      type: '8月',
-      value: 38,
-    },
-    {
-      type: '9月',
-      value: 381,
-    },
-    {
-      type: '10月',
-      value: 382,
-    },
-    {
-      type: '11月',
-      value: 333,
-    },
-    {
-      type: '12月',
-      value: 31,
-    },
-  ];
-
   // 获取统计数据
-  const fetchIncomeDetail = (userId) => {
+  const fetchIncomeDetail = (values = {}) => {
     dispatch({
-      type: 'provCompany/fetchIncomeDetail',
-      payload: { userId },
+      type: 'areaCenter/fetchAreaBeanDetail',
+      payload: { partnerId, year: values.year || moment().format('YYYY') },
+      callback: (year) => setSelectYear(year),
     });
   };
 
   useEffect(() => {
-    // fetchIncomeDetail()
+    fetchIncomeDetail();
   }, []);
 
   return (
     <>
-      <SearchCondition
-        searchItems={searchItems}
-        handleSearch={fetchIncomeDetail}
-        btnExtra={btnExtra}
-      ></SearchCondition>
+      <SearchCondition searchItems={searchItems} handleSearch={fetchIncomeDetail}></SearchCondition>
       <Spin spinning={!!loading}>
-        <div style={{ textAlign: 'center' }}>年份：2020年&nbsp;&nbsp;&nbsp;&nbsp;收益：124561卡豆</div>
+        <div style={{ textAlign: 'center' }}>
+          年份：{selectYear}年&nbsp;&nbsp;&nbsp;&nbsp;收益：{totalData.total}卡豆
+        </div>
         <Bar
-          data={data}
+          data={totalData.list}
           height={350}
-          meta={{ type: { alias: '月份' }, value: { alias: '卡豆数（个）' } }}
+          meta={{ month: { alias: '月份' }, beanSum: { alias: '卡豆数（个）' } }}
+          xyField={{ xField: 'month', yField: 'beanSum' }}
         />
       </Spin>
     </>
   );
 };
 
-export default connect(({ provCompany, loading }) => ({
-  totalData: provCompany.totalData,
-  loading: loading.effects['provCompany/fetchIncomeDetail'],
+export default connect(({ areaCenter, loading }) => ({
+  totalData: areaCenter.totalData,
+  loading: loading.effects['areaCenter/fetchAreaBeanDetail'],
 }))(ProvCompanyTotalInfo);

@@ -14,6 +14,7 @@ import {
   fetchAreaAccountEdit,
   fetchAreaBankSet,
   fetchAreaBankDetail,
+  fetchAreaBeanDetail,
 } from '@/services/CityomServices';
 
 export default {
@@ -25,6 +26,7 @@ export default {
     bankDetail: {},
     partnerId: '',
     partnerAccountId: '',
+    totalData: { list: [], total: 0 },
   },
 
   reducers: {
@@ -41,6 +43,7 @@ export default {
         partnerAccountId: '',
         detail: {},
         bankDetail: {},
+        totalData: { list: [], total: 0 },
       };
     },
   },
@@ -62,6 +65,18 @@ export default {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchAreaBeanDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAreaBeanDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: { list: content.recordList, total: content.totalBean },
+        },
+      });
+      callback(payload.year);
     },
     *fetchGetOcrLicense({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrLicense, payload);
@@ -115,7 +130,7 @@ export default {
         type: 'save',
         payload: {
           partnerId: detail.partnerId,
-          partnerAccountId: detail.partnerAccountId,  
+          partnerAccountId: detail.partnerAccountId,
           detail: detail,
         },
       });

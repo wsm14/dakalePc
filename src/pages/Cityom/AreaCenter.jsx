@@ -123,16 +123,16 @@ const AreaCenter = (props) => {
       render: (partnerId, record) => (
         <HandleSetTable
           formItems={[
-            // {
-            //   type: 'own',
-            //   title: '收益明细',
-            //   click: () => setVisible({ type: 'income', record }),
-            // },
-            // {
-            //   type: 'own',
-            //   title: '提现记录',
-            //   click: () => setVisible({ type: 'withdraw', record }),
-            // },
+            {
+              type: 'own',
+              title: '收益明细',
+              click: () => setVisible({ type: 'income', record }),
+            },
+            {
+              type: 'own',
+              title: '提现记录',
+              click: () => setVisible({ type: 'withdraw', record }),
+            },
             {
               type: 'info',
               click: () => fetchAreaDetail({ type: 'detail', partnerId }),

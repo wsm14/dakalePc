@@ -80,6 +80,13 @@ export function fetchAreaBankDetail(params) {
   });
 }
 
+// 区县运营中心 - 收益数据
+export function fetchAreaBeanDetail(params) {
+  return request('/admin/cityOperationManagement/listStatisticPartnerBeanDetail', {
+    params,
+  });
+}
+
 // post 区县运营中心 - 新增
 export function fetchAreaAdd(data) {
   return request('/admin/partner/savePartner', {
