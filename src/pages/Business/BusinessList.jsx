@@ -52,13 +52,13 @@ const BusinessListComponent = (props) => {
     },
     {
       label: '集团名称',
-      name: 'businessssStatus',
+      name: 'groupName',
     },
     {
       label: '店铺类型',
-      name: 'statusss',
+      name: 'groupFlag',
       type: 'select',
-      select: { list: BUSINESS_STATUS },
+      select: { list: ['单店', '集团'] },
     },
     {
       label: '地址',
@@ -138,12 +138,12 @@ const BusinessListComponent = (props) => {
     {
       title: '店铺类型',
       align: 'center',
-      dataIndex: 'businessStatus',
-      render: (val) => BUSINESS_DO_STATUS[val],
+      dataIndex: 'groupId',
+      render: (val) => (val ? '集团' : '单店'),
     },
     {
       title: '集团名称',
-      dataIndex: 'activationTime',
+      dataIndex: 'groupName',
       render: (val) => val || '--',
     },
     {

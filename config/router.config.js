@@ -214,6 +214,11 @@ export default [
             name: '广告管理',
             component: './market/AppSetList',
           },
+          {
+            path: '/market/special',
+            name: '周边特惠',
+            component: './Market/SpecialGoods',
+          },
         ],
       },
       {

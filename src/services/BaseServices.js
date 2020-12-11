@@ -2,6 +2,13 @@ import request from '@/utils/request';
 
 // 全局接口
 
+// get 日志记录
+export function fetchHandleDetail(params) {
+  return request('/user/logRecord/listLogRecord', {
+    params,
+  });
+}
+
 // get OCR识别 营业执照
 export function fetchGetOcrLicense(params) {
   return request('/common/ocr/businessLicense', {
@@ -37,9 +44,16 @@ export function fetchGetHubSelect(params) {
   });
 }
 
-// get 日志记录
-export function fetchHandleDetail(params) {
-  return request('/user/logRecord/listLogRecord', {
+// get 获取商圈名称
+export function fetchGetHubName(params) {
+  return request('/common/businessHub/getBusinessHubById', {
+    params,
+  });
+}
+
+// get 周边特惠 - 行业类目
+export function fetchSpecialClassisyList(params) {
+  return request('/common/category/listSpecialGoodsCategoryAdmin', {
     params,
   });
 }

@@ -209,3 +209,37 @@ export function fetchBannerSet(data) {
 }
 
 // App设置 end
+
+// 周边特惠
+
+// get 周边特惠 - 列表
+export function fetchSpecialGoodsList(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
+// get 周边特惠 - 所属商圈
+export function fetchSpecialGoodsHubs(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
+// post 周边特惠 - 下架
+export function fetchSpecialGoodsStatus(data) {
+  return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 推荐状态
+export function fetchSpecialGoodsRecommend(data) {
+  return request('/admin/specialGoodsManagement/setRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+// App设置 end

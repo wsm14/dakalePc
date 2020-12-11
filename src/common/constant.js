@@ -194,6 +194,12 @@ export const MASTER_TYPE = [
   { value: 'merchant', name: '商户' },
 ];
 
+// 周边特惠 - 上架状态
+export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
+
+// 周边特惠 - 推荐状态
+export const SPECIAL_RECOMMEND_STATUS = ['否', '是'];
+
 // 默认起始结束时间
 const now = new Date();
 export const INIT_END_TIME = moment(now, 'YYYY-MM-DD');
