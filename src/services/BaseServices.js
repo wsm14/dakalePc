@@ -51,9 +51,17 @@ export function fetchGetHubName(params) {
   });
 }
 
-// get 周边特惠 - 行业类目
-export function fetchSpecialClassisyList(params) {
+// get 行业类目 - 勾选列表
+export function fetchGetTradeSelect(params) {
   return request('/common/category/listSpecialGoodsCategoryAdmin', {
     params,
+  });
+}
+
+// post 行业类目 - 勾选设置
+export function fetchSetTradeSelect(data) {
+  return request('/common/category/setSpecialGoodsCategory', {
+    method: 'POST',
+    data,
   });
 }

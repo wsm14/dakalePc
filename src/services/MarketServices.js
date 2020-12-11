@@ -219,13 +219,6 @@ export function fetchSpecialGoodsList(params) {
   });
 }
 
-// get 周边特惠 - 所属商圈
-export function fetchSpecialGoodsHubs(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
-    params,
-  });
-}
-
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
   return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {

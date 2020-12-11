@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button, Modal } from 'antd';
 import { SPECIAL_STATUS, SPECIAL_RECOMMEND_STATUS } from '@/common/constant';
@@ -6,12 +6,13 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
 
   const childRef = useRef();
-  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+  const [visible, setVisible] = useState(false);
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -179,7 +180,7 @@ const SpecialGoods = (props) => {
   // 获取所属商圈
   const fetchGetHubName = (payload) => {
     dispatch({
-      type: 'specialGoods/fetchGetHubName',
+      type: 'baseData/fetchGetHubName',
       payload,
       callback: (hub) =>
         Modal.confirm({
@@ -211,12 +212,31 @@ const SpecialGoods = (props) => {
     });
   };
 
+  // 行业类目
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
+  // 勾选的行业列表
+  const fetchGetTradeSelect = () => {
+    dispatch({
+      type: 'baseData/fetchGetTradeSelect',
+      callback: (detail) => setVisible({ show: true, detail: { categoryIds: detail } }),
+    });
+  };
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   return (
     <>
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button className="dkl_green_btn" onClick={() => setVisibleSet({ show: true, info: '' })}>
+          <Button className="dkl_green_btn" onClick={fetchGetTradeSelect}>
             行业设置
           </Button>
         }
@@ -227,6 +247,10 @@ const SpecialGoods = (props) => {
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></DataTableBlock>
+      <SpecialGoodsTrade
+        visible={visible}
+        onCancel={() => setVisible({ show: false })}
+      ></SpecialGoodsTrade>
     </>
   );
 };

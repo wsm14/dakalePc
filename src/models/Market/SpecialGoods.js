@@ -1,8 +1,6 @@
 import { notification } from 'antd';
-import { fetchGetHubName } from '@/services/BaseServices';
 import {
   fetchSpecialGoodsList,
-  fetchSpecialGoodsHubs,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
 } from '@/services/MarketServices';
@@ -37,12 +35,8 @@ export default {
         },
       });
     },
-    *fetchGetHubName({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetHubName, payload);
-      if (!response) return;
-      const { content } = response;
-      content && callback(content.businessHubList);
-    },
+
+
     *fetchSpecialGoodsStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchSpecialGoodsStatus, payload);
       if (!response) return;

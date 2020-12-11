@@ -149,7 +149,7 @@ const BusinessListComponent = (props) => {
     {
       title: '联系人手机号',
       align: 'center',
-      dataIndex: 'activatisonTime',
+      dataIndex: 'mobile',
       render: (val) => val || '--',
     },
     {
