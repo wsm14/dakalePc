@@ -160,7 +160,7 @@ const SpecialGoods = (props) => {
               {
                 type: 'own',
                 title: '推荐',
-                visible: record.status != '0' && record.recommendStatus == '0' && businessHubId,
+                visible: record.status != '0' && record.recommendStatus != '1' && businessHubId,
                 click: () => fetchGetHubName({ specialGoodsId, businessHubId, recommendStatus: 1 }),
               },
               {

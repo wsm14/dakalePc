@@ -42,7 +42,7 @@ const SpecialGoodsTrade = (props) => {
       bodyStyle={{ padding: '0 0 24px' }}
     >
       <Alert
-        message="勾选之后将不会出现在周边特惠的行业tab中"
+        message="勾选之后将会出现在周边特惠的行业tab中"
         banner
         style={{ marginBottom: 20 }}
       />
