@@ -151,14 +151,14 @@ export default [
           },
           {
             path: '/business/settled',
-            name: '入驻查询',
+            name: '入驻绑定查询',
             component: './Business/BusinessSettled',
           },
-          {
-            path: '/business/bindBank',
-            name: '绑定查询',
-            component: './Business/BusinessBindBank',
-          },
+          // {
+          //   path: '/business/bindBank',
+          //   name: '绑定查询',
+          //   component: './Business/BusinessBindBank',
+          // },
         ],
       },
       {

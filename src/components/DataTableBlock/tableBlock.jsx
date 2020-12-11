@@ -70,12 +70,12 @@ const TableBlockComponent = (props) => {
   } = props;
 
   const [first, setFirst] = useState(NoSearch); // first No search
-  const [searchData, setSearchData] = useState(pParams.searchData || {}); // 搜索参数
   const [tableParems, setTableParems] = useState({
     page: pParams.page || 1, // 页码
     limit: pParams.limit || { default: 10, middle: 10, small: 10 }[componentSize], // 每页条数
     sortOrder: '', // 排序字段
     sortField: '', // 排序规则 升降
+    ...(pParams.searchData || {}), // 搜索控件参数
   }); // 表格参数
 
   // 获取列表
@@ -86,7 +86,6 @@ const TableBlockComponent = (props) => {
         payload: {
           ...tableParems, // 表格参数
           ...params, // 默认参数
-          ...searchData, // 搜索参数
           ...data, // 传递的搜索参数
         },
       });
@@ -94,8 +93,7 @@ const TableBlockComponent = (props) => {
 
   // 搜索
   const handleSearch = (value) => {
-    setSearchData(value);
-    setNum(1);
+    setTableParems({ ...tableParems, ...value, page: 1 });
   };
 
   // 分页
@@ -115,6 +113,7 @@ const TableBlockComponent = (props) => {
     if (tpage == page.current && limit == page.pageSize) return false;
     console.log(page, filters, sorter);
     setTableParems({
+      ...tableParems,
       page: page.current, // 页码
       limit: page.pageSize, // 每页条数
       // sortOrder: sorter.order, // 排序字段
@@ -131,8 +130,7 @@ const TableBlockComponent = (props) => {
 
   // 保存搜索参数
   const handleSaveParams = () => {
-    if (typeof setParams === 'function')
-      setParams({ page: tableParems.page, limit: tableParems.limit, searchData });
+    if (typeof setParams === 'function') setParams({ ...tableParems, searchData: tableParems });
   };
 
   useEffect(() => {
@@ -142,7 +140,7 @@ const TableBlockComponent = (props) => {
       setFirst(false);
     }
     return handleSaveParams;
-  }, [tableParems, searchData]);
+  }, [tableParems]);
 
   const tabContent = (
     <>

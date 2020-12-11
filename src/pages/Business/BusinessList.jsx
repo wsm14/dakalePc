@@ -51,6 +51,16 @@ const BusinessListComponent = (props) => {
       select: { list: BUSINESS_ACCOUNT_STATUS },
     },
     {
+      label: '集团名称',
+      name: 'businessssStatus',
+    },
+    {
+      label: '店铺类型',
+      name: 'statusss',
+      type: 'select',
+      select: { list: BUSINESS_STATUS },
+    },
+    {
       label: '地址',
       name: 'city',
       type: 'cascader',
@@ -126,6 +136,23 @@ const BusinessListComponent = (props) => {
       render: (val) => val || '--',
     },
     {
+      title: '店铺类型',
+      align: 'center',
+      dataIndex: 'businessStatus',
+      render: (val) => BUSINESS_DO_STATUS[val],
+    },
+    {
+      title: '集团名称',
+      dataIndex: 'activationTime',
+      render: (val) => val || '--',
+    },
+    {
+      title: '联系人手机号',
+      align: 'center',
+      dataIndex: 'activatisonTime',
+      render: (val) => val || '--',
+    },
+    {
       title: '账号状态',
       align: 'center',
       dataIndex: 'bankStatus',
@@ -193,6 +220,7 @@ const BusinessListComponent = (props) => {
 
   // 获取商家导出excel 数据
   const fetchGetExcel = (payload) => {
+    const fieldNames = { key: 'key', headerName: 'header' };
     const header = [
       { key: 'account', header: '店铺账号' },
       { key: 'merchantName', header: '店铺简称' },
@@ -215,7 +243,7 @@ const BusinessListComponent = (props) => {
     dispatch({
       type: 'businessList/fetchMerchantGetExcel',
       payload,
-      callback: (data) => exportExcel({ header, data }),
+      callback: (data) => exportExcel({ header, data, fieldNames }),
     });
   };
 
