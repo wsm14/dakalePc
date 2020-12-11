@@ -235,4 +235,16 @@ export function fetchSpecialGoodsRecommend(data) {
   });
 }
 
-// App设置 end
+// 周边特惠 end
+
+// 热门搜索
+
+// post 热门搜索 - 配置
+export function fetchSearchSet(data) {
+  return request('/common/category/setHotMerchantCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 热门搜索 end

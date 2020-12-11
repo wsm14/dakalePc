@@ -385,6 +385,7 @@ const FormComponents = ({
         select: (
           <Select
             labelInValue={item.labelInValue || false}
+            mode={item.mode}
             showSearch
             loading={item.loading}
             disabled={item.disabled}

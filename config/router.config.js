@@ -219,6 +219,11 @@ export default [
             name: '周边特惠',
             component: './Market/SpecialGoods',
           },
+          {
+            path: '/market/search',
+            name: '搜索配置',
+            component: './Market/SearchSetList',
+          },
         ],
       },
       {
