@@ -22,7 +22,7 @@ const GoodsDetail = (props) => {
       render: (val) => (val == 'package' ? '套餐' : '单品'),
     },
     {
-      label: '单品名称',
+      label: `${val == 'package' ? '套餐' : '单品'}名称`,
       name: 'goodsName',
     },
     {
@@ -66,11 +66,7 @@ const GoodsDetail = (props) => {
 
   return (
     <>
-      <DescriptionsCondition
-        column={2}
-        formItems={formItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
+      <DescriptionsCondition formItems={formItems} initialValues={detail}></DescriptionsCondition>
     </>
   );
 };
