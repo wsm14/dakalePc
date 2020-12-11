@@ -154,11 +154,6 @@ export default [
             name: '入驻绑定查询',
             component: './Business/BusinessSettled',
           },
-          // {
-          //   path: '/business/bindBank',
-          //   name: '绑定查询',
-          //   component: './Business/BusinessBindBank',
-          // },
         ],
       },
       {
@@ -186,6 +181,11 @@ export default [
             path: '/expert/set',
             name: '创作设置',
             component: './Expert/ExpertSet',
+          },
+          {
+            path: '/expert/sort',
+            name: '排序机制',
+            component: './Expert/ExpertSort',
           },
         ],
       },

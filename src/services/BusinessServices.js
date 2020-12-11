@@ -140,13 +140,6 @@ export function fetchMerSettledList(params) {
   });
 }
 
-// get 绑定查询 - 列表
-export function fetchMerBindBankList(params) {
-  return request('/admin/merchantManagement/getMerchantBankStatusOk', {
-    params,
-  });
-}
-
 // 集团管理
 
 // get 集团列表 - 统计

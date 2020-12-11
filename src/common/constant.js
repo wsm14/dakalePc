@@ -44,6 +44,19 @@ export const FEEDBACK_USER_TYPE = {
   patner: '区县',
 };
 
+// 排序纬度
+export const EXPERT_SORT_TYPE = {
+  beanReward: '卡豆打赏额',
+  likes: '点赞数',
+  collections: '收藏数',
+  shares: '分享数',
+  finished: '完播数',
+  views: '浏览量',
+  level: '哒人等级',
+  quantity: '带货量',
+  noviceProtection: '新手保护',
+};
+
 // 用户状态
 export const ACCOUNT_STATUS = ['禁用', '启用'];
 

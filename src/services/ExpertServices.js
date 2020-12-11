@@ -120,3 +120,22 @@ export function fetchClassifyDetailSet(data) {
     data,
   });
 }
+
+// 排序机制
+
+// get 排序机制 - 列表
+export function fetchExpertSortList(params) {
+  return request('/admin/userManagement/getUserLevelSortConfig', {
+    params,
+  });
+}
+
+// post 排序机制 - 设置
+export function fetchExpertSortSet(data) {
+  return request('/admin/userManagement/saveUserLevelSortConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 哒人列表 end
