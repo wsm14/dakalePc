@@ -5,10 +5,18 @@ import DataTableBlock from '@/components/DataTableBlock';
 import SearchSetModal from './components/SearchSet/SearchSetModal';
 
 const SearchSetList = (props) => {
-  const { loading } = props;
+  const { loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState({ show: false, detail: '' });
+  const [visible, setVisible] = useState({ show: false, detail: [],data:{} });
+
+  // 回显信息
+  const fetchSearchGetData = () => {
+    dispatch({
+      type: 'searchSet/fetchSearchGetData',
+      callback: (detail) => setVisible({ show: true, detail,data:{data: detail.map(i=>i.value)} }),
+    });
+  };
 
   // table 表头
   const getColumns = [
@@ -28,7 +36,7 @@ const SearchSetList = (props) => {
             {
               type: 'own',
               title: '配置',
-              click: () => setVisible({ show: true }),
+              click: fetchSearchGetData,
             },
           ]}
         />

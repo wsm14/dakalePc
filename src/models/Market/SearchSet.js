@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchSearchSet } from '@/services/MarketServices';
+import { fetchSearchSet, fetchSearchGetData } from '@/services/MarketServices';
 
 export default {
   namespace: 'searchSet',
@@ -19,6 +19,14 @@ export default {
   },
 
   effects: {
+    *fetchSearchGetData({ payload, callback }, { call }) {
+      const response = yield call(fetchSearchGetData, payload);
+      if (!response) return;
+      const { content } = response;
+      console.log(content.dictionaryDTO);
+      const listData = JSON.parse(content.dictionaryDTO.extraParam);
+      if (callback) callback(listData ? listData.merchantList.map(item=> ({label: item.merchantName,value: item.id})) : []);
+    },
     *fetchSearchSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchSearchSet, payload);
       if (!response) return;

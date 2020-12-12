@@ -381,7 +381,7 @@ const FormComponents = ({
             // }
           />
         ),
-        checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} />,
+        checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} onChange={item.onChange}/>,
         select: (
           <Select
             labelInValue={item.labelInValue || false}
@@ -390,6 +390,7 @@ const FormComponents = ({
             loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}
+            dropdownMatchSelectWidth={false}
             filterOption={item.filterOption || true}
             onSearch={item.onSearch}
             onChange={item.onChange}

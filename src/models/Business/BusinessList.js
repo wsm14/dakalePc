@@ -23,6 +23,7 @@ export default {
     total: 0,
     totalData: { chartsLeft: {}, chartsRight: [] },
     brandList: { list: [], total: 0 },
+    selectList:[]
   },
 
   reducers: {
@@ -43,6 +44,11 @@ export default {
         type: 'save',
         payload: {
           list: content.recordList,
+          selectList: content.recordList.map((item) => ({
+            name: item.merchantName,
+            otherData: item.address,
+            value: item.userMerchantIdString,
+          })),
         },
       });
       if (callback) callback(content.recordList);

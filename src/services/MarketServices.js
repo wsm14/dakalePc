@@ -239,6 +239,13 @@ export function fetchSpecialGoodsRecommend(data) {
 
 // 热门搜索
 
+// get 热门搜索 - 回显
+export function fetchSearchGetData(params) {
+  return request('/common/category/getHotMerchantCategory', {
+    params,
+  });
+}
+
 // post 热门搜索 - 配置
 export function fetchSearchSet(data) {
   return request('/common/category/setHotMerchantCategory', {

@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Modal, Form, Alert } from 'antd';
 import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';
 
 const SearchSetModal = (props) => {
-  const { loading, dispatch, visible = false, businessList, onCancel } = props;
-  const { show = false } = visible;
+  const { loading, dispatch, visible = false, selectList, onCancel } = props;
+  const { show = false, detail = [], data = {} } = visible;
 
   const [form] = Form.useForm();
   const [selectMre, setSelecMre] = useState([]);
 
+  useEffect(() => {
+    show && setSelecMre(detail);
+  }, [detail]);
+
   // 勾选的行业设置
   const handleSetTradeSelect = () => {
+    const data = form.getFieldValue('data');
+    let extraParam = [];
+    if (data.length) {
+      extraParam = selectMre
+        .filter((item) => data.indexOf(item.value) > -1)
+        .map((item) => ({ merchantName: item.label, id: item.value, rankStatus: 1 }));
+    }
     dispatch({
       type: 'searchSet/fetchSearchSet',
       payload: {
-        extraParam: JSON.stringify({ merchantList: selectMre }),
+        extraParam: JSON.stringify({ merchantList: extraParam }),
       },
       callback: onCancel,
     });
@@ -37,28 +48,37 @@ const SearchSetModal = (props) => {
     });
   }, 500);
 
-  console.log(businessList);
+  console.log(selectList);
 
   const formItems = [
     {
       label: '关键词',
       name: 'merchantList',
       type: 'select',
-      mode: 'multiple',
       loading: loading.effects['businessList/fetchGetList'],
       onSearch: fetchGetMreList,
-      select: businessList.list.map((item) => ({
-        name: item.merchantName,
-        value: item.userMerchantIdString,
-      })),
-      onChange: (val, item) =>
-        setSelecMre(
-          item.map((mre) => ({
-            merchantName: mre.children[0],
-            id: mre.value,
-            rankStatus: 1,
-          })),
-        ),
+      select: selectList,
+      rules: [{ required: false }],
+      onChange: (val, itemObj) => {
+        const obj = {};
+        const arr = [
+          ...selectMre,
+          ...detail,
+          { value: itemObj.value, label: itemObj.children[0] },
+        ].reduce((item, next) => {
+          obj[next.value] ? '' : (obj[next.value] = true && item.push(next));
+          return item;
+        }, []);
+        form.setFieldsValue({ data: arr.map((i) => i.value) });
+        setSelecMre(arr);
+      },
+    },
+    {
+      label: '已选项目',
+      name: 'data',
+      type: 'checkbox',
+      select: selectMre,
+      rules: [{ required: false }],
     },
   ];
 
@@ -71,17 +91,18 @@ const SearchSetModal = (props) => {
       confirmLoading={loading.effects['searchSet/fetchSearchSet']}
       onOk={handleSetTradeSelect}
       onCancel={onCancel}
+      maskClosable={false}
       bodyStyle={{ padding: '0 0 24px' }}
     >
       <Alert message="展示搜索页面-热门搜索模块" banner style={{ marginBottom: 20 }} />
       <div style={{ padding: '0 50px 0 0' }}>
-        <FormCondition formItems={formItems} form={form} />
+        <FormCondition formItems={formItems} form={form} initialValues={data} />
       </div>
     </Modal>
   );
 };
 
 export default connect(({ businessList, loading }) => ({
-  businessList,
+  selectList: businessList.selectList,
   loading,
 }))(SearchSetModal);
