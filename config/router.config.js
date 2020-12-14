@@ -16,13 +16,14 @@ export default [
     component: '../layouts/BasicLayout',
     routes: [
       {
-        name: '城市运营中心',
+        name: '区县管理',
         path: '/cityom',
         routes: [
           {
             path: '/cityom/provCo',
             name: '省级公司',
             component: './CityOm/ProvCompany',
+            button: ['view', 'update', 'save', 'status'],
           },
           {
             path: '/cityom/partner',
@@ -36,6 +37,32 @@ export default [
           },
         ],
       },
+      // {
+      //   name: '活动设置',
+      //   path: '/active',
+      //   routes: [
+      //     {
+      //       path: '/active/template',
+      //       name: '营销活动模版',
+      //       component: './Active/ActiveTemplate',
+      //     },
+      //     {
+      //       path: '/active/allocation',
+      //       name: '活动配置',
+      //       component: './Active/ActiveAllocation',
+      //     },
+      //     {
+      //       path: '/active/list',
+      //       name: '活动列表',
+      //       component: './Active/ActiveList',
+      //     },
+      //     {
+      //       path: '/active/param',
+      //       name: '参数配置',
+      //       component: './Active/ActiveParam',
+      //     },
+      //   ],
+      // },
       {
         name: '用户管理',
         path: '/user',
@@ -44,17 +71,28 @@ export default [
             path: '/user/list',
             name: '用户数据',
             component: './User/UserList',
+            buttons: ['view', 'status'],
+          },
+          {
+            path: '/user/master',
+            name: '家主列表',
+            component: './User/CircleMasterList',
+          },
+          {
+            path: '/user/bdlimitPop',
+            name: 'BD白名单',
+            component: './User/BdLimitPop',
           },
         ],
       },
       {
-        name: '商户管理',
+        name: '店铺管理',
         path: '/business',
         routes: [
           {
-            path: '/business/list',
-            name: '商户数据',
-            component: './Business/BusinessList',
+            path: '/business/register',
+            name: '注册列表',
+            component: './Business/BusinessRegister',
           },
           {
             path: '/business/audit',
@@ -62,24 +100,52 @@ export default [
             component: './Business/BusinessAudit',
           },
           {
-            path: '/business/register',
-            name: '注册列表',
-            component: './Business/BusinessRegister',
+            path: '/business/list',
+            name: '店铺数据',
+            component: './Business/BusinessList',
           },
           {
-            path: '/business/brand',
-            name: '品牌',
-            component: './Business/BusinessBrand',
+            path: '/business/group',
+            name: '集团管理',
+            component: './business/GroupList',
           },
           {
-            path: '/business/excel',
-            name: 'excel（临时）',
-            component: './Business/BusinessExcelList',
+            path: '/business/settled',
+            name: '入驻查询',
+            component: './Business/BusinessSettled',
+          },
+          {
+            path: '/business/bindBank',
+            name: '绑定查询',
+            component: './Business/BusinessBindBank',
+          },
+        ],
+      },
+      {
+        name: '哒人管理',
+        icon: 'expert',
+        path: '/expert',
+        routes: [
+          {
+            path: '/expert/uaerlist',
+            name: '哒人列表',
+            component: './Expert/ExpertUserList',
+          },
+          {
+            path: '/expert/level',
+            name: '等级设置',
+            component: './Expert/ExpertLevel',
+          },
+          {
+            path: '/expert/set',
+            name: '话题设置',
+            component: './Expert/ExpertSet',
           },
         ],
       },
       {
         name: '营销管理',
+        icon: 'market',
         path: '/market',
         routes: [
           {
@@ -92,21 +158,21 @@ export default [
             name: '营销活动',
             component: './Market/MarketCardActivity',
           },
-        ],
-      },
-      {
-        name: '圈层管理',
-        path: '/circle',
-        routes: [
           {
-            path: '/circle/masterlist',
-            name: '家主列表',
-            component: './Circle/CircleMasterList',
+            path: '/market/checkIn',
+            name: '打卡设置',
+            component: './Market/CheckInSet',
+          },
+          {
+            path: '/market/appset',
+            name: '广告管理',
+            component: './market/AppSetList',
           },
         ],
       },
       {
         name: '账户管理',
+        icon: 'account',
         path: '/account',
         routes: [
           {
@@ -123,17 +189,18 @@ export default [
       },
       {
         name: '客服中心',
+        icon: 'service',
         path: '/service',
         routes: [
-          {
-            path: '/service/feedback',
-            name: '问题反馈',
-            component: './Service/ServiceFeedBack',
-          },
           {
             path: '/service/news',
             name: '新闻动态',
             component: './Service/ServiceNews',
+          },
+          {
+            path: '/service/feedback',
+            name: '问题反馈',
+            component: './Service/ServiceFeedBack',
           },
           {
             path: '/service/businessVideo',
@@ -143,61 +210,61 @@ export default [
         ],
       },
       {
-        name: '活动设置',
-        path: '/active',
-        routes: [
-          {
-            path: '/active/template',
-            name: '活动模版',
-            component: './Active/ActiveTemplate',
-          },
-          {
-            path: '/active/allocation',
-            name: '活动配置',
-            component: './Active/ActiveAllocation',
-          },
-          {
-            path: '/active/list',
-            name: '活动列表',
-            component: './Active/ActiveList',
-          },
-        ],
-      },
-      {
-        name: '系统设置',
+        name: '基础配置',
+        icon: 'system',
         path: '/system',
         routes: [
           {
-            path: '/system/appset',
-            name: 'App设置',
-            component: './System/SysAppList',
+            path: '/system/account',
+            name: '帐号权限管理',
+            component: './System/AccountAdmin',
+          },
+          {
+            path: '/system/company',
+            name: '省公司帐号',
+            component: './System/AccountCompanyRole',
+          },
+          {
+            path: '/system/partner',
+            name: '区县帐号',
+            component: './System/AccountPartnerRole',
+          },
+          {
+            path: '/system/tradeArea',
+            name: '商圈管理',
+            component: './System/TradeArea',
           },
           {
             path: '/system/tradeset',
-            name: '行业设置',
-            component: './System/SysTradeList',
+            name: '行业管理',
+            component: './System/TradeList',
           },
           {
-            path: '/system/checkIn',
-            name: '打卡设置',
-            component: './System/SysCheckIn',
+            path: '/system/brand',
+            name: '品牌管理',
+            component: './System/ManageBrand',
+          },
+          {
+            path: '/system/bankSet',
+            name: '支行管理',
+            component: './System/ManageBank',
           },
           {
             path: '/system/peasShare',
             name: '卡豆分享',
-            component: './System/SysPeasShare',
-          },
-          {
-            path: '/system/accountset',
-            name: '帐号设置',
-            component: './System/SysAccountList',
+            component: './System/PeasShare',
           },
           {
             path: '/system/pageset',
             name: '菜单设置',
-            component: './System/SysMenuList',
+            component: './System/MenuList',
           },
         ],
+      },
+      {
+        name: '修改密码',
+        path: '/password',
+        component: './System/PassWord',
       },
     ],
   },

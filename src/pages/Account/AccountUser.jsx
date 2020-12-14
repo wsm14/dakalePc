@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'dva';
+import CardLoading from '@/components/CardLoading';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-// import UserTotalInfo from './components/User/UserTotalInfo';
 import UserDetailList from './components/User/UserDetailList';
+
+const UserTotalInfo = lazy(() => import('./components/User/UserTotalInfo'));
 
 const AccountUserList = (props) => {
   const { userlist, loading, dispatch } = props;
@@ -91,15 +93,19 @@ const AccountUserList = (props) => {
 
   return (
     <>
-      {/* <UserTotalInfo></UserTotalInfo> */}
       <DataTableBlock
+        keepName="用户账户"
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="accountUser/fetchGetList"
         {...userlist}
-      ></DataTableBlock>
+      >
+        <Suspense fallback={<CardLoading></CardLoading>}>
+          <UserTotalInfo></UserTotalInfo>
+        </Suspense>
+      </DataTableBlock>
       <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
     </>
   );

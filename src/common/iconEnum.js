@@ -9,6 +9,8 @@ import {
   WhatsAppOutlined,
   SettingOutlined,
   CrownOutlined,
+  TeamOutlined,
+  UsergroupAddOutlined,
 } from '@ant-design/icons';
 
 const iconEnum = {
@@ -21,6 +23,8 @@ const iconEnum = {
   service: <WhatsAppOutlined />,
   system: <SettingOutlined />,
   active: <CrownOutlined />,
+  expert: <TeamOutlined />,
+  sign: <UsergroupAddOutlined/>,
 };
 
 export default iconEnum;

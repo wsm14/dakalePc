@@ -1,0 +1,23 @@
+.editable-cell {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.editable-cell-value-wrap {
+  padding: 5px 12px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.editable-row:hover .editable-cell-value-wrap {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 4px 11px;
+  box-sizing: border-box;
+  min-height: 32px;
+}
+
+[data-theme='dark'] .editable-row:hover .editable-cell-value-wrap {
+  border: 1px solid #434343;
+  box-sizing: border-box;
+}

@@ -35,7 +35,6 @@ const TEXT_SET_TOOL = [
 
 const EditorForm = ({
   content,
-  fileApi = '/admin/file/uploads',
   maxImgSize = 1000,
   AllImgSize = 5000,
   editClass,
@@ -45,7 +44,6 @@ const EditorForm = ({
 }) => {
   EditorForm.defaultProps = {
     content: '',
-    fileApi: '/admin/file/uploads',
     maxImgSize: 1000,
     AllImgSize: 5000,
     editClass: undefined,
@@ -54,7 +52,6 @@ const EditorForm = ({
 
   EditorForm.propTypes = {
     content: PropTypes.string,
-    fileApi: PropTypes.string,
     maxImgSize: PropTypes.number,
     AllImgSize: PropTypes.number,
     editClass: PropTypes.string,

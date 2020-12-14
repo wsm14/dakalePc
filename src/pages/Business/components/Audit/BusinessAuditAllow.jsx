@@ -3,8 +3,9 @@ import { connect } from 'dva';
 import { Drawer, Button, Space, Form, TimePicker, Switch, Modal } from 'antd';
 import { PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import FormCondition from '@/components/FormCondition';
-import aliOssUpload from '@/utils/aliOssUpload';
-import styles from '../style.less';
+// import aliOssUpload from '@/utils/aliOssUpload';
+import moment from 'moment';
+import styles from './style.less';
 
 const BusinessAuditAllow = (props) => {
   const {
@@ -15,16 +16,34 @@ const BusinessAuditAllow = (props) => {
     merchantName,
     categoryId,
     merchantVerifyId,
+    initialValues,
     fetchFormData,
+    businessAudit,
   } = props;
 
   const [form] = Form.useForm();
 
+  const { businessTime } = initialValues;
+  const bTimeArr = businessTime.split(',');
+
   const [serviceLsit, setServiceLsit] = useState(false);
   const [speacialLsit, setSpeacialLsit] = useState(false);
-  const [allTime, setAllTime] = useState(false);
-  const [timeItem, setTimeItem] = useState(['time1']);
+  const [allTime, setAllTime] = useState(businessTime.indexOf('00:00-23:59') > -1 ? true : false);
+  const [timeItem, setTimeItem] = useState(
+    businessTime ? bTimeArr.map((val, i) => `item${i + 1}`) : ['time1'],
+  );
   const [itemNum, setItemNum] = useState(1);
+  // 审核时间默认值显示
+  const [inValues] = useState(() => {
+    const newInVlaues = { ...initialValues };
+    const newTimeObj = {};
+    bTimeArr.map((val, i) => {
+      const timeArr = val.split('-');
+      newTimeObj[`item${i + 1}`] = [moment(timeArr[0], 'HH:mm'), moment(timeArr[1], 'HH:mm')];
+    });
+    newInVlaues.businessTime = businessTime ? newTimeObj : '';
+    return newInVlaues;
+  });
 
   // 确认数据
   const fetchUpData = () => {
@@ -39,9 +58,10 @@ const BusinessAuditAllow = (props) => {
             businessTime,
             property: { service, speacial },
           } = values;
+
           // aliOssUpload(allImages).then((res) => {
           const selectTime = values.allTime
-            ? '0:00-23:59'
+            ? '00:00-23:59'
             : timeItem.map(
                 (item) =>
                   `${businessTime[item][0].format('HH:mm')}-${businessTime[item][1].format(
@@ -118,10 +138,10 @@ const BusinessAuditAllow = (props) => {
     },
     {
       label: '营业时间',
-      type: 'children',
+      type: 'childrenOwn',
       rules: 'false',
       required: true,
-      children: (
+      childrenOwn: (
         <>
           {timeItem.map((item, i) => (
             <div className={styles.audit_picker_item} key={item}>
@@ -132,6 +152,7 @@ const BusinessAuditAllow = (props) => {
               >
                 <TimePicker.RangePicker
                   disabled={allTime}
+                  order={false}
                   style={{ width: i > 0 ? '64%' : '65%' }}
                   format={'HH:mm'}
                 />
@@ -159,7 +180,7 @@ const BusinessAuditAllow = (props) => {
                 </>
               )}
               {i == 0 && (
-                <Form.Item name="allTime" noStyle valuePropName="checked">
+                <Form.Item name="allTime" initialValue={allTime} noStyle valuePropName="checked">
                   <Switch
                     checkedChildren="24小时营业"
                     unCheckedChildren="24小时营业"
@@ -233,7 +254,7 @@ const BusinessAuditAllow = (props) => {
         </div>
       }
     >
-      <FormCondition formItems={formItems} form={form} />
+      <FormCondition formItems={formItems} form={form} initialValues={inValues} />
     </Drawer>
   );
 };

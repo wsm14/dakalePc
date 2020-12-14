@@ -10,6 +10,23 @@ export const AUTH_SECRET_KEY = '733828mtizndu2cshfp1468889281801r9uv0aaji10';
 // 高德地图key
 export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 
+// 数据权限选项
+export const WORKER_ROLEDATA_TYPE = [
+  { value: 1, name: '本人' },
+  { value: 25, name: '本部门（不含下级部门）' },
+  { value: 50, name: '本部门及以下级部门 ' },
+  { value: 100, name: '全部' },
+];
+
+// 权限按钮映射
+export const ROLE_BUTTON_TYPE = {
+  view: '查看',
+  save: '新增',
+  update: '修改',
+  verify: '审核',
+  status: '状态',
+};
+
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 
@@ -37,6 +54,9 @@ export const BUSINESS_STATUS = ['禁用', '启用'];
 // 商户 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['', '审核中', '审核驳回', ''];
 
+// 商户帐号状态
+export const BUSINESS_BANK_TYPE = ['未绑定', '审核中', '绑定失败', '绑定成功'];
+
 // 挑战赛状态
 export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 
@@ -58,6 +78,28 @@ export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 // 新闻动态状态
 export const NEWS_STATUS = ['下架', '上架'];
 
+// 员工在职状态
+export const WORKER_JOB_TYPE = ['离职', '在职'];
+
+export const WORKER_BANK_STATUS = [
+  {
+    label: '0',
+    value: '未激活',
+  },
+  {
+    label: '1',
+    value: '审核中',
+  },
+  {
+    label: '2',
+    value: '激活失败',
+  },
+  {
+    label: '3',
+    value: '激活成功',
+  },
+];
+
 // Banner展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 
@@ -67,8 +109,12 @@ export const BANNER_TYPE = [
   { value: 'merchant', name: '到店打卡' },
   { value: 'person', name: '个人' },
   { value: 'near', name: '周边' },
+  { value: 'merchantMain', name: '商家主页' },
 ];
-
+export const SEX_TYPE = [
+  { value: 'M', name: '男' },
+  { value: 'F', name: '女' },
+];
 // Banner跳转类型
 export const BANNER_JUMP_TYPE = [
   { value: '无', name: '无' },
@@ -142,4 +188,12 @@ export const TIME_UNIX_E = (time) => {
 // 获取七天前时间戳_ 00:00:00
 export const TIME_UNIX_7E = () => {
   return moment(moment().subtract(7, 'days').format('YYYY-MM-DD 00:00:00')).format('x');
+};
+
+export const filterList = (str) => {
+  if (!str) {
+    return [];
+  } else {
+    return str.split(',');
+  }
 };

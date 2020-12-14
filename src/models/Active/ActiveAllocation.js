@@ -1,5 +1,9 @@
 import { notification } from 'antd';
-import { fetchNewsList, fetchNewsEdit, fetchNewsStatus } from '@/services/ActiveServices';
+import {
+  fetchAllocationList,
+  fetchAllocationNative,
+  fetchAllocationSetEdit,
+} from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeAllocation',
@@ -7,6 +11,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    detailList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -20,32 +25,28 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchNewsList, payload);
+      const response = yield call(fetchAllocationList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: content.recordList.map((version, id) => ({ version, id })),
         },
       });
     },
-    *fetchNewsEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchNewsEdit, payload);
+    *fetchAllocationNative({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllocationNative, payload);
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '新闻动态编辑成功',
-      });
-      callback();
+      const { content } = response;
+      callback(content.recordList);
     },
-    *fetchNewsStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchNewsStatus, payload);
+    *fetchAllocationSetEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAllocationSetEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新闻动态下架成功',
+        description: '活动配置成功',
       });
       callback();
     },

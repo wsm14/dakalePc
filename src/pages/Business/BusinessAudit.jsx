@@ -46,6 +46,10 @@ const BusinessAuditList = (props) => {
       dataIndex: 'cityName',
     },
     {
+      label: '所属商圈',
+      name: 'businessHub',
+    },
+    {
       title: '详细地址',
       align: 'center',
       dataIndex: 'address',
@@ -145,6 +149,7 @@ const BusinessAuditList = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="审核列表"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

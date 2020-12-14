@@ -6,7 +6,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { dispatch, cRef, visible = null, onClose, loading } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
@@ -22,7 +22,7 @@ const BusinessDetailShow = (props) => {
   const statusNum = Number(status);
   const businessStatusNum = Number(businessStatus);
   const statusText = !statusNum ? '启用' : '禁用';
-  const businessStatusText = !businessStatusNum ? '恢复营业' : '停业';
+  const businessStatusText = !businessStatusNum ? '恢复营业' : '暂停营业';
 
   const [form] = Form.useForm();
 
@@ -47,7 +47,7 @@ const BusinessDetailShow = (props) => {
   const handleMerStatus = (type) => {
     if (type === 'sale' && businessStatusNum === 0) type = 'hsale';
     const propsItem = {
-      hsale: { title: '恢复营业', payload: { status: 1 } },
+      hsale: { title: '恢复营业', payload: { businessStatus: 1 } },
       sale: { title: '停业', payload: { businessStatus: 0 } },
       acc: { title: statusText, payload: { status: Number(!statusNum) } },
     }[type];
@@ -86,6 +86,10 @@ const BusinessDetailShow = (props) => {
     {
       label: '详细地址',
       name: 'address',
+    },
+    {
+      label: '所属商圈',
+      name: 'businessHub',
     },
     {
       label: '商户电话',
@@ -136,7 +140,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '账户类型',
       name: 'bankAccountType',
-      render: (val) => (val === 1 ? '对公（企业/组织机构）' : '对私（个体工商户）'),
+      render: (val) => (val === '1' ? '对公（企业/组织机构）' : '对私（个体工商户）'),
     },
     {
       label: '开户许可证',
@@ -190,7 +194,7 @@ const BusinessDetailShow = (props) => {
 
   const modalProps = {
     title: `商家详情`,
-    width: 600,
+    width: 800,
     visible,
     maskClosable: true,
     destroyOnClose: true,

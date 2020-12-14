@@ -9,7 +9,7 @@ export async function fetchAccountUserList(params) {
 
 // get 用户账户 - 获取统计信息
 export async function fetchAccountUserTotal(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/getUserBeanStatistic', {
     params,
   });
 }
@@ -37,7 +37,7 @@ export async function fetchAccountBusinessList(params) {
 
 // get 商家账户 - 获取统计信息
 export async function fetchAccountBusinessTotal(params) {
-  return request('/admin/auth/getOwnInfo', {
+  return request('/admin/accountManagement/getMerchantBeanStatistic', {
     params,
   });
 }

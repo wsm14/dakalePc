@@ -7,6 +7,9 @@ import {
   fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
+  fetchMerchantEdit,
+  fetchMerchantTotal,
+  fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
 
@@ -16,7 +19,7 @@ export default {
   state: {
     list: [],
     total: 0,
-    totalData: {},
+    totalData: { chartsLeft: {}, chartsRight: [] },
     brandList: { list: [], total: 0 },
   },
 
@@ -30,7 +33,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
+    *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantList, payload);
       if (!response) return;
       const { content } = response;
@@ -40,21 +43,37 @@ export default {
           list: content.recordList,
         },
       });
+      if (callback) callback(content.recordList);
     },
     *fetchMerchantDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.merchantDetail);
+      const { provinceCode, cityCode, districtCode } = content.merchantDetail;
+      callback({ ...content.merchantDetail, citycodeArr: [provinceCode, cityCode, districtCode] });
     },
     *fetchBusinessTotal({ payload }, { call, put }) {
-      const response = yield call(fetchMerchantDetail, payload);
-      if (!response) return;
+      const response = yield call(fetchMerchantTotal);
+      const response2 = yield call(fetchMerchantTotalCategory, payload);
+      if (!response && !response2) return;
       const { content } = response;
+      const { content: content2 = {} } = response2;
+      const {
+        parentMerchant = 0,
+        childMerchant = 0,
+        merchantSettle = 0,
+        categoryMerchantCount = [],
+      } = content2;
+
       yield put({
         type: 'save',
         payload: {
-          totalData: content.userMerchantList,
+          totalData: {
+            chartsLeft: { ...content, parentMerchant, childMerchant, merchantSettle },
+            chartsRight: categoryMerchantCount.length
+              ? categoryMerchantCount
+              : [{ categoryName: '无', count: 0 }],
+          },
         },
       });
     },
@@ -63,6 +82,15 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content);
+    },
+    *fetchMerchantEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerchantEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商家修改成功',
+      });
+      callback();
     },
     *fetchMerSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchMerSetBandCode, payload);

@@ -1,5 +1,4 @@
-import { notification } from 'antd';
-import { fetchMerVideoList, fetchMerVideoDel } from '@/services/ActiveServices';
+import { fetchActiveList } from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeList',
@@ -20,7 +19,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchMerVideoList, payload);
+      const response = yield call(fetchActiveList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -30,15 +29,6 @@ export default {
           total: content.total,
         },
       });
-    },
-    *fetchMerVideoDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerVideoDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '视屏删除成功',
-      });
-      callback();
     },
   },
 };

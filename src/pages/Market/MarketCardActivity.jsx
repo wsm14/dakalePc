@@ -124,6 +124,7 @@ const MarketCardActivity = (props) => {
         {
           home: (
             <DataTableBlock
+              keepName="营销活动"
               cRef={childRef}
               loading={loading}
               btnExtra={btnExtra}

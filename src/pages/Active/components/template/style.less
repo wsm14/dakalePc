@@ -6,7 +6,7 @@
   position: fixed;
   left: 0;
   top: 65px;
-  min-width: 250px;
+  width: 250px;
   border-right: 1px solid #d9d9d9;
   background-color: @white;
   padding-bottom: 67px;
@@ -21,9 +21,27 @@
       border: 0;
     }
   }
+  .aT_Left_RadioGroup {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    :global(.ant-radio-button-wrapper) {
+      text-align: center;
+      height: auto;
+      width: 49%;
+      margin-bottom: 10px;
+      line-height: 20px;
+      padding: 10px 15px;
+    }
+    &_icon {
+      margin-bottom: 5px;
+    }
+  }
 }
 
 .active_Template_content {
+  position: relative;
   width: 375px;
   margin: auto;
   padding: 20px 0;
@@ -33,12 +51,39 @@
     margin: auto;
     position: relative;
     display: flex;
-    min-height: 100%;
-    height: 757px;
+    min-height: 757px;
     background-color: #eeeeee;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
-  .previewer_null {
-    
+  .previewer_wrap {
+    width: 375px;
+    margin: auto;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    min-height: 100%;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    & > iframe {
+      width: 100%;
+      min-height: 100%;
+      border: none;
+    }
   }
 }
+
+.previewer_active_warp {
+  width: 375px;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  .previewer_active_mask {
+    border: 3px solid #3089dc;
+    width: 100%;
+    left: 0;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 1;
+  }
+}
+

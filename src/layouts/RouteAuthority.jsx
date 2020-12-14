@@ -24,7 +24,7 @@ class SecurityLayout extends React.Component {
   render() {
     const { isReady } = this.state;
     const { children, loading, currentUser, authority } = this.props;
-    
+
     // token 判断
     const isLogin = sessionStorage.getItem('token') && currentUser && currentUser.username;
 
@@ -59,7 +59,6 @@ class SecurityLayout extends React.Component {
         />
       );
     }
-
     return children;
   }
 }

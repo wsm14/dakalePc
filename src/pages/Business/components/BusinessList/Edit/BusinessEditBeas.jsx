@@ -16,13 +16,13 @@ const BusinessAddBeas = (props) => {
     platformList,
     tradeList,
   } = props;
-
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
-  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] === 1);
+  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
   const [priceList, setPriceList] = useState([]);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
-  const [ampShow, setAmpShow] = useState(false);
+  const [ampShow, setAmpShow] = useState(true);
   const [categId, setCategId] = useState(initialValues.businessArea);
+  const [hubList, setHubList] = useState([]);
 
   // 获取品牌
   const fetchGetBrandList = () => {
@@ -67,9 +67,19 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取详情
+  const fetchGetDetail = (payload) => {
+    dispatch({
+      type: 'businessAudit/fetchWaitBusinessHub',
+      payload,
+      callback: (info) => setHubList(info),
+    });
+  };
+
   useEffect(() => {
     fetchGetBrandList();
     if (initialValues) {
+      if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
       fetchGetPlatform(initialValues.topCategoryName[0]);
     }
   }, []);
@@ -78,10 +88,10 @@ const BusinessAddBeas = (props) => {
     {
       title: '01 商户信息',
       label: '品牌名称',
-      type: 'children',
+      type: 'childrenOwn',
       rules: 'false',
       required: false,
-      children: (
+      childrenOwn: (
         <>
           <Form.Item name="brandName" noStyle rules={[{ required: false, message: '请选择品牌' }]}>
             <Select
@@ -126,7 +136,20 @@ const BusinessAddBeas = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'provinceCode',
-      onChange: setSelectCity,
+      onChange: (val) => {
+        fetchGetDetail({ districtCode: val[2].value });
+        setSelectCity(val);
+      },
+    },
+    {
+      label: '所属商圈',
+      name: 'businessHubIdString',
+      type: 'select',
+      select: hubList.map((item) => ({
+        name: item.businessHubName,
+        value: item.businessHubIdString,
+      })),
+      span: 2,
     },
     {
       label: '详细地址',
@@ -137,7 +160,7 @@ const BusinessAddBeas = (props) => {
     {
       type: 'noForm',
       visible: ampShow,
-      children: amap,
+      childrenOwn: amap,
     },
     {
       label: '商户电话',
@@ -183,11 +206,11 @@ const BusinessAddBeas = (props) => {
       type: 'cascader',
       name: 'topCategoryName',
       select: tradeList.filter((i) => i.categoryDTOList),
-      fieldNames: { label: 'categoryName', value: 'id', children: 'categoryDTOList' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val) => {
         setPriceList([]);
-        setAreaMust(val[0].id === 1);
-        fetchGetPlatform(val[0].id);
+        setAreaMust(val[0].categoryIdString === 1);
+        fetchGetPlatform(val[0].categoryIdString);
         form.setFieldsValue({
           categoryName: val,
           businessArea: undefined,

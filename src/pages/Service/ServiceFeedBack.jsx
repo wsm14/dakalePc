@@ -100,6 +100,7 @@ const ServiceFeedBack = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="问题反馈"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

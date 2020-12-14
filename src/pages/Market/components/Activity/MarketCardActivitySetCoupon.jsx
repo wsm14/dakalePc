@@ -61,7 +61,7 @@ const MarketCardActivitySetCoupon = (props) => {
         label: '有效期',
         name: 'activeDays',
         extra: '输入天数，自领取成功之后该天数内有效',
-        suffix: '天',
+        addonAfter: '天',
         addRules: [{ pattern: NUM_INT, message: '天数应为整数' }],
         render: (val) => (val ? `自领取成功之后 ${val} 天内有效` : '活动已下架，未添加'),
       },

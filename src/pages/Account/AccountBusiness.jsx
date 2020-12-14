@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'dva';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-// import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
 import BusinessDetailList from './components/Business/BusinessDetailList';
+import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
 
 const AccountBusinessList = (props) => {
   const { list, loading, dispatch } = props;
@@ -101,15 +101,17 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
-      {/* <BusinessTotalInfo></BusinessTotalInfo> */}
       <DataTableBlock
+        keepName="商家账户"
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="accountBusiness/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      >
+        <BusinessTotalInfo></BusinessTotalInfo>
+      </DataTableBlock>
       <BusinessDetailList visible={visible} setVisible={setVisible}></BusinessDetailList>
     </>
   );

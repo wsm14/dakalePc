@@ -102,20 +102,20 @@ const UserListComponent = (props) => {
   };
 
   return (
-    <>
+    <DataTableBlock
+      keepName="用户数据"
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.userIdString}`}
+      NoSearch={true}
+      dispatchType="userList/fetchGetList"
+      list={list}
+    >
       <UserListTotalInfo></UserListTotalInfo>
-      {/* <UserTotalSpread></UserTotalSpread> */}
-      <DataTableBlock
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userIdString}`}
-        NoSearch={true}
-        dispatchType="userList/fetchGetList"
-        list={list}
-      ></DataTableBlock>
-    </>
+      <UserTotalSpread></UserTotalSpread>
+    </DataTableBlock>
   );
 };
 

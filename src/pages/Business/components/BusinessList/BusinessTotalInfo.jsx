@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Donut, Bar } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
+
+const dDate = moment().subtract(1, 'day');
 
 const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
   // 搜索参数
@@ -10,74 +13,56 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
     {
       label: '',
       type: 'rangePicker',
-      name: 'mobile',
+      name: 'beginDate',
+      end: 'endDate',
+      disabledDate: (current) => current && current > moment().endOf('day').subtract(1, 'day'),
     },
   ];
+
+  const { chartsLeft, chartsRight } = totalData;
 
   const data = [
     {
-      type: '新增入驻商户',
-      value: totalData.all || 0,
+      type: '总商家',
+      value: Number(chartsLeft.totalMerchant) || 0,
     },
     {
-      type: '家店商户数',
-      value: totalData.all || 0,
+      type: '活跃商家',
+      value: Number(chartsLeft.activeMerchant) || 0,
     },
     {
-      type: '家主商户数',
-      value: totalData.all || 0,
+      type: '流失商家',
+      value: Number(chartsLeft.inactiveMerchant) || 0,
     },
     {
-      type: '活跃商户数',
-      value: totalData.all || 0,
+      type: '新入驻商家',
+      value: Number(chartsLeft.merchantSettle) || 0,
     },
     {
-      type: '潜在流失商户数',
-      value: totalData.all || 0,
-    },
-  ];
-
-  const data2 = [
-    {
-      type: '餐饮',
-      value: totalData.all || 0,
+      type: '新增家主',
+      value: Number(chartsLeft.parentMerchant) || 0,
     },
     {
-      type: '娱乐',
-      value: totalData.all || 0,
-    },
-    {
-      type: '医美',
-      value: totalData.all || 0,
-    },
-    {
-      type: '教育',
-      value: totalData.all || 0,
-    },
-    {
-      type: '装修',
-      value: totalData.all || 0,
-    },
-    {
-      type: '房产',
-      value: totalData.all || 0,
-    },
-    {
-      type: '宠物',
-      value: totalData.all || 0,
+      type: '新增家店',
+      value: Number(chartsLeft.childMerchant) || 0,
     },
   ];
 
   // 获取商户统计数据
-  const fetchBusinessTotal = (userId) => {
+  const fetchBusinessTotal = (
+    values = {
+      beginDate: dDate.format('YYYY-MM-DD'),
+      endDate: dDate.format('YYYY-MM-DD'),
+    },
+  ) => {
     dispatch({
       type: 'businessList/fetchBusinessTotal',
-      payload: { userId },
+      payload: values,
     });
   };
 
   useEffect(() => {
-    // fetchBusinessTotal()
+    fetchBusinessTotal();
   }, []);
 
   return (
@@ -86,16 +71,23 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
         searchItems={searchItems}
         handleSearch={fetchBusinessTotal}
         btnExtra={btnExtra}
+        initialValues={{
+          beginDate: [dDate, dDate],
+        }}
       ></SearchCondition>
       <Row gutter={16} align="middle">
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Donut data={data} totalLabel="开发中" height={276} />
+            <Bar
+              data={data}
+              height={300}
+              meta={{ type: { alias: '分类' }, value: { alias: '数量' } }}
+            />
           </Spin>
         </Col>
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Donut data={data2} totalLabel="开发中"  height={276} />
+            <Donut data={chartsRight} height={300} angleField="count" colorField="categoryName" />
           </Spin>
         </Col>
       </Row>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { history } from 'umi';
-import { Form, Button, Input } from 'antd';
+import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 
 // import QRCode from "qrcode-react";
@@ -43,10 +43,19 @@ const LoginItem = ({ prop, loading }) => {
         }
       }
     }
-    if (list[0].subAuthAccessDTOList.length) {
-      history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
+    if (!list.length) {
+      notification.info({
+        message: '提示',
+        description: '帐号权限未配置，请联系管理员设置',
+      });
+      return;
+    }
+    if (list[0].childList.length) {
+      // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
+      history.replace(list[0].childList[0].accessUrl);
     } else {
-      history.replace(redirect || list[0].accessUrl);
+      // history.replace(redirect || list[0].accessUrl);
+      history.replace(list[0].accessUrl);
     }
   };
 
@@ -66,14 +75,14 @@ const LoginItem = ({ prop, loading }) => {
         >
           <FormItem
             label="帐号"
-            name="username"
+            name="mobile"
             rules={[
               { required: true, message: '请填写正确帐号' },
               // { pattern: PHONE_PATTERN, message: '请填写正确帐号' },
             ]}
             className={style.dakale_user_form_item}
           >
-            <Input placeholder="请输入您的帐号" maxLength="11" />
+            <Input placeholder="请输入您的帐号" />
           </FormItem>
           <FormItem
             label="密码"
@@ -81,7 +90,7 @@ const LoginItem = ({ prop, loading }) => {
             rules={[{ required: true, message: '请填写密码' }]}
             style={{ marginBottom: 0 }}
           >
-            <Input.Password placeholder="请输入密码" type="passwprd" />
+            <Input.Password placeholder="请输入密码" type="password" />
           </FormItem>
           <Button
             className={style.dakale_Submit}

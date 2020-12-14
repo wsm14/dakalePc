@@ -35,6 +35,7 @@ const BusinessRegisterComponent = (props) => {
 
   return (
     <DataTableBlock
+      keepName="注册列表"
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}

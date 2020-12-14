@@ -1,116 +1,77 @@
 import React, { useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'dva';
 import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
-const UserTotalInfo = ({ dispatch, loading, totalData }) => {
+const dDate = moment().subtract(1, 'day');
+
+const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTotalOut }) => {
   // 搜索参数
   const searchItems = [
     {
       label: '',
       type: 'rangePicker',
-      name: 'mobile',
-    },
-  ];
-
-  const data = [
-    {
-      type: '充值卡豆',
-      value: totalData.all || 0,
-    },
-    {
-      type: '看视频',
-      value: totalData.all || 0,
-    },
-    {
-      type: '看图文',
-      value: totalData.all || 0,
-    },
-    {
-      type: '到店打卡',
-      value: totalData.all || 0,
-    },
-    {
-      type: '圈层分佣',
-      value: totalData.all || 0,
-    },
-    {
-      type: '早起挑战',
-      value: totalData.all || 0,
-    },
-    {
-      type: '步数挑战',
-      value: totalData.all || 0,
-    },
-  ];
-
-  const data2 = [
-    {
-      type: '发布视频',
-      value: totalData.all || 0,
-    },
-    {
-      type: '发布图文',
-      value: totalData.all || 0,
-    },
-    {
-      type: '消费抵扣',
-      value: totalData.all || 0,
-    },
-    {
-      type: '预约预订',
-      value: totalData.all || 0,
-    },
-    {
-      type: '小店兑换',
-      value: totalData.all || 0,
-    },
-    {
-      type: '早起挑战',
-      value: totalData.all || 0,
-    },
-    {
-      type: '步数挑战',
-      value: totalData.all || 0,
+      name: 'beginDate',
+      end: 'endDate',
     },
   ];
 
   // 获取商户统计数据
-  const fetchBusinessTotal = (userId) => {
+  const fetchUserTotal = (
+    values = { beginDate: dDate.format('YYYY-MM-DD'), endDate: dDate.format('YYYY-MM-DD') },
+  ) => {
     dispatch({
       type: 'accountUser/fetchUserTotal',
-      payload: { userId },
+      payload: values,
     });
   };
 
   useEffect(() => {
-    // fetchBusinessTotal();
+    fetchUserTotal();
   }, []);
 
   return (
     <Card style={{ marginBottom: 16 }}>
       <SearchCondition
         searchItems={searchItems}
-        handleSearch={fetchBusinessTotal}
+        handleSearch={fetchUserTotal}
+        initialValues={{
+          beginDate: [dDate, dDate],
+        }}
       ></SearchCondition>
-      <Row gutter={16} align="middle">
-        <Col span={12}>
-          <Spin spinning={!!loading}>
-            <Donut data={data} totalLabel="累计收益卡豆" height={276} />
-          </Spin>
-        </Col>
-        <Col span={12}>
-          <Spin spinning={!!loading}>
-            <Donut data={data2} totalLabel="累计消耗卡豆" height={276} />
-          </Spin>
-        </Col>
-      </Row>
+      <Spin spinning={!!loading}>
+        <Row gutter={16} align="middle">
+          <Col span={12}>
+            用户累计收益卡豆：{userTotalIn}
+            <Donut
+              key="chart1"
+              data={indata}
+              totalLabel="累计卡豆"
+              height={276}
+              angleField="content"
+              colorField="statisticDesc"
+            />
+          </Col>
+          <Col span={12}>
+            用户累计消耗卡豆：{userTotalOut}
+            <Donut
+              key="chart2"
+              data={outdata}
+              totalLabel="累计卡豆"
+              height={276}
+              angleField="content"
+              colorField="statisticDesc"
+            />
+          </Col>
+        </Row>
+      </Spin>
     </Card>
   );
 };
 
 export default connect(({ accountUser, loading }) => ({
-  totalData: accountUser.totalData,
+  ...accountUser,
   loading: loading.effects['accountUser/fetchUserTotal'],
 }))(UserTotalInfo);

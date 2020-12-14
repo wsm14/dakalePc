@@ -4,6 +4,7 @@ import {
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
   fetchMerSaleAuditAllow,
+  fetchWaitBusinessHub,
 } from '@/services/BusinessServices';
 
 export default {
@@ -36,6 +37,18 @@ export default {
         },
       });
     },
+    *fetchWaitBusinessHub({ payload, callback }, { call, put }) {
+      const response = yield call(fetchWaitBusinessHub, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          hubList: content.businessHubList,
+        },
+      });
+      callback(content.businessHubList);
+    },
     *fetchMerchantAuditDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantAuditDetail, payload);
       if (!response) return;
@@ -63,12 +76,12 @@ export default {
           { value: c, label: cN },
           { value: d, label: dN },
         ],
-        topCategoryName: [Number(categoryNodeArr[0]), Number(categoryNodeArr[1])],
+        topCategoryName: [categoryNodeArr[0], categoryNodeArr[1]],
         otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
         bondBean: { value: bondBean, key: commissionRatio },
         categoryName: [
-          { id: Number(categoryNodeArr[0]), name: topCategoryName },
-          { id: Number(categoryNodeArr[1]), name: categoryName },
+          { categoryIdString: categoryNodeArr[0], categoryName: topCategoryName },
+          { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
         ],
         commissionRatio: bondBean,
       };

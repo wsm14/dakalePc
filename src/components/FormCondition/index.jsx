@@ -68,15 +68,16 @@ const disabledDate = (current) => current && current < moment().endOf('day').sub
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
-const FormCondition = ({
-  form = Form.useForm(),
+const FormComponents = ({
+  form,
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
   formItemLayouts = {},
+  children,
 }) => {
+  const [formN] = Form.useForm();
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -135,16 +136,19 @@ const FormCondition = ({
       onChange: (value) => {
         const { fileList } = value;
         if (!value.file.status) {
+          const fileName = value.file.name;
           imageCompress(value.file).then(({ file }) => {
-            fileList[fileList.length - 1].originFileObj = file;
-            // 临时
-            fileList.map((i) => (i.status = 'done'));
-            // end
+            fileList.map((fi) => {
+              if (fi.name == fileName) {
+                fi.originFileObj = file;
+              }
+              return fi;
+            });
             setFileLists({ ...fileLists, [name]: fileList });
           });
           if (onChange) onChange(value);
         } else {
-          if (!fileList.length) form.setFieldsValue({ [name]: undefined });
+          if (!fileList.length) (form || formN).setFieldsValue({ [name]: undefined });
           setFileLists({ ...fileLists, [name]: fileList });
         }
       },
@@ -163,7 +167,7 @@ const FormCondition = ({
 
   // 遍历表单
   const getFields = () => {
-    const children = [];
+    const childrenOwn = [];
 
     formItems.forEach((item, i) => {
       const {
@@ -197,15 +201,18 @@ const FormCondition = ({
         input: (
           <Input
             placeholder={placeholder}
-            suffix={item.suffix || ''}
+            prefix={item.prefix}
+            suffix={dataNum || item.suffix || ''}
             maxLength={maxLength}
-            addonAfter={dataNum}
+            addonAfter={item.addonAfter}
             disabled={item.disabled}
             onBlur={item.onBlur}
+            onPressEnter={item.onPressEnter}
             onChange={(e) => {
               if (item.onChange) item.onChange(e);
               setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
             }}
+            style={item.style}
           />
         ),
         number: (
@@ -213,6 +220,12 @@ const FormCondition = ({
             disabled={item.disabled}
             style={{ width: '100%' }}
             placeholder={placeholder}
+            style={{ width: '100%' }}
+            max={item.max}
+            min={item.min}
+            addonAfter={item.addonAfter}
+            prefix={item.prefix}
+            suffix={dataNum || item.suffix || ''}
           />
         ),
         textArea: (
@@ -231,10 +244,10 @@ const FormCondition = ({
             allowClear={false}
           />
         ),
+        dataPicker: <DatePicker style={{ width: '100%' }} />,
         rangePicker: (
-          <RangePicker
+          <DatePicker.RangePicker
             style={{ width: '100%' }}
-            allowClear={false}
             // defaultPickerValue={[
             //   moment(moment().startOf('month')).subtract(1, 'month'),
             //   moment(moment().startOf('month')).subtract(1, 'day'),
@@ -248,21 +261,23 @@ const FormCondition = ({
         checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} />,
         select: (
           <Select
+            labelInValue={item.labelInValue || false}
             showSearch
             loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}
-            filterOption={item.filterOption || false}
+            filterOption={item.filterOption || true}
             onSearch={item.onSearch}
             onChange={item.onChange}
             placeholder={item.placeholder || `请选择${label}`}
             style={{ width: '100%' }}
+            optionFilterProp="children"
           >
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
-                const name = data.name ? data.name : data;
+                const name = data.name ? data.name : '--';
                 return (
                   <Option key={data.key || j} value={value}>
                     {name}
@@ -310,9 +325,10 @@ const FormCondition = ({
             fieldNames={item.fieldNames}
             options={item.select || CITYJSON}
             expandTrigger="hover"
+            disabled={item.disabled}
             changeOnSelect={item.changeOnSelect || false}
             onChange={(val, sele) => {
-              form.setFieldsValue({ [`Cascader${item.name}`]: sele });
+              (form || formN).setFieldsValue({ [`Cascader${item.name}`]: sele });
               if (item.onChange) item.onChange(sele);
             }}
             showSearch={{
@@ -342,11 +358,11 @@ const FormCondition = ({
                 ...fileLists,
                 [name]: newArr,
               });
-              const urlValue = form.getFieldValue(name);
+              const urlValue = (form || formN).getFieldValue(name);
               if (typeof urlValue === 'string') {
-                form.setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
+                (form || formN).setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
               } else {
-                form.setFieldsValue({
+                (form || formN).setFieldsValue({
                   [name]: {
                     file: urlValue.file,
                     fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
@@ -361,7 +377,7 @@ const FormCondition = ({
               uploadButton}
           </Upload>
         ),
-        children: item.children,
+        childrenOwn: item.childrenOwn,
         noForm: '',
       }[type];
 
@@ -375,12 +391,12 @@ const FormCondition = ({
       }
 
       if (type === 'noForm') {
-        children.push(visible && item.children);
+        childrenOwn.push(visible && item.childrenOwn);
         return;
       }
 
       if (title) {
-        children.push(
+        childrenOwn.push(
           <Divider orientation="left" key={`${label}${i}`}>
             {title}
           </Divider>,
@@ -389,7 +405,7 @@ const FormCondition = ({
 
       const req = {};
       if (item.required) req.required = item.required;
-      children.push(
+      childrenOwn.push(
         visible && (
           <FormItem
             {...req}
@@ -401,14 +417,20 @@ const FormCondition = ({
             valuePropName={valuePropName}
             {...initialValue}
             hidden={hidden}
+            labelCol={item.labelCol}
+            wrapperCol={item.wrapperCol}
           >
             {component}
           </FormItem>
         ),
       );
     });
-    return children;
+    return childrenOwn;
   };
+
+  useEffect(() => {
+    (form || formN).setFieldsValue(initialValues);
+  }, [initialValues]);
 
   useEffect(() => {
     return componentWillUnmount;
@@ -416,12 +438,12 @@ const FormCondition = ({
 
   // 组件销毁执行
   const componentWillUnmount = () => {
-    form.resetFields();
+    (form || formN).resetFields();
   };
 
   return (
     <Form
-      form={form}
+      form={form || formN}
       layout={layout}
       initialValues={initialValues}
       {...formItemLayout}
@@ -429,6 +451,7 @@ const FormCondition = ({
       scrollToFirstError={true}
     >
       {formItems.length ? getFields() : ''}
+      {children}
       <Modal
         title={previewTitle}
         visible={previewVisible}
@@ -442,4 +465,4 @@ const FormCondition = ({
   );
 };
 
-export default FormCondition;
+export default FormComponents;

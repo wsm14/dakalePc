@@ -4,6 +4,7 @@ const BusinessAuditDetailShow = (props) => {
     showType: 'info',
     width: 600,
     title: '商户驳回详情',
+    footerShow: false,
     formItems: [
       {
         label: '商户简称',

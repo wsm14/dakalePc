@@ -10,7 +10,7 @@ import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 
 const BusinessAdd = (props) => {
-  const { dispatch, cRef, visible, initialValues = false, onClose, loading } = props;
+  const { dispatch, cRef, visible, initialValues = false, onClose, loading, businessAudit } = props;
 
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
@@ -18,20 +18,7 @@ const BusinessAdd = (props) => {
   const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
   const [selectCity, setSelectCity] = useState([]); // 选择城市
   const [visibleAllow, setVisibleAllow] = useState(false);
-
-  useEffect(() => {
-    if (initialValues) {
-      setLocation([lnt, lat]);
-      setSelectCity(initialValues.selectCity);
-      if (initialValues.hasPartner !== '1') {
-        Modal.warning({
-          title: '提醒',
-          content:
-            '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
-        });
-      }
-    }
-  }, [initialValues]);
+  const [marker, setMarker] = useState(true); // 浮标拖拽状态
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
@@ -43,13 +30,20 @@ const BusinessAdd = (props) => {
         interiorImg,
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
+        businessHubIdString,
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
         return;
       }
+      const { hubList } = businessAudit;
+      const businessHubObj = hubList.filter(
+        (item) => item.businessHubIdString == businessHubIdString,
+      );
       const payload = {
         ...values,
+        businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',
+        businessHub: businessHubObj.length ? businessHubObj[0].businessHubName : '',
         brandName: otherBrand ? '其他品牌' : values.brandName,
         provinceCode: selectCity[0].value,
         provinceName: selectCity[0].label,
@@ -57,11 +51,11 @@ const BusinessAdd = (props) => {
         cityName: selectCity[1].label,
         districtCode: selectCity[2].value,
         districtName: selectCity[2].label,
-        topCategoryId: cobj[0].id,
+        topCategoryId: cobj[0].categoryIdString,
         topCategoryName: cobj[0].categoryName,
-        categoryId: cobj[1].id,
+        categoryId: cobj[1].categoryIdString,
         categoryName: cobj[1].categoryName,
-        categoryNode: `${cobj[0].id}.${cobj[1].id}`,
+        categoryNode: `${cobj[0].categoryIdString}.${cobj[1].categoryIdString}`,
         commissionRatio: bobj.key,
         bondBean: bobj.value,
         lnt: location[0],
@@ -91,6 +85,21 @@ const BusinessAdd = (props) => {
     });
   };
 
+  // 打开编辑框时默认值赋值
+  const handleInvalueEdit = () => {
+    if (initialValues) {
+      setLocation([lnt, lat]);
+      setSelectCity(initialValues.selectCity);
+      if (initialValues.hasPartner !== '1') {
+        Modal.warning({
+          title: '提醒',
+          content:
+            '该商家所在的城市区域未设置城市合伙人，请先设置该城市的城市合伙人，否则无法通过审核',
+        });
+      }
+    }
+  };
+
   // 审核驳回
   const fetchAuditRefuse = () => {
     dispatch({
@@ -105,6 +114,7 @@ const BusinessAdd = (props) => {
       setAmpShow(false);
       return;
     }
+    setMarker(false);
     let cityname = '';
     if (typeof city[1] !== 'object') city = selectCity;
     (typeof city[1] === 'object' ? city : selectCity).map((item) => {
@@ -112,14 +122,14 @@ const BusinessAdd = (props) => {
       return true;
     });
     fetch(
-      `https://restapi.amap.com/v3/geocode/geo?key=${AMAP_KEY}&city=${city[1].label}&address=${
+      `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&city=${city[1].label}&keywords=${
         cityname + address
       }`,
     )
       .then((res) => {
         if (res.ok) {
           res.json().then((data) => {
-            const list = data.geocodes;
+            const list = data.pois;
             if (list.length === 0) message.warn('未查询到地址信息', 1.5);
             else {
               const geocodes = list[0].location.split(',');
@@ -128,12 +138,23 @@ const BusinessAdd = (props) => {
               console.log(city[1].label, [longitude, latitude]);
               setLocation([longitude, latitude]);
               setAmpShow(true);
+              setMarker(true);
               setSelectCity(typeof city[1] === 'object' ? city : selectCity);
             }
           });
         }
       })
       .finally(() => {});
+  };
+
+  // 地图浮标移动定位
+  const handleMarkerEvents = {
+    dragend: (event) => {
+      const { lnglat } = event;
+      const latitude = parseFloat(lnglat.lat); // 维度
+      const longitude = parseFloat(lnglat.lng); // 经度
+      setLocation([longitude, latitude]);
+    },
   };
 
   const amap = (
@@ -146,14 +167,14 @@ const BusinessAdd = (props) => {
         keyboardEnable={false}
         touchZoom={false}
       >
-        <Marker position={location} />
+        <Marker clickable draggable={marker} position={location} events={handleMarkerEvents} />
       </Map>
     </div>
   );
 
   const modalProps = {
     title: `${initialValues ? '审核' : '新增'}商户`,
-    width: 600,
+    width: 700,
     visible,
     maskClosable: false,
     destroyOnClose: true,
@@ -163,6 +184,11 @@ const BusinessAdd = (props) => {
     <Drawer
       {...modalProps}
       onClose={onClose}
+      afterVisibleChange={(showEdit) => {
+        if (showEdit) {
+          handleInvalueEdit();
+        }
+      }}
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'right' }}>
@@ -207,6 +233,7 @@ const BusinessAdd = (props) => {
       {initialValues && (
         <BusinessAuditAllow
           visible={visibleAllow}
+          initialValues={initialValues}
           onClose={() => setVisibleAllow(false)}
           merchantName={initialValues.merchantName}
           merchantVerifyId={initialValues.merchantVerifyIdString}
@@ -218,6 +245,7 @@ const BusinessAdd = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ loading, businessAudit }) => ({
+  businessAudit,
   loading: loading.models.businessList,
 }))(BusinessAdd);

@@ -11,10 +11,21 @@ import {
   DatePicker,
   InputNumber,
   Cascader,
+  Grid,
 } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
 import styles from './index.less';
+
+/**
+ *
+ * @searchItems {*} 搜索数组
+ * @handleSearch {*} 搜索回调
+ * @btnExtra {*} 额外按钮
+ * @componentSize {*} 组件大小
+ * @initialValues {*} 默认值
+ * @NoSearch {*} 无搜索内容时 不搜索
+ */
 
 // 城市搜索筛选
 const filter = (inputValue, path) => {
@@ -42,6 +53,7 @@ const ranges = {
 const FormItem = Form.Item;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const { useBreakpoint } = Grid;
 
 const SearchCondition = (props) => {
   const {
@@ -54,12 +66,21 @@ const SearchCondition = (props) => {
   } = props;
 
   const [form] = Form.useForm();
+  const screens = useBreakpoint();
 
   const [expand, setExpand] = useState(false);
 
+  const len = formItems.length;
+
+  // 不同屏幕大小显示个数
+  let count = 2;
+  if (screens.xxl) {
+    count = 4;
+  } else if (screens.xl) {
+    count = 3;
+  }
+
   const getFields = () => {
-    const len = formItems.length;
-    const count = expand ? len : componentSize !== 'default' ? 6 : 4;
     const children = [];
     formItems.forEach((item, i) => {
       let initialValue = '';
@@ -99,6 +120,8 @@ const SearchCondition = (props) => {
         initialValue = item.initialValue ? `${item.initialValue}` : '';
         component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} />;
       }
+
+      // 时间区间搜索
       if (item.type === 'rangePicker') {
         initialValue = item.defaultValue || [];
         component = (
@@ -109,8 +132,8 @@ const SearchCondition = (props) => {
               moment(moment().startOf('month')).subtract(1, 'month'),
               moment(moment().startOf('month')).subtract(1, 'day'),
             ]}
-            disabledDate={disabledDate}
-            ranges={item.ranges || ranges}
+            disabledDate={item.disabledDate || disabledDate}
+            ranges={item.ranges || item.disabledDate ? '' : ranges}
             // renderExtraFooter={() => (
             //   <div className={styles.shop_dateInfo}>
             //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
@@ -119,11 +142,15 @@ const SearchCondition = (props) => {
           />
         );
       }
+
+      // 时间搜索 picker
       if (item.type === 'datePicker') {
         component = (
           <DatePicker style={{ width: '100%' }} allowClear={false} picker={item.picker || 'date'} />
         );
       }
+
+      // 城市类型
       if (item.type === 'city') {
         component = (
           <Cascader
@@ -137,11 +164,15 @@ const SearchCondition = (props) => {
         );
       }
 
+      const colcount = expand ? len : count;
+      const pickerCheck = (item.type === 'rangePicker' || item.type === 'datePicker') && len < 4;
+      // 排版填充
       children.push(
         <Col
-          span={componentSize !== 'default' ? (item.type === 'rangePicker' ? 9 : 6) : 6}
+          lg={pickerCheck ? 10 : componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
+          xl={pickerCheck ? 10 : i < colcount ? 8 : 0}
+          xxl={pickerCheck ? 8 : componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
           key={i}
-          style={{ display: i < count ? 'inline' : 'none' }}
         >
           <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>
             {component}
@@ -152,10 +183,12 @@ const SearchCondition = (props) => {
     return children;
   };
 
+  // 搜索
   const handleSearchsOver = (values) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
+        // 判断类型 时间类型处理
         if (item.type === 'datePicker') {
           formObj[item.name] = values[item.name].format(
             item.picker === 'year' ? 'YYYY' : 'YYYY-MM-DD',
@@ -164,22 +197,28 @@ const SearchCondition = (props) => {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
         } else if (item.type === 'city') {
+          // 判断类型 城市类型处理
           item.valuesKey.map((item, i) => (formObj[item] = values.city[i]));
           delete values[item.name];
         }
       } else {
+        // 删除不存在值的key
         delete values[item.name];
       }
     });
+    // 搜索回调
     if (NoSearch) {
+      // NoSearch为true时 无搜索值的不请求
       if (Object.keys(values).length) {
         handleSearch({ ...values, ...formObj });
       }
     } else {
+      // 默认请求
       handleSearch({ ...values, ...formObj });
     }
   };
 
+  // 重置
   const handleReset = () => {
     form.resetFields();
   };
@@ -188,30 +227,33 @@ const SearchCondition = (props) => {
     form.setFieldsValue(initialValues);
   }, []);
 
+  // 展开
   const toggle = () => setExpand(!expand);
 
-  const len = formItems.length;
-  const search = (
-    <div style={{ textAlign: 'right' }}>
-      <Space>
-        <Button type="primary" htmlType="submit">
-          查询
-        </Button>
-        <Button onClick={handleReset}>重置</Button>
-        {btnExtra}
-      </Space>
-      {len > (componentSize !== 'default' ? 6 : 4) ? (
-        <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
-          {expand ? '收起' : '展开'}
-          {expand ? <UpOutlined /> : <DownOutlined />}
-        </a>
-      ) : null}
-    </div>
-  );
+  const search = () => {
+    return (
+      <div style={{ textAlign: 'right' }}>
+        <Space>
+          <Button type="primary" htmlType="submit">
+            查询
+          </Button>
+          <Button onClick={handleReset}>重置</Button>
+          {btnExtra}
+        </Space>
+        {len > (componentSize !== 'default' ? 6 : count) ? (
+          <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
+            {expand ? '收起' : '展开'}
+            {expand ? <UpOutlined /> : <DownOutlined />}
+          </a>
+        ) : null}
+      </div>
+    );
+  };
 
   return (
     <Form
       form={form}
+      initialValues={initialValues}
       size={componentSize}
       layout="horizontal"
       className={styles.form}
@@ -221,7 +263,7 @@ const SearchCondition = (props) => {
         <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
           {getFields()}
         </Row>
-        {search}
+        {search()}
       </div>
     </Form>
   );
