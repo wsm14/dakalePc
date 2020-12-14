@@ -10,7 +10,7 @@ import style from './style.less';
 
 const FormItem = Form.Item;
 
-const LoginItem = ({ prop, dispatch, loading }) => {
+const LoginForm = ({ dispatch, loading }) => {
   const [form] = Form.useForm();
   const isLoading =
     loading.effects['login/login'] || loading.effects['userInfo/fetchGetAuthMenuTree'];
@@ -108,4 +108,5 @@ const LoginItem = ({ prop, dispatch, loading }) => {
     </div>
   );
 };
-export default connect(({ settings, loading }) => ({ ...settings, loading }))(LoginItem);
+
+export default connect(({ settings, loading }) => ({ ...settings, loading }))(LoginForm);
