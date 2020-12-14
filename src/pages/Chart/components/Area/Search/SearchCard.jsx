@@ -59,7 +59,6 @@ const SearchCard = ({ setSearchData, searchData, cityShow }) => {
           showSearch
           optionFilterProp="label"
           style={{ width: 150 }}
-          allowClear={true}
           options={CITYJSON}
           placeholder={`请选择省份`}
           onChange={(val) => handleSearchData(selectedTime, val)}

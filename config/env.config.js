@@ -1,6 +1,6 @@
 
 // const target = 'http://192.168.0.103:6020'
-const target = 'http://36l08135o7.wicp.vip';
+const target = 'https://devgateway.dakale.net';
 
 export default {
   dev: {
