@@ -3,7 +3,7 @@ import { Button, Drawer, Space, Form, notification } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import Title from './title';
 import ActiveSetForm from './Form/activeSetForm';
-import LegalForm from './Form/LegalForm';
+import LegalForm from './Form/legalForm';
 import { connect } from 'umi';
 import { TIME_YMD } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';

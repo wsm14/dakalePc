@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BankSet from './components/BankSet/businessBankSet';
+import BankSet from './components/BankSet/BusinessBankSet';
 
 const BusinessBankSetContent = (props) => {
   const { businessBankSet, loading, dispatch } = props;

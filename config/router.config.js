@@ -39,17 +39,17 @@ export default [
           {
             path: '/cityom/provCo',
             name: '省公司列表',
-            component: './CityOm/ProvCompany',
+            component: './Cityom/ProvCompany',
           },
           {
             path: '/cityom/area',
             name: '区县运营中心',
-            component: './CityOm/AreaCenter',
+            component: './Cityom/AreaCenter',
           },
           {
             path: '/cityom/join',
             name: '加盟申请',
-            component: './CityOm/FranchiseApplication',
+            component: './Cityom/FranchiseApplication',
           },
         ],
       },
@@ -218,7 +218,7 @@ export default [
           {
             path: '/market/appset',
             name: '广告管理',
-            component: './market/AppSetList',
+            component: './Market/AppSetList',
           },
           {
             path: '/market/special',
