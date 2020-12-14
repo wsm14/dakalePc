@@ -28,7 +28,7 @@ export default [
           {
             path: '/chart/block',
             name: '数据概况',
-            component: './User/CircleMasterList',
+            component: './Chart/ChartBlock',
           },
         ],
       },
