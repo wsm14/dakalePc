@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { connect } from 'umi';
 import { history } from 'umi';
 import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
@@ -9,12 +10,14 @@ import style from './style.less';
 
 const FormItem = Form.Item;
 
-const LoginItem = ({ prop, loading }) => {
+const LoginItem = ({ prop, dispatch, loading }) => {
   const [form] = Form.useForm();
+  const isLoading =
+    loading.effects['login/login'] || loading.effects['userInfo/fetchGetAuthMenuTree'];
 
   // 登录
   const handleSearchsOver = (values) => {
-    prop.dispatch({
+    dispatch({
       type: 'login/login',
       payload: values,
       callback: fetchGetAuthMenuTree,
@@ -23,7 +26,7 @@ const LoginItem = ({ prop, loading }) => {
 
   // 获取权限树
   const fetchGetAuthMenuTree = () => {
-    prop.dispatch({
+    dispatch({
       type: 'userInfo/fetchGetAuthMenuTree',
       callback: fetchLoginRedirect,
     });
@@ -96,7 +99,7 @@ const LoginItem = ({ prop, loading }) => {
             className={style.dakale_Submit}
             type="primary"
             htmlType="submit"
-            loading={loading}
+            loading={isLoading}
           >
             登录
           </Button>
@@ -105,4 +108,4 @@ const LoginItem = ({ prop, loading }) => {
     </div>
   );
 };
-export default LoginItem;
+export default connect(({ settings, loading }) => ({ ...settings, loading }))(LoginItem);
