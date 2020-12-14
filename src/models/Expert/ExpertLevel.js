@@ -45,7 +45,7 @@ export default {
                 })
                 .filter((i) => i),
               target: Object.keys(target).map((item) => ({
-                title: item,
+                name: item,
                 value: target[item],
               })),
             };
@@ -55,7 +55,7 @@ export default {
     },
     *fetchExpertLevelSet({ payload, callback }, { call }) {
       const { target, rights } = payload;
-      const targetArr = target.map((i) => ({ [i.title]: i.value }));
+      const targetArr = target.map((i) => ({ [i.name]: i.value }));
       const response = yield call(fetchExpertLevelSet, {
         ...payload,
         target: JSON.stringify(targetArr.length ? Object.assign(...targetArr) : {}),

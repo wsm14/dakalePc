@@ -1,3 +1,4 @@
+// 权益库
 export const rightsJson = [
   {
     title: '身份铭牌',
@@ -99,5 +100,64 @@ export const rightsJson = [
     icon: 'https://resource-new.dakale.net/common/level/guanggaorenwu.png',
     name: 'advertising',
     value: null,
+  },
+];
+
+// 任务库
+export const targetJson = [
+  {
+    title: '发布图文内容',
+    name: 'momentPic',
+    value: 1,
+  },
+  {
+    title: '发布视频内容',
+    name: 'momentVideo',
+    value: 1,
+  },
+  {
+    title: '内容收藏',
+    name: 'momentCollect',
+    value: 1,
+  },
+  {
+    title: '内容点赞',
+    name: 'momentLike',
+    value: 1,
+  },
+  {
+    title: '到店打卡',
+    name: 'mark',
+    value: 1,
+  },
+  {
+    title: '发展家人',
+    name: 'family',
+    value: 1,
+  },
+  {
+    title: '发展家店',
+    name: 'merchant',
+    value: 1,
+  },
+  {
+    title: '关注数',
+    name: 'attention',
+    value: 1,
+  },
+  {
+    title: '粉丝数',
+    name: 'fan',
+    value: 1,
+  },
+  {
+    title: '专题活动内容创作',
+    name: 'domainActivity',
+    value: 1,
+  },
+  {
+    title: '带货成交量',
+    name: 'order',
+    value: 1,
   },
 ];
