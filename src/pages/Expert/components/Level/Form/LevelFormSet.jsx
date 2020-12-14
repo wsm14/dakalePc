@@ -1,62 +1,127 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'dva';
-import { Modal } from 'antd';
-import LevelTable from './LevelTable';
+import { Drawer, Form, InputNumber, Space, Button } from 'antd';
+import FormCondition from '@/components/FormCondition';
 
 const LevelFormSet = (props) => {
-  const { visible, dispatch, onCancel, cRef } = props;
+  const { visible, keyRow, showlistData, onCancel, loading, fetchExpertLevelSet } = props;
 
-  const { type = 'set', key = 'target', row = '' } = visible;
-  // 表格值
-  const [listData, setListData] = useState([]);
-  // 打开选择库
-  const [selectData, setSelectData] = useState({ show: false });
+  const { type = 'set', detail = '', show = false } = visible;
 
-  // 保存
-  const fetchExpertLevelSet = (newList) => {
-    dispatch({
-      type: 'expertLevel/fetchExpertLevelSet',
-      payload: { ...row, [key]: newList },
-      callback: () => {
-        cRef.current.fetchGetData();
-        setListData(newList);
-      },
+  const [form] = Form.useForm();
+
+  // 提交
+  const fetchFormData = () => {
+    form.validateFields().then((values) => {
+      const { name, title, icon } = detail;
+      // 处理数据返回新数据数组
+      const newArr = showlistData.map((item) =>
+        item.name == name ? { name, title, icon, value: values.value } : item,
+      );
+      fetchExpertLevelSet(newArr, 'edit');
     });
   };
 
-  // table
+  const formObj = {
+    style: { display: 'inline-block', width: 'calc(50% - 12px)' },
+    rules: [{ required: true, message: '请输入数字' }],
+  };
+
+  const delSpan = (
+    <span
+      style={{
+        display: 'inline-block',
+        width: '24px',
+        lineHeight: '32px',
+        textAlign: 'center',
+      }}
+    >
+      -
+    </span>
+  );
+
+  const formItems = [
+    {
+      label: '输入数值',
+      name: 'value',
+      type: 'number',
+      min: 1,
+      precision: 0,
+      visible: detail.name != 'exclusiveCoupon',
+    },
+    {
+      label: '设置数值',
+      name: 'value',
+      visible: detail.name == 'exclusiveCoupon',
+      type: 'noForm',
+      childrenOwn: (
+        <Form.Item label="设置数值" style={{ marginBottom: 0 }}>
+          <Form.Item name={['value', 'startMoney']} {...formObj}>
+            <InputNumber style={{ width: '100%' }} min={1} precision={0} />
+          </Form.Item>
+          {delSpan}
+          <Form.Item name={['value', 'endMoney']} {...formObj}>
+            <InputNumber style={{ width: '100%' }} min={1} precision={0} />
+          </Form.Item>
+        </Form.Item>
+      ),
+    },
+    {
+      label: '设置张数',
+      name: 'value',
+      visible: detail.name == 'exclusiveCoupon',
+      type: 'noForm',
+      childrenOwn: (
+        <Form.Item label="设置张数" style={{ marginBottom: 0 }}>
+          <Form.Item name={['value', 'startCount']} {...formObj}>
+            <InputNumber style={{ width: '100%' }} min={1} precision={0} />
+          </Form.Item>
+          {delSpan}
+          <Form.Item name={['value', 'endCount']} {...formObj}>
+            <InputNumber style={{ width: '100%' }} min={1} precision={0} />
+          </Form.Item>
+        </Form.Item>
+      ),
+    },
+  ];
+
+  // Drawer
   const propItem = {
     target: {
-      title: `编辑任务 - ${row.levelName}`,
-      dataKey: 'target',
+      title: `编辑任务 - ${detail.titleName}`,
     },
     rights: {
-      title: `编辑权益 - ${row.levelName}`,
-      dataKey: 'rights',
+      title: `编辑权益 - ${detail.titleName}`,
     },
-  }[key];
+  }[keyRow];
 
-  // 监听打开 修改表格值展示
-  useEffect(() => {
-    if (visible) setListData(row[propItem.dataKey]);
-  }, [visible]);
+  const modalProps = {
+    title: propItem.title,
+    width: 560,
+    visible: show,
+    maskClosable: true,
+    destroyOnClose: true,
+    zIndex: 1005,
+  };
 
   return (
-    <Modal
-      title={propItem.title}
-      width={800}
-      destroyOnClose
-      footer={null}
-      visible={visible}
-      onCancel={() => onCancel('')}
+    <Drawer
+      {...modalProps}
+      onClose={onCancel}
+      bodyStyle={{ paddingBottom: 80 }}
+      footer={
+        <div style={{ textAlign: 'center' }}>
+          <Space>
+            <Button onClick={onCancel}>取消</Button>
+            <Button onClick={fetchFormData} type="primary" loading={loading}>
+              确认
+            </Button>
+          </Space>
+        </div>
+      }
     >
-      <LevelTable
-        keyRow={key}
-        list={listData}
-        setSelectData={setSelectData}
-        fetchExpertLevelSet={fetchExpertLevelSet}
-      ></LevelTable>
-    </Modal>
+      <FormCondition formItems={formItems} initialValues={detail} form={form} />
+    </Drawer>
   );
 };
 

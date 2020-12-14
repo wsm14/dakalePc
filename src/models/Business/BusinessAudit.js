@@ -117,7 +117,7 @@ export default {
           { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
         ],
         commissionRatio: bondBean,
-        tags: tags.split(','),
+        tags: tags ? tags.split(',') : [],
       };
       callback(initialValues);
     },

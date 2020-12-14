@@ -143,6 +143,17 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
+// 退款订单状态
+export const REFUND_ORDERS_STATUS = [
+  false,
+  false,
+  '订单关闭',
+  '交易完成',
+  '已确认',
+  false,
+  '退款中',
+];
+
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 

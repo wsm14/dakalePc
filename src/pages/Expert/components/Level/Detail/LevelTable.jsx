@@ -6,7 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const LevelTable = (props) => {
-  const { list, keyRow, loading, setSelectData, fetchExpertLevelSet } = props;
+  const { list, keyRow, loading, setSelectData, setEditData, fetchExpertLevelSet } = props;
 
   // 权益详情字典
   const rightsDataDetail = (name, value) => {
@@ -32,7 +32,7 @@ const LevelTable = (props) => {
       case 'exclusiveCoupon':
         return (
           <span>
-            升级礼包·优惠券价值 <b>{value.startMoney}</b>~<b>{value.endMoney}</b> 元 /
+            升级礼包·优惠券价值 <b>{value.startMoney}</b>~<b>{value.endMoney}</b> 元 /{' '}
             <b>{value.startCount}</b>~<b>{value.endCount}</b>张
           </span>
         );
@@ -152,7 +152,13 @@ const LevelTable = (props) => {
               {
                 type: 'edit',
                 visible: row.value,
-                click: () => setSelectData({ show: true }),
+                click: () => {
+                  const titleName =
+                    keyRow == 'rights'
+                      ? row.title
+                      : targetJson.filter((i) => i.name == row.name)[0].title;
+                  setEditData({ show: true, detail: { ...row, titleName } });
+                },
               },
               {
                 type: 'del',
@@ -178,7 +184,7 @@ const LevelTable = (props) => {
       CardNone={false}
       loading={loading}
       columns={getColumns}
-      rowKey={(record) => `${record.title}`}
+      rowKey={(record) => `${record.name}`}
       list={list}
       pagination={false}
     ></DataTableBlock>

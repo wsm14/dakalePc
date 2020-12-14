@@ -56,11 +56,12 @@ export default {
     *fetchExpertLevelSet({ payload, callback }, { call }) {
       const { target, rights } = payload;
       const targetArr = target.map((i) => ({ [i.name]: i.value }));
-      const response = yield call(fetchExpertLevelSet, {
+      const newData = {
         ...payload,
         target: JSON.stringify(targetArr.length ? Object.assign(...targetArr) : {}),
         rights: JSON.stringify(rights),
-      });
+      };
+      const response = yield call(fetchExpertLevelSet, newData);
       if (!response) return;
       notification.success({
         message: '温馨提示',

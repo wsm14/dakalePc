@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Modal } from 'antd';
 import LevelTable from './LevelTable';
 import LevelJSONSet from './LevelJSONSet';
+import LevelFormSet from '../Form/LevelFormSet';
 
 const LevelDetail = (props) => {
   const { visible, dispatch, onCancel, cRef } = props;
@@ -12,15 +13,20 @@ const LevelDetail = (props) => {
   const [listData, setListData] = useState([]);
   // 打开选择库
   const [selectData, setSelectData] = useState({ show: false });
+  // 修改数值
+  const [editData, setEditData] = useState({ show: false, detail: {} });
 
   // 保存
-  const fetchExpertLevelSet = (newList) => {
+  const fetchExpertLevelSet = (newList, setType = 'add') => {
     dispatch({
       type: 'expertLevel/fetchExpertLevelSet',
       payload: { ...row, [key]: newList },
       callback: () => {
         cRef.current.fetchGetData();
         setListData(newList);
+        if (setType == 'edit') {
+          setEditData({ show: false, detail: {} });
+        }
       },
     });
   };
@@ -55,6 +61,7 @@ const LevelDetail = (props) => {
         <LevelTable
           keyRow={key}
           list={listData}
+          setEditData={setEditData}
           setSelectData={setSelectData}
           fetchExpertLevelSet={fetchExpertLevelSet}
         ></LevelTable>
@@ -66,6 +73,13 @@ const LevelDetail = (props) => {
         onCancel={() => setSelectData({ show: false, list: [] })}
         fetchExpertLevelSet={fetchExpertLevelSet}
       ></LevelJSONSet>
+      <LevelFormSet
+        visible={editData}
+        showlistData={listData}
+        keyRow={key}
+        onCancel={() => setEditData({ show: false, detail: {} })}
+        fetchExpertLevelSet={fetchExpertLevelSet}
+      ></LevelFormSet>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { ORDERS_STATUS } from '@/common/constant';
+import { ORDERS_STATUS, REFUND_ORDERS_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 
@@ -28,7 +28,7 @@ const RefundOrder = (props) => {
       type: 'select',
       name: 'status',
       select: {
-        list: ORDERS_STATUS,
+        list: REFUND_ORDERS_STATUS,
       },
     },
   ];
