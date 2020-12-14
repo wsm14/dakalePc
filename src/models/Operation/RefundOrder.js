@@ -1,7 +1,7 @@
-import { fetchOrdersList, fetchOrdersDetail } from '@/services/BusinessServices';
+import { fetchRefundOrderList, fetchOrdersDetail } from '@/services/OperationServices';
 
 export default {
-  namespace: 'ordersList',
+  namespace: 'refundOrder',
 
   state: {
     list: [],
@@ -20,7 +20,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchOrdersList, payload);
+      const response = yield call(fetchRefundOrderList, payload);
       if (!response) return;
       const { content } = response;
       yield put({

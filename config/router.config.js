@@ -116,7 +116,7 @@ export default [
           },
           {
             path: '/business/list',
-            name: '店铺数据',
+            name: '店铺列表',
             component: './Business/BusinessList',
           },
           {
@@ -125,34 +125,40 @@ export default [
             component: './Business/GroupList',
           },
           {
-            path: '/business/share',
-            name: '分享管理',
-            component: './Business/ShareManage',
-          },
-          {
-            path: '/business/goods',
-            name: '商品管理',
-            component: './Business/GoodsManage',
-          },
-          {
-            path: '/business/classify',
-            name: '分类管理',
-            component: './Business/ClassifyManage',
-          },
-          {
-            path: '/business/orders',
-            name: '订单列表',
-            component: './Business/OrdersList',
-          },
-          {
-            path: '/business/refund',
-            name: '退款管理',
-            component: './Business/RefundOrder',
-          },
-          {
             path: '/business/settled',
             name: '入驻绑定查询',
             component: './Business/BusinessSettled',
+          },
+        ],
+      },
+      {
+        name: '店铺运营',
+        path: '/operation',
+        routes: [
+          {
+            path: '/operation/share',
+            name: '分享管理',
+            component: './Operation/ShareManage',
+          },
+          {
+            path: '/operation/goods',
+            name: '商品管理',
+            component: './Operation/GoodsManage',
+          },
+          {
+            path: '/operation/classify',
+            name: '分类管理',
+            component: './Operation/ClassifyManage',
+          },
+          {
+            path: '/operation/orders',
+            name: '订单列表',
+            component: './Operation/OrdersList',
+          },
+          {
+            path: '/operation/refund',
+            name: '退款管理',
+            component: './Operation/RefundOrder',
           },
         ],
       },

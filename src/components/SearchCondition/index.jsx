@@ -80,7 +80,7 @@ const SearchCondition = (props) => {
   if (screens.xxl) {
     count = 4;
   } else if (screens.xl) {
-    count = 3;
+    count = 2;
   }
 
   const getFields = () => {
@@ -224,7 +224,7 @@ const SearchCondition = (props) => {
       children.push(
         <Col
           lg={pickerCheck ? 10 : componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
-          xl={pickerCheck ? 10 : i < colcount ? 8 : 0}
+          xl={pickerCheck ? 10 : i < colcount ? 12 : 0}
           xxl={pickerCheck ? 8 : componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
           key={i}
         >

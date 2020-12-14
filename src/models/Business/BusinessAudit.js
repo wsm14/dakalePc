@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { notification } from 'antd';
+import { fetchGetHubSelect } from '@/services/BaseServices';
 import {
   fetchMerchantAuditList,
   fetchMerchantAuditDetailList,
@@ -7,7 +8,6 @@ import {
   fetchMerSaleAudit,
   fetchMerSaleAuditAllow,
 } from '@/services/BusinessServices';
-import { fetchGetHubSelect } from '@/services/BaseServices';
 
 export default {
   namespace: 'businessAudit',

@@ -9,7 +9,7 @@ import {
   fetchGoodsAdd,
   fetchGoodsDel,
   fetchGoodsGetDetail,
-} from '@/services/BusinessServices';
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'goodsManage',
