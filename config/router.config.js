@@ -7,7 +7,7 @@ export default [
       {
         name: '登录',
         path: '/login/index',
-        component: './Login/UserLogin',
+        component: './Logins/UserLogin',
       },
     ],
   },
