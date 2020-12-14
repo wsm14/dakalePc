@@ -1,10 +1,10 @@
 import { notification } from 'antd';
-import { fetchHandleDetail } from '@/services/OperationServices';
+import { fetchHandleDetail } from '@/services/BaseServices';
 import {
   fetchShareList,
   fetchShareStatusClose,
   fetchShareDetail,
-} from '@/services/BusinessServices';
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'shareManage',
