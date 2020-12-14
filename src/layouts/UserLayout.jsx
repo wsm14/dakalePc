@@ -1,6 +1,6 @@
 import { connect } from 'umi';
 import { DefaultFooter } from '@ant-design/pro-layout';
-import Context from '@/pages/Login/LoginForm';
+import Context from '../pages/Login/LoginForm';
 import React from 'react';
 import styles from './UserLayout.less';
 
