@@ -3,10 +3,10 @@ import { connect } from 'umi';
 import { history } from 'umi';
 import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
+import style from './style.less';
 
 // import QRCode from "qrcode-react";
 // import { PHONE_PATTERN } from '@/common/regExp';
-import style from './style.less';
 
 const FormItem = Form.Item;
 

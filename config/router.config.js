@@ -7,7 +7,7 @@ export default [
       {
         name: '登录',
         path: '/login/index',
-        component: './Chart/AreaTotal',
+        component: './Login/UserLogin',
       },
     ],
   },
