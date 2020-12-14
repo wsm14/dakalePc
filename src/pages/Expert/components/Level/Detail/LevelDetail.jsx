@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'dva';
 import { Modal } from 'antd';
 import LevelTable from './LevelTable';
+import LevelJSONSet from './LevelJSONSet';
 
 const LevelDetail = (props) => {
-  const { visible, onCancel } = props;
+  const { visible, dispatch, onCancel, cRef } = props;
 
-  const { type = 'target', row = '' } = visible;
+  const { type = 'set', key = 'target', row = '' } = visible;
+  // 表格值
+  const [listData, setListData] = useState([]);
+  // 打开选择库
+  const [selectData, setSelectData] = useState({ show: false });
+
+  // 保存
+  const fetchExpertLevelSet = (newList) => {
+    dispatch({
+      type: 'expertLevel/fetchExpertLevelSet',
+      payload: { ...row, [key]: newList },
+      callback: () => {
+        cRef.current.fetchGetData();
+        setListData(newList);
+      },
+    });
+  };
 
   // table
   const propItem = {
@@ -17,20 +35,39 @@ const LevelDetail = (props) => {
       title: `等级权益 - ${row.levelName}`,
       dataKey: 'rights',
     },
-  }[type];
+  }[key];
+
+  // 监听打开 修改表格值展示
+  useEffect(() => {
+    if (visible) setListData(row[propItem.dataKey]);
+  }, [visible]);
 
   return (
-    <Modal
-      title={propItem.title}
-      width={800}
-      destroyOnClose
-      footer={null}
-      visible={visible}
-      onCancel={() => onCancel('')}
-    >
-      <LevelTable type={type} list={row[propItem.dataKey]}></LevelTable>
-    </Modal>
+    <>
+      <Modal
+        title={propItem.title}
+        width={800}
+        destroyOnClose
+        footer={null}
+        visible={visible}
+        onCancel={() => onCancel('')}
+      >
+        <LevelTable
+          keyRow={key}
+          list={listData}
+          setSelectData={setSelectData}
+          fetchExpertLevelSet={fetchExpertLevelSet}
+        ></LevelTable>
+      </Modal>
+      <LevelJSONSet
+        {...selectData}
+        showlistData={listData}
+        keyRow={key}
+        onCancel={() => setSelectData({ show: false, list: [] })}
+        fetchExpertLevelSet={fetchExpertLevelSet}
+      ></LevelJSONSet>
+    </>
   );
 };
 
-export default LevelDetail;
+export default connect()(LevelDetail);

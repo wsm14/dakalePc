@@ -31,48 +31,48 @@ const ExpertLevel = (props) => {
       title: '等级名称',
       dataIndex: 'levelName',
     },
-    // {
-    //   title: `等级任务`,
-    //   align: 'right',
-    //   dataIndex: 'target',
-    //   render: (val, row) => {
-    //     return (
-    //       <HandleSetTable
-    //         formItems={[
-    //           {
-    //             type: 'set',
-    //             // click: () =>
-    //           },
-    //           {
-    //             type: 'eye',
-    //             click: () => setVisible({ show: true, type: 'target', row }),
-    //           },
-    //         ]}
-    //       />
-    //     );
-    //   },
-    // },
-    // {
-    //   title: '等级权益',
-    //   align: 'right',
-    //   dataIndex: 'rights',
-    //   render: (val, row) => {
-    //     return (
-    //       <HandleSetTable
-    //         formItems={[
-    //           {
-    //             type: 'set',
-    //             // click: () => setVisible({ show: true, type: '' }),
-    //           },
-    //           {
-    //             type: 'eye',
-    //             click: () => setVisible({ show: true, type: 'rights', row }),
-    //           },
-    //         ]}
-    //       />
-    //     );
-    //   },
-    // },
+    {
+      title: `等级任务`,
+      align: 'right',
+      dataIndex: 'target',
+      render: (val, row) => {
+        return (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'set',
+                click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
+              },
+              // {
+              //   type: 'eye',
+              //   click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
+              // },
+            ]}
+          />
+        );
+      },
+    },
+    {
+      title: '等级权益',
+      align: 'right',
+      dataIndex: 'rights',
+      render: (val, row) => {
+        return (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'set',
+                click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
+              },
+              // {
+              //   type: 'eye',
+              //   click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
+              // },
+            ]}
+          />
+        );
+      },
+    },
   ];
 
   return (
@@ -86,7 +86,11 @@ const ExpertLevel = (props) => {
         dispatchType="expertLevel/fetchGetList"
         list={list}
       ></DataTableBlock>
-      <LevelDetail visible={visible} onCancel={() => setVisible(false)}></LevelDetail>
+      <LevelDetail
+        cRef={childRef}
+        visible={visible}
+        onCancel={() => setVisible(false)}
+      ></LevelDetail>
     </>
   );
 };

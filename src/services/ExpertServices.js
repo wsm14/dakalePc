@@ -149,4 +149,12 @@ export function fetchExpertLevelList(params) {
   });
 }
 
+// post 等级设置 - 设置
+export function fetchExpertLevelSet(data) {
+  return request('/admin/userLevelManagement/saveLevelConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 等级设置 end

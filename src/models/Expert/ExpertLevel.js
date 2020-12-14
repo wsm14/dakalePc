@@ -1,5 +1,6 @@
 import { notification } from 'antd';
-import { fetchExpertLevelList, fetchExpertSortSet } from '@/services/ExpertServices';
+import { rightsJson } from '@/common/expertLevelJSON';
+import { fetchExpertLevelList, fetchExpertLevelSet } from '@/services/ExpertServices';
 
 export default {
   namespace: 'expertLevel',
@@ -7,7 +8,6 @@ export default {
   state: {
     list: [],
     total: 0,
-    userLevelSortConfig: {},
   },
 
   reducers: {
@@ -29,13 +29,21 @@ export default {
         payload: {
           list: content.levelConfigList.map((item) => {
             const pictures = JSON.parse(item.pictures);
-            const rights = JSON.parse(item.rights);
+            const rights = item.rights ? JSON.parse(item.rights) : [];
             const target = item.target ? JSON.parse(item.target) : {};
             return {
               ...item,
               activity: pictures.activity,
               currentLevel: pictures.currentLevel,
-              rights,
+              rights: rights
+                .map((item) => {
+                  const checkArr = rightsJson.filter((i) => i.title == item.title);
+                  if (checkArr.length) {
+                    return { ...checkArr[0], ...item };
+                  }
+                  return false;
+                })
+                .filter((i) => i),
               target: Object.keys(target).map((item) => ({
                 title: item,
                 value: target[item],
@@ -45,16 +53,20 @@ export default {
         },
       });
     },
-    *fetchExpertSortSet({ payload, callback }, { call, put, select }) {
-      const data = yield select((status) => status.expertSort.userLevelSortConfig);
-      data[payload.key] = payload.value;
-      const response = yield call(fetchExpertSortSet, { extraParam: JSON.stringify(data) });
+    *fetchExpertLevelSet({ payload, callback }, { call }) {
+      const { target, rights } = payload;
+      const targetArr = target.map((i) => ({ [i.title]: i.value }));
+      const response = yield call(fetchExpertLevelSet, {
+        ...payload,
+        target: JSON.stringify(targetArr.length ? Object.assign(...targetArr) : {}),
+        rights: JSON.stringify(rights),
+      });
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '排序机制设置成功',
+        description: '权益等级设置保存成功',
       });
-      callback();
+      callback && callback();
     },
   },
 };
