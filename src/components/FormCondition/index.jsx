@@ -336,7 +336,6 @@ const FormComponents = ({
             disabled={item.disabled}
             style={{ width: '100%' }}
             placeholder={placeholder}
-            style={{ width: '100%' }}
             max={item.max}
             min={item.min}
             formatter={item.formatter}

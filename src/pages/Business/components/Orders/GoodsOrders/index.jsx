@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'dva';
-import { ORDERS_STATUS, ORDERS_TYPE, ORDERS_ATTRIBUTES, PAY_TYPE } from '@/common/constant';
+import { ORDERS_STATUS, ORDERS_TYPE, PAY_TYPE } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import OrdersDetail from '../OrdersDetail';
 
@@ -35,14 +35,6 @@ const GoodsOrders = (props) => {
     },
     {
       label: '订单属性',
-      type: 'select',
-      name: 'orderAttributes',
-      select: {
-        list: ORDERS_ATTRIBUTES,
-      },
-    },
-    {
-      label: '订单类型',
       type: 'select',
       name: 'orderType',
       select: {
@@ -129,20 +121,11 @@ const GoodsOrders = (props) => {
       dataIndex: 'merchantName',
     },
     {
-      title: '订单类型',
+      title: '订单属性',
       align: 'center',
       dataIndex: 'orderType',
       render: (val) => {
         const type = ORDERS_TYPE.filter((i) => i.value == val);
-        return type.length ? type[0].name : '--';
-      },
-    },
-    {
-      title: '订单属性',
-      align: 'center',
-      dataIndex: 'orderAttributes',
-      render: (val) => {
-        const type = ORDERS_ATTRIBUTES.filter((i) => i.value == val);
         return type.length ? type[0].name : '--';
       },
     },
