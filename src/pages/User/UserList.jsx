@@ -18,6 +18,16 @@ const UserListComponent = (props) => {
       label: '注册手机号',
       name: 'mobile',
     },
+    {
+      label: '用户昵称',
+      name: 'username',
+    },
+    {
+      label: '注册时间',
+      type: 'rangePicker',
+      name: 'createTimeStart',
+      end: 'createTimeEnd',
+    },
   ];
 
   // table 表头
@@ -108,9 +118,8 @@ const UserListComponent = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.userIdString}`}
-      NoSearch={true}
       dispatchType="userList/fetchGetList"
-      list={list}
+      {...list}
     >
       <UserListTotalInfo></UserListTotalInfo>
       <UserTotalSpread></UserTotalSpread>
