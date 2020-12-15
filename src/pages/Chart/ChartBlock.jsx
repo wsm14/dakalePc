@@ -3,6 +3,7 @@ import { Card } from 'antd';
 import moment from 'moment';
 import SearchCard from './components/Block/Search/SearchCard';
 import OrderChart from './components/Block/Chart/OrderChart';
+import UserChart from './components/Block/Chart/UserChart';
 
 const ChartBlockComponent = () => {
   const [searchData, setSearchData] = useState({
@@ -23,6 +24,7 @@ const ChartBlockComponent = () => {
       title={<SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>}
     >
       <OrderChart searchData={searchData}></OrderChart>
+      <UserChart searchData={searchData}></UserChart>
     </Card>
   );
 };

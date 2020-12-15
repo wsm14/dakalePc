@@ -21,7 +21,7 @@ const CircleMasterList = (props) => {
       select: { list: MASTER_TYPE },
     },
     {
-      label: '商户名',
+      label: '用户/商户名',
       name: 'name',
     },
     {
