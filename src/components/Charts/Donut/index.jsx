@@ -9,6 +9,7 @@ const DonutChart = (props) => {
     totalLabel,
     angleField = 'value',
     colorField = 'type',
+    legend,
   } = props;
 
   const config = {
@@ -26,6 +27,7 @@ const DonutChart = (props) => {
       triggerOn: false,
       totalLabel: totalLabel || '总计',
     },
+    legend,
     label: {
       visible: true,
       type: 'inner',

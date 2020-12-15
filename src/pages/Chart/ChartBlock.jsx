@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Card } from 'antd';
+import { Card, Affix } from 'antd';
 import moment from 'moment';
 import SearchCard from './components/Block/Search/SearchCard';
 import OrderChart from './components/Block/Chart/OrderChart';
 import UserChart from './components/Block/Chart/UserChart';
 import ActiveChart from './components/Block/Chart/ActiveChart';
+import MasterChart from './components/Block/Chart/MasterChart';
+import styles from './style.less';
 
 const ChartBlockComponent = () => {
   const [searchData, setSearchData] = useState({
@@ -21,14 +23,17 @@ const ChartBlockComponent = () => {
   };
 
   return (
-    <>
-      <Card bordered={false}>
-        <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>
-      </Card>
+    <div className={styles.chertBox}>
+      <Affix offsetTop={40}>
+        <Card bordered={false}>
+          <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>
+        </Card>
+      </Affix>
       <OrderChart searchData={searchData}></OrderChart>
       <UserChart searchData={searchData}></UserChart>
       <ActiveChart searchData={searchData}></ActiveChart>
-    </>
+      <MasterChart searchData={searchData}></MasterChart>
+    </div>
   );
 };
 

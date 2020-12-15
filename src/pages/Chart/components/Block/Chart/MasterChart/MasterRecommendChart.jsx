@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Bar } from '@/components/Charts';
-import { Typography } from 'antd';
+import { Column } from '@/components/Charts';
+import { Skeleton, Typography } from 'antd';
 
-const SaleChart = ({ dispatch, searchData, totalData }) => {
+const MasterRecommendChart = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);
   // }, [searchData]);
@@ -18,40 +18,36 @@ const SaleChart = ({ dispatch, searchData, totalData }) => {
 
   const data = [
     {
-      type: '新认领',
+      type: '人推人',
       value: 38,
     },
     {
-      type: '新注册',
+      type: '人推店',
       value: 52,
     },
     {
-      type: '新入驻',
+      type: '店推人',
       value: 61,
     },
     {
-      type: '新激活',
-      value: 145,
-    },
-    {
-      type: '新培训',
-      value: 48,
+      type: '店推店',
+      value: 61,
     },
   ];
 
   return (
     <>
-      <Typography.Title level={5}>销售情况</Typography.Title>
-      <Bar
+      <Typography.Title level={5}>圈层推荐情况</Typography.Title>
+      <Column
         data={data}
-        height={300}
+        height={346}
         meta={{ type: { alias: '月份' }, value: { alias: '卡豆数（个）' } }}
-        xyField={{ xField: 'value', yField: 'type' }}
+        xyField={{ xField: 'type', yField: 'value' }}
       />
     </>
   );
 };
 
-export default connect(({ chartBlock,  }) => ({
+export default connect(({ chartBlock }) => ({
   totalData: chartBlock.orderInfo,
-}))(SaleChart);
+}))(MasterRecommendChart);

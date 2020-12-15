@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Card, Statistic, Skeleton } from 'antd';
+import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
 const UserChart = ({ dispatch, searchData, totalData, loading }) => {
-  useEffect(() => {
-    fetchGetTotalData(searchData);
-  }, [searchData]);
+  // useEffect(() => {
+  //   fetchGetTotalData(searchData);
+  // }, [searchData]);
 
-  // 获取统计数据
-  const fetchGetTotalData = (payload = {}) => {
-    dispatch({
-      type: 'chartBlock/fetchChartBlockOrder',
-      payload,
-    });
-  };
+  // // 获取统计数据
+  // const fetchGetTotalData = (payload = {}) => {
+  //   dispatch({
+  //     type: 'chartBlock/fetchChartBlockOrder',
+  //     payload,
+  //   });
+  // };
 
   const orderArr = [
     {
@@ -70,23 +70,21 @@ const UserChart = ({ dispatch, searchData, totalData, loading }) => {
   };
 
   return (
-    <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ marginTop: 20 }}>
-      <Skeleton loading={loading} active>
-        {orderArr.map((item) => (
-          <Card.Grid style={gridStyle} key={item.title}>
-            <Statistic
-              title={
-                <QuestionTooltip
-                  title={item.title}
-                  content={item.info}
-                  type="quest"
-                ></QuestionTooltip>
-              }
-              value={checkData(totalData[item.key], 'totalFee')}
-            />
-          </Card.Grid>
-        ))}
-      </Skeleton>
+    <Card bodyStyle={{ padding: 0 }} loading={loading} bordered={false} style={{ marginTop: 20 }}>
+      {orderArr.map((item) => (
+        <Card.Grid style={gridStyle} key={item.title}>
+          <Statistic
+            title={
+              <QuestionTooltip
+                title={item.title}
+                content={item.info}
+                type="quest"
+              ></QuestionTooltip>
+            }
+            value={checkData(totalData[item.key], 'totalFee')}
+          />
+        </Card.Grid>
+      ))}
     </Card>
   );
 };
