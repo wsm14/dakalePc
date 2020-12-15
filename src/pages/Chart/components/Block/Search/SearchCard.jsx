@@ -7,14 +7,17 @@ import styles from './style.less';
 const disTime = moment('2020-03-01');
 
 const SearchCard = ({ setSearchData, searchData, cityShow }) => {
-  const [selectedTime, setSelectedTime] = useState([moment(), moment()]);
+  const [selectedTime, setSelectedTime] = useState([
+    moment().subtract(1, 'day'),
+    moment().subtract(1, 'day'),
+  ]);
 
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), moment()];
 
   // 禁止选择时间
   const disabledDate = (current) =>
-    (current && current > moment().endOf('day')) || current < disTime;
+    (current && current > moment().endOf('day').subtract(1, 'day')) || current < disTime;
 
   const timeObj = {
     昨日: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],

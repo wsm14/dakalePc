@@ -6,7 +6,7 @@ import CITYJSON from '@/common/city';
 import styles from './style.less';
 
 const CityListComponent = (props) => {
-  const { list, districtList, loading, searchData } = props;
+  const { list, loading, searchData } = props;
 
   const childRef = useRef();
 
@@ -58,7 +58,7 @@ const CityListComponent = (props) => {
   ];
 
   useEffect(() => {
-    setSelectRow('')
+    setSelectRow('');
     childRef.current.fetchGetData(searchData);
   }, [searchData]);
 

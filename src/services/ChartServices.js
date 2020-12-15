@@ -11,10 +11,13 @@ export function fetchAreaTotalList(params) {
 
 // 区域战报 end
 
-// post 登录
-export function fakeAccountLogin(data) {
-  return request('/admin/admin/account/login', {
-    method: 'POST',
-    data,
+// 数据概览
+
+// get 顶部 - 订单统计
+export function fetchChartBlockOrder(params) {
+  return request('/admin/areaStatistic/orderStatistic', {
+    params,
   });
 }
+
+// 数据概览 end
