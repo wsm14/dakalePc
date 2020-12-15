@@ -61,7 +61,7 @@ export function fetchMasterTotalList(params) {
 
 // get 家主列表 - 列表
 export function fetchMasterList(params) {
-  return request('/admin/circleManagement/getUserCircleDetail', {
+  return request('/admin/userManagement/listLandlordManagement', {
     params,
   });
 }

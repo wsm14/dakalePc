@@ -1,26 +1,28 @@
 import React from 'react';
-import { Bar } from '@ant-design/charts';
+import { Column } from '@ant-design/charts';
 
-const BarChart = (props) => {
+const ColumnChart = (props) => {
   const {
     height = 0,
     data,
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
+    description,
   } = props;
   const config = {
     data,
-    ...xyField,
     forceFit: true,
     height: height,
+    radius: 1,
+    description: description || false,
     meta,
+    ...xyField,
     label: {
-      position: 'right',
       visible: true,
     },
   };
 
-  return <Bar {...config} />;
+  return <Column {...config} />;
 };
 
-export default BarChart;
+export default ColumnChart;

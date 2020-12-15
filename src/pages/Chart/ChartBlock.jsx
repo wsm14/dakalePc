@@ -4,6 +4,7 @@ import moment from 'moment';
 import SearchCard from './components/Block/Search/SearchCard';
 import OrderChart from './components/Block/Chart/OrderChart';
 import UserChart from './components/Block/Chart/UserChart';
+import ActiveChart from './components/Block/Chart/ActiveChart';
 
 const ChartBlockComponent = () => {
   const [searchData, setSearchData] = useState({
@@ -20,12 +21,14 @@ const ChartBlockComponent = () => {
   };
 
   return (
-    <Card
-      title={<SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>}
-    >
+    <>
+      <Card bordered={false}>
+        <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>
+      </Card>
       <OrderChart searchData={searchData}></OrderChart>
       <UserChart searchData={searchData}></UserChart>
-    </Card>
+      <ActiveChart searchData={searchData}></ActiveChart>
+    </>
   );
 };
 

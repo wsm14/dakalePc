@@ -9,7 +9,7 @@ const MasterDetail = (props) => {
   const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'family', record = '' } = visible;
-
+  
   // table
   const propItem = {
     family: {
@@ -59,12 +59,12 @@ const MasterDetail = (props) => {
           dataIndex: 'userMerchantIdString',
         },
         {
-          title: '商家名称',
+          title: '店铺名称',
           align: 'center',
           dataIndex: 'merchantName',
         },
         {
-          title: '商家账号',
+          title: '店铺账号',
           align: 'center',
           dataIndex: 'account',
         },
@@ -121,7 +121,7 @@ const MasterDetail = (props) => {
           render: (val) => val || '--',
         },
         {
-          title: '关联商户',
+          title: '关联店铺',
           align: 'center',
           dataIndex: 'relatedMerchant',
           render: (val) => val || '--',

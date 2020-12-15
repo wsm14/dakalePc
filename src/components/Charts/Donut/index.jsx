@@ -10,6 +10,7 @@ const DonutChart = (props) => {
     angleField = 'value',
     colorField = 'type',
   } = props;
+
   const config = {
     data,
     forceFit: true,
@@ -19,6 +20,7 @@ const DonutChart = (props) => {
     angleField,
     colorField,
     tooltip: true,
+    barWidthRatio: 0.8,
     statistic: {
       visible: true,
       triggerOn: false,

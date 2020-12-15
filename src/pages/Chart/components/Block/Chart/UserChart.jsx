@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Card, Statistic, Spin } from 'antd';
+import { Card, Statistic, Skeleton } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
 const UserChart = ({ dispatch, searchData, totalData, loading }) => {
@@ -70,22 +70,24 @@ const UserChart = ({ dispatch, searchData, totalData, loading }) => {
   };
 
   return (
-    <Spin spinning={loading}>
-      {orderArr.map((item) => (
-        <Card.Grid style={gridStyle} key={item.title}>
-          <Statistic
-            title={
-              <QuestionTooltip
-                title={item.title}
-                content={item.info}
-                type="quest"
-              ></QuestionTooltip>
-            }
-            value={checkData(totalData[item.key], 'totalFee')}
-          />
-        </Card.Grid>
-      ))}
-    </Spin>
+    <Card bodyStyle={{ padding: 0 }} bordered={false} style={{ marginTop: 20 }}>
+      <Skeleton loading={loading} active>
+        {orderArr.map((item) => (
+          <Card.Grid style={gridStyle} key={item.title}>
+            <Statistic
+              title={
+                <QuestionTooltip
+                  title={item.title}
+                  content={item.info}
+                  type="quest"
+                ></QuestionTooltip>
+              }
+              value={checkData(totalData[item.key], 'totalFee')}
+            />
+          </Card.Grid>
+        ))}
+      </Skeleton>
+    </Card>
   );
 };
 

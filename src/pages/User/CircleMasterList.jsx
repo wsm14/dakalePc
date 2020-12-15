@@ -15,14 +15,17 @@ const CircleMasterList = (props) => {
   const searchItems = [
     {
       label: '身份',
-      name: 'userType',
+      name: 'userOrMerchant',
       type: 'select',
-      allItem: false,
       select: { list: MASTER_TYPE },
     },
     {
-      label: '用户/商户名',
-      name: 'name',
+      label: '用户名',
+      name: 'username',
+    },
+    {
+      label: '店铺名',
+      name: 'merchantName',
     },
     {
       label: '手机号',
@@ -30,18 +33,31 @@ const CircleMasterList = (props) => {
     },
   ];
 
+  // 打开详情表格
+  const showProps = (type, data) => {
+    setVisible({
+      type: type,
+      record: {
+        ...data,
+        name: data.username,
+        userType: data.parentUserType,
+        id: data.parentUserIdString,
+      },
+    });
+  };
+  
   // table 表头
   const getColumns = [
     {
       title: '名称',
       fixed: 'left',
-      dataIndex: 'name',
+      dataIndex: 'username',
     },
     {
       title: '身份',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'userType',
+      dataIndex: 'parentUserType',
       render: (val) => (val === 'user' ? '用户' : '商户'),
     },
     {
@@ -54,14 +70,14 @@ const CircleMasterList = (props) => {
       align: 'right',
       dataIndex: 'totalFamilyUser',
       render: (val, record) =>
-        val > 0 ? <a onClick={() => setVisible({ type: 'family', record })}>{val}</a> : 0,
+        val > 0 ? <a onClick={() => showProps('family', record)}>{val}</a> : 0,
     },
     {
       title: '家店数',
       align: 'right',
       dataIndex: 'totalFamilyMerchant',
       render: (val, record) =>
-        val > 0 ? <a onClick={() => setVisible({ type: 'shop', record })}>{val}</a> : 0,
+        val > 0 ? <a onClick={() => showProps('shop', record)}>{val}</a> : 0,
     },
     {
       title: '累计收益（卡豆）',
@@ -70,7 +86,7 @@ const CircleMasterList = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'id',
+      dataIndex: 'parentUserIdString',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
@@ -79,7 +95,7 @@ const CircleMasterList = (props) => {
             {
               type: 'own',
               title: '收益明细',
-              click: () => setVisible({ type: 'income', record }),
+              click: () => showProps('income', record),
             },
           ]}
         />
@@ -100,9 +116,7 @@ const CircleMasterList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.id}`}
-        params={{ userType: 'user' }}
-        pParams={{ searchData: { userType: 'user' } }}
+        rowKey={(record) => `${record.parentUserIdString}`}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
       >
