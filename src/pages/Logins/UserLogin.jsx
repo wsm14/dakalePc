@@ -109,4 +109,4 @@ const LoginForm = ({ dispatch, loading }) => {
   );
 };
 
-export default connect(({ settings, loading }) => ({ ...settings, loading }))(LoginForm);
+export default connect(({ loading }) => ({ loading }))(LoginForm);
