@@ -18,10 +18,12 @@ const MasterOrderDetail = ({ order, name, orderDetail, loading, dispatch }) => {
 
   const oderDom = (
     <div className={styles.master_order}>
-      <div className={styles.master_order_item}>
-        <span className={styles.master_order_itemTitle}>订单商品：</span>
-        <span className={styles.master_order_itemContent}>{name}</span>
-      </div>
+      {name && (
+        <div className={styles.master_order_item}>
+          <span className={styles.master_order_itemTitle}>订单商品：</span>
+          <span className={styles.master_order_itemContent}>{name}</span>
+        </div>
+      )}
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>店铺名称：</span>
         <span className={styles.master_order_itemContent}>{orderDetail.merchantName}</span>
