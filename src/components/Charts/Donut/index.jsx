@@ -9,7 +9,12 @@ const DonutChart = (props) => {
     totalLabel,
     angleField = 'value',
     colorField = 'type',
+    barWidthRatio = 0.8,
+    innerRadius,
     legend,
+    label = {},
+    labelColor = 'white',
+    statisticShow = true,
   } = props;
 
   const config = {
@@ -21,9 +26,10 @@ const DonutChart = (props) => {
     angleField,
     colorField,
     tooltip: true,
-    barWidthRatio: 0.8,
+    barWidthRatio,
+    innerRadius,
     statistic: {
-      visible: true,
+      visible: statisticShow,
       triggerOn: false,
       totalLabel: totalLabel || '总计',
     },
@@ -31,7 +37,8 @@ const DonutChart = (props) => {
     label: {
       visible: true,
       type: 'inner',
-      style: { stroke: '', fill: 'white' },
+      style: { stroke: '', fill: labelColor },
+      ...label,
     },
   };
 
