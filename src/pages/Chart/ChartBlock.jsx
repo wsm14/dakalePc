@@ -7,6 +7,7 @@ import UserChart from './components/Block/Chart/UserChart';
 import ActiveChart from './components/Block/Chart/ActiveChart';
 import MasterChart from './components/Block/Chart/MasterChart';
 import TradeChart from './components/Block/Chart/TradeChart';
+import RankingTotal from './components/Block/Chart/RankingTotal';
 import styles from './style.less';
 
 const ChartBlockComponent = () => {
@@ -35,6 +36,7 @@ const ChartBlockComponent = () => {
       <ActiveChart searchData={searchData}></ActiveChart>
       <MasterChart searchData={searchData}></MasterChart>
       <TradeChart searchData={searchData}></TradeChart>
+      <RankingTotal searchData={searchData}></RankingTotal>
     </div>
   );
 };
