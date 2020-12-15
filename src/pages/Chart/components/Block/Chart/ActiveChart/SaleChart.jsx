@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Bar } from '@/components/Charts';
-import { Card, Skeleton, Typography } from 'antd';
+import { Skeleton, Typography } from 'antd';
 
 const SaleChart = ({ dispatch, searchData, totalData, loading }) => {
   useEffect(() => {
