@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
+/**
+ * 营收统计
+ */
 const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
   useEffect(() => {
     fetchGetTotalData(searchData);

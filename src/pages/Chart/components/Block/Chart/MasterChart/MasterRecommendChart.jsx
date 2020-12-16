@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Column } from '@/components/Charts';
 import { Skeleton, Typography } from 'antd';
 
+/**
+ * 圈层推荐情况
+ */
 const MasterRecommendChart = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);

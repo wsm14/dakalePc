@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Card, Statistic } from 'antd';
 
+/**
+ * 店铺视频统计
+ */
 const BusinessTotal = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);

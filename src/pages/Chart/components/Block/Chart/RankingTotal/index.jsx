@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Card, Typography, Row, Col } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
 import numeral from 'numeral';
 import styles from './style.less';
 
+/**
+ * 店铺营收排行 & 销售排行
+ */
 const RankingTotal = ({ searchData, totalData, loading }) => {
   // table 表头
   const getColumns = [
@@ -70,43 +72,43 @@ const RankingTotal = ({ searchData, totalData, loading }) => {
   const rankList = [
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机s卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡d来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来得a及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来得及阿ds来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡ds来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来得及阿asd来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来得及asd阿来得s及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来fd得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来sf得及阿来得sd及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
     {
       name:
-        'aljda啊三菱电机卡来得及阿来得及阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
+        'aljda啊三菱电机卡来得及阿来得及gfdgd阿来得及啊三菱电机阿来得及啊三菱电机啊冷静阿来得及俺删了',
     },
   ];
 

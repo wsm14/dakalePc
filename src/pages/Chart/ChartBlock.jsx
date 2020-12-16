@@ -7,10 +7,12 @@ import UserChart from './components/Block/Chart/UserChart';
 import ActiveChart from './components/Block/Chart/ActiveChart';
 import MasterChart from './components/Block/Chart/MasterChart';
 import TradeChart from './components/Block/Chart/TradeChart';
+import TradeAreaMap from './components/Block/TradeAreaMap';
 import RankingTotal from './components/Block/Chart/RankingTotal';
 import styles from './style.less';
 
 const ChartBlockComponent = () => {
+  // 搜索参数
   const [searchData, setSearchData] = useState({
     beginDate: moment().format('YYYY-MM-DD'),
     endDate: moment().format('YYYY-MM-DD'),
@@ -28,14 +30,23 @@ const ChartBlockComponent = () => {
     <div className={styles.chertBox}>
       <Affix offsetTop={40}>
         <Card bordered={false}>
+          {/* 搜索框 */}
           <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>
         </Card>
       </Affix>
+      {/* 营收统计 */}
       <OrderChart searchData={searchData}></OrderChart>
+      {/* 用户数据统计 */}
       <UserChart searchData={searchData}></UserChart>
+      {/* 销售情况 & 拜访情况 & 店铺情况（截止昨日）& 店铺视频统计*/}
       <ActiveChart searchData={searchData}></ActiveChart>
+      {/* 圈层情况 & 圈层推荐情况 */}
       <MasterChart searchData={searchData}></MasterChart>
+      {/* 入驻店铺行业分布 */}
       <TradeChart searchData={searchData}></TradeChart>
+      {/* 商圈地图 */}
+      <TradeAreaMap searchData={searchData}></TradeAreaMap>
+      {/* 店铺营收排行 & 销售排行 */}
       <RankingTotal searchData={searchData}></RankingTotal>
     </div>
   );

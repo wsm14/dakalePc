@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Bar } from '@/components/Charts';
 import { Typography } from 'antd';
 
+/**
+ * 店铺情况（截止昨日）
+ */
 const BusinessChart = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);

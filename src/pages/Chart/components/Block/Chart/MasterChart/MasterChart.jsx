@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Donut } from '@/components/Charts';
 import { Typography, Row, Col } from 'antd';
 
+/**
+ * 圈层情况
+ */
 const MasterChart = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);

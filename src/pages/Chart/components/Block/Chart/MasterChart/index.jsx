@@ -14,9 +14,11 @@ const MasterChartIndex = ({ dispatch, searchData, totalData, loading }) => {
     >
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, marginRight: 20 }}>
+          {/* 圈层情况 */}
           <MasterChart searchData={searchData}></MasterChart>
         </div>
         <div style={{ flex: 1 }}>
+          {/* 圈层推荐情况 */}
           <MasterRecommendChart searchData={searchData}></MasterRecommendChart>
         </div>
       </div>

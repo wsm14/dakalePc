@@ -15,11 +15,14 @@ const ActiveChart = ({ dispatch, searchData, totalData, loading }) => {
         bodyStyle={{ paddingBottom: 0 }}
         style={{ flex: 1, marginRight: 20 }}
       >
+        {/* 销售情况 */}
         <SaleChart searchData={searchData}></SaleChart>
+        {/* 拜访情况 */}
         <VisitChart searchData={searchData}></VisitChart>
       </Card>
       <div style={{ flex: 1 }}>
         <Card bordered={false} loading={loading} bodyStyle={{ paddingBottom: loading ? 24 : 0 }}>
+          {/* 店铺情况（截止昨日）*/}
           <BusinessChart searchData={searchData}></BusinessChart>
         </Card>
         <Card
@@ -28,6 +31,7 @@ const ActiveChart = ({ dispatch, searchData, totalData, loading }) => {
           loading={loading}
           style={{ marginTop: 20 }}
         >
+          {/* 店铺视频统计 */}
           <BusinessTotal searchData={searchData}></BusinessTotal>
         </Card>
       </div>

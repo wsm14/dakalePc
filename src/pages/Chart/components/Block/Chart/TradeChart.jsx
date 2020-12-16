@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Donut } from '@/components/Charts';
 import { Card, Typography, Row, Col } from 'antd';
 
+/**
+ * 入驻店铺行业分布
+ */
 const TradeChart = ({ searchData, totalData, loading }) => {
   const data = [
     {

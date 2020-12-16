@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Bar } from '@/components/Charts';
 import { Typography } from 'antd';
 
+/**
+ * 销售情况
+ */
 const SaleChart = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);

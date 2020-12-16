@@ -3,6 +3,9 @@ import { connect } from 'dva';
 import { Bar } from '@/components/Charts';
 import { Typography } from 'antd';
 
+/**
+ * 拜访情况
+ */
 const VisitChart = ({ dispatch, searchData, totalData }) => {
   // useEffect(() => {
   //   fetchGetTotalData(searchData);
