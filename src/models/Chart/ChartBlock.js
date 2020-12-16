@@ -4,6 +4,7 @@ import {
   fetchChartBlockMreShare,
   fetchChartBlockTradeLeft,
   fetchChartBlockTradeRight,
+  fetchChartBlockSaleRight,
 } from '@/services/ChartServices';
 
 export default {
@@ -15,6 +16,7 @@ export default {
     mreShareTotal: {},
     tradeLeft: [],
     tradeRight: [],
+    saleRank: [],
   },
 
   reducers: {
@@ -99,6 +101,17 @@ export default {
         type: 'save',
         payload: {
           tradeRight: content.category,
+        },
+      });
+    },
+    *fetchChartBlockSaleRight({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockSaleRight, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          saleRank: content.saleRankList,
         },
       });
     },

@@ -48,4 +48,11 @@ export function fetchChartBlockTradeRight(params) {
   });
 }
 
+// get 底部 - 销售排行 - right
+export function fetchChartBlockSaleRight(params) {
+  return request('/admin/areaStatistic/getSaleRank', {
+    params,
+  });
+}
+
 // 数据概览 end

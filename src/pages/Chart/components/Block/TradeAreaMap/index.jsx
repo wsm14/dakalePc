@@ -30,18 +30,35 @@ const TradeAreaMap = ({ dispatch, searchData, totalData, loading }) => {
           keyboardEnable={false}
           touchZoom={false}
         >
-          <Marker clickable position={[116.407526, 39.90403]} />
+          {/* <Marker clickable position={[116.407526, 39.90403]} /> */}
           <Circle
             center={[116.407526, 39.90403]}
             radius={5000}
             // visible={this.state.visible}
             style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }}
-          />
+          >
+            <Marker
+              clickable
+              position={[116.407526, 39.90403]}
+              events={{
+                created: (markerInstance) => {
+                  console.log(markerInstance.getPosition());
+                },
+              }}
+            />
+          </Circle>
           <Circle
             center={[115.407526, 39.90403]}
             radius={5000}
-            style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }}
-          />
+            style={{
+              strokeOpacity: 0.2,
+              fillOpacity: 0.4,
+              fillColor: '#1791fc',
+              zIndex: 50,
+            }}
+          >
+            <Marker clickable position={[115.407526, 39.90403]} />
+          </Circle>
         </Map>
       </div>
     </Card>

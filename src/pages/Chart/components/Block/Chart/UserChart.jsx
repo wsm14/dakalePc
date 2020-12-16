@@ -7,7 +7,6 @@ import QuestionTooltip from '@/components/QuestionTooltip';
  * 用户数据统计
  */
 const UserChart = ({ dispatch, searchData, totalData, loading }) => {
-
   useEffect(() => {
     fetchChartBlockUser(searchData);
   }, [searchData]);
