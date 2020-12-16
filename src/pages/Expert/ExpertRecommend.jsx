@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
-import { Button } from 'antd';
+import { Button, Badge } from 'antd';
 import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -151,6 +151,10 @@ const ExpertRecommend = (props) => {
     },
   ];
 
+  useEffect(() => {
+    fetchExpertCountReport();
+  }, []);
+
   // 上下架
   const fetchExpertRemdStatus = (values) => {
     dispatch({
@@ -160,13 +164,22 @@ const ExpertRecommend = (props) => {
     });
   };
 
+  // 获取举报数据数量
+  const fetchExpertCountReport = () => {
+    dispatch({
+      type: 'expertRecommend/fetchExpertCountReport',
+    });
+  };
+
   return (
     <>
       <DataTableBlock
         btnExtra={
-          <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
-            举报中心
-          </Button>
+          <Badge count={expertRecommend.totalReport}>
+            <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
+              举报中心
+            </Button>
+          </Badge>
         }
         cRef={childRef}
         loading={loading}
@@ -181,6 +194,7 @@ const ExpertRecommend = (props) => {
         setShowVisible={setVisible}
         visible={visibleDetailList}
         setVisible={setVisibleDetailList}
+        fetchExpertCountReport={fetchExpertCountReport}
       ></ReportList>
     </>
   );

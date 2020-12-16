@@ -1,5 +1,5 @@
 export default (props) => {
-  const { dispatch, childRef, initialValues = {} } = props;
+  const { dispatch, childRef, initialValues = {}, fetchExpertCountReport } = props;
 
   // 下架
   const fetchStatusClose = (payload) => {
@@ -9,7 +9,10 @@ export default (props) => {
         ...initialValues,
         ...payload,
       },
-      callback: () => childRef.current.fetchGetData(),
+      callback: () => {
+        childRef.current.fetchGetData();
+        fetchExpertCountReport();
+      },
     });
   };
 

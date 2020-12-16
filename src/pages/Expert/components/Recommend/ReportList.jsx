@@ -9,7 +9,14 @@ import HandleSetTable from '@/components/HandleSetTable';
 import processReport from './ProcessReport';
 
 const ReportList = (props) => {
-  const { expertRecommend, dispatch, loading, visible = false, setVisible, setShowVisible } = props;
+  const {
+    expertRecommend,
+    dispatch,
+    loading,
+    visible = false,
+    setVisible,
+    fetchExpertCountReport,
+  } = props;
 
   const statusArr = ['处理中', '已解决'];
 
@@ -148,7 +155,7 @@ const ReportList = (props) => {
   const fetchExpertProcessReport = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: processReport({ dispatch, childRef, initialValues }),
+      payload: processReport({ dispatch, childRef, initialValues, fetchExpertCountReport }),
     });
   };
 

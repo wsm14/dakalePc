@@ -43,6 +43,13 @@ export function fetchExpertRemdList(params) {
   });
 }
 
+// get 达人管理 - 统计举报数量
+export function fetchExpertCountReport(params) {
+  return request('/user/userReport/countPendingUserReport', {
+    params,
+  });
+}
+
 // get 种草管理 - 详情
 export function fetchExpertRemdDetail(params) {
   return request('/admin/kolMoments/kolMomentsDetail', {

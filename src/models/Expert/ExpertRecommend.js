@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import {
+  fetchExpertCountReport,
   fetchExpertRemdList,
   fetchExpertRemdStatus,
   fetchExpertRemdDetail,
@@ -14,6 +15,7 @@ export default {
     list: { list: [], total: 0 },
     reportList: { list: [], total: 0 },
     detail: {},
+    totalReport: 0,
   },
 
   reducers: {
@@ -34,6 +36,17 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchExpertCountReport({ payload }, { call, put }) {
+      const response = yield call(fetchExpertCountReport, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalReport: content.countPendingUserReport,
         },
       });
     },
