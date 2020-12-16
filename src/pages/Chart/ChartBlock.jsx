@@ -41,9 +41,9 @@ const ChartBlockComponent = () => {
         {/* 圈层情况 & 圈层推荐情况 */}
         <MasterChart></MasterChart>
         {/* 入驻店铺行业分布 */}
-        <TradeChart></TradeChart>
+        <TradeChart searchData={searchData}></TradeChart>
         {/* 商圈地图 */}
-        <TradeAreaMap></TradeAreaMap>
+        {/* <TradeAreaMap></TradeAreaMap> */}
         {/* 店铺营收排行 & 销售排行 */}
         <RankingTotal></RankingTotal>
       </div>

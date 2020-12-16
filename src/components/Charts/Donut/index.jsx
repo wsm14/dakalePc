@@ -15,6 +15,7 @@ const DonutChart = (props) => {
     label = {},
     labelColor = 'white',
     statisticShow = true,
+    onClick,
   } = props;
 
   const config = {
@@ -39,6 +40,11 @@ const DonutChart = (props) => {
       type: 'inner',
       style: { stroke: '', fill: labelColor },
       ...label,
+    },
+    events: {
+      onRingClick: (ev) => {
+        onClick && onClick(ev);
+      }, // 点击事件,其他事件查看文档说明
     },
   };
 

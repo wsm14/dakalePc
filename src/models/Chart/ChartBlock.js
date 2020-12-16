@@ -2,6 +2,8 @@ import {
   fetchChartBlockOrder,
   fetchChartBlockUser,
   fetchChartBlockMreShare,
+  fetchChartBlockTradeLeft,
+  fetchChartBlockTradeRight,
 } from '@/services/ChartServices';
 
 export default {
@@ -11,6 +13,8 @@ export default {
     orderInfo: {},
     userInfo: {},
     mreShareTotal: {},
+    tradeLeft: [],
+    tradeRight: [],
   },
 
   reducers: {
@@ -61,6 +65,40 @@ export default {
             view: { totalFee: content.viewAmount, docCount: content.avgViewAmount },
             bean: { totalFee: content.totalBean, docCount: content.avgBean },
           },
+        },
+      });
+    },
+    *fetchChartBlockTradeLeft({ payload }, { call, put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          tradeRight: [],
+        },
+      });
+      const response = yield call(fetchChartBlockTradeLeft, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          tradeLeft: content.category,
+        },
+      });
+      if (content.category.length) {
+        yield put({
+          type: 'fetchChartBlockTradeRight',
+          payload: { ...payload, topCategoryId: content.category[0].categoryId },
+        });
+      }
+    },
+    *fetchChartBlockTradeRight({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockTradeRight, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          tradeRight: content.category,
         },
       });
     },

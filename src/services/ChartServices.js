@@ -34,4 +34,18 @@ export function fetchChartBlockMreShare(params) {
   });
 }
 
+// get 底部 - 行业分布 - left
+export function fetchChartBlockTradeLeft(params) {
+  return request('/admin/areaStatistic/getMerchantCategoryStatistic', {
+    params,
+  });
+}
+
+// get 底部 - 行业分布 - right
+export function fetchChartBlockTradeRight(params) {
+  return request('/admin/areaStatistic/getMerchantSubCategoryStatistic', {
+    params,
+  });
+}
+
 // 数据概览 end
