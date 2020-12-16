@@ -31,7 +31,7 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
       value: Number(chartsLeft.activeMerchant) || 0,
     },
     {
-      type: '流失商家',
+      type: '静默商家',
       value: Number(chartsLeft.inactiveMerchant) || 0,
     },
     {

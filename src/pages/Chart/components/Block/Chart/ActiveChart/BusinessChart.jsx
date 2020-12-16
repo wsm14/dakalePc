@@ -30,7 +30,7 @@ const BusinessChart = ({ dispatch, searchData, totalData }) => {
       value: 61,
     },
     {
-      type: '潜在流失店铺数',
+      type: '静默店铺数',
       value: 61,
     },
     {
