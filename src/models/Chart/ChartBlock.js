@@ -1,4 +1,4 @@
-import { fetchChartBlockOrder } from '@/services/ChartServices';
+import { fetchChartBlockOrder, fetchChartBlockUser } from '@/services/ChartServices';
 
 export default {
   namespace: 'chartBlock',
@@ -30,6 +30,17 @@ export default {
         type: 'save',
         payload: {
           orderInfo: { allTotal, ...content.orderInfo },
+        },
+      });
+    },
+    *fetchChartBlockUser({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockUser, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          userInfo: content,
         },
       });
     },

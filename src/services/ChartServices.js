@@ -20,4 +20,11 @@ export function fetchChartBlockOrder(params) {
   });
 }
 
+// get 顶部 - 用户数据
+export function fetchChartBlockUser(params) {
+  return request('/admin/areaStatistic/userStatistic', {
+    params,
+  });
+}
+
 // 数据概览 end
