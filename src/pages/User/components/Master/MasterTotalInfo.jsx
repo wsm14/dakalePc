@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
-import { Card, Row, Col, Spin } from 'antd';
+import { Card, Row, Col, Spin, Tooltip } from 'antd';
 import { Donut } from '@/components/Charts';
 import numeral from 'numeral';
 import styles from './style.less';
@@ -77,7 +77,7 @@ const MasterTotalInfo = ({
                   }
                 </h4>
                 <ul className={styles.rankingList}>
-                  <Row gutter={50} align="middle">
+                  <Row gutter={25} align="middle">
                     <Col span={12}>
                       {data.rankList.slice(0, 5).map((item, i) => (
                         <li key={item.name}>
@@ -86,9 +86,9 @@ const MasterTotalInfo = ({
                           >
                             {i + 1}
                           </span>
-                          <span className={styles.rankingItemTitle} title={item.name}>
-                            {item.name}
-                          </span>
+                          <Tooltip title={item.name}>
+                            <span className={styles.rankingItemTitle}>{item.name}</span>
+                          </Tooltip>
                           <span className={styles.rankingItemValue}>
                             {numeral(item.total).format('0,0')}
                           </span>
@@ -99,9 +99,9 @@ const MasterTotalInfo = ({
                       {data.rankList.slice(5, 10).map((item, i) => (
                         <li key={item.name}>
                           <span className={styles.rankingItemNumber}>{i + 6}</span>
-                          <span className={styles.rankingItemTitle} title={item.name}>
-                            {item.name}
-                          </span>
+                          <Tooltip title={item.name}>
+                            <span className={styles.rankingItemTitle}>{item.name}</span>
+                          </Tooltip>
                           <span className={styles.rankingItemValue}>
                             {numeral(item.total).format('0,0')}
                           </span>
@@ -121,6 +121,6 @@ const MasterTotalInfo = ({
 
 export default connect(({ circleMaster, loading }) => ({
   ...circleMaster,
-    loading : loading.effects['circleMaster/fetchMasterTotal'],
+  loading: loading.effects['circleMaster/fetchMasterTotal'],
   loading2: loading.effects['circleMaster/fetchMasterTotalList'],
 }))(MasterTotalInfo);

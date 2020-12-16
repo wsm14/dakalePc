@@ -61,7 +61,7 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
           <Card
             bordered={false}
             loading={loadingLeft}
-            bodyStyle={{ paddingBottom: loadingLeft ? 24 : 0 }}
+            bodyStyle={{ paddingBottom: loadingLeft || !tradeLeft.length ? 24 : 0 }}
           >
             {tradeLeft.length ? (
               <Donut
@@ -79,8 +79,8 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
         <Col span={12}>
           <Card
             bordered={false}
-            loading={loadingRight}
-            bodyStyle={{ paddingBottom: loadingRight ? 24 : 0 }}
+            loading={loadingRight || loadingLeft}
+            bodyStyle={{ paddingBottom: loadingRight || !tradeRight.length ? 24 : 0 }}
           >
             {tradeRight.length ? (
               <Donut

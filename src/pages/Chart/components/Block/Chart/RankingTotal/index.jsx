@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Card, Typography, Row, Col } from 'antd';
+import { Card, Typography, Row, Col, Tooltip } from 'antd';
 import numeral from 'numeral';
 import styles from './style.less';
 
@@ -58,7 +58,7 @@ const RankingTotal = ({ searchData, totalData, loading }) => {
     {
       title: '店铺营收排行 TOP10',
       columns: getColumns,
-      rowKey: 'userMerchantIdString',
+      rowKey: 'bus',
       list: [{}],
     },
     {
@@ -126,27 +126,39 @@ const RankingTotal = ({ searchData, totalData, loading }) => {
             <div className={styles.chartRank}>
               <ul className={styles.chartRankList}>
                 <li>
-                  <span style={{ width: '40%', textAlign: 'center', fontSize: 15 }}>店铺名称</span>
-                  <span className={styles.totalItemTitle}>营收金额</span>
-                  <span className={styles.totalItemTitle}>扫码支付</span>
-                  <span className={styles.totalItemTitle}>在线支付</span>
+                  {item.columns.map((ctiele, i) =>
+                    i === 0 ? (
+                      <span
+                        style={{ width: '40%', textAlign: 'center', fontSize: 15, fontWeight: 600 }}
+                      >
+                        {ctiele.title}
+                      </span>
+                    ) : (
+                      <span className={styles.totalItemTitle}>{ctiele.title}</span>
+                    ),
+                  )}
                 </li>
-                {rankList.map((item, i) => (
-                  <li key={item.name}>
+                {rankList.map((items, i) => (
+                  <li key={items.name}>
                     <span style={{ width: '40%', display: 'flex' }}>
                       <span className={`${styles.rankingItemNumber} ${i < 3 ? styles.active : ''}`}>
                         {i + 1}
                       </span>
-                      <span className={styles.rankingItemTitle}>{item.name}</span>
+                      <Tooltip title={items.name}>
+                        <span className={styles.rankingItemTitle}>{items.name}</span>
+                      </Tooltip>
                     </span>
                     <span className={styles.rankingItemValue}>
-                      {numeral(item.total).format('0,0')}
+                      {item.rowKey === 'bus' && '￥ '}
+                      {numeral(items.total).format('0,0')}
                     </span>
                     <span className={styles.rankingItemValue}>
-                      {numeral(item.total).format('0,0')}
+                      {numeral(items.total).format('0,0')}
+                      {item.rowKey === 'bus' && ' %'}
                     </span>
                     <span className={styles.rankingItemValue}>
-                      {numeral(item.total).format('0,0')}
+                      {numeral(items.total).format('0,0')}
+                      {item.rowKey === 'bus' && ' %'}
                     </span>
                   </li>
                 ))}
