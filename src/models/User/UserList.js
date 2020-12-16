@@ -4,6 +4,7 @@ import {
   fetchUserDetail,
   fetchUserStatus,
   fetchUserTotal,
+  fetchUserInfoTotal,
   fetchUserAddTotal,
   fetchUserCityTotal,
 } from '@/services/UserServices';
@@ -15,6 +16,7 @@ export default {
     list: { list: [], total: 0 },
     totalData: {},
     totalSperadData: { city: [] },
+    totalInfo: {},
   },
 
   reducers: {
@@ -70,6 +72,24 @@ export default {
         type: 'save',
         payload: {
           totalSperadData: content,
+        },
+      });
+    },
+    *fetchUserInfoTotal({ payload }, { call, put }) {
+      const response = yield call(fetchUserInfoTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      console.log(content);
+      yield put({
+        type: 'save',
+        payload: {
+          totalInfo: {
+            ...content,
+            age: Object.keys(content.age).map((item) => ({
+              type: `${item}岁`,
+              value: content.age[item],
+            })),
+          },
         },
       });
     },
