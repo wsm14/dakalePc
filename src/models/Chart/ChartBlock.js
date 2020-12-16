@@ -1,4 +1,8 @@
-import { fetchChartBlockOrder, fetchChartBlockUser } from '@/services/ChartServices';
+import {
+  fetchChartBlockOrder,
+  fetchChartBlockUser,
+  fetchChartBlockMreShare,
+} from '@/services/ChartServices';
 
 export default {
   namespace: 'chartBlock',
@@ -6,6 +10,7 @@ export default {
   state: {
     orderInfo: {},
     userInfo: {},
+    mreShareTotal: {},
   },
 
   reducers: {
@@ -41,6 +46,21 @@ export default {
         type: 'save',
         payload: {
           userInfo: content,
+        },
+      });
+    },
+    *fetchChartBlockMreShare({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockMreShare, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          mreShareTotal: {
+            send: { totalFee: content.totalMoments, docCount: content.avgMoments },
+            view: { totalFee: content.viewAmount, docCount: content.avgViewAmount },
+            bean: { totalFee: content.totalBean, docCount: content.avgBean },
+          },
         },
       });
     },

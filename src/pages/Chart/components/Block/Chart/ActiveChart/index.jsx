@@ -6,7 +6,7 @@ import VisitChart from './VisitChart';
 import BusinessChart from './BusinessChart';
 import BusinessTotal from './BusinessTotal';
 
-const ActiveChart = ({ dispatch, searchData, totalData, loading }) => {
+const ActiveChart = ({ dispatch, totalData, loading }) => {
   return (
     <div style={{ display: 'flex', width: '100%', marginTop: 20 }}>
       <Card
@@ -16,29 +16,22 @@ const ActiveChart = ({ dispatch, searchData, totalData, loading }) => {
         style={{ flex: 1, marginRight: 20 }}
       >
         {/* 销售情况 */}
-        <SaleChart searchData={searchData}></SaleChart>
+        <SaleChart></SaleChart>
         {/* 拜访情况 */}
-        <VisitChart searchData={searchData}></VisitChart>
+        <VisitChart></VisitChart>
       </Card>
       <div style={{ flex: 1 }}>
         <Card bordered={false} loading={loading} bodyStyle={{ paddingBottom: loading ? 24 : 0 }}>
           {/* 店铺情况（截止昨日）*/}
-          <BusinessChart searchData={searchData}></BusinessChart>
+          <BusinessChart></BusinessChart>
         </Card>
-        <Card
-          bordered={false}
-          bodyStyle={{ padding: 0 }}
-          loading={loading}
-          style={{ marginTop: 20 }}
-        >
-          {/* 店铺视频统计 */}
-          <BusinessTotal searchData={searchData}></BusinessTotal>
-        </Card>
+        {/* 店铺视频统计 */}
+        <BusinessTotal></BusinessTotal>
       </div>
     </div>
   );
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['chartBlock/fetchChartBlockOrder'],
+  loading: loading.effects['chartBlock/fetchChartBlockMreShare'],
 }))(ActiveChart);

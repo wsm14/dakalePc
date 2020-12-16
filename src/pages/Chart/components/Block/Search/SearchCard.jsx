@@ -6,7 +6,7 @@ import styles from './style.less';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ setSearchData, searchData, cityShow }) => {
+const SearchCard = ({ setSearchData, cityShow }) => {
   const [selectedTime, setSelectedTime] = useState([
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),

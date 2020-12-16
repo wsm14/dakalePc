@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import { Card, Affix } from 'antd';
-import moment from 'moment';
+import { ChartContext, initialState, reducer } from './components/Block/chartStore';
 import SearchCard from './components/Block/Search/SearchCard';
 import OrderChart from './components/Block/Chart/OrderChart';
 import UserChart from './components/Block/Chart/UserChart';
@@ -13,10 +13,7 @@ import styles from './style.less';
 
 const ChartBlockComponent = () => {
   // 搜索参数
-  const [searchData, setSearchData] = useState({
-    beginDate: moment().format('YYYY-MM-DD'),
-    endDate: moment().format('YYYY-MM-DD'),
-  });
+  const [searchData, setSearchData] = useReducer(reducer, initialState);
 
   // 选择时间
   const handleSearchData = (time) => {
@@ -27,28 +24,30 @@ const ChartBlockComponent = () => {
   };
 
   return (
-    <div className={styles.chertBox}>
-      <Affix offsetTop={40}>
-        <Card bordered={false}>
-          {/* 搜索框 */}
-          <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>
-        </Card>
-      </Affix>
-      {/* 营收统计 */}
-      <OrderChart searchData={searchData}></OrderChart>
-      {/* 用户数据统计 */}
-      <UserChart searchData={searchData}></UserChart>
-      {/* 销售情况 & 拜访情况 & 店铺情况（截止昨日）& 店铺视频统计*/}
-      <ActiveChart searchData={searchData}></ActiveChart>
-      {/* 圈层情况 & 圈层推荐情况 */}
-      <MasterChart searchData={searchData}></MasterChart>
-      {/* 入驻店铺行业分布 */}
-      <TradeChart searchData={searchData}></TradeChart>
-      {/* 商圈地图 */}
-      <TradeAreaMap searchData={searchData}></TradeAreaMap>
-      {/* 店铺营收排行 & 销售排行 */}
-      <RankingTotal searchData={searchData}></RankingTotal>
-    </div>
+    <ChartContext.Provider value={{ searchData, setSearchData }}>
+      <div className={styles.chertBox}>
+        <Affix offsetTop={40}>
+          <Card bordered={false}>
+            {/* 搜索框 */}
+            <SearchCard setSearchData={handleSearchData}></SearchCard>
+          </Card>
+        </Affix>
+        {/* 营收统计 */}
+        <OrderChart searchData={searchData}></OrderChart>
+        {/* 用户数据统计 */}
+        <UserChart searchData={searchData}></UserChart>
+        {/* 销售情况 & 拜访情况 & 店铺情况（截止昨日）& 店铺视频统计*/}
+        <ActiveChart></ActiveChart>
+        {/* 圈层情况 & 圈层推荐情况 */}
+        <MasterChart></MasterChart>
+        {/* 入驻店铺行业分布 */}
+        <TradeChart></TradeChart>
+        {/* 商圈地图 */}
+        <TradeAreaMap></TradeAreaMap>
+        {/* 店铺营收排行 & 销售排行 */}
+        <RankingTotal></RankingTotal>
+      </div>
+    </ChartContext.Provider>
   );
 };
 

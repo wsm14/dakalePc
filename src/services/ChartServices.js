@@ -27,4 +27,11 @@ export function fetchChartBlockUser(params) {
   });
 }
 
+// get 中部 - 商户视频分享统计
+export function fetchChartBlockMreShare(params) {
+  return request('/admin/areaStatistic/getMomentStatistic', {
+    params,
+  });
+}
+
 // 数据概览 end

@@ -79,7 +79,6 @@ export default {
       const response = yield call(fetchUserInfoTotal, payload);
       if (!response) return;
       const { content } = response;
-      console.log(content);
       yield put({
         type: 'save',
         payload: {

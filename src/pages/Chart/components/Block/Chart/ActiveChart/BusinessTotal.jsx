@@ -1,37 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { connect } from 'dva';
 import { Card, Statistic } from 'antd';
+import { ChartContext } from '../../chartStore';
 
 /**
  * 店铺视频统计
  */
-const BusinessTotal = ({ dispatch, searchData, totalData }) => {
-  // useEffect(() => {
-  //   fetchGetTotalData(searchData);
-  // }, [searchData]);
+const BusinessTotal = ({ dispatch, totalData, loading }) => {
+  const { searchData } = useContext(ChartContext);
 
-  // // 获取统计数据
-  // const fetchGetTotalData = (payload = {}) => {
-  //   dispatch({
-  //     type: 'chartBlock/fetchChartBlockOrder',
-  //     payload,
-  //   });
-  // };
+  useEffect(() => {
+    fetchChartBlockMreShare(searchData);
+  }, [searchData]);
+
+  // 获取统计数据
+  const fetchChartBlockMreShare = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartBlockMreShare',
+      payload,
+    });
+  };
 
   const orderArr = [
     {
       title: '店铺发布视频数',
-      key: 'allTotal',
+      key: 'send',
       tip: '平均发布视频数',
     },
     {
       title: '视频播放次数',
-      key: 'scan',
+      key: 'view',
       tip: '平均播放次数',
     },
     {
       title: '视频打赏卡豆数',
-      key: 'verificationFee',
+      key: 'bean',
       tip: '视频平均打赏卡豆数',
     },
   ];
@@ -53,23 +56,24 @@ const BusinessTotal = ({ dispatch, searchData, totalData }) => {
   };
 
   return (
-    <>
+    <Card bordered={false} loading={loading} bodyStyle={{ padding: 0 }} style={{ marginTop: 20 }}>
       {orderArr.map((item) => (
         <Card.Grid style={gridStyle} key={item.title}>
           <Statistic
             title={item.title}
             value={checkData(totalData[item.key], 'totalFee')}
-            precision={2}
+            precision={0}
           />
           <span style={allStyle}>
             {item.tip}：{checkData(totalData[item.key], 'docCount')}
           </span>
         </Card.Grid>
       ))}
-    </>
+    </Card>
   );
 };
 
-export default connect(({ chartBlock }) => ({
-  totalData: chartBlock.orderInfo,
+export default connect(({ chartBlock, loading }) => ({
+  totalData: chartBlock.mreShareTotal,
+  loading: loading.effects['chartBlock/fetchChartBlockMreShare'],
 }))(BusinessTotal);
