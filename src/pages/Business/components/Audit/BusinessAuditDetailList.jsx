@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Modal } from 'antd';
+import { BUSINESS_DETAIL_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -21,12 +22,18 @@ const BusinessAuditDetailList = (props) => {
         label: '审核人',
         name: 'verifierName',
       },
+      {
+        label: '审核状态',
+        name: 'verifyStatus',
+        type: 'select',
+        select: { list: BUSINESS_DETAIL_AUDIT },
+      },
     ],
     getColumns: [
       {
         title: '店铺账号',
         fixed: 'left',
-        dataIndex: 'account',
+        dataIndex: 'mobile',
         render: (val) => val || '暂未授权',
       },
       {
@@ -65,7 +72,7 @@ const BusinessAuditDetailList = (props) => {
       {
         title: '申请时间',
         align: 'center',
-        dataIndex: 'applyTime',
+        dataIndex: 'submitTime',
       },
       {
         title: '审核人',
@@ -76,6 +83,12 @@ const BusinessAuditDetailList = (props) => {
         title: '审核时间',
         align: 'center',
         dataIndex: 'verifyTime',
+      },
+      {
+        title: '审核结果',
+        align: 'center',
+        dataIndex: 'verifyStatus',
+        render: (val) => BUSINESS_DETAIL_AUDIT[val],
       },
     ],
   };

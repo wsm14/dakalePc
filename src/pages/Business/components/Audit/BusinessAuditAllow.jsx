@@ -84,6 +84,12 @@ const BusinessAuditAllow = (props) => {
         { label: '品牌连锁', value: '品牌连锁' },
       ],
     },
+    {
+      label: '备注',
+      type: 'textArea',
+      name: 'textAreassd',
+      rules: [{ required: false }],
+    },
   ];
 
   return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
