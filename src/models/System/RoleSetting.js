@@ -9,7 +9,6 @@ import {
   fetchAllUserRoleDetail,
   fetchAllGetRoleDetail,
 } from '@/services/SystemServices';
-import router from '../../../config/router.config';
 
 // 递归树菜单
 const userMenuDataTree = (menu, key, pid = '0') => {
