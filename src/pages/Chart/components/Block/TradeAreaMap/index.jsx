@@ -163,24 +163,12 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
             },
           }}
         >
+          {/* 商户详情 */}
           {MreInfo}
           {/* 图例区域 */}
           {MapRightLegend}
-          {mapHub.map((item, i) => (
-            <Marker
-              clickable
-              position={[item.lnt, item.lat]}
-              events={{
-                created(markerInstance) {
-                  markerInstance.setLabel({
-                    offset: new AMap.Pixel(0, 20), // 设置文本标注偏移量
-                    content: `<div class='chart_amp_markey_info'>${item.businessHubName} ${item.settleCount} / ${item.activeCount}</div>`, // 设置文本标注内容
-                    direction: 'top', // 设置文本标注方位
-                  });
-                },
-              }}
-            />
-          ))}
+          {/* 商圈中心 */}
+          {/* 商圈 */}
           {mapHub.map((item, i) => (
             <Circle
               center={[item.lnt, item.lat]}
@@ -191,7 +179,22 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
                   if (i == item.length) mapInstance.setFitView();
                 },
               }}
-            ></Circle>
+            >
+              {/* 商圈中心 */}
+              <Marker
+                clickable
+                position={[item.lnt, item.lat]}
+                events={{
+                  created(markerInstance) {
+                    markerInstance.setLabel({
+                      offset: new AMap.Pixel(0, 20), // 设置文本标注偏移量
+                      content: `<div class='chart_amp_markey_info'>${item.businessHubName} ${item.settleCount} / ${item.activeCount}</div>`, // 设置文本标注内容
+                      direction: 'top', // 设置文本标注方位
+                    });
+                  },
+                }}
+              />
+            </Circle>
           ))}
           {/* <Markers
             useCluster={mapCluster}
