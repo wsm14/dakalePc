@@ -7,6 +7,8 @@ import {
   fetchChartBlockTradeRight,
   fetchChartBlockIncomeLeft,
   fetchChartBlockSaleRight,
+  fetchChartBlockSale,
+  fetchChartBlockAreaMer,
   fetchChartMapHub,
   fetchChartMapHubMre,
   fetchChartMapHubMreDeatil,
@@ -25,6 +27,8 @@ export default {
     incomeRank: [],
     mapHub: [],
     mapHubDetail: [],
+    saleLeft: {},
+    areaMer: [],
   },
 
   reducers: {
@@ -75,6 +79,28 @@ export default {
             view: { totalFee: content.viewAmount, docCount: content.avgViewAmount },
             bean: { totalFee: content.totalBean, docCount: content.avgBean },
           },
+        },
+      });
+    },
+    *fetchChartBlockSale({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockSale, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          saleLeft: content,
+        },
+      });
+    },
+    *fetchChartBlockAreaMer({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockAreaMer, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          areaMer: content.merchantStatistic,
         },
       });
     },

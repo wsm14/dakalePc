@@ -16,8 +16,13 @@ const ChartBlockComponent = () => {
   const [searchData, setSearchData] = useReducer(reducer, initialState);
 
   // 选择时间
-  const handleSearchData = (time) => {
+  const handleSearchData = (time, areaCode) => {
+    let area = {};
+    if (areaCode && areaCode.length) {
+      area = { provinceCode: areaCode[0], cityCode: areaCode[1], districtCode: areaCode[2] };
+    }
     setSearchData({
+      ...area,
       beginDate: time[0].format('YYYY-MM-DD'),
       endDate: time[1].format('YYYY-MM-DD'),
     });

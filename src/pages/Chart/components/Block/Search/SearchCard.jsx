@@ -68,7 +68,6 @@ const SearchCard = ({ setSearchData, cityShow }) => {
       />
       <Cascader
         changeOnSelect
-        allowClear={false}
         expandTrigger="hover"
         options={CITYJSON}
         style={{

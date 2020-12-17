@@ -41,7 +41,6 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
 
   const gridStyle = {
     width: '33.3%',
-    height: 137,
     textAlign: 'center',
   };
 
@@ -56,7 +55,12 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
   };
 
   return (
-    <Card bordered={false} loading={loading} bodyStyle={{ padding: 0 }} style={{ marginTop: 20 }}>
+    <Card
+      bordered={false}
+      loading={loading}
+      bodyStyle={{ padding: 0, height: 137 }}
+      style={{ marginTop: 20 }}
+    >
       {orderArr.map((item) => (
         <Card.Grid style={gridStyle} key={item.title}>
           <Statistic

@@ -1,68 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { connect } from 'dva';
 import { Bar } from '@/components/Charts';
-import { Typography } from 'antd';
+import { Card, Typography, Empty } from 'antd';
+import { ChartContext } from '../../chartStore';
 
 /**
  * 店铺情况（截止昨日）
  */
-const BusinessChart = ({ dispatch, searchData, totalData }) => {
-  // useEffect(() => {
-  //   fetchGetTotalData(searchData);
-  // }, [searchData]);
+const BusinessChart = ({ dispatch, totalData, loading }) => {
+  const { searchData } = useContext(ChartContext);
+  useEffect(() => {
+    fetchGetTotalData(searchData);
+  }, [searchData]);
 
-  // // 获取统计数据
-  // const fetchGetTotalData = (payload = {}) => {
-  //   dispatch({
-  //     type: 'chartBlock/fetchChartBlockOrder',
-  //     payload,
-  //   });
-  // };
-
-  const data = [
-    {
-      type: '累计入驻店铺数',
-      value: 38,
-    },
-    {
-      type: '累计激活店铺数',
-      value: 52,
-    },
-    {
-      type: '近1月活跃店铺数',
-      value: 61,
-    },
-    {
-      type: '静默店铺数',
-      value: 61,
-    },
-    {
-      type: '已产生订单店铺数',
-      value: 61,
-    },
-    {
-      type: '已上架商品店铺数',
-      value: 61,
-    },
-    {
-      type: '已发布视频店铺数',
-      value: 61,
-    },
-  ];
+  // 获取统计数据
+  const fetchGetTotalData = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartBlockAreaMer',
+      payload,
+    });
+  };
 
   return (
-    <>
+    <Card
+      bordered={false}
+      loading={loading}
+      bodyStyle={{ paddingBottom: loading ? 24 : 0, height: 487 }}
+    >
       <Typography.Title level={5}>店铺情况（截止昨日）</Typography.Title>
-      <Bar
-        data={data}
-        height={379}
-        meta={{ type: { alias: '月份' }, value: { alias: '卡豆数（个）' } }}
-        xyField={{ xField: 'value', yField: 'type' }}
-      />
-    </>
+      {totalData.length ? (
+        <Bar
+          data={totalData}
+          height={379 + 50}
+          meta={{ type: { alias: '类型' }, count: { alias: '数量' } }}
+          xyField={{ xField: 'count', yField: 'type' }}
+        />
+      ) : (
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+      )}
+    </Card>
   );
 };
 
-export default connect(({ chartBlock }) => ({
-  totalData: chartBlock.orderInfo,
+export default connect(({ chartBlock, loading }) => ({
+  totalData: chartBlock.areaMer,
+  loading: loading.effects['chartBlock/fetchChartBlockAreaMer'],
 }))(BusinessChart);

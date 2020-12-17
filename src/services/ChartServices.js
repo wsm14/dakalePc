@@ -34,6 +34,20 @@ export function fetchChartBlockMreShare(params) {
   });
 }
 
+// get 中部 - 销售统计
+export function fetchChartBlockSale(params) {
+  return request('/admin/areaStatistic/getStatistic', {
+    params,
+  });
+}
+
+// get 中部 - 店铺情况
+export function fetchChartBlockAreaMer(params) {
+  return request('/admin/areaStatistic/getAreaMerchantStatistic', {
+    params,
+  });
+}
+
 // get 底部 - 行业分布 - left
 export function fetchChartBlockTradeLeft(params) {
   return request('/admin/areaStatistic/getMerchantCategoryStatistic', {
