@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { connect } from 'dva';
 import { Card, Typography, Row, Col, Tooltip, Empty } from 'antd';
-import numeral from 'numeral';
 import styles from './style.less';
 
 /**
  * 店铺营收排行 & 销售排行
  */
-const RankingTotal = ({ searchData, dispatch, saleRank, loading, loadingSale }) => {
+const RankingTotal = ({ searchData, dispatch, incomeRank, saleRank, loading, loadingSale }) => {
   useEffect(() => {
+    fetchChartBlockIncomeLeft(searchData);
     fetchChartBlockSaleRight(searchData);
   }, [searchData]);
 
@@ -20,26 +20,34 @@ const RankingTotal = ({ searchData, dispatch, saleRank, loading, loadingSale }) 
     });
   };
 
+  // 获取统计数据
+  const fetchChartBlockIncomeLeft = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartBlockIncomeLeft',
+      payload,
+    });
+  };
+
   // table 表头
   const getColumns = [
     {
       title: '店铺名称',
-      dataIndex: 'userMerchantIdString',
+      dataIndex: 'merchantName',
     },
     {
       title: '营收金额',
       align: 'right',
-      dataIndex: 'merchantName',
+      dataIndex: 'allTotal',
     },
     {
       title: '扫码支付',
       align: 'right',
-      dataIndex: 'account',
+      dataIndex: 'scan',
     },
     {
       title: '在线支付',
       align: 'right',
-      dataIndex: 'totalAdd',
+      dataIndex: 'verificationFee',
     },
   ];
 
@@ -72,7 +80,7 @@ const RankingTotal = ({ searchData, dispatch, saleRank, loading, loadingSale }) 
       columns: getColumns,
       rowKey: 'bus',
       loading: loading,
-      list: [],
+      list: incomeRank,
     },
     {
       title: '销售排行 TOP10（按入驻店铺排行）',
@@ -126,14 +134,14 @@ const RankingTotal = ({ searchData, dispatch, saleRank, loading, loadingSale }) 
                       </span>
                       <span className={styles.rankingItemValue}>
                         {item.rowKey === 'bus' && '￥ '}
-                        {numeral(items[item.columns[1].dataIndex]).format('0,0')}
+                        {items[item.columns[1].dataIndex]}
                       </span>
                       <span className={styles.rankingItemValue}>
-                        {numeral(items[item.columns[2].dataIndex]).format('0,0')}
+                        {items[item.columns[2].dataIndex]}
                         {item.rowKey === 'bus' && ' %'}
                       </span>
                       <span className={styles.rankingItemValue}>
-                        {numeral(items[item.columns[3].dataIndex]).format('0,0')}
+                        {items[item.columns[3].dataIndex]}
                         {item.rowKey === 'bus' && ' %'}
                       </span>
                     </li>
@@ -151,7 +159,8 @@ const RankingTotal = ({ searchData, dispatch, saleRank, loading, loadingSale }) 
 };
 
 export default connect(({ chartBlock, loading }) => ({
+  incomeRank: chartBlock.incomeRank,
   saleRank: chartBlock.saleRank,
-  loading: loading.effects['chartBlock/fetchChartBlockSaleLeft'],
+  loading: loading.effects['chartBlock/fetchChartBlockIncomeLeft'],
   loadingSale: loading.effects['chartBlock/fetchChartBlockSaleRight'],
 }))(RankingTotal);

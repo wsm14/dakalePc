@@ -48,6 +48,13 @@ export function fetchChartBlockTradeRight(params) {
   });
 }
 
+// get 底部 - 营收排行 - left
+export function fetchChartBlockIncomeLeft(params) {
+  return request('/admin/areaStatistic/getMerchantIncomeRank', {
+    params,
+  });
+}
+
 // get 底部 - 销售排行 - right
 export function fetchChartBlockSaleRight(params) {
   return request('/admin/areaStatistic/getSaleRank', {

@@ -1,9 +1,11 @@
+import numeral from 'numeral';
 import {
   fetchChartBlockOrder,
   fetchChartBlockUser,
   fetchChartBlockMreShare,
   fetchChartBlockTradeLeft,
   fetchChartBlockTradeRight,
+  fetchChartBlockIncomeLeft,
   fetchChartBlockSaleRight,
 } from '@/services/ChartServices';
 
@@ -17,6 +19,7 @@ export default {
     tradeLeft: [],
     tradeRight: [],
     saleRank: [],
+    incomeRank: [],
   },
 
   reducers: {
@@ -104,14 +107,41 @@ export default {
         },
       });
     },
-    *fetchChartBlockSaleRight({ payload }, { call, put }) {
-      const response = yield call(fetchChartBlockSaleRight, payload);
+    *fetchChartBlockIncomeLeft({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockIncomeLeft, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          saleRank: content.saleRankList,
+          incomeRank: content.rankList.map((item) => {
+            const { verificationFee, scan, merchantName } = item;
+            const allTotal = verificationFee + scan;
+            const verificationFeeNum = ((verificationFee / allTotal) * 100).toFixed(2);
+            return {
+              merchantName,
+              allTotal,
+              verificationFee: allTotal === 0 ? 0 : verificationFeeNum,
+              scan: allTotal === 0 ? 0 : 100 - verificationFeeNum,
+            };
+          }),
+        },
+      });
+    },
+    *fetchChartBlockSaleRight({ payload }, { call, put }) {
+      const response = yield call(fetchChartBlockSaleRight, payload);
+      if (!response) return;
+      const { content } = response;
+      const numFormat = (val) => numeral(val).format('0,0');
+      yield put({
+        type: 'save',
+        payload: {
+          saleRank: content.saleRankList.map((item) => ({
+            ...item,
+            visitTimes: numFormat(item.visitTimes),
+            settleCount: numFormat(item.settleCount),
+            activeCount: numFormat(item.activeCount),
+          })),
         },
       });
     },
