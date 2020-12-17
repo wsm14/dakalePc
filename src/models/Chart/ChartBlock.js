@@ -8,6 +8,8 @@ import {
   fetchChartBlockIncomeLeft,
   fetchChartBlockSaleRight,
   fetchChartMapHub,
+  fetchChartMapHubMre,
+  fetchChartMapHubMreDeatil,
 } from '@/services/ChartServices';
 
 export default {
@@ -22,6 +24,7 @@ export default {
     saleRank: [],
     incomeRank: [],
     mapHub: [],
+    mapHubDetail: [],
   },
 
   reducers: {
@@ -157,6 +160,26 @@ export default {
           mapHub: content.businessHubList,
         },
       });
+    },
+    *fetchChartMapHubMre({ payload, callback }, { call, put }) {
+      const response = yield call(fetchChartMapHubMre, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          mapHubDetail: content.merchantList.map((item) => ({
+            position: { longitude: Number(item.lnt), latitude: Number(item.lat), ...item },
+          })),
+        },
+      });
+      callback && callback();
+    },
+    *fetchChartMapHubMreDeatil({ payload, callback }, { call, put }) {
+      const response = yield call(fetchChartMapHubMreDeatil, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content.merchantDetail);
     },
   },
 };

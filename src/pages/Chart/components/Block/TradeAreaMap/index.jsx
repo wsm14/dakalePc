@@ -9,11 +9,13 @@ import './style.less';
 /**
  * 商圈地图
  */
-const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
+const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
   // 聚合状态
   const [mapCluster, setMapCluster] = useState(true);
+  // 商户详情
+  const [mreInfoShow, setMreInfoShow] = useState({ show: false, detail: {} });
 
   // 获取区域商圈
   const fetchChartMapHub = (payload = {}) => {
@@ -23,15 +25,35 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
     });
   };
 
+  // 获取区域商圈 - 散点
+  const fetchChartMapHubMre = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartMapHubMre',
+      payload: { ...payload, page: 1, limit: 99 },
+      callback: () => setMapCluster(false),
+    });
+  };
+
+  // 获取区域商圈 - 商家详情
+  const fetchChartMapHubMreDeatil = (merchantId) => {
+    dispatch({
+      type: 'chartBlock/fetchChartMapHubMreDeatil',
+      payload: { merchantId },
+      callback: (detail) => setMreInfoShow({ show: true, detail }),
+    });
+  };
+
   // 获取地图四角经纬度
   const getMapBounds = (bounds, type) => {
-    console.log('bounds', bounds);
+    console.log('bounds', type, bounds);
     const NorthEast = bounds.northeast;
     const SouthWest = bounds.southwest;
     const lat = [SouthWest.lat, NorthEast.lat].join('_');
     const lnt = [SouthWest.lng, NorthEast.lng].join('_');
-    console.log(lat, lnt);
-    if (type == 'created') fetchChartMapHub({ lat, lnt });
+    // 初始渲染获取商圈
+    if (type === 'created') fetchChartMapHub({ lat, lnt });
+    // 缩放移动等获取详情
+    else if (type === 'detail') fetchChartMapHubMre({ lat, lnt });
   };
 
   // 图例数组
@@ -58,67 +80,55 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
       ))}
     </div>
   );
-
+  const {
+    merchantName,
+    topCategoryName,
+    categoryName,
+    telephone,
+    address,
+    salesperson,
+    businessTime,
+    coverImg,
+    allImgs,
+  } = mreInfoShow.detail;
   // 商家信息
   const MreInfo = (
     <div className="chart_amp_mreInfo">
       <div className="chart_amp_mreInfo_heard">
         <Typography.Title level={4} className="title">
-          商圈地图（截止昨日）商圈地图（截止昨日）
+          {merchantName || '--'}
         </Typography.Title>
-        <div className="chart_amp_mreInfo_item">美食/中餐</div>
+        <div className="chart_amp_mreInfo_item">
+          {topCategoryName} / {categoryName}
+        </div>
         <div className="chart_amp_mreInfo_item">
           <div className="chart_amp_mreInfo_icon">
             <PhoneOutlined />
           </div>
-          <div className="chart_amp_mreInfo_text"> (0571)83580902</div>
+          <div className="chart_amp_mreInfo_text"> {telephone || '--'}</div>
         </div>
         <div className="chart_amp_mreInfo_item">
           <div className="chart_amp_mreInfo_icon">
             <EnvironmentOutlined />
           </div>
-          <div className="chart_amp_mreInfo_text">
-            杭州市萧山区建设一路与金鸡路交叉口宝龙城市广场内
-          </div>
+          <div className="chart_amp_mreInfo_text">{address || '--'}</div>
         </div>
       </div>
       <div className="chart_amp_mreInfo_content">
-        <p className="merInfo_sale">关联商拓：王龙</p>
-        <p>营业时间：07:30-22:30</p>
+        <p className="merInfo_sale">关联商拓：{salesperson || '--'}</p>
+        <p>营业时间：{businessTime || '--'}</p>
         <p>相册</p>
         <div className="mreInfo_img">
           <div className="mreInfo_img_item">
-            <Image
-              width={102}
-              height={102}
-              src={'http://www.dongfeng-honda-ur-v.com/images/2020page/m1-1.png'}
-              className="descript_img"
-            />
+            <Image width={102} height={102} src={coverImg} className="descript_img" />
           </div>
-          <div className="mreInfo_img_item">
-            <Image
-              width={102}
-              height={102}
-              src={'http://www.dongfeng-honda-ur-v.com/images/2020page/m1-1.png'}
-              className="descript_img"
-            />
-          </div>
-          <div className="mreInfo_img_item">
-            <Image
-              width={102}
-              height={102}
-              src={'http://www.dongfeng-honda-ur-v.com/images/2020page/m1-1.png'}
-              className="descript_img"
-            />
-          </div>
-          <div className="mreInfo_img_item">
-            <Image
-              width={102}
-              height={102}
-              src={'http://www.dongfeng-honda-ur-v.com/images/2020page/m1-1.png'}
-              className="descript_img"
-            />
-          </div>
+          {allImgs
+            ? allImgs.split(',').map((item) => (
+                <div className="mreInfo_img_item">
+                  <Image width={102} height={102} src={item} className="descript_img" />
+                </div>
+              ))
+            : ''}
         </div>
       </div>
     </div>
@@ -136,7 +146,7 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
       <div style={{ height: 700 }} key="map">
         <Map
           amapkey={AMAP_KEY}
-          zooms={[4, 18]}
+          zooms={[4, 20]}
           doubleClickZoom={false}
           keyboardEnable={false}
           touchZoom={false}
@@ -149,28 +159,35 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
             },
             // 拖拽地图事件
             dragend() {
-              // 获取地图四角经纬度
-              getMapBounds(mapInstance.getBounds());
+              // 获取地图四角经纬度 detail 获取可视界面商圈
+              const zoom = mapInstance.getZoom();
+              if (zoom >= 14) {
+                getMapBounds(mapInstance.getBounds(), 'detail');
+              }
             },
             // 地图缩放事件
             zoomend() {
-              // 获取地图四角经纬度
-              getMapBounds(mapInstance.getBounds());
-              // 缩放级别小于 13 显示聚合点 大于13隐藏聚合点 显示散点
+              // 缩放级别小于 14 请求接口显示聚合点 大于14隐藏聚合点 显示散点
               const zoom = mapInstance.getZoom();
-              if (zoom < 13) setMapCluster(true);
-              else setMapCluster(false);
+              console.log('zoom', zoom);
+              if (zoom >= 14) {
+                getMapBounds(mapInstance.getBounds(), 'detail');
+              } else {
+                console.log(1);
+                setMapCluster(true);
+              }
             },
           }}
         >
           {/* 商户详情 */}
-          {MreInfo}
+          {mreInfoShow.show && MreInfo}
           {/* 图例区域 */}
           {MapRightLegend}
           {/* 商圈中心 */}
           {/* 商圈 */}
           {mapHub.map((item, i) => (
             <Circle
+              key={item.businessHubName}
               center={[item.lnt, item.lat]}
               radius={item.radius}
               style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }}
@@ -196,22 +213,28 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
               />
             </Circle>
           ))}
-          {/* <Markers
+          <Markers
             useCluster={mapCluster}
             visible={!mapCluster}
-            markers={[
-              { position: { longitude: 116.408424, latitude: 39.91502, id: 1 } },
-              { position: { longitude: 116.408526, latitude: 39.90504, id: 2 } },
-              { position: { longitude: 116.419526, latitude: 39.90504, id: 2 } },
-            ]}
+            markers={mapHubDetail}
             events={{
+              created(marker) {
+                marker.map((item) => {
+                  const extData = item.getExtData().position;
+                  item.setLabel({
+                    offset: new AMap.Pixel(0, 50), // 设置文本标注偏移量
+                    content: `<div class='chart_amp_markeys_info'>${extData.merchantName}</div>`, // 设置文本标注内容
+                    direction: 'top', // 设置文本标注方位
+                  });
+                });
+              },
               click(e, marker) {
                 // 通过高德原生提供的 getExtData 方法获取原始数据
-                const extData = marker.getExtData();
-                console.log(extData);
+                const extData = marker.getExtData().position;
+                fetchChartMapHubMreDeatil(extData.userMerchantIdString);
               },
             }}
-          /> */}
+          />
         </Map>
       </div>
     </Card>
@@ -220,4 +243,5 @@ const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
 
 export default connect(({ chartBlock }) => ({
   mapHub: chartBlock.mapHub,
+  mapHubDetail: chartBlock.mapHubDetail,
 }))(TradeAreaMap);

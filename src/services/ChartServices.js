@@ -69,4 +69,18 @@ export function fetchChartMapHub(params) {
   });
 }
 
+// get 地图 - 获取区域商圈 - 散点
+export function fetchChartMapHubMre(params) {
+  return request('/admin/areaStatistic/getMerchantMapDetail', {
+    params,
+  });
+}
+
+// get 地图 - 获取区域商圈 - 商家详情
+export function fetchChartMapHubMreDeatil(params) {
+  return request('/admin/areaStatistic/getMerchantDetail', {
+    params,
+  });
+}
+
 // 数据概览 end
