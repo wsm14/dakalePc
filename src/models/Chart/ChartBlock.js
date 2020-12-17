@@ -7,6 +7,7 @@ import {
   fetchChartBlockTradeRight,
   fetchChartBlockIncomeLeft,
   fetchChartBlockSaleRight,
+  fetchChartMapHub,
 } from '@/services/ChartServices';
 
 export default {
@@ -20,6 +21,7 @@ export default {
     tradeRight: [],
     saleRank: [],
     incomeRank: [],
+    mapHub: [],
   },
 
   reducers: {
@@ -142,6 +144,17 @@ export default {
             settleCount: numFormat(item.settleCount),
             activeCount: numFormat(item.activeCount),
           })),
+        },
+      });
+    },
+    *fetchChartMapHub({ payload }, { call, put }) {
+      const response = yield call(fetchChartMapHub, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          mapHub: content.businessHubList,
         },
       });
     },

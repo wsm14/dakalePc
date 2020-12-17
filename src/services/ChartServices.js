@@ -62,4 +62,11 @@ export function fetchChartBlockSaleRight(params) {
   });
 }
 
+// get 地图 - 获取区域商圈
+export function fetchChartMapHub(params) {
+  return request('/admin/areaStatistic/getMerchantMap', {
+    params,
+  });
+}
+
 // 数据概览 end

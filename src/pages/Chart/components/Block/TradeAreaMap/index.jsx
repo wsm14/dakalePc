@@ -9,20 +9,29 @@ import './style.less';
 /**
  * 商圈地图
  */
-const TradeAreaMap = ({ dispatch, searchData, totalData }) => {
+const TradeAreaMap = ({ dispatch, searchData, mapHub }) => {
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
   // 聚合状态
   const [mapCluster, setMapCluster] = useState(true);
 
+  // 获取区域商圈
+  const fetchChartMapHub = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartMapHub',
+      payload,
+    });
+  };
+
   // 获取地图四角经纬度
-  const getMapBounds = (bounds) => {
+  const getMapBounds = (bounds, type) => {
     console.log('bounds', bounds);
     const NorthEast = bounds.northeast;
     const SouthWest = bounds.southwest;
-    const SouthEast = [NorthEast.lng, SouthWest.lat];
-    const NorthWest = [SouthWest.lng, NorthEast.lat];
-    console.log(SouthEast, NorthWest);
+    const lat = [SouthWest.lat, NorthEast.lat].join('_');
+    const lnt = [SouthWest.lng, NorthEast.lng].join('_');
+    console.log(lat, lnt);
+    if (type == 'created') fetchChartMapHub({ lat, lnt });
   };
 
   // 图例数组
@@ -128,7 +137,6 @@ const TradeAreaMap = ({ dispatch, searchData, totalData }) => {
         <Map
           amapkey={AMAP_KEY}
           zooms={[4, 18]}
-          center={[116.407526, 39.90403]}
           doubleClickZoom={false}
           keyboardEnable={false}
           touchZoom={false}
@@ -137,7 +145,7 @@ const TradeAreaMap = ({ dispatch, searchData, totalData }) => {
             created(map) {
               setMapInstance(map);
               // 获取地图四角经纬度
-              getMapBounds(map.getBounds());
+              getMapBounds(map.getBounds(), 'created');
             },
             // 拖拽地图事件
             dragend() {
@@ -158,47 +166,49 @@ const TradeAreaMap = ({ dispatch, searchData, totalData }) => {
           {MreInfo}
           {/* 图例区域 */}
           {MapRightLegend}
-          <Marker
-            clickable
-            position={[116.407526, 39.90403]}
-            visible={mapCluster}
-            events={{
-              created(markerInstance) {
-                markerInstance.setLabel({
-                  offset: new AMap.Pixel(0, 20), // 设置文本标注偏移量
-                  content: `<div class='amp_markey_info'>我是 marker 的 label 标签</div>`, // 设置文本标注内容
-                  direction: 'top', // 设置文本标注方位
-                });
-              },
-            }}
-          />
-          <Circle
-            center={[116.407526, 39.90403]}
-            radius={1000}
-            style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }}
-            events={{
-              created() {
-                mapInstance.setFitView();
-              },
-            }}
-          >
-            <Markers
-              useCluster={mapCluster}
-              visible={!mapCluster}
-              markers={[
-                { position: { longitude: 116.408424, latitude: 39.91502, id: 1 } },
-                { position: { longitude: 116.408526, latitude: 39.90504, id: 2 } },
-                { position: { longitude: 116.419526, latitude: 39.90504, id: 2 } },
-              ]}
+          {mapHub.map((item, i) => (
+            <Marker
+              clickable
+              position={[item.lnt, item.lat]}
               events={{
-                click(e, marker) {
-                  // 通过高德原生提供的 getExtData 方法获取原始数据
-                  const extData = marker.getExtData();
-                  console.log(extData);
+                created(markerInstance) {
+                  markerInstance.setLabel({
+                    offset: new AMap.Pixel(0, 20), // 设置文本标注偏移量
+                    content: `<div class='chart_amp_markey_info'>${item.businessHubName} ${item.settleCount} / ${item.activeCount}</div>`, // 设置文本标注内容
+                    direction: 'top', // 设置文本标注方位
+                  });
                 },
               }}
             />
-          </Circle>
+          ))}
+          {mapHub.map((item, i) => (
+            <Circle
+              center={[item.lnt, item.lat]}
+              radius={item.radius}
+              style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }}
+              events={{
+                created() {
+                  if (i == item.length) mapInstance.setFitView();
+                },
+              }}
+            ></Circle>
+          ))}
+          {/* <Markers
+            useCluster={mapCluster}
+            visible={!mapCluster}
+            markers={[
+              { position: { longitude: 116.408424, latitude: 39.91502, id: 1 } },
+              { position: { longitude: 116.408526, latitude: 39.90504, id: 2 } },
+              { position: { longitude: 116.419526, latitude: 39.90504, id: 2 } },
+            ]}
+            events={{
+              click(e, marker) {
+                // 通过高德原生提供的 getExtData 方法获取原始数据
+                const extData = marker.getExtData();
+                console.log(extData);
+              },
+            }}
+          /> */}
         </Map>
       </div>
     </Card>
@@ -206,5 +216,5 @@ const TradeAreaMap = ({ dispatch, searchData, totalData }) => {
 };
 
 export default connect(({ chartBlock }) => ({
-  totalData: chartBlock.userInfo,
+  mapHub: chartBlock.mapHub,
 }))(TradeAreaMap);
