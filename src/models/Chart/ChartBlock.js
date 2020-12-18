@@ -26,6 +26,7 @@ export default {
     saleRank: [],
     incomeRank: [],
     mapHub: [],
+    mapHubId: [],
     mapHubDetail: [],
     saleLeft: {},
     areaMer: [],
@@ -184,6 +185,7 @@ export default {
         type: 'save',
         payload: {
           mapHub: content.businessHubList,
+          mapHubId: content.businessHubList.map((item) => item.businessHubIdString),
         },
       });
     },

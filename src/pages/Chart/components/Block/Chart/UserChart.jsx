@@ -64,7 +64,6 @@ const UserChart = ({ dispatch, searchData, totalData, loading }) => {
 
   const gridStyle = {
     width: '50%',
-    height: 111,
     textAlign: 'center',
   };
 
@@ -73,7 +72,12 @@ const UserChart = ({ dispatch, searchData, totalData, loading }) => {
   };
 
   return (
-    <Card bodyStyle={{ padding: 0 }} loading={loading} bordered={false} style={{ marginTop: 20 }}>
+    <Card
+      bodyStyle={{ padding: 0, height: 111 }}
+      loading={loading}
+      bordered={false}
+      style={{ marginTop: 20 }}
+    >
       {orderArr.map((item) => (
         <Card.Grid style={gridStyle} key={item.title}>
           <Statistic

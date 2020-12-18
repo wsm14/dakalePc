@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Card, Affix } from 'antd';
 import { ChartContext, initialState, reducer } from './components/Block/chartStore';
 import SearchCard from './components/Block/Search/SearchCard';
@@ -14,22 +14,31 @@ import styles from './style.less';
 const ChartBlockComponent = () => {
   // 搜索参数
   const [searchData, setSearchData] = useReducer(reducer, initialState);
+  // 时间参数
+  const [timeData, setTimeData] = useState(initialState);
+  // 城市参数
+  const [cityData, setCityData] = useState({});
 
   // 选择时间
   const handleSearchData = (time, areaCode) => {
     let area = {};
     if (areaCode && areaCode.length) {
       area = { provinceCode: areaCode[0], cityCode: areaCode[1], districtCode: areaCode[2] };
+      setCityData(area);
     }
-    setSearchData({
-      ...area,
+    const timeObj = {
       beginDate: time[0].format('YYYY-MM-DD'),
       endDate: time[1].format('YYYY-MM-DD'),
+    };
+    setTimeData(timeObj);
+    setSearchData({
+      ...area,
+      ...time,
     });
   };
 
   return (
-    <ChartContext.Provider value={{ searchData, setSearchData }}>
+    <ChartContext.Provider value={{ searchData, timeData, cityData, setSearchData }}>
       <div className={styles.chertBox}>
         <Affix offsetTop={40}>
           <Card bordered={false}>
@@ -50,7 +59,7 @@ const ChartBlockComponent = () => {
         {/* 商圈地图 */}
         <TradeAreaMap></TradeAreaMap>
         {/* 店铺营收排行 & 销售排行 */}
-        <RankingTotal searchData={searchData}></RankingTotal>
+        <RankingTotal searchData={timeData}></RankingTotal>
       </div>
     </ChartContext.Provider>
   );

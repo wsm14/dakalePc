@@ -98,6 +98,7 @@ export default {
       if (!response) return;
       const { content } = response;
       if (!content.records.length) return;
+      console.log(content.records)
       yield put({
         type: 'save',
         payload: {

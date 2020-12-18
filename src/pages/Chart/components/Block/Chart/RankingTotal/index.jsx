@@ -6,11 +6,22 @@ import styles from './style.less';
 /**
  * 店铺营收排行 & 销售排行
  */
-const RankingTotal = ({ searchData, dispatch, incomeRank, saleRank, loading, loadingSale }) => {
+const RankingTotal = ({
+  searchData, // 营收排行搜索参数
+  timeData, // 销售排行搜索参数
+  dispatch,
+  incomeRank,
+  saleRank,
+  loading,
+  loadingSale,
+}) => {
   useEffect(() => {
     fetchChartBlockIncomeLeft(searchData);
-    fetchChartBlockSaleRight(searchData);
   }, [searchData]);
+
+  useEffect(() => {
+    fetchChartBlockSaleRight(timeData);
+  }, [timeData]);
 
   // 获取统计数据
   const fetchChartBlockSaleRight = (payload = {}) => {
@@ -109,11 +120,14 @@ const RankingTotal = ({ searchData, dispatch, incomeRank, saleRank, loading, loa
                     i === 0 ? (
                       <span
                         style={{ width: '40%', textAlign: 'center', fontSize: 15, fontWeight: 600 }}
+                        key={ctiele.title}
                       >
                         {ctiele.title}
                       </span>
                     ) : (
-                      <span className={styles.totalItemTitle}>{ctiele.title}</span>
+                      <span className={styles.totalItemTitle} key={ctiele.title}>
+                        {ctiele.title}
+                      </span>
                     ),
                   )}
                 </li>

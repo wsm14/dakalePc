@@ -8,10 +8,10 @@ import { ChartContext } from '../../chartStore';
  * 店铺情况（截止昨日）
  */
 const BusinessChart = ({ dispatch, totalData, loading }) => {
-  const { searchData } = useContext(ChartContext);
+  const { cityData } = useContext(ChartContext);
   useEffect(() => {
-    fetchGetTotalData(searchData);
-  }, [searchData]);
+    fetchGetTotalData(cityData);
+  }, [cityData]);
 
   // 获取统计数据
   const fetchGetTotalData = (payload = {}) => {
@@ -25,7 +25,7 @@ const BusinessChart = ({ dispatch, totalData, loading }) => {
     <Card
       bordered={false}
       loading={loading}
-      bodyStyle={{ paddingBottom: loading ? 24 : 0, height: 487 }}
+      bodyStyle={{ paddingBottom: loading ? 24 : 0, minHeight: 487 }}
     >
       <Typography.Title level={5}>店铺情况（截止昨日）</Typography.Title>
       {totalData.length ? (

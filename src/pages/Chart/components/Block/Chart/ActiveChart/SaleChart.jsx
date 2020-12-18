@@ -8,11 +8,11 @@ import { ChartContext } from '../../chartStore';
  * 销售情况 && 拜访情况
  */
 const SaleChart = ({ dispatch, totalData, loading }) => {
-  const { searchData } = useContext(ChartContext);
+  const { timeData } = useContext(ChartContext);
 
   useEffect(() => {
-    fetchGetTotalData(searchData);
-  }, [searchData]);
+    fetchGetTotalData(timeData);
+  }, [timeData]);
 
   // 获取统计数据
   const fetchGetTotalData = (payload = {}) => {

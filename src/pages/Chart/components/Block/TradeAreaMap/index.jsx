@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'dva';
-import { Card, Typography, Image } from 'antd';
+import { Card, Typography } from 'antd';
 import { Map, Marker, Circle, Markers } from 'react-amap';
-import { PhoneOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { AMAP_KEY } from '@/common/constant';
+import MreDetail from './MreDetail';
+import MapLegend from './MapLegend';
 import './style.less';
 
 /**
  * 商圈地图
  */
-const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
+const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
-  // 聚合状态
-  const [mapCluster, setMapCluster] = useState(true);
   // 商户详情
   const [mreInfoShow, setMreInfoShow] = useState({ show: false, detail: {} });
 
@@ -30,7 +29,6 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
     dispatch({
       type: 'chartBlock/fetchChartMapHubMre',
       payload: { ...payload, page: 1, limit: 99 },
-      callback: () => setMapCluster(false),
     });
   };
 
@@ -53,86 +51,35 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
     // 初始渲染获取商圈
     if (type === 'created') fetchChartMapHub({ lat, lnt });
     // 缩放移动等获取详情
-    else if (type === 'detail') fetchChartMapHubMre({ lat, lnt });
+    else if (type === 'detail') {
+      fetchChartMapHubMre({ lat, lnt });
+    }
   };
 
-  // 图例数组
-  const lengendArr = [
-    {
-      label: '已激活',
-      url: '',
-      onClick: () => {},
+  // map 事件
+  const mapEvents = {
+    // 地图初始化事件
+    created(map) {
+      // 保存地图实例
+      setMapInstance(map);
+      // 获取地图四角经纬度
+      getMapBounds(map.getBounds(), 'created');
     },
-    {
-      label: '已入驻',
-      url: '',
-      onClick: () => {},
+    // 拖拽 移动变化地图事件
+    moveend() {
+      // 删除原本点坐标防止重复渲染 排除商圈坐标点
+      const removeArr = mapInstance
+        .getAllOverlays('marker')
+        .filter((item) => mapHubId.indexOf(item.getExtData()) === -1);
+      // 删除点
+      mapInstance.remove(removeArr);
+      // 缩放级别小于 14 请求接口显示聚合点 大于14隐藏聚合点 显示散点
+      const zoom = mapInstance.getZoom();
+      if (zoom >= 14) {
+        getMapBounds(mapInstance.getBounds(), 'detail');
+      }
     },
-  ];
-
-  // 图例
-  const MapRightLegend = (
-    <div className="chart_amap_Legend_right">
-      {lengendArr.map((item) => (
-        <div className="amap_Legend_item" key={item.label} onClick={item.onClick}>
-          <img src={item.url} className="amap_Legend_img"></img> {item.label}
-        </div>
-      ))}
-    </div>
-  );
-  const {
-    merchantName,
-    topCategoryName,
-    categoryName,
-    telephone,
-    address,
-    salesperson,
-    businessTime,
-    coverImg,
-    allImgs,
-  } = mreInfoShow.detail;
-  // 商家信息
-  const MreInfo = (
-    <div className="chart_amp_mreInfo">
-      <div className="chart_amp_mreInfo_heard">
-        <Typography.Title level={4} className="title">
-          {merchantName || '--'}
-        </Typography.Title>
-        <div className="chart_amp_mreInfo_item">
-          {topCategoryName} / {categoryName}
-        </div>
-        <div className="chart_amp_mreInfo_item">
-          <div className="chart_amp_mreInfo_icon">
-            <PhoneOutlined />
-          </div>
-          <div className="chart_amp_mreInfo_text"> {telephone || '--'}</div>
-        </div>
-        <div className="chart_amp_mreInfo_item">
-          <div className="chart_amp_mreInfo_icon">
-            <EnvironmentOutlined />
-          </div>
-          <div className="chart_amp_mreInfo_text">{address || '--'}</div>
-        </div>
-      </div>
-      <div className="chart_amp_mreInfo_content">
-        <p className="merInfo_sale">关联商拓：{salesperson || '--'}</p>
-        <p>营业时间：{businessTime || '--'}</p>
-        <p>相册</p>
-        <div className="mreInfo_img">
-          <div className="mreInfo_img_item">
-            <Image width={102} height={102} src={coverImg} className="descript_img" />
-          </div>
-          {allImgs
-            ? allImgs.split(',').map((item) => (
-                <div className="mreInfo_img_item">
-                  <Image width={102} height={102} src={item} className="descript_img" />
-                </div>
-              ))
-            : ''}
-        </div>
-      </div>
-    </div>
-  );
+  };
 
   return (
     <Card
@@ -146,53 +93,26 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
       <div style={{ height: 700 }} key="map">
         <Map
           amapkey={AMAP_KEY}
-          zooms={[4, 20]}
+          zooms={[4, 20]} // 缩放范围 20以上地图细节不存在
           doubleClickZoom={false}
           keyboardEnable={false}
           touchZoom={false}
-          events={{
-            // 地图初始化事件
-            created(map) {
-              setMapInstance(map);
-              // 获取地图四角经纬度
-              getMapBounds(map.getBounds(), 'created');
-            },
-            // 拖拽地图事件
-            dragend() {
-              // 获取地图四角经纬度 detail 获取可视界面商圈
-              const zoom = mapInstance.getZoom();
-              if (zoom >= 14) {
-                getMapBounds(mapInstance.getBounds(), 'detail');
-              }
-            },
-            // 地图缩放事件
-            zoomend() {
-              // 缩放级别小于 14 请求接口显示聚合点 大于14隐藏聚合点 显示散点
-              const zoom = mapInstance.getZoom();
-              console.log('zoom', zoom);
-              if (zoom >= 14) {
-                getMapBounds(mapInstance.getBounds(), 'detail');
-              } else {
-                console.log(1);
-                setMapCluster(true);
-              }
-            },
-          }}
+          events={mapEvents}
         >
           {/* 商户详情 */}
-          {mreInfoShow.show && MreInfo}
+          {mreInfoShow.show && <MreDetail detail={mreInfoShow.detail}></MreDetail>}
           {/* 图例区域 */}
-          {MapRightLegend}
-          {/* 商圈中心 */}
+          <MapLegend></MapLegend>
           {/* 商圈 */}
           {mapHub.map((item, i) => (
             <Circle
               key={item.businessHubName}
-              center={[item.lnt, item.lat]}
-              radius={item.radius}
-              style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }}
+              center={[item.lnt, item.lat]} // 坐标
+              radius={item.radius} // 半径
+              style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }} // 圈样式
               events={{
                 created() {
+                  // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
                   if (i == item.length) mapInstance.setFitView();
                 },
               }}
@@ -200,7 +120,8 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
               {/* 商圈中心 */}
               <Marker
                 clickable
-                position={[item.lnt, item.lat]}
+                position={[item.lnt, item.lat]} // 坐标
+                extData={item.businessHubIdString} // 额外参数 保存商户id
                 events={{
                   created(markerInstance) {
                     markerInstance.setLabel({
@@ -213,9 +134,8 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
               />
             </Circle>
           ))}
+          {/* 聚合点 */}
           <Markers
-            useCluster={mapCluster}
-            visible={!mapCluster}
             markers={mapHubDetail}
             events={{
               created(marker) {
@@ -243,5 +163,6 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, searchData, mapHub }) => {
 
 export default connect(({ chartBlock }) => ({
   mapHub: chartBlock.mapHub,
+  mapHubId: chartBlock.mapHubId,
   mapHubDetail: chartBlock.mapHubDetail,
 }))(TradeAreaMap);
