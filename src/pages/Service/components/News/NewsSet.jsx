@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Form, Input, Row, Col, Button } from 'antd';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';

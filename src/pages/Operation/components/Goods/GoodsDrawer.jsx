@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Button, Space, Form, notification } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import GoodsDetail from './Detail/GoodsDetail';

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import exportExcel from '@/utils/exportExcel';

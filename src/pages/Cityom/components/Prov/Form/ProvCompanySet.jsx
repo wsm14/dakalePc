@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';

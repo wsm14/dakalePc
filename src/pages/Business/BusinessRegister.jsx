@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { BUSINESS_REGISTER_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 

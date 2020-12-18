@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
-import { history } from 'umi';
+import { history, connect } from 'umi';
 import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 import style from './style.less';

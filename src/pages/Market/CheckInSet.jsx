@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import checkInSet from './components/CheckIn/CheckInSet';

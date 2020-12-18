@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card } from 'antd';
 import MasterChart from './MasterChart';
 import MasterRecommendChart from './MasterRecommendChart';

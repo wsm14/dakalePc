@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import { DatePicker, Select, Spin, Space, Empty } from 'antd';
 

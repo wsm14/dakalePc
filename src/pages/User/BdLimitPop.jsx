@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 import limitPopSet from './components/LimitPop/LimitPopSet';

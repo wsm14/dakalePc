@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { MATCH_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';

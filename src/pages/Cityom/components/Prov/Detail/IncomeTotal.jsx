@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Spin } from 'antd';
 import { Bar } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';

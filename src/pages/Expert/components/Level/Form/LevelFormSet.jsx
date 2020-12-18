@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Form, InputNumber, Space, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
 

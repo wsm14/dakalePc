@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button, Badge } from 'antd';
 import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';

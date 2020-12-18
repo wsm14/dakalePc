@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
 import { Donut } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';

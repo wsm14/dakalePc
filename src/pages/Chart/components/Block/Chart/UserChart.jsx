@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 

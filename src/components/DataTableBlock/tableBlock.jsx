@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Row, Col, Spin, Tooltip } from 'antd';
 import { Donut } from '@/components/Charts';
 import numeral from 'numeral';

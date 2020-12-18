@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Typography, Row, Col, Tooltip, Empty } from 'antd';
 import styles from './style.less';
 

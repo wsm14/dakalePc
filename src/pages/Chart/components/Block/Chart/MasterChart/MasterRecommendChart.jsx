@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Column } from '@/components/Charts';
 import { Skeleton, Typography } from 'antd';
 

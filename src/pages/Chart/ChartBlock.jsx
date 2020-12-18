@@ -11,7 +11,8 @@ import TradeAreaMap from './components/Block/TradeAreaMap';
 import RankingTotal from './components/Block/Chart/RankingTotal';
 import styles from './style.less';
 
-const ChartBlockComponent = () => {
+const ChartBlockComponent = ({location:{query:{bucket=''}}}) => {
+  console.log(bucket)
   // 搜索参数
   const [searchData, setSearchData] = useReducer(reducer, initialState);
   // 时间参数

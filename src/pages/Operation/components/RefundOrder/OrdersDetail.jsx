@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Spin, Popover } from 'antd';
 import { PAY_TYPE } from '@/common/constant';
 import styles from './style.less';

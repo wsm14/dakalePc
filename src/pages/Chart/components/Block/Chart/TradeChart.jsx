@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Donut } from '@/components/Charts';
 import { Card, Typography, Row, Col, Empty } from 'antd';
 

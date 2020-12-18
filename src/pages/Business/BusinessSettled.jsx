@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { MRE_ACCOUNT_STATUS, BUSINESS_STATUS_AUDIT, MRE_SORT_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';

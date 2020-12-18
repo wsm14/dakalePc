@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import DataTableBlock from '@/components/DataTableBlock';
 import DistrictList from './DistrictList';
 import CITYJSON from '@/common/city';

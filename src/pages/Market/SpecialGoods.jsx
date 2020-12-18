@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button, Modal } from 'antd';
 import { SPECIAL_STATUS, SPECIAL_RECOMMEND_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';

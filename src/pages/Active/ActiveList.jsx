@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button, Popover } from 'antd';
 import QRCode from 'qrcode.react';
 import HandleSetTable from '@/components/HandleSetTable';

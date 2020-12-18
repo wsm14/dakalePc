@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 

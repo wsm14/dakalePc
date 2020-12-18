@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Form, Select, Switch } from 'antd';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';

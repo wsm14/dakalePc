@@ -1,5 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Table, Checkbox, Select } from 'antd';
 import { WORKER_ROLEDATA_TYPE } from '@/common/constant';
 import router from '../../../../../../config/router.config';

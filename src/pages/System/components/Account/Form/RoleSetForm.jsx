@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Form, Button, Space } from 'antd';
 import FormComponents from '@/components/FormCondition';
 import RoleTableForm from './RoleTableForm';

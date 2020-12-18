@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Button, Space, Form, Skeleton } from 'antd';
 import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';

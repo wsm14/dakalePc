@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect, history } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import CITYJSON from '@/common/city';
@@ -73,13 +73,23 @@ const ProvinceTotalComponent = (props) => {
           formItems={[
             {
               type: 'info',
-              click: () => fetchUserDetail(record.userIdString),
+              click: () => handleHistoryChart(record.bucket),
             },
           ]}
         />
       ),
     },
   ];
+
+  // 跳转数据统计
+  const handleHistoryChart = (bucket) => {
+    history.push({
+      pathname: '/chart/block',
+      query: {
+        bucket,
+      },
+    });
+  };
 
   useEffect(() => {
     childRef.current.fetchGetData(searchData);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { targetJson } from '@/common/expertLevelJSON';
 import HandleSetTable from '@/components/HandleSetTable';

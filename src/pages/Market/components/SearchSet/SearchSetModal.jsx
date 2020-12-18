@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal, Form, Alert } from 'antd';
 import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';

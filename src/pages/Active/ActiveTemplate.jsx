@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import activeTemplateNameSet from './components/template/ActiveTemplateNameSet';

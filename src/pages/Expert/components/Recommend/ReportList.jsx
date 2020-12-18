@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Bar } from '@/components/Charts';
 import { Card, Typography } from 'antd';
 import { ChartContext } from '../../chartStore';

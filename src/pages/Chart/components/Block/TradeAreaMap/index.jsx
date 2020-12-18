@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Typography } from 'antd';
 import { Map, Marker, Circle, Markers } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';

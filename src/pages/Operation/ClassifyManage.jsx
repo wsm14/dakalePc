@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import debounce from 'lodash/debounce';
 import DataTableBlock from '@/components/DataTableBlock';

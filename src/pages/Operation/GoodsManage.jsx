@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button, message } from 'antd';
 import { GOODS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';

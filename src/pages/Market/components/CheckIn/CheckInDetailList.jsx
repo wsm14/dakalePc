@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import NoticeImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';

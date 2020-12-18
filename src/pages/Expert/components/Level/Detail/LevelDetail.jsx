@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal } from 'antd';
 import LevelTable from './LevelTable';
 import LevelJSONSet from './LevelJSONSet';

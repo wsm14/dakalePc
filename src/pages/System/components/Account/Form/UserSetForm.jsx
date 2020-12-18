@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { PHONE_PATTERN } from '@/common/regExp';
 import { WORKER_JOB_TYPE } from '@/common/constant';
 import { Drawer, Form, Button, Space, Transfer, Spin, notification } from 'antd';

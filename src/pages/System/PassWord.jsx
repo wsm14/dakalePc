@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button, Card, Form, Input, Typography, Space } from 'antd';
 
 const { Title } = Typography;

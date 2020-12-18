@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, PAY_TYPE } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import OrdersDetail from '../OrdersDetail';
