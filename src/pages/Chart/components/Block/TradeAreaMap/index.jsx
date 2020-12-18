@@ -56,6 +56,16 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     }
   };
 
+  // 删除原本点坐标防止重复渲染 排除商圈坐标点
+  const mapRemoveMaekes = () => {
+    // 删除原本点坐标防止重复渲染 排除商圈坐标点
+    const removeArr = mapInstance
+      .getAllOverlays('marker')
+      .filter((item) => mapHubId.indexOf(item.getExtData()) === -1);
+    // 删除点
+    mapInstance.remove(removeArr);
+  };
+
   // map 事件
   const mapEvents = {
     // 地图初始化事件
@@ -67,12 +77,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     },
     // 拖拽 移动变化地图事件
     moveend() {
-      // 删除原本点坐标防止重复渲染 排除商圈坐标点
-      const removeArr = mapInstance
-        .getAllOverlays('marker')
-        .filter((item) => mapHubId.indexOf(item.getExtData()) === -1);
-      // 删除点
-      mapInstance.remove(removeArr);
+      mapRemoveMaekes();
       // 缩放级别小于 14 请求接口显示聚合点 大于14隐藏聚合点 显示散点
       const zoom = mapInstance.getZoom();
       if (zoom >= 14) {
@@ -92,6 +97,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       </Typography.Title>
       <div style={{ height: 700 }} key="map">
         <Map
+          plugins={['Scale']} // 工具 MapType 类型切换 OverView 鹰眼 Scale 比例尺 ToolBar 工具条 ControlBar 控件
           amapkey={AMAP_KEY}
           zooms={[4, 20]} // 缩放范围 20以上地图细节不存在
           doubleClickZoom={false}

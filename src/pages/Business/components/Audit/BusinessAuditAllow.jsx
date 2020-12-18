@@ -87,7 +87,7 @@ const BusinessAuditAllow = (props) => {
     {
       label: '备注',
       type: 'textArea',
-      name: 'textAreassd',
+      name: 'remark',
       rules: [{ required: false }],
     },
   ];
