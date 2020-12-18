@@ -44,7 +44,6 @@ const ShareDetail = (props) => {
                     backgroundPosition: 'center',
                   }}
                 ></div>
-                {/* <img src={detail.imageHost + item.key} style={styleDiv}></img> */}
               </div>
             ))}
           </Carousel>

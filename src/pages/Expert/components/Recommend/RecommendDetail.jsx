@@ -33,8 +33,17 @@ const RecommendDetail = (props) => {
         <>
           <Carousel autoplay style={{ ...styleDiv, margin: '0 auto' }}>
             {JSON.parse(detail.imageContent).map((item) => (
-              <div style={styleDiv}>
-                <img src={detail.imageHost + item.key} style={styleDiv}></img>
+              <div key={item.key} style={styleDiv}>
+                <div
+                  style={{
+                    ...styleDiv,
+                    backgroundColor: 'black',
+                    background: `url(${detail.imageHost + item.key})`,
+                    backgroundSize: 'auto 100%',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                  }}
+                ></div>
               </div>
             ))}
           </Carousel>
