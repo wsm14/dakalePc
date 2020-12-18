@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card } from 'antd';
+import OrderChart from './components/Orders/OrderChart';
 import CodeOrders from './components/Orders/CodeOrders';
 import GoodsOrders from './components/Orders/GoodsOrders';
 
@@ -26,6 +27,7 @@ const OrdersList = () => {
 
   return (
     <>
+      <OrderChart></OrderChart>
       <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
         {contentList[tabkey]}
       </Card>
