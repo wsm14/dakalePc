@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BankSet from './components/BankSet/BusinessBankSet';
+import BankSet from './components/BankSet/BusinessBankSets';
 
 const BusinessBankSetContent = (props) => {
   const { businessBankSet, loading, dispatch } = props;
