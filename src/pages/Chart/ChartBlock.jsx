@@ -51,7 +51,7 @@ const ChartBlockComponent = ({
   return (
     <ChartContext.Provider value={{ searchData, timeData, cityData, setSearchData }}>
       <div className={styles.chertBox}>
-        <Affix offsetTop={40}>
+        <Affix offsetTop={49}>
           <Card bordered={false}>
             {/* 搜索框 */}
             <SearchCard setSearchData={handleSearchData} bucket={bucket}></SearchCard>
