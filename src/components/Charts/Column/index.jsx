@@ -13,7 +13,7 @@ const ColumnChart = (props) => {
     data,
     forceFit: true,
     height: height,
-    radius: 1,
+    radius: 0.8,
     description: description || false,
     meta,
     ...xyField,

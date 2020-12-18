@@ -1,35 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Donut } from '@/components/Charts';
-import { Typography, Row, Col } from 'antd';
+import { Typography, Row, Col, Empty } from 'antd';
 
 /**
  * 圈层情况
  */
-const MasterChart = ({ dispatch, searchData, totalData }) => {
-  // useEffect(() => {
-  //   fetchGetTotalData(searchData);
-  // }, [searchData]);
-
-  // // 获取统计数据
-  // const fetchGetTotalData = (payload = {}) => {
-  //   dispatch({
-  //     type: 'chartBlock/fetchChartBlockOrder',
-  //     payload,
-  //   });
-  // };
-
-  const data = [
-    {
-      type: '商户家主',
-      value: 38,
-    },
-    {
-      type: '用户家主',
-      value: 52,
-    },
-  ];
-
+const MasterChart = ({ masterDountLeftData, masterDountRightData }) => {
   const heightChart = 330;
 
   return (
@@ -37,24 +14,32 @@ const MasterChart = ({ dispatch, searchData, totalData }) => {
       <Typography.Title level={5}>圈层情况</Typography.Title>
       <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
         <Col span={12}>
-          <Donut
-            data={data}
-            totalLabel="新增家主数"
-            height={heightChart}
-            legend={{ position: 'bottom', offsetY: 10 }}
-            // angleField="count"
-            // colorField="categoryName"
-          />
+          {masterDountLeftData.length ? (
+            <Donut
+              data={masterDountLeftData}
+              totalLabel="新增家主数"
+              height={heightChart}
+              legend={{ position: 'bottom', offsetY: 10 }}
+              angleField="count"
+              colorField="type"
+            />
+          ) : (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          )}
         </Col>
         <Col span={12}>
-          <Donut
-            data={data}
-            totalLabel="收益卡豆"
-            height={heightChart}
-            legend={{ position: 'bottom', offsetY: 10 }}
-            // angleField="count"
-            // colorField="categoryName"
-          />
+          {masterDountRightData.length ? (
+            <Donut
+              data={masterDountRightData}
+              totalLabel="收益卡豆"
+              height={heightChart}
+              legend={{ position: 'bottom', offsetY: 10 }}
+              angleField="count"
+              colorField="type"
+            />
+          ) : (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          )}
         </Col>
       </Row>
     </>
@@ -62,5 +47,6 @@ const MasterChart = ({ dispatch, searchData, totalData }) => {
 };
 
 export default connect(({ chartBlock }) => ({
-  totalData: chartBlock.orderInfo,
+  masterDountLeftData: chartBlock.masterDountLeftData,
+  masterDountRightData: chartBlock.masterDountRightData,
 }))(MasterChart);

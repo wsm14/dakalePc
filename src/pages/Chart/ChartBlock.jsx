@@ -44,7 +44,7 @@ const ChartBlockComponent = ({
     setTimeData(timeObj);
     setSearchData({
       ...area,
-      ...time,
+      ...timeObj,
     });
   };
 
@@ -64,7 +64,7 @@ const ChartBlockComponent = ({
         {/* 销售情况 & 拜访情况 & 店铺情况（截止昨日）& 店铺视频统计*/}
         <ActiveChart></ActiveChart>
         {/* 圈层情况 & 圈层推荐情况 */}
-        <MasterChart></MasterChart>
+        <MasterChart searchData={searchData}></MasterChart>
         {/* 入驻店铺行业分布 */}
         <TradeChart searchData={searchData}></TradeChart>
         {/* 商圈地图 */}

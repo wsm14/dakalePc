@@ -48,6 +48,13 @@ export function fetchChartBlockAreaMer(params) {
   });
 }
 
+// get 中部 - 圈层数据
+export function fetchChartMasterData(params) {
+  return request('/admin/areaStatistic/getFamilyStatistic', {
+    params,
+  });
+}
+
 // get 底部 - 行业分布 - left
 export function fetchChartBlockTradeLeft(params) {
   return request('/admin/areaStatistic/getMerchantCategoryStatistic', {

@@ -22,7 +22,7 @@ const DonutChart = (props) => {
     data,
     forceFit: true,
     height: height,
-    radius: 1,
+    radius: 0.85,
     description: description || false,
     angleField,
     colorField,
@@ -34,6 +34,7 @@ const DonutChart = (props) => {
       triggerOn: false,
       totalLabel: totalLabel || '总计',
     },
+    padding: 'auto',
     legend,
     label: {
       visible: true,

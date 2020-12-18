@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import MasterChart from './MasterChart';
 import MasterRecommendChart from './MasterRecommendChart';
 
-const MasterChartIndex = ({ searchData, loading }) => {
+const MasterChartIndex = ({ dispatch, searchData, loading }) => {
+  useEffect(() => {
+    fetchGetTotalData(searchData);
+  }, [searchData]);
+
+  // 获取统计数据
+  const fetchGetTotalData = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartMasterData',
+      payload,
+    });
+  };
   return (
     <Card
       bordered={false}
       loading={loading}
       style={{ marginTop: 20, width: '100%' }}
-      bodyStyle={{ paddingBottom: loading ? 24 : 0, height: 402 }}
+      bodyStyle={{ paddingBottom: loading ? 24 : 0, maxHeight: 402 }}
     >
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1, marginRight: 20 }}>
@@ -27,5 +38,5 @@ const MasterChartIndex = ({ searchData, loading }) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['chartBlock/fetchChartBlockOrder'],
+  loading: loading.effects['chartBlock/fetchChartMasterData'],
 }))(MasterChartIndex);
