@@ -6,7 +6,7 @@ import styles from './style.less';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ setSearchData, cityShow }) => {
+const SearchCard = ({ setSearchData, bucket }) => {
   const [selectedTime, setSelectedTime] = useState([
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
@@ -67,6 +67,7 @@ const SearchCard = ({ setSearchData, cityShow }) => {
         }}
       />
       <Cascader
+        defaultValue={bucket ? [bucket] : []}
         changeOnSelect
         expandTrigger="hover"
         options={CITYJSON}

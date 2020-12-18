@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect } from 'react';
 import { Card, Affix } from 'antd';
 import { ChartContext, initialState, reducer } from './components/Block/chartStore';
 import SearchCard from './components/Block/Search/SearchCard';
@@ -11,14 +11,24 @@ import TradeAreaMap from './components/Block/TradeAreaMap';
 import RankingTotal from './components/Block/Chart/RankingTotal';
 import styles from './style.less';
 
-const ChartBlockComponent = ({location:{query:{bucket=''}}}) => {
-  console.log(bucket)
+const ChartBlockComponent = ({
+  location: {
+    query: { bucket = '' },
+  },
+}) => {
   // 搜索参数
   const [searchData, setSearchData] = useReducer(reducer, initialState);
   // 时间参数
   const [timeData, setTimeData] = useState(initialState);
   // 城市参数
   const [cityData, setCityData] = useState({});
+
+  useEffect(() => {
+    if (bucket) {
+      setCityData({ provinceCode: bucket });
+      setSearchData({ ...timeData, provinceCode: bucket });
+    }
+  }, []);
 
   // 选择时间
   const handleSearchData = (time, areaCode) => {
@@ -44,7 +54,7 @@ const ChartBlockComponent = ({location:{query:{bucket=''}}}) => {
         <Affix offsetTop={40}>
           <Card bordered={false}>
             {/* 搜索框 */}
-            <SearchCard setSearchData={handleSearchData}></SearchCard>
+            <SearchCard setSearchData={handleSearchData} bucket={bucket}></SearchCard>
           </Card>
         </Affix>
         {/* 营收统计 */}
@@ -60,7 +70,7 @@ const ChartBlockComponent = ({location:{query:{bucket=''}}}) => {
         {/* 商圈地图 */}
         <TradeAreaMap></TradeAreaMap>
         {/* 店铺营收排行 & 销售排行 */}
-        <RankingTotal searchData={timeData}></RankingTotal>
+        <RankingTotal searchData={searchData} timeData={timeData}></RankingTotal>
       </div>
     </ChartContext.Provider>
   );

@@ -7,8 +7,10 @@ import moment from 'moment';
 // 登录权限key
 export const AUTH_SECRET_KEY = '733828mtizndu2cshfp1468889281801r9uv0aaji10';
 
-// 高德地图key
+// 高德地图map key
 export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
+// 高德地图js key
+export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
 // 数据权限选项
 export const WORKER_ROLEDATA_TYPE = [

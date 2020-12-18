@@ -9,7 +9,7 @@ const MasterDetail = (props) => {
   const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'family', record = '' } = visible;
-  
+
   // table
   const propItem = {
     family: {
@@ -118,13 +118,13 @@ const MasterDetail = (props) => {
           title: '关联用户',
           align: 'center',
           dataIndex: 'relatedUser',
-          render: (val) => val || '--',
+          render: (val) => (record.userType == 'user' ? record.username : val || '--'),
         },
         {
           title: '关联店铺',
           align: 'center',
           dataIndex: 'relatedMerchant',
-          render: (val) => val || '--',
+          render: (val) => (record.userType !== 'user' ? record.username : val || '--'),
         },
         {
           title: '关联订单',
@@ -135,7 +135,7 @@ const MasterDetail = (props) => {
       ],
     },
   }[type];
-
+  console.log(record);
   return (
     <Modal
       title={propItem.title}

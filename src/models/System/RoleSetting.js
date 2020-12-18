@@ -144,6 +144,7 @@ export default {
       (flag != 1 ? userMenu : serverMenu).map((item) => {
         if (authMenu.some((menu) => menu[accID] == item[accID])) {
           if (
+            item.children &&
             !item.children.every((menuItem) =>
               authMenu.some((menu) => menu[accID] == menuItem[accID]),
             )

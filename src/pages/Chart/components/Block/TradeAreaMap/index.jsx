@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { connect } from 'umi';
-import { Card, Typography } from 'antd';
+import { connect, history } from 'umi';
+import { Button, Card, Typography } from 'antd';
 import { Map, Marker, Circle, Markers } from 'react-amap';
-import { AMAP_KEY } from '@/common/constant';
+import { AMAP_JS_KEY } from '@/common/constant';
 import MreDetail from './MreDetail';
 import MapLegend from './MapLegend';
+import dai from './icon/mreji.png';
+import ruzhu from './icon/ruzhu.png';
 import './style.less';
 
 /**
@@ -66,14 +68,46 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     mapInstance.remove(removeArr);
   };
 
+  // 点样式
+  const renderMarkerLayout = (extData) => {
+    // verifyStatus 3-已入住 bankStatus 3-待激活
+    const { verifyStatus, bankStatus } = extData.position;
+    const mekes = {
+      width: 25,
+      height: 25,
+    };
+    if (bankStatus == 3) {
+      return (
+        <div
+          style={{ ...mekes, backgroundImage: `url(${dai})`, backgroundSize: '100% 100%' }}
+        ></div>
+      );
+    }
+    if (verifyStatus == 3) {
+      return (
+        <div
+          style={{ ...mekes, backgroundImage: `url(${ruzhu})`, backgroundSize: '100% 100%' }}
+        ></div>
+      );
+    }
+  };
+
   // map 事件
   const mapEvents = {
     // 地图初始化事件
     created(map) {
+      const {
+        query: { bucket = '' },
+      } = history.location;
+
       // 保存地图实例
       setMapInstance(map);
       // 获取地图四角经纬度
       getMapBounds(map.getBounds(), 'created');
+      // url传递城市的情况下 地图跳转到指定城市界面
+      if (bucket && map) {
+        if (bucket !== '33') map.setCity(`${bucket}0000`);
+      }
     },
     // 拖拽 移动变化地图事件
     moveend() {
@@ -98,7 +132,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       <div style={{ height: 700 }} key="map">
         <Map
           plugins={['Scale']} // 工具 MapType 类型切换 OverView 鹰眼 Scale 比例尺 ToolBar 工具条 ControlBar 控件
-          amapkey={AMAP_KEY}
+          amapkey={AMAP_JS_KEY}
           zooms={[4, 20]} // 缩放范围 20以上地图细节不存在
           doubleClickZoom={false}
           keyboardEnable={false}
@@ -131,8 +165,8 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
                 events={{
                   created(markerInstance) {
                     markerInstance.setLabel({
-                      offset: new AMap.Pixel(0, 20), // 设置文本标注偏移量
-                      content: `<div class='chart_amp_markey_info'>${item.businessHubName} ${item.settleCount} / ${item.activeCount}</div>`, // 设置文本标注内容
+                      offset: new AMap.Pixel(0, 15), // 设置文本标注偏移量
+                      content: `<div class='chart_amp_markey_info'>${item.businessHubName} <span className='ruzhuColor'>${item.settleCount}</span> / ${item.activeCount}</div>`, // 设置文本标注内容
                       direction: 'top', // 设置文本标注方位
                     });
                   },
@@ -143,14 +177,15 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
           {/* 聚合点 */}
           <Markers
             markers={mapHubDetail}
+            render={renderMarkerLayout}
             events={{
               created(marker) {
                 marker.map((item) => {
                   const extData = item.getExtData().position;
                   item.setLabel({
-                    offset: new AMap.Pixel(0, 50), // 设置文本标注偏移量
+                    offset: new AMap.Pixel(0, 0), // 设置文本标注偏移量
                     content: `<div class='chart_amp_markeys_info'>${extData.merchantName}</div>`, // 设置文本标注内容
-                    direction: 'top', // 设置文本标注方位
+                    direction: 'bottom', // 设置文本标注方位
                   });
                 });
               },
