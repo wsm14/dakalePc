@@ -23,7 +23,7 @@ export default (props) => {
     formItems: [
       {
         label: '下架原因',
-        name: 'removalReason',
+        name: 'offShelfReason',
         type: 'textArea',
         placeholder: '请输入下架原因，以方便商家调整商品信息',
       },

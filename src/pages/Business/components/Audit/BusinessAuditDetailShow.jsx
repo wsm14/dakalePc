@@ -1,10 +1,11 @@
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 const BusinessAuditDetailShow = (props) => {
+  const { verifyStatus } = props;
   return {
     type: 'Drawer',
     showType: 'info',
     width: 600,
-    title: '商户驳回详情',
+    title: verifyStatus !== '2' ? '商户详情' : '商户驳回详情',
     footerShow: false,
     formItems: [
       {

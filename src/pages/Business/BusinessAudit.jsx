@@ -114,7 +114,7 @@ const BusinessAuditList = (props) => {
             {
               type: 'eye',
               visible: record.verifyStatus != '1',
-              click: () => handleShowUserDetail(record),
+              click: () => handleShowUserDetail(record, record.verifyStatus),
             },
           ]}
         />
@@ -132,10 +132,10 @@ const BusinessAuditList = (props) => {
   };
 
   // 用户详情展示
-  const handleShowUserDetail = (initialValues) => {
+  const handleShowUserDetail = (initialValues, verifyStatus) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: businessAuditDetailShow({ initialValues }),
+      payload: businessAuditDetailShow({ initialValues, verifyStatus }),
     });
   };
 
