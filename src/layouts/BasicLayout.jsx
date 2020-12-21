@@ -50,7 +50,13 @@ const BasicLayout = (props) => {
   // 动态菜单
   const menuDataRender = (menu, keys = true) => {
     return menu.map((item) => {
-      const { accessName: name, accessIcon: icon, accessUrl: path, childList: routes } = item;
+      const {
+        accessName: name,
+        accessIcon: icon,
+        accessUrl: path,
+        childList: routes,
+        buttons = null,
+      } = item;
       if (keys) {
         rootSubmenuKeys.push(path);
       }
@@ -58,6 +64,7 @@ const BasicLayout = (props) => {
         name,
         icon: iconEnum[icon],
         path,
+        buttons,
         routes: routes ? menuDataRender(routes, false) : undefined,
       };
       return localItem;
@@ -104,7 +111,6 @@ const BasicLayout = (props) => {
 
   // 菜单展开方法
   const onOpenChange = (openKey) => {
-    
     const latestOpenKey = openKey.find((key) => openKeys.indexOf(key) === -1);
     setRootSubmenuKeys(Array.from(new Set(rootSubmenuKeys)));
     // setOpenKeys([latestOpenKey]);
@@ -114,7 +120,7 @@ const BasicLayout = (props) => {
       setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
     }
   };
-
+  console.log(props);
   return (
     <AliveScope>
       <ProLayout
