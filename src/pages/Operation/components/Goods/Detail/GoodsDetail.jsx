@@ -1,9 +1,12 @@
 import React from 'react';
+import { Alert } from 'antd';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import GoodsSetTable from '../Form/components/GoodsSetTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
+
+  const { status } = detail;
 
   // 信息
   const formItems = [
@@ -40,6 +43,12 @@ const GoodsDetail = (props) => {
       render: (val, record) => `￥${val}`,
     },
     {
+      label: '套餐内单品',
+      visible: detail.goodsType == 'package',
+      name: 'packageGoods',
+      render: (val) => <GoodsSetTable detail={JSON.parse(val)}></GoodsSetTable>,
+    },
+    {
       label: detail.goodsType == 'single' ? '单品介绍' : '套餐介绍',
       name: 'goodsDesc',
       render: (val, record) => (
@@ -56,16 +65,13 @@ const GoodsDetail = (props) => {
         </div>
       ),
     },
-    {
-      label: '套餐内单品',
-      visible: detail.goodsType == 'package',
-      name: 'packageGoods',
-      render: (val) => <GoodsSetTable detail={JSON.parse(val)}></GoodsSetTable>,
-    },
   ];
 
   return (
     <>
+      {status == 1 && (
+        <Alert message="上架中" type="success" style={{ textAlign: 'center', marginBottom: 5 }} />
+      )}
       <DescriptionsCondition formItems={formItems} initialValues={detail}></DescriptionsCondition>
     </>
   );

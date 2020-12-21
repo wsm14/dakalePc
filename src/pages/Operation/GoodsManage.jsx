@@ -10,6 +10,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
 import GoodsDrawer from './components/Goods/GoodsDrawer';
+import styles from './style.less';
 
 const GoodsManageComponent = (props) => {
   const { goodsManage, loadings, loading, dispatch } = props;
@@ -240,6 +241,9 @@ const GoodsManageComponent = (props) => {
     });
   };
 
+  // 每行颜色
+  const rowClassName = (record) => (record.stock <= 50 ? styles.goods_rowColor : '');
+
   return (
     <>
       <DataTableBlock
@@ -258,6 +262,7 @@ const GoodsManageComponent = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.goodsIdString}`}
+        rowClassName={rowClassName}
         dispatchType="goodsManage/fetchGetList"
         {...goodsManage}
       ></DataTableBlock>

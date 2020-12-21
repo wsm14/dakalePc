@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import numeral from 'numeral';
 import { PlusOutlined } from '@ant-design/icons';
 import DataTableBlock from '@/components/DataTableBlock';
 import FormListContent from '../GoodsGruop';
@@ -6,7 +7,7 @@ import FormListContent from '../GoodsGruop';
 const GoodsSetTable = ({ form, detail }) => {
   const [formShow, setFormShow] = useState(false);
   const [listData, setListData] = useState([]);
-  console.log(detail);
+
   // table 表头
   const getColumns = [
     {
@@ -18,13 +19,13 @@ const GoodsSetTable = ({ form, detail }) => {
       title: '数量',
       align: 'right',
       dataIndex: 'goodsNum',
-      render: (val) => `x ${val}`,
+      render: (val) => `x ${numeral(val).format('0,0')}`,
     },
     {
       title: '价格',
       align: 'right',
       dataIndex: 'goodsPrice',
-      render: (val) => `￥ ${val}`,
+      render: (val) => `￥ ${numeral(val).format('0,0.00')}`,
     },
   ];
 
