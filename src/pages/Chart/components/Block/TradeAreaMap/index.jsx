@@ -138,9 +138,6 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
           keyboardEnable={false}
           touchZoom={false}
           events={mapEvents}
-          isHotspot={false} // 关闭地图热点
-          showIndoorMap={false}
-          features={['bg', 'road', 'point']}
         >
           {/* 商户详情 */}
           {mreInfoShow.show && (
