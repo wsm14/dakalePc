@@ -22,13 +22,13 @@ export const WORKER_ROLEDATA_TYPE = [
 
 // 权限按钮映射
 export const ROLE_BUTTON_TYPE = {
-  view: '查看',
+  view: '详情',
   save: '新增',
-  update: '修改',
+  edit: '编辑',
   verify: '审核',
   status: '状态',
-  freeze: '冻结',
-  unfreeze: '解冻',
+  relieve: '解约',
+  handle: '处理',
 };
 
 // 加盟申请状态

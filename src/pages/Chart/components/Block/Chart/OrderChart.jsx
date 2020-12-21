@@ -59,7 +59,7 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
 
   const gridStyle = {
     width: '25%',
-    height: 137,
+    minHeight: 137,
     textAlign: 'center',
   };
 

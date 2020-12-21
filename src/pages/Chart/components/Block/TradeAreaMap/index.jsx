@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect, history } from 'umi';
 import { Card, Typography } from 'antd';
 import { Map, Marker, Circle, Markers } from 'react-amap';
@@ -17,6 +17,16 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   const [mapInstance, setMapInstance] = useState(null);
   // 商户详情
   const [mreInfoShow, setMreInfoShow] = useState({ show: false, detail: {} });
+  // 图例状态 '' 表示全激活 否传状态
+  const [mapLengend, setMapLengend] = useState('');
+  // 搜索的经纬度
+  const [mapSourceData, setMapSourceData] = useState({});
+
+  // 监听图例 经纬度变化请求具体商店点
+  useEffect(() => {
+    if (mapSourceData.lat) fetchChartMapHubMre();
+    return () => dispatch({ type: 'chartBlock/save', payload: { mapHubDetail: [] } });
+  }, [mapSourceData, mapLengend]);
 
   // 获取区域商圈
   const fetchChartMapHub = (payload = {}) => {
@@ -27,10 +37,16 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   };
 
   // 获取区域商圈 - 散点
-  const fetchChartMapHubMre = (payload = {}) => {
+  const fetchChartMapHubMre = () => {
+    mapRemoveMaekes();
     dispatch({
       type: 'chartBlock/fetchChartMapHubMre',
-      payload: { ...payload, page: 1, limit: 99 },
+      payload: {
+        ...mapSourceData,
+        bankStatus: mapLengend == 2 ? '' : mapLengend,
+        page: 1,
+        limit: 99,
+      },
     });
   };
 
@@ -54,7 +70,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     if (type === 'created') fetchChartMapHub({ lat, lnt });
     // 缩放移动等获取详情
     else if (type === 'detail') {
-      fetchChartMapHubMre({ lat, lnt });
+      setMapSourceData({ lat, lnt });
     }
   };
 
@@ -99,7 +115,6 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       const {
         query: { bucket = '' },
       } = history.location;
-
       // 保存地图实例
       setMapInstance(map);
       // 获取地图四角经纬度
@@ -147,7 +162,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
             ></MreDetail>
           )}
           {/* 图例区域 */}
-          <MapLegend></MapLegend>
+          <MapLegend mapLengend={mapLengend} setMapLengend={setMapLengend}></MapLegend>
           {/* 商圈 */}
           {mapHub.map((item, i) => (
             <Circle

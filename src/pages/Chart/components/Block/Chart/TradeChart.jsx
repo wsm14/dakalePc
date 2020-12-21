@@ -42,7 +42,7 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
     label: {
       type: 'spider',
       formatter: (datum, item) => {
-        return `${item._origin.categoryName}\n\n${
+        return `${item._origin.categoryName}\n${
           Math.round((datum / 90) * 100 * 100) / 100
         }% ${datum}家`;
       },

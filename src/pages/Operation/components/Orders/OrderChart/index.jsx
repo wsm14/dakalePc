@@ -66,7 +66,7 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
 
   const gridStyle = {
     width: '25%',
-    height: 137,
+    minHeight: 137,
     textAlign: 'center',
   };
 
@@ -83,7 +83,7 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
   return (
     <Card
       title={<Searchs setSearchData={setSearchData}></Searchs>}
-      bodyStyle={{ padding: 0, height: 274 }}
+      bodyStyle={{ padding: 0, minHeight: 274 }}
       loading={loading}
       bordered={false}
       style={{ marginBottom: 20 }}

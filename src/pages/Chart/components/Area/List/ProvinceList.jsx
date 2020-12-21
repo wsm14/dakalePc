@@ -30,7 +30,7 @@ const ProvinceTotalComponent = (props) => {
       title: '营收金额',
       align: 'right',
       dataIndex: 'getFee',
-      render: (val, record) => record.verificationFee + record.scanOrder,
+      render: (val, record) => (record.verificationFee + record.scanOrder).toFixed(2),
       sorter: (a, b) => a.verificationFee + a.scanOrder - (b.verificationFee + b.scanOrder),
     },
     {

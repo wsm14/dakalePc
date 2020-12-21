@@ -7,36 +7,29 @@ import { Typography, Row, Col, Empty } from 'antd';
  * 圈层情况
  */
 const MasterChart = ({ masterDountLeftData, masterDountRightData }) => {
-  const heightChart = 330;
+
+  const dountProps = {
+    innerRadius: 0.7,
+    angleField: 'count',
+    colorField: 'type',
+    legend: { position: 'bottom', offsetY: 0 },
+    height: 350,
+  };
 
   return (
     <>
       <Typography.Title level={5}>圈层情况</Typography.Title>
-      <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
+      <Row align="middle" style={{ marginBottom: 16 }}>
         <Col span={12}>
           {masterDountLeftData.length ? (
-            <Donut
-              data={masterDountLeftData}
-              totalLabel="新增家主数"
-              height={heightChart}
-              legend={{ position: 'bottom', offsetY: 10 }}
-              angleField="count"
-              colorField="type"
-            />
+            <Donut data={masterDountLeftData} totalLabel="新增家主数" {...dountProps} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
         </Col>
         <Col span={12}>
           {masterDountRightData.length ? (
-            <Donut
-              data={masterDountRightData}
-              totalLabel="收益卡豆"
-              height={heightChart}
-              legend={{ position: 'bottom', offsetY: 10 }}
-              angleField="count"
-              colorField="type"
-            />
+            <Donut data={masterDountRightData} totalLabel="家主收益卡豆" {...dountProps} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}

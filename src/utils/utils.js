@@ -1,6 +1,5 @@
 import md5 from 'md5';
 import { parse } from 'querystring';
-import pathRegexp from 'path-to-regexp';
 import { AUTH_SECRET_KEY } from '@/common/constant';
 
 export const store = {
@@ -154,24 +153,6 @@ export const encrypt = (data) => {
 };
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
-
-export const getRouteAuthority = (path, routeData) => {
-  let authorities = false;
-  routeData.forEach((route) => {
-    // match prefix
-    if (pathRegexp(`${route.path}/(.*)`).test(`${path}/`)) {
-      if (route.path === path) {
-        authorities = true;
-        return;
-      } // get children authority recursively
-
-      if (route.routes) {
-        authorities = getRouteAuthority(path, route.routes) || authorities;
-      }
-    }
-  });
-  return authorities;
-};
 
 // 设置uuid
 export const uuid = () => {

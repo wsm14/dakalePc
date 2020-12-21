@@ -1,4 +1,3 @@
-import numeral from 'numeral';
 import {
   fetchChartBlockOrder,
   fetchChartBlockUser,
@@ -91,6 +90,8 @@ export default {
       const response = yield call(fetchChartBlockSale, payload);
       if (!response) return;
       const { content } = response;
+      const numFormat = (val) => Number(val);
+      Object.keys(content).forEach((item) => (content[item] = numFormat(content[item])));
       yield put({
         type: 'save',
         payload: {
@@ -115,7 +116,7 @@ export default {
       const { content } = response;
       const barArr = ['人推人', '人推店', '店推人', '店推店'];
       const dountArr = ['商家家主', '用户家主'];
-      const dountTowArr = ['商家家主收益', '用户家主收益'];
+      const dountTowArr = ['商家家主', '用户家主'];
       yield put({
         type: 'save',
         payload: {
@@ -188,7 +189,7 @@ export default {
       const response = yield call(fetchChartBlockSaleRight, payload);
       if (!response) return;
       const { content } = response;
-      const numFormat = (val) => numeral(val).format('0,0');
+      const numFormat = (val) => Number(val);
       yield put({
         type: 'save',
         payload: {

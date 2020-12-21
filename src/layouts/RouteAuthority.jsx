@@ -1,8 +1,26 @@
 import React from 'react';
 import { PageLoading } from '@ant-design/pro-layout';
+import pathRegexp from 'path-to-regexp';
 import { Result, Button } from 'antd';
 import { history, Link, connect } from 'umi';
-import { getRouteAuthority } from '@/utils/utils';
+
+const getRouteAuthority = (path, routeData) => {
+  let authorities = false;
+  routeData.forEach((route) => {
+    // match prefix
+    if (pathRegexp(`${route.path}/(.*)`).test(`${path}/`)) {
+      if (route.path === path) {
+        authorities = true;
+        return;
+      } // get children authority recursively
+
+      if (route.routes) {
+        authorities = getRouteAuthority(path, route.routes) || authorities;
+      }
+    }
+  });
+  return authorities;
+};
 
 class SecurityLayout extends React.Component {
   state = {

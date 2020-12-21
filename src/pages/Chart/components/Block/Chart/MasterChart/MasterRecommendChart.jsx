@@ -13,7 +13,7 @@ const MasterRecommendChart = ({ totalData }) => {
       {totalData.length ? (
         <Column
           data={totalData}
-          height={346}
+          height={356}
           meta={{ type: { alias: '类型' }, count: { alias: '数量' } }}
           xyField={{ xField: 'type', yField: 'count' }}
         />

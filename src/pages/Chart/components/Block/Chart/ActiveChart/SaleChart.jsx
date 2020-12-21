@@ -69,7 +69,7 @@ const SaleChart = ({ dispatch, totalData, loading }) => {
       bordered={false}
       loading={loading}
       bodyStyle={{ paddingBottom: 0 }}
-      style={{ flex: 1, marginRight: 20 }}
+      style={{ flex: 1 }}
     >
       <Typography.Title level={5}>销售情况</Typography.Title>
       <Bar
@@ -82,7 +82,7 @@ const SaleChart = ({ dispatch, totalData, loading }) => {
       <Bar
         data={dataVisit}
         height={205}
-        meta={{ type: { alias: '类型' }, value: { alias: '数量' } }}
+        meta={{ type: { alias: '类型' }, value: { alias: '次数' } }}
         xyField={{ xField: 'value', yField: 'type' }}
       />
     </Card>

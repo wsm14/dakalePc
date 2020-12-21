@@ -35,7 +35,7 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
     {
       title: '视频打赏卡豆数',
       key: 'bean',
-      tip: '视频平均打赏卡豆数',
+      tip: '平均打赏卡豆数',
     },
   ];
 

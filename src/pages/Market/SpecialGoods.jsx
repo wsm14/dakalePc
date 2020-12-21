@@ -99,7 +99,7 @@ const SpecialGoods = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
-      title: '已售',
+      title: '已核销',
       align: 'right',
       dataIndex: 'soldGoodsCount',
     },
