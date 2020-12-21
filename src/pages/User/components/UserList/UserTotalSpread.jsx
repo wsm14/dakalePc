@@ -57,14 +57,20 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={totalInfo.age || []} totalLabel="年龄层" height={276} />
+            <Donut
+              data={totalInfo.age || []}
+              totalLabel="年龄层"
+              height={276}
+              radius={1}
+              innerRadius={0.65}
+            />
           </Card>
         </Spin>
       </Col>
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={dataSex} totalLabel="性别" height={276} />
+            <Donut data={dataSex} totalLabel="性别" height={276} radius={1} innerRadius={0.65} />
           </Card>
         </Spin>
       </Col>
@@ -77,6 +83,8 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
               height={276}
               angleField="count"
               colorField="tag"
+              radius={1}
+              innerRadius={0.65}
             />
           </Card>
         </Spin>

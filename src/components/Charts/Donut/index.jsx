@@ -15,13 +15,14 @@ const DonutChart = (props) => {
     labelColor = 'white',
     statisticShow = true,
     onClick,
+    radius = 0.8,
   } = props;
 
   const config = {
     data,
     forceFit: true,
     height: height,
-    radius: 0.8,
+    radius,
     description: description || false,
     angleField,
     colorField,

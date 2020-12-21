@@ -158,6 +158,11 @@ const GoodsManageComponent = (props) => {
                 click: () => fetchAuditRefuse(record),
               },
               {
+                type: 'up',
+                visible: status == 0,
+                click: () => fetchGoodsUp({ goodsIdString: val }),
+              },
+              {
                 type: 'own',
                 title: '操作记录',
                 click: () => fetchGoodsHandleDetail(val),
@@ -200,6 +205,15 @@ const GoodsManageComponent = (props) => {
   const fetchGoodsDel = (payload) => {
     dispatch({
       type: 'goodsManage/fetchGoodsDel',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
+  // 商品上架
+  const fetchGoodsUp = (payload) => {
+    dispatch({
+      type: 'goodsManage/fetchGoodsUp',
       payload,
       callback: () => childRef.current.fetchGetData(),
     });

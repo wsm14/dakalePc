@@ -93,8 +93,16 @@ export function fetchUpdataStock(data) {
   });
 }
 
+// post 商品管理 - 上架
+export function fetchGoodsUp(data) {
+  return request('/admin/goodsManagement/onShelfGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 商品管理 - 下架
-export function fetchGoodsUpdataStatus(data) {
+export function fetchGoodsDown(data) {
   return request('/admin/goodsManagement/offShelfGoods', {
     method: 'POST',
     data,

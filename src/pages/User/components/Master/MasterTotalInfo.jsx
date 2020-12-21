@@ -44,6 +44,8 @@ const MasterTotalInfo = ({
                 height={276}
                 angleField="content"
                 colorField="statisticDesc"
+                radius={1}
+                innerRadius={0.6}
               />
             </Spin>
           </Card>
@@ -55,6 +57,8 @@ const MasterTotalInfo = ({
                 data={incomeTotal}
                 totalLabel="累计收益卡豆"
                 height={276}
+                radius={1}
+                innerRadius={0.6}
                 angleField="content"
                 colorField="statisticDesc"
               />

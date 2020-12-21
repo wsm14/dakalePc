@@ -5,8 +5,9 @@ import {
   fetchGoodsGetMre,
   fetchGoodsGetClassify,
   fetchUpdataStock,
-  fetchGoodsUpdataStatus,
+  fetchGoodsDown,
   fetchGoodsAdd,
+  fetchGoodsUp,
   fetchGoodsDel,
   fetchGoodsGetDetail,
 } from '@/services/OperationServices';
@@ -93,8 +94,17 @@ export default {
       });
       callback();
     },
+    *fetchGoodsUp({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGoodsUp, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '商品上架成功',
+      });
+      callback();
+    },
     *fetchGoodsUpdataStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGoodsUpdataStatus, payload);
+      const response = yield call(fetchGoodsDown, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
