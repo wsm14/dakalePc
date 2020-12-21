@@ -1,8 +1,8 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ClassifySet = (props) => {
-  const { dispatch, childRef, tradeList, initialValues = {}, rowDetail } = props;
-  
+  const { dispatch, childRef, tradeList, initialValues = {}, rowDetail = {} } = props;
+
   // 经营类目储存
   let setData = {};
   const editType = !initialValues.domainId;
