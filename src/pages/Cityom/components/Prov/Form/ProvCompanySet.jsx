@@ -203,6 +203,7 @@ const ProvCompanySet = (props) => {
 };
 
 export default connect(({ provCompany, loading }) => ({
+  detail: provCompany.detail,
   companyId: provCompany.companyId,
   loading:
     loading.effects['provCompany/fetchProvAdd'] || loading.effects['provCompany/fetchProvEdit'],

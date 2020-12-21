@@ -141,21 +141,21 @@ const AreaCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      {detail.status != 2 && (
+                      {detail.partnerStatus != 2 && (
                         <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
                           解约
                         </Button>
                       )}
-                      {(detail.status == 0 || detail.status == 1) && (
+                      {(detail.partnerStatus == 0 || detail.partnerStatus == 1) && (
                         <Button
-                          onClick={() => fetchAreaEdit(1 ^ Number(detail.status))}
+                          onClick={() => fetchAreaEdit(1 ^ Number(detail.partnerStatus))}
                           type="primary"
                           loading={loading}
                         >
-                          {detail.status == 0 ? '冻结' : '启用'}
+                          {detail.partnerStatus == 0 ? '冻结' : '启用'}
                         </Button>
                       )}
-                      {detail.status != 2 && (
+                      {detail.partnerStatus != 2 && (
                         <Button
                           onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
                           type="primary"
@@ -208,6 +208,7 @@ const AreaCompanySet = (props) => {
 };
 
 export default connect(({ areaCenter, loading }) => ({
+  detail: areaCenter.detail,
   partnerId: areaCenter.partnerId,
   loading:
     loading.effects['areaCenter/fetchAreaAdd'] || loading.effects['areaCenter/fetchAreaEdit'],

@@ -27,6 +27,8 @@ export const ROLE_BUTTON_TYPE = {
   update: '修改',
   verify: '审核',
   status: '状态',
+  freeze: '冻结',
+  unfreeze: '解冻',
 };
 
 // 加盟申请状态
