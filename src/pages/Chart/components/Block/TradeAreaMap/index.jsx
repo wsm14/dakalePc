@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect, history } from 'umi';
-import { Button, Card, Typography } from 'antd';
+import { Card, Typography } from 'antd';
 import { Map, Marker, Circle, Markers } from 'react-amap';
 import { AMAP_JS_KEY } from '@/common/constant';
 import MreDetail from './MreDetail';
@@ -138,9 +138,17 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
           keyboardEnable={false}
           touchZoom={false}
           events={mapEvents}
+          isHotspot={false} // 关闭地图热点
+          showIndoorMap={false}
+          features={['bg', 'road', 'point']}
         >
           {/* 商户详情 */}
-          {mreInfoShow.show && <MreDetail detail={mreInfoShow.detail}></MreDetail>}
+          {mreInfoShow.show && (
+            <MreDetail
+              detail={mreInfoShow.detail}
+              onClose={() => setMreInfoShow({ show: false, detail: {} })}
+            ></MreDetail>
+          )}
           {/* 图例区域 */}
           <MapLegend></MapLegend>
           {/* 商圈 */}
