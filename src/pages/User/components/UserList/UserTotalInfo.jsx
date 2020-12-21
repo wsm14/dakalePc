@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Statistic, Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Statistic, Card, Row, Col, Button } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
 
-const UserTotalInfo = ({ dispatch, loading, totalData }) => {
+const UserTotalInfo = ({ dispatch, loading, totalData, currentUser }) => {
   // 搜索参数
   const searchItems = [
     {
@@ -46,9 +45,23 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
 
   const styles = { padding: 0 };
 
+  // 数据聚合
+  const handLimitPopSet = () => {
+    dispatch({
+      type: 'userList/fetchUserJuhe',
+    });
+  };
+
   return (
     <Card style={{ marginBottom: 16 }}>
       <SearchCondition
+        btnExtra={
+          currentUser.username == '管理员' && (
+            <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
+              数据聚合
+            </Button>
+          )
+        }
         searchItems={searchItems}
         handleSearch={fetchUserTotal}
         initialValues={{
@@ -113,7 +126,8 @@ const UserTotalInfo = ({ dispatch, loading, totalData }) => {
   );
 };
 
-export default connect(({ userList, loading }) => ({
+export default connect(({ userInfo, userList, loading }) => ({
+  currentUser: userInfo.currentUser,
   totalData: userList.totalData,
   loading: loading.effects['userList/fetchUserTotal'],
 }))(UserTotalInfo);

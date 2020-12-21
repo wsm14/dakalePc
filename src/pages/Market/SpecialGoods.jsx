@@ -99,16 +99,15 @@ const SpecialGoods = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
-      title: '已核销',
+      title: '已售',
       align: 'right',
       dataIndex: 'soldGoodsCount',
     },
-    // {
-    //   title: '剩余',
-    //   align: 'right',
-    //   dataIndex: 'maxBuyAmount',
-    //   render: (val, row) => val - row.soldGoodsCount,
-    // },
+    {
+      title: '已核销',
+      align: 'right',
+      dataIndex: 'writeOffGoodsCount',
+    },
     {
       title: '所属商家',
       dataIndex: 'merchantName',

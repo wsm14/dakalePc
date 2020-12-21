@@ -43,7 +43,7 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
     fetchUserInfoTotal();
   }, []);
 
-  const styles = { padding: 0 };
+  const styles = { padding: '0 10px' };
 
   return (
     <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>

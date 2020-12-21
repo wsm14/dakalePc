@@ -7,6 +7,7 @@ import {
   fetchUserInfoTotal,
   fetchUserAddTotal,
   fetchUserCityTotal,
+  fetchUserJuhe,
 } from '@/services/UserServices';
 
 export default {
@@ -90,6 +91,14 @@ export default {
             })),
           },
         },
+      });
+    },
+    *fetchUserJuhe({ payload }, { call }) {
+      const response = yield call(fetchUserJuhe, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '执行成功',
       });
     },
     *fetchUserStatus({ payload, callback }, { call, put }) {
