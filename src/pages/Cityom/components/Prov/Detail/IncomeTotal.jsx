@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Spin } from 'antd';
-import { Bar } from '@/components/Charts';
+import { Column } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const ProvCompanyTotalInfo = ({ dispatch, loading, companyId, totalData }) => {
@@ -38,7 +38,7 @@ const ProvCompanyTotalInfo = ({ dispatch, loading, companyId, totalData }) => {
         <div style={{ textAlign: 'center' }}>
           年份：{selectYear}年&nbsp;&nbsp;&nbsp;&nbsp;收益：{totalData.total}卡豆
         </div>
-        <Bar
+        <Column
           data={totalData.list}
           height={350}
           meta={{ month: { alias: '月份' }, beanSum: { alias: '卡豆数（个）' } }}

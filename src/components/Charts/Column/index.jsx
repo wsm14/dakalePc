@@ -14,11 +14,20 @@ const ColumnChart = (props) => {
     forceFit: true,
     height: height,
     radius: 0.8,
+    columnSize: 80,
     description: description || false,
     meta,
     ...xyField,
     label: {
       visible: true,
+    },
+    tooltip: {
+      visible: true,
+      domStyles: {
+        'g2-tooltip-value': {
+          marginLeft: '15px',
+        },
+      },
     },
   };
 

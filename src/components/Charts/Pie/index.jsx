@@ -1,7 +1,7 @@
 import React from 'react';
-import { Donut } from '@ant-design/charts';
+import { Pie } from '@ant-design/charts';
 
-const DonutChart = (props) => {
+const PieChart = (props) => {
   const {
     height = 0,
     data,
@@ -9,10 +9,8 @@ const DonutChart = (props) => {
     totalLabel,
     angleField = 'value',
     colorField = 'type',
-    innerRadius,
     legend,
     label = {},
-    labelColor = 'white',
     statisticShow = true,
     onClick,
     radius = 0.8,
@@ -35,7 +33,6 @@ const DonutChart = (props) => {
         },
       },
     },
-    innerRadius,
     statistic: {
       visible: statisticShow,
       triggerOn: false,
@@ -46,7 +43,6 @@ const DonutChart = (props) => {
     label: {
       visible: true,
       type: 'inner',
-      // style: { stroke: '', fill: labelColor },
       ...label,
     },
     events: {
@@ -56,7 +52,7 @@ const DonutChart = (props) => {
     },
   };
 
-  return <Donut {...config} />;
+  return <Pie {...config} />;
 };
 
-export default DonutChart;
+export default PieChart;

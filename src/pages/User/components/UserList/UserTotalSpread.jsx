@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Donut, Pie } from '@/components/Charts';
 
 const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
   const dataCity = totalData.city.map((item) => ({
@@ -77,14 +77,13 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut
+            <Pie
               data={totalInfo.tag || []}
               totalLabel="兴趣"
               height={276}
               angleField="count"
               colorField="tag"
               radius={1}
-              innerRadius={0.65}
             />
           </Card>
         </Spin>

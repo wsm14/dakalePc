@@ -18,6 +18,14 @@ const BarChart = (props) => {
       position: 'right',
       visible: true,
     },
+    tooltip: {
+      visible: true,
+      domStyles: {
+        'g2-tooltip-value': {
+          marginLeft: '15px',
+        },
+      },
+    },
   };
 
   return <Bar {...config} />;
