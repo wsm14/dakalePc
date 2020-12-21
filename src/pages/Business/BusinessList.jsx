@@ -114,8 +114,8 @@ const BusinessListComponent = (props) => {
       ),
     },
     {
-      label: '所属商圈',
-      name: 'businessHub',
+      title: '所属商圈',
+      dataIndex: 'businessHub',
     },
     {
       title: '经营类目',
