@@ -41,7 +41,7 @@ const CircleMasterList = (props) => {
       },
     });
   };
-  
+
   // table 表头
   const getColumns = [
     {
@@ -90,6 +90,7 @@ const CircleMasterList = (props) => {
           formItems={[
             {
               type: 'own',
+              auth: 'income',
               title: '收益明细',
               click: () => showProps('income', record),
             },

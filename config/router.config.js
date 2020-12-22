@@ -89,11 +89,13 @@ export default [
             path: '/user/list',
             name: '用户数据',
             component: './User/UserList',
+            buttons: ['info', 'status'],
           },
           {
             path: '/user/master',
             name: '家主列表',
             component: './User/CircleMasterList',
+            buttons: ['income'],
           },
           {
             path: '/user/bdlimitPop',

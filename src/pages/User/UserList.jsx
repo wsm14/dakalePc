@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import userDetailShow from './components/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
