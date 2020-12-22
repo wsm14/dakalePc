@@ -76,6 +76,7 @@ const SysMenuList = (props) => {
           formItems={[
             {
               type: 'edit',
+              auth: true,
               click: () => fetchGetMenuDetail({ accessId: val }),
             },
             {

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Switch, Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import RoleSetForm from '../Form/RoleSetForm';
@@ -98,12 +99,14 @@ const RoleList = (props) => {
       width: 100,
       dataIndex: 'status',
       render: (val, record) => (
-        <Switch
-          checkedChildren="启"
-          unCheckedChildren="停"
-          checked={val === '1'}
-          onClick={() => fetchEdit({ roleId: record.idString, status: 1 ^ val })}
-        />
+        <AuthConsumer auth="roleStatus" noAuth={val === '1' ? '启用' : '停用'}>
+          <Switch
+            checkedChildren="启"
+            unCheckedChildren="停"
+            checked={val === '1'}
+            onClick={() => fetchEdit({ roleId: record.idString, status: 1 ^ val })}
+          />
+        </AuthConsumer>
       ),
     },
     {
@@ -118,6 +121,7 @@ const RoleList = (props) => {
             {
               type: 'own',
               title: '权限设置',
+              auth: 'roleEdit',
               click: () => fetchFlag({ roleId: val }),
             },
           ]}

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import peasShareSet from './components/PeasShare/PeasShareSet';
@@ -64,9 +65,11 @@ const SysPeasShare = (props) => {
     <DataTableBlock
       cRef={childRef}
       btnExtra={
-        <Button className="dkl_green_btn" onClick={() => handlePeasShareSet()}>
-          新增
-        </Button>
+        <AuthConsumer auth="save">
+          <Button className="dkl_green_btn" onClick={() => handlePeasShareSet()}>
+            新增
+          </Button>
+        </AuthConsumer>
       }
       loading={loading}
       columns={getColumns}

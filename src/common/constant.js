@@ -67,6 +67,17 @@ export const ROLE_BUTTON_TYPE = {
   searchSet: '热门搜索配置',
   peasDetail: '卡豆明细',
   rechargeDetail: '充值记录',
+  user: '用户',
+  userAdd: '新增用户',
+  userStatus: '用户状态',
+  userEdit: '用户编辑',
+  role: '角色',
+  roleStatus: '角色状态',
+  roleEdit: '角色权限设置',
+  section: '部门',
+  baseTrade: '基础设施',
+  tradeAdd: '新增类目',
+  tradeSecondAdd: '添加子类目',
 };
 
 // 数据权限选项

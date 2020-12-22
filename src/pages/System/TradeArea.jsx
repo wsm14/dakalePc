@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Switch, Button, Card } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import TradeAreaLeft from './components/TradeArea/Left';
@@ -68,12 +69,14 @@ const TradeArea = (props) => {
       fixed: 'right',
       dataIndex: 'status',
       render: (val, record) => (
-        <Switch
-          checkedChildren="启"
-          unCheckedChildren="停"
-          checked={val === '1'}
-          onClick={() => fetchSet({ businessHubId: record.businessHubIdString, status: 1 ^ val })}
-        />
+        <AuthConsumer auth="edit" noAuth={val === '1' ? '启用' : '停用'}>
+          <Switch
+            checkedChildren="启"
+            unCheckedChildren="停"
+            checked={val === '1'}
+            onClick={() => fetchSet({ businessHubId: record.businessHubIdString, status: 1 ^ val })}
+          />
+        </AuthConsumer>
       ),
     },
     {
@@ -121,14 +124,15 @@ const TradeArea = (props) => {
       <div style={{ flex: 1 }}>
         <DataTableBlock
           btnExtra={
-            <Button
-              className="dkl_green_btn"
-              disabled={!(selectCode.districtCode && selectCode.cityCode)}
-              key="1"
-              onClick={() => setData()}
-            >
-              新增商圈
-            </Button>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                disabled={!(selectCode.districtCode && selectCode.cityCode)}
+                onClick={() => setData()}
+              >
+                新增商圈
+              </Button>
+            </AuthConsumer>
           }
           CardNone={false}
           cRef={childRef}

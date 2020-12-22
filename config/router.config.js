@@ -333,6 +333,16 @@ export default [
             path: '/system/account',
             name: '帐号权限管理',
             component: './System/AccountAdmin',
+            buttons: [
+              'user',
+              'userAdd',
+              'userStatus',
+              'userEdit',
+              'role',
+              'roleStatus',
+              'roleEdit',
+              'section',
+            ],
           },
           {
             path: '/system/provinceRole',
@@ -348,26 +358,31 @@ export default [
             path: '/system/tradeArea',
             name: '商圈管理',
             component: './System/TradeArea',
+            buttons: ['save', 'edit'],
           },
           {
             path: '/system/tradeset',
             name: '行业管理',
             component: './System/TradeList',
+            buttons: ['baseTrade', 'tradeAdd', 'edit', 'del', 'tradeSecondAdd'],
           },
           {
             path: '/system/brand',
             name: '品牌管理',
             component: './System/ManageBrand',
+            buttons: ['save'],
           },
           {
             path: '/system/bankSet',
             name: '支行管理',
             component: './System/ManageBank',
+            buttons: ['save', 'edit'],
           },
           {
             path: '/system/peasShare',
             name: '卡豆分享',
             component: './System/PeasShare',
+            buttons: ['save', 'edit', 'del'],
           },
           {
             path: '/system/pageset',

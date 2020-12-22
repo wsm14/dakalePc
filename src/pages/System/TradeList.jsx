@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import tradeCategorySet from './components/Trade/TradeCategorySet';
@@ -34,14 +35,21 @@ const SysTradeSet = (props) => {
       title: '平台服务费',
       align: 'center',
       dataIndex: 'parentId',
-      render: (val, record) => !val && <a onClick={() => setPVisible({ record })}>设置</a>,
+      render: (val, record) => (
+        <AuthConsumer auth="edit">
+          {!val && <a onClick={() => setPVisible({ record })}>设置</a>}
+        </AuthConsumer>
+      ),
     },
     {
       title: '特色服务',
       align: 'center',
       dataIndex: 'orderCount',
-      render: (val, record) =>
-        !record.parentId && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>,
+      render: (val, record) => (
+        <AuthConsumer auth="edit">
+          {!record.parentId && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>}
+        </AuthConsumer>
+      ),
     },
     {
       title: '操作',
@@ -65,6 +73,7 @@ const SysTradeSet = (props) => {
               type: 'own',
               visible: record.parentId === 0,
               title: '添加子类目',
+              auth: 'tradeSecondAdd',
               click: () =>
                 handleTradeCategorySet({
                   parentId: val,
@@ -118,18 +127,23 @@ const SysTradeSet = (props) => {
     <>
       <DataTableBlock
         cRef={childRef}
-        btnExtra={[
-          <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ type: 'base' })}>
-            基础设施
-          </Button>,
-          <Button
-            className="dkl_green_btn"
-            key="2"
-            onClick={() => handleTradeCategorySet({ parentId: 0, node: '0', type: 'first' })}
-          >
-            新增类目
-          </Button>,
-        ]}
+        btnExtra={
+          <>
+            <AuthConsumer auth="baseTrade">
+              <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'base' })}>
+                基础设施
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="tradeAdd">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => handleTradeCategorySet({ parentId: 0, node: '0', type: 'first' })}
+              >
+                新增类目
+              </Button>
+            </AuthConsumer>
+          </>
+        }
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

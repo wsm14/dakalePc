@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Card } from 'antd';
+import { Card, Result } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import UserList from './components/Account/List/UserList';
 import RoleList from './components/Account/List/RoleList';
 import SectionList from './components/Account/List/SectionList';
@@ -23,9 +24,30 @@ const AccountOwn = (props) => {
   const [tabkey, setTabKey] = useState('tab1');
 
   const contentList = {
-    tab1: <UserList></UserList>,
-    tab2: <RoleList></RoleList>,
-    tab3: <SectionList></SectionList>,
+    tab1: (
+      <AuthConsumer
+        auth="user"
+        noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
+      >
+        <UserList></UserList>
+      </AuthConsumer>
+    ),
+    tab2: (
+      <AuthConsumer
+        auth="role"
+        noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
+      >
+        <RoleList></RoleList>
+      </AuthConsumer>
+    ),
+    tab3: (
+      <AuthConsumer
+        auth="section"
+        noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
+      >
+        <SectionList></SectionList>
+      </AuthConsumer>
+    ),
   };
 
   return (
@@ -34,7 +56,7 @@ const AccountOwn = (props) => {
       tabList={tabList}
       activeTabKey={tabkey}
       onTabChange={(key) => {
-        console.log(key)
+        console.log(key);
         setTabKey(key);
       }}
     >
