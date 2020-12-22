@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 
@@ -141,40 +142,48 @@ const AreaCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      {detail.partnerStatus != 2 && (
-                        <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
-                          解约
-                        </Button>
-                      )}
-                      {(detail.partnerStatus == 0 || detail.partnerStatus == 1) && (
-                        <Button
-                          onClick={() => fetchAreaEdit(1 ^ Number(detail.partnerStatus))}
-                          type="primary"
-                          loading={loading}
-                        >
-                          {detail.partnerStatus == 0 ? '冻结' : '启用'}
-                        </Button>
-                      )}
-                      {detail.partnerStatus != 2 && (
-                        <Button
-                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                          type="primary"
-                          loading={loading}
-                        >
-                          编辑
-                        </Button>
-                      )}
+                      <AuthConsumer auth="relieve">
+                        {detail.partnerStatus != 2 && (
+                          <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
+                            解约
+                          </Button>
+                        )}
+                      </AuthConsumer>
+                      <AuthConsumer auth="status">
+                        {(detail.partnerStatus == 0 || detail.partnerStatus == 1) && (
+                          <Button
+                            onClick={() => fetchAreaEdit(1 ^ Number(detail.partnerStatus))}
+                            type="primary"
+                            loading={loading}
+                          >
+                            {detail.partnerStatus == 0 ? '冻结' : '启用'}
+                          </Button>
+                        )}
+                      </AuthConsumer>
+                      <AuthConsumer auth="edit">
+                        {detail.partnerStatus != 2 && (
+                          <Button
+                            onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                            type="primary"
+                            loading={loading}
+                          >
+                            编辑
+                          </Button>
+                        )}
+                      </AuthConsumer>
                     </>
                   )}
-                  {tabKey == '2' && (
-                    <Button
-                      onClick={() => setVisibleAct({ type: 'edit', show: true })}
-                      type="primary"
-                      loading={loading}
-                    >
-                      去编辑
-                    </Button>
-                  )}
+                  <AuthConsumer auth="edit">
+                    {tabKey == '2' && (
+                      <Button
+                        onClick={() => setVisibleAct({ type: 'edit', show: true })}
+                        type="primary"
+                        loading={loading}
+                      >
+                        去编辑
+                      </Button>
+                    )}
+                  </AuthConsumer>
                 </Space>
               ),
             }[type]

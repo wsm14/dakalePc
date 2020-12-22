@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 
@@ -140,36 +141,44 @@ const ProvCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
-                        解约
-                      </Button>
-                      {(detail.status == 0 || detail.status == 1) && (
+                      <AuthConsumer auth="relieve">
+                        <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                          解约
+                        </Button>
+                      </AuthConsumer>
+                      <AuthConsumer auth="status">
+                        {(detail.status == 0 || detail.status == 1) && (
+                          <Button
+                            onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                            type="primary"
+                            loading={loading}
+                          >
+                            {detail.status == 0 ? '冻结' : '启用'}
+                          </Button>
+                        )}
+                      </AuthConsumer>
+                      <AuthConsumer auth="edit">
                         <Button
-                          onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
                           type="primary"
                           loading={loading}
                         >
-                          {detail.status == 0 ? '冻结' : '启用'}
+                          编辑
                         </Button>
-                      )}
+                      </AuthConsumer>
+                    </>
+                  )}
+                  <AuthConsumer auth="edit">
+                    {tabKey == '2' && (
                       <Button
-                        onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                        onClick={() => setVisibleAct({ type: 'edit', show: true })}
                         type="primary"
                         loading={loading}
                       >
-                        编辑
+                        去编辑
                       </Button>
-                    </>
-                  )}
-                  {tabKey == '2' && (
-                    <Button
-                      onClick={() => setVisibleAct({ type: 'edit', show: true })}
-                      type="primary"
-                      loading={loading}
-                    >
-                      去编辑
-                    </Button>
-                  )}
+                    )}
+                  </AuthConsumer>
                 </Space>
               ),
             }[type]

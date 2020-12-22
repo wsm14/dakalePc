@@ -34,6 +34,8 @@ export const ROLE_BUTTON_TYPE = {
   save: '新增',
   status: '状态',
   relieve: '解约',
+  income: '收益数据',
+  withdraw: '提现数据',
   handle: '处理',
 };
 

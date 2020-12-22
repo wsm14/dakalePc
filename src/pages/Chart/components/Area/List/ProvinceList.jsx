@@ -73,6 +73,7 @@ const ProvinceTotalComponent = (props) => {
           formItems={[
             {
               type: 'info',
+              auth: true,
               click: () => handleHistoryChart(record.bucket),
             },
           ]}

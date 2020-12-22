@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
@@ -125,11 +126,13 @@ const AreaCenter = (props) => {
           formItems={[
             {
               type: 'own',
+              auth: 'income',
               title: '收益明细',
               click: () => setVisible({ type: 'income', record }),
             },
             {
               type: 'own',
+              auth: 'withdraw',
               title: '提现记录',
               click: () => setVisible({ type: 'withdraw', record }),
             },
@@ -148,18 +151,20 @@ const AreaCenter = (props) => {
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button
-            className="dkl_green_btn"
-            key="1"
-            onClick={() => {
-              dispatch({
-                type: 'areaCenter/fetchCloseData',
-                callback: () => setVisibleSet({ type: 'add', show: true }),
-              });
-            }}
-          >
-            新增
-          </Button>
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              key="1"
+              onClick={() => {
+                dispatch({
+                  type: 'areaCenter/fetchCloseData',
+                  callback: () => setVisibleSet({ type: 'add', show: true }),
+                });
+              }}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
         }
         loading={loading}
         columns={getColumns}

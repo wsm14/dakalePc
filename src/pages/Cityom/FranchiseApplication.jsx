@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { FRANCHISE_APP_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -82,9 +83,10 @@ const FranchiseApplication = (props) => {
           formItems={[
             {
               type: 'own',
-              title: '处理',
-              visible: record.handled === '0',
               pop: true,
+              title: '处理',
+              auth: 'handle',
+              visible: record.handled === '0',
               popText: '加盟申请是否已处理？',
               click: () => fetchFranchiseHandle(record.userApplyIdString),
             },
