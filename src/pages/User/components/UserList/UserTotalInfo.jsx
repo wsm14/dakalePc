@@ -53,7 +53,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData, currentUser }) => {
   };
 
   return (
-    <Card style={{ marginBottom: 16 }}>
+    <Card style={{ marginBottom: 16 }} bordered={false}>
       <SearchCondition
         btnExtra={
           currentUser.username == '管理员' && (
