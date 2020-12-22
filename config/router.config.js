@@ -295,11 +295,13 @@ export default [
             path: '/account/user',
             name: '用户账户',
             component: './Account/AccountUser',
+            buttons: ['peasDetail', 'rechargeDetail'],
           },
           {
             path: '/account/business',
             name: '商家账户',
             component: './Account/AccountBusiness',
+            buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
           },
         ],
       },

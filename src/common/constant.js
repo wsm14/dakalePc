@@ -64,6 +64,8 @@ export const ROLE_BUTTON_TYPE = {
   markTextEdit: '修改打卡文案',
   tradeSet: '行业设置',
   searchSet: '热门搜索配置',
+  peasDetail: '卡豆明细',
+  rechargeDetail: '充值记录',
 };
 
 // 数据权限选项
