@@ -116,16 +116,16 @@ export default {
       const { content } = response;
       const barArr = ['人推人', '人推店', '店推人', '店推店'];
       const dountArr = ['商家家主', '用户家主'];
-      const dountTowArr = ['商家家主', '用户家主'];
+      const dountTowArr = ['商家家主收益', '用户家主收益'];
       yield put({
         type: 'save',
         payload: {
           masterDountLeftData: content.familyStatistic.filter(
             (item) => dountArr.indexOf(item.type) > -1,
           ),
-          masterDountRightData: content.familyStatistic.filter(
-            (item) => dountTowArr.indexOf(item.type) > -1,
-          ),
+          masterDountRightData: content.familyStatistic
+            .filter((item) => dountTowArr.indexOf(item.type) > -1)
+            .map((item) => ({ ...item, type: item.type.replace('收益', '') })),
           masterBarData: content.familyStatistic.filter((item) => barArr.indexOf(item.type) > -1),
         },
       });
