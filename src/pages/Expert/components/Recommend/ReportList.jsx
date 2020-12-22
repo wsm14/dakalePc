@@ -140,6 +140,7 @@ const ReportList = (props) => {
                 {
                   title: '处理',
                   type: 'own',
+                  auth: 'handle',
                   visible: status == 0,
                   click: () => fetchExpertProcessReport({ userReportId }),
                 },

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Badge } from 'antd';
 import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -135,7 +136,9 @@ const ExpertRecommend = (props) => {
         const idObj = { kolMomentsId, userIdString };
         return (
           <>
-            <OrdersDetail {...idObj}></OrdersDetail>
+            <AuthConsumer auth="info">
+              <OrdersDetail {...idObj}></OrdersDetail>
+            </AuthConsumer>
             <HandleSetTable
               formItems={[
                 {
@@ -175,11 +178,13 @@ const ExpertRecommend = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Badge count={expertRecommend.totalReport}>
-            <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
-              举报中心
-            </Button>
-          </Badge>
+          <AuthConsumer auth="reportCenter">
+            <Badge count={expertRecommend.totalReport}>
+              <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
+                举报中心
+              </Button>
+            </Badge>
+          </AuthConsumer>
         }
         cRef={childRef}
         loading={loading}

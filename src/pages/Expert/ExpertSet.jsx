@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Switch } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import classifySet from './components/ExpertSet/ClassifySet';
@@ -24,22 +25,29 @@ const ExpertSet = (props) => {
       align: 'center',
       dataIndex: 'status',
       render: (val, record) => (
-        <Switch
-          checked={val == '1'}
-          onClick={() =>
-            fetchClassifyStatusEdit(
-              { domainId: record.domainId, status: 1 ^ Number(record.status) },
-              val,
-            )
-          }
-        />
+        <AuthConsumer auth="status" noAuth={val === '1' ? '显示' : '不显示'}>
+          <Switch
+            checked={val == '1'}
+            onClick={() =>
+              fetchClassifyStatusEdit(
+                { domainId: record.domainId, status: 1 ^ Number(record.status) },
+                val,
+              )
+            }
+          />
+        </AuthConsumer>
       ),
     },
     {
       title: '话题',
       align: 'center',
       dataIndex: 'parentDomainId',
-      render: (val, record) => val != 0 && <a onClick={() => setVisible({ record })}>设置</a>,
+      render: (val, record) =>
+        val != 0 && (
+          <AuthConsumer auth="topic">
+            <a onClick={() => setVisible({ record })}>设置</a>
+          </AuthConsumer>
+        ),
     },
     {
       title: '操作',
@@ -73,6 +81,7 @@ const ExpertSet = (props) => {
                 type: 'own',
                 visible: pid === 0,
                 title: '添加内容分类',
+                auth: 'saveClassify',
                 click: () =>
                   handleClassifySet(
                     {
@@ -132,15 +141,16 @@ const ExpertSet = (props) => {
   return (
     <>
       <DataTableBlock
-        btnExtra={[
-          <Button
-            className="dkl_green_btn"
-            key="2"
-            onClick={() => handleClassifySet({ parentDomainId: 0 })}
-          >
-            新增
-          </Button>,
-        ]}
+        btnExtra={
+          <AuthConsumer auth="savePClassify">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => handleClassifySet({ parentDomainId: 0 })}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
+        }
         keepName="话题设置"
         cRef={childRef}
         loading={loading}

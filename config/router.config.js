@@ -191,30 +191,35 @@ export default [
         path: '/expert',
         routes: [
           {
-            path: '/expert/recommend',
-            name: '种草管理',
-            component: './Expert/ExpertRecommend',
-          },
-          {
             path: '/expert/uaerlist',
             //business talent
             name: '哒人列表',
             component: './Expert/ExpertUserList',
+            buttons: ['status'],
           },
           {
             path: '/expert/level',
             name: '等级设置',
             component: './Expert/ExpertLevel',
+            buttons: ['targetSet', 'rightsSet'],
           },
           {
             path: '/expert/set',
             name: '创作设置',
             component: './Expert/ExpertSet',
+            buttons: ['status', 'topic', 'edit', 'del', 'savePClassify', 'saveClassify'],
+          },
+          {
+            path: '/expert/recommend',
+            name: '种草管理',
+            component: './Expert/ExpertRecommend',
+            buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
           {
             path: '/expert/sort',
             name: '排序机制',
             component: './Expert/ExpertSort',
+            buttons: ['edit'],
           },
         ],
       },

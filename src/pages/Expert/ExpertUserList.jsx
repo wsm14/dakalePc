@@ -106,6 +106,7 @@ const ExpertUserList = (props) => {
             {
               type: 'own',
               visible: record.status == 1,
+              auth: 'status',
               title: '封停',
               click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
             },
@@ -113,6 +114,7 @@ const ExpertUserList = (props) => {
               type: 'own',
               pop: true,
               visible: record.status != 1,
+              auth: 'status',
               title: '解封',
               click: () => fetchExpertOpen({ kolUserId: val }),
             },

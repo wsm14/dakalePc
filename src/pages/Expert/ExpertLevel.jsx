@@ -41,6 +41,7 @@ const ExpertLevel = (props) => {
             formItems={[
               {
                 type: 'set',
+                auth: 'targetSet',
                 click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
               },
               // {
@@ -62,6 +63,7 @@ const ExpertLevel = (props) => {
             formItems={[
               {
                 type: 'set',
+                auth: 'rightsSet',
                 click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
               },
               // {
