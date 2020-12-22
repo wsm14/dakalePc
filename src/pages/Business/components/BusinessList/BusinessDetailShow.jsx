@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const { TabPane } = Tabs;
@@ -228,12 +229,16 @@ const BusinessDetailShow = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={onClose}>取消</Button>
-            <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
-              {businessStatusText}
-            </Button>
-            <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
-              {statusText}
-            </Button>
+            <AuthConsumer auth="bussinessStatus">
+              <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
+                {businessStatusText}
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="status">
+              <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
+                {statusText}
+              </Button>
+            </AuthConsumer>
           </Space>
         </div>
       }

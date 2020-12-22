@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import exportExcel from '@/utils/exportExcel';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
@@ -181,6 +182,7 @@ const BusinessListComponent = (props) => {
             {
               title: '获取二维码',
               type: 'own',
+              auth: 'qrCode',
               click: () => setVisibleQrcode(record),
             },
             {
@@ -267,9 +269,11 @@ const BusinessListComponent = (props) => {
       <DataTableBlock
         keepName="店铺数据"
         btnExtra={({ get }) => (
-          <Button className="dkl_green_btn" key="1" onClick={() => fetchGetExcel(get())}>
-            导出
-          </Button>
+          <AuthConsumer auth="exportList">
+            <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
+              导出
+            </Button>
+          </AuthConsumer>
         )}
         cRef={childRef}
         loading={
@@ -288,16 +292,19 @@ const BusinessListComponent = (props) => {
             key="businessTotalInfo"
             btnExtra={
               <>
-                <Button
-                  className="dkl_green_btn"
-                  key="1"
-                  onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
-                >
-                  新增商户
-                </Button>
-                <Button className="dkl_green_btn" key="1" onClick={handleVCodeSet}>
-                  设置商家验证码
-                </Button>
+                <AuthConsumer auth="save">
+                  <Button
+                    className="dkl_green_btn"
+                    onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
+                  >
+                    新增商户
+                  </Button>
+                </AuthConsumer>
+                <AuthConsumer auth="setMreCord">
+                  <Button className="dkl_green_btn" onClick={handleVCodeSet}>
+                    设置商家验证码
+                  </Button>
+                </AuthConsumer>
               </>
             }
           ></BusinessTotalInfo>

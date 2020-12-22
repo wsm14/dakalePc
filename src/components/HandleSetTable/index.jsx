@@ -6,6 +6,7 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import { ROLE_BUTTON_TYPE } from '@/common/constant';
 
 const HandleSetTable = (props) => {
   const { formItems } = props;
@@ -17,42 +18,23 @@ const HandleSetTable = (props) => {
       let { pop = false, auth = false } = item;
       auth = auth || type;
 
-      let btnText = '';
+      let btnText = ROLE_BUTTON_TYPE[type];
       if (type === 'own') {
         btnText = title;
         // 默认全显示 配置权限则根据权限显示
         auth = auth === 'own' ? true : auth;
       }
-      if (type === 'info') {
-        btnText = '详情';
-      }
-      if (type === 'set') {
-        btnText = '设置';
-      }
-      if (type === 'eye') {
-        btnText = '查看';
-      }
-      if (type === 'edit') {
-        btnText = '编辑';
-      }
       if (type === 'del') {
         pop = true;
-        btnText = '删除';
-      }
-      if (type === 'check') {
-        btnText = '审核';
       }
       if (type === 'send') {
         pop = true;
-        btnText = '发布';
       }
       if (type === 'up') {
         pop = true;
-        btnText = '上架';
       }
       if (type === 'down') {
         pop = true;
-        btnText = '下架';
       }
 
       let component =

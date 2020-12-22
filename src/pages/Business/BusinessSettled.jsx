@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { MRE_ACCOUNT_STATUS, BUSINESS_STATUS_AUDIT, MRE_SORT_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import exportExcel from '@/utils/exportExcel';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -166,9 +167,11 @@ const BusinessSettled = (props) => {
   return (
     <DataTableBlock
       btnExtra={({ get }) => (
-        <Button className="dkl_green_btn" key="1" onClick={() => fetchGetExcel(get())}>
-          导出
-        </Button>
+        <AuthConsumer auth="exportList">
+          <Button className="dkl_green_btn" key="1" onClick={() => fetchGetExcel(get())}>
+            导出
+          </Button>
+        </AuthConsumer>
       )}
       keepName="入驻查询"
       cRef={childRef}

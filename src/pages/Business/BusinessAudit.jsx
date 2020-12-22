@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
@@ -155,9 +156,11 @@ const BusinessAuditList = (props) => {
       <DataTableBlock
         keepName="审核列表"
         btnExtra={
-          <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
-            审核记录
-          </Button>
+          <AuthConsumer auth="checkDetail">
+            <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
+              审核记录
+            </Button>
+          </AuthConsumer>
         }
         cRef={childRef}
         loading={loading}

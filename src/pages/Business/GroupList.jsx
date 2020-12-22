@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { WORKER_BANK_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
@@ -176,6 +177,7 @@ const tableList = (props) => {
               {
                 type: 'own',
                 title: '账户激活',
+                auth: 'activate',
                 click: () => {
                   fetchSave({
                     visible1: true,
@@ -220,22 +222,24 @@ const tableList = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button
-            className="dkl_green_btn"
-            key="1"
-            onClick={() =>
-              fetchSave({
-                visible: true,
-                merchantGroupId: null,
-                groupDetails: {},
-                merchantGroupDTO: {},
-                businessLicense: {},
-                bankBindingInfo: {},
-              })
-            }
-          >
-            新增
-          </Button>
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              key="1"
+              onClick={() =>
+                fetchSave({
+                  visible: true,
+                  merchantGroupId: null,
+                  groupDetails: {},
+                  merchantGroupDTO: {},
+                  businessLicense: {},
+                  bankBindingInfo: {},
+                })
+              }
+            >
+              新增
+            </Button>
+          </AuthConsumer>
         }
         loading={loading}
         columns={getColumns}

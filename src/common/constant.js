@@ -20,7 +20,7 @@ export const WORKER_ROLEDATA_TYPE = [
   { value: 100, name: '全部' },
 ];
 
-// 权限按钮映射
+// 权限按钮映射 和 HandleSetTable 对应
 export const ROLE_BUTTON_TYPE = {
   info: '详情',
   set: '设置',
@@ -33,10 +33,16 @@ export const ROLE_BUTTON_TYPE = {
   down: '下架',
   save: '新增',
   status: '状态',
+  bussinessStatus: '营业状态',
   relieve: '解约',
   income: '收益数据',
   withdraw: '提现数据',
   handle: '处理',
+  checkDetail: '审核记录',
+  setMreCord: '设置商家验证码',
+  exportList: '导出列表',
+  qrCode: '获取二维码',
+  activate: '账户激活',
 };
 
 // 加盟申请状态
