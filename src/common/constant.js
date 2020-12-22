@@ -12,14 +12,6 @@ export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 // 高德地图js key
 export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
-// 数据权限选项
-export const WORKER_ROLEDATA_TYPE = [
-  { value: 1, name: '本人' },
-  { value: 25, name: '本部门（不含下级部门）' },
-  { value: 50, name: '本部门及以下级部门 ' },
-  { value: 100, name: '全部' },
-];
-
 // 权限按钮映射 和 HandleSetTable 对应
 export const ROLE_BUTTON_TYPE = {
   info: '详情',
@@ -33,6 +25,7 @@ export const ROLE_BUTTON_TYPE = {
   down: '下架',
   save: '新增',
   status: '状态',
+  recommendStatus: '推荐状态',
   bussinessStatus: '营业状态',
   relieve: '解约',
   income: '收益数据',
@@ -51,7 +44,35 @@ export const ROLE_BUTTON_TYPE = {
   saveClassify: '添加内容子类',
   savePClassify: '添加内容分类',
   reportCenter: '举报中心',
+  noticeAdd: '公告新增',
+  noticeEdit: '公告修改',
+  noticeDel: '公告删除',
+  noticeSend: '公告发送',
+  couponAdd: '优惠券新增',
+  destoryDetail: '核销明细',
+  orderDetail: '订单明细',
+  couponDetail: '优惠券详情',
+  shareImg: '分享图片',
+  shareText: '分享文案',
+  markImg: '打卡图片',
+  markText: '打卡文案',
+  shareImgAdd: '新增分享图片',
+  shareImgEdit: '修改分享图片',
+  markTextAdd: '新增分享文案',
+  shareTextEdit: '修改分享文案',
+  markImgEdit: '修改打卡图片',
+  markTextEdit: '修改打卡文案',
+  tradeSet: '行业设置',
+  searchSet: '热门搜索配置',
 };
+
+// 数据权限选项
+export const WORKER_ROLEDATA_TYPE = [
+  { value: 1, name: '本人' },
+  { value: 25, name: '本部门（不含下级部门）' },
+  { value: 50, name: '本部门及以下级部门 ' },
+  { value: 100, name: '全部' },
+];
 
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];

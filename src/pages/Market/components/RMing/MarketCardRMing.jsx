@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import { MATCH_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketRMTotalInfo from './MarketRMTotalInfo';
@@ -131,12 +132,13 @@ const MarketCardRMing = (props) => {
     handlePageShowBtn();
   }, []);
 
-  const btnExtra = [
-    <Button className="dkl_green_btn" key="1" onClick={handleSetMatch}>
-      设置
-    </Button>,
-  ];
-
+  const btnExtra = (
+    <AuthConsumer auth="set">
+      <Button className="dkl_green_btn" key="1" onClick={handleSetMatch}>
+        设置
+      </Button>
+    </AuthConsumer>
+  );
   return (
     <>
       <MarketRMTotalInfo matchType={matchType} />

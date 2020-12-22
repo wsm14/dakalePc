@@ -8,13 +8,14 @@ const SearchSetList = (props) => {
   const { loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState({ show: false, detail: [],data:{} });
+  const [visible, setVisible] = useState({ show: false, detail: [], data: {} });
 
   // 回显信息
   const fetchSearchGetData = () => {
     dispatch({
       type: 'searchSet/fetchSearchGetData',
-      callback: (detail) => setVisible({ show: true, detail,data:{data: detail.map(i=>i.value)} }),
+      callback: (detail) =>
+        setVisible({ show: true, detail, data: { data: detail.map((i) => i.value) } }),
     });
   };
 
@@ -35,6 +36,7 @@ const SearchSetList = (props) => {
           formItems={[
             {
               type: 'own',
+              auth: 'searchSet',
               title: '配置',
               click: fetchSearchGetData,
             },

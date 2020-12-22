@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Modal } from 'antd';
 import { SPECIAL_STATUS, SPECIAL_RECOMMEND_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -150,15 +151,14 @@ const SpecialGoods = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'own',
-                pop: true,
-                title: '下架',
+                type: 'down',
                 visible: record.status != '0',
                 click: () => fetchSpecialGoodsStatus({ ...record, goodsIdStr }),
               },
               {
                 type: 'own',
                 title: '推荐',
+                auth: 'recommendStatus',
                 visible: record.status != '0' && record.recommendStatus != '1' && businessHubId,
                 click: () => fetchGetHubName({ specialGoodsId, businessHubId, recommendStatus: 1 }),
               },
@@ -166,6 +166,7 @@ const SpecialGoods = (props) => {
                 type: 'own',
                 pop: true,
                 title: '取消推荐',
+                auth: 'recommendStatus',
                 visible: record.status != '0' && record.recommendStatus == '1' && businessHubId,
                 click: () => fetchSpecialGoodsRecommend({ specialGoodsId, recommendStatus: 0 }),
               },
@@ -235,9 +236,11 @@ const SpecialGoods = (props) => {
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button className="dkl_green_btn" onClick={fetchGetTradeSelect}>
-            行业设置
-          </Button>
+          <AuthConsumer auth="tradeSet">
+            <Button className="dkl_green_btn" onClick={fetchGetTradeSelect}>
+              行业设置
+            </Button>
+          </AuthConsumer>
         }
         loading={loading}
         columns={getColumns}

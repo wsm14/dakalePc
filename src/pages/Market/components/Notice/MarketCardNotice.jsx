@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import NoticeImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -118,11 +119,13 @@ const MarketCardNotice = (props) => {
     handlePageShowBtn();
   }, []);
 
-  const btnExtra = [
-    <Button className="dkl_green_btn" key="1" onClick={() => handleNoticeSet()}>
-      新增公告
-    </Button>,
-  ];
+  const btnExtra = (
+    <AuthConsumer auth="noticeAdd">
+      <Button className="dkl_green_btn" key="1" onClick={() => handleNoticeSet()}>
+        新增公告
+      </Button>
+    </AuthConsumer>
+  );
 
   return (
     <DataTableBlock

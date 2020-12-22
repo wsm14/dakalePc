@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -90,9 +91,7 @@ const SysAppSet = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              pop: true,
-              title: '下架',
+              type: 'down',
               visible: record.showStatus === '1',
               click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
             },
@@ -126,9 +125,14 @@ const SysAppSet = (props) => {
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button className="dkl_green_btn" onClick={() => setVisibleSet({ show: true, info: '' })}>
-            新增
-          </Button>
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisibleSet({ show: true, info: '' })}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
         }
         loading={loading}
         columns={getColumns}
