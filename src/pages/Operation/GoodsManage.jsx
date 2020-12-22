@@ -2,8 +2,9 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, message } from 'antd';
 import { GOODS_TYPE } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
+import Ellipsis from '@/components/Ellipsis';
 import closeRefuse from './components/Goods/Form/CloseRefuse';
 import stockSet from './components/Goods/Form/StockSet';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -144,6 +145,7 @@ const GoodsManageComponent = (props) => {
               {
                 type: 'own',
                 title: '库存',
+                auth: 'stockSet',
                 visible: status != 0,
                 click: () => fetchStockSet(record),
               },
@@ -165,6 +167,7 @@ const GoodsManageComponent = (props) => {
               {
                 type: 'own',
                 title: '操作记录',
+                auth: 'handleDeatil',
                 click: () => fetchGoodsHandleDetail(val),
               },
             ]}
@@ -262,13 +265,11 @@ const GoodsManageComponent = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button
-            className="dkl_green_btn"
-            key="1"
-            onClick={() => setVisible({ type: 'addGoods' })}
-          >
-            新增
-          </Button>
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'addGoods' })}>
+              新增
+            </Button>
+          </AuthConsumer>
         }
         resetSearch={() => setMerchantId('')}
         cRef={childRef}

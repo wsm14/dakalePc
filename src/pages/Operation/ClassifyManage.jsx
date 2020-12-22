@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import debounce from 'lodash/debounce';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import ClassifySet from './components/Classify/ClassifySet';
@@ -68,7 +69,7 @@ const ClassifyManageComponent = (props) => {
     {
       title: '操作',
       fixed: 'right',
-      align: 'center',
+      align: 'right',
       dataIndex: 'categoryCustomId',
       render: (categoryCustomId, record) => {
         const { merchantIdStr } = record;
@@ -99,9 +100,11 @@ const ClassifyManageComponent = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ type: 'add' })}>
-            新增分类
-          </Button>
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
+              新增分类
+            </Button>
+          </AuthConsumer>
         }
         cRef={childRef}
         loading={loading}

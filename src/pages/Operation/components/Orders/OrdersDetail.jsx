@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Spin, Popover } from 'antd';
 import { PAY_TYPE } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import styles from './style.less';
 
 const MasterOrderDetail = ({ order, name, orderDetail, loading, dispatch }) => {
@@ -72,17 +73,19 @@ const MasterOrderDetail = ({ order, name, orderDetail, loading, dispatch }) => {
   );
 
   return order ? (
-    <Popover
-      destroyTooltipOnHide
-      placement="right"
-      trigger="click"
-      title="订单详情"
-      overlayStyle={{ height: 284, width: 300 }}
-      content={loading ? <Spin></Spin> : oderDom}
-      onVisibleChange={(val) => setVisible(val)}
-    >
-      <a onClick={fetchGetDetail}>查看详情</a>
-    </Popover>
+    <AuthConsumer auth="info">
+      <Popover
+        destroyTooltipOnHide
+        placement="right"
+        trigger="click"
+        title="订单详情"
+        overlayStyle={{ height: 284, width: 300 }}
+        content={loading ? <Spin></Spin> : oderDom}
+        onVisibleChange={(val) => setVisible(val)}
+      >
+        <a onClick={fetchGetDetail}>查看详情</a>
+      </Popover>
+    </AuthConsumer>
   ) : (
     '--'
   );

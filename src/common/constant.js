@@ -43,6 +43,8 @@ export const ROLE_BUTTON_TYPE = {
   exportList: '导出列表',
   qrCode: '获取二维码',
   activate: '账户激活',
+  handleDeatil: '操作记录',
+  stockSet: '库存设置',
 };
 
 // 加盟申请状态

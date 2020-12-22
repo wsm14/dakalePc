@@ -141,9 +141,7 @@ const ShareManage = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'own',
-                pop: true,
-                title: '下架',
+                type: 'down',
                 visible: status == 1 || status == 5,
                 click: () => fetchAuditRefuse(record),
               },
@@ -152,8 +150,9 @@ const ShareManage = (props) => {
                 click: () => fetchShareDetail(val, record.contentType),
               },
               {
-                title: '操作记录',
                 type: 'own',
+                auth: 'handleDeatil',
+                title: '操作记录',
                 click: () => fetchShareHandleDetail(val),
               },
             ]}
