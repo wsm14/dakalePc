@@ -339,6 +339,7 @@ export default [
               'userStatus',
               'userEdit',
               'role',
+              'roleAdd',
               'roleStatus',
               'roleEdit',
               'section',

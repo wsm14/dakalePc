@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Switch, Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import RoleSetForm from './components/RoleProvince/Form/RoleSetForm';
@@ -60,12 +61,14 @@ const ProvinceRole = (props) => {
       width: 100,
       dataIndex: 'status',
       render: (val, record) => (
-        <Switch
-          checkedChildren="启"
-          unCheckedChildren="停"
-          checked={val === '1'}
-          onClick={() => fetchEdit({ roleId: record.idString, status: 1 ^ val })}
-        />
+        <AuthConsumer auth="roleStatus" noAuth={val === '1' ? '启用' : '停用'}>
+          <Switch
+            checkedChildren="启"
+            unCheckedChildren="停"
+            checked={val === '1'}
+            onClick={() => fetchEdit({ roleId: record.idString, status: 1 ^ val })}
+          />
+        </AuthConsumer>
       ),
     },
     {
@@ -79,6 +82,7 @@ const ProvinceRole = (props) => {
           formItems={[
             {
               type: 'own',
+              auth: 'roleEdit',
               title: '权限设置',
               click: () => fetchDetail({ roleId: val }),
             },
@@ -92,9 +96,11 @@ const ProvinceRole = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ visible: true })}>
-            新增
-          </Button>
+          <AuthConsumer auth="roleAdd">
+            <Button className="dkl_green_btn" onClick={() => setVisible({ visible: true })}>
+              新增
+            </Button>
+          </AuthConsumer>
         }
         cRef={childRef}
         loading={loading}
