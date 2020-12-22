@@ -39,13 +39,13 @@ export default [
             path: '/cityom/provCo',
             name: '省公司列表',
             component: './Cityom/ProvCompany',
-            buttons: ['save', 'view', 'edit', 'status', 'relieve'],
+            buttons: ['save', 'info', 'edit', 'status', 'relieve'],
           },
           {
             path: '/cityom/area',
             name: '区县运营中心',
             component: './Cityom/AreaCenter',
-            buttons: ['save', 'view', 'edit', 'status', 'relieve'],
+            buttons: ['save', 'info', 'edit', 'status', 'relieve'],
           },
           {
             path: '/cityom/join',

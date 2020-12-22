@@ -73,10 +73,8 @@ const ServiceNewsComponent = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              pop: true,
+              type: 'down',
               visible: record.status === '1',
-              title: '下架',
               click: () => fetchNewsStatus({ newsId: val, status: 0 }),
             },
             // {

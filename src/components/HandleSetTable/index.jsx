@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 
 const HandleSetTable = (props) => {
   const { formItems } = props;
@@ -13,11 +14,14 @@ const HandleSetTable = (props) => {
     const children = [];
     formItems.forEach((item, index) => {
       const { type = 'button', title = '按钮', visible = true } = item;
-      let { pop = false } = item;
+      let { pop = false, auth = false } = item;
+      auth = auth || type;
 
       let btnText = '';
       if (type === 'own') {
         btnText = title;
+        // 默认全显示 配置权限则根据权限显示
+        auth = auth === 'own' ? true : auth;
       }
       if (type === 'info') {
         btnText = '详情';
@@ -55,7 +59,7 @@ const HandleSetTable = (props) => {
         type === 'text' ? (
           { title }
         ) : (
-          <Button key={`del${type}${index}`} type="link" size="small" onClick={item.click}>
+          <Button type="link" size="small" onClick={item.click}>
             {btnText}
           </Button>
         );
@@ -66,7 +70,6 @@ const HandleSetTable = (props) => {
           onConfirm={item.click}
           okText="确认"
           cancelText="取消"
-          key={`pop${type}${index}`}
         >
           <Button type="link" size="small">
             {btnText}
@@ -75,7 +78,13 @@ const HandleSetTable = (props) => {
       ) : (
         component
       );
-      children.push(visible && component);
+      children.push(
+        visible && (
+          <AuthConsumer key={`auth${type}${index}`} auth={auth}>
+            {component}
+          </AuthConsumer>
+        ),
+      );
     });
     return children;
   };

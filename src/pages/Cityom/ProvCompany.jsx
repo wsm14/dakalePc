@@ -7,6 +7,7 @@ import DataTableBlock from '@/components/DataTableBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
 import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
+import AuthConsumer from '@/layouts/AuthConsumer';
 
 const ProvCompany = (props) => {
   const { list, loading, dispatch } = props;
@@ -136,18 +137,20 @@ const ProvCompany = (props) => {
       <DataTableBlock
         cRef={childRef}
         btnExtra={
-          <Button
-            className="dkl_green_btn"
-            key="1"
-            onClick={() => {
-              dispatch({
-                type: 'provCompany/fetchCloseData',
-                callback: () => setVisibleSet({ type: 'add', show: true }),
-              });
-            }}
-          >
-            新增
-          </Button>
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              key="1"
+              onClick={() => {
+                dispatch({
+                  type: 'provCompany/fetchCloseData',
+                  callback: () => setVisibleSet({ type: 'add', show: true }),
+                });
+              }}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
         }
         loading={loading}
         columns={getColumns}

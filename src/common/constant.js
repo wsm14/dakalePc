@@ -22,10 +22,16 @@ export const WORKER_ROLEDATA_TYPE = [
 
 // 权限按钮映射
 export const ROLE_BUTTON_TYPE = {
-  view: '详情',
-  save: '新增',
+  info: '详情',
+  set: '设置',
+  eye: '查看',
   edit: '编辑',
-  verify: '审核',
+  del: '删除',
+  check: '审核',
+  send: '发布',
+  up: '上架',
+  down: '下架',
+  save: '新增',
   status: '状态',
   relieve: '解约',
   handle: '处理',

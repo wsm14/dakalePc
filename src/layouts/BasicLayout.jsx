@@ -120,7 +120,7 @@ const BasicLayout = (props) => {
       setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
     }
   };
-  console.log(props);
+
   return (
     <AliveScope>
       <ProLayout
