@@ -24,6 +24,7 @@ export const ROLE_BUTTON_TYPE = {
   up: '上架',
   down: '下架',
   save: '新增',
+  replay: '回复',
   status: '状态',
   recommendStatus: '推荐状态',
   bussinessStatus: '营业状态',

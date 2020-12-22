@@ -77,14 +77,14 @@ const ServiceFeedBack = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              title: '查看',
+              type: 'eye',
               visible: info.status === '2',
               click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
             {
               type: 'own',
               title: '回复',
+              auth: 'replay',
               visible: info.status !== '2',
               click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
