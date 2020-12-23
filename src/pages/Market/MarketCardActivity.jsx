@@ -1,25 +1,29 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
+import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
 
 const MarketCardActivity = (props) => {
-  const { marketCardActivity, loading, dispatch, setKey, matchType } = props;
+  const { marketCardActivity, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [show, setShow] = useState({ key: 'home', record: '' });
+  const [params, setParams] = useState({});
 
   // 搜索参数
   const searchItems = [
     {
       label: '活动名称',
-      name: 'date',
+      name: 'activityName',
     },
     {
       label: '活动状态',
-      name: 'date2',
+      name: 'activityStatus',
       type: 'select',
       select: { list: ACTIVITY_STATUS },
     },
@@ -30,45 +34,60 @@ const MarketCardActivity = (props) => {
     {
       title: '活动名称',
       align: 'center',
-      dataIndex: 'startDate',
-      render: (val) => `${val}期`,
+      fixed: 'left',
+      dataIndex: 'activityName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
-      title: '活动描述',
+      title: '活动简述',
       align: 'center',
-      dataIndex: 'signBeanAmount',
+      dataIndex: 'description',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '活动商家',
       align: 'center',
-      dataIndex: 'signAmount',
+      dataIndex: 'activityCount',
       render: (val) => (val ? val : '--'),
     },
     {
       title: '活动时间',
       align: 'center',
-      dataIndex: 'totalBeanAmount',
+      dataIndex: 'activityBeginTime',
+      render: (val, record) => `${val} - ${record.activityEndTime}`,
     },
     {
       title: '活动状态',
       align: 'center',
-      dataIndex: 'targetUserAmount',
-      render: (val) => (val ? val : '--'),
+      dataIndex: 'activityStatus',
+      render: (val) => ACTIVITY_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'id',
-      align: 'center',
+      dataIndex: 'activityIdString',
+      fixed: 'right',
+      align: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
               type: 'eye',
-              // click: () => fetchGetDetail(record.merchantId),
+              click: () => setShow({ key: 'detail', record }),
             },
             {
               type: 'own',
+              pop: true,
               title: '下架',
+              visible: record.activityStatus !== '2',
+              click: () => fetchMarketActivityCancel({ activityId: val }),
             },
           ]}
         />
@@ -76,49 +95,61 @@ const MarketCardActivity = (props) => {
     },
   ];
 
-  // 获取挑战卡豆详情
-  const handleMorningDetail = () => {
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: MarketMatchMorningSet({
-    //     dispatch,
-    //     childRef,
-    //   }),
-    // });
-  };
-
-  // 设置挑战卡豆数
-  const handleSetMatch = () => {
+  // 活动下架
+  const fetchMarketActivityCancel = (payload) => {
     dispatch({
-      type: 'drawerForm/show',
-      payload: propInfo.payload,
+      type: 'marketCardActivity/fetchMarketActivityCancel',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
     });
   };
 
-  const btnExtra = [
-    <Button className="dkl_green_btn" key="1" onClick={handleSetMatch}>
+  // 设置活动
+  const handleSetActive = () => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: marketCardActivitySet({ dispatch, childRef }),
+    });
+  };
+
+  const btnExtra = (
+    <Button className="dkl_green_btn" key="1" onClick={handleSetActive}>
       新增活动
-    </Button>,
-  ];
+    </Button>
+  );
 
   return (
     <>
-      <DataTableBlock
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.startDate}`}
-        btnExtra={btnExtra}
-        dispatchType="marketCardActivity/fetchGetList"
-        {...marketCardActivity}
-      ></DataTableBlock>
-      <MarketCardActivityDetail></MarketCardActivityDetail>
+      {
+        {
+          home: (
+            <DataTableBlock
+              keepName="营销活动"
+              cRef={childRef}
+              loading={loading}
+              btnExtra={btnExtra}
+              columns={getColumns}
+              searchItems={searchItems}
+              pParams={params}
+              setParams={setParams}
+              rowKey={(record) => record.activityIdString}
+              dispatchType="marketCardActivity/fetchGetList"
+              {...marketCardActivity.active}
+            ></DataTableBlock>
+          ),
+          detail: (
+            <MarketCardActivityDetail
+              params={show.record}
+              setShow={setShow}
+            ></MarketCardActivityDetail>
+          ),
+        }[show.key]
+      }
     </>
   );
 };
 
 export default connect(({ marketCardActivity, loading }) => ({
   marketCardActivity,
-  loading: loading.models.marketCardActivity,
+  loading: loading.effects['marketCardActivity/fetchGetList'],
 }))(MarketCardActivity);

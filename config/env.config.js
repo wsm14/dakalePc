@@ -1,22 +1,31 @@
+
+// const target = 'http://192.168.0.139:6020'
+const target = 'https://pregateway.dakale.net'
+
 export default {
   dev: {
     define: {
-      APIURL: '', // 使用proxy代理 不配置
+      APIURL:  '', // 使用proxy代理 不配置
     },
     proxy: {
-      '/merchant': {
-        target: 'https://devgateway.dakale.net/',
+      '/admin': {
+        target:  target,
         changeOrigin: true,
       },
-      '/admin': {
-        target: 'http://192.168.0.143:6020/',
+      '/common': {
+        target:  target,
+        changeOrigin: true,
+      },
+      '/media': {
+        target,
         changeOrigin: true,
       },
     },
   },
+
   test: {
     define: {
-      APIURL: 'http://192.168.0.102:3500',
+      APIURL: 'https://devgateway.dakale.net',
     },
     proxy: {
       '/api/': {
@@ -25,10 +34,16 @@ export default {
       },
     },
   },
+  // 预发布环境
+  pre: {
+    define: {
+      APIURL: 'https://pregateway.dakale.net',
+    },
+  },
   // 生产环境proxy代理 不生效
   prod: {
     define: {
-      APIURL: 'https://devgateway.dakale.net/',
+      APIURL: 'https://gateway1.dakale.net',
     },
   },
 };

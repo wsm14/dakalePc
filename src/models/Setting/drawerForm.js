@@ -28,7 +28,7 @@ const DrawerForm = {
         showType: state.showType,
         title: state.title,
         formItems: state.formItems,
-        initialValues: state.initialValues,
+        initialValues: {},
         maskClosable: true,
         visible: false,
       };

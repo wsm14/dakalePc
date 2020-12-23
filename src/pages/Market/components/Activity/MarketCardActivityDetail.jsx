@@ -1,72 +1,219 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'dva';
 import { Button } from 'antd';
-import { MATCH_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
+import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import MarketCardActivitySetStore from './MarketCardActivitySetStore';
+import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
+import MarketCardActivityDetailPay from './MarketCardActivityDetailPay';
+
+// 搜索参数
+const searchItems = [
+  {
+    label: '商家名称',
+    name: 'merchantName',
+  },
+];
 
 const MarketCardActivityDetail = (props) => {
-  const { marketCardMorning, loading, dispatch, setKey } = props;
+  const { marketCardActivity, loading, dispatch, params, setShow } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState('');
+  const [visibleSet, setVisibleSet] = useState(false);
+
+  const loadings =
+    loading.effects['marketCardActivity/fetchGetActiveDetail'] ||
+    loading.effects['marketCardActivity/fetchGetCouponInfo'];
 
   // table 表头
   const getColumns = [
     {
-      title: '用户ID',
+      title: '活动商品',
       align: 'center',
-      dataIndex: 'startDate',
-      render: (val) => `${val}期`,
+      fixed: 'left',
+      dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
-      title: '用户名',
+      title: '商家名称',
       align: 'center',
-      dataIndex: 'signBeanAmount',
+      fixed: 'left',
+      dataIndex: 'merchantName',
     },
     {
-      title: '挑战状态',
+      title: '所在城市',
       align: 'center',
-      dataIndex: 'signAmount',
-      render: (val) => MATCH_STATUS[val],
+      dataIndex: 'merchantCity',
     },
     {
-      title: '本期收益（卡豆）',
+      title: '所在区域',
       align: 'center',
-      dataIndex: 'totalBeanAmount',
-      render: (val) => val || '--',
+      dataIndex: 'merchantDistrict',
     },
     {
-      title: '报名时间',
+      title: '详细地址',
       align: 'center',
-      dataIndex: 'targetUserAmount',
+      dataIndex: 'merchantAddress',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
-      title: '打卡时间',
+      title: '原价',
       align: 'center',
-      dataIndex: 'status',
-      render: (val) => val || '--',
+      dataIndex: 'originPrice',
+    },
+    {
+      title: '活动价',
+      align: 'center',
+      dataIndex: 'currentPrice',
+    },
+    {
+      title: '活动数量',
+      align: 'center',
+      dataIndex: 'totalCount',
+    },
+    {
+      title: '已售',
+      align: 'center',
+      dataIndex: 'soldCount',
+      render: (val) => val || 0,
+    },
+    {
+      title: '已核销',
+      align: 'center',
+      dataIndex: 'verifiedCount',
+      render: (val) => val || 0,
+    },
+    {
+      title: '操作',
+      align: 'right',
+      fixed: 'right',
+      dataIndex: 'marketCouponIdString',
+      render: (val, record) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'own',
+              title: '核销明细',
+              click: () => setVisible({ type: 'destory', record }),
+            },
+            {
+              type: 'own',
+              title: '订单明细',
+              click: () => setVisible({ type: 'order', record }),
+            },
+            {
+              type: 'own',
+              title: '优惠券',
+              click: () => fetchGetCouponInfo(val, record.merchantName),
+            },
+            // {
+            //   type: 'info',
+            //   click: () => setVisible({ type: 'destory', record }),
+            // },
+          ]}
+        />
+      ),
     },
   ];
 
+  // 获取优惠券详情status != 2 表示活动上架 可添加
+  const fetchGetCouponInfo = (marketCouponId, merchantName) => {
+    dispatch({
+      type: 'marketCardActivity/fetchGetCouponInfo',
+      payload: {
+        marketCouponId,
+        merchantName,
+        status: params.activityStatus !== '2',
+        activityId: params.activityIdString,
+      },
+      callback: handleSetActive,
+    });
+  };
+
+  // 设置/查看 优惠券
+  const handleSetActive = (payload) => {
+    // const payload = { initialValues: '', marketCouponId };
+    const obj = { dispatch, childRef, payload };
+    dispatch({
+      type: 'drawerForm/show',
+      payload: MarketCardActivitySetCoupon(obj),
+    });
+  };
+
+  // 头部添加面包屑 按钮
+  const handlePageShowBtn = () => {
+    dispatch({
+      type: 'global/saveTitle',
+      payload: {
+        pageTitle: [params.activityName],
+        pageBtn: [
+          <Button type="danger" key="btn" onClick={handlePageBtnBack}>
+            返回
+          </Button>,
+        ],
+      },
+    });
+  };
+
+  // 头部添加按钮返回
+  const handlePageBtnBack = () => {
+    setShow({ key: 'home' });
+    dispatch({
+      type: 'global/closeTitle',
+    });
+  };
+
+  useEffect(() => {
+    dispatch({
+      type: 'marketCardActivity/clearDetailPay',
+    });
+  }, [visible]);
+
+  useEffect(() => {
+    handlePageShowBtn();
+  }, []);
+
+  const btnExtra = (
+    <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
+      新增
+    </Button>
+  );
+
   return (
-    <DataTableBlock
-      title={<>早起挑战赛-报名详情</>}
-      extra={
-        <Button className="dkl_orange_btn" key="2" onClick={setKey}>
-          返回
-        </Button>
-      }
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      rowKey={(record) => `${record.startDate}`}
-      params={{ matchType: 'wakeUp' }}
-      dispatchType="marketCardMorning/fetchGetList"
-      {...marketCardMorning}
-    ></DataTableBlock>
+    <>
+      <DataTableBlock
+        cRef={childRef}
+        loading={loadings}
+        btnExtra={params.activityStatus !== '2' && btnExtra}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => record.marketCouponIdString}
+        params={{ activityId: params.activityIdString }}
+        dispatchType="marketCardActivity/fetchGetActiveDetail"
+        {...marketCardActivity.detail}
+      ></DataTableBlock>
+      <MarketCardActivityDetailPay visible={visible} setVisible={setVisible} />
+      <MarketCardActivitySetStore
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+        storeId={params.activityIdString}
+      ></MarketCardActivitySetStore>
+    </>
   );
 };
 
-export default connect(({ marketCardMorning, loading }) => ({
-  marketCardMorning,
-  loading: loading.models.marketCardMorning,
+export default connect(({ marketCardActivity, loading }) => ({
+  marketCardActivity,
+  loading,
 }))(MarketCardActivityDetail);

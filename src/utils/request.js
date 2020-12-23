@@ -7,6 +7,11 @@ import { notification, Modal } from 'antd';
 import { encrypt } from './utils';
 import { history } from 'umi';
 
+notification.config({
+  duration: 2,
+  placement: 'topRight',
+});
+
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -23,7 +28,7 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
-  '2001': '用户身份过期请重新登录',
+  '2001': '管理员账号不存在',
   '5005': '用户身份失效请重新登录',
 };
 
@@ -36,7 +41,7 @@ const errorHandler = (error) => {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
     notification.error({
-      message: `请求错误 ${status}: ${url}`,
+      message: `请求错误 ${status}`,
       description: errorText,
     });
     return false;
@@ -56,7 +61,7 @@ const errorHandler = (error) => {
 const request = extend({
   errorHandler,
   // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie 'include','same-origin'
+  credentials: 'same-origin', // 默认请求是否带上cookie 'include','same-origin'
 });
 
 // request拦截器, 改变url 或 options.
@@ -84,7 +89,7 @@ request.interceptors.response.use(async (response) => {
   const { success, resultCode = '', resultDesc = '' } = data;
   if (resultCode === '5005' || resultCode === '2001') {
     Modal.warning({
-      title: codeMessage[resultCode],
+      title: resultDesc,
       okText: '去登录',
       onOk: () => {
         Modal.destroyAll();

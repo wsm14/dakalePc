@@ -1,7 +1,24 @@
-import md5 from "md5";
+import md5 from 'md5';
 import { parse } from 'querystring';
 import pathRegexp from 'path-to-regexp';
 import { AUTH_SECRET_KEY } from '@/common/constant';
+
+export const store = {
+  save: (name, value, type = 'localtorage') => {
+    if ((type || '').toLocaleLowerCase() === 'localstorage') {
+      localStorage.setItem(name, JSON.stringify(value));
+    } else if ((type || '').toLocaleLowerCase() === 'sessionstorage') {
+      sessionStorage.setItem(name, JSON.stringify(value));
+    }
+  },
+  get: (name, type = 'localStorage') => {
+    if ((type || '').toLocaleLowerCase() === 'localstorage') {
+      return JSON.parse(localStorage.getItem(name) || '{}');
+    } else if ((type || '').toLocaleLowerCase() === 'sessionstorage') {
+      return JSON.parse(sessionStorage.getItem(name) || '{}');
+    }
+  },
+};
 
 // 设置随机字符串
 function setString(randomFlag, min, max) {
@@ -154,4 +171,19 @@ export const getRouteAuthority = (path, routeData) => {
     }
   });
   return authorities;
+};
+
+// 设置uuid
+export const uuid = () => {
+  var s = [];
+  var hexDigits = '0123456789abcdef';
+  for (var i = 0; i < 36; i++) {
+    s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+  }
+  s[14] = '4'; // bits 12-15 of the time_hi_and_version field to 0010
+  s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+  s[8] = s[13] = s[18] = s[23] = '-';
+
+  var uuid = s.join('');
+  return uuid;
 };

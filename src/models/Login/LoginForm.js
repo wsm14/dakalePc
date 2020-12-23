@@ -11,28 +11,15 @@ const LoginForm = {
   },
 
   effects: {
-    *login({ payload }, { call, put }) {
+    *login({ payload, callback }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
       if (!response) return;
 
       const {
-        content: { adminInfo },
+        content: { adminAccount },
       } = response;
-
-      const urlParams = new URL(window.location.href);
-      const params = getPageQuery();
-      let { redirect } = params;
-      if (redirect) {
-        const redirectUrlParams = new URL(redirect);
-        if (redirectUrlParams.origin === urlParams.origin) {
-          redirect = redirect.substr(urlParams.origin.length);
-          if (redirect.match(/^\/.*#/)) {
-            redirect = redirect.substr(redirect.indexOf('#') + 1);
-          }
-        }
-      }
-      history.replace(redirect || '/user');
-      window.sessionStorage.setItem('token', adminInfo.token);
+      window.sessionStorage.setItem('token', adminAccount.token);
+      callback();
     },
 
     logout() {

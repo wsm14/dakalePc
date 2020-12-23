@@ -1,41 +1,19 @@
 /**
  * 操作按钮组件
  * @param {*} props 按钮配置参数
- * type 默认类型:
- * {
- *    无   仅icon和浮动提示文案      配置：onClick事件 style className visible icon title
- *    icon 仅只有按钮不显示浮动文案  配置：onClick事件 style className visible icon
- *    pop  自定义pop内容弹出形式    配置：onClick事件 style className visible icon title content
- *    true 确认仅pop确认           配置：onClick事件 style className visible title okText cancelText
- *    eye  查看按钮                配置：onClick事件 style className visible title
- *    edit 修改                   配置：onClick事件 style className visible
- *    del  删除                   配置：onClick事件 style className visible okText cancelText
- * }
- * onConfirm为自定义Popconfirm确认 配置：onConfirm事件 content style className visible icon title okText cancelText
- *-------------------------------------------------
- * icon 按钮图标
- * title 标题名称
- * style icon样式
- * className icon className
- * content 弹出内容
- * onClick icon点击事件 同时配置type和click confirm 以type为准
- * onConfirm Popover确认事件
- * visible 是否显示
- * okText Popover确认按钮文案 默认确认
- * cancelText Popover取消按钮文案 默认取消
  */
 
 import React from 'react';
-import { Button } from 'antd';
+import { Button, Popconfirm } from 'antd';
 
 const HandleSetTable = (props) => {
-
   const { formItems } = props;
 
   const getFields = () => {
     const children = [];
     formItems.forEach((item, index) => {
-      const { type, title = '按钮', visible = true } = item;
+      const { type = 'button', title = '按钮', visible = true } = item;
+      let { pop = false } = item;
 
       let btnText = '';
       if (type === 'own') {
@@ -44,6 +22,9 @@ const HandleSetTable = (props) => {
       if (type === 'info') {
         btnText = '详情';
       }
+      if (type === 'set') {
+        btnText = '设置';
+      }
       if (type === 'eye') {
         btnText = '查看';
       }
@@ -51,13 +32,18 @@ const HandleSetTable = (props) => {
         btnText = '编辑';
       }
       if (type === 'del') {
+        pop = true;
         btnText = '删除';
       }
       if (type === 'check') {
         btnText = '审核';
       }
+      if (type === 'send') {
+        pop = true;
+        btnText = '发布';
+      }
 
-      const component =
+      let component =
         type === 'text' ? (
           { title }
         ) : (
@@ -65,6 +51,22 @@ const HandleSetTable = (props) => {
             {btnText}
           </Button>
         );
+      component = pop ? (
+        <Popconfirm
+          placement="top"
+          title={item.popText || `确认${btnText}？`}
+          onConfirm={item.click}
+          okText="确认"
+          cancelText="取消"
+          key={`pop${type}${index}`}
+        >
+          <Button type="link" size="small">
+            {btnText}
+          </Button>
+        </Popconfirm>
+      ) : (
+        component
+      );
       children.push(visible && component);
     });
     return children;

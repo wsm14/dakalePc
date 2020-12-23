@@ -10,8 +10,14 @@ import {
   Upload,
   Modal,
   Cascader,
+  Switch,
+  Divider,
+  Checkbox,
+  Spin,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import imageCompress from '@/utils/imageCompress';
+import CITYJSON from '@/common/city';
 import moment from 'moment';
 
 /**
@@ -23,7 +29,6 @@ import moment from 'moment';
  * @formItems 表单内容数组
  * @layout 表单排版 参考antd Form
  * @initialValues 表单参数默认值
- * @imgFileList upload默认参数
  *
  */
 
@@ -53,9 +58,9 @@ const uploadButton = (
   </div>
 );
 
-// 城市搜索筛选
-const filter = (inputValue, path) => {
-  return path.some((option) => option.name.indexOf(inputValue) > -1);
+// Cascader搜索筛选
+const filter = (inputValue, path, label = 'label') => {
+  return path.some((option) => option[label].indexOf(inputValue) > -1);
 };
 
 // 限制选择时间
@@ -63,38 +68,54 @@ const disabledDate = (current) => current && current < moment().endOf('day').sub
 
 const FormItem = Form.Item;
 const { Option } = Select;
-const { RangePicker } = DatePicker;
 
-const FormCondition = ({
-  form = Form.useForm(),
+const FormComponents = ({
+  form,
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
-  resetValue,
+  formItemLayouts = {},
+  children,
 }) => {
-  const [formValue] = useState(initialValues);
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
+  const [formN] = Form.useForm();
+  const [totalNum, setTotalNum] = useState({}); // 字数计算
+  const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
+  const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
+  const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
   const [fileLists, setFileLists] = useState(() => {
     const fileobj = {};
     formItems.map((item, i) => {
+      const { name } = item;
       if (item.type === 'upload') {
         if (Object.keys(initialValues).length) {
-          fileobj[item.name] = {
-            fileList: !Array.isArray(initialValues[item.name])
-              ? initialValues[item.name].length > 0
-                ? [imgold(initialValues[item.name], i)]
-                : []
-              : item.initialValue.map((items) => imgold(items)),
-          };
+          if (Array.isArray(name)) {
+            if (!initialValues[name[0]]) {
+              fileobj[name[1]] = [];
+              return;
+            }
+            const urlfile = initialValues[name[0]][name[1]];
+            fileobj[name[1]] = urlfile ? [imgold(urlfile, i)] : [];
+            return;
+          }
+          const fileArrar = initialValues[name];
+          if (fileArrar && !!fileArrar.fileList) {
+            fileobj[name] = fileArrar.fileList;
+            return;
+          }
+          fileobj[name] = !Array.isArray(fileArrar)
+            ? fileArrar && fileArrar.length > 0
+              ? fileArrar.indexOf(',') > -1
+                ? fileArrar.split(',').map((v, i) => imgold(v, i))
+                : [imgold(fileArrar, i)]
+              : []
+            : fileArrar.map((v, i) => imgold(v, i));
         } else {
-          fileobj[item.name] = { fileList: [] };
+          fileobj[Array.isArray(name) ? name[1] : name] = [];
         }
       }
     });
     return fileobj;
-  });
+  }); // 文件控制列表
 
   // 图片获取预览base64
   const getBase64 = (file) => {
@@ -104,6 +125,34 @@ const FormCondition = ({
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+  };
+
+  /**
+   * 选择图片上传配置
+   */
+  const handleUpProps = (name, onChange) => {
+    return {
+      accept: 'image/*',
+      onChange: (value) => {
+        const { fileList } = value;
+        if (!value.file.status) {
+          const fileName = value.file.name;
+          imageCompress(value.file).then(({ file }) => {
+            fileList.map((fi) => {
+              if (fi.name == fileName) {
+                fi.originFileObj = file;
+              }
+              return fi;
+            });
+            setFileLists({ ...fileLists, [name]: fileList });
+          });
+          if (onChange) onChange(value);
+        } else {
+          if (!fileList.length) (form || formN).setFieldsValue({ [name]: undefined });
+          setFileLists({ ...fileLists, [name]: fileList });
+        }
+      },
+    };
   };
 
   // 预览图片
@@ -118,60 +167,128 @@ const FormCondition = ({
 
   // 遍历表单
   const getFields = () => {
-    const children = [];
+    const childrenOwn = [];
 
     formItems.forEach((item, i) => {
+      const {
+        title = '',
+        label = '',
+        name = '',
+        type = 'input',
+        select = [],
+        addRules,
+        valuePropName,
+        maxLength,
+        visible = true,
+        hidden = false,
+      } = item;
+
+      let { extra } = item;
+
       let initialValue = {};
-      const placeholder = item.placeholder || `请输入${item.label}`;
-      let rules = item.rules || [{ required: true, message: `请输入${item.label}` }];
+      let rules = item.rules || [{ required: true, message: `请确认${label}` }];
+      const placeholder = item.placeholder || `请输入${label}`;
 
-      // 默认input
-      let component = <Input placeholder={placeholder} addonAfter={item.addonAfter || ''} />;
+      const dataNum =
+        maxLength &&
+        `${
+          totalNum[name] || (initialValues[name] && `${initialValues[name]}`.length) || 0
+        }/${maxLength}`;
 
-      // 判断类型
-      // 数字
-      if (item.type === 'number') {
-        component = <InputNumber style={{ width: '100%' }} placeholder={placeholder} />;
-      }
-      // textArea 输入
-      if (item.type === 'textArea') {
-        component = <Input.TextArea placeholder={placeholder} />;
-      }
-      // 时间
-      if (item.type === 'timePicker') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        component = (
+      // 判断类型 默认input
+
+      let component = {
+        input: (
+          <Input
+            placeholder={placeholder}
+            prefix={item.prefix}
+            suffix={dataNum || item.suffix || ''}
+            maxLength={maxLength}
+            addonAfter={item.addonAfter}
+            disabled={item.disabled}
+            onBlur={item.onBlur}
+            onPressEnter={item.onPressEnter}
+            onChange={(e) => {
+              if (item.onChange) item.onChange(e);
+              setTotalNum({ ...totalNum, [item.name]: e.target.value.length });
+            }}
+            style={item.style}
+          />
+        ),
+        number: (
+          <InputNumber
+            disabled={item.disabled}
+            style={{ width: '100%' }}
+            placeholder={placeholder}
+            style={{ width: '100%' }}
+            max={item.max}
+            min={item.min}
+            addonAfter={item.addonAfter}
+            prefix={item.prefix}
+            suffix={dataNum || item.suffix || ''}
+          />
+        ),
+        textArea: (
+          <Input.TextArea
+            placeholder={placeholder}
+            rows={item.rows || 5}
+            disabled={item.disabled}
+            maxLength={maxLength}
+            onChange={(e) => setTotalNum({ ...totalNum, [item.name]: e.target.value.length })}
+          />
+        ),
+        timePicker: (
           <TimePicker.RangePicker
             style={{ width: '100%' }}
             format={item.format || 'HH:mm'}
             allowClear={false}
           />
-        );
-      }
-      // 日期
-      if (item.type === 'rangePicker') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        component = (
-          <RangePicker
+        ),
+        dataPicker: <DatePicker style={{ width: '100%' }} />,
+        rangePicker: (
+          <DatePicker.RangePicker
             style={{ width: '100%' }}
-            allowClear={false}
             // defaultPickerValue={[
             //   moment(moment().startOf('month')).subtract(1, 'month'),
             //   moment(moment().startOf('month')).subtract(1, 'day'),
             // ]}
-            disabledDate={disabledDate}
-            renderExtraFooter={() =>
-              '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
-            }
+            disabledDate={item.disabledDate}
+            // renderExtraFooter={() =>
+            //   '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'
+            // }
           />
-        );
-      }
-      // select选择期
-      if (item.type === 'select' && item.select) {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        const { select } = item;
-        component = (
-          <Select placeholder={item.placeholder || `请选择`}>
+        ),
+        checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} />,
+        select: (
+          <Select
+            labelInValue={item.labelInValue || false}
+            showSearch
+            loading={item.loading}
+            disabled={item.disabled}
+            defaultActiveFirstOption={false}
+            filterOption={item.filterOption || true}
+            onSearch={item.onSearch}
+            onChange={item.onChange}
+            placeholder={item.placeholder || `请选择${label}`}
+            style={{ width: '100%' }}
+            optionFilterProp="children"
+          >
+            {select.map((data, j) => {
+              if (data) {
+                // 兼容数组
+                const value = !data.value ? `${j}` : data.value;
+                const name = data.name ? data.name : '--';
+                return (
+                  <Option key={data.key || j} value={value}>
+                    {name}
+                  </Option>
+                );
+              }
+            })}
+          </Select>
+        ),
+        tags: (
+          <Select mode="tags" showSearch style={{ width: '100%' }} tokenSeparators={[',', '，']}>
             {select.map((data, j) => {
               if (data) {
                 // 兼容数组
@@ -185,12 +302,8 @@ const FormCondition = ({
               }
             })}
           </Select>
-        );
-      }
-      // 单选
-      if (item.type === 'radio' && item.select) {
-        const { select } = item;
-        component = (
+        ),
+        radio: (
           <Radio.Group onChange={item.onChange} disabled={item.disabled}>
             {select.map((data, j) => {
               if (data) {
@@ -205,77 +318,146 @@ const FormCondition = ({
               }
             })}
           </Radio.Group>
-        );
-      }
-      // 级联选择
-      if (item.type === 'cascader') {
-        component = (
+        ),
+        cascader: (
           <Cascader
             allowClear={false}
-            fieldNames={item.options}
-            options={item.select}
+            fieldNames={item.fieldNames}
+            options={item.select || CITYJSON}
             expandTrigger="hover"
-            showSearch={{
-              filter,
+            disabled={item.disabled}
+            changeOnSelect={item.changeOnSelect || false}
+            onChange={(val, sele) => {
+              (form || formN).setFieldsValue({ [`Cascader${item.name}`]: sele });
+              if (item.onChange) item.onChange(sele);
             }}
-            placeholder="选择"
+            showSearch={{
+              filter: (inputValue, path) =>
+                filter(inputValue, path, item.fieldNames ? item.fieldNames.label : 'label'),
+            }}
+            placeholder={item.placeholder || `请选择${label}`}
           />
-        );
-      }
-      // 上传文件
-      if (item.type === 'upload') {
-        rules = item.rules || [{ required: true, message: `请选择${item.label}` }];
-        initialValue = { initialValue: item.initialValue };
-        component = (
+        ),
+        switch: <Switch disabled={item.disabled} />,
+        upload: (
           <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+            multiple={item.multiple || false}
             listType="picture-card"
-            fileList={fileLists[item.name].fileList}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+            beforeUpload={() => false}
             onPreview={handlePreview}
-            onChange={({ fileList }) => setFileLists({ ...fileLists, [item.name]: fileList })}
+            {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
+            // 临时
+            showUploadList={item.showUploadList}
+            onDownload={(file) => {
+              const newArr = [
+                fileLists[name].filter((i) => i.url === file.url)[0],
+                ...fileLists[name].filter((i) => i.url !== file.url),
+              ];
+              setFileLists({
+                ...fileLists,
+                [name]: newArr,
+              });
+              const urlValue = (form || formN).getFieldValue(name);
+              if (typeof urlValue === 'string') {
+                (form || formN).setFieldsValue({ [name]: newArr.map((i) => i.url).toString() });
+              } else {
+                (form || formN).setFieldsValue({
+                  [name]: {
+                    file: urlValue.file,
+                    fileList: [...newArr, ...urlValue.fileList.slice(newArr.length)],
+                  },
+                });
+              }
+            }}
+            // end
           >
-            {fileLists[item.name].fileList.length < (item.maxFile || 999) && uploadButton}
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
+              uploadButton}
           </Upload>
+        ),
+        childrenOwn: item.childrenOwn,
+        noForm: '',
+      }[type];
+
+      if (type === 'textArea') {
+        extra = (extra || maxLength) && (
+          <div style={{ display: 'flex' }}>
+            <div style={{ flex: 1, paddingRight: 5 }}>{extra}</div>
+            {dataNum}
+          </div>
         );
       }
-      children.push(
-        <FormItem
-          label={item.label}
-          name={item.name}
-          extra={item.extra}
-          key={`${item.label}${item.name}`}
-          rules={rules}
-          {...initialValue}
-        >
-          {component}
-        </FormItem>,
+
+      if (type === 'noForm') {
+        childrenOwn.push(visible && item.childrenOwn);
+        return;
+      }
+
+      if (title) {
+        childrenOwn.push(
+          <Divider orientation="left" key={`${label}${i}`}>
+            {title}
+          </Divider>,
+        );
+      }
+
+      const req = {};
+      if (item.required) req.required = item.required;
+      childrenOwn.push(
+        visible && (
+          <FormItem
+            {...req}
+            label={label}
+            name={name}
+            extra={extra}
+            key={`${label}${name}`}
+            rules={[...rules, ...(addRules || [])]}
+            valuePropName={valuePropName}
+            {...initialValue}
+            hidden={hidden}
+            labelCol={item.labelCol}
+            wrapperCol={item.wrapperCol}
+          >
+            {component}
+          </FormItem>
+        ),
       );
     });
-    return children;
-  };
-
-  const handleReset = () => {
-    form.resetFields();
+    return childrenOwn;
   };
 
   useEffect(() => {
-    handleReset();
-  }, [resetValue]);
+    (form || formN).setFieldsValue(initialValues);
+  }, [initialValues]);
+
+  useEffect(() => {
+    return componentWillUnmount;
+  }, []);
+
+  // 组件销毁执行
+  const componentWillUnmount = () => {
+    (form || formN).resetFields();
+  };
 
   return (
     <Form
-      form={form}
-      {...formItemLayout}
-      scrollToFirstError
-      initialValues={formValue}
+      form={form || formN}
       layout={layout}
+      initialValues={initialValues}
+      {...formItemLayout}
+      {...formItemLayouts}
+      scrollToFirstError={true}
     >
       {formItems.length ? getFields() : ''}
+      {children}
       <Modal
-        visible={previewVisible}
         title={previewTitle}
-        footer={null}
+        visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
+        footer={null}
+        zIndex={1009}
       >
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
       </Modal>
@@ -283,4 +465,4 @@ const FormCondition = ({
   );
 };
 
-export default FormCondition;
+export default FormComponents;

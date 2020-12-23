@@ -1,12 +1,13 @@
 /**
  * 正则表达式
  */
+// 不能写 safari不支持 ?<=、?<!、?!、?=
 
 // 以字母数字下划线组成,6-24位
 export const WORD_NUM_PATTERN = /^[A-Za-z0-9_]{6,24}$/;
 
 // 电话号码
-export const PHONE_PATTERN = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+export const PHONE_PATTERN = /^1[3456789]\d{9}$/;
 
 // 全数字
 export const NUM_PATTERN = /^\d+$/;
@@ -16,3 +17,16 @@ export const NUM_INT = /^\+?[1-9]\d*$/;
 
 // 判断是否有空格
 export const SPACE_PATTERN = /^[^\s]+$/;
+
+// 限制逗号最多两个
+export const COMMA_TWO_PATTERN = /^([^,]*,?[^,]*){0,2}$/;
+
+// 不允许逗号开头结尾
+// export const COMMA_SE_PATTERN = /([^!,])(?<![,])$/;
+
+// 判断url
+export const URL_PATTERN = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+
+export const NUM_PERCENTAGE = /^([1-9]\d?|100)$/
+// 1-99位数
+export const BANK_CARD = /^([1-9]{1})(\d{14}|\d{18}|\d{19})$/

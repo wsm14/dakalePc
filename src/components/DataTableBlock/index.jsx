@@ -1,128 +1,27 @@
-import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { connect } from 'dva';
-import { Table, Card, Space, Button } from 'antd';
-import SearchCondition from '@/components/SearchCondition';
+import React from 'react';
+import { useLocation } from 'umi';
+import { KeepAlive } from 'react-activation';
+import TableBlock from './tableBlock';
 
 /**
- *
- * 搜索+表格信息回显
- * 2020年7月29日 14:48:02 Dong
- *
- * @dispatchType {*} 表格请求url
- * @columns 表头
- * @searchItems 搜索条件
- * @loading 请求等待
- * @list 表格源数据
- * @total 数据总条数
- * @rowKey 每行id
- * @btnExtra 额外的按钮
- * @cRef 父组件获取子组件ref
- * @title 图表标题
- * @style card style
- * @params 搜索时默认参数
- * @CardNone 是否需要Card包裹 默认true
- * @extra card 右上角
+ * 判断是否保持数据
  */
 
-const DataTableBlockComponent = ({
-  dispatchType,
-  columns,
-  searchItems,
-  loading,
-  dispatch,
-  rowKey,
-  list,
-  total,
-  btnExtra,
-  style,
-  title,
-  cRef,
-  params,
-  CardNone = true,
-  extra,
-}) => {
-  const [param] = useState(params);
-  const [searchData, setSearchData] = useState({}); // 搜索参数
-  const [current, setNum] = useState(1); // 页码
-  const [pageSize, setSize] = useState(10); // 每页条数
+const DataTableBlockComponent = (props) => {
+  const { keepName } = props;
 
-  // 获取列表
-  const fetchGetList = () => {
-    dispatch({
-      type: dispatchType,
-      payload: {
-        page: current,
-        limit: pageSize,
-        ...searchData,
-        ...param,
-      },
-    });
-  };
+  const match = useLocation();
 
-  // 搜索
-  const handleSearch = (value) => {
-    setSearchData(value);
-    setNum(1);
-  };
-
-  // 分页
-  const paginationProps = {
-    total,
-    current,
-    pageSize,
-    showTotal: () => `共${total}项`,
-    showQuickJumper: true,
-    hideOnSinglePage: total > 0 ? false : true,
-    showSizeChanger: true,
-    onChange: (page, pagesize) => {
-      setNum(page);
-      setSize(pagesize);
-    },
-  };
-
-  // 向父组件暴露方法
-  useImperativeHandle(cRef, () => ({
-    fetchGetData: () => {
-      dispatch({ type: 'drawerForm/fetchClose', callback: fetchGetList });
-    },
-  }));
-
-  useEffect(() => {
-    fetchGetList();
-  }, [current, pageSize, searchData]);
-
-  const tabContent = (
-    <>
-      {!searchItems && btnExtra && (
-        <div style={{ textAlign: 'right', marginBottom: 18 }}>
-          <Space>{btnExtra}</Space>
-        </div>
-      )}
-      {searchItems && (
-        <SearchCondition
-          formItems={searchItems}
-          handleSearch={handleSearch}
-          btnExtra={btnExtra}
-        ></SearchCondition>
-      )}
-      <Table
-        rowKey={rowKey}
-        loading={loading}
-        dataSource={list}
-        columns={columns}
-        pagination={paginationProps}
-      />
-    </>
-  );
-
-  return {
+  const KeepContent = {
     true: (
-      <Card title={title} style={style} extra={extra}>
-        {tabContent}
-      </Card>
+      <KeepAlive name={keepName} url={match.pathname} saveScrollPosition="screen">
+        <TableBlock {...props}></TableBlock>
+      </KeepAlive>
     ),
-    false: tabContent,
-  }[CardNone];
+    false: <TableBlock {...props}></TableBlock>,
+  }[!!keepName];
+
+  return KeepContent;
 };
 
-export default connect()(DataTableBlockComponent);
+export default DataTableBlockComponent;
