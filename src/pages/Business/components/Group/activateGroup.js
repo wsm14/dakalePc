@@ -19,6 +19,7 @@ const addGroups = (props) => {
     businessLicense,
     bankBindingInfo,
     childRef,
+    loading
   } = props;
   const [form] = Form.useForm();
   const cRef = useRef();
@@ -112,7 +113,6 @@ const addGroups = (props) => {
       });
     });
   };
-  console.log(businessLicense,bankBindingInfo)
   return (
     <>
       <Drawer
@@ -127,6 +127,7 @@ const addGroups = (props) => {
             <Space>
               <Button onClick={() => saveVisible({ visible1: false })}>取消</Button>
               <Button
+                loading={loading}
                 onClick={() =>
                   fetchAddCard(() => {
                     childRef.current.fetchGetData();
@@ -141,7 +142,6 @@ const addGroups = (props) => {
           </div>
         }
       >
-
         <Title panelList={panelList}></Title>
       </Drawer>
     </>
@@ -150,4 +150,5 @@ const addGroups = (props) => {
 
 export default connect(({ groupSet, loading }) => ({
   ...groupSet,
+  loading: loading.effects['groupSet/fetchMerchantBank'],
 }))(addGroups);

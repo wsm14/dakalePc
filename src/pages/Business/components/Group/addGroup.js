@@ -20,7 +20,9 @@ const addGroups = (props) => {
     merchantGroupDTO,
     businessLicense,
     bankBindingInfo,
-    childRef
+    childRef,
+    loadingAdd,
+    loadingUpDate
   } = props;
   const [form] = Form.useForm();
   const cRef = useRef();
@@ -40,6 +42,7 @@ const addGroups = (props) => {
       <div style={{textAlign: 'right'}}>
         <Space>
           <Button
+            loading={loadingAdd}
             onClick={() =>
               fetchAddLists(() => {
                 saveVisible({
@@ -63,6 +66,7 @@ const addGroups = (props) => {
             }
             )}
             type="primary"
+            loading={loadingAdd}
           >
             下一步
           </Button>
@@ -90,6 +94,7 @@ const addGroups = (props) => {
                   bankBindingInfo: {}});
               })
             }
+            loading={loadingUpDate}
             type="primary"
           >
             保存
@@ -206,4 +211,6 @@ export default connect(({sysTradeList, groupSet, loading}) => ({
   ...sysTradeList,
   ...groupSet,
   loading: loading.effects['circleMaster/fetchMasterTotal'],
+  loadingAdd: loading.effects['groupSet/fetchAddList'],
+  loadingUpDate: loading.effects['groupSet/fetchUpdateGroup'],
 }))(addGroups);
