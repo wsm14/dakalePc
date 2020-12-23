@@ -115,7 +115,6 @@ const TableBlockComponent = (props) => {
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     fetchGetData: (data) => {
-      console.log(data);
       dispatch({ type: 'drawerForm/fetchClose', callback: () => fetchGetList(data) });
     },
   }));

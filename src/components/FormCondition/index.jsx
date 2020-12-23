@@ -14,6 +14,7 @@ import {
   Divider,
   Checkbox,
   Spin,
+  message,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
@@ -127,29 +128,41 @@ const FormComponents = ({
     });
   };
 
+  // 上传文件限制
+  const beforeUpload = (file, maxSize) => {
+    if (!maxSize) return false;
+    const isLt1M = file.size / 1024 / 1024 < maxSize;
+    if (!isLt1M) {
+      message.error(`上传图片过大，请小于${maxSize}MB！`);
+      return false;
+    }
+    return isLt1M;
+  };
+
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name, onChange) => {
+  const handleUpProps = (name, onChange, maxSize) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
         const { fileList } = value;
-        if (!value.file.status) {
+        const newFileList = !maxSize ? fileList : fileList.filter((file) => !!file.status);
+        if (value.file.status == 'done' && newFileList.length) {
           const fileName = value.file.name;
-          imageCompress(value.file).then(({ file }) => {
-            fileList.map((fi) => {
+          imageCompress(value.file.originFileObj).then(({ file }) => {
+            newFileList.map((fi) => {
               if (fi.name == fileName) {
                 fi.originFileObj = file;
               }
               return fi;
             });
-            setFileLists({ ...fileLists, [name]: fileList });
+            setFileLists({ ...fileLists, [name]: newFileList });
           });
           if (onChange) onChange(value);
         } else {
-          if (!fileList.length) (form || formN).setFieldsValue({ [name]: undefined });
-          setFileLists({ ...fileLists, [name]: fileList });
+          if (!newFileList.length) (form || formN).setFieldsValue({ [name]: undefined });
+          setFileLists({ ...fileLists, [name]: newFileList });
         }
       },
     };
@@ -344,9 +357,9 @@ const FormComponents = ({
             multiple={item.multiple || false}
             listType="picture-card"
             fileList={fileLists[Array.isArray(name) ? name[1] : name]}
-            beforeUpload={() => false}
+            beforeUpload={(file) => beforeUpload(file, item.maxSize)}
             onPreview={handlePreview}
-            {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange)}
+            {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange, item.maxSize)}
             // 临时
             showUploadList={item.showUploadList}
             onDownload={(file) => {
