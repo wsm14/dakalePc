@@ -49,10 +49,10 @@ export default {
       const response = yield call(fetchChartBlockOrder, payload);
       if (!response) return;
       const { content } = response;
-      const allTotal = Object.values(content.orderInfo).reduce((prev, next) => ({
-        totalFee: prev.totalFee + next.totalFee,
-        docCount: prev.docCount + next.docCount,
-      }));
+      const allTotal = {
+        totalFee: content.orderInfo.scan.totalFee + content.orderInfo.verificationFee.totalFee,
+        docCount: content.orderInfo.scan.docCount + content.orderInfo.verificationFee.docCount,
+      };
       yield put({
         type: 'save',
         payload: {
