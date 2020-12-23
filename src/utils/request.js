@@ -75,7 +75,8 @@ request.interceptors.request.use(async (url, options) => {
       data = encrypt(data);
       break;
   }
-  options = { ...options, data, params };
+  
+  options = { ...options, data: JSON.stringify(data), params };
 
   const headers = {
     'Content-Type': 'application/json;charset=utf-8',

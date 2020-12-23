@@ -1,27 +1,31 @@
-import React, {useState, useRef} from "react";
-import {PHONE_PATTERN, SPACE_PATTERN, WORD_NUM_PATTERN} from "@/common/regExp";
-import {Spin, Transfer} from "antd";
-import {SEX_TYPE, TIME_YMD} from "@/common/constant";
-import aliOssUpload from "@/utils/aliOssUpload";
-import cityList from "@/common/city";
-import moment from "moment";
+import React, { useState, useRef } from 'react';
+import { PHONE_PATTERN, SPACE_PATTERN, WORD_NUM_PATTERN } from '@/common/regExp';
+import { Spin, Transfer } from 'antd';
+import { SEX_TYPE, TIME_YMD } from '@/common/constant';
+import aliOssUpload from '@/utils/aliOssUpload';
+import cityList from '@/common/city';
+import moment from 'moment';
 
-
-export const base = [{
-  label: '集团名称',
-  name: 'groupName',
-}, {
-  label: '经营类目',
-  type: 'cascader',
-  name: 'topCategoryName',
-}, {
-  label: '详细地址',
-  name: 'address',
-}, {
-  label: '服务费比例',
-  name: 'commissionRatio',
-}]
-export const user = [{label: '登录账号', name: 'account',}]
+export const base = [
+  {
+    label: '集团名称',
+    name: 'groupName',
+  },
+  {
+    label: '经营类目',
+    type: 'cascader',
+    name: 'topCategoryName',
+  },
+  {
+    label: '详细地址',
+    name: 'address',
+  },
+  {
+    label: '服务费比例',
+    name: 'commissionRatio',
+  },
+];
+export const user = [{ label: '登录账号', name: 'account' }];
 // {
 //   label: '角色',
 //   name: 'idString',
@@ -55,13 +59,14 @@ export const userDetails = [
     label: '联系人电话',
     name: 'contactMobile',
   },
-]
+];
 
-export const shopDetails = [{
-  label: '店铺主图',
-  name: 'mainImages',
-  type: 'upload',
-},
+export const shopDetails = [
+  {
+    label: '店铺主图',
+    name: 'mainImages',
+    type: 'upload',
+  },
   {
     label: '店铺小图',
     name: 'localImages',
@@ -71,7 +76,8 @@ export const shopDetails = [{
     label: '店铺介绍',
     name: 'groupDesc',
     type: 'textArea',
-  },]
+  },
+];
 
 export const management = [
   {
@@ -83,7 +89,7 @@ export const management = [
     name: 'brandLogo',
     type: 'upload',
   },
-]
+];
 export const active = [
   {
     label: '营业执照',
@@ -121,12 +127,10 @@ export const active = [
   {
     label: '开户名称',
     name: 'cardName',
-
   },
   {
     label: '银行卡号',
     name: 'cardNo',
-
   },
   {
     label: '开户银行',
@@ -140,7 +144,7 @@ export const active = [
   //   // onSearch: vale => console.log(vale),
   //   // select:
   // },
-]
+];
 export const legal = [
   {
     label: '法人身份证正面照',
@@ -168,5 +172,4 @@ export const legal = [
     label: '法人手机号',
     name: 'legalMp',
   },
-]
-
+];

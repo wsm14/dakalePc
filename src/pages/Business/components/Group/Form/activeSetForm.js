@@ -35,6 +35,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       label: '营业执照',
       name: 'businessLicenseImg',
       type: 'upload',
+      maxSize: 1,
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       onChange: async (val) => {
@@ -83,6 +84,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       label: '开户许可证',
       name: 'openAccountPermit',
       type: 'upload',
+      maxSize: 1,
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       onChange: async (val) => {
