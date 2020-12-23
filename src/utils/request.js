@@ -71,11 +71,8 @@ request.interceptors.request.use(async (url, options) => {
     case 'get':
       params = encrypt(params);
       break;
-    case 'post':
-      data = encrypt(data);
-      break;
-
     default:
+      data = encrypt(data);
       break;
   }
   options = { ...options, data, params };
