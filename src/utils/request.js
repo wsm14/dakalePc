@@ -66,9 +66,18 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use(async (url, options) => {
-  let { data = {}, params = {} } = options;
-  // if (method === 'get') data = encrypt(data);
-  params = encrypt(params);
+  let { data = {}, params = {}, method = 'get' } = options;
+  switch (method) {
+    case 'get':
+      params = encrypt(params);
+      break;
+    case 'post':
+      data = encrypt(data);
+      break;
+
+    default:
+      break;
+  }
   options = { ...options, data, params };
 
   const headers = {
