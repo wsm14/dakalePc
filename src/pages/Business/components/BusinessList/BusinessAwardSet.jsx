@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Drawer, Button, Space, Form } from 'antd';
-import { COMMA_TWO_PATTERN, COMMA_SE_PATTERN } from '@/common/regExp';
+import { COMMA_TWO_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 
 const BusinessAwardSet = (props) => {
