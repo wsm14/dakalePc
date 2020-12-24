@@ -43,7 +43,7 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
     fetchUserInfoTotal();
   }, []);
 
-  const styles = { padding: '0 10px' };
+  const styles = { padding: 20, height: 276 };
 
   return (
     <Row gutter={[16, 16]} align="middle">
@@ -56,7 +56,7 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
       </Col> */}
       <Col span={8}>
         <Spin spinning={!!loading}>
-          <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
+          <Card bordered={false} bodyStyle={styles}>
             <Pie
               data={totalInfo.age || []}
               totalLabel="年龄层"

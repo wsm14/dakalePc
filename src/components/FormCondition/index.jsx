@@ -191,7 +191,7 @@ const FormComponents = ({
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name, onChange, maxSize) => {
+  const handleUpProps = (name, onChange, maxFile, maxSize) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -215,7 +215,7 @@ const FormComponents = ({
         } else {
           if (!newFileList.length) (form || formN).setFieldsValue({ [name]: undefined });
           else (form || formN).setFieldsValue({ [name]: value });
-          setFileLists({ ...fileLists, [name]: fileList });
+          setFileLists({ ...fileLists, [name]: newFileList });
         }
       },
     };
@@ -493,7 +493,12 @@ const FormComponents = ({
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={(file) => beforeUpload(file, item.maxSize)}
               onPreview={(file) => handlePreview(file, name, item.onChange)}
-              {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange, item.maxSize)}
+              {...handleUpProps(
+                Array.isArray(name) ? name[1] : name,
+                item.onChange,
+                item.maxFile,
+                item.maxSize,
+              )}
               itemRender={(originNode, file, currFileList) => {
                 return (
                   <DragableUploadListItem
