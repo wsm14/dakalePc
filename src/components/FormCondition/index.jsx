@@ -197,9 +197,9 @@ const FormComponents = ({
       onChange: (value) => {
         const { fileList } = value;
         const newFileList = !maxSize ? fileList : fileList.filter((file) => !!file.status);
-        if (value.file.status == 'done' && newFileList.length) {
+        if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileName = value.file.name;
-          imageCompress(value.file.originFileObj).then(({ file }) => {
+          imageCompress(value.file.originFileObj || value.file).then(({ file }) => {
             newFileList.map((fi) => {
               if (fi.name == fileName) {
                 fi.originFileObj = file;
