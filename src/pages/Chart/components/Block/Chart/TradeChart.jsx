@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import { Card, Typography, Row, Col, Empty } from 'antd';
 
 /**
@@ -68,7 +68,7 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
             }}
           >
             {tradeLeft.length ? (
-              <Donut
+              <Pie
                 data={tradeLeft}
                 {...chartProps}
                 angleField="count"
@@ -90,7 +90,7 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
             }}
           >
             {tradeRight.length ? (
-              <Donut
+              <Pie
                 data={tradeRight}
                 {...chartProps}
                 angleField="count"

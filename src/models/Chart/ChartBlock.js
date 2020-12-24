@@ -49,9 +49,11 @@ export default {
       const response = yield call(fetchChartBlockOrder, payload);
       if (!response) return;
       const { content } = response;
+      const dataCheck = (key, numKey) =>
+        content.orderInfo[key] ? content.orderInfo[key][numKey] || 0 : 0;
       const allTotal = {
-        totalFee: content.orderInfo.scan.totalFee + content.orderInfo.verificationFee.totalFee,
-        docCount: content.orderInfo.scan.docCount + content.orderInfo.verificationFee.docCount,
+        totalFee: dataCheck('scan', 'totalFee') + dataCheck('verificationFee', 'totalFee'),
+        docCount: dataCheck('scan', 'docCount') + dataCheck('verificationFee', 'docCount'),
       };
       yield put({
         type: 'save',

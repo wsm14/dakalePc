@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut, Pie } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 
 const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
   const dataCity = totalData.city.map((item) => ({
@@ -46,18 +46,18 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
   const styles = { padding: '0 10px' };
 
   return (
-    <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
+    <Row gutter={[16, 16]} align="middle">
       {/* <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={dataCity} totalLabel="城市" height={276} />
+            <Pie data={dataCity} totalLabel="城市" height={276} />
           </Card>
         </Spin>
       </Col> */}
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut
+            <Pie
               data={totalInfo.age || []}
               totalLabel="年龄层"
               height={276}
@@ -70,7 +70,7 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Donut data={dataSex} totalLabel="性别" height={276} radius={1} innerRadius={0.65} />
+            <Pie data={dataSex} totalLabel="性别" height={276} radius={1} innerRadius={0.65} />
           </Card>
         </Spin>
       </Col>
@@ -79,8 +79,8 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
             <Pie
               data={totalInfo.tag || []}
-              totalLabel="兴趣"
               height={276}
+              totalLabel="兴趣"
               angleField="count"
               colorField="tag"
               radius={1}

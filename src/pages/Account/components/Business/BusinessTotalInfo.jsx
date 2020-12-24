@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -52,7 +52,7 @@ const BusinessTotalInfo = ({
         <Row gutter={16} align="middle">
           <Col span={12}>
             商家累计收益：{merchantTotalIncome}
-            <Donut
+            <Pie
               data={indata}
               totalLabel="累计卡豆"
               height={276}
@@ -62,7 +62,7 @@ const BusinessTotalInfo = ({
           </Col>
           <Col span={12}>
             商家累计消费：{merchantTotalOut}
-            <Donut
+            <Pie
               data={outdata}
               totalLabel="累计卡豆"
               height={276}

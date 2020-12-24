@@ -21,7 +21,6 @@
     "not ie <= 10"
   ],
   "dependencies": {
-    "@ant-design/charts": "^0.9.11",
     "@ant-design/icons": "^4.0.0",
     "@ant-design/pro-layout": "^6.2.5",
     "@ant-design/pro-table": "^2.4.0",
@@ -53,6 +52,7 @@
     "xlsx": "^0.16.6"
   },
   "devDependencies": {
+    "@ant-design/charts": "^1.0.13",
     "@ant-design/pro-cli": "^1.0.18",
     "@types/classnames": "^2.2.7",
     "@types/express": "^4.17.0",

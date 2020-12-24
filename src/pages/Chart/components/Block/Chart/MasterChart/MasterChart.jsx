@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import { Typography, Row, Col, Empty } from 'antd';
 
 /**
@@ -22,14 +22,14 @@ const MasterChart = ({ masterDountLeftData, masterDountRightData }) => {
       <Row align="middle" style={{ marginBottom: 16 }}>
         <Col span={12}>
           {masterDountLeftData.length ? (
-            <Donut data={masterDountLeftData} totalLabel="新增家主数" {...dountProps} />
+            <Pie data={masterDountLeftData} totalLabel="新增家主数" {...dountProps} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
         </Col>
         <Col span={12}>
           {masterDountRightData.length ? (
-            <Donut data={masterDountRightData} totalLabel="家主收益卡豆" {...dountProps} />
+            <Pie data={masterDountRightData} totalLabel="家主收益卡豆" {...dountProps} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}

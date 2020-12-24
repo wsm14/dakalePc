@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin, Tooltip } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import numeral from 'numeral';
 import styles from './style.less';
 
@@ -38,7 +38,7 @@ const MasterTotalInfo = ({
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
           <Card bodyStyle={{ padding: 0, height: 276 }}>
             <Spin spinning={!!loading}>
-              <Donut
+              <Pie
                 data={masterTotal}
                 totalLabel="总家主数"
                 height={276}
@@ -53,7 +53,7 @@ const MasterTotalInfo = ({
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
           <Card bodyStyle={{ padding: 0, height: 276 }}>
             <Spin spinning={!!loading}>
-              <Donut
+              <Pie
                 data={incomeTotal}
                 totalLabel="累计收益卡豆"
                 height={276}

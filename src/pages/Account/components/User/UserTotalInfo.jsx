@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -45,7 +45,7 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
         <Row gutter={16} align="middle">
           <Col span={12}>
             用户累计收益卡豆：{userTotalIn}
-            <Donut
+            <Pie
               key="chart1"
               data={indata}
               totalLabel="累计卡豆"
@@ -56,7 +56,7 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
           </Col>
           <Col span={12}>
             用户累计消耗卡豆：{userTotalOut}
-            <Donut
+            <Pie
               key="chart2"
               data={outdata}
               totalLabel="累计卡豆"

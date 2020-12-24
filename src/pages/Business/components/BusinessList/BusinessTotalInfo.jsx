@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut, Column } from '@/components/Charts';
+import { Pie, Column } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -87,7 +87,7 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
         </Col>
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Donut data={chartsRight} height={300} angleField="count" colorField="categoryName" />
+            <Pie data={chartsRight} height={300} angleField="count" colorField="categoryName" />
           </Spin>
         </Col>
       </Row>
