@@ -15,6 +15,7 @@ import {
   Checkbox,
   Spin,
   Empty,
+  message,
 } from 'antd';
 import ImgCutView from '@/components/ImgCut';
 import { PlusOutlined } from '@ant-design/icons';
@@ -176,31 +177,43 @@ const FormComponents = ({
     });
   };
 
+  // 上传文件限制
+  const beforeUpload = (file, maxSize) => {
+    if (!maxSize) return false;
+    const isLt1M = file.size / 1024 / 1024 < maxSize;
+    if (!isLt1M) {
+      message.error(`上传图片过大，请小于${maxSize}MB！`);
+      return false;
+    }
+    return isLt1M;
+  };
+
   /**
    * 选择图片上传配置
    */
-  const handleUpProps = (name, onChange, maxFile) => {
+  const handleUpProps = (name, onChange, maxSize) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
         const { fileList } = value;
-        if (!value.file.status) {
+        const newFileList = !maxSize ? fileList : fileList.filter((file) => !!file.status);
+        if (value.file.status == 'done' && newFileList.length) {
           const fileName = value.file.name;
-          imageCompress(value.file).then(({ file }) => {
-            fileList.map((fi) => {
+          imageCompress(value.file.originFileObj).then(({ file }) => {
+            newFileList.map((fi) => {
               if (fi.name == fileName) {
                 fi.originFileObj = file;
               }
               return fi;
             });
-            setFileLists({ ...fileLists, [name]: fileList.slice(0, maxFile || 999) });
+            setFileLists({ ...fileLists, [name]: newFileList.slice(0, maxFile || 999) });
             (form || formN).setFieldsValue({
-              [name]: { ...value, fileList: fileList.slice(0, maxFile || 999) },
+              [name]: { ...value, fileList: newFileList.slice(0, maxFile || 999) },
             });
           });
           if (onChange) onChange(value);
         } else {
-          if (!fileList.length) (form || formN).setFieldsValue({ [name]: undefined });
+          if (!newFileList.length) (form || formN).setFieldsValue({ [name]: undefined });
           else (form || formN).setFieldsValue({ [name]: value });
           setFileLists({ ...fileLists, [name]: fileList });
         }
@@ -380,7 +393,11 @@ const FormComponents = ({
             // }
           />
         ),
-        checkbox: item.loading ? <Spin /> : <Checkbox.Group options={select} onChange={item.onChange}/>,
+        checkbox: item.loading ? (
+          <Spin />
+        ) : (
+          <Checkbox.Group options={select} onChange={item.onChange} />
+        ),
         select: (
           <Select
             labelInValue={item.labelInValue || false}
@@ -474,9 +491,9 @@ const FormComponents = ({
               multiple={item.multiple || true}
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
-              beforeUpload={() => false}
+              beforeUpload={(file) => beforeUpload(file, item.maxSize)}
               onPreview={(file) => handlePreview(file, name, item.onChange)}
-              {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange, item.maxFile)}
+              {...handleUpProps(Array.isArray(name) ? name[1] : name, item.onChange, item.maxSize)}
               itemRender={(originNode, file, currFileList) => {
                 return (
                   <DragableUploadListItem

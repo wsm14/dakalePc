@@ -104,38 +104,80 @@ function sort(obj) {
   if (window.sessionStorage.getItem('token')) {
     obj.token = window.sessionStorage.getItem('token');
   }
-  let setObj = {
-    ...obj,
-  };
-  let Array = Object.keys(setObj).sort();
-  let NewObject = {};
-  Array.forEach((item) => {
-    NewObject[item] = setObj[item];
+  var newArr = [],
+    newObj = {};
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      //判断自身中是否存在该属性
+      newArr.push(key);
+    }
+  }
+  //排序
+  newArr = newArr.sort();
+  newArr.forEach(function (key) {
+    newObj[key] = obj[key];
   });
-  return NewObject;
+  newArr = null;
+  return newObj;
 }
 
-// 请求数据加密处理
-function Conversion(obj) {
-  let newObj = JSON.stringify(obj);
-  Object.keys(obj).forEach((item) => {
-    if (obj[item] instanceof Array === false) {
-      newObj = newObj.replace(`"${obj[item]}"`, `${obj[item]}`);
-      if (item === 'couponDesc') {
-        let filterObj = JSON.stringify({ couponDesc: obj.couponDesc });
-        filterObj = filterObj.split(':')[1].substring(1, filterObj.length - 2);
-        let filter = filterObj.replace(/\\n/g, '\n');
-        newObj = newObj.replace(`"${filterObj}"`, filter);
-      }
-    }
-
-    newObj = newObj
-      .replace(`"${item}"`, `${item}`)
-      .replace(`,${item}`, `&${item}`)
-      .replace(`${item}:`, `${item}=`);
+/**
+ * 遍历数组并进行json字符化转义
+ * @param arr array 数组内容
+ * @returns string
+ */
+function judge(arr) {
+  var a = [];
+  [].forEach.call(arr, function (ar) {
+    typeof ar === ''
+      ? a.push(JSON.stringify(ar))
+      : typeof ar === 'number'
+      ? a.push(ar)
+      : a.push('"' + ar.toString() + '"');
   });
-  newObj = newObj.slice(1, newObj.length - 1);
-  return newObj;
+  return a.join(',');
+}
+
+/**
+ * 对参数进行签名
+ * @param obj object 传入参数
+ * @returns string 签名字符串
+ */
+function getStr(obj) {
+  // 定义一个数组存放keyValue
+  var str = [];
+  // 定义一个value存放处理后的键值
+  var value = '';
+  // 定义emoji正则表达式
+  // var regRule = /\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2600-\u27FF]/g;
+  var regRule = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]/gi;
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (Array.isArray(obj[key])) {
+        // 数组
+        value = '[' + judge(obj[key]) + ']';
+      } else if (Object.prototype.toString.call(obj[key]) == '[object Object]') {
+        // 对象
+        value = JSON.stringify(obj[key]);
+        if (value.match(regRule)) {
+          value = value.replace(regRule, ''); //旧的js emoji正则表达式
+        }
+      } else {
+        // 其他格式
+        value = obj[key]; //先复制一份值
+        // 如果变量是文本类型且存在emoji则过滤emoji再签名
+        if (
+          Object.prototype.toString.call(obj[key]) == '[object String]' &&
+          obj[key].match(regRule)
+        ) {
+          value = value.replace(regRule, ''); // 旧的js emoji正则表达式
+        }
+      }
+      str.push(key + '=' + value);
+    }
+  }
+  //console.log(str.join('&').toLowerCase());
+  return md5(str.join('&').toLowerCase());
 }
 
 // 处理完成后返回加密数据
@@ -144,11 +186,11 @@ export const encrypt = (data) => {
   setMd5.auth_time_stamp = new Date().getTime().toString();
   setMd5.auth_nonce = setString(true, 10, 28);
   setMd5.auth_secret_key = AUTH_SECRET_KEY;
-  let setStringMd5 = Conversion(setMd5);
-  setStringMd5 = setStringMd5.toLowerCase();
-  let Md5data = md5(setStringMd5);
+  // let setStringMd5 = Conversion(setMd5);
+  // setStringMd5 = setStringMd5.toLowerCase();
+  // let Md5data = md5(setStringMd5);
+  setMd5.auth_sign = getStr(setMd5);
   delete setMd5.auth_secret_key;
-  setMd5.auth_sign = Md5data;
   return setMd5;
 };
 
