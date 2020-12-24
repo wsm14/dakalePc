@@ -8,14 +8,14 @@ const PieChart = (props) => {
     angleField = 'value',
     colorField = 'type',
     legend,
-    label = {},
     statisticShow = true,
     onClick,
-    radius = 1,
+    radius = 0.8,
     innerRadius,
   } = props;
 
   const config = {
+    appendPadding: 10,
     data,
     radius,
     autoRotate: true,
@@ -30,9 +30,8 @@ const PieChart = (props) => {
       },
     },
     statistic: {
-      visible: statisticShow,
-      triggerOn: false,
-      totalLabel: totalLabel || '总计',
+      title: { customHtml: totalLabel || '总计', style: { fontSize: 16 }, offsetY: -10 },
+      content: { style: { fontSize: 25 } },
     },
     padding: 'auto',
     legend: {
@@ -49,6 +48,7 @@ const PieChart = (props) => {
         textAlign: 'center',
       },
     },
+    interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
     events: {
       onRingClick: (ev) => {
         onClick && onClick(ev);
