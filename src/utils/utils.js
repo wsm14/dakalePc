@@ -115,7 +115,7 @@ function sort(obj) {
   //排序
   newArr = newArr.sort();
   newArr.forEach(function (key) {
-    newObj[key] = obj[key];
+    key && (newObj[key] = obj[key]);
   });
   newArr = null;
   return newObj;
