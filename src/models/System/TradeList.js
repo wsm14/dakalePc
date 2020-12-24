@@ -63,11 +63,11 @@ export default {
     *fetchDetailList({ payload, callback }, { call, put }) {
       const { type } = payload;
       const inter = {
-        base: fetchTradeBaseList, // 基础设施
-        special: fetchTradeSpecialList, // 特色服务
+        base: { fun: fetchTradeBaseList, pay: {} }, // 基础设施
+        special: { fun: fetchTradeSpecialList, pay: payload }, // 特色服务
       }[type];
       delete payload.type;
-      const response = yield call(inter, payload);
+      const response = yield call(inter.fun, inter.pay);
       if (!response) return;
       const { content } = response;
       yield put({

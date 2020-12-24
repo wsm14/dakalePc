@@ -28,19 +28,19 @@ const TradeCategorySet = (props) => {
         label: '一级类目名称',
         name: 'categoryName',
         visible: initialValues.type === 'first',
-        maxLength: 20,
+        maxLength: 10,
       },
       {
         label: '二级类目名称',
         visible: initialValues.type === 'second',
         name: 'categoryName',
-        maxLength: 20,
+        maxLength: 10,
       },
       {
         label: '类目名称',
         visible: !!initialValues.categoryId,
         name: 'categoryName',
-        maxLength: 20,
+        maxLength: 10,
       },
       // {
       //   label: '三级类目名称',
