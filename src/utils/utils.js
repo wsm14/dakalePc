@@ -115,7 +115,7 @@ function sort(obj) {
   //排序
   newArr = newArr.sort();
   newArr.forEach(function (key) {
-    key && (newObj[key] = obj[key]);
+    key && obj[key] !== undefined && obj[key] !== null && (newObj[key] = obj[key]);
   });
   newArr = null;
   return newObj;
@@ -129,7 +129,7 @@ function sort(obj) {
 function judge(arr) {
   var a = [];
   [].forEach.call(arr, function (ar) {
-    typeof ar === ''
+    typeof ar === 'object'
       ? a.push(JSON.stringify(ar))
       : typeof ar === 'number'
       ? a.push(ar)

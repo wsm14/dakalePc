@@ -21,7 +21,7 @@ const RoleSetForm = (props) => {
       const permissionObjects = selectedRowKeys.map((item) => ({
         accessId: item,
         dataType: selectedDatas[item] || '1',
-        buttons: selectedBtns[item],
+        buttons: selectedBtns[item] || [],
       }));
       dispatch({
         type: userInfo.roleId
