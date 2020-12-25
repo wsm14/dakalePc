@@ -39,7 +39,7 @@ const MarketCardRMingJoinDetail = (props) => {
       dataIndex: 'signDate',
     },
     {
-      title: '打卡时间',
+      title: '步数',
       align: 'center',
       dataIndex: 'process',
       render: (val) => val || '--',

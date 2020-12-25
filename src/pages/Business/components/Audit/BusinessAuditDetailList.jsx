@@ -37,7 +37,7 @@ const BusinessAuditDetailList = (props) => {
         render: (val) => val || '暂未授权',
       },
       {
-        title: '店铺简称',
+        title: '店铺名称',
         fixed: 'left',
         dataIndex: 'merchantName',
         render: (val) => (

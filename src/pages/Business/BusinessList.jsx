@@ -80,6 +80,18 @@ const BusinessListComponent = (props) => {
       type: 'select',
       select: { list: BUSINESS_STATUS },
     },
+    {
+      label: '入驻时间',
+      type: 'rangePicker',
+      name: 'settleTimeStart',
+      end: 'settleTimeEnd',
+    },
+    {
+      label: '激活时间',
+      type: 'rangePicker',
+      name: 'activationTimeStart',
+      end: 'activationTimeEnd',
+    },
   ];
 
   // table 表头
@@ -225,7 +237,7 @@ const BusinessListComponent = (props) => {
     const fieldNames = { key: 'key', headerName: 'header' };
     const header = [
       { key: 'account', header: '店铺账号' },
-      { key: 'merchantName', header: '店铺简称' },
+      { key: 'merchantName', header: '店铺名称' },
       { key: 'cityName', header: '所在城市' },
       { key: 'address', header: '详细地址' },
       { key: 'topCategoryName', header: '一级经营类目' },

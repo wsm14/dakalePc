@@ -20,7 +20,7 @@ const BusinessAuditList = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '店铺简称',
+      label: '店铺名称',
       name: 'merchantName',
     },
     {
@@ -44,7 +44,7 @@ const BusinessAuditList = (props) => {
       render: (val) => val || '暂未授权',
     },
     {
-      title: '店铺简称',
+      title: '店铺名称',
       fixed: 'left',
       dataIndex: 'merchantName',
       render: (val) => (

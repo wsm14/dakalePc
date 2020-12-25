@@ -61,7 +61,7 @@ const MarketCardRMing = (props) => {
           title: '完成目标人数',
           align: 'center',
           dataIndex: 'targetUserAmount',
-          render: (val) => (val ? val : '--'),
+          render: (val) => val,
         },
         {
           title: '状态',
@@ -79,13 +79,13 @@ const MarketCardRMing = (props) => {
         {
           title: '目标步数（步）',
           align: 'center',
-          dataIndex: 'to2talBeanAmount',
+          dataIndex: 'stepNumber',
         },
         {
           title: '完成目标人数',
           align: 'center',
           dataIndex: 'targetUserAmount',
-          render: (val) => (val ? val : '--'),
+          render: (val) => val,
         },
         {
           title: '状态',

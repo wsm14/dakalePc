@@ -93,7 +93,7 @@ const BusinessDetailShow = (props) => {
       name: 'businessHub',
     },
     {
-      label: '商户电话',
+      label: '店铺电话',
       name: 'telephone',
     },
     {
