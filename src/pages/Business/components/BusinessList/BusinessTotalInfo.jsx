@@ -78,11 +78,9 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
       <Row gutter={16} align="middle">
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Column
-              data={data}
-              height={300}
-              meta={{ type: { alias: '分类' }, value: { alias: '数量' } }}
-            />
+            <div style={{ height: 260 }}>
+              <Column data={data} meta={{ type: { alias: '分类' }, value: { alias: '数量' } }} />
+            </div>
           </Spin>
         </Col>
         <Col span={12}>

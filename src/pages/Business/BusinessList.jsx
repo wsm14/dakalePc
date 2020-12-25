@@ -278,6 +278,28 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
+      <Suspense fallback={<CardLoading></CardLoading>}>
+        <BusinessTotalInfo
+          key="businessTotalInfo"
+          btnExtra={
+            <>
+              <AuthConsumer auth="save">
+                <Button
+                  className="dkl_green_btn"
+                  onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
+                >
+                  新增商户
+                </Button>
+              </AuthConsumer>
+              <AuthConsumer auth="setMreCord">
+                <Button className="dkl_green_btn" onClick={handleVCodeSet}>
+                  设置商家验证码
+                </Button>
+              </AuthConsumer>
+            </>
+          }
+        ></BusinessTotalInfo>
+      </Suspense>
       <DataTableBlock
         keepName="店铺数据"
         btnExtra={({ get }) => (
@@ -298,30 +320,7 @@ const BusinessListComponent = (props) => {
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="businessList/fetchGetList"
         {...businessList}
-      >
-        <Suspense fallback={<CardLoading></CardLoading>}>
-          <BusinessTotalInfo
-            key="businessTotalInfo"
-            btnExtra={
-              <>
-                <AuthConsumer auth="save">
-                  <Button
-                    className="dkl_green_btn"
-                    onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
-                  >
-                    新增商户
-                  </Button>
-                </AuthConsumer>
-                <AuthConsumer auth="setMreCord">
-                  <Button className="dkl_green_btn" onClick={handleVCodeSet}>
-                    设置商家验证码
-                  </Button>
-                </AuthConsumer>
-              </>
-            }
-          ></BusinessTotalInfo>
-        </Suspense>
-      </DataTableBlock>
+      ></DataTableBlock>
       <BusinessAwardSet
         cRef={childRef}
         visible={visible}
