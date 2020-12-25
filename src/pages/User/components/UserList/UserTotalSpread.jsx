@@ -57,7 +57,7 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
-            <Pie data={totalInfo.age || []} title="年龄层" innerRadius={0.65} />
+            <Pie data={totalInfo.age || []} title="年龄层" innerRadius={0.65} flipPage />
           </Card>
         </Spin>
       </Col>

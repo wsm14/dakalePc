@@ -83,10 +83,11 @@ export default {
       yield put({
         type: 'save',
         payload: {
+          // 异常或空数据
           totalInfo: {
             ...content,
             age: Object.keys(content.age).map((item) => ({
-              type: `${item}岁`,
+              type: { [item]: `${item}`, '60+岁': '60岁以上', 异常或空数据: '未知' }[item],
               value: content.age[item],
             })),
           },
