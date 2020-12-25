@@ -17,8 +17,8 @@ const MasterChartIndex = ({ dispatch, searchData, loading }) => {
     });
   };
 
-  const coloffLeft = { xs: 24, sm: 24, md: 24, lg: 24, xl: 16, xxl: 12 };
-  const coloffset = { xs: 24, sm: 24, md: 24, lg: 24, xl: 8, xxl: 12 };
+  const coloffLeft = { xs: 24, sm: 24, md: 24, lg: 24, xl: 12, xxl: 12 };
+  const coloffset = { xs: 24, sm: 24, md: 24, lg: 24, xl: 12, xxl: 12 };
   const styles = { height: 280 };
 
   return (
@@ -30,7 +30,7 @@ const MasterChartIndex = ({ dispatch, searchData, loading }) => {
         </Col>
         <Col {...coloffset}>
           {/* 圈层推荐情况 */}
-          {/* <MasterRecommendChart></MasterRecommendChart> */}
+          <MasterRecommendChart styles={styles}></MasterRecommendChart>
         </Col>
       </Row>
     </Card>

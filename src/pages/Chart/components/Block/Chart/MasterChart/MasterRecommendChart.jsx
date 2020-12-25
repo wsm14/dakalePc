@@ -6,17 +6,18 @@ import { Typography, Empty } from 'antd';
 /**
  * 圈层推荐情况
  */
-const MasterRecommendChart = ({ totalData }) => {
+const MasterRecommendChart = ({ totalData, styles }) => {
   return (
     <>
       <Typography.Title level={5}>圈层推荐情况</Typography.Title>
       {totalData.length ? (
-        <Column
-          data={totalData}
-          height={356}
-          meta={{ type: { alias: '类型' }, count: { alias: '数量' } }}
-          xyField={{ xField: 'type', yField: 'count' }}
-        />
+        <div style={styles}>
+          <Column
+            data={totalData}
+            meta={{ type: { alias: '类型' }, count: { alias: '数量' } }}
+            xyField={{ xField: 'type', yField: 'count' }}
+          />
+        </div>
       ) : (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}

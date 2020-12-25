@@ -26,7 +26,7 @@ const PieChart = (props) => {
     flipPage = false, // 图例分页
   } = props;
 
-  const legends = { layout, position: 'right', flipPage, itemSpacing: 5, useHtml: true, ...legend };
+  const legends = { layout, position: 'right', flipPage, itemSpacing: 8, useHtml: true, ...legend };
 
   const config = {
     data,

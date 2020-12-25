@@ -7,19 +7,17 @@ const ColumnChart = (props) => {
     data,
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
-    description,
   } = props;
   const config = {
+    padding: 'auto',
+    appendPadding: 20,
     data,
-    forceFit: true,
     height: height,
-    radius: 0.8,
-    columnSize: 80,
-    description: description || false,
+    autoFit: true,
     meta,
     ...xyField,
     label: {
-      visible: true,
+      position: 'top', // 'top', 'bottom', 'middle',
     },
     tooltip: {
       visible: true,
