@@ -154,7 +154,7 @@ export default {
           selectedPKeys.push(item[accID]);
         }
       });
-      console.log(selectedBtns, selectedPKeys, userMenu);
+      console.log('当前角色详情', { selectedBtns, selectedPKeys, selectedRowKeys });
       callback({
         ...content.authRoleDetail,
         roleId: content.authRoleDetail.roleIdString,
