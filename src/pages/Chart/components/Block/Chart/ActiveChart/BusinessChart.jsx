@@ -22,11 +22,7 @@ const BusinessChart = ({ dispatch, totalData, loading }) => {
   };
 
   return (
-    <Card
-      bordered={false}
-      loading={loading}
-      bodyStyle={{ paddingBottom: loading ? 24 : 0, minHeight: 487 }}
-    >
+    <Card bordered={false} loading={loading} bodyStyle={{ minHeight: 480 }}>
       <Typography.Title level={5}>店铺情况（截止昨日）</Typography.Title>
       {totalData.length ? (
         <Bar

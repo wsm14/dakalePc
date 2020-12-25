@@ -3,7 +3,6 @@ import { Column } from '@ant-design/charts';
 
 const ColumnChart = (props) => {
   const {
-    height = 0,
     data,
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
@@ -12,7 +11,6 @@ const ColumnChart = (props) => {
     padding: 'auto',
     appendPadding: 20,
     data,
-    height: height,
     autoFit: true,
     meta,
     ...xyField,

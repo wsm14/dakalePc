@@ -75,10 +75,10 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
 
   return (
     <Card
-      bodyStyle={{ padding: 0, height: 274 }}
+      bodyStyle={{ padding: 0 }}
       loading={loading}
       bordered={false}
-      style={{ marginTop: 20 }}
+      style={{ marginTop: 20, height: 274 }}
     >
       {orderArr.map((item) => (
         <Card.Grid style={gridStyle} key={item.title}>

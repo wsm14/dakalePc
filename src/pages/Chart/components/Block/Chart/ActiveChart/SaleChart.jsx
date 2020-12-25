@@ -65,26 +65,23 @@ const SaleChart = ({ dispatch, totalData, loading }) => {
   ];
 
   return (
-    <Card
-      bordered={false}
-      loading={loading}
-      bodyStyle={{ paddingBottom: 0 }}
-      style={{ flex: 1 }}
-    >
+    <Card bordered={false} loading={loading} style={{ flex: 1, height: 636 }}>
       <Typography.Title level={5}>销售情况</Typography.Title>
-      <Bar
-        data={data}
-        height={350}
-        meta={{ type: { alias: '类型' }, value: { alias: '数量' } }}
-        xyField={{ xField: 'value', yField: 'type' }}
-      />
+      <div style={{ height: 350 }}>
+        <Bar
+          data={data}
+          meta={{ type: { alias: '类型' }, value: { alias: '数量' } }}
+          xyField={{ xField: 'value', yField: 'type' }}
+        />
+      </div>
       <Typography.Title level={5}>拜访情况</Typography.Title>
-      <Bar
-        data={dataVisit}
-        height={205}
-        meta={{ type: { alias: '类型' }, value: { alias: '次数' } }}
-        xyField={{ xField: 'value', yField: 'type' }}
-      />
+      <div style={{ height: 189 }}>
+        <Bar
+          data={dataVisit}
+          meta={{ type: { alias: '类型' }, value: { alias: '次数' } }}
+          xyField={{ xField: 'value', yField: 'type' }}
+        />
+      </div>
     </Card>
   );
 };

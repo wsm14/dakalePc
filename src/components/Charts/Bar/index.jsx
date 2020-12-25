@@ -3,7 +3,6 @@ import { Bar } from '@ant-design/charts';
 
 const BarChart = (props) => {
   const {
-    height = 0,
     data,
     xyField = { xField: 'type', yField: 'value' },
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
@@ -11,15 +10,14 @@ const BarChart = (props) => {
   const config = {
     data,
     ...xyField,
-    forceFit: true,
-    height: height,
+    autoFit: true,
+    padding: 'auto',
+    appendPadding: 10,
     meta,
     label: {
       position: 'right',
-      visible: true,
     },
     tooltip: {
-      visible: true,
       domStyles: {
         'g2-tooltip-value': {
           marginLeft: '15px',
