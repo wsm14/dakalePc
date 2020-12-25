@@ -1,27 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pie } from '@ant-design/charts';
 
 const PieChart = (props) => {
+  const ref = React.useRef();
+
   const {
     data,
-    totalLabel,
+    title,
     angleField = 'value',
     colorField = 'type',
-    legend,
-    statisticShow = true,
     onClick,
-    radius = 0.8,
+    radius = 1,
     innerRadius,
+    label = {},
+    legend = {},
+    statistic = {},
+    layout, // horizontal
+    flipPage = false, // 图例分页
   } = props;
 
   const config = {
-    appendPadding: 10,
     data,
-    radius,
-    autoRotate: true,
-    angleField,
-    colorField,
-    innerRadius,
+    radius, // 外环
+    innerRadius, // 内环
+    angleField, // 值
+    colorField, // 分类项
+    appendPadding: 10,
+    padding: 'auto',
+    // 提示文本
     tooltip: {
       domStyles: {
         'g2-tooltip-value': {
@@ -29,17 +35,22 @@ const PieChart = (props) => {
         },
       },
     },
+    // 内环文本
     statistic: {
-      title: { customHtml: totalLabel || '总计', style: { fontSize: 16 }, offsetY: -10 },
-      content: { style: { fontSize: 25 } },
+      title: { customHtml: title || '总计', style: { fontSize: 14 }, offsetY: -10 },
+      content: { style: { fontSize: 25, fontWeight: 400 } },
+      ...statistic,
     },
-    padding: 'auto',
+    // 图例
     legend: {
-      layout: 'horizontal',
+      layout,
       position: 'right',
-      flipPage: false,
+      flipPage,
+      itemSpacing: 5,
+      useHtml: true,
       ...legend,
     },
+    // 文字
     label: {
       type: 'inner',
       offset: '-50%',
@@ -47,16 +58,22 @@ const PieChart = (props) => {
       style: {
         textAlign: 'center',
       },
+      ...label,
     },
-    interactions: [{ type: 'element-selected' }, { type: 'element-active' }],
-    events: {
-      onRingClick: (ev) => {
-        onClick && onClick(ev);
-      }, // 点击事件,其他事件查看文档说明
-    },
+    interactions: [{ type: 'element-active' }],
   };
 
-  return <Pie {...config} />;
+  useEffect(() => {
+    if (ref.current) {
+      // 点击 point
+      ref.current.on('element:click', (...args) => {
+        // console.log(...args);
+        onClick && onClick(...args);
+      });
+    }
+  }, []);
+
+  return <Pie {...config} chartRef={ref} />;
 };
 
 export default PieChart;

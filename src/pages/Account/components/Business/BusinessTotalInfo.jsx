@@ -54,7 +54,7 @@ const BusinessTotalInfo = ({
             商家累计收益：{merchantTotalIncome}
             <Pie
               data={indata}
-              totalLabel="累计卡豆"
+              title="累计卡豆"
               height={276}
               angleField="content"
               colorField="statisticDesc"
@@ -64,7 +64,7 @@ const BusinessTotalInfo = ({
             商家累计消费：{merchantTotalOut}
             <Pie
               data={outdata}
-              totalLabel="累计卡豆"
+              title="累计卡豆"
               height={276}
               angleField="content"
               colorField="statisticDesc"

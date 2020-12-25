@@ -135,7 +135,7 @@ const MasterDetail = (props) => {
       ],
     },
   }[type];
-  console.log(record);
+
   return (
     <Modal
       title={propItem.title}

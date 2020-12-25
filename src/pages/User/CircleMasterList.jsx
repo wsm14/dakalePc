@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'umi';
 import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';

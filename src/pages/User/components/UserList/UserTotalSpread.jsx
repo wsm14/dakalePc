@@ -43,47 +43,41 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
     fetchUserInfoTotal();
   }, []);
 
-  const styles = { padding: 20, height: 276 };
+  const styles = { padding: 10, height: 276 };
 
   return (
     <Row gutter={[16, 16]} align="middle">
       {/* <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Pie data={dataCity} totalLabel="城市" height={276} />
+            <Pie data={dataCity} title="城市" height={276} />
           </Card>
         </Spin>
       </Col> */}
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
-            <Pie
-              data={totalInfo.age || []}
-              totalLabel="年龄层"
-              height={276}
-              radius={1}
-              innerRadius={0.65}
-            />
+            <Pie data={totalInfo.age || []} title="年龄层" innerRadius={0.65} />
           </Card>
         </Spin>
       </Col>
       <Col span={8}>
         <Spin spinning={!!loading}>
-          <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Pie data={dataSex} totalLabel="性别" height={276} radius={1} innerRadius={0.65} />
+          <Card bordered={false} bodyStyle={styles}>
+            <Pie data={dataSex} title="性别" innerRadius={0.65} />
           </Card>
         </Spin>
       </Col>
       <Col span={8}>
         <Spin spinning={!!loading}>
-          <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
+          <Card bordered={false} bodyStyle={styles}>
             <Pie
               data={totalInfo.tag || []}
-              height={276}
-              totalLabel="兴趣"
+              title="兴趣"
               angleField="count"
               colorField="tag"
-              radius={1}
+              innerRadius={0.65}
+              flipPage
             />
           </Card>
         </Spin>

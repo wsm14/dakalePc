@@ -48,7 +48,7 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
             <Pie
               key="chart1"
               data={indata}
-              totalLabel="累计卡豆"
+              title="累计卡豆"
               height={276}
               angleField="content"
               colorField="statisticDesc"
@@ -59,7 +59,7 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
             <Pie
               key="chart2"
               data={outdata}
-              totalLabel="累计卡豆"
+              title="累计卡豆"
               height={276}
               angleField="content"
               colorField="statisticDesc"

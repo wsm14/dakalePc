@@ -37,12 +37,14 @@ const ProvinceTotalComponent = (props) => {
       title: '核销金额',
       align: 'right',
       dataIndex: 'verificationFee',
+      render: (val, record) => val.toFixed(2),
       sorter: (a, b) => a.verificationFee - b.verificationFee,
     },
     {
       title: '扫码付金额',
       align: 'right',
       dataIndex: 'scanOrder',
+      render: (val, record) => val.toFixed(2),
       sorter: (a, b) => a.scanOrder - b.scanOrder,
     },
     {

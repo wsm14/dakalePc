@@ -22,14 +22,14 @@ const MasterChart = ({ masterDountLeftData, masterDountRightData }) => {
       <Row align="middle" style={{ marginBottom: 16 }}>
         <Col span={12}>
           {masterDountLeftData.length ? (
-            <Pie data={masterDountLeftData} totalLabel="新增家主数" {...dountProps} />
+            <Pie data={masterDountLeftData} title="新增家主数" {...dountProps} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
         </Col>
         <Col span={12}>
           {masterDountRightData.length ? (
-            <Pie data={masterDountRightData} totalLabel="家主收益卡豆" {...dountProps} />
+            <Pie data={masterDountRightData} title="家主收益卡豆" {...dountProps} />
           ) : (
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           )}
