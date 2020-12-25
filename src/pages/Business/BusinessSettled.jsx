@@ -6,6 +6,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import exportExcel from '@/utils/exportExcel';
 import DataTableBlock from '@/components/DataTableBlock';
+import HandleSetTable from '@/components/HandleSetTable';
 
 const BusinessSettled = (props) => {
   const { businessSettled, loading, dispatch } = props;
@@ -114,6 +115,18 @@ const BusinessSettled = (props) => {
       ),
     },
     {
+      title: '店铺服务费',
+      align: 'right',
+      dataIndex: 'businesssHub',
+      render: (val) => val || '--',
+    },
+    {
+      title: '赠送卡豆',
+      align: 'right',
+      dataIndex: 'businedssHsub',
+      render: (val) => val || '--',
+    },
+    {
       title: '提交审核日期',
       dataIndex: 'submitVerifyTime',
     },
@@ -151,6 +164,25 @@ const BusinessSettled = (props) => {
       title: '推店人手机',
       dataIndex: 'parentMobile',
       render: (val) => val || '--',
+    },
+    {
+      title: '操作',
+      dataIndex: 'userMerchantIdString',
+      fixed: 'right',
+      align: 'right',
+      render: (val, row) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'own',
+              pop: true,
+              popText: '失败原因',
+              title: '失败原因',
+              visible: row.bankStatus === '2',
+            },
+          ]}
+        />
+      ),
     },
   ];
 
