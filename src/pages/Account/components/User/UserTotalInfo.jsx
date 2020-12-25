@@ -32,6 +32,13 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
     fetchUserTotal();
   }, []);
 
+  const chaerProps = {
+    title: '累计卡豆',
+    innerRadius: 0.6,
+    angleField: 'content',
+    colorField: 'statisticDesc',
+  };
+
   return (
     <Card style={{ marginBottom: 16 }}>
       <SearchCondition
@@ -45,25 +52,15 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
         <Row gutter={16} align="middle">
           <Col span={12}>
             用户累计收益卡豆：{userTotalIn}
-            <Pie
-              key="chart1"
-              data={indata}
-              title="累计卡豆"
-              height={276}
-              angleField="content"
-              colorField="statisticDesc"
-            />
+            <div style={{ height: 250 }}>
+              <Pie key="chart1" data={indata} {...chaerProps} />
+            </div>
           </Col>
           <Col span={12}>
             用户累计消耗卡豆：{userTotalOut}
-            <Pie
-              key="chart2"
-              data={outdata}
-              title="累计卡豆"
-              height={276}
-              angleField="content"
-              colorField="statisticDesc"
-            />
+            <div style={{ height: 250 }}>
+              <Pie key="chart2" data={outdata} {...chaerProps} />
+            </div>
           </Col>
         </Row>
       </Spin>

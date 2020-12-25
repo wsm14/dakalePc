@@ -12,12 +12,21 @@ const PieChart = (props) => {
     onClick,
     radius = 1,
     innerRadius,
-    label = {},
-    legend = {},
+    label = {
+      type: 'inner',
+      offset: '-50%',
+      content: '{value}',
+      style: {
+        textAlign: 'center',
+      },
+    },
     statistic = {},
+    legend = {},
     layout, // horizontal
     flipPage = false, // 图例分页
   } = props;
+
+  const legends = { layout, position: 'right', flipPage, itemSpacing: 5, useHtml: true, ...legend };
 
   const config = {
     data,
@@ -42,24 +51,9 @@ const PieChart = (props) => {
       ...statistic,
     },
     // 图例
-    legend: {
-      layout,
-      position: 'right',
-      flipPage,
-      itemSpacing: 5,
-      useHtml: true,
-      ...legend,
-    },
+    legend: legends,
     // 文字
-    label: {
-      type: 'inner',
-      offset: '-50%',
-      content: '{value}',
-      style: {
-        textAlign: 'center',
-      },
-      ...label,
-    },
+    label,
     interactions: [{ type: 'element-active' }],
   };
 

@@ -19,22 +19,18 @@ const MasterChartIndex = ({ dispatch, searchData, loading }) => {
 
   const coloffLeft = { xs: 24, sm: 24, md: 24, lg: 24, xl: 16, xxl: 12 };
   const coloffset = { xs: 24, sm: 24, md: 24, lg: 24, xl: 8, xxl: 12 };
+  const styles = { height: 300 };
 
   return (
-    <Card
-      bordered={false}
-      loading={loading}
-      style={{ marginTop: 20, width: '100%' }}
-      bodyStyle={{ paddingBottom: loading ? 24 : 0 }}
-    >
+    <Card bordered={false} loading={loading} style={{ marginTop: 20, width: '100%' }}>
       <Row gutter={[20]}>
         <Col {...coloffLeft}>
           {/* 圈层情况 */}
-          <MasterChart searchData={searchData}></MasterChart>
+          <MasterChart styles={styles}></MasterChart>
         </Col>
         <Col {...coloffset}>
           {/* 圈层推荐情况 */}
-          <MasterRecommendChart searchData={searchData}></MasterRecommendChart>
+          {/* <MasterRecommendChart></MasterRecommendChart> */}
         </Col>
       </Row>
     </Card>

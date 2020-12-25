@@ -87,7 +87,14 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
         </Col>
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Pie data={chartsRight} height={300} angleField="count" colorField="categoryName" />
+            <div style={{ height: 260 }}>
+              <Pie
+                data={chartsRight}
+                angleField="count"
+                innerRadius={0.65}
+                colorField="categoryName"
+              />
+            </div>
           </Spin>
         </Col>
       </Row>

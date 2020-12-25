@@ -31,23 +31,21 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
   };
 
   const chartProps = {
-    height: 330,
     legend: {
       position: 'bottom',
-      offsetY: 10,
     },
-    innerRadius: 0.75,
-    labelColor: 'black',
-    statisticShow: false,
+    layout: 'horizontal',
+    radius: 0.8,
+    innerRadius: 0.7,
     label: {
-      type: 'spider',
-      formatter: (datum, item) => {
-        return [
-          `${Math.round((datum / 90) * 100 * 100) / 100}% ${datum}家`,
-          item._origin.categoryName,
-        ];
-      },
+      type: 'outer',
+      labelHeight: 30,
+      content: '{name}\n {percentage} {value}家 ',
     },
+  };
+
+  const styles = {
+    height: 300,
   };
 
   return (
@@ -57,24 +55,25 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
       bodyStyle={{ paddingBottom: 0 }}
     >
       <Typography.Title level={5}>入驻店铺行业分布</Typography.Title>
-      <Row gutter={16} align="middle" style={{ marginBottom: 16 }}>
+      <Row gutter={16} align="middle">
         <Col span={12}>
           <Card
             bordered={false}
             loading={loadingLeft}
             bodyStyle={{
-              paddingBottom: loadingLeft || !tradeLeft.length ? 24 : 0,
-              paddingTop: loadingLeft || !tradeLeft.length ? 24 : 0,
+              padding: '0 0 24px 0',
             }}
           >
             {tradeLeft.length ? (
-              <Pie
-                data={tradeLeft}
-                {...chartProps}
-                angleField="count"
-                colorField="categoryName"
-                onClick={(val) => fetchGetTotalDataRight(val.data.categoryId)}
-              />
+              <div style={styles}>
+                <Pie
+                  {...chartProps}
+                  data={tradeLeft}
+                  angleField="count"
+                  colorField="categoryName"
+                  onClick={(val) => fetchGetTotalDataRight(val.data.data.categoryId)}
+                />
+              </div>
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             )}
@@ -85,17 +84,18 @@ const TradeChart = ({ dispatch, searchData, tradeLeft, tradeRight, loadingLeft, 
             bordered={false}
             loading={loadingRight || loadingLeft}
             bodyStyle={{
-              paddingBottom: loadingRight || !tradeRight.length ? 24 : 0,
-              paddingTop: loadingLeft || !tradeLeft.length ? 24 : 0,
+              padding: '0 0 24px 0',
             }}
           >
             {tradeRight.length ? (
-              <Pie
-                data={tradeRight}
-                {...chartProps}
-                angleField="count"
-                colorField="categoryName"
-              />
+              <div style={styles}>
+                <Pie
+                  data={tradeRight}
+                  {...chartProps}
+                  angleField="count"
+                  colorField="categoryName"
+                />
+              </div>
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             )}
