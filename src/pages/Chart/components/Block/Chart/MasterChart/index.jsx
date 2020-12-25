@@ -19,7 +19,7 @@ const MasterChartIndex = ({ dispatch, searchData, loading }) => {
 
   const coloffLeft = { xs: 24, sm: 24, md: 24, lg: 24, xl: 16, xxl: 12 };
   const coloffset = { xs: 24, sm: 24, md: 24, lg: 24, xl: 8, xxl: 12 };
-  const styles = { height: 300 };
+  const styles = { height: 280 };
 
   return (
     <Card bordered={false} loading={loading} style={{ marginTop: 20, width: '100%' }}>
