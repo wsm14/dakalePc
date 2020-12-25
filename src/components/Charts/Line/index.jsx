@@ -3,16 +3,15 @@ import { Line } from '@ant-design/charts';
 
 const LineChart = (props) => {
   const {
-    // data,
+    data,
     legend,
-    label = {},
-    onClick,
+    label = false,
     seriesField = 'type', // 分组的字段 多折线图必传 否则为单折线图
     xyField = { xField: 'date', yField: 'value' }, // x轴 y轴字段
     meta = { type: { alias: 'x轴' }, value: { alias: 'y轴' } },
   } = props;
 
-  const data = [
+  const dataTest = [
     {
       date: '2018/8/1',
       type: 'download',
@@ -241,15 +240,15 @@ const LineChart = (props) => {
   ];
 
   const config = {
-    data,
+    data: data || dataTest,
     meta,
     padding: 'auto',
-    forceFit: true,
+    appendPadding: 10,
+    autoFit: true,
     ...xyField,
     seriesField,
     responsive: true,
     tooltip: {
-      visible: true,
       domStyles: {
         'g2-tooltip-value': {
           marginLeft: '15px',
@@ -257,16 +256,7 @@ const LineChart = (props) => {
       },
     },
     legend,
-    label: {
-      visible: true,
-      type: 'inner',
-      ...label,
-    },
-    events: {
-      onLineClick: (ev) => {
-        onClick && onClick(ev);
-      }, // 点击事件,其他事件查看文档说明
-    },
+    label,
   };
 
   return <Line {...config} />;
