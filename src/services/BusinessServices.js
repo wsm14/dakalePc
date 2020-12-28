@@ -181,6 +181,13 @@ export function fetchGetOcrIdCardBack(params) {
 }
 //ocr 身份证反面
 
+export function fetchGetOcrIdBankCard(params) {
+  return request('/common/ocr/bankCard', {
+    params,
+  });
+}
+
+
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {
     method: 'POST',

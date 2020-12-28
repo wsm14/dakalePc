@@ -4,9 +4,20 @@ import Title from './title'
 import {connect} from 'umi'
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import {
-  base, user, userDetails, shopDetails, active, legal, management
+  base, user, userDetails, shopDetails, active, legal, management,activeByOne,activeByBank,activeByLegal
 } from './details/detailsIndex'
-
+import city from '@/common/city'
+const  filterCity = (proCode,areCode) => {
+  if(proCode&&areCode){
+    const proList = city.filter(item  => { return item.value == Number(proCode)})[0]
+    const areList = proList['children'].filter(item =>  {
+      return  item.value   === areCode
+    })[0]
+    console.log(proList,areList,areCode)
+    return  proList.label+'/'+areList.label
+  }
+  return  ''
+}
 const groupsDetails = (props) => {
   const {
     dispatch,
@@ -16,6 +27,7 @@ const groupsDetails = (props) => {
     groupDetails,
     saveVisible
   } = props
+  console.log(groupDetails)
   const fetchGrounpDetails = () => {
     if (merchantGroupId) {
       dispatch({
@@ -115,23 +127,58 @@ const groupsDetails = (props) => {
       form: <DescriptionsCondition formItems={shopDetails}
                                    initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
     }],
-    tab2: [{
-      title: '对公账户信息',
-      form: <DescriptionsCondition formItems={active} initialValues={{
-        ...businessLicense,
-        ...bankBindingInfo,
-      }}></DescriptionsCondition>,
-      showArrow: false,
-      disabled: true
-    }, {
-      title: '法人信息',
+    tab2: {
+      '1': [
+        {
+        title: '对公账户信息',
+        form: <DescriptionsCondition formItems={active} initialValues={{
+          ...businessLicense,
+          ...bankBindingInfo,
+        }}></DescriptionsCondition>,
+        showArrow: false,
+        disabled: true
+      }, {
+    title: '法人信息',
       form: <DescriptionsCondition formItems={legal} initialValues={{
-        ...businessLicense, ...bankBindingInfo,
-        activeBeginDate:(bankBindingInfo && bankBindingInfo.startDate || '') + '-'+ (bankBindingInfo && bankBindingInfo.legalCertIdExpires || '')
-      }}></DescriptionsCondition>,
+      ...businessLicense, ...bankBindingInfo,
+      activeBeginDate:(bankBindingInfo && bankBindingInfo.startDate || '') + '-'+ (bankBindingInfo && bankBindingInfo.legalCertIdExpires || '')
+    }}></DescriptionsCondition>,
       showArrow: false,
       disabled: true
-    }]
+  }
+      ],
+      '2': [
+        {
+          title: '对私账户信息',
+          form: <DescriptionsCondition formItems={activeByOne} initialValues={{
+            ...businessLicense,
+            ...bankBindingInfo,
+            activeValidity: (businessLicense && businessLicense.establishDate|| '') + '-'+ (businessLicense && businessLicense.validityPeriod|| '')
+          }}></DescriptionsCondition>,
+          showArrow: false,
+          disabled: true
+        },
+        {
+          title: '银行卡信息',
+          form: <DescriptionsCondition formItems={activeByBank} initialValues={{
+            ...businessLicense, ...bankBindingInfo,
+            city: filterCity(bankBindingInfo.provCode,bankBindingInfo.areaCode)
+          }}></DescriptionsCondition>,
+          showArrow: false,
+          disabled: true
+        },
+        {
+          title: '结算人身份信息',
+          form: <DescriptionsCondition formItems={activeByLegal} initialValues={{
+            ...businessLicense, ...bankBindingInfo,
+            activeBeginDate: (bankBindingInfo && bankBindingInfo.startDate || '') + '-'+ (bankBindingInfo && bankBindingInfo.legalCertIdExpires || '')
+          }}></DescriptionsCondition>,
+          showArrow: false,
+          disabled: true
+        }
+      ]
+    }[merchantGroupDTO.bankAccountType]
+
   }[tabKey]
   return (
     <>
