@@ -21,15 +21,24 @@ const addGroups = (props) => {
     childRef,
     loading,
     merchantGroupDTO: {
-      bankAccountType = '2'
+      bankAccountType
     }
   } = props;
   const options = [
-    {label: '对公(企业、组织机构)', value: '1'},
-    {label: '对私(个体工商户)', value: '2'},
+    {
+      label: '对公(企业、组织机构)',
+      value: '1',
+      disabled: bankAccountType === '2'
+    },
+    {label: '对私(个体工商户)'
+      , value: '2',
+      disabled: bankAccountType === '1'
+    },
   ];
   useEffect(() => {
-    setBankAccount(bankAccountType)
+    if(bankAccountType){
+      setBankAccount(bankAccountType)
+    }
   }, [bankAccountType])
   const [form] = Form.useForm();
   const cRef = useRef();
