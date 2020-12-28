@@ -183,9 +183,11 @@ const FormComponents = ({
     const isLt1M = file.size / 1024 / 1024 < maxSize;
     if (!isLt1M) {
       message.error(`上传图片过大，请小于${maxSize}MB！`);
-      return false;
+      // 图片过大 不允许上传 dklFileStatus 返回out
+      // 默认可上传 dklFileStatus 不存在
+      file.dklFileStatus = 'out';
     }
-    return isLt1M;
+    return false;
   };
 
   /**
@@ -196,7 +198,10 @@ const FormComponents = ({
       accept: 'image/*',
       onChange: (value) => {
         const { fileList } = value;
-        const newFileList = !maxSize ? fileList : fileList.filter((file) => !!file.status);
+        const newFileList = !maxSize
+          ? fileList
+          // dklFileStatus  === out 的值 不允许上传
+          : fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileName = value.file.name;
           imageCompress(value.file.originFileObj || value.file).then(({ file }) => {
