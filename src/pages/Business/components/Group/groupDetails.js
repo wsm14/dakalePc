@@ -13,7 +13,6 @@ const  filterCity = (proCode,areCode) => {
     const areList = proList['children'].filter(item =>  {
       return  item.value   === areCode
     })[0]
-    console.log(proList,areList,areCode)
     return  proList.label+'/'+areList.label
   }
   return  ''
