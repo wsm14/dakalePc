@@ -6,7 +6,6 @@ import styles from '../style.less'
 import cityList from '@/common/city'
 import {TIME_YMD} from "@/common/constant"
 import {BANK_CARD, PHONE_PATTERN} from '@/common/regExp'
-
 const activeForm = ({ form, initialValues, dispatch, cRef}) => {
   const fetchGetOcrBusinessLicense = (payload, callback) => {
     dispatch({
@@ -111,8 +110,6 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
     {
       label: '银行卡号',
       name: 'cardNo',
-      addRules: [{ pattern: BANK_CARD, message: '请输入正确的银行卡号' }],
-
     },
     {
       label: '开户银行',
@@ -123,7 +120,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       label: '开户支行城市',
       name: 'city',
       type: 'cascader',
-      select: cityList.map((item) => {
+      select: JSON.parse(JSON.stringify(cityList)).map((item) => {
         item.children = item.children.map((items) => {
           return {label: items.label, value: items.value}
         })

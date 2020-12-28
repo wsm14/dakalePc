@@ -16,10 +16,9 @@ const addGroups = (props) => {
     visible1,
     saveVisible,
     merchantGroupId,
-    businessLicense,
-    bankBindingInfo,
     childRef,
-    loading
+    loading,
+    initial
   } = props;
   const [form] = Form.useForm();
   const cRef = useRef();
@@ -30,7 +29,7 @@ const addGroups = (props) => {
         <ActiveSetForm
           cRef={cRef}
           form={form}
-          initialValues={{ ...businessLicense, ...bankBindingInfo }}
+          initialValues={initial}
         />
       ),
       showArrow: false,
@@ -42,7 +41,7 @@ const addGroups = (props) => {
         <LegalForm
           cRef={cRef}
           form={form}
-          initialValues={{ ...businessLicense, ...bankBindingInfo }}
+          initialValues={initial}
         />
       ),
       showArrow: false,
@@ -57,6 +56,7 @@ const addGroups = (props) => {
       let startDate = TIME_YMD(activeBeginDate[0]);
       let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
       let obj = {
+        ...initial,
         ...val,
       };
       const {
@@ -125,13 +125,13 @@ const addGroups = (props) => {
         footer={
           <div style={{ textAlign: 'right' }}>
             <Space>
-              <Button onClick={() => saveVisible({ visible1: false })}>取消</Button>
+              <Button onClick={() => onClose()}>取消</Button>
               <Button
                 loading={loading}
                 onClick={() =>
                   fetchAddCard(() => {
                     childRef.current.fetchGetData();
-                    saveVisible({ visible1: false });
+                    onClose();
                   })
                 }
                 type="primary"

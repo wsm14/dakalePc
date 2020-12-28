@@ -159,6 +159,7 @@ const groupsDetails = (props) => {
                   merchantGroupDTO: {},
                   businessLicense: {},
                   bankBindingInfo: {},
+                  initial: {}
                 })
               }}>取消</Button>
               <Button onClick={() => fetchGrounpGoBtn()} type="primary">

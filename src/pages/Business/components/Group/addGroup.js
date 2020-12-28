@@ -50,7 +50,8 @@ const addGroups = (props) => {
                   groupDetails: {},
                   merchantGroupDTO: {},
                   businessLicense: {},
-                  bankBindingInfo: {}
+                  bankBindingInfo: {},
+                  initial: {}
                 });
                  childRef.current.fetchGetData();
               })
@@ -81,6 +82,7 @@ const addGroups = (props) => {
             groupDetails: {},
             merchantGroupDTO: {},
             businessLicense: {},
+            initial: {},
             bankBindingInfo: {}})}>取消</Button>
           <Button
             onClick={() =>
@@ -91,7 +93,8 @@ const addGroups = (props) => {
                   groupDetails: {},
                   merchantGroupDTO: {},
                   businessLicense: {},
-                  bankBindingInfo: {}});
+                  bankBindingInfo: {},
+                  initial: {}});
               })
             }
             loading={loadingUpDate}
