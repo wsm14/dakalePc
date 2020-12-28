@@ -194,7 +194,12 @@ export const ORDERS_TYPE = [
 ];
 
 // 订单支付类型
-export const PAY_TYPE = { beanPay: '卡豆支付', wechat: '微信支付', alipay: '支付宝支付' };
+export const PAY_TYPE = {
+  beanPay: '卡豆支付',
+  wechat: '微信支付',
+  alipay: '支付宝支付',
+  wx_lite: '微信小程序',
+};
 
 // 订单状态
 export const ORDERS_STATUS = [
