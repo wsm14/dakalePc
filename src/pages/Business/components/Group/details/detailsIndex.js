@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { PHONE_PATTERN, SPACE_PATTERN, WORD_NUM_PATTERN } from '@/common/regExp';
+import {BANK_CARD, PHONE_PATTERN, SPACE_PATTERN, WORD_NUM_PATTERN} from '@/common/regExp';
 import { Spin, Transfer } from 'antd';
 import { SEX_TYPE, TIME_YMD } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -137,6 +137,13 @@ export const active = [
     name: 'bankBranchName',
     // addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号，手机号不正确' }],
   },
+  {
+    label: '开户行号',
+    name: 'bankSwiftCode',
+    // type: 'select',
+    // onSearch: vale => console.log(vale),
+    // select:
+  },
   // {
   //   label: '开户支行',
   //   name: '',
@@ -173,3 +180,88 @@ export const legal = [
     name: 'legalMp',
   },
 ];
+
+export const activeByOne = [
+  {
+    label: '营业执照',
+    name: 'businessLicenseImg',
+    type: 'upload',
+  },
+  {
+    label: '社会信用代码',
+    name: 'socialCreditCode',
+  },
+  {
+    label: '公司名称',
+    name: 'businessName',
+  },
+  {
+    label: '注册地址',
+    name: 'signInAddress',
+  },
+  {
+    label: '营业期限',
+    type: 'rangePicker',
+    name: 'activeValidity',
+  },
+  {
+    label: '经营范围',
+    name: 'businessScope',
+    type: 'textArea',
+  },
+]
+export const activeByBank = [
+  {
+    label: '银行卡',
+    name: 'bankPhoto',
+    type: 'upload',
+  },
+  {
+    label: '银行卡号',
+    name: 'cardNo',
+  },
+  {
+    label: '开户支行',
+    name: 'bankBranchName',
+  },
+  {
+    label: '开户城市',
+    name: 'city',
+    type: 'cascader',
+  },
+  {
+    label: '银行预留手机号',
+    name: 'legalMp',
+  },
+  {
+    label: '开户行号',
+    name: 'bankSwiftCode',
+    // type: 'select',
+    // onSearch: vale => console.log(vale),
+    // select:
+  },
+]
+export const activeByLegal = [
+  {
+    label: '结算人身份证正面照',
+    name: 'certFrontPhoto',
+    type: 'upload',
+  },
+  {
+    label: '结算人身份证反面照',
+    name: 'certReversePhoto',
+    type: 'upload',
+  },
+  {
+    label: '结算人姓名',
+    name: 'legalPerson',
+  },
+  {
+    label: '结算人身份证号码',
+    name: 'legalCertId',
+  },
+  {
+    label: '结算人身份有效期',
+    name: 'activeBeginDate',
+  },
+]

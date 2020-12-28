@@ -13,6 +13,7 @@ import {
   fetchWMSUserRoles,
   fetchGrounpDetails,
   fetchUpdateGroup,
+  fetchGetOcrIdBankCard
 } from '@/services/BusinessServices';
 
 export default {
@@ -112,6 +113,12 @@ export default {
       const { content } = response;
       callback && callback(content);
     },
+    *fetchGetOcrIdBankCard({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOcrIdBankCard, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
+    },
     *fetchMerchantBank({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantBank, payload);
       if (!response) return;
@@ -127,11 +134,22 @@ export default {
       if (!response) return;
       const { content } = response;
       let activeBeginDate = [];
+      let activeValidity = []
+      let city = []
       if (content.bankBindingInfo) {
         activeBeginDate = [
           moment(content.bankBindingInfo.startDate),
           moment(content.bankBindingInfo.legalCertIdExpires),
         ];
+      }
+      if(content.businessLicense){
+        activeValidity = [
+          moment(content.businessLicense.establishDate),
+          moment(content.businessLicense.validityPeriod),
+        ]
+      }
+      if(content.bankBindingInfo){
+        city = [content.bankBindingInfo.provCode,content.bankBindingInfo.areaCode]
       }
       yield put({
         type: 'save',
@@ -152,6 +170,8 @@ export default {
             {
               ...content.bankBindingInfo,
               activeBeginDate,
+              activeValidity,
+              city
             } || {},
         },
       });
