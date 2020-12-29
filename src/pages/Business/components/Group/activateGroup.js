@@ -1,5 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {Button, Drawer, Space, Form,  Radio} from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Drawer, Space, Form, Radio } from 'antd';
 import Title from './title';
 import ActiveSetForm from './Form/activeSetForm';
 import LegalForm from './Form/legalForm';
@@ -18,27 +18,24 @@ const addGroups = (props) => {
     merchantGroupId,
     childRef,
     loading,
-    initial
+    initial,
   } = props;
   const options = [
     {
       label: '对公(企业、组织机构)',
       value: '1',
-      disabled: bankAccountType === '2'
+      disabled: bankAccountType === '2',
     },
-    {label: '对私(个体工商户)'
-      , value: '2',
-      disabled: bankAccountType === '1'
-    },
+    { label: '对私(个体工商户)', value: '2', disabled: bankAccountType === '1' },
   ];
   useEffect(() => {
-    if(bankAccountType){
-      setBankAccount(bankAccountType)
+    if (bankAccountType) {
+      setBankAccount(bankAccountType);
     }
-  }, [bankAccountType])
+  }, [bankAccountType]);
   const [form] = Form.useForm();
   const cRef = useRef();
-  const [bankAccount, setBankAccount] = useState('2')
+  const [bankAccount, setBankAccount] = useState('2');
   const panelList = {
     '1': [
       {
@@ -47,7 +44,7 @@ const addGroups = (props) => {
           <ActiveSetForm
             cRef={cRef}
             form={form}
-            initialValues={{...businessLicense, ...bankBindingInfo}}
+            initialValues={{ ...businessLicense, ...bankBindingInfo }}
           />
         ),
         showArrow: false,
@@ -59,7 +56,7 @@ const addGroups = (props) => {
           <LegalForm
             cRef={cRef}
             form={form}
-            initialValues={{...businessLicense, ...bankBindingInfo}}
+            initialValues={{ ...businessLicense, ...bankBindingInfo }}
           />
         ),
         showArrow: false,
@@ -73,7 +70,7 @@ const addGroups = (props) => {
           <ActiveSetOneForm
             cRef={cRef}
             form={form}
-            initialValues={{...businessLicense, ...bankBindingInfo}}
+            initialValues={{ ...businessLicense, ...bankBindingInfo }}
           />
         ),
         showArrow: false,
@@ -85,7 +82,7 @@ const addGroups = (props) => {
           <ActiveBankForm
             cRef={cRef}
             form={form}
-            initialValues={{...businessLicense, ...bankBindingInfo}}
+            initialValues={{ ...businessLicense, ...bankBindingInfo }}
           />
         ),
         showArrow: false,
@@ -97,20 +94,19 @@ const addGroups = (props) => {
           <LegalByOneForm
             cRef={cRef}
             form={form}
-            initialValues={{...businessLicense, ...bankBindingInfo}}
+            initialValues={{ ...businessLicense, ...bankBindingInfo }}
           />
         ),
         showArrow: false,
         disabled: true,
       },
-    ]
-
-  }[bankAccount]
+    ],
+  }[bankAccount];
   const fetchAddCard = (callback) => {
     if (bankAccount === '1') {
       form.validateFields().then((val) => {
         let city = cRef.current.getCity();
-        const {activeBeginDate, activeValidity} = val;
+        const { activeBeginDate, activeValidity } = val;
         let startDate = TIME_YMD(activeBeginDate[0]);
         let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
         let establishDate = TIME_YMD(activeValidity[0]);
@@ -139,7 +135,7 @@ const addGroups = (props) => {
           certReversePhoto,
           legalCertId,
           cardName,
-          bankSwiftCode
+          bankSwiftCode,
         } = obj;
         dispatch({
           type: 'groupSet/fetchMerchantBank',
@@ -153,7 +149,7 @@ const addGroups = (props) => {
               signInAddress,
               socialCreditCode,
               validityPeriod,
-              establishDate
+              establishDate,
             },
             bankBindingObject: {
               bankBranchName,
@@ -179,7 +175,7 @@ const addGroups = (props) => {
     } else {
       form.validateFields().then((val) => {
         let city = cRef.current.getCityByOne();
-        const {activeBeginDate, activeValidity} = val;
+        const { activeBeginDate, activeValidity } = val;
         let startDate = TIME_YMD(activeBeginDate[0]);
         let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
         let establishDate = TIME_YMD(activeValidity[0]);
@@ -204,7 +200,7 @@ const addGroups = (props) => {
           certFrontPhoto,
           certReversePhoto,
           legalCertId,
-          bankSwiftCode
+          bankSwiftCode,
         } = obj;
         dispatch({
           type: 'groupSet/fetchMerchantBank',
@@ -218,7 +214,7 @@ const addGroups = (props) => {
               signInAddress,
               socialCreditCode,
               validityPeriod,
-              establishDate
+              establishDate,
             },
             bankBindingObject: {
               bankPhoto,
@@ -233,14 +229,13 @@ const addGroups = (props) => {
               startDate,
               certFrontPhoto,
               certReversePhoto,
-              bankSwiftCode
+              bankSwiftCode,
             },
           },
           callback: callback,
         });
-      })
+      });
     }
-
   };
   return (
     <>
@@ -250,32 +245,37 @@ const addGroups = (props) => {
         visible={visible1}
         destroyOnClose={true}
         onClose={onClose}
-        bodyStyle={{paddingBottom: 80}}
+        bodyStyle={{ paddingBottom: 80 }}
         footer={
-          <div style={{textAlign: 'right'}}>
+          <div style={{ textAlign: 'right' }}>
             <Space>
-              <Button onClick={() => saveVisible({
-                visible1: false,
-                merchantGroupId: null,
-                groupDetails: {},
-                merchantGroupDTO: {},
-                businessLicense: {},
-                bankBindingInfo: {},
-              })}>取消</Button>
+              <Button
+                onClick={() =>
+                  saveVisible({
+                    visible1: false,
+                    merchantGroupId: null,
+                    groupDetails: {},
+                    merchantGroupDTO: {},
+                    businessLicense: {},
+                    bankBindingInfo: {},
+                  })
+                }
+              >
+                取消
+              </Button>
               <Button
                 loading={loading}
                 onClick={() =>
                   fetchAddCard(() => {
                     childRef.current.fetchGetData();
-                    saveVisible(
-                      {
-                        visible1: false,
-                        merchantGroupId: null,
-                        groupDetails: {},
-                        merchantGroupDTO: {},
-                        businessLicense: {},
-                        bankBindingInfo: {},
-                      });
+                    saveVisible({
+                      visible1: false,
+                      merchantGroupId: null,
+                      groupDetails: {},
+                      merchantGroupDTO: {},
+                      businessLicense: {},
+                      bankBindingInfo: {},
+                    });
                   })
                 }
                 type="primary"
@@ -287,18 +287,25 @@ const addGroups = (props) => {
         }
       >
         <Radio.Group
-          style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px'}}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '12px',
+          }}
           options={options}
           onChange={(e) => {
-            setBankAccount(e.target.value)
-          }} value={bankAccount}/>
+            setBankAccount(e.target.value);
+          }}
+          value={bankAccount}
+        />
         <Title panelList={panelList}></Title>
       </Drawer>
     </>
   );
 };
 
-export default connect(({groupSet, loading}) => ({
+export default connect(({ groupSet, loading }) => ({
   ...groupSet,
   loading: loading.effects['groupSet/fetchMerchantBank'],
 }))(addGroups);
