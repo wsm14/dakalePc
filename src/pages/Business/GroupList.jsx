@@ -180,6 +180,7 @@ const tableList = (props) => {
                     visible1: true,
                     merchantGroupId: val,
                     groupDetails: {},
+                    initial:{}
                   });
                 },
               },
@@ -259,6 +260,7 @@ const tableList = (props) => {
             merchantGroupDTO: {},
             businessLicense: {},
             bankBindingInfo: {},
+            initial:{}
           })
         }
       ></DrawerForms>
@@ -274,6 +276,7 @@ const tableList = (props) => {
             merchantGroupDTO: {},
             businessLicense: {},
             bankBindingInfo: {},
+            initial: {}
           })
         }
       ></SetDetailsForms>
@@ -290,6 +293,7 @@ const tableList = (props) => {
               merchantGroupDTO: {},
               businessLicense: {},
               bankBindingInfo: {},
+              initial: {}
             })
           }
         ></GroupDetails>

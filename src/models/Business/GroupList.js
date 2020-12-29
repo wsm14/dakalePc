@@ -25,6 +25,7 @@ export default {
     merchantGroupDTO: {},
     businessLicense: {},
     bankBindingInfo: {},
+    initial: {}
   },
 
   reducers: {
@@ -123,7 +124,7 @@ export default {
     *fetchGrounpDetails({ payload, callback }, { call, put }) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
-      const { content } = response;
+      const { content,content: {bankBindingInfo = {},businessLicense={}} } = response;
       let activeBeginDate = [];
       if (content.bankBindingInfo) {
         activeBeginDate = [
@@ -135,18 +136,17 @@ export default {
         type: 'save',
         payload: {
           groupDetails: { ...content },
-          merchantGroupDTO:
-            {
+          merchantGroupDTO: {
               ...content.merchantGroupDTO,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
               allCode: [content.merchantGroupDTO.provinceCode,content.merchantGroupDTO.cityCode,content.merchantGroupDTO.districtCode],
             } || {},
-          businessLicense: content.businessLicense || {},
-          bankBindingInfo:
-            {
-              ...content.bankBindingInfo,
-              activeBeginDate,
-            } || {},
+          businessLicense: businessLicense,
+          bankBindingInfo: {...bankBindingInfo, activeBeginDate} || {},
+          initial:{
+            ...businessLicense,...bankBindingInfo,activeBeginDate,
+            city: [bankBindingInfo.provCode, bankBindingInfo.areaCode]
+          }
         },
       });
       callback && callback();

@@ -130,7 +130,7 @@ function sort(obj) {
 function judge(arr) {
   var a = [];
   [].forEach.call(arr, function (ar) {
-    typeof ar === ''
+    typeof ar === 'object'
       ? a.push(JSON.stringify(ar))
       : typeof ar === 'number'
       ? a.push(ar)
