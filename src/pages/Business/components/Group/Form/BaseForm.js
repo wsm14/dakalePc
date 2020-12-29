@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 import { AMAP_KEY } from '@/common/constant';
 import { NUM_PERCENTAGE } from '@/common/regExp'
 import { Map, Marker } from 'react-amap';
-
+import cityList from '@/common/city'
 const BaseForm = (props) => {
   const { tradeList, form, initialValues, cRef, groupDetails } = props;
   const [map, setMap] = useState(false);

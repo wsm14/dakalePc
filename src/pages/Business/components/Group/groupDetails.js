@@ -1,32 +1,37 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Button, Drawer, Space, Card, Alert } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import Title from './title';
 import { connect } from 'umi';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import {  base, user, userDetails, shopDetails, active, legal, management,activeByOne,activeByBank,activeByLegal } from './details/detailsIndex'
-import city from '@/common/city'
+import {
+  base,
+  user,
+  userDetails,
+  shopDetails,
+  active,
+  legal,
+  management,
+  activeByOne,
+  activeByBank,
+  activeByLegal,
+} from './details/detailsIndex';
+import city from '@/common/city';
 
-const  filterCity = (proCode,areCode) => {
-  if(proCode&&areCode){
-    const proList = city.filter(item  => { return item.value == Number(proCode)})[0]
-    const areList = proList['children'].filter(item =>  {
-      return  item.value   === areCode
-    })[0]
-    return  proList.label+'/'+areList.label
+const filterCity = (proCode, areCode) => {
+  if (proCode && areCode) {
+    const proList = city.filter((item) => {
+      return item.value == Number(proCode);
+    })[0];
+    const areList = proList['children'].filter((item) => {
+      return item.value === areCode;
+    })[0];
+    return proList.label + '/' + areList.label;
   }
-  return  ''
-}
+  return '';
+};
 
 const groupsDetails = (props) => {
-  const {
-    visible2,
-    onClose,
-    dispatch,
-    merchantGroupId,
-    groupDetails,
-    saveVisible
-  } = props;
+  const { visible2, onClose, dispatch, merchantGroupId, groupDetails, saveVisible } = props;
 
   const fetchGrounpDetails = () => {
     if (merchantGroupId) {
@@ -98,84 +103,148 @@ const groupsDetails = (props) => {
     }
   };
   const panelList = {
-    tab1: [{
-      title: '基础信息',
-      form: <DescriptionsCondition formItems={base} initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
-      showArrow: false,
-      disabled: true
-    }, {
-      title: '品牌信息',
-      form: <DescriptionsCondition formItems={management}
-                                   initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
-    }, {
-      title: '登录信息',
-      form: <DescriptionsCondition formItems={user} initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
-      showArrow: false,
-      disabled: true,
-
-    }, {
-      title: '联系人信息',
-      form: <DescriptionsCondition formItems={userDetails}
-                                   initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
-      showArrow: false,
-      disabled: true
-    }, {
-      title: '店铺信息',
-      form: <DescriptionsCondition formItems={shopDetails}
-                                   initialValues={{...merchantGroupDTO}}></DescriptionsCondition>,
-    }],
+    tab1: [
+      {
+        title: '基础信息',
+        form: (
+          <DescriptionsCondition
+            formItems={base}
+            initialValues={{ ...merchantGroupDTO }}
+          ></DescriptionsCondition>
+        ),
+        showArrow: false,
+        disabled: true,
+      },
+      {
+        title: '品牌信息',
+        form: (
+          <DescriptionsCondition
+            formItems={management}
+            initialValues={{ ...merchantGroupDTO }}
+          ></DescriptionsCondition>
+        ),
+      },
+      {
+        title: '登录信息',
+        form: (
+          <DescriptionsCondition
+            formItems={user}
+            initialValues={{ ...merchantGroupDTO }}
+          ></DescriptionsCondition>
+        ),
+        showArrow: false,
+        disabled: true,
+      },
+      {
+        title: '联系人信息',
+        form: (
+          <DescriptionsCondition
+            formItems={userDetails}
+            initialValues={{ ...merchantGroupDTO }}
+          ></DescriptionsCondition>
+        ),
+        showArrow: false,
+        disabled: true,
+      },
+      {
+        title: '店铺信息',
+        form: (
+          <DescriptionsCondition
+            formItems={shopDetails}
+            initialValues={{ ...merchantGroupDTO }}
+          ></DescriptionsCondition>
+        ),
+      },
+    ],
     tab2: {
       '1': [
         {
-        title: '对公账户信息',
-        form: <DescriptionsCondition formItems={active} initialValues={{
-          ...businessLicense,
-          ...bankBindingInfo,
-        }}></DescriptionsCondition>,
-        showArrow: false,
-        disabled: true
-      }, {
-    title: '法人信息',
-      form: <DescriptionsCondition formItems={legal} initialValues={{
-      ...businessLicense, ...bankBindingInfo,
-      activeBeginDate:(bankBindingInfo && bankBindingInfo.startDate || '') + '-'+ (bankBindingInfo && bankBindingInfo.legalCertIdExpires || '')
-    }}></DescriptionsCondition>,
-      showArrow: false,
-      disabled: true
-  }
+          title: '对公账户信息',
+          form: (
+            <DescriptionsCondition
+              formItems={active}
+              initialValues={{
+                ...businessLicense,
+                ...bankBindingInfo,
+              }}
+            ></DescriptionsCondition>
+          ),
+          showArrow: false,
+          disabled: true,
+        },
+        {
+          title: '法人信息',
+          form: (
+            <DescriptionsCondition
+              formItems={legal}
+              initialValues={{
+                ...businessLicense,
+                ...bankBindingInfo,
+                activeBeginDate:
+                  ((bankBindingInfo && bankBindingInfo.startDate) || '') +
+                  '-' +
+                  ((bankBindingInfo && bankBindingInfo.legalCertIdExpires) || ''),
+              }}
+            ></DescriptionsCondition>
+          ),
+          showArrow: false,
+          disabled: true,
+        },
       ],
       '2': [
         {
           title: '对私账户信息',
-          form: <DescriptionsCondition formItems={activeByOne} initialValues={{
-            ...businessLicense,
-            ...bankBindingInfo,
-            activeValidity: (businessLicense && businessLicense.establishDate|| '') + '-'+ (businessLicense && businessLicense.validityPeriod|| '')
-          }}></DescriptionsCondition>,
+          form: (
+            <DescriptionsCondition
+              formItems={activeByOne}
+              initialValues={{
+                ...businessLicense,
+                ...bankBindingInfo,
+                activeValidity:
+                  ((businessLicense && businessLicense.establishDate) || '') +
+                  '-' +
+                  ((businessLicense && businessLicense.validityPeriod) || ''),
+              }}
+            ></DescriptionsCondition>
+          ),
           showArrow: false,
-          disabled: true
+          disabled: true,
         },
         {
           title: '银行卡信息',
-          form: <DescriptionsCondition formItems={activeByBank} initialValues={{
-            ...businessLicense, ...bankBindingInfo,
-            city: filterCity(bankBindingInfo.provCode,bankBindingInfo.areaCode)
-          }}></DescriptionsCondition>,
+          form: (
+            <DescriptionsCondition
+              formItems={activeByBank}
+              initialValues={{
+                ...businessLicense,
+                ...bankBindingInfo,
+                city: filterCity(bankBindingInfo.provCode, bankBindingInfo.areaCode),
+              }}
+            ></DescriptionsCondition>
+          ),
           showArrow: false,
-          disabled: true
+          disabled: true,
         },
         {
           title: '结算人身份信息',
-          form: <DescriptionsCondition formItems={activeByLegal} initialValues={{
-            ...businessLicense, ...bankBindingInfo,
-            activeBeginDate: (bankBindingInfo && bankBindingInfo.startDate || '') + '-'+ (bankBindingInfo && bankBindingInfo.legalCertIdExpires || '')
-          }}></DescriptionsCondition>,
+          form: (
+            <DescriptionsCondition
+              formItems={activeByLegal}
+              initialValues={{
+                ...businessLicense,
+                ...bankBindingInfo,
+                activeBeginDate:
+                  ((bankBindingInfo && bankBindingInfo.startDate) || '') +
+                  '-' +
+                  ((bankBindingInfo && bankBindingInfo.legalCertIdExpires) || ''),
+              }}
+            ></DescriptionsCondition>
+          ),
           showArrow: false,
-          disabled: true
-        }
-      ]
-    }[merchantGroupDTO.bankAccountType]
-
+          disabled: true,
+        },
+      ],
+    }[merchantGroupDTO.bankAccountType],
   }[tabKey];
   return (
     <>
@@ -204,16 +273,15 @@ const groupsDetails = (props) => {
                       merchantGroupDTO: {},
                       businessLicense: {},
                       bankBindingInfo: {},
+                      initial: {},
                     });
                   }}
                 >
                   取消
                 </Button>
-                <AuthConsumer auth="edit">
-                  <Button onClick={() => fetchGrounpGoBtn()} type="primary">
-                    去修改
-                  </Button>
-                </AuthConsumer>
+                <Button onClick={() => fetchGrounpGoBtn()} type="primary">
+                  去修改
+                </Button>
               </Space>
             </div>
           )

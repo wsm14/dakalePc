@@ -1,35 +1,32 @@
-import React, {useState, useImperativeHandle} from "react";
-import {connect} from 'umi'
-import FormCondition from "@/components/FormCondition";
+import React, { useState, useImperativeHandle } from 'react';
+import { connect } from 'umi';
+import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import styles from '../style.less'
-import cityList from '@/common/city'
-import {TIME_YMD} from "@/common/constant"
-import {BANK_CARD, PHONE_PATTERN} from '@/common/regExp'
-import moment from "moment";
+import cityList from '@/common/city';
+import moment from 'moment';
 
-const activeForm = ({ form, initialValues, dispatch, cRef}) => {
+const activeForm = ({ form, initialValues, dispatch, cRef }) => {
   const fetchGetOcrBusinessLicense = (payload, callback) => {
     dispatch({
       type: 'groupSet/fetchGetOcrBusinessLicense',
       payload: payload,
-      callback: (val) => callback(val)
-    })
-  }
+      callback: (val) => callback(val),
+    });
+  };
   const fetchGetOcrBankLicense = (payload, callback) => {
     dispatch({
       type: 'groupSet/fetchGetOcrBankLicense',
       payload: payload,
-      callback: (val) => callback(val)
-    })
-  }
-  const [city, setCity] = useState({})
+      callback: (val) => callback(val),
+    });
+  };
+  const [city, setCity] = useState({});
 
   useImperativeHandle(cRef, () => ({
     getCity: () => {
-      return {...city}
-    }
-  }))
+      return { ...city };
+    },
+  }));
 
   const formItems = [
     {
@@ -40,24 +37,27 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       onChange: async (val) => {
-        let imgUrl = await aliOssUpload(val)
+        let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           form.setFieldsValue({
-            businessLicenseImg: imgUrl[0]
-          })
-          fetchGetOcrBusinessLicense({imageUrl: imgUrl[0]}, res => {
-            const {address, business, establishDate, name, regNum, validPeriod} = res
+            businessLicenseImg: imgUrl[0],
+          });
+          fetchGetOcrBusinessLicense({ imageUrl: imgUrl[0] }, (res) => {
+            const { address, business, establishDate, name, regNum, validPeriod } = res;
             form.setFieldsValue({
               socialCreditCode: regNum || '',
               businessName: name || '',
               signInAddress: address || '',
-              activeValidity: [moment(establishDate, 'YYYY-MM-DD'), moment(validPeriod, 'YYYY-MM-DD')],
+              activeValidity: [
+                moment(establishDate, 'YYYY-MM-DD'),
+                moment(validPeriod, 'YYYY-MM-DD'),
+              ],
               businessScope: business || '',
               cardName: name || '',
-            })
-          })
+            });
+          });
         }
-      }
+      },
     },
     {
       label: '社会信用代码',
@@ -91,25 +91,31 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       onChange: async (val) => {
-        let imgUrl = await aliOssUpload(val)
+        let imgUrl = await aliOssUpload(val);
         form.setFieldsValue({
-          openAccountPermit: imgUrl[0]
-        })
+          openAccountPermit: imgUrl[0],
+        });
         if (imgUrl) {
-          fetchGetOcrBankLicense({imageUrl: imgUrl[0]}, res => {
-            const {enterpriseBankCheckId, enterpriseBankId = '', enterpriseBankName, enterpriseBankRegisterId, enterpriseNameCH, enterpriseOwner} = res
+          fetchGetOcrBankLicense({ imageUrl: imgUrl[0] }, (res) => {
+            const {
+              enterpriseBankCheckId,
+              enterpriseBankId = '',
+              enterpriseBankName,
+              enterpriseBankRegisterId,
+              enterpriseNameCH,
+              enterpriseOwner,
+            } = res;
             form.setFieldsValue({
               bankBranchName: enterpriseBankName,
-              cardNo: enterpriseBankId
-            })
-          })
+              cardNo: enterpriseBankId,
+            });
+          });
         }
-      }
+      },
     },
     {
       label: '开户名称',
       name: 'cardName',
-
     },
     {
       label: '银行卡号',
@@ -124,37 +130,34 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       label: '开户支行城市',
       name: 'city',
       type: 'cascader',
-      select: cityList.map((item) => {
+      select: JSON.parse(JSON.stringify(cityList)).map((item) => {
         item.children = item.children.map((items) => {
-          return {label: items.label, value: items.value}
-        })
-        return item
+          return { label: items.label, value: items.value };
+        });
+        return item;
       }),
-      onChange: val => {
-        const {value} = val[0]
+      onChange: (val) => {
+        const { value } = val[0];
         setCity({
           provCode: value,
           areaCode: val[1].value,
-          areaName: val[1].label
-        })
-      }
+          areaName: val[1].label,
+        });
+      },
     },
     {
       label: '开户行号',
       name: 'bankSwiftCode',
-      rules: [{required: false}],
+      rules: [{ required: false }],
       // type: 'select',
       // onSearch: vale => console.log(vale),
       // select:
     },
   ];
 
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+};
 
-  return (
-    <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
-  )
-}
-
-export default connect(({groupSet}) => ({
-  ...groupSet
-}))(activeForm)
+export default connect(({ groupSet }) => ({
+  ...groupSet,
+}))(activeForm);

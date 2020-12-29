@@ -293,7 +293,6 @@ const FormComponents = ({
   // 遍历表单
   const getFields = () => {
     const childrenOwn = [];
-
     formItems.forEach((item, i) => {
       const {
         title = '',
@@ -307,7 +306,6 @@ const FormComponents = ({
         visible = true,
         hidden = false,
       } = item;
-
       let { extra } = item;
 
       let initialValue = {};

@@ -16,13 +16,9 @@ const addGroups = (props) => {
     visible1,
     saveVisible,
     merchantGroupId,
-    businessLicense,
-    bankBindingInfo,
     childRef,
     loading,
-    merchantGroupDTO: {
-      bankAccountType
-    }
+    initial
   } = props;
   const options = [
     {

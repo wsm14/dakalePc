@@ -28,6 +28,7 @@ export default {
     merchantGroupDTO: {},
     businessLicense: {},
     bankBindingInfo: {},
+    initial: {}
   },
 
   reducers: {
@@ -132,7 +133,7 @@ export default {
     *fetchGrounpDetails({ payload, callback }, { call, put }) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
-      const { content } = response;
+      const { content,content: {bankBindingInfo = {},businessLicense={}} } = response;
       let activeBeginDate = [];
       let activeValidity = []
       let city = []
@@ -155,8 +156,7 @@ export default {
         type: 'save',
         payload: {
           groupDetails: { ...content },
-          merchantGroupDTO:
-            {
+          merchantGroupDTO: {
               ...content.merchantGroupDTO,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
               allCode: [
