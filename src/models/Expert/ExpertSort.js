@@ -24,7 +24,8 @@ export default {
       const response = yield call(fetchExpertSortList, payload);
       if (!response) return;
       const { content } = response;
-      const sortObj = JSON.parse(content.userLevelSortConfig.extraParam);
+      const { userLevelSortConfig = {} } = content;
+      const sortObj = JSON.parse(userLevelSortConfig.extraParam || '{}');
       yield put({
         type: 'save',
         payload: {
