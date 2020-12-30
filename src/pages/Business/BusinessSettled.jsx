@@ -127,6 +127,7 @@ const BusinessSettled = (props) => {
     {
       title: '提交审核日期',
       dataIndex: 'submitVerifyTime',
+      render: (val) => val || '--',
     },
     {
       title: '审核状态',

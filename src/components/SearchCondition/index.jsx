@@ -89,7 +89,11 @@ const SearchCondition = (props) => {
       let initialValue = '';
       const placeholder = item.placeholder || '';
       let component = (
-        <Input placeholder={placeholder || `请输入${item.label}`} style={{ width: '100%' }} />
+        <Input
+          placeholder={placeholder || `请输入${item.label}`}
+          style={{ width: '100%' }}
+          allowClear
+        />
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
@@ -98,6 +102,7 @@ const SearchCondition = (props) => {
         const selectList = Array.isArray(select) ? select : select.list;
         component = (
           <Select
+            allowClear
             showSearch
             optionFilterProp="children"
             loading={item.loading}
@@ -105,7 +110,6 @@ const SearchCondition = (props) => {
             onSearch={item.onSearch}
             onChange={item.onChange}
             onFocus={item.onFocus}
-            allowClear={true}
             dropdownMatchSelectWidth={false}
             notFoundContent={
               item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -135,6 +139,7 @@ const SearchCondition = (props) => {
         initialValue = select.defaultValue || '';
         component = (
           <Select
+            allowClear
             showSearch
             mode="multiple"
             defaultActiveFirstOption={false}
@@ -170,7 +175,7 @@ const SearchCondition = (props) => {
       }
       if (item.type === 'number') {
         initialValue = item.initialValue ? `${item.initialValue}` : '';
-        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} />;
+        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} allowClear />;
       }
 
       // 时间区间搜索
@@ -178,8 +183,8 @@ const SearchCondition = (props) => {
         initialValue = item.defaultValue || [];
         component = (
           <RangePicker
+            allowClear
             style={{ width: '100%' }}
-            allowClear={false}
             defaultPickerValue={[
               moment(moment().startOf('month')).subtract(1, 'month'),
               moment(moment().startOf('month')).subtract(1, 'day'),
@@ -198,7 +203,11 @@ const SearchCondition = (props) => {
       // 时间搜索 picker
       if (item.type === 'datePicker') {
         component = (
-          <DatePicker style={{ width: '100%' }} allowClear={false} picker={item.picker || 'date'} />
+          <DatePicker
+            style={{ width: '100%' }}
+            picker={item.picker || 'date'}
+            allowClear
+          />
         );
       }
 
@@ -206,6 +215,7 @@ const SearchCondition = (props) => {
       if (item.type === 'cascader') {
         component = (
           <Cascader
+            allowClear
             changeOnSelect={item.changeOnSelect || false}
             disabled={item.disabled}
             options={item.options || CITYJSON}
