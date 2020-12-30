@@ -60,7 +60,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       label: '开户城市',
       name: 'city',
       type: 'cascader',
-      select: cityList.map((item) => {
+      select: JSON.parse(JSON.stringify(cityList)).map((item) => {
         item.children = item.children.map((items) => {
           return {label: items.label, value: items.value}
         })

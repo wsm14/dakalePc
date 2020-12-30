@@ -140,20 +140,20 @@ export default {
       let activeBeginDate = [];
       let activeValidity = [];
       let city = [];
-      if (content.bankBindingInfo) {
+      if (bankBindingInfo.startDate && bankBindingInfo.legalCertIdExpires) {
         activeBeginDate = [
-          moment(content.bankBindingInfo.startDate),
-          moment(content.bankBindingInfo.legalCertIdExpires),
+          moment(bankBindingInfo.startDate),
+          moment(bankBindingInfo.legalCertIdExpires),
         ];
       }
-      if (content.businessLicense) {
+      if (businessLicense.establishDate && businessLicense.validityPeriod) {
         activeValidity = [
-          moment(content.businessLicense.establishDate),
-          moment(content.businessLicense.validityPeriod),
+          moment(businessLicense.establishDate),
+          moment(businessLicense.validityPeriod),
         ];
       }
       if (content.bankBindingInfo) {
-        city = [content.bankBindingInfo.provCode, content.bankBindingInfo.areaCode];
+        city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode]
       }
       yield put({
         type: 'save',
@@ -170,13 +170,19 @@ export default {
               ],
             } || {},
           businessLicense: content.businessLicense || {},
-          bankBindingInfo:
-            {
+          bankBindingInfo: {
               ...content.bankBindingInfo,
               activeBeginDate,
               activeValidity,
               city,
             } || {},
+          initial:{
+            ...businessLicense,
+            ...bankBindingInfo,
+            activeBeginDate,
+            activeValidity,
+            city
+          }
         },
       });
       callback && callback();
