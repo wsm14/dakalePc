@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "cross-env UMI_UI=none umi dev",
+    "start": "set PORT=8001 && cross-env UMI_UI=none umi dev",
     "start:test": "cross-env REACT_APP_ENV=test UMI_UI=none MOCK=none umi dev",
     "build": "cross-env REACT_APP_ENV=prod umi build",
     "build:test": "cross-env REACT_APP_ENV=test umi build",
