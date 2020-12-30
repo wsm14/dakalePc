@@ -1,6 +1,13 @@
 import { DefaultFooter } from '@ant-design/pro-layout';
 import React from 'react';
+import { Tag } from 'antd';
 import styles from './UserLayout.less';
+
+// 环境区分
+const ENVTagColor = {
+  dev: 'orange',
+  test: 'green',
+};
 
 const UserLayout = ({ children }) => {
   return (
@@ -9,7 +16,14 @@ const UserLayout = ({ children }) => {
         <div className={styles.dakale_user_title}>
           <div className={styles.dakale_user_logo}></div>
           <div className={styles.dakale_user_liner}></div>
-          <div className={styles.dakale_user_font}>哒卡乐运营后台</div>
+          <div className={styles.dakale_user_font}>
+            哒卡乐运营后台
+            {REACT_APP_ENV !== 'prod' && (
+              <span>
+                <Tag color={ENVTagColor[REACT_APP_ENV || 'dev']}>{REACT_APP_ENV || 'dev'}</Tag>
+              </span>
+            )}
+          </div>
         </div>
       </div>
       <div className={styles.dakale_user_content}>{children}</div>
