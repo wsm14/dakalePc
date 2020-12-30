@@ -4,23 +4,19 @@ import { Card, Row, Col, Spin } from 'antd';
 import { Pie } from '@/components/Charts';
 
 const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
-  const dataCity = totalData.city.map((item) => ({
-    type: item.cityName == 'unknown' ? '未知' : item.cityName,
-    value: item.count,
-  }));
+  // const dataCity = totalData.city.map((item) => ({
+  //   type: item.cityName == 'unknown' ? '未知' : item.cityName,
+  //   value: item.count,
+  // }));
 
   const dataSex = [
     {
       type: '男',
-      value: totalData.userGenderMale || 0,
+      value: totalData.userGenderMale + totalData.userGenderUnknown || 0,
     },
     {
       type: '女',
       value: totalData.userGenderFemale || 0,
-    },
-    {
-      type: '未知',
-      value: totalData.userGenderUnknown || 0,
     },
   ];
 
