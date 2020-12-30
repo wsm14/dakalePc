@@ -183,6 +183,12 @@ export default [
             component: './Operation/RefundOrder',
             buttons: ['info'],
           },
+          {
+            path: '/operation/tag',
+            name: '退款管理',
+            component: './Operation/TagManage',
+            buttons: ['save', 'edit'],
+          },
         ],
       },
       {

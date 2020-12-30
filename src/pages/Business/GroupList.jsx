@@ -265,9 +265,9 @@ const tableList = (props) => {
             initial:{}
           })
         }
-      ></DrawerForms> */}
+      ></DrawerForms>
 
-      {/* <SetDetailsForms
+      <SetDetailsForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible1}
         childRef={childRef}

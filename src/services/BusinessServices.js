@@ -169,13 +169,6 @@ export function fetchAddMerchantGroup(data) {
 }
 //新增集团
 
-export function fetchGetOcrIdBankCard(params) {
-  return request('/common/ocr/bankCard', {
-    params,
-  });
-}
-
-
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {
     method: 'POST',
