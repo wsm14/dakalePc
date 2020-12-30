@@ -5,6 +5,7 @@ import {
   fetchGetOcrBank,
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
+  fetchGetOcrIdBankCard,
 } from '@/services/BaseServices';
 import {
   fetchMerchantGroup,
@@ -13,7 +14,6 @@ import {
   fetchWMSUserRoles,
   fetchGrounpDetails,
   fetchUpdateGroup,
-  fetchGetOcrIdBankCard
 } from '@/services/BusinessServices';
 
 export default {
@@ -28,7 +28,7 @@ export default {
     merchantGroupDTO: {},
     businessLicense: {},
     bankBindingInfo: {},
-    initial: {}
+    initial: {},
   },
 
   reducers: {
@@ -133,30 +133,34 @@ export default {
     *fetchGrounpDetails({ payload, callback }, { call, put }) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
-      const { content,content: {bankBindingInfo = {},businessLicense={}} } = response;
+      const {
+        content,
+        content: { bankBindingInfo = {}, businessLicense = {} },
+      } = response;
       let activeBeginDate = [];
-      let activeValidity = []
-      let city = []
+      let activeValidity = [];
+      let city = [];
       if (content.bankBindingInfo) {
         activeBeginDate = [
           moment(content.bankBindingInfo.startDate),
           moment(content.bankBindingInfo.legalCertIdExpires),
         ];
       }
-      if(content.businessLicense){
+      if (content.businessLicense) {
         activeValidity = [
           moment(content.businessLicense.establishDate),
           moment(content.businessLicense.validityPeriod),
-        ]
+        ];
       }
-      if(content.bankBindingInfo){
-        city = [content.bankBindingInfo.provCode,content.bankBindingInfo.areaCode]
+      if (content.bankBindingInfo) {
+        city = [content.bankBindingInfo.provCode, content.bankBindingInfo.areaCode];
       }
       yield put({
         type: 'save',
         payload: {
           groupDetails: { ...content },
-          merchantGroupDTO: {
+          merchantGroupDTO:
+            {
               ...content.merchantGroupDTO,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
               allCode: [
@@ -171,7 +175,7 @@ export default {
               ...content.bankBindingInfo,
               activeBeginDate,
               activeValidity,
-              city
+              city,
             } || {},
         },
       });

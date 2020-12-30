@@ -161,3 +161,30 @@ export function fetchClassifyDel(data) {
 }
 
 // 分类列表 end
+
+// 标签管理
+
+// get 标签管理 - 列表
+export function fetchTagList(params) {
+  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+    params,
+  });
+}
+
+// post 标签管理 - 新增
+export function fetchTagAdd(data) {
+  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 标签管理 - 修改
+export function fetchTagEdit(data) {
+  return request('/common/configMerchantTag/updateConfigMerchantTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 分类列表 end

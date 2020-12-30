@@ -16,6 +16,13 @@ export function fetchGetOcrLicense(params) {
   });
 }
 
+// get OCR识别 银行卡
+export function fetchGetOcrIdBankCard(params) {
+  return request('/common/ocr/bankCard', {
+    params,
+  });
+}
+
 // get OCR识别 开户行
 export function fetchGetOcrBank(params) {
   return request('/common/ocr/bankLicense', {
