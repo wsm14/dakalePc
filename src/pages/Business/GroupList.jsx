@@ -235,6 +235,7 @@ const tableList = (props) => {
                   merchantGroupDTO: {},
                   businessLicense: {},
                   bankBindingInfo: {},
+                  initial:{}
                 })
               }
             >
@@ -250,7 +251,7 @@ const tableList = (props) => {
         dispatchType="groupSet/fetchGetList"
         {...list}
       ></DataTableBlock>
-      {/* <DrawerForms
+      <DrawerForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible}
         childRef={childRef}
@@ -281,7 +282,7 @@ const tableList = (props) => {
             initial: {}
           })
         }
-      ></SetDetailsForms> */}
+      ></SetDetailsForms>
 
       {visible2 && (
         <GroupDetails

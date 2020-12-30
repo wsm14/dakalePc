@@ -266,15 +266,7 @@ const groupsDetails = (props) => {
               <Space>
                 <Button
                   onClick={() => {
-                    saveVisible({
-                      visible2: false,
-                      merchantGroupId: null,
-                      groupDetails: {},
-                      merchantGroupDTO: {},
-                      businessLicense: {},
-                      bankBindingInfo: {},
-                      initial: {},
-                    });
+                    onClose()
                   }}
                 >
                   取消
