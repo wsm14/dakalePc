@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Popover } from 'antd';
 import { MRE_ACCOUNT_STATUS, BUSINESS_STATUS_AUDIT, MRE_SORT_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import exportExcel from '@/utils/exportExcel';
 import DataTableBlock from '@/components/DataTableBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 
 const BusinessSettled = (props) => {
   const { businessSettled, loading, dispatch } = props;
@@ -170,19 +169,12 @@ const BusinessSettled = (props) => {
       dataIndex: 'userMerchantIdString',
       fixed: 'right',
       align: 'right',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'own',
-              pop: true,
-              popText: '失败原因',
-              title: '失败原因',
-              visible: row.bankStatus === '2',
-            },
-          ]}
-        />
-      ),
+      render: (val, row) =>
+        row.bankStatus === '2' && (
+          <Popover placement="left" content={row.failureReason} trigger="click">
+            <a>失败原因</a>
+          </Popover>
+        ),
     },
   ];
 
