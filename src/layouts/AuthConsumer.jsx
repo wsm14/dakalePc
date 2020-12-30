@@ -3,7 +3,7 @@ import { connect, useLocation } from 'umi';
 const AuthConsumer = (props) => {
   const { menuBtn, children, auth = false, noAuth = null, currentUser } = props;
   const { username = '' } = currentUser;
-  if (auth === true || username == '管理员') return children;
+  if (auth === true || username == '管理员' || username == 'admin') return children;
   const authMenu = menuBtn[useLocation().pathname];
   const checkAuth = authMenu ? authMenu.includes(auth) : false;
   // auth 默认没有不显示子组件
