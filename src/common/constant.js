@@ -185,7 +185,10 @@ export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
 
 // 商品状态
-export const GOODS_TYPE = ['下架', '上架', '预售', '未发布'];
+export const GOODS_TYPE = ['已下架', '上架中', '预售', '未发布'];
+
+// 商户确认状态
+export const MRE_SURE_TYPE = ['已驳回', '确认中', '已确认'];
 
 // 订单类型
 export const ORDERS_TYPE = [
