@@ -31,9 +31,9 @@ const CorporateAccount = (props) => {
               validityPeriod: val.validPeriod,
               businessScope: val.business,
             },
-            bankBindingObject: {
-              cardName: val.name,
-            },
+            // bankBindingObject: {
+            //   cardName: val.name,
+            // },
           });
         },
       });
@@ -53,6 +53,7 @@ const CorporateAccount = (props) => {
         callback: (val) => {
           form.setFieldsValue({
             bankBindingObject: {
+              cardName: val.enterpriseNameCH,
               openAccountPermit: res.toString(),
               cardNo: val.enterpriseBankId,
               bankBranchName: val.enterpriseBankName,

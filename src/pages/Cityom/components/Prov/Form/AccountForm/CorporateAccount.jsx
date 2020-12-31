@@ -8,7 +8,7 @@ import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const CorporateAccount = (props) => {
-  const { form, detail = {}, type, dispatch } = props;
+  const { form, detail = {}, type, dispatch, loading } = props;
   const [disabledInfo, setDisabledInfo] = useState(false);
 
   // 上传图片返回url ocr识别营业执照
@@ -31,9 +31,9 @@ const CorporateAccount = (props) => {
               validityPeriod: val.validPeriod,
               businessScope: val.business,
             },
-            bankBindingObject: {
-              cardName: val.name,
-            },
+            // bankBindingObject: {
+            //   cardName: val.name,
+            // },
           });
         },
       });
@@ -53,6 +53,7 @@ const CorporateAccount = (props) => {
         callback: (val) => {
           form.setFieldsValue({
             bankBindingObject: {
+              cardName: val.enterpriseNameCH,
               openAccountPermit: res.toString(),
               cardNo: val.enterpriseBankId,
               bankBranchName: val.enterpriseBankName,
@@ -122,28 +123,28 @@ const CorporateAccount = (props) => {
     },
     {
       label: '商户名称',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'businessName'],
     },
     {
       label: '统一社会信用代码',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'socialCreditCode'],
     },
     {
       label: '注册地址',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'signInAddress'],
     },
     {
       label: '营业期限',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'validityPeriod'],
     },
     {
       label: '经营范围',
       type: 'textArea',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'businessScope'],
     },
     {
@@ -156,23 +157,23 @@ const CorporateAccount = (props) => {
     },
     {
       label: '开户名称',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['bankBindingObject', 'cardName'],
     },
     {
       label: '银行卡号',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['bankBindingObject', 'cardNo'],
     },
     {
       label: '开户银行',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['bankBindingObject', 'bankBranchName'],
     },
     {
       label: '开户支行城市',
       type: 'cascader',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: 'allCityCode',
       onChange: (val) => {
         form.setFieldsValue({
@@ -232,18 +233,18 @@ const CorporateAccount = (props) => {
     },
     {
       label: '法人姓名',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['bankBindingObject', 'legalPerson'],
     },
     {
       label: '法人身份证号码',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['bankBindingObject', 'legalCertId'],
     },
     {
       label: '法人身份有效期',
       type: 'rangePicker',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: 'activeDate',
       render: (val, row) => `${row.startDate || ''} - ${row.legalCertIdExpires || ''}`,
     },
@@ -261,7 +262,7 @@ const CorporateAccount = (props) => {
     },
     {
       label: '法人手机号',
-      disabled: disabledInfo,
+      disabled: disabledInfo || loading,
       name: ['bankBindingObject', 'legalMp'],
       maxLength: 11,
       addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
@@ -291,6 +292,7 @@ const CorporateAccount = (props) => {
   );
 };
 
-export default connect(({ provCompany }) => ({
+export default connect(({ provCompany, loading }) => ({
   detail: provCompany.bankDetail,
+  loading: loading.models.provCompany,
 }))(CorporateAccount);
