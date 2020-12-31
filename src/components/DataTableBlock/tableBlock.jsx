@@ -164,7 +164,7 @@ const TableBlockComponent = (props) => {
           componentSize={componentSize}
           searchItems={searchItems}
           handleSearch={handleSearch}
-          // initialValues={searchData}
+          initialValues={pParams.searchData}
           // NoSearch={NoSearch}
           btnExtra={btnExtra}
         ></SearchCondition>
