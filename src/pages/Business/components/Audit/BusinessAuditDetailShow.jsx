@@ -1,9 +1,11 @@
+import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 const BusinessAuditDetailShow = (props) => {
+  const { verifyStatus } = props;
   return {
     type: 'Drawer',
     showType: 'info',
     width: 600,
-    title: '商户驳回详情',
+    title: verifyStatus !== '2' ? '商户详情' : '商户驳回详情',
     footerShow: false,
     formItems: [
       {
@@ -17,6 +19,10 @@ const BusinessAuditDetailShow = (props) => {
       {
         label: '详细地址',
         name: 'address',
+      },
+      {
+        label: '所属商圈',
+        name: 'businessHub',
       },
       {
         label: '经营类目',
@@ -39,11 +45,12 @@ const BusinessAuditDetailShow = (props) => {
       {
         label: '审核状态',
         name: 'verifyStatus',
-        render: () => `审核驳回`,
+        render: (val) => BUSINESS_STATUS_AUDIT[val],
       },
       {
         label: '驳回原因',
         name: 'rejectReason',
+        render: (val) => val || '--',
       },
     ],
     ...props,

@@ -1,14 +1,16 @@
+import moment from 'moment';
 import { notification } from 'antd';
+import { fetchGetOcrLicense } from '@/services/BaseServices';
 import {
   fetchMerchantList,
   fetchMerchantDetail,
   fetchMerSetBandCode,
   fetchMerchantStatus,
-  fetchMerBusinessOcr,
   fetchMerchantSet,
   fetchMerchantAdd,
   fetchMerchantEdit,
   fetchMerchantTotal,
+  fetchMerchantExportExcel,
   fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
 } from '@/services/BusinessServices';
@@ -21,6 +23,7 @@ export default {
     total: 0,
     totalData: { chartsLeft: {}, chartsRight: [] },
     brandList: { list: [], total: 0 },
+    selectList: [],
   },
 
   reducers: {
@@ -41,16 +44,77 @@ export default {
         type: 'save',
         payload: {
           list: content.recordList,
+          total: content.total,
+          selectList: content.recordList.map((item) => ({
+            name: item.merchantName,
+            otherData: item.address,
+            value: item.userMerchantIdString,
+          })),
         },
       });
+      if (callback) callback(content.recordList);
+    },
+    *fetchMerchantGetExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchMerchantExportExcel, payload);
+      if (!response) return;
+      const { content } = response;
       if (callback) callback(content.recordList);
     },
     *fetchMerchantDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { provinceCode, cityCode, districtCode } = content.merchantDetail;
-      callback({ ...content.merchantDetail, citycodeArr: [provinceCode, cityCode, districtCode] });
+      const {
+        provinceCode: p,
+        cityCode: c,
+        districtCode: d,
+        provinceName: pN,
+        cityName: cN,
+        districtName: dN,
+        categoryNode,
+        brandName,
+        topCategoryName,
+        categoryName,
+        businessTime,
+        property,
+        tag,
+      } = content.merchantDetail;
+      const categoryNodeArr = categoryNode.split('.');
+      const initialValues = {
+        ...content.merchantDetail,
+        provinceCode: [p, c, d],
+        selectCity: [
+          { value: p, label: pN },
+          { value: c, label: cN },
+          { value: d, label: dN },
+        ],
+        businessTimeObj: businessTime,
+        businessTime: Object.assign(
+          ...businessTime.split(',').map((item, i) => {
+            const timeArr = item.split('-');
+            return {
+              [`item5${i + 1}`]: [moment(timeArr[0], 'HH:mm'), moment(timeArr[1], 'HH:mm')],
+            };
+          }),
+        ),
+        topCategoryId: categoryNodeArr[0],
+        topCategoryName: [categoryNodeArr[0], categoryNodeArr[1]],
+        otherBrand: brandName === '' ? false : brandName === '其他品牌' ? true : false,
+        categoryName: [
+          { categoryIdString: categoryNodeArr[0], categoryName: topCategoryName },
+          { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
+        ],
+        category: `${topCategoryName} - ${categoryName}`,
+        citycodeArr: [p, c, d],
+        property: property
+          ? {
+              service: JSON.parse(property).service.split(','),
+              speacial: JSON.parse(property).speacial.split(','),
+            }
+          : '',
+        tags: tag.split(','),
+      };
+      callback(initialValues);
     },
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchMerchantTotal);
@@ -78,7 +142,7 @@ export default {
       });
     },
     *fetchMerBusinessOcr({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerBusinessOcr, payload);
+      const response = yield call(fetchGetOcrLicense, payload);
       if (!response) return;
       const { content } = response;
       callback(content);

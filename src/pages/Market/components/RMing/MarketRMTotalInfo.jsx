@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Statistic, Card, Row, Col, Spin } from 'antd';
 import styles from '../style.less';
 

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Form, Button, Space } from 'antd';
 import FormComponents from '@/components/FormCondition';
 import RoleTableForm from './RoleTableForm';
@@ -7,8 +7,8 @@ import RoleTableForm from './RoleTableForm';
 const RoleSetForm = (props) => {
   const { userInfo = {}, flag, childRef, dispatch, visible, onClose, loading } = props;
 
-  const tableRef = useRef();
   const [form] = Form.useForm();
+  const tableRef = useRef();
 
   // 新增 / 修改角色
   const handleUpdata = () => {

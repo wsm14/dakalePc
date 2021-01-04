@@ -1,12 +1,15 @@
 import { notification } from 'antd';
 import moment from 'moment';
 import {
-  fetchMerchantGroup,
-  fetchAddMerchantGroup,
-  fetchGetOcrBankLicense,
+  fetchGetOcrLicense,
+  fetchGetOcrBank,
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
-  fetchGetOcrBusinessLicense,
+  fetchGetOcrIdBankCard,
+} from '@/services/BaseServices';
+import {
+  fetchMerchantGroup,
+  fetchAddMerchantGroup,
   fetchMerchantBank,
   fetchWMSUserRoles,
   fetchGrounpDetails,
@@ -25,7 +28,7 @@ export default {
     merchantGroupDTO: {},
     businessLicense: {},
     bankBindingInfo: {},
-    initial: {}
+    initial: {},
   },
 
   reducers: {
@@ -52,7 +55,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.recordList || [],total:content.total},
+          list: { list: content.recordList || [], total: content.total },
         },
       });
     },
@@ -88,13 +91,13 @@ export default {
       callback && callback();
     },
     *fetchGetOcrBusinessLicense({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetOcrBusinessLicense, payload);
+      const response = yield call(fetchGetOcrLicense, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
     *fetchGetOcrBankLicense({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetOcrBankLicense, payload);
+      const response = yield call(fetchGetOcrBank, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
@@ -107,6 +110,12 @@ export default {
     },
     *fetchGetOcrIdCardBack({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetOcrIdCardBack, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
+    },
+    *fetchGetOcrIdBankCard({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOcrIdBankCard, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
@@ -124,28 +133,55 @@ export default {
     *fetchGrounpDetails({ payload, callback }, { call, put }) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
-      const { content,content: {bankBindingInfo = {},businessLicense={}} } = response;
+      const {
+        content,
+        content: { bankBindingInfo = {}, businessLicense = {} },
+      } = response;
       let activeBeginDate = [];
-      if (content.bankBindingInfo) {
+      let activeValidity = [];
+      let city = [];
+      if (bankBindingInfo.startDate && bankBindingInfo.legalCertIdExpires) {
         activeBeginDate = [
-          moment(content.bankBindingInfo.startDate),
-          moment(content.bankBindingInfo.legalCertIdExpires),
+          moment(bankBindingInfo.startDate),
+          moment(bankBindingInfo.legalCertIdExpires),
         ];
+      }
+      if (businessLicense.establishDate && businessLicense.validityPeriod) {
+        activeValidity = [
+          moment(businessLicense.establishDate),
+          moment(businessLicense.validityPeriod),
+        ];
+      }
+      if (content.bankBindingInfo) {
+        city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode]
       }
       yield put({
         type: 'save',
         payload: {
           groupDetails: { ...content },
-          merchantGroupDTO: {
+          merchantGroupDTO:
+            {
               ...content.merchantGroupDTO,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
-              allCode: [content.merchantGroupDTO.provinceCode,content.merchantGroupDTO.cityCode,content.merchantGroupDTO.districtCode],
+              allCode: [
+                content.merchantGroupDTO.provinceCode,
+                content.merchantGroupDTO.cityCode,
+                content.merchantGroupDTO.districtCode,
+              ],
             } || {},
-          businessLicense: businessLicense,
-          bankBindingInfo: {...bankBindingInfo, activeBeginDate} || {},
+          businessLicense: content.businessLicense || {},
+          bankBindingInfo: {
+              ...content.bankBindingInfo,
+              activeBeginDate,
+              activeValidity,
+              city,
+            } || {},
           initial:{
-            ...businessLicense,...bankBindingInfo,activeBeginDate,
-            city: [bankBindingInfo.provCode, bankBindingInfo.areaCode]
+            ...businessLicense,
+            ...bankBindingInfo,
+            activeBeginDate,
+            activeValidity,
+            city
           }
         },
       });

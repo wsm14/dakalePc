@@ -44,6 +44,7 @@ export default {
     total: 0,
     userMenu: [],
     serverMenu: [],
+    flag: 0,
   },
 
   reducers: {
@@ -101,6 +102,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
+          // 用户可选菜单
           userMenu: userMenuDataTree(content.permissionObjectList, 'accessIdString'),
         },
       });
@@ -110,25 +112,55 @@ export default {
       const response = yield call(fetchAllGetRoleFlag, payload);
       if (!response) return;
       const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          flag: content.flag,
+        },
+      });
       callback(content.flag);
     },
-    *fetchAllGetRoleDetail({ payload, callback }, { call }) {
+    *fetchAllGetRoleDetail({ payload, callback }, { call, select }) {
       const response = yield call(fetchAllGetRoleDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { permissionObjects } = content.authRoleDetail;
+      const { permissionObjects: authMenu } = content.authRoleDetail;
+      // 用户已选数据整理
       const getData = (key, val) => {
-        if (permissionObjects && !permissionObjects.length) return [];
-        return Object.assign(...permissionObjects.map((item) => ({ [item[key]]: item[val] })));
+        if (authMenu && !authMenu.length) return [];
+        return Object.assign(...authMenu.map((item) => ({ [item[key]]: item[val] })));
       };
-      const selectedBtns = getData('accessIdString', 'buttons');
-      const selectedDatas = getData('accessIdString', 'dataType');
-      const selectedRowKeys = permissionObjects.map((item) => item.accessIdString);
+      const accID = 'accessIdString';
+      // 用户可选菜单
+      const userMenu = yield select((state) => state.roleSetting.userMenu);
+      const serverMenu = yield select((state) => state.roleSetting.serverMenu);
+      const flag = yield select((state) => state.roleSetting.flag);
+      // 用户已选数据按钮
+      const selectedBtns = getData(accID, 'buttons');
+      // 用户已选数据父级菜单id
+      let selectedPKeys = [];
+      // 用户已选数据菜单id
+      let selectedRowKeys = authMenu.map((item) => item[accID]);
+      (flag != 1 ? userMenu : serverMenu).map((item) => {
+        if (authMenu.some((menu) => menu[accID] == item[accID])) {
+          if (
+            item.children &&
+            !item.children.every((menuItem) =>
+              authMenu.some((menu) => menu[accID] == menuItem[accID]),
+            )
+          ) {
+            selectedRowKeys = selectedRowKeys.filter((i) => i != item[accID]);
+          }
+          selectedPKeys.push(item[accID]);
+        }
+      });
+      console.log('当前角色详情', { selectedBtns, selectedPKeys, selectedRowKeys });
       callback({
         ...content.authRoleDetail,
         roleId: content.authRoleDetail.roleIdString,
         selectedBtns,
-        selectedDatas,
+        // selectedDatas,
+        selectedPKeys,
         selectedRowKeys,
       });
     },

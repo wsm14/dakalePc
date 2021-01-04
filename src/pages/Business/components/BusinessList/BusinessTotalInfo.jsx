@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut, Bar } from '@/components/Charts';
+import { Pie, Column } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -31,7 +31,7 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
       value: Number(chartsLeft.activeMerchant) || 0,
     },
     {
-      type: '流失商家',
+      type: '静默商家',
       value: Number(chartsLeft.inactiveMerchant) || 0,
     },
     {
@@ -78,16 +78,21 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
       <Row gutter={16} align="middle">
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Bar
-              data={data}
-              height={300}
-              meta={{ type: { alias: '分类' }, value: { alias: '数量' } }}
-            />
+            <div style={{ height: 260 }}>
+              <Column data={data} meta={{ type: { alias: '分类' }, value: { alias: '数量' } }} />
+            </div>
           </Spin>
         </Col>
         <Col span={12}>
           <Spin spinning={!!loading}>
-            <Donut data={chartsRight} height={300} angleField="count" colorField="categoryName" />
+            <div style={{ height: 260 }}>
+              <Pie
+                data={chartsRight}
+                angleField="count"
+                innerRadius={0.65}
+                colorField="categoryName"
+              />
+            </div>
           </Spin>
         </Col>
       </Row>

@@ -1,7 +1,7 @@
 
-const target = 'https://devgateway.dakale.net'
+// const target = 'https://devgateway.dakale.net'
 // const target = 'https://pregateway.dakale.net'
-
+const target = 'http://192.168.0.28:6020'
 export default {
   dev: {
     define: {
@@ -9,6 +9,10 @@ export default {
     },
     proxy: {
       '/admin': {
+        target:  target,
+        changeOrigin: true,
+      },
+      '/user': {
         target:  target,
         changeOrigin: true,
       },
@@ -22,7 +26,6 @@ export default {
       },
     },
   },
-
   test: {
     define: {
       APIURL: 'https://devgateway.dakale.net',

@@ -1,8 +1,15 @@
 import request from '@/utils/request';
 
+// get 用户列表 - 数据聚合
+export function fetchUserJuhe(params) {
+  return request('/admin/userManagement/userHistoricalDataStatistic', {
+    params,
+  });
+}
+
 // get 用户列表 - 用户列表
 export function fetchUserList(params) {
-  return request('/admin/userManagement/getUserByMobile', {
+  return request('/admin/userManagement/listUserManagement', {
     params,
   });
 }
@@ -17,6 +24,13 @@ export function fetchUserDetail(params) {
 // get 用户列表 - 用户统计
 export function fetchUserTotal(params) {
   return request('/admin/userManagement/getUserStatisticTotal', {
+    params,
+  });
+}
+
+// get 用户列表 - 用户统计 年龄性别
+export function fetchUserInfoTotal(params) {
+  return request('/admin/userManagement/getUserHabitStatistic', {
     params,
   });
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -76,6 +76,7 @@ const SysMenuList = (props) => {
           formItems={[
             {
               type: 'edit',
+              auth: true,
               click: () => fetchGetMenuDetail({ accessId: val }),
             },
             {

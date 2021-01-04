@@ -12,6 +12,8 @@ import {
   InputNumber,
   Cascader,
   Grid,
+  Empty,
+  Spin,
 } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import CITYJSON from '@/common/city';
@@ -58,6 +60,7 @@ const { useBreakpoint } = Grid;
 const SearchCondition = (props) => {
   const {
     searchItems: formItems,
+    resetSearch = () => {},
     handleSearch,
     btnExtra = '',
     componentSize = 'default',
@@ -77,7 +80,7 @@ const SearchCondition = (props) => {
   if (screens.xxl) {
     count = 4;
   } else if (screens.xl) {
-    count = 3;
+    count = 2;
   }
 
   const getFields = () => {
@@ -86,19 +89,73 @@ const SearchCondition = (props) => {
       let initialValue = '';
       const placeholder = item.placeholder || '';
       let component = (
-        <Input placeholder={placeholder || `请输入${item.label}`} style={{ width: '100%' }} />
+        <Input
+          placeholder={placeholder || `请输入${item.label}`}
+          style={{ width: '100%' }}
+          allowClear
+        />
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
         const { select, allItem = true } = item;
         initialValue = select.defaultValue || '';
+        const selectList = Array.isArray(select) ? select : select.list;
         component = (
           <Select
+            allowClear
             showSearch
             optionFilterProp="children"
             loading={item.loading}
             style={{ width: '100%' }}
+            onSearch={item.onSearch}
+            onChange={item.onChange}
+            onFocus={item.onFocus}
+            dropdownMatchSelectWidth={false}
+            notFoundContent={
+              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }
             placeholder={item.placeholder || `请选择`}
+          >
+            {allItem && <Option value={initialValue}>全部</Option>}
+            {selectList.map((data, j) => {
+              if (data) {
+                // 兼容数组
+                const value = !data.value ? `${j}` : data.value;
+                const name = data.value ? data.name : data;
+                const otherData = data.otherData ? data.otherData : '';
+                return (
+                  <Option key={j} value={value}>
+                    {name}
+                    {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
+                  </Option>
+                );
+              }
+            })}
+          </Select>
+        );
+      }
+      if (item.type === 'multiple' && item.select) {
+        const { select, allItem = false } = item;
+        initialValue = select.defaultValue || '';
+        component = (
+          <Select
+            allowClear
+            showSearch
+            mode="multiple"
+            defaultActiveFirstOption={false}
+            filterOption={true}
+            optionFilterProp="children"
+            loading={item.loading}
+            notFoundContent={
+              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }
+            style={{ width: '100%' }}
+            maxTagCount={2}
+            maxTagTextLength={2}
+            onSearch={item.onSearch}
+            onChange={item.onChange}
+            placeholder={item.placeholder || `请选择`}
+            disabled={item.disabled}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
             {select.list.map((data, j) => {
@@ -118,7 +175,7 @@ const SearchCondition = (props) => {
       }
       if (item.type === 'number') {
         initialValue = item.initialValue ? `${item.initialValue}` : '';
-        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} />;
+        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} allowClear />;
       }
 
       // 时间区间搜索
@@ -126,8 +183,8 @@ const SearchCondition = (props) => {
         initialValue = item.defaultValue || [];
         component = (
           <RangePicker
+            allowClear
             style={{ width: '100%' }}
-            allowClear={false}
             defaultPickerValue={[
               moment(moment().startOf('month')).subtract(1, 'month'),
               moment(moment().startOf('month')).subtract(1, 'day'),
@@ -146,20 +203,27 @@ const SearchCondition = (props) => {
       // 时间搜索 picker
       if (item.type === 'datePicker') {
         component = (
-          <DatePicker style={{ width: '100%' }} allowClear={false} picker={item.picker || 'date'} />
+          <DatePicker
+            style={{ width: '100%' }}
+            picker={item.picker || 'date'}
+            allowClear
+          />
         );
       }
 
       // 城市类型
-      if (item.type === 'city') {
+      if (item.type === 'cascader') {
         component = (
           <Cascader
+            allowClear
             changeOnSelect={item.changeOnSelect || false}
             disabled={item.disabled}
             options={item.options || CITYJSON}
             expandTrigger="hover"
             showSearch={{ filter }}
-            placeholder="选择城市"
+            fieldNames={item.fieldNames}
+            placeholder={item.placeholder || '选择城市'}
+            onChange={item.onChange}
           />
         );
       }
@@ -170,7 +234,7 @@ const SearchCondition = (props) => {
       children.push(
         <Col
           lg={pickerCheck ? 10 : componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
-          xl={pickerCheck ? 10 : i < colcount ? 8 : 0}
+          xl={pickerCheck ? 10 : i < colcount ? 12 : 0}
           xxl={pickerCheck ? 8 : componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
           key={i}
         >
@@ -184,7 +248,7 @@ const SearchCondition = (props) => {
   };
 
   // 搜索
-  const handleSearchsOver = (values) => {
+  const handleSearchsOver = (values, type) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
@@ -196,9 +260,12 @@ const SearchCondition = (props) => {
         } else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
           formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
           formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
-        } else if (item.type === 'city') {
+        } else if (item.type === 'multiple') {
+          // 判断类型 多选框字符串传递
+          formObj[item.name] = values[item.name].toString();
+        } else if (item.type === 'cascader') {
           // 判断类型 城市类型处理
-          item.valuesKey.map((item, i) => (formObj[item] = values.city[i]));
+          item.valuesKey.map((key, i) => (formObj[key] = values[item.name][i]));
           delete values[item.name];
         }
       } else {
@@ -206,8 +273,9 @@ const SearchCondition = (props) => {
         delete values[item.name];
       }
     });
-    // 搜索回调
+    if (type == 'data') return { ...values, ...formObj };
     if (NoSearch) {
+      // 搜索回调
       // NoSearch为true时 无搜索值的不请求
       if (Object.keys(values).length) {
         handleSearch({ ...values, ...formObj });
@@ -218,9 +286,14 @@ const SearchCondition = (props) => {
     }
   };
 
+  const getData = () => {
+    return handleSearchsOver(form.getFieldsValue(), 'data');
+  };
+
   // 重置
   const handleReset = () => {
     form.resetFields();
+    if (resetSearch) resetSearch();
   };
 
   useEffect(() => {
@@ -238,7 +311,7 @@ const SearchCondition = (props) => {
             查询
           </Button>
           <Button onClick={handleReset}>重置</Button>
-          {btnExtra}
+          {typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
         </Space>
         {len > (componentSize !== 'default' ? 6 : count) ? (
           <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>

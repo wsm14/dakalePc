@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -59,12 +59,12 @@ const MasterDetail = (props) => {
           dataIndex: 'userMerchantIdString',
         },
         {
-          title: '商家名称',
+          title: '店铺名称',
           align: 'center',
           dataIndex: 'merchantName',
         },
         {
-          title: '商家账号',
+          title: '店铺账号',
           align: 'center',
           dataIndex: 'account',
         },
@@ -118,13 +118,13 @@ const MasterDetail = (props) => {
           title: '关联用户',
           align: 'center',
           dataIndex: 'relatedUser',
-          render: (val) => val || '--',
+          render: (val) => (record.userType == 'user' ? record.username : val || '--'),
         },
         {
-          title: '关联商户',
+          title: '关联店铺',
           align: 'center',
           dataIndex: 'relatedMerchant',
-          render: (val) => val || '--',
+          render: (val) => (record.userType !== 'user' ? record.username : val || '--'),
         },
         {
           title: '关联订单',

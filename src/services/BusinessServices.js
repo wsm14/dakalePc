@@ -1,8 +1,17 @@
 import request from '@/utils/request';
 
+// 店铺数据
+
 // get 商户数据 - 商户列表
 export function fetchMerchantList(params) {
   return request('/admin/merchantManagement/listMerchant', {
+    params,
+  });
+}
+
+// get 商户数据 - 商户列表
+export function fetchMerchantExportExcel(params) {
+  return request('/admin/merchantManagement/listMerchantImport', {
     params,
   });
 }
@@ -26,13 +35,6 @@ export function fetchMerchantDetail(params) {
   });
 }
 
-// get 商户数据 - OCR识别营业执照
-export function fetchMerBusinessOcr(params) {
-  return request('/common/ocr/businessLicense', {
-    params,
-  });
-}
-
 // post 商户数据 - 商家 设置开户行号
 export function fetchMerSetBandCode(data) {
   return request('/admin/merchantManagement/updateMerchantBankSwiftCode', {
@@ -51,7 +53,7 @@ export function fetchMerchantAdd(data) {
 
 // post 商户数据 - 商家 修改
 export function fetchMerchantEdit(data) {
-  return request('/admin/merchantManagement/updateMerchant', {
+  return request('/admin/merchantManagement/editMerchant', {
     method: 'POST',
     data,
   });
@@ -81,6 +83,10 @@ export function fetchMerVerificationCodeSet(data) {
   });
 }
 
+// 店铺数据 end
+
+// 审核列表
+
 // get 商户审核 - 商户审核列表
 export function fetchMerchantAuditList(params) {
   return request('/admin/merchantManagement/listMerchantVerify', {
@@ -88,9 +94,9 @@ export function fetchMerchantAuditList(params) {
   });
 }
 
-// get 商户审核 - 商圈选项
-export function fetchWaitBusinessHub(params) {
-  return request('/common/businessHub/listBusinessHubByCode', {
+// get 商户审核 - 商户审核详情列表
+export function fetchMerchantAuditDetailList(params) {
+  return request('/admin/userMerchantVerifyRecord/listUserMerchantVerifyRecord', {
     params,
   });
 }
@@ -118,6 +124,8 @@ export function fetchMerSaleAudit(data) {
   });
 }
 
+// 审核列表 end
+
 // get 注册列表 - 列表
 export function fetchMerRegisterList(params) {
   return request('/admin/merchantManagement/listMerchantUnVerified', {
@@ -125,19 +133,23 @@ export function fetchMerRegisterList(params) {
   });
 }
 
+// 入驻查询
+
 // get 入驻查询 - 列表
 export function fetchMerSettledList(params) {
-  return request('/admin/merchantManagement/getMerchantSettle', {
+  return request('/admin/merchantManagement/listMerchantSettleIn', {
     params,
   });
 }
 
-// get 绑定查询 - 列表
-export function fetchMerBindBankList(params) {
-  return request('/admin/merchantManagement/getMerchantBankStatusOk', {
+// get 入驻查询 - 获取excel数据
+export function fetchGetMerSettledExcel(params) {
+  return request('/admin/merchantManagement/importListMerchantSettleIn', {
     params,
   });
 }
+
+// 入驻查询 end
 
 // 集团管理
 
@@ -156,30 +168,6 @@ export function fetchAddMerchantGroup(data) {
   });
 }
 //新增集团
-export function fetchGetOcrBusinessLicense(params) {
-  return request('/common/ocr/businessLicense', {
-    params,
-  });
-}
-//ocr 印业执照
-export function fetchGetOcrBankLicense(params) {
-  return request('/common/ocr/bankLicense', {
-    params,
-  });
-}
-//ocr 开户行
-export function fetchGetOcrIdCardFront(params) {
-  return request('/common/ocr/idCardFront', {
-    params,
-  });
-}
-//ocr 身份证正面
-export function fetchGetOcrIdCardBack(params) {
-  return request('/common/ocr/idCardBack', {
-    params,
-  });
-}
-//ocr 身份证反面
 
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {

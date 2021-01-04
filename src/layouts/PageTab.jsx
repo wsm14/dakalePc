@@ -6,8 +6,7 @@
  *   <PageTab>{children}</PageTab>
  */
 
-import { connect } from 'dva';
-import { history } from 'umi';
+import { connect, history } from 'umi';
 import React, { Component } from 'react';
 import { message, Tabs, Menu, Dropdown, Tooltip } from 'antd';
 import pageTabStyle from './PageTab.less';
@@ -20,7 +19,7 @@ const getTitle = (cb = () => {}) => {
     <div style={{ fontSize: 14, width: 380 }}>
       <div>1、点击鼠标右键可以操作标签页面；</div>
       <div>
-        2、双击标签页标题可以刷新当前页； 
+        2、双击标签页标题可以刷新当前页；
         <span
           style={{ cursor: 'pointer', textDecoration: 'underline' }}
           onClick={() => {
@@ -132,11 +131,11 @@ class App extends Component {
     const { pages } = this.state;
     const myPage = Object.assign([], pages);
     // 如果是新开标签页，push到tabs标签页数组中，并设置当前激活页面
-    if (pathname !== '/' && !pages.some(page => page.key === pathname)) {
+    if (pathname !== '/' && !pages.some((page) => page.key === pathname)) {
       myPage.push({ key: pathname, title: pageName, content: children });
     }
     const keys = {};
-    myPage.forEach(item => {
+    myPage.forEach((item) => {
       const { key } = item;
       keys[key] = key;
     });

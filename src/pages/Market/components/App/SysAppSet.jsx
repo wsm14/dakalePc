@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Button, Space, Form } from 'antd';
 import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';

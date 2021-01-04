@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
-import { Drawer, Button, Space, Form, message, Modal } from 'antd';
+import React, { useState } from 'react';
+import { connect } from 'umi';
+import { Drawer, Button, Space, Form, message, Modal, Skeleton } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -10,38 +10,70 @@ import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 
 const BusinessAdd = (props) => {
-  const { dispatch, cRef, visible, initialValues = false, onClose, loading, businessAudit } = props;
+  const {
+    dispatch,
+    cRef,
+    visible = {},
+    initialValues = false,
+    onClose,
+    loading,
+    businessAudit,
+  } = props;
 
+  const { type = 'add', show = false } = visible;
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
-  const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
-  const [selectCity, setSelectCity] = useState([]); // 选择城市
-  const [visibleAllow, setVisibleAllow] = useState(false);
-  const [marker, setMarker] = useState(true); // 浮标拖拽状态
+  // [经度, 纬度]
+  const [location, setLocation] = useState([lnt, lat]);
+  // 选择城市
+  const [selectCity, setSelectCity] = useState([]);
+  // 骨架框显示
+  const [skeletonType, setSkeletonType] = useState(true);
+  // 经营类目
+  const [categId, setCategId] = useState('');
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
     form.validateFields().then((values) => {
       const {
         categoryName: cobj,
-        bondBean: bobj,
         coverImg,
         interiorImg,
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
+        businessTime,
         businessHubIdString,
+        tags,
+        property: { service, speacial },
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
         return;
       }
+
+      const selectTime = values.allTime
+        ? '00:00-23:59'
+        : Object.values(businessTime)
+            .map((item) => {
+              if (item) return `${item[0].format('HH:mm')}-${item[1].format('HH:mm')}`;
+              else return false;
+            })
+            .filter((i) => i);
+
       const { hubList } = businessAudit;
       const businessHubObj = hubList.filter(
         (item) => item.businessHubIdString == businessHubIdString,
       );
       const payload = {
         ...values,
+        property: {
+          service: service.toString(),
+          speacial: speacial ? speacial.toString() : '',
+        },
+        [type == 'edit' ? 'tag' : 'tags']: tags.toString(),
+        userMerchantId: initialValues.userMerchantIdString,
+        businessTime: selectTime.toString(), // 营业时间
         businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',
         businessHub: businessHubObj.length ? businessHubObj[0].businessHubName : '',
         brandName: otherBrand ? '其他品牌' : values.brandName,
@@ -56,8 +88,6 @@ const BusinessAdd = (props) => {
         categoryId: cobj[1].categoryIdString,
         categoryName: cobj[1].categoryName,
         categoryNode: `${cobj[0].categoryIdString}.${cobj[1].categoryIdString}`,
-        commissionRatio: bobj.key,
-        bondBean: bobj.value,
         lnt: location[0],
         lat: location[1],
         ...auditInfo,
@@ -65,17 +95,23 @@ const BusinessAdd = (props) => {
       aliOssUpload(coverImg).then((cres) => {
         payload.coverImg = cres.toString();
         aliOssUpload(interiorImg).then((res) => {
+          console.log(
+            JSON.stringify({
+              ...payload,
+              interiorImg: res.toString(),
+            }),
+          );
           dispatch({
             type: {
-              false: 'businessList/fetchMerchantAdd',
-              true: 'businessAudit/fetchMerSaleAuditAllow',
-            }[!!initialValues],
+              add: 'businessList/fetchMerchantAdd',
+              edit: 'businessList/fetchMerchantEdit',
+              audit: 'businessAudit/fetchMerSaleAuditAllow',
+            }[type],
             payload: {
               ...payload,
               interiorImg: res.toString(),
             },
             callback: () => {
-              if (auditInfo.verifyStatus) setVisibleAllow(false);
               onClose();
               cRef.current.fetchGetData();
             },
@@ -85,12 +121,30 @@ const BusinessAdd = (props) => {
     });
   };
 
+  // 审核通过
+  const fetchAuditAllow = (values) => {
+    Modal.confirm({
+      title: '审核通过',
+      content: '是否确认审核通过？',
+      onOk() {
+        // aliOssUpload(allImages).then((res) => {
+        const info = {
+          merchantVerifyId: initialValues.merchantVerifyIdString,
+          verifyStatus: 3,
+          perCapitaConsumption: values.perCapitaConsumption,
+        };
+        fetchFormData(info);
+        // });
+      },
+    });
+  };
+
   // 打开编辑框时默认值赋值
   const handleInvalueEdit = () => {
     if (initialValues) {
       setLocation([lnt, lat]);
       setSelectCity(initialValues.selectCity);
-      if (initialValues.hasPartner !== '1') {
+      if (type == 'audit' && initialValues.hasPartner !== '1') {
         Modal.warning({
           title: '提醒',
           content:
@@ -98,6 +152,7 @@ const BusinessAdd = (props) => {
         });
       }
     }
+    setSkeletonType(false);
   };
 
   // 审核驳回
@@ -114,7 +169,6 @@ const BusinessAdd = (props) => {
       setAmpShow(false);
       return;
     }
-    setMarker(false);
     let cityname = '';
     if (typeof city[1] !== 'object') city = selectCity;
     (typeof city[1] === 'object' ? city : selectCity).map((item) => {
@@ -138,7 +192,6 @@ const BusinessAdd = (props) => {
               console.log(city[1].label, [longitude, latitude]);
               setLocation([longitude, latitude]);
               setAmpShow(true);
-              setMarker(true);
               setSelectCity(typeof city[1] === 'object' ? city : selectCity);
             }
           });
@@ -150,6 +203,7 @@ const BusinessAdd = (props) => {
   // 地图浮标移动定位
   const handleMarkerEvents = {
     dragend: (event) => {
+      console.log(event);
       const { lnglat } = event;
       const latitude = parseFloat(lnglat.lat); // 维度
       const longitude = parseFloat(lnglat.lng); // 经度
@@ -158,7 +212,7 @@ const BusinessAdd = (props) => {
   };
 
   const amap = (
-    <div style={{ height: 240, marginBottom: 24 }}>
+    <div style={{ height: 240, marginBottom: 24 }} key="map">
       <Map
         amapkey={AMAP_KEY}
         zoom={19}
@@ -167,39 +221,53 @@ const BusinessAdd = (props) => {
         keyboardEnable={false}
         touchZoom={false}
       >
-        <Marker clickable draggable={marker} position={location} events={handleMarkerEvents} />
+        <Marker clickable draggable position={location} events={handleMarkerEvents} />
       </Map>
     </div>
   );
 
   const modalProps = {
-    title: `${initialValues ? '审核' : '新增'}商户`,
-    width: 700,
-    visible,
+    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}商户`,
+    width: 750,
+    visible: show,
     maskClosable: false,
     destroyOnClose: true,
+  };
+
+  const closeDrawer = () => {
+    setSkeletonType(true);
+    onClose();
   };
 
   return (
     <Drawer
       {...modalProps}
-      onClose={onClose}
+      onClose={closeDrawer}
       afterVisibleChange={(showEdit) => {
         if (showEdit) {
+          setSkeletonType(true);
           handleInvalueEdit();
+          setCategId(initialValues.topCategoryId);
+        } else {
+          setSkeletonType(true);
         }
       }}
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'right' }}>
           <Space>
-            <Button onClick={onClose}>取消</Button>
-            {!initialValues && (
-              <Button onClick={fetchFormData} type="primary" loading={loading}>
+            <Button onClick={closeDrawer}>取消</Button>
+            {type == 'edit' && (
+              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
+                修改
+              </Button>
+            )}
+            {type == 'add' && (
+              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
                 提交审核
               </Button>
             )}
-            {initialValues && (
+            {type == 'audit' && (
               <>
                 <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
                   审核驳回
@@ -208,7 +276,7 @@ const BusinessAdd = (props) => {
                   <Button
                     onClick={() => {
                       form.validateFields().then((values) => {
-                        setVisibleAllow(true);
+                        fetchAuditAllow(values);
                       });
                     }}
                     type="primary"
@@ -223,29 +291,26 @@ const BusinessAdd = (props) => {
         </div>
       }
     >
-      <BusinessAddBeas
-        form={form}
-        amap={amap}
-        onSearchAddress={onSearchAddress}
-        initialValues={initialValues}
-      />
-      <BusinessAddQuality form={form} initialValues={initialValues} />
-      {initialValues && (
-        <BusinessAuditAllow
-          visible={visibleAllow}
+      <Skeleton loading={skeletonType} active>
+        <BusinessAddBeas
+          form={form}
+          amap={amap}
+          setType={type}
+          setCategId={setCategId}
+          onSearchAddress={onSearchAddress}
           initialValues={initialValues}
-          onClose={() => setVisibleAllow(false)}
-          merchantName={initialValues.merchantName}
-          merchantVerifyId={initialValues.merchantVerifyIdString}
-          fetchFormData={fetchFormData}
-          categoryId={form.getFieldValue('topCategoryName')}
         />
-      )}
+        <BusinessAddQuality form={form} initialValues={initialValues} />
+        <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
+      </Skeleton>
     </Drawer>
   );
 };
 
 export default connect(({ loading, businessAudit }) => ({
   businessAudit,
-  loading: loading.models.businessList,
+  loading:
+    loading.models.businessList ||
+    loading.effects['sysTradeList/fetchDetailList'] ||
+    loading.models.businessAudit,
 }))(BusinessAdd);

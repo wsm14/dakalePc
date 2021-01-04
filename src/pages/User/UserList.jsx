@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import userDetailShow from './components/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
@@ -17,6 +17,16 @@ const UserListComponent = (props) => {
     {
       label: '注册手机号',
       name: 'mobile',
+    },
+    {
+      label: '用户昵称',
+      name: 'username',
+    },
+    {
+      label: '注册时间',
+      type: 'rangePicker',
+      name: 'createTimeStart',
+      end: 'createTimeEnd',
     },
   ];
 
@@ -34,7 +44,6 @@ const UserListComponent = (props) => {
     },
     {
       title: '昵称',
-      align: 'left',
       dataIndex: 'username',
     },
     {
@@ -109,9 +118,8 @@ const UserListComponent = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.userIdString}`}
-      NoSearch={true}
       dispatchType="userList/fetchGetList"
-      list={list}
+      {...list}
     >
       <UserListTotalInfo></UserListTotalInfo>
       <UserTotalSpread></UserTotalSpread>

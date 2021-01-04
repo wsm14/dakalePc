@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { NEWS_STATUS } from '@/common/constant';
-import { Card } from 'antd';
+import { Card, Result } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -11,10 +12,12 @@ import NewsSet from './components/News/NewsSet';
 const tabList = [
   {
     key: 'tab1',
+    auth: 'newsList',
     tab: '动态列表',
   },
   {
     key: 'tab2',
+    auth: 'save',
     tab: '新增动态',
   },
 ];
@@ -73,10 +76,8 @@ const ServiceNewsComponent = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              pop: true,
+              type: 'down',
               visible: record.status === '1',
-              title: '下架',
               click: () => fetchNewsStatus({ newsId: val, status: 0 }),
             },
             // {
@@ -112,7 +113,14 @@ const ServiceNewsComponent = (props) => {
         {...serviceNews}
       ></DataTableBlock>
     ),
-    tab2: <NewsSet setTabKey={setTabKey}></NewsSet>,
+    tab2: (
+      <AuthConsumer
+        auth="save"
+        noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
+      >
+        <NewsSet setTabKey={setTabKey}></NewsSet>
+      </AuthConsumer>
+    ),
   };
 
   return (

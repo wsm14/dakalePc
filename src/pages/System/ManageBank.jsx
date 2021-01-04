@@ -1,9 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BankSet from './components/BankSet/businessBankSet';
+import BankSet from './components/BankSet/BusinessBankSets';
 
 const BusinessBankSetContent = (props) => {
   const { businessBankSet, loading, dispatch } = props;
@@ -62,13 +63,14 @@ const BusinessBankSetContent = (props) => {
       <DataTableBlock
         keepName="支行设置"
         btnExtra={
-          <Button
-            className="dkl_green_btn"
-            key="1"
-            onClick={() => setVisible({ show: true, info: {} })}
-          >
-            新增
-          </Button>
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisible({ show: true, info: {} })}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
         }
         cRef={childRef}
         loading={loading}

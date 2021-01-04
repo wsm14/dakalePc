@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailList from './components/Business/BusinessDetailList';
@@ -74,16 +74,19 @@ const AccountBusinessList = (props) => {
           formItems={[
             {
               type: 'own',
+              auth: 'peasDetail',
               title: '卡豆明细',
               click: () => setVisible({ type: 'peas', record }),
             },
             {
               type: 'own',
+              auth: 'withdraw',
               title: '提现记录',
               click: () => setVisible({ type: 'collect', record }),
             },
             {
               type: 'own',
+              auth: 'rechargeDetail',
               title: '充值记录',
               click: () => setVisible({ type: 'recharge', record }),
             },

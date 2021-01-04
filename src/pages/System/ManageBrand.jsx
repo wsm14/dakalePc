@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import businessBrandSet from './components/Brand/BusinessBrandSet';
@@ -66,9 +67,11 @@ const BusinessBrandComponent = (props) => {
   return (
     <DataTableBlock
       btnExtra={
-        <Button className="dkl_green_btn" key="1" onClick={handleBrandSet}>
-          新增
-        </Button>
+        <AuthConsumer auth="save">
+          <Button className="dkl_green_btn" onClick={handleBrandSet}>
+            新增
+          </Button>
+        </AuthConsumer>
       }
       keepName="品牌管理"
       cRef={childRef}

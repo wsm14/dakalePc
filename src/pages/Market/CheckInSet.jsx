@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import checkInSet from './components/CheckIn/CheckInSet';
@@ -57,21 +57,25 @@ const SysCheckIn = (props) => {
             {
               type: 'own',
               title: '分享图片',
+              auth: 'shareImg',
               click: () => setVisible({ type: 'image', styleType: 'share', record }),
             },
             {
               type: 'own',
               title: '打卡图片',
+              auth: 'markImg',
               click: () => setVisible({ type: 'image', styleType: 'mark', record }),
             },
             {
               type: 'own',
               title: '分享文案',
+              auth: 'shareText',
               click: () => setVisible({ type: 'text', styleType: 'share', record }),
             },
             {
               type: 'own',
               title: '打卡文案',
+              auth: 'markText',
               click: () => setVisible({ type: 'text', styleType: 'mark', record }),
             },
           ]}

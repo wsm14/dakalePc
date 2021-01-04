@@ -1,6 +1,5 @@
 import md5 from 'md5';
 import { parse } from 'querystring';
-import pathRegexp from 'path-to-regexp';
 import { AUTH_SECRET_KEY } from '@/common/constant';
 
 export const store = {
@@ -116,7 +115,7 @@ function sort(obj) {
   //排序
   newArr = newArr.sort();
   newArr.forEach(function (key) {
-    (!!obj[key] || typeof obj[key] === 'boolean' || obj[key] === 0) && (newObj[key] = obj[key]);
+    key && obj[key] !== undefined && obj[key] !== null && (newObj[key] = obj[key]);
   });
   newArr = null;
   return newObj;
@@ -145,12 +144,12 @@ function judge(arr) {
  * @returns string 签名字符串
  */
 function getStr(obj) {
-  //定义一个数组存放keyValue
+  // 定义一个数组存放keyValue
   var str = [];
-  //定义一个value存放处理后的键值
+  // 定义一个value存放处理后的键值
   var value = '';
-  //定义emoji正则表达式
-  //var regRule = /\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2600-\u27FF]/g;
+  // 定义emoji正则表达式
+  // var regRule = /\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2600-\u27FF]/g;
   var regRule = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]/gi;
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
@@ -166,12 +165,12 @@ function getStr(obj) {
       } else {
         // 其他格式
         value = obj[key]; //先复制一份值
-        //如果变量是文本类型且存在emoji则过滤emoji再签名
+        // 如果变量是文本类型且存在emoji则过滤emoji再签名
         if (
           Object.prototype.toString.call(obj[key]) == '[object String]' &&
           obj[key].match(regRule)
         ) {
-          value = value.replace(regRule, ''); //旧的js emoji正则表达式
+          value = value.replace(regRule, ''); // 旧的js emoji正则表达式
         }
       }
       str.push(key + '=' + value);
@@ -196,24 +195,6 @@ export const encrypt = (data) => {
 };
 
 export const getPageQuery = () => parse(window.location.href.split('?')[1]);
-
-export const getRouteAuthority = (path, routeData) => {
-  let authorities = false;
-  routeData.forEach((route) => {
-    // match prefix
-    if (pathRegexp(`${route.path}/(.*)`).test(`${path}/`)) {
-      if (route.path === path) {
-        authorities = true;
-        return;
-      } // get children authority recursively
-
-      if (route.routes) {
-        authorities = getRouteAuthority(path, route.routes) || authorities;
-      }
-    }
-  });
-  return authorities;
-};
 
 // 设置uuid
 export const uuid = () => {

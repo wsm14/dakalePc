@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Spin, Popover } from 'antd';
 import styles from './style.less';
 
@@ -70,7 +70,7 @@ const MasterOrderDetail = ({ order, orderDetail, loading, dispatch }) => {
       placement="right"
       trigger="click"
       title="订单详情"
-      overlayStyle={{ height: 284, maxWidth: 300 }}
+      overlayStyle={{ height: 284, width: 300 }}
       content={loading ? <Spin></Spin> : oderDom}
       onVisibleChange={(val) => setVisible(val)}
     >

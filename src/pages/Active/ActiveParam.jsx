@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Card } from 'antd';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 

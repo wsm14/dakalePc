@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import {
   fetchFeedBackList,
   fetchFeedBackPush,
+  fetchFeedBackDetail,
 } from '@/services/ServiceServices';
 
 export default {
@@ -31,6 +32,12 @@ export default {
           list: { list: content.dtoList, total: content.total },
         },
       });
+    },
+    *fetchFeedBackDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchFeedBackDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.userFeedbackDTO);
     },
     *fetchFeedBackPush({ payload, callback }, { call, put }) {
       const response = yield call(fetchFeedBackPush, payload);

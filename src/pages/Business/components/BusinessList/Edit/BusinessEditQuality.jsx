@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 

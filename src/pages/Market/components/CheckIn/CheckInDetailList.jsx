@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal, Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -48,6 +49,7 @@ const CheckInDetailList = (props) => {
               formItems={[
                 {
                   type: 'edit',
+                  auth: 'markImgEdit',
                   click: () => handleCheckInDetailSet(row),
                 },
               ]}
@@ -74,6 +76,7 @@ const CheckInDetailList = (props) => {
               formItems={[
                 {
                   type: 'edit',
+                  auth: 'shareTextEdit',
                   click: () => handleCheckInDetailSet(row),
                 },
               ]}
@@ -96,15 +99,23 @@ const CheckInDetailList = (props) => {
       <DataTableBlock
         btnExtra={
           {
-            text: detailList.list.length < 6 && (
-              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                新增
-              </Button>
+            text: (
+              <AuthConsumer auth="markTextAdd">
+                {detailList.list.length < 6 && (
+                  <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                    新增
+                  </Button>
+                )}
+              </AuthConsumer>
             ),
-            image: detailList.list.length < 3 && (
-              <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                新增
-              </Button>
+            image: (
+              <AuthConsumer auth="shareImgAdd">
+                {detailList.list.length < 3 && (
+                  <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                    新增
+                  </Button>
+                )}
+              </AuthConsumer>
             ),
           }[type]
         }

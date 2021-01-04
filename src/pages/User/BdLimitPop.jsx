@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
 import limitPopSet from './components/LimitPop/LimitPopSet';
 
@@ -49,9 +50,11 @@ const ServiceLimitPop = (props) => {
   return (
     <DataTableBlock
       btnExtra={
-        <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
-          新增
-        </Button>
+        <AuthConsumer auth="save">
+          <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
+            新增
+          </Button>
+        </AuthConsumer>
       }
       keepName="BD白名单"
       cRef={childRef}

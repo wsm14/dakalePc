@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -38,6 +38,13 @@ const BusinessTotalInfo = ({
     fetchBusinessTotal();
   }, []);
 
+  const chaerProps = {
+    title: '累计卡豆',
+    innerRadius: 0.6,
+    angleField: 'content',
+    colorField: 'statisticDesc',
+  };
+
   return (
     <Card style={{ marginBottom: 16 }}>
       <SearchCondition
@@ -52,23 +59,15 @@ const BusinessTotalInfo = ({
         <Row gutter={16} align="middle">
           <Col span={12}>
             商家累计收益：{merchantTotalIncome}
-            <Donut
-              data={indata}
-              totalLabel="累计卡豆"
-              height={276}
-              angleField="content"
-              colorField="statisticDesc"
-            />
+            <div style={{ height: 250 }}>
+              <Pie data={indata} {...chaerProps} />
+            </div>
           </Col>
           <Col span={12}>
             商家累计消费：{merchantTotalOut}
-            <Donut
-              data={outdata}
-              totalLabel="累计卡豆"
-              height={276}
-              angleField="content"
-              colorField="statisticDesc"
-            />
+            <div style={{ height: 250 }}>
+              <Pie data={outdata} {...chaerProps} />
+            </div>
           </Col>
         </Row>
       </Spin>

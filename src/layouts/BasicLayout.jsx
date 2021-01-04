@@ -27,7 +27,7 @@ const BasicLayout = (props) => {
     pageTitle,
     pageBtn,
     menuList,
-    loading
+    loading,
   } = props;
   const match = useLocation();
   const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]); // 菜单一级keys
@@ -55,6 +55,7 @@ const BasicLayout = (props) => {
         accessIcon: icon,
         accessUrl: path,
         childList: routes,
+        buttons = null,
       } = item;
       if (keys) {
         rootSubmenuKeys.push(path);
@@ -63,6 +64,7 @@ const BasicLayout = (props) => {
         name,
         icon: iconEnum[icon],
         path,
+        buttons,
         routes: routes ? menuDataRender(routes, false) : undefined,
       };
       return localItem;
@@ -148,7 +150,7 @@ const BasicLayout = (props) => {
         }}
         // footerRender={() => defaultFooterDom}
         // menuDataRender={menuDataRender}
-        menuDataRender={ () => menuDataRender(menuList)}
+        menuDataRender={() => menuDataRender(menuList)}
         menu={{ loading }}
         headerRender={() => <HeaderContent />}
         rightContentRender={() => <RightContent />}
@@ -186,7 +188,7 @@ const BasicLayout = (props) => {
 export default connect(({ global, settings, userInfo }) => ({
   collapsed: global.collapsed,
   menuList: userInfo.menuList,
-  loading:userInfo.loading,
+  loading: userInfo.loading,
   pageTitle: global.pageTitle,
   pageBtn: global.pageBtn,
   settings,

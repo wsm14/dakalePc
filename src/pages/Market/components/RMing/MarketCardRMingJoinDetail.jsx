@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal } from 'antd';
 import { MATCH_USER_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -39,7 +39,7 @@ const MarketCardRMingJoinDetail = (props) => {
       dataIndex: 'signDate',
     },
     {
-      title: '打卡时间',
+      title: '步数',
       align: 'center',
       dataIndex: 'process',
       render: (val) => val || '--',

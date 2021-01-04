@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
-import { Donut } from '@/components/Charts';
+import { Pie } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -32,6 +32,13 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
     fetchUserTotal();
   }, []);
 
+  const chaerProps = {
+    title: '累计卡豆',
+    innerRadius: 0.6,
+    angleField: 'content',
+    colorField: 'statisticDesc',
+  };
+
   return (
     <Card style={{ marginBottom: 16 }}>
       <SearchCondition
@@ -45,25 +52,15 @@ const UserTotalInfo = ({ dispatch, loading, indata, outdata, userTotalIn, userTo
         <Row gutter={16} align="middle">
           <Col span={12}>
             用户累计收益卡豆：{userTotalIn}
-            <Donut
-              key="chart1"
-              data={indata}
-              totalLabel="累计卡豆"
-              height={276}
-              angleField="content"
-              colorField="statisticDesc"
-            />
+            <div style={{ height: 250 }}>
+              <Pie key="chart1" data={indata} {...chaerProps} />
+            </div>
           </Col>
           <Col span={12}>
             用户累计消耗卡豆：{userTotalOut}
-            <Donut
-              key="chart2"
-              data={outdata}
-              totalLabel="累计卡豆"
-              height={276}
-              angleField="content"
-              colorField="statisticDesc"
-            />
+            <div style={{ height: 250 }}>
+              <Pie key="chart2" data={outdata} {...chaerProps} />
+            </div>
           </Col>
         </Row>
       </Spin>

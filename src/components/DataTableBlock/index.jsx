@@ -8,8 +8,7 @@ import TableBlock from './tableBlock';
  */
 
 const DataTableBlockComponent = (props) => {
-  const { keepName } = props;
-
+  const { keepName, searchItems } = props;
   const match = useLocation();
 
   const KeepContent = {

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -83,9 +84,7 @@ const MarketCardActivity = (props) => {
               click: () => setShow({ key: 'detail', record }),
             },
             {
-              type: 'own',
-              pop: true,
-              title: '下架',
+              type: 'down',
               visible: record.activityStatus !== '2',
               click: () => fetchMarketActivityCancel({ activityId: val }),
             },
@@ -113,9 +112,11 @@ const MarketCardActivity = (props) => {
   };
 
   const btnExtra = (
-    <Button className="dkl_green_btn" key="1" onClick={handleSetActive}>
-      新增活动
-    </Button>
+    <AuthConsumer auth="save">
+      <Button className="dkl_green_btn" key="1" onClick={handleSetActive}>
+        新增活动
+      </Button>
+    </AuthConsumer>
   );
 
   return (

@@ -1,4 +1,4 @@
-import { fetchMerSettledList } from '@/services/BusinessServices';
+import { fetchMerSettledList, fetchGetMerSettledExcel } from '@/services/BusinessServices';
 
 export default {
   namespace: 'businessSettled',
@@ -29,6 +29,12 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchMerchantGetExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchGetMerSettledExcel, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.userMerchantDTOList);
     },
   },
 };

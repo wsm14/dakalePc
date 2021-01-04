@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Modal, Input, Card, Row, Col, Pagination } from 'antd';
 
 const Merchant = (props) => {

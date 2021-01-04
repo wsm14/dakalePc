@@ -5,6 +5,8 @@
 
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
+import { ROLE_BUTTON_TYPE } from '@/common/constant';
 
 const HandleSetTable = (props) => {
   const { formItems } = props;
@@ -13,41 +15,33 @@ const HandleSetTable = (props) => {
     const children = [];
     formItems.forEach((item, index) => {
       const { type = 'button', title = '按钮', visible = true } = item;
-      let { pop = false } = item;
+      let { pop = false, auth = false } = item;
+      auth = auth || type;
 
-      let btnText = '';
+      let btnText = ROLE_BUTTON_TYPE[type];
       if (type === 'own') {
         btnText = title;
-      }
-      if (type === 'info') {
-        btnText = '详情';
-      }
-      if (type === 'set') {
-        btnText = '设置';
-      }
-      if (type === 'eye') {
-        btnText = '查看';
-      }
-      if (type === 'edit') {
-        btnText = '编辑';
+        // 默认全显示 配置权限则根据权限显示
+        auth = auth === 'own' ? true : auth;
       }
       if (type === 'del') {
         pop = true;
-        btnText = '删除';
-      }
-      if (type === 'check') {
-        btnText = '审核';
       }
       if (type === 'send') {
         pop = true;
-        btnText = '发布';
+      }
+      if (type === 'up') {
+        pop = true;
+      }
+      if (type === 'down') {
+        pop = true;
       }
 
       let component =
         type === 'text' ? (
           { title }
         ) : (
-          <Button key={`del${type}${index}`} type="link" size="small" onClick={item.click}>
+          <Button type="link" size="small" onClick={item.click}>
             {btnText}
           </Button>
         );
@@ -58,7 +52,6 @@ const HandleSetTable = (props) => {
           onConfirm={item.click}
           okText="确认"
           cancelText="取消"
-          key={`pop${type}${index}`}
         >
           <Button type="link" size="small">
             {btnText}
@@ -67,7 +60,13 @@ const HandleSetTable = (props) => {
       ) : (
         component
       );
-      children.push(visible && component);
+      children.push(
+        visible && (
+          <AuthConsumer key={`auth${type}${index}`} auth={auth}>
+            {component}
+          </AuthConsumer>
+        ),
+      );
     });
     return children;
   };

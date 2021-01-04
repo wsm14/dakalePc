@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Switch, Button, Menu } from 'antd';
 import { WORKER_JOB_TYPE } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -106,12 +107,14 @@ const UserList = (props) => {
       fixed: 'right',
       dataIndex: 'status',
       render: (val, record) => (
-        <Switch
-          checkedChildren="启"
-          unCheckedChildren="停"
-          checked={val === '1'}
-          onClick={() => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val })}
-        />
+        <AuthConsumer auth="userStatus" noAuth={val === '1' ? '启用' : '停用'}>
+          <Switch
+            checkedChildren="启"
+            unCheckedChildren="停"
+            checked={val === '1'}
+            onClick={() => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val })}
+          />
+        </AuthConsumer>
       ),
     },
     {
@@ -124,6 +127,7 @@ const UserList = (props) => {
           formItems={[
             {
               type: 'edit',
+              auth: 'userEdit',
               click: () => fetchDetail({ adminAccountId }),
             },
           ]}
@@ -208,9 +212,15 @@ const UserList = (props) => {
       <div style={{ flex: 1 }}>
         <DataTableBlock
           btnExtra={
-            <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ visible: true })}>
-              新增用户
-            </Button>
+            <AuthConsumer auth="userAdd">
+              <Button
+                className="dkl_green_btn"
+                key="1"
+                onClick={() => setVisible({ visible: true })}
+              >
+                新增用户
+              </Button>
+            </AuthConsumer>
           }
           CardNone={false}
           cRef={childRef}

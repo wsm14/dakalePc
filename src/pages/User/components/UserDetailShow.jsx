@@ -28,6 +28,7 @@ const UserDetailShow = (props) => {
     type: 'Drawer',
     showType: 'info',
     title: '用户详情',
+    width: 700,
     loadingModels: 'userList',
     formItems: [
       { label: '用户头像', name: 'profile', type: 'upload' },

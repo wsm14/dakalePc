@@ -47,7 +47,7 @@ const TradeCategorySet = (props) => {
       {
         label: `${propItem.title}名称`,
         name: 'name',
-        maxLength: 20,
+        maxLength: 10,
       },
     ],
     onFinish: fetchDataEdit,

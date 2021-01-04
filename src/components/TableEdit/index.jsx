@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Table } from 'antd';
 import { EditableRow, EditableCell } from './TableEdit';
 import styles from './style.less';

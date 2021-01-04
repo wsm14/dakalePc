@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const { TabPane } = Tabs;
@@ -92,13 +93,12 @@ const BusinessDetailShow = (props) => {
       name: 'businessHub',
     },
     {
-      label: '商户电话',
+      label: '店铺电话',
       name: 'telephone',
     },
     {
       label: '经营类目',
-      name: 'topCategoryName',
-      render: (val, row) => `${val} - ${row.categoryName}`,
+      name: 'category',
     },
     {
       label: '平台服务费',
@@ -134,6 +134,26 @@ const BusinessDetailShow = (props) => {
         </div>
       ),
     },
+    {
+      label: '人均消费',
+      name: 'perCapitaConsumption',
+    },
+    {
+      label: '营业时间',
+      name: 'businessTimeObj',
+    },
+    {
+      label: '店铺服务',
+      name: ['property', 'service'],
+    },
+    {
+      label: '特色服务',
+      name: ['property', 'speacial'],
+    },
+    {
+      label: '店铺标签',
+      name: 'tags',
+    },
   ];
 
   const accountItems = [
@@ -145,7 +165,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '开户许可证',
       type: 'upload',
-      show: bkInfo.bankAccountType === 1,
+      visible: bkInfo.bankAccountType === 1,
       name: 'openAccountPermit',
     },
     {
@@ -209,12 +229,16 @@ const BusinessDetailShow = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={onClose}>取消</Button>
-            <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
-              {businessStatusText}
-            </Button>
-            <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
-              {statusText}
-            </Button>
+            <AuthConsumer auth="bussinessStatus">
+              <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
+                {businessStatusText}
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="status">
+              <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
+                {statusText}
+              </Button>
+            </AuthConsumer>
           </Space>
         </div>
       }

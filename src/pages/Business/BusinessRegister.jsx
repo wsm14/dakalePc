@@ -1,5 +1,6 @@
 import React from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
+import { BUSINESS_REGISTER_STATUS } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessRegisterComponent = (props) => {
@@ -10,6 +11,16 @@ const BusinessRegisterComponent = (props) => {
     {
       label: '注册手机号',
       name: 'mobile',
+    },
+    {
+      label: '推荐人手机号',
+      name: 'parentMobile',
+    },
+    {
+      label: '状态',
+      name: 'verifyAndBankStatus',
+      type: 'select',
+      select: { list: BUSINESS_REGISTER_STATUS },
     },
   ];
 
@@ -30,6 +41,12 @@ const BusinessRegisterComponent = (props) => {
       title: '注册时间',
       align: 'center',
       dataIndex: 'createTime',
+    },
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'verifyAndBankStatus',
+      render: (val) => BUSINESS_REGISTER_STATUS[val],
     },
   ];
 

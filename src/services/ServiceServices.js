@@ -7,24 +7,16 @@ export async function fetchFeedBackList(params) {
   });
 }
 
-// post 问题反馈 - 确认反馈
-export function fetchFeedBackPush(data) {
-  return request('/admin/marketCustomer/replayUserFeedback', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 视屏列表 - 列表
-export function fetchMerVideoList(params) {
-  return request('/admin/marketingManagement/listMerchantMoment', {
+// post 问题反馈 - 问题反馈详情
+export function fetchFeedBackDetail(params) {
+  return request('/admin/marketCustomer/getUserFeedbackDetail', {
     params,
   });
 }
 
-// post 视屏列表 - 删除
-export function fetchMerVideoDel(data) {
-  return request('/admin/marketingManagement/closeUserMoment', {
+// post 问题反馈 - 确认反馈
+export function fetchFeedBackPush(data) {
+  return request('/admin/marketCustomer/replayUserFeedback', {
     method: 'POST',
     data,
   });

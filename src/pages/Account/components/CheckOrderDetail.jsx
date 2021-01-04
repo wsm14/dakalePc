@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Spin, Popover } from 'antd';
 import styles from './style.less';
 

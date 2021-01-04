@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';

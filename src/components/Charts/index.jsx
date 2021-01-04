@@ -1,8 +1,12 @@
-import Donut from './Donut';
 import Bar from './Bar';
+import Column from './Column';
+import Pie from './Pie';
+import Line from './Line';
 
 const Charts = {
-  Donut,
   Bar,
+  Pie,
+  Line,
+  Column,
 };
-export { Charts as default, Donut, Bar };
+export { Charts as default, Pie, Bar, Line, Column };

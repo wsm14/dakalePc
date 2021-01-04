@@ -4,17 +4,20 @@ import {
   fetchUserDetail,
   fetchUserStatus,
   fetchUserTotal,
+  fetchUserInfoTotal,
   fetchUserAddTotal,
   fetchUserCityTotal,
+  fetchUserJuhe,
 } from '@/services/UserServices';
 
 export default {
   namespace: 'userList',
 
   state: {
-    list: [],
+    list: { list: [], total: 0 },
     totalData: {},
     totalSperadData: { city: [] },
+    totalInfo: {},
   },
 
   reducers: {
@@ -28,23 +31,13 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const { mobile } = payload;
-      if (!mobile) {
-        yield put({
-          type: 'save',
-          payload: {
-            list: [],
-          },
-        });
-        return;
-      }
       const response = yield call(fetchUserList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: content.user.userIdString ? [content.user] : [],
+          list: { list: content.recordList, total: content.total },
         },
       });
     },
@@ -81,6 +74,32 @@ export default {
         payload: {
           totalSperadData: content,
         },
+      });
+    },
+    *fetchUserInfoTotal({ payload }, { call, put }) {
+      const response = yield call(fetchUserInfoTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          // 异常或空数据
+          totalInfo: {
+            ...content,
+            age: Object.keys(content.age).map((item) => ({
+              type: { [item]: `${item}`, '60+岁': '60岁以上', 异常或空数据: '未知' }[item],
+              value: content.age[item],
+            })),
+          },
+        },
+      });
+    },
+    *fetchUserJuhe({ payload }, { call }) {
+      const response = yield call(fetchUserJuhe, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '执行成功',
       });
     },
     *fetchUserStatus({ payload, callback }, { call, put }) {

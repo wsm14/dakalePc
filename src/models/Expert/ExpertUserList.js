@@ -1,4 +1,10 @@
-import { fetchExpertUserTotal, fetchExpertUserList } from '@/services/ExpertServices';
+import { notification } from 'antd';
+import {
+  fetchExpertUserTotal,
+  fetchExpertUserList,
+  fetchExpertStop,
+  fetchExpertOpen,
+} from '@/services/ExpertServices';
 
 export default {
   namespace: 'expertUserList',
@@ -25,7 +31,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.mobile ? [content] : [] },
+          list: { list: content.recordList, total: content.total },
         },
       });
     },
@@ -39,6 +45,24 @@ export default {
           userTotal: content.kolCount,
         },
       });
+    },
+    *fetchExpertStop({ payload, callback }, { call, put }) {
+      const response = yield call(fetchExpertStop, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '封停设置成功',
+      });
+      callback();
+    },
+    *fetchExpertOpen({ payload, callback }, { call, put }) {
+      const response = yield call(fetchExpertOpen, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '解封成功',
+      });
+      callback();
     },
   },
 };

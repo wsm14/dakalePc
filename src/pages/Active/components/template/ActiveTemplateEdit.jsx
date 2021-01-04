@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useReducer, createContext } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import ActiveHeardTitle from './heard';

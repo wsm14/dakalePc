@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Button } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -104,16 +105,19 @@ const MarketCardActivityDetail = (props) => {
             {
               type: 'own',
               title: '核销明细',
+              auth: 'destoryDetail',
               click: () => setVisible({ type: 'destory', record }),
             },
             {
               type: 'own',
               title: '订单明细',
+              auth: 'orderDetail',
               click: () => setVisible({ type: 'order', record }),
             },
             {
               type: 'own',
               title: '优惠券',
+              auth: 'couponDetail',
               click: () => fetchGetCouponInfo(val, record.merchantName),
             },
             // {
@@ -184,9 +188,11 @@ const MarketCardActivityDetail = (props) => {
   }, []);
 
   const btnExtra = (
-    <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
-      新增
-    </Button>
+    <AuthConsumer auth="couponAdd">
+      <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
+        新增
+      </Button>
+    </AuthConsumer>
   );
 
   return (

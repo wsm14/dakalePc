@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { connect } from 'dva';
+import { connect } from 'umi';
 import { Drawer, Form, Button, Space, Select, Spin, Empty, message } from 'antd';
 import debounce from 'lodash/debounce';
 import { Map, Marker } from 'react-amap';
