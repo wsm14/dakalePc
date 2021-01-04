@@ -69,10 +69,8 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
           <Card bordered={false} bodyStyle={styles}>
             <Pie
               data={totalInfo.tag || []}
-              title="兴趣"
               angleField="count"
               colorField="tag"
-              innerRadius={0.65}
               flipPage
             />
           </Card>
