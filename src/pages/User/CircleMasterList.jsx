@@ -46,9 +46,10 @@ const CircleMasterList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '名称',
+      title: '用户/店铺名',
       fixed: 'left',
       dataIndex: 'username',
+      render: (val) => val || '--',
     },
     {
       title: '身份',
@@ -61,6 +62,7 @@ const CircleMasterList = (props) => {
       title: '手机号',
       align: 'center',
       dataIndex: 'mobile',
+      render: (val) => val || '--',
     },
     {
       title: '家人数',
