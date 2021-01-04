@@ -167,7 +167,7 @@ const BaseForm = (props) => {
         form.setFieldsValue({
           cityCode: val[1].value,
           cityName: val[1].label,
-          districtCode: val[2].label,
+          districtCode: val[2].value,
           districtName: val[2].label,
         });
       },

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, message } from 'antd';
-import { GOODS_TYPE } from '@/common/constant';
+import { GOODS_TYPE, MRE_SURE_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
@@ -129,12 +129,18 @@ const GoodsManageComponent = (props) => {
       render: (val) => GOODS_TYPE[val],
     },
     {
+      title: '上架状态',
+      align: 'center',
+      dataIndex: 'checkStatus',
+      render: (val) => MRE_SURE_TYPE[val],
+    },
+    {
       title: '操作',
       fixed: 'right',
       align: 'right',
       dataIndex: 'goodsIdString',
       render: (val, record) => {
-        const { status, merchantIdStr } = record;
+        const { status, merchantIdStr, checkStatus } = record;
         return (
           <HandleSetTable
             formItems={[
@@ -146,22 +152,22 @@ const GoodsManageComponent = (props) => {
                 type: 'own',
                 title: '库存',
                 auth: 'stockSet',
-                visible: status != 0,
+                visible: status != 0 && checkStatus != 1,
                 click: () => fetchStockSet(record),
               },
               {
                 type: 'del',
-                visible: status == 0,
+                visible: status == 0 && checkStatus == 2,
                 click: () => fetchGoodsDel({ goodsIdString: val, merchantIdStr }),
               },
               {
                 type: 'down',
-                visible: status != 0,
+                visible: status != 0 && checkStatus == 2,
                 click: () => fetchAuditRefuse(record),
               },
               {
                 type: 'up',
-                visible: status == 0,
+                visible: status == 0 && checkStatus == 2,
                 click: () => fetchGoodsUp({ goodsIdString: val }),
               },
               {

@@ -28,6 +28,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       label: '银行卡',
       name: 'bankPhoto',
       type: 'upload',
+      rules: [{required: false}],
       maxSize: 1,
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',

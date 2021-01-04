@@ -200,8 +200,8 @@ const FormComponents = ({
         const { fileList } = value;
         const newFileList = !maxSize
           ? fileList
-          // dklFileStatus  === out 的值 不允许上传
-          : fileList.filter((file) => file.dklFileStatus !== 'out');
+          : // dklFileStatus  === out 的值 不允许上传
+            fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileName = value.file.name;
           imageCompress(value.file.originFileObj || value.file).then(({ file }) => {
@@ -385,11 +385,13 @@ const FormComponents = ({
         dataPicker: <DatePicker style={{ width: '100%' }} />,
         rangePicker: (
           <DatePicker.RangePicker
+            disabled={item.disabled}
             style={{ width: '100%' }}
             // defaultPickerValue={[
             //   moment(moment().startOf('month')).subtract(1, 'month'),
             //   moment(moment().startOf('month')).subtract(1, 'day'),
             // ]}
+            onChange={item.onChange}
             disabledDate={item.disabledDate}
             // renderExtraFooter={() =>
             //   '开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59'

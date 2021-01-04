@@ -51,12 +51,14 @@ const UserTotalInfo = ({ dispatch, loading, totalData, currentUser }) => {
       type: 'userList/fetchUserJuhe',
     });
   };
-
+  console.log(currentUser);
   return (
     <Card style={{ marginBottom: 16 }} bordered={false}>
       <SearchCondition
         btnExtra={
-          currentUser.username == '管理员' && (
+          (currentUser.username == '管理员' ||
+            currentUser.username == 'admin' ||
+            currentUser.username == '朱佳飞') && (
             <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
               数据聚合
             </Button>

@@ -166,7 +166,7 @@ const BusinessAuditList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ verifyStatus: 1 }}
+        pParams={{ searchData: { verifyStatus: '1' } }}
         rowKey={(record) => `${record.userMerchantVerifyId}`}
         dispatchType="businessAudit/fetchGetList"
         {...businessAudit.list}

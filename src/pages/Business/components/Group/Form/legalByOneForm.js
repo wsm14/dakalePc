@@ -59,7 +59,10 @@ const legalForm = (props) => {
         });
         if (imgUrl) {
           fetchGetOcrIdCardBack({ imageUrl: imgUrl[0] }, (res) => {
-            const { startDate, endDate } = res;
+            let { startDate, endDate } = res;
+            if(endDate == '长期' ||!endDate){
+              endDate = '20991231'
+            }
             form.setFieldsValue({
               activeBeginDate: [moment(startDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
             });

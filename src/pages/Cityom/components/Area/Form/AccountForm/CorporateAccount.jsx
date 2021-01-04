@@ -31,9 +31,9 @@ const CorporateAccount = (props) => {
               validityPeriod: val.validPeriod,
               businessScope: val.business,
             },
-            bankBindingObject: {
-              cardName: val.name,
-            },
+            // bankBindingObject: {
+            //   cardName: val.name,
+            // },
           });
         },
       });
@@ -53,6 +53,7 @@ const CorporateAccount = (props) => {
         callback: (val) => {
           form.setFieldsValue({
             bankBindingObject: {
+              cardName: val.enterpriseNameCH,
               openAccountPermit: res.toString(),
               cardNo: val.enterpriseBankId,
               bankBranchName: val.enterpriseBankName,
@@ -98,11 +99,14 @@ const CorporateAccount = (props) => {
         },
         callback: (val) => {
           form.setFieldsValue({
-            activeDate: [moment(val.startDate, 'YYYY-MM-DD'), moment(val.endDate, 'YYYY-MM-DD')],
+            activeDate: [
+              moment(val.startDate, 'YYYY-MM-DD'),
+              moment(val.endDate === '长期' ? '20991231' : val.endDate, 'YYYY-MM-DD'),
+            ],
             bankBindingObject: {
               certReversePhoto: res.toString(),
               startDate: val.startDate,
-              legalCertIdExpires: val.endDate,
+              legalCertIdExpires: val.endDate === '长期' ? '20991231' : val.endDate,
             },
           });
         },
@@ -183,7 +187,7 @@ const CorporateAccount = (props) => {
           },
         });
       },
-      select: cityList.map((item) => {
+      select: JSON.parse(JSON.stringify(cityList)).map((item) => {
         item.children = item.children.map((items) => {
           return { label: items.label, value: items.value };
         });
@@ -245,6 +249,14 @@ const CorporateAccount = (props) => {
       type: 'rangePicker',
       disabled: disabledInfo || loading,
       name: 'activeDate',
+      onChange: (val) =>
+        val &&
+        form.setFieldsValue({
+          bankBindingObject: {
+            startDate: val[0].format('YYYYMMDD'),
+            legalCertIdExpires: val[1].format('YYYYMMDD'),
+          },
+        }),
       render: (val, row) => `${row.startDate || ''} - ${row.legalCertIdExpires || ''}`,
     },
     {
