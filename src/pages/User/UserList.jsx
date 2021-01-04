@@ -40,7 +40,7 @@ const UserListComponent = (props) => {
     {
       title: '注册手机号',
       dataIndex: 'mobile',
-      render: (val) => val || '暂未授权',
+      render: (val) => val || '小程序用户',
     },
     {
       title: '昵称',
