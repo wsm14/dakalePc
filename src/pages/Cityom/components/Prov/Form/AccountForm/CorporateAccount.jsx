@@ -99,11 +99,14 @@ const CorporateAccount = (props) => {
         },
         callback: (val) => {
           form.setFieldsValue({
-            activeDate: [moment(val.startDate, 'YYYY-MM-DD'), moment(val.endDate, 'YYYY-MM-DD')],
+            activeDate: [
+              moment(val.startDate, 'YYYY-MM-DD'),
+              moment(val.endDate === '长期' ? '20991231' : val.endDate, 'YYYY-MM-DD'),
+            ],
             bankBindingObject: {
               certReversePhoto: res.toString(),
               startDate: val.startDate,
-              legalCertIdExpires: val.endDate,
+              legalCertIdExpires: val.endDate === '长期' ? '20991231' : val.endDate,
             },
           });
         },
