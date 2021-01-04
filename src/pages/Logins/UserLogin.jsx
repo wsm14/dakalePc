@@ -52,7 +52,7 @@ const LoginForm = ({ dispatch, loading }) => {
       });
       return;
     }
-    if (list[0].childList.length) {
+    if (list[0].childList && list[0].childList.length) {
       // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
       history.replace(list[0].childList[0].accessUrl);
     } else {
