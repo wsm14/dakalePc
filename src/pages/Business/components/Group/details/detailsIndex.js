@@ -23,6 +23,7 @@ export const base = [
   {
     label: '服务费比例',
     name: 'commissionRatio',
+    render:  (val)  =>  (val+'%')
   },
 ];
 export const user = [{ label: '登录账号', name: 'account' }];
