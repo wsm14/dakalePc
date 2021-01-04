@@ -246,6 +246,14 @@ const CorporateAccount = (props) => {
       type: 'rangePicker',
       disabled: disabledInfo || loading,
       name: 'activeDate',
+      onChange: (val) =>
+        val &&
+        form.setFieldsValue({
+          bankBindingObject: {
+            startDate: val[0].format('YYYYMMDD'),
+            legalCertIdExpires: val[1].format('YYYYMMDD'),
+          },
+        }),
       render: (val, row) => `${row.startDate || ''} - ${row.legalCertIdExpires || ''}`,
     },
     {
