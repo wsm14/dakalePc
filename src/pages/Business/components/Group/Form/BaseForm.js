@@ -7,7 +7,7 @@ import { NUM_PERCENTAGE } from '@/common/regExp'
 import { Map, Marker } from 'react-amap';
 import cityList from '@/common/city'
 const BaseForm = (props) => {
-  const { tradeList, form, initialValues, cRef, groupDetails } = props;
+  const {tradeList, form, initialValues, cRef, groupDetails } = props;
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
   const [address, setAddress] = useState({
@@ -91,19 +91,13 @@ const BaseForm = (props) => {
       setLocation([longitude, latitude]);
     },
   };
-  // useEffect(() => {
-  //   if(initialValues&&initialValues.provinceCode){
-  //     setAddress({
-  //       ...address,
-  //       latlnt: [lnt, lat],
-  //       city: [
-  //         {value: provinceCode, label: provinceName, pid: "3", level: "1"},
-  //         {value: cityCode, label: cityName, pid: "33", level: "2"},
-  //         {value: districtCode, label: districtName, pid: "3301", level: "3"}
-  //       ]
-  //     })
-  //   }
-  // },[initialValues])
+  useEffect(() => {
+    const {merchantGroupDTO = {}} = groupDetails
+    if(Object.keys(merchantGroupDTO).length> 10){
+      const {lat ,lnt} = merchantGroupDTO
+      setLocation([lat ,lnt])
+    }
+  },[groupDetails])
   const amap = (
     <div style={{ height: 240, marginBottom: 24, position: 'relative' }}>
       <Map
@@ -175,7 +169,7 @@ const BaseForm = (props) => {
     },
     {
       type: 'noForm',
-      visible: map,
+      // visible: map,
       childrenOwn: amap,
     },
     {
