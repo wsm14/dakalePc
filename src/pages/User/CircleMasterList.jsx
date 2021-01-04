@@ -15,8 +15,9 @@ const CircleMasterList = (props) => {
   const searchItems = [
     {
       label: '身份',
-      name: 'userOrMerchant',
+      name: 'userType',
       type: 'select',
+      allItem: false,
       select: { list: MASTER_TYPE },
     },
     {
@@ -114,6 +115,7 @@ const CircleMasterList = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.parentUserIdString}`}
+        pParams={{ searchData: { userType: 'user' } }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
       >
