@@ -117,12 +117,13 @@ const BusinessSettled = (props) => {
       title: '店铺服务费',
       align: 'right',
       dataIndex: 'commissionRatio',
-      render: (val) => val + '%',
+      render: (val, row) => (row.bankStatus === '3' ? val + '%' : '--'),
     },
     {
       title: '赠送卡豆',
       align: 'right',
       dataIndex: 'bondBean',
+      render: (val, row) => (row.bankStatus === '3' ? val : '--'),
     },
     {
       title: '提交审核日期',
