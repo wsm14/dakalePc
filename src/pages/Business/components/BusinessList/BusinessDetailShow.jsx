@@ -76,8 +76,21 @@ const BusinessDetailShow = (props) => {
       name: 'brandName',
     },
     {
-      label: '商户简称',
+      label: '店铺简称',
       name: 'merchantName',
+    },
+    {
+      label: '店铺帐号',
+      name: 'mobile',
+    },
+    {
+      label: '店铺类型',
+      name: 'type',
+    },
+    {
+      label: '集团名称',
+      name: 'groupName',
+      show: visible.type === '集团',
     },
     {
       label: '省市区',
