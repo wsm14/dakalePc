@@ -72,6 +72,7 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
   userEdit: '用户编辑',
   role: '角色',
+  roleAdd: '角色添加',
   roleStatus: '角色状态',
   roleEdit: '角色权限设置',
   section: '部门',
