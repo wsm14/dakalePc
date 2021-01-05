@@ -101,6 +101,7 @@ export default [
             path: '/user/bdlimitPop',
             name: 'BD白名单',
             component: './User/BdLimitPop',
+            buttons: ['save'],
           },
         ],
       },
@@ -146,6 +147,18 @@ export default [
             name: '入驻绑定查询',
             component: './Business/BusinessSettled',
             buttons: ['exportList'],
+          },
+        ],
+      },
+      {
+        name: '财务管理',
+        path: '/finance',
+        routes: [
+          {
+            path: '/finance/subsidy',
+            name: '补贴管理',
+            component: './Operation/ShareManage',
+            buttons: ['down', 'info', 'handleDeatil'],
           },
         ],
       },
