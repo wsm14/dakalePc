@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import CITYJSON from '@/common/city';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -42,6 +43,12 @@ const AreaCenter = (props) => {
 
   // 搜索参数
   const searchItems = [
+    {
+      label: '所属省公司',
+      name: 'belongProvinceCode',
+      type: 'select',
+      select: { list: CITYJSON.map((item) => ({ name: item.label, value: item.value })) },
+    },
     {
       label: '代理公司名称',
       name: 'partnerName',
