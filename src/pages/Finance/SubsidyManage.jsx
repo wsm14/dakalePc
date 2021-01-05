@@ -14,6 +14,19 @@ const SubsidyManage = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleHandle, setVisibleHandle] = useState(false);
+  
+  // 时间选择器限制选择参数比较
+  const [dates, setDates] = useState([]);
+  // 时间限制选择一年
+  const disabledDate = (current) => {
+    if (!dates || dates.length === 0) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 365;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 365;
+    return tooEarly || tooLate;
+  };
+
   // 下架
   const fetchAuditRefuse = (initialValues) => {
     dispatch({
@@ -61,6 +74,15 @@ const SubsidyManage = (props) => {
       type: 'select',
       name: 'status',
       select: { list: SHARE_STATUS },
+    },
+    {
+      label: '时间',
+      type: 'rangePicker',
+      name: 'activationTimeStart',
+      end: 'activationTimeEnd',
+      onCalendarChange: setDates,
+      onOpenChange: () => setDates([]),
+      disabledDate,
     },
   ];
 
