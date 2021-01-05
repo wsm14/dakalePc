@@ -14,7 +14,6 @@ const SubsidyManage = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleHandle, setVisibleHandle] = useState(false);
-
   // 下架
   const fetchAuditRefuse = (initialValues) => {
     dispatch({

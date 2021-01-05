@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Result } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import UserList from './components/Account/List/UserList';
 import RoleList from './components/Account/List/RoleList';
 import SectionList from './components/Account/List/SectionList';
@@ -8,14 +8,17 @@ import SectionList from './components/Account/List/SectionList';
 const tabList = [
   {
     key: 'tab1',
+    auth: 'user',
     tab: '用户',
   },
   {
     key: 'tab2',
+    auth: 'role',
     tab: '角色',
   },
   {
     key: 'tab3',
+    auth: 'section',
     tab: '部门',
   },
 ];
@@ -53,7 +56,7 @@ const AccountOwn = (props) => {
   return (
     <Card
       bordered={false}
-      tabList={tabList}
+      tabList={authCheck(tabList)}
       activeTabKey={tabkey}
       onTabChange={(key) => {
         console.log(key);

@@ -1,4 +1,13 @@
-import { connect, useLocation } from 'umi';
+import { connect, useLocation, useSelector } from 'umi';
+
+// 检查权限返回对应数据 目前传进数组 auth 字段判断
+export const authCheck = (checkAuth = []) => {
+  const flag = useSelector((state) => state.userInfo.flag);
+  const menuBtn = useSelector((state) => state.userInfo.menuBtn);
+  if (flag === 1) return checkAuth;
+  const authMenu = menuBtn[useLocation().pathname];
+  return checkAuth.filter((item) => authMenu.includes(item.auth));
+};
 
 const AuthConsumer = (props) => {
   const { menuBtn, children, auth = false, noAuth = null, flag } = props;
