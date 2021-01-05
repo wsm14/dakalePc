@@ -6,7 +6,7 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import { ROLE_BUTTON_TYPE } from '@/common/constant';
+import { ROLE_BUTTON_TYPE } from '@/common/roleConstant';
 
 const HandleSetTable = (props) => {
   const { formItems } = props;

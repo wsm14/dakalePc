@@ -158,7 +158,7 @@ export default [
             path: '/finance/subsidy',
             name: '补贴管理',
             component: './Operation/ShareManage',
-            buttons: ['down', 'info', 'handleDeatil'],
+            buttons: ['exportList', 'save', 'info', 'del', 'end'],
           },
         ],
       },
