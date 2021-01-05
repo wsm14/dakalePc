@@ -101,6 +101,7 @@ export default [
             path: '/user/bdlimitPop',
             name: 'BD白名单',
             component: './User/BdLimitPop',
+            buttons: ['save'],
           },
         ],
       },

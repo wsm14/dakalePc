@@ -1,9 +1,8 @@
 import { connect, useLocation } from 'umi';
 
 const AuthConsumer = (props) => {
-  const { menuBtn, children, auth = false, noAuth = null, currentUser } = props;
-  const { username = '' } = currentUser;
-  if (auth === true || username == '管理员' || username == 'admin') return children;
+  const { menuBtn, children, auth = false, noAuth = null, flag } = props;
+  if (auth === true || flag === 1) return children;
   const authMenu = menuBtn[useLocation().pathname];
   const checkAuth = authMenu ? authMenu.includes(auth) : false;
   // auth 默认没有不显示子组件
@@ -13,6 +12,6 @@ const AuthConsumer = (props) => {
 };
 
 export default connect(({ userInfo }) => ({
-  currentUser: userInfo.currentUser,
+  flag: userInfo.flag,
   menuBtn: userInfo.menuBtn,
 }))(AuthConsumer);
