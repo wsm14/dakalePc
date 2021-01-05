@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import { Card } from 'antd';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import SearchCard from './components/UserList/Search/SearchCard';
 import userDetailShow from './components/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
@@ -11,6 +13,8 @@ const UserListComponent = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
+  // 城市参数
+  const [cityData, setCityData] = useState({});
 
   // 搜索参数
   const searchItems = [
@@ -111,19 +115,26 @@ const UserListComponent = (props) => {
   };
 
   return (
-    <DataTableBlock
-      keepName="用户数据"
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userIdString}`}
-      dispatchType="userList/fetchGetList"
-      {...list}
-    >
-      <UserListTotalInfo></UserListTotalInfo>
-      <UserTotalSpread></UserTotalSpread>
-    </DataTableBlock>
+    <>
+      <Card bordered={false} style={{ marginBottom: 16 }}>
+        {/* 搜索框 */}
+        <SearchCard setSearchData={setCityData}></SearchCard>
+      </Card>
+      {/* 用户数统计 */}
+      <UserListTotalInfo cityData={cityData}></UserListTotalInfo>
+      {/* 用户chart统计 */}
+      <UserTotalSpread cityData={cityData}></UserTotalSpread>
+      <DataTableBlock
+        keepName="用户数据"
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userIdString}`}
+        dispatchType="userList/fetchGetList"
+        {...list}
+      ></DataTableBlock>
+    </>
   );
 };
 
