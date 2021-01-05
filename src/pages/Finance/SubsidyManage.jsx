@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { SHARE_TYPE, SHARE_STATUS } from '@/common/constant';
+import { SHARE_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
@@ -47,24 +47,20 @@ const SubsidyManage = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '内容标题',
+      label: '任务名称',
       name: 'title',
     },
     {
-      label: '分享类型',
+      label: '补贴类型',
       type: 'select',
       name: 'contentType',
-      select: { list: SHARE_TYPE },
+      select: { list: ['平台直充'] },
     },
     {
-      label: '分享状态',
+      label: '补贴角色',
       type: 'select',
       name: 'status',
       select: { list: SHARE_STATUS },
-    },
-    {
-      label: '所属店铺',
-      name: 'merchantName',
     },
   ];
 
