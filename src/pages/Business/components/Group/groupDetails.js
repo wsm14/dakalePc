@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { Button, Drawer, Space, Card, Alert } from 'antd';
 import Title from './title';
 import { connect } from 'umi';
@@ -32,9 +32,7 @@ const filterCity = (proCode, areCode) => {
 
 const groupsDetails = (props) => {
   const { visible2, onClose, dispatch, merchantGroupId, groupDetails, saveVisible } = props;
-  useEffect(() => {
-    fetchGrounpDetails();
-  },[])
+
   const fetchGrounpDetails = () => {
     if (merchantGroupId) {
       dispatch({
@@ -255,6 +253,11 @@ const groupsDetails = (props) => {
         width={660}
         visible={visible2}
         destroyOnClose={true}
+        afterVisibleChange={(visible) => {
+          if (visible) {
+            fetchGrounpDetails();
+          }
+        }}
         onClose={onClose}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
