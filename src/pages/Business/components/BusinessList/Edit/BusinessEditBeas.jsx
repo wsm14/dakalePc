@@ -192,7 +192,7 @@ const BusinessAddBeas = (props) => {
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val) => {
-        setAreaMust(val[0].categoryName === '美食');
+        setAreaMust(val[0].categoryName === '餐饮');
         setCategId(val[0].categoryIdString);
         fetchGetPlatform(val[0].id);
         form.setFieldsValue({
