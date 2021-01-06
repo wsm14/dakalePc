@@ -2,19 +2,18 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { SHARE_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
+import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import PopImgShow from '@/components/PopImgShow';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import SubsidyDrawer from './components/subsidy/SubsidyDrawer';
 
 const SubsidyManage = (props) => {
   const { shareManage, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
-  const [visibleHandle, setVisibleHandle] = useState(false);
-  
+
   // 时间选择器限制选择参数比较
   const [dates, setDates] = useState([]);
   // 时间限制选择一年
@@ -43,17 +42,6 @@ const SubsidyManage = (props) => {
         userMomentIdString: val,
       },
       callback: (detail) => setVisible({ show: true, type, detail }),
-    });
-  };
-
-  // 获取操作日志详情
-  const fetchShareHandleDetail = (val) => {
-    dispatch({
-      type: 'shareManage/fetchShareHandleDetail',
-      payload: {
-        identifyIdStr: val,
-      },
-      callback: (detail) => setVisibleHandle({ show: true, detail }),
     });
   };
 
@@ -89,62 +77,37 @@ const SubsidyManage = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '种草内容',
+      title: '序号',
       fixed: 'left',
       dataIndex: 'frontImage',
-      render: (val) => <PopImgShow url={val}></PopImgShow>,
+      render: (val, row, index) => index + 1,
     },
     {
-      title: '内容标题',
+      title: '任务名称',
+      fixed: 'left',
       dataIndex: 'title',
       width: 150,
     },
     {
-      title: '所属店铺',
+      title: '补贴类型',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      render: (val) => val,
     },
     {
-      title: '分享分类',
+      title: '补贴角色',
       align: 'center',
       dataIndex: 'contentType',
       render: (val) => (val == 'video' ? '视频' : '图片'),
     },
     {
-      title: '单次打赏卡豆数',
+      title: '总参与人数',
       align: 'right',
       dataIndex: 'beanAmount',
     },
     {
-      title: '视频时长',
+      title: '已补贴卡豆数',
       align: 'right',
       dataIndex: 'length',
-      render: (val) => (val ? `${val}s` : '--'),
-    },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-    },
-    {
-      title: '转发数',
-      align: 'right',
-      dataIndex: 'forwardAmount',
-    },
-    {
-      title: '卡豆支出',
-      align: 'right',
-      dataIndex: 'payedBeanAmount',
-    },
-    {
-      title: '分享状态',
-      align: 'right',
-      dataIndex: 'status',
-      render: (val) => SHARE_STATUS[val],
     },
     {
       title: '操作',
@@ -157,19 +120,18 @@ const SubsidyManage = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'down',
-                visible: status == 1 || status == 5,
-                click: () => fetchAuditRefuse(record),
-              },
-              {
                 type: 'info',
                 click: () => fetchShareDetail(val, record.contentType),
               },
               {
+                type: 'del',
+                visible: status == 1 || status == 5,
+                click: () => fetchAuditRefuse(record),
+              },
+              {
                 type: 'own',
-                auth: 'handleDeatil',
-                title: '操作记录',
-                click: () => fetchShareHandleDetail(val),
+                auth: 'end',
+                title: '结束',
               },
             ]}
           />
@@ -192,11 +154,21 @@ const SubsidyManage = (props) => {
     <>
       <DataTableBlock
         btnExtra={({ get }) => (
-          <AuthConsumer auth="exportList">
-            <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
-              导出
-            </Button>
-          </AuthConsumer>
+          <>
+            <AuthConsumer auth="exportList">
+              <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
+                导出
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisible({ type: 'add', show: true })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          </>
         )}
         cRef={childRef}
         loading={loading}
@@ -206,6 +178,7 @@ const SubsidyManage = (props) => {
         dispatchType="shareManage/fetchGetList"
         {...shareManage}
       ></DataTableBlock>
+      <SubsidyDrawer visible={visible} setVisible={setVisible}></SubsidyDrawer>
     </>
   );
 };
