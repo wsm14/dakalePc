@@ -16,7 +16,7 @@ const BusinessAddBeas = (props) => {
     platformList,
     tradeList,
     setCategId,
-    setType,
+    setType, // 进入的状态 add edit audit
   } = props;
 
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
@@ -65,7 +65,7 @@ const BusinessAddBeas = (props) => {
     fetchGetBrandList();
     if (initialValues) {
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
-      fetchGetPromotionMoney(initialValues.topCategoryId);
+      setType === 'audit' && fetchGetPromotionMoney(initialValues.topCategoryId);
     }
   }, []);
 
