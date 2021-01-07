@@ -5,7 +5,7 @@ const PromotionMoneySet = (props) => {
   // 提交表单
   const fetchDataEdit = (payload) => {
     dispatch({
-      type: 'sysTradeList/fetchTradeSet',
+      type: 'sysTradeList/fetchPromotionMoneySet',
       payload: { categoryId: info.categoryIdString, ...payload },
       callback: () => childRef.current.fetchGetData(),
     });

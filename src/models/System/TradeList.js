@@ -9,6 +9,8 @@ import {
   fetchTradeBaseSet,
   fetchTradeSpecialSet,
   fetchTradePlatformSet,
+  fetchPromotionMoneyGet,
+  fetchPromotionMoneySet,
 } from '@/services/SystemServices';
 
 export default {
@@ -60,6 +62,12 @@ export default {
       });
       if (callback) callback(content.merchantSettleList);
     },
+    *fetchPromotionMoneyGet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPromotionMoneyGet, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.categoryPromote);
+    },
     *fetchDetailList({ payload, callback }, { call, put }) {
       const { type } = payload;
       const inter = {
@@ -87,6 +95,15 @@ export default {
             value: item,
           })),
         );
+    },
+    *fetchPromotionMoneySet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPromotionMoneySet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '推广费设置成功',
+      });
+      callback();
     },
     *fetchTradeBaseSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeBaseSet, payload);

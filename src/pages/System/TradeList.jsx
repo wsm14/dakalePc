@@ -130,9 +130,20 @@ const SysTradeSet = (props) => {
 
   // 新增/修改推广费
   const handlePromotionMoneySet = (info) => {
+    handlePromotionMoneyGet(info.categoryIdString, (initialValues) =>
+      dispatch({
+        type: 'drawerForm/show',
+        payload: promotionMoneySet({ dispatch, childRef, info, initialValues }),
+      }),
+    );
+  };
+
+  // 获取推广费详情
+  const handlePromotionMoneyGet = (categoryId, callback) => {
     dispatch({
-      type: 'drawerForm/show',
-      payload: promotionMoneySet({ dispatch, childRef, info }),
+      type: 'sysTradeList/fetchPromotionMoneyGet',
+      payload: { categoryId },
+      callback,
     });
   };
 
