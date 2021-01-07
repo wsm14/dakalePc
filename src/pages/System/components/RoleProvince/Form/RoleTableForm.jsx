@@ -1,7 +1,7 @@
 import React, { useState, useImperativeHandle } from 'react';
 import { connect } from 'umi';
 import { Table, Checkbox, Select } from 'antd';
-import { WORKER_ROLEDATA_TYPE } from '@/common/constant';
+import { WORKER_ROLEDATA_TYPE } from '@/common/roleConstant';
 import router from '../../../../../../config/router.config';
 
 const RoleTableForm = (props) => {

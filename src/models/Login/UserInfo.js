@@ -7,6 +7,7 @@ export default {
   namespace: 'userInfo',
   state: {
     currentUser: {},
+    flag: 0,
     menuList: [],
     menuBtn: {},
     loading: true,
@@ -55,6 +56,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
+          flag: Number(content.flag),
           menuList: content.permissionTree,
           menuBtn: btnObj,
           loading: false,
