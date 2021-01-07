@@ -378,7 +378,7 @@ export default [
             path: '/system/brand',
             name: '品牌管理',
             component: './System/ManageBrand',
-            buttons: ['save', 'edit', 'del'],
+            buttons: ['save', 'status', 'edit', 'del'],
           },
           {
             path: '/system/bankSet',
