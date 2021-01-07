@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
+import HandleSetTable from '@/components/HandleSetTable';
 import businessBrandSet from './components/Brand/BusinessBrandSet';
 
 const BusinessBrandComponent = (props) => {
@@ -42,6 +43,43 @@ const BusinessBrandComponent = (props) => {
       title: '品牌类型',
       align: 'center',
       dataIndex: 'categoryName',
+    },
+    {
+      title: '启用状态',
+      align: 'center',
+      dataIndex: 'status',
+      render: (val, record) => (
+        <AuthConsumer auth="status" noAuth={val === '1' ? '启用' : '停用'}>
+          <Switch
+            checked={val === '1'}
+            onClick={() =>
+              fetchClassifyStatusEdit(
+                { domainId: record.domainId, status: 1 ^ Number(record.status) },
+                val,
+              )
+            }
+          />
+        </AuthConsumer>
+      ),
+    },
+    {
+      title: '操作',
+      align: 'right',
+      dataIndex: 'configBrandIdString',
+      render: (val, record) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'edit',
+              click: () => setVisible({ show: true, info: record }),
+            },
+            {
+              type: 'del',
+              click: () => setVisible({ show: true, info: record }),
+            },
+          ]}
+        />
+      ),
     },
   ];
 
