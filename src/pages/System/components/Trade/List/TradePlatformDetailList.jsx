@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Modal, Button, Table } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import tradePlatformSet from './TradePlatformSet';
+import tradePlatformSet from '../Form/TradePlatformSet';
 
 const TradePlatformDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
