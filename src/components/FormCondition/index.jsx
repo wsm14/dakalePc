@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Form,
   Input,
@@ -192,8 +192,9 @@ const FormComponents = ({
 
   /**
    * 选择图片上传配置
+   * onPreview={(file) => handlePreview(file, name, item.onChange)}
    */
-  const handleUpProps = (name, onChange, maxFile, maxSize) => {
+  const handleUpProps = (name, onChange, maxFile, maxSize, isCut, imgRatio) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -204,7 +205,14 @@ const FormComponents = ({
             fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileName = value.file.name;
-          imageCompress(value.file.originFileObj || value.file).then(({ file }) => {
+          imageCompress(value.file.originFileObj || value.file).then(({ file, blob }) => {
+            // 是否传入是裁剪
+            if (isCut) {
+              blob.uid = value.file.uid;
+              blob.name = value.file.name;
+              handlePreview(blob, name, onChange, imgRatio);
+              return;
+            }
             newFileList.map((fi) => {
               if (fi.name == fileName) {
                 fi.originFileObj = file;
@@ -227,12 +235,13 @@ const FormComponents = ({
   };
 
   // 预览图片
-  const handlePreview = async (file, key, onChange) => {
+  const handlePreview = async (file, key, onChange, imgRatio) => {
     if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+      file.preview = await getBase64(file.originFileObj || file);
     }
-    setPreviewImage(file.url || file.preview);
-    setPreviewTitle({ uid: file.uid, key, onChange });
+    const showFile = file instanceof Blob ? file : file.url || file.preview;
+    setPreviewImage(showFile);
+    setPreviewTitle({ uid: file.uid, key, onChange, imgRatio });
     setPreviewVisible(true);
   };
 
@@ -242,16 +251,20 @@ const FormComponents = ({
       ? previewTitle.key[previewTitle.key.length - 1]
       : previewTitle.key;
     const uid = previewTitle.uid;
-    const newimg = fileLists[fName];
+    let newimg = fileLists[fName] || [];
     imageCompress(file).then(({ file, base64 }) => {
-      newimg.map((fi) => {
-        if (fi.uid == uid) {
-          fi.originFileObj = file;
-          fi.url = base64;
-          fi.thumbUrl = base64;
-        }
-        return fi;
-      });
+      if (newimg.findIndex((i) => i.uid == uid) === -1) {
+        newimg = [...newimg, { uid, url: base64, thumbUrl: base64, originFileObj: file }];
+      } else {
+        newimg.map((fi) => {
+          if (fi.uid === uid) {
+            fi.originFileObj = file;
+            fi.url = base64;
+            fi.thumbUrl = base64;
+          }
+          return fi;
+        });
+      }
       setFileLists({ ...fileLists, [fName]: newimg });
       let onwFile = { [fName]: { file, fileList: newimg } };
       if (Array.isArray(previewTitle.key)) {
@@ -493,16 +506,19 @@ const FormComponents = ({
         upload: (
           <DndProvider manager={manager.current.dragDropManager}>
             <Upload
-              multiple={item.multiple || true}
+              // 允许选择时裁剪的时候不允许多选
+              multiple={item.isCut ? false : item.multiple || true}
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={(file) => beforeUpload(file, item.maxSize)}
-              onPreview={(file) => handlePreview(file, name, item.onChange)}
+              onPreview={(file) => handlePreview(file, name, item.onChange, item.imgRatio)}
               {...handleUpProps(
                 Array.isArray(name) ? name[1] : name,
                 item.onChange,
                 item.maxFile,
                 item.maxSize,
+                item.isCut,
+                item.imgRatio,
               )}
               itemRender={(originNode, file, currFileList) => {
                 return (
@@ -608,6 +624,7 @@ const FormComponents = ({
         <ImgCutView
           uploadedImageFile={previewImage}
           onSubmit={handleCutImg}
+          imgRatio={previewTitle.imgRatio}
           onClose={() => setPreviewVisible(false)}
         />
       </Modal>

@@ -31,10 +31,13 @@ const BusinessBankSet = (props) => {
         type: 'upload',
         name: 'brandLogo',
         maxFile: 1,
+        isCut: true,
+        imgRatio: 50 / 50,
       },
       {
         label: '品牌名',
         name: 'brandName',
+        maxLength: 20,
       },
       {
         label: '品牌类型',
