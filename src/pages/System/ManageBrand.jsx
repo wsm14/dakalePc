@@ -75,7 +75,11 @@ const BusinessBrandComponent = (props) => {
             },
             {
               type: 'del',
-              click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
+              click: () =>
+                fetchMerBrandEdit({
+                  configBrandIdString: val,
+                  deleteFlag: 0,
+                }),
             },
           ]}
         />
@@ -95,6 +99,7 @@ const BusinessBrandComponent = (props) => {
     dispatch({
       type: 'businessBrand/fetchMerBrandEdit',
       payload,
+      callback: () => childRef.current.fetchGetData(),
     });
   };
 
@@ -119,7 +124,6 @@ const BusinessBrandComponent = (props) => {
           </Button>
         </AuthConsumer>
       }
-      keepName="品牌管理"
       cRef={childRef}
       loading={loading.models.businessBrand}
       columns={getColumns}

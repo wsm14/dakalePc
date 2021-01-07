@@ -6,12 +6,11 @@ const BusinessBankSet = (props) => {
   // 新增
   const fetchMerBrandSet = (values) => {
     const { brandLogo, categoryId } = values;
-
     aliOssUpload(brandLogo).then((res) => {
-      // initialValues 存在为修改 false 为新增
+      // initialValues.configBrandIdString 存在为修改 false 为新增
       dispatch({
         type: { false: 'businessBrand/fetchMerBrandAdd', true: 'businessBrand/fetchMerBrandEdit' }[
-          !!initialValues
+          !!initialValues.configBrandIdString
         ],
         payload: {
           ...values,
