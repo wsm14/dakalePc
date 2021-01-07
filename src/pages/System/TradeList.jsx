@@ -194,5 +194,7 @@ const SysTradeSet = (props) => {
 
 export default connect(({ sysTradeList, loading }) => ({
   list: sysTradeList.list,
-  loading: loading.effects['sysTradeList/fetchGetList'],
+  loading:
+    loading.effects['sysTradeList/fetchGetList'] ||
+    loading.effects['sysTradeList/fetchPromotionMoneyGet'],
 }))(SysTradeSet);
