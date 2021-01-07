@@ -53,10 +53,10 @@ const BusinessBrandComponent = (props) => {
           <Switch
             checked={val === '1'}
             onClick={() =>
-              fetchClassifyStatusEdit(
-                { domainId: record.domainId, status: 1 ^ Number(record.status) },
-                val,
-              )
+              fetchMerBrandEdit({
+                configBrandIdString: record.configBrandIdString,
+                status: 1 ^ Number(val),
+              })
             }
           />
         </AuthConsumer>
@@ -66,16 +66,16 @@ const BusinessBrandComponent = (props) => {
       title: '操作',
       align: 'right',
       dataIndex: 'configBrandIdString',
-      render: (val, record) => (
+      render: (val, row) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => setVisible({ show: true, info: record }),
+              click: () => handleBrandSet(row),
             },
             {
               type: 'del',
-              click: () => setVisible({ show: true, info: record }),
+              click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -90,11 +90,19 @@ const BusinessBrandComponent = (props) => {
     });
   };
 
+  // 编辑/删除/启用停用品牌
+  const fetchMerBrandEdit = (payload) => {
+    dispatch({
+      type: 'businessBrand/fetchMerBrandEdit',
+      payload,
+    });
+  };
+
   // 品牌新增
-  const handleBrandSet = () => {
+  const handleBrandSet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: businessBrandSet({ dispatch, childRef, tradeList }),
+      payload: businessBrandSet({ dispatch, childRef, tradeList, initialValues }),
     });
   };
 

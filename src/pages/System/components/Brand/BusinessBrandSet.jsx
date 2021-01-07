@@ -1,17 +1,21 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const BusinessBankSet = (props) => {
-  const { dispatch, childRef, tradeList } = props;
+  const { dispatch, childRef, tradeList, initialValues = null } = props;
 
   // 新增
-  const fetchMerBrandAdd = (values) => {
+  const fetchMerBrandSet = (values) => {
     const { brandLogo, categoryId } = values;
 
     aliOssUpload(brandLogo).then((res) => {
+      // initialValues 存在为修改 false 为新增
       dispatch({
-        type: 'businessBrand/fetchMerBrandAdd',
+        type: { false: 'businessBrand/fetchMerBrandAdd', true: 'businessBrand/fetchMerBrandEdit' }[
+          !!initialValues
+        ],
         payload: {
           ...values,
+          configBrandIdString: initialValues.configBrandIdString,
           categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
           brandLogo: res.toString(),
         },
@@ -46,7 +50,7 @@ const BusinessBankSet = (props) => {
         select: tradeList.map((item) => ({ name: item.categoryName, value: item.id })),
       },
     ],
-    onFinish: fetchMerBrandAdd,
+    onFinish: fetchMerBrandSet,
     ...props,
   };
 };

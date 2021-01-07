@@ -295,6 +295,14 @@ export function fetchMerBrandAdd(data) {
   });
 }
 
+// post 品牌 - 品牌修改
+export function fetchMerBrandEdit(data) {
+  return request('/admin/merchantManagement/updateConfigBrand', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 品牌管理 end
 
 // 支行管理
