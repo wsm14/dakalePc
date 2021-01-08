@@ -7,10 +7,10 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const ManageCity = (props) => {
-  const { businessBrand, loading, dispatch } = props;
+  const { loading, dispatch } = props;
 
   const childRef = useRef();
-  const [provinceList, setProvinceList] = useState(
+  const [provinceList] = useState(
     Object.assign([], CITYJSON).map((i) => ({
       cityName: i.label,
       locationCityIdString: i.value,
@@ -33,7 +33,6 @@ const ManageCity = (props) => {
     },
     {
       title: '城市文案',
-      align: 'center',
       dataIndex: 'cityDesc',
     },
     {
@@ -65,7 +64,7 @@ const ManageCity = (props) => {
             {
               type: 'del',
               visible: !!row.provinceCode,
-              click: () => fetchGetMenuDetail({ accessId: val }),
+              click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -73,21 +72,35 @@ const ManageCity = (props) => {
     },
   ];
 
+  // 城市状态修改
+  const fetchCityManageStatus = (payload) => {
+    dispatch({
+      type: 'manageCity/fetchCityManageStatus',
+      payload,
+    });
+  };
+
+  // 获取城市列表
+  const fetchGetCityList = (provinceCode, row) => {
+    dispatch({
+      type: 'manageCity/fetchGetList',
+      payload: { provinceCode, row },
+    });
+  };
+
   return (
     <DataTableBlock
       cRef={childRef}
-      loading={loading.models.businessBrand}
+      loading={loading.models.manageCity}
       columns={getColumns}
       rowKey={(record) => `${record.locationCityIdString}`}
-      dispatchType="businessBrand/fetchGetList"
       pagination={false}
+      onExpand={(expanded, row) => expanded && fetchGetCityList(row.locationCityIdString, row)}
       list={provinceList}
     ></DataTableBlock>
   );
 };
 
-export default connect(({ businessBrand, sysTradeList, loading }) => ({
-  businessBrand,
-  tradeList: sysTradeList.list.list,
+export default connect(({ loading }) => ({
   loading,
 }))(ManageCity);

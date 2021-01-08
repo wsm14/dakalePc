@@ -1,0 +1,52 @@
+import { notification } from 'antd';
+import {
+  fetchCityManageList,
+  fetchPeasShareAdd,
+  fetchCityManageStatus,
+} from '@/services/SystemServices';
+
+export default {
+  namespace: 'manageCity',
+
+  state: {
+    list: [],
+  },
+
+  reducers: {
+    save(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+      };
+    },
+  },
+
+  effects: {
+    *fetchGetList({ payload }, { call, put }) {
+      const { provinceCode, row } = payload;
+      const response = yield call(fetchCityManageList, { provinceCode });
+      if (!response) return;
+      const { content } = response;
+      row.children = content.locationCityList;
+    },
+    *fetchPeasShareAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPeasShareAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '卡豆分享新增成功',
+      });
+      callback();
+    },
+    *fetchCityManageStatus({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityManageStatus, payload);
+      if (!response) return;
+      const { deleteFlag } = payload;
+      notification.success({
+        message: '温馨提示',
+        description: `城市${deleteFlag === 0 ? '删除' : '修改'}成功`,
+      });
+      callback();
+    },
+  },
+};

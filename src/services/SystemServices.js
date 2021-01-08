@@ -364,3 +364,22 @@ export function fetchWMSRoleEdit(data) {
 }
 
 // 省公司 区县权限管理 end
+
+// 城市管理
+
+// get 城市管理 - 城市列表
+export function fetchCityManageList(params) {
+  return request('/admin/locationCityManagement/listLocationCity', {
+    params,
+  });
+}
+
+// post 城市管理 - 状态修改
+export function fetchCityManageStatus(data) {
+  return request('/admin/locationCityManagement/deleteLocationCity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 城市管理 end
