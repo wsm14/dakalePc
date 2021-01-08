@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
+import { BANNER_SHOW_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -19,13 +19,18 @@ const PuzzleAd = (props) => {
       label: '品牌名',
       name: 'bannerType',
     },
+    // {
+    //   label: '区域',
+    //   name: 'city',
+    //   type: 'cascader',
+    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    // },
   ];
 
   // table 表头
   const getColumns = [
     {
       title: '类型',
-      fixed: 'left',
       dataIndex: 'coverImg',
     },
     {
