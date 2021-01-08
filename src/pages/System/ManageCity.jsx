@@ -120,7 +120,7 @@ const ManageCity = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.locationCityIdString}`}
           pagination={false}
-          params={{ provinceCode: '33' }}
+          params={{ provinceCode: selectCode.provinceCode }}
           dispatchType="manageCity/fetchGetList"
           {...manageCity}
         ></DataTableBlock>
