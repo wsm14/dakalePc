@@ -73,7 +73,6 @@ const BusinessBrandComponent = (props) => {
           </Button>
         </AuthConsumer>
       }
-      keepName="品牌管理"
       cRef={childRef}
       loading={loading.models.businessBrand}
       columns={getColumns}

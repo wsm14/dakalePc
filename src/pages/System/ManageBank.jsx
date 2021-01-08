@@ -61,7 +61,6 @@ const BusinessBankSetContent = (props) => {
   return (
     <>
       <DataTableBlock
-        keepName="支行设置"
         btnExtra={
           <AuthConsumer auth="save">
             <Button
