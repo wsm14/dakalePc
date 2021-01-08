@@ -1,35 +1,31 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch } from 'antd';
-import CITYJSON from '@/common/city';
+import { Card, Button, Switch } from 'antd';
 import { CITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import ManageCityLeft from './components/City/Left';
+import manageCitySet from './components/City/ManageCitySet';
 
 const ManageCity = (props) => {
-  const { loading, dispatch } = props;
+  const { loading, manageCity, dispatch } = props;
 
   const childRef = useRef();
-  const [provinceList] = useState(
-    Object.assign([], CITYJSON).map((i) => ({
-      cityName: i.label,
-      locationCityIdString: i.value,
-      children: [],
-    })),
-  );
+  const [selectCode, setSelectCode] = useState({
+    provinceCode: '33',
+    provinceName: '浙江',
+  });
 
   // table 表头
   const getColumns = [
     {
-      title: '省/市',
-      align: 'center',
+      title: '市',
       dataIndex: 'cityName',
     },
     {
       title: '背景图',
-      align: 'center',
       dataIndex: 'backgroundImg',
       render: (val) => <PopImgShow url={val} />,
     },
@@ -66,17 +62,9 @@ const ManageCity = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'save',
-              visible: !row.provinceCode,
-              click: () =>
-                handleSysMenuSet({
-                  menuName: row.accessName,
-                }),
-            },
-            {
               type: 'edit',
               visible: !!row.provinceCode,
-              click: () => fetchGetMenuDetail({ accessId: val }),
+              click: () => handleManageCitySet({ ...row, id: val }),
             },
             {
               type: 'del',
@@ -89,6 +77,14 @@ const ManageCity = (props) => {
     },
   ];
 
+  // 城市新增修改
+  const handleManageCitySet = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: manageCitySet({ dispatch, childRef, initialValues }),
+    });
+  };
+
   // 城市状态修改
   const fetchCityManageStatus = (payload) => {
     dispatch({
@@ -98,27 +94,42 @@ const ManageCity = (props) => {
     });
   };
 
-  // 获取城市列表
-  const fetchGetCityList = (provinceCode, row) => {
-    dispatch({
-      type: 'manageCity/fetchGetList',
-      payload: { provinceCode, row },
-    });
-  };
-
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading.models.manageCity}
-      columns={getColumns}
-      rowKey={(record) => `${record.locationCityIdString}`}
-      pagination={false}
-      onExpand={(expanded, row) => expanded && fetchGetCityList(row.locationCityIdString, row)}
-      list={provinceList}
-    ></DataTableBlock>
+    <Card bordered={false} bodyStyle={{ display: 'flex' }}>
+      <ManageCityLeft
+        cRef={childRef}
+        selectCode={selectCode}
+        setSelectCode={setSelectCode}
+      ></ManageCityLeft>
+      <div style={{ flex: 1 }}>
+        <DataTableBlock
+          btnExtra={
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                disabled={!selectCode.provinceCode}
+                onClick={() => handleManageCitySet(selectCode)}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          }
+          CardNone={false}
+          cRef={childRef}
+          loading={loading.models.manageCity}
+          columns={getColumns}
+          rowKey={(record) => `${record.locationCityIdString}`}
+          pagination={false}
+          params={{ provinceCode: '33' }}
+          dispatchType="manageCity/fetchGetList"
+          {...manageCity}
+        ></DataTableBlock>
+      </div>
+    </Card>
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ manageCity, loading }) => ({
+  manageCity,
   loading,
 }))(ManageCity);

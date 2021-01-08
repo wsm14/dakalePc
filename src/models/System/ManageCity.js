@@ -23,11 +23,15 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const { provinceCode, row } = payload;
-      const response = yield call(fetchCityManageList, { provinceCode });
+      const response = yield call(fetchCityManageList, payload);
       if (!response) return;
       const { content } = response;
-      row.children = content.locationCityList;
+      yield put({
+        type: 'save',
+        payload: {
+          list: content.locationCityList,
+        },
+      });
     },
     *fetchCityManageSet({ payload, callback }, { call }) {
       const response = yield call(fetchCityManageSet, payload);
