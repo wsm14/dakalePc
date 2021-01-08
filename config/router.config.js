@@ -384,7 +384,7 @@ export default [
             path: '/system/city',
             name: '城市管理',
             component: './System/ManageCity',
-            buttons: ['save', 'edit', 'del'],
+            buttons: ['save', 'edit', 'status', 'del'],
           },
           {
             path: '/system/bankSet',

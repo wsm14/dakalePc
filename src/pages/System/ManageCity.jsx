@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { CITY_STATUS } from '@/common/constant';
+import { Switch } from 'antd';
 import CITYJSON from '@/common/city';
+import { CITY_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -39,7 +41,22 @@ const ManageCity = (props) => {
       title: '状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => CITY_STATUS[val],
+      render: (val, row) =>
+        val && (
+          <AuthConsumer auth="status" noAuth={CITY_STATUS[val]}>
+            <Switch
+              checked={val === '1'}
+              checkedChildren="已开通"
+              unCheckedChildren="未开通"
+              onClick={() =>
+                fetchCityManageStatus({
+                  id: row.locationCityIdString,
+                  status: 1 ^ Number(val),
+                })
+              }
+            />
+          </AuthConsumer>
+        ),
     },
     {
       title: '操作',
@@ -77,6 +94,7 @@ const ManageCity = (props) => {
     dispatch({
       type: 'manageCity/fetchCityManageStatus',
       payload,
+      callback: childRef.current.fetchGetData,
     });
   };
 

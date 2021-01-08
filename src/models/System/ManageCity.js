@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchCityManageList,
-  fetchPeasShareAdd,
+  fetchCityManageSet,
   fetchCityManageStatus,
 } from '@/services/SystemServices';
 
@@ -29,12 +29,12 @@ export default {
       const { content } = response;
       row.children = content.locationCityList;
     },
-    *fetchPeasShareAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchPeasShareAdd, payload);
+    *fetchCityManageSet({ payload, callback }, { call }) {
+      const response = yield call(fetchCityManageSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '卡豆分享新增成功',
+        description: '城市设置成功',
       });
       callback();
     },

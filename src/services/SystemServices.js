@@ -374,6 +374,14 @@ export function fetchCityManageList(params) {
   });
 }
 
+// post 城市管理 - 新增修改
+export function fetchCityManageSet(data) {
+  return request('/admin/locationCityManagement/saveOrUpdateLocationCity', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 城市管理 - 状态修改
 export function fetchCityManageStatus(data) {
   return request('/admin/locationCityManagement/deleteLocationCity', {
