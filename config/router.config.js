@@ -277,7 +277,7 @@ export default [
             path: '/market/appset',
             name: '广告管理',
             component: './Market/AppSetList',
-            buttons: ['down', 'del', 'edit', 'save'],
+            buttons: ['down', 'save', 'edit', 'del'],
           },
           {
             path: '/market/special',
@@ -290,6 +290,12 @@ export default [
             name: '搜索配置',
             component: './Market/SearchSetList',
             buttons: ['searchSet'],
+          },
+          {
+            path: '/market/puzzleAd',
+            name: '拼图广告',
+            component: './Market/PuzzleAd',
+            buttons: ['eye', 'edit', 'save', 'del', 'up', 'down'],
           },
         ],
       },
