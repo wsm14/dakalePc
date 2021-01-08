@@ -162,12 +162,12 @@ const GoodsManageComponent = (props) => {
               },
               {
                 type: 'down',
-                visible: status != 0 && checkStatus == 2,
+                visible: status == 1 && checkStatus == 2,
                 click: () => fetchAuditRefuse(record),
               },
               {
                 type: 'up',
-                visible: status == 0 && checkStatus == 2,
+                visible: status != 1 && status != 2 && checkStatus != 1,
                 click: () => fetchGoodsUp({ goodsIdString: val }),
               },
               {
