@@ -1,14 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { BANNER_SHOW_STATUS } from '@/common/constant';
+import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import SysAppSetForm from './components/App/SysAppSet';
 
 const PuzzleAd = (props) => {
-  const { sysAppList, loading, dispatch } = props;
+  const { puzzleAd, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
@@ -17,7 +17,7 @@ const PuzzleAd = (props) => {
   const searchItems = [
     {
       label: '品牌名',
-      name: 'bannerType',
+      name: 'brandName',
     },
     // {
     //   label: '区域',
@@ -31,68 +31,59 @@ const PuzzleAd = (props) => {
   const getColumns = [
     {
       title: '类型',
-      dataIndex: 'coverImg',
+      dataIndex: 'type',
+      render: (val) =>
+        Object.assign(...PUZZLE_AD_TYPE.map((item) => ({ [item.value]: item.name })))[val],
     },
     {
       title: '品牌名',
       align: 'center',
-      dataIndex: 'description',
+      dataIndex: 'brandName',
     },
     {
       title: '说明',
       align: 'center',
-      dataIndex: 'bannerType',
-    },
-    {
-      title: '品牌名',
-      align: 'center',
-      dataIndex: 'jumpType',
-      render: (val) => val || '无',
+      dataIndex: 'description',
     },
     {
       title: '展示时间',
       align: 'center',
-      dataIndex: 'jumpUrl',
-      render: (val) => val || '--',
+      dataIndex: 'startShowTime',
+      render: (val, row) => `${val} ~ ${row.endShowTime}`,
     },
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'showStatus',
-      render: (val) => BANNER_SHOW_STATUS[val],
+      dataIndex: 'status',
+      render: (val) => PUZZLE_AD_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'bannerIdString',
+      dataIndex: 'puzzleAdsId',
       align: 'right',
       fixed: 'right',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
-              type: 'eye',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+              type: 'down',
+              visible: record.status === '1',
+              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 0 }),
             },
             {
               type: 'up',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
-            },
-            {
-              type: 'down',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+              visible: record.status === '0',
+              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 1 }),
             },
             {
               type: 'edit',
-              visible: record.showStatus !== '2',
+              visible: record.status === '0',
               click: () => setVisibleSet({ show: true, info: record }),
             },
             {
               type: 'del',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
+              visible: record.status === '0',
+              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -100,12 +91,12 @@ const PuzzleAd = (props) => {
     },
   ];
 
-  // 下架
-  const fetchBannerStatusDel = (payload) => {
+  // 新增修改
+  const fetchPuzzleAdSet = (payload) => {
     dispatch({
-      type: 'sysAppList/fetchBannerStatusDel',
+      type: 'puzzleAd/fetchPuzzleAdSet',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -126,9 +117,9 @@ const PuzzleAd = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.bannerIdString}`}
-        dispatchType="sysAppList/fetchGetList"
-        {...sysAppList}
+        rowKey={(record) => `${record.puzzleAdsId}`}
+        dispatchType="puzzleAd/fetchGetList"
+        {...puzzleAd}
       ></DataTableBlock>
       <SysAppSetForm
         cRef={childRef}
@@ -139,7 +130,7 @@ const PuzzleAd = (props) => {
   );
 };
 
-export default connect(({ sysAppList, loading }) => ({
-  sysAppList,
-  loading: loading.models.sysAppList,
+export default connect(({ puzzleAd, loading }) => ({
+  puzzleAd,
+  loading: loading.models.puzzleAd,
 }))(PuzzleAd);

@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchBannerList, fetchBannerSet, fetchBannerStatusDel } from '@/services/MarketServices';
+import { fetchPuzzleAdList, fetchPuzzleAdSet } from '@/services/MarketServices';
 
 export default {
   namespace: 'puzzleAd',
@@ -20,7 +20,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchBannerList, payload);
+      const response = yield call(fetchPuzzleAdList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -31,32 +31,13 @@ export default {
         },
       });
     },
-    *fetchBannerEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchBannerStatusDel, payload);
-      if (!response) return;
-      const { bannerStatus } = payload;
-      notification.success({
-        message: '温馨提示',
-        description: `占位图修改成功`,
-      });
-      callback();
-    },
-    *fetchBannerStatusDel({ payload, callback }, { call, put }) {
-      const response = yield call(fetchBannerStatusDel, payload);
-      if (!response) return;
-      const { bannerStatus } = payload;
-      notification.success({
-        message: '温馨提示',
-        description: `占位图${bannerStatus === 0 ? '下架' : '删除'}成功`,
-      });
-      callback();
-    },
-    *fetchBannerSet({ payload, callback }, { call, put }) {
-      const response = yield call(fetchBannerSet, payload);
+    *fetchPuzzleAdSet({ payload, callback }, { call, put }) {
+      const { deleteFlag } = payload;
+      const response = yield call(fetchPuzzleAdSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '占位图新增成功',
+        description: `拼图广告${deleteFlag === 0 ? '删除' : '设置'}成功`,
       });
       callback();
     },
