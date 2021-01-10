@@ -136,7 +136,7 @@ const FormComponents = ({
     const fileobj = {};
     formItems.map((item, i) => {
       const { name } = item;
-      if (item.type === 'upload') {
+      if (item.type === 'upload' || item.type === 'videoUpload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
             if (!initialValues[name[0]]) {
@@ -227,12 +227,12 @@ const FormComponents = ({
   };
 
   // 预览图片
-  const handlePreview = async (file, key, onChange) => {
+  const handlePreview = async (file, key, onChange, type) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
     setPreviewImage(file.url || file.preview);
-    setPreviewTitle({ uid: file.uid, key, onChange });
+    setPreviewTitle({ uid: file.uid, key, onChange, type });
     setPreviewVisible(true);
   };
 
@@ -305,6 +305,7 @@ const FormComponents = ({
         maxLength,
         visible = true,
         hidden = false,
+        fieldNames = {},
       } = item;
       let { extra } = item;
 
@@ -423,14 +424,16 @@ const FormComponents = ({
             optionFilterProp="children"
           >
             {select.map((data, j) => {
+              const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
               if (data) {
+                const nameD = data[labelKey];
                 // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.name ? data.name : typeof data == 'string' ? data : '--';
-                const otherData = data.otherData ? data.otherData : '';
+                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
+                const nameData = nameD ? nameD : typeof data == 'string' ? data : '--';
+                const otherData = data[tipKey] ? data[tipKey] : '';
                 return (
-                  <Option key={data.key || j} value={value}>
-                    {name}
+                  <Option key={data.key || j} value={valueData}>
+                    {nameData}
                     {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
@@ -497,7 +500,8 @@ const FormComponents = ({
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={(file) => beforeUpload(file, item.maxSize)}
-              onPreview={(file) => handlePreview(file, name, item.onChange)}
+              maxCount={item.maxFile}
+              onPreview={(file) => handlePreview(file, name, item.onChange, 'image')}
               {...handleUpProps(
                 Array.isArray(name) ? name[1] : name,
                 item.onChange,
@@ -520,6 +524,56 @@ const FormComponents = ({
                 uploadButton}
             </Upload>
           </DndProvider>
+        ),
+        videoUpload: (
+          <Upload
+            multiple={item.multiple || true}
+            listType="picture-card"
+            accept="video/mp4,.mp4"
+            maxCount={item.maxFile}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+            previewFile={(file) => {
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                  resolve(reader.result);
+                };
+                reader.onerror = (error) => reject(error);
+              });
+            }}
+            onPreview={(file) => handlePreview(file, name, item.onChange, 'video')}
+            beforeUpload={(file) => {
+              if (file.type !== 'video/mp4') {
+                message.error(`${file.name} 不是mp4格式`);
+                file.dklFileStatus = 'out';
+              }
+              return false;
+            }}
+            onChange={(value) => {
+              const keyName = Array.isArray(name) ? name[1] : name;
+              const { fileList } = value;
+              const newFileList = fileList.filter((file) => file.dklFileStatus !== 'out');
+              if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
+                setFileLists({
+                  ...fileLists,
+                  [keyName]: newFileList.slice(0, item.maxFile || 999),
+                });
+                (form || formN).setFieldsValue({
+                  [keyName]: { ...value, fileList: newFileList.slice(0, item.maxFile || 999) },
+                });
+                if (item.onChange) item.onChange(value);
+              } else {
+                if (!newFileList.length) (form || formN).setFieldsValue({ [keyName]: undefined });
+                else (form || formN).setFieldsValue({ [keyName]: value });
+                setFileLists({ ...fileLists, [keyName]: newFileList });
+              }
+            }}
+          >
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
+              uploadButton}
+          </Upload>
         ),
         childrenOwn: item.childrenOwn,
         noForm: '',
@@ -599,7 +653,7 @@ const FormComponents = ({
         destroyOnClose
         title="编辑图片"
         width={950}
-        visible={previewVisible}
+        visible={previewVisible && previewTitle.type === 'image'}
         maskClosable={false}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
@@ -611,15 +665,23 @@ const FormComponents = ({
           onClose={() => setPreviewVisible(false)}
         />
       </Modal>
-      {/* <Modal
-        title={previewTitle}
-        visible={previewVisible}
+      <Modal
+        title={'查看'}
+        visible={previewVisible && previewTitle.type === 'video'}
         onCancel={() => setPreviewVisible(false)}
+        width={548}
         footer={null}
-        zIndex={1009}
+        zIndex={100000}
       >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal> */}
+        <video
+          controls="controls"
+          style={{ maxHeight: 300, margin: '0 auto', width: 500 }}
+          autoPlay
+          src={previewImage}
+        >
+          <track kind="captions" />
+        </video>
+      </Modal>
     </Form>
   );
 };

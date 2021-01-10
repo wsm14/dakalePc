@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import SysAppSetForm from './components/App/SysAppSet';
+import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
 
 const PuzzleAd = (props) => {
   const { puzzleAd, loading, dispatch } = props;
@@ -78,7 +79,18 @@ const PuzzleAd = (props) => {
             {
               type: 'edit',
               visible: record.status === '0',
-              click: () => setVisibleSet({ show: true, info: record }),
+              click: () =>
+                setVisibleSet({
+                  show: true,
+                  info: {
+                    ...record,
+                    brandId: record.brandIdStr,
+                    activeDate: [
+                      moment(record.startShowTime, 'YYYY-MM-DD'),
+                      moment(record.endShowTime, 'YYYY-MM-DD'),
+                    ],
+                  },
+                }),
             },
             {
               type: 'del',
@@ -92,11 +104,14 @@ const PuzzleAd = (props) => {
   ];
 
   // 新增修改
-  const fetchPuzzleAdSet = (payload) => {
+  const fetchPuzzleAdSet = (payload, callback) => {
     dispatch({
       type: 'puzzleAd/fetchPuzzleAdSet',
       payload,
-      callback: childRef.current.fetchGetData,
+      callback: () => {
+        callback && callback();
+        childRef.current.fetchGetData();
+      },
     });
   };
 
@@ -121,11 +136,12 @@ const PuzzleAd = (props) => {
         dispatchType="puzzleAd/fetchGetList"
         {...puzzleAd}
       ></DataTableBlock>
-      <SysAppSetForm
+      <PuzzleAdSet
         cRef={childRef}
         visible={visibleSet}
+        onSumbit={fetchPuzzleAdSet}
         onClose={() => setVisibleSet({ show: false, info: '' })}
-      ></SysAppSetForm>
+      ></PuzzleAdSet>
     </>
   );
 };
