@@ -13,7 +13,7 @@ import './style.less';
 /**
  * 商圈地图
  */
-const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId, bucket }) => {
+const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   const { cityData } = useContext(ChartContext);
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
