@@ -33,10 +33,16 @@ const GoodsManageComponent = (props) => {
       type: 'select',
       loading: loadings.effects['goodsManage/fetchClassifyGetMre'],
       allItem: false,
-      onSearch: (val) => fetchClassifyGetMre(val),
-      onChange: (val) => fetchGetClassify(val),
       select: mreSelect,
       placeholder: '请输入店铺名称搜索',
+      handle: (form) => ({
+        onSearch: (val) => fetchClassifyGetMre(val),
+        onChange: (val) => {
+          fetchClassifySelectClear();
+          fetchGetClassify(val);
+          form.setFieldsValue({ customCategoryId: undefined });
+        },
+      }),
     },
     {
       label: '商品分类',
@@ -150,6 +156,7 @@ const GoodsManageComponent = (props) => {
                 type: 'info',
                 click: () => fetchGoodsGetDetail({ goodsIdString: val }),
               },
+              // 上架中
               {
                 type: 'own',
                 title: '库存',
@@ -157,19 +164,26 @@ const GoodsManageComponent = (props) => {
                 visible: status == 1,
                 click: () => fetchStockSet(record),
               },
+              // 未发布 - | 已下架 已确认
               {
                 type: 'del',
-                visible: status == 0 && checkStatus == 2,
+                visible:
+                  (status == 3 && !['0', '1', '2'].includes(checkStatus)) ||
+                  (status == 0 && checkStatus == 2),
                 click: () => fetchGoodsDel({ goodsIdString: val, merchantIdStr }),
               },
+              // 上架中 已确认 | 上架中 已驳回
               {
                 type: 'down',
                 visible: status == 1 && (checkStatus == 2 || checkStatus == 0),
                 click: () => fetchAuditRefuse(record),
               },
+              // 未发布 - | 未发布 已驳回 | 已下架 已确认
               {
                 type: 'up',
-                visible: status != 1 && status != 2 && checkStatus != 1,
+                visible:
+                  (status == 3 && ['1', '2'].indexOf(checkStatus) == -1) ||
+                  (status == 0 && checkStatus == 2),
                 click: () => fetchGoodsUp({ goodsIdString: val }),
               },
               {
@@ -184,6 +198,16 @@ const GoodsManageComponent = (props) => {
       },
     },
   ];
+
+  // 清楚搜索项目
+  const fetchClassifySelectClear = () => {
+    dispatch({
+      type: 'goodsManage/save',
+      payload: {
+        classifySelect: [],
+      },
+    });
+  };
 
   // 搜索商家
   const fetchClassifyGetMre = debounce((keyword) => {
@@ -276,7 +300,10 @@ const GoodsManageComponent = (props) => {
             </Button>
           </AuthConsumer>
         }
-        resetSearch={() => setMerchantId('')}
+        resetSearch={() => {
+          fetchClassifySelectClear();
+          setMerchantId('');
+        }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
