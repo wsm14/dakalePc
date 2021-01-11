@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { NEWS_STATUS } from '@/common/constant';
-import { Card, Result, Switch } from 'antd';
+import { FAQ_LIKE_STATUS } from '@/common/constant';
+import { Card, Result, Switch, Button, Space } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -23,8 +23,9 @@ const ServiceFAQ = (props) => {
   const { serviceFAQ, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [tabkey, setTabKey] = useState(false);
   const check = authCheck(tabList);
+  const [tabkey, setTabKey] = useState(false);
+  const [delKey, setDelKey] = useState([]);
 
   useEffect(() => {
     setTabKey(check ? check[0]['key'] : false);
@@ -33,6 +34,26 @@ const ServiceFAQ = (props) => {
   useEffect(() => {
     tabkey && childRef.current.fetchGetData();
   }, [tabkey]);
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '问题分类',
+      name: 'username',
+      type: 'select',
+      select: { list: FAQ_LIKE_STATUS },
+    },
+    {
+      label: '关键字',
+      name: 'questionTitle',
+    },
+    {
+      label: '猜你想问',
+      name: 'likeStatus',
+      type: 'select',
+      select: { list: FAQ_LIKE_STATUS },
+    },
+  ];
 
   // table 表头
   const getColumns = [
@@ -76,7 +97,7 @@ const ServiceFAQ = (props) => {
       dataIndex: 'likeStatus',
       render: (val, row) =>
         row.questionIdString && (
-          <AuthConsumer auth="set" noAuth={val === '0' ? '未设置' : '已设置'}>
+          <AuthConsumer auth="setLike" noAuth={FAQ_LIKE_STATUS[val]}>
             <a>{val === '0' ? '设置' : '取消设置'}</a>
           </AuthConsumer>
         ),
@@ -88,12 +109,14 @@ const ServiceFAQ = (props) => {
       dataIndex: 'questionCategoryId',
       render: (val, row) => (
         <>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={row.status === '1'}
-            onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
-          />
+          <AuthConsumer auth="status">
+            <Switch
+              checkedChildren="启"
+              unCheckedChildren="停"
+              checked={row.status === '1'}
+              onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+            />
+          </AuthConsumer>
           <HandleSetTable
             formItems={[
               {
@@ -118,13 +141,42 @@ const ServiceFAQ = (props) => {
   };
 
   return (
-    <Card tabList={check} onTabChange={(key) => setTabKey(key)}>
+    <Card
+      tabList={check}
+      onTabChange={(key) => {
+        setDelKey([]);
+        setTabKey(key);
+      }}
+      tabBarExtraContent={
+        <Space>
+          <AuthConsumer auth="sortFAQ">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
+            >
+              分类管理
+            </Button>
+          </AuthConsumer>
+          <AuthConsumer auth="del">
+            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={() => {}}>
+              批量删除
+            </Button>
+          </AuthConsumer>
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" onClick={() => {}}>
+              新增问题
+            </Button>
+          </AuthConsumer>
+        </Space>
+      }
+    >
       {check ? (
         <DataTableBlock
           NoSearch
           CardNone={false}
           cRef={childRef}
           loading={loading}
+          searchItems={searchItems}
           columns={getColumns}
           params={{ userType: tabkey }}
           rowKey={(record) => `${record.questionCategoryIdString || record.questionIdString}`}
@@ -135,8 +187,8 @@ const ServiceFAQ = (props) => {
               if (record.questionCategoryIdString) return false;
               else return originNode;
             },
-            // selectedRowKeys,
-            onChange: (val) => console.log(val),
+            selectedRowKeys: delKey,
+            onChange: (val) => setDelKey(val),
           }}
           {...serviceFAQ}
         ></DataTableBlock>

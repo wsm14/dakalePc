@@ -62,6 +62,13 @@ export async function fetchFAQList(params) {
   });
 }
 
+// get FAQ - 分类列表
+export async function fetchFAQSortList(params) {
+  return request('/admin/questionManagement/listCommonQuestionCategoryManagement', {
+    params,
+  });
+}
+
 // post FAQ - 新增
 export function fetchFAQEdit(data) {
   return request('/admin/news/saveNews', {
