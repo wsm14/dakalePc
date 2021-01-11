@@ -267,7 +267,7 @@ export function fetchPuzzleAdList(params) {
 
 // post 拼图广告 - 添加修改
 export function fetchPuzzleAdSet(data) {
-  return request('/common/category/setHotMerchantCategory', {
+  return request('/admin/puzzleAdsManagement/saveOrUpdatePuzzleAds', {
     method: 'POST',
     data,
   });

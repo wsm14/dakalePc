@@ -104,7 +104,7 @@ const PuzzleAdSet = (props) => {
 
   const modalProps = {
     title: '编辑',
-    width: 560,
+    width: 650,
     visible: show,
     maskClosable: true,
     destroyOnClose: true,
@@ -124,6 +124,8 @@ const PuzzleAdSet = (props) => {
           fetchGetBrandList();
           setShowType(info.type);
           setSkeletonType(false);
+        } else {
+          setSkeletonType(true);
         }
       }}
       bodyStyle={{ paddingBottom: 80 }}
