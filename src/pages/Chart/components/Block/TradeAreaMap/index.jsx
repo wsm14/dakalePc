@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { connect, history } from 'umi';
 import { Card, Typography } from 'antd';
 import { Map, Marker, Circle, Markers } from 'react-amap';
 import { AMAP_JS_KEY } from '@/common/constant';
+import { ChartContext } from '../chartStore';
 import MreDetail from './MreDetail';
 import MapLegend from './MapLegend';
 import dai from './icon/mreji.png';
@@ -12,7 +13,8 @@ import './style.less';
 /**
  * 商圈地图
  */
-const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
+const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId, bucket }) => {
+  const { cityData } = useContext(ChartContext);
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
   // 商户详情
@@ -27,6 +29,22 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     if (mapSourceData.lat) fetchChartMapHubMre();
     return () => dispatch({ type: 'chartBlock/save', payload: { mapHubDetail: [] } });
   }, [mapSourceData, mapLengend]);
+
+  // 监听图例 经纬度变化请求具体商店点
+  useEffect(() => {
+    if (cityData && mapInstance) {
+      const { cityCode, districtCode, provinceCode } = cityData;
+      let code = '330000';
+      if (districtCode) {
+        code = districtCode;
+      } else if (cityCode) {
+        code = cityCode + '00';
+      } else if (provinceCode) {
+        code = provinceCode + '0000';
+      }
+      mapInstance.setCity(code);
+    }
+  }, [cityData]);
 
   // 获取区域商圈
   const fetchChartMapHub = (payload = {}) => {
@@ -113,13 +131,13 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     // 地图初始化事件
     created(map) {
       const {
-        query: { bucket = '' },
+        query: { bucket: buckets = '' },
       } = history.location;
       // 保存地图实例
       setMapInstance(map);
       // url传递城市的情况下 地图跳转到指定城市界面
       if (map) {
-        map.setCity(`${bucket || 33}0000`);
+        map.setCity(`${buckets || 33}0000`);
       }
       // 获取地图四角经纬度
       getMapBounds(map.getBounds(), 'created');
