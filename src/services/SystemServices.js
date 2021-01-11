@@ -84,6 +84,21 @@ export function fetchTradeSpecialList(params) {
   });
 }
 
+// get 行业设置 - 推广费 - 获取显示
+export function fetchPromotionMoneyGet(params) {
+  return request('/admin/systemIndustry/getIndustryPromotionFee', {
+    params,
+  });
+}
+
+// post 行业设置 - 推广费 - 设置
+export function fetchPromotionMoneySet(data) {
+  return request('/admin/systemIndustry/setIndustryPromotionFee', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 行业设置 - 基础设施 - 新增修改删除
 export function fetchTradeBaseSet(data) {
   return request('/admin/systemIndustry/updateInfrastructure', {
