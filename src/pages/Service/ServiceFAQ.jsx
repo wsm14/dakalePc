@@ -1,63 +1,88 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { NEWS_STATUS } from '@/common/constant';
 import { Card, Result } from 'antd';
-import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
+import { authCheck } from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import NewsSet from './components/News/NewsSet';
+
+const tabList = [
+  {
+    key: 'user',
+    auth: 'userOs',
+    tab: '用户端',
+  },
+  {
+    key: 'merchant',
+    auth: 'mreOs',
+    tab: '商家端',
+  },
+];
 
 const ServiceFAQ = (props) => {
-  const { serviceNews, loading, dispatch } = props;
+  const { serviceFAQ, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [tabkey, setTabKey] = useState(false);
+  const check = authCheck(tabList);
+
+  useEffect(() => {
+    setTabKey(check ? check[0]['key'] : false);
+  }, []);
+
+  useEffect(() => {
+    console.log(tabkey);
+    tabkey && childRef.current.fetchGetData();
+  }, [tabkey]);
 
   // table 表头
   const getColumns = [
     {
-      title: '封面图',
+      title: '序号',
       fixed: 'left',
-      dataIndex: 'coverImg',
-      render: (val) => <PopImgShow url={val} />,
+      dataIndex: 'image',
+      render: (val, row, i) => i + 1,
     },
     {
-      title: '标题',
-      dataIndex: 'title',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      title: 'FAQ标题',
+      dataIndex: 'questionCategoryName',
     },
     {
-      title: '内容简介',
-      dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
-    },
-    {
-      title: '发布人',
-      dataIndex: 'publisherName',
-    },
-    {
-      title: '发布时间',
+      title: '发布日期',
       dataIndex: 'createTime',
     },
     {
-      title: '状态',
+      title: '发布人',
+      dataIndex: 'createName',
+    },
+    {
+      title: '修改日期',
+      dataIndex: 'updateTime',
+    },
+    {
+      title: '修改人',
+      dataIndex: 'updateName',
+    },
+    {
+      title: '有用/没用',
       dataIndex: 'status',
       render: (val) => NEWS_STATUS[val],
     },
     {
+      title: '排序',
+      dataIndex: 'sort',
+    },
+    {
+      title: '猜你想问',
+      dataIndex: 'status',
+    },
+    {
       title: '操作',
-      dataIndex: 'newsIdString',
       fixed: 'right',
       align: 'right',
+      dataIndex: 'questionCategoryId',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
@@ -87,47 +112,34 @@ const ServiceFAQ = (props) => {
     });
   };
 
-  const tabList = [
-    {
-      key: 'user',
-      auth: 'user',
-      tab: '用户端',
-      content: (
-        <AuthConsumer
-          auth="user"
-          noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
-        >
-          <DataTableBlock
-            CardNone={false}
-            cRef={childRef}
-            loading={loading}
-            columns={getColumns}
-            rowKey={(record) => `${record.newsIdString}`}
-            dispatchType="serviceNews/fetchGetList"
-            {...serviceNews}
-          ></DataTableBlock>
-        </AuthConsumer>
-      ),
-    },
-    {
-      key: 'mre',
-      auth: 'mre',
-      tab: '商家端',
-      content: (
-        <AuthConsumer
-          auth="mre"
-          noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
-        >
-          <NewsSet></NewsSet>
-        </AuthConsumer>
-      ),
-    },
-  ];
-
-  return <Card tabList={authCheck(tabList)}>{authCheck(tabList)[0]['content']}</Card>;
+  return (
+    <Card tabList={check} onTabChange={(key) => setTabKey(key)}>
+      {check ? (
+        <DataTableBlock
+          NoSearch
+          CardNone={false}
+          cRef={childRef}
+          loading={loading}
+          columns={getColumns}
+          params={{ userType: tabkey }}
+          rowKey={(record) => `${record.questionCategoryIdString}`}
+          dispatchType="serviceFAQ/fetchGetList"
+          childrenColumnName="commonQuestionList"
+          rowSelection={{
+            fixed: true,
+            // selectedRowKeys,
+            // onChange: (val) => setSelectedRowKeys(val),
+          }}
+          {...serviceFAQ}
+        ></DataTableBlock>
+      ) : (
+        <Result status="403" title="403" subTitle="暂无权限"></Result>
+      )}
+    </Card>
+  );
 };
 
-export default connect(({ serviceNews, loading }) => ({
-  serviceNews,
-  loading: loading.models.serviceNews,
+export default connect(({ serviceFAQ, loading }) => ({
+  serviceFAQ,
+  loading: loading.models.serviceFAQ,
 }))(ServiceFAQ);
