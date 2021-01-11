@@ -11,6 +11,25 @@ const GoodsDrawer = (props) => {
   const { type = '', detail = [] } = visible;
   const [form] = Form.useForm();
 
+  // 检查文件上传格式
+  const checkFileData = (fileData) => {
+    let aimg = [];
+    switch (typeof fileData) {
+      case 'undefined':
+        break;
+      case 'object':
+        aimg = fileData.fileList.map((item) => {
+          if (item.url) return item.url;
+          return item.originFileObj;
+        });
+        break;
+      default:
+        aimg = [fileData];
+        break;
+    }
+    return aimg;
+  };
+
   // 确认提交
   const handleUpAudit = () => {
     const goodsType = form.getFieldValue('goodsType');
@@ -22,11 +41,17 @@ const GoodsDrawer = (props) => {
       return;
     }
     form.validateFields().then((values) => {
-      const { allImgs = '' } = values;
-      aliOssUpload(allImgs).then((res) => {
+      const { allImgs, goodsDescImg } = values;
+      const aimg = checkFileData(allImgs);
+      const gimg = checkFileData(goodsDescImg);
+      aliOssUpload([...aimg, ...gimg]).then((res) => {
         dispatch({
           type: 'goodsManage/fetchGoodsAdd',
-          payload: { ...values, allImgs: res.toString() },
+          payload: {
+            ...values,
+            allImgs: res.slice(0, aimg.length).toString(),
+            goodsDescImg: res.slice(aimg.length).toString(),
+          },
           callback: () => {
             onClose();
             childRef.current.fetchGetData();
@@ -38,7 +63,7 @@ const GoodsDrawer = (props) => {
 
   const modalProps = {
     title: `${type == 'showDetail' ? '商品详情' : '新增商品'}`,
-    width: 600,
+    width: 620,
     visible: type == 'showDetail' || type == 'addGoods',
     maskClosable: true,
     destroyOnClose: true,

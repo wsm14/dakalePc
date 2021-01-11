@@ -153,7 +153,7 @@ const GoodsManageComponent = (props) => {
                 type: 'own',
                 title: '库存',
                 auth: 'stockSet',
-                visible: status != 0 && checkStatus != 1,
+                visible: status == 1,
                 click: () => fetchStockSet(record),
               },
               {

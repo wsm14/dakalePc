@@ -51,19 +51,6 @@ const GoodsDetail = (props) => {
     {
       label: detail.goodsType == 'single' ? '单品介绍' : '套餐介绍',
       name: 'goodsDesc',
-      render: (val, record) => (
-        <div>
-          {val}
-          <div>
-            {record.goodsDescImg &&
-              record.goodsDescImg
-                .split(',')
-                .map((item) => (
-                  <img key={item} src={item} style={{ width: '100%', marginTop: 10 }}></img>
-                ))}
-          </div>
-        </div>
-      ),
     },
     {
       label: '介绍图片',
