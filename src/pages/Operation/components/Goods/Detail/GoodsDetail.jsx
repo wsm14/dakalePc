@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert } from 'antd';
+import { GOODS_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import GoodsSetTable from '../Form/components/GoodsSetTable';
 
@@ -61,9 +62,11 @@ const GoodsDetail = (props) => {
 
   return (
     <>
-      {status == 1 && (
-        <Alert message="上架中" type="success" style={{ textAlign: 'center', marginBottom: 5 }} />
-      )}
+      <Alert
+        message={GOODS_TYPE[status]}
+        type={status == 1 ? 'success' : 'warning'}
+        style={{ textAlign: 'center', marginBottom: 5 }}
+      />
       <DescriptionsCondition formItems={formItems} initialValues={detail}></DescriptionsCondition>
     </>
   );

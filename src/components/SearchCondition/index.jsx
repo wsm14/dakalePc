@@ -107,6 +107,7 @@ const SearchCondition = (props) => {
             optionFilterProp="children"
             loading={item.loading}
             style={{ width: '100%' }}
+            disabled={item.disabled}
             onSearch={item.onSearch}
             onChange={item.onChange}
             onFocus={item.onFocus}
@@ -115,6 +116,7 @@ const SearchCondition = (props) => {
               item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
             placeholder={item.placeholder || `请选择`}
+            {...(item.handle && item.handle(form))}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
             {selectList.map((data, j) => {
