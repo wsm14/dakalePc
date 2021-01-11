@@ -1,17 +1,20 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const BusinessBankSet = (props) => {
-  const { dispatch, childRef, tradeList } = props;
+  const { dispatch, childRef, tradeList, initialValues = null } = props;
 
   // 新增
-  const fetchMerBrandAdd = (values) => {
+  const fetchMerBrandSet = (values) => {
     const { brandLogo, categoryId } = values;
-
     aliOssUpload(brandLogo).then((res) => {
+      // initialValues.configBrandIdString 存在为修改 false 为新增
       dispatch({
-        type: 'businessBrand/fetchMerBrandAdd',
+        type: { false: 'businessBrand/fetchMerBrandAdd', true: 'businessBrand/fetchMerBrandEdit' }[
+          !!initialValues.configBrandIdString
+        ],
         payload: {
           ...values,
+          configBrandIdString: initialValues.configBrandIdString,
           categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
           brandLogo: res.toString(),
         },
@@ -31,10 +34,13 @@ const BusinessBankSet = (props) => {
         type: 'upload',
         name: 'brandLogo',
         maxFile: 1,
+        isCut: true,
+        imgRatio: 50 / 50,
       },
       {
         label: '品牌名',
         name: 'brandName',
+        maxLength: 20,
       },
       {
         label: '品牌类型',
@@ -43,7 +49,7 @@ const BusinessBankSet = (props) => {
         select: tradeList.map((item) => ({ name: item.categoryName, value: item.id })),
       },
     ],
-    onFinish: fetchMerBrandAdd,
+    onFinish: fetchMerBrandSet,
     ...props,
   };
 };
