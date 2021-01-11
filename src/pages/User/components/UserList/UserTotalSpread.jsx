@@ -3,12 +3,7 @@ import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
 import { Pie } from '@/components/Charts';
 
-const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
-  // const dataCity = totalData.city.map((item) => ({
-  //   type: item.cityName == 'unknown' ? '未知' : item.cityName,
-  //   value: item.count,
-  // }));
-
+const UserTotalSpread = ({ dispatch, cityData, loading, totalData, totalInfo }) => {
   const dataSex = [
     {
       type: '男',
@@ -37,19 +32,12 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
   useEffect(() => {
     fetchUserTotalSperad();
     fetchUserInfoTotal();
-  }, []);
+  }, [cityData]);
 
   const styles = { padding: 10, height: 276 };
 
   return (
     <Row gutter={[16, 16]} align="middle">
-      {/* <Col span={8}>
-        <Spin spinning={!!loading}>
-          <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-            <Pie data={dataCity} title="城市" height={276} />
-          </Card>
-        </Spin>
-      </Col> */}
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
@@ -67,12 +55,7 @@ const UserTotalSpread = ({ dispatch, loading, totalData, totalInfo }) => {
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
-            <Pie
-              data={totalInfo.tag || []}
-              angleField="count"
-              colorField="tag"
-              flipPage
-            />
+            <Pie data={totalInfo.tag || []} angleField="count" colorField="tag" flipPage />
           </Card>
         </Spin>
       </Col>
