@@ -70,6 +70,7 @@ export const ROLE_BUTTON_TYPE = {
   tradeAdd: '新增类目',
   tradeSecondAdd: '添加子类目',
   sortFAQ: '分类管理',
+  setLike: '设置猜你想问',
 };
 
 // 数据权限选项

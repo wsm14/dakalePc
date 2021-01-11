@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { NEWS_STATUS } from '@/common/constant';
-import { Card, Result } from 'antd';
-import { authCheck } from '@/layouts/AuthConsumer';
+import { Card, Result, Switch } from 'antd';
+import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -31,7 +31,6 @@ const ServiceFAQ = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(tabkey);
     tabkey && childRef.current.fetchGetData();
   }, [tabkey]);
 
@@ -65,8 +64,8 @@ const ServiceFAQ = (props) => {
     },
     {
       title: '有用/没用',
-      dataIndex: 'status',
-      render: (val) => NEWS_STATUS[val],
+      dataIndex: 'noUse',
+      render: (val, row) => row.questionIdString && `${row.beUse} / ${val}`,
     },
     {
       title: '排序',
@@ -74,29 +73,37 @@ const ServiceFAQ = (props) => {
     },
     {
       title: '猜你想问',
-      dataIndex: 'status',
+      dataIndex: 'likeStatus',
+      render: (val, row) =>
+        row.questionIdString && (
+          <AuthConsumer auth="set" noAuth={val === '0' ? '未设置' : '已设置'}>
+            <a>{val === '0' ? '设置' : '取消设置'}</a>
+          </AuthConsumer>
+        ),
     },
     {
       title: '操作',
       fixed: 'right',
       align: 'right',
       dataIndex: 'questionCategoryId',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'down',
-              visible: record.status === '1',
-              click: () => fetchNewsStatus({ newsId: val, status: 0 }),
-            },
-            // {
-            //   type: 'own',
-            //   pop: true,
-            //   visible: record.status === '1',
-            //   title: '上架',
-            // },
-          ]}
-        />
+      render: (val, row) => (
+        <>
+          <Switch
+            checkedChildren="启"
+            unCheckedChildren="停"
+            checked={row.status === '1'}
+            onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+          />
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'edit',
+                visible: row.status === '1',
+                click: () => fetchNewsStatus({ newsId: val, status: 0 }),
+              },
+            ]}
+          />
+        </>
       ),
     },
   ];
@@ -120,19 +127,16 @@ const ServiceFAQ = (props) => {
           loading={loading}
           columns={getColumns}
           params={{ userType: tabkey }}
-          rowKey={(record) =>
-            `${record.questionCategoryIdString || record.questionIdString}`
-          }
+          rowKey={(record) => `${record.questionCategoryIdString || record.questionIdString}`}
           dispatchType="serviceFAQ/fetchGetList"
           childrenColumnName="commonQuestionList"
           rowSelection={{
-            fixed: true,
-            renderCell: (checked, record) => {
-              if (record.commonQuestionList) return false;
-              else return true;
+            renderCell: (checked, record, i, originNode) => {
+              if (record.questionCategoryIdString) return false;
+              else return originNode;
             },
             // selectedRowKeys,
-            // onChange: (val) => setSelectedRowKeys(val),
+            onChange: (val) => console.log(val),
           }}
           {...serviceFAQ}
         ></DataTableBlock>

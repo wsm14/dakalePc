@@ -333,7 +333,7 @@ export default [
             path: '/service/faq',
             name: '常见问题',
             component: './Service/ServiceFAQ',
-            buttons: ['userOs', 'mreOs', 'sortFAQ', 'sort', 'save', 'del', 'edit', 'set', 'status'],
+            buttons: ['userOs', 'mreOs', 'sortFAQ', 'sort', 'save', 'del', 'edit', 'setLike', 'status'],
           },
         ],
       },
