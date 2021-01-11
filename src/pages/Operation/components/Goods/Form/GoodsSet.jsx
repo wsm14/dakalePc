@@ -123,6 +123,7 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
       type: 'upload',
       name: 'goodsDescImg',
       maxFile: 5,
+      rules: [{ required: false }],
     },
     {
       label: '上架状态',

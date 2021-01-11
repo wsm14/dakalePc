@@ -40,7 +40,7 @@ const GoodsDetail = (props) => {
     {
       label: '售价',
       name: 'price',
-      render: (val, record) => `￥${val}`,
+      render: (val, record) => `￥${Number(val).toFixed(2)}`,
     },
     {
       label: '套餐内单品',
