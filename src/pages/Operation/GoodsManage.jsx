@@ -121,6 +121,7 @@ const GoodsManageComponent = (props) => {
       title: '库存',
       align: 'right',
       dataIndex: 'stock',
+      render: (val) => <span className={val <= 50 ? styles.goods_rowColor : ''}>{val}</span>,
     },
     {
       title: '上架状态',
@@ -264,9 +265,6 @@ const GoodsManageComponent = (props) => {
     });
   };
 
-  // 每行颜色
-  const rowClassName = (record) => (record.stock <= 50 ? styles.goods_rowColor : '');
-
   return (
     <>
       <DataTableBlock
@@ -283,7 +281,6 @@ const GoodsManageComponent = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.goodsIdString}`}
-        rowClassName={rowClassName}
         dispatchType="goodsManage/fetchGetList"
         {...goodsManage}
       ></DataTableBlock>
