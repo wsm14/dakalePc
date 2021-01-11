@@ -151,6 +151,19 @@ export default [
         ],
       },
       {
+        name: '财务管理',
+        icon: 'finance',
+        path: '/finance',
+        routes: [
+          {
+            path: '/finance/subsidy',
+            name: '补贴管理',
+            component: './Finance/SubsidyManage',
+            buttons: ['exportList', 'save', 'info', 'del', 'end'],
+          },
+        ],
+      },
+      {
         name: '店铺运营',
         path: '/operation',
         routes: [
