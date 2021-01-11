@@ -3,8 +3,6 @@ import { connect } from 'umi';
 import { NEWS_STATUS } from '@/common/constant';
 import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
-import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 
@@ -122,11 +120,17 @@ const ServiceFAQ = (props) => {
           loading={loading}
           columns={getColumns}
           params={{ userType: tabkey }}
-          rowKey={(record) => `${record.questionCategoryIdString}`}
+          rowKey={(record) =>
+            `${record.questionCategoryIdString || record.questionIdString}`
+          }
           dispatchType="serviceFAQ/fetchGetList"
           childrenColumnName="commonQuestionList"
           rowSelection={{
             fixed: true,
+            renderCell: (checked, record) => {
+              if (record.commonQuestionList) return false;
+              else return true;
+            },
             // selectedRowKeys,
             // onChange: (val) => setSelectedRowKeys(val),
           }}
