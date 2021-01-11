@@ -108,6 +108,9 @@ export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 // 新闻动态状态
 export const NEWS_STATUS = ['下架', '上架'];
 
+// 拼图广告状态
+export const PUZZLE_AD_STATUS = ['下架', '上架'];
+
 // 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分享完成'];
 
@@ -155,6 +158,12 @@ export const REFUND_ORDERS_STATUS = [
   '已确认',
   false,
   '退款中',
+];
+
+// 分享类型
+export const PUZZLE_AD_TYPE = [
+  { value: 'video', name: '视频' },
+  { value: 'image', name: '图片' },
 ];
 
 // 分享类型

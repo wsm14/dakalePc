@@ -255,3 +255,22 @@ export function fetchSearchSet(data) {
 }
 
 // 热门搜索 end
+
+// 拼图广告
+
+// get 拼图广告 - 列表
+export function fetchPuzzleAdList(params) {
+  return request('/admin/puzzleAdsManagement/listPuzzleAdsManagement', {
+    params,
+  });
+}
+
+// post 拼图广告 - 添加修改
+export function fetchPuzzleAdSet(data) {
+  return request('/admin/puzzleAdsManagement/saveOrUpdatePuzzleAds', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 拼图广告 end
