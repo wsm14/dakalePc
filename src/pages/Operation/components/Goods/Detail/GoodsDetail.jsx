@@ -65,6 +65,11 @@ const GoodsDetail = (props) => {
         </div>
       ),
     },
+    {
+      label: '介绍图片',
+      type: 'upload',
+      name: 'goodsDescImg',
+    },
   ];
 
   return (

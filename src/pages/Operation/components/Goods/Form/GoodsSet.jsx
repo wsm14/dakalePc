@@ -119,6 +119,12 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
       rules: [{ required: false }],
     },
     {
+      label: '介绍图片',
+      type: 'upload',
+      name: 'goodsDescImg',
+      maxFile: 5,
+    },
+    {
       label: '上架状态',
       name: 'onSellFlag',
       type: 'radio',
