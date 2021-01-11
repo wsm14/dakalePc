@@ -131,13 +131,13 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     // 地图初始化事件
     created(map) {
       const {
-        query: { bucket: buckets = '' },
+        query: { bucket = '' },
       } = history.location;
       // 保存地图实例
       setMapInstance(map);
       // url传递城市的情况下 地图跳转到指定城市界面
       if (map) {
-        map.setCity(`${buckets || 33}0000`);
+        map.setCity(`${bucket || 33}0000`);
       }
       // 获取地图四角经纬度
       getMapBounds(map.getBounds(), 'created');
