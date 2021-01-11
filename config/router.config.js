@@ -381,6 +381,12 @@ export default [
             buttons: ['save', 'status', 'edit', 'del'],
           },
           {
+            path: '/system/city',
+            name: '城市管理',
+            component: './System/ManageCity',
+            buttons: ['save', 'edit', 'status', 'del'],
+          },
+          {
             path: '/system/bankSet',
             name: '支行管理',
             component: './System/ManageBank',

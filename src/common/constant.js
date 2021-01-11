@@ -57,6 +57,9 @@ export const ACCOUNT_STATUS = ['禁用', '启用'];
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
 
+// 城市管理 -  状态
+export const CITY_STATUS = ['未开通', '已开通'];
+
 // 商户 营业状态
 export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
 
