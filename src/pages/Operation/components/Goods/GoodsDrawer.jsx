@@ -41,7 +41,7 @@ const GoodsDrawer = (props) => {
       return;
     }
     form.validateFields().then((values) => {
-      const { allImgs, goodsDescImg } = values;
+      const { allImgs, goodsDescImg, price } = values;
       const aimg = checkFileData(allImgs);
       const gimg = checkFileData(goodsDescImg);
       aliOssUpload([...aimg, ...gimg]).then((res) => {
@@ -49,6 +49,7 @@ const GoodsDrawer = (props) => {
           type: 'goodsManage/fetchGoodsAdd',
           payload: {
             ...values,
+            price: price.toFixed(2),
             allImgs: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
           },

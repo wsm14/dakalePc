@@ -106,6 +106,7 @@ const GoodsManageComponent = (props) => {
       title: '售价',
       align: 'right',
       dataIndex: 'price',
+      render: (val) => Number(val).toFixed(2),
     },
     {
       title: '所属店铺',
@@ -163,7 +164,7 @@ const GoodsManageComponent = (props) => {
               },
               {
                 type: 'down',
-                visible: status == 1 && checkStatus == 2,
+                visible: status == 1 && (checkStatus == 2 || checkStatus == 0),
                 click: () => fetchAuditRefuse(record),
               },
               {
