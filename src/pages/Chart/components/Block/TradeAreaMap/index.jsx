@@ -117,12 +117,12 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       } = history.location;
       // 保存地图实例
       setMapInstance(map);
+      // url传递城市的情况下 地图跳转到指定城市界面
+      if (map) {
+        map.setCity(`${bucket || 33}0000`);
+      }
       // 获取地图四角经纬度
       getMapBounds(map.getBounds(), 'created');
-      // url传递城市的情况下 地图跳转到指定城市界面
-      if (bucket && map) {
-        if (bucket !== '33') map.setCity(`${bucket}0000`);
-      }
     },
     // 拖拽 移动变化地图事件
     moveend() {
@@ -131,6 +131,8 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       const zoom = mapInstance.getZoom();
       if (zoom >= 14) {
         getMapBounds(mapInstance.getBounds(), 'detail');
+      } else {
+        getMapBounds(mapInstance.getBounds(), 'created');
       }
     },
   };
@@ -168,7 +170,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
             <Circle
               key={item.businessHubName}
               center={[item.lnt, item.lat]} // 坐标
-              radius={item.radius} // 半径
+              radius={Number(item.radius)} // 半径
               style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }} // 圈样式
               events={{
                 created() {
