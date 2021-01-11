@@ -58,6 +58,13 @@ export function fetchGetHubName(params) {
   });
 }
 
+// get 店铺标签
+export function fetchGetMreTag(params) {
+  return request('/common/configMerchantTag/listConfigMerchantTag', {
+    params,
+  });
+}
+
 // get 行业类目 - 勾选列表
 export function fetchGetTradeSelect(params) {
   return request('/common/category/listSpecialGoodsCategoryAdmin', {
