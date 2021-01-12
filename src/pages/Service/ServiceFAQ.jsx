@@ -22,13 +22,17 @@ const tabList = [
 
 const ServiceFAQ = (props) => {
   const { serviceFAQ, loading, dispatch } = props;
+  const { sortList } = serviceFAQ;
 
   const childRef = useRef();
   const check = authCheck(tabList);
   const [tabkey, setTabKey] = useState(false);
   const [delKey, setDelKey] = useState([]);
 
+  console.log(sortList);
+
   useEffect(() => {
+    fetchFAQSortList();
     setTabKey(check ? check[0]['key'] : false);
   }, []);
 
@@ -42,7 +46,8 @@ const ServiceFAQ = (props) => {
       label: '问题分类',
       name: 'username',
       type: 'select',
-      select: { list: FAQ_LIKE_STATUS },
+      loading: loading.effects['serviceFAQ/fetchFAQSortList'],
+      select: { list: sortList.list },
     },
     {
       label: '关键字',
@@ -160,6 +165,14 @@ const ServiceFAQ = (props) => {
     });
   };
 
+  // 问题分类列表
+  const fetchFAQSortList = () => {
+    dispatch({
+      type: 'serviceFAQ/fetchFAQSortList',
+      payload: { page: 1, limit: 99 },
+    });
+  };
+
   return (
     <Card
       tabList={check}
@@ -195,7 +208,7 @@ const ServiceFAQ = (props) => {
           NoSearch
           CardNone={false}
           cRef={childRef}
-          loading={loading}
+          loading={loading.models.serviceFAQ}
           searchItems={searchItems}
           columns={getColumns}
           params={{ userType: tabkey }}
@@ -210,7 +223,7 @@ const ServiceFAQ = (props) => {
             selectedRowKeys: delKey,
             onChange: (val) => setDelKey(val),
           }}
-          {...serviceFAQ}
+          {...serviceFAQ.list}
         ></DataTableBlock>
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>
@@ -221,5 +234,5 @@ const ServiceFAQ = (props) => {
 
 export default connect(({ serviceFAQ, loading }) => ({
   serviceFAQ,
-  loading: loading.models.serviceFAQ,
+  loading,
 }))(ServiceFAQ);

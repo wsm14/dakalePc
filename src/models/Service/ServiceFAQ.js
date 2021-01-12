@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchFAQList,
+  fetchFAQSortList,
   fetchFAQDel,
   fetchNewsEdit,
   fetchNewsStatus,
@@ -10,8 +11,8 @@ export default {
   namespace: 'serviceFAQ',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    sortList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -31,8 +32,18 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.commonQuestionCategoryList,
-          total: content.total,
+          list: { list: content.commonQuestionCategoryList, total: content.total },
+        },
+      });
+    },
+    *fetchFAQSortList({ payload }, { call, put }) {
+      const response = yield call(fetchFAQSortList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          sortList: { list: content.recordList, total: content.total },
         },
       });
     },
