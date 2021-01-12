@@ -140,7 +140,7 @@ const GoodsManageComponent = (props) => {
       title: '商户确认状态',
       align: 'center',
       dataIndex: 'checkStatus',
-      render: (val) => MRE_SURE_TYPE[val],
+      render: (val) => (!val ? '-' : MRE_SURE_TYPE[val]),
     },
     {
       title: '操作',
