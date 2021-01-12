@@ -44,10 +44,11 @@ const ServiceFAQ = (props) => {
   const searchItems = [
     {
       label: '问题分类',
-      name: 'username',
+      name: 'questionCategoryId',
       type: 'select',
       loading: loading.effects['serviceFAQ/fetchFAQSortList'],
       select: { list: sortList.list },
+      fieldNames: { labelKey: 'questionCategoryName', valueKey: 'questionCategoryIdString' },
     },
     {
       label: '关键字',
@@ -111,39 +112,48 @@ const ServiceFAQ = (props) => {
       dataIndex: 'likeStatus',
       fixed: 'right',
       align: 'right',
-      render: (val, row) =>
-        row.questionIdString && (
-          <AuthConsumer auth="setLike" noAuth={FAQ_LIKE_STATUS[val]}>
-            <a>{val === '0' ? '设置' : '取消设置'}</a>
-          </AuthConsumer>
-        ),
+      render: (val, row) => {
+        const { questionIdString: id } = row;
+        return (
+          row.questionIdString && (
+            <AuthConsumer auth="setLike" noAuth={FAQ_LIKE_STATUS[val]}>
+              <a onClick={() => fetchFAQEdit({ id, likeStatus: 1 ^ Number(val) })}>
+                {val === '0' ? '设置' : '取消设置'}
+              </a>
+            </AuthConsumer>
+          )
+        );
+      },
     },
     {
       title: '操作',
       fixed: 'right',
       align: 'right',
       dataIndex: 'questionCategoryId',
-      render: (val, row) => (
-        <>
-          <AuthConsumer auth="status">
-            <Switch
-              checkedChildren="启"
-              unCheckedChildren="停"
-              checked={row.status === '1'}
-              onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+      render: (val, row) => {
+        const { questionIdString: id, status } = row;
+        return (
+          <>
+            <AuthConsumer auth="status">
+              <Switch
+                checkedChildren="启"
+                unCheckedChildren="停"
+                checked={row.status === '1'}
+                onClick={() => fetchFAQEdit({ id, status: 1 ^ Number(status) })}
+              />
+            </AuthConsumer>
+            <HandleSetTable
+              formItems={[
+                {
+                  type: 'edit',
+                  visible: !!val,
+                  click: () => fetchNewsStatus({ newsId: val, status: 0 }),
+                },
+              ]}
             />
-          </AuthConsumer>
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                visible: !!val,
-                click: () => fetchNewsStatus({ newsId: val, status: 0 }),
-              },
-            ]}
-          />
-        </>
-      ),
+          </>
+        );
+      },
     },
   ];
 
@@ -170,6 +180,15 @@ const ServiceFAQ = (props) => {
     dispatch({
       type: 'serviceFAQ/fetchFAQSortList',
       payload: { page: 1, limit: 99 },
+    });
+  };
+
+  // 问题编辑
+  const fetchFAQEdit = (payload) => {
+    dispatch({
+      type: 'serviceFAQ/fetchFAQEdit',
+      payload,
+      callback: childRef.current.fetchGetData,
     });
   };
 

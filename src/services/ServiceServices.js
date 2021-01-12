@@ -77,9 +77,9 @@ export function fetchFAQDel(data) {
   });
 }
 
-// post FAQ - 新增
+// post FAQ - 编辑问题
 export function fetchFAQEdit(data) {
-  return request('/admin/news/saveNews', {
+  return request('/admin/questionManagement/updateCommonQuestion', {
     method: 'POST',
     data,
   });

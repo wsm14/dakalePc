@@ -3,7 +3,7 @@ import {
   fetchFAQList,
   fetchFAQSortList,
   fetchFAQDel,
-  fetchNewsEdit,
+  fetchFAQEdit,
   fetchNewsStatus,
 } from '@/services/ServiceServices';
 
@@ -56,12 +56,12 @@ export default {
       });
       callback();
     },
-    *fetchNewsEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchNewsEdit, payload);
+    *fetchFAQEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新闻动态编辑成功',
+        description: '问题编辑成功',
       });
       callback();
     },
