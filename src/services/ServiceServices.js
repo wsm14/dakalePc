@@ -69,6 +69,14 @@ export async function fetchFAQSortList(params) {
   });
 }
 
+// post FAQ - 删除问题
+export function fetchFAQDel(data) {
+  return request('/admin/questionManagement/batchDeleteCommonQuestion', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post FAQ - 新增
 export function fetchFAQEdit(data) {
   return request('/admin/news/saveNews', {

@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { FAQ_LIKE_STATUS } from '@/common/constant';
-import { Card, Result, Switch, Button, Space } from 'antd';
+import { Card, Result, Switch, Button, Space, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import { checkSorterData } from '@/utils/utils';
 
 const tabList = [
   {
@@ -69,32 +70,42 @@ const ServiceFAQ = (props) => {
     },
     {
       title: '发布日期',
+      align: 'center',
       dataIndex: 'createTime',
+      sorter: (a, b) => checkSorterData(a, b, 'createTime', 'time'),
     },
     {
       title: '发布人',
+      align: 'right',
       dataIndex: 'createName',
     },
     {
       title: '修改日期',
+      align: 'center',
       dataIndex: 'updateTime',
+      sorter: (a, b) => checkSorterData(a, b, 'updateTime', 'time'),
     },
     {
       title: '修改人',
+      align: 'right',
       dataIndex: 'updateName',
     },
     {
       title: '有用/没用',
+      align: 'right',
       dataIndex: 'noUse',
       render: (val, row) => row.questionIdString && `${row.beUse} / ${val}`,
     },
     {
       title: '排序',
+      align: 'center',
       dataIndex: 'sort',
     },
     {
       title: '猜你想问',
       dataIndex: 'likeStatus',
+      fixed: 'right',
+      align: 'right',
       render: (val, row) =>
         row.questionIdString && (
           <AuthConsumer auth="setLike" noAuth={FAQ_LIKE_STATUS[val]}>
@@ -121,7 +132,7 @@ const ServiceFAQ = (props) => {
             formItems={[
               {
                 type: 'edit',
-                visible: row.status === '1',
+                visible: !!val,
                 click: () => fetchNewsStatus({ newsId: val, status: 0 }),
               },
             ]}
@@ -131,12 +142,21 @@ const ServiceFAQ = (props) => {
     },
   ];
 
-  // 下架视频
-  const fetchNewsStatus = (payload) => {
-    dispatch({
-      type: 'serviceNews/fetchNewsStatus',
-      payload,
-      callback: () => childRef.current.fetchGetData(),
+  // 删除问题
+  const fetchFAQDel = () => {
+    Modal.confirm({
+      title: '温馨提示',
+      content: '确定要删除当前问题吗？删除后数据不可找回',
+      onOk() {
+        dispatch({
+          type: 'serviceFAQ/fetchFAQDel',
+          payload: { questionIds: delKey },
+          callback: () => {
+            setDelKey([]);
+            childRef.current.fetchGetData();
+          },
+        });
+      },
     });
   };
 
@@ -158,7 +178,7 @@ const ServiceFAQ = (props) => {
             </Button>
           </AuthConsumer>
           <AuthConsumer auth="del">
-            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={() => {}}>
+            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchFAQDel}>
               批量删除
             </Button>
           </AuthConsumer>

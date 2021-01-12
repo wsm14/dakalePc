@@ -1,5 +1,10 @@
 import { notification } from 'antd';
-import { fetchFAQList, fetchNewsEdit, fetchNewsStatus } from '@/services/ServiceServices';
+import {
+  fetchFAQList,
+  fetchFAQDel,
+  fetchNewsEdit,
+  fetchNewsStatus,
+} from '@/services/ServiceServices';
 
 export default {
   namespace: 'serviceFAQ',
@@ -30,6 +35,15 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchFAQDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '删除成功',
+      });
+      callback();
     },
     *fetchNewsEdit({ payload, callback }, { call, put }) {
       const response = yield call(fetchNewsEdit, payload);
