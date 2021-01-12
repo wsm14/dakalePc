@@ -149,5 +149,5 @@ const FAQSet = (props) => {
 
 export default connect(({ serviceFAQ, loading }) => ({
   sortList: serviceFAQ.sortList.list,
-  loading: loading.models.sortList,
+  loading: loading.models.serviceFAQ,
 }))(FAQSet);
