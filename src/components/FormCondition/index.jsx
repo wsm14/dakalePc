@@ -210,7 +210,7 @@ const FormComponents = ({
             if (isCut) {
               blob.uid = value.file.uid;
               blob.name = value.file.name;
-              handlePreview(blob, name, onChange, imgRatio);
+              handlePreview(blob, name, onChange, 'image', imgRatio);
               return;
             }
             newFileList.map((fi) => {

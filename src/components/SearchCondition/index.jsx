@@ -97,9 +97,10 @@ const SearchCondition = (props) => {
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
-        const { select, allItem = true } = item;
+        const { select, allItem = true, fieldNames = {} } = item;
         initialValue = select.defaultValue || '';
         const selectList = Array.isArray(select) ? select : select.list;
+        const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
         component = (
           <Select
             allowClear
@@ -122,12 +123,12 @@ const SearchCondition = (props) => {
             {selectList.map((data, j) => {
               if (data) {
                 // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.value ? data.name : data;
-                const otherData = data.otherData ? data.otherData : '';
+                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
+                const nameData = data[valueKey] ? data[labelKey] : data;
+                const otherData = data[tipKey] ? data[tipKey] : '';
                 return (
-                  <Option key={j} value={value}>
-                    {name}
+                  <Option key={j} value={valueData}>
+                    {nameData}
                     {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
