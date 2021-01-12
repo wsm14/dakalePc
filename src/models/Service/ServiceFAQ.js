@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import {
   fetchFAQList,
   fetchFAQSortList,
+  fetchFAQAdd,
   fetchFAQDel,
   fetchFAQEdit,
   fetchFAQSortAdd,
@@ -48,6 +49,15 @@ export default {
           sortList: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchFAQAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '问题新增成功',
+      });
+      callback();
     },
     *fetchFAQDel({ payload, callback }, { call, put }) {
       const response = yield call(fetchFAQDel, payload);

@@ -7,6 +7,7 @@ import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import FAQSortList from './components/FAQ/List/FAQSortList';
+import FAQSet from './components/FAQ/Form/FAQSet';
 
 const tabList = [
   {
@@ -30,11 +31,15 @@ const ServiceFAQ = (props) => {
   const [tabkey, setTabKey] = useState(false);
   const [delKey, setDelKey] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [faqSet, setFaqSet] = useState(false);
 
   useEffect(() => {
-    fetchFAQSortList();
     setTabKey(check ? check[0]['key'] : false);
   }, []);
+
+  useEffect(() => {
+    if (!visible) fetchFAQSortList();
+  }, [visible]);
 
   useEffect(() => {
     tabkey && childRef.current.fetchGetData();
@@ -147,7 +152,7 @@ const ServiceFAQ = (props) => {
                 {
                   type: 'edit',
                   visible: !!val,
-                  click: () => fetchNewsStatus({ newsId: val, status: 0 }),
+                  click: () => setFaqSet({ type: 'edit', detail: row }),
                 },
               ]}
             />
@@ -212,7 +217,12 @@ const ServiceFAQ = (props) => {
             </Button>
           </AuthConsumer>
           <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => {}}>
+            <Button
+              className="dkl_green_btn"
+              onClick={() =>
+                setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } })
+              }
+            >
               新增问题
             </Button>
           </AuthConsumer>
@@ -249,6 +259,12 @@ const ServiceFAQ = (props) => {
         visible={visible}
         setVisible={() => setVisible(false)}
       ></FAQSortList>
+      <FAQSet
+        typeList={check}
+        cRef={childRef}
+        visible={faqSet}
+        onClose={() => setFaqSet(false)}
+      ></FAQSet>
     </Card>
   );
 };
