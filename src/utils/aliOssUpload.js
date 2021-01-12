@@ -117,6 +117,13 @@ const aliOssUpload = (
       return ossCallback;
     })
     .then(async (ossCallback) => {
+      if (!ossCallback) {
+        notification.info({
+          message: '温馨提示',
+          description: 'common OSS服务未启动',
+        });
+        return;
+      }
       if (ossType === 'delete') {
         ossCallback();
         return;

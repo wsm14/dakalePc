@@ -45,7 +45,7 @@ const imageCompress = (files) => {
         }
         fileblob = new Blob([u8arr], { type: mime });
         const file = new File([fileblob], files.name, { type: mime }); // 后台需要文件名 转换回来
-        resolve({ file, base64 });
+        resolve({ file, blob: fileblob, base64 });
       };
     };
   });
