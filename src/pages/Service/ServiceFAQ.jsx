@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
+import { checkSorterData } from '@/utils/utils';
 import { FAQ_LIKE_STATUS } from '@/common/constant';
 import { Card, Result, Switch, Button, Space, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import { checkSorterData } from '@/utils/utils';
+import FAQSortList from './components/FAQ/List/FAQSortList';
 
 const tabList = [
   {
@@ -28,8 +29,7 @@ const ServiceFAQ = (props) => {
   const check = authCheck(tabList);
   const [tabkey, setTabKey] = useState(false);
   const [delKey, setDelKey] = useState([]);
-
-  console.log(sortList);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     fetchFAQSortList();
@@ -202,10 +202,7 @@ const ServiceFAQ = (props) => {
       tabBarExtraContent={
         <Space>
           <AuthConsumer auth="sortFAQ">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
-            >
+            <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
               分类管理
             </Button>
           </AuthConsumer>
@@ -247,6 +244,11 @@ const ServiceFAQ = (props) => {
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>
       )}
+      <FAQSortList
+        qRef={childRef}
+        visible={visible}
+        setVisible={() => setVisible(false)}
+      ></FAQSortList>
     </Card>
   );
 };

@@ -85,9 +85,9 @@ export function fetchFAQEdit(data) {
   });
 }
 
-// post FAQ - 下架
-export function fetchFAQStatus(data) {
-  return request('/admin/news/updateNews', {
+// post FAQ - 删除问题分类
+export function fetchFAQSortDel(data) {
+  return request('/admin/questionManagement/deleteCommonQuestionCategory', {
     method: 'POST',
     data,
   });

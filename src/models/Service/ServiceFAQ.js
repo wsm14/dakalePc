@@ -4,7 +4,7 @@ import {
   fetchFAQSortList,
   fetchFAQDel,
   fetchFAQEdit,
-  fetchNewsStatus,
+  fetchFAQSortDel,
 } from '@/services/ServiceServices';
 
 export default {
@@ -52,7 +52,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '删除成功',
+        description: '问题删除成功',
       });
       callback();
     },
@@ -65,12 +65,12 @@ export default {
       });
       callback();
     },
-    *fetchNewsStatus({ payload, callback }, { call, put }) {
-      const response = yield call(fetchNewsStatus, payload);
+    *fetchFAQSortDel({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQSortDel, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新闻动态下架成功',
+        description: '问题分类删除成功',
       });
       callback();
     },
