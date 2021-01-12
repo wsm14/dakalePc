@@ -68,7 +68,7 @@ const ChartBlockComponent = ({
         {/* 入驻店铺行业分布 */}
         <TradeChart searchData={searchData}></TradeChart>
         {/* 商圈地图 */}
-        <TradeAreaMap></TradeAreaMap>
+        <TradeAreaMap bucket={bucket}></TradeAreaMap>
         {/* 店铺营收排行 & 销售排行 */}
         <RankingTotal searchData={searchData} timeData={timeData}></RankingTotal>
       </div>

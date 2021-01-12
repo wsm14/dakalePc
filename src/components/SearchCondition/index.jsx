@@ -97,9 +97,10 @@ const SearchCondition = (props) => {
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
-        const { select, allItem = true } = item;
+        const { select, allItem = true, fieldNames = {} } = item;
         initialValue = select.defaultValue || '';
         const selectList = Array.isArray(select) ? select : select.list;
+        const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
         component = (
           <Select
             allowClear
@@ -107,6 +108,7 @@ const SearchCondition = (props) => {
             optionFilterProp="children"
             loading={item.loading}
             style={{ width: '100%' }}
+            disabled={item.disabled}
             onSearch={item.onSearch}
             onChange={item.onChange}
             onFocus={item.onFocus}
@@ -115,17 +117,18 @@ const SearchCondition = (props) => {
               item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
             placeholder={item.placeholder || `请选择`}
+            {...(item.handle && item.handle(form))}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
             {selectList.map((data, j) => {
               if (data) {
                 // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.value ? data.name : data;
-                const otherData = data.otherData ? data.otherData : '';
+                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
+                const nameData = data[valueKey] ? data[labelKey] : data;
+                const otherData = data[tipKey] ? data[tipKey] : '';
                 return (
-                  <Option key={j} value={value}>
-                    {name}
+                  <Option key={j} value={valueData}>
+                    {nameData}
                     {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
@@ -203,11 +206,7 @@ const SearchCondition = (props) => {
       // 时间搜索 picker
       if (item.type === 'datePicker') {
         component = (
-          <DatePicker
-            style={{ width: '100%' }}
-            picker={item.picker || 'date'}
-            allowClear
-          />
+          <DatePicker style={{ width: '100%' }} picker={item.picker || 'date'} allowClear />
         );
       }
 

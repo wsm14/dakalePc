@@ -21,7 +21,12 @@ const GoodsHandleDetail = (props) => {
             <Steps.Step
               key={item.identifyIdStr}
               title={item.createTime}
-              description={item.content}
+              description={
+                <span style={{ whiteSpace: 'pre-line' }}>
+                  {item.content}
+                  <div>操作人：{item.operator}</div>
+                </span>
+              }
             />
           ))}
       </Steps>
