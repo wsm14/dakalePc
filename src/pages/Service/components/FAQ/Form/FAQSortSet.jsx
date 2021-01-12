@@ -1,32 +1,38 @@
+import aliOssUpload from '@/utils/aliOssUpload';
 const FAQSortSet = (props) => {
-  const { dispatch, childRef, initialValues = {} } = props;
+  const { dispatch, childRef, qRef, initialValues = {}, setType } = props;
 
   // 提交表单
   const fetchDataEdit = (payload) => {
-    const editType = !initialValues.categoryId;
-    dispatch({
-      type: { true: 'sysTradeList/fetchTradeAdd', false: 'sysTradeList/fetchTradeSet' }[editType],
-      payload: { ...initialValues, ...payload },
-      callback: () => childRef.current.fetchGetData(),
+    const { image } = payload;
+    aliOssUpload(image).then((res) => {
+      dispatch({
+        type: { add: 'serviceFAQ/fetchFAQSortAdd', edit: 'serviceFAQ/fetchFAQSortEdit' }[setType],
+        payload: { id: initialValues.questionCategoryIdString, ...payload, image: res.toString() },
+        callback: () => {
+          childRef.current.fetchGetData();
+          qRef.current.fetchGetData();
+        },
+      });
     });
   };
 
   return {
     type: 'Drawer',
     showType: 'form',
-    title: `${!initialValues.categoryId ? '新增类目' : '编辑类目'}`,
-    loadingModels: 'sysTradeList',
+    title: `${setType === 'add' ? '新增分类' : '修改分类'}`,
+    loadingModels: 'serviceFAQ',
     initialValues,
     formItems: [
       {
         label: 'FAQ分类名称',
-        name: 'parentName',
+        name: 'questionCategoryName',
         maxLength: 10,
       },
       {
         label: '分类图',
         type: 'upload',
-        name: 'goodsDescImg',
+        name: 'image',
         maxFile: 1,
         isCut: true,
         imgRatio: 108 / 108,

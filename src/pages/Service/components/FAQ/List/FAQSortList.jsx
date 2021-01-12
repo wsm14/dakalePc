@@ -44,7 +44,7 @@ const FAQSortList = (props) => {
               },
               {
                 type: 'edit',
-                click: () => fetchNewsStatus({ newsId: val, status: 0 }),
+                click: () => handleDataSet('edit', row),
               },
             ]}
           />
@@ -54,13 +54,15 @@ const FAQSortList = (props) => {
   ];
 
   //  新增 修改
-  const handleDataSet = (initialValues) => {
+  const handleDataSet = (setType = 'add', initialValues) => {
     dispatch({
       type: 'drawerForm/show',
       payload: faqSortSet({
         dispatch,
         childRef,
+        qRef,
         initialValues,
+        setType,
       }),
     });
   };
