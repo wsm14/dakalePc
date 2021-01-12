@@ -210,7 +210,7 @@ const FormComponents = ({
             if (isCut) {
               blob.uid = value.file.uid;
               blob.name = value.file.name;
-              handlePreview(blob, name, onChange, imgRatio);
+              handlePreview(blob, name, onChange, 'image', imgRatio);
               return;
             }
             newFileList.map((fi) => {
@@ -669,7 +669,7 @@ const FormComponents = ({
         destroyOnClose
         title="编辑图片"
         width={950}
-        visible={previewVisible && previewTitle.type === 'image'}
+        visible={previewVisible && previewTitle.fileType === 'image'}
         maskClosable={false}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
@@ -684,7 +684,7 @@ const FormComponents = ({
       </Modal>
       <Modal
         title={'查看'}
-        visible={previewVisible && previewTitle.type === 'video'}
+        visible={previewVisible && previewTitle.fileType === 'video'}
         onCancel={() => setPreviewVisible(false)}
         width={548}
         footer={null}
