@@ -4,6 +4,8 @@ import {
   fetchFAQSortList,
   fetchFAQDel,
   fetchFAQEdit,
+  fetchFAQSortAdd,
+  fetchFAQSortEdit,
   fetchFAQSortDel,
 } from '@/services/ServiceServices';
 
@@ -62,6 +64,24 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '问题编辑成功',
+      });
+      callback();
+    },
+    *fetchFAQSortAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQSortAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '问题分类新增成功',
+      });
+      callback();
+    },
+    *fetchFAQSortEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQSortEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '问题分类修改成功',
       });
       callback();
     },

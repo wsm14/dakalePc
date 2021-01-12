@@ -85,7 +85,23 @@ export function fetchFAQEdit(data) {
   });
 }
 
-// post FAQ - 删除问题分类
+// post FAQ - 问题分类 - 新增
+export function fetchFAQSortAdd(data) {
+  return request('/admin/questionManagement/saveCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题分类 - 修改
+export function fetchFAQSortEdit(data) {
+  return request('/admin/questionManagement/updateCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题分类 - 删除
 export function fetchFAQSortDel(data) {
   return request('/admin/questionManagement/deleteCommonQuestionCategory', {
     method: 'POST',

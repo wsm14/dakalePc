@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import faqSortSet from '../Form/FAQSortSet';
 
 const FAQSortList = (props) => {
   const { sortList, qRef, loading, visible, setVisible, dispatch } = props;
@@ -51,6 +52,18 @@ const FAQSortList = (props) => {
       },
     },
   ];
+
+  //  新增 修改
+  const handleDataSet = (initialValues) => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: faqSortSet({
+        dispatch,
+        childRef,
+        initialValues,
+      }),
+    });
+  };
 
   // 删除
   const fetchFAQSortDel = (payload) => {
