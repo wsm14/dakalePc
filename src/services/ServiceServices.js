@@ -86,6 +86,14 @@ export function fetchFAQEdit(data) {
   });
 }
 
+// post FAQ - 问题排序
+export function fetchFAQSort(data) {
+  return request('/admin/questionManagement/sortCommonQuestion', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get FAQ - 分类列表
 export async function fetchFAQSortList(params) {
   return request('/admin/questionManagement/listCommonQuestionCategoryManagement', {
@@ -112,6 +120,14 @@ export function fetchFAQSortEdit(data) {
 // post FAQ - 问题分类 - 删除
 export function fetchFAQSortDel(data) {
   return request('/admin/questionManagement/deleteCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题分类 - 排序
+export function fetchFAQClassSort(data) {
+  return request('/admin/questionManagement/sortCommonQuestionCategory', {
     method: 'POST',
     data,
   });

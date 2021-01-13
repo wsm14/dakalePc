@@ -6,6 +6,7 @@ import { Card, Result, Switch, Button, Space, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import DraggableContent, { DragHandle } from '@/components/DataTableBlock/SortBlock';
 import FAQSortList from './components/FAQ/List/FAQSortList';
 import FAQSet from './components/FAQ/Form/FAQSet';
 
@@ -24,14 +25,20 @@ const tabList = [
 
 const ServiceFAQ = (props) => {
   const { serviceFAQ, loading, dispatch } = props;
-  const { sortList } = serviceFAQ;
+  const { sortList, list: FAQList } = serviceFAQ;
 
   const childRef = useRef();
   const check = authCheck(tabList);
+  // tab分类
   const [tabkey, setTabKey] = useState(false);
+  // 多选删除项木key
   const [delKey, setDelKey] = useState([]);
+  // 分类列表
   const [visible, setVisible] = useState(false);
+  // 设置faq
   const [faqSet, setFaqSet] = useState(false);
+  // 展开行
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   useEffect(() => {
     setTabKey(check ? check[0]['key'] : false);
@@ -77,7 +84,9 @@ const ServiceFAQ = (props) => {
     },
     {
       title: 'FAQ标题',
-      dataIndex: 'questionCategoryName',
+      className: 'drag-visible',
+      dataIndex: 'questionTitle',
+      width: 250,
     },
     {
       title: '发布日期',
@@ -105,12 +114,14 @@ const ServiceFAQ = (props) => {
       title: '有用/没用',
       align: 'right',
       dataIndex: 'noUse',
-      render: (val, row) => row.questionIdString && `${row.beUse} / ${val}`,
+      render: (val, row) => !row.questionCategoryIdString && `${row.beUse} / ${val}`,
     },
     {
       title: '排序',
       align: 'center',
       dataIndex: 'sort',
+      render: (val, row) =>
+        expandedRowKeys.length && row.questionCategoryIdString ? '' : <DragHandle />,
     },
     {
       title: '猜你想问',
@@ -120,7 +131,7 @@ const ServiceFAQ = (props) => {
       render: (val, row) => {
         const { questionIdString: id } = row;
         return (
-          row.questionIdString && (
+          !row.questionCategoryIdString && (
             <AuthConsumer auth="setLike" noAuth={FAQ_LIKE_STATUS[val]}>
               <a onClick={() => fetchFAQEdit({ id, likeStatus: 1 ^ Number(val) })}>
                 {val === '0' ? '设置' : '取消设置'}
@@ -134,7 +145,7 @@ const ServiceFAQ = (props) => {
       title: '操作',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'questionCategoryId',
+      dataIndex: 'questionCategoryIdString',
       render: (val, row) => {
         const { questionIdString: id, status } = row;
         return (
@@ -144,15 +155,23 @@ const ServiceFAQ = (props) => {
                 checkedChildren="启"
                 unCheckedChildren="停"
                 checked={row.status === '1'}
-                onClick={() => fetchFAQEdit({ id, status: 1 ^ Number(status) })}
+                onClick={() =>
+                  !!val
+                    ? fetchFAQSortEdit({ id: val, status: 1 ^ Number(status) })
+                    : fetchFAQEdit({ id, status: 1 ^ Number(status) })
+                }
               />
             </AuthConsumer>
             <HandleSetTable
               formItems={[
                 {
                   type: 'edit',
-                  visible: !!val,
-                  click: () => setFaqSet({ type: 'edit', detail: row }),
+                  visible: !val,
+                  click: () =>
+                    setFaqSet({
+                      type: 'edit',
+                      detail: { ...row, questionCategoryId: row.questionCategoryIdStr },
+                    }),
                 },
               ]}
             />
@@ -188,6 +207,15 @@ const ServiceFAQ = (props) => {
     });
   };
 
+  // 问题分类编辑
+  const fetchFAQSortEdit = (payload) => {
+    dispatch({
+      type: 'serviceFAQ/fetchFAQSortEdit',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
   // 问题编辑
   const fetchFAQEdit = (payload) => {
     dispatch({
@@ -196,6 +224,39 @@ const ServiceFAQ = (props) => {
       callback: childRef.current.fetchGetData,
     });
   };
+
+  // 问题排序
+  const fetchFAQSort = (payload) => {
+    dispatch({
+      type: 'serviceFAQ/fetchFAQSort',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 顶部数据源
+  const topScoureIndex =
+    FAQList.list.findIndex((item) => item.questionCategoryIdString === expandedRowKeys[0]) + 1;
+
+  // 参与排序的源数据 父级列表 或者 子列表  expandedRowKeys.length > 0 则是对子类操作 否则是父类
+  const faqProps = expandedRowKeys.length
+    ? {
+        key: 'questionIdString',
+        sourceData: [
+          ...FAQList.list.slice(0, topScoureIndex),
+          ...FAQList.list.filter((item) => item.questionCategoryIdString === expandedRowKeys[0])[0]
+            .commonQuestionList,
+          ...FAQList.list.slice(topScoureIndex),
+        ],
+        type: 'faq',
+        sortKey: 'commonQuestionList',
+      }
+    : {
+        key: 'questionCategoryIdString',
+        sourceData: FAQList.list,
+        type: 'class',
+        sortKey: 'commonQuestionCategoryList',
+      };
 
   return (
     <Card
@@ -238,9 +299,43 @@ const ServiceFAQ = (props) => {
           searchItems={searchItems}
           columns={getColumns}
           params={{ userType: tabkey }}
-          rowKey={(record) => `${record.questionCategoryIdString || record.questionIdString}`}
+          rowKey={(record) => `${record.questionIdString}`}
           dispatchType="serviceFAQ/fetchGetList"
           childrenColumnName="commonQuestionList"
+          // 排序
+          {...DraggableContent(
+            // 参与排序的源数据 父级列表 或者 子列表  expandedRowKeys.length > 0 则是对子类操作 否则是父类
+            faqProps.sourceData,
+            {
+              key: 'questionIdString',
+              // 排序回调
+              onSortEnd: (val) => {
+                // 若是子级排序过滤父级数组
+                const newArr = !expandedRowKeys.length
+                  ? val
+                  : val.filter(
+                      (i) =>
+                        !FAQList.list.some(
+                          (faq) => faq.questionIdString == i.questionCategoryIdString,
+                        ),
+                    );
+                // 传递排序后数据
+                fetchFAQSort({
+                  type: faqProps.type,
+                  [faqProps.sortKey]: newArr.map((item, i) => ({
+                    id: item[faqProps.key],
+                    sort: i,
+                  })),
+                });
+              },
+            },
+          )}
+          // 展开一个子级
+          expandable={{
+            expandedRowKeys,
+            onExpand: (expanded, row) =>
+              setExpandedRowKeys(expanded ? [row.questionCategoryIdString] : []),
+          }}
           rowSelection={{
             renderCell: (checked, record, i, originNode) => {
               if (record.questionCategoryIdString) return false;
@@ -249,7 +344,7 @@ const ServiceFAQ = (props) => {
             selectedRowKeys: delKey,
             onChange: (val) => setDelKey(val),
           }}
-          {...serviceFAQ.list}
+          {...FAQList}
         ></DataTableBlock>
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>

@@ -8,12 +8,15 @@ const formList = () => {
       {(fields, { add, remove }) => {
         return (
           <div style={{ paddingLeft: 43 }}>
-            <div style={{ marginBottom: 10, display: 'flex' }}>
+            <div style={{ marginBottom: 20, display: 'flex' }}>
               超链接：
-              <PlusCircleOutlined onClick={() => add()} style={{ fontSize: 22, margin: '0 10px' }} />
+              <PlusCircleOutlined
+                onClick={() => add()}
+                style={{ fontSize: 22, margin: '0 10px' }}
+              />
             </div>
             {fields.map((field) => (
-              <div style={{ display: 'flex' }}>
+              <div style={{ display: 'flex' }} key={field.name}>
                 <Form.Item
                   style={{ flex: 0.5, marginRight: 5 }}
                   name={[field.name, 'linkName']}

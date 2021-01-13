@@ -4,10 +4,12 @@ import {
   fetchFAQSortList,
   fetchFAQAdd,
   fetchFAQDel,
+  fetchFAQSort,
   fetchFAQEdit,
   fetchFAQSortAdd,
   fetchFAQSortEdit,
   fetchFAQSortDel,
+  fetchFAQClassSort,
 } from '@/services/ServiceServices';
 
 export default {
@@ -35,7 +37,14 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.commonQuestionCategoryList, total: content.total },
+          list: {
+            list: content.commonQuestionCategoryList.map((item) => ({
+              questionTitle: item.questionCategoryName,
+              questionIdString: item.questionCategoryIdString,
+              ...item,
+            })),
+            total: content.total,
+          },
         },
       });
     },
@@ -74,6 +83,25 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '问题编辑成功',
+      });
+      callback();
+    },
+    *fetchFAQSort({ payload, callback }, { call, put }) {
+      const { type = 'faq' } = payload;
+      const response = yield call({ faq: fetchFAQSort, class: fetchFAQClassSort }[type], payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '排序完成',
+      });
+      callback();
+    },
+    *fetchFAQClassSort({ payload, callback }, { call, put }) {
+      const response = yield call(fetchFAQClassSort, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '排序完成',
       });
       callback();
     },
