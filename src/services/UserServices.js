@@ -21,9 +21,9 @@ export function fetchUserTotal(params) {
   });
 }
 
-// get 用户列表 - 用户统计 年龄性别
-export function fetchUserInfoTotal(params) {
-  return request('/admin/userManagement/getUserHabitStatistic', {
+// get 用户列表 - 用户统计
+export function fetchUserChartTotal(params) {
+  return request('/admin/userManagement/userListManagementStatistics', {
     params,
   });
 }
@@ -31,13 +31,6 @@ export function fetchUserInfoTotal(params) {
 // get 用户列表 - 用户新增用户统计
 export function fetchUserAddTotal(params) {
   return request('/admin/userManagement/getUserStatistic', {
-    params,
-  });
-}
-
-// get 用户列表 - 用户地区用户统计
-export function fetchUserCityTotal(params) {
-  return request('/admin/userManagement/getUserCityStatistic', {
     params,
   });
 }

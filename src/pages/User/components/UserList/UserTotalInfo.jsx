@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Statistic, Card, Row, Col } from 'antd';
@@ -7,6 +7,10 @@ import SearchCondition from '@/components/SearchCondition';
 const dDate = moment().subtract(1, 'day');
 
 const UserTotalInfo = ({ dispatch, loading, totalData, cityData }) => {
+  const [search, setSerach] = useState({
+    beginDate: dDate.format('YYYY-MM-DD'),
+    endDate: dDate.format('YYYY-MM-DD'),
+  });
   // 搜索参数
   const searchItems = [
     {
@@ -19,18 +23,16 @@ const UserTotalInfo = ({ dispatch, loading, totalData, cityData }) => {
   ];
 
   // 获取用户详情
-  const fetchUserTotal = (
-    val = { beginDate: dDate.format('YYYY-MM-DD'), endDate: dDate.format('YYYY-MM-DD') },
-  ) => {
+  const fetchUserTotal = () => {
     dispatch({
       type: 'userList/fetchUserTotal',
-      payload: val,
+      payload: { ...search, ...cityData },
     });
   };
 
   useEffect(() => {
     fetchUserTotal();
-  }, [cityData]);
+  }, [cityData, search]);
 
   const styles = { padding: 0 };
 
@@ -38,7 +40,7 @@ const UserTotalInfo = ({ dispatch, loading, totalData, cityData }) => {
     <Card style={{ marginBottom: 16 }} bordered={false}>
       <SearchCondition
         searchItems={searchItems}
-        handleSearch={fetchUserTotal}
+        handleSearch={(val) => setSerach(val)}
         initialValues={{
           beginDate: [dDate, dDate],
         }}
