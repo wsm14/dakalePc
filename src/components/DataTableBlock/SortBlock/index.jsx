@@ -26,7 +26,7 @@ const onSortEnd = ({ oldIndex, newIndex }, dataSource, callback) => {
 //  拖拽按钮
 export const DragHandle = sortableHandle(() => {
   return (
-    <MenuOutlined style={{ cursor: 'pointer', color: '#999', pointerEvents: 'bounding-box' }} />
+    <MenuOutlined style={{ cursor: 'move', color: '#999', pointerEvents: 'bounding-box' }} />
   );
 });
 
