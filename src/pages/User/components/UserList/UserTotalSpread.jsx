@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin, Empty } from 'antd';
 import { Pie } from '@/components/Charts';
 
-const UserTotalSpread = ({ dispatch, cityData, loading, totalChartData }) => {
+const UserTotalSpread = ({ loading, totalChartData }) => {
   const dataSex = [
     {
       type: '男',
@@ -14,18 +14,6 @@ const UserTotalSpread = ({ dispatch, cityData, loading, totalChartData }) => {
       value: totalChartData.userGenderFemale || 0,
     },
   ];
-
-  // 获取用户统计
-  const fetchUserChartTotal = () => {
-    dispatch({
-      type: 'userList/fetchUserChartTotal',
-      payload: cityData,
-    });
-  };
-
-  useEffect(() => {
-    fetchUserChartTotal();
-  }, [cityData]);
 
   const styles = { padding: 10, height: 276 };
   return (
@@ -61,5 +49,5 @@ const UserTotalSpread = ({ dispatch, cityData, loading, totalChartData }) => {
 
 export default connect(({ userList, loading }) => ({
   totalChartData: userList.totalChartData,
-  loading: loading.effects['userList/fetchUserTotalSperad'],
+  loading: loading.effects['userList/fetchUserChartTotal'],
 }))(UserTotalSpread);
