@@ -1,4 +1,5 @@
 import md5 from 'md5';
+import moment from 'moment';
 import { parse } from 'querystring';
 import { AUTH_SECRET_KEY } from '@/common/constant';
 
@@ -209,4 +210,17 @@ export const uuid = () => {
 
   var uuid = s.join('');
   return uuid;
+};
+
+// 参数大小排序
+export const checkSorterData = (old, next, key, type = 'number') => {
+  const oldData = old[key];
+  const nextData = next[key];
+  switch (type) {
+    case 'time':
+      return moment(oldData).diff(moment(nextData));
+
+    default:
+      return Number(oldData) - Number(nextData);
+  }
 };

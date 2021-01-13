@@ -138,6 +138,9 @@ export const SPECIAL_RECOMMEND_STATUS = ['否', '是'];
 // 商户标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
 
+// FAQ猜你想问
+export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
+
 // 订单状态
 export const ORDERS_STATUS = [
   '待支付',

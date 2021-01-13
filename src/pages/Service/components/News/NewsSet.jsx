@@ -65,7 +65,7 @@ const NewsSet = (props) => {
               onChange={(e) => setTitleNum(e.target.value.length)}
             />
           </Form.Item>
-          <EditorForm setContent={setContent}></EditorForm>
+          <EditorForm setContent={(val) => setContent(val)}></EditorForm>
         </Form>
       </Col>
       <Col lg={24} xl={8} xxl={6} md={24} sm={24} xs={24}>

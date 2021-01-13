@@ -1,5 +1,7 @@
 import request from '@/utils/request';
 
+// 问题反馈
+
 // get 问题反馈 - 列表
 export async function fetchFeedBackList(params) {
   return request('/admin/marketCustomer/listUserFeedbackMarketPlatform', {
@@ -22,6 +24,10 @@ export function fetchFeedBackPush(data) {
   });
 }
 
+// 问题反馈 end
+
+// 新闻动态
+
 // get 新闻动态 - 列表
 export async function fetchNewsList(params) {
   return request('/admin/news/listNews', {
@@ -29,7 +35,7 @@ export async function fetchNewsList(params) {
   });
 }
 
-// post 视屏列表 - 新增
+// post 新闻动态 - 新增
 export function fetchNewsEdit(data) {
   return request('/admin/news/saveNews', {
     method: 'POST',
@@ -37,10 +43,94 @@ export function fetchNewsEdit(data) {
   });
 }
 
-// post 视屏列表 - 下架
+// post 新闻动态 - 下架
 export function fetchNewsStatus(data) {
   return request('/admin/news/updateNews', {
     method: 'POST',
     data,
   });
 }
+
+// 新闻动态 end
+
+// FAQ
+
+// get FAQ - 列表
+export async function fetchFAQList(params) {
+  return request('/admin/questionManagement/listCommonQuestionManagement', {
+    params,
+  });
+}
+
+// post FAQ - 新增问题
+export function fetchFAQAdd(data) {
+  return request('/admin/questionManagement/saveCommonQuestion', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 删除问题
+export function fetchFAQDel(data) {
+  return request('/admin/questionManagement/batchDeleteCommonQuestion', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 编辑问题
+export function fetchFAQEdit(data) {
+  return request('/admin/questionManagement/updateCommonQuestion', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题排序
+export function fetchFAQSort(data) {
+  return request('/admin/questionManagement/sortCommonQuestion', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get FAQ - 分类列表
+export async function fetchFAQSortList(params) {
+  return request('/admin/questionManagement/listCommonQuestionCategoryManagement', {
+    params,
+  });
+}
+
+// post FAQ - 问题分类 - 新增
+export function fetchFAQSortAdd(data) {
+  return request('/admin/questionManagement/saveCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题分类 - 修改
+export function fetchFAQSortEdit(data) {
+  return request('/admin/questionManagement/updateCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题分类 - 删除
+export function fetchFAQSortDel(data) {
+  return request('/admin/questionManagement/deleteCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post FAQ - 问题分类 - 排序
+export function fetchFAQClassSort(data) {
+  return request('/admin/questionManagement/sortCommonQuestionCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// FAQ end
