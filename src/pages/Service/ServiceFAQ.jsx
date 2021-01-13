@@ -241,6 +241,8 @@ const ServiceFAQ = (props) => {
   // 参与排序的源数据 父级列表 或者 子列表  expandedRowKeys.length > 0 则是对子类操作 否则是父类
   const faqProps = expandedRowKeys.length
     ? {
+        // 子级排序
+        type: 'faq',
         key: 'questionIdString',
         sourceData: [
           ...FAQList.list.slice(0, topScoureIndex),
@@ -248,14 +250,14 @@ const ServiceFAQ = (props) => {
             .commonQuestionList,
           ...FAQList.list.slice(topScoureIndex),
         ],
-        type: 'faq',
-        sortKey: 'commonQuestionList',
+        sortKey: 'commonQuestionList', // 传递给后端的key
       }
     : {
-        key: 'questionCategoryIdString',
-        sourceData: FAQList.list,
+        // 父级排序
         type: 'class',
-        sortKey: 'commonQuestionCategoryList',
+        key: 'questionCategoryIdString', // 排序后获取值的key
+        sourceData: FAQList.list, // 排序数据源
+        sortKey: 'commonQuestionCategoryList', // 传递给后端的key
       };
 
   return (
