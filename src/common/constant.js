@@ -132,6 +132,9 @@ export const SPECIAL_RECOMMEND_STATUS = ['否', '是'];
 // 商户标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
 
+// 省代/区县公司状态
+export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
+
 // 订单状态
 export const ORDERS_STATUS = [
   '待支付',
