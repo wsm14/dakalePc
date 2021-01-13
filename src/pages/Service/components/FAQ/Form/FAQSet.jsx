@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Drawer, Button, Space, Form, Skeleton } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import UrlList from './urlList';
 
 const FAQSet = (props) => {
   const { dispatch, visible = {}, typeList, onClose, cRef, loading, sortList } = props;
@@ -66,48 +65,11 @@ const FAQSet = (props) => {
       hidden: true,
     },
     {
-      label: '超链接',
-      type: 'noForm',
-      rules: [{ required: false }],
-      childrenOwn: <UrlList key="url"></UrlList>,
-    },
-    {
       label: 'FAQ内容描述',
       type: 'textArea',
       name: 'questionDesc',
       maxLength: 600,
-      // type: 'noForm',
-      // childrenOwn: (
-      //   <Form.Item
-      //     key="questionDescText"
-      //     label={'FAQ内容描述'}
-      //     name={'questionDescText'}
-      //     rules={[
-      //       { type: 'string', max: 600, message: '最多输入600个字' },
-      //       { required: true, message: '请输入FAQ内容描述' },
-      //     ]}
-      //     labelCol={24}
-      //     wrapperCol={24}
-      //   >
-      //     <EditorForm
-      //       setContent={(val, text) => {
-      //         form.setFieldsValue({
-      //           questionDesc: val,
-      //           questionDescText: text,
-      //         });
-      //       }}
-      //       content={detail.questionDesc}
-      //       contentClass={styles.edit_height}
-      //       maxLength={600}
-      //     ></EditorForm>
-      //   </Form.Item>
-      // ),
     },
-    // {
-    //   label: 'FAQ内容描述a',
-    //   name: 'questionDesc',
-    //   hidden: true,
-    // },
     {
       label: '上传图片',
       type: 'upload',
