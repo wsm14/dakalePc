@@ -141,6 +141,9 @@ export const MRE_TAG_STATUS = ['停用', '启用'];
 // FAQ猜你想问
 export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
 
+// 省代/区县公司状态
+export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
+
 // 订单状态
 export const ORDERS_STATUS = [
   '待支付',
