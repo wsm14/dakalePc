@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import BankSet from './components/BankSet/BusinessBankSets';
+import BankSet from './components/BankSet/BusinessBankSet';
 
 const BusinessBankSetContent = (props) => {
   const { businessBankSet, loading, dispatch } = props;
