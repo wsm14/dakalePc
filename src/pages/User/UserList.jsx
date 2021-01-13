@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
@@ -97,6 +97,18 @@ const UserListComponent = (props) => {
     },
   ];
 
+  useEffect(() => {
+    fetchUserChartTotal();
+  }, [cityData]);
+
+  // 获取用户统计
+  const fetchUserChartTotal = () => {
+    dispatch({
+      type: 'userList/fetchUserChartTotal',
+      payload: cityData,
+    });
+  };
+
   // 获取用户详情
   const fetchUserDetail = (userId) => {
     dispatch({
@@ -121,9 +133,9 @@ const UserListComponent = (props) => {
         <SearchCard setSearchData={setCityData}></SearchCard>
       </Card>
       {/* 用户数统计 */}
-      <UserListTotalInfo cityData={cityData}></UserListTotalInfo>
+      <UserListTotalInfo></UserListTotalInfo>
       {/* 用户chart统计 */}
-      <UserTotalSpread cityData={cityData}></UserTotalSpread>
+      <UserTotalSpread></UserTotalSpread>
       <DataTableBlock
         keepName="用户数据"
         cRef={childRef}
