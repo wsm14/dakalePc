@@ -5,7 +5,7 @@ import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import SubsidyDrawer from './components/subsidy/SubsidyDrawer';
+import WithdrawRemark from './components/Withdraw/WithdrawRemark';
 
 const WithdrawDetail = (props) => {
   const { withdrawDetail, loading, dispatch } = props;
@@ -102,7 +102,7 @@ const WithdrawDetail = (props) => {
             formItems={[
               {
                 type: 'edit',
-                click: () => fetchShareDetail(val, record.contentType),
+                click: () => setVisible({ shwo: true, detail: record }),
               },
             ]}
           />
@@ -159,7 +159,11 @@ const WithdrawDetail = (props) => {
         dispatchType="withdrawDetail/fetchGetList"
         {...withdrawDetail.list}
       ></DataTableBlock>
-      <SubsidyDrawer visible={visible} setVisible={setVisible}></SubsidyDrawer>
+      <WithdrawRemark
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></WithdrawRemark>
     </>
   );
 };
