@@ -5,6 +5,7 @@ import {
   fetchGetTradeSelect,
   fetchSetTradeSelect,
   fetchGetMreTag,
+  fetchMerCheckData,
 } from '@/services/BaseServices';
 
 export default {
@@ -62,6 +63,11 @@ export default {
         description: '设置成功',
       });
       callback();
+    },
+    *fetchMerCheckData({ payload, callback }, { call }) {
+      const response = yield call(fetchMerCheckData, payload);
+      if (!response) return;
+      callback(response.content);
     },
   },
 };
