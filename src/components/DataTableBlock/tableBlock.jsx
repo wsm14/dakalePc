@@ -12,6 +12,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @keepName 保持数据的名字
  * @columns 表头
  * @searchItems 搜索条件
+ * @searchCallback 搜索回调
  * @loading 请求等待
  * @list 表格源数据
  * @total 数据总条数
@@ -67,6 +68,7 @@ const TableBlockComponent = (props) => {
     rowSelection,
     onRow,
     children,
+    searchCallback,
   } = props;
 
   const [first, setFirst] = useState(NoSearch); // first No search
@@ -102,6 +104,7 @@ const TableBlockComponent = (props) => {
       page: 1,
       searchData: Object.keys(value).length ? value : {},
     });
+    searchCallback && searchCallback(Object.keys(value).length ? value : {});
   };
 
   // 分页
