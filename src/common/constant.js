@@ -157,6 +157,9 @@ export const REFUND_ORDERS_STATUS = [
   '退款中',
 ];
 
+// 合作意向类型
+export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
+
 // 分享类型
 export const SHARE_TYPE = [
   { value: 'video', name: '视频' },

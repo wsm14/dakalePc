@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { FRANCHISE_APP_STATUS } from '@/common/constant';
+import { FRANCHISE_APP_STATUS, FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -13,18 +13,24 @@ const FranchiseApplication = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '手机号',
-      name: 'mobile',
+      label: '申请人',
+      name: 'username',
     },
     {
-      label: '姓名',
-      name: 'username',
+      label: '手机号',
+      name: 'mobile',
     },
     {
       label: '申请状态',
       name: 'handled',
       type: 'select',
-      select: { list: FRANCHISE_APP_STATUS },
+      select: FRANCHISE_APP_STATUS,
+    },
+    {
+      label: '合作意向类型',
+      name: 'cooperationType',
+      type: 'select',
+      select: FRANCHISE_COOPERATION_TYPE,
     },
   ];
 
