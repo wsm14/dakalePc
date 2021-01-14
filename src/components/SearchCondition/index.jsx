@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import lodash from 'lodash';
 import {
   Form,
   Space,
@@ -97,9 +98,35 @@ const SearchCondition = (props) => {
       );
       // 判断类型
       if (item.type === 'select' && item.select) {
-        const { select, allItem = true } = item;
+        const { select, allItem = true, fieldNames = {} } = item;
+        const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
         initialValue = select.defaultValue || '';
-        const selectList = Array.isArray(select) ? select : select.list;
+        // 遍历对象
+        const arrObject = (obj) => {
+          return Object.keys(obj).map((item) => ({
+            [labelKey]: obj[item],
+            [valueKey]: item,
+          }));
+        };
+        /**
+         *  判断传入值类型 select
+         *  { list: [] } | { list: {} } | [] | {}
+         */
+        let selectList = [];
+        if (Array.isArray(select)) {
+          selectList = select;
+        } else if (lodash.isPlainObject(select)) {
+          if (Array.isArray(select.list)) {
+            // 若为数组
+            selectList = select.list;
+          } else if (select.list && lodash.isPlainObject(select.list)) {
+            // 若为对象则将遍历成数组赋值
+            selectList = arrObject(select.list);
+          } else {
+            // 若为对象则将遍历成数组赋值
+            selectList = arrObject(select);
+          }
+        }
         component = (
           <Select
             allowClear
@@ -107,6 +134,7 @@ const SearchCondition = (props) => {
             optionFilterProp="children"
             loading={item.loading}
             style={{ width: '100%' }}
+            disabled={item.disabled}
             onSearch={item.onSearch}
             onChange={item.onChange}
             onFocus={item.onFocus}
@@ -115,17 +143,18 @@ const SearchCondition = (props) => {
               item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             }
             placeholder={item.placeholder || `请选择`}
+            {...(item.handle && item.handle(form))}
           >
             {allItem && <Option value={initialValue}>全部</Option>}
             {selectList.map((data, j) => {
               if (data) {
                 // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.value ? data.name : data;
-                const otherData = data.otherData ? data.otherData : '';
+                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
+                const nameData = data[valueKey] ? data[labelKey] : data;
+                const otherData = data[tipKey] ? data[tipKey] : '';
                 return (
-                  <Option key={j} value={value}>
-                    {name}
+                  <Option key={j} value={valueData}>
+                    {nameData}
                     {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );

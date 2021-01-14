@@ -47,6 +47,11 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
           <Button
             onClick={() =>
               form.validateFields().then((values) => {
+                const { packageGoodsObjects } = values;
+                packageGoodsObjects.forEach(
+                  (item) => (item.goodsPrice = item.goodsPrice.toFixed(2)),
+                );
+                console.log(values);
                 pform.setFieldsValue(values);
                 onConfirm(values.packageGoodsObjects);
                 onClose();
