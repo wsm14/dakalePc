@@ -60,7 +60,7 @@ export default {
     *fetchMerCheckData({ payload, callback }, { call }) {
       const response = yield call(fetchMerCheckData, payload);
       if (!response) return;
-      callback(response);
+      callback(response.content);
     },
   },
 };
