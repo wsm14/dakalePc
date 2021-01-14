@@ -21,19 +21,13 @@ const HandleSetTable = (props) => {
       let btnText = ROLE_BUTTON_TYPE[type];
       if (type === 'own') {
         btnText = title;
-        // 默认全显示 配置权限则根据权限显示
+        // 默认全显示 配置权限则根据权限显示 own 则默认显示
         auth = auth === 'own' ? true : auth;
       }
-      if (type === 'del') {
-        pop = true;
-      }
-      if (type === 'send') {
-        pop = true;
-      }
-      if (type === 'up') {
-        pop = true;
-      }
-      if (type === 'down') {
+      // 默认pop确认弹窗
+      const popType = ['del', 'send', 'up', 'down'];
+
+      if (popType.includes(type)) {
         pop = true;
       }
 

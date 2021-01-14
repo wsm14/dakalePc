@@ -1,5 +1,6 @@
 import md5 from 'md5';
 import moment from 'moment';
+import lodash from 'lodash';
 import { parse } from 'querystring';
 import { AUTH_SECRET_KEY } from '@/common/constant';
 
@@ -223,4 +224,39 @@ export const checkSorterData = (old, next, key, type = 'number') => {
     default:
       return Number(oldData) - Number(nextData);
   }
+};
+
+// 检查数据类型
+const checkDataType = (data) => {
+  let checkType = undefined;
+  if (Array.isArray(data)) {
+    checkType = 'Array'; // 数组
+  } else if (lodash.isPlainObject(data)) {
+    checkType = 'Object'; // 对象
+  } else if (lodash.isString(data)) {
+    checkType = 'String'; // 字符串
+  } else if (lodash.isBoolean(data)) {
+    checkType = 'Boolean'; // 布尔
+  } else if (lodash.isArguments(data)) {
+    checkType = 'arguments'; // arguments对象
+  } else if (lodash.isFunction(data)) {
+    checkType = 'Function'; // 函数
+  } else if (lodash.isInteger(data)) {
+    checkType = 'Int'; // 整数
+  } else if (lodash.isNaN(data)) {
+    checkType = 'NaN'; // 于 undefined 和其他非数字的值返回 false
+  } else if (lodash.isNil(data)) {
+    checkType = 'Nil'; // 是 null 或者 undefined
+  } else if (lodash.ArrayBuffer(data)) {
+    checkType = 'ArrayBuffer'; // buffer数组
+  } else if (lodash.isBuffer(data)) {
+    checkType = 'buffer'; // buffer文件
+  } else if (lodash.isDate(data)) {
+    checkType = 'Date'; // 时间
+  } else if (lodash.isEmpty(data)) {
+    checkType = 'empty'; // 空对象，集合，映射或者set
+  } else if (lodash.isError(data)) {
+    checkType = 'error'; // Error, EvalError, RangeError, ReferenceError,SyntaxError, TypeError, 或者 URIError对象
+  }
+  return checkType;
 };

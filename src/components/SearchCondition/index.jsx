@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import lodash from 'lodash';
 import {
   Form,
   Space,
@@ -98,9 +99,34 @@ const SearchCondition = (props) => {
       // 判断类型
       if (item.type === 'select' && item.select) {
         const { select, allItem = true, fieldNames = {} } = item;
-        initialValue = select.defaultValue || '';
-        const selectList = Array.isArray(select) ? select : select.list;
         const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
+        initialValue = select.defaultValue || '';
+        // 遍历对象
+        const arrObject = (obj) => {
+          return Object.keys(obj).map((item) => ({
+            [labelKey]: obj[item],
+            [valueKey]: item,
+          }));
+        };
+        /**
+         *  判断传入值类型 select
+         *  { list: [] } | { list: {} } | [] | {}
+         */
+        let selectList = [];
+        if (Array.isArray(select)) {
+          selectList = select;
+        } else if (lodash.isPlainObject(select)) {
+          if (Array.isArray(select.list)) {
+            // 若为数组
+            selectList = select.list;
+          } else if (select.list && lodash.isPlainObject(select.list)) {
+            // 若为对象则将遍历成数组赋值
+            selectList = arrObject(select.list);
+          } else {
+            // 若为对象则将遍历成数组赋值
+            selectList = arrObject(select);
+          }
+        }
         component = (
           <Select
             allowClear

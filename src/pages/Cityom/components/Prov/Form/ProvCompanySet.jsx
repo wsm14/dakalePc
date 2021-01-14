@@ -4,7 +4,6 @@ import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification
 import AuthConsumer from '@/layouts/AuthConsumer';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
-import { replace } from 'lodash';
 
 const ProvCompanySet = (props) => {
   const {

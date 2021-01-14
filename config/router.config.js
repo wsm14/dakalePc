@@ -51,7 +51,7 @@ export default [
             path: '/cityom/join',
             name: '加盟申请',
             component: './Cityom/FranchiseApplication',
-            buttons: ['handle'],
+            buttons: ['handle', 'info'],
           },
         ],
       },
