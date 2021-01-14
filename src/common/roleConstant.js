@@ -16,6 +16,9 @@ export const ROLE_BUTTON_TYPE = {
   handle: '处理',
   relieve: '解约',
   end: '结束',
+  sort: '排序',
+  userOs: '用户端',
+  mreOs: '商家端',
   recommendStatus: '推荐状态',
   bussinessStatus: '营业状态',
   income: '收益数据',
@@ -66,6 +69,8 @@ export const ROLE_BUTTON_TYPE = {
   baseTrade: '基础设施',
   tradeAdd: '新增类目',
   tradeSecondAdd: '添加子类目',
+  sortFAQ: '分类管理',
+  setLike: '设置猜你想问',
 };
 
 // 数据权限选项

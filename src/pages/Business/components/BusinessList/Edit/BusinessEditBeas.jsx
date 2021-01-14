@@ -16,7 +16,7 @@ const BusinessAddBeas = (props) => {
     platformList,
     tradeList,
     setCategId,
-    setType,
+    setType, // 进入的状态 add edit audit
   } = props;
 
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
@@ -43,6 +43,15 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取推广费
+  const fetchGetPromotionMoney = (categoryId) => {
+    dispatch({
+      type: 'sysTradeList/fetchPromotionMoneyGet',
+      payload: { categoryId },
+      callback: (val) => form.setFieldsValue({ promotionFee: val.promotionFee || 0 }),
+    });
+  };
+
   // 获取详情
   const fetchGetDetail = (payload) => {
     dispatch({
@@ -56,6 +65,7 @@ const BusinessAddBeas = (props) => {
     fetchGetBrandList();
     if (initialValues) {
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
+      setType === 'audit' && fetchGetPromotionMoney(initialValues.topCategoryId);
     }
   }, []);
 
@@ -194,7 +204,8 @@ const BusinessAddBeas = (props) => {
       onChange: (val) => {
         setAreaMust(val[0].categoryName === '美食');
         setCategId(val[0].categoryIdString);
-        fetchGetPlatform(val[0].id);
+        fetchGetPlatform(val[0].categoryIdString);
+        fetchGetPromotionMoney(val[0].categoryIdString);
         form.setFieldsValue({
           categoryName: val,
           businessArea: undefined,
@@ -219,6 +230,11 @@ const BusinessAddBeas = (props) => {
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
       },
+    },
+    {
+      label: '推广费',
+      name: 'promotionFee',
+      loading: loading.models.sysTradeList,
     },
   ];
 

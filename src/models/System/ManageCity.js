@@ -1,12 +1,15 @@
 import { notification } from 'antd';
-import { fetchMerBrandList, fetchMerBrandAdd, fetchMerBrandEdit } from '@/services/SystemServices';
+import {
+  fetchCityManageList,
+  fetchCityManageSet,
+  fetchCityManageStatus,
+} from '@/services/SystemServices';
 
 export default {
-  namespace: 'businessBrand',
+  namespace: 'manageCity',
 
   state: {
     list: [],
-    total: 0,
   },
 
   reducers: {
@@ -20,32 +23,32 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchMerBrandList, payload);
+      const response = yield call(fetchCityManageList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: content.locationCityList,
         },
       });
     },
-    *fetchMerBrandAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerBrandAdd, payload);
+    *fetchCityManageSet({ payload, callback }, { call }) {
+      const response = yield call(fetchCityManageSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '品牌新增成功',
+        description: '城市设置成功',
       });
       callback();
     },
-    *fetchMerBrandEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerBrandEdit, payload);
+    *fetchCityManageStatus({ payload, callback }, { call, put }) {
+      const response = yield call(fetchCityManageStatus, payload);
       if (!response) return;
+      const { deleteFlag } = payload;
       notification.success({
         message: '温馨提示',
-        description: '品牌修改成功',
+        description: `城市${deleteFlag === 0 ? '删除' : '修改'}成功`,
       });
       callback();
     },

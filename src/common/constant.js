@@ -57,6 +57,9 @@ export const ACCOUNT_STATUS = ['禁用', '启用'];
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
 
+// 城市管理 -  状态
+export const CITY_STATUS = ['未开通', '已开通'];
+
 // 商户 营业状态
 export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
 
@@ -105,6 +108,9 @@ export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 // 新闻动态状态
 export const NEWS_STATUS = ['下架', '上架'];
 
+// 拼图广告状态
+export const PUZZLE_AD_STATUS = ['下架', '上架'];
+
 // 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分享完成'];
 
@@ -132,6 +138,12 @@ export const SPECIAL_RECOMMEND_STATUS = ['否', '是'];
 // 商户标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
 
+// FAQ猜你想问
+export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
+
+// 省代/区县公司状态
+export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
+
 // 订单状态
 export const ORDERS_STATUS = [
   '待支付',
@@ -152,6 +164,15 @@ export const REFUND_ORDERS_STATUS = [
   '已确认',
   false,
   '退款中',
+];
+
+// 合作意向类型
+export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
+
+// 分享类型
+export const PUZZLE_AD_TYPE = [
+  { value: 'video', name: '视频' },
+  { value: 'image', name: '图片' },
 ];
 
 // 分享类型
