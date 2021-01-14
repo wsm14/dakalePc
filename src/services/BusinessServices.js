@@ -9,7 +9,7 @@ export function fetchMerchantList(params) {
   });
 }
 
-// get 商户数据 - 商户列表
+// get 商户数据 - 商户列表 - 导出excel
 export function fetchMerchantExportExcel(params) {
   return request('/admin/merchantManagement/listMerchantImport', {
     params,
