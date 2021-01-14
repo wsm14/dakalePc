@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -10,8 +10,16 @@ import SubsidyDrawer from './components/subsidy/SubsidyDrawer';
 const WithdrawDetail = (props) => {
   const { withdrawDetail, loading, dispatch } = props;
 
+  const { totalData } = withdrawDetail;
+
+  const toatlLoading = loading.effects['withdrawDetail/fetchWithdrawTotal'];
+
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    fetchWithdrawTotal();
+  }, []);
 
   // 搜索参数
   const searchItems = [
@@ -103,6 +111,14 @@ const WithdrawDetail = (props) => {
     },
   ];
 
+  // 统计数据
+  const fetchWithdrawTotal = (payload) => {
+    dispatch({
+      type: 'withdrawDetail/fetchWithdrawTotal',
+      payload,
+    });
+  };
+
   // 导出excel 数据
   const fetchGetExcel = (payload) => {
     const header = getColumns.slice(1);
@@ -116,18 +132,30 @@ const WithdrawDetail = (props) => {
   return (
     <>
       <DataTableBlock
+        title={() => (
+          <div style={{ textAlign: 'right', marginTop: -16 }}>
+            合计提现金额：{toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum}`}{' '}
+            &nbsp;&nbsp; 合计提现手续费：
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum}`}
+          </div>
+        )}
         btnExtra={({ get }) => (
           <AuthConsumer auth="exportList">
-            <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
+            <Button
+              className="dkl_green_btn"
+              loading={loading.effects['withdrawDetail/fetchGetExcel']}
+              onClick={() => fetchGetExcel(get())}
+            >
               导出
             </Button>
           </AuthConsumer>
         )}
+        searchCallback={fetchWithdrawTotal}
         cRef={childRef}
-        loading={loading}
+        loading={loading.effects['withdrawDetail/fetchGetList']}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userMomentIdString}`}
+        rowKey={(record) => `${record.merchantBeanWithdrawalId}`}
         dispatchType="withdrawDetail/fetchGetList"
         {...withdrawDetail.list}
       ></DataTableBlock>
@@ -138,5 +166,5 @@ const WithdrawDetail = (props) => {
 
 export default connect(({ withdrawDetail, loading }) => ({
   withdrawDetail,
-  loading: loading.models.withdrawDetail,
+  loading,
 }))(WithdrawDetail);
