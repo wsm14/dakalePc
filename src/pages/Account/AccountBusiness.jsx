@@ -39,6 +39,12 @@ const AccountBusinessList = (props) => {
       dataIndex: 'merchantName',
     },
     {
+      title: '集团名称',
+      align: 'center',
+      dataIndex: 'groupName',
+      render: (val) => val || '--',
+    },
+    {
       title: '商户帐号',
       align: 'center',
       dataIndex: 'account',
@@ -57,7 +63,7 @@ const AccountBusinessList = (props) => {
       title: '累计提现（卡豆）',
       align: 'right',
       dataIndex: 'totalConsume',
-      render: (val) => val || '-',
+      render: (val) => val || '--',
     },
     {
       title: '当前余额（卡豆）',

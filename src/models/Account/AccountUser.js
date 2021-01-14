@@ -22,6 +22,7 @@ export default {
     userTotalOut: 0,
     indata: data1,
     outdata: data1,
+    userTotalBean: 0,
   },
 
   reducers: {
@@ -72,7 +73,7 @@ export default {
     *fetchUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountUserTotal, payload);
       if (!response) return;
-      const { in: indata, out: outdata } = response.content;
+      const { in: indata, out: outdata, userTotalBean = 0 } = response.content;
       const userTotalIn = indata.length
         ? indata.filter((item) => item.statisticType == 'userTotalIn')[0].content
         : 0;
@@ -84,6 +85,7 @@ export default {
         payload: {
           userTotalIn,
           userTotalOut,
+          userTotalBean,
           indata: indata.length
             ? indata
                 .filter((item) => item.statisticType != 'userTotalIn')
