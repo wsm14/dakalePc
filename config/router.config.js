@@ -161,6 +161,12 @@ export default [
             component: './Finance/SubsidyManage',
             buttons: ['exportList', 'save', 'info', 'del', 'end'],
           },
+          {
+            path: '/finance/withdraw',
+            name: '提现明细',
+            component: './Finance/WithdrawDetail',
+            buttons: ['exportList', 'edit'],
+          },
         ],
       },
       {
