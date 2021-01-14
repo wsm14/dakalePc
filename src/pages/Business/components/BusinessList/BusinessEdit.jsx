@@ -121,60 +121,22 @@ const BusinessAdd = (props) => {
     });
   };
 
-  // 检查商户信息是否存在 营业执照号 店铺电话提示 userMerchantId merchantName telephone address socialCreditCode
-  const fetchMerCheckData = (payload, callback) => {
-    dispatch({
-      type: 'baseData/fetchMerCheckData',
-      payload,
-      callback,
-    });
-  };
-
   // 审核通过
   const fetchAuditAllow = (values) => {
-    const {
-      telephone,
-      businessLicenseObject: { socialCreditCode },
-      perCapitaConsumption,
-    } = values;
-
-    const info = {
-      merchantVerifyId: initialValues.merchantVerifyIdString,
-      verifyStatus: 3,
-      perCapitaConsumption,
-    };
-    // 检查信息是否重复
-    fetchMerCheckData(
-      {
-        userMerchantId: initialValues.merchantVerifyIdString,
-        telephone,
-        socialCreditCode,
+    Modal.confirm({
+      title: '审核通过',
+      content: '是否确认审核通过？',
+      onOk() {
+        // aliOssUpload(allImages).then((res) => {
+        const info = {
+          merchantVerifyId: initialValues.merchantVerifyIdString,
+          verifyStatus: 3,
+          perCapitaConsumption: values.perCapitaConsumption,
+        };
+        fetchFormData(info);
+        // });
       },
-      (check) => {
-        const { businessLicense, telephone } = check;
-        if (!businessLicense || !telephone) {
-          Modal.confirm({
-            title: '提示',
-            content: `该店铺已存在${!businessLicense ? '（营业执照号重复）' : ''} ${
-              !telephone ? '（店铺电话重复）' : ''
-            }，确定要审核通过吗？`,
-            onOk() {
-              fetchFormData(info);
-            },
-          });
-          return;
-        } else {
-          // 审核通过
-          Modal.confirm({
-            title: '审核通过',
-            content: '是否确认审核通过？',
-            onOk() {
-              fetchFormData(info);
-            },
-          });
-        }
-      },
-    );
+    });
   };
 
   // 打开编辑框时默认值赋值
@@ -295,14 +257,14 @@ const BusinessAdd = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={closeDrawer}>取消</Button>
-            {type == 'add' && (
-              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
-                提交审核
-              </Button>
-            )}
             {type == 'edit' && (
               <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
                 修改
+              </Button>
+            )}
+            {type == 'add' && (
+              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
+                提交审核
               </Button>
             )}
             {type == 'audit' && (
@@ -350,6 +312,5 @@ export default connect(({ loading, businessAudit }) => ({
   loading:
     loading.models.businessList ||
     loading.effects['sysTradeList/fetchDetailList'] ||
-    loading.models.businessAudit ||
-    loading.effects['baseData/fetchMerCheckData'],
+    loading.models.businessAudit,
 }))(BusinessAdd);
