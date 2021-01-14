@@ -4,7 +4,6 @@ import {
   fetchGetHubSelect,
   fetchGetTradeSelect,
   fetchSetTradeSelect,
-  fetchGetMreTag,
 } from '@/services/BaseServices';
 
 export default {
@@ -35,12 +34,6 @@ export default {
         },
       });
       if (callback) callback(content.businessHubList);
-    },
-    *fetchGetMreTag({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetMreTag, payload);
-      if (!response) return;
-      const { content } = response;
-      content && callback(content.tagNames);
     },
     *fetchGetTradeSelect({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetTradeSelect, payload);

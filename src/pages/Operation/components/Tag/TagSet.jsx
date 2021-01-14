@@ -34,7 +34,6 @@ const ClassifySet = (props) => {
     {
       label: '标签名称',
       name: 'tagName',
-      maxLength: 10,
     },
     {
       label: '标签状态',

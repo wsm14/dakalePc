@@ -6,9 +6,7 @@ export const authCheck = (checkAuth = []) => {
   const menuBtn = useSelector((state) => state.userInfo.menuBtn);
   if (flag === 1) return checkAuth;
   const authMenu = menuBtn[useLocation().pathname];
-  return authMenu
-    ? checkAuth.filter((item) => authMenu.includes(item.auth) || item.auth === true)
-    : null;
+  return checkAuth.filter((item) => authMenu.includes(item.auth) || item.auth === true);
 };
 
 const AuthConsumer = (props) => {

@@ -13,13 +13,11 @@ import {
   UsergroupAddOutlined,
   PieChartOutlined,
   BoxPlotOutlined,
-  DollarOutlined,
 } from '@ant-design/icons';
 
 const iconEnum = {
   chart: <PieChartOutlined />,
   cityom: <HeatMapOutlined />,
-  finance: <DollarOutlined />,
   operation: <BoxPlotOutlined />,
   user: <UserOutlined />,
   business: <ShopOutlined />,

@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchMerBrandList, fetchMerBrandAdd, fetchMerBrandEdit } from '@/services/SystemServices';
+import { fetchMerBrandList, fetchMerBrandAdd } from '@/services/SystemServices';
 
 export default {
   namespace: 'businessBrand',
@@ -37,15 +37,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '品牌新增成功',
-      });
-      callback();
-    },
-    *fetchMerBrandEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerBrandEdit, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '品牌修改成功',
       });
       callback();
     },

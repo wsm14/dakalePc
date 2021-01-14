@@ -220,8 +220,6 @@ const SearchCondition = (props) => {
             ]}
             disabledDate={item.disabledDate || disabledDate}
             ranges={item.ranges || item.disabledDate ? '' : ranges}
-            onCalendarChange={item.onCalendarChange}
-            onOpenChange={item.onOpenChange}
             // renderExtraFooter={() => (
             //   <div className={styles.shop_dateInfo}>
             //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59

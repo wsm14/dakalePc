@@ -114,11 +114,6 @@ const BusinessDetailShow = (props) => {
       name: 'category',
     },
     {
-      label: '推广费',
-      name: 'promotionFee',
-      render: (val) => `${val || 0}%`,
-    },
-    {
       label: '平台服务费',
       name: 'commissionRatio',
       render: (val, row) =>

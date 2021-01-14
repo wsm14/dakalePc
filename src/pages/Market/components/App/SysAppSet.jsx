@@ -119,6 +119,7 @@ const SysAppSet = (props) => {
         }
         formItems={formItems}
         form={form}
+        loading={loading}
       />
     </Drawer>
   );

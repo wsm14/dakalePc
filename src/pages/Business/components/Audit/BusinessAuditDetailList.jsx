@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessAuditDetailList = (props) => {
-  const { businessAudit, loading, visible = false, setVisible } = props;
+  const { businessAudit, loading, visible = false, setVisible, tablehandle } = props;
 
   // 搜索参数
   const propItem = {
@@ -94,7 +94,7 @@ const BusinessAuditDetailList = (props) => {
         title: '驳回原因',
         align: 'center',
         dataIndex: 'rejectReason',
-        render: (val) => (
+        render: (val, record) => (
           <Ellipsis length={10} tooltip>
             {val || '--'}
           </Ellipsis>

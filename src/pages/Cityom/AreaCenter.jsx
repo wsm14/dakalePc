@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import CITYJSON from '@/common/city';
-import { COMPANY_PROV_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -44,12 +42,6 @@ const AreaCenter = (props) => {
 
   // 搜索参数
   const searchItems = [
-    {
-      label: '所属省公司',
-      name: 'belongProvinceCode',
-      type: 'select',
-      select: { list: CITYJSON.map((item) => ({ name: item.label, value: item.value })) },
-    },
     {
       label: '代理公司名称',
       name: 'partnerName',
@@ -123,12 +115,6 @@ const AreaCenter = (props) => {
       title: '累计提现（卡豆）',
       align: 'right',
       dataIndex: 'totalWithdrawal',
-    },
-    {
-      title: '状态',
-      align: 'right',
-      dataIndex: 'partnerStatus',
-      render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
       title: '操作',

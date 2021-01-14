@@ -1,9 +1,5 @@
 import { notification } from 'antd';
-import {
-  fetchFranchiseAppList,
-  fetchFranchiseHandleDetail,
-  fetchFranchiseHandle,
-} from '@/services/CityomServices';
+import { fetchFranchiseAppList, fetchFranchiseHandle } from '@/services/CityomServices';
 
 export default {
   namespace: 'franchiseApp',
@@ -32,12 +28,6 @@ export default {
           list: { list: content.userApplyList, total: content.total },
         },
       });
-    },
-    *fetchFranchiseHandleDetail({ payload, callback }, { call, put }) {
-      const response = yield call(fetchFranchiseHandleDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.userApply);
     },
     *fetchFranchiseHandle({ payload, callback }, { call, put }) {
       const response = yield call(fetchFranchiseHandle, payload);

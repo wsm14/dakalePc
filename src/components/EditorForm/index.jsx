@@ -40,7 +40,6 @@ const EditorForm = ({
   editClass,
   contentClass,
   setContent,
-  maxLength = 0,
   // dispatch,
 }) => {
   EditorForm.defaultProps = {
@@ -49,14 +48,12 @@ const EditorForm = ({
     AllImgSize: 5000,
     editClass: undefined,
     contentClass: undefined,
-    maxLength: 0,
   };
 
   EditorForm.propTypes = {
     content: PropTypes.string,
     maxImgSize: PropTypes.number,
     AllImgSize: PropTypes.number,
-    maxLength: PropTypes.number,
     editClass: PropTypes.string,
     contentClass: PropTypes.string,
     setContent: PropTypes.func.isRequired,
@@ -64,7 +61,6 @@ const EditorForm = ({
 
   const refTb = useRef(null);
   const refFa = useRef(null);
-  const [textLength, setTextLength] = useState(0);
 
   const setEditor = () => {
     const elemtb = refTb.current;
@@ -81,8 +77,7 @@ const EditorForm = ({
     editor.customConfig.uploadImgMaxLength = 3; // 上传图片数量
     editor.customConfig.pasteFilterStyle = true;
     editor.customConfig.onchange = (html) => {
-      if (setContent) setContent(html === '<p><br></p>' ? '' : html, editor.txt.text());
-      if (maxLength != 0) setTextLength(editor.txt.text().length);
+      if (setContent) setContent(html === '<p><br></p>' ? '' : html);
     }; // 回显 保存 html
     editor.customConfig.pasteTextHandle = (contents) => {
       // 赋值粘贴文本a标签替换
@@ -123,7 +118,6 @@ const EditorForm = ({
     };
     editor.create(); // 初始化
     editor.txt.html(content); // 初始化富文本内容
-    content && maxLength !== 0 && editor.change();
   };
 
   useEffect(() => {
@@ -134,18 +128,7 @@ const EditorForm = ({
     <div className={`${styles.editor} ${editClass}`}>
       <div ref={refTb} className={styles.toolbar} />
       <div className={styles.padd} />
-      <div
-        ref={refFa}
-        className={`${styles.content} ${contentClass} ${
-          textLength > maxLength ? styles.maxlength_box_red : ''
-        }`}
-      />
-      {maxLength != 0 && (
-        <div style={{ textAlign: 'right' }}>
-          <span className={textLength > maxLength ? styles.maxlength_red : {}}>{textLength}</span> /{' '}
-          {maxLength}
-        </div>
-      )}
+      <div ref={refFa} className={`${styles.content} ${contentClass}`} />
     </div>
   );
 };

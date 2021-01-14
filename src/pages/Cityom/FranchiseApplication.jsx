@@ -1,47 +1,39 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { FRANCHISE_APP_STATUS, FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
+import { FRANCHISE_APP_STATUS } from '@/common/constant';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import FranchiseDrawer from './components/Franchise/FranchiseDrawer';
 
 const FranchiseApplication = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
 
   // 搜索参数
   const searchItems = [
-    {
-      label: '申请人',
-      name: 'username',
-    },
     {
       label: '手机号',
       name: 'mobile',
     },
     {
+      label: '姓名',
+      name: 'username',
+    },
+    {
       label: '申请状态',
       name: 'handled',
       type: 'select',
-      select: FRANCHISE_APP_STATUS,
-    },
-    {
-      label: '合作意向类型',
-      name: 'cooperationType',
-      type: 'select',
-      select: FRANCHISE_COOPERATION_TYPE,
+      select: { list: FRANCHISE_APP_STATUS },
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '序号',
+      title: '编号',
       dataIndex: 'userApplyIdString',
       fixed: 'left',
-      render: (val, row, i) => i + 1,
     },
     {
       title: '姓名',
@@ -50,36 +42,19 @@ const FranchiseApplication = (props) => {
       dataIndex: 'name',
     },
     {
-      title: '电话',
+      title: '手机号',
       align: 'center',
       dataIndex: 'phoneNumber',
     },
     {
-      title: '意向合作类型',
-      align: 'center',
-      dataIndex: 'cooperationType',
-      render: (val) => FRANCHISE_COOPERATION_TYPE[val],
-    },
-    {
-      title: '意向合作城市',
+      title: '意向代理城市',
       align: 'center',
       dataIndex: 'intentionalProxyCity',
     },
     {
-      title: '公司',
+      title: '目前从事行业',
       align: 'right',
-      dataIndex: 'companyName',
-    },
-    {
-      title: '地址',
-      align: 'right',
-      dataIndex: 'address',
-    },
-    {
-      title: '邮箱',
-      align: 'right',
-      dataIndex: 'email',
-      render: (val) => FRANCHISE_APP_STATUS[val],
+      dataIndex: 'engageIndustry',
     },
     {
       title: '申请时间',
@@ -93,22 +68,27 @@ const FranchiseApplication = (props) => {
       render: (val) => FRANCHISE_APP_STATUS[val],
     },
     {
+      title: '处理时间',
+      align: 'right',
+      dataIndex: 'handleTime',
+      render: (val) => (val ? val : '--'),
+    },
+    {
       title: '操作',
+      dataIndex: 'companyName',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'userApplyIdString',
       render: (val, record) => (
         <HandleSetTable
           formItems={[
             {
-              type: 'handle',
+              type: 'own',
+              pop: true,
+              title: '处理',
+              auth: 'handle',
               visible: record.handled === '0',
-              click: () => setVisible({ type: 'handle', shwo: true, detail: record }),
-            },
-            {
-              type: 'info',
-              visible: record.handled === '1',
-              click: () => fetchFranchiseHandle(val),
+              popText: '加盟申请是否已处理？',
+              click: () => fetchFranchiseHandle(record.userApplyIdString),
             },
           ]}
         />
@@ -119,33 +99,26 @@ const FranchiseApplication = (props) => {
   // 获取公司详情
   const fetchFranchiseHandle = (userApplyId) => {
     dispatch({
-      type: 'franchiseApp/fetchFranchiseHandleDetail',
+      type: 'franchiseApp/fetchFranchiseHandle',
       payload: { userApplyId },
-      callback: (detail) => setVisible({ type: 'info', shwo: true, detail }),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   return (
-    <>
-      <DataTableBlock
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.userApplyIdString}`}
-        dispatchType="franchiseApp/fetchGetList"
-        {...list}
-      ></DataTableBlock>
-      <FranchiseDrawer
-        childRef={childRef}
-        visible={visible}
-        onClose={() => setVisible(false)}
-      ></FranchiseDrawer>
-    </>
+    <DataTableBlock
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.userApplyIdString}`}
+      dispatchType="franchiseApp/fetchGetList"
+      {...list}
+    ></DataTableBlock>
   );
 };
 
 export default connect(({ franchiseApp, loading }) => ({
   list: franchiseApp.list,
-  loading: loading.models.franchiseApp,
+  loading: loading.effects['franchiseApp/fetchGetList'],
 }))(FranchiseApplication);

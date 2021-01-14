@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import FormCondition from '@/components/FormCondition';
+// import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessTimeSet from './BusinessTimeSet';
 
 const BusinessAuditAllow = (props) => {
@@ -8,7 +9,6 @@ const BusinessAuditAllow = (props) => {
 
   const [serviceLsit, setServiceLsit] = useState(false);
   const [speacialLsit, setSpeacialLsit] = useState(false);
-  const [tagList, setTagList] = useState([]);
 
   // 店铺服务/基础设施
   const fetchGetService = () => {
@@ -28,18 +28,8 @@ const BusinessAuditAllow = (props) => {
     });
   };
 
-  // 店铺标签
-  const fetchGetMreTag = () => {
-    dispatch({
-      type: 'baseData/fetchGetMreTag',
-      payload: { page: 1, limit: 10 },
-      callback: (val) => setTagList(val),
-    });
-  };
-
   useEffect(() => {
     fetchGetService();
-    fetchGetMreTag();
   }, []);
 
   useEffect(() => {
@@ -49,6 +39,12 @@ const BusinessAuditAllow = (props) => {
   }, [categoryId]);
 
   const formItems = [
+    // {
+    //   label: '店铺主图',
+    //   name: 'allImages',
+    //   type: 'upload',
+    //   maxFile: 3,
+    // },
     {
       title: '03 其他信息',
       label: '人均消费',
@@ -82,8 +78,11 @@ const BusinessAuditAllow = (props) => {
       label: '店铺标签',
       name: 'tags',
       type: 'checkbox',
-      loading: loading.effects['baseData/fetchGetMreTag'],
-      select: tagList || [],
+      select: [
+        { label: '人气商家', value: '人气商家' },
+        { label: '景观店家', value: '景观店家' },
+        { label: '品牌连锁', value: '品牌连锁' },
+      ],
     },
     {
       label: '备注',
