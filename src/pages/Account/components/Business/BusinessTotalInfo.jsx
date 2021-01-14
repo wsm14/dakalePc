@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Row, Col, Spin } from 'antd';
 import { Pie } from '@/components/Charts';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment().subtract(1, 'day');
@@ -11,6 +12,7 @@ const BusinessTotalInfo = ({
   dispatch,
   loading,
   indata,
+  merchantTotalBean,
   merchantTotalOut,
   merchantTotalIncome,
   outdata,
@@ -46,7 +48,20 @@ const BusinessTotalInfo = ({
   };
 
   return (
-    <Card style={{ marginBottom: 16 }}>
+    <Card
+      style={{ marginBottom: 16 }}
+      title={
+        <>
+          <QuestionTooltip
+            placement="bottom"
+            title="总卡豆余额"
+            overlayStyle={{ maxWidth: 300 }}
+            content={'实时统计，不随时间搜索变化'}
+          ></QuestionTooltip>
+          ：{merchantTotalBean}
+        </>
+      }
+    >
       <SearchCondition
         searchItems={searchItems}
         handleSearch={fetchBusinessTotal}
@@ -58,13 +73,25 @@ const BusinessTotalInfo = ({
       <Spin spinning={!!loading}>
         <Row gutter={16} align="middle">
           <Col span={12}>
-            商家累计收益：{merchantTotalIncome}
+            <QuestionTooltip
+              placement="bottom"
+              title="商家累计收益"
+              overlayStyle={{ maxWidth: 300 }}
+              content={'默认统计到昨日，随时间搜索变化'}
+            ></QuestionTooltip>
+            ：{merchantTotalIncome}
             <div style={{ height: 250 }}>
               <Pie data={indata} {...chaerProps} />
             </div>
           </Col>
           <Col span={12}>
-            商家累计消费：{merchantTotalOut}
+            <QuestionTooltip
+              placement="bottom"
+              title="商家累计消费"
+              overlayStyle={{ maxWidth: 300 }}
+              content={'默认统计到昨日，随时间搜索变化'}
+            ></QuestionTooltip>
+            ：{merchantTotalOut}
             <div style={{ height: 250 }}>
               <Pie data={outdata} {...chaerProps} />
             </div>

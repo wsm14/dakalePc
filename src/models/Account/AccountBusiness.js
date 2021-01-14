@@ -23,6 +23,7 @@ export default {
     outdata: data1,
     merchantTotalIncome: 0,
     merchantTotalOut: 0,
+    merchantTotalBean: 0,
   },
 
   reducers: {
@@ -74,7 +75,7 @@ export default {
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountBusinessTotal, payload);
       if (!response) return;
-      const { in: indata, out: outdata } = response.content;
+      const { in: indata, out: outdata, merchantTotalBean = 0 } = response.content;
       const merchantTotalIncome = indata.length
         ? indata.filter((item) => item.statisticType == 'merchantTotalIncome')[0].content
         : 0;
@@ -86,6 +87,7 @@ export default {
         payload: {
           merchantTotalIncome,
           merchantTotalOut,
+          merchantTotalBean,
           indata: indata.length
             ? indata
                 .filter((item) => item.statisticType != 'merchantTotalIncome')
