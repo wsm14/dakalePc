@@ -35,7 +35,7 @@ const UserTotalSpread = ({ loading, totalChartData }) => {
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
-            {totalChartData.tag.length ? (
+            {totalChartData.tag && totalChartData.tag.length ? (
               <Pie data={totalChartData.tag || []} angleField="count" colorField="tag" flipPage />
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ marginTop: 89 }} />
