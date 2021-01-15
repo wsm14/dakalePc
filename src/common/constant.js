@@ -154,6 +154,9 @@ export const REFUND_ORDERS_STATUS = [
   '退款中',
 ];
 
+// 消息推送 - 消息类型
+export const MSG_PSUH_TYPE = { official: '官方消息', system: '系统消息' };
+
 // 分享类型
 export const SHARE_TYPE = [
   { value: 'video', name: '视频' },
