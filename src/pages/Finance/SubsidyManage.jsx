@@ -26,25 +26,6 @@ const SubsidyManage = (props) => {
     return tooEarly || tooLate;
   };
 
-  // 下架
-  const fetchAuditRefuse = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
-    });
-  };
-
-  // 获取详情
-  const fetchShareDetail = (val, type) => {
-    dispatch({
-      type: 'shareManage/fetchShareDetail',
-      payload: {
-        userMomentIdString: val,
-      },
-      callback: (detail) => setVisible({ show: true, type, detail }),
-    });
-  };
-
   // 搜索参数
   const searchItems = [
     {
@@ -115,7 +96,7 @@ const SubsidyManage = (props) => {
       dataIndex: 'subsidyId',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => {
+      render: (subsidyId, record) => {
         const { status } = record;
         return (
           <HandleSetTable
@@ -126,12 +107,14 @@ const SubsidyManage = (props) => {
               },
               {
                 type: 'del',
-                // visible: status == 1 || status == 5,
-                click: () => fetchAuditRefuse(record),
+                visible: status === '0',
+                click: () => fetchSubsidyEndDel({ subsidyId, deleteFlag: 0 }),
               },
               {
                 type: 'end',
-                click: () => fetchAuditRefuse(record),
+                pop: true,
+                visible: status === '1',
+                click: () => fetchSubsidyEndDel({ subsidyId, status: 0 }),
               },
             ]}
           />
@@ -139,6 +122,15 @@ const SubsidyManage = (props) => {
       },
     },
   ];
+
+  // 补贴管理 结束 删除
+  const fetchSubsidyEndDel = (payload) => {
+    dispatch({
+      type: 'subsidyManage/fetchSubsidyEndDel',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
 
   // 导出excel 数据
   const fetchGetExcel = (payload) => {

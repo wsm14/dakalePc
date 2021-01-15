@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import {
   fetchSubsidyList,
   fetchSubsidyGetExcel,
-  fetchWithdrawTotal,
+  fetchSubsidyEndDel,
   fetchWithdrawSetRemark,
 } from '@/services/FinanceServices';
 
@@ -11,7 +11,6 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
-    totalData: { withdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
   },
 
   reducers: {
@@ -41,22 +40,15 @@ export default {
       const { content } = response;
       if (callback) callback(content.subsidyList);
     },
-    *fetchWithdrawTotal({ payload }, { call, put }) {
-      const response = yield call(fetchWithdrawTotal, payload);
+    *fetchSubsidyEndDel({ payload, callback }, { call }) {
+      const { deleteFlag } = payload;
+      const response = yield call(fetchSubsidyEndDel, payload);
       if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          totalData: content,
-        },
+      notification.success({
+        message: '温馨提示',
+        description: `${deleteFlag === 0 ? '删除' : '结束'}成功`,
       });
-    },
-    *fetchGetExcel({ payload, callback }, { call }) {
-      const response = yield call(fetchWithdrawExportExcel, payload);
-      if (!response) return;
-      const { content } = response;
-      if (callback) callback(content.merchantBeanWithdrawalList);
+      callback();
     },
     *fetchWithdrawSetRemark({ payload, callback }, { call }) {
       const response = yield call(fetchWithdrawSetRemark, payload);
