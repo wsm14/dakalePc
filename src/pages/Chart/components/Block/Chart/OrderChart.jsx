@@ -34,7 +34,7 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
       title: '核销金额',
       info: '店铺核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
       key: 'verificationFee',
-      numName: '核销人数',
+      numName: '核销数量',
     },
     {
       title: '客单价',
