@@ -260,9 +260,9 @@ const SearchCondition = (props) => {
       // 排版填充
       children.push(
         <Col
-          lg={pickerCheck ? 10 : componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
-          xl={pickerCheck ? 10 : i < colcount ? 12 : 0}
-          xxl={pickerCheck ? 8 : componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
+          lg={i < colcount ? (pickerCheck ? 10 : componentSize !== 'default' ? 8 : 12) : 0}
+          xl={i < colcount ? (pickerCheck ? 10 : 12) : 0}
+          xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
           key={i}
         >
           <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>

@@ -4,7 +4,6 @@ import {
   fetchUserDetail,
   fetchUserStatus,
   fetchUserTotal,
-  fetchUserAddTotal,
   fetchUserChartTotal,
 } from '@/services/UserServices';
 
@@ -46,19 +45,12 @@ export default {
     },
     *fetchUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchUserTotal, payload);
-      const responseTow = yield call(fetchUserAddTotal, payload);
       if (!response) return;
-      if (!responseTow) return;
       const { content } = response;
-      const { content: contentTwo } = responseTow;
-      const {
-        userRealNameCount: userAddRealNameCount = 0,
-        userTopUpCount: userAddTopUpCount = 0,
-      } = contentTwo;
       yield put({
         type: 'save',
         payload: {
-          totalData: { ...content, userAddRealNameCount, userAddTopUpCount },
+          totalData: content,
         },
       });
     },
