@@ -154,5 +154,5 @@ const UserListComponent = (props) => {
 
 export default connect(({ userList, loading }) => ({
   list: userList.list,
-  loading: loading.effects['userList/fetchGetList'],
+  loading: loading.effects['userList/fetchGetList'] || loading.effects['userList/fetchUserDetail'],
 }))(UserListComponent);
