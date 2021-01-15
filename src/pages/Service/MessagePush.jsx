@@ -152,10 +152,6 @@ const MessagePush = (props) => {
                 click: () => fetchMsgPushDeatil(val, 'edit'),
               },
               {
-                type: 'eye', // 查看
-                click: () => fetchMsgPushDeatil(val, 'info'),
-              },
-              {
                 type: 'revoke', // 撤销 推送中 推送成功
                 visible: ['1', '2'].includes(status),
                 pop: true,
@@ -164,6 +160,10 @@ const MessagePush = (props) => {
               {
                 type: 'copy', // 复制
                 click: () => fetchMsgPushHandle(val, 'copy'),
+              },
+              {
+                type: 'eye', // 查看
+                click: () => fetchMsgPushDeatil(val, 'info'),
               },
             ]}
           />
