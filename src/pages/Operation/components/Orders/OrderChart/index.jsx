@@ -31,6 +31,7 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
       title: '平台总营收金额',
       info: '店铺通过扫码支付或核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
       key: 'allTotal',
+      numName: false,
     },
     {
       title: '扫码付金额',
@@ -100,12 +101,15 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
                 type="quest"
               ></QuestionTooltip>
             }
+            valueStyle={item.key === 'allTotal' ? { fontSize: 40 } : {}}
             value={checkData(totalData[item.key], 'totalFee')}
             precision={2}
           />
-          <span style={allStyle}>
-            {item.numName ? item.numName : '订单数'}：{checkData(totalData[item.key], 'docCount')}
-          </span>
+          {item.numName !== false && (
+            <span style={allStyle}>
+              {item.numName ? item.numName : '订单数'}：{checkData(totalData[item.key], 'docCount')}
+            </span>
+          )}
         </Card.Grid>
       ))}
     </Card>
