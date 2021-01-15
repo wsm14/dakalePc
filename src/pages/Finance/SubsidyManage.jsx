@@ -6,7 +6,7 @@ import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import SubsidyDrawer from './components/subsidy/SubsidyDrawer';
+import SubsidyDrawer from './components/Subsidys/SubsidyDrawer';
 
 const SubsidyManage = (props) => {
   const { subsidyManage, loading, dispatch } = props;
@@ -103,7 +103,7 @@ const SubsidyManage = (props) => {
             formItems={[
               {
                 type: 'info',
-                click: () => fetchShareDetail(val, record.contentType),
+                click: () => fetchSubsidyDetail({ subsidyId }),
               },
               {
                 type: 'del',
@@ -122,6 +122,15 @@ const SubsidyManage = (props) => {
       },
     },
   ];
+
+  // 补贴管理 详情
+  const fetchSubsidyDetail = (payload) => {
+    dispatch({
+      type: 'subsidyManage/fetchSubsidyDetail',
+      payload,
+      callback: (detail) => setVisible({ type: 'info', show: true, detail }),
+    });
+  };
 
   // 补贴管理 结束 删除
   const fetchSubsidyEndDel = (payload) => {
@@ -170,7 +179,11 @@ const SubsidyManage = (props) => {
         dispatchType="subsidyManage/fetchGetList"
         {...subsidyManage.list}
       ></DataTableBlock>
-      <SubsidyDrawer visible={visible} setVisible={setVisible}></SubsidyDrawer>
+      <SubsidyDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></SubsidyDrawer>
     </>
   );
 };

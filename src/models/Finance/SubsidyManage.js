@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import {
   fetchSubsidyList,
   fetchSubsidyGetExcel,
+  fetchSubsidyDetail,
   fetchSubsidyEndDel,
   fetchWithdrawSetRemark,
 } from '@/services/FinanceServices';
@@ -39,6 +40,12 @@ export default {
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.subsidyList);
+    },
+    *fetchSubsidyDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.subsidy);
     },
     *fetchSubsidyEndDel({ payload, callback }, { call }) {
       const { deleteFlag } = payload;

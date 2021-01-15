@@ -16,6 +16,13 @@ export function fetchSubsidyGetExcel(params) {
   });
 }
 
+// get 补贴管理 - 详情
+export function fetchSubsidyDetail(params) {
+  return request('/admin/subsidyManagement/getSubsidyById', {
+    params,
+  });
+}
+
 // post 补贴管理 - 删除 结束
 export function fetchSubsidyEndDel(data) {
   return request('/admin/subsidyManagement/updateSubsidy', {
