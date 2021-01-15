@@ -135,12 +135,13 @@ const MessagePush = (props) => {
       align: 'right',
       dataIndex: 'messagePushId',
       render: (val, row) => {
+        const { pushStatus: status } = row;
         return (
           <HandleSetTable
             formItems={[
               {
-                type: 'edit',
-                visible: !val,
+                type: 'edit', // 修改
+                visible: status === '0',
                 click: () =>
                   setFaqSet({
                     type: 'edit',
@@ -148,8 +149,19 @@ const MessagePush = (props) => {
                   }),
               },
               {
-                type: 'eye',
-                visible: !val,
+                type: 'push', // 推送 未推送
+                visible: status === '0',
+                pop: true,
+                click: () => fetchMsgPushHandle(val, 'push'),
+              },
+              {
+                type: 'revoke', // 撤销 推送中 推送成功
+                visible: ['1', '2'].includes(status),
+                pop: true,
+                click: () => fetchMsgPushHandle(val, 'revoke'),
+              },
+              {
+                type: 'copy', // 复制
                 click: () =>
                   setFaqSet({
                     type: 'edit',
@@ -157,17 +169,7 @@ const MessagePush = (props) => {
                   }),
               },
               {
-                type: 'copy',
-                visible: !val,
-                click: () =>
-                  setFaqSet({
-                    type: 'edit',
-                    detail: { ...row, questionCategoryId: row.questionCategoryIdStr },
-                  }),
-              },
-              {
-                type: 'push',
-                visible: !val,
+                type: 'eye', // 查看
                 click: () =>
                   setFaqSet({
                     type: 'edit',
@@ -181,14 +183,26 @@ const MessagePush = (props) => {
     },
   ];
 
-  // 删除问题
-  const fetchFAQDel = () => {
+  // 按钮操作 type: push 推送 revoke 撤销
+  const fetchMsgPushHandle = (id, type) => {
+    const api = { push: 'messagePush/fetchMsgPush', revoke: 'messagePush/fetchMsgPushRevoke' }[
+      type
+    ];
+    dispatch({
+      type: api,
+      payload: { id },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 删除
+  const fetchMsgPushDel = () => {
     Modal.confirm({
       title: '温馨提示',
-      content: '确定要删除当前问题吗？删除后数据不可找回',
+      content: '确定要删除当前消息吗？删除后数据不可找回',
       onOk() {
         dispatch({
-          type: 'serviceFAQ/fetchFAQDel',
+          type: 'messagePush/fetchMsgPushDel',
           payload: { questionIds: delKey },
           callback: () => {
             setDelKey([]);
@@ -209,7 +223,7 @@ const MessagePush = (props) => {
       tabBarExtraContent={
         <Space>
           <AuthConsumer auth="del">
-            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchFAQDel}>
+            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchMsgPushDel}>
               批量删除
             </Button>
           </AuthConsumer>

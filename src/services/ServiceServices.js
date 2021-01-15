@@ -47,10 +47,34 @@ export function fetchNewsStatus(data) {
 
 // 消息推送
 
-// 消息推送 - 列表
+// get 消息推送 - 列表
 export function fetchMsgPushList(params) {
   return request('/admin/messagePushManagement/listMessagePush', {
     params,
+  });
+}
+
+// post 消息推送 - 推送
+export function fetchMsgPush(data) {
+  return request('/admin/messagePushManagement/pushMessage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 删除消息
+export function fetchMsgPushDel(data) {
+  return request('/admin/messagePushManagement/cancelMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 撤回推送
+export function fetchMsgPushRevoke(data) {
+  return request('/admin/messagePushManagement/cancelMessagePush', {
+    method: 'POST',
+    data,
   });
 }
 

@@ -1,7 +1,9 @@
 import { notification } from 'antd';
 import {
   fetchMsgPushList,
-  fetchFeedBackPush,
+  fetchMsgPush,
+  fetchMsgPushDel,
+  fetchMsgPushRevoke,
   fetchFeedBackDetail,
 } from '@/services/ServiceServices';
 
@@ -39,12 +41,30 @@ export default {
       const { content } = response;
       callback(content.userFeedbackDTO);
     },
-    *fetchFeedBackPush({ payload, callback }, { call, put }) {
-      const response = yield call(fetchFeedBackPush, payload);
+    *fetchMsgPush({ payload, callback }, { call }) {
+      const response = yield call(fetchMsgPush, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '反馈成功',
+        description: '消息推送成功',
+      });
+      callback();
+    },
+    *fetchMsgPushDel({ payload, callback }, { call }) {
+      const response = yield call(fetchMsgPushDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '消息删除成功',
+      });
+      callback();
+    },
+    *fetchMsgPushRevoke({ payload, callback }, { call }) {
+      const response = yield call(fetchMsgPushRevoke, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '消息撤回成功',
       });
       callback();
     },
