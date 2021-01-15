@@ -61,6 +61,30 @@ export function fetchMsgPushDetail(params) {
   });
 }
 
+// post 消息推送 - 新增
+export function fetchMsgPushAdd(data) {
+  return request('/admin/messagePushManagement/createUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 编辑
+export function fetchMsgPushEdit(data) {
+  return request('/admin/messagePushManagement/updateUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 复制
+export function fetchMsgPushCopy(data) {
+  return request('/admin/messagePushManagement/copyUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 消息推送 - 推送
 export function fetchMsgPush(data) {
   return request('/admin/messagePushManagement/pushMessage', {

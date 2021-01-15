@@ -141,19 +141,19 @@ const MessagePush = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'edit', // 修改
-                visible: status === '0',
-                click: () =>
-                  setFaqSet({
-                    type: 'edit',
-                    detail: { ...row, questionCategoryId: row.questionCategoryIdStr },
-                  }),
-              },
-              {
                 type: 'push', // 推送 未推送
                 visible: status === '0',
                 pop: true,
                 click: () => fetchMsgPushHandle(val, 'push'),
+              },
+              {
+                type: 'edit', // 修改
+                visible: status === '0',
+                click: () => fetchMsgPushDeatil(val, 'edit'),
+              },
+              {
+                type: 'eye', // 查看
+                click: () => fetchMsgPushDeatil(val, 'info'),
               },
               {
                 type: 'revoke', // 撤销 推送中 推送成功
@@ -163,15 +163,7 @@ const MessagePush = (props) => {
               },
               {
                 type: 'copy', // 复制
-                click: () =>
-                  setFaqSet({
-                    type: 'edit',
-                    detail: { ...row, questionCategoryId: row.questionCategoryIdStr },
-                  }),
-              },
-              {
-                type: 'eye', // 查看
-                click: () => fetchMsgPushDeatil(val, 'info'),
+                click: () => fetchMsgPushHandle(val, 'copy'),
               },
             ]}
           />
@@ -189,11 +181,13 @@ const MessagePush = (props) => {
     });
   };
 
-  // 按钮操作 type: push 推送 revoke 撤销
+  // 按钮操作 type: push 推送 revoke 撤销 copy 复制
   const fetchMsgPushHandle = (id, type) => {
-    const api = { push: 'messagePush/fetchMsgPush', revoke: 'messagePush/fetchMsgPushRevoke' }[
-      type
-    ];
+    const api = {
+      push: 'messagePush/fetchMsgPush',
+      revoke: 'messagePush/fetchMsgPushRevoke',
+      copy: 'messagePush/fetchMsgPushCopy',
+    }[type];
     dispatch({
       type: api,
       payload: { id },
@@ -237,7 +231,9 @@ const MessagePush = (props) => {
             <AuthConsumer auth="save">
               <Button
                 className="dkl_green_btn"
-                onClick={() => setVisible({ type: 'add', shwo: true })}
+                onClick={() =>
+                  setVisible({ type: 'add', shwo: true, detail: { pushObjectType: 'all' } })
+                }
               >
                 新增推送
               </Button>
@@ -267,6 +263,7 @@ const MessagePush = (props) => {
         )}
       </Card>
       <MessageDrawer
+        userType={tabkey}
         childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
