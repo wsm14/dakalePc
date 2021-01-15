@@ -44,3 +44,14 @@ export function fetchNewsStatus(data) {
     data,
   });
 }
+
+// 消息推送
+
+// 消息推送 - 列表
+export function fetchMsgPushList(params) {
+  return request('/admin/messagePushManagement/listMessagePush', {
+    params,
+  });
+}
+
+// 消息推送 end

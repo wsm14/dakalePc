@@ -1,6 +1,6 @@
 import { notification } from 'antd';
 import {
-  fetchFeedBackList,
+  fetchMsgPushList,
   fetchFeedBackPush,
   fetchFeedBackDetail,
 } from '@/services/ServiceServices';
@@ -23,13 +23,13 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchFeedBackList, payload);
+      const response = yield call(fetchMsgPushList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.dtoList, total: content.total },
+          list: { list: content.recordList, total: content.total },
         },
       });
     },
