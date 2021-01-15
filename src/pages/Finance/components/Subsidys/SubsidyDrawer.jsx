@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import FormCondition from '@/components/FormCondition';
 import SubsidyDetail from './Detail/SubsidyDetail';
+import SubsidyDirectMoney from './Form/SubsidyDirectMoney';
 
 const SubsidyDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
@@ -15,10 +15,9 @@ const SubsidyDrawer = (props) => {
   const handleUpAudit = () => {
     form.validateFields().then((value) => {
       dispatch({
-        type: 'franchiseApp/fetchFranchiseHandle',
+        type: 'subsidyManage/fetchSubsidyAdd',
         payload: {
           ...value,
-          userApplyId: detail.userApplyIdString,
         },
         callback: () => {
           onClose();
@@ -28,29 +27,11 @@ const SubsidyDrawer = (props) => {
     });
   };
 
-  const formItems = [
-    {
-      label: '处理详情',
-      type: 'textArea',
-      name: 'handleDetails',
-    },
-    {
-      label: '处理人',
-      name: 'handler',
-      visible: type === 'info',
-    },
-    {
-      label: '处理时间',
-      name: 'handleTime',
-      visible: type === 'info',
-    },
-  ];
-
   // 统一处理
   const drawerProps = {
     add: {
       title: '新增任务',
-      children: <FormCondition form={form} formItems={formItems}></FormCondition>,
+      children: <SubsidyDirectMoney form={form} detail={detail}></SubsidyDirectMoney>,
       footer: (
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           提交

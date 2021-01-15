@@ -4,7 +4,7 @@ import {
   fetchSubsidyGetExcel,
   fetchSubsidyDetail,
   fetchSubsidyEndDel,
-  fetchWithdrawSetRemark,
+  fetchSubsidyAdd,
 } from '@/services/FinanceServices';
 
 export default {
@@ -53,16 +53,16 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `${deleteFlag === 0 ? '删除' : '结束'}成功`,
+        description: `任务${deleteFlag === 0 ? '删除' : '结束'}成功`,
       });
       callback();
     },
-    *fetchWithdrawSetRemark({ payload, callback }, { call }) {
-      const response = yield call(fetchWithdrawSetRemark, payload);
+    *fetchSubsidyAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '备注设置成功',
+        description: '任务新增成功',
       });
       callback();
     },

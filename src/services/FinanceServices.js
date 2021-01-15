@@ -23,6 +23,14 @@ export function fetchSubsidyDetail(params) {
   });
 }
 
+// post 补贴管理 - 新增
+export function fetchSubsidyAdd(data) {
+  return request('/admin/subsidyManagement/platformDirectCharge', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 补贴管理 - 删除 结束
 export function fetchSubsidyEndDel(data) {
   return request('/admin/subsidyManagement/updateSubsidy', {
