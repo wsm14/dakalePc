@@ -16,7 +16,7 @@ export function fetchUserDetail(params) {
 
 // get 用户列表 - 用户统计
 export function fetchUserTotal(params) {
-  return request('/admin/userManagement/getUserStatisticTotal', {
+  return request('/admin/userManagement/userListManagementStatisticsDay', {
     params,
   });
 }
@@ -24,13 +24,6 @@ export function fetchUserTotal(params) {
 // get 用户列表 - 用户统计
 export function fetchUserChartTotal(params) {
   return request('/admin/userManagement/userListManagementStatistics', {
-    params,
-  });
-}
-
-// get 用户列表 - 用户新增用户统计
-export function fetchUserAddTotal(params) {
-  return request('/admin/userManagement/getUserStatistic', {
     params,
   });
 }

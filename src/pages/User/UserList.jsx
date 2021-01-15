@@ -99,6 +99,7 @@ const UserListComponent = (props) => {
 
   useEffect(() => {
     fetchUserChartTotal();
+    childRef.current && childRef.current.fetchGetData(cityData);
   }, [cityData]);
 
   // 获取用户统计
@@ -141,6 +142,7 @@ const UserListComponent = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
+        params={cityData}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="userList/fetchGetList"
