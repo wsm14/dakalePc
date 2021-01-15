@@ -133,7 +133,7 @@ const UserListComponent = (props) => {
         <SearchCard setSearchData={setCityData}></SearchCard>
       </Card>
       {/* 用户数统计 */}
-      <UserListTotalInfo></UserListTotalInfo>
+      <UserListTotalInfo cityData={cityData}></UserListTotalInfo>
       {/* 用户chart统计 */}
       <UserTotalSpread></UserTotalSpread>
       <DataTableBlock
