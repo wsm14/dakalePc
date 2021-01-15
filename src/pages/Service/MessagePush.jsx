@@ -203,7 +203,7 @@ const MessagePush = (props) => {
       onOk() {
         dispatch({
           type: 'messagePush/fetchMsgPushDel',
-          payload: { questionIds: delKey },
+          payload: { messagePushIds: delKey },
           callback: () => {
             setDelKey([]);
             childRef.current.fetchGetData();

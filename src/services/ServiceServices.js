@@ -103,7 +103,7 @@ export function fetchMsgPushDel(data) {
 
 // post 消息推送 - 撤回推送
 export function fetchMsgPushRevoke(data) {
-  return request('/admin/messagePushManagement/cancelMessagePush', {
+  return request('/admin/messagePushManagement/batchDeleteMessagePush', {
     method: 'POST',
     data,
   });
