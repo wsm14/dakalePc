@@ -237,9 +237,7 @@ const MessagePush = (props) => {
             <AuthConsumer auth="save">
               <Button
                 className="dkl_green_btn"
-                onClick={() =>
-                  setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } })
-                }
+                onClick={() => setVisible({ type: 'add', shwo: true })}
               >
                 新增推送
               </Button>

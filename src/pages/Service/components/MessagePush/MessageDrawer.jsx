@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import FormCondition from '@/components/FormCondition';
 import MessageDetail from './Deatil/MessageDetail';
+import MessagePushSet from './Form/MessagePushSet';
 
 const MessageDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
@@ -28,29 +28,11 @@ const MessageDrawer = (props) => {
     });
   };
 
-  const formItems = [
-    {
-      label: '处理详情',
-      type: 'textArea',
-      name: 'handleDetails',
-    },
-    {
-      label: '处理人',
-      name: 'handler',
-      visible: type === 'info',
-    },
-    {
-      label: '处理时间',
-      name: 'handleTime',
-      visible: type === 'info',
-    },
-  ];
-
   // 统一处理
   const drawerProps = {
-    handle: {
+    add: {
       title: '处理',
-      children: <FormCondition form={form} formItems={formItems}></FormCondition>,
+      children: <MessagePushSet form={form}></MessagePushSet>,
       footer: (
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           提交
@@ -59,7 +41,7 @@ const MessageDrawer = (props) => {
     },
     info: {
       title: '查看推送',
-      children: <MessageDetail formItems={formItems} initialValues={detail}></MessageDetail>,
+      children: <MessageDetail initialValues={detail}></MessageDetail>,
     },
   }[type];
 
