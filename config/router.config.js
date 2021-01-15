@@ -329,6 +329,12 @@ export default [
             component: './Service/ServiceFeedBack',
             buttons: ['eye', 'replay'],
           },
+          {
+            path: '/service/msg',
+            name: '消息推送',
+            component: './Service/MessagePush',
+            buttons: ['save', 'del', 'edit', 'eye', 'copy', 'push'],
+          },
         ],
       },
       {

@@ -12,6 +12,8 @@ export const ROLE_BUTTON_TYPE = {
   status: '状态',
   exportList: '导出',
   set: '设置',
+  copy: '复制',
+  push: '推送',
   replay: '回复',
   handle: '处理',
   relieve: '解约',
