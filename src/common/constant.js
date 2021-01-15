@@ -154,14 +154,20 @@ export const REFUND_ORDERS_STATUS = [
   '退款中',
 ];
 
+// 消息推送 - 推送状态
+export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
+
+// 消息推送 - 推送目标
+export const MSG_PSUH_TAB = { user: '用户端', merchant: '商家端' };
+
 // 消息推送 - 消息类型
 export const MSG_PSUH_TYPE = { official: '官方消息', system: '系统消息' };
 
-// 消息推送 - 推送对象
-export const MSG_PSUH_OBJECT = { all: '全部用户', specific: '指定用户', group: '用户群体' };
+// 消息推送 - 推送对象, specific: '指定用户', group: '用户群体'
+export const MSG_PSUH_OBJECT = { all: '全部用户' };
 
-// 消息推送 - 推送状态
-export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
+// 消息推送 - 跳转类型
+export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 
 // 分享类型
 export const SHARE_TYPE = [

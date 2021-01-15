@@ -54,6 +54,13 @@ export function fetchMsgPushList(params) {
   });
 }
 
+// get 消息推送 - 详情
+export function fetchMsgPushDetail(params) {
+  return request('/admin/messagePushManagement/getMessagePushById', {
+    params,
+  });
+}
+
 // post 消息推送 - 推送
 export function fetchMsgPush(data) {
   return request('/admin/messagePushManagement/pushMessage', {

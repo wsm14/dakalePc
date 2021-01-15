@@ -5,6 +5,7 @@ import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_STATUS } from '@/common/consta
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
+import MessageDrawer from './components/MessagePush/MessageDrawer';
 
 const tabList = [
   {
@@ -28,8 +29,8 @@ const MessagePush = (props) => {
   const [tabkey, setTabKey] = useState(false);
   // 多选删除项木key
   const [delKey, setDelKey] = useState([]);
-  // 设置faq
-  const [faqSet, setFaqSet] = useState(false);
+  // 设置 修改 详情
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     setTabKey(check ? check[0]['key'] : false);
@@ -170,11 +171,7 @@ const MessagePush = (props) => {
               },
               {
                 type: 'eye', // 查看
-                click: () =>
-                  setFaqSet({
-                    type: 'edit',
-                    detail: { ...row, questionCategoryId: row.questionCategoryIdStr },
-                  }),
+                click: () => fetchMsgPushDeatil(val, 'info'),
               },
             ]}
           />
@@ -182,6 +179,15 @@ const MessagePush = (props) => {
       },
     },
   ];
+
+  // 获取详情 type：info 查看 edit 修改
+  const fetchMsgPushDeatil = (id, type) => {
+    dispatch({
+      type: 'messagePush/fetchMsgPushDetail',
+      payload: { messagePushId: id },
+      callback: (detail) => setVisible({ type, shwo: true, detail }),
+    });
+  };
 
   // 按钮操作 type: push 推送 revoke 撤销
   const fetchMsgPushHandle = (id, type) => {
@@ -214,53 +220,60 @@ const MessagePush = (props) => {
   };
 
   return (
-    <Card
-      tabList={check}
-      onTabChange={(key) => {
-        setDelKey([]);
-        setTabKey(key);
-      }}
-      tabBarExtraContent={
-        <Space>
-          <AuthConsumer auth="del">
-            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchMsgPushDel}>
-              批量删除
-            </Button>
-          </AuthConsumer>
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() =>
-                setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } })
-              }
-            >
-              新增推送
-            </Button>
-          </AuthConsumer>
-        </Space>
-      }
-    >
-      {check ? (
-        <DataTableBlock
-          NoSearch
-          CardNone={false}
-          cRef={childRef}
-          loading={loading.models.messagePush}
-          searchItems={searchItems}
-          columns={getColumns}
-          params={{ userType: tabkey }}
-          rowKey={(record) => `${record.messagePushId}`}
-          dispatchType="messagePush/fetchGetList"
-          rowSelection={{
-            selectedRowKeys: delKey,
-            onChange: (val) => setDelKey(val),
-          }}
-          {...messagePush.list}
-        ></DataTableBlock>
-      ) : (
-        <Result status="403" title="403" subTitle="暂无权限"></Result>
-      )}
-    </Card>
+    <>
+      <Card
+        tabList={check}
+        onTabChange={(key) => {
+          setDelKey([]);
+          setTabKey(key);
+        }}
+        tabBarExtraContent={
+          <Space>
+            <AuthConsumer auth="del">
+              <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchMsgPushDel}>
+                批量删除
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() =>
+                  setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } })
+                }
+              >
+                新增推送
+              </Button>
+            </AuthConsumer>
+          </Space>
+        }
+      >
+        {check ? (
+          <DataTableBlock
+            NoSearch
+            CardNone={false}
+            cRef={childRef}
+            loading={loading.models.messagePush}
+            searchItems={searchItems}
+            columns={getColumns}
+            params={{ userType: tabkey }}
+            rowKey={(record) => `${record.messagePushId}`}
+            dispatchType="messagePush/fetchGetList"
+            rowSelection={{
+              selectedRowKeys: delKey,
+              onChange: (val) => setDelKey(val),
+            }}
+            {...messagePush.list}
+          ></DataTableBlock>
+        ) : (
+          <Result status="403" title="403" subTitle="暂无权限"></Result>
+        )}
+      </Card>
+      <MessageDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></MessageDrawer>
+    </>
   );
 };
 

@@ -4,7 +4,7 @@ import {
   fetchMsgPush,
   fetchMsgPushDel,
   fetchMsgPushRevoke,
-  fetchFeedBackDetail,
+  fetchMsgPushDetail,
 } from '@/services/ServiceServices';
 
 export default {
@@ -35,11 +35,11 @@ export default {
         },
       });
     },
-    *fetchFeedBackDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchFeedBackDetail, payload);
+    *fetchMsgPushDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchMsgPushDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.userFeedbackDTO);
+      callback(content.messagePush);
     },
     *fetchMsgPush({ payload, callback }, { call }) {
       const response = yield call(fetchMsgPush, payload);
