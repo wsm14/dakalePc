@@ -232,7 +232,11 @@ const MessagePush = (props) => {
               <Button
                 className="dkl_green_btn"
                 onClick={() =>
-                  setVisible({ type: 'add', shwo: true, detail: { pushObjectType: 'all' } })
+                  setVisible({
+                    type: 'add',
+                    shwo: true,
+                    detail: { pushObjectType: 'all', userType: tabkey },
+                  })
                 }
               >
                 新增推送
