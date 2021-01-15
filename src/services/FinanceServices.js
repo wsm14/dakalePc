@@ -9,6 +9,13 @@ export function fetchSubsidyList(params) {
   });
 }
 
+// get 补贴管理 - 导出
+export function fetchSubsidyGetExcel(params) {
+  return request('/admin/subsidyManagement/listSubsidyImport', {
+    params,
+  });
+}
+
 // 补贴管理 end
 
 // 提现明细

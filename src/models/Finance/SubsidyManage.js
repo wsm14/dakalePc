@@ -1,8 +1,8 @@
 import { notification } from 'antd';
 import {
   fetchSubsidyList,
+  fetchSubsidyGetExcel,
   fetchWithdrawTotal,
-  fetchWithdrawExportExcel,
   fetchWithdrawSetRemark,
 } from '@/services/FinanceServices';
 
@@ -34,6 +34,12 @@ export default {
           list: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchSubsidyGetExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyGetExcel, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.subsidyList);
     },
     *fetchWithdrawTotal({ payload }, { call, put }) {
       const response = yield call(fetchWithdrawTotal, payload);

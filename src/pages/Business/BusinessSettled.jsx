@@ -181,7 +181,7 @@ const BusinessSettled = (props) => {
 
   // 导出excel 数据
   const fetchGetExcel = (payload) => {
-    const header = getColumns.slice(1);
+    const header = getColumns.slice(0, -1);
     dispatch({
       type: 'businessSettled/fetchMerchantGetExcel',
       payload,
