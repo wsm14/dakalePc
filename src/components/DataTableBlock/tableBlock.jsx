@@ -2,6 +2,7 @@ import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { connect } from 'umi';
 import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
+import DraggableContent from './SortBlock';
 
 /**
  *
@@ -34,6 +35,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @scrollX 横向滚动
  * @rowSelection
  * @children
+ * @tableSort 表格排序 {onSortEnd:()=>{}}
  */
 
 const TableBlockComponent = (props) => {
@@ -42,7 +44,6 @@ const TableBlockComponent = (props) => {
     dispatchType,
     scrollY,
     scrollX = 'max-content',
-    keepName,
     columns,
     searchItems,
     searchForm,
@@ -68,6 +69,7 @@ const TableBlockComponent = (props) => {
     rowSelection,
     onRow,
     children,
+    tableSort = false,
     searchCallback,
   } = props;
 
@@ -184,6 +186,8 @@ const TableBlockComponent = (props) => {
         pagination={pagination === false ? false : paginationProps}
         onRow={onRow}
         onChange={tableChange}
+        // 排序
+        {...(tableSort ? DraggableContent(list, tableSort) : {})}
         {...props}
       />
     </>
