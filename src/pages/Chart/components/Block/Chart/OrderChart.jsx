@@ -34,11 +34,13 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
       title: '核销金额',
       info: '店铺核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
       key: 'verificationFee',
+      numName: '核销人数',
     },
     {
       title: '客单价',
       info: '总营收金额（扫码付+核销）/付款人数',
       key: 'distinctPerson',
+      numName: '付款人数',
     },
     {
       title: '哒人带货销售额',
@@ -93,7 +95,9 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
             value={checkData(totalData[item.key], 'totalFee')}
             precision={2}
           />
-          <span style={allStyle}>订单数：{checkData(totalData[item.key], 'docCount')}</span>
+          <span style={allStyle}>
+            {item.numName ? item.numName : '订单数'}：{checkData(totalData[item.key], 'docCount')}
+          </span>
         </Card.Grid>
       ))}
     </Card>
