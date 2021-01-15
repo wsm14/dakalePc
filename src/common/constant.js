@@ -154,6 +154,12 @@ export const REFUND_ORDERS_STATUS = [
   '退款中',
 ];
 
+// 补贴类型
+export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
+
+// 补贴角色
+export const SUBSIDY_ROLE = { user: '用户', merchant: '商户', kol: '哒人' };
+
 // 分享类型
 export const SHARE_TYPE = [
   { value: 'video', name: '视频' },

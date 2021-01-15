@@ -1,5 +1,16 @@
 import request from '@/utils/request';
 
+// 补贴管理
+
+// get 补贴管理 - 列表
+export function fetchSubsidyList(params) {
+  return request('/admin/subsidyManagement/listSubsidy', {
+    params,
+  });
+}
+
+// 补贴管理 end
+
 // 提现明细
 
 // get 提现明细 - 列表

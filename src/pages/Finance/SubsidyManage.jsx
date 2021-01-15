@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { SHARE_STATUS } from '@/common/constant';
+import { SUBSIDY_TYPE, SUBSIDY_ROLE } from '@/common/constant';
 import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -9,7 +9,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import SubsidyDrawer from './components/subsidy/SubsidyDrawer';
 
 const SubsidyManage = (props) => {
-  const { shareManage, loading, dispatch } = props;
+  const { subsidyManage, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -49,25 +49,25 @@ const SubsidyManage = (props) => {
   const searchItems = [
     {
       label: '任务名称',
-      name: 'title',
+      name: 'taskName',
     },
     {
       label: '补贴类型',
       type: 'select',
-      name: 'contentType',
-      select: { list: ['平台直充'] },
+      name: 'type',
+      select: SUBSIDY_TYPE,
     },
     {
       label: '补贴角色',
       type: 'select',
-      name: 'status',
-      select: { list: SHARE_STATUS },
+      name: 'role',
+      select: SUBSIDY_ROLE,
     },
     {
       label: '时间',
       type: 'rangePicker',
-      name: 'activationTimeStart',
-      end: 'activationTimeEnd',
+      name: 'startTime',
+      end: 'endTime',
       onCalendarChange: setDates,
       onOpenChange: () => setDates([]),
       disabledDate,
@@ -79,39 +79,40 @@ const SubsidyManage = (props) => {
     {
       title: '序号',
       fixed: 'left',
-      dataIndex: 'frontImage',
+      dataIndex: 'rechargeBeans',
       render: (val, row, index) => index + 1,
     },
     {
       title: '任务名称',
       fixed: 'left',
-      dataIndex: 'title',
+      dataIndex: 'taskName',
       width: 150,
     },
     {
       title: '补贴类型',
-      dataIndex: 'merchantName',
-      render: (val) => val,
+      align: 'center',
+      dataIndex: 'type',
+      render: (val) => SUBSIDY_TYPE[val],
     },
     {
       title: '补贴角色',
       align: 'center',
-      dataIndex: 'contentType',
-      render: (val) => (val == 'video' ? '视频' : '图片'),
+      dataIndex: 'role',
+      render: (val) => SUBSIDY_ROLE[val],
     },
     {
       title: '总参与人数',
       align: 'right',
-      dataIndex: 'beanAmount',
+      dataIndex: 'participants',
     },
     {
       title: '已补贴卡豆数',
       align: 'right',
-      dataIndex: 'length',
+      dataIndex: 'subsidizedBeans',
     },
     {
       title: '操作',
-      dataIndex: 'userMomentIdString',
+      dataIndex: 'subsidyId',
       fixed: 'right',
       align: 'right',
       render: (val, record) => {
@@ -125,13 +126,12 @@ const SubsidyManage = (props) => {
               },
               {
                 type: 'del',
-                visible: status == 1 || status == 5,
+                // visible: status == 1 || status == 5,
                 click: () => fetchAuditRefuse(record),
               },
               {
-                type: 'own',
-                auth: 'end',
-                title: '结束',
+                type: 'end',
+                click: () => fetchAuditRefuse(record),
               },
             ]}
           />
@@ -174,16 +174,16 @@ const SubsidyManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userMomentIdString}`}
-        dispatchType="shareManage/fetchGetList"
-        {...shareManage}
+        rowKey={(record) => `${record.subsidyId}`}
+        dispatchType="subsidyManage/fetchGetList"
+        {...subsidyManage.list}
       ></DataTableBlock>
       <SubsidyDrawer visible={visible} setVisible={setVisible}></SubsidyDrawer>
     </>
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  shareManage,
-  loading: loading.models.shareManage,
+export default connect(({ subsidyManage, loading }) => ({
+  subsidyManage,
+  loading: loading.models.subsidyManage,
 }))(SubsidyManage);
