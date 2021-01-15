@@ -134,3 +134,69 @@ export function fetchFAQClassSort(data) {
 }
 
 // FAQ end
+
+// 消息推送
+
+// get 消息推送 - 列表
+export function fetchMsgPushList(params) {
+  return request('/admin/messagePushManagement/listMessagePush', {
+    params,
+  });
+}
+
+// get 消息推送 - 详情
+export function fetchMsgPushDetail(params) {
+  return request('/admin/messagePushManagement/getMessagePushById', {
+    params,
+  });
+}
+
+// post 消息推送 - 新增
+export function fetchMsgPushAdd(data) {
+  return request('/admin/messagePushManagement/createUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 编辑
+export function fetchMsgPushEdit(data) {
+  return request('/admin/messagePushManagement/updateUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 复制
+export function fetchMsgPushCopy(data) {
+  return request('/admin/messagePushManagement/copyUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 推送
+export function fetchMsgPush(data) {
+  return request('/admin/messagePushManagement/pushMessage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 删除消息
+export function fetchMsgPushDel(data) {
+  return request('/admin/messagePushManagement/cancelMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 消息推送 - 撤回推送
+export function fetchMsgPushRevoke(data) {
+  return request('/admin/messagePushManagement/batchDeleteMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 消息推送 end

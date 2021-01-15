@@ -396,7 +396,7 @@ const FormComponents = ({
             allowClear={false}
           />
         ),
-        dataPicker: <DatePicker style={{ width: '100%' }} />,
+        dataPicker: <DatePicker showTime={item.showTime} style={{ width: '100%' }} />,
         rangePicker: (
           <DatePicker.RangePicker
             disabled={item.disabled}
