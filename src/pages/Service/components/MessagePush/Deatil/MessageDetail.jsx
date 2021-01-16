@@ -43,6 +43,7 @@ const MessageDetail = (props) => {
     {
       label: '推送时间',
       name: 'pushTime',
+      render: (val) => val.format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       label: '推送对象',

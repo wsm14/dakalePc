@@ -12,13 +12,16 @@ const MessageDrawer = (props) => {
   const [form] = Form.useForm();
 
   // 确认提交
-  const handleUpAudit = () => {
+  const handleUpAudit = (now) => {
     form.validateFields().then((value) => {
       const { pushTime } = value;
-      const dispathType = {
-        add: 'messagePush/fetchMsgPushAdd',
-        edit: 'messagePush/fetchMsgPushEdit',
-      }[type];
+      const dispathType =
+        now === 'too'
+          ? 'messagePush/fetchMsgAddAndPush' // 新增并推送
+          : {
+              add: 'messagePush/fetchMsgPushAdd', // 新增
+              edit: 'messagePush/fetchMsgPushEdit', // 修改
+            }[type];
       dispatch({
         type: dispathType,
         payload: {
@@ -40,7 +43,7 @@ const MessageDrawer = (props) => {
     children: <MessagePushSet form={form} initialValues={detail}></MessagePushSet>,
     footer: (
       <>
-        <Button onClick={handleUpAudit} type="primary" loading={loading}>
+        <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
           创建并推送
         </Button>
         <Button onClick={handleUpAudit} type="primary" loading={loading}>

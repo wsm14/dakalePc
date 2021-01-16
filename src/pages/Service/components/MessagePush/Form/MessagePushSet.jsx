@@ -51,7 +51,6 @@ const MessagePushSet = (props) => {
       name: 'pushTime',
       type: 'dataPicker',
       showTime: true,
-      rules: [{ required: false }],
     },
     {
       label: '推送对象',

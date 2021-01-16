@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { notification } from 'antd';
 import {
   fetchMsgPushList,
@@ -8,6 +9,7 @@ import {
   fetchMsgPushCopy,
   fetchMsgPushRevoke,
   fetchMsgPushDetail,
+  fetchMsgAddAndPush,
 } from '@/services/ServiceServices';
 
 export default {
@@ -42,7 +44,10 @@ export default {
       const response = yield call(fetchMsgPushDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.messagePush);
+      callback({
+        ...content.messagePush,
+        pushTime: moment(content.messagePush.pushTime),
+      });
     },
     *fetchMsgPushAdd({ payload, callback }, { call }) {
       const response = yield call(fetchMsgPushAdd, payload);
@@ -50,6 +55,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '消息新增成功',
+      });
+      callback();
+    },
+    *fetchMsgAddAndPush({ payload, callback }, { call }) {
+      const response = yield call(fetchMsgAddAndPush, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '消息新增并推送成功',
       });
       callback();
     },
