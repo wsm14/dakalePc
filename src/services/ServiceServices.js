@@ -159,6 +159,14 @@ export function fetchMsgPushAdd(data) {
   });
 }
 
+// post 消息推送 - 新增并推送
+export function fetchMsgAddAndPush(data) {
+  return request('/admin/messagePushManagement/createAndPushUserMessagePush', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 消息推送 - 编辑
 export function fetchMsgPushEdit(data) {
   return request('/admin/messagePushManagement/updateUserMessagePush', {
