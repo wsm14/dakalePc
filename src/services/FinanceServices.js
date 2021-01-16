@@ -1,5 +1,46 @@
 import request from '@/utils/request';
 
+// 补贴管理
+
+// get 补贴管理 - 列表
+export function fetchSubsidyList(params) {
+  return request('/admin/subsidyManagement/listSubsidy', {
+    params,
+  });
+}
+
+// get 补贴管理 - 导出
+export function fetchSubsidyGetExcel(params) {
+  return request('/admin/subsidyManagement/listSubsidyImport', {
+    params,
+  });
+}
+
+// get 补贴管理 - 详情
+export function fetchSubsidyDetail(params) {
+  return request('/admin/subsidyManagement/getSubsidyById', {
+    params,
+  });
+}
+
+// post 补贴管理 - 新增
+export function fetchSubsidyAdd(data) {
+  return request('/admin/subsidyManagement/platformDirectCharge', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 删除 结束
+export function fetchSubsidyEndDel(data) {
+  return request('/admin/subsidyManagement/updateSubsidy', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 补贴管理 end
+
 // 提现明细
 
 // get 提现明细 - 列表

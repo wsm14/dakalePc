@@ -188,6 +188,11 @@ export const MSG_PSUH_OBJECT = { all: '全部用户' };
 
 // 消息推送 - 跳转类型
 export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
+// 补贴类型
+export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
+
+// 补贴角色
+export const SUBSIDY_ROLE = { user: '用户', merchant: '商户', kol: '哒人' };
 
 // 分享类型
 export const SHARE_TYPE = [

@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { SHARE_STATUS } from '@/common/constant';
+import { SUBSIDY_TYPE, SUBSIDY_ROLE } from '@/common/constant';
 import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import SubsidyDrawer from './components/subsidy/SubsidyDrawer';
+import SubsidyDrawer from './components/Subsidys/SubsidyDrawer';
 
 const SubsidyManage = (props) => {
-  const { shareManage, loading, dispatch } = props;
+  const { subsidyManage, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -26,48 +26,29 @@ const SubsidyManage = (props) => {
     return tooEarly || tooLate;
   };
 
-  // 下架
-  const fetchAuditRefuse = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
-    });
-  };
-
-  // 获取详情
-  const fetchShareDetail = (val, type) => {
-    dispatch({
-      type: 'shareManage/fetchShareDetail',
-      payload: {
-        userMomentIdString: val,
-      },
-      callback: (detail) => setVisible({ show: true, type, detail }),
-    });
-  };
-
   // 搜索参数
   const searchItems = [
     {
       label: '任务名称',
-      name: 'title',
+      name: 'taskName',
     },
     {
       label: '补贴类型',
       type: 'select',
-      name: 'contentType',
-      select: { list: ['平台直充'] },
+      name: 'type',
+      select: SUBSIDY_TYPE,
     },
     {
       label: '补贴角色',
       type: 'select',
-      name: 'status',
-      select: { list: SHARE_STATUS },
+      name: 'role',
+      select: SUBSIDY_ROLE,
     },
     {
       label: '时间',
       type: 'rangePicker',
-      name: 'activationTimeStart',
-      end: 'activationTimeEnd',
+      name: 'startTime',
+      end: 'endTime',
       onCalendarChange: setDates,
       onOpenChange: () => setDates([]),
       disabledDate,
@@ -79,59 +60,61 @@ const SubsidyManage = (props) => {
     {
       title: '序号',
       fixed: 'left',
-      dataIndex: 'frontImage',
+      dataIndex: 'rechargeBeans',
       render: (val, row, index) => index + 1,
     },
     {
       title: '任务名称',
       fixed: 'left',
-      dataIndex: 'title',
+      dataIndex: 'taskName',
       width: 150,
     },
     {
       title: '补贴类型',
-      dataIndex: 'merchantName',
-      render: (val) => val,
+      align: 'center',
+      dataIndex: 'type',
+      render: (val) => SUBSIDY_TYPE[val],
     },
     {
       title: '补贴角色',
       align: 'center',
-      dataIndex: 'contentType',
-      render: (val) => (val == 'video' ? '视频' : '图片'),
+      dataIndex: 'role',
+      render: (val) => SUBSIDY_ROLE[val],
     },
     {
       title: '总参与人数',
       align: 'right',
-      dataIndex: 'beanAmount',
+      dataIndex: 'participants',
     },
     {
       title: '已补贴卡豆数',
       align: 'right',
-      dataIndex: 'length',
+      dataIndex: 'subsidizedBeans',
     },
     {
       title: '操作',
-      dataIndex: 'userMomentIdString',
+      dataIndex: 'subsidyId',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => {
+      render: (subsidyId, record) => {
         const { status } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'info',
-                click: () => fetchShareDetail(val, record.contentType),
+                click: () => fetchSubsidyDetail({ subsidyId }),
               },
               {
                 type: 'del',
-                visible: status == 1 || status == 5,
-                click: () => fetchAuditRefuse(record),
+                visible: status === '0',
+                click: () => fetchSubsidyEndDel({ subsidyId, deleteFlag: 0 }),
               },
               {
-                type: 'own',
-                auth: 'end',
-                title: '结束',
+                type: 'end',
+                pop: true,
+                visible: status === '1',
+                click: () => fetchSubsidyEndDel({ subsidyId, status: 0 }),
               },
             ]}
           />
@@ -140,11 +123,29 @@ const SubsidyManage = (props) => {
     },
   ];
 
+  // 补贴管理 详情
+  const fetchSubsidyDetail = (payload) => {
+    dispatch({
+      type: 'subsidyManage/fetchSubsidyDetail',
+      payload,
+      callback: (detail) => setVisible({ type: 'info', show: true, detail }),
+    });
+  };
+
+  // 补贴管理 结束 删除
+  const fetchSubsidyEndDel = (payload) => {
+    dispatch({
+      type: 'subsidyManage/fetchSubsidyEndDel',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
   // 导出excel 数据
   const fetchGetExcel = (payload) => {
-    const header = getColumns.slice(1);
+    const header = getColumns.slice(0, -1);
     dispatch({
-      type: 'businessSettled/fetchMerchantGetExcel',
+      type: 'subsidyManage/fetchSubsidyGetExcel',
       payload,
       callback: (data) => exportExcel({ header, data }),
     });
@@ -174,16 +175,20 @@ const SubsidyManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userMomentIdString}`}
-        dispatchType="shareManage/fetchGetList"
-        {...shareManage}
+        rowKey={(record) => `${record.subsidyId}`}
+        dispatchType="subsidyManage/fetchGetList"
+        {...subsidyManage.list}
       ></DataTableBlock>
-      <SubsidyDrawer visible={visible} setVisible={setVisible}></SubsidyDrawer>
+      <SubsidyDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></SubsidyDrawer>
     </>
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  shareManage,
-  loading: loading.models.shareManage,
+export default connect(({ subsidyManage, loading }) => ({
+  subsidyManage,
+  loading: loading.models.subsidyManage,
 }))(SubsidyManage);

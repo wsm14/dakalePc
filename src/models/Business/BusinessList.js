@@ -24,6 +24,7 @@ export default {
     totalData: { chartsLeft: {}, chartsRight: [] },
     brandList: { list: [], total: 0 },
     selectList: [],
+    subsidyList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -45,6 +46,10 @@ export default {
         payload: {
           list: content.recordList,
           total: content.total,
+          subsidyList: {
+            list: content.recordList,
+            total: content.total,
+          },
           selectList: content.recordList.map((item) => ({
             name: item.merchantName,
             otherData: item.address,
