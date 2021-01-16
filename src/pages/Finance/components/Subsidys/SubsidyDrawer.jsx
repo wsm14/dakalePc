@@ -11,7 +11,7 @@ const SubsidyDrawer = (props) => {
   const { type = 'info', show = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
-  // 确认提交
+  // 确认提交 merchantIds
   const handleUpAudit = () => {
     form.validateFields().then((value) => {
       dispatch({
