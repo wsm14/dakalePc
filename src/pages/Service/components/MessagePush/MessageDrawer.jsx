@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
 import MessageDetail from './Deatil/MessageDetail';
 import MessagePushSet from './Form/MessagePushSet';
@@ -43,9 +44,11 @@ const MessageDrawer = (props) => {
     children: <MessagePushSet form={form} initialValues={detail}></MessagePushSet>,
     footer: (
       <>
-        <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
-          创建并推送
-        </Button>
+        <AuthConsumer auth="push">
+          <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
+            创建并推送
+          </Button>
+        </AuthConsumer>
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           保存
         </Button>
