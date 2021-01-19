@@ -28,7 +28,7 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
 
   const orderArr = [
     {
-      title: '平台总营收金额',
+      title: '店铺总营收金额',
       info: '店铺通过扫码支付或核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
       key: 'allTotal',
       numName: false,
@@ -59,6 +59,11 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
       title: '周边特惠销售额',
       info: '在周边特惠板块成交的订单金额',
       key: 'specialGoods',
+    },
+    {
+      title: '抵扣券销售额',
+      info: '抵扣券销售额',
+      key: 'specialGoodss',
     },
     {
       title: '退款金额',

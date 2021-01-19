@@ -138,7 +138,7 @@ export const MRE_TAG_STATUS = ['停用', '启用'];
 // 订单状态
 export const ORDERS_STATUS = [
   '待支付',
-  '已支付',
+  '待核销',
   '订单关闭',
   '交易完成',
   '已确认',
@@ -164,10 +164,7 @@ export const SHARE_TYPE = [
 ];
 
 // 订单类型
-export const ORDERS_TYPE = [
-  { name: '哒人带货', value: 'kolGoods' },
-  { name: '周边特惠', value: 'specialGoods' },
-];
+export const ORDERS_TYPE = { kolGoods: '哒人带货', specialGoods: '周边特惠' };
 
 // 账户激活状态
 export const WORKER_BANK_STATUS = [
