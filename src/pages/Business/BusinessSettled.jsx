@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Button, Popover } from 'antd';
-import { MRE_ACCOUNT_STATUS, BUSINESS_STATUS_AUDIT, MRE_SORT_STATUS } from '@/common/constant';
+import {
+  MRE_ACCOUNT_STATUS,
+  BUSINESS_STATUS_AUDIT,
+  MRE_SORT_STATUS,
+  BUSINESS_TYPE,
+} from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import exportExcel from '@/utils/exportExcel';
@@ -14,6 +19,12 @@ const BusinessSettled = (props) => {
 
   // 搜索参数
   const searchItems = [
+    {
+      label: '审核通过',
+      type: 'rangePicker',
+      name: 'verifyTimeStart',
+      end: 'verifyTimeEnd',
+    },
     {
       label: '提审时间',
       type: 'rangePicker',
@@ -35,16 +46,29 @@ const BusinessSettled = (props) => {
       name: 'account',
     },
     {
+      label: '店铺类型',
+      name: 'merchantType',
+      type: 'select',
+      select: BUSINESS_TYPE,
+    },
+    {
+      label: '省市区',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
-      select: { list: BUSINESS_STATUS_AUDIT },
+      select: BUSINESS_STATUS_AUDIT,
     },
     {
       label: '激活状态',
       name: 'activationStatus',
       type: 'select',
-      select: { list: MRE_ACCOUNT_STATUS },
+      select: MRE_ACCOUNT_STATUS,
     },
     {
       label: '推荐人手机号',
@@ -54,7 +78,7 @@ const BusinessSettled = (props) => {
       label: '排序',
       name: 'sortField',
       type: 'select',
-      select: { list: MRE_SORT_STATUS },
+      select: MRE_SORT_STATUS,
     },
   ];
 
