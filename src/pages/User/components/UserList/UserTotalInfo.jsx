@@ -23,8 +23,8 @@ const UserTotalInfo = ({
     {
       label: '',
       type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
+      name: 'beginTime',
+      end: 'endTime',
     },
   ];
 
