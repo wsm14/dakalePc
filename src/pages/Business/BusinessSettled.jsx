@@ -35,6 +35,13 @@ const BusinessSettled = (props) => {
       name: 'account',
     },
     {
+      label: '省市区',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
