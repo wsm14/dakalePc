@@ -70,7 +70,7 @@ export default {
         },
       });
     },
-    *fetchUserTotal({ payload }, { call, put }) {
+    *fetchAccountUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountUserTotal, payload);
       if (!response) return;
       const { in: indata, out: outdata, userTotalBean = 0 } = response.content;

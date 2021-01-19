@@ -32,7 +32,7 @@ const UserTotalInfo = ({
     values = { beginDate: dDate.format('YYYY-MM-DD'), endDate: dDate.format('YYYY-MM-DD') },
   ) => {
     dispatch({
-      type: 'accountUser/fetchUserTotal',
+      type: 'accountUser/fetchAccountUserTotal',
       payload: values,
     });
   };
