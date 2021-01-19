@@ -24,8 +24,13 @@ export default {
       if (!response) return;
       const { content } = response;
       console.log(content.dictionaryDTO);
-      const listData = JSON.parse(content.dictionaryDTO.extraParam);
-      if (callback) callback(listData ? listData.merchantList.map(item=> ({label: item.merchantName,value: item.id})) : []);
+      const listData = JSON.parse(content.dictionaryDTO.extraParam || '{}');
+      if (callback)
+        callback(
+          listData.merchantList
+            ? listData.merchantList.map((item) => ({ label: item.merchantName, value: item.id }))
+            : [],
+        );
     },
     *fetchSearchSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchSearchSet, payload);
