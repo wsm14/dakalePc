@@ -220,6 +220,8 @@ const SearchCondition = (props) => {
             ]}
             disabledDate={item.disabledDate || disabledDate}
             ranges={item.ranges || item.disabledDate ? '' : ranges}
+            onCalendarChange={item.onCalendarChange}
+            onOpenChange={item.onOpenChange}
             // renderExtraFooter={() => (
             //   <div className={styles.shop_dateInfo}>
             //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
@@ -243,12 +245,12 @@ const SearchCondition = (props) => {
             allowClear
             changeOnSelect={item.changeOnSelect || false}
             disabled={item.disabled}
-            options={item.options || CITYJSON}
+            options={item.select || CITYJSON}
             expandTrigger="hover"
             showSearch={{ filter }}
             fieldNames={item.fieldNames}
             placeholder={item.placeholder || '选择城市'}
-            onChange={item.onChange}
+            onChange={(val) => item.onChange && item.onChange(val, form)}
           />
         );
       }
@@ -258,9 +260,9 @@ const SearchCondition = (props) => {
       // 排版填充
       children.push(
         <Col
-          lg={pickerCheck ? 10 : componentSize !== 'default' ? 8 : i < colcount ? 12 : 0}
-          xl={pickerCheck ? 10 : i < colcount ? 12 : 0}
-          xxl={pickerCheck ? 8 : componentSize !== 'default' ? 8 : i < colcount ? 6 : 0}
+          lg={i < colcount ? (pickerCheck ? 10 : componentSize !== 'default' ? 8 : 12) : 0}
+          xl={i < colcount ? (pickerCheck ? 10 : 12) : 0}
+          xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
           key={i}
         >
           <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>
