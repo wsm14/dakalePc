@@ -250,7 +250,7 @@ const SearchCondition = (props) => {
             showSearch={{ filter }}
             fieldNames={item.fieldNames}
             placeholder={item.placeholder || '选择城市'}
-            onChange={item.onChange}
+            onChange={(val) => item.onChange && item.onChange(val, form)}
           />
         );
       }
