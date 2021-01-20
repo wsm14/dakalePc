@@ -55,6 +55,7 @@ const BusinessAddBeas = (props) => {
   useEffect(() => {
     fetchGetBrandList();
     if (initialValues) {
+      fetchGetPlatform(initialValues.topCategoryId);
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
     }
   }, []);
