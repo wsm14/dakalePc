@@ -65,6 +65,7 @@ const BusinessAddBeas = (props) => {
     fetchGetBrandList();
     if (initialValues) {
       setAmpShow(!!initialValues.lat);
+      fetchGetPlatform(initialValues.topCategoryId);
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
       setType === 'audit' && fetchGetPromotionMoney(initialValues.topCategoryId);
     }

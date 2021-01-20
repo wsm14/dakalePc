@@ -245,7 +245,7 @@ const SearchCondition = (props) => {
             allowClear
             changeOnSelect={item.changeOnSelect || false}
             disabled={item.disabled}
-            options={item.options || CITYJSON}
+            options={item.select || CITYJSON}
             expandTrigger="hover"
             showSearch={{ filter }}
             fieldNames={item.fieldNames}
