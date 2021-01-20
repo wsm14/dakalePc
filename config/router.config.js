@@ -51,7 +51,7 @@ export default [
             path: '/cityom/join',
             name: '加盟申请',
             component: './Cityom/FranchiseApplication',
-            buttons: ['handle', 'info'],
+            buttons: ['handle'],
           },
         ],
       },
@@ -151,25 +151,6 @@ export default [
         ],
       },
       {
-        name: '财务管理',
-        icon: 'finance',
-        path: '/finance',
-        routes: [
-          {
-            path: '/finance/subsidy',
-            name: '补贴管理',
-            component: './Finance/SubsidyManage',
-            buttons: ['exportList', 'save', 'info', 'del', 'end'],
-          },
-          {
-            path: '/finance/withdraw',
-            name: '提现明细',
-            component: './Finance/WithdrawDetail',
-            buttons: ['exportList', 'edit'],
-          },
-        ],
-      },
-      {
         name: '店铺运营',
         path: '/operation',
         routes: [
@@ -195,7 +176,7 @@ export default [
             path: '/operation/orders',
             name: '订单列表',
             component: './Operation/OrdersList',
-
+            buttons: ['info'],
           },
           {
             path: '/operation/refund',
@@ -296,7 +277,7 @@ export default [
             path: '/market/appset',
             name: '广告管理',
             component: './Market/AppSetList',
-            buttons: ['down', 'save', 'edit', 'del'],
+            buttons: ['down', 'del', 'edit', 'save'],
           },
           {
             path: '/market/special',
@@ -309,12 +290,6 @@ export default [
             name: '搜索配置',
             component: './Market/SearchSetList',
             buttons: ['searchSet'],
-          },
-          {
-            path: '/market/puzzleAd',
-            name: '拼图广告',
-            component: './Market/PuzzleAd',
-            buttons: ['eye', 'edit', 'save', 'del', 'up', 'down'],
           },
         ],
       },
@@ -353,28 +328,6 @@ export default [
             name: '问题反馈',
             component: './Service/ServiceFeedBack',
             buttons: ['eye', 'replay'],
-          },
-          {
-            path: '/service/msg',
-            name: '消息推送',
-            component: './Service/MessagePush',
-            buttons: ['userOs', 'mreOs', 'save', 'del', 'edit', 'eye', 'copy', 'push', 'revoke'],
-          },
-          {
-            path: '/service/faq',
-            name: '常见问题',
-            component: './Service/ServiceFAQ',
-            buttons: [
-              'userOs',
-              'mreOs',
-              'sortFAQ',
-              'sort',
-              'save',
-              'del',
-              'edit',
-              'setLike',
-              'status',
-            ],
           },
         ],
       },
@@ -425,13 +378,7 @@ export default [
             path: '/system/brand',
             name: '品牌管理',
             component: './System/ManageBrand',
-            buttons: ['save', 'status', 'edit', 'del'],
-          },
-          {
-            path: '/system/city',
-            name: '城市管理',
-            component: './System/ManageCity',
-            buttons: ['save', 'edit', 'status', 'del'],
+            buttons: ['save'],
           },
           {
             path: '/system/bankSet',

@@ -324,7 +324,7 @@ const BusinessListComponent = (props) => {
                   className="dkl_green_btn"
                   onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
                 >
-                  新增商户
+                  新增店铺
                 </Button>
               </AuthConsumer>
               <AuthConsumer auth="setMreCord">
