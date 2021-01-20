@@ -71,19 +71,20 @@ const CodeOrders = (props) => {
       title: '订单金额',
       align: 'right',
       dataIndex: 'totalFee',
+      render: (val) => `￥${val}`,
     },
     {
-      title: '卡豆抵扣',
+      title: '卡豆抵扣金额',
       align: 'right',
       dataIndex: 'beanFee',
-      render: (val) => val / 100,
+      render: (val) => `￥${val / 100}`,
     },
     {
       title: '现金支付',
       align: 'right',
       dataIndex: 'payFee',
       render: (val, record) =>
-        `${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
+        `￥${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
     },
     {
       title: '优惠券',

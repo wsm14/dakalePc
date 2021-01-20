@@ -24,6 +24,16 @@ const RefundOrder = (props) => {
       name: 'merchantName',
     },
     {
+      label: '退款原因',
+      name: 'merchantNames',
+    },
+    {
+      label: '提交退款时间',
+      type: 'rangePicker',
+      name: 'verifiedBeginDate',
+      end: 'verifiedEndDate',
+    },
+    {
       label: '状态',
       type: 'select',
       name: 'status',
@@ -50,14 +60,34 @@ const RefundOrder = (props) => {
       dataIndex: 'goodsName',
     },
     {
+      title: '店铺名称',
+      align: 'right',
+      dataIndex: 'merchantName',
+    },
+    {
       title: '购买数量',
       align: 'right',
       dataIndex: 'goodsCount',
     },
     {
-      title: '店铺名称',
+      title: '退款数量',
       align: 'right',
-      dataIndex: 'merchantName',
+      dataIndex: 'goodsCount',
+    },
+    {
+      title: '退款总金额',
+      align: 'right',
+      dataIndex: 'goodsCount',
+    },
+    {
+      title: '退款卡豆数',
+      align: 'right',
+      dataIndex: 'goodsCount',
+    },
+    {
+      title: '退款现金',
+      align: 'right',
+      dataIndex: 'goodsCount',
     },
     {
       title: '提交退款时间',
