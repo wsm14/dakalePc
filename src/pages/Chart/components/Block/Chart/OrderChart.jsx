@@ -49,18 +49,18 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
       key: 'kolGoods',
     },
     {
-      title: '周边特惠销售额',
-      info: '在周边特惠板块成交的订单金额',
+      title: '特价活动销售额',
+      info: '用户通过特价活动购买商品的实付金额',
       key: 'specialGoods',
     },
     {
       title: '抵扣券销售额',
-      info: '抵扣券销售额',
+      info: '用户购买抵扣券的实付金额',
       key: 'specialGoodss',
     },
     {
       title: '退款金额',
-      info: '用户发起退款申请后，店铺同意退款的金额',
+      info: '用户发起退款申请后，实际退款成功的金额',
       key: 'refundFee',
     },
   ];
