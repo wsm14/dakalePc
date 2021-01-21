@@ -1,66 +1,91 @@
 import React from 'react';
-import { Alert } from 'antd';
-import { GOODS_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
 
-  const { status } = detail;
-
-  // 信息
-  const formItems = [
+  // 参与活动的店铺
+  const mreFormItems = [
     {
-      label: '商品图片',
-      type: 'upload',
+      label: '店铺类型',
       name: 'allImgs',
     },
     {
-      label: '所属店铺',
+      label: '集团名称',
       name: 'merchantName',
     },
     {
-      label: '商品类型',
+      label: '店铺范围',
       name: 'goodsType',
-      render: (val) => (val == 'package' ? '套餐' : '单品'),
+      children: '111',
+    },
+  ];
+
+  // 券信息
+  const couponFormItems = [
+    {
+      label: '券名称',
+      name: 'allImgs',
     },
     {
-      label: `${detail.goodsType == 'package' ? '套餐' : '单品'}名称`,
-      name: 'goodsName',
+      label: '券价值',
+      name: 'merchantName',
     },
     {
-      label: '单位',
-      visible: detail.goodsType == 'single',
-      name: 'goodsUnit',
+      label: '售卖价格',
+      name: 'goodsType',
+      children: '111',
+    },
+  ];
+
+  // 使用规则
+  const useFormItems = [
+    {
+      label: '使用门槛',
+      name: 'allImgs',
     },
     {
-      label: '所属分类',
-      name: 'customCategoryName',
+      label: '使用有效期',
+      name: 'merchantName',
     },
     {
-      label: '售价',
-      name: 'price',
-      render: (val, record) => `￥${Number(val).toFixed(2)}`,
+      label: '投放总量',
+      name: 'goodsType',
     },
     {
-      label: detail.goodsType == 'single' ? '单品介绍' : '套餐介绍',
-      name: 'goodsDesc',
+      label: '购买上限',
+      name: 'goodsType',
+      render: () => '111',
+      children: <div>单人最高购买份数: 3</div>,
     },
     {
-      label: '介绍图片',
-      type: 'upload',
-      name: 'goodsDescImg',
+      label: '购买须知',
+      name: 'goodsType',
+    },
+    {
+      label: '退款规则',
+      name: 'goodsType',
+      render: () => `是否允许随时退款 \n 是否允许过期退款`,
     },
   ];
 
   return (
     <>
-      <Alert
-        message={GOODS_TYPE[status]}
-        type={status == 1 ? 'success' : 'warning'}
-        style={{ textAlign: 'center', marginBottom: 5 }}
-      />
-      <DescriptionsCondition formItems={formItems} initialValues={detail}></DescriptionsCondition>
+      <DescriptionsCondition
+        title="参与活动的店铺"
+        formItems={mreFormItems}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="券信息"
+        formItems={couponFormItems}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="使用规则"
+        formItems={useFormItems}
+        initialValues={detail}
+      ></DescriptionsCondition>
     </>
   );
 };

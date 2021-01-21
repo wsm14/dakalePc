@@ -6,7 +6,7 @@ import CouponDetail from './Detail/CouponDetail';
 const CouponDrawer = (props) => {
   const { visible, onClose } = props;
 
-  const { type = 'info', shwo = false, detail = {} } = visible;
+  const { type = 'info', show = false, detail = {} } = visible;
 
   // 统一处理弹窗
   const drawerProps = {
@@ -19,7 +19,7 @@ const CouponDrawer = (props) => {
   // 弹窗属性
   const modalProps = {
     title: drawerProps.title,
-    visible: shwo,
+    visible: show,
     onClose,
     footer: drawerProps.footer,
   };
