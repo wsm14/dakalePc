@@ -34,12 +34,14 @@ const SearchSetModal = (props) => {
 
   // 设置标签
   const handleTagSet = (val) => {
+    if (!val) return;
     const obj = {};
+    // 选择项目去重
     const arr = [...selectMre, ...detail, { value: val, label: val }].reduce((item, next) => {
       obj[next.value] ? '' : (obj[next.value] = true && item.push(next));
       return item;
     }, []);
-    form.setFieldsValue({ data: arr.map((i) => i.value) });
+    form.setFieldsValue({ data: [...form.getFieldValue('data'), val] });
     setSelecMre(arr);
   };
 
