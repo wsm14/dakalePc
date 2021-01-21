@@ -12,7 +12,6 @@ const CouponDrawer = (props) => {
   const drawerProps = {
     info: {
       title: '查看详情',
-      showDetail: true,
       children: <CouponDetail initialValues={detail}></CouponDetail>,
     },
   }[type];

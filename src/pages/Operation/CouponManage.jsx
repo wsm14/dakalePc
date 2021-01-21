@@ -144,6 +144,7 @@ const CouponManageComponent = (props) => {
               // 上架中 已确认 | 上架中 已驳回
               {
                 type: 'down',
+                popText: `下架后用户无法购买，\n确定要下架吗？`,
                 visible: status == 1,
                 click: () => fetchCouponStatus(record),
               },
