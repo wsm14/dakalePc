@@ -28,7 +28,7 @@ export default {
       if (callback)
         callback(
           listData.merchantList
-            ? listData.merchantList.map((item) => ({ label: item.merchantName, value: item.id }))
+            ? listData.merchantList.map((item) => ({ label: item.merchantName, value: item.merchantName }))
             : [],
         );
     },
