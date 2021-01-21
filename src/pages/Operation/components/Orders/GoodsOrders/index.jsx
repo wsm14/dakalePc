@@ -52,14 +52,14 @@ const GoodsOrders = (props) => {
     {
       label: '下单日期',
       type: 'rangePicker',
-      name: 'createTimeBeginDate',
-      end: 'createTimeEndDate',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
     },
     {
       label: '核销日期',
       type: 'rangePicker',
-      name: 'verifiedBeginDate',
-      end: 'verifiedEndDate',
+      name: 'verificationTimeStart',
+      end: 'verificationTimeEnd',
     },
     {
       label: '区域',
@@ -136,7 +136,7 @@ const GoodsOrders = (props) => {
     {
       title: '核销时间',
       align: 'center',
-      dataIndex: 'payTime',
+      dataIndex: 'verificationTime',
     },
     {
       title: '店铺名称',
