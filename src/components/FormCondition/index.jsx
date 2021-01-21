@@ -16,6 +16,7 @@ import {
   Spin,
   Empty,
   message,
+  Button,
 } from 'antd';
 import ImgCutView from '@/components/ImgCut';
 import { PlusOutlined } from '@ant-design/icons';
@@ -136,7 +137,7 @@ const FormComponents = ({
     const fileobj = {};
     formItems.map((item, i) => {
       const { name } = item;
-      if (item.type === 'upload' || item.type === 'videoUpload') {
+      if (item.type === 'upload' || item.type === 'videoUpload' || item.type === 'apkUpload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
             if (!initialValues[name[0]]) {
@@ -589,6 +590,39 @@ const FormComponents = ({
             {fileLists[Array.isArray(name) ? name[1] : name] &&
               fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
               uploadButton}
+          </Upload>
+        ),
+        apkUpload: (
+          <Upload
+            multiple={false}
+            listType="picture"
+            maxCount={item.maxFile || 1}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+            beforeUpload={(file) => false}
+            onChange={(value) => {
+              const keyName = Array.isArray(name) ? name[1] : name;
+              const { fileList } = value;
+              const newFileList = fileList.filter((file) => file.dklFileStatus !== 'out');
+              if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
+                setFileLists({
+                  ...fileLists,
+                  [keyName]: newFileList.slice(0, item.maxFile || 999),
+                });
+                (form || formN).setFieldsValue({
+                  [keyName]: { ...value, fileList: newFileList.slice(0, item.maxFile || 999) },
+                });
+                if (item.onChange) item.onChange(value);
+              } else {
+                if (!newFileList.length) (form || formN).setFieldsValue({ [keyName]: undefined });
+                else (form || formN).setFieldsValue({ [keyName]: value });
+                setFileLists({ ...fileLists, [keyName]: newFileList });
+              }
+            }}
+          >
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) && (
+                <Button>选择文件</Button>
+              )}
           </Upload>
         ),
         childrenOwn: item.childrenOwn,

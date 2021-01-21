@@ -52,9 +52,12 @@ const aliOssUpload = (
     message.loading('文件上传中......', 0);
   }
 
+  // 上传类型
+  const uploadType = { image: 'resource', app: '' }[apiType];
+
   // 向后台获取oss凭证
   return request('/common/oss/getOssPolicy', {
-    params: { uploadType: 'resource' },
+    params: { uploadType },
   })
     .then((res) => {
       if (!res) {
@@ -82,9 +85,9 @@ const aliOssUpload = (
           true: oldFileName,
         }[!!oldFileName];
         // 文件储存路径
-        const fileUrl = { image: folder, active: 'dev/active/page' }[apiType];
+        const fileUrl = folder;
         // 文件后缀
-        const fileSuffix = apiType === 'active' ? type : file['name'].replace(/.+\./, '.');
+        const fileSuffix = file['name'].replace(/.+\./, '.');
 
         // 设置路径+随机文件名
         let fileName = fileUrl + '/' + fileType + fileSuffix;
