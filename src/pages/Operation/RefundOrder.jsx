@@ -78,6 +78,7 @@ const RefundOrder = (props) => {
       title: '退款总金额',
       align: 'right',
       dataIndex: 'goodsCount',
+      render: (val) => `￥${val}`,
     },
     {
       title: '退款卡豆数',
@@ -88,6 +89,7 @@ const RefundOrder = (props) => {
       title: '退款现金',
       align: 'right',
       dataIndex: 'goodsCount',
+      render: (val) => `￥${val}`,
     },
     {
       title: '提交退款时间',
