@@ -172,7 +172,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       style={{ marginTop: 20 }}
     >
       <Typography.Title level={5} className="chart_map_title_style">
-        商圈地图（截止昨日）
+        商圈数据（截止当前）
       </Typography.Title>
       <div style={{ height: 700 }} key="map">
         <Map
