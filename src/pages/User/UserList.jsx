@@ -63,6 +63,12 @@ const UserListComponent = (props) => {
       render: (val) => REAL_NAME_STATUS[val],
     },
     {
+      title: '注册地',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, row) => (val ? `${val}/${row.cityName}/${row.districtName}` : '-'),
+    },
+    {
       title: '常驻地',
       align: 'center',
       dataIndex: 'residentAddress',
