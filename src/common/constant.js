@@ -152,7 +152,7 @@ export const REFUND_ORDERS_STATUS = [
   false,
   '订单关闭',
   '交易完成',
-  '已确认',
+  false,
   false,
   '退款中',
 ];
