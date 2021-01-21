@@ -46,7 +46,7 @@ const BusinessListComponent = (props) => {
       type: 'cascader',
       name: 'topCategoryId',
       changeOnSelect: true,
-      options: tradeList,
+      select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       valuesKey: ['topCategoryId', 'categoryId'],
       placeholder: '选择经营类目',
@@ -324,7 +324,7 @@ const BusinessListComponent = (props) => {
                   className="dkl_green_btn"
                   onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
                 >
-                  新增商户
+                  新增店铺
                 </Button>
               </AuthConsumer>
               <AuthConsumer auth="setMreCord">

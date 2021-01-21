@@ -158,10 +158,12 @@ const BusinessDetailShow = (props) => {
     {
       label: '店铺服务',
       name: ['property', 'service'],
+      render: (val) => val.toString(),
     },
     {
       label: '特色服务',
       name: ['property', 'speacial'],
+      render: (val) => val.toString(),
     },
     {
       label: '店铺标签',
