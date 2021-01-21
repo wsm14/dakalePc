@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Form, Alert } from 'antd';
-import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';
 
 const SearchSetModal = (props) => {
-  const { loading, dispatch, visible = false, selectList, onCancel } = props;
+  const { loading, dispatch, visible = false, onCancel } = props;
   const { show = false, detail = [], data = {} } = visible;
 
   const [form] = Form.useForm();
@@ -22,7 +21,7 @@ const SearchSetModal = (props) => {
     if (data.length) {
       extraParam = selectMre
         .filter((item) => data.indexOf(item.value) > -1)
-        .map((item) => ({ merchantName: item.label, id: item.value, rankStatus: 1 }));
+        .map((item) => ({ merchantName: item.label, rankStatus: 1 }));
     }
     dispatch({
       type: 'searchSet/fetchSearchSet',
@@ -33,45 +32,31 @@ const SearchSetModal = (props) => {
     });
   };
 
-  // 搜索商户
-  const fetchGetMreList = debounce((merchantName) => {
-    if (!merchantName) return;
-    dispatch({
-      type: 'businessList/fetchGetList',
-      payload: {
-        merchantName,
-        businessStatus: 1,
-        status: 1,
-        page: 1,
-        limit: 999,
-      },
-    });
-  }, 500);
-
-  console.log(selectList);
+  // 设置标签
+  const handleTagSet = (val) => {
+    const obj = {};
+    const arr = [...selectMre, ...detail, { value: val, label: val }].reduce((item, next) => {
+      obj[next.value] ? '' : (obj[next.value] = true && item.push(next));
+      return item;
+    }, []);
+    form.setFieldsValue({ data: arr.map((i) => i.value) });
+    setSelecMre(arr);
+  };
 
   const formItems = [
     {
       label: '关键词',
       name: 'merchantList',
-      type: 'select',
-      loading: loading.effects['businessList/fetchGetList'],
-      onSearch: fetchGetMreList,
-      select: selectList,
       rules: [{ required: false }],
-      onChange: (val, itemObj) => {
-        const obj = {};
-        const arr = [
-          ...selectMre,
-          ...detail,
-          { value: itemObj.value, label: itemObj.children[0] },
-        ].reduce((item, next) => {
-          obj[next.value] ? '' : (obj[next.value] = true && item.push(next));
-          return item;
-        }, []);
-        form.setFieldsValue({ data: arr.map((i) => i.value) });
-        setSelecMre(arr);
-      },
+      onPressEnter: (e) => handleTagSet(e.target.value),
+      addonAfter: (
+        <span
+          style={{ cursor: 'pointer' }}
+          onClick={() => handleTagSet(form.getFieldValue('merchantList'))}
+        >
+          添加
+        </span>
+      ),
     },
     {
       label: '已选项目',
