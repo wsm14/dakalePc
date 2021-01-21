@@ -4,13 +4,14 @@ import { GOODS_TYPE, MRE_SURE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import GoodsDrawer from './components/Goods/GoodsDrawer';
+import CouponDrawer from './components/Coupon/CouponDrawer';
 import styles from './style.less';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch } = props;
 
   const childRef = useRef();
+  // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
 
   // 搜索参数
@@ -138,7 +139,7 @@ const CouponManageComponent = (props) => {
             formItems={[
               {
                 type: 'info',
-                click: () => fetchGoodsGetDetail({ goodsIdString: val }),
+                click: () => setVisible({ type: 'info', show: true }),
               },
               // 上架中 已确认 | 上架中 已驳回
               {
@@ -163,11 +164,11 @@ const CouponManageComponent = (props) => {
   };
 
   // 获取商品详情
-  const fetchGoodsGetDetail = (payload) => {
+  const fetchCouponDetail = (payload) => {
     dispatch({
       type: 'couponManage/fetchGoodsGetDetail',
       payload,
-      callback: (detail) => setVisible({ type: 'showDetail', detail }),
+      callback: (detail) => setVisible({ type: 'info', show: true, detail }),
     });
   };
 
@@ -182,11 +183,11 @@ const CouponManageComponent = (props) => {
         dispatchType="couponManage/fetchGetList"
         {...couponManage}
       ></DataTableBlock>
-      <GoodsDrawer
+      <CouponDrawer
         childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
-      ></GoodsDrawer>
+      ></CouponDrawer>
     </>
   );
 };
