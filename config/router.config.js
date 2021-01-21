@@ -205,9 +205,15 @@ export default [
           },
           {
             path: '/operation/tag',
-            name: '退款管理',
+            name: '店铺标签',
             component: './Operation/TagManage',
             buttons: ['save', 'edit'],
+          },
+          {
+            path: '/operation/coupon',
+            name: '优惠券管理',
+            component: './Operation/CouponManage',
+            buttons: ['info', 'down'],
           },
         ],
       },

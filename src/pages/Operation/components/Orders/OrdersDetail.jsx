@@ -71,7 +71,7 @@ const MasterOrderDetail = ({ order, name, orderDetail, loading, dispatch }) => {
       </div>
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>核销时间：</span>
-        <span className={styles.master_order_itemContent}>{orderDetail.payTime}</span>
+        <span className={styles.master_order_itemContent}>{orderDetail.verificationTime}</span>
       </div>
     </div>
   );
