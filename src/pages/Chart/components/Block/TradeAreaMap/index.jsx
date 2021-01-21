@@ -136,11 +136,21 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       // 保存地图实例
       setMapInstance(map);
       // url传递城市的情况下 地图跳转到指定城市界面
-      if (map) {
+      if (map && bucket) {
         map.setCity(`${bucket || 33}0000`);
       }
       // 获取地图四角经纬度
       getMapBounds(map.getBounds(), 'created');
+    },
+    // 缩放事件
+    zoomend() {
+      mapRemoveMaekes();
+      const zoom = mapInstance.getZoom();
+      if (zoom >= 14) {
+        getMapBounds(mapInstance.getBounds(), 'detail');
+      } else {
+        getMapBounds(mapInstance.getBounds(), 'created');
+      }
     },
     // 拖拽 移动变化地图事件
     moveend() {
@@ -166,12 +176,24 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       </Typography.Title>
       <div style={{ height: 700 }} key="map">
         <Map
-          plugins={['Scale']} // 工具 MapType 类型切换 OverView 鹰眼 Scale 比例尺 ToolBar 工具条 ControlBar 控件
+          plugins={[
+            'Scale',
+            {
+              name: 'ToolBar',
+              options: {
+                visible: true, // 动态改变控件的可视状态，默认为 true
+                liteStyle: false,
+                position: 'LB',
+              },
+            },
+          ]} // 工具 MapType 类型切换 OverView 鹰眼 Scale 比例尺 ToolBar 工具条 ControlBar 控件
           amapkey={AMAP_JS_KEY}
           zooms={[4, 20]} // 缩放范围 20以上地图细节不存在
-          doubleClickZoom={false}
-          keyboardEnable={false}
-          touchZoom={false}
+          rotateEnable // 地图旋转
+          doubleClickZoom // 双击放大
+          scrollWheel={false} // 禁止鼠标缩放
+          keyboardEnable={false} // 键盘控制
+          touchZoom={false} // 移动端缩放
           events={mapEvents}
         >
           {/* 商户详情 */}
@@ -192,8 +214,9 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
               style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }} // 圈样式
               events={{
                 created() {
+                  console.log();
                   // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
-                  if (i == item.length) mapInstance.setFitView();
+                  if (i === item.length) mapInstance.setFitView();
                 },
               }}
             >
