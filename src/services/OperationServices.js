@@ -188,3 +188,22 @@ export function fetchTagEdit(data) {
 }
 
 // 分类列表 end
+
+// 优惠券管理
+
+// get 优惠券管理 - 列表
+export function fetchCouponList(params) {
+  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+    params,
+  });
+}
+
+// post 优惠券管理 - 下架
+export function fetchCouponStatus(data) {
+  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 优惠券管理 end
