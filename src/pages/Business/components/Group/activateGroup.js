@@ -1,10 +1,10 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {Button, Drawer, Space, Form, Radio} from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Drawer, Space, Form, Radio } from 'antd';
 import Title from './title';
 import ActiveSetForm from './Form/activeSetForm';
 import LegalForm from './Form/legalForm';
-import {connect} from 'umi';
-import {TIME_YMD} from '@/common/constant';
+import { connect } from 'umi';
+import { TIME_YMD } from '@/common/timeConstant';
 import ActiveSetOneForm from './Form/activeByOneForm';
 import ActiveBankForm from './Form/activeBankForm';
 import LegalByOneForm from './Form/legalByOneForm';
@@ -19,9 +19,7 @@ const addGroups = (props) => {
     childRef,
     loading,
     initial,
-    merchantGroupDTO: {
-      bankAccountType
-    }
+    merchantGroupDTO: { bankAccountType },
   } = props;
   const options = [
     {
@@ -29,7 +27,7 @@ const addGroups = (props) => {
       value: '1',
       disabled: bankAccountType === '2',
     },
-    {label: '对私(个体工商户)', value: '2', disabled: bankAccountType === '1'},
+    { label: '对私(个体工商户)', value: '2', disabled: bankAccountType === '1' },
   ];
   useEffect(() => {
     if (bankAccountType) {
@@ -43,25 +41,13 @@ const addGroups = (props) => {
     '1': [
       {
         title: '对公账户信息',
-        form: (
-          <ActiveSetForm
-            cRef={cRef}
-            form={form}
-            initialValues={initial}
-          />
-        ),
+        form: <ActiveSetForm cRef={cRef} form={form} initialValues={initial} />,
         showArrow: false,
         disabled: true,
       },
       {
         title: '法人信息',
-        form: (
-          <LegalForm
-            cRef={cRef}
-            form={form}
-            initialValues={initial}
-          />
-        ),
+        form: <LegalForm cRef={cRef} form={form} initialValues={initial} />,
         showArrow: false,
         disabled: true,
       },
@@ -69,37 +55,19 @@ const addGroups = (props) => {
     '2': [
       {
         title: '对私账户信息',
-        form: (
-          <ActiveSetOneForm
-            cRef={cRef}
-            form={form}
-            initialValues={initial}
-          />
-        ),
+        form: <ActiveSetOneForm cRef={cRef} form={form} initialValues={initial} />,
         showArrow: false,
         disabled: false,
       },
       {
         title: '银行卡信息',
-        form: (
-          <ActiveBankForm
-            cRef={cRef}
-            form={form}
-            initialValues={initial}
-          />
-        ),
+        form: <ActiveBankForm cRef={cRef} form={form} initialValues={initial} />,
         showArrow: false,
         disabled: false,
       },
       {
         title: '法人信息',
-        form: (
-          <LegalByOneForm
-            cRef={cRef}
-            form={form}
-            initialValues={initial}
-          />
-        ),
+        form: <LegalByOneForm cRef={cRef} form={form} initialValues={initial} />,
         showArrow: false,
         disabled: true,
       },
@@ -109,7 +77,7 @@ const addGroups = (props) => {
     if (bankAccount === '1') {
       form.validateFields().then((val) => {
         let city = cRef.current.getCity();
-        const {activeBeginDate, activeValidity} = val;
+        const { activeBeginDate, activeValidity } = val;
         let startDate = TIME_YMD(activeBeginDate[0]);
         let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
         let establishDate = TIME_YMD(activeValidity[0]);
@@ -139,7 +107,7 @@ const addGroups = (props) => {
           cardName,
           bankSwiftCode,
         } = obj;
-        provCode = provCode.includes('00') ? provCode : '00' + provCode
+        provCode = provCode.includes('00') ? provCode : '00' + provCode;
         dispatch({
           type: 'groupSet/fetchMerchantBank',
           payload: {
@@ -178,7 +146,7 @@ const addGroups = (props) => {
     } else {
       form.validateFields().then((val) => {
         let city = cRef.current.getCityByOne();
-        const {activeBeginDate, activeValidity} = val;
+        const { activeBeginDate, activeValidity } = val;
         let startDate = TIME_YMD(activeBeginDate[0]);
         let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
         let establishDate = TIME_YMD(activeValidity[0]);
@@ -206,7 +174,7 @@ const addGroups = (props) => {
           legalCertId,
           bankSwiftCode,
         } = obj;
-        provCode = provCode.includes('00') ? provCode : '00' + provCode
+        provCode = provCode.includes('00') ? provCode : '00' + provCode;
         dispatch({
           type: 'groupSet/fetchMerchantBank',
           payload: {
@@ -250,21 +218,17 @@ const addGroups = (props) => {
         visible={visible1}
         destroyOnClose={true}
         onClose={onClose}
-        bodyStyle={{paddingBottom: 80}}
+        bodyStyle={{ paddingBottom: 80 }}
         footer={
-          <div style={{textAlign: 'right'}}>
+          <div style={{ textAlign: 'right' }}>
             <Space>
-              <Button
-                onClick={() => onClose()}
-              >
-                取消
-              </Button>
+              <Button onClick={() => onClose()}>取消</Button>
               <Button
                 loading={loading}
                 onClick={() =>
                   fetchAddCard(() => {
                     childRef.current.fetchGetData();
-                    onClose()
+                    onClose();
                   })
                 }
                 type="primary"
@@ -294,7 +258,7 @@ const addGroups = (props) => {
   );
 };
 
-export default connect(({groupSet, loading}) => ({
+export default connect(({ groupSet, loading }) => ({
   ...groupSet,
   loading: loading.effects['groupSet/fetchMerchantBank'],
 }))(addGroups);
