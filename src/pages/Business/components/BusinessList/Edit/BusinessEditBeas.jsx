@@ -234,9 +234,10 @@ const BusinessAddBeas = (props) => {
       },
     },
     {
-      label: '推广费',
+      label: '推广费比例',
       name: 'promotionFee',
       loading: loading.models.sysTradeList,
+      suffix: '%',
     },
   ];
 
