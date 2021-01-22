@@ -5,6 +5,7 @@ import { Result, Button } from 'antd';
 import { history, Link, connect } from 'umi';
 
 const getRouteAuthority = (path, routeData) => {
+
   let authorities = false;
   routeData.forEach((route) => {
     // match prefix
@@ -44,7 +45,7 @@ class SecurityLayout extends React.Component {
     const { children, loading, currentUser, authority } = this.props;
 
     // token 判断
-    const isLogin = sessionStorage.getItem('token') && currentUser && currentUser.personName;
+    const isLogin = sessionStorage.getItem('token') && currentUser && currentUser.username;
 
     if ((!isLogin && loading) || !isReady) {
       return <PageLoading />;
