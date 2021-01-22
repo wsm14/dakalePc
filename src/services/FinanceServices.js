@@ -46,7 +46,15 @@ export function fetchSubsidyActionList(params) {
   });
 }
 
-// post 补贴管理 - 行为管理 -  删除
+// post 补贴管理 - 行为管理 - 新增编辑
+export function fetchSubsidyActionAdd(data) {
+  return request('/admin/systemConfig/saveConfigBehavior', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 行为管理 - 删除
 export function fetchSubsidyActionDel(data) {
   return request('/admin/systemConfig/deleteConfigBehavior', {
     method: 'POST',

@@ -4,6 +4,7 @@ import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import SubsidyDetail from './Detail/SubsidyDetail';
 import SubsidyDirectMoney from './Form/SubsidyDirectMoney';
+import SubsidyActionSet from './Form/SubsidyActionSet';
 
 const SubsidyDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
@@ -13,12 +14,19 @@ const SubsidyDrawer = (props) => {
 
   // 确认提交
   const handleUpAudit = () => {
-    form.validateFields().then((value) => {
-      dispatch({
-        type: 'subsidyManage/fetchSubsidyTaskAdd',
-        payload: {
-          ...value,
+    form.validateFields().then((payload) => {
+      const dispatchProps = {
+        task: { type: 'subsidyManage/fetchSubsidyTaskAdd', payload },
+        action: {
+          type: 'subsidyManage/fetchSubsidyActionAdd',
+          payload: {
+            ...payload,
+            id: detail.configBehaviorId,
+          },
         },
+      }[tab];
+      dispatch({
+        ...dispatchProps,
         callback: () => {
           onClose();
           childRef.current.fetchGetData();
@@ -47,20 +55,14 @@ const SubsidyDrawer = (props) => {
     }[type],
     // 行为列表
     action: {
-      add: {
-        title: '新增行为',
-        children: '<SubsidyDirectMoney form={form} detail={detail}></SubsidyDirectMoney>',
-        footer: (
-          <Button onClick={handleUpAudit} type="primary" loading={loading}>
-            提交
-          </Button>
-        ),
-      },
-      edit: {
-        title: '修改行为',
-        children: '<SubsidyDetail detail={detail}></SubsidyDetail>',
-      },
-    }[type],
+      title: type === 'add' ? '新增行为' : '修改行为',
+      children: <SubsidyActionSet form={form} detail={detail}></SubsidyActionSet>,
+      footer: (
+        <Button onClick={handleUpAudit} type="primary" loading={loading}>
+          提交
+        </Button>
+      ),
+    },
   }[tab];
 
   // 弹出窗属性

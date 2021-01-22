@@ -6,6 +6,7 @@ import {
   fetchSubsidyTaskEndDel,
   fetchSubsidyTaskAdd,
   fetchSubsidyActionList,
+  fetchSubsidyActionAdd,
   fetchSubsidyActionDel,
 } from '@/services/FinanceServices';
 
@@ -80,6 +81,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '任务新增成功',
+      });
+      callback();
+    },
+    *fetchSubsidyActionAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyActionAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '行为设置成功',
       });
       callback();
     },

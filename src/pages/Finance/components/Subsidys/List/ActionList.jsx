@@ -36,6 +36,7 @@ const ActionList = (props) => {
       title: '补贴卡豆数',
       align: 'right',
       dataIndex: 'subsidyBean',
+      render: (val) => `${val || 0}卡豆`,
     },
     {
       title: '备注',
@@ -49,7 +50,7 @@ const ActionList = (props) => {
       fixed: 'right',
       align: 'right',
       render: (id, record) => {
-        const { status } = record;
+        const { categoryIdStr: categoryId } = record;
         return (
           <HandleSetTable
             formItems={[
@@ -62,7 +63,12 @@ const ActionList = (props) => {
                 type: 'edit',
                 auth: 'actionEdit',
                 click: () =>
-                  setVisible({ type: 'edit', tab: 'action', show: true, detail: record }),
+                  setVisible({
+                    type: 'edit',
+                    tab: 'action',
+                    show: true,
+                    detail: { categoryId, ...record },
+                  }),
               },
             ]}
           />
