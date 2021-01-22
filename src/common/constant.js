@@ -157,15 +157,7 @@ export const ORDERS_STATUS = [
 ];
 
 // 退款订单状态
-export const REFUND_ORDERS_STATUS = [
-  false,
-  false,
-  '订单关闭',
-  '交易完成',
-  false,
-  false,
-  '退款中',
-];
+export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
@@ -175,6 +167,7 @@ export const PUZZLE_AD_TYPE = [
   { value: 'video', name: '视频' },
   { value: 'image', name: '图片' },
 ];
+
 // 消息推送 - 推送状态
 export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
 
@@ -189,11 +182,18 @@ export const MSG_PSUH_OBJECT = { all: '全部用户' };
 
 // 消息推送 - 跳转类型
 export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
-// 补贴类型
+
+// 补贴管理 补贴类型
 export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
 
-// 补贴角色
-export const SUBSIDY_ROLE = { user: '用户', merchant: '商户', kol: '哒人' };
+//  补贴管理 任务列表 补贴角色
+export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '商户', kol: '哒人' };
+
+//  补贴管理 行为管理 补贴角色
+export const SUBSIDY_ACTION_ROLE = { merchant: '商户', kol: '哒人' };
+
+//  补贴管理 行为管理 补贴类型
+export const SUBSIDY_ACTION_TYPE = { video: '发布视频', image: '发布图文', mark: '到店打卡' };
 
 // 分享类型
 export const SHARE_TYPE = [

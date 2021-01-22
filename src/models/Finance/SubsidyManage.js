@@ -1,10 +1,13 @@
 import { notification } from 'antd';
 import {
-  fetchSubsidyList,
-  fetchSubsidyGetExcel,
-  fetchSubsidyDetail,
-  fetchSubsidyEndDel,
-  fetchSubsidyAdd,
+  fetchSubsidyTaskList,
+  fetchSubsidyTaskGetExcel,
+  fetchSubsidyTaskDetail,
+  fetchSubsidyTaskEndDel,
+  fetchSubsidyTaskAdd,
+  fetchSubsidyActionList,
+  fetchSubsidyActionAdd,
+  fetchSubsidyActionDel,
 } from '@/services/FinanceServices';
 
 export default {
@@ -12,6 +15,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    actionList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -24,8 +28,8 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchSubsidyList, payload);
+    *fetchGetTaskList({ payload }, { call, put }) {
+      const response = yield call(fetchSubsidyTaskList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -35,21 +39,35 @@ export default {
         },
       });
     },
-    *fetchSubsidyGetExcel({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyGetExcel, payload);
+    *fetchSubsidyActionList({ payload }, { call, put }) {
+      const response = yield call(fetchSubsidyActionList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          actionList: {
+            list: content.configBehaviorList,
+            total: content.configBehaviorList.length,
+          },
+        },
+      });
+    },
+    *fetchSubsidyTaskGetExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyTaskGetExcel, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.subsidyList);
     },
-    *fetchSubsidyDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyDetail, payload);
+    *fetchSubsidyTaskDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyTaskDetail, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.subsidy);
     },
-    *fetchSubsidyEndDel({ payload, callback }, { call }) {
+    *fetchSubsidyTaskEndDel({ payload, callback }, { call }) {
       const { deleteFlag } = payload;
-      const response = yield call(fetchSubsidyEndDel, payload);
+      const response = yield call(fetchSubsidyTaskEndDel, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -57,12 +75,30 @@ export default {
       });
       callback();
     },
-    *fetchSubsidyAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyAdd, payload);
+    *fetchSubsidyTaskAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyTaskAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '任务新增成功',
+      });
+      callback();
+    },
+    *fetchSubsidyActionAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyActionAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '行为设置成功',
+      });
+      callback();
+    },
+    *fetchSubsidyActionDel({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyActionDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '行为删除成功',
       });
       callback();
     },

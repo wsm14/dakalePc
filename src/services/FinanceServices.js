@@ -2,38 +2,61 @@ import request from '@/utils/request';
 
 // 补贴管理
 
-// get 补贴管理 - 列表
-export function fetchSubsidyList(params) {
+// get 补贴管理 - 任务列表 - 列表
+export function fetchSubsidyTaskList(params) {
   return request('/admin/subsidyManagement/listSubsidy', {
     params,
   });
 }
 
-// get 补贴管理 - 导出
-export function fetchSubsidyGetExcel(params) {
+// get 补贴管理 - 任务列表 -  导出
+export function fetchSubsidyTaskGetExcel(params) {
   return request('/admin/subsidyManagement/listSubsidyImport', {
     params,
   });
 }
 
-// get 补贴管理 - 详情
-export function fetchSubsidyDetail(params) {
+// get 补贴管理 - 任务列表 -  详情
+export function fetchSubsidyTaskDetail(params) {
   return request('/admin/subsidyManagement/getSubsidyById', {
     params,
   });
 }
 
-// post 补贴管理 - 新增
-export function fetchSubsidyAdd(data) {
+// post 补贴管理 - 任务列表 -  新增
+export function fetchSubsidyTaskAdd(data) {
   return request('/admin/subsidyManagement/platformDirectCharge', {
     method: 'POST',
     data,
   });
 }
 
-// post 补贴管理 - 删除 结束
-export function fetchSubsidyEndDel(data) {
+// post 补贴管理 - 任务列表 -  删除 结束
+export function fetchSubsidyTaskEndDel(data) {
   return request('/admin/subsidyManagement/updateSubsidy', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 补贴管理 - 行为管理 - 列表
+export function fetchSubsidyActionList(params) {
+  return request('/admin/systemConfig/listConfigBehavior', {
+    params,
+  });
+}
+
+// post 补贴管理 - 行为管理 - 新增编辑
+export function fetchSubsidyActionAdd(data) {
+  return request('/admin/systemConfig/saveConfigBehavior', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 行为管理 - 删除
+export function fetchSubsidyActionDel(data) {
+  return request('/admin/systemConfig/deleteConfigBehavior', {
     method: 'POST',
     data,
   });
