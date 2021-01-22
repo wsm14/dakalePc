@@ -66,6 +66,15 @@ export const ROLE_BUTTON_TYPE = {
   baseTrade: '基础设施',
   tradeAdd: '新增类目',
   tradeSecondAdd: '添加子类目',
+  task: '任务列表',
+  taskInfo: '任务详情',
+  taskSave: '新增任务',
+  taskDel: '删除任务',
+  taskEnd: '结束任务',
+  action: '行为管理',
+  actionSave: '新增行为',
+  actionDel: '删除行为',
+  actionEdit: '修改行为',
 };
 
 // 数据权限选项
