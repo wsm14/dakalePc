@@ -3,9 +3,9 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import exportExcel from '@/utils/exportExcel';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
+import ExcelButton from '@/components/ExcelButton';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
@@ -268,10 +268,25 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  // 设置商家端登录验证码
+  const handleVCodeSet = () => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
+    });
+  };
+
+  // 店铺详情展示
+  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   // 获取商家导出excel 数据
-  const fetchGetExcel = (payload) => {
-    const fieldNames = { key: 'key', headerName: 'header' };
-    const header = [
+  const getExcelProps = {
+    fieldNames: { key: 'key', headerName: 'header' },
+    header: [
       { key: 'account', header: '店铺账号' },
       { key: 'merchantName', header: '店铺名称' },
       { key: 'cityName', header: '所在城市' },
@@ -289,28 +304,8 @@ const BusinessListComponent = (props) => {
       },
       { key: 'businessStatus', header: '经营状态', render: (val) => BUSINESS_DO_STATUS[val] },
       { key: 'status', header: '店铺状态', render: (val) => BUSINESS_STATUS[val] },
-    ];
-    dispatch({
-      type: 'businessList/fetchMerchantGetExcel',
-      payload,
-      callback: (data) => exportExcel({ header, data, fieldNames }),
-    });
+    ],
   };
-
-  // 设置商家端登录验证码
-  const handleVCodeSet = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
-    });
-  };
-
-  // 店铺详情展示
-  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
 
   return (
     <>
@@ -339,11 +334,11 @@ const BusinessListComponent = (props) => {
       <DataTableBlock
         keepName="店铺数据"
         btnExtra={({ get }) => (
-          <AuthConsumer auth="exportList">
-            <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
-              导出
-            </Button>
-          </AuthConsumer>
+          <ExcelButton
+            dispatchType={'businessList/fetchMerchantGetExcel'}
+            dispatchData={get()}
+            exportProps={getExcelProps}
+          ></ExcelButton>
         )}
         cRef={childRef}
         loading={

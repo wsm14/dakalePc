@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Spin } from 'antd';
-import exportExcel from '@/utils/exportExcel';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Spin } from 'antd';
+import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import WithdrawRemark from './components/Withdraw/WithdrawRemark';
@@ -15,6 +14,7 @@ const WithdrawDetail = (props) => {
   const toatlLoading = loading.effects['withdrawDetail/fetchWithdrawTotal'];
 
   const childRef = useRef();
+  // 修改弹窗
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -119,16 +119,6 @@ const WithdrawDetail = (props) => {
     });
   };
 
-  // 导出excel 数据
-  const fetchGetExcel = (payload) => {
-    const header = getColumns.slice(0, -1);
-    dispatch({
-      type: 'withdrawDetail/fetchGetExcel',
-      payload,
-      callback: (data) => exportExcel({ header, data }),
-    });
-  };
-
   return (
     <>
       <DataTableBlock
@@ -140,15 +130,11 @@ const WithdrawDetail = (props) => {
           </div>
         )}
         btnExtra={({ get }) => (
-          <AuthConsumer auth="exportList">
-            <Button
-              className="dkl_green_btn"
-              loading={loading.effects['withdrawDetail/fetchGetExcel']}
-              onClick={() => fetchGetExcel(get())}
-            >
-              导出
-            </Button>
-          </AuthConsumer>
+          <ExcelButton
+            dispatchType={'withdrawDetail/fetchGetExcel'}
+            dispatchData={get()}
+            exportProps={{ header: getColumns.slice(0, -1) }}
+          ></ExcelButton>
         )}
         searchCallback={fetchWithdrawTotal}
         cRef={childRef}

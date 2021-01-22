@@ -1,19 +1,18 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { Button, Popover } from 'antd';
+import { Popover } from 'antd';
 import {
   MRE_ACCOUNT_STATUS,
   BUSINESS_STATUS_AUDIT,
   MRE_SORT_STATUS,
   BUSINESS_TYPE,
 } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
-import exportExcel from '@/utils/exportExcel';
+import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessSettled = (props) => {
-  const { businessSettled, loading, dispatch } = props;
+  const { businessSettled, loading } = props;
 
   const childRef = useRef();
 
@@ -203,24 +202,14 @@ const BusinessSettled = (props) => {
     },
   ];
 
-  // 导出excel 数据
-  const fetchGetExcel = (payload) => {
-    const header = getColumns.slice(0, -1);
-    dispatch({
-      type: 'businessSettled/fetchMerchantGetExcel',
-      payload,
-      callback: (data) => exportExcel({ header, data }),
-    });
-  };
-
   return (
     <DataTableBlock
       btnExtra={({ get }) => (
-        <AuthConsumer auth="exportList">
-          <Button className="dkl_green_btn" key="1" onClick={() => fetchGetExcel(get())}>
-            导出
-          </Button>
-        </AuthConsumer>
+        <ExcelButton
+          dispatchType={'businessSettled/fetchMerchantGetExcel'}
+          dispatchData={get()}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
       )}
       keepName="入驻查询"
       cRef={childRef}

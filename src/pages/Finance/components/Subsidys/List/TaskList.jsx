@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
-import { FileExcelOutlined } from '@ant-design/icons';
-import exportExcel from '@/utils/exportExcel';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 
@@ -141,27 +138,15 @@ const TaskManage = (props) => {
     });
   };
 
-  // 导出excel 数据
-  const fetchGetExcel = (payload) => {
-    const header = getColumns.slice(0, -1);
-    dispatch({
-      type: 'subsidyManage/fetchSubsidyTaskGetExcel',
-      payload,
-      callback: (data) => exportExcel({ header, data }),
-    });
-  };
-
   return (
     <DataTableBlock
       CardNone={false}
       btnExtra={({ get }) => (
-        <AuthConsumer auth="exportList">
-          <Button
-            type="primary"
-            icon={<FileExcelOutlined />}
-            onClick={() => fetchGetExcel(get())}
-          ></Button>
-        </AuthConsumer>
+        <ExcelButton
+          dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
+          dispatchData={get()}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
       )}
       cRef={childRef}
       loading={loading}
