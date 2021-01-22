@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { SUBSIDY_TYPE, SUBSIDY_ROLE } from '@/common/constant';
+import { FileExcelOutlined } from '@ant-design/icons';
 import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -100,20 +101,20 @@ const TaskManage = (props) => {
               {
                 type: 'info',
                 auth: 'taskInfo',
-                click: () => fetchSubsidyDetail({ subsidyId }),
+                click: () => fetchSubsidyTaskDetail({ subsidyId }),
               },
               {
                 type: 'del',
                 auth: 'taskDel',
                 visible: status === '0',
-                click: () => fetchSubsidyEndDel({ subsidyId, deleteFlag: 0 }),
+                click: () => fetchSubsidyTaskEndDel({ subsidyId, deleteFlag: 0 }),
               },
               {
                 type: 'end',
                 auth: 'taskEnd',
                 pop: true,
                 visible: status === '1',
-                click: () => fetchSubsidyEndDel({ subsidyId, status: 0 }),
+                click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
               },
             ]}
           />
@@ -123,18 +124,18 @@ const TaskManage = (props) => {
   ];
 
   // 补贴管理 详情
-  const fetchSubsidyDetail = (payload) => {
+  const fetchSubsidyTaskDetail = (payload) => {
     dispatch({
-      type: 'subsidyManage/fetchSubsidyDetail',
+      type: 'subsidyManage/fetchSubsidyTaskDetail',
       payload,
       callback: (detail) => setVisible({ type: 'info', show: true, detail }),
     });
   };
 
   // 补贴管理 结束 删除
-  const fetchSubsidyEndDel = (payload) => {
+  const fetchSubsidyTaskEndDel = (payload) => {
     dispatch({
-      type: 'subsidyManage/fetchSubsidyEndDel',
+      type: 'subsidyManage/fetchSubsidyTaskEndDel',
       payload,
       callback: childRef.current.fetchGetData,
     });
@@ -144,7 +145,7 @@ const TaskManage = (props) => {
   const fetchGetExcel = (payload) => {
     const header = getColumns.slice(0, -1);
     dispatch({
-      type: 'subsidyManage/fetchSubsidyGetExcel',
+      type: 'subsidyManage/fetchSubsidyTaskGetExcel',
       payload,
       callback: (data) => exportExcel({ header, data }),
     });
@@ -155,9 +156,11 @@ const TaskManage = (props) => {
       CardNone={false}
       btnExtra={({ get }) => (
         <AuthConsumer auth="exportList">
-          <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
-            导出
-          </Button>
+          <Button
+            type="primary"
+            icon={<FileExcelOutlined />}
+            onClick={() => fetchGetExcel(get())}
+          ></Button>
         </AuthConsumer>
       )}
       cRef={childRef}
@@ -165,7 +168,7 @@ const TaskManage = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.subsidyId}`}
-      dispatchType="subsidyManage/fetchGetList"
+      dispatchType="subsidyManage/fetchGetTaskList"
       {...subsidyManage.list}
     ></DataTableBlock>
   );

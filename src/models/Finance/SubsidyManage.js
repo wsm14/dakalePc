@@ -1,10 +1,10 @@
 import { notification } from 'antd';
 import {
-  fetchSubsidyList,
-  fetchSubsidyGetExcel,
-  fetchSubsidyDetail,
-  fetchSubsidyEndDel,
-  fetchSubsidyAdd,
+  fetchSubsidyTaskList,
+  fetchSubsidyTaskGetExcel,
+  fetchSubsidyTaskDetail,
+  fetchSubsidyTaskEndDel,
+  fetchSubsidyTaskAdd,
 } from '@/services/FinanceServices';
 
 export default {
@@ -24,8 +24,8 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchSubsidyList, payload);
+    *fetchGetTaskList({ payload }, { call, put }) {
+      const response = yield call(fetchSubsidyTaskList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -35,21 +35,21 @@ export default {
         },
       });
     },
-    *fetchSubsidyGetExcel({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyGetExcel, payload);
+    *fetchSubsidyTaskGetExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyTaskGetExcel, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.subsidyList);
     },
-    *fetchSubsidyDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyDetail, payload);
+    *fetchSubsidyTaskDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyTaskDetail, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.subsidy);
     },
-    *fetchSubsidyEndDel({ payload, callback }, { call }) {
+    *fetchSubsidyTaskEndDel({ payload, callback }, { call }) {
       const { deleteFlag } = payload;
-      const response = yield call(fetchSubsidyEndDel, payload);
+      const response = yield call(fetchSubsidyTaskEndDel, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -57,8 +57,8 @@ export default {
       });
       callback();
     },
-    *fetchSubsidyAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyAdd, payload);
+    *fetchSubsidyTaskAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyTaskAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

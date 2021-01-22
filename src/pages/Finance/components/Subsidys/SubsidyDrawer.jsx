@@ -15,7 +15,7 @@ const SubsidyDrawer = (props) => {
   const handleUpAudit = () => {
     form.validateFields().then((value) => {
       dispatch({
-        type: 'subsidyManage/fetchSubsidyAdd',
+        type: 'subsidyManage/fetchSubsidyTaskAdd',
         payload: {
           ...value,
         },
