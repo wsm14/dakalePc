@@ -66,7 +66,8 @@ const UserListComponent = (props) => {
       title: '注册地',
       align: 'center',
       dataIndex: 'provinceName',
-      render: (val, row) => (val ? `${val}/${row.cityName}/${row.districtName}` : '-'),
+      render: (val, row) =>
+        val ? `${val}/${row.cityName || '--'}/${row.districtName || '--'}` : '--',
     },
     {
       title: '常驻地',
