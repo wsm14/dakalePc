@@ -2,40 +2,40 @@ import request from '@/utils/request';
 
 // 店铺数据
 
-// get 商户数据 - 商户列表
+// get 店铺数据 - 店铺列表
 export function fetchMerchantList(params) {
   return request('/admin/merchantManagement/listMerchant', {
     params,
   });
 }
 
-// get 商户数据 - 商户列表 - 导出excel
+// get 店铺数据 - 店铺列表 - 导出excel
 export function fetchMerchantExportExcel(params) {
   return request('/admin/merchantManagement/listMerchantImport', {
     params,
   });
 }
 
-// get 商户数据 - 统计数据 总商家/流失/活跃
+// get 店铺数据 - 统计数据 总商家/流失/活跃
 export function fetchMerchantTotal() {
   return request('/admin/merchantManagement/getMerchantStatistic');
 }
 
-// get 商户数据 - 统计数据 新入驻/家主/家店/行业
+// get 店铺数据 - 统计数据 新入驻/家主/家店/行业
 export function fetchMerchantTotalCategory(params) {
   return request('/admin/merchantManagement/getMerchantStatisticByDate', {
     params,
   });
 }
 
-// get 商户数据 - 商户详情
+// get 店铺数据 - 店铺详情
 export function fetchMerchantDetail(params) {
   return request('/admin/merchantManagement/merchantCredentialsInfo', {
     params,
   });
 }
 
-// post 商户数据 - 商家 设置开户行号
+// post 店铺数据 - 商家 设置开户行号
 export function fetchMerSetBandCode(data) {
   return request('/admin/merchantManagement/updateMerchantBankSwiftCode', {
     method: 'POST',
@@ -43,7 +43,7 @@ export function fetchMerSetBandCode(data) {
   });
 }
 
-// post 商户数据 - 商家新增
+// post 店铺数据 - 商家新增
 export function fetchMerchantAdd(data) {
   return request('/admin/userMerchantVerify/saveUserMerchantVerify', {
     method: 'POST',
@@ -51,7 +51,7 @@ export function fetchMerchantAdd(data) {
   });
 }
 
-// post 商户数据 - 商家 修改
+// post 店铺数据 - 商家 修改
 export function fetchMerchantEdit(data) {
   return request('/admin/merchantManagement/editMerchant', {
     method: 'POST',
@@ -59,7 +59,7 @@ export function fetchMerchantEdit(data) {
   });
 }
 
-// post 商户数据 - 商家 设置
+// post 店铺数据 - 商家 设置
 export function fetchMerchantSet(data) {
   return request('/admin/merchantManagement/updateMerchantBeanSet', {
     method: 'POST',
@@ -67,7 +67,7 @@ export function fetchMerchantSet(data) {
   });
 }
 
-// post 商户数据 - 商家 店铺状态 经营状态 修改
+// post 店铺数据 - 商家 店铺状态 经营状态 修改
 export function fetchMerchantStatus(data) {
   return request('/admin/merchantManagement/updateUserMerchant', {
     method: 'POST',
@@ -75,7 +75,7 @@ export function fetchMerchantStatus(data) {
   });
 }
 
-// post 商户数据 - 设置商家端验证码
+// post 店铺数据 - 设置商家端验证码
 export function fetchMerVerificationCodeSet(data) {
   return request('/admin/merchantManagement/setMerchantLogonCode', {
     method: 'POST',
@@ -87,28 +87,28 @@ export function fetchMerVerificationCodeSet(data) {
 
 // 审核列表
 
-// get 商户审核 - 商户审核列表
+// get 店铺审核 - 店铺审核列表
 export function fetchMerchantAuditList(params) {
   return request('/admin/merchantManagement/listMerchantVerify', {
     params,
   });
 }
 
-// get 商户审核 - 商户审核详情列表
+// get 店铺审核 - 店铺审核详情列表
 export function fetchMerchantAuditDetailList(params) {
   return request('/admin/userMerchantVerifyRecord/listUserMerchantVerifyRecord', {
     params,
   });
 }
 
-// get 商户审核 - 商户审核详情
+// get 店铺审核 - 店铺审核详情
 export function fetchMerchantAuditDetail(params) {
   return request('/admin/merchantManagement/getMerchantVerifyDetail', {
     params,
   });
 }
 
-// post 商户审核 - 商家 审核通过
+// post 店铺审核 - 商家 审核通过
 export function fetchMerSaleAuditAllow(data) {
   return request('/admin/userMerchantVerify/updateUserMerchantVerifyStatusInfo', {
     method: 'POST',
@@ -116,7 +116,7 @@ export function fetchMerSaleAuditAllow(data) {
   });
 }
 
-// post 商户审核 - 商家 审核拒绝
+// post 店铺审核 - 商家 审核拒绝
 export function fetchMerSaleAudit(data) {
   return request('/admin/userMerchantVerify/updateUserMerchantVerifyStatusInfo', {
     method: 'POST',

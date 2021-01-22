@@ -27,7 +27,7 @@ const addGroups = (props) => {
       value: '1',
       disabled: bankAccountType === '2',
     },
-    { label: '对私(个体工商户)', value: '2', disabled: bankAccountType === '1' },
+    { label: '对私(个体工店铺)', value: '2', disabled: bankAccountType === '1' },
   ];
   useEffect(() => {
     if (bankAccountType) {

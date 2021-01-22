@@ -305,7 +305,7 @@ const BusinessListComponent = (props) => {
     });
   };
 
-  // 商户详情展示
+  // 店铺详情展示
   const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
 
   useEffect(() => {

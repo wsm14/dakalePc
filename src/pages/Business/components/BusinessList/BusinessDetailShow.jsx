@@ -144,7 +144,7 @@ const BusinessDetailShow = (props) => {
       initialValue: blobj.businessLicenseImg,
       children: (
         <div style={{ maxWidth: 363 }}>
-          <div>商户名称：{blobj.businessName}</div>
+          <div>店铺名称：{blobj.businessName}</div>
           <div>统一社会信用代码：{blobj.socialCreditCode}</div>
           <div>注册地址：{blobj.signInAddress}</div>
           <div>营业期限：{blobj.validityPeriod}</div>
@@ -180,7 +180,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '账户类型',
       name: 'bankAccountType',
-      render: (val) => (val === '1' ? '对公（企业/组织机构）' : '对私（个体工商户）'),
+      render: (val) => (val === '1' ? '对公（企业/组织机构）' : '对私（个体工店铺）'),
     },
     {
       label: '开户许可证',

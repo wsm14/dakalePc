@@ -28,7 +28,7 @@ const BusinessTotalInfo = ({
     },
   ];
 
-  // 获取商户统计数据
+  // 获取店铺统计数据
   const fetchBusinessTotal = (values) => {
     dispatch({
       type: 'accountBusiness/fetchBusinessTotal',

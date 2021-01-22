@@ -74,7 +74,7 @@ const BusinessAddBeas = (props) => {
 
   const formItems = [
     {
-      title: '01 商户信息',
+      title: '01 店铺信息',
       label: '品牌名称',
       type: 'childrenOwn',
       rules: 'false',
@@ -122,7 +122,7 @@ const BusinessAddBeas = (props) => {
       addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号' }],
     },
     {
-      label: '商户简称',
+      label: '店铺简称',
       name: 'merchantName',
       placeholder: '如：一点点城西店',
     },

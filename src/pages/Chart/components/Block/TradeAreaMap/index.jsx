@@ -17,7 +17,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   const { cityData } = useContext(ChartContext);
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
-  // 商户详情
+  // 店铺详情
   const [mreInfoShow, setMreInfoShow] = useState({ show: false, detail: {} });
   // 图例状态 '' 表示全激活 否传状态
   const [mapLengend, setMapLengend] = useState('');
@@ -196,7 +196,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
           touchZoom={false} // 移动端缩放
           events={mapEvents}
         >
-          {/* 商户详情 */}
+          {/* 店铺详情 */}
           {mreInfoShow.show && (
             <MreDetail
               detail={mreInfoShow.detail}
@@ -224,7 +224,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
               <Marker
                 clickable
                 position={[item.lnt, item.lat]} // 坐标
-                extData={item.businessHubIdString} // 额外参数 保存商户id
+                extData={item.businessHubIdString} // 额外参数 保存店铺id
                 events={{
                   created(markerInstance) {
                     markerInstance.setLabel({

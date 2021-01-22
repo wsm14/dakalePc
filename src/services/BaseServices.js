@@ -80,7 +80,7 @@ export function fetchSetTradeSelect(data) {
   });
 }
 
-// post 校验商户是否存在
+// post 校验店铺是否存在
 export function fetchMerCheckData(data) {
   return request('/admin/merchantManagement/repeatStoreVerification', {
     method: 'POST',

@@ -27,7 +27,7 @@ const UserTotalInfo = ({
     },
   ];
 
-  // 获取商户统计数据
+  // 获取店铺统计数据
   const fetchUserTotal = (
     values = { beginDate: dDate.format('YYYY-MM-DD'), endDate: dDate.format('YYYY-MM-DD') },
   ) => {

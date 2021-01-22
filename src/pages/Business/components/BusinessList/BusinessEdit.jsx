@@ -121,7 +121,7 @@ const BusinessAdd = (props) => {
     });
   };
 
-  // 检查商户信息是否存在 营业执照号 店铺电话提示 userMerchantId merchantName telephone address socialCreditCode
+  // 检查店铺信息是否存在 营业执照号 店铺电话提示 userMerchantId merchantName telephone address socialCreditCode
   const fetchMerCheckData = (payload, callback) => {
     dispatch({
       type: 'baseData/fetchMerCheckData',
@@ -288,7 +288,7 @@ const BusinessAdd = (props) => {
   );
 
   const modalProps = {
-    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}商户`,
+    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
     width: 750,
     visible: show,
     maskClosable: false,

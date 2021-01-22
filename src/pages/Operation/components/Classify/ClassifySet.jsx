@@ -32,7 +32,7 @@ const ClassifySet = (props) => {
     });
   };
 
-  // 搜索商户
+  // 搜索店铺
   const fetchClassifyGetMre = debounce((keyword) => {
     if (!keyword) {
       setEditLoading(false);

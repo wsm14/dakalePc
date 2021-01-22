@@ -5,11 +5,11 @@ const BusinessAuditDetailShow = (props) => {
     type: 'Drawer',
     showType: 'info',
     width: 600,
-    title: verifyStatus !== '2' ? '商户详情' : '商户驳回详情',
+    title: verifyStatus !== '2' ? '店铺详情' : '店铺驳回详情',
     footerShow: false,
     formItems: [
       {
-        label: '商户简称',
+        label: '店铺简称',
         name: 'merchantName',
       },
       {

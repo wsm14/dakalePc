@@ -125,7 +125,7 @@ const CorporateAccount = (props) => {
       extra: '以下信息通过OCR识别，请检查后再提交哦',
     },
     {
-      label: '商户名称',
+      label: '店铺名称',
       disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'businessName'],
     },

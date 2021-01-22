@@ -58,31 +58,31 @@ export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审�
 // 城市管理 -  状态
 export const CITY_STATUS = ['未开通', '已开通'];
 
-// 商户 营业状态
+// 店铺 营业状态
 export const BUSINESS_DO_STATUS = ['暂停营业', '营业'];
 
-// 商户 账户状态(银行卡绑定状态)
+// 店铺 账户状态(银行卡绑定状态)
 export const BUSINESS_ACCOUNT_STATUS = [false, false, '未激活', '已激活'];
 
-// 商户 账户激活状态
+// 店铺 账户激活状态
 export const MRE_ACCOUNT_STATUS = ['未绑定', '审核中', '绑定失败', '绑定成功'];
 
-// 商户 绑定激活查询排序
+// 店铺 绑定激活查询排序
 export const MRE_SORT_STATUS = ['提交审核时间倒序', '按审核时间倒序', '按绑卡时间倒序'];
 
-// 商户 店铺状态
+// 店铺 店铺状态
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
-// 商户 类型
+// 店铺 类型
 export const BUSINESS_TYPE = { single: '单店', group: '集团' };
 
-// 商户 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
+// 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];
 
-// 商户 审核记录状态 '审核通过', '审核驳回'
+// 店铺 审核记录状态 '审核通过', '审核驳回'
 export const BUSINESS_DETAIL_AUDIT = ['审核通过', '审核驳回'];
 
-// 商户 注册列表 状态
+// 店铺 注册列表 状态
 export const BUSINESS_REGISTER_STATUS = ['已注册', '已入驻', '未激活', '已激活'];
 
 // 挑战赛状态
@@ -121,7 +121,7 @@ export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除
 // 商品状态 0-已下架 1-上架中 2-预售 3-未发布
 export const GOODS_TYPE = ['已下架', '上架中', false, '未发布'];
 
-// 商户确认状态
+// 店铺确认状态
 export const MRE_SURE_TYPE = ['已驳回', '确认中', '已确认'];
 
 // 员工在职状态
@@ -136,7 +136,7 @@ export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
 // 周边特惠 - 推荐状态
 export const SPECIAL_RECOMMEND_STATUS = ['否', '是'];
 
-// 商户标签状态
+// 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
 
 // FAQ猜你想问
@@ -187,10 +187,10 @@ export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
 
 //  补贴管理 任务列表 补贴角色
-export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '商户', kol: '哒人' };
+export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', kol: '哒人' };
 
 //  补贴管理 行为管理 补贴角色
-export const SUBSIDY_ACTION_ROLE = { merchant: '商户', kol: '哒人' };
+export const SUBSIDY_ACTION_ROLE = { merchant: '店铺', kol: '哒人' };
 
 //  补贴管理 行为管理 补贴类型
 export const SUBSIDY_ACTION_TYPE = { video: '发布视频', image: '发布图文', mark: '到店打卡' };
@@ -238,5 +238,5 @@ export const BANNER_JUMP_TYPE = [
 // 用户类型
 export const MASTER_TYPE = [
   { value: 'user', name: '用户' },
-  { value: 'merchant', name: '商户' },
+  { value: 'merchant', name: '店铺' },
 ];

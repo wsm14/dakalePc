@@ -12,7 +12,7 @@ const SubsidyDirectMoney = (props) => {
   // 选择店铺后回显的数据
   const [mreList, setMreList] = useState({ keys: [], list: [] });
 
-  // 设置form表单值 商户id
+  // 设置form表单值 店铺id
   useEffect(() => {
     form.setFieldsValue({ merchantIds: mreList.keys.toString() });
   }, [mreList]);
@@ -29,7 +29,7 @@ const SubsidyDirectMoney = (props) => {
       select: Object.keys(SUBSIDY_TASK_ROLE).map((item) => ({ name: SUBSIDY_TASK_ROLE[item], value: item })),
     },
     {
-      label: '适用商户',
+      label: '适用店铺',
       name: 'merchantIds',
       type: 'childrenOwn',
       childrenOwn: (
@@ -39,7 +39,7 @@ const SubsidyDirectMoney = (props) => {
       ),
     },
     {
-      label: '适用商户',
+      label: '适用店铺',
       type: 'noForm',
       childrenOwn: (
         <MreSelectShow
