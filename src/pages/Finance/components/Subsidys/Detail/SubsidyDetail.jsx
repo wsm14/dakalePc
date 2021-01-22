@@ -1,5 +1,5 @@
 import React from 'react';
-import { SUBSIDY_TYPE, SUBSIDY_ROLE } from '@/common/constant';
+import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SubsidyDetail = (props) => {
@@ -18,7 +18,7 @@ const SubsidyDetail = (props) => {
     {
       label: '补贴角色',
       name: 'role',
-      render: (val) => SUBSIDY_ROLE[val],
+      render: (val) => SUBSIDY_TASK_ROLE[val],
     },
     {
       label: '总参与人数',

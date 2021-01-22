@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
-import { SUBSIDY_ROLE } from '@/common/constant';
+import { SUBSIDY_TASK_ROLE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import MreSelect from './MreSelect';
 import MreSelectShow from './MreSelectShow';
@@ -26,7 +26,7 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: Object.keys(SUBSIDY_ROLE).map((item) => ({ name: SUBSIDY_ROLE[item], value: item })),
+      select: Object.keys(SUBSIDY_TASK_ROLE).map((item) => ({ name: SUBSIDY_TASK_ROLE[item], value: item })),
     },
     {
       label: '适用商户',

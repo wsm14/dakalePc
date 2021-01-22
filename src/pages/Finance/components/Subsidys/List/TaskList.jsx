@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { SUBSIDY_TYPE, SUBSIDY_ROLE } from '@/common/constant';
+import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import { FileExcelOutlined } from '@ant-design/icons';
 import exportExcel from '@/utils/exportExcel';
 import AuthConsumer from '@/layouts/AuthConsumer';
@@ -39,7 +39,7 @@ const TaskManage = (props) => {
       label: '补贴角色',
       type: 'select',
       name: 'role',
-      select: SUBSIDY_ROLE,
+      select: SUBSIDY_TASK_ROLE,
     },
     {
       label: '时间',
@@ -76,7 +76,7 @@ const TaskManage = (props) => {
       title: '补贴角色',
       align: 'center',
       dataIndex: 'role',
-      render: (val) => SUBSIDY_ROLE[val],
+      render: (val) => SUBSIDY_TASK_ROLE[val],
     },
     {
       title: '总参与人数',

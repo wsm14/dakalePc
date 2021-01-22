@@ -39,6 +39,21 @@ export function fetchSubsidyTaskEndDel(data) {
   });
 }
 
+// get 补贴管理 - 行为管理 - 列表
+export function fetchSubsidyActionList(params) {
+  return request('/admin/systemConfig/listConfigBehavior', {
+    params,
+  });
+}
+
+// post 补贴管理 - 行为管理 -  删除
+export function fetchSubsidyActionDel(data) {
+  return request('/admin/systemConfig/deleteConfigBehavior', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 补贴管理 end
 
 // 提现明细

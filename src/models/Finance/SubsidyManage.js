@@ -5,6 +5,8 @@ import {
   fetchSubsidyTaskDetail,
   fetchSubsidyTaskEndDel,
   fetchSubsidyTaskAdd,
+  fetchSubsidyActionList,
+  fetchSubsidyActionDel,
 } from '@/services/FinanceServices';
 
 export default {
@@ -12,6 +14,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    actionList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -32,6 +35,20 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchSubsidyActionList({ payload }, { call, put }) {
+      const response = yield call(fetchSubsidyActionList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          actionList: {
+            list: content.configBehaviorList,
+            total: content.configBehaviorList.length,
+          },
         },
       });
     },
@@ -63,6 +80,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '任务新增成功',
+      });
+      callback();
+    },
+    *fetchSubsidyActionDel({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyActionDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '行为删除成功',
       });
       callback();
     },

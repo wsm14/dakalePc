@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { SUBSIDY_TYPE, SUBSIDY_ROLE } from '@/common/constant';
+import { SUBSIDY_ACTION_TYPE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 
@@ -18,37 +18,37 @@ const ActionList = (props) => {
     {
       title: '行业',
       fixed: 'left',
-      dataIndex: 'taskName',
+      dataIndex: 'category',
     },
     {
       title: '补贴角色',
       align: 'center',
-      dataIndex: 'type',
-      render: (val) => SUBSIDY_ROLE[val],
+      dataIndex: 'subsidyRole',
+      render: (val) => SUBSIDY_ACTION_ROLE[val],
     },
     {
       title: '补贴类型',
       align: 'center',
-      dataIndex: 'role',
-      render: (val) => SUBSIDY_TYPE[val],
+      dataIndex: 'subsidyType',
+      render: (val) => SUBSIDY_ACTION_TYPE[val],
     },
     {
       title: '补贴卡豆数',
       align: 'right',
-      dataIndex: 'participants',
+      dataIndex: 'subsidyBean',
     },
     {
       title: '备注',
       align: 'right',
-      dataIndex: 'subsidizedBeans',
+      dataIndex: 'remark',
       render: (val) => val || '--',
     },
     {
       title: '操作',
-      dataIndex: 'subsidyId',
+      dataIndex: 'configBehaviorId',
       fixed: 'right',
       align: 'right',
-      render: (subsidyId, record) => {
+      render: (id, record) => {
         const { status } = record;
         return (
           <HandleSetTable
@@ -56,7 +56,7 @@ const ActionList = (props) => {
               {
                 type: 'del',
                 auth: 'actionDel',
-                click: () => fetchSubsidyEndDel({ subsidyId, deleteFlag: 0 }),
+                click: () => fetchSubsidyActionDel({ id, deleteFlag: 0 }),
               },
               {
                 type: 'edit',
@@ -71,10 +71,10 @@ const ActionList = (props) => {
     },
   ];
 
-  // 补贴管理 结束 删除
-  const fetchSubsidyEndDel = (payload) => {
+  // 删除
+  const fetchSubsidyActionDel = (payload) => {
     dispatch({
-      type: 'subsidyManage/fetchSubsidyEndDel',
+      type: 'subsidyManage/fetchSubsidyActionDel',
       payload,
       callback: childRef.current.fetchGetData,
     });
@@ -86,9 +86,9 @@ const ActionList = (props) => {
       cRef={childRef}
       loading={loading}
       columns={getColumns}
-      rowKey={(record) => `${record.subsidyId}`}
-      dispatchType="subsidyManage/fetchGetList"
-      {...subsidyManage.list}
+      rowKey={(record) => `${record.configBehaviorId}`}
+      dispatchType="subsidyManage/fetchSubsidyActionList"
+      {...subsidyManage.actionList}
     ></DataTableBlock>
   );
 };
