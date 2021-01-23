@@ -53,6 +53,12 @@ const CodeOrders = (props) => {
         })),
       },
     },
+    {
+      label: '支付日期',
+      type: 'rangePicker',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
+    },
   ];
 
   // table 表头
