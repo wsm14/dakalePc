@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { NUM_INT } from '@/common/regExp';
 import { SUBSIDY_ACTION_ROLE, SUBSIDY_ACTION_TYPE } from '@/common/constant';
@@ -6,6 +6,9 @@ import FormCondition from '@/components/FormCondition';
 
 const SubsidyActionSet = (props) => {
   const { form, detail, loading, dispatch, tradeList } = props;
+
+  // 是否显示手续费 默认不显示 到店打卡 mark 无手续费
+  const [handleFee, setHandleFee] = useState('mark');
 
   useEffect(() => {
     fetchTradeList();
@@ -50,6 +53,7 @@ const SubsidyActionSet = (props) => {
         name: SUBSIDY_ACTION_TYPE[item],
         value: item,
       })),
+      onChange: setHandleFee,
     },
     {
       label: `单用户最高补贴卡豆`,
@@ -62,6 +66,7 @@ const SubsidyActionSet = (props) => {
       name: 'handlingFee',
       suffix: '%',
       addRules: [{ pattern: NUM_INT, message: '手续费应为整数' }],
+      visible: handleFee !== 'mark',
     },
     {
       label: '备注',
