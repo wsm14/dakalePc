@@ -36,7 +36,7 @@ const AreaCenter = (props) => {
       type: 'areaCenter/fetchAreaBankDetail',
       payload: {
         ownerId: payload.partnerId,
-        ownerType: 'company',
+        ownerType: 'partner',
       },
       callback: () => setVisibleSet({ type: payload.type, show: true }),
     });

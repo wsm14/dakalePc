@@ -106,6 +106,7 @@ const ProvCompanySet = (props) => {
       afterVisibleChange={(showEdit) => {
         if (showEdit) {
           setSkeletonType(false);
+          setTabKey('1');
         } else {
           setSkeletonType(true);
         }
