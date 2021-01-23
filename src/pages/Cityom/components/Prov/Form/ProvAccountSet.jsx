@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Skeleton } from 'antd';
+import { Drawer, Button, Space, Skeleton } from 'antd';
 import AccountForm from './AccountForm/CorporateAccount';
 
 const ProvAccountSet = (props) => {
@@ -17,13 +17,13 @@ const ProvAccountSet = (props) => {
 
   const { type = 'add', show = false } = visible;
 
-  const [form] = Form.useForm();
+  const cRef = useRef();
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
 
   // 提交数据
   const handleUpData = () => {
-    form.validateFields().then((values) => {
+    cRef.current.fetchData().then((values) => {
       dispatch({
         type: 'provCompany/fetchProvBankSet',
         payload: { ownerId: companyId, ...values },
@@ -42,6 +42,7 @@ const ProvAccountSet = (props) => {
     destroyOnClose: true,
   };
 
+  // 关闭
   const closeDrawer = () => {
     setSkeletonType(true);
     setVisibleAct(false);
@@ -72,7 +73,7 @@ const ProvAccountSet = (props) => {
       }
     >
       <Skeleton loading={skeletonType || loadingDetail} active>
-        <AccountForm form={form} type={type} detail={detail}></AccountForm>
+        <AccountForm cRef={cRef} type={type} detail={detail}></AccountForm>
       </Skeleton>
     </Drawer>
   );
