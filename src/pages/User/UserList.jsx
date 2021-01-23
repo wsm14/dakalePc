@@ -5,7 +5,7 @@ import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import SearchCard from './components/UserList/Search/SearchCard';
-import userDetailShow from './components/UserDetailShow';
+import UserDetailShow from './components/UserList/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
 
@@ -15,6 +15,8 @@ const UserListComponent = (props) => {
   const childRef = useRef();
   // 城市参数
   const [cityData, setCityData] = useState({});
+  // 用户详情弹窗
+  const [visible, setVisible] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -122,15 +124,7 @@ const UserListComponent = (props) => {
     dispatch({
       type: 'userList/fetchUserDetail',
       payload: { userId },
-      callback: handleShowUserDetail,
-    });
-  };
-
-  // 用户详情展示
-  const handleShowUserDetail = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: userDetailShow({ dispatch, childRef, initialValues }),
+      callback: (detail) => setVisible({ shwo: true, detail }),
     });
   };
 
@@ -155,6 +149,11 @@ const UserListComponent = (props) => {
         dispatchType="userList/fetchGetList"
         {...list}
       ></DataTableBlock>
+      <UserDetailShow
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></UserDetailShow>
     </>
   );
 };

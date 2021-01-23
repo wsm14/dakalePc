@@ -12,9 +12,20 @@ import { Drawer, Space, Skeleton, Button } from 'antd';
  * @footer 底部按钮组
  * @afterCallBack 打开Drawer后回调函数
  * @children react 默认最高级传递组件
+ * @bodyStyle Drawer bodyStyle
  */
 const DrawerCondition = (props) => {
-  const { visible, width = 650, onClose, title, loading, footer, afterCallBack, children } = props;
+  const {
+    visible,
+    width = 650,
+    bodyStyle = {},
+    onClose,
+    title,
+    loading,
+    footer,
+    afterCallBack,
+    children,
+  } = props;
 
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
@@ -26,7 +37,7 @@ const DrawerCondition = (props) => {
     onClose,
     maskClosable: true,
     destroyOnClose: true,
-    bodyStyle: { paddingBottom: 80 },
+    bodyStyle: { paddingBottom: 80, ...bodyStyle },
     afterVisibleChange: (showEdit) => {
       if (showEdit) {
         setSkeletonType(false);
