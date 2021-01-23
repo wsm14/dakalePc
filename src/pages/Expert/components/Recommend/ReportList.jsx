@@ -161,7 +161,7 @@ const ReportList = (props) => {
   };
 
   const tableProps = {
-    CardNone: false,
+    noCard: false,
     loading,
     cRef: childRef,
     columns: propItem.getColumns,

@@ -54,7 +54,7 @@ const MreSelect = ({ visible, keys, onOk, onCancel, subsidyList = [], loading })
       onCancel={onCancel}
     >
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         componentSize="middle"
         searchItems={searchItems}
         columns={getColumns}

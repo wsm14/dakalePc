@@ -87,7 +87,7 @@ const ActiveAllocationPlace = (props) => {
   return (
     <DataTableBlock
       NoSearch={true}
-      CardNone={false}
+      noCard={false}
       componentSize="middle"
       searchItems={searchItems}
       cRef={childRef}

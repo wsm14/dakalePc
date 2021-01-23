@@ -96,7 +96,7 @@ const ActiveAllocation = (props) => {
       >
         <DataTableBlock
           NoSearch={true}
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading}
           columns={getColumns}

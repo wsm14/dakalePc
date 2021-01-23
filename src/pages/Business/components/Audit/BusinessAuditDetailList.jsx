@@ -104,7 +104,7 @@ const BusinessAuditDetailList = (props) => {
   };
 
   const tableProps = {
-    CardNone: false,
+    noCard: false,
     loading,
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,

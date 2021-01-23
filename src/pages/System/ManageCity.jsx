@@ -114,7 +114,7 @@ const ManageCity = (props) => {
               </Button>
             </AuthConsumer>
           }
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading.models.manageCity}
           columns={getColumns}

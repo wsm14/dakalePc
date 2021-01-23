@@ -120,7 +120,7 @@ const CheckInDetailList = (props) => {
           }[type]
         }
         cRef={childRef}
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row.idString}`}

@@ -19,7 +19,7 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
   return (
     <div style={{ marginBottom: 20 }} key="table">
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         columns={getColumns}
         rowKey={(record) => `${record.userMerchantIdString}`}
         rowSelection={{

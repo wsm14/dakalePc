@@ -88,7 +88,7 @@ const ActionList = (props) => {
 
   return (
     <DataTableBlock
-      CardNone={false}
+      noCard={false}
       cRef={childRef}
       loading={loading}
       columns={getColumns}

@@ -97,7 +97,7 @@ const FAQSortList = (props) => {
           </Button>
         }
         cRef={childRef}
-        CardNone={false}
+        noCard={false}
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}

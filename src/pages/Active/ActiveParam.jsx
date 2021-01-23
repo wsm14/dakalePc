@@ -97,7 +97,7 @@ const SysAccountSet = (props) => {
     tab1: (
       <>
         <DataTableBlock
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading}
           columns={getColumns}
@@ -109,7 +109,7 @@ const SysAccountSet = (props) => {
     ),
     tab2: (
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

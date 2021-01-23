@@ -181,7 +181,7 @@ const LevelTable = (props) => {
           添加
         </Button>
       }
-      CardNone={false}
+      noCard={false}
       loading={loading}
       columns={getColumns}
       rowKey={(record) => `${record.name}`}

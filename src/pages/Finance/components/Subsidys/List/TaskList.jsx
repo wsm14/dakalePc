@@ -140,7 +140,7 @@ const TaskManage = (props) => {
 
   return (
     <DataTableBlock
-      CardNone={false}
+      noCard={false}
       btnExtra={({ get }) => (
         <ExcelButton
           dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}

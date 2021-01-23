@@ -295,7 +295,7 @@ const ServiceFAQ = (props) => {
       {check ? (
         <DataTableBlock
           NoSearch
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading.models.serviceFAQ}
           searchItems={searchItems}

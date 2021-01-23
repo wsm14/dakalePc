@@ -25,7 +25,7 @@ import DraggableContent from './SortBlock';
  * @params 搜索时默认参数
  * @pParams 保存分页 搜索数据保存
  * @setParams 保存分页 搜索数据
- * @CardNone 是否需要Card包裹 默认true
+ * @noCard 是否需要Card包裹 默认true
  * @extra card 右上角
  * @componentSize 组件大小 small default middle
  * @NoSearch 刚打开是否请求 默认false 请求接口
@@ -60,7 +60,7 @@ const TableBlockComponent = (props) => {
     params,
     pParams = {},
     setParams,
-    CardNone = true,
+    noCard = true,
     extra,
     componentSize = 'default',
     NoSearch = false,
@@ -208,7 +208,7 @@ const TableBlockComponent = (props) => {
         {tabContent}
       </>
     ),
-  }[CardNone];
+  }[noCard];
 
   return tableCard;
 };

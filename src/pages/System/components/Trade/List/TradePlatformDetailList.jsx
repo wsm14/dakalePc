@@ -181,7 +181,7 @@ const TradePlatformDetailList = (props) => {
       <DataTableBlock
         btnExtra={propsItem.btnExtra}
         cRef={childRef}
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={propsItem.columns}
         rowKey={(row, i) => `${row[propsItem.rowKey] + i}`}

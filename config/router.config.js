@@ -178,6 +178,12 @@ export default [
             component: './Finance/WithdrawDetail',
             buttons: ['exportList', 'edit'],
           },
+          {
+            path: '/finance/income',
+            name: '平台收益',
+            component: './Finance/IncomeDetail',
+            buttons: ['exportList', 'info'],
+          },
         ],
       },
       {

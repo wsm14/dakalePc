@@ -222,7 +222,7 @@ const UserList = (props) => {
               </Button>
             </AuthConsumer>
           }
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading}
           searchItems={searchItems}

@@ -112,7 +112,7 @@ const MarketCardActivityDetailPay = (props) => {
   }[type];
 
   const tableProps = {
-    CardNone: false,
+    noCard: false,
     loading: loadings,
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,

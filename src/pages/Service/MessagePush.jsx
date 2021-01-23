@@ -248,7 +248,7 @@ const MessagePush = (props) => {
         {check ? (
           <DataTableBlock
             NoSearch
-            CardNone={false}
+            noCard={false}
             cRef={childRef}
             loading={loading.models.messagePush}
             searchItems={searchItems}

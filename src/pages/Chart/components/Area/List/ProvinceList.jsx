@@ -101,7 +101,7 @@ const ProvinceTotalComponent = (props) => {
   return (
     <DataTableBlock
       NoSearch
-      CardNone={false}
+      noCard={false}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
