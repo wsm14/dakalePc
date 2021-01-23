@@ -33,7 +33,7 @@ const MessagePush = (props) => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    setTabKey(check ? check[0]['key'] : false);
+    setTabKey(check && check.length ? check[0]['key'] : false);
   }, []);
 
   useEffect(() => {
@@ -245,7 +245,7 @@ const MessagePush = (props) => {
           </Space>
         }
       >
-        {check ? (
+        {check && check.length ? (
           <DataTableBlock
             NoSearch
             noCard={false}

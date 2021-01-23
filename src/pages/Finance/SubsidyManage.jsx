@@ -32,7 +32,7 @@ const SubsidyManage = () => {
 
   // 检查权限获取key默认显示tab
   useEffect(() => {
-    setTabKey(check ? check[0]['key'] : false);
+    setTabKey(check && check.length ? check[0]['key'] : false);
   }, []);
 
   // 表格公共props
@@ -64,7 +64,7 @@ const SubsidyManage = () => {
           </Space>
         }
       >
-        {check ? (
+        {check && check.length ? (
           contentList[tabkey]
         ) : (
           <Result status="403" title="403" subTitle="暂无权限"></Result>

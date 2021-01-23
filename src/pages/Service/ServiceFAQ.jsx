@@ -41,7 +41,7 @@ const ServiceFAQ = (props) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   useEffect(() => {
-    setTabKey(check ? check[0]['key'] : false);
+    setTabKey(check && check.length ? check[0]['key'] : false);
   }, []);
 
   useEffect(() => {
@@ -292,7 +292,7 @@ const ServiceFAQ = (props) => {
         </Space>
       }
     >
-      {check ? (
+      {check && check.length ? (
         <DataTableBlock
           NoSearch
           noCard={false}
