@@ -12,7 +12,7 @@ const MessageDrawer = (props) => {
   const { type = 'info', shwo = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
-  // 确认提交
+  // 确认提交 now 新增并推送时传参 用来区分是不是创建并保存接口调用
   const handleUpAudit = (now) => {
     form.validateFields().then((value) => {
       const { pushTime } = value;
@@ -44,11 +44,14 @@ const MessageDrawer = (props) => {
     children: <MessagePushSet form={form} initialValues={detail}></MessagePushSet>,
     footer: (
       <>
-        <AuthConsumer auth="push">
-          <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
-            创建并推送
-          </Button>
-        </AuthConsumer>
+        {/* 修改时只有保存按钮 新增时有这个按钮 */}
+        {type === 'add' && (
+          <AuthConsumer auth="push">
+            <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
+              创建并推送
+            </Button>
+          </AuthConsumer>
+        )}
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           保存
         </Button>
