@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import moment from 'moment';
-import { Card } from 'antd';
-import OrderList from './components/Income/List/OrderList';
+import { Card, Row, Col } from 'antd';
+import IncomeTotal from './components/Income/Total';
 import SearchCard from './components/Income/Search/SearchCard';
+import OrderList from './components/Income/List/OrderList';
 import ActionList from './components/Subsidys/List/ActionList';
 
 const tabList = [
@@ -52,8 +53,13 @@ const IncomeDetail = () => {
         tabList={tabList}
         onTabChange={(key) => {
           setTabKey(key);
-          // 切换tab 重新默认值
-          setSearchData(defaultValue);
+          const tabTime = {
+            order: [moment(), moment()],
+            day: [moment().startOf('month'), moment()],
+            month: [moment().startOf('year'), moment()],
+          }[key];
+          // 切换tab 重置时间选项
+          setSearchData({ ...searchData, time: tabTime });
         }}
       >
         <SearchCard
@@ -61,6 +67,7 @@ const IncomeDetail = () => {
           searchData={searchData}
           setSearchData={setSearchData}
         ></SearchCard>
+        <IncomeTotal></IncomeTotal>
         {contentList[tabkey]}
       </Card>
     </>
