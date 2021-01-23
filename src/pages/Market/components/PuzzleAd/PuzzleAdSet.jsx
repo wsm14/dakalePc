@@ -7,22 +7,16 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const PuzzleAdSet = (props) => {
-  const { dispatch, visible, onSumbit, onClose, brandList, loadings, loading } = props;
+  const { visible, onSumbit, onClose, loadings, loading } = props;
 
   const { show = false, info = '' } = visible;
   const [form] = Form.useForm();
+  // 上传文件根据接口改变文件参数key
   const [showType, setShowType] = useState(false);
+  // 上传确认按钮loading
   const [fileUpload, setFileUpload] = useState(false);
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
-
-  // 获取品牌
-  const fetchGetBrandList = () => {
-    dispatch({
-      type: 'businessBrand/fetchGetList',
-      payload: { page: 1, limit: 999 },
-    });
-  };
 
   // 提交
   const fetchGetFormData = () => {
@@ -87,18 +81,7 @@ const PuzzleAdSet = (props) => {
     },
     {
       label: '品牌名',
-      type: 'select',
-      name: 'brandId',
-      select: brandList,
-      fieldNames: { labelKey: 'brandName', valueKey: 'configBrandIdString' },
-      onChange: (value, item) => {
-        form.setFieldsValue({ brandName: item.children[0] });
-      },
-    },
-    {
-      label: '品牌名',
       name: 'brandName',
-      hidden: true,
     },
   ];
 
@@ -121,7 +104,6 @@ const PuzzleAdSet = (props) => {
       onClose={closeDrawer}
       afterVisibleChange={(showEdit) => {
         if (showEdit) {
-          fetchGetBrandList();
           setShowType(info.type);
           setSkeletonType(false);
         } else {
@@ -147,8 +129,7 @@ const PuzzleAdSet = (props) => {
   );
 };
 
-export default connect(({ businessBrand, loading }) => ({
-  brandList: businessBrand.list,
+export default connect(({ loading }) => ({
   loadings: loading,
   loading: loading.models.puzzleAd,
 }))(PuzzleAdSet);
