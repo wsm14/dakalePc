@@ -159,6 +159,7 @@ const MessagePush = (props) => {
               },
               {
                 type: 'copy', // 复制
+                pop: true,
                 click: () => fetchMsgPushHandle(val, 'copy'),
               },
               {
