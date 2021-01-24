@@ -45,6 +45,13 @@ export default {
       const response = yield call(fetchGetAuthMenuTree, payload);
       if (!response) return;
       const { content } = response;
+      const { flag, permissionTree } = content;
+      if (flag == 0 && !permissionTree) {
+        return notification.warning({
+          message: '温馨提示',
+          description: '权限不足，请通知管理员配置角色菜单',
+        });
+      }
       const btnObj = {};
       const duplicate = (item) => {
         if (item.buttons && item.buttons.length) btnObj[item.accessUrl] = item.buttons;
