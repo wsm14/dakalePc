@@ -23,6 +23,8 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   const [mapLengend, setMapLengend] = useState('');
   // 搜索的经纬度
   const [mapSourceData, setMapSourceData] = useState({});
+  // 被点击的Marker key 置顶
+  const [markerIndex, setMarkerIndex] = useState(100);
 
   // 监听图例 经纬度变化请求具体商店点
   useEffect(() => {
@@ -223,6 +225,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
               {/* 商圈中心 */}
               <Marker
                 clickable
+                zIndex={item.businessHubName === markerIndex ? 1000 : 100}
                 position={[item.lnt, item.lat]} // 坐标
                 extData={item.businessHubIdString} // 额外参数 保存店铺id
                 events={{
@@ -232,6 +235,9 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
                       content: `<div class='chart_amp_markey_info'>${item.businessHubName} <span className='ruzhuColor'>${item.settleCount}</span> / ${item.activeCount}</div>`, // 设置文本标注内容
                       direction: 'top', // 设置文本标注方位
                     });
+                  },
+                  click: () => {
+                    setMarkerIndex(item.businessHubName);
                   },
                 }}
               />
