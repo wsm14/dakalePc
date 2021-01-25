@@ -51,7 +51,10 @@ const AreaAccountSet = (props) => {
   return (
     <Drawer
       {...modalProps}
-      onClose={closeDrawer}
+      onClose={() => {
+        setSkeletonType(true);
+        setVisibleAct(false);
+      }}
       afterVisibleChange={(showEdit) => {
         if (showEdit) {
           setSkeletonType(false);
@@ -64,7 +67,14 @@ const AreaAccountSet = (props) => {
       footer={
         <div style={{ textAlign: 'center' }}>
           <Space>
-            <Button onClick={closeDrawer}>取消</Button>
+            <Button
+              onClick={() => {
+                setSkeletonType(true);
+                setVisibleAct(false);
+              }}
+            >
+              取消
+            </Button>
             <Button onClick={handleUpData} type="primary" loading={loading}>
               提交
             </Button>

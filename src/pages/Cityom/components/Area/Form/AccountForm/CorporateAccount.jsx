@@ -9,7 +9,7 @@ import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const CorporateAccount = (props) => {
-  const { detail = {}, type, dispatch, loading } = props;
+  const { detail = {}, type, dispatch, cRef, loading } = props;
 
   const [form] = Form.useForm();
   // 是否允许输入

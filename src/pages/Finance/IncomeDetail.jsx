@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import moment from 'moment';
-import { Card, Row, Col } from 'antd';
+import { Card } from 'antd';
 import IncomeTotal from './components/Income/Total';
 import SearchCard from './components/Income/Search/SearchCard';
 import OrderList from './components/Income/List/OrderList';
-import ActionList from './components/Subsidys/List/ActionList';
 
 const tabList = [
   {
@@ -43,8 +42,8 @@ const IncomeDetail = () => {
 
   const contentList = {
     order: <OrderList {...tableProp}></OrderList>,
-    day: <ActionList {...tableProp}></ActionList>,
-    month: <ActionList {...tableProp}></ActionList>,
+    day: <OrderList {...tableProp}></OrderList>,
+    month: <OrderList {...tableProp}></OrderList>,
   };
 
   return (
