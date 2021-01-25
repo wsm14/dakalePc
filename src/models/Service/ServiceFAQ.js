@@ -33,12 +33,13 @@ export default {
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchFAQList, payload);
       if (!response) return;
-      const { content } = response;
+      const { content = {} } = response;
+      const { commonQuestionCategoryList = [] } = content;
       yield put({
         type: 'save',
         payload: {
           list: {
-            list: content.commonQuestionCategoryList.map((item) => ({
+            list: commonQuestionCategoryList.map((item) => ({
               questionTitle: item.questionCategoryName,
               questionIdString: item.questionCategoryIdString,
               ...item,
