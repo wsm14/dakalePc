@@ -266,6 +266,7 @@ const ServiceFAQ = (props) => {
     <Card
       tabList={check}
       onTabChange={(key) => {
+        setExpandedRowKeys([]);
         setDelKey([]);
         setTabKey(key);
       }}
