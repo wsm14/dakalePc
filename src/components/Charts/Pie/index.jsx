@@ -20,6 +20,13 @@ const PieChart = (props) => {
         textAlign: 'center',
       },
     },
+    tooltip = {
+      domStyles: {
+        'g2-tooltip-value': {
+          marginLeft: '15px',
+        },
+      },
+    },
     statistic = {},
     legend = {},
     layout, // horizontal
@@ -37,13 +44,7 @@ const PieChart = (props) => {
     appendPadding: 10,
     padding: 'auto',
     // 提示文本
-    tooltip: {
-      domStyles: {
-        'g2-tooltip-value': {
-          marginLeft: '15px',
-        },
-      },
-    },
+    tooltip,
     // 内环文本
     statistic: {
       title: { customHtml: title || '总计', style: { fontSize: 14 }, offsetY: -10 },
@@ -51,10 +52,11 @@ const PieChart = (props) => {
       ...statistic,
     },
     // 图例
-    legend: legends,
+    legend: typeof legend === 'boolean' ? legend : legends,
     // 文字
     label,
     interactions: [{ type: 'element-active' }],
+    ...props,
   };
 
   useEffect(() => {
@@ -67,7 +69,7 @@ const PieChart = (props) => {
     }
   }, []);
 
-  return <Pie {...config} chartRef={ref} />;
+  return <Pie {...config} chartRef={ref}></Pie>;
 };
 
 export default PieChart;
