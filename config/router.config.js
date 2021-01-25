@@ -238,6 +238,12 @@ export default [
             component: './Operation/ExpertRecommend',
             buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
+          {
+            path: '/operation/special',
+            name: '周边特惠',
+            component: './Operation/SpecialGoods',
+            buttons: ['down', 'recommendStatus', 'tradeSet'],
+          },
         ],
       },
       {
@@ -320,12 +326,6 @@ export default [
             name: '广告管理',
             component: './Market/AppSetList',
             buttons: ['down', 'save', 'edit', 'del'],
-          },
-          {
-            path: '/market/special',
-            name: '周边特惠',
-            component: './Market/SpecialGoods',
-            buttons: ['down', 'recommendStatus', 'tradeSet'],
           },
           {
             path: '/market/search',

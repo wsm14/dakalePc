@@ -1,5 +1,32 @@
 import request from '@/utils/request';
 
+// 周边特惠
+
+// get 周边特惠 - 列表
+export function fetchSpecialGoodsList(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
+// post 周边特惠 - 下架
+export function fetchSpecialGoodsStatus(data) {
+  return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 推荐状态
+export function fetchSpecialGoodsRecommend(data) {
+  return request('/admin/specialGoodsManagement/setRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 周边特惠 end
+
 // 分享管理
 
 // get 分享管理 - 分享列表

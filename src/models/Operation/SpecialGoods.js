@@ -3,7 +3,7 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
-} from '@/services/MarketServices';
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'specialGoods',
@@ -35,7 +35,6 @@ export default {
         },
       });
     },
-
 
     *fetchSpecialGoodsStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchSpecialGoodsStatus, payload);
