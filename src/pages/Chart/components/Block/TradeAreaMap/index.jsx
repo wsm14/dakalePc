@@ -237,6 +237,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
                     });
                   },
                   click: () => {
+                    // 点击置顶
                     setMarkerIndex(item.businessHubName);
                   },
                 }}
