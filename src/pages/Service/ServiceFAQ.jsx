@@ -131,13 +131,15 @@ const ServiceFAQ = (props) => {
       render: (val, row) => {
         const { questionIdString: id } = row;
         return (
-          !row.questionCategoryIdString && (
-            <AuthConsumer auth="setLike" noAuth={FAQ_LIKE_STATUS[val]}>
-              <a onClick={() => fetchFAQEdit({ id, likeStatus: 1 ^ Number(val) })}>
-                {val === '0' ? '设置' : '取消设置'}
-              </a>
-            </AuthConsumer>
-          )
+          <AuthConsumer
+            auth="setLike"
+            noAuth={FAQ_LIKE_STATUS[val]}
+            show={!row.questionCategoryIdString}
+          >
+            <a onClick={() => fetchFAQEdit({ id, likeStatus: 1 ^ Number(val) })}>
+              {val === '0' ? '设置' : '取消设置'}
+            </a>
+          </AuthConsumer>
         );
       },
     },

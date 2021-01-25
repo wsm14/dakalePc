@@ -159,29 +159,25 @@ const AreaCompanySet = (props) => {
                           {detail.partnerStatus == 0 ? '冻结' : '启用'}
                         </Button>
                       </AuthConsumer>
-                      <AuthConsumer auth="edit">
-                        {detail.partnerStatus != 2 && (
-                          <Button
-                            onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                            type="primary"
-                            loading={loading}
-                          >
-                            编辑
-                          </Button>
-                        )}
+                      <AuthConsumer auth="edit" show={detail.partnerStatus != 2}>
+                        <Button
+                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                          type="primary"
+                          loading={loading}
+                        >
+                          编辑
+                        </Button>
                       </AuthConsumer>
                     </>
                   )}
-                  <AuthConsumer auth="edit">
-                    {tabKey == '2' && detail.partnerStatus != 2 && (
-                      <Button
-                        onClick={() => setVisibleAct({ type: 'edit', show: true })}
-                        type="primary"
-                        loading={loading}
-                      >
-                        去编辑
-                      </Button>
-                    )}
+                  <AuthConsumer auth="edit" show={tabKey == '2' && detail.partnerStatus != 2}>
+                    <Button
+                      onClick={() => setVisibleAct({ type: 'edit', show: true })}
+                      type="primary"
+                      loading={loading}
+                    >
+                      去编辑
+                    </Button>
                   </AuthConsumer>
                 </Space>
               ),

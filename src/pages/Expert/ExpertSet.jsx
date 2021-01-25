@@ -42,12 +42,11 @@ const ExpertSet = (props) => {
       title: '话题',
       align: 'center',
       dataIndex: 'parentDomainId',
-      render: (val, record) =>
-        val != 0 && (
-          <AuthConsumer auth="topic">
-            <a onClick={() => setVisible({ record })}>设置</a>
-          </AuthConsumer>
-        ),
+      render: (val, record) => (
+        <AuthConsumer auth="topic" show={val != 0}>
+          <a onClick={() => setVisible({ record })}>设置</a>
+        </AuthConsumer>
+      ),
     },
     {
       title: '操作',

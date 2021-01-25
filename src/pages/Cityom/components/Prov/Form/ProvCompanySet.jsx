@@ -142,47 +142,39 @@ const ProvCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      {detail.status != 2 && (
-                        <AuthConsumer auth="relieve">
-                          <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
-                            解约
-                          </Button>
-                        </AuthConsumer>
-                      )}
-                      <AuthConsumer auth="status">
-                        {(detail.status == 0 || detail.status == 1) && (
-                          <Button
-                            onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
-                            type="primary"
-                            loading={loading}
-                          >
-                            {detail.status == 0 ? '冻结' : '启用'}
-                          </Button>
-                        )}
+                      <AuthConsumer auth="relieve" show={detail.status != 2}>
+                        <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                          解约
+                        </Button>
                       </AuthConsumer>
-                      {detail.status != 2 && (
-                        <AuthConsumer auth="edit">
-                          <Button
-                            onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                            type="primary"
-                            loading={loading}
-                          >
-                            编辑
-                          </Button>
-                        </AuthConsumer>
-                      )}
+                      <AuthConsumer auth="status" show={detail.status == 0 || detail.status == 1}>
+                        <Button
+                          onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                          type="primary"
+                          loading={loading}
+                        >
+                          {detail.status == 0 ? '冻结' : '启用'}
+                        </Button>
+                      </AuthConsumer>
+                      <AuthConsumer auth="edit" show={detail.status != 2}>
+                        <Button
+                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                          type="primary"
+                          loading={loading}
+                        >
+                          编辑
+                        </Button>
+                      </AuthConsumer>
                     </>
                   )}
-                  <AuthConsumer auth="edit">
-                    {tabKey == '2' && detail.status != 2 && (
-                      <Button
-                        onClick={() => setVisibleAct({ type: 'edit', show: true })}
-                        type="primary"
-                        loading={loading}
-                      >
-                        去编辑
-                      </Button>
-                    )}
+                  <AuthConsumer auth="edit" show={tabKey == '2' && detail.status != 2}>
+                    <Button
+                      onClick={() => setVisibleAct({ type: 'edit', show: true })}
+                      type="primary"
+                      loading={loading}
+                    >
+                      去编辑
+                    </Button>
                   </AuthConsumer>
                 </Space>
               ),

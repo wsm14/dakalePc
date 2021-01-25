@@ -100,21 +100,17 @@ const CheckInDetailList = (props) => {
         btnExtra={
           {
             text: (
-              <AuthConsumer auth="markTextAdd">
-                {detailList.list.length < 6 && (
-                  <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                    新增
-                  </Button>
-                )}
+              <AuthConsumer auth="markTextAdd" show={detailList.list.length < 6}>
+                <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                  新增
+                </Button>
               </AuthConsumer>
             ),
             image: (
-              <AuthConsumer auth="shareImgAdd">
-                {detailList.list.length < 3 && (
-                  <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                    新增
-                  </Button>
-                )}
+              <AuthConsumer auth="shareImgAdd" show={detailList.list.length < 3}>
+                <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
+                  新增
+                </Button>
               </AuthConsumer>
             ),
           }[type]

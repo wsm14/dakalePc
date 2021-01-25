@@ -45,13 +45,11 @@ const MessageDrawer = (props) => {
     footer: (
       <>
         {/* 修改时只有保存按钮 新增时有这个按钮 */}
-        {type === 'add' && (
-          <AuthConsumer auth="push">
-            <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
-              创建并推送
-            </Button>
-          </AuthConsumer>
-        )}
+        <AuthConsumer auth="push" show={type === 'add'}>
+          <Button onClick={() => handleUpAudit('too')} type="primary" loading={loading}>
+            创建并推送
+          </Button>
+        </AuthConsumer>
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           保存
         </Button>

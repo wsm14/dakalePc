@@ -37,8 +37,8 @@ const SysTradeSet = (props) => {
       align: 'center',
       dataIndex: 'parentId',
       render: (val, record) => (
-        <AuthConsumer auth="edit">
-          {!val && <a onClick={() => setPVisible({ record })}>设置</a>}
+        <AuthConsumer auth="edit" show={!val}>
+          <a onClick={() => setPVisible({ record })}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -47,8 +47,8 @@ const SysTradeSet = (props) => {
       align: 'center',
       dataIndex: 'id',
       render: (val, record) => (
-        <AuthConsumer auth="edit">
-          {!record.parentId && <a onClick={() => handlePromotionMoneySet(record)}>设置</a>}
+        <AuthConsumer auth="edit" show={!record.parentId}>
+          <a onClick={() => handlePromotionMoneySet(record)}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -57,8 +57,8 @@ const SysTradeSet = (props) => {
       align: 'center',
       dataIndex: 'orderCount',
       render: (val, record) => (
-        <AuthConsumer auth="edit">
-          {!record.parentId && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>}
+        <AuthConsumer auth="edit" show={!record.parentId}>
+          <a onClick={() => setVisible({ type: 'special', record })}>设置</a>
         </AuthConsumer>
       ),
     },
