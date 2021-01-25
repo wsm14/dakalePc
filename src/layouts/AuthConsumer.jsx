@@ -11,8 +11,17 @@ export const authCheck = (checkAuth = []) => {
     : null;
 };
 
+/**
+ * 权限检查组件
+ * @param {*} menuBtn 按钮数据
+ * @param {*} auth 权限key 校验 true 则默认显示 flag 全部权限
+ * @param {*} noAuth 无权限时显示内容
+ * @param {*} show 是否显示
+ * @param {*} children
+ */
 const AuthConsumer = (props) => {
-  const { menuBtn, children, auth = false, noAuth = null, flag } = props;
+  const { menuBtn, children, auth = false, noAuth = null, flag, show = true } = props;
+  if (!show) return '';
   if (auth === true || flag === 1) return children;
   const authMenu = menuBtn[useLocation().pathname];
   const checkAuth = authMenu ? authMenu.includes(auth) : false;

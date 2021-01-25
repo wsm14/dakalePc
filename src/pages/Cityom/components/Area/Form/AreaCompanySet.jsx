@@ -142,23 +142,22 @@ const AreaCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      <AuthConsumer auth="relieve">
-                        {detail.partnerStatus != 2 && (
-                          <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
-                            解约
-                          </Button>
-                        )}
+                      <AuthConsumer auth="relieve" show={detail.partnerStatus != 2}>
+                        <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
+                          解约
+                        </Button>
                       </AuthConsumer>
-                      <AuthConsumer auth="status">
-                        {(detail.partnerStatus == 0 || detail.partnerStatus == 1) && (
-                          <Button
-                            onClick={() => fetchAreaEdit(1 ^ Number(detail.partnerStatus))}
-                            type="primary"
-                            loading={loading}
-                          >
-                            {detail.partnerStatus == 0 ? '冻结' : '启用'}
-                          </Button>
-                        )}
+                      <AuthConsumer
+                        auth="status"
+                        show={detail.partnerStatus == 0 || detail.partnerStatus == 1}
+                      >
+                        <Button
+                          onClick={() => fetchAreaEdit(1 ^ Number(detail.partnerStatus))}
+                          type="primary"
+                          loading={loading}
+                        >
+                          {detail.partnerStatus == 0 ? '冻结' : '启用'}
+                        </Button>
                       </AuthConsumer>
                       <AuthConsumer auth="edit">
                         {detail.partnerStatus != 2 && (
