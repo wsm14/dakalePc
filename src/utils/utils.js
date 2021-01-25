@@ -152,7 +152,7 @@ function getStr(obj) {
   var value = '';
   // 定义emoji正则表达式
   // var regRule = /\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2600-\u27FF]/g;
-  var regRule = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]/gi;
+  // var regRule = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]/gi;
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (Array.isArray(obj[key])) {
@@ -161,19 +161,19 @@ function getStr(obj) {
       } else if (Object.prototype.toString.call(obj[key]) == '[object Object]') {
         // 对象
         value = JSON.stringify(obj[key]);
-        if (value.match(regRule)) {
-          value = value.replace(regRule, ''); //旧的js emoji正则表达式
-        }
+        // if (value.match(regRule)) {
+        //   value = value.replace(regRule, ''); //旧的js emoji正则表达式
+        // }
       } else {
         // 其他格式
         value = obj[key]; //先复制一份值
         // 如果变量是文本类型且存在emoji则过滤emoji再签名
-        if (
-          Object.prototype.toString.call(obj[key]) == '[object String]' &&
-          obj[key].match(regRule)
-        ) {
-          value = value.replace(regRule, ''); // 旧的js emoji正则表达式
-        }
+        // if (
+        //   Object.prototype.toString.call(obj[key]) == '[object String]' &&
+        //   obj[key].match(regRule)
+        // ) {
+        //   value = value.replace(regRule, ''); // 旧的js emoji正则表达式
+        // }
       }
       str.push(key + '=' + value);
     }

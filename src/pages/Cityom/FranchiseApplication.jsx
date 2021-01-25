@@ -79,7 +79,6 @@ const FranchiseApplication = (props) => {
       title: '邮箱',
       align: 'right',
       dataIndex: 'email',
-      render: (val) => FRANCHISE_APP_STATUS[val],
     },
     {
       title: '申请时间',
