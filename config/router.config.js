@@ -232,6 +232,12 @@ export default [
             component: './Operation/CouponManage',
             buttons: ['info', 'down'],
           },
+          {
+            path: '/operation/recommend',
+            name: '哒人种草',
+            component: './Operation/ExpertRecommend',
+            buttons: ['reportCenter', 'info', 'down', 'handle'],
+          },
         ],
       },
       {
@@ -257,12 +263,6 @@ export default [
             name: '创作设置',
             component: './Expert/ExpertSet',
             buttons: ['status', 'topic', 'edit', 'del', 'savePClassify', 'saveClassify'],
-          },
-          {
-            path: '/expert/recommend',
-            name: '种草管理',
-            component: './Expert/ExpertRecommend',
-            buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
           {
             path: '/expert/sort',
