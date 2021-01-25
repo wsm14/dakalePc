@@ -142,11 +142,13 @@ const ProvCompanySet = (props) => {
                   <Button onClick={closeDrawer}>关闭</Button>
                   {tabKey == '1' && (
                     <>
-                      <AuthConsumer auth="relieve">
-                        <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
-                          解约
-                        </Button>
-                      </AuthConsumer>
+                      {detail.status != 2 && (
+                        <AuthConsumer auth="relieve">
+                          <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                            解约
+                          </Button>
+                        </AuthConsumer>
+                      )}
                       <AuthConsumer auth="status">
                         {(detail.status == 0 || detail.status == 1) && (
                           <Button
@@ -158,15 +160,17 @@ const ProvCompanySet = (props) => {
                           </Button>
                         )}
                       </AuthConsumer>
-                      <AuthConsumer auth="edit">
-                        <Button
-                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                          type="primary"
-                          loading={loading}
-                        >
-                          编辑
-                        </Button>
-                      </AuthConsumer>
+                      {detail.status != 2 && (
+                        <AuthConsumer auth="edit">
+                          <Button
+                            onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                            type="primary"
+                            loading={loading}
+                          >
+                            编辑
+                          </Button>
+                        </AuthConsumer>
+                      )}
                     </>
                   )}
                   <AuthConsumer auth="edit">

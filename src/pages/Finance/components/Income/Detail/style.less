@@ -1,0 +1,57 @@
+@import '~antd/es/style/themes/default.less';
+/* 订单详情 */
+.income_order {
+  .income_order_top {
+    text-align: center;
+    .income_order_icon {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 1px solid #d2d2d2;
+      border-radius: 50%;
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+    .income_order_name {
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .income_order_title {
+      font-size: 15px;
+    }
+    .income_order_Total {
+      margin-bottom: 5px;
+      font-size: 13px;
+      color: #ff1c1c;
+      .income_order_num {
+        font-size: 20px;
+        font-weight: 500;
+        margin: 0 5px;
+        .income_order_unit {
+          font-size: 13px;
+          font-weight: 400;
+        }
+      }
+    }
+    .income_order_tip {
+      color: rgba(0, 0, 0, 0.45);
+      font-size: 12px;
+    }
+  }
+  .income_order_detail {
+    margin-top: 10px;
+    border-top: 1px solid #e8e8e8;
+    padding: 20px;
+  }
+  .detail_item {
+    & + .detail_item {
+      margin-top: 5px;
+    }
+  }
+  .income_order_bottom {
+    border-top: 5px solid #f3f3f3;
+    padding: 20px 20px 10px 20px;
+    color: #00000069;
+  }
+}

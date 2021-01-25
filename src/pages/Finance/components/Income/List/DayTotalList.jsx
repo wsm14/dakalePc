@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import DataTableBlock from '@/components/DataTableBlock';
-import IncomeOrderDetail from '../Detail/IncomeOrderDetail';
+import HandleSetTable from '@/components/HandleSetTable';
 
-const OrderList = (props) => {
+const DayTotalList = (props) => {
   const { withdrawDetail, loading } = props;
 
   const childRef = useRef();
@@ -22,12 +22,27 @@ const OrderList = (props) => {
       dataIndex: 'withdrawalDate',
     },
     {
-      title: '项目',
-      align: 'center',
+      title: '扫码支付收益',
+      align: 'right',
       dataIndex: 'withdrawalSn',
     },
     {
-      title: '卡豆',
+      title: '商品核销收益',
+      align: 'right',
+      dataIndex: 'merchantName',
+    },
+    {
+      title: '优惠券核销收益',
+      align: 'right',
+      dataIndex: 'merchantName',
+    },
+    {
+      title: '看分享收益',
+      align: 'right',
+      dataIndex: 'merchantName',
+    },
+    {
+      title: '【总】收益（卡豆）',
       align: 'right',
       dataIndex: 'merchantName',
     },
@@ -35,7 +50,18 @@ const OrderList = (props) => {
       title: '详情',
       align: 'right',
       dataIndex: 'remark',
-      render: (val, record) => <IncomeOrderDetail></IncomeOrderDetail>,
+      render: (val, record) => {
+        return (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'info',
+                click: () => {},
+              },
+            ]}
+          />
+        );
+      },
     },
   ];
 
@@ -48,7 +74,6 @@ const OrderList = (props) => {
       rowKey={(record) => `${record.merchantBeanWithdrawalId}`}
       dispatchType="withdrawDetail/fetchGetList"
       {...withdrawDetail.list}
-      list={[1]}
     ></DataTableBlock>
   );
 };
@@ -56,4 +81,4 @@ const OrderList = (props) => {
 export default connect(({ withdrawDetail, loading }) => ({
   withdrawDetail,
   loading,
-}))(OrderList);
+}))(DayTotalList);

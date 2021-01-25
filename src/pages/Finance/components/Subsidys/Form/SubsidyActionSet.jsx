@@ -12,6 +12,8 @@ const SubsidyActionSet = (props) => {
 
   useEffect(() => {
     fetchTradeList();
+    // 修改时根据type 展示手续费表单
+    setHandleFee(detail.subsidyType || 'mark');
   }, []);
 
   // 行业

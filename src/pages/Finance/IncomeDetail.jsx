@@ -4,6 +4,8 @@ import { Card } from 'antd';
 import IncomeTotal from './components/Income/Total';
 import SearchCard from './components/Income/Search/SearchCard';
 import OrderList from './components/Income/List/OrderList';
+import DayTotalList from './components/Income/List/DayTotalList';
+import MonthtotalList from './components/Income/List/MonthtotalList';
 
 const tabList = [
   {
@@ -29,7 +31,7 @@ const IncomeDetail = () => {
 
   // tab激活项目
   const [tabkey, setTabKey] = useState('order');
-  // 设置 修改 详情
+  // 详情展示
   const [visible, setVisible] = useState(false);
   // 搜索参数
   const [searchData, setSearchData] = useState(defaultValue);
@@ -42,8 +44,8 @@ const IncomeDetail = () => {
 
   const contentList = {
     order: <OrderList {...tableProp}></OrderList>,
-    day: <OrderList {...tableProp}></OrderList>,
-    month: <OrderList {...tableProp}></OrderList>,
+    day: <DayTotalList {...tableProp}></DayTotalList>,
+    month: <MonthtotalList {...tableProp}></MonthtotalList>,
   };
 
   return (
