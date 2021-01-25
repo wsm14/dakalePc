@@ -174,7 +174,7 @@ const AreaCompanySet = (props) => {
                     </>
                   )}
                   <AuthConsumer auth="edit">
-                    {tabKey == '2' && (
+                    {tabKey == '2' && detail.partnerStatus != 2 && (
                       <Button
                         onClick={() => setVisibleAct({ type: 'edit', show: true })}
                         type="primary"

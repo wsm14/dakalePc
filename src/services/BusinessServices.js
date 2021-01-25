@@ -85,9 +85,9 @@ export function fetchMerVerificationCodeSet(data) {
 
 // 店铺数据 end
 
-// 审核列表
+// 新店审核
 
-// get 店铺审核 - 店铺审核列表
+// get 店铺审核 - 店铺新店审核
 export function fetchMerchantAuditList(params) {
   return request('/admin/merchantManagement/listMerchantVerify', {
     params,
@@ -124,7 +124,7 @@ export function fetchMerSaleAudit(data) {
   });
 }
 
-// 审核列表 end
+// 新店审核 end
 
 // get 注册列表 - 列表
 export function fetchMerRegisterList(params) {

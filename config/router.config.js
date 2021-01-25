@@ -116,7 +116,7 @@ export default [
           },
           {
             path: '/business/audit',
-            name: '审核列表',
+            name: '新店审核',
             component: './Business/BusinessAudit',
             buttons: ['checkDetail', 'check'],
           },
