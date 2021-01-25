@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Spin, Popover, Empty } from 'antd';
-import { PAY_TYPE } from '@/common/constant';
 import { QrcodeOutlined, ShoppingOutlined, AccountBookOutlined } from '@ant-design/icons';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import styles from './style.less';
+
 const IncomeOrderDetail = ({ order, type = 'code', orderDetail, loading, dispatch }) => {
   // 打开详情请求
   const [visible, setVisible] = useState(false);
@@ -38,7 +38,7 @@ const IncomeOrderDetail = ({ order, type = 'code', orderDetail, loading, dispatc
     },
   }[type];
 
-  const oderDom = orderDetail ? (
+  const oderDom = orderDetail.id ? (
     <div className={styles.income_order}>
       <div className={styles.income_order_top}>
         <span className={styles.income_order_icon}>{detailProps.icon}</span>
@@ -67,18 +67,19 @@ const IncomeOrderDetail = ({ order, type = 'code', orderDetail, loading, dispatc
       </div>
     </div>
   ) : (
-    <Empty description={false} />
+    <div style={{ height: 462 }}>
+      <Empty description={false} />
+    </div>
   );
 
   return (
     <AuthConsumer auth="info">
       <Popover
-        visible={true}
         destroyTooltipOnHide
         placement="right"
         trigger="click"
         title={`${detailProps.type} - 详情`}
-        overlayStyle={{ width: 380 }}
+        overlayStyle={{ minHeight: 462, width: 380 }}
         content={loading ? <Spin></Spin> : oderDom}
         onVisibleChange={(val) => setVisible(val)}
       >
