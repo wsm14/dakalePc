@@ -5,6 +5,7 @@ import { Drawer, Button, Space, Form, Skeleton } from 'antd';
 import { PUZZLE_AD_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const PuzzleAdSet = (props) => {
   const { visible, onSumbit, onClose, loadings, loading } = props;
@@ -85,47 +86,56 @@ const PuzzleAdSet = (props) => {
     },
   ];
 
-  const modalProps = {
-    title: '编辑',
-    width: 650,
-    visible: show,
-    maskClosable: true,
-    destroyOnClose: true,
-  };
-
   const closeDrawer = () => {
     setSkeletonType(true);
     onClose();
   };
 
+  const modalProps = {
+    title: '编辑',
+    width: 650,
+    visible: show,
+    loading:loadings.effects['businessBrand/fetchGetList'],
+    onClose: closeDrawer,
+    afterCallBack: () => setShowType(info.type),
+    footer: (
+      <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
+        确认
+      </Button>
+    ),
+  };
+
   return (
-    <Drawer
-      {...modalProps}
-      onClose={closeDrawer}
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setShowType(info.type);
-          setSkeletonType(false);
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType || loadings.effects['businessBrand/fetchGetList']} active>
-        <FormCondition initialValues={info} formItems={formItems} form={form} />
-      </Skeleton>
-    </Drawer>
+    <DrawerCondition {...modalProps}>
+      <FormCondition initialValues={info} formItems={formItems} form={form} />
+    </DrawerCondition>
+    // <Drawer
+    //   {...modalProps}
+    //   onClose={closeDrawer}
+    //   afterVisibleChange={(showEdit) => {
+    //     if (showEdit) {
+    //       setShowType(info.type);
+    //       setSkeletonType(false);
+    //     } else {
+    //       setSkeletonType(true);
+    //     }
+    //   }}
+    //   bodyStyle={{ paddingBottom: 80 }}
+    //   footer={
+    //     <div style={{ textAlign: 'right' }}>
+    //       <Space>
+    //         <Button onClick={onClose}>取消</Button>
+    //         <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
+    //           确认
+    //         </Button>
+    //       </Space>
+    //     </div>
+    //   }
+    // >
+    //   <Skeleton loading={skeletonType || loadings.effects['businessBrand/fetchGetList']} active>
+    //     <FormCondition initialValues={info} formItems={formItems} form={form} />
+    //   </Skeleton>
+    // </Drawer>
   );
 };
 
