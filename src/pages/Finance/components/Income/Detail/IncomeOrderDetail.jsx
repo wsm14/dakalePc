@@ -36,17 +36,19 @@ const IncomeOrderDetail = ({ identification, type = 'scan', orderDetail, loading
       type: '商品核销',
       icon: <ShoppingOutlined />,
       tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
-      titleKey: 'merchantName',
+      titleKey: 'name',
     },
     reduceCoupon: {
       type: '抵扣券核销',
       icon: <AccountBookOutlined />,
       tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
+      titleKey: 'name',
     },
     moment: {
       type: '看分享',
       icon: <PlaySquareOutlined />,
       tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
+      titleKey: 'merchantName',
     },
   }[type];
 
@@ -54,7 +56,9 @@ const IncomeOrderDetail = ({ identification, type = 'scan', orderDetail, loading
     <div className={styles.income_order}>
       <div className={styles.income_order_top}>
         <span className={styles.income_order_icon}>{detailProps.icon}</span>
-        <div className={styles.income_order_name}>一点点（萧山宝龙店）</div>
+        {!orderDetail.name && (
+          <div className={styles.income_order_name}>{orderDetail.merchantName}</div>
+        )}
         <div className={styles.income_order_title}>{orderDetail[detailProps.titleKey]}</div>
         <div className={styles.income_order_Total}>
           平台佣金
@@ -80,7 +84,9 @@ const IncomeOrderDetail = ({ identification, type = 'scan', orderDetail, loading
         <div className={styles.detail_item}>用户昵称：{orderDetail.userName}</div>
         <div className={styles.detail_item}>创建时间：{orderDetail.createTime}</div>
         <div className={styles.detail_item}>支付时间：{orderDetail.payTime}</div>
-        <div className={styles.detail_item}>核销时间：{orderDetail.verificationTime}</div>
+        {orderDetail.verificationTime && (
+          <div className={styles.detail_item}>核销时间：{orderDetail.verificationTime}</div>
+        )}
       </div>
     </div>
   ) : (

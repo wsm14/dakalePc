@@ -89,7 +89,7 @@ const PlatformIncome = ({ platformIncome, loadingList }) => {
         noCard={false}
         cRef={childRef}
         loading={loadingList}
-        columns={tableColums({ type: searchData.latitude })}
+        columns={tableColums({ type: searchData.latitude, setSearchData })}
         params={newSearch}
         rowKey={(record) => `${record.merchantBeanWithdrawalId}`}
         dispatchType="platformIncome/fetchPlatformInconme"

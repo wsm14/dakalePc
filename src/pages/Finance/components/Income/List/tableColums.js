@@ -6,7 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
  * 表格头
  * @param {*} type order - 按单显示 day - 按日显示 month - 按月显示
  */
-const tableColums = ({ type }) => {
+const tableColums = ({ type, setSearchData }) => {
   // 按日显示 按月显示 表格头
   const dayMonthColums = [
     {
