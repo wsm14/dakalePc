@@ -50,7 +50,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.merchantList },
+          list: { list: content.merchantList, total: content.total },
         },
       });
     },
