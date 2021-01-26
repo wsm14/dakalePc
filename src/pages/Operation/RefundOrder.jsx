@@ -73,7 +73,7 @@ const RefundOrder = (props) => {
       title: '退款金额',
       align: 'right',
       dataIndex: 'refundFee',
-      render: (val) => `￥${val}`,
+      render: (val) => `￥${val || 0}`,
     },
     {
       title: '退款卡豆数',
