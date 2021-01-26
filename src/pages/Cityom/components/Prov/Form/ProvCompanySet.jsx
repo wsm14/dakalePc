@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Drawer, Tabs, Alert, Button, Space, Form, Skeleton, Modal, notification } from 'antd';
+import { Tabs, Alert, Button, Form, Modal, notification } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const ProvCompanySet = (props) => {
   const {
@@ -21,8 +22,6 @@ const ProvCompanySet = (props) => {
   const { type = 'add', show = false } = visible;
 
   const [form] = Form.useForm();
-  // 骨架框显示
-  const [skeletonType, setSkeletonType] = useState(true);
   const [tabKey, setTabKey] = useState('1');
 
   // 提交数据
@@ -86,104 +85,78 @@ const ProvCompanySet = (props) => {
     });
   };
 
+  const closeDrawer = () => setVisibleSet(false);
+
   const modalProps = {
     title: `${{ add: '新增省公司', edit: '编辑信息', detail: '省公司详情' }[type]}`,
-    width: 700,
     visible: show,
     maskClosable: false,
-    destroyOnClose: true,
-  };
-
-  const closeDrawer = () => {
-    setSkeletonType(true);
-    setVisibleSet(false);
+    loading: loadingDetail,
+    onClose: type === 'edit' ? () => setVisibleSet({ ...visible, type: 'detail' }) : closeDrawer,
+    footer: {
+      add: (
+        <>
+          <Button onClick={handleUpData} type="primary" loading={loading}>
+            保存
+          </Button>
+          <Button onClick={() => handleUpData('next')} type="primary" loading={loading}>
+            下一步
+          </Button>
+        </>
+      ),
+      edit: (
+        <>
+          <Button onClick={handleUpData} type="primary" loading={loading}>
+            保存
+          </Button>
+        </>
+      ),
+      detail: (
+        <>
+          {tabKey == '1' && (
+            <>
+              <AuthConsumer auth="relieve" show={detail.status != 2}>
+                <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
+                  解约
+                </Button>
+              </AuthConsumer>
+              <AuthConsumer auth="status" show={detail.status == 0 || detail.status == 1}>
+                <Button
+                  onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
+                  type="primary"
+                  loading={loading}
+                >
+                  {detail.status == 0 ? '冻结' : '启用'}
+                </Button>
+              </AuthConsumer>
+              <AuthConsumer auth="edit" show={detail.status != 2}>
+                <Button
+                  onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
+                  type="primary"
+                  loading={loading}
+                >
+                  编辑
+                </Button>
+              </AuthConsumer>
+            </>
+          )}
+          <AuthConsumer auth="edit" show={tabKey == '2' && detail.status != 2}>
+            <Button
+              onClick={() => setVisibleAct({ type: 'edit', show: true })}
+              type="primary"
+              loading={loading}
+            >
+              去编辑
+            </Button>
+          </AuthConsumer>
+        </>
+      ),
+    }[type],
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={closeDrawer}
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setSkeletonType(false);
-          setTabKey('1');
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          {
-            {
-              add: (
-                <Space>
-                  <Button onClick={closeDrawer}>取消</Button>
-                  <Button onClick={handleUpData} type="primary" loading={loading}>
-                    保存
-                  </Button>
-                  <Button onClick={() => handleUpData('next')} type="primary" loading={loading}>
-                    下一步
-                  </Button>
-                </Space>
-              ),
-              edit: (
-                <Space>
-                  <Button onClick={() => setVisibleSet({ ...visible, type: 'detail' })}>
-                    取消
-                  </Button>
-                  <Button onClick={handleUpData} type="primary" loading={loading}>
-                    保存
-                  </Button>
-                </Space>
-              ),
-              detail: (
-                <Space>
-                  <Button onClick={closeDrawer}>关闭</Button>
-                  {tabKey == '1' && (
-                    <>
-                      <AuthConsumer auth="relieve" show={detail.status != 2}>
-                        <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
-                          解约
-                        </Button>
-                      </AuthConsumer>
-                      <AuthConsumer auth="status" show={detail.status == 0 || detail.status == 1}>
-                        <Button
-                          onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
-                          type="primary"
-                          loading={loading}
-                        >
-                          {detail.status == 0 ? '冻结' : '启用'}
-                        </Button>
-                      </AuthConsumer>
-                      <AuthConsumer auth="edit" show={detail.status != 2}>
-                        <Button
-                          onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                          type="primary"
-                          loading={loading}
-                        >
-                          编辑
-                        </Button>
-                      </AuthConsumer>
-                    </>
-                  )}
-                  <AuthConsumer auth="edit" show={tabKey == '2' && detail.status != 2}>
-                    <Button
-                      onClick={() => setVisibleAct({ type: 'edit', show: true })}
-                      type="primary"
-                      loading={loading}
-                    >
-                      去编辑
-                    </Button>
-                  </AuthConsumer>
-                </Space>
-              ),
-            }[type]
-          }
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType || loadingDetail} active>
+    <DrawerCondition {...modalProps}>
+      <>
         {
           {
             add: <AddDetail form={form} type={type}></AddDetail>,
@@ -203,8 +176,8 @@ const ProvCompanySet = (props) => {
             ),
           }[type]
         }
-      </Skeleton>
-    </Drawer>
+      </>
+    </DrawerCondition>
   );
 };
 
