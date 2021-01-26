@@ -151,6 +151,7 @@ const LevelTable = (props) => {
             formItems={[
               {
                 type: 'edit',
+                auth: true,
                 visible: row.value,
                 click: () => {
                   const titleName =
@@ -162,6 +163,7 @@ const LevelTable = (props) => {
               },
               {
                 type: 'del',
+                auth: true,
                 click: () => {
                   const newList = list.filter((item, index) => index != i);
                   fetchExpertLevelSet(newList);

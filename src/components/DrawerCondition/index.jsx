@@ -16,6 +16,7 @@ import { Drawer, Space, Skeleton, Button } from 'antd';
  * @maskClosable 点击蒙版关闭 true false
  * @destroyOnClose 关闭Drawer销毁子组件 true false
  * @bodyStyle Drawer bodyStyle
+ * @zIndex Drawer z-index配置
  * @children react 默认最高级传递组件
  */
 const DrawerCondition = (props) => {
@@ -32,12 +33,14 @@ const DrawerCondition = (props) => {
     closeCallBack,
     maskClosable = true,
     destroyOnClose = true,
+    zIndex,
     children,
   } = props;
 
   // 骨架框显示
   const [skeletonType, setSkeletonType] = useState(true);
 
+  // drawer 配置 props
   const modalProps = {
     title,
     width,
@@ -45,6 +48,7 @@ const DrawerCondition = (props) => {
     onClose,
     maskClosable,
     destroyOnClose,
+    zIndex,
     bodyStyle: { paddingBottom: 80, ...bodyStyle },
     afterVisibleChange: (showEdit) => {
       if (showEdit) {
