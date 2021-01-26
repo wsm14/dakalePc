@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
+import { FormOutlined } from '@ant-design/icons';
 import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -101,17 +102,23 @@ const WithdrawDetail = (props) => {
       title: '备注',
       fixed: 'right',
       align: 'right',
+      width: 300,
       dataIndex: 'remark',
       render: (val, record) => {
         return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => setVisible({ shwo: true, detail: record }),
-              },
-            ]}
-          />
+          <>
+            {val}
+            <HandleSetTable
+              formItems={[
+                {
+                  type: 'own',
+                  auth: 'edit',
+                  title: <FormOutlined />,
+                  click: () => setVisible({ shwo: true, detail: record }),
+                },
+              ]}
+            />
+          </>
         );
       },
     },

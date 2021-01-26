@@ -61,11 +61,9 @@ const HandleSetTable = (props) => {
         component
       );
       children.push(
-        visible && (
-          <AuthConsumer key={`auth${type}${index}`} auth={auth}>
-            {component}
-          </AuthConsumer>
-        ),
+        <AuthConsumer show={visible} key={`auth${type}${index}`} auth={auth}>
+          {component}
+        </AuthConsumer>,
       );
     });
     return children;
