@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form } from 'antd';
+import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
   const { show = false, info } = visible;
@@ -57,28 +58,19 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     });
   };
 
+  const modalProps = {
+    title: '问题详情',
+    visible: show,
+    onClose,
+    footer: (info && info.status !== '2' && (
+      <Button onClick={handleFinish} type="primary" loading={loading}>
+        确认回复
+      </Button>)
+    ),
+  };
+
   return (
-    <Drawer
-      visible={show}
-      title="问题详情"
-      width={600}
-      maskClosable
-      destroyOnClose
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>关闭</Button>
-            {info && info.status !== '2' && (
-              <Button onClick={handleFinish} type="primary" loading={loading}>
-                确认回复
-              </Button>
-            )}
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <DescriptionsCondition formItems={description} initialValues={info}></DescriptionsCondition>
       {info && info.status == '2' && (
         <div style={{ marginTop: 50 }}>
@@ -109,7 +101,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
           <FormCondition formItems={formItems} form={form} />
         </div>
       )}
-    </Drawer>
+    </DrawerCondition>
   );
 };
 export default connect(({ customerFeedBack, loading }) => ({
