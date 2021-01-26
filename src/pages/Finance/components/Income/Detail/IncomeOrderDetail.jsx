@@ -55,7 +55,7 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
     <div className={styles.income_order}>
       <div className={styles.income_order_top}>
         <span className={styles.income_order_icon}>
-          {detailProps[type] ? detailProps.icon : <ShoppingOutlined />}
+          {detailProps.icon ? detailProps.icon : <ShoppingOutlined />}
         </span>
         {!detail[detailProps.titleKey] && (
           <div className={styles.income_order_name}>{detail.merchantName}</div>
@@ -64,19 +64,17 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         <div className={styles.income_order_Total}>
           平台佣金
           <label className={styles.income_order_num}>
-            {detail.platformBean * 100 || 0}
+            {detail.platformBean}
             <span className={styles.income_order_unit}>卡豆</span>
           </label>
-          （￥{detail.platformBean || 0}）
+          （￥{detail.platformBean / 100 || 0}）
         </div>
         <span className={styles.income_order_tip}>{detailProps.tip}</span>
       </div>
       <div className={styles.income_order_detail}>
         <div className={styles.detail_item}>用户实付： ￥{detail.totalFee || 0}</div>
         <div className={styles.detail_item}>平台服务费比例： {detail.commissionRatio || 0}%</div>
-        <div className={styles.detail_item}>
-          平台佣金比例： {detail.rebate || 0}%（无用户/店铺家主）
-        </div>
+        <div className={styles.detail_item}>平台佣金比例： {detail.rebate || 0}%</div>
       </div>
       <div className={styles.income_order_bottom}>
         <div className={styles.detail_item}>订单号：{detail.orderSn}</div>

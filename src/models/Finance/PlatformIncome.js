@@ -18,7 +18,7 @@ export default {
   },
 
   effects: {
-    *fetchPlatformInconme({ payload }, { call, put }) {
+    *fetchPlatformInconme({ payload, callback }, { call, put }) {
       const response = yield call(fetchPlatformInconme, payload);
       if (!response) return;
       const { content } = response;
@@ -29,6 +29,7 @@ export default {
           totalBean: Number(content.totalBean),
         },
       });
+      callback && callback(content.platformRevenueList);
     },
     *fetchPlatformInconmeDetail({ payload, callback }, { call }) {
       const response = yield call(fetchPlatformInconmeDetail, payload);
