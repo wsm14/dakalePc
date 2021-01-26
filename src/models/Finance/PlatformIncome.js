@@ -6,7 +6,6 @@ export default {
   state: {
     list: { list: [], total: 0 },
     totalBean: 0,
-    orderDetail: {},
   },
 
   reducers: {
@@ -31,22 +30,11 @@ export default {
         },
       });
     },
-    *fetchPlatformInconmeDetail({ payload }, { call, put }) {
-      yield put({
-        type: 'save',
-        payload: {
-          orderDetail: {},
-        },
-      });
+    *fetchPlatformInconmeDetail({ payload, callback }, { call }) {
       const response = yield call(fetchPlatformInconmeDetail, payload);
       if (!response) return;
       const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          orderDetail: content.order,
-        },
-      });
+      callback(content.order);
     },
   },
 };

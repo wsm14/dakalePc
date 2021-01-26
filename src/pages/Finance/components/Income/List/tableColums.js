@@ -1,12 +1,24 @@
+import moment from 'moment';
 import { PLATFORM_INCOME_ORDERS_TYPE } from '@/common/constant';
-import IncomeOrderDetail from '../Detail/IncomeOrderDetail';
 import HandleSetTable from '@/components/HandleSetTable';
+
+const infoHandle = (click) => (
+  <HandleSetTable
+    formItems={[
+      {
+        type: 'info',
+        auth: true,
+        click,
+      },
+    ]}
+  />
+);
 
 /**
  * 表格头
  * @param {*} type order - 按单显示 day - 按日显示 month - 按月显示
  */
-const tableColums = ({ type, setSearchData }) => {
+const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
   // 按日显示 按月显示 表格头
   const dayMonthColums = [
     {
@@ -77,10 +89,7 @@ const tableColums = ({ type, setSearchData }) => {
           title: '详情',
           align: 'right',
           dataIndex: 'identification',
-          render: (val, row) =>
-            row.type && (
-              <IncomeOrderDetail identification={val} type={row.type}></IncomeOrderDetail>
-            ),
+          render: (val, row) => infoHandle(() => fetchGetDetail(val, row.type)),
         },
       ];
     // 按日显示
@@ -91,18 +100,14 @@ const tableColums = ({ type, setSearchData }) => {
           title: '详情',
           align: 'right',
           dataIndex: 'remark',
-          render: (val, record) => {
-            return (
-              <HandleSetTable
-                formItems={[
-                  {
-                    type: 'info',
-                    click: () => {},
-                  },
-                ]}
-              />
-            );
-          },
+          render: (val, row) =>
+            infoHandle(() =>
+              setSearchData({
+                ...searchData,
+                latitude: 'order',
+                time: [moment(row.time).startOf('day'), moment(row.time).endOf('day')],
+              }),
+            ),
         },
       ];
     default:
@@ -113,18 +118,14 @@ const tableColums = ({ type, setSearchData }) => {
           title: '详情',
           align: 'right',
           dataIndex: 'remark',
-          render: (val, record) => {
-            return (
-              <HandleSetTable
-                formItems={[
-                  {
-                    type: 'info',
-                    click: () => {},
-                  },
-                ]}
-              />
-            );
-          },
+          render: (val, row) =>
+            infoHandle(() =>
+              setSearchData({
+                ...searchData,
+                latitude: 'day',
+                time: [moment(row.time).startOf('month'), moment(row.time).endOf('month')],
+              }),
+            ),
         },
       ];
   }

@@ -152,6 +152,7 @@ const LevelTable = (props) => {
               {
                 type: 'edit',
                 visible: row.value,
+                auth: true,
                 click: () => {
                   const titleName =
                     keyRow == 'rights'
@@ -162,6 +163,7 @@ const LevelTable = (props) => {
               },
               {
                 type: 'del',
+                auth: true,
                 click: () => {
                   const newList = list.filter((item, index) => index != i);
                   fetchExpertLevelSet(newList);

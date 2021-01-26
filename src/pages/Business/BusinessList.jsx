@@ -290,6 +290,7 @@ const BusinessListComponent = (props) => {
       { key: 'account', header: '店铺账号' },
       { key: 'merchantName', header: '店铺名称' },
       { key: 'cityName', header: '所在城市' },
+      { key: 'businessHub', header: '所属商圈' },
       { key: 'address', header: '详细地址' },
       { key: 'topCategoryName', header: '一级经营类目' },
       { key: 'categoryName', header: '二级经营类目' },
