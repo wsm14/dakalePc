@@ -45,8 +45,8 @@ const PlatformIncome = ({ platformIncome, loadingList }) => {
     source,
     latitude: searchData.latitude,
     type: searchData.type.toString(),
-    beginDate: searchData.time[0].format('YYYY-MM-DD'),
-    endDate: searchData.time[1].format('YYYY-MM-DD'),
+    beginTime: searchData.time[0].format('YYYY-MM-DD'),
+    endTime: searchData.time[1].format('YYYY-MM-DD'),
   };
 
   // 搜索参数改变时请求

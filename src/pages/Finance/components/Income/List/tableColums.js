@@ -77,9 +77,10 @@ const tableColums = ({ type }) => {
           title: '详情',
           align: 'right',
           dataIndex: 'identification',
-          render: (val, row) => (
-            <IncomeOrderDetail identification={val} type={row.type}></IncomeOrderDetail>
-          ),
+          render: (val, row) =>
+            row.type && (
+              <IncomeOrderDetail identification={val} type={row.type}></IncomeOrderDetail>
+            ),
         },
       ];
     // 按日显示

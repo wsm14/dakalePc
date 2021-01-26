@@ -26,7 +26,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.platformRevenueList,
+          list: { list: content.platformRevenueList, total: content.total },
           totalBean: Number(content.totalBean),
         },
       });
