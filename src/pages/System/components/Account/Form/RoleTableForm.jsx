@@ -20,15 +20,12 @@ const RoleTableForm = (props) => {
   const [selectedPKeys, setSelectedPKeys] = useState(userInfo.selectedPKeys || []);
   // 选择的按钮
   const [selectedBtns, setSelectedBtns] = useState(userInfo.selectedBtns || {});
-  // // 选择的数据
-  // const [selectedDatas, setSelectedDatas] = useState(userInfo.selectedDatas || {});
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     fetchGetData: () => {
       return {
         selectedBtns,
-        // selectedDatas,
         selectedRowKeys: Array.from(new Set([...selectedPKeys, ...selectedRowKeys])),
       };
     },
@@ -46,9 +43,6 @@ const RoleTableForm = (props) => {
   // 全选
   const handleSelectAll = (value) => setSelectedBtns({ ...selectedBtns, ...value });
 
-  // // 选择权限
-  // const handleSelectData = (value) => setSelectedDatas({ ...selectedDatas, ...value });
-
   // table 表头
   const getColumns = [
     {
@@ -56,37 +50,6 @@ const RoleTableForm = (props) => {
       dataIndex: 'accessName',
       width: 150,
     },
-    // 运营后台无数据权限配置
-    // {
-    //   title: '数据权限',
-    //   dataIndex: 'accessUrl',
-    //   width: 150,
-    //   render: (val, record) => {
-    //     return (
-    //       !record.children && (
-    //         <Select
-    //           showSearch
-    //           defaultValue="1"
-    //           value={selectedDatas[record.accessIdString]}
-    //           disabled={selectedRowKeys.indexOf(record.accessIdString) == -1}
-    //           onChange={(value) => handleSelectData({ [record.accessIdString]: value })}
-    //           dropdownMatchSelectWidth={false}
-    //           style={{ width: 150 }}
-    //           optionFilterProp="children"
-    //         >
-    //           {/* 可选数据权限选项 */}
-    //           {WORKER_ROLEDATA_TYPE.filter((i) => i.value <= Number(record.dataType)).map(
-    //             (item) => (
-    //               <Select.Option value={`${item.value}`} key={item.value}>
-    //                 {item.name}
-    //               </Select.Option>
-    //             ),
-    //           )}
-    //         </Select>
-    //       )
-    //     );
-    //   },
-    // },
     {
       title: '操作权限',
       dataIndex: 'accessIdString',
