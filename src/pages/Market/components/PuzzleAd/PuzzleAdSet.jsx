@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Skeleton } from 'antd';
+import {  Button, Form } from 'antd';
 import { PUZZLE_AD_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -16,8 +16,6 @@ const PuzzleAdSet = (props) => {
   const [showType, setShowType] = useState(false);
   // 上传确认按钮loading
   const [fileUpload, setFileUpload] = useState(false);
-  // 骨架框显示
-  const [skeletonType, setSkeletonType] = useState(true);
 
   // 提交
   const fetchGetFormData = () => {
@@ -87,7 +85,6 @@ const PuzzleAdSet = (props) => {
   ];
 
   const closeDrawer = () => {
-    setSkeletonType(true);
     onClose();
   };
 
@@ -109,33 +106,6 @@ const PuzzleAdSet = (props) => {
     <DrawerCondition {...modalProps}>
       <FormCondition initialValues={info} formItems={formItems} form={form} />
     </DrawerCondition>
-    // <Drawer
-    //   {...modalProps}
-    //   onClose={closeDrawer}
-    //   afterVisibleChange={(showEdit) => {
-    //     if (showEdit) {
-    //       setShowType(info.type);
-    //       setSkeletonType(false);
-    //     } else {
-    //       setSkeletonType(true);
-    //     }
-    //   }}
-    //   bodyStyle={{ paddingBottom: 80 }}
-    //   footer={
-    //     <div style={{ textAlign: 'right' }}>
-    //       <Space>
-    //         <Button onClick={onClose}>取消</Button>
-    //         <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
-    //           确认
-    //         </Button>
-    //       </Space>
-    //     </div>
-    //   }
-    // >
-    //   <Skeleton loading={skeletonType || loadings.effects['businessBrand/fetchGetList']} active>
-    //     <FormCondition initialValues={info} formItems={formItems} form={form} />
-    //   </Skeleton>
-    // </Drawer>
   );
 };
 
