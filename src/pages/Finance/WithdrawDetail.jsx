@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
-import { Spin } from 'antd';
+import { Spin, Tag } from 'antd';
 import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -16,6 +17,11 @@ const WithdrawDetail = (props) => {
   const childRef = useRef();
   // 修改弹窗
   const [visible, setVisible] = useState(false);
+  // 显示当前数据的时间标记
+  const [searchTime, setSearchTime] = useState([
+    moment().subtract(1, 'month').format('YYYY-MM-DD'),
+    moment().format('YYYY-MM-DD'),
+  ]);
 
   useEffect(() => {
     fetchWithdrawTotal();
@@ -112,7 +118,12 @@ const WithdrawDetail = (props) => {
   ];
 
   // 统计数据
-  const fetchWithdrawTotal = (payload) => {
+  const fetchWithdrawTotal = (payload = {}) => {
+    const {
+      withdrawalDateEnd = moment().subtract(1, 'month').format('YYYY-MM-DD'),
+      withdrawalDateStart = moment().format('YYYY-MM-DD'),
+    } = payload;
+    setSearchTime([withdrawalDateStart, withdrawalDateEnd]);
     dispatch({
       type: 'withdrawDetail/fetchWithdrawTotal',
       payload,
@@ -124,8 +135,12 @@ const WithdrawDetail = (props) => {
       <DataTableBlock
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
-            合计提现金额：{toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum}`}{' '}
-            &nbsp;&nbsp; 合计提现手续费：
+            <Tag color="orange">
+              {searchTime[0]} ~ {searchTime[1]}
+            </Tag>
+            合计提现金额：
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum}`} &nbsp;&nbsp;
+            合计提现手续费：
             {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum}`}
           </div>
         )}
