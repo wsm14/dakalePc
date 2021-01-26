@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Spin, Popover, Empty } from 'antd';
-import { QrcodeOutlined, ShoppingOutlined, AccountBookOutlined } from '@ant-design/icons';
+import {
+  QrcodeOutlined,
+  ShoppingOutlined,
+  AccountBookOutlined,
+  PlaySquareOutlined,
+} from '@ant-design/icons';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import styles from './style.less';
 
-const IncomeOrderDetail = ({ order, type = 'code', orderDetail, loading, dispatch }) => {
+const IncomeOrderDetail = ({ identification, type = 'scan', orderDetail, loading, dispatch }) => {
   // 打开详情请求
   const [visible, setVisible] = useState(false);
 
@@ -13,57 +18,69 @@ const IncomeOrderDetail = ({ order, type = 'code', orderDetail, loading, dispatc
   const fetchGetDetail = () => {
     if (!visible) {
       dispatch({
-        type: 'ordersList/fetchOrderDetail',
-        payload: { orderId: order },
+        type: 'platformIncome/fetchPlatformInconmeDetail',
+        payload: { identification, source: 'platform' },
       });
     }
   };
 
   // 订单详情配置
   const detailProps = {
-    code: {
+    scan: {
       type: '扫码支付',
-      icon: <QrcodeOutlined></QrcodeOutlined>,
+      icon: <QrcodeOutlined />,
       tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
+      titleKey: 'merchantName',
     },
-    shop: {
+    goods: {
       type: '商品核销',
-      icon: <ShoppingOutlined></ShoppingOutlined>,
+      icon: <ShoppingOutlined />,
+      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
+      titleKey: 'merchantName',
+    },
+    reduceCoupon: {
+      type: '抵扣券核销',
+      icon: <AccountBookOutlined />,
       tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
     },
-    coupon: {
-      type: '优惠券核销',
-      icon: <AccountBookOutlined></AccountBookOutlined>,
+    moment: {
+      type: '看分享',
+      icon: <PlaySquareOutlined />,
       tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
     },
   }[type];
 
-  const oderDom = orderDetail.id ? (
+  const oderDom = orderDetail.orderId ? (
     <div className={styles.income_order}>
       <div className={styles.income_order_top}>
         <span className={styles.income_order_icon}>{detailProps.icon}</span>
         <div className={styles.income_order_name}>一点点（萧山宝龙店）</div>
-        <div className={styles.income_order_title}>杨枝甘露</div>
+        <div className={styles.income_order_title}>{orderDetail[detailProps.titleKey]}</div>
         <div className={styles.income_order_Total}>
           平台佣金
           <label className={styles.income_order_num}>
-            15<span className={styles.income_order_unit}>卡豆</span>
+            {orderDetail.platformBean * 100 || 0}
+            <span className={styles.income_order_unit}>卡豆</span>
           </label>
-          （￥0.15）
+          （￥{orderDetail.platformBean || 0}）
         </div>
         <span className={styles.income_order_tip}>{detailProps.tip}</span>
       </div>
       <div className={styles.income_order_detail}>
-        <div className={styles.detail_item}>用户实付： ￥10.00</div>
-        <div className={styles.detail_item}>平台服务费比例： 2%</div>
-        <div className={styles.detail_item}>平台佣金比例： 75%（无用户/店铺家主）</div>
+        <div className={styles.detail_item}>用户实付： ￥{orderDetail.totalFee || 0}</div>
+        <div className={styles.detail_item}>
+          平台服务费比例： {orderDetail.commissionRatio || 0}%
+        </div>
+        <div className={styles.detail_item}>
+          平台佣金比例： {orderDetail.rebate || 0}%（无用户/店铺家主）
+        </div>
       </div>
       <div className={styles.income_order_bottom}>
-        <div className={styles.detail_item}>订单号：DKL293839438343</div>
-        <div className={styles.detail_item}>用户昵称：小黄豆</div>
-        <div className={styles.detail_item}>创建时间：2020-11-10 19:09:00</div>
-        <div className={styles.detail_item}>支付时间：2020-11-10 19:09:00</div>
-        <div className={styles.detail_item}>核销时间：2020-11-10 19:09:00</div>
+        <div className={styles.detail_item}>订单号：{orderDetail.orderSn}</div>
+        <div className={styles.detail_item}>用户昵称：{orderDetail.userName}</div>
+        <div className={styles.detail_item}>创建时间：{orderDetail.createTime}</div>
+        <div className={styles.detail_item}>支付时间：{orderDetail.payTime}</div>
+        <div className={styles.detail_item}>核销时间：{orderDetail.verificationTime}</div>
       </div>
     </div>
   ) : (
@@ -89,7 +106,7 @@ const IncomeOrderDetail = ({ order, type = 'code', orderDetail, loading, dispatc
   );
 };
 
-export default connect(({ ordersList, loading }) => ({
-  orderDetail: ordersList.orderDetail,
+export default connect(({ platformIncome, loading }) => ({
+  orderDetail: platformIncome.orderDetail,
   loading: loading.effects['ordersList/fetchOrderDetail'],
 }))(IncomeOrderDetail);

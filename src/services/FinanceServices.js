@@ -106,4 +106,11 @@ export function fetchPlatformInconme(params) {
   });
 }
 
+// get 平台收益 - 详情
+export function fetchPlatformInconmeDetail(params) {
+  return request('/admin/order/getPlatformRevenueOrderDetail', {
+    params,
+  });
+}
+
 // 平台收益 end
