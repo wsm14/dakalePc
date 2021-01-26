@@ -12,14 +12,14 @@ const IncomeTotal = ({ totalBean, loading }) => {
   // 自定义legend
   const [chartData, setChartData] = useState([
     {
-      value: 1111,
+      value: 0,
       type: '广告佣金（卡豆）',
       checked: true,
       color: '#FABF4B',
       tip: '交易佣金(卡豆) = 扫码支付/核销订单/哒人带货平台服务费*圈层佣金比例',
     },
     {
-      value: 3333,
+      value: 0,
       type: '交易佣金（卡豆）',
       checked: true,
       color: '#5F96F4',
@@ -58,6 +58,7 @@ const IncomeTotal = ({ totalBean, loading }) => {
       return '#FABF4B';
     },
     tooltip: false,
+    interactions: false,
     statistic: {
       title: false,
       content: {

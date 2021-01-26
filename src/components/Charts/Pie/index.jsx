@@ -31,6 +31,7 @@ const PieChart = (props) => {
     legend = {},
     layout, // horizontal
     flipPage = false, // 图例分页
+    interactions = [{ type: 'element-active' }],
   } = props;
 
   const legends = { layout, position: 'right', flipPage, itemSpacing: 8, useHtml: true, ...legend };
@@ -55,7 +56,7 @@ const PieChart = (props) => {
     legend: typeof legend === 'boolean' ? legend : legends,
     // 文字
     label,
-    interactions: [{ type: 'element-active' }],
+    interactions,
     ...props,
   };
 
