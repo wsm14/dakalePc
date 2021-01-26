@@ -181,7 +181,7 @@ export default [
           {
             path: '/finance/income',
             name: '平台收益',
-            component: './Finance/IncomeDetail',
+            component: './Finance/PlatformIncome',
             buttons: ['exportList', 'info'],
           },
         ],

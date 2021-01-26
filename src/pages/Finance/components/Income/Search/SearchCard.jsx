@@ -56,10 +56,10 @@ const SearchCard = ({ tabkey, searchData, setSearchData }) => {
 
   // 类型选择项目
   const options = [
-    { label: '扫码支付', value: 'Apple' },
-    { label: '商品核销', value: 'Pear' },
-    { label: '优惠券核销', value: 'Orange' },
-    { label: '看分享', value: 'Oran1ge' },
+    { label: '扫码支付', value: 'scan' },
+    { label: '商品核销', value: 'goods' },
+    { label: '优惠券核销', value: 'coupon' },
+    { label: '看分享', value: 'moment' },
   ];
 
   return (

@@ -96,3 +96,14 @@ export function fetchWithdrawSetRemark(data) {
 }
 
 // 提现明细 end
+
+// 平台收益
+
+// get 平台收益 - 列表 总收益卡豆
+export function fetchPlatformInconme(params) {
+  return request('/admin/order/platformRevenue', {
+    params,
+  });
+}
+
+// 平台收益 end

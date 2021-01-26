@@ -204,6 +204,16 @@ export const SHARE_TYPE = [
 // 订单类型
 export const ORDERS_TYPE = { kolGoods: '哒人带货', specialGoods: '周边特惠' };
 
+// 平台收益订单类型
+export const PLATFORM_INCOME_ORDERS_TYPE = {
+  scan: '扫码订单',
+  goods: '商品订单',
+  reduceCoupon: '抵扣券订单',
+  specialGoods: '特价商品订单',
+  marketCoupon: '兑换券订单',
+  kolGoods: '哒人带货订单',
+};
+
 // 账户激活状态
 export const WORKER_BANK_STATUS = [
   { label: '0', value: '未激活' },

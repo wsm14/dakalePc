@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import numeral from 'numeral';
+import { connect } from 'umi';
 import { Statistic } from 'antd';
 import { Pie } from '@/components/Charts';
+import numeral from 'numeral';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import totalImg from './img/total.png';
 import shadowImg from './img/shadow.png';
 import styles from './style.less';
 
-const IncomeTotal = () => {
+const IncomeTotal = ({ totalBean, loading }) => {
   // 自定义legend
   const [chartData, setChartData] = useState([
     {
@@ -87,7 +88,8 @@ const IncomeTotal = () => {
           ></QuestionTooltip>
           {/* 统计总收益 */}
           <Statistic
-            value={3132313}
+            value={totalBean}
+            loading={loading}
             valueStyle={{
               fontSize: 30,
               color: '#5F91FF',
@@ -138,4 +140,7 @@ const IncomeTotal = () => {
   );
 };
 
-export default IncomeTotal;
+export default connect(({ platformIncome, loading }) => ({
+  ...platformIncome,
+  loading: loading.effects['platformIncome/fetchPlatformInconme'],
+}))(IncomeTotal);

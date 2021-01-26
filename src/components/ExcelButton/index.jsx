@@ -27,6 +27,7 @@ const ExcelButton = (props) => {
 
   // 导出excel 数据
   const fetchGetExcel = () => {
+    console.log(exportProps);
     dispatch({
       type: dispatchType,
       payload: dispatchData,
