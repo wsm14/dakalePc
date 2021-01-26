@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import {  Button, Form } from 'antd';
+import { Button, Form } from 'antd';
 import { PUZZLE_AD_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -92,7 +92,7 @@ const PuzzleAdSet = (props) => {
     title: '编辑',
     width: 650,
     visible: show,
-    loading:loadings.effects['businessBrand/fetchGetList'],
+    loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,
     afterCallBack: () => setShowType(info.type),
     footer: (
