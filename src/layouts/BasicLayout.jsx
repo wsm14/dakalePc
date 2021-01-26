@@ -3,11 +3,11 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import ProLayout from '@ant-design/pro-layout';
 import { Affix, BackTop } from 'antd';
 import { PageContainer, RouteContext } from '@ant-design/pro-layout';
-import { Link, connect, useLocation } from 'umi';
+import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import HeaderContent from '@/components/GlobalHeader/HeaderContent';
@@ -29,13 +29,7 @@ const BasicLayout = (props) => {
     menuList,
     loading,
   } = props;
-  const match = useLocation();
-  const [rootSubmenuKeys, setRootSubmenuKeys] = useState([]); // 菜单一级keys
-  const [selectedKeys, setSelectedKeys] = useState([match.pathname]); // 菜单点亮的keys
-  const [openKeys, setOpenKeys] = useState(() => {
-    const obj = match.pathname.split('/');
-    return [`/${obj[1]}`];
-  }); // 菜单展开的keys
+
   // 本地菜单
   // const menuDataRender = (menuList, keys = true) => {
   //   return menuList.map((item) => {
@@ -57,9 +51,6 @@ const BasicLayout = (props) => {
         childList: routes,
         buttons = null,
       } = item;
-      if (keys) {
-        rootSubmenuKeys.push(path);
-      }
       const localItem = {
         name,
         icon: iconEnum[icon],
@@ -70,14 +61,6 @@ const BasicLayout = (props) => {
       return localItem;
     });
   };
-
-  useEffect(() => {
-    if (match.pathname === '/password') {
-      setSelectedKeys([]);
-    } else {
-      setSelectedKeys([match.pathname]);
-    }
-  }, [match]);
 
   useEffect(() => {
     if (dispatch) {
@@ -109,25 +92,9 @@ const BasicLayout = (props) => {
     });
   };
 
-  // 菜单展开方法
-  const onOpenChange = (openKey) => {
-    const latestOpenKey = openKey.find((key) => openKeys.indexOf(key) === -1);
-    setRootSubmenuKeys(Array.from(new Set(rootSubmenuKeys)));
-    // setOpenKeys([latestOpenKey]);
-    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      setOpenKeys(openKeys);
-    } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-    }
-  };
-
   return (
     <AliveScope>
       <ProLayout
-        openKeys={openKeys}
-        selectedKeys={selectedKeys}
-        menuProps={{ onClick: (val) => setSelectedKeys(val.keyPath) }}
-        onOpenChange={onOpenChange}
         onPageChange={handleCloseTitle}
         logo={logo}
         onCollapse={handleMenuCollapse}
@@ -137,19 +104,9 @@ const BasicLayout = (props) => {
           }
           return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         }}
-        // breadcrumbRender={(routers = []) => [...routers]}
         itemRender={(route, params, routes, paths) => {
-          // const first = routes.path === route.path;
-          // setTitle(routes.map((item) => item.breadcrumbName).join(' / '));
-          // return first ? (
-          //   <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
-          // ) : (
-          //   <span>{route.breadcrumbName}</span>
-          // );
           return false;
         }}
-        // footerRender={() => defaultFooterDom}
-        // menuDataRender={menuDataRender}
         menuDataRender={() => menuDataRender(menuList)}
         menu={{ loading }}
         headerRender={() => <HeaderContent />}
