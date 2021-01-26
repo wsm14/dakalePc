@@ -61,7 +61,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
   const fetchGetDetail = (identification, type) => {
     dispatch({
       type: 'platformIncome/fetchPlatformInconmeDetail',
-      payload: { identification, source: 'platform' },
+      payload: { identification, source },
       callback: (detail) => setVisible({ show: true, type, detail }),
     });
   };
