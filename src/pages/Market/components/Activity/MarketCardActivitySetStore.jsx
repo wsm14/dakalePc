@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form } from 'antd';
+import { Button, Form } from 'antd';
 import { NUM_INT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const MarketCardActivitySetStore = (props) => {
   const {
@@ -192,28 +193,18 @@ const MarketCardActivitySetStore = (props) => {
     title: '新增商家',
     width: 560,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    footer: (
+      <Button onClick={fetchGetFormData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchGetFormData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormCondition formItems={formItems} form={form} loading={loading} />
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

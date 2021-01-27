@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Drawer, Form, InputNumber, Space, Button } from 'antd';
+import { Form, InputNumber, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const LevelFormSet = (props) => {
   const { visible, keyRow, showlistData, onCancel, loading, fetchExpertLevelSet } = props;
@@ -99,29 +100,19 @@ const LevelFormSet = (props) => {
     title: propItem.title,
     width: 560,
     visible: show,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose: onCancel,
     zIndex: 1005,
+    footer: (
+      <Button onClick={fetchFormData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onCancel}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={onCancel}>取消</Button>
-            <Button onClick={fetchFormData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormCondition formItems={formItems} initialValues={detail} form={form} />
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

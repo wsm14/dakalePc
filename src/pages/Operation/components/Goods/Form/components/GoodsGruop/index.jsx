@@ -1,7 +1,8 @@
 import React from 'react';
-import { Drawer, Form, Input, InputNumber, Button } from 'antd';
+import { Form, Input, InputNumber, Button, Space } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './style.less';
+import DrawerCondition from '@/components/DrawerCondition';
 
 // 表单排版
 const formItemLayout = {
@@ -22,48 +23,29 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
     visible,
     maskClosable: false,
     destroyOnClose: true,
+    zIndex: 100000000,
+    onClose,
+    footer: (
+      <Button
+        onClick={() =>
+          form.validateFields().then((values) => {
+            const { packageGoodsObjects } = values;
+            packageGoodsObjects.forEach((item) => (item.goodsPrice = item.goodsPrice.toFixed(2)));
+            console.log(values);
+            pform.setFieldsValue(values);
+            onConfirm(values.packageGoodsObjects);
+            onClose();
+          })
+        }
+        type="primary"
+      >
+        确定
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      zIndex={100000000}
-      footer={
-        <div>
-          {/* <Popconfirm
-            placement="top"
-            title={'确认清空？数据无法还原'}
-            onConfirm={() => form.setFieldsValue({ packageGoodsObjects: [] })}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button style={{ marginRight: 10 }}>清空</Button>
-          </Popconfirm> */}
-          <Button style={{ marginRight: 10, marginLeft: 100 }} onClick={onClose}>
-            取消
-          </Button>
-          <Button
-            onClick={() =>
-              form.validateFields().then((values) => {
-                const { packageGoodsObjects } = values;
-                packageGoodsObjects.forEach(
-                  (item) => (item.goodsPrice = item.goodsPrice.toFixed(2)),
-                );
-                console.log(values);
-                pform.setFieldsValue(values);
-                onConfirm(values.packageGoodsObjects);
-                onClose();
-              })
-            }
-            type="primary"
-          >
-            确定
-          </Button>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <Form {...formItemLayout} form={form} initialValues={{ packageGoodsObjects: [{}] }}>
         <Form.List name="packageGoodsObjects">
           {(fields, { add, remove }) => {
@@ -119,7 +101,9 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
                     </Form.Item>
                   </div>
                 ))}
+                <Space>
                 <Button
+                style={{marginLeft:"65px"}}
                   disabled={fields.length === 30}
                   onClick={() => {
                     add();
@@ -129,12 +113,13 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
                 >
                   <PlusOutlined /> {fields.length} / {30} 添加
                 </Button>
+                </Space>
               </>
             );
           }}
         </Form.List>
       </Form>
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

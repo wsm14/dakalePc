@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Skeleton } from 'antd';
+import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const FAQSet = (props) => {
   const { dispatch, visible = {}, typeList, onClose, cRef, loading, sortList } = props;
   const { type = '', detail = {} } = visible;
 
   const [form] = Form.useForm();
-  const [skeletonType, setSkeletonType] = useState(true);
 
   // 确认数据
   const fetchUpData = () => {
@@ -86,36 +86,21 @@ const FAQSet = (props) => {
     },
   ];
 
+  const modalProps = {
+    title: `${type == 'add' ? '新增' : '编辑'}问题`,
+    visible: !!type,
+    onClose,
+    footer: (
+      <Button onClick={fetchUpData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
+  };
+
   return (
-    <Drawer
-      title={`${type == 'add' ? '新增' : '编辑'}问题`}
-      width={600}
-      visible={!!type}
-      destroyOnClose
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setSkeletonType(false);
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchUpData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType} active>
-        <FormCondition formItems={formItems} form={form} initialValues={detail} />
-      </Skeleton>
-    </Drawer>
+    <DrawerCondition {...modalProps}>
+      <FormCondition formItems={formItems} form={form} initialValues={detail} />
+    </DrawerCondition>
   );
 };
 

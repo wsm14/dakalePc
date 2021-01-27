@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form } from 'antd';
+import {  Button, Form } from 'antd';
 import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
@@ -81,29 +82,19 @@ const SysAppSet = (props) => {
   ];
 
   const modalProps = {
-    title: '编辑',
+    title: info?'编辑':"新增",
     width: 560,
     visible: show,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    footer: (
+      <Button onClick={fetchGetFormData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchGetFormData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormCondition
         initialValues={
           info
@@ -120,7 +111,7 @@ const SysAppSet = (props) => {
         formItems={formItems}
         form={form}
       />
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'umi';
 import { MRE_TAG_STATUS } from '@/common/constant';
-import { Drawer, Button, Space, Form } from 'antd';
+import {  Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const ClassifySet = (props) => {
   const { dispatch, visible = {}, onClose, cRef, loading } = props;
@@ -45,27 +46,21 @@ const ClassifySet = (props) => {
     },
   ];
 
+  const modalProps = {
+    title: '设置分类',
+    visible: !!type,
+    onClose,
+    footer: (
+      <Button onClick={fetchUpData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
+  };
+
   return (
-    <Drawer
-      title={`设置分类`}
-      width={600}
-      visible={!!type}
-      destroyOnClose={true}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchUpData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormCondition formItems={formItems} form={form} initialValues={detail} />
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

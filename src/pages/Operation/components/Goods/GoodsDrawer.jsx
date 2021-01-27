@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, notification } from 'antd';
+import {  Button, Form, notification } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import GoodsDetail from './Detail/GoodsDetail';
 import GoodsSet from './Form/GoodsSet';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const GoodsDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
@@ -66,31 +67,19 @@ const GoodsDrawer = (props) => {
     title: `${type == 'showDetail' ? '商品详情' : '新增商品'}`,
     width: 620,
     visible: type == 'showDetail' || type == 'addGoods',
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    footer: type !== 'showDetail' && (
+      <Button onClick={handleUpAudit} type="primary" loading={loading}>
+        提交
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            {type != 'showDetail' && (
-              <Button onClick={handleUpAudit} type="primary" loading={loading}>
-                提交
-              </Button>
-            )}
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       {type == 'showDetail' && <GoodsDetail detail={detail}></GoodsDetail>}
       {type == 'addGoods' && <GoodsSet form={form}></GoodsSet>}
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

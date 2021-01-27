@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Skeleton } from 'antd';
+import { Button, Form } from 'antd';
 import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const ClassifySet = (props) => {
   const { dispatch, visible = {}, onClose, cRef, loading, classifyManage } = props;
@@ -67,36 +68,26 @@ const ClassifySet = (props) => {
       placeholder: '请先选择店铺',
     },
   ];
-
-  return (
-    <Drawer
-      title={`设置分类`}
-      width={600}
-      visible={!!type}
-      destroyOnClose={true}
-      afterVisibleChange={(show) => {
-        setEditLoading(true);
-        if (show && type == 'edit') {
-          fetchClassifyGetMre(detail.merchantName);
-        }
-      }}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchUpData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
+  const modalProps = {
+    title: '设置分类',
+    visible: !!type,
+    onClose,
+    loading: editLoading,
+    afterCallBack: () => {
+      if ( type == 'edit') {
+        fetchClassifyGetMre(detail.merchantName);
       }
-    >
-      <Skeleton loading={type == 'edit' && editLoading} active>
-        <FormCondition formItems={formItems} form={form} initialValues={detail} />
-      </Skeleton>
-    </Drawer>
+    },
+    footer: (
+      <Button onClick={fetchUpData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
+  };
+  return (
+    <DrawerCondition {...modalProps}>
+      <FormCondition formItems={formItems} form={form} initialValues={detail} />
+    </DrawerCondition>
   );
 };
 

@@ -151,6 +151,7 @@ const LevelTable = (props) => {
             formItems={[
               {
                 type: 'edit',
+                auth: true,
                 visible: row.value,
                 auth: true,
                 click: () => {
