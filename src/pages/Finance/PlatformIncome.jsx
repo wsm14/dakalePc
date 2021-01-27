@@ -54,7 +54,11 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
 
   // 搜索参数改变时请求
   useEffect(() => {
-    childRef.current && childRef.current.fetchGetData(newSearch);
+    const { page, limit } = searchData;
+    let pageObj = {};
+    // 判断是否存在分页信息 存在则重置分页
+    if (page) pageObj = { page, limit };
+    childRef.current && childRef.current.fetchGetData({ ...newSearch, ...pageObj });
   }, [searchData]);
 
   // 获取详情
@@ -86,7 +90,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
             month: [moment().startOf('year'), moment()],
           }[key];
           // 切换tab 重置时间选项
-          setSearchData({ ...searchData, latitude: key, time: tabTime });
+          setSearchData({ ...searchData, latitude: key, time: tabTime, page: 1, limit: 10 });
         }}
       >
         {/* 搜索区域 */}

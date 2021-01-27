@@ -10,7 +10,7 @@ const SearchCard = ({ tabkey, searchData, setSearchData }) => {
 
   // 选择时间
   const handleSearchData = (value) => {
-    setSearchData({ ...searchData, ...value });
+    setSearchData({ ...searchData, ...value, page: 1, limit: 10 });
   };
 
   // 激活tag
