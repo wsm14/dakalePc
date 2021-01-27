@@ -58,7 +58,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
     let pageObj = {};
     // 判断是否存在分页信息 存在则重置分页
     if (page) pageObj = { page, limit };
-    childRef.current && childRef.current.fetchGetData({ ...newSearch, ...pageObj });
+    childRef.current.fetchGetData({ ...newSearch, ...pageObj });
   }, [searchData]);
 
   // 获取详情
@@ -103,7 +103,6 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
         <IncomeTotal></IncomeTotal>
         {/* 表格 */}
         <DataTableBlock
-          keepName="平台收益"
           NoSearch
           noCard={false}
           cRef={childRef}

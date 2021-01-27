@@ -81,7 +81,6 @@ const TableBlockComponent = (props) => {
     sortField: '', // 排序规则 升降
     searchData: pParams.searchData || {}, // 搜索控件参数
   }); // 表格参数
-
   // 获取列表
   const fetchGetList = (data) => {
     if (dispatchType) {
@@ -91,6 +90,7 @@ const TableBlockComponent = (props) => {
         ...tableParems.searchData, // 搜索参数
         ...data, // 传递的搜索参数
       };
+
       delete prams.searchData;
       dispatch({
         type: dispatchType, // 请求接口
@@ -101,6 +101,8 @@ const TableBlockComponent = (props) => {
 
   // 搜索
   const handleSearch = (value) => {
+    delete value.page;
+    delete value.limit;
     setTableParems({
       ...tableParems,
       page: 1,
@@ -140,16 +142,9 @@ const TableBlockComponent = (props) => {
       dispatch({
         type: 'drawerForm/fetchClose',
         callback: () => {
-          const { page, limit } = data;
-          delete data.page;
-          delete data.limit;
+          const { page } = data;
           if (page) {
-            setTableParems({
-              ...tableParems,
-              searchData: { ...data },
-              page,
-              limit,
-            });
+            handleSearch(data);
             return;
           }
           fetchGetList(data);
