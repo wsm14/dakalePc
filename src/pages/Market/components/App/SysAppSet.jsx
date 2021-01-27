@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import {  Button, Form } from 'antd';
+import { Button, Form } from 'antd';
 import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -13,6 +13,12 @@ const SysAppSet = (props) => {
   const { show = false, info = '' } = visible;
   const [form] = Form.useForm();
   const [showUrl, setShowUrl] = useState(false);
+
+  useEffect(() => {
+    if (show) {
+      setShowUrl(info.jumpType || false);
+    }
+  }, [show]);
 
   // 提交
   const fetchGetFormData = () => {
@@ -82,7 +88,7 @@ const SysAppSet = (props) => {
   ];
 
   const modalProps = {
-    title: info?'编辑':"新增",
+    title: info ? '编辑' : '新增',
     width: 560,
     visible: show,
     onClose,

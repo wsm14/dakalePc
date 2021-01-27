@@ -56,7 +56,9 @@ const SubsidyManage = () => {
             <AuthConsumer auth={`${tabkey}Save`}>
               <Button
                 className="dkl_green_btn"
-                onClick={() => setVisible({ type: 'add', tab: tabkey, show: true })}
+                onClick={() =>
+                  setVisible({ type: 'add', tab: tabkey, show: true, detail: { subsidyRole: 'merchant' } })
+                }
               >
                 新增
               </Button>
