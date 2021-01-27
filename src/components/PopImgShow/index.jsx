@@ -8,7 +8,7 @@ import { Popover } from 'antd';
  */
 const PopImgShow = ({ url, onClick }) => {
   PopImgShow.propTypes = {
-    url: PropTypes.string.isRequired,
+    url: PropTypes.string,
   };
 
   const imgDiv = (

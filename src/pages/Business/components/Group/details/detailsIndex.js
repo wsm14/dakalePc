@@ -1,11 +1,3 @@
-import React, { useState, useRef } from 'react';
-import {BANK_CARD, PHONE_PATTERN, SPACE_PATTERN, WORD_NUM_PATTERN} from '@/common/regExp';
-import { Spin, Transfer } from 'antd';
-import { SEX_TYPE, TIME_YMD } from '@/common/constant';
-import aliOssUpload from '@/utils/aliOssUpload';
-import cityList from '@/common/city';
-import moment from 'moment';
-
 export const base = [
   {
     label: '集团名称',
@@ -23,6 +15,7 @@ export const base = [
   {
     label: '服务费比例',
     name: 'commissionRatio',
+    render: (val) => val + '%',
   },
 ];
 export const user = [{ label: '登录账号', name: 'account' }];
@@ -209,7 +202,7 @@ export const activeByOne = [
     name: 'businessScope',
     type: 'textArea',
   },
-]
+];
 export const activeByBank = [
   {
     label: '银行卡',
@@ -240,7 +233,7 @@ export const activeByBank = [
     // onSearch: vale => console.log(vale),
     // select:
   },
-]
+];
 export const activeByLegal = [
   {
     label: '结算人身份证正面照',
@@ -264,4 +257,4 @@ export const activeByLegal = [
     label: '结算人身份有效期',
     name: 'activeBeginDate',
   },
-]
+];

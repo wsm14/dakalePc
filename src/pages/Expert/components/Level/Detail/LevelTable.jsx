@@ -151,7 +151,9 @@ const LevelTable = (props) => {
             formItems={[
               {
                 type: 'edit',
+                auth: true,
                 visible: row.value,
+                auth: true,
                 click: () => {
                   const titleName =
                     keyRow == 'rights'
@@ -162,6 +164,7 @@ const LevelTable = (props) => {
               },
               {
                 type: 'del',
+                auth: true,
                 click: () => {
                   const newList = list.filter((item, index) => index != i);
                   fetchExpertLevelSet(newList);
@@ -181,7 +184,7 @@ const LevelTable = (props) => {
           添加
         </Button>
       }
-      CardNone={false}
+      noCard={false}
       loading={loading}
       columns={getColumns}
       rowKey={(record) => `${record.name}`}

@@ -145,7 +145,7 @@ const ClassifyDetailList = (props) => {
           </Button>
         }
         cRef={childRef}
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={getColumns}
         rowKey={(row) => `${row.topicIdString}`}

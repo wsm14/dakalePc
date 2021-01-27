@@ -48,7 +48,7 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
     },
   ];
 
-  // 获取商户统计数据
+  // 获取店铺统计数据
   const fetchBusinessTotal = (
     values = {
       beginDate: dDate.format('YYYY-MM-DD'),

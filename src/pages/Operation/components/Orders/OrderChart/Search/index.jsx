@@ -24,7 +24,7 @@ const SearchCard = ({ setSearchData, dispatch, mreSelect, loading }) => {
     setSelectedTime(time);
   };
 
-  // 搜索商户
+  // 搜索店铺
   const fetchClassifyGetMre = debounce((keyword) => {
     if (!keyword) return;
     dispatch({

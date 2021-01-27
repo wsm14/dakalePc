@@ -2,6 +2,7 @@ import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { connect } from 'umi';
 import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
+import DraggableContent from './SortBlock';
 
 /**
  *
@@ -12,6 +13,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @keepName 保持数据的名字
  * @columns 表头
  * @searchItems 搜索条件
+ * @searchCallback 搜索回调
  * @loading 请求等待
  * @list 表格源数据
  * @total 数据总条数
@@ -23,7 +25,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @params 搜索时默认参数
  * @pParams 保存分页 搜索数据保存
  * @setParams 保存分页 搜索数据
- * @CardNone 是否需要Card包裹 默认true
+ * @noCard 是否需要Card包裹 默认true
  * @extra card 右上角
  * @componentSize 组件大小 small default middle
  * @NoSearch 刚打开是否请求 默认false 请求接口
@@ -33,6 +35,7 @@ import SearchCondition from '@/components/SearchCondition';
  * @scrollX 横向滚动
  * @rowSelection
  * @children
+ * @tableSort 表格排序 {onSortEnd:()=>{}}
  */
 
 const TableBlockComponent = (props) => {
@@ -41,7 +44,6 @@ const TableBlockComponent = (props) => {
     dispatchType,
     scrollY,
     scrollX = 'max-content',
-    keepName,
     columns,
     searchItems,
     searchForm,
@@ -58,7 +60,7 @@ const TableBlockComponent = (props) => {
     params,
     pParams = {},
     setParams,
-    CardNone = true,
+    noCard = true,
     extra,
     componentSize = 'default',
     NoSearch = false,
@@ -67,6 +69,8 @@ const TableBlockComponent = (props) => {
     rowSelection,
     onRow,
     children,
+    tableSort = false,
+    searchCallback,
   } = props;
 
   const [first, setFirst] = useState(NoSearch); // first No search
@@ -77,7 +81,6 @@ const TableBlockComponent = (props) => {
     sortField: '', // 排序规则 升降
     searchData: pParams.searchData || {}, // 搜索控件参数
   }); // 表格参数
-
   // 获取列表
   const fetchGetList = (data) => {
     if (dispatchType) {
@@ -87,6 +90,7 @@ const TableBlockComponent = (props) => {
         ...tableParems.searchData, // 搜索参数
         ...data, // 传递的搜索参数
       };
+
       delete prams.searchData;
       dispatch({
         type: dispatchType, // 请求接口
@@ -97,11 +101,14 @@ const TableBlockComponent = (props) => {
 
   // 搜索
   const handleSearch = (value) => {
+    delete value.page;
+    delete value.limit;
     setTableParems({
       ...tableParems,
       page: 1,
       searchData: Object.keys(value).length ? value : {},
     });
+    searchCallback && searchCallback(Object.keys(value).length ? value : {});
   };
 
   // 分页
@@ -131,8 +138,18 @@ const TableBlockComponent = (props) => {
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
-    fetchGetData: (data) => {
-      dispatch({ type: 'drawerForm/fetchClose', callback: () => fetchGetList(data) });
+    fetchGetData: (data = {}) => {
+      dispatch({
+        type: 'drawerForm/fetchClose',
+        callback: () => {
+          const { page } = data;
+          if (page) {
+            handleSearch(data);
+            return;
+          }
+          fetchGetList(data);
+        },
+      });
     },
   }));
 
@@ -181,6 +198,8 @@ const TableBlockComponent = (props) => {
         pagination={pagination === false ? false : paginationProps}
         onRow={onRow}
         onChange={tableChange}
+        // 排序
+        {...(tableSort ? DraggableContent(list, tableSort) : {})}
         {...props}
       />
     </>
@@ -201,7 +220,7 @@ const TableBlockComponent = (props) => {
         {tabContent}
       </>
     ),
-  }[CardNone];
+  }[noCard];
 
   return tableCard;
 };

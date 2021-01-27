@@ -137,6 +137,13 @@ export function fetchFranchiseAppList(params) {
   });
 }
 
+// get 加盟申请 - 处理详情
+export function fetchFranchiseHandleDetail(params) {
+  return request('/admin/cityOperationManagement/getUserApplyById', {
+    params,
+  });
+}
+
 // post 加盟申请 - 处理
 export function fetchFranchiseHandle(data) {
   return request('/admin/cityOperationManagement/updateUserApply', {

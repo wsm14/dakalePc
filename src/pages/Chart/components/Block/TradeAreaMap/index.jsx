@@ -17,12 +17,14 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
   const { cityData } = useContext(ChartContext);
   // map实例
   const [mapInstance, setMapInstance] = useState(null);
-  // 商户详情
+  // 店铺详情
   const [mreInfoShow, setMreInfoShow] = useState({ show: false, detail: {} });
   // 图例状态 '' 表示全激活 否传状态
   const [mapLengend, setMapLengend] = useState('');
   // 搜索的经纬度
   const [mapSourceData, setMapSourceData] = useState({});
+  // 被点击的Marker key 置顶
+  const [markerIndex, setMarkerIndex] = useState(100);
 
   // 监听图例 经纬度变化请求具体商店点
   useEffect(() => {
@@ -135,11 +137,22 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       } = history.location;
       // 保存地图实例
       setMapInstance(map);
-      if (map) {
+      // url传递城市的情况下 地图跳转到指定城市界面
+      if (map && bucket) {
         map.setCity(`${bucket || 33}0000`);
       }
       // 获取地图四角经纬度
       getMapBounds(map.getBounds(), 'created');
+    },
+    // 缩放事件
+    zoomend() {
+      mapRemoveMaekes();
+      const zoom = mapInstance.getZoom();
+      if (zoom >= 14) {
+        getMapBounds(mapInstance.getBounds(), 'detail');
+      } else {
+        getMapBounds(mapInstance.getBounds(), 'created');
+      }
     },
     // 拖拽 移动变化地图事件
     moveend() {
@@ -161,19 +174,31 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       style={{ marginTop: 20 }}
     >
       <Typography.Title level={5} className="chart_map_title_style">
-        商圈地图（截止昨日）
+        商圈数据（截止当前）
       </Typography.Title>
       <div style={{ height: 700 }} key="map">
         <Map
-          plugins={['Scale']} // 工具 MapType 类型切换 OverView 鹰眼 Scale 比例尺 ToolBar 工具条 ControlBar 控件
+          plugins={[
+            'Scale',
+            {
+              name: 'ToolBar',
+              options: {
+                visible: true, // 动态改变控件的可视状态，默认为 true
+                liteStyle: false,
+                position: 'LB',
+              },
+            },
+          ]} // 工具 MapType 类型切换 OverView 鹰眼 Scale 比例尺 ToolBar 工具条 ControlBar 控件
           amapkey={AMAP_JS_KEY}
           zooms={[4, 20]} // 缩放范围 20以上地图细节不存在
-          doubleClickZoom={false}
-          keyboardEnable={false}
-          touchZoom={false}
+          rotateEnable // 地图旋转
+          doubleClickZoom // 双击放大
+          scrollWheel={false} // 禁止鼠标缩放
+          keyboardEnable={false} // 键盘控制
+          touchZoom={false} // 移动端缩放
           events={mapEvents}
         >
-          {/* 商户详情 */}
+          {/* 店铺详情 */}
           {mreInfoShow.show && (
             <MreDetail
               detail={mreInfoShow.detail}
@@ -191,16 +216,18 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
               style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }} // 圈样式
               events={{
                 created() {
+                  console.log();
                   // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
-                  if (i == item.length) mapInstance.setFitView();
+                  if (i === item.length) mapInstance.setFitView();
                 },
               }}
             >
               {/* 商圈中心 */}
               <Marker
                 clickable
+                zIndex={item.businessHubName === markerIndex ? 1000 : 100}
                 position={[item.lnt, item.lat]} // 坐标
-                extData={item.businessHubIdString} // 额外参数 保存商户id
+                extData={item.businessHubIdString} // 额外参数 保存店铺id
                 events={{
                   created(markerInstance) {
                     markerInstance.setLabel({
@@ -208,6 +235,10 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
                       content: `<div class='chart_amp_markey_info'>${item.businessHubName} <span className='ruzhuColor'>${item.settleCount}</span> / ${item.activeCount}</div>`, // 设置文本标注内容
                       direction: 'top', // 设置文本标注方位
                     });
+                  },
+                  click: () => {
+                    // 点击置顶
+                    setMarkerIndex(item.businessHubName);
                   },
                 }}
               />

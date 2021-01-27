@@ -4,9 +4,7 @@ import {
   fetchUserDetail,
   fetchUserStatus,
   fetchUserTotal,
-  fetchUserInfoTotal,
-  fetchUserAddTotal,
-  fetchUserCityTotal,
+  fetchUserChartTotal,
 } from '@/services/UserServices';
 
 export default {
@@ -15,8 +13,7 @@ export default {
   state: {
     list: { list: [], total: 0 },
     totalData: {},
-    totalSperadData: { city: [] },
-    totalInfo: {},
+    totalChartData: { city: [] },
   },
 
   reducers: {
@@ -48,43 +45,28 @@ export default {
     },
     *fetchUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchUserTotal, payload);
-      const responseTow = yield call(fetchUserAddTotal, payload);
       if (!response) return;
-      if (!responseTow) return;
       const { content } = response;
-      const { content: contentTwo } = responseTow;
-      const {
-        userRealNameCount: userAddRealNameCount = 0,
-        userTopUpCount: userAddTopUpCount = 0,
-      } = contentTwo;
       yield put({
         type: 'save',
         payload: {
-          totalData: { ...content, userAddRealNameCount, userAddTopUpCount },
+          totalData: content,
         },
       });
     },
-    *fetchUserTotalSperad({ payload }, { call, put }) {
-      const response = yield call(fetchUserCityTotal, payload);
+    *fetchUserChartTotal({ payload }, { call, put }) {
+      const response = yield call(fetchUserChartTotal, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          totalSperadData: content,
-        },
-      });
-    },
-    *fetchUserInfoTotal({ payload }, { call, put }) {
-      const response = yield call(fetchUserInfoTotal, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          // 异常或空数据
-          totalInfo: {
+          totalChartData: {
             ...content,
+            tag: Object.keys(content.tag).map((item) => ({
+              tag: item,
+              count: content.tag[item],
+            })),
             age: Object.keys(content.age).map((item) => ({
               type: { [item]: `${item}`, '60+岁': '60岁以上', 异常或空数据: '未知' }[item],
               value: content.age[item],

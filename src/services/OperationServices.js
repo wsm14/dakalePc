@@ -1,5 +1,32 @@
 import request from '@/utils/request';
 
+// 周边特惠
+
+// get 周边特惠 - 列表
+export function fetchSpecialGoodsList(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
+// post 周边特惠 - 下架
+export function fetchSpecialGoodsStatus(data) {
+  return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 推荐状态
+export function fetchSpecialGoodsRecommend(data) {
+  return request('/admin/specialGoodsManagement/setRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 周边特惠 end
+
 // 分享管理
 
 // get 分享管理 - 分享列表
@@ -25,6 +52,54 @@ export function fetchShareStatusClose(data) {
 }
 
 // 分享管理 end
+
+// 种草管理
+
+// get 种草管理 - 列表
+export function fetchExpertRemdList(params) {
+  return request('/admin/kolMoments/listKolMomentsManagement', {
+    params,
+  });
+}
+
+// get 种草管理 - 统计举报数量
+export function fetchExpertCountReport(params) {
+  return request('/user/userReport/countPendingUserReport', {
+    params,
+  });
+}
+
+// get 种草管理 - 详情
+export function fetchExpertRemdDetail(params) {
+  return request('/admin/kolMoments/kolMomentsDetail', {
+    params,
+  });
+}
+
+// post 种草管理 - 上下架
+export function fetchExpertRemdStatus(data) {
+  return request('/admin/kolMoments/kolMomentsDropOff', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 种草管理 - 举报列表
+export function fetchExpertReportList(params) {
+  return request('/user/userReport/listUserReport', {
+    params,
+  });
+}
+
+// post 种草管理 - 举报列表 - 处理举报
+export function fetchExpertProcessReport(data) {
+  return request('/user/userReport/processUserReport', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 种草管理 end
 
 // 订单列表
 
@@ -188,3 +263,22 @@ export function fetchTagEdit(data) {
 }
 
 // 分类列表 end
+
+// 优惠券管理
+
+// get 优惠券管理 - 列表
+export function fetchCouponList(params) {
+  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+    params,
+  });
+}
+
+// post 优惠券管理 - 下架
+export function fetchCouponStatus(data) {
+  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 优惠券管理 end

@@ -4,12 +4,19 @@ import { Tooltip } from 'antd';
 import { EyeOutlined, ExclamationCircleOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 
 const QuestionTooltip = (props: any) => {
-  const { title = '', content = '', type = 'info', overlayStyle, placement = 'top' } = props;
+  const {
+    title = '',
+    content = '',
+    type = 'info',
+    overlayStyle,
+    iconStyle,
+    placement = 'top',
+  } = props;
 
   const icon = {
-    info: <ExclamationCircleOutlined />,
-    quest: <QuestionCircleOutlined />,
-    eye: <EyeOutlined />,
+    info: <ExclamationCircleOutlined style={iconStyle} />,
+    quest: <QuestionCircleOutlined style={iconStyle} />,
+    eye: <EyeOutlined style={iconStyle} />,
   }[type];
 
   return (

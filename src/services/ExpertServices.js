@@ -34,54 +34,6 @@ export function fetchExpertOpen(data) {
 
 // 哒人列表 end
 
-// 种草管理
-
-// get 种草管理 - 列表
-export function fetchExpertRemdList(params) {
-  return request('/admin/kolMoments/listKolMomentsManagement', {
-    params,
-  });
-}
-
-// get 达人管理 - 统计举报数量
-export function fetchExpertCountReport(params) {
-  return request('/user/userReport/countPendingUserReport', {
-    params,
-  });
-}
-
-// get 种草管理 - 详情
-export function fetchExpertRemdDetail(params) {
-  return request('/admin/kolMoments/kolMomentsDetail', {
-    params,
-  });
-}
-
-// post 种草管理 - 上下架
-export function fetchExpertRemdStatus(data) {
-  return request('/admin/kolMoments/kolMomentsDropOff', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 种草管理 - 举报列表
-export function fetchExpertReportList(params) {
-  return request('/user/userReport/listUserReport', {
-    params,
-  });
-}
-
-// post 种草管理 - 举报列表 - 处理举报
-export function fetchExpertProcessReport(data) {
-  return request('/user/userReport/processUserReport', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 种草管理 end
-
 // get 达人管理 - 创作设置
 export function fetchExpertSetList(params) {
   return request('/admin/domain/listDomain', {
@@ -120,7 +72,7 @@ export function fetchClassifyDetailAdd(data) {
   });
 }
 
-// post 达人管理 - 话题设置 删除 修改 推荐
+// post 达人管理 - 创作设置 删除 修改 推荐
 export function fetchClassifyDetailSet(data) {
   return request('/admin/topic/updateTopic', {
     method: 'POST',

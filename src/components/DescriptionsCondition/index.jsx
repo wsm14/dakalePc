@@ -65,7 +65,12 @@ const DescriptionsCondition = ({
           >
             {initialValues && Object.keys(initialValues).length
               ? item.render
-                ? item.render(initialValues[valueKey], initialValues)
+                ? item.render(
+                    Array.isArray(valueKey)
+                      ? initialValues[valueKey[0]][valueKey[1]]
+                      : initialValues[valueKey],
+                    initialValues,
+                  )
                 : item.type === 'upload'
                 ? imgShow(
                     item.initialValue

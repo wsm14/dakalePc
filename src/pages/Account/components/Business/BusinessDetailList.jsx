@@ -13,7 +13,7 @@ const BusinessDetailList = (props) => {
   // table
   const propItem = {
     peas: {
-      title: `卡豆明细 - 商户ID：${record.userMerchantIdString} 商户名称：${record.merchantName}`,
+      title: `卡豆明细 - 店铺ID：${record.userMerchantIdString} 店铺名称：${record.merchantName}`,
       rowKey: 'createTime',
       getColumns: [
         {
@@ -53,7 +53,7 @@ const BusinessDetailList = (props) => {
       ],
     },
     collect: {
-      title: `提现记录 - 商户ID：${record.userMerchantIdString} 商户名称：${
+      title: `提现记录 - 店铺ID：${record.userMerchantIdString} 店铺名称：${
         record.merchantName
       } 累计提现：${record.totalConsume / 100}元（${record.totalConsume}卡豆）`,
       rowKey: 'withdrawalSn',
@@ -94,7 +94,7 @@ const BusinessDetailList = (props) => {
       ],
     },
     recharge: {
-      title: `充值记录 - 商户ID：${record.userMerchantIdString} 商户名称：${record.merchantName} 累计充值：${record.totalCharge}元`,
+      title: `充值记录 - 店铺ID：${record.userMerchantIdString} 店铺名称：${record.merchantName} 累计充值：${record.totalCharge}元`,
       rowKey: 'orderSn',
       getColumns: [
         {
@@ -154,7 +154,7 @@ const BusinessDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row, i) => `${row[propItem.rowKey] + i}`}

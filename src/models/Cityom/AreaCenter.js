@@ -140,9 +140,9 @@ export default {
       const response = yield call(fetchAreaBankDetail, payload);
       if (!response) return;
       const { content } = response;
-      let detail = {};
-      if (content.bankBindingInfoObject) {
-        const { provCode, areaCode, startDate, legalCertIdExpires } = content.bankBindingInfoObject;
+      let detail = { ...content };
+      if (content.bankBindingObject) {
+        const { provCode, areaCode, startDate, legalCertIdExpires } = content.bankBindingObject;
         detail = {
           ...content,
           activeDate: [moment(startDate), moment(legalCertIdExpires)],

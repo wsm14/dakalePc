@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Skeleton } from 'antd';
+import { Button } from 'antd';
 import AccountForm from './AccountForm/CorporateAccount';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const AreaAccountSet = (props) => {
   const {
@@ -17,13 +18,11 @@ const AreaAccountSet = (props) => {
 
   const { type = 'add', show = false } = visible;
 
-  const [form] = Form.useForm();
-  // 骨架框显示
-  const [skeletonType, setSkeletonType] = useState(true);
+  const cRef = useRef();
 
   // 提交数据
   const handleUpData = () => {
-    form.validateFields().then((values) => {
+    cRef.current.fetchData().then((values) => {
       dispatch({
         type: 'areaCenter/fetchAreaBankSet',
         payload: { ownerId: partnerId, ...values },
@@ -36,46 +35,24 @@ const AreaAccountSet = (props) => {
 
   const modalProps = {
     title: `${{ add: '绑定账户信息', edit: '编辑账户信息' }[type]}`,
-    width: 700,
     visible: show,
-    maskClosable: false,
-    destroyOnClose: true,
+    loading: loadingDetail,
+    footer: (
+      <Button onClick={handleUpData} type="primary" loading={loading}>
+        提交
+      </Button>
+    ),
   };
 
   const closeDrawer = () => {
-    setSkeletonType(true);
     setVisibleAct(false);
     setVisibleSet(false);
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={closeDrawer}
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setSkeletonType(false);
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      destroyOnClose
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={closeDrawer}>取消</Button>
-            <Button onClick={handleUpData} type="primary" loading={loading}>
-              提交
-            </Button>
-          </Space>
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType || loadingDetail} active>
-        <AccountForm form={form} type={type} detail={detail}></AccountForm>
-      </Skeleton>
-    </Drawer>
+    <DrawerCondition {...modalProps} onClose={() => setVisibleAct(false)}>
+      <AccountForm cRef={cRef} type={type} detail={detail}></AccountForm>
+    </DrawerCondition>
   );
 };
 

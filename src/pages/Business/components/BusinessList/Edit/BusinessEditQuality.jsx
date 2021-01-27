@@ -57,7 +57,7 @@ const BusinessAddQuality = (props) => {
       onChange: (file) => fetchMerBusinessUpload(file),
     },
     {
-      label: '商户名称',
+      label: '店铺名称',
       disabled: disabledInfo,
       name: ['businessLicenseObject', 'businessName'],
     },

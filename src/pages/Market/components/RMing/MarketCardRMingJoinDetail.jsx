@@ -62,7 +62,7 @@ const MarketCardRMingJoinDetail = (props) => {
       onCancel={() => setVisible('')}
     >
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.userId}`}

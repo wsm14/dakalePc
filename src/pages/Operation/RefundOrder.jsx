@@ -24,6 +24,16 @@ const RefundOrder = (props) => {
       name: 'merchantName',
     },
     {
+      label: '退款原因',
+      name: 'refundReason',
+    },
+    {
+      label: '提交退款时间',
+      type: 'rangePicker',
+      name: 'submitRefundTimeStart',
+      end: 'submitRefundTimeEnd',
+    },
+    {
       label: '状态',
       type: 'select',
       name: 'status',
@@ -50,34 +60,45 @@ const RefundOrder = (props) => {
       dataIndex: 'goodsName',
     },
     {
-      title: '购买数量',
-      align: 'right',
-      dataIndex: 'goodsCount',
-    },
-    {
       title: '店铺名称',
       align: 'right',
       dataIndex: 'merchantName',
     },
     {
+      title: '购买数量',
+      align: 'right',
+      dataIndex: 'goodsCount',
+    },
+    {
+      title: '退款金额',
+      align: 'right',
+      dataIndex: 'refundFee',
+      render: (val) => `￥${val || 0}`,
+    },
+    {
+      title: '退款卡豆数',
+      align: 'right',
+      dataIndex: 'refundBean',
+    },
+    {
       title: '提交退款时间',
       align: 'right',
-      dataIndex: 'closeTime',
+      dataIndex: 'submitRefundTime',
     },
     {
       title: '退款原因',
-      dataIndex: 'closeReason',
+      dataIndex: 'refundReason',
     },
-    // {
-    //   title: '处理时间',
-    //   align: 'center',
-    //   dataIndex: 'closeTime',
-    // },
     {
       title: '状态',
       align: 'center',
       dataIndex: 'status',
       render: (val) => ORDERS_STATUS[val],
+    },
+    {
+      title: '退款完成时间',
+      align: 'right',
+      dataIndex: 'completeRefundTime',
     },
     {
       title: '操作',
@@ -90,11 +111,12 @@ const RefundOrder = (props) => {
 
   return (
     <DataTableBlock
+      keepName="退款管理"
       cRef={childRef}
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.orderSn}`}
+      rowKey={(record) => `${record.orderId}`}
       dispatchType="refundOrder/fetchGetList"
       {...refundOrder}
     ></DataTableBlock>

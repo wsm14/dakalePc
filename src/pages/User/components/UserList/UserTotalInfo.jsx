@@ -1,109 +1,91 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Statistic, Card, Row, Col, Button } from 'antd';
+import { Statistic, Card, Row, Col, Divider } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 
-const dDate = moment().subtract(1, 'day');
+const dDate = moment();
 
-const UserTotalInfo = ({ dispatch, loading, totalData, currentUser }) => {
+const UserTotalInfo = ({
+  dispatch,
+  loading,
+  totalUserData,
+  totalChartData: totalData,
+  cityData,
+}) => {
+  const styles = { padding: '0 0 0 12px' };
+  const [search, setSerach] = useState({
+    beginDate: dDate.format('YYYY-MM-DD'),
+    endDate: dDate.format('YYYY-MM-DD'),
+  });
   // 搜索参数
   const searchItems = [
     {
       label: '',
       type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
-      disabledDate: (current) => current && current > moment().endOf('day').subtract(1, 'day'),
-    },
-  ];
-
-  const data = [
-    {
-      type: '今日新增实名用户',
-      value: totalData.userAddRealNameCount || 0,
-    },
-    {
-      type: '今日新增充值用户',
-      value: totalData.userAddTopUpCount || 0,
+      name: 'beginTime',
+      end: 'endTime',
     },
   ];
 
   // 获取用户详情
-  const fetchUserTotal = (
-    val = { beginDate: dDate.format('YYYY-MM-DD'), endDate: dDate.format('YYYY-MM-DD') },
-  ) => {
+  const fetchUserTotal = () => {
     dispatch({
       type: 'userList/fetchUserTotal',
-      payload: val,
+      payload: { ...search, ...cityData },
     });
   };
 
   useEffect(() => {
     fetchUserTotal();
-  }, []);
-
-  const styles = { padding: 0 };
+  }, [cityData, search]);
 
   return (
     <Card style={{ marginBottom: 16 }} bordered={false}>
       <SearchCondition
         searchItems={searchItems}
-        handleSearch={fetchUserTotal}
+        handleSearch={(val) => setSerach(val)}
         initialValues={{
           beginDate: [dDate, dDate],
         }}
       ></SearchCondition>
       <Row gutter={16} align="middle">
-        {/* <Col span={12}>
-          <Spin spinning={!!loading}>
-            <Card bordered={false} bodyStyle={styles} style={{ height: 276 }}>
-              <Pie data={data} height={276} />
-            </Card>
-          </Spin>
-        </Col> */}
-        <Col span={12}>
-          <Card bordered={false} bodyStyle={styles} loading={loading} style={{ height: 100 }}>
-            <Row gutter={[16, 16]} span={12} align="middle" style={{ height: 100, marginLeft: 10 }}>
-              <Col span={8}>
-                <Statistic
-                  title="今日新增用户"
-                  value={totalData.userAddRealNameCount + totalData.userAddTopUpCount}
-                ></Statistic>
+        <Col span={8}>
+          <Card
+            bordered={false}
+            bodyStyle={styles}
+            loading={loading.effects['userList/fetchUserChartTotal']}
+            style={{ borderRight: '1px solid #d2d2d2' }}
+          >
+            <Row gutter={[16, 16]} span={10} align="middle">
+              <Col span={12}>
+                <Statistic title="累计注册数" value={totalData.userTotalRegister}></Statistic>
               </Col>
-              <Col span={8}>
-                <Statistic title="总注册数" value={totalData.userTotalRegister}></Statistic>
+              <Col span={12}>
+                <Statistic title="累计实名认证" value={totalData.userRealNameCount}></Statistic>
               </Col>
-              <Col span={8}>
-                <Statistic title="总实名认证" value={totalData.userRealNameCount}></Statistic>
-              </Col>
-              {/* <Col span={8}>
-                <Statistic title="总充值用户" value={totalData.userTopUpCount}></Statistic>
-              </Col> */}
-              {/* <Col span={8}>
-                <Statistic title="今日新增充值用户" value={totalData.userAddTopUpCount}></Statistic>
-              </Col> */}
             </Row>
           </Card>
         </Col>
-        <Col span={12}>
-          <Card bordered={false} bodyStyle={styles} loading={loading} style={{ height: 100 }}>
-            <Row gutter={[16, 16]} span={12} align="middle" style={{ height: 100, marginLeft: 10 }}>
-              <Col span={8}>
-                <Statistic
-                  title="总支付用户数"
-                  value={totalData.userAddRealNameCount + totalData.userAddTopUpCount}
-                ></Statistic>
+        <Col span={16}>
+          <Card
+            bordered={false}
+            bodyStyle={styles}
+            loading={loading.effects['userList/fetchUserTotal']}
+          >
+            <Row gutter={[16, 16]} span={14} align="middle">
+              <Col span={6}>
+                <Statistic title="注册数" value={totalUserData.userRegister}></Statistic>
               </Col>
-              <Col span={8}>
-                <Statistic title="总到店打卡数" value={totalData.userTotalRegister}></Statistic>
+              <Col span={6}>
+                <Statistic title="实名认证" value={totalUserData.userRealCount}></Statistic>
               </Col>
-              {/* <Col span={8}>
-                <Statistic title="总充值用户" value={totalData.userTopUpCount}></Statistic>
-              </Col> */}
-              {/* <Col span={8}>
-                <Statistic title="今日新增充值用户" value={totalData.userAddTopUpCount}></Statistic>
-              </Col> */}
+              <Col span={6}>
+                <Statistic title="支付用户数" value={totalUserData.userTopUpCount}></Statistic>
+              </Col>
+              <Col span={6}>
+                <Statistic title="到店打卡用户数" value={totalUserData.markCount}></Statistic>
+              </Col>
             </Row>
           </Card>
         </Col>
@@ -112,8 +94,8 @@ const UserTotalInfo = ({ dispatch, loading, totalData, currentUser }) => {
   );
 };
 
-export default connect(({ userInfo, userList, loading }) => ({
-  currentUser: userInfo.currentUser,
-  totalData: userList.totalData,
-  loading: loading.effects['userList/fetchUserTotal'],
+export default connect(({ userList, loading }) => ({
+  totalUserData: userList.totalData,
+  totalChartData: userList.totalChartData,
+  loading,
 }))(UserTotalInfo);

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Skeleton } from 'antd';
+import { Button } from 'antd';
 import AccountForm from './AccountForm/CorporateAccount';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const ProvAccountSet = (props) => {
   const {
@@ -17,13 +18,11 @@ const ProvAccountSet = (props) => {
 
   const { type = 'add', show = false } = visible;
 
-  const [form] = Form.useForm();
-  // 骨架框显示
-  const [skeletonType, setSkeletonType] = useState(true);
+  const cRef = useRef();
 
   // 提交数据
   const handleUpData = () => {
-    form.validateFields().then((values) => {
+    cRef.current.fetchData().then((values) => {
       dispatch({
         type: 'provCompany/fetchProvBankSet',
         payload: { ownerId: companyId, ...values },
@@ -34,47 +33,30 @@ const ProvAccountSet = (props) => {
     });
   };
 
-  const modalProps = {
-    title: `${{ add: '绑定账户信息', edit: '编辑账户信息' }[type]}`,
-    width: 700,
-    visible: show,
-    maskClosable: false,
-    destroyOnClose: true,
-  };
-
+  // 关闭
   const closeDrawer = () => {
-    setSkeletonType(true);
     setVisibleAct(false);
     setVisibleSet(false);
   };
 
+  const modalProps = {
+    title: `${{ add: '绑定账户信息', edit: '编辑账户信息' }[type]}`,
+    visible: show,
+    maskClosable: false,
+    destroyOnClose: true,
+    onClose: closeDrawer,
+    loading: loadingDetail,
+    footer:(
+        <Button onClick={handleUpData} type="primary" loading={loading}>
+          提交
+        </Button>
+    )
+  };
+
   return (
-    <Drawer
-      {...modalProps}
-      onClose={closeDrawer}
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setSkeletonType(false);
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={closeDrawer}>取消</Button>
-            <Button onClick={handleUpData} type="primary" loading={loading}>
-              提交
-            </Button>
-          </Space>
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType || loadingDetail} active>
-        <AccountForm form={form} type={type} detail={detail}></AccountForm>
-      </Skeleton>
-    </Drawer>
+    <DrawerCondition {...modalProps} >
+      <AccountForm cRef={cRef} type={type} detail={detail}></AccountForm>
+    </DrawerCondition>
   );
 };
 

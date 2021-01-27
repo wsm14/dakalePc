@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Form,
   Input,
@@ -16,6 +16,7 @@ import {
   Spin,
   Empty,
   message,
+  Button,
 } from 'antd';
 import ImgCutView from '@/components/ImgCut';
 import { PlusOutlined } from '@ant-design/icons';
@@ -136,7 +137,7 @@ const FormComponents = ({
     const fileobj = {};
     formItems.map((item, i) => {
       const { name } = item;
-      if (item.type === 'upload') {
+      if (item.type === 'upload' || item.type === 'videoUpload' || item.type === 'apkUpload') {
         if (Object.keys(initialValues).length) {
           if (Array.isArray(name)) {
             if (!initialValues[name[0]]) {
@@ -192,8 +193,9 @@ const FormComponents = ({
 
   /**
    * 选择图片上传配置
+   * onPreview={(file) => handlePreview(file, name, item.onChange)}
    */
-  const handleUpProps = (name, onChange, maxFile, maxSize) => {
+  const handleUpProps = (name, onChange, maxFile, maxSize, isCut, imgRatio) => {
     return {
       accept: 'image/*',
       onChange: (value) => {
@@ -204,7 +206,14 @@ const FormComponents = ({
             fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileName = value.file.name;
-          imageCompress(value.file.originFileObj || value.file).then(({ file }) => {
+          imageCompress(value.file.originFileObj || value.file).then(({ file, blob }) => {
+            // 是否传入是裁剪
+            if (isCut) {
+              blob.uid = value.file.uid;
+              blob.name = value.file.name;
+              handlePreview(blob, name, onChange, 'image', imgRatio);
+              return;
+            }
             newFileList.map((fi) => {
               if (fi.name == fileName) {
                 fi.originFileObj = file;
@@ -227,12 +236,13 @@ const FormComponents = ({
   };
 
   // 预览图片
-  const handlePreview = async (file, key, onChange) => {
+  const handlePreview = async (file, key, onChange, fileType, imgRatio) => {
     if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+      file.preview = await getBase64(file.originFileObj || file);
     }
-    setPreviewImage(file.url || file.preview);
-    setPreviewTitle({ uid: file.uid, key, onChange });
+    const showFile = file instanceof Blob ? file : file.url || file.preview;
+    setPreviewImage(showFile);
+    setPreviewTitle({ uid: file.uid, key, onChange, fileType, imgRatio });
     setPreviewVisible(true);
   };
 
@@ -242,16 +252,20 @@ const FormComponents = ({
       ? previewTitle.key[previewTitle.key.length - 1]
       : previewTitle.key;
     const uid = previewTitle.uid;
-    const newimg = fileLists[fName];
+    let newimg = fileLists[fName] || [];
     imageCompress(file).then(({ file, base64 }) => {
-      newimg.map((fi) => {
-        if (fi.uid == uid) {
-          fi.originFileObj = file;
-          fi.url = base64;
-          fi.thumbUrl = base64;
-        }
-        return fi;
-      });
+      if (newimg.findIndex((i) => i.uid == uid) === -1) {
+        newimg = [...newimg, { uid, url: base64, thumbUrl: base64, originFileObj: file }];
+      } else {
+        newimg.map((fi) => {
+          if (fi.uid === uid) {
+            fi.originFileObj = file;
+            fi.url = base64;
+            fi.thumbUrl = base64;
+          }
+          return fi;
+        });
+      }
       setFileLists({ ...fileLists, [fName]: newimg });
       let onwFile = { [fName]: { file, fileList: newimg } };
       if (Array.isArray(previewTitle.key)) {
@@ -305,6 +319,7 @@ const FormComponents = ({
         maxLength,
         visible = true,
         hidden = false,
+        fieldNames = {},
       } = item;
       let { extra } = item;
 
@@ -382,7 +397,7 @@ const FormComponents = ({
             allowClear={false}
           />
         ),
-        dataPicker: <DatePicker style={{ width: '100%' }} />,
+        dataPicker: <DatePicker showTime={item.showTime} style={{ width: '100%' }} />,
         rangePicker: (
           <DatePicker.RangePicker
             disabled={item.disabled}
@@ -423,14 +438,16 @@ const FormComponents = ({
             optionFilterProp="children"
           >
             {select.map((data, j) => {
+              const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
               if (data) {
+                const nameD = data[labelKey];
                 // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.name ? data.name : typeof data == 'string' ? data : '--';
-                const otherData = data.otherData ? data.otherData : '';
+                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
+                const nameData = nameD ? nameD : typeof data == 'string' ? data : '--';
+                const otherData = data[tipKey] ? data[tipKey] : '';
                 return (
-                  <Option key={data.key || j} value={value}>
-                    {name}
+                  <Option key={data.key || j} value={valueData}>
+                    {nameData}
                     {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
@@ -493,16 +510,20 @@ const FormComponents = ({
         upload: (
           <DndProvider manager={manager.current.dragDropManager}>
             <Upload
-              multiple={item.multiple || true}
+              // 允许选择时裁剪的时候不允许多选
+              multiple={item.isCut ? false : item.multiple || true}
               listType="picture-card"
               fileList={fileLists[Array.isArray(name) ? name[1] : name]}
               beforeUpload={(file) => beforeUpload(file, item.maxSize)}
-              onPreview={(file) => handlePreview(file, name, item.onChange)}
+              onPreview={(file) => handlePreview(file, name, item.onChange, 'image', item.imgRatio)}
+              maxCount={item.maxFile}
               {...handleUpProps(
                 Array.isArray(name) ? name[1] : name,
                 item.onChange,
                 item.maxFile,
                 item.maxSize,
+                item.isCut,
+                item.imgRatio,
               )}
               itemRender={(originNode, file, currFileList) => {
                 return (
@@ -520,6 +541,89 @@ const FormComponents = ({
                 uploadButton}
             </Upload>
           </DndProvider>
+        ),
+        videoUpload: (
+          <Upload
+            multiple={item.multiple || true}
+            listType="picture-card"
+            accept="video/mp4,.mp4"
+            maxCount={item.maxFile}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+            previewFile={(file) => {
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => {
+                  resolve(reader.result);
+                };
+                reader.onerror = (error) => reject(error);
+              });
+            }}
+            onPreview={(file) => handlePreview(file, name, item.onChange, 'video')}
+            beforeUpload={(file) => {
+              if (file.type !== 'video/mp4') {
+                message.error(`${file.name} 不是mp4格式`);
+                file.dklFileStatus = 'out';
+              }
+              return false;
+            }}
+            onChange={(value) => {
+              const keyName = Array.isArray(name) ? name[1] : name;
+              const { fileList } = value;
+              const newFileList = fileList.filter((file) => file.dklFileStatus !== 'out');
+              if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
+                setFileLists({
+                  ...fileLists,
+                  [keyName]: newFileList.slice(0, item.maxFile || 999),
+                });
+                (form || formN).setFieldsValue({
+                  [keyName]: { ...value, fileList: newFileList.slice(0, item.maxFile || 999) },
+                });
+                if (item.onChange) item.onChange(value);
+              } else {
+                if (!newFileList.length) (form || formN).setFieldsValue({ [keyName]: undefined });
+                else (form || formN).setFieldsValue({ [keyName]: value });
+                setFileLists({ ...fileLists, [keyName]: newFileList });
+              }
+            }}
+          >
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) &&
+              uploadButton}
+          </Upload>
+        ),
+        apkUpload: (
+          <Upload
+            multiple={false}
+            listType="picture"
+            maxCount={item.maxFile || 1}
+            fileList={fileLists[Array.isArray(name) ? name[1] : name]}
+            beforeUpload={(file) => false}
+            onChange={(value) => {
+              const keyName = Array.isArray(name) ? name[1] : name;
+              const { fileList } = value;
+              const newFileList = fileList.filter((file) => file.dklFileStatus !== 'out');
+              if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
+                setFileLists({
+                  ...fileLists,
+                  [keyName]: newFileList.slice(0, item.maxFile || 999),
+                });
+                (form || formN).setFieldsValue({
+                  [keyName]: { ...value, fileList: newFileList.slice(0, item.maxFile || 999) },
+                });
+                if (item.onChange) item.onChange(value);
+              } else {
+                if (!newFileList.length) (form || formN).setFieldsValue({ [keyName]: undefined });
+                else (form || formN).setFieldsValue({ [keyName]: value });
+                setFileLists({ ...fileLists, [keyName]: newFileList });
+              }
+            }}
+          >
+            {fileLists[Array.isArray(name) ? name[1] : name] &&
+              fileLists[Array.isArray(name) ? name[1] : name].length < (item.maxFile || 999) && (
+                <Button>选择文件</Button>
+              )}
+          </Upload>
         ),
         childrenOwn: item.childrenOwn,
         noForm: '',
@@ -599,7 +703,7 @@ const FormComponents = ({
         destroyOnClose
         title="编辑图片"
         width={950}
-        visible={previewVisible}
+        visible={previewVisible && previewTitle.fileType === 'image'}
         maskClosable={false}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
@@ -608,18 +712,27 @@ const FormComponents = ({
         <ImgCutView
           uploadedImageFile={previewImage}
           onSubmit={handleCutImg}
+          imgRatio={previewTitle.imgRatio}
           onClose={() => setPreviewVisible(false)}
         />
       </Modal>
-      {/* <Modal
-        title={previewTitle}
-        visible={previewVisible}
+      <Modal
+        title={'查看'}
+        visible={previewVisible && previewTitle.fileType === 'video'}
         onCancel={() => setPreviewVisible(false)}
+        width={548}
         footer={null}
-        zIndex={1009}
+        zIndex={100000}
       >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal> */}
+        <video
+          controls="controls"
+          style={{ maxHeight: 300, margin: '0 auto', width: 500 }}
+          autoPlay
+          src={previewImage}
+        >
+          <track kind="captions" />
+        </video>
+      </Modal>
     </Form>
   );
 };

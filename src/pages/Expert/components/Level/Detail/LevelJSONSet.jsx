@@ -90,7 +90,7 @@ const LevelJSONSet = (props) => {
     <Drawer {...modalProps} onClose={onCancel}>
       <DataTableBlock
         componentSize={'small'}
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.title}`}

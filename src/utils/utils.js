@@ -1,4 +1,6 @@
 import md5 from 'md5';
+import moment from 'moment';
+import lodash from 'lodash';
 import { parse } from 'querystring';
 import { AUTH_SECRET_KEY } from '@/common/constant';
 
@@ -150,7 +152,7 @@ function getStr(obj) {
   var value = '';
   // 定义emoji正则表达式
   // var regRule = /\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2600-\u27FF]/g;
-  var regRule = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]/gi;
+  // var regRule = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]/gi;
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
       if (Array.isArray(obj[key])) {
@@ -159,19 +161,19 @@ function getStr(obj) {
       } else if (Object.prototype.toString.call(obj[key]) == '[object Object]') {
         // 对象
         value = JSON.stringify(obj[key]);
-        if (value.match(regRule)) {
-          value = value.replace(regRule, ''); //旧的js emoji正则表达式
-        }
+        // if (value.match(regRule)) {
+        //   value = value.replace(regRule, ''); //旧的js emoji正则表达式
+        // }
       } else {
         // 其他格式
         value = obj[key]; //先复制一份值
         // 如果变量是文本类型且存在emoji则过滤emoji再签名
-        if (
-          Object.prototype.toString.call(obj[key]) == '[object String]' &&
-          obj[key].match(regRule)
-        ) {
-          value = value.replace(regRule, ''); // 旧的js emoji正则表达式
-        }
+        // if (
+        //   Object.prototype.toString.call(obj[key]) == '[object String]' &&
+        //   obj[key].match(regRule)
+        // ) {
+        //   value = value.replace(regRule, ''); // 旧的js emoji正则表达式
+        // }
       }
       str.push(key + '=' + value);
     }
@@ -209,4 +211,52 @@ export const uuid = () => {
 
   var uuid = s.join('');
   return uuid;
+};
+
+// 参数大小排序
+export const checkSorterData = (old, next, key, type = 'number') => {
+  const oldData = old[key];
+  const nextData = next[key];
+  switch (type) {
+    case 'time':
+      return moment(oldData).diff(moment(nextData));
+
+    default:
+      return Number(oldData) - Number(nextData);
+  }
+};
+
+// 检查数据类型
+const checkDataType = (data) => {
+  let checkType = undefined;
+  if (Array.isArray(data)) {
+    checkType = 'Array'; // 数组
+  } else if (lodash.isPlainObject(data)) {
+    checkType = 'Object'; // 对象
+  } else if (lodash.isString(data)) {
+    checkType = 'String'; // 字符串
+  } else if (lodash.isBoolean(data)) {
+    checkType = 'Boolean'; // 布尔
+  } else if (lodash.isArguments(data)) {
+    checkType = 'arguments'; // arguments对象
+  } else if (lodash.isFunction(data)) {
+    checkType = 'Function'; // 函数
+  } else if (lodash.isInteger(data)) {
+    checkType = 'Int'; // 整数
+  } else if (lodash.isNaN(data)) {
+    checkType = 'NaN'; // 于 undefined 和其他非数字的值返回 false
+  } else if (lodash.isNil(data)) {
+    checkType = 'Nil'; // 是 null 或者 undefined
+  } else if (lodash.ArrayBuffer(data)) {
+    checkType = 'ArrayBuffer'; // buffer数组
+  } else if (lodash.isBuffer(data)) {
+    checkType = 'buffer'; // buffer文件
+  } else if (lodash.isDate(data)) {
+    checkType = 'Date'; // 时间
+  } else if (lodash.isEmpty(data)) {
+    checkType = 'empty'; // 空对象，集合，映射或者set
+  } else if (lodash.isError(data)) {
+    checkType = 'error'; // Error, EvalError, RangeError, ReferenceError,SyntaxError, TypeError, 或者 URIError对象
+  }
+  return checkType;
 };

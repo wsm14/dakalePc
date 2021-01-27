@@ -16,28 +16,14 @@ export function fetchUserDetail(params) {
 
 // get 用户列表 - 用户统计
 export function fetchUserTotal(params) {
-  return request('/admin/userManagement/getUserStatisticTotal', {
+  return request('/admin/userManagement/userListManagementStatisticsDay', {
     params,
   });
 }
 
-// get 用户列表 - 用户统计 年龄性别
-export function fetchUserInfoTotal(params) {
-  return request('/admin/userManagement/getUserHabitStatistic', {
-    params,
-  });
-}
-
-// get 用户列表 - 用户新增用户统计
-export function fetchUserAddTotal(params) {
-  return request('/admin/userManagement/getUserStatistic', {
-    params,
-  });
-}
-
-// get 用户列表 - 用户地区用户统计
-export function fetchUserCityTotal(params) {
-  return request('/admin/userManagement/getUserCityStatistic', {
+// get 用户列表 - 用户统计
+export function fetchUserChartTotal(params) {
+  return request('/admin/userManagement/userListManagementStatistics', {
     params,
   });
 }

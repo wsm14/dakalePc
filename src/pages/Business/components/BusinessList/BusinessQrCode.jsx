@@ -7,7 +7,7 @@ const BusinessQrCode = (props) => {
   const { visible, onClose } = props;
 
   const modalProps = {
-    title: `商户二维码 - ${visible.merchantName}`,
+    title: `店铺二维码 - ${visible.merchantName}`,
     width: 790,
     visible: !!visible,
   };

@@ -110,7 +110,7 @@ const UserDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row, i) => `${row[propItem.rowKey]}${i}`}

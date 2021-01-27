@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { PHONE_PATTERN } from '@/common/regExp';
 import { WORKER_JOB_TYPE } from '@/common/constant';
-import { Drawer, Form, Button, Space, Transfer, Spin, notification } from 'antd';
+import { Form, Button, Transfer, Spin, notification } from 'antd';
 import FormComponents from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const UserSetForm = (props) => {
   const { userInfo = {}, childRef, sectionList = [], dispatch, visible, onClose, loading } = props;
@@ -41,13 +42,11 @@ const UserSetForm = (props) => {
   }, [sectionList]);
 
   // 抽屉打开时请求选择参数
-  const afterVisibleChange = (visible) => {
-    if (visible) {
-      fetchAllRoleSelect();
-      fetchSectionList();
-    }
+  const afterVisibleChange = () => {
+    fetchAllRoleSelect();
+    fetchSectionList();
   };
-
+  
   // 获取角色选择项
   const fetchAllRoleSelect = () => {
     dispatch({
@@ -192,29 +191,19 @@ const UserSetForm = (props) => {
     title: `用户设置`,
     width: 650,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    afterCallBack: afterVisibleChange,
+    footer: (
+      <Button onClick={handleUpdata} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      afterVisibleChange={afterVisibleChange}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={handleUpdata} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormComponents form={form} formItems={formItems} initialValues={userInfo}></FormComponents>
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

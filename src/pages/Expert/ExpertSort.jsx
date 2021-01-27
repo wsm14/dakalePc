@@ -51,6 +51,7 @@ const ExpertSort = (props) => {
 
   return (
     <DataTableBlock
+      keepName="排序机制"
       cRef={childRef}
       loading={loading}
       columns={getColumns}
