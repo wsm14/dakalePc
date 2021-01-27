@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { NUM_INT } from '@/common/regExp';
+import { NUM_INT, NUM_PATTERN } from '@/common/regExp';
 import { SUBSIDY_ACTION_ROLE, SUBSIDY_ACTION_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
@@ -67,7 +67,7 @@ const SubsidyActionSet = (props) => {
       label: `手续费`,
       name: 'handlingFee',
       suffix: '%',
-      addRules: [{ pattern: NUM_INT, message: '手续费应为整数' }],
+      addRules: [{ pattern: NUM_PATTERN, message: '手续费应为数字' }],
       visible: handleFee !== 'mark',
     },
     {
