@@ -54,7 +54,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
 
   // 搜索参数改变时请求
   useEffect(() => {
-    childRef.current.fetchGetData(newSearch);
+    childRef.current && childRef.current.fetchGetData(newSearch);
   }, [searchData]);
 
   // 获取详情
@@ -99,6 +99,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
         <IncomeTotal></IncomeTotal>
         {/* 表格 */}
         <DataTableBlock
+          keepName="平台收益"
           NoSearch
           noCard={false}
           cRef={childRef}

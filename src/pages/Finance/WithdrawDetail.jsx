@@ -140,6 +140,7 @@ const WithdrawDetail = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="提现明细"
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
             <Tag color="orange">
