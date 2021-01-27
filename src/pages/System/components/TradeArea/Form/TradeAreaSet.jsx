@@ -214,7 +214,7 @@ const TradeAreaSet = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-       <FormComponents form={form} formItems={formItems} initialValues={info}></FormComponents>
+      <FormComponents form={form} formItems={formItems} initialValues={info}></FormComponents>
     </DrawerCondition>
   );
 };
