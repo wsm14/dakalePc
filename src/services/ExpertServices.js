@@ -72,7 +72,7 @@ export function fetchClassifyDetailAdd(data) {
   });
 }
 
-// post 达人管理 - 话题设置 删除 修改 推荐
+// post 达人管理 - 创作设置 删除 修改 推荐
 export function fetchClassifyDetailSet(data) {
   return request('/admin/topic/updateTopic', {
     method: 'POST',

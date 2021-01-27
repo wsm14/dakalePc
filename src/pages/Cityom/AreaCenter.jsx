@@ -163,6 +163,7 @@ const AreaCenter = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="区县运营中心"
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

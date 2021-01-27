@@ -177,6 +177,7 @@ const ExpertRecommend = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="哒人种草"
         btnExtra={
           <AuthConsumer auth="reportCenter">
             <Badge count={expertRecommend.totalReport}>

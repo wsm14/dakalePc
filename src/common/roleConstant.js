@@ -34,7 +34,7 @@ export const ROLE_BUTTON_TYPE = {
   stockSet: '库存设置',
   targetSet: '任务设置',
   rightsSet: '权益设置',
-  topic: '话题设置',
+  topic: '创作设置',
   saveClassify: '添加内容子类',
   savePClassify: '添加内容分类',
   reportCenter: '举报中心',

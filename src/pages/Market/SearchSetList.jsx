@@ -49,6 +49,7 @@ const SearchSetList = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="搜索配置"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

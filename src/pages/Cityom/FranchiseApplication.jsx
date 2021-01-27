@@ -127,6 +127,7 @@ const FranchiseApplication = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="加盟申请"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

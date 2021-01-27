@@ -111,6 +111,7 @@ const RefundOrder = (props) => {
 
   return (
     <DataTableBlock
+      keepName="退款管理"
       cRef={childRef}
       loading={loading}
       columns={getColumns}

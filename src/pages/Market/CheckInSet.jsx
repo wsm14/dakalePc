@@ -105,6 +105,7 @@ const SysCheckIn = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="打卡设置"
         cRef={childRef}
         loading={loading}
         columns={getColumns}

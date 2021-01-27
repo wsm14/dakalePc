@@ -204,6 +204,7 @@ const BusinessSettled = (props) => {
 
   return (
     <DataTableBlock
+      keepName="入驻绑定查询"
       btnExtra={({ get }) => (
         <ExcelButton
           dispatchType={'businessSettled/fetchMerchantGetExcel'}
@@ -211,7 +212,6 @@ const BusinessSettled = (props) => {
           exportProps={{ header: getColumns.slice(0, -1) }}
         ></ExcelButton>
       )}
-      keepName="入驻查询"
       cRef={childRef}
       loading={loading}
       columns={getColumns}

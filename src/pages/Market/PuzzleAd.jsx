@@ -118,6 +118,7 @@ const PuzzleAd = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="拼图广告"
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

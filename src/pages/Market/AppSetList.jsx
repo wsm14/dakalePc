@@ -123,6 +123,7 @@ const SysAppSet = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="广告设置"
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

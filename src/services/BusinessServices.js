@@ -160,7 +160,7 @@ export function fetchMerchantGroup(params) {
   });
 }
 
-// post 集团列表 - 话题设置 删除 修改 推荐
+// post 集团列表 - 创作设置 删除 修改 推荐
 export function fetchAddMerchantGroup(data) {
   return request('/admin/merchantGroup/saveMerchantGroup', {
     method: 'POST',

@@ -143,6 +143,7 @@ const ProvCompany = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="省级公司"
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

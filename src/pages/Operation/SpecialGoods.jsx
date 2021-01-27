@@ -234,6 +234,7 @@ const SpecialGoods = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="周边特惠"
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="tradeSet">
