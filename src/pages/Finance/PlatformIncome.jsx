@@ -61,12 +61,12 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
     childRef.current.fetchGetData({ ...newSearch, ...pageObj });
   }, [searchData]);
 
-  // 获取详情
-  const fetchGetDetail = (identification, type) => {
+  // 获取详情 订单类型type 订单卡豆数bean
+  const fetchGetDetail = (identification, type, bean) => {
     dispatch({
       type: 'platformIncome/fetchPlatformInconmeDetail',
       payload: { identification, source },
-      callback: (detail) => setVisible({ show: true, type, detail }),
+      callback: (detail) => setVisible({ show: true, type, detail, bean }),
     });
   };
 

@@ -10,15 +10,7 @@ import {
 import styles from './style.less';
 
 const IncomeOrderDetail = ({ visible, onClose }) => {
-  const { show = false, type = 'scan', detail = {} } = visible;
-
-  // 平台收益对应类型
-  const rebate_type = {
-    60: '（有用户/店铺家主）',
-    65: '（有用户/无店铺家主）',
-    70: '（无用户/有店铺家主）',
-    75: '（无用户/店铺家主）',
-  };
+  const { show = false, type = 'scan', detail = {}, bean = 0 } = visible;
 
   // 公式计算dom
   const formulaDom = (title = '服务费=店铺实收*服务费比例', footTip) => (
@@ -99,9 +91,7 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
   const oderDom = (
     <div className={styles.income_order}>
       <div className={styles.income_order_top}>
-        <span className={styles.income_order_icon}>
-          {detailProps.icon ? detailProps.icon : <ShoppingOutlined />}
-        </span>
+        <span className={styles.income_order_icon}>{detailProps.icon}</span>
         {!detail[detailProps.titleKey] && (
           <div className={styles.income_order_name}>{detail.merchantName}</div>
         )}
@@ -109,22 +99,53 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         <div className={styles.income_order_Total}>
           平台佣金
           <label className={styles.income_order_num}>
-            {detail.platformBean}
+            {bean}
             <span className={styles.income_order_unit}>卡豆</span>
           </label>
-          （￥{detail.platformBean / 100 || 0}）
+          （￥{bean / 100}）
         </div>
         <span className={styles.income_order_tip}>
-          平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣
+          {/* 哒人带货商品显示字段 */}
+          {type === 'kolGoods'
+            ? '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣+哒人带货利润-哒人分佣-哒人家主分佣'
+            : '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
       </div>
       <div className={styles.income_order_detail}>
-        <div className={styles.detail_item}>用户实付： ￥{detail.totalFee || 0}</div>
-        <div className={styles.detail_item}>平台服务费比例： {detail.commissionRatio || 0}%</div>
-        <div className={styles.detail_item}>
-          平台佣金比例： {detail.rebate || 0}%{rebate_type[detail.rebate]}
+        <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
+        <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
+        {/* 哒人带货商品显示字段 */}
+        {type === 'kolGoods' && (
+          <>
+            <div className={styles.detail_item}>
+              哒人带货利润：￥{detail.merchantServiceBean / 100}
+            </div>
+            <div className={styles.detail_item}>哒人等级：Lv {detail.kolLevel}</div>
+          </>
+        )}
+        <div className={styles.detail_item}>店铺服务费：{detail.merchantServiceBean || 0}卡豆</div>
+        <div className={styles.detail_item_class}>
+          区县分佣：{detail.partnerProfitBean || 0}卡豆
         </div>
-        <div className={styles.detail_item}>
+        <div className={styles.detail_item_class}>
+          省公司分佣：{detail.provinceProfitBean || 0}卡豆
+        </div>
+        <div className={styles.detail_item_class}>
+          用户家主分佣：{detail.userParentProfitBean || 0}卡豆
+        </div>
+        <div className={styles.detail_item_class}>
+          店铺家主分佣：{detail.merchantParentProfitBean || 0}卡豆
+        </div>
+        {/* 哒人带货商品显示字段 */}
+        {type === 'kolGoods' && (
+          <>
+            <div className={styles.detail_item}>哒人分佣：{detail.kolProfitBean || 0}卡豆</div>
+            <div className={styles.detail_item}>
+              哒人家主分佣：{detail.kolParentProfitBean || 0}卡豆
+            </div>
+          </>
+        )}
+        <div className={styles.detail_item_formula}>
           <Popover content={detailProps.formulaDom()} placement="left">
             <a>查看计算公式</a>
           </Popover>

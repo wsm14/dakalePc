@@ -89,7 +89,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '详情',
           align: 'right',
           dataIndex: 'identification',
-          render: (val, row) => infoHandle(() => fetchGetDetail(val, row.type)),
+          render: (val, row) => infoHandle(() => fetchGetDetail(val, row.type, row.bean)),
         },
       ];
     // 按日显示
