@@ -15,7 +15,7 @@ const ManageCity = (props) => {
   const childRef = useRef();
   const [selectCode, setSelectCode] = useState({
     provinceCode: '33',
-    provinceName: '浙江',
+    provinceName: '浙江省',
   });
 
   // table 表头
