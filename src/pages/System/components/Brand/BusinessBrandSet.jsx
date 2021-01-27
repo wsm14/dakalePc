@@ -15,7 +15,13 @@ const BusinessBankSet = (props) => {
         payload: {
           ...values,
           configBrandIdString: initialValues.configBrandIdString,
-          categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
+          categoryName: tradeList.filter((item) => item.
+          
+          
+          
+          
+          
+          id === categoryId)[0].categoryName,
           brandLogo: res.toString(),
         },
         callback: () => childRef.current.fetchGetData(),

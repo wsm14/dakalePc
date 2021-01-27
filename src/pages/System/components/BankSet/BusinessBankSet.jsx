@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form } from 'antd';
+import {  Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const BusinessBrandSet = (props) => {
   const { dispatch, visible, onClose, cRef, loading, bankTopArr, initialValues } = props;
@@ -72,27 +73,22 @@ const BusinessBrandSet = (props) => {
     },
   ];
 
+  const modalProps = {
+    title: '设置支行',
+    width: 600,
+    visible,
+    onClose,
+    footer: (
+      <Button onClick={fetchUpData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
+  };
+
   return (
-    <Drawer
-      title={`设置支行`}
-      width={600}
-      visible={visible}
-      destroyOnClose={true}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchUpData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormCondition formItems={formItems} form={form} initialValues={initialValues} />
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

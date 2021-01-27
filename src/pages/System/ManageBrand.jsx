@@ -119,7 +119,7 @@ const BusinessBrandComponent = (props) => {
     <DataTableBlock
       btnExtra={
         <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" onClick={handleBrandSet}>
+          <Button className="dkl_green_btn" onClick={()=>handleBrandSet()}>
             新增
           </Button>
         </AuthConsumer>

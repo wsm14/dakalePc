@@ -1,10 +1,11 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Drawer, Form, Button, Space, Select, Spin, Empty, message } from 'antd';
+import { Form, Button, Space, Select, Spin, Empty, message } from 'antd';
 import debounce from 'lodash/debounce';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import FormComponents from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const TradeAreaSet = (props) => {
   const { info = {}, fetchSet, visible, onClose, loading } = props;
@@ -18,9 +19,9 @@ const TradeAreaSet = (props) => {
 
   const { provinceName, cityName, districtName } = info;
 
-  useEffect(()=>{
-    info.lat && setLocation([info.lnt,info.lat])
-  },[info])
+  useEffect(() => {
+    info.lat && setLocation([info.lnt, info.lat]);
+  }, [info]);
 
   // 新增 / 修改
   const handleUpdata = () => {
@@ -132,7 +133,6 @@ const TradeAreaSet = (props) => {
         doubleClickZoom={false}
         keyboardEnable={false}
         touchZoom={false}
-
       >
         <Marker clickable draggable position={location} events={handleMarkerEvents} />
       </Map>
@@ -203,29 +203,19 @@ const TradeAreaSet = (props) => {
     title: `商圈设置 - ${provinceName} / ${cityName} / ${districtName}`,
     width: 650,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    afterCallBack: () => setAmpShow(false),
+    footer: (
+      <Button onClick={handleUpdata} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      afterVisibleChange={() => setAmpShow(false)}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={handleUpdata} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
-      <FormComponents form={form} formItems={formItems} initialValues={info}></FormComponents>
-    </Drawer>
+    <DrawerCondition {...modalProps}>
+       <FormComponents form={form} formItems={formItems} initialValues={info}></FormComponents>
+    </DrawerCondition>
   );
 };
 

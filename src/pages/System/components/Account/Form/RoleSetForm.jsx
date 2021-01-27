@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { Drawer, Form, Button, Space } from 'antd';
+import { Form, Button } from 'antd';
 import FormComponents from '@/components/FormCondition';
 import RoleTableForm from './RoleTableForm';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const RoleSetForm = (props) => {
   const { userInfo = {}, flag, childRef, dispatch, visible, onClose, loading } = props;
@@ -64,33 +65,18 @@ const RoleSetForm = (props) => {
     title: `角色设置`,
     width: 850,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    footer: (
+      <Button onClick={handleUpdata} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      // afterVisibleChange={(show) => {
-      //   if (show) {
-      //     fetchWMSRoleSelect();
-      //   }
-      // }}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={handleUpdata} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormComponents form={form} formItems={formItems} initialValues={userInfo}></FormComponents>
-    </Drawer>
+    </DrawerCondition>
   );
 };
 
