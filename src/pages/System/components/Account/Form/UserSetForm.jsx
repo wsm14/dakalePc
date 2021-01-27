@@ -42,13 +42,11 @@ const UserSetForm = (props) => {
   }, [sectionList]);
 
   // 抽屉打开时请求选择参数
-  const afterVisibleChange = (visible) => {
-    if (visible) {
-      fetchAllRoleSelect();
-      fetchSectionList();
-    }
+  const afterVisibleChange = () => {
+    fetchAllRoleSelect();
+    fetchSectionList();
   };
-
+  
   // 获取角色选择项
   const fetchAllRoleSelect = () => {
     dispatch({
@@ -203,7 +201,7 @@ const UserSetForm = (props) => {
   };
 
   return (
-    <DrawerCondition  {...modalProps}>
+    <DrawerCondition {...modalProps}>
       <FormComponents form={form} formItems={formItems} initialValues={userInfo}></FormComponents>
     </DrawerCondition>
   );

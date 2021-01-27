@@ -24,37 +24,36 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
     scan: {
       type: '扫码支付',
       icon: <QrcodeOutlined />,
-      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
       titleKey: 'merchantName',
     },
     goods: {
       type: '商品核销',
       icon: <ShoppingOutlined />,
-      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
       titleKey: 'goodsName',
     },
     specialGoods: {
       type: '特价商品订单',
       icon: <ShoppingOutlined />,
-      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
+      titleKey: 'goodsName',
+    },
+    kolGoods: {
+      type: '哒人带货订单',
+      icon: <ShoppingOutlined />,
       titleKey: 'goodsName',
     },
     reduceCoupon: {
       type: '抵扣券核销',
       icon: <AccountBookOutlined />,
-      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
       titleKey: 'couponName',
     },
     marketCoupon: {
       type: '兑换券订单',
       icon: <AccountBookOutlined />,
-      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
       titleKey: 'couponName',
     },
     moment: {
       type: '看分享',
       icon: <PlaySquareOutlined />,
-      tip: '平台佣金=用户实付*平台服务费比例*平台佣金比例',
       titleKey: 'merchantName',
     },
   }[type];
@@ -77,13 +76,18 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           </label>
           （￥{detail.platformBean / 100 || 0}）
         </div>
-        <span className={styles.income_order_tip}>{detailProps.tip}</span>
+        <span className={styles.income_order_tip}>
+          平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣
+        </span>
       </div>
       <div className={styles.income_order_detail}>
         <div className={styles.detail_item}>用户实付： ￥{detail.totalFee || 0}</div>
         <div className={styles.detail_item}>平台服务费比例： {detail.commissionRatio || 0}%</div>
         <div className={styles.detail_item}>
           平台佣金比例： {detail.rebate || 0}%{rebate_type[detail.rebate]}
+        </div>
+        <div className={styles.detail_item}>
+          <a>查看计算公式</a>
         </div>
       </div>
       <div className={styles.income_order_bottom}>
