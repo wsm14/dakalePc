@@ -67,7 +67,7 @@ const SubsidyActionSet = (props) => {
       label: `手续费`,
       name: 'handlingFee',
       suffix: '%',
-      addRules: [{ pattern: NUM_PATTERN, message: '手续费应为数字' }],
+      addRules: [{ pattern: NUM_PATTERN, message: '手续费应为整数数字' }],
       visible: handleFee !== 'mark',
     },
     {
