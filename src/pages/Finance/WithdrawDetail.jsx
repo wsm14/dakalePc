@@ -154,7 +154,7 @@ const WithdrawDetail = (props) => {
               {searchTime[0]} ~ {searchTime[1]}
             </Tag>
             合计提现金额：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.allWithdrawalFeeSum}`} &nbsp;&nbsp;
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.allWithdrawalFeeSum || 0}`} &nbsp;&nbsp;
             成功提现金额：
             {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum}`} &nbsp;&nbsp;
             成功提现手续费：
