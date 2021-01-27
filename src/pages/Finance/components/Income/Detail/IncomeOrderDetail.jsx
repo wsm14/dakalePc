@@ -11,6 +11,14 @@ import styles from './style.less';
 const IncomeOrderDetail = ({ visible, onClose }) => {
   const { show = false, type = 'scan', detail = {} } = visible;
 
+  // 平台收益对应类型
+  const rebate_type = {
+    60: '（有用户/店铺家主）',
+    65: '（有用户/无店铺家主）',
+    70: '（无用户/有店铺家主）',
+    75: '（无用户/店铺家主）',
+  };
+
   // 订单详情配置
   const detailProps = {
     scan: {
@@ -74,7 +82,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
       <div className={styles.income_order_detail}>
         <div className={styles.detail_item}>用户实付： ￥{detail.totalFee || 0}</div>
         <div className={styles.detail_item}>平台服务费比例： {detail.commissionRatio || 0}%</div>
-        <div className={styles.detail_item}>平台佣金比例： {detail.rebate || 0}%</div>
+        <div className={styles.detail_item}>
+          平台佣金比例： {detail.rebate || 0}%{rebate_type[detail.rebate]}
+        </div>
       </div>
       <div className={styles.income_order_bottom}>
         <div className={styles.detail_item}>订单号：{detail.orderSn}</div>

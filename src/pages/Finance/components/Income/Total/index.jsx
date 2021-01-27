@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Statistic } from 'antd';
 import { Pie } from '@/components/Charts';
@@ -19,13 +19,32 @@ const IncomeTotal = ({ totalBean, loading }) => {
       tip: '交易佣金(卡豆) = 扫码支付/核销订单/哒人带货平台服务费*圈层佣金比例',
     },
     {
-      value: 0,
+      value: totalBean,
       type: '交易佣金（卡豆）',
       checked: true,
       color: '#5F96F4',
       tip: '广告佣金(卡豆) = 发分享平台服务费*圈层佣金比例',
     },
   ]);
+
+  useEffect(() => {
+    setChartData([
+      {
+        value: 0,
+        type: '广告佣金（卡豆）',
+        checked: true,
+        color: '#FABF4B',
+        tip: '交易佣金(卡豆) = 扫码支付/核销订单/哒人带货平台服务费*圈层佣金比例',
+      },
+      {
+        value: totalBean,
+        type: '交易佣金（卡豆）',
+        checked: true,
+        color: '#5F96F4',
+        tip: '广告佣金(卡豆) = 发分享平台服务费*圈层佣金比例',
+      },
+    ]);
+  }, [totalBean]);
 
   // 点击图例切换数据
   const hanleLegendClick = (lengendItem) => {
@@ -42,14 +61,14 @@ const IncomeTotal = ({ totalBean, loading }) => {
   const chartProps = {
     legend: false,
     layout: 'horizontal',
-    radius: 1,
-    innerRadius: 0.6,
+    radius: 0.75,
+    innerRadius: 0.58,
     label: {
       type: 'spider',
       style: {
         lineHeight: 20,
       },
-      content: '{name}\n {value}',
+      content: '{name}\n{percentage}',
     },
     color: ({ type }) => {
       if (type === '交易佣金（卡豆）') {
@@ -101,7 +120,7 @@ const IncomeTotal = ({ totalBean, loading }) => {
         </div>
       </div>
       <div className={styles.pie_block}>
-        <div style={{ height: 200, width: 500, position: 'relative' }}>
+        <div style={{ height: 255, width: 500, position: 'relative' }}>
           <Pie {...chartProps} data={chartData.filter((item) => item.checked)} />
           {/* 检查是否 有数据显示 有则显示阴影 无则隐藏阴影 */}
           {chartData.some((item) => item.checked) && (
