@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
+import { WITHDRAW_STATUS } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -64,7 +65,7 @@ const WithdrawDetail = (props) => {
       dataIndex: 'withdrawalDate',
     },
     {
-      title: '提现单号',
+      title: '流水单号',
       dataIndex: 'withdrawalSn',
     },
     {
@@ -97,6 +98,12 @@ const WithdrawDetail = (props) => {
       align: 'right',
       dataIndex: 'withdrawalHandlingFee',
       render: (val) => `￥ ${val}`,
+    },
+    {
+      title: '状态',
+      align: 'right',
+      dataIndex: 'status',
+      render: (val) => WITHDRAW_STATUS[val],
     },
     {
       title: '备注',
@@ -147,8 +154,10 @@ const WithdrawDetail = (props) => {
               {searchTime[0]} ~ {searchTime[1]}
             </Tag>
             合计提现金额：
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.allWithdrawalFeeSum}`} &nbsp;&nbsp;
+            成功提现金额：
             {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum}`} &nbsp;&nbsp;
-            合计提现手续费：
+            成功提现手续费：
             {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum}`}
           </div>
         )}

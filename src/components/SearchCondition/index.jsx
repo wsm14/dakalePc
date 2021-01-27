@@ -279,6 +279,10 @@ const SearchCondition = (props) => {
     const formObj = {};
     formItems.forEach((item) => {
       if (values[item.name]) {
+        // 过滤单引号
+        if (typeof values[item.name] === 'string') {
+          formObj[item.name] = values[item.name].replace(/'/g, '');
+        }
         // 判断类型 时间类型处理
         if (item.type === 'datePicker') {
           formObj[item.name] = values[item.name].format(

@@ -44,7 +44,7 @@ export const PAY_TYPE = {
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 
 // 提现状态
-export const WITHDRAW_STATUS = [false, false, '处理中', '成功', '失败'];
+export const WITHDRAW_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
 
 // 反馈状态
 export const FEEDBACK_STATUS = [false, '处理中', '已解答'];
