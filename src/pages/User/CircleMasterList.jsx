@@ -48,7 +48,7 @@ const CircleMasterList = (props) => {
     {
       title: '用户/店铺名',
       fixed: 'left',
-      dataIndex: 'username',
+      dataIndex: 'name',
       render: (val) => val || '--',
     },
     {
