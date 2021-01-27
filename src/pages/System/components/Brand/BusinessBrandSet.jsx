@@ -1,7 +1,7 @@
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const BusinessBankSet = (props) => {
-  const { dispatch, childRef, tradeList, initialValues = null } = props;
+  const { dispatch, childRef, tradeList, initialValues = {} } = props;
 
   // 新增
   const fetchMerBrandSet = (values) => {
@@ -15,13 +15,7 @@ const BusinessBankSet = (props) => {
         payload: {
           ...values,
           configBrandIdString: initialValues.configBrandIdString,
-          categoryName: tradeList.filter((item) => item.
-          
-          
-          
-          
-          
-          id === categoryId)[0].categoryName,
+          categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
           brandLogo: res.toString(),
         },
         callback: () => childRef.current.fetchGetData(),
