@@ -8,9 +8,9 @@ import TableBlock from './tableBlock';
  */
 
 const DataTableBlockComponent = (props) => {
-  const { keepName, searchItems } = props;
+  const { keepName } = props;
   const match = useLocation();
-
+  
   const KeepContent = {
     true: (
       <KeepAlive name={keepName} url={match.pathname} saveScrollPosition="screen">

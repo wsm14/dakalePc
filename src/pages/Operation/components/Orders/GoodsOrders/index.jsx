@@ -50,6 +50,18 @@ const GoodsOrders = (props) => {
       },
     },
     {
+      label: '下单日期',
+      type: 'rangePicker',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
+    },
+    {
+      label: '核销日期',
+      type: 'rangePicker',
+      name: 'verificationTimeStart',
+      end: 'verificationTimeEnd',
+    },
+    {
       label: '区域',
       name: 'city',
       type: 'cascader',
@@ -93,17 +105,23 @@ const GoodsOrders = (props) => {
       dataIndex: 'goodsCount',
     },
     {
-      title: '卡豆抵扣',
+      title: '订单金额',
+      align: 'right',
+      dataIndex: 'totalFee',
+      render: (val) => `￥${val}`,
+    },
+    {
+      title: '卡豆抵扣金额',
       align: 'right',
       dataIndex: 'beanFee',
-      render: (val) => val / 100,
+      render: (val) => `￥${val / 100}`,
     },
     {
       title: '现金支付',
       align: 'right',
       dataIndex: 'payFee',
       render: (val, record) =>
-        `${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
+        `￥${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
     },
     {
       title: '优惠券',
@@ -111,9 +129,14 @@ const GoodsOrders = (props) => {
       render: (val) => `--`,
     },
     {
-      title: '下单日期',
+      title: '下单时间',
       align: 'center',
       dataIndex: 'createTime',
+    },
+    {
+      title: '核销时间',
+      align: 'center',
+      dataIndex: 'verificationTime',
     },
     {
       title: '店铺名称',
@@ -124,10 +147,7 @@ const GoodsOrders = (props) => {
       title: '订单属性',
       align: 'center',
       dataIndex: 'orderType',
-      render: (val) => {
-        const type = ORDERS_TYPE.filter((i) => i.value == val);
-        return type.length ? type[0].name : '--';
-      },
+      render: (val) => ORDERS_TYPE[val],
     },
     {
       title: '状态',
@@ -147,7 +167,7 @@ const GoodsOrders = (props) => {
   return (
     <>
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

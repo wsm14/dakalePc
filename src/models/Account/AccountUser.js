@@ -22,6 +22,7 @@ export default {
     userTotalOut: 0,
     indata: data1,
     outdata: data1,
+    userTotalBean: 0,
   },
 
   reducers: {
@@ -48,7 +49,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          userlist: { list: content.userDtoList },
+          userlist: { list: content.recordList, total: content.total },
         },
       });
     },
@@ -69,21 +70,29 @@ export default {
         },
       });
     },
-    *fetchUserTotal({ payload }, { call, put }) {
+    *fetchAccountUserTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountUserTotal, payload);
       if (!response) return;
-      const { in: indata, out: outdata } = response.content;
-      const userTotalIn = indata.length
-        ? indata.filter((item) => item.statisticType == 'userTotalIn')[0].content
-        : 0;
-      const userTotalOut = outdata.length
-        ? outdata.filter((item) => item.statisticType == 'userTotalOut')[0].content
-        : 0;
+      const { in: indata, out: outdata, userTotalBean = 0 } = response.content;
+      // 计算总数
+      const totalReduce = (arr, type) =>
+        arr.reduce((pre, cur) => {
+          if (cur.statisticType === type) {
+            return pre + 0;
+          }
+          return pre + Number(cur.content || 0);
+        }, 0);
+      // 用户累计收益卡豆
+      const userTotalIn = indata.length ? totalReduce(indata, 'userTotalIn') : 0;
+      // 商家累计消费
+      const userTotalOut = outdata.length ? totalReduce(outdata, 'userTotalOut') : 0;
+
       yield put({
         type: 'save',
         payload: {
           userTotalIn,
           userTotalOut,
+          userTotalBean,
           indata: indata.length
             ? indata
                 .filter((item) => item.statisticType != 'userTotalIn')

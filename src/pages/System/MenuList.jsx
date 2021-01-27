@@ -167,7 +167,7 @@ const SysMenuList = (props) => {
       }}
     >
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

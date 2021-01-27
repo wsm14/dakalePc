@@ -21,9 +21,10 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
 
   const orderArr = [
     {
-      title: '平台总营收金额',
+      title: '店铺总营收金额',
       info: '店铺通过扫码支付或核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
       key: 'allTotal',
+      numName: false,
     },
     {
       title: '扫码付金额',
@@ -34,11 +35,13 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
       title: '核销金额',
       info: '店铺核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
       key: 'verificationFee',
+      numName: '核销数量',
     },
     {
       title: '客单价',
       info: '总营收金额（扫码付+核销）/付款人数',
       key: 'distinctPerson',
+      numName: '付款人数',
     },
     {
       title: '哒人带货销售额',
@@ -46,13 +49,18 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
       key: 'kolGoods',
     },
     {
-      title: '周边特惠销售额',
-      info: '在周边特惠板块成交的订单金额',
+      title: '特价活动销售额',
+      info: '用户通过特价活动购买商品的实付金额',
       key: 'specialGoods',
     },
     {
+      title: '抵扣券销售额',
+      info: '用户购买抵扣券的实付金额',
+      key: 'specialGoodss',
+    },
+    {
       title: '退款金额',
-      info: '用户发起退款申请后，店铺同意退款的金额',
+      info: '用户发起退款申请后，实际退款成功的金额',
       key: 'refundFee',
     },
   ];
@@ -90,10 +98,15 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
                 type="quest"
               ></QuestionTooltip>
             }
+            valueStyle={item.key === 'allTotal' ? { fontSize: 40 } : {}}
             value={checkData(totalData[item.key], 'totalFee')}
             precision={2}
           />
-          <span style={allStyle}>订单数：{checkData(totalData[item.key], 'docCount')}</span>
+          {item.numName !== false && (
+            <span style={allStyle}>
+              {item.numName ? item.numName : '订单数'}：{checkData(totalData[item.key], 'docCount')}
+            </span>
+          )}
         </Card.Grid>
       ))}
     </Card>

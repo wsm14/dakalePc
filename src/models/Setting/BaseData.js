@@ -4,6 +4,8 @@ import {
   fetchGetHubSelect,
   fetchGetTradeSelect,
   fetchSetTradeSelect,
+  fetchGetMreTag,
+  fetchMerCheckData,
 } from '@/services/BaseServices';
 
 export default {
@@ -35,6 +37,12 @@ export default {
       });
       if (callback) callback(content.businessHubList);
     },
+    *fetchGetMreTag({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetMreTag, payload);
+      if (!response) return;
+      const { content } = response;
+      content && callback(content.tagNames);
+    },
     *fetchGetTradeSelect({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetTradeSelect, payload);
       if (!response) return;
@@ -55,6 +63,11 @@ export default {
         description: '设置成功',
       });
       callback();
+    },
+    *fetchMerCheckData({ payload, callback }, { call }) {
+      const response = yield call(fetchMerCheckData, payload);
+      if (!response) return;
+      callback(response.content);
     },
   },
 };

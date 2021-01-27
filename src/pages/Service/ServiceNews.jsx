@@ -104,7 +104,7 @@ const ServiceNewsComponent = (props) => {
   const contentList = {
     tab1: (
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

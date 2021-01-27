@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Drawer, Form, Button, Space } from 'antd';
+import { Form, Button } from 'antd';
 import FormComponents from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const SectionEdit = (props) => {
   const { setInfo = {}, childRef, dispatch, visible, onClose, loading } = props;
@@ -46,28 +47,20 @@ const SectionEdit = (props) => {
     title: `部门设置 - ${setInfo.departmentName || '新增'}`,
     width: 650,
     visible,
+    onClose,
     maskClosable: true,
     destroyOnClose: true,
+    footer: (
+      <Button onClick={handleUpdata} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'center' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={handleUpdata} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormComponents form={form} formItems={formItems}></FormComponents>
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

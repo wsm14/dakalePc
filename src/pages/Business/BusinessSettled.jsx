@@ -1,19 +1,29 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { Button, Popover } from 'antd';
-import { MRE_ACCOUNT_STATUS, BUSINESS_STATUS_AUDIT, MRE_SORT_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Popover } from 'antd';
+import {
+  MRE_ACCOUNT_STATUS,
+  BUSINESS_STATUS_AUDIT,
+  MRE_SORT_STATUS,
+  BUSINESS_TYPE,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import exportExcel from '@/utils/exportExcel';
+import ExcelButton from '@/components/ExcelButton';
 import DataTableBlock from '@/components/DataTableBlock';
 
 const BusinessSettled = (props) => {
-  const { businessSettled, loading, dispatch } = props;
+  const { businessSettled, loading } = props;
 
   const childRef = useRef();
 
   // 搜索参数
   const searchItems = [
+    {
+      label: '审核通过',
+      type: 'rangePicker',
+      name: 'verifyTimeStart',
+      end: 'verifyTimeEnd',
+    },
     {
       label: '提审时间',
       type: 'rangePicker',
@@ -35,16 +45,29 @@ const BusinessSettled = (props) => {
       name: 'account',
     },
     {
+      label: '店铺类型',
+      name: 'merchantType',
+      type: 'select',
+      select: BUSINESS_TYPE,
+    },
+    {
+      label: '省市区',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
-      select: { list: BUSINESS_STATUS_AUDIT },
+      select: BUSINESS_STATUS_AUDIT,
     },
     {
       label: '激活状态',
       name: 'activationStatus',
       type: 'select',
-      select: { list: MRE_ACCOUNT_STATUS },
+      select: MRE_ACCOUNT_STATUS,
     },
     {
       label: '推荐人手机号',
@@ -54,7 +77,7 @@ const BusinessSettled = (props) => {
       label: '排序',
       name: 'sortField',
       type: 'select',
-      select: { list: MRE_SORT_STATUS },
+      select: MRE_SORT_STATUS,
     },
   ];
 
@@ -179,26 +202,16 @@ const BusinessSettled = (props) => {
     },
   ];
 
-  // 导出excel 数据
-  const fetchGetExcel = (payload) => {
-    const header = getColumns.slice(1);
-    dispatch({
-      type: 'businessSettled/fetchMerchantGetExcel',
-      payload,
-      callback: (data) => exportExcel({ header, data }),
-    });
-  };
-
   return (
     <DataTableBlock
+      keepName="入驻绑定查询"
       btnExtra={({ get }) => (
-        <AuthConsumer auth="exportList">
-          <Button className="dkl_green_btn" key="1" onClick={() => fetchGetExcel(get())}>
-            导出
-          </Button>
-        </AuthConsumer>
+        <ExcelButton
+          dispatchType={'businessSettled/fetchMerchantGetExcel'}
+          dispatchData={get()}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
       )}
-      keepName="入驻查询"
       cRef={childRef}
       loading={loading}
       columns={getColumns}

@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DataTableBlock from '@/components/DataTableBlock';
+import HandleSetTable from '@/components/HandleSetTable';
 import businessBrandSet from './components/Brand/BusinessBrandSet';
 
 const BusinessBrandComponent = (props) => {
@@ -43,6 +44,47 @@ const BusinessBrandComponent = (props) => {
       align: 'center',
       dataIndex: 'categoryName',
     },
+    {
+      title: '启用状态',
+      align: 'center',
+      dataIndex: 'status',
+      render: (val, record) => (
+        <AuthConsumer auth="status" noAuth={val === '1' ? '启用' : '停用'}>
+          <Switch
+            checked={val === '1'}
+            onClick={() =>
+              fetchMerBrandEdit({
+                configBrandIdString: record.configBrandIdString,
+                status: 1 ^ Number(val),
+              })
+            }
+          />
+        </AuthConsumer>
+      ),
+    },
+    {
+      title: '操作',
+      align: 'right',
+      dataIndex: 'configBrandIdString',
+      render: (val, row) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'edit',
+              click: () => handleBrandSet(row),
+            },
+            {
+              type: 'del',
+              click: () =>
+                fetchMerBrandEdit({
+                  configBrandIdString: val,
+                  deleteFlag: 0,
+                }),
+            },
+          ]}
+        />
+      ),
+    },
   ];
 
   // 品牌类型列表
@@ -52,11 +94,20 @@ const BusinessBrandComponent = (props) => {
     });
   };
 
+  // 编辑/删除/启用停用品牌
+  const fetchMerBrandEdit = (payload) => {
+    dispatch({
+      type: 'businessBrand/fetchMerBrandEdit',
+      payload,
+      callback: () => childRef.current.fetchGetData(),
+    });
+  };
+
   // 品牌新增
-  const handleBrandSet = () => {
+  const handleBrandSet = (initialValues) => {
     dispatch({
       type: 'drawerForm/show',
-      payload: businessBrandSet({ dispatch, childRef, tradeList }),
+      payload: businessBrandSet({ dispatch, childRef, tradeList, initialValues }),
     });
   };
 
@@ -68,12 +119,11 @@ const BusinessBrandComponent = (props) => {
     <DataTableBlock
       btnExtra={
         <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" onClick={handleBrandSet}>
+          <Button className="dkl_green_btn" onClick={()=>handleBrandSet()}>
             新增
           </Button>
         </AuthConsumer>
       }
-      keepName="品牌管理"
       cRef={childRef}
       loading={loading.models.businessBrand}
       columns={getColumns}

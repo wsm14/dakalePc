@@ -58,6 +58,13 @@ export function fetchGetHubName(params) {
   });
 }
 
+// get 店铺标签
+export function fetchGetMreTag(params) {
+  return request('/common/configMerchantTag/listConfigMerchantTag', {
+    params,
+  });
+}
+
 // get 行业类目 - 勾选列表
 export function fetchGetTradeSelect(params) {
   return request('/common/category/listSpecialGoodsCategoryAdmin', {
@@ -68,6 +75,14 @@ export function fetchGetTradeSelect(params) {
 // post 行业类目 - 勾选设置
 export function fetchSetTradeSelect(data) {
   return request('/common/category/setSpecialGoodsCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 校验店铺是否存在
+export function fetchMerCheckData(data) {
+  return request('/admin/merchantManagement/repeatStoreVerification', {
     method: 'POST',
     data,
   });

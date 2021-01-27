@@ -17,7 +17,16 @@ const ShareHandleDetail = (props) => {
     >
       <Steps direction="vertical" progressDot current={detail.length}>
         {detail.map((item) => (
-          <Steps.Step key={item.identifyIdStr} title={item.createTime} description={item.content} />
+          <Steps.Step
+            key={item.identifyIdStr}
+            title={item.createTime}
+            description={
+              <span style={{ whiteSpace: 'pre-line' }}>
+                {item.content}
+                <div>操作人：{item.operator}</div>
+              </span>
+            }
+          />
         ))}
       </Steps>
     </Modal>

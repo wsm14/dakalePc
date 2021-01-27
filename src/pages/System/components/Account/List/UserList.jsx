@@ -155,6 +155,7 @@ const UserList = (props) => {
     return list.map((item, index) => {
       return item[val] ? (
         <SubMenu
+          className={item.departmentIdString === departmentIds ? 'ant-menu-item-selected' : ''}
           onTitleClick={({ key }) => {
             let childrenId = '';
             if (item[val]) {
@@ -188,6 +189,7 @@ const UserList = (props) => {
   return (
     <div style={{ display: 'flex' }}>
       <Menu
+        selectedKeys={[departmentIds || '-1']}
         openKeys={[...filterOpenKeys(menuList, 'children').map((item) => item.departmentIdString)]}
         inlineCollapsed={false}
         defaultSelectedKeys={['-1']}
@@ -222,7 +224,7 @@ const UserList = (props) => {
               </Button>
             </AuthConsumer>
           }
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading}
           searchItems={searchItems}

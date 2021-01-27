@@ -23,6 +23,7 @@ export default {
     outdata: data1,
     merchantTotalIncome: 0,
     merchantTotalOut: 0,
+    merchantTotalBean: 0,
   },
 
   reducers: {
@@ -49,7 +50,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.merchantList },
+          list: { list: content.recordList, total: content.total },
         },
       });
     },
@@ -74,18 +75,26 @@ export default {
     *fetchBusinessTotal({ payload }, { call, put }) {
       const response = yield call(fetchAccountBusinessTotal, payload);
       if (!response) return;
-      const { in: indata, out: outdata } = response.content;
-      const merchantTotalIncome = indata.length
-        ? indata.filter((item) => item.statisticType == 'merchantTotalIncome')[0].content
-        : 0;
-      const merchantTotalOut = outdata.length
-        ? outdata.filter((item) => item.statisticType == 'merchantTotalOut')[0].content
-        : 0;
+      const { in: indata, out: outdata, merchantTotalBean = 0 } = response.content;
+      // 计算总数
+      const totalReduce = (arr, type) =>
+        arr.reduce((pre, cur) => {
+          if (cur.statisticType === type) {
+            return pre + 0;
+          }
+          return pre + Number(cur.content || 0);
+        }, 0);
+      // 商家累计收益
+      const merchantTotalIncome = indata.length ? totalReduce(indata, 'merchantTotalIncome') : 0;
+      // 商家累计消费
+      const merchantTotalOut = outdata.length ? totalReduce(outdata, 'merchantTotalOut') : 0;
+      
       yield put({
         type: 'save',
         payload: {
           merchantTotalIncome,
           merchantTotalOut,
+          merchantTotalBean,
           indata: indata.length
             ? indata
                 .filter((item) => item.statisticType != 'merchantTotalIncome')

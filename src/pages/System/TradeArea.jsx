@@ -14,9 +14,9 @@ const TradeArea = (props) => {
   const [visible, setVisible] = useState(null);
   const [selectCode, setSelectCode] = useState({
     provinceCode: '33',
-    provinceName: '浙江',
+    provinceName: '浙江省',
     cityCode: '3301',
-    cityName: '杭州',
+    cityName: '杭州市',
     districtCode: '',
   });
 
@@ -134,7 +134,7 @@ const TradeArea = (props) => {
               </Button>
             </AuthConsumer>
           }
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading}
           searchItems={searchItems}

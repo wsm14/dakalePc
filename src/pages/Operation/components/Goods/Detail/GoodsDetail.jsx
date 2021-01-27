@@ -1,5 +1,6 @@
 import React from 'react';
 import { Alert } from 'antd';
+import { GOODS_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import GoodsSetTable from '../Form/components/GoodsSetTable';
 
@@ -40,7 +41,7 @@ const GoodsDetail = (props) => {
     {
       label: '售价',
       name: 'price',
-      render: (val, record) => `￥${val}`,
+      render: (val, record) => `￥${Number(val).toFixed(2)}`,
     },
     {
       label: '套餐内单品',
@@ -51,27 +52,21 @@ const GoodsDetail = (props) => {
     {
       label: detail.goodsType == 'single' ? '单品介绍' : '套餐介绍',
       name: 'goodsDesc',
-      render: (val, record) => (
-        <div>
-          {val}
-          <div>
-            {record.goodsDescImg &&
-              record.goodsDescImg
-                .split(',')
-                .map((item) => (
-                  <img key={item} src={item} style={{ width: '100%', marginTop: 10 }}></img>
-                ))}
-          </div>
-        </div>
-      ),
+    },
+    {
+      label: '介绍图片',
+      type: 'upload',
+      name: 'goodsDescImg',
     },
   ];
 
   return (
     <>
-      {status == 1 && (
-        <Alert message="上架中" type="success" style={{ textAlign: 'center', marginBottom: 5 }} />
-      )}
+      <Alert
+        message={GOODS_TYPE[status]}
+        type={status == 1 ? 'success' : 'warning'}
+        style={{ textAlign: 'center', marginBottom: 5 }}
+      />
       <DescriptionsCondition formItems={formItems} initialValues={detail}></DescriptionsCondition>
     </>
   );

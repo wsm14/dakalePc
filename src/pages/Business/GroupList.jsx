@@ -183,7 +183,7 @@ const tableList = (props) => {
                     visible1: true,
                     merchantGroupId: val,
                     groupDetails: {},
-                    initial:{}
+                    initial: {},
                   });
                 },
               },
@@ -222,6 +222,7 @@ const tableList = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="集团管理"
         btnExtra={
           <AuthConsumer auth="save">
             <Button
@@ -235,7 +236,7 @@ const tableList = (props) => {
                   merchantGroupDTO: {},
                   businessLicense: {},
                   bankBindingInfo: {},
-                  initial:{}
+                  initial: {},
                 })
               }
             >
@@ -263,7 +264,7 @@ const tableList = (props) => {
             merchantGroupDTO: {},
             businessLicense: {},
             bankBindingInfo: {},
-            initial:{}
+            initial: {},
           })
         }
       ></DrawerForms>
@@ -279,7 +280,7 @@ const tableList = (props) => {
             merchantGroupDTO: {},
             businessLicense: {},
             bankBindingInfo: {},
-            initial: {}
+            initial: {},
           })
         }
       ></SetDetailsForms>
@@ -296,7 +297,7 @@ const tableList = (props) => {
               merchantGroupDTO: {},
               businessLicense: {},
               bankBindingInfo: {},
-              initial: {}
+              initial: {},
             })
           }
         ></GroupDetails>

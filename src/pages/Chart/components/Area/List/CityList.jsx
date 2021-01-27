@@ -68,7 +68,7 @@ const CityListComponent = (props) => {
         {selectRow && '各城市排行'}
         <DataTableBlock
           NoSearch
-          CardNone={false}
+          noCard={false}
           cRef={childRef}
           loading={loading}
           columns={getColumns}

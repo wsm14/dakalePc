@@ -3,9 +3,9 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import exportExcel from '@/utils/exportExcel';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
+import ExcelButton from '@/components/ExcelButton';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
@@ -17,13 +17,19 @@ import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerif
 const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
 
 const BusinessListComponent = (props) => {
-  const { businessList, tradeList, loading, dispatch } = props;
+  const { businessList, tradeList, hubData, loading, dispatch } = props;
 
   const childRef = useRef();
+  // 设置
   const [visible, setVisible] = useState({});
+  // 详情
   const [visibleDetail, setVisibleDetail] = useState(false);
+  // 二维码
   const [visibleQrcode, setVisibleQrcode] = useState('');
+  // 编辑
   const [visibleEdit, setVisibleEdit] = useState('');
+  // 商圈搜索选择
+  const [hubSelect, setHubSelect] = useState(true);
 
   // 搜索参数
   const searchItems = [
@@ -40,7 +46,7 @@ const BusinessListComponent = (props) => {
       type: 'cascader',
       name: 'topCategoryId',
       changeOnSelect: true,
-      options: tradeList,
+      select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       valuesKey: ['topCategoryId', 'categoryId'],
       placeholder: '选择经营类目',
@@ -49,7 +55,7 @@ const BusinessListComponent = (props) => {
       label: '账号状态',
       name: 'bankStatus',
       type: 'select',
-      select: { list: BUSINESS_ACCOUNT_STATUS },
+      select: BUSINESS_ACCOUNT_STATUS,
     },
     {
       label: '集团名称',
@@ -59,7 +65,7 @@ const BusinessListComponent = (props) => {
       label: '店铺类型',
       name: 'groupFlag',
       type: 'select',
-      select: { list: ['单店', '集团'] },
+      select: ['单店', '集团'],
     },
     {
       label: '地址',
@@ -67,6 +73,28 @@ const BusinessListComponent = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      onChange: (val, form) => {
+        // 必须选到区级才可选择商圈
+        form.setFieldsValue({ businessHubId: undefined });
+        if (val.length === 3) fetchGetHubSelect({ districtCode: val[2] });
+        else {
+          setHubSelect(true);
+          return;
+        }
+        setHubSelect(false);
+      },
+    },
+    {
+      label: '所属商圈',
+      name: 'businessHubId',
+      type: 'select',
+      loading: loading.models.baseData,
+      disabled: hubSelect,
+      allItem: false,
+      select: hubData.map((item) => ({
+        name: item.businessHubName,
+        value: item.businessHubIdString,
+      })),
     },
     {
       label: '经营状态',
@@ -216,6 +244,14 @@ const BusinessListComponent = (props) => {
     },
   ];
 
+  // 获取商圈
+  const fetchGetHubSelect = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetHubData',
+      payload,
+    });
+  };
+
   // 经营类目
   const fetchTradeList = () => {
     dispatch({
@@ -232,13 +268,29 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  // 设置商家端登录验证码
+  const handleVCodeSet = () => {
+    dispatch({
+      type: 'drawerForm/show',
+      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
+    });
+  };
+
+  // 店铺详情展示
+  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   // 获取商家导出excel 数据
-  const fetchGetExcel = (payload) => {
-    const fieldNames = { key: 'key', headerName: 'header' };
-    const header = [
+  const getExcelProps = {
+    fieldNames: { key: 'key', headerName: 'header' },
+    header: [
       { key: 'account', header: '店铺账号' },
       { key: 'merchantName', header: '店铺名称' },
       { key: 'cityName', header: '所在城市' },
+      { key: 'businessHub', header: '所属商圈' },
       { key: 'address', header: '详细地址' },
       { key: 'topCategoryName', header: '一级经营类目' },
       { key: 'categoryName', header: '二级经营类目' },
@@ -253,28 +305,8 @@ const BusinessListComponent = (props) => {
       },
       { key: 'businessStatus', header: '经营状态', render: (val) => BUSINESS_DO_STATUS[val] },
       { key: 'status', header: '店铺状态', render: (val) => BUSINESS_STATUS[val] },
-    ];
-    dispatch({
-      type: 'businessList/fetchMerchantGetExcel',
-      payload,
-      callback: (data) => exportExcel({ header, data, fieldNames }),
-    });
+    ],
   };
-
-  // 设置商家端登录验证码
-  const handleVCodeSet = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
-    });
-  };
-
-  // 商户详情展示
-  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
 
   return (
     <>
@@ -288,7 +320,7 @@ const BusinessListComponent = (props) => {
                   className="dkl_green_btn"
                   onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
                 >
-                  新增商户
+                  新增店铺
                 </Button>
               </AuthConsumer>
               <AuthConsumer auth="setMreCord">
@@ -301,13 +333,13 @@ const BusinessListComponent = (props) => {
         ></BusinessTotalInfo>
       </Suspense>
       <DataTableBlock
-        keepName="店铺数据"
+        keepName="店铺列表"
         btnExtra={({ get }) => (
-          <AuthConsumer auth="exportList">
-            <Button className="dkl_green_btn" onClick={() => fetchGetExcel(get())}>
-              导出
-            </Button>
-          </AuthConsumer>
+          <ExcelButton
+            dispatchType={'businessList/fetchMerchantGetExcel'}
+            dispatchData={get()}
+            exportProps={getExcelProps}
+          ></ExcelButton>
         )}
         cRef={childRef}
         loading={
@@ -342,8 +374,9 @@ const BusinessListComponent = (props) => {
   );
 };
 
-export default connect(({ businessList, sysTradeList, loading }) => ({
+export default connect(({ businessList, baseData, sysTradeList, loading }) => ({
   businessList,
+  hubData: baseData.hubData,
   tradeList: sysTradeList.list.list,
   loading,
 }))(BusinessListComponent);

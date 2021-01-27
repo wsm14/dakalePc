@@ -16,12 +16,12 @@ const SysPassWord = (props) => {
 
   const handleSubmit = () => {
     form.validateFields().then((values) => {
-      const { password, rePassword } = values;
-      if (password !== rePassword) {
+      const { newPassword, rePassword } = values;
+      if (newPassword !== rePassword) {
         form.setFields([
           {
-            name: 'password',
-            value: password,
+            name: 'newPassword',
+            value: newPassword,
             errors: ['两次密码输入不一致'],
           },
           {
@@ -62,7 +62,7 @@ const SysPassWord = (props) => {
         </Form.Item>
         <Form.Item
           label="新密码"
-          name="password"
+          name="newPassword"
           rules={[{ required: true, message: '请输入新密码' }]}
         >
           <Input.Password placeholder="请输入新密码" />

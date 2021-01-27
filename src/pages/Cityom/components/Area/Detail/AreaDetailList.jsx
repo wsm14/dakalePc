@@ -69,7 +69,7 @@ const ProvCompanyDetailList = (props) => {
         {
           withdraw: (
             <DataTableBlock
-              CardNone={false}
+              noCard={false}
               loading={loading}
               columns={propItem.getColumns}
               rowKey={(row) => `${row[propItem.rowKey]}`}

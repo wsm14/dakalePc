@@ -24,6 +24,7 @@ export default {
     totalData: { chartsLeft: {}, chartsRight: [] },
     brandList: { list: [], total: 0 },
     selectList: [],
+    subsidyList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -45,6 +46,10 @@ export default {
         payload: {
           list: content.recordList,
           total: content.total,
+          subsidyList: {
+            list: content.recordList,
+            total: content.total,
+          },
           selectList: content.recordList.map((item) => ({
             name: item.merchantName,
             otherData: item.address,
@@ -76,10 +81,12 @@ export default {
         topCategoryName,
         categoryName,
         businessTime,
-        property,
+        property = '{}',
         tag,
       } = content.merchantDetail;
       const categoryNodeArr = categoryNode.split('.');
+      // 检查值
+      const dataCheck = (key) => (JSON.parse(property)[key] ? JSON.parse(property)[key] || '' : '');
       const initialValues = {
         ...content.merchantDetail,
         provinceCode: [p, c, d],
@@ -108,8 +115,8 @@ export default {
         citycodeArr: [p, c, d],
         property: property
           ? {
-              service: JSON.parse(property).service.split(','),
-              speacial: JSON.parse(property).speacial.split(','),
+              service: dataCheck('service').split(','),
+              speacial: dataCheck('speacial').split(','),
             }
           : '',
         tags: tag.split(','),

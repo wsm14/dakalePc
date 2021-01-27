@@ -6,7 +6,7 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import { ROLE_BUTTON_TYPE } from '@/common/constant';
+import { ROLE_BUTTON_TYPE } from '@/common/roleConstant';
 
 const HandleSetTable = (props) => {
   const { formItems } = props;
@@ -21,19 +21,13 @@ const HandleSetTable = (props) => {
       let btnText = ROLE_BUTTON_TYPE[type];
       if (type === 'own') {
         btnText = title;
-        // 默认全显示 配置权限则根据权限显示
+        // 默认全显示 配置权限则根据权限显示 own 则默认显示
         auth = auth === 'own' ? true : auth;
       }
-      if (type === 'del') {
-        pop = true;
-      }
-      if (type === 'send') {
-        pop = true;
-      }
-      if (type === 'up') {
-        pop = true;
-      }
-      if (type === 'down') {
+      // 默认pop确认弹窗
+      const popType = ['del', 'send', 'up', 'down'];
+
+      if (popType.includes(type)) {
         pop = true;
       }
 
@@ -48,7 +42,13 @@ const HandleSetTable = (props) => {
       component = pop ? (
         <Popconfirm
           placement="top"
-          title={item.popText || `确认${btnText}？`}
+          title={
+            item.popText ? (
+              <div style={{ whiteSpace: 'pre-line' }}>{item.popText}</div>
+            ) : (
+              `确认${btnText}？`
+            )
+          }
           onConfirm={item.click}
           okText="确认"
           cancelText="取消"
@@ -61,11 +61,9 @@ const HandleSetTable = (props) => {
         component
       );
       children.push(
-        visible && (
-          <AuthConsumer key={`auth${type}${index}`} auth={auth}>
-            {component}
-          </AuthConsumer>
-        ),
+        <AuthConsumer show={visible} key={`auth${type}${index}`} auth={auth}>
+          {component}
+        </AuthConsumer>,
       );
     });
     return children;

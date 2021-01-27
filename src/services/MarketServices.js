@@ -210,33 +210,6 @@ export function fetchBannerSet(data) {
 
 // App设置 end
 
-// 周边特惠
-
-// get 周边特惠 - 列表
-export function fetchSpecialGoodsList(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
-    params,
-  });
-}
-
-// post 周边特惠 - 下架
-export function fetchSpecialGoodsStatus(data) {
-  return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 周边特惠 - 推荐状态
-export function fetchSpecialGoodsRecommend(data) {
-  return request('/admin/specialGoodsManagement/setRecommend', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 周边特惠 end
-
 // 热门搜索
 
 // get 热门搜索 - 回显
@@ -255,3 +228,22 @@ export function fetchSearchSet(data) {
 }
 
 // 热门搜索 end
+
+// 拼图广告
+
+// get 拼图广告 - 列表
+export function fetchPuzzleAdList(params) {
+  return request('/admin/puzzleAdsManagement/listPuzzleAdsManagement', {
+    params,
+  });
+}
+
+// post 拼图广告 - 添加修改
+export function fetchPuzzleAdSet(data) {
+  return request('/admin/puzzleAdsManagement/saveOrUpdatePuzzleAds', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 拼图广告 end

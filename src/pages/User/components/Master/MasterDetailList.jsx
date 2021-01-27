@@ -13,7 +13,7 @@ const MasterDetail = (props) => {
   // table
   const propItem = {
     family: {
-      title: `家人明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计邀请家人：${record.totalFamilyUser}人`,
+      title: `家人明细 - 家主ID：${record.id} 用户/店铺名：${record.name} 累计邀请家人：${record.totalFamilyUser}人`,
       rowKey: 'userIdString',
       getColumns: [
         {
@@ -50,11 +50,11 @@ const MasterDetail = (props) => {
       ],
     },
     shop: {
-      title: `家店明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计邀请家店：${record.totalFamilyMerchant}家`,
+      title: `家店明细 - 家主ID：${record.id} 用户/店铺名：${record.name} 累计邀请家店：${record.totalFamilyMerchant}家`,
       rowKey: 'userMerchantIdString',
       getColumns: [
         {
-          title: '商户ID',
+          title: '店铺ID',
           align: 'center',
           dataIndex: 'userMerchantIdString',
         },
@@ -96,7 +96,7 @@ const MasterDetail = (props) => {
       ],
     },
     income: {
-      title: `收益明细 - 家主ID：${record.id} 用户/商户名：${record.name} 累计收益：${record.totalAdd}卡豆`,
+      title: `收益明细 - 家主ID：${record.id} 用户/店铺名：${record.name} 累计收益：${record.totalAdd}卡豆`,
       rowKey: 'createTime',
       getColumns: [
         {
@@ -146,7 +146,7 @@ const MasterDetail = (props) => {
       onCancel={() => setVisible('')}
     >
       <DataTableBlock
-        CardNone={false}
+        noCard={false}
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row) => `${row[propItem.rowKey]}`}

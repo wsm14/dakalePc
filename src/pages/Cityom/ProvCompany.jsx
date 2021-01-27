@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
@@ -110,6 +111,12 @@ const ProvCompany = (props) => {
       dataIndex: 'totalWithdrawal',
     },
     {
+      title: '状态',
+      align: 'right',
+      dataIndex: 'status',
+      render: (val) => COMPANY_PROV_STATUS[val],
+    },
+    {
       title: '操作',
       fixed: 'right',
       align: 'right',
@@ -136,6 +143,7 @@ const ProvCompany = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="省级公司"
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

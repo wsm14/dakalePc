@@ -16,7 +16,7 @@ const BusinessAddBeas = (props) => {
     platformList,
     tradeList,
     setCategId,
-    setType,
+    setType, // 进入的状态 add edit audit
   } = props;
 
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
@@ -43,6 +43,15 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取推广费
+  const fetchGetPromotionMoney = (categoryId) => {
+    dispatch({
+      type: 'sysTradeList/fetchPromotionMoneyGet',
+      payload: { categoryId },
+      callback: (val) => form.setFieldsValue({ promotionFee: val.promotionFee || 0 }),
+    });
+  };
+
   // 获取详情
   const fetchGetDetail = (payload) => {
     dispatch({
@@ -55,13 +64,17 @@ const BusinessAddBeas = (props) => {
   useEffect(() => {
     fetchGetBrandList();
     if (initialValues) {
+      setAmpShow(!!initialValues.lat);
+      fetchGetPlatform(initialValues.topCategoryId);
+      setAmpShow(!!initialValues.lat);
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
+      setType === 'audit' && fetchGetPromotionMoney(initialValues.topCategoryId);
     }
   }, []);
 
   const formItems = [
     {
-      title: '01 商户信息',
+      title: '01 店铺信息',
       label: '品牌名称',
       type: 'childrenOwn',
       rules: 'false',
@@ -109,7 +122,7 @@ const BusinessAddBeas = (props) => {
       addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号' }],
     },
     {
-      label: '商户简称',
+      label: '店铺简称',
       name: 'merchantName',
       placeholder: '如：一点点城西店',
     },
@@ -194,7 +207,8 @@ const BusinessAddBeas = (props) => {
       onChange: (val) => {
         setAreaMust(val[0].categoryName === '美食');
         setCategId(val[0].categoryIdString);
-        fetchGetPlatform(val[0].id);
+        fetchGetPlatform(val[0].categoryIdString);
+        fetchGetPromotionMoney(val[0].categoryIdString);
         form.setFieldsValue({
           categoryName: val,
           businessArea: undefined,
@@ -219,6 +233,12 @@ const BusinessAddBeas = (props) => {
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
       },
+    },
+    {
+      label: '推广费比例',
+      name: 'promotionFee',
+      loading: loading.models.sysTradeList,
+      suffix: '%',
     },
   ];
 

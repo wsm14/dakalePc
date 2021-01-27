@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
+import { Card } from 'antd';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import userDetailShow from './components/UserDetailShow';
+import SearchCard from './components/UserList/Search/SearchCard';
+import UserDetailShow from './components/UserList/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
 import UserTotalSpread from './components/UserList/UserTotalSpread';
 
@@ -11,6 +13,10 @@ const UserListComponent = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
+  // 城市参数
+  const [cityData, setCityData] = useState({});
+  // 用户详情弹窗
+  const [visible, setVisible] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -59,6 +65,13 @@ const UserListComponent = (props) => {
       render: (val) => REAL_NAME_STATUS[val],
     },
     {
+      title: '注册地',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, row) =>
+        val ? `${val}/${row.cityName || '--'}/${row.districtName || '--'}` : '--',
+    },
+    {
       title: '常驻地',
       align: 'center',
       dataIndex: 'residentAddress',
@@ -93,41 +106,59 @@ const UserListComponent = (props) => {
     },
   ];
 
+  useEffect(() => {
+    fetchUserChartTotal();
+    childRef.current && childRef.current.fetchGetData(cityData);
+  }, [cityData]);
+
+  // 获取用户统计
+  const fetchUserChartTotal = () => {
+    dispatch({
+      type: 'userList/fetchUserChartTotal',
+      payload: cityData,
+    });
+  };
+
   // 获取用户详情
   const fetchUserDetail = (userId) => {
     dispatch({
       type: 'userList/fetchUserDetail',
       payload: { userId },
-      callback: handleShowUserDetail,
-    });
-  };
-
-  // 用户详情展示
-  const handleShowUserDetail = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: userDetailShow({ dispatch, childRef, initialValues }),
+      callback: (detail) => setVisible({ shwo: true, detail }),
     });
   };
 
   return (
-    <DataTableBlock
-      keepName="用户数据"
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.userIdString}`}
-      dispatchType="userList/fetchGetList"
-      {...list}
-    >
-      <UserListTotalInfo></UserListTotalInfo>
+    <>
+      <Card bordered={false} style={{ marginBottom: 16 }}>
+        {/* 搜索框 */}
+        <SearchCard setSearchData={setCityData}></SearchCard>
+      </Card>
+      {/* 用户数统计 */}
+      <UserListTotalInfo cityData={cityData}></UserListTotalInfo>
+      {/* 用户chart统计 */}
       <UserTotalSpread></UserTotalSpread>
-    </DataTableBlock>
+      <DataTableBlock
+        keepName="用户数据"
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        params={cityData}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.userIdString}`}
+        dispatchType="userList/fetchGetList"
+        {...list}
+      ></DataTableBlock>
+      <UserDetailShow
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></UserDetailShow>
+    </>
   );
 };
 
 export default connect(({ userList, loading }) => ({
   list: userList.list,
-  loading: loading.effects['userList/fetchGetList'],
+  loading: loading.effects['userList/fetchGetList'] || loading.effects['userList/fetchUserDetail'],
 }))(UserListComponent);

@@ -96,7 +96,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '话题设置成功',
+        description: '创作设置成功',
       });
       callback();
     },

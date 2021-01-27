@@ -132,7 +132,7 @@ const addGroups = (props) => {
     {
       title: '店铺信息',
       form: <ShopDetailsForm form={form} initialValues={merchantGroupDTO}/>,
-      // extra: '(上传后可同步至旗下子商户)',
+      // extra: '(上传后可同步至旗下子店铺)',
     },
   ];
 

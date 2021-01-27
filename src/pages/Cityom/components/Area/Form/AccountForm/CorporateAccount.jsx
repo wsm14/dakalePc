@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useImperativeHandle } from 'react';
 import { connect } from 'umi';
+import { Form } from 'antd';
 import { PHONE_PATTERN } from '@/common/regExp';
 import moment from 'moment';
 import cityList from '@/common/city';
@@ -8,8 +9,16 @@ import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const CorporateAccount = (props) => {
-  const { form, detail = {}, type, dispatch, loading } = props;
+  const { detail = {}, type, dispatch, cRef, loading } = props;
+
+  const [form] = Form.useForm();
+  // 是否允许输入
   const [disabledInfo, setDisabledInfo] = useState(false);
+
+  // 向父组件暴露方法
+  useImperativeHandle(cRef, () => ({
+    fetchData: () => form.validateFields(),
+  }));
 
   // 上传图片返回url ocr识别营业执照
   const fetchMerBusinessUpload = (file) => {
@@ -125,7 +134,7 @@ const CorporateAccount = (props) => {
       extra: '以下信息通过OCR识别，请检查后再提交哦',
     },
     {
-      label: '商户名称',
+      label: '店铺名称',
       disabled: disabledInfo || loading,
       name: ['businessLicenseObject', 'businessName'],
     },

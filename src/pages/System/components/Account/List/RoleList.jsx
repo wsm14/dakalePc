@@ -138,7 +138,7 @@ const RoleList = (props) => {
             新增
           </Button>
         }
-        CardNone={false}
+        noCard={false}
         cRef={childRef}
         loading={loading}
         searchItems={searchItems}

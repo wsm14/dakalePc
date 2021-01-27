@@ -78,6 +78,7 @@ const TagManage = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="店铺标签"
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>

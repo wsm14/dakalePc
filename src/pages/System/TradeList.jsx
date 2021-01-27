@@ -4,9 +4,10 @@ import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import DataTableBlock from '@/components/DataTableBlock';
-import tradeCategorySet from './components/Trade/TradeCategorySet';
-import TradeDetailList from './components/Trade/TradeDetailList';
-import TradePlatformDetailList from './components/Trade/TradePlatformDetailList';
+import tradeCategorySet from './components/Trade/Form/TradeCategorySet';
+import promotionMoneySet from './components/Trade/Form/PromotionMoneySet';
+import TradeDetailList from './components/Trade/List/TradeDetailList';
+import TradePlatformDetailList from './components/Trade/List/TradePlatformDetailList';
 
 const SysTradeSet = (props) => {
   const { list, loading, dispatch } = props;
@@ -36,8 +37,18 @@ const SysTradeSet = (props) => {
       align: 'center',
       dataIndex: 'parentId',
       render: (val, record) => (
-        <AuthConsumer auth="edit">
-          {!val && <a onClick={() => setPVisible({ record })}>设置</a>}
+        <AuthConsumer auth="edit" show={!val}>
+          <a onClick={() => setPVisible({ record })}>设置</a>
+        </AuthConsumer>
+      ),
+    },
+    {
+      title: '推广费',
+      align: 'center',
+      dataIndex: 'id',
+      render: (val, record) => (
+        <AuthConsumer auth="edit" show={!record.parentId}>
+          <a onClick={() => handlePromotionMoneySet(record)}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -46,8 +57,8 @@ const SysTradeSet = (props) => {
       align: 'center',
       dataIndex: 'orderCount',
       render: (val, record) => (
-        <AuthConsumer auth="edit">
-          {!record.parentId && <a onClick={() => setVisible({ type: 'special', record })}>设置</a>}
+        <AuthConsumer auth="edit" show={!record.parentId}>
+          <a onClick={() => setVisible({ type: 'special', record })}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -117,6 +128,25 @@ const SysTradeSet = (props) => {
     });
   };
 
+  // 新增/修改推广费
+  const handlePromotionMoneySet = (info) => {
+    handlePromotionMoneyGet(info.categoryIdString, (initialValues) =>
+      dispatch({
+        type: 'drawerForm/show',
+        payload: promotionMoneySet({ dispatch, childRef, info, initialValues }),
+      }),
+    );
+  };
+
+  // 获取推广费详情
+  const handlePromotionMoneyGet = (categoryId, callback) => {
+    dispatch({
+      type: 'sysTradeList/fetchPromotionMoneyGet',
+      payload: { categoryId },
+      callback,
+    });
+  };
+
   useEffect(() => {
     dispatch({
       type: 'sysTradeList/clearDetail',
@@ -164,5 +194,7 @@ const SysTradeSet = (props) => {
 
 export default connect(({ sysTradeList, loading }) => ({
   list: sysTradeList.list,
-  loading: loading.effects['sysTradeList/fetchGetList'],
+  loading:
+    loading.effects['sysTradeList/fetchGetList'] ||
+    loading.effects['sysTradeList/fetchPromotionMoneyGet'],
 }))(SysTradeSet);

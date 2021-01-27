@@ -121,22 +121,83 @@ const BusinessAdd = (props) => {
     });
   };
 
+  // 检查店铺信息是否存在 营业执照号 店铺电话提示 userMerchantId merchantName telephone address socialCreditCode
+  const fetchMerCheckData = (payload, callback) => {
+    dispatch({
+      type: 'baseData/fetchMerCheckData',
+      payload,
+      callback,
+    });
+  };
+
+  // 新增修改提交 校验
+  const fetchUpdataCheck = (values) => {
+    const {
+      telephone,
+      businessLicenseObject: { socialCreditCode },
+    } = values;
+    // 检查信息是否重复
+    fetchMerCheckData(
+      {
+        userMerchantId: initialValues.userMerchantIdString,
+        telephone,
+        socialCreditCode,
+      },
+      (check) => {
+        const { businessLicense, telephone } = check;
+        if (!businessLicense || !telephone) {
+          Modal.confirm({
+            title: '提示',
+            content: `该店铺已存在${!businessLicense ? '（营业执照号重复）' : ''} ${
+              !telephone ? '（店铺电话重复）' : ''
+            }，确定要设置吗？`,
+            onOk() {
+              fetchFormData();
+            },
+          });
+          return;
+        }
+        fetchFormData();
+      },
+    );
+  };
+
   // 审核通过
   const fetchAuditAllow = (values) => {
-    Modal.confirm({
-      title: '审核通过',
-      content: '是否确认审核通过？',
-      onOk() {
-        // aliOssUpload(allImages).then((res) => {
-        const info = {
-          merchantVerifyId: initialValues.merchantVerifyIdString,
-          verifyStatus: 3,
-          perCapitaConsumption: values.perCapitaConsumption,
-        };
-        fetchFormData(info);
-        // });
+    const {
+      telephone,
+      businessLicenseObject: { socialCreditCode },
+      perCapitaConsumption,
+    } = values;
+    const info = {
+      merchantVerifyId: initialValues.merchantVerifyIdString,
+      verifyStatus: 3,
+      perCapitaConsumption,
+    };
+    // 检查信息是否重复
+    fetchMerCheckData(
+      {
+        userMerchantId: initialValues.merchantVerifyIdString,
+        telephone,
+        socialCreditCode,
       },
-    });
+      (check) => {
+        const { businessLicense, telephone } = check;
+        let tipContent = '是否确认审核通过？';
+        if (!businessLicense || !telephone) {
+          tipContent = `该店铺已存在${!businessLicense ? '（营业执照号重复）' : ''} ${
+            !telephone ? '（店铺电话重复）' : ''
+          }，确定要审核通过吗？`;
+        }
+        Modal.confirm({
+          title: '审核通过',
+          content: tipContent,
+          onOk() {
+            fetchFormData(info);
+          },
+        });
+      },
+    );
   };
 
   // 打开编辑框时默认值赋值
@@ -227,7 +288,7 @@ const BusinessAdd = (props) => {
   );
 
   const modalProps = {
-    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}商户`,
+    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
     width: 750,
     visible: show,
     maskClosable: false,
@@ -238,6 +299,15 @@ const BusinessAdd = (props) => {
     setSkeletonType(true);
     onClose();
   };
+
+  const buttonProps = (callback) => ({
+    onClick: () =>
+      form.validateFields().then((values) => {
+        callback(values);
+      }),
+    type: 'primary',
+    loading,
+  });
 
   return (
     <Drawer
@@ -257,14 +327,9 @@ const BusinessAdd = (props) => {
         <div style={{ textAlign: 'right' }}>
           <Space>
             <Button onClick={closeDrawer}>取消</Button>
-            {type == 'edit' && (
-              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
-                修改
-              </Button>
-            )}
-            {type == 'add' && (
-              <Button onClick={() => fetchFormData()} type="primary" loading={loading}>
-                提交审核
+            {(type == 'add' || type == 'edit') && (
+              <Button {...buttonProps(fetchUpdataCheck)}>
+                {{ add: '提交审核', edit: '修改' }[type]}
               </Button>
             )}
             {type == 'audit' && (
@@ -273,17 +338,7 @@ const BusinessAdd = (props) => {
                   审核驳回
                 </Button>
                 {initialValues.hasPartner === '1' && (
-                  <Button
-                    onClick={() => {
-                      form.validateFields().then((values) => {
-                        fetchAuditAllow(values);
-                      });
-                    }}
-                    type="primary"
-                    loading={loading}
-                  >
-                    审核通过
-                  </Button>
+                  <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
                 )}
               </>
             )}

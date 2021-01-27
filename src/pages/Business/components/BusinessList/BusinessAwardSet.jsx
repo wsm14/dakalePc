@@ -68,30 +68,6 @@ const BusinessAwardSet = (props) => {
       visible: !inputShow.share,
       rules: [{ required: !inputShow.share, message: `请确认平台固定卡豆数` }],
     },
-    {
-      type: 'textArea',
-      label: '商家标签',
-      name: 'tag',
-      extra: (
-        <>
-          多个用 英文 “ , ”（逗号） 隔开，最多三个；<br></br>例：人气商家,景观店家,热门商家
-        </>
-      ),
-      rules: [
-        { pattern: COMMA_TWO_PATTERN, message: `最多输入三个标签` },
-        {
-          validator: (rule, value) => {
-            if (value.substr(0, 1) == ',') {
-              return Promise.reject('请勿以 “ , ” 开头');
-            }
-            if (value.substr(value.length - 1, 1) == ',') {
-              return Promise.reject('请勿以 “ , ” 结尾');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
   ];
 
   const modalProps = {

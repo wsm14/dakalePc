@@ -23,7 +23,7 @@ const SearchDataContent = (props) => {
       itemkey: 'merchantId',
       itemName: [
         {
-          title: '商户简称',
+          title: '店铺简称',
           dataIndex: 'merchantName',
         },
         {

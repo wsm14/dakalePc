@@ -13,11 +13,11 @@ const AccountBusinessList = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商户名称',
+      label: '店铺名称',
       name: 'merchantName',
     },
     {
-      label: '商户帐号',
+      label: '店铺帐号',
       name: 'account',
     },
     {
@@ -29,17 +29,23 @@ const AccountBusinessList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商户ID',
+      title: '店铺ID',
       fixed: 'left',
       dataIndex: 'userMerchantIdString',
     },
     {
-      title: '商户名称',
+      title: '店铺名称',
       align: 'center',
       dataIndex: 'merchantName',
     },
     {
-      title: '商户帐号',
+      title: '集团名称',
+      align: 'center',
+      dataIndex: 'groupName',
+      render: (val) => val || '--',
+    },
+    {
+      title: '店铺帐号',
       align: 'center',
       dataIndex: 'account',
     },
@@ -57,7 +63,7 @@ const AccountBusinessList = (props) => {
       title: '累计提现（卡豆）',
       align: 'right',
       dataIndex: 'totalConsume',
-      render: (val) => val || '-',
+      render: (val) => val || '--',
     },
     {
       title: '当前余额（卡豆）',

@@ -14,7 +14,7 @@ const ClassifyManageComponent = (props) => {
   const { mreSelect } = classifyManage;
   const [visible, setVisible] = useState(false);
 
-  // 搜索商户
+  // 搜索店铺
   const fetchClassifyGetMre = debounce((keyword) => {
     if (!keyword) return;
     dispatch({
@@ -99,6 +99,7 @@ const ClassifyManageComponent = (props) => {
   return (
     <>
       <DataTableBlock
+        keepName="分类管理"
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>

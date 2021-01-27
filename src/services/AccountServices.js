@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 // get 用户账户 - 账户列表
 export async function fetchAccountUserList(params) {
-  return request('/admin/accountManagement/getUserDetail', {
+  return request('/admin/accountManagement/listUserAccount', {
     params,
   });
 }
@@ -30,7 +30,7 @@ export async function fetchUserRechargeDetail(params) {
 
 // get 商家账户 - 账户列表
 export async function fetchAccountBusinessList(params) {
-  return request('/admin/accountManagement/getMerchantDetail', {
+  return request('/admin/accountManagement/listMerchantAccount', {
     params,
   });
 }

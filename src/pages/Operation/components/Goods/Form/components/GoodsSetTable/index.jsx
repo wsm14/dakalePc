@@ -32,7 +32,7 @@ const GoodsSetTable = ({ form, detail }) => {
   const tableCon = (
     <DataTableBlock
       componentSize="small"
-      CardNone={false}
+      noCard={false}
       columns={getColumns}
       rowKey={(record) => `${record.goodsName}`}
       list={detail || listData}
