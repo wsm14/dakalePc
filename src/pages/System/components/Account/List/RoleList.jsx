@@ -134,9 +134,11 @@ const RoleList = (props) => {
     <>
       <DataTableBlock
         btnExtra={
-          <Button className="dkl_green_btn" key="1" onClick={() => fetchFlag()}>
-            新增
-          </Button>
+          <AuthConsumer auth="roleAdd">
+            <Button className="dkl_green_btn" key="1" onClick={() => fetchFlag()}>
+              新增
+            </Button>
+          </AuthConsumer>
         }
         noCard={false}
         cRef={childRef}
