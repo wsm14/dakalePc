@@ -69,10 +69,12 @@ const MasterOrderDetail = ({ order, name, orderDetail, loading, dispatch }) => {
         <span className={styles.master_order_itemTitle}>支付时间：</span>
         <span className={styles.master_order_itemContent}>{orderDetail.payTime}</span>
       </div>
-      <div className={styles.master_order_item}>
-        <span className={styles.master_order_itemTitle}>核销时间：</span>
-        <span className={styles.master_order_itemContent}>{orderDetail.verificationTime}</span>
-      </div>
+      {orderDetail.verificationTime && (
+        <div className={styles.master_order_item}>
+          <span className={styles.master_order_itemTitle}>核销时间：</span>
+          <span className={styles.master_order_itemContent}>{orderDetail.verificationTime}</span>
+        </div>
+      )}
     </div>
   );
 
