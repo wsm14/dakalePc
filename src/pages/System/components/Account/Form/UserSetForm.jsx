@@ -46,7 +46,7 @@ const UserSetForm = (props) => {
     fetchAllRoleSelect();
     fetchSectionList();
   };
-  
+
   // 获取角色选择项
   const fetchAllRoleSelect = () => {
     dispatch({
