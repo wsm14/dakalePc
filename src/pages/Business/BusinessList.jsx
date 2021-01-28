@@ -140,7 +140,7 @@ const BusinessListComponent = (props) => {
       ),
     },
     {
-      title: '所在城市',
+      title: '所在地区',
       align: 'center',
       dataIndex: 'cityName',
     },

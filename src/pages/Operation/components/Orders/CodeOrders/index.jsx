@@ -34,6 +34,10 @@ const CodeOrders = (props) => {
       name: 'merchantName',
     },
     {
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
       label: '区域',
       name: 'city',
       type: 'cascader',

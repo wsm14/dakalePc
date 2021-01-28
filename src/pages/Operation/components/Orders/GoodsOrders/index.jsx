@@ -34,6 +34,10 @@ const GoodsOrders = (props) => {
       name: 'merchantName',
     },
     {
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
       label: '订单属性',
       type: 'select',
       name: 'orderType',
