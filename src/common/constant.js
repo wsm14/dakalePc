@@ -11,14 +11,6 @@ export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 // 高德地图js key
 export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
-// 反馈身份
-export const FEEDBACK_USER_TYPE = {
-  user: '用户',
-  merchant: '商家',
-  company: '省公司',
-  patner: '区县',
-};
-
 // 排序纬度
 export const EXPERT_SORT_TYPE = {
   beanReward: '卡豆打赏额',
@@ -202,7 +194,12 @@ export const SHARE_TYPE = [
 ];
 
 // 订单类型
-export const ORDERS_TYPE = { kolGoods: '哒人带货', specialGoods: '周边特惠' };
+export const ORDERS_TYPE = {
+  kolGoods: '哒人带货',
+  specialGoods: '周边特惠',
+  reduceCoupon: '抵扣券订单',
+  marketCoupon: '兑换券订单',
+};
 
 // 平台收益订单类型
 export const PLATFORM_INCOME_ORDERS_TYPE = {
