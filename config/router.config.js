@@ -221,22 +221,10 @@ export default [
             buttons: ['info'],
           },
           {
-            path: '/operation/tag',
-            name: '店铺标签',
-            component: './Operation/TagManage',
-            buttons: ['save', 'edit'],
-          },
-          {
             path: '/operation/coupon',
             name: '优惠券管理',
             component: './Operation/CouponManage',
             buttons: ['info', 'down'],
-          },
-          {
-            path: '/operation/recommend',
-            name: '哒人种草',
-            component: './Operation/ExpertRecommend',
-            buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
           {
             path: '/operation/special',
@@ -275,6 +263,12 @@ export default [
             name: '排序机制',
             component: './Expert/ExpertSort',
             buttons: ['edit'],
+          },
+          {
+            path: '/expert/recommend',
+            name: '哒人种草',
+            component: './Expert/ExpertRecommend',
+            buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
         ],
       },
@@ -472,6 +466,12 @@ export default [
             path: '/system/pageset',
             name: '菜单设置',
             component: './System/MenuList',
+          },
+          {
+            path: '/system/tag',
+            name: '店铺标签',
+            component: './System/TagManage',
+            buttons: ['save', 'edit'],
           },
         ],
       },
