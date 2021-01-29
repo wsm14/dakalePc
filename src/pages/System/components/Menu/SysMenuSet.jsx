@@ -58,6 +58,7 @@ const SysMenuSet = (props) => {
         label: '资源类别',
         name: 'ownerType',
         hidden: true,
+        visible: !!initialValues.type,
       },
       {
         label: '是否自动赋权',
