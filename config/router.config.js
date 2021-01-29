@@ -445,6 +445,12 @@ export default [
             buttons: ['save', 'status', 'edit', 'del'],
           },
           {
+            path: '/system/tag',
+            name: '店铺标签',
+            component: './System/TagManage',
+            buttons: ['save', 'edit'],
+          },
+          {
             path: '/system/city',
             name: '城市管理',
             component: './System/ManageCity',
@@ -466,12 +472,6 @@ export default [
             path: '/system/pageset',
             name: '菜单设置',
             component: './System/MenuList',
-          },
-          {
-            path: '/system/tag',
-            name: '店铺标签',
-            component: './System/TagManage',
-            buttons: ['save', 'edit'],
           },
         ],
       },
