@@ -177,7 +177,6 @@ const BusinessAdd = (props) => {
     // 检查信息是否重复
     fetchMerCheckData(
       {
-        userMerchantId: initialValues.merchantVerifyIdString,
         merchantVerifyId: initialValues.merchantVerifyIdString,
         telephone,
         socialCreditCode,
