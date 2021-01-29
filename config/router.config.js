@@ -45,7 +45,7 @@ export default [
             path: '/cityom/area',
             name: '区县运营中心',
             component: './Cityom/AreaCenter',
-            buttons: ['save', 'info', 'edit', 'status', 'relieve', 'income', 'withdraw'],
+            buttons: ['save', 'info', 'edit', 'status', 'relieve'],
           },
           {
             path: '/cityom/join',
