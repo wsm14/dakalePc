@@ -39,13 +39,13 @@ export default [
             path: '/cityom/provCo',
             name: '省公司列表',
             component: './Cityom/ProvCompany',
-            buttons: ['save', 'info', 'edit', 'status', 'relieve', 'income'],
+            buttons: ['save', 'info', 'edit', 'status', 'relieve'],
           },
           {
             path: '/cityom/area',
             name: '区县运营中心',
             component: './Cityom/AreaCenter',
-            buttons: ['save', 'info', 'edit', 'status', 'relieve', 'income', 'withdraw'],
+            buttons: ['save', 'info', 'edit', 'status', 'relieve'],
           },
           {
             path: '/cityom/join',
@@ -221,22 +221,10 @@ export default [
             buttons: ['info'],
           },
           {
-            path: '/operation/tag',
-            name: '店铺标签',
-            component: './Operation/TagManage',
-            buttons: ['save', 'edit'],
-          },
-          {
             path: '/operation/coupon',
             name: '优惠券管理',
             component: './Operation/CouponManage',
             buttons: ['info', 'down'],
-          },
-          {
-            path: '/operation/recommend',
-            name: '哒人种草',
-            component: './Operation/ExpertRecommend',
-            buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
           {
             path: '/operation/special',
@@ -275,6 +263,12 @@ export default [
             name: '排序机制',
             component: './Expert/ExpertSort',
             buttons: ['edit'],
+          },
+          {
+            path: '/expert/recommend',
+            name: '哒人种草',
+            component: './Expert/ExpertRecommend',
+            buttons: ['reportCenter', 'info', 'down', 'handle'],
           },
         ],
       },
@@ -449,6 +443,12 @@ export default [
             name: '品牌管理',
             component: './System/ManageBrand',
             buttons: ['save', 'status', 'edit', 'del'],
+          },
+          {
+            path: '/system/tag',
+            name: '店铺标签',
+            component: './System/TagManage',
+            buttons: ['save', 'edit'],
           },
           {
             path: '/system/city',

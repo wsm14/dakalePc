@@ -114,16 +114,16 @@ const AreaCenter = (props) => {
       align: 'right',
       dataIndex: 'merchantCount',
     },
-    {
-      title: '累计收益（卡豆）',
-      align: 'right',
-      dataIndex: 'totalIncome',
-    },
-    {
-      title: '累计提现（卡豆）',
-      align: 'right',
-      dataIndex: 'totalWithdrawal',
-    },
+    // {
+    //   title: '累计收益（卡豆）',
+    //   align: 'right',
+    //   dataIndex: 'totalIncome',
+    // },
+    // {
+    //   title: '累计提现（卡豆）',
+    //   align: 'right',
+    //   dataIndex: 'totalWithdrawal',
+    // },
     {
       title: '状态',
       align: 'right',
@@ -138,18 +138,18 @@ const AreaCenter = (props) => {
       render: (partnerId, record) => (
         <HandleSetTable
           formItems={[
-            {
-              type: 'own',
-              auth: 'income',
-              title: '收益明细',
-              click: () => setVisible({ type: 'income', record }),
-            },
-            {
-              type: 'own',
-              auth: 'withdraw',
-              title: '提现记录',
-              click: () => setVisible({ type: 'withdraw', record }),
-            },
+            // {
+            //   type: 'own',
+            //   auth: 'income',
+            //   title: '收益明细',
+            //   click: () => setVisible({ type: 'income', record }),
+            // },
+            // {
+            //   type: 'own',
+            //   auth: 'withdraw',
+            //   title: '提现记录',
+            //   click: () => setVisible({ type: 'withdraw', record }),
+            // },
             {
               type: 'info',
               click: () => fetchAreaDetail({ type: 'detail', partnerId }),
