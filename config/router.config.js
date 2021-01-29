@@ -39,7 +39,7 @@ export default [
             path: '/cityom/provCo',
             name: '省公司列表',
             component: './Cityom/ProvCompany',
-            buttons: ['save', 'info', 'edit', 'status', 'relieve', 'income'],
+            buttons: ['save', 'info', 'edit', 'status', 'relieve'],
           },
           {
             path: '/cityom/area',
