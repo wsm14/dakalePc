@@ -34,6 +34,8 @@ const SysMenuSet = (props) => {
       {
         label: '菜单路径',
         name: 'accessUrl',
+        rules: 'false',
+        extra: '父级节点不需要输入',
       },
       {
         label: '父节点',
@@ -42,7 +44,9 @@ const SysMenuSet = (props) => {
         hidden: !!initialValues.type,
         select: [
           { name: '无', value: '0' },
-          ...allMenu.map((item) => ({ name: item.accessName, value: item.authAccessId })),
+          ...allMenu
+            .filter((item) => item.authAccessId !== initialValues.accessId)
+            .map((item) => ({ name: item.accessName, value: item.authAccessId })),
         ],
       },
       {
@@ -54,12 +58,6 @@ const SysMenuSet = (props) => {
         label: '资源类别',
         name: 'ownerType',
         hidden: true,
-        type: 'radio',
-        visible: !!initialValues.type,
-        select: [
-          { name: '后台管理', value: 'admin' },
-          { name: '商家管理', value: 'merchant' },
-        ],
       },
       {
         label: '是否自动赋权',
