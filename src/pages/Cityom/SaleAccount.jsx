@@ -20,7 +20,7 @@ const SaleAccount = (props) => {
   // 获取账户详情 sellMainId type类型：detail 详情
   const fetchSaleAccountDetail = ({ sellMainId, type }) => {
     dispatch({
-      type: 'areaCenter/fetchAreaBankDetail',
+      type: 'saleAccount/fetchSaleAccountDetail',
       payload: {
         sellMainId,
       },

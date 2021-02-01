@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
+import { Button, Form, Modal } from 'antd';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
 import SaleAccountDetail from './Detail/SaleAccountDetail';
 import SubsidyActionSet from './Form/SubsidyActionSet';
@@ -11,26 +12,44 @@ const SaleAccountDrawer = (props) => {
   const [form] = Form.useForm();
   const { type = 'add', show = false, detail = {} } = visible;
 
+  // 状态
+  const { status } = detail;
+
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then((payload) => {
-      const dispatchProps = {
-        task: { type: 'subsidyManage/fetchSubsidyTaskAdd', payload },
-        action: {
-          type: 'subsidyManage/fetchSubsidyActionAdd',
-          payload: {
-            ...payload,
-            id: detail.configBehaviorId,
-          },
-        },
-      }[type];
       dispatch({
-        ...dispatchProps,
+        type: {
+          add: 'saleAccount/fetchSaleAccountAdd',
+          edit: 'saleAccount/fetchSaleAccountEdit',
+        }[type],
+        payload: { ...payload },
         callback: () => {
           setVisible(false);
           childRef.current.fetchGetData();
         },
       });
+    });
+  };
+
+  // 修改状态
+  const fetchSaleStatueEdit = (handle) => {
+    Modal.confirm({
+      title: `确认${{ status: { 0: '冻结', 1: '解冻' }[status], relieve: '解约' }[handle]}？`,
+      onOk() {
+        dispatch({
+          type: 'saleAccount/fetchSaleAccountEdit',
+          payload: {
+            sellMainId: detail.sellMainId,
+            status: { status: 1 ^ Number(status), relieve: 2 }[handle],
+          },
+          callback: () => {
+            setVisible(false);
+            cRef.current.fetchGetData();
+          },
+        });
+      },
+      onCancel() {},
     });
   };
 
@@ -40,9 +59,18 @@ const SaleAccountDrawer = (props) => {
       title: '查看详情',
       children: <SaleAccountDetail form={form} detail={detail}></SaleAccountDetail>,
       footer: (
-        <Button onClick={handleUpAudit} type="primary" loading={loading}>
-          提交
-        </Button>
+        <>
+          <AuthConsumer show={status !== '2'} auth="status">
+            <Button onClick={() => fetchSaleStatueEdit('status')} type="primary" loading={loading}>
+              {{ 0: '冻结', 1: '解冻' }[status]}
+            </Button>
+          </AuthConsumer>
+          <AuthConsumer show={status !== '2'} auth="relieve">
+            <Button onClick={() => fetchSaleStatueEdit('relieve')} type="primary" loading={loading}>
+              解约
+            </Button>
+          </AuthConsumer>
+        </>
       ),
     },
     add: {
@@ -59,7 +87,7 @@ const SaleAccountDrawer = (props) => {
       children: <SubsidyActionSet form={form} detail={detail}></SubsidyActionSet>,
       footer: (
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
-          提交
+          保存
         </Button>
       ),
     },
@@ -77,5 +105,5 @@ const SaleAccountDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['franchiseApp/fetchFranchiseHandle'],
+  loading: loading.models.saleAccount,
 }))(SaleAccountDrawer);

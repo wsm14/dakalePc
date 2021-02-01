@@ -29,6 +29,7 @@ const SaleAccountDetail = (props) => {
     {
       label: '联系人电话',
       name: 'contactMobile',
+      render: (val) => val || '--',
     },
     {
       label: '登录账号',
