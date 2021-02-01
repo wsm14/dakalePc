@@ -45,6 +45,12 @@ export default [
         component: './Cityom/FranchiseApplication',
         buttons: ['handle', 'info'],
       },
+      {
+        path: '/cityom/sale',
+        name: '销售系统管理',
+        component: './Cityom/SaleAccount',
+        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
+      },
       // {
       //   name: '活动设置',
       //   path: '/active',
