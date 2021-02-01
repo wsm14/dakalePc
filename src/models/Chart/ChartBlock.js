@@ -181,7 +181,7 @@ export default {
               merchantName,
               allTotal,
               verificationFee: allTotal === 0 ? 0 : verificationFeeNum,
-              scan: allTotal === 0 ? 0 : 100 - verificationFeeNum,
+              scan: allTotal === 0 ? 0 : (100 - verificationFeeNum).toFixed(2),
             };
           }),
         },
