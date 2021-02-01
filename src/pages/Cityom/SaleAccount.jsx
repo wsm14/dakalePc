@@ -63,7 +63,7 @@ const SaleAccount = (props) => {
     },
     {
       label: '联系人电话',
-      name: 'sellMainMobile',
+      name: 'contactMobile',
     },
   ];
 
@@ -95,7 +95,7 @@ const SaleAccount = (props) => {
     {
       title: '联系人电话',
       align: 'center',
-      dataIndex: 'sellMainMobile',
+      dataIndex: 'contactMobile',
       render: (val) => val || '--',
     },
     {

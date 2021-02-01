@@ -28,7 +28,7 @@ const SaleAccountDetail = (props) => {
     },
     {
       label: '联系人电话',
-      name: 'subsidizedBeans',
+      name: 'contactMobile',
     },
     {
       label: '登录账号',
