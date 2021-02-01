@@ -4,7 +4,7 @@ import { Button, Form, Modal } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
 import SaleAccountDetail from './Detail/SaleAccountDetail';
-import SubsidyActionSet from './Form/SubsidyActionSet';
+import SaleAccountSet from './Form/SaleAccountSet';
 
 const SaleAccountDrawer = (props) => {
   const { dispatch, visible, childRef, setVisible, loading } = props;
@@ -70,12 +70,21 @@ const SaleAccountDrawer = (props) => {
               解约
             </Button>
           </AuthConsumer>
+          <AuthConsumer show={status !== '2'} auth="edit">
+            <Button
+              onClick={() => setVisible({ ...visible, type: 'edit' })}
+              type="primary"
+              loading={loading}
+            >
+              编辑
+            </Button>
+          </AuthConsumer>
         </>
       ),
     },
     add: {
       title: '新增账户',
-      children: <SubsidyActionSet form={form} detail={detail}></SubsidyActionSet>,
+      children: <SaleAccountSet form={form} detail={detail} type={type}></SaleAccountSet>,
       footer: (
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           提交
@@ -84,7 +93,8 @@ const SaleAccountDrawer = (props) => {
     },
     edit: {
       title: '修改账户',
-      children: <SubsidyActionSet form={form} detail={detail}></SubsidyActionSet>,
+      onClose: () => setVisible({ ...visible, type: 'detail' }),
+      children: <SaleAccountSet form={form} detail={detail} type={type}></SaleAccountSet>,
       footer: (
         <Button onClick={handleUpAudit} type="primary" loading={loading}>
           保存
@@ -97,7 +107,7 @@ const SaleAccountDrawer = (props) => {
   const modalProps = {
     title: drawerProps.title,
     visible: show,
-    onClose: () => setVisible(false),
+    onClose: () => (drawerProps.onClose ? drawerProps.onClose() : setVisible(false)),
     footer: drawerProps.footer,
   };
 
