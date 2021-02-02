@@ -46,7 +46,11 @@ const RankingTotal = ({
       dataIndex: 'merchantName',
     },
     {
-      title: '营收金额',
+      title: (
+        <span>
+          总销售额<br></br><span style={{ fontSize: 12, color: '#00000057' }}>(扫码支付+线上销售)</span>
+        </span>
+      ),
       align: 'right',
       dataIndex: 'allTotal',
     },
@@ -56,7 +60,7 @@ const RankingTotal = ({
       dataIndex: 'scan',
     },
     {
-      title: '在线支付',
+      title: '线上销售',
       align: 'right',
       dataIndex: 'verificationFee',
     },
@@ -87,7 +91,7 @@ const RankingTotal = ({
 
   const tableArr = [
     {
-      title: '店铺营收排行 TOP10',
+      title: '店铺销售额排行 TOP10',
       columns: getColumns,
       rowKey: 'bus',
       loading: loading,

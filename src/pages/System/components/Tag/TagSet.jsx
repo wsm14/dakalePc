@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { MRE_TAG_STATUS } from '@/common/constant';
-import {  Button, Form } from 'antd';
+import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 

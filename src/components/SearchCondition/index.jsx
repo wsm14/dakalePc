@@ -296,7 +296,8 @@ const SearchCondition = (props) => {
           formObj[item.name] = values[item.name].toString();
         } else if (item.type === 'cascader') {
           // 判断类型 城市类型处理
-          item.valuesKey.map((key, i) => (formObj[key] = values[item.name][i]));
+          if (item.valuesKey) item.valuesKey.map((key, i) => (formObj[key] = values[item.name][i]));
+          else formObj[item.name] = values[item.name][values[item.name].length - 1];
           delete values[item.name];
         }
       } else {

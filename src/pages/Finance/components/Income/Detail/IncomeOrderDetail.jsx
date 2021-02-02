@@ -48,41 +48,48 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
     scan: {
       type: '扫码支付',
       icon: <QrcodeOutlined />,
+      merchantName: false,
       titleKey: 'merchantName',
       formulaDom,
     },
     goods: {
       type: '商品核销',
       icon: <ShoppingOutlined />,
+      merchantName: true,
       titleKey: 'goodsName',
     },
     specialGoods: {
       type: '特价商品订单',
       icon: <ShoppingOutlined />,
+      merchantName: true,
       titleKey: 'goodsName',
       formulaDom,
     },
     kolGoods: {
       type: '哒人带货订单',
       icon: <ShoppingOutlined />,
+      merchantName: true,
       titleKey: 'goodsName',
       formulaDom: () => formulaDom('服务费=店铺实收*服务费比例', kolformulaDom),
     },
     reduceCoupon: {
       type: '抵扣券核销',
       icon: <AccountBookOutlined />,
+      merchantName: true,
       titleKey: 'couponName',
       formulaDom,
     },
     marketCoupon: {
       type: '兑换券订单',
       icon: <AccountBookOutlined />,
+      merchantName: true,
       titleKey: 'couponName',
       formulaDom,
     },
     moment: {
       type: '看分享',
       icon: <PlaySquareOutlined />,
+      merchantName: false,
       titleKey: 'merchantName',
       formulaDom: () => formulaDom('推广费=店铺结算卡豆*推广费比例'),
     },
@@ -92,7 +99,7 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
     <div className={styles.income_order}>
       <div className={styles.income_order_top}>
         <span className={styles.income_order_icon}>{detailProps.icon}</span>
-        {!detail[detailProps.titleKey] && (
+        {detailProps.merchantName && (
           <div className={styles.income_order_name}>{detail.merchantName}</div>
         )}
         <div className={styles.income_order_title}>{detail[detailProps.titleKey]}</div>
@@ -118,9 +125,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         {type === 'kolGoods' && (
           <>
             <div className={styles.detail_item}>
-              哒人带货利润：￥{detail.merchantServiceBean / 100}
+              哒人带货利润：￥{detail.kolGoodsProfitBean / 100}
             </div>
-            <div className={styles.detail_item}>哒人等级：Lv {detail.kolLevel}</div>
+            <div className={styles.detail_item}>哒人等级：Lv {Number(detail.kolLevel) - 1}</div>
           </>
         )}
         <div className={styles.detail_item}>店铺服务费：{detail.merchantServiceBean || 0}卡豆</div>

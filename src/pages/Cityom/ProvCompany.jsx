@@ -100,16 +100,16 @@ const ProvCompany = (props) => {
       align: 'right',
       dataIndex: 'merchantCount',
     },
-    {
-      title: '累计收益（卡豆）',
-      align: 'right',
-      dataIndex: 'totalIncome',
-    },
-    {
-      title: '累计提现（卡豆）',
-      align: 'right',
-      dataIndex: 'totalWithdrawal',
-    },
+    // {
+    //   title: '累计收益（卡豆）',
+    //   align: 'right',
+    //   dataIndex: 'totalIncome',
+    // },
+    // {
+    //   title: '累计提现（卡豆）',
+    //   align: 'right',
+    //   dataIndex: 'totalWithdrawal',
+    // },
     {
       title: '状态',
       align: 'right',
@@ -124,12 +124,12 @@ const ProvCompany = (props) => {
       render: (companyId, record) => (
         <HandleSetTable
           formItems={[
-            {
-              type: 'own',
-              title: '收益数据',
-              auth: 'income',
-              click: () => setVisible({ type: 'income', record }),
-            },
+            // {
+            //   type: 'own',
+            //   title: '收益数据',
+            //   auth: 'income',
+            //   click: () => setVisible({ type: 'income', record }),
+            // },
             {
               type: 'info',
               click: () => fetchProvDetail({ type: 'detail', companyId }),

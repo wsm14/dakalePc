@@ -153,3 +153,37 @@ export function fetchFranchiseHandle(data) {
 }
 
 // 加盟申请 end
+
+// 销售管理系统帐号
+
+// get 销售管理系统帐号 - 列表
+export function fetchSaleAccountList(params) {
+  return request('/admin/sell/main/listSellMain', {
+    params,
+  });
+}
+
+// get 销售管理系统帐号 - 详情
+export function fetchSaleAccountDetail(params) {
+  return request('/admin/sell/main/getSellMainDetail', {
+    params,
+  });
+}
+
+// post 销售管理系统帐号 - 新增
+export function fetchSaleAccountAdd(data) {
+  return request('/admin/sell/main/saveSellMain', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 销售管理系统帐号 - 修改
+export function fetchSaleAccountEdit(data) {
+  return request('/admin/sell/main/updateSellMain', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 销售管理系统帐号 end

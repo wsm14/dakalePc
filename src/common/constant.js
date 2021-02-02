@@ -11,14 +11,6 @@ export const AMAP_KEY = 'b71a4bfb0ccc175459fdadf06cb0b1b7';
 // 高德地图js key
 export const AMAP_JS_KEY = 'ebb2511fda31f6cbf5c5c9a5d7e84e39';
 
-// 反馈身份
-export const FEEDBACK_USER_TYPE = {
-  user: '用户',
-  merchant: '商家',
-  company: '省公司',
-  patner: '区县',
-};
-
 // 排序纬度
 export const EXPERT_SORT_TYPE = {
   beanReward: '卡豆打赏额',
@@ -142,7 +134,7 @@ export const MRE_TAG_STATUS = ['停用', '启用'];
 // FAQ猜你想问
 export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
 
-// 省代/区县公司状态
+// 省代/区县公司/销售管理系统状态
 export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
 
 // 订单状态
@@ -170,6 +162,12 @@ export const PUZZLE_AD_TYPE = [
 
 // 消息推送 - 推送状态
 export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
+
+// 用户性别
+export const SEX_NEW_TYPE = { M: '男', F: '女' };
+
+// 销售管理系统 - 类型
+export const SALE_ACCOUNT_TYPE = { province: '省份', city: '城市', district: '区县' };
 
 // 消息推送 - 推送目标
 export const MSG_PSUH_TAB = { user: '用户端', merchant: '商家端' };
@@ -202,7 +200,12 @@ export const SHARE_TYPE = [
 ];
 
 // 订单类型
-export const ORDERS_TYPE = { kolGoods: '哒人带货', specialGoods: '周边特惠' };
+export const ORDERS_TYPE = {
+  kolGoods: '哒人带货',
+  specialGoods: '周边特惠',
+  reduceCoupon: '抵扣券订单',
+  marketCoupon: '兑换券订单',
+};
 
 // 平台收益订单类型
 export const PLATFORM_INCOME_ORDERS_TYPE = {
