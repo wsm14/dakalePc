@@ -13,17 +13,27 @@ const SaleAccountDrawer = (props) => {
   const { type = 'add', show = false, detail = {} } = visible;
 
   // 状态
-  const { status } = detail;
+  const { status, sellMainId } = detail;
 
   // 确认提交
   const handleUpAudit = () => {
-    form.validateFields().then((payload) => {
+    form.validateFields().then((values) => {
+      const { password, contactMobile, agentCode } = values;
       dispatch({
         type: {
           add: 'saleAccount/fetchSaleAccountAdd',
           edit: 'saleAccount/fetchSaleAccountEdit',
         }[type],
-        payload: { ...payload },
+        payload: {
+          ...values,
+          sellMainId, // 修改时存在
+          agentCode: agentCode[agentCode.length - 1],
+          password: password
+            ? password
+            : type == 'edit'
+            ? undefined
+            : contactMobile.match(/.*(.{6})/)[1],
+        },
         callback: () => {
           setVisible(false);
           childRef.current.fetchGetData();
@@ -45,7 +55,7 @@ const SaleAccountDrawer = (props) => {
           },
           callback: () => {
             setVisible(false);
-            cRef.current.fetchGetData();
+            childRef.current.fetchGetData();
           },
         });
       },
@@ -107,6 +117,7 @@ const SaleAccountDrawer = (props) => {
   const modalProps = {
     title: drawerProps.title,
     visible: show,
+    bodyStyle: { paddingTop: 0 },
     onClose: () => (drawerProps.onClose ? drawerProps.onClose() : setVisible(false)),
     footer: drawerProps.footer,
   };

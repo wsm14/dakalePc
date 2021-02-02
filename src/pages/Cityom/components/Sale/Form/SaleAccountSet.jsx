@@ -1,9 +1,12 @@
-import React from 'react';
-import { SALE_ACCOUNT_TYPE } from '@/common/constant';
+import React, { useState } from 'react';
+import { SALE_ACCOUNT_TYPE, SEX_TYPE } from '@/common/constant';
+import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
 
 const SaleAccountSet = (props) => {
   const { form, detail, type } = props;
+  // 选择框类型 判断所属地区可选项目
+  const [agentType, setAgentType] = useState(undefined);
 
   const formItems = [
     {
@@ -15,11 +18,30 @@ const SaleAccountSet = (props) => {
         name: SALE_ACCOUNT_TYPE[item],
         value: item,
       })),
-      onChange: (val, item) => form.setFieldsValue({ category: item.children[0] }),
+      onChange: (val) => {
+        // 重置地区项目
+        setAgentType(val);
+        // 重置地区选项值
+        form.setFieldsValue({ agentCode: undefined });
+      },
+      disabled: type === 'edit',
     },
     {
       label: '所属地区',
       name: 'agentCode',
+      type: 'cascader',
+      disabled: type === 'edit',
+      select: {
+        undefined: undefined,
+        province: CITYJSON.map((item) => ({ label: item.label, value: item.value })),
+        city: CITYJSON.map((item) => ({
+          label: item.label,
+          value: item.value,
+          children: item.children.map((citem) => ({ ...citem, children: undefined })),
+        })),
+        district: undefined,
+      }[agentType],
+      onChange: (val) => form.setFieldsValue({ agentName: val[val.length - 1].label }),
     },
     {
       label: '所属地区',
@@ -34,6 +56,8 @@ const SaleAccountSet = (props) => {
     {
       label: '联系人性别',
       name: 'gender',
+      type: 'radio',
+      select: SEX_TYPE,
     },
     {
       label: '联系人电话',
@@ -48,6 +72,8 @@ const SaleAccountSet = (props) => {
     {
       label: '登录密码',
       name: 'password',
+      rules: [{ required: false }],
+      placeholder: type == 'edit' ? '不填写则不修改' : '不填写默认联系电话后6位',
     },
     {
       label: '联系人邮箱',

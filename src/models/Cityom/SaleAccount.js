@@ -38,7 +38,15 @@ export default {
       const response = yield call(fetchSaleAccountDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.sellMainDetail);
+      const { agentCode = '' } = content.sellMainDetail;
+      const codeType = agentCode.length;
+      const cityCode = {
+        0: [],
+        6: [agentCode.slice(0, 2), agentCode.slice(0, 4), agentCode], // 区
+        4: [agentCode.slice(0, 2), agentCode], // 市
+        2: [agentCode], // 省
+      }[codeType];
+      callback({ ...content.sellMainDetail, agentCode: cityCode });
     },
     *fetchSaleAccountAdd({ payload, callback }, { call }) {
       const response = yield call(fetchSaleAccountAdd, payload);
