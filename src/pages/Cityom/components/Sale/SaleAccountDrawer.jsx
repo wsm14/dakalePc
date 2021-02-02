@@ -117,7 +117,7 @@ const SaleAccountDrawer = (props) => {
   const modalProps = {
     title: drawerProps.title,
     visible: show,
-    bodyStyle: { paddingTop: 0 },
+    bodyStyle: { paddingTop: type === 'detail' ? 24 : 0 },
     onClose: () => (drawerProps.onClose ? drawerProps.onClose() : setVisible(false)),
     footer: drawerProps.footer,
   };

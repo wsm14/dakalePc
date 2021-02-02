@@ -65,6 +65,12 @@ const SaleAccount = (props) => {
       label: '联系人电话',
       name: 'contactMobile',
     },
+    {
+      label: '状态',
+      name: 'status',
+      type: 'select',
+      select: COMPANY_PROV_STATUS,
+    },
   ];
 
   // table 表头

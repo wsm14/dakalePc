@@ -19,7 +19,7 @@ const SaleAccountDetail = (props) => {
     {
       title: '联系人账号',
       label: '联系人姓名',
-      name: 'adminName',
+      name: 'sellMainName',
     },
     {
       label: '联系人性别',
