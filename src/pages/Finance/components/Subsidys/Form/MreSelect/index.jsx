@@ -55,12 +55,13 @@ const MreSelect = ({ visible, keys, onOk, onCancel, subsidyList = [], loading })
     >
       <DataTableBlock
         noCard={false}
-        componentSize="middle"
+        componentSize="small"
         searchItems={searchItems}
         columns={getColumns}
         loading={loading}
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="businessList/fetchGetList"
+        params={{ bankStatus: 3, businessStatus: 1 }}
         rowSelection={{
           preserveSelectedRowKeys: true,
           selectedRowKeys: selectMreKey,
