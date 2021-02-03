@@ -72,14 +72,13 @@ const ClassifySet = (props) => {
     title: '设置分类',
     visible: !!type,
     onClose,
-    loading: editLoading,
     afterCallBack: () => {
-      if ( type == 'edit') {
+      if (type == 'edit') {
         fetchClassifyGetMre(detail.merchantName);
       }
     },
     footer: (
-      <Button onClick={fetchUpData} type="primary" loading={loading}>
+      <Button onClick={fetchUpData} type="primary" loading={loading || editLoading}>
         确认
       </Button>
     ),
