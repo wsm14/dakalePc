@@ -143,6 +143,12 @@ const GoodsManageComponent = (props) => {
       render: (val) => (!val ? '-' : MRE_SURE_TYPE[val]),
     },
     {
+      title: '是否售罄',
+      align: 'center',
+      dataIndex: 'stockStatus',
+      render: (val) => (val?["已售罄","未售罄"][val]:'--'),
+    },
+    {
       title: '操作',
       fixed: 'right',
       align: 'right',

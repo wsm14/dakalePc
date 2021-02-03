@@ -45,6 +45,10 @@ const BusinessSettled = (props) => {
       name: 'account',
     },
     {
+      label: 'BD姓名',
+      name: 'salespersonName',
+    },
+    {
       label: '店铺类型',
       name: 'merchantType',
       type: 'select',
@@ -212,6 +216,7 @@ const BusinessSettled = (props) => {
           exportProps={{ header: getColumns.slice(0, -1) }}
         ></ExcelButton>
       )}
+      pParams={{ searchData: { sortField: '1' } }}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
