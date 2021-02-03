@@ -37,8 +37,8 @@ const UserListComponent = (props) => {
     {
       label: '认证状态',
       name: 'realNameStatus',
-      type:'select',
-      select:REAL_NAME_STATUS
+      type: 'select',
+      select: REAL_NAME_STATUS,
     },
   ];
 

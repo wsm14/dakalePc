@@ -215,7 +215,7 @@ const BaseForm = (props) => {
       type: 'number',
       name: 'contractAmount',
       min: 0,
-      render:(val)=>val+"元"
+      render: (val) => val + '元',
     },
     {
       label: '经度',

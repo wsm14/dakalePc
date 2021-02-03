@@ -116,6 +116,9 @@ export const GOODS_TYPE = ['已下架', '上架中', false, '未发布'];
 // 店铺确认状态
 export const MRE_SURE_TYPE = ['已驳回', '确认中', '已确认'];
 
+// 店铺售罄状态
+export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
+
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
