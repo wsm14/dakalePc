@@ -28,6 +28,13 @@ const CircleMasterList = (props) => {
       label: '手机号',
       name: 'mobile',
     },
+    {
+      label: '省市区',
+      type: 'cascader',
+      name: 'city',
+      changeOnSelect:true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
   ];
 
   // 打开详情表格
