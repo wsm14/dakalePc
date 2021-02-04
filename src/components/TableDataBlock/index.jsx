@@ -4,25 +4,27 @@ import { KeepAlive } from 'react-activation';
 import TableBlock from './tableBlock';
 
 /**
- * 判断是否保持数据
+ * 表格组件父组件
+ * 判断是否启用 KeepAlive 组件
+ * @param keepData 启用组件 默认false 顶部tab显示
  */
 
 const TableDataBlockComponent = (props) => {
-  const menuNameObj = useSelector((state) => state.userInfo.menuNameObj);
   const { keepData = false } = props;
-  const match = useLocation();
-
+  // 获取线上菜单储存的路由对象
+  const menuNameObj = useSelector((state) => state.userInfo.menuNameObj);
+  // 路由信息
+  const match = useLocation().pathname;
+  // 表格
+  const content = <TableBlock {...props}></TableBlock>;
+  // 显示内容
   const KeepContent = {
     true: (
-      <KeepAlive
-        name={menuNameObj[match.pathname]}
-        url={match.pathname}
-        saveScrollPosition="screen"
-      >
-        <TableBlock {...props}></TableBlock>
+      <KeepAlive name={menuNameObj[match]} url={match} saveScrollPosition="screen">
+        {content}
       </KeepAlive>
     ),
-    false: <TableBlock {...props}></TableBlock>,
+    false: content,
   }[keepData];
 
   return KeepContent;
