@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import { connect } from 'umi';
 import DataTableBlock from '@/components/DataTableBlock';
 
-const MreSelect = ({ visible, keys, onOk, onCancel, subsidyList = [], loading }) => {
+const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = [], loading }) => {
   // 选中的店铺
   const [selectMre, setSelectMre] = useState([]);
   const [selectMreKey, setSelectMreKey] = useState([]);
@@ -47,6 +47,7 @@ const MreSelect = ({ visible, keys, onOk, onCancel, subsidyList = [], loading })
       maskClosable
       width={950}
       visible={visible}
+      okText={`确定（已选${selectMreKey.length}项）`}
       onOk={() => {
         onOk({ keys: selectMreKey, list: selectMre });
         onCancel();
@@ -55,7 +56,7 @@ const MreSelect = ({ visible, keys, onOk, onCancel, subsidyList = [], loading })
     >
       <DataTableBlock
         noCard={false}
-        componentSize="small"
+        componentSize="middle"
         searchItems={searchItems}
         columns={getColumns}
         loading={loading}
@@ -66,8 +67,19 @@ const MreSelect = ({ visible, keys, onOk, onCancel, subsidyList = [], loading })
           preserveSelectedRowKeys: true,
           selectedRowKeys: selectMreKey,
           onChange: (val, list) => {
+            // 先去重处理 排除重复已选数据
+            // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
+            const obj = {};
+            const newSelectList = [...mreList, ...list]
+              .reduce((item, next) => {
+                next && obj[next.userMerchantIdString]
+                  ? ''
+                  : next && (obj[next.userMerchantIdString] = true && item.push(next));
+                return item;
+              }, [])
+              .filter((item) => item && val.includes(item.userMerchantIdString));
             setSelectMreKey(val);
-            setSelectMre(list);
+            setSelectMre(newSelectList);
           },
         }}
         {...subsidyList}
