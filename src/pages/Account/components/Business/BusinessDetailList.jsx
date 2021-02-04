@@ -167,7 +167,7 @@ const BusinessDetailList = (props) => {
           }[type],
         }}
         dispatchType="accountBusiness/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
       ></TableDataBlock>
     </Modal>

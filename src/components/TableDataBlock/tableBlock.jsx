@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
-import { connect } from 'umi';
+import { useDispatch } from 'umi';
 import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 import DraggableContent from './SortBlock';
@@ -9,88 +9,80 @@ import DraggableContent from './SortBlock';
  * 搜索+表格信息回显
  * 2020年7月29日 14:48:02 Dong
  *
+ * @cRef 父组件获取子组件ref
  * @dispatchType {*} 表格请求url
- * @columns 表头
  * @searchItems 搜索条件
+ * @searchForm 搜索form
  * @searchCallback 搜索回调
+ * @resetSearch 重置回调
+ * @rowKey 每行id
+ * @columns 表头
  * @loading 请求等待
  * @list 表格源数据
  * @total 数据总条数
- * @rowKey 每行id
  * @btnExtra 额外的按钮
- * @cRef 父组件获取子组件ref
- * @CardTitle 图表标题
- * @style card style
- * @params 搜索时默认参数
- * @pParams 保存分页 搜索数据保存
- * @setParams 保存分页 搜索数据
- * @noCard 是否需要Card包裹 默认true
- * @extra card 右上角
- * @componentSize 组件大小 small default middle
- * @NoSearch 刚打开是否请求 默认false 请求接口
- * @expandable
  * @pagination 分页是否显示 赋值false不显示
+ * @tableSort 表格排序 {onSortEnd:()=>{}}
+ * @noCard 是否需要Card包裹 默认true
+ * @cardProps card 配置聚合 原 CardTitle style bodyStyle extra
+ * @size 组件大小 原componentSize small default middle
  * @scrollY 垂直滚动高度
  * @scrollX 横向滚动
- * @rowSelection
+ * @firstFetch 原NoSearch 刚打开是否请求 默认true 请求接口
  * @children
- * @tableSort 表格排序 {onSortEnd:()=>{}}
+
+ * @params 搜索时默认参数 移除 pParams params替代全部职能
+ * @setParams 保存分页 搜索数据
  */
 
 const TableBlockComponent = (props) => {
   const {
-    dispatch,
+    // 不修改的参数
+    cRef,
     dispatchType,
-    scrollY,
-    scrollX = 'max-content',
-    columns,
     searchItems,
     searchForm,
     resetSearch,
-    loading,
-    rowKey,
+    searchCallback,
+    btnExtra,
+    noCard = true,
+    pagination,
+    tableSort = false,
+    cardProps = {},
     list,
     total,
-    btnExtra,
-    style,
-    bodyStyle,
-    CardTitle,
-    cRef,
-    params,
-    pParams = {},
-    setParams,
-    noCard = true,
-    extra,
-    componentSize = 'default',
-    NoSearch = false,
-    expandable,
-    pagination,
-    rowSelection,
-    onRow,
     children,
-    tableSort = false,
-    searchCallback,
+    loading,
+    scrollY,
+    scrollX = 'max-content',
+    size = 'default',
+    firstFetch = true,
+    params = {},
+    // end
+
+    setParams,
   } = props;
 
-  const [first, setFirst] = useState(NoSearch); // first No search
+  const dispatch = useDispatch();
+
+  const [first, setFirst] = useState(firstFetch); // first No search
   const [tableParems, setTableParems] = useState({
-    page: pParams.page || 1, // 页码
-    limit: pParams.limit || { default: 10, middle: 10, small: 10 }[componentSize], // 每页条数
+    page: 1, // 页码
+    limit: { default: 10, middle: 10, small: 10 }[size], // 每页条数
     sortOrder: '', // 排序字段
     sortField: '', // 排序规则 升降
-    searchData: pParams.searchData || {}, // 搜索控件参数
+    searchData: params,
   }); // 表格参数
+
   // 获取列表
   const fetchGetList = (data) => {
     if (dispatchType) {
       const prams = {
-        ...tableParems, // 表格参数
-        ...params, // 默认参数
         ...tableParems.searchData, // 搜索参数
+        ...tableParems, // 表格参数
         ...data, // 传递的搜索参数
       };
-
-      delete prams.searchData;
+      delete prams['searchData'];
       dispatch({
         type: dispatchType, // 请求接口
         payload: prams,
@@ -99,15 +91,15 @@ const TableBlockComponent = (props) => {
   };
 
   // 搜索
-  const handleSearch = (value) => {
-    delete value.page;
-    delete value.limit;
+  const handleSearch = (values = {}) => {
+    const newSearchValue = { ...params, ...values };
     setTableParems({
       ...tableParems,
+      searchData: newSearchValue,
       page: 1,
-      searchData: Object.keys(value).length ? value : {},
     });
-    searchCallback && searchCallback(Object.keys(value).length ? value : {});
+    // 搜索回调
+    searchCallback && searchCallback(newSearchValue);
   };
 
   // 分页
@@ -123,8 +115,6 @@ const TableBlockComponent = (props) => {
 
   // table change
   const tableChange = (page, filters, sorter) => {
-    const { page: tpage, limit } = tableParems;
-    if (tpage == page.current && limit == page.pageSize) return false;
     console.log(page, filters, sorter);
     setTableParems({
       ...tableParems,
@@ -154,11 +144,11 @@ const TableBlockComponent = (props) => {
 
   // 保存搜索参数
   const handleSaveParams = () => {
-    if (typeof setParams === 'function') setParams({ ...tableParems, searchData: tableParems });
+    if (typeof setParams === 'function') setParams({ ...tableParems });
   };
 
   useEffect(() => {
-    if (!first) {
+    if (first) {
       fetchGetList();
     } else {
       setFirst(false);
@@ -177,25 +167,18 @@ const TableBlockComponent = (props) => {
         <SearchCondition
           searchForm={searchForm}
           resetSearch={resetSearch}
-          componentSize={componentSize}
+          componentSize={size}
           searchItems={searchItems}
           handleSearch={handleSearch}
-          initialValues={pParams.searchData}
-          // NoSearch={NoSearch}
+          initialValues={params}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}
       <Table
-        rowSelection={rowSelection}
-        expandable={expandable}
         scroll={{ x: scrollX, y: scrollY }}
-        size={componentSize} // 'small' ||
-        rowKey={rowKey}
         loading={loading}
         dataSource={list}
-        columns={columns}
         pagination={pagination === false ? false : paginationProps}
-        onRow={onRow}
         onChange={tableChange}
         // 排序
         {...(tableSort ? DraggableContent(list, tableSort) : {})}
@@ -208,20 +191,18 @@ const TableBlockComponent = (props) => {
     true: (
       <>
         {children}
-        <Card title={CardTitle} style={style} extra={extra} bodyStyle={bodyStyle}>
-          {tabContent}
-        </Card>
+        {tabContent}
       </>
     ),
     false: (
       <>
         {children}
-        {tabContent}
+        <Card {...cardProps}>{tabContent}</Card>
       </>
     ),
-  }[noCard];
+  }[!noCard];
 
   return tableCard;
 };
 
-export default connect()(TableBlockComponent);
+export default TableBlockComponent;

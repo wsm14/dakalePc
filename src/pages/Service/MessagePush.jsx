@@ -248,7 +248,7 @@ const MessagePush = (props) => {
       >
         {check && check.length ? (
           <TableDataBlock
-            NoSearch
+            firstFetch={false}
             noCard={false}
             cRef={childRef}
             loading={loading.models.messagePush}

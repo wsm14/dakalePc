@@ -67,7 +67,7 @@ const CityListComponent = (props) => {
       <div style={{ flex: 1 }}>
         {selectRow && '各城市排行'}
         <TableDataBlock
-          NoSearch
+          firstFetch={false}
           noCard={false}
           cRef={childRef}
           loading={loading}

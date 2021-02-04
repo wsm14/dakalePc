@@ -131,7 +131,7 @@ const MarketCardActivity = (props) => {
               btnExtra={btnExtra}
               columns={getColumns}
               searchItems={searchItems}
-              pParams={params}
+              params={params}
               setParams={setParams}
               rowKey={(record) => record.activityIdString}
               dispatchType="marketCardActivity/fetchGetList"

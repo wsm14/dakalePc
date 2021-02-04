@@ -93,7 +93,7 @@ const TradePlatformDetailList = (props) => {
       dataSource={data}
       rowKey={(row) => `${row.freeBean}`}
       pagination={false}
-      componentSize="middle"
+      size="middle"
     />
   );
 
@@ -187,7 +187,7 @@ const TradePlatformDetailList = (props) => {
         rowKey={(row, i) => `${row[propsItem.rowKey] + i}`}
         params={{ categoryId: record.id }}
         dispatchType="sysTradeList/fetchTradePlatformList"
-        componentSize="middle"
+        size="middle"
         expandable={propsItem.expandable}
         list={propsItem.list}
       ></TableDataBlock>

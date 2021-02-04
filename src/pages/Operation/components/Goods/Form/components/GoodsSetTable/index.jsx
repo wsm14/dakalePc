@@ -31,7 +31,7 @@ const GoodsSetTable = ({ form, detail }) => {
 
   const tableCon = (
     <TableDataBlock
-      componentSize="small"
+      size="small"
       noCard={false}
       columns={getColumns}
       rowKey={(record) => `${record.goodsName}`}

@@ -32,7 +32,7 @@ const CircleMasterList = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'city',
-      changeOnSelect:true,
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
@@ -124,7 +124,7 @@ const CircleMasterList = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.parentUserIdString}`}
-        pParams={{ searchData: { userType: 'user' } }}
+        params={{ userType: 'user' }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
       >

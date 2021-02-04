@@ -297,7 +297,7 @@ const ServiceFAQ = (props) => {
     >
       {check && check.length ? (
         <TableDataBlock
-          NoSearch
+          firstFetch={false}
           noCard={false}
           cRef={childRef}
           loading={loading.models.serviceFAQ}

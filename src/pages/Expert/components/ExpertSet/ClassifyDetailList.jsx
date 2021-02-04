@@ -151,7 +151,7 @@ const ClassifyDetailList = (props) => {
         rowKey={(row) => `${row.topicIdString}`}
         params={{ domainId: record.domainId }}
         dispatchType="expertSet/fetchClassifyDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
       ></TableDataBlock>
     </Modal>

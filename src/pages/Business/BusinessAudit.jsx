@@ -37,7 +37,7 @@ const BusinessAuditList = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'city',
-      changeOnSelect:true,
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
@@ -173,7 +173,7 @@ const BusinessAuditList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        pParams={{ searchData: { verifyStatus: '1' } }}
+        params={{ verifyStatus: '1' }}
         rowKey={(record) => `${record.userMerchantVerifyId}`}
         dispatchType="businessAudit/fetchGetList"
         {...businessAudit.list}

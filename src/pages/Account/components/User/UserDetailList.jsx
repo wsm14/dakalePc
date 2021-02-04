@@ -116,7 +116,7 @@ const UserDetailList = (props) => {
         rowKey={(row, i) => `${row[propItem.rowKey]}${i}`}
         params={{ type, userType: 'user', userId: record.userIdString }}
         dispatchType="accountUser/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
       ></TableDataBlock>
     </Modal>

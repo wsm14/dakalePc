@@ -95,7 +95,7 @@ const ActiveAllocation = (props) => {
         }}
       >
         <TableDataBlock
-          NoSearch={true}
+          firstFetch={false}
           noCard={false}
           cRef={childRef}
           loading={loading}

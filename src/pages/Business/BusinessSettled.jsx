@@ -216,7 +216,7 @@ const BusinessSettled = (props) => {
           exportProps={{ header: getColumns.slice(0, -1) }}
         ></ExcelButton>
       )}
-      pParams={{ searchData: { sortField: '1' } }}
+      params={{ sortField: '1' }}
       cRef={childRef}
       loading={loading}
       columns={getColumns}

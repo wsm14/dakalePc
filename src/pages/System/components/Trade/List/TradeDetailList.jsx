@@ -131,7 +131,7 @@ const TradeBaseSet = (props) => {
         rowKey={(row) => `${row[propItem.rowKey]}`}
         params={{ type, categoryId: record.categoryIdString }}
         dispatchType="sysTradeList/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
       ></TableDataBlock>
     </Modal>

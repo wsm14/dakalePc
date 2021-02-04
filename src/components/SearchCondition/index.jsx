@@ -328,10 +328,6 @@ const SearchCondition = (props) => {
     if (resetSearch) resetSearch();
   };
 
-  useEffect(() => {
-    form.setFieldsValue(initialValues);
-  }, []);
-
   // 展开
   const toggle = () => setExpand(!expand);
 

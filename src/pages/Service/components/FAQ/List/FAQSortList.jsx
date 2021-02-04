@@ -103,7 +103,7 @@ const FAQSortList = (props) => {
         columns={getColumns}
         rowKey={(row) => `${row.questionCategoryIdString}`}
         dispatchType="serviceFAQ/fetchFAQSortList"
-        componentSize="middle"
+        size="middle"
         {...sortList}
       ></TableDataBlock>
     </Modal>

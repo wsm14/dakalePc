@@ -74,7 +74,7 @@ const ProvCompanyDetailList = (props) => {
               columns={propItem.getColumns}
               rowKey={(row) => `${row[propItem.rowKey]}`}
               dispatchType="areaCenter/fetchWithdrawList"
-              componentSize="middle"
+              size="middle"
               list={[]}
             ></TableDataBlock>
           ),

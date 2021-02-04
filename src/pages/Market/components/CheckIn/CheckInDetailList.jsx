@@ -127,7 +127,7 @@ const CheckInDetailList = (props) => {
           subIdentify: record.subIdentify,
         }}
         dispatchType="sysCheckIn/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
       ></TableDataBlock>
     </Modal>

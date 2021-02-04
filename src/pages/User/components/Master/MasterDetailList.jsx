@@ -156,7 +156,7 @@ const MasterDetail = (props) => {
           [{ family: 'ownerId', shop: 'ownerId', income: 'identifyId' }[type]]: record.id,
         }}
         dispatchType="circleMaster/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
       ></TableDataBlock>
     </Modal>

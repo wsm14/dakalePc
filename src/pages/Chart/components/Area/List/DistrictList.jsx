@@ -60,7 +60,7 @@ const DistrictListComponent = (props) => {
 
   return (
     <TableDataBlock
-      NoSearch
+      firstFetch={false}
       noCard={false}
       cRef={childRef}
       loading={loading}
