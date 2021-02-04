@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, REFUND_ORDERS_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 
 const RefundOrder = (props) => {
@@ -110,8 +110,8 @@ const RefundOrder = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="退款管理"
+    <TableDataBlock
+      keepName
       cRef={childRef}
       loading={loading}
       columns={getColumns}
@@ -119,7 +119,7 @@ const RefundOrder = (props) => {
       rowKey={(record) => `${record.orderId}`}
       dispatchType="refundOrder/fetchGetList"
       {...refundOrder}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

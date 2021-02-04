@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
 import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
 import MarketCardActivityDetailPay from './MarketCardActivityDetailPay';
@@ -197,7 +197,7 @@ const MarketCardActivityDetail = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         cRef={childRef}
         loading={loadings}
         btnExtra={params.activityStatus !== '2' && btnExtra}
@@ -207,7 +207,7 @@ const MarketCardActivityDetail = (props) => {
         params={{ activityId: params.activityIdString }}
         dispatchType="marketCardActivity/fetchGetActiveDetail"
         {...marketCardActivity.detail}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <MarketCardActivityDetailPay visible={visible} setVisible={setVisible} />
       <MarketCardActivitySetStore
         cRef={childRef}

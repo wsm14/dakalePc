@@ -10,6 +10,7 @@ export default {
     flag: 0,
     menuList: [],
     menuBtn: {},
+    menuNameObj: {},
     loading: true,
   },
   reducers: {
@@ -53,7 +54,9 @@ export default {
         });
       }
       const btnObj = {};
+      const urlObj = {};
       const duplicate = (item) => {
+        urlObj[item.accessUrl] = item.accessName;
         if (item.buttons && item.buttons.length) btnObj[item.accessUrl] = item.buttons;
         if (item.childList && item.childList.length) {
           lodash.flatMap(item.childList, duplicate);
@@ -66,6 +69,7 @@ export default {
           flag: Number(content.flag),
           menuList: content.permissionTree,
           menuBtn: btnObj,
+          menuNameObj: urlObj,
           loading: false,
         },
       });

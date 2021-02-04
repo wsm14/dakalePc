@@ -5,7 +5,7 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import { Button, message } from 'antd';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
@@ -221,8 +221,8 @@ const tableList = (props) => {
   ];
   return (
     <>
-      <DataTableBlock
-        keepName="集团管理"
+      <TableDataBlock
+        keepName
         btnExtra={
           <AuthConsumer auth="save">
             <Button
@@ -251,7 +251,7 @@ const tableList = (props) => {
         rowKey={(record) => `${record.merchantGroupId}`}
         dispatchType="groupSet/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <DrawerForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible}

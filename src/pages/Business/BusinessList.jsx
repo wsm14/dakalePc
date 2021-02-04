@@ -7,7 +7,7 @@ import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
@@ -332,8 +332,8 @@ const BusinessListComponent = (props) => {
           }
         ></BusinessTotalInfo>
       </Suspense>
-      <DataTableBlock
-        keepName="店铺列表"
+      <TableDataBlock
+        keepName
         btnExtra={({ get }) => (
           <ExcelButton
             dispatchType={'businessList/fetchMerchantGetExcel'}
@@ -352,7 +352,7 @@ const BusinessListComponent = (props) => {
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="businessList/fetchGetList"
         {...businessList}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <BusinessAwardSet
         cRef={childRef}
         visible={visible}

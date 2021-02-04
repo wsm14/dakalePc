@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
 import closeRefuse from './components/Goods/Form/CloseRefuse';
 import stockSet from './components/Goods/Form/StockSet';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
 import GoodsDrawer from './components/Goods/GoodsDrawer';
@@ -298,8 +298,8 @@ const GoodsManageComponent = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="商品管理"
+      <TableDataBlock
+        keepName
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'addGoods' })}>
@@ -318,7 +318,7 @@ const GoodsManageComponent = (props) => {
         rowKey={(record) => `${record.goodsIdString}`}
         dispatchType="goodsManage/fetchGetList"
         {...goodsManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <GoodsDrawer
         childRef={childRef}
         visible={visible}

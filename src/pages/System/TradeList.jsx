@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import tradeCategorySet from './components/Trade/Form/TradeCategorySet';
 import promotionMoneySet from './components/Trade/Form/PromotionMoneySet';
 import TradeDetailList from './components/Trade/List/TradeDetailList';
@@ -155,7 +155,7 @@ const SysTradeSet = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         cRef={childRef}
         btnExtra={
           <>
@@ -182,7 +182,7 @@ const SysTradeSet = (props) => {
         {...list}
         expandable={{ childrenColumnName: ['categoryDTOList'] }}
         pagination={false}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <TradeDetailList visible={visible} setVisible={setVisible}></TradeDetailList>
       <TradePlatformDetailList
         visible={pvisible}

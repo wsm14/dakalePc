@@ -5,7 +5,7 @@ import { ACTIVITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
 import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
 
@@ -124,8 +124,8 @@ const MarketCardActivity = (props) => {
       {
         {
           home: (
-            <DataTableBlock
-              keepName="营销活动"
+            <TableDataBlock
+              keepName
               cRef={childRef}
               loading={loading}
               btnExtra={btnExtra}
@@ -136,7 +136,7 @@ const MarketCardActivity = (props) => {
               rowKey={(record) => record.activityIdString}
               dispatchType="marketCardActivity/fetchGetList"
               {...marketCardActivity.active}
-            ></DataTableBlock>
+            ></TableDataBlock>
           ),
           detail: (
             <MarketCardActivityDetail

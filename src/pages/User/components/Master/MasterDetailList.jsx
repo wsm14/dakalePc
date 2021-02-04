@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MasterOrderDetail from './MasterOrderDetail';
 
 const MasterDetail = (props) => {
@@ -145,7 +145,7 @@ const MasterDetail = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         loading={loading}
         columns={propItem.getColumns}
@@ -158,7 +158,7 @@ const MasterDetail = (props) => {
         dispatchType="circleMaster/fetchDetailList"
         componentSize="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { MRE_TAG_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import TagSet from './components/Tag/TagSet';
 
@@ -77,7 +77,7 @@ const TagManage = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
@@ -92,7 +92,7 @@ const TagManage = (props) => {
         rowKey={(record) => `${record.configMerchantId}`}
         dispatchType="tagManage/fetchGetList"
         {...tagManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>
     </>
   );

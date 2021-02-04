@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import BankSet from './components/BankSet/BusinessBankSet';
 
 const BusinessBankSetContent = (props) => {
@@ -60,7 +60,7 @@ const BusinessBankSetContent = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="save">
             <Button
@@ -78,7 +78,7 @@ const BusinessBankSetContent = (props) => {
         rowKey={(record) => `${record.bankBranchIdString}`}
         dispatchType="businessBankSet/fetchGetList"
         {...businessBankSet}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <BankSet
         cRef={childRef}
         bankTopArr={businessBankSet.bankTopArr}

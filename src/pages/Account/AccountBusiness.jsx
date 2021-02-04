@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailList from './components/Business/BusinessDetailList';
 import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
 
@@ -110,8 +110,8 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="商家账户"
+      <TableDataBlock
+        keepName
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -120,7 +120,7 @@ const AccountBusinessList = (props) => {
         {...list}
       >
         <BusinessTotalInfo></BusinessTotalInfo>
-      </DataTableBlock>
+      </TableDataBlock>
       <BusinessDetailList visible={visible} setVisible={setVisible}></BusinessDetailList>
     </>
   );

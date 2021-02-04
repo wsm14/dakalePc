@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 // import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import activeAllocationEdit from './components/allocation/ActiveAllocationEdit';
 import ActiveAllocationPlace from './components/allocation/ActiveAllocationPlace';
 import AllocationSet from './components/allocation/AllocationSet';
@@ -94,7 +94,7 @@ const ActiveAllocation = (props) => {
           setRowKey([]);
         }}
       >
-        <DataTableBlock
+        <TableDataBlock
           NoSearch={true}
           noCard={false}
           cRef={childRef}
@@ -123,7 +123,7 @@ const ActiveAllocation = (props) => {
             ),
           }}
           {...activeAllocation}
-        ></DataTableBlock>
+        ></TableDataBlock>
       </Card>
       <AllocationSet
         {...visibleSet}

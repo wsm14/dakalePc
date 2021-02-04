@@ -5,7 +5,7 @@ import CITYJSON from '@/common/city';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
 import AreaCompanySet from './components/Area/Form/AreaCompanySet';
 import AreaAccountSet from './components/Area/Form/AreaAccountSet';
@@ -162,8 +162,8 @@ const AreaCenter = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="区县运营中心"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -187,7 +187,7 @@ const AreaCenter = (props) => {
         rowKey={(record) => `${record.partnerId}`}
         dispatchType="areaCenter/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <AreaCompanyDetailList visible={visible} setVisible={setVisible} />
       <AreaCompanySet
         cRef={childRef}

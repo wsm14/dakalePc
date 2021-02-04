@@ -5,8 +5,8 @@ import { FAQ_LIKE_STATUS } from '@/common/constant';
 import { Card, Result, Switch, Button, Space, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import DraggableContent, { DragHandle } from '@/components/DataTableBlock/SortBlock';
+import TableDataBlock from '@/components/TableDataBlock';
+import DraggableContent, { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import FAQSortList from './components/FAQ/List/FAQSortList';
 import FAQSet from './components/FAQ/Form/FAQSet';
 
@@ -296,7 +296,7 @@ const ServiceFAQ = (props) => {
       }
     >
       {check && check.length ? (
-        <DataTableBlock
+        <TableDataBlock
           NoSearch
           noCard={false}
           cRef={childRef}
@@ -350,7 +350,7 @@ const ServiceFAQ = (props) => {
             onChange: (val) => setDelKey(val),
           }}
           {...FAQList}
-        ></DataTableBlock>
+        ></TableDataBlock>
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>
       )}

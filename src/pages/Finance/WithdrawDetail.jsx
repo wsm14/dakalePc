@@ -5,7 +5,7 @@ import { Spin, Tag } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import WithdrawRemark from './components/Withdraw/WithdrawRemark';
 
@@ -146,8 +146,8 @@ const WithdrawDetail = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="提现明细"
+      <TableDataBlock
+        keepName
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
             <Tag color="orange">
@@ -176,7 +176,7 @@ const WithdrawDetail = (props) => {
         rowKey={(record) => `${record.merchantBeanWithdrawalId}`}
         dispatchType="withdrawDetail/fetchGetList"
         {...withdrawDetail.list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <WithdrawRemark
         childRef={childRef}
         visible={visible}

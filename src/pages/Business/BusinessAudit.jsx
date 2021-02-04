@@ -5,7 +5,7 @@ import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
@@ -160,8 +160,8 @@ const BusinessAuditList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="新店审核"
+      <TableDataBlock
+        keepName
         btnExtra={
           <AuthConsumer auth="checkDetail">
             <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
@@ -177,7 +177,7 @@ const BusinessAuditList = (props) => {
         rowKey={(record) => `${record.userMerchantVerifyId}`}
         dispatchType="businessAudit/fetchGetList"
         {...businessAudit.list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <BusinessEdit
         cRef={childRef}
         visible={visible}

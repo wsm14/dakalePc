@@ -6,7 +6,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import NoticeImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import marketCardNoticeSet from './MarketCardNoticeSet';
 
 const MarketCardNotice = (props) => {
@@ -128,7 +128,7 @@ const MarketCardNotice = (props) => {
   );
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       cRef={childRef}
       loading={loading}
       btnExtra={btnExtra}
@@ -137,7 +137,7 @@ const MarketCardNotice = (props) => {
       rowKey={(record) => `${record.configAnnounceIdString}`}
       dispatchType="marketCardNotice/fetchGetList"
       {...marketCardNotice}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

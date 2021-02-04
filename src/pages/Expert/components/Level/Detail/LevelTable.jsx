@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { targetJson } from '@/common/expertLevelJSON';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelTable = (props) => {
   const { list, keyRow, loading, setSelectData, setEditData, fetchExpertLevelSet } = props;
@@ -178,7 +178,7 @@ const LevelTable = (props) => {
   ];
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       btnExtra={
         <Button className="dkl_green_btn" onClick={() => setSelectData({ show: true })}>
           添加
@@ -190,7 +190,7 @@ const LevelTable = (props) => {
       rowKey={(record) => `${record.name}`}
       list={list}
       pagination={false}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

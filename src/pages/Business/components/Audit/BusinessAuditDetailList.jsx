@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Modal } from 'antd';
 import { BUSINESS_DETAIL_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessAuditDetailList = (props) => {
   const { businessAudit, loading, visible = false, setVisible } = props;
@@ -122,7 +122,7 @@ const BusinessAuditDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible(false)}
     >
-      <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <TableDataBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_ACTION_TYPE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const ActionList = (props) => {
@@ -87,7 +87,7 @@ const ActionList = (props) => {
   };
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       noCard={false}
       cRef={childRef}
       loading={loading}
@@ -95,7 +95,7 @@ const ActionList = (props) => {
       rowKey={(record) => `${record.configBehaviorId}`}
       dispatchType="subsidyManage/fetchSubsidyActionList"
       {...subsidyManage.actionList}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

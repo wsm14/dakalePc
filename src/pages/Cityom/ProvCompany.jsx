@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
 import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
@@ -142,8 +142,8 @@ const ProvCompany = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="省级公司"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -167,7 +167,7 @@ const ProvCompany = (props) => {
         rowKey={(record) => `${record.companyId}`}
         dispatchType="provCompany/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ProvCompanyDetailList visible={visible} setVisible={setVisible} />
       <ProvCompanySet
         cRef={childRef}

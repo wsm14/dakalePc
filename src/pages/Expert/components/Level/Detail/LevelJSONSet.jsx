@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { rightsJson, targetJson } from '@/common/expertLevelJSON';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelJSONSet = (props) => {
   const { show, showlistData, keyRow, onCancel, loading, fetchExpertLevelSet } = props;
@@ -88,7 +88,7 @@ const LevelJSONSet = (props) => {
 
   return (
     <Drawer {...modalProps} onClose={onCancel}>
-      <DataTableBlock
+      <TableDataBlock
         componentSize={'small'}
         noCard={false}
         loading={loading}
@@ -96,7 +96,7 @@ const LevelJSONSet = (props) => {
         rowKey={(record) => `${record.title}`}
         list={propItem.list}
         pagination={false}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Drawer>
   );
 };

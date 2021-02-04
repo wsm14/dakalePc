@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import { MATCH_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MarketRMTotalInfo from './MarketRMTotalInfo';
 import marketMatchMorningSet from './MarketMatchMorningSet';
 import marketMatchRuningSet from './MarketMatchRuningSet';
@@ -142,7 +142,7 @@ const MarketCardRMing = (props) => {
   return (
     <>
       <MarketRMTotalInfo matchType={matchType} />
-      <DataTableBlock
+      <TableDataBlock
         cRef={childRef}
         loading={loading}
         btnExtra={btnExtra}
@@ -152,7 +152,7 @@ const MarketCardRMing = (props) => {
         params={{ matchType, limit: 2 }}
         dispatchType="marketCardRMing/fetchGetList"
         {...marketCardRMing.matchList}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <MarketCardRMingJoinDetail matchType={matchType} visible={visible} setVisible={setVisible} />
     </>
   );

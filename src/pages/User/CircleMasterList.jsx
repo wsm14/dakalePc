@@ -2,7 +2,7 @@ import React, { useEffect, useState, memo } from 'react';
 import { connect } from 'umi';
 import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
 import MasterDetailList from './components/Master/MasterDetailList';
 
@@ -118,8 +118,8 @@ const CircleMasterList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="家主列表"
+      <TableDataBlock
+        keepName
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -129,7 +129,7 @@ const CircleMasterList = (props) => {
         {...masterList}
       >
         <MasterTotalInfo />
-      </DataTableBlock>
+      </TableDataBlock>
       <MasterDetailList visible={visible} setVisible={setVisible} />
     </>
   );

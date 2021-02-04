@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import peasShareSet from './components/PeasShare/PeasShareSet';
 
 const SysPeasShare = (props) => {
@@ -62,7 +62,7 @@ const SysPeasShare = (props) => {
   };
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       cRef={childRef}
       btnExtra={
         <AuthConsumer auth="save">
@@ -76,7 +76,7 @@ const SysPeasShare = (props) => {
       rowKey={(record) => `${record.configMomentIdString}`}
       dispatchType="sysPeasShare/fetchGetList"
       {...sysPeasShare}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

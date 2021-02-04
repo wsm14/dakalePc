@@ -1,5 +1,5 @@
 import React from 'react';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
   // table 表头
@@ -18,7 +18,7 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
 
   return (
     <div style={{ marginBottom: 20 }} key="table">
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         componentSize="small"
         columns={getColumns}
@@ -29,7 +29,7 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
         }}
         list={list}
         total={list.length}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 
 const SpecialGoods = (props) => {
@@ -233,8 +233,8 @@ const SpecialGoods = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="周边特惠"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="tradeSet">
@@ -249,7 +249,7 @@ const SpecialGoods = (props) => {
         rowKey={(record) => `${record.specialGoodsId}`}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <SpecialGoodsTrade
         visible={visible}
         onCancel={() => setVisible({ show: false })}

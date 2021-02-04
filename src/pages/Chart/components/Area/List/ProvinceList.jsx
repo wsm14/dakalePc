@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect, history } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import CITYJSON from '@/common/city';
 
 const ProvinceTotalComponent = (props) => {
@@ -99,7 +99,7 @@ const ProvinceTotalComponent = (props) => {
   }, [searchData]);
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       NoSearch
       noCard={false}
       cRef={childRef}
@@ -109,7 +109,7 @@ const ProvinceTotalComponent = (props) => {
       rowKey={(record) => `${record.bucket}`}
       dispatchType="areaTotal/fetchGetList"
       list={list}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

@@ -5,7 +5,7 @@ import { CITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import ManageCityLeft from './components/City/Left';
 import manageCitySet from './components/City/ManageCitySet';
 
@@ -102,7 +102,7 @@ const ManageCity = (props) => {
         setSelectCode={setSelectCode}
       ></ManageCityLeft>
       <div style={{ flex: 1 }}>
-        <DataTableBlock
+        <TableDataBlock
           btnExtra={
             <AuthConsumer auth="save">
               <Button
@@ -123,7 +123,7 @@ const ManageCity = (props) => {
           params={{ provinceCode: selectCode.provinceCode }}
           dispatchType="manageCity/fetchGetList"
           {...manageCity}
-        ></DataTableBlock>
+        ></TableDataBlock>
       </div>
     </Card>
   );

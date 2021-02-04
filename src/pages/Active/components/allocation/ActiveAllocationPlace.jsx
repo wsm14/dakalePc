@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const ActiveAllocationPlace = (props) => {
   const { activeAllocationPlace, loading, userOs, promotionVersion, setVisibleSet } = props;
@@ -85,7 +85,7 @@ const ActiveAllocationPlace = (props) => {
   ];
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       NoSearch={true}
       noCard={false}
       componentSize="middle"
@@ -97,7 +97,7 @@ const ActiveAllocationPlace = (props) => {
       params={{ userOs, promotionVersion }}
       dispatchType="activeAllocationPlace/fetchGetList"
       {...activeAllocationPlace}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

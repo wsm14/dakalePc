@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import sysMenuSet from './components/Menu/SysMenuSet';
 
 const tabList = [
@@ -166,7 +166,7 @@ const SysMenuList = (props) => {
         setOne(true);
       }}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         cRef={childRef}
         loading={loading}
@@ -176,7 +176,7 @@ const SysMenuList = (props) => {
         params={{ ownerType: tabkey }}
         pParams={{ limit: 101 }}
         {...sysMenuList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Card>
   );
 };

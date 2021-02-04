@@ -6,7 +6,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import NewsSet from './components/News/NewsSet';
 
 const tabList = [
@@ -103,7 +103,7 @@ const ServiceNewsComponent = (props) => {
 
   const contentList = {
     tab1: (
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         cRef={childRef}
         loading={loading}
@@ -111,7 +111,7 @@ const ServiceNewsComponent = (props) => {
         rowKey={(record) => `${record.newsIdString}`}
         dispatchType="serviceNews/fetchGetList"
         {...serviceNews}
-      ></DataTableBlock>
+      ></TableDataBlock>
     ),
     tab2: (
       <AuthConsumer

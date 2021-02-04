@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import UserOrderDetail from '../CheckOrderDetail';
 
 const UserDetailList = (props) => {
@@ -109,7 +109,7 @@ const UserDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         loading={loading}
         columns={propItem.getColumns}
@@ -118,7 +118,7 @@ const UserDetailList = (props) => {
         dispatchType="accountUser/fetchDetailList"
         componentSize="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

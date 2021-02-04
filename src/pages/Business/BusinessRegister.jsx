@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { BUSINESS_REGISTER_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessRegisterComponent = (props) => {
   const { businessRegister, loading } = props;
@@ -58,15 +58,15 @@ const BusinessRegisterComponent = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="注册列表"
+    <TableDataBlock
+      keepName
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.userMerchantIdString}`}
       dispatchType="businessRegister/fetchGetList"
       {...businessRegister}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

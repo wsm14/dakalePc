@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Card } from 'antd';
 import moment from 'moment';
 import ExcelButton from '@/components/ExcelButton';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import IncomeTotal from './components/Income/Total';
 import SearchCard from './components/Income/Search/SearchCard';
 import tableColums from './components/Income/List/tableColums';
@@ -102,7 +102,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
         {/* 统计区域 */}
         <IncomeTotal></IncomeTotal>
         {/* 表格 */}
-        <DataTableBlock
+        <TableDataBlock
           NoSearch
           noCard={false}
           cRef={childRef}
@@ -117,7 +117,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
           rowKey={(record) => `${record.identification || record.time}`}
           dispatchType="platformIncome/fetchPlatformInconme"
           {...platformIncome.list}
-        ></DataTableBlock>
+        ></TableDataBlock>
       </Card>
       <IncomeOrderDetail visible={visible} onClose={() => setVisible(false)}></IncomeOrderDetail>
     </>

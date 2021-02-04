@@ -2,7 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'umi';
 import CardLoading from '@/components/CardLoading';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import UserDetailList from './components/User/UserDetailList';
 
 const UserTotalInfo = lazy(() => import('./components/User/UserTotalInfo'));
@@ -95,8 +95,8 @@ const AccountUserList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="用户账户"
+      <TableDataBlock
+        keepName
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -107,7 +107,7 @@ const AccountUserList = (props) => {
         <Suspense fallback={<CardLoading></CardLoading>}>
           <UserTotalInfo></UserTotalInfo>
         </Suspense>
-      </DataTableBlock>
+      </TableDataBlock>
       <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
     </>
   );

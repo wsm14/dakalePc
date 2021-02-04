@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { GOODS_TYPE, MRE_SURE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import CouponDrawer from './components/Coupon/CouponDrawer';
 import styles from './style.less';
@@ -175,7 +175,7 @@ const CouponManageComponent = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -183,7 +183,7 @@ const CouponManageComponent = (props) => {
         rowKey={(record) => `${record.goodsIdString}`}
         dispatchType="couponManage/fetchGetList"
         {...couponManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <CouponDrawer
         childRef={childRef}
         visible={visible}

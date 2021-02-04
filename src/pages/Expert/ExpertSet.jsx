@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import classifySet from './components/ExpertSet/ClassifySet';
 import ClassifyDetailList from './components/ExpertSet/ClassifyDetailList';
 
@@ -139,7 +139,7 @@ const ExpertSet = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="savePClassify">
             <Button
@@ -150,7 +150,7 @@ const ExpertSet = (props) => {
             </Button>
           </AuthConsumer>
         }
-        keepName="创作设置"
+        keepName
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -159,7 +159,7 @@ const ExpertSet = (props) => {
         {...list}
         expandable={{ childrenColumnName: ['domainDTOList'] }}
         pagination={false}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ClassifyDetailList visible={visible} setVisible={setVisible}></ClassifyDetailList>
     </>
   );

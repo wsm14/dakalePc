@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const TaskManage = (props) => {
@@ -139,7 +139,7 @@ const TaskManage = (props) => {
   };
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       noCard={false}
       btnExtra={({ get }) => (
         <ExcelButton
@@ -155,7 +155,7 @@ const TaskManage = (props) => {
       rowKey={(record) => `${record.subsidyId}`}
       dispatchType="subsidyManage/fetchGetTaskList"
       {...subsidyManage.list}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

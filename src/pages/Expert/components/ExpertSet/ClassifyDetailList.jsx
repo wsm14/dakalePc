@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Modal, Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import classifyDetailSet from './ClassifyDetailSet';
 
@@ -138,7 +138,7 @@ const ClassifyDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
             新增
@@ -153,7 +153,7 @@ const ClassifyDetailList = (props) => {
         dispatchType="expertSet/fetchClassifyDetailList"
         componentSize="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

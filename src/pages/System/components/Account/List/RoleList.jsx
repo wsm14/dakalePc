@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Switch, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from '../Form/RoleSetForm';
 
 const RoleList = (props) => {
@@ -132,7 +132,7 @@ const RoleList = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="roleAdd">
             <Button className="dkl_green_btn" key="1" onClick={() => fetchFlag()}>
@@ -149,7 +149,7 @@ const RoleList = (props) => {
         rowKey={(record) => `${record.idString}`}
         dispatchType="roleSetting/fetchGetList"
         {...roleSetting}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <RoleSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></RoleSetForm>
     </>
   );

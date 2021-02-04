@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import debounce from 'lodash/debounce';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import ClassifySet from './components/Classify/ClassifySet';
 
@@ -98,8 +98,8 @@ const ClassifyManageComponent = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="分类管理"
+      <TableDataBlock
+        keepName
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
@@ -114,7 +114,7 @@ const ClassifyManageComponent = (props) => {
         rowKey={(record) => `${record.categoryCustomId}`}
         dispatchType="classifyManage/fetchGetList"
         {...classifyManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ClassifySet
         cRef={childRef}
         visible={visible}

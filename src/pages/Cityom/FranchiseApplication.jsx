@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { FRANCHISE_APP_STATUS, FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import FranchiseDrawer from './components/Franchise/FranchiseDrawer';
 
 const FranchiseApplication = (props) => {
@@ -126,8 +126,8 @@ const FranchiseApplication = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="加盟申请"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -135,7 +135,7 @@ const FranchiseApplication = (props) => {
         rowKey={(record) => `${record.userApplyIdString}`}
         dispatchType="franchiseApp/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <FranchiseDrawer
         childRef={childRef}
         visible={visible}

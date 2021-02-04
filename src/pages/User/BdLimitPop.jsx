@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import limitPopSet from './components/LimitPop/LimitPopSet';
 
 const ServiceLimitPop = (props) => {
@@ -48,7 +48,7 @@ const ServiceLimitPop = (props) => {
   };
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       btnExtra={
         <AuthConsumer auth="save">
           <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
@@ -56,7 +56,7 @@ const ServiceLimitPop = (props) => {
           </Button>
         </AuthConsumer>
       }
-      keepName="BD白名单"
+      keepName
       cRef={childRef}
       loading={loading}
       columns={getColumns}
@@ -64,7 +64,7 @@ const ServiceLimitPop = (props) => {
       rowKey={(record) => `${record.mobile}`}
       dispatchType="serviceLimitPop/fetchGetList"
       {...serviceLimitPop}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

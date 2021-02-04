@@ -6,7 +6,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
 
 const SysAppSet = (props) => {
@@ -122,8 +122,8 @@ const SysAppSet = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="广告设置"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -141,7 +141,7 @@ const SysAppSet = (props) => {
         rowKey={(record) => `${record.bannerIdString}`}
         dispatchType="sysAppList/fetchGetList"
         {...sysAppList}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <SysAppSetForm
         cRef={childRef}
         visible={visibleSet}

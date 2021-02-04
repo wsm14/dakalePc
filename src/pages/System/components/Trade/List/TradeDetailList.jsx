@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import tradeBaseSet from '../Form/TradeBaseSet';
 
@@ -118,7 +118,7 @@ const TradeBaseSet = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
             新增
@@ -133,7 +133,7 @@ const TradeBaseSet = (props) => {
         dispatchType="sysTradeList/fetchDetailList"
         componentSize="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

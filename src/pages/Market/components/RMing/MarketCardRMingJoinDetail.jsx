@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { MATCH_USER_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const MarketCardRMingJoinDetail = (props) => {
   const { marketCardRMing, loading, matchType, visible, setVisible } = props;
@@ -61,7 +61,7 @@ const MarketCardRMingJoinDetail = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         loading={loading}
         columns={getColumns}
@@ -70,7 +70,7 @@ const MarketCardRMingJoinDetail = (props) => {
         dispatchType="marketCardRMing/fetchMarketMatchJoin"
         componentSize="middle"
         {...marketCardRMing.joinList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

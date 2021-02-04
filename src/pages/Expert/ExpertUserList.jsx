@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { EXPERT_USER_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import closeExpert from './components/UserList/CloseExpert';
 
@@ -153,8 +153,8 @@ const ExpertUserList = (props) => {
   // }, []);
 
   return (
-    <DataTableBlock
-      keepName="哒人列表"
+    <TableDataBlock
+      keepName
       cRef={childRef}
       loading={loading}
       columns={getColumns}
@@ -169,7 +169,7 @@ const ExpertUserList = (props) => {
       >
         哒人总数： <Statistic value={userTotal}></Statistic>
       </Card> */}
-    </DataTableBlock>
+    </TableDataBlock>
   );
 };
 

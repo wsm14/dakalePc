@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { ACTIVE_COUPON_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const MarketCardActivityDetailPay = (props) => {
   const { marketCardActivity, loading, visible, setVisible } = props;
@@ -134,7 +134,7 @@ const MarketCardActivityDetailPay = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <TableDataBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
   );
 };

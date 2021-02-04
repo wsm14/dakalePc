@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import checkInDetailSet from './CheckInDetailSet';
 
@@ -96,7 +96,7 @@ const CheckInDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           {
             text: (
@@ -129,7 +129,7 @@ const CheckInDetailList = (props) => {
         dispatchType="sysCheckIn/fetchDetailList"
         componentSize="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

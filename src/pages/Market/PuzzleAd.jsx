@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
 
 const PuzzleAd = (props) => {
@@ -117,8 +117,8 @@ const PuzzleAd = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="拼图广告"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -136,7 +136,7 @@ const PuzzleAd = (props) => {
         rowKey={(record) => `${record.puzzleAdsId}`}
         dispatchType="puzzleAd/fetchGetList"
         {...puzzleAd}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <PuzzleAdSet
         cRef={childRef}
         visible={visibleSet}

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Modal, Button, Table } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import tradePlatformSet from '../Form/TradePlatformSet';
 
@@ -178,7 +178,7 @@ const TradePlatformDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={propsItem.btnExtra}
         cRef={childRef}
         noCard={false}
@@ -190,7 +190,7 @@ const TradePlatformDetailList = (props) => {
         componentSize="middle"
         expandable={propsItem.expandable}
         list={propsItem.list}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { FEEDBACK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 
 const ServiceFeedBack = (props) => {
@@ -105,8 +105,8 @@ const ServiceFeedBack = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="问题反馈"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -114,7 +114,7 @@ const ServiceFeedBack = (props) => {
         rowKey={(record) => `${record.feedbackIdString}`}
         dispatchType="serviceFeedBack/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <FeedBackDetail
         cRef={childRef}
         visible={visible}

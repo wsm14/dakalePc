@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { SHARE_TYPE, SHARE_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import closeRefuse from './components/Share/CloseRefuse';
 import ShareDetail from './components/Share/ShareDetail';
@@ -164,8 +164,8 @@ const ShareManage = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="分享管理"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -173,7 +173,7 @@ const ShareManage = (props) => {
         rowKey={(record) => `${record.userMomentIdString}`}
         dispatchType="shareManage/fetchGetList"
         {...shareManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ShareDetail visible={visible} onClose={() => setVisible(false)}></ShareDetail>
       <ShareHandleDetail
         visible={visibleHandle}

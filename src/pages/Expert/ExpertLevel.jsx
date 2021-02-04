@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import LevelDetail from './components/Level/Detail/LevelDetail';
 
 const ExpertLevel = (props) => {
@@ -79,15 +79,15 @@ const ExpertLevel = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="等级设置"
+      <TableDataBlock
+        keepName
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.levelConfigId}`}
         dispatchType="expertLevel/fetchGetList"
         list={list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <LevelDetail
         cRef={childRef}
         visible={visible}

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import DistrictList from './DistrictList';
 import CITYJSON from '@/common/city';
 import styles from './style.less';
@@ -66,7 +66,7 @@ const CityListComponent = (props) => {
     <div style={{ display: 'flex' }}>
       <div style={{ flex: 1 }}>
         {selectRow && '各城市排行'}
-        <DataTableBlock
+        <TableDataBlock
           NoSearch
           noCard={false}
           cRef={childRef}
@@ -84,7 +84,7 @@ const CityListComponent = (props) => {
               }, // 点击行
             };
           }}
-        ></DataTableBlock>
+        ></TableDataBlock>
       </div>
       {selectRow && (
         <div style={{ flex: 1, marginLeft: 5 }}>

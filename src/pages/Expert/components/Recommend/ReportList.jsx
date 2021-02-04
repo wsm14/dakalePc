@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import processReport from './ProcessReport';
@@ -180,7 +180,7 @@ const ReportList = (props) => {
       visible={visible}
       onCancel={() => setVisible(false)}
     >
-      <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <TableDataBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
   );
 };

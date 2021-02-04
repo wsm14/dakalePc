@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { EXPERT_SORT_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import sortSet from './components/Sort/SortSet';
 
 const ExpertSort = (props) => {
@@ -50,8 +50,8 @@ const ExpertSort = (props) => {
   };
 
   return (
-    <DataTableBlock
-      keepName="排序机制"
+    <TableDataBlock
+      keepName
       cRef={childRef}
       loading={loading}
       columns={getColumns}
@@ -59,7 +59,7 @@ const ExpertSort = (props) => {
       dispatchType="expertSort/fetchGetList"
       {...expertSort}
       pagination={false}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { PAY_TYPE } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
 
 const CodeOrders = (props) => {
@@ -122,7 +122,7 @@ const CodeOrders = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         cRef={childRef}
         loading={loading}
@@ -132,7 +132,7 @@ const CodeOrders = (props) => {
         rowKey={(record) => `${record.orderSn}`}
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </>
   );
 };

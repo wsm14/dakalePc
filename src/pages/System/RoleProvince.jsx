@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Switch, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from './components/RoleProvince/Form/RoleSetForm';
 
 const ProvinceRole = (props) => {
@@ -94,7 +94,7 @@ const ProvinceRole = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="roleAdd">
             <Button className="dkl_green_btn" onClick={() => setVisible({ visible: true })}>
@@ -109,7 +109,7 @@ const ProvinceRole = (props) => {
         dispatchType="roleProvinceArea/fetchGetList"
         params={{ ownerType: 'company' }}
         {...roleProvinceArea}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <RoleSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></RoleSetForm>
     </>
   );

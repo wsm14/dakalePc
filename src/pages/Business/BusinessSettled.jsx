@@ -9,7 +9,7 @@ import {
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessSettled = (props) => {
   const { businessSettled, loading } = props;
@@ -207,8 +207,8 @@ const BusinessSettled = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="入驻绑定查询"
+    <TableDataBlock
+      keepName
       btnExtra={({ get }) => (
         <ExcelButton
           dispatchType={'businessSettled/fetchMerchantGetExcel'}
@@ -224,7 +224,7 @@ const BusinessSettled = (props) => {
       rowKey={(record) => `${record.userMerchantIdString}`}
       dispatchType="businessSettled/fetchGetList"
       {...businessSettled}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

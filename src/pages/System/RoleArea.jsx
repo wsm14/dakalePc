@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Switch, Button } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from './components/RoleArea/Form/RoleSetForm';
 
 const RoleArea = (props) => {
@@ -95,7 +95,7 @@ const RoleArea = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <Button className="dkl_green_btn" key="1" onClick={() => setVisible({ visible: true })}>
             新增
@@ -108,7 +108,7 @@ const RoleArea = (props) => {
         dispatchType="roleProvinceArea/fetchGetList"
         params={{ ownerType: 'partner' }}
         {...roleProvinceArea}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <RoleSetForm childRef={childRef} {...visible} onClose={() => setVisible(false)}></RoleSetForm>
     </>
   );

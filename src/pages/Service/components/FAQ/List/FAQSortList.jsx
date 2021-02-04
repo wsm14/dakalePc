@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import faqSortSet from '../Form/FAQSortSet';
 
@@ -90,7 +90,7 @@ const FAQSortList = (props) => {
       visible={visible}
       onCancel={setVisible}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
             新增分类
@@ -105,7 +105,7 @@ const FAQSortList = (props) => {
         dispatchType="serviceFAQ/fetchFAQSortList"
         componentSize="middle"
         {...sortList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

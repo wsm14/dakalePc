@@ -5,7 +5,7 @@ import { WORKER_JOB_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import UserSetForm from '../Form/UserSetForm';
 
 const { SubMenu } = Menu;
@@ -212,7 +212,7 @@ const UserList = (props) => {
         {menuList && routerMenu(menuList, 'children')}
       </Menu>
       <div style={{ flex: 1 }}>
-        <DataTableBlock
+        <TableDataBlock
           btnExtra={
             <AuthConsumer auth="userAdd">
               <Button
@@ -233,7 +233,7 @@ const UserList = (props) => {
           rowKey={(record) => `${record.adminAccountId}`}
           dispatchType="accountList/fetchGetList"
           {...accountList}
-        ></DataTableBlock>
+        ></TableDataBlock>
         <UserSetForm
           childRef={childRef}
           {...visible}

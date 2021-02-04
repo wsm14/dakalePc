@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import businessBrandSet from './components/Brand/BusinessBrandSet';
 
@@ -116,7 +116,7 @@ const BusinessBrandComponent = (props) => {
   }, []);
 
   return (
-    <DataTableBlock
+    <TableDataBlock
       btnExtra={
         <AuthConsumer auth="save">
           <Button className="dkl_green_btn" onClick={()=>handleBrandSet()}>
@@ -131,7 +131,7 @@ const BusinessBrandComponent = (props) => {
       rowKey={(record) => `${record.configBrandIdString}`}
       dispatchType="businessBrand/fetchGetList"
       {...businessBrand}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

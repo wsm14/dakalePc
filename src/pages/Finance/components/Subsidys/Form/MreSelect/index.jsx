@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = [], loading }) => {
   // 选中的店铺
@@ -54,7 +54,7 @@ const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = 
       }}
       onCancel={onCancel}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         componentSize="middle"
         searchItems={searchItems}
@@ -83,7 +83,7 @@ const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = 
           },
         }}
         {...subsidyList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };
