@@ -150,7 +150,7 @@ const ExpertSet = (props) => {
             </Button>
           </AuthConsumer>
         }
-        keepName
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}

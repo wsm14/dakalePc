@@ -147,7 +147,7 @@ const WithdrawDetail = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
             <Tag color="orange">

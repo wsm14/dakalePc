@@ -111,7 +111,7 @@ const AccountBusinessList = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

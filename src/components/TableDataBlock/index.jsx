@@ -9,7 +9,7 @@ import TableBlock from './tableBlock';
 
 const TableDataBlockComponent = (props) => {
   const menuNameObj = useSelector((state) => state.userInfo.menuNameObj);
-  const { keepName = false } = props;
+  const { keepData = false } = props;
   const match = useLocation();
 
   const KeepContent = {
@@ -23,7 +23,7 @@ const TableDataBlockComponent = (props) => {
       </KeepAlive>
     ),
     false: <TableBlock {...props}></TableBlock>,
-  }[keepName];
+  }[keepData];
 
   return KeepContent;
 };

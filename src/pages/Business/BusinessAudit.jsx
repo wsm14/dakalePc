@@ -161,7 +161,7 @@ const BusinessAuditList = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         btnExtra={
           <AuthConsumer auth="checkDetail">
             <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>

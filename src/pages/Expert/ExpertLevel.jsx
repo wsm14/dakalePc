@@ -80,7 +80,7 @@ const ExpertLevel = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}

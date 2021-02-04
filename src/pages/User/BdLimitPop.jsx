@@ -56,7 +56,7 @@ const ServiceLimitPop = (props) => {
           </Button>
         </AuthConsumer>
       }
-      keepName
+      keepData
       cRef={childRef}
       loading={loading}
       columns={getColumns}

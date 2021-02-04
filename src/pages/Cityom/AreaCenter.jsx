@@ -163,7 +163,7 @@ const AreaCenter = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

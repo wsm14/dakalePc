@@ -208,7 +208,7 @@ const BusinessSettled = (props) => {
 
   return (
     <TableDataBlock
-      keepName
+      keepData
       btnExtra={({ get }) => (
         <ExcelButton
           dispatchType={'businessSettled/fetchMerchantGetExcel'}

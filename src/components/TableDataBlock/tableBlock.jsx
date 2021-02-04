@@ -10,7 +10,6 @@ import DraggableContent from './SortBlock';
  * 2020年7月29日 14:48:02 Dong
  *
  * @dispatchType {*} 表格请求url
- * @keepName 保持数据的名字
  * @columns 表头
  * @searchItems 搜索条件
  * @searchCallback 搜索回调

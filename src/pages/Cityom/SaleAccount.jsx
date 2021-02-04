@@ -136,7 +136,7 @@ const SaleAccount = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">

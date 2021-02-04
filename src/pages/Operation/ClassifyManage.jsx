@@ -99,7 +99,7 @@ const ClassifyManageComponent = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>

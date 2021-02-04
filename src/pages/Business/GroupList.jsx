@@ -222,7 +222,7 @@ const tableList = (props) => {
   return (
     <>
       <TableDataBlock
-        keepName
+        keepData
         btnExtra={
           <AuthConsumer auth="save">
             <Button

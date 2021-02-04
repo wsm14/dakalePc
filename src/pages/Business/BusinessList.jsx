@@ -333,7 +333,7 @@ const BusinessListComponent = (props) => {
         ></BusinessTotalInfo>
       </Suspense>
       <TableDataBlock
-        keepName
+        keepData
         btnExtra={({ get }) => (
           <ExcelButton
             dispatchType={'businessList/fetchMerchantGetExcel'}
