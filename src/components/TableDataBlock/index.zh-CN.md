@@ -2,7 +2,7 @@
 
 ---
 
-表格信息回显组件 整合了拖动排序 搜索表单 `整合antd组件 兼容所有原组件配置参数`
+表格信息回显组件 整合了拖动排序 搜索表单 `整合antd组件 兼容所有原组件配置参数（TableDataBlock props将完整打入表格中）`
 
 ### 涉及 antd 组件文档
 
@@ -18,7 +18,7 @@
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数`（必填）` | `string | function(record): string` | - |
 | dispatchType | 请求路径 | String | - |
 | cRef | 子组件绑定 ref 获取请求方法 | useRef | - |
-| btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get:getData() })` | - |
+| btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get: function() => nowData })` | - |
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | useForm | - |
 | searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function | - |
