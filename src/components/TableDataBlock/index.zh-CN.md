@@ -17,10 +17,10 @@
 | columns | 表头`（必填）` | object[] | - |
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数`（必填）` | `string | function(record): string` | - |
 | dispatchType | 请求路径 | String | - |
-| cRef | 子组件绑定 ref 获取请求方法 | useRef | - |
+| cRef | 子组件绑定 ref 获取请求方法 | React.useRef() | - |
 | btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get: function() => nowData })` | - |
 | searchItems | 搜索条件 | object[] | - |
-| searchForm | 搜索表单 form | useForm | - |
+| searchForm | 搜索表单 form | Form.useForm() | - |
 | searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function | - |
 | resetSearch | 重置事件回调 | function | - |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
