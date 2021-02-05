@@ -43,16 +43,16 @@
 `TableDataBlock/SortBlock` 默认导出方法 返回 `{ components:{ body:{} } }` 对象
 
 ```
-<TableDataBlock 
-  {...DraggableContent(list, { key, onSortEnd: (val) => {} })} 
+<TableDataBlock
+  {...DraggableContent(list, { key, onSortEnd: (val) => {} })}
 />
 ```
 
-| 参数       | 说明                 | 类型                 | 默认值 |
-| ---------- | -------------------- | -------------------- | ------ |
-| dataSource | 排序数据源`（必填）` | object[]             | []     |
-| key        | 排序唯一键名         | string               | -      |
-| onSortEnd  | 排序完成回调函数     | `function(): Object` | -      |
+| 参数       | 说明                                         | 类型                 | 默认值 |
+| ---------- | -------------------------------------------- | -------------------- | ------ |
+| dataSource | 排序数据源`（必填）`                         | object[]             | []     |
+| key        | 排序唯一键名 `（必填）`                      | string               | -      |
+| onSortEnd  | 排序完成回调函数，将会返回排序完成后新数据 | `function(): Object` | -      |
 
 - ### 2021-02-05
 
