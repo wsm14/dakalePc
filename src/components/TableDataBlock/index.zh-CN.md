@@ -2,7 +2,7 @@
 
 ---
 
-表格信息回显组件 整合了拖动排序 搜索表单 `整合antd组件 兼容所有原组件配置参数（TableDataBlock props将完整打入表格中）`
+表格信息回显组件 整合了拖动排序 搜索表单 `整合antd组件 兼容所有原antd Table组件配置参数（TableDataBlock props将完整打入表格中）`
 
 ### 涉及 antd 组件文档
 
@@ -35,7 +35,7 @@
 | params | 搜索时默认参数 | Object | {} |
 | children | 表格搜索框顶部显示内容 | ReactNode | - |
 
-### 2021-02-05
+- ### 2021-02-05
 
 组件重构
 
