@@ -34,9 +34,8 @@
 | params | 搜索时默认参数 | Object | {} |
 | children | 表格搜索框顶部显示内容 | ReactNode | - |
 
-`2021-02-05`  
-组件重构
-
+### 2021-02-05
+>组件重构
 - `noCard` 替换 `CardNone`
 - `firstFetch` 替换 `NoSearch`
 - 移除参数 `pParams`，用`params` 替代全部职能
