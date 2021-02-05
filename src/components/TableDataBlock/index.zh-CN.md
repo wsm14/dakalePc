@@ -2,7 +2,7 @@
 
 ---
 
-表格信息回显组件 整合了拖动排序 搜索表单 兼容所有antd [Table 表格](https://ant.design/components/table-cn/)配置参数`（TableDataBlock props将完整打入表格中，传递即可）`
+表格信息回显组件 整合了拖动排序 搜索表单 兼容antd [Table 表格](https://ant.design/components/table-cn/)配置参数`（TableDataBlock props将完整打入表格中，传递即可）`
 
 ### 涉及 antd 组件文档
 
