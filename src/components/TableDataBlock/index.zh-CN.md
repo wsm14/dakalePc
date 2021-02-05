@@ -44,7 +44,11 @@
 
 ```
 <TableDataBlock
-  {...DraggableContent(list, { key, onSortEnd: (val) => {} })}
+  {...draggableContent(
+      list, 
+      { key, onSortEnd: (val) => {} }
+    )
+  }
 />
 ```
 
