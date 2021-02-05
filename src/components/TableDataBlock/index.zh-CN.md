@@ -47,8 +47,7 @@
   {...draggableContent(
       list, 
       { key, onSortEnd: (val) => {} }
-    )
-  }
+  )}
 />
 ```
 
