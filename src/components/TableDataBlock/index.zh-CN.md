@@ -21,7 +21,7 @@
 | dispatchType | 请求路径 | String | - |
 | cRef | 子组件绑定 ref 获取请求方法 | React.useRef() | - |
 | btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get: function() => nowData })` | - |
-| keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅`运营``销售`后台支持） | boolean | false |
+| keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅`运营` `销售`后台支持） | boolean | false |
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | Form.useForm() | - |
 | searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function(searchVal, tableVal) | - |
@@ -65,7 +65,7 @@
 
 > - `noCard` 替换 `CardNone`
 > - `firstFetch` 替换 `NoSearch`
-> - `keepData` 替换 `keepName`，`keepName`由原路径名称变为 boolean（仅`运营``销售`后台支持）
+> - `keepData` 替换 `keepName`，`keepName`由原路径名称变为 boolean（仅`运营` `销售`后台支持）
 > - 移除参数 `pParams`，用`params` 替代全部职能
 > - 移除参数 `CardTitle` `style` `bodyStyle` `extra`，用`cardProps` 替代全部职能完整传递 antd Card 组件配置
 > - 移除参数 `setParams`
