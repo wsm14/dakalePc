@@ -6,8 +6,12 @@ import { Pie } from '@/components/Charts';
 const UserTotalSpread = ({ loading, totalChartData }) => {
   const dataSex = [
     {
+      type: '未知',
+      value: totalChartData.userGenderUnknown || 0,
+    },
+    {
       type: '男',
-      value: totalChartData.userGenderMale + totalChartData.userGenderUnknown || 0,
+      value: totalChartData.userGenderMale || 0,
     },
     {
       type: '女',
