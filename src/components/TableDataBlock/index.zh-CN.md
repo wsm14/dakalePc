@@ -28,7 +28,7 @@
 | resetSearch | 重置事件回调 | function | - |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
 | pagination | 分页是否显示 | boolean | true |
-| tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出[DraggableContent](#DraggableContent)方法配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
+| tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出<a href="#DraggableContent">默认方法</a>配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
 | noCard | 表格是否需要 Card 组件包裹 | boolean | true |
 | cardProps | Card 组件配置项 | Object | {} |
 | size | 组件大小 | String | small default middle |
