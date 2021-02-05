@@ -28,7 +28,7 @@
 | resetSearch | 重置事件回调 | function | - |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
 | pagination | 分页是否显示 | boolean | true |
-| tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出<a href="#DraggableContent">默认方法draggableContent</a>配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
+| tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出<a href="#DraggableContent">默认方法 draggableContent</a>配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
 | noCard | 表格是否需要 Card 组件包裹 | boolean | true |
 | cardProps | Card 组件配置项 | Object | {} |
 | size | 组件大小 | String | small default middle |
@@ -42,20 +42,20 @@
 
 `TableDataBlock/SortBlock` 默认导出方法 返回 `{ components:{ body:{} } }` 对象
 
+| 参数       | 说明                                       | 类型                 | 默认值 |
+| ---------- | ------------------------------------------ | -------------------- | ------ |
+| dataSource | 排序数据源`（必填）`                       | object[]             | []     |
+| key        | 排序唯一键名 `（必填）`                    | string               | -      |
+| onSortEnd  | 排序完成回调函数，将会返回排序完成后新数据 | `function(): Object` | -      |
+
 ```
 <TableDataBlock
   {...draggableContent(
-      list, 
+      list,
       { key, onSortEnd: (val) => {} }
   )}
 />
 ```
-
-| 参数       | 说明                                         | 类型                 | 默认值 |
-| ---------- | -------------------------------------------- | -------------------- | ------ |
-| dataSource | 排序数据源`（必填）`                         | object[]             | []     |
-| key        | 排序唯一键名 `（必填）`                      | string               | -      |
-| onSortEnd  | 排序完成回调函数，将会返回排序完成后新数据 | `function(): Object` | -      |
 
 - ### 2021-02-05
 
