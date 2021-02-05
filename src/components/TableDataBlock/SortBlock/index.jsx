@@ -9,7 +9,7 @@ import './style.less';
  * function (dataSource, { key, onSortEnd })
  * @param dataSource 数据源 array[]
  * @param key 排序唯一键名 string
- * @param onSortEnd 排序完成回调函数 function () => {}
+ * @param onSortEnd 排序完成回调函数 function (newData) => {}
  */
 
 //  替换表格行

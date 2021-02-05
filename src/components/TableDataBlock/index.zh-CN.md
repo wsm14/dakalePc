@@ -16,19 +16,19 @@
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数 | `string | function(record): string` | - |
 | dispatchType | 请求路径 | String | - |
 | cRef | 子组件绑定 ref 获取请求方法 | useRef | - |
-| btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get:getData })` | - |
+| btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get:getData() })` | - |
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | useForm | - |
 | searchCallback | 搜索事件回调 | function | - |
 | resetSearch | 重置事件回调 | function | - |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
 | pagination | 分页是否显示 | boolean | true |
-| tableSort | 表格排序组件配置 | Object{ key, onSortEnd } | - |
+| tableSort | 表格排序组件配置 | Object{ key, onSortEnd:function (newData) => {} } | - |
 | noCard | 表格是否需要 Card 组件包裹 | boolean | true |
 | cardProps | Card 组件配置项 | Object | {} |
 | size | 组件大小 | String | small default middle |
 | scrollY | 设置纵向滚动，也可用于指定滚动区域的高，可以设置为像素值 | `string | number` | - |
-| scrollX | 设置横向滚动，也可用于指定滚动区域的宽，可以设置为像素值，百分比，true 和 'max-content' | `string | number | true | max-content` |
+| scrollX | 设置横向滚动，也可用于指定滚动区域的宽，可以设置为像素值，百分比，true 和 'max-content' | `string | number | true | max-content` | - |
 | firstFetch | 刚打开是否请求接口 | boolean | true |
 | params | 搜索时默认参数 | Object | {} |
 | children |
