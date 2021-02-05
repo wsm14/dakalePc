@@ -21,7 +21,7 @@
 | dispatchType | 请求路径 | String | - |
 | cRef | 子组件绑定 ref 获取请求方法 | React.useRef() | - |
 | btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get: function() => nowData })` | - |
-| keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅运营以及销售后台支持） | boolean | false |
+| keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅`运营``销售`后台支持） | boolean | false |
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | Form.useForm() | - |
 | searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function(searchVal, tableVal) | - |
