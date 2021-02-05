@@ -8,59 +8,54 @@ import DraggableContent from './SortBlock';
  *
  * 搜索+表格信息回显
  * 2020年7月29日 14:48:02 Dong
+ * 2021年2月5日 15:57:36 Dong fix
  *
- * @cRef 父组件获取子组件ref
+ * @list 表格源数据 必填
+ * @columns 表头 必填
+ * @rowKey 每行id 必填
  * @dispatchType {*} 表格请求url
+ * @total 数据总条数
+ * @cRef 父组件获取子组件ref
+ * @btnExtra 额外的按钮
  * @searchItems 搜索条件
  * @searchForm 搜索form
  * @searchCallback 搜索回调
  * @resetSearch 重置回调
- * @rowKey 每行id
- * @columns 表头
  * @loading 请求等待
- * @list 表格源数据
- * @total 数据总条数
- * @btnExtra 额外的按钮
  * @pagination 分页是否显示 赋值false不显示
- * @tableSort 表格排序 {onSortEnd:()=>{}}
+ * @tableSort 表格排序Object {onSortEnd:()=>{}}
  * @noCard 是否需要Card包裹 默认true
- * @cardProps card 配置聚合 原 CardTitle style bodyStyle extra
- * @size 组件大小 原componentSize small default middle
+ * @cardProps card 配置聚合Object 原 CardTitle style bodyStyle extra
+ * @size 组件大小 small default middle 原componentSize
  * @scrollY 垂直滚动高度
  * @scrollX 横向滚动
  * @firstFetch 原NoSearch 刚打开是否请求 默认true 请求接口
- * @children
-
  * @params 搜索时默认参数 移除 pParams params替代全部职能
- * @setParams 保存分页 搜索数据
+ * @children
  */
 
 const TableBlockComponent = (props) => {
   const {
-    // 不修改的参数
-    cRef,
-    dispatchType,
-    searchItems,
-    searchForm,
-    resetSearch,
-    searchCallback,
     btnExtra,
-    noCard = true,
-    pagination,
-    tableSort = false,
+    cRef,
     cardProps = {},
-    list,
-    total,
-    children,
+    dispatchType,
+    firstFetch = true,
+    list = [],
     loading,
+    noCard = true,
+    params = {},
+    pagination,
+    resetSearch,
+    size = 'default',
     scrollY,
     scrollX = 'max-content',
-    size = 'default',
-    firstFetch = true,
-    params = {},
-    // end
-
-    setParams,
+    searchItems,
+    searchForm,
+    searchCallback,
+    total,
+    tableSort = false,
+    children,
   } = props;
 
   const dispatch = useDispatch();
@@ -74,18 +69,43 @@ const TableBlockComponent = (props) => {
     searchData: params,
   }); // 表格参数
 
+  // 向父组件暴露方法
+  useImperativeHandle(cRef, () => ({
+    fetchGetData: (data = {}) => {
+      dispatch({
+        type: 'drawerForm/fetchClose',
+        callback: () => {
+          const { page } = data;
+          if (page) {
+            handleSearch(data);
+            return;
+          }
+          fetchGetList(data);
+        },
+      });
+    },
+  }));
+
+  useEffect(() => {
+    if (first) {
+      fetchGetList();
+    } else {
+      setFirst(false);
+    }
+  }, [tableParems]);
+
   // 获取列表
   const fetchGetList = (data) => {
     if (dispatchType) {
-      const prams = {
+      const payload = {
         ...tableParems.searchData, // 搜索参数
         ...tableParems, // 表格参数
         ...data, // 传递的搜索参数
       };
-      delete prams['searchData'];
+      delete payload['searchData'];
       dispatch({
         type: dispatchType, // 请求接口
-        payload: prams,
+        payload,
       });
     }
   };
@@ -99,7 +119,7 @@ const TableBlockComponent = (props) => {
       page: 1,
     });
     // 搜索回调
-    searchCallback && searchCallback(newSearchValue);
+    searchCallback && searchCallback(newSearchValue, tableParems);
   };
 
   // 分页
@@ -124,37 +144,6 @@ const TableBlockComponent = (props) => {
       // sortField: sorter.field, // 排序规则 升降
     });
   };
-
-  // 向父组件暴露方法
-  useImperativeHandle(cRef, () => ({
-    fetchGetData: (data = {}) => {
-      dispatch({
-        type: 'drawerForm/fetchClose',
-        callback: () => {
-          const { page } = data;
-          if (page) {
-            handleSearch(data);
-            return;
-          }
-          fetchGetList(data);
-        },
-      });
-    },
-  }));
-
-  // 保存搜索参数
-  const handleSaveParams = () => {
-    if (typeof setParams === 'function') setParams({ ...tableParems });
-  };
-
-  useEffect(() => {
-    if (first) {
-      fetchGetList();
-    } else {
-      setFirst(false);
-    }
-    return handleSaveParams;
-  }, [tableParems]);
 
   const tabContent = (
     <>

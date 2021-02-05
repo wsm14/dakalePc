@@ -14,7 +14,7 @@ const MarketCardActivity = (props) => {
 
   const childRef = useRef();
   const [show, setShow] = useState({ key: 'home', record: '' });
-  const [params, setParams] = useState({});
+  const [params] = useState({});
 
   // 搜索参数
   const searchItems = [
@@ -132,7 +132,6 @@ const MarketCardActivity = (props) => {
               columns={getColumns}
               searchItems={searchItems}
               params={params}
-              setParams={setParams}
               rowKey={(record) => record.activityIdString}
               dispatchType="marketCardActivity/fetchGetList"
               {...marketCardActivity.active}
