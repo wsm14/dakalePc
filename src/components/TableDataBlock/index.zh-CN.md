@@ -2,7 +2,7 @@
 
 ---
 
-表格信息回显组件 整合了拖动排序 搜索表单 `整合antd组件 兼容所有原antd Table组件配置参数（TableDataBlock props将完整打入表格中）`
+表格信息回显组件 整合了拖动排序 搜索表单 兼容所有antd [Table 表格](https://ant.design/components/table-cn/)配置参数`（TableDataBlock props将完整打入表格中，传递即可）`
 
 ### 涉及 antd 组件文档
 
@@ -66,7 +66,7 @@
 > - `noCard` 替换 `CardNone`
 > - `firstFetch` 替换 `NoSearch`
 > - `keepData` 替换 `keepName`，`keepName`由原路径名称变为 boolean（仅`运营` `销售`后台支持）
-> - 移除参数 `pParams`，用`params` 替代全部职能
-> - 移除参数 `CardTitle` `style` `bodyStyle` `extra`，用`cardProps` 替代全部职能完整传递 antd Card 组件配置
 > - 移除参数 `setParams`
+> - 移除参数 `pParams`，用`params` 替代全部职能
+> - 移除参数 `CardTitle` `style` `bodyStyle` `extra`，用`cardProps` 替代全部职能完整传递 antd [Card 卡片](https://ant.design/components/card-cn/)配置
 > - 搜索回调`searchCallback`增加 `tableParems`回参，第二个参数返回当前 table 请求参数包含分页等信息
