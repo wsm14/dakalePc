@@ -11,6 +11,8 @@
 
 ## API
 
+### TableDataBlock
+
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | list | 表格数据源`（必填）` | object[] | [] |
@@ -19,14 +21,14 @@
 | dispatchType | 请求路径 | String | - |
 | cRef | 子组件绑定 ref 获取请求方法 | React.useRef() | - |
 | btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get: function() => nowData })` | - |
-| keepData | 是否保持数据，true的情况下顶部显示tab选项页（仅运营以及销售后台支持） | boolean | false |
+| keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅运营以及销售后台支持） | boolean | false |
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | Form.useForm() | - |
 | searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function | - |
 | resetSearch | 重置事件回调 | function | - |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
 | pagination | 分页是否显示 | boolean | true |
-| tableSort | 表格排序组件配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
+| tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出[DraggableContent](#DraggableContent)方法配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
 | noCard | 表格是否需要 Card 组件包裹 | boolean | true |
 | cardProps | Card 组件配置项 | Object | {} |
 | size | 组件大小 | String | small default middle |
@@ -35,6 +37,20 @@
 | firstFetch | 刚打开是否请求接口 | boolean | true |
 | params | 搜索时默认参数 | Object | {} |
 | children | 表格搜索框顶部显示内容 | ReactNode | - |
+
+<span id="DraggableContent"><h3>DraggableContent<h3></span>
+
+`TableDataBlock/SortBlock` 默认导出方法 返回 `{ components:{ body:{} } }` 对象
+
+```
+ <TableDataBlock {...DraggableContent(list, { key, onSortEnd: (val) => {} })} />
+```
+
+| 参数       | 说明                 | 类型                 | 默认值 |
+| ---------- | -------------------- | -------------------- | ------ |
+| dataSource | 排序数据源`（必填）` | object[]             | []     |
+| key        | 排序唯一键名         | string               | -      |
+| onSortEnd  | 排序完成回调函数     | `function(): Object` | -      |
 
 - ### 2021-02-05
 
