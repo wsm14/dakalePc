@@ -38,12 +38,14 @@
 | params | 搜索时默认参数 | Object | {} |
 | children | 表格搜索框顶部显示内容 | ReactNode | - |
 
-<span id="DraggableContent"><h3>DraggableContent<h3></span>
+<span id="DraggableContent"><h3>DraggableContent</h3></span>
 
 `TableDataBlock/SortBlock` 默认导出方法 返回 `{ components:{ body:{} } }` 对象
 
 ```
- <TableDataBlock {...DraggableContent(list, { key, onSortEnd: (val) => {} })} />
+<TableDataBlock 
+  {...DraggableContent(list, { key, onSortEnd: (val) => {} })} 
+/>
 ```
 
 | 参数       | 说明                 | 类型                 | 默认值 |
