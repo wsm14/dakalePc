@@ -24,7 +24,7 @@
 | keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅运营以及销售后台支持） | boolean | false |
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | Form.useForm() | - |
-| searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function | - |
+| searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function(searchVal, tableVal) | - |
 | resetSearch | 重置事件回调 | function | - |
 | loading | 表格页面是否加载中 loading | `boolean | object (更多)` | false |
 | pagination | 分页是否显示 | boolean | true |
