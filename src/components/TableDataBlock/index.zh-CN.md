@@ -29,12 +29,12 @@
 | params | 搜索时默认参数 | Object | {} |
 | pagination | 分页是否显示 | boolean | true |
 | resetSearch | 重置事件回调 | function | - |
-| searchItems | 搜索条件 | object[] | - |
-| searchForm | 搜索表单 form | Form.useForm() | - |
-| searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function(searchVal, tableVal) | - |
 | size | 组件大小 | String | small default middle |
 | scrollY | 设置纵向滚动，也可用于指定滚动区域的高，可以设置为像素值 | `string | number` | - |
 | scrollX | 设置横向滚动，也可用于指定滚动区域的宽，可以设置为像素值，百分比，true 和 'max-content' | `string | number | true | max-content` | - |
+| searchItems | 搜索条件 | object[] | - |
+| searchForm | 搜索表单 form | Form.useForm() | - |
+| searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function(searchVal, tableVal) | - |
 | tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出<a href="#DraggableContent">默认方法 draggableContent</a>配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
 | children | 表格搜索框顶部显示内容 | ReactNode | - |
 

@@ -31,8 +31,8 @@
 | fieldNames | 参数别名 `此参数优先于name` | number | - |
 | initialValue | 当前行显示值，无关 name 处理直接显示此参数 `此参数优先于组件initialValue` | any | - |
 | render | 生成复杂数据的渲染函数，参数分别为当前行的值，当前行数据 | function(text, record, ) {} | - |
-| span | 包含列的数量 | number | 1 |
 | show | 是否显示当前项 | boolean | true |
+| span | 包含列的数量 | number | 1 |
 | type | 显示类型 text upload | String | text |
 | children | 额外内容在 item 底部 | ReactNode | - |
 
