@@ -2,7 +2,7 @@
 
 ---
 
-详情展示组件 antd [Descriptions 描述列表](https://ant.design/components/descriptions-cn/)二次封装 `兼容文档配置项目 props 全打入配置`
+详情展示组件 antd [Descriptions 描述列表](https://ant.design/components/descriptions-cn/)二次封装 `兼容文档Descriptions配置项目 props 全打入配置`
 
 ### 涉及 antd 组件文档
 
@@ -38,11 +38,14 @@
 
 ## 更新日志
 
-- ### 2021年2月6日 17:17:26 Dong
+- ### 2021 年 2 月 6 日 17:17:26 Dong
 
 组件重构
 
+> - `fieldNames` 替代 `childrenName` 参数
+>   > - 会影响原本使用`childrenName`参数获取数值字段，全局检查
 > - 移除参数 `visible` `hidden`参数，`show`参数 承接所有显示隐藏职能
 >   > - 会影响原本使用`visible` `hidden`参数做显示隐藏的详情字段，全局检查
-> - 子组件抽离- upload类型 图片显示组件抽离
+> - 子组件抽离- upload 类型 图片显示组件抽离
 > - 参数值获取方法重写
+> - 兼容所有[Descriptions 描述列表](https://ant.design/components/descriptions-cn/)Descriptions 配置
