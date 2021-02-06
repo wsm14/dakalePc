@@ -3,7 +3,7 @@
 ---
 
 ### 涉及到的组件
-- [ AuthConsumer ](@/layouts/AuthConsumer) `@/layouts/AuthConsumer`
+- [ AuthConsumer ](@/layouts/AuthConsumer) 页面内组件位置 `@/layouts/AuthConsumer`
   
 - `权限控制，auth 默认 auth = 'exportList' `
 
