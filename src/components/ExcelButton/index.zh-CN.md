@@ -3,8 +3,9 @@
 ---
 
 ### 涉及到的组件
-- [ AuthConsumer ](@/layouts/AuthConsumer)
-`权限控制，auth 默认 auth = 'exportList' `
+- [ AuthConsumer ](@/layouts/AuthConsumer) `@/layouts/AuthConsumer`
+  
+- `权限控制，auth 默认 auth = 'exportList' `
 
 
 ## API
