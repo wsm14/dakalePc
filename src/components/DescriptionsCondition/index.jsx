@@ -18,7 +18,7 @@ import styles from './index.less';
  */
 
 const DescriptionsCondition = (props) => {
-  const { formItems = [], initialValues = {}, column, children } = props;
+  const { formItems = [], initialValues = {}, column = 1, children } = props;
 
   // 逐级获取value
   const getArrKeyVal = (key) => {
@@ -54,7 +54,7 @@ const DescriptionsCondition = (props) => {
     const {
       name, // 内容参数名
       type = 'text', // 显示类型 text upload 默认text
-      fieldNames = '', // 参数别名 最高权重
+      fieldNames, // 参数别名 最高权重
       render, // 生成复杂数据的渲染函数，参数分别为当前行的值，当前行数据
       initialValue: rowValue, // 显示参数
     } = rowItem;
@@ -104,7 +104,7 @@ const DescriptionsCondition = (props) => {
       <Descriptions
         bordered
         size="small"
-        column={column || 1}
+        column={column}
         {...props}
         className={styles.descriptions_box}
       >
