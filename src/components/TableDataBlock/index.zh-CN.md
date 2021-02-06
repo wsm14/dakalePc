@@ -20,7 +20,7 @@
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数`（必填）` | `string | function(record): string` | - |
 | btnExtra | 搜索表格额外的按钮，存在搜索条件 function 返回一个 get 方法获取搜索参数 | `ReactNode | function({ get: function() => nowData })` | - |
 | cRef | 子组件绑定 ref 获取请求方法 | React.useRef() | - |
-| cardProps | Card 组件配置项 | Object | {} |
+| cardProps | Card 组件配置项 [Card 卡片](https://ant.design/components/card-cn/) | Object | {} |
 | dispatchType | 请求路径 | String | - |
 | firstFetch | 刚打开是否请求接口 | boolean | true |
 | keepData | 是否保持数据，true 的情况下顶部显示 tab 选项页（仅`运营` `销售`后台支持） | boolean | false |
