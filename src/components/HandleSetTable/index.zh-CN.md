@@ -24,6 +24,7 @@
   | click   | 按钮点击事件                                                                                                               | function           | -                  |
   | popText | 二次弹框显示的提示内容                                                                                                     | string             | `确认${btnText}？` |
   | visible | 是否展示                                                                                                                   | boolean            | true               |
+  | pop     | 是否配置二次弹框确认                                                                                                       | boolean            | false              |
   
   
 
