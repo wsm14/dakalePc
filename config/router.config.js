@@ -212,7 +212,6 @@ export default [
       // 哒人管理
       {
         path: '/expert/uaerlist',
-        //business talent
         name: '哒人列表',
         component: './Expert/ExpertUserList',
         buttons: ['status'],

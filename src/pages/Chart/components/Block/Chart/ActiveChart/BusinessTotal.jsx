@@ -67,10 +67,11 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
             title={item.title}
             value={checkData(totalData[item.key], 'totalFee')}
             precision={0}
+            valueStyle={{ fontSize: 40 }}
           />
-          <span style={allStyle}>
+          {/* <span style={allStyle}>
             {item.tip}：{checkData(totalData[item.key], 'docCount')}
-          </span>
+          </span> */}
         </Card.Grid>
       ))}
     </Card>

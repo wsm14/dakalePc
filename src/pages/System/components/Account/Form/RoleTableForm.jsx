@@ -48,12 +48,14 @@ const RoleTableForm = (props) => {
     {
       title: '菜单名称',
       dataIndex: 'accessName',
-      width: 150,
+      width: 200,
     },
     {
       title: '操作权限',
       dataIndex: 'accessIdString',
       render: (val, record) => {
+        // 父级菜单无按钮组
+        if (record.children) return '';
         // 禁选状态
         const disabled = selectedRowKeys.indexOf(val) == -1;
         // 按钮数据获取 flag 0 时获取数据按钮
