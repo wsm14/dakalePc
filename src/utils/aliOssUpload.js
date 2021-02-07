@@ -26,42 +26,37 @@ const notificationInfo = (info) => {
 };
 
 // 获取oss凭证
-const fetchGetOssPolicy = ({ policyType, ossType }) => {
+const fetchGetOssPolicy = async ({ policyType, ossType }) => {
   // 上传类型
   const uploadType = { image: 'resource', app: '' }[policyType];
 
-  return request('/common/oss/getOssPolicy', { params: { uploadType } }).then((res) => {
-    if (!res) {
-      notificationInfo('common OSS服务未启动');
-      return;
-    }
-
-    const { folder, host, securityToken: stsToken } = res.content;
-
-    // oss sdk实例化
-    const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...res.content });
-
-    // oss 上传
-    return async (file) => {
-      // 设置路径 + 文件名 + 文件后缀
-      let _fileRath = `${folder}/${uuid()}${file['name'].replace(/.+\./, '.')}`;
-      // 提交文件
-      if (ossType === 'put') {
-        const putres = await client.put(_fileRath, file);
-        const { status, statusCode } = putres.res;
-        if (status === 200 && statusCode === 200) {
-          return host + _fileRath;
-        } else {
-          message.destroy();
-          return false;
-        }
+  const res = await request('/common/oss/getOssPolicy', { params: { uploadType } });
+  if (!res) {
+    notificationInfo('common OSS服务未启动');
+    return;
+  }
+  const { folder, host, securityToken: stsToken } = res.content;
+  // oss sdk实例化
+  const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...res.content });
+  return async (file) => {
+    // 设置路径 + 文件名 + 文件后缀
+    let _fileRath = `${folder}/${uuid()}${file['name'].replace(/.+\./, '.')}`;
+    // 提交文件
+    if (ossType === 'put') {
+      const putres = await client.put(_fileRath, file);
+      const { status, statusCode } = putres.res;
+      if (status === 200 && statusCode === 200) {
+        return host + _fileRath;
+      } else {
+        message.destroy();
+        return false;
       }
-    };
-  });
+    }
+  };
 };
 
 // 上传文件
-const aliOssUpload = (file = '', fieldNames = {}, policyType = 'image', ossType = 'put') => {
+const aliOssUpload = async (file = '', fieldNames = {}, policyType = 'image', ossType = 'put') => {
   // file 默认是数组直接赋值
   let fileDataArray = file || [];
 
@@ -82,29 +77,25 @@ const aliOssUpload = (file = '', fieldNames = {}, policyType = 'image', ossType 
   }
 
   // 向后台获取oss凭证 后上传文件
-  return fetchGetOssPolicy({ policyType, ossType }).then(async (osshandle) => {
-    // 最后返回文件url数组
-    const fileUrlArray = [];
-
-    // 文件数组遍历
-    for (const item of fileDataArray) {
-      if (typeof item === 'string') {
-        fileUrlArray.push(item);
-      } else {
-        await osshandle(item).then((res) => {
-          if (!res) {
-            notificationInfo('文件上传失败');
-            return;
-          }
-          fileUrlArray.push(res);
-        });
-      }
+  const osshandle = await fetchGetOssPolicy({ policyType, ossType });
+  // 最后返回文件url数组
+  const fileUrlArray = [];
+  // 文件数组遍历
+  for (const item_1 of fileDataArray) {
+    if (typeof item_1 === 'string') {
+      fileUrlArray.push(item_1);
+    } else {
+      await osshandle(item_1).then((res) => {
+        if (!res) {
+          notificationInfo('文件上传失败');
+          return;
+        }
+        fileUrlArray.push(res);
+      });
     }
-
-    message.destroy();
-    // 返回url数组
-    return fileUrlArray;
-  });
+  }
+  message.destroy();
+  return fileUrlArray;
 };
 
 export default aliOssUpload;
