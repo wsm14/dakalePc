@@ -24,7 +24,8 @@ const PopImgShow = ({ url, onClick }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
-    ></div>
+    >
+    </div>
   );
 
   return (
