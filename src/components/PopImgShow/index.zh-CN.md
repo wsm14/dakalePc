@@ -4,7 +4,7 @@
 
 ### 涉及 antd 组件文档
 
-- [Drawer 抽屉](https://ant.design/components/popover-cn/)
+- [Popover 气泡卡片](https://ant.design/components/popover-cn/)
   
 
 ### API
