@@ -39,7 +39,7 @@ const DescriptionsCondition = (props) => {
     return Array.isArray(key) ? getArrKeyVal(key) : initialValues[key];
   };
 
-  // 处理返回结构
+  // 处理返回dom结构
   const checkData = (type, value) => {
     const domShow = {
       text: value,
@@ -49,6 +49,7 @@ const DescriptionsCondition = (props) => {
     if (!domShow) return 'type error';
     return domShow;
   };
+
   // 区分表单信息
   const getCheckItem = (rowItem) => {
     const {
