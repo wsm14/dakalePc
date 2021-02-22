@@ -91,7 +91,7 @@ const WithdrawDetail = (props) => {
       title: '提现金额',
       align: 'right',
       dataIndex: 'withdrawalFee',
-      render: (val) => `￥ ${val}`,
+      render: (val) => `￥ ${(Number(val) || 0).toFixed(2)}`,
     },
     {
       title: '实收提现手续费',
@@ -134,8 +134,8 @@ const WithdrawDetail = (props) => {
   // 统计数据
   const fetchWithdrawTotal = (payload = {}) => {
     const {
-      withdrawalDateEnd = moment().subtract(1, 'month').format('YYYY-MM-DD'),
-      withdrawalDateStart = moment().format('YYYY-MM-DD'),
+      withdrawalDateEnd = moment().format('YYYY-MM-DD'),
+      withdrawalDateStart = moment().subtract(1, 'month').format('YYYY-MM-DD'),
     } = payload;
     setSearchTime([withdrawalDateStart, withdrawalDateEnd]);
     dispatch({
@@ -154,11 +154,11 @@ const WithdrawDetail = (props) => {
               {searchTime[0]} ~ {searchTime[1]}
             </Tag>
             合计提现金额：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.allWithdrawalFeeSum || 0}`} &nbsp;&nbsp;
-            成功提现金额：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum}`} &nbsp;&nbsp;
-            成功提现手续费：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum}`}
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.allWithdrawalFeeSum.toFixed(2)}`}
+            &nbsp;&nbsp; 成功提现金额：
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum.toFixed(2)}`}
+            &nbsp;&nbsp; 成功提现手续费：
+            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum.toFixed(2)}`}
           </div>
         )}
         btnExtra={({ get }) => (
