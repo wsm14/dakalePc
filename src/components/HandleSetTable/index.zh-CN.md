@@ -17,8 +17,8 @@
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | type | 类型 `text button`，与权限相关映射`@/common/roleConstant` 文件 | string | button |
-| auth | 按钮权限配置`info, edit | true` auth 没有值的时候，默认 `auth = auth || type`等 | `string | boolean` | - |
-| title | `可选` 按钮显示文字，配置则优先显示，不配置则权限相关从 ROLE_BUTTON_TYPE 映射 | string | 按钮 |
+| auth | 按钮权限配置`any | true`，auth 默认 false/不存在 情况使用`type`做权限校验 | `string | boolean` | false |
+| title | `可选` 按钮显示文字，配置则优先显示，不配置则权限相关从 `ROLE_BUTTON_TYPE` 映射 | string | 按钮 |
 | pop | 是否配置二次弹框确认 | boolean | false |
 | click | 按钮点击事件，若 `pop` 为 true 则为弹窗确认事件 | function | - |
 | popText | 二次弹框显示的提示内容 | string | `确认${title}？` |

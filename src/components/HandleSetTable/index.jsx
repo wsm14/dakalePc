@@ -42,7 +42,7 @@ const HandleSetTable = (props) => {
         );
 
       children.push(
-        <AuthConsumer show={visible} key={`auth${type}${index}`} auth={auth}>
+        <AuthConsumer show={visible} key={`auth${type}${index}`} auth={auth || type}>
           {/* 是否需要显示pop */}
           {popShow ? (
             <Popconfirm
