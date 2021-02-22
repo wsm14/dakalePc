@@ -8,9 +8,17 @@ import { Select, Spin, Empty } from 'antd';
 const { Option } = Select;
 
 const SelectBlock = (props) => {
-  const { type, select, allItem = true, fieldNames = {}, loading, placeholder, label } = props;
+  const {
+    type,
+    select,
+    allItem = true,
+    defaultValue = '',
+    fieldNames = {},
+    loading,
+    placeholder,
+    label,
+  } = props;
 
-  const initialValue = select.defaultValue || '';
   const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
 
   // 遍历对象
@@ -61,7 +69,7 @@ const SelectBlock = (props) => {
       {...multProps}
       {...props}
     >
-      {allItem && <Option value={initialValue}>全部</Option>}
+      {type !== 'multiple' && allItem && <Option value={defaultValue}>全部</Option>}
       {selectList.map((data, j) => {
         if (data) {
           // 兼容数组

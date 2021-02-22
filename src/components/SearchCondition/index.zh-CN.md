@@ -55,10 +55,11 @@ handle={(form)=> ({
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | type | `（必填）` 类型 ，`select | multiple` | string | - |
-| select | `（必填）` 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array, defaultValue: 全部参数默认值 } | { list: object, defaultValue: 全部参数默认值 }` | - |
+| select | `（必填）` 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array } | { list: object }` | - |
 | loading | 搜索等待状态 | boolean | false |
-| allItem | 是否显示`全部`选项 | boolean | true |
 | fieldNames | 自定义 select 中 name value otherData 的字段 | object | { labelKey: label, valueKey: value, tipKey: otherData } | string | - |
+| allItem `select` | 是否显示`全部`选项，配置 defaultValue | boolean | true |
+| defaultValue `select` | `全部` 选项默认值 | string | - |
 
 #### Cascader 级联选择（[更多配置](https://ant.design/components/cascader-cn/)）
 
@@ -79,6 +80,7 @@ handle={(form)=> ({
 
 > - `cascader` 组件 `valuesKey` 参数，改为 `valueskey`
 > - `select` 组件增加 `fieldNames` 配置 参数别名
+> - `select` type 为 select 时 增加 `defaultValue` 配置 `全部` 选项默认值
 > - 表单组件增加`handle`配置，抛出当前 `form` 实例，对象形式，会扩展到相关组件内
 > - 新增 `form` 参数，外部传递 form 实例，`handle`配置时 会抛出当前 form
 > - 移除 `NoSearch` 参数
