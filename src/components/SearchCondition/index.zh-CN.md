@@ -1,8 +1,8 @@
-## SearchCondition 详情展示组件
+## SearchCondition 搜索组件
 
 ---
 
-搜索表单封装 `兼容文档表单子组件所有配置项`
+搜索表单封装 `兼容 antd 文档表单子组件所有配置项`
 
 ### 涉及 antd 组件文档
 
@@ -21,12 +21,12 @@
 | searchItems | `（必填）` 搜索表单内容数组 | <a href="#formType">formType[]</a> | [] |
 | btnExtra | 额外按钮，为 `function` 时提供 get 方法获取当前输入搜索值 | ReactNode, function({ get: getData }) | - |
 | componentSize | 表单大小`small` `default` `large` | string | 'default' |
-| form | 经 `Form.useForm()` 创建的 form 控制实例，不提供时会内置 | FormInstance | - |
+| form | 经 `Form.useForm()` 创建的 form 控制实例，不提供时会内置 | [FormInstance](https://ant.design/components/form-cn/#FormInstance) | - |
 | initialValues | 默认值 | object | {} |
 | handleSearch | 搜索按钮回调 | function(data) | - |
 | resetSearch | 重置按钮回调 | function | - |
 
-<span id="formType"><h4>formItems 表单组件通用配置</h4></span>
+<span id="formType"><h4>searchItems 表单组件通用配置</h4></span>
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -42,15 +42,15 @@ handle={(form)=> ({
 })};
 ```
 
-#### [DatePicker 日期选择框](https://ant.design/components/date-picker-cn/)
+#### DatePicker 日期选择框（[更多配置](https://ant.design/components/date-picker-cn/)）
 
 | 参数                | 说明                                         | 类型   | 默认值 |
 | ------------------- | -------------------------------------------- | ------ | ------ |
 | type                | `（必填）` 类型 ，`datePicker | rangePicker` | string | -      |
-| picker `datePicker` | `（必填）` 时间选择器展示类型，`year`        | string | -      |
+| picker `datePicker` | 时间选择器展示类型，默认选择到日，`year`     | string | -      |
 | end `rangePicker`   | `（必填）` 结束时间参数名                    | string | -      |
 
-#### [Select 选择器](https://ant.design/components/select-cn/)
+#### Select 选择器（[更多配置](https://ant.design/components/select-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -60,7 +60,7 @@ handle={(form)=> ({
 | allItem | 是否显示`全部`选项 | boolean | true |
 | fieldNames | 自定义 select 中 name value otherData 的字段 | object | { labelKey: label, valueKey: value, tipKey: otherData } | string | - |
 
-#### [Cascader 级联选择](https://ant.design/components/cascader-cn/)
+#### Cascader 级联选择（[更多配置](https://ant.design/components/cascader-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
