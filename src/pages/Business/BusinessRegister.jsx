@@ -27,7 +27,7 @@ const BusinessRegisterComponent = (props) => {
       type: 'cascader',
       name: 'city',
       changeOnSelect:true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 

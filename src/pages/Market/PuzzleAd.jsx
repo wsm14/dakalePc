@@ -24,7 +24,7 @@ const PuzzleAd = (props) => {
     //   label: '区域',
     //   name: 'city',
     //   type: 'cascader',
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    //   valueskey: ['provinceCode', 'cityCode', 'districtCode'],
     // },
   ];
 

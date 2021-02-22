@@ -23,7 +23,7 @@ const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = 
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 

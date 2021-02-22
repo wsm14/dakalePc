@@ -48,7 +48,7 @@ const BusinessListComponent = (props) => {
       changeOnSelect: true,
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      valuesKey: ['topCategoryId', 'categoryId'],
+      valueskey: ['topCategoryId', 'categoryId'],
       placeholder: '选择经营类目',
     },
     {
@@ -72,7 +72,7 @@ const BusinessListComponent = (props) => {
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val, form) => {
         // 必须选到区级才可选择商圈
         form.setFieldsValue({ businessHubId: undefined });

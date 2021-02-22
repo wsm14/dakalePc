@@ -1,23 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
-import lodash from 'lodash';
-import {
-  Form,
-  Space,
-  Row,
-  Col,
-  Input,
-  Button,
-  Select,
-  DatePicker,
-  InputNumber,
-  Cascader,
-  Grid,
-  Empty,
-  Spin,
-} from 'antd';
+import React, { useState } from 'react';
+import { Searchor } from './searchModule';
+import { Form, Row, Col, Button, Space, Grid } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
-import CITYJSON from '@/common/city';
 import styles from './index.less';
 
 /**
@@ -27,51 +11,28 @@ import styles from './index.less';
  * @btnExtra {*} 额外按钮
  * @componentSize {*} 组件大小
  * @initialValues {*} 默认值
- * @NoSearch {*} 无搜索内容时 不搜索
  */
 
-// 城市搜索筛选
-const filter = (inputValue, path) => {
-  return path.some((option) => option.label.indexOf(inputValue) > -1);
-};
-
-const disTime = moment('2020-03-01');
-// 限制选择时间
-const disabledDate = (current) => (current && current > moment().endOf('day')) || current < disTime;
-
-const returnDay = (day, type) => [moment().subtract(day, type), moment()];
-
-const ranges = {
-  当天: [moment(), moment()],
-  当月: [moment().startOf('month'), moment().endOf('day')],
-  最近7日: returnDay(6, 'day'),
-  最近15日: returnDay(14, 'day'),
-  最近一月: returnDay(1, 'month'),
-  上一个月: [
-    moment(moment().startOf('month')).subtract(1, 'month'),
-    moment(moment().startOf('month')).subtract(1, 'day'),
-  ],
-};
-
 const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
 const { useBreakpoint } = Grid;
 
 const SearchCondition = (props) => {
   const {
+    form,
     searchItems: formItems,
     resetSearch = () => {},
     handleSearch,
     btnExtra = '',
     componentSize = 'default',
     initialValues = {},
-    NoSearch = false,
   } = props;
 
-  const [form] = Form.useForm();
+  const [ownForm] = Form.useForm();
+  // 外部传递form优先
+  const searchForm = form || ownForm;
+  // 动态获取当前屏幕大小
   const screens = useBreakpoint();
-
+  // 展开状态
   const [expand, setExpand] = useState(false);
 
   const len = formItems.length;
@@ -87,173 +48,9 @@ const SearchCondition = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, i) => {
-      let initialValue = '';
-      const placeholder = item.placeholder || '';
-      let component = (
-        <Input
-          placeholder={placeholder || `请输入${item.label}`}
-          style={{ width: '100%' }}
-          allowClear
-        />
-      );
-      // 判断类型
-      if (item.type === 'select' && item.select) {
-        const { select, allItem = true, fieldNames = {} } = item;
-        const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
-        initialValue = select.defaultValue || '';
-        // 遍历对象
-        const arrObject = (obj) => {
-          return Object.keys(obj).map((item) => ({
-            [labelKey]: obj[item],
-            [valueKey]: item,
-          }));
-        };
-        /**
-         *  判断传入值类型 select
-         *  { list: [] } | { list: {} } | [] | {}
-         */
-        let selectList = [];
-        if (Array.isArray(select)) {
-          selectList = select;
-        } else if (lodash.isPlainObject(select)) {
-          if (Array.isArray(select.list)) {
-            // 若为数组
-            selectList = select.list;
-          } else if (select.list && lodash.isPlainObject(select.list)) {
-            // 若为对象则将遍历成数组赋值
-            selectList = arrObject(select.list);
-          } else {
-            // 若为对象则将遍历成数组赋值
-            selectList = arrObject(select);
-          }
-        }
-        component = (
-          <Select
-            allowClear
-            showSearch
-            optionFilterProp="children"
-            loading={item.loading}
-            style={{ width: '100%' }}
-            disabled={item.disabled}
-            onSearch={item.onSearch}
-            onChange={item.onChange}
-            onFocus={item.onFocus}
-            dropdownMatchSelectWidth={false}
-            notFoundContent={
-              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            }
-            placeholder={item.placeholder || `请选择`}
-            {...(item.handle && item.handle(form))}
-          >
-            {allItem && <Option value={initialValue}>全部</Option>}
-            {selectList.map((data, j) => {
-              if (data) {
-                // 兼容数组
-                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
-                const nameData = data[valueKey] ? data[labelKey] : data;
-                const otherData = data[tipKey] ? data[tipKey] : '';
-                return (
-                  <Option key={j} value={valueData}>
-                    {nameData}
-                    {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
-                  </Option>
-                );
-              }
-            })}
-          </Select>
-        );
-      }
-      if (item.type === 'multiple' && item.select) {
-        const { select, allItem = false } = item;
-        initialValue = select.defaultValue || '';
-        component = (
-          <Select
-            allowClear
-            showSearch
-            mode="multiple"
-            defaultActiveFirstOption={false}
-            filterOption={true}
-            optionFilterProp="children"
-            loading={item.loading}
-            notFoundContent={
-              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-            }
-            style={{ width: '100%' }}
-            maxTagCount={2}
-            maxTagTextLength={2}
-            onSearch={item.onSearch}
-            onChange={item.onChange}
-            placeholder={item.placeholder || `请选择`}
-            disabled={item.disabled}
-          >
-            {allItem && <Option value={initialValue}>全部</Option>}
-            {select.list.map((data, j) => {
-              if (data) {
-                // 兼容数组
-                const value = !data.value ? `${j}` : data.value;
-                const name = data.value ? data.name : data;
-                return (
-                  <Option key={j} value={value}>
-                    {name}
-                  </Option>
-                );
-              }
-            })}
-          </Select>
-        );
-      }
-      if (item.type === 'number') {
-        initialValue = item.initialValue ? `${item.initialValue}` : '';
-        component = <InputNumber placeholder={placeholder} style={{ width: '100%' }} allowClear />;
-      }
-
-      // 时间区间搜索
-      if (item.type === 'rangePicker') {
-        initialValue = item.defaultValue || [];
-        component = (
-          <RangePicker
-            allowClear
-            style={{ width: '100%' }}
-            defaultPickerValue={[
-              moment(moment().startOf('month')).subtract(1, 'month'),
-              moment(moment().startOf('month')).subtract(1, 'day'),
-            ]}
-            disabledDate={item.disabledDate || disabledDate}
-            ranges={item.ranges || item.disabledDate ? '' : ranges}
-            onCalendarChange={item.onCalendarChange}
-            onOpenChange={item.onOpenChange}
-            // renderExtraFooter={() => (
-            //   <div className={styles.shop_dateInfo}>
-            //     开始时间：选择日期的 00：00：00，结束时间：选择日期的 23：59：59
-            //   </div>
-            // )}
-          />
-        );
-      }
-
-      // 时间搜索 picker
-      if (item.type === 'datePicker') {
-        component = (
-          <DatePicker style={{ width: '100%' }} picker={item.picker || 'date'} allowClear />
-        );
-      }
-
-      // 城市类型
-      if (item.type === 'cascader') {
-        component = (
-          <Cascader
-            allowClear
-            changeOnSelect={item.changeOnSelect || false}
-            disabled={item.disabled}
-            options={item.select || CITYJSON}
-            expandTrigger="hover"
-            showSearch={{ filter }}
-            fieldNames={item.fieldNames}
-            placeholder={item.placeholder || '选择城市'}
-            onChange={(val) => item.onChange && item.onChange(val, form)}
-          />
-        );
-      }
+      const { type = 'input', name, handle } = item;
+      // 根据类型获取不同的表单组件
+      const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
       const pickerCheck = (item.type === 'rangePicker' || item.type === 'datePicker') && len < 4;
@@ -265,8 +62,8 @@ const SearchCondition = (props) => {
           xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
           key={i}
         >
-          <FormItem label={item.label} style={{ paddingBottom: 8 }} name={item.name}>
-            {component}
+          <FormItem label={item.label} style={{ paddingBottom: 8 }} name={name}>
+            <SearchItem {...item} {...(handle && handle(searchForm))}></SearchItem>
           </FormItem>
         </Col>,
       );
@@ -278,53 +75,49 @@ const SearchCondition = (props) => {
   const handleSearchsOver = (values, type) => {
     const formObj = {};
     formItems.forEach((item) => {
-      if (values[item.name]) {
-        // 过滤单引号
-        if (typeof values[item.name] === 'string') {
-          formObj[item.name] = values[item.name].replace(/'/g, '');
+      const { type, name, end, picker } = item;
+      if (values[name]) {
+        // 过滤单引号 (因为后端会报错)
+        if (typeof values[name] === 'string') {
+          formObj[name] = values[name].replace(/'/g, '');
         }
-        // 判断类型 时间类型处理
-        if (item.type === 'datePicker') {
-          formObj[item.name] = values[item.name].format(
-            item.picker === 'year' ? 'YYYY' : 'YYYY-MM-DD',
-          );
-        } else if (item.type === 'rangePicker' && item.end && !!values[item.name].length) {
-          formObj[item.name] = values[item.name][0].format('YYYY-MM-DD');
-          formObj[item.end] = values[item.name][1].format('YYYY-MM-DD');
-        } else if (item.type === 'multiple') {
-          // 判断类型 多选框字符串传递
-          formObj[item.name] = values[item.name].toString();
-        } else if (item.type === 'cascader') {
-          // 判断类型 城市类型处理
-          if (item.valuesKey) item.valuesKey.map((key, i) => (formObj[key] = values[item.name][i]));
-          else formObj[item.name] = values[item.name][values[item.name].length - 1];
-          delete values[item.name];
+        // 判断类型
+        // 时间类型处理
+        if (type === 'datePicker') {
+          formObj[name] = values[name].format(picker === 'year' ? 'YYYY' : 'YYYY-MM-DD');
+        } else if (type === 'rangePicker' && end && !!values[name].length) {
+          // 区间时间类型
+          formObj[name] = values[name][0].format('YYYY-MM-DD');
+          formObj[end] = values[name][1].format('YYYY-MM-DD');
+        } else if (type === 'multiple') {
+          // 多选框字符串传递
+          formObj[name] = values[name].toString();
+        } else if (type === 'cascader') {
+          const { valueskey } = item;
+          // 级联处理
+          if (valueskey) valueskey.map((key, i) => (formObj[key] = values[name][i]));
+          else formObj[name] = values[name][values[name].length - 1];
+          delete values[name];
         }
       } else {
         // 删除不存在值的key
-        delete values[item.name];
+        delete values[name];
       }
     });
+    // 直接返回搜素参数
     if (type == 'data') return { ...values, ...formObj };
-    if (NoSearch) {
-      // 搜索回调
-      // NoSearch为true时 无搜索值的不请求
-      if (Object.keys(values).length) {
-        handleSearch({ ...values, ...formObj });
-      }
-    } else {
-      // 默认请求
-      handleSearch({ ...values, ...formObj });
-    }
+    // 搜索回调
+    handleSearch({ ...values, ...formObj });
   };
 
+  // 获取参数
   const getData = () => {
-    return handleSearchsOver(form.getFieldsValue(), 'data');
+    return handleSearchsOver(searchForm.getFieldsValue(), 'data');
   };
 
   // 重置
   const handleReset = () => {
-    form.resetFields();
+    searchForm.resetFields();
     if (resetSearch) resetSearch();
   };
 
@@ -353,7 +146,7 @@ const SearchCondition = (props) => {
 
   return (
     <Form
-      form={form}
+      form={searchForm}
       initialValues={initialValues}
       size={componentSize}
       layout="horizontal"
