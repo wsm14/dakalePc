@@ -23,7 +23,7 @@
 
 ### <ExcelButton></ExcelButton>在组件中的使用例子eg:
 
-```
+```jsx
  btnExtra={({ get }) => (
         <ExcelButton
           dispatchType={'businessSettled/fetchMerchantGetExcel'}
