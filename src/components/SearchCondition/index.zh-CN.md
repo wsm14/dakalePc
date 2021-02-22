@@ -30,7 +30,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| type | `（必填）` 表单的类型 `input | cascader | datePicker | rangePicker | number | select | multiple`，兼容 antd 相关组件配置 | string | input |
+| type | `（必填）` 表单的类型 `input | cascader | datePicker | rangePicker | number | select | multiple`， 兼容 antd 相关组件配置 | string | input |
 | name | `（必填）` 数据参数名 | string | - |
 | handle | 事件配置，向外传递 form 实例 | function: (form) => ({}) | - |
 
