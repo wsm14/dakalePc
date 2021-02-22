@@ -34,6 +34,8 @@
 | name | 数据参数名 `（必填）` | string | - |
 | handle | 事件配置，向外传递 form 实例 | function: (form) => ({}) | - |
 
+---
+
 ```jsx
 handle={(form)=> ({
   onChange: (value) => {}
