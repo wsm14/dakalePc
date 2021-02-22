@@ -18,7 +18,7 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| searchItems`（必填）` | 搜索表单内容数组 | <a href="#formType">formType[]</a> | [] |
+| searchItems | `（必填）` 搜索表单内容数组 | <a href="#formType">formType[]</a> | [] |
 | btnExtra | 额外按钮，为 `function` 时提供 get 方法获取当前输入搜索值 | ReactNode, function({ get: getData }) | - |
 | componentSize | 表单大小`small` `default` `large` | string | 'default' |
 | form | 经 `Form.useForm()` 创建的 form 控制实例，不提供时会内置 | FormInstance | - |
@@ -30,8 +30,8 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| type `（必填）` | 表单的类型 `input | cascader | datePicker | rangePicker | number | select | multiple`，兼容 antd 相关组件配置 | string | input |
-| name `（必填）` | 数据参数名 | string | - |
+| type | `（必填）` 表单的类型 `input | cascader | datePicker | rangePicker | number | select | multiple`，兼容 antd 相关组件配置 | string | input |
+| name | `（必填）` 数据参数名 | string | - |
 | handle | 事件配置，向外传递 form 实例 | function: (form) => ({}) | - |
 
 ---
@@ -44,18 +44,18 @@ handle={(form)=> ({
 
 #### [DatePicker 日期选择框](https://ant.design/components/date-picker-cn/)
 
-| 参数                           | 说明                              | 类型   | 默认值 |
-| ------------------------------ | --------------------------------- | ------ | ------ |
-| type `（必填）`                | 类型 ，`datePicker | rangePicker` | string | -      |
-| picker `（必填）` `datePicker` | 时间选择器展示类型，`year`        | string | -      |
-| end `（必填）` `rangePicker`   | 结束时间参数名                    | string | -      |
+| 参数                | 说明                                         | 类型   | 默认值 |
+| ------------------- | -------------------------------------------- | ------ | ------ |
+| type                | `（必填）` 类型 ，`datePicker | rangePicker` | string | -      |
+| picker `datePicker` | `（必填）` 时间选择器展示类型，`year`        | string | -      |
+| end `rangePicker`   | `（必填）` 结束时间参数名                    | string | -      |
 
 #### [Select 选择器](https://ant.design/components/select-cn/)
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| type `（必填）` | 类型 ，`select | multiple` | string | - |
-| select `（必填）` | 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array, defaultValue: 全部参数默认值 } | { list: object, defaultValue: 全部参数默认值 }` | - |
+| type | `（必填）` 类型 ，`select | multiple` | string | - |
+| select | `（必填）` 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array, defaultValue: 全部参数默认值 } | { list: object, defaultValue: 全部参数默认值 }` | - |
 | loading | 搜索等待状态 | boolean | false |
 | allItem | 是否显示`全部`选项 | boolean | true |
 | fieldNames | 自定义 select 中 name value otherData 的字段 | object | { labelKey: label, valueKey: value, tipKey: otherData } | string | - |
@@ -64,8 +64,8 @@ handle={(form)=> ({
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| select `（必填）` | 选择值，默认城市数据 | [] | CITYJSON |
-| valueskey `（必填）` | 返回参数 key 值，按顺序返回 ['provinceCode', 'cityCode', 'districtCode'], | array | [] |
+| select | `（必填）` 选择值，默认城市数据 | [] | CITYJSON |
+| valueskey | `（必填）` 返回参数 key 值，按顺序返回 ['provinceCode', 'cityCode', 'districtCode'], | array | [] |
 | placeholder | 默认文本 | string | 选择城市 |
 | changeOnSelect | 点选每级菜单选项值都会发生变化 | boolean | false |
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
