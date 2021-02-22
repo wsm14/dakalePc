@@ -136,9 +136,9 @@ const BaseForm = (props) => {
     },
     {
       label: '签约金额',
-      type: 'number',
       name: 'contractAmount',
-      min: 0,
+      suffix: '元',
+      addRules: [{ pattern: NUM_PATTERN, message: '签约金额为大于0的整数' }],
       render: (val) => val + '元',
     },
     {
