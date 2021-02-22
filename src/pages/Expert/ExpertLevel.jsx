@@ -44,10 +44,6 @@ const ExpertLevel = (props) => {
                 auth: 'targetSet',
                 click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
               },
-              // {
-              //   type: 'eye',
-              //   click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
-              // },
             ]}
           />
         );
@@ -66,10 +62,6 @@ const ExpertLevel = (props) => {
                 auth: 'rightsSet',
                 click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
               },
-              // {
-              //   type: 'eye',
-              //   click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
-              // },
             ]}
           />
         );

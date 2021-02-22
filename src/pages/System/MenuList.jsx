@@ -41,10 +41,6 @@ const SysMenuList = (props) => {
 
   // table 表头
   const getColumns = [
-    // {
-    //   title: '菜单ID',
-    //   dataIndex: 'authAccessId',
-    // },
     {
       title: '菜单名称',
       dataIndex: 'accessName',
@@ -62,11 +58,6 @@ const SysMenuList = (props) => {
         />
       ),
     },
-    // {
-    //   title: '菜单路径',
-    //   align: 'center',
-    //   dataIndex: 'orderCount',
-    // },
     {
       title: '操作',
       dataIndex: 'authAccessId',

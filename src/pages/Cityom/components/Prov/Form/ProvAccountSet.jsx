@@ -46,15 +46,15 @@ const ProvAccountSet = (props) => {
     destroyOnClose: true,
     onClose: closeDrawer,
     loading: loadingDetail,
-    footer:(
-        <Button onClick={handleUpData} type="primary" loading={loading}>
-          提交
-        </Button>
-    )
+    footer: (
+      <Button onClick={handleUpData} type="primary" loading={loading}>
+        提交
+      </Button>
+    ),
   };
 
   return (
-    <DrawerCondition {...modalProps} >
+    <DrawerCondition {...modalProps}>
       <AccountForm cRef={cRef} type={type} detail={detail}></AccountForm>
     </DrawerCondition>
   );

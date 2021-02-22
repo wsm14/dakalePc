@@ -4,9 +4,6 @@ import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 import style from './style.less';
 
-// import QRCode from "qrcode-react";
-// import { PHONE_PATTERN } from '@/common/regExp';
-
 const FormItem = Form.Item;
 
 const LoginForm = ({ dispatch, loading }) => {
@@ -80,7 +77,6 @@ const LoginForm = ({ dispatch, loading }) => {
             name="mobile"
             rules={[
               { required: true, message: '请填写正确帐号' },
-              // { pattern: PHONE_PATTERN, message: '请填写正确帐号' },
             ]}
             className={style.dakale_user_form_item}
           >

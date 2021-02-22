@@ -29,7 +29,7 @@ const BusinessAuditDetailList = (props) => {
         select: { list: BUSINESS_DETAIL_AUDIT },
       },
     ],
-    
+
     getColumns: [
       {
         title: '店铺账号',

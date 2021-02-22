@@ -93,18 +93,6 @@ const SysTradeSet = (props) => {
                   type: 'second',
                 }),
             },
-            // {
-            //   type: 'own',
-            //   visible: record.parentId !== 0 && !record.categoryDTOList,
-            //   title: '添加子类目',
-            //   click: () =>
-            //     handleTradeCategorySet({
-            //       parentId: val,
-            //       parentName: record.categoryName,
-            //       node: `${val}.${record.parentId}`,
-            //       type: 'third',
-            //     }),
-            // },
           ]}
         />
       ),

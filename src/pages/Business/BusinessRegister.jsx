@@ -26,7 +26,7 @@ const BusinessRegisterComponent = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'city',
-      changeOnSelect:true,
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];

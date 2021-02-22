@@ -44,12 +44,6 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
     textAlign: 'center',
   };
 
-  const allStyle = {
-    display: 'inline-block',
-    marginTop: 4,
-    color: '#8f8f8f',
-  };
-
   const checkData = (checkData, key, reData = 0) => {
     return checkData ? checkData[key] : reData;
   };
@@ -69,9 +63,6 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
             precision={0}
             valueStyle={{ fontSize: 40 }}
           />
-          {/* <span style={allStyle}>
-            {item.tip}：{checkData(totalData[item.key], 'docCount')}
-          </span> */}
         </Card.Grid>
       ))}
     </Card>
