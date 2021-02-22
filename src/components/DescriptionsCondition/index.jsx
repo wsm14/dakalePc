@@ -43,6 +43,7 @@ const DescriptionsCondition = (props) => {
   const checkData = (type, value) => {
     const domShow = {
       text: value,
+      textArea: value,
       upload: <ImagePreviewGroup url={value}></ImagePreviewGroup>,
     }[type];
     // 类型错误返回

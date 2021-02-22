@@ -126,6 +126,7 @@ const BaseForm = (props) => {
     {
       type: 'noForm',
       visible: map,
+      show: false,
       childrenOwn: amap,
     },
     {
