@@ -49,7 +49,7 @@ const CodeOrders = (props) => {
       name: 'businessHubIdStr',
       type: 'select',
       loading: loadings.models.baseData,
-      allItem: false,
+      allitem: false,
       select: {
         list: hubData.map((item) => ({
           name: item.businessHubName,

@@ -6,9 +6,9 @@ import { DatePicker } from 'antd';
  * 时间选择控件
  */
 
-// 起始时间限制
 const { RangePicker } = DatePicker;
 
+// 起始时间限制
 const disTime = moment('2020-03-01');
 
 // 限制选择时间

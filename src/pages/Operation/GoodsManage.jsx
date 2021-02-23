@@ -32,7 +32,7 @@ const GoodsManageComponent = (props) => {
       name: 'merchantId',
       type: 'select',
       loading: loadings.effects['goodsManage/fetchClassifyGetMre'],
-      allItem: false,
+      allitem: false,
       select: mreSelect,
       placeholder: '请输入店铺名称搜索',
       handle: (form) => ({
@@ -48,7 +48,7 @@ const GoodsManageComponent = (props) => {
       label: '商品分类',
       name: 'customCategoryId',
       type: 'select',
-      allItem: false,
+      allitem: false,
       disabled: !merchantId,
       loading: loadings.effects['goodsManage/fetchGoodsGetClassify'],
       onFocus: () => !merchantId && message.warning('请先选择店铺！'),

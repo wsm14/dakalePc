@@ -59,7 +59,7 @@ const SpecialGoods = (props) => {
       name: 'businessHubId',
       type: 'select',
       loading: loadings.models.baseData,
-      allItem: false,
+      allitem: false,
       select: {
         list: hubData.map((item) => ({
           name: item.businessHubName,
