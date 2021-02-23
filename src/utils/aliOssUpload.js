@@ -64,6 +64,7 @@ const aliOssUpload = async (file = '', fieldNames = {}, policyType = 'image', os
   if (ossType === 'put') {
     message.loading('文件上传中......', 0);
     if (typeof file === 'string') {
+      message.destroy();
       // file 是字符串直接返回 （已经上传的文件生成了http信息）
       return new Promise((resolve) => resolve(file));
     } else if (file instanceof Blob || file instanceof File) {

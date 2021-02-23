@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
@@ -6,9 +6,12 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import businessBrandSet from './components/Brand/BusinessBrandSet';
+import BrandUpdate from './components/Brand/BrandUpdate';
 
 const BusinessBrandComponent = (props) => {
   const { businessBrand, tradeList, loading, dispatch } = props;
+
+  const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
   // 搜索参数
@@ -71,7 +74,7 @@ const BusinessBrandComponent = (props) => {
           formItems={[
             {
               type: 'edit',
-              click: () => handleBrandSet(row),
+              click: () => handleBrandSet('edit', row),
             },
             {
               type: 'del',
@@ -104,11 +107,17 @@ const BusinessBrandComponent = (props) => {
   };
 
   // 品牌新增
-  const handleBrandSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessBrandSet({ dispatch, childRef, tradeList, initialValues }),
+  const handleBrandSet = (type, initialValues) => {
+    setVisible({
+      type,
+      initialValues,
+      show: true,
+      tradeList,
     });
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: businessBrandSet({ dispatch, childRef, tradeList, initialValues }),
+    // });
   };
 
   useEffect(() => {
@@ -116,22 +125,30 @@ const BusinessBrandComponent = (props) => {
   }, []);
 
   return (
-    <TableDataBlock
-      btnExtra={
-        <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" onClick={()=>handleBrandSet()}>
-            新增
-          </Button>
-        </AuthConsumer>
-      }
-      cRef={childRef}
-      loading={loading.models.businessBrand}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.configBrandIdString}`}
-      dispatchType="businessBrand/fetchGetList"
-      {...businessBrand}
-    ></TableDataBlock>
+    <>
+      <TableDataBlock
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" onClick={() => handleBrandSet('add')}>
+              新增
+            </Button>
+          </AuthConsumer>
+        }
+        cRef={childRef}
+        loading={loading.models.businessBrand}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.configBrandIdString}`}
+        dispatchType="businessBrand/fetchGetList"
+        {...businessBrand}
+      ></TableDataBlock>
+      <BrandUpdate
+        cRef={childRef}
+        visible={visible}
+        setVisible={setVisible}
+        onClose={() => setVisible(false)}
+      ></BrandUpdate>
+    </>
   );
 };
 
