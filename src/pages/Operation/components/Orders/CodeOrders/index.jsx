@@ -41,7 +41,7 @@ const CodeOrders = (props) => {
       label: '区域',
       name: 'city',
       type: 'cascader',
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length && fetchGetHubSelect(val[2]),
     },
     {

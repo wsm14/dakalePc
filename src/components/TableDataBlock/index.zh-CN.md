@@ -48,7 +48,7 @@
 | key        | 排序唯一键名 `（必填）`                    | string               | -      |
 | onSortEnd  | 排序完成回调函数，将会返回排序完成后新数据 | `function(): Object` | -      |
 
-```
+```jsx
 <TableDataBlock
   {...draggableContent(
       list,

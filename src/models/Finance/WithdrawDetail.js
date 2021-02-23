@@ -11,7 +11,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
-    totalData: { withdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
+    totalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
   },
 
   reducers: {

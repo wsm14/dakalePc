@@ -58,7 +58,7 @@ const AreaCenter = (props) => {
       label: '代理区县',
       type: 'cascader',
       name: 'districtCode',
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '联系人姓名',

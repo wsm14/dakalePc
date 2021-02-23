@@ -59,7 +59,7 @@ const BusinessSettled = (props) => {
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '审核状态',
