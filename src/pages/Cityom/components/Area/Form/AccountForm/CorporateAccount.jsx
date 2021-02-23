@@ -204,16 +204,19 @@ const CorporateAccount = (props) => {
     {
       label: '开户支行城code',
       name: ['bankBindingObject', 'provCode'],
+      show: false,
       hidden: true,
     },
     {
       label: '开户支行市名',
       name: ['bankBindingObject', 'areaName'],
       hidden: true,
+      show: false,
     },
     {
       label: '开户支行市code',
       name: ['bankBindingObject', 'areaCode'],
+      show: false,
       hidden: true,
     },
     // {
@@ -269,12 +272,14 @@ const CorporateAccount = (props) => {
       label: '身份有效期开始',
       name: ['bankBindingObject', 'startDate'],
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
     {
       label: '身份有效期结束',
       name: ['bankBindingObject', 'legalCertIdExpires'],
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
     {

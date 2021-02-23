@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
 import { Map, Marker } from 'react-amap';
+import { NUM_PATTERN } from '@/common/regExp';
 import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -102,6 +103,7 @@ const BaseForm = (props) => {
       label: '分管省份名字值',
       name: 'agentProvinceName',
       hidden: true,
+      show: false,
     },
     {
       label: '企业所在地',
@@ -116,6 +118,7 @@ const BaseForm = (props) => {
       label: '企业所在地名字',
       name: 'allCityName',
       hidden: true,
+      show: false,
     },
     {
       label: '企业地址',
@@ -146,12 +149,14 @@ const BaseForm = (props) => {
       label: '经度',
       name: 'lat',
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
     {
       label: '纬度',
       name: 'lnt',
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
   ];
