@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
 import { Map, Marker } from 'react-amap';
+import { NUM_PATTERN } from '@/common/regExp';
 import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
