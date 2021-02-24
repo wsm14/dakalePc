@@ -84,7 +84,7 @@ const SysPeasShare = (props) => {
       dispatchType="sysPeasShare/fetchGetList"
       {...sysPeasShare}
     ></TableDataBlock>
-    <PeasShareSet cRef={childRef} visible={visible} setVisible={setVisible} onClose={()=>setVisible(false)}></PeasShareSet>
+    <PeasShareSet cRef={childRef} visible={visible} onClose={()=>setVisible(false)}></PeasShareSet>
     </>
   );
 };
