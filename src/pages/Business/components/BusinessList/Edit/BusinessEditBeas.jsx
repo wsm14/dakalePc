@@ -76,10 +76,10 @@ const BusinessAddBeas = (props) => {
     {
       title: '01 店铺信息',
       label: '品牌名称',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: 'false',
       required: false,
-      childrenOwn: (
+      formItem: (
         <>
           <Form.Item
             key="bandName"
@@ -157,7 +157,7 @@ const BusinessAddBeas = (props) => {
     {
       type: 'noForm',
       visible: ampShow,
-      childrenOwn: amap,
+      formItem: amap,
     },
     {
       label: '店铺电话',

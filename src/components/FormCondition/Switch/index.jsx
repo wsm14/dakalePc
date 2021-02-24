@@ -1,9 +1,10 @@
 import React from 'react';
 import { Switch } from 'antd';
+import { delectProps } from '../utils';
 
 const SwitchBlock = (props) => {
-  const switchProps = JSON.parse(JSON.stringify(props));
-  delete switchProps.name;
+  const switchProps = delectProps(props);
+  
   return <Switch {...switchProps} />;
 };
 

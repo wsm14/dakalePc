@@ -74,7 +74,7 @@ const ManagementForm = (props) => {
 
       type: 'noForm',
       visible: ImageShow,
-      childrenOwn: Images,
+      formItem: Images,
       // label: '品牌LOGO',
       // name: 'brandLogo',
       // type: 'upload',

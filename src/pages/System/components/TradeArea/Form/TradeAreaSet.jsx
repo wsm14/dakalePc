@@ -170,7 +170,7 @@ const TradeAreaSet = (props) => {
     {
       type: 'noForm',
       visible: ampShow,
-      childrenOwn: amap,
+      formItem: amap,
     },
     {
       label: '商圈经度',

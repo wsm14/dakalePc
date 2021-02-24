@@ -90,7 +90,7 @@ const BusinessListComponent = (props) => {
       type: 'select',
       loading: loading.models.baseData,
       disabled: hubSelect,
-      allitem: false,
+      allItem: false,
       select: hubData.map((item) => ({
         name: item.businessHubName,
         value: item.businessHubIdString,

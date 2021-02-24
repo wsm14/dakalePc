@@ -305,7 +305,7 @@ const FormComponents = ({
 
   // 遍历表单
   const getFields = () => {
-    const childrenOwn = [];
+    const formItem = [];
     formItems.forEach((item, i) => {
       const {
         title = '',
@@ -624,7 +624,7 @@ const FormComponents = ({
               )}
           </Upload>
         ),
-        childrenOwn: item.childrenOwn,
+        formItem: item.formItem,
         noForm: '',
       }[type];
 
@@ -638,12 +638,12 @@ const FormComponents = ({
       }
 
       if (type === 'noForm') {
-        childrenOwn.push(visible && item.childrenOwn);
+        formItem.push(visible && item.formItem);
         return;
       }
 
       if (title) {
-        childrenOwn.push(
+        formItem.push(
           <Divider orientation="left" key={`${label}${i}`}>
             {title}
           </Divider>,
@@ -652,7 +652,7 @@ const FormComponents = ({
 
       const req = {};
       if (item.required) req.required = item.required;
-      childrenOwn.push(
+      formItem.push(
         visible && (
           <FormItem
             {...req}
@@ -673,7 +673,7 @@ const FormComponents = ({
         ),
       );
     });
-    return childrenOwn;
+    return formItem;
   };
 
   useEffect(() => {

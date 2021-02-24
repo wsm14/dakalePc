@@ -55,7 +55,7 @@ const LevelFormSet = (props) => {
       name: 'value',
       visible: detail.name == 'exclusiveCoupon',
       type: 'noForm',
-      childrenOwn: (
+      formItem: (
         <Form.Item label="设置数值" style={{ marginBottom: 0 }}>
           <Form.Item name={['value', 'startMoney']} {...formObj}>
             <InputNumber style={{ width: '100%' }} min={1} precision={0} />
@@ -72,7 +72,7 @@ const LevelFormSet = (props) => {
       name: 'value',
       visible: detail.name == 'exclusiveCoupon',
       type: 'noForm',
-      childrenOwn: (
+      formItem: (
         <Form.Item label="设置张数" style={{ marginBottom: 0 }}>
           <Form.Item name={['value', 'startCount']} {...formObj}>
             <InputNumber style={{ width: '100%' }} min={1} precision={0} />

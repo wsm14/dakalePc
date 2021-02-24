@@ -30,10 +30,10 @@ const userForm = (props) => {
     // {
     //   label: '角色',
     //   name: 'idString',
-    //   type: 'childrenOwn',
+    //   type: 'formItem',
     //   visible: Object.keys(groupDetails).length !== 0 ? false : true,
     //   rules: [{ required: false }],
-    //   childrenOwn: (
+    //   formItem: (
     //     <Spin spinning={loading}>
     //       <Transfer
     //         showSearch

@@ -77,7 +77,7 @@ const GoodsOrders = (props) => {
       name: 'businessHubIdStr',
       type: 'select',
       loading: loadings.models.baseData,
-      allitem: false,
+      allItem: false,
       select: {
         list: hubData.map((item) => ({
           name: item.businessHubName,

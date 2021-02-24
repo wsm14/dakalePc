@@ -17,7 +17,7 @@ const CircleMasterList = (props) => {
       label: '身份',
       name: 'userType',
       type: 'select',
-      allitem: false,
+      allItem: false,
       select: { list: MASTER_TYPE },
     },
     {

@@ -130,7 +130,7 @@ const BaseForm = (props) => {
       type: 'noForm',
       visible: map,
       show: false,
-      childrenOwn: amap,
+      formItem: amap,
     },
     {
       label: '加盟日期',

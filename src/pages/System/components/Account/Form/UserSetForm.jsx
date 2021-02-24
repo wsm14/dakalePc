@@ -151,9 +151,9 @@ const UserSetForm = (props) => {
     {
       label: '角色',
       name: 'roleIds',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: [{ required: false }],
-      childrenOwn: (
+      formItem: (
         <Spin spinning={loading}>
           <Transfer
             showSearch

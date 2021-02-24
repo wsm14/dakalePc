@@ -34,8 +34,8 @@ const SubsidyDirectMoney = (props) => {
     {
       label: '适用店铺',
       name: 'merchantIds',
-      type: 'childrenOwn',
-      childrenOwn: (
+      type: 'formItem',
+      formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺
         </Button>
@@ -44,7 +44,7 @@ const SubsidyDirectMoney = (props) => {
     {
       label: '适用店铺',
       type: 'noForm',
-      childrenOwn: (
+      formItem: (
         <MreSelectShow
           key="MreTable"
           form={form}

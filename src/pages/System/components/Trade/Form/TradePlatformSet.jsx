@@ -86,11 +86,11 @@ const TradePlatformSet = (props) => {
     formItems: [
       {
         label: '面积区间',
-        type: 'childrenOwn',
+        type: 'formItem',
         rules: 'false',
         required: true,
         visible: CeditType !== 3,
-        childrenOwn: (
+        formItem: (
           <>
             <Form.Item
               name="areaMin"

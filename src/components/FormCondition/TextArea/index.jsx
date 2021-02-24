@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Input } from 'antd';
+import { delectProps } from '../utils';
 
-const InputBlock = (props) => {
+const TextAreaBlock = (props) => {
   const { initialvalues = {}, rows, name, maxLength } = props;
 
   const [totalNum, setTotalNum] = useState(0); // 字数计算
+  const divProps = delectProps(props);
 
   const numtext = () => {
     if (!maxLength) return 0;
@@ -17,11 +19,12 @@ const InputBlock = (props) => {
 
   const dataNum = maxLength && `${totalNum || (numtext() && `${numtext()}`.length)}/${maxLength}`;
 
+
   return (
     <>
       <Input.TextArea
+        {...divProps}
         rows={rows || 5}
-        {...props}
         onChange={(e) => setTotalNum(e.target.value.length)}
       />
       {maxLength && (
@@ -34,4 +37,4 @@ const InputBlock = (props) => {
   );
 };
 
-export default InputBlock;
+export default TextAreaBlock;

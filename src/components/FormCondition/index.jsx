@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
+import { delectProps } from './utils';
 
 /**
  *
@@ -28,7 +29,6 @@ const FormItem = Form.Item;
 
 const FormComponents = ({
   form,
-  keyValue = 'formCon',
   formItems = [],
   layout = 'horizontal',
   initialValues = {},
@@ -41,77 +41,71 @@ const FormComponents = ({
 
   // 遍历表单
   const getFields = () => {
-    const childrenOwn = [];
+    const formItemArr = [];
     formItems.forEach((item, i) => {
+      let component = '';
       const { title = '', label = '', name = '', type = 'input', addRules, visible = true } = item;
       // 标题
       if (title) {
-        childrenOwn.push(
-          <Divider orientation="left" key={`${label}${i}`}>
+        formItemArr.push(
+          <Divider orientation="left" key={`${type}${label}${i}`}>
             {title}
           </Divider>,
         );
       }
       // 自定义formItem 结构
       if (type === 'noForm') {
-        childrenOwn.push(visible && item.childrenOwn);
+        formItemArr.push(visible && <div key={`${label}${i}${type}`}>{item.formItem}</div>);
         return;
       }
-      // 根据类型获取不同的表单组件
-      const IFormItem = IFormModule[type];
-      if (!IFormItem) {
-        childrenOwn.push(<div>form error</div>);
-        return;
-      }
-      // 规则 默认必填
-      const rules = item.rules || [{ required: true, message: `请确认${label}` }];
-      // 默认值
-      const placeholder = item.placeholder || `请输入${label}`;
-
       // 表单组件
-      const component =
-        type === 'childrenOwn' ? (
-          item.childrenOwn
-        ) : (
+      if (type === 'formItem') {
+        component = item.formItem;
+      } else {
+        // 根据类型获取不同的表单组件
+        const IFormItem = IFormModule[type];
+        if (!IFormItem) {
+          formItemArr.push(<div key={`${label}${name}${i}`}>form error</div>);
+          return;
+        }
+        // 默认值
+        const placeholder = item.placeholder || `请输入${label}`;
+        component = (
           <IFormItem
             {...item}
             form={form || formN}
             initialvalues={initialValues}
             placeholder={placeholder}
-            visible="true"
           ></IFormItem>
         );
+      }
 
-      childrenOwn.push(
+      // 规则 默认必填
+      const rules = item.rules || [{ required: true, message: `请确认${label}` }];
+      const formProps = delectProps(item);
+      delete formProps.onChange;
+      formItemArr.push(
         visible && (
           <FormItem
+            key={`${label}${name}${type}`}
+            {...formProps}
             name={name}
-            key={`${label}${name}`}
             rules={[...rules, ...(addRules || [])]}
-            {...item}
-            visible="true"
           >
             {component}
           </FormItem>
         ),
       );
     });
-    return childrenOwn;
+    return formItemArr;
   };
 
   useEffect(() => {
     formDom.setFieldsValue(initialValues);
-    return componentWillUnmount;
   }, [Object.keys(initialValues).length]);
-
-  // 组件销毁执行
-  const componentWillUnmount = () => {
-    formDom.resetFields();
-  };
 
   return (
     <Form
-      key={keyValue}
       form={formDom}
       layout={layout}
       initialValues={initialValues}

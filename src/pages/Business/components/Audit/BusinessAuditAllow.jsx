@@ -57,9 +57,9 @@ const BusinessAuditAllow = (props) => {
     },
     {
       label: '营业时间',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: [{ required: false }],
-      childrenOwn: (
+      formItem: (
         <BusinessTimeSet timeObj={initialValues.businessTimeObj} form={form}></BusinessTimeSet>
       ),
     },

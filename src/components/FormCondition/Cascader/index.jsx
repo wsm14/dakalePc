@@ -8,22 +8,32 @@ const filter = (inputValue, path, label = 'label') => {
 };
 
 const CascaderBlock = (props) => {
-  const { select, label, placeholder, onChange = undefined, fieldNames } = props;
+  const {
+    select,
+    label,
+    placeholder,
+    disabled,
+    changeOnSelect = false,
+    onChange = undefined,
+    fieldNames,
+  } = props;
 
   return (
     <Cascader
       allowClear={false}
-      options={select || CITYJSON}
       expandTrigger="hover"
-      onChange={(val, option) => {
-        if (onChange) onChange(option);
-      }}
       showSearch={{
         filter: (inputValue, path) =>
           filter(inputValue, path, fieldNames ? fieldNames.label : 'label'),
       }}
+      disabled={disabled}
+      changeOnSelect={changeOnSelect}
+      fieldNames={fieldNames}
       placeholder={placeholder || `请选择${label}`}
-      {...props}
+      options={select || CITYJSON}
+      onChange={(val, option) => {
+        if (onChange) onChange(option);
+      }}
     />
   );
 };

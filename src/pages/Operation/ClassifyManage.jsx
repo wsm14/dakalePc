@@ -43,7 +43,7 @@ const ClassifyManageComponent = (props) => {
       name: 'merchantId',
       type: 'select',
       loading: loadings.effects['classifyManage/fetchClassifyGetMre'],
-      allitem: false,
+      allItem: false,
       onSearch: (val) => fetchClassifyGetMre(val),
       select: { list: mreSelect },
       placeholder: '请输入搜索',

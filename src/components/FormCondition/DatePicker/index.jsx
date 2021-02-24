@@ -1,12 +1,14 @@
 import React from 'react';
 import { DatePicker } from 'antd';
+import { delectProps } from '../utils';
 
 const { RangePicker } = DatePicker;
 
 const DatePickerBlock = (props) => {
+  
   const { type = 'rangePicker' } = props;
 
-  const pockerDefault = { width: '100%', ...props };
+  const pockerDefault = delectProps({ width: '100%', ...props });
 
   return {
     dataPicker: <DatePicker {...pockerDefault} />,

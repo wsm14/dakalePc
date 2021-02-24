@@ -1,10 +1,12 @@
 import React from 'react';
 import lodash from 'lodash';
 import { Radio } from 'antd';
+import { delectProps } from '../utils';
 
 const RadioBlock = (props) => {
   const { select, fieldNames = {} } = props;
 
+  const divProps = delectProps(props);
   const { label = 'name', value = 'value', disabled = 'disabled' } = fieldNames;
 
   // 遍历对象
@@ -33,7 +35,7 @@ const RadioBlock = (props) => {
     selectList = arrObject(select);
   }
 
-  return <Radio.Group options={selectList} {...props}></Radio.Group>;
+  return <Radio.Group {...divProps} options={selectList}></Radio.Group>;
 };
 
 export default RadioBlock;

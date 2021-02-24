@@ -52,7 +52,7 @@ const MessagePush = (props) => {
       label: '推送对象',
       name: 'pushObjectType',
       type: 'select',
-      allitem: false,
+      allItem: false,
       select: MSG_PSUH_OBJECT,
     },
     {

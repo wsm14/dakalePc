@@ -95,7 +95,7 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
     {
       type: 'noForm',
       visible: goodsType == 'package',
-      childrenOwn: <GoodsSetTable key="groups" form={form}></GoodsSetTable>,
+      formItem: <GoodsSetTable key="groups" form={form}></GoodsSetTable>,
     },
     {
       label: '套餐内单品：',

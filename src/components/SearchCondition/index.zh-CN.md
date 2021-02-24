@@ -58,7 +58,7 @@ handle={(form)=> ({
 | select | `（必填）` 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array } | { list: object }` | - |
 | loading | 搜索等待状态 | boolean | false |
 | fieldNames | 自定义 select 中 name value otherData 的字段 | object | { labelKey: label, valueKey: value, tipKey: otherData } | string | - |
-| allitem `select` | 是否显示`全部`选项，配置 defaultValue | boolean | true |
+| allItem `select` | 是否显示`全部`选项，配置 defaultValue | boolean | true |
 | defaultValue `select` | `全部` 选项默认值 | string | - |
 
 #### Cascader 级联选择（[更多配置](https://ant.design/components/cascader-cn/)）
@@ -78,7 +78,7 @@ handle={(form)=> ({
 
 组件重构
 
-> - `Select` 组件 `allItem` 改为 `allitem`
+> - `Select` 组件 `allItem` 改为 `allItem`
 > - `cascader` 组件 `valuesKey` 参数，改为 `valueskey`
 > - `select` 组件增加 `fieldNames` 配置 参数别名
 > - `select` type 为 select 时 增加 `defaultValue` 配置 `全部` 选项默认值

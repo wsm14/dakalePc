@@ -22,9 +22,9 @@ export const user = [{ label: '登录账号', name: 'account' }];
 // {
 //   label: '角色',
 //   name: 'idString',
-//   type: 'childrenOwn',
+//   type: 'formItem',
 //   rules: [{ required: false }],
-//   childrenOwn: (
+//   formItem: (
 //     <Spin spinning={loading}>
 //       <Transfer
 //         showSearch
