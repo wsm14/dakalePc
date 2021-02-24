@@ -1,8 +1,8 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
 import MasterDetailList from './components/Master/MasterDetailList';
 
@@ -18,7 +18,7 @@ const CircleMasterList = (props) => {
       name: 'userType',
       type: 'select',
       allItem: false,
-      select: { list: MASTER_TYPE },
+      select: MASTER_TYPE,
     },
     {
       label: '用户/店铺名',
@@ -32,8 +32,8 @@ const CircleMasterList = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'city',
-      changeOnSelect:true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      changeOnSelect: true,
+      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 
@@ -43,9 +43,6 @@ const CircleMasterList = (props) => {
       type: type,
       record: {
         ...data,
-        name: data.username,
-        userType: data.parentUserType,
-        id: data.parentUserIdString,
       },
     });
   };
@@ -92,7 +89,7 @@ const CircleMasterList = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'parentUserIdString',
+      dataIndex: 'id',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
@@ -118,18 +115,18 @@ const CircleMasterList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="家主列表"
+      <TableDataBlock
+        keepData
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.parentUserIdString}`}
-        pParams={{ searchData: { userType: 'user' } }}
+        rowKey={(record) => `${record.id}`}
+        params={{ userType: 'user' }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
       >
         <MasterTotalInfo />
-      </DataTableBlock>
+      </TableDataBlock>
       <MasterDetailList visible={visible} setVisible={setVisible} />
     </>
   );
