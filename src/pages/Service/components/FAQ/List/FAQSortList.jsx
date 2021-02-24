@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import faqSortSet from '../Form/FAQSortSet';
+import FaqSortSet from '../Form/FAQSortSet';
 
 const FAQSortList = (props) => {
   const { sortList, qRef, loading, visible, setVisible, dispatch } = props;
+
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -55,15 +57,12 @@ const FAQSortList = (props) => {
 
   //  新增 修改
   const handleDataSet = (setType = 'add', initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: faqSortSet({
-        dispatch,
-        childRef,
-        qRef,
-        initialValues,
-        setType,
-      }),
+    setVisibleSet({
+      setType,
+      initialValues,
+      childRef,
+      qRef,
+      show: true,
     });
   };
 
@@ -92,7 +91,7 @@ const FAQSortList = (props) => {
     >
       <TableDataBlock
         btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
+          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
             新增分类
           </Button>
         }
@@ -106,6 +105,7 @@ const FAQSortList = (props) => {
         size="middle"
         {...sortList}
       ></TableDataBlock>
+      <FaqSortSet visibleSet={visibleSet} onClose={() => setVisibleSet(false)}></FaqSortSet>
     </Modal>
   );
 };
