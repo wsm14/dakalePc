@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import sysMenuSet from './components/Menu/SysMenuSet';
+import SysMenuSet from './components/Menu/SysMenuSet';
 
 const tabList = [
   {
@@ -38,6 +38,7 @@ const SysMenuList = (props) => {
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('admin');
   const [one, setOne] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -74,7 +75,7 @@ const SysMenuList = (props) => {
               type: 'own',
               title: '添加',
               click: () =>
-                handleSysMenuSet({
+                handleSysMenuSet("add",{
                   menuName: record.accessName,
                   pid: val,
                   authType: '2',
@@ -94,7 +95,10 @@ const SysMenuList = (props) => {
     dispatch({
       type: 'sysMenuList/fetchGetMenuDetail',
       payload,
-      callback: val === undefined ? handleSysMenuSet : fetchSetMenuStatus,
+      callback:
+        val === undefined
+          ? (val) => handleSysMenuSet('edit', val)
+          :fetchSetMenuStatus,
     });
   };
 
@@ -125,15 +129,19 @@ const SysMenuList = (props) => {
   };
 
   // 新增/修改
-  const handleSysMenuSet = (initialValues = { authType: '2', status: '1', ownerType: tabkey }) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: sysMenuSet({
-        dispatch,
-        allMenu: sysMenuList.allMenu,
-        initialValues: { pid: initialValues.pidString, ...initialValues },
-        handleCallback,
-      }),
+  const handleSysMenuSet = (
+    type,
+    val,
+    initialValues = { authType: '2', status: '1', ownerType: tabkey },
+  ) => {
+    if (val && val !== 'undefined') {
+      initialValues = { pid: val.pidString, ...initialValues,...val};
+    }
+    setVisible({
+      show: true,
+      type,
+      initialValues,
+      allMenu: sysMenuList.allMenu,
     });
   };
 
@@ -146,7 +154,7 @@ const SysMenuList = (props) => {
   return (
     <Card
       tabBarExtraContent={
-        <Button className="dkl_green_btn" onClick={() => handleSysMenuSet()}>
+        <Button className="dkl_green_btn" onClick={() => handleSysMenuSet('add')}>
           新增
         </Button>
       }
@@ -167,6 +175,11 @@ const SysMenuList = (props) => {
         params={{ ownerType: tabkey, limit: 101 }}
         {...sysMenuList}
       ></TableDataBlock>
+      <SysMenuSet
+        visible={visible}
+        onClose={() => setVisible(false)}
+        handleCallback={handleCallback}
+      ></SysMenuSet>
     </Card>
   );
 };
