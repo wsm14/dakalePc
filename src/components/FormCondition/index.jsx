@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
 import { delectProps } from './utils';
@@ -101,6 +101,10 @@ const FormComponents = ({
     });
     return formItemArr;
   };
+
+  useEffect(() => {
+    formDom.setFieldsValue(initialValues);
+  }, [initialValues]);
 
   return (
     <Form
