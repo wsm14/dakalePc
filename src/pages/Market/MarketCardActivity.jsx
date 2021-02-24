@@ -7,13 +7,14 @@ import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
-import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
+import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
 
 const MarketCardActivity = (props) => {
   const { marketCardActivity, loading, dispatch } = props;
 
   const childRef = useRef();
   const [show, setShow] = useState({ key: 'home', record: '' });
+  const [visible, setVisible] = useState(false)
   const [params] = useState({});
 
   // 搜索参数
@@ -105,10 +106,7 @@ const MarketCardActivity = (props) => {
 
   // 设置活动
   const handleSetActive = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: marketCardActivitySet({ dispatch, childRef }),
-    });
+    setVisible(true)
   };
 
   const btnExtra = (
@@ -145,6 +143,7 @@ const MarketCardActivity = (props) => {
           ),
         }[show.key]
       }
+      <MarketCardActivitySet visible={visible} cRef={childRef} onClose = {()=>setVisible(false)}></MarketCardActivitySet>
     </>
   );
 };
