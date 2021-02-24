@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SALE_ACCOUNT_TYPE, SEX_TYPE } from '@/common/constant';
+import { SALE_ACCOUNT_TYPE, SEX_NEW_TYPE } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
 
@@ -54,7 +54,7 @@ const SaleAccountSet = (props) => {
       label: '联系人性别',
       name: 'gender',
       type: 'radio',
-      select: SEX_TYPE,
+      select: SEX_NEW_TYPE,
     },
     {
       label: '联系人电话',

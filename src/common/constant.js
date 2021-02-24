@@ -158,10 +158,7 @@ export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
 
 // 分享类型
-export const PUZZLE_AD_TYPE = {
-  video: '视频',
-  image: '图片',
-};
+export const PUZZLE_AD_TYPE = { video: '视频', image: '图片' };
 
 // 消息推送 - 推送状态
 export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
@@ -230,21 +227,8 @@ export const BANNER_TYPE = {
   surroundingSpecial: '周边特惠列表',
 };
 
-// 用户性别
-export const SEX_TYPE = [
-  { value: 'M', name: '男' },
-  { value: 'F', name: '女' },
-];
-
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = {
-  无: '无',
-  H5: 'H5',
-  内部: '内部',
-};
+export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', 内部: '内部' };
 
 // 用户类型
-export const MASTER_TYPE = {
-  user: '用户',
-  merchant: '店铺',
-};
+export const MASTER_TYPE = { user: '用户', merchant: '店铺' };

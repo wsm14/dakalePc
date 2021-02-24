@@ -10,7 +10,7 @@ const MessagePushSet = (props) => {
       label: '推送目标',
       name: 'userType',
       type: 'radio',
-      select: Object.keys(MSG_PSUH_TAB).map((item) => ({ name: MSG_PSUH_TAB[item], value: item })),
+      select: MSG_PSUH_TAB,
     },
     {
       label: '消息标题',
@@ -53,10 +53,7 @@ const MessagePushSet = (props) => {
       label: '推送对象',
       name: 'pushObjectType',
       type: 'radio',
-      select: Object.keys(MSG_PSUH_OBJECT).map((item) => ({
-        name: MSG_PSUH_OBJECT[item],
-        value: item,
-      })),
+      select: MSG_PSUH_OBJECT,
     },
   ];
 

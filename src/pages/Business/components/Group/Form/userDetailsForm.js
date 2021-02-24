@@ -1,14 +1,10 @@
-import React, {useState} from "react";
-import FormCondition from "@/components/FormCondition";
-import {SPACE_PATTERN,WORD_NUM_PATTERN,PHONE_PATTERN} from "@/common/regExp";
-import {SEX_TYPE} from "@/common/constant"
-import {connect} from 'umi'
+import React from 'react';
+import FormCondition from '@/components/FormCondition';
+import { PHONE_PATTERN } from '@/common/regExp';
+import { SEX_NEW_TYPE } from '@/common/constant';
+import { connect } from 'umi';
 const userForm = (props) => {
-  const {
-    form,
-    initialValues,
-    groupDetails
-  } = props
+  const { form, initialValues, groupDetails } = props;
 
   const formItems = [
     {
@@ -18,9 +14,9 @@ const userForm = (props) => {
     {
       label: '性别',
       name: 'gender',
-      type:'radio',
+      type: 'radio',
       visible: Object.keys(groupDetails).length !== 0 ? false : true,
-      select: SEX_TYPE
+      select: SEX_NEW_TYPE,
     },
     {
       label: '联系人电话',
@@ -29,11 +25,9 @@ const userForm = (props) => {
     },
   ];
 
-  return (
-    <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
-  )
-}
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+};
 
-export default connect(({groupSet}) => ({
+export default connect(({ groupSet }) => ({
   ...groupSet,
-}))(userForm)
+}))(userForm);
