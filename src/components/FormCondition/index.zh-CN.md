@@ -35,17 +35,17 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| type | `（必填）` 表单的类型 `input | cascader | textArea | datePicker | rangePicker | timePicker | number | select | multiple | checkbox | radio | tags | switch | upload | videoUpload | otherUpload | noForm | formItem`，图片/视频/文件处理逻辑不同，拆分三个组件，`noForm` 不使用`formItem`组件包裹，`formItem`使用`formItem`包裹自定义表单组件 | string | input |
+| type | `（必填）` 表单的类型 `input | cascader | textArea | datePicker | rangePicker | timePicker | number | select | multiple | checkbox | radio | tags | switch | upload | videoUpload | otherUpload | noForm | formItem`，`noForm` 不使用`formItem`组件包裹，`formItem`使用`formItem`包裹自定义表单组件 | string | input |
 | title | 标题 | ReactNode | - |
 | label | label 标签的文本 | ReactNode | - |
 | name | 数据参数名 | string | - |
-| rules | 规则配置 | [Rule[]](https://ant.design/components/form-cn/#Rule) | [{ required: true, message: `请确认${label}` }] |
+| rules | 规则配置 默认[{ required: true, message: `请确认${label}` }] | [Rule[]](https://ant.design/components/form-cn/#Rule) | [] |
 | addRules | 额外规则配置 | [Rule[]](https://ant.design/components/form-cn/#Rule) | - |
 | visible | 是否显示表单 | boolean | true |
 | hidden | 是否隐藏字段（依然会收集和校验字段），`可额外数据收集时使用` | boolean | false |
 | extra | 额外的提示信息 | ReactNode | - |
 
-#### input 输入框 [更多配置](https://ant.design/components/input-cn/)）
+#### input 输入框 （[更多配置](https://ant.design/components/input-cn/)）
 
 | 参数       | 说明                                   | 类型        | 默认值 |
 | ---------- | -------------------------------------- | ----------- | ------ |
@@ -54,7 +54,7 @@
 | maxLength  | 最长字数，配置后显示字数统计           | number      | -      |
 | onChange   | 输入框内容变化时的回调                 | function(e) | -      |
 
-#### TextArea 输入框 [更多配置](https://ant.design/components/input-cn/)）
+#### TextArea 输入框 （[更多配置](https://ant.design/components/input-cn/)）
 
 | 参数      | 说明                         | 类型   | 默认值 |
 | --------- | ---------------------------- | ------ | ------ |
@@ -72,7 +72,7 @@
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
 | onChange | 选择完成后的回调 | (value, form) => void | - |
 
-#### Select 选择器 && Tags 选择器 [更多配置](https://ant.design/components/select-cn/)）
+#### Select 选择器 && Tags 选择器 （[更多配置](https://ant.design/components/select-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -80,7 +80,7 @@
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: name, value: value, tip: otherData } |
 | loading | loading 状态 | boolean | false |
 
-#### Upload 上传组件 [更多配置](https://ant.design/components/upload-cn/)）
+#### Upload 上传组件
 
 > 图片`upload`/视频`videoUpload`/文件`otherUpload`处理逻辑不同，拆分三个组件
 
@@ -116,14 +116,14 @@
 
 ---
 
-#### Radio 单选框 [更多配置](https://ant.design/components/radio-cn/)）
+#### Radio 单选框
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | select | `（必填）` 选择值 | `[] | [{ }] | { label: string; value: string; disabled?: boolean; }` | [] |
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
 
-#### TimePicker 时间选择框 [更多配置](https://ant.design/components/time-picker-cn/)）
+#### TimePicker 时间选择框
 
 | 参数   | 说明           | 类型   | 默认值  |
 | ------ | -------------- | ------ | ------- |
@@ -136,7 +136,7 @@
 组件重构
 
 > - `childrenOwn`字段 改为 `formItem`
->   > 全局替换
+>   > - 全局替换
 > - `select` 组件增加 `fieldNames` 配置 参数别名
->   > 目的：替换原本常量中数组键值对形式数据为对象
-> - 子组件抽离，antd 相关组件配置兼容
+>   > - 目的：替换原本常量中数组键值对形式数据为对象
+> - 组件抽离，antd 相关组件配置兼容
