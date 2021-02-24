@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import { delectProps } from '../utils';
 
 const TextAreaBlock = (props) => {
-  const { initialvalues = {}, rows, name, maxLength, onChange } = props;
+  const { form, initialvalues = {}, rows, name, maxLength, onChange } = props;
 
   const [totalNum, setTotalNum] = useState(0); // 字数计算
   const divProps = delectProps(props);
@@ -13,12 +13,13 @@ const TextAreaBlock = (props) => {
     if (Array.isArray(name)) {
       return initialvalues[name[0]] ? initialvalues[name[0]][name[1]] || 0 : '';
     } else {
-      return initialvalues[name] ? initialvalues[name] : '';
+      const inputData = form.getFieldValue(name);
+      return inputData ? inputData : 0;
     }
   };
 
   const dataNum = maxLength && `${totalNum || (numtext() && `${numtext()}`.length)}/${maxLength}`;
-  console.log(divProps);
+
   return (
     <>
       <Input.TextArea
