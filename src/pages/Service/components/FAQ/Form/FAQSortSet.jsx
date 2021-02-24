@@ -55,7 +55,7 @@ const FAQSortSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={()=>fetchDataEdit()}>
+      <Button type="primary" onClick={() => fetchDataEdit()}>
         确定
       </Button>
     ),
