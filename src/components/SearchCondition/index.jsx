@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Searchor } from './searchModule';
-import { Form, Row, Col, Button, Space, Grid } from 'antd';
+import { Form, Row, Col, Input, Button, Space, Grid } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -48,12 +48,12 @@ const SearchCondition = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, i) => {
-      const { type = 'input', name, handle } = item;
+      const { type = 'input', name, handle, label } = item;
       // 根据类型获取不同的表单组件
       const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
-      const pickerCheck = (item.type === 'rangePicker' || item.type === 'datePicker') && len < 4;
+      const pickerCheck = (type === 'rangePicker' || type === 'datePicker') && len < 4;
       // 排版填充
       children.push(
         <Col
@@ -62,7 +62,7 @@ const SearchCondition = (props) => {
           xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
           key={i}
         >
-          <FormItem label={item.label} style={{ paddingBottom: 8 }} name={name}>
+          <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
             <SearchItem {...item} {...(handle && handle(searchForm))} handle=""></SearchItem>
           </FormItem>
         </Col>,
