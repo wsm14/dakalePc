@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import checkInSet from './components/CheckIn/CheckInSet';
+import CheckInSet from './components/CheckIn/CheckInSet';
 import CheckInDetailList from './components/CheckIn/CheckInDetailList';
 
 const SysCheckIn = (props) => {
@@ -10,6 +10,7 @@ const SysCheckIn = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
+  const [visibleSet, setVisibleSet] = useState('');
 
   // table 表头
   const getColumns = [
@@ -86,13 +87,9 @@ const SysCheckIn = (props) => {
 
   // 新增 修改
   const handlePeasShareSet = (rowData) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: checkInSet({
-        dispatch,
-        childRef,
-        rowData,
-      }),
+    setVisibleSet({
+      show: true,
+      initialValues: rowData,
     });
   };
 
@@ -114,6 +111,11 @@ const SysCheckIn = (props) => {
         {...list}
       ></TableDataBlock>
       <CheckInDetailList visible={visible} setVisible={setVisible} />
+      <CheckInSet
+        visible={visibleSet}
+        cRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></CheckInSet>
     </>
   );
 };
