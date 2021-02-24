@@ -100,6 +100,7 @@ const TableBlockComponent = (props) => {
       const payload = {
         ...tableParems.searchData, // 搜索参数
         ...tableParems, // 表格参数
+        ...params,
         ...data, // 传递的搜索参数
       };
       delete payload['searchData'];
