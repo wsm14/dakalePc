@@ -3,7 +3,7 @@ import { Input } from 'antd';
 import { delectProps } from '../utils';
 
 const TextAreaBlock = (props) => {
-  const { initialvalues = {}, rows, name, maxLength } = props;
+  const { initialvalues = {}, rows, name, maxLength, onChange } = props;
 
   const [totalNum, setTotalNum] = useState(0); // 字数计算
   const divProps = delectProps(props);
@@ -18,14 +18,16 @@ const TextAreaBlock = (props) => {
   };
 
   const dataNum = maxLength && `${totalNum || (numtext() && `${numtext()}`.length)}/${maxLength}`;
-
-
+  console.log(divProps);
   return (
     <>
       <Input.TextArea
         {...divProps}
+        onChange={(e) => {
+          onChange(e);
+          setTotalNum(e.target.value.length);
+        }}
         rows={rows || 5}
-        onChange={(e) => setTotalNum(e.target.value.length)}
       />
       {maxLength && (
         <div style={{ display: 'flex' }}>

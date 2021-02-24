@@ -12,8 +12,8 @@ const RadioBlock = (props) => {
   // 遍历对象
   const arrObject = (obj) => {
     return Object.keys(obj).map((item) => ({
-      label: item,
-      value: obj[item],
+      label: obj[item],
+      value: item,
     }));
   };
 
