@@ -136,6 +136,8 @@
 
 > - `childrenOwn`字段 改为 `formItem`
 >   > - 全局替换
+> - type 为 `switch`时 `valuePropName` 默认为 checked
+>   > - 即 `valuePropName` 无需配置
 > - `select` 组件增加 `fieldNames` 配置 参数别名
 >   > - 目的：替换原本常量中数组键值对形式数据为对象
 > - 组件抽离，antd 相关组件配置兼容

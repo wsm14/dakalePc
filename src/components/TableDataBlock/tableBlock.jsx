@@ -66,7 +66,7 @@ const TableBlockComponent = (props) => {
     limit: { default: 10, middle: 10, small: 10 }[size], // 每页条数
     sortOrder: '', // 排序字段
     sortField: '', // 排序规则 升降
-    searchData: params,
+    searchData: {},
   }); // 表格参数
 
   // 向父组件暴露方法
@@ -98,6 +98,7 @@ const TableBlockComponent = (props) => {
   const fetchGetList = (data) => {
     if (dispatchType) {
       const payload = {
+        ...params,
         ...tableParems.searchData, // 搜索参数
         ...tableParems, // 表格参数
         ...data, // 传递的搜索参数
