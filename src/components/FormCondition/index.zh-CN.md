@@ -26,7 +26,6 @@
 | --- | --- | --- | --- |
 | formItems | `（必填）` 表单内容数组 | <a href="#formItems">formItems[]</a> | [] |
 | form | 经 `Form.useForm()` 创建的 form 控制实例 | [FormInstance](https://ant.design/components/form-cn/#FormInstance) | - |
-| initialValues | 表单参数默认值 | object | {} |
 | formItemLayouts | 表单布局，文档内 `labelCol，wrapperCol` `{ labelCol: null, wrapperCol: null, }` | object | {} |
 | initialValues | 表单默认值，只有初始化以及重置时生效 | object | {} |
 | children | react 内置子元素，表单组件包裹后显示在底部 | ReactNode | - |

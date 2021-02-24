@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CITYJSON from '@/common/city';
 import { Cascader } from 'antd';
 
@@ -9,6 +9,8 @@ const filter = (inputValue, path, label = 'label') => {
 
 const CascaderBlock = (props) => {
   const {
+    form,
+    name,
     select,
     label,
     placeholder,
@@ -16,10 +18,17 @@ const CascaderBlock = (props) => {
     changeOnSelect = false,
     onChange = undefined,
     fieldNames,
+    value = [],
   } = props;
+
+  useEffect(() => {
+    const valueData = typeof value[0] === 'object' ? value.map((i) => i.value) : value;
+    form.setFieldsValue({ [name]: valueData });
+  }, [value]);
 
   return (
     <Cascader
+      value={value}
       allowClear={false}
       expandTrigger="hover"
       showSearch={{

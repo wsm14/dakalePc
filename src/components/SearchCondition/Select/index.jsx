@@ -63,6 +63,7 @@ const SelectBlock = (props) => {
    * remove it from the DOM element.
    * */
   delete divProps.allItem;
+  delete divProps.fieldNames;
 
   // 返回结果
   return (

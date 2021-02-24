@@ -90,7 +90,7 @@ const TableBlockComponent = (props) => {
     if (first) {
       fetchGetList();
     } else {
-      setFirst(false);
+      setFirst(true);
     }
   }, [tableParems]);
 

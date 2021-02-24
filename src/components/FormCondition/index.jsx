@@ -70,9 +70,11 @@ const FormComponents = ({
         }
         // 默认值
         const placeholder = item.placeholder || `请输入${label}`;
+        const itemProps = Object.assign({}, item);
+        delete itemProps.normalize;
         component = (
           <IFormItem
-            {...item}
+            {...itemProps}
             form={form || formN}
             initialvalues={initialValues}
             placeholder={placeholder}
@@ -102,7 +104,7 @@ const FormComponents = ({
 
   useEffect(() => {
     formDom.setFieldsValue(initialValues);
-  }, [Object.keys(initialValues).length]);
+  }, [initialValues]);
 
   return (
     <Form

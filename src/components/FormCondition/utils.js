@@ -23,6 +23,8 @@ export const delectProps = (data) => {
   delete divProps.isCut;
   delete divProps.imgRatio;
   delete divProps.addonAfter;
+  delete divProps.render;
+  delete divProps.show;
 
   return divProps;
 };

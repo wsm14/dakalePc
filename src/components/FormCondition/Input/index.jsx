@@ -3,7 +3,15 @@ import { Input } from 'antd';
 import { delectProps } from '../utils';
 
 const InputBlock = (props) => {
-  const { initialvalues = {}, suffix, name, onChange = undefined, maxLength, addonAfter } = props;
+  const {
+    form,
+    initialvalues = {},
+    suffix,
+    name,
+    onChange = undefined,
+    maxLength,
+    addonAfter,
+  } = props;
 
   const divProps = delectProps(props);
   const [totalNum, setTotalNum] = useState(0); // 字数计算
@@ -11,9 +19,10 @@ const InputBlock = (props) => {
   const numtext = () => {
     if (!maxLength) return 0;
     if (Array.isArray(name)) {
-      return initialvalues[name[0]] ? initialvalues[name[0]][name[1]] || 0 : '';
+      return initialvalues[name[0]] ? initialvalues[name[0]][name[1]] || 0 : 0;
     } else {
-      return initialvalues[name] ? initialvalues[name] : '';
+      const inputData = form.getFieldValue(name);
+      return inputData ? inputData : 0;
     }
   };
 

@@ -78,7 +78,6 @@ handle={(form)=> ({
 
 组件重构
 
-> - `Select` 组件 `allItem` 改为 `allItem`
 > - `cascader` 组件 `valuesKey` 参数，改为 `valueskey`
 > - `select` 组件增加 `fieldNames` 配置 参数别名
 > - `select` type 为 select 时 增加 `defaultValue` 配置 `全部` 选项默认值
