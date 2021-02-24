@@ -20,7 +20,7 @@ const BusinessRegisterComponent = (props) => {
       label: '状态',
       name: 'verifyAndBankStatus',
       type: 'select',
-      select: { list: BUSINESS_REGISTER_STATUS },
+      select:  BUSINESS_REGISTER_STATUS,
     },
     // {
     //   label: '省市区',

@@ -24,7 +24,7 @@ const ExpertRecommend = (props) => {
       label: '类型',
       name: 'contentType',
       type: 'select',
-      select: { list: SHARE_TYPE },
+      select: SHARE_TYPE ,
     },
     {
       label: '标题',
@@ -42,7 +42,7 @@ const ExpertRecommend = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: { list: RECOMMEND_STATUS },
+      select: RECOMMEND_STATUS,
     },
   ];
 

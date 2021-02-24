@@ -41,10 +41,7 @@ const MessagePushSet = (props) => {
       label: '消息类型',
       name: 'messageType',
       type: 'select',
-      select: Object.keys(MSG_PSUH_TYPE).map((item) => ({
-        name: MSG_PSUH_TYPE[item],
-        value: item,
-      })),
+      select: MSG_PSUH_TYPE,
     },
     {
       label: '推送时间',

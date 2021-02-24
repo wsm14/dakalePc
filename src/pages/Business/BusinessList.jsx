@@ -100,13 +100,13 @@ const BusinessListComponent = (props) => {
       label: '经营状态',
       name: 'businessStatus',
       type: 'select',
-      select: { list: BUSINESS_DO_STATUS },
+      select:  BUSINESS_DO_STATUS,
     },
     {
       label: '店铺状态',
       name: 'status',
       type: 'select',
-      select: { list: BUSINESS_STATUS },
+      select: BUSINESS_STATUS,
     },
     {
       label: '入驻时间',

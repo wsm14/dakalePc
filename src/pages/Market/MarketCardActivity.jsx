@@ -26,7 +26,7 @@ const MarketCardActivity = (props) => {
       label: '活动状态',
       name: 'activityStatus',
       type: 'select',
-      select: { list: ACTIVITY_STATUS },
+      select: ACTIVITY_STATUS,
     },
   ];
 

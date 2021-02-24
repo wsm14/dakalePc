@@ -59,7 +59,7 @@ const GoodsManageComponent = (props) => {
       label: '上架状态',
       name: 'status',
       type: 'select',
-      select: { list: GOODS_TYPE },
+      select: GOODS_TYPE,
     },
     {
       label: '商品类型',

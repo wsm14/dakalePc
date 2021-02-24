@@ -28,7 +28,7 @@ const ExpertUserList = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: { list: EXPERT_USER_STATUS },
+      select: EXPERT_USER_STATUS ,
     },
   ];
 

@@ -31,7 +31,7 @@ const BusinessAuditList = (props) => {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
-      select: { list: BUSINESS_STATUS_AUDIT },
+      select:  BUSINESS_STATUS_AUDIT,
     },
     {
       label: '省市区',

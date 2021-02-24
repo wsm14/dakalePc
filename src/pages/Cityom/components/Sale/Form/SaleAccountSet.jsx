@@ -14,10 +14,7 @@ const SaleAccountSet = (props) => {
       label: '类型',
       type: 'select',
       name: 'agentType',
-      select: Object.keys(SALE_ACCOUNT_TYPE).map((item) => ({
-        name: SALE_ACCOUNT_TYPE[item],
-        value: item,
-      })),
+      select: SALE_ACCOUNT_TYPE,
       onChange: (val) => {
         // 重置地区项目
         setAgentType(val);

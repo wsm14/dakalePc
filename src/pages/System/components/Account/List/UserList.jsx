@@ -49,7 +49,7 @@ const UserList = (props) => {
       label: '在职状态',
       name: 'workStatus',
       type: 'select',
-      select: { list: WORKER_JOB_TYPE },
+      select: WORKER_JOB_TYPE,
     },
   ];
 

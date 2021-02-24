@@ -37,9 +37,7 @@ const RefundOrder = (props) => {
       label: '状态',
       type: 'select',
       name: 'status',
-      select: {
-        list: REFUND_ORDERS_STATUS,
-      },
+      select: REFUND_ORDERS_STATUS,
     },
   ];
 

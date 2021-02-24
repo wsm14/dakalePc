@@ -18,7 +18,7 @@ const CircleMasterList = (props) => {
       name: 'userType',
       type: 'select',
       allItem: false,
-      select: { list: MASTER_TYPE },
+      select: MASTER_TYPE,
     },
     {
       label: '用户/店铺名',

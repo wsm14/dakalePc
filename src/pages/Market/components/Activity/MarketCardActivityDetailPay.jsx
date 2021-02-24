@@ -30,7 +30,7 @@ const MarketCardActivityDetailPay = (props) => {
           label: '券状态',
           type: 'select',
           name: 'couponStatus',
-          select: { list: ACTIVE_COUPON_STATUS },
+          select: ACTIVE_COUPON_STATUS,
         },
       ],
       getColumns: [

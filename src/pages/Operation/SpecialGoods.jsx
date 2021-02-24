@@ -39,13 +39,13 @@ const SpecialGoods = (props) => {
       label: '上架状态',
       name: 'status',
       type: 'select',
-      select: { list: SPECIAL_STATUS },
+      select: SPECIAL_STATUS,
     },
     {
       label: '推荐状态',
       name: 'recommendStatus',
       type: 'select',
-      select: { list: SPECIAL_RECOMMEND_STATUS },
+      select: SPECIAL_RECOMMEND_STATUS,
     },
     {
       label: '区域',

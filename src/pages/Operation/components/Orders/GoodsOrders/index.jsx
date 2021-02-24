@@ -41,17 +41,13 @@ const GoodsOrders = (props) => {
       label: '订单属性',
       type: 'select',
       name: 'orderType',
-      select: {
-        list: ORDERS_TYPE,
-      },
+      select: ORDERS_TYPE,
     },
     {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: {
-        list: ORDERS_STATUS,
-      },
+      select: ORDERS_STATUS,
     },
     {
       label: '下单日期',

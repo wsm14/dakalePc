@@ -56,13 +56,13 @@ const ShareManage = (props) => {
       label: '分享类型',
       type: 'select',
       name: 'contentType',
-      select: { list: SHARE_TYPE },
+      select: SHARE_TYPE ,
     },
     {
       label: '分享状态',
       type: 'select',
       name: 'status',
-      select: { list: SHARE_STATUS },
+      select: SHARE_STATUS,
     },
     {
       label: '所属店铺',

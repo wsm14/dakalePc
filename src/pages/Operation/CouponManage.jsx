@@ -20,7 +20,7 @@ const CouponManageComponent = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: { list: GOODS_TYPE },
+      select: GOODS_TYPE,
     },
     {
       label: '创建时间',
@@ -32,7 +32,7 @@ const CouponManageComponent = (props) => {
       label: '券类型',
       name: 'status',
       type: 'select',
-      select: { list: GOODS_TYPE },
+      select:  GOODS_TYPE,
     },
     {
       label: '优惠券名称',
@@ -46,7 +46,7 @@ const CouponManageComponent = (props) => {
       label: '投放渠道',
       name: 'goodsName',
       type: 'select',
-      select: { list: GOODS_TYPE },
+      select:  GOODS_TYPE,
     },
     {
       label: '地区',

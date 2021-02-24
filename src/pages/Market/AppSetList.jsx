@@ -21,13 +21,13 @@ const SysAppSet = (props) => {
       label: '位置',
       name: 'bannerType',
       type: 'select',
-      select: { list: BANNER_TYPE },
+      select:  BANNER_TYPE ,
     },
     {
       label: '状态',
       name: 'showStatus',
       type: 'select',
-      select: { list: BANNER_SHOW_STATUS },
+      select:  BANNER_SHOW_STATUS,
     },
   ];
 
@@ -53,10 +53,8 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) =>
-        BANNER_TYPE.filter((item) => item.value === val)[0]
-          ? BANNER_TYPE.filter((item) => item.value === val)[0].name
-          : '--',
+      render: (val) => BANNER_TYPE[val]? BANNER_TYPE[val]:'--',
+       
     },
     {
       title: '跳转类型',

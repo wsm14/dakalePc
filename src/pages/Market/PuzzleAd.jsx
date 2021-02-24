@@ -27,8 +27,8 @@ const PuzzleAd = (props) => {
     {
       title: '类型',
       dataIndex: 'type',
-      render: (val) =>
-        Object.assign(...PUZZLE_AD_TYPE.map((item) => ({ [item.value]: item.name })))[val],
+      render: (val) =>PUZZLE_AD_TYPE[val],
+      
     },
     {
       title: '品牌名',

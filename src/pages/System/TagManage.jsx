@@ -23,7 +23,7 @@ const TagManage = (props) => {
       label: '标签状态',
       type: 'select',
       name: 'status',
-      select: { list: MRE_TAG_STATUS },
+      select: MRE_TAG_STATUS,
     },
   ];
 

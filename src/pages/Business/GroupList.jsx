@@ -79,7 +79,7 @@ const tableList = (props) => {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select: { list: WORKER_BANK_STATUS.map((item) => ({ name: item.value, value: item.label })) },
+      select:  WORKER_BANK_STATUS,
     },
   ];
   // table 表头
@@ -140,9 +140,7 @@ const tableList = (props) => {
       align: 'center',
       dataIndex: 'bankStatus',
       render: (val) =>
-        WORKER_BANK_STATUS.filter((item) => {
-          return item.label === val;
-        })[0].value,
+        WORKER_BANK_STATUS[val],
     },
     {
       title: '操作',

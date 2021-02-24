@@ -32,7 +32,7 @@ const ReportList = (props) => {
         label: '类型',
         name: 'contentType',
         type: 'select',
-        select: { list: SHARE_TYPE },
+        select: SHARE_TYPE,
       },
       {
         label: '标题',

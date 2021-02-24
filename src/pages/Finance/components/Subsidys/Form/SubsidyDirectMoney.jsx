@@ -26,10 +26,7 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: Object.keys(SUBSIDY_TASK_ROLE).map((item) => ({
-        name: SUBSIDY_TASK_ROLE[item],
-        value: item,
-      })),
+      select: SUBSIDY_TASK_ROLE,
     },
     {
       label: '适用店铺',

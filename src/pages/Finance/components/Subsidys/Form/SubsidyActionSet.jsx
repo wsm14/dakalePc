@@ -42,19 +42,13 @@ const SubsidyActionSet = (props) => {
       label: '补贴角色',
       name: 'subsidyRole',
       type: 'select',
-      select: Object.keys(SUBSIDY_ACTION_ROLE).map((item) => ({
-        name: SUBSIDY_ACTION_ROLE[item],
-        value: item,
-      })),
+      select: SUBSIDY_ACTION_ROLE
     },
     {
       label: '奖励类型',
       name: 'subsidyType',
       type: 'select',
-      select: Object.keys(SUBSIDY_ACTION_TYPE).map((item) => ({
-        name: SUBSIDY_ACTION_TYPE[item],
-        value: item,
-      })),
+      select: SUBSIDY_ACTION_TYPE,
       onChange: setHandleFee,
     },
     {

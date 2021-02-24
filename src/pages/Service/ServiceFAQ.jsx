@@ -70,7 +70,7 @@ const ServiceFAQ = (props) => {
       label: '猜你想问',
       name: 'likeStatus',
       type: 'select',
-      select: { list: FAQ_LIKE_STATUS },
+      select: FAQ_LIKE_STATUS,
     },
   ];
 
