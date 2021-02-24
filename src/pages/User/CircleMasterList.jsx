@@ -43,9 +43,6 @@ const CircleMasterList = (props) => {
       type: type,
       record: {
         ...data,
-        name: data.username,
-        userType: data.parentUserType,
-        id: data.parentUserIdString,
       },
     });
   };
@@ -92,7 +89,7 @@ const CircleMasterList = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'parentUserIdString',
+      dataIndex: 'id',
       fixed: 'right',
       align: 'right',
       render: (val, record) => (
@@ -123,7 +120,7 @@ const CircleMasterList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.parentUserIdString}`}
+        rowKey={(record) => `${record.id}`}
         params={{ userType: 'user' }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}

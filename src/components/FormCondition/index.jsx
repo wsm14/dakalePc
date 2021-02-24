@@ -44,7 +44,15 @@ const FormComponents = ({
     const formItemArr = [];
     formItems.forEach((item, i) => {
       let component = '';
-      const { title = '', label = '', name = '', type = 'input', addRules, visible = true } = item;
+      const {
+        title = '',
+        label = '',
+        name = '',
+        type = 'input',
+        addRules,
+        visible = true,
+        valuePropName = 'value',
+      } = item;
       // 标题
       if (title) {
         formItemArr.push(
@@ -92,6 +100,7 @@ const FormComponents = ({
             key={`${label}${name}${type}`}
             {...formProps}
             name={name}
+            valuePropName={type === 'switch' ? 'checked' : valuePropName}
             rules={[...rules, ...(addRules || [])]}
           >
             {component}
