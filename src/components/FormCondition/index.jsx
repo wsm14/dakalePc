@@ -102,10 +102,6 @@ const FormComponents = ({
     return formItemArr;
   };
 
-  useEffect(() => {
-    formDom.setFieldsValue(initialValues);
-  }, [Object.keys(initialValues).length]);
-
   return (
     <Form
       form={formDom}
