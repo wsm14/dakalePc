@@ -157,7 +157,6 @@ const TradeAreaSet = (props) => {
       addonAfter: (
         <a
           onClick={() => {
-            // onSearchAddress();
             setAmpShow(true);
           }}
         >

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Statistic, Card, Row, Col, Divider } from 'antd';
+import { Statistic, Card, Row, Col } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 
 const dDate = moment();

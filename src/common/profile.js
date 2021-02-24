@@ -10,7 +10,7 @@ const keyObj = {
   currentUser: '登录用户信息',
   userId: '用户id',
   isMobile: '判断是否是手机',
-  routerData: '路由'
+  routerData: '路由',
 };
 
 // 设置某一个本地储存
@@ -23,7 +23,7 @@ Profile.set = (key, val) => {
 };
 
 // 获取某一个本地储存
-Profile.get = key => {
+Profile.get = (key) => {
   if (!keyObj[key]) {
     console.log(`get ${key}`, false);
     return false;
@@ -32,7 +32,7 @@ Profile.get = key => {
 };
 
 // 删除某一个本地储存
-Profile.remove = key => {
+Profile.remove = (key) => {
   if (!keyObj[key]) {
     console.log(`remove ${key}`, false);
     return false;

@@ -1,15 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import peasShareSet from './components/PeasShare/PeasShareSet';
+import PeasShareSet from './components/PeasShare/PeasShareSet';
 
 const SysPeasShare = (props) => {
   const { sysPeasShare, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false)
 
   // table 表头
   const getColumns = [
@@ -32,7 +33,7 @@ const SysPeasShare = (props) => {
           formItems={[
             {
               type: 'edit',
-              click: () => handlePeasShareSet(record),
+              click: () => handlePeasShareSet('edit',record),
             },
             {
               type: 'del',
@@ -54,19 +55,25 @@ const SysPeasShare = (props) => {
   };
 
   // 新增 修改
-  const handlePeasShareSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: peasShareSet({ dispatch, childRef, initialValues }),
-    });
+  const handlePeasShareSet = (type,initialValues) => {
+    setVisible({
+      type,
+      initialValues,
+      show:true,
+    })
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: peasShareSet({ dispatch, childRef, initialValues }),
+    // });
   };
 
   return (
+    <>
     <TableDataBlock
       cRef={childRef}
       btnExtra={
         <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" onClick={() => handlePeasShareSet()}>
+          <Button className="dkl_green_btn" onClick={() => handlePeasShareSet('add')}>
             新增
           </Button>
         </AuthConsumer>
@@ -77,6 +84,8 @@ const SysPeasShare = (props) => {
       dispatchType="sysPeasShare/fetchGetList"
       {...sysPeasShare}
     ></TableDataBlock>
+    <PeasShareSet cRef={childRef} visible={visible} setVisible={setVisible} onClose={()=>setVisible(false)}></PeasShareSet>
+    </>
   );
 };
 

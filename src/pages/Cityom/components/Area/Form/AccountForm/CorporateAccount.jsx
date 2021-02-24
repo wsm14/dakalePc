@@ -40,9 +40,6 @@ const CorporateAccount = (props) => {
               validityPeriod: val.validPeriod,
               businessScope: val.business,
             },
-            // bankBindingObject: {
-            //   cardName: val.name,
-            // },
           });
         },
       });

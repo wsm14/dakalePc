@@ -57,10 +57,9 @@ const ReportList = (props) => {
       {
         title: '封面',
         dataIndex: 'frontImage',
-        render: (val, detail) => (
+        render: (val) => (
           <PopImgShow
             url={val}
-            // onClick={() => setShowVisible({ show: true, type: detail.contentType, detail })}
           ></PopImgShow>
         ),
       },

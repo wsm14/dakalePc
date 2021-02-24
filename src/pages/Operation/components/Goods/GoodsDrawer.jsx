@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import {  Button, Form, notification } from 'antd';
+import { Button, Form, notification } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import GoodsDetail from './Detail/GoodsDetail';
 import GoodsSet from './Form/GoodsSet';

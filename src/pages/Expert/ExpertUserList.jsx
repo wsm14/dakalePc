@@ -141,17 +141,6 @@ const ExpertUserList = (props) => {
     });
   };
 
-  // 统计数
-  const fetchExpertUserTotal = () => {
-    dispatch({
-      type: 'expertUserList/fetchExpertUserTotal',
-    });
-  };
-
-  // useEffect(() => {
-  //   fetchExpertUserTotal();
-  // }, []);
-
   return (
     <TableDataBlock
       keepData
@@ -163,12 +152,6 @@ const ExpertUserList = (props) => {
       dispatchType="expertUserList/fetchGetList"
       {...expertUserList.list}
     >
-      {/* <Card
-        style={{ marginBottom: 16 }}
-        bodyStyle={{ display: 'flex', alignItems: 'center', padding: '10px 24px' }}
-      >
-        哒人总数： <Statistic value={userTotal}></Statistic>
-      </Card> */}
     </TableDataBlock>
   );
 };

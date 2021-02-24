@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Drawer, Form, Button, Space } from 'antd';
 import FormComponents from '@/components/FormCondition';
@@ -9,8 +9,6 @@ const RoleSetForm = (props) => {
 
   const [form] = Form.useForm();
   const tableRef = useRef();
-
-  const [selectValue, setSelectValue] = useState([]);
 
   // 新增 / 修改角色
   const handleUpdata = () => {
@@ -31,8 +29,6 @@ const RoleSetForm = (props) => {
           ownerType: 'company',
           ...userInfo,
           ...values,
-          // roleName: roleName.label,
-          // roleKey: roleName.key,
           permissionObjects,
         },
         callback: () => {
@@ -42,14 +38,6 @@ const RoleSetForm = (props) => {
       });
     });
   };
-
-  // 角色可选搜索
-  // const fetchWMSRoleSelect = () => {
-  //   dispatch({
-  //     type: 'roleProvinceArea/fetchWMSRoleSelect',
-  //     callback: setSelectValue,
-  //   });
-  // };
 
   const formItems = [
     {
@@ -86,11 +74,6 @@ const RoleSetForm = (props) => {
     <Drawer
       {...modalProps}
       onClose={onClose}
-      // afterVisibleChange={(show) => {
-      //   if (show) {
-      //     fetchWMSRoleSelect();
-      //   }
-      // }}
       bodyStyle={{ paddingBottom: 80 }}
       footer={
         <div style={{ textAlign: 'center' }}>

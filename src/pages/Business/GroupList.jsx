@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
@@ -6,7 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/Group/groupDetails';

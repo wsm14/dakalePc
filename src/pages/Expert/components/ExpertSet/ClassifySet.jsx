@@ -12,7 +12,7 @@ const ClassifySet = (props) => {
     const { domainImage = '' } = values;
     const { parentDomainId: pid } = initialValues;
     const topCategoryId = pid == 0 ? setData.value : setData[0].categoryIdString;
-    const topCategoryName = pid == 0 ? setData.children[0] : setData[0].categoryName;
+    const topCategoryName = pid == 0 ? setData.children && setData.children[0] : setData[0].categoryName;
     const category = {
       categoryNode:
         pid == 0

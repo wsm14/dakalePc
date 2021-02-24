@@ -20,12 +20,6 @@ const PuzzleAd = (props) => {
       label: '品牌名',
       name: 'brandName',
     },
-    // {
-    //   label: '区域',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   valueskey: ['provinceCode', 'cityCode', 'districtCode'],
-    // },
   ];
 
   // table 表头

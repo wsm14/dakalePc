@@ -120,10 +120,6 @@ const MarketCardActivityDetail = (props) => {
               auth: 'couponDetail',
               click: () => fetchGetCouponInfo(val, record.merchantName),
             },
-            // {
-            //   type: 'info',
-            //   click: () => setVisible({ type: 'destory', record }),
-            // },
           ]}
         />
       ),
@@ -146,7 +142,6 @@ const MarketCardActivityDetail = (props) => {
 
   // 设置/查看 优惠券
   const handleSetActive = (payload) => {
-    // const payload = { initialValues: '', marketCouponId };
     const obj = { dispatch, childRef, payload };
     dispatch({
       type: 'drawerForm/show',

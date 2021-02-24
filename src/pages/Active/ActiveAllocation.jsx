@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-// import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import activeAllocationEdit from './components/allocation/ActiveAllocationEdit';
 import ActiveAllocationPlace from './components/allocation/ActiveAllocationPlace';
@@ -45,27 +44,6 @@ const ActiveAllocation = (props) => {
       dataIndex: 'version',
       render: (val) => `v${val}`,
     },
-    // {
-    //   title: '操作',
-    //   dataIndex: 'id',
-    //   align: 'right',
-    //   render: (val, record) => (
-    //     <HandleSetTable
-    //       formItems={[
-    //         // {
-    //         //   type: 'own',
-    //         //   title: '添加位置',
-    //         //   click: () => handleSet({ record }),
-    //         // },
-    //         {
-    //           type: 'own',
-    //           title: '配置',
-    //           click: () => setVisibleSet({ show: true, promotionId: val, record }),
-    //         },
-    //       ]}
-    //     />
-    //   ),
-    // },
   ];
 
   // 获取配置详情列表
