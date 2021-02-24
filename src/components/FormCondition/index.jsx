@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
 import { delectProps } from './utils';
@@ -37,7 +37,12 @@ const FormComponents = ({
 }) => {
   const [formN] = Form.useForm();
 
-  const formDom = form || formN;
+  const [formDom, setFormDom] = useState(formN);
+
+  useEffect(() => {
+    setFormDom(form || formN);
+    return () => setFormDom(formN);
+  }, [form]);
 
   // 遍历表单
   const getFields = () => {
@@ -113,6 +118,7 @@ const FormComponents = ({
 
   useEffect(() => {
     formDom.setFieldsValue(initialValues);
+    return () => formDom.setFieldsValue({});
   }, [initialValues]);
 
   return (

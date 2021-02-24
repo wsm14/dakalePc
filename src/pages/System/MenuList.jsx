@@ -75,7 +75,7 @@ const SysMenuList = (props) => {
               type: 'own',
               title: '添加',
               click: () =>
-                handleSysMenuSet("add",{
+                handleSysMenuSet('add', {
                   menuName: record.accessName,
                   pid: val,
                   authType: '2',
@@ -95,10 +95,7 @@ const SysMenuList = (props) => {
     dispatch({
       type: 'sysMenuList/fetchGetMenuDetail',
       payload,
-      callback:
-        val === undefined
-          ? (val) => handleSysMenuSet('edit', val)
-          :fetchSetMenuStatus,
+      callback: val === undefined ? (val) => handleSysMenuSet('edit', val) : fetchSetMenuStatus,
     });
   };
 
@@ -135,7 +132,7 @@ const SysMenuList = (props) => {
     initialValues = { authType: '2', status: '1', ownerType: tabkey },
   ) => {
     if (val && val !== 'undefined') {
-      initialValues = { pid: val.pidString, ...initialValues,...val};
+      initialValues = { pid: val.pidString, ...initialValues, ...val };
     }
     setVisible({
       show: true,
@@ -172,7 +169,8 @@ const SysMenuList = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.authAccessId}`}
         dispatchType="sysMenuList/fetchGetList"
-        params={{ ownerType: tabkey, limit: 101 }}
+        params={{ ownerType: tabkey, limit: 999 }}
+        pagination={false}
         {...sysMenuList}
       ></TableDataBlock>
       <SysMenuSet
