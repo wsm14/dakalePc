@@ -6,6 +6,7 @@ const TimeRangePickerBlock = (props) => {
   const { format } = props;
   
   const divProps = delectProps(props);
+  delete divProps.placeholder;
 
   return (
     <TimePicker.RangePicker
