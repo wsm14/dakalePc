@@ -52,7 +52,7 @@ const FAQSet = (props) => {
       name: 'questionCategoryId',
       type: 'select',
       select: sortList,
-      fieldNames: { labelKey: 'questionCategoryName', valueKey: 'questionCategoryIdString' },
+      fieldNames: { label: 'questionCategoryName', value: 'questionCategoryIdString' },
       onChange: (val, item) => {
         form.setFieldsValue({
           questionCategoryName: item.children[0],

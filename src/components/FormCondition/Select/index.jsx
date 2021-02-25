@@ -7,13 +7,14 @@ const SelectBlock = (props) => {
   const {
     type,
     select,
-    value: changeValue,
     label: plabel,
     loading,
     placeholder,
     fieldNames = {},
+    dataOnChange,
+    onChange,
   } = props;
-  console.log(props);
+
   const divProps = delectProps(props);
   const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
 
@@ -54,7 +55,10 @@ const SelectBlock = (props) => {
       loading={loading}
       {...multProps}
       {...divProps}
-      value={changeValue}
+      onChange={(val, option) => {
+        onChange(val);
+        dataOnChange && dataOnChange(val, option);
+      }}
       placeholder={placeholder || `请选择${plabel}`}
     >
       {selectList.map((data, j) => {

@@ -86,7 +86,7 @@ const UploadBlock = (props) => {
     name = '',
     maxFile,
     maxSize,
-    onChange = undefined,
+    dataOnChange: onChange = undefined,
     isCut,
     imgRatio,
     multiple,
@@ -142,7 +142,7 @@ const UploadBlock = (props) => {
       ? previewTitle.key[previewTitle.key.length - 1]
       : previewTitle.key;
     const uid = previewTitle.uid;
-    let newimg = fileLists[fName] || [];
+    let newimg = fileLists || [];
     imageCompress(file).then(({ file, base64 }) => {
       if (newimg.findIndex((i) => i.uid == uid) === -1) {
         newimg = [...newimg, { uid, url: base64, thumbUrl: base64, originFileObj: file }];
@@ -161,8 +161,8 @@ const UploadBlock = (props) => {
       if (Array.isArray(previewTitle.key)) {
         onwFile = { [previewTitle.key[0]]: { [previewTitle.key[1]]: { file, fileList: newimg } } };
       }
-      form.setFieldsValue(onwFile);
       onChange && onChange(file);
+      form.setFieldsValue({ ...onwFile });
     });
   };
 

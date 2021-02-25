@@ -8,9 +8,9 @@ const InputBlock = (props) => {
     initialvalues = {},
     suffix,
     name,
-    onChange = undefined,
     maxLength,
     addonAfter,
+    onChange,
   } = props;
 
   const divProps = delectProps(props);

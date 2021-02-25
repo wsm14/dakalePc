@@ -3,7 +3,7 @@ import CITYJSON from '@/common/city';
 import { Cascader } from 'antd';
 
 // Cascader搜索筛选
-const filter = (inputValue, path, label) => {
+const filter = (inputValue, path, label = 'label') => {
   return path.some((option) => option[label].indexOf(inputValue) > -1);
 };
 
@@ -17,7 +17,7 @@ const CascaderBlock = (props) => {
     disabled,
     changeOnSelect = false,
     onChange = undefined,
-    fieldNames,
+    fieldNames = {},
     value: changeValue = [],
   } = props;
 

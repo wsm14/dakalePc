@@ -25,6 +25,9 @@ export const delectProps = (data) => {
   delete divProps.addonAfter;
   delete divProps.render;
   delete divProps.show;
+  delete divProps.dataOnChange;
+  delete divProps.label;
+  delete divProps.form;
 
   return divProps;
 };

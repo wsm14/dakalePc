@@ -40,7 +40,7 @@ const FormComponents = ({
     return () => {
       form && form.resetFields();
     };
-  }, [initialValues]);
+  }, [Object.keys(initialValues).length]);
 
   // 遍历表单
   const getFields = () => {
@@ -55,6 +55,7 @@ const FormComponents = ({
         addRules,
         visible = true,
         valuePropName = 'value',
+        onChange,
       } = item;
       // 标题
       if (title) {
@@ -83,13 +84,14 @@ const FormComponents = ({
         const placeholder = item.placeholder || `请输入${label}`;
         const itemProps = Object.assign({}, item);
         delete itemProps.normalize;
+        delete itemProps.onChange;
         component = (
           <IFormItem
-            key={`${type}${label}${name}`}
             {...itemProps}
             form={form}
             initialvalues={initialValues}
             placeholder={placeholder}
+            dataOnChange={onChange}
           ></IFormItem>
         );
       }

@@ -16,16 +16,16 @@ const SelectBlock = (props) => {
     fieldNames = {},
     loading,
     placeholder,
-    label,
+    label: plabel,
   } = props;
 
-  const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
+  const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
 
   // 遍历对象
   const arrObject = (obj) => {
     return Object.keys(obj).map((item) => ({
-      [labelKey]: obj[item],
-      [valueKey]: item,
+      [label]: obj[item],
+      [value]: item,
     }));
   };
 
@@ -77,7 +77,7 @@ const SelectBlock = (props) => {
       notFoundContent={
         loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       }
-      placeholder={placeholder || `请选择${label}`}
+      placeholder={placeholder || `请选择${plabel}`}
       {...multProps}
       {...divProps}
     >
@@ -85,9 +85,9 @@ const SelectBlock = (props) => {
       {selectList.map((data, j) => {
         if (data) {
           // 兼容数组
-          const valueData = !data[valueKey] ? `${j}` : data[valueKey];
-          const nameData = data[valueKey] ? data[labelKey] : data;
-          const otherData = data[tipKey] ? data[tipKey] : '';
+          const valueData = !data[value] ? `${j}` : data[value];
+          const nameData = data[value] ? data[label] : data;
+          const otherData = data[tip] ? data[tip] : '';
           return (
             <Option key={j} value={valueData}>
               {nameData}
