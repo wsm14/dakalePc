@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import TableDataBlock from '@/components/TableDataBlock';
+import TableDataBlock from '@/components/DataTableBlock';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
 import MasterDetailList from './components/Master/MasterDetailList';
 
