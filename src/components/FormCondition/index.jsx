@@ -35,14 +35,12 @@ const FormComponents = ({
   formItemLayouts = {},
   children,
 }) => {
-  const [formN] = Form.useForm();
-
-  const [formDom, setFormDom] = useState(formN);
-
   useEffect(() => {
-    setFormDom(form || formN);
-    return () => setFormDom(formN);
-  }, [form]);
+    form && form.setFieldsValue(initialValues);
+    return () => {
+      form && form.resetFields();
+    };
+  }, [initialValues]);
 
   // 遍历表单
   const getFields = () => {
@@ -116,14 +114,9 @@ const FormComponents = ({
     return formItemArr;
   };
 
-  useEffect(() => {
-    formDom.setFieldsValue(initialValues);
-    return () => formDom.setFieldsValue({});
-  }, [initialValues]);
-
   return (
     <Form
-      form={formDom}
+      form={form}
       layout={layout}
       initialValues={initialValues}
       {...formItemLayout}
