@@ -95,8 +95,9 @@ const FormComponents = ({
 
       // 规则 默认必填
       const rules = item.rules || [{ required: true, message: `请确认${label}` }];
-      const formProps = delectProps(item);
+      const formProps = { ...delectProps(item) };
       delete formProps.onChange;
+      delete formProps.changeOnSelect;
       formItemArr.push(
         visible && (
           <FormItem
