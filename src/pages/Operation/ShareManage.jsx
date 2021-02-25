@@ -5,7 +5,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import closeRefuse from './components/Share/CloseRefuse';
+import CloseRefuse from './components/Share/CloseRefuse';
 import ShareDetail from './components/Share/ShareDetail';
 import ShareHandleDetail from './components/Share/ShareHandleDetail';
 
@@ -14,14 +14,19 @@ const ShareManage = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleDown, setVisibleDown] = useState(false);
   const [visibleHandle, setVisibleHandle] = useState(false);
 
   // 下架
   const fetchAuditRefuse = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
+    setVisibleDown({
+      show: true,
+      initialValues,
     });
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: closeRefuse({ dispatch, childRef, initialValues }),
+    // });
   };
 
   // 获取详情
@@ -56,7 +61,7 @@ const ShareManage = (props) => {
       label: '分享类型',
       type: 'select',
       name: 'contentType',
-      select: SHARE_TYPE ,
+      select: SHARE_TYPE,
     },
     {
       label: '分享状态',
@@ -179,6 +184,12 @@ const ShareManage = (props) => {
         visible={visibleHandle}
         onClose={() => setVisibleHandle(false)}
       ></ShareHandleDetail>
+       {/* 下架 */}
+       <CloseRefuse
+        visible={visibleDown}
+        childRef={childRef}
+        onClose={() => setVisibleDown(false)}
+      ></CloseRefuse>
     </>
   );
 };

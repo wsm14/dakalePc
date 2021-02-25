@@ -5,7 +5,7 @@ import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
-import closeRefuse from './components/Goods/Form/CloseRefuse';
+import CloseRefuse from './components/Goods/Form/CloseRefuse';
 import stockSet from './components/Goods/Form/StockSet';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -19,6 +19,7 @@ const GoodsManageComponent = (props) => {
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
   const [visible, setVisible] = useState(false);
+  const [visibleDown, setVisibleDown] = useState(false);
   const [merchantId, setMerchantId] = useState('');
 
   // 搜索参数
@@ -262,9 +263,9 @@ const GoodsManageComponent = (props) => {
 
   // 下架
   const fetchAuditRefuse = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
+    setVisibleDown({
+      show: true,
+      initialValues,
     });
   };
 
@@ -324,7 +325,17 @@ const GoodsManageComponent = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></GoodsDrawer>
-      <GoodsHandleDetail visible={visible} onClose={() => setVisible(false)}></GoodsHandleDetail>
+      <GoodsHandleDetail
+        visible={visible}
+        childRef={childRef}
+        onClose={() => setVisible(false)}
+      ></GoodsHandleDetail>
+      {/* 下架 */}
+      <CloseRefuse
+        visible={visibleDown}
+        childRef={childRef}
+        onClose={() => setVisibleDown(false)}
+      ></CloseRefuse>
     </>
   );
 };
