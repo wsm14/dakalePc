@@ -98,15 +98,6 @@ const ClassifyDetailList = (props) => {
       initialValues,
       domainId: record.domainId,
     })
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: classifyDetailSet({
-    //     dispatch,
-    //     childRef,
-    //     initialValues,
-    //     domainId: record.domainId,
-    //   }),
-    // });
   };
 
   // 删除 设置
