@@ -1,42 +1,72 @@
+import React from 'react';
+import { connect } from 'umi';
+import { Modal, Button, Form } from 'antd';
 import { EXPERT_USER_STATUS } from '@/common/constant';
+import FormCondition from '@/components/FormCondition';
 
-export default (props) => {
-  const { dispatch, childRef, initialValues = {} } = props;
+const CloseExpert = (props) => {
+  const { dispatch, childRef, visible, onClose } = props;
+  const { show = false, initialValues = {} } = visible;
+  const [form] = Form.useForm();
 
   // 下架
-  const fetchExpertStop = (payload) => {
-    dispatch({
-      type: 'expertUserList/fetchExpertStop',
-      payload: {
-        ...initialValues,
-        ...payload,
-      },
-      callback: () => childRef.current.fetchGetData(),
+  const fetchExpertStop = () => {
+    form.validateFields().then((values) => {
+      dispatch({
+        type: 'expertUserList/fetchExpertStop',
+        payload: {
+          ...initialValues,
+          ...values,
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
-  return {
-    type: 'Modal',
-    showType: 'form',
+  const formItems = [
+    {
+      label: '封停',
+      name: 'suspendStatus',
+      type: 'select',
+      select: EXPERT_USER_STATUS.map((i) => {
+        if (i == '正常') return false;
+        return i;
+      }),
+    },
+    {
+      label: '封停原因',
+      name: 'suspendReason',
+      type: 'textArea',
+    },
+  ];
+
+  const modalProps = {
     title: `封停 - ${initialValues.username}`,
+    visible: show,
     width: 520,
-    loadingModels: 'expertUserList  ',
-    onFinish: fetchExpertStop,
-    formItems: [
-      {
-        label: '封停',
-        name: 'suspendStatus',
-        type: 'select',
-        select: EXPERT_USER_STATUS.map((i) => {
-          if (i == '正常') return false;
-          return i;
-        }),
-      },
-      {
-        label: '封停原因',
-        name: 'suspendReason',
-        type: 'textArea',
-      },
-    ],
+    onCancel: onClose,
+    footer: (
+      <Button type="primary" onClick={fetchExpertStop}>
+        确定
+      </Button>
+    ),
   };
+  return (
+    <Modal {...modalProps} destroyOnClose>
+      <FormCondition
+        form={form}
+        formItems={formItems}
+        initialValues={initialValues}
+      ></FormCondition>
+    </Modal>
+  );
+
 };
+
+export default connect(({ expertUserList, loading }) => ({
+  expertUserList,
+  loading,
+}))(CloseExpert);

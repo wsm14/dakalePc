@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef,useState } from 'react';
 import { connect } from 'umi';
 import { EXPERT_USER_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import closeExpert from './components/UserList/CloseExpert';
+import CloseExpert from './components/UserList/CloseExpert';
 
 const ExpertUserList = (props) => {
   const { expertUserList, loading, dispatch } = props;
+
+  const [visible,setVisible] = useState(false)
 
   const childRef = useRef();
 
@@ -126,10 +128,10 @@ const ExpertUserList = (props) => {
 
   // 封停
   const fetchCloseExpert = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeExpert({ dispatch, childRef, initialValues }),
-    });
+    setVisible({
+      show:true,
+      initialValues
+    })
   };
 
   // 解封
@@ -142,6 +144,7 @@ const ExpertUserList = (props) => {
   };
 
   return (
+    <>
     <TableDataBlock
       keepData
       cRef={childRef}
@@ -153,6 +156,8 @@ const ExpertUserList = (props) => {
       {...expertUserList.list}
     >
     </TableDataBlock>
+    <CloseExpert visible={visible} childRef={childRef} onClose={()=>setVisible(false)}></CloseExpert>
+    </>
   );
 };
 
