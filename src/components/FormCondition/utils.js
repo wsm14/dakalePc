@@ -63,6 +63,9 @@ export const delectFormProps = (data) => {
   delete divProps.changeOnSelect;
   delete divProps.showTime;
   delete divProps.disabledDate;
+  delete divProps.onPressEnter;
+  delete divProps.onSearch;
+  delete divProps.formatter;
 
   return divProps;
 };
