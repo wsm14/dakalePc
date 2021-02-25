@@ -67,12 +67,10 @@ const GoodsManageComponent = (props) => {
       label: '商品类型',
       name: 'goodsType',
       type: 'select',
-      select: {
-        list: [
-          { value: 'package', name: '套餐' },
-          { value: 'single', name: '单品' },
-        ],
-      },
+      select: [
+        { value: 'package', name: '套餐' },
+        { value: 'single', name: '单品' },
+      ],
     },
   ];
 

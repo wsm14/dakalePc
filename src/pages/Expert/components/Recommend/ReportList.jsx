@@ -52,7 +52,7 @@ const ReportList = (props) => {
         label: '状态',
         name: 'status',
         type: 'select',
-        select: { list: statusArr },
+        select: statusArr,
       },
     ],
     getColumns: [

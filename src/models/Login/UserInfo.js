@@ -46,12 +46,13 @@ export default {
       const response = yield call(fetchGetAuthMenuTree, payload);
       if (!response) return;
       const { content } = response;
-      const { flag, permissionTree } = content;
-      if (flag == 0 && !permissionTree) {
-        return notification.warning({
+      const { flag, permissionTree = [] } = content;
+      if (flag == 0 && permissionTree.length === 0) {
+        notification.warning({
           message: '温馨提示',
           description: '权限不足，请通知管理员配置角色菜单',
         });
+        return;
       }
       const btnObj = {};
       const urlObj = {};
