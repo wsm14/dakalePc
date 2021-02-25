@@ -1,35 +1,65 @@
-export default (props) => {
-  const { dispatch, childRef, initialValues = {} } = props;
+import React from 'react';
+import { connect } from 'umi';
+import { Modal, Button, Form } from 'antd';
+import FormCondition from '@/components/FormCondition';
+
+const StockSet = (props) => {
+  const { dispatch, childRef, visible, onClose } = props;
+  const { show = false, initialValues = {} } = visible;
+  const [form] = Form.useForm();
 
   // 下架
-  const fetchStatusClose = (payload) => {
-    dispatch({
-      type: 'goodsManage/fetchUpdataStock',
-      payload: {
-        goodsIdString: initialValues.goodsIdString,
-        ...payload,
-      },
-      callback: () => childRef.current.fetchGetData(),
+  const fetchStatusClose = () => {
+    form.validateFields().then((payload) => {
+      dispatch({
+        type: 'goodsManage/fetchUpdataStock',
+        payload: {
+          goodsIdString: initialValues.goodsIdString,
+          ...payload,
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
-  return {
-    type: 'Modal',
-    showType: 'form',
+  const formItems = [
+    {
+      label: '可用库存',
+      name: 'stock',
+      type: 'number',
+      max: 100000,
+      min: 0,
+      precision: 0,
+    },
+  ];
+
+  const modalProps = {
     title: `库存 - ${initialValues.goodsName}`,
+    visible: show,
     width: 550,
-    initialValues,
-    loadingModels: 'goodsManage',
-    onFinish: fetchStatusClose,
-    formItems: [
-      {
-        label: '可用库存',
-        name: 'stock',
-        type: 'number',
-        max: 100000,
-        min: 0,
-        precision: 0,
-      },
-    ],
+    onCancel: onClose,
+    footer: (
+      <Button type="primary" onClick={fetchStatusClose}>
+        确定
+      </Button>
+    ),
   };
+
+  return (
+    <Modal {...modalProps} destroyOnClose>
+      <FormCondition
+        form={form}
+        formItems={formItems}
+        initialValues={initialValues}
+      ></FormCondition>
+    </Modal>
+  );
 };
+
+export default connect(({ goodsManage, loading }) => ({
+  goodsManage,
+  loading,
+}))(StockSet);

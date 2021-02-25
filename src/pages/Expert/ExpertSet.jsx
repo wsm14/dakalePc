@@ -4,7 +4,7 @@ import { Button, Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import classifySet from './components/ExpertSet/ClassifySet';
+import ClassifySet from './components/ExpertSet/ClassifySet';
 import ClassifyDetailList from './components/ExpertSet/ClassifyDetailList';
 
 const ExpertSet = (props) => {
@@ -12,6 +12,7 @@ const ExpertSet = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -63,6 +64,7 @@ const ExpertSet = (props) => {
                 // visible: record.parentDomainId !== 0,
                 click: () =>
                   handleClassifySet(
+                    'edit',
                     {
                       ...record,
                       category: [`${tcid}`, `${cid}`],
@@ -83,6 +85,7 @@ const ExpertSet = (props) => {
                 auth: 'saveClassify',
                 click: () =>
                   handleClassifySet(
+                    'own',
                     {
                       parentDomainId: val,
                       domainNameShow: record.domainName,
@@ -123,11 +126,14 @@ const ExpertSet = (props) => {
   };
 
   // 新增/修改 领域/内容分类
-  const handleClassifySet = (initialValues, rowDetail) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: classifySet({ dispatch, tradeList, childRef, initialValues, rowDetail }),
-    });
+  const handleClassifySet = (type,initialValues, rowDetail) => {
+    setVisibleSet({
+      show:true,
+      type,
+      initialValues,
+      rowDetail,
+      tradeList
+    })
   };
 
   useEffect(() => {
@@ -144,7 +150,7 @@ const ExpertSet = (props) => {
           <AuthConsumer auth="savePClassify">
             <Button
               className="dkl_green_btn"
-              onClick={() => handleClassifySet({ parentDomainId: 0 })}
+              onClick={() => handleClassifySet('add',{ parentDomainId: 0 })}
             >
               新增
             </Button>
@@ -161,6 +167,7 @@ const ExpertSet = (props) => {
         pagination={false}
       ></TableDataBlock>
       <ClassifyDetailList visible={visible} setVisible={setVisible}></ClassifyDetailList>
+      <ClassifySet visible={visibleSet} childRef={childRef} onClose ={()=>setVisibleSet(false)}></ClassifySet>
     </>
   );
 };

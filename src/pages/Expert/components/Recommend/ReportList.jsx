@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import processReport from './ProcessReport';
+import PocessReport from './ProcessReport';
 
 const ReportList = (props) => {
   const {
@@ -19,6 +19,8 @@ const ReportList = (props) => {
   } = props;
 
   const statusArr = ['处理中', '已解决'];
+
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -57,11 +59,7 @@ const ReportList = (props) => {
       {
         title: '封面',
         dataIndex: 'frontImage',
-        render: (val) => (
-          <PopImgShow
-            url={val}
-          ></PopImgShow>
-        ),
+        render: (val) => <PopImgShow url={val}></PopImgShow>,
       },
       {
         title: '类型',
@@ -153,9 +151,10 @@ const ReportList = (props) => {
 
   // 处理举报
   const fetchExpertProcessReport = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: processReport({ dispatch, childRef, initialValues, fetchExpertCountReport }),
+    setVisibleSet({
+      show: true,
+      initialValues,
+      fetchExpertCountReport,
     });
   };
 
@@ -180,6 +179,11 @@ const ReportList = (props) => {
       onCancel={() => setVisible(false)}
     >
       <TableDataBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <PocessReport
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></PocessReport>
     </Modal>
   );
 };
