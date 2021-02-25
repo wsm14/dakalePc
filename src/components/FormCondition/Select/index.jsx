@@ -4,7 +4,16 @@ import { Select, Spin, Empty } from 'antd';
 import { delectProps } from '../utils';
 
 const SelectBlock = (props) => {
-  const { type, select, label: plabel, loading, placeholder, fieldNames = {} } = props;
+  const {
+    type,
+    select,
+    label: plabel,
+    loading,
+    placeholder,
+    fieldNames = {},
+    dataOnChange,
+    onChange,
+  } = props;
 
   const divProps = delectProps(props);
   const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
@@ -46,6 +55,10 @@ const SelectBlock = (props) => {
       loading={loading}
       {...multProps}
       {...divProps}
+      onChange={(val, option) => {
+        onChange(val);
+        dataOnChange && dataOnChange(val, option);
+      }}
       placeholder={placeholder || `请选择${plabel}`}
     >
       {selectList.map((data, j) => {

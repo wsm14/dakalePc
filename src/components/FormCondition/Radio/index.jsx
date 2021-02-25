@@ -13,7 +13,7 @@ const RadioBlock = (props) => {
   const arrObject = (obj) => {
     return Object.keys(obj).map((item) => ({
       label: obj[item],
-      value: item,
+      value: `${item}`,
     }));
   };
 
@@ -26,10 +26,10 @@ const RadioBlock = (props) => {
     if (lodash.isPlainObject(select[0])) {
       selectList = select.map((item) => ({
         label: item[label],
-        value: item[value],
+        value: `${item[value]}`,
         disabled: item[disabled] || false,
       }));
-    } else selectList = select;
+    } else selectList = select.map((item, index) => ({ label: item, value: `${index}` }));
   } else if (lodash.isPlainObject(select)) {
     // 若为对象则将遍历成数组赋值
     selectList = arrObject(select);

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
-import { delectProps } from './utils';
+import { delectFormProps } from './utils';
 
 /**
  *
@@ -40,7 +40,7 @@ const FormComponents = ({
     return () => {
       form && form.resetFields();
     };
-  }, [initialValues]);
+  }, [Object.keys(initialValues).length]);
 
   // 遍历表单
   const getFields = () => {
@@ -55,6 +55,7 @@ const FormComponents = ({
         addRules,
         visible = true,
         valuePropName = 'value',
+        onChange,
       } = item;
       // 标题
       if (title) {
@@ -83,20 +84,21 @@ const FormComponents = ({
         const placeholder = item.placeholder || `请输入${label}`;
         const itemProps = Object.assign({}, item);
         delete itemProps.normalize;
+        delete itemProps.onChange;
         component = (
           <IFormItem
             {...itemProps}
-            form={form || formN}
+            form={form}
             initialvalues={initialValues}
             placeholder={placeholder}
+            dataOnChange={onChange}
           ></IFormItem>
         );
       }
 
       // 规则 默认必填
       const rules = item.rules || [{ required: true, message: `请确认${label}` }];
-      const formProps = delectProps(item);
-      delete formProps.onChange;
+      const formProps = { ...delectFormProps(item) };
       formItemArr.push(
         visible && (
           <FormItem

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
@@ -6,23 +6,21 @@ import { DatePicker, Select, Spin, Space, Empty } from 'antd';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ setSearchData, dispatch, mreSelect, loading }) => {
-
+const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
   const [selectedTime, setSelectedTime] = useState([moment(), moment()]);
+  const [merchantId, setMerchantId] = useState('');
+
+  useEffect(() => {
+    fetchGetTotalData({
+      beginDate: selectedTime[0].format('YYYY-MM-DD'),
+      endDate: selectedTime[1].format('YYYY-MM-DD'),
+      merchantId,
+    });
+  }, [merchantId, selectedTime]);
 
   // 禁止选择时间
   const disabledDate = (current) =>
-    (current && current > moment().endOf('day').subtract(1, 'day')) || current < disTime;
-
-  // 选择时间
-  const handleSearchData = (time, merchantId) => {
-    setSearchData({
-      beginDate: time[0].format('YYYY-MM-DD'),
-      endDate: time[1].format('YYYY-MM-DD'),
-      merchantId,
-    });
-    setSelectedTime(time);
-  };
+    (current && current > moment().endOf('day')) || current < disTime;
 
   // 搜索店铺
   const fetchClassifyGetMre = debounce((keyword) => {
@@ -42,7 +40,7 @@ const SearchCard = ({ setSearchData, dispatch, mreSelect, loading }) => {
       <DatePicker.RangePicker
         allowClear={false}
         value={selectedTime}
-        onChange={(val) => handleSearchData(val)}
+        onChange={(val) => setSelectedTime(val)}
         disabledDate={disabledDate}
         style={{
           width: 256,
@@ -57,7 +55,7 @@ const SearchCard = ({ setSearchData, dispatch, mreSelect, loading }) => {
         }
         allowClear
         onSearch={fetchClassifyGetMre}
-        onChange={(val) => handleSearchData(selectedTime, val)}
+        onChange={(val) => setMerchantId(val)}
         optionFilterProp="children"
         style={{ width: 256 }}
       >

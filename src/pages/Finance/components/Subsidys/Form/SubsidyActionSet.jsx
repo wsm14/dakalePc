@@ -30,7 +30,7 @@ const SubsidyActionSet = (props) => {
       name: 'categoryId',
       loading,
       select: tradeList,
-      fieldNames: { labelKey: 'categoryName', valueKey: 'categoryIdString' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
       onChange: (val, item) => form.setFieldsValue({ category: item.children[0] }),
     },
     {

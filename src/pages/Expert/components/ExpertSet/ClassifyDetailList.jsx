@@ -36,7 +36,9 @@ const ClassifyDetailList = (props) => {
       render: (val, record) => (
         <Switch
           checked={val == '1'}
-          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
+          onClick={() =>
+            fetchClassifyDetailSet({ topicId: record.topicIdString, status: 1 ^ Number(val) })
+          }
         />
       ),
     },

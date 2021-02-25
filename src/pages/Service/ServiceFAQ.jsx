@@ -60,7 +60,7 @@ const ServiceFAQ = (props) => {
       type: 'select',
       loading: loading.effects['serviceFAQ/fetchFAQSortList'],
       select: { list: sortList.list },
-      fieldNames: { labelKey: 'questionCategoryName', valueKey: 'questionCategoryIdString' },
+      fieldNames: { label: 'questionCategoryName', value: 'questionCategoryIdString' },
     },
     {
       label: '关键字',

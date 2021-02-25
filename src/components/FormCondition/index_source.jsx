@@ -437,13 +437,13 @@ const FormComponents = ({
             optionFilterProp="children"
           >
             {select.map((data, j) => {
-              const { labelKey = 'name', valueKey = 'value', tipKey = 'otherData' } = fieldNames;
+              const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
               if (data) {
-                const nameD = data[labelKey];
+                const nameD = data[label];
                 // 兼容数组
-                const valueData = !data[valueKey] ? `${j}` : data[valueKey];
+                const valueData = !data[value] ? `${j}` : data[value];
                 const nameData = nameD ? nameD : typeof data == 'string' ? data : '--';
-                const otherData = data[tipKey] ? data[tipKey] : '';
+                const otherData = data[tip] ? data[tip] : '';
                 return (
                   <Option key={data.key || j} value={valueData}>
                     {nameData}

@@ -57,7 +57,7 @@ handle={(form)=> ({
 | type | `（必填）` 类型 ，`select | multiple` | string | - |
 | select | `（必填）` 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array } | { list: object }` | - |
 | loading | 搜索等待状态 | boolean | false |
-| fieldNames | 自定义 select 中 name value otherData 的字段 | object | { labelKey: label, valueKey: value, tipKey: otherData } | string | - |
+| fieldNames | 自定义 select 中 name value otherData 的字段 | object | { label: label, value: value, tip: otherData } | string | - |
 | allItem `select` | 是否显示`全部`选项，配置 defaultValue | boolean | true |
 | defaultValue `select` | `全部` 选项默认值 | string | - |
 

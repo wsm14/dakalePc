@@ -174,14 +174,14 @@ export default {
         type: 'save',
         payload: {
           incomeRank: content.rankList.map((item) => {
-            const { verificationFee, scan, merchantName } = item;
-            const allTotal = verificationFee + scan;
+            const { verificationFee = 0, scan = 0, merchantName = 0 } = item;
+            const allTotal = (verificationFee + scan).toFixed(2);
             const verificationFeeNum = ((verificationFee / allTotal) * 100).toFixed(2);
             return {
               merchantName,
               allTotal,
               verificationFee: allTotal === 0 ? 0 : verificationFeeNum,
-              scan: allTotal === 0 ? 0 : (100 - verificationFeeNum).toFixed(2),
+              scan: allTotal === 0 ? 0 : (100 - Number(verificationFeeNum)).toFixed(2),
             };
           }),
         },

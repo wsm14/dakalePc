@@ -76,8 +76,8 @@ const SysAppSet = (props) => {
       name: 'jumpType',
       select: BANNER_JUMP_TYPE,
       onChange: (value) => {
+        console.log(value);
         setShowUrl(value !== '无');
-        form.setFieldsValue({ descsdription: '' });
       },
     },
     {

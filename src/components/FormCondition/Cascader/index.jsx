@@ -12,33 +12,35 @@ const CascaderBlock = (props) => {
     form,
     name,
     select,
-    label,
+    label: plabel,
     placeholder,
     disabled,
     changeOnSelect = false,
     onChange = undefined,
-    fieldNames,
-    value = [],
+    fieldNames = {},
+    value: changeValue = [],
   } = props;
 
+  const { label = 'label', value = 'value' } = fieldNames;
+
   useEffect(() => {
-    const valueData = typeof value[0] === 'object' ? value.map((i) => i.value) : value;
+    const valueData =
+      typeof changeValue[0] === 'object' ? changeValue.map((i) => i[value]) : changeValue;
     form.setFieldsValue({ [name]: valueData });
-  }, [value]);
+  }, [changeValue]);
 
   return (
     <Cascader
-      value={value}
+      value={changeValue}
       allowClear={false}
       expandTrigger="hover"
       showSearch={{
-        filter: (inputValue, path) =>
-          filter(inputValue, path, fieldNames ? fieldNames.label : 'label'),
+        filter: (inputValue, path) => filter(inputValue, path, label),
       }}
       disabled={disabled}
       changeOnSelect={changeOnSelect}
       fieldNames={fieldNames}
-      placeholder={placeholder || `请选择${label}`}
+      placeholder={placeholder || `请选择${plabel}`}
       options={select || CITYJSON}
       onChange={(val, option) => {
         if (onChange) onChange(option);

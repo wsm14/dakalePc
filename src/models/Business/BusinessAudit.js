@@ -88,9 +88,11 @@ export default {
         topCategoryName,
         categoryName,
         businessTime,
+        property,
         tags,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
+      const dataCheck = (key) => (property[key] ? property[key] || '' : '');
       const initialValues = {
         ...content.userMerchantVerify,
         provinceCode: [p, c, d],
@@ -117,6 +119,12 @@ export default {
           { categoryIdString: categoryNodeArr[1], categoryName: categoryName },
         ],
         commissionRatio: bondBean,
+        property: property
+          ? {
+              service: dataCheck('service').split(','),
+              speacial: dataCheck('speacial').split(','),
+            }
+          : '',
         tags: tags ? tags.split(',') : [],
       };
       callback(initialValues);

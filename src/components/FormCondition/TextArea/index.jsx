@@ -25,7 +25,7 @@ const TextAreaBlock = (props) => {
       <Input.TextArea
         {...divProps}
         onChange={(e) => {
-          onChange(e);
+          onChange && onChange(e);
           setTotalNum(e.target.value.length);
         }}
         rows={rows || 5}
