@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import moment from 'moment';
+import React from 'react';
 import { connect } from 'umi';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
@@ -9,23 +8,6 @@ import Searchs from './Search';
  * 营收统计
  */
 const OrderChart = ({ dispatch, totalData, loading }) => {
-  const [searchData, setSearchData] = useState({
-    beginDate: moment().format('YYYY-MM-DD'),
-    endDate: moment().format('YYYY-MM-DD'),
-  });
-
-  useEffect(() => {
-    fetchGetTotalData(searchData);
-  }, [searchData]);
-
-  // 获取统计数据
-  const fetchGetTotalData = (payload = {}) => {
-    dispatch({
-      type: 'chartBlock/fetchChartBlockOrder',
-      payload,
-    });
-  };
-
   const orderArr = [
     {
       title: '店铺总营收金额',
@@ -88,9 +70,17 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
     return checkData ? checkData[key] : reData;
   };
 
+  // 获取统计数据
+  const fetchGetTotalData = (payload = {}) => {
+    dispatch({
+      type: 'chartBlock/fetchChartBlockOrder',
+      payload,
+    });
+  };
+
   return (
     <Card
-      title={<Searchs setSearchData={setSearchData}></Searchs>}
+      title={<Searchs fetchGetTotalData={fetchGetTotalData}></Searchs>}
       bodyStyle={{ padding: 0, minHeight: 274 }}
       loading={loading}
       bordered={false}
