@@ -7,7 +7,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const SysMenuSet = (props) => {
   const { dispatch, visible = {}, onClose, handleCallback } = props;
 
-  const { type, show = false, initialValues = {}, allMenu = [] } = visible;
+  const { show = false, initialValues = {}, allMenu = [] } = visible;
 
   const [form] = Form.useForm();
 
@@ -90,7 +90,7 @@ const SysMenuSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={()=>fetchMenuEdit()}>
+      <Button type="primary" onClick={() => fetchMenuEdit()}>
         确定
       </Button>
     ),
