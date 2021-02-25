@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
-import { delectProps, delectFormProps } from './utils';
+import { delectFormProps } from './utils';
 
 /**
  *
@@ -85,8 +85,9 @@ const FormComponents = ({
         delete itemProps.normalize;
         component = (
           <IFormItem
+            key={`${type}${label}${name}`}
             {...itemProps}
-            form={form || formN}
+            form={form}
             initialvalues={initialValues}
             placeholder={placeholder}
           ></IFormItem>

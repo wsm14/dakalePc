@@ -2,9 +2,9 @@ export const delectProps = (data) => {
   const divProps = Object.assign({}, data);
 
   /**
-   * React does not recognize the `****` prop on a DOM element.
+   * React does not recognize the `***` prop on a DOM element.
    * If you intentionally want it to appear in the DOM as a custom attribute,
-   * spell it as lowercase `****` instead.
+   * spell it as lowercase `***` instead.
    * If you accidentally passed it from a parent component,
    * remove it from the DOM element.
    * */
