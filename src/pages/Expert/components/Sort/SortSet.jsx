@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SortSet = (props) => {
-  const { dispatch, childRef, visible ,onClose} = props;
+  const { dispatch, childRef, visible, onClose } = props;
   const { show = false, initialValues = {} } = visible;
 
   const [form] = Form.useForm();

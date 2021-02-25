@@ -9,7 +9,7 @@ const ExpertSort = (props) => {
   const { expertSort, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible,setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -45,24 +45,24 @@ const ExpertSort = (props) => {
   // 修改
   const handleSortSet = (initialValues) => {
     setVisible({
-      show:true,
-      initialValues
-    })
+      show: true,
+      initialValues,
+    });
   };
 
   return (
     <>
-    <TableDataBlock
-      keepData
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      rowKey={(record) => `${record.key}`}
-      dispatchType="expertSort/fetchGetList"
-      {...expertSort}
-      pagination={false}
-    ></TableDataBlock>
-    <SortSet visible={visible} childRef={childRef} onClose={()=>setVisible(false)}></SortSet>
+      <TableDataBlock
+        keepData
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        rowKey={(record) => `${record.key}`}
+        dispatchType="expertSort/fetchGetList"
+        {...expertSort}
+        pagination={false}
+      ></TableDataBlock>
+      <SortSet visible={visible} childRef={childRef} onClose={() => setVisible(false)}></SortSet>
     </>
   );
 };
