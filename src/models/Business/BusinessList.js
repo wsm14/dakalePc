@@ -198,13 +198,14 @@ export default {
       });
       callback();
     },
-    *fetchMerVerificationCodeSet({ payload }, { call, put }) {
+    *fetchMerVerificationCodeSet({ payload,callback }, { call, put }) {
       const response = yield call(fetchMerVerificationCodeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '验证码设置成功',
       });
+      callback();
     },
   },
 };

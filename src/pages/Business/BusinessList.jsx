@@ -30,6 +30,8 @@ const BusinessListComponent = (props) => {
   const [visibleEdit, setVisibleEdit] = useState('');
   // 商圈搜索选择
   const [hubSelect, setHubSelect] = useState(true);
+ // 设置商家验证码
+ const [visibleCodeSet,setVisibleCodeSet] = useState(false)
 
   // 搜索参数
   const searchItems = [
@@ -270,10 +272,7 @@ const BusinessListComponent = (props) => {
 
   // 设置商家端登录验证码
   const handleVCodeSet = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
-    });
+    setVisibleCodeSet(true)
   };
 
   // 店铺详情展示
@@ -370,6 +369,7 @@ const BusinessListComponent = (props) => {
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
       <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
+      <BusinessVerificationCodeSet visible={visibleCodeSet} childRef={childRef} onClose={()=>setVisibleCodeSet(false)}></BusinessVerificationCodeSet>
     </>
   );
 };
