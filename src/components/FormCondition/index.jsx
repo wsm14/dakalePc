@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
 import { IFormModule } from './formModule';
-import { delectProps } from './utils';
+import { delectProps, delectFormProps } from './utils';
 
 /**
  *
@@ -95,9 +95,7 @@ const FormComponents = ({
 
       // 规则 默认必填
       const rules = item.rules || [{ required: true, message: `请确认${label}` }];
-      const formProps = { ...delectProps(item) };
-      delete formProps.onChange;
-      delete formProps.changeOnSelect;
+      const formProps = { ...delectFormProps(item) };
       formItemArr.push(
         visible && (
           <FormItem
