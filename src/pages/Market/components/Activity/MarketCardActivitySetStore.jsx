@@ -104,10 +104,8 @@ const MarketCardActivitySetStore = (props) => {
         handleStoreGoodsType(val);
         form.setFieldsValue({ categoryCustomId: undefined });
       },
-      select: merchantList.map((item) => ({
-        value: item.userMerchantIdString,
-        name: item.merchantName,
-      })),
+      select: merchantList,
+      fieldNames: { label: 'merchantName', value: 'userMerchantIdString' },
     },
     {
       label: '活动商品',
@@ -118,10 +116,8 @@ const MarketCardActivitySetStore = (props) => {
       label: '商品分类',
       type: 'select',
       name: 'categoryCustomId',
-      select: typeList.map((item) => ({
-        value: item.categoryCustomId,
-        name: item.categoryName,
-      })),
+      select: typeList,
+      fieldNames: { label: 'categoryName', value: 'categoryCustomId' },
     },
     {
       label: '活动图',

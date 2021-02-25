@@ -73,13 +73,14 @@ const tableList = (props) => {
       label: '经营类目',
       name: 'categoryId',
       type: 'select',
-      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'id' },
     },
     {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select:  WORKER_BANK_STATUS,
+      select: WORKER_BANK_STATUS,
     },
   ];
   // table 表头
@@ -139,8 +140,7 @@ const tableList = (props) => {
       title: '账户状态',
       align: 'center',
       dataIndex: 'bankStatus',
-      render: (val) =>
-        WORKER_BANK_STATUS[val],
+      render: (val) => WORKER_BANK_STATUS[val],
     },
     {
       title: '操作',

@@ -55,7 +55,8 @@ const ClassifySet = (props) => {
       type: 'select',
       name: 'topCategoryName',
       disabled: rowDetail.topCategoryName,
-      select: tradeList.map((i) => ({ name: i.categoryName, value: i.categoryIdString })),
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
       visible: initialValues.parentDomainId == 0,
       onChange: (val, item) => {
         setData = item;

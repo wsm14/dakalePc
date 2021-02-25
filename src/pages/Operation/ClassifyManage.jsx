@@ -45,7 +45,7 @@ const ClassifyManageComponent = (props) => {
       loading: loadings.effects['classifyManage/fetchClassifyGetMre'],
       allItem: false,
       onSearch: (val) => fetchClassifyGetMre(val),
-      select: { list: mreSelect },
+      select: mreSelect,
       placeholder: '请输入搜索',
     },
   ];

@@ -48,7 +48,8 @@ const AreaCenter = (props) => {
       label: '所属省公司',
       name: 'belongProvinceCode',
       type: 'select',
-      select: { list: CITYJSON.map((item) => ({ name: item.label, value: item.value })) },
+      select: CITYJSON,
+      fieldNames: { label: 'label' },
     },
     {
       label: '代理公司名称',

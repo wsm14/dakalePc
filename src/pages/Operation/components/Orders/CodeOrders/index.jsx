@@ -50,12 +50,8 @@ const CodeOrders = (props) => {
       type: 'select',
       loading: loadings.models.baseData,
       allItem: false,
-      select: {
-        list: hubData.map((item) => ({
-          name: item.businessHubName,
-          value: item.businessHubIdString,
-        })),
-      },
+      select: hubData,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
     },
     {
       label: '支付日期',

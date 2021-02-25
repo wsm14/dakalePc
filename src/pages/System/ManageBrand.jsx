@@ -24,7 +24,8 @@ const BusinessBrandComponent = (props) => {
       name: 'categoryId',
       loading: loading.models.sysTradeList,
       type: 'select',
-      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'id' },
     },
   ];
 

@@ -73,16 +73,18 @@ const BusinessListComponent = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valueskey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val, form) => {
-        // 必须选到区级才可选择商圈
-        form.setFieldsValue({ businessHubId: undefined });
-        if (val.length === 3) fetchGetHubSelect({ districtCode: val[2] });
-        else {
-          setHubSelect(true);
-          return;
-        }
-        setHubSelect(false);
-      },
+      handle: (form) => ({
+        onChange: (val) => {
+          // 必须选到区级才可选择商圈
+          form.setFieldsValue({ businessHubId: undefined });
+          if (val.length === 3) fetchGetHubSelect({ districtCode: val[2] });
+          else {
+            setHubSelect(true);
+            return;
+          }
+          setHubSelect(false);
+        },
+      }),
     },
     {
       label: '所属商圈',
@@ -91,16 +93,14 @@ const BusinessListComponent = (props) => {
       loading: loading.models.baseData,
       disabled: hubSelect,
       allItem: false,
-      select: hubData.map((item) => ({
-        name: item.businessHubName,
-        value: item.businessHubIdString,
-      })),
+      select: hubData,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
     },
     {
       label: '经营状态',
       name: 'businessStatus',
       type: 'select',
-      select:  BUSINESS_DO_STATUS,
+      select: BUSINESS_DO_STATUS,
     },
     {
       label: '店铺状态',

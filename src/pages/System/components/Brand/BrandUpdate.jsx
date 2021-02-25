@@ -27,9 +27,9 @@ const BrandUpdate = (props) => {
             categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
             brandLogo: res.toString(),
           },
-          callback: () =>{ 
-            onClose()
-            cRef.current.fetchGetData()
+          callback: () => {
+            onClose();
+            cRef.current.fetchGetData();
           },
         });
       });
@@ -65,7 +65,8 @@ const BrandUpdate = (props) => {
       label: '品牌类型',
       type: 'select',
       name: 'categoryId',
-      select: tradeList.map((item) => ({ name: item.categoryName, value: item.id })),
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'id' },
     },
   ];
 

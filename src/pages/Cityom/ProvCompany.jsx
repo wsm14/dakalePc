@@ -52,7 +52,8 @@ const ProvCompany = (props) => {
       label: '代理省份',
       name: 'provinceCode',
       type: 'select',
-      select: { list: CITYJSON.map((item) => ({ name: item.label, value: item.value })) },
+      select: CITYJSON,
+      fieldNames: { label: 'label' },
     },
     {
       label: '联系人姓名',

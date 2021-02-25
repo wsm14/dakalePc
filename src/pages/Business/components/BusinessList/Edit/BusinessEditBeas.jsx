@@ -142,10 +142,8 @@ const BusinessAddBeas = (props) => {
       label: '所属商圈',
       name: 'businessHubIdString',
       type: 'select',
-      select: hubList.map((item) => ({
-        name: item.businessHubName,
-        value: item.businessHubIdString,
-      })),
+      select: hubList,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
       span: 2,
     },
     {
@@ -226,10 +224,8 @@ const BusinessAddBeas = (props) => {
       name: 'businessArea',
       visible: areaMust,
       loading: loading.models.sysTradeList,
-      select: platformList.map((item) => ({
-        value: item.typeContent,
-        name: item.typeContent,
-      })),
+      select: platformList,
+      fieldNames: { label: 'typeContent', value: 'typeContent' },
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
       },

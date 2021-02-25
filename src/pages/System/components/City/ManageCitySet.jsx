@@ -32,7 +32,8 @@ const ManageCitySet = (props) => {
         label: '城市',
         type: 'select',
         name: 'cityCode',
-        select: cityList.map(({ value, label }) => ({ value, name: label })),
+        select: cityList,
+        fieldNames: { label: 'label' },
       },
       {
         label: '背景图',

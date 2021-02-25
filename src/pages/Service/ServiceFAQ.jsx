@@ -59,7 +59,7 @@ const ServiceFAQ = (props) => {
       name: 'questionCategoryId',
       type: 'select',
       loading: loading.effects['serviceFAQ/fetchFAQSortList'],
-      select: { list: sortList.list },
+      select: sortList.list,
       fieldNames: { label: 'questionCategoryName', value: 'questionCategoryIdString' },
     },
     {

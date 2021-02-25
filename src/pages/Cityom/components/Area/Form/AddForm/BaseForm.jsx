@@ -95,7 +95,8 @@ const BaseForm = (props) => {
       label: '所属省公司',
       type: 'select',
       name: 'provinceCode',
-      select: CITYJSON.map((item) => ({ name: item.label, value: item.value })),
+      select: CITYJSON,
+      fieldNames: { label: 'label' },
       onChange: (val, item) => {
         setCitySelect(CITYJSON.filter((item) => item.value == val));
         form.setFieldsValue({ provinceName: item.children[0] });
