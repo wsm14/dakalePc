@@ -84,6 +84,9 @@ export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 export const MATCH_USER_STATUS = ['已取消', '已报名', '已完成', '已领奖'];
 
 // 哒人状态
+export const EXPERT_USER_TYPE = ['封停', '正常'];
+
+// 哒人封停状态
 export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封停1周', '封停1月'];
 
 // 活动状态

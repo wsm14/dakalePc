@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { EXPERT_USER_STATUS } from '@/common/constant';
+import { EXPERT_USER_TYPE } from '@/common/constant';
 import DataTableBlock from '@/components/DataTableBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import closeExpert from './components/UserList/CloseExpert';
@@ -28,7 +28,7 @@ const ExpertUserList = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: { list: EXPERT_USER_STATUS },
+      select: EXPERT_USER_TYPE,
     },
   ];
 
@@ -94,7 +94,7 @@ const ExpertUserList = (props) => {
       title: '状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => EXPERT_USER_STATUS[val],
+      render: (val) => EXPERT_USER_TYPE[val],
     },
     {
       title: '操作',
