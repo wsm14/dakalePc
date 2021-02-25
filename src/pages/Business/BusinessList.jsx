@@ -273,10 +273,6 @@ const BusinessListComponent = (props) => {
   // 设置商家端登录验证码
   const handleVCodeSet = () => {
     setVisibleCodeSet(true)
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: BusinessVerificationCodeSet({ dispatch, childRef }),
-    // });
   };
 
   // 店铺详情展示
