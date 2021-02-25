@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
+import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 
@@ -16,6 +16,7 @@ const BusinessAuditList = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleDetailList, setVisibleDetailList] = useState(false);
+  const [visibleAuditDetail,setVisibleAuditDetail]= useState(false)
 
   // 搜索参数
   const searchItems = [
@@ -141,10 +142,11 @@ const BusinessAuditList = (props) => {
 
   // 用户详情展示
   const handleShowUserDetail = (initialValues, verifyStatus) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessAuditDetailShow({ initialValues, verifyStatus }),
-    });
+    setVisibleAuditDetail({
+      show:true,
+      initialValues,
+      verifyStatus,
+    })
   };
 
   // 经营类目
@@ -188,6 +190,7 @@ const BusinessAuditList = (props) => {
         visible={visibleDetailList}
         setVisible={setVisibleDetailList}
       ></BusinessAuditDetailList>
+      <BusinessAuditDetailShow visible={visibleAuditDetail} onClose={()=>setVisibleAuditDetail(false)}></BusinessAuditDetailShow>
     </>
   );
 };
