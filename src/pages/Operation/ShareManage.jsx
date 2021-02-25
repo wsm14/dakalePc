@@ -184,8 +184,8 @@ const ShareManage = (props) => {
         visible={visibleHandle}
         onClose={() => setVisibleHandle(false)}
       ></ShareHandleDetail>
-       {/* 下架 */}
-       <CloseRefuse
+      {/* 下架 */}
+      <CloseRefuse
         visible={visibleDown}
         childRef={childRef}
         onClose={() => setVisibleDown(false)}
