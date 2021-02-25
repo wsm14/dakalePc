@@ -6,7 +6,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
 import CloseRefuse from './components/Goods/Form/CloseRefuse';
-import stockSet from './components/Goods/Form/StockSet';
+import StockSet from './components/Goods/Form/StockSet';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
@@ -20,6 +20,7 @@ const GoodsManageComponent = (props) => {
   const { mreSelect, classifySelect } = goodsManage;
   const [visible, setVisible] = useState(false);
   const [visibleDown, setVisibleDown] = useState(false);
+  const [visibleStock, setVisibleStock] = useState(false);
   const [merchantId, setMerchantId] = useState('');
 
   // 搜索参数
@@ -271,9 +272,9 @@ const GoodsManageComponent = (props) => {
 
   // 库存
   const fetchStockSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: stockSet({ dispatch, childRef, initialValues }),
+    setVisibleStock({
+      show: true,
+      initialValues,
     });
   };
 
@@ -336,6 +337,12 @@ const GoodsManageComponent = (props) => {
         childRef={childRef}
         onClose={() => setVisibleDown(false)}
       ></CloseRefuse>
+      {/* 库存 */}
+      <StockSet
+        visible={visibleStock}
+        childRef={childRef}
+        onClose={() => setVisibleStock(false)}
+      ></StockSet>
     </>
   );
 };
