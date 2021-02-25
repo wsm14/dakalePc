@@ -49,12 +49,7 @@
 | onSortEnd  | 排序完成回调函数，将会返回排序完成后新数据 | `function(): Object` | -      |
 
 ```jsx
-<TableDataBlock
-  {...draggableContent(
-      list,
-      { key, onSortEnd: (val) => {} }
-  )}
-/>
+<TableDataBlock {...draggableContent(list, { key, onSortEnd: (val) => {} })} />
 ```
 
 ## 更新日志
