@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
 import { Map, Marker } from 'react-amap';
+import { NUM_PATTERN } from '@/common/regExp';
 import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -212,9 +213,10 @@ const BaseForm = (props) => {
     },
     {
       label: '签约金额',
-      type: 'number',
       name: 'contractAmount',
-      min: 0,
+      suffix: '元',
+      addRules: [{ pattern: NUM_PATTERN, message: '签约金额为大于0的整数' }],
+      render: (val) => val + '元',
     },
     {
       label: '经度',

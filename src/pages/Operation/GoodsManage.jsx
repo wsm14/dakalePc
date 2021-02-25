@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, message } from 'antd';
-import { GOODS_TYPE, MRE_SURE_TYPE } from '@/common/constant';
+import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
@@ -140,7 +140,13 @@ const GoodsManageComponent = (props) => {
       title: '店铺确认状态',
       align: 'center',
       dataIndex: 'checkStatus',
-      render: (val) => (!val ? '-' : MRE_SURE_TYPE[val]),
+      render: (val) => (!val ? '--' : MRE_SURE_TYPE[val]),
+    },
+    {
+      title: '是否售罄',
+      align: 'center',
+      dataIndex: 'stockStatus',
+      render: (val) => MRE_STOCK_STATUS[val],
     },
     {
       title: '操作',

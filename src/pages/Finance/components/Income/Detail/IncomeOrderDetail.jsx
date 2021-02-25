@@ -125,9 +125,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         {type === 'kolGoods' && (
           <>
             <div className={styles.detail_item}>
-              哒人带货利润：￥{detail.merchantServiceBean / 100}
+              哒人带货利润：￥{detail.kolGoodsProfitBean / 100}
             </div>
-            <div className={styles.detail_item}>哒人等级：Lv {detail.kolLevel}</div>
+            <div className={styles.detail_item}>哒人等级：Lv {Number(detail.kolLevel) - 1}</div>
           </>
         )}
         <div className={styles.detail_item}>店铺服务费：{detail.merchantServiceBean || 0}卡豆</div>

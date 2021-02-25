@@ -84,6 +84,9 @@ export const MATCH_STATUS = ['已取消', '等待揭晓', '已结束'];
 export const MATCH_USER_STATUS = ['已取消', '已报名', '已完成', '已领奖'];
 
 // 哒人状态
+export const EXPERT_USER_TYPE = ['封停', '正常'];
+
+// 哒人封停状态
 export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封停1周', '封停1月'];
 
 // 活动状态
@@ -116,6 +119,9 @@ export const GOODS_TYPE = ['已下架', '上架中', false, '未发布'];
 // 店铺确认状态
 export const MRE_SURE_TYPE = ['已驳回', '确认中', '已确认'];
 
+// 店铺售罄状态
+export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
+
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
@@ -134,7 +140,7 @@ export const MRE_TAG_STATUS = ['停用', '启用'];
 // FAQ猜你想问
 export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
 
-// 省代/区县公司状态
+// 省代/区县公司/销售管理系统状态
 export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
 
 // 订单状态
@@ -162,6 +168,12 @@ export const PUZZLE_AD_TYPE = [
 
 // 消息推送 - 推送状态
 export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
+
+// 用户性别
+export const SEX_NEW_TYPE = { M: '男', F: '女' };
+
+// 销售管理系统 - 类型
+export const SALE_ACCOUNT_TYPE = { province: '省份', city: '城市', district: '区县' };
 
 // 消息推送 - 推送目标
 export const MSG_PSUH_TAB = { user: '用户端', merchant: '商家端' };

@@ -13,7 +13,7 @@ const UserDetailShow = (props) => {
   const { status, userIdString } = detail;
 
   const statusNum = Number(status);
-  const statusText = !statusNum ? '启用' : '禁用';
+  const statusText = !statusNum ? '启用' : '封停';
 
   // 账户状态
   const handleUserStatus = () => {

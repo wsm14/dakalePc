@@ -26,7 +26,10 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: Object.keys(SUBSIDY_TASK_ROLE).map((item) => ({ name: SUBSIDY_TASK_ROLE[item], value: item })),
+      select: Object.keys(SUBSIDY_TASK_ROLE).map((item) => ({
+        name: SUBSIDY_TASK_ROLE[item],
+        value: item,
+      })),
     },
     {
       label: '适用店铺',
@@ -66,6 +69,7 @@ const SubsidyDirectMoney = (props) => {
       <MreSelect
         keys={mreList.keys}
         visible={visible}
+        mreList={mreList.list}
         onOk={(val) => setMreList(val)}
         onCancel={() => setVisible(false)}
       ></MreSelect>

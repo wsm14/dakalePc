@@ -6,6 +6,7 @@ import * as XLSX from 'xlsx';
  * @param {*} data 数据
  * @param {*} fileName 导出的文件名
  * @param {*} filterData ['序号'] 需要过滤的数据 header
+ * @param {*} fieldRender 重定义render
  * @param {*} fieldNames 数据别名
  */
 const exportExcel = ({
@@ -13,6 +14,7 @@ const exportExcel = ({
   data = [],
   fileName = 'file',
   fieldNames = {},
+  fieldRender = {},
   filterData = ['序号'],
 }) => {
   const { key = 'dataIndex', headerName = 'title' } = fieldNames;
@@ -32,7 +34,7 @@ const exportExcel = ({
       // 头
       const rowHeader = keys[headerName];
       // 值重置函数
-      const rowRender = keys.render;
+      const rowRender = fieldRender[keys[key]] || keys.render;
 
       const rowRenderData = rowRender ? rowRender(rowData, item) : rowData;
 

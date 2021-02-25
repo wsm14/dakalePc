@@ -23,17 +23,17 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
 
   const orderArr = [
     {
-      title: '店铺发布视频数',
+      title: '店铺发布分享数',
       key: 'send',
-      tip: '平均发布视频数',
+      tip: '平均发布分享数',
     },
     {
-      title: '视频播放次数',
+      title: '分享打赏次数',
       key: 'view',
-      tip: '平均播放次数',
+      tip: '平均打赏次数',
     },
     {
-      title: '视频打赏卡豆数',
+      title: '分享打赏卡豆数',
       key: 'bean',
       tip: '平均打赏卡豆数',
     },
@@ -67,10 +67,11 @@ const BusinessTotal = ({ dispatch, totalData, loading }) => {
             title={item.title}
             value={checkData(totalData[item.key], 'totalFee')}
             precision={0}
+            valueStyle={{ fontSize: 40 }}
           />
-          <span style={allStyle}>
+          {/* <span style={allStyle}>
             {item.tip}：{checkData(totalData[item.key], 'docCount')}
-          </span>
+          </span> */}
         </Card.Grid>
       ))}
     </Card>

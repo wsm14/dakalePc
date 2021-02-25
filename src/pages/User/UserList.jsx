@@ -34,6 +34,12 @@ const UserListComponent = (props) => {
       name: 'createTimeStart',
       end: 'createTimeEnd',
     },
+    {
+      label: '认证状态',
+      name: 'realNameStatus',
+      type: 'select',
+      select: REAL_NAME_STATUS,
+    },
   ];
 
   // table 表头

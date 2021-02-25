@@ -22,6 +22,13 @@ const BusinessRegisterComponent = (props) => {
       type: 'select',
       select: { list: BUSINESS_REGISTER_STATUS },
     },
+    // {
+    //   label: '省市区',
+    //   type: 'cascader',
+    //   name: 'city',
+    //   changeOnSelect:true,
+    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    // },
   ];
 
   // table 表头

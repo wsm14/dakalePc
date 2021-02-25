@@ -20,6 +20,7 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
     <div style={{ marginBottom: 20 }} key="table">
       <DataTableBlock
         noCard={false}
+        componentSize="small"
         columns={getColumns}
         rowKey={(record) => `${record.userMerchantIdString}`}
         rowSelection={{
