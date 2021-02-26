@@ -1,33 +1,58 @@
+import React from 'react';
+import { connect } from 'umi';
+import { Form, Button } from 'antd';
+import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
+
 const LimitPopSet = (props) => {
-  const { dispatch, childRef } = props;
+  const { dispatch, childRef, visible, onClose } = props;
+
+  const [form] = Form.useForm();
 
   // 新增
-  const fetchLimitPopAdd = (values) => {
-    dispatch({
-      type: 'serviceLimitPop/fetchLimitPopAdd',
-      payload: values,
-      callback: () => childRef.current.fetchGetData(),
+  const fetchLimitPopAdd = () => {
+    form.validateFields().then((values) => {
+      dispatch({
+        type: 'serviceLimitPop/fetchLimitPopAdd',
+        payload: values,
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
-  return {
-    type: 'Drawer',
-    showType: 'form',
+  const formItems = [
+    {
+      label: '姓名',
+      name: 'name',
+    },
+    {
+      label: '手机号',
+      name: 'mobile',
+    },
+  ];
+
+  const modalProps = {
     title: '新增人员',
-    loadingModels: 'serviceLimitPop',
-    formItems: [
-      {
-        label: '姓名',
-        name: 'name',
-      },
-      {
-        label: '手机号',
-        name: 'mobile',
-      },
-    ],
-    onFinish: fetchLimitPopAdd,
-    ...props,
+    visible,
+    onClose,
+    footer: (
+      <Button type="primary" onClick={() => fetchLimitPopAdd()}>
+        确定
+      </Button>
+    ),
   };
+
+  return (
+    <DrawerCondition {...modalProps}>
+      <FormCondition form={form} formItems={formItems} ></FormCondition>
+    </DrawerCondition>
+  );
 };
 
-export default LimitPopSet;
+export default connect(({ serviceLimitPop, loading }) => ({
+  serviceLimitPop,
+  loading,
+}))(LimitPopSet);
