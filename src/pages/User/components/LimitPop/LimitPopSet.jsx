@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const LimitPopSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
 
   const [form] = Form.useForm();
 
@@ -39,7 +39,7 @@ const LimitPopSet = (props) => {
     visible,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchLimitPopAdd()}>
+      <Button type="primary" onClick={fetchLimitPopAdd} loading={loading}>
         确定
       </Button>
     ),
@@ -47,12 +47,11 @@ const LimitPopSet = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition form={form} formItems={formItems} ></FormCondition>
+      <FormCondition form={form} formItems={formItems}></FormCondition>
     </DrawerCondition>
   );
 };
 
-export default connect(({ serviceLimitPop, loading }) => ({
-  serviceLimitPop,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['serviceLimitPop/fetchLimitPopAdd'],
 }))(LimitPopSet);
