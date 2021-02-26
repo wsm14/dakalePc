@@ -14,7 +14,8 @@ const SysMenuSet = (props) => {
   // 新增修改 传id修改 不传id新增
   const fetchMenuEdit = () => {
     form.validateFields().then((values) => {
-      const payload = { ...detail, ...values, id: detail.accessId };
+      const { accessId } = detail;
+      const payload = { ...detail, ...values, id: accessId };
       dispatch({
         type: 'sysMenuList/fetchMenuSet',
         payload,

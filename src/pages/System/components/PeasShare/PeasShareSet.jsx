@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import { NUM_INT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import { NUM_INT } from '@/common/regExp';
 
 const PeasShareSet = (props) => {
-  const { cRef, dispatch, visible = {}, onClose } = props;
+  const { cRef, dispatch, visible = {}, onClose, loading } = props;
 
   const { type, show = false, initialValues = {} } = visible;
+
   const [form] = Form.useForm();
 
   const fetchPeasShareAdd = () => {
     form.validateFields().then((values) => {
+      const { configMomentIdString: configMomentId } = initialValues;
       const payload = {
         add: { type: 'sysPeasShare/fetchPeasShareAdd' },
         edit: { type: 'sysPeasShare/fetchPeasShareEdit' },
@@ -20,7 +22,7 @@ const PeasShareSet = (props) => {
       dispatch({
         type: payload.type,
         payload: {
-          configMomentId: initialValues.configMomentIdString,
+          configMomentId,
           ...initialValues,
           ...values,
         },
@@ -30,17 +32,6 @@ const PeasShareSet = (props) => {
         },
       });
     });
-  };
-
-  const modalProps = {
-    title: `${{ add: '新增卡豆分享', edit: '卡豆分享设置' }[type]}`,
-    visible: show,
-    onClose,
-    footer: (
-      <Button type="primary" onClick={fetchPeasShareAdd}>
-        确定
-      </Button>
-    ),
   };
 
   const formItems = [
@@ -58,6 +49,17 @@ const PeasShareSet = (props) => {
     },
   ];
 
+  const modalProps = {
+    title: `${{ add: '新增卡豆分享', edit: '卡豆分享设置' }[type]}`,
+    visible: show,
+    onClose,
+    footer: (
+      <Button type="primary" onClick={fetchPeasShareAdd} loading={loading}>
+        确定
+      </Button>
+    ),
+  };
+
   return (
     <DrawerCondition {...modalProps}>
       <FormCondition
@@ -69,7 +71,6 @@ const PeasShareSet = (props) => {
   );
 };
 
-export default connect(({ sysPeasShare, loading }) => ({
-  sysPeasShare,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.models.sysPeasShare,
 }))(PeasShareSet);
