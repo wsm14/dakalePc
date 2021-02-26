@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const ClassifySet = (props) => {
-  const { dispatch, childRef, visible = {}, onClose } = props;
+  const { dispatch, childRef, visible = {}, onClose, loading } = props;
 
   const { type, show = false, initialValues = {}, tradeList = [], rowDetail = {} } = visible;
 
@@ -109,7 +109,7 @@ const ClassifySet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={fetchDataEdit}>
+      <Button type="primary" onClick={fetchDataEdit} loading={loading}>
         确定
       </Button>
     ),
@@ -124,19 +124,8 @@ const ClassifySet = (props) => {
       ></FormCondition>
     </DrawerCondition>
   );
-
-  // return {
-  //   type: 'Drawer',
-  //   showType: 'form',
-  //   title: `${!initialValues.domainId ? '新增' : '修改'}`,
-  //   loadingModels: 'expertSet',
-  //   initialValues,
-  //   onFinish: fetchDataEdit,
-  //   ...props,
-  // };
 };
 
-export default connect(({ expertSet, loading }) => ({
-  expertSet,
-  loading,
+export default connect(({ loading }) => ({
+  loading:loading.models.expertSet,
 }))(ClassifySet);

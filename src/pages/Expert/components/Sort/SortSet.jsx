@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SortSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
 
   const [form] = Form.useForm();
@@ -39,7 +39,7 @@ const SortSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={fetchDataEdit}>
+      <Button type="primary" onClick={fetchDataEdit} loading={loading}>
         确定
       </Button>
     ),
@@ -56,7 +56,6 @@ const SortSet = (props) => {
   );
 };
 
-export default connect(({ expertSort, loading }) => ({
-  expertSort,
-  loading,
+export default connect(({ loading }) => ({
+  loading:loading.models.expertSort,
 }))(SortSet);

@@ -12,7 +12,6 @@ const ProvAccountSet = (props) => {
     setVisibleAct,
     setVisibleSet,
     loading,
-    loadingDetail,
     companyId,
   } = props;
 
@@ -45,7 +44,6 @@ const ProvAccountSet = (props) => {
     maskClosable: false,
     destroyOnClose: true,
     onClose: closeDrawer,
-    loading: loadingDetail,
     footer: (
       <Button onClick={handleUpData} type="primary" loading={loading}>
         提交

@@ -6,8 +6,8 @@ import DrawerCondition from '@/components/DrawerCondition';
 import moment from 'moment';
 
 const CheckInSet = (props) => {
-  const { dispatch, cRef, visible, onClose } = props;
-  const { initialValues = {}, show=false } = visible;
+  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { initialValues = {}, show = false } = visible;
   const [form] = Form.useForm();
 
   const detail = {
@@ -56,7 +56,7 @@ const CheckInSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchSysCheckIn()}>
+      <Button type="primary" onClick={() => fetchSysCheckIn()} loading={loading}>
         确定
       </Button>
     ),
@@ -69,7 +69,6 @@ const CheckInSet = (props) => {
   );
 };
 
-export default connect(({ sysCheckIn, loading }) => ({
-  sysCheckIn,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['sysCheckIn/fetchCheckInEdit'],
 }))(CheckInSet);

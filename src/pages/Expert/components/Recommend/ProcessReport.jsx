@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const ProcessReport = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loadingg } = props;
   const { show = false, initialValues = {}, fetchExpertCountReport } = visible;
   const [form] = Form.useForm();
 
@@ -46,7 +46,7 @@ const ProcessReport = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchStatusClose()}>
+      <Button type="primary" onClick={() => fetchStatusClose()} loading={loading}>
         确定
       </Button>
     ),
@@ -62,7 +62,6 @@ const ProcessReport = (props) => {
     </DrawerCondition>
   );
 };
-export default connect(({ expertRecommend, loading }) => ({
-  expertRecommend,
-  loading,
+export default connect(({ loading }) => ({
+  loading:loading.models.expertRecommend,
 }))(ProcessReport);

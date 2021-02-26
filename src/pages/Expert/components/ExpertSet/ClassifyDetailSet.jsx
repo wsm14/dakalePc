@@ -6,7 +6,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ClassifyDetailSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { type, show = false, initialValues = {}, domainId } = visible;
 
   const [form] = Form.useForm();
@@ -60,7 +60,7 @@ const ClassifyDetailSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={fetchDataEdit}>
+      <Button type="primary" onClick={fetchDataEdit} loading={loading}>
         确定
       </Button>
     ),
@@ -77,7 +77,6 @@ const ClassifyDetailSet = (props) => {
   );
 };
 
-export default connect(({ expertSet, loading }) => ({
-  expertSet,
-  loading,
+export default connect(({ loading }) => ({
+  loading:loading.models.expertSet
 }))(ClassifyDetailSet);
