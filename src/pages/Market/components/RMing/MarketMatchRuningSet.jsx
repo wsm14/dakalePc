@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const MarketMatchRuningSet = (props) => {
-  const { dispatch, childRef, visible = false, onClose } = props;
+  const { dispatch, childRef, visible = false, onClose, loading } = props;
 
   const [form] = Form.useForm();
 
@@ -41,7 +41,7 @@ const MarketMatchRuningSet = (props) => {
     visible,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchRuningSet()}>
+      <Button type="primary" onClick={() => fetchRuningSet()} loading={loading}>
         确定
       </Button>
     ),
@@ -54,7 +54,6 @@ const MarketMatchRuningSet = (props) => {
   );
 };
 
-export default connect(({ marketCardRMing, loading }) => ({
-  marketCardRMing,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['marketCardRMing/fetchMarketMatchRuningSet'],
 }))(MarketMatchRuningSet);

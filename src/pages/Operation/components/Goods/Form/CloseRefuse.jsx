@@ -4,7 +4,7 @@ import { Modal, Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const CloseRefuse = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -31,7 +31,7 @@ const CloseRefuse = (props) => {
     width: 520,
     onCancel: onClose,
     footer: (
-      <Button type="primary" onClick={fetchStatusClose}>
+      <Button type="primary" onClick={fetchStatusClose} loading={loading}>
         确定
       </Button>
     ),
@@ -45,7 +45,7 @@ const CloseRefuse = (props) => {
       placeholder: '请输入下架原因，以方便商家调整商品信息',
     },
   ];
-  
+
   return (
     <Modal {...modalProps} destroyOnClose>
       <FormCondition
@@ -57,7 +57,6 @@ const CloseRefuse = (props) => {
   );
 };
 
-export default connect(({ goodsManage, loading }) => ({
-  goodsManage,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['goodsManage/fetchGoodsUpdataStatus'],
 }))(CloseRefuse);

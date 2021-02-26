@@ -4,7 +4,7 @@ import { Modal, Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const StockSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -42,7 +42,7 @@ const StockSet = (props) => {
     width: 550,
     onCancel: onClose,
     footer: (
-      <Button type="primary" onClick={fetchStatusClose}>
+      <Button type="primary" onClick={fetchStatusClose} loading={loading}>
         确定
       </Button>
     ),
@@ -59,7 +59,6 @@ const StockSet = (props) => {
   );
 };
 
-export default connect(({ goodsManage, loading }) => ({
-  goodsManage,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['goodsManage/fetchUpdataStock'],
 }))(StockSet);
