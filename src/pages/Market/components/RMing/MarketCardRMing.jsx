@@ -106,12 +106,6 @@ const MarketCardRMing = (props) => {
     if(matchType==='step'){
       setVisibleRun(true)
     }
-    
-
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: propInfo.payload,
-    // });
   };
 
   // 头部添加面包屑 按钮
