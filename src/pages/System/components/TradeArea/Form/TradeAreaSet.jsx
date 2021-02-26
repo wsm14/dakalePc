@@ -12,15 +12,16 @@ const TradeAreaSet = (props) => {
 
   const [form] = Form.useForm();
   const [ampShow, setAmpShow] = useState(false); // 地图是否显示
-  const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
+  const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]
   const [fetching, setFetching] = useState(false); // 查找地址等待状态
   const [localList, setLocalList] = useState([]); // 可选地址列表
   const [selectLocal, setSelectLocal] = useState(''); // 已选地址
 
-  const { provinceName, cityName, districtName } = info;
+  const { provinceName, cityName, districtName, lat, lnt } = info;
 
   useEffect(() => {
-    info.lat && setLocation([info.lnt, info.lat]);
+    // 修改时保存经纬度 地图回显使用
+    lat && setLocation([lnt, lat]);
   }, [info]);
 
   // 新增 / 修改

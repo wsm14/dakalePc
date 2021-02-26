@@ -5,15 +5,12 @@ import CITYJSON from '@/common/city';
 const { SubMenu } = Menu;
 
 const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
-  // menu 选择的省key
-  const [pId, setPIdIds] = useState('33');
-  // menu 展开的城市key
-  const [cityCode, setCityCode] = useState('3301');
-  // menu 选择的城市key 高亮
-  const [dCode, setDCode] = useState('3301');
+  const [pId, setPIdIds] = useState('33'); // menu 选择的省key
+  const [cityCode, setCityCode] = useState('3301'); // menu 展开的城市key
+  const [dCode, setDCode] = useState('3301'); // menu 选择的城市key 高亮
 
   const routerMenu = (list, val) => {
-    return list.map((item, index) => {
+    return list.map((item) => {
       return item[val] ? (
         <SubMenu
           className={item.value === dCode ? 'ant-menu-item-selected' : ''}
@@ -33,17 +30,7 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
       );
     });
   };
-  const filterOpenKeys = (list, val) => {
-    let arr = [];
-    const lists = list.filter((item) => {
-      if (item[val]) {
-        let a = filterOpenKeys(item[val], val);
-        arr.push(...a);
-        return true;
-      }
-    });
-    return [...lists, ...arr];
-  };
+
   return (
     <div>
       <Select
