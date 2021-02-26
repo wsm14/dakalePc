@@ -10,9 +10,13 @@ import BrandUpdate from './components/Brand/BrandUpdate';
 const BusinessBrandComponent = (props) => {
   const { businessBrand, tradeList, loading, dispatch } = props;
 
+  const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
-  const childRef = useRef();
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   // 搜索参数
   const searchItems = [
     {
@@ -22,8 +26,8 @@ const BusinessBrandComponent = (props) => {
     {
       label: '品牌类型',
       name: 'categoryId',
-      loading: loading.models.sysTradeList,
       type: 'select',
+      loading: loading.models.sysTradeList,
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'id' },
     },
@@ -51,13 +55,13 @@ const BusinessBrandComponent = (props) => {
       title: '启用状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val, record) => (
+      render: (val, row) => (
         <AuthConsumer auth="status" noAuth={val === '1' ? '启用' : '停用'}>
           <Switch
             checked={val === '1'}
             onClick={() =>
               fetchMerBrandEdit({
-                configBrandIdString: record.configBrandIdString,
+                configBrandIdString: row.configBrandIdString,
                 status: 1 ^ Number(val),
               })
             }
@@ -78,11 +82,7 @@ const BusinessBrandComponent = (props) => {
             },
             {
               type: 'del',
-              click: () =>
-                fetchMerBrandEdit({
-                  configBrandIdString: val,
-                  deleteFlag: 0,
-                }),
+              click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -116,10 +116,6 @@ const BusinessBrandComponent = (props) => {
     });
   };
 
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
-
   return (
     <>
       <TableDataBlock
@@ -141,7 +137,6 @@ const BusinessBrandComponent = (props) => {
       <BrandUpdate
         cRef={childRef}
         visible={visible}
-        setVisible={setVisible}
         onClose={() => setVisible(false)}
       ></BrandUpdate>
     </>

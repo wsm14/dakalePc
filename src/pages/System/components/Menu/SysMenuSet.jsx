@@ -5,23 +5,20 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysMenuSet = (props) => {
-  const { dispatch, visible = {}, onClose, handleCallback } = props;
+  const { dispatch, visible = {}, onClose, handleCallback, allMenu = [], loading } = props;
 
-  const { show = false, initialValues = {}, allMenu = [] } = visible;
+  const { show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
 
   // 新增修改 传id修改 不传id新增
-  const fetchMenuEdit = (payload) => {
+  const fetchMenuEdit = () => {
     form.validateFields().then((values) => {
+      const { accessId } = detail;
+      const payload = { ...detail, ...values, id: accessId };
       dispatch({
         type: 'sysMenuList/fetchMenuSet',
-        payload: {
-          ...initialValues,
-          ...values,
-          id: initialValues.accessId,
-          ...payload,
-        },
+        payload,
         callback: () => {
           onClose();
           handleCallback();
@@ -51,29 +48,29 @@ const SysMenuSet = (props) => {
       label: '父节点',
       name: 'pid',
       type: 'select',
-      hidden: !!initialValues.type,
+      hidden: !!detail.type,
       select: [
         { name: '无', value: '0' },
         ...allMenu
-          .filter((item) => item.authAccessId !== initialValues.accessId)
+          .filter((item) => item.authAccessId !== detail.accessId)
           .map((item) => ({ name: item.accessName, value: item.authAccessId })),
       ],
     },
     {
       label: '权重',
-      visible: initialValues.id,
+      visible: detail.id,
       name: 'weight',
     },
     {
       label: '资源类别',
       name: 'ownerType',
       hidden: true,
-      visible: !!initialValues.type,
+      visible: !!detail.type,
     },
     {
       label: '是否自动赋权',
       name: 'authType',
-      visible: !initialValues.id,
+      visible: !detail.id,
       type: 'radio',
       select: ['不赋权', '赋予经理', '赋予所有人'],
     },
@@ -86,11 +83,11 @@ const SysMenuSet = (props) => {
   ];
 
   const modalProps = {
-    title: `菜单设置 - ${initialValues.menuName || initialValues.accessName || '新增'}`,
+    title: `菜单设置 - ${detail.menuName || detail.accessName || '新增'}`,
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchMenuEdit()}>
+      <Button type="primary" loading={loading} onClick={() => fetchMenuEdit()}>
         确定
       </Button>
     ),
@@ -98,16 +95,12 @@ const SysMenuSet = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={initialValues}
-      ></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };
 
 export default connect(({ sysMenuList, loading }) => ({
-  sysMenuList,
-  loading,
+  allMenu: sysMenuList.allMenu,
+  loading: loading.effects['sysMenuList/fetchMenuSet'],
 }))(SysMenuSet);

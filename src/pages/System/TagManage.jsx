@@ -11,7 +11,7 @@ const TagManage = (props) => {
   const { tagManage, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 修改新增框
 
   // 搜索参数
   const searchItems = [

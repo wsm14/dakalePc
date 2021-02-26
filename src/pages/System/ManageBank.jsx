@@ -11,6 +11,7 @@ const BusinessBankSetContent = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState({ show: false, info: {} });
+
   // 搜索参数
   const searchItems = [
     {
@@ -63,10 +64,7 @@ const BusinessBankSetContent = (props) => {
       <TableDataBlock
         btnExtra={
           <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisible({ show: true, info: {} })}
-            >
+            <Button className="dkl_green_btn" onClick={() => setVisible({ show: true, info: {} })}>
               新增
             </Button>
           </AuthConsumer>

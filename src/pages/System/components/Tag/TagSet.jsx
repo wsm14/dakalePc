@@ -8,12 +8,12 @@ import DrawerCondition from '@/components/DrawerCondition';
 const ClassifySet = (props) => {
   const { dispatch, visible = {}, onClose, cRef, loading } = props;
   const { type = '', detail = {} } = visible;
-
   const [form] = Form.useForm();
 
   // 确认数据
   const fetchUpData = () => {
     form.validateFields().then((values) => {
+      const { configMerchantId } = detail;
       dispatch({
         type: {
           add: 'tagManage/fetchTagAdd',
@@ -21,7 +21,7 @@ const ClassifySet = (props) => {
         }[type],
         payload: {
           ...values,
-          configMerchantId: detail.configMerchantId,
+          configMerchantId,
         },
         callback: () => {
           onClose();

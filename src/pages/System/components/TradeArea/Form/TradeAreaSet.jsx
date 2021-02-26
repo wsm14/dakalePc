@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button, Space, Select, Spin, Empty, message } from 'antd';
 import debounce from 'lodash/debounce';
-import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
+import { Map, Marker } from 'react-amap';
+import { Form, Button, Space, Select, Spin, Empty, message } from 'antd';
 import FormComponents from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const TradeAreaSet = (props) => {
-  const { info = {}, fetchSet, visible, onClose, loading } = props;
+  const { info = {}, onSubmit, visible, onClose, loading } = props;
 
   const [form] = Form.useForm();
-  const [ampShow, setAmpShow] = useState(false);
-  const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
-  const [fetching, setFetching] = useState(false);
-  const [localList, setLocalList] = useState([]);
-  const [selectLocal, setSelectLocal] = useState('');
+  const [ampShow, setAmpShow] = useState(false); // 地图是否显示
+  const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]
+  const [fetching, setFetching] = useState(false); // 查找地址等待状态
+  const [localList, setLocalList] = useState([]); // 可选地址列表
+  const [selectLocal, setSelectLocal] = useState(''); // 已选地址
 
-  const { provinceName, cityName, districtName } = info;
+  const { provinceName, cityName, districtName, lat, lnt } = info;
 
   useEffect(() => {
-    info.lat && setLocation([info.lnt, info.lat]);
+    // 修改时保存经纬度 地图回显使用
+    lat && setLocation([lnt, lat]);
   }, [info]);
 
   // 新增 / 修改
   const handleUpdata = () => {
     form.validateFields().then((values) => {
       delete values.provinceCode;
-      fetchSet({ ...info, ...values });
+      onSubmit({ ...info, ...values });
     });
   };
 
@@ -59,6 +60,8 @@ const TradeAreaSet = (props) => {
         setFetching(false);
       });
   }, 500);
+
+  // 浮标事件
   const handleMarkerEvents = {
     dragend: (event) => {
       const { lnglat } = event;
@@ -67,6 +70,8 @@ const TradeAreaSet = (props) => {
       setLocation([longitude, latitude]);
     },
   };
+
+  // 地图组件
   const amap = (
     <div key="map" style={{ height: 350, marginBottom: 24, position: 'relative' }}>
       <div
@@ -154,17 +159,8 @@ const TradeAreaSet = (props) => {
     {
       label: '商圈地址',
       name: 'businessHubAddress',
-      addonAfter: (
-        <a
-          onClick={() => {
-            setAmpShow(true);
-          }}
-        >
-          选地址
-        </a>
-      ),
+      addonAfter: <a onClick={() => setAmpShow(true)}>选地址</a>,
       placeholder: '请选择商圈地址',
-      // disabled: true,
     },
     {
       type: 'noForm',
