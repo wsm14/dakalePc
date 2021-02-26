@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import limitPopSet from './components/LimitPop/LimitPopSet';
+import LimitPopSet from './components/LimitPop/LimitPopSet';
 
 const ServiceLimitPop = (props) => {
   const { serviceLimitPop, loading, dispatch } = props;
+
+  const [visibleLimit, setVisibleLimit] = useState(false);
 
   const childRef = useRef();
   // 搜索参数
@@ -41,30 +43,30 @@ const ServiceLimitPop = (props) => {
 
   // 新增
   const handLimitPopSet = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: limitPopSet({ dispatch, childRef }),
-    });
+    setVisibleLimit(true)
   };
 
   return (
-    <TableDataBlock
-      btnExtra={
-        <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
-            新增
-          </Button>
-        </AuthConsumer>
-      }
-      keepData
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.mobile}`}
-      dispatchType="serviceLimitPop/fetchGetList"
-      {...serviceLimitPop}
-    ></TableDataBlock>
+    <>
+      <TableDataBlock
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
+              新增
+            </Button>
+          </AuthConsumer>
+        }
+        keepData
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.mobile}`}
+        dispatchType="serviceLimitPop/fetchGetList"
+        {...serviceLimitPop}
+      ></TableDataBlock>
+      <LimitPopSet visible={visibleLimit} childRef={childRef} onClose={() => setVisibleLimit(false)}></LimitPopSet>
+    </>
   );
 };
 

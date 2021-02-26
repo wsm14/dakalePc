@@ -7,7 +7,7 @@ import moment from 'moment';
 
 const CheckInSet = (props) => {
   const { dispatch, cRef, visible, onClose } = props;
-  const { initialValues = {}, show } = visible;
+  const { initialValues = {}, show=false } = visible;
   const [form] = Form.useForm();
 
   const detail = {

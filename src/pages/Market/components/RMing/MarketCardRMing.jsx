@@ -5,8 +5,8 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import { MATCH_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketRMTotalInfo from './MarketRMTotalInfo';
-import marketMatchMorningSet from './MarketMatchMorningSet';
-import marketMatchRuningSet from './MarketMatchRuningSet';
+import MarketMatchMorningSet from './MarketMatchMorningSet'; //早起挑战赛
+import MarketMatchRuningSet from './MarketMatchRuningSet'; //步数挑战赛
 import MarketCardRMingJoinDetail from './MarketCardRMingJoinDetail';
 
 const MarketCardRMing = (props) => {
@@ -14,6 +14,8 @@ const MarketCardRMing = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
+  const [visibleMoring, setVisibleMoring] = useState(false);
+  const [visibleRun, setVisibleRun] = useState(false);
 
   const prop = { childRef, dispatch };
 
@@ -54,7 +56,6 @@ const MarketCardRMing = (props) => {
   const propInfo = {
     wakeUp: {
       title: '早起挑战赛',
-      payload: marketMatchMorningSet(prop),
       getColumns: [
         ...columns,
         {
@@ -73,7 +74,6 @@ const MarketCardRMing = (props) => {
     },
     step: {
       title: '步数挑战赛',
-      payload: marketMatchRuningSet(prop),
       getColumns: [
         ...columns,
         {
@@ -99,10 +99,13 @@ const MarketCardRMing = (props) => {
 
   // 设置挑战卡豆数
   const handleSetMatch = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: propInfo.payload,
-    });
+   
+    if(matchType==='wakeUp'){
+      setVisibleMoring(true)
+    }
+    if(matchType==='step'){
+      setVisibleRun(true)
+    }
   };
 
   // 头部添加面包屑 按钮
@@ -154,6 +157,10 @@ const MarketCardRMing = (props) => {
         {...marketCardRMing.matchList}
       ></TableDataBlock>
       <MarketCardRMingJoinDetail matchType={matchType} visible={visible} setVisible={setVisible} />
+      {/* 早起挑战赛 */}
+      <MarketMatchMorningSet visible={visibleMoring}  childRef={childRef} onClose={()=>setVisibleMoring(false)}></MarketMatchMorningSet>
+      {/* 步数挑战赛 */}
+      <MarketMatchRuningSet visible={visibleRun} childRef={childRef} onClose={()=>setVisibleRun(false)}></MarketMatchRuningSet>
     </>
   );
 };

@@ -69,7 +69,6 @@ const MarketCardActivitySetCoupon = (props) => {
         title: '设置领券关联',
         label: '关联到店打卡',
         type: 'switch',
-        valuePropName: 'checked',
         name: 'mark',
         rules: [],
         render: () => cclsIndexOf('mark'),
@@ -77,7 +76,6 @@ const MarketCardActivitySetCoupon = (props) => {
       {
         label: '关联看分享',
         type: 'switch',
-        valuePropName: 'checked',
         name: 'moment',
         rules: [],
         render: () => cclsIndexOf('moment'),
