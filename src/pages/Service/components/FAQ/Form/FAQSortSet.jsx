@@ -1,13 +1,13 @@
-import aliOssUpload from '@/utils/aliOssUpload';
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const FAQSortSet = (props) => {
-  const { dispatch, visibleSet, onClose } = props;
-  const { childRef, qRef, initialValues = {}, setType, show = false } = visibleSet;
+  const { dispatch, visibleSet, onClose, childRef, loading } = props;
+  const { initialValues = {}, type, show = false } = visibleSet;
 
   const [form] = Form.useForm();
 
@@ -17,7 +17,7 @@ const FAQSortSet = (props) => {
       const { image } = values;
       aliOssUpload(image).then((res) => {
         dispatch({
-          type: { add: 'serviceFAQ/fetchFAQSortAdd', edit: 'serviceFAQ/fetchFAQSortEdit' }[setType],
+          type: { add: 'serviceFAQ/fetchFAQSortAdd', edit: 'serviceFAQ/fetchFAQSortEdit' }[type],
           payload: {
             id: initialValues.questionCategoryIdString,
             ...values,
@@ -26,7 +26,6 @@ const FAQSortSet = (props) => {
           callback: () => {
             onClose();
             childRef.current.fetchGetData();
-            qRef.current.fetchGetData();
           },
         });
       });
@@ -51,11 +50,11 @@ const FAQSortSet = (props) => {
   ];
 
   const modalProps = {
-    title: `${{ add: '新增分类', edit: '修改分类' }[setType]}`,
+    title: `${{ add: '新增分类', edit: '修改分类' }[type]}`,
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchDataEdit()}>
+      <Button type="primary" onClick={fetchDataEdit} loading={loading}>
         确定
       </Button>
     ),
@@ -72,7 +71,6 @@ const FAQSortSet = (props) => {
   );
 };
 
-export default connect(({ serviceFAQ, loading }) => ({
-  serviceFAQ,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.models.serviceFAQ,
 }))(FAQSortSet);

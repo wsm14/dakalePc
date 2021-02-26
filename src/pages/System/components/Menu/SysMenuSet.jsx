@@ -87,7 +87,7 @@ const SysMenuSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" loading={loading} onClick={() => fetchMenuEdit()}>
+      <Button type="primary" loading={loading} onClick={fetchMenuEdit}>
         确定
       </Button>
     ),

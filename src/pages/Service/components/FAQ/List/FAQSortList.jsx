@@ -56,12 +56,10 @@ const FAQSortList = (props) => {
   ];
 
   //  新增 修改
-  const handleDataSet = (setType = 'add', initialValues) => {
+  const handleDataSet = (type = 'add', initialValues) => {
     setVisibleSet({
-      setType,
+      type,
       initialValues,
-      childRef,
-      qRef,
       show: true,
     });
   };
@@ -71,42 +69,45 @@ const FAQSortList = (props) => {
     dispatch({
       type: 'serviceFAQ/fetchFAQSortDel',
       payload,
-      callback: () => {
-        // 列表刷新
-        childRef.current.fetchGetData();
-        // 外围列表刷新
-        qRef.current.fetchGetData();
-      },
+      callback: childRef.current.fetchGetData,
     });
   };
 
   return (
-    <Modal
-      title={'分类管理'}
-      width={1150}
-      destroyOnClose
-      footer={null}
-      visible={visible}
-      onCancel={setVisible}
-    >
-      <TableDataBlock
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-            新增分类
-          </Button>
-        }
-        cRef={childRef}
-        noCard={false}
-        loading={loading}
-        searchItems={searchItems}
-        columns={getColumns}
-        rowKey={(row) => `${row.questionCategoryIdString}`}
-        dispatchType="serviceFAQ/fetchFAQSortList"
-        size="middle"
-        {...sortList}
-      ></TableDataBlock>
-      <FaqSortSet visibleSet={visibleSet} onClose={() => setVisibleSet(false)}></FaqSortSet>
-    </Modal>
+    <>
+      <Modal
+        title={'分类管理'}
+        width={1150}
+        destroyOnClose
+        footer={null}
+        visible={visible}
+        onCancel={setVisible}
+        afterClose={() => qRef.current.fetchGetData()} // 外围列表刷新
+      >
+        <TableDataBlock
+          btnExtra={
+            <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
+              新增分类
+            </Button>
+          }
+          cRef={childRef}
+          noCard={false}
+          loading={loading}
+          searchItems={searchItems}
+          columns={getColumns}
+          rowKey={(row) => `${row.questionCategoryIdString}`}
+          dispatchType="serviceFAQ/fetchFAQSortList"
+          size="middle"
+          {...sortList}
+        ></TableDataBlock>
+      </Modal>
+      <FaqSortSet
+        qRef={qRef}
+        childRef={childRef}
+        visibleSet={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></FaqSortSet>
+    </>
   );
 };
 

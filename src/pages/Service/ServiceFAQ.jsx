@@ -29,16 +29,12 @@ const ServiceFAQ = (props) => {
 
   const childRef = useRef();
   const check = authCheck(tabList);
-  // tab分类
-  const [tabkey, setTabKey] = useState(false);
-  // 多选删除项木key
-  const [delKey, setDelKey] = useState([]);
-  // 分类列表
-  const [visible, setVisible] = useState(false);
-  // 设置faq
-  const [faqSet, setFaqSet] = useState(false);
-  // 展开行
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+  const [tabkey, setTabKey] = useState(false); // tab分类
+  const [delKey, setDelKey] = useState([]); // 多选删除项木key
+  const [visible, setVisible] = useState(false); // 分类列表
+  const [faqSet, setFaqSet] = useState(false); // 设置faq
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]); // 展开行
 
   useEffect(() => {
     setTabKey(check && check.length ? check[0]['key'] : false);
