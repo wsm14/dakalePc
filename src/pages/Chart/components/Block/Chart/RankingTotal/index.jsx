@@ -48,7 +48,8 @@ const RankingTotal = ({
     {
       title: (
         <span>
-          总销售额<br></br><span style={{ fontSize: 12, color: '#00000057' }}>(扫码支付+线上销售)</span>
+          总销售额<br></br>
+          <span style={{ fontSize: 12, color: '#00000057' }}>扫码支付+线上销售</span>
         </span>
       ),
       align: 'right',
