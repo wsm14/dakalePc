@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const FAQSortSet = (props) => {
-  const { dispatch, visibleSet, onClose } = props;
+  const { dispatch, visibleSet, onClose, loading } = props;
   const { childRef, qRef, initialValues = {}, setType, show = false } = visibleSet;
 
   const [form] = Form.useForm();
@@ -55,7 +55,7 @@ const FAQSortSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchDataEdit()}>
+      <Button type="primary" onClick={() => fetchDataEdit()} loading={loading}>
         确定
       </Button>
     ),
@@ -72,7 +72,6 @@ const FAQSortSet = (props) => {
   );
 };
 
-export default connect(({ serviceFAQ, loading }) => ({
-  serviceFAQ,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.models.serviceFAQ,
 }))(FAQSortSet);
