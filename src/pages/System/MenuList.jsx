@@ -75,12 +75,9 @@ const SysMenuList = (props) => {
               type: 'own',
               title: '添加',
               click: () =>
-                handleSysMenuSet('add', {
+                handleSysMenuSet({
                   menuName: record.accessName,
                   pid: val,
-                  authType: '2',
-                  status: '1',
-                  ownerType: tabkey,
                   type: 'addChildren',
                 }),
             },
@@ -95,7 +92,7 @@ const SysMenuList = (props) => {
     dispatch({
       type: 'sysMenuList/fetchGetMenuDetail',
       payload,
-      callback: val === undefined ? (val) => handleSysMenuSet('edit', val) : fetchSetMenuStatus,
+      callback: val === undefined ? (val) => handleSysMenuSet(val) : fetchSetMenuStatus,
     });
   };
 
@@ -107,7 +104,7 @@ const SysMenuList = (props) => {
         ...payload,
         pid: payload.pidString,
         id: payload.accessId,
-        status: Number(!Number(payload.status)),
+        status: 1 ^ Number(payload.status),
       },
       callback: handleCallback,
     });
@@ -126,19 +123,13 @@ const SysMenuList = (props) => {
   };
 
   // 新增/修改
-  const handleSysMenuSet = (
-    type,
-    val,
-    initialValues = { authType: '2', status: '1', ownerType: tabkey },
-  ) => {
-    if (val && val !== 'undefined') {
-      initialValues = { pid: val.pidString, ...initialValues, ...val };
-    }
+  const handleSysMenuSet = (value = {}) => {
+    // 菜单默认值
+    const dataMenu = { authType: '2', status: '1', ownerType: tabkey };
+    const { pidString: pid } = value;
     setVisible({
       show: true,
-      type,
-      initialValues,
-      allMenu: sysMenuList.allMenu,
+      detail: { pid, ...dataMenu, ...value },
     });
   };
 
@@ -151,7 +142,7 @@ const SysMenuList = (props) => {
   return (
     <Card
       tabBarExtraContent={
-        <Button className="dkl_green_btn" onClick={() => handleSysMenuSet('add')}>
+        <Button className="dkl_green_btn" onClick={() => handleSysMenuSet()}>
           新增
         </Button>
       }
