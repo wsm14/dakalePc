@@ -353,16 +353,6 @@ export default [
         ],
       },
       {
-        path: '/system/provinceRole',
-        name: '省公司角色管理',
-        component: './System/RoleProvince',
-      },
-      {
-        path: '/system/areaRole',
-        name: '区县角色管理',
-        component: './System/RoleArea',
-      },
-      {
         path: '/system/tradeArea',
         name: '商圈管理',
         component: './System/TradeArea',
