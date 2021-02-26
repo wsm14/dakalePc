@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const StockSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -41,11 +41,8 @@ const StockSet = (props) => {
     visible: show,
     width: 550,
     onCancel: onClose,
-    footer: (
-      <Button type="primary" onClick={fetchStatusClose}>
-        确定
-      </Button>
-    ),
+    confirmLoading: loading,
+    onOk: fetchStatusClose,
   };
 
   return (
@@ -59,7 +56,6 @@ const StockSet = (props) => {
   );
 };
 
-export default connect(({ goodsManage, loading }) => ({
-  goodsManage,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['goodsManage/fetchUpdataStock'],
 }))(StockSet);

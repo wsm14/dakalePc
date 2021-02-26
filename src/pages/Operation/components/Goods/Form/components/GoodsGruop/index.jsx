@@ -102,17 +102,17 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
                   </div>
                 ))}
                 <Space>
-                <Button
-                style={{marginLeft:"65px"}}
-                  disabled={fields.length === 30}
-                  onClick={() => {
-                    add();
-                  }}
-                  type="primary"
-                  className={styles.goods_group_btn}
-                >
-                  <PlusOutlined /> {fields.length} / {30} 添加
-                </Button>
+                  <Button
+                    style={{ marginLeft: '65px' }}
+                    disabled={fields.length === 30}
+                    onClick={() => {
+                      add();
+                    }}
+                    type="primary"
+                    className={styles.goods_group_btn}
+                  >
+                    <PlusOutlined /> {fields.length} / {30} 添加
+                  </Button>
                 </Space>
               </>
             );
