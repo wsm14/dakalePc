@@ -100,8 +100,6 @@ const TradeArea = (props) => {
   const setData = (info = {}) => {
     setVisible({
       visible: true,
-      fetchSet,
-      onClose: () => setVisible(null),
       info: {
         ...selectCode,
         ...info,
@@ -145,7 +143,11 @@ const TradeArea = (props) => {
           {...tradeArea}
         ></TableDataBlock>
       </div>
-      <TradeAreaSet {...visible}></TradeAreaSet>
+      <TradeAreaSet
+        {...visible}
+        onSubmit={fetchSet}
+        onClose={() => setVisible(null)}
+      ></TradeAreaSet>
     </Card>
   );
 };
