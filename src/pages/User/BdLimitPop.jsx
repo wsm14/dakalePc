@@ -44,10 +44,6 @@ const ServiceLimitPop = (props) => {
   // 新增
   const handLimitPopSet = () => {
     setVisibleLimit(true)
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: limitPopSet({ dispatch, childRef }),
-    // });
   };
 
   return (
