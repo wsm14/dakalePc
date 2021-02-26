@@ -5,7 +5,7 @@ import { EXPERT_USER_STATUS } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
 const CloseExpert = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -49,7 +49,7 @@ const CloseExpert = (props) => {
     width: 520,
     onCancel: onClose,
     footer: (
-      <Button type="primary" onClick={fetchExpertStop}>
+      <Button type="primary" onClick={fetchExpertStop} loading={loading}>
         确定
       </Button>
     ),
@@ -63,10 +63,8 @@ const CloseExpert = (props) => {
       ></FormCondition>
     </Modal>
   );
-
 };
 
-export default connect(({ expertUserList, loading }) => ({
-  expertUserList,
-  loading,
+export default connect(({ loading }) => ({
+  loading:loading.effects['expertUserList/fetchExpertStop'],
 }))(CloseExpert);

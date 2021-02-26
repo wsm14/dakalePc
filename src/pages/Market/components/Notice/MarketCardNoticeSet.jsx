@@ -6,7 +6,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const MarketCardNoticeSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, type, initialValues = {} } = visible;
   const { configAnnounceIdString: configAnnounceId } = initialValues;
   const [form] = Form.useForm();
@@ -55,7 +55,7 @@ const MarketCardNoticeSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchMarketNoticeAdd()}>
+      <Button type="primary" onClick={() => fetchMarketNoticeAdd()} loading={loading}>
         确定
       </Button>
     ),
@@ -73,6 +73,5 @@ const MarketCardNoticeSet = (props) => {
 };
 
 export default connect(({ marketCardNotice, loading }) => ({
-  marketCardNotice,
-  loading,
+  loading:loading.models.marketCardNotice,
 }))(MarketCardNoticeSet);

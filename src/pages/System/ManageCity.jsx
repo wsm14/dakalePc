@@ -7,7 +7,7 @@ import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ManageCityLeft from './components/City/Left';
-import manageCitySet from './components/City/ManageCitySet';
+import ManageCitySet from './components/City/ManageCitySet';
 
 const ManageCity = (props) => {
   const { loading, manageCity, dispatch } = props;
@@ -17,6 +17,8 @@ const ManageCity = (props) => {
     provinceCode: '33',
     provinceName: '浙江省',
   });
+
+  const [visibleSet, setVisibleSet] = useState(false)
 
   // table 表头
   const getColumns = [
@@ -64,7 +66,7 @@ const ManageCity = (props) => {
             {
               type: 'edit',
               visible: !!row.provinceCode,
-              click: () => handleManageCitySet({ ...row, id: val }),
+              click: () => handleManageCitySet('edit' ,{ ...row, id: val }),
             },
             {
               type: 'del',
@@ -78,11 +80,12 @@ const ManageCity = (props) => {
   ];
 
   // 城市新增修改
-  const handleManageCitySet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: manageCitySet({ dispatch, childRef, initialValues }),
-    });
+  const handleManageCitySet = (type,initialValues) => {
+    setVisibleSet({
+      show:true,
+      type,
+      initialValues,
+    })
   };
 
   // 城市状态修改
@@ -108,7 +111,7 @@ const ManageCity = (props) => {
               <Button
                 className="dkl_green_btn"
                 disabled={!selectCode.provinceCode}
-                onClick={() => handleManageCitySet(selectCode)}
+                onClick={() => handleManageCitySet('add',selectCode)}
               >
                 新增
               </Button>
@@ -125,6 +128,7 @@ const ManageCity = (props) => {
           {...manageCity}
         ></TableDataBlock>
       </div>
+      <ManageCitySet visible={visibleSet}  childRef={childRef} onClose={()=>setVisibleSet(false)}></ManageCitySet>
     </Card>
   );
 };

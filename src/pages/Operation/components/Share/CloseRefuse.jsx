@@ -4,7 +4,7 @@ import { Modal, Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const CloseRefuse = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -40,7 +40,7 @@ const CloseRefuse = (props) => {
     width: 520,
     onCancel: onClose,
     footer: (
-      <Button type="primary" onClick={fetchStatusClose}>
+      <Button type="primary" onClick={fetchStatusClose} loading={loading}>
         确定
       </Button>
     ),
@@ -57,7 +57,6 @@ const CloseRefuse = (props) => {
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  shareManage,
-  loading: loading.models.shareManage,
+export default connect(({ loading }) => ({
+  loading: loading.effects['shareManage/fetchStatusClose'],
 }))(CloseRefuse);
