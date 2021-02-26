@@ -13,17 +13,9 @@ const ShareManage = (props) => {
   const { shareManage, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
-  const [visibleDown, setVisibleDown] = useState(false);
-  const [visibleHandle, setVisibleHandle] = useState(false);
-
-  // 下架
-  const fetchAuditRefuse = (initialValues) => {
-    setVisibleDown({
-      show: true,
-      initialValues,
-    });
-  };
+  const [visible, setVisible] = useState(false); // 详情
+  const [visibleDown, setVisibleDown] = useState(false); // 下架原因
+  const [visibleHandle, setVisibleHandle] = useState(false); // 操作记录
 
   // 获取详情
   const fetchShareDetail = (val, type) => {
@@ -144,7 +136,7 @@ const ShareManage = (props) => {
               {
                 type: 'down',
                 visible: status == 1 || status == 5,
-                click: () => fetchAuditRefuse(record),
+                click: () => setVisibleDown({ show: true, initialValues: record }),
               },
               {
                 type: 'info',

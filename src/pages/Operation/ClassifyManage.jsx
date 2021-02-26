@@ -32,7 +32,7 @@ const ClassifyManageComponent = (props) => {
     dispatch({
       type: 'classifyManage/fetchClassifyDel',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

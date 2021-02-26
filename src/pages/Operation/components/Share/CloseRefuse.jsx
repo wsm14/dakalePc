@@ -39,11 +39,8 @@ const CloseRefuse = (props) => {
     visible: show,
     width: 520,
     onCancel: onClose,
-    footer: (
-      <Button type="primary" onClick={fetchStatusClose} loading={loading}>
-        确定
-      </Button>
-    ),
+    confirmLoading: loading,
+    onOk: fetchStatusClose,
   };
 
   return (
