@@ -219,10 +219,6 @@ const BusinessAdd = (props) => {
 
   // 审核驳回
   const fetchAuditRefuse = () => {
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: businessAuditRefuse({ dispatch, cRef, initialValues, onClose }),
-    // });
     setVisibleRefuse({
       show: true,
       initialValues,
