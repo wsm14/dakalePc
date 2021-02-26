@@ -6,7 +6,7 @@ import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
-import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
+import BusinessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 
 const BusinessAdd = (props) => {
@@ -32,6 +32,7 @@ const BusinessAdd = (props) => {
   const [skeletonType, setSkeletonType] = useState(true);
   // 经营类目
   const [categId, setCategId] = useState('');
+  const [visibleRefuse, setVisibleRefuse] = useState(false);
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
@@ -218,9 +219,13 @@ const BusinessAdd = (props) => {
 
   // 审核驳回
   const fetchAuditRefuse = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessAuditRefuse({ dispatch, cRef, initialValues, onClose }),
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: businessAuditRefuse({ dispatch, cRef, initialValues, onClose }),
+    // });
+    setVisibleRefuse({
+      show: true,
+      initialValues,
     });
   };
 
@@ -310,55 +315,62 @@ const BusinessAdd = (props) => {
   });
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={closeDrawer}
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setSkeletonType(true);
-          handleInvalueEdit();
-          setCategId(initialValues.topCategoryId);
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={closeDrawer}>取消</Button>
-            {(type == 'add' || type == 'edit') && (
-              <Button {...buttonProps(fetchUpdataCheck)}>
-                {{ add: '提交审核', edit: '修改' }[type]}
-              </Button>
-            )}
-            {type == 'audit' && (
-              <>
-                <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
-                  审核驳回
+    <>
+      <Drawer
+        {...modalProps}
+        onClose={closeDrawer}
+        afterVisibleChange={(showEdit) => {
+          if (showEdit) {
+            setSkeletonType(true);
+            handleInvalueEdit();
+            setCategId(initialValues.topCategoryId);
+          } else {
+            setSkeletonType(true);
+          }
+        }}
+        bodyStyle={{ paddingBottom: 80 }}
+        footer={
+          <div style={{ textAlign: 'right' }}>
+            <Space>
+              <Button onClick={closeDrawer}>取消</Button>
+              {(type == 'add' || type == 'edit') && (
+                <Button {...buttonProps(fetchUpdataCheck)}>
+                  {{ add: '提交审核', edit: '修改' }[type]}
                 </Button>
-                {initialValues.hasPartner === '1' && (
-                  <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
-                )}
-              </>
-            )}
-          </Space>
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType} active>
-        <BusinessAddBeas
-          form={form}
-          amap={amap}
-          setType={type}
-          setCategId={setCategId}
-          onSearchAddress={onSearchAddress}
-          initialValues={initialValues}
-        />
-        <BusinessAddQuality form={form} initialValues={initialValues} />
-        <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
-      </Skeleton>
-    </Drawer>
+              )}
+              {type == 'audit' && (
+                <>
+                  <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
+                    审核驳回
+                  </Button>
+                  {initialValues.hasPartner === '1' && (
+                    <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
+                  )}
+                </>
+              )}
+            </Space>
+          </div>
+        }
+      >
+        <Skeleton loading={skeletonType} active>
+          <BusinessAddBeas
+            form={form}
+            amap={amap}
+            setType={type}
+            setCategId={setCategId}
+            onSearchAddress={onSearchAddress}
+            initialValues={initialValues}
+          />
+          <BusinessAddQuality form={form} initialValues={initialValues} />
+          <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
+        </Skeleton>
+      </Drawer>
+      <BusinessAuditRefuse
+        visible={visibleRefuse}
+        cRef={cRef}
+        onClose={()=>setVisibleRefuse(false)}
+      ></BusinessAuditRefuse>
+    </>
   );
 };
 
