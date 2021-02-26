@@ -7,7 +7,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const LevelFormSet = (props) => {
   const { visible, keyRow, showlistData, onCancel, loading, fetchExpertLevelSet } = props;
 
-  const { type = 'set', detail = '', show = false } = visible;
+  const { detail = '', show = false } = visible;
 
   const [form] = Form.useForm();
 
@@ -98,7 +98,6 @@ const LevelFormSet = (props) => {
 
   const modalProps = {
     title: propItem.title,
-    width: 560,
     visible: show,
     onClose: onCancel,
     zIndex: 1005,

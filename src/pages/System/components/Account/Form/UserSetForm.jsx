@@ -189,7 +189,6 @@ const UserSetForm = (props) => {
 
   const modalProps = {
     title: `用户设置`,
-    width: 650,
     visible,
     onClose,
     afterCallBack: afterVisibleChange,

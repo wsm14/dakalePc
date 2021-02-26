@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import aliOssUpload from '@/utils/aliOssUpload';
 
 const CheckInDetailSet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, CeditType, record = {}, id, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -59,7 +59,7 @@ const CheckInDetailSet = (props) => {
     onClose,
     visible: show,
     footer: (
-      <Button type="primary" onClick={fetchSysCheckIn}>
+      <Button type="primary" onClick={fetchSysCheckIn} loading={loading}>
         确定
       </Button>
     ),
@@ -76,7 +76,6 @@ const CheckInDetailSet = (props) => {
   );
 };
 
-export default connect(({ sysCheckIn, loading }) => ({
-  sysCheckIn,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.models.sysCheckIn,
 }))(CheckInDetailSet);

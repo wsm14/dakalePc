@@ -8,7 +8,7 @@ import LevelFormSet from '../Form/LevelFormSet';
 const LevelDetail = (props) => {
   const { visible, dispatch, onCancel, cRef } = props;
 
-  const { type = 'set', key = 'target', row = '' } = visible;
+  const { key = 'target', row = '' } = visible;
   // 表格值
   const [listData, setListData] = useState([]);
   // 打开选择库

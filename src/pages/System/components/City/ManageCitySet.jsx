@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
-import FormCondition from '@/components/FormCondition';
-import DrawerCondition from '@/components/DrawerCondition';
 import CITYJSON from '@/common/city';
 import aliOssUpload from '@/utils/aliOssUpload';
+import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const ManageCitySet = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;

@@ -82,7 +82,7 @@ const MarketCardNotice = (props) => {
     dispatch({
       type: 'marketCardNotice/fetchNoticeSet',
       payload: { ...val, type },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

@@ -14,7 +14,7 @@ const MarketCardActivity = (props) => {
 
   const childRef = useRef();
   const [show, setShow] = useState({ key: 'home', record: '' });
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
   const [params] = useState({});
 
   // 搜索参数
@@ -100,14 +100,12 @@ const MarketCardActivity = (props) => {
     dispatch({
       type: 'marketCardActivity/fetchMarketActivityCancel',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 设置活动
-  const handleSetActive = () => {
-    setVisible(true)
-  };
+  const handleSetActive = () => setVisible(true);
 
   const btnExtra = (
     <AuthConsumer auth="save">
@@ -143,7 +141,11 @@ const MarketCardActivity = (props) => {
           ),
         }[show.key]
       }
-      <MarketCardActivitySet visible={visible} cRef={childRef} onClose = {()=>setVisible(false)}></MarketCardActivitySet>
+      <MarketCardActivitySet
+        visible={visible}
+        cRef={childRef}
+        onClose={() => setVisible(false)}
+      ></MarketCardActivitySet>
     </>
   );
 };

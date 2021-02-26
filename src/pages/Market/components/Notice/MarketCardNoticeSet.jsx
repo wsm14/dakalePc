@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import aliOssUpload from '@/utils/aliOssUpload';
 
 const MarketCardNoticeSet = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;
@@ -55,7 +55,7 @@ const MarketCardNoticeSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchMarketNoticeAdd()} loading={loading}>
+      <Button type="primary" onClick={fetchMarketNoticeAdd} loading={loading}>
         确定
       </Button>
     ),
@@ -72,6 +72,6 @@ const MarketCardNoticeSet = (props) => {
   );
 };
 
-export default connect(({ marketCardNotice, loading }) => ({
-  loading:loading.models.marketCardNotice,
+export default connect(({ loading }) => ({
+  loading: loading.models.marketCardNotice,
 }))(MarketCardNoticeSet);

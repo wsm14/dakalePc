@@ -65,7 +65,6 @@ const GoodsDrawer = (props) => {
 
   const modalProps = {
     title: `${type == 'showDetail' ? '商品详情' : '新增商品'}`,
-    width: 620,
     visible: type == 'showDetail' || type == 'addGoods',
     onClose,
     footer: type !== 'showDetail' && (

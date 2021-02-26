@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import moment from 'moment';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import moment from 'moment';
 
 const CheckInSet = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
@@ -37,6 +37,7 @@ const CheckInSet = (props) => {
       });
     });
   };
+
   const formItems = [
     {
       label: '打卡时间',
@@ -56,7 +57,7 @@ const CheckInSet = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchSysCheckIn()} loading={loading}>
+      <Button type="primary" onClick={fetchSysCheckIn} loading={loading}>
         确定
       </Button>
     ),

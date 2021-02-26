@@ -19,7 +19,6 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
 
   const modalProps = {
     title: `添加子单品`,
-    width: 500,
     visible,
     maskClosable: false,
     destroyOnClose: true,

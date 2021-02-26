@@ -45,7 +45,6 @@ const SectionEdit = (props) => {
 
   const modalProps = {
     title: `部门设置 - ${setInfo.departmentName || '新增'}`,
-    width: 650,
     visible,
     onClose,
     maskClosable: true,

@@ -24,7 +24,7 @@ const ExpertRecommend = (props) => {
       label: '类型',
       name: 'contentType',
       type: 'select',
-      select: SHARE_TYPE ,
+      select: SHARE_TYPE,
     },
     {
       label: '标题',
@@ -163,7 +163,7 @@ const ExpertRecommend = (props) => {
     dispatch({
       type: 'expertRecommend/fetchExpertRemdStatus',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

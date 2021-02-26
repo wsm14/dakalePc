@@ -32,7 +32,7 @@ const TagManage = (props) => {
     dispatch({
       type: 'tagManage/fetchTagEdit',
       payload: payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

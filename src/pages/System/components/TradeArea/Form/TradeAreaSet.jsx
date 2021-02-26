@@ -19,8 +19,8 @@ const TradeAreaSet = (props) => {
 
   const { provinceName, cityName, districtName, lat, lnt } = info;
 
+  // 修改时保存经纬度 地图回显使用
   useEffect(() => {
-    // 修改时保存经纬度 地图回显使用
     lat && setLocation([lnt, lat]);
   }, [info]);
 
@@ -196,7 +196,6 @@ const TradeAreaSet = (props) => {
 
   const modalProps = {
     title: `商圈设置 - ${provinceName} / ${cityName} / ${districtName}`,
-    width: 650,
     visible,
     onClose,
     afterCallBack: () => setAmpShow(false),

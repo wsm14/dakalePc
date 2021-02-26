@@ -14,7 +14,6 @@ const addGroups = (props) => {
     onClose,
     dispatch,
     visible1,
-    saveVisible,
     merchantGroupId,
     childRef,
     loading,

@@ -104,7 +104,7 @@ const SysTradeSet = (props) => {
     dispatch({
       type: 'sysTradeList/fetchTradeSet',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

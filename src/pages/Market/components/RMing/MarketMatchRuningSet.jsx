@@ -9,7 +9,7 @@ const MarketMatchRuningSet = (props) => {
 
   const [form] = Form.useForm();
 
-  const fetchRuningSet = (values) => {
+  const fetchRuningSet = () => {
     form.validateFields().then((values) => {
       dispatch({
         type: 'marketCardRMing/fetchMarketMatchRuningSet',
@@ -41,7 +41,7 @@ const MarketMatchRuningSet = (props) => {
     visible,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchRuningSet()} loading={loading}>
+      <Button type="primary" onClick={fetchRuningSet} loading={loading}>
         确定
       </Button>
     ),

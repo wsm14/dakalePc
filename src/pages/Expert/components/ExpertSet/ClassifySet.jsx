@@ -6,9 +6,9 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const ClassifySet = (props) => {
-  const { dispatch, childRef, visible = {}, onClose, loading } = props;
+  const { dispatch, childRef, visible = {}, tradeList = [], onClose, loading } = props;
 
-  const { type, show = false, initialValues = {}, tradeList = [], rowDetail = {} } = visible;
+  const { show = false, initialValues = {}, rowDetail = {} } = visible;
 
   const [form] = Form.useForm();
 
@@ -126,6 +126,7 @@ const ClassifySet = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
-  loading:loading.models.expertSet,
+export default connect(({ sysTradeList, loading }) => ({
+  tradeList: sysTradeList.list.list,
+  loading: loading.models.expertSet,
 }))(ClassifySet);

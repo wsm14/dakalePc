@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import SortSet from './components/Sort/SortSet';
 
 const ExpertSort = (props) => {
-  const { expertSort, loading, dispatch } = props;
+  const { expertSort, loading } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -43,12 +43,7 @@ const ExpertSort = (props) => {
   ];
 
   // 修改
-  const handleSortSet = (initialValues) => {
-    setVisible({
-      show: true,
-      initialValues,
-    });
-  };
+  const handleSortSet = (initialValues) => setVisible({ show: true, initialValues });
 
   return (
     <>

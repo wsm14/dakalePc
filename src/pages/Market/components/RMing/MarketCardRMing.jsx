@@ -17,8 +17,6 @@ const MarketCardRMing = (props) => {
   const [visibleMoring, setVisibleMoring] = useState(false);
   const [visibleRun, setVisibleRun] = useState(false);
 
-  const prop = { childRef, dispatch };
-
   // 搜索参数
   const searchItems = [
     {
@@ -99,12 +97,11 @@ const MarketCardRMing = (props) => {
 
   // 设置挑战卡豆数
   const handleSetMatch = () => {
-   
-    if(matchType==='wakeUp'){
-      setVisibleMoring(true)
+    if (matchType === 'wakeUp') {
+      setVisibleMoring(true);
     }
-    if(matchType==='step'){
-      setVisibleRun(true)
+    if (matchType === 'step') {
+      setVisibleRun(true);
     }
   };
 
@@ -158,9 +155,17 @@ const MarketCardRMing = (props) => {
       ></TableDataBlock>
       <MarketCardRMingJoinDetail matchType={matchType} visible={visible} setVisible={setVisible} />
       {/* 早起挑战赛 */}
-      <MarketMatchMorningSet visible={visibleMoring}  childRef={childRef} onClose={()=>setVisibleMoring(false)}></MarketMatchMorningSet>
+      <MarketMatchMorningSet
+        visible={visibleMoring}
+        childRef={childRef}
+        onClose={() => setVisibleMoring(false)}
+      ></MarketMatchMorningSet>
       {/* 步数挑战赛 */}
-      <MarketMatchRuningSet visible={visibleRun} childRef={childRef} onClose={()=>setVisibleRun(false)}></MarketMatchRuningSet>
+      <MarketMatchRuningSet
+        visible={visibleRun}
+        childRef={childRef}
+        onClose={() => setVisibleRun(false)}
+      ></MarketMatchRuningSet>
     </>
   );
 };

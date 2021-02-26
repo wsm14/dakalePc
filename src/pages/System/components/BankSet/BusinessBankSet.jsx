@@ -53,7 +53,7 @@ const BusinessBrandSet = (props) => {
       label: '支行名称',
       name: 'bankBranchName',
       placeholder: '银行 + 城市 + 支行名称',
-      onBlur: () => hanleCheckData(),
+      onBlur: hanleCheckData,
     },
     {
       label: '总行编码',
@@ -76,7 +76,6 @@ const BusinessBrandSet = (props) => {
 
   const modalProps = {
     title: '设置支行',
-    width: 600,
     visible,
     onClose,
     footer: (

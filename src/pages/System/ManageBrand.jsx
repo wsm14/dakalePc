@@ -102,7 +102,7 @@ const BusinessBrandComponent = (props) => {
     dispatch({
       type: 'businessBrand/fetchMerBrandEdit',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const BusinessAuditRefuse = (props) => {
-  const { dispatch, cRef, visible, onClose } = props;
+  const { dispatch, cRef, visible, onClose, loading } = props;
   const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
@@ -39,13 +39,10 @@ const BusinessAuditRefuse = (props) => {
     visible: show,
     width: 520,
     onCancel: onClose,
-    footer: (
-      <Button type="primary" onClick={fetchMerSaleAudit}>
-        确定
-      </Button>
-    ),
+    confirmLoading: loading,
+    onOk: fetchMerSaleAudit,
   };
-  
+
   return (
     <Modal {...modalProps} destroyOnClose>
       <FormCondition form={form} formItems={formItems}></FormCondition>
@@ -53,7 +50,6 @@ const BusinessAuditRefuse = (props) => {
   );
 };
 
-export default connect(({ businessAudit, loading }) => ({
-  businessAudit,
-  loading,
+export default connect(({ loading }) => ({
+  loading: loading.effects['businessAudit/fetchMerSaleAudit'],
 }))(BusinessAuditRefuse);

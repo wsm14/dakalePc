@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import { EXPERT_USER_STATUS } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
@@ -48,11 +48,8 @@ const CloseExpert = (props) => {
     visible: show,
     width: 520,
     onCancel: onClose,
-    footer: (
-      <Button type="primary" onClick={fetchExpertStop} loading={loading}>
-        确定
-      </Button>
-    ),
+    confirmLoading: loading,
+    onOk: fetchExpertStop,
   };
   return (
     <Modal {...modalProps} destroyOnClose>
@@ -66,5 +63,5 @@ const CloseExpert = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading:loading.effects['expertUserList/fetchExpertStop'],
+  loading: loading.effects['expertUserList/fetchExpertStop'],
 }))(CloseExpert);

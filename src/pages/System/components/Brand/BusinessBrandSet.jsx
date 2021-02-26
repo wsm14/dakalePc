@@ -18,7 +18,7 @@ const BusinessBankSet = (props) => {
           categoryName: tradeList.filter((item) => item.id === categoryId)[0].categoryName,
           brandLogo: res.toString(),
         },
-        callback: () => childRef.current.fetchGetData(),
+        callback: childRef.current.fetchGetData,
       });
     });
   };

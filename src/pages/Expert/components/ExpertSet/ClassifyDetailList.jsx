@@ -11,7 +11,7 @@ const ClassifyDetailList = (props) => {
 
   const { record = '' } = visible;
 
-  const [visibleSet,setVisibleSet] = useState(false)
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -80,7 +80,7 @@ const ClassifyDetailList = (props) => {
             },
             {
               type: 'edit',
-              click: () => handleDataSet('edit',{ topicId: val, ...records }),
+              click: () => handleDataSet('edit', { topicId: val, ...records }),
             },
             {
               type: 'del',
@@ -93,13 +93,13 @@ const ClassifyDetailList = (props) => {
   ];
 
   //  新增 修改
-  const handleDataSet = (type,initialValues) => {
+  const handleDataSet = (type, initialValues) => {
     setVisibleSet({
-      show:true,
+      show: true,
       type,
       initialValues,
       domainId: record.domainId,
-    })
+    });
   };
 
   // 删除 设置
@@ -126,7 +126,7 @@ const ClassifyDetailList = (props) => {
     dispatch({
       type: 'expertSet/fetchClassifyDetailSet',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -155,7 +155,11 @@ const ClassifyDetailList = (props) => {
         size="middle"
         {...detailList}
       ></TableDataBlock>
-      <ClassifyDetailSet visible={visibleSet} childRef={childRef} onClose ={()=>setVisibleSet(false)}></ClassifyDetailSet>
+      <ClassifyDetailSet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ClassifyDetailSet>
     </Modal>
   );
 };

@@ -112,8 +112,8 @@ const SysCheckIn = (props) => {
       ></TableDataBlock>
       <CheckInDetailList visible={visible} setVisible={setVisible} />
       <CheckInSet
-        visible={visibleSet}
         cRef={childRef}
+        visible={visibleSet}
         onClose={() => setVisibleSet(false)}
       ></CheckInSet>
     </>

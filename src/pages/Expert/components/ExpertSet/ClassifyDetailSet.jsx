@@ -7,7 +7,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 
 const ClassifyDetailSet = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;
-  const { type, show = false, initialValues = {}, domainId } = visible;
+  const { show = false, initialValues = {}, domainId } = visible;
 
   const [form] = Form.useForm();
 
@@ -78,5 +78,5 @@ const ClassifyDetailSet = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading:loading.models.expertSet
+  loading: loading.models.expertSet,
 }))(ClassifyDetailSet);

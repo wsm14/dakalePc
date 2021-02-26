@@ -1,4 +1,4 @@
-import React, { useRef,useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { EXPERT_USER_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -8,7 +8,7 @@ import CloseExpert from './components/UserList/CloseExpert';
 const ExpertUserList = (props) => {
   const { expertUserList, loading, dispatch } = props;
 
-  const [visible,setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
 
@@ -127,36 +127,34 @@ const ExpertUserList = (props) => {
   ];
 
   // 封停
-  const fetchCloseExpert = (initialValues) => {
-    setVisible({
-      show:true,
-      initialValues
-    })
-  };
+  const fetchCloseExpert = (initialValues) => setVisible({ show: true, initialValues });
 
   // 解封
   const fetchExpertOpen = (values) => {
     dispatch({
       type: 'expertUserList/fetchExpertOpen',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   return (
     <>
-    <TableDataBlock
-      keepData
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.kolUserId}`}
-      dispatchType="expertUserList/fetchGetList"
-      {...expertUserList.list}
-    >
-    </TableDataBlock>
-    <CloseExpert visible={visible} childRef={childRef} onClose={()=>setVisible(false)}></CloseExpert>
+      <TableDataBlock
+        keepData
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.kolUserId}`}
+        dispatchType="expertUserList/fetchGetList"
+        {...expertUserList.list}
+      ></TableDataBlock>
+      <CloseExpert
+        visible={visible}
+        childRef={childRef}
+        onClose={() => setVisible(false)}
+      ></CloseExpert>
     </>
   );
 };

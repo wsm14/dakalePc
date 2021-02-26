@@ -1,5 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {Button, Drawer, Space, Form, notification} from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
+import { Button, Drawer, Space, Form, notification } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import Title from './title';
 import BaseForm from './Form/BaseForm';
@@ -7,7 +7,7 @@ import ManagementForm from './Form/ManagementForm';
 import UserForm from './Form/userForm';
 import UserDetailsForm from './Form/userDetailsForm';
 import ShopDetailsForm from './Form/shopDetailsForm';
-import {connect} from 'umi';
+import { connect } from 'umi';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const addGroups = (props) => {
@@ -18,16 +18,14 @@ const addGroups = (props) => {
     saveVisible,
     groupDetails,
     merchantGroupDTO,
-    businessLicense,
-    bankBindingInfo,
     childRef,
     loadingAdd,
-    loadingUpDate
+    loadingUpDate,
   } = props;
   const [form] = Form.useForm();
   const cRef = useRef();
   const cRef1 = useRef();
-  const cRef2 = useRef()
+  const cRef2 = useRef();
   const [bottomBtn, setBottom] = useState('add');
   useEffect(() => {
     const { merchantGroupDTO } = groupDetails;
@@ -39,7 +37,7 @@ const addGroups = (props) => {
   }, [groupDetails]);
   const Btn = {
     add: (
-      <div style={{textAlign: 'right'}}>
+      <div style={{ textAlign: 'right' }}>
         <Space>
           <Button
             loading={loadingAdd}
@@ -51,21 +49,21 @@ const addGroups = (props) => {
                   merchantGroupDTO: {},
                   businessLicense: {},
                   bankBindingInfo: {},
-                  initial: {}
+                  initial: {},
                 });
-                 childRef.current.fetchGetData();
+                childRef.current.fetchGetData();
               })
             }
           >
             保存
           </Button>
           <Button
-            onClick={() => fetchAddLists(() =>
-            {
-              saveVisible({visible: false, visible1: true})
-              childRef.current.fetchGetData();
+            onClick={() =>
+              fetchAddLists(() => {
+                saveVisible({ visible: false, visible1: true });
+                childRef.current.fetchGetData();
+              })
             }
-            )}
             type="primary"
             loading={loadingAdd}
           >
@@ -75,15 +73,22 @@ const addGroups = (props) => {
       </div>
     ),
     update: (
-      <div style={{textAlign: 'right'}}>
+      <div style={{ textAlign: 'right' }}>
         <Space>
-          <Button onClick={() => saveVisible({
-            visible: false,
-            groupDetails: {},
-            merchantGroupDTO: {},
-            businessLicense: {},
-            initial: {},
-            bankBindingInfo: {}})}>取消</Button>
+          <Button
+            onClick={() =>
+              saveVisible({
+                visible: false,
+                groupDetails: {},
+                merchantGroupDTO: {},
+                businessLicense: {},
+                initial: {},
+                bankBindingInfo: {},
+              })
+            }
+          >
+            取消
+          </Button>
           <Button
             onClick={() =>
               fetchUpdateGroup(() => {
@@ -94,7 +99,8 @@ const addGroups = (props) => {
                   merchantGroupDTO: {},
                   businessLicense: {},
                   bankBindingInfo: {},
-                  initial: {}});
+                  initial: {},
+                });
               })
             }
             loading={loadingUpDate}
@@ -109,29 +115,29 @@ const addGroups = (props) => {
   const panelList = [
     {
       title: '基础信息',
-      form: <BaseForm cRef={cRef} form={form} initialValues={merchantGroupDTO}/>,
+      form: <BaseForm cRef={cRef} form={form} initialValues={merchantGroupDTO} />,
       showArrow: false,
       disabled: true,
     },
     {
       title: '品牌信息',
-      form: <ManagementForm form={form} cRef={cRef2} initialValues={merchantGroupDTO}/>,
+      form: <ManagementForm form={form} cRef={cRef2} initialValues={merchantGroupDTO} />,
     },
     {
       title: '登录信息',
-      form: <UserForm cRef={cRef1} form={form} initialValues={merchantGroupDTO}/>,
+      form: <UserForm cRef={cRef1} form={form} initialValues={merchantGroupDTO} />,
       showArrow: false,
       disabled: true,
     },
     {
       title: '联系人信息',
-      form: <UserDetailsForm form={form} initialValues={merchantGroupDTO}/>,
+      form: <UserDetailsForm form={form} initialValues={merchantGroupDTO} />,
       showArrow: false,
       disabled: true,
     },
     {
       title: '店铺信息',
-      form: <ShopDetailsForm form={form} initialValues={merchantGroupDTO}/>,
+      form: <ShopDetailsForm form={form} initialValues={merchantGroupDTO} />,
       // extra: '(上传后可同步至旗下子店铺)',
     },
   ];
@@ -141,13 +147,13 @@ const addGroups = (props) => {
     form.validateFields().then(async (val) => {
       const payload = cRef.current.fetchAllData();
       const payload1 = cRef2.current.getImage();
-      const {lat, lnt} = payload;
+      const { lat, lnt } = payload;
       if (!lat && !lnt) {
         return notification.error({
           message: '请点击查询!设置经纬度',
         });
       } else {
-        let {brandLogo, localImages, mainImages} = val;
+        let { brandLogo, localImages, mainImages } = val;
         brandLogo = await aliOssUpload(brandLogo);
         localImages = await aliOssUpload(localImages);
         mainImages = await aliOssUpload(mainImages);
@@ -169,7 +175,7 @@ const addGroups = (props) => {
     form.validateFields().then(async (val) => {
       const payload = cRef.current.fetchAllData();
       const payload1 = cRef2.current.getImage();
-      let {brandLogo, localImages, mainImages} = val;
+      let { brandLogo, localImages, mainImages } = val;
       brandLogo = await aliOssUpload(brandLogo);
       localImages = await aliOssUpload(localImages);
       mainImages = await aliOssUpload(mainImages);
@@ -201,7 +207,7 @@ const addGroups = (props) => {
         //   }
         // }}
         onClose={onClose}
-        bodyStyle={{paddingBottom: 80}}
+        bodyStyle={{ paddingBottom: 80 }}
         footer={Btn}
       >
         <Title panelList={panelList}></Title>
@@ -210,7 +216,7 @@ const addGroups = (props) => {
   );
 };
 
-export default connect(({sysTradeList, groupSet, loading}) => ({
+export default connect(({ sysTradeList, groupSet, loading }) => ({
   ...sysTradeList,
   ...groupSet,
   loading: loading.effects['circleMaster/fetchMasterTotal'],
