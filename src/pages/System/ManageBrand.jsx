@@ -114,10 +114,6 @@ const BusinessBrandComponent = (props) => {
       show: true,
       tradeList,
     });
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: businessBrandSet({ dispatch, childRef, tradeList, initialValues }),
-    // });
   };
 
   useEffect(() => {

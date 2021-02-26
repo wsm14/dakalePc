@@ -61,10 +61,6 @@ const SysPeasShare = (props) => {
       initialValues,
       show:true,
     })
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: peasShareSet({ dispatch, childRef, initialValues }),
-    // });
   };
 
   return (

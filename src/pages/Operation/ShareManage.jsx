@@ -23,10 +23,6 @@ const ShareManage = (props) => {
       show: true,
       initialValues,
     });
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: closeRefuse({ dispatch, childRef, initialValues }),
-    // });
   };
 
   // 获取详情
