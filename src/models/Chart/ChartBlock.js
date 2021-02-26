@@ -175,8 +175,9 @@ export default {
         payload: {
           incomeRank: content.rankList.map((item) => {
             const { verificationFee = 0, scan = 0, merchantName = 0 } = item;
-            const allTotal = (verificationFee + scan).toFixed(2);
-            const verificationFeeNum = ((verificationFee / allTotal) * 100).toFixed(2);
+            const totalFree = verificationFee + scan;
+            const allTotal = totalFree.toFixed(2);
+            const verificationFeeNum = ((verificationFee / totalFree) * 100).toFixed(2);
             return {
               merchantName,
               allTotal,
