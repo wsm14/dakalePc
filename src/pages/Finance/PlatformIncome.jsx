@@ -103,6 +103,7 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
         <IncomeTotal></IncomeTotal>
         {/* 表格 */}
         <TableDataBlock
+          order
           firstFetch={false}
           noCard={false}
           cRef={childRef}

@@ -77,11 +77,6 @@ const GoodsManageComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'merchantIdStr',
-      render: (val, item, i) => i + 1,
-    },
-    {
       title: '商品名称',
       dataIndex: 'goodsName',
       render: (val) => (
@@ -299,6 +294,7 @@ const GoodsManageComponent = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         keepData
         btnExtra={
           <AuthConsumer auth="save">

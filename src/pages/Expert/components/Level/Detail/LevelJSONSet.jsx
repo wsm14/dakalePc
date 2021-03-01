@@ -24,11 +24,6 @@ const LevelJSONSet = (props) => {
 
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'icon',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: `等级${keyRow == 'rights' ? '权益' : '任务'}`,
       dataIndex: 'title',
     },
@@ -89,6 +84,7 @@ const LevelJSONSet = (props) => {
   return (
     <Drawer {...modalProps} onClose={onCancel}>
       <TableDataBlock
+        order
         componentSize={'small'}
         noCard={false}
         loading={loading}

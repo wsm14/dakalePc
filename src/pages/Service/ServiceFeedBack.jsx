@@ -22,7 +22,7 @@ const ServiceFeedBack = (props) => {
       label: '问题状态',
       name: 'status',
       type: 'select',
-      select: FEEDBACK_STATUS ,
+      select: FEEDBACK_STATUS,
     },
   ];
 

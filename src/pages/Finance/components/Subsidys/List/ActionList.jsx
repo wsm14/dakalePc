@@ -10,12 +10,6 @@ const ActionList = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'rechargeBeans',
-      render: (val, row, index) => index + 1,
-    },
-    {
       title: '行业',
       fixed: 'left',
       dataIndex: 'category',
@@ -88,6 +82,7 @@ const ActionList = (props) => {
 
   return (
     <TableDataBlock
+      order
       noCard={false}
       cRef={childRef}
       loading={loading}

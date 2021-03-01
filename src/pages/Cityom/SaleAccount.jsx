@@ -76,12 +76,6 @@ const SaleAccount = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'districtName',
-      fixed: 'left',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: '类型',
       fixed: 'left',
       dataIndex: 'agentType',
@@ -136,6 +130,7 @@ const SaleAccount = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         keepData
         cRef={childRef}
         btnExtra={

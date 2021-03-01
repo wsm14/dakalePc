@@ -31,6 +31,7 @@ import DraggableContent from './SortBlock';
  * @scrollX 横向滚动
  * @firstFetch 原NoSearch 刚打开是否请求 默认true 请求接口
  * @params 搜索时默认参数 移除 pParams params替代全部职能
+ * @order 排序序号是否显示
  * @children
  */
 
@@ -38,6 +39,7 @@ const TableBlockComponent = (props) => {
   const {
     btnExtra,
     cRef,
+    columns,
     cardProps = {},
     dispatchType,
     firstFetch = true,
@@ -55,6 +57,7 @@ const TableBlockComponent = (props) => {
     searchCallback,
     total,
     tableSort = false,
+    order = false,
     children,
   } = props;
 
@@ -141,6 +144,23 @@ const TableBlockComponent = (props) => {
     });
   };
 
+  const orderDataSource = !order
+    ? list
+    : list.map((item, index) => ({
+        ...item,
+        numId: (tableParems.page - 1) * 10 + index + 1,
+      }));
+
+  const orderColumns = !order
+    ? columns
+    : [
+        {
+          title: '序号',
+          dataIndex: 'numId',
+        },
+        ...columns,
+      ];
+
   const tabContent = (
     <>
       {!searchItems && btnExtra && (
@@ -162,12 +182,13 @@ const TableBlockComponent = (props) => {
       <Table
         scroll={{ x: scrollX, y: scrollY }}
         loading={loading}
-        dataSource={list}
+        dataSource={orderDataSource}
         pagination={pagination === false ? false : paginationProps}
         onChange={tableChange}
         // 排序
         {...(tableSort ? DraggableContent(list, tableSort) : {})}
         {...props}
+        columns={orderColumns}
       />
     </>
   );

@@ -88,12 +88,6 @@ const BusinessSettled = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'id',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: '类型',
       dataIndex: 'type',
       render: (val) => val || '--',
@@ -208,6 +202,7 @@ const BusinessSettled = (props) => {
 
   return (
     <TableDataBlock
+      order
       keepData
       btnExtra={({ get }) => (
         <ExcelButton

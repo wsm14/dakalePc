@@ -73,12 +73,6 @@ const ServiceFAQ = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'image',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: 'FAQ标题',
       className: 'drag-visible',
       dataIndex: 'questionTitle',
@@ -293,6 +287,7 @@ const ServiceFAQ = (props) => {
     >
       {check && check.length ? (
         <TableDataBlock
+          order
           firstFetch={false}
           noCard={false}
           cRef={childRef}

@@ -52,12 +52,6 @@ const TaskManage = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'rechargeBeans',
-      render: (val, row, index) => index + 1,
-    },
-    {
       title: '任务名称',
       fixed: 'left',
       dataIndex: 'taskName',
@@ -140,6 +134,7 @@ const TaskManage = (props) => {
 
   return (
     <TableDataBlock
+      order
       noCard={false}
       btnExtra={({ get }) => (
         <ExcelButton

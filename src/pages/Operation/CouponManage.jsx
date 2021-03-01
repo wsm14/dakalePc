@@ -60,11 +60,6 @@ const CouponManageComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'merchantIdStr',
-      render: (val, item, i) => i + 1,
-    },
-    {
       title: '优惠券类型',
       dataIndex: 'goodsName',
     },
@@ -176,6 +171,7 @@ const CouponManageComponent = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         cRef={childRef}
         loading={loading}
         columns={getColumns}

@@ -76,12 +76,6 @@ const MessagePush = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'userType',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: '消息标题',
       fixed: 'left',
       dataIndex: 'title',
@@ -248,6 +242,7 @@ const MessagePush = (props) => {
       >
         {check && check.length ? (
           <TableDataBlock
+            order
             firstFetch={false}
             noCard={false}
             cRef={childRef}

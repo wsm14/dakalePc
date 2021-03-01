@@ -124,11 +124,6 @@ const LevelTable = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'icon',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: `等级${keyRow == 'rights' ? '权益' : '任务'}`,
       dataIndex: 'title',
       render: (val, row) => {
@@ -179,6 +174,7 @@ const LevelTable = (props) => {
 
   return (
     <TableDataBlock
+      order
       btnExtra={
         <Button className="dkl_green_btn" onClick={() => setSelectData({ show: true })}>
           添加

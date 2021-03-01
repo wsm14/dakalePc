@@ -68,12 +68,6 @@ const ProvCompany = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'userId',
-      fixed: 'left',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: '分管省份',
       fixed: 'left',
       dataIndex: 'agentProvinceName',
@@ -144,6 +138,7 @@ const ProvCompany = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         keepData
         cRef={childRef}
         btnExtra={

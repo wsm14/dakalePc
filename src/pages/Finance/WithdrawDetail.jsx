@@ -54,12 +54,6 @@ const WithdrawDetail = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'merchantBeanWithdrawalId',
-      render: (val, row, index) => index + 1,
-    },
-    {
       title: '提现日期',
       fixed: 'left',
       dataIndex: 'withdrawalDate',
@@ -147,6 +141,7 @@ const WithdrawDetail = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         keepData
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
