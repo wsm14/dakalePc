@@ -131,24 +131,22 @@ export default {
         },
       });
     },
-    *fetchGetCouponInfo({ payload, callback }, { call, put }) {
+    *fetchGetCouponInfo({ payload, callback }, { call }) {
       const response = yield call(fetchStoreGoodsCouponInfo, payload);
       if (!response) return;
       const {
         content: { marketCouponDeduct },
       } = response;
-      const { couponChannels: ccls = '', couponName = '' } = marketCouponDeduct;
+      const { couponChannels: coupon = '', couponName = '' } = marketCouponDeduct;
       const initialValues = !couponName
-        ? payload.status
-          ? ''
-          : {}
+        ? { couponType: '0' }
         : {
             ...marketCouponDeduct,
             couponType: '0',
-            mark: ccls.indexOf('mark') > -1,
-            moment: ccls.indexOf('moment') > -1,
+            mark: coupon.indexOf('mark') > -1,
+            moment: coupon.indexOf('moment') > -1,
           };
-      callback({ initialValues, ...payload });
+      callback({ ...initialValues, ...payload });
     },
     *fetchMarketActivityAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchMarketActivityAdd, payload);

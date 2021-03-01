@@ -129,8 +129,8 @@ const CheckInDetailList = (props) => {
         {...detailList}
       ></TableDataBlock>
       <CheckInDetailSet
-        visible={visibleDetail}
         childRef={childRef}
+        visible={visibleDetail}
         onClose={() => setVisibleDetail(false)}
       ></CheckInDetailSet>
     </Modal>

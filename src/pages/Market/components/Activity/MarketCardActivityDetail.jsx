@@ -23,6 +23,7 @@ const MarketCardActivityDetail = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState('');
   const [visibleSet, setVisibleSet] = useState(false);
+  const [visibleCoupon, setVisibleCoupon] = useState(false);
 
   const loadings =
     loading.effects['marketCardActivity/fetchGetActiveDetail'] ||
@@ -126,26 +127,21 @@ const MarketCardActivityDetail = (props) => {
     },
   ];
 
-  // 获取优惠券详情status != 2 表示活动上架 可添加
+  // 获取优惠券详情status != 2 表示活动上架 可添加 已经有券展示详情
   const fetchGetCouponInfo = (marketCouponId, merchantName) => {
+    const addType = params.activityStatus !== '2';
+    console.log('params', params);
+    console.log('addType', addType);
     dispatch({
       type: 'marketCardActivity/fetchGetCouponInfo',
       payload: {
         marketCouponId,
         merchantName,
-        status: params.activityStatus !== '2',
+        status: addType,
         activityId: params.activityIdString,
       },
-      callback: handleSetActive,
-    });
-  };
-
-  // 设置/查看 优惠券
-  const handleSetActive = (payload) => {
-    const obj = { dispatch, childRef, payload };
-    dispatch({
-      type: 'drawerForm/show',
-      payload: MarketCardActivitySetCoupon(obj),
+      callback: (detail) =>
+        setVisibleCoupon({ show: true, detail, addType: addType && !detail.couponName }),
     });
   };
 
@@ -210,6 +206,11 @@ const MarketCardActivityDetail = (props) => {
         onClose={() => setVisibleSet(false)}
         storeId={params.activityIdString}
       ></MarketCardActivitySetStore>
+      <MarketCardActivitySetCoupon
+        visible={visibleCoupon}
+        childRef={childRef}
+        onClose={() => setVisibleCoupon(false)}
+      ></MarketCardActivitySetCoupon>
     </>
   );
 };
