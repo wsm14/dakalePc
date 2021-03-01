@@ -87,10 +87,10 @@ const SysAccountSet = (props) => {
 
   // 新增/修改 管理员帐号
   const handleSysAccountSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: sysAccountInfoSet({ dispatch, childRef, initialValues }),
-    });
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: sysAccountInfoSet({ dispatch, childRef, initialValues }),
+    // });
   };
 
   const contentList = {
