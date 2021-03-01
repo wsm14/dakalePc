@@ -8,7 +8,7 @@ import ClassifySet from './components/ExpertSet/ClassifySet';
 import ClassifyDetailList from './components/ExpertSet/ClassifyDetailList';
 
 const ExpertSet = (props) => {
-  const { list, loading, dispatch, tradeList } = props;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
@@ -105,7 +105,7 @@ const ExpertSet = (props) => {
     dispatch({
       type: 'expertSet/fetchClassifyEdit',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -121,19 +121,18 @@ const ExpertSet = (props) => {
     dispatch({
       type: 'expertSet/fetchClassifyDel',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 新增/修改 领域/内容分类
-  const handleClassifySet = (type,initialValues, rowDetail) => {
+  const handleClassifySet = (type, initialValues, rowDetail) => {
     setVisibleSet({
-      show:true,
+      show: true,
       type,
       initialValues,
       rowDetail,
-      tradeList
-    })
+    });
   };
 
   useEffect(() => {
@@ -150,7 +149,7 @@ const ExpertSet = (props) => {
           <AuthConsumer auth="savePClassify">
             <Button
               className="dkl_green_btn"
-              onClick={() => handleClassifySet('add',{ parentDomainId: 0 })}
+              onClick={() => handleClassifySet('add', { parentDomainId: 0 })}
             >
               新增
             </Button>
@@ -167,13 +166,16 @@ const ExpertSet = (props) => {
         pagination={false}
       ></TableDataBlock>
       <ClassifyDetailList visible={visible} setVisible={setVisible}></ClassifyDetailList>
-      <ClassifySet visible={visibleSet} childRef={childRef} onClose ={()=>setVisibleSet(false)}></ClassifySet>
+      <ClassifySet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ClassifySet>
     </>
   );
 };
 
-export default connect(({ expertSet, sysTradeList, loading }) => ({
+export default connect(({ expertSet, loading }) => ({
   list: expertSet.list,
-  tradeList: sysTradeList.list.list,
   loading: loading.effects['expertSet/fetchGetList'],
 }))(ExpertSet);

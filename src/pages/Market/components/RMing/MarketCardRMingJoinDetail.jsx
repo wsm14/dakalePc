@@ -7,7 +7,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 const MarketCardRMingJoinDetail = (props) => {
   const { marketCardRMing, loading, matchType, visible, setVisible } = props;
 
-  const { type = '', record = '' } = visible;
+  const { record = '' } = visible;
 
   // table 表头
   const getColumns = [

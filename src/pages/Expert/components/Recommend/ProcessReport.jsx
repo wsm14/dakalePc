@@ -5,8 +5,8 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const ProcessReport = (props) => {
-  const { dispatch, childRef, visible, onClose, loadingg } = props;
-  const { show = false, initialValues = {}, fetchExpertCountReport } = visible;
+  const { dispatch, childRef, visible, onClose, fetchExpertCountReport, loading } = props;
+  const { show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
   // 下架
@@ -63,5 +63,5 @@ const ProcessReport = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading:loading.models.expertRecommend,
+  loading: loading.models.expertRecommend,
 }))(ProcessReport);

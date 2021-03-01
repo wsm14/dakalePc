@@ -187,7 +187,6 @@ const MarketCardActivitySetStore = (props) => {
 
   const modalProps = {
     title: '新增商家',
-    width: 560,
     visible,
     onClose,
     footer: (

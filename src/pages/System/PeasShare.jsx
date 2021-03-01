@@ -50,7 +50,7 @@ const SysPeasShare = (props) => {
     dispatch({
       type: 'sysPeasShare/fetchPeasShareEdit',
       payload: { configMomentId: val, deleteFlag: 0 },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

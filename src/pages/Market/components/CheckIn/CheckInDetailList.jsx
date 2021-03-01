@@ -8,7 +8,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import CheckInDetailSet from './CheckInDetailSet';
 
 const CheckInDetailList = (props) => {
-  const { detailList, loading, visible, setVisible, dispatch } = props;
+  const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'text', styleType = 'share', record = '' } = visible;
 

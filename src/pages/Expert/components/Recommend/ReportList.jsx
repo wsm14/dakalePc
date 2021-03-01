@@ -9,14 +9,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import PocessReport from './ProcessReport';
 
 const ReportList = (props) => {
-  const {
-    expertRecommend,
-    dispatch,
-    loading,
-    visible = false,
-    setVisible,
-    fetchExpertCountReport,
-  } = props;
+  const { expertRecommend, loading, visible = false, setVisible, fetchExpertCountReport } = props;
 
   const statusArr = ['处理中', '已解决'];
 
@@ -150,13 +143,7 @@ const ReportList = (props) => {
   };
 
   // 处理举报
-  const fetchExpertProcessReport = (initialValues) => {
-    setVisibleSet({
-      show: true,
-      initialValues,
-      fetchExpertCountReport,
-    });
-  };
+  const fetchExpertProcessReport = (initialValues) => setVisibleSet({ show: true, initialValues });
 
   const tableProps = {
     noCard: false,
@@ -182,6 +169,7 @@ const ReportList = (props) => {
       <PocessReport
         visible={visibleSet}
         childRef={childRef}
+        fetchExpertCountReport={fetchExpertCountReport}
         onClose={() => setVisibleSet(false)}
       ></PocessReport>
     </Modal>

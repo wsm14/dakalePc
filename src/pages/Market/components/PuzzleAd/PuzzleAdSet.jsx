@@ -3,8 +3,8 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { PUZZLE_AD_TYPE } from '@/common/constant';
-import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const PuzzleAdSet = (props) => {
@@ -90,7 +90,6 @@ const PuzzleAdSet = (props) => {
 
   const modalProps = {
     title: '编辑',
-    width: 650,
     visible: show,
     loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,

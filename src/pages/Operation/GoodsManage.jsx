@@ -18,10 +18,10 @@ const GoodsManageComponent = (props) => {
 
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
-  const [visible, setVisible] = useState(false);
-  const [visibleDown, setVisibleDown] = useState(false);
-  const [visibleStock, setVisibleStock] = useState(false);
-  const [merchantId, setMerchantId] = useState('');
+  const [visible, setVisible] = useState(false); // 商品详情
+  const [visibleDown, setVisibleDown] = useState(false); // 下架原因
+  const [visibleStock, setVisibleStock] = useState(false); // 库存设置
+  const [merchantId, setMerchantId] = useState(''); // 搜索的商家id
 
   // 搜索参数
   const searchItems = [

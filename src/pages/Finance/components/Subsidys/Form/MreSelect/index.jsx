@@ -4,8 +4,7 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = [], loading }) => {
-  // 选中的店铺
-  const [selectMre, setSelectMre] = useState([]);
+  const [selectMre, setSelectMre] = useState([]); // 选中的店铺
   const [selectMreKey, setSelectMreKey] = useState([]);
 
   useEffect(() => {

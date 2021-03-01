@@ -3,8 +3,8 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
-import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
@@ -15,9 +15,7 @@ const SysAppSet = (props) => {
   const [showUrl, setShowUrl] = useState(false);
 
   useEffect(() => {
-    if (show) {
-      setShowUrl(info.jumpType || false);
-    }
+    if (show) setShowUrl(info.jumpType || false);
   }, [show]);
 
   // 提交
@@ -75,10 +73,7 @@ const SysAppSet = (props) => {
       type: 'select',
       name: 'jumpType',
       select: BANNER_JUMP_TYPE,
-      onChange: (value) => {
-        console.log(value);
-        setShowUrl(value !== '无');
-      },
+      onChange: (value) => setShowUrl(value !== '无'),
     },
     {
       label: '跳转链接',
@@ -89,7 +84,6 @@ const SysAppSet = (props) => {
 
   const modalProps = {
     title: info ? '编辑' : '新增',
-    width: 560,
     visible: show,
     onClose,
     footer: (
@@ -121,7 +115,6 @@ const SysAppSet = (props) => {
   );
 };
 
-export default connect(({ sysAppList, loading }) => ({
-  sysAppList,
+export default connect(({ loading }) => ({
   loading: loading.models.sysAppList,
 }))(SysAppSet);

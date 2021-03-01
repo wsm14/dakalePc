@@ -97,7 +97,7 @@ const ServiceNewsComponent = (props) => {
     dispatch({
       type: 'serviceNews/fetchNewsStatus',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

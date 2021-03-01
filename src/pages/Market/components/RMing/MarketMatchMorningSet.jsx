@@ -9,7 +9,7 @@ const MarketMatchMorningSet = (props) => {
 
   const [form] = Form.useForm();
 
-  const fetchMorningSet = (values) => {
+  const fetchMorningSet = () => {
     form.validateFields().then((values) => {
       dispatch({
         type: 'marketCardRMing/fetchMarketMatchMorningSet',
@@ -36,7 +36,7 @@ const MarketMatchMorningSet = (props) => {
     visible,
     onClose,
     footer: (
-      <Button type="primary" onClick={() => fetchMorningSet()} loading={loading}>
+      <Button type="primary" onClick={fetchMorningSet} loading={loading}>
         确定
       </Button>
     ),
@@ -50,5 +50,5 @@ const MarketMatchMorningSet = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading:loading.effects['marketCardRMing/fetchMarketMatchMorningSet'],
+  loading: loading.effects['marketCardRMing/fetchMarketMatchMorningSet'],
 }))(MarketMatchMorningSet);

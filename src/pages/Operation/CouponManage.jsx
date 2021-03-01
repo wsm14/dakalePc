@@ -32,7 +32,7 @@ const CouponManageComponent = (props) => {
       label: '券类型',
       name: 'status',
       type: 'select',
-      select:  GOODS_TYPE,
+      select: GOODS_TYPE,
     },
     {
       label: '优惠券名称',
@@ -46,7 +46,7 @@ const CouponManageComponent = (props) => {
       label: '投放渠道',
       name: 'goodsName',
       type: 'select',
-      select:  GOODS_TYPE,
+      select: GOODS_TYPE,
     },
     {
       label: '地区',
@@ -160,7 +160,7 @@ const CouponManageComponent = (props) => {
     dispatch({
       type: 'couponManage/fetchCouponStatus',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

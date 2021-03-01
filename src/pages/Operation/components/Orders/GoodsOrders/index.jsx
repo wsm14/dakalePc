@@ -161,19 +161,17 @@ const GoodsOrders = (props) => {
   ];
 
   return (
-    <>
-      <TableDataBlock
-        noCard={false}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        params={{ goodsOrScanFlag: tabkey }}
-        rowKey={(record) => `${record.orderSn}`}
-        dispatchType="ordersList/fetchGetList"
-        {...ordersList}
-      ></TableDataBlock>
-    </>
+    <TableDataBlock
+      noCard={false}
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      params={{ goodsOrScanFlag: tabkey }}
+      rowKey={(record) => `${record.orderSn}`}
+      dispatchType="ordersList/fetchGetList"
+      {...ordersList}
+    ></TableDataBlock>
   );
 };
 

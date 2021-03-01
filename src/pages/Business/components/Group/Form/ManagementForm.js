@@ -2,7 +2,6 @@ import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { connect } from 'umi';
 import FormCondition from '@/components/FormCondition';
 import PopImgShow from '@/components/PopImgShow';
-import { Image } from 'antd';
 
 const ManagementForm = (props) => {
   const { list, form, initialValues, cRef } = props;

@@ -3,6 +3,7 @@ import FormCondition from '@/components/FormCondition';
 import { PHONE_PATTERN } from '@/common/regExp';
 import { SEX_NEW_TYPE } from '@/common/constant';
 import { connect } from 'umi';
+
 const userForm = (props) => {
   const { form, initialValues, groupDetails } = props;
 

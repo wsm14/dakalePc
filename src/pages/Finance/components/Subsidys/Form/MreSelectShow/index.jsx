@@ -14,8 +14,6 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
     },
   ];
 
-  console.log(keys);
-
   return (
     <div style={{ marginBottom: 20 }} key="table">
       <TableDataBlock

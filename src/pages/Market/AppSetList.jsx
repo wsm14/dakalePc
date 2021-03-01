@@ -113,7 +113,7 @@ const SysAppSet = (props) => {
     dispatch({
       type: 'sysAppList/fetchBannerStatusDel',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

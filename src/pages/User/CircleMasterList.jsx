@@ -38,14 +38,7 @@ const CircleMasterList = (props) => {
   ];
 
   // 打开详情表格
-  const showProps = (type, data) => {
-    setVisible({
-      type: type,
-      record: {
-        ...data,
-      },
-    });
-  };
+  const showProps = (type, record) => setVisible({ type: type, record });
 
   // table 表头
   const getColumns = [

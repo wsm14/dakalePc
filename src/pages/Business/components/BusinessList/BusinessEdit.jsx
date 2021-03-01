@@ -96,12 +96,6 @@ const BusinessAdd = (props) => {
       aliOssUpload(coverImg).then((cres) => {
         payload.coverImg = cres.toString();
         aliOssUpload(interiorImg).then((res) => {
-          console.log(
-            JSON.stringify({
-              ...payload,
-              interiorImg: res.toString(),
-            }),
-          );
           dispatch({
             type: {
               add: 'businessList/fetchMerchantAdd',
@@ -364,7 +358,7 @@ const BusinessAdd = (props) => {
       <BusinessAuditRefuse
         visible={visibleRefuse}
         cRef={cRef}
-        onClose={()=>setVisibleRefuse(false)}
+        onClose={() => setVisibleRefuse(false)}
       ></BusinessAuditRefuse>
     </>
   );

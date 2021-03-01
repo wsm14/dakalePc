@@ -17,8 +17,8 @@ const WithdrawDetail = (props) => {
   const toatlLoading = loading.effects['withdrawDetail/fetchWithdrawTotal'];
 
   const childRef = useRef();
-  // 修改弹窗
-  const [visible, setVisible] = useState(false);
+
+  const [visible, setVisible] = useState(false); // 修改弹窗
   // 显示当前数据的时间标记
   const [searchTime, setSearchTime] = useState([
     moment().subtract(1, 'month').format('YYYY-MM-DD'),

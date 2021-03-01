@@ -97,14 +97,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef }) => {
         });
         if (imgUrl) {
           fetchGetOcrBankLicense({ imageUrl: imgUrl[0] }, (res) => {
-            const {
-              enterpriseBankCheckId,
-              enterpriseBankId = '',
-              enterpriseBankName,
-              enterpriseBankRegisterId,
-              enterpriseNameCH,
-              enterpriseOwner,
-            } = res;
+            const { enterpriseBankId = '', enterpriseBankName } = res;
             form.setFieldsValue({
               bankBranchName: enterpriseBankName,
               cardNo: enterpriseBankId,
