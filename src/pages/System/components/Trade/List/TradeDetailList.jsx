@@ -37,7 +37,7 @@ const TradeBaseSet = (props) => {
           .filter((item) => item != value),
         categoryId: record.categoryIdString,
       },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

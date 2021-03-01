@@ -66,7 +66,7 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
       onChange: (e) => setGoodsType(e.target.value),
     },
     {
-      label: '单品名称',
+      label: `${{ single: '单品', package: '套餐' }[goodsType]}名称`,
       name: 'goodsName',
       maxLength: 30,
     },
@@ -137,7 +137,7 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
     <FormCondition
       form={form}
       formItems={formItems}
-      initialValues={{ onSellFlag: '1' }}
+      initialValues={{ onSellFlag: '1', goodsType: 'single' }}
     ></FormCondition>
   );
 };

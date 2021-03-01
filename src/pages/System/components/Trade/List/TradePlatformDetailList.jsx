@@ -33,7 +33,7 @@ const TradePlatformDetailList = (props) => {
     dispatch({
       type: 'sysTradeList/fetchTradePlatformSet',
       payload: { configMerchantSettleId: value, deleteFlag: 0 },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -48,7 +48,7 @@ const TradePlatformDetailList = (props) => {
         configMerchantSettleId: configMerchantSettleIdString,
         merchantSettleObjects: pObj.filter((item) => item.serviceFee !== value.serviceFee),
       },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

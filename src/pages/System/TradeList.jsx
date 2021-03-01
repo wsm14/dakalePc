@@ -5,7 +5,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import tradeCategorySet from './components/Trade/Form/TradeCategorySet';
-import promotionMoneySet from './components/Trade/Form/PromotionMoneySet';
+import PromotionMoneySet from './components/Trade/Form/PromotionMoneySet';
 import TradeDetailList from './components/Trade/List/TradeDetailList';
 import TradePlatformDetailList from './components/Trade/List/TradePlatformDetailList';
 
@@ -15,6 +15,7 @@ const SysTradeSet = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState('');
   const [pvisible, setPVisible] = useState('');
+  const [moneyVisible, setMoneyVisible] = useState(false); // 推广费设置修改
 
   // 搜索参数
   const searchItems = [
@@ -48,7 +49,7 @@ const SysTradeSet = (props) => {
       dataIndex: 'id',
       render: (val, record) => (
         <AuthConsumer auth="edit" show={!record.parentId}>
-          <a onClick={() => handlePromotionMoneySet(record)}>设置</a>
+          <a onClick={() => handlePromotionMoneyGet(record)}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -116,22 +117,13 @@ const SysTradeSet = (props) => {
     });
   };
 
-  // 新增/修改推广费
-  const handlePromotionMoneySet = (info) => {
-    handlePromotionMoneyGet(info.categoryIdString, (initialValues) =>
-      dispatch({
-        type: 'drawerForm/show',
-        payload: promotionMoneySet({ dispatch, childRef, info, initialValues }),
-      }),
-    );
-  };
-
-  // 获取推广费详情
-  const handlePromotionMoneyGet = (categoryId, callback) => {
+  // 获取推广费详情 -> 新增/修改推广费
+  const handlePromotionMoneyGet = (info) => {
+    const { categoryIdString: categoryId } = info;
     dispatch({
       type: 'sysTradeList/fetchPromotionMoneyGet',
       payload: { categoryId },
-      callback,
+      callback: (detail) => setMoneyVisible({ show: true, info, detail }),
     });
   };
 
@@ -176,6 +168,12 @@ const SysTradeSet = (props) => {
         visible={pvisible}
         setVisible={setPVisible}
       ></TradePlatformDetailList>
+      {/* 推广费设置修改 */}
+      <PromotionMoneySet
+        childRef={childRef}
+        visible={moneyVisible}
+        onClose={() => setMoneyVisible(false)}
+      ></PromotionMoneySet>
     </>
   );
 };

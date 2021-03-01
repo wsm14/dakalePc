@@ -4,7 +4,7 @@ import { Radio } from 'antd';
 import { delectProps } from '../utils';
 
 const RadioBlock = (props) => {
-  const { select, fieldNames = {} } = props;
+  const { select, fieldNames = {}, onChange, dataOnChange } = props;
 
   const divProps = delectProps(props);
   const { label = 'name', value = 'value', disabled = 'disabled' } = fieldNames;
@@ -35,7 +35,16 @@ const RadioBlock = (props) => {
     selectList = arrObject(select);
   }
 
-  return <Radio.Group {...divProps} options={selectList}></Radio.Group>;
+  return (
+    <Radio.Group
+      {...divProps}
+      onChange={(e) => {
+        onChange(e);
+        dataOnChange && dataOnChange(e);
+      }}
+      options={selectList}
+    ></Radio.Group>
+  );
 };
 
 export default RadioBlock;
