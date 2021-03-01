@@ -29,14 +29,6 @@ const ActiveAllocation = (props) => {
   const [rowKey, setRowKey] = useState([]);
   const [userOs, setUserOs] = useState('iOS');
 
-  // 新增/修改
-  const handleSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: activeAllocationEdit({ dispatch, childRef, initialValues }),
-    });
-  };
-
   // table 表头
   const getColumns = [
     {
