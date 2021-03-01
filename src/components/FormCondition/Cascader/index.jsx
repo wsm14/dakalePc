@@ -19,6 +19,7 @@ const CascaderBlock = (props) => {
     onChange = undefined,
     fieldNames = {},
     value: changeValue = [],
+    dataOnChange,
   } = props;
 
   const { label = 'label', value = 'value' } = fieldNames;
@@ -44,6 +45,7 @@ const CascaderBlock = (props) => {
       options={select || CITYJSON}
       onChange={(val, option) => {
         if (onChange) onChange(option);
+        dataOnChange && dataOnChange(option, val);
       }}
     />
   );
