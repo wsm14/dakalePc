@@ -72,17 +72,12 @@ const TableBlockComponent = (props) => {
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     fetchGetData: (data = {}) => {
-      dispatch({
-        type: 'drawerForm/fetchClose',
-        callback: () => {
-          const { page } = data;
-          if (page) {
-            handleSearch(data);
-            return;
-          }
-          fetchGetList(data);
-        },
-      });
+      const { page } = data;
+      if (page) {
+        handleSearch(data);
+        return;
+      }
+      fetchGetList(data);
     },
   }));
 

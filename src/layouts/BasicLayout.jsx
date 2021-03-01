@@ -11,7 +11,6 @@ import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import HeaderContent from '@/components/GlobalHeader/HeaderContent';
-import DrawerModalForm from '@/components/DrawerModalForm';
 import iconEnum from '@/common/iconEnum';
 import logo from '../../public/favicon.png';
 import { AliveScope } from 'react-activation';
@@ -141,7 +140,6 @@ const BasicLayout = (props) => {
           </RouteContext.Consumer>
         </RouteAuthority>
         <BackTop />
-        <DrawerModalForm></DrawerModalForm>
       </ProLayout>
     </AliveScope>
   );
