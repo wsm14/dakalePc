@@ -1,57 +1,76 @@
+import React from 'react';
+import { connect } from 'umi';
+import { Button, Form } from 'antd';
+import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
+
 const TradeCategorySet = (props) => {
-  const { dispatch, childRef, initialValues = {} } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
+
+  const [form] = Form.useForm();
+  const { show = false, type = 'add', detail = {} } = visible;
 
   // 提交表单
-  const fetchDataEdit = (payload) => {
-    const editType = !initialValues.categoryId;
-    dispatch({
-      type: { true: 'sysTradeList/fetchTradeAdd', false: 'sysTradeList/fetchTradeSet' }[editType],
-      payload: { ...initialValues, ...payload },
-      callback: () => childRef.current.fetchGetData(),
+  const handleUpAudit = () => {
+    form.validateFields().then((values) => {
+      dispatch({
+        type: { add: 'sysTradeList/fetchTradeAdd', edit: 'sysTradeList/fetchTradeSet' }[type],
+        payload: { ...detail, ...values },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
-  return {
-    type: 'Drawer',
-    showType: 'form',
-    title: `${!initialValues.categoryId ? '新增类目' : '编辑类目'}`,
-    loadingModels: 'sysTradeList',
-    initialValues,
-    formItems: [
-      {
-        label: '父级类目',
-        name: 'parentName',
-        visible: initialValues.type === 'second',
-        disabled: true,
-      },
-      {
-        label: '一级类目名称',
-        name: 'categoryName',
-        visible: initialValues.type === 'first',
-        maxLength: 10,
-      },
-      {
-        label: '二级类目名称',
-        visible: initialValues.type === 'second',
-        name: 'categoryName',
-        maxLength: 10,
-      },
-      {
-        label: '类目名称',
-        visible: !!initialValues.categoryId,
-        name: 'categoryName',
-        maxLength: 10,
-      },
-      // {
-      //   label: '三级类目名称',
-      //   visible: initialValues.type === 'third',
-      //   name: 'categoryName',
-      //   maxLength: 20,
-      // },
-    ],
-    onFinish: fetchDataEdit,
-    ...props,
+  const formItems = [
+    {
+      label: '父级类目',
+      name: 'parentName',
+      visible: detail.type === 'second',
+      disabled: true,
+    },
+    {
+      label: '一级类目名称',
+      name: 'categoryName',
+      visible: detail.type === 'first',
+      maxLength: 10,
+    },
+    {
+      label: '二级类目名称',
+      visible: detail.type === 'second',
+      name: 'categoryName',
+      maxLength: 10,
+    },
+    {
+      label: '类目名称',
+      visible: type === 'edit',
+      name: 'categoryName',
+      maxLength: 10,
+    },
+  ];
+
+  // 弹出窗属性
+  const modalProps = {
+    title: `${type === 'add' ? '新增类目' : '编辑类目'}`,
+    visible: show,
+    onClose,
+    footer: (
+      <Button onClick={handleUpAudit} type="primary" loading={loading}>
+        提交
+      </Button>
+    ),
   };
+
+  return (
+    <DrawerCondition {...modalProps}>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+    </DrawerCondition>
+  );
 };
 
-export default TradeCategorySet;
+export default connect(({ loading }) => ({
+  loading:
+    loading.effects['sysTradeList/fetchTradeAdd'] || loading.effects['sysTradeList/fetchTradeSet'],
+}))(TradeCategorySet);
