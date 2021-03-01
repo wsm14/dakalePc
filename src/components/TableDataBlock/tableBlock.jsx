@@ -39,7 +39,7 @@ const TableBlockComponent = (props) => {
   const {
     btnExtra,
     cRef,
-    columns,
+    columns = [],
     cardProps = {},
     dispatchType,
     firstFetch = true,
@@ -144,22 +144,17 @@ const TableBlockComponent = (props) => {
     });
   };
 
-  const orderDataSource = !order
-    ? list
-    : list.map((item, index) => ({
-        ...item,
+  // 表格是否展示排序字段
+  const orderData = {
+    true: {
+      dataSource: list.map((item, index) => ({
         numId: (tableParems.page - 1) * 10 + index + 1,
-      }));
-
-  const orderColumns = !order
-    ? columns
-    : [
-        {
-          title: '序号',
-          dataIndex: 'numId',
-        },
-        ...columns,
-      ];
+        ...item,
+      })),
+      columns: [{ title: '序号', dataIndex: 'numId' }, ...columns],
+    },
+    false: { dataSource: list, columns: columns },
+  }[order];
 
   const tabContent = (
     <>
@@ -182,13 +177,13 @@ const TableBlockComponent = (props) => {
       <Table
         scroll={{ x: scrollX, y: scrollY }}
         loading={loading}
-        dataSource={orderDataSource}
+        dataSource={orderData.dataSource}
         pagination={pagination === false ? false : paginationProps}
         onChange={tableChange}
         // 排序
         {...(tableSort ? DraggableContent(list, tableSort) : {})}
         {...props}
-        columns={orderColumns}
+        columns={orderData.columns}
       />
     </>
   );
