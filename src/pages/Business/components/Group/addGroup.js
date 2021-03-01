@@ -200,12 +200,6 @@ const addGroups = (props) => {
         width={850}
         visible={visible}
         destroyOnClose={true}
-        // afterVisibleChange={(visible) => {
-        //   console.log(visible);
-        //   if (!visible) {
-        //     saveVisible({groupDetails: {}});
-        //   }
-        // }}
         onClose={onClose}
         bodyStyle={{ paddingBottom: 80 }}
         footer={Btn}
