@@ -34,9 +34,9 @@ class AvatarDropdown extends React.Component {
   getRandomColor = () => {
     const rand = Math.floor(Math.random() * 0xffffff).toString(16);
     if (rand.length === 6) {
-      return this.setState({ color: rand });
-    }
-    return this.getRandomColor();
+      this.setState({ color: rand });
+      return;
+    } else this.getRandomColor();
   };
 
   render() {
