@@ -1,31 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import tradeBaseSet from '../Form/TradeBaseSet';
+import TradeBaseSet from '../Form/TradeBaseSet';
 
-const TradeBaseSet = (props) => {
-  const { detailList, loading, visible, setVisible, dispatch } = props;
+const TradeBaseList = (props) => {
+  const { detailList, loading, visible, onClose, dispatch } = props;
 
   const { type = 'base', record = '' } = visible;
 
   const childRef = useRef();
-
-  //  新增 修改
-  const handleDataSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: tradeBaseSet({
-        dispatch,
-        childRef,
-        initialValues,
-        detailList,
-        categoryId: record.categoryIdString,
-        CeditType: type,
-      }),
-    });
-  };
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // 删除参数
   const fetchDataDel = (value) => {
@@ -90,7 +76,7 @@ const TradeBaseSet = (props) => {
           title: '操作',
           align: 'center',
           dataIndex: 'value',
-          render: (val, record) => (
+          render: (val) => (
             <HandleSetTable
               formItems={[
                 {
@@ -109,36 +95,49 @@ const TradeBaseSet = (props) => {
     },
   }[type];
 
+  const handleDataSet = (detail) => setVisibleSet({ show: true, detail });
+
   return (
-    <Modal
-      title={propItem.title}
-      width={1150}
-      destroyOnClose
-      footer={null}
-      visible={visible}
-      onCancel={() => setVisible('')}
-    >
-      <TableDataBlock
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
-            新增
-          </Button>
-        }
-        cRef={childRef}
-        noCard={false}
-        loading={loading}
-        columns={propItem.getColumns}
-        rowKey={(row) => `${row[propItem.rowKey]}`}
-        params={{ type, categoryId: record.categoryIdString }}
-        dispatchType="sysTradeList/fetchDetailList"
-        size="middle"
-        {...detailList}
-      ></TableDataBlock>
-    </Modal>
+    <>
+      <Modal
+        title={propItem.title}
+        width={1150}
+        destroyOnClose
+        footer={null}
+        visible={visible}
+        zIndex={555}
+        onCancel={() => onClose('')}
+      >
+        <TableDataBlock
+          btnExtra={
+            <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
+              新增
+            </Button>
+          }
+          cRef={childRef}
+          noCard={false}
+          loading={loading}
+          columns={propItem.getColumns}
+          rowKey={(row) => `${row[propItem.rowKey]}`}
+          params={{ type, categoryId: record.categoryIdString }}
+          dispatchType="sysTradeList/fetchDetailList"
+          size="middle"
+          {...detailList}
+        ></TableDataBlock>
+      </Modal>
+      <TradeBaseSet
+        type={type}
+        childRef={childRef}
+        categoryId={record.categoryIdString}
+        visible={visibleSet}
+        detailList={detailList}
+        onClose={() => setVisibleSet(false)}
+      ></TradeBaseSet>
+    </>
   );
 };
 
 export default connect(({ sysTradeList, loading }) => ({
   detailList: sysTradeList.detailList,
   loading: loading.effects['sysTradeList/fetchDetailList'],
-}))(TradeBaseSet);
+}))(TradeBaseList);

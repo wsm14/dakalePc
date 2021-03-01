@@ -165,7 +165,7 @@ const SysTradeSet = (props) => {
       {/* 平台服务费 */}
       <TradePlatformDetailList visible={visible} setVisible={setVisible}></TradePlatformDetailList>
       {/* 基础设施 */}
-      <TradeDetailList visible={baseVisible} setVisible={setBaseVisible}></TradeDetailList>
+      <TradeDetailList visible={baseVisible} onClose={setBaseVisible}></TradeDetailList>
       {/* 推广费设置修改 */}
       <PromotionMoneySet
         childRef={childRef}
