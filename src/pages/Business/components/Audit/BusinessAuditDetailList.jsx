@@ -26,7 +26,7 @@ const BusinessAuditDetailList = (props) => {
         label: '审核状态',
         name: 'verifyStatus',
         type: 'select',
-        select:  BUSINESS_DETAIL_AUDIT ,
+        select: BUSINESS_DETAIL_AUDIT,
       },
     ],
 
@@ -110,7 +110,7 @@ const BusinessAuditDetailList = (props) => {
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,
     dispatchType: propItem.dispatchType,
-    componentSize: 'middle',
+    size: 'middle',
     ...businessAudit.detailList,
   };
 

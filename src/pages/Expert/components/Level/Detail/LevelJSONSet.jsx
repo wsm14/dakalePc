@@ -85,7 +85,7 @@ const LevelJSONSet = (props) => {
     <Drawer {...modalProps} onClose={onCancel}>
       <TableDataBlock
         order
-        componentSize={'small'}
+        size={'small'}
         noCard={false}
         loading={loading}
         columns={getColumns}

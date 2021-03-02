@@ -152,7 +152,7 @@ const ReportList = (props) => {
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,
     dispatchType: propItem.dispatchType,
-    componentSize: 'middle',
+    size: 'middle',
     ...expertRecommend.reportList,
   };
 

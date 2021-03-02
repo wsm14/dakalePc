@@ -121,7 +121,7 @@ const MarketCardActivityDetailPay = (props) => {
       marketCouponId: record.marketCouponIdString,
     },
     dispatchType: propItem.dispatchType,
-    componentSize: 'middle',
+    size: 'middle',
     ...marketCardActivity.detailPay,
   };
 
