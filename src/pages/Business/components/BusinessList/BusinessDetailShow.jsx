@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
+import { Button, Form, Tabs, Input, Modal } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const { TabPane } = Tabs;
 
@@ -236,33 +237,25 @@ const BusinessDetailShow = (props) => {
     title: `商家详情`,
     width: 800,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    footer: (
+      <>
+        <AuthConsumer auth="bussinessStatus">
+          <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
+            {businessStatusText}
+          </Button>
+        </AuthConsumer>
+        <AuthConsumer auth="status">
+          <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
+            {statusText}
+          </Button>
+        </AuthConsumer>
+      </>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <AuthConsumer auth="bussinessStatus">
-              <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
-                {businessStatusText}
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="status">
-              <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
-                {statusText}
-              </Button>
-            </AuthConsumer>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <Tabs type="card">
         <TabPane tab="店铺信息" key="1">
           <DescriptionsCondition formItems={storeItems} initialValues={visible} />
@@ -293,7 +286,7 @@ const BusinessDetailShow = (props) => {
           </Form>
         </TabPane>
       </Tabs>
-    </Drawer>
+    </DrawerCondition>
   );
 };
 
