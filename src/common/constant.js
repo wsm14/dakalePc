@@ -235,3 +235,6 @@ export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', 内部: '内部' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
+
+// 商品类型
+export const GOODS_CLASS_TYPE = { package: '套餐', single: '单品' };

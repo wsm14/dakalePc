@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, message } from 'antd';
-import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS } from '@/common/constant';
+import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
@@ -67,10 +67,7 @@ const GoodsManageComponent = (props) => {
       label: '商品类型',
       name: 'goodsType',
       type: 'select',
-      select: [
-        { value: 'package', name: '套餐' },
-        { value: 'single', name: '单品' },
-      ],
+      select: GOODS_CLASS_TYPE,
     },
   ];
 
@@ -101,7 +98,7 @@ const GoodsManageComponent = (props) => {
       title: '商品类型',
       align: 'center',
       dataIndex: 'goodsType',
-      render: (val) => (val == 'package' ? '套餐' : '单品'),
+      render: (val) => GOODS_CLASS_TYPE[val],
     },
     {
       title: '售价',
