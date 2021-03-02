@@ -56,27 +56,19 @@ const SysCheckIn = (props) => {
               click: () => handlePeasShareSet(record),
             },
             {
-              type: 'own',
-              title: '分享图片',
-              auth: 'shareImg',
+              type: 'shareImg',
               click: () => setVisible({ type: 'image', styleType: 'share', record }),
             },
             {
-              type: 'own',
-              title: '打卡图片',
-              auth: 'markImg',
+              type: 'markImg',
               click: () => setVisible({ type: 'image', styleType: 'mark', record }),
             },
             {
-              type: 'own',
-              title: '分享文案',
-              auth: 'shareText',
+              type: 'shareText',
               click: () => setVisible({ type: 'text', styleType: 'share', record }),
             },
             {
-              type: 'own',
-              title: '打卡文案',
-              auth: 'markText',
+              type: 'markText',
               click: () => setVisible({ type: 'text', styleType: 'mark', record }),
             },
           ]}

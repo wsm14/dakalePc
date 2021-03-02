@@ -156,7 +156,6 @@ const GoodsManageComponent = (props) => {
               },
               // 上架中
               {
-                type: 'own',
                 title: '库存',
                 auth: 'stockSet',
                 visible: status == 1,
@@ -185,9 +184,7 @@ const GoodsManageComponent = (props) => {
                 click: () => fetchGoodsUp({ goodsIdString: val }),
               },
               {
-                type: 'own',
-                title: '操作记录',
-                auth: 'handleDeatil',
+                type: 'handleDeatil',
                 click: () => fetchGoodsHandleDetail(val),
               },
             ]}

@@ -30,8 +30,8 @@ const BusinessListComponent = (props) => {
   const [visibleEdit, setVisibleEdit] = useState('');
   // 商圈搜索选择
   const [hubSelect, setHubSelect] = useState(true);
- // 设置商家验证码
- const [visibleCodeSet,setVisibleCodeSet] = useState(false)
+  // 设置商家验证码
+  const [visibleCodeSet, setVisibleCodeSet] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -222,9 +222,7 @@ const BusinessListComponent = (props) => {
         <HandleSetTable
           formItems={[
             {
-              title: '获取二维码',
-              type: 'own',
-              auth: 'qrCode',
+              type: 'qrCode',
               click: () => setVisibleQrcode(record),
             },
             {
@@ -272,7 +270,7 @@ const BusinessListComponent = (props) => {
 
   // 设置商家端登录验证码
   const handleVCodeSet = () => {
-    setVisibleCodeSet(true)
+    setVisibleCodeSet(true);
   };
 
   // 店铺详情展示
@@ -369,7 +367,11 @@ const BusinessListComponent = (props) => {
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
       <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
-      <BusinessVerificationCodeSet visible={visibleCodeSet} childRef={childRef} onClose={()=>setVisibleCodeSet(false)}></BusinessVerificationCodeSet>
+      <BusinessVerificationCodeSet
+        visible={visibleCodeSet}
+        childRef={childRef}
+        onClose={() => setVisibleCodeSet(false)}
+      ></BusinessVerificationCodeSet>
     </>
   );
 };

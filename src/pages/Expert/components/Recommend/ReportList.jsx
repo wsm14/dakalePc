@@ -128,9 +128,7 @@ const ReportList = (props) => {
             <HandleSetTable
               formItems={[
                 {
-                  title: '处理',
-                  type: 'own',
-                  auth: 'handle',
+                  type: 'handle',
                   visible: status == 0,
                   click: () => fetchExpertProcessReport({ userReportId }),
                 },

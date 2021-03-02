@@ -120,7 +120,6 @@ const ProvCompany = (props) => {
         <HandleSetTable
           formItems={[
             // {
-            //   type: 'own',
             //   title: '收益数据',
             //   auth: 'income',
             //   click: () => setVisible({ type: 'income', record }),

@@ -35,7 +35,6 @@ const SearchSetList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               auth: 'searchSet',
               title: '配置',
               click: fetchSearchGetData,

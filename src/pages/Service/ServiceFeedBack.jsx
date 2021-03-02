@@ -82,9 +82,7 @@ const ServiceFeedBack = (props) => {
               click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
             {
-              type: 'own',
-              title: '回复',
-              auth: 'replay',
+              type: 'replay',
               visible: info.status !== '2',
               click: () => fetchFeedBackDetail({ feedbackIdString }),
             },

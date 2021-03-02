@@ -119,7 +119,6 @@ const RoleList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               title: '权限设置',
               auth: 'roleEdit',
               click: () => fetchFlag({ roleId: val }),

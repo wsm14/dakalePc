@@ -89,9 +89,7 @@ const CircleMasterList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              auth: 'income',
-              title: '收益明细',
+              type: 'income',
               click: () => showProps('income', record),
             },
           ]}

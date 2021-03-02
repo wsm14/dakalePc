@@ -56,7 +56,7 @@ const ClassifyDetailList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
+              auth: true,
               title: '推荐',
               visible: records.recommendFlag === '0',
               click: () =>
@@ -68,7 +68,7 @@ const ClassifyDetailList = (props) => {
                 }),
             },
             {
-              type: 'own',
+              auth: true,
               title: '取消推荐',
               visible: records.recommendFlag === '1',
               click: () =>

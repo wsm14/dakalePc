@@ -106,14 +106,12 @@ const ExpertUserList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               visible: record.status == 1,
               auth: 'status',
               title: '封停',
               click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
             },
             {
-              type: 'own',
               pop: true,
               visible: record.status != 1,
               auth: 'status',

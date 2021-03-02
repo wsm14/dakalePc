@@ -152,14 +152,12 @@ const SpecialGoods = (props) => {
                 click: () => fetchSpecialGoodsStatus({ ...record, goodsIdStr }),
               },
               {
-                type: 'own',
                 title: '推荐',
                 auth: 'recommendStatus',
                 visible: record.status != '0' && record.recommendStatus != '1' && businessHubId,
                 click: () => fetchGetHubName({ specialGoodsId, businessHubId, recommendStatus: 1 }),
               },
               {
-                type: 'own',
                 pop: true,
                 title: '取消推荐',
                 auth: 'recommendStatus',

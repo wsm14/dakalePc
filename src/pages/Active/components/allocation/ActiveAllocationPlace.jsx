@@ -65,7 +65,6 @@ const ActiveAllocationPlace = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               title: '配置',
               click: () =>
                 setVisibleSet({

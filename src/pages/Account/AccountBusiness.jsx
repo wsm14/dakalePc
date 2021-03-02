@@ -79,19 +79,16 @@ const AccountBusinessList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               auth: 'peasDetail',
               title: '卡豆明细',
               click: () => setVisible({ type: 'peas', record }),
             },
             {
-              type: 'own',
               auth: 'withdraw',
               title: '提现记录',
               click: () => setVisible({ type: 'collect', record }),
             },
             {
-              type: 'own',
               auth: 'rechargeDetail',
               title: '充值记录',
               click: () => setVisible({ type: 'recharge', record }),

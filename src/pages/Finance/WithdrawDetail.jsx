@@ -112,7 +112,6 @@ const WithdrawDetail = (props) => {
             <HandleSetTable
               formItems={[
                 {
-                  type: 'own',
                   auth: 'edit',
                   title: <FormOutlined />,
                   click: () => setVisible({ shwo: true, detail: record }),

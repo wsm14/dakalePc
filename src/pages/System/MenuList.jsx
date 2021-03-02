@@ -72,7 +72,7 @@ const SysMenuList = (props) => {
               click: () => fetchGetMenuDetail({ accessId: val }),
             },
             {
-              type: 'own',
+              auth: true,
               title: '添加',
               click: () =>
                 handleSysMenuSet({

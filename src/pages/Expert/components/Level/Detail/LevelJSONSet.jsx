@@ -47,7 +47,7 @@ const LevelJSONSet = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'own',
+                auth: true,
                 title: '添加',
                 pop: true,
                 visible: !checkAdd,
@@ -56,7 +56,7 @@ const LevelJSONSet = (props) => {
                 },
               },
               {
-                type: 'own',
+                auth: true,
                 title: '取消添加',
                 pop: true,
                 visible: checkAdd,

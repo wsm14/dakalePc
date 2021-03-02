@@ -79,10 +79,9 @@ const ExpertSet = (props) => {
                 click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
               },
               {
-                type: 'own',
-                visible: pid === 0,
-                title: '添加内容分类',
                 auth: 'saveClassify',
+                title: '添加内容分类',
+                visible: pid === 0,
                 click: () =>
                   handleClassifySet(
                     'own',

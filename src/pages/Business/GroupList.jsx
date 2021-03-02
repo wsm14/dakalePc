@@ -173,9 +173,7 @@ const tableList = (props) => {
                 },
               },
               {
-                type: 'own',
-                title: '账户激活',
-                auth: 'activate',
+                type: 'activate',
                 click: () => {
                   fetchSave({
                     visible1: true,

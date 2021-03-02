@@ -143,9 +143,7 @@ const ShareManage = (props) => {
                 click: () => fetchShareDetail(val, record.contentType),
               },
               {
-                type: 'own',
-                auth: 'handleDeatil',
-                title: '操作记录',
+                type: '操作记录',
                 click: () => fetchShareHandleDetail(val),
               },
             ]}

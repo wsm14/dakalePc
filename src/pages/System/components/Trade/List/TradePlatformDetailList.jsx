@@ -101,7 +101,7 @@ const TradePlatformDetailList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
+              auth: true,
               title: '新增服务费',
               click: () => handleDataSet('moneySet', '', val, red),
             },

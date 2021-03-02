@@ -104,19 +104,14 @@ const MarketCardActivityDetail = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              title: '核销明细',
-              auth: 'destoryDetail',
+              type: 'destoryDetail',
               click: () => setVisible({ type: 'destory', record }),
             },
             {
-              type: 'own',
-              title: '订单明细',
-              auth: 'orderDetail',
+              type: 'orderDetail',
               click: () => setVisible({ type: 'order', record }),
             },
             {
-              type: 'own',
               title: '优惠券',
               auth: 'couponDetail',
               click: () => fetchGetCouponInfo(val, record.merchantName),

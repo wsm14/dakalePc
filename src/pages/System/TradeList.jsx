@@ -87,10 +87,8 @@ const SysTradeSet = (props) => {
                 click: () => fetchTradeDel({ categoryId: val, isDelete: 1 }),
               },
               {
-                type: 'own',
+                type: 'tradeSecondAdd',
                 visible: record.parentId === 0,
-                title: '添加子类目',
-                auth: 'tradeSecondAdd',
                 click: () => {
                   const { categoryName: parentName } = record;
                   const detail = { parentId: val, node: `${val}`, parentName, type: 'second' };
