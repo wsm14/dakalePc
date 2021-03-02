@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, message, Modal, Skeleton } from 'antd';
+import { Button, Form, message, Modal } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -8,6 +8,7 @@ import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
 import BusinessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const BusinessAdd = (props) => {
   const {
@@ -24,15 +25,11 @@ const BusinessAdd = (props) => {
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
-  // [经度, 纬度]
-  const [location, setLocation] = useState([lnt, lat]);
-  // 选择城市
-  const [selectCity, setSelectCity] = useState([]);
-  // 骨架框显示
-  const [skeletonType, setSkeletonType] = useState(true);
-  // 经营类目
-  const [categId, setCategId] = useState('');
-  const [visibleRefuse, setVisibleRefuse] = useState(false);
+
+  const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
+  const [selectCity, setSelectCity] = useState([]); // 选择城市
+  const [categId, setCategId] = useState(''); // 经营类目
+  const [visibleRefuse, setVisibleRefuse] = useState(false); // 审核拒绝
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
@@ -208,7 +205,6 @@ const BusinessAdd = (props) => {
         });
       }
     }
-    setSkeletonType(false);
   };
 
   // 审核驳回
@@ -282,19 +278,6 @@ const BusinessAdd = (props) => {
     </div>
   );
 
-  const modalProps = {
-    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
-    width: 750,
-    visible: show,
-    maskClosable: false,
-    destroyOnClose: true,
-  };
-
-  const closeDrawer = () => {
-    setSkeletonType(true);
-    onClose();
-  };
-
   const buttonProps = (callback) => ({
     onClick: () =>
       form.validateFields().then((values) => {
@@ -304,57 +287,51 @@ const BusinessAdd = (props) => {
     loading,
   });
 
+  const modalProps = {
+    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
+    width: 750,
+    visible: show,
+    maskClosable: false,
+    onClose,
+    afterCallBack: () => {
+      handleInvalueEdit();
+      setCategId(initialValues.topCategoryId);
+    },
+    footer: (
+      <>
+        {(type == 'add' || type == 'edit') && (
+          <Button {...buttonProps(fetchUpdataCheck)}>
+            {{ add: '提交审核', edit: '修改' }[type]}
+          </Button>
+        )}
+        {type == 'audit' && (
+          <>
+            <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
+              审核驳回
+            </Button>
+            {initialValues.hasPartner === '1' && (
+              <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
+            )}
+          </>
+        )}
+      </>
+    ),
+  };
+
   return (
     <>
-      <Drawer
-        {...modalProps}
-        onClose={closeDrawer}
-        afterVisibleChange={(showEdit) => {
-          if (showEdit) {
-            setSkeletonType(true);
-            handleInvalueEdit();
-            setCategId(initialValues.topCategoryId);
-          } else {
-            setSkeletonType(true);
-          }
-        }}
-        bodyStyle={{ paddingBottom: 80 }}
-        footer={
-          <div style={{ textAlign: 'right' }}>
-            <Space>
-              <Button onClick={closeDrawer}>取消</Button>
-              {(type == 'add' || type == 'edit') && (
-                <Button {...buttonProps(fetchUpdataCheck)}>
-                  {{ add: '提交审核', edit: '修改' }[type]}
-                </Button>
-              )}
-              {type == 'audit' && (
-                <>
-                  <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
-                    审核驳回
-                  </Button>
-                  {initialValues.hasPartner === '1' && (
-                    <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
-                  )}
-                </>
-              )}
-            </Space>
-          </div>
-        }
-      >
-        <Skeleton loading={skeletonType} active>
-          <BusinessAddBeas
-            form={form}
-            amap={amap}
-            setType={type}
-            setCategId={setCategId}
-            onSearchAddress={onSearchAddress}
-            initialValues={initialValues}
-          />
-          <BusinessAddQuality form={form} initialValues={initialValues} />
-          <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
-        </Skeleton>
-      </Drawer>
+      <DrawerCondition {...modalProps}>
+        <BusinessAddBeas
+          form={form}
+          amap={amap}
+          setType={type}
+          setCategId={setCategId}
+          onSearchAddress={onSearchAddress}
+          initialValues={initialValues}
+        />
+        <BusinessAddQuality form={form} initialValues={initialValues} />
+        <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
+      </DrawerCondition>
       <BusinessAuditRefuse
         visible={visibleRefuse}
         cRef={cRef}
