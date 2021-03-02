@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form } from 'antd';
+import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const BusinessAwardSet = (props) => {
   const {
@@ -73,28 +74,18 @@ const BusinessAwardSet = (props) => {
     title: `设置 - ${record.merchantName}`,
     width: 560,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    footer: (
+      <Button onClick={fetchFormData} type="primary" loading={loading}>
+        确认
+      </Button>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <Button onClick={fetchFormData} type="primary" loading={loading}>
-              确认
-            </Button>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <FormCondition formItems={formItems} initialValues={record} form={form} loading={loading} />
-    </Drawer>
+    </DrawerCondition>
   );
 };
 
