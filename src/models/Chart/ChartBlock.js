@@ -177,12 +177,15 @@ export default {
             const { verificationFee = 0, scan = 0, merchantName = 0 } = item;
             const totalFree = verificationFee + scan;
             const allTotal = totalFree.toFixed(2);
-            const verificationFeeNum = ((verificationFee / totalFree) * 100).toFixed(2);
+            const verificationFeeNum = (totalFree === 0
+              ? 0
+              : (verificationFee / totalFree) * 100
+            ).toFixed(2);
             return {
               merchantName,
               allTotal,
-              verificationFee: allTotal === 0 ? 0 : verificationFeeNum,
-              scan: allTotal === 0 ? 0 : (100 - Number(verificationFeeNum)).toFixed(2),
+              verificationFee: allTotal === '0.00' ? 0 : verificationFeeNum,
+              scan: allTotal === '0.00' ? 0 : (100 - Number(verificationFeeNum)).toFixed(2),
             };
           }),
         },
