@@ -32,6 +32,7 @@ import DraggableContent from './SortBlock';
  * @firstFetch 原NoSearch 刚打开是否请求 默认true 请求接口
  * @params 搜索时默认参数 移除 pParams params替代全部职能
  * @order 排序序号是否显示
+ * @tableSize 表格大小 small default middle
  * @children
  */
 
@@ -58,6 +59,7 @@ const TableBlockComponent = (props) => {
     total,
     tableSort = false,
     order = false,
+    tableSize = 'default',
     children,
   } = props;
 
@@ -151,7 +153,7 @@ const TableBlockComponent = (props) => {
         numId: (tableParems.page - 1) * 10 + index + 1,
         ...item,
       })),
-      columns: [{ title: '序号', fixed: 'left', dataIndex: 'numId' }, ...columns],
+      columns: [{ title: '序号', fixed: 'left', width: 80, dataIndex: 'numId' }, ...columns],
     },
     false: { dataSource: list, columns: columns },
   }[order];
@@ -180,6 +182,7 @@ const TableBlockComponent = (props) => {
         dataSource={orderData.dataSource}
         pagination={pagination === false ? false : paginationProps}
         onChange={tableChange}
+        size={tableSize || size}
         // 排序
         {...(tableSort ? DraggableContent(list, tableSort) : {})}
         {...props}

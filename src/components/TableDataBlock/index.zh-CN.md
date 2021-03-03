@@ -36,6 +36,7 @@
 | searchItems | 搜索条件 | object[] | - |
 | searchForm | 搜索表单 form | Form.useForm() | - |
 | searchCallback | 搜索事件回调，返回（当前搜索事件参数，table 所有请求参数（包含分页）） | function(searchVal, tableVal) | - |
+| tableSize | 单独控制表格大小 | String | small default middle |
 | tableSort | 表格基础排序组件配置，复杂排序可从`TableDataBlock/SortBlock`导出<a href="#DraggableContent">默认方法 draggableContent</a>配置 | `Object{ key, onSortEnd:function (newData) => {} }` | - |
 | children | 表格搜索框顶部显示内容 | ReactNode | - |
 
@@ -54,6 +55,10 @@
 ```
 
 ## 更新日志
+
+- ### 2021 年 3 月 3 日 16:48:31 18:20:35 Dong
+
+> - 增加配置 `tableSize`单独控制表格大小 默认 `default` 可选 `small | default | middle`
 
 - ### 2021 年 3 月 1 日 18:20:35 Dong
 
