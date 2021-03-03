@@ -97,9 +97,9 @@ const BaseForm = (props) => {
       name: 'provinceCode',
       select: CITYJSON,
       fieldNames: { label: 'label' },
-      onChange: (val, item) => {
+      onChange: (val, option) => {
         setCitySelect(CITYJSON.filter((item) => item.value == val));
-        form.setFieldsValue({ provinceName: item.children[0] });
+        form.setFieldsValue({ provinceName: option.children[0] });
       },
       render: (val, row) => row.provinceName,
     },
