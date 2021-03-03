@@ -41,8 +41,9 @@ const CodeOrders = (props) => {
       label: '区域',
       name: 'city',
       type: 'cascader',
+      changeOnSelect: true,
       valueskey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length && fetchGetHubSelect(val[2]),
+      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
     {
       label: '商圈',

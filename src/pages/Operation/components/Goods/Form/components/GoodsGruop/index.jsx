@@ -22,7 +22,7 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
     visible,
     maskClosable: false,
     destroyOnClose: true,
-    zIndex: 100000000,
+    zIndex: 2000,
     onClose,
     footer: (
       <Button

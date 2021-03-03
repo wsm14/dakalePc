@@ -151,7 +151,7 @@ const TableBlockComponent = (props) => {
         numId: (tableParems.page - 1) * 10 + index + 1,
         ...item,
       })),
-      columns: [{ title: '序号', dataIndex: 'numId' }, ...columns],
+      columns: [{ title: '序号', fixed: 'left', dataIndex: 'numId' }, ...columns],
     },
     false: { dataSource: list, columns: columns },
   }[order];

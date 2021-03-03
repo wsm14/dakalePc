@@ -84,7 +84,13 @@ const SearchCondition = (props) => {
         // 判断类型
         // 时间类型处理
         if (type === 'datePicker') {
-          formObj[name] = values[name].format(picker === 'year' ? 'YYYY' : 'YYYY-MM-DD');
+          if (picker === 'year') {
+            formObj[item.name] = values[item.name].format('YYYY');
+          } else if (picker === 'month') {
+            formObj[item.name] = values[item.name].format('YYYY-MM');
+          } else {
+            formObj[item.name] = values[item.name].format('YYYY-MM-DD');
+          }
         } else if (type === 'rangePicker' && end && !!values[name].length) {
           // 区间时间类型
           formObj[name] = values[name][0].format('YYYY-MM-DD');
