@@ -24,11 +24,11 @@ const TextAreaBlock = (props) => {
     <>
       <Input.TextArea
         {...divProps}
+        rows={rows || 5}
         onChange={(e) => {
           onChange && onChange(e);
           setTotalNum(e.target.value.length);
         }}
-        rows={rows || 5}
       />
       {maxLength && (
         <div style={{ display: 'flex' }}>

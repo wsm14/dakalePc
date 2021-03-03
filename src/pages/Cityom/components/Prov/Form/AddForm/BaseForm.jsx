@@ -110,8 +110,8 @@ const BaseForm = (props) => {
       label: '企业所在地',
       type: 'cascader',
       name: 'allCityCode',
-      onChange: (val) => {
-        form.setFieldsValue({ allCityName: val.map((item) => item.label) });
+      onChange: (val, option) => {
+        form.setFieldsValue({ allCityName: option.map((item) => item.label) });
       },
       show: false,
     },

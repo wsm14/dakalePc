@@ -130,9 +130,9 @@ const BusinessAddBeas = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'provinceCode',
-      onChange: (val) => {
-        fetchGetDetail({ districtCode: val[2].value });
-        setSelectCity(val);
+      onChange: (val, option) => {
+        fetchGetDetail({ districtCode: option[2].value });
+        setSelectCity(option);
         form.setFieldsValue({
           businessHubIdString: undefined,
         });
@@ -202,13 +202,13 @@ const BusinessAddBeas = (props) => {
       name: 'topCategoryName',
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      onChange: (val) => {
-        setAreaMust(val[0].categoryName === '美食');
-        setCategId(val[0].categoryIdString);
-        fetchGetPlatform(val[0].categoryIdString);
-        fetchGetPromotionMoney(val[0].categoryIdString);
+      onChange: (val, option) => {
+        setAreaMust(option[0].categoryName === '美食');
+        setCategId(option[0].categoryIdString);
+        fetchGetPlatform(option[0].categoryIdString);
+        fetchGetPromotionMoney(option[0].categoryIdString);
         form.setFieldsValue({
-          categoryName: val,
+          categoryName: option,
           businessArea: undefined,
         });
       },

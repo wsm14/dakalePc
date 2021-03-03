@@ -35,16 +35,7 @@ const RadioBlock = (props) => {
     selectList = arrObject(select);
   }
 
-  return (
-    <Radio.Group
-      {...divProps}
-      onChange={(e) => {
-        onChange(e);
-        dataOnChange && dataOnChange(e);
-      }}
-      options={selectList}
-    ></Radio.Group>
-  );
+  return <Radio.Group {...divProps} options={selectList}></Radio.Group>;
 };
 
 export default RadioBlock;

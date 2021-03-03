@@ -65,12 +65,12 @@ const activeForm = ({ form, initialValues, dispatch, cRef }) => {
         });
         return item;
       }),
-      onChange: (val) => {
-        const { value } = val[0];
+      onChange: (val, option) => {
+        const { value } = option[0];
         setCity({
           provCode: value,
-          areaCode: val[1].value,
-          areaName: val[1].label,
+          areaCode: option[1].value,
+          areaName: option[1].label,
         });
       },
     },

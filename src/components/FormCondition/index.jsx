@@ -55,7 +55,6 @@ const FormComponents = ({
         addRules,
         visible = true,
         valuePropName = 'value',
-        onChange,
       } = item;
       // 标题
       if (title) {
@@ -70,30 +69,18 @@ const FormComponents = ({
         formItemArr.push(visible && <div key={`${label}${i}${type}`}>{item.formItem}</div>);
         return;
       }
+      let IFormItem = '';
+      const placeholder = item.placeholder || `请输入${label}`;
       // 表单组件
       if (type === 'formItem') {
         component = item.formItem;
       } else {
         // 根据类型获取不同的表单组件
-        const IFormItem = IFormModule[type];
+        IFormItem = IFormModule[type];
         if (!IFormItem) {
           formItemArr.push(<div key={`${label}${name}${i}`}>form error</div>);
           return;
         }
-        // 默认值
-        const placeholder = item.placeholder || `请输入${label}`;
-        const itemProps = Object.assign({}, item);
-        delete itemProps.normalize;
-        delete itemProps.onChange;
-        component = (
-          <IFormItem
-            {...itemProps}
-            form={form}
-            initialvalues={initialValues}
-            placeholder={placeholder}
-            dataOnChange={onChange}
-          ></IFormItem>
-        );
       }
 
       // 规则 默认必填
@@ -108,7 +95,16 @@ const FormComponents = ({
             valuePropName={type === 'switch' ? 'checked' : valuePropName}
             rules={[...rules, ...(addRules || [])]}
           >
-            {component}
+            {type === 'formItem' ? (
+              item.formItem
+            ) : (
+              <IFormItem
+                {...item}
+                form={form}
+                initialvalues={initialValues}
+                placeholder={placeholder}
+              ></IFormItem>
+            )}
           </FormItem>
         ),
       );

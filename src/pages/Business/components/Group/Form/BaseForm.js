@@ -136,14 +136,14 @@ const BaseForm = (props) => {
       name: 'topCategSelect',
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      onChange: (val) => {
-        const { categoryDTOList, categoryIdString, categoryName, parentId } = val[0];
+      onChange: (val, option) => {
+        const { categoryDTOList, categoryIdString, categoryName, parentId } = option[0];
         setCategoryObj({
-          categoryId: val[1].categoryIdString,
-          categoryName: val[1].categoryName,
+          categoryId: option[1].categoryIdString,
+          categoryName: option[1].categoryName,
           topCategoryId: categoryIdString,
           topCategoryName: categoryName,
-          categoryNode: categoryIdString + '.' + val[1].categoryIdString,
+          categoryNode: categoryIdString + '.' + option[1].categoryIdString,
         });
         // form.setFieldsValue({
         //   categoryName: val,
@@ -157,8 +157,8 @@ const BaseForm = (props) => {
       type: 'cascader',
       name: 'allCode',
       visible: Object.keys(groupDetails).length !== 0 ? false : true,
-      onChange: (val) => {
-        setAddress({ ...address, disable: false, city: val });
+      onChange: (val, option) => {
+        setAddress({ ...address, disable: false, city: option });
       },
     },
     {

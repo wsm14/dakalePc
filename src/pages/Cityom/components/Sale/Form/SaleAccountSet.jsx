@@ -38,7 +38,7 @@ const SaleAccountSet = (props) => {
         })),
         district: undefined,
       }[agentType],
-      onChange: (val) => form.setFieldsValue({ agentName: val[val.length - 1].label }),
+      onChange: (val, option) => form.setFieldsValue({ agentName: option[option.length - 1].label }),
     },
     {
       label: '所属地区',

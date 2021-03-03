@@ -119,14 +119,14 @@ const BaseForm = (props) => {
       type: 'cascader',
       name: 'allAgentCityCode',
       select: citySelect,
-      onChange: (val) => {
+      onChange: (val, option) => {
         form.setFieldsValue({
-          agentProvinceCode: val[0].value,
-          agentCityCode: val[1].value,
-          agentDistrictCode: val[2].value,
-          agentProvinceName: val[0].label,
-          agentCityName: val[1].label,
-          agentDistrictName: val[2].label,
+          agentProvinceCode: option[0].value,
+          agentCityCode: option[1].value,
+          agentDistrictCode: option[2].value,
+          agentProvinceName: option[0].label,
+          agentCityName: option[1].label,
+          agentDistrictName: option[2].label,
         });
       },
       render: (val, row) => row.agentProvinceName,
@@ -172,12 +172,12 @@ const BaseForm = (props) => {
       type: 'cascader',
       name: 'allCityCode',
       select: citySelect,
-      onChange: (val) => {
+      onChange: (val, option) => {
         form.setFieldsValue({
-          cityCode: val[1].value,
-          cityName: val[1].label,
-          districtCode: val[2].value,
-          districtName: val[2].label,
+          cityCode: option[1].value,
+          cityName: option[1].label,
+          districtCode: option[2].value,
+          districtName: option[2].label,
         });
       },
       show: false,

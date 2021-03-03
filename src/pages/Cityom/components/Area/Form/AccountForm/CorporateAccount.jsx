@@ -184,12 +184,12 @@ const CorporateAccount = (props) => {
       type: 'cascader',
       disabled: disabledInfo || loading,
       name: 'allCityCode',
-      onChange: (val) => {
+      onChange: (val, option) => {
         form.setFieldsValue({
           bankBindingObject: {
-            provCode: val[0].value,
-            areaName: val[1].label,
-            areaCode: val[1].value,
+            provCode: option[0].value,
+            areaName: option[1].label,
+            areaCode: option[1].value,
           },
         });
       },

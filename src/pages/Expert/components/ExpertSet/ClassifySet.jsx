@@ -98,8 +98,8 @@ const ClassifySet = (props) => {
         value: 'categoryIdString',
         children: 'categoryDTOList',
       },
-      onChange: (val) => {
-        setData = val;
+      onChange: (val, option) => {
+        setData = option;
       },
     },
   ];

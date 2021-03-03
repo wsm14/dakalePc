@@ -69,7 +69,7 @@
 | disabled | 是否禁用 | boolean | false |
 | changeOnSelect | 点选每级菜单选项值都会发生变化 | boolean | false |
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
-| onChange | 选择完成后的回调 | (value, form) => void | - |
+| onChange | 选择完成后的回调 | (value, option) => void | - |
 
 #### Select 选择器 && Tags 选择器 （[更多配置](https://ant.design/components/select-cn/)）
 
@@ -129,6 +129,13 @@
 | format | 展示的时间格式 | string | 'HH:mm' |
 
 ## 更新日志
+
+- ### 2021 年 3 月 3 日 14:45:41 Dong
+
+> - `Cascader 级联选择`类型调整 `onChange`
+>   > - `onChange`事件 回参 `(option)=> void` 调整为 `(value, option)=> void`
+>   > - `onChange`事件 第一个参数为当前选择的值，第二个参数为当前选项，与 antd 原本回参相同
+>   > - 全局搜索修改
 
 - ### 2021 年 2 月 24 日 12:13:00 Dong
 

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CITYJSON from '@/common/city';
 import { Cascader } from 'antd';
+import { delectProps } from '../utils';
 
 // Cascader搜索筛选
 const filter = (inputValue, path, label = 'label') => {
@@ -9,30 +10,21 @@ const filter = (inputValue, path, label = 'label') => {
 
 const CascaderBlock = (props) => {
   const {
-    form,
-    name,
     select,
     label: plabel,
     placeholder,
     disabled,
     changeOnSelect = false,
-    onChange = undefined,
     fieldNames = {},
-    value: changeValue = [],
-    dataOnChange,
+    onChange,
   } = props;
 
-  const { label = 'label', value = 'value' } = fieldNames;
-
-  useEffect(() => {
-    const valueData =
-      typeof changeValue[0] === 'object' ? changeValue.map((i) => i[value]) : changeValue;
-    form.setFieldsValue({ [name]: valueData });
-  }, [changeValue]);
+  const { label = 'label' } = fieldNames;
+  const divProps = delectProps(props);
 
   return (
     <Cascader
-      value={changeValue}
+      {...divProps}
       allowClear={false}
       expandTrigger="hover"
       showSearch={{
@@ -43,9 +35,8 @@ const CascaderBlock = (props) => {
       fieldNames={fieldNames}
       placeholder={placeholder || `请选择${plabel}`}
       options={select || CITYJSON}
-      onChange={(val, option) => {
-        if (onChange) onChange(option);
-        dataOnChange && dataOnChange(option, val);
+      onChange={(val, options) => {
+        if (onChange) onChange(val, options);
       }}
     />
   );
