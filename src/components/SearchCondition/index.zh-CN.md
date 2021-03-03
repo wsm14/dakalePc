@@ -44,18 +44,18 @@ handle={(form)=> ({
 
 #### DatePicker 日期选择框（[更多配置](https://ant.design/components/date-picker-cn/)）
 
-| 参数                | 说明                                         | 类型   | 默认值 |
-| ------------------- | -------------------------------------------- | ------ | ------ |
-| type                | `（必填）` 类型 ，`datePicker | rangePicker` | string | -      |
-| picker `datePicker` | 时间选择器展示类型，默认选择到日，`year`     | string | -      |
-| end `rangePicker`   | `（必填）` 结束时间参数名                    | string | -      |
+| 参数                | 说明                                             | 类型   | 默认值 |
+| ------------------- | ------------------------------------------------ | ------ | ------ |
+| type                | `（必填）` 类型 ，`datePicker | rangePicker`     | string | -      |
+| picker `datePicker` | 时间选择器展示类型，默认选择到日，`year | month` | string | date   |
+| end `rangePicker`   | `（必填）` 结束时间参数名                        | string | -      |
 
 #### Select 选择器（[更多配置](https://ant.design/components/select-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | type | `（必填）` 类型 ，`select | multiple` | string | - |
-| select | `（必填）` 选择值参数值 ，`datePicker | rangePicker` | `object | array | { list: array } | { list: object }` | - |
+| select | `（必填）` 选择值参数值 | `object | array | { list: array } | { list: object }` | - |
 | loading | 搜索等待状态 | boolean | false |
 | fieldNames | 自定义 select 中 name value otherData 的字段 | object | { label: label, value: value, tip: otherData } | string | - |
 | allItem `select` | 是否显示`全部`选项，配置 defaultValue | boolean | true |
