@@ -85,11 +85,11 @@ const SearchCondition = (props) => {
         // 时间类型处理
         if (type === 'datePicker') {
           if (picker === 'year') {
-            formObj[item.name] = values[item.name].format('YYYY');
+            formObj[name] = values[name].format('YYYY');
           } else if (picker === 'month') {
-            formObj[item.name] = values[item.name].format('YYYY-MM');
+            formObj[name] = values[name].format('YYYY-MM');
           } else {
-            formObj[item.name] = values[item.name].format('YYYY-MM-DD');
+            formObj[name] = values[name].format('YYYY-MM-DD');
           }
         } else if (type === 'rangePicker' && end && !!values[name].length) {
           // 区间时间类型
