@@ -66,7 +66,7 @@ handle={(form)=> ({
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | select | `（必填）` 选择值，默认城市数据 | [] | CITYJSON |
-| valueskey | `（必填）` 返回参数 key 值，按顺序返回 ['provinceCode', 'cityCode', 'districtCode'], | array | [] |
+| valuesKey | `（必填）` 返回参数 key 值，按顺序返回 ['provinceCode', 'cityCode', 'districtCode'], | array | [] |
 | placeholder | 默认文本 | string | 选择城市 |
 | changeOnSelect | 点选每级菜单选项值都会发生变化 | boolean | false |
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
@@ -78,7 +78,6 @@ handle={(form)=> ({
 
 组件重构
 
-> - `cascader` 组件 `valuesKey` 参数，改为 `valueskey`
 > - `select` 组件增加 `fieldNames` 配置 参数别名
 > - `select` type 为 select 时 增加 `defaultValue` 配置 `全部` 选项默认值
 > - 表单组件增加`handle`配置，抛出当前 `form` 实例，对象形式，会扩展到相关组件内

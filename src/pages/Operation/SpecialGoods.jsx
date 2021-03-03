@@ -51,7 +51,7 @@ const SpecialGoods = (props) => {
       label: '区域',
       name: 'city',
       type: 'cascader',
-      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length && fetchGetHubSelect(val[2]),
     },
     {

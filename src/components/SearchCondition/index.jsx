@@ -99,9 +99,9 @@ const SearchCondition = (props) => {
           // 多选框字符串传递
           formObj[name] = values[name].toString();
         } else if (type === 'cascader') {
-          const { valueskey } = item;
+          const { valuesKey } = item;
           // 级联处理
-          if (valueskey) valueskey.map((key, i) => (formObj[key] = values[name][i]));
+          if (valuesKey) valuesKey.map((key, i) => (formObj[key] = values[name][i]));
           else formObj[name] = values[name][values[name].length - 1];
           delete values[name];
         }

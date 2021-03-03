@@ -33,7 +33,7 @@ const CircleMasterList = (props) => {
       type: 'cascader',
       name: 'city',
       changeOnSelect: true,
-      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 

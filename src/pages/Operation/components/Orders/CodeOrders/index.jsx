@@ -42,7 +42,7 @@ const CodeOrders = (props) => {
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
-      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
     {

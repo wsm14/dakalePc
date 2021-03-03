@@ -53,7 +53,7 @@ const CouponManageComponent = (props) => {
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
-      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 
