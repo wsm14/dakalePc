@@ -43,6 +43,7 @@ const SelectBlock = (props) => {
       notFoundContent={
         loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       }
+      loading={loading}
       {...multProps}
       {...divProps}
       placeholder={placeholder || `请选择${plabel}`}
