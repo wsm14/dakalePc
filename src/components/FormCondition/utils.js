@@ -27,6 +27,7 @@ export const delectProps = (data) => {
   delete divProps.show;
   delete divProps.label;
   delete divProps.form;
+  delete divProps.normalize;
 
   return divProps;
 };
