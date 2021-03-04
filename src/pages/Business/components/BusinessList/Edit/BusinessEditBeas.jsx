@@ -20,7 +20,6 @@ const BusinessAddBeas = (props) => {
   } = props;
 
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
-  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(false);
   const [hubList, setHubList] = useState([]);
@@ -203,10 +202,10 @@ const BusinessAddBeas = (props) => {
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val, option) => {
-        setAreaMust(option[0].categoryName === '美食');
-        setCategId(option[0].categoryIdString);
-        fetchGetPlatform(option[0].categoryIdString);
-        fetchGetPromotionMoney(option[0].categoryIdString);
+        const [categoryId] = val;
+        setCategId(categoryId);
+        fetchGetPlatform(categoryId);
+        fetchGetPromotionMoney(categoryId);
         form.setFieldsValue({
           categoryName: option,
           businessArea: undefined,
@@ -222,7 +221,7 @@ const BusinessAddBeas = (props) => {
       label: '店铺面积',
       type: 'select',
       name: 'businessArea',
-      visible: areaMust,
+      visible: platformList.length && platformList[0].type === 'area',
       loading: loading.models.sysTradeList,
       select: platformList,
       fieldNames: { label: 'typeContent', value: 'typeContent' },
