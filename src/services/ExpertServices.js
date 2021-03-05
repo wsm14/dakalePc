@@ -84,14 +84,14 @@ export function fetchClassifyDetailSet(data) {
 
 // get 排序机制 - 列表
 export function fetchExpertSortList(params) {
-  return request('/admin/userManagement/getUserLevelSortConfig', {
+  return request('/admin/systemConfig/getUserLevelSortConfig', {
     params,
   });
 }
 
 // post 排序机制 - 设置
 export function fetchExpertSortSet(data) {
-  return request('/admin/userManagement/saveUserLevelSortConfig', {
+  return request('/admin/systemConfig/saveUserLevelSortConfig', {
     method: 'POST',
     data,
   });
@@ -103,14 +103,14 @@ export function fetchExpertSortSet(data) {
 
 // get 等级设置 - 列表
 export function fetchExpertLevelList(params) {
-  return request('/admin/userLevelManagement/listLevelConfig', {
+  return request('/admin/systemConfig/listLevelConfig', {
     params,
   });
 }
 
 // post 等级设置 - 设置
 export function fetchExpertLevelSet(data) {
-  return request('/admin/userLevelManagement/saveLevelConfig', {
+  return request('/admin/systemConfig/saveLevelConfig', {
     method: 'POST',
     data,
   });

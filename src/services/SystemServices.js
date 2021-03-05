@@ -117,7 +117,7 @@ export function fetchTradeSpecialSet(data) {
 
 // post 行业设置 - 平台服务费 - 新增修改删除
 export function fetchTradePlatformSet(data) {
-  return request('/admin/systemIndustry/upsertConfigMerchantSettle', {
+  return request('/admin/systemIndustry/updateConfigMerchantSettle', {
     method: 'POST',
     data,
   });
@@ -297,14 +297,14 @@ export function fetchTradeAreaEdit(data) {
 
 // get 品牌 - 品牌列表
 export function fetchMerBrandList(params) {
-  return request('/admin/merchantManagement/listConfigBrand', {
+  return request('/admin/systemConfig/listConfigBrand', {
     params,
   });
 }
 
 // post 品牌 - 品牌新增
 export function fetchMerBrandAdd(data) {
-  return request('/admin/merchantManagement/saveConfigBrand', {
+  return request('/admin/systemConfig/saveConfigBrand', {
     method: 'POST',
     data,
   });
@@ -312,7 +312,7 @@ export function fetchMerBrandAdd(data) {
 
 // post 品牌 - 品牌修改
 export function fetchMerBrandEdit(data) {
-  return request('/admin/merchantManagement/updateConfigBrand', {
+  return request('/admin/systemConfig/updateConfigBrand', {
     method: 'POST',
     data,
   });
