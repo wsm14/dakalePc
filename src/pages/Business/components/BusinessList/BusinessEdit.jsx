@@ -325,6 +325,7 @@ const BusinessAdd = (props) => {
           form={form}
           amap={amap}
           setType={type}
+          categId={categId}
           setCategId={setCategId}
           onSearchAddress={onSearchAddress}
           initialValues={initialValues}

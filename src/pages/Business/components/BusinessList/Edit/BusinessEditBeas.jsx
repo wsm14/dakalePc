@@ -15,6 +15,7 @@ const BusinessAddBeas = (props) => {
     brandList,
     platformList,
     tradeList,
+    categId,
     setCategId,
     setType, // 进入的状态 add edit audit
   } = props;
@@ -221,7 +222,7 @@ const BusinessAddBeas = (props) => {
       label: '店铺面积',
       type: 'select',
       name: 'businessArea',
-      visible: platformList.length && platformList[0].type === 'area',
+      visible: categId && platformList.length && platformList[0].type === 'area',
       loading: loading.models.sysTradeList,
       select: platformList,
       fieldNames: { label: 'typeContent', value: 'typeContent' },
