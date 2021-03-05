@@ -1,6 +1,7 @@
 import React from 'react';
 import { Descriptions } from 'antd';
 import ImagePreviewGroup from './ImagePreviewGroup';
+import VideoPreview from './VideoPreview';
 import styles from './index.less';
 
 /**
@@ -45,6 +46,7 @@ const DescriptionsCondition = (props) => {
       text: value,
       textArea: value,
       upload: <ImagePreviewGroup url={value}></ImagePreviewGroup>,
+      videoUpload: <VideoPreview url={value}></VideoPreview>,
     }[type];
     // 类型错误返回
     if (!domShow) return 'type error';
