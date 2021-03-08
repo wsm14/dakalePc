@@ -209,6 +209,11 @@ export default [
         component: './Operation/SpecialGoods',
         buttons: ['down', 'recommendStatus', 'tradeSet'],
       },
+      {
+        path: '/operation/walking',
+        name: '逛逛页面配置',
+        component: './Operation/WalkingManage',
+      },
       // 哒人管理
       {
         path: '/expert/uaerlist',
