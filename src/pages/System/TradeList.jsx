@@ -8,6 +8,7 @@ import TradeCategorySet from './components/Trade/Form/TradeCategorySet';
 import PromotionMoneySet from './components/Trade/Form/PromotionMoneySet';
 import TradeDetailList from './components/Trade/List/TradeDetailList';
 import TradePlatformDetailList from './components/Trade/List/TradePlatformDetailList';
+import TradeSceneList from './components/Trade/List/TradeSceneList'
 
 const SysTradeSet = (props) => {
   const { list, loading, dispatch } = props;
@@ -188,6 +189,7 @@ const SysTradeSet = (props) => {
         onClose={() => setClassVisible(false)}
       ></TradeCategorySet>
       {/* 适用场景 */}
+      <TradeSceneList visible={visibleScene} childRef={childRef} onClose={()=>setVisibleScene(false)}></TradeSceneList>
       
     </>
   );
