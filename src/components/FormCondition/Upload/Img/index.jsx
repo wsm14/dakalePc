@@ -31,7 +31,6 @@ const DragableUploadListItem = ({ originNode, moveRow, file, fileList, fileKeyNa
       moveRow(item.index, index);
     },
   });
-
   // type 拖拽对象落点的属性 区分拖拽对象的不同落点区域 与useDrop accept对应
   const [, drag] = useDrag({
     item: { type: fileKeyName, index },
@@ -99,6 +98,7 @@ const UploadBlock = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显弹窗显示隐藏
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 属性
+
   // 文件控制列表
   const [fileLists, setFileLists] = useState(() => {
     if (initialValues && Object.keys(initialValues).length) {
