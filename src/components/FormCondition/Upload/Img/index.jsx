@@ -10,14 +10,13 @@ import './index.less';
 
 const RNDContext = createDndContext(HTML5Backend);
 
-const type = 'DragableUploadList';
-
 // 图片拖动
-const DragableUploadListItem = ({ originNode, moveRow, file, fileList }) => {
+const DragableUploadListItem = ({ originNode, moveRow, file, fileList, fileKeyName }) => {
   const ref = useRef();
   const index = fileList.indexOf(file);
+  // accept 拖拽对象落点的属性 区分拖拽对象的不同落点区域 与useDrag type对应
   const [{ isOver, dropClassName }, drop] = useDrop({
-    accept: type,
+    accept: fileKeyName,
     collect: (monitor) => {
       const { index: dragIndex } = monitor.getItem() || {};
       if (dragIndex === index) {
@@ -33,8 +32,9 @@ const DragableUploadListItem = ({ originNode, moveRow, file, fileList }) => {
     },
   });
 
+  // type 拖拽对象落点的属性 区分拖拽对象的不同落点区域 与useDrop accept对应
   const [, drag] = useDrag({
-    item: { type, index },
+    item: { type: fileKeyName, index },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -265,6 +265,7 @@ const UploadBlock = (props) => {
                 file={file}
                 fileList={currFileList}
                 moveRow={(dragIndex, hoverIndex) => moveRow(dragIndex, hoverIndex)}
+                fileKeyName={fileKeyName}
               />
             );
           }}
