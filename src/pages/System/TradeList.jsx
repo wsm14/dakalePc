@@ -17,6 +17,7 @@ const SysTradeSet = (props) => {
   const [baseVisible, setBaseVisible] = useState(''); // 基础设施
   const [moneyVisible, setMoneyVisible] = useState(false); // 推广费设置修改
   const [classVisible, setClassVisible] = useState(false); // 类目设置修改
+  const [visibleScene, setVisibleScene] = useState(false); // 类目设置修改
 
   // 搜索参数
   const searchItems = [
@@ -61,6 +62,16 @@ const SysTradeSet = (props) => {
       render: (val, record) => (
         <AuthConsumer auth="edit" show={!record.parentId}>
           <a onClick={() => setBaseVisible({ type: 'special', record })}>设置</a>
+        </AuthConsumer>
+      ),
+    },
+    {
+      title: '适用场景',
+      align: 'center',
+      dataIndex: 'id',
+      render: (val, record) => (
+        <AuthConsumer auth="edit" show={!record.parentId}>
+          <a onClick={() =>setVisibleScene({type:'scene', record}) }>设置</a>
         </AuthConsumer>
       ),
     },
@@ -176,6 +187,8 @@ const SysTradeSet = (props) => {
         visible={classVisible}
         onClose={() => setClassVisible(false)}
       ></TradeCategorySet>
+      {/* 适用场景 */}
+      
     </>
   );
 };
