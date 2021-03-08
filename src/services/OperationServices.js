@@ -241,14 +241,14 @@ export function fetchClassifyDel(data) {
 
 // get 标签管理 - 列表
 export function fetchTagList(params) {
-  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+  return request('/common/systemConfig/listConfigMerchantTagAdmin', {
     params,
   });
 }
 
 // post 标签管理 - 新增
 export function fetchTagAdd(data) {
-  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+  return request('/common/systemConfig/saveConfigMerchantTag', {
     method: 'POST',
     data,
   });
@@ -256,7 +256,7 @@ export function fetchTagAdd(data) {
 
 // post 标签管理 - 修改
 export function fetchTagEdit(data) {
-  return request('/common/configMerchantTag/updateConfigMerchantTag', {
+  return request('/common/systemConfig/updateConfigMerchantTag', {
     method: 'POST',
     data,
   });
@@ -268,14 +268,14 @@ export function fetchTagEdit(data) {
 
 // get 优惠券管理 - 列表
 export function fetchCouponList(params) {
-  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+  return request('/common/systemConfig/listConfigMerchantTagAdmin', {
     params,
   });
 }
 
 // post 优惠券管理 - 下架
 export function fetchCouponStatus(data) {
-  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+  return request('/common/systemConfig/saveConfigMerchantTag', {
     method: 'POST',
     data,
   });

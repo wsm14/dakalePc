@@ -101,14 +101,14 @@ export function fetchWithdrawSetRemark(data) {
 
 // get 平台收益 - 列表 总收益卡豆
 export function fetchPlatformInconme(params) {
-  return request('/admin/order/platformRevenue', {
+  return request('/admin/platform/platformRevenue', {
     params,
   });
 }
 
 // get 平台收益 - 详情
 export function fetchPlatformInconmeDetail(params) {
-  return request('/admin/order/getPlatformRevenueOrderDetail', {
+  return request('/admin/platform/getPlatformRevenueOrderDetail', {
     params,
   });
 }

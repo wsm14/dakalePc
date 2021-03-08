@@ -130,7 +130,7 @@ const TableBlockComponent = (props) => {
     pageSize: tableParems.limit,
     showTotal: () => `共${total}项`,
     showQuickJumper: tableParems.limit > 100 ? false : true,
-    hideOnSinglePage: total > 0 ? false : true,
+    hideOnSinglePage: true,
     showSizeChanger: tableParems.limit > 100 ? false : true,
   };
 

@@ -4,7 +4,7 @@ import request from '@/utils/request';
 
 // get 日志记录
 export function fetchHandleDetail(params) {
-  return request('/user/logRecord/listLogRecord', {
+  return request('/admin/logRecord/listLogRecord', {
     params,
   });
 }
@@ -60,7 +60,7 @@ export function fetchGetHubName(params) {
 
 // get 店铺标签
 export function fetchGetMreTag(params) {
-  return request('/common/configMerchantTag/listConfigMerchantTag', {
+  return request('/common/systemConfig/listConfigMerchantTag', {
     params,
   });
 }
