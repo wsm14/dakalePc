@@ -1,16 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import Ellipsis from '@/components/Ellipsis';
+import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import VaneDrawer from './VaneDrawer';
 
 const VaneManage = (props) => {
-  const { shareManage, loading, dispatch } = props;
+  const { serviceFAQ, loading, dispatch } = props;
+  const { list: FAQList } = serviceFAQ;
 
   const childRef = useRef();
-  const [visibleDown, setVisibleDown] = useState(false); // 下架原因
 
   // 获取详情
   const fetchShareDetail = (val, type) => {
@@ -27,23 +28,19 @@ const VaneManage = (props) => {
   const getColumns = [
     {
       title: '图标',
-      fixed: 'left',
       dataIndex: 'frontImage',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
       title: '显示名称',
-      dataIndex: 'title',
-      width: 150,
+      dataIndex: 'questionTitle',
+      className: 'drag-visible',
     },
     {
-      title: '移动',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      title: '排序',
+      align: 'right',
+      dataIndex: 'sort',
+      render: () => <DragHandle />,
     },
     {
       title: '操作',
@@ -51,21 +48,19 @@ const VaneManage = (props) => {
       fixed: 'right',
       align: 'right',
       render: (val, record) => {
-        const { status } = record;
         return (
           <HandleSetTable
             formItems={[
               {
-                type: 'down',
-                visible: status == 1 || status == 5,
+                type: 'info',
                 click: () => setVisibleDown({ show: true, initialValues: record }),
               },
               {
-                type: 'info',
+                type: 'edit',
                 click: () => fetchShareDetail(val, record.contentType),
               },
               {
-                type: '操作记录',
+                type: 'del',
                 click: () => fetchShareHandleDetail(val),
               },
             ]}
@@ -78,19 +73,22 @@ const VaneManage = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        tableSort={{ key: 'questionIdString', onSortEnd: (val) => console.log(val) }}
         cardProps={{ title: '风向标配置', extra: <Button type="primary">新增</Button> }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.userMomentIdString}`}
-        {...shareManage}
+        rowKey={(record) => `${record.questionIdString}`}
+        params={{ userType: 'user' }}
+        dispatchType="serviceFAQ/fetchGetList"
+        {...FAQList}
       ></TableDataBlock>
+      <VaneDrawer visible={{ show: true }}></VaneDrawer>
     </>
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  shareManage,
-  loading: loading.models.shareManage,
+export default connect(({ serviceFAQ, loading }) => ({
+  serviceFAQ,
+  loading: loading.models.serviceFAQ,
 }))(VaneManage);

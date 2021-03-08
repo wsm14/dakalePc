@@ -9,6 +9,7 @@ import select from './Select';
 import switchBlock from './Switch';
 import textArea from './TextArea';
 import timePicker from './TimePicker';
+import treeSelect from './TreeSelect';
 import upload from './Upload/Img';
 import videoUpload from './Upload/Video';
 import otherUpload from './Upload/Other';
@@ -20,6 +21,7 @@ const IFormModule = {
   checkbox,
   cascader,
   timePicker,
+  treeSelect,
   dataPicker,
   rangePicker,
   radio,

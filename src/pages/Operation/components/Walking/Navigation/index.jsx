@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import TableDataBlock from '@/components/TableDataBlock';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import DndDragContext from '@/components/DndDragContext';
 
 const VaneManage = (props) => {
@@ -37,8 +37,8 @@ const VaneManage = (props) => {
     {
       title: '场景',
       dataIndex: 'id',
-      render: () => (
-        <DndDragContext accept="tag" data={list} onEnd={(val) => setList(val)}>
+      render: (val, row) => (
+        <DndDragContext accept={row.questionTitle} data={list} onEnd={(val) => setList(val)}>
           {list.map((item) => (
             <Tag color="orange" key={item.value}>
               {item.name}
