@@ -72,7 +72,7 @@ const SysAppSet = (props) => {
     {
       label: '应用范围',
       type: 'radio',
-      name: 'descsssrssiption',
+      name: 'detion',
       select: ['全平台', '按区县'],
     },
     {
