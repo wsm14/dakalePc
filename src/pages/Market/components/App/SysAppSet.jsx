@@ -46,21 +46,40 @@ const SysAppSet = (props) => {
 
   const formItems = [
     {
-      label: '图片上传',
-      type: 'upload',
-      maxFile: 1,
-      name: 'coverImg',
-    },
-    {
       label: '图片位置',
       type: 'select',
       name: 'bannerType',
       select: BANNER_TYPE,
     },
     {
-      type: 'textArea',
+      label: '图片上传',
+      type: 'upload',
+      maxFile: 1,
+      name: 'coverImg',
+    },
+    {
       label: '图片说明',
+      type: 'textArea',
       name: 'description',
+      maxLength: 200,
+    },
+    {
+      label: '可见范围',
+      type: 'radio',
+      name: 'descrssiption',
+      select: ['所有用户可见', '仅哒人可见'],
+    },
+    {
+      label: '应用范围',
+      type: 'radio',
+      name: 'descsssrssiption',
+      select: ['全平台', '按区县'],
+    },
+    {
+      label: '选择区县',
+      type: 'radio',
+      name: 'descsssrssiption',
+      select: ['全平台', '按区县'],
     },
     {
       type: 'rangePicker',
