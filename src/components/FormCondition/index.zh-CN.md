@@ -16,6 +16,7 @@
 - [Select 选择器](https://ant.design/components/select-cn/)
 - [Switch 开关](https://ant.design/components/switch-cn/)
 - [TimePicker 时间选择框](https://ant.design/components/time-picker-cn/)
+- [TreeSelect 树选择](https://ant.design/components/tree-select-cn/)
 - [Upload 上传](https://ant.design/components/upload-cn/)
 
 ## API
@@ -68,15 +69,22 @@
 | placeholder | 默认文本 | string | 选择城市 |
 | disabled | 是否禁用 | boolean | false |
 | changeOnSelect | 点选每级菜单选项值都会发生变化 | boolean | false |
-| fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
+| fieldNames | 自定义 select 中 label value children 的字段 | object | { label: label, value: value, children: children } |
 | onChange | 选择完成后的回调 | (value, option) => void | - |
+
+#### TreeSelect 树选择（[更多配置](https://ant.design/components/tree-select-cn/)）
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| select | `（必填）` 选择值 | `[{ name: string; value: string; children: children }]` | [] |
+| fieldNames | 自定义 select 中 label value children disabled 的字段 | object | { label: name, value: value, children: children, disabled: disabled } |
 
 #### Select 选择器 && Tags 选择器 （[更多配置](https://ant.design/components/select-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | select | `（必填）` 选择值 | `[] | [{ }] | { label: string; value: string; tip?: string; }` | [] |
-| fieldNames | 自定义 select 中 label name children 的字段 | object | { label: name, value: value, tip: otherData } |
+| fieldNames | 自定义 select 中 label value children 的字段 | object | { label: name, value: value, tip: otherData } |
 | loading | loading 状态 | boolean | false |
 
 #### Upload 上传组件
@@ -129,6 +137,13 @@
 | format | 展示的时间格式 | string | 'HH:mm' |
 
 ## 更新日志
+
+- ### 2021 年 3 月 9 日 10:58:44 Dong
+
+> - 新增 `TreeSelect 树形选择器`
+> - `Upload/Img` 拖拽排序控件调整
+>   > - Cannot have two HTML5 backends at the same time.
+>   > - `@\components\DndDragContext` 导出 `DndProvider`
 
 - ### 2021 年 3 月 3 日 14:45:41 Dong
 

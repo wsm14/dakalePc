@@ -1,14 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { DndProvider, useDrag, useDrop, createDndContext } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrag, useDrop } from 'react-dnd';
+import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
 import update from 'immutability-helper';
 import imageCompress from '@/utils/imageCompress';
 import ImgCutView from '@/components/ImgCut';
 import './index.less';
-
-const RNDContext = createDndContext(HTML5Backend);
 
 // 图片拖动
 const DragableUploadListItem = ({ originNode, moveRow, file, fileList, fileKeyName }) => {
@@ -92,8 +90,6 @@ const UploadBlock = (props) => {
   } = props;
 
   const fileKeyName = Array.isArray(name) ? name[1] : name;
-
-  const manager = useRef(RNDContext);
 
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显弹窗显示隐藏
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -248,7 +244,7 @@ const UploadBlock = (props) => {
 
   return (
     <>
-      <DndProvider manager={manager.current.dragDropManager}>
+      <DragAndDropHOC>
         <Upload
           // 允许选择时裁剪的时候不允许多选
           multiple={isCut ? false : multiple || true}
@@ -272,7 +268,7 @@ const UploadBlock = (props) => {
         >
           {fileLists && fileLists.length < (maxFile || 999) && uploadButton}
         </Upload>
-      </DndProvider>
+      </DragAndDropHOC>
       <Modal
         destroyOnClose
         title="编辑图片"

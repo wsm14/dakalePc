@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -9,7 +8,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const VaneDrawer = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
 
-  const { show = false, info = '' } = visible;
+  const { show = false, type = 'add', info = '' } = visible;
   const [form] = Form.useForm();
   const [showUrl, setShowUrl] = useState(false);
 
@@ -81,22 +80,7 @@ const VaneDrawer = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition
-        initialValues={
-          info
-            ? {
-                ...info,
-                jumpType: info.jumpType ? info.jumpType : '无',
-                beginDate: [
-                  moment(info.beginDate, 'YYYY-MM-DD'),
-                  moment(info.endDate, 'YYYY-MM-DD'),
-                ],
-              }
-            : {}
-        }
-        formItems={formItems}
-        form={form}
-      />
+      <FormCondition initialValues={{}} formItems={formItems} form={form} />
     </DrawerCondition>
   );
 };

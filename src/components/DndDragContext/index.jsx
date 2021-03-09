@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrag, useDrop } from 'react-dnd';
 import update from 'immutability-helper';
+import DragAndDropHOC from './DragAndDropHOC';
 import './index.less';
 
 const DndDragContext = (props) => {
@@ -21,7 +21,7 @@ const DndDragContext = (props) => {
   };
 
   // 拖动项目
-  const DragableUploadListItem = ({ originNode, index }) => {
+  const DragableListItem = ({ originNode, index }) => {
     const ref = useRef();
     // accept 拖拽对象落点的属性 区分拖拽对象的不同落点区域 与useDrag type对应
     const [{ isOver, dropClassName }, drop] = useDrop({
@@ -60,17 +60,17 @@ const DndDragContext = (props) => {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DragAndDropHOC>
       <div className="dakale-move-dom-wrapper">
         {children.map((item, index) => (
-          <DragableUploadListItem
+          <DragableListItem
             key={`domDnd${index}`}
             originNode={item}
             index={index}
-          ></DragableUploadListItem>
+          ></DragableListItem>
         ))}
       </div>
-    </DndProvider>
+    </DragAndDropHOC>
   );
 };
 

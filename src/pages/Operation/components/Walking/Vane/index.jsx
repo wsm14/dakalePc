@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
@@ -12,6 +12,7 @@ const VaneManage = (props) => {
   const { list: FAQList } = serviceFAQ;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false);
 
   // 获取详情
   const fetchShareDetail = (val, type) => {
@@ -74,7 +75,14 @@ const VaneManage = (props) => {
     <>
       <TableDataBlock
         tableSort={{ key: 'questionIdString', onSortEnd: (val) => console.log(val) }}
-        cardProps={{ title: '风向标配置', extra: <Button type="primary">新增</Button> }}
+        cardProps={{
+          title: '风向标配置',
+          extra: (
+            <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
+              新增
+            </Button>
+          ),
+        }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -83,7 +91,7 @@ const VaneManage = (props) => {
         dispatchType="serviceFAQ/fetchGetList"
         {...FAQList}
       ></TableDataBlock>
-      <VaneDrawer visible={{ show: true }}></VaneDrawer>
+      <VaneDrawer visible={visible} onClose={() => setVisible(false)}></VaneDrawer>
     </>
   );
 };

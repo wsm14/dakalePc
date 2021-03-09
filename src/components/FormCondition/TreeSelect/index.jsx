@@ -18,6 +18,7 @@ const CascaderBlock = (props) => {
     children = 'children',
     disabled = 'disabled',
   } = fieldNames;
+
   const divProps = delectProps(props);
 
   const mapTreeDom = (list) =>
