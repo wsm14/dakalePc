@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const CloseRefuse = (props) => {

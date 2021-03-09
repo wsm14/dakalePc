@@ -25,6 +25,17 @@ const VaneManage = (props) => {
     });
   };
 
+  // 删除
+  const fetchDetailDel = (val) => {
+    dispatch({
+      type: 'shareManage/fetchShareDetail',
+      payload: {
+        userMomentIdString: val,
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
   // table 表头
   const getColumns = [
     {
@@ -54,15 +65,15 @@ const VaneManage = (props) => {
             formItems={[
               {
                 type: 'info',
-                click: () => setVisibleDown({ show: true, initialValues: record }),
+                click: () => fetchShareDetail(val, 'detail'),
               },
               {
                 type: 'edit',
-                click: () => fetchShareDetail(val, record.contentType),
+                click: () => fetchShareDetail(val, 'edit'),
               },
               {
                 type: 'del',
-                click: () => fetchShareHandleDetail(val),
+                click: () => fetchDetailDel(val),
               },
             ]}
           />
