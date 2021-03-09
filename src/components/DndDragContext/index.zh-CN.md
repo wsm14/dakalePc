@@ -22,6 +22,4 @@ Cannot have two HTML5 backends at the same time.
 
 - ### 2021 年 3 月 8 日 17:26:18 Dong
 
-组件重构
-
 > - 组件封装
