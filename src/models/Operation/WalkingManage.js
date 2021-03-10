@@ -6,6 +6,7 @@ import {
   fetchWalkManageVaneAdd,
   fetchWalkManageVaneEditDel,
   fetchWalkManageNavigation,
+  fetchWalkManageNavigationSort,
 } from '@/services/OperationServices';
 
 export default {
@@ -84,6 +85,15 @@ export default {
           },
         },
       });
+    },
+    *fetchWalkManageNavigationSort({ payload, callback }, { call }) {
+      const response = yield call(fetchWalkManageNavigationSort, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '类目排序成功',
+      });
+      callback();
     },
   },
 };

@@ -10,14 +10,28 @@ const VaneManage = (props) => {
 
   const childRef = useRef();
 
-  // 获取详情
-  const fetchShareDetail = (val, type) => {
+  // 排序
+  const fetchDetailSort = (value) => {
     dispatch({
-      type: 'shareManage/fetchShareDetail',
-      payload: {
-        userMomentIdString: val,
-      },
-      callback: (detail) => setVisible({ show: true, type, detail }),
+      type: 'walkingManage/fetchWalkManageVaneSort',
+      payload: value,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 子项目排序 需要父级项目id 当前序号 数据
+  const handleSortData = (id, index, list) => {
+    fetchDetailSort({
+      categoryDTOList: [
+        {
+          categoryIdString: id,
+          navigationSort: index + 1,
+          categoryScenesDTOList: list.map(({ categoryScenesId }, index) => ({
+            categoryScenesId,
+            sort: index,
+          })),
+        },
+      ],
     });
   };
 
@@ -32,10 +46,14 @@ const VaneManage = (props) => {
       title: '场景',
       align: 'center',
       dataIndex: 'categoryIdString',
-      render: (val, row) => {
+      render: (val, row, index) => {
         const { categoryScenesDTOList: data = [] } = row;
         return data.length ? (
-          <DndDragContext accept={val} data={data} onEnd={(list) => console.log(val, list)}>
+          <DndDragContext
+            accept={val}
+            data={data}
+            onEnd={(list) => handleSortData(val, index, list)}
+          >
             {row.categoryScenesDTOList.map((item) => (
               <Tag color="orange" key={item.categoryId}>
                 {item.scenesName}
@@ -56,19 +74,23 @@ const VaneManage = (props) => {
   ];
 
   return (
-    <>
-      <TableDataBlock
-        tableSort={{ key: 'categoryIdString', onSortEnd: (val) => console.log(val) }}
-        cardProps={{ title: '导航类目页面配置', style }}
-        cRef={childRef}
-        loading={loading}
-        pagination={false}
-        columns={getColumns}
-        rowKey={(record) => `${record.categoryIdString}`}
-        dispatchType="walkingManage/fetchWalkManageNavigation"
-        {...navigation}
-      ></TableDataBlock>
-    </>
+    <TableDataBlock
+      tableSort={{
+        key: 'categoryIdString',
+        onSortEnd: (val) =>
+          fetchDetailSort({
+            categoryDTOList: val.map((item, index) => ({ ...item, navigationSort: index + 1 })),
+          }),
+      }}
+      cardProps={{ title: '导航类目页面配置', style }}
+      cRef={childRef}
+      loading={loading}
+      pagination={false}
+      columns={getColumns}
+      rowKey={(record) => `${record.categoryIdString}`}
+      dispatchType="walkingManage/fetchWalkManageNavigation"
+      {...navigation}
+    ></TableDataBlock>
   );
 };
 

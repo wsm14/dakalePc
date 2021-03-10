@@ -328,4 +328,12 @@ export function fetchWalkManageNavigation() {
   return request('/admin/systemIndustry/listAllCategoryScenes');
 }
 
+// post 导航类目页面配置 - 排序
+export function fetchWalkManageNavigationSort(data) {
+  return request('/admin/systemConfig/configCategoryNavigation', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 逛逛页面配置 end
