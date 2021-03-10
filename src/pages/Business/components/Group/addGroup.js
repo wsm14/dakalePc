@@ -37,7 +37,7 @@ const addGroups = (props) => {
   }, [groupDetails]);
   const Btn = {
     add: (
-      <div style={{ textAlign: 'right' }}>
+      <div style={{ textAlign: 'center' }}>
         <Space>
           <Button
             loading={loadingAdd}

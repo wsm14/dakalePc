@@ -219,7 +219,7 @@ const addGroups = (props) => {
         onClose={onClose}
         bodyStyle={{ paddingBottom: 80 }}
         footer={
-          <div style={{ textAlign: 'right' }}>
+          <div style={{ textAlign: 'center' }}>
             <Space>
               <Button onClick={() => onClose()}>取消</Button>
               <Button

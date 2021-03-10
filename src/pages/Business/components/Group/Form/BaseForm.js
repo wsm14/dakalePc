@@ -1,10 +1,10 @@
 import React, { useImperativeHandle, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { message, Button } from 'antd';
-import FormCondition from '@/components/FormCondition';
 import { AMAP_KEY } from '@/common/constant';
 import { NUM_PERCENTAGE } from '@/common/regExp';
 import { Map, Marker } from 'react-amap';
+import FormCondition from '@/components/FormCondition';
 
 const BaseForm = (props) => {
   const { tradeList, form, initialValues, cRef, groupDetails } = props;
@@ -176,7 +176,10 @@ const BaseForm = (props) => {
       name: 'commissionRatio',
       // type: 'number',
       rules: [{ required: false }],
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }],
+      addRules:
+        Object.keys(groupDetails).length === 0
+          ? [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }]
+          : [],
       addonAfter: '%',
       disabled: Object.keys(groupDetails).length === 0 ? false : true,
     },
