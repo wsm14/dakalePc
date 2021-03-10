@@ -241,7 +241,7 @@ export function fetchClassifyDel(data) {
 
 // get 标签管理 - 列表
 export function fetchTagList(params) {
-  return request('/common/systemConfig/listConfigMerchantTagAdmin', {
+  return request('/admin/systemConfig/listConfigMerchantTagAdmin', {
     params,
   });
 }
@@ -268,7 +268,7 @@ export function fetchTagEdit(data) {
 
 // get 优惠券管理 - 列表
 export function fetchCouponList(params) {
-  return request('/common/systemConfig/listConfigMerchantTagAdmin', {
+  return request('/admin/systemConfig/listConfigMerchantTagAdmin', {
     params,
   });
 }

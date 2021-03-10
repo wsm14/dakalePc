@@ -4,7 +4,7 @@ import { Radio } from 'antd';
 import { delectProps } from '../utils';
 
 const RadioBlock = (props) => {
-  const { select, fieldNames = {}, onChange, dataOnChange } = props;
+  const { select, fieldNames = {} } = props;
 
   const divProps = delectProps(props);
   const { label = 'name', value = 'value', disabled = 'disabled' } = fieldNames;

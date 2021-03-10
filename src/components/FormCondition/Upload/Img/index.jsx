@@ -83,7 +83,7 @@ const UploadBlock = (props) => {
     name = '',
     maxFile,
     maxSize,
-    dataOnChange: onChange = undefined,
+    onChange = undefined,
     isCut,
     imgRatio,
     multiple,

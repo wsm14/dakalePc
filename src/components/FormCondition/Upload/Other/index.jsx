@@ -10,7 +10,7 @@ const imgold = (url, uid) => ({
 });
 
 const UploadBlock = (props) => {
-  const { form, initialValues, name = '', maxFile, dataOnChange: onChange } = props;
+  const { form, initialValues, name = '', maxFile, onChange } = props;
   const fileKeyName = Array.isArray(name) ? name[1] : name;
 
   // 文件控制列表
