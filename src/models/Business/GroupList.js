@@ -153,7 +153,7 @@ export default {
         ];
       }
       if (content.bankBindingInfo) {
-        city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode]
+        city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode];
       }
       yield put({
         type: 'save',
@@ -170,19 +170,20 @@ export default {
               ],
             } || {},
           businessLicense: content.businessLicense || {},
-          bankBindingInfo: {
+          bankBindingInfo:
+            {
               ...content.bankBindingInfo,
               activeBeginDate,
               activeValidity,
               city,
             } || {},
-          initial:{
+          initial: {
             ...businessLicense,
             ...bankBindingInfo,
             activeBeginDate,
             activeValidity,
-            city
-          }
+            city,
+          },
         },
       });
       callback && callback();

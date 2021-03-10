@@ -7,6 +7,7 @@ export const base = [
     label: '经营类目',
     type: 'cascader',
     name: 'topCategoryName',
+    render: (val) => val,
   },
   {
     label: '详细地址',
