@@ -18,6 +18,7 @@ export default {
     vaneList: { list: [] },
     navigation: { list: [] },
     class: [],
+    nowTrade: [],
   },
 
   reducers: {
@@ -102,10 +103,16 @@ export default {
       const response = yield call(fetchWalkManageGratiaClass, payload);
       if (!response) return;
       const { content } = response;
+      const nowTrade = []; // 当前已选的类目用做剔除
+      const list = content.categoryList.map((item) => {
+        nowTrade.push(item.categoryIdString);
+        return { ...item, id: item.categoryIdString };
+      });
       yield put({
         type: 'save',
         payload: {
-          class: content.categoryList,
+          class: list,
+          nowTrade,
         },
       });
     },

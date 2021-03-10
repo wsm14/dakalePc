@@ -13,6 +13,7 @@ const EditableCell = ({
   required,
   onChange,
   tradeList,
+  nowTrade,
   dispatch,
   ...restProps
 }) => {
@@ -21,10 +22,16 @@ const EditableCell = ({
       <Select
         placeholder="请选择"
         onChange={onChange}
-        options={tradeList.map((item) => ({
-          label: item.categoryName,
-          value: item.categoryIdString,
-        }))}
+        // 排除已存在的类目不可再次选择，但修改时可显示当前类目
+        options={tradeList
+          .filter(
+            (item) =>
+              nowTrade.indexOf(item.categoryIdString) === -1 || item.categoryIdString == record.id,
+          )
+          .map((item) => ({
+            label: item.categoryName,
+            value: item.categoryIdString,
+          }))}
       />
     ) : (
       <Input maxLength={4} placeholder="最多输入4个字" />
@@ -46,6 +53,7 @@ const EditableCell = ({
   );
 };
 
-export default connect(({ sysTradeList }) => ({
+export default connect(({ walkingManage, sysTradeList }) => ({
+  nowTrade: walkingManage.nowTrade,
   tradeList: sysTradeList.list.list,
 }))(EditableCell);
