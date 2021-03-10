@@ -24,6 +24,9 @@ const VaneDrawer = (props) => {
       title: '修改',
       api: 'walkingManage/fetchWalkManageVaneEditDel',
     },
+    detail: {
+      title: '详情',
+    },
   }[type];
 
   // 提交
@@ -82,11 +85,13 @@ const VaneDrawer = (props) => {
       name: 'jumpType',
       select: VANE_URL_TYPE,
       onChange: (e) => setShowUrl(e.target.value),
+      render: (val) => VANE_URL_TYPE[val],
     },
     {
       label: '链接',
       name: 'jumpUrl',
       visible: showUrl === 'url',
+      show: showUrl === 'url',
     },
     {
       label: '选择场景',
@@ -105,6 +110,7 @@ const VaneDrawer = (props) => {
         children: 'categoryScenesDTOList',
       },
       visible: showUrl === 'scenes',
+      show: false,
     },
   ];
 
@@ -116,7 +122,7 @@ const VaneDrawer = (props) => {
       setShowPop(detail.bubbleFlag);
       setShowUrl(detail.jumpType || false);
     },
-    footer: (
+    footer: type !== 'detail' && (
       <Button onClick={fetchGetFormData} type="primary" loading={loading}>
         确认
       </Button>
