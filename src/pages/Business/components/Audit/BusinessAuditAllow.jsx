@@ -9,6 +9,9 @@ const BusinessAuditAllow = (props) => {
   const [serviceLsit, setServiceLsit] = useState(false);
   const [speacialLsit, setSpeacialLsit] = useState(false);
   const [tagList, setTagList] = useState([]);
+  
+  //场景checkbox列表
+  const [sceneList, setSceneList] = useState(false);
 
   // 店铺服务/基础设施
   const fetchGetService = () => {
@@ -21,6 +24,7 @@ const BusinessAuditAllow = (props) => {
 
   // 特色服务
   const fetchGetSpeacial = () => {
+    
     dispatch({
       type: 'sysTradeList/fetchDetailList',
       payload: { type: 'special', categoryId },
@@ -75,6 +79,13 @@ const BusinessAuditAllow = (props) => {
       type: 'checkbox',
       name: ['property', 'speacial'],
       rules: [{ required: false }],
+      loading: loading.effects['sysTradeList/fetchDetailList'],
+      select: speacialLsit || [],
+    },
+    {
+      label: '场景设置',
+      type: 'checkbox',
+      name: ['property', 'speacial'],
       loading: loading.effects['sysTradeList/fetchDetailList'],
       select: speacialLsit || [],
     },

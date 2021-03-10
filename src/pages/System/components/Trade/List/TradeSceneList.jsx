@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -7,17 +7,17 @@ import TradeSceneSet from '../Form/TradeSceneSet';
 import PopImgShow from '@/components/PopImgShow';
 
 const TradeSceneList = (props) => {
-  const { detailList, loading, visible, onClose, dispatch, childRef } = props;
-  const { type = 'scene', record = '' } = visible;
-
+  const {sceneList, loading, visible, onClose, dispatch, childRef } = props;
+  const { type = '', record = '' } = visible;
+ 
   const [visibleUpdate, setVisibleUpdate] = useState(false);
 
   const getColumns = [
-    { title: '适用场景', align: 'center', dataIndex: 'name' },
+    { title: '适用场景', align: 'center', dataIndex: 'scenesName' },
     {
       title: '图片',
-      align: 'center',
-      dataIndex: 'name',
+      // align: 'center',
+      dataIndex: 'image',
       render: (val) => <PopImgShow url={val} />,
     },
     {
@@ -33,7 +33,7 @@ const TradeSceneList = (props) => {
             },
             {
               type: 'del',
-              click: () => fetchDataDel(val),
+              click: () => fetchDataDel(record),
             },
           ]}
         />
@@ -51,7 +51,20 @@ const TradeSceneList = (props) => {
   };
 
   //删除
-  const fetchDataDel = (val) =>{
+  const fetchDataDel = (record) =>{
+    const {categoryScenesId,image,scenesName,deleteFlag} = record
+    dispatch({
+      type:'sysTradeList/fetchSceneUpdate',
+      payload:{
+        categoryScenesId,
+        image,
+        scenesName,
+        deleteFlag:0
+      },
+      callback:()=>{
+        childRef.current.fetchGetData();
+      }
+    })
 
   }
 
@@ -74,21 +87,22 @@ const TradeSceneList = (props) => {
         cRef={childRef}
         noCard={false}
         columns={getColumns}
-        // rowKey={(row) => ``}
+        rowKey={(row) => `${row.categoryScenesId}`}
         params={{ categoryId: record.categoryIdString }}
-        // dispatchType="sysTradeList/fetchDetailList"
+        dispatchType="sysTradeList/fetchSceneListById"
         size="middle"
-        // {...detailList}
+        {...sceneList}
       ></TableDataBlock>
       <TradeSceneSet
         visible={visibleUpdate}
         childRef={childRef}
+        categoryId={record.categoryIdString}
         onClose={() => setVisibleUpdate(false)}
       ></TradeSceneSet>
     </Modal>
   );
 };
 export default connect(({ sysTradeList, loading }) => ({
-  detailList: sysTradeList.detailList,
-  loading: loading,
+  sceneList: sysTradeList.sceneList,
+  loading: loading.effects['sysTradeList/fetchSceneListById'],
 }))(TradeSceneList);

@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, PAY_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
+import ExcelButton from '@/components/ExcelButton';
 
 const GoodsOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
@@ -163,6 +164,13 @@ const GoodsOrders = (props) => {
 
   return (
     <TableDataBlock
+      btnExtra={({ get }) => (
+        <ExcelButton
+          dispatchType={'businessSettled/fetchMerchantGetExcel'}
+          dispatchData={get()}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
+      )}
       noCard={false}
       cRef={childRef}
       loading={loading}

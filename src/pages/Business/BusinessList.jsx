@@ -122,6 +122,10 @@ const BusinessListComponent = (props) => {
       name: 'activationTimeStart',
       end: 'activationTimeEnd',
     },
+    {
+      label:"营业执照号",
+      name:'businessLicense'
+    }
   ];
 
   // table 表头

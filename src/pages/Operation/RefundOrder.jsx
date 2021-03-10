@@ -68,6 +68,11 @@ const RefundOrder = (props) => {
       dataIndex: 'goodsCount',
     },
     {
+      title: '退款数量',
+      align: 'right',
+      dataIndex: 'goodsCount',
+    },
+    {
       title: '退款金额',
       align: 'right',
       dataIndex: 'refundFee',

@@ -157,6 +157,9 @@ export const ORDERS_STATUS = [
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
 
+//用户来源
+export const USER_SOURCE = ['小程序','APP','H5'];
+
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
 

@@ -66,6 +66,22 @@ const PuzzleAd = (props) => {
               click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 0 }),
             },
             {
+              type: 'info',
+              visible: record.status === '1',
+              click: () => setVisibleSet({
+                type:'info',
+                show: true,
+                info: {
+                  ...record,
+                  brandId: record.brandIdStr,
+                  activeDate: [
+                    moment(record.startShowTime, 'YYYY-MM-DD'),
+                    moment(record.endShowTime, 'YYYY-MM-DD'),
+                  ],
+                },
+              }),
+            },
+            {
               type: 'up',
               visible: record.status === '0',
               click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 1 }),
@@ -75,6 +91,7 @@ const PuzzleAd = (props) => {
               visible: record.status === '0',
               click: () =>
                 setVisibleSet({
+                  type:'edit',
                   show: true,
                   info: {
                     ...record,
@@ -118,7 +135,7 @@ const PuzzleAd = (props) => {
           <AuthConsumer auth="save">
             <Button
               className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, info: '' })}
+              onClick={() => setVisibleSet({ type:'add',show: true, info: '' })}
             >
               新增
             </Button>

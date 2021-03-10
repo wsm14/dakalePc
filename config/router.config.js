@@ -189,7 +189,7 @@ export default [
         path: '/operation/orders',
         name: '订单列表',
         component: './Operation/OrdersList',
-        buttons: ['info'],
+        buttons: ['info', 'exportList'],
       },
       {
         path: '/operation/refund',
@@ -295,7 +295,7 @@ export default [
         path: '/market/puzzleAd',
         name: '拼图广告',
         component: './Market/PuzzleAd',
-        buttons: ['eye', 'edit', 'save', 'del', 'up', 'down'],
+        buttons: ['eye', 'edit', 'save', 'del', 'up', 'down','info'],
       },
       // 账户管理
       {
@@ -309,6 +309,12 @@ export default [
         name: '商家账户',
         component: './Account/AccountBusiness',
         buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
+      },
+      {
+        path: '/account/subsidyShop',
+        name: '商家账户',
+        component: './Account/SubsidyShop',
+        buttons: ['info'],
       },
       // 客服中心
       {

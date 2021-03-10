@@ -83,6 +83,11 @@ const BusinessDetailShow = (props) => {
     {
       label: '店铺帐号',
       name: 'mobile',
+      render: (val) => (
+        <div style={{ display: 'flex', justifyContent: 'space-between',alignItems:'center' }}>
+          {val} <span style={{ padding: '5px 10px', background: '#ccc'}}>浙江-杭州</span>
+        </div>
+      ),
     },
     {
       label: '店铺类型',
