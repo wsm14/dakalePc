@@ -292,4 +292,40 @@ export function fetchWalkManageVaneList(params) {
   });
 }
 
+// get 风向标配置 - 详情
+export function fetchWalkManageVaneDetail(params) {
+  return request('/admin/systemConfig/getConfigWindVaneById', {
+    params,
+  });
+}
+
+// post 风向标配置 - 编辑删除
+export function fetchWalkManageVaneEditDel(data) {
+  return request('/admin/systemConfig/updateConfigWindVane', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 风向标配置 - 排序
+export function fetchWalkManageVaneSort(data) {
+  return request('/admin/systemConfig/sortConfigWindVane', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 风向标配置 - 新增
+export function fetchWalkManageVaneAdd(data) {
+  return request('/admin/systemConfig/saveConfigWindVane', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 导航类目页面配置/风向标配置 - 列表/获取场景
+export function fetchWalkManageNavigation() {
+  return request('/admin/systemIndustry/listAllCategoryScenes');
+}
+
 // 逛逛页面配置 end

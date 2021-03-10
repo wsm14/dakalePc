@@ -1,11 +1,19 @@
 import { notification } from 'antd';
-import { fetchWalkManageVaneList, fetchTagAdd, fetchTagEdit } from '@/services/OperationServices';
+import {
+  fetchWalkManageVaneList,
+  fetchWalkManageVaneDetail,
+  fetchWalkManageVaneSort,
+  fetchWalkManageVaneAdd,
+  fetchWalkManageVaneEditDel,
+  fetchWalkManageNavigation,
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'walkingManage',
 
   state: {
     vaneList: { list: [] },
+    navigation: { list: [] },
   },
 
   reducers: {
@@ -29,23 +37,53 @@ export default {
         },
       });
     },
-    *fetchTagAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchTagAdd, payload);
+    *fetchWalkManageVaneDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
+      const { configWindVane } = response.content;
+      const { bubbleFlag } = configWindVane;
+      callback({ ...configWindVane, bubbleFlag: Boolean(Number(bubbleFlag)) });
+    },
+    *fetchWalkManageVaneEditDel({ payload, callback }, { call }) {
+      const response = yield call(fetchWalkManageVaneEditDel, payload);
+      if (!response) return;
+      const { deleteFlag } = payload;
       notification.success({
         message: '温馨提示',
-        description: '标签新增成功',
+        description: `风向标${deleteFlag === 0 ? '删除' : '修改'}成功`,
       });
       callback();
     },
-    *fetchTagEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchTagEdit, payload);
+    *fetchWalkManageVaneSort({ payload, callback }, { call }) {
+      const response = yield call(fetchWalkManageVaneSort, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '标签修改成功',
+        description: '风向标排序成功',
       });
       callback();
+    },
+    *fetchWalkManageVaneAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchWalkManageVaneAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '风向标新增成功',
+      });
+      callback();
+    },
+    *fetchWalkManageNavigation({ payload }, { call, put }) {
+      const response = yield call(fetchWalkManageNavigation, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          navigation: {
+            list: content.recordList,
+          },
+        },
+      });
     },
   },
 };

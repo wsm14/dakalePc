@@ -14,22 +14,37 @@ const VaneManage = (props) => {
   const [visible, setVisible] = useState(false);
 
   // 获取详情
-  const fetchShareDetail = (val, type) => {
+  const fetchGetDetail = (val, type) => {
     dispatch({
-      type: 'shareManage/fetchShareDetail',
+      type: 'walkingManage/fetchWalkManageVaneDetail',
       payload: {
-        userMomentIdString: val,
+        configWindVaneId: val,
       },
       callback: (detail) => setVisible({ show: true, type, detail }),
     });
   };
 
   // 删除
-  const fetchDetailDel = (val) => {
+  const fetchDetailDel = (configWindVaneId) => {
     dispatch({
-      type: 'shareManage/fetchShareDetail',
+      type: 'walkingManage/fetchWalkManageVaneEditDel',
       payload: {
-        userMomentIdString: val,
+        configWindVaneId,
+        deleteFlag: 0,
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 排序
+  const fetchDetailSort = (list) => {
+    dispatch({
+      type: 'walkingManage/fetchWalkManageVaneSort',
+      payload: {
+        configWindVaneDTOList: list.map((item, i) => ({
+          configWindVaneId: item.configWindVaneId,
+          sort: i,
+        })),
       },
       callback: childRef.current.fetchGetData,
     });
@@ -64,11 +79,11 @@ const VaneManage = (props) => {
             formItems={[
               {
                 type: 'info',
-                click: () => fetchShareDetail(val, 'detail'),
+                click: () => fetchGetDetail(val, 'detail'),
               },
               {
                 type: 'edit',
-                click: () => fetchShareDetail(val, 'edit'),
+                click: () => fetchGetDetail(val, 'edit'),
               },
               {
                 type: 'del',
@@ -84,7 +99,7 @@ const VaneManage = (props) => {
   return (
     <>
       <TableDataBlock
-        tableSort={{ key: 'configWindVaneId', onSortEnd: (val) => console.log(val) }}
+        tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
         cardProps={{
           title: '风向标配置',
           extra: (
@@ -98,14 +113,19 @@ const VaneManage = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.configWindVaneId}`}
         dispatchType="walkingManage/fetchWalkManageVaneList"
+        pagination={false}
         {...list}
       ></TableDataBlock>
-      <VaneDrawer visible={visible} onClose={() => setVisible(false)}></VaneDrawer>
+      <VaneDrawer cRef={childRef} visible={visible} onClose={() => setVisible(false)}></VaneDrawer>
     </>
   );
 };
 
 export default connect(({ walkingManage, loading }) => ({
   list: walkingManage.vaneList,
-  loading: loading.effects['walkingManage/fetchWalkManageVaneList'],
+  loading:
+    loading.effects['walkingManage/fetchWalkManageVaneList'] ||
+    loading.effects['walkingManage/fetchWalkManageVaneEditDel'] ||
+    loading.effects['walkingManage/fetchWalkManageVaneDetail'] ||
+    loading.effects['walkingManage/fetchWalkManageVaneSort'],
 }))(VaneManage);

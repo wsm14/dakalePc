@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
@@ -6,15 +6,9 @@ import TableDataBlock from '@/components/TableDataBlock';
 import DndDragContext from '@/components/DndDragContext';
 
 const VaneManage = (props) => {
-  const { serviceFAQ, loading, dispatch, style } = props;
-  const { list: FAQList } = serviceFAQ;
+  const { navigation, loading, dispatch, style } = props;
 
   const childRef = useRef();
-  const [list, setList] = useState([
-    { value: 1, name: 111111 },
-    { value: 2, name: 222222 },
-    { value: 3, name: 333333 },
-  ]);
 
   // 获取详情
   const fetchShareDetail = (val, type) => {
@@ -31,21 +25,27 @@ const VaneManage = (props) => {
   const getColumns = [
     {
       title: '类目',
-      dataIndex: 'questionTitle',
+      dataIndex: 'categoryName',
       className: 'drag-visible',
     },
     {
       title: '场景',
-      dataIndex: 'id',
-      render: (val, row) => (
-        <DndDragContext accept={row.questionTitle} data={list} onEnd={(val) => setList(val)}>
-          {list.map((item) => (
-            <Tag color="orange" key={item.value}>
-              {item.name}
-            </Tag>
-          ))}
-        </DndDragContext>
-      ),
+      align: 'center',
+      dataIndex: 'categoryIdString',
+      render: (val, row) => {
+        const { categoryScenesDTOList: data = [] } = row;
+        return data.length ? (
+          <DndDragContext accept={val} data={data} onEnd={(list) => console.log(val, list)}>
+            {row.categoryScenesDTOList.map((item) => (
+              <Tag color="orange" key={item.categoryId}>
+                {item.scenesName}
+              </Tag>
+            ))}
+          </DndDragContext>
+        ) : (
+          ''
+        );
+      },
     },
     {
       title: '排序',
@@ -58,21 +58,21 @@ const VaneManage = (props) => {
   return (
     <>
       <TableDataBlock
-        tableSort={{ key: 'questionIdString', onSortEnd: (val) => console.log(val) }}
+        tableSort={{ key: 'categoryIdString', onSortEnd: (val) => console.log(val) }}
         cardProps={{ title: '导航类目页面配置', style }}
         cRef={childRef}
         loading={loading}
+        pagination={false}
         columns={getColumns}
-        rowKey={(record) => `${record.questionIdString}`}
-        params={{ userType: 'user' }}
-        dispatchType="serviceFAQ/fetchGetList"
-        {...FAQList}
+        rowKey={(record) => `${record.categoryIdString}`}
+        dispatchType="walkingManage/fetchWalkManageNavigation"
+        {...navigation}
       ></TableDataBlock>
     </>
   );
 };
 
-export default connect(({ serviceFAQ, loading }) => ({
-  serviceFAQ,
-  loading: loading.models.serviceFAQ,
+export default connect(({ walkingManage, loading }) => ({
+  navigation: walkingManage.navigation,
+  loading: loading.effects['walkingManage/fetchWalkManageNavigation'],
 }))(VaneManage);
