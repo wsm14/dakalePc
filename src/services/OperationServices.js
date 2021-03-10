@@ -64,7 +64,7 @@ export function fetchExpertRemdList(params) {
 
 // get 种草管理 - 统计举报数量
 export function fetchExpertCountReport(params) {
-  return request('/user/userReport/countPendingUserReport', {
+  return request('/admin/userReport/countPendingUserReport', {
     params,
   });
 }
@@ -86,14 +86,14 @@ export function fetchExpertRemdStatus(data) {
 
 // get 种草管理 - 举报列表
 export function fetchExpertReportList(params) {
-  return request('/user/userReport/listUserReport', {
+  return request('/admin/userReport/listUserReport', {
     params,
   });
 }
 
 // post 种草管理 - 举报列表 - 处理举报
 export function fetchExpertProcessReport(data) {
-  return request('/user/userReport/processUserReport', {
+  return request('/admin/userReport/processUserReport', {
     method: 'POST',
     data,
   });
@@ -248,7 +248,7 @@ export function fetchTagList(params) {
 
 // post 标签管理 - 新增
 export function fetchTagAdd(data) {
-  return request('/common/systemConfig/saveConfigMerchantTag', {
+  return request('/admin/systemConfig/saveConfigMerchantTag', {
     method: 'POST',
     data,
   });
@@ -256,7 +256,7 @@ export function fetchTagAdd(data) {
 
 // post 标签管理 - 修改
 export function fetchTagEdit(data) {
-  return request('/common/systemConfig/updateConfigMerchantTag', {
+  return request('/admin/systemConfig/updateConfigMerchantTag', {
     method: 'POST',
     data,
   });
@@ -275,10 +275,21 @@ export function fetchCouponList(params) {
 
 // post 优惠券管理 - 下架
 export function fetchCouponStatus(data) {
-  return request('/common/systemConfig/saveConfigMerchantTag', {
+  return request('/admin/systemConfig/saveConfigMerchantTag', {
     method: 'POST',
     data,
   });
 }
 
 // 优惠券管理 end
+
+// 逛逛页面配置
+
+// get 风向标配置 - 列表
+export function fetchWalkManageVaneList(params) {
+  return request('/admin/systemConfig/listConfigWindVane', {
+    params,
+  });
+}
+
+// 逛逛页面配置 end

@@ -18,12 +18,12 @@ export function fetchMerchantExportExcel(params) {
 
 // get 店铺数据 - 统计数据 总商家/流失/活跃
 export function fetchMerchantTotal() {
-  return request('/admin/merchantManagement/getMerchantStatistic');
+  return request('/admin/areaStatistic/getMerchantStatistic');
 }
 
 // get 店铺数据 - 统计数据 新入驻/家主/家店/行业
 export function fetchMerchantTotalCategory(params) {
-  return request('/admin/merchantManagement/getMerchantStatisticByDate', {
+  return request('/admin/areaStatistic/getMerchantStatisticByDate', {
     params,
   });
 }

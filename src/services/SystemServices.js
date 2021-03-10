@@ -270,14 +270,14 @@ export function fetchOwnAccountEdit(data) {
 
 // get 商圈管理 - 列表
 export function fetchTradeAreaList(params) {
-  return request('/common/businessHub/listBusinessHubAdmin', {
+  return request('/admin/businessHub/listBusinessHubAdmin', {
     params,
   });
 }
 
 // post 商圈管理 - 新增
 export function fetchTradeAreaAdd(data) {
-  return request('/common/businessHub/saveBusinessHub', {
+  return request('/admin/businessHub/saveBusinessHub', {
     method: 'POST',
     data,
   });
@@ -285,7 +285,7 @@ export function fetchTradeAreaAdd(data) {
 
 // post 商圈管理 - 修改
 export function fetchTradeAreaEdit(data) {
-  return request('/common/businessHub/updateBusinessHub', {
+  return request('/admin/businessHub/updateBusinessHub', {
     method: 'POST',
     data,
   });

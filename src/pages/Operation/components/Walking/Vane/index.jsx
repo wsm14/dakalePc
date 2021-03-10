@@ -8,8 +8,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import VaneDrawer from './VaneDrawer';
 
 const VaneManage = (props) => {
-  const { serviceFAQ, loading, dispatch } = props;
-  const { list: FAQList } = serviceFAQ;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -40,12 +39,12 @@ const VaneManage = (props) => {
   const getColumns = [
     {
       title: '图标',
-      dataIndex: 'frontImage',
+      dataIndex: 'image',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
       title: '显示名称',
-      dataIndex: 'questionTitle',
+      dataIndex: 'name',
       className: 'drag-visible',
     },
     {
@@ -56,9 +55,9 @@ const VaneManage = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'userMomentIdString',
       fixed: 'right',
       align: 'right',
+      dataIndex: 'configWindVaneId',
       render: (val, record) => {
         return (
           <HandleSetTable
@@ -85,7 +84,7 @@ const VaneManage = (props) => {
   return (
     <>
       <TableDataBlock
-        tableSort={{ key: 'questionIdString', onSortEnd: (val) => console.log(val) }}
+        tableSort={{ key: 'configWindVaneId', onSortEnd: (val) => console.log(val) }}
         cardProps={{
           title: '风向标配置',
           extra: (
@@ -97,17 +96,16 @@ const VaneManage = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.questionIdString}`}
-        params={{ userType: 'user' }}
-        dispatchType="serviceFAQ/fetchGetList"
-        {...FAQList}
+        rowKey={(record) => `${record.configWindVaneId}`}
+        dispatchType="walkingManage/fetchWalkManageVaneList"
+        {...list}
       ></TableDataBlock>
       <VaneDrawer visible={visible} onClose={() => setVisible(false)}></VaneDrawer>
     </>
   );
 };
 
-export default connect(({ serviceFAQ, loading }) => ({
-  serviceFAQ,
-  loading: loading.models.serviceFAQ,
+export default connect(({ walkingManage, loading }) => ({
+  list: walkingManage.vaneList,
+  loading: loading.effects['walkingManage/fetchWalkManageVaneList'],
 }))(VaneManage);

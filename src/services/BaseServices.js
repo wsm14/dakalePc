@@ -46,28 +46,28 @@ export function fetchGetOcrIdCardBack(params) {
 
 // get 获取商圈
 export function fetchGetHubSelect(params) {
-  return request('/common/businessHub/listBusinessHubByCode', {
+  return request('/admin/businessHub/listBusinessHubByCode', {
     params,
   });
 }
 
 // get 获取商圈名称
 export function fetchGetHubName(params) {
-  return request('/common/businessHub/getBusinessHubById', {
+  return request('/admin/businessHub/getBusinessHubById', {
     params,
   });
 }
 
 // get 店铺标签
 export function fetchGetMreTag(params) {
-  return request('/common/systemConfig/listConfigMerchantTag', {
+  return request('/admin/systemConfig/listConfigMerchantTag', {
     params,
   });
 }
 
 // get 行业类目 - 勾选列表
 export function fetchGetTradeSelect(params) {
-  return request('/common/category/listSpecialGoodsCategoryAdmin', {
+  return request('/common/category/listSpecialGoodsCategory', {
     params,
   });
 }
