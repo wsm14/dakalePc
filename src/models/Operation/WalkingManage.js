@@ -7,6 +7,8 @@ import {
   fetchWalkManageVaneEditDel,
   fetchWalkManageNavigation,
   fetchWalkManageNavigationSort,
+  fetchWalkManageGratiaClass,
+  fetchWalkManageGratiaClassAdd,
 } from '@/services/OperationServices';
 
 export default {
@@ -15,6 +17,7 @@ export default {
   state: {
     vaneList: { list: [] },
     navigation: { list: [] },
+    class: [],
   },
 
   reducers: {
@@ -92,6 +95,26 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '类目排序成功',
+      });
+      callback();
+    },
+    *fetchWalkManageGratiaClass({ payload }, { call, put }) {
+      const response = yield call(fetchWalkManageGratiaClass, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          class: content.categoryList,
+        },
+      });
+    },
+    *fetchWalkManageGratiaClassAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchWalkManageGratiaClassAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '类型设置成功',
       });
       callback();
     },

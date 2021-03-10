@@ -5,7 +5,7 @@ import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import TableDataBlock from '@/components/TableDataBlock';
 import DndDragContext from '@/components/DndDragContext';
 
-const VaneManage = (props) => {
+const NavigationManage = (props) => {
   const { navigation, loading, dispatch, style } = props;
 
   const childRef = useRef();
@@ -13,7 +13,7 @@ const VaneManage = (props) => {
   // 排序
   const fetchDetailSort = (value) => {
     dispatch({
-      type: 'walkingManage/fetchWalkManageVaneSort',
+      type: 'walkingManage/fetchWalkManageNavigationSort',
       payload: value,
       callback: childRef.current.fetchGetData,
     });
@@ -25,7 +25,7 @@ const VaneManage = (props) => {
       categoryDTOList: [
         {
           categoryIdString: id,
-          navigationSort: index + 1,
+          navigationSort: index,
           categoryScenesDTOList: list.map(({ categoryScenesId }, index) => ({
             categoryScenesId,
             sort: index,
@@ -79,7 +79,7 @@ const VaneManage = (props) => {
         key: 'categoryIdString',
         onSortEnd: (val) =>
           fetchDetailSort({
-            categoryDTOList: val.map((item, index) => ({ ...item, navigationSort: index + 1 })),
+            categoryDTOList: val.map((item, index) => ({ ...item, navigationSort: index })),
           }),
       }}
       cardProps={{ title: '导航类目页面配置', style }}
@@ -96,5 +96,7 @@ const VaneManage = (props) => {
 
 export default connect(({ walkingManage, loading }) => ({
   navigation: walkingManage.navigation,
-  loading: loading.effects['walkingManage/fetchWalkManageNavigation'],
-}))(VaneManage);
+  loading:
+    loading.effects['walkingManage/fetchWalkManageNavigation'] ||
+    loading.effects['walkingManage/fetchWalkManageNavigationSort'],
+}))(NavigationManage);

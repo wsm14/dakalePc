@@ -8,7 +8,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const VaneDrawer = (props) => {
-  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { navigation, dispatch, cRef, visible, onClose, loading } = props;
 
   const { show = false, type = 'add', detail = '' } = visible;
   const [form] = Form.useForm();
@@ -92,6 +92,18 @@ const VaneDrawer = (props) => {
       label: '选择场景',
       type: 'treeSelect',
       name: 'scenesId',
+      select: navigation.list.map(
+        ({
+          categoryIdString: categoryScenesId,
+          categoryName: scenesName,
+          categoryScenesDTOList,
+        }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
+      ),
+      fieldNames: {
+        label: 'scenesName',
+        value: 'categoryScenesId',
+        children: 'categoryScenesDTOList',
+      },
       visible: showUrl === 'scenes',
     },
   ];
@@ -122,6 +134,7 @@ const VaneDrawer = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ walkingManage, loading }) => ({
+  navigation: walkingManage.navigation,
   loading: loading.models.walkingManage,
 }))(VaneDrawer);

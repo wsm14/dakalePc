@@ -4,12 +4,7 @@ import { delectProps } from '../utils';
 
 const { TreeNode } = TreeSelect;
 
-// Cascader搜索筛选
-const filter = (inputValue, path, label = 'label') => {
-  return path.some((option) => option[label].indexOf(inputValue) > -1);
-};
-
-const CascaderBlock = (props) => {
+const TreeSelectBlock = (props) => {
   const { label: plabel, select = [], placeholder, fieldNames = {}, onChange } = props;
 
   const {
@@ -39,7 +34,6 @@ const CascaderBlock = (props) => {
       placeholder={placeholder || `请选择${plabel}`}
       style={{ width: '100%' }}
       treeDefaultExpandAll
-      filterTreeNode={(inputValue, path) => filter(inputValue, path, label)}
       onChange={(val, options) => {
         console.log(val, options);
         if (onChange) onChange(val, options);
@@ -50,4 +44,4 @@ const CascaderBlock = (props) => {
   );
 };
 
-export default CascaderBlock;
+export default TreeSelectBlock;

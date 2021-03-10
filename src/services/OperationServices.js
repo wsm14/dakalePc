@@ -323,7 +323,7 @@ export function fetchWalkManageVaneAdd(data) {
   });
 }
 
-// get 导航类目页面配置/风向标配置 - 列表/获取场景
+// get 导航类目页面配置 - 列表 / 风向标配置 - 获取场景选择
 export function fetchWalkManageNavigation() {
   return request('/admin/systemIndustry/listAllCategoryScenes');
 }
@@ -331,6 +331,19 @@ export function fetchWalkManageNavigation() {
 // post 导航类目页面配置 - 排序
 export function fetchWalkManageNavigationSort(data) {
   return request('/admin/systemConfig/configCategoryNavigation', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 特惠商品类目配置 - 列表
+export function fetchWalkManageGratiaClass() {
+  return request('/common/category/listSpecialGoodsCategory');
+}
+
+// post 导航类目页面配置 - 新增
+export function fetchWalkManageGratiaClassAdd(data) {
+  return request('/common/category/setSpecialGoodsCategory', {
     method: 'POST',
     data,
   });

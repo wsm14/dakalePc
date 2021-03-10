@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'umi';
 import { Input, Select, Form } from 'antd';
 
 const EditableCell = ({
@@ -10,9 +11,24 @@ const EditableCell = ({
   index,
   children,
   required,
+  onChange,
+  tradeList,
+  dispatch,
   ...restProps
 }) => {
-  const inputNode = inputType === 'select' ? <Select /> : <Input maxLength={4} />;
+  const inputNode =
+    inputType === 'select' ? (
+      <Select
+        placeholder="请选择"
+        onChange={onChange}
+        options={tradeList.map((item) => ({
+          label: item.categoryName,
+          value: item.categoryIdString,
+        }))}
+      />
+    ) : (
+      <Input maxLength={4} placeholder="最多输入4个字" />
+    );
   return (
     <td {...restProps}>
       {editing ? (
@@ -30,4 +46,6 @@ const EditableCell = ({
   );
 };
 
-export default EditableCell;
+export default connect(({ sysTradeList }) => ({
+  tradeList: sysTradeList.list.list,
+}))(EditableCell);

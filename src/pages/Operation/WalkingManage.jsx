@@ -12,7 +12,7 @@ const WalkingManage = () => {
       {/* 导航类目页面配置 */}
       <NavigationManage style={style}></NavigationManage>
       {/* 特惠商品类目配置 */}
-      <GratiaClassManage style={style}></GratiaClassManage>
+      <GratiaClassManage style={{ ...style, marginBottom: 50 }}></GratiaClassManage>
     </>
   );
 };
