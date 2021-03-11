@@ -148,7 +148,8 @@ const BusinessListComponent = (props) => {
     {
       title: '所在地区',
       align: 'center',
-      dataIndex: 'cityName',
+      dataIndex: 'provinceName',
+      render :(val,record)=> `${val}-${record.cityName}-${record.districtName}`
     },
     {
       title: '详细地址',
@@ -290,7 +291,9 @@ const BusinessListComponent = (props) => {
     header: [
       { key: 'account', header: '店铺账号' },
       { key: 'merchantName', header: '店铺名称' },
-      { key: 'cityName', header: '所在城市' },
+      { key: 'provinceName', header: '所在省' },
+      { key: 'cityName', header: '所在市' },
+      { key: 'districtName', header: '所在区' },
       { key: 'businessHub', header: '所属商圈' },
       { key: 'address', header: '详细地址' },
       { key: 'topCategoryName', header: '一级经营类目' },
