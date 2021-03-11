@@ -1,14 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
+import { Button } from 'antd';
+import { MreSelect } from '@/components/MerchantDataTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import { MreSelect } from '@/components/MerchantDataTable';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import CloseRefuse from './components/Share/CloseRefuse';
 import ShareDetail from './components/Share/ShareDetail';
 import ShareHandleDetail from './components/Share/ShareHandleDetail';
 import ShareVideoDetail from './components/Share/ShareVideoDetail';
+import ShareDrawer from './components/Share/ShareDrawer';
 import styles from './style.less';
 
 const ShareManage = (props) => {
@@ -16,6 +19,7 @@ const ShareManage = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 详情
+  const [visibleShare, setVisibleShare] = useState(false); // 发布分享
   const [visibleMre, setVisibleMre] = useState(false); // 商户详情
   const [visibleVideo, setVisibleVideo] = useState(false); // 视屏
   const [visibleDown, setVisibleDown] = useState(false); // 下架原因
@@ -258,6 +262,16 @@ const ShareManage = (props) => {
       <TableDataBlock
         order
         keepData
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisibleShare({ type: 'add', show: true })}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -268,11 +282,16 @@ const ShareManage = (props) => {
         {...shareManage}
         list={[{ userMomentIdString: 1 }]}
       ></TableDataBlock>
+      {/* 发布分享 */}
+      <ShareDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareDrawer>
+      {/* 详情 */}
       <ShareDetail visible={visible} onClose={() => setVisible(false)}></ShareDetail>
+      {/* 视频详情 */}
       <ShareVideoDetail
         visible={visibleVideo}
         onClose={() => setVisibleVideo(false)}
       ></ShareVideoDetail>
+      {/* 操作记录 */}
       <ShareHandleDetail
         visible={visibleHandle}
         onClose={() => setVisibleHandle(false)}
