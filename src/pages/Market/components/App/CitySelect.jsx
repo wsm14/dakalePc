@@ -8,6 +8,9 @@ import styles from './style.less';
 const CitySelect = ({ form, name }) => {
   // 检查城市是否已选
   const checkCityData = (rule, value) => {
+    if (!value) {
+      return Promise.resolve();
+    }
     const cityData = form.getFieldValue(name).filter(
       // 判断城市是否已经选择
       // 省是否已选 当data长度为1 时只选了省，数据中存在该省做提示
@@ -47,20 +50,12 @@ const CitySelect = ({ form, name }) => {
                   <Cascader changeOnSelect />
                 </Form.Item>
                 <MinusCircleOutlined
-                  onClick={() => {
-                    remove(field.name);
-                  }}
+                  onClick={() => remove(field.name)}
                   className={styles.app_icon}
                 />
               </div>
             ))}
-            <Button
-              disabled={fields.length === 10}
-              onClick={() => {
-                add();
-              }}
-              type="primary"
-            >
+            <Button disabled={fields.length === 10} onClick={() => add()} type="primary">
               <PlusOutlined /> {fields.length} / {10} 添加
             </Button>
           </>
