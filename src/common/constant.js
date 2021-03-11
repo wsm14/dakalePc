@@ -154,11 +154,18 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
+// 订单关闭状态
+export const ORDER_CLOSE_TYPE = {
+  unpaidExpiredCancel: '待付款超时自动关闭',
+  unpaidManualCancel: '订单已取消',
+  expiredRefund: '订单已过期，订单自动过期',//过期退款
+  manualRefund: '已退款成功，申请退款成功',// 手动退款
+};
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
 
 //用户来源
-export const USER_SOURCE = ['小程序','APP','H5'];
+export const USER_SOURCE = ['小程序', 'APP', 'H5'];
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };

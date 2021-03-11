@@ -13,7 +13,8 @@ import {
   fetchPromotionMoneySet,
   fetchSceneListById,
   fetchSceneAdd,
-  fetchSceneUpdate
+  fetchSceneUpdate,
+  fetchScenceList,
 } from '@/services/SystemServices';
 
 export default {
@@ -23,7 +24,7 @@ export default {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     platFormList: { list: [], total: 0 },
-    sceneList :{list:[],total:0}
+    sceneList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -154,9 +155,9 @@ export default {
       });
       callback();
     },
-    *fetchSceneListById({payload},{ call, put }){
-      const response = yield call(fetchSceneListById,payload)
-      if(!response) return;
+    *fetchSceneListById({ payload }, { call, put }) {
+      const response = yield call(fetchSceneListById, payload);
+      if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
@@ -165,23 +166,39 @@ export default {
         },
       });
     },
-    *fetchSceneAdd({payload,callback},{call,put}){
-      const response = yield call (fetchSceneAdd,payload);
-      if(!response) return ;
+    *fetchSceneAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSceneAdd, payload);
+      if (!response) return;
       notification.success({
         message: '温馨提示',
         description: `添加成功`,
       });
       callback();
     },
-    *fetchSceneUpdate({payload,callback},{call}){
-      const response = yield call (fetchSceneUpdate,payload);
-      if(!response) return;
+    *fetchSceneUpdate({ payload, callback }, { call }) {
+      const response = yield call(fetchSceneUpdate, payload);
+      if (!response) return;
       notification.success({
         message: '温馨提示',
         description: `操作成功`,
       });
       callback();
-    }
+    },
+    *fetchScenceList({ payload, callback }, { call }) {
+      const response = yield call(fetchScenceList, payload);
+      if (!response) return;
+      const { content } = response;
+      let list = [];
+      content.recordList.map((item) => {
+        if (item.categoryScenesDTOList) {
+          const listtemp = item.categoryScenesDTOList.map((itemChild) => ({
+            label: itemChild.scenesName,
+            value: itemChild.categoryScenesId,
+          }));
+          list = [...list, ...listtemp];
+        }
+      });
+      callback(list);
+    },
   },
 };

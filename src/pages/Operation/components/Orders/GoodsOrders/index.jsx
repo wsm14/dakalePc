@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { ORDERS_STATUS, ORDERS_TYPE, PAY_TYPE } from '@/common/constant';
+import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
 import ExcelButton from '@/components/ExcelButton';
@@ -50,6 +50,12 @@ const GoodsOrders = (props) => {
       type: 'select',
       select: ORDERS_STATUS,
     },
+    // {
+    //   label: '订单关闭类型',
+    //   name: 'closeType',
+    //   type: 'select',
+    //   select: ORDER_CLOSE_TYPE,
+    // },
     {
       label: '下单日期',
       type: 'rangePicker',
@@ -103,23 +109,24 @@ const GoodsOrders = (props) => {
       dataIndex: 'goodsCount',
     },
     {
-      title: '订单金额',
-      align: 'right',
-      dataIndex: 'totalFee',
-      render: (val) => `￥${val}`,
-    },
-    {
-      title: '卡豆抵扣金额',
-      align: 'right',
-      dataIndex: 'beanFee',
-      render: (val) => `￥${val / 100}`,
-    },
-    {
-      title: '现金支付',
+      title: '用户支付金额',
       align: 'right',
       dataIndex: 'payFee',
+      render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
+    },
+    {
+      title: '店铺实收总额',
+      align: 'right',
+      dataIndex: 'actualCashFee',
       render: (val, record) =>
-        `￥${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
+        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+    },
+    {
+      title: '商品佣金',
+      align: 'right',
+      dataIndex: 'cashCommission',
+      render: (val, record) =>
+        `￥${val}（含${record.beanCommission ? record.beanCommission : 0}卡豆）`,
     },
     {
       title: '优惠券',
@@ -132,6 +139,16 @@ const GoodsOrders = (props) => {
       dataIndex: 'createTime',
     },
     {
+      title: '下单渠道',
+      align: 'center',
+      dataIndex: 'orderChannel',
+    },
+    {
+      title: '核销数',
+      align: 'center',
+      dataIndex: 'verificationCount',
+    },
+    {
       title: '核销时间',
       align: 'center',
       dataIndex: 'verificationTime',
@@ -140,6 +157,12 @@ const GoodsOrders = (props) => {
       title: '店铺名称',
       align: 'center',
       dataIndex: 'merchantName',
+    },
+    {
+      title: '区域',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
     {
       title: '订单属性',
@@ -152,6 +175,14 @@ const GoodsOrders = (props) => {
       align: 'center',
       dataIndex: 'status',
       render: (val) => ORDERS_STATUS[val],
+      // render: (val, row) => (val === '2' ? ORDER_CLOSE_TYPE[row.closeType] : ORDERS_STATUS[val]),
+    },
+    {
+      title: '订单关闭类型',
+      align: 'center',
+      dataIndex: 'closeType',
+      // hidden:
+      render: (val) => ORDER_CLOSE_TYPE[val],
     },
     {
       title: '操作',
@@ -164,13 +195,13 @@ const GoodsOrders = (props) => {
 
   return (
     <TableDataBlock
-      btnExtra={({ get }) => (
-        <ExcelButton
-          dispatchType={'businessSettled/fetchMerchantGetExcel'}
-          dispatchData={get()}
-          exportProps={{ header: getColumns.slice(0, -1) }}
-        ></ExcelButton>
-      )}
+      // btnExtra={({ get }) => (
+      //   <ExcelButton
+      //     dispatchType={'businessSettled/fetchMerchantGetExcel'}
+      //     dispatchData={get()}
+      //     exportProps={{ header: getColumns.slice(0, -1) }}
+      //   ></ExcelButton>
+      // )}
       noCard={false}
       cRef={childRef}
       loading={loading}

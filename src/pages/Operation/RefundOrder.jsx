@@ -70,18 +70,13 @@ const RefundOrder = (props) => {
     {
       title: '退款数量',
       align: 'right',
-      dataIndex: 'goodsCount',
+      dataIndex: 'refundCount',
     },
     {
       title: '退款金额',
       align: 'right',
       dataIndex: 'refundFee',
-      render: (val) => `￥${val || 0}`,
-    },
-    {
-      title: '退款卡豆数',
-      align: 'right',
-      dataIndex: 'refundBean',
+      render: (val,record) => `￥${val || 0} (含${record.refundBean?record.refundBean:0}卡豆)`,
     },
     {
       title: '提交退款时间',

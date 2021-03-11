@@ -7,6 +7,8 @@ import QuestionTooltip from '@/components/QuestionTooltip';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
 import tableColums from './components/SubsidyShop/List/tableColums';
 
+import SubsidyDetail from './components/SubsidyShop/Detail/SubsidyDetail'
+
 const tabList = [
   {
     key: 'order',
@@ -24,6 +26,8 @@ const tabList = [
 
 const SubsidyShop = (props) => {
   const childRef = useRef();
+
+  const [visible,setVisible] = useState(false)
   // 搜索默认参数
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
@@ -56,7 +60,13 @@ const SubsidyShop = (props) => {
   }, [searchData]);
 
   // 获取详情 订单类型type 订单卡豆数bean
-  const fetchGetDetail = () => {};
+  const fetchGetDetail = (type,info) => {
+    setVisible({
+      show:true,
+      type,
+      info
+    })
+  };
 
   return (
     <>
@@ -125,6 +135,7 @@ const SubsidyShop = (props) => {
           //   dispatchType="platformIncome/fetchPlatformInconme"
           //   {...platformIncome.list}
         ></TableDataBlock>
+        <SubsidyDetail visible={visible} onClose={()=>setVisible(false)}></SubsidyDetail>
       </Card>
     </>
   );

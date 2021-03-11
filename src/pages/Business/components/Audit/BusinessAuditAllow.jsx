@@ -22,9 +22,19 @@ const BusinessAuditAllow = (props) => {
     });
   };
 
+  // 场景列表
+  const fechSceneList = () =>{
+    dispatch({
+      type:"sysTradeList/fetchScenceList",
+      callback:(val)=>{
+        setSceneList(val)
+      }
+    })
+  }
+
   // 特色服务
   const fetchGetSpeacial = () => {
-    
+
     dispatch({
       type: 'sysTradeList/fetchDetailList',
       payload: { type: 'special', categoryId },
@@ -44,6 +54,7 @@ const BusinessAuditAllow = (props) => {
   useEffect(() => {
     fetchGetService();
     fetchGetMreTag();
+    fechSceneList()
   }, []);
 
   useEffect(() => {
@@ -87,7 +98,7 @@ const BusinessAuditAllow = (props) => {
       type: 'checkbox',
       name: ['property', 'speacial'],
       loading: loading.effects['sysTradeList/fetchDetailList'],
-      select: speacialLsit || [],
+      select: sceneList || [],
     },
     {
       label: '店铺标签',

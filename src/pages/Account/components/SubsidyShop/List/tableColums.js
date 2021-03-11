@@ -141,7 +141,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '操作',
           align: 'center',
           dataIndex: 'time',
-          render: (val, row) => infoHandle(() => fetchGetDetail(val, row.type, row.bean)),
+          render: (val, row) => infoHandle(() => fetchGetDetail(row.type, row)),
         },
       ];
     // 按日显示
