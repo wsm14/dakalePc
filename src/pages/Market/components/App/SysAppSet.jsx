@@ -4,6 +4,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
+import CitySelect from './CitySelect';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
@@ -12,17 +13,19 @@ const SysAppSet = (props) => {
 
   const { show = false, info = '' } = visible;
   const [form] = Form.useForm();
-  const [showUrl, setShowUrl] = useState(false);
-
-  useEffect(() => {
-    if (show) setShowUrl(info.jumpType || false);
-  }, [show]);
+  const [showUrl, setShowUrl] = useState(false); // 链接
+  const [showArea, setShowArea] = useState(false); // 区域
 
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { coverImg, beginDate: time, jumpType } = values;
-
+      const { coverImg, beginDate: time, jumpType, detion, cityData = [] } = values;
+      // 城市数据整理
+      const newCityList = cityData.map(({ city }) => ({
+        provinceCode: city[0],
+        cityCode: city[1],
+        districtCode: city[2],
+      }));
       // 上传图片到oss -> 提交表单
       aliOssUpload(coverImg).then((res) => {
         dispatch({
@@ -74,12 +77,13 @@ const SysAppSet = (props) => {
       type: 'radio',
       name: 'detion',
       select: ['全平台', '按区县'],
+      onChange: (e) => setShowArea(e.target.value === '1'),
     },
     {
       label: '选择区县',
-      type: 'radio',
-      name: 'descsssrssiption',
-      select: ['全平台', '按区县'],
+      type: 'formItem',
+      visible: showArea,
+      formItem: <CitySelect name="cityData" form={form}></CitySelect>,
     },
     {
       type: 'rangePicker',
@@ -105,6 +109,10 @@ const SysAppSet = (props) => {
     title: info ? '编辑' : '新增',
     visible: show,
     onClose,
+    afterCallback: () => {
+      setShowUrl(info.jumpType || false);
+      setShowArea(info.detion || false);
+    },
     footer: (
       <Button onClick={fetchGetFormData} type="primary" loading={loading}>
         确认

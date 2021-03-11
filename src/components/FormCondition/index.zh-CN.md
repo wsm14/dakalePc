@@ -138,6 +138,11 @@
 
 ## 更新日志
 
+- ### 2021 年 3 月 11 日 10:54:02 Dong
+
+> - 导出部分自定义组件 可在 Form 表单外部使用
+>   > - `Cascader` `Select` `Upload` `Checkbox`
+
 - ### 2021 年 3 月 9 日 10:58:44 Dong
 
 > - 新增 `TreeSelect 树形选择器`

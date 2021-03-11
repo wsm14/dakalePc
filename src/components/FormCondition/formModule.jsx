@@ -33,4 +33,10 @@ const IFormModule = {
   switch: switchBlock,
 };
 
-export { IFormModule };
+export {
+  IFormModule,
+  cascader as Cascader,
+  select as Select,
+  upload as Upload,
+  checkbox as Checkbox,
+};

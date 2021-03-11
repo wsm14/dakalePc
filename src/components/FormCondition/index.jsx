@@ -71,9 +71,12 @@ const FormComponents = ({
       }
       let IFormItem = '';
       const placeholder = item.placeholder || `请输入${label}`;
+      // 规则 默认必填
+      let rules = item.rules || [{ required: true, message: `请确认${label}` }];
       // 表单组件
       if (type === 'formItem') {
         component = item.formItem;
+        rules = [{ required: false }];
       } else {
         // 根据类型获取不同的表单组件
         IFormItem = IFormModule[type];
@@ -83,8 +86,6 @@ const FormComponents = ({
         }
       }
 
-      // 规则 默认必填
-      const rules = item.rules || [{ required: true, message: `请确认${label}` }];
       const formProps = { ...delectFormProps(item) };
       formItemArr.push(
         visible && (

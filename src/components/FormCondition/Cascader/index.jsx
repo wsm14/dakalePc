@@ -11,7 +11,7 @@ const filter = (inputValue, path, label = 'label') => {
 const CascaderBlock = (props) => {
   const {
     select,
-    label: plabel,
+    label: plabel = '',
     placeholder,
     disabled,
     changeOnSelect = false,
