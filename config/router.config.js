@@ -31,25 +31,25 @@ export default [
         path: '/cityom/provCo',
         name: '省公司列表',
         component: './Cityom/ProvCompany',
-        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
+        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       {
         path: '/cityom/area',
         name: '区县运营中心',
         component: './Cityom/AreaCenter',
-        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
+        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       {
         path: '/cityom/join',
         name: '加盟申请',
         component: './Cityom/FranchiseApplication',
-        buttons: ['handle', 'info'],
+        buttons: ['info', 'handle'],
       },
       {
         path: '/cityom/sale',
         name: '销售系统管理',
         component: './Cityom/SaleAccount',
-        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
+        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       // {
       //   name: '活动设置',
@@ -114,13 +114,13 @@ export default [
         component: './Business/BusinessList',
         buttons: [
           'save',
+          'edit',
+          'info',
           'setMreCord',
           'exportList',
           'qrCode',
-          'info',
           'status',
           'bussinessStatus',
-          'edit',
           'set',
         ],
       },
@@ -158,7 +158,7 @@ export default [
         path: '/finance/withdraw',
         name: '提现明细',
         component: './Finance/WithdrawDetail',
-        buttons: ['exportList', 'edit'],
+        buttons: ['edit', 'exportList'],
       },
       {
         path: '/finance/income',
@@ -171,19 +171,19 @@ export default [
         path: '/operation/share',
         name: '分享管理',
         component: './Operation/ShareManage',
-        buttons: ['down', 'info', 'handleDeatil'],
+        buttons: ['save', 'del', 'edit', 'info', 'down', 'recall', 'signDetail', 'handleDeatil'],
       },
       {
         path: '/operation/goods',
         name: '商品管理',
         component: './Operation/GoodsManage',
-        buttons: ['save', 'info', 'stockSet', 'down', 'up', 'del', 'handleDeatil'],
+        buttons: ['save', 'del', 'info', 'down', 'up', 'stockSet', 'handleDeatil'],
       },
       {
         path: '/operation/classify',
         name: '分类管理',
         component: './Operation/ClassifyManage',
-        buttons: ['save', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit'],
       },
       {
         path: '/operation/orders',
@@ -231,7 +231,7 @@ export default [
         path: '/expert/set',
         name: '创作设置',
         component: './Expert/ExpertSet',
-        buttons: ['status', 'topic', 'edit', 'del', 'savePClassify', 'saveClassify'],
+        buttons: ['del', 'edit', 'status', 'topic', 'savePClassify', 'saveClassify'],
       },
       {
         path: '/expert/sort',
@@ -243,7 +243,7 @@ export default [
         path: '/expert/recommend',
         name: '哒人种草',
         component: './Expert/ExpertRecommend',
-        buttons: ['reportCenter', 'info', 'down', 'handle'],
+        buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
       // 营销管理
       {
@@ -288,7 +288,7 @@ export default [
         path: '/market/appset',
         name: '广告管理',
         component: './Market/AppSetList',
-        buttons: ['down', 'save', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit', 'down'],
       },
       {
         path: '/market/search',
@@ -300,7 +300,7 @@ export default [
         path: '/market/puzzleAd',
         name: '拼图广告',
         component: './Market/PuzzleAd',
-        buttons: ['eye', 'edit', 'save', 'del', 'up', 'down'],
+        buttons: ['save', 'del', 'edit', 'eye', 'up', 'down'],
       },
       // 账户管理
       {
@@ -320,7 +320,7 @@ export default [
         path: '/service/news',
         name: '新闻动态',
         component: './Service/ServiceNews',
-        buttons: ['down', 'save'],
+        buttons: ['save', 'down'],
       },
       {
         path: '/service/feedback',
@@ -338,7 +338,7 @@ export default [
         path: '/service/faq',
         name: '常见问题',
         component: './Service/ServiceFAQ',
-        buttons: ['userOs', 'mreOs', 'sortFAQ', 'sort', 'save', 'del', 'edit', 'setLike', 'status'],
+        buttons: ['userOs', 'mreOs', 'sortFAQ', 'save', 'del', 'edit', 'sort', 'setLike', 'status'],
       },
       // 基础配置
       {
@@ -367,13 +367,13 @@ export default [
         path: '/system/tradeset',
         name: '行业管理',
         component: './System/TradeList',
-        buttons: ['baseTrade', 'tradeAdd', 'edit', 'del', 'tradeSecondAdd'],
+        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
       },
       {
         path: '/system/brand',
         name: '品牌管理',
         component: './System/ManageBrand',
-        buttons: ['save', 'status', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit', 'status'],
       },
       {
         path: '/system/tag',
@@ -385,7 +385,7 @@ export default [
         path: '/system/city',
         name: '城市管理',
         component: './System/ManageCity',
-        buttons: ['save', 'edit', 'status', 'del'],
+        buttons: ['save', 'del', 'edit', 'status'],
       },
       {
         path: '/system/bankSet',
@@ -397,7 +397,7 @@ export default [
         path: '/system/peasShare',
         name: '卡豆分享',
         component: './System/PeasShare',
-        buttons: ['save', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit'],
       },
       {
         path: '/system/pageset',

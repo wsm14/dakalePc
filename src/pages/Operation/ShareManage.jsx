@@ -216,6 +216,24 @@ const ShareManage = (props) => {
           <HandleSetTable
             formItems={[
               {
+                type: 'del',
+                popText: `删除之后内容不可恢复，\n确认删除吗？`,
+                click: () => setVisibleDown({ show: true, initialValues: record }),
+              },
+              {
+                type: 'edit',
+                click: () => fetchShareDetail(val, record.contentType),
+              },
+              {
+                type: 'recall',
+                pop: true,
+                click: () => setVisibleDown({ show: true, initialValues: record }),
+              },
+              {
+                type: 'signDetail',
+                click: () => fetchShareHandleDetail(val),
+              },
+              {
                 type: 'down',
                 visible: status == 1 || status == 5,
                 click: () => setVisibleDown({ show: true, initialValues: record }),
