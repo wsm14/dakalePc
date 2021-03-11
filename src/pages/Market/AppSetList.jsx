@@ -29,6 +29,12 @@ const SysAppSet = (props) => {
       type: 'select',
       select: BANNER_SHOW_STATUS,
     },
+    {
+      label: '投放区域',
+      name: 'shoswStatus',
+      type: 'select',
+      select: BANNER_SHOW_STATUS,
+    },
   ];
 
   // table 表头
@@ -54,6 +60,12 @@ const SysAppSet = (props) => {
       align: 'center',
       dataIndex: 'bannerType',
       render: (val) => (BANNER_TYPE[val] ? BANNER_TYPE[val] : '--'),
+    },
+    {
+      title: '投放区域',
+      align: 'center',
+      dataIndex: 'bannerType',
+      render: (val) => BANNER_TYPE[val],
     },
     {
       title: '跳转类型',

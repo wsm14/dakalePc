@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
@@ -109,8 +109,8 @@ const SysAppSet = (props) => {
     title: info ? '编辑' : '新增',
     visible: show,
     onClose,
-    afterCallback: () => {
-      setShowUrl(info.jumpType || false);
+    afterCallBack: () => {
+      setShowUrl(info.jumpType === 'H5');
       setShowArea(info.detion || false);
     },
     footer: (
