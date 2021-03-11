@@ -56,11 +56,8 @@ const SearchCard = ({ tabkey, searchData, setSearchData }) => {
 
   // 类型选择项目
   const options = [
-    { label: '全部', value: 'scan' },
+    { label: '全部', value: '' },
     { label: '平台直充', value: 'goods' },
-    { label: '行为补贴', value: 'coupon' },
-    { label: '内容补贴', value: 'moment' },
-    { label: '充值', value: 'moment' },
   ];
 
   return (

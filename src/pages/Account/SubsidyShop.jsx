@@ -32,7 +32,7 @@ const SubsidyShop = (props) => {
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: ['scan', 'goods', 'coupon', 'moment'],
+    type: ['', 'goods'],
   };
 
   // platform-运营平台 partner-区县平台 province-省代平台
@@ -56,7 +56,7 @@ const SubsidyShop = (props) => {
     let pageObj = {};
     // 判断是否存在分页信息 存在则重置分页
     if (page) pageObj = { page, limit };
-    // childRef.current.fetchGetData({ ...newSearch, ...pageObj });
+    childRef.current.fetchGetData({ ...newSearch, ...pageObj });
   }, [searchData]);
 
   // 获取详情 订单类型type 订单卡豆数bean
@@ -83,15 +83,12 @@ const SubsidyShop = (props) => {
               content={'实时统计，不随时间搜索变化'}
             ></QuestionTooltip>
             ：111000000000000
-            <Button type="primary" style={{ marginLeft: '20px' }}>
-              提现
-            </Button>
           </Space>
         }
         extra={
           <>
             <span>补贴账户 | </span>
-            <span>补贴银行 | </span>
+            <span>杭州联合银行 | </span>
             <span>67327823327838273238382</span>
           </>
         }

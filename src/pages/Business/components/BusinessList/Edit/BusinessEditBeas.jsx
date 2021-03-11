@@ -170,6 +170,14 @@ const BusinessAddBeas = (props) => {
       rules: [{ required: true, message: `请确认店铺门头照` }],
     },
     {
+      label: '店铺头图',
+      name: 'coverImg',
+      type: 'upload',
+      maxFile: 1,
+      extra: '最多上传 1 张图片，建议图片比例16：9，大小在3M以内',
+      rules: [{ required: true, message: `请确认店铺头图` }],
+    },
+    {
       label: '店内实景照',
       name: 'interiorImg',
       type: 'upload',

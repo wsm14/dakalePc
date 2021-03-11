@@ -138,7 +138,7 @@ const BusinessDetailShow = (props) => {
       type: 'upload',
     },
     {
-      label: '店铺头照',
+      label: '店铺头图',
       name: 'coverImg',
       type: 'upload',
     },

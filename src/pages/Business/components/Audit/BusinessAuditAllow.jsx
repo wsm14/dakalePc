@@ -34,7 +34,6 @@ const BusinessAuditAllow = (props) => {
 
   // 特色服务
   const fetchGetSpeacial = () => {
-
     dispatch({
       type: 'sysTradeList/fetchDetailList',
       payload: { type: 'special', categoryId },
@@ -54,7 +53,7 @@ const BusinessAuditAllow = (props) => {
   useEffect(() => {
     fetchGetService();
     fetchGetMreTag();
-    fechSceneList()
+    fechSceneList();
   }, []);
 
   useEffect(() => {
@@ -96,8 +95,8 @@ const BusinessAuditAllow = (props) => {
     {
       label: '场景设置',
       type: 'checkbox',
-      name: ['property', 'speacial'],
-      loading: loading.effects['sysTradeList/fetchDetailList'],
+      name: ['property', 'scenesIds'],
+      loading: loading.effects['sysTradeList/fetchScenceList'],
       select: sceneList || [],
     },
     {
