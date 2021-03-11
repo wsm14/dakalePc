@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Searchor } from './searchModule';
-import { Form, Row, Col, Input, Button, Space, Grid } from 'antd';
+import { Form, Row, Col, Button, Space, Grid } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -34,42 +34,6 @@ const SearchCondition = (props) => {
   const screens = useBreakpoint();
   // 展开状态
   const [expand, setExpand] = useState(false);
-
-  const len = formItems.length;
-
-  // 不同屏幕大小显示个数
-  let count = 2;
-  if (screens.xxl) {
-    count = 4;
-  } else if (screens.xl) {
-    count = 2;
-  }
-
-  const getFields = () => {
-    const children = [];
-    formItems.forEach((item, i) => {
-      const { type = 'input', name, handle, label } = item;
-      // 根据类型获取不同的表单组件
-      const SearchItem = Searchor[type];
-
-      const colcount = expand ? len : count;
-      const pickerCheck = (type === 'rangePicker' || type === 'datePicker') && len < 4;
-      // 排版填充
-      children.push(
-        <Col
-          lg={i < colcount ? (pickerCheck ? 10 : componentSize !== 'default' ? 8 : 12) : 0}
-          xl={i < colcount ? (pickerCheck ? 10 : 12) : 0}
-          xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
-          key={i}
-        >
-          <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
-            <SearchItem {...item} {...(handle && handle(searchForm))} handle=""></SearchItem>
-          </FormItem>
-        </Col>,
-      );
-    });
-    return children;
-  };
 
   // 搜索
   const handleSearchsOver = (values, type) => {
@@ -114,6 +78,42 @@ const SearchCondition = (props) => {
     if (type == 'data') return { ...values, ...formObj };
     // 搜索回调
     handleSearch({ ...values, ...formObj });
+  };
+
+  const len = formItems.length;
+
+  // 不同屏幕大小显示个数
+  let count = 2;
+  if (screens.xxl) {
+    count = 4;
+  } else if (screens.xl) {
+    count = 2;
+  }
+
+  const getFields = () => {
+    const children = [];
+    formItems.forEach((item, i) => {
+      const { type = 'input', name, handle, label } = item;
+      // 根据类型获取不同的表单组件
+      const SearchItem = Searchor[type];
+
+      const colcount = expand ? len : count;
+      const pickerCheck = (type === 'rangePicker' || type === 'datePicker') && len < 4;
+      // 排版填充
+      children.push(
+        <Col
+          lg={i < colcount ? (pickerCheck ? 10 : componentSize !== 'default' ? 8 : 12) : 0}
+          xl={i < colcount ? (pickerCheck ? 10 : 12) : 0}
+          xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
+          key={i}
+        >
+          <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
+            <SearchItem {...item} {...(handle && handle(searchForm))} handle=""></SearchItem>
+          </FormItem>
+        </Col>,
+      );
+    });
+    return children;
   };
 
   // 获取参数

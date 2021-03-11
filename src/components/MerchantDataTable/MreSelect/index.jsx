@@ -3,12 +3,23 @@ import { Modal } from 'antd';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
-const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = [], loading }) => {
+const MreSelect = ({
+  type = 'select',
+  visible,
+  keys = [],
+  mreList = [],
+  onOk,
+  onCancel,
+  subsidyList = [],
+  dispatchType = 'businessList/fetchGetList',
+  params = { bankStatus: 3, businessStatus: 1 },
+  loading,
+}) => {
   const [selectMre, setSelectMre] = useState([]); // 选中的店铺
   const [selectMreKey, setSelectMreKey] = useState([]);
 
   useEffect(() => {
-    visible && setSelectMreKey(keys);
+    visible && type === 'select' && setSelectMreKey(keys);
   }, [visible]);
 
   // 搜索参数
@@ -31,7 +42,7 @@ const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = 
     {
       title: '店铺名称',
       dataIndex: 'merchantName',
-      width: 300,
+      width: 400,
     },
     {
       title: '详细地址',
@@ -39,13 +50,34 @@ const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = 
     },
   ];
 
+  const rowSelection = {
+    preserveSelectedRowKeys: true,
+    selectedRowKeys: selectMreKey,
+    onChange: (val, list) => {
+      // 先去重处理 排除重复已选数据
+      // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
+      const obj = {};
+      const newSelectList = [...mreList, ...list]
+        .reduce((item, next) => {
+          next && obj[next.userMerchantIdString]
+            ? ''
+            : next && (obj[next.userMerchantIdString] = true && item.push(next));
+          return item;
+        }, [])
+        .filter((item) => item && val.includes(item.userMerchantIdString));
+      setSelectMreKey(val);
+      setSelectMre(newSelectList);
+    },
+  };
+
   return (
     <Modal
-      title="选择发布店铺"
+      title={`${type === 'select' ? '选择发布店铺' : '查看店铺'}`}
       destroyOnClose
       maskClosable
       width={950}
       visible={visible}
+      footer={type === 'select' ? undefined : false}
       okText={`确定（已选${selectMreKey.length}项）`}
       onOk={() => {
         onOk({ keys: selectMreKey, list: selectMre });
@@ -56,31 +88,14 @@ const MreSelect = ({ visible, keys, mreList = [], onOk, onCancel, subsidyList = 
       <TableDataBlock
         noCard={false}
         size="middle"
+        tableSize="small"
         searchItems={searchItems}
         columns={getColumns}
         loading={loading}
         rowKey={(record) => `${record.userMerchantIdString}`}
-        dispatchType="businessList/fetchGetList"
-        params={{ bankStatus: 3, businessStatus: 1 }}
-        rowSelection={{
-          preserveSelectedRowKeys: true,
-          selectedRowKeys: selectMreKey,
-          onChange: (val, list) => {
-            // 先去重处理 排除重复已选数据
-            // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
-            const obj = {};
-            const newSelectList = [...mreList, ...list]
-              .reduce((item, next) => {
-                next && obj[next.userMerchantIdString]
-                  ? ''
-                  : next && (obj[next.userMerchantIdString] = true && item.push(next));
-                return item;
-              }, [])
-              .filter((item) => item && val.includes(item.userMerchantIdString));
-            setSelectMreKey(val);
-            setSelectMre(newSelectList);
-          },
-        }}
+        dispatchType={dispatchType}
+        params={params}
+        rowSelection={type === 'select' ? rowSelection : undefined}
         {...subsidyList}
       ></TableDataBlock>
     </Modal>
