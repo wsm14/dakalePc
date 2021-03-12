@@ -192,6 +192,13 @@ export function fetchBannerList(params) {
   });
 }
 
+// get 广告管理 - 获取详情
+export function fetchBannerDetail(params) {
+  return request('/admin/systemConfig/listBannerMarketPlatform', {
+    params,
+  });
+}
+
 // post 广告管理 - 下架/图片删除 修改
 export function fetchBannerStatusDel(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {

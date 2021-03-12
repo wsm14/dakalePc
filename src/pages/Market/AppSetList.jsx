@@ -116,7 +116,7 @@ const SysAppSet = (props) => {
             {
               type: 'edit',
               visible: record.showStatus !== '2',
-              click: () => setVisibleSet({ show: true, info: record }),
+              click: () => fetchBannerDetail({ bannerId: val }),
             },
             {
               type: 'del',
@@ -128,6 +128,15 @@ const SysAppSet = (props) => {
       ),
     },
   ];
+
+  // 获取详情
+  const fetchBannerDetail = (payload) => {
+    dispatch({
+      type: 'sysAppList/fetchBannerDetail',
+      payload,
+      callback: (detail) => setVisibleSet({ show: true, type: 'edit', detail }),
+    });
+  };
 
   // 占位图下架
   const fetchBannerStatusDel = (payload) => {
@@ -147,7 +156,7 @@ const SysAppSet = (props) => {
           <AuthConsumer auth="save">
             <Button
               className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, info: '' })}
+              onClick={() => setVisibleSet({ show: true, type: 'add' })}
             >
               新增
             </Button>
@@ -163,7 +172,7 @@ const SysAppSet = (props) => {
       <SysAppSetForm
         cRef={childRef}
         visible={visibleSet}
-        onClose={() => setVisibleSet({ show: false, info: '' })}
+        onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
     </>
   );

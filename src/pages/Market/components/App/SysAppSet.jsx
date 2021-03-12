@@ -16,7 +16,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const SysAppSet = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
 
-  const { show = false, info = '' } = visible;
+  const { show = false, type = 'add', detail = {} } = visible;
   const [form] = Form.useForm();
   const [showUrl, setShowUrl] = useState(false); // 链接
   const [showArea, setShowArea] = useState(false); // 区域
@@ -39,9 +39,9 @@ const SysAppSet = (props) => {
       // 上传图片到oss -> 提交表单
       aliOssUpload(coverImg).then((res) => {
         dispatch({
-          type: { true: 'sysAppList/fetchBannerSet', false: 'sysAppList/fetchBannerEdit' }[!info],
+          type: { add: 'sysAppList/fetchBannerSet', edit: 'sysAppList/fetchBannerEdit' }[type],
           payload: {
-            bannerId: info.bannerIdString,
+            bannerId: detail.bannerIdString,
             ...values,
             provinceCityDistrictObjects,
             jumpType: jumpType === '无' ? '' : jumpType,
@@ -117,12 +117,12 @@ const SysAppSet = (props) => {
   ];
 
   const modalProps = {
-    title: info ? '编辑' : '新增',
+    title: type === 'edit' ? '编辑' : '新增',
     visible: show,
     onClose,
     afterCallBack: () => {
-      setShowUrl(info.jumpType === 'H5');
-      setShowArea(info.deliveryAreaType === 'detail');
+      setShowUrl(detail.jumpType === 'H5');
+      setShowArea(detail.deliveryAreaType === 'detail');
     },
     footer: (
       <Button onClick={fetchGetFormData} type="primary" loading={loading}>
@@ -133,22 +133,7 @@ const SysAppSet = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition
-        initialValues={
-          info
-            ? {
-                ...info,
-                jumpType: info.jumpType ? info.jumpType : '无',
-                beginDate: [
-                  moment(info.beginDate, 'YYYY-MM-DD'),
-                  moment(info.endDate, 'YYYY-MM-DD'),
-                ],
-              }
-            : {}
-        }
-        formItems={formItems}
-        form={form}
-      />
+      <FormCondition initialValues={detail} formItems={formItems} form={form} />
     </DrawerCondition>
   );
 };
