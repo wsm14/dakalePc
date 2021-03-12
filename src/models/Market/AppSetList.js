@@ -46,11 +46,11 @@ export default {
         beginDate,
         endDate,
         provinceCityDistrictObjects: cityData = [],
-      } = content.subsidy;
+      } = content.bannerDTO;
       callback({
-        ...content.subsidy,
+        ...content.bannerDTO,
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
-          city: [provinceCode, cityCode, districtCode],
+          city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
         jumpType: jumpType ? jumpType : '无',
         beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],

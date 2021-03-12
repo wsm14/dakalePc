@@ -16,7 +16,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const SysAppSet = (props) => {
   const { dispatch, cRef, visible, onClose, loading } = props;
 
-  const { show = false, type = 'add', detail = {} } = visible;
+  const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
   const [form] = Form.useForm();
   const [showUrl, setShowUrl] = useState(false); // 链接
   const [showArea, setShowArea] = useState(false); // 区域

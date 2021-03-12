@@ -35,7 +35,7 @@ const CitySelect = ({ form, name }) => {
   };
 
   return (
-    <Form.List name={name} initialValue={[{}]}>
+    <Form.List name={name}>
       {(fields, { add, remove }) => {
         return (
           <>
@@ -49,10 +49,12 @@ const CitySelect = ({ form, name }) => {
                 >
                   <Cascader changeOnSelect />
                 </Form.Item>
-                <MinusCircleOutlined
-                  onClick={() => remove(field.name)}
-                  className={styles.app_icon}
-                />
+                {fields.length > 1 && (
+                  <MinusCircleOutlined
+                    onClick={() => remove(field.name)}
+                    className={styles.app_icon}
+                  />
+                )}
               </div>
             ))}
             <Button disabled={fields.length === 10} onClick={() => add()} type="primary">

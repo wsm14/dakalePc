@@ -194,7 +194,7 @@ export function fetchBannerList(params) {
 
 // get 广告管理 - 获取详情
 export function fetchBannerDetail(params) {
-  return request('/admin/systemConfig/listBannerMarketPlatform', {
+  return request('/admin/systemConfig/getBannerMarketPlatformById', {
     params,
   });
 }
