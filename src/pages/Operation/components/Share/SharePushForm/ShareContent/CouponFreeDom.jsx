@@ -20,7 +20,7 @@ export const couponsDom = (item = {}, id, setSelectItem) => {
     >
       <div className="share_left">价值¥{couponPrice}</div>
       <div className="share_title">
-        <div>{couponName}</div>
+        <div className="titile">{couponName}</div>
         <div className="share_tip">
           {activeDate && endDate
             ? `有效期：${activeDate} - ${endDate}`
@@ -47,12 +47,13 @@ export const goodsDom = (item = {}, id, setSelectItem) => {
     <div
       key={ownerCouponId}
       className={`share_Coupon share_item ${id === ownerCouponId && 'select'}`}
-      style={{ marginBottom: 6, height: 68 }}
+      style={{ marginBottom: 6, height: 78 }}
       onClick={() => setSelectItem(item)}
     >
-      <div className="share_left" style={{ width: 50, height: 50 }}></div>
+      <div className="share_left" style={{ width: 60, height: 60 }}></div>
       <div className="share_title">
-        <div>{couponName}</div>
+        <div className="titile">{couponName}</div>
+        <div className="share_tip">¥12</div>
         <div className="share_tip">剩余{remain}张</div>
       </div>
       <div className="share_select_icon">

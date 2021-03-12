@@ -24,7 +24,7 @@ const ShareCoupon = (props) => {
     <div className="share_Coupon">
       <div className="share_left">价值¥{couponPrice}</div>
       <div className="share_title">
-        <div>{couponName}</div>
+        <div className="titile">{couponName}</div>
         <div className="share_tip">
           {activeDate && endDate
             ? `有效期：${activeDate} - ${endDate}`
@@ -44,7 +44,7 @@ const ShareCoupon = (props) => {
     <div className="share_Coupon">
       <div className="share_left" style={{ width: 80, height: 80 }}></div>
       <div className="share_title">
-        <div>{couponName}</div>
+        <div className="titile">{couponName}</div>
         <div className="share_tip">{`有效期：${activeDate} - ${endDate}`}</div>
         <div className="share_tip" style={{ textAlign: 'right' }}>
           <span style={{ textDecoration: 'line-through', marginRight: 10 }}>¥20</span>

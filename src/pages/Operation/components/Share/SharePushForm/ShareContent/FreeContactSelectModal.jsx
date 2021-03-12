@@ -56,7 +56,7 @@ const FreeContactSelectModal = (props) => {
   return (
     <Modal
       title={`选择优惠内容（单选）`}
-      width={960}
+      width={1110}
       visible={visible}
       afterClose={() => setPage(1)}
       maskStyle={{ background: 'none' }}
