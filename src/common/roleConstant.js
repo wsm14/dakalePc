@@ -10,7 +10,6 @@ export const ROLE_BUTTON_TYPE = {
   up: '上架',
   down: '下架',
   status: '状态',
-  recall: '撤回',
   exportList: '导出',
   set: '设置',
   copy: '复制',

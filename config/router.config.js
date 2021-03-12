@@ -171,7 +171,7 @@ export default [
         path: '/operation/share',
         name: '分享管理',
         component: './Operation/ShareManage',
-        buttons: ['save', 'del', 'edit', 'info', 'down', 'recall', 'signDetail', 'handleDeatil'],
+        buttons: ['save', 'del', 'edit', 'info', 'down', 'signDetail', 'handleDeatil'],
       },
       {
         path: '/operation/goods',

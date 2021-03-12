@@ -63,8 +63,8 @@ const ShareManage = (props) => {
     {
       label: '创建时间',
       type: 'rangePicker',
-      name: 'submitRefundTimeStart',
-      end: 'submitRefundTimeEnd',
+      name: 'beginDate',
+      end: 'endDate',
     },
     {
       label: '状态',
@@ -95,13 +95,9 @@ const ShareManage = (props) => {
     },
     {
       label: '店铺类型',
-      name: 'merchantType',
+      name: 'userType',
       type: 'select',
       select: BUSINESS_TYPE,
-    },
-    {
-      label: '剩余卡豆',
-      name: 'merchantName',
     },
     {
       label: '行业',
@@ -219,20 +215,6 @@ const ShareManage = (props) => {
         return (
           <HandleSetTable
             formItems={[
-              {
-                type: 'del',
-                popText: `删除之后内容不可恢复，\n确认删除吗？`,
-                click: () => setVisibleDown({ show: true, initialValues: record }),
-              },
-              {
-                type: 'edit',
-                click: () => fetchShareDetail(val, record.contentType),
-              },
-              {
-                type: 'recall',
-                pop: true,
-                click: () => setVisibleDown({ show: true, initialValues: record }),
-              },
               {
                 type: 'signDetail',
                 click: () => fetchShareHandleDetail(val),
