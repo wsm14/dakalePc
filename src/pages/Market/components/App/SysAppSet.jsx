@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { BANNER_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
+import {
+  BANNER_TYPE,
+  BANNER_JUMP_TYPE,
+  BANNER_AREA_TYPE,
+  BANNER_LOOK_AREA,
+} from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import CitySelect from './CitySelect';
 import FormCondition from '@/components/FormCondition';
@@ -19,9 +24,14 @@ const SysAppSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { coverImg, beginDate: time, jumpType, detion, cityData = [] } = values;
+      const {
+        coverImg,
+        beginDate: time,
+        jumpType,
+        provinceCityDistrictObjects: cityData = [],
+      } = values;
       // 城市数据整理
-      const newCityList = cityData.map(({ city }) => ({
+      const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
         cityCode: city[1],
         districtCode: city[2],
@@ -33,6 +43,7 @@ const SysAppSet = (props) => {
           payload: {
             bannerId: info.bannerIdString,
             ...values,
+            provinceCityDistrictObjects,
             jumpType: jumpType === '无' ? '' : jumpType,
             coverImg: res.toString(),
             beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
@@ -69,26 +80,26 @@ const SysAppSet = (props) => {
     {
       label: '可见范围',
       type: 'radio',
-      name: 'descrssiption',
-      select: ['所有用户可见', '仅哒人可见'],
+      name: 'visibleRange',
+      select: BANNER_LOOK_AREA,
     },
     {
       label: '应用范围',
       type: 'radio',
-      name: 'detion',
-      select: ['全平台', '按区县'],
-      onChange: (e) => setShowArea(e.target.value === '1'),
+      name: 'deliveryAreaType',
+      select: BANNER_AREA_TYPE,
+      onChange: (e) => setShowArea(e.target.value === 'detail'),
     },
     {
       label: '选择区县',
       type: 'formItem',
       visible: showArea,
-      formItem: <CitySelect name="cityData" form={form}></CitySelect>,
+      formItem: <CitySelect name="provinceCityDistrictObjects" form={form}></CitySelect>,
     },
     {
-      type: 'rangePicker',
       label: '展示时间',
       name: 'beginDate',
+      type: 'rangePicker',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
@@ -111,7 +122,7 @@ const SysAppSet = (props) => {
     onClose,
     afterCallBack: () => {
       setShowUrl(info.jumpType === 'H5');
-      setShowArea(info.detion || false);
+      setShowArea(info.deliveryAreaType === 'detail');
     },
     footer: (
       <Button onClick={fetchGetFormData} type="primary" loading={loading}>

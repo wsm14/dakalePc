@@ -1,7 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import { BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
+import { Button, Tooltip } from 'antd';
+import {
+  BANNER_TYPE,
+  BANNER_SHOW_STATUS,
+  BANNER_JUMP_TYPE,
+  BANNER_AREA_TYPE,
+} from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -33,7 +38,7 @@ const SysAppSet = (props) => {
       label: '投放区域',
       name: 'shoswStatus',
       type: 'select',
-      select: BANNER_SHOW_STATUS,
+      select: BANNER_AREA_TYPE,
     },
   ];
 
@@ -64,14 +69,18 @@ const SysAppSet = (props) => {
     {
       title: '投放区域',
       align: 'center',
-      dataIndex: 'bannerType',
-      render: (val) => BANNER_TYPE[val],
+      dataIndex: 'deliveryAreaType',
+      render: (val, row) =>
+        ({
+          all: BANNER_AREA_TYPE[val],
+          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
+        }[val]),
     },
     {
       title: '跳转类型',
       align: 'center',
       dataIndex: 'jumpType',
-      render: (val) => val || '无',
+      render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
     },
     {
       title: '跳转链接',

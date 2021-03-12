@@ -125,8 +125,14 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
-// Banner展示状态
+// 广告管理 - 展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
+
+// 广告管理 - 投放区域类型
+export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
+
+// 广告管理 - 可见范围
+export const BANNER_LOOK_AREA = { user: '用户', kol: '哒人' };
 
 // 周边特惠 - 上架状态
 export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
@@ -187,13 +193,13 @@ export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 // 补贴管理 补贴类型
 export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
 
-//  补贴管理 任务列表 补贴角色
+// 补贴管理 任务列表 补贴角色
 export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', kol: '哒人' };
 
-//  补贴管理 行为管理 补贴角色
+// 补贴管理 行为管理 补贴角色
 export const SUBSIDY_ACTION_ROLE = { merchant: '店铺' };
 
-//  补贴管理 行为管理 补贴类型
+// 补贴管理 行为管理 补贴类型
 export const SUBSIDY_ACTION_TYPE = { video: '发布视频', image: '发布图文', mark: '到店打卡' };
 
 // 分享类型
@@ -228,10 +234,12 @@ export const BANNER_TYPE = {
   merchantMain: '商家主页',
   mainSpecial: '周边特惠首页',
   surroundingSpecial: '周边特惠列表',
+  wanderAroundMainBanner: '逛逛主Banner',
+  wanderAroundCapsule: '逛逛胶囊位',
 };
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', 内部: '内部' };
+export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', inside: '内部' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };

@@ -183,16 +183,16 @@ export function fetchCheckInTextImgAdd(data) {
 
 // 打卡设置 end
 
-// App设置
+// 广告管理
 
-// get App设置 - 图片列表
+// get 广告管理 - 广告列表
 export function fetchBannerList(params) {
   return request('/admin/systemConfig/listBannerMarketPlatform', {
     params,
   });
 }
 
-// post App设置 - 图片下架/图片删除 修改
+// post 广告管理 - 下架/图片删除 修改
 export function fetchBannerStatusDel(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {
     method: 'POST',
@@ -200,7 +200,7 @@ export function fetchBannerStatusDel(data) {
   });
 }
 
-// post App设置 - 图片新增
+// post 广告管理 - 新增
 export function fetchBannerSet(data) {
   return request('/admin/systemConfig/saveBannerMarketPlatform', {
     method: 'POST',
@@ -208,7 +208,7 @@ export function fetchBannerSet(data) {
   });
 }
 
-// App设置 end
+// 广告管理 end
 
 // 热门搜索
 
