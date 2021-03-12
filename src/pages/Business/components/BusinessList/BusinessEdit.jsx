@@ -44,6 +44,7 @@ const BusinessAdd = (props) => {
         businessHubIdString,
         tags,
         property: { service, speacial },
+        scenesIds,
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
@@ -70,6 +71,7 @@ const BusinessAdd = (props) => {
           speacial: speacial ? speacial.toString() : '',
         },
         [type == 'edit' ? 'tag' : 'tags']: tags.toString(),
+        scenesIds:scenesIds.toString(),
         userMerchantId: initialValues.userMerchantIdString,
         businessTime: selectTime.toString(), // 营业时间
         businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',

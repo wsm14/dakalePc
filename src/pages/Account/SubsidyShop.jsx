@@ -6,8 +6,9 @@ import { Card, Space, Button } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
 import tableColums from './components/SubsidyShop/List/tableColums';
+import ExcelButton from '@/components/ExcelButton';
 
-import SubsidyDetail from './components/SubsidyShop/Detail/SubsidyDetail'
+import SubsidyDetail from './components/SubsidyShop/Detail/SubsidyDetail';
 
 const tabList = [
   {
@@ -25,14 +26,15 @@ const tabList = [
 ];
 
 const SubsidyShop = (props) => {
+  const { subsidyShop, loading, dispatch, outBean, inBean } = props;
   const childRef = useRef();
 
-  const [visible,setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
   // 搜索默认参数
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: ['', 'goods'],
+    type: ['', 'platform'],
   };
 
   // platform-运营平台 partner-区县平台 province-省代平台
@@ -60,12 +62,17 @@ const SubsidyShop = (props) => {
   }, [searchData]);
 
   // 获取详情 订单类型type 订单卡豆数bean
-  const fetchGetDetail = (type,info) => {
-    setVisible({
-      show:true,
-      type,
-      info
-    })
+  const fetchGetDetail = (type, row) => {
+    dispatch({
+      type: 'subsidyShop/fetchSubsidyShopDetailById',
+      payload: { subsidyId: row.subsidyId },
+      callback: (info) => setVisible({ show: true, type, info }),
+    });
+    // setVisible({
+    //   show: true,
+    //   type,
+    //   info,
+    // });
   };
 
   return (
@@ -82,7 +89,7 @@ const SubsidyShop = (props) => {
               overlayStyle={{ maxWidth: 300 }}
               content={'实时统计，不随时间搜索变化'}
             ></QuestionTooltip>
-            ：111000000000000
+            ：{outBean}
           </Space>
         }
         extra={
@@ -111,9 +118,23 @@ const SubsidyShop = (props) => {
       <Card
         title={
           <Space size="large" style={{ color: '#f00' }}>
-            <span> 收入：7373</span>
-            <span>支出：5555</span>
+            <span> 收入：{inBean}</span>
+            <span>支出：{outBean}</span>
           </Space>
+        }
+        extra={
+           <ExcelButton
+              dispatchType={'subsidyShop/fetchSubsidyShopList'}
+              dispatchData={newSearch}
+              exportProps={{
+                header: tableColums({
+                  type: searchData.latitude,
+                  searchData,
+                  setSearchData,
+                  fetchGetDetail,
+                }).slice(0, -1),
+              }}
+            ></ExcelButton>
         }
       >
         <TableDataBlock
@@ -121,21 +142,27 @@ const SubsidyShop = (props) => {
           firstFetch={false}
           noCard={false}
           cRef={childRef}
+          loading={loading}
           columns={tableColums({
             type: searchData.latitude,
             searchData,
             setSearchData,
             fetchGetDetail,
           })}
-          //   params={newSearch}
-            rowKey={(record) => `${record.identification || record.time}`}
-          //   dispatchType="platformIncome/fetchPlatformInconme"
-          //   {...platformIncome.list}
+          params={newSearch}
+          rowKey={(record) => `${record.identification || record.time}`}
+          dispatchType="subsidyShop/fetchSubsidyShopList"
+          {...subsidyShop.list}
         ></TableDataBlock>
-        <SubsidyDetail visible={visible} onClose={()=>setVisible(false)}></SubsidyDetail>
+        <SubsidyDetail visible={visible} onClose={() => setVisible(false)}></SubsidyDetail>
       </Card>
     </>
   );
 };
 
-export default connect()(SubsidyShop);
+export default connect(({ subsidyShop, loading }) => ({
+  subsidyShop,
+  outBean: subsidyShop.outBean,
+  inBean: subsidyShop.inBean,
+  loading: loading.effects['subsidyShop/fetchSubsidyShopList'],
+}))(SubsidyShop);

@@ -124,7 +124,7 @@ const BusinessListComponent = (props) => {
     },
     {
       label:"营业执照号",
-      name:'businessLicense'
+      name:'socialCreditCode'
     }
   ];
 

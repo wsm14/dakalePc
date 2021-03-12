@@ -248,3 +248,6 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 
 // 商品类型
 export const GOODS_CLASS_TYPE = { package: '套餐', single: '单品' };
+
+//收入/支出
+export const ADD_AND_MINUS= {add:'收入', minus:'支出'}

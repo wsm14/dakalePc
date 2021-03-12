@@ -62,3 +62,18 @@ export async function fetchBusinessRechargeDetail(params) {
     params,
   });
 }
+
+
+//补贴店铺 
+export async function fetchSubsidyShopList(params) {
+  return request('/admin/subsidyStatistic/subsidyStatistic', {
+    params,
+  });
+}
+
+//补贴店铺详情 /
+export async function fetchSubsidyShopDetailById(params) {
+  return request('/admin/subsidyManagement/getSubsidyById', {
+    params,
+  });
+}

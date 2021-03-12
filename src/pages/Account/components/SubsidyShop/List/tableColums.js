@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { PLATFORM_INCOME_ORDERS_TYPE } from '@/common/constant';
+import { ADD_AND_MINUS } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const infoHandle = (click) => (
@@ -25,101 +25,41 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
     {
       title: '时间',
       align: 'center',
-      dataIndex: 'time',
+      dataIndex: 'gainTime',
     },
     {
       title: '平台直充',
       align: 'right',
-      dataIndex: 'scanBean',
-    },
-    {
-      title: '内容补贴',
-      align: 'right',
-      dataIndex: 'goodsBean',
-    },
-    {
-      title: '行为补贴',
-      align: 'right',
-      dataIndex: 'couponBean',
-    },
-    {
-      title: '充值',
-      align: 'right',
-      dataIndex: 'merchantName',
-      render: (val) => val || 0,
+      dataIndex: 'platformBean',
     },
     {
       title: '收入（卡豆）',
       align: 'right',
-      dataIndex: 'totalBean',
+      dataIndex: 'inBean',
     },
     {
       title: '支出（卡豆）',
       align: 'right',
-      dataIndex: 'totalBean',
+      dataIndex: 'outBean',
     },
   ];
   const monthColums = [
     {
       title: '时间',
       align: 'center',
-      dataIndex: 'time',
+      dataIndex: 'gainTime',
     },
-    {
-      title: '补贴用户',
-      align: 'right',
-      dataIndex: 'scanBean',
-    },
+   
     {
       title: '补贴店铺',
       align: 'right',
-      dataIndex: 'goodsBean',
+      dataIndex: 'platformBean',
     },
-    {
-      title: '补贴哒人',
-      align: 'right',
-      dataIndex: 'couponBean',
-    },
-    {
-      title: '补贴分享',
-      align: 'right',
-      dataIndex: 'couponBean',
-    },
+   
     {
       title: '【总】补贴（卡豆',
       align: 'right',
-      dataIndex: 'couponBean',
-    },
-    {
-      title: '补贴用户-退回',
-      align: 'right',
-      dataIndex: 'couponBean',
-    },
-    {
-      title: '补贴店铺-退回',
-      align: 'right',
-      dataIndex: 'couponBean',
-    },
-    {
-      title: '补贴哒人-退回',
-      align: 'right',
-      dataIndex: 'merchantName',
-      render: (val) => val || 0,
-    },
-    {
-      title: '补贴分享-退回',
-      align: 'right',
-      dataIndex: 'totalBean',
-    },
-    {
-      title: '【总】补贴退回（卡豆）',
-      align: 'right',
-      dataIndex: 'totalBean',
-    },
-    {
-      title: '【总】充值（卡豆）',
-      align: 'right',
-      dataIndex: 'totalBean',
+      dataIndex: 'inBean',
     },
   ];
 
@@ -130,38 +70,37 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         {
           title: '时间',
           align: 'center',
-          dataIndex: 'time',
+          dataIndex: 'gainTime',
         },
         {
           title: '收入/支出',
           align: 'center',
-          dataIndex: 'time',
+          dataIndex: 'detailType',
+          render:(val)=>ADD_AND_MINUS[val]
         },
         {
           title: '类型',
           align: 'center',
-          dataIndex: 'time',
+          dataIndex: 'identificationType',
+          render:(val)=>val==="platform"?"平台直充":'--'
         },
         {
           title: '角色',
           align: 'center',
-          dataIndex: 'time',
+          dataIndex: 'subsidyRole',
+          // render:(val)=> {user :'用户',merchant:'商家'}[val]
         },
         {
-          title: 'r',
+          title: '任务名称',
           align: 'center',
-          dataIndex: 'time',
+          dataIndex: 'taskName',
         },
         {
-          title: '角色',
+          title: '卡豆',
           align: 'center',
-          dataIndex: 'time',
+          dataIndex: 'bean',
         },
-        {
-          title: '角色',
-          align: 'center',
-          dataIndex: 'time',
-        },
+       
         {
           title: '操作',
           align: 'center',

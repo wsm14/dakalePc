@@ -49,6 +49,13 @@ const WithdrawDetail = (props) => {
       label: '提现单号',
       name: 'withdrawalSn',
     },
+    {
+      label: '省市区',
+      type: 'cascader',
+      name: 'city',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
   ];
 
   // table 表头
@@ -69,6 +76,11 @@ const WithdrawDetail = (props) => {
     {
       title: '店铺账号',
       dataIndex: 'merchantAccount',
+    },
+    {
+      title: '省市区',
+      dataIndex: 'provinceName',
+      render:(val,row) =>`${val}-${row.cityName}-${row.districtName}`
     },
     {
       title: '提现账户',

@@ -152,6 +152,7 @@ export default [
           'actionSave',
           'actionDel',
           'actionEdit',
+          'exportList',
         ],
       },
       {
