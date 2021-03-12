@@ -101,11 +101,12 @@ const PuzzleAdSet = (props) => {
     loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,
     afterCallBack: () => setShowType(info.type),
-    footer: (
-      <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
-        确认
-      </Button>
-    ),
+    footer:
+      type !== 'info' ? (
+        <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
+          确认
+        </Button>
+      ) : null,
   };
 
   return (

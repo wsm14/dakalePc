@@ -246,4 +246,10 @@ export function fetchPuzzleAdSet(data) {
   });
 }
 
+// 拼团广告详情
+export function fetchPuzzleAdDetail(params) {
+  return request('/admin/puzzleAdsManagement/getPuzzleAdsById', {
+    params,
+  });
+}
 // 拼图广告 end

@@ -27,8 +27,7 @@ const PuzzleAd = (props) => {
     {
       title: '类型',
       dataIndex: 'type',
-      render: (val) =>PUZZLE_AD_TYPE[val],
-      
+      render: (val) => PUZZLE_AD_TYPE[val],
     },
     {
       title: '品牌名',
@@ -68,18 +67,7 @@ const PuzzleAd = (props) => {
             {
               type: 'info',
               visible: record.status === '1',
-              click: () => setVisibleSet({
-                type:'info',
-                show: true,
-                info: {
-                  ...record,
-                  brandId: record.brandIdStr,
-                  activeDate: [
-                    moment(record.startShowTime, 'YYYY-MM-DD'),
-                    moment(record.endShowTime, 'YYYY-MM-DD'),
-                  ],
-                },
-              }),
+              click: () => fetchDetail('info', val, record),
             },
             {
               type: 'up',
@@ -89,19 +77,8 @@ const PuzzleAd = (props) => {
             {
               type: 'edit',
               visible: record.status === '0',
-              click: () =>
-                setVisibleSet({
-                  type:'edit',
-                  show: true,
-                  info: {
-                    ...record,
-                    brandId: record.brandIdStr,
-                    activeDate: [
-                      moment(record.startShowTime, 'YYYY-MM-DD'),
-                      moment(record.endShowTime, 'YYYY-MM-DD'),
-                    ],
-                  },
-                }),
+              click: () => fetchDetail('edit', val, record),
+            
             },
             {
               type: 'del',
@@ -126,6 +103,30 @@ const PuzzleAd = (props) => {
     });
   };
 
+  //详情
+  const fetchDetail = (type, puzzleAdsId, record) => {
+    dispatch({
+      type: 'puzzleAd/fetchPuzzleAdDetail',
+      payload: {
+        puzzleAdsId,
+      },
+      callback: (detail) => {
+        setVisibleSet({
+          type,
+          show: true,
+          info: {
+            ...detail,
+            brandId: detail.brandIdStr,
+            activeDate: [
+              moment(detail.startShowTime, 'YYYY-MM-DD'),
+              moment(detail.endShowTime, 'YYYY-MM-DD'),
+            ],
+          },
+        });
+      },
+    });
+  };
+
   return (
     <>
       <TableDataBlock
@@ -135,7 +136,7 @@ const PuzzleAd = (props) => {
           <AuthConsumer auth="save">
             <Button
               className="dkl_green_btn"
-              onClick={() => setVisibleSet({ type:'add',show: true, info: '' })}
+              onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
             >
               新增
             </Button>
