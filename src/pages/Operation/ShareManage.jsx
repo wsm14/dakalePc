@@ -128,75 +128,77 @@ const ShareManage = (props) => {
     },
     {
       title: '店铺类型',
-      dataIndex: 'merchantName',
+      dataIndex: 'userType',
+      render: (val) => BUSINESS_TYPE[val],
     },
     {
       title: '店铺/集团名称',
       align: 'center',
-      dataIndex: 'contentType',
-      render: (val) => <a onClick={() => setVisibleMre(true)}>商户</a>,
-    },
-    {
-      title: '活动店铺数',
-      align: 'right',
-      dataIndex: 'beanAmount',
+      dataIndex: 'merchantName',
+      render: (val, row) =>
+        row.userType === 'single' ? val : <a onClick={() => setVisibleMre(true)}>{val}</a>,
     },
     {
       title: '地区',
       align: 'center',
-      dataIndex: 'length',
+      dataIndex: 'provinceName',
+      render: (val, row) => `${val || ''} ${row.cityName || ''} ${row.districtName || ''}`,
     },
     {
       title: '行业',
       align: 'center',
-      dataIndex: 'viewAmount',
+      dataIndex: 'topCategoryName',
+      render: (val, row) => `${val}/${row.categoryName}`,
     },
     {
       title: '观看人数（人）',
       align: 'right',
-      dataIndex: 'forwardAmount',
+      dataIndex: 'viewAmount',
     },
     {
       title: '打卡人数（人）',
       align: 'right',
-      dataIndex: 'payedBeanAmount',
+      dataIndex: 'payedPersonAmount',
     },
     {
       title: '单次打赏卡豆数',
       align: 'right',
-      dataIndex: 'status',
-      render: (val) => SHARE_STATUS[val],
+      dataIndex: 'beanAmount',
+      render: (val, row) => Math.round(val + row.exposureBeanAmount),
     },
     {
       title: '累计打赏卡豆数',
       align: 'right',
-      dataIndex: 'stastus',
+      dataIndex: 'exposureBeanAmount',
+      render: (val, row) => Math.round((val + row.beanAmount) * row.payedPersonAmount),
     },
     {
       title: '剩余卡豆数',
       align: 'right',
-      dataIndex: 'stastus',
+      dataIndex: 'payedPersonAmount',
+      render: (val, row) =>
+        Math.round((row.beanAmount + row.exposureBeanAmount) * (row.beanPersonAmount - val)),
     },
     {
       title: 'ID',
       align: 'center',
-      dataIndex: 'stastus',
+      dataIndex: 'userMomentIdString',
     },
     {
       title: '更新时间',
       align: 'center',
-      dataIndex: 'stastus',
+      dataIndex: 'updateTime',
     },
     {
       title: '更新人',
       align: 'center',
-      dataIndex: 'stastus',
+      dataIndex: 'adminOperatorName',
     },
     {
       title: '关联券/商品',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'stastus',
+      dataIndex: 'sssstastus',
     },
     {
       title: '状态',
@@ -207,27 +209,31 @@ const ShareManage = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'userMomentIdString',
+      dataIndex: 'length',
       fixed: 'right',
       align: 'right',
       render: (val, record) => {
-        const { status } = record;
+        const { status, userMomentIdString } = record;
         return (
           <HandleSetTable
             formItems={[
-              {
-                type: 'signDetail',
-                click: () => fetchShareHandleDetail(val),
-              },
+              // 下架
               {
                 type: 'down',
                 visible: status == 1 || status == 5,
                 click: () => setVisibleDown({ show: true, initialValues: record }),
               },
+              // 详情
               {
                 type: 'info',
                 click: () => fetchShareDetail(val, record.contentType),
               },
+              // 打卡明细
+              {
+                type: 'signDetail',
+                click: () => fetchShareHandleDetail(val),
+              },
+              // 操作记录
               {
                 type: 'handleDeatil',
                 click: () => fetchShareHandleDetail(val),

@@ -27,8 +27,8 @@ export default {
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchShareList, payload);
       if (!response) return;
-      return;
       const { content } = response;
+      return;
       yield put({
         type: 'save',
         payload: {
