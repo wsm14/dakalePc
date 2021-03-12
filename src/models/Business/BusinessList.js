@@ -54,6 +54,8 @@ export default {
             name: item.merchantName,
             otherData: item.address,
             value: item.userMerchantIdString,
+            topCategoryName: [item.topCategoryName, item.categoryName],
+            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
           })),
         },
       });
@@ -198,7 +200,7 @@ export default {
       });
       callback();
     },
-    *fetchMerVerificationCodeSet({ payload,callback }, { call, put }) {
+    *fetchMerVerificationCodeSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerVerificationCodeSet, payload);
       if (!response) return;
       notification.success({

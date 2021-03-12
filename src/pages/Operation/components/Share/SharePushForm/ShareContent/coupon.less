@@ -1,0 +1,80 @@
+.share_Coupon {
+  width: 300px;
+  height: 94px;
+  padding: 8px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  &:hover {
+    border-color: #1890ff;
+  }
+  .share_left {
+    font-size: 12px;
+    position: relative;
+    width: 76px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    background-color: rgb(226, 226, 226);
+    padding: 9px;
+  }
+  .share_title {
+    flex: 1;
+    padding-left: 10px;
+    font-weight: 600;
+    .share_tip {
+      font-weight: 400;
+      font-size: 12px;
+    }
+  }
+  .share_del_icon {
+    cursor: pointer;
+  }
+}
+
+.share_Coupon.share_add {
+  cursor: pointer;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.share_select_list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  &:after {
+    content: '';
+    width: 300px;
+    height: 0px;
+    visibility: hidden;
+  }
+
+  .share_Coupon.share_item {
+    cursor: pointer;
+    .share_select_icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #b1b1b1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .share_select {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+    }
+  }
+  & > .select {
+    &.share_item {
+      border: 1px solid #1890ff;
+    }
+    .share_select {
+      background-color: #1890ff;
+    }
+  }
+}

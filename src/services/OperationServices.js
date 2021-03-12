@@ -43,6 +43,13 @@ export function fetchShareDetail(params) {
   });
 }
 
+// get 分享管理 - 获取免费券列表
+export function fetchShareGetFreeCoupon(params) {
+  return request('/admin/coupon/listOwnerCouponByChannel', {
+    params,
+  });
+}
+
 // post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {

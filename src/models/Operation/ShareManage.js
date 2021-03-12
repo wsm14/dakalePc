@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import { fetchHandleDetail } from '@/services/BaseServices';
 import {
   fetchShareList,
+  fetchShareGetFreeCoupon,
   fetchShareStatusClose,
   fetchShareDetail,
 } from '@/services/OperationServices';
@@ -12,6 +13,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    couponList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -28,12 +30,22 @@ export default {
       const response = yield call(fetchShareList, payload);
       if (!response) return;
       const { content } = response;
-      return;
       yield put({
         type: 'save',
         payload: {
           list: content.recordList,
           total: content.total,
+        },
+      });
+    },
+    *fetchShareGetFreeCoupon({ payload }, { call, put }) {
+      const response = yield call(fetchShareGetFreeCoupon, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          couponList: { list: content.recordList, total: content.total },
         },
       });
     },

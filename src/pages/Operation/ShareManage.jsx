@@ -117,7 +117,7 @@ const ShareManage = (props) => {
       title: '视频',
       fixed: 'left',
       dataIndex: 'frontImage',
-      render: (val) => (
+      render: (val, detail) => (
         <PopImgShow url={val} onClick={() => setVisibleVideo({ show: true, detail })}></PopImgShow>
       ),
     },
@@ -136,7 +136,7 @@ const ShareManage = (props) => {
       align: 'center',
       dataIndex: 'merchantName',
       render: (val, row) =>
-        row.userType === 'single' ? val : <a onClick={() => setVisibleMre(true)}>{val}</a>,
+        row.userType === 'merchant' ? val : <a onClick={() => setVisibleMre(true)}>{val}</a>,
     },
     {
       title: '地区',
@@ -268,7 +268,6 @@ const ShareManage = (props) => {
         rowKey={(record) => `${record.userMomentIdString}`}
         dispatchType="shareManage/fetchGetList"
         {...shareManage}
-        list={[{ userMomentIdString: 1 }]}
       ></TableDataBlock>
       {/* 发布分享 */}
       <ShareDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareDrawer>
@@ -299,5 +298,8 @@ const ShareManage = (props) => {
 export default connect(({ sysTradeList, shareManage, loading }) => ({
   shareManage,
   tradeList: sysTradeList.list.list,
-  loading: loading.models.shareManage,
+  loading:
+    loading.effects['shareManage/fetchGetList'] ||
+    loading.effects['shareManage/fetchShareDetail'] ||
+    loading.effects['shareManage/fetchShareHandleDetail'],
 }))(ShareManage);

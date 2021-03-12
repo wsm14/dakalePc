@@ -66,7 +66,7 @@ export const MRE_SORT_STATUS = ['提交审核时间倒序', '按审核时间倒�
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // 店铺 类型
-export const BUSINESS_TYPE = { single: '单店', group: '集团' };
+export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 
 // 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];

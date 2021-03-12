@@ -46,7 +46,6 @@ const FormComponents = ({
   const getFields = () => {
     const formItemArr = [];
     formItems.forEach((item, i) => {
-      let component = '';
       const {
         title = '',
         label = '',
@@ -75,7 +74,6 @@ const FormComponents = ({
       let rules = item.rules || [{ required: true, message: `请确认${label}` }];
       // 表单组件
       if (type === 'formItem') {
-        component = item.formItem;
         rules = [{ required: false }];
       } else {
         // 根据类型获取不同的表单组件

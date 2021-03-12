@@ -29,7 +29,7 @@ const getBase64 = (file) => {
 };
 
 const UploadBlock = (props) => {
-  const { form, initialValues, name = '', multiple, maxFile, onChange } = props;
+  const { form, initialvalues: initialValues, name = '', multiple, maxFile, onChange } = props;
   const fileKeyName = Array.isArray(name) ? name[1] : name;
 
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显弹窗显示隐藏
