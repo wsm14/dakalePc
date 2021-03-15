@@ -88,7 +88,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '角色',
           align: 'center',
           dataIndex: 'subsidyRole',
-          // render:(val)=> {user :'用户',merchant:'商家'}[val]
+          render:(val) => ({user :'用户',merchant:'商家'}[val])
         },
         {
           title: '任务名称',

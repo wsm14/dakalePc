@@ -68,11 +68,6 @@ const SubsidyShop = (props) => {
       payload: { subsidyId: row.subsidyId },
       callback: (info) => setVisible({ show: true, type, info }),
     });
-    // setVisible({
-    //   show: true,
-    //   type,
-    //   info,
-    // });
   };
 
   return (
@@ -81,24 +76,24 @@ const SubsidyShop = (props) => {
         tabList={tabList}
         activeTabKey={searchData.latitude}
         style={{ marginBottom: 10 }}
-        title={
-          <Space style={{ height: 80 }}>
-            <QuestionTooltip
-              placement="bottom"
-              title="账户余额（卡豆）"
-              overlayStyle={{ maxWidth: 300 }}
-              content={'实时统计，不随时间搜索变化'}
-            ></QuestionTooltip>
-            ：{outBean}
-          </Space>
-        }
-        extra={
-          <>
-            <span>补贴账户 | </span>
-            <span>杭州联合银行 | </span>
-            <span>67327823327838273238382</span>
-          </>
-        }
+        // title={
+        //   <Space style={{ height: 80 }}>
+        //     <QuestionTooltip
+        //       placement="bottom"
+        //       title="账户余额（卡豆）"
+        //       overlayStyle={{ maxWidth: 300 }}
+        //       content={'实时统计，不随时间搜索变化'}
+        //     ></QuestionTooltip>
+        //     ：{outBean}
+        //   </Space>
+        // }
+        // extra={
+        //   <>
+        //     <span>补贴账户 | </span>
+        //     <span>杭州联合银行 | </span>
+        //     <span>67327823327838273238382</span>
+        //   </>
+        // }
         onTabChange={(key) => {
           const tabTime = {
             order: [moment(), moment()],

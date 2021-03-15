@@ -15,27 +15,30 @@ const SubsidyDetail = (props) => {
         },
         {
             label:"补贴类型",
-            nane:'taskName'
+            nane:'identificationType',
+            render:(val)=>val==="platform"?"平台直充":'--'
         },
         {
             label:"补贴角色",
-            nane:'taskName'
+            nane:'subsidyRole',
+            render:(val) => ({user :'用户',merchant:'商家'}[val])
         },
-        {
-            label:"总参与人数",
-            nane:'taskName'
-        },
+        // {
+        //     label:"总参与人数",
+        //     nane:'taskName'
+        // },
         {
             label:"已补贴卡豆数",
-            nane:'taskName'
+            nane:'bean'
         },
-        {
-            label:"充值卡豆数",
-            nane:'taskName'
-        },
+        // {
+        //     label:"充值卡豆数",
+        //     nane:'taskName'
+        // },
         {
             label:"状态",
-            nane:'status'
+            nane:'status',
+            render:(val)=>"启用"
         },
     ]
 
