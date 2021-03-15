@@ -84,9 +84,9 @@ const ShareDrawer = (props) => {
   ];
 
   const modalProps = {
-    title: `${type == 'add' ? '发布分享' : '分享详情'}`,
+    title: '发布分享',
     visible: show,
-    width: type == 'add' ? 800 : 650,
+    width: 800,
     maskClosable: current === 0,
     onClose,
     footer: (

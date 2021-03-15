@@ -61,6 +61,7 @@ const DescriptionsCondition = (props) => {
       fieldNames, // 参数别名 最高权重
       render, // 生成复杂数据的渲染函数，参数分别为当前行的值，当前行数据
       initialValue: rowValue, // 显示参数
+      children: rowChildren, // 额外内容在底部
     } = rowItem;
 
     // 获取参数名
@@ -70,7 +71,11 @@ const DescriptionsCondition = (props) => {
     const detailVal = getRowVale(rowValue, valueKey) || '--';
 
     // 返回处理结果 存在render 情况下优先返回，否则走类型判断
-    const resultsDom = render ? render(detailVal, initialValues) : checkData(type, detailVal);
+    const resultsDom = render
+      ? render(detailVal, initialValues)
+      : rowChildren && detailVal === '--'
+      ? ''
+      : checkData(type, detailVal);
 
     return resultsDom;
   };
@@ -96,7 +101,7 @@ const DescriptionsCondition = (props) => {
           className={styles.descriptions_item}
         >
           {/* 显示数据内容 默认值不存在 则显示为'--'*/}
-          {Object.keys(initialValues).length ? getCheckItem(item) : '--'}
+          {Object.keys(initialValues).length ? getCheckItem(item) : rowChildren ? '' : '--'}
           {/* 额外显示dom */}
           {rowChildren && <div>{rowChildren}</div>}
         </Descriptions.Item>

@@ -117,9 +117,7 @@ const ShareManage = (props) => {
       title: '视频',
       fixed: 'left',
       dataIndex: 'frontImage',
-      render: (val, detail) => (
-        <PopImgShow url={val} onClick={() => setVisibleVideo({ show: true, detail })}></PopImgShow>
-      ),
+      render: (val, detail) => <PopImgShow url={val}></PopImgShow>,
     },
     {
       title: '标题',
@@ -226,17 +224,17 @@ const ShareManage = (props) => {
               // 详情
               {
                 type: 'info',
-                click: () => fetchShareDetail(val, record.contentType),
+                click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
               // 打卡明细
               {
                 type: 'signDetail',
-                click: () => fetchShareHandleDetail(val),
+                click: () => fetchShareHandleDetail(userMomentIdString),
               },
               // 操作记录
               {
                 type: 'handleDeatil',
-                click: () => fetchShareHandleDetail(val),
+                click: () => fetchShareHandleDetail(userMomentIdString),
               },
             ]}
           />
