@@ -9,7 +9,7 @@ import FreeContactSelectModal from './ShareContent/FreeContactSelectModal';
  * 内容设置
  */
 const ShareContentSet = (props) => {
-  const { form, tradeList, couponData, setCouponData, detail } = props;
+  const { form, tradeList, couponData, setCouponData, detail, saveDataStorage } = props;
 
   const { merchantId, userType } = detail;
   const { free, contact } = couponData;
@@ -51,6 +51,12 @@ const ShareContentSet = (props) => {
       name: 'topCategoryId',
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      // 后端需要名字两级id
+      onChange: (val, option) =>
+        saveDataStorage({
+          topCategoryId: val,
+          topCategoryName: [option[0].categoryName, option[1].categoryName],
+        }),
     },
     {
       label: '免费券',

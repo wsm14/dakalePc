@@ -4,11 +4,10 @@ import { Checkbox, Spin } from 'antd';
 import { delectProps } from '../utils';
 
 const CheckboxBlock = (props) => {
-  const { select, fieldNames, loading } = props;
+  const { select = [], fieldNames = {}, loading } = props;
 
   const divProps = delectProps(props);
   const { label = 'label', value = 'value', disabled = 'disabled' } = fieldNames;
-
   // 遍历对象
   const arrObject = (obj) => {
     return Object.keys(obj).map((item) => ({
@@ -23,7 +22,7 @@ const CheckboxBlock = (props) => {
    */
   let selectList = [];
   if (Array.isArray(select)) {
-    if (lodash.isPlainObject(select[0])) {
+    if (select[0] && lodash.isPlainObject(select[0])) {
       selectList = select.map((item) => ({
         label: item[label],
         value: `${item[value]}`,

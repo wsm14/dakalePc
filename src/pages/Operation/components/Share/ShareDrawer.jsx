@@ -6,13 +6,14 @@ import DrawerCondition from '@/components/DrawerCondition';
 import ShareMreSelect from './SharePushForm/ShareMreSelect';
 import ShareContentSet from './SharePushForm/ShareContentSet';
 import SharePutInSet from './SharePushForm/SharePutInSet';
+import SharePushSet from './SharePushForm/SharePushSet';
 
 const { Step } = Steps;
 
 const ShareDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
-  const { type = 'add', show = false, detail = {} } = visible;
+  const { type = 'add', show = false } = visible;
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
@@ -78,18 +79,14 @@ const ShareDrawer = (props) => {
     },
     {
       title: '发布设置',
-      content: 'Last-content',
-    },
-    {
-      title: '发布',
-      content: 'Last-content',
+      content: <SharePushSet {...stepProps}></SharePushSet>,
     },
   ];
 
   const modalProps = {
     title: `${type == 'add' ? '发布分享' : '分享详情'}`,
     visible: show,
-    width: type == 'add' ? 950 : 650,
+    width: type == 'add' ? 800 : 650,
     maskClosable: current === 0,
     onClose,
     footer: (

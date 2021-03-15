@@ -62,6 +62,7 @@ const FormComponents = ({
             {title}
           </Divider>,
         );
+        if (Object.keys(item).length === 1) return;
       }
       // 自定义formItem 结构
       if (type === 'noForm') {

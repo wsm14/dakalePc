@@ -5,6 +5,7 @@ import {
   fetchShareGetFreeCoupon,
   fetchShareStatusClose,
   fetchShareDetail,
+  fetchShareGetPlatformBean,
 } from '@/services/OperationServices';
 
 export default {
@@ -14,6 +15,7 @@ export default {
     list: [],
     total: 0,
     couponList: { list: [], total: 0 },
+    platformBean: 0,
   },
 
   reducers: {
@@ -46,6 +48,17 @@ export default {
         type: 'save',
         payload: {
           couponList: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchShareGetPlatformBean({ payload }, { call, put }) {
+      const response = yield call(fetchShareGetPlatformBean, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          platformBean: content.platformBean,
         },
       });
     },

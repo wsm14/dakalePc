@@ -50,6 +50,13 @@ export function fetchShareGetFreeCoupon(params) {
   });
 }
 
+// get 分享管理 - 商家平台卡豆信息
+export function fetchShareGetPlatformBean(params) {
+  return request('/admin/merchant/platformBean', {
+    params,
+  });
+}
+
 // post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {
