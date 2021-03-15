@@ -6,6 +6,8 @@ import {
   fetchSetTradeSelect,
   fetchGetMreTag,
   fetchMerCheckData,
+  fetchGetPropertyJSON,
+  fetchGetTasteTag,
 } from '@/services/BaseServices';
 
 export default {
@@ -13,6 +15,8 @@ export default {
 
   state: {
     hubData: [],
+    propertyJSON: {},
+    tasteTag: [],
   },
 
   reducers: {
@@ -36,6 +40,31 @@ export default {
         },
       });
       if (callback) callback(content.businessHubList);
+    },
+    *fetchGetPropertyJSON({ payload }, { call, put }) {
+      const response = yield call(fetchGetPropertyJSON, payload);
+      if (!response) return;
+      const { content } = response;
+      const responseJson = yield fetch(content.propertyInfo.url).then(
+        async (response) => await response.json(),
+      );
+      yield put({
+        type: 'save',
+        payload: {
+          propertyJSON: responseJson,
+        },
+      });
+    },
+    *fetchGetTasteTag({ payload }, { call, put }) {
+      const response = yield call(fetchGetTasteTag, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          tasteTag: content.domainList,
+        },
+      });
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);

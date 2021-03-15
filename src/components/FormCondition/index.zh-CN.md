@@ -65,11 +65,12 @@
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| select | `（必填）` 选择值，默认城市数据 | [] | CITYJSON |
+| select | 选择值，默认城市数据，可配置 `cityType` 不同范围 | [] | CITYJSON |
 | placeholder | 默认文本 | string | 选择城市 |
 | disabled | 是否禁用 | boolean | false |
 | changeOnSelect | 点选每级菜单选项值都会发生变化 | boolean | false |
 | fieldNames | 自定义 select 中 label value children 的字段 | object | { label: label, value: value, children: children } |
+| cityType | 默认城市范围可选数据省市区，`province | city | district` | string | district |
 | onChange | 选择完成后的回调 | (value, option) => void | - |
 
 #### TreeSelect 树选择（[更多配置](https://ant.design/components/tree-select-cn/)）
@@ -137,6 +138,13 @@
 | format | 展示的时间格式 | string | 'HH:mm' |
 
 ## 更新日志
+
+- ### 2021 年 3 月 15 日 12:51:39 Dong
+
+> - `Cascader` 增加 `cityType` 默认城市数据
+>   > - `province` - 省 ，`city` - 市，`district` - 区
+> - `Checkbox` 增加 `fieldNames` 数据别名
+>   > - `fieldNames` - `{ label = 'label', value = 'value', disabled = 'disabled' }`
 
 - ### 2021 年 3 月 11 日 10:54:02 Dong
 

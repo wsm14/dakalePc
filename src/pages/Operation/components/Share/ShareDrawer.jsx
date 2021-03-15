@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareMreSelect from './SharePushForm/ShareMreSelect';
 import ShareContentSet from './SharePushForm/ShareContentSet';
+import SharePutInSet from './SharePushForm/SharePutInSet';
 
 const { Step } = Steps;
 
@@ -16,6 +17,25 @@ const ShareDrawer = (props) => {
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
+
+  useEffect(() => {
+    fetchGetPropertyJSON();
+    fetchGetTasteTag();
+  }, []);
+
+  // 获取配置文件
+  const fetchGetPropertyJSON = () => {
+    dispatch({
+      type: 'baseData/fetchGetPropertyJSON',
+    });
+  };
+
+  // 获取兴趣标签
+  const fetchGetTasteTag = () => {
+    dispatch({
+      type: 'baseData/fetchGetTasteTag',
+    });
+  };
 
   // 下一步
   const handleNextStep = () => {
@@ -38,7 +58,8 @@ const ShareDrawer = (props) => {
   const steps = [
     {
       title: '选择店铺',
-      content: <ShareMreSelect {...stepProps}></ShareMreSelect>,
+      content: <SharePutInSet {...stepProps}></SharePutInSet>,
+      // content: <ShareMreSelect {...stepProps}></ShareMreSelect>,
     },
     {
       title: '内容设置',
@@ -46,7 +67,7 @@ const ShareDrawer = (props) => {
     },
     {
       title: '投放设置',
-      content: 'Last-content',
+      content: <SharePutInSet {...stepProps}></SharePutInSet>,
     },
     {
       title: '发布设置',

@@ -175,14 +175,14 @@ const UserSetForm = (props) => {
       label: '状态',
       name: 'workStatus',
       type: 'select',
-      visible: !!userInfo.authAdminId,
+      visible: !!userInfo.adminAccountId,
       select: WORKER_JOB_TYPE,
     },
     {
       label: '启用状态',
       name: 'status',
       type: 'radio',
-      visible: !!userInfo.authAdminId,
+      visible: !!userInfo.adminAccountId,
       select: ['停用', '启用'],
     },
   ];

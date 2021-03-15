@@ -3,6 +3,9 @@ import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';
 
+/**
+ * 选择店铺
+ */
 const ShareMreSelect = (props) => {
   const { form, dispatch, selectList, saveDataStorage, loading, detail } = props;
 

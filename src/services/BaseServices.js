@@ -9,6 +9,13 @@ export function fetchHandleDetail(params) {
   });
 }
 
+// get 获取配置文件
+export function fetchGetPropertyJSON(params) {
+  return request('/common/property/getLastProperty', {
+    params,
+  });
+}
+
 // get OCR识别 营业执照
 export function fetchGetOcrLicense(params) {
   return request('/common/ocr/businessLicense', {
@@ -85,5 +92,12 @@ export function fetchMerCheckData(data) {
   return request('/admin/merchantManagement/repeatStoreVerification', {
     method: 'POST',
     data,
+  });
+}
+
+// get 获取兴趣标签
+export function fetchGetTasteTag(params) {
+  return request('/common/domain/listDomain', {
+    params,
   });
 }

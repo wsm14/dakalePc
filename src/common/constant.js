@@ -249,3 +249,23 @@ export const GOODS_CLASS_TYPE = { package: '套餐', single: '单品' };
 
 // 风向标跳转类型
 export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按场景显示' };
+
+// 分享设置 - 用户群
+export const SHARE_SCOPE_TYPE = { all: '所有人可见', family: '仅家人家店可见' };
+
+// 分享设置 - 区域类型
+export const SHARE_AREA_TYPE = {
+  all: '全国',
+  city: '按市选择',
+  district: '按区县选择',
+  near: '按附近区域',
+};
+
+// 分享设置 - 兴趣标签选择
+export const SHARE_TASTE_TYPE = { all: '不限', tag: '选择兴趣标签' };
+
+// 分享设置 - 性别
+export const SHARE_SEX_TYPE = { ALL: '不限', M: '男', F: '女' };
+
+// 分享设置 - 年龄
+export const SHARE_AGE_TYPE = { '1-100': '不限', age: '选择年龄段(可多选)' };

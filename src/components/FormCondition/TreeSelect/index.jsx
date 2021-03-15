@@ -19,6 +19,7 @@ const TreeSelectBlock = (props) => {
   const mapTreeDom = (list) =>
     list.map((item) => (
       <TreeNode
+        item={item}
         key={item[value]}
         value={item[value]}
         title={item[label]}
@@ -34,9 +35,10 @@ const TreeSelectBlock = (props) => {
       placeholder={placeholder || `请选择${plabel}`}
       style={{ width: '100%' }}
       treeDefaultExpandAll
-      onChange={(val, options) => {
-        console.log(val, options);
-        if (onChange) onChange(val, options);
+      treeNodeFilterProp="title"
+      onChange={(val, options, extra) => {
+        console.log(val, options, extra);
+        if (onChange) onChange(val, options, extra);
       }}
     >
       {mapTreeDom(select)}

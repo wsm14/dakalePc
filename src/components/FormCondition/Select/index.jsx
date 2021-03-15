@@ -12,7 +12,7 @@ const SelectBlock = (props) => {
   // 遍历对象
   const arrObject = (obj) => {
     return Object.keys(obj).map((item) => ({
-      [label]: obj[item],
+      [label]: item,
       [value]: item,
     }));
   };

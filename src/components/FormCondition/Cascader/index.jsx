@@ -17,10 +17,19 @@ const CascaderBlock = (props) => {
     changeOnSelect = false,
     fieldNames = {},
     onChange,
+    cityType = 'district',
   } = props;
-
   const { label = 'label' } = fieldNames;
   const divProps = delectProps(props);
+  // 默认城市数据
+  const detaulData = {
+    province: CITYJSON.map((item) => ({ ...item, children: undefined })),
+    city: CITYJSON.map((item) => ({
+      ...item,
+      children: item.children.map((citem) => ({ ...citem, children: undefined })),
+    })),
+    district: CITYJSON,
+  }[cityType];
 
   return (
     <Cascader
@@ -34,7 +43,7 @@ const CascaderBlock = (props) => {
       changeOnSelect={changeOnSelect}
       fieldNames={fieldNames}
       placeholder={placeholder || `请选择${plabel}`}
-      options={select || CITYJSON}
+      options={select || detaulData}
       onChange={(val, options) => {
         if (onChange) onChange(val, options);
       }}

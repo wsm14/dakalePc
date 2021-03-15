@@ -5,6 +5,9 @@ import ShareCoupon from './ShareContent/ShareCoupon';
 import FreeCouponSelectModal from './ShareContent/FreeCouponSelectModal';
 import FreeContactSelectModal from './ShareContent/FreeContactSelectModal';
 
+/**
+ * 内容设置
+ */
 const ShareContentSet = (props) => {
   const { form, dispatch, tradeList, couponData, setCouponData, detail, saveDataStorage } = props;
 
@@ -22,11 +25,14 @@ const ShareContentSet = (props) => {
       label: '上传封面',
       name: 'dasd',
       type: 'upload',
+      maxFile: 1,
+      rules: [{ required: false }],
     },
     {
       label: '上传视频',
       name: 'remssdson',
       type: 'videoUpload',
+      maxFile: 1,
     },
     {
       label: '视频标题',

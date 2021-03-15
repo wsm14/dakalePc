@@ -5,7 +5,7 @@ import { Cascader } from '@/components/FormCondition/formModule';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 
-const CitySelect = ({ form, name }) => {
+const CitySelect = ({ form, areaType, setCityData, name }) => {
   // 检查城市是否已选
   const checkCityData = (rule, value) => {
     if (!value) {
@@ -33,6 +33,7 @@ const CitySelect = ({ form, name }) => {
     }
     return Promise.resolve();
   };
+
   return (
     <Form.List name={name}>
       {(fields, { add, remove }) => {
@@ -41,12 +42,15 @@ const CitySelect = ({ form, name }) => {
             {fields.map((field, i) => (
               <div key={field.key} className={styles.app_city_select}>
                 <Form.Item
-                  name={[field.name, 'city']}
-                  fieldKey={[field.fieldKey, 'city']}
+                  {...field}
                   style={{ flex: 1 }}
                   rules={[{ required: true, message: '请选择' }, { validator: checkCityData }]}
                 >
-                  <Cascader changeOnSelect />
+                  <Cascader
+                    changeOnSelect={areaType === 'city'}
+                    cityType={areaType}
+                    onChange={(val, option) => setCityData(option)}
+                  />
                 </Form.Item>
                 {fields.length > 1 && (
                   <MinusCircleOutlined
@@ -56,8 +60,8 @@ const CitySelect = ({ form, name }) => {
                 )}
               </div>
             ))}
-            <Button disabled={fields.length === 10} onClick={() => add()} type="primary">
-              <PlusOutlined /> {fields.length} / {10} 添加
+            <Button onClick={() => add()} type="primary">
+              <PlusOutlined /> 添加（{fields.length}）
             </Button>
           </>
         );
