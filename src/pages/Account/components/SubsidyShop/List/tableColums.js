@@ -19,7 +19,6 @@ const infoHandle = (click) => (
  * @param {*} type order - 按单显示 day - 按日显示 month - 按月显示
  */
 const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
- 
   // 按日显示 按月显示 表格头
   const dayColums = [
     {
@@ -49,13 +48,13 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       align: 'center',
       dataIndex: 'gainTime',
     },
-   
+
     {
       title: '补贴店铺',
       align: 'right',
       dataIndex: 'platformBean',
     },
-   
+
     {
       title: '【总】补贴（卡豆',
       align: 'right',
@@ -76,19 +75,19 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '收入/支出',
           align: 'center',
           dataIndex: 'detailType',
-          render:(val)=>ADD_AND_MINUS[val]
+          render: (val) => ADD_AND_MINUS[val],
         },
         {
           title: '类型',
           align: 'center',
           dataIndex: 'identificationType',
-          render:(val)=>val==="platform"?"平台直充":'--'
+          render: (val) => (val === 'platform' ? '平台直充' : '--'),
         },
         {
           title: '角色',
           align: 'center',
           dataIndex: 'subsidyRole',
-          render:(val) => ({user :'用户',merchant:'商家'}[val])
+          render: (val) => ({ user: '用户', merchant: '商家', kol: '哒人' }[val]),
         },
         {
           title: '任务名称',
@@ -100,7 +99,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           align: 'center',
           dataIndex: 'bean',
         },
-       
+
         {
           title: '操作',
           align: 'center',
@@ -133,7 +132,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         {
           title: '操作',
           align: 'right',
-          dataIndex: 'remark', 
+          dataIndex: 'remark',
           render: (val, row) =>
             infoHandle(() =>
               setSearchData({
