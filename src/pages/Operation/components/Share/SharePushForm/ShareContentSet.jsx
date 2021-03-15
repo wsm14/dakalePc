@@ -9,7 +9,7 @@ import FreeContactSelectModal from './ShareContent/FreeContactSelectModal';
  * 内容设置
  */
 const ShareContentSet = (props) => {
-  const { form, dispatch, tradeList, couponData, setCouponData, detail, saveDataStorage } = props;
+  const { form, tradeList, couponData, setCouponData, detail } = props;
 
   const { merchantId, userType } = detail;
   const { free, contact } = couponData;

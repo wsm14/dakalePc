@@ -14,24 +14,13 @@ import CitySelect from './PutInSet/CitySelect';
  * 投放设置
  */
 const SharePutInSet = (props) => {
-  const {
-    form,
-    dispatch,
-    propertyJSON = {},
-    tasteTag,
-    selectList,
-    saveDataStorage,
-    loading,
-    detail = {},
-  } = props;
+  const { form, propertyJSON = {}, saveExtraStorage, tasteTag, detail = {} } = props;
   // 默认选择项
   const inputData = { scope: 'all', areaType: 'all', taste: 'all', gender: 'ALL', age: '1-100' };
 
   const [areaType, setAreaType] = useState('all'); // 地域选择
-  const [cityData, setCityData] = useState([]); // 地域信息
   const [ageType, setAgeType] = useState('1-100'); // 年龄
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
-  const [tasteData, setTasteData] = useState([]); // 兴趣信息
 
   useEffect(() => {
     setAreaType(detail.areaType);
@@ -52,7 +41,7 @@ const SharePutInSet = (props) => {
       type: 'radio',
       select: SHARE_AREA_TYPE,
       onChange: (e) => {
-        form.setFieldsValue({ provinceCityDistrictObjects: [[]] });
+        form.setFieldsValue({ cityList: [[]] });
         setAreaType(e.target.value);
       },
     },
@@ -62,10 +51,11 @@ const SharePutInSet = (props) => {
       visible: ['city', 'district'].includes(areaType),
       formItem: (
         <CitySelect
-          name="provinceCityDistrictObjects"
+          name="cityList"
           form={form}
           areaType={areaType}
-          setCityData={(option) => setCityData([...cityData, option])}
+          // 后端选择省时要所有市级code 省市数据分开字段 需要自己整理
+          setCityData={(option) => option.length === 1 && saveExtraStorage('city', option)}
         ></CitySelect>
       ),
     },
@@ -104,7 +94,8 @@ const SharePutInSet = (props) => {
       onChange: (val, options, extra) => {
         const { selected } = extra;
         // 后端需要父级名字+id 子集名字+id 先将dom数据储存下来 后面整理数据给后端
-        setTasteData(
+        saveExtraStorage(
+          'taste',
           extra.allCheckedNodes.map((item) => {
             return selected ? item.node.props.item : item.props.item;
           }),

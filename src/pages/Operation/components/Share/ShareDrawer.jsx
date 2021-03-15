@@ -17,6 +17,7 @@ const ShareDrawer = (props) => {
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
+  const [extraData, setExtraData] = useState({ city: [], taste: [] }); // 额外数据暂存 city 地域 taste 兴趣
 
   useEffect(() => {
     fetchGetPropertyJSON();
@@ -41,13 +42,20 @@ const ShareDrawer = (props) => {
   const handleNextStep = () => {
     form.validateFields().then((values) => {
       console.log(values);
-      saveDataStorage(values);
+      saveDataStorage({ ...dataStorage, ...values });
       setCurrent(current + 1);
     });
   };
 
   // 暂存数据
   const saveDataStorage = (val) => setDataStorage({ ...dataStorage, ...val });
+
+  // 额外数据暂存
+  const saveExtraStorage = (name, val) => {
+    let data = val;
+    if (name === 'city') data = [...extraData[name], data];
+    setExtraData({ ...extraData, [name]: data });
+  };
 
   // 公有 props
   const stepProps = { form, detail: dataStorage, saveDataStorage };
@@ -58,8 +66,7 @@ const ShareDrawer = (props) => {
   const steps = [
     {
       title: '选择店铺',
-      content: <SharePutInSet {...stepProps}></SharePutInSet>,
-      // content: <ShareMreSelect {...stepProps}></ShareMreSelect>,
+      content: <ShareMreSelect {...stepProps}></ShareMreSelect>,
     },
     {
       title: '内容设置',
@@ -67,7 +74,7 @@ const ShareDrawer = (props) => {
     },
     {
       title: '投放设置',
-      content: <SharePutInSet {...stepProps}></SharePutInSet>,
+      content: <SharePutInSet {...stepProps} saveExtraStorage={saveExtraStorage}></SharePutInSet>,
     },
     {
       title: '发布设置',
