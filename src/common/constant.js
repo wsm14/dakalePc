@@ -158,14 +158,14 @@ export const ORDERS_STATUS = [
 export const ORDER_CLOSE_TYPE = {
   unpaidExpiredCancel: '待付款超时自动关闭',
   unpaidManualCancel: '订单已取消',
-  expiredRefund: '订单已过期，订单自动过期',//过期退款
-  manualRefund: '已退款成功，申请退款成功',// 手动退款
+  expiredRefund: '订单已过期，订单自动过期', //过期退款
+  manualRefund: '已退款成功，申请退款成功', // 手动退款
 };
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
 
 //用户来源
-export const USER_SOURCE = ['小程序', 'APP', 'H5'];
+export const USER_SOURCE = { wechat: '小程序', app: 'APP' };
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
@@ -250,4 +250,4 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { package: '套餐', single: '单品' };
 
 //收入/支出
-export const ADD_AND_MINUS= {add:'收入', minus:'支出'}
+export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
