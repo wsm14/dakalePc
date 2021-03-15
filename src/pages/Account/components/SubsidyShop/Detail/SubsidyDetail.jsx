@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { connect } from 'umi';
+import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 
 const SubsidyDetail = (props) => {
-  const { dispatch, onClose, visible } = props;
+  const { onClose, visible } = props;
 
   const { type, show = false, info } = visible;
 
@@ -16,12 +16,12 @@ const SubsidyDetail = (props) => {
     {
       label: '补贴类型',
       name: 'type',
-      render: (val) => ({ behavior: '行为补贴', platform: '平台直充' }[val]),
+      render: (val) => SUBSIDY_TYPE[val],
     },
     {
       label: '补贴角色',
-      name: 'subsidyRole',
-      render: (val) => ({ user: '用户', merchant: '商家', kol: '哒人' }[val]),
+      name: 'role',
+      render: (val) => SUBSIDY_TASK_ROLE[val],
     },
     {
       label: '总参与人数',

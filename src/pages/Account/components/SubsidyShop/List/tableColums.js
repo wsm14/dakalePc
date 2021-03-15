@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ADD_AND_MINUS } from '@/common/constant';
+import { ADD_AND_MINUS, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const infoHandle = (click) => (
@@ -87,7 +87,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '角色',
           align: 'center',
           dataIndex: 'subsidyRole',
-          render: (val) => ({ user: '用户', merchant: '商家', kol: '哒人' }[val]),
+          render: (val) => SUBSIDY_TASK_ROLE[val],
         },
         {
           title: '任务名称',
