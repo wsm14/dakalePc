@@ -14,7 +14,6 @@ import {
   fetchSceneListById,
   fetchSceneAdd,
   fetchSceneUpdate,
-  fetchScenceList,
 } from '@/services/SystemServices';
 
 export default {
@@ -155,7 +154,7 @@ export default {
       });
       callback();
     },
-    *fetchSceneListById({ payload }, { call, put }) {
+    *fetchSceneListById({ payload, callback }, { call, put }) {
       const response = yield call(fetchSceneListById, payload);
       if (!response) return;
       const { content } = response;
@@ -165,6 +164,14 @@ export default {
           sceneList: { list: content.recordList },
         },
       });
+      let list = [];
+      if (content.recordList) {
+        list = content.recordList.map((items) => ({
+          label: items.scenesName,
+          value: items.categoryScenesId,
+        }));
+      }
+      if (callback) callback(list);
     },
     *fetchSceneAdd({ payload, callback }, { call, put }) {
       const response = yield call(fetchSceneAdd, payload);
@@ -183,22 +190,6 @@ export default {
         description: `操作成功`,
       });
       callback();
-    },
-    *fetchScenceList({ payload, callback }, { call }) {
-      const response = yield call(fetchScenceList, payload);
-      if (!response) return;
-      const { content } = response;
-      let list = [];
-      content.recordList.map((item) => {
-        if (item.categoryScenesDTOList) {
-          const listtemp = item.categoryScenesDTOList.map((itemChild) => ({
-            label: itemChild.scenesName,
-            value: itemChild.categoryScenesId,
-          }));
-          list = [...list, ...listtemp];
-        }
-      });
-      callback(list);
     },
   },
 };

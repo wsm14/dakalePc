@@ -438,9 +438,3 @@ export function fetchSceneUpdate(data) {
   });
 }
 
-// 以行业维度获取所有场景列表
-export function fetchScenceList(params) {
-  return request('/admin/systemIndustry/listAllCategoryScenes', {
-    params,
-  });
-}

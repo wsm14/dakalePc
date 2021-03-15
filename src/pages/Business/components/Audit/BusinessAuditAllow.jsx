@@ -25,7 +25,8 @@ const BusinessAuditAllow = (props) => {
   // 场景列表
   const fechSceneList = () => {
     dispatch({
-      type: 'sysTradeList/fetchScenceList',
+      type: 'sysTradeList/fetchSceneListById',
+      payload: { categoryId },
       callback: (val) => {
         setSceneList(val);
       },
@@ -96,7 +97,7 @@ const BusinessAuditAllow = (props) => {
       label: '场景设置',
       type: 'checkbox',
       name: 'scenesIds',
-      loading: loading.effects['sysTradeList/fetchScenceList'],
+      loading: loading.effects['sysTradeList/fetchSceneListById'],
       select: sceneList || [],
     },
     {
