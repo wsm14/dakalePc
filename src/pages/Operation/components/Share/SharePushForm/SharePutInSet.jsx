@@ -103,6 +103,7 @@ const SharePutInSet = (props) => {
       },
       onChange: (val, options, extra) => {
         const { selected } = extra;
+        // 后端需要父级名字+id 子集名字+id 先将dom数据储存下来 后面整理数据给后端
         setTasteData(
           extra.allCheckedNodes.map((item) => {
             return selected ? item.node.props.item : item.props.item;

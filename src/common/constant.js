@@ -132,7 +132,11 @@ export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
 
 // 广告管理 - 可见范围
-export const BANNER_LOOK_AREA = { user: '用户', kol: '哒人' };
+export const BANNER_LOOK_AREA = {
+  'user,kol': '全部',
+  kol: '仅哒人可见',
+  user: '仅用户可见',
+};
 
 // 周边特惠 - 上架状态
 export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
