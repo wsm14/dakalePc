@@ -1,0 +1,138 @@
+import React, { useRef } from 'react';
+import { connect } from 'umi';
+import { PAY_TYPE } from '@/common/constant';
+import TableDataBlock from '@/components/TableDataBlock';
+
+const PreferentialActive = (props) => {
+  const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
+
+  const childRef = useRef();
+
+  // 获取商圈
+  const fetchGetHubSelect = (districtCode) => {
+    dispatch({
+      type: 'baseData/fetchGetHubData',
+      payload: {
+        districtCode,
+      },
+    });
+  };
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '活动状态',
+      name: 'orderSn',
+    },
+    {
+      label: '活动有效期',
+      name: 'mobile',
+    },
+    {
+      label: '使用有效期',
+      name: 'merchantName',
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'goodsName',
+    },
+    {
+      label: '区域',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
+    },
+    {
+      label: '商圈',
+      name: 'businessHubIdStr',
+      type: 'select',
+      loading: loadings.models.baseData,
+      allItem: false,
+      select: hubData,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
+    },
+    {
+      label: '支付日期',
+      type: 'rangePicker',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
+    },
+  ];
+
+  // table 表头
+  const getColumns = [
+    {
+      title: '订单号',
+      fixed: 'left',
+      dataIndex: 'orderSn',
+    },
+    {
+      title: '手机号',
+      fixed: 'left',
+      dataIndex: 'mobile',
+    },
+    {
+      title: '订单金额',
+      align: 'right',
+      dataIndex: 'totalFee',
+      render: (val) => `￥${val}`,
+    },
+    {
+      title: '卡豆抵扣金额',
+      align: 'right',
+      dataIndex: 'beanFee',
+      render: (val) => `￥${val / 100}`,
+    },
+    {
+      title: '现金支付',
+      align: 'right',
+      dataIndex: 'payFee',
+      render: (val, record) =>
+        `￥${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
+    },
+    {
+      title: '优惠券',
+      dataIndex: 'businessArea',
+      render: (val) => `--`,
+    },
+    {
+      title: '支付日期',
+      align: 'center',
+      dataIndex: 'createTime',
+    },
+    {
+      title: '店铺名称',
+      align: 'center',
+      dataIndex: 'merchantName',
+    },
+    {
+      title: '操作',
+      dataIndex: 'orderId',
+      align: 'right',
+      fixed: 'right',
+    },
+  ];
+
+  return (
+    <TableDataBlock
+      order
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      params={{ goodsOrScanFlag: tabkey }}
+      rowKey={(record) => `${record.orderSn}`}
+      dispatchType="ordersList/fetchGetList"
+      {...ordersList}
+    ></TableDataBlock>
+  );
+};
+
+export default connect(({ ordersList, baseData, loading }) => ({
+  loadings: loading,
+  ordersList,
+  hubData: baseData.hubData,
+  loading: loading.effects['ordersList/fetchGetList'],
+}))(PreferentialActive);

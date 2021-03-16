@@ -214,6 +214,11 @@ export default [
         name: '逛逛页面配置',
         component: './Operation/WalkingManage',
       },
+      {
+        path: '/operation/preferential',
+        name: '逛逛页面配置',
+        component: './Operation/PreferentialActive',
+      },
       // 哒人管理
       {
         path: '/expert/uaerlist',
