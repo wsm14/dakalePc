@@ -276,3 +276,24 @@ export const SHARE_AGE_TYPE = { '1-100': '不限', age: '选择年龄段(可多�
 
 // 分享设置 - 时间设置类型
 export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
+
+// 优惠券管理 - 优惠券状态
+export const COUPON_STATUS = [false, '上架', '下架'];
+
+// 优惠券管理 - 优惠券类型
+export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
+
+// 优惠券管理 - 是否售卖
+export const COUPON_BUY_FLAG = ['关闭', '开启'];
+
+// 优惠券管理 - 适用时段
+export const COUPON_USER_TIME = { all: '每天', part: '部分' };
+
+// 优惠券管理 - 星期时间段
+export const COUPON_WEEK_TIME = [false, '周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+// 优惠券管理 - 时间段选择
+export const COUPON_TIME_TYPE = { all: '全天', part: '固定时间' };
+
+// 优惠券管理 - 购买规则
+export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };

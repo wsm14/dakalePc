@@ -34,6 +34,12 @@ export default {
         ...payload,
       };
     },
+    close(state) {
+      return {
+        ...state,
+        selectList: [],
+      };
+    },
   },
 
   effects: {
@@ -54,6 +60,7 @@ export default {
             name: item.merchantName,
             otherData: item.address,
             value: item.userMerchantIdString,
+            commissionRatio: item.commissionRatio,
             topCategoryName: [item.topCategoryName, item.categoryName],
             topCategoryId: [item.topCategoryIdString, item.categoryIdString],
           })),

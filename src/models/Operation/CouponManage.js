@@ -1,5 +1,10 @@
 import { notification } from 'antd';
-import { fetchCouponList, fetchCouponStatus } from '@/services/OperationServices';
+import {
+  fetchCouponList,
+  fetchCouponStatus,
+  fetchCouponSave,
+  fetchCouponDetail,
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'couponManage',
@@ -31,12 +36,27 @@ export default {
         },
       });
     },
-    *fetchCouponStatus({ payload, callback }, { call }) {
+    *fetchCouponDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.couponDetail);
+    },
+    *fetchCouponSave({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '优惠券新增成功',
+      });
+      callback();
+    },
+    *fetchCouponSet({ payload, callback }, { call }) {
       const response = yield call(fetchCouponStatus, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '优惠券下架成功',
+        description: '优惠券操作成功',
       });
       callback();
     },

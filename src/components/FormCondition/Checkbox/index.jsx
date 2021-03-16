@@ -28,12 +28,15 @@ const CheckboxBlock = (props) => {
         value: `${item[value]}`,
         disabled: item[disabled] || false,
       }));
-    } else selectList = select.map((item, index) => ({ label: item, value: `${index}` }));
+    } else {
+      selectList = select
+        .map((item, index) => (item ? { label: item, value: `${index}` } : null))
+        .filter((i) => i);
+    }
   } else if (lodash.isPlainObject(select)) {
     // 若为对象则将遍历成数组赋值
     selectList = arrObject(select);
   }
-
   return loading ? <Spin /> : <Checkbox.Group options={selectList} {...divProps} />;
 };
 

@@ -67,6 +67,7 @@ export const delectFormProps = (data) => {
   delete divProps.onPressEnter;
   delete divProps.onSearch;
   delete divProps.formatter;
+  delete divProps.order;
 
   return divProps;
 };

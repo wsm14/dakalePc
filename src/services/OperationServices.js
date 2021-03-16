@@ -282,14 +282,29 @@ export function fetchTagEdit(data) {
 
 // get 优惠券管理 - 列表
 export function fetchCouponList(params) {
-  return request('/admin/systemConfig/listConfigMerchantTagAdmin', {
+  return request('/admin/coupon/listOwnerCouponToAction', {
     params,
   });
 }
 
-// post 优惠券管理 - 下架
+// get 优惠券管理 - 详情
+export function fetchCouponDetail(params) {
+  return request('/admin/coupon/getOwnerCouponDetail', {
+    params,
+  });
+}
+
+// post 优惠券管理 - 新增
+export function fetchCouponSave(data) {
+  return request('/admin/coupon/saveOwnerCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 优惠券管理 - 下架/编辑/删除优惠券
 export function fetchCouponStatus(data) {
-  return request('/admin/systemConfig/saveConfigMerchantTag', {
+  return request('/admin/coupon/updateOwnerCoupon', {
     method: 'POST',
     data,
   });

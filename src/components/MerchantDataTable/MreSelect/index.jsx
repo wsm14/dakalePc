@@ -12,7 +12,7 @@ const MreSelect = ({
   onCancel,
   subsidyList = [],
   dispatchType = 'businessList/fetchGetList',
-  params = { bankStatus: 3, businessStatus: 1 },
+  params = {},
   loading,
 }) => {
   const [selectMre, setSelectMre] = useState([]); // 选中的店铺
@@ -94,7 +94,7 @@ const MreSelect = ({
         loading={loading}
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType={dispatchType}
-        params={params}
+        params={{ ...params, bankStatus: 3, businessStatus: 1 }}
         rowSelection={type === 'select' ? rowSelection : undefined}
         {...subsidyList}
       ></TableDataBlock>
