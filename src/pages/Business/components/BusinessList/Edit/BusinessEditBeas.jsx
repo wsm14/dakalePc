@@ -171,7 +171,7 @@ const BusinessAddBeas = (props) => {
     },
     {
       label: '店铺头图',
-      name: 'coverImg',
+      name: 'headerImg',
       type: 'upload',
       maxFile: 1,
       extra: '最多上传 1 张图片，建议图片比例16：9，大小在3M以内',

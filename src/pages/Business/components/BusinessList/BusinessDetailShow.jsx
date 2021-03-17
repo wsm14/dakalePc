@@ -8,7 +8,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible = null, onClose, loading } = props;
+  const { dispatch, cRef, visible = null, onClose, loading, sceneList } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
@@ -140,7 +140,7 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '店铺头图',
-      name: 'coverImg',
+      name: 'headerImg',
       type: 'upload',
     },
     {
@@ -184,7 +184,21 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '场景设置',
-      name: 'tags',
+      name: 'scenesIds',
+      render: (val) => {
+        const scenId = val? val : [];
+        let sceneName = '';
+        if (sceneList && sceneList.length) {
+          sceneList.forEach((item) => {
+            scenId.forEach((item1) => {
+              if (item.value == item1) {
+                sceneName = sceneName ? sceneName + '，' + item.label : item.label;
+              }
+            });
+          });
+        }
+        return <span>{sceneName.toString()}</span>;
+      },
     },
     {
       label: '店铺标签',

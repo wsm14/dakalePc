@@ -60,6 +60,7 @@ const BusinessAuditAllow = (props) => {
   useEffect(() => {
     if (categoryId) {
       fetchGetSpeacial();
+      fechSceneList();
     }
   }, [categoryId]);
 

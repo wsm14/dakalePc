@@ -83,6 +83,7 @@ export default {
         businessTime,
         property = '{}',
         tag,
+        scenesIds,
       } = content.merchantDetail;
       const categoryNodeArr = categoryNode.split('.');
       // 检查值
@@ -120,6 +121,7 @@ export default {
             }
           : '',
         tags: tag.split(','),
+        scenesIds: scenesIds.split(','),
       };
       callback(initialValues);
     },
@@ -198,7 +200,7 @@ export default {
       });
       callback();
     },
-    *fetchMerVerificationCodeSet({ payload,callback }, { call, put }) {
+    *fetchMerVerificationCodeSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerVerificationCodeSet, payload);
       if (!response) return;
       notification.success({

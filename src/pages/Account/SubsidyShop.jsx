@@ -61,11 +61,11 @@ const SubsidyShop = (props) => {
     childRef.current.fetchGetData({ ...newSearch, ...pageObj });
   }, [searchData]);
 
-  // 获取详情 订单类型type 订单卡豆数bean
+  // 获取详情 
   const fetchGetDetail = (type, row) => {
     dispatch({
       type: 'subsidyShop/fetchSubsidyShopDetailById',
-      payload: { subsidyId: row.subsidyId },
+      payload: { subsidyId: row.identification },
       callback: (info) => setVisible({ show: true, type, info }),
     });
   };

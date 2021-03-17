@@ -32,6 +32,8 @@ const BusinessListComponent = (props) => {
   const [hubSelect, setHubSelect] = useState(true);
   // 设置商家验证码
   const [visibleCodeSet, setVisibleCodeSet] = useState(false);
+  //场景checkbox列表
+  const [sceneList, setSceneList] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -123,9 +125,9 @@ const BusinessListComponent = (props) => {
       end: 'activationTimeEnd',
     },
     {
-      label:"营业执照号",
-      name:'socialCreditCode'
-    }
+      label: '营业执照号',
+      name: 'socialCreditCode',
+    },
   ];
 
   // table 表头
@@ -149,7 +151,7 @@ const BusinessListComponent = (props) => {
       title: '所在地区',
       align: 'center',
       dataIndex: 'provinceName',
-      render :(val,record)=> `${val}-${record.cityName}-${record.districtName}`
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
     {
       title: '详细地址',
@@ -232,12 +234,14 @@ const BusinessListComponent = (props) => {
             },
             {
               type: 'info',
-              click: () => fetchGetDetail(val),
+              click: () => fetchGetDetail(val, record.topCategoryIdString),
             },
             {
               type: 'edit',
               click: () =>
-                fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                fetchGetDetail(val, record.topCategoryIdString, (info) =>
+                  setVisibleEdit({ show: true, type: 'edit', info }),
+                ),
             },
             {
               type: 'set',
@@ -264,12 +268,23 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  // 场景列表
+  const fechSceneList = (categoryId) => {
+    dispatch({
+      type: 'sysTradeList/fetchSceneListById',
+      payload: { categoryId },
+      callback: (val) => {
+        setSceneList(val);
+      },
+    });
+  };
+
   // 获取商家详情
-  const fetchGetDetail = (merchantId, callback) => {
+  const fetchGetDetail = (merchantId, categoryId, callback) => {
     dispatch({
       type: 'businessList/fetchMerchantDetail',
       payload: { merchantId },
-      callback: (info) => (callback ? callback(info) : handleShowUserDetail(info)),
+      callback: (info) => (callback ? callback(info) : handleShowUserDetail(info, categoryId)),
     });
   };
 
@@ -279,7 +294,10 @@ const BusinessListComponent = (props) => {
   };
 
   // 店铺详情展示
-  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
+  const handleShowUserDetail = (initialValues, categoryId) => {
+    fechSceneList(categoryId);
+    setVisibleDetail(initialValues);
+  };
 
   useEffect(() => {
     fetchTradeList();
@@ -371,6 +389,7 @@ const BusinessListComponent = (props) => {
       <BusinessDetailShow
         cRef={childRef}
         visible={visibleDetail}
+        sceneList={sceneList}
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
       <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
