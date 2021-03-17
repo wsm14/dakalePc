@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
+import { GOODS_CLASS_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import GoodsSetTable from './components/GoodsSetTable';
 
@@ -59,14 +60,11 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
       label: '商品类型',
       name: 'goodsType',
       type: 'radio',
-      select: [
-        { value: 'single', name: '单品' },
-        { value: 'package', name: '套餐' },
-      ],
+      select: GOODS_CLASS_TYPE,
       onChange: (e) => setGoodsType(e.target.value),
     },
     {
-      label: `${{ single: '单品', package: '套餐' }[goodsType]}名称`,
+      label: `${GOODS_CLASS_TYPE[goodsType]}名称`,
       name: 'goodsName',
       maxLength: 30,
     },
@@ -113,7 +111,7 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: goodsType == 'single' ? '单品介绍' : '套餐介绍',
+      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
       name: 'goodsDesc',
       type: 'textArea',
       rules: [{ required: false }],

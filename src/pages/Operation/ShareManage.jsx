@@ -215,25 +215,21 @@ const ShareManage = (props) => {
         return (
           <HandleSetTable
             formItems={[
-              // 下架
               {
-                type: 'down',
+                type: 'down', // 下架
                 visible: status == 1 || status == 5,
                 click: () => setVisibleDown({ show: true, initialValues: record }),
               },
-              // 详情
               {
-                type: 'info',
+                type: 'info', // 详情
                 click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
-              // 打卡明细
               {
-                type: 'signDetail',
+                type: 'signDetail', // 打卡明细
                 click: () => fetchShareHandleDetail(userMomentIdString),
               },
-              // 操作记录
               {
-                type: 'handleDeatil',
+                type: 'handleDeatil', // 操作记录
                 click: () => fetchShareHandleDetail(userMomentIdString),
               },
             ]}

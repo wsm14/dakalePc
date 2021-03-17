@@ -216,8 +216,9 @@ export default [
       },
       {
         path: '/operation/preferential',
-        name: '逛逛页面配置',
+        name: '特惠活动',
         component: './Operation/PreferentialActive',
+        buttons: ['save', 'del', 'edit', 'info', 'down', 'recommendStatus'],
       },
       // 哒人管理
       {

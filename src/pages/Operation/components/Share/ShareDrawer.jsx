@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps } from 'antd';
-import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareMreSelect from './SharePushForm/ShareMreSelect';
 import ShareContentSet from './SharePushForm/ShareContentSet';
