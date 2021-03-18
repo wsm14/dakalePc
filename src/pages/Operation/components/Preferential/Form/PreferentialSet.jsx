@@ -5,7 +5,7 @@ import { Button } from 'antd';
 import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
 import FormCondition from '@/components/FormCondition';
-import GoodsSetTable from '../GoodsSetTable';
+import GoodsGroupSet from '../GoodsGroupSet';
 
 const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
@@ -120,7 +120,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
     {
       type: 'noForm',
       visible: radioData.goodsType == 'package',
-      formItem: <GoodsSetTable key="groups" form={form}></GoodsSetTable>,
+      formItem: <GoodsGroupSet key="groups" form={form}></GoodsGroupSet>,
     },
     {
       title: '设置商品价格',
@@ -200,7 +200,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={{ ownerType: 'merchant', goodsType: 'single' }}
+        initialValues={{ ownerType: 'merchant', goodsType: 'single', groupGoods: [{}] }}
       ></FormCondition>
       <MreSelect
         keys={mreList.keys}

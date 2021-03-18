@@ -1,38 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import CouponDetail from './Detail/PreferentialDetail';
-import CouponSet from './Form/PreferentialSet';
+import PreferentialSet from './Form/PreferentialSet';
+import PreferentialRuleSet from './Form/PreferentialRuleSet';
 
 const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading } = props;
 
   const { type = 'info', show = false, detail = {} } = visible;
   const [form] = Form.useForm();
+  const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
-      const { activeDate, timeRange, availableTime, setTime, restrictions, ...other } = values;
-      dispatch({
-        type: 'couponManage/fetchCouponSave',
-        payload: {
-          ...other,
-          couponType: 'reduce',
-          activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
-          endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
-          availableTime: {
-            ...availableTime,
-            timeRange:
-              timeRange && `${timeRange[0].format('HH:mm')}-${timeRange[1].format('HH:mm')}`,
-          },
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
+      setVisibleRule({ show: true, preData: values });
     });
   };
 
@@ -44,7 +28,7 @@ const PreferentialDrawer = (props) => {
     },
     add: {
       title: '新增活动',
-      children: <CouponSet form={form} initialValues={detail}></CouponSet>,
+      children: <PreferentialSet form={form} initialValues={detail}></PreferentialSet>,
     },
   }[type];
 
@@ -56,12 +40,23 @@ const PreferentialDrawer = (props) => {
     closeCallBack: () => dispatch({ type: 'businessList/close' }), // 关闭清空搜索的商家数据
     footer: (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
-        发布申请
+        下一步
       </Button>
     ),
   };
 
-  return <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>;
+  return (
+    <>
+      <DrawerCondition {...modalProps}>
+        {drawerProps.children}
+        <PreferentialRuleSet
+          form={form}
+          visible={visibleRule}
+          onClose={() => setVisibleRule(false)}
+        ></PreferentialRuleSet>
+      </DrawerCondition>
+    </>
+  );
 };
 
 export default connect(({ loading }) => ({

@@ -21,7 +21,6 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
     title: `添加子单品`,
     visible,
     maskClosable: false,
-    destroyOnClose: true,
     zIndex: 2000,
     onClose,
     footer: (
