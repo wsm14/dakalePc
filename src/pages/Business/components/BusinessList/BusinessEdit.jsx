@@ -20,7 +20,6 @@ const BusinessAdd = (props) => {
     loading,
     businessAudit,
   } = props;
-
   const { type = 'add', show = false } = visible;
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
@@ -37,6 +36,7 @@ const BusinessAdd = (props) => {
       const {
         categoryName: cobj,
         coverImg,
+        headerImg,
         interiorImg,
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
@@ -44,6 +44,7 @@ const BusinessAdd = (props) => {
         businessHubIdString,
         tags,
         property: { service, speacial },
+        scenesIds,
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
@@ -70,6 +71,7 @@ const BusinessAdd = (props) => {
           speacial: speacial ? speacial.toString() : '',
         },
         [type == 'edit' ? 'tag' : 'tags']: tags.toString(),
+        scenesIds: scenesIds.toString(),
         userMerchantId: initialValues.userMerchantIdString,
         businessTime: selectTime.toString(), // 营业时间
         businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',
@@ -92,21 +94,24 @@ const BusinessAdd = (props) => {
       };
       aliOssUpload(coverImg).then((cres) => {
         payload.coverImg = cres.toString();
-        aliOssUpload(interiorImg).then((res) => {
-          dispatch({
-            type: {
-              add: 'businessList/fetchMerchantAdd',
-              edit: 'businessList/fetchMerchantEdit',
-              audit: 'businessAudit/fetchMerSaleAuditAllow',
-            }[type],
-            payload: {
-              ...payload,
-              interiorImg: res.toString(),
-            },
-            callback: () => {
-              onClose();
-              cRef.current.fetchGetData();
-            },
+        aliOssUpload(headerImg).then((cres2) => {
+          payload.headerImg = cres2.toString();
+          aliOssUpload(interiorImg).then((res) => {
+            dispatch({
+              type: {
+                add: 'businessList/fetchMerchantAdd',
+                edit: 'businessList/fetchMerchantEdit',
+                audit: 'businessAudit/fetchMerSaleAuditAllow',
+              }[type],
+              payload: {
+                ...payload,
+                interiorImg: res.toString(),
+              },
+              callback: () => {
+                onClose();
+                cRef.current.fetchGetData();
+              },
+            });
           });
         });
       });

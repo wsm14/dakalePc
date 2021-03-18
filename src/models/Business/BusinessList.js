@@ -92,6 +92,7 @@ export default {
         businessTime,
         property = '{}',
         tag,
+        scenesIds,
       } = content.merchantDetail;
       const categoryNodeArr = categoryNode.split('.');
       // 检查值
@@ -129,6 +130,7 @@ export default {
             }
           : '',
         tags: tag.split(','),
+        scenesIds: scenesIds.split(','),
       };
       callback(initialValues);
     },

@@ -10,12 +10,26 @@ const BusinessAuditAllow = (props) => {
   const [speacialLsit, setSpeacialLsit] = useState(false);
   const [tagList, setTagList] = useState([]);
 
+  //场景checkbox列表
+  const [sceneList, setSceneList] = useState(false);
+
   // 店铺服务/基础设施
   const fetchGetService = () => {
     dispatch({
       type: 'sysTradeList/fetchDetailList',
       payload: { type: 'base' },
       callback: (val) => setServiceLsit(val),
+    });
+  };
+
+  // 场景列表
+  const fechSceneList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchSceneListById',
+      payload: { categoryId },
+      callback: (val) => {
+        setSceneList(val);
+      },
     });
   };
 
@@ -40,11 +54,13 @@ const BusinessAuditAllow = (props) => {
   useEffect(() => {
     fetchGetService();
     fetchGetMreTag();
+    fechSceneList();
   }, []);
 
   useEffect(() => {
     if (categoryId) {
       fetchGetSpeacial();
+      fechSceneList();
     }
   }, [categoryId]);
 
@@ -77,6 +93,13 @@ const BusinessAuditAllow = (props) => {
       rules: [{ required: false }],
       loading: loading.effects['sysTradeList/fetchDetailList'],
       select: speacialLsit || [],
+    },
+    {
+      label: '场景设置',
+      type: 'checkbox',
+      name: 'scenesIds',
+      loading: loading.effects['sysTradeList/fetchSceneListById'],
+      select: sceneList || [],
     },
     {
       label: '店铺标签',

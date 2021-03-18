@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS, USER_SOURCE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/UserList/Search/SearchCard';
@@ -39,6 +39,12 @@ const UserListComponent = (props) => {
       name: 'realNameStatus',
       type: 'select',
       select: REAL_NAME_STATUS,
+    },
+    {
+      label: '用户来源',
+      name: 'userSource',
+      type: 'select',
+      select: USER_SOURCE,
     },
   ];
 
@@ -93,6 +99,12 @@ const UserListComponent = (props) => {
       align: 'center',
       dataIndex: 'status',
       render: (val) => ACCOUNT_STATUS[val],
+    },
+    {
+      title: '用户来源',
+      align: 'center',
+      dataIndex: 'userSource',
+      render: (val) => USER_SOURCE[val],
     },
     {
       title: '操作',

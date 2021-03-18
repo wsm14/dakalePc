@@ -414,3 +414,26 @@ export function fetchCityManageStatus(data) {
 }
 
 // 城市管理 end
+
+// 行业设置 通过行业id获取行业场景列表
+export function fetchSceneListById(params) {
+  return request('/admin/systemIndustry/listCategoryScenesByCategoryId', {
+    params,
+  });
+}
+
+// 新增行业场景
+export function fetchSceneAdd(data) {
+  return request('/admin/systemIndustry/saveCategoryScenes', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 编辑删除行业场景
+export function fetchSceneUpdate(data) {
+  return request('/admin/systemIndustry/updateCategoryScenes', {
+    method: 'POST',
+    data,
+  });
+}

@@ -164,8 +164,18 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
+// 订单关闭状态
+export const ORDER_CLOSE_TYPE = {
+  unpaidExpiredCancel: '待付款超时自动关闭',
+  unpaidManualCancel: '订单已取消',
+  expiredRefund: '订单已过期，订单自动过期', //过期退款
+  manualRefund: '已退款成功，申请退款成功', // 手动退款
+};
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
+
+//用户来源
+export const USER_SOURCE = { wechat: '小程序', app: 'APP' };
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
@@ -297,3 +307,6 @@ export const COUPON_TIME_TYPE = { all: '全天', part: '固定时间' };
 
 // 优惠券管理 - 购买规则
 export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+
+// 收入/支出
+export const ADD_AND_MINUS = { add: '收入', minus: '支出' };

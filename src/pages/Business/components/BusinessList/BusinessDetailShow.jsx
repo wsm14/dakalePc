@@ -8,7 +8,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible = null, onClose, loading } = props;
+  const { dispatch, cRef, visible = null, onClose, loading, sceneList } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
@@ -83,6 +83,11 @@ const BusinessDetailShow = (props) => {
     {
       label: '店铺帐号',
       name: 'mobile',
+      // render: (val) => (
+      //   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      //     {val} <span style={{ padding: '5px 10px', background: '#ccc' }}>浙江-杭州</span>
+      //   </div>
+      // ),
     },
     {
       label: '店铺类型',
@@ -133,6 +138,11 @@ const BusinessDetailShow = (props) => {
       type: 'upload',
     },
     {
+      label: '店铺头图',
+      name: 'headerImg',
+      type: 'upload',
+    },
+    {
       label: '店铺内景照',
       name: 'interiorImg',
       type: 'upload',
@@ -170,6 +180,24 @@ const BusinessDetailShow = (props) => {
       label: '特色服务',
       name: ['property', 'speacial'],
       render: (val) => val.toString(),
+    },
+    {
+      label: '场景设置',
+      name: 'scenesIds',
+      render: (val) => {
+        const scenId = val? val : [];
+        let sceneName = '';
+        if (sceneList && sceneList.length) {
+          sceneList.forEach((item) => {
+            scenId.forEach((item1) => {
+              if (item.value == item1) {
+                sceneName = sceneName ? sceneName + '，' + item.label : item.label;
+              }
+            });
+          });
+        }
+        return <span>{sceneName.toString()}</span>;
+      },
     },
     {
       label: '店铺标签',

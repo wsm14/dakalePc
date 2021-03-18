@@ -26,7 +26,8 @@ const DescriptionsCondition = (props) => {
     const _len = key.length;
     let newVal = initialValues;
     for (let _key = 0; _key < _len; _key++) {
-      const valGet = newVal[key[_key]];
+      // 当数组key 获取值时某一层不存在时直接返回null
+      const valGet = newVal ? newVal[key[_key]] : null;
       newVal = valGet ? valGet : undefined;
     }
     return newVal;

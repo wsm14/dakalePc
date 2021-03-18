@@ -77,21 +77,8 @@ const CodeOrders = (props) => {
     {
       title: '订单金额',
       align: 'right',
-      dataIndex: 'totalFee',
-      render: (val) => `￥${val}`,
-    },
-    {
-      title: '卡豆抵扣金额',
-      align: 'right',
-      dataIndex: 'beanFee',
-      render: (val) => `￥${val / 100}`,
-    },
-    {
-      title: '现金支付',
-      align: 'right',
       dataIndex: 'payFee',
-      render: (val, record) =>
-        `￥${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
+      render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
     },
     {
       title: '优惠券',
@@ -107,6 +94,12 @@ const CodeOrders = (props) => {
       title: '店铺名称',
       align: 'center',
       dataIndex: 'merchantName',
+    },
+    {
+      title: '区域',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render:(val,record)=> `${val}-${record.cityName}-${record.districtName}` 
     },
     {
       title: '操作',

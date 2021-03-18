@@ -1,5 +1,9 @@
 import { notification } from 'antd';
-import { fetchPuzzleAdList, fetchPuzzleAdSet } from '@/services/MarketServices';
+import {
+  fetchPuzzleAdList,
+  fetchPuzzleAdSet,
+  fetchPuzzleAdDetail,
+} from '@/services/MarketServices';
 
 export default {
   namespace: 'puzzleAd',
@@ -40,6 +44,12 @@ export default {
         description: `拼图广告${deleteFlag === 0 ? '删除' : '设置'}成功`,
       });
       callback();
+    },
+    *fetchPuzzleAdDetail({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPuzzleAdDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.puzzleAdsDTO);
     },
   },
 };
