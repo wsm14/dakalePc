@@ -18,6 +18,9 @@ export const NUM_INT = /^\+?[1-9]\d*$/;
 // 不超过六位正整数
 export const NUM_INT_MAXSIX = /^([1-9][0-9]{0,5}|0)$/;
 
+// 不超过八位正整数
+export const NUM_INT_MAXEIGHT = /^([1-9][0-9]{0,7})$/;
+
 // 判断是否有空格
 export const SPACE_PATTERN = /^[^\s]+$/;
 

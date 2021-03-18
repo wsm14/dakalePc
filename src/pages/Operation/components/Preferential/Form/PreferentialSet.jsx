@@ -192,6 +192,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       name: 'gsdsadse',
       type: 'upload',
       maxFile: 5,
+      rules: [{ required: false }],
     },
   ];
 

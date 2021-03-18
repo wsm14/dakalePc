@@ -68,6 +68,7 @@ export const delectFormProps = (data) => {
   delete divProps.onSearch;
   delete divProps.formatter;
   delete divProps.order;
+  delete divProps.onCalendarChange;
 
   return divProps;
 };
