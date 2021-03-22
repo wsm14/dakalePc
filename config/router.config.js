@@ -291,18 +291,18 @@ export default [
       //     'markTextEdit',
       //   ],
       // },
-      {
-        path: '/market/appset',
-        name: '广告管理',
-        component: './Market/AppSetList',
-        buttons: ['save', 'del', 'edit', 'down'],
-      },
-      {
-        path: '/market/search',
-        name: '搜索配置',
-        component: './Market/SearchSetList',
-        buttons: ['searchSet'],
-      },
+      // {
+      //   path: '/market/appset',
+      //   name: '广告管理',
+      //   component: './Market/AppSetList',
+      //   buttons: ['save', 'del', 'edit', 'down'],
+      // },
+      // {
+      //   path: '/market/search',
+      //   name: '搜索配置',
+      //   component: './Market/SearchSetList',
+      //   buttons: ['searchSet'],
+      // },
       // {
       //   path: '/market/puzzleAd',
       //   name: '拼图广告',
