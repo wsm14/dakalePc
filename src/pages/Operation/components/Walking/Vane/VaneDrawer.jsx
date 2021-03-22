@@ -32,7 +32,7 @@ const VaneDrawer = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { image, bubbleFlag = 0 } = values;
+      const { image, bubbleFlag = 0, scenesId = [] } = values;
       // 上传图片到oss -> 提交表单
       aliOssUpload(image).then((res) => {
         dispatch({
@@ -42,6 +42,7 @@ const VaneDrawer = (props) => {
             ...values,
             bubbleFlag: Number(bubbleFlag),
             image: res.toString(),
+            scenesId: scenesId.toString(),
           },
           callback: () => {
             onClose();
@@ -96,6 +97,7 @@ const VaneDrawer = (props) => {
     {
       label: '选择场景',
       type: 'treeSelect',
+      multiple: true,
       name: 'scenesId',
       select: navigation.list.map(
         ({

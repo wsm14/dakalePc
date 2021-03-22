@@ -46,8 +46,12 @@ export default {
       const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
       const { configWindVane } = response.content;
-      const { bubbleFlag } = configWindVane;
-      callback({ ...configWindVane, bubbleFlag: Boolean(Number(bubbleFlag)) });
+      const { bubbleFlag, scenesId = '' } = configWindVane;
+      callback({
+        ...configWindVane,
+        bubbleFlag: Boolean(Number(bubbleFlag)),
+        scenesId: scenesId.split(','),
+      });
     },
     *fetchWalkManageVaneEditDel({ payload, callback }, { call }) {
       const response = yield call(fetchWalkManageVaneEditDel, payload);
