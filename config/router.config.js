@@ -21,11 +21,11 @@ export default [
         name: '区域战报',
         component: './Chart/AreaTotal',
       },
-      // {
-      //   path: '/chart/block',
-      //   name: '数据概况',
-      //   component: './Chart/ChartBlock',
-      // },
+      {
+        path: '/chart/block',
+        name: '数据概况',
+        component: './Chart/ChartBlock',
+      },
       // 加盟管理
       {
         path: '/cityom/provCo',
