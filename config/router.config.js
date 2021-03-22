@@ -322,12 +322,12 @@ export default [
         component: './Account/AccountBusiness',
         buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
       },
-      {
-        path: '/account/subsidyShop',
-        name: '补贴店铺',
-        component: './Account/SubsidyShop',
-        buttons: ['info'],
-      },
+      // {
+      //   path: '/account/subsidyShop',
+      //   name: '补贴店铺',
+      //   component: './Account/SubsidyShop',
+      //   buttons: ['info'],
+      // },
       // 客服中心
       {
         path: '/service/news',
