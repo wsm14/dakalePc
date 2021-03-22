@@ -14,6 +14,10 @@ export default defineConfig({
     type: 'none',
     exclude: [],
   },
+  externals: {
+    '@ant-design/charts': 'window.Charts',
+  },
+  scripts: ['https://unpkg.com/@ant-design/charts@1.0.13/dist/charts.min.js'],
   antd: {},
   dva: {
     hmr: true,
