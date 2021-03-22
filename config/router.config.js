@@ -303,12 +303,12 @@ export default [
         component: './Market/SearchSetList',
         buttons: ['searchSet'],
       },
-      {
-        path: '/market/puzzleAd',
-        name: '拼图广告',
-        component: './Market/PuzzleAd',
-        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
-      },
+      // {
+      //   path: '/market/puzzleAd',
+      //   name: '拼图广告',
+      //   component: './Market/PuzzleAd',
+      //   buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
+      // },
       // 账户管理
       {
         path: '/account/user',
@@ -322,12 +322,12 @@ export default [
         component: './Account/AccountBusiness',
         buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
       },
-      {
-        path: '/account/subsidyShop',
-        name: '补贴店铺',
-        component: './Account/SubsidyShop',
-        buttons: ['info'],
-      },
+      // {
+      //   path: '/account/subsidyShop',
+      //   name: '补贴店铺',
+      //   component: './Account/SubsidyShop',
+      //   buttons: ['info'],
+      // },
       // 客服中心
       {
         path: '/service/news',
