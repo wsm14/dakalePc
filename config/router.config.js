@@ -259,20 +259,20 @@ export default [
         component: './Market/MarketCardPeasPark',
         buttons: ['set', 'noticeAdd', 'noticeEdit', 'noticeDel', 'noticeSend'],
       },
-      // {
-      //   path: '/market/activity',
-      //   name: '营销活动',
-      //   component: './Market/MarketCardActivity',
-      //   buttons: [
-      //     'save',
-      //     'eye',
-      //     'down',
-      //     'couponAdd',
-      //     'destoryDetail',
-      //     'orderDetail',
-      //     'couponDetail',
-      //   ],
-      // },
+      {
+        path: '/market/activity',
+        name: '营销活动',
+        component: './Market/MarketCardActivity',
+        buttons: [
+          'save',
+          'eye',
+          'down',
+          'couponAdd',
+          'destoryDetail',
+          'orderDetail',
+          'couponDetail',
+        ],
+      },
       // {
       //   path: '/market/checkIn',
       //   name: '打卡设置',
@@ -309,25 +309,25 @@ export default [
       //   component: './Market/PuzzleAd',
       //   buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
       // },
-      // 账户管理
-      {
-        path: '/account/user',
-        name: '用户账户',
-        component: './Account/AccountUser',
-        buttons: ['peasDetail', 'rechargeDetail'],
-      },
-      {
-        path: '/account/business',
-        name: '商家账户',
-        component: './Account/AccountBusiness',
-        buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
-      },
-      {
-        path: '/account/subsidyShop',
-        name: '商家账户',
-        component: './Account/SubsidyShop',
-        buttons: ['info'],
-      },
+      // // 账户管理
+      // {
+      //   path: '/account/user',
+      //   name: '用户账户',
+      //   component: './Account/AccountUser',
+      //   buttons: ['peasDetail', 'rechargeDetail'],
+      // },
+      // {
+      //   path: '/account/business',
+      //   name: '商家账户',
+      //   component: './Account/AccountBusiness',
+      //   buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
+      // },
+      // {
+      //   path: '/account/subsidyShop',
+      //   name: '补贴店铺',
+      //   component: './Account/SubsidyShop',
+      //   buttons: ['info'],
+      // },
       // 客服中心
       {
         path: '/service/news',

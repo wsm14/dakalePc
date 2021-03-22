@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { connect } from 'umi';
-import TableDataBlock from '@/components/TableDataBlock';
 import moment from 'moment';
-import { Card, Space, Button } from 'antd';
-import QuestionTooltip from '@/components/QuestionTooltip';
+import { connect } from 'umi';
+import { Card, Space } from 'antd';
+import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
 import tableColums from './components/SubsidyShop/List/tableColums';
 import ExcelButton from '@/components/ExcelButton';
@@ -61,7 +60,7 @@ const SubsidyShop = (props) => {
     childRef.current.fetchGetData({ ...newSearch, ...pageObj });
   }, [searchData]);
 
-  // 获取详情 
+  // 获取详情
   const fetchGetDetail = (type, row) => {
     dispatch({
       type: 'subsidyShop/fetchSubsidyShopDetailById',
@@ -76,24 +75,6 @@ const SubsidyShop = (props) => {
         tabList={tabList}
         activeTabKey={searchData.latitude}
         style={{ marginBottom: 10 }}
-        // title={
-        //   <Space style={{ height: 80 }}>
-        //     <QuestionTooltip
-        //       placement="bottom"
-        //       title="账户余额（卡豆）"
-        //       overlayStyle={{ maxWidth: 300 }}
-        //       content={'实时统计，不随时间搜索变化'}
-        //     ></QuestionTooltip>
-        //     ：{outBean}
-        //   </Space>
-        // }
-        // extra={
-        //   <>
-        //     <span>补贴账户 | </span>
-        //     <span>杭州联合银行 | </span>
-        //     <span>67327823327838273238382</span>
-        //   </>
-        // }
         onTabChange={(key) => {
           const tabTime = {
             order: [moment(), moment()],
@@ -118,18 +99,18 @@ const SubsidyShop = (props) => {
           </Space>
         }
         extra={
-           <ExcelButton
-              dispatchType={'subsidyShop/fetchSubsidyShopList'}
-              dispatchData={newSearch}
-              exportProps={{
-                header: tableColums({
-                  type: searchData.latitude,
-                  searchData,
-                  setSearchData,
-                  fetchGetDetail,
-                }).slice(0, -1),
-              }}
-            ></ExcelButton>
+          <ExcelButton
+            dispatchType={'subsidyShop/fetchSubsidyShopList'}
+            dispatchData={newSearch}
+            exportProps={{
+              header: tableColums({
+                type: searchData.latitude,
+                searchData,
+                setSearchData,
+                fetchGetDetail,
+              }).slice(0, -1),
+            }}
+          ></ExcelButton>
         }
       >
         <TableDataBlock
