@@ -210,42 +210,42 @@ export default [
         component: './Operation/SpecialGoods',
         buttons: ['down', 'recommendStatus', 'tradeSet'],
       },
-      // {
-      //   path: '/operation/walking',
-      //   name: '逛逛页面配置',
-      //   component: './Operation/WalkingManage',
-      // },
-      // {
-      //   path: '/operation/preferential',
-      //   name: '特惠活动',
-      //   component: './Operation/PreferentialActive',
-      //   buttons: ['save', 'del', 'edit', 'info', 'down', 'recommendStatus'],
-      // },
-      // // 哒人管理
-      // {
-      //   path: '/expert/uaerlist',
-      //   name: '哒人列表',
-      //   component: './Expert/ExpertUserList',
-      //   buttons: ['status'],
-      // },
-      // {
-      //   path: '/expert/level',
-      //   name: '等级设置',
-      //   component: './Expert/ExpertLevel',
-      //   buttons: ['targetSet', 'rightsSet'],
-      // },
-      // {
-      //   path: '/expert/set',
-      //   name: '创作设置',
-      //   component: './Expert/ExpertSet',
-      //   buttons: ['del', 'edit', 'status', 'topic', 'savePClassify', 'saveClassify'],
-      // },
-      // {
-      //   path: '/expert/sort',
-      //   name: '排序机制',
-      //   component: './Expert/ExpertSort',
-      //   buttons: ['edit'],
-      // },
+      {
+        path: '/operation/walking',
+        name: '逛逛页面配置',
+        component: './Operation/WalkingManage',
+      },
+      {
+        path: '/operation/preferential',
+        name: '特惠活动',
+        component: './Operation/PreferentialActive',
+        buttons: ['save', 'del', 'edit', 'info', 'down', 'recommendStatus'],
+      },
+      // 哒人管理
+      {
+        path: '/expert/uaerlist',
+        name: '哒人列表',
+        component: './Expert/ExpertUserList',
+        buttons: ['status'],
+      },
+      {
+        path: '/expert/level',
+        name: '等级设置',
+        component: './Expert/ExpertLevel',
+        buttons: ['targetSet', 'rightsSet'],
+      },
+      {
+        path: '/expert/set',
+        name: '创作设置',
+        component: './Expert/ExpertSet',
+        buttons: ['del', 'edit', 'status', 'topic', 'savePClassify', 'saveClassify'],
+      },
+      {
+        path: '/expert/sort',
+        name: '排序机制',
+        component: './Expert/ExpertSort',
+        buttons: ['edit'],
+      },
       // {
       //   path: '/expert/recommend',
       //   name: '哒人种草',
