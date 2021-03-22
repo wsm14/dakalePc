@@ -297,18 +297,18 @@ export default [
       //   component: './Market/AppSetList',
       //   buttons: ['save', 'del', 'edit', 'down'],
       // },
-      // {
-      //   path: '/market/search',
-      //   name: '搜索配置',
-      //   component: './Market/SearchSetList',
-      //   buttons: ['searchSet'],
-      // },
-      // {
-      //   path: '/market/puzzleAd',
-      //   name: '拼图广告',
-      //   component: './Market/PuzzleAd',
-      //   buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
-      // },
+      {
+        path: '/market/search',
+        name: '搜索配置',
+        component: './Market/SearchSetList',
+        buttons: ['searchSet'],
+      },
+      {
+        path: '/market/puzzleAd',
+        name: '拼图广告',
+        component: './Market/PuzzleAd',
+        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
+      },
       // 账户管理
       {
         path: '/account/user',
