@@ -4,7 +4,7 @@
     "start": "set PORT=8010 && cross-env UMI_UI=none umi dev",
     "start:test": "cross-env REACT_APP_ENV=test UMI_UI=none MOCK=none umi dev",
     "build": "cross-env REACT_APP_ENV=prod umi build",
-    "build:test": "cross-env REACT_APP_ENV=test umi build",
+    "build:test": "cross-env REACT_APP_ENV=test COMPRESS=none umi build",
     "build:pre": "cross-env REACT_APP_ENV=pre umi build",
     "analyze": "cross-env ANALYZE=1 umi build"
   },
