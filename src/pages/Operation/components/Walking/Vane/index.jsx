@@ -79,14 +79,17 @@ const VaneManage = (props) => {
             formItems={[
               {
                 type: 'info',
+                auth: true,
                 click: () => fetchGetDetail(val, 'detail'),
               },
               {
                 type: 'edit',
+                auth: true,
                 click: () => fetchGetDetail(val, 'edit'),
               },
               {
                 type: 'del',
+                auth: true,
                 click: () => fetchDetailDel(val),
               },
             ]}

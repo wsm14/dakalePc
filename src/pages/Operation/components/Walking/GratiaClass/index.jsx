@@ -106,6 +106,7 @@ const GratiaClassManage = (props) => {
             formItems={[
               {
                 type: 'edit',
+                auth: true,
                 visible: !editable,
                 click: () => edit(record),
               },
