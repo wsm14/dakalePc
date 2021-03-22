@@ -1,11 +1,9 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import CardLoading from '@/components/CardLoading';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserDetailList from './components/User/UserDetailList';
-
-const UserTotalInfo = lazy(() => import('./components/User/UserTotalInfo'));
+import UserTotalInfo from './components/User/UserTotalInfo';
 
 const AccountUserList = (props) => {
   const { userlist, loading, dispatch } = props;
@@ -93,6 +91,7 @@ const AccountUserList = (props) => {
 
   return (
     <>
+      <UserTotalInfo></UserTotalInfo>
       <TableDataBlock
         keepData
         loading={loading}
@@ -101,11 +100,7 @@ const AccountUserList = (props) => {
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="accountUser/fetchGetList"
         {...userlist}
-      >
-        <Suspense fallback={<CardLoading></CardLoading>}>
-          <UserTotalInfo></UserTotalInfo>
-        </Suspense>
-      </TableDataBlock>
+      ></TableDataBlock>
       <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
     </>
   );

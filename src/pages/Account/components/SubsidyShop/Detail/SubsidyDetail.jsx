@@ -6,7 +6,7 @@ import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
 
-  const { type, show = false, info } = visible;
+  const { show = false, info } = visible;
 
   const formItems = [
     {

@@ -310,18 +310,18 @@ export default [
         buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
       },
       // 账户管理
-      // {
-      //   path: '/account/user',
-      //   name: '用户账户',
-      //   component: './Account/AccountUser',
-      //   buttons: ['peasDetail', 'rechargeDetail'],
-      // },
-      // {
-      //   path: '/account/business',
-      //   name: '商家账户',
-      //   component: './Account/AccountBusiness',
-      //   buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
-      // },
+      {
+        path: '/account/user',
+        name: '用户账户',
+        component: './Account/AccountUser',
+        buttons: ['peasDetail', 'rechargeDetail'],
+      },
+      {
+        path: '/account/business',
+        name: '商家账户',
+        component: './Account/AccountBusiness',
+        buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
+      },
       {
         path: '/account/subsidyShop',
         name: '补贴店铺',

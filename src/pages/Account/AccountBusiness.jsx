@@ -107,6 +107,7 @@ const AccountBusinessList = (props) => {
 
   return (
     <>
+      <BusinessTotalInfo></BusinessTotalInfo>
       <TableDataBlock
         keepData
         loading={loading}
@@ -115,9 +116,7 @@ const AccountBusinessList = (props) => {
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="accountBusiness/fetchGetList"
         {...list}
-      >
-        <BusinessTotalInfo></BusinessTotalInfo>
-      </TableDataBlock>
+      ></TableDataBlock>
       <BusinessDetailList visible={visible} setVisible={setVisible}></BusinessDetailList>
     </>
   );
