@@ -10,6 +10,10 @@ export default defineConfig({
   hash: true,
   history: { type: 'hash' },
   esbuild: {},
+  nodeModulesTransform: {
+    type: 'none',
+    exclude: [],
+  },
   antd: {},
   dva: {
     hmr: true,
