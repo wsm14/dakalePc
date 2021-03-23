@@ -78,7 +78,7 @@ const VaneDrawer = (props) => {
       label: '气泡内容',
       name: 'bubbleContent',
       visible: showPop,
-      maxLength: 2+,
+      maxLength: 2,
     },
     {
       label: '跳转类型',
