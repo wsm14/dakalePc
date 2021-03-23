@@ -6,7 +6,7 @@ import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import FeedBackDetail from './components/FeedBack/FeedBackDetail';
+import JobsClass from './components/Jobs/JobsClass';
 
 const SolicitJobs = (props) => {
   const { list, loading, dispatch } = props;
@@ -58,7 +58,7 @@ const SolicitJobs = (props) => {
       dataIndex: 'jobDescription',
       width: 300,
       render: (val) => (
-        <Ellipsis length={30} tooltip>
+        <Ellipsis length={50} tooltip>
           {val}
         </Ellipsis>
       ),
@@ -115,14 +115,21 @@ const SolicitJobs = (props) => {
       <TableDataBlock
         order
         btnExtra={
-          <AuthConsumer auth="jobClass">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
+          <>
+            <AuthConsumer auth="jobClass">
+              <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
+                职位类别
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          </>
         }
         cRef={childRef}
         loading={loading}
@@ -132,11 +139,7 @@ const SolicitJobs = (props) => {
         dispatchType="solicitJobs/fetchGetList"
         {...list}
       ></TableDataBlock>
-      <FeedBackDetail
-        cRef={childRef}
-        visible={visible}
-        onClose={() => setVisible({ show: false, info: {} })}
-      ></FeedBackDetail>
+      <JobsClass visible={visible} onClose={() => setVisible(false)}></JobsClass>
     </>
   );
 };

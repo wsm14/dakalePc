@@ -226,4 +226,27 @@ export function fetchJobsSet(data) {
   });
 }
 
+// get 人才招聘 - 职位类别 - 列表
+export function fetchJobsClassList(params) {
+  return request('/admin/systemConfig/listJobType', {
+    params,
+  });
+}
+
+// post 人才招聘 - 职位类别 - 新增
+export function fetchJobsClassSave(data) {
+  return request('/admin/systemConfig/saveConfigJobType', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 人才招聘 - 职位类别 - 删除/修改
+export function fetchJobsClassSet(data) {
+  return request('/admin/systemConfig/updateConfigJobType', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 人才招聘 end

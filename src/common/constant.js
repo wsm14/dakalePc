@@ -189,6 +189,18 @@ export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推�
 // 人才招聘 - 状态
 export const JSOBS_STATUS = ['草稿', '已发布', '下架'];
 
+// 人才招聘 - 学历
+export const EDUCATION_JSOBS_STATUS = {
+  不限: '不限',
+  初中及以下: '初中及以下',
+  '中专/中技': '中专/中技',
+  高中: '高中',
+  大专: '大专',
+  本科: '本科',
+  硕士: '硕士',
+  博士: '博士',
+};
+
 // 用户性别
 export const SEX_NEW_TYPE = { M: '男', F: '女' };
 
