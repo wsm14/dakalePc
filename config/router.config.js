@@ -353,6 +353,12 @@ export default [
         component: './Service/ServiceFAQ',
         buttons: ['userOs', 'mreOs', 'sortFAQ', 'save', 'del', 'edit', 'sort', 'setLike', 'status'],
       },
+      {
+        path: '/service/jobs',
+        name: '人才招聘',
+        component: './Service/SolicitJobs',
+        buttons: ['save', 'edit', 'down', 'jobClass'],
+      },
       // 基础配置
       {
         path: '/system/account',

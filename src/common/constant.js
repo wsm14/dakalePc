@@ -186,6 +186,9 @@ export const PUZZLE_AD_TYPE = { video: '视频', image: '图片' };
 // 消息推送 - 推送状态
 export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
 
+// 人才招聘 - 状态
+export const JSOBS_STATUS = ['草稿', '已发布', '下架'];
+
 // 用户性别
 export const SEX_NEW_TYPE = { M: '男', F: '女' };
 

@@ -22,6 +22,7 @@ export const ROLE_BUTTON_TYPE = {
   sort: '排序',
   userOs: '用户端',
   mreOs: '商家端',
+  jobClass: '职位类别',
   recommendStatus: '推荐状态',
   bussinessStatus: '营业状态',
   sharePush: '发布分享',

@@ -208,3 +208,22 @@ export function fetchMsgPushRevoke(data) {
 }
 
 // 消息推送 end
+
+// 人才招聘
+
+// get 人才招聘 - 列表
+export function fetchJobsList(params) {
+  return request('/admin/talentRecruitment/listTalentRecruitment', {
+    params,
+  });
+}
+
+// post 人才招聘 - 新增/编辑/下架
+export function fetchJobsSet(data) {
+  return request('/admin/talentRecruitment/saveOrUpdateTalentRecruitment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 人才招聘 end
