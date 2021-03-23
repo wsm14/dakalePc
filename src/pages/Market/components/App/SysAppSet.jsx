@@ -69,6 +69,8 @@ const SysAppSet = (props) => {
       label: '图片上传',
       type: 'upload',
       maxFile: 1,
+      isCut: true,
+      imgRatio: 686 / 160,
       name: 'coverImg',
     },
     {

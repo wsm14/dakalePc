@@ -253,7 +253,7 @@ export const BANNER_TYPE = {
 };
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', inside: '内部' };
+export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', inside: '原生页面' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
