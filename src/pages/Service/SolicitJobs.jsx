@@ -7,12 +7,14 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import JobsClass from './components/Jobs/JobsClass';
+import JobsSet from './components/Jobs/JobsSet';
 
 const SolicitJobs = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 职位信息管理
+  const [visibleSet, setVisibleSet] = useState(false); // 招聘信息
 
   // 搜索参数
   const searchItems = [
@@ -84,16 +86,16 @@ const SolicitJobs = (props) => {
       dataIndex: 'talentRecruitmentId',
       fixed: 'right',
       align: 'right',
-      render: (talentRecruitmentId, info) => (
+      render: (talentRecruitmentId, row) => (
         <HandleSetTable
           formItems={[
             {
               type: 'edit',
-              click: () => fetchFeedBackDetail({ talentRecruitmentId }),
+              click: () => setVisibleSet({ type: 'edit', show: true, detail: row }),
             },
             {
               type: 'down',
-              visible: info.status === '1',
+              visible: row.status === '1',
               click: () => fetchJobsSet({ talentRecruitmentId, status: 2 }),
             },
           ]}
@@ -107,6 +109,7 @@ const SolicitJobs = (props) => {
     dispatch({
       type: 'solicitJobs/fetchJobsSet',
       payload,
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -124,7 +127,7 @@ const SolicitJobs = (props) => {
             <AuthConsumer auth="save">
               <Button
                 className="dkl_green_btn"
-                onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
+                onClick={() => setVisibleSet({ type: 'add', show: true, detail: '' })}
               >
                 新增
               </Button>
@@ -139,7 +142,14 @@ const SolicitJobs = (props) => {
         dispatchType="solicitJobs/fetchGetList"
         {...list}
       ></TableDataBlock>
+      {/* 职位信息管理 */}
       <JobsClass visible={visible} onClose={() => setVisible(false)}></JobsClass>
+      {/* 招聘信息管理 */}
+      <JobsSet
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></JobsSet>
     </>
   );
 };

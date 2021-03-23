@@ -3,17 +3,12 @@ import { connect } from 'umi';
 import { Input, Form } from 'antd';
 
 const EditableCell = ({
+  jobsClasslist,
   editing,
   dataIndex,
   title,
-  inputType,
-  record,
-  index,
   children,
   required,
-  onChange,
-  tradeList,
-  nowTrade,
   dispatch,
   ...restProps
 }) => {
@@ -23,7 +18,17 @@ const EditableCell = ({
         <Form.Item
           name={dataIndex}
           style={{ margin: 0 }}
-          rules={[{ required: required === false ? false : true, message: `请确认${title}!` }]}
+          rules={[
+            { required: true, message: `请确认${title}!` },
+            {
+              validator: (rule, value) => {
+                if (jobsClasslist.some((item) => item.jobType === value)) {
+                  return Promise.reject('职位已存在，请修改');
+                }
+                return Promise.resolve();
+              },
+            },
+          ]}
         >
           <Input placeholder="请输入职位名称" />
         </Form.Item>
@@ -34,7 +39,6 @@ const EditableCell = ({
   );
 };
 
-export default connect(({ walkingManage, sysTradeList }) => ({
-  nowTrade: walkingManage.nowTrade,
-  tradeList: sysTradeList.list.list,
+export default connect(({ solicitJobs }) => ({
+  jobsClasslist: solicitJobs.jobsClasslist,
 }))(EditableCell);

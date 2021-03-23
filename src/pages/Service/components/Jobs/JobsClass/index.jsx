@@ -106,12 +106,11 @@ const JobsClassManage = (props) => {
     if (!col.editable) {
       return col;
     }
-    const { dataIndex, title, required, inputType = 'input', onChange } = col;
+    const { dataIndex, title, required, onChange } = col;
     return {
       ...col,
       onCell: (record) => ({
         record,
-        inputType,
         dataIndex,
         title,
         required,
