@@ -102,7 +102,7 @@ export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 
 // 新闻动态状态
-export const NEWS_STATUS = ['下架', '上架'];
+export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 
 // 拼图广告状态
 export const PUZZLE_AD_STATUS = ['下架', '上架'];

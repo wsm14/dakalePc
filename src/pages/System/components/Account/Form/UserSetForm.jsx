@@ -89,6 +89,7 @@ const UserSetForm = (props) => {
           ...values,
           entryDate: entryDate ? entryDate.format('YYYY-MM-DD') : '',
           departmentId: departmentId[departmentId.length - 1],
+          account: mobile,
           password: password
             ? password
             : userInfo.adminAccountId

@@ -27,6 +27,21 @@ const ServiceNewsComponent = (props) => {
 
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('tab1');
+  const [detail, setDetail] = useState({});
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '状态',
+      name: 'status',
+      type: 'select',
+      select: NEWS_STATUS,
+    },
+    {
+      label: '标题',
+      name: 'title',
+    },
+  ];
 
   // table 表头
   const getColumns = [
@@ -39,31 +54,33 @@ const ServiceNewsComponent = (props) => {
     {
       title: '标题',
       dataIndex: 'title',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      width: 300,
+      render: (val) => val,
     },
     {
       title: '内容简介',
       dataIndex: 'description',
+      width: 300,
       render: (val) => (
-        <Ellipsis length={10} tooltip>
+        <Ellipsis length={50} tooltip>
           {val || '--'}
         </Ellipsis>
       ),
     },
     {
-      title: '发布人',
-      dataIndex: 'publisherName',
+      title: '更新人',
+      align: 'center',
+      dataIndex: 'updater',
+      render: (val, row) => val || row.publisherName,
     },
     {
-      title: '发布时间',
-      dataIndex: 'createTime',
+      title: '更新时间',
+      align: 'center',
+      dataIndex: 'updateTime',
     },
     {
       title: '状态',
+      align: 'center',
       dataIndex: 'status',
       render: (val) => NEWS_STATUS[val],
     },
@@ -77,22 +94,23 @@ const ServiceNewsComponent = (props) => {
           formItems={[
             {
               type: 'down',
-              visible: record.status === '1',
+              visible: record.status === '0',
               click: () => fetchNewsStatus({ newsId: val, status: 0 }),
             },
-            // {
-            //   type: 'own',
-            //   pop: true,
-            //   visible: record.status === '1',
-            //   title: '上架',
-            // },
+            {
+              type: 'edit',
+              click: () => {
+                setDetail(record);
+                setTabKey('tab2');
+              },
+            },
           ]}
         />
       ),
     },
   ];
 
-  // 下架视频
+  // 下架
   const fetchNewsStatus = (payload) => {
     dispatch({
       type: 'serviceNews/fetchNewsStatus',
@@ -107,6 +125,7 @@ const ServiceNewsComponent = (props) => {
         noCard={false}
         cRef={childRef}
         loading={loading}
+        searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.newsIdString}`}
         dispatchType="serviceNews/fetchGetList"
@@ -118,13 +137,20 @@ const ServiceNewsComponent = (props) => {
         auth="save"
         noAuth={<Result status="403" title="403" subTitle="暂无权限"></Result>}
       >
-        <NewsSet setTabKey={setTabKey}></NewsSet>
+        <NewsSet setTabKey={setTabKey} detail={detail}></NewsSet>
       </AuthConsumer>
     ),
   };
 
   return (
-    <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
+    <Card
+      tabList={tabList}
+      activeTabKey={tabkey}
+      onTabChange={(key) => {
+        setTabKey(key);
+        key === 'tab1' && setDetail({});
+      }}
+    >
       {contentList[tabkey]}
     </Card>
   );
