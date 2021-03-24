@@ -1,8 +1,11 @@
 import { notification } from 'antd';
+import moment from 'moment';
 import {
   fetchPuzzleAdList,
   fetchPuzzleAdSet,
   fetchPuzzleAdDetail,
+  fetchPuzzleAdRoot,
+  fetchPuzzleAdRootSet,
 } from '@/services/MarketServices';
 
 export default {
@@ -11,6 +14,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    adRoot: {},
   },
 
   reducers: {
@@ -45,11 +49,42 @@ export default {
       });
       callback();
     },
-    *fetchPuzzleAdDetail({ payload, callback }, { call, put }) {
+    *fetchPuzzleAdDetail({ payload, callback }, { call }) {
       const response = yield call(fetchPuzzleAdDetail, payload);
       if (!response) return;
-      const { content } = response;
-      if (callback) callback(content.puzzleAdsDTO);
+      const { content = {} } = response;
+      const { brandIdStr: brandId, startShowTime, endShowTime } = content.puzzleAdsDTO;
+      if (callback)
+        callback({
+          ...content.puzzleAdsDTO,
+          brandId,
+          activeDate: [moment(startShowTime, 'YYYY-MM-DD'), moment(endShowTime, 'YYYY-MM-DD')],
+        });
+    },
+    *fetchPuzzleAdRoot({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPuzzleAdRoot, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const dataValue = {
+        [content.dictionaryDTOS[0].child]: content.dictionaryDTOS[0].extraParam,
+        [content.dictionaryDTOS[1].child]: content.dictionaryDTOS[1].extraParam,
+      };
+      yield put({
+        type: 'save',
+        payload: {
+          adRoot: { data: content.dictionaryDTOS, dataValue },
+        },
+      });
+      callback();
+    },
+    *fetchPuzzleAdRootSet({ payload, callback }, { call }) {
+      const response = yield call(fetchPuzzleAdRootSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `广告配置成功`,
+      });
+      callback();
     },
   },
 };

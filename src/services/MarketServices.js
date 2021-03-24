@@ -245,6 +245,28 @@ export function fetchPuzzleAdList(params) {
   });
 }
 
+// get 拼图广告 -  拼团广告详情
+export function fetchPuzzleAdDetail(params) {
+  return request('/admin/puzzleAdsManagement/getPuzzleAdsById', {
+    params,
+  });
+}
+
+// get 拼图广告 - 获取广告配置
+export function fetchPuzzleAdRoot(params) {
+  return request('/admin/systemConfig/listAdvertisingConfig', {
+    params,
+  });
+}
+
+// post 拼图广告 - 广告配置修改
+export function fetchPuzzleAdRootSet(data) {
+  return request('/admin/systemConfig/updateAdvertisingConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 拼图广告 - 添加修改
 export function fetchPuzzleAdSet(data) {
   return request('/admin/puzzleAdsManagement/saveOrUpdatePuzzleAds', {
@@ -253,10 +275,4 @@ export function fetchPuzzleAdSet(data) {
   });
 }
 
-// 拼团广告详情
-export function fetchPuzzleAdDetail(params) {
-  return request('/admin/puzzleAdsManagement/getPuzzleAdsById', {
-    params,
-  });
-}
 // 拼图广告 end

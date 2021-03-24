@@ -7,12 +7,14 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
+import PuzzleAdRoot from './components/PuzzleAd/PuzzleAdRoot';
 
 const PuzzleAd = (props) => {
   const { puzzleAd, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' }); // 拼图广告设置
+  const [visibleRoot, setVisibleRoot] = useState(false); // 拼图广告设置
 
   // 搜索参数
   const searchItems = [
@@ -78,7 +80,6 @@ const PuzzleAd = (props) => {
               type: 'edit',
               visible: record.status === '0',
               click: () => fetchDetail('edit', val, record),
-            
             },
             {
               type: 'del',
@@ -103,27 +104,22 @@ const PuzzleAd = (props) => {
     });
   };
 
-  //详情
-  const fetchDetail = (type, puzzleAdsId, record) => {
+  // 详情
+  const fetchDetail = (type, puzzleAdsId) => {
     dispatch({
       type: 'puzzleAd/fetchPuzzleAdDetail',
       payload: {
         puzzleAdsId,
       },
-      callback: (detail) => {
-        setVisibleSet({
-          type,
-          show: true,
-          info: {
-            ...detail,
-            brandId: detail.brandIdStr,
-            activeDate: [
-              moment(detail.startShowTime, 'YYYY-MM-DD'),
-              moment(detail.endShowTime, 'YYYY-MM-DD'),
-            ],
-          },
-        });
-      },
+      callback: (info) => setVisibleSet({ type, show: true, info }),
+    });
+  };
+
+  // 获取广告配置详情
+  const fetchAdRootDetail = () => {
+    dispatch({
+      type: 'puzzleAd/fetchPuzzleAdRoot',
+      callback: () => setVisibleRoot(true),
     });
   };
 
@@ -133,14 +129,21 @@ const PuzzleAd = (props) => {
         keepData
         cRef={childRef}
         btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
+          <>
+            <AuthConsumer auth="adRoot">
+              <Button className="dkl_green_btn" onClick={fetchAdRootDetail}>
+                广告配置
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          </>
         }
         loading={loading}
         columns={getColumns}
@@ -149,12 +152,15 @@ const PuzzleAd = (props) => {
         dispatchType="puzzleAd/fetchGetList"
         {...puzzleAd}
       ></TableDataBlock>
+      {/* 拼图广告设置 */}
       <PuzzleAdSet
         cRef={childRef}
         visible={visibleSet}
         onSumbit={fetchPuzzleAdSet}
         onClose={() => setVisibleSet({ show: false, info: '' })}
       ></PuzzleAdSet>
+      {/* 广告配置 */}
+      <PuzzleAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></PuzzleAdRoot>
     </>
   );
 };

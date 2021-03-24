@@ -20,6 +20,7 @@ export const ROLE_BUTTON_TYPE = {
   relieve: '解约',
   end: '结束',
   sort: '排序',
+  adRoot: '广告配置',
   userOs: '用户端',
   mreOs: '商家端',
   jobClass: '职位类别',
