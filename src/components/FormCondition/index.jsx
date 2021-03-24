@@ -56,7 +56,7 @@ const FormComponents = ({
         valuePropName = 'value',
       } = item;
       // 标题
-      if (title) {
+      if (title && visible) {
         formItemArr.push(
           <Divider orientation="left" key={`${type}${label}${i}`}>
             {title}

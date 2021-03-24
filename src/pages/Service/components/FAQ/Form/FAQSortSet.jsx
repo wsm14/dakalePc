@@ -43,7 +43,6 @@ const FAQSortSet = (props) => {
       type: 'upload',
       name: 'image',
       maxFile: 1,
-      isCut: true,
       imgRatio: 108 / 108,
       rules: [{ required: false }],
     },

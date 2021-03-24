@@ -30,7 +30,12 @@ export default {
         type: 'save',
         payload: {
           list: content.userLevelList.map((item) => {
-            let obj = { children: item.configUserLevelList };
+            let obj = {
+              children: item.configUserLevelList.map((ite) => ({
+                ...ite,
+                levelKey: item.type,
+              })),
+            };
             if (item.type === 'normal')
               obj = {
                 ...item.configUserLevelList[0],
@@ -39,6 +44,7 @@ export default {
             return {
               ...item,
               ...obj,
+              levelKey: item.type,
             };
           }),
         },

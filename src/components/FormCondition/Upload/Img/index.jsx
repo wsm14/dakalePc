@@ -215,7 +215,7 @@ const UploadBlock = (props) => {
           const fileName = value.file.name;
           imageCompress(value.file.originFileObj || value.file).then(({ file, blob }) => {
             // 是否传入时裁剪
-            if (isCut) {
+            if (imgRatio || isCut) {
               blob.uid = value.file.uid;
               blob.name = value.file.name;
               handlePreview(blob, 'image');

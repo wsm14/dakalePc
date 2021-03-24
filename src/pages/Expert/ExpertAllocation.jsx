@@ -4,11 +4,12 @@ import { EXPERT_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import ExpertAllocationSet from './components/Allocation/ExpertAllocationSet';
 
 const ExpertAllocation = (props) => {
-  const { list, loading, dispatch } = props;
+  const { list, loading } = props;
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 配置修改新增
 
   const childRef = useRef();
   // table 表头
@@ -44,6 +45,7 @@ const ExpertAllocation = (props) => {
           title: '升级图标',
           dataIndex: ['levelExtraParamObject', 'upLevelIcon'],
           align: 'center',
+          render: (val) => <PopImgShow url={val}></PopImgShow>,
         },
         {
           title: '直推用户数',
@@ -76,6 +78,7 @@ const ExpertAllocation = (props) => {
           title: '消费抵扣（卡豆）',
           dataIndex: 'payBeanCommission',
           align: 'right',
+          render: (val) => val && `${val}%`,
         },
       ],
     },
@@ -91,12 +94,12 @@ const ExpertAllocation = (props) => {
               auth: 'save',
               title: '新增等级',
               visible: !!row.children,
-              click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
+              click: () => setVisible({ show: true, type: 'add', detail: row }),
             },
             {
               type: 'edit',
               visible: !row.children || row.type == 'normal',
-              click: () => fetchExpertOpen({ kolUserId: val }),
+              click: () => setVisible({ show: true, type: 'edit', detail: row }),
             },
           ]}
         />
@@ -114,8 +117,14 @@ const ExpertAllocation = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.type || record.levelName}`}
         dispatchType="expertAllocation/fetchGetList"
+        expandable={{ defaultExpandAllRows: true }}
         list={list}
       ></TableDataBlock>
+      <ExpertAllocationSet
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ExpertAllocationSet>
     </>
   );
 };

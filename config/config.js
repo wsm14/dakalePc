@@ -6,15 +6,15 @@ import define from './env.config';
 
 const { REACT_APP_ENV, NODE_ENV } = process.env;
 
-const externalsConfig = {
-  development: {},
-  production: {
-    externals: {
-      '@ant-design/charts': 'window.Charts',
-    },
-    scripts: ['https://unpkg.com/@ant-design/charts@1.0.13/dist/charts.min.js'],
-  },
-}[NODE_ENV];
+const externalsConfig =
+  NODE_ENV === 'production'
+    ? {
+        externals: {
+          '@ant-design/charts': 'window.Charts',
+        },
+        scripts: ['https://unpkg.com/@ant-design/charts@1.0.13/dist/charts.min.js'],
+      }
+    : {};
 
 export default defineConfig({
   hash: true,

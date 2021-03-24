@@ -43,7 +43,6 @@ const BrandUpdate = (props) => {
       type: 'upload',
       name: 'brandLogo',
       maxFile: 1,
-      isCut: true,
       imgRatio: 50 / 50,
     },
     {
