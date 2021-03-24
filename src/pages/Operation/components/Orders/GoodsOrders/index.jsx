@@ -140,7 +140,7 @@ const GoodsOrders = (props) => {
     {
       title: '下单渠道',
       align: 'center',
-      dataIndex: 'orderChannel',
+      dataIndex: 'orderSource',
     },
     {
       title: '核销数',
