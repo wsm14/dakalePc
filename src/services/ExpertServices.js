@@ -117,3 +117,30 @@ export function fetchExpertLevelSet(data) {
 }
 
 // 等级设置 end
+
+// 哒人配置
+
+// get 哒人配置 - 列表
+export function fetchExpertAllocationList(params) {
+  return request('/admin/systemConfig/listUserLevel', {
+    params,
+  });
+}
+
+// post 哒人配置 - 新增
+export function fetchExpertAllocationSave(data) {
+  return request('/admin/systemConfig/saveUserLevel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 哒人配置 - 修改
+export function fetchExpertAllocationEdit(data) {
+  return request('/admin/systemConfig/updateUserLevel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 哒人配置 end

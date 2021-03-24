@@ -30,7 +30,8 @@ const ShareDetail = (props) => {
     {
       title: '分享内容',
       label: `视频`,
-      name: 'videoContent',
+      name: ['videoContent', 'url'],
+      type: 'videoUpload',
     },
     {
       label: '标题',

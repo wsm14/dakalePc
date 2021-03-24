@@ -252,6 +252,12 @@ export default [
         component: './Expert/ExpertRecommend',
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
+      {
+        path: '/expert/allocation',
+        name: '哒人配置',
+        component: './Expert/ExpertAllocation',
+        buttons: ['save', 'edit'],
+      },
       // 营销管理
       {
         path: '/market/cardpeaspark',

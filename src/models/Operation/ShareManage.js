@@ -66,7 +66,11 @@ export default {
       const response = yield call(fetchShareDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.userMoments);
+      const newObj = {
+        ...content.userMoments,
+        videoContent: JSON.parse(content.userMoments.videoContent),
+      };
+      callback(newObj);
     },
     *fetchShareHandleDetail({ payload, callback }, { call }) {
       const response = yield call(fetchHandleDetail, payload);

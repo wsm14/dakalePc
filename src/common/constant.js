@@ -89,6 +89,9 @@ export const EXPERT_USER_TYPE = ['封停', '正常'];
 // 哒人封停状态
 export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封停1周', '封停1月'];
 
+// 哒人类型
+export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
