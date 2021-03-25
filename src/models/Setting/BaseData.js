@@ -9,6 +9,7 @@ import {
   fetchGetPropertyJSON,
   fetchGetTasteTag,
   fetchGetKolLevel,
+  fetchHandleDetail,
 } from '@/services/BaseServices';
 
 export default {
@@ -81,6 +82,19 @@ export default {
           })),
         },
       });
+    },
+    *fetchHandleDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchHandleDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      if (!content.logRecordList.length) {
+        notification.info({
+          message: '温馨提示',
+          description: '暂无日志记录',
+        });
+        return;
+      }
+      callback(content.logRecordList);
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);

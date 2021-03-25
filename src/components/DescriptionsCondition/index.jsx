@@ -19,7 +19,7 @@ import styles from './index.less';
  */
 
 const DescriptionsCondition = (props) => {
-  const { formItems = [], initialValues = {}, column = 1, children } = props;
+  const { formItems = [], initialValues = {}, column = 1, children, ...other } = props;
 
   // 逐级获取value
   const getArrKeyVal = (key) => {
@@ -115,7 +115,7 @@ const DescriptionsCondition = (props) => {
         bordered
         size="small"
         column={column}
-        {...props}
+        {...other}
         className={styles.descriptions_box}
       >
         {formItems.length ? getFields() : ''}

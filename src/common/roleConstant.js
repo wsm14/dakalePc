@@ -19,6 +19,7 @@ export const ROLE_BUTTON_TYPE = {
   handle: '处理',
   relieve: '解约',
   end: '结束',
+  diary: '日志',
   sort: '排序',
   adRoot: '广告配置',
   userOs: '用户端',

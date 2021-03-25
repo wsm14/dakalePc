@@ -1,5 +1,4 @@
 import { notification } from 'antd';
-import { fetchHandleDetail } from '@/services/BaseServices';
 import {
   fetchShareList,
   fetchShareGetFreeCoupon,
@@ -71,12 +70,6 @@ export default {
         videoContent: JSON.parse(content.userMoments.videoContent),
       };
       callback(newObj);
-    },
-    *fetchShareHandleDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchHandleDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.logRecordList);
     },
     *fetchStatusClose({ payload, callback }, { call }) {
       const response = yield call(fetchShareStatusClose, payload);

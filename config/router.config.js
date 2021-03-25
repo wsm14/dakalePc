@@ -226,7 +226,7 @@ export default [
         path: '/expert/uaerlist',
         name: '哒人列表',
         component: './Expert/ExpertUserList',
-        buttons: ['status'],
+        buttons: ['status', 'diary'],
       },
       {
         path: '/expert/level',

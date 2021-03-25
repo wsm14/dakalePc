@@ -50,7 +50,7 @@ const ShareManage = (props) => {
   // 获取操作日志详情
   const fetchShareHandleDetail = (val) => {
     dispatch({
-      type: 'shareManage/fetchShareHandleDetail',
+      type: 'baseData/fetchHandleDetail',
       payload: {
         identifyIdStr: val,
       },
@@ -295,5 +295,5 @@ export default connect(({ sysTradeList, shareManage, loading }) => ({
   loading:
     loading.effects['shareManage/fetchGetList'] ||
     loading.effects['shareManage/fetchShareDetail'] ||
-    loading.effects['shareManage/fetchShareHandleDetail'],
+    loading.effects['baseData/fetchHandleDetail'],
 }))(ShareManage);
