@@ -264,6 +264,12 @@ export default [
         component: './Expert/ExpertUserAchievement',
         buttons: ['recommendList', 'statistics'],
       },
+      {
+        path: '/expert/distribution',
+        name: '哒人分销明细',
+        component: './Expert/ExpertUserDistribution',
+        buttons: ['status', 'diary'],
+      },
       // 营销管理
       {
         path: '/market/cardpeaspark',
