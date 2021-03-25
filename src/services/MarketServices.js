@@ -192,6 +192,13 @@ export function fetchBannerList(params) {
   });
 }
 
+// get 广告管理 - 获取banner图片分辨率
+export function fetchBannerRatio(params) {
+  return request('/admin/systemConfig/getBannerPictureResolutionConfig', {
+    params,
+  });
+}
+
 // get 广告管理 - 获取详情
 export function fetchBannerDetail(params) {
   return request('/admin/systemConfig/getBannerMarketPlatformById', {

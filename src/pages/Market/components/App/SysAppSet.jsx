@@ -4,6 +4,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import {
   BANNER_TYPE,
+  BANNER_PORT_TYPE,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
   BANNER_LOOK_AREA,
@@ -14,12 +15,13 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { dispatch, cRef, visible, onClose, radioType, loading } = props;
 
   const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
   const [form] = Form.useForm();
   const [showUrl, setShowUrl] = useState(false); // 链接
   const [showArea, setShowArea] = useState(false); // 区域
+  const [showRadio, setShowRadio] = useState(null); // 图片分辨率
 
   // 提交
   const fetchGetFormData = () => {
@@ -64,13 +66,15 @@ const SysAppSet = (props) => {
       type: 'select',
       name: 'bannerType',
       select: BANNER_TYPE,
+      onChange: setShowRadio,
     },
     {
       label: '图片上传',
       type: 'upload',
-      maxFile: 1,
-      imgRatio: 686 / 160,
       name: 'coverImg',
+      visible: showRadio,
+      maxFile: 1,
+      imgRatio: radioType[showRadio],
     },
     {
       label: '图片说明',
@@ -139,6 +143,7 @@ const SysAppSet = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ sysAppList, loading }) => ({
+  radioType: sysAppList.radioType,
   loading: loading.models.sysAppList,
 }))(SysAppSet);

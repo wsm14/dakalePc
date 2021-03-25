@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Tooltip } from 'antd';
 import {
@@ -19,6 +19,10 @@ const SysAppSet = (props) => {
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+
+  useEffect(() => {
+    fetchBannerRatio();
+  }, []);
 
   // 搜索参数
   const searchItems = [
@@ -128,6 +132,13 @@ const SysAppSet = (props) => {
       ),
     },
   ];
+
+  // 获取banner分辨率配置
+  const fetchBannerRatio = () => {
+    dispatch({
+      type: 'sysAppList/fetchBannerRatio',
+    });
+  };
 
   // 获取详情
   const fetchBannerDetail = (payload) => {

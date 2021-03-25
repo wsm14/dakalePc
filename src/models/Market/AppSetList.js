@@ -3,6 +3,7 @@ import moment from 'moment';
 import {
   fetchBannerList,
   fetchBannerDetail,
+  fetchBannerRatio,
   fetchBannerSet,
   fetchBannerStatusDel,
 } from '@/services/MarketServices';
@@ -13,6 +14,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    radioType: {},
   },
 
   reducers: {
@@ -34,6 +36,23 @@ export default {
         payload: {
           list: content.recordList,
           total: content.total,
+        },
+      });
+    },
+    *fetchBannerRatio({ payload }, { call, put }) {
+      const response = yield call(fetchBannerRatio, payload);
+      if (!response) return;
+      const { content } = response;
+      let dataObj = {};
+      content.banner.bannerPictureResolutionConfigs.forEach((item) => {
+        item.pictureResolutionConfigs.forEach((it) => {
+          dataObj[it.bannerType] = it.height / it.width;
+        });
+      });
+      yield put({
+        type: 'save',
+        payload: {
+          radioType: dataObj,
         },
       });
     },

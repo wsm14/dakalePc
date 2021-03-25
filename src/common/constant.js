@@ -258,6 +258,9 @@ export const PLATFORM_INCOME_ORDERS_TYPE = {
 // 账户激活状态
 export const WORKER_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
 
+// Banner端口
+export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
+
 // Banner类型
 export const BANNER_TYPE = {
   main: '首页',

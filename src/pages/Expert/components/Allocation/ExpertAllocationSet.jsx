@@ -102,7 +102,7 @@ const ExpertAllocationSet = (props) => {
       name: ['levelExtraParamObject', 'upLevelIcon'],
       type: 'upload',
       maxFile: 1,
-      imgRatio: 540 / 320,
+      imgRatio: 540 / 120,
       visible: !fromShow,
     },
     {
