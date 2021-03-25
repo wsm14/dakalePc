@@ -24,6 +24,8 @@ export const ROLE_BUTTON_TYPE = {
   userOs: '用户端',
   mreOs: '商家端',
   jobClass: '职位类别',
+  statistics: '统计',
+  recommendList: '推荐列表',
   recommendStatus: '推荐状态',
   bussinessStatus: '营业状态',
   sharePush: '发布分享',

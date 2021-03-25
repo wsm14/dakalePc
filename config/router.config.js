@@ -258,6 +258,12 @@ export default [
         component: './Expert/ExpertAllocation',
         buttons: ['save', 'edit'],
       },
+      {
+        path: '/expert/achievement',
+        name: '哒人业绩',
+        component: './Expert/ExpertUserAchievement',
+        buttons: ['recommendList', 'statistics'],
+      },
       // 营销管理
       {
         path: '/market/cardpeaspark',

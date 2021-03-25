@@ -144,3 +144,14 @@ export function fetchExpertAllocationEdit(data) {
 }
 
 // 哒人配置 end
+
+// 哒人业绩
+
+// get 哒人业绩 - 统计
+export function fetchExpertUserAchievementList(params) {
+  return request('/admin/kol/listKolPerformance', {
+    params,
+  });
+}
+
+// 哒人业绩 end

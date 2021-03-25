@@ -101,3 +101,10 @@ export function fetchGetTasteTag(params) {
     params,
   });
 }
+
+// get 获取哒人等级对应名称
+export function fetchGetKolLevel(params) {
+  return request('/admin/systemConfig/listLevelAndLevelName', {
+    params,
+  });
+}

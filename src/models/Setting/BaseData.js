@@ -8,6 +8,7 @@ import {
   fetchMerCheckData,
   fetchGetPropertyJSON,
   fetchGetTasteTag,
+  fetchGetKolLevel,
 } from '@/services/BaseServices';
 
 export default {
@@ -17,6 +18,7 @@ export default {
     hubData: [],
     propertyJSON: {},
     tasteTag: [],
+    kolLevel: [],
   },
 
   reducers: {
@@ -63,6 +65,20 @@ export default {
         type: 'save',
         payload: {
           tasteTag: content.domainList,
+        },
+      });
+    },
+    *fetchGetKolLevel({ payload }, { call, put }) {
+      const response = yield call(fetchGetKolLevel, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          kolLevel: content.userLevelList.map(({ levelName: name, level: value }) => ({
+            name,
+            value,
+          })),
         },
       });
     },
