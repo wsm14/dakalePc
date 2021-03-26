@@ -39,12 +39,6 @@ export default defineConfig({
               test: /[\\/]node_modules[\\/]/,
               priority: 10,
             },
-            antv: {
-              name: 'antv',
-              chunks: 'all',
-              test: /[\\/]node_modules[\\/](@antv)[\\/]/,
-              priority: 10,
-            },
             antdesigns: {
               name: 'antdesigns',
               chunks: 'all',
