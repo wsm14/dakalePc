@@ -39,12 +39,12 @@ export default defineConfig({
               test: /[\\/]node_modules[\\/]/,
               priority: 10,
             },
-            antdesigns: {
-              name: 'antdesigns',
-              chunks: 'all',
-              test: /[\\/]node_modules[\\/](@ant-design|antd)[\\/]/,
-              priority: 11,
-            },
+            // antdesigns: {
+            //   name: 'antdesigns',
+            //   chunks: 'all',
+            //   test: /[\\/]node_modules[\\/](@ant-design|antd)[\\/]/,
+            //   priority: 11,
+            // },
             jsdk: {
               name: 'jsdk',
               chunks: 'initial',
