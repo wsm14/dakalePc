@@ -17,6 +17,7 @@ const SelectBlock = (props) => {
     loading,
     placeholder,
     label: plabel,
+    ...ohther
   } = props;
 
   const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
@@ -53,18 +54,6 @@ const SelectBlock = (props) => {
   let multProps = {};
   if (type === 'multiple') multProps = { maxTagCount: 2, maxTagTextLength: 2 };
 
-  const divProps = Object.assign({}, props);
-
-  /**
-   * React does not recognize the `****` prop on a DOM element.
-   * If you intentionally want it to appear in the DOM as a custom attribute,
-   * spell it as lowercase `****` instead.
-   * If you accidentally passed it from a parent component,
-   * remove it from the DOM element.
-   * */
-  delete divProps.allItem;
-  delete divProps.fieldNames;
-
   // 返回结果
   return (
     <Select
@@ -79,7 +68,7 @@ const SelectBlock = (props) => {
       }
       placeholder={placeholder || `请选择${plabel}`}
       {...multProps}
-      {...divProps}
+      {...ohther}
     >
       {type !== 'multiple' && allItem && <Option value={defaultValue}>全部</Option>}
       {selectList.map((data, j) => {

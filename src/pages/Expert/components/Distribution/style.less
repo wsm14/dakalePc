@@ -1,0 +1,41 @@
+.orderInfo_box {
+  display: flex;
+  .order_img {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    :global {
+      .ant-ribbon-wrapper {
+        width: 80px;
+      }
+    }
+    .order_tag {
+      position: absolute;
+    }
+  }
+  .order_info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-around;
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      span {
+        color: #9c9c9c;
+      }
+    }
+  }
+}
+
+.info_box {
+  div + div {
+    margin-top: 5px;
+  }
+  .footer span {
+    color: #9c9c9c;
+  }
+}

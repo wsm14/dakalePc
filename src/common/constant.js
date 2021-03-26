@@ -174,10 +174,17 @@ export const ORDER_CLOSE_TYPE = {
   expiredRefund: '订单已过期，订单自动过期', //过期退款
   manualRefund: '已退款成功，申请退款成功', // 手动退款
 };
+
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
 
-//用户来源
+// 哒人带货 订单状态
+export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
+
+// 哒人带货 订单对应状态
+export const EXPRET_DISTRIBUTION_PAY_STATUS = ['付款', '核销', false, false, '退款'];
+
+// 用户来源
 export const USER_SOURCE = { wechat: '小程序', app: 'APP' };
 
 // 合作意向类型
@@ -331,3 +338,13 @@ export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制
 
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
+
+// 哒人核销订单类型
+export const EXPRET_DISTRIBUTION_TYPE = {
+  scan: '扫码支付',
+  specialGoods: '周边特惠',
+  reduceCoupon: '抵扣券订单',
+};
+
+// 哒人核销是否自购类型
+export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推', team: '团队' };

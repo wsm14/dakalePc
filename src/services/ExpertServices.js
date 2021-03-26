@@ -155,3 +155,14 @@ export function fetchExpertUserAchievementList(params) {
 }
 
 // 哒人业绩 end
+
+// 哒人分销明细
+
+// get 哒人分销明细 - 统计
+export function fetchExpertUserDistributionList(params) {
+  return request('/admin/kol/listKolDistributionDetails', {
+    params,
+  });
+}
+
+// 哒人分销明细 end

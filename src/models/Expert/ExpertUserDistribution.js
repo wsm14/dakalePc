@@ -1,4 +1,4 @@
-import { fetchExpertUserAchievementList } from '@/services/ExpertServices';
+import { fetchExpertUserDistributionList } from '@/services/ExpertServices';
 
 export default {
   namespace: 'expertUserDistribution',
@@ -19,7 +19,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchExpertUserAchievementList, payload);
+      const response = yield call(fetchExpertUserDistributionList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
