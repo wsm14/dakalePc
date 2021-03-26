@@ -4,7 +4,7 @@ import defaultSettings from './defaultSettings';
 import routes from './router.config';
 import define from './env.config';
 
-const { REACT_APP_ENV, NODE_ENV } = process.env;
+const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
@@ -22,28 +22,6 @@ export default defineConfig({
   lessLoader: { javascriptEnabled: true },
   dynamicImport: {
     loading: '@/components/PageLoading/index',
-  },
-  chunks: ['vendors', 'umi'],
-  chainWebpack: function (config, {}) {
-    config.merge({
-      optimization: {
-        splitChunks: {
-          chunks: 'all',
-          minSize: 30000,
-          minChunks: 3,
-          automaticNameDelimiter: '.',
-          cacheGroups: {
-            vendor: {
-              name: 'vendors',
-              test({ resource }) {
-                return /[\\/]node_modules[\\/]/.test(resource);
-              },
-              priority: 10,
-            },
-          },
-        },
-      },
-    });
   },
   nodeModulesTransform: {
     type: 'none',
