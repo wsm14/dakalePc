@@ -54,7 +54,6 @@ const BusinessAuditAllow = (props) => {
   useEffect(() => {
     fetchGetService();
     fetchGetMreTag();
-    fechSceneList();
   }, []);
 
   useEffect(() => {
