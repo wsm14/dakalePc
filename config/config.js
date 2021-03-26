@@ -10,9 +10,15 @@ const externalsConfig =
   NODE_ENV === 'production'
     ? {
         externals: {
-          '@ant-design/charts': 'window.Charts',
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          '@ant-design/charts': 'window.charts',
         },
-        scripts: ['https://unpkg.com/@ant-design/charts@1.0.13/dist/charts.min.js'],
+        scripts: [
+          'https://unpkg.com/react@17.0.1/umd/react.production.min.js',
+          'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js',
+          'https://unpkg.com/@ant-design/charts@1.0.13/dist/charts.min.js',
+        ],
       }
     : {};
 
@@ -33,6 +39,7 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
+  extraBabelPlugins: [['import', { libraryName: '@ant-design/charts', libraryDirectory: 'lib' }]],
   chunks: ['vendors', 'umi'],
   chainWebpack: function (config, {}) {
     config.merge({
@@ -76,5 +83,5 @@ export default defineConfig({
     basePath: '/',
   },
   ...define[REACT_APP_ENV || 'dev'],
-  ...externalsConfig,
+  // ...externalsConfig,
 });
