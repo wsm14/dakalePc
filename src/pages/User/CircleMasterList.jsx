@@ -106,6 +106,7 @@ const CircleMasterList = (props) => {
 
   return (
     <>
+      <MasterTotalInfo />
       <TableDataBlock
         keepData
         loading={loading}
@@ -115,9 +116,7 @@ const CircleMasterList = (props) => {
         params={{ userType: 'user' }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
-      >
-        <MasterTotalInfo />
-      </TableDataBlock>
+      ></TableDataBlock>
       <MasterDetailList visible={visible} setVisible={setVisible} />
     </>
   );
