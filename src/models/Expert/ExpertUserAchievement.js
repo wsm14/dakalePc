@@ -1,11 +1,15 @@
-import { fetchExpertUserAchievementList } from '@/services/ExpertServices';
+import {
+  fetchExpertUserAchievementList,
+  fetchExpertUserSubCommissionStatistics,
+} from '@/services/ExpertServices';
 
 export default {
   namespace: 'expertUserAchievement',
 
   state: {
     list: { list: [], total: 0 },
-    userTotal: 0,
+    subList: { list: [], total: 0 },
+    subTotal: {},
   },
 
   reducers: {
@@ -26,6 +30,23 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchExpertUserSubCommissionStatistics({ payload }, { call, put }) {
+      const response = yield call(fetchExpertUserSubCommissionStatistics, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { recordList = {} } = content;
+      const { kolCommissionStatisticMonthList = [], ...other } = recordList;
+      yield put({
+        type: 'save',
+        payload: {
+          subList: {
+            list: kolCommissionStatisticMonthList,
+            total: content.total,
+          },
+          subTotal: other,
         },
       });
     },

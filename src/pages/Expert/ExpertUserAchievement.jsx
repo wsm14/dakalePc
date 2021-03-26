@@ -3,10 +3,10 @@ import { connect } from 'umi';
 import { EXPERT_USER_TYPE, EXPERT_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import CloseExpert from './components/UserList/CloseExpert';
+import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
 
 const ExpertUserAchievement = (props) => {
-  const { expertUserAchievement, kolLevel, loading, dispatch } = props;
+  const { list, kolLevel, loading, dispatch } = props;
 
   const [visible, setVisible] = useState(false);
 
@@ -51,7 +51,8 @@ const ExpertUserAchievement = (props) => {
     },
     {
       title: '身份',
-      dataIndex: 'mobile',
+      dataIndex: 'levelKey',
+      render: (val) => EXPERT_TYPE[val],
     },
     {
       title: '级别',
@@ -67,17 +68,17 @@ const ExpertUserAchievement = (props) => {
       title: '操作',
       align: 'right',
       dataIndex: 'kolUserId',
-      render: (val, record) => (
+      render: (val, detail) => (
         <HandleSetTable
           formItems={[
             {
               type: 'recommendList',
-              click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
+              click: () => setVisible({ show: true, detail }),
             },
             {
               auth: 'statistics',
               title: '分佣统计',
-              click: () => fetchExpertOpen({ kolUserId: val }),
+              click: () => setVisible({ show: true, detail }),
             },
           ]}
         />
@@ -92,42 +93,31 @@ const ExpertUserAchievement = (props) => {
     });
   };
 
-  // 封停
-  const fetchCloseExpert = (initialValues) => setVisible({ show: true, initialValues });
-
-  // 解封
-  const fetchExpertOpen = (values) => {
-    dispatch({
-      type: 'expertUserList/fetchExpertOpen',
-      payload: values,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
   return (
     <>
       <TableDataBlock
         order
         keepData
+        title={() => <div style={{ marginTop: -16, color: 'red' }}>当前数据统计到昨日</div>}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.kolUserId}`}
         dispatchType="expertUserAchievement/fetchGetList"
-        {...expertUserAchievement.list}
+        {...list}
       ></TableDataBlock>
-      <CloseExpert
+      {/* 分佣统计 */}
+      <SubCommissionStatistics
         visible={visible}
-        childRef={childRef}
         onClose={() => setVisible(false)}
-      ></CloseExpert>
+      ></SubCommissionStatistics>
     </>
   );
 };
 
 export default connect(({ expertUserAchievement, baseData, loading }) => ({
-  expertUserAchievement,
+  list: expertUserAchievement.list,
   kolLevel: baseData.kolLevel,
-  loading: loading.models.expertUserAchievement,
+  loading: loading.effects['expertUserAchievement/fetchGetList'],
 }))(ExpertUserAchievement);

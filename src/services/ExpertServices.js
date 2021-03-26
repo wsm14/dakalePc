@@ -154,6 +154,13 @@ export function fetchExpertUserAchievementList(params) {
   });
 }
 
+// get 哒人业绩 - 分佣统计
+export function fetchExpertUserSubCommissionStatistics(params) {
+  return request('/admin/kol/monthStatisticKolCommission', {
+    params,
+  });
+}
+
 // 哒人业绩 end
 
 // 哒人分销明细
