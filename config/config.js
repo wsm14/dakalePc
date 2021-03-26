@@ -6,22 +6,6 @@ import define from './env.config';
 
 const { REACT_APP_ENV, NODE_ENV } = process.env;
 
-const externalsConfig =
-  NODE_ENV === 'production'
-    ? {
-        externals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          '@ant-design/charts': 'window.charts',
-        },
-        scripts: [
-          'https://unpkg.com/react@17.0.1/umd/react.production.min.js',
-          'https://unpkg.com/react-dom@17/umd/react-dom.production.min.js',
-          'https://unpkg.com/@ant-design/charts@1.0.13/dist/charts.min.js',
-        ],
-      }
-    : {};
-
 export default defineConfig({
   hash: true,
   history: { type: 'hash' },
@@ -83,5 +67,4 @@ export default defineConfig({
     basePath: '/',
   },
   ...define[REACT_APP_ENV || 'dev'],
-  // ...externalsConfig,
 });
