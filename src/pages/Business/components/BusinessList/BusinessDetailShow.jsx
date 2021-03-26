@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Form, Tabs, Input, Modal } from 'antd';
+import { Button, Form, Tabs, Input, Modal, Tag } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -12,6 +13,9 @@ const BusinessDetailShow = (props) => {
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
+  const loadingCheck = loading.effects['baseData/fetchGetPhoneComeLocation'];
+
+  const [mobileInfo, setMobileInfo] = useState({});
 
   const {
     businessLicenseObject: blobj = {},
@@ -19,6 +23,9 @@ const BusinessDetailShow = (props) => {
     userMerchantIdString: merchantId,
     businessStatus,
     status,
+    mobile,
+    provinceName = '',
+    cityName = '',
   } = visible;
 
   const statusNum = Number(status);
@@ -28,12 +35,6 @@ const BusinessDetailShow = (props) => {
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (visible) {
-      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
-    }
-  }, [visible]);
-
   // 设置开户行号
   const fetchMerSetBandCode = (values) => {
     dispatch({
@@ -42,6 +43,17 @@ const BusinessDetailShow = (props) => {
         merchantId,
         ...values,
       },
+    });
+  };
+
+  // 获取手机归属地
+  const fetchGetPhoneComeLocation = () => {
+    dispatch({
+      type: 'baseData/fetchGetPhoneComeLocation',
+      payload: {
+        mobile,
+      },
+      callback: setMobileInfo,
     });
   };
 
@@ -71,6 +83,9 @@ const BusinessDetailShow = (props) => {
     });
   };
 
+  // 检查归属地和所在地是否相同
+  const checkMobile = provinceName.includes(mobileInfo.prov) && cityName.includes(mobileInfo.city);
+
   const storeItems = [
     {
       label: '品牌名称',
@@ -83,11 +98,17 @@ const BusinessDetailShow = (props) => {
     {
       label: '店铺帐号',
       name: 'mobile',
-      // render: (val) => (
-      //   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      //     {val} <span style={{ padding: '5px 10px', background: '#ccc' }}>浙江-杭州</span>
-      //   </div>
-      // ),
+      render: (val) => (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {val}
+          <Tag
+            icon={loadingCheck && <SyncOutlined spin />}
+            color={checkMobile ? 'success' : 'error'}
+          >
+            {!loadingCheck && `${mobileInfo.prov || ''}-${mobileInfo.city || ''}`}
+          </Tag>
+        </div>
+      ),
     },
     {
       label: '店铺类型',
@@ -185,7 +206,7 @@ const BusinessDetailShow = (props) => {
       label: '场景设置',
       name: 'scenesIds',
       render: (val) => {
-        const scenId = val? val : [];
+        const scenId = val ? val : [];
         let sceneName = '';
         if (sceneList && sceneList.length) {
           sceneList.forEach((item) => {
@@ -266,6 +287,10 @@ const BusinessDetailShow = (props) => {
     width: 800,
     visible,
     onClose,
+    afterCallBack: () => {
+      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
+      fetchGetPhoneComeLocation();
+    },
     footer: (
       <>
         <AuthConsumer auth="bussinessStatus">

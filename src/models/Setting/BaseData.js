@@ -10,6 +10,7 @@ import {
   fetchGetTasteTag,
   fetchGetKolLevel,
   fetchHandleDetail,
+  fetchGetPhoneComeLocation,
 } from '@/services/BaseServices';
 
 export default {
@@ -101,6 +102,12 @@ export default {
       if (!response) return;
       const { content } = response;
       content && callback(content.tagNames);
+    },
+    *fetchGetPhoneComeLocation({ payload, callback }, { call }) {
+      const response = yield call(fetchGetPhoneComeLocation, payload);
+      if (!response) return;
+      const { content } = response;
+      content && callback(content);
     },
     *fetchGetTradeSelect({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetTradeSelect, payload);

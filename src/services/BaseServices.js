@@ -16,6 +16,13 @@ export function fetchGetPropertyJSON(params) {
   });
 }
 
+// get 获取手机号归属地
+export function fetchGetPhoneComeLocation(params) {
+  return request('/common/ocr/getMobileInfo', {
+    params,
+  });
+}
+
 // get OCR识别 营业执照
 export function fetchGetOcrLicense(params) {
   return request('/common/ocr/businessLicense', {
