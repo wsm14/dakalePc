@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pie } from '@ant-design/charts';
+import Pie from '@ant-design/charts/lib/pie';
 
 const PieChart = (props) => {
   const ref = React.useRef();

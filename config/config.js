@@ -23,7 +23,6 @@ export default defineConfig({
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },
-  extraBabelPlugins: [['import', { libraryName: '@ant-design/charts', libraryDirectory: 'lib' }]],
   chunks: ['vendors', 'umi'],
   chainWebpack: function (config, {}) {
     config.merge({

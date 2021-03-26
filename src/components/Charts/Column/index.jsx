@@ -1,5 +1,5 @@
 import React from 'react';
-import { Column } from '@ant-design/charts';
+import Column from '@ant-design/charts/lib/column';
 
 const ColumnChart = (props) => {
   const {
