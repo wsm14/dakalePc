@@ -19,9 +19,9 @@ const UserTotalSpread = ({ loading, totalChartData }) => {
     },
   ];
 
-  const styles = { padding: 10 };
+  const styles = { padding: 10, height: 296 };
   return (
-    <Row gutter={[16, 16]} align="middle">
+    <Row gutter={[16, 16]} align="middle" style={{ marginBottom: 16 }}>
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
