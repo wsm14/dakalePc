@@ -18,6 +18,7 @@ export default defineConfig({
   locale: {
     // default zh-CN
     default: 'zh-CN',
+    antd: true,
   },
   lessLoader: { javascriptEnabled: true },
   dynamicImport: {
