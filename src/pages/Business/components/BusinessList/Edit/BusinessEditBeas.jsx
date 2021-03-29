@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Select, Switch } from 'antd';
+import { Form, Select, Switch, Tag } from 'antd';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 
@@ -19,11 +19,13 @@ const BusinessAddBeas = (props) => {
     setCategId,
     setType, // 进入的状态 add edit audit
   } = props;
+  const { provinceName = '', cityName = '' } = initialValues;
 
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(false);
   const [hubList, setHubList] = useState([]);
+  const [mobileInfo, setMobileInfo] = useState({});
 
   // 获取品牌
   const fetchGetBrandList = () => {
@@ -61,6 +63,20 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取手机归属地
+  const fetchGetPhoneComeLocation = () => {
+    dispatch({
+      type: 'baseData/fetchGetPhoneComeLocation',
+      payload: {
+        mobile: initialValues.mobile,
+      },
+      callback: setMobileInfo,
+    });
+  };
+
+  // 检查归属地和所在地是否相同
+  const checkMobile = provinceName.includes(mobileInfo.prov) && cityName.includes(mobileInfo.city);
+
   useEffect(() => {
     fetchGetBrandList();
     if (initialValues) {
@@ -69,6 +85,7 @@ const BusinessAddBeas = (props) => {
       setAmpShow(!!initialValues.lat);
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
       setType === 'audit' && fetchGetPromotionMoney(initialValues.topCategoryId);
+      setType === 'audit' && fetchGetPhoneComeLocation();
     }
   }, []);
 
@@ -119,6 +136,11 @@ const BusinessAddBeas = (props) => {
       label: '注册帐号',
       name: 'mobile',
       visible: setType != 'edit',
+      addonAfter: (
+        <span style={{ color: checkMobile ? 'green' : 'red' }}>
+          {mobileInfo.prov || ''}-{mobileInfo.city || ''}
+        </span>
+      ),
       addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号' }],
     },
     {
