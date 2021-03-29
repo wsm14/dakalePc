@@ -56,7 +56,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
     },
 
     {
-      title: '【总】补贴（卡豆',
+      title: '【总】补贴（卡豆）',
       align: 'right',
       dataIndex: 'inBean',
     },

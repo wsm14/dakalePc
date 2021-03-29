@@ -94,8 +94,8 @@ const SubsidyShop = (props) => {
       <Card
         title={
           <Space size="large" style={{ color: '#f00' }}>
-            <span> 收入：{inBean}</span>
-            <span>支出：{outBean}</span>
+            <span> 收入（卡豆）：{inBean}</span>
+            <span style={{marginLeft:'50px'}}>支出（卡豆）：{outBean}</span>
           </Space>
         }
         extra={
