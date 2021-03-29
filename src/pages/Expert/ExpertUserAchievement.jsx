@@ -4,11 +4,13 @@ import { EXPERT_USER_TYPE, EXPERT_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
+import RecommendModal from './components/Achievement/RecommendModal';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch } = props;
 
   const [visible, setVisible] = useState(false);
+  const [visibleList, setVisibleList] = useState(false);
 
   const childRef = useRef();
 
@@ -73,7 +75,7 @@ const ExpertUserAchievement = (props) => {
           formItems={[
             {
               type: 'recommendList',
-              click: () => setVisible({ show: true, detail }),
+              click: () => setVisibleList({ show: true, detail }),
             },
             {
               auth: 'statistics',
@@ -112,6 +114,8 @@ const ExpertUserAchievement = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></SubCommissionStatistics>
+      {/* 推荐列表 */}
+      <RecommendModal visible={visibleList} onClose={() => setVisibleList(false)}></RecommendModal>
     </>
   );
 };

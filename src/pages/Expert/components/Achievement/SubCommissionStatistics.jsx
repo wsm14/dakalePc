@@ -59,7 +59,7 @@ const SubCommissionStatistics = (props) => {
       title: '预代扣税',
       align: 'right',
       dataIndex: 'withholdingTax',
-      render: (val) => `￥ ${val}`,
+      render: (val) => `￥ ${val || 0}`,
     },
   ];
 

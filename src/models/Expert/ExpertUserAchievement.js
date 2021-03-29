@@ -1,5 +1,6 @@
 import {
   fetchExpertUserAchievementList,
+  fetchExpertUserAchievementRecommend,
   fetchExpertUserSubCommissionStatistics,
 } from '@/services/ExpertServices';
 
@@ -10,6 +11,7 @@ export default {
     list: { list: [], total: 0 },
     subList: { list: [], total: 0 },
     subTotal: {},
+    recommendList: {},
   },
 
   reducers: {
@@ -17,6 +19,12 @@ export default {
       return {
         ...state,
         ...payload,
+      };
+    },
+    closeRecommend(state) {
+      return {
+        ...state,
+        recommendList: {},
       };
     },
   },
@@ -30,6 +38,22 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchExpertUserAchievementRecommend({ payload }, { call, put, select }) {
+      const { kolUserId } = payload;
+      const response = yield call(fetchExpertUserAchievementRecommend, payload);
+      if (!response) return;
+      const { content } = response;
+      const recommendList = yield select((state) => state.expertUserAchievement.recommendList);
+      yield put({
+        type: 'save',
+        payload: {
+          recommendList: {
+            ...recommendList,
+            [kolUserId]: { list: content.recordList, total: content.total },
+          },
         },
       });
     },

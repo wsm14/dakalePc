@@ -5,7 +5,8 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
-    userTotal: 0,
+    shareBeanSum: 0,
+    teamBeanSum: 0,
   },
 
   reducers: {
@@ -22,10 +23,13 @@ export default {
       const response = yield call(fetchExpertUserDistributionList, payload);
       if (!response) return;
       const { content } = response;
+      const { shareBeanSum = 0, teamBeanSum = 0, recordList, total } = content;
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.recordList, total: content.total },
+          list: { list: recordList, total },
+          shareBeanSum,
+          teamBeanSum,
         },
       });
     },

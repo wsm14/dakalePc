@@ -164,9 +164,9 @@ const ExpertUserDistribution = (props) => {
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
             推广者总佣金：
-            {loadingTotal ? <Spin></Spin> : `￥0000`}
+            {loadingTotal ? <Spin></Spin> : `￥${expertUserDistribution.shareBeanSum}`}
             &nbsp;&nbsp; 豆长总佣金：
-            {loadingTotal ? <Spin></Spin> : `￥0000`}
+            {loadingTotal ? <Spin></Spin> : `￥${expertUserDistribution.teamBeanSum}`}
           </div>
         )}
         cRef={childRef}

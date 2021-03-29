@@ -154,6 +154,13 @@ export function fetchExpertUserAchievementList(params) {
   });
 }
 
+// get 哒人业绩 - 推荐列表
+export function fetchExpertUserAchievementRecommend(params) {
+  return request('/admin/kol/listKolRecommended', {
+    params,
+  });
+}
+
 // get 哒人业绩 - 分佣统计
 export function fetchExpertUserSubCommissionStatistics(params) {
   return request('/admin/kol/monthStatisticKolCommission', {
