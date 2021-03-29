@@ -16,7 +16,8 @@ const PuzzleAdRoot = (props) => {
       dispatch({
         type: 'puzzleAd/fetchPuzzleAdRootSet',
         payload: {
-          dictionaryDTOS: data.map((item) => ({ ...item, extraParam: values[item.child] })),
+          ...data,
+          extraParam: values,
         },
         callback: onClose,
       });
@@ -26,12 +27,12 @@ const PuzzleAdRoot = (props) => {
   const formItems = [
     {
       label: '每日卡豆领取上限',
-      name: 'dailyCardBeanCollectionLimit',
+      name: 'beanLimit',
       suffix: '卡豆',
     },
     {
       label: '每看',
-      name: 'watchVideosPopUpAdsNum',
+      name: 'preventSize',
       suffix: '个视频弹出广告',
       placeholder: '请输入视频数量',
     },

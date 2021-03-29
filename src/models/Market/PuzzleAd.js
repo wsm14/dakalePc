@@ -65,14 +65,12 @@ export default {
       const response = yield call(fetchPuzzleAdRoot, payload);
       if (!response) return;
       const { content = {} } = response;
-      const dataValue = {
-        [content.dictionaryDTOS[0].child]: content.dictionaryDTOS[0].extraParam,
-        [content.dictionaryDTOS[1].child]: content.dictionaryDTOS[1].extraParam,
-      };
+      const { extraParam = '{}' } = content.dictionary;
+      const dataValue = JSON.parse(extraParam);
       yield put({
         type: 'save',
         payload: {
-          adRoot: { data: content.dictionaryDTOS, dataValue },
+          adRoot: { data: content.dictionary, dataValue },
         },
       });
       callback();
