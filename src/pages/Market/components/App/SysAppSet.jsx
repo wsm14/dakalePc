@@ -126,6 +126,7 @@ const SysAppSet = (props) => {
     visible: show,
     onClose,
     afterCallBack: () => {
+      setShowRadio(detail.bannerType);
       setShowUrl(detail.jumpType === 'H5');
       setShowArea(detail.deliveryAreaType === 'detail');
     },
