@@ -99,16 +99,16 @@ const BusinessAuditAllow = (props) => {
       name: 'scenesIds',
       loading: loading.effects['sysTradeList/fetchSceneListById'],
       select: sceneList || [],
-      // addRules: [
-      //   {
-      //     validator: (rule, value) => {
-      //       if (value.length > 3) {
-      //         return Promise.reject(`场景设置最多选择3个`);
-      //       }
-      //       return Promise.resolve();
-      //     },
-      //   },
-      // ],
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value.length > 3) {
+              return Promise.reject(`场景设置最多选择3个`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '店铺标签',
