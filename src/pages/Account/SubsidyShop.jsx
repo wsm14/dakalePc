@@ -29,15 +29,16 @@ const SubsidyShop = (props) => {
   const childRef = useRef();
 
   const [visible, setVisible] = useState(false);
+
+  // platform-运营平台 partner-区县平台 province-省代平台
+  const source = 'platform';
+
   // 搜索默认参数
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: ['', 'platform'],
+    type: source,
   };
-
-  // platform-运营平台 partner-区县平台 province-省代平台
-  const source = 'platform';
 
   // 搜索参数
   const [searchData, setSearchData] = useState(defaultValue);
@@ -46,7 +47,7 @@ const SubsidyShop = (props) => {
   const newSearch = {
     source,
     latitude: searchData.latitude,
-    type: searchData.type.toString(),
+    type: source,
     beginTime: searchData.time[0].format('YYYY-MM-DD'),
     endTime: searchData.time[1].format('YYYY-MM-DD'),
   };

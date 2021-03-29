@@ -63,7 +63,7 @@ const CouponManageComponent = (props) => {
             <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
             {val}
           </div>
-          <div>
+          <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
             <Ellipsis length={10} tooltip>
               {row.ownerName}

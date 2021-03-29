@@ -40,7 +40,7 @@ const CouponDrawer = (props) => {
   const drawerProps = {
     info: {
       title: '查看详情',
-      children: <CouponDetail initialValues={detail}></CouponDetail>,
+      children: <CouponDetail detail={detail}></CouponDetail>,
     },
     add: {
       title: '新建券',
@@ -54,7 +54,7 @@ const CouponDrawer = (props) => {
     visible: show,
     onClose,
     closeCallBack: () => dispatch({ type: 'businessList/close' }), // 关闭清空搜索的商家数据
-    footer: (
+    footer: type == 'add' && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         发布申请
       </Button>

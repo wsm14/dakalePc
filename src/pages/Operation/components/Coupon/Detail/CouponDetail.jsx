@@ -20,7 +20,8 @@ const GoodsDetail = (props) => {
       label: '店铺范围',
       name: 'merchantIdList',
       render: () => '',
-      children: mreList && mreList.length ? `部分${mreList.length}` : '全部',
+      show: ownerType === 'group',
+      children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
     },
   ];
 
@@ -54,29 +55,31 @@ const GoodsDetail = (props) => {
     {
       label: '使用门槛',
       name: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' ? '无门槛' : `满${val}元可使用`),
+      render: (val) => (val === '0' || val === '--' ? '无门槛' : `满${val}元可使用`),
     },
     {
       label: '使用有效期',
       name: 'activeDate',
       render: (val, row) => {
-        val && row.endDate
-          ? `有效期：${val} - ${row.endDate}`
-          : row.delayDays != 0
-          ? `领取后${row.delayDays}天生效｜有效期${row.activeDays}天`
-          : `有效期：领取后${row.activeDays}天内`;
+        const { activeDate, endDate, delayDays, activeDays } = row;
+        if (activeDate && endDate) {
+          return activeDate + '~' + endDate;
+        } else {
+          if (delayDays === '0') {
+            return `领取后立即生效\n有效期${activeDays}天`;
+          }
+          return `领取后${delayDays}天生效\n有效期${activeDays}天`;
+        }
       },
     },
     {
       label: '适用时段',
-      name: ['availableTime', 'dayType'],
-      render: (val) =>
-        val === 'all' ? '全天' : COUPON_WEEK_TIME.filter((item, index) => val.includes(index)),
+      name: 'useWeek',
+      render: (val) => COUPON_WEEK_TIME.filter((item, index) => val.includes(index)),
     },
     {
       label: '使用时间',
-      name: ['availableTime', 'timeType'],
-      render: (val, row) => `${val === 'all' ? '全天' : row.availableTime.timeRange}`,
+      name: 'useTime',
     },
     {
       label: '投放总量',
@@ -95,7 +98,7 @@ const GoodsDetail = (props) => {
           )}
           {detail.buyRule === 'dayLimit' && (
             <div>
-              单人每天{['领取', '购买'][buyFlag]}份数: {detail.dayMaxByAmount}
+              单人每天{['领取', '购买'][buyFlag]}份数: {detail.dayMaxBuyAmount}
             </div>
           )}
         </>
