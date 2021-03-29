@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
@@ -23,12 +23,12 @@ const CouponManageComponent = (props) => {
       name: 'merchantCouponStatus',
       select: COUPON_STATUS,
     },
-    {
-      label: '创建时间',
-      type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
-    },
+    // {
+    //   label: '创建时间',
+    //   type: 'rangePicker',
+    //   name: 'beginDate',
+    //   end: 'endDate',
+    // },
     {
       label: '券类型',
       type: 'select',
@@ -39,81 +39,60 @@ const CouponManageComponent = (props) => {
       label: '优惠券名称',
       name: 'couponName',
     },
-    {
-      label: '集团/店铺名称',
-      name: 'merchantName',
-    },
-    {
-      label: '地区',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
+    // {
+    //   label: '集团/店铺名称',
+    //   name: 'merchantName',
+    // },
+    // {
+    //   label: '地区',
+    //   name: 'city',
+    //   type: 'cascader',
+    //   changeOnSelect: true,
+    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    // },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '优惠券类型',
-      dataIndex: 'couponType',
-      render: (val) => COUPON_TYPE[val],
-    },
-    {
-      title: '优惠券名称',
+      title: '券名称',
       dataIndex: 'couponName',
-    },
-    {
-      title: '券价值',
-      align: 'right',
-      dataIndex: ['reduceObject', 'couponPrice'],
-      render: (val) => `￥${Number(val).toFixed(2)}`,
-    },
-    {
-      title: '券售价',
-      align: 'right',
-      dataIndex: 'buyPrice',
-      render: (val) => (!val ? '免费' : `￥${Number(val).toFixed(2)}`),
-    },
-    {
-      title: '结算价',
-      align: 'right',
-      dataIndex: 'goosdsType',
-      render: (val) => `￥${Number(val).toFixed(2)}`,
-    },
-    {
-      title: '使用门槛',
-      align: 'right',
-      dataIndex: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' ? '无门槛' : `满${val}元可使用`),
-    },
-    {
-      title: '店铺类型',
-      align: 'right',
-      dataIndex: 'merchantType',
-      render: (val) => BUSINESS_TYPE[val],
-    },
-    {
-      title: '店铺/集团名称',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
+      render: (val, row) => (
+        <div>
+          <div>
+            <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
+            {val}
+          </div>
+          <div>
+            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+            <Ellipsis length={10} tooltip>
+              {row.ownerName}
+            </Ellipsis>
+          </div>
+        </div>
       ),
     },
     {
-      title: '活动店铺数',
+      title: '券价值/售价',
       align: 'right',
-      dataIndex: 'merchantCount',
-      render: (val, row) => {
-        const { ownerCouponId } = row;
-        return <a onClick={() => {}}>{val}</a>;
-      },
+      dataIndex: ['reduceObject', 'couponPrice'],
+      render: (val, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(val).toFixed(2)}
+          </div>
+          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
+        </div>
+      ),
     },
     {
-      title: '有效期',
+      title: '使用门槛',
       align: 'center',
+      dataIndex: ['reduceObject', 'thresholdPrice'],
+      render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
+    },
+    {
+      title: '使用有效期',
       dataIndex: 'activeDate',
       render: (val, row) => {
         const { activeDate, endDate, delayDays, activeDays } = row;
@@ -128,70 +107,63 @@ const CouponManageComponent = (props) => {
       },
     },
     {
-      title: '投放总量',
+      title: '剩余数量',
       align: 'right',
-      dataIndex: 'none',
+      dataIndex: 'remain',
+      sorter: (a, b) => a.remain - b.remain,
     },
     {
-      title: '投放总量',
+      title: '销量',
+      dataIndex: 'total',
       align: 'right',
-      dataIndex: 'none2',
-    },
-    {
-      title: '销量/领取量',
-      align: 'right',
-      dataIndex: 'none3',
+      render: (val, row) => val - row.remain,
+      sorter: (a, b) => a.total - a.remain - (b.total - b.remain),
     },
     {
       title: '核销数量',
       align: 'right',
-      dataIndex: 'none4',
+      dataIndex: 'verifiedCount',
+      sorter: (a, b) => a.verifiedCount - b.verifiedCount,
     },
     {
-      title: '更新人',
-      align: 'center',
-      dataIndex: 'none5',
+      title: '创建时间',
+      align: 'right',
+      dataIndex: 'createTime',
     },
     {
-      title: '更新时间',
-      align: 'center',
-      dataIndex: 'none6',
-    },
-    {
-      title: '状态',
-      align: 'center',
-      fixed: 'right',
-      dataIndex: 'merchantCouponStatus',
-      render: (val) => COUPON_STATUS[val],
+      title: '发布时间',
+      align: 'right',
+      dataIndex: 'updateTime',
     },
     {
       title: '操作',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'ownerCouponId',
-      render: (val, record) => {
-        const { merchantCouponStatus: status } = record;
+      dataIndex: 'ownerCouponIdString',
+      render: (ownerCouponId, record) => {
+        const { merchantCouponStatus: status, ownerIdString: ownerId } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'info',
-                click: () => fetchCouponDetail(val, 'info'),
+                click: () => fetchCouponDetail({ ownerCouponId, ownerId }, 'info'),
               },
               {
                 type: 'del',
-                click: () => fetchCouponSet({ ownerCouponId, deleteFlag: 0 }),
+                visible: status !== '1',
+                click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
               },
-              {
-                type: 'edit',
-                click: () => fetchCouponDetail(val, 'edit'),
-              },
+              // {
+              //   type: 'edit',
+              //   click: () => fetchCouponDetail(val, 'edit'),
+              // },
               // 上架中 已确认 | 上架中 已驳回
               {
                 type: 'down',
                 popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
-                visible: status == 1,
-                click: () => fetchCouponSet({ ownerCouponId, merchantCouponStatus: 2 }),
+                visible: status == '1',
+                click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
               },
             ]}
           />
@@ -223,21 +195,21 @@ const CouponManageComponent = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisible({ type: 'add', show: true })}
-            >
-              新建券
-            </Button>
-          </AuthConsumer>
-        }
+        // btnExtra={
+        //   <AuthConsumer auth="save">
+        //     <Button
+        //       className="dkl_green_btn"
+        //       onClick={() => setVisible({ type: 'add', show: true })}
+        //     >
+        //       新建券
+        //     </Button>
+        //   </AuthConsumer>
+        // }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.ownerCouponId}`}
+        rowKey={(record) => `${record.ownerCouponIdString}`}
         dispatchType="couponManage/fetchGetList"
         {...couponManage}
       ></TableDataBlock>

@@ -224,10 +224,10 @@ const ShareManage = (props) => {
                 type: 'info', // 详情
                 click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
-              {
-                type: 'signDetail', // 打卡明细
-                click: () => fetchShareHandleDetail(userMomentIdString),
-              },
+              // {
+              //   type: 'signDetail', // 打卡明细
+              //   click: () => fetchShareHandleDetail(userMomentIdString),
+              // },
               {
                 type: 'handleDeatil', // 操作记录
                 click: () => fetchShareHandleDetail(userMomentIdString),

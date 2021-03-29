@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+// import { Button } from 'antd';
+// import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import PreferentialDrawer from './components/Preferential/PreferentialDrawer';
@@ -204,14 +204,10 @@ const PreferentialActive = (props) => {
                 type: 'info', // 详情
                 click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
-              {
-                type: 'edit', // 编辑
-                click: () => fetchShareHandleDetail(userMomentIdString),
-              },
-              {
-                type: 'del', // 删除
-                click: () => fetchShareHandleDetail(userMomentIdString),
-              },
+              // {
+              //   type: 'edit', // 编辑
+              //   click: () => fetchShareHandleDetail(userMomentIdString),
+              // },
               {
                 auth: 'recommendStatus', // 推荐状态
                 title: '推荐', // 推荐 | 取消推荐
@@ -229,16 +225,16 @@ const PreferentialActive = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisible({ type: 'add', show: true })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        // btnExtra={
+        //   <AuthConsumer auth="save">
+        //     <Button
+        //       className="dkl_green_btn"
+        //       onClick={() => setVisible({ type: 'add', show: true })}
+        //     >
+        //       新增
+        //     </Button>
+        //   </AuthConsumer>
+        // }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
