@@ -124,6 +124,13 @@ export function fetchOrdersList(params) {
   });
 }
 
+// get 订单列表 - 导出
+export function fetchOrdersImport(params) {
+  return request('/admin/orderManagement/listOrderImport', {
+    params,
+  });
+}
+
 // get 订单列表 / 退款管理 - 详情
 export function fetchOrdersDetail(params) {
   return request('/admin/orderManagement/getOrderById', {

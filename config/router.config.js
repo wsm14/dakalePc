@@ -172,7 +172,7 @@ export default [
         path: '/operation/share',
         name: '分享管理',
         component: './Operation/ShareManage',
-        buttons: ['save', 'del', 'edit', 'info', 'down', 'signDetail', 'handleDeatil'],
+        buttons: ['info', 'down', 'signDetail', 'handleDeatil'],
       },
       {
         path: '/operation/goods',
@@ -219,7 +219,7 @@ export default [
         path: '/operation/preferential',
         name: '特惠活动',
         component: './Operation/PreferentialActive',
-        buttons: ['save', 'del', 'edit', 'info', 'down', 'recommendStatus'],
+        buttons: ['del', 'edit', 'info', 'down', 'recommendStatus'],
       },
       // 哒人管理
       {

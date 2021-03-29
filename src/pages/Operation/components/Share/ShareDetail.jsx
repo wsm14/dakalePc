@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from 'antd';
 import {
   SHARE_SCOPE_TYPE,
   BUSINESS_TYPE,
@@ -11,7 +10,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const ShareDetail = (props) => {
-  const { visible, onClose, loading } = props;
+  const { visible, onClose } = props;
 
   const { type = 'img', show = false, detail = {} } = visible;
 
@@ -109,11 +108,6 @@ const ShareDetail = (props) => {
     title: '分享详情',
     visible: show,
     onClose,
-    footer: (
-      <Button type="primary" loading={loading}>
-        提交
-      </Button>
-    ),
   };
 
   return (

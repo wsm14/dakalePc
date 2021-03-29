@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
+import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
 
@@ -194,6 +195,13 @@ const GoodsOrders = (props) => {
 
   return (
     <TableDataBlock
+      btnExtra={({ get }) => (
+        <ExcelButton
+          dispatchType={'ordersList/fetchOrdersImport'}
+          dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
+      )}
       noCard={false}
       cRef={childRef}
       loading={loading}

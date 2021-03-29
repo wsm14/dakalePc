@@ -59,7 +59,6 @@ const RefundOrder = (props) => {
     },
     {
       title: '店铺名称',
-      align: 'right',
       dataIndex: 'merchantName',
     },
     {

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { PAY_TYPE } from '@/common/constant';
+import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
 
@@ -99,7 +99,7 @@ const CodeOrders = (props) => {
       title: '区域',
       align: 'center',
       dataIndex: 'provinceName',
-      render:(val,record)=> `${val}-${record.cityName}-${record.districtName}` 
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
     {
       title: '操作',
@@ -113,6 +113,13 @@ const CodeOrders = (props) => {
   return (
     <TableDataBlock
       noCard={false}
+      btnExtra={({ get }) => (
+        <ExcelButton
+          dispatchType={'ordersList/fetchOrdersImport'}
+          dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
+      )}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
