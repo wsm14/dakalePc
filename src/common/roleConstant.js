@@ -11,6 +11,7 @@ export const ROLE_BUTTON_TYPE = {
   down: '下架',
   status: '状态',
   exportList: '导出',
+  placement: '置顶',
   set: '设置',
   copy: '复制',
   push: '推送',

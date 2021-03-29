@@ -45,12 +45,17 @@ export default {
       });
       callback();
     },
-    *fetchSpecialGoodsRecommend({ payload, callback }, { call, put }) {
+    *fetchSpecialGoodsRecommend({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsRecommend, payload);
       if (!response) return;
+      const { operationFlag } = payload;
+      let mes = '设置推荐成功';
+      if (operationFlag === 'cancelRecommend') mes = '取消推荐成功';
+      if (operationFlag === 'top') mes = '置顶成功';
+      if (operationFlag === 'cancelTop') mes = '取消置顶成功';
       notification.success({
         message: '温馨提示',
-        description: '特惠活动推荐成功',
+        description: mes,
       });
       callback();
     },

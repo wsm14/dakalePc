@@ -208,18 +208,12 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['down', 'recommendStatus', 'tradeSet'],
+        buttons: ['down', 'placement', 'recommendStatus', 'tradeSet'],
       },
       {
         path: '/operation/walking',
         name: '逛逛页面配置',
         component: './Operation/WalkingManage',
-      },
-      {
-        path: '/operation/preferential',
-        name: '特惠活动',
-        component: './Operation/PreferentialActive',
-        buttons: ['down', 'info', 'recommendStatus'],
       },
       // 哒人管理
       {
