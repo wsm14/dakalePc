@@ -85,7 +85,9 @@ const SpecialGoods = (props) => {
             }}
           >
             <div style={{ display: 'flex' }}>
-              <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
+              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
+                {GOODS_CLASS_TYPE[row.goodsType]}
+              </Tag>
               <Ellipsis length={10} tooltip>
                 {row.goodsName}
               </Ellipsis>
@@ -131,9 +133,15 @@ const SpecialGoods = (props) => {
     {
       title: '活动时间',
       align: 'center',
-      dataIndex: 'useStartTime',
-      render: (val, row) =>
-        row.activityTimeRule === 'infinite' ? '长期' : `${val} ~ ${row.useEndTime}`,
+      dataIndex: 'activeStartTime',
+      render: (val, row) => (
+        <>
+          {row.activityTimeRule === 'infinite'
+            ? `${row.createTime} ~ 长期`
+            : `${val} ~ ${row.activeEndTime}`}
+          <div>{SPECIAL_STATUS[row.status]}</div>
+        </>
+      ),
     },
     {
       title: '剩余数量',
