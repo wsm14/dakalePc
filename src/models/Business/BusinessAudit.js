@@ -90,6 +90,7 @@ export default {
         businessTime,
         property,
         tags,
+        scenesIds,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
       const dataCheck = (key) => (property[key] ? property[key] || '' : '');
@@ -126,6 +127,7 @@ export default {
             }
           : '',
         tags: tags ? tags.split(',') : [],
+        scenesIds: scenesIds ? scenesIds.split(',') : [],
       };
       callback(initialValues);
     },
