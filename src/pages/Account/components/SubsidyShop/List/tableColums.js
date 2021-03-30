@@ -46,7 +46,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
     {
       title: '时间',
       align: 'center',
-      dataIndex: 'gainTime',
+      dataIndex: 'gainMonth',
     },
 
     {
@@ -88,6 +88,11 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           align: 'center',
           dataIndex: 'subsidyRole',
           render: (val) => SUBSIDY_TASK_ROLE[val],
+        },
+        {
+          title: '店铺名称',
+          align: 'center',
+          dataIndex: 'merchantName',
         },
         {
           title: '任务名称',

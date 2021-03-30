@@ -347,4 +347,4 @@ export const EXPRET_DISTRIBUTION_TYPE = {
 export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推', team: '团队' };
 
 // 特惠活动 - 热销推荐
-export const SPECIAL_RECOMMEND_TYPE = { hot: '热销推荐', today: '每日推荐' };
+export const SPECIAL_RECOMMEND_TYPE = { hot: '爆品推荐', today: '限时推荐' };

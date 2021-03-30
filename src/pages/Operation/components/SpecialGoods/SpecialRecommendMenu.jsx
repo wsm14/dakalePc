@@ -18,8 +18,8 @@ const SpecialRecommendMenu = (props) => {
 
   const menu = (
     <Menu onClick={({ key }) => handleClickRecommend(key)}>
-      <Menu.Item key={'hot'}>热销推荐</Menu.Item>
-      <Menu.Item key={'today'}>每日推荐</Menu.Item>
+      <Menu.Item key={'hot'}>爆品推荐</Menu.Item>
+      <Menu.Item key={'today'}>限时推荐</Menu.Item>
       <Menu.Item key={'cancelRecommend'}>取消推荐</Menu.Item>
     </Menu>
   );

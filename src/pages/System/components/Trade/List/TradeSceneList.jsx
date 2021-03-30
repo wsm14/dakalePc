@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -7,9 +7,9 @@ import TradeSceneSet from '../Form/TradeSceneSet';
 import PopImgShow from '@/components/PopImgShow';
 
 const TradeSceneList = (props) => {
-  const {sceneList, loading, visible, onClose, dispatch, childRef } = props;
-  const { type = '', record = '' } = visible;
- 
+  const { sceneList, visible, onClose, dispatch, childRef } = props;
+  const { record = '' } = visible;
+
   const [visibleUpdate, setVisibleUpdate] = useState(false);
 
   const getColumns = [
@@ -51,22 +51,21 @@ const TradeSceneList = (props) => {
   };
 
   //删除
-  const fetchDataDel = (record) =>{
-    const {categoryScenesId,image,scenesName,deleteFlag} = record
+  const fetchDataDel = (record) => {
+    const { categoryScenesId, image, scenesName, deleteFlag } = record;
     dispatch({
-      type:'sysTradeList/fetchSceneUpdate',
-      payload:{
+      type: 'sysTradeList/fetchSceneUpdate',
+      payload: {
         categoryScenesId,
         image,
         scenesName,
-        deleteFlag:0
+        deleteFlag: 0,
       },
-      callback:()=>{
+      callback: () => {
         childRef.current.fetchGetData();
-      }
-    })
-
-  }
+      },
+    });
+  };
 
   return (
     <Modal
@@ -84,12 +83,14 @@ const TradeSceneList = (props) => {
             新增
           </Button>
         }
+        size="midden"
         cRef={childRef}
         noCard={false}
         columns={getColumns}
         rowKey={(row) => `${row.categoryScenesId}`}
         params={{ categoryId: record.categoryIdString }}
         dispatchType="sysTradeList/fetchSceneListById"
+        pagination={false}
         size="middle"
         {...sceneList}
       ></TableDataBlock>
