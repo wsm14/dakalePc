@@ -9,6 +9,14 @@ const TaskDetailList = (props) => {
   const { show = false, detail = {} } = visible;
   const { subsidyId, taskName, subsidizedBeans } = detail;
 
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '店铺名称',
+      name: 'taskName',
+    },
+  ];
+
   const getColumns = [
     {
       title: '店铺名称',
@@ -57,6 +65,7 @@ const TaskDetailList = (props) => {
         order
         noCard={false}
         loading={loading}
+        searchItems={searchItems}
         columns={getColumns}
         rowKey={(row) => `${row.topicIdString}`}
         params={{ subsidyId }}

@@ -159,6 +159,10 @@ const SpecialGoods = (props) => {
       render: (val, row) => (row.recommendStatus !== '0' ? SPECIAL_RECOMMEND_TYPE[val] : '--'),
     },
     {
+      title: '创建时间',
+      dataIndex: 'createTime',
+    },
+    {
       title: '操作',
       dataIndex: 'specialGoodsId',
       align: 'right',
