@@ -121,13 +121,13 @@ const GoodsOrders = (props) => {
       render: (val, record) =>
         `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
-    {
-      title: '商品佣金',
-      align: 'right',
-      dataIndex: 'cashCommission',
-      render: (val, record) =>
-        `￥${val}（含${record.beanCommission ? record.beanCommission : 0}卡豆）`,
-    },
+    // {
+    //   title: '商品佣金',
+    //   align: 'right',
+    //   dataIndex: 'cashCommission',
+    //   render: (val, record) =>
+    //     `￥${val}（含${record.beanCommission ? record.beanCommission : 0}卡豆）`,
+    // },
     {
       title: '优惠券',
       dataIndex: 'businessArea',
@@ -147,6 +147,11 @@ const GoodsOrders = (props) => {
       title: '核销数',
       align: 'center',
       dataIndex: 'verificationCount',
+    },
+    {
+      title: '商品佣金',
+      align: 'center',
+      dataIndex: 'estimatedCommission',
     },
     {
       title: '核销时间',

@@ -17,7 +17,7 @@ export default {
   state: {
     list: { list: [], total: 0 },
     actionList: { list: [], total: 0 },
-    detailList: { list: [], total: 0 },
+    detailList: { list: [] },
   },
 
   reducers: {
@@ -48,7 +48,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.recordList, total: content.total },
+          detailList: { list: content.subsidyList },
         },
       });
     },

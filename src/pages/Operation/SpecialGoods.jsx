@@ -5,7 +5,7 @@ import {
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
   BUSINESS_TYPE,
-  SPECIAL_RECOMMEND_TYPE,
+  SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
@@ -164,7 +164,11 @@ const SpecialGoods = (props) => {
     {
       title: '推广位置',
       dataIndex: 'recommendType',
-      render: (val, row) => (row.recommendStatus !== '0' ? SPECIAL_RECOMMEND_TYPE[val] : '--'),
+      render: (val, row) => {
+        if (row.recommendStatus === '0' && row.topStatus === '0') return '';
+        let tagName = row.topStatus === '0' ? '推荐' : '置顶';
+        return SPECIAL_RECOMMEND_LISTTYPE[val] + tagName;
+      },
     },
     {
       title: '创建时间',
@@ -186,19 +190,12 @@ const SpecialGoods = (props) => {
                 click: () => fetchSpecialGoodsStatus({ ...record, goodsIdStr }),
               },
               {
-                title: '置顶',
-                auth: 'placement',
                 pop: true,
-                visible: record.status != '0',
-                click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'top' }),
-              },
-              {
-                pop: true,
-                title: '取消置顶',
+                title: '取消推荐',
                 auth: 'placement',
                 visible: record.status != '0' && record.topStatus !== '0',
                 click: () =>
-                  fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancelTop' }),
+                  fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
             ]}
           />

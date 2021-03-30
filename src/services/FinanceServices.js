@@ -25,7 +25,7 @@ export function fetchSubsidyTaskDetail(params) {
 
 // get 补贴管理 - 任务列表 -  补贴详情列表
 export function fetchSubsidyTaskDetailList(params) {
-  return request('/admin/subsidyManagement/getSubsidyById', {
+  return request('/admin/subsidyManagement/listSubsidyDetail', {
     params,
   });
 }

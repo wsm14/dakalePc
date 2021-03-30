@@ -13,43 +13,42 @@ const TaskDetailList = (props) => {
   const searchItems = [
     {
       label: '店铺名称',
-      name: 'taskName',
+      name: 'merchantName',
     },
   ];
 
   const getColumns = [
     {
       title: '店铺名称',
-      dataIndex: 'image',
+      dataIndex: 'merchantName',
     },
     {
       title: '店铺帐号',
-      dataIndex: 'topicName',
+      dataIndex: 'account',
     },
     {
       title: '所属商圈',
-      dataIndex: 'topicDesc',
+      dataIndex: 'businessHub',
     },
     {
       title: '所属行业',
       align: 'center',
-      dataIndex: 'recommendFlag',
-      render: (val) => (val == '1' ? '推荐' : '不推荐'),
+      dataIndex: 'category',
     },
     {
       title: '地址',
-      dataIndex: 'topicDesc',
+      dataIndex: 'address',
     },
     {
       title: '补贴卡豆数',
       align: 'right',
-      dataIndex: 'topicDesc',
+      dataIndex: 'rechargeBeans',
     },
-    {
-      title: '已消耗卡豆数',
-      align: 'right',
-      dataIndex: 'topicDesc',
-    },
+    // {
+    //   title: '已消耗卡豆数',
+    //   align: 'right',
+    //   dataIndex: 'topicDesc',
+    // },
   ];
 
   return (
@@ -67,7 +66,7 @@ const TaskDetailList = (props) => {
         loading={loading}
         searchItems={searchItems}
         columns={getColumns}
-        rowKey={(row) => `${row.topicIdString}`}
+        rowKey={(row) => `${row.merchantId}`}
         params={{ subsidyId }}
         dispatchType="subsidyManage/fetchSubsidyTaskDetailList"
         size="middle"

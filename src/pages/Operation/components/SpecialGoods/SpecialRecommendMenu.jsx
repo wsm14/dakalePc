@@ -1,26 +1,16 @@
 import React from 'react';
 import { connect } from 'umi';
+import { SPECIAL_RECOMMEND_TYPE } from '@/common/constant';
 import { Button, Menu, Dropdown } from 'antd';
 
 const SpecialRecommendMenu = (props) => {
   const { disabled, handleRecommend } = props;
 
-  // 点击推荐
-  const handleClickRecommend = (key) => {
-    let value = {};
-    if (key === 'cancelRecommend') {
-      value = { operationFlag: key };
-    } else {
-      value = { recommendType: key, operationFlag: 'recommend' };
-    }
-    handleRecommend(value);
-  };
-
   const menu = (
-    <Menu onClick={({ key }) => handleClickRecommend(key)}>
-      <Menu.Item key={'hot'}>爆品推荐</Menu.Item>
-      <Menu.Item key={'today'}>限时推荐</Menu.Item>
-      <Menu.Item key={'cancelRecommend'}>取消推荐</Menu.Item>
+    <Menu onClick={({ key }) => handleRecommend({ operationFlag: key })}>
+      {Object.keys(SPECIAL_RECOMMEND_TYPE).map((item) => (
+        <Menu.Item key={item}>{SPECIAL_RECOMMEND_TYPE[item]}</Menu.Item>
+      ))}
     </Menu>
   );
 

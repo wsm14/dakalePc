@@ -347,4 +347,16 @@ export const EXPRET_DISTRIBUTION_TYPE = {
 export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推', team: '团队' };
 
 // 特惠活动 - 热销推荐
-export const SPECIAL_RECOMMEND_TYPE = { hot: '爆品推荐', today: '限时推荐' };
+export const SPECIAL_RECOMMEND_TYPE = {
+  hotRecommend: '爆品推荐',
+  todayRecommend: '限时推荐',
+  hotTop: '爆品置顶',
+  todayTop: '限时置顶',
+  cancel: '取消推荐',
+};
+
+// 特惠活动 - 热销推荐列表枚举
+export const SPECIAL_RECOMMEND_LISTTYPE = {
+  hot: '爆品',
+  today: '限时',
+};
