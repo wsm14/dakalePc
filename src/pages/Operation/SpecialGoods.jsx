@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Tag, Menu, Dropdown } from 'antd';
+import { Button, Tag } from 'antd';
 import {
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
