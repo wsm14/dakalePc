@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Popover } from 'antd';
 import QRCode from 'qrcode.react';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import activeTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
@@ -19,10 +19,10 @@ const ActiveListComponent = (props) => {
       setVisible({ show: true, info: { ...initialValues, activeName } });
       dispatch({ type: 'drawerForm/close' });
     };
-    dispatch({
-      type: 'drawerForm/show',
-      payload: activeTemplateNameSet({ initialValues, callback: (values) => callback(values) }),
-    });
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: activeTemplateNameSet({ initialValues, callback: (values) => callback(values) }),
+    // });
   };
 
   // table 表头
@@ -83,14 +83,14 @@ const ActiveListComponent = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.promotionActivityIdString}`}
         dispatchType="activeList/fetchGetList"
         {...activeList}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ActiveTemplateEdit
         key="templateEdit"
         visible={visible}

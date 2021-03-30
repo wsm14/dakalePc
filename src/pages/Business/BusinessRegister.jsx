@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { BUSINESS_REGISTER_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessRegisterComponent = (props) => {
   const { businessRegister, loading } = props;
@@ -20,7 +20,7 @@ const BusinessRegisterComponent = (props) => {
       label: '状态',
       name: 'verifyAndBankStatus',
       type: 'select',
-      select: { list: BUSINESS_REGISTER_STATUS },
+      select:  BUSINESS_REGISTER_STATUS,
     },
     // {
     //   label: '省市区',
@@ -58,15 +58,15 @@ const BusinessRegisterComponent = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="注册列表"
+    <TableDataBlock
+      keepData
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.userMerchantIdString}`}
       dispatchType="businessRegister/fetchGetList"
       {...businessRegister}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

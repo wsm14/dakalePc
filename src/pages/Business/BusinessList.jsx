@@ -7,7 +7,7 @@ import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
@@ -30,6 +30,10 @@ const BusinessListComponent = (props) => {
   const [visibleEdit, setVisibleEdit] = useState('');
   // 商圈搜索选择
   const [hubSelect, setHubSelect] = useState(true);
+  // 设置商家验证码
+  const [visibleCodeSet, setVisibleCodeSet] = useState(false);
+  //场景checkbox列表
+  const [sceneList, setSceneList] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -73,16 +77,18 @@ const BusinessListComponent = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val, form) => {
-        // 必须选到区级才可选择商圈
-        form.setFieldsValue({ businessHubId: undefined });
-        if (val.length === 3) fetchGetHubSelect({ districtCode: val[2] });
-        else {
-          setHubSelect(true);
-          return;
-        }
-        setHubSelect(false);
-      },
+      handle: (form) => ({
+        onChange: (val) => {
+          // 必须选到区级才可选择商圈
+          form.setFieldsValue({ businessHubId: undefined });
+          if (val.length === 3) fetchGetHubSelect({ districtCode: val[2] });
+          else {
+            setHubSelect(true);
+            return;
+          }
+          setHubSelect(false);
+        },
+      }),
     },
     {
       label: '所属商圈',
@@ -91,22 +97,20 @@ const BusinessListComponent = (props) => {
       loading: loading.models.baseData,
       disabled: hubSelect,
       allItem: false,
-      select: hubData.map((item) => ({
-        name: item.businessHubName,
-        value: item.businessHubIdString,
-      })),
+      select: hubData,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
     },
     {
       label: '经营状态',
       name: 'businessStatus',
       type: 'select',
-      select: { list: BUSINESS_DO_STATUS },
+      select: BUSINESS_DO_STATUS,
     },
     {
       label: '店铺状态',
       name: 'status',
       type: 'select',
-      select: { list: BUSINESS_STATUS },
+      select: BUSINESS_STATUS,
     },
     {
       label: '入驻时间',
@@ -119,6 +123,10 @@ const BusinessListComponent = (props) => {
       type: 'rangePicker',
       name: 'activationTimeStart',
       end: 'activationTimeEnd',
+    },
+    {
+      label: '营业执照号',
+      name: 'socialCreditCode',
     },
   ];
 
@@ -142,7 +150,8 @@ const BusinessListComponent = (props) => {
     {
       title: '所在地区',
       align: 'center',
-      dataIndex: 'cityName',
+      dataIndex: 'provinceName',
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
     {
       title: '详细地址',
@@ -220,19 +229,19 @@ const BusinessListComponent = (props) => {
         <HandleSetTable
           formItems={[
             {
-              title: '获取二维码',
-              type: 'own',
-              auth: 'qrCode',
+              type: 'qrCode',
               click: () => setVisibleQrcode(record),
             },
             {
               type: 'info',
-              click: () => fetchGetDetail(val),
+              click: () => fetchGetDetail(val, record.topCategoryIdString),
             },
             {
               type: 'edit',
               click: () =>
-                fetchGetDetail(val, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+                fetchGetDetail(val, record.topCategoryIdString, (info) =>
+                  setVisibleEdit({ show: true, type: 'edit', info }),
+                ),
             },
             {
               type: 'set',
@@ -259,25 +268,36 @@ const BusinessListComponent = (props) => {
     });
   };
 
+  // 场景列表
+  const fechSceneList = (categoryId) => {
+    dispatch({
+      type: 'sysTradeList/fetchSceneListById',
+      payload: { categoryId },
+      callback: (val) => {
+        setSceneList(val);
+      },
+    });
+  };
+
   // 获取商家详情
-  const fetchGetDetail = (merchantId, callback) => {
+  const fetchGetDetail = (merchantId, categoryId, callback) => {
     dispatch({
       type: 'businessList/fetchMerchantDetail',
       payload: { merchantId },
-      callback: (info) => (callback ? callback(info) : handleShowUserDetail(info)),
+      callback: (info) => (callback ? callback(info) : handleShowUserDetail(info, categoryId)),
     });
   };
 
   // 设置商家端登录验证码
   const handleVCodeSet = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: BusinessVerificationCodeSet({ dispatch, childRef }),
-    });
+    setVisibleCodeSet(true);
   };
 
   // 店铺详情展示
-  const handleShowUserDetail = (initialValues) => setVisibleDetail(initialValues);
+  const handleShowUserDetail = (initialValues, categoryId) => {
+    fechSceneList(categoryId);
+    setVisibleDetail(initialValues);
+  };
 
   useEffect(() => {
     fetchTradeList();
@@ -289,7 +309,9 @@ const BusinessListComponent = (props) => {
     header: [
       { key: 'account', header: '店铺账号' },
       { key: 'merchantName', header: '店铺名称' },
-      { key: 'cityName', header: '所在城市' },
+      { key: 'provinceName', header: '所在省' },
+      { key: 'cityName', header: '所在市' },
+      { key: 'districtName', header: '所在区' },
       { key: 'businessHub', header: '所属商圈' },
       { key: 'address', header: '详细地址' },
       { key: 'topCategoryName', header: '一级经营类目' },
@@ -332,8 +354,8 @@ const BusinessListComponent = (props) => {
           }
         ></BusinessTotalInfo>
       </Suspense>
-      <DataTableBlock
-        keepName="店铺列表"
+      <TableDataBlock
+        keepData
         btnExtra={({ get }) => (
           <ExcelButton
             dispatchType={'businessList/fetchMerchantGetExcel'}
@@ -352,7 +374,7 @@ const BusinessListComponent = (props) => {
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType="businessList/fetchGetList"
         {...businessList}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <BusinessAwardSet
         cRef={childRef}
         visible={visible}
@@ -367,9 +389,15 @@ const BusinessListComponent = (props) => {
       <BusinessDetailShow
         cRef={childRef}
         visible={visibleDetail}
+        sceneList={sceneList}
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
       <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
+      <BusinessVerificationCodeSet
+        visible={visibleCodeSet}
+        childRef={childRef}
+        onClose={() => setVisibleCodeSet(false)}
+      ></BusinessVerificationCodeSet>
     </>
   );
 };

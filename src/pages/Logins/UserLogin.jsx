@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react';
 import { history, connect } from 'umi';
-import { Form, Button, Input, notification } from 'antd';
+import { Form, Button, Input } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 import style from './style.less';
-
-// import QRCode from "qrcode-react";
-// import { PHONE_PATTERN } from '@/common/regExp';
 
 const FormItem = Form.Item;
 
@@ -45,13 +42,6 @@ const LoginForm = ({ dispatch, loading }) => {
         }
       }
     }
-    if (!list.length) {
-      notification.info({
-        message: '提示',
-        description: '帐号权限未配置，请联系管理员设置',
-      });
-      return;
-    }
     if (list[0].childList && list[0].childList.length) {
       // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);
       history.replace(list[0].childList[0].accessUrl);
@@ -78,10 +68,7 @@ const LoginForm = ({ dispatch, loading }) => {
           <FormItem
             label="帐号"
             name="mobile"
-            rules={[
-              { required: true, message: '请填写正确帐号' },
-              // { pattern: PHONE_PATTERN, message: '请填写正确帐号' },
-            ]}
+            rules={[{ required: true, message: '请填写正确帐号' }]}
             className={style.dakale_user_form_item}
           >
             <Input placeholder="请输入您的帐号" />

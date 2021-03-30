@@ -32,7 +32,7 @@ const MasterTotalInfo = ({
     fetchMasterTotalList();
   }, []);
 
-  const stylesCard = { padding: 10, height: 276 };
+  const stylesCard = { padding: 10 };
 
   return (
     <>
@@ -40,26 +40,30 @@ const MasterTotalInfo = ({
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
           <Spin spinning={!!loading}>
             <Card bordered={false} bodyStyle={stylesCard}>
-              <Pie
-                data={masterTotal}
-                title="总家主数"
-                angleField="content"
-                colorField="statisticDesc"
-                innerRadius={0.6}
-              />
+              <div style={{ height: 276 }}>
+                <Pie
+                  data={masterTotal}
+                  title="总家主数"
+                  angleField="content"
+                  colorField="statisticDesc"
+                  innerRadius={0.6}
+                />
+              </div>
             </Card>
           </Spin>
         </Col>
         <Col xl={12} lg={12} md={12} sm={24} xs={24}>
           <Spin spinning={!!loading}>
             <Card bordered={false} bodyStyle={stylesCard}>
-              <Pie
-                data={incomeTotal}
-                title="累计收益卡豆"
-                innerRadius={0.6}
-                angleField="content"
-                colorField="statisticDesc"
-              />
+              <div style={{ height: 276 }}>
+                <Pie
+                  data={incomeTotal}
+                  title="累计收益卡豆"
+                  innerRadius={0.6}
+                  angleField="content"
+                  colorField="statisticDesc"
+                />
+              </div>
             </Card>
           </Spin>
         </Col>

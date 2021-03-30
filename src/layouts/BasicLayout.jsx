@@ -11,7 +11,6 @@ import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import HeaderContent from '@/components/GlobalHeader/HeaderContent';
-import DrawerModalForm from '@/components/DrawerModalForm';
 import iconEnum from '@/common/iconEnum';
 import logo from '../../public/favicon.png';
 import { AliveScope } from 'react-activation';
@@ -117,26 +116,30 @@ const BasicLayout = (props) => {
         <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
           <RouteContext.Consumer>
             {(value) => {
-              const { breadcrumb } = value;
-              return (
-                <PageContainer
-                  subTitle={
-                    breadcrumb.routes &&
-                    `${breadcrumb.routes.map((item) => item.breadcrumbName).join(' / ')}
-                  ${pageTitle.length > 0 ? ' / ' : ''}
-                  ${pageTitle.join(' / ')}`
-                  }
-                  title={false}
-                  extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
-                >
-                  {children}
-                </PageContainer>
-              );
+              const { pageTitleInfo } = value;
+              if (pageTitleInfo.id) {
+                return (
+                  <PageContainer
+                    subTitle={
+                      pageTitleInfo.id &&
+                      `${pageTitleInfo.id.split('.').slice(1, 3).join(' / ')}${
+                        pageTitle.length > 0 ? ' / ' : ''
+                      }
+                      ${pageTitle.join(' / ')}`
+                    }
+                    title={false}
+                    extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}
+                  >
+                    {children}
+                  </PageContainer>
+                );
+              } else {
+                return children;
+              }
             }}
           </RouteContext.Consumer>
         </RouteAuthority>
         <BackTop />
-        <DrawerModalForm></DrawerModalForm>
       </ProLayout>
     </AliveScope>
   );

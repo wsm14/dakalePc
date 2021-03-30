@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Editor from 'wangeditor';
-// import Editor from 'wangeditor-dx/release/wangEditor';
 import { Modal } from 'antd';
 import PropTypes from 'prop-types';
 import imageCompress from '@/utils/imageCompress';
@@ -9,28 +8,13 @@ import styles from './style.less';
 
 let editor = '';
 
-// 富文本工具栏
+// 富文本隐藏的工具栏
 const TEXT_SET_TOOL = [
-  'head', // 标题
-  'bold', // 粗体
-  'fontSize', // 字号
-  'fontName', // 字体
-  'italic', // 斜体
-  'underline', // 下划线
-  'strikeThrough', // 删除线
-  'foreColor', // 文字颜色
-  'backColor', // 背景颜色
-  'link', // 插入链接
-  // 'list', // 列表
-  'justify', // 对齐方式
-  // 'quote', // 引用
-  // 'emoticon', // 表情
-  'image', // 插入图片
-  'table', // 表格
-  // 'video', // 插入视频
-  // 'code', // 插入代码
-  'undo', // 撤销
-  'redo', // 重复
+  'todo', // 代办事项
+  'quote', // 引用
+  'emoticon', // 表情
+  'video', // 插入视频
+  'code', // 插入代码
 ];
 
 const EditorForm = ({
@@ -39,13 +23,13 @@ const EditorForm = ({
   AllImgSize = 5000,
   editClass,
   contentClass,
-  setContent,
+  editCallback,
   maxLength = 0,
   // dispatch,
 }) => {
   EditorForm.defaultProps = {
     content: '',
-    maxImgSize: 1000,
+    maxImgSize: 1,
     AllImgSize: 5000,
     editClass: undefined,
     contentClass: undefined,
@@ -59,33 +43,26 @@ const EditorForm = ({
     maxLength: PropTypes.number,
     editClass: PropTypes.string,
     contentClass: PropTypes.string,
-    setContent: PropTypes.func.isRequired,
+    editCallback: PropTypes.func.isRequired,
   };
 
-  const refTb = useRef(null);
-  const refFa = useRef(null);
+  // 菜单ref
+  const refTool = useRef(null);
+  // 编辑区域ref
+  const refEdit = useRef(null);
+  // 文本统计
   const [textLength, setTextLength] = useState(0);
 
-  const setEditor = () => {
-    const elemtb = refTb.current;
-    const elem = refFa.current;
-    editor = new Editor(elemtb, elem);
-    editor.customConfig.menus = TEXT_SET_TOOL;
-    // editor.customConfig.uploadImgServer = `${APIURL}${fileApi}`; // 上传服务器api
-    // editor.customConfig.uploadFileName = 'files'; // 上传formdata参数名
-    editor.customConfig.uploadImgMaxSize = (maxImgSize / 1000) * 1024 * 1024; // 图片大小限制
-    editor.customConfig.withCredentials = true; // 跨域传递 cookie
-    editor.customConfig.pasteIgnoreImg = true; // 忽略粘贴内容中的图片
-    editor.customConfig.showLinkImg = false; // 隐藏“网络图片”tab
-    editor.customConfig.zIndex = 100; // 配置编辑区域的 z-index
-    editor.customConfig.uploadImgMaxLength = 3; // 上传图片数量
-    editor.customConfig.pasteFilterStyle = true;
-    editor.customConfig.onchange = (html) => {
-      if (setContent) setContent(html === '<p><br></p>' ? '' : html, editor.txt.text());
-      if (maxLength != 0) setTextLength(editor.txt.text().length);
-    }; // 回显 保存 html
-    editor.customConfig.pasteTextHandle = (contents) => {
-      // 赋值粘贴文本a标签替换
+  // maxleng存在时超长 编辑区域警告样式
+  const maxTextError = textLength > maxLength ? styles.maxlength_box_red : '';
+
+  // maxleng存在时超长 数字警告样式
+  const maxNumberError = textLength > maxLength ? styles.maxlength_red : {};
+
+  // 自定义方法
+  const customhandle = {
+    // 赋值粘贴文本a标签替换
+    pasteText: (contents) => {
       const newtext = contents
         .replace(/(<\/?a.*?>)|(<\/?span.*?>)/g, '')
         .replace(/<a/g, '<p')
@@ -97,8 +74,15 @@ const EditorForm = ({
         .replace(/&nbsp;/gi, '')
         .replace(/\s+/g, '');
       return newtext;
-    };
-    editor.customConfig.customUploadImg = function (files, insert) {
+    },
+    // 自定义提示
+    alert: (info) => {
+      Modal.info({
+        title: info,
+      });
+    },
+    // 自定义图片上传
+    uploadImg: (files, insert) => {
       // files 是 input 中选中的文件列表
       const fileArr = [];
       files.map((item, i) =>
@@ -114,36 +98,49 @@ const EditorForm = ({
           }
         }),
       );
-    };
-    editor.customConfig.customAlert = (info) => {
-      // info 是需要提示的内容
-      Modal.info({
-        title: info,
-      });
-    };
+    },
+    // 富文本内容修改回调
+    change: (html) => {
+      if (editCallback) editCallback(html, editor.txt.text());
+      if (maxLength !== 0) setTextLength(editor.txt.text().length);
+    },
+  };
+
+  const editorCreate = () => {
+    const elemtb = refTool.current;
+    const elem = refEdit.current;
+    editor = new Editor(elemtb, elem);
+    editor.config.excludeMenus = TEXT_SET_TOOL; // 剔除菜单
+    editor.config.uploadImgMaxSize = maxImgSize * 1024 * 1024; // 图片大小限制
+    editor.config.pasteIgnoreImg = true; // 忽略粘贴内容中的图片
+    editor.config.showLinkImg = false; // 隐藏“网络图片”tab
+    editor.config.zIndex = 100; // 配置编辑区域的 z-index
+    editor.config.uploadImgMaxLength = 3; // 上传图片数量
+    editor.config.pasteFilterStyle = true; // 过滤掉复制文本的样式
+    editor.config.pasteTextHandle = customhandle['pasteText']; // 赋值粘贴文本a标签替换
+    editor.config.customUploadImg = customhandle['uploadImg']; // 自定义图片上传
+    editor.config.customAlert = customhandle['alert']; // 自定义提示
+    editor.config.onchange = customhandle['change']; // 富文本内容修改回调
     editor.create(); // 初始化
     editor.txt.html(content); // 初始化富文本内容
-    content && maxLength !== 0 && editor.change();
+    maxLength !== 0 && content && editor.change(); // 统计一次数值
   };
 
   useEffect(() => {
-    setEditor();
+    editorCreate();
   }, []);
 
   return (
     <div className={`${styles.editor} ${editClass}`}>
-      <div ref={refTb} className={styles.toolbar} />
+      {/* 菜单区域 */}
+      <div ref={refTool} className={styles.toolbar} />
       <div className={styles.padd} />
-      <div
-        ref={refFa}
-        className={`${styles.content} ${contentClass} ${
-          textLength > maxLength ? styles.maxlength_box_red : ''
-        }`}
-      />
+      {/* 编辑区域 */}
+      <div ref={refEdit} className={`${styles.content} ${contentClass} ${maxTextError}`} />
+      {/* 数值统计 */}
       {maxLength != 0 && (
         <div style={{ textAlign: 'right' }}>
-          <span className={textLength > maxLength ? styles.maxlength_red : {}}>{textLength}</span> /{' '}
-          {maxLength}
+          <span className={maxNumberError}>{textLength}</span> / {maxLength}
         </div>
       )}
     </div>

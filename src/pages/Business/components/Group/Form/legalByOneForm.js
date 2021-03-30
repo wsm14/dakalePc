@@ -1,12 +1,9 @@
-import React, { useState, useImperativeHandle } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { message, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
-import { AMAP_KEY } from '@/common/constant';
-import { Map, Marker } from 'react-amap';
-import { PHONE_PATTERN } from '@/common/regExp';
 import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
+
 const legalForm = (props) => {
   const { form, initialValues, dispatch, cRef } = props;
   const fetchGetOcrIdCardFront = (payload, callback) => {
@@ -60,8 +57,8 @@ const legalForm = (props) => {
         if (imgUrl) {
           fetchGetOcrIdCardBack({ imageUrl: imgUrl[0] }, (res) => {
             let { startDate, endDate } = res;
-            if(endDate == '长期' ||!endDate){
-              endDate = '20991231'
+            if (endDate == '长期' || !endDate) {
+              endDate = '20991231';
             }
             form.setFieldsValue({
               activeBeginDate: [moment(startDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],

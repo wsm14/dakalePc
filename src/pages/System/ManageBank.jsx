@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import BankSet from './components/BankSet/BusinessBankSet';
 
 const BusinessBankSetContent = (props) => {
@@ -11,6 +11,7 @@ const BusinessBankSetContent = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState({ show: false, info: {} });
+
   // 搜索参数
   const searchItems = [
     {
@@ -60,13 +61,10 @@ const BusinessBankSetContent = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisible({ show: true, info: {} })}
-            >
+            <Button className="dkl_green_btn" onClick={() => setVisible({ show: true, info: {} })}>
               新增
             </Button>
           </AuthConsumer>
@@ -78,7 +76,7 @@ const BusinessBankSetContent = (props) => {
         rowKey={(record) => `${record.bankBranchIdString}`}
         dispatchType="businessBankSet/fetchGetList"
         {...businessBankSet}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <BankSet
         cRef={childRef}
         bankTopArr={businessBankSet.bankTopArr}

@@ -7,6 +7,7 @@ export const base = [
     label: '经营类目',
     type: 'cascader',
     name: 'topCategoryName',
+    render: (val) => val,
   },
   {
     label: '详细地址',
@@ -22,9 +23,9 @@ export const user = [{ label: '登录账号', name: 'account' }];
 // {
 //   label: '角色',
 //   name: 'idString',
-//   type: 'childrenOwn',
+//   type: 'formItem',
 //   rules: [{ required: false }],
-//   childrenOwn: (
+//   formItem: (
 //     <Spin spinning={loading}>
 //       <Transfer
 //         showSearch

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { MASTER_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import TableDataBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
 import MasterDetailList from './components/Master/MasterDetailList';
 
@@ -33,19 +33,12 @@ const CircleMasterList = (props) => {
       type: 'cascader',
       name: 'city',
       changeOnSelect: true,
-      valueskey: ['provinceCode', 'cityCode', 'districtCode'],
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 
   // 打开详情表格
-  const showProps = (type, data) => {
-    setVisible({
-      type: type,
-      record: {
-        ...data,
-      },
-    });
-  };
+  const showProps = (type, record) => setVisible({ type: type, record });
 
   // table 表头
   const getColumns = [
@@ -96,9 +89,7 @@ const CircleMasterList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
-              auth: 'income',
-              title: '收益明细',
+              type: 'income',
               click: () => showProps('income', record),
             },
           ]}
@@ -115,6 +106,7 @@ const CircleMasterList = (props) => {
 
   return (
     <>
+      <MasterTotalInfo />
       <TableDataBlock
         keepData
         loading={loading}
@@ -124,9 +116,7 @@ const CircleMasterList = (props) => {
         params={{ userType: 'user' }}
         dispatchType="circleMaster/fetchGetList"
         {...masterList}
-      >
-        <MasterTotalInfo />
-      </TableDataBlock>
+      ></TableDataBlock>
       <MasterDetailList visible={visible} setVisible={setVisible} />
     </>
   );

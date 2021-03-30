@@ -1,23 +1,16 @@
-import React, {useState} from "react";
-import {connect} from 'umi'
-import {message, Button} from "antd";
-import FormCondition from "@/components/FormCondition";
-import {AMAP_KEY} from "@/common/constant";
-import {Map, Marker} from "react-amap";
+import React from 'react';
+import { connect } from 'umi';
+import FormCondition from '@/components/FormCondition';
 
 const ManagementForm = (props) => {
-  const {
-    list,
-    form,
-    initialValues
-  } = props
+  const { form, initialValues } = props;
 
   const formItems = [
     {
       label: '店铺主图',
       name: 'mainImages',
       type: 'upload',
-      multiple:true,
+      multiple: true,
       rules: [{ required: false }],
       maxFile: 5,
       // addRules: [
@@ -43,7 +36,7 @@ const ManagementForm = (props) => {
       label: '店铺小图',
       name: 'localImages',
       type: 'upload',
-      multiple:true,
+      multiple: true,
       maxFile: 9,
       extra: '店铺小图最多可上传9张',
       rules: [{ required: false }],
@@ -58,13 +51,10 @@ const ManagementForm = (props) => {
     },
   ];
 
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+};
 
-  return (
-    <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
-  )
-}
-
-export default connect(({businessBrand}) => ({
+export default connect(({ businessBrand }) => ({
   list: businessBrand.list,
-  ...businessBrand
-}))(ManagementForm)
+  ...businessBrand,
+}))(ManagementForm);

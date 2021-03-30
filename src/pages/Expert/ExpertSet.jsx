@@ -3,15 +3,16 @@ import { connect } from 'umi';
 import { Button, Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import classifySet from './components/ExpertSet/ClassifySet';
+import TableDataBlock from '@/components/TableDataBlock';
+import ClassifySet from './components/ExpertSet/ClassifySet';
 import ClassifyDetailList from './components/ExpertSet/ClassifyDetailList';
 
 const ExpertSet = (props) => {
-  const { list, loading, dispatch, tradeList } = props;
+  const { list, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -63,6 +64,7 @@ const ExpertSet = (props) => {
                 // visible: record.parentDomainId !== 0,
                 click: () =>
                   handleClassifySet(
+                    'edit',
                     {
                       ...record,
                       category: [`${tcid}`, `${cid}`],
@@ -77,12 +79,12 @@ const ExpertSet = (props) => {
                 click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
               },
               {
-                type: 'own',
-                visible: pid === 0,
-                title: '添加内容分类',
                 auth: 'saveClassify',
+                title: '添加内容分类',
+                visible: pid === 0,
                 click: () =>
                   handleClassifySet(
+                    'own',
                     {
                       parentDomainId: val,
                       domainNameShow: record.domainName,
@@ -102,7 +104,7 @@ const ExpertSet = (props) => {
     dispatch({
       type: 'expertSet/fetchClassifyEdit',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -118,15 +120,17 @@ const ExpertSet = (props) => {
     dispatch({
       type: 'expertSet/fetchClassifyDel',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 新增/修改 领域/内容分类
-  const handleClassifySet = (initialValues, rowDetail) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: classifySet({ dispatch, tradeList, childRef, initialValues, rowDetail }),
+  const handleClassifySet = (type, initialValues, rowDetail) => {
+    setVisibleSet({
+      show: true,
+      type,
+      initialValues,
+      rowDetail,
     });
   };
 
@@ -139,18 +143,18 @@ const ExpertSet = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="savePClassify">
             <Button
               className="dkl_green_btn"
-              onClick={() => handleClassifySet({ parentDomainId: 0 })}
+              onClick={() => handleClassifySet('add', { parentDomainId: 0 })}
             >
               新增
             </Button>
           </AuthConsumer>
         }
-        keepName="创作设置"
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -159,14 +163,18 @@ const ExpertSet = (props) => {
         {...list}
         expandable={{ childrenColumnName: ['domainDTOList'] }}
         pagination={false}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ClassifyDetailList visible={visible} setVisible={setVisible}></ClassifyDetailList>
+      <ClassifySet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ClassifySet>
     </>
   );
 };
 
-export default connect(({ expertSet, sysTradeList, loading }) => ({
+export default connect(({ expertSet, loading }) => ({
   list: expertSet.list,
-  tradeList: sysTradeList.list.list,
   loading: loading.effects['expertSet/fetchGetList'],
 }))(ExpertSet);

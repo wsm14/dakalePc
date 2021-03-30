@@ -1,26 +1,17 @@
-import React, {useState, useImperativeHandle} from "react";
-import {connect} from 'umi'
-import FormCondition from "@/components/FormCondition";
+import React, { useState } from 'react';
+import { connect } from 'umi';
+import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import {TIME_YMD} from "@/common/constant"
-import moment from "moment";
+import moment from 'moment';
 
-const activeForm = ({ form, initialValues, dispatch, cRef}) => {
+const activeForm = ({ form, initialValues, dispatch, cRef }) => {
   const fetchGetOcrBusinessLicense = (payload, callback) => {
     dispatch({
       type: 'groupSet/fetchGetOcrBusinessLicense',
       payload: payload,
-      callback: (val) => callback(val)
-    })
-  }
-  const fetchGetOcrBankLicense = (payload, callback) => {
-    dispatch({
-      type: 'groupSet/fetchGetOcrBankLicense',
-      payload: payload,
-      callback: (val) => callback(val)
-    })
-  }
-  const [city, setCity] = useState({})
+      callback: (val) => callback(val),
+    });
+  };
 
   const formItems = [
     {
@@ -31,23 +22,26 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       onChange: async (val) => {
-        let imgUrl = await aliOssUpload(val)
+        let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           form.setFieldsValue({
-            businessLicenseImg: imgUrl[0]
-          })
-          fetchGetOcrBusinessLicense({imageUrl: imgUrl[0]}, res => {
-            const {address, business, establishDate, name, regNum, validPeriod} = res
+            businessLicenseImg: imgUrl[0],
+          });
+          fetchGetOcrBusinessLicense({ imageUrl: imgUrl[0] }, (res) => {
+            const { address, business, establishDate, name, regNum, validPeriod } = res;
             form.setFieldsValue({
               socialCreditCode: regNum || '',
               businessName: name || '',
               signInAddress: address || '',
-              activeValidity: [moment(establishDate, 'YYYY-MM-DD'), moment(validPeriod, 'YYYY-MM-DD')],
+              activeValidity: [
+                moment(establishDate, 'YYYY-MM-DD'),
+                moment(validPeriod, 'YYYY-MM-DD'),
+              ],
               businessScope: business || '',
-            })
-          })
+            });
+          });
         }
-      }
+      },
     },
     {
       label: '社会信用代码',
@@ -75,13 +69,9 @@ const activeForm = ({ form, initialValues, dispatch, cRef}) => {
     },
   ];
 
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+};
 
-  return (
-    <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
-  )
-}
-
-export default connect(({groupSet}) => ({
-  ...groupSet
-}))(activeForm)
-
+export default connect(({ groupSet }) => ({
+  ...groupSet,
+}))(activeForm);

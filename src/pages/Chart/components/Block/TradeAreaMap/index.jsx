@@ -214,13 +214,13 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
               center={[item.lnt, item.lat]} // 坐标
               radius={Number(item.radius)} // 半径
               style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }} // 圈样式
-              events={{
-                created() {
-                  console.log();
-                  // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
-                  if (i === item.length) mapInstance.setFitView();
-                },
-              }}
+              // events={{
+              //   created() {
+              //     console.log();
+              //     // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
+              //     if (i === item.length) mapInstance.setFitView();
+              //   },
+              // }}
             >
               {/* 商圈中心 */}
               <Marker

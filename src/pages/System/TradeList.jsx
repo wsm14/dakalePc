@@ -3,18 +3,22 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import tradeCategorySet from './components/Trade/Form/TradeCategorySet';
-import promotionMoneySet from './components/Trade/Form/PromotionMoneySet';
+import TableDataBlock from '@/components/TableDataBlock';
+import TradeCategorySet from './components/Trade/Form/TradeCategorySet';
+import PromotionMoneySet from './components/Trade/Form/PromotionMoneySet';
 import TradeDetailList from './components/Trade/List/TradeDetailList';
 import TradePlatformDetailList from './components/Trade/List/TradePlatformDetailList';
+import TradeSceneList from './components/Trade/List/TradeSceneList';
 
 const SysTradeSet = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState('');
-  const [pvisible, setPVisible] = useState('');
+  const [visible, setVisible] = useState(''); // 平台服务费
+  const [baseVisible, setBaseVisible] = useState(''); // 基础设施
+  const [moneyVisible, setMoneyVisible] = useState(false); // 推广费设置修改
+  const [classVisible, setClassVisible] = useState(false); // 类目设置修改
+  const [visibleScene, setVisibleScene] = useState(false); // 场景设置修改
 
   // 搜索参数
   const searchItems = [
@@ -38,7 +42,7 @@ const SysTradeSet = (props) => {
       dataIndex: 'parentId',
       render: (val, record) => (
         <AuthConsumer auth="edit" show={!val}>
-          <a onClick={() => setPVisible({ record })}>设置</a>
+          <a onClick={() => setVisible({ record })}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -48,7 +52,7 @@ const SysTradeSet = (props) => {
       dataIndex: 'id',
       render: (val, record) => (
         <AuthConsumer auth="edit" show={!record.parentId}>
-          <a onClick={() => handlePromotionMoneySet(record)}>设置</a>
+          <a onClick={() => handlePromotionMoneyGet(record)}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -58,7 +62,17 @@ const SysTradeSet = (props) => {
       dataIndex: 'orderCount',
       render: (val, record) => (
         <AuthConsumer auth="edit" show={!record.parentId}>
-          <a onClick={() => setVisible({ type: 'special', record })}>设置</a>
+          <a onClick={() => setBaseVisible({ type: 'special', record })}>设置</a>
+        </AuthConsumer>
+      ),
+    },
+    {
+      title: '适用场景',
+      align: 'center',
+      dataIndex: 'id',
+      render: (val, record) => (
+        <AuthConsumer auth="edit" show={!record.parentId}>
+          <a onClick={() => setVisibleScene({ type: 'scene', record })}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -67,83 +81,58 @@ const SysTradeSet = (props) => {
       dataIndex: 'categoryIdString',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () =>
-                handleTradeCategorySet({ categoryId: val, categoryName: record.categoryName }),
-            },
-            {
-              type: 'del',
-              visible: !record.categoryDTOList,
-              click: () => fetchTradeDel({ categoryId: val, isDelete: 1 }),
-            },
-            {
-              type: 'own',
-              visible: record.parentId === 0,
-              title: '添加子类目',
-              auth: 'tradeSecondAdd',
-              click: () =>
-                handleTradeCategorySet({
-                  parentId: val,
-                  parentName: record.categoryName,
-                  node: `${val}`,
-                  type: 'second',
-                }),
-            },
-            // {
-            //   type: 'own',
-            //   visible: record.parentId !== 0 && !record.categoryDTOList,
-            //   title: '添加子类目',
-            //   click: () =>
-            //     handleTradeCategorySet({
-            //       parentId: val,
-            //       parentName: record.categoryName,
-            //       node: `${val}.${record.parentId}`,
-            //       type: 'third',
-            //     }),
-            // },
-          ]}
-        />
-      ),
+      render: (val, record) => {
+        return (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'edit',
+                click: () => {
+                  const { categoryName } = record;
+                  const detail = { categoryId: val, categoryName };
+                  handleClassSet('edit', detail);
+                },
+              },
+              {
+                type: 'del',
+                visible: !record.categoryDTOList,
+                click: () => fetchTradeDel({ categoryId: val, isDelete: 1 }),
+              },
+              {
+                type: 'tradeSecondAdd',
+                visible: record.parentId === 0,
+                click: () => {
+                  const { categoryName: parentName } = record;
+                  const detail = { parentId: val, node: `${val}`, parentName, type: 'second' };
+                  handleClassSet('add', detail);
+                },
+              },
+            ]}
+          />
+        );
+      },
     },
   ];
+
+  // 类目设置修改
+  const handleClassSet = (type, detail) => setClassVisible({ show: true, type, detail });
 
   // 删除类目
   const fetchTradeDel = (values) => {
     dispatch({
       type: 'sysTradeList/fetchTradeSet',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
-  // 新增/修改类目
-  const handleTradeCategorySet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: tradeCategorySet({ dispatch, childRef, initialValues }),
-    });
-  };
-
-  // 新增/修改推广费
-  const handlePromotionMoneySet = (info) => {
-    handlePromotionMoneyGet(info.categoryIdString, (initialValues) =>
-      dispatch({
-        type: 'drawerForm/show',
-        payload: promotionMoneySet({ dispatch, childRef, info, initialValues }),
-      }),
-    );
-  };
-
-  // 获取推广费详情
-  const handlePromotionMoneyGet = (categoryId, callback) => {
+  // 获取推广费详情 -> 新增/修改推广费
+  const handlePromotionMoneyGet = (info) => {
+    const { categoryIdString: categoryId } = info;
     dispatch({
       type: 'sysTradeList/fetchPromotionMoneyGet',
       payload: { categoryId },
-      callback,
+      callback: (detail) => setMoneyVisible({ show: true, info, detail }),
     });
   };
 
@@ -151,23 +140,23 @@ const SysTradeSet = (props) => {
     dispatch({
       type: 'sysTradeList/clearDetail',
     });
-  }, [visible, pvisible]);
+  }, [visible, baseVisible]);
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         cRef={childRef}
         btnExtra={
           <>
             <AuthConsumer auth="baseTrade">
-              <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'base' })}>
+              <Button className="dkl_green_btn" onClick={() => setBaseVisible({ type: 'base' })}>
                 基础设施
               </Button>
             </AuthConsumer>
             <AuthConsumer auth="tradeAdd">
               <Button
                 className="dkl_green_btn"
-                onClick={() => handleTradeCategorySet({ parentId: 0, node: '0', type: 'first' })}
+                onClick={() => handleClassSet('add', { parentId: 0, node: '0', type: 'first' })}
               >
                 新增类目
               </Button>
@@ -182,12 +171,29 @@ const SysTradeSet = (props) => {
         {...list}
         expandable={{ childrenColumnName: ['categoryDTOList'] }}
         pagination={false}
-      ></DataTableBlock>
-      <TradeDetailList visible={visible} setVisible={setVisible}></TradeDetailList>
-      <TradePlatformDetailList
-        visible={pvisible}
-        setVisible={setPVisible}
-      ></TradePlatformDetailList>
+      ></TableDataBlock>
+      {/* 平台服务费 */}
+      <TradePlatformDetailList visible={visible} setVisible={setVisible}></TradePlatformDetailList>
+      {/* 基础设施 */}
+      <TradeDetailList visible={baseVisible} onClose={setBaseVisible}></TradeDetailList>
+      {/* 推广费设置修改 */}
+      <PromotionMoneySet
+        childRef={childRef}
+        visible={moneyVisible}
+        onClose={() => setMoneyVisible(false)}
+      ></PromotionMoneySet>
+      {/* 类目新增/修改 */}
+      <TradeCategorySet
+        childRef={childRef}
+        visible={classVisible}
+        onClose={() => setClassVisible(false)}
+      ></TradeCategorySet>
+      {/* 适用场景 */}
+      <TradeSceneList
+        visible={visibleScene}
+        childRef={childRef}
+        onClose={() => setVisibleScene(false)}
+      ></TradeSceneList>
     </>
   );
 };

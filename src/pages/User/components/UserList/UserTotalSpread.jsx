@@ -19,20 +19,24 @@ const UserTotalSpread = ({ loading, totalChartData }) => {
     },
   ];
 
-  const styles = { padding: 10, height: 276 };
+  const styles = { padding: 10, height: 296 };
   return (
-    <Row gutter={[16, 16]} align="middle">
+    <Row gutter={[16, 16]} align="middle" style={{ marginBottom: 16 }}>
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
-            <Pie data={totalChartData.age || []} title="年龄层" innerRadius={0.65} flipPage />
+            <div style={{ height: 276 }}>
+              <Pie data={totalChartData.age || []} title="年龄层" innerRadius={0.65} flipPage />
+            </div>
           </Card>
         </Spin>
       </Col>
       <Col span={8}>
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
-            <Pie data={dataSex} title="性别" innerRadius={0.65} />
+            <div style={{ height: 276 }}>
+              <Pie data={dataSex} title="性别" innerRadius={0.65} />
+            </div>
           </Card>
         </Spin>
       </Col>
@@ -40,7 +44,9 @@ const UserTotalSpread = ({ loading, totalChartData }) => {
         <Spin spinning={!!loading}>
           <Card bordered={false} bodyStyle={styles}>
             {totalChartData.tag && totalChartData.tag.length ? (
-              <Pie data={totalChartData.tag || []} angleField="count" colorField="tag" flipPage />
+              <div style={{ height: 276 }}>
+                <Pie data={totalChartData.tag || []} angleField="count" colorField="tag" flipPage />
+              </div>
             ) : (
               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ marginTop: 89 }} />
             )}

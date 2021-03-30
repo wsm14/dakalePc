@@ -1,26 +1,38 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { SHARE_TYPE, SHARE_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
+import { Button } from 'antd';
+import { MreSelect } from '@/components/MerchantDataTable';
+import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import closeRefuse from './components/Share/CloseRefuse';
+import AuthConsumer from '@/layouts/AuthConsumer';
+import CloseRefuse from './components/Share/CloseRefuse';
 import ShareDetail from './components/Share/ShareDetail';
 import ShareHandleDetail from './components/Share/ShareHandleDetail';
+import ShareVideoDetail from './components/Share/ShareVideoDetail';
+import ShareDrawer from './components/Share/ShareDrawer';
+import styles from './style.less';
 
 const ShareManage = (props) => {
-  const { shareManage, loading, dispatch } = props;
+  const { shareManage, loading, tradeList, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
-  const [visibleHandle, setVisibleHandle] = useState(false);
+  const [visible, setVisible] = useState(false); // 详情
+  const [visibleShare, setVisibleShare] = useState(false); // 发布分享
+  const [visibleMre, setVisibleMre] = useState(false); // 商户详情
+  const [visibleVideo, setVisibleVideo] = useState(false); // 视屏
+  const [visibleDown, setVisibleDown] = useState(false); // 下架原因
+  const [visibleHandle, setVisibleHandle] = useState(false); // 操作记录
 
-  // 下架
-  const fetchAuditRefuse = (initialValues) => {
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业选择项
+  const fetchTradeList = () => {
     dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
+      type: 'sysTradeList/fetchGetList',
     });
   };
 
@@ -38,7 +50,7 @@ const ShareManage = (props) => {
   // 获取操作日志详情
   const fetchShareHandleDetail = (val) => {
     dispatch({
-      type: 'shareManage/fetchShareHandleDetail',
+      type: 'baseData/fetchHandleDetail',
       payload: {
         identifyIdStr: val,
       },
@@ -49,111 +61,176 @@ const ShareManage = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '内容标题',
+      label: '创建时间',
+      type: 'rangePicker',
+      name: 'beginDate',
+      end: 'endDate',
+    },
+    {
+      label: '状态',
+      type: 'select',
+      name: 'status',
+      select: SHARE_STATUS,
+    },
+    {
+      label: '分享标题',
       name: 'title',
     },
     {
       label: '分享类型',
       type: 'select',
       name: 'contentType',
-      select: { list: SHARE_TYPE },
+      select: SHARE_TYPE,
     },
     {
-      label: '分享状态',
-      type: 'select',
-      name: 'status',
-      select: { list: SHARE_STATUS },
+      label: '地区',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
-      label: '所属店铺',
+      label: '集团/店铺名称',
       name: 'merchantName',
+    },
+    {
+      label: '店铺类型',
+      name: 'userType',
+      type: 'select',
+      select: BUSINESS_TYPE,
+    },
+    {
+      label: '行业',
+      type: 'cascader',
+      name: 'topCategoryId',
+      changeOnSelect: true,
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      valuesKey: ['topCategoryId', 'categoryId'],
+      placeholder: '选择行业',
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '种草内容',
+      title: '视频',
       fixed: 'left',
       dataIndex: 'frontImage',
-      render: (val) => <PopImgShow url={val}></PopImgShow>,
+      render: (val, detail) => <PopImgShow url={val}></PopImgShow>,
     },
     {
-      title: '内容标题',
+      title: '标题',
       dataIndex: 'title',
       width: 150,
     },
     {
-      title: '所属店铺',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      title: '店铺类型',
+      dataIndex: 'userType',
+      render: (val) => BUSINESS_TYPE[val],
     },
     {
-      title: '分享分类',
+      title: '店铺/集团名称',
       align: 'center',
-      dataIndex: 'contentType',
-      render: (val) => (val == 'video' ? '视频' : '图片'),
+      dataIndex: 'merchantName',
+      render: (val, row) =>
+        row.userType === 'merchant' ? val : <a onClick={() => setVisibleMre(true)}>{val}</a>,
+    },
+    {
+      title: '地区',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, row) => `${val || ''} ${row.cityName || ''} ${row.districtName || ''}`,
+    },
+    {
+      title: '行业',
+      align: 'center',
+      dataIndex: 'topCategoryName',
+      render: (val, row) => `${val}/${row.categoryName}`,
+    },
+    {
+      title: '观看人数（人）',
+      align: 'right',
+      dataIndex: 'viewAmount',
+    },
+    {
+      title: '打卡人数（人）',
+      align: 'right',
+      dataIndex: 'payedPersonAmount',
     },
     {
       title: '单次打赏卡豆数',
       align: 'right',
       dataIndex: 'beanAmount',
+      render: (val, row) => Math.round(val + row.exposureBeanAmount),
     },
     {
-      title: '视频时长',
+      title: '累计打赏卡豆数',
       align: 'right',
-      dataIndex: 'length',
-      render: (val) => (val ? `${val}s` : '--'),
+      dataIndex: 'exposureBeanAmount',
+      render: (val, row) => Math.round((val + row.beanAmount) * row.payedPersonAmount),
     },
     {
-      title: '观看人数',
+      title: '剩余卡豆数',
       align: 'right',
-      dataIndex: 'viewAmount',
+      dataIndex: 'payedPersonAmount',
+      render: (val, row) =>
+        Math.round((row.beanAmount + row.exposureBeanAmount) * (row.beanPersonAmount - val)),
     },
     {
-      title: '转发数',
-      align: 'right',
-      dataIndex: 'forwardAmount',
+      title: 'ID',
+      align: 'center',
+      dataIndex: 'userMomentIdString',
     },
     {
-      title: '卡豆支出',
-      align: 'right',
-      dataIndex: 'payedBeanAmount',
+      title: '更新时间',
+      align: 'center',
+      dataIndex: 'updateTime',
     },
     {
-      title: '分享状态',
+      title: '更新人',
+      align: 'center',
+      dataIndex: 'adminOperatorName',
+    },
+    {
+      title: '关联券/商品',
+      fixed: 'right',
       align: 'right',
-      dataIndex: 'status',
+      dataIndex: 'sssstastus',
+    },
+    {
+      title: '状态',
+      fixed: 'right',
+      align: 'right',
+      dataIndex: 'stastus',
       render: (val) => SHARE_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'userMomentIdString',
+      dataIndex: 'length',
       fixed: 'right',
       align: 'right',
       render: (val, record) => {
-        const { status } = record;
+        const { status, userMomentIdString } = record;
         return (
           <HandleSetTable
             formItems={[
               {
-                type: 'down',
+                type: 'down', // 下架
                 visible: status == 1 || status == 5,
-                click: () => fetchAuditRefuse(record),
+                click: () => setVisibleDown({ show: true, initialValues: record }),
               },
               {
-                type: 'info',
-                click: () => fetchShareDetail(val, record.contentType),
+                type: 'info', // 详情
+                click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
+              // {
+              //   type: 'signDetail', // 打卡明细
+              //   click: () => fetchShareHandleDetail(userMomentIdString),
+              // },
               {
-                type: 'own',
-                auth: 'handleDeatil',
-                title: '操作记录',
-                click: () => fetchShareHandleDetail(val),
+                type: 'handleDeatil', // 操作记录
+                click: () => fetchShareHandleDetail(userMomentIdString),
               },
             ]}
           />
@@ -164,26 +241,59 @@ const ShareManage = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="分享管理"
+      <TableDataBlock
+        order
+        keepData
+        // btnExtra={
+        //   <AuthConsumer auth="save">
+        //     <Button
+        //       className="dkl_green_btn"
+        //       onClick={() => setVisibleShare({ type: 'add', show: true })}
+        //     >
+        //       新增
+        //     </Button>
+        //   </AuthConsumer>
+        // }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        rowClassName={(record) => (record.bucket < 200 ? styles.share_rowColor : '')}
         rowKey={(record) => `${record.userMomentIdString}`}
         dispatchType="shareManage/fetchGetList"
         {...shareManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
+      {/* 发布分享 */}
+      <ShareDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareDrawer>
+      {/* 详情 */}
       <ShareDetail visible={visible} onClose={() => setVisible(false)}></ShareDetail>
+      {/* 视频详情 */}
+      <ShareVideoDetail
+        visible={visibleVideo}
+        onClose={() => setVisibleVideo(false)}
+      ></ShareVideoDetail>
+      {/* 操作记录 */}
       <ShareHandleDetail
         visible={visibleHandle}
         onClose={() => setVisibleHandle(false)}
       ></ShareHandleDetail>
+      {/* 下架 */}
+      <CloseRefuse
+        visible={visibleDown}
+        childRef={childRef}
+        onClose={() => setVisibleDown(false)}
+      ></CloseRefuse>
+      {/* 查看商户 */}
+      <MreSelect type="show" visible={visibleMre} onCancel={() => setVisibleMre(false)}></MreSelect>
     </>
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
+export default connect(({ sysTradeList, shareManage, loading }) => ({
   shareManage,
-  loading: loading.models.shareManage,
+  tradeList: sysTradeList.list.list,
+  loading:
+    loading.effects['shareManage/fetchGetList'] ||
+    loading.effects['shareManage/fetchShareDetail'] ||
+    loading.effects['baseData/fetchHandleDetail'],
 }))(ShareManage);

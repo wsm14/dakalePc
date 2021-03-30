@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import TaskDetailList from '../Detail/TaskDetailList';
 
 const TaskManage = (props) => {
   const { subsidyManage, loading, childRef, setVisible, dispatch } = props;
 
-  // 时间选择器限制选择参数比较
-  const [dates, setDates] = useState([]);
+  const [dates, setDates] = useState([]); // 时间选择器限制选择参数比较
+  const [taskDetail, setTaskDates] = useState(false); // 补贴详情展示
+
   // 时间限制选择一年
   const disabledDate = (current) => {
     if (!dates || dates.length === 0) {
@@ -51,12 +53,6 @@ const TaskManage = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'rechargeBeans',
-      render: (val, row, index) => index + 1,
-    },
     {
       title: '任务名称',
       fixed: 'left',
@@ -101,6 +97,10 @@ const TaskManage = (props) => {
                 click: () => fetchSubsidyTaskDetail({ subsidyId }),
               },
               {
+                type: 'taskDetail',
+                click: () => setTaskDates({ show: true, detail: record }),
+              },
+              {
                 type: 'del',
                 auth: 'taskDel',
                 visible: status === '0',
@@ -139,27 +139,34 @@ const TaskManage = (props) => {
   };
 
   return (
-    <DataTableBlock
-      noCard={false}
-      btnExtra={({ get }) => (
-        <ExcelButton
-          dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
-          dispatchData={get()}
-          exportProps={{ header: getColumns.slice(0, -1) }}
-        ></ExcelButton>
-      )}
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.subsidyId}`}
-      dispatchType="subsidyManage/fetchGetTaskList"
-      {...subsidyManage.list}
-    ></DataTableBlock>
+    <>
+      <TableDataBlock
+        order
+        noCard={false}
+        btnExtra={({ get }) => (
+          <ExcelButton
+            dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
+            dispatchData={get()}
+            exportProps={{ header: getColumns.slice(0, -1) }}
+          ></ExcelButton>
+        )}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.subsidyId}`}
+        dispatchType="subsidyManage/fetchGetTaskList"
+        {...subsidyManage.list}
+      ></TableDataBlock>
+      <TaskDetailList visible={taskDetail} onClose={() => setTaskDates(false)}></TaskDetailList>
+    </>
   );
 };
 
 export default connect(({ subsidyManage, loading }) => ({
   subsidyManage,
-  loading: loading.models.subsidyManage,
+  loading:
+    loading.effects['subsidyManage/fetchGetTaskList'] ||
+    loading.effects['subsidyManage/fetchSubsidyTaskDetail'] ||
+    loading.effects['subsidyManage/fetchSubsidyTaskEndDel'],
 }))(TaskManage);

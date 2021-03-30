@@ -97,14 +97,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef }) => {
         });
         if (imgUrl) {
           fetchGetOcrBankLicense({ imageUrl: imgUrl[0] }, (res) => {
-            const {
-              enterpriseBankCheckId,
-              enterpriseBankId = '',
-              enterpriseBankName,
-              enterpriseBankRegisterId,
-              enterpriseNameCH,
-              enterpriseOwner,
-            } = res;
+            const { enterpriseBankId = '', enterpriseBankName } = res;
             form.setFieldsValue({
               bankBranchName: enterpriseBankName,
               cardNo: enterpriseBankId,
@@ -136,12 +129,12 @@ const activeForm = ({ form, initialValues, dispatch, cRef }) => {
         });
         return item;
       }),
-      onChange: (val) => {
-        const { value } = val[0];
+      onChange: (val, option) => {
+        const { value } = option[0];
         setCity({
           provCode: value,
-          areaCode: val[1].value,
-          areaName: val[1].label,
+          areaCode: option[1].value,
+          areaName: option[1].label,
         });
       },
     },

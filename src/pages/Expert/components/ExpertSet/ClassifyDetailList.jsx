@@ -1,15 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import classifyDetailSet from './ClassifyDetailSet';
+import ClassifyDetailSet from './ClassifyDetailSet';
 
 const ClassifyDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
 
   const { record = '' } = visible;
+
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -54,7 +56,7 @@ const ClassifyDetailList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
+              auth: true,
               title: '推荐',
               visible: records.recommendFlag === '0',
               click: () =>
@@ -66,7 +68,7 @@ const ClassifyDetailList = (props) => {
                 }),
             },
             {
-              type: 'own',
+              auth: true,
               title: '取消推荐',
               visible: records.recommendFlag === '1',
               click: () =>
@@ -78,7 +80,7 @@ const ClassifyDetailList = (props) => {
             },
             {
               type: 'edit',
-              click: () => handleDataSet({ topicId: val, ...records }),
+              click: () => handleDataSet('edit', { topicId: val, ...records }),
             },
             {
               type: 'del',
@@ -91,15 +93,12 @@ const ClassifyDetailList = (props) => {
   ];
 
   //  新增 修改
-  const handleDataSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: classifyDetailSet({
-        dispatch,
-        childRef,
-        initialValues,
-        domainId: record.domainId,
-      }),
+  const handleDataSet = (type, initialValues) => {
+    setVisibleSet({
+      show: true,
+      type,
+      initialValues,
+      domainId: record.domainId,
     });
   };
 
@@ -127,7 +126,7 @@ const ClassifyDetailList = (props) => {
     dispatch({
       type: 'expertSet/fetchClassifyDetailSet',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -140,9 +139,9 @@ const ClassifyDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
+          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
             新增
           </Button>
         }
@@ -153,9 +152,14 @@ const ClassifyDetailList = (props) => {
         rowKey={(row) => `${row.topicIdString}`}
         params={{ domainId: record.domainId }}
         dispatchType="expertSet/fetchClassifyDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
+      <ClassifyDetailSet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ClassifyDetailSet>
     </Modal>
   );
 };

@@ -28,7 +28,6 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
-  '2001': '你的账号已在别处登录',
   '5005': '用户身份失效请重新登录',
 };
 
@@ -75,7 +74,7 @@ request.interceptors.request.use(async (url, options) => {
       data = encrypt(data);
       break;
   }
-  
+
   options = { ...options, data: JSON.stringify(data), params };
 
   const headers = {
@@ -94,7 +93,8 @@ request.interceptors.request.use(async (url, options) => {
 request.interceptors.response.use(async (response) => {
   const data = await response.clone().json();
   const { success, resultCode = '', resultDesc = '' } = data;
-  if (resultCode === '5005' || resultCode === '2001') {
+  const errorCode = ['5005', '1014'];
+  if (errorCode.includes(resultCode)) {
     Modal.warning({
       title: resultDesc,
       okText: '去登录',

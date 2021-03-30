@@ -1,14 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { EXPERT_SORT_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import sortSet from './components/Sort/SortSet';
+import TableDataBlock from '@/components/TableDataBlock';
+import SortSet from './components/Sort/SortSet';
 
 const ExpertSort = (props) => {
-  const { expertSort, loading, dispatch } = props;
+  const { expertSort, loading } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -42,24 +43,22 @@ const ExpertSort = (props) => {
   ];
 
   // 修改
-  const handleSortSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: sortSet({ dispatch, childRef, initialValues }),
-    });
-  };
+  const handleSortSet = (initialValues) => setVisible({ show: true, initialValues });
 
   return (
-    <DataTableBlock
-      keepName="排序机制"
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      rowKey={(record) => `${record.key}`}
-      dispatchType="expertSort/fetchGetList"
-      {...expertSort}
-      pagination={false}
-    ></DataTableBlock>
+    <>
+      <TableDataBlock
+        keepData
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        rowKey={(record) => `${record.key}`}
+        dispatchType="expertSort/fetchGetList"
+        {...expertSort}
+        pagination={false}
+      ></TableDataBlock>
+      <SortSet visible={visible} childRef={childRef} onClose={() => setVisible(false)}></SortSet>
+    </>
   );
 };
 

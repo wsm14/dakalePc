@@ -89,7 +89,6 @@ const SearchSetModal = (props) => {
   );
 };
 
-export default connect(({ businessList, loading }) => ({
-  selectList: businessList.selectList,
+export default connect(({ loading }) => ({
   loading,
 }))(SearchSetModal);

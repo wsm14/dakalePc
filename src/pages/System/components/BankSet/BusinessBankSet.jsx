@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import {  Button, Form } from 'antd';
+import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
@@ -11,7 +11,7 @@ const BusinessBrandSet = (props) => {
   const [code, setCode] = useState(false);
 
   useEffect(() => {
-    setCode(false);
+    setCode(!!initialValues.bankCode);
   }, [visible]);
 
   // 确认数据
@@ -45,6 +45,7 @@ const BusinessBrandSet = (props) => {
     const bankname = form.getFieldValue('bankBranchName');
     const checkName = bankTopArr.filter((item) => bankname.indexOf(item) > -1);
     setCode(!checkName.length);
+    return !checkName.length;
   };
 
   const formItems = [
@@ -52,7 +53,7 @@ const BusinessBrandSet = (props) => {
       label: '支行名称',
       name: 'bankBranchName',
       placeholder: '银行 + 城市 + 支行名称',
-      onBlur: () => hanleCheckData(),
+      onBlur: hanleCheckData,
     },
     {
       label: '总行编码',
@@ -62,8 +63,8 @@ const BusinessBrandSet = (props) => {
         <div>
           已存银行：
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            {bankTopArr.map((item) => (
-              <div style={{ width: '33.3%' }} key={item}>
+            {bankTopArr.map((item, index) => (
+              <div style={{ width: '33.3%' }} key={`${item}${index}`}>
                 {item}
               </div>
             ))}
@@ -75,7 +76,6 @@ const BusinessBrandSet = (props) => {
 
   const modalProps = {
     title: '设置支行',
-    width: 600,
     visible,
     onClose,
     footer: (

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import CITYJSON from '@/common/city';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const DistrictListComponent = (props) => {
   const { list, loading, searchData, cityCode } = props;
@@ -59,8 +59,8 @@ const DistrictListComponent = (props) => {
   }, [cityCode]);
 
   return (
-    <DataTableBlock
-      NoSearch
+    <TableDataBlock
+      firstFetch={false}
       noCard={false}
       cRef={childRef}
       loading={loading}
@@ -69,7 +69,7 @@ const DistrictListComponent = (props) => {
       rowKey={(record) => `${record.bucket}`}
       dispatchType="areaTotal/fetchGetList"
       list={list}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

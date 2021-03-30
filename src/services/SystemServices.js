@@ -117,7 +117,7 @@ export function fetchTradeSpecialSet(data) {
 
 // post 行业设置 - 平台服务费 - 新增修改删除
 export function fetchTradePlatformSet(data) {
-  return request('/admin/systemIndustry/upsertConfigMerchantSettle', {
+  return request('/admin/systemIndustry/updateConfigMerchantSettle', {
     method: 'POST',
     data,
   });
@@ -270,14 +270,14 @@ export function fetchOwnAccountEdit(data) {
 
 // get 商圈管理 - 列表
 export function fetchTradeAreaList(params) {
-  return request('/common/businessHub/listBusinessHubAdmin', {
+  return request('/admin/businessHub/listBusinessHubAdmin', {
     params,
   });
 }
 
 // post 商圈管理 - 新增
 export function fetchTradeAreaAdd(data) {
-  return request('/common/businessHub/saveBusinessHub', {
+  return request('/admin/businessHub/saveBusinessHub', {
     method: 'POST',
     data,
   });
@@ -285,7 +285,7 @@ export function fetchTradeAreaAdd(data) {
 
 // post 商圈管理 - 修改
 export function fetchTradeAreaEdit(data) {
-  return request('/common/businessHub/updateBusinessHub', {
+  return request('/admin/businessHub/updateBusinessHub', {
     method: 'POST',
     data,
   });
@@ -297,14 +297,14 @@ export function fetchTradeAreaEdit(data) {
 
 // get 品牌 - 品牌列表
 export function fetchMerBrandList(params) {
-  return request('/admin/merchantManagement/listConfigBrand', {
+  return request('/admin/systemConfig/listConfigBrand', {
     params,
   });
 }
 
 // post 品牌 - 品牌新增
 export function fetchMerBrandAdd(data) {
-  return request('/admin/merchantManagement/saveConfigBrand', {
+  return request('/admin/systemConfig/saveConfigBrand', {
     method: 'POST',
     data,
   });
@@ -312,7 +312,7 @@ export function fetchMerBrandAdd(data) {
 
 // post 品牌 - 品牌修改
 export function fetchMerBrandEdit(data) {
-  return request('/admin/merchantManagement/updateConfigBrand', {
+  return request('/admin/systemConfig/updateConfigBrand', {
     method: 'POST',
     data,
   });
@@ -414,3 +414,26 @@ export function fetchCityManageStatus(data) {
 }
 
 // 城市管理 end
+
+// 行业设置 通过行业id获取行业场景列表
+export function fetchSceneListById(params) {
+  return request('/admin/systemIndustry/listCategoryScenesByCategoryId', {
+    params,
+  });
+}
+
+// 新增行业场景
+export function fetchSceneAdd(data) {
+  return request('/admin/systemIndustry/saveCategoryScenes', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 编辑删除行业场景
+export function fetchSceneUpdate(data) {
+  return request('/admin/systemIndustry/updateCategoryScenes', {
+    method: 'POST',
+    data,
+  });
+}

@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
-import DataTableBlock from '@/components/DataTableBlock';
-import { Button, message } from 'antd';
+import TableDataBlock from '@/components/TableDataBlock';
+import { Button } from 'antd';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/Group/groupDetails';
@@ -73,13 +73,14 @@ const tableList = (props) => {
       label: '经营类目',
       name: 'categoryId',
       type: 'select',
-      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'id' },
     },
     {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select: { list: WORKER_BANK_STATUS.map((item) => ({ name: item.value, value: item.label })) },
+      select: WORKER_BANK_STATUS,
     },
   ];
   // table 表头
@@ -139,10 +140,7 @@ const tableList = (props) => {
       title: '账户状态',
       align: 'center',
       dataIndex: 'bankStatus',
-      render: (val) =>
-        WORKER_BANK_STATUS.filter((item) => {
-          return item.label === val;
-        })[0].value,
+      render: (val) => WORKER_BANK_STATUS[val],
     },
     {
       title: '操作',
@@ -175,9 +173,7 @@ const tableList = (props) => {
                 },
               },
               {
-                type: 'own',
-                title: '账户激活',
-                auth: 'activate',
+                type: 'activate',
                 click: () => {
                   fetchSave({
                     visible1: true,
@@ -221,8 +217,8 @@ const tableList = (props) => {
   ];
   return (
     <>
-      <DataTableBlock
-        keepName="集团管理"
+      <TableDataBlock
+        keepData
         btnExtra={
           <AuthConsumer auth="save">
             <Button
@@ -251,7 +247,7 @@ const tableList = (props) => {
         rowKey={(record) => `${record.merchantGroupId}`}
         dispatchType="groupSet/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <DrawerForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible}

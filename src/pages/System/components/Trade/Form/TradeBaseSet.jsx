@@ -1,5 +1,23 @@
-const TradeCategorySet = (props) => {
-  const { dispatch, childRef, initialValues = {}, detailList, categoryId, CeditType } = props;
+import React from 'react';
+import { connect } from 'umi';
+import { Button, Form } from 'antd';
+import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
+
+const TradeBaseSet = (props) => {
+  const {
+    dispatch,
+    childRef,
+    visible,
+    onClose,
+    loading,
+    detailList,
+    type: eidtType,
+    categoryId,
+  } = props;
+
+  const [form] = Form.useForm();
+  const { show = false, detail = {} } = visible;
 
   const listData = detailList.list.map((item) => item.name);
 
@@ -14,45 +32,63 @@ const TradeCategorySet = (props) => {
       name: 'specialService',
       url: 'sysTradeList/fetchTradeSpecialSet',
     },
-  }[CeditType];
+  }[eidtType];
 
   // 提交表单
-  const fetchDataEdit = (values) => {
-    const payload = !Object.keys(initialValues).length
-      ? [...listData, values.name]
-      : listData.map((item) => {
-          if (item === initialValues.name) {
-            return values.name;
-          }
-          return item;
-        });
-    dispatch({
-      type: propItem.url,
-      payload: {
-        [propItem.name]: payload,
-        categoryId,
-        configMerchantSettleId: initialValues.configMerchantSettleIdString,
-      },
-      callback: () => childRef.current.fetchGetData(),
+  const handleUpAudit = () => {
+    form.validateFields().then((values) => {
+      const payload = !Object.keys(detail).length
+        ? [...listData, values.name]
+        : listData.map((item) => {
+            if (item === detail.name) {
+              return values.name;
+            }
+            return item;
+          });
+      dispatch({
+        type: propItem.url,
+        payload: {
+          [propItem.name]: payload,
+          categoryId,
+          configMerchantSettleId: detail.configMerchantSettleIdString,
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
-  return {
-    type: 'Drawer',
-    showType: 'form',
+  const formItems = [
+    {
+      label: `${propItem.title}名称`,
+      name: 'name',
+      maxLength: 10,
+    },
+  ];
+
+  // 弹出窗属性
+  const modalProps = {
     title: `设置 - ${propItem.title}`,
-    loadingModels: 'sysTradeList',
-    initialValues,
-    formItems: [
-      {
-        label: `${propItem.title}名称`,
-        name: 'name',
-        maxLength: 10,
-      },
-    ],
-    onFinish: fetchDataEdit,
-    ...props,
+    visible: show,
+    onClose,
+    footer: (
+      <Button onClick={handleUpAudit} type="primary" loading={loading}>
+        提交
+      </Button>
+    ),
   };
+
+  return (
+    <DrawerCondition {...modalProps}>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+    </DrawerCondition>
+  );
 };
 
-export default TradeCategorySet;
+export default connect(({ loading }) => ({
+  loading:
+    loading.effects['sysTradeList/fetchTradeBaseSet'] ||
+    loading.effects['sysTradeList/fetchTradeSpecialSet'],
+}))(TradeBaseSet);

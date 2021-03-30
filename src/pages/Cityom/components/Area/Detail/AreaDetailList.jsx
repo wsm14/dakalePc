@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyTotalInfo from './IncomeTotal';
 
 const ProvCompanyDetailList = (props) => {
@@ -68,15 +68,15 @@ const ProvCompanyDetailList = (props) => {
       {
         {
           withdraw: (
-            <DataTableBlock
+            <TableDataBlock
               noCard={false}
               loading={loading}
               columns={propItem.getColumns}
               rowKey={(row) => `${row[propItem.rowKey]}`}
               dispatchType="areaCenter/fetchWithdrawList"
-              componentSize="middle"
+              size="middle"
               list={[]}
-            ></DataTableBlock>
+            ></TableDataBlock>
           ),
           income: <ProvCompanyTotalInfo partnerId={record.partnerId}></ProvCompanyTotalInfo>,
         }[type]

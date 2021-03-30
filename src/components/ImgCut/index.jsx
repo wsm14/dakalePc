@@ -54,7 +54,7 @@ const ImgCutModal = ({
     // TODO: 这里可以尝试修改上传图片的尺寸
     cropper.getCroppedCanvas().toBlob(async (blob) => {
       // 把选中裁切好的的图片传出去
-      const file = new File([blob], filename.name || 'a.png', { type: filename.type });
+      const file = new File([blob], filename.name || 'a.png', { type: filename.type || 'image/png' });
       onSubmit(file);
       // 关闭弹窗
       onClose(true);

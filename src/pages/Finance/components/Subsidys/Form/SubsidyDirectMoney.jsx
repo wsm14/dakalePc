@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
 import FormCondition from '@/components/FormCondition';
-import MreSelect from './MreSelect';
-import MreSelectShow from './MreSelectShow';
 
 const SubsidyDirectMoney = (props) => {
   const { form, detail } = props;
@@ -26,16 +25,13 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: Object.keys(SUBSIDY_TASK_ROLE).map((item) => ({
-        name: SUBSIDY_TASK_ROLE[item],
-        value: item,
-      })),
+      select: SUBSIDY_TASK_ROLE,
     },
     {
       label: '适用店铺',
       name: 'merchantIds',
-      type: 'childrenOwn',
-      childrenOwn: (
+      type: 'formItem',
+      formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺
         </Button>
@@ -44,7 +40,7 @@ const SubsidyDirectMoney = (props) => {
     {
       label: '适用店铺',
       type: 'noForm',
-      childrenOwn: (
+      formItem: (
         <MreSelectShow
           key="MreTable"
           form={form}

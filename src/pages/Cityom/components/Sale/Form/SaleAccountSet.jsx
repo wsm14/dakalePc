@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SALE_ACCOUNT_TYPE, SEX_TYPE } from '@/common/constant';
+import { SALE_ACCOUNT_TYPE, SEX_NEW_TYPE } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import FormCondition from '@/components/FormCondition';
 
@@ -14,10 +14,7 @@ const SaleAccountSet = (props) => {
       label: '类型',
       type: 'select',
       name: 'agentType',
-      select: Object.keys(SALE_ACCOUNT_TYPE).map((item) => ({
-        name: SALE_ACCOUNT_TYPE[item],
-        value: item,
-      })),
+      select: SALE_ACCOUNT_TYPE,
       onChange: (val) => {
         // 重置地区项目
         setAgentType(val);
@@ -41,7 +38,7 @@ const SaleAccountSet = (props) => {
         })),
         district: undefined,
       }[agentType],
-      onChange: (val) => form.setFieldsValue({ agentName: val[val.length - 1].label }),
+      onChange: (val, option) => form.setFieldsValue({ agentName: option[option.length - 1].label }),
     },
     {
       label: '所属地区',
@@ -57,7 +54,7 @@ const SaleAccountSet = (props) => {
       label: '联系人性别',
       name: 'gender',
       type: 'radio',
-      select: SEX_TYPE,
+      select: SEX_NEW_TYPE,
     },
     {
       label: '联系人电话',

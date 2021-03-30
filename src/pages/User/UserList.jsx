@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-import { ACCOUNT_STATUS, REAL_NAME_STATUS } from '@/common/constant';
+import { ACCOUNT_STATUS, REAL_NAME_STATUS, USER_SOURCE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/UserList/Search/SearchCard';
 import UserDetailShow from './components/UserList/UserDetailShow';
 import UserListTotalInfo from './components/UserList/UserTotalInfo';
@@ -39,6 +39,12 @@ const UserListComponent = (props) => {
       name: 'realNameStatus',
       type: 'select',
       select: REAL_NAME_STATUS,
+    },
+    {
+      label: '用户来源',
+      name: 'userSource',
+      type: 'select',
+      select: USER_SOURCE,
     },
   ];
 
@@ -95,6 +101,12 @@ const UserListComponent = (props) => {
       render: (val) => ACCOUNT_STATUS[val],
     },
     {
+      title: '用户来源',
+      align: 'center',
+      dataIndex: 'userSource',
+      render: (val) => USER_SOURCE[val],
+    },
+    {
       title: '操作',
       align: 'right',
       fixed: 'right',
@@ -144,8 +156,8 @@ const UserListComponent = (props) => {
       <UserListTotalInfo cityData={cityData}></UserListTotalInfo>
       {/* 用户chart统计 */}
       <UserTotalSpread></UserTotalSpread>
-      <DataTableBlock
-        keepName="用户数据"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -154,7 +166,7 @@ const UserListComponent = (props) => {
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="userList/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <UserDetailShow
         childRef={childRef}
         visible={visible}

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import CardLoading from '@/components/CardLoading';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import UserDetailList from './components/User/UserDetailList';
-
-const UserTotalInfo = lazy(() => import('./components/User/UserTotalInfo'));
+import UserTotalInfo from './components/User/UserTotalInfo';
 
 const AccountUserList = (props) => {
   const { userlist, loading, dispatch } = props;
@@ -70,13 +68,11 @@ const AccountUserList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               auth: 'peasDetail',
               title: '卡豆明细',
               click: () => setVisible({ type: 'peas', record }),
             },
             {
-              type: 'own',
               auth: 'rechargeDetail',
               title: '充值记录',
               click: () => setVisible({ type: 'recharge', record }),
@@ -95,19 +91,16 @@ const AccountUserList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="用户账户"
+      <UserTotalInfo></UserTotalInfo>
+      <TableDataBlock
+        keepData
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.userIdString}`}
         dispatchType="accountUser/fetchGetList"
         {...userlist}
-      >
-        <Suspense fallback={<CardLoading></CardLoading>}>
-          <UserTotalInfo></UserTotalInfo>
-        </Suspense>
-      </DataTableBlock>
+      ></TableDataBlock>
       <UserDetailList visible={visible} setVisible={setVisible}></UserDetailList>
     </>
   );

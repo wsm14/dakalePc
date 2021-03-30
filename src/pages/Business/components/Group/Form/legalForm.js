@@ -1,15 +1,12 @@
-import React, {useState, useImperativeHandle} from 'react';
-import {connect} from 'umi';
-import {message, Button} from 'antd';
+import React from 'react';
+import { connect } from 'umi';
 import FormCondition from '@/components/FormCondition';
-import {AMAP_KEY} from '@/common/constant';
-import {Map, Marker} from 'react-amap';
-import {PHONE_PATTERN} from '@/common/regExp';
+import { PHONE_PATTERN } from '@/common/regExp';
 import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const legalForm = (props) => {
-  const {form, initialValues, dispatch, cRef} = props;
+  const { form, initialValues, dispatch } = props;
   const fetchGetOcrIdCardFront = (payload, callback) => {
     dispatch({
       type: 'groupSet/fetchGetOcrIdCardFront',
@@ -37,8 +34,8 @@ const legalForm = (props) => {
           certFrontPhoto: imgUrl[0],
         });
         if (imgUrl) {
-          fetchGetOcrIdCardFront({imageUrl: imgUrl[0]}, (res) => {
-            const {name, num} = res;
+          fetchGetOcrIdCardFront({ imageUrl: imgUrl[0] }, (res) => {
+            const { name, num } = res;
             form.setFieldsValue({
               legalPerson: name || '',
               legalCertId: num || '',
@@ -59,10 +56,10 @@ const legalForm = (props) => {
           certReversePhoto: imgUrl[0],
         });
         if (imgUrl) {
-          fetchGetOcrIdCardBack({imageUrl: imgUrl[0]}, (res) => {
-            let {startDate, endDate} = res;
+          fetchGetOcrIdCardBack({ imageUrl: imgUrl[0] }, (res) => {
+            let { startDate, endDate } = res;
             if (endDate == '长期' || !endDate) {
-              endDate = '20991231'
+              endDate = '20991231';
             }
             form.setFieldsValue({
               activeBeginDate: [moment(startDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
@@ -89,14 +86,14 @@ const legalForm = (props) => {
     {
       label: '法人手机号',
       name: 'legalMp',
-      addRules: [{pattern: PHONE_PATTERN, message: '手机号格式不正确'}],
+      addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>;
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
 };
 
-export default connect(({groupSet, loading}) => ({
+export default connect(({ groupSet, loading }) => ({
   ...groupSet,
   loading: loading.models.groupSet,
 }))(legalForm);

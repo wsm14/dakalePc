@@ -11,6 +11,9 @@ import {
   fetchTradePlatformSet,
   fetchPromotionMoneyGet,
   fetchPromotionMoneySet,
+  fetchSceneListById,
+  fetchSceneAdd,
+  fetchSceneUpdate,
 } from '@/services/SystemServices';
 
 export default {
@@ -20,6 +23,7 @@ export default {
     list: { list: [], total: 0 },
     detailList: { list: [], total: 0 },
     platFormList: { list: [], total: 0 },
+    sceneList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -147,6 +151,43 @@ export default {
       notification.success({
         message: '温馨提示',
         description: `${payload.isDelete ? '删除' : '修改'}类目成功`,
+      });
+      callback();
+    },
+    *fetchSceneListById({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSceneListById, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          sceneList: { list: content.recordList },
+        },
+      });
+      let list = [];
+      if (content.recordList) {
+        list = content.recordList.map((items) => ({
+          label: items.scenesName,
+          value: items.categoryScenesId,
+        }));
+      }
+      if (callback) callback(list);
+    },
+    *fetchSceneAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSceneAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `添加成功`,
+      });
+      callback();
+    },
+    *fetchSceneUpdate({ payload, callback }, { call }) {
+      const response = yield call(fetchSceneUpdate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `操作成功`,
       });
       callback();
     },

@@ -5,7 +5,7 @@ import { SALE_ACCOUNT_TYPE, COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SaleAccountDrawer from './components/Sale/SaleAccountDrawer';
 
 const SaleAccount = (props) => {
@@ -76,12 +76,6 @@ const SaleAccount = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'districtName',
-      fixed: 'left',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: '类型',
       fixed: 'left',
       dataIndex: 'agentType',
@@ -135,8 +129,9 @@ const SaleAccount = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="销售系统管理"
+      <TableDataBlock
+        order
+        keepData
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -156,7 +151,7 @@ const SaleAccount = (props) => {
         rowKey={(record) => `${record.sellMainId}`}
         dispatchType="saleAccount/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <SaleAccountDrawer childRef={childRef} visible={visible} setVisible={setVisible} />
     </>
   );

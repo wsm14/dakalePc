@@ -15,42 +15,6 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
-      // 数据统计
-      {
-        path: '/chart/area',
-        name: '区域战报',
-        component: './Chart/AreaTotal',
-      },
-      {
-        path: '/chart/block',
-        name: '数据概况',
-        component: './Chart/ChartBlock',
-      },
-      // 加盟管理
-      {
-        path: '/cityom/provCo',
-        name: '省公司列表',
-        component: './Cityom/ProvCompany',
-        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
-      },
-      {
-        path: '/cityom/area',
-        name: '区县运营中心',
-        component: './Cityom/AreaCenter',
-        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
-      },
-      {
-        path: '/cityom/join',
-        name: '加盟申请',
-        component: './Cityom/FranchiseApplication',
-        buttons: ['handle', 'info'],
-      },
-      {
-        path: '/cityom/sale',
-        name: '销售系统管理',
-        component: './Cityom/SaleAccount',
-        buttons: ['save', 'info', 'edit', 'status', 'relieve'],
-      },
       // {
       //   name: '活动设置',
       //   path: '/active',
@@ -77,24 +41,24 @@ export default [
       //     },
       //   ],
       // },
-      // 用户管理
+      // 账户管理
       {
-        path: '/user/list',
-        name: '用户数据',
-        component: './User/UserList',
-        buttons: ['info', 'status'],
+        path: '/account/user',
+        name: '用户账户',
+        component: './Account/AccountUser',
+        buttons: ['peasDetail', 'rechargeDetail'],
       },
       {
-        path: '/user/master',
-        name: '家主列表',
-        component: './User/CircleMasterList',
-        buttons: ['income'],
+        path: '/account/business',
+        name: '商家账户',
+        component: './Account/AccountBusiness',
+        buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
       },
       {
-        path: '/user/bdlimitPop',
-        name: 'BD白名单',
-        component: './User/BdLimitPop',
-        buttons: ['save'],
+        path: '/account/subsidyShop',
+        name: '补贴店铺',
+        component: './Account/SubsidyShop',
+        buttons: ['info'],
       },
       // 店铺管理
       {
@@ -114,13 +78,13 @@ export default [
         component: './Business/BusinessList',
         buttons: [
           'save',
+          'edit',
+          'info',
           'setMreCord',
           'exportList',
           'qrCode',
-          'info',
           'status',
           'bussinessStatus',
-          'edit',
           'set',
         ],
       },
@@ -136,85 +100,48 @@ export default [
         component: './Business/BusinessSettled',
         buttons: ['exportList'],
       },
-      // 财务管理
+      // 数据统计
       {
-        path: '/finance/subsidy',
-        name: '补贴管理',
-        component: './Finance/SubsidyManage',
-        buttons: [
-          'task',
-          'exportList',
-          'taskSave',
-          'taskInfo',
-          'taskDel',
-          'taskEnd',
-          'action',
-          'actionSave',
-          'actionDel',
-          'actionEdit',
-        ],
+        path: '/chart/area',
+        name: '区域战报',
+        component: './Chart/AreaTotal',
       },
       {
-        path: '/finance/withdraw',
-        name: '提现明细',
-        component: './Finance/WithdrawDetail',
-        buttons: ['exportList', 'edit'],
+        path: '/chart/block',
+        name: '数据概况',
+        component: './Chart/ChartBlock',
+      },
+      // 加盟管理
+      {
+        path: '/cityom/provCo',
+        name: '省公司列表',
+        component: './Cityom/ProvCompany',
+        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       {
-        path: '/finance/income',
-        name: '平台收益',
-        component: './Finance/PlatformIncome',
-        buttons: ['exportList'],
-      },
-      // 店铺运营
-      {
-        path: '/operation/share',
-        name: '分享管理',
-        component: './Operation/ShareManage',
-        buttons: ['down', 'info', 'handleDeatil'],
+        path: '/cityom/area',
+        name: '区县运营中心',
+        component: './Cityom/AreaCenter',
+        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       {
-        path: '/operation/goods',
-        name: '商品管理',
-        component: './Operation/GoodsManage',
-        buttons: ['save', 'info', 'stockSet', 'down', 'up', 'del', 'handleDeatil'],
+        path: '/cityom/join',
+        name: '加盟申请',
+        component: './Cityom/FranchiseApplication',
+        buttons: ['info', 'handle'],
       },
       {
-        path: '/operation/classify',
-        name: '分类管理',
-        component: './Operation/ClassifyManage',
-        buttons: ['save', 'edit', 'del'],
-      },
-      {
-        path: '/operation/orders',
-        name: '订单列表',
-        component: './Operation/OrdersList',
-        buttons: ['info'],
-      },
-      {
-        path: '/operation/refund',
-        name: '退款管理',
-        component: './Operation/RefundOrder',
-        buttons: ['info'],
-      },
-      {
-        path: '/operation/coupon',
-        name: '优惠券管理',
-        component: './Operation/CouponManage',
-        buttons: ['info', 'down'],
-      },
-      {
-        path: '/operation/special',
-        name: '周边特惠',
-        component: './Operation/SpecialGoods',
-        buttons: ['down', 'recommendStatus', 'tradeSet'],
+        path: '/cityom/sale',
+        name: '销售系统管理',
+        component: './Cityom/SaleAccount',
+        buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
       // 哒人管理
       {
         path: '/expert/uaerlist',
         name: '哒人列表',
         component: './Expert/ExpertUserList',
-        buttons: ['status'],
+        buttons: ['status', 'diary'],
       },
       {
         path: '/expert/level',
@@ -226,7 +153,7 @@ export default [
         path: '/expert/set',
         name: '创作设置',
         component: './Expert/ExpertSet',
-        buttons: ['status', 'topic', 'edit', 'del', 'savePClassify', 'saveClassify'],
+        buttons: ['del', 'edit', 'status', 'topic', 'savePClassify', 'saveClassify'],
       },
       {
         path: '/expert/sort',
@@ -238,7 +165,57 @@ export default [
         path: '/expert/recommend',
         name: '哒人种草',
         component: './Expert/ExpertRecommend',
-        buttons: ['reportCenter', 'info', 'down', 'handle'],
+        buttons: ['info', 'down', 'handle', 'reportCenter'],
+      },
+      {
+        path: '/expert/allocation',
+        name: '哒人配置',
+        component: './Expert/ExpertAllocation',
+        buttons: ['save', 'edit'],
+      },
+      {
+        path: '/expert/achievement',
+        name: '哒人业绩',
+        component: './Expert/ExpertUserAchievement',
+        buttons: ['recommendList', 'statistics'],
+      },
+      {
+        path: '/expert/distribution',
+        name: '哒人分销明细',
+        component: './Expert/ExpertUserDistribution',
+        buttons: ['status', 'diary'],
+      },
+      // 财务管理
+      {
+        path: '/finance/subsidy',
+        name: '补贴管理',
+        component: './Finance/SubsidyManage',
+        buttons: [
+          'task',
+          'exportList',
+          'taskSave',
+          'taskDel',
+          'taskEnd',
+          'taskInfo',
+          'taskDetail',
+          'action',
+          'actionSave',
+          'actionDel',
+          'actionEdit',
+          'exportList',
+        ],
+      },
+      {
+        path: '/finance/withdraw',
+        name: '提现明细',
+        component: './Finance/WithdrawDetail',
+        buttons: ['edit', 'exportList'],
+      },
+      {
+        path: '/finance/income',
+        name: '平台收益',
+        component: './Finance/PlatformIncome',
+        buttons: ['exportList'],
       },
       // 营销管理
       {
@@ -283,7 +260,7 @@ export default [
         path: '/market/appset',
         name: '广告管理',
         component: './Market/AppSetList',
-        buttons: ['down', 'save', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit', 'down'],
       },
       {
         path: '/market/search',
@@ -295,27 +272,62 @@ export default [
         path: '/market/puzzleAd',
         name: '拼图广告',
         component: './Market/PuzzleAd',
-        buttons: ['eye', 'edit', 'save', 'del', 'up', 'down'],
+        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down'],
       },
-      // 账户管理
+      // 店铺运营
       {
-        path: '/account/user',
-        name: '用户账户',
-        component: './Account/AccountUser',
-        buttons: ['peasDetail', 'rechargeDetail'],
+        path: '/operation/share',
+        name: '分享管理',
+        component: './Operation/ShareManage',
+        buttons: ['info', 'down', 'handleDeatil'],
       },
       {
-        path: '/account/business',
-        name: '商家账户',
-        component: './Account/AccountBusiness',
-        buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
+        path: '/operation/goods',
+        name: '商品管理',
+        component: './Operation/GoodsManage',
+        buttons: ['save', 'del', 'info', 'down', 'up', 'stockSet', 'handleDeatil'],
+      },
+      {
+        path: '/operation/classify',
+        name: '分类管理',
+        component: './Operation/ClassifyManage',
+        buttons: ['save', 'del', 'edit'],
+      },
+      {
+        path: '/operation/orders',
+        name: '订单列表',
+        component: './Operation/OrdersList',
+        buttons: ['info', 'exportList'],
+      },
+      {
+        path: '/operation/refund',
+        name: '退款管理',
+        component: './Operation/RefundOrder',
+        buttons: ['info'],
+      },
+      {
+        path: '/operation/coupon',
+        name: '优惠券管理',
+        component: './Operation/CouponManage',
+        buttons: ['del', 'info', 'down'],
+      },
+      {
+        path: '/operation/special',
+        name: '周边特惠',
+        component: './Operation/SpecialGoods',
+        buttons: ['down', 'placement', 'recommendStatus', 'tradeSet'],
+      },
+      {
+        path: '/operation/walking',
+        name: '逛逛页面配置',
+        component: './Operation/WalkingManage',
       },
       // 客服中心
       {
         path: '/service/news',
         name: '新闻动态',
         component: './Service/ServiceNews',
-        buttons: ['down', 'save'],
+        buttons: ['save', 'edit', 'down'],
       },
       {
         path: '/service/feedback',
@@ -333,7 +345,13 @@ export default [
         path: '/service/faq',
         name: '常见问题',
         component: './Service/ServiceFAQ',
-        buttons: ['userOs', 'mreOs', 'sortFAQ', 'sort', 'save', 'del', 'edit', 'setLike', 'status'],
+        buttons: ['userOs', 'mreOs', 'sortFAQ', 'save', 'del', 'edit', 'sort', 'setLike', 'status'],
+      },
+      {
+        path: '/service/jobs',
+        name: '人才招聘',
+        component: './Service/SolicitJobs',
+        buttons: ['save', 'edit', 'down', 'jobClass'],
       },
       // 基础配置
       {
@@ -353,16 +371,6 @@ export default [
         ],
       },
       {
-        path: '/system/provinceRole',
-        name: '省公司角色管理',
-        component: './System/RoleProvince',
-      },
-      {
-        path: '/system/areaRole',
-        name: '区县角色管理',
-        component: './System/RoleArea',
-      },
-      {
         path: '/system/tradeArea',
         name: '商圈管理',
         component: './System/TradeArea',
@@ -372,13 +380,13 @@ export default [
         path: '/system/tradeset',
         name: '行业管理',
         component: './System/TradeList',
-        buttons: ['baseTrade', 'tradeAdd', 'edit', 'del', 'tradeSecondAdd'],
+        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
       },
       {
         path: '/system/brand',
         name: '品牌管理',
         component: './System/ManageBrand',
-        buttons: ['save', 'status', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit', 'status'],
       },
       {
         path: '/system/tag',
@@ -390,7 +398,7 @@ export default [
         path: '/system/city',
         name: '城市管理',
         component: './System/ManageCity',
-        buttons: ['save', 'edit', 'status', 'del'],
+        buttons: ['save', 'del', 'edit', 'status'],
       },
       {
         path: '/system/bankSet',
@@ -402,7 +410,7 @@ export default [
         path: '/system/peasShare',
         name: '卡豆分享',
         component: './System/PeasShare',
-        buttons: ['save', 'edit', 'del'],
+        buttons: ['save', 'del', 'edit'],
       },
       {
         path: '/system/pageset',
@@ -413,6 +421,25 @@ export default [
         name: '修改密码',
         path: '/password',
         component: './System/PassWord',
+      },
+      // 用户管理
+      {
+        path: '/user/list',
+        name: '用户数据',
+        component: './User/UserList',
+        buttons: ['info', 'status'],
+      },
+      {
+        path: '/user/master',
+        name: '家主列表',
+        component: './User/CircleMasterList',
+        buttons: ['income'],
+      },
+      {
+        path: '/user/bdlimitPop',
+        name: 'BD白名单',
+        component: './User/BdLimitPop',
+        buttons: ['save'],
       },
     ],
   },

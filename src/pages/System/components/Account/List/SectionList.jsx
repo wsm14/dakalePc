@@ -69,7 +69,7 @@ const SectionList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
+              auth: true,
               title: '添加子部门',
               click: () =>
                 setVisible({

@@ -1,16 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, Tabs, Input, Modal } from 'antd';
+import { Button, Form, Tabs, Input, Modal, Tag } from 'antd';
+import { SyncOutlined } from '@ant-design/icons';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible = null, onClose, loading } = props;
+  const { dispatch, cRef, visible = null, onClose, loading, sceneList } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
+  const loadingCheck = loading.effects['baseData/fetchGetPhoneComeLocation'];
+
+  const [mobileInfo, setMobileInfo] = useState({});
 
   const {
     businessLicenseObject: blobj = {},
@@ -18,6 +23,9 @@ const BusinessDetailShow = (props) => {
     userMerchantIdString: merchantId,
     businessStatus,
     status,
+    mobile,
+    provinceName = '',
+    cityName = '',
   } = visible;
 
   const statusNum = Number(status);
@@ -27,12 +35,6 @@ const BusinessDetailShow = (props) => {
 
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    if (visible) {
-      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
-    }
-  }, [visible]);
-
   // 设置开户行号
   const fetchMerSetBandCode = (values) => {
     dispatch({
@@ -41,6 +43,17 @@ const BusinessDetailShow = (props) => {
         merchantId,
         ...values,
       },
+    });
+  };
+
+  // 获取手机归属地
+  const fetchGetPhoneComeLocation = () => {
+    dispatch({
+      type: 'baseData/fetchGetPhoneComeLocation',
+      payload: {
+        mobile,
+      },
+      callback: setMobileInfo,
     });
   };
 
@@ -70,6 +83,9 @@ const BusinessDetailShow = (props) => {
     });
   };
 
+  // 检查归属地和所在地是否相同
+  const checkMobile = provinceName.includes(mobileInfo.prov) && cityName.includes(mobileInfo.city);
+
   const storeItems = [
     {
       label: '品牌名称',
@@ -82,6 +98,17 @@ const BusinessDetailShow = (props) => {
     {
       label: '店铺帐号',
       name: 'mobile',
+      render: (val) => (
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {val}
+          <Tag
+            icon={loadingCheck && <SyncOutlined spin />}
+            color={checkMobile ? 'success' : 'error'}
+          >
+            {!loadingCheck && `${mobileInfo.prov || ''}-${mobileInfo.city || ''}`}
+          </Tag>
+        </div>
+      ),
     },
     {
       label: '店铺类型',
@@ -132,6 +159,11 @@ const BusinessDetailShow = (props) => {
       type: 'upload',
     },
     {
+      label: '店铺头图',
+      name: 'headerImg',
+      type: 'upload',
+    },
+    {
       label: '店铺内景照',
       name: 'interiorImg',
       type: 'upload',
@@ -169,6 +201,24 @@ const BusinessDetailShow = (props) => {
       label: '特色服务',
       name: ['property', 'speacial'],
       render: (val) => val.toString(),
+    },
+    {
+      label: '场景设置',
+      name: 'scenesIds',
+      render: (val) => {
+        const scenId = val ? val : [];
+        let sceneName = '';
+        if (sceneList && sceneList.length) {
+          sceneList.forEach((item) => {
+            scenId.forEach((item1) => {
+              if (item.value == item1) {
+                sceneName = sceneName ? sceneName + '，' + item.label : item.label;
+              }
+            });
+          });
+        }
+        return <span>{sceneName.toString()}</span>;
+      },
     },
     {
       label: '店铺标签',
@@ -236,33 +286,29 @@ const BusinessDetailShow = (props) => {
     title: `商家详情`,
     width: 800,
     visible,
-    maskClosable: true,
-    destroyOnClose: true,
+    onClose,
+    afterCallBack: () => {
+      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
+      fetchGetPhoneComeLocation();
+    },
+    footer: (
+      <>
+        <AuthConsumer auth="bussinessStatus">
+          <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
+            {businessStatusText}
+          </Button>
+        </AuthConsumer>
+        <AuthConsumer auth="status">
+          <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
+            {statusText}
+          </Button>
+        </AuthConsumer>
+      </>
+    ),
   };
 
   return (
-    <Drawer
-      {...modalProps}
-      onClose={onClose}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={onClose}>取消</Button>
-            <AuthConsumer auth="bussinessStatus">
-              <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
-                {businessStatusText}
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="status">
-              <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
-                {statusText}
-              </Button>
-            </AuthConsumer>
-          </Space>
-        </div>
-      }
-    >
+    <DrawerCondition {...modalProps}>
       <Tabs type="card">
         <TabPane tab="店铺信息" key="1">
           <DescriptionsCondition formItems={storeItems} initialValues={visible} />
@@ -293,7 +339,7 @@ const BusinessDetailShow = (props) => {
           </Form>
         </TabPane>
       </Tabs>
-    </Drawer>
+    </DrawerCondition>
   );
 };
 

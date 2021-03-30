@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button, Card } from 'antd';
 import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const tabList = [
   {
@@ -87,16 +87,16 @@ const SysAccountSet = (props) => {
 
   // 新增/修改 管理员帐号
   const handleSysAccountSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: sysAccountInfoSet({ dispatch, childRef, initialValues }),
-    });
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: sysAccountInfoSet({ dispatch, childRef, initialValues }),
+    // });
   };
 
   const contentList = {
     tab1: (
       <>
-        <DataTableBlock
+        <TableDataBlock
           noCard={false}
           cRef={childRef}
           loading={loading}
@@ -104,11 +104,11 @@ const SysAccountSet = (props) => {
           rowKey={(record) => `${record.idString}`}
           dispatchType="sysAccountList/fetchGetList"
           {...sysAccountList}
-        ></DataTableBlock>
+        ></TableDataBlock>
       </>
     ),
     tab2: (
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         cRef={childRef}
         loading={loading}
@@ -116,7 +116,7 @@ const SysAccountSet = (props) => {
         rowKey={(record) => `${record.idString}`}
         dispatchType="sysAccountList/fetchGetList"
         {...sysAccountList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     ),
   };
 

@@ -9,7 +9,7 @@ import {
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessSettled = (props) => {
   const { businessSettled, loading } = props;
@@ -87,12 +87,6 @@ const BusinessSettled = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'id',
-      render: (val, row, i) => i + 1,
-    },
     {
       title: '类型',
       dataIndex: 'type',
@@ -207,8 +201,9 @@ const BusinessSettled = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="入驻绑定查询"
+    <TableDataBlock
+      order
+      keepData
       btnExtra={({ get }) => (
         <ExcelButton
           dispatchType={'businessSettled/fetchMerchantGetExcel'}
@@ -216,7 +211,7 @@ const BusinessSettled = (props) => {
           exportProps={{ header: getColumns.slice(0, -1) }}
         ></ExcelButton>
       )}
-      pParams={{ searchData: { sortField: '1' } }}
+      params={{ sortField: '1' }}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
@@ -224,7 +219,7 @@ const BusinessSettled = (props) => {
       rowKey={(record) => `${record.userMerchantIdString}`}
       dispatchType="businessSettled/fetchGetList"
       {...businessSettled}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

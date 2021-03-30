@@ -5,7 +5,7 @@ import CITYJSON from '@/common/city';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
 import AreaCompanySet from './components/Area/Form/AreaCompanySet';
 import AreaAccountSet from './components/Area/Form/AreaAccountSet';
@@ -48,7 +48,8 @@ const AreaCenter = (props) => {
       label: '所属省公司',
       name: 'belongProvinceCode',
       type: 'select',
-      select: { list: CITYJSON.map((item) => ({ name: item.label, value: item.value })) },
+      select: CITYJSON,
+      fieldNames: { label: 'label' },
     },
     {
       label: '代理公司名称',
@@ -72,12 +73,6 @@ const AreaCenter = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      dataIndex: 'districtName',
-      fixed: 'left',
-      render: (val, row, i) => i + 1,
-    },
     {
       title: '代理区县',
       fixed: 'left',
@@ -114,16 +109,6 @@ const AreaCenter = (props) => {
       align: 'right',
       dataIndex: 'merchantCount',
     },
-    // {
-    //   title: '累计收益（卡豆）',
-    //   align: 'right',
-    //   dataIndex: 'totalIncome',
-    // },
-    // {
-    //   title: '累计提现（卡豆）',
-    //   align: 'right',
-    //   dataIndex: 'totalWithdrawal',
-    // },
     {
       title: '状态',
       align: 'right',
@@ -138,18 +123,6 @@ const AreaCenter = (props) => {
       render: (partnerId, record) => (
         <HandleSetTable
           formItems={[
-            // {
-            //   type: 'own',
-            //   auth: 'income',
-            //   title: '收益明细',
-            //   click: () => setVisible({ type: 'income', record }),
-            // },
-            // {
-            //   type: 'own',
-            //   auth: 'withdraw',
-            //   title: '提现记录',
-            //   click: () => setVisible({ type: 'withdraw', record }),
-            // },
             {
               type: 'info',
               click: () => fetchAreaDetail({ type: 'detail', partnerId }),
@@ -162,8 +135,9 @@ const AreaCenter = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="区县运营中心"
+      <TableDataBlock
+        order
+        keepData
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -187,7 +161,7 @@ const AreaCenter = (props) => {
         rowKey={(record) => `${record.partnerId}`}
         dispatchType="areaCenter/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <AreaCompanyDetailList visible={visible} setVisible={setVisible} />
       <AreaCompanySet
         cRef={childRef}

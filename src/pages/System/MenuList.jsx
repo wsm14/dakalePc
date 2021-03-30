@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import { Button, Card, Switch } from 'antd';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import sysMenuSet from './components/Menu/SysMenuSet';
+import TableDataBlock from '@/components/TableDataBlock';
+import SysMenuSet from './components/Menu/SysMenuSet';
 
 const tabList = [
   {
@@ -38,13 +38,10 @@ const SysMenuList = (props) => {
   const childRef = useRef();
   const [tabkey, setTabKey] = useState('admin');
   const [one, setOne] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   // table 表头
   const getColumns = [
-    // {
-    //   title: '菜单ID',
-    //   dataIndex: 'authAccessId',
-    // },
     {
       title: '菜单名称',
       dataIndex: 'accessName',
@@ -62,11 +59,6 @@ const SysMenuList = (props) => {
         />
       ),
     },
-    // {
-    //   title: '菜单路径',
-    //   align: 'center',
-    //   dataIndex: 'orderCount',
-    // },
     {
       title: '操作',
       dataIndex: 'authAccessId',
@@ -80,15 +72,12 @@ const SysMenuList = (props) => {
               click: () => fetchGetMenuDetail({ accessId: val }),
             },
             {
-              type: 'own',
+              auth: true,
               title: '添加',
               click: () =>
                 handleSysMenuSet({
                   menuName: record.accessName,
                   pid: val,
-                  authType: '2',
-                  status: '1',
-                  ownerType: tabkey,
                   type: 'addChildren',
                 }),
             },
@@ -103,7 +92,7 @@ const SysMenuList = (props) => {
     dispatch({
       type: 'sysMenuList/fetchGetMenuDetail',
       payload,
-      callback: val === undefined ? handleSysMenuSet : fetchSetMenuStatus,
+      callback: val === undefined ? (val) => handleSysMenuSet(val) : fetchSetMenuStatus,
     });
   };
 
@@ -115,7 +104,7 @@ const SysMenuList = (props) => {
         ...payload,
         pid: payload.pidString,
         id: payload.accessId,
-        status: Number(!Number(payload.status)),
+        status: 1 ^ Number(payload.status),
       },
       callback: handleCallback,
     });
@@ -134,15 +123,13 @@ const SysMenuList = (props) => {
   };
 
   // 新增/修改
-  const handleSysMenuSet = (initialValues = { authType: '2', status: '1', ownerType: tabkey }) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: sysMenuSet({
-        dispatch,
-        allMenu: sysMenuList.allMenu,
-        initialValues: { pid: initialValues.pidString, ...initialValues },
-        handleCallback,
-      }),
+  const handleSysMenuSet = (value = {}) => {
+    // 菜单默认值
+    const dataMenu = { authType: '2', status: '1', ownerType: tabkey };
+    const { pidString: pid } = value;
+    setVisible({
+      show: true,
+      detail: { pid, ...dataMenu, ...value },
     });
   };
 
@@ -166,17 +153,22 @@ const SysMenuList = (props) => {
         setOne(true);
       }}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.authAccessId}`}
         dispatchType="sysMenuList/fetchGetList"
-        params={{ ownerType: tabkey }}
-        pParams={{ limit: 101 }}
+        params={{ ownerType: tabkey, limit: 999 }}
+        pagination={false}
         {...sysMenuList}
-      ></DataTableBlock>
+      ></TableDataBlock>
+      <SysMenuSet
+        visible={visible}
+        onClose={() => setVisible(false)}
+        handleCallback={handleCallback}
+      ></SysMenuSet>
     </Card>
   );
 };

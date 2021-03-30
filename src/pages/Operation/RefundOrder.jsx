@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, REFUND_ORDERS_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 
 const RefundOrder = (props) => {
@@ -37,9 +37,7 @@ const RefundOrder = (props) => {
       label: '状态',
       type: 'select',
       name: 'status',
-      select: {
-        list: REFUND_ORDERS_STATUS,
-      },
+      select: REFUND_ORDERS_STATUS,
     },
   ];
 
@@ -61,7 +59,6 @@ const RefundOrder = (props) => {
     },
     {
       title: '店铺名称',
-      align: 'right',
       dataIndex: 'merchantName',
     },
     {
@@ -70,15 +67,15 @@ const RefundOrder = (props) => {
       dataIndex: 'goodsCount',
     },
     {
+      title: '退款数量',
+      align: 'right',
+      dataIndex: 'refundCount',
+    },
+    {
       title: '退款金额',
       align: 'right',
       dataIndex: 'refundFee',
-      render: (val) => `￥${val || 0}`,
-    },
-    {
-      title: '退款卡豆数',
-      align: 'right',
-      dataIndex: 'refundBean',
+      render: (val,record) => `￥${val || 0} (含${record.refundBean?record.refundBean:0}卡豆)`,
     },
     {
       title: '提交退款时间',
@@ -110,8 +107,8 @@ const RefundOrder = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      keepName="退款管理"
+    <TableDataBlock
+      keepData
       cRef={childRef}
       loading={loading}
       columns={getColumns}
@@ -119,7 +116,7 @@ const RefundOrder = (props) => {
       rowKey={(record) => `${record.orderId}`}
       dispatchType="refundOrder/fetchGetList"
       {...refundOrder}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Drawer, Button, Space, Form, message, Modal, Skeleton } from 'antd';
+import { Button, Form, message, Modal } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
-import businessAuditRefuse from '../Audit/BusinessAuditRefuse';
+import BusinessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const BusinessAdd = (props) => {
   const {
@@ -19,19 +20,15 @@ const BusinessAdd = (props) => {
     loading,
     businessAudit,
   } = props;
-
   const { type = 'add', show = false } = visible;
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
-  // [经度, 纬度]
-  const [location, setLocation] = useState([lnt, lat]);
-  // 选择城市
-  const [selectCity, setSelectCity] = useState([]);
-  // 骨架框显示
-  const [skeletonType, setSkeletonType] = useState(true);
-  // 经营类目
-  const [categId, setCategId] = useState('');
+
+  const [location, setLocation] = useState([lnt, lat]); // [经度, 纬度]
+  const [selectCity, setSelectCity] = useState([]); // 选择城市
+  const [categId, setCategId] = useState(''); // 经营类目
+  const [visibleRefuse, setVisibleRefuse] = useState(false); // 审核拒绝
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
@@ -39,6 +36,7 @@ const BusinessAdd = (props) => {
       const {
         categoryName: cobj,
         coverImg,
+        headerImg,
         interiorImg,
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
@@ -46,6 +44,7 @@ const BusinessAdd = (props) => {
         businessHubIdString,
         tags,
         property: { service, speacial },
+        scenesIds,
       } = values;
       if (typeof bimg !== 'string') {
         message.warn('请重新上传营业执照', 1.5);
@@ -72,6 +71,7 @@ const BusinessAdd = (props) => {
           speacial: speacial ? speacial.toString() : '',
         },
         [type == 'edit' ? 'tag' : 'tags']: tags.toString(),
+        scenesIds: scenesIds.toString(),
         userMerchantId: initialValues.userMerchantIdString,
         businessTime: selectTime.toString(), // 营业时间
         businessHubId: businessHubObj.length ? businessHubObj[0].businessHubIdString : '',
@@ -94,27 +94,24 @@ const BusinessAdd = (props) => {
       };
       aliOssUpload(coverImg).then((cres) => {
         payload.coverImg = cres.toString();
-        aliOssUpload(interiorImg).then((res) => {
-          console.log(
-            JSON.stringify({
-              ...payload,
-              interiorImg: res.toString(),
-            }),
-          );
-          dispatch({
-            type: {
-              add: 'businessList/fetchMerchantAdd',
-              edit: 'businessList/fetchMerchantEdit',
-              audit: 'businessAudit/fetchMerSaleAuditAllow',
-            }[type],
-            payload: {
-              ...payload,
-              interiorImg: res.toString(),
-            },
-            callback: () => {
-              onClose();
-              cRef.current.fetchGetData();
-            },
+        aliOssUpload(headerImg).then((cres2) => {
+          payload.headerImg = cres2.toString();
+          aliOssUpload(interiorImg).then((res) => {
+            dispatch({
+              type: {
+                add: 'businessList/fetchMerchantAdd',
+                edit: 'businessList/fetchMerchantEdit',
+                audit: 'businessAudit/fetchMerSaleAuditAllow',
+              }[type],
+              payload: {
+                ...payload,
+                interiorImg: res.toString(),
+              },
+              callback: () => {
+                onClose();
+                cRef.current.fetchGetData();
+              },
+            });
           });
         });
       });
@@ -213,14 +210,13 @@ const BusinessAdd = (props) => {
         });
       }
     }
-    setSkeletonType(false);
   };
 
   // 审核驳回
   const fetchAuditRefuse = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessAuditRefuse({ dispatch, cRef, initialValues, onClose }),
+    setVisibleRefuse({
+      show: true,
+      initialValues,
     });
   };
 
@@ -287,19 +283,6 @@ const BusinessAdd = (props) => {
     </div>
   );
 
-  const modalProps = {
-    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
-    width: 750,
-    visible: show,
-    maskClosable: false,
-    destroyOnClose: true,
-  };
-
-  const closeDrawer = () => {
-    setSkeletonType(true);
-    onClose();
-  };
-
   const buttonProps = (callback) => ({
     onClick: () =>
       form.validateFields().then((values) => {
@@ -309,56 +292,58 @@ const BusinessAdd = (props) => {
     loading,
   });
 
+  const modalProps = {
+    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
+    width: 750,
+    visible: show,
+    maskClosable: false,
+    onClose,
+    afterCallBack: () => {
+      handleInvalueEdit();
+      setCategId(initialValues.topCategoryId);
+    },
+    footer: (
+      <>
+        {(type == 'add' || type == 'edit') && (
+          <Button {...buttonProps(fetchUpdataCheck)}>
+            {{ add: '提交审核', edit: '修改' }[type]}
+          </Button>
+        )}
+        {type == 'audit' && (
+          <>
+            <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
+              审核驳回
+            </Button>
+            {initialValues.hasPartner === '1' && (
+              <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
+            )}
+          </>
+        )}
+      </>
+    ),
+  };
+
   return (
-    <Drawer
-      {...modalProps}
-      onClose={closeDrawer}
-      afterVisibleChange={(showEdit) => {
-        if (showEdit) {
-          setSkeletonType(true);
-          handleInvalueEdit();
-          setCategId(initialValues.topCategoryId);
-        } else {
-          setSkeletonType(true);
-        }
-      }}
-      bodyStyle={{ paddingBottom: 80 }}
-      footer={
-        <div style={{ textAlign: 'right' }}>
-          <Space>
-            <Button onClick={closeDrawer}>取消</Button>
-            {(type == 'add' || type == 'edit') && (
-              <Button {...buttonProps(fetchUpdataCheck)}>
-                {{ add: '提交审核', edit: '修改' }[type]}
-              </Button>
-            )}
-            {type == 'audit' && (
-              <>
-                <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>
-                  审核驳回
-                </Button>
-                {initialValues.hasPartner === '1' && (
-                  <Button {...buttonProps(fetchAuditAllow)}>审核通过</Button>
-                )}
-              </>
-            )}
-          </Space>
-        </div>
-      }
-    >
-      <Skeleton loading={skeletonType} active>
+    <>
+      <DrawerCondition {...modalProps}>
         <BusinessAddBeas
           form={form}
           amap={amap}
           setType={type}
+          categId={categId}
           setCategId={setCategId}
           onSearchAddress={onSearchAddress}
           initialValues={initialValues}
         />
         <BusinessAddQuality form={form} initialValues={initialValues} />
         <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
-      </Skeleton>
-    </Drawer>
+      </DrawerCondition>
+      <BusinessAuditRefuse
+        visible={visibleRefuse}
+        cRef={cRef}
+        onClose={() => setVisibleRefuse(false)}
+      ></BusinessAuditRefuse>
+    </>
   );
 };
 

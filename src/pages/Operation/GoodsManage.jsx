@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, message } from 'antd';
-import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS } from '@/common/constant';
+import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
-import closeRefuse from './components/Goods/Form/CloseRefuse';
-import stockSet from './components/Goods/Form/StockSet';
-import DataTableBlock from '@/components/DataTableBlock';
+import CloseRefuse from './components/Goods/Form/CloseRefuse';
+import StockSet from './components/Goods/Form/StockSet';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
 import GoodsDrawer from './components/Goods/GoodsDrawer';
@@ -18,8 +18,10 @@ const GoodsManageComponent = (props) => {
 
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
-  const [visible, setVisible] = useState(false);
-  const [merchantId, setMerchantId] = useState('');
+  const [visible, setVisible] = useState(false); // 商品详情
+  const [visibleDown, setVisibleDown] = useState(false); // 下架原因
+  const [visibleStock, setVisibleStock] = useState(false); // 库存设置
+  const [merchantId, setMerchantId] = useState(''); // 搜索的商家id
 
   // 搜索参数
   const searchItems = [
@@ -59,28 +61,18 @@ const GoodsManageComponent = (props) => {
       label: '上架状态',
       name: 'status',
       type: 'select',
-      select: { list: GOODS_TYPE },
+      select: GOODS_TYPE,
     },
     {
       label: '商品类型',
       name: 'goodsType',
       type: 'select',
-      select: {
-        list: [
-          { value: 'package', name: '套餐' },
-          { value: 'single', name: '单品' },
-        ],
-      },
+      select: GOODS_CLASS_TYPE,
     },
   ];
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      dataIndex: 'merchantIdStr',
-      render: (val, item, i) => i + 1,
-    },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
@@ -106,7 +98,7 @@ const GoodsManageComponent = (props) => {
       title: '商品类型',
       align: 'center',
       dataIndex: 'goodsType',
-      render: (val) => (val == 'package' ? '套餐' : '单品'),
+      render: (val) => GOODS_CLASS_TYPE[val],
     },
     {
       title: '售价',
@@ -164,7 +156,6 @@ const GoodsManageComponent = (props) => {
               },
               // 上架中
               {
-                type: 'own',
                 title: '库存',
                 auth: 'stockSet',
                 visible: status == 1,
@@ -193,9 +184,7 @@ const GoodsManageComponent = (props) => {
                 click: () => fetchGoodsUp({ goodsIdString: val }),
               },
               {
-                type: 'own',
-                title: '操作记录',
-                auth: 'handleDeatil',
+                type: 'handleDeatil',
                 click: () => fetchGoodsHandleDetail(val),
               },
             ]}
@@ -262,17 +251,17 @@ const GoodsManageComponent = (props) => {
 
   // 下架
   const fetchAuditRefuse = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: closeRefuse({ dispatch, childRef, initialValues }),
+    setVisibleDown({
+      show: true,
+      initialValues,
     });
   };
 
   // 库存
   const fetchStockSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: stockSet({ dispatch, childRef, initialValues }),
+    setVisibleStock({
+      show: true,
+      initialValues,
     });
   };
 
@@ -298,8 +287,9 @@ const GoodsManageComponent = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="商品管理"
+      <TableDataBlock
+        order
+        keepData
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'addGoods' })}>
@@ -318,13 +308,29 @@ const GoodsManageComponent = (props) => {
         rowKey={(record) => `${record.goodsIdString}`}
         dispatchType="goodsManage/fetchGetList"
         {...goodsManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <GoodsDrawer
         childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
       ></GoodsDrawer>
-      <GoodsHandleDetail visible={visible} onClose={() => setVisible(false)}></GoodsHandleDetail>
+      <GoodsHandleDetail
+        visible={visible}
+        childRef={childRef}
+        onClose={() => setVisible(false)}
+      ></GoodsHandleDetail>
+      {/* 下架 */}
+      <CloseRefuse
+        visible={visibleDown}
+        childRef={childRef}
+        onClose={() => setVisibleDown(false)}
+      ></CloseRefuse>
+      {/* 库存 */}
+      <StockSet
+        visible={visibleStock}
+        childRef={childRef}
+        onClose={() => setVisibleStock(false)}
+      ></StockSet>
     </>
   );
 };

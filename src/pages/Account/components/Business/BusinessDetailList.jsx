@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { COLLECT_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import BusinessOrderDetail from '../CheckOrderDetail';
 
 const BusinessDetailList = (props) => {
@@ -153,7 +153,7 @@ const BusinessDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         loading={loading}
         columns={propItem.getColumns}
@@ -167,9 +167,9 @@ const BusinessDetailList = (props) => {
           }[type],
         }}
         dispatchType="accountBusiness/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

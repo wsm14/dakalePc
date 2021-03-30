@@ -62,10 +62,10 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     title: '问题详情',
     visible: show,
     onClose,
-    footer: (info && info.status !== '2' && (
+    footer: info && info.status !== '2' && (
       <Button onClick={handleFinish} type="primary" loading={loading}>
         确认回复
-      </Button>)
+      </Button>
     ),
   };
 
@@ -104,7 +104,6 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     </DrawerCondition>
   );
 };
-export default connect(({ customerFeedBack, loading }) => ({
-  customerFeedBack,
+export default connect(({ loading }) => ({
   loading: loading.effects['serviceFeedBack/fetchFeedBackPush'],
 }))(FeedBackDetail);

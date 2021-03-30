@@ -53,11 +53,11 @@ const RoleSetForm = (props) => {
     {
       label: '操作权限设置',
       name: 'roleIds',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: [{ required: false }],
       labelCol: { span: 24 },
       wrapperCol: { span: 24 },
-      childrenOwn: <RoleTableForm cRef={tableRef} flag={flag} userInfo={userInfo}></RoleTableForm>,
+      formItem: <RoleTableForm cRef={tableRef} flag={flag} userInfo={userInfo}></RoleTableForm>,
     },
   ];
 

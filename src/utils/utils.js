@@ -227,7 +227,7 @@ export const checkSorterData = (old, next, key, type = 'number') => {
 };
 
 // 检查数据类型
-const checkDataType = (data) => {
+export const checkDataType = (data) => {
   let checkType = undefined;
   if (Array.isArray(data)) {
     checkType = 'Array'; // 数组

@@ -89,6 +89,7 @@ const UserSetForm = (props) => {
           ...values,
           entryDate: entryDate ? entryDate.format('YYYY-MM-DD') : '',
           departmentId: departmentId[departmentId.length - 1],
+          account: mobile,
           password: password
             ? password
             : userInfo.adminAccountId
@@ -151,9 +152,9 @@ const UserSetForm = (props) => {
     {
       label: '角色',
       name: 'roleIds',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: [{ required: false }],
-      childrenOwn: (
+      formItem: (
         <Spin spinning={loading}>
           <Transfer
             showSearch
@@ -175,21 +176,20 @@ const UserSetForm = (props) => {
       label: '状态',
       name: 'workStatus',
       type: 'select',
-      visible: !!userInfo.authAdminId,
+      visible: !!userInfo.adminAccountId,
       select: WORKER_JOB_TYPE,
     },
     {
       label: '启用状态',
       name: 'status',
       type: 'radio',
-      visible: !!userInfo.authAdminId,
+      visible: !!userInfo.adminAccountId,
       select: ['停用', '启用'],
     },
   ];
 
   const modalProps = {
     title: `用户设置`,
-    width: 650,
     visible,
     onClose,
     afterCallBack: afterVisibleChange,

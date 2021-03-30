@@ -5,14 +5,16 @@ import { Button } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
+import PuzzleAdRoot from './components/PuzzleAd/PuzzleAdRoot';
 
 const PuzzleAd = (props) => {
   const { puzzleAd, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' }); // 拼图广告设置
+  const [visibleRoot, setVisibleRoot] = useState(false); // 拼图广告设置
 
   // 搜索参数
   const searchItems = [
@@ -20,12 +22,6 @@ const PuzzleAd = (props) => {
       label: '品牌名',
       name: 'brandName',
     },
-    // {
-    //   label: '区域',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    // },
   ];
 
   // table 表头
@@ -33,8 +29,7 @@ const PuzzleAd = (props) => {
     {
       title: '类型',
       dataIndex: 'type',
-      render: (val) =>
-        Object.assign(...PUZZLE_AD_TYPE.map((item) => ({ [item.value]: item.name })))[val],
+      render: (val) => PUZZLE_AD_TYPE[val],
     },
     {
       title: '品牌名',
@@ -72,6 +67,11 @@ const PuzzleAd = (props) => {
               click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 0 }),
             },
             {
+              type: 'info',
+              visible: record.status === '1',
+              click: () => fetchDetail('info', val, record),
+            },
+            {
               type: 'up',
               visible: record.status === '0',
               click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 1 }),
@@ -79,18 +79,7 @@ const PuzzleAd = (props) => {
             {
               type: 'edit',
               visible: record.status === '0',
-              click: () =>
-                setVisibleSet({
-                  show: true,
-                  info: {
-                    ...record,
-                    brandId: record.brandIdStr,
-                    activeDate: [
-                      moment(record.startShowTime, 'YYYY-MM-DD'),
-                      moment(record.endShowTime, 'YYYY-MM-DD'),
-                    ],
-                  },
-                }),
+              click: () => fetchDetail('edit', val, record),
             },
             {
               type: 'del',
@@ -115,20 +104,46 @@ const PuzzleAd = (props) => {
     });
   };
 
+  // 详情
+  const fetchDetail = (type, puzzleAdsId) => {
+    dispatch({
+      type: 'puzzleAd/fetchPuzzleAdDetail',
+      payload: {
+        puzzleAdsId,
+      },
+      callback: (info) => setVisibleSet({ type, show: true, info }),
+    });
+  };
+
+  // 获取广告配置详情
+  const fetchAdRootDetail = () => {
+    dispatch({
+      type: 'puzzleAd/fetchPuzzleAdRoot',
+      callback: () => setVisibleRoot(true),
+    });
+  };
+
   return (
     <>
-      <DataTableBlock
-        keepName="拼图广告"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, info: '' })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
+          <>
+            <AuthConsumer auth="adRoot">
+              <Button className="dkl_green_btn" onClick={fetchAdRootDetail}>
+                广告配置
+              </Button>
+            </AuthConsumer>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          </>
         }
         loading={loading}
         columns={getColumns}
@@ -136,13 +151,16 @@ const PuzzleAd = (props) => {
         rowKey={(record) => `${record.puzzleAdsId}`}
         dispatchType="puzzleAd/fetchGetList"
         {...puzzleAd}
-      ></DataTableBlock>
+      ></TableDataBlock>
+      {/* 拼图广告设置 */}
       <PuzzleAdSet
         cRef={childRef}
         visible={visibleSet}
         onSumbit={fetchPuzzleAdSet}
         onClose={() => setVisibleSet({ show: false, info: '' })}
       ></PuzzleAdSet>
+      {/* 广告配置 */}
+      <PuzzleAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></PuzzleAdRoot>
     </>
   );
 };

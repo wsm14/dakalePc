@@ -1,4 +1,8 @@
-import { fetchOrdersList, fetchOrdersDetail } from '@/services/OperationServices';
+import {
+  fetchOrdersList,
+  fetchOrdersImport,
+  fetchOrdersDetail,
+} from '@/services/OperationServices';
 
 export default {
   namespace: 'ordersList',
@@ -30,6 +34,12 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchOrdersImport({ payload, callback }, { call }) {
+      const response = yield call(fetchOrdersImport, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.orderDTOS);
     },
     *fetchOrderDetail({ payload }, { call, put }) {
       const response = yield call(fetchOrdersDetail, payload);

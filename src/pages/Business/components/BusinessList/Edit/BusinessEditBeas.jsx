@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Select, Switch } from 'antd';
+import { Form, Select, Switch, Tag } from 'antd';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 
@@ -15,15 +15,17 @@ const BusinessAddBeas = (props) => {
     brandList,
     platformList,
     tradeList,
+    categId,
     setCategId,
     setType, // 进入的状态 add edit audit
   } = props;
+  const { provinceName = '', cityName = '' } = initialValues;
 
   const [brandMust, setBrandMust] = useState(!(initialValues.brandName === '其他品牌'));
-  const [areaMust, setAreaMust] = useState(initialValues && initialValues.topCategoryName[0] == 1);
   const [selectCity, setSelectCity] = useState(initialValues.provinceCode || []);
   const [ampShow, setAmpShow] = useState(false);
   const [hubList, setHubList] = useState([]);
+  const [mobileInfo, setMobileInfo] = useState({});
 
   // 获取品牌
   const fetchGetBrandList = () => {
@@ -61,6 +63,20 @@ const BusinessAddBeas = (props) => {
     });
   };
 
+  // 获取手机归属地
+  const fetchGetPhoneComeLocation = () => {
+    dispatch({
+      type: 'baseData/fetchGetPhoneComeLocation',
+      payload: {
+        mobile: initialValues.mobile,
+      },
+      callback: setMobileInfo,
+    });
+  };
+
+  // 检查归属地和所在地是否相同
+  const checkMobile = provinceName.includes(mobileInfo.prov) && cityName.includes(mobileInfo.city);
+
   useEffect(() => {
     fetchGetBrandList();
     if (initialValues) {
@@ -69,6 +85,7 @@ const BusinessAddBeas = (props) => {
       setAmpShow(!!initialValues.lat);
       if (initialValues.districtCode) fetchGetDetail({ districtCode: initialValues.districtCode });
       setType === 'audit' && fetchGetPromotionMoney(initialValues.topCategoryId);
+      setType === 'audit' && fetchGetPhoneComeLocation();
     }
   }, []);
 
@@ -76,10 +93,10 @@ const BusinessAddBeas = (props) => {
     {
       title: '01 店铺信息',
       label: '品牌名称',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: 'false',
       required: false,
-      childrenOwn: (
+      formItem: (
         <>
           <Form.Item
             key="bandName"
@@ -119,6 +136,11 @@ const BusinessAddBeas = (props) => {
       label: '注册帐号',
       name: 'mobile',
       visible: setType != 'edit',
+      addonAfter: (
+        <span style={{ color: checkMobile ? 'green' : 'red' }}>
+          {mobileInfo.prov || ''}-{mobileInfo.city || ''}
+        </span>
+      ),
       addRules: [{ pattern: PHONE_PATTERN, message: '注册帐号为手机号' }],
     },
     {
@@ -130,9 +152,9 @@ const BusinessAddBeas = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'provinceCode',
-      onChange: (val) => {
-        fetchGetDetail({ districtCode: val[2].value });
-        setSelectCity(val);
+      onChange: (val, option) => {
+        fetchGetDetail({ districtCode: option[2].value });
+        setSelectCity(option);
         form.setFieldsValue({
           businessHubIdString: undefined,
         });
@@ -142,10 +164,8 @@ const BusinessAddBeas = (props) => {
       label: '所属商圈',
       name: 'businessHubIdString',
       type: 'select',
-      select: hubList.map((item) => ({
-        name: item.businessHubName,
-        value: item.businessHubIdString,
-      })),
+      select: hubList,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
       span: 2,
     },
     {
@@ -157,7 +177,7 @@ const BusinessAddBeas = (props) => {
     {
       type: 'noForm',
       visible: ampShow,
-      childrenOwn: amap,
+      formItem: amap,
     },
     {
       label: '店铺电话',
@@ -170,6 +190,14 @@ const BusinessAddBeas = (props) => {
       maxFile: 1,
       extra: '最多上传 1 张图片，建议尺寸1080px*720px，支持JPG、PNG、JPEG格式，大小在2M以内',
       rules: [{ required: true, message: `请确认店铺门头照` }],
+    },
+    {
+      label: '店铺头图',
+      name: 'headerImg',
+      type: 'upload',
+      maxFile: 1,
+      extra: '最多上传 1 张图片，建议图片比例16：9，大小在3M以内',
+      rules: [{ required: true, message: `请确认店铺头图` }],
     },
     {
       label: '店内实景照',
@@ -204,13 +232,13 @@ const BusinessAddBeas = (props) => {
       name: 'topCategoryName',
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      onChange: (val) => {
-        setAreaMust(val[0].categoryName === '美食');
-        setCategId(val[0].categoryIdString);
-        fetchGetPlatform(val[0].categoryIdString);
-        fetchGetPromotionMoney(val[0].categoryIdString);
+      onChange: (val, option) => {
+        const [categoryId] = val;
+        setCategId(categoryId);
+        fetchGetPlatform(categoryId);
+        fetchGetPromotionMoney(categoryId);
         form.setFieldsValue({
-          categoryName: val,
+          categoryName: option,
           businessArea: undefined,
         });
       },
@@ -224,12 +252,10 @@ const BusinessAddBeas = (props) => {
       label: '店铺面积',
       type: 'select',
       name: 'businessArea',
-      visible: areaMust,
+      visible: categId && platformList.length && platformList[0].type === 'area',
       loading: loading.models.sysTradeList,
-      select: platformList.map((item) => ({
-        value: item.typeContent,
-        name: item.typeContent,
-      })),
+      select: platformList,
+      fieldNames: { label: 'typeContent', value: 'typeContent' },
       onChange: (val) => {
         form.setFieldsValue({ commissionRatio: undefined });
       },

@@ -4,7 +4,7 @@ import { Card, Result, Button, Space, Modal } from 'antd';
 import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_STATUS } from '@/common/constant';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MessageDrawer from './components/MessagePush/MessageDrawer';
 
 const tabList = [
@@ -75,12 +75,6 @@ const MessagePush = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'userType',
-      render: (val, row, i) => i + 1,
-    },
     {
       title: '消息标题',
       fixed: 'left',
@@ -247,8 +241,9 @@ const MessagePush = (props) => {
         }
       >
         {check && check.length ? (
-          <DataTableBlock
-            NoSearch
+          <TableDataBlock
+            order
+            firstFetch={false}
             noCard={false}
             cRef={childRef}
             loading={loading.models.messagePush}
@@ -262,7 +257,7 @@ const MessagePush = (props) => {
               onChange: (val) => setDelKey(val),
             }}
             {...messagePush.list}
-          ></DataTableBlock>
+          ></TableDataBlock>
         ) : (
           <Result status="403" title="403" subTitle="暂无权限"></Result>
         )}

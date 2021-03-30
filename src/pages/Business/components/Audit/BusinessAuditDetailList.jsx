@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Modal } from 'antd';
 import { BUSINESS_DETAIL_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessAuditDetailList = (props) => {
   const { businessAudit, loading, visible = false, setVisible } = props;
@@ -26,9 +26,10 @@ const BusinessAuditDetailList = (props) => {
         label: '审核状态',
         name: 'verifyStatus',
         type: 'select',
-        select: { list: BUSINESS_DETAIL_AUDIT },
+        select: BUSINESS_DETAIL_AUDIT,
       },
     ],
+
     getColumns: [
       {
         title: '店铺账号',
@@ -109,7 +110,7 @@ const BusinessAuditDetailList = (props) => {
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,
     dispatchType: propItem.dispatchType,
-    componentSize: 'middle',
+    size: 'middle',
     ...businessAudit.detailList,
   };
 
@@ -122,7 +123,7 @@ const BusinessAuditDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible(false)}
     >
-      <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <TableDataBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
   );
 };

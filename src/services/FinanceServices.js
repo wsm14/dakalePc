@@ -23,6 +23,13 @@ export function fetchSubsidyTaskDetail(params) {
   });
 }
 
+// get 补贴管理 - 任务列表 -  补贴详情列表
+export function fetchSubsidyTaskDetailList(params) {
+  return request('/admin/subsidyManagement/listSubsidyDetail', {
+    params,
+  });
+}
+
 // post 补贴管理 - 任务列表 -  新增
 export function fetchSubsidyTaskAdd(data) {
   return request('/admin/subsidyManagement/platformDirectCharge', {
@@ -101,14 +108,14 @@ export function fetchWithdrawSetRemark(data) {
 
 // get 平台收益 - 列表 总收益卡豆
 export function fetchPlatformInconme(params) {
-  return request('/admin/order/platformRevenue', {
+  return request('/admin/platform/platformRevenue', {
     params,
   });
 }
 
 // get 平台收益 - 详情
 export function fetchPlatformInconmeDetail(params) {
-  return request('/admin/order/getPlatformRevenueOrderDetail', {
+  return request('/admin/platform/getPlatformRevenueOrderDetail', {
     params,
   });
 }
