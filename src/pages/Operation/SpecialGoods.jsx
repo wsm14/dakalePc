@@ -133,12 +133,12 @@ const SpecialGoods = (props) => {
     {
       title: '活动时间',
       align: 'center',
-      dataIndex: 'activeStartTime',
+      dataIndex: 'activityStartTime',
       render: (val, row) => (
         <>
           {row.activityTimeRule === 'infinite'
             ? `${row.createTime} ~ 长期`
-            : `${val} ~ ${row.activeEndTime}`}
+            : `${val} ~ ${row.activityEndTime}`}
           <div>{SPECIAL_STATUS[row.status]}</div>
         </>
       ),
