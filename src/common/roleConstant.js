@@ -84,6 +84,7 @@ export const ROLE_BUTTON_TYPE = {
   setLike: '设置猜你想问',
   task: '任务列表',
   taskInfo: '任务详情',
+  taskDetail: '补贴详情',
   taskSave: '新增任务',
   taskDel: '删除任务',
   taskEnd: '结束任务',

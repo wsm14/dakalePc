@@ -95,6 +95,10 @@ const TaskManage = (props) => {
                 click: () => fetchSubsidyTaskDetail({ subsidyId }),
               },
               {
+                type: 'taskDetail',
+                click: () => fetchSubsidyTaskDetail({ subsidyId }),
+              },
+              {
                 type: 'del',
                 auth: 'taskDel',
                 visible: status === '0',
