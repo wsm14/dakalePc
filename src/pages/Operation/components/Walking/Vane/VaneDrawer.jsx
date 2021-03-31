@@ -121,7 +121,7 @@ const VaneDrawer = (props) => {
     visible: show,
     onClose,
     afterCallBack: () => {
-      setShowPop(detail.bubbleFlag);
+      setShowPop(Boolean(detail.bubbleFlag));
       setShowUrl(detail.jumpType || false);
     },
     footer: type !== 'detail' && (
