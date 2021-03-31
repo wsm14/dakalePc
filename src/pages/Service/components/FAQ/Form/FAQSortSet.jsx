@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import { SQUARE_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -43,7 +44,7 @@ const FAQSortSet = (props) => {
       type: 'upload',
       name: 'image',
       maxFile: 1,
-      imgRatio: 108 / 108,
+      imgRatio: SQUARE_ICON,
       rules: [{ required: false }],
     },
   ];
