@@ -47,7 +47,7 @@ const BusinessAuditAllow = (props) => {
     dispatch({
       type: 'baseData/fetchGetMreTag',
       payload: { page: 1, limit: 500 },
-      callback: (val) => setTagList(val),
+      callback: (val) => setTagList(val.map((item) => ({ label: item, value: item }))),
     });
   };
 
