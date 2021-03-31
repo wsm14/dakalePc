@@ -6,14 +6,14 @@ import { Input } from 'antd';
  */
 
 const InputBlock = (props) => {
-  const { placeholder, label } = props;
+  const { placeholder, label, ...other } = props;
   // 返回结果
   return (
     <Input
       placeholder={placeholder || `请输入${label}`}
       style={{ width: '100%' }}
       allowClear
-      {...props}
+      {...other}
     />
   );
 };

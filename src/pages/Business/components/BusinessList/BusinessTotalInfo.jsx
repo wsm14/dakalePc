@@ -13,6 +13,7 @@ const BusinessTotalInfo = ({ dispatch, loading, totalData, btnExtra }) => {
     {
       label: '',
       type: 'rangePicker',
+      allowClear: false,
       name: 'beginDate',
       end: 'endDate',
       disabledDate: (current) => current && current > moment().endOf('day').subtract(1, 'day'),

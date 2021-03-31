@@ -93,7 +93,7 @@ const SearchCondition = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, i) => {
-      const { type = 'input', name, handle, label } = item;
+      const { type = 'input', name, handle, label, ...other } = item;
       // 根据类型获取不同的表单组件
       const SearchItem = Searchor[type];
 
@@ -108,7 +108,13 @@ const SearchCondition = (props) => {
           key={i}
         >
           <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
-            <SearchItem {...item} {...(handle && handle(searchForm))} handle=""></SearchItem>
+            <SearchItem
+              type={type}
+              label={label}
+              name={name}
+              {...other}
+              {...(handle && handle(searchForm))}
+            ></SearchItem>
           </FormItem>
         </Col>,
       );
