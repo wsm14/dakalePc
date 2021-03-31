@@ -96,7 +96,6 @@ export const ROLE_BUTTON_TYPE = {
   taskSave: '新增任务',
   taskInfo: '任务详情',
   tradeAdd: '新增类目',
-  tradeSet: '行业设置',
   targetSet: '任务设置',
   taskDetail: '补贴详情',
   tradeSecondAdd: '添加子类目',

@@ -34,7 +34,7 @@ const DatePickerBlock = (props) => {
   const { type, picker, ranges: pRanges, disabledDate: pDisabledDate, ...other } = props;
 
   // 时间选择器默认配置
-  const pockerDefault = { width: '100%', allowClear: true };
+  const pockerDefault = { style: { width: '100%' }, allowClear: true };
 
   // 返回结果
   return {

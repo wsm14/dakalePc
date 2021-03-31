@@ -1,13 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Tag } from 'antd';
+import { Tag } from 'antd';
 import {
+  BUSINESS_TYPE,
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
-  BUSINESS_TYPE,
+  SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -20,6 +20,7 @@ const SpecialGoods = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
 
   // 获取商圈
@@ -35,25 +36,62 @@ const SpecialGoods = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商品名称',
-      name: 'goodsName',
-    },
-    {
-      label: '商家名称',
-      name: 'merchantName',
-    },
-    {
-      label: '上架状态',
+      label: '活动状态',
       name: 'status',
       type: 'select',
       select: SPECIAL_STATUS,
+    },
+    {
+      label: '活动有效期',
+      type: 'rangePicker',
+      name: 'activityStartTime',
+      end: 'activityEndTime',
+    },
+    {
+      label: '使用有效期',
+      type: 'select',
+      name: 'useTimeRule',
+      allItem: false,
+      select: SPECIAL_USERTIME_TYPE,
+      handle: (form) => ({
+        onChange: (val) => {
+          setSearchType(val);
+          form.setFieldsValue({ time: undefined });
+        },
+      }),
+    },
+    {
+      label: '有效期',
+      name: 'time',
+      disabled: !searchType,
+      type: { gain: 'number', fixed: 'rangePicker' }[searchType],
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'merchantName',
+    },
+    {
+      label: '推荐状态',
+      type: 'select',
+      name: 'recommendFlag',
+      select: { hotRecommend: '限时推荐', todayRecommend: '爆品推荐' },
+    },
+    {
+      label: '置顶状态',
+      type: 'select',
+      name: 'topFlag',
+      select: { hotTop: '限时置顶', todayTop: '爆品置顶' },
+    },
+    {
+      label: '活动商品名称',
+      name: 'goodsName',
     },
     {
       label: '区域',
       name: 'city',
       type: 'cascader',
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length && fetchGetHubSelect(val[2]),
+      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
     {
       label: '商圈',
@@ -63,6 +101,12 @@ const SpecialGoods = (props) => {
       allItem: false,
       select: hubData,
       fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
+    },
+    {
+      label: '店铺类型',
+      name: 'ownerType',
+      type: 'select',
+      select: BUSINESS_TYPE,
     },
   ];
 
@@ -222,44 +266,18 @@ const SpecialGoods = (props) => {
     });
   };
 
-  // 行业类目
-  const fetchTradeList = () => {
-    dispatch({
-      type: 'sysTradeList/fetchGetList',
-    });
-  };
-
-  // 勾选的行业列表
-  const fetchGetTradeSelect = () => {
-    dispatch({
-      type: 'baseData/fetchGetTradeSelect',
-      callback: (detail) => setVisible({ show: true, detail: { categoryIds: detail } }),
-    });
-  };
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
-
   return (
     <>
       <TableDataBlock
         keepData
         cRef={childRef}
         btnExtra={
-          <>
-            <AuthConsumer auth="tradeSet">
-              <Button className="dkl_green_btn" onClick={fetchGetTradeSelect}>
-                行业设置
-              </Button>
-            </AuthConsumer>
-            <SpecialRecommendMenu
-              handleRecommend={(val) =>
-                fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
-              }
-              disabled={!goodsList.length}
-            ></SpecialRecommendMenu>
-          </>
+          <SpecialRecommendMenu
+            handleRecommend={(val) =>
+              fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
+            }
+            disabled={!goodsList.length}
+          ></SpecialRecommendMenu>
         }
         loading={loading}
         columns={getColumns}

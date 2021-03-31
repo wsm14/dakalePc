@@ -314,7 +314,7 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['down', 'placement', 'recommendStatus', 'tradeSet'],
+        buttons: ['down', 'placement', 'recommendStatus'],
       },
       {
         path: '/operation/walking',
