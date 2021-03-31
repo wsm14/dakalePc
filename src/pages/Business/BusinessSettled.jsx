@@ -19,6 +19,14 @@ const BusinessSettled = (props) => {
   // 搜索参数
   const searchItems = [
     {
+      label: '店铺名称',
+      name: 'merchantName',
+    },
+    {
+      label: '店铺帐号',
+      name: 'account',
+    },
+    {
       label: '审核通过',
       type: 'rangePicker',
       name: 'verifyTimeStart',
@@ -37,14 +45,6 @@ const BusinessSettled = (props) => {
       end: 'activationTimeEnd',
     },
     {
-      label: '店铺名称',
-      name: 'merchantName',
-    },
-    {
-      label: '店铺帐号',
-      name: 'account',
-    },
-    {
       label: 'BD姓名',
       name: 'salespersonName',
     },
@@ -61,6 +61,7 @@ const BusinessSettled = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
+
     {
       label: '审核状态',
       name: 'verifyStatus',

@@ -35,6 +35,17 @@ const SearchCondition = (props) => {
   // 展开状态
   const [expand, setExpand] = useState(false);
 
+  // 重置
+  const handleReset = () => {
+    searchForm.resetFields();
+    if (resetSearch) resetSearch();
+  };
+
+  // 获取参数
+  const getData = () => {
+    return handleSearchsOver(searchForm.getFieldsValue(), 'data');
+  };
+
   // 搜索
   const handleSearchsOver = (values, type) => {
     const formObj = {};
@@ -83,7 +94,7 @@ const SearchCondition = (props) => {
   const len = formItems.length;
 
   // 不同屏幕大小显示个数
-  let count = 2;
+  let count = 4;
   if (screens.xxl) {
     count = 4;
   } else if (screens.xl) {
@@ -93,62 +104,60 @@ const SearchCondition = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, i) => {
-      const { type = 'input', name, handle, label } = item;
+      const { type = 'input', name, handle, label, ...other } = item;
       // 根据类型获取不同的表单组件
       const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
-      const pickerCheck = (type === 'rangePicker' || type === 'datePicker') && len < 4;
+      
       // 排版填充
       children.push(
         <Col
-          lg={i < colcount ? (pickerCheck ? 10 : componentSize !== 'default' ? 8 : 12) : 0}
-          xl={i < colcount ? (pickerCheck ? 10 : 12) : 0}
-          xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
+          lg={i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
+          xl={i < colcount ? 12 : 0}
+          xxl={i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
           key={i}
         >
           <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
-            <SearchItem {...item} {...(handle && handle(searchForm))} handle=""></SearchItem>
+            <SearchItem
+              type={type}
+              label={label}
+              name={name}
+              {...other}
+              {...(handle && handle(searchForm))}
+            ></SearchItem>
           </FormItem>
         </Col>,
       );
     });
+    children.push(
+      expand && (
+        <Col flex={1} key="searchkey">
+          {search}
+        </Col>
+      ),
+    );
     return children;
   };
 
-  // 获取参数
-  const getData = () => {
-    return handleSearchsOver(searchForm.getFieldsValue(), 'data');
-  };
-
-  // 重置
-  const handleReset = () => {
-    searchForm.resetFields();
-    if (resetSearch) resetSearch();
-  };
-
-  // 展开
-  const toggle = () => setExpand(!expand);
-
-  const search = () => {
-    return (
-      <div style={{ textAlign: 'right' }}>
-        <Space>
-          <Button type="primary" htmlType="submit">
-            查询
-          </Button>
-          <Button onClick={handleReset}>重置</Button>
-          {typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
-        </Space>
-        {len > (componentSize !== 'default' ? 6 : count) ? (
-          <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
-            {expand ? '收起' : '展开'}
-            {expand ? <UpOutlined /> : <DownOutlined />}
-          </a>
-        ) : null}
-      </div>
-    );
-  };
+  // 搜索按钮
+  const search = (
+    <div style={{ textAlign: 'right', marginBottom: 24 }}>
+      <Space>
+        <Button type="primary" htmlType="submit">
+          查询
+        </Button>
+        <Button onClick={handleReset}>重置</Button>
+        {typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
+      </Space>
+      {len > (componentSize !== 'default' ? 6 : count) ? (
+        <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => setExpand(!expand)}>
+          {expand ? '收起' : '展开'}
+          {expand ? <UpOutlined /> : <DownOutlined />}
+        </a>
+      ) : null}
+    </div>
+  );
 
   return (
     <Form
@@ -159,12 +168,12 @@ const SearchCondition = (props) => {
       className={styles.form}
       onFinish={handleSearchsOver}
     >
-      <div style={{ display: 'flex' }}>
-        <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
-          {getFields()}
-        </Row>
-        {search()}
-      </div>
+      <Row gutter={[12, 0]} style={{ padding: '0 10px' }}>
+        <Col flex={1}>
+          <Row gutter={[12, 0]}>{getFields()}</Row>
+        </Col>
+        {!expand && <Col>{search}</Col>}
+      </Row>
     </Form>
   );
 };

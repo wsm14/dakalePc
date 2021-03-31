@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import CouponDrawer from './components/Coupon/CouponDrawer';
@@ -23,12 +22,12 @@ const CouponManageComponent = (props) => {
       name: 'merchantCouponStatus',
       select: COUPON_STATUS,
     },
-    // {
-    //   label: '创建时间',
-    //   type: 'rangePicker',
-    //   name: 'beginDate',
-    //   end: 'endDate',
-    // },
+    {
+      label: '创建时间',
+      type: 'rangePicker',
+      name: 'beginDate',
+      end: 'endDate',
+    },
     {
       label: '券类型',
       type: 'select',
@@ -39,17 +38,16 @@ const CouponManageComponent = (props) => {
       label: '优惠券名称',
       name: 'couponName',
     },
-    // {
-    //   label: '集团/店铺名称',
-    //   name: 'merchantName',
-    // },
-    // {
-    //   label: '地区',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   changeOnSelect: true,
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    // },
+    {
+      label: '集团/店铺名称',
+      name: 'ownerName',
+    },
+    {
+      label: '店铺类型',
+      name: 'ownerType',
+      type: 'select',
+      select: BUSINESS_TYPE,
+    },
   ];
 
   // table 表头
