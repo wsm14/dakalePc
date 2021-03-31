@@ -35,6 +35,17 @@ const SearchCondition = (props) => {
   // 展开状态
   const [expand, setExpand] = useState(false);
 
+  // 重置
+  const handleReset = () => {
+    searchForm.resetFields();
+    if (resetSearch) resetSearch();
+  };
+
+  // 获取参数
+  const getData = () => {
+    return handleSearchsOver(searchForm.getFieldsValue(), 'data');
+  };
+
   // 搜索
   const handleSearchsOver = (values, type) => {
     const formObj = {};
@@ -83,11 +94,11 @@ const SearchCondition = (props) => {
   const len = formItems.length;
 
   // 不同屏幕大小显示个数
-  let count = 2;
+  let count = 7;
   if (screens.xxl) {
-    count = 4;
+    count = 7;
   } else if (screens.xl) {
-    count = 2;
+    count = 4;
   }
 
   const getFields = () => {
@@ -102,9 +113,9 @@ const SearchCondition = (props) => {
       // 排版填充
       children.push(
         <Col
-          lg={i < colcount ? (pickerCheck ? 10 : componentSize !== 'default' ? 8 : 12) : 0}
-          xl={i < colcount ? (pickerCheck ? 10 : 12) : 0}
-          xxl={i < colcount ? (pickerCheck ? 8 : componentSize !== 'default' ? 8 : 6) : 0}
+          lg={i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
+          xl={i < colcount ? 12 : 0}
+          xxl={i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
           key={i}
         >
           <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
@@ -119,25 +130,13 @@ const SearchCondition = (props) => {
         </Col>,
       );
     });
+    children.push(search);
     return children;
   };
 
-  // 获取参数
-  const getData = () => {
-    return handleSearchsOver(searchForm.getFieldsValue(), 'data');
-  };
-
-  // 重置
-  const handleReset = () => {
-    searchForm.resetFields();
-    if (resetSearch) resetSearch();
-  };
-
-  // 展开
-  const toggle = () => setExpand(!expand);
-
-  const search = () => {
-    return (
+  // 搜索按钮
+  const search = (
+    <Col flex={1} key="searchButton" style={{ marginBottom: 24 }}>
       <div style={{ textAlign: 'right' }}>
         <Space>
           <Button type="primary" htmlType="submit">
@@ -147,14 +146,14 @@ const SearchCondition = (props) => {
           {typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
         </Space>
         {len > (componentSize !== 'default' ? 6 : count) ? (
-          <a style={{ marginLeft: 8, fontSize: 12 }} onClick={toggle}>
+          <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => setExpand(!expand)}>
             {expand ? '收起' : '展开'}
             {expand ? <UpOutlined /> : <DownOutlined />}
           </a>
         ) : null}
       </div>
-    );
-  };
+    </Col>
+  );
 
   return (
     <Form
@@ -165,12 +164,9 @@ const SearchCondition = (props) => {
       className={styles.form}
       onFinish={handleSearchsOver}
     >
-      <div style={{ display: 'flex' }}>
-        <Row gutter={24} style={{ flex: 1, padding: '0 10px' }}>
-          {getFields()}
-        </Row>
-        {search()}
-      </div>
+      <Row gutter={24} style={{ padding: '0 10px' }}>
+        {getFields()}
+      </Row>
     </Form>
   );
 };
