@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { NUM_PATTERN } from '@/common/regExp';
 import { EXPERT_TYPE } from '@/common/constant';
+import { LEVEL_ICON, UP_LEVEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -94,7 +95,7 @@ const ExpertAllocationSet = (props) => {
       name: ['levelExtraParamObject', 'levelIcon'],
       type: 'upload',
       maxFile: 1,
-      imgRatio: 52 / 40,
+      imgRatio: LEVEL_ICON,
     },
     {
       title: '升级条件',
@@ -102,7 +103,7 @@ const ExpertAllocationSet = (props) => {
       name: ['levelExtraParamObject', 'upLevelIcon'],
       type: 'upload',
       maxFile: 1,
-      imgRatio: 540 / 320,
+      imgRatio: UP_LEVEL_ICON,
       visible: !fromShow,
     },
     {
