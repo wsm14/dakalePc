@@ -109,7 +109,7 @@ const SearchCondition = (props) => {
       const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
-      const pickerCheck = (type === 'rangePicker' || type === 'datePicker') && len < 4;
+      
       // 排版填充
       children.push(
         <Col
