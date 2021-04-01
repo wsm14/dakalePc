@@ -14,7 +14,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: `${BUSINESS_TYPE[ownerType]}名称`,
-      name: 'merchantName',
+      name: 'ownerName',
     },
     {
       label: '店铺范围',
