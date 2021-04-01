@@ -61,7 +61,6 @@ const BusinessSettled = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
-
     {
       label: '审核状态',
       name: 'verifyStatus',

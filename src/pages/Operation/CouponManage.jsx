@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import CouponDrawer from './components/Coupon/CouponDrawer';
@@ -132,6 +133,12 @@ const CouponManageComponent = (props) => {
       title: '发布时间',
       align: 'right',
       dataIndex: 'updateTime',
+      render: (val, row) => (
+        <div>
+          {val}
+          <div>{COUPON_STATUS[row.merchantCouponStatus]}</div>
+        </div>
+      ),
     },
     {
       title: '操作',
@@ -193,16 +200,16 @@ const CouponManageComponent = (props) => {
       <TableDataBlock
         order
         keepData
-        // btnExtra={
-        //   <AuthConsumer auth="save">
-        //     <Button
-        //       className="dkl_green_btn"
-        //       onClick={() => setVisible({ type: 'add', show: true })}
-        //     >
-        //       新建券
-        //     </Button>
-        //   </AuthConsumer>
-        // }
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisible({ type: 'add', show: true })}
+            >
+              新建券
+            </Button>
+          </AuthConsumer>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}

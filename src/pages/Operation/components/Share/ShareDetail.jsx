@@ -38,7 +38,7 @@ const ShareDetail = (props) => {
     },
     {
       label: '内容详情',
-      name: 'customCategoryName',
+      name: 'message',
     },
     {
       label: '行业分类',

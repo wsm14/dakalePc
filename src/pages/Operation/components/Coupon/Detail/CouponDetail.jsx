@@ -14,7 +14,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: `${BUSINESS_TYPE[ownerType]}名称`,
-      name: 'merchantName',
+      name: 'ownerName',
     },
     {
       label: '店铺范围',
@@ -61,8 +61,8 @@ const GoodsDetail = (props) => {
       label: '使用有效期',
       name: 'activeDate',
       render: (val, row) => {
-        const { activeDate, endDate, delayDays, activeDays } = row;
-        if (activeDate && endDate) {
+        const { useTimeRule, activeDate, endDate, delayDays, activeDays } = row;
+        if (useTimeRule === 'fixed') {
           return activeDate + '~' + endDate;
         } else {
           if (delayDays === '0') {

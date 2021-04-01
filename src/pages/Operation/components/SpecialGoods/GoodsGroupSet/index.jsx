@@ -6,7 +6,7 @@ import GoodsItemSet from '../GoodsItemSet';
 const GoodsGroupSet = () => {
   return (
     <div style={{ marginBottom: 24 }}>
-      <Form.List name="groups" initialValue={[{}]}>
+      <Form.List name="packageGroupObjects" initialValue={[{}]}>
         {(fields, { add, remove }) => {
           return (
             <>

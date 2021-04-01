@@ -308,13 +308,13 @@ export default [
         path: '/operation/coupon',
         name: '优惠券管理',
         component: './Operation/CouponManage',
-        buttons: ['del', 'info', 'down'],
+        buttons: ['save', 'del', 'info', 'down'],
       },
       {
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['down', 'placement', 'recommendStatus'],
+        buttons: ['save', 'down', 'placement', 'recommendStatus'],
       },
       {
         path: '/operation/walking',

@@ -17,6 +17,14 @@ export function fetchSpecialGoodsStatus(data) {
   });
 }
 
+// post 周边特惠 - 新增
+export function fetchSpecialGoodsSave(data) {
+  return request('admin/specialGoodsManagement/saveSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 周边特惠 - 推荐状态
 export function fetchSpecialGoodsRecommend(data) {
   return request('/admin/specialGoodsManagement/setRecommend', {

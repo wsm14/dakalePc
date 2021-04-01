@@ -313,7 +313,7 @@ export const SHARE_AGE_TYPE = { '1-100': '不限', age: '选择年龄段(可多�
 export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
 
 // 优惠券管理 - 优惠券状态
-export const COUPON_STATUS = [false, '上架', '下架'];
+export const COUPON_STATUS = [false, '上架中', '已下架'];
 
 // 优惠券管理 - 优惠券类型
 export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
@@ -322,16 +322,19 @@ export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
 export const COUPON_BUY_FLAG = ['关闭', '开启'];
 
 // 优惠券管理 - 适用时段
-export const COUPON_USER_TIME = { all: '每天', part: '部分' };
+export const COUPON_USER_TIME = { '1,2,3,4,5,6,7': '每天', part: '部分' };
 
 // 优惠券管理 - 星期时间段
 export const COUPON_WEEK_TIME = [false, '周一', '周二', '周三', '周四', '周五', '周六', '周日'];
 
 // 优惠券管理 - 时间段选择
-export const COUPON_TIME_TYPE = { all: '全天', part: '固定时间' };
+export const COUPON_TIME_TYPE = { '00:00-23:59': '全天', part: '固定时间' };
 
 // 优惠券管理 - 购买规则
 export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+
+// 优惠券管理 - 优惠券类型
+export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
 
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };

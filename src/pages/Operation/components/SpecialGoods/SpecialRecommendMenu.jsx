@@ -4,7 +4,7 @@ import { SPECIAL_RECOMMEND_TYPE } from '@/common/constant';
 import { Button, Menu, Dropdown } from 'antd';
 
 const SpecialRecommendMenu = (props) => {
-  const { disabled, handleRecommend } = props;
+  const { disabled, handleRecommend, num } = props;
 
   const menu = (
     <Menu onClick={({ key }) => handleRecommend({ operationFlag: key })}>
@@ -16,7 +16,7 @@ const SpecialRecommendMenu = (props) => {
 
   return (
     <Dropdown overlay={menu} placement="bottomCenter" disabled={disabled}>
-      <Button type="primary">推荐</Button>
+      <Button type="primary">推荐{num ? `(已选${num})` : ''}</Button>
     </Dropdown>
   );
 };
