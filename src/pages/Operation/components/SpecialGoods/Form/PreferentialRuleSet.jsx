@@ -7,6 +7,7 @@ import {
   COUPON_TIME_TYPE,
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
+  SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
@@ -49,15 +50,15 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
     {
       label: '使用有效期',
       type: 'radio',
-      select: ['固定时间', '领取后'],
-      name: 'setTime',
+      select: SPECIAL_USERTIME_TYPE,
+      name: 'useTimeRule',
       onChange: (e) => saveSelectData({ userTime: e.target.value }),
     },
     {
       label: '固定时间',
       name: 'activeDate',
       type: 'rangePicker',
-      visible: radioData.userTime === '0',
+      visible: radioData.userTime === 'fixed',
       disabledDate: (time) => {
         const dates = form.getFieldValue('actsdiveDate');
         const noewdate = moment().endOf('day').subtract(1, 'day');
@@ -85,7 +86,7 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === '1',
+      visible: radioData.userTime === 'gain',
     },
     {
       label: '有效期天数',
@@ -94,7 +95,7 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === '1',
+      visible: radioData.userTime === 'gain',
     },
     {
       label: '适用时段',

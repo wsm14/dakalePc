@@ -10,6 +10,7 @@ import {
   COUPON_TIME_TYPE,
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
+  SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
 import { NUM_INT_MAXSIX, NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
@@ -180,15 +181,15 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
     {
       label: '使用有效期',
       type: 'radio',
-      select: ['固定时间', '领取后'],
-      name: 'setTime',
+      select: SPECIAL_USERTIME_TYPE,
+      name: 'useTimeRule',
       onChange: (e) => saveSelectData({ userTime: e.target.value }),
     },
     {
       label: '固定时间',
       name: 'activeDate',
       type: 'rangePicker',
-      visible: radioData.userTime === '0',
+      visible: radioData.userTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
@@ -198,7 +199,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === '1',
+      visible: radioData.userTime === 'gain',
     },
     {
       label: '有效期天数',
@@ -207,7 +208,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === '1',
+      visible: radioData.userTime === 'gain',
     },
     {
       label: '适用时段',

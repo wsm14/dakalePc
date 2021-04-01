@@ -115,11 +115,9 @@ const GoodsOrders = (props) => {
       render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
     },
     {
-      title: '店铺实收总额',
-      align: 'right',
-      dataIndex: 'actualCashFee',
-      render: (val, record) =>
-        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+      title: '商品佣金',
+      align: 'center',
+      dataIndex: 'estimatedCommission',
     },
     // {
     //   title: '商品佣金',
@@ -149,9 +147,11 @@ const GoodsOrders = (props) => {
       dataIndex: 'verificationCount',
     },
     {
-      title: '商品佣金',
-      align: 'center',
-      dataIndex: 'estimatedCommission',
+      title: '店铺实收总额',
+      align: 'right',
+      dataIndex: 'actualCashFee',
+      render: (val, record) =>
+        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
       title: '核销时间',

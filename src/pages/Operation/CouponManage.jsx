@@ -194,16 +194,16 @@ const CouponManageComponent = (props) => {
       <TableDataBlock
         order
         keepData
-        // btnExtra={
-        //   <AuthConsumer auth="save">
-        //     <Button
-        //       className="dkl_green_btn"
-        //       onClick={() => setVisible({ type: 'add', show: true })}
-        //     >
-        //       新建券
-        //     </Button>
-        //   </AuthConsumer>
-        // }
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisible({ type: 'add', show: true })}
+            >
+              新建券
+            </Button>
+          </AuthConsumer>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
