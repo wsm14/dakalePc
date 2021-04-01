@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Button } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -9,17 +9,20 @@ import {
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
+import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
 
@@ -272,12 +275,22 @@ const SpecialGoods = (props) => {
         keepData
         cRef={childRef}
         btnExtra={
-          <SpecialRecommendMenu
-            handleRecommend={(val) =>
-              fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
-            }
-            disabled={!goodsList.length}
-          ></SpecialRecommendMenu>
+          <>
+            <SpecialRecommendMenu
+              handleRecommend={(val) =>
+                fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
+              }
+              disabled={!goodsList.length}
+            ></SpecialRecommendMenu>
+            {/* <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ type: 'add', show: true })}
+              >
+                新增
+              </Button>
+            </AuthConsumer> */}
+          </>
         }
         loading={loading}
         columns={getColumns}
@@ -293,6 +306,11 @@ const SpecialGoods = (props) => {
         visible={visible}
         onCancel={() => setVisible({ show: false })}
       ></SpecialGoodsTrade>
+      <PreferentialDrawer
+        childRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet({ show: false })}
+      ></PreferentialDrawer>
     </>
   );
 };

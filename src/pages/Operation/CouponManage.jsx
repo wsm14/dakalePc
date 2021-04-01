@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Button, Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import CouponDrawer from './components/Coupon/CouponDrawer';
