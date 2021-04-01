@@ -162,20 +162,23 @@ const ShareManage = (props) => {
       title: '单次打赏卡豆数',
       align: 'right',
       dataIndex: 'beanAmount',
-      render: (val, row) => Math.round(val + row.exposureBeanAmount),
+      render: (val = 0, row) => Math.round(val + (row.exposureBeanAmount || 0)),
     },
     {
       title: '累计打赏卡豆数',
       align: 'right',
       dataIndex: 'exposureBeanAmount',
-      render: (val, row) => Math.round((val + row.beanAmount) * row.payedPersonAmount),
+      render: (val = 0, row) => Math.round((val + (row.beanAmount || 0)) * row.payedPersonAmount),
     },
     {
       title: '剩余卡豆数',
       align: 'right',
       dataIndex: 'payedPersonAmount',
-      render: (val, row) =>
-        Math.round((row.beanAmount + row.exposureBeanAmount) * (row.beanPersonAmount - val)),
+      render: (val = 0, row) =>
+        Math.round(
+          ((row.beanAmount || 0) + (row.exposureBeanAmount || 0)) *
+            ((row.beanPersonAmount || 0) - val),
+        ),
     },
     {
       title: 'ID',

@@ -6,6 +6,7 @@ import {
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
   SPECIAL_USERTIME_TYPE,
+  SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -25,6 +26,9 @@ const SpecialGoods = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
+
+  const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
+  const search_recommend = { notPromoted: '未推广', ...other };
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -74,16 +78,10 @@ const SpecialGoods = (props) => {
       name: 'merchantName',
     },
     {
-      label: '推荐状态',
+      label: '推广位置',
       type: 'select',
-      name: 'recommendFlag',
-      select: { hotRecommend: '限时推荐', todayRecommend: '爆品推荐' },
-    },
-    {
-      label: '置顶状态',
-      type: 'select',
-      name: 'topFlag',
-      select: { hotTop: '限时置顶', todayTop: '爆品置顶' },
+      name: 'promotionLocation',
+      select: search_recommend,
     },
     {
       label: '活动商品名称',

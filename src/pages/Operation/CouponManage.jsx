@@ -94,8 +94,8 @@ const CouponManageComponent = (props) => {
       title: '使用有效期',
       dataIndex: 'activeDate',
       render: (val, row) => {
-        const { activeDate, endDate, delayDays, activeDays } = row;
-        if (activeDate && endDate) {
+        const { useTimeRule, activeDate, endDate, delayDays, activeDays } = row;
+        if (useTimeRule === 'fixed') {
           return activeDate + '~' + endDate;
         } else {
           if (delayDays === '0') {
