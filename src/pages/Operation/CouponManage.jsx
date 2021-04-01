@@ -94,8 +94,8 @@ const CouponManageComponent = (props) => {
       title: '使用有效期',
       dataIndex: 'activeDate',
       render: (val, row) => {
-        const { useTimeRule, activeDate, endDate, delayDays, activeDays } = row;
-        if (useTimeRule === 'fixed') {
+        const { activeDate, endDate, delayDays, activeDays } = row;
+        if (activeDate && endDate) {
           return activeDate + '~' + endDate;
         } else {
           if (delayDays === '0') {
@@ -133,6 +133,12 @@ const CouponManageComponent = (props) => {
       title: '发布时间',
       align: 'right',
       dataIndex: 'updateTime',
+      render: (val, row) => (
+        <div>
+          {val}
+          <div>{COUPON_STATUS[row.merchantCouponStatus]}</div>
+        </div>
+      ),
     },
     {
       title: '操作',

@@ -275,6 +275,7 @@ const SpecialGoods = (props) => {
         btnExtra={
           <>
             <SpecialRecommendMenu
+              num={goodsList.length}
               handleRecommend={(val) =>
                 fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
               }
