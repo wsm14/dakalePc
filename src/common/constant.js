@@ -313,7 +313,7 @@ export const SHARE_AGE_TYPE = { '1-100': '不限', age: '选择年龄段(可多�
 export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
 
 // 优惠券管理 - 优惠券状态
-export const COUPON_STATUS = [false, '上架', '下架'];
+export const COUPON_STATUS = [false, '上架中', '已下架'];
 
 // 优惠券管理 - 优惠券类型
 export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
