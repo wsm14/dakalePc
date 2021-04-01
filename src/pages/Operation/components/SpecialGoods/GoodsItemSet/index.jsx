@@ -8,8 +8,8 @@ const formList = ({ groupName, gooupKey, groupLength, handleRemove }) => {
     <div className={styles.groupGoods}>
       <Form.Item
         label="单品组名称"
-        name={[groupName, 'goosdsName']}
-        fieldKey={[gooupKey, 'gooddsName']}
+        name={[groupName, 'groupName']}
+        fieldKey={[gooupKey, 'groupName']}
         rules={[{ required: true, message: '请输入单品组名称' }]}
       >
         <Input placeholder="请输入单品组名称" maxLength={30} />

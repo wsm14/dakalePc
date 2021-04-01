@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
@@ -13,11 +13,6 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
   const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] });
   // 商品类型 goodsType 店铺范围 shopType
   const [radioData, setRadioData] = useState({ goodsType: 'single', shopType: '0' });
-
-  // 设置form表单值 店铺id
-  useEffect(() => {
-    form.setFieldsValue({ merchantIdList: mreList.keys });
-  }, [mreList.keys]);
 
   // 搜索店铺
   const fetchGetMre = debounce((merchantName) => {
@@ -50,14 +45,14 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       onChange: (e) => {
         saveSelectData({ shopType: '0' });
         saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined, shopType: '0' }); // 重置数据
+        form.setFieldsValue({ merchantId: undefined, shopType: '0' }); // 重置数据
         dispatch({ type: 'businessList/close' }); // 清空选择数据
       },
     },
     {
       label: `选择${BUSINESS_TYPE[mreList.type]}`,
       type: 'select',
-      name: 'ownerId',
+      name: 'merchantId',
       placeholder: '请输入搜索',
       select: selectList,
       loading,
@@ -94,7 +89,10 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
           key="MreTable"
           form={form}
           {...mreList}
-          setMreList={saveMreData}
+          setMreList={(val) => {
+            saveMreData(val);
+            form.setFieldsValue({ merchantIdList: val.keys });
+          }}
         ></MreSelectShow>
       ),
     },
@@ -108,7 +106,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
     },
     {
       label: `${GOODS_CLASS_TYPE[radioData.goodsType]}轮播图`,
-      name: 'goossse',
+      name: 'activityGoodsImg',
       type: 'upload',
       maxFile: 5,
     },
@@ -120,12 +118,12 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
     {
       type: 'noForm',
       visible: radioData.goodsType == 'package',
-      formItem: <GoodsGroupSet key="groups" form={form}></GoodsGroupSet>,
+      formItem: <GoodsGroupSet key="packageGroupObjects" form={form}></GoodsGroupSet>,
     },
     {
       title: '设置商品价格',
       label: `${GOODS_CLASS_TYPE[radioData.goodsType]}原价`,
-      name: 'buyPrice',
+      name: 'oriPrice',
       type: 'number',
       precision: 2,
       min: 0,
@@ -134,7 +132,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
     },
     {
       label: '特惠价格',
-      name: 'buyssdce',
+      name: 'realPrice',
       type: 'number',
       precision: 2,
       min: 0,
@@ -143,9 +141,9 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       addRules: [
         {
           validator: (rule, value) => {
-            const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('buyPrice'));
-            if (merchantPrice > buyPrice) {
+            const realPrice = Number(value);
+            const buyPrice = Number(form.getFieldValue('oriPrice'));
+            if (realPrice > buyPrice) {
               return Promise.reject('特惠价格需小于套餐价格');
             }
             return Promise.resolve();
@@ -165,7 +163,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
         {
           validator: (rule, value) => {
             const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('buyPrice'));
+            const buyPrice = Number(form.getFieldValue('realPrice'));
             if (merchantPrice > buyPrice) {
               return Promise.reject('商家结算价不可超过售卖价格');
             }
@@ -183,13 +181,13 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       title: '设置商品介绍',
       label: '套餐介绍',
       type: 'textArea',
-      name: 'couponDesc',
+      name: 'goodsDesc',
       rules: [{ required: false }],
       maxLength: 200,
     },
     {
       label: '套餐图片',
-      name: 'gsdsadse',
+      name: 'goodsDescImg',
       type: 'upload',
       maxFile: 5,
       rules: [{ required: false }],

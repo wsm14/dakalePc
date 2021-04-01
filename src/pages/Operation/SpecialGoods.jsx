@@ -281,14 +281,14 @@ const SpecialGoods = (props) => {
               }
               disabled={!goodsList.length}
             ></SpecialRecommendMenu>
-            {/* <AuthConsumer auth="save">
+            <AuthConsumer auth="save">
               <Button
                 className="dkl_green_btn"
                 onClick={() => setVisibleSet({ type: 'add', show: true })}
               >
                 新增
               </Button>
-            </AuthConsumer> */}
+            </AuthConsumer>
           </>
         }
         loading={loading}

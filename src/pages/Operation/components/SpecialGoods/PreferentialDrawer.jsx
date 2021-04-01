@@ -7,7 +7,7 @@ import PreferentialSet from './Form/PreferentialSet';
 import PreferentialRuleSet from './Form/PreferentialRuleSet';
 
 const PreferentialDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading } = props;
+  const { visible, dispatch, childRef, onClose } = props;
 
   const { type = 'info', show = false, detail = {} } = visible;
   const [form] = Form.useForm();
@@ -39,7 +39,7 @@ const PreferentialDrawer = (props) => {
     onClose,
     closeCallBack: () => dispatch({ type: 'businessList/close' }), // 关闭清空搜索的商家数据
     footer: (
-      <Button onClick={handleUpAudit} type="primary" loading={loading}>
+      <Button onClick={handleUpAudit} type="primary">
         下一步
       </Button>
     ),
@@ -51,7 +51,9 @@ const PreferentialDrawer = (props) => {
         {drawerProps.children}
         <PreferentialRuleSet
           form={form}
+          childRef={childRef}
           visible={visibleRule}
+          onOver={onClose}
           onClose={() => setVisibleRule(false)}
         ></PreferentialRuleSet>
       </DrawerCondition>
@@ -59,6 +61,4 @@ const PreferentialDrawer = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
-  loading: loading.effects['couponManage/fetchCouponSave'],
-}))(PreferentialDrawer);
+export default connect()(PreferentialDrawer);

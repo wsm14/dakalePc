@@ -1,6 +1,7 @@
 import { notification } from 'antd';
 import {
   fetchSpecialGoodsList,
+  fetchSpecialGoodsSave,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
 } from '@/services/OperationServices';
@@ -35,7 +36,15 @@ export default {
         },
       });
     },
-
+    *fetchSpecialGoodsSave({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动新增成功',
+      });
+      callback();
+    },
     *fetchSpecialGoodsStatus({ payload, callback }, { call, put }) {
       const response = yield call(fetchSpecialGoodsStatus, payload);
       if (!response) return;

@@ -22,7 +22,7 @@ const CouponDrawer = (props) => {
           couponType: 'reduce',
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
-          useWeek: timeSplit !== 'part' ? timeSplit : useWeek,
+          useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
           useTime:
             timeType !== 'part'
               ? timeType

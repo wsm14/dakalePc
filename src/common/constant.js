@@ -333,6 +333,9 @@ export const COUPON_TIME_TYPE = { '00:00-23:59': '全天', part: '固定时间' 
 // 优惠券管理 - 购买规则
 export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
 
+// 优惠券管理 - 优惠券类型
+export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
+
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
 

@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Button, Form, Checkbox } from 'antd';
+import { Button, Form, Checkbox, notification } from 'antd';
 import {
   COUPON_USER_TIME,
   COUPON_TIME_TYPE,
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
+  COUPON_ACTIVE_TYPE,
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
+import aliOssUpload from '@/utils/aliOssUpload';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
-const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
+const PreferentialRuleSet = ({ visible, loading, childRef, onClose, onOver, dispatch }) => {
   const { show = false, preData } = visible;
 
   const [form] = Form.useForm();
@@ -29,21 +31,90 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
+  // 检查文件上传格式
+  const checkFileData = (fileData) => {
+    let aimg = [];
+    switch (typeof fileData) {
+      case 'undefined':
+        break;
+      case 'object':
+        aimg = fileData.fileList.map((item) => {
+          if (item.url) return item.url;
+          return item.originFileObj;
+        });
+        break;
+      default:
+        aimg = [fileData];
+        break;
+    }
+    return aimg;
+  };
+
+  // 确认提交
+  const handleUpAudit = () => {
+    form.validateFields().then((values) => {
+      if (!treaty) {
+        notification.info({
+          message: '温馨提示',
+          description: '请确认《商家营销协议》',
+        });
+        return;
+      }
+      const { activityGoodsImg, goodsDescImg } = preData;
+      const {
+        activityStartTime,
+        useStartTime,
+        timeSplit,
+        timeType,
+        useWeek,
+        useTime,
+        ...other
+      } = values;
+      const aimg = checkFileData(activityGoodsImg);
+      const gimg = checkFileData(goodsDescImg);
+      aliOssUpload([...aimg, ...gimg]).then((res) => {
+        dispatch({
+          type: 'specialGoods/fetchSpecialGoodsSave',
+          payload: {
+            ...preData,
+            ...other,
+            activityGoodsImg: res.slice(0, aimg.length).toString(),
+            goodsDescImg: res.slice(aimg.length).toString(),
+            activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),
+            activityEndTime: activityStartTime && activityStartTime[1].format('YYYY-MM-DD'),
+            useStartTime: useStartTime && useStartTime[0].format('YYYY-MM-DD'),
+            useEndTime: useStartTime && useStartTime[1].format('YYYY-MM-DD'),
+            useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+            useTime:
+              timeType !== 'part'
+                ? timeType
+                : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
+          },
+          callback: () => {
+            onClose();
+            onOver();
+            childRef.current.fetchGetData();
+          },
+        });
+      });
+    });
+  };
+
   // 信息
   const formItems = [
     {
       title: '设置投放规则',
       label: '活动时间',
       type: 'radio',
-      select: ['长期', '固定时间'],
-      name: 'setTsdime',
+      select: COUPON_ACTIVE_TYPE,
+      name: 'activityTimeRule',
       onChange: (e) => saveSelectData({ activeTime: e.target.value }),
     },
     {
       label: '设置时间',
-      name: 'actsdiveDate',
+      name: 'activityStartTime',
       type: 'rangePicker',
-      visible: radioData.activeTime === '1',
+      visible: radioData.activeTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
       onChange: (val) => form.setFieldsValue({ activeDate: undefined }),
     },
@@ -56,7 +127,7 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
     },
     {
       label: '固定时间',
-      name: 'activeDate',
+      name: 'useStartTime',
       type: 'rangePicker',
       visible: radioData.userTime === 'fixed',
       disabledDate: (time) => {
@@ -101,27 +172,27 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
       label: '适用时段',
       type: 'radio',
       select: COUPON_USER_TIME,
-      name: ['availableTime', 'dayType'],
+      name: 'timeSplit',
       onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
     },
     {
       label: '每周',
       type: 'checkbox',
       select: COUPON_WEEK_TIME,
-      name: ['availableTime', 'weekDays'],
+      name: 'useWeek',
       visible: radioData.timeSplit === 'part',
     },
     {
       label: '时间选择',
       type: 'radio',
       select: COUPON_TIME_TYPE,
-      name: ['availableTime', 'timeType'],
+      name: 'timeType',
       visible: radioData.timeSplit !== '',
       onChange: (e) => saveSelectData({ timeType: e.target.value }),
     },
     {
       label: '设置时间段',
-      name: 'timeRange',
+      name: 'useTime',
       type: 'timePicker',
       order: false,
       visible: radioData.timeType === 'part',
@@ -149,7 +220,7 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
     },
     {
       label: `单人每天购买份数`,
-      name: 'dayMaxByAmount',
+      name: 'dayMaxBuyAmount',
       suffix: '份',
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.buyRule === 'dayLimit',
@@ -157,28 +228,28 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
     {
       label: '是否需要预约购买',
       type: 'switch',
-      name: ['reduceObject', 'anssnd'],
+      name: 'needOrder',
       normalize: (val) => Number(val),
       rules: [{ required: false }],
     },
     {
       label: '购买须知',
       type: 'textArea',
-      name: 'couponDesc',
+      name: 'buyDesc',
       maxLength: 200,
     },
     {
       title: '设置退款规则',
       label: '是否允许随时退款',
       type: 'switch',
-      name: ['reduceObject', 'anytimeRefund'],
+      name: 'allowRefund',
       normalize: (val) => Number(val),
       rules: [{ required: false }],
     },
     {
       label: '是否允许过期退款',
       type: 'switch',
-      name: ['reduceObject', 'expireRefund'],
+      name: 'allowExpireRefund',
       normalize: (val) => Number(val),
       rules: [{ required: false }],
     },
@@ -191,7 +262,7 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
     onClose,
     maskShow: false,
     footer: (
-      <Button type="primary" loading={loading}>
+      <Button type="primary" onClick={handleUpAudit} loading={loading}>
         发布申请
       </Button>
     ),
@@ -212,7 +283,6 @@ const PreferentialRuleSet = ({ visible, loading, onClose, dispatch }) => {
   );
 };
 
-export default connect(({ businessList, loading }) => ({
-  selectList: businessList.selectList,
-  loading: loading.models.businessList,
+export default connect(({ loading }) => ({
+  loading: loading.effects['specialGoods/fetchSpecialGoodsSave'],
 }))(PreferentialRuleSet);
