@@ -125,7 +125,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
               setSearchData({
                 ...searchData,
                 latitude: 'order',
-                time: [moment(row.time).startOf('day'), moment(row.time).endOf('day')],
+                time: [moment(row.gainTime).startOf('day'), moment(row.gainTime).endOf('day')],
               }),
             ),
         },
@@ -143,7 +143,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
               setSearchData({
                 ...searchData,
                 latitude: 'day',
-                time: [moment(row.time).startOf('month'), moment(row.time).endOf('month')],
+                time: [moment(row.gainMonth).startOf('month'), moment(row.gainMonth).endOf('month')],
               }),
             ),
         },
