@@ -56,7 +56,6 @@ const SolicitJobs = (props) => {
     },
     {
       title: '职位描述',
-      align: 'center',
       dataIndex: 'jobDescription',
       width: 300,
       render: (val) => (
