@@ -127,7 +127,7 @@ const SubsidyShop = (props) => {
             fetchGetDetail,
           })}
           params={newSearch}
-          rowKey={(record) => `${record.gainTime || record.gainMonth}`}
+          rowKey={(record,i) => `${record.gainTime || record.gainMonth}${i}`}
           dispatchType="subsidyShop/fetchSubsidyShopList"
           {...subsidyShop.list}
         ></TableDataBlock>
