@@ -62,7 +62,6 @@ const aliOssUpload = async (file = '', fieldNames = {}, policyType = 'image', os
 
   // 预处理file数据 无论如何 处理成数组形式
   if (ossType === 'put') {
-    message.loading('文件上传中......', 0);
     if (typeof file === 'string') {
       message.destroy();
       // file 是字符串直接返回 （已经上传的文件生成了http信息）
@@ -78,6 +77,7 @@ const aliOssUpload = async (file = '', fieldNames = {}, policyType = 'image', os
     }
   }
 
+  message.loading('文件上传中......', 0);
   // 向后台获取oss凭证 后上传文件
   const osshandle = await fetchGetOssPolicy({ policyType, ossType });
   // 最后返回文件url数组
