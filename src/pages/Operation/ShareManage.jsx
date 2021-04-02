@@ -4,9 +4,10 @@ import { Button } from 'antd';
 import { MreSelect } from '@/components/MerchantDataTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import CloseRefuse from './components/Share/CloseRefuse';
 import ShareDetail from './components/Share/ShareDetail';
 import ShareHandleDetail from './components/Share/ShareHandleDetail';
@@ -149,12 +150,18 @@ const ShareManage = (props) => {
       render: (val, row) => `${val}/${row.categoryName}`,
     },
     {
-      title: '观看人数（人）',
+      title: (
+        <QuestionTooltip
+          type="quest"
+          title="观看人数（人）"
+          content={`观看视频3s及以上的人数`}
+        ></QuestionTooltip>
+      ),
       align: 'right',
       dataIndex: 'viewAmount',
     },
     {
-      title: '打卡人数（人）',
+      title: '领卡豆人数（人）',
       align: 'right',
       dataIndex: 'payedPersonAmount',
     },
@@ -190,22 +197,22 @@ const ShareManage = (props) => {
       align: 'center',
       dataIndex: 'updateTime',
     },
-    {
-      title: '更新人',
-      align: 'center',
-      dataIndex: 'adminOperatorName',
-    },
+    // {
+    //   title: '更新人',
+    //   align: 'center',
+    //   dataIndex: 'adminOperatorName',
+    // },
     {
       title: '关联券/商品',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'sssstastus',
+      dataIndex: 'goodsOrCouponName',
     },
     {
       title: '状态',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'stastus',
+      dataIndex: 'status',
       render: (val) => SHARE_STATUS[val],
     },
     {
