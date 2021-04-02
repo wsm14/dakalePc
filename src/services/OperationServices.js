@@ -19,7 +19,7 @@ export function fetchSpecialGoodsStatus(data) {
 
 // post 周边特惠 - 新增
 export function fetchSpecialGoodsSave(data) {
-  return request('admin/specialGoodsManagement/saveSpecialGoods', {
+  return request('/admin/specialGoodsManagement/saveSpecialGoods', {
     method: 'POST',
     data,
   });
