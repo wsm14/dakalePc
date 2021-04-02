@@ -6,7 +6,6 @@ import {
   fetchMerchantAuditDetailList,
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
-  fetchMerSaleAuditAllow,
 } from '@/services/BusinessServices';
 
 export default {
@@ -141,7 +140,7 @@ export default {
       callback();
     },
     *fetchMerSaleAuditAllow({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerSaleAuditAllow, payload);
+      const response = yield call(fetchMerSaleAudit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

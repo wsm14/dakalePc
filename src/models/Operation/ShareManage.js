@@ -1,4 +1,5 @@
 import { notification } from 'antd';
+import cityJson from '@/common/cityJson';
 import {
   fetchShareList,
   fetchShareGetFreeCoupon,
@@ -65,9 +66,18 @@ export default {
       const response = yield call(fetchShareDetail, payload);
       if (!response) return;
       const { content } = response;
+      const { area } = content.userMoments;
       const newObj = {
         ...content.userMoments,
         videoContent: JSON.parse(content.userMoments.videoContent),
+        area: (area ? area.split(',') : [])
+          .map((item) => {
+            const cityIndex = cityJson.findIndex((city) => city.id === item);
+            if (cityIndex > -1) {
+              return cityJson[cityIndex].name;
+            }
+          })
+          .toString(),
       };
       callback(newObj);
     },

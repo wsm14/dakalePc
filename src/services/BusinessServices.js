@@ -108,15 +108,7 @@ export function fetchMerchantAuditDetail(params) {
   });
 }
 
-// post 店铺审核 - 商家 审核通过
-export function fetchMerSaleAuditAllow(data) {
-  return request('/admin/userMerchantVerify/updateUserMerchantVerifyStatusInfo', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 店铺审核 - 商家 审核拒绝
+// post 店铺审核 - 商家 审核
 export function fetchMerSaleAudit(data) {
   return request('/admin/userMerchantVerify/updateUserMerchantVerifyStatusInfo', {
     method: 'POST',
