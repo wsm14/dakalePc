@@ -273,7 +273,7 @@ const PreferentialRuleSet = ({ visible, loading, childRef, onClose, onOver, disp
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={{ ownerType: 'merchant', goodsType: 'single', groupGoods: [{}] }}
+        initialValues={{ needOrder: 0, allowRefund: 0, allowExpireRefund: 0 }}
       ></FormCondition>
       <div style={{ textAlign: 'center' }}>
         <Checkbox onChange={(e) => setTreaty(e.target.checked)}>我已阅读并同意</Checkbox>
