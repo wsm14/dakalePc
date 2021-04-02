@@ -96,7 +96,7 @@ const SubsidyShop = (props) => {
         title={
           <Space size="large" style={{ color: '#f00' }}>
             <span> 收入（卡豆）：{inBean}</span>
-            <span style={{marginLeft:'50px'}}>支出（卡豆）：{outBean}</span>
+            <span style={{ marginLeft: '50px' }}>支出（卡豆）：{outBean}</span>
           </Space>
         }
         extra={
@@ -127,7 +127,13 @@ const SubsidyShop = (props) => {
             fetchGetDetail,
           })}
           params={newSearch}
-          rowKey={(record) => `${record.merchantId || record.gainMonth || record.gainTime}`}
+          rowKey={(record) =>
+            `${
+              (record.merchantId && record.merchantId + record.gainTime) ||
+              record.gainMonth ||
+              record.gainTime
+            }`
+          }
           dispatchType="subsidyShop/fetchSubsidyShopList"
           {...subsidyShop.list}
         ></TableDataBlock>

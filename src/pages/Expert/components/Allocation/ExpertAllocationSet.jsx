@@ -61,6 +61,7 @@ const ExpertAllocationSet = (props) => {
             ...values,
             userLevelId: detail.userLevelId,
             level: detail.level,
+            nextLevel: detail.nextLevel,
             certificate: res.slice(2).toString(),
             levelExtraParamObject: {
               ...levelExtraParamObject,
