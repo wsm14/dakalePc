@@ -190,11 +190,11 @@ const ShareManage = (props) => {
       align: 'center',
       dataIndex: 'updateTime',
     },
-    {
-      title: '更新人',
-      align: 'center',
-      dataIndex: 'adminOperatorName',
-    },
+    // {
+    //   title: '更新人',
+    //   align: 'center',
+    //   dataIndex: 'adminOperatorName',
+    // },
     {
       title: '关联券/商品',
       fixed: 'right',
