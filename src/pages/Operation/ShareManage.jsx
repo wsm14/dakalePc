@@ -199,13 +199,13 @@ const ShareManage = (props) => {
       title: '关联券/商品',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'sssstastus',
+      dataIndex: 'goodsOrCouponName',
     },
     {
       title: '状态',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'stastus',
+      dataIndex: 'status',
       render: (val) => SHARE_STATUS[val],
     },
     {
