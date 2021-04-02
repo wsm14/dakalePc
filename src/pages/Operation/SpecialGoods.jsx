@@ -238,7 +238,7 @@ const SpecialGoods = (props) => {
                 pop: true,
                 title: '取消推荐',
                 auth: 'placement',
-                visible: record.status != '0' && record.topStatus !== '0',
+                visible: record.recommendStatus !== '0' || record.topStatus !== '0',
                 click: () =>
                   fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
