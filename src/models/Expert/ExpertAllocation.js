@@ -1,4 +1,5 @@
 import { notification } from 'antd';
+import update from 'immutability-helper';
 import {
   fetchExpertAllocationList,
   fetchExpertAllocationSave,
@@ -26,10 +27,18 @@ export default {
       const response = yield call(fetchExpertAllocationList, payload);
       if (!response) return;
       const { content } = response;
+      const { userLevelList } = content;
+      const normalRow = userLevelList.findIndex((item) => item.type === 'normal');
+      const movefile = update(content.userLevelList, {
+        $splice: [
+          [normalRow, 1],
+          [0, 0, userLevelList[normalRow]],
+        ],
+      });
       yield put({
         type: 'save',
         payload: {
-          list: content.userLevelList.map((item) => {
+          list: movefile.map((item) => {
             let obj = {
               children: item.configUserLevelList.map((ite) => ({
                 ...ite,
@@ -42,8 +51,8 @@ export default {
                 children: undefined,
               };
             return {
-              ...item,
               ...obj,
+              ...item,
               levelKey: item.type,
             };
           }),

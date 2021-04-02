@@ -97,8 +97,8 @@ const ShareDetail = (props) => {
       name: 'bbb',
       children: (
         <div>
-          <div>预计补贴人数：--</div>
-          <div>单用户补贴卡豆数：--</div>
+          <div>预计补贴人数：{detail.beanPersonAmount || 0}</div>
+          <div>单用户补贴卡豆数：{detail.exposureBeanAmount || 0}</div>
         </div>
       ),
     },

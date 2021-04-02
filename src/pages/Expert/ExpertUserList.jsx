@@ -39,8 +39,8 @@ const ExpertUserList = (props) => {
     },
     {
       label: '状态',
-      name: 'status',
       type: 'select',
+      name: 'suspendStatus',
       select: EXPERT_USER_STATUS,
     },
     {
