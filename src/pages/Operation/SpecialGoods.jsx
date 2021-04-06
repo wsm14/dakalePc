@@ -62,20 +62,22 @@ const SpecialGoods = (props) => {
       select: SPECIAL_USERTIME_TYPE,
       handle: (form) => ({
         onChange: (val) => {
+          console.log(val);
           setSearchType(val);
-          form.setFieldsValue({ time: undefined });
+          form.setFieldsValue({ gain: undefined });
         },
       }),
     },
     {
       label: '有效期',
-      name: 'time',
+      name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
       disabled: !searchType,
       type: { gain: 'number', fixed: 'rangePicker' }[searchType],
+      end: 'useEndTime',
     },
     {
       label: '集团/店铺名称',
-      name: 'merchantName',
+      name: 'groupOrMerchantName',
     },
     {
       label: '推广位置',
@@ -91,6 +93,7 @@ const SpecialGoods = (props) => {
       label: '区域',
       name: 'city',
       type: 'cascader',
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
@@ -225,14 +228,19 @@ const SpecialGoods = (props) => {
       align: 'right',
       fixed: 'right',
       render: (val, record) => {
-        const { goodsIdString: goodsIdStr, specialGoodsId } = record;
+        const { specialGoodsId, status } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'down',
-                visible: record.status != '0',
-                click: () => fetchSpecialGoodsStatus({ ...record, goodsIdStr }),
+                visible: status !== '0',
+                click: () => fetchSpecialGoodsStatus(record),
+              },
+              {
+                type: 'edit',
+                visible: status !== '0',
+                click: () => fetchSpecialGoodsDetail(record, [false, 'active', 'edit'][status]),
               },
               {
                 pop: true,
@@ -264,6 +272,21 @@ const SpecialGoods = (props) => {
       type: 'specialGoods/fetchSpecialGoodsRecommend',
       payload,
       callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 获取详情
+  const fetchSpecialGoodsDetail = (payload, type) => {
+    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = payload;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, merchantIdStr, type },
+      callback: (val) =>
+        setVisibleSet({
+          type,
+          show: true,
+          detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
+        }),
     });
   };
 

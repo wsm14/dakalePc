@@ -173,7 +173,7 @@ const ExpertUserDistribution = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.verificationCode}`}
+        rowKey={(record) => `${record.uniqueKey}`}
         dispatchType="expertUserDistribution/fetchGetList"
         {...expertUserDistribution.list}
       ></TableDataBlock>

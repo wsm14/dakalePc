@@ -9,9 +9,24 @@ export function fetchSpecialGoodsList(params) {
   });
 }
 
+// get 周边特惠 - 详情
+export function fetchSpecialGoodsDetail(params) {
+  return request('/admin/specialGoodsManagement/getSpecialGoods', {
+    params,
+  });
+}
+
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
   return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 编辑
+export function fetchSpecialGoodsEdit(data) {
+  return request('/admin/specialGoodsManagement/updateSpecialGoods', {
     method: 'POST',
     data,
   });

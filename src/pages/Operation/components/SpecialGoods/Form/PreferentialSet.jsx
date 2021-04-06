@@ -7,7 +7,14 @@ import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from '../GoodsGroupSet';
 
-const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
+const PreferentialSet = ({
+  form,
+  editActive,
+  loading,
+  selectList,
+  dispatch,
+  initialValues = {},
+}) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] });
@@ -40,6 +47,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       title: '设置参与活动的店铺',
       label: '选择店铺类型',
       type: 'radio',
+      disabled: editActive,
       name: 'ownerType',
       select: BUSINESS_TYPE,
       onChange: (e) => {
@@ -54,8 +62,9 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       type: 'select',
       name: 'merchantId',
       placeholder: '请输入搜索',
-      select: selectList,
       loading,
+      select: selectList,
+      disabled: editActive,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
@@ -66,6 +75,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       label: '店铺范围',
       type: 'radio',
       name: 'shopType',
+      disabled: editActive,
       visible: mreList.name && mreList.type === 'group',
       select: ['全部', '部分'],
       onChange: (e) => saveSelectData({ shopType: e.target.value }),
@@ -76,7 +86,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       type: 'formItem',
       visible: mreList.name && radioData.shopType === '1',
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)}>
+        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={editActive}>
           选择店铺
         </Button>
       ),
@@ -199,7 +209,7 @@ const PreferentialSet = ({ form, loading, selectList, dispatch }) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={{ ownerType: 'merchant', goodsType: 'single', groupGoods: [{}] }}
+        initialValues={initialValues}
       ></FormCondition>
       <MreSelect
         keys={mreList.keys}

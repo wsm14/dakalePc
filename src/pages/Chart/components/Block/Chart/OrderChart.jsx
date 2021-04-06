@@ -43,14 +43,14 @@ const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
       key: 'distinctPerson',
       numName: '付款人数',
     },
+    // {
+    //   title: '哒人带货销售额',
+    //   info: '通过哒人带货成交的订单金额',
+    //   key: 'kolGoods',
+    // },
     {
-      title: '哒人带货销售额',
-      info: '通过哒人带货成交的订单金额',
-      key: 'kolGoods',
-    },
-    {
-      title: '特价活动销售额',
-      info: '用户通过特价活动购买商品的实付金额',
+      title: '特惠商品销售额',
+      info: '用户通过特惠商品购买商品的实付金额',
       key: 'specialGoods',
     },
     {
