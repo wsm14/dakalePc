@@ -1,16 +1,22 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import businessBrandSet from './components/Brand/BusinessBrandSet';
+import BrandUpdate from './components/Brand/BrandUpdate';
 
 const BusinessBrandComponent = (props) => {
   const { businessBrand, tradeList, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   // 搜索参数
   const searchItems = [
     {
@@ -20,9 +26,10 @@ const BusinessBrandComponent = (props) => {
     {
       label: '品牌类型',
       name: 'categoryId',
-      loading: loading.models.sysTradeList,
       type: 'select',
-      select: { list: tradeList.map((item) => ({ name: item.categoryName, value: item.id })) },
+      loading: loading.models.sysTradeList,
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'id' },
     },
   ];
 
@@ -48,13 +55,13 @@ const BusinessBrandComponent = (props) => {
       title: '启用状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val, record) => (
+      render: (val, row) => (
         <AuthConsumer auth="status" noAuth={val === '1' ? '启用' : '停用'}>
           <Switch
             checked={val === '1'}
             onClick={() =>
               fetchMerBrandEdit({
-                configBrandIdString: record.configBrandIdString,
+                configBrandIdString: row.configBrandIdString,
                 status: 1 ^ Number(val),
               })
             }
@@ -71,15 +78,11 @@ const BusinessBrandComponent = (props) => {
           formItems={[
             {
               type: 'edit',
-              click: () => handleBrandSet(row),
+              click: () => handleBrandSet('edit', row),
             },
             {
               type: 'del',
-              click: () =>
-                fetchMerBrandEdit({
-                  configBrandIdString: val,
-                  deleteFlag: 0,
-                }),
+              click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -99,39 +102,44 @@ const BusinessBrandComponent = (props) => {
     dispatch({
       type: 'businessBrand/fetchMerBrandEdit',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 品牌新增
-  const handleBrandSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessBrandSet({ dispatch, childRef, tradeList, initialValues }),
+  const handleBrandSet = (type, initialValues) => {
+    setVisible({
+      type,
+      initialValues,
+      show: true,
+      tradeList,
     });
   };
 
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
-
   return (
-    <DataTableBlock
-      btnExtra={
-        <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" onClick={()=>handleBrandSet()}>
-            新增
-          </Button>
-        </AuthConsumer>
-      }
-      cRef={childRef}
-      loading={loading.models.businessBrand}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.configBrandIdString}`}
-      dispatchType="businessBrand/fetchGetList"
-      {...businessBrand}
-    ></DataTableBlock>
+    <>
+      <TableDataBlock
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" onClick={() => handleBrandSet('add')}>
+              新增
+            </Button>
+          </AuthConsumer>
+        }
+        cRef={childRef}
+        loading={loading.models.businessBrand}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.configBrandIdString}`}
+        dispatchType="businessBrand/fetchGetList"
+        {...businessBrand}
+      ></TableDataBlock>
+      <BrandUpdate
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></BrandUpdate>
+    </>
   );
 };
 

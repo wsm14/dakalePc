@@ -25,9 +25,7 @@ const TableEdit = (props) => {
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
-    fetchGetData: () => {
-      dispatch({ type: 'drawerForm/fetchClose', callback: fetchGetList });
-    },
+    fetchGetData: fetchGetList,
   }));
 
   useEffect(() => {

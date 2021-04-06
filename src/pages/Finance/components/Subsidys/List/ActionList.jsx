@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_ACTION_TYPE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const ActionList = (props) => {
@@ -9,12 +9,6 @@ const ActionList = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'rechargeBeans',
-      render: (val, row, index) => index + 1,
-    },
     {
       title: '行业',
       fixed: 'left',
@@ -87,7 +81,8 @@ const ActionList = (props) => {
   };
 
   return (
-    <DataTableBlock
+    <TableDataBlock
+      order
       noCard={false}
       cRef={childRef}
       loading={loading}
@@ -95,7 +90,7 @@ const ActionList = (props) => {
       rowKey={(record) => `${record.configBehaviorId}`}
       dispatchType="subsidyManage/fetchSubsidyActionList"
       {...subsidyManage.actionList}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

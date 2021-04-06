@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { PAY_TYPE } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import ExcelButton from '@/components/ExcelButton';
+import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
 
 const CodeOrders = (props) => {
@@ -41,8 +41,9 @@ const CodeOrders = (props) => {
       label: '区域',
       name: 'city',
       type: 'cascader',
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length && fetchGetHubSelect(val[2]),
+      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
     {
       label: '商圈',
@@ -50,12 +51,8 @@ const CodeOrders = (props) => {
       type: 'select',
       loading: loadings.models.baseData,
       allItem: false,
-      select: {
-        list: hubData.map((item) => ({
-          name: item.businessHubName,
-          value: item.businessHubIdString,
-        })),
-      },
+      select: hubData,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
     },
     {
       label: '支付日期',
@@ -80,21 +77,15 @@ const CodeOrders = (props) => {
     {
       title: '订单金额',
       align: 'right',
-      dataIndex: 'totalFee',
-      render: (val) => `￥${val}`,
-    },
-    {
-      title: '卡豆抵扣金额',
-      align: 'right',
-      dataIndex: 'beanFee',
-      render: (val) => `￥${val / 100}`,
-    },
-    {
-      title: '现金支付',
-      align: 'right',
       dataIndex: 'payFee',
+      render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
+    },
+    {
+      title: '店铺实收总额',
+      align: 'right',
+      dataIndex: 'actualCashFee',
       render: (val, record) =>
-        `￥${val || 0}${record.payType ? '（' + PAY_TYPE[record.payType] + '）' : ''}`,
+        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
       title: '优惠券',
@@ -112,6 +103,12 @@ const CodeOrders = (props) => {
       dataIndex: 'merchantName',
     },
     {
+      title: '区域',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+    },
+    {
       title: '操作',
       dataIndex: 'orderId',
       align: 'right',
@@ -121,19 +118,24 @@ const CodeOrders = (props) => {
   ];
 
   return (
-    <>
-      <DataTableBlock
-        noCard={false}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        params={{ goodsOrScanFlag: tabkey }}
-        rowKey={(record) => `${record.orderSn}`}
-        dispatchType="ordersList/fetchGetList"
-        {...ordersList}
-      ></DataTableBlock>
-    </>
+    <TableDataBlock
+      noCard={false}
+      btnExtra={({ get }) => (
+        <ExcelButton
+          dispatchType={'ordersList/fetchOrdersImport'}
+          dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
+          exportProps={{ header: getColumns.slice(0, -1) }}
+        ></ExcelButton>
+      )}
+      cRef={childRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      params={{ goodsOrScanFlag: tabkey }}
+      rowKey={(record) => `${record.orderSn}`}
+      dispatchType="ordersList/fetchGetList"
+      {...ordersList}
+    ></TableDataBlock>
   );
 };
 

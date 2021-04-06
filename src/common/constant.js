@@ -66,7 +66,7 @@ export const MRE_SORT_STATUS = ['提交审核时间倒序', '按审核时间倒�
 export const BUSINESS_STATUS = ['禁用', '启用'];
 
 // 店铺 类型
-export const BUSINESS_TYPE = { single: '单店', group: '集团' };
+export const BUSINESS_TYPE = { merchant: '单店', group: '集团' };
 
 // 店铺 审核状态 '待审核', '审核中', '审核驳回', '审核通过'
 export const BUSINESS_STATUS_AUDIT = ['待审核', '审核中', '审核驳回', '审核通过'];
@@ -89,6 +89,12 @@ export const EXPERT_USER_TYPE = ['封停', '正常'];
 // 哒人封停状态
 export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封停1周', '封停1月'];
 
+// 哒人类型
+export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
+
+// 哒人类型
+export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
@@ -102,13 +108,13 @@ export const ACTIVE_COUPON_STATUS = ['未使用', '已过期', '已核销'];
 export const MARKET_NOTICE_STATUS = ['待发布', '已发布'];
 
 // 新闻动态状态
-export const NEWS_STATUS = ['下架', '上架'];
+export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 
 // 拼图广告状态
 export const PUZZLE_AD_STATUS = ['下架', '上架'];
 
 // 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
-export const SHARE_STATUS = [false, '已上架', false, '下架', '删除', '分享完成'];
+export const SHARE_STATUS = ['待审核', '审核通过', '审核拒绝', '下架', '删除', '分享完成'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
@@ -125,14 +131,21 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
-// Banner展示状态
+// 广告管理 - 展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
+
+// 广告管理 - 投放区域类型
+export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
+
+// 广告管理 - 可见范围
+export const BANNER_LOOK_AREA = {
+  'user,kol': '全部',
+  kol: '仅哒人可见',
+  user: '仅用户可见',
+};
 
 // 周边特惠 - 上架状态
 export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
-
-// 周边特惠 - 推荐状态
-export const SPECIAL_RECOMMEND_STATUS = ['否', '是'];
 
 // 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
@@ -154,20 +167,49 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
+// 订单关闭状态
+export const ORDER_CLOSE_TYPE = {
+  unpaidExpiredCancel: '待付款超时自动关闭',
+  unpaidManualCancel: '订单已取消',
+  expiredRefund: '订单已过期，订单自动过期', //过期退款
+  manualRefund: '已退款成功，申请退款成功', // 手动退款
+};
+
 // 退款订单状态
 export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
+
+// 哒人带货 订单状态
+export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
+
+// 哒人带货 订单对应状态
+export const EXPRET_DISTRIBUTION_PAY_STATUS = ['付款', '核销', false, false, '退款'];
+
+// 用户来源
+export const USER_SOURCE = { weChat: '小程序', app: 'APP' };
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
 
 // 分享类型
-export const PUZZLE_AD_TYPE = [
-  { value: 'video', name: '视频' },
-  { value: 'image', name: '图片' },
-];
+export const PUZZLE_AD_TYPE = { video: '视频', image: '图片' };
 
 // 消息推送 - 推送状态
 export const MSG_PSUH_STATUS = ['未推送', '推送中', '推送成功', '推送已撤销'];
+
+// 人才招聘 - 状态
+export const JSOBS_STATUS = ['草稿', '已发布', '下架'];
+
+// 人才招聘 - 学历
+export const EDUCATION_JSOBS_STATUS = {
+  不限: '不限',
+  初中及以下: '初中及以下',
+  '中专/中技': '中专/中技',
+  高中: '高中',
+  大专: '大专',
+  本科: '本科',
+  硕士: '硕士',
+  博士: '博士',
+};
 
 // 用户性别
 export const SEX_NEW_TYPE = { M: '男', F: '女' };
@@ -190,20 +232,17 @@ export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 // 补贴管理 补贴类型
 export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
 
-//  补贴管理 任务列表 补贴角色
+// 补贴管理 任务列表 补贴角色
 export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', kol: '哒人' };
 
-//  补贴管理 行为管理 补贴角色
+// 补贴管理 行为管理 补贴角色
 export const SUBSIDY_ACTION_ROLE = { merchant: '店铺' };
 
-//  补贴管理 行为管理 补贴类型
+// 补贴管理 行为管理 补贴类型
 export const SUBSIDY_ACTION_TYPE = { video: '发布视频', image: '发布图文', mark: '到店打卡' };
 
 // 分享类型
-export const SHARE_TYPE = [
-  { value: 'video', name: '视频' },
-  { value: 'image', name: '图文' },
-];
+export const SHARE_TYPE = { video: '视频', image: '图文' };
 
 // 订单类型
 export const ORDERS_TYPE = {
@@ -224,38 +263,109 @@ export const PLATFORM_INCOME_ORDERS_TYPE = {
 };
 
 // 账户激活状态
-export const WORKER_BANK_STATUS = [
-  { label: '0', value: '未激活' },
-  { label: '1', value: '审核中' },
-  { label: '2', value: '激活失败' },
-  { label: '3', value: '激活成功' },
-];
+export const WORKER_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
+
+// Banner端口
+export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 
 // Banner类型
-export const BANNER_TYPE = [
-  { value: 'main', name: '首页' },
-  { value: 'merchant', name: '到店打卡' },
-  { value: 'person', name: '个人' },
-  { value: 'merchantMain', name: '商家主页' },
-  { value: 'mainSpecial', name: '周边特惠首页' },
-  { value: 'surroundingSpecial', name: '周边特惠列表' },
-];
-
-// 用户性别
-export const SEX_TYPE = [
-  { value: 'M', name: '男' },
-  { value: 'F', name: '女' },
-];
+export const BANNER_TYPE = {
+  main: '首页',
+  merchant: '到店打卡',
+  person: '个人',
+  merchantMain: '商家主页',
+  mainSpecial: '周边特惠首页',
+  surroundingSpecial: '周边特惠列表',
+  wanderAroundMainBanner: '逛逛主Banner',
+  wanderAroundCapsule: '逛逛胶囊位',
+};
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = [
-  { value: '无', name: '无' },
-  { value: 'H5', name: 'H5' },
-  { value: '内部', name: '内部' },
-];
+export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', inside: '原生页面' };
 
 // 用户类型
-export const MASTER_TYPE = [
-  { value: 'user', name: '用户' },
-  { value: 'merchant', name: '店铺' },
-];
+export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
+
+// 商品类型
+export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
+
+// 风向标跳转类型
+export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按场景显示' };
+
+// 分享设置 - 用户群
+export const SHARE_SCOPE_TYPE = { all: '所有人可见', family: '仅家人家店可见' };
+
+// 分享设置 - 区域类型
+export const SHARE_AREA_TYPE = {
+  all: '全国',
+  city: '按市选择',
+  district: '按区县选择',
+  near: '按附近区域',
+};
+
+// 分享设置 - 兴趣标签选择
+export const SHARE_TASTE_TYPE = { all: '不限', tag: '选择兴趣标签' };
+
+// 分享设置 - 性别
+export const SHARE_SEX_TYPE = { ALL: '不限', M: '男', F: '女' };
+
+// 分享设置 - 年龄
+export const SHARE_AGE_TYPE = { '1-100': '不限', age: '选择年龄段(可多选)' };
+
+// 分享设置 - 时间设置类型
+export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
+
+// 优惠券管理 - 优惠券状态
+export const COUPON_STATUS = [false, '上架中', '已下架'];
+
+// 优惠券管理 - 优惠券类型
+export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
+
+// 优惠券管理 - 是否售卖
+export const COUPON_BUY_FLAG = ['关闭', '开启'];
+
+// 优惠券管理 - 适用时段
+export const COUPON_USER_TIME = { '1,2,3,4,5,6,7': '每天', part: '部分' };
+
+// 优惠券管理 - 星期时间段
+export const COUPON_WEEK_TIME = [false, '周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+
+// 优惠券管理 - 时间段选择
+export const COUPON_TIME_TYPE = { '00:00-23:59': '全天', part: '固定时间' };
+
+// 优惠券管理 - 购买规则
+export const COUPON_BUY_RULE = { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+
+// 优惠券管理 - 优惠券类型
+export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
+
+// 收入/支出
+export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
+
+// 哒人核销订单类型
+export const EXPRET_DISTRIBUTION_TYPE = {
+  scan: '扫码支付',
+  specialGoods: '周边特惠',
+  reduceCoupon: '抵扣券订单',
+};
+
+// 哒人核销是否自购类型
+export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推', team: '团队' };
+
+// 特惠活动 - 使用时间
+export const SPECIAL_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' };
+
+// 特惠活动 - 热销推荐
+export const SPECIAL_RECOMMEND_TYPE = {
+  hotRecommend: '限时推荐',
+  todayRecommend: '爆品推荐',
+  hotTop: '限时置顶',
+  todayTop: '爆品置顶',
+  cancel: '取消推荐',
+};
+
+// 特惠活动 - 热销推荐列表枚举
+export const SPECIAL_RECOMMEND_LISTTYPE = {
+  hot: '限时',
+  today: '爆品',
+};

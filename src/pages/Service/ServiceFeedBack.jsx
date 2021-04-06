@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { FEEDBACK_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 
 const ServiceFeedBack = (props) => {
@@ -22,7 +22,7 @@ const ServiceFeedBack = (props) => {
       label: '问题状态',
       name: 'status',
       type: 'select',
-      select: { list: FEEDBACK_STATUS },
+      select: FEEDBACK_STATUS,
     },
   ];
 
@@ -82,9 +82,7 @@ const ServiceFeedBack = (props) => {
               click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
             {
-              type: 'own',
-              title: '回复',
-              auth: 'replay',
+              type: 'replay',
               visible: info.status !== '2',
               click: () => fetchFeedBackDetail({ feedbackIdString }),
             },
@@ -105,8 +103,8 @@ const ServiceFeedBack = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="问题反馈"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -114,7 +112,7 @@ const ServiceFeedBack = (props) => {
         rowKey={(record) => `${record.feedbackIdString}`}
         dispatchType="serviceFeedBack/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <FeedBackDetail
         cRef={childRef}
         visible={visible}

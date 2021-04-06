@@ -1,15 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import peasShareSet from './components/PeasShare/PeasShareSet';
+import TableDataBlock from '@/components/TableDataBlock';
+import PeasShareSet from './components/PeasShare/PeasShareSet';
 
 const SysPeasShare = (props) => {
   const { sysPeasShare, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [visible, setVisible] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -32,7 +33,7 @@ const SysPeasShare = (props) => {
           formItems={[
             {
               type: 'edit',
-              click: () => handlePeasShareSet(record),
+              click: () => handlePeasShareSet('edit', record),
             },
             {
               type: 'del',
@@ -49,34 +50,42 @@ const SysPeasShare = (props) => {
     dispatch({
       type: 'sysPeasShare/fetchPeasShareEdit',
       payload: { configMomentId: val, deleteFlag: 0 },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 新增 修改
-  const handlePeasShareSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: peasShareSet({ dispatch, childRef, initialValues }),
+  const handlePeasShareSet = (type, initialValues) => {
+    setVisible({
+      type,
+      initialValues,
+      show: true,
     });
   };
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      btnExtra={
-        <AuthConsumer auth="save">
-          <Button className="dkl_green_btn" onClick={() => handlePeasShareSet()}>
-            新增
-          </Button>
-        </AuthConsumer>
-      }
-      loading={loading}
-      columns={getColumns}
-      rowKey={(record) => `${record.configMomentIdString}`}
-      dispatchType="sysPeasShare/fetchGetList"
-      {...sysPeasShare}
-    ></DataTableBlock>
+    <>
+      <TableDataBlock
+        cRef={childRef}
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button className="dkl_green_btn" onClick={() => handlePeasShareSet('add')}>
+              新增
+            </Button>
+          </AuthConsumer>
+        }
+        loading={loading}
+        columns={getColumns}
+        rowKey={(record) => `${record.configMomentIdString}`}
+        dispatchType="sysPeasShare/fetchGetList"
+        {...sysPeasShare}
+      ></TableDataBlock>
+      <PeasShareSet
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></PeasShareSet>
+    </>
   );
 };
 

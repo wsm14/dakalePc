@@ -2,12 +2,12 @@ import * as XLSX from 'xlsx';
 
 /**
  * 导出excel 文件
- * @param {*} header 头部数组 {[key]:[name]}
- * @param {*} data 数据
- * @param {*} fileName 导出的文件名
- * @param {*} filterData ['序号'] 需要过滤的数据 header
- * @param {*} fieldRender 重定义render
- * @param {*} fieldNames 数据别名
+ * @param {*} header 头部数组 object { [key]: [name] }
+ * @param {*} data 数据 object[] []
+ * @param {*} fileName 导出的文件名 string 'file'
+ * @param {*} filterData 需要过滤的数据 string[] ['序号']
+ * @param {*} fieldRender 重定义render object { [dataIndex]: (tdData, row) => () }
+ * @param {*} fieldNames 数据别名 object { key = 'dataIndex', headerName = 'title' }
  */
 const exportExcel = ({
   header = [],
@@ -26,20 +26,14 @@ const exportExcel = ({
     headerObj[item[headerName]] = item[headerName];
   });
   // 获取数据列表
-  const dataList = data.map((item) => {
+  const dataList = data.map((row) => {
     const newData = {};
     newheader.map((keys) => {
-      // 值
-      const rowData = item[keys[key]];
-      // 头
-      const rowHeader = keys[headerName];
-      // 值重置函数
-      const rowRender = fieldRender[keys[key]] || keys.render;
-
-      const rowRenderData = rowRender ? rowRender(rowData, item) : rowData;
-
-      // 数据key映射
-      newData[rowHeader] = typeof rowRenderData == 'string' ? rowRenderData : rowData;
+      const tdData = row[keys[key]]; // 值
+      const rowHeader = keys[headerName]; // 头
+      const rowRender = fieldRender[keys[key]] || keys.render; // 值重置函数
+      const rowRenderData = rowRender ? rowRender(tdData, row) : tdData;
+      newData[rowHeader] = typeof rowRenderData == 'string' ? rowRenderData : tdData; // 数据key映射
     });
     return newData;
   });

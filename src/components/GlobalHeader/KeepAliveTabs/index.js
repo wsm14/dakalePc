@@ -11,7 +11,6 @@ export default function KeepAliveTabs() {
   const { getCachingNodes, dropScope } = useAliveController();
   const cachingNodes = getCachingNodes();
   const closable = cachingNodes.length > 1;
-
   const dropTab = (currentUrl, action) => {
     if (action === 'remove') {
       const currentName = cachingNodes.filter((item) => item.url === currentUrl).pop().name;
@@ -42,12 +41,12 @@ export default function KeepAliveTabs() {
       activeKey={location.pathname}
       onEdit={dropTab}
     >
-      {cachingNodes.map((pane) => (
+      {cachingNodes.map((pane, index) => (
         <Tabs.TabPane
           className={`${pageTabStyle.tabPage}`}
           style={{ background: 'transparent', paddingLeft: 0, paddingRight: 0 }}
           tab={pane.name}
-          key={pane.url}
+          key={`${pane.url}`}
           closable={closable}
         />
       ))}

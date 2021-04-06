@@ -19,14 +19,15 @@ const ProvCompanySet = (props) => {
     companyId,
   } = props;
 
-  const { type = 'add', show = false } = visible;
+  const { type = 'edit', show = false } = visible;
 
   const [form] = Form.useForm();
+  const [Addform] = Form.useForm();
   const [tabKey, setTabKey] = useState('1');
 
   // 提交数据
   const handleUpData = (next) => {
-    form.validateFields().then((values) => {
+    (type == 'add' ? Addform : form).validateFields().then((values) => {
       const { password, contactMobile, entryDate, allCityCode, allCityName, lat } = values;
       if (!lat) {
         notification.info({
@@ -159,18 +160,18 @@ const ProvCompanySet = (props) => {
       <>
         {
           {
-            add: <AddDetail form={form} type={type}></AddDetail>,
+            add: <AddDetail form={Addform} type={type}></AddDetail>,
             edit: <AddDetail form={form} type={type} detail={detail}></AddDetail>,
             detail: (
               <Tabs defaultActiveKey="1" onChange={setTabKey}>
                 <Tabs.TabPane tab="省公司信息" key="1">
-                  <AddDetail form={form} type={type} detail={detail}></AddDetail>
+                  <AddDetail type={type} detail={detail}></AddDetail>
                 </Tabs.TabPane>
                 <Tabs.TabPane tab="账户信息" key="2">
                   {detail.ownerInfo && detail.ownerInfo.bankStatus == 2 && (
                     <Alert message={detail.ownerInfo.bankRejectReason} type="error" />
                   )}
-                  <AccountForm form={form} type={type} detail={detail}></AccountForm>
+                  <AccountForm type={type} detail={detail}></AccountForm>
                 </Tabs.TabPane>
               </Tabs>
             ),

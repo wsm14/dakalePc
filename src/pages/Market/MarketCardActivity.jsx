@@ -5,16 +5,17 @@ import { ACTIVITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
-import marketCardActivitySet from './components/Activity/MarketCardActivitySet';
+import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
 
 const MarketCardActivity = (props) => {
   const { marketCardActivity, loading, dispatch } = props;
 
   const childRef = useRef();
   const [show, setShow] = useState({ key: 'home', record: '' });
-  const [params, setParams] = useState({});
+  const [visible, setVisible] = useState(false);
+  const [params] = useState({});
 
   // 搜索参数
   const searchItems = [
@@ -26,7 +27,7 @@ const MarketCardActivity = (props) => {
       label: '活动状态',
       name: 'activityStatus',
       type: 'select',
-      select: { list: ACTIVITY_STATUS },
+      select: ACTIVITY_STATUS,
     },
   ];
 
@@ -99,17 +100,12 @@ const MarketCardActivity = (props) => {
     dispatch({
       type: 'marketCardActivity/fetchMarketActivityCancel',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 设置活动
-  const handleSetActive = () => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: marketCardActivitySet({ dispatch, childRef }),
-    });
-  };
+  const handleSetActive = () => setVisible(true);
 
   const btnExtra = (
     <AuthConsumer auth="save">
@@ -124,19 +120,18 @@ const MarketCardActivity = (props) => {
       {
         {
           home: (
-            <DataTableBlock
-              keepName="营销活动"
+            <TableDataBlock
+              keepData
               cRef={childRef}
               loading={loading}
               btnExtra={btnExtra}
               columns={getColumns}
               searchItems={searchItems}
-              pParams={params}
-              setParams={setParams}
+              params={params}
               rowKey={(record) => record.activityIdString}
               dispatchType="marketCardActivity/fetchGetList"
               {...marketCardActivity.active}
-            ></DataTableBlock>
+            ></TableDataBlock>
           ),
           detail: (
             <MarketCardActivityDetail
@@ -146,6 +141,11 @@ const MarketCardActivity = (props) => {
           ),
         }[show.key]
       }
+      <MarketCardActivitySet
+        visible={visible}
+        cRef={childRef}
+        onClose={() => setVisible(false)}
+      ></MarketCardActivitySet>
     </>
   );
 };

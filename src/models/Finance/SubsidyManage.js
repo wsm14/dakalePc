@@ -5,6 +5,7 @@ import {
   fetchSubsidyTaskDetail,
   fetchSubsidyTaskEndDel,
   fetchSubsidyTaskAdd,
+  fetchSubsidyTaskDetailList,
   fetchSubsidyActionList,
   fetchSubsidyActionAdd,
   fetchSubsidyActionDel,
@@ -16,6 +17,7 @@ export default {
   state: {
     list: { list: [], total: 0 },
     actionList: { list: [], total: 0 },
+    detailList: { list: [] },
   },
 
   reducers: {
@@ -36,6 +38,17 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchSubsidyTaskDetailList({ payload }, { call, put }) {
+      const response = yield call(fetchSubsidyTaskDetailList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: { list: content.subsidyList },
         },
       });
     },

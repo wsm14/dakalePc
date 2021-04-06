@@ -1,9 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button, Table } from 'antd';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import tradePlatformSet from '../Form/TradePlatformSet';
+import TradePlatformSet from '../Form/TradePlatformSet';
 
 const TradePlatformDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
@@ -11,29 +11,18 @@ const TradePlatformDetailList = (props) => {
   const { record = '' } = visible;
 
   const childRef = useRef();
+  const [visibleSet, setVisibleSet] = useState(false);
 
-  //  新增 修改 CeditType 1 面积新增 2 面积修改 3 服务费新增修改
-  const handleDataSet = (CeditType, initialValues, configMerchantSettleId, rowData) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: tradePlatformSet({
-        dispatch,
-        childRef,
-        initialValues,
-        categoryId: record.id,
-        configMerchantSettleId,
-        CeditType,
-        rowData,
-      }),
-    });
-  };
+  //  新增 修改 type 1 areaAdd 面积新增 2 areaEdit 面积修改 3 moneySet 服务费新增修改
+  const handleDataSet = (type, detail, configMerchantSettleId, rowData) =>
+    setVisibleSet({ show: true, type, detail, configMerchantSettleId, rowData });
 
   // 删除面积
   const fetchDataDel = (value) => {
     dispatch({
       type: 'sysTradeList/fetchTradePlatformSet',
       payload: { configMerchantSettleId: value, deleteFlag: 0 },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -48,7 +37,7 @@ const TradePlatformDetailList = (props) => {
         configMerchantSettleId: configMerchantSettleIdString,
         merchantSettleObjects: pObj.filter((item) => item.serviceFee !== value.serviceFee),
       },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -69,16 +58,16 @@ const TradePlatformDetailList = (props) => {
         title: '操作',
         align: 'right',
         dataIndex: 'configMerchantSettleIdString',
-        render: (val, red) => (
+        render: (val, row) => (
           <HandleSetTable
             formItems={[
               {
                 type: 'edit',
-                click: () => handleDataSet(3, red, '', data),
+                click: () => handleDataSet('moneySet', row, '', data),
               },
               {
                 type: 'del',
-                click: () => fetchDataRowDel(red, data),
+                click: () => fetchDataRowDel(row, data),
               },
             ]}
           />
@@ -93,7 +82,7 @@ const TradePlatformDetailList = (props) => {
       dataSource={data}
       rowKey={(row) => `${row.freeBean}`}
       pagination={false}
-      componentSize="middle"
+      size="middle"
     />
   );
 
@@ -112,9 +101,9 @@ const TradePlatformDetailList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
+              auth: true,
               title: '新增服务费',
-              click: () => handleDataSet(3, '', val, red),
+              click: () => handleDataSet('moneySet', '', val, red),
             },
             {
               type: 'edit',
@@ -127,7 +116,7 @@ const TradePlatformDetailList = (props) => {
                   const num = area.split('以')[0];
                   areaArr = { true: [num, ''], false: [0, num] }[area.indexOf('上') !== -1];
                 }
-                handleDataSet(2, { areaMin: areaArr[0], areaMax: areaArr[1] }, val);
+                handleDataSet('areaEdit', { areaMin: areaArr[0], areaMax: areaArr[1] }, val);
               },
             },
             {
@@ -148,7 +137,7 @@ const TradePlatformDetailList = (props) => {
       btnExtra: (
         <Button
           className="dkl_green_btn"
-          onClick={() => handleDataSet(3, '', 999, detailList.list[0])}
+          onClick={() => handleDataSet('moneySet', '', 999, detailList.list[0])}
         >
           新增
         </Button>
@@ -159,7 +148,7 @@ const TradePlatformDetailList = (props) => {
       rowKey: 'configMerchantSettleIdString',
       list: detailList.list,
       btnExtra: (
-        <Button className="dkl_green_btn" onClick={() => handleDataSet(1)}>
+        <Button className="dkl_green_btn" onClick={() => handleDataSet('areaAdd')}>
           新增面积
         </Button>
       ),
@@ -170,28 +159,37 @@ const TradePlatformDetailList = (props) => {
   }[!detailList.list.length ? true : detailList.list[0].type === 'no'];
 
   return (
-    <Modal
-      title={`平台服务费 - ${record.categoryName}`}
-      width={1150}
-      destroyOnClose
-      footer={null}
-      visible={visible}
-      onCancel={() => setVisible('')}
-    >
-      <DataTableBlock
-        btnExtra={propsItem.btnExtra}
-        cRef={childRef}
-        noCard={false}
-        loading={loading}
-        columns={propsItem.columns}
-        rowKey={(row, i) => `${row[propsItem.rowKey] + i}`}
-        params={{ categoryId: record.id }}
-        dispatchType="sysTradeList/fetchTradePlatformList"
-        componentSize="middle"
-        expandable={propsItem.expandable}
-        list={propsItem.list}
-      ></DataTableBlock>
-    </Modal>
+    <>
+      <Modal
+        title={`平台服务费 - ${record.categoryName}`}
+        width={1150}
+        destroyOnClose
+        footer={null}
+        zIndex={555}
+        visible={visible}
+        onCancel={() => setVisible('')}
+      >
+        <TableDataBlock
+          btnExtra={propsItem.btnExtra}
+          cRef={childRef}
+          noCard={false}
+          loading={loading}
+          columns={propsItem.columns}
+          rowKey={(row, i) => `${row[propsItem.rowKey] + i}`}
+          params={{ categoryId: record.id }}
+          dispatchType="sysTradeList/fetchTradePlatformList"
+          size="middle"
+          expandable={propsItem.expandable}
+          list={propsItem.list}
+        ></TableDataBlock>
+      </Modal>
+      <TradePlatformSet
+        childRef={childRef}
+        categoryId={record.id}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></TradePlatformSet>
+    </>
   );
 };
 

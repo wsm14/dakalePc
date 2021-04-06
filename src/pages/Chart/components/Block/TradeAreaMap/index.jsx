@@ -81,7 +81,6 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
 
   // 获取地图四角经纬度
   const getMapBounds = (bounds, type) => {
-    console.log('bounds', type, bounds);
     const NorthEast = bounds.northeast;
     const SouthWest = bounds.southwest;
     const lat = [SouthWest.lat, NorthEast.lat].join('_');
@@ -135,6 +134,7 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
       const {
         query: { bucket = '' },
       } = history.location;
+      console.log('map', map);
       // 保存地图实例
       setMapInstance(map);
       // url传递城市的情况下 地图跳转到指定城市界面
@@ -146,23 +146,27 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
     },
     // 缩放事件
     zoomend() {
-      mapRemoveMaekes();
-      const zoom = mapInstance.getZoom();
-      if (zoom >= 14) {
-        getMapBounds(mapInstance.getBounds(), 'detail');
-      } else {
-        getMapBounds(mapInstance.getBounds(), 'created');
+      if (mapInstance) {
+        mapRemoveMaekes();
+        const zoom = mapInstance.getZoom();
+        if (zoom >= 14) {
+          getMapBounds(mapInstance.getBounds(), 'detail');
+        } else {
+          getMapBounds(mapInstance.getBounds(), 'created');
+        }
       }
     },
     // 拖拽 移动变化地图事件
     moveend() {
-      mapRemoveMaekes();
-      // 缩放级别小于 14 请求接口显示聚合点 大于14隐藏聚合点 显示散点
-      const zoom = mapInstance.getZoom();
-      if (zoom >= 14) {
-        getMapBounds(mapInstance.getBounds(), 'detail');
-      } else {
-        getMapBounds(mapInstance.getBounds(), 'created');
+      if (mapInstance) {
+        mapRemoveMaekes();
+        // 缩放级别小于 14 请求接口显示聚合点 大于14隐藏聚合点 显示散点
+        const zoom = mapInstance.getZoom();
+        if (zoom >= 14) {
+          getMapBounds(mapInstance.getBounds(), 'detail');
+        } else {
+          getMapBounds(mapInstance.getBounds(), 'created');
+        }
       }
     },
   };
@@ -214,13 +218,13 @@ const TradeAreaMap = ({ dispatch, mapHubDetail, mapHub, mapHubId }) => {
               center={[item.lnt, item.lat]} // 坐标
               radius={Number(item.radius)} // 半径
               style={{ strokeOpacity: 0.2, fillOpacity: 0.4, fillColor: '#1791fc', zIndex: 50 }} // 圈样式
-              events={{
-                created() {
-                  console.log();
-                  // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
-                  if (i === item.length) mapInstance.setFitView();
-                },
-              }}
+              // events={{
+              //   created() {
+              //     console.log();
+              //     // 初始化事件 最后一个商圈渲染后地图自适应显示所有商圈范围
+              //     if (i === item.length) mapInstance.setFitView();
+              //   },
+              // }}
             >
               {/* 商圈中心 */}
               <Marker

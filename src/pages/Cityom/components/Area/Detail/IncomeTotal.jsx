@@ -6,7 +6,6 @@ import { Column } from '@/components/Charts';
 import SearchCondition from '@/components/SearchCondition';
 
 const ProvCompanyTotalInfo = ({ dispatch, loading, partnerId, totalData }) => {
-  
   const [selectYear, setSelectYear] = useState(moment().format('YYYY'));
   // 搜索参数
   const searchItems = [

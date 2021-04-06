@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { rightsJson, targetJson } from '@/common/expertLevelJSON';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelJSONSet = (props) => {
   const { show, showlistData, keyRow, onCancel, loading, fetchExpertLevelSet } = props;
@@ -23,11 +23,6 @@ const LevelJSONSet = (props) => {
   }[keyRow];
 
   const getColumns = [
-    {
-      title: '序号',
-      dataIndex: 'icon',
-      render: (val, row, i) => i + 1,
-    },
     {
       title: `等级${keyRow == 'rights' ? '权益' : '任务'}`,
       dataIndex: 'title',
@@ -52,7 +47,7 @@ const LevelJSONSet = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'own',
+                auth: true,
                 title: '添加',
                 pop: true,
                 visible: !checkAdd,
@@ -61,7 +56,7 @@ const LevelJSONSet = (props) => {
                 },
               },
               {
-                type: 'own',
+                auth: true,
                 title: '取消添加',
                 pop: true,
                 visible: checkAdd,
@@ -88,15 +83,16 @@ const LevelJSONSet = (props) => {
 
   return (
     <Drawer {...modalProps} onClose={onCancel}>
-      <DataTableBlock
-        componentSize={'small'}
+      <TableDataBlock
+        order
+        size={'small'}
         noCard={false}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.title}`}
         list={propItem.list}
         pagination={false}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Drawer>
   );
 };

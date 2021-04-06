@@ -95,7 +95,8 @@ const BaseForm = (props) => {
       label: '分管省份',
       type: 'select',
       name: 'agentProvinceCode',
-      select: CITYJSON.map((item) => ({ name: item.label, value: item.value })),
+      select: CITYJSON,
+      fieldNames: { label: 'label' },
       onChange: (val, item) => form.setFieldsValue({ agentProvinceName: item.children[0] }),
       render: (val, row) => row.agentProvinceName,
     },
@@ -103,13 +104,14 @@ const BaseForm = (props) => {
       label: '分管省份名字值',
       name: 'agentProvinceName',
       hidden: true,
+      show: false,
     },
     {
       label: '企业所在地',
       type: 'cascader',
       name: 'allCityCode',
-      onChange: (val) => {
-        form.setFieldsValue({ allCityName: val.map((item) => item.label) });
+      onChange: (val, option) => {
+        form.setFieldsValue({ allCityName: option.map((item) => item.label) });
       },
       show: false,
     },
@@ -117,6 +119,7 @@ const BaseForm = (props) => {
       label: '企业所在地名字',
       name: 'allCityName',
       hidden: true,
+      show: false,
     },
     {
       label: '企业地址',
@@ -127,7 +130,8 @@ const BaseForm = (props) => {
     {
       type: 'noForm',
       visible: map,
-      childrenOwn: amap,
+      show: false,
+      formItem: amap,
     },
     {
       label: '加盟日期',
@@ -146,12 +150,14 @@ const BaseForm = (props) => {
       label: '经度',
       name: 'lat',
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
     {
       label: '纬度',
       name: 'lnt',
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
   ];

@@ -68,6 +68,7 @@ const ClassifySet = (props) => {
       placeholder: '请先选择店铺',
     },
   ];
+
   const modalProps = {
     title: '设置分类',
     visible: !!type,

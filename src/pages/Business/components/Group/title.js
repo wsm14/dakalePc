@@ -21,7 +21,7 @@ export default ({ panelList = [] }) => {
       {panelList.map((item) => {
         const { title = '', extra = '', form = '', showArrow = true, disabled = false } = item;
         return (
-          <Panel header={title} extra={extra} key={title} disabled={disabled} showArrow={showArrow}>
+          <Panel header={title} extra={extra} key={title} collapsible={disabled?'disabled':''} showArrow={showArrow}>
             {form}
           </Panel>
         );

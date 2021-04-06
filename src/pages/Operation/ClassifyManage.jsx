@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import debounce from 'lodash/debounce';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import ClassifySet from './components/Classify/ClassifySet';
 
@@ -32,7 +32,7 @@ const ClassifyManageComponent = (props) => {
     dispatch({
       type: 'classifyManage/fetchClassifyDel',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -45,18 +45,13 @@ const ClassifyManageComponent = (props) => {
       loading: loadings.effects['classifyManage/fetchClassifyGetMre'],
       allItem: false,
       onSearch: (val) => fetchClassifyGetMre(val),
-      select: { list: mreSelect },
+      select: mreSelect,
       placeholder: '请输入搜索',
     },
   ];
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      dataIndex: 'sortValue',
-      render: (val, item, i) => i + 1,
-    },
     {
       title: '分类名称',
       dataIndex: 'categoryName',
@@ -98,8 +93,9 @@ const ClassifyManageComponent = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="分类管理"
+      <TableDataBlock
+        order
+        keepData
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
@@ -114,7 +110,7 @@ const ClassifyManageComponent = (props) => {
         rowKey={(record) => `${record.categoryCustomId}`}
         dispatchType="classifyManage/fetchGetList"
         {...classifyManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ClassifySet
         cRef={childRef}
         visible={visible}

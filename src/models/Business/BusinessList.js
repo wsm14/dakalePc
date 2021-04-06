@@ -34,6 +34,12 @@ export default {
         ...payload,
       };
     },
+    close(state) {
+      return {
+        ...state,
+        selectList: [],
+      };
+    },
   },
 
   effects: {
@@ -54,6 +60,9 @@ export default {
             name: item.merchantName,
             otherData: item.address,
             value: item.userMerchantIdString,
+            commissionRatio: item.commissionRatio,
+            topCategoryName: [item.topCategoryName, item.categoryName],
+            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
           })),
         },
       });
@@ -83,6 +92,7 @@ export default {
         businessTime,
         property = '{}',
         tag,
+        scenesIds,
       } = content.merchantDetail;
       const categoryNodeArr = categoryNode.split('.');
       // 检查值
@@ -120,6 +130,7 @@ export default {
             }
           : '',
         tags: tag.split(','),
+        scenesIds: scenesIds.split(','),
       };
       callback(initialValues);
     },
@@ -198,13 +209,14 @@ export default {
       });
       callback();
     },
-    *fetchMerVerificationCodeSet({ payload }, { call, put }) {
+    *fetchMerVerificationCodeSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerVerificationCodeSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '验证码设置成功',
       });
+      callback();
     },
   },
 };

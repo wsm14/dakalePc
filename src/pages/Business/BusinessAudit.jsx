@@ -5,8 +5,8 @@ import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import businessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
+import TableDataBlock from '@/components/TableDataBlock';
+import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 
@@ -16,6 +16,7 @@ const BusinessAuditList = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleDetailList, setVisibleDetailList] = useState(false);
+  const [visibleAuditDetail,setVisibleAuditDetail]= useState(false)
 
   // 搜索参数
   const searchItems = [
@@ -31,13 +32,13 @@ const BusinessAuditList = (props) => {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
-      select: { list: BUSINESS_STATUS_AUDIT },
+      select:  BUSINESS_STATUS_AUDIT,
     },
     {
       label: '省市区',
       type: 'cascader',
       name: 'city',
-      changeOnSelect:true,
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
@@ -141,10 +142,11 @@ const BusinessAuditList = (props) => {
 
   // 用户详情展示
   const handleShowUserDetail = (initialValues, verifyStatus) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: businessAuditDetailShow({ initialValues, verifyStatus }),
-    });
+    setVisibleAuditDetail({
+      show:true,
+      initialValues,
+      verifyStatus,
+    })
   };
 
   // 经营类目
@@ -160,8 +162,8 @@ const BusinessAuditList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="新店审核"
+      <TableDataBlock
+        keepData
         btnExtra={
           <AuthConsumer auth="checkDetail">
             <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
@@ -173,11 +175,11 @@ const BusinessAuditList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        pParams={{ searchData: { verifyStatus: '1' } }}
+        params={{ verifyStatus: '1' }}
         rowKey={(record) => `${record.userMerchantVerifyId}`}
         dispatchType="businessAudit/fetchGetList"
         {...businessAudit.list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <BusinessEdit
         cRef={childRef}
         visible={visible}
@@ -188,6 +190,7 @@ const BusinessAuditList = (props) => {
         visible={visibleDetailList}
         setVisible={setVisibleDetailList}
       ></BusinessAuditDetailList>
+      <BusinessAuditDetailShow visible={visibleAuditDetail} onClose={()=>setVisibleAuditDetail(false)}></BusinessAuditDetailShow>
     </>
   );
 };

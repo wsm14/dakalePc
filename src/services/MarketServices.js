@@ -183,16 +183,30 @@ export function fetchCheckInTextImgAdd(data) {
 
 // 打卡设置 end
 
-// App设置
+// 广告管理
 
-// get App设置 - 图片列表
+// get 广告管理 - 广告列表
 export function fetchBannerList(params) {
   return request('/admin/systemConfig/listBannerMarketPlatform', {
     params,
   });
 }
 
-// post App设置 - 图片下架/图片删除 修改
+// get 广告管理 - 获取banner图片分辨率
+export function fetchBannerRatio(params) {
+  return request('/admin/systemConfig/getBannerPictureResolutionConfig', {
+    params,
+  });
+}
+
+// get 广告管理 - 获取详情
+export function fetchBannerDetail(params) {
+  return request('/admin/systemConfig/getBannerMarketPlatformById', {
+    params,
+  });
+}
+
+// post 广告管理 - 下架/图片删除 修改
 export function fetchBannerStatusDel(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {
     method: 'POST',
@@ -200,7 +214,7 @@ export function fetchBannerStatusDel(data) {
   });
 }
 
-// post App设置 - 图片新增
+// post 广告管理 - 新增
 export function fetchBannerSet(data) {
   return request('/admin/systemConfig/saveBannerMarketPlatform', {
     method: 'POST',
@@ -208,7 +222,7 @@ export function fetchBannerSet(data) {
   });
 }
 
-// App设置 end
+// 广告管理 end
 
 // 热门搜索
 
@@ -235,6 +249,28 @@ export function fetchSearchSet(data) {
 export function fetchPuzzleAdList(params) {
   return request('/admin/puzzleAdsManagement/listPuzzleAdsManagement', {
     params,
+  });
+}
+
+// get 拼图广告 -  拼团广告详情
+export function fetchPuzzleAdDetail(params) {
+  return request('/admin/puzzleAdsManagement/getPuzzleAdsById', {
+    params,
+  });
+}
+
+// get 拼图广告 - 获取广告配置
+export function fetchPuzzleAdRoot(params) {
+  return request('/admin/systemConfig/listAdvertisingConfig', {
+    params,
+  });
+}
+
+// post 拼图广告 - 广告配置修改
+export function fetchPuzzleAdRootSet(data) {
+  return request('/admin/systemConfig/updateAdvertisingConfig', {
+    method: 'POST',
+    data,
   });
 }
 

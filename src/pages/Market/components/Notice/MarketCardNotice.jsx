@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
@@ -6,11 +6,13 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import NoticeImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import marketCardNoticeSet from './MarketCardNoticeSet';
+import TableDataBlock from '@/components/TableDataBlock';
+import MarketCardNoticeSet from './MarketCardNoticeSet';
 
 const MarketCardNotice = (props) => {
   const { marketCardNotice, title, loading, dispatch, setKey } = props;
+
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -57,7 +59,7 @@ const MarketCardNotice = (props) => {
             {
               type: 'edit',
               visible: record.status === '0',
-              click: () => handleNoticeSet(record),
+              click: () => handleNoticeSet('edit', record),
             },
             {
               type: 'del',
@@ -80,7 +82,7 @@ const MarketCardNotice = (props) => {
     dispatch({
       type: 'marketCardNotice/fetchNoticeSet',
       payload: { ...val, type },
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -108,10 +110,11 @@ const MarketCardNotice = (props) => {
   };
 
   // 设置公告表单
-  const handleNoticeSet = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: marketCardNoticeSet({ dispatch, childRef, initialValues }),
+  const handleNoticeSet = (type, initialValues) => {
+    setVisibleSet({
+      show: true,
+      type,
+      initialValues,
     });
   };
 
@@ -121,23 +124,30 @@ const MarketCardNotice = (props) => {
 
   const btnExtra = (
     <AuthConsumer auth="noticeAdd">
-      <Button className="dkl_green_btn" key="1" onClick={() => handleNoticeSet()}>
+      <Button className="dkl_green_btn" key="1" onClick={() => handleNoticeSet('add')}>
         新增公告
       </Button>
     </AuthConsumer>
   );
 
   return (
-    <DataTableBlock
-      cRef={childRef}
-      loading={loading}
-      btnExtra={btnExtra}
-      columns={getColumns}
-      searchItems={searchItems}
-      rowKey={(record) => `${record.configAnnounceIdString}`}
-      dispatchType="marketCardNotice/fetchGetList"
-      {...marketCardNotice}
-    ></DataTableBlock>
+    <>
+      <TableDataBlock
+        cRef={childRef}
+        loading={loading}
+        btnExtra={btnExtra}
+        columns={getColumns}
+        searchItems={searchItems}
+        rowKey={(record) => `${record.configAnnounceIdString}`}
+        dispatchType="marketCardNotice/fetchGetList"
+        {...marketCardNotice}
+      ></TableDataBlock>
+      <MarketCardNoticeSet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></MarketCardNoticeSet>
+    </>
   );
 };
 

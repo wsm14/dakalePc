@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import {  Button, Form, notification } from 'antd';
+import { Button, Form, notification } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import GoodsDetail from './Detail/GoodsDetail';
 import GoodsSet from './Form/GoodsSet';
@@ -65,7 +65,6 @@ const GoodsDrawer = (props) => {
 
   const modalProps = {
     title: `${type == 'showDetail' ? '商品详情' : '新增商品'}`,
-    width: 620,
     visible: type == 'showDetail' || type == 'addGoods',
     onClose,
     footer: type !== 'showDetail' && (

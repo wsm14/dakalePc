@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import numeral from 'numeral';
 import { PlusOutlined } from '@ant-design/icons';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import FormListContent from '../GoodsGruop';
 
 const GoodsSetTable = ({ form, detail }) => {
@@ -30,13 +30,13 @@ const GoodsSetTable = ({ form, detail }) => {
   ];
 
   const tableCon = (
-    <DataTableBlock
-      componentSize="small"
+    <TableDataBlock
+      size="small"
       noCard={false}
       columns={getColumns}
       rowKey={(record) => `${record.goodsName}`}
       list={detail || listData}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 
   return (

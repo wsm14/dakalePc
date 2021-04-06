@@ -5,8 +5,8 @@ import { FAQ_LIKE_STATUS } from '@/common/constant';
 import { Card, Result, Switch, Button, Space, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import DraggableContent, { DragHandle } from '@/components/DataTableBlock/SortBlock';
+import TableDataBlock from '@/components/TableDataBlock';
+import DraggableContent, { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import FAQSortList from './components/FAQ/List/FAQSortList';
 import FAQSet from './components/FAQ/Form/FAQSet';
 
@@ -29,16 +29,12 @@ const ServiceFAQ = (props) => {
 
   const childRef = useRef();
   const check = authCheck(tabList);
-  // tab分类
-  const [tabkey, setTabKey] = useState(false);
-  // 多选删除项木key
-  const [delKey, setDelKey] = useState([]);
-  // 分类列表
-  const [visible, setVisible] = useState(false);
-  // 设置faq
-  const [faqSet, setFaqSet] = useState(false);
-  // 展开行
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+  const [tabkey, setTabKey] = useState(false); // tab分类
+  const [delKey, setDelKey] = useState([]); // 多选删除项木key
+  const [visible, setVisible] = useState(false); // 分类列表
+  const [faqSet, setFaqSet] = useState(false); // 设置faq
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]); // 展开行
 
   useEffect(() => {
     setTabKey(check && check.length ? check[0]['key'] : false);
@@ -59,8 +55,8 @@ const ServiceFAQ = (props) => {
       name: 'questionCategoryId',
       type: 'select',
       loading: loading.effects['serviceFAQ/fetchFAQSortList'],
-      select: { list: sortList.list },
-      fieldNames: { labelKey: 'questionCategoryName', valueKey: 'questionCategoryIdString' },
+      select: sortList.list,
+      fieldNames: { label: 'questionCategoryName', value: 'questionCategoryIdString' },
     },
     {
       label: '关键字',
@@ -70,18 +66,12 @@ const ServiceFAQ = (props) => {
       label: '猜你想问',
       name: 'likeStatus',
       type: 'select',
-      select: { list: FAQ_LIKE_STATUS },
+      select: FAQ_LIKE_STATUS,
     },
   ];
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'image',
-      render: (val, row, i) => i + 1,
-    },
     {
       title: 'FAQ标题',
       className: 'drag-visible',
@@ -296,8 +286,9 @@ const ServiceFAQ = (props) => {
       }
     >
       {check && check.length ? (
-        <DataTableBlock
-          NoSearch
+        <TableDataBlock
+          order
+          firstFetch={false}
           noCard={false}
           cRef={childRef}
           loading={loading.models.serviceFAQ}
@@ -350,7 +341,7 @@ const ServiceFAQ = (props) => {
             onChange: (val) => setDelKey(val),
           }}
           {...FAQList}
-        ></DataTableBlock>
+        ></TableDataBlock>
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>
       )}

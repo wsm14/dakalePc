@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { targetJson } from '@/common/expertLevelJSON';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelTable = (props) => {
   const { list, keyRow, loading, setSelectData, setEditData, fetchExpertLevelSet } = props;
@@ -124,11 +124,6 @@ const LevelTable = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '序号',
-      dataIndex: 'icon',
-      render: (val, row, i) => i + 1,
-    },
-    {
       title: `等级${keyRow == 'rights' ? '权益' : '任务'}`,
       dataIndex: 'title',
       render: (val, row) => {
@@ -178,7 +173,8 @@ const LevelTable = (props) => {
   ];
 
   return (
-    <DataTableBlock
+    <TableDataBlock
+      order
       btnExtra={
         <Button className="dkl_green_btn" onClick={() => setSelectData({ show: true })}>
           添加
@@ -190,7 +186,7 @@ const LevelTable = (props) => {
       rowKey={(record) => `${record.name}`}
       list={list}
       pagination={false}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

@@ -1,5 +1,12 @@
 import { notification } from 'antd';
-import { fetchPuzzleAdList, fetchPuzzleAdSet } from '@/services/MarketServices';
+import moment from 'moment';
+import {
+  fetchPuzzleAdList,
+  fetchPuzzleAdSet,
+  fetchPuzzleAdDetail,
+  fetchPuzzleAdRoot,
+  fetchPuzzleAdRootSet,
+} from '@/services/MarketServices';
 
 export default {
   namespace: 'puzzleAd',
@@ -7,6 +14,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    adRoot: {},
   },
 
   reducers: {
@@ -38,6 +46,41 @@ export default {
       notification.success({
         message: '温馨提示',
         description: `拼图广告${deleteFlag === 0 ? '删除' : '设置'}成功`,
+      });
+      callback();
+    },
+    *fetchPuzzleAdDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchPuzzleAdDetail, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { brandIdStr: brandId, startShowTime, endShowTime } = content.puzzleAdsDTO;
+      if (callback)
+        callback({
+          ...content.puzzleAdsDTO,
+          brandId,
+          activeDate: [moment(startShowTime, 'YYYY-MM-DD'), moment(endShowTime, 'YYYY-MM-DD')],
+        });
+    },
+    *fetchPuzzleAdRoot({ payload, callback }, { call, put }) {
+      const response = yield call(fetchPuzzleAdRoot, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { extraParam = '{}' } = content.dictionary;
+      const dataValue = JSON.parse(extraParam);
+      yield put({
+        type: 'save',
+        payload: {
+          adRoot: { data: content.dictionary, dataValue },
+        },
+      });
+      callback();
+    },
+    *fetchPuzzleAdRootSet({ payload, callback }, { call }) {
+      const response = yield call(fetchPuzzleAdRootSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `广告配置成功`,
       });
       callback();
     },

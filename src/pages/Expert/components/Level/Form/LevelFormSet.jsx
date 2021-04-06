@@ -7,7 +7,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const LevelFormSet = (props) => {
   const { visible, keyRow, showlistData, onCancel, loading, fetchExpertLevelSet } = props;
 
-  const { type = 'set', detail = '', show = false } = visible;
+  const { detail = '', show = false } = visible;
 
   const [form] = Form.useForm();
 
@@ -55,7 +55,7 @@ const LevelFormSet = (props) => {
       name: 'value',
       visible: detail.name == 'exclusiveCoupon',
       type: 'noForm',
-      childrenOwn: (
+      formItem: (
         <Form.Item label="设置数值" style={{ marginBottom: 0 }}>
           <Form.Item name={['value', 'startMoney']} {...formObj}>
             <InputNumber style={{ width: '100%' }} min={1} precision={0} />
@@ -72,7 +72,7 @@ const LevelFormSet = (props) => {
       name: 'value',
       visible: detail.name == 'exclusiveCoupon',
       type: 'noForm',
-      childrenOwn: (
+      formItem: (
         <Form.Item label="设置张数" style={{ marginBottom: 0 }}>
           <Form.Item name={['value', 'startCount']} {...formObj}>
             <InputNumber style={{ width: '100%' }} min={1} precision={0} />
@@ -98,7 +98,6 @@ const LevelFormSet = (props) => {
 
   const modalProps = {
     title: propItem.title,
-    width: 560,
     visible: show,
     onClose: onCancel,
     zIndex: 1005,

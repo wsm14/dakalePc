@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { MATCH_USER_STATUS } from '@/common/constant';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const MarketCardRMingJoinDetail = (props) => {
   const { marketCardRMing, loading, matchType, visible, setVisible } = props;
 
-  const { type = '', record = '' } = visible;
+  const { record = '' } = visible;
 
   // table 表头
   const getColumns = [
@@ -61,16 +61,16 @@ const MarketCardRMingJoinDetail = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         noCard={false}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.userId}`}
         params={{ matchType, date: record.startDate }}
         dispatchType="marketCardRMing/fetchMarketMatchJoin"
-        componentSize="middle"
+        size="middle"
         {...marketCardRMing.joinList}
-      ></DataTableBlock>
+      ></TableDataBlock>
     </Modal>
   );
 };

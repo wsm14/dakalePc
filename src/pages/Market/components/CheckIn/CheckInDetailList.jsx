@@ -1,32 +1,30 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
-import checkInDetailSet from './CheckInDetailSet';
+import CheckInDetailSet from './CheckInDetailSet';
 
 const CheckInDetailList = (props) => {
-  const { detailList, loading, visible, setVisible, dispatch } = props;
+  const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'text', styleType = 'share', record = '' } = visible;
 
   const childRef = useRef();
 
+  const [visibleDetail, setVisibleDetail] = useState(false);
+
   // 新增 修改
   const handleCheckInDetailSet = (initialValues = {}) => {
     const { idString } = initialValues;
-    dispatch({
-      type: 'drawerForm/show',
-      payload: checkInDetailSet({
-        dispatch,
-        childRef,
-        initialValues,
-        CeditType: type,
-        record: { styleType, ...record, contentType: type },
-        id: idString,
-      }),
+    setVisibleDetail({
+      show: true,
+      initialValues,
+      CeditType: type,
+      record: { styleType, ...record, contentType: type },
+      id: idString,
     });
   };
 
@@ -96,7 +94,7 @@ const CheckInDetailList = (props) => {
       visible={visible}
       onCancel={() => setVisible('')}
     >
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           {
             text: (
@@ -127,9 +125,14 @@ const CheckInDetailList = (props) => {
           subIdentify: record.subIdentify,
         }}
         dispatchType="sysCheckIn/fetchDetailList"
-        componentSize="middle"
+        size="middle"
         {...detailList}
-      ></DataTableBlock>
+      ></TableDataBlock>
+      <CheckInDetailSet
+        childRef={childRef}
+        visible={visibleDetail}
+        onClose={() => setVisibleDetail(false)}
+      ></CheckInDetailSet>
     </Modal>
   );
 };

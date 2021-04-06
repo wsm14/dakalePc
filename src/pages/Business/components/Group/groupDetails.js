@@ -261,7 +261,7 @@ const groupsDetails = (props) => {
         bodyStyle={{ paddingBottom: 80 }}
         footer={
           btnShow() && (
-            <div style={{ textAlign: 'right' }}>
+            <div style={{ textAlign: 'center' }}>
               <Space>
                 <Button
                   onClick={() => {

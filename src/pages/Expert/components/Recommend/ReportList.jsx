@@ -1,24 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import processReport from './ProcessReport';
+import PocessReport from './ProcessReport';
 
 const ReportList = (props) => {
-  const {
-    expertRecommend,
-    dispatch,
-    loading,
-    visible = false,
-    setVisible,
-    fetchExpertCountReport,
-  } = props;
+  const { expertRecommend, loading, visible = false, setVisible, fetchExpertCountReport } = props;
 
   const statusArr = ['处理中', '已解决'];
+
+  const [visibleSet, setVisibleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -32,7 +27,7 @@ const ReportList = (props) => {
         label: '类型',
         name: 'contentType',
         type: 'select',
-        select: { list: SHARE_TYPE },
+        select: SHARE_TYPE,
       },
       {
         label: '标题',
@@ -50,19 +45,14 @@ const ReportList = (props) => {
         label: '状态',
         name: 'status',
         type: 'select',
-        select: { list: statusArr },
+        select: statusArr,
       },
     ],
     getColumns: [
       {
         title: '封面',
         dataIndex: 'frontImage',
-        render: (val, detail) => (
-          <PopImgShow
-            url={val}
-            // onClick={() => setShowVisible({ show: true, type: detail.contentType, detail })}
-          ></PopImgShow>
-        ),
+        render: (val) => <PopImgShow url={val}></PopImgShow>,
       },
       {
         title: '类型',
@@ -138,9 +128,7 @@ const ReportList = (props) => {
             <HandleSetTable
               formItems={[
                 {
-                  title: '处理',
-                  type: 'own',
-                  auth: 'handle',
+                  type: 'handle',
                   visible: status == 0,
                   click: () => fetchExpertProcessReport({ userReportId }),
                 },
@@ -153,12 +141,7 @@ const ReportList = (props) => {
   };
 
   // 处理举报
-  const fetchExpertProcessReport = (initialValues) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: processReport({ dispatch, childRef, initialValues, fetchExpertCountReport }),
-    });
-  };
+  const fetchExpertProcessReport = (initialValues) => setVisibleSet({ show: true, initialValues });
 
   const tableProps = {
     noCard: false,
@@ -167,7 +150,7 @@ const ReportList = (props) => {
     columns: propItem.getColumns,
     searchItems: propItem.searchItems,
     dispatchType: propItem.dispatchType,
-    componentSize: 'middle',
+    size: 'middle',
     ...expertRecommend.reportList,
   };
 
@@ -180,7 +163,13 @@ const ReportList = (props) => {
       visible={visible}
       onCancel={() => setVisible(false)}
     >
-      <DataTableBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <TableDataBlock {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
+      <PocessReport
+        visible={visibleSet}
+        childRef={childRef}
+        fetchExpertCountReport={fetchExpertCountReport}
+        onClose={() => setVisibleSet(false)}
+      ></PocessReport>
     </Modal>
   );
 };

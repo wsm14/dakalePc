@@ -1,23 +1,10 @@
-import React, {useImperativeHandle, useState} from "react";
-import FormCondition from "@/components/FormCondition";
-import {SPACE_PATTERN,WORD_NUM_PATTERN} from "@/common/regExp";
-import {connect} from 'umi'
-import {Spin, Transfer} from "antd";
+import React from 'react';
+import FormCondition from '@/components/FormCondition';
+import { SPACE_PATTERN, WORD_NUM_PATTERN } from '@/common/regExp';
+import { connect } from 'umi';
+
 const userForm = (props) => {
-  const {
-    form,
-    initialValues,
-    loading,
-    rolesList,
-    cRef,
-    groupDetails
-  } = props
-  const [roleIds, setRoleIds] = useState([]);
-  // useImperativeHandle(cRef, () => ({
-  //   getRoleIds: () => {
-  //     return {roleIds}
-  //   }
-  // }))
+  const { form, initialValues, groupDetails } = props;
 
   const formItems = [
     {
@@ -30,10 +17,10 @@ const userForm = (props) => {
     // {
     //   label: '角色',
     //   name: 'idString',
-    //   type: 'childrenOwn',
+    //   type: 'formItem',
     //   visible: Object.keys(groupDetails).length !== 0 ? false : true,
     //   rules: [{ required: false }],
-    //   childrenOwn: (
+    //   formItem: (
     //     <Spin spinning={loading}>
     //       <Transfer
     //         showSearch
@@ -60,15 +47,11 @@ const userForm = (props) => {
     },
   ];
 
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+};
 
-  return (
-    <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
-  )
-}
-
-export default  connect(({groupSet, loading}) => ({
+export default connect(({ groupSet, loading }) => ({
   ...groupSet,
-  loading: loading.models.groupSet
+  loading: loading.models.groupSet,
   // effects['groupSet/fetchGetOcrIdCardFront'],
-}))(userForm)
-
+}))(userForm);

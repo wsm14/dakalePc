@@ -9,9 +9,32 @@ export function fetchSpecialGoodsList(params) {
   });
 }
 
+// get 周边特惠 - 详情
+export function fetchSpecialGoodsDetail(params) {
+  return request('/admin/specialGoodsManagement/getSpecialGoods', {
+    params,
+  });
+}
+
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
   return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 编辑
+export function fetchSpecialGoodsEdit(data) {
+  return request('/admin/specialGoodsManagement/updateSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 新增
+export function fetchSpecialGoodsSave(data) {
+  return request('/admin/specialGoodsManagement/saveSpecialGoods', {
     method: 'POST',
     data,
   });
@@ -43,6 +66,20 @@ export function fetchShareDetail(params) {
   });
 }
 
+// get 分享管理 - 获取免费券列表
+export function fetchShareGetFreeCoupon(params) {
+  return request('/admin/coupon/listOwnerCouponByChannel', {
+    params,
+  });
+}
+
+// get 分享管理 - 商家平台卡豆信息
+export function fetchShareGetPlatformBean(params) {
+  return request('/admin/merchant/platformBean', {
+    params,
+  });
+}
+
 // post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {
@@ -64,7 +101,7 @@ export function fetchExpertRemdList(params) {
 
 // get 种草管理 - 统计举报数量
 export function fetchExpertCountReport(params) {
-  return request('/user/userReport/countPendingUserReport', {
+  return request('/admin/userReport/countPendingUserReport', {
     params,
   });
 }
@@ -86,14 +123,14 @@ export function fetchExpertRemdStatus(data) {
 
 // get 种草管理 - 举报列表
 export function fetchExpertReportList(params) {
-  return request('/user/userReport/listUserReport', {
+  return request('/admin/userReport/listUserReport', {
     params,
   });
 }
 
 // post 种草管理 - 举报列表 - 处理举报
 export function fetchExpertProcessReport(data) {
-  return request('/user/userReport/processUserReport', {
+  return request('/admin/userReport/processUserReport', {
     method: 'POST',
     data,
   });
@@ -106,6 +143,13 @@ export function fetchExpertProcessReport(data) {
 // get 订单列表 - 列表
 export function fetchOrdersList(params) {
   return request('/admin/orderManagement/listOrder', {
+    params,
+  });
+}
+
+// get 订单列表 - 导出
+export function fetchOrdersImport(params) {
+  return request('/admin/orderManagement/listOrderImport', {
     params,
   });
 }
@@ -241,14 +285,14 @@ export function fetchClassifyDel(data) {
 
 // get 标签管理 - 列表
 export function fetchTagList(params) {
-  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+  return request('/admin/systemConfig/listConfigMerchantTagAdmin', {
     params,
   });
 }
 
 // post 标签管理 - 新增
 export function fetchTagAdd(data) {
-  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+  return request('/admin/systemConfig/saveConfigMerchantTag', {
     method: 'POST',
     data,
   });
@@ -256,7 +300,7 @@ export function fetchTagAdd(data) {
 
 // post 标签管理 - 修改
 export function fetchTagEdit(data) {
-  return request('/common/configMerchantTag/updateConfigMerchantTag', {
+  return request('/admin/systemConfig/updateConfigMerchantTag', {
     method: 'POST',
     data,
   });
@@ -268,17 +312,100 @@ export function fetchTagEdit(data) {
 
 // get 优惠券管理 - 列表
 export function fetchCouponList(params) {
-  return request('/common/configMerchantTag/listConfigMerchantTagAdmin', {
+  return request('/admin/coupon/listOwnerCouponToAction', {
     params,
   });
 }
 
-// post 优惠券管理 - 下架
+// get 优惠券管理 - 详情
+export function fetchCouponDetail(params) {
+  return request('/admin/coupon/getOwnerCouponDetail', {
+    params,
+  });
+}
+
+// post 优惠券管理 - 新增
+export function fetchCouponSave(data) {
+  return request('/admin/coupon/saveOwnerCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 优惠券管理 - 下架/编辑/删除优惠券
 export function fetchCouponStatus(data) {
-  return request('/common/configMerchantTag/saveConfigMerchantTag', {
+  return request('/admin/coupon/updateOwnerCoupon', {
     method: 'POST',
     data,
   });
 }
 
 // 优惠券管理 end
+
+// 逛逛页面配置
+
+// get 风向标配置 - 列表
+export function fetchWalkManageVaneList(params) {
+  return request('/admin/systemConfig/listConfigWindVane', {
+    params,
+  });
+}
+
+// get 风向标配置 - 详情
+export function fetchWalkManageVaneDetail(params) {
+  return request('/admin/systemConfig/getConfigWindVaneById', {
+    params,
+  });
+}
+
+// post 风向标配置 - 编辑删除
+export function fetchWalkManageVaneEditDel(data) {
+  return request('/admin/systemConfig/updateConfigWindVane', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 风向标配置 - 排序
+export function fetchWalkManageVaneSort(data) {
+  return request('/admin/systemConfig/sortConfigWindVane', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 风向标配置 - 新增
+export function fetchWalkManageVaneAdd(data) {
+  return request('/admin/systemConfig/saveConfigWindVane', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 导航类目页面配置 - 列表 / 风向标配置 - 获取场景选择
+export function fetchWalkManageNavigation() {
+  return request('/admin/systemIndustry/listAllCategoryScenes');
+}
+
+// post 导航类目页面配置 - 排序
+export function fetchWalkManageNavigationSort(data) {
+  return request('/admin/systemConfig/configCategoryNavigation', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 特惠商品类目配置 - 列表
+export function fetchWalkManageGratiaClass() {
+  return request('/common/category/listSpecialGoodsCategory');
+}
+
+// post 导航类目页面配置 - 新增
+export function fetchWalkManageGratiaClassAdd(data) {
+  return request('/common/category/setSpecialGoodsCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 逛逛页面配置 end

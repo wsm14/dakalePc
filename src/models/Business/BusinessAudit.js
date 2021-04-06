@@ -6,7 +6,6 @@ import {
   fetchMerchantAuditDetailList,
   fetchMerchantAuditDetail,
   fetchMerSaleAudit,
-  fetchMerSaleAuditAllow,
 } from '@/services/BusinessServices';
 
 export default {
@@ -90,6 +89,7 @@ export default {
         businessTime,
         property,
         tags,
+        scenesIds,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
       const dataCheck = (key) => (property[key] ? property[key] || '' : '');
@@ -126,6 +126,7 @@ export default {
             }
           : '',
         tags: tags ? tags.split(',') : [],
+        scenesIds: scenesIds ? scenesIds.split(',') : [],
       };
       callback(initialValues);
     },
@@ -139,7 +140,7 @@ export default {
       callback();
     },
     *fetchMerSaleAuditAllow({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerSaleAuditAllow, payload);
+      const response = yield call(fetchMerSaleAudit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

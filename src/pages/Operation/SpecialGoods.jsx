@@ -1,19 +1,34 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Modal } from 'antd';
-import { SPECIAL_STATUS, SPECIAL_RECOMMEND_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Tag, Button } from 'antd';
+import {
+  BUSINESS_TYPE,
+  SPECIAL_STATUS,
+  GOODS_CLASS_TYPE,
+  SPECIAL_USERTIME_TYPE,
+  SPECIAL_RECOMMEND_TYPE,
+  SPECIAL_RECOMMEND_LISTTYPE,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
+import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
+import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
+  const [searchType, setSearchType] = useState(null); // 搜索类型
+  const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
+
+  const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
+  const search_recommend = { notPromoted: '未推广', ...other };
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -28,31 +43,59 @@ const SpecialGoods = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '商品名称',
-      name: 'goodsName',
-    },
-    {
-      label: '商家名称',
-      name: 'merchantName',
-    },
-    {
-      label: '上架状态',
+      label: '活动状态',
       name: 'status',
       type: 'select',
-      select: { list: SPECIAL_STATUS },
+      select: SPECIAL_STATUS,
     },
     {
-      label: '推荐状态',
-      name: 'recommendStatus',
+      label: '活动有效期',
+      type: 'rangePicker',
+      name: 'activityStartTime',
+      end: 'activityEndTime',
+    },
+    {
+      label: '使用有效期',
       type: 'select',
-      select: { list: SPECIAL_RECOMMEND_STATUS },
+      name: 'useTimeRule',
+      allItem: false,
+      select: SPECIAL_USERTIME_TYPE,
+      handle: (form) => ({
+        onChange: (val) => {
+          console.log(val);
+          setSearchType(val);
+          form.setFieldsValue({ gain: undefined });
+        },
+      }),
+    },
+    {
+      label: '有效期',
+      name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
+      disabled: !searchType,
+      type: { gain: 'number', fixed: 'rangePicker' }[searchType],
+      end: 'useEndTime',
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'groupOrMerchantName',
+    },
+    {
+      label: '推广位置',
+      type: 'select',
+      name: 'promotionLocation',
+      select: search_recommend,
+    },
+    {
+      label: '活动商品名称',
+      name: 'goodsName',
     },
     {
       label: '区域',
       name: 'city',
       type: 'cascader',
+      changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length && fetchGetHubSelect(val[2]),
+      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
     {
       label: '商圈',
@@ -60,81 +103,124 @@ const SpecialGoods = (props) => {
       type: 'select',
       loading: loadings.models.baseData,
       allItem: false,
-      select: {
-        list: hubData.map((item) => ({
-          name: item.businessHubName,
-          value: item.businessHubIdString,
-        })),
-      },
+      select: hubData,
+      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
+    },
+    {
+      label: '店铺类型',
+      name: 'ownerType',
+      type: 'select',
+      select: BUSINESS_TYPE,
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '商品图片',
+      title: '商品名称/店铺',
       fixed: 'left',
       dataIndex: 'goodsImg',
-      render: (val) => <PopImgShow url={val} />,
-    },
-    {
-      title: '商品名称',
-      fixed: 'left',
-      dataIndex: 'goodsName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <PopImgShow url={val} />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
+                {GOODS_CLASS_TYPE[row.goodsType]}
+              </Tag>
+              <Ellipsis length={10} tooltip>
+                {row.goodsName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+              <Ellipsis length={10} tooltip>
+                {row.merchantName}
+              </Ellipsis>
+            </div>
+          </div>
+        </div>
       ),
     },
     {
-      title: '售价',
-      align: 'right',
-      dataIndex: 'realPrice',
-      render: (val) => `￥ ${val}`,
-    },
-    {
-      title: '原价',
+      title: '原价/售价',
       align: 'right',
       dataIndex: 'oriPrice',
-      render: (val) => `￥ ${val}`,
-    },
-    {
-      title: '已售',
-      align: 'right',
-      dataIndex: 'soldGoodsCount',
-    },
-    {
-      title: '已核销',
-      align: 'right',
-      dataIndex: 'writeOffGoodsCount',
-    },
-    {
-      title: '所属商家',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
+      render: (val, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(val).toFixed(2)}
+          </div>
+          <div>￥{Number(row.realPrice).toFixed(2)}</div>
+        </div>
       ),
     },
     {
-      title: '活动有效期',
-      align: 'center',
+      title: '使用有效期',
       dataIndex: 'useStartTime',
-      render: (val, row) => `${val} ~ ${row.useEndTime}`,
+      render: (val, row) => {
+        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+        if (useTimeRule === 'fixed') {
+          return useStartTime + '~' + useEndTime;
+        } else {
+          if (delayDays === '0') {
+            return `领取后立即生效\n有效期${activeDays}天`;
+          }
+          return `领取后${delayDays}天生效\n有效期${activeDays}天`;
+        }
+      },
     },
     {
-      title: '状态',
+      title: '活动时间',
       align: 'center',
-      dataIndex: 'status',
-      render: (val) => SPECIAL_STATUS[val],
+      dataIndex: 'activityStartTime',
+      render: (val, row) => (
+        <>
+          {row.activityTimeRule === 'infinite'
+            ? `${row.createTime} ~ 长期`
+            : `${val} ~ ${row.activityEndTime}`}
+          <div>{SPECIAL_STATUS[row.status]}</div>
+        </>
+      ),
     },
     {
-      title: '首页推荐',
-      align: 'center',
-      dataIndex: 'recommendStatus',
-      render: (val) => SPECIAL_RECOMMEND_STATUS[val],
+      title: '剩余数量',
+      align: 'right',
+      dataIndex: 'remain',
+      sorter: (a, b) => a.remain - b.remain,
+    },
+    {
+      title: '销量',
+      align: 'right',
+      dataIndex: 'soldGoodsCount',
+      sorter: (a, b) => a.soldGoodsCount - b.soldGoodsCount,
+    },
+    {
+      title: '核销数量',
+      align: 'right',
+      dataIndex: 'writeOffGoodsCount',
+      sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
+    },
+    {
+      title: '推广位置',
+      dataIndex: 'recommendType',
+      render: (val, row) => {
+        if (row.recommendStatus === '0' && row.topStatus === '0') return '';
+        let tagName = row.topStatus === '0' ? '推荐' : '置顶';
+        return SPECIAL_RECOMMEND_LISTTYPE[val] + tagName;
+      },
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
     },
     {
       title: '操作',
@@ -142,33 +228,27 @@ const SpecialGoods = (props) => {
       align: 'right',
       fixed: 'right',
       render: (val, record) => {
-        const {
-          goodsIdString: goodsIdStr,
-          businessHubIdString: businessHubId = '',
-          specialGoodsId,
-        } = record;
+        const { specialGoodsId, status } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'down',
-                visible: record.status != '0',
-                click: () => fetchSpecialGoodsStatus({ ...record, goodsIdStr }),
+                visible: status !== '0',
+                click: () => fetchSpecialGoodsStatus(record),
               },
               {
-                type: 'own',
-                title: '推荐',
-                auth: 'recommendStatus',
-                visible: record.status != '0' && record.recommendStatus != '1' && businessHubId,
-                click: () => fetchGetHubName({ specialGoodsId, businessHubId, recommendStatus: 1 }),
+                type: 'edit',
+                visible: status !== '0',
+                click: () => fetchSpecialGoodsDetail(record, [false, 'active', 'edit'][status]),
               },
               {
-                type: 'own',
                 pop: true,
                 title: '取消推荐',
-                auth: 'recommendStatus',
-                visible: record.status != '0' && record.recommendStatus == '1' && businessHubId,
-                click: () => fetchSpecialGoodsRecommend({ specialGoodsId, recommendStatus: 0 }),
+                auth: 'placement',
+                visible: record.recommendStatus !== '0' || record.topStatus !== '0',
+                click: () =>
+                  fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
             ]}
           />
@@ -177,83 +257,82 @@ const SpecialGoods = (props) => {
     },
   ];
 
-  // 获取所属商圈
-  const fetchGetHubName = (payload) => {
-    dispatch({
-      type: 'baseData/fetchGetHubName',
-      payload,
-      callback: (hub) =>
-        Modal.confirm({
-          title: `是否推荐至 ${hub.businessHubName}`,
-          maskClosable: true,
-          onOk() {
-            fetchSpecialGoodsRecommend({ ...payload, recommendStatus: 1 });
-          },
-          onCancel() {},
-        }),
-    });
-  };
-
   // 下架
   const fetchSpecialGoodsStatus = (payload) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
-  // 推荐状态
+  // 推荐状态 / 置顶状态
   const fetchSpecialGoodsRecommend = (payload) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsRecommend',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
-  // 行业类目
-  const fetchTradeList = () => {
+  // 获取详情
+  const fetchSpecialGoodsDetail = (payload, type) => {
+    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = payload;
     dispatch({
-      type: 'sysTradeList/fetchGetList',
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, merchantIdStr, type },
+      callback: (val) =>
+        setVisibleSet({
+          type,
+          show: true,
+          detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
+        }),
     });
   };
-
-  // 勾选的行业列表
-  const fetchGetTradeSelect = () => {
-    dispatch({
-      type: 'baseData/fetchGetTradeSelect',
-      callback: (detail) => setVisible({ show: true, detail: { categoryIds: detail } }),
-    });
-  };
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
 
   return (
     <>
-      <DataTableBlock
-        keepName="周边特惠"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         btnExtra={
-          <AuthConsumer auth="tradeSet">
-            <Button className="dkl_green_btn" onClick={fetchGetTradeSelect}>
-              行业设置
-            </Button>
-          </AuthConsumer>
+          <>
+            <SpecialRecommendMenu
+              num={goodsList.length}
+              handleRecommend={(val) =>
+                fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
+              }
+              disabled={!goodsList.length}
+            ></SpecialRecommendMenu>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ type: 'add', show: true })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          </>
         }
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.specialGoodsId}`}
+        rowSelection={{
+          onChange: setGoodsList,
+        }}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <SpecialGoodsTrade
         visible={visible}
         onCancel={() => setVisible({ show: false })}
       ></SpecialGoodsTrade>
+      <PreferentialDrawer
+        childRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet({ show: false })}
+      ></PreferentialDrawer>
     </>
   );
 };

@@ -19,11 +19,9 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
 
   const modalProps = {
     title: `添加子单品`,
-    width: 500,
     visible,
     maskClosable: false,
-    destroyOnClose: true,
-    zIndex: 100000000,
+    zIndex: 2000,
     onClose,
     footer: (
       <Button
@@ -102,17 +100,17 @@ const formList = ({ visible, onConfirm, pform, onClose }) => {
                   </div>
                 ))}
                 <Space>
-                <Button
-                style={{marginLeft:"65px"}}
-                  disabled={fields.length === 30}
-                  onClick={() => {
-                    add();
-                  }}
-                  type="primary"
-                  className={styles.goods_group_btn}
-                >
-                  <PlusOutlined /> {fields.length} / {30} 添加
-                </Button>
+                  <Button
+                    style={{ marginLeft: '65px' }}
+                    disabled={fields.length === 30}
+                    onClick={() => {
+                      add();
+                    }}
+                    type="primary"
+                    className={styles.goods_group_btn}
+                  >
+                    <PlusOutlined /> {fields.length} / {30} 添加
+                  </Button>
                 </Space>
               </>
             );

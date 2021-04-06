@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const ActiveAllocationPlace = (props) => {
   const { activeAllocationPlace, loading, userOs, promotionVersion, setVisibleSet } = props;
@@ -65,7 +65,6 @@ const ActiveAllocationPlace = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               title: '配置',
               click: () =>
                 setVisibleSet({
@@ -85,10 +84,10 @@ const ActiveAllocationPlace = (props) => {
   ];
 
   return (
-    <DataTableBlock
-      NoSearch={true}
+    <TableDataBlock
+      firstFetch={false}
       noCard={false}
-      componentSize="middle"
+      size="middle"
       searchItems={searchItems}
       cRef={childRef}
       loading={loading}
@@ -97,7 +96,7 @@ const ActiveAllocationPlace = (props) => {
       params={{ userOs, promotionVersion }}
       dispatchType="activeAllocationPlace/fetchGetList"
       {...activeAllocationPlace}
-    ></DataTableBlock>
+    ></TableDataBlock>
   );
 };
 

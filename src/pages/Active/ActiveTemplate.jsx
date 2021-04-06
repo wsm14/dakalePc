@@ -31,10 +31,10 @@ const ActiveTemplate = (props) => {
       setVisible({ show: true, info: { ...item, activeName } });
       dispatch({ type: 'drawerForm/close' });
     };
-    dispatch({
-      type: 'drawerForm/show',
-      payload: activeTemplateNameSet({ callback }),
-    });
+    // dispatch({
+    //   type: 'drawerForm/show',
+    //   payload: activeTemplateNameSet({ callback }),
+    // });
   };
 
   return (

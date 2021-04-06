@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SearchSetModal from './components/SearchSet/SearchSetModal';
 
 const SearchSetList = (props) => {
@@ -35,7 +35,6 @@ const SearchSetList = (props) => {
         <HandleSetTable
           formItems={[
             {
-              type: 'own',
               auth: 'searchSet',
               title: '配置',
               click: fetchSearchGetData,
@@ -48,14 +47,14 @@ const SearchSetList = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="搜索配置"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.title}`}
         list={[{ title: '热门搜索' }]}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <SearchSetModal
         visible={visible}
         onCancel={() => setVisible({ show: false })}

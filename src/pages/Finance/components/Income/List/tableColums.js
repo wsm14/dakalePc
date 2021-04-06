@@ -22,12 +22,6 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
   // 按日显示 按月显示 表格头
   const dayMonthColums = [
     {
-      title: '序号',
-      fixed: 'left',
-      dataIndex: 'id',
-      render: (val, row, index) => index + 1,
-    },
-    {
       title: '时间',
       align: 'center',
       dataIndex: 'time',
@@ -64,11 +58,6 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
     // 按单显示
     case 'order':
       return [
-        {
-          title: '序号',
-          dataIndex: 'id',
-          render: (val, row, index) => index + 1,
-        },
         {
           title: '时间',
           align: 'center',

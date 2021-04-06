@@ -1,13 +1,13 @@
-import React, { useImperativeHandle, useState,useEffect } from 'react';
+import React, { useImperativeHandle, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { message, Button } from 'antd';
-import FormCondition from '@/components/FormCondition';
 import { AMAP_KEY } from '@/common/constant';
-import { NUM_PERCENTAGE } from '@/common/regExp'
+import { NUM_PERCENTAGE } from '@/common/regExp';
 import { Map, Marker } from 'react-amap';
-import cityList from '@/common/city'
+import FormCondition from '@/components/FormCondition';
+
 const BaseForm = (props) => {
-  const {tradeList, form, initialValues, cRef, groupDetails } = props;
+  const { tradeList, form, initialValues, cRef, groupDetails } = props;
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
   const [address, setAddress] = useState({
@@ -20,14 +20,13 @@ const BaseForm = (props) => {
   const onSearchAddress = () => {
     const addressData = form.getFieldValue('address');
     const city = address.city;
-    if(addressData &&  address.city.length===0 &&initialValues.lat &&initialValues.lnt){
-      setLocation([initialValues.lat,initialValues.lnt,])
-      setMap(true)
+    if (addressData && address.city.length === 0 && initialValues.lat && initialValues.lnt) {
+      setLocation([initialValues.lat, initialValues.lnt]);
+      setMap(true);
       return;
-    }
-    else if (!addressData || address.city.length===0) {
-       message.info('请选择省市区并输入地址');
-       return;
+    } else if (!addressData || address.city.length === 0) {
+      message.info('请选择省市区并输入地址');
+      return;
     }
     let cityname = '';
     city.map((item) => {
@@ -70,8 +69,8 @@ const BaseForm = (props) => {
           provinceName: cityList[0].label,
           cityCode: cityList[1].value,
           cityName: cityList[1].label,
-          districtCode: cityList[2].value||'',
-          districtName: cityList[2].label||'',
+          districtCode: cityList[2].value || '',
+          districtName: cityList[2].label || '',
         };
       }
       return {
@@ -92,12 +91,12 @@ const BaseForm = (props) => {
     },
   };
   useEffect(() => {
-    const {merchantGroupDTO = {}} = groupDetails
-    if(Object.keys(merchantGroupDTO).length> 10){
-      const {lat ,lnt} = merchantGroupDTO
-      setLocation([lat ,lnt])
+    const { merchantGroupDTO = {} } = groupDetails;
+    if (Object.keys(merchantGroupDTO).length > 10) {
+      const { lat, lnt } = merchantGroupDTO;
+      setLocation([lat, lnt]);
     }
-  },[groupDetails])
+  }, [groupDetails]);
   const amap = (
     <div style={{ height: 240, marginBottom: 24, position: 'relative' }}>
       <Map
@@ -137,14 +136,14 @@ const BaseForm = (props) => {
       name: 'topCategSelect',
       select: tradeList.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      onChange: (val) => {
-        const { categoryDTOList, categoryIdString, categoryName, parentId } = val[0];
+      onChange: (val, option) => {
+        const { categoryDTOList, categoryIdString, categoryName, parentId } = option[0];
         setCategoryObj({
-          categoryId: val[1].categoryIdString,
-          categoryName:val[1].categoryName,
+          categoryId: option[1].categoryIdString,
+          categoryName: option[1].categoryName,
           topCategoryId: categoryIdString,
           topCategoryName: categoryName,
-          categoryNode: categoryIdString + '.' + val[1].categoryIdString,
+          categoryNode: categoryIdString + '.' + option[1].categoryIdString,
         });
         // form.setFieldsValue({
         //   categoryName: val,
@@ -158,8 +157,8 @@ const BaseForm = (props) => {
       type: 'cascader',
       name: 'allCode',
       visible: Object.keys(groupDetails).length !== 0 ? false : true,
-      onChange: (val) => {
-        setAddress({ ...address, disable: false, city: val });
+      onChange: (val, option) => {
+        setAddress({ ...address, disable: false, city: option });
       },
     },
     {
@@ -170,14 +169,17 @@ const BaseForm = (props) => {
     {
       type: 'noForm',
       // visible: map,
-      childrenOwn: amap,
+      formItem: amap,
     },
     {
       label: '服务费比例',
       name: 'commissionRatio',
       // type: 'number',
-      rules: [{required: false}],
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }],
+      rules: [{ required: false }],
+      addRules:
+        Object.keys(groupDetails).length === 0
+          ? [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }]
+          : [],
       addonAfter: '%',
       disabled: Object.keys(groupDetails).length === 0 ? false : true,
     },

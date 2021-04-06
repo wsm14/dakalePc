@@ -3,14 +3,15 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { PUZZLE_AD_TYPE } from '@/common/constant';
-import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
+import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const PuzzleAdSet = (props) => {
   const { visible, onSumbit, onClose, loadings, loading } = props;
 
-  const { show = false, info = '' } = visible;
+  const { type, show = false, info = '' } = visible;
   const [form] = Form.useForm();
   // 上传文件根据接口改变文件参数key
   const [showType, setShowType] = useState(false);
@@ -50,6 +51,7 @@ const PuzzleAdSet = (props) => {
         setShowType(value);
         form.setFieldsValue({ descsdription: '' });
       },
+      render: (val) => PUZZLE_AD_TYPE[val],
     },
     {
       label: '广告说明',
@@ -62,6 +64,7 @@ const PuzzleAdSet = (props) => {
       type: 'upload',
       maxFile: 5,
       visible: showType === 'image',
+      show: showType === 'image',
       name: 'image',
     },
     {
@@ -69,6 +72,7 @@ const PuzzleAdSet = (props) => {
       type: 'videoUpload',
       maxFile: 1,
       visible: showType === 'video',
+      show: showType === 'video',
       name: 'video',
       extra: '仅支持MP4',
     },
@@ -77,6 +81,7 @@ const PuzzleAdSet = (props) => {
       label: '展示时间',
       name: 'activeDate',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
+      render: (val, record) => `${record.startShowTime} -- ${record.endShowTime}`,
     },
     {
       label: '品牌名',
@@ -88,23 +93,29 @@ const PuzzleAdSet = (props) => {
     onClose();
   };
 
+  const title = { add: '新增', edit: '编辑', info: '详情' }[type];
+
   const modalProps = {
-    title: '编辑',
-    width: 650,
+    title: `${title}`,
     visible: show,
     loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,
     afterCallBack: () => setShowType(info.type),
-    footer: (
-      <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
-        确认
-      </Button>
-    ),
+    footer:
+      type !== 'info' ? (
+        <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>
+          确认
+        </Button>
+      ) : null,
   };
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition initialValues={info} formItems={formItems} form={form} />
+      {type === 'info' ? (
+        <DescriptionsCondition initialValues={info} formItems={formItems}></DescriptionsCondition>
+      ) : (
+        <FormCondition initialValues={info} formItems={formItems} form={form} />
+      )}
     </DrawerCondition>
   );
 };

@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { MRE_TAG_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import TagSet from './components/Tag/TagSet';
 
@@ -11,7 +11,7 @@ const TagManage = (props) => {
   const { tagManage, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false); // 修改新增框
 
   // 搜索参数
   const searchItems = [
@@ -23,7 +23,7 @@ const TagManage = (props) => {
       label: '标签状态',
       type: 'select',
       name: 'status',
-      select: { list: MRE_TAG_STATUS },
+      select: MRE_TAG_STATUS,
     },
   ];
 
@@ -32,7 +32,7 @@ const TagManage = (props) => {
     dispatch({
       type: 'tagManage/fetchTagEdit',
       payload: payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -77,7 +77,7 @@ const TagManage = (props) => {
 
   return (
     <>
-      <DataTableBlock
+      <TableDataBlock
         btnExtra={
           <AuthConsumer auth="save">
             <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
@@ -92,7 +92,7 @@ const TagManage = (props) => {
         rowKey={(record) => `${record.configMerchantId}`}
         dispatchType="tagManage/fetchGetList"
         {...tagManage}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>
     </>
   );

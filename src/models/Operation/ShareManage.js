@@ -1,9 +1,11 @@
 import { notification } from 'antd';
-import { fetchHandleDetail } from '@/services/BaseServices';
+import cityJson from '@/common/cityJson';
 import {
   fetchShareList,
+  fetchShareGetFreeCoupon,
   fetchShareStatusClose,
   fetchShareDetail,
+  fetchShareGetPlatformBean,
 } from '@/services/OperationServices';
 
 export default {
@@ -12,6 +14,8 @@ export default {
   state: {
     list: [],
     total: 0,
+    couponList: { list: [], total: 0 },
+    platformBean: 0,
   },
 
   reducers: {
@@ -36,17 +40,46 @@ export default {
         },
       });
     },
+    *fetchShareGetFreeCoupon({ payload }, { call, put }) {
+      const response = yield call(fetchShareGetFreeCoupon, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          couponList: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchShareGetPlatformBean({ payload }, { call, put }) {
+      const response = yield call(fetchShareGetPlatformBean, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          platformBean: content.platformBean,
+        },
+      });
+    },
     *fetchShareDetail({ payload, callback }, { call }) {
       const response = yield call(fetchShareDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.userMoments);
-    },
-    *fetchShareHandleDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchHandleDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.logRecordList);
+      const { area } = content.userMoments;
+      const newObj = {
+        ...content.userMoments,
+        videoContent: JSON.parse(content.userMoments.videoContent),
+        area: (area ? area.split(',') : [])
+          .map((item) => {
+            const cityIndex = cityJson.findIndex((city) => city.id === item);
+            if (cityIndex > -1) {
+              return cityJson[cityIndex].name;
+            }
+          })
+          .toString(),
+      };
+      callback(newObj);
     },
     *fetchStatusClose({ payload, callback }, { call }) {
       const response = yield call(fetchShareStatusClose, payload);

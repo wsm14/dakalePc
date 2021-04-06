@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Switch, Button, Card } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import TradeAreaLeft from './components/TradeArea/Left';
 import TradeAreaSet from './components/TradeArea/Form/TradeAreaSet';
 
@@ -100,8 +100,6 @@ const TradeArea = (props) => {
   const setData = (info = {}) => {
     setVisible({
       visible: true,
-      fetchSet,
-      onClose: () => setVisible(null),
       info: {
         ...selectCode,
         ...info,
@@ -122,7 +120,7 @@ const TradeArea = (props) => {
         setSelectCode={setSelectCode}
       ></TradeAreaLeft>
       <div style={{ flex: 1 }}>
-        <DataTableBlock
+        <TableDataBlock
           btnExtra={
             <AuthConsumer auth="save">
               <Button
@@ -143,9 +141,13 @@ const TradeArea = (props) => {
           rowKey={(record) => `${record.businessHubIdString}`}
           dispatchType="tradeArea/fetchGetList"
           {...tradeArea}
-        ></DataTableBlock>
+        ></TableDataBlock>
       </div>
-      <TradeAreaSet {...visible}></TradeAreaSet>
+      <TradeAreaSet
+        {...visible}
+        onSubmit={fetchSet}
+        onClose={() => setVisible(null)}
+      ></TradeAreaSet>
     </Card>
   );
 };

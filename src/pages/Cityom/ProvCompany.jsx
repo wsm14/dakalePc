@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
 import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
@@ -52,7 +52,8 @@ const ProvCompany = (props) => {
       label: '代理省份',
       name: 'provinceCode',
       type: 'select',
-      select: { list: CITYJSON.map((item) => ({ name: item.label, value: item.value })) },
+      select: CITYJSON,
+      fieldNames: { label: 'label' },
     },
     {
       label: '联系人姓名',
@@ -66,12 +67,6 @@ const ProvCompany = (props) => {
 
   // table 表头
   const getColumns = [
-    {
-      title: '序号',
-      dataIndex: 'userId',
-      fixed: 'left',
-      render: (val, row, i) => i + 1,
-    },
     {
       title: '分管省份',
       fixed: 'left',
@@ -125,7 +120,6 @@ const ProvCompany = (props) => {
         <HandleSetTable
           formItems={[
             // {
-            //   type: 'own',
             //   title: '收益数据',
             //   auth: 'income',
             //   click: () => setVisible({ type: 'income', record }),
@@ -142,8 +136,9 @@ const ProvCompany = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="省级公司"
+      <TableDataBlock
+        order
+        keepData
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
@@ -167,7 +162,7 @@ const ProvCompany = (props) => {
         rowKey={(record) => `${record.companyId}`}
         dispatchType="provCompany/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <ProvCompanyDetailList visible={visible} setVisible={setVisible} />
       <ProvCompanySet
         cRef={childRef}

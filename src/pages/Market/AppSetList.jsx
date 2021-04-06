@@ -1,12 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import { BANNER_TYPE, BANNER_SHOW_STATUS } from '@/common/constant';
+import { Button, Tooltip } from 'antd';
+import {
+  BANNER_TYPE,
+  BANNER_SHOW_STATUS,
+  BANNER_JUMP_TYPE,
+  BANNER_AREA_TYPE,
+} from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
 
 const SysAppSet = (props) => {
@@ -15,19 +20,29 @@ const SysAppSet = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
 
+  useEffect(() => {
+    fetchBannerRatio();
+  }, []);
+
   // 搜索参数
   const searchItems = [
     {
       label: '位置',
       name: 'bannerType',
       type: 'select',
-      select: { list: BANNER_TYPE },
+      select: BANNER_TYPE,
     },
     {
       label: '状态',
       name: 'showStatus',
       type: 'select',
-      select: { list: BANNER_SHOW_STATUS },
+      select: BANNER_SHOW_STATUS,
+    },
+    {
+      label: '投放区域',
+      name: 'shoswStatus',
+      type: 'select',
+      select: BANNER_AREA_TYPE,
     },
   ];
 
@@ -53,16 +68,23 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) =>
-        BANNER_TYPE.filter((item) => item.value === val)[0]
-          ? BANNER_TYPE.filter((item) => item.value === val)[0].name
-          : '--',
+      render: (val) => (BANNER_TYPE[val] ? BANNER_TYPE[val] : '--'),
+    },
+    {
+      title: '投放区域',
+      align: 'center',
+      dataIndex: 'deliveryAreaType',
+      render: (val, row) =>
+        ({
+          all: BANNER_AREA_TYPE[val],
+          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
+        }[val]),
     },
     {
       title: '跳转类型',
       align: 'center',
       dataIndex: 'jumpType',
-      render: (val) => val || '无',
+      render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
     },
     {
       title: '跳转链接',
@@ -98,7 +120,7 @@ const SysAppSet = (props) => {
             {
               type: 'edit',
               visible: record.showStatus !== '2',
-              click: () => setVisibleSet({ show: true, info: record }),
+              click: () => fetchBannerDetail({ bannerId: val }),
             },
             {
               type: 'del',
@@ -111,25 +133,41 @@ const SysAppSet = (props) => {
     },
   ];
 
+  // 获取banner分辨率配置
+  const fetchBannerRatio = () => {
+    dispatch({
+      type: 'sysAppList/fetchBannerRatio',
+    });
+  };
+
+  // 获取详情
+  const fetchBannerDetail = (payload) => {
+    dispatch({
+      type: 'sysAppList/fetchBannerDetail',
+      payload,
+      callback: (detail) => setVisibleSet({ show: true, type: 'edit', detail }),
+    });
+  };
+
   // 占位图下架
   const fetchBannerStatusDel = (payload) => {
     dispatch({
       type: 'sysAppList/fetchBannerStatusDel',
       payload,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
   return (
     <>
-      <DataTableBlock
-        keepName="广告设置"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         btnExtra={
           <AuthConsumer auth="save">
             <Button
               className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, info: '' })}
+              onClick={() => setVisibleSet({ show: true, type: 'add' })}
             >
               新增
             </Button>
@@ -141,11 +179,11 @@ const SysAppSet = (props) => {
         rowKey={(record) => `${record.bannerIdString}`}
         dispatchType="sysAppList/fetchGetList"
         {...sysAppList}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <SysAppSetForm
         cRef={childRef}
         visible={visibleSet}
-        onClose={() => setVisibleSet({ show: false, info: '' })}
+        onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
     </>
   );

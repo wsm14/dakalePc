@@ -11,12 +11,13 @@ import { Drawer, Space, Skeleton, Button } from 'antd';
  * @closeLabel 取消按钮显示值
  * @loading 额外Skeleton loading
  * @footer 底部按钮组
- * @openCallBack 打开Drawer后回调函数
+ * @afterCallBack 打开Drawer后回调函数
  * @closeCallBack 关闭Drawer后回调函数
  * @maskClosable 点击蒙版关闭 true false
  * @destroyOnClose 关闭Drawer销毁子组件 true false
  * @bodyStyle Drawer bodyStyle
  * @zIndex Drawer z-index配置
+ * @maskShow Drawer 遮罩透明 false
  * @children react 默认最高级传递组件
  */
 const DrawerCondition = (props) => {
@@ -33,6 +34,7 @@ const DrawerCondition = (props) => {
     closeCallBack,
     maskClosable = true,
     destroyOnClose = true,
+    maskShow = true,
     zIndex,
     children,
   } = props;
@@ -48,6 +50,7 @@ const DrawerCondition = (props) => {
     onClose,
     maskClosable,
     destroyOnClose,
+    maskStyle: maskShow ? {} : { background: 'none' },
     zIndex,
     bodyStyle: { paddingBottom: 80, ...bodyStyle },
     afterVisibleChange: (showEdit) => {

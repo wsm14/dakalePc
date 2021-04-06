@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import HandleSetTable from '@/components/HandleSetTable';
-import DataTableBlock from '@/components/DataTableBlock';
-import checkInSet from './components/CheckIn/CheckInSet';
+import TableDataBlock from '@/components/TableDataBlock';
+import CheckInSet from './components/CheckIn/CheckInSet';
 import CheckInDetailList from './components/CheckIn/CheckInDetailList';
 
 const SysCheckIn = (props) => {
@@ -10,6 +10,7 @@ const SysCheckIn = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState('');
+  const [visibleSet, setVisibleSet] = useState('');
 
   // table 表头
   const getColumns = [
@@ -55,27 +56,19 @@ const SysCheckIn = (props) => {
               click: () => handlePeasShareSet(record),
             },
             {
-              type: 'own',
-              title: '分享图片',
-              auth: 'shareImg',
+              type: 'shareImg',
               click: () => setVisible({ type: 'image', styleType: 'share', record }),
             },
             {
-              type: 'own',
-              title: '打卡图片',
-              auth: 'markImg',
+              type: 'markImg',
               click: () => setVisible({ type: 'image', styleType: 'mark', record }),
             },
             {
-              type: 'own',
-              title: '分享文案',
-              auth: 'shareText',
+              type: 'shareText',
               click: () => setVisible({ type: 'text', styleType: 'share', record }),
             },
             {
-              type: 'own',
-              title: '打卡文案',
-              auth: 'markText',
+              type: 'markText',
               click: () => setVisible({ type: 'text', styleType: 'mark', record }),
             },
           ]}
@@ -86,13 +79,9 @@ const SysCheckIn = (props) => {
 
   // 新增 修改
   const handlePeasShareSet = (rowData) => {
-    dispatch({
-      type: 'drawerForm/show',
-      payload: checkInSet({
-        dispatch,
-        childRef,
-        rowData,
-      }),
+    setVisibleSet({
+      show: true,
+      initialValues: rowData,
     });
   };
 
@@ -104,16 +93,21 @@ const SysCheckIn = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="打卡设置"
+      <TableDataBlock
+        keepData
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.subIdentify}`}
         dispatchType="sysCheckIn/fetchGetList"
         {...list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <CheckInDetailList visible={visible} setVisible={setVisible} />
+      <CheckInSet
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></CheckInSet>
     </>
   );
 };

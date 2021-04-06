@@ -28,7 +28,7 @@ const ChartBlockComponent = ({
       setCityData({ provinceCode: bucket });
       setSearchData({ ...timeData, provinceCode: bucket });
     }
-  }, []);
+  }, [bucket]);
 
   // 选择时间
   const handleSearchData = (time, areaCode) => {

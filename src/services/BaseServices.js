@@ -4,7 +4,21 @@ import request from '@/utils/request';
 
 // get 日志记录
 export function fetchHandleDetail(params) {
-  return request('/user/logRecord/listLogRecord', {
+  return request('/admin/logRecord/listLogRecord', {
+    params,
+  });
+}
+
+// get 获取配置文件
+export function fetchGetPropertyJSON(params) {
+  return request('/common/property/getLastProperty', {
+    params,
+  });
+}
+
+// get 获取手机号归属地
+export function fetchGetPhoneComeLocation(params) {
+  return request('/common/ocr/getMobileInfo', {
     params,
   });
 }
@@ -46,28 +60,28 @@ export function fetchGetOcrIdCardBack(params) {
 
 // get 获取商圈
 export function fetchGetHubSelect(params) {
-  return request('/common/businessHub/listBusinessHubByCode', {
+  return request('/admin/businessHub/listBusinessHubByCode', {
     params,
   });
 }
 
 // get 获取商圈名称
 export function fetchGetHubName(params) {
-  return request('/common/businessHub/getBusinessHubById', {
+  return request('/admin/businessHub/getBusinessHubById', {
     params,
   });
 }
 
 // get 店铺标签
 export function fetchGetMreTag(params) {
-  return request('/common/configMerchantTag/listConfigMerchantTag', {
+  return request('/admin/systemConfig/listConfigMerchantTag', {
     params,
   });
 }
 
 // get 行业类目 - 勾选列表
 export function fetchGetTradeSelect(params) {
-  return request('/common/category/listSpecialGoodsCategoryAdmin', {
+  return request('/common/category/listSpecialGoodsCategory', {
     params,
   });
 }
@@ -85,5 +99,19 @@ export function fetchMerCheckData(data) {
   return request('/admin/merchantManagement/repeatStoreVerification', {
     method: 'POST',
     data,
+  });
+}
+
+// get 获取兴趣标签
+export function fetchGetTasteTag(params) {
+  return request('/common/domain/listDomain', {
+    params,
+  });
+}
+
+// get 获取哒人等级对应名称
+export function fetchGetKolLevel(params) {
+  return request('/admin/systemConfig/listLevelAndLevelName', {
+    params,
   });
 }

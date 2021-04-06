@@ -10,6 +10,7 @@ export default {
     flag: 0,
     menuList: [],
     menuBtn: {},
+    menuNameObj: {},
     loading: true,
   },
   reducers: {
@@ -45,15 +46,18 @@ export default {
       const response = yield call(fetchGetAuthMenuTree, payload);
       if (!response) return;
       const { content } = response;
-      const { flag, permissionTree } = content;
-      if (flag == 0 && !permissionTree) {
-        return notification.warning({
+      const { flag, permissionTree = [] } = content;
+      if (flag == 0 && permissionTree.length === 0) {
+        notification.warning({
           message: '温馨提示',
           description: '权限不足，请通知管理员配置角色菜单',
         });
+        return;
       }
       const btnObj = {};
+      const urlObj = {};
       const duplicate = (item) => {
+        urlObj[item.accessUrl] = item.accessName;
         if (item.buttons && item.buttons.length) btnObj[item.accessUrl] = item.buttons;
         if (item.childList && item.childList.length) {
           lodash.flatMap(item.childList, duplicate);
@@ -66,6 +70,7 @@ export default {
           flag: Number(content.flag),
           menuList: content.permissionTree,
           menuBtn: btnObj,
+          menuNameObj: urlObj,
           loading: false,
         },
       });

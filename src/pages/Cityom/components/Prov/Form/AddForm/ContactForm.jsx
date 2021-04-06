@@ -1,5 +1,5 @@
 import React from 'react';
-import { SEX_TYPE } from '@/common/constant';
+import { SEX_NEW_TYPE } from '@/common/constant';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -23,8 +23,8 @@ const ContactForm = (props) => {
       label: '性别',
       type: 'radio',
       name: 'gender',
-      select: SEX_TYPE,
-      render: (val) => ({ M: '男', F: '女' }[val]),
+      select: SEX_NEW_TYPE,
+      render: (val) => SEX_NEW_TYPE[val],
     },
     {
       label: '邮箱',

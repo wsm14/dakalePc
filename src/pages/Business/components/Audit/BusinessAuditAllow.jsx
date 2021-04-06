@@ -10,12 +10,26 @@ const BusinessAuditAllow = (props) => {
   const [speacialLsit, setSpeacialLsit] = useState(false);
   const [tagList, setTagList] = useState([]);
 
+  //场景checkbox列表
+  const [sceneList, setSceneList] = useState(false);
+
   // 店铺服务/基础设施
   const fetchGetService = () => {
     dispatch({
       type: 'sysTradeList/fetchDetailList',
       payload: { type: 'base' },
       callback: (val) => setServiceLsit(val),
+    });
+  };
+
+  // 场景列表
+  const fechSceneList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchSceneListById',
+      payload: { categoryId },
+      callback: (val) => {
+        setSceneList(val);
+      },
     });
   };
 
@@ -33,7 +47,7 @@ const BusinessAuditAllow = (props) => {
     dispatch({
       type: 'baseData/fetchGetMreTag',
       payload: { page: 1, limit: 500 },
-      callback: (val) => setTagList(val),
+      callback: (val) => setTagList(val.map((item) => ({ label: item, value: item }))),
     });
   };
 
@@ -45,6 +59,7 @@ const BusinessAuditAllow = (props) => {
   useEffect(() => {
     if (categoryId) {
       fetchGetSpeacial();
+      fechSceneList();
     }
   }, [categoryId]);
 
@@ -57,9 +72,9 @@ const BusinessAuditAllow = (props) => {
     },
     {
       label: '营业时间',
-      type: 'childrenOwn',
+      type: 'formItem',
       rules: [{ required: false }],
-      childrenOwn: (
+      formItem: (
         <BusinessTimeSet timeObj={initialValues.businessTimeObj} form={form}></BusinessTimeSet>
       ),
     },
@@ -77,6 +92,23 @@ const BusinessAuditAllow = (props) => {
       rules: [{ required: false }],
       loading: loading.effects['sysTradeList/fetchDetailList'],
       select: speacialLsit || [],
+    },
+    {
+      label: '场景设置',
+      type: 'checkbox',
+      name: 'scenesIds',
+      loading: loading.effects['sysTradeList/fetchSceneListById'],
+      select: sceneList || [],
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value.length > 3) {
+              return Promise.reject(`场景设置最多选择3个`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '店铺标签',

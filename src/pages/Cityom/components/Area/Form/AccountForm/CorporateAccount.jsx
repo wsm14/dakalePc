@@ -40,9 +40,6 @@ const CorporateAccount = (props) => {
               validityPeriod: val.validPeriod,
               businessScope: val.business,
             },
-            // bankBindingObject: {
-            //   cardName: val.name,
-            // },
           });
         },
       });
@@ -187,12 +184,12 @@ const CorporateAccount = (props) => {
       type: 'cascader',
       disabled: disabledInfo || loading,
       name: 'allCityCode',
-      onChange: (val) => {
+      onChange: (val, option) => {
         form.setFieldsValue({
           bankBindingObject: {
-            provCode: val[0].value,
-            areaName: val[1].label,
-            areaCode: val[1].value,
+            provCode: option[0].value,
+            areaName: option[1].label,
+            areaCode: option[1].value,
           },
         });
       },
@@ -207,16 +204,19 @@ const CorporateAccount = (props) => {
     {
       label: '开户支行城code',
       name: ['bankBindingObject', 'provCode'],
+      show: false,
       hidden: true,
     },
     {
       label: '开户支行市名',
       name: ['bankBindingObject', 'areaName'],
       hidden: true,
+      show: false,
     },
     {
       label: '开户支行市code',
       name: ['bankBindingObject', 'areaCode'],
+      show: false,
       hidden: true,
     },
     // {
@@ -272,12 +272,14 @@ const CorporateAccount = (props) => {
       label: '身份有效期开始',
       name: ['bankBindingObject', 'startDate'],
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
     {
       label: '身份有效期结束',
       name: ['bankBindingObject', 'legalCertIdExpires'],
       hidden: true,
+      show: false,
       rules: [{ required: false }],
     },
     {

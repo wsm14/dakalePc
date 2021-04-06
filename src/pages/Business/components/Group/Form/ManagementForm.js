@@ -1,80 +1,80 @@
-import React, {useState, useEffect, useImperativeHandle} from "react";
-import {connect} from 'umi'
-import FormCondition from "@/components/FormCondition";
-import PopImgShow from "@/components/PopImgShow";
-import {Image} from "antd";
-
+import React, { useState, useEffect, useImperativeHandle } from 'react';
+import { connect } from 'umi';
+import FormCondition from '@/components/FormCondition';
+import PopImgShow from '@/components/PopImgShow';
 
 const ManagementForm = (props) => {
-  const {
-    list,
-    form,
-    initialValues,
-    cRef
-  } = props
-  const [upload,setUpload] = useState('')
-  const [uploadName,setUploadName] = useState({
-    upload:'',
-  })
-  const [ImageShow,setImageShow] = useState(false)
+  const { list, form, initialValues, cRef } = props;
+  const [upload, setUpload] = useState('');
+  const [uploadName, setUploadName] = useState({
+    upload: '',
+  });
+  const [ImageShow, setImageShow] = useState(false);
   const Images = (
-    <div style={{marginLeft:'18%',display:'flex',alignItems:'center',}}>
-      品牌LOGO: <div style={{marginLeft:'10px'}}><PopImgShow url={upload}></PopImgShow></div>
+    <div style={{ marginLeft: '18%', display: 'flex', alignItems: 'center' }}>
+      品牌LOGO:{' '}
+      <div style={{ marginLeft: '10px' }}>
+        <PopImgShow url={upload}></PopImgShow>
+      </div>
     </div>
-
-  )
+  );
   useImperativeHandle(cRef, () => ({
     getImage: () => {
-      let obj = {}
-      if(upload.length>0){
+      let obj = {};
+      if (upload.length > 0) {
         obj = {
           brandLogo: upload,
-          brandName: uploadName
-        }
+          brandName: uploadName,
+        };
       }
       return {
-        ...obj
-      }
-    }
-  }))
+        ...obj,
+      };
+    },
+  }));
 
   useEffect(() => {
-    if(upload !==''){
-      setImageShow(true)
+    if (upload !== '') {
+      setImageShow(true);
+    } else {
+      setImageShow(false);
     }
-    else {
-      setImageShow(false)
-    }
-  },[upload])
+  }, [upload]);
   useEffect(() => {
-    if(initialValues.brandLogo && initialValues.brandLogo.length >0){
-      setUpload(initialValues.brandLogo)
-      setImageShow(true)
+    if (initialValues.brandLogo && initialValues.brandLogo.length > 0) {
+      setUpload(initialValues.brandLogo);
+      setImageShow(true);
     }
-  },[initialValues])
+  }, [initialValues]);
   const formItems = [
     {
       label: '品牌',
       name: 'brandId',
       type: 'select',
       rules: [{ required: false }],
-      onChange:(e,value)=> {
-       let url = list.filter(item => {return item.configBrandIdString === e})[0].brandLogo||''
-       let brandName = list.filter(item => {return item.configBrandIdString === e})[0].brandName||''
-        setUpload(url)
-        setUploadName(brandName)
+      onChange: (e, value) => {
+        let url =
+          list.filter((item) => {
+            return item.configBrandIdString === e;
+          })[0].brandLogo || '';
+        let brandName =
+          list.filter((item) => {
+            return item.configBrandIdString === e;
+          })[0].brandName || '';
+        setUpload(url);
+        setUploadName(brandName);
       },
-      select: list.map((item) => ({name: item.brandName, value: item.configBrandIdString}))
+      select: list,
+      fieldNames: { label: 'brandName', value: 'configBrandIdString' },
       // loading,
       // labelInValue: true,
       // visible: !userInfo.roleId,
       // select: selectValue.map((item) => ({ name: item.value, value: item.child })),
     },
     {
-
       type: 'noForm',
       visible: ImageShow,
-      childrenOwn: Images,
+      formItem: Images,
       // label: '品牌LOGO',
       // name: 'brandLogo',
       // type: 'upload',
@@ -84,13 +84,10 @@ const ManagementForm = (props) => {
     },
   ];
 
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+};
 
-  return (
-    <FormCondition formItems={formItems} form={form} initialValues={initialValues}/>
-  )
-}
-
-export default connect(({businessBrand}) => ({
+export default connect(({ businessBrand }) => ({
   list: businessBrand.list,
-  ...businessBrand
-}))(ManagementForm)
+  ...businessBrand,
+}))(ManagementForm);

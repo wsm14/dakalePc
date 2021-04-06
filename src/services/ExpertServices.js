@@ -84,14 +84,14 @@ export function fetchClassifyDetailSet(data) {
 
 // get 排序机制 - 列表
 export function fetchExpertSortList(params) {
-  return request('/admin/userManagement/getUserLevelSortConfig', {
+  return request('/admin/systemConfig/getUserLevelSortConfig', {
     params,
   });
 }
 
 // post 排序机制 - 设置
 export function fetchExpertSortSet(data) {
-  return request('/admin/userManagement/saveUserLevelSortConfig', {
+  return request('/admin/systemConfig/saveUserLevelSortConfig', {
     method: 'POST',
     data,
   });
@@ -103,17 +103,80 @@ export function fetchExpertSortSet(data) {
 
 // get 等级设置 - 列表
 export function fetchExpertLevelList(params) {
-  return request('/admin/userLevelManagement/listLevelConfig', {
+  return request('/admin/systemConfig/listLevelConfig', {
     params,
   });
 }
 
 // post 等级设置 - 设置
 export function fetchExpertLevelSet(data) {
-  return request('/admin/userLevelManagement/saveLevelConfig', {
+  return request('/admin/systemConfig/saveLevelConfig', {
     method: 'POST',
     data,
   });
 }
 
 // 等级设置 end
+
+// 哒人配置
+
+// get 哒人配置 - 列表
+export function fetchExpertAllocationList(params) {
+  return request('/admin/systemConfig/listUserLevel', {
+    params,
+  });
+}
+
+// post 哒人配置 - 新增
+export function fetchExpertAllocationSave(data) {
+  return request('/admin/systemConfig/saveUserLevel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 哒人配置 - 修改
+export function fetchExpertAllocationEdit(data) {
+  return request('/admin/systemConfig/updateUserLevel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 哒人配置 end
+
+// 哒人业绩
+
+// get 哒人业绩 - 统计
+export function fetchExpertUserAchievementList(params) {
+  return request('/admin/kol/listKolPerformance', {
+    params,
+  });
+}
+
+// get 哒人业绩 - 推荐列表
+export function fetchExpertUserAchievementRecommend(params) {
+  return request('/admin/kol/listKolRecommended', {
+    params,
+  });
+}
+
+// get 哒人业绩 - 分佣统计
+export function fetchExpertUserSubCommissionStatistics(params) {
+  return request('/admin/kol/monthStatisticKolCommission', {
+    params,
+  });
+}
+
+// 哒人业绩 end
+
+// 哒人分销明细
+
+// get 哒人分销明细 - 统计
+export function fetchExpertUserDistributionList(params) {
+  return request('/admin/kol/listKolDistributionDetails', {
+    params,
+  });
+}
+
+// 哒人分销明细 end

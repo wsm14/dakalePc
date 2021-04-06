@@ -5,7 +5,7 @@ import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import DataTableBlock from '@/components/DataTableBlock';
+import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import RecommendDetail from './components/Recommend/RecommendDetail';
 import OrdersDetail from './components/Recommend/OrdersDetail';
@@ -24,7 +24,7 @@ const ExpertRecommend = (props) => {
       label: '类型',
       name: 'contentType',
       type: 'select',
-      select: { list: SHARE_TYPE },
+      select: SHARE_TYPE,
     },
     {
       label: '标题',
@@ -42,7 +42,7 @@ const ExpertRecommend = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: { list: RECOMMEND_STATUS },
+      select: RECOMMEND_STATUS,
     },
   ];
 
@@ -163,7 +163,7 @@ const ExpertRecommend = (props) => {
     dispatch({
       type: 'expertRecommend/fetchExpertRemdStatus',
       payload: values,
-      callback: () => childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
@@ -176,8 +176,8 @@ const ExpertRecommend = (props) => {
 
   return (
     <>
-      <DataTableBlock
-        keepName="哒人种草"
+      <TableDataBlock
+        keepData
         btnExtra={
           <AuthConsumer auth="reportCenter">
             <Badge count={expertRecommend.totalReport}>
@@ -194,7 +194,7 @@ const ExpertRecommend = (props) => {
         rowKey={(record) => `${record.kolMomentsId}`}
         dispatchType="expertRecommend/fetchGetList"
         {...expertRecommend.list}
-      ></DataTableBlock>
+      ></TableDataBlock>
       <RecommendDetail visible={visible} onClose={() => setVisible(false)}></RecommendDetail>
       <ReportList
         setShowVisible={setVisible}

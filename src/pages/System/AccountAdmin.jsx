@@ -23,7 +23,7 @@ const tabList = [
   },
 ];
 
-const AccountOwn = (props) => {
+const AccountOwn = () => {
   const [tabkey, setTabKey] = useState('tab1');
 
   const contentList = {
