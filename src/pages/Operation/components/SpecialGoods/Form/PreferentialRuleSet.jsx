@@ -153,7 +153,7 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
     },
     {
       label: `单人${{ personLimit: '每人', dayLimit: '每天' }[radioData.buyRule]}购买份数`,
-      name: 'dayMaxBuyAmount',
+      name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[radioData.buyRule],
       suffix: '份',
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '份数必须为整数，且不可为0' }],
       visible: ['personLimit', 'dayLimit'].includes(radioData.buyRule),
