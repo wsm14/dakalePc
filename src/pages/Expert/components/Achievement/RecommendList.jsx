@@ -52,21 +52,21 @@ const RecommendList = (props) => {
       fixed: 'left',
       dataIndex: 'username',
     },
-    {
-      title: '身份',
-      align: 'center',
-      dataIndex: 'levelKey',
-      render: (val) => EXPERT_TYPE[val],
-    },
+    // {
+    //   title: '身份',
+    //   align: 'center',
+    //   dataIndex: 'levelKey',
+    //   render: (val) => EXPERT_TYPE[val],
+    // },
     {
       title: '豆号',
       align: 'center',
       dataIndex: 'beanCode',
     },
     {
-      label: '手机号',
+      title: '手机号',
       align: 'center',
-      name: 'mobile',
+      dataIndex: 'mobile',
     },
     {
       title: '注册时间',
