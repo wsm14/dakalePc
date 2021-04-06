@@ -1,21 +1,29 @@
 import React, { useEffect } from 'react';
-import { connect } from 'umi';
+import { connect, useLocation } from 'umi';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
 /**
  * 用户数据统计
  */
-const UserChart = ({ dispatch, searchData, totalData, loading }) => {
+const UserChart = ({ dispatch, searchData = {}, totalData, loading }) => {
+  const loaction = useLocation();
+  const {
+    query: { bucket },
+  } = loaction;
+
   useEffect(() => {
-    fetchChartBlockUser(searchData);
+    fetchChartBlockUser();
   }, [searchData]);
 
   // 获取统计数据
-  const fetchChartBlockUser = (payload = {}) => {
+  const fetchChartBlockUser = () => {
     dispatch({
       type: 'chartBlock/fetchChartBlockUser',
-      payload,
+      payload: {
+        provinceCode: bucket,
+        ...searchData,
+      },
     });
   };
 
@@ -72,11 +80,7 @@ const UserChart = ({ dispatch, searchData, totalData, loading }) => {
   };
 
   return (
-    <Card
-      loading={loading}
-      bordered={false}
-      style={{ marginTop: 20, height: 112 }}
-    >
+    <Card loading={loading} bordered={false} style={{ marginTop: 20, height: 112 }}>
       {orderArr.map((item) => (
         <Card.Grid style={gridStyle} key={item.title}>
           <Statistic

@@ -1,21 +1,29 @@
 import React, { useEffect } from 'react';
-import { connect } from 'umi';
+import { connect, useLocation } from 'umi';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
 /**
  * 营收统计
  */
-const OrderChart = ({ dispatch, searchData, totalData, loading }) => {
+const OrderChart = ({ dispatch, searchData = {}, totalData, loading }) => {
+  const loaction = useLocation();
+  const {
+    query: { bucket },
+  } = loaction;
+
   useEffect(() => {
-    fetchGetTotalData(searchData);
+    fetchGetTotalData();
   }, [searchData]);
 
   // 获取统计数据
-  const fetchGetTotalData = (payload = {}) => {
+  const fetchGetTotalData = () => {
     dispatch({
       type: 'chartBlock/fetchChartBlockOrder',
-      payload,
+      payload: {
+        provinceCode: bucket,
+        ...searchData,
+      },
     });
   };
 

@@ -98,12 +98,12 @@ const ExpertUserList = (props) => {
       dataIndex: 'goodsCount',
       render: (val) => val || 0,
     },
-    {
-      title: '带货收益',
-      align: 'right',
-      dataIndex: 'cargoIncome',
-      render: (val) => val || 0,
-    },
+    // {
+    //   title: '带货收益',
+    //   align: 'right',
+    //   dataIndex: 'cargoIncome',
+    //   render: (val) => val || 0,
+    // },
     {
       title: '解锁时间',
       align: 'center',
