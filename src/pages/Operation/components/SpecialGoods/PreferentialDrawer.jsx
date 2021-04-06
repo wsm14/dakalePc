@@ -148,7 +148,7 @@ const PreferentialDrawer = (props) => {
           initialValues={{
             ownerType: 'merchant',
             goodsType: 'single',
-            groupGoods: [{}],
+            packageGoodsObjects: [{}],
             ...detail,
           }}
         ></PreferentialSet>
