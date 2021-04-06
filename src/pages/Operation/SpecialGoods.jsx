@@ -167,8 +167,8 @@ const SpecialGoods = (props) => {
       title: '使用有效期',
       dataIndex: 'useStartTime',
       render: (val, row) => {
-        if (!useTimeRule) return '';
         const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+        if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
           return useStartTime + '~' + useEndTime;
         } else {
