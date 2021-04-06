@@ -167,6 +167,7 @@ const SpecialGoods = (props) => {
       title: '使用有效期',
       dataIndex: 'useStartTime',
       render: (val, row) => {
+        if (!useTimeRule) return '';
         const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
         if (useTimeRule === 'fixed') {
           return useStartTime + '~' + useEndTime;
@@ -213,7 +214,8 @@ const SpecialGoods = (props) => {
       title: '推广位置',
       dataIndex: 'recommendType',
       render: (val, row) => {
-        if (row.recommendStatus === '0' && row.topStatus === '0') return '';
+        if ((row.recommendStatus === '0' && (row.topStatus === '0' || !row.topStatus)) || !val)
+          return '';
         let tagName = row.topStatus === '0' ? '推荐' : '置顶';
         return SPECIAL_RECOMMEND_LISTTYPE[val] + tagName;
       },

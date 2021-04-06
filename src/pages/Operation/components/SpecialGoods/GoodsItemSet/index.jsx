@@ -14,7 +14,7 @@ const formList = ({ groupName, gooupKey, groupLength, handleRemove }) => {
       >
         <Input placeholder="请输入单品组名称" maxLength={30} />
       </Form.Item>
-      <Form.List name={[groupName, 'groupGoods']} initialValue={[{}]}>
+      <Form.List name={[groupName, 'packageGoodsObjects']} initialValue={[{}]}>
         {(fields, { add, remove }) => {
           return (
             <>

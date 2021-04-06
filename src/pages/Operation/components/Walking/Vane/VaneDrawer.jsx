@@ -98,6 +98,7 @@ const VaneDrawer = (props) => {
       label: '选择场景',
       type: 'treeSelect',
       multiple: true,
+      showCheckedStrategy: 'SHOW_ALL',
       name: 'scenesId',
       select: navigation.list.map(
         ({
