@@ -58,7 +58,7 @@ const PreferentialDrawer = (props) => {
 
   // 确认提交数据 - 新增 / 修改所有数据
   const handleUpData = () => {
-    (type === 'add' ? formRule : formRuleAdd).validateFields().then((values) => {
+    (type === 'add' ? formRuleAdd : formRule).validateFields().then((values) => {
       if (!treaty) {
         notification.info({
           message: '温馨提示',
