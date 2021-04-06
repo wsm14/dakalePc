@@ -53,6 +53,7 @@ export default {
         activityEndTime,
         useStartTime,
         useEndTime,
+        buyDesc = '[]',
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
@@ -74,6 +75,7 @@ export default {
         ...content.specialGoodsInfo,
         ...newDetail,
         merchantId,
+        buyDesc: JSON.parse(buyDesc),
         allowRefund: Number(allowRefund),
         allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),

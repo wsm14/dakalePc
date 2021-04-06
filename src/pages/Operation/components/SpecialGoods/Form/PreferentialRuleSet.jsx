@@ -10,6 +10,7 @@ import {
 } from '@/common/constant';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
+import GoodsDescSet from '../GoodsDescSet';
 
 const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
   const [radioData, setRadioData] = useState({
@@ -166,9 +167,9 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
     },
     {
       label: '购买须知',
-      type: 'textArea',
       name: 'buyDesc',
-      maxLength: 200,
+      type: 'formItem',
+      formItem: <GoodsDescSet keyName={'buyDesc'}></GoodsDescSet>,
     },
     {
       title: '设置退款规则',
