@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
 
@@ -118,6 +119,7 @@ const GoodsOrders = (props) => {
       title: '商品佣金',
       align: 'center',
       dataIndex: 'estimatedCommission',
+      render: (val) => `￥ ${val}`,
     },
     // {
     //   title: '商品佣金',
@@ -162,6 +164,11 @@ const GoodsOrders = (props) => {
       title: '店铺名称',
       align: 'center',
       dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={20} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '区域',

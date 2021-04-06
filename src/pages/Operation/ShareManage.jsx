@@ -134,6 +134,7 @@ const ShareManage = (props) => {
       title: '店铺/集团名称',
       align: 'center',
       dataIndex: 'merchantName',
+      width: 200,
       render: (val, row) =>
         row.userType === 'merchant' ? val : <a onClick={() => setVisibleMre(true)}>{val}</a>,
     },
@@ -187,11 +188,11 @@ const ShareManage = (props) => {
             ((row.beanPersonAmount || 0) - val),
         ),
     },
-    {
-      title: 'ID',
-      align: 'center',
-      dataIndex: 'userMomentIdString',
-    },
+    // {
+    //   title: 'ID',
+    //   align: 'center',
+    //   dataIndex: 'userMomentIdString',
+    // },
     {
       title: '更新时间',
       align: 'center',
@@ -204,7 +205,6 @@ const ShareManage = (props) => {
     // },
     {
       title: '关联券/商品',
-      fixed: 'right',
       align: 'right',
       dataIndex: 'goodsOrCouponName',
     },
@@ -218,6 +218,7 @@ const ShareManage = (props) => {
     {
       title: '操作',
       dataIndex: 'length',
+      width: 100,
       fixed: 'right',
       align: 'right',
       render: (val, record) => {

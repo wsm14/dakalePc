@@ -81,6 +81,13 @@ const CodeOrders = (props) => {
       render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
     },
     {
+      title: '店铺实收总额',
+      align: 'right',
+      dataIndex: 'actualCashFee',
+      render: (val, record) =>
+        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+    },
+    {
       title: '优惠券',
       dataIndex: 'businessArea',
       render: (val) => `--`,
