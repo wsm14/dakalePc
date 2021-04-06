@@ -14,7 +14,9 @@ const PreferentialDrawer = (props) => {
   const { type = 'info', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
+  const [formEdit] = Form.useForm();
   const [formRule] = Form.useForm(); // 数据表单
+  const [formRuleAdd] = Form.useForm(); // 数据表单
   const [treaty, setTreaty] = useState(false); // 是否同意协议
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
@@ -56,7 +58,7 @@ const PreferentialDrawer = (props) => {
 
   // 确认提交数据 - 新增 / 修改所有数据
   const handleUpData = () => {
-    formRule.validateFields().then((values) => {
+    (type === 'add' ? formRule : formRuleAdd).validateFields().then((values) => {
       if (!treaty) {
         notification.info({
           message: '温馨提示',
@@ -73,6 +75,7 @@ const PreferentialDrawer = (props) => {
         timeType,
         useWeek,
         useTime,
+        buyDesc = [],
         ...other
       } = values;
       const aimg = checkFileData(activityGoodsImg);
@@ -95,6 +98,7 @@ const PreferentialDrawer = (props) => {
             useStartTime: useStartTime && useStartTime[0].format('YYYY-MM-DD'),
             useEndTime: useStartTime && useStartTime[1].format('YYYY-MM-DD'),
             useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+            buyDesc: buyDesc.filter((i) => i),
             useTime:
               timeType !== 'part'
                 ? timeType
@@ -113,11 +117,13 @@ const PreferentialDrawer = (props) => {
   // 确认修改 - 进行中的活动
   const handleUpEdit = () => {
     formRule.validateFields().then((values) => {
+      const { buyDesc = [] } = values;
       dispatch({
         type: 'specialGoods/fetchSpecialGoodsEdit',
         payload: {
           ...detail,
           ...values,
+          buyDesc: buyDesc.filter((i) => i),
         },
         callback: () => {
           onClose();
@@ -129,7 +135,7 @@ const PreferentialDrawer = (props) => {
 
   // 下一步
   const handleUpAudit = () => {
-    form.validateFields().then((values) => {
+    (type === 'add' ? form : formEdit).validateFields().then((values) => {
       setVisibleRule({ show: true, preData: values });
     });
   };
@@ -148,8 +154,7 @@ const PreferentialDrawer = (props) => {
           initialValues={{
             ownerType: 'merchant',
             goodsType: 'single',
-            groupGoods: [{}],
-            ...detail,
+            packageGoodsObjects: [{}],
           }}
         ></PreferentialSet>
       ),
@@ -157,7 +162,7 @@ const PreferentialDrawer = (props) => {
     edit: {
       title: '修改活动',
       children: (
-        <PreferentialSet editActive={true} form={form} initialValues={detail}></PreferentialSet>
+        <PreferentialSet editActive={true} form={formEdit} initialValues={detail}></PreferentialSet>
       ),
     },
     active: {
@@ -213,18 +218,16 @@ const PreferentialDrawer = (props) => {
   };
 
   return (
-    <>
-      <DrawerCondition {...modalProps}>
-        {drawerProps.children}
-        <DrawerCondition {...ruleModalProps}>
-          <PreferentialRuleSet form={formRule} initialValues={detail}></PreferentialRuleSet>
-          <div style={{ textAlign: 'center' }}>
-            <Checkbox onChange={(e) => setTreaty(e.target.checked)}>我已阅读并同意</Checkbox>
-            <a>《商家营销协议》</a>
-          </div>
-        </DrawerCondition>
+    <DrawerCondition {...modalProps}>
+      {drawerProps.children}
+      <DrawerCondition {...ruleModalProps}>
+        <PreferentialRuleSet form={formRuleAdd} initialValues={detail}></PreferentialRuleSet>
+        <div style={{ textAlign: 'center' }}>
+          <Checkbox onChange={(e) => setTreaty(e.target.checked)}>我已阅读并同意</Checkbox>
+          <a>《商家营销协议》</a>
+        </div>
       </DrawerCondition>
-    </>
+    </DrawerCondition>
   );
 };
 
