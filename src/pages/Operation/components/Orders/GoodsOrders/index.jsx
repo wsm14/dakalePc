@@ -103,6 +103,11 @@ const GoodsOrders = (props) => {
     {
       title: '购买商品',
       dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '--'}
+        </Ellipsis>
+      ),
     },
     {
       title: '购买数量',

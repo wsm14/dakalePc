@@ -90,7 +90,11 @@ const SysAppSet = (props) => {
       title: '跳转链接',
       align: 'center',
       dataIndex: 'jumpUrl',
-      render: (val) => val || '--',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '--'}
+        </Ellipsis>
+      ),
     },
     {
       title: '展示时间',
