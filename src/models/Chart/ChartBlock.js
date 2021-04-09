@@ -167,6 +167,12 @@ export default {
       });
     },
     *fetchChartBlockIncomeLeft({ payload }, { call, put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          incomeRank: [],
+        },
+      });
       const response = yield call(fetchChartBlockIncomeLeft, payload);
       if (!response) return;
       const { content } = response;
