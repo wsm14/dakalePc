@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React, { useReducer, useState } from 'react';
 import { Card, Affix } from 'antd';
 import { ChartContext, initialState, reducer } from './components/Block/chartStore';
 import SearchCard from './components/Block/Search/SearchCard';
@@ -17,25 +17,23 @@ const ChartBlockComponent = ({
   },
 }) => {
   // 搜索参数
-  const [searchData, setSearchData] = useReducer(reducer, initialState);
+  const [searchData, setSearchData] = useReducer(reducer, {
+    ...initialState,
+    provinceCode: bucket,
+  });
   // 时间参数
   const [timeData, setTimeData] = useState(initialState);
   // 城市参数
-  const [cityData, setCityData] = useState({});
-
-  useEffect(() => {
-    if (bucket) {
-      setCityData({ provinceCode: bucket });
-      setSearchData({ ...timeData, provinceCode: bucket });
-    }
-  }, [bucket]);
+  const [cityData, setCityData] = useState({ provinceCode: bucket });
 
   // 选择时间
   const handleSearchData = (time, areaCode) => {
-    let area = {};
+    let area = { provinceCode: undefined };
     if (areaCode && areaCode.length) {
       area = { provinceCode: areaCode[0], cityCode: areaCode[1], districtCode: areaCode[2] };
       setCityData(area);
+    } else {
+      setCityData({});
     }
     const timeObj = {
       beginDate: time[0].format('YYYY-MM-DD'),
