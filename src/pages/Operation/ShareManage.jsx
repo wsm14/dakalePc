@@ -196,7 +196,7 @@ const ShareManage = (props) => {
     {
       title: '更新时间',
       align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'updateTime',
     },
     // {
     //   title: '更新人',
