@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
+import { APPLY_STATUS } from '@/common/constant';
 const Checked = (props) => {
   const childRef = useRef();
   const { loading } = props;
@@ -32,8 +33,9 @@ const Checked = (props) => {
     },
     {
       label: '申请状态',
-      name: 'appayStatus',
+      name: 'applyStatus',
       type: 'select',
+      select: APPLY_STATUS,
     },
   ];
   const getColumns = [

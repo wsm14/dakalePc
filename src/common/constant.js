@@ -324,6 +324,9 @@ export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
 // 优惠券管理 - 是否售卖
 export const COUPON_BUY_FLAG = ['关闭', '开启'];
 
+// 审核状态
+export const APPLY_STATUS=['审核通过','被驳回'];
+
 // 优惠券管理 - 适用时段
 export const COUPON_USER_TIME = { '1,2,3,4,5,6,7': '每天', part: '部分' };
 
