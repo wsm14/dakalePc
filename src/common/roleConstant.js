@@ -108,6 +108,8 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
 
   withdraw: '提现记录',
+
+  checkList:'审核列表'
 };
 
 // 数据权限选项

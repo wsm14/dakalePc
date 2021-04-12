@@ -13,12 +13,15 @@ import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
+import CheckList from './components/App/CheckList';
 
 const SysAppSet = (props) => {
   const { sysAppList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+
+  const [visibleCheck, setVisibleCheck] = useState(false);
 
   useEffect(() => {
     fetchBannerRatio();
@@ -162,20 +165,32 @@ const SysAppSet = (props) => {
     });
   };
 
+  // 审核列表
+  const getChecklist = () => {
+    setVisibleCheck(true);
+  };
+
   return (
     <>
       <TableDataBlock
         keepData
         cRef={childRef}
         btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, type: 'add' })}
-            >
-              新增
+          <>
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ show: true, type: 'add' })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+            {/* <AuthConsumer auth="checkList"> */}
+            <Button className="dkl_green_btn" onClick={getChecklist}>
+              审核列表
             </Button>
-          </AuthConsumer>
+            {/* </AuthConsumer> */}
+          </>
         }
         loading={loading}
         columns={getColumns}
@@ -189,6 +204,12 @@ const SysAppSet = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
+      {/* 审核列表 */}
+      <CheckList
+        cRef={childRef}
+        visible={visibleCheck}
+        onClose={() => setVisibleCheck(false)}
+      ></CheckList>
     </>
   );
 };

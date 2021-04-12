@@ -271,7 +271,7 @@ export default [
         path: '/market/puzzleAd',
         name: '拼图广告',
         component: './Market/PuzzleAd',
-        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
+        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot','check'],
       },
       // 店铺运营
       {
