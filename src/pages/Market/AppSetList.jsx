@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Tooltip } from 'antd';
 import {
   BANNER_TYPE,
+  BANNER_PORT_TYPE,
   BANNER_SHOW_STATUS,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
@@ -19,6 +20,7 @@ const SysAppSet = (props) => {
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+  const [tabKey, setTabKey] = useState('user');
 
   useEffect(() => {
     fetchBannerRatio();
@@ -103,6 +105,12 @@ const SysAppSet = (props) => {
       render: (val, record) => `${val} ~ ${record.endDate}`,
     },
     {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'beginDate',
+      render: (val, record) => `${val} ~ ${record.endDate}`,
+    },
+    {
       title: '状态',
       align: 'center',
       dataIndex: 'showStatus',
@@ -167,16 +175,27 @@ const SysAppSet = (props) => {
       <TableDataBlock
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, type: 'add' })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        cardProps={{
+          tabList: Object.keys(BANNER_PORT_TYPE).map((key) => ({
+            key,
+            tab: BANNER_PORT_TYPE[key],
+          })),
+          tabBarExtraContent: (
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() => setVisibleSet({ show: true, type: 'add' })}
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          ),
+          onTabChange: (key) => {
+            setTabKey(key);
+            childRef.current.fetchGetData({ key, page: 1 });
+          },
+        }}
+        params={{ key: tabKey }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -185,6 +204,7 @@ const SysAppSet = (props) => {
         {...sysAppList}
       ></TableDataBlock>
       <SysAppSetForm
+        tabKey={tabKey}
         cRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}

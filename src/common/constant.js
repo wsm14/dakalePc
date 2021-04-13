@@ -114,7 +114,7 @@ export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 export const PUZZLE_AD_STATUS = ['下架', '上架'];
 
 // 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
-export const SHARE_STATUS = ['待审核', '审核通过', '审核拒绝', '下架', '删除', '分享完成'];
+export const SHARE_STATUS = [false, '已上架', false, '已下架', '已删除', '分享结束'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
@@ -268,16 +268,35 @@ export const WORKER_BANK_STATUS = ['未激活', '审核中', '激活失败', '�
 // Banner端口
 export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 
-// Banner类型
+// Banner类型 列表映射
 export const BANNER_TYPE = {
   main: '首页',
   merchant: '到店打卡',
   person: '个人',
-  merchantMain: '商家主页',
+  merchantMain: '商家工作台',
   mainSpecial: '周边特惠首页',
   surroundingSpecial: '周边特惠列表',
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundCapsule: '逛逛胶囊位',
+};
+
+// Banner类型
+export const BANNER_PORT_LINK = {
+  user: {
+    person: '个人',
+    wanderAroundMainBanner: '逛逛主Banner',
+    wanderAroundCapsule: '逛逛胶囊位',
+  },
+  weChat: {
+    person: '个人',
+    wanderAroundMainBanner: '逛逛主Banner',
+    wanderAroundCapsule: '逛逛胶囊位',
+  },
+  merchant: {
+    merchantMain: '商家工作台',
+  },
+  // mainSpecial: '周边特惠首页',
+  // surroundingSpecial: '周边特惠列表',
 };
 
 // Banner跳转类型

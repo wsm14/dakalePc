@@ -14,7 +14,7 @@ export default {
   state: {
     list: [],
     total: 0,
-    radioType: {},
+    radioType: { user: {}, merchant: {}, weChat: {} },
   },
 
   reducers: {
@@ -45,9 +45,11 @@ export default {
       const { content } = response;
       let dataObj = {};
       content.banner.bannerPictureResolutionConfigs.forEach((item) => {
+        let newObj = {};
         item.pictureResolutionConfigs.forEach((it) => {
-          dataObj[it.bannerType] = it.height / it.width;
+          newObj[it.bannerType] = it.height / it.width;
         });
+        dataObj[item.terminalType] = newObj;
       });
       yield put({
         type: 'save',
