@@ -109,7 +109,7 @@ export const ROLE_BUTTON_TYPE = {
 
   withdraw: '提现记录',
 
-  checkList:'审核列表'
+  republish:'重新发布'
 };
 
 // 数据权限选项

@@ -278,7 +278,7 @@ export default [
         path: '/operation/share',
         name: '分享管理',
         component: './Operation/ShareManage',
-        buttons: ['info', 'down', 'handleDeatil'],
+        buttons: ['info', 'down', 'handleDeatil','republish'],
       },
       {
         path: '/operation/goods',

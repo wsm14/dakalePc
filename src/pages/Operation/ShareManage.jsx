@@ -59,6 +59,10 @@ const ShareManage = (props) => {
     });
   };
 
+  //重新发布
+  const fetchRepublish=(record)=>{
+  }
+
   // 搜索参数
   const searchItems = [
     {
@@ -230,6 +234,12 @@ const ShareManage = (props) => {
                 type: 'down', // 下架
                 visible: status == 1 || status == 5,
                 click: () => setVisibleDown({ show: true, initialValues: record }),
+              },
+              {
+                type: 'republish',// 重新发布
+                pop: true,
+                visible: status == 3,
+                click: () =>fetchRepublish(record),
               },
               {
                 type: 'info', // 详情

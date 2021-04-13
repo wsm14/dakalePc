@@ -13,7 +13,6 @@ import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
-import CheckList from './components/App/CheckList';
 
 const SysAppSet = (props) => {
   const { sysAppList, loading, dispatch } = props;
@@ -21,7 +20,6 @@ const SysAppSet = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
 
-  const [visibleCheck, setVisibleCheck] = useState(false);
 
   useEffect(() => {
     fetchBannerRatio();
@@ -165,11 +163,6 @@ const SysAppSet = (props) => {
     });
   };
 
-  // 审核列表
-  const getChecklist = () => {
-    setVisibleCheck(true);
-  };
-
   return (
     <>
       <TableDataBlock
@@ -185,11 +178,7 @@ const SysAppSet = (props) => {
                 新增
               </Button>
             </AuthConsumer>
-            {/* <AuthConsumer auth="checkList"> */}
-            <Button className="dkl_green_btn" onClick={getChecklist}>
-              审核列表
-            </Button>
-            {/* </AuthConsumer> */}
+            
           </>
         }
         loading={loading}
@@ -204,12 +193,6 @@ const SysAppSet = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></SysAppSetForm>
-      {/* 审核列表 */}
-      <CheckList
-        cRef={childRef}
-        visible={visibleCheck}
-        onClose={() => setVisibleCheck(false)}
-      ></CheckList>
     </>
   );
 };

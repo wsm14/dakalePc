@@ -17,6 +17,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
+import DownReason from './components/SpecialGoods/Form/DownReason';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -26,6 +27,7 @@ const SpecialGoods = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
+  const [visibleReason, setVisibleReason] = useState(false);
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -113,11 +115,11 @@ const SpecialGoods = (props) => {
       select: BUSINESS_TYPE,
     },
     {
-      label:'创建日期',
+      label: '创建日期',
       type: 'rangePicker',
       end: 'activityEndTime',
-      name:'createEndTime'
-    }
+      name: 'createEndTime',
+    },
   ];
 
   // table 表头
@@ -267,11 +269,13 @@ const SpecialGoods = (props) => {
 
   // 下架
   const fetchSpecialGoodsStatus = (payload) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsStatus',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
+    // 展示 下架原因
+    setVisibleReason({ show: true, initialValues: payload });
+    // dispatch({
+    //   type: 'specialGoods/fetchSpecialGoodsStatus',
+    //   payload,
+    //   callback: childRef.current.fetchGetData,
+    // });
   };
 
   // 推荐状态 / 置顶状态
@@ -341,6 +345,12 @@ const SpecialGoods = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></PreferentialDrawer>
+      {/* 下架原因 */}
+      <DownReason
+        visible={visibleReason}
+        childRef={childRef}
+        onClose={() => setVisibleReason(false)}
+      ></DownReason>
     </>
   );
 };
