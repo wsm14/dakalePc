@@ -181,11 +181,6 @@ const OpenAdvert = (props) => {
                   新增
                 </Button>
               </AuthConsumer>
-              <AuthConsumer auth="adRoot">
-                <Button type="primary" onClick={() => setVisibleSet({ show: true, type: 'add' })}>
-                  配置
-                </Button>
-              </AuthConsumer>
             </Space>
           ),
           onTabChange: (key) => {
