@@ -18,6 +18,8 @@ import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import DownReason from './components/SpecialGoods/Form/DownReason';
+import ExcelButton from '@/components/ExcelButton';
+import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -27,7 +29,8 @@ const SpecialGoods = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
-  const [visibleReason, setVisibleReason] = useState(false);
+  const [visibleReason, setVisibleReason] = useState(false); // 下架原因
+  const [visibleInfo, setVisibleInfo] = useState(false);
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -243,6 +246,10 @@ const SpecialGoods = (props) => {
           <HandleSetTable
             formItems={[
               {
+                type: 'info',
+                click: () => setVisibleInfo({ show: true, detail: record }),
+              },
+              {
                 type: 'down',
                 visible: status !== '0',
                 click: () => fetchSpecialGoodsStatus(record),
@@ -267,15 +274,59 @@ const SpecialGoods = (props) => {
     },
   ];
 
+  //导出列表
+  const getExcelProps = {
+    fieldNames: { key: 'key', headerName: 'header' },
+    header: [
+      { key: 'goodsType', header: '商品类型', render: (val) => GOODS_CLASS_TYPE[val] },
+      { key: 'goodsName', header: '商品名称' },
+      { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
+      { key: 'merchantName', header: '店铺名称' },
+      { key: 'districtName', header: 'BD' }, //BD
+      { key: 'oriPrice', header: '原价' },
+      { key: 'realPrice', header: '特惠价格' },
+      { key: 'realPrice', header: '商家结算价' },
+      { key: 'categoryName', header: '使用门槛' }, //
+      {
+        key: 'useStartTime',
+        header: '使用有效期',
+        render: (val, row) => {
+          const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+          if (!useTimeRule) return '';
+          if (useTimeRule === 'fixed') {
+            return useStartTime + '~' + useEndTime;
+          } else {
+            if (delayDays === '0') {
+              return `领取后立即生效\n有效期${activeDays}天`;
+            }
+            return `领取后${delayDays}天生效\n有效期${activeDays}天`;
+          }
+        },
+      },
+      { key: 'commissionRatio', header: '投放总量' }, //
+      { key: 'remain', header: '剩余数量' },
+      { key: 'soldGoodsCount', header: '销量' },
+      {
+        key: 'writeOffGoodsCount',
+        header: '核销数量',
+      },
+      { key: 'createTime', header: '创建时间' },
+      { key: 'createTime', header: '审核通过时间' }, //
+      { key: 'useEndTime', header: '下架时间' }, //
+      { key: 'status', header: '状态' }, //
+    ],
+  };
+
   // 下架
   const fetchSpecialGoodsStatus = (payload) => {
-    // 展示 下架原因
-    setVisibleReason({ show: true, initialValues: payload });
     // dispatch({
     //   type: 'specialGoods/fetchSpecialGoodsStatus',
     //   payload,
     //   callback: childRef.current.fetchGetData,
     // });
+
+    // 展示 下架原因
+    setVisibleReason({ show: true, initialValues: payload });
   };
 
   // 推荐状态 / 置顶状态
@@ -307,7 +358,7 @@ const SpecialGoods = (props) => {
       <TableDataBlock
         keepData
         cRef={childRef}
-        btnExtra={
+        btnExtra={({ get }) => (
           <>
             <SpecialRecommendMenu
               num={goodsList.length}
@@ -316,6 +367,11 @@ const SpecialGoods = (props) => {
               }
               disabled={!goodsList.length}
             ></SpecialRecommendMenu>
+            <ExcelButton
+              // dispatchType={'businessList/fetchMerchantGetExcel'}
+              dispatchData={get()}
+              exportProps={getExcelProps}
+            ></ExcelButton>
             <AuthConsumer auth="save">
               <Button
                 className="dkl_green_btn"
@@ -325,7 +381,7 @@ const SpecialGoods = (props) => {
               </Button>
             </AuthConsumer>
           </>
-        }
+        )}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -351,6 +407,11 @@ const SpecialGoods = (props) => {
         childRef={childRef}
         onClose={() => setVisibleReason(false)}
       ></DownReason>
+      {/* 详情 */}
+      <SpecialGoodDetail
+        visible={visibleInfo}
+        onClose={() => setVisibleInfo(false)}
+      ></SpecialGoodDetail>
     </>
   );
 };

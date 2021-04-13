@@ -271,14 +271,14 @@ export default [
         path: '/market/puzzleAd',
         name: '拼图广告',
         component: './Market/PuzzleAd',
-        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot','check'],
+        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot', 'check'],
       },
       // 店铺运营
       {
         path: '/operation/share',
         name: '分享管理',
         component: './Operation/ShareManage',
-        buttons: ['info', 'down', 'handleDeatil','republish'],
+        buttons: ['info', 'down', 'handleDeatil', 'republish'],
       },
       {
         path: '/operation/goods',
@@ -314,7 +314,7 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus'],
+        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
       {
         path: '/operation/walking',
