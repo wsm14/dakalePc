@@ -112,6 +112,12 @@ const SpecialGoods = (props) => {
       type: 'select',
       select: BUSINESS_TYPE,
     },
+    {
+      label:'创建日期',
+      type: 'rangePicker',
+      end: 'activityEndTime',
+      name:'createEndTime'
+    }
   ];
 
   // table 表头
