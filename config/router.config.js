@@ -256,6 +256,12 @@ export default [
         ],
       },
       {
+        path: '/market/openAd',
+        name: '开屏广告',
+        component: './Market/OpenAdvert',
+        buttons: ['save', 'del', 'edit', 'down', 'againUp', 'info', 'adRoot'],
+      },
+      {
         path: '/market/appset',
         name: '广告管理',
         component: './Market/AppSetList',

@@ -2,6 +2,7 @@
 export const ROLE_BUTTON_TYPE = {
   adRoot: '广告配置',
   action: '行为管理',
+  againUp: '重新上架',
   activate: '账户激活',
   actionDel: '删除行为',
   actionEdit: '修改行为',

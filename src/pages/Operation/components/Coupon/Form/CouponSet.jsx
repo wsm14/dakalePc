@@ -271,16 +271,12 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       visible: radioData.buyFlag === '1',
       type: 'switch',
       name: ['reduceObject', 'anytimeRefund'],
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       label: '是否允许过期退款',
       visible: radioData.buyFlag === '1',
       type: 'switch',
       name: ['reduceObject', 'expireRefund'],
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       title: '使用说明',

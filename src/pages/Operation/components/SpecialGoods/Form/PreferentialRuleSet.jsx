@@ -162,8 +162,6 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       label: '是否需要预约购买',
       type: 'switch',
       name: 'needOrder',
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       label: '购买须知',
@@ -176,15 +174,11 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       label: '是否允许随时退款',
       type: 'switch',
       name: 'allowRefund',
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       label: '是否允许过期退款',
       type: 'switch',
       name: 'allowExpireRefund',
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
   ];
 
