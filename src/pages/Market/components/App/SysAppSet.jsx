@@ -3,10 +3,9 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
+import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import CitySelect from './CitySelect';
 import FormCondition from '@/components/FormCondition';
-import JumpFormBlock from '@/components/JumpFormBlock';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
@@ -94,7 +93,7 @@ const SysAppSet = (props) => {
       label: '选择区县',
       type: 'formItem',
       visible: showArea,
-      formItem: <CitySelect name="provinceCityDistrictObjects" form={form}></CitySelect>,
+      formItem: <CitySet name="provinceCityDistrictObjects" form={form} maxLength={10}></CitySet>,
     },
     {
       label: '展示时间',
@@ -104,7 +103,7 @@ const SysAppSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <JumpFormBlock form={form} detail={detail}></JumpFormBlock>,
+      formItem: <JumpFormSet form={form} detail={detail}></JumpFormSet>,
     },
   ];
 

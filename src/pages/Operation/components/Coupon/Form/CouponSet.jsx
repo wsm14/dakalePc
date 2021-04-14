@@ -14,7 +14,7 @@ import {
 } from '@/common/constant';
 import { NUM_INT_MAXSIX, NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
-import GoodsDescSet from '@/components/GoodsDescSet';
+import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const CouponSet = ({ form, loading, selectList, dispatch }) => {
@@ -284,7 +284,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '使用说明',
       name: 'couponDesc',
       type: 'formItem',
-      formItem: <GoodsDescSet keyName={'couponDesc'}></GoodsDescSet>,
+      formItem: <DescSet name={'couponDesc'}></DescSet>,
     },
   ];
 

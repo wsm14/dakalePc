@@ -2,10 +2,10 @@ import React from 'react';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
 
-const GoodsDescSet = ({ keyName }) => {
+const GoodsDescSet = ({ name }) => {
   return (
     <div style={{ marginBottom: 24 }}>
-      <Form.List name={keyName}>
+      <Form.List name={name}>
         {(fields, { add, remove }) => (
           <>
             {fields.map((field) => (
