@@ -49,7 +49,7 @@ const PreferentialSet = ({
       type: 'radio',
       disabled: editActive,
       name: 'ownerType',
-      select: BUSINESS_TYPE,
+      select: { merchant: '单店' },
       onChange: (e) => {
         saveSelectData({ shopType: '0' });
         saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据

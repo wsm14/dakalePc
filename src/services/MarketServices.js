@@ -283,3 +283,37 @@ export function fetchPuzzleAdSet(data) {
 }
 
 // 拼图广告 end
+
+// 开屏广告
+
+// get 开屏广告 - 列表
+export function fetchOpenAdvertList(params) {
+  return request('/admin/launchImage/listAppLaunchImage', {
+    params,
+  });
+}
+
+// get 开屏广告 - 详情
+export function fetchOpenAdvertDetail(params) {
+  return request('/admin/launchImage/getAppLaunchImage', {
+    params,
+  });
+}
+
+// post 开屏广告 - 添加
+export function fetchOpenAdvertSet(data) {
+  return request('/admin/launchImage/saveLaunchImage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 开屏广告 - 更新
+export function fetchOpenAdvertEdit(data) {
+  return request('/admin/launchImage/updateAppLaunchImage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 开屏广告 end

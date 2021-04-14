@@ -30,10 +30,12 @@ const ExpertUserDistribution = (props) => {
     {
       label: '推广者',
       name: 'promoter',
+      placeholder: '请输入推广者手机号',
     },
     {
       label: '买家',
       name: 'payer',
+      placeholder: '请输入买家手机号',
     },
     {
       label: '店铺',

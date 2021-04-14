@@ -43,6 +43,14 @@ const SpecialGoods = (props) => {
   // 搜索参数
   const searchItems = [
     {
+      label: '活动商品名称',
+      name: 'goodsName',
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'groupOrMerchantName',
+    },
+    {
       label: '活动状态',
       name: 'status',
       type: 'select',
@@ -76,18 +84,10 @@ const SpecialGoods = (props) => {
       end: 'useEndTime',
     },
     {
-      label: '集团/店铺名称',
-      name: 'groupOrMerchantName',
-    },
-    {
       label: '推广位置',
       type: 'select',
       name: 'promotionLocation',
       select: search_recommend,
-    },
-    {
-      label: '活动商品名称',
-      name: 'goodsName',
     },
     {
       label: '区域',

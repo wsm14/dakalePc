@@ -274,8 +274,9 @@ export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weCh
 // Banner类型 列表映射
 export const BANNER_TYPE = {
   main: '首页',
-  merchant: '到店打卡',
   person: '个人',
+  hotWeal: '爆品福利',
+  merchant: '到店打卡',
   merchantMain: '商家工作台',
   mainSpecial: '周边特惠首页',
   surroundingSpecial: '周边特惠列表',
@@ -287,11 +288,13 @@ export const BANNER_TYPE = {
 export const BANNER_PORT_LINK = {
   user: {
     person: '个人',
+    hotWeal: '爆品福利',
     wanderAroundMainBanner: '逛逛主Banner',
     wanderAroundCapsule: '逛逛胶囊位',
   },
   weChat: {
     person: '个人',
+    hotWeal: '爆品福利',
     wanderAroundMainBanner: '逛逛主Banner',
     wanderAroundCapsule: '逛逛胶囊位',
   },

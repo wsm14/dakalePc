@@ -10,3 +10,6 @@ export const LEVEL_ICON = 50 / 40;
 
 // 升级图标
 export const UP_LEVEL_ICON = 540 / 320;
+
+// 开屏广告
+export const OPEN_ADVERT = 750 / 1624;

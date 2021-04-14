@@ -10,29 +10,29 @@ import TableDataBlock from '@/components/TableDataBlock';
 import OpenAdSet from './components/OpenAd/OpenAdSet';
 
 const OpenAdvert = (props) => {
-  const { sysAppList, loading, dispatch } = props;
+  const { openAdvert, loading, dispatch } = props;
 
   const childRef = useRef();
-  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+  const [visibleSet, setVisibleSet] = useState({ show: false, detail: '' });
   const [tabKey, setTabKey] = useState('user');
 
   // 搜索参数
   const searchItems = [
     {
       label: '广告主',
-      name: 'bannspe',
+      name: 'launchOwner',
     },
     {
       label: '状态',
-      name: 'showStatus',
+      name: 'status',
       type: 'select',
       select: BANNER_SHOW_STATUS,
     },
     {
       label: '创建时间',
       type: 'rangePicker',
-      name: 'begsinDate',
-      end: 'enddDate',
+      name: 'beginTime',
+      end: 'endTime',
     },
   ];
 
@@ -41,23 +41,18 @@ const OpenAdvert = (props) => {
     {
       title: '广告主名',
       fixed: 'left',
-      dataIndex: 'coverImg',
-      render: (val) => <PopImgShow url={val} />,
+      dataIndex: 'launchOwner',
     },
     {
       title: '广告内容',
       align: 'center',
-      dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      dataIndex: 'url',
+      render: (val) => <PopImgShow url={val} />,
     },
     {
       title: '广告说明',
       align: 'center',
-      dataIndex: 'bannerType',
+      dataIndex: 'launchDesc',
       render: (val) => (
         <Ellipsis length={10} tooltip>
           {val}
@@ -67,75 +62,61 @@ const OpenAdvert = (props) => {
     {
       title: '点击事件',
       align: 'center',
-      dataIndex: 'jumpType',
+      dataIndex: 'jumpUrlType',
       render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
     },
     {
       title: '跳转内容',
       align: 'center',
       dataIndex: 'jumpUrl',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      render: (val, row) => {
+        const { jumpUrlType, nativeJumpName } = row;
+        return { H5: val, inside: nativeJumpName, 无: '--' }[jumpUrlType];
+      },
     },
     {
       title: '展示时间',
       align: 'center',
-      dataIndex: 'beginDate',
+      dataIndex: 'startDate',
       render: (val, record) => `${val} ~ ${record.endDate}`,
     },
     {
       title: '创建时间',
       align: 'center',
-      dataIndex: 'beginDate',
-      render: (val, record) => `${val} ~ ${record.endDate}`,
-    },
-    {
-      title: '补贴卡豆',
-      align: 'right',
-      dataIndex: 'showStsatus',
+      dataIndex: 'createTime',
     },
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'showStatus',
+      dataIndex: 'status',
       render: (val) => BANNER_SHOW_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'bannerIdString',
+      dataIndex: 'idString',
       align: 'right',
       fixed: 'right',
-      width: 165,
-      render: (val, record) => (
+      render: (appLaunchImageId, record) => (
         <HandleSetTable
           formItems={[
             {
-              type: 'down',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
-            },
-            {
-              type: 'againUp',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
-            },
-            {
               type: 'info',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+              click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
             },
             {
               type: 'edit',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerDetail({ bannerId: val }),
+              visible: record.status === '1',
+              click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
+            },
+            {
+              type: 'down',
+              visible: record.onFlag === '1',
+              click: () => fetchOpenAdvertEdit({ appLaunchImageId, onFlag: 0 }),
             },
             {
               type: 'del',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
+              visible: record.onFlag === '0',
+              click: () => fetchOpenAdvertEdit({ appLaunchImageId, deleteFlag: 0 }),
             },
           ]}
         />
@@ -144,18 +125,18 @@ const OpenAdvert = (props) => {
   ];
 
   // 获取详情
-  const fetchBannerDetail = (payload) => {
+  const fetchOpenAdvertDetail = (payload, type) => {
     dispatch({
-      type: 'sysAppList/fetchBannerDetail',
+      type: 'openAdvert/fetchOpenAdvertDetail',
       payload,
-      callback: (detail) => setVisibleSet({ show: true, type: 'edit', detail }),
+      callback: (detail) => setVisibleSet({ show: true, type, detail }),
     });
   };
 
-  // 占位图下架
-  const fetchBannerStatusDel = (payload) => {
+  // 下架 删除
+  const fetchOpenAdvertEdit = (payload) => {
     dispatch({
-      type: 'sysAppList/fetchBannerStatusDel',
+      type: 'openAdvert/fetchOpenAdvertEdit',
       payload,
       callback: childRef.current.fetchGetData,
     });
@@ -183,18 +164,18 @@ const OpenAdvert = (props) => {
               </AuthConsumer>
             </Space>
           ),
-          onTabChange: (key) => {
-            setTabKey(key);
-            childRef.current.fetchGetData({ key, page: 1 });
+          onTabChange: (userType) => {
+            setTabKey(userType);
+            childRef.current.fetchGetData({ userType, page: 1 });
           },
         }}
-        params={{ key: tabKey }}
+        params={{ userType: tabKey }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.bannerIdString}`}
-        dispatchType="sysAppList/fetchGetList"
-        {...sysAppList}
+        rowKey={(record) => `${record.idString}`}
+        dispatchType="openAdvert/fetchGetList"
+        {...openAdvert}
       ></TableDataBlock>
       <OpenAdSet
         tabKey={tabKey}
@@ -206,7 +187,7 @@ const OpenAdvert = (props) => {
   );
 };
 
-export default connect(({ sysAppList, loading }) => ({
-  sysAppList,
-  loading: loading.models.sysAppList,
+export default connect(({ openAdvert, loading }) => ({
+  openAdvert,
+  loading: loading.models.openAdvert,
 }))(OpenAdvert);

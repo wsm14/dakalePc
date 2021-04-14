@@ -7,12 +7,18 @@ import FormCondition from '@/components/FormCondition';
 
 const FormItem = Form.Item;
 
-const JumpFormBlock = ({ navigation, form, dispatch }) => {
+const JumpFormBlock = ({ navigation, nativeList, form, dispatch, detail }) => {
   const [showUrl, setShowUrl] = useState(false); // 链接类型
   const [showApi, setShowApi] = useState(false); // 打开的页面类型
+  const [paramKey, setParamKey] = useState(['paramName', 'paramValue']); // app 跳转需要的参数
 
   useEffect(() => {
+    const { jumpUrlType, nativeJumpType, param = {} } = detail;
+    fetchGetJumpNative();
     fetchWalkManageNavigation();
+    setShowUrl(jumpUrlType);
+    setShowApi(nativeJumpType);
+    setParamKey(Object.keys(param));
   }, []);
 
   // 获取风向标
@@ -22,9 +28,15 @@ const JumpFormBlock = ({ navigation, form, dispatch }) => {
     });
   };
 
+  // 获取风向标
+  const fetchGetJumpNative = () => {
+    dispatch({
+      type: 'baseData/fetchGetJumpNative',
+    });
+  };
+
   const scenesProps = {
     label: '选择场景',
-    multiple: true,
     showCheckedStrategy: 'SHOW_ALL',
     select: navigation.list.map(
       ({
@@ -62,22 +74,20 @@ const JumpFormBlock = ({ navigation, form, dispatch }) => {
     // 原生页面
     inside: (
       <FormItem
-        key={`jumpContent`}
+        key={`nativeJumpType`}
         label="跳转内容"
-        name={'jumpContent'}
+        name={'nativeJumpType'}
         rules={[{ required: true, message: `请选择跳转内容` }]}
         style={{ maxWidth: '100%' }}
       >
         <Select
           label="跳转内容"
-          select={[
-            { name: '1', value: '1', type: 'list' },
-            { name: '2', value: '12', type: 'list' },
-            { name: '3', value: '13', type: 'list' },
-            { name: '4', value: '14', type: 'tag' },
-          ]}
+          select={nativeList}
           placeholder={'请选择跳转内容'}
-          onChange={(val, item) => setShowApi(item.option.type)}
+          onChange={(val, item) => {
+            setParamKey(item.option.paramKey);
+            setShowApi(val);
+          }}
         ></Select>
       </FormItem>
     ),
@@ -86,9 +96,9 @@ const JumpFormBlock = ({ navigation, form, dispatch }) => {
   return (
     <>
       <FormItem
-        key={`jumpType`}
+        key={`jumpUrlType`}
         label="跳转类型"
-        name={'jumpType'}
+        name={'jumpUrlType'}
         rules={[{ required: true, message: `请确认跳转类型` }]}
         style={{ maxWidth: '100%' }}
       >
@@ -97,27 +107,37 @@ const JumpFormBlock = ({ navigation, form, dispatch }) => {
           onChange={(e) => {
             setShowUrl(e.target.value);
             setShowApi(false);
-            form.setFieldsValue({ jumpContent: undefined });
+            form.setFieldsValue({ nativeJumpType: undefined });
           }}
         ></Radio>
       </FormItem>
       {jumpTypeBlock[showUrl]}
-      {showApi === 'tag' && (
-        <FormItem
-          key={`treeSelect`}
-          label="选择风向标"
-          name={'scenesId'}
-          rules={[{ required: true, message: `请选择风向标` }]}
-          style={{ maxWidth: '100%' }}
-        >
-          <TreeSelect {...scenesProps}></TreeSelect>
-        </FormItem>
+      {showApi === 'vaneWind' && (
+        <>
+          <FormItem
+            key={`treeSelect`}
+            label="选择风向标"
+            name={['param', paramKey[0]]}
+            rules={[{ required: true, message: `请选择风向标` }]}
+            style={{ maxWidth: '100%' }}
+          >
+            <TreeSelect
+              {...scenesProps}
+              onChange={(val, options, extra) => {
+                const { node } = extra.allCheckedNodes[0];
+                form.setFieldsValue({ param: { [paramKey[1]]: node.props.title } });
+              }}
+            ></TreeSelect>
+          </FormItem>
+          <FormItem key={`pamranOhter`} hidden={true} name={['param', paramKey[1]]}></FormItem>
+        </>
       )}
     </>
   );
 };
 
-export default connect(({ walkingManage, loading }) => ({
+export default connect(({ baseData, walkingManage, loading }) => ({
   navigation: walkingManage.navigation,
+  nativeList: baseData.nativeList,
   loading: loading.effects['walkingManage/fetchWalkManageNavigation'],
 }))(JumpFormBlock);

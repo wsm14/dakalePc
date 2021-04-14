@@ -11,6 +11,7 @@ import {
   fetchGetKolLevel,
   fetchHandleDetail,
   fetchGetPhoneComeLocation,
+  fetchGetJumpNative,
 } from '@/services/BaseServices';
 
 export default {
@@ -21,6 +22,7 @@ export default {
     propertyJSON: {},
     tasteTag: [],
     kolLevel: [],
+    nativeList: [],
   },
 
   reducers: {
@@ -67,6 +69,23 @@ export default {
         type: 'save',
         payload: {
           tasteTag: content.domainList,
+        },
+      });
+    },
+    *fetchGetJumpNative({ payload }, { call, put }) {
+      const response = yield call(fetchGetJumpNative, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          nativeList: content.nativeJump.map(
+            ({ nativeJumpName: name, nativeJumpType: value, paramList: paramKey }) => ({
+              name,
+              value,
+              paramKey,
+            }),
+          ),
         },
       });
     },

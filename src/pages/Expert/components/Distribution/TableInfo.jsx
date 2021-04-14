@@ -40,7 +40,7 @@ export const OrderInfo = ({ data }) => {
             {goodsName}
           </Ellipsis>
         </div>
-        <div>
+        <div style={{ display: 'flex' }}>
           店铺：
           <Ellipsis length={17} tooltip>
             {merchantName}

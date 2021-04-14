@@ -259,7 +259,7 @@ export default [
         path: '/market/openAd',
         name: '开屏广告',
         component: './Market/OpenAdvert',
-        buttons: ['save', 'del', 'edit', 'down', 'againUp', 'info'],
+        buttons: ['save', 'del', 'edit', 'down', 'info'],
       },
       {
         path: '/market/appset',
