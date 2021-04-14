@@ -1,20 +1,27 @@
-import React, { useState } from 'react';
-import { connect } from 'umi';
+import React from 'react';
 import { Button, Modal, Tabs } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Form/GoodsDetailForm';
 import RegularDetail from './Form/RegularDetail';
 
 const SpecialGoodDetail = (props) => {
-  const { visible, onClose } = props;
-  const { show = false, detail = {} } = visible;
+  const { visible, onClose, onEdit } = props;
+  const { show = false, detail = {}, status } = visible;
+
+  const handleEdit = () => {
+    onClose(), onEdit();
+  };
 
   // 弹出窗属性
   const modalProps = {
     title: '活动详情',
     visible: show,
     onClose,
-    footer: <Button type="primary">编辑 </Button>,
+    footer: (
+      <Button type="primary" onClick={handleEdit}>
+        编辑{' '}
+      </Button>
+    ),
   };
 
   return (

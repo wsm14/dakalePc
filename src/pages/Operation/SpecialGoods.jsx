@@ -247,7 +247,7 @@ const SpecialGoods = (props) => {
             formItems={[
               {
                 type: 'info',
-                click: () => setVisibleInfo({ show: true, detail: record }),
+                click: () => fetchSpecialGoodsDetail(record, 'info'),
               },
               {
                 type: 'down',
@@ -286,7 +286,7 @@ const SpecialGoods = (props) => {
       { key: 'oriPrice', header: '原价' },
       { key: 'realPrice', header: '特惠价格' },
       { key: 'realPrice', header: '商家结算价' },
-      { key: 'categoryName', header: '使用门槛' }, //
+      { key: 'dayMaxBuyAmount', header: '使用门槛', render: (val) => `单人每天购买${val}份数` },
       {
         key: 'useStartTime',
         header: '使用有效期',
@@ -303,7 +303,7 @@ const SpecialGoods = (props) => {
           }
         },
       },
-      { key: 'commissionRatio', header: '投放总量' }, //
+      { key: 'total', header: '投放总量' },
       { key: 'remain', header: '剩余数量' },
       { key: 'soldGoodsCount', header: '销量' },
       {
@@ -313,7 +313,7 @@ const SpecialGoods = (props) => {
       { key: 'createTime', header: '创建时间' },
       { key: 'createTime', header: '审核通过时间' }, //
       { key: 'useEndTime', header: '下架时间' }, //
-      { key: 'status', header: '状态' }, //
+      { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
     ],
   };
 
@@ -340,16 +340,25 @@ const SpecialGoods = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (payload, type) => {
-    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = payload;
+    const { specialGoodsId, merchantIdStr, merchantName, ownerType, status } = payload;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, merchantIdStr, type },
-      callback: (val) =>
-        setVisibleSet({
-          type,
-          show: true,
-          detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
-        }),
+      callback: (val) => {
+        if (type == 'info') {
+          setVisibleInfo({
+            show: true,
+            status,
+            detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
+          });
+        } else {
+          setVisibleSet({
+            type,
+            show: true,
+            detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
+          });
+        }
+      },
     });
   };
 
@@ -410,6 +419,13 @@ const SpecialGoods = (props) => {
       {/* 详情 */}
       <SpecialGoodDetail
         visible={visibleInfo}
+        onEdit={() =>
+          setVisibleSet({
+            type: [false, 'active', 'edit'][visibleInfo.status],
+            show: true,
+            detail: visibleInfo ? visibleInfo.detail : {},
+          })
+        }
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodDetail>
     </>

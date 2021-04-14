@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-
+import moment from 'moment';
+import { COUPON_BUY_RULE, COUPON_WEEK_TIME } from '@/common/constant';
 const RegularDetail = (props) => {
   const { detail } = props;
+  
   const RegularItems = [
     {
-      name: 'goodsType',
+      name: 'activityTimeRule',
       label: '活动时间',
+      render: (val, row) =>
+        val == 'infinite'
+          ? `长期`
+          : `${row.activityStartTime[0].format('YYYY-MM-DD')}-${row.activityStartTime[1].format(
+              'YYYY-MM-DD',
+            )}`,
     },
     {
       name: 'goodsType',
       label: '使用有效期',
       render: (val, row) => {
         const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+        console.log(useStartTime, useEndTime, useTimeRule, 'v');
         if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
-          return useStartTime + '~' + useEndTime;
+          return useStartTime[0].format('YYYY-MM-DD') + '~' + useStartTime[1].format('YYYY-MM-DD');
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -25,35 +34,71 @@ const RegularDetail = (props) => {
       },
     },
     {
-      name: 'activityStartTime',
+      name: 'useTime', // COUPON_USER_TIME
       label: '适用时段',
-      render:(val,row)=>`${val}-${row.activityEndTime}`
+      render: (val, row) => {
+        let week = '每周';
+        if (row.timeSplit == 'part') {
+          row.useWeek.forEach((item, index) => {
+            week += `${COUPON_WEEK_TIME[item]}`;
+            return week;
+          });
+        }
+        const times =
+          val.length > 0
+            ? val[0].format('HH:mm:ss') + '-' + val[1].format('HH:mm:ss')
+            : row.timeType;
+        return <>{row.timeSplit == 'part' ? `${week}--${times}` : `每天--${times}`}</>;
+      },
     },
     {
-      name: 'commissionRatio',
+      name: 'total',
       label: '投放总量',
+      render: (val) => (val ? `${val}份` : '--'),
     },
   ];
+
   const BuyRegularItem = [
     {
-      name: 'goodsType',
+      name: 'buyRule',
       label: '购买上限',
+      render: (val) => COUPON_BUY_RULE[val],
     },
     {
-      name: 'goodsType',
-      label: '每日单人最高购买份数',
+      label: `单人每天购买份数`,
+      name: 'dayMaxBuyAmount',
+      render: (val) => (val ? `${val}份` : '--'),
     },
+    // {
+    //   label: `单人每人购买份数`,
+    //   name: 'maxBuyAmount',
+    //   render: (val) => `${val}份`,
+    // },
     {
-      name: 'goodsType',
+      name: 'needOrder',
       label: '是否需要预约购买',
+      render: (val) => (val == 1 ? '是' : '否'),
     },
     {
-      name: 'goodsType',
+      name: 'buyDesc',
       label: '购买须知',
+      render: (val) => val.map((items, ins) => <div key={ins}>{items}</div>),
     },
     {
-      name: 'goodsType',
+      name: 'allowRefund',
       label: '退款规则',
+      render: (val, row) => (
+        <>
+          <div>
+            <span style={{ marginRight: '8px' }}>是否允许随时退款:</span>
+            <span>{val == 1 ? '是' : '否'}</span>
+          </div>
+          <div>
+            <span style={{ marginRight: '8px' }}>是否允许过期退款: </span>
+            <span>{row.allowExpireRefund == 1 ? '是' : '否'}</span>
+          </div>
+        </>
+      ),
     },
   ];
 
