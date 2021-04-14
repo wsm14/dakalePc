@@ -40,7 +40,14 @@ export default {
       const response = yield call(fetchCouponDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.couponDetail);
+      const { couponDesc } = content.couponDetail;
+      callback({
+        ...content.couponDetail,
+        couponDescString: couponDesc.includes(']')
+          ? JSON.parse(couponDesc || '[]').join('\n')
+          : couponDesc,
+        couponDesc: couponDesc.includes(']') ? JSON.parse(couponDesc || '[]') : [],
+      });
     },
     *fetchCouponSave({ payload, callback }, { call }) {
       const response = yield call(fetchCouponSave, payload);

@@ -10,7 +10,7 @@ import {
 } from '@/common/constant';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
-import GoodsDescSet from '../GoodsDescSet';
+import GoodsDescSet from '@/components/GoodsDescSet';
 
 const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
   const [radioData, setRadioData] = useState({

@@ -7,7 +7,7 @@ import FormCondition from '@/components/FormCondition';
 
 const FormItem = Form.Item;
 
-const JumpFormBlock = ({ navigation, nativeList, form, dispatch, detail }) => {
+const JumpFormBlock = ({ navigation, nativeList, form, dispatch, detail = {} }) => {
   const [showUrl, setShowUrl] = useState(false); // 链接类型
   const [showApi, setShowApi] = useState(false); // 打开的页面类型
   const [paramKey, setParamKey] = useState(['paramName', 'paramValue']); // app 跳转需要的参数

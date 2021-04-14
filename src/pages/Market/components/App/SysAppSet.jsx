@@ -23,7 +23,7 @@ const SysAppSet = (props) => {
       const {
         coverImg,
         beginDate: time,
-        jumpType,
+        jumpUrlType,
         provinceCityDistrictObjects: cityData = [],
       } = values;
       // 城市数据整理
@@ -39,8 +39,9 @@ const SysAppSet = (props) => {
           payload: {
             bannerId: detail.bannerIdString,
             ...values,
+            userType: tabKey,
             provinceCityDistrictObjects,
-            jumpType: jumpType === '无' ? '' : jumpType,
+            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),
             beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
             endDate: time[1].format('YYYY-MM-DD 00:00:00'),
@@ -103,7 +104,7 @@ const SysAppSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <JumpFormBlock form={form}></JumpFormBlock>,
+      formItem: <JumpFormBlock form={form} detail={detail}></JumpFormBlock>,
     },
   ];
 

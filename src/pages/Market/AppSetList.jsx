@@ -190,12 +190,12 @@ const SysAppSet = (props) => {
               </Button>
             </AuthConsumer>
           ),
-          onTabChange: (key) => {
-            setTabKey(key);
-            childRef.current.fetchGetData({ key, page: 1 });
+          onTabChange: (userType) => {
+            setTabKey(userType);
+            childRef.current.fetchGetData({ userType, page: 1 });
           },
         }}
-        params={{ key: tabKey }}
+        params={{ userType: tabKey }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
