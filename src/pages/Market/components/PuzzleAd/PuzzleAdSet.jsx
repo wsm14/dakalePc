@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { PUZZLE_AD_TYPE } from '@/common/constant';
+import { PUZZLE_AD_TYPE, BANNER_AREA_TYPE } from '@/common/constant';
+import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -17,6 +18,7 @@ const PuzzleAdSet = (props) => {
   const [showType, setShowType] = useState(false);
   // 上传确认按钮loading
   const [fileUpload, setFileUpload] = useState(false);
+  const [showArea, setShowArea] = useState(false); // 区域
 
   // 提交
   const fetchGetFormData = () => {
@@ -86,6 +88,26 @@ const PuzzleAdSet = (props) => {
     {
       label: '品牌名',
       name: 'brandName',
+    },
+    {
+      label: '应用范围',
+      type: 'radio',
+      name: 'deliveryAreaType',
+      show: false,
+      select: BANNER_AREA_TYPE,
+      onChange: (e) => setShowArea(e.target.value === 'detail'),
+    },
+    {
+      label: '选择区县',
+      type: 'formItem',
+      show: false,
+      visible: showArea,
+      formItem: <CitySet name="provinceCityDistrictObjects" form={form} maxLength={10}></CitySet>,
+    },
+    {
+      type: 'noForm',
+      show: false,
+      formItem: <JumpFormSet form={form} detail={info}></JumpFormSet>,
     },
   ];
 
