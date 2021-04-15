@@ -61,6 +61,14 @@ const ShareManage = (props) => {
   // 搜索参数
   const searchItems = [
     {
+      label: '分享标题',
+      name: 'title',
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'merchantName',
+    },
+    {
       label: '创建时间',
       type: 'rangePicker',
       name: 'beginDate',
@@ -71,10 +79,6 @@ const ShareManage = (props) => {
       type: 'select',
       name: 'status',
       select: SHARE_STATUS,
-    },
-    {
-      label: '分享标题',
-      name: 'title',
     },
     {
       label: '分享类型',
@@ -88,10 +92,6 @@ const ShareManage = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-    {
-      label: '集团/店铺名称',
-      name: 'merchantName',
     },
     {
       label: '店铺类型',

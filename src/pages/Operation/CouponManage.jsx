@@ -18,6 +18,14 @@ const CouponManageComponent = (props) => {
   // 搜索参数
   const searchItems = [
     {
+      label: '券名称',
+      name: 'couponName',
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'ownerName',
+    },
+    {
       label: '状态',
       type: 'select',
       name: 'merchantCouponStatus',
@@ -34,14 +42,6 @@ const CouponManageComponent = (props) => {
       type: 'select',
       name: 'couponType',
       select: COUPON_TYPE,
-    },
-    {
-      label: '优惠券名称',
-      name: 'couponName',
-    },
-    {
-      label: '集团/店铺名称',
-      name: 'ownerName',
     },
     {
       label: '店铺类型',
