@@ -1,10 +1,10 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import moment from 'moment';
 import { COUPON_BUY_RULE, COUPON_WEEK_TIME } from '@/common/constant';
+
 const RegularDetail = (props) => {
   const { detail } = props;
-  
+
   const RegularItems = [
     {
       name: 'activityTimeRule',
@@ -54,7 +54,7 @@ const RegularDetail = (props) => {
     {
       name: 'total',
       label: '投放总量',
-      render: (val) => (val && val!=='--' ? `${val}份` : '--'),
+      render: (val) => (val && val !== '--' ? `${val}份` : '--'),
     },
   ];
 
@@ -67,13 +67,8 @@ const RegularDetail = (props) => {
     {
       label: `单人每天购买份数`,
       name: 'dayMaxBuyAmount',
-      render: (val) => (val&&val!=='--' ? `${val}份` : '--'),
+      render: (val) => (val && val !== '--' ? `${val}份` : '--'),
     },
-    // {
-    //   label: `单人每人购买份数`,
-    //   name: 'maxBuyAmount',
-    //   render: (val) => `${val}份`,
-    // },
     {
       name: 'needOrder',
       label: '是否需要预约购买',

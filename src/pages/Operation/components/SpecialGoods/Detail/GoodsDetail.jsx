@@ -1,17 +1,9 @@
-import React, { useState } from 'react';
-import { Button, Modal, Tabs } from 'antd';
+import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import SetMealTable from '../Detail/SetMealTable';
-import {
-  BUSINESS_TYPE,
-  SPECIAL_STATUS,
-  GOODS_CLASS_TYPE,
-  SPECIAL_USERTIME_TYPE,
-  SPECIAL_RECOMMEND_TYPE,
-  SPECIAL_RECOMMEND_LISTTYPE,
-} from '@/common/constant';
+import SetMealTable from './SetMealTable';
+import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 
-const GoodsDetailForm = (props) => {
+const GoodsDetail = (props) => {
   const { detail } = props;
   const { goodsType } = detail;
 
@@ -47,7 +39,9 @@ const GoodsDetailForm = (props) => {
       name: 'goodsType',
       label: '套餐单品',
       show: goodsType == 'package',
-      render: (val,row) => <SetMealTable packageGroupObjects={row.packageGroupObjects}></SetMealTable>,
+      render: (val, row) => (
+        <SetMealTable packageGroupObjects={row.packageGroupObjects}></SetMealTable>
+      ),
     },
   ];
 
@@ -78,7 +72,7 @@ const GoodsDetailForm = (props) => {
       type: 'upload',
     },
   ];
-  
+
   return (
     <>
       <DescriptionsCondition
@@ -104,4 +98,4 @@ const GoodsDetailForm = (props) => {
     </>
   );
 };
-export default GoodsDetailForm;
+export default GoodsDetail;

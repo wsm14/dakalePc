@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Modal, Tabs } from 'antd';
+import { Button, Tabs } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import GoodsDetailForm from './Form/GoodsDetailForm';
-import RegularDetail from './Form/RegularDetail';
+import GoodsDetailForm from './Detail/GoodsDetail';
+import RegularDetail from './Detail/RegularDetail';
 
 const SpecialGoodDetail = (props) => {
   const { visible, onClose, onEdit } = props;
