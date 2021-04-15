@@ -23,7 +23,13 @@ const PuzzleAdSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { activeDate: time } = values;
+      const { activeDate: time, provinceCityDistrictObjects: cityData = [] } = values;
+      // 城市数据整理
+      const provinceCityDistrictObjects = cityData.map(({ city }) => ({
+        provinceCode: city[0],
+        cityCode: city[1],
+        districtCode: city[2],
+      }));
       // 上传图片到oss -> 提交表单
       setFileUpload(true);
       aliOssUpload(values[showType]).then((res) => {
@@ -32,6 +38,7 @@ const PuzzleAdSet = (props) => {
           {
             ...values,
             [showType]: res.toString(),
+            provinceCityDistrictObjects,
             puzzleAdsId: info.puzzleAdsId,
             startShowTime: time[0].format('YYYY-MM-DD'),
             endShowTime: time[1].format('YYYY-MM-DD'),
@@ -122,7 +129,10 @@ const PuzzleAdSet = (props) => {
     visible: show,
     loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,
-    afterCallBack: () => setShowType(info.type),
+    afterCallBack: () => {
+      setShowType(info.type);
+      setShowArea(info.deliveryAreaType === 'detail');
+    },
     footer:
       type !== 'info' ? (
         <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>

@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Tooltip } from 'antd';
 import {
   BANNER_TYPE,
+  BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
   BANNER_SHOW_STATUS,
   BANNER_JUMP_TYPE,
@@ -71,6 +72,11 @@ const SysAppSet = (props) => {
       align: 'center',
       dataIndex: 'bannerType',
       render: (val) => (BANNER_TYPE[val] ? BANNER_TYPE[val] : '--'),
+    },
+    {
+      title: '可见范围',
+      dataIndex: 'visibleRange',
+      render: (val) => BANNER_LOOK_AREA[val],
     },
     {
       title: '投放区域',

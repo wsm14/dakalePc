@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS } from '@/common/constant';
+import { Button, Tooltip } from 'antd';
+import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -40,6 +39,16 @@ const PuzzleAd = (props) => {
       title: '说明',
       align: 'center',
       dataIndex: 'description',
+    },
+    {
+      title: '投放区域',
+      align: 'center',
+      dataIndex: 'deliveryAreaType',
+      render: (val, row) =>
+        ({
+          all: BANNER_AREA_TYPE[val],
+          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
+        }[val]),
     },
     {
       title: '展示时间',

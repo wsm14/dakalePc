@@ -53,11 +53,19 @@ export default {
       const response = yield call(fetchPuzzleAdDetail, payload);
       if (!response) return;
       const { content = {} } = response;
-      const { brandIdStr: brandId, startShowTime, endShowTime } = content.puzzleAdsDTO;
+      const {
+        brandIdStr: brandId,
+        startShowTime,
+        endShowTime,
+        provinceCityDistrictObjects: cityData = [],
+      } = content.puzzleAdsDTO;
       if (callback)
         callback({
           ...content.puzzleAdsDTO,
           brandId,
+          provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
+            city: [provinceCode, cityCode, districtCode].filter((i) => i),
+          })),
           activeDate: [moment(startShowTime, 'YYYY-MM-DD'), moment(endShowTime, 'YYYY-MM-DD')],
         });
     },

@@ -49,7 +49,7 @@ const CitySelect = ({ form, name, areaType, setCityData, maxLength }) => {
                   <Cascader
                     changeOnSelect={areaType ? areaType === 'city' : true}
                     cityType={areaType}
-                    onChange={(val, option) => setCityData(option)}
+                    onChange={(val, option) => setCityData && setCityData(option)}
                   />
                 </Form.Item>
                 {fields.length > 1 && (
