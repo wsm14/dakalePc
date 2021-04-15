@@ -280,11 +280,9 @@ const SpecialGoods = (props) => {
       { key: 'goodsName', header: '商品名称' },
       { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
       { key: 'merchantName', header: '店铺名称' },
-      { key: 'districtName', header: 'BD' }, //BD
       { key: 'oriPrice', header: '原价' },
       { key: 'realPrice', header: '特惠价格' },
       { key: 'realPrice', header: '商家结算价' },
-      { key: 'dayMaxBuyAmount', header: '使用门槛', render: (val) => `单人每天购买${val}份数` },
       {
         key: 'useStartTime',
         header: '使用有效期',
@@ -309,8 +307,6 @@ const SpecialGoods = (props) => {
         header: '核销数量',
       },
       { key: 'createTime', header: '创建时间' },
-      { key: 'createTime', header: '审核通过时间' }, //
-      { key: 'useEndTime', header: '下架时间' }, //
       { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
     ],
   };
@@ -364,7 +360,7 @@ const SpecialGoods = (props) => {
         btnExtra={({ get }) => (
           <>
             <ExcelButton
-              // dispatchType={'businessList/fetchMerchantGetExcel'}
+              dispatchType={'specialGoods/fetchSpecialGoodsImport'}
               dispatchData={get()}
               exportProps={getExcelProps}
             ></ExcelButton>

@@ -181,15 +181,17 @@ const CouponManageComponent = (props) => {
   const getExcelProps = {
     fieldNames: { key: 'key', headerName: 'header' },
     header: [
-      { key: 'couponType', header: '券类型', render: (val) => COUPON_TYPE[val]},
+      { key: 'couponType', header: '券类型', render: (val) => COUPON_TYPE[val] },
       { key: 'couponName', header: '券名称' },
       { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
       { key: 'ownerName', header: '店铺/集团名称' },
-      { key: 'districtName', header: 'BD' }, //BD
-      { key: 'reduceObject', header: '券价值',render:(val)=>val.couponPrice },
+      { key: ['reduceObject', 'couponPrice'], header: '券价值', render: (val) => val.couponPrice },
       { key: 'buyPrice', header: '售卖价' },
-      { key: 'realPrice', header: '商家结算价' },
-      { key: 'dayMaxBuyAmount', header: '使用门槛', render: (val) => `单人每天购买${val}份数` },
+      {
+        key: ['reduceObject', 'thresholdPrice'],
+        header: '使用门槛',
+        render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
+      },
       {
         key: 'activeDate',
         header: '使用有效期',
@@ -205,17 +207,15 @@ const CouponManageComponent = (props) => {
           }
         },
       },
-      { key: 'total', header: '投放总量' },//
       { key: 'remain', header: '剩余数量' },
-      { key: 'soldGoodsCount', header: '销量' },//
+      { key: 'total', header: '销量' }, 
       {
         key: 'verifiedCount',
         header: '核销数量',
       },
       { key: 'createTime', header: '创建时间' },
-      { key: 'createTime', header: '发布时间' }, //
-      { key: 'useEndTime', header: '下架时间' }, //
-      { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
+      { key: 'updateTime', header: '发布时间' },
+      { key: 'status', header: '状态', render: (val) => COUPON_STATUS[val] },
     ],
   };
 
@@ -245,7 +245,7 @@ const CouponManageComponent = (props) => {
         btnExtra={({ get }) => (
           <>
             <ExcelButton
-              // dispatchType={'businessList/fetchMerchantGetExcel'}
+              dispatchType={'couponManage/fetchCouponToImport'}
               dispatchData={get()}
               exportProps={getExcelProps}
             ></ExcelButton>

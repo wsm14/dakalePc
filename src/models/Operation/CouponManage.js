@@ -4,6 +4,7 @@ import {
   fetchCouponStatus,
   fetchCouponSave,
   fetchCouponDetail,
+  fetchCouponToImport
 } from '@/services/OperationServices';
 
 export default {
@@ -67,5 +68,11 @@ export default {
       });
       callback();
     },
+    *fetchCouponToImport({ payload, callback }, { call }){
+      const response = yield call(fetchCouponToImport, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.ownerCouponList);
+    }
   },
 };
