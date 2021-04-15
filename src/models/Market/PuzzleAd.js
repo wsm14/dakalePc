@@ -57,12 +57,14 @@ export default {
         brandIdStr: brandId,
         startShowTime,
         endShowTime,
+        jumpUrlType,
         provinceCityDistrictObjects: cityData = [],
       } = content.puzzleAdsDTO;
       if (callback)
         callback({
           ...content.puzzleAdsDTO,
           brandId,
+          jumpUrlType: jumpUrlType === '' ? '无' : jumpUrlType,
           provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
             city: [provinceCode, cityCode, districtCode].filter((i) => i),
           })),

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { PUZZLE_AD_TYPE, BANNER_AREA_TYPE } from '@/common/constant';
+import { PUZZLE_AD_TYPE, BANNER_AREA_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
 import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -23,7 +23,7 @@ const PuzzleAdSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { activeDate: time, provinceCityDistrictObjects: cityData = [] } = values;
+      const { activeDate: time, provinceCityDistrictObjects: cityData = [], jumpUrlType } = values;
       // 城市数据整理
       const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
@@ -38,6 +38,7 @@ const PuzzleAdSet = (props) => {
           {
             ...values,
             [showType]: res.toString(),
+            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             provinceCityDistrictObjects,
             puzzleAdsId: info.puzzleAdsId,
             startShowTime: time[0].format('YYYY-MM-DD'),
@@ -115,6 +116,32 @@ const PuzzleAdSet = (props) => {
       type: 'noForm',
       show: false,
       formItem: <JumpFormSet form={form} detail={info}></JumpFormSet>,
+    },
+    {
+      label: '跳转事件',
+      name: 'jumpUrlType',
+      visible: false,
+      render: (val) => BANNER_JUMP_TYPE[val],
+    },
+    {
+      label: '跳转内容',
+      name: 'jumpUrl',
+      visible: false,
+      show: info.jumpUrlType !== '无',
+      render: (val, row) => {
+        const { jumpUrlType, nativeJumpName, param = {} } = row;
+        return { H5: val, inside: `${nativeJumpName} - ${param.scenesName}` }[jumpUrlType];
+      },
+    },
+    {
+      label: '投放区域',
+      name: 'deliveryAreaType',
+      visible: false,
+      render: (val, row) =>
+        ({
+          all: BANNER_AREA_TYPE[val],
+          detail: row.deliveryAreaNameStr,
+        }[val]),
     },
   ];
 

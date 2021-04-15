@@ -114,13 +114,15 @@ const PuzzleAd = (props) => {
   };
 
   // 详情
-  const fetchDetail = (type, puzzleAdsId) => {
+  const fetchDetail = (type, puzzleAdsId, row) => {
+    const { deliveryAreaNameStr } = row;
     dispatch({
       type: 'puzzleAd/fetchPuzzleAdDetail',
       payload: {
         puzzleAdsId,
       },
-      callback: (info) => setVisibleSet({ type, show: true, info }),
+      callback: (info) =>
+        setVisibleSet({ type, show: true, info: { ...info, deliveryAreaNameStr } }),
     });
   };
 
