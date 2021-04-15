@@ -75,7 +75,7 @@ export default {
         ...content.specialGoodsInfo,
         ...newDetail,
         merchantId,
-        buyDesc: buyDesc ? JSON.parse(buyDesc) : [],
+        buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
         allowRefund: Number(allowRefund),
         allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
