@@ -120,7 +120,9 @@ const ShareManage = (props) => {
       render: (val, detail) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <PopImgShow url={val}></PopImgShow>
-          <div style={{ marginLeft: '15px' }}>{detail.title}</div>
+          <Ellipsis style={{ marginLeft: '15px' }} length={10} tooltip>
+            {detail.title}
+          </Ellipsis>
         </div>
       ),
     },
