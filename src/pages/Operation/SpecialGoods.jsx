@@ -9,15 +9,15 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import Ellipsis from '@/components/Ellipsis';
+import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
-import ExcelButton from '@/components/ExcelButton';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 
 const SpecialGoods = (props) => {
@@ -116,10 +116,10 @@ const SpecialGoods = (props) => {
       select: BUSINESS_TYPE,
     },
     {
-      label: '创建日期',
+      label: '创建时间',
       type: 'rangePicker',
-      end: 'activityEndTime',
-      name: 'createEndTime',
+      name: 'createStartTime',
+      end: 'createEndTime',
     },
   ];
 
