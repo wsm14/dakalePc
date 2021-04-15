@@ -319,14 +319,12 @@ const SpecialGoods = (props) => {
 
   // 下架
   const fetchSpecialGoodsStatus = (payload) => {
-    // dispatch({
-    //   type: 'specialGoods/fetchSpecialGoodsStatus',
-    //   payload,
-    //   callback: childRef.current.fetchGetData,
-    // });
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsStatus',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
 
-    // 展示 下架原因
-    setVisibleReason({ show: true, initialValues: payload });
   };
 
   // 推荐状态 / 置顶状态
@@ -410,12 +408,6 @@ const SpecialGoods = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></PreferentialDrawer>
-      {/* 下架原因 */}
-      <DownReason
-        visible={visibleReason}
-        childRef={childRef}
-        onClose={() => setVisibleReason(false)}
-      ></DownReason>
       {/* 详情 */}
       <SpecialGoodDetail
         visible={visibleInfo}

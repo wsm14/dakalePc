@@ -272,12 +272,6 @@ const ShareManage = (props) => {
                 click: () => setVisibleDown({ show: true, initialValues: record }),
               },
               {
-                type: 'republish', // 重新发布
-                pop: true,
-                visible: status == 3,
-                click: () => fetchRepublish(record),
-              },
-              {
                 type: 'info', // 详情
                 click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
