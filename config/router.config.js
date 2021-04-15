@@ -320,7 +320,7 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus'],
+        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
       {
         path: '/operation/walking',

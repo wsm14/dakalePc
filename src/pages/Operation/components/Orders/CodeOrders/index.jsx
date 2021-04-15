@@ -75,6 +75,11 @@ const CodeOrders = (props) => {
       dataIndex: 'mobile',
     },
     {
+      title: '店铺名称',
+      align: 'center',
+      dataIndex: 'merchantName',
+    },
+    {
       title: '订单金额',
       align: 'right',
       dataIndex: 'payFee',
@@ -97,10 +102,11 @@ const CodeOrders = (props) => {
       align: 'center',
       dataIndex: 'createTime',
     },
+   
     {
-      title: '店铺名称',
+      title: '下单渠道',
       align: 'center',
-      dataIndex: 'merchantName',
+      dataIndex: 'orderSource',
     },
     {
       title: '区域',

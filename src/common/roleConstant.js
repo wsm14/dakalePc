@@ -108,6 +108,8 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
 
   withdraw: '提现记录',
+
+  republish:'重新发布'
 };
 
 // 数据权限选项

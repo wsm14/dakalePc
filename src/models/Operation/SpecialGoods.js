@@ -58,7 +58,7 @@ export default {
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
       let newDetail = {};
-      if (type === 'edit') {
+      if (type === 'edit' || type==='info') {
         newDetail = {
           activityStartTime: [moment(activityStartTime), moment(activityEndTime)],
           useStartTime: [moment(useStartTime), moment(useEndTime)],
@@ -75,7 +75,7 @@ export default {
         ...content.specialGoodsInfo,
         ...newDetail,
         merchantId,
-        buyDesc: JSON.parse(buyDesc),
+        buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
         allowRefund: Number(allowRefund),
         allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),

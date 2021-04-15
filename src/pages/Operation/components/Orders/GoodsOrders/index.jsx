@@ -101,6 +101,16 @@ const GoodsOrders = (props) => {
       dataIndex: 'mobile',
     },
     {
+      title: '店铺名称',
+      align: 'center',
+      dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={20} tooltip>
+          {val}
+        </Ellipsis>
+      ),
+    },
+    {
       title: '购买商品',
       dataIndex: 'goodsName',
       render: (val) => (
@@ -144,9 +154,9 @@ const GoodsOrders = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '下单渠道',
+      title: '核销时间',
       align: 'center',
-      dataIndex: 'orderSource',
+      dataIndex: 'verificationTime',
     },
     {
       title: '核销数',
@@ -161,19 +171,9 @@ const GoodsOrders = (props) => {
         `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
-      title: '核销时间',
+      title: '下单渠道',
       align: 'center',
-      dataIndex: 'verificationTime',
-    },
-    {
-      title: '店铺名称',
-      align: 'center',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={20} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      dataIndex: 'orderSource',
     },
     {
       title: '区域',
@@ -181,6 +181,7 @@ const GoodsOrders = (props) => {
       dataIndex: 'provinceName',
       render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
+
     {
       title: '订单属性',
       align: 'center',
