@@ -183,7 +183,6 @@ export default [
         path: '/expert/distribution',
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
-        buttons: ['status', 'diary'],
       },
       // 财务管理
       {
