@@ -117,10 +117,17 @@ const ShareManage = (props) => {
       title: '视频/标题',
       fixed: 'left',
       dataIndex: 'frontImage',
+      width: 300,
       render: (val, detail) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <PopImgShow url={val}></PopImgShow>
-          <div style={{ marginLeft: '15px' }}>{detail.title}</div>
+          <div>
+            <PopImgShow url={val}></PopImgShow>
+          </div>
+          <div style={{ marginLeft: '15px' }}>
+            <Ellipsis length={10} tooltip>
+              {detail.title}
+            </Ellipsis>
+          </div>
         </div>
       ),
     },

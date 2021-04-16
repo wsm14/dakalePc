@@ -375,7 +375,7 @@ export const EXPRET_DISTRIBUTION_TYPE = {
 };
 
 // 哒人核销是否自购类型
-export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推', team: '团队' };
+export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推' };
 
 // 特惠活动 - 使用时间
 export const SPECIAL_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' };

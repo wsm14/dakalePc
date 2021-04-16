@@ -47,6 +47,12 @@ export function fetchSpecialGoodsRecommend(data) {
     data,
   });
 }
+// 周边特惠导出 /
+export function fetchSpecialGoodsImport(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagementImport', {
+    params,
+  });
+}
 
 // 周边特惠 end
 
@@ -337,6 +343,13 @@ export function fetchCouponStatus(data) {
   return request('/admin/coupon/updateOwnerCoupon', {
     method: 'POST',
     data,
+  });
+}
+
+// 优惠券导出 /
+export function fetchCouponToImport(params) {
+  return request('/admin/coupon/listOwnerCouponToActionImport', {
+    params,
   });
 }
 

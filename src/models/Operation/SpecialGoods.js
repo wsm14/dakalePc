@@ -7,6 +7,7 @@ import {
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
+  fetchSpecialGoodsImport
 } from '@/services/OperationServices';
 
 export default {
@@ -122,5 +123,12 @@ export default {
       });
       callback();
     },
+    *fetchSpecialGoodsImport({ payload, callback }, { call }){
+      const response = yield call(fetchSpecialGoodsImport, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.specialGoodsList);
+
+    }
   },
 };
