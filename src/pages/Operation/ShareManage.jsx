@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
+import { Tag } from 'antd';
 import { MreSelect } from '@/components/MerchantDataTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
@@ -137,30 +138,14 @@ const ShareManage = (props) => {
       width: 300,
       render: (val, row) => (
         <>
-          <div className={styles.item}>
-            <span
-              className={styles.sp_span}
-              style={{
-                border: '1px solid #CDC9C9',
-                background: '#FAFAFA',
-                color: '#666',
-              }}
-            >
-              {BUSINESS_TYPE[val]}
-            </span>
+          <div style={{ display: 'flex' }}>
+            <Tag>{BUSINESS_TYPE[val]}</Tag>
             <Ellipsis length={10} tooltip>
               {row.merchantName}
             </Ellipsis>
           </div>
-          <div>
-            <span
-              className={styles.sp_span}
-              style={{
-                border: '1px solid #FA8072',
-                background: '#FFF0F5',
-                color: '#FA8072',
-              }}
-            >{`${row.topCategoryName}-${row.categoryName}`}</span>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Tag color={'magenta'}>{`${row.topCategoryName}-${row.categoryName}`}</Tag>
             <span>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</span>
           </div>
         </>
