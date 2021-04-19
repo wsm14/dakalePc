@@ -102,9 +102,9 @@ const CodeOrders = (props) => {
       align: 'center',
       dataIndex: 'createTime',
     },
-   
+
     {
-      title: '下单渠道',
+      title: '订单来源',
       align: 'center',
       dataIndex: 'orderSource',
     },

@@ -92,12 +92,12 @@ const ExpertUserList = (props) => {
       dataIndex: 'likeAmount',
       render: (val, record) => `${val || 0} || ${record.collectionAmount || 0}`,
     },
-    {
-      title: '带货成交量',
-      align: 'right',
-      dataIndex: 'goodsCount',
-      render: (val) => val || 0,
-    },
+    // {
+    //   title: '带货成交量',
+    //   align: 'right',
+    //   dataIndex: 'goodsCount',
+    //   render: (val) => val || 0,
+    // },
     // {
     //   title: '带货收益',
     //   align: 'right',

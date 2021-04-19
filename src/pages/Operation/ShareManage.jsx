@@ -207,7 +207,7 @@ const ShareManage = (props) => {
       dataIndex: 'goodsOrCouponName',
     },
     {
-      title: '发布时间',
+      title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
     },
