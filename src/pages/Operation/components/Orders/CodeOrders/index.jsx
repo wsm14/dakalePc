@@ -104,7 +104,7 @@ const CodeOrders = (props) => {
     },
 
     {
-      title: '订单来源',
+      title: '下单渠道',
       align: 'center',
       dataIndex: 'orderSource',
     },

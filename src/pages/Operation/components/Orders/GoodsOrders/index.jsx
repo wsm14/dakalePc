@@ -171,7 +171,7 @@ const GoodsOrders = (props) => {
         `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
-      title: '订单来源',
+      title: '下单渠道',
       align: 'center',
       dataIndex: 'orderSource',
     },
