@@ -272,6 +272,45 @@ const SpecialGoods = (props) => {
     },
   ];
 
+  // 下架
+  const fetchSpecialGoodsStatus = (payload) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsStatus',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 推荐状态 / 置顶状态
+  const fetchSpecialGoodsRecommend = (payload) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsRecommend',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 获取详情
+  const fetchSpecialGoodsDetail = (payload, type) => {
+    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = payload;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, merchantIdStr, type },
+      callback: (val) => {
+        const { status } = val;
+        const newProps = {
+          show: true,
+          detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
+        };
+        if (type == 'info') {
+          setVisibleInfo({ status, ...newProps });
+        } else {
+          setVisibleSet({ type, ...newProps });
+        }
+      },
+    });
+  };
+
   //导出列表
   const getExcelProps = {
     fieldNames: { key: 'key', headerName: 'header' },
@@ -309,48 +348,6 @@ const SpecialGoods = (props) => {
       { key: 'createTime', header: '创建时间' },
       { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
     ],
-  };
-
-  // 下架
-  const fetchSpecialGoodsStatus = (payload) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsStatus',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // 推荐状态 / 置顶状态
-  const fetchSpecialGoodsRecommend = (payload) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsRecommend',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // 获取详情
-  const fetchSpecialGoodsDetail = (payload, type) => {
-    const { specialGoodsId, merchantIdStr, merchantName, ownerType, status } = payload;
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { specialGoodsId, merchantIdStr, type },
-      callback: (val) => {
-        if (type == 'info') {
-          setVisibleInfo({
-            show: true,
-            status,
-            detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
-          });
-        } else {
-          setVisibleSet({
-            type,
-            show: true,
-            detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
-          });
-        }
-      },
-    });
   };
 
   return (
