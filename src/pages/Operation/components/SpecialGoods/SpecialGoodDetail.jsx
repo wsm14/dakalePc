@@ -17,11 +17,14 @@ const SpecialGoodDetail = (props) => {
     title: '活动详情',
     visible: show,
     onClose,
-    footer: (
-      <Button type="primary" onClick={handleEdit}>
-        编辑
-      </Button>
-    ),
+    footer:
+      status !== '0' ? (
+        <Button type="primary" onClick={handleEdit}>
+          编辑
+        </Button>
+      ) : (
+        ''
+      ),
   };
 
   return (
