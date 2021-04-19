@@ -21,6 +21,8 @@ const PreferentialSet = ({
   // 商品类型 goodsType 店铺范围 shopType
   const [radioData, setRadioData] = useState({ goodsType: 'single', shopType: '0' });
 
+  const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
+
   // 搜索店铺
   const fetchGetMre = debounce((merchantName) => {
     if (!merchantName) return;
@@ -115,13 +117,13 @@ const PreferentialSet = ({
       onChange: (e) => saveSelectData({ goodsType: e.target.value }),
     },
     {
-      label: `${GOODS_CLASS_TYPE[radioData.goodsType]}轮播图`,
+      label: `${goodsTypeName}轮播图`,
       name: 'activityGoodsImg',
       type: 'upload',
       maxFile: 5,
     },
     {
-      label: `${GOODS_CLASS_TYPE[radioData.goodsType]}名称`,
+      label: `${goodsTypeName}名称`,
       name: 'goodsName',
       maxLength: 30,
     },
@@ -132,7 +134,7 @@ const PreferentialSet = ({
     },
     {
       title: '设置商品价格',
-      label: `${GOODS_CLASS_TYPE[radioData.goodsType]}原价`,
+      label: `${goodsTypeName}原价`,
       name: 'oriPrice',
       type: 'number',
       precision: 2,
@@ -188,15 +190,15 @@ const PreferentialSet = ({
       ],
     },
     {
-      title: '设置商品介绍',
-      label: '套餐介绍',
+      title: `设置${goodsTypeName}介绍`,
+      label: `${goodsTypeName}介绍`,
       type: 'textArea',
       name: 'goodsDesc',
       rules: [{ required: false }],
       maxLength: 200,
     },
     {
-      label: '套餐图片',
+      label: `${goodsTypeName}图片`,
       name: 'goodsDescImg',
       type: 'upload',
       maxFile: 5,
