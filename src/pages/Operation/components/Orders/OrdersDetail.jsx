@@ -46,7 +46,9 @@ const MasterOrderDetail = ({ order, name, orderDetail, loading, dispatch }) => {
       <div className={styles.master_order_item}>
         <span className={styles.master_order_itemTitle}>优惠券：</span>
         <span className={styles.master_order_itemContent}>
-          {orderDetail.deductFee || 0}元抵扣券（-￥{orderDetail.deductFee || 0}）
+          {orderDetail.reduceFee
+            ? `${orderDetail.reduceFee}元抵扣券（-￥${orderDetail.reduceFee || 0}）`
+            : '--'}
         </span>
       </div>
       <div className={styles.master_order_item}>
