@@ -43,7 +43,7 @@ const SysAppSet = (props) => {
             jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),
             beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
-            endDate: time[1].format('YYYY-MM-DD 00:00:00'),
+            endDate: time[1].format('YYYY-MM-DD 23:59:59'),
           },
           callback: () => {
             onClose();
