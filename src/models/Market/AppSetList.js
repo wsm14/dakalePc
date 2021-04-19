@@ -5,7 +5,8 @@ import {
   fetchBannerDetail,
   fetchBannerRatio,
   fetchBannerSet,
-  fetchBannerStatusDel,
+  fetchBannerEdit,
+  fetchBannerStatus,
 } from '@/services/MarketServices';
 
 export default {
@@ -78,7 +79,7 @@ export default {
       });
     },
     *fetchBannerEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchBannerStatusDel, payload);
+      const response = yield call(fetchBannerEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -87,7 +88,7 @@ export default {
       callback();
     },
     *fetchBannerStatusDel({ payload, callback }, { call }) {
-      const response = yield call(fetchBannerStatusDel, payload);
+      const response = yield call(fetchBannerStatus, payload);
       if (!response) return;
       const { bannerStatus } = payload;
       notification.success({

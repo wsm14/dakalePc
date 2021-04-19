@@ -206,9 +206,17 @@ export function fetchBannerDetail(params) {
   });
 }
 
-// post 广告管理 - 下架/图片删除 修改
-export function fetchBannerStatusDel(data) {
+// post 广告管理 - 下架/图片 修改
+export function fetchBannerEdit(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 广告管理 - 下架/图片 下架删除
+export function fetchBannerStatus(data) {
+  return request('/admin/systemConfig/onOffOrDeleteBannerMarketPlatform', {
     method: 'POST',
     data,
   });
