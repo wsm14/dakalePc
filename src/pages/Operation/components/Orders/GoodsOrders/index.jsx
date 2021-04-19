@@ -125,7 +125,7 @@ const GoodsOrders = (props) => {
       dataIndex: 'goodsCount',
     },
     {
-      title: '用户支付金额',
+      title: '用户支付',
       align: 'right',
       dataIndex: 'payFee',
       render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
@@ -145,8 +145,8 @@ const GoodsOrders = (props) => {
     // },
     {
       title: '优惠券',
-      dataIndex: 'businessArea',
-      render: (val) => `--`,
+      dataIndex: 'reduceFee',
+      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
     },
     {
       title: '下单时间',
@@ -164,14 +164,14 @@ const GoodsOrders = (props) => {
       dataIndex: 'verificationCount',
     },
     {
-      title: '店铺实收总额',
+      title: '店铺实收',
       align: 'right',
       dataIndex: 'actualCashFee',
       render: (val, record) =>
         `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
-      title: '下单渠道',
+      title: '订单来源',
       align: 'center',
       dataIndex: 'orderSource',
     },

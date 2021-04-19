@@ -80,13 +80,13 @@ const CodeOrders = (props) => {
       dataIndex: 'merchantName',
     },
     {
-      title: '订单金额',
+      title: '用户支付',
       align: 'right',
       dataIndex: 'payFee',
       render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
     },
     {
-      title: '店铺实收总额',
+      title: '店铺实收',
       align: 'right',
       dataIndex: 'actualCashFee',
       render: (val, record) =>
@@ -94,11 +94,11 @@ const CodeOrders = (props) => {
     },
     {
       title: '优惠券',
-      dataIndex: 'businessArea',
-      render: (val) => `--`,
+      dataIndex: 'reduceFee',
+      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
     },
     {
-      title: '支付日期',
+      title: '支付时间',
       align: 'center',
       dataIndex: 'createTime',
     },
