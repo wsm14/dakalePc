@@ -50,7 +50,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
     {
       title: '【总】收益（卡豆）',
       align: 'right',
-      dataIndex: 'totalBean',
+      dataIndex: 'bean',
     },
   ];
 
