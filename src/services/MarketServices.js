@@ -332,4 +332,12 @@ export function fetchOpenAdvertEdit(data) {
   });
 }
 
+// post 开屏广告 - 上下架 删除
+export function fetchOpenAdvertStatus(data) {
+  return request('/admin/launchImage/onOffAppLaunchImage', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 开屏广告 end

@@ -111,12 +111,12 @@ const OpenAdvert = (props) => {
             {
               type: 'down',
               visible: record.onFlag === '1',
-              click: () => fetchOpenAdvertEdit({ appLaunchImageId, onFlag: 0 }),
+              click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
             },
             {
               type: 'del',
               visible: record.onFlag === '0',
-              click: () => fetchOpenAdvertEdit({ appLaunchImageId, deleteFlag: 0 }),
+              click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
             },
           ]}
         />
@@ -134,9 +134,9 @@ const OpenAdvert = (props) => {
   };
 
   // 下架 删除
-  const fetchOpenAdvertEdit = (payload) => {
+  const fetchOpenAdvertStatus = (payload) => {
     dispatch({
-      type: 'openAdvert/fetchOpenAdvertEdit',
+      type: 'openAdvert/fetchOpenAdvertStatus',
       payload,
       callback: childRef.current.fetchGetData,
     });

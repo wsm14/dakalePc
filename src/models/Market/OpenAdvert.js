@@ -4,6 +4,7 @@ import {
   fetchOpenAdvertList,
   fetchOpenAdvertSet,
   fetchOpenAdvertEdit,
+  fetchOpenAdvertStatus,
   fetchOpenAdvertDetail,
 } from '@/services/MarketServices';
 
@@ -52,6 +53,16 @@ export default {
       notification.success({
         message: '温馨提示',
         description: `开屏广告修改成功`,
+      });
+      callback();
+    },
+    *fetchOpenAdvertStatus({ payload, callback }, { call }) {
+      const { deleteFlag } = payload;
+      const response = yield call(fetchOpenAdvertStatus, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `开屏广告${deleteFlag === 0 ? '删除' : '设置'}成功`,
       });
       callback();
     },
