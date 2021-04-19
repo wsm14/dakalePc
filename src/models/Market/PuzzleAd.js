@@ -3,6 +3,7 @@ import moment from 'moment';
 import {
   fetchPuzzleAdList,
   fetchPuzzleAdSet,
+  fetchPuzzleAdStatus,
   fetchPuzzleAdDetail,
   fetchPuzzleAdRoot,
   fetchPuzzleAdRootSet,
@@ -39,9 +40,18 @@ export default {
         },
       });
     },
-    *fetchPuzzleAdSet({ payload, callback }, { call, put }) {
-      const { deleteFlag } = payload;
+    *fetchPuzzleAdSet({ payload, callback }, { call }) {
       const response = yield call(fetchPuzzleAdSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '拼图广告设置成功',
+      });
+      callback();
+    },
+    *fetchPuzzleAdStatus({ payload, callback }, { call }) {
+      const { deleteFlag } = payload;
+      const response = yield call(fetchPuzzleAdStatus, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

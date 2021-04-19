@@ -73,7 +73,7 @@ const PuzzleAd = (props) => {
             {
               type: 'down',
               visible: record.status === '1',
-              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 0 }),
+              click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, status: 0 }),
             },
             {
               type: 'info',
@@ -83,7 +83,7 @@ const PuzzleAd = (props) => {
             {
               type: 'up',
               visible: record.status === '0',
-              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 1 }),
+              click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, status: 1 }),
             },
             {
               type: 'edit',
@@ -93,7 +93,7 @@ const PuzzleAd = (props) => {
             {
               type: 'del',
               visible: record.status === '0',
-              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, deleteFlag: 0 }),
+              click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -101,15 +101,12 @@ const PuzzleAd = (props) => {
     },
   ];
 
-  // 新增修改
-  const fetchPuzzleAdSet = (payload, callback) => {
+  // 上下架 删除
+  const fetchPuzzleAdStatus = (payload) => {
     dispatch({
-      type: 'puzzleAd/fetchPuzzleAdSet',
+      type: 'puzzleAd/fetchPuzzleAdStatus',
       payload,
-      callback: () => {
-        callback && callback();
-        childRef.current.fetchGetData();
-      },
+      callback: childRef.current.fetchGetData(),
     });
   };
 
@@ -167,7 +164,6 @@ const PuzzleAd = (props) => {
       <PuzzleAdSet
         cRef={childRef}
         visible={visibleSet}
-        onSumbit={fetchPuzzleAdSet}
         onClose={() => setVisibleSet({ show: false, info: '' })}
       ></PuzzleAdSet>
       {/* 广告配置 */}

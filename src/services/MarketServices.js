@@ -282,6 +282,14 @@ export function fetchPuzzleAdSet(data) {
   });
 }
 
+// post 拼图广告 - 上下架，删除
+export function fetchPuzzleAdStatus(data) {
+  return request('/admin/puzzleAdsManagement/onOffOrDeletePuzzleAds', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 拼图广告 end
 
 // 开屏广告

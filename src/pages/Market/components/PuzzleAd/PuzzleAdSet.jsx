@@ -10,7 +10,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const PuzzleAdSet = (props) => {
-  const { visible, onSumbit, onClose, loadings, loading } = props;
+  const { visible, cRef, onClose, loadings, loading, dispatch } = props;
 
   const { type, show = false, info = '' } = visible;
   const [form] = Form.useForm();
@@ -34,8 +34,9 @@ const PuzzleAdSet = (props) => {
       setFileUpload(true);
       aliOssUpload(values[showType]).then((res) => {
         setFileUpload(false);
-        onSumbit(
-          {
+        dispatch({
+          type: 'puzzleAd/fetchPuzzleAdSet',
+          payload: {
             ...values,
             [showType]: res.toString(),
             jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
@@ -45,8 +46,11 @@ const PuzzleAdSet = (props) => {
             endShowTime: time[1].format('YYYY-MM-DD'),
             activeDate: undefined,
           },
-          onClose,
-        );
+          callback: () => {
+            onClose();
+            cRef.current.fetchGetData();
+          },
+        });
       });
     });
   };
