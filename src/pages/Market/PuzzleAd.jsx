@@ -106,7 +106,7 @@ const PuzzleAd = (props) => {
     dispatch({
       type: 'puzzleAd/fetchPuzzleAdStatus',
       payload,
-      callback: childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 
