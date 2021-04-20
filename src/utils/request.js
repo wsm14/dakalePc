@@ -36,7 +36,6 @@ const codeMessage = {
  */
 const errorHandler = (error) => {
   const { response } = error;
-  console.log(error);
   if (response && response.status !== 200) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
@@ -66,7 +65,6 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use(async (url, options) => {
-  console.log(url, options);
   let { data = {}, params = {}, method = 'get' } = options;
   switch (method) {
     case 'get':
@@ -79,7 +77,6 @@ request.interceptors.request.use(async (url, options) => {
 
   options = { ...options, data: JSON.stringify(data), params };
 
-  console.log(url, options);
   const headers = {
     'Content-Type': 'application/json;charset=utf-8',
     Accept: 'application/json',
