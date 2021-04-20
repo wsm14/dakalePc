@@ -28,7 +28,7 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
-  '5005': '用户身份失效请重新登录',
+  5005: '用户身份失效请重新登录',
 };
 
 /**
@@ -36,6 +36,7 @@ const codeMessage = {
  */
 const errorHandler = (error) => {
   const { response } = error;
+  console.log(error);
   if (response && response.status !== 200) {
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
@@ -65,6 +66,7 @@ const request = extend({
 
 // request拦截器, 改变url 或 options.
 request.interceptors.request.use(async (url, options) => {
+  console.log(url, options);
   let { data = {}, params = {}, method = 'get' } = options;
   switch (method) {
     case 'get':
@@ -77,6 +79,7 @@ request.interceptors.request.use(async (url, options) => {
 
   options = { ...options, data: JSON.stringify(data), params };
 
+  console.log(url, options);
   const headers = {
     'Content-Type': 'application/json;charset=utf-8',
     Accept: 'application/json',
