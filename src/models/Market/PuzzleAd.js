@@ -68,6 +68,7 @@ export default {
         startShowTime,
         endShowTime,
         jumpUrlType,
+        param,
         provinceCityDistrictObjects: cityData = [],
       } = content.puzzleAdsDTO;
       if (callback)
@@ -78,6 +79,7 @@ export default {
           provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
             city: [provinceCode, cityCode, districtCode].filter((i) => i),
           })),
+          param: JSON.parse(param || '{}'),
           activeDate: [moment(startShowTime, 'YYYY-MM-DD'), moment(endShowTime, 'YYYY-MM-DD')],
         });
     },

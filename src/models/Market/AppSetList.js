@@ -67,6 +67,7 @@ export default {
         jumpUrlType,
         beginDate,
         endDate,
+        param,
         provinceCityDistrictObjects: cityData = [],
       } = content.bannerDTO;
       callback({
@@ -75,6 +76,7 @@ export default {
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
         jumpUrlType: jumpUrlType ? jumpUrlType : '无',
+        param: JSON.parse(param || '{}'),
         beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },
