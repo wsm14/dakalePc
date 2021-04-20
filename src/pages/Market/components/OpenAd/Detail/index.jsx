@@ -35,7 +35,10 @@ const OpenAdForm = (props) => {
       show: detail.jumpUrlType !== '无',
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName, param = {} } = row;
-        return { H5: val, inside: `${nativeJumpName} - ${param.scenesName}` }[jumpUrlType];
+        return {
+          H5: val,
+          inside: `${nativeJumpName}${param.scenesName ? ' -' + param.scenesName : ''}`,
+        }[jumpUrlType];
       },
     },
   ];
