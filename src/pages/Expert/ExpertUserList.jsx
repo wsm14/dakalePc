@@ -159,7 +159,7 @@ const ExpertUserList = (props) => {
     dispatch({
       type: 'baseData/fetchHandleDetail',
       payload: {
-        type: 'unblock_kol,suspend_kol',
+        type: 'suspend_kol,unblock_kol,upgrade_user',
         identifyIdStr: id,
       },
       callback: (val) => setVisibleLog({ show: true, detail: { row, data: val } }),
