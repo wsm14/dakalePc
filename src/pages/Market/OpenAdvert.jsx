@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Space } from 'antd';
+import { Button, Space, Form } from 'antd';
 import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
@@ -13,6 +13,7 @@ const OpenAdvert = (props) => {
   const { openAdvert, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, detail: '' });
   const [tabKey, setTabKey] = useState('user');
 
@@ -147,6 +148,7 @@ const OpenAdvert = (props) => {
       <TableDataBlock
         keepData
         cRef={childRef}
+        searchForm={form}
         cardProps={{
           tabList: Object.keys(OPEN_ADVERT_PORT).map((key) => ({
             key,
@@ -166,6 +168,7 @@ const OpenAdvert = (props) => {
           ),
           onTabChange: (userType) => {
             setTabKey(userType);
+            form.resetFields();
             childRef.current.fetchGetData({ userType, page: 1 });
           },
         }}

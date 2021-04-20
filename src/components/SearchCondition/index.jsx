@@ -109,7 +109,7 @@ const SearchCondition = (props) => {
       const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
-      
+
       // 排版填充
       children.push(
         <Col
@@ -168,7 +168,7 @@ const SearchCondition = (props) => {
       className={styles.form}
       onFinish={handleSearchsOver}
     >
-      <Row gutter={[12, 0]} style={{ padding: '0 10px' }}>
+      <Row gutter={[12, 0]}>
         <Col flex={1}>
           <Row gutter={[12, 0]}>{getFields()}</Row>
         </Col>
