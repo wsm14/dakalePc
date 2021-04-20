@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, Form } from 'antd';
 import {
   BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
@@ -20,6 +20,7 @@ const SysAppSet = (props) => {
   const { sysAppList, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
   const [tabKey, setTabKey] = useState('user');
 
@@ -181,6 +182,7 @@ const SysAppSet = (props) => {
       <TableDataBlock
         keepData
         cRef={childRef}
+        searchForm={form}
         cardProps={{
           tabList: Object.keys(BANNER_PORT_TYPE).map((key) => ({
             key,
@@ -198,6 +200,7 @@ const SysAppSet = (props) => {
           ),
           onTabChange: (userType) => {
             setTabKey(userType);
+            form.resetFields();
             childRef.current.fetchGetData({ userType, page: 1 });
           },
         }}
