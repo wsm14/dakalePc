@@ -2,12 +2,12 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Tooltip } from 'antd';
 import {
-  BANNER_TYPE,
   BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
-  BANNER_SHOW_STATUS,
+  BANNER_PORT_LINK,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
+  BANNER_SHOW_STATUS,
 } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
@@ -23,7 +23,6 @@ const SysAppSet = (props) => {
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
   const [tabKey, setTabKey] = useState('user');
 
-
   useEffect(() => {
     fetchBannerRatio();
   }, []);
@@ -34,7 +33,7 @@ const SysAppSet = (props) => {
       label: '位置',
       name: 'bannerType',
       type: 'select',
-      select: BANNER_TYPE,
+      select: BANNER_PORT_LINK[tabKey],
     },
     {
       label: '状态',
@@ -72,7 +71,7 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) => (BANNER_TYPE[val] ? BANNER_TYPE[val] : '--'),
+      render: (val) => BANNER_PORT_LINK[tabKey][val],
     },
     {
       title: '可见范围',
