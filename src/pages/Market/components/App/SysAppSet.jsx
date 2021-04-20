@@ -80,6 +80,7 @@ const SysAppSet = (props) => {
       label: '可见范围',
       type: 'radio',
       name: 'visibleRange',
+      hidden: tabKey === 'merchant',
       select: BANNER_LOOK_AREA,
     },
     {

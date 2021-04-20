@@ -192,7 +192,9 @@ const SysAppSet = (props) => {
             <AuthConsumer auth="save">
               <Button
                 className="dkl_green_btn"
-                onClick={() => setVisibleSet({ show: true, type: 'add' })}
+                onClick={() =>
+                  setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } })
+                }
               >
                 新增
               </Button>
