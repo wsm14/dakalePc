@@ -29,6 +29,13 @@ const RefundOrder = (props) => {
       name: 'refundReason',
     },
     {
+      label: '区域',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
       label: '提交退款时间',
       type: 'rangePicker',
       name: 'submitRefundTimeStart',

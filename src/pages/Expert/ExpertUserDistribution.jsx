@@ -51,6 +51,13 @@ const ExpertUserDistribution = (props) => {
       name: 'goodsName',
     },
     {
+      label: '区域',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
       label: '付款时间',
       type: 'rangePicker',
       name: 'payTimeBegin',
