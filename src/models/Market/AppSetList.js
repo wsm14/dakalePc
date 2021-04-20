@@ -64,7 +64,7 @@ export default {
       if (!response) return;
       const { content } = response;
       const {
-        jumpType,
+        jumpUrlType,
         beginDate,
         endDate,
         provinceCityDistrictObjects: cityData = [],
@@ -74,7 +74,7 @@ export default {
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
-        jumpType: jumpType ? jumpType : '无',
+        jumpUrlType: jumpUrlType ? jumpUrlType : '无',
         beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },
