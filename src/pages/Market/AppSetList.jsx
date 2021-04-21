@@ -92,18 +92,17 @@ const SysAppSet = (props) => {
     {
       title: '跳转类型',
       align: 'center',
-      dataIndex: 'jumpType',
+      dataIndex: 'jumpUrlType',
       render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
     },
     {
-      title: '跳转链接',
+      title: '跳转内容',
       align: 'center',
       dataIndex: 'jumpUrl',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      render: (val, row) => {
+        const { jumpUrlType, nativeJumpName } = row;
+        return { H5: val, inside: nativeJumpName, '': '--' }[jumpUrlType];
+      },
     },
     {
       title: '展示时间',

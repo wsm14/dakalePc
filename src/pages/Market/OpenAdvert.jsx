@@ -72,7 +72,7 @@ const OpenAdvert = (props) => {
       dataIndex: 'jumpUrl',
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName } = row;
-        return { H5: val, inside: nativeJumpName, 无: '--' }[jumpUrlType];
+        return { H5: val, inside: nativeJumpName, '': '--' }[jumpUrlType];
       },
     },
     {

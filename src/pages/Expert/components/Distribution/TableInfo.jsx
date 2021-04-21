@@ -51,7 +51,7 @@ export const OrderInfo = ({ data }) => {
         </div>
         <div className={styles.footer}>
           <div>
-            <span>结算金额：</span>￥{Number(settlementFee).toFixed(2)}
+            <span>结算价：</span>￥{Number(settlementFee).toFixed(2)}
           </div>
           <div>
             <span>
