@@ -94,7 +94,7 @@ const ExpertUserDistribution = (props) => {
     {
       title: '订单信息',
       dataIndex: 'orderSn',
-      width: 460,
+      width: 480,
       render: (val, row) => <OrderInfo data={row}></OrderInfo>,
     },
     {

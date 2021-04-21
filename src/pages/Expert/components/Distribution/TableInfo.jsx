@@ -7,6 +7,7 @@ import {
 } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
+import coupon from './coupon.png';
 import styles from './style.less';
 
 // 订单信息
@@ -22,7 +23,9 @@ export const OrderInfo = ({ data }) => {
     orderStatus,
   } = data;
 
-  const imgShow = <PopImgShow url={goodsImg}></PopImgShow>;
+  const imgShow = (
+    <PopImgShow url={goodsImg || coupon} onClick={goodsImg ? null : () => {}}></PopImgShow>
+  );
 
   return (
     <div className={styles.orderInfo_box}>

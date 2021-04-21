@@ -102,7 +102,6 @@ const GoodsOrders = (props) => {
     },
     {
       title: '店铺名称',
-      align: 'center',
       dataIndex: 'merchantName',
       render: (val) => (
         <Ellipsis length={20} tooltip>

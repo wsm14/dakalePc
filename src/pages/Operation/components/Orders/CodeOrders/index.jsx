@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
+import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
@@ -76,8 +77,12 @@ const CodeOrders = (props) => {
     },
     {
       title: '店铺名称',
-      align: 'center',
       dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={20} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '用户支付',
