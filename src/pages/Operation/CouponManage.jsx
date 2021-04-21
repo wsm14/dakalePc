@@ -212,7 +212,7 @@ const CouponManageComponent = (props) => {
       { key: 'verifiedCount', header: '核销数量' },
       { key: 'createTime', header: '创建时间' },
       { key: 'updateTime', header: '发布时间' },
-      { key: 'status', header: '状态', render: (val) => COUPON_STATUS[val] },
+      { key: 'merchantCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },
     ],
   };
 
