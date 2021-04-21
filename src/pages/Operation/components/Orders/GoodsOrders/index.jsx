@@ -143,11 +143,6 @@ const GoodsOrders = (props) => {
     //     `￥${val}（含${record.beanCommission ? record.beanCommission : 0}卡豆）`,
     // },
     {
-      title: '优惠券',
-      dataIndex: 'reduceFee',
-      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
-    },
-    {
       title: '下单时间',
       align: 'center',
       dataIndex: 'createTime',

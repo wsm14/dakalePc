@@ -208,11 +208,8 @@ const CouponManageComponent = (props) => {
         },
       },
       { key: 'remain', header: '剩余数量' },
-      { key: 'total', header: '销量' }, 
-      {
-        key: 'verifiedCount',
-        header: '核销数量',
-      },
+      { key: 'total', header: '销量', render: (val, row) => val - row.remain },
+      { key: 'verifiedCount', header: '核销数量' },
       { key: 'createTime', header: '创建时间' },
       { key: 'updateTime', header: '发布时间' },
       { key: 'status', header: '状态', render: (val) => COUPON_STATUS[val] },

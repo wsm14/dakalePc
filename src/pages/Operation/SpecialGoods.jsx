@@ -238,6 +238,7 @@ const SpecialGoods = (props) => {
       dataIndex: 'specialGoodsId',
       align: 'right',
       fixed: 'right',
+      width: 100,
       render: (val, record) => {
         const { specialGoodsId, status } = record;
         return (
@@ -321,7 +322,7 @@ const SpecialGoods = (props) => {
       { key: 'merchantName', header: '店铺名称' },
       { key: 'oriPrice', header: '原价' },
       { key: 'realPrice', header: '特惠价格' },
-      { key: 'realPrice', header: '商家结算价' },
+      { key: 'merchantPrice', header: '商家结算价' },
       {
         key: 'useStartTime',
         header: '使用有效期',

@@ -252,7 +252,6 @@ const ShareManage = (props) => {
   return (
     <>
       <TableDataBlock
-        order
         keepData
         // btnExtra={
         //   <AuthConsumer auth="save">

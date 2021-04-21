@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Checkbox, Form, notification } from 'antd';
+import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import CouponDetail from './Detail/PreferentialDetail';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -17,7 +17,6 @@ const PreferentialDrawer = (props) => {
   const [formEdit] = Form.useForm();
   const [formRule] = Form.useForm(); // 数据表单
   const [formRuleAdd] = Form.useForm(); // 数据表单
-  const [treaty, setTreaty] = useState(false); // 是否同意协议
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 搜索店铺
@@ -59,13 +58,6 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - 新增 / 修改所有数据
   const handleUpData = () => {
     (type === 'add' ? formRuleAdd : formRule).validateFields().then((values) => {
-      if (!treaty) {
-        notification.info({
-          message: '温馨提示',
-          description: '请确认《商家营销协议》',
-        });
-        return;
-      }
       const { specialGoodsId, merchantIdStr } = detail;
       const { activityGoodsImg, goodsDescImg } = visibleRule.preData;
       const {
@@ -222,10 +214,6 @@ const PreferentialDrawer = (props) => {
       {drawerProps.children}
       <DrawerCondition {...ruleModalProps}>
         <PreferentialRuleSet form={formRuleAdd} initialValues={detail}></PreferentialRuleSet>
-        <div style={{ textAlign: 'center' }}>
-          <Checkbox onChange={(e) => setTreaty(e.target.checked)}>我已阅读并同意</Checkbox>
-          <a>《商家营销协议》</a>
-        </div>
       </DrawerCondition>
     </DrawerCondition>
   );
