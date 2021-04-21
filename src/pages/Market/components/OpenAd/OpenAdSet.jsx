@@ -56,7 +56,7 @@ const OpenAdSet = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       {type !== 'info' ? (
-        <OpenAdForm detail={detail} form={form} />
+        <OpenAdForm detail={detail} form={form} tabKey={tabKey} />
       ) : (
         <OpenAdDetail detail={detail} />
       )}

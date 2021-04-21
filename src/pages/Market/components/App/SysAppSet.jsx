@@ -104,7 +104,7 @@ const SysAppSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <JumpFormSet form={form} detail={detail}></JumpFormSet>,
+      formItem: <JumpFormSet form={form} detail={detail} port={tabKey}></JumpFormSet>,
     },
   ];
 

@@ -5,7 +5,7 @@ import { JumpFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const OpenAdForm = (props) => {
-  const { detail, form } = props;
+  const { detail, form, tabKey } = props;
 
   const formItems = [
     {
@@ -34,7 +34,7 @@ const OpenAdForm = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <JumpFormSet form={form} detail={detail}></JumpFormSet>,
+      formItem: <JumpFormSet form={form} detail={detail} port={tabKey}></JumpFormSet>,
     },
   ];
 
