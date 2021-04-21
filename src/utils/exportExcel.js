@@ -54,7 +54,7 @@ const exportExcel = ({
       const rowHeader = keys[headerName]; // 头
       const rowRender = fieldRender[keys[key]] || keys.render; // 值重置函数
       const rowRenderData = rowRender ? rowRender(tdData, row) : tdData;
-      newData[rowHeader] = typeof rowRenderData == 'string' ? rowRenderData : tdData; // 数据key映射
+      newData[rowHeader] = rowRenderData;
     });
     return newData;
   });
