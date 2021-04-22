@@ -2,24 +2,17 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import {
-  BANNER_TYPE,
-  BANNER_PORT_TYPE,
-  BANNER_JUMP_TYPE,
-  BANNER_AREA_TYPE,
-  BANNER_LOOK_AREA,
-} from '@/common/constant';
+import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
+import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import CitySelect from './CitySelect';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const SysAppSet = (props) => {
-  const { dispatch, cRef, visible, onClose, radioType, loading } = props;
+  const { dispatch, cRef, visible, onClose, tabKey, radioType, loading } = props;
 
   const { show = false, type = 'add', detail = { provinceCityDistrictObjects: [{}] } } = visible;
   const [form] = Form.useForm();
-  const [showUrl, setShowUrl] = useState(false); // 链接
   const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
 
@@ -29,7 +22,7 @@ const SysAppSet = (props) => {
       const {
         coverImg,
         beginDate: time,
-        jumpType,
+        jumpUrlType,
         provinceCityDistrictObjects: cityData = [],
       } = values;
       // 城市数据整理
@@ -45,11 +38,12 @@ const SysAppSet = (props) => {
           payload: {
             bannerId: detail.bannerIdString,
             ...values,
+            userType: tabKey,
             provinceCityDistrictObjects,
-            jumpType: jumpType === '无' ? '' : jumpType,
+            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),
             beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
-            endDate: time[1].format('YYYY-MM-DD 00:00:00'),
+            endDate: time[1].format('YYYY-MM-DD 23:59:59'),
           },
           callback: () => {
             onClose();
@@ -65,7 +59,7 @@ const SysAppSet = (props) => {
       label: '图片位置',
       type: 'select',
       name: 'bannerType',
-      select: BANNER_TYPE,
+      select: BANNER_PORT_LINK[tabKey],
       onChange: setShowRadio,
     },
     {
@@ -74,7 +68,7 @@ const SysAppSet = (props) => {
       name: 'coverImg',
       visible: showRadio,
       maxFile: 1,
-      imgRatio: radioType[showRadio],
+      imgRatio: radioType[tabKey][showRadio],
     },
     {
       label: '图片说明',
@@ -86,6 +80,7 @@ const SysAppSet = (props) => {
       label: '可见范围',
       type: 'radio',
       name: 'visibleRange',
+      hidden: tabKey === 'merchant',
       select: BANNER_LOOK_AREA,
     },
     {
@@ -99,7 +94,7 @@ const SysAppSet = (props) => {
       label: '选择区县',
       type: 'formItem',
       visible: showArea,
-      formItem: <CitySelect name="provinceCityDistrictObjects" form={form}></CitySelect>,
+      formItem: <CitySet name="provinceCityDistrictObjects" form={form} maxLength={10}></CitySet>,
     },
     {
       label: '展示时间',
@@ -108,16 +103,8 @@ const SysAppSet = (props) => {
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
-      label: '跳转类型',
-      type: 'select',
-      name: 'jumpType',
-      select: BANNER_JUMP_TYPE,
-      onChange: (value) => setShowUrl(value !== '无'),
-    },
-    {
-      label: '跳转链接',
-      visible: showUrl,
-      name: 'jumpUrl',
+      type: 'noForm',
+      formItem: <JumpFormSet form={form} detail={detail} port={tabKey}></JumpFormSet>,
     },
   ];
 
@@ -126,8 +113,7 @@ const SysAppSet = (props) => {
     visible: show,
     onClose,
     afterCallBack: () => {
-      setShowRadio(detail.bannerType);
-      setShowUrl(detail.jumpType === 'H5');
+      setShowRadio(!!detail.bannerType);
       setShowArea(detail.deliveryAreaType === 'detail');
     },
     footer: (

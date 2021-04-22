@@ -5,7 +5,8 @@ import {
   fetchBannerDetail,
   fetchBannerRatio,
   fetchBannerSet,
-  fetchBannerStatusDel,
+  fetchBannerEdit,
+  fetchBannerStatus,
 } from '@/services/MarketServices';
 
 export default {
@@ -14,7 +15,7 @@ export default {
   state: {
     list: [],
     total: 0,
-    radioType: {},
+    radioType: { user: {}, merchant: {}, weChat: {} },
   },
 
   reducers: {
@@ -45,9 +46,11 @@ export default {
       const { content } = response;
       let dataObj = {};
       content.banner.bannerPictureResolutionConfigs.forEach((item) => {
+        let newObj = {};
         item.pictureResolutionConfigs.forEach((it) => {
-          dataObj[it.bannerType] = it.height / it.width;
+          newObj[it.bannerType] = it.height / it.width;
         });
+        dataObj[item.terminalType] = newObj;
       });
       yield put({
         type: 'save',
@@ -61,9 +64,10 @@ export default {
       if (!response) return;
       const { content } = response;
       const {
-        jumpType,
+        jumpUrlType,
         beginDate,
         endDate,
+        param,
         provinceCityDistrictObjects: cityData = [],
       } = content.bannerDTO;
       callback({
@@ -71,12 +75,13 @@ export default {
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
-        jumpType: jumpType ? jumpType : '无',
+        jumpUrlType: jumpUrlType ? jumpUrlType : '无',
+        param: JSON.parse(param || '{}'),
         beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },
     *fetchBannerEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchBannerStatusDel, payload);
+      const response = yield call(fetchBannerEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
@@ -85,7 +90,7 @@ export default {
       callback();
     },
     *fetchBannerStatusDel({ payload, callback }, { call }) {
-      const response = yield call(fetchBannerStatusDel, payload);
+      const response = yield call(fetchBannerStatus, payload);
       if (!response) return;
       const { bannerStatus } = payload;
       notification.success({

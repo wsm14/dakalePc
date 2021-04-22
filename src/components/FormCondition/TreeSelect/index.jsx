@@ -5,7 +5,14 @@ import { delectProps } from '../utils';
 const { TreeNode } = TreeSelect;
 
 const TreeSelectBlock = (props) => {
-  const { label: plabel, select = [], placeholder, fieldNames = {}, onChange } = props;
+  const {
+    label: plabel,
+    select = [],
+    placeholder,
+    fieldNames = {},
+    showTitle = true,
+    onChange,
+  } = props;
 
   const {
     label = 'name',
@@ -16,16 +23,17 @@ const TreeSelectBlock = (props) => {
 
   const divProps = delectProps(props);
 
-  const mapTreeDom = (list) =>
+  const mapTreeDom = (list, pName) =>
     list.map((item) => (
       <TreeNode
         item={item}
         key={item[value]}
+        showName={`${pName} - ${item[label]}`}
         value={item[value]}
         title={item[label]}
         disabled={item[disabled] || (item[children] && item[children].length)}
       >
-        {item[children] && item[children].length && mapTreeDom(item[children])}
+        {item[children] && item[children].length && mapTreeDom(item[children], item[label])}
       </TreeNode>
     ));
 
@@ -35,6 +43,7 @@ const TreeSelectBlock = (props) => {
       placeholder={placeholder || `请选择${plabel}`}
       style={{ width: '100%' }}
       treeDefaultExpandAll
+      treeNodeLabelProp={showTitle ? 'showName' : 'title'}
       treeNodeFilterProp="title"
       onChange={(val, options, extra) => {
         console.log(val, options, extra);

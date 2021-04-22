@@ -114,7 +114,7 @@ export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 export const PUZZLE_AD_STATUS = ['下架', '上架'];
 
 // 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
-export const SHARE_STATUS = ['待审核', '审核通过', '审核拒绝', '下架', '删除', '分享完成'];
+export const SHARE_STATUS = [false, '已上架', false, '已下架', '已删除', '分享结束'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
@@ -255,29 +255,37 @@ export const ORDERS_TYPE = {
 // 平台收益订单类型
 export const PLATFORM_INCOME_ORDERS_TYPE = {
   scan: '扫码订单',
-  goods: '商品订单',
-  reduceCoupon: '抵扣券订单',
-  specialGoods: '特价商品订单',
-  marketCoupon: '兑换券订单',
-  kolGoods: '哒人带货订单',
+  writeOff: '核销订单',
 };
 
 // 账户激活状态
 export const WORKER_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
 
+// 开屏广告端口
+export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
+
 // Banner端口
 export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 
 // Banner类型
-export const BANNER_TYPE = {
-  main: '首页',
-  merchant: '到店打卡',
-  person: '个人',
-  merchantMain: '商家主页',
-  mainSpecial: '周边特惠首页',
-  surroundingSpecial: '周边特惠列表',
-  wanderAroundMainBanner: '逛逛主Banner',
-  wanderAroundCapsule: '逛逛胶囊位',
+export const BANNER_PORT_LINK = {
+  user: {
+    person: '个人',
+    hotWeal: '爆品福利',
+    wanderAroundMainBanner: '逛逛主Banner',
+    wanderAroundCapsule: '逛逛胶囊位',
+  },
+  weChat: {
+    person: '个人',
+    hotWeal: '爆品福利',
+    wanderAroundMainBanner: '逛逛主Banner',
+    wanderAroundCapsule: '逛逛胶囊位',
+  },
+  merchant: {
+    merchantMain: '商家工作台',
+  },
+  // mainSpecial: '周边特惠首页',
+  // surroundingSpecial: '周边特惠列表',
 };
 
 // Banner跳转类型
@@ -350,7 +358,7 @@ export const EXPRET_DISTRIBUTION_TYPE = {
 };
 
 // 哒人核销是否自购类型
-export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推', team: '团队' };
+export const EXPRET_DISTRIBUTION_OWN_TYPE = { self: '自购', share: '直推' };
 
 // 特惠活动 - 使用时间
 export const SPECIAL_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' };

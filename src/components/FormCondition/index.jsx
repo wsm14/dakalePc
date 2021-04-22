@@ -46,15 +46,7 @@ const FormComponents = ({
   const getFields = () => {
     const formItemArr = [];
     formItems.forEach((item, i) => {
-      const {
-        title = '',
-        label = '',
-        name = '',
-        type = 'input',
-        addRules,
-        visible = true,
-        valuePropName = 'value',
-      } = item;
+      const { title = '', label = '', name = '', type = 'input', addRules, visible = true } = item;
       // 标题
       if (title && visible) {
         formItemArr.push(
@@ -72,7 +64,14 @@ const FormComponents = ({
       let IFormItem = '';
       const placeholder = item.placeholder || `请输入${label}`;
       // 规则 默认必填
-      let rules = item.rules || [{ required: true, message: `请确认${label}` }];
+      let rules = item.rules || [{ required: type !== 'switch', message: `请确认${label}` }];
+
+      // switch 默认配置
+      let switchProps = {};
+      if (type === 'switch') {
+        switchProps = { normalize: (val) => Number(val), valuePropName: 'checked' };
+      }
+
       // 表单组件
       if (type === 'formItem') {
         rules = [{ required: false }];
@@ -89,10 +88,10 @@ const FormComponents = ({
       formItemArr.push(
         visible && (
           <FormItem
+            name={name}
             key={`${label}${name}${type}`}
             {...formProps}
-            name={name}
-            valuePropName={type === 'switch' ? 'checked' : valuePropName}
+            {...switchProps}
             rules={[...rules, ...(addRules || [])]}
           >
             {type === 'formItem' ? (

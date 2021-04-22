@@ -101,6 +101,15 @@ const GoodsOrders = (props) => {
       dataIndex: 'mobile',
     },
     {
+      title: '店铺名称',
+      dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={20} tooltip>
+          {val}
+        </Ellipsis>
+      ),
+    },
+    {
       title: '购买商品',
       dataIndex: 'goodsName',
       render: (val) => (
@@ -115,7 +124,7 @@ const GoodsOrders = (props) => {
       dataIndex: 'goodsCount',
     },
     {
-      title: '用户支付金额',
+      title: '用户支付',
       align: 'right',
       dataIndex: 'payFee',
       render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
@@ -134,31 +143,9 @@ const GoodsOrders = (props) => {
     //     `￥${val}（含${record.beanCommission ? record.beanCommission : 0}卡豆）`,
     // },
     {
-      title: '优惠券',
-      dataIndex: 'businessArea',
-      render: (val) => `--`,
-    },
-    {
       title: '下单时间',
       align: 'center',
       dataIndex: 'createTime',
-    },
-    {
-      title: '下单渠道',
-      align: 'center',
-      dataIndex: 'orderSource',
-    },
-    {
-      title: '核销数',
-      align: 'center',
-      dataIndex: 'verificationCount',
-    },
-    {
-      title: '店铺实收总额',
-      align: 'right',
-      dataIndex: 'actualCashFee',
-      render: (val, record) =>
-        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
       title: '核销时间',
@@ -166,14 +153,21 @@ const GoodsOrders = (props) => {
       dataIndex: 'verificationTime',
     },
     {
-      title: '店铺名称',
+      title: '核销数',
       align: 'center',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={20} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      dataIndex: 'verificationCount',
+    },
+    {
+      title: '店铺实收',
+      align: 'right',
+      dataIndex: 'actualCashFee',
+      render: (val, record) =>
+        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+    },
+    {
+      title: '下单渠道',
+      align: 'center',
+      dataIndex: 'orderSource',
     },
     {
       title: '区域',
@@ -181,6 +175,7 @@ const GoodsOrders = (props) => {
       dataIndex: 'provinceName',
       render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
+
     {
       title: '订单属性',
       align: 'center',

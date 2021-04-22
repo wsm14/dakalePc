@@ -14,6 +14,7 @@ import {
 } from '@/common/constant';
 import { NUM_INT_MAXSIX, NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
+import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const CouponSet = ({ form, loading, selectList, dispatch }) => {
@@ -60,7 +61,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '选择店铺类型',
       type: 'radio',
       name: 'ownerType',
-      select: BUSINESS_TYPE,
+      select: { merchant: '单店' },
       onChange: (e) => {
         saveSelectData({ shopType: '0' });
         saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
@@ -271,24 +272,19 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       visible: radioData.buyFlag === '1',
       type: 'switch',
       name: ['reduceObject', 'anytimeRefund'],
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       label: '是否允许过期退款',
       visible: radioData.buyFlag === '1',
       type: 'switch',
       name: ['reduceObject', 'expireRefund'],
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       title: '使用说明',
       label: '使用说明',
-      type: 'textArea',
       name: 'couponDesc',
-      rules: [{ required: false }],
-      maxLength: 200,
+      type: 'formItem',
+      formItem: <DescSet name={'couponDesc'}></DescSet>,
     },
   ];
 

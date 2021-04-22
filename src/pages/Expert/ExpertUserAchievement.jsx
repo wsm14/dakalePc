@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { EXPERT_USER_TYPE, EXPERT_TYPE } from '@/common/constant';
+import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
@@ -35,7 +35,7 @@ const ExpertUserAchievement = (props) => {
       label: '身份',
       name: 'levelKey',
       type: 'select',
-      select: EXPERT_TYPE,
+      select: EXPERT_LIST_TYPE,
     },
     {
       label: '状态',
@@ -54,7 +54,7 @@ const ExpertUserAchievement = (props) => {
     {
       title: '身份',
       dataIndex: 'levelKey',
-      render: (val) => EXPERT_TYPE[val],
+      render: (val) => EXPERT_LIST_TYPE[val],
     },
     {
       title: '级别',

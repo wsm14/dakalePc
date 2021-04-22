@@ -30,10 +30,12 @@ const ExpertUserDistribution = (props) => {
     {
       label: '推广者',
       name: 'promoter',
+      placeholder: '请输入推广者手机号',
     },
     {
       label: '买家',
       name: 'payer',
+      placeholder: '请输入买家手机号',
     },
     {
       label: '店铺',
@@ -47,6 +49,13 @@ const ExpertUserDistribution = (props) => {
     {
       label: '商品',
       name: 'goodsName',
+    },
+    {
+      label: '区域',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
       label: '付款时间',
@@ -85,7 +94,7 @@ const ExpertUserDistribution = (props) => {
     {
       title: '订单信息',
       dataIndex: 'orderSn',
-      width: 460,
+      width: 500,
       render: (val, row) => <OrderInfo data={row}></OrderInfo>,
     },
     {

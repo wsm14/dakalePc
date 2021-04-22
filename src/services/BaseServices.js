@@ -115,3 +115,10 @@ export function fetchGetKolLevel(params) {
     params,
   });
 }
+
+// get 可跳转app选项列表
+export function fetchGetJumpNative(params) {
+  return request('/admin/native/jump/listNativeJump', {
+    params,
+  });
+}

@@ -92,12 +92,12 @@ const ExpertUserList = (props) => {
       dataIndex: 'likeAmount',
       render: (val, record) => `${val || 0} || ${record.collectionAmount || 0}`,
     },
-    {
-      title: '带货成交量',
-      align: 'right',
-      dataIndex: 'goodsCount',
-      render: (val) => val || 0,
-    },
+    // {
+    //   title: '带货成交量',
+    //   align: 'right',
+    //   dataIndex: 'goodsCount',
+    //   render: (val) => val || 0,
+    // },
     // {
     //   title: '带货收益',
     //   align: 'right',
@@ -159,7 +159,7 @@ const ExpertUserList = (props) => {
     dispatch({
       type: 'baseData/fetchHandleDetail',
       payload: {
-        type: 'unblock_kol,suspend_kol',
+        type: 'suspend_kol,unblock_kol,upgrade_user',
         identifyIdStr: id,
       },
       callback: (val) => setVisibleLog({ show: true, detail: { row, data: val } }),

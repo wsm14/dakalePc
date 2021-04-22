@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { connect, useLocation } from 'umi';
+import { connect } from 'umi';
 import { Card, Statistic } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
@@ -7,11 +7,6 @@ import QuestionTooltip from '@/components/QuestionTooltip';
  * 用户数据统计
  */
 const UserChart = ({ dispatch, searchData = {}, totalData, loading }) => {
-  const loaction = useLocation();
-  const {
-    query: { bucket },
-  } = loaction;
-
   useEffect(() => {
     fetchChartBlockUser();
   }, [searchData]);
@@ -20,10 +15,7 @@ const UserChart = ({ dispatch, searchData = {}, totalData, loading }) => {
   const fetchChartBlockUser = () => {
     dispatch({
       type: 'chartBlock/fetchChartBlockUser',
-      payload: {
-        provinceCode: bucket,
-        ...searchData,
-      },
+      payload: searchData,
     });
   };
 

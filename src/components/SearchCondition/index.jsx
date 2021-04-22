@@ -28,8 +28,6 @@ const SearchCondition = (props) => {
   } = props;
 
   const [ownForm] = Form.useForm();
-  // 外部传递form优先
-  const searchForm = form || ownForm;
   // 动态获取当前屏幕大小
   const screens = useBreakpoint();
   // 展开状态
@@ -37,13 +35,13 @@ const SearchCondition = (props) => {
 
   // 重置
   const handleReset = () => {
-    searchForm.resetFields();
+    (form || ownForm).resetFields();
     if (resetSearch) resetSearch();
   };
 
   // 获取参数
   const getData = () => {
-    return handleSearchsOver(searchForm.getFieldsValue(), 'data');
+    return handleSearchsOver((form || ownForm).getFieldsValue(), 'data');
   };
 
   // 搜索
@@ -109,7 +107,7 @@ const SearchCondition = (props) => {
       const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
-      
+
       // 排版填充
       children.push(
         <Col
@@ -124,7 +122,7 @@ const SearchCondition = (props) => {
               label={label}
               name={name}
               {...other}
-              {...(handle && handle(searchForm))}
+              {...(handle && handle(form || ownForm))}
             ></SearchItem>
           </FormItem>
         </Col>,
@@ -161,14 +159,14 @@ const SearchCondition = (props) => {
 
   return (
     <Form
-      form={searchForm}
+      form={form || ownForm}
       initialValues={initialValues}
       size={componentSize}
       layout="horizontal"
       className={styles.form}
       onFinish={handleSearchsOver}
     >
-      <Row gutter={[12, 0]} style={{ padding: '0 10px' }}>
+      <Row gutter={[12, 0]}>
         <Col flex={1}>
           <Row gutter={[12, 0]}>{getFields()}</Row>
         </Col>

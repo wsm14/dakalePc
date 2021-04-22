@@ -18,33 +18,58 @@ const exportExcel = ({
   filterData = ['序号'],
 }) => {
   const { key = 'dataIndex', headerName = 'title' } = fieldNames;
+
+  // 逐级获取value
+  const getArrKeyVal = (rowkey, rowData) => {
+    const _len = rowkey.length;
+    let newVal = rowData;
+    for (let _key = 0; _key < _len; _key++) {
+      // 当数组key 获取值时某一层不存在时直接返回null
+      const valGet = newVal ? newVal[rowkey[_key]] : '';
+      newVal = valGet ? valGet : '';
+    }
+    return newVal;
+  };
+
+  // 获取参数值判断
+  const getRowVale = (rowkey, rowData) => {
+    // 参数名判断 若是数组则逐级获取参数
+    return Array.isArray(rowkey) ? getArrKeyVal(rowkey, rowData) : rowData[rowkey];
+  };
+
   // 过滤导出 header
   const newheader = header.filter((item) => !filterData.includes(item[headerName]));
+
   // 获取数据头部
   const headerObj = {};
   newheader.map((item) => {
     headerObj[item[headerName]] = item[headerName];
   });
+
   // 获取数据列表
   const dataList = data.map((row) => {
     const newData = {};
     newheader.map((keys) => {
-      const tdData = row[keys[key]]; // 值
+      const tdData = getRowVale(keys[key], row); // 值
       const rowHeader = keys[headerName]; // 头
       const rowRender = fieldRender[keys[key]] || keys.render; // 值重置函数
       const rowRenderData = rowRender ? rowRender(tdData, row) : tdData;
-      newData[rowHeader] = typeof rowRenderData == 'string' ? rowRenderData : tdData; // 数据key映射
+      newData[rowHeader] = rowRenderData;
     });
     return newData;
   });
+
   //创建book
   const wb = XLSX.utils.book_new();
+
   //json转sheet
   const ws = XLSX.utils.json_to_sheet([headerObj, ...dataList], {
     header: newheader.map((item) => item[headerName]),
     skipHeader: true,
   });
+
   const timestamp = new Date().toLocaleString();
+
   //sheet写入book
   XLSX.utils.book_append_sheet(wb, ws, 'file');
   //输出

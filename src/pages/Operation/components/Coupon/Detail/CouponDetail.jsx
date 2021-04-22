@@ -106,7 +106,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: '使用说明',
-      name: 'couponDesc',
+      name: 'couponDescString',
     },
     {
       label: '退款规则',

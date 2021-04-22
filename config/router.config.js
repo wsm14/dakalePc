@@ -183,7 +183,6 @@ export default [
         path: '/expert/distribution',
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
-        buttons: ['status', 'diary'],
       },
       // 财务管理
       {
@@ -256,6 +255,12 @@ export default [
         ],
       },
       {
+        path: '/market/openAd',
+        name: '开屏广告',
+        component: './Market/OpenAdvert',
+        buttons: ['save', 'del', 'edit', 'down', 'info'],
+      },
+      {
         path: '/market/appset',
         name: '广告管理',
         component: './Market/AppSetList',
@@ -314,7 +319,7 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus'],
+        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
       {
         path: '/operation/walking',

@@ -32,14 +32,9 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       dataIndex: 'scanBean',
     },
     {
-      title: '商品核销收益',
+      title: '核销收益',
       align: 'right',
-      dataIndex: 'goodsBean',
-    },
-    {
-      title: '优惠券核销收益',
-      align: 'right',
-      dataIndex: 'couponBean',
+      dataIndex: 'writeOffBean',
     },
     {
       title: '看分享收益',
@@ -50,7 +45,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
     {
       title: '【总】收益（卡豆）',
       align: 'right',
-      dataIndex: 'totalBean',
+      dataIndex: 'bean',
     },
   ];
 

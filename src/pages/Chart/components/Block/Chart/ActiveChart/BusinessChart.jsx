@@ -22,15 +22,16 @@ const BusinessChart = ({ dispatch, totalData, loading }) => {
   };
 
   return (
-    <Card bordered={false} loading={loading} bodyStyle={{ minHeight: 480 }}>
+    <Card bordered={false} loading={loading} bodyStyle={{ minHeight: 480 + 156 }}>
       <Typography.Title level={5}>店铺情况（截止昨日）</Typography.Title>
       {totalData.length ? (
-        <Bar
-          data={totalData}
-          height={379 + 50}
-          meta={{ type: { alias: '类型' }, count: { alias: '数量' } }}
-          xyField={{ xField: 'count', yField: 'type' }}
-        />
+        <div style={{ height: 379 + 137 }}>
+          <Bar
+            data={totalData}
+            meta={{ type: { alias: '类型' }, count: { alias: '数量' } }}
+            xyField={{ xField: 'count', yField: 'type' }}
+          />
+        </div>
       ) : (
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}

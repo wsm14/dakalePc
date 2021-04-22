@@ -7,8 +7,8 @@ import {
   SHARE_SEX_TYPE,
   SHARE_AGE_TYPE,
 } from '@/common/constant';
+import { CitySet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
-import CitySelect from './PutInSet/CitySelect';
 
 /**
  * 投放设置
@@ -50,13 +50,13 @@ const SharePutInSet = (props) => {
       type: 'formItem',
       visible: ['city', 'district'].includes(areaType),
       formItem: (
-        <CitySelect
+        <CitySet
           name="cityList"
           form={form}
           areaType={areaType}
           // 后端选择省时要所有市级code 省市数据分开字段 需要自己整理
           setCityData={(option) => option.length === 1 && saveExtraStorage('city', option)}
-        ></CitySelect>
+        ></CitySet>
       ),
     },
     {

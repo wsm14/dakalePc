@@ -30,17 +30,23 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
   );
 
   // 哒人带货分佣说明
-  const kolformulaDom = (
-    <>
-      <br />
-      哒人分佣=哒人带货利润*90%*哒人等级收益比例
-      <br />
-      哒人家主分佣=哒人带货利润*5%（无家主时分摊到平台）
-      <br />
-      <div style={{ lineHeight: 1.5, whiteSpace: 'pre-line' }}>
-        {`哒人等级收益比例：\nLV0——45%\nLV1——50%\nLV2——55%\nLV3——60%\nLV4——65%\nLV5——70%\nLV6——75%\nLV7——80%\nLV8——90%`}
-      </div>
-    </>
+  const kolFormDom = () => (
+    <div style={{ lineHeight: 2.5 }}>
+      <div>商品佣金=用户实付-店铺实收</div>
+      <span style={{ color: '#00000069' }}>
+        区县分佣=商品佣金*34%*20%
+        <br />
+        省公司分佣=商品佣金*34%*5%
+        <br />
+        用户家主分佣=商品佣金*34%*10%（无家主时分摊到平台）
+        <br />
+        店铺家主分佣=商品佣金*34%*5%（无家主时分摊到平台）
+        <br />
+        推广者分佣=商品佣金*推广者等级分佣比例
+        <br />
+        豆长团队分佣=商品佣金*豆长团队分佣比例
+      </span>
+    </div>
   );
 
   // 订单详情配置
@@ -51,6 +57,13 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
       merchantName: false,
       titleKey: 'merchantName',
       formulaDom,
+    },
+    writeOff: {
+      type: '核销订单',
+      icon: <ShoppingOutlined />,
+      merchantName: true,
+      titleKey: 'goodsName',
+      kolFormDom,
     },
     goods: {
       type: '商品核销',
@@ -63,21 +76,21 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
       icon: <ShoppingOutlined />,
       merchantName: true,
       titleKey: 'goodsName',
-      formulaDom,
+      kolFormDom,
     },
     kolGoods: {
       type: '哒人带货订单',
       icon: <ShoppingOutlined />,
       merchantName: true,
       titleKey: 'goodsName',
-      formulaDom: () => formulaDom('服务费=店铺实收*服务费比例', kolformulaDom),
+      kolFormDom,
     },
     reduceCoupon: {
       type: '抵扣券核销',
       icon: <AccountBookOutlined />,
       merchantName: true,
       titleKey: 'couponName',
-      formulaDom,
+      kolFormDom,
     },
     marketCoupon: {
       type: '兑换券订单',
@@ -102,7 +115,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         {detailProps.merchantName && (
           <div className={styles.income_order_name}>{detail.merchantName}</div>
         )}
-        <div className={styles.income_order_title}>{detail[detailProps.titleKey]}</div>
+        <div className={styles.income_order_title}>
+          {detail.couponName || detail[detailProps.titleKey]}
+        </div>
         <div className={styles.income_order_Total}>
           平台佣金
           <label className={styles.income_order_num}>
@@ -113,24 +128,38 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         </div>
         <span className={styles.income_order_tip}>
           {/* 哒人带货商品显示字段 */}
-          {type === 'kolGoods'
-            ? '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣+哒人带货利润-哒人分佣-哒人家主分佣'
+          {type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff'
+            ? '平台佣金=商品佣金-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
             : '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
       </div>
       <div className={styles.income_order_detail}>
-        <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
-        <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
-        {/* 哒人带货商品显示字段 */}
-        {type === 'kolGoods' && (
+        {/* 哒人带货,优惠券商品显示字段 */}
+        {(type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff') && (
           <>
-            <div className={styles.detail_item}>
-              哒人带货利润：￥{detail.kolGoodsProfitBean / 100}
-            </div>
-            <div className={styles.detail_item}>哒人等级：Lv {Number(detail.kolLevel) - 1}</div>
+            <div className={styles.detail_item}>用户实付：￥{detail.payFee || 0}</div>
+            <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
+            <div className={styles.detail_item}>商品佣金：￥{detail.totalCommission || 0}</div>
           </>
         )}
-        <div className={styles.detail_item}>店铺服务费：{detail.merchantServiceBean || 0}卡豆</div>
+        {type !== 'kolGoods' &&
+          type !== 'reduceCoupon' &&
+          type !== 'specialGoods' &&
+          type !== 'writeOff' && (
+            <>
+              <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
+              <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
+              <div className={styles.detail_item}>
+                店铺服务费：{detail.merchantServiceBean || 0}卡豆
+              </div>
+            </>
+          )}
         <div className={styles.detail_item_class}>
           区县分佣：{detail.partnerProfitBean || 0}卡豆
         </div>
@@ -143,19 +172,35 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         <div className={styles.detail_item_class}>
           店铺家主分佣：{detail.merchantParentProfitBean || 0}卡豆
         </div>
-        {/* 哒人带货商品显示字段 */}
-        {type === 'kolGoods' && (
+        {/* 哒人带货,优惠券商品显示字段 */}
+        {(type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff') && (
           <>
-            <div className={styles.detail_item}>哒人分佣：{detail.kolProfitBean || 0}卡豆</div>
-            <div className={styles.detail_item}>
-              哒人家主分佣：{detail.kolParentProfitBean || 0}卡豆
+            <div className={styles.detail_item_class}>
+              哒人带货分佣：{detail.kolProfitBean || 0}卡豆 （分佣比例：{detail.kolProfitProportion}
+              ）
+            </div>
+            <div className={styles.detail_item_class}>
+              豆长团队分佣：{detail.teamProfitBean || 0}卡豆 (分佣比例：
+              {detail.teamProfitProportion})
             </div>
           </>
         )}
         <div className={styles.detail_item_formula}>
-          <Popover content={detailProps.formulaDom()} placement="left">
-            <a>查看计算公式</a>
-          </Popover>
+          {type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff' ? (
+            <Popover content={detailProps.kolFormDom()} placement="left">
+              <a>查看计算公式</a>
+            </Popover>
+          ) : (
+            <Popover content={detailProps.formulaDom()} placement="left">
+              <a>查看计算公式</a>
+            </Popover>
+          )}
         </div>
       </div>
       <div className={styles.income_order_bottom}>

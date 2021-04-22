@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
+import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
@@ -75,13 +76,22 @@ const CodeOrders = (props) => {
       dataIndex: 'mobile',
     },
     {
-      title: '订单金额',
+      title: '店铺名称',
+      dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={20} tooltip>
+          {val}
+        </Ellipsis>
+      ),
+    },
+    {
+      title: '用户支付',
       align: 'right',
       dataIndex: 'payFee',
       render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
     },
     {
-      title: '店铺实收总额',
+      title: '店铺实收',
       align: 'right',
       dataIndex: 'actualCashFee',
       render: (val, record) =>
@@ -89,18 +99,19 @@ const CodeOrders = (props) => {
     },
     {
       title: '优惠券',
-      dataIndex: 'businessArea',
-      render: (val) => `--`,
+      dataIndex: 'reduceFee',
+      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
     },
     {
-      title: '支付日期',
+      title: '支付时间',
       align: 'center',
       dataIndex: 'createTime',
     },
+
     {
-      title: '店铺名称',
+      title: '下单渠道',
       align: 'center',
-      dataIndex: 'merchantName',
+      dataIndex: 'orderSource',
     },
     {
       title: '区域',

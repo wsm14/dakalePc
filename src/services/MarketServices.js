@@ -206,9 +206,17 @@ export function fetchBannerDetail(params) {
   });
 }
 
-// post 广告管理 - 下架/图片删除 修改
-export function fetchBannerStatusDel(data) {
+// post 广告管理 - 下架/图片 修改
+export function fetchBannerEdit(data) {
   return request('/admin/systemConfig/updateBannerMarketPlatform', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 广告管理 - 下架/图片 下架删除
+export function fetchBannerStatus(data) {
+  return request('/admin/systemConfig/onOffOrDeleteBannerMarketPlatform', {
     method: 'POST',
     data,
   });
@@ -282,4 +290,54 @@ export function fetchPuzzleAdSet(data) {
   });
 }
 
+// post 拼图广告 - 上下架，删除
+export function fetchPuzzleAdStatus(data) {
+  return request('/admin/puzzleAdsManagement/onOffOrDeletePuzzleAds', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 拼图广告 end
+
+// 开屏广告
+
+// get 开屏广告 - 列表
+export function fetchOpenAdvertList(params) {
+  return request('/admin/launchImage/listAppLaunchImage', {
+    params,
+  });
+}
+
+// get 开屏广告 - 详情
+export function fetchOpenAdvertDetail(params) {
+  return request('/admin/launchImage/getAppLaunchImage', {
+    params,
+  });
+}
+
+// post 开屏广告 - 添加
+export function fetchOpenAdvertSet(data) {
+  return request('/admin/launchImage/saveLaunchImage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 开屏广告 - 更新
+export function fetchOpenAdvertEdit(data) {
+  return request('/admin/launchImage/updateAppLaunchImage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 开屏广告 - 上下架 删除
+export function fetchOpenAdvertStatus(data) {
+  return request('/admin/launchImage/onOffAppLaunchImage', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 开屏广告 end

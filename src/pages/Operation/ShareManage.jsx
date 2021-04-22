@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Tag } from 'antd';
 import { MreSelect } from '@/components/MerchantDataTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import QuestionTooltip from '@/components/QuestionTooltip';
@@ -13,6 +12,7 @@ import ShareDetail from './components/Share/ShareDetail';
 import ShareHandleDetail from './components/Share/ShareHandleDetail';
 import ShareVideoDetail from './components/Share/ShareVideoDetail';
 import ShareDrawer from './components/Share/ShareDrawer';
+import Ellipsis from '@/components/Ellipsis';
 import styles from './style.less';
 
 const ShareManage = (props) => {
@@ -62,6 +62,14 @@ const ShareManage = (props) => {
   // 搜索参数
   const searchItems = [
     {
+      label: '分享标题',
+      name: 'title',
+    },
+    {
+      label: '集团/店铺名称',
+      name: 'merchantName',
+    },
+    {
       label: '创建时间',
       type: 'rangePicker',
       name: 'beginDate',
@@ -72,10 +80,6 @@ const ShareManage = (props) => {
       type: 'select',
       name: 'status',
       select: SHARE_STATUS,
-    },
-    {
-      label: '分享标题',
-      name: 'title',
     },
     {
       label: '分享类型',
@@ -89,10 +93,6 @@ const ShareManage = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-    {
-      label: '集团/店铺名称',
-      name: 'merchantName',
     },
     {
       label: '店铺类型',
@@ -115,40 +115,48 @@ const ShareManage = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '视频',
+      title: '视频/标题',
       fixed: 'left',
       dataIndex: 'frontImage',
-      render: (val, detail) => <PopImgShow url={val}></PopImgShow>,
+      width: 280,
+      render: (val, detail) => (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div>
+            <PopImgShow url={val}></PopImgShow>
+          </div>
+          <div style={{ marginLeft: '15px' }}>
+            <Ellipsis length={10} tooltip lines={3}>
+              {detail.title}
+            </Ellipsis>
+          </div>
+        </div>
+      ),
     },
     {
-      title: '标题',
-      dataIndex: 'title',
-      width: 150,
-    },
-    {
-      title: '店铺类型',
+      title: '店铺/集团',
       dataIndex: 'userType',
-      render: (val) => BUSINESS_TYPE[val],
+      width: 300,
+      render: (val, row) => (
+        <>
+          <div style={{ display: 'flex' }}>
+            <Tag>{BUSINESS_TYPE[val]}</Tag>
+            <Ellipsis length={10} tooltip>
+              {row.merchantName}
+            </Ellipsis>
+          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Tag color={'magenta'}>{`${row.topCategoryName}-${row.categoryName}`}</Tag>
+            <span>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</span>
+          </div>
+        </>
+      ),
     },
     {
-      title: '店铺/集团名称',
-      align: 'center',
-      dataIndex: 'merchantName',
-      width: 200,
-      render: (val, row) =>
-        row.userType === 'merchant' ? val : <a onClick={() => setVisibleMre(true)}>{val}</a>,
-    },
-    {
-      title: '地区',
-      align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val || ''} ${row.cityName || ''} ${row.districtName || ''}`,
-    },
-    {
-      title: '行业',
-      align: 'center',
-      dataIndex: 'topCategoryName',
-      render: (val, row) => `${val}/${row.categoryName}`,
+      title: '单次打赏卡豆数',
+      align: 'right',
+      dataIndex: 'beanAmount',
+      render: (val = 0, row) => Math.round(val + (row.exposureBeanAmount || 0)),
+      sorter: (a, b) => a.beanAmount - b.beanAmount,
     },
     {
       title: (
@@ -160,53 +168,48 @@ const ShareManage = (props) => {
       ),
       align: 'right',
       dataIndex: 'viewAmount',
+      sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
     {
       title: '领卡豆人数（人）',
       align: 'right',
       dataIndex: 'payedPersonAmount',
+      sorter: (a, b) => a.payedPersonAmount - b.payedPersonAmount,
     },
-    {
-      title: '单次打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      render: (val = 0, row) => Math.round(val + (row.exposureBeanAmount || 0)),
-    },
+
     {
       title: '累计打赏卡豆数',
       align: 'right',
       dataIndex: 'exposureBeanAmount',
       render: (val = 0, row) => Math.round((val + (row.beanAmount || 0)) * row.payedPersonAmount),
+      sorter: (a, b) =>
+        (a.exposureBeanAmount + (a.beanAmount || 0)) * a.payedPersonAmount -
+        (b.exposureBeanAmount + (b.beanAmount || 0)) * b.payedPersonAmount,
     },
     {
       title: '剩余卡豆数',
       align: 'right',
-      dataIndex: 'payedPersonAmount',
+      dataIndex: 'beanPersonAmount',
       render: (val = 0, row) =>
         Math.round(
           ((row.beanAmount || 0) + (row.exposureBeanAmount || 0)) *
-            ((row.beanPersonAmount || 0) - val),
+            ((row.beanPersonAmount || 0) - row.payedPersonAmount || 0),
         ),
+      sorter: (a, b) =>
+        ((a.beanAmount || 0) + (a.exposureBeanAmount || 0)) *
+          ((a.beanPersonAmount || 0) - (a.payedPersonAmount || 0)) -
+        ((b.beanAmount || 0) + (b.exposureBeanAmount || 0)) *
+          ((b.beanPersonAmount || 0) - (b.payedPersonAmount || 0)),
     },
-    // {
-    //   title: 'ID',
-    //   align: 'center',
-    //   dataIndex: 'userMomentIdString',
-    // },
-    {
-      title: '更新时间',
-      align: 'center',
-      dataIndex: 'updateTime',
-    },
-    // {
-    //   title: '更新人',
-    //   align: 'center',
-    //   dataIndex: 'adminOperatorName',
-    // },
     {
       title: '关联券/商品',
       align: 'right',
       dataIndex: 'goodsOrCouponName',
+    },
+    {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
     },
     {
       title: '状态',
@@ -235,10 +238,6 @@ const ShareManage = (props) => {
                 type: 'info', // 详情
                 click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
               },
-              // {
-              //   type: 'signDetail', // 打卡明细
-              //   click: () => fetchShareHandleDetail(userMomentIdString),
-              // },
               {
                 type: 'handleDeatil', // 操作记录
                 click: () => fetchShareHandleDetail(userMomentIdString),
@@ -253,7 +252,6 @@ const ShareManage = (props) => {
   return (
     <>
       <TableDataBlock
-        order
         keepData
         // btnExtra={
         //   <AuthConsumer auth="save">

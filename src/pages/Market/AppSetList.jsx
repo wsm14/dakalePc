@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, Form } from 'antd';
 import {
-  BANNER_TYPE,
-  BANNER_SHOW_STATUS,
+  BANNER_LOOK_AREA,
+  BANNER_PORT_TYPE,
+  BANNER_PORT_LINK,
   BANNER_JUMP_TYPE,
   BANNER_AREA_TYPE,
+  BANNER_SHOW_STATUS,
 } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
@@ -18,7 +20,9 @@ const SysAppSet = (props) => {
   const { sysAppList, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [form] = Form.useForm();
   const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
+  const [tabKey, setTabKey] = useState('user');
 
   useEffect(() => {
     fetchBannerRatio();
@@ -30,7 +34,7 @@ const SysAppSet = (props) => {
       label: '位置',
       name: 'bannerType',
       type: 'select',
-      select: BANNER_TYPE,
+      select: BANNER_PORT_LINK[tabKey],
     },
     {
       label: '状态',
@@ -68,7 +72,12 @@ const SysAppSet = (props) => {
       title: '位置',
       align: 'center',
       dataIndex: 'bannerType',
-      render: (val) => (BANNER_TYPE[val] ? BANNER_TYPE[val] : '--'),
+      render: (val) => BANNER_PORT_LINK[tabKey][val],
+    },
+    {
+      title: '可见范围',
+      dataIndex: 'visibleRange',
+      render: (val) => BANNER_LOOK_AREA[val],
     },
     {
       title: '投放区域',
@@ -83,21 +92,26 @@ const SysAppSet = (props) => {
     {
       title: '跳转类型',
       align: 'center',
-      dataIndex: 'jumpType',
+      dataIndex: 'jumpUrlType',
       render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
     },
     {
-      title: '跳转链接',
+      title: '跳转内容',
       align: 'center',
       dataIndex: 'jumpUrl',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      render: (val, row) => {
+        const { jumpUrlType, nativeJumpName } = row;
+        return { H5: val, inside: nativeJumpName, '': '--' }[jumpUrlType];
+      },
     },
     {
       title: '展示时间',
+      align: 'center',
+      dataIndex: 'beginDate',
+      render: (val, record) => `${val} ~ ${record.endDate}`,
+    },
+    {
+      title: '创建时间',
       align: 'center',
       dataIndex: 'beginDate',
       render: (val, record) => `${val} ~ ${record.endDate}`,
@@ -167,16 +181,31 @@ const SysAppSet = (props) => {
       <TableDataBlock
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleSet({ show: true, type: 'add' })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        searchForm={form}
+        cardProps={{
+          tabList: Object.keys(BANNER_PORT_TYPE).map((key) => ({
+            key,
+            tab: BANNER_PORT_TYPE[key],
+          })),
+          tabBarExtraContent: (
+            <AuthConsumer auth="save">
+              <Button
+                className="dkl_green_btn"
+                onClick={() =>
+                  setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } })
+                }
+              >
+                新增
+              </Button>
+            </AuthConsumer>
+          ),
+          onTabChange: (userType) => {
+            setTabKey(userType);
+            form.resetFields();
+            childRef.current.fetchGetData({ userType, page: 1 });
+          },
+        }}
+        params={{ userType: tabKey }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -185,6 +214,7 @@ const SysAppSet = (props) => {
         {...sysAppList}
       ></TableDataBlock>
       <SysAppSetForm
+        tabKey={tabKey}
         cRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}

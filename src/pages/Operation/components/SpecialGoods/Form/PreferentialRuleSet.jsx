@@ -9,8 +9,8 @@ import {
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
+import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
-import GoodsDescSet from '../GoodsDescSet';
 
 const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
   const [radioData, setRadioData] = useState({
@@ -162,29 +162,23 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       label: '是否需要预约购买',
       type: 'switch',
       name: 'needOrder',
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       label: '购买须知',
       name: 'buyDesc',
       type: 'formItem',
-      formItem: <GoodsDescSet keyName={'buyDesc'}></GoodsDescSet>,
+      formItem: <DescSet name={'buyDesc'}></DescSet>,
     },
     {
       title: '设置退款规则',
       label: '是否允许随时退款',
       type: 'switch',
       name: 'allowRefund',
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
     {
       label: '是否允许过期退款',
       type: 'switch',
       name: 'allowExpireRefund',
-      normalize: (val) => Number(val),
-      rules: [{ required: false }],
     },
   ];
 
