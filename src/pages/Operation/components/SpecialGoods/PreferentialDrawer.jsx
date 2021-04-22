@@ -203,7 +203,6 @@ const PreferentialDrawer = (props) => {
   const ruleModalProps = {
     title: '规则设置',
     visible: visibleRule.show,
-    destroyOnClose: false,
     afterCallBack: () => fetchGetMre(),
     onClose: () => {
       setSaveData(formRuleAdd.getFieldsValue());

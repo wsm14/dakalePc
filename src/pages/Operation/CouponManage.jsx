@@ -185,7 +185,7 @@ const CouponManageComponent = (props) => {
       { key: 'couponName', header: '券名称' },
       { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
       { key: 'ownerName', header: '店铺/集团名称' },
-      { key: ['reduceObject', 'couponPrice'], header: '券价值', render: (val) => val.couponPrice },
+      { key: ['reduceObject', 'couponPrice'], header: '券价值' },
       { key: 'buyPrice', header: '售卖价' },
       {
         key: ['reduceObject', 'thresholdPrice'],
