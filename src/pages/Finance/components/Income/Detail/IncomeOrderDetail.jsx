@@ -58,6 +58,13 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
       titleKey: 'merchantName',
       formulaDom,
     },
+    writeOff: {
+      type: '核销订单',
+      icon: <ShoppingOutlined />,
+      merchantName: true,
+      titleKey: 'goodsName',
+      kolFormDom,
+    },
     goods: {
       type: '商品核销',
       icon: <ShoppingOutlined />,
@@ -119,30 +126,38 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         </div>
         <span className={styles.income_order_tip}>
           {/* 哒人带货商品显示字段 */}
-          {type === 'kolGoods' || type === 'reduceCoupon' || type === 'specialGoods'
+          {type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff'
             ? '平台佣金=商品佣金-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
             : '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
       </div>
       <div className={styles.income_order_detail}>
         {/* 哒人带货,优惠券商品显示字段 */}
-        {(type === 'kolGoods' || type === 'reduceCoupon' || type === 'specialGoods') && (
+        {(type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff') && (
           <>
             <div className={styles.detail_item}>用户实付：￥{detail.payFee || 0}</div>
             <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
             <div className={styles.detail_item}>商品佣金：￥{detail.totalCommission || 0}</div>
           </>
         )}
-        {type !== 'kolGoods' && type !== 'reduceCoupon' && type !== 'specialGoods' && (
-          <>
-            <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
-            <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
-            <div className={styles.detail_item}>
-              店铺服务费：{detail.merchantServiceBean || 0}卡豆
-            </div>
-          </>
-        )}
-
+        {type !== 'kolGoods' &&
+          type !== 'reduceCoupon' &&
+          type !== 'specialGoods' &&
+          type !== 'writeOff' && (
+            <>
+              <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
+              <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
+              <div className={styles.detail_item}>
+                店铺服务费：{detail.merchantServiceBean || 0}卡豆
+              </div>
+            </>
+          )}
         <div className={styles.detail_item_class}>
           区县分佣：{detail.partnerProfitBean || 0}卡豆
         </div>
@@ -156,7 +171,10 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           店铺家主分佣：{detail.merchantParentProfitBean || 0}卡豆
         </div>
         {/* 哒人带货,优惠券商品显示字段 */}
-        {(type === 'kolGoods' || type === 'reduceCoupon' || type === 'specialGoods') && (
+        {(type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff') && (
           <>
             <div className={styles.detail_item_class}>
               哒人带货分佣：{detail.kolProfitBean || 0}卡豆 （分佣比例：{detail.kolProfitProportion}
@@ -169,7 +187,10 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           </>
         )}
         <div className={styles.detail_item_formula}>
-          {type === 'kolGoods' || type === 'reduceCoupon' || type === 'specialGoods' ? (
+          {type === 'kolGoods' ||
+          type === 'reduceCoupon' ||
+          type === 'specialGoods' ||
+          type === 'writeOff' ? (
             <Popover content={detailProps.kolFormDom()} placement="left">
               <a>查看计算公式</a>
             </Popover>

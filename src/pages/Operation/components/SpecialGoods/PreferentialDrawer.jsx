@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
+import Html5Simulate from '@/components/Html5Simulate';
 import CouponDetail from './Detail/PreferentialDetail';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PreferentialSet from './Form/PreferentialSet';
@@ -217,15 +218,18 @@ const PreferentialDrawer = (props) => {
   };
 
   return (
-    <DrawerCondition {...modalProps}>
-      {drawerProps.children}
-      <DrawerCondition {...ruleModalProps}>
-        <PreferentialRuleSet
-          form={formRuleAdd}
-          initialValues={saveData || detail}
-        ></PreferentialRuleSet>
+    <>
+      <DrawerCondition {...modalProps}>
+        {drawerProps.children}
+        <DrawerCondition {...ruleModalProps}>
+          <PreferentialRuleSet
+            form={formRuleAdd}
+            initialValues={saveData || detail}
+          ></PreferentialRuleSet>
+        </DrawerCondition>
       </DrawerCondition>
-    </DrawerCondition>
+      {/* <Html5Simulate show={show}></Html5Simulate> */}
+    </>
   );
 };
 

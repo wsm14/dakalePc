@@ -255,11 +255,7 @@ export const ORDERS_TYPE = {
 // 平台收益订单类型
 export const PLATFORM_INCOME_ORDERS_TYPE = {
   scan: '扫码订单',
-  goods: '商品订单',
-  reduceCoupon: '抵扣券订单',
-  specialGoods: '特价商品订单',
-  marketCoupon: '兑换券订单',
-  kolGoods: '哒人带货订单',
+  writeOff: '核销订单',
 };
 
 // 账户激活状态

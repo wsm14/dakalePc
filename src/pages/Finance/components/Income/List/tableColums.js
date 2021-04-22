@@ -32,14 +32,9 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       dataIndex: 'scanBean',
     },
     {
-      title: '商品核销收益',
+      title: '核销收益',
       align: 'right',
-      dataIndex: 'goodsBean',
-    },
-    {
-      title: '优惠券核销收益',
-      align: 'right',
-      dataIndex: 'couponBean',
+      dataIndex: 'writeOffBean',
     },
     {
       title: '看分享收益',
