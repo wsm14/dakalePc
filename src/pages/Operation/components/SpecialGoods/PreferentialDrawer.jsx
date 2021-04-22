@@ -176,7 +176,10 @@ const PreferentialDrawer = (props) => {
     visible: show,
     onClose,
     afterCallBack: () => fetchGetMre(),
-    closeCallBack: () => dispatch({ type: 'businessList/close' }), // 关闭清空搜索的商家数据
+    closeCallBack: () => {
+      dispatch({ type: 'businessList/close' });
+      setSaveData(null);
+    }, // 关闭清空搜索的商家数据
     footer: {
       add: (
         <Button onClick={handleUpAudit} type="primary">
