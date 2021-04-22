@@ -115,7 +115,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         {detailProps.merchantName && (
           <div className={styles.income_order_name}>{detail.merchantName}</div>
         )}
-        <div className={styles.income_order_title}>{detail[detailProps.titleKey]}</div>
+        <div className={styles.income_order_title}>
+          {detail.couponName || detail[detailProps.titleKey]}
+        </div>
         <div className={styles.income_order_Total}>
           平台佣金
           <label className={styles.income_order_num}>
