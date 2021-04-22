@@ -17,6 +17,7 @@ const PreferentialDrawer = (props) => {
   const [formEdit] = Form.useForm();
   const [formRule] = Form.useForm(); // 数据表单
   const [formRuleAdd] = Form.useForm(); // 数据表单
+  const [saveData, setSaveData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 搜索店铺
@@ -199,8 +200,12 @@ const PreferentialDrawer = (props) => {
   const ruleModalProps = {
     title: '规则设置',
     visible: visibleRule.show,
+    destroyOnClose: false,
     afterCallBack: () => fetchGetMre(),
-    onClose: () => setVisibleRule(false),
+    onClose: () => {
+      setSaveData(formRuleAdd.getFieldsValue());
+      setVisibleRule(false);
+    },
     maskShow: false,
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>
@@ -213,7 +218,10 @@ const PreferentialDrawer = (props) => {
     <DrawerCondition {...modalProps}>
       {drawerProps.children}
       <DrawerCondition {...ruleModalProps}>
-        <PreferentialRuleSet form={formRuleAdd} initialValues={detail}></PreferentialRuleSet>
+        <PreferentialRuleSet
+          form={formRuleAdd}
+          initialValues={saveData || detail}
+        ></PreferentialRuleSet>
       </DrawerCondition>
     </DrawerCondition>
   );
