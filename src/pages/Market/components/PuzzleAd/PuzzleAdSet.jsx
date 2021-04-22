@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { PUZZLE_AD_TYPE } from '@/common/constant';
+import { PUZZLE_AD_TYPE, BANNER_AREA_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
+import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const PuzzleAdSet = (props) => {
-  const { visible, onSumbit, onClose, loadings, loading } = props;
+  const { visible, cRef, onClose, loadings, loading, dispatch } = props;
 
   const { type, show = false, info = '' } = visible;
   const [form] = Form.useForm();
@@ -17,26 +18,39 @@ const PuzzleAdSet = (props) => {
   const [showType, setShowType] = useState(false);
   // 上传确认按钮loading
   const [fileUpload, setFileUpload] = useState(false);
+  const [showArea, setShowArea] = useState(false); // 区域
 
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { activeDate: time } = values;
+      const { activeDate: time, provinceCityDistrictObjects: cityData = [], jumpUrlType } = values;
+      // 城市数据整理
+      const provinceCityDistrictObjects = cityData.map(({ city }) => ({
+        provinceCode: city[0],
+        cityCode: city[1],
+        districtCode: city[2],
+      }));
       // 上传图片到oss -> 提交表单
       setFileUpload(true);
       aliOssUpload(values[showType]).then((res) => {
         setFileUpload(false);
-        onSumbit(
-          {
+        dispatch({
+          type: 'puzzleAd/fetchPuzzleAdSet',
+          payload: {
             ...values,
             [showType]: res.toString(),
+            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
+            provinceCityDistrictObjects,
             puzzleAdsId: info.puzzleAdsId,
             startShowTime: time[0].format('YYYY-MM-DD'),
             endShowTime: time[1].format('YYYY-MM-DD'),
             activeDate: undefined,
           },
-          onClose,
-        );
+          callback: () => {
+            onClose();
+            cRef.current.fetchGetData();
+          },
+        });
       });
     });
   };
@@ -87,6 +101,55 @@ const PuzzleAdSet = (props) => {
       label: '品牌名',
       name: 'brandName',
     },
+    {
+      label: '应用范围',
+      type: 'radio',
+      name: 'deliveryAreaType',
+      show: false,
+      select: BANNER_AREA_TYPE,
+      onChange: (e) => setShowArea(e.target.value === 'detail'),
+    },
+    {
+      label: '选择区县',
+      type: 'formItem',
+      show: false,
+      visible: showArea,
+      formItem: <CitySet name="provinceCityDistrictObjects" form={form} maxLength={10}></CitySet>,
+    },
+    {
+      type: 'noForm',
+      show: false,
+      formItem: <JumpFormSet form={form} detail={info}></JumpFormSet>,
+    },
+    {
+      label: '跳转事件',
+      name: 'jumpUrlType',
+      visible: false,
+      render: (val) => BANNER_JUMP_TYPE[val],
+    },
+    {
+      label: '跳转内容',
+      name: 'jumpUrl',
+      visible: false,
+      show: info.jumpUrlType !== '无',
+      render: (val, row) => {
+        const { jumpUrlType, nativeJumpName, param = {} } = row;
+        return {
+          H5: val,
+          inside: `${nativeJumpName}${param.scenesName ? ' -' + param.scenesName : ''}`,
+        }[jumpUrlType];
+      },
+    },
+    {
+      label: '投放区域',
+      name: 'deliveryAreaType',
+      visible: false,
+      render: (val, row) =>
+        ({
+          all: BANNER_AREA_TYPE[val],
+          detail: row.deliveryAreaNameStr,
+        }[val]),
+    },
   ];
 
   const closeDrawer = () => {
@@ -100,7 +163,10 @@ const PuzzleAdSet = (props) => {
     visible: show,
     loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,
-    afterCallBack: () => setShowType(info.type),
+    afterCallBack: () => {
+      setShowType(info.type);
+      setShowArea(info.deliveryAreaType === 'detail');
+    },
     footer:
       type !== 'info' ? (
         <Button onClick={fetchGetFormData} type="primary" loading={loading || fileUpload}>

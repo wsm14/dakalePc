@@ -7,6 +7,7 @@ import {
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
+  fetchSpecialGoodsImport
 } from '@/services/OperationServices';
 
 export default {
@@ -58,7 +59,7 @@ export default {
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
       let newDetail = {};
-      if (type === 'edit') {
+      if (type === 'edit' || type==='info') {
         newDetail = {
           activityStartTime: [moment(activityStartTime), moment(activityEndTime)],
           useStartTime: [moment(useStartTime), moment(useEndTime)],
@@ -75,7 +76,7 @@ export default {
         ...content.specialGoodsInfo,
         ...newDetail,
         merchantId,
-        buyDesc: JSON.parse(buyDesc),
+        buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
         allowRefund: Number(allowRefund),
         allowExpireRefund: Number(allowExpireRefund),
         needOrder: Number(needOrder),
@@ -122,5 +123,12 @@ export default {
       });
       callback();
     },
+    *fetchSpecialGoodsImport({ payload, callback }, { call }){
+      const response = yield call(fetchSpecialGoodsImport, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.specialGoodsList);
+
+    }
   },
 };

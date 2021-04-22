@@ -167,7 +167,7 @@ const TableBlockComponent = (props) => {
       )}
       {searchItems && (
         <SearchCondition
-          searchForm={searchForm}
+          form={searchForm}
           resetSearch={resetSearch}
           componentSize={size}
           searchItems={searchItems}

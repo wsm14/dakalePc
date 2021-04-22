@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag, Button } from 'antd';
+import { Tag, Button, Space } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -9,14 +9,16 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import Ellipsis from '@/components/Ellipsis';
+import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
+import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -26,6 +28,7 @@ const SpecialGoods = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
+  const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -42,6 +45,14 @@ const SpecialGoods = (props) => {
 
   // 搜索参数
   const searchItems = [
+    {
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
+      label: '集团/店铺名',
+      name: 'groupOrMerchantName',
+    },
     {
       label: '活动状态',
       name: 'status',
@@ -76,18 +87,10 @@ const SpecialGoods = (props) => {
       end: 'useEndTime',
     },
     {
-      label: '集团/店铺名称',
-      name: 'groupOrMerchantName',
-    },
-    {
       label: '推广位置',
       type: 'select',
       name: 'promotionLocation',
       select: search_recommend,
-    },
-    {
-      label: '活动商品名称',
-      name: 'goodsName',
     },
     {
       label: '区域',
@@ -111,6 +114,12 @@ const SpecialGoods = (props) => {
       name: 'ownerType',
       type: 'select',
       select: BUSINESS_TYPE,
+    },
+    {
+      label: '创建时间',
+      type: 'rangePicker',
+      name: 'createStartTime',
+      end: 'createEndTime',
     },
   ];
 
@@ -229,11 +238,16 @@ const SpecialGoods = (props) => {
       dataIndex: 'specialGoodsId',
       align: 'right',
       fixed: 'right',
+      width: 100,
       render: (val, record) => {
         const { specialGoodsId, status } = record;
         return (
           <HandleSetTable
             formItems={[
+              {
+                type: 'info',
+                click: () => fetchSpecialGoodsDetail(record, 'info'),
+              },
               {
                 type: 'down',
                 visible: status !== '0',
@@ -283,39 +297,95 @@ const SpecialGoods = (props) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, merchantIdStr, type },
-      callback: (val) =>
-        setVisibleSet({
-          type,
+      callback: (val) => {
+        const { status } = val;
+        const newProps = {
           show: true,
           detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
-        }),
+        };
+        if (type == 'info') {
+          setVisibleInfo({ status, ...newProps });
+        } else {
+          setVisibleSet({ type, ...newProps });
+        }
+      },
     });
+  };
+
+  //导出列表
+  const getExcelProps = {
+    fieldNames: { key: 'key', headerName: 'header' },
+    header: [
+      { key: 'goodsType', header: '商品类型', render: (val) => GOODS_CLASS_TYPE[val] },
+      { key: 'goodsName', header: '商品名称' },
+      { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
+      { key: 'merchantName', header: '店铺名称' },
+      { key: 'oriPrice', header: '原价' },
+      { key: 'realPrice', header: '特惠价格' },
+      { key: 'merchantPrice', header: '商家结算价' },
+      {
+        key: 'useStartTime',
+        header: '使用有效期',
+        render: (val, row) => {
+          const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+          if (!useTimeRule) return '';
+          if (useTimeRule === 'fixed') {
+            return useStartTime + '~' + useEndTime;
+          } else {
+            if (delayDays === '0') {
+              return `领取后立即生效\n有效期${activeDays}天`;
+            }
+            return `领取后${delayDays}天生效\n有效期${activeDays}天`;
+          }
+        },
+      },
+      { key: 'total', header: '投放总量' },
+      { key: 'remain', header: '剩余数量' },
+      { key: 'soldGoodsCount', header: '销量' },
+      {
+        key: 'writeOffGoodsCount',
+        header: '核销数量',
+      },
+      { key: 'createTime', header: '创建时间' },
+      { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
+    ],
   };
 
   return (
     <>
       <TableDataBlock
         keepData
-        cRef={childRef}
-        btnExtra={
+        btnExtra={({ get }) => (
           <>
-            <SpecialRecommendMenu
-              num={goodsList.length}
-              handleRecommend={(val) =>
-                fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
-              }
-              disabled={!goodsList.length}
-            ></SpecialRecommendMenu>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => setVisibleSet({ type: 'add', show: true })}
-              >
-                新增
-              </Button>
-            </AuthConsumer>
+            <ExcelButton
+              dispatchType={'specialGoods/fetchSpecialGoodsImport'}
+              dispatchData={get()}
+              exportProps={getExcelProps}
+            ></ExcelButton>
           </>
-        }
+        )}
+        cardProps={{
+          extra: (
+            <Space>
+              <AuthConsumer auth="save">
+                <Button
+                  className="dkl_green_btn"
+                  onClick={() => setVisibleSet({ type: 'add', show: true })}
+                >
+                  新增
+                </Button>
+              </AuthConsumer>
+              <SpecialRecommendMenu
+                num={goodsList.length}
+                handleRecommend={(val) =>
+                  fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
+                }
+                disabled={!goodsList.length}
+              ></SpecialRecommendMenu>
+            </Space>
+          ),
+        }}
+        cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -335,6 +405,18 @@ const SpecialGoods = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></PreferentialDrawer>
+      {/* 详情 */}
+      <SpecialGoodDetail
+        visible={visibleInfo}
+        onEdit={() =>
+          setVisibleSet({
+            type: [false, 'active', 'edit'][visibleInfo.status],
+            show: true,
+            detail: visibleInfo ? visibleInfo.detail : {},
+          })
+        }
+        onClose={() => setVisibleInfo(false)}
+      ></SpecialGoodDetail>
     </>
   );
 };

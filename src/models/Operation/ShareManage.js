@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import cityJson from '@/common/cityJson';
+import { SHARE_AREA_TYPE } from '@/common/constant';
 import {
   fetchShareList,
   fetchShareGetFreeCoupon,
@@ -66,18 +67,21 @@ export default {
       const response = yield call(fetchShareDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { area } = content.userMoments;
+      const { area, areaType } = content.userMoments;
       const newObj = {
         ...content.userMoments,
         videoContent: JSON.parse(content.userMoments.videoContent),
-        area: (area ? area.split(',') : [])
-          .map((item) => {
-            const cityIndex = cityJson.findIndex((city) => city.id === item);
-            if (cityIndex > -1) {
-              return cityJson[cityIndex].name;
-            }
-          })
-          .toString(),
+        area:
+          areaType !== 'all'
+            ? (area ? area.split(',') : [])
+                .map((item) => {
+                  const cityIndex = cityJson.findIndex((city) => city.id === item);
+                  if (cityIndex > -1) {
+                    return cityJson[cityIndex].name;
+                  }
+                })
+                .toString()
+            : SHARE_AREA_TYPE[areaType],
       };
       callback(newObj);
     },

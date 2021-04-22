@@ -14,7 +14,16 @@ const CouponDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
-      const { activeDate, restrictions, timeSplit, timeType, useWeek, useTime, ...other } = values;
+      const {
+        activeDate,
+        restrictions,
+        couponDesc = [],
+        timeSplit,
+        timeType,
+        useWeek,
+        useTime,
+        ...other
+      } = values;
       dispatch({
         type: 'couponManage/fetchCouponSave',
         payload: {
@@ -23,6 +32,7 @@ const CouponDrawer = (props) => {
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
           useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
+          couponDesc: couponDesc.filter((i) => i),
           useTime:
             timeType !== 'part'
               ? timeType

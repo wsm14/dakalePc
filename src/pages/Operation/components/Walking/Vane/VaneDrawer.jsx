@@ -70,7 +70,6 @@ const VaneDrawer = (props) => {
       label: '显示气泡',
       type: 'switch',
       name: 'bubbleFlag',
-      rules: [{ required: false }],
       onChange: setShowPop,
       show: false,
     },

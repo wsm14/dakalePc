@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS } from '@/common/constant';
+import { Button, Tooltip } from 'antd';
+import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -42,6 +41,16 @@ const PuzzleAd = (props) => {
       dataIndex: 'description',
     },
     {
+      title: '投放区域',
+      align: 'center',
+      dataIndex: 'deliveryAreaType',
+      render: (val, row) =>
+        ({
+          all: BANNER_AREA_TYPE[val],
+          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
+        }[val]),
+    },
+    {
       title: '展示时间',
       align: 'center',
       dataIndex: 'startShowTime',
@@ -64,7 +73,7 @@ const PuzzleAd = (props) => {
             {
               type: 'down',
               visible: record.status === '1',
-              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 0 }),
+              click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, status: 0 }),
             },
             {
               type: 'info',
@@ -74,7 +83,7 @@ const PuzzleAd = (props) => {
             {
               type: 'up',
               visible: record.status === '0',
-              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, status: 1 }),
+              click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, status: 1 }),
             },
             {
               type: 'edit',
@@ -84,7 +93,7 @@ const PuzzleAd = (props) => {
             {
               type: 'del',
               visible: record.status === '0',
-              click: () => fetchPuzzleAdSet({ puzzleAdsId: val, deleteFlag: 0 }),
+              click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, deleteFlag: 0 }),
             },
           ]}
         />
@@ -92,26 +101,25 @@ const PuzzleAd = (props) => {
     },
   ];
 
-  // 新增修改
-  const fetchPuzzleAdSet = (payload, callback) => {
+  // 上下架 删除
+  const fetchPuzzleAdStatus = (payload) => {
     dispatch({
-      type: 'puzzleAd/fetchPuzzleAdSet',
+      type: 'puzzleAd/fetchPuzzleAdStatus',
       payload,
-      callback: () => {
-        callback && callback();
-        childRef.current.fetchGetData();
-      },
+      callback: childRef.current.fetchGetData,
     });
   };
 
   // 详情
-  const fetchDetail = (type, puzzleAdsId) => {
+  const fetchDetail = (type, puzzleAdsId, row) => {
+    const { deliveryAreaNameStr } = row;
     dispatch({
       type: 'puzzleAd/fetchPuzzleAdDetail',
       payload: {
         puzzleAdsId,
       },
-      callback: (info) => setVisibleSet({ type, show: true, info }),
+      callback: (info) =>
+        setVisibleSet({ type, show: true, info: { ...info, deliveryAreaNameStr } }),
     });
   };
 
@@ -156,7 +164,6 @@ const PuzzleAd = (props) => {
       <PuzzleAdSet
         cRef={childRef}
         visible={visibleSet}
-        onSumbit={fetchPuzzleAdSet}
         onClose={() => setVisibleSet({ show: false, info: '' })}
       ></PuzzleAdSet>
       {/* 广告配置 */}

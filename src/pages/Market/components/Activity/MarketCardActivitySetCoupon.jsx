@@ -69,14 +69,12 @@ const MarketCardActivitySetCoupon = (props) => {
       label: '关联到店打卡',
       type: 'switch',
       name: 'mark',
-      rules: [],
       render: () => couponIndexOf('mark'),
     },
     {
       label: '关联看分享',
       type: 'switch',
       name: 'moment',
-      rules: [],
       render: () => couponIndexOf('moment'),
     },
   ];

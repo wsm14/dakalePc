@@ -39,4 +39,7 @@ export {
   select as Select,
   upload as Upload,
   checkbox as Checkbox,
+  radio as Radio,
+  input as Input,
+  treeSelect as TreeSelect,
 };
