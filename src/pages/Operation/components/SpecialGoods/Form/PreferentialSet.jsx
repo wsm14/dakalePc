@@ -14,6 +14,7 @@ const PreferentialSet = ({
   selectList,
   dispatch,
   initialValues = {},
+  onValuesChange,
 }) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
@@ -212,6 +213,7 @@ const PreferentialSet = ({
         form={form}
         formItems={formItems}
         initialValues={initialValues}
+        onValuesChange={(changedValues, allValues) => onValuesChange(allValues)}
       ></FormCondition>
       <MreSelect
         keys={mreList.keys}

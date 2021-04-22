@@ -15,6 +15,8 @@ const Html5Simulate = ({ show, right = 650, children }) => {
           zIndex: 10000,
           boxShadow: '-1px 2px 3px #585858',
           borderRadius: 3,
+          wordWrap: 'break-word',
+          overflowY: 'auto',
         }}
       >
         {children}
