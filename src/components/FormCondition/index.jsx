@@ -34,6 +34,7 @@ const FormComponents = ({
   initialValues = {},
   formItemLayouts = {},
   children,
+  ...other
 }) => {
   useEffect(() => {
     form && form.setFieldsValue(initialValues);
@@ -119,6 +120,7 @@ const FormComponents = ({
       {...formItemLayout}
       {...formItemLayouts}
       scrollToFirstError={true}
+      {...other}
     >
       {formItems.length ? getFields() : ''}
       {children}
