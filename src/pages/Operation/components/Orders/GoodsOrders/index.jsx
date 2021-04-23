@@ -211,7 +211,10 @@ const GoodsOrders = (props) => {
         <ExcelButton
           dispatchType={'ordersList/fetchOrdersImport'}
           dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
-          exportProps={{ header: getColumns.slice(0, -1) }}
+          exportProps={{
+            header: getColumns.slice(0, -1),
+            fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
+          }}
         ></ExcelButton>
       )}
       noCard={false}
