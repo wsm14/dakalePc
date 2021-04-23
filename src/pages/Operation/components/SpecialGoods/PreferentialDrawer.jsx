@@ -19,6 +19,7 @@ const PreferentialDrawer = (props) => {
   const [formRule] = Form.useForm(); // 数据表单
   const [formRuleAdd] = Form.useForm(); // 数据表单
   const [saveData, setSaveData] = useState(null);
+  const [showHtmlData, setShowHtmlData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 搜索店铺
@@ -150,6 +151,7 @@ const PreferentialDrawer = (props) => {
             goodsType: 'single',
             packageGoodsObjects: [{}],
           }}
+          onValuesChange={setShowHtmlData}
         ></PreferentialSet>
       ),
     },
@@ -228,7 +230,9 @@ const PreferentialDrawer = (props) => {
           ></PreferentialRuleSet>
         </DrawerCondition>
       </DrawerCondition>
-      {/* <Html5Simulate show={show}></Html5Simulate> */}
+      {/* <Html5Simulate show={show}>
+        <div>{JSON.stringify(showHtmlData)}</div>
+      </Html5Simulate> */}
     </>
   );
 };

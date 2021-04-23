@@ -14,6 +14,7 @@ import {
   PieChartOutlined,
   BoxPlotOutlined,
   DollarOutlined,
+  ClusterOutlined,
 } from '@ant-design/icons';
 
 const iconEnum = {
@@ -23,6 +24,7 @@ const iconEnum = {
   operation: <BoxPlotOutlined />,
   user: <UserOutlined />,
   business: <ShopOutlined />,
+  base: <ClusterOutlined />,
   market: <SmileOutlined />,
   circle: <UserSwitchOutlined />,
   account: <SolutionOutlined />,
