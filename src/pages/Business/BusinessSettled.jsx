@@ -208,7 +208,10 @@ const BusinessSettled = (props) => {
         <ExcelButton
           dispatchType={'businessSettled/fetchMerchantGetExcel'}
           dispatchData={get()}
-          exportProps={{ header: getColumns.slice(0, -1) }}
+          exportProps={{
+            header: getColumns.slice(0, -1),
+            fieldRender: { merchantName: (val) => val, address: (val) => val },
+          }}
         ></ExcelButton>
       )}
       params={{ sortField: '1' }}
