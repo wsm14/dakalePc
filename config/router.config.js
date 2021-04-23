@@ -41,7 +41,7 @@ export default [
       //     },
       //   ],
       // },
-      // 账户管理
+      // 账户管理 account
       {
         path: '/account/user',
         name: '用户账户',
@@ -60,7 +60,7 @@ export default [
         component: './Account/SubsidyShop',
         buttons: ['info'],
       },
-      // 基础信息
+      // 基础信息 base
       {
         path: '/system/account',
         name: '帐号权限管理',
@@ -118,7 +118,7 @@ export default [
         path: '/password',
         component: './Base/PassWord',
       },
-      // 店铺管理
+      // 店铺管理 business
       {
         path: '/business/register',
         name: '注册列表',
@@ -158,7 +158,7 @@ export default [
         component: './Business/BusinessSettled',
         buttons: ['exportList'],
       },
-      // 数据统计
+      // 数据统计 chart
       {
         path: '/chart/area',
         name: '区域战报',
@@ -169,7 +169,7 @@ export default [
         name: '数据概况',
         component: './Chart/ChartBlock',
       },
-      // 加盟管理
+      // 加盟管理 cityom
       {
         path: '/cityom/provCo',
         name: '省公司列表',
@@ -194,7 +194,7 @@ export default [
         component: './Cityom/SaleAccount',
         buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
-      // 哒人管理
+      // 哒人管理 expert
       {
         path: '/expert/uaerlist',
         name: '哒人列表',
@@ -236,7 +236,7 @@ export default [
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
       },
-      // 财务管理
+      // 财务管理 finance
       {
         path: '/finance/subsidy',
         name: '补贴管理',
@@ -267,7 +267,7 @@ export default [
         component: './Finance/PlatformIncome',
         buttons: ['exportList'],
       },
-      // 营销管理
+      // 营销管理 market
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -324,7 +324,7 @@ export default [
         component: './Market/PuzzleAd',
         buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
       },
-      // 店铺运营
+      // 店铺运营 operation
       {
         path: '/operation/share',
         name: '分享管理',
@@ -367,7 +367,7 @@ export default [
         component: './Operation/SpecialGoods',
         buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
-      // 客服中心
+      // 客服中心 service
       {
         path: '/service/news',
         name: '新闻动态',
@@ -398,7 +398,7 @@ export default [
         component: './Service/SolicitJobs',
         buttons: ['save', 'edit', 'down', 'jobClass'],
       },
-      // 配置管理
+      // 配置管理 system
       {
         path: '/system/city',
         name: '城市管理',
@@ -427,7 +427,7 @@ export default [
         name: '逛逛页面配置',
         component: './System/WalkingManage',
       },
-      // 用户管理
+      // 用户管理 user
       {
         path: '/user/list',
         name: '用户数据',
