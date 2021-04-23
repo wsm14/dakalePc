@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { notification } from 'antd';
-import { fetchGetHubSelect } from '@/services/BaseServices';
+import { fetchGetHubSelect } from '@/services/PublicServices';
 import {
   fetchMerchantAuditList,
   fetchMerchantAuditDetailList,

@@ -5,7 +5,7 @@ import {
   fetchGetOcrBank,
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
-} from '@/services/BaseServices';
+} from '@/services/PublicServices';
 import {
   fetchAreaCenterList,
   fetchAreaDetail,

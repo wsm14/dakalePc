@@ -5,7 +5,7 @@ import {
   fetchOwnAccountAdd,
   fetchOwnAccountEdit,
   fetchOwnAccountDetail,
-} from '@/services/SystemServices';
+} from '@/services/BaseServices';
 
 export default {
   namespace: 'accountList',

@@ -4,7 +4,7 @@ import {
   fetchExpertAllocationList,
   fetchExpertAllocationSave,
   fetchExpertAllocationEdit,
-} from '@/services/ExpertServices';
+} from '@/services/SystemServices';
 
 export default {
   namespace: 'expertAllocation',

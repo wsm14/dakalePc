@@ -1,4 +1,4 @@
-import { fetchOrderDetail } from '@/services/SystemServices';
+import { fetchOrderDetail } from '@/services/PublicServices';
 const DrawerForm = {
   namespace: 'orderDetail',
 

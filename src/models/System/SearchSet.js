@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchSearchSet, fetchSearchGetData } from '@/services/MarketServices';
+import { fetchSearchSet, fetchSearchGetData } from '@/services/SystemServices';
 
 export default {
   namespace: 'searchSet',

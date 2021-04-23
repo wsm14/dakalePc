@@ -4,7 +4,7 @@ import {
   fetchWMSRoleDetail,
   fetchWMSRoleAdd,
   fetchWMSRoleEdit,
-} from '@/services/SystemServices';
+} from '@/services/BaseServices';
 
 export default {
   namespace: 'roleProvinceArea',
