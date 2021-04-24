@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
-import activeTemplateNameSet from './components/template/ActiveTemplateNameSet';
+import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
-const ActiveTemplate = (props) => {
-  const { dispatch } = props;
+const ActiveTemplate = () => {
 
   const [visible, setVisible] = useState({ show: false, info: {} });
+  const [visibleName, setVisibleName] = useState({ show: false, info: {} });
 
   /**
    * 模版选项
@@ -25,16 +25,13 @@ const ActiveTemplate = (props) => {
     },
   ];
 
+  // 选择活动
+  const handleSelectActive = (item) => setVisibleName({ show: true, info: item });
+
   // 设置活动名称
-  const handleSetActiveName = (item) => {
-    const callback = (activeName) => {
-      setVisible({ show: true, info: { ...item, activeName } });
-      dispatch({ type: 'drawerForm/close' });
-    };
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: activeTemplateNameSet({ callback }),
-    // });
+  const handleSetActiveName = (activeName) => {
+    setVisible({ show: true, info: { ...visibleName.info, activeName } });
+    setVisibleName(false);
   };
 
   return (
@@ -45,7 +42,7 @@ const ActiveTemplate = (props) => {
             <Col key={item.id}>
               <Card
                 cover={<img alt="example" src={item.img} />}
-                actions={[<div onClick={() => handleSetActiveName(item)}>使用模版</div>]}
+                actions={[<div onClick={() => handleSelectActive(item)}>使用模版</div>]}
               >
                 {item.title}
               </Card>
@@ -58,6 +55,11 @@ const ActiveTemplate = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></ActiveTemplateEdit>
+      <ActiveTemplateNameSet
+        visible={visibleName}
+        callback={handleSetActiveName}
+        onClose={() => setVisibleName(false)}
+      ></ActiveTemplateNameSet>
     </>
   );
 };

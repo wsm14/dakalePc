@@ -20,7 +20,7 @@ const SearchDataContent = (props) => {
         { name: 'mobile', type: 'number' },
         { name: 'merchantName', type: 'string' },
       ],
-      itemkey: 'merchantId',
+      itemkey: 'userMerchantIdString',
       itemName: [
         {
           title: '店铺简称',
