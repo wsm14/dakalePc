@@ -87,7 +87,7 @@ const UserTotalInfo = ({
           <Col span={12}>
             <QuestionTooltip
               placement="bottom"
-              title="商家累计消费"
+              title="用户累计消费"
               overlayStyle={{ maxWidth: 300 }}
               content={'用户累计消耗卡豆'}
             ></QuestionTooltip>
