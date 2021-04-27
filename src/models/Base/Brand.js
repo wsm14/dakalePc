@@ -1,12 +1,8 @@
 import { notification } from 'antd';
-import {
-  fetchTradeAreaList,
-  fetchTradeAreaAdd,
-  fetchTradeAreaEdit,
-} from '@/services/SystemServices';
+import { fetchMerBrandList, fetchMerBrandAdd, fetchMerBrandEdit } from '@/services/BaseServices';
 
 export default {
-  namespace: 'tradeArea',
+  namespace: 'businessBrand',
 
   state: {
     list: [],
@@ -24,7 +20,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchTradeAreaList, payload);
+      const response = yield call(fetchMerBrandList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -35,21 +31,21 @@ export default {
         },
       });
     },
-    *fetchTradeAreaAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchTradeAreaAdd, payload);
+    *fetchMerBrandAdd({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerBrandAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商圈新增成功',
+        description: '品牌新增成功',
       });
       callback();
     },
-    *fetchTradeAreaEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchTradeAreaEdit, payload);
+    *fetchMerBrandEdit({ payload, callback }, { call, put }) {
+      const response = yield call(fetchMerBrandEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '商圈修改成功',
+        description: '品牌修改成功',
       });
       callback();
     },

@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchHandleDetail } from '@/services/BaseServices';
+import { fetchHandleDetail } from '@/services/PublicServices';
 import {
   fetchGoodsList,
   fetchGoodsGetMre,

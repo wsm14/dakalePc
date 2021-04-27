@@ -4,7 +4,7 @@ import {
   fetchMerBankAll,
   fetchMerBankAdd,
   fetchMerBankEdit,
-} from '@/services/SystemServices';
+} from '@/services/BaseServices';
 
 export default {
   namespace: 'businessBankSet',

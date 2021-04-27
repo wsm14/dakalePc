@@ -14,7 +14,7 @@ import {
   fetchSceneListById,
   fetchSceneAdd,
   fetchSceneUpdate,
-} from '@/services/SystemServices';
+} from '@/services/BaseServices';
 
 export default {
   namespace: 'sysTradeList',

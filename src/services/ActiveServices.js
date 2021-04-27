@@ -60,7 +60,7 @@ export function fetchActiveEdit(data) {
 
 // get 数据源 - 商家
 export async function fetchSourceMerchant(params) {
-  return request('/admin/promotionData/pageUserMerchantInfo', {
+  return request('/admin/merchantManagement/listMerchant', {
     params,
   });
 }

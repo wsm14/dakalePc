@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import lodash from 'lodash';
 import { fetchQueryCurrent, fetchGetAuthMenuTree } from '@/services/LoginServices';
-import { fetchPassWordEdit } from '@/services/SystemServices';
+import { fetchPassWordEdit } from '@/services/BaseServices';
 
 export default {
   namespace: 'userInfo',

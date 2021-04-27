@@ -6,7 +6,7 @@ import {
   fetchGetOcrIdCardFront,
   fetchGetOcrIdCardBack,
   fetchGetOcrIdBankCard,
-} from '@/services/BaseServices';
+} from '@/services/PublicServices';
 import {
   fetchMerchantGroup,
   fetchAddMerchantGroup,
