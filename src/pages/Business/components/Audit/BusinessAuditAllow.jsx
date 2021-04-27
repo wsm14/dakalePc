@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
+import { BUSINESS_DO_STATUS } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import BusinessTimeSet from './BusinessTimeSet';
 
@@ -122,6 +123,12 @@ const BusinessAuditAllow = (props) => {
       type: 'textArea',
       name: 'remark',
       rules: [{ required: false }],
+    },
+    {
+      label: '经营状态',
+      type: 'radio',
+      name: 'businessStatus',
+      select: BUSINESS_DO_STATUS,
     },
   ];
 
