@@ -25,7 +25,7 @@ const GratiaClassManage = (props) => {
     });
   };
 
-  // 新增/修改
+  // 新增/修改 新列表传递回去
   const fetchDetailAdd = (val) => {
     dispatch({
       type: 'walkingManage/fetchWalkManageGratiaClassAdd',
@@ -109,6 +109,12 @@ const GratiaClassManage = (props) => {
                 auth: true,
                 visible: !editable,
                 click: () => edit(record),
+              },
+              {
+                type: 'del',
+                auth: true,
+                visible: !editable,
+                click: () => fetchDetailAdd(classList.filter(({ id }) => id !== record.id)),
               },
               {
                 auth: true,
