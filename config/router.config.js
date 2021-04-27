@@ -87,7 +87,7 @@ export default [
         path: '/system/tradeset',
         name: '行业管理',
         component: './Base/TradeList',
-        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
+        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd', 'isWechat'],
       },
       {
         path: '/system/brand',

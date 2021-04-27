@@ -69,6 +69,12 @@ const RecommendList = (props) => {
       dataIndex: 'mobile',
     },
     {
+      title: '注册地',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, row) => `${val} - ${row.cityName} - ${row.districtName}`,
+    },
+    {
       title: '注册时间',
       align: 'center',
       dataIndex: 'createTime',

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -77,6 +77,24 @@ const SysTradeSet = (props) => {
       ),
     },
     {
+      title: '小程序展示',
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'isWechat',
+      render: (val, record) => (
+        <AuthConsumer auth="isWechat" noAuth={val === '1' ? '开' : '关'}>
+          <Switch
+            checkedChildren="开"
+            unCheckedChildren="关"
+            checked={val === '1'}
+            onClick={() =>
+              fetchTradeSet({ categoryId: record.categoryIdString, isWechat: 1 ^ val })
+            }
+          />
+        </AuthConsumer>
+      ),
+    },
+    {
       title: '操作',
       dataIndex: 'categoryIdString',
       fixed: 'right',
@@ -96,7 +114,7 @@ const SysTradeSet = (props) => {
               {
                 type: 'del',
                 visible: !record.categoryDTOList,
-                click: () => fetchTradeDel({ categoryId: val, isDelete: 1 }),
+                click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
               },
               {
                 type: 'tradeSecondAdd',
@@ -117,8 +135,8 @@ const SysTradeSet = (props) => {
   // 类目设置修改
   const handleClassSet = (type, detail) => setClassVisible({ show: true, type, detail });
 
-  // 删除类目
-  const fetchTradeDel = (values) => {
+  // 删除/修改类目
+  const fetchTradeSet = (values) => {
     dispatch({
       type: 'sysTradeList/fetchTradeSet',
       payload: values,

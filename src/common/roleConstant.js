@@ -31,6 +31,7 @@ export const ROLE_BUTTON_TYPE = {
 
   info: '详情',
   income: '收益明细',
+  isWechat: '小程序展示控制',
 
   jobClass: '职位类别',
 
@@ -109,7 +110,7 @@ export const ROLE_BUTTON_TYPE = {
 
   withdraw: '提现记录',
 
-  republish:'重新发布'
+  republish: '重新发布',
 };
 
 // 数据权限选项
