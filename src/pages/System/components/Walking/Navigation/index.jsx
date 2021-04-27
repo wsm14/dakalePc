@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import DndDragContext from '@/components/DndDragContext';
 
 const NavigationManage = (props) => {
-  const { navigation, loading, dispatch, style } = props;
+  const { navigation, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -69,6 +69,7 @@ const NavigationManage = (props) => {
       title: '排序',
       align: 'right',
       dataIndex: 'sort',
+      fixed: 'right',
       render: () => <DragHandle />,
     },
   ];
@@ -82,7 +83,7 @@ const NavigationManage = (props) => {
             categoryDTOList: val.map((item, index) => ({ ...item, navigationSort: index })),
           }),
       }}
-      cardProps={{ title: '导航类目页面配置', style }}
+      cardProps={{ title: '导航类目页面配置', bordered: false }}
       cRef={childRef}
       loading={loading}
       pagination={false}

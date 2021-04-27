@@ -6,7 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import EditableCell from './EditableCell';
 
 const GratiaClassManage = (props) => {
-  const { classList, loading, dispatch, style } = props;
+  const { classList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [form] = Form.useForm();
@@ -159,12 +159,12 @@ const GratiaClassManage = (props) => {
       <TableDataBlock
         cardProps={{
           title: '特惠商品类目配置',
+          bordered: false,
           extra: (
             <Button type="primary" onClick={addRow}>
               新增
             </Button>
           ),
-          style,
         }}
         components={{
           body: {
