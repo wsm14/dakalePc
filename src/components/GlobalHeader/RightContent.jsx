@@ -2,6 +2,7 @@ import React from 'react';
 import { Tag } from 'antd';
 import { connect } from 'umi';
 import Avatar from './AvatarDropdown';
+import ExcelWrite from './ExcelWrite';
 import styles from './index.less';
 
 const ENVTagColor = {
@@ -19,8 +20,9 @@ const GlobalHeaderRight = (props) => {
 
   return (
     <div className={className}>
+      <ExcelWrite />
       <Avatar />
-      {REACT_APP_ENV !== "prod" && (
+      {REACT_APP_ENV !== 'prod' && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV || 'dev']}>{REACT_APP_ENV || 'dev'}</Tag>
         </span>
