@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// 运营看板
+export function fetchSaleBlock(params) {
+  return request('/admin/emergency/data/byDate', {
+    params,
+  });
+}
+
 // 区域战报
 
 // get 获取登录账户权限菜单

@@ -9,7 +9,7 @@ import {
   fetchWalkManageNavigationSort,
   fetchWalkManageGratiaClass,
   fetchWalkManageGratiaClassAdd,
-} from '@/services/OperationServices';
+} from '@/services/SystemServices';
 
 export default {
   namespace: 'walkingManage',

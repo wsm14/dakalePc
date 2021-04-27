@@ -12,7 +12,7 @@ import {
   fetchHandleDetail,
   fetchGetPhoneComeLocation,
   fetchGetJumpNative,
-} from '@/services/BaseServices';
+} from '@/services/PublicServices';
 
 export default {
   namespace: 'baseData',

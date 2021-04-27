@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { notification } from 'antd';
-import { fetchGetOcrLicense } from '@/services/BaseServices';
+import { fetchGetOcrLicense } from '@/services/PublicServices';
 import {
   fetchMerchantList,
   fetchMerchantDetail,

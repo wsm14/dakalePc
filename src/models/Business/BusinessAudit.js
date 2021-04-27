@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { notification } from 'antd';
-import { fetchGetHubSelect } from '@/services/BaseServices';
+import { fetchGetHubSelect } from '@/services/PublicServices';
 import {
   fetchMerchantAuditList,
   fetchMerchantAuditDetailList,
@@ -90,11 +90,13 @@ export default {
         property,
         tags,
         scenesIds,
+        businessStatus,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
       const dataCheck = (key) => (property[key] ? property[key] || '' : '');
       const initialValues = {
         ...content.userMerchantVerify,
+        businessStatus: `${Number(businessStatus)}`,
         provinceCode: [p, c, d],
         selectCity: [
           { value: p, label: pN },

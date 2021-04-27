@@ -41,7 +41,7 @@ export default [
       //     },
       //   ],
       // },
-      // 账户管理
+      // 账户管理 account
       {
         path: '/account/user',
         name: '用户账户',
@@ -60,7 +60,65 @@ export default [
         component: './Account/SubsidyShop',
         buttons: ['info'],
       },
-      // 店铺管理
+      // 基础信息 base
+      {
+        path: '/system/account',
+        name: '帐号权限管理',
+        component: './Base/AccountAdmin',
+        buttons: [
+          'user',
+          'userAdd',
+          'userStatus',
+          'userEdit',
+          'role',
+          'roleAdd',
+          'roleStatus',
+          'roleEdit',
+          'section',
+        ],
+      },
+      {
+        path: '/system/tradeArea',
+        name: '商圈管理',
+        component: './Base/TradeArea',
+        buttons: ['save', 'edit'],
+      },
+      {
+        path: '/system/tradeset',
+        name: '行业管理',
+        component: './Base/TradeList',
+        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
+      },
+      {
+        path: '/system/brand',
+        name: '品牌管理',
+        component: './Base/ManageBrand',
+        buttons: ['save', 'del', 'edit', 'status'],
+      },
+      {
+        path: '/system/tag',
+        name: '店铺标签',
+        component: './Base/TagManage',
+        buttons: ['save', 'edit'],
+      },
+      {
+        path: '/system/bankSet',
+        name: '支行管理',
+        component: './Base/ManageBank',
+        buttons: ['save', 'edit'],
+      },
+      {
+        path: '/system/peasShare',
+        name: '卡豆分享',
+        component: './Base/PeasShare',
+        buttons: ['save', 'del', 'edit'],
+      },
+      {
+        name: '修改密码',
+        path: '/password',
+        component: './Base/PassWord',
+      },
+      // 店铺管理 business
       {
         path: '/business/register',
         name: '注册列表',
@@ -100,18 +158,23 @@ export default [
         component: './Business/BusinessSettled',
         buttons: ['exportList'],
       },
-      // 数据统计
+      // 数据统计 chart
       {
         path: '/chart/area',
         name: '区域战报',
         component: './Chart/AreaTotal',
       },
       {
+        path: '/chart/sale',
+        name: '运营数据',
+        component: './Chart/SaleBlock',
+      },
+      {
         path: '/chart/block',
         name: '数据概况',
         component: './Chart/ChartBlock',
       },
-      // 加盟管理
+      // 加盟管理 cityom
       {
         path: '/cityom/provCo',
         name: '省公司列表',
@@ -136,7 +199,7 @@ export default [
         component: './Cityom/SaleAccount',
         buttons: ['save', 'edit', 'info', 'status', 'relieve'],
       },
-      // 哒人管理
+      // 哒人管理 expert
       {
         path: '/expert/uaerlist',
         name: '哒人列表',
@@ -168,12 +231,6 @@ export default [
         buttons: ['info', 'down', 'handle', 'reportCenter'],
       },
       {
-        path: '/expert/allocation',
-        name: '哒人配置',
-        component: './Expert/ExpertAllocation',
-        buttons: ['save', 'edit'],
-      },
-      {
         path: '/expert/achievement',
         name: '哒人业绩',
         component: './Expert/ExpertUserAchievement',
@@ -184,7 +241,7 @@ export default [
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
       },
-      // 财务管理
+      // 财务管理 finance
       {
         path: '/finance/subsidy',
         name: '补贴管理',
@@ -215,7 +272,7 @@ export default [
         component: './Finance/PlatformIncome',
         buttons: ['exportList'],
       },
-      // 营销管理
+      // 营销管理 market
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -267,18 +324,12 @@ export default [
         buttons: ['save', 'del', 'edit', 'down'],
       },
       {
-        path: '/market/search',
-        name: '搜索配置',
-        component: './Market/SearchSetList',
-        buttons: ['searchSet'],
-      },
-      {
         path: '/market/puzzleAd',
         name: '拼图广告',
         component: './Market/PuzzleAd',
         buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
       },
-      // 店铺运营
+      // 店铺运营 operation
       {
         path: '/operation/share',
         name: '分享管理',
@@ -321,12 +372,7 @@ export default [
         component: './Operation/SpecialGoods',
         buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
-      {
-        path: '/operation/walking',
-        name: '逛逛页面配置',
-        component: './Operation/WalkingManage',
-      },
-      // 客服中心
+      // 客服中心 service
       {
         path: '/service/news',
         name: '新闻动态',
@@ -357,47 +403,7 @@ export default [
         component: './Service/SolicitJobs',
         buttons: ['save', 'edit', 'down', 'jobClass'],
       },
-      // 基础配置
-      {
-        path: '/system/account',
-        name: '帐号权限管理',
-        component: './System/AccountAdmin',
-        buttons: [
-          'user',
-          'userAdd',
-          'userStatus',
-          'userEdit',
-          'role',
-          'roleAdd',
-          'roleStatus',
-          'roleEdit',
-          'section',
-        ],
-      },
-      {
-        path: '/system/tradeArea',
-        name: '商圈管理',
-        component: './System/TradeArea',
-        buttons: ['save', 'edit'],
-      },
-      {
-        path: '/system/tradeset',
-        name: '行业管理',
-        component: './System/TradeList',
-        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
-      },
-      {
-        path: '/system/brand',
-        name: '品牌管理',
-        component: './System/ManageBrand',
-        buttons: ['save', 'del', 'edit', 'status'],
-      },
-      {
-        path: '/system/tag',
-        name: '店铺标签',
-        component: './System/TagManage',
-        buttons: ['save', 'edit'],
-      },
+      // 配置管理 system
       {
         path: '/system/city',
         name: '城市管理',
@@ -405,28 +411,28 @@ export default [
         buttons: ['save', 'del', 'edit', 'status'],
       },
       {
-        path: '/system/bankSet',
-        name: '支行管理',
-        component: './System/ManageBank',
-        buttons: ['save', 'edit'],
-      },
-      {
-        path: '/system/peasShare',
-        name: '卡豆分享',
-        component: './System/PeasShare',
-        buttons: ['save', 'del', 'edit'],
-      },
-      {
         path: '/system/pageset',
         name: '菜单设置',
         component: './System/MenuList',
       },
       {
-        name: '修改密码',
-        path: '/password',
-        component: './System/PassWord',
+        path: '/expert/allocation',
+        name: '哒人配置',
+        component: './System/ExpertAllocation',
+        buttons: ['save', 'edit'],
       },
-      // 用户管理
+      {
+        path: '/market/search',
+        name: '搜索配置',
+        component: './System/SearchSetList',
+        buttons: ['searchSet'],
+      },
+      {
+        path: '/operation/walking',
+        name: '逛逛页面配置',
+        component: './System/WalkingManage',
+      },
+      // 用户管理 user
       {
         path: '/user/list',
         name: '用户数据',

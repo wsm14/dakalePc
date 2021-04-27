@@ -3,7 +3,7 @@ import {
   fetchPeasShareList,
   fetchPeasShareAdd,
   fetchPeasShareEdit,
-} from '@/services/SystemServices';
+} from '@/services/BaseServices';
 
 export default {
   namespace: 'sysPeasShare',
