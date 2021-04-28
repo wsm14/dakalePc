@@ -1,24 +1,23 @@
-
 // const target = 'https://devgateway.dakale.net'
-// const target = 'https://pregateway.dakale.net'
-const target = 'http://192.168.0.103:6020'
+const target = 'https://pregateway.dakale.net';
+// const target = 'http://192.168.0.103:6020';
 
 export default {
   dev: {
     define: {
-      APIURL:  '', // 使用proxy代理 不配置
+      APIURL: '', // 使用proxy代理 不配置
     },
     proxy: {
       '/admin': {
-        target:  target,
+        target: target,
         changeOrigin: true,
       },
       '/user': {
-        target:  target,
+        target: target,
         changeOrigin: true,
       },
       '/common': {
-        target:  target,
+        target: target,
         changeOrigin: true,
       },
       '/media': {

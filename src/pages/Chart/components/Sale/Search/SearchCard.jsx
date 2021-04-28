@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { DatePicker } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 const disTime = moment('2020-03-01');
 
@@ -26,14 +27,14 @@ const SearchCard = ({ timeData, setTimeData }) => {
     <div style={{ marginLeft: -12 }}>
       <DatePicker.RangePicker
         bordered={false}
-        suffixIcon={null}
+        suffixIcon={<DownOutlined></DownOutlined>}
         allowClear={false}
         value={timeData}
         onChange={(val) => handleSearchData(val)}
         disabledDate={disabledDate}
         ranges={timeObj}
         style={{
-          width: 200,
+          width: 250,
         }}
       />
     </div>
