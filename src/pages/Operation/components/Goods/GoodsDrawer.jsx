@@ -73,11 +73,18 @@ const GoodsDrawer = (props) => {
       total,
       onChange: (size) => getDetail(size, 'info'),
     },
-    footer: type !== 'showDetail' && (
-      <Button onClick={handleUpAudit} type="primary" loading={loading}>
-        提交
-      </Button>
-    ),
+    footer: {
+      addGoods: (
+        <Button onClick={handleUpAudit} type="primary" loading={loading}>
+          提交
+        </Button>
+      ),
+      // showDetail: status == 1 && (checkStatus == 2 || checkStatus == 0) && (
+      //   <Button onClick={() => fetchAuditRefuse(detail)} type="primary">
+      //     下架
+      //   </Button>
+      // ),
+    }[type],
   };
 
   return (
