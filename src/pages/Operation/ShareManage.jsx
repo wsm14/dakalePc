@@ -135,12 +135,12 @@ const ShareManage = (props) => {
     {
       title: '店铺/集团',
       dataIndex: 'userType',
-      width: 300,
+      width: 320,
       render: (val, row) => (
         <>
           <div style={{ display: 'flex' }}>
             <Tag>{BUSINESS_TYPE[val]}</Tag>
-            <Ellipsis length={10} tooltip>
+            <Ellipsis length={15} tooltip>
               {row.merchantName}
             </Ellipsis>
           </div>

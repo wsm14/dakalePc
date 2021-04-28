@@ -30,6 +30,7 @@ const DrawerCondition = (props) => {
     title,
     loading,
     footer,
+    dataPage,
     afterCallBack,
     closeCallBack,
     maskClosable = true,
@@ -81,7 +82,17 @@ const DrawerCondition = (props) => {
     <Drawer
       {...modalProps}
       footer={
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: dataPage ? 'space-between' : 'center' }}>
+          {dataPage && (
+            <Space>
+              {dataPage.current > 0 && (
+                <Button onClick={() => dataPage.onChange(dataPage.current - 1)}>上一条</Button>
+              )}
+              {dataPage.total !== dataPage.current + 1 && (
+                <Button onClick={() => dataPage.onChange(dataPage.current + 1)}>下一条</Button>
+              )}
+            </Space>
+          )}
           <Space>
             <Button onClick={onClose}>{closeLabel}</Button>
             {footer && footerCheck()}
