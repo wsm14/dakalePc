@@ -267,9 +267,9 @@ const CouponManageComponent = (props) => {
         {...couponManage}
       ></TableDataBlock>
       <CouponDrawer
-        total={list.length}
         childRef={childRef}
         visible={visible}
+        total={list.length}
         getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
       ></CouponDrawer>

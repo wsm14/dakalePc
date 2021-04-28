@@ -7,9 +7,9 @@ import GoodsSet from './Form/GoodsSet';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const GoodsDrawer = (props) => {
-  const { dispatch, visible, childRef, onClose, loading } = props;
+  const { dispatch, visible, childRef, total, getDetail, onClose, loading, loadingDetail } = props;
 
-  const { type = '', detail = [] } = visible;
+  const { type = '', index, detail = [] } = visible;
   const [form] = Form.useForm();
 
   // 检查文件上传格式
@@ -67,6 +67,12 @@ const GoodsDrawer = (props) => {
     title: `${type == 'showDetail' ? '商品详情' : '新增商品'}`,
     visible: type == 'showDetail' || type == 'addGoods',
     onClose,
+    loading: loadingDetail,
+    dataPage: type === 'showDetail' && {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'info'),
+    },
     footer: type !== 'showDetail' && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         提交
@@ -84,4 +90,5 @@ const GoodsDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['goodsManage/fetchGoodsAdd'],
+  loadingDetail: loading.effects['goodsManage/fetchGoodsGetDetail'],
 }))(GoodsDrawer);
