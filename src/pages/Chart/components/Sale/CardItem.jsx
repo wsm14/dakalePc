@@ -37,6 +37,7 @@ const SaleBlockComponent = ({ title, tip, saleTotal, keyName, loading, dispatch,
                 title="核销订单"
                 value={saleTotal['userOrderBeanVerify'] || 0}
                 loading={loading.effects[api]}
+                valueStyle={{ color: '#1890ff' }}
               />
             </Col>
             <Col span={12}>
@@ -44,6 +45,7 @@ const SaleBlockComponent = ({ title, tip, saleTotal, keyName, loading, dispatch,
                 title="扫码订单"
                 value={saleTotal['userOrderBeanScan'] || 0}
                 loading={loading.effects[api]}
+                valueStyle={{ color: '#1890ff' }}
               />
             </Col>
           </Row>
@@ -52,7 +54,7 @@ const SaleBlockComponent = ({ title, tip, saleTotal, keyName, loading, dispatch,
             value={saleTotal[keyName] || 0}
             precision={0}
             loading={loading.effects[api]}
-            valueStyle={{ fontSize: 40 }}
+            valueStyle={{ fontSize: 40, color: '#1890ff' }}
           />
         )}
       </Card>
