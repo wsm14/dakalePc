@@ -17,6 +17,7 @@ import styles from './style.less';
 
 const ShareManage = (props) => {
   const { shareManage, loading, tradeList, dispatch } = props;
+  const { list } = shareManage;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 详情
@@ -38,13 +39,14 @@ const ShareManage = (props) => {
   };
 
   // 获取详情
-  const fetchShareDetail = (val, type) => {
+  const fetchShareDetail = (index, type) => {
+    const { userMomentIdString } = list[index];
     dispatch({
       type: 'shareManage/fetchShareDetail',
       payload: {
-        userMomentIdString: val,
+        userMomentIdString,
       },
-      callback: (detail) => setVisible({ show: true, type, detail }),
+      callback: (detail) => setVisible({ show: true, index, type, detail }),
     });
   };
 
@@ -224,7 +226,7 @@ const ShareManage = (props) => {
       width: 100,
       fixed: 'right',
       align: 'right',
-      render: (val, record) => {
+      render: (val, record, index) => {
         const { status, userMomentIdString } = record;
         return (
           <HandleSetTable
@@ -236,7 +238,7 @@ const ShareManage = (props) => {
               },
               {
                 type: 'info', // 详情
-                click: () => fetchShareDetail(userMomentIdString, record.contentType || 'video'),
+                click: () => fetchShareDetail(index, record.contentType || 'video'),
               },
               {
                 type: 'handleDeatil', // 操作记录
@@ -275,7 +277,12 @@ const ShareManage = (props) => {
       {/* 发布分享 */}
       <ShareDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareDrawer>
       {/* 详情 */}
-      <ShareDetail visible={visible} onClose={() => setVisible(false)}></ShareDetail>
+      <ShareDetail
+        total={list.length}
+        visible={visible}
+        getDetail={fetchShareDetail}
+        onClose={() => setVisible(false)}
+      ></ShareDetail>
       {/* 视频详情 */}
       <ShareVideoDetail
         visible={visibleVideo}

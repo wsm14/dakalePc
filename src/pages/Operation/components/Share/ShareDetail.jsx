@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'umi';
 import {
   SHARE_SCOPE_TYPE,
   BUSINESS_TYPE,
@@ -10,9 +11,9 @@ import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const ShareDetail = (props) => {
-  const { visible, onClose } = props;
+  const { visible, total, getDetail, onClose, loadingDetail } = props;
 
-  const { type = 'img', show = false, detail = {} } = visible;
+  const { type = 'img', index, show = false, detail = {} } = visible;
 
   // 信息
   const formItems = [
@@ -108,6 +109,12 @@ const ShareDetail = (props) => {
     title: '分享详情',
     visible: show,
     onClose,
+    loading: loadingDetail,
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'video'),
+    },
   };
 
   return (
@@ -117,4 +124,6 @@ const ShareDetail = (props) => {
   );
 };
 
-export default ShareDetail;
+export default connect(({ loading }) => ({
+  loadingDetail: loading.effects['shareManage/fetchShareDetail'],
+}))(ShareDetail);
