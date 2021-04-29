@@ -60,7 +60,7 @@ const PreferentialDrawer = (props) => {
 
   // 确认提交数据 - 新增 / 修改所有数据
   const handleUpData = () => {
-    (type === 'add' ? formRuleAdd : formRule).validateFields().then((values) => {
+    (type === 'add' || type === 'active' ? formRuleAdd : formRule).validateFields().then((values) => {
       const { specialGoodsId, merchantIdStr } = detail;
       const { activityGoodsImg, goodsDescImg } = visibleRule.preData;
       const {
