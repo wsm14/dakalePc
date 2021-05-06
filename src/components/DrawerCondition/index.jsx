@@ -85,11 +85,11 @@ const DrawerCondition = (props) => {
         <div style={{ display: 'flex', justifyContent: dataPage ? 'space-between' : 'center' }}>
           {dataPage && (
             <Space>
-              {dataPage.current > 0 && (
-                <Button onClick={() => dataPage.onChange(dataPage.current - 1)}>上一条</Button>
-              )}
               {dataPage.total !== dataPage.current + 1 && (
                 <Button onClick={() => dataPage.onChange(dataPage.current + 1)}>下一条</Button>
+              )}
+              {dataPage.current > 0 && (
+                <Button onClick={() => dataPage.onChange(dataPage.current - 1)}>上一条</Button>
               )}
             </Space>
           )}
