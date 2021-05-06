@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Drawer, Space, Card, Alert } from 'antd';
+import React, { useState } from 'react';
+import { Button, Card, Alert } from 'antd';
 import Title from './title';
 import { connect } from 'umi';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 import {
   base,
   user,
@@ -31,13 +32,26 @@ const filterCity = (proCode, areCode) => {
 };
 
 const groupsDetails = (props) => {
-  const { visible2, onClose, dispatch, merchantGroupId, groupDetails, saveVisible } = props;
+  const {
+    visible2,
+    onClose,
+    dispatch,
+    groupDetails,
+    saveVisible,
+    loading,
+    list,
+    merchantGroupIdIndex,
+  } = props;
 
-  useEffect(() => {
-    fetchGrounpDetails();
-  }, []);
-
-  const fetchGrounpDetails = () => {
+  const fetchGrounpDetails = (size) => {
+    dispatch({
+      type: 'groupSet/save',
+      payload: {
+        merchantGroupIdIndex: size,
+      },
+    });
+    setTabKey('tab1');
+    const { merchantGroupId } = list.list[size];
     if (merchantGroupId) {
       dispatch({
         type: 'groupSet/fetchGrounpDetails',
@@ -250,55 +264,49 @@ const groupsDetails = (props) => {
       ],
     }[merchantGroupDTO.bankAccountType],
   }[tabKey];
+
+  const modalProps = {
+    title: `集团详情`,
+    visible: visible2,
+    onClose,
+    bodyStyle: { padding: loading ? 24 : 0 },
+    loading: loading,
+    dataPage: {
+      current: merchantGroupIdIndex,
+      total: list.list.length,
+      onChange: (size) => fetchGrounpDetails(size),
+    },
+    afterCallBack: () => fetchGrounpDetails(merchantGroupIdIndex),
+    footer: btnShow() && (
+      <Button onClick={() => fetchGrounpGoBtn()} type="primary">
+        去修改
+      </Button>
+    ),
+  };
+
   return (
-    <>
-      <Drawer
-        title={`集团详情`}
-        width={660}
-        visible={visible2}
-        destroyOnClose={true}
-        onClose={onClose}
-        bodyStyle={{ padding: 0 }}
-        footer={
-          btnShow() && (
-            <div style={{ textAlign: 'center' }}>
-              <Space>
-                <Button
-                  onClick={() => {
-                    onClose();
-                  }}
-                >
-                  取消
-                </Button>
-                <Button onClick={() => fetchGrounpGoBtn()} type="primary">
-                  去修改
-                </Button>
-              </Space>
-            </div>
-          )
-        }
+    <DrawerCondition {...modalProps}>
+      <Card
+        bordered={false}
+        tabList={tabList}
+        activeTabKey={tabKey}
+        onTabChange={(key) => setTabKey(key)}
       >
-        <Card
-          bordered={false}
-          tabList={tabList}
-          activeTabKey={tabKey}
-          onTabChange={(key) => setTabKey(key)}
-        >
-          {toastShow() && (
-            <Alert
-              style={{ marginBottom: '12px' }}
-              message={`失败原因：${merchantGroupDTO.bankRejectReason || ''}`}
-              type="error"
-              showIcon
-            />
-          )}
-          <Title panelList={panelList}></Title>
-        </Card>
-      </Drawer>
-    </>
+        {toastShow() && (
+          <Alert
+            style={{ marginBottom: '12px' }}
+            message={`失败原因：${merchantGroupDTO.bankRejectReason || ''}`}
+            type="error"
+            showIcon
+          />
+        )}
+        <Title panelList={panelList}></Title>
+      </Card>
+    </DrawerCondition>
   );
 };
 
 export default connect(({ groupSet, loading }) => ({
   ...groupSet,
+  loading: loading.effects['groupSet/fetchGrounpDetails'],
 }))(groupsDetails);
