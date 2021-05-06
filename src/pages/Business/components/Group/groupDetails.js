@@ -161,7 +161,7 @@ const groupsDetails = (props) => {
       },
     ],
     tab2: {
-      '1': [
+      1: [
         {
           title: '对公账户信息',
           form: (
@@ -195,7 +195,7 @@ const groupsDetails = (props) => {
           disabled: true,
         },
       ],
-      '2': [
+      2: [
         {
           title: '对私账户信息',
           form: (
@@ -258,7 +258,7 @@ const groupsDetails = (props) => {
         visible={visible2}
         destroyOnClose={true}
         onClose={onClose}
-        bodyStyle={{ paddingBottom: 80 }}
+        bodyStyle={{ padding: 0 }}
         footer={
           btnShow() && (
             <div style={{ textAlign: 'center' }}>
