@@ -6,9 +6,9 @@ import UserBaseDetail from './Detail/UserBaseDetail';
 import UserRealDetail from './Detail/UserRealDetail';
 
 const UserDetailShow = (props) => {
-  const { dispatch, visible, childRef, onClose, loading } = props;
+  const { dispatch, visible, total, getDetail, childRef, onClose, loading, loadingDetail } = props;
 
-  const { shwo = false, detail = {} } = visible;
+  const { shwo = false, index, detail = {} } = visible;
 
   const { status, userIdString } = detail;
 
@@ -40,6 +40,12 @@ const UserDetailShow = (props) => {
     visible: shwo,
     onClose,
     bodyStyle: { paddingTop: 0 },
+    loading: loadingDetail,
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size),
+    },
     footer: (
       <Button key="2" type="primary" onClick={handleUserStatus} loading={loading}>
         {statusText}
@@ -62,5 +68,6 @@ const UserDetailShow = (props) => {
 };
 
 export default connect(({ loading }) => ({
+  loadingDetail: loading.effects['userList/fetchUserDetail'],
   loading: loading.effects['withdrawDetail/fetchWithdrawSetRemark'],
 }))(UserDetailShow);
