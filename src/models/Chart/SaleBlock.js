@@ -161,5 +161,77 @@ export default {
         },
       });
     },
+    *fetchSGOnHangzou({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, payload);
+      const { dataType } = payload;
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          [dataType]: content.data,
+        },
+      });
+    },
+    *fetchSGHangzou({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, payload);
+      const { dataType } = payload;
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          [dataType]: content.data,
+        },
+      });
+    },
+    *fetchSGXiangxi({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, payload);
+      const { dataType } = payload;
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          [dataType]: content.data,
+        },
+      });
+    },
+    *fetchSGOnXiangxi({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, payload);
+      const { dataType } = payload;
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          [dataType]: content.data,
+        },
+      });
+    },
+    *fetchMomentOnHangzou({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, payload);
+      const { dataType } = payload;
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          [dataType]: content.data,
+        },
+      });
+    },
+    *fetchMomentOnXiangxi({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, payload);
+      const { dataType } = payload;
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          [dataType]: content.data,
+        },
+      });
+    },
   },
 };
