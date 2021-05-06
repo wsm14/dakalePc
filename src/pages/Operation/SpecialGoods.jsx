@@ -22,6 +22,7 @@ import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
+  const { list } = specialGoods;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -239,14 +240,14 @@ const SpecialGoods = (props) => {
       align: 'right',
       fixed: 'right',
       width: 100,
-      render: (val, record) => {
+      render: (val, record, index) => {
         const { specialGoodsId, status } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'info',
-                click: () => fetchSpecialGoodsDetail(record, 'info'),
+                click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
               {
                 type: 'down',
@@ -256,7 +257,7 @@ const SpecialGoods = (props) => {
               {
                 type: 'edit',
                 visible: status !== '0',
-                click: () => fetchSpecialGoodsDetail(record, [false, 'active', 'edit'][status]),
+                click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
               },
               {
                 pop: true,
@@ -292,8 +293,8 @@ const SpecialGoods = (props) => {
   };
 
   // 获取详情
-  const fetchSpecialGoodsDetail = (payload, type) => {
-    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = payload;
+  const fetchSpecialGoodsDetail = (index, type) => {
+    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, merchantIdStr, type },
@@ -304,7 +305,7 @@ const SpecialGoods = (props) => {
           detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
         };
         if (type == 'info') {
-          setVisibleInfo({ status, ...newProps });
+          setVisibleInfo({ status, index, ...newProps });
         } else {
           setVisibleSet({ type, ...newProps });
         }
@@ -408,6 +409,8 @@ const SpecialGoods = (props) => {
       {/* 详情 */}
       <SpecialGoodDetail
         visible={visibleInfo}
+        total={list.length}
+        getDetail={fetchSpecialGoodsDetail}
         onEdit={() =>
           setVisibleSet({
             type: [false, 'active', 'edit'][visibleInfo.status],

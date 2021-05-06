@@ -1,12 +1,13 @@
 import React from 'react';
+import { connect } from 'umi';
 import { Button, Tabs } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
 
 const SpecialGoodDetail = (props) => {
-  const { visible, onClose, onEdit } = props;
-  const { show = false, detail = {}, status } = visible;
+  const { visible, onClose, onEdit, total, getDetail, loading } = props;
+  const { show = false, index, detail = {}, status } = visible;
 
   const handleEdit = () => {
     onClose(), onEdit();
@@ -16,7 +17,13 @@ const SpecialGoodDetail = (props) => {
   const modalProps = {
     title: '活动详情',
     visible: show,
+    loading,
     onClose,
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'info'),
+    },
     footer: status !== '0' && (
       <Button type="primary" onClick={handleEdit}>
         编辑
@@ -37,4 +44,7 @@ const SpecialGoodDetail = (props) => {
     </DrawerCondition>
   );
 };
-export default SpecialGoodDetail;
+
+export default connect(({ loading }) => ({
+  loading: loading.effects['specialGoods/fetchSpecialGoodsDetail'],
+}))(SpecialGoodDetail);
