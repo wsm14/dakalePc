@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Tabs, Input, Modal, Tag } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
@@ -9,7 +9,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible = null, onClose, loading, sceneList } = props;
+  const { dispatch, cRef, visible = null, total, getDetail, onClose, loading, sceneList } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
@@ -26,7 +26,12 @@ const BusinessDetailShow = (props) => {
     mobile,
     provinceName = '',
     cityName = '',
+    index,
   } = visible;
+
+  useEffect(() => {
+    fetchGetPhoneComeLocation();
+  }, [mobile]);
 
   const statusNum = Number(status);
   const businessStatusNum = Number(businessStatus);
@@ -287,9 +292,14 @@ const BusinessDetailShow = (props) => {
     width: 800,
     visible,
     onClose,
+    loading: loading.effects['businessList/fetchMerchantDetail'],
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size),
+    },
     afterCallBack: () => {
       form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
-      fetchGetPhoneComeLocation();
     },
     footer: (
       <>
