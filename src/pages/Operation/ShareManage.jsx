@@ -195,13 +195,13 @@ const ShareManage = (props) => {
       render: (val = 0, row) =>
         Math.round(
           ((row.beanAmount || 0) + (row.exposureBeanAmount || 0)) *
-            ((row.beanPersonAmount || 0) - row.payedPersonAmount || 0),
+          ((row.beanPersonAmount || 0) - row.payedPersonAmount || 0),
         ),
       sorter: (a, b) =>
         ((a.beanAmount || 0) + (a.exposureBeanAmount || 0)) *
-          ((a.beanPersonAmount || 0) - (a.payedPersonAmount || 0)) -
+        ((a.beanPersonAmount || 0) - (a.payedPersonAmount || 0)) -
         ((b.beanAmount || 0) + (b.exposureBeanAmount || 0)) *
-          ((b.beanPersonAmount || 0) - (b.payedPersonAmount || 0)),
+        ((b.beanPersonAmount || 0) - (b.payedPersonAmount || 0)),
     },
     {
       title: '关联券/商品',
@@ -233,7 +233,7 @@ const ShareManage = (props) => {
             formItems={[
               {
                 type: 'down', // 下架
-                visible: status == 1 || status == 5,
+                visible: status == 1,
                 click: () => setVisibleDown({ show: true, initialValues: record }),
               },
               {
