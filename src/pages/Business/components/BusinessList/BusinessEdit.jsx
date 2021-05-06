@@ -96,6 +96,9 @@ const BusinessAdd = (props) => {
         payload.coverImg = cres.toString();
         aliOssUpload(headerImg).then((cres2) => {
           payload.headerImg = cres2.toString();
+          if (type !== 'audit') {
+            payload.headerContentObject = { headerType: 'image', imageUrl: cres2.toString() };
+          }
           aliOssUpload(interiorImg).then((res) => {
             dispatch({
               type: {

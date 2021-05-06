@@ -27,7 +27,10 @@ const BusinessDetailShow = (props) => {
     provinceName = '',
     cityName = '',
     index,
+    headerContentObject = {},
   } = visible;
+
+  const { headerType = 'image' } = headerContentObject;
 
   useEffect(() => {
     fetchGetPhoneComeLocation();
@@ -165,8 +168,8 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '店铺头图',
-      name: 'headerImg',
-      type: 'upload',
+      name: ['headerContentObject', { image: 'imageUrl', video: 'mp4Url' }[headerType]],
+      type: { image: 'upload', video: 'videoUpload' }[headerType],
     },
     {
       label: '店铺内景照',
