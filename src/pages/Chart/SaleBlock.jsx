@@ -53,10 +53,50 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchDarenIncome',
     },
     {
+      title: '杭州上架中特惠商品数',
+      tip: '指杭州的店铺当前上架中的特惠商品数',
+      keyName: 'SGOnHangzou',
+      api: 'saleTotal/fetchSGOnHangzou',
+      timeSearch: false,
+    },
+    {
+      title: '杭州发布特惠商品数',
+      tip: '指杭州的店铺新发布的特惠商品数',
+      keyName: 'SGHangzou',
+      api: 'saleTotal/fetchSGHangzou',
+    },
+    {
+      title: '湘西上架中特惠商品数',
+      tip: '指湘西的店铺当前上架中的特惠商品数',
+      keyName: 'SGOnXiangxi',
+      api: 'saleTotal/fetchSGOnXiangxi',
+      timeSearch: false,
+    },
+    {
+      title: '湘西发布特惠商品数',
+      tip: '指湘西的店铺新发布的特惠商品数',
+      keyName: 'SGXiangxi',
+      api: 'saleTotal/fetchSGXiangxi',
+    },
+    {
+      title: '杭州上架中视频数',
+      tip: '指杭州的店铺当前上架中的视频数',
+      keyName: 'momentOnHangzou',
+      api: 'saleTotal/fetchMomentOnHangzou',
+      timeSearch: false,
+    },
+    {
       title: '杭州发布视频数',
       tip: '指杭州新发布的视频数',
       keyName: 'momentHangzou',
       api: 'saleTotal/fetchMomentHangzou',
+    },
+    {
+      title: '湘西上架中视频数',
+      tip: '指湘西的店铺当前上架中的视频数',
+      keyName: 'momentOnXiangxi',
+      api: 'saleTotal/fetchMomentOnXiangxi',
+      timeSearch: false,
     },
     {
       title: '湘西发布视频数',
@@ -65,15 +105,15 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchMomentXiangxi',
     },
     {
-      title: '杭州注册用户数',
-      tip: '指注册时IP地址是杭州的新用户',
-      keyName: 'userHangzou',
+      title: '浙江注册用户数',
+      tip: '指注册时IP地址是浙江的新用户',
+      keyName: 'UserZJ',
       api: 'saleTotal/fetchUserHangzou',
     },
     {
-      title: '湘西注册用户数',
-      tip: '指注册时IP地址是湘西的新用户',
-      keyName: 'userXiangxi',
+      title: '湖南注册用户数',
+      tip: '指注册时IP地址是湖南的新用户',
+      keyName: 'UserHN',
       api: 'saleTotal/fetchUserXiangxi',
     },
   ];
@@ -86,6 +126,7 @@ const SaleBlockComponent = ({}) => {
           keyName={item.keyName}
           tip={item.tip}
           api={item.api}
+          timeSearch={item.timeSearch}
         ></CardItem>
       ))}
     </Row>
