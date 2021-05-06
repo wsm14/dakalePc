@@ -66,7 +66,7 @@ const UploadBlock = (props) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
-    const showFile = file.originFileObj ? file.originFileObj : file.url || file.preview;
+    const showFile = file.url || file.preview;
     setPreviewImage(showFile);
     setPreviewTitle({ uid: file.uid, key: name, fileType });
     setPreviewVisible(true);
