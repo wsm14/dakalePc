@@ -156,7 +156,7 @@ export default {
       callback();
     },
     *fetchTradeWeChat({ payload, callback }, { call }) {
-      const response = yield call(fetchTradeSet, payload);
+      const response = yield call(fetchTradeWeChat, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
