@@ -60,31 +60,10 @@ const PlatformRights = (props) => {
       select: SPECIAL_STATUS,
     },
     {
-      label: '活动有效期',
-      type: 'rangePicker',
-      name: 'activityStartTime',
-      end: 'activityEndTime',
-    },
-    {
       label: '使用有效期',
-      type: 'select',
-      name: 'useTimeRule',
-      allItem: false,
-      select: SPECIAL_USERTIME_TYPE,
-      handle: (form) => ({
-        onChange: (val) => {
-          console.log(val);
-          setSearchType(val);
-          form.setFieldsValue({ gain: undefined });
-        },
-      }),
-    },
-    {
-      label: '有效期',
-      name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
-      disabled: !searchType,
-      type: { gain: 'number', fixed: 'rangePicker' }[searchType],
-      end: 'useEndTime',
+      type: 'rangePicker',
+      name: 'createStartTime',
+      end: 'createEndTime',
     },
     {
       label: '推广位置',
@@ -93,7 +72,7 @@ const PlatformRights = (props) => {
       select: search_recommend,
     },
     {
-      label: '区域',
+      label: '店铺区域',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
@@ -101,20 +80,15 @@ const PlatformRights = (props) => {
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
     {
-      label: '商圈',
-      name: 'businessHubId',
-      type: 'select',
-      loading: loadings.models.baseData,
-      allItem: false,
-      select: hubData,
-      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
+      label: '创建人',
+      name: 'creator',
     },
-    {
-      label: '店铺类型',
-      name: 'ownerType',
-      type: 'select',
-      select: BUSINESS_TYPE,
-    },
+    // {
+    //   label: '店铺类型',
+    //   name: 'ownerType',
+    //   type: 'select',
+    //   select: BUSINESS_TYPE,
+    // },
     {
       label: '创建时间',
       type: 'rangePicker',
@@ -374,7 +348,7 @@ const PlatformRights = (props) => {
         rowSelection={{
           onChange: setGoodsList,
         }}
-        dispatchType="specialGoods/fetchGetList"
+        // dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
       <SpecialGoodsTrade
