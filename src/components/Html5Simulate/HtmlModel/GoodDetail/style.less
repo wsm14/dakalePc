@@ -1,0 +1,332 @@
+.nameCon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 58px;
+  padding: 0 14px;
+  color: #fff;
+  background: #108588;
+  .priceCon {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 36px;
+    .priceTile {
+      height: 11px;
+      font-size: 11px;
+      line-height: 11px;
+    }
+    .priceNum {
+      display: flex;
+      align-items: flex-end;
+      i {
+        font-weight: normal;
+        font-style: normal;
+      }
+      i:nth-child(1) {
+        font-size: 9px;
+      }
+      i:nth-child(2) {
+        height: 22px;
+        font-size: 22px;
+        line-height: 22px;
+      }
+      i:nth-child(3) {
+        margin-left: 5px;
+        font-size: 11px;
+        text-decoration: line-through;
+        opacity: 0.5;
+      }
+    }
+  }
+  .timesType {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 36px;
+    .times {
+      height: 13px;
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 13px;
+    }
+    .spec_span {
+      display: inline-block;
+      width: 72px;
+      height: 18px;
+      color: #108588;
+      font-size: 11px;
+      line-height: 18px;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 4px;
+    }
+  }
+}
+.goods_dec {
+  padding: 18px 14px;
+  background: #ffffff;
+  .goods_tit {
+    display: -webkit-box;
+    height: 43px;
+    overflow: hidden;
+    color: #333333;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    text-overflow: -o-ellipsis-lastline;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .listChecked {
+    display: flex;
+    align-items: center;
+    margin: 11px 0 18px 0;
+    color: #999999;
+    font-size: 11px;
+    .items {
+      display: flex;
+      align-items: center;
+      margin-right: 11px;
+      font-size: 11px;
+      line-height: 11px;
+      .imgs {
+        display: inline-block;
+        width: 11px;
+        height: 11px;
+        margin-right: 4px;
+        background: url('../../../../images/checked.png') no-repeat center/cover;
+      }
+    }
+  }
+  .quest {
+    width: 16px;
+    height: 16px;
+    background: url('../../../../images/quest.png') no-repeat center/cover;
+  }
+}
+.listGood_spec {
+  display: flex;
+  .item_spec {
+    margin-right: 7px;
+    padding: 4px 5px;
+    color: #f1587d;
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+    background: rgba(239, 71, 111, 0.05);
+    border-radius: 2px;
+  }
+}
+
+.merchantCon {
+  display: flex;
+  align-items: flex-start;
+  box-sizing: border-box;
+  height: 76px;
+  margin-top: 11px;
+  padding: 14px;
+  background: #ffffff;
+  .mechImg {
+    width: 47px;
+    height: 47px;
+    background: #ccc;
+  }
+  .addressCon {
+    display: flex;
+    flex-direction: column;
+    width: 217px;
+    margin-left: 11px;
+    span:nth-child(1) {
+      width: 217px;
+      height: 16px;
+      margin: 4px 0 11px 0;
+      overflow: hidden;
+      color: #333333;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 16px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      word-break: break-all;
+    }
+    span:nth-child(2) {
+      width: 217px;
+      height: 13px;
+      color: #999999;
+      font-size: 13px;
+      line-height: 13px;
+    }
+  }
+  .moreImg {
+    width: 16px;
+    height: 16px;
+    margin: 5px 0 0 18px;
+    background: url('../../../../images/more.png') no-repeat center/cover;
+  }
+}
+.titles {
+  height: 14px;
+  color: #333333;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.uesWays {
+  height: 448px;
+  margin: 11px 14px 0 14px;
+  padding-top: 18px;
+  background: #ffffff;
+  border-radius: 9px;
+  .imgways {
+    width: 309px;
+    height: 423px;
+    margin-top: 11px;
+    background: url('../../../../images/ways.png') no-repeat center/cover;
+  }
+}
+.teams_Con {
+  margin-top: 11px;
+  padding: 18px 14px;
+  background: #ffffff;
+  border-radius: 9px;
+  .teamsList {
+    padding-top: 4px;
+    .item_teams {
+      display: flex;
+      flex-direction: column;
+      margin-top: 14px;
+      .groupNames {
+        height: 14px;
+        color: #333333;
+        font-weight: bold;
+        font-size: 13px;
+        line-height: 14px;
+      }
+      .spec_names{
+        margin-left: 8px;
+        font-size: 13px;
+      }
+    }
+  }
+}
+.goods_Con {
+  margin: 11px 14px 0 14px;
+  padding: 18px 0px;
+  background: #ffffff;
+  border-radius: 9px;
+}
+.goodsimglist {
+  width: 100%;
+  height: 200px;
+  margin: 10px 0 18px 0;
+  background: rgb(223, 243, 243);
+}
+.imgsGood {
+  width: 100%;
+  margin-top: 10px;
+}
+.da_cons {
+  padding: 18px 14px 0 14px;
+}
+.da_imglist {
+  height: 200px;
+  background: rgb(223, 243, 243);
+}
+.da_dec_con {
+  display: flex;
+  flex-direction: column;
+  margin-top: 9px;
+
+  .title_da {
+    color: #333;
+    font-weight: bold;
+    font-size: 13px;
+  }
+}
+.sece_color {
+  color: #108588;
+  font-style: normal;
+}
+.textCon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 280px;
+  margin-top: 11px;
+  color: #666666;
+  font-size: 11px;
+  line-height: 16px;
+}
+.knowsCon {
+  margin: 11px 14px 0 14px;
+  padding: 18px 14px;
+  background: #ffffff;
+  border-radius: 9px;
+
+  .textCons {
+    height: 162px;
+  }
+}
+.colorFon {
+  color: #07c0c2;
+  font-style: normal;
+}
+.spec {
+  margin: 11px 0 0 0 !important;
+}
+.contextCOn {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+}
+.bottomCon {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 58px;
+  background: #fff;
+  .bot_dec {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    padding: 11px 14px;
+    .lefts {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #ef476f;
+      .items_bot {
+        line-height: 1;
+      }
+      .spec_d {
+        margin-left: 6px;
+        padding: 4px 5px;
+        font-size: 9px;
+        background: rgba(239, 71, 111, 0.05);
+      }
+    }
+    .rightbtn {
+      width: 144px;
+      height: 36px;
+      color: #fff;
+      font-size: 14px;
+      line-height: 36px;
+      text-align: center;
+      background: #07c0c2;
+      border-radius: 4px;
+    }
+  }
+}

@@ -179,7 +179,6 @@ const SysAppSet = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
         cRef={childRef}
         searchForm={form}
         cardProps={{

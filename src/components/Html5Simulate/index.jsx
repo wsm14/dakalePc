@@ -1,6 +1,14 @@
 import React from 'react';
+import GoodDetail from './HtmlModel/GoodDetail';
+import './style.less';
 
-const Html5Simulate = ({ show, right = 650, children }) => {
+const Html5Simulate = ({ show, right = 650, data = {}, type = null }) => {
+  console.log(data)
+  const htmlBlock = {
+    null: '',
+    goods: <GoodDetail data={data || {}}></GoodDetail>,
+  }[type];
+
   return (
     show && (
       <div
@@ -8,7 +16,7 @@ const Html5Simulate = ({ show, right = 650, children }) => {
           position: 'absolute',
           width: 337.5,
           height: 600.3,
-          background: 'white',
+          background:'#F5F5F5',
           top: '25%',
           transform: 'translate(0, -50%)',
           right: right + 150,
@@ -18,8 +26,9 @@ const Html5Simulate = ({ show, right = 650, children }) => {
           wordWrap: 'break-word',
           overflowY: 'auto',
         }}
+        className="html_simulate_box"
       >
-        {children}
+        {htmlBlock}
       </div>
     )
   );

@@ -136,6 +136,19 @@ const JumpFormBlock = ({ navigation, nativeList, form, dispatch, detail = {}, po
           <FormItem key={`pamranOhter`} hidden={true} name={['param', paramKey[1]]}></FormItem>
         </>
       )}
+      {showApi === 'activity' && (
+        <>
+          <FormItem
+            key={`activityInput`}
+            label="请输入参数"
+            name={['param', paramKey[0]]}
+            rules={[{ required: true, message: `请输入参数` }]}
+            style={{ maxWidth: '100%' }}
+          >
+            <Input placeholder={'请输入参数'}></Input>
+          </FormItem>
+        </>
+      )}
     </>
   );
 };

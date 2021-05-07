@@ -90,11 +90,13 @@ export default {
         property,
         tags,
         scenesIds,
+        businessStatus,
       } = content.userMerchantVerify;
       const categoryNodeArr = categoryNode.split('.');
       const dataCheck = (key) => (property[key] ? property[key] || '' : '');
       const initialValues = {
         ...content.userMerchantVerify,
+        businessStatus: `${Number(businessStatus)}`,
         provinceCode: [p, c, d],
         selectCity: [
           { value: p, label: pN },

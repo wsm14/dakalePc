@@ -146,7 +146,6 @@ const OpenAdvert = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
         cRef={childRef}
         searchForm={form}
         cardProps={{
