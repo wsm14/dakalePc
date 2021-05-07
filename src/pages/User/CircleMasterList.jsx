@@ -52,8 +52,8 @@ const CircleMasterList = (props) => {
       title: '身份',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'parentUserType',
-      render: (val) => (val === 'user' ? '用户' : '店铺'),
+      dataIndex: 'userType',
+      render: (val) => MASTER_TYPE[val],
     },
     {
       title: '手机号',
