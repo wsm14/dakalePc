@@ -63,7 +63,7 @@ const SaleBlockComponent = ({
             value={saleTotal[keyName] || 0}
             precision={0}
             loading={loading.effects[api]}
-            valueStyle={{ fontSize: timeSearch ? 40 : 60, color: '#1890ff' }}
+            valueStyle={{ fontSize: 40, color: '#1890ff', marginTop: timeSearch ? 0 : 32 }}
           />
         )}
       </Card>
