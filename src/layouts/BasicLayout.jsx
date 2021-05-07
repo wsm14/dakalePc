@@ -139,7 +139,7 @@ const BasicLayout = (props) => {
             }}
           </RouteContext.Consumer>
         </RouteAuthority>
-        <BackTop />
+        <BackTop visibilityHeight={100} style={{ right: 25 }} />
       </ProLayout>
     </AliveScope>
   );
