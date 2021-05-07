@@ -422,6 +422,12 @@ export default [
         component: './System/MenuList',
       },
       {
+        path: '/system/welfare',
+        name: '福利设置',
+        component: './System/WelfareConfig',
+        buttons: ['edit', 'add', 'del'],
+      },
+      {
         path: '/expert/allocation',
         name: '哒人配置',
         component: './System/ExpertAllocation',
