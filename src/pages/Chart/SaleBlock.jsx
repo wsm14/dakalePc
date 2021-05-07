@@ -47,7 +47,7 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchDarenCount',
     },
     {
-      title: '哒人收益',
+      title: '哒人收益卡豆数',
       tip: '指哒人实际获得的分佣（不含待分佣）',
       keyName: 'darenIncome',
       api: 'saleTotal/fetchDarenIncome',
