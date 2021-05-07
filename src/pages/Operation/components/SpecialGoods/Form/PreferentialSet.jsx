@@ -213,7 +213,7 @@ const PreferentialSet = ({
         form={form}
         formItems={formItems}
         initialValues={initialValues}
-        onValuesChange={(changedValues, allValues) => onValuesChange(allValues)}
+        onValuesChange={(changedValues, allValues) => onValuesChange && onValuesChange(allValues)}
       ></FormCondition>
       <MreSelect
         keys={mreList.keys}
