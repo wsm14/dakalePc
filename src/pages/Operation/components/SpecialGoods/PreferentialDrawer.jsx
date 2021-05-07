@@ -230,9 +230,7 @@ const PreferentialDrawer = (props) => {
           ></PreferentialRuleSet>
         </DrawerCondition>
       </DrawerCondition>
-      {/* <Html5Simulate show={show}>
-        <div>{JSON.stringify(showHtmlData)}</div>
-      </Html5Simulate> */}
+      {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}
     </>
   );
 };
