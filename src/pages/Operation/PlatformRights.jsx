@@ -15,10 +15,9 @@ import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
-import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
-import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
-import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
+import SpecialGoodsTrade from './components/PlatformRights/SpecialGoodsTrade';
+import PreferentialDrawer from './components/PlatformRights/PreferentialDrawer';
+import PlatformRightsDetail from './components/PlatformRights/PlatformRightsDetail';
 
 const PlatformRights = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -388,7 +387,7 @@ const PlatformRights = (props) => {
         onClose={() => setVisibleSet({ show: false })}
       ></PreferentialDrawer>
       {/* 详情 */}
-      <SpecialGoodDetail
+      <PlatformRightsDetail
         visible={visibleInfo}
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
@@ -400,7 +399,7 @@ const PlatformRights = (props) => {
           })
         }
         onClose={() => setVisibleInfo(false)}
-      ></SpecialGoodDetail>
+      ></PlatformRightsDetail>
     </>
   );
 };

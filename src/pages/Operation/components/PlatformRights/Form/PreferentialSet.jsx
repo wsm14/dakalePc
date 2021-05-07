@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Checkbox } from 'antd';
 import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
 import FormCondition from '@/components/FormCondition';
@@ -165,31 +165,68 @@ const PreferentialSet = ({
       ],
     },
     {
-      label: '商家结算价',
-      name: 'merchantPrice',
+      label: `平台成本价`,
+      name: 'oriPrice',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
-      addRules: [
-        {
-          validator: (rule, value) => {
-            const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('realPrice'));
-            if (merchantPrice > buyPrice) {
-              return Promise.reject('商家结算价不可超过售卖价格');
-            }
-            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            if (merchantPrice > getPrice) {
-              return Promise.reject(`商家结算价不可超过${getPrice}`);
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
     },
+    {
+      label: `哒人分配佣金`,
+      name: 'oriPrice',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+    },
+    {
+      label: `区县分佣佣金`,
+      name: 'oriPrice',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+    },
+    {
+      type: 'noForm',
+      name: 'check',
+      formItem: <Checkbox style={{ marginLeft: '120px' }}>不允许纯现金支付</Checkbox>,
+      // type:'checkbox',
+      // label: `不允许纯现金支付`,
+      // name:'',
+      // select:[{label:'不允许纯现金支付',value:''}]
+    },
+
+    // {
+    //   label: '商家结算价',
+    //   name: 'merchantPrice',
+    //   type: 'number',
+    //   precision: 2,
+    //   min: 0,
+    //   max: 999999.99,
+    //   formatter: (value) => `￥ ${value}`,
+    //   addRules: [
+    //     {
+    //       validator: (rule, value) => {
+    //         const merchantPrice = Number(value);
+    //         const buyPrice = Number(form.getFieldValue('realPrice'));
+    //         if (merchantPrice > buyPrice) {
+    //           return Promise.reject('商家结算价不可超过售卖价格');
+    //         }
+    //         // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
+    //         const getPrice = buyPrice * (1 - mreList.ratio / 100);
+    //         if (merchantPrice > getPrice) {
+    //           return Promise.reject(`商家结算价不可超过${getPrice}`);
+    //         }
+    //         return Promise.resolve();
+    //       },
+    //     },
+    //   ],
+    // },
     {
       title: `设置${goodsTypeName}介绍`,
       label: `${goodsTypeName}介绍`,

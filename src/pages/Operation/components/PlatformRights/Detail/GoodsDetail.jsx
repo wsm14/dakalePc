@@ -56,8 +56,20 @@ const GoodsDetail = (props) => {
     },
     {
       name: 'merchantPrice',
-      label: '商家结算价',
+      label: '平台成本价',
     },
+    {
+      name: 'merchantPrice',
+      label: '哒人分配佣金',
+    },
+    {
+      name: 'merchantPrice',
+      label: '区县分佣佣金',
+    },
+    // {
+    //   name: 'merchantPrice',
+    //   label: '商家结算价',
+    // },
   ];
 
   const GoodDecItem = [

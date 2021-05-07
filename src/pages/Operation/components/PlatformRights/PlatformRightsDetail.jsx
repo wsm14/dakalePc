@@ -5,7 +5,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
 
-const SpecialGoodDetail = (props) => {
+const PlatformRightsDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading } = props;
   const { show = false, index, detail = {}, status } = visible;
 
@@ -47,4 +47,4 @@ const SpecialGoodDetail = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['specialGoods/fetchSpecialGoodsDetail'],
-}))(SpecialGoodDetail);
+}))(PlatformRightsDetail);
