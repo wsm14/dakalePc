@@ -14,7 +14,7 @@ const tabList = [
   {
     key: 'action',
     auth: 'action',
-    tab: '行为管理',
+    tab: '使用规则',
   },
 ];
 
