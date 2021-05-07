@@ -106,6 +106,14 @@ export function fetchTradeSet(data) {
   });
 }
 
+// post 行业设置 - 小程序是否可见
+export function fetchTradeWeChat(data) {
+  return request('/admin/systemIndustry/setCategoryIsWeChat', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 帐号设置 - 修改密码
 export function fetchPassWordEdit(data) {
   return request('/admin/admin/account/updatePassword', {

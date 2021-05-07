@@ -88,7 +88,7 @@ const SysTradeSet = (props) => {
             unCheckedChildren="关"
             checked={val === '1'}
             onClick={() =>
-              fetchTradeSet({ categoryId: record.categoryIdString, isWechat: 1 ^ val })
+              fetchTradeWeChat({ categoryId: record.categoryIdString, isWechat: 1 ^ val })
             }
           />
         </AuthConsumer>
@@ -134,6 +134,15 @@ const SysTradeSet = (props) => {
 
   // 类目设置修改
   const handleClassSet = (type, detail) => setClassVisible({ show: true, type, detail });
+
+  // 小程序是否可见开关
+  const fetchTradeWeChat = (values) => {
+    dispatch({
+      type: 'sysTradeList/fetchTradeWeChat',
+      payload: values,
+      callback: childRef.current.fetchGetData,
+    });
+  };
 
   // 删除/修改类目
   const fetchTradeSet = (values) => {

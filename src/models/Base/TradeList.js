@@ -3,6 +3,7 @@ import {
   fetchTradeList,
   fetchTradeAdd,
   fetchTradeSet,
+  fetchTradeWeChat,
   fetchTradeBaseList,
   fetchTradePlatformList,
   fetchTradeSpecialList,
@@ -151,6 +152,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: `${payload.isDelete ? '删除' : '修改'}类目成功`,
+      });
+      callback();
+    },
+    *fetchTradeWeChat({ payload, callback }, { call }) {
+      const response = yield call(fetchTradeSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `类目设置成功`,
       });
       callback();
     },
