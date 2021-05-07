@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -28,20 +28,6 @@ const NewsPeople = (props) => {
       payload: {
         configWindVaneId,
         deleteFlag: 0,
-      },
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // 排序
-  const fetchDetailSort = (list) => {
-    dispatch({
-      type: 'walkingManage/fetchWalkManageVaneSort',
-      payload: {
-        configWindVaneDTOList: list.map((item, i) => ({
-          configWindVaneId: item.configWindVaneId,
-          sort: i,
-        })),
       },
       callback: childRef.current.fetchGetData,
     });
