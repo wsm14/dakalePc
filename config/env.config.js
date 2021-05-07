@@ -29,7 +29,7 @@ export default {
   },
   test: {
     define: {
-      APIURL: 'http://192.168.0.188:6020',
+      APIURL: 'https://devgateway.dakale.net',
     },
     proxy: {
       '/api/': {
