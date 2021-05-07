@@ -230,7 +230,11 @@ export const MSG_PSUH_OBJECT = { all: '全部用户' };
 export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 
 // 补贴管理 补贴类型
-export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
+export const SUBSIDY_TYPE = {
+  behavior: '行为补贴',
+  platform: '营销卡豆充值',
+  directCharge: '平台直充',
+};
 
 // 补贴管理 任务列表 补贴角色
 export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', kol: '哒人' };

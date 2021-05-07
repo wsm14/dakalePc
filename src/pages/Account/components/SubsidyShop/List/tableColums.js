@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ADD_AND_MINUS, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { ADD_AND_MINUS, SUBSIDY_TASK_ROLE, SUBSIDY_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const infoHandle = (click) => (
@@ -27,7 +27,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       dataIndex: 'gainTime',
     },
     {
-      title: '平台直充',
+      title: '营销卡豆充值',
       align: 'right',
       dataIndex: 'platformBean',
     },
@@ -81,7 +81,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '类型',
           align: 'center',
           dataIndex: 'identificationType',
-          render: (val) => (val === 'platform' ? '平台直充' : '--'),
+          render: (val) => SUBSIDY_TYPE[val],
         },
         {
           title: '角色',
@@ -143,7 +143,10 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
               setSearchData({
                 ...searchData,
                 latitude: 'day',
-                time: [moment(row.gainMonth).startOf('month'), moment(row.gainMonth).endOf('month')],
+                time: [
+                  moment(row.gainMonth).startOf('month'),
+                  moment(row.gainMonth).endOf('month'),
+                ],
               }),
             ),
         },

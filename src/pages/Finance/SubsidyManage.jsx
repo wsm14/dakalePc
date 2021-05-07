@@ -9,7 +9,12 @@ const tabList = [
   {
     key: 'task',
     auth: 'task',
-    tab: '任务列表',
+    tab: '营销卡豆充值',
+  },
+  {
+    key: 'direct',
+    auth: 'direct',
+    tab: '平台直充',
   },
   {
     key: 'action',
@@ -39,10 +44,12 @@ const SubsidyManage = () => {
   const tableProp = {
     childRef,
     setVisible,
+    tabkey,
   };
 
   const contentList = {
     task: <TaskList {...tableProp}></TaskList>,
+    direct: <TaskList {...tableProp}></TaskList>,
     action: <ActionList {...tableProp}></ActionList>,
   };
 
@@ -50,14 +57,27 @@ const SubsidyManage = () => {
     <>
       <Card
         tabList={check}
-        onTabChange={(key) => setTabKey(key)}
+        onTabChange={(key) => {
+          const checkGet = ['task', 'direct'];
+          checkGet.includes(key) &&
+            checkGet.includes(tabkey) &&
+            childRef.current.fetchGetData({
+              type: { task: 'platform', direct: 'directCharge' }[tabkey],
+            });
+          setTabKey(key);
+        }}
         tabBarExtraContent={
           <Space>
             <AuthConsumer auth={`${tabkey}Save`}>
               <Button
                 className="dkl_green_btn"
                 onClick={() =>
-                  setVisible({ type: 'add', tab: tabkey, show: true, detail: { subsidyRole: 'merchant' } })
+                  setVisible({
+                    type: 'add',
+                    tab: tabkey,
+                    show: true,
+                    detail: { subsidyRole: 'merchant' },
+                  })
                 }
               >
                 新增

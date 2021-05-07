@@ -7,20 +7,9 @@ import HandleSetTable from '@/components/HandleSetTable';
 import TaskDetailList from '../Detail/TaskDetailList';
 
 const TaskManage = (props) => {
-  const { subsidyManage, loading, childRef, setVisible, dispatch } = props;
+  const { subsidyManage, loading, childRef, tabkey, setVisible, dispatch } = props;
 
-  const [dates, setDates] = useState([]); // 时间选择器限制选择参数比较
   const [taskDetail, setTaskDates] = useState(false); // 补贴详情展示
-
-  // 时间限制选择一年
-  const disabledDate = (current) => {
-    if (!dates || dates.length === 0) {
-      return false;
-    }
-    const tooLate = dates[0] && current.diff(dates[0], 'days') > 365;
-    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 365;
-    return tooEarly || tooLate;
-  };
 
   // 搜索参数
   const searchItems = [
@@ -29,25 +18,10 @@ const TaskManage = (props) => {
       name: 'taskName',
     },
     {
-      label: '补贴类型',
+      label: '创建人',
       type: 'select',
       name: 'type',
       select: SUBSIDY_TYPE,
-    },
-    {
-      label: '补贴角色',
-      type: 'select',
-      name: 'role',
-      select: SUBSIDY_TASK_ROLE,
-    },
-    {
-      label: '时间',
-      type: 'rangePicker',
-      name: 'startTime',
-      end: 'endTime',
-      onCalendarChange: setDates,
-      onOpenChange: () => setDates([]),
-      disabledDate,
     },
   ];
 
@@ -60,16 +34,16 @@ const TaskManage = (props) => {
       width: 150,
     },
     {
-      title: '补贴类型',
-      align: 'center',
-      dataIndex: 'type',
-      render: (val) => SUBSIDY_TYPE[val],
-    },
-    {
-      title: '补贴角色',
+      title: '角色',
       align: 'center',
       dataIndex: 'role',
       render: (val) => SUBSIDY_TASK_ROLE[val],
+    },
+    {
+      title: '类型',
+      align: 'center',
+      dataIndex: 'type',
+      render: (val) => SUBSIDY_TYPE[val],
     },
     {
       title: '总参与人数',
@@ -80,6 +54,12 @@ const TaskManage = (props) => {
       title: '已补贴卡豆数',
       align: 'right',
       dataIndex: 'subsidizedBeans',
+    },
+    {
+      title: '创建时间',
+      align: 'right',
+      dataIndex: 'subsidizedBeans',
+      render: (val) => SUBSIDY_TYPE[val],
     },
     {
       title: '操作',
@@ -93,22 +73,22 @@ const TaskManage = (props) => {
             formItems={[
               {
                 type: 'info',
-                auth: 'taskInfo',
+                auth: `${tabkey}Info`,
                 click: () => fetchSubsidyTaskDetail({ subsidyId }),
               },
               {
-                type: 'taskDetail',
+                type: `${tabkey}Detail`,
                 click: () => setTaskDates({ show: true, detail: record }),
               },
               {
                 type: 'del',
-                auth: 'taskDel',
+                auth: `${tabkey}Del`,
                 visible: status === '0',
                 click: () => fetchSubsidyTaskEndDel({ subsidyId, deleteFlag: 0 }),
               },
               {
                 type: 'end',
-                auth: 'taskEnd',
+                auth: `${tabkey}End`,
                 pop: true,
                 visible: status === '1',
                 click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
@@ -147,13 +127,14 @@ const TaskManage = (props) => {
           <ExcelButton
             dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
             dispatchData={get()}
-            exportProps={{ header: getColumns.slice(0, -1) }}
+            exportProps={{ header: getColumns }}
           ></ExcelButton>
         )}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        params={{ tabkey }}
         rowKey={(record) => `${record.subsidyId}`}
         dispatchType="subsidyManage/fetchGetTaskList"
         {...subsidyManage.list}
