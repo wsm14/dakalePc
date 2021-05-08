@@ -11,17 +11,9 @@ const SubsidyActionSet = (props) => {
   const [handleFee, setHandleFee] = useState('mark');
 
   useEffect(() => {
-    fetchTradeList();
     // 修改时根据type 展示手续费表单
     setHandleFee(detail.subsidyType || 'mark');
   }, []);
-
-  // 行业
-  const fetchTradeList = () => {
-    dispatch({
-      type: 'sysTradeList/fetchGetList',
-    });
-  };
 
   const formItems = [
     {
@@ -42,7 +34,7 @@ const SubsidyActionSet = (props) => {
       label: '补贴角色',
       name: 'subsidyRole',
       type: 'select',
-      select: SUBSIDY_ACTION_ROLE
+      select: SUBSIDY_ACTION_ROLE,
     },
     {
       label: '奖励类型',

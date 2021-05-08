@@ -10,6 +10,7 @@ import {
   fetchSubsidyActionList,
   fetchSubsidyActionAdd,
   fetchSubsidyActionDel,
+  fetchActionBatchEdit,
 } from '@/services/FinanceServices';
 
 export default {
@@ -122,6 +123,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '使用规则删除成功',
+      });
+      callback();
+    },
+    *fetchActionBatchEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchActionBatchEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '使用规则批量修改成功',
       });
       callback();
     },

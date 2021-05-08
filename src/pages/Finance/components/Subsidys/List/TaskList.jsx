@@ -49,9 +49,10 @@ const TaskManage = (props) => {
       dataIndex: 'participants',
     },
     {
-      title: '已补贴卡豆数',
+      title: '补贴/回收卡豆数',
       align: 'right',
       dataIndex: 'subsidizedBeans',
+      render: (val, row) => (row.mode == 'out' ? val : row.rechargeBeans),
     },
     {
       title: '创建时间',

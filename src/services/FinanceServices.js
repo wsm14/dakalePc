@@ -54,14 +54,14 @@ export function fetchSubsidyTaskEndDel(data) {
   });
 }
 
-// get 补贴管理 - 行为管理 - 列表
+// get 补贴管理 - 使用规则 - 列表
 export function fetchSubsidyActionList(params) {
   return request('/admin/systemConfig/listConfigBehavior', {
     params,
   });
 }
 
-// post 补贴管理 - 行为管理 - 新增编辑
+// post 补贴管理 - 使用规则 - 新增编辑
 export function fetchSubsidyActionAdd(data) {
   return request('/admin/systemConfig/saveConfigBehavior', {
     method: 'POST',
@@ -69,9 +69,17 @@ export function fetchSubsidyActionAdd(data) {
   });
 }
 
-// post 补贴管理 - 行为管理 - 删除
+// post 补贴管理 - 使用规则 - 删除
 export function fetchSubsidyActionDel(data) {
   return request('/admin/systemConfig/deleteConfigBehavior', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 使用规则 - 批量修改
+export function fetchActionBatchEdit(data) {
+  return request('/admin/systemConfig/batchUpdateConfigBehavior', {
     method: 'POST',
     data,
   });

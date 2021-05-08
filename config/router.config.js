@@ -264,6 +264,7 @@ export default [
           'actionSave',
           'actionDel',
           'actionEdit',
+          'batchEdit',
         ],
       },
       {
