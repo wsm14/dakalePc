@@ -2,7 +2,7 @@ import React from 'react';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
-const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
+const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) => {
   // table 表头
   const getColumns = [
     {
@@ -34,6 +34,7 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
         </Ellipsis>
       ),
     },
+    ...otherColumns,
   ];
 
   return (

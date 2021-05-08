@@ -46,6 +46,14 @@ export function fetchSubsidyDirectAdd(data) {
   });
 }
 
+// post 补贴管理 - 卡豆回收
+export function fetchSubsidyRecycleBean(data) {
+  return request('/admin/subsidyManagement/recycleBean', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 补贴管理 - 任务列表 -  删除 结束
 export function fetchSubsidyTaskEndDel(data) {
   return request('/admin/subsidyManagement/updateSubsidy', {

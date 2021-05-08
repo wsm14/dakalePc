@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from 'antd';
-import { SUBSIDY_TASK_ROLE } from '@/common/constant';
+import lodash from 'lodash';
+import { Button, InputNumber } from 'antd';
 import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
 import FormCondition from '@/components/FormCondition';
 
 const SubsidyRecycleBean = (props) => {
   const { form, detail } = props;
-  // 选择店铺弹窗
-  const [visible, setVisible] = useState(false);
-  // 选择店铺后回显的数据
-  const [mreList, setMreList] = useState({ keys: [], list: [] });
+
+  const [visible, setVisible] = useState(false); // 选择店铺弹窗
+  const [mreList, setMreList] = useState({ keys: [], list: [] }); // 选择店铺后回显的数据
+  const [mreNumber, setMreNumber] = useState({}); // 店铺回收卡豆数 暂存输入值
+  const [mreTotal, setMreTotal] = useState(0); // 店铺回收卡豆数
 
   // 设置form表单值 店铺id
   useEffect(() => {
-    form.setFieldsValue({ merchantIds: mreList.keys.toString() });
-  }, [mreList]);
+    const newData = lodash.pickBy(mreNumber, (value, key) => mreList.keys.includes(key));
+    const recycleList = Object.keys(newData).map((item) => ({
+      merchantId: item,
+      recycleBean: newData[item] || 0,
+    }));
+    setMreTotal(lodash.sumBy(recycleList, 'recycleBean'));
+    form.setFieldsValue({ recycleList });
+  }, [mreList, mreNumber]);
 
   const formItems = [
     {
@@ -40,16 +47,39 @@ const SubsidyRecycleBean = (props) => {
     {
       label: '适用店铺',
       type: 'noForm',
-      formItem: <MreSelectShow key="MreTable" {...mreList} setMreList={setMreList}></MreSelectShow>,
+      formItem: (
+        <MreSelectShow
+          key="MreTable"
+          {...mreList}
+          setMreList={setMreList}
+          otherColumns={[
+            {
+              fixed: 'right',
+              title: '回收卡豆数',
+              dataIndex: 'recycleBean',
+              render: (val, record) => (
+                <InputNumber
+                  value={mreNumber[record.userMerchantIdString]}
+                  precision={0}
+                  min={0}
+                  onChange={(val) =>
+                    setMreNumber(({ sum, ...other }) => ({
+                      ...other,
+                      [record.userMerchantIdString]: val,
+                    }))
+                  }
+                ></InputNumber>
+              ),
+            },
+          ]}
+        ></MreSelectShow>
+      ),
     },
     {
       label: '回收卡豆数',
-      name: 'rechargeBeans',
-      disabled: true,
-      type: 'number',
-      precision: 0,
-      min: 0,
-      max: 999999999,
+      name: 'recycleList',
+      type: 'formItem',
+      formItem: <>{mreTotal}</>,
     },
     {
       label: '回收凭证',

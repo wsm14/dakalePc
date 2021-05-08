@@ -54,11 +54,7 @@ const EditableCell = ({
     }
   };
   let childNode = children;
-  const dataNum =
-    maxLength &&
-    `${
-      totalNum || 0
-    }/${maxLength}`;
+  const dataNum = maxLength && `${totalNum || 0}/${maxLength}`;
   if (editable) {
     childNode = editing ? (
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -76,10 +72,13 @@ const EditableCell = ({
             },
           ]}
         >
-          <Input ref={inputRef} onPressEnter={save}
-                 onFocus={(e) => setTotalNum(e.target.value.length)}
-                 onChange={(e) => setTotalNum(e.target.value.length)}
-                 suffix={suffix?dataNum:false}  maxLength={maxLength}
+          <Input
+            ref={inputRef}
+            onPressEnter={save}
+            onFocus={(e) => setTotalNum(e.target.value.length)}
+            onChange={(e) => setTotalNum(e.target.value.length)}
+            suffix={suffix ? dataNum : false}
+            maxLength={maxLength}
           />
         </Form.Item>
         <a onClick={save} style={{ marginRight: 10 }}>

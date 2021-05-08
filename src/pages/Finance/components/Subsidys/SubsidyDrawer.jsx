@@ -20,18 +20,33 @@ const SubsidyDrawer = (props) => {
     childRef.current.fetchGetData();
   };
 
-  // 新增 task 营销卡豆充值 direct 平台直充
+  // 新增 task 营销卡豆充值 direct 平台直充 batch 卡豆回收
   const handleUpAddTask = () => {
     form.validateFields().then((values) => {
       const { certificate } = values;
       aliOssUpload(certificate).then((res) => {
+        const disProps = {
+          // 卡豆回收
+          batch: {
+            type: 'subsidyManage/fetchSubsidyRecycleBean',
+            payload: {
+              type: { task: 'platform', direct: 'directCharge' }[tab],
+            },
+          },
+          // 新增
+          add: {
+            type: {
+              task: 'subsidyManage/fetchSubsidyTaskAdd',
+              direct: 'subsidyManage/fetchSubsidyDirectAdd',
+            }[tab],
+            payload: {},
+          },
+        }[type];
         dispatch({
-          type: {
-            task: 'subsidyManage/fetchSubsidyTaskAdd',
-            direct: 'subsidyManage/fetchSubsidyDirectAdd',
-          }[tab],
+          type: disProps.type,
           payload: {
             ...values,
+            ...disProps.payload,
             certificate: res.toString(),
           },
           callback: closeDrawer,

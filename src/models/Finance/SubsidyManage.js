@@ -6,6 +6,7 @@ import {
   fetchSubsidyTaskEndDel,
   fetchSubsidyTaskAdd,
   fetchSubsidyDirectAdd,
+  fetchSubsidyRecycleBean,
   fetchSubsidyTaskDetailList,
   fetchSubsidyActionList,
   fetchSubsidyActionAdd,
@@ -105,6 +106,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '平台直充新增成功',
+      });
+      callback();
+    },
+    *fetchSubsidyRecycleBean({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyRecycleBean, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '卡豆回收新建成功',
       });
       callback();
     },
