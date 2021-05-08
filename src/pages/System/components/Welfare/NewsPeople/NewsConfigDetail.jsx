@@ -21,6 +21,7 @@ const NewsConfigDetail = (props) => {
     },
   }[type];
 
+
   const formItems = [
     {
       label: '福利名称',
@@ -51,7 +52,7 @@ const NewsConfigDetail = (props) => {
       type: 'formItem',
       formItem: (
         <>
-          <Form.Item name="isBeanPay">
+          <Form.Item name="isBeanPay" >
             <Checkbox.Group>
               <Checkbox value="1" style={{ lineHeight: '32px' }}>
                 必须使用卡豆支付
@@ -76,13 +77,12 @@ const NewsConfigDetail = (props) => {
 
   const save = () => {
     form.validateFields().then((values) => {
-      console.log(values);
       const { activityTime } = values;
       delete values.activityTime;
       const payload = {
         ...values,
         configNewcomerOrdersId: detail.configNewcomerOrdersId,
-        isBeanPay: Array.isArray(values.isBeanPay) ? values.isBeanPay[0] : values.isBeanPay,
+        isBeanPay: values.isBeanPay ? values.isBeanPay[0] : 0,
         activityStartDay: activityTime[0].format('YYYY-MM-DD'),
         activityEndDay: activityTime[1].format('YYYY-MM-DD'),
       };
