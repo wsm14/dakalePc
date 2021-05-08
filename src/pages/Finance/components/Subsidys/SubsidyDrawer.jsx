@@ -4,6 +4,7 @@ import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import SubsidyDetail from './Detail/SubsidyDetail';
 import SubsidyDirectMoney from './Form/SubsidyDirectMoney';
+import SubsidyRecycleBean from './Form/SubsidyRecycleBean';
 import SubsidyActionSet from './Form/SubsidyActionSet';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -58,6 +59,15 @@ const SubsidyDrawer = (props) => {
     add: {
       title: '新增',
       children: <SubsidyDirectMoney form={form} detail={detail}></SubsidyDirectMoney>,
+      footer: (
+        <Button onClick={handleUpAddTask} type="primary" loading={loading}>
+          提交
+        </Button>
+      ),
+    },
+    batch: {
+      title: '卡豆回收',
+      children: <SubsidyRecycleBean form={form} detail={detail}></SubsidyRecycleBean>,
       footer: (
         <Button onClick={handleUpAddTask} type="primary" loading={loading}>
           提交

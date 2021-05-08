@@ -62,6 +62,21 @@ const SubsidyManage = () => {
         }}
         tabBarExtraContent={
           <Space>
+            <AuthConsumer auth={'recycleBean'} show={tabkey !== 'action'}>
+              <Button
+                className="dkl_green_btn"
+                onClick={() =>
+                  setVisible({
+                    type: 'batch',
+                    tab: tabkey,
+                    show: true,
+                    detail: { role: 'merchant' },
+                  })
+                }
+              >
+                卡豆回收
+              </Button>
+            </AuthConsumer>
             <AuthConsumer auth={'batchEdit'} show={tabkey === 'action'}>
               <Button
                 disabled={!actionIdList.length}
@@ -74,14 +89,7 @@ const SubsidyManage = () => {
             <AuthConsumer auth={`${tabkey}Save`}>
               <Button
                 className="dkl_green_btn"
-                onClick={() =>
-                  setVisible({
-                    type: 'add',
-                    tab: tabkey,
-                    show: true,
-                    detail: { subsidyRole: 'merchant' },
-                  })
-                }
+                onClick={() => setVisible({ type: 'add', tab: tabkey, show: true })}
               >
                 新增
               </Button>

@@ -27,7 +27,7 @@ const SubsidyDetail = (props) => {
     },
     {
       label: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
-      name: { out: 'subsidizedBeans', in: '' }[mode],
+      name: { out: 'subsidizedBeans', in: 'recycleBean' }[mode],
     },
     {
       label: '充值卡豆数',

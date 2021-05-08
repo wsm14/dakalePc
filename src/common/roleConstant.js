@@ -70,6 +70,7 @@ export const ROLE_BUTTON_TYPE = {
   roleEdit: '角色权限设置',
   rightsSet: '权益设置',
   roleStatus: '角色状态',
+  recycleBean: '卡豆回收',
   reportCenter: '举报中心',
   recommendList: '推荐列表',
   rechargeDetail: '充值记录',

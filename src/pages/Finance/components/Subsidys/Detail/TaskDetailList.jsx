@@ -9,7 +9,7 @@ const TaskDetailList = (props) => {
   const { detailList, loading, visible = {}, onClose } = props;
 
   const { show = false, detail = {} } = visible;
-  const { subsidyId, taskName, subsidizedBeans, mode } = detail;
+  const { subsidyId, taskName, subsidizedBeans, recycleBean, mode } = detail;
 
   // 搜索参数
   const searchItems = [
@@ -50,7 +50,7 @@ const TaskDetailList = (props) => {
     {
       title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
       align: 'right',
-      dataIndex: { out: 'rechargeBeans', in: '' }[mode],
+      dataIndex: 'rechargeBeans',
     },
     // {
     //   title: '已消耗卡豆数',
@@ -62,7 +62,7 @@ const TaskDetailList = (props) => {
   return (
     <Modal
       title={`补贴详情 - ${taskName} | 总${SUBSIDY_BEAN_TYPE[mode]}卡豆：${
-        { out: subsidizedBeans, in: 0 }[mode]
+        { out: subsidizedBeans, in: recycleBean }[mode]
       }`}
       width={1150}
       destroyOnClose

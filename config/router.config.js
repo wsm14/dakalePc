@@ -265,6 +265,7 @@ export default [
           'actionDel',
           'actionEdit',
           'batchEdit',
+          'recycleBean',
         ],
       },
       {
