@@ -27,8 +27,8 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.configNewcomerOrders,
-          total: content.configNewcomerOrders.length,
+          list: content.recordList,
+          total: content.total,
         },
       });
     },

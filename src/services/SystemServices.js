@@ -170,8 +170,10 @@ export function fetchWalkManageGratiaClassAdd(data) {
 // 新人下单配置 start
 
 //新人下单配置列表
-export function fetchWelfareConfigList() {
-  return request('/admin/systemConfig/listConfigNewcomerOrders');
+export function fetchWelfareConfigList(params) {
+  return request('/admin/systemConfig/listConfigNewcomerOrders', {
+    params,
+  });
 }
 
 //  新增、修改 新人下单配置

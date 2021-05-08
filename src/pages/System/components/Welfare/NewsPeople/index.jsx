@@ -48,15 +48,14 @@ const NewsPeople = (props) => {
       render: (val, record) =>
         val == 1 && record.orderFee > 0
           ? `卡豆支付,满${record.orderFee}元`
-          : val == 1 && (record.orderFee==0 ||record.orderFee=='')
+          : val == 1 && (record.orderFee == 0 || record.orderFee == '')
           ? '卡豆支付'
           : `满${record.orderFee}元`,
     },
     {
       title: '活动时间',
       dataIndex: 'activityStartDay',
-      render: (val, record) =>
-        val ? `${val}-${record.activityEndDay}`:'--'
+      render: (val, record) => (val ? `${val}-${record.activityEndDay}` : '--'),
     },
     // {
     //   title: '创建时间',
@@ -115,7 +114,6 @@ const NewsPeople = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.configNewcomerOrdersId}`}
         dispatchType="welfareConfigList/fetchWelfareConfigLists"
-        pagination={false}
         {...welfareConfigList}
       ></TableDataBlock>
       <NewsConfigDeatil
