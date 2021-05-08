@@ -50,23 +50,22 @@ const NewsConfigDetail = (props) => {
       label: '成立条件',
       type: 'formItem',
       formItem: (
-        <div style={{ display: 'flex' }}>
+        <>
           <Form.Item name="isBeanPay">
             <Checkbox.Group>
               <Checkbox value="1" style={{ lineHeight: '32px' }}>
                 必须使用卡豆支付
               </Checkbox>
-              <Checkbox value="0" style={{ lineHeight: '32px' }}>
-                每单实付满
-              </Checkbox>
             </Checkbox.Group>
           </Form.Item>
-          <Form.Item name="orderFee" style={{ width: '120px' }}>
-            <Input suffix="元" />
+
+          <Form.Item label="每单实付满" name="orderFee">
+            <Input suffix="元" style={{ width: '120px' }} />
           </Form.Item>
-        </div>
+        </>
       ),
     },
+
     {
       label: '活动时间',
       name: 'activityTime',
@@ -76,13 +75,15 @@ const NewsConfigDetail = (props) => {
   ];
   const save = () => {
     form.validateFields().then((values) => {
+        console.log(values)
       const { activityTime } = values;
       delete values.activityTime;
       const payload = {
         ...values,
-        isBeanPay: values.isBeanPay ? values.isBeanPay.join(',') : '',
-        activityStartDay: activityTime[0].format('YYYY-MM-DD HH:mm:ss'),
-        activityEndDay: activityTime[1].format('YYYY-MM-DD HH:mm:ss'),
+        configNewcomerOrdersId: detail.configNewcomerOrdersId,
+        isBeanPay: Array.isArray(values.isBeanPay)?values.isBeanPay[0]:values.isBeanPay,
+        activityStartDay: activityTime[0].format('YYYY-MM-DD'),
+        activityEndDay: activityTime[1].format('YYYY-MM-DD'),
       };
 
       dispatch({

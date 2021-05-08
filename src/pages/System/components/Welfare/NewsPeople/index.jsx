@@ -4,7 +4,8 @@ import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import NewsConfigDeatil from './NewsConfigDetail';
-import { WELFARE_STATUS } from '@/common/constant'
+import { WELFARE_STATUS } from '@/common/constant';
+import moment from 'moment';
 
 const NewsPeople = (props) => {
   const { welfareConfigList, loading, dispatch } = props;
@@ -14,7 +15,8 @@ const NewsPeople = (props) => {
 
   // 获取详情
   const fetchGetDetail = (val, type) => {
-    setVisible({ show: true, type, detail: val });
+    const activityTime = [moment(val.activityStartDay), moment(val.activityEndDay)];
+    setVisible({ show: true, type, detail: { ...val, activityTime } });
   };
 
   // 删除
@@ -43,28 +45,23 @@ const NewsPeople = (props) => {
     {
       title: '成立条件',
       dataIndex: 'isBeanPay',
-      render: (val, record) => {
-        if (val == 1 && record.orderFee > 0) {
-          return `卡豆支付,满${record.orderFee}元`;
-        }
-        if (val == 1 && !record.orderFee) {
-          return `卡豆支付`;
-        }
-        if (val == 0) {
-          return `满${record.orderFee}元`;
-        }
-      },
+      render: (val, record) =>
+        val == 1 && record.orderFee > 0
+          ? `卡豆支付,满${record.orderFee}元`
+          : val == 1 && (record.orderFee==0 ||record.orderFee=='')
+          ? '卡豆支付'
+          : `满${record.orderFee}元`,
     },
     {
       title: '活动时间',
       dataIndex: 'activityStartDay',
       render: (val, record) =>
-        val ? (val + '-' + record.activityEndDay ? record.activityEndDay : '') : '',
+        val ? `${val}-${record.activityEndDay}`:'--'
     },
-    {
-      title: '创建时间',
-      dataIndex: 'name',
-    },
+    // {
+    //   title: '创建时间',
+    //   dataIndex: 'name',
+    // },
     {
       title: '创建人',
       dataIndex: 'creator',
@@ -72,7 +69,7 @@ const NewsPeople = (props) => {
     {
       title: '状态',
       dataIndex: 'status',
-      render:(val) =>WELFARE_STATUS[val]
+      render: (val) => WELFARE_STATUS[val],
     },
     {
       title: '操作',
@@ -92,6 +89,7 @@ const NewsPeople = (props) => {
                 type: 'del',
                 auth: true,
                 click: () => fetchDetailDel(val),
+                visible: record.status == 0 || record.status == 2,
               },
             ]}
           />
@@ -115,7 +113,7 @@ const NewsPeople = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.configWindVaneId}`}
+        rowKey={(record) => `${record.configNewcomerOrdersId}`}
         dispatchType="welfareConfigList/fetchWelfareConfigLists"
         pagination={false}
         {...welfareConfigList}
