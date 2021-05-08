@@ -16,6 +16,15 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
       ),
     },
     {
+      title: '经营类目',
+      dataIndex: 'topCategoryName',
+    },
+    {
+      title: '地区',
+      dataIndex: 'provinceName',
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+    },
+    {
       title: '详细地址',
       dataIndex: 'address',
       width: 200,

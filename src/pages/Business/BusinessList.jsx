@@ -21,20 +21,14 @@ const BusinessListComponent = (props) => {
   const { list } = businessList;
 
   const childRef = useRef();
-  // 设置
-  const [visible, setVisible] = useState({});
-  // 详情
-  const [visibleDetail, setVisibleDetail] = useState(false);
-  // 二维码
-  const [visibleQrcode, setVisibleQrcode] = useState('');
-  // 编辑
-  const [visibleEdit, setVisibleEdit] = useState('');
-  // 商圈搜索选择
-  const [hubSelect, setHubSelect] = useState(true);
-  // 设置商家验证码
-  const [visibleCodeSet, setVisibleCodeSet] = useState(false);
-  //场景checkbox列表
-  const [sceneList, setSceneList] = useState(false);
+
+  const [visible, setVisible] = useState({}); // 设置
+  const [visibleDetail, setVisibleDetail] = useState(false); // 详情
+  const [visibleQrcode, setVisibleQrcode] = useState(''); // 二维码
+  const [visibleEdit, setVisibleEdit] = useState(''); // 编辑
+  const [hubSelect, setHubSelect] = useState(true); // 商圈搜索选择
+  const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
+  const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
 
   // 搜索参数
   const searchItems = [

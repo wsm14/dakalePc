@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import Search from './Search';
 
 const MreSelect = ({
   type = 'select',
@@ -15,6 +17,7 @@ const MreSelect = ({
   params = {},
   loading,
 }) => {
+  const childRef = useRef(); // 表格ref
   const [selectMre, setSelectMre] = useState([]); // 选中的店铺
   const [selectMreKey, setSelectMreKey] = useState([]);
 
@@ -22,31 +25,42 @@ const MreSelect = ({
     visible && type === 'select' && setSelectMreKey(keys);
   }, [visible]);
 
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '店铺名称',
-      name: 'merchantName',
-    },
-    {
-      label: '地址',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-  ];
-
   // table 表头
   const getColumns = [
     {
       title: '店铺名称',
       dataIndex: 'merchantName',
-      width: 400,
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val || '暂未授权'}
+        </Ellipsis>
+      ),
+    },
+    {
+      title: '店铺账号',
+      dataIndex: 'account',
+    },
+    {
+      title: '所属商圈',
+      dataIndex: 'businessHub',
+    },
+    {
+      title: '经营类目',
+      dataIndex: 'topCategoryName',
+    },
+    {
+      title: '地区',
+      dataIndex: 'provinceName',
+      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
     {
       title: '详细地址',
       dataIndex: 'address',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
   ];
 
@@ -75,7 +89,7 @@ const MreSelect = ({
       title={`${type === 'select' ? '选择发布店铺' : '查看店铺'}`}
       destroyOnClose
       maskClosable
-      width={950}
+      width={900}
       visible={visible}
       footer={type === 'select' ? undefined : false}
       okText={`确定（已选${selectMreKey.length}项）`}
@@ -85,13 +99,15 @@ const MreSelect = ({
       }}
       onCancel={onCancel}
     >
+      <Search cRef={childRef}></Search>
       <TableDataBlock
+        order
         noCard={false}
         size="middle"
         tableSize="small"
-        searchItems={searchItems}
+        cRef={childRef}
         columns={getColumns}
-        loading={loading}
+        loading={loading.effects['businessList/fetchGetList']}
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType={dispatchType}
         params={{ ...params, bankStatus: 3, businessStatus: 1 }}
@@ -104,5 +120,5 @@ const MreSelect = ({
 
 export default connect(({ businessList, loading }) => ({
   subsidyList: businessList.subsidyList,
-  loading: loading.effects['businessList/fetchGetList'],
+  loading,
 }))(MreSelect);

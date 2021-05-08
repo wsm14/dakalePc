@@ -90,6 +90,7 @@ const SubsidyDrawer = (props) => {
   const modalProps = {
     title: drawerProps.title,
     visible: show,
+    width: 800,
     onClose,
     footer: drawerProps.footer,
   };
