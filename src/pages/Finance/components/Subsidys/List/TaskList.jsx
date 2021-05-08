@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import TaskDetailList from '../Detail/TaskDetailList';
 
 const TaskManage = (props) => {
-  const { subsidyManage, loading, childRef, tabkey, setVisible, dispatch } = props;
+  const { subsidyManage, loading, childRef, tabkey, type, setVisible, dispatch } = props;
 
   const [taskDetail, setTaskDates] = useState(false); // 补贴详情展示
 
@@ -19,9 +19,7 @@ const TaskManage = (props) => {
     },
     {
       label: '创建人',
-      type: 'select',
-      name: 'type',
-      select: SUBSIDY_TYPE,
+      name: 'creator',
     },
   ];
 
@@ -42,8 +40,8 @@ const TaskManage = (props) => {
     {
       title: '类型',
       align: 'center',
-      dataIndex: 'type',
-      render: (val) => SUBSIDY_TYPE[val],
+      dataIndex: 'mode',
+      render: (val) => SUBSIDY_BEAN_TYPE[val],
     },
     {
       title: '总参与人数',
@@ -57,9 +55,9 @@ const TaskManage = (props) => {
     },
     {
       title: '创建时间',
-      align: 'right',
-      dataIndex: 'subsidizedBeans',
-      render: (val) => SUBSIDY_TYPE[val],
+      align: 'center',
+      dataIndex: 'createTime',
+      render: (val, row) => `${val}\n${row.creator}`,
     },
     {
       title: '操作',
@@ -78,6 +76,7 @@ const TaskManage = (props) => {
               },
               {
                 type: `${tabkey}Detail`,
+                title: '补贴详情',
                 click: () => setTaskDates({ show: true, detail: record }),
               },
               {
@@ -134,7 +133,7 @@ const TaskManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ tabkey }}
+        params={{ type }}
         rowKey={(record) => `${record.subsidyId}`}
         dispatchType="subsidyManage/fetchGetTaskList"
         {...subsidyManage.list}
