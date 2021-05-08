@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'umi';
 import { Menu } from 'antd';
-import NewsPeople from './components/Welfare/NewsPeople'
+import NewsPeople from './components/Welfare/NewsPeople';
 import styles from './index.less';
 
 const WelfareConfig = (props) => {

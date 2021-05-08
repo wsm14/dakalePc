@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, Input, Checkbox, InputNumber } from 'antd';
 import FormCondition from '@/components/FormCondition';
@@ -73,19 +73,19 @@ const NewsConfigDetail = (props) => {
       disabled: status > 0,
     },
   ];
+
   const save = () => {
     form.validateFields().then((values) => {
-        console.log(values)
+      console.log(values);
       const { activityTime } = values;
       delete values.activityTime;
       const payload = {
         ...values,
         configNewcomerOrdersId: detail.configNewcomerOrdersId,
-        isBeanPay: Array.isArray(values.isBeanPay)?values.isBeanPay[0]:values.isBeanPay,
+        isBeanPay: Array.isArray(values.isBeanPay) ? values.isBeanPay[0] : values.isBeanPay,
         activityStartDay: activityTime[0].format('YYYY-MM-DD'),
         activityEndDay: activityTime[1].format('YYYY-MM-DD'),
       };
-
       dispatch({
         type: 'welfareConfigList/fetchWelfareUpdates',
         payload,
