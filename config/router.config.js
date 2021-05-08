@@ -425,7 +425,7 @@ export default [
         path: '/system/welfare',
         name: '福利设置',
         component: './System/WelfareConfig',
-        buttons: ['edit', 'add', 'del'],
+        buttons: ['edit', 'save', 'del'],
       },
       {
         path: '/expert/allocation',

@@ -3,31 +3,26 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
+import NewsConfigDeatil from './NewsConfigDetail';
+import { WELFARE_STATUS } from '@/common/constant'
 
 const NewsPeople = (props) => {
-  const { list, loading, dispatch } = props;
+  const { welfareConfigList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
   // 获取详情
   const fetchGetDetail = (val, type) => {
-    dispatch({
-      type: 'walkingManage/fetchWalkManageVaneDetail',
-      payload: {
-        configWindVaneId: val,
-      },
-      callback: (detail) => setVisible({ show: true, type, detail }),
-    });
+    setVisible({ show: true, type, detail: val });
   };
 
   // 删除
-  const fetchDetailDel = (configWindVaneId) => {
+  const fetchDetailDel = (configNewcomerOrdersId) => {
     dispatch({
-      type: 'walkingManage/fetchWalkManageVaneEditDel',
+      type: 'welfareConfigList/fetchWelfareDeletes',
       payload: {
-        configWindVaneId,
-        deleteFlag: 0,
+        configNewcomerOrdersId,
       },
       callback: childRef.current.fetchGetData,
     });
@@ -36,20 +31,35 @@ const NewsPeople = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '新手福利',
+      title: '福利名称',
       dataIndex: 'name',
     },
     {
-      title: '必须使用卡豆支付',
-      dataIndex: 'name',
+      title: '福利限制',
+      dataIndex: 'verificationDay',
+      render: (val, record) =>
+        val ? `${val}天内核销 ${record.orderNum ? record.orderNum : 0}单` : '--',
     },
     {
-      title: '每单金额',
-      dataIndex: 'name',
+      title: '成立条件',
+      dataIndex: 'isBeanPay',
+      render: (val, record) => {
+        if (val == 1 && record.orderFee > 0) {
+          return `卡豆支付,满${record.orderFee}元`;
+        }
+        if (val == 1 && !record.orderFee) {
+          return `卡豆支付`;
+        }
+        if (val == 0) {
+          return `满${record.orderFee}元`;
+        }
+      },
     },
     {
       title: '活动时间',
-      dataIndex: 'name',
+      dataIndex: 'activityStartDay',
+      render: (val, record) =>
+        val ? (val + '-' + record.activityEndDay ? record.activityEndDay : '') : '',
     },
     {
       title: '创建时间',
@@ -57,13 +67,18 @@ const NewsPeople = (props) => {
     },
     {
       title: '创建人',
-      dataIndex: 'name',
+      dataIndex: 'creator',
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      render:(val) =>WELFARE_STATUS[val]
     },
     {
       title: '操作',
       fixed: 'right',
       align: 'right',
-      dataIndex: 'configWindVaneId',
+      dataIndex: 'configNewcomerOrdersId',
       render: (val, record) => {
         return (
           <HandleSetTable
@@ -71,7 +86,7 @@ const NewsPeople = (props) => {
               {
                 type: 'edit',
                 auth: true,
-                click: () => fetchGetDetail(val, 'edit'),
+                click: () => fetchGetDetail(record, 'edit'),
               },
               {
                 type: 'del',
@@ -101,13 +116,20 @@ const NewsPeople = (props) => {
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.configWindVaneId}`}
-        // dispatchType="walkingManage/fetchWalkManageVaneList"
+        dispatchType="welfareConfigList/fetchWelfareConfigLists"
         pagination={false}
-        // {...list}
+        {...welfareConfigList}
       ></TableDataBlock>
-      {/* <VaneDrawer cRef={childRef} visible={visible} onClose={() => setVisible(false)}></VaneDrawer> */}
+      <NewsConfigDeatil
+        cRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></NewsConfigDeatil>
     </>
   );
 };
 
-export default connect(() => ({}))(NewsPeople);
+export default connect(({ welfareConfigList, loading }) => ({
+  welfareConfigList,
+  loading: loading.effects['welfareConfigList/fetchWelfareConfigLists'],
+}))(NewsPeople);
