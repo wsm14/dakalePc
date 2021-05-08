@@ -243,14 +243,26 @@ export const SUBSIDY_BEAN_TYPE = { out: '补贴', in: '回收' };
 export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', kol: '哒人' };
 
 // 补贴管理 行为管理 补贴角色
-export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺', kol: '哒人', group: '集团' };
+export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺' };
 
-// 补贴管理 行为管理 补贴类型
+// 补贴管理 行为管理 补贴类型 列表映射
 export const SUBSIDY_ACTION_TYPE = {
   video: '发布视频',
   image: '发布图文',
   mark: '到店打卡',
   newcomer: '新人核销',
+};
+
+// 补贴管理 行为管理 补贴类型 表单映射
+export const SUBSIDY_ACTION_TYPE_FORM = {
+  merchant: {
+    video: '发布视频',
+    image: '发布图文',
+    mark: '到店打卡',
+  },
+  user: {
+    newcomer: '新人核销',
+  },
 };
 
 // 分享类型
