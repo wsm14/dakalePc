@@ -125,7 +125,7 @@ const TaskManage = (props) => {
         btnExtra={({ get }) => (
           <ExcelButton
             dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
-            dispatchData={get()}
+            dispatchData={{ type, ...get() }}
             exportProps={{ header: getColumns }}
           ></ExcelButton>
         )}

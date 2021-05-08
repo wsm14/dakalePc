@@ -40,14 +40,7 @@ const SubsidyDirectMoney = (props) => {
     {
       label: '适用店铺',
       type: 'noForm',
-      formItem: (
-        <MreSelectShow
-          key="MreTable"
-          form={form}
-          {...mreList}
-          setMreList={setMreList}
-        ></MreSelectShow>
-      ),
+      formItem: <MreSelectShow key="MreTable" {...mreList} setMreList={setMreList}></MreSelectShow>,
     },
     {
       label: '充值卡豆数',
@@ -56,6 +49,12 @@ const SubsidyDirectMoney = (props) => {
       precision: 0,
       min: 0,
       max: 999999999,
+    },
+    {
+      label: '充值凭证',
+      name: 'certificate',
+      type: 'upload',
+      maxFile: 1,
     },
   ];
 

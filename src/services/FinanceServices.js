@@ -30,9 +30,17 @@ export function fetchSubsidyTaskDetailList(params) {
   });
 }
 
-// post 补贴管理 - 任务列表 -  新增
+// post 补贴管理 - 营销卡豆充值 -  新增
 export function fetchSubsidyTaskAdd(data) {
   return request('/admin/subsidyManagement/platformDirectCharge', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 平台直充 -  新增
+export function fetchSubsidyDirectAdd(data) {
+  return request('/admin/subsidyManagement/addDirectCharge', {
     method: 'POST',
     data,
   });

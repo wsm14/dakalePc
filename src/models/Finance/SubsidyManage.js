@@ -5,6 +5,7 @@ import {
   fetchSubsidyTaskDetail,
   fetchSubsidyTaskEndDel,
   fetchSubsidyTaskAdd,
+  fetchSubsidyDirectAdd,
   fetchSubsidyTaskDetailList,
   fetchSubsidyActionList,
   fetchSubsidyActionAdd,
@@ -84,7 +85,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `任务${deleteFlag === 0 ? '删除' : '结束'}成功`,
+        description: `${deleteFlag === 0 ? '删除' : '结束'}成功`,
       });
       callback();
     },
@@ -93,7 +94,16 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '任务新增成功',
+        description: '营销卡豆充值新增成功',
+      });
+      callback();
+    },
+    *fetchSubsidyDirectAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyDirectAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '平台直充新增成功',
       });
       callback();
     },
@@ -102,7 +112,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '行为设置成功',
+        description: '使用规则设置成功',
       });
       callback();
     },
@@ -111,7 +121,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '行为删除成功',
+        description: '使用规则删除成功',
       });
       callback();
     },

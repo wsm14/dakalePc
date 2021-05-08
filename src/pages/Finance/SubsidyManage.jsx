@@ -44,9 +44,9 @@ const SubsidyManage = () => {
   const tableProp = { childRef, setVisible };
 
   const contentList = {
-    task: <TaskList {...tableProp} tabkey="task" type="platform"></TaskList>,
-    direct: <TaskList {...tableProp} tabkey="direct"  type="directCharge"></TaskList>,
-    action: <ActionList {...tableProp}></ActionList>,
+    task: <TaskList {...tableProp} tabkey="task" type="platform"></TaskList>, // 营销卡豆充值
+    direct: <TaskList {...tableProp} tabkey="direct" type="directCharge"></TaskList>, // 平台直充
+    action: <ActionList {...tableProp}></ActionList>, // 使用规则
   };
 
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
@@ -7,10 +8,22 @@ const MreSelectShow = ({ keys = [], list = [], setMreList }) => {
     {
       title: '店铺名称',
       dataIndex: 'merchantName',
+      width: 200,
+      render: (val) => (
+        <Ellipsis length={10} tooltip lines={2}>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '详细地址',
       dataIndex: 'address',
+      width: 200,
+      render: (val) => (
+        <Ellipsis length={10} tooltip lines={2}>
+          {val}
+        </Ellipsis>
+      ),
     },
   ];
 
