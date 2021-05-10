@@ -174,6 +174,11 @@ export default [
         name: '数据概况',
         component: './Chart/ChartBlock',
       },
+      {
+        path: '/chart/dataGatherExport',
+        name: '数据明细查询',
+        component: './Chart/DataGatherExport',
+      },
       // 加盟管理 cityom
       {
         path: '/cityom/provCo',

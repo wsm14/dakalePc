@@ -69,7 +69,7 @@ const NewsConfigDetail = (props) => {
           </Form.Item>
           <div style={{display:'flex'}}>
             <Form.Item label="每单实付满" name="orderFee">
-              <InputNumber style={{ width: '120px' }} min={0} max={9999} />
+              <InputNumber style={{ width: '120px' }} min={0} max={9999}  precision={0}/>
             </Form.Item>
             <div style={{ lineHeight: '30px',marginLeft:'10px' }}>元</div>
           </div>
