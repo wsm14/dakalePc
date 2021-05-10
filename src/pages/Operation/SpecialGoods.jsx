@@ -9,6 +9,7 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
+import { LogDetail } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
@@ -267,12 +268,24 @@ const SpecialGoods = (props) => {
                 click: () =>
                   fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
+              {
+                type: 'diary',
+                click: () => fetchGetLogData(),
+              },
             ]}
           />
         );
       },
     },
   ];
+
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogData',
+      payload,
+    });
+  };
 
   // 下架
   const fetchSpecialGoodsStatus = (payload) => {
@@ -420,6 +433,7 @@ const SpecialGoods = (props) => {
         }
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodDetail>
+      <LogDetail></LogDetail>
     </>
   );
 };

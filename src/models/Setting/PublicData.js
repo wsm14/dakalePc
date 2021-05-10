@@ -23,6 +23,7 @@ export default {
     tasteTag: [],
     kolLevel: [],
     nativeList: [],
+    logDetail: { show: false, data: [] },
   },
 
   reducers: {
@@ -30,6 +31,12 @@ export default {
       return {
         ...state,
         ...payload,
+      };
+    },
+    closeLog(state) {
+      return {
+        ...state,
+        logDetail: { show: false, data: [] },
       };
     },
   },
@@ -153,6 +160,16 @@ export default {
       const response = yield call(fetchMerCheckData, payload);
       if (!response) return;
       callback(response.content);
+    },
+    *fetchGetLogData({ payload }, { call, put }) {
+      // const response = yield call(fetchMerCheckData, payload);
+      // if (!response) return;
+      yield put({
+        type: 'save',
+        payload: {
+          logDetail: { show: true, data: [] },
+        },
+      });
     },
   },
 };
