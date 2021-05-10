@@ -21,6 +21,13 @@ const NewsConfigDetail = (props) => {
     },
   }[type];
 
+  const getChangeval = (val) => {
+    if (val.length == 0) {
+      form.setFieldsValue({
+        isBeanPay: '0',
+      });
+    }
+  };
 
   const formItems = [
     {
@@ -52,8 +59,8 @@ const NewsConfigDetail = (props) => {
       type: 'formItem',
       formItem: (
         <>
-          <Form.Item name="isBeanPay" >
-            <Checkbox.Group>
+          <Form.Item name="isBeanPay">
+            <Checkbox.Group onChange={getChangeval}>
               <Checkbox value="1" style={{ lineHeight: '32px' }}>
                 必须使用卡豆支付
               </Checkbox>
@@ -82,7 +89,7 @@ const NewsConfigDetail = (props) => {
       const payload = {
         ...values,
         configNewcomerOrdersId: detail.configNewcomerOrdersId,
-        isBeanPay: values.isBeanPay ? values.isBeanPay[0] : 0,
+        isBeanPay: values.isBeanPay ? values.isBeanPay[0] : '0',
         activityStartDay: activityTime[0].format('YYYY-MM-DD'),
         activityEndDay: activityTime[1].format('YYYY-MM-DD'),
       };

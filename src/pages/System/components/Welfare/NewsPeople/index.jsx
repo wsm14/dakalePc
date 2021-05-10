@@ -66,6 +66,7 @@ const NewsPeople = (props) => {
       dataIndex: 'creator',
     },
     {
+      
       title: '状态',
       dataIndex: 'status',
       render: (val) => WELFARE_STATUS[val],
