@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
+import {
+  BANNER_PORT_LINK,
+  BANNER_AREA_TYPE,
+  BANNER_LOOK_AREA,
+  COUPON_ACTIVE_TYPE,
+} from '@/common/constant';
 import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -15,14 +20,18 @@ const SysAppSet = (props) => {
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
+  const [timeRule, setTimeRule] = useState(null); // 展示时间规则 fixed 固定 infinite 长期
 
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
+      const { beginDate } = detail;
       const {
         coverImg,
-        beginDate: time,
+        beginDate: time = [],
         jumpUrlType,
+        hideTitle = false,
+        timeRuleData, // fixed 固定 infinite 长期 长期时endDate 为2999-12-30 23:59:59
         provinceCityDistrictObjects: cityData = [],
       } = values;
       // 城市数据整理
@@ -39,11 +48,21 @@ const SysAppSet = (props) => {
             bannerId: detail.bannerIdString,
             ...values,
             userType: tabKey,
+            hideTitle: Number(hideTitle),
             provinceCityDistrictObjects,
             jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),
-            beginDate: time[0].format('YYYY-MM-DD 00:00:00'),
-            endDate: time[1].format('YYYY-MM-DD 23:59:59'),
+            beginDate:
+              timeRuleData === 'fixed'
+                ? time[0].format('YYYY-MM-DD 23:59:59')
+                : {
+                    add: moment().format('YYYY-MM-DD 00:00:00'),
+                    edit: beginDate[0].format('YYYY-MM-DD 00:00:00'),
+                  }[type],
+            endDate:
+              timeRuleData === 'fixed'
+                ? time[1].format('YYYY-MM-DD 23:59:59')
+                : '2999-12-30 23:59:59',
           },
           callback: () => {
             onClose();
@@ -77,6 +96,18 @@ const SysAppSet = (props) => {
       maxLength: 200,
     },
     {
+      label: '是否显示标题',
+      type: 'switch',
+      name: 'hideTitle',
+    },
+    {
+      label: '权重',
+      name: 'weight',
+      type: 'number',
+      min: 1,
+      precision: 0,
+    },
+    {
       label: '可见范围',
       type: 'radio',
       name: 'visibleRange',
@@ -98,8 +129,16 @@ const SysAppSet = (props) => {
     },
     {
       label: '展示时间',
+      type: 'radio',
+      select: COUPON_ACTIVE_TYPE,
+      name: 'timeRuleData',
+      onChange: (e) => setTimeRule(e.target.value),
+    },
+    {
+      label: '设置时间',
       name: 'beginDate',
       type: 'rangePicker',
+      visible: timeRule === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
@@ -113,6 +152,7 @@ const SysAppSet = (props) => {
     visible: show,
     onClose,
     afterCallBack: () => {
+      setTimeRule(detail.timeRuleData);
       setShowRadio(!!detail.bannerType);
       setShowArea(detail.deliveryAreaType === 'detail');
     },

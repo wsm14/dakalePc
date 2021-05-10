@@ -80,6 +80,7 @@ export default {
             city: [provinceCode, cityCode, districtCode].filter((i) => i),
           })),
           param: JSON.parse(param || '{}'),
+          timeRuleData: endShowTime === '2999-12-30 00:00' ? 'infinite' : 'fixed',
           activeDate: [moment(startShowTime, 'YYYY-MM-DD'), moment(endShowTime, 'YYYY-MM-DD')],
         });
     },

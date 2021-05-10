@@ -54,7 +54,8 @@ const PuzzleAd = (props) => {
       title: '展示时间',
       align: 'center',
       dataIndex: 'startShowTime',
-      render: (val, row) => `${val} ~ ${row.endShowTime}`,
+      render: (val, row) =>
+        `${val} ~ ${row.endShowTime !== '2999-12-30 00:00' ? row.endShowTime : '长期'}`,
     },
     {
       title: '状态',

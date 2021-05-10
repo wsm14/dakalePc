@@ -68,6 +68,7 @@ export default {
         beginDate,
         endDate,
         param,
+        hideTitle = false,
         provinceCityDistrictObjects: cityData = [],
       } = content.bannerDTO;
       callback({
@@ -77,6 +78,8 @@ export default {
         })),
         jumpUrlType: jumpUrlType ? jumpUrlType : '无',
         param: JSON.parse(param || '{}'),
+        hideTitle: Number(hideTitle),
+        timeRuleData: endDate === '2999.12.30' ? 'infinite' : 'fixed',
         beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },

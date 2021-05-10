@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { PUZZLE_AD_TYPE, BANNER_AREA_TYPE, BANNER_JUMP_TYPE } from '@/common/constant';
+import {
+  PUZZLE_AD_TYPE,
+  BANNER_AREA_TYPE,
+  BANNER_JUMP_TYPE,
+  COUPON_ACTIVE_TYPE,
+} from '@/common/constant';
 import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -14,16 +19,22 @@ const PuzzleAdSet = (props) => {
 
   const { type, show = false, info = '' } = visible;
   const [form] = Form.useForm();
-  // 上传文件根据接口改变文件参数key
-  const [showType, setShowType] = useState(false);
-  // 上传确认按钮loading
-  const [fileUpload, setFileUpload] = useState(false);
+
+  const [showType, setShowType] = useState(false); // 上传文件根据接口改变文件参数key
+  const [fileUpload, setFileUpload] = useState(false); // 上传确认按钮loading
   const [showArea, setShowArea] = useState(false); // 区域
+  const [timeRule, setTimeRule] = useState(null); // 展示时间规则 fixed 固定 infinite 长期
 
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { activeDate: time, provinceCityDistrictObjects: cityData = [], jumpUrlType } = values;
+      const { activeDate } = info;
+      const {
+        activeDate: time,
+        provinceCityDistrictObjects: cityData = [],
+        jumpUrlType,
+        timeRuleData,
+      } = values;
       // 城市数据整理
       const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
@@ -42,8 +53,14 @@ const PuzzleAdSet = (props) => {
             jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             provinceCityDistrictObjects,
             puzzleAdsId: info.puzzleAdsId,
-            startShowTime: time[0].format('YYYY-MM-DD'),
-            endShowTime: time[1].format('YYYY-MM-DD'),
+            startShowTime:
+              timeRuleData === 'fixed'
+                ? time[0].format('YYYY-MM-DD')
+                : {
+                    add: moment().format('YYYY-MM-DD'),
+                    edit: activeDate[0].format('YYYY-MM-DD'),
+                  }[type],
+            endShowTime: timeRuleData === 'fixed' ? time[1].format('YYYY-MM-DD') : '2999-12-30',
             activeDate: undefined,
           },
           callback: () => {
@@ -91,11 +108,23 @@ const PuzzleAdSet = (props) => {
       extra: '仅支持MP4',
     },
     {
-      type: 'rangePicker',
       label: '展示时间',
+      type: 'radio',
+      select: COUPON_ACTIVE_TYPE,
+      name: 'timeRuleData',
+      onChange: (e) => setTimeRule(e.target.value),
+      render: (val, record) =>
+        `${record.startShowTime} -- ${
+          record.endShowTime !== '2999-12-30 00:00' ? record.endShowTime : '长期'
+        }`,
+    },
+    {
+      label: '设置时间',
       name: 'activeDate',
+      type: 'rangePicker',
+      visible: timeRule === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-      render: (val, record) => `${record.startShowTime} -- ${record.endShowTime}`,
+      show: false,
     },
     {
       label: '品牌名',
@@ -164,6 +193,7 @@ const PuzzleAdSet = (props) => {
     loading: loadings.effects['businessBrand/fetchGetList'],
     onClose: closeDrawer,
     afterCallBack: () => {
+      setTimeRule(info.timeRuleData);
       setShowType(info.type);
       setShowArea(info.deliveryAreaType === 'detail');
     },
