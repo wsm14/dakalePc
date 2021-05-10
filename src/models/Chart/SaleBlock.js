@@ -28,26 +28,26 @@ export default {
       });
     },
     *fetchUserAcquire({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, payload);
-      const { dataType } = payload;
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userAcquire' });
+      // const response2 = yield call(fetchSaleBlock, { ...payload, dataType: 'userOrderBeanVerify' });
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          [dataType]: content.data,
+          userAcquire: content.data,
         },
       });
     },
     *fetchUserConsume({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, payload);
-      const { dataType } = payload;
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userConsume' });
+      // const response2 = yield call(fetchSaleBlock, { ...payload, dataType: 'userOrderBeanVerify' });
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          [dataType]: content.data,
+          userConsume: content.data,
         },
       });
     },

@@ -15,18 +15,30 @@ const SaleBlockComponent = ({}) => {
       tip: '指用户通过看视频、到店打卡、圈层收益或哒人分销收益获得的卡豆',
       keyName: 'userAcquire',
       api: 'saleTotal/fetchUserAcquire',
+      keyOther: [
+        { title: '卡豆数', key: 'userAcquire' },
+        { title: '人数', key: 'userAcquir2e' },
+      ],
     },
     {
       title: '用户消耗卡豆数',
       tip: '指用户购买商品、优惠券或扫码支付时使用的卡豆数',
       keyName: 'userConsume',
       api: 'saleTotal/fetchUserConsume',
+      keyOther: [
+        { title: '卡豆数', key: 'userConsume' },
+        { title: '人数', key: 'user2Consume' },
+      ],
     },
     {
       title: '用户卡豆抵扣订单数',
       tip: '指用户购买商品或优惠券时使用了卡豆的核销订单数或扫码支付时使用了卡豆支付的订单数',
       keyName: 'userOrderBean',
       api: 'saleTotal/fetchUserOrderBean',
+      keyOther: [
+        { title: '核销订单', key: 'userOrderBeanVerify' },
+        { title: '扫码订单', key: 'userOrderBeanScan' },
+      ],
     },
     {
       title: '商家提现卡豆数',
@@ -127,6 +139,7 @@ const SaleBlockComponent = ({}) => {
           tip={item.tip}
           api={item.api}
           timeSearch={item.timeSearch}
+          keyOther={item.keyOther}
         ></CardItem>
       ))}
     </Row>
