@@ -66,10 +66,15 @@ const NewsPeople = (props) => {
       dataIndex: 'creator',
     },
     {
-      
       title: '状态',
       dataIndex: 'status',
-      render: (val) => WELFARE_STATUS[val],
+      render: (val) => (
+        <>
+          {val == 1 && <span style={{ color: '#66ae46' }}>{WELFARE_STATUS[val]}</span>}
+          {val == 0 && <span style={{ color: '#333' }}>{WELFARE_STATUS[val]}</span>}
+          {val == 2 && <span style={{ color: '#999' }}>{WELFARE_STATUS[val]}</span>}
+        </>
+      ),
     },
     {
       title: '操作',

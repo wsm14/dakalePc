@@ -33,22 +33,23 @@ const NewsConfigDetail = (props) => {
     {
       label: '福利名称',
       name: 'name',
+      maxLength: 20,
     },
     {
       type: 'formItem',
       label: '福利限制',
       required: true,
       formItem: (
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Form.Item
             name="verificationDay"
             rules={[{ required: true, message: '请输入几天内核销' }]}
           >
-            <InputNumber style={{ width: '150px' }} />
+            <InputNumber style={{ width: '150px' }} min={1} max={99} precision={0} />
           </Form.Item>
           <div style={{ lineHeight: '30px' }}>天内核销</div>
           <Form.Item name="orderNum" rules={[{ required: true, message: '请输入核销单数' }]}>
-            <InputNumber style={{ width: '150px' }} />
+            <InputNumber style={{ width: '150px' }} min={1} max={99} precision={0} />
           </Form.Item>
           <div style={{ lineHeight: '30px' }}>单</div>
         </div>
@@ -66,10 +67,12 @@ const NewsConfigDetail = (props) => {
               </Checkbox>
             </Checkbox.Group>
           </Form.Item>
-
-          <Form.Item label="每单实付满" name="orderFee">
-            <Input suffix="元" style={{ width: '120px' }} />
-          </Form.Item>
+          <div style={{display:'flex'}}>
+            <Form.Item label="每单实付满" name="orderFee">
+              <InputNumber style={{ width: '120px' }} min={0} max={9999} />
+            </Form.Item>
+            <div style={{ lineHeight: '30px',marginLeft:'10px' }}>元</div>
+          </div>
         </>
       ),
     },
@@ -82,6 +85,7 @@ const NewsConfigDetail = (props) => {
     },
   ];
 
+  //提交表单数据
   const save = () => {
     form.validateFields().then((values) => {
       const { activityTime } = values;
@@ -93,6 +97,7 @@ const NewsConfigDetail = (props) => {
         activityStartDay: activityTime[0].format('YYYY-MM-DD'),
         activityEndDay: activityTime[1].format('YYYY-MM-DD'),
       };
+      console.log(payload,"payload")
       dispatch({
         type: 'welfareConfigList/fetchWelfareUpdates',
         payload,
