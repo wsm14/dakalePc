@@ -4,10 +4,12 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
+  fetchSpecialGoodsVerify,
+  fetchSpecialGoodsDel,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
-  fetchSpecialGoodsImport
+  fetchSpecialGoodsImport,
 } from '@/services/OperationServices';
 
 export default {
@@ -59,7 +61,7 @@ export default {
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
       let newDetail = {};
-      if (type === 'edit' || type==='info') {
+      if (type === 'edit' || type === 'info') {
         newDetail = {
           activityStartTime: [moment(activityStartTime), moment(activityEndTime)],
           useStartTime: [moment(useStartTime), moment(useEndTime)],
@@ -88,6 +90,24 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特惠活动新增成功',
+      });
+      callback();
+    },
+    *fetchSpecialGoodsDel({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动删除成功',
+      });
+      callback();
+    },
+    *fetchSpecialGoodsVerify({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsVerify, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动审核完成',
       });
       callback();
     },
@@ -123,12 +143,11 @@ export default {
       });
       callback();
     },
-    *fetchSpecialGoodsImport({ payload, callback }, { call }){
+    *fetchSpecialGoodsImport({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsImport, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.specialGoodsList);
-
-    }
+    },
   },
 };

@@ -1,4 +1,4 @@
-import AuditRefuse from './AuditRefuse';
+import RefuseModal from './RefuseModal';
 import LogDetail from './LogDetail';
 
-export { AuditRefuse, LogDetail };
+export { RefuseModal, LogDetail };

@@ -33,6 +33,8 @@ export const ROLE_BUTTON_TYPE = {
   edit: '编辑',
   exportList: '导出',
 
+  goodsCode: '商品码',
+
   handle: '处理',
   handleDeatil: '操作记录',
 

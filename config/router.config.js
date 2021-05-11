@@ -378,7 +378,20 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
+        buttons: [
+          'save',
+          'del',
+          'edit',
+          'down',
+          'info',
+          'check',
+          'diary',
+          'republish',
+          'placement',
+          'recommendStatus',
+          'exportList',
+          'goodsCode',
+        ],
       },
       // 客服中心 service
       {

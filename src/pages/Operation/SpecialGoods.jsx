@@ -9,7 +9,7 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
 } from '@/common/constant';
-import { LogDetail } from '@/components/PublicComponents';
+import { LogDetail, RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
@@ -20,6 +20,7 @@ import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
+import excelProps from './components/SpecialGoods/ExcelProps';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -31,6 +32,7 @@ const SpecialGoods = (props) => {
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -275,25 +277,50 @@ const SpecialGoods = (props) => {
       dataIndex: 'specialGoodsId',
       align: 'right',
       fixed: 'right',
-      width: 100,
+      width: 120,
       render: (val, record, index) => {
-        const { specialGoodsId, status } = record;
+        const { specialGoodsId, merchantIdStr, status } = record;
         return (
           <HandleSetTable
             formItems={[
+              {
+                type: 'goodsCode',
+                visible: status !== '3', // '已下架', '活动中', '审核中'
+                click: () => fetchSpecialGoodsDetail(index, 'info'),
+              },
               {
                 type: 'info',
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
               {
                 type: 'down',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsStatus(record),
+                visible: status == '1',
+                click: () =>
+                  setVisibleRefuse({
+                    show: true,
+                    detail: record,
+                    formProps: { type: 'down', key: 'offShelfReason' },
+                  }),
               },
               {
                 type: 'edit',
-                visible: status !== '0',
+                visible: ['1', '2'].includes(status), // 活动中 审核中
                 click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
+              },
+              {
+                type: 'check',
+                visible: ['2'].includes(status), // 活动中 审核中
+                click: () => fetchSpecialGoodsDetail(index, 'info'),
+              },
+              {
+                type: 'del',
+                visible: ['0'].includes(status), // 已下架
+                click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
+              },
+              {
+                type: 'republish',
+                visible: ['0'].includes(status), // 已下架
+                click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
               {
                 pop: true,
@@ -322,12 +349,47 @@ const SpecialGoods = (props) => {
     });
   };
 
+  // 删除
+  const fetchSpecialGoodsDel = (payload) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDel',
+      payload,
+    });
+  };
+
+  // 审核
+  const fetchSpecialGoodsVerify = (values) => {
+    const { merchantIdStr, specialGoodsId, status } = visibleRefuse.detail;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsVerify',
+      payload: {
+        merchantIdStr,
+        specialGoodsId,
+        status,
+        ...values,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
   // 下架
-  const fetchSpecialGoodsStatus = (payload) => {
+  const fetchSpecialGoodsStatus = (values) => {
+    const { merchantIdStr, specialGoodsId, status } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
-      payload,
-      callback: childRef.current.fetchGetData,
+      payload: {
+        ...values,
+        merchantIdStr,
+        specialGoodsId,
+        status,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
     });
   };
 
@@ -361,67 +423,6 @@ const SpecialGoods = (props) => {
     });
   };
 
-  //导出列表
-  const getExcelProps = {
-    fieldNames: { key: 'key', headerName: 'header' },
-    header: [
-      { key: 'goodsType', header: '商品类型', render: (val) => GOODS_CLASS_TYPE[val] },
-      { key: 'goodsName', header: '商品名称' },
-      { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
-      { key: 'merchantName', header: '店铺名称' },
-      { key: 'oriPrice', header: '原价' },
-      { key: 'realPrice', header: '特惠价格' },
-      {
-        key: 'businessHubIdString',
-        header: '折扣',
-        render: (val, row) => {
-          const zhe = (Number(row.realPrice) / Number(row.oriPrice)) * 10;
-          return `${zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折`;
-        },
-      },
-      { key: 'merchantPrice', header: '商家结算价' },
-      {
-        key: 'realPrice',
-        header: '佣金',
-        render: (val, row) => (Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2),
-      },
-      {
-        key: 'activityStartTime',
-        header: '活动时间',
-        render: (val, row) =>
-          row.activityTimeRule === 'infinite'
-            ? `${row.createTime} ~ 长期`
-            : `${val} ~ ${row.activityEndTime}`,
-      },
-      {
-        key: 'useStartTime',
-        header: '使用有效期',
-        render: (val, row) => {
-          const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-          if (!useTimeRule) return '';
-          if (useTimeRule === 'fixed') {
-            return useStartTime + '~' + useEndTime;
-          } else {
-            if (delayDays === '0') {
-              return `领取后立即生效\n有效期${activeDays}天`;
-            }
-            return `领取后${delayDays}天生效\n有效期${activeDays}天`;
-          }
-        },
-      },
-      { key: 'total', header: '投放总量' },
-      { key: 'remain', header: '剩余数量' },
-      { key: 'soldGoodsCount', header: '销量' },
-      {
-        key: 'writeOffGoodsCount',
-        header: '核销数量',
-      },
-      { key: 'createTime', header: '创建时间' },
-      { key: 'creatorName', header: '创建人' },
-      { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
-    ],
-  };
-
   return (
     <>
       <TableDataBlock
@@ -431,7 +432,7 @@ const SpecialGoods = (props) => {
             <ExcelButton
               dispatchType={'specialGoods/fetchSpecialGoodsImport'}
               dispatchData={get()}
-              exportProps={getExcelProps}
+              exportProps={excelProps}
             ></ExcelButton>
           </>
         )}
@@ -481,6 +482,8 @@ const SpecialGoods = (props) => {
         visible={visibleInfo}
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
+        setVisibleRefuse={setVisibleRefuse}
+        fetchSpecialGoodsVerify={fetchSpecialGoodsVerify}
         onEdit={() =>
           setVisibleSet({
             type: [false, 'active', 'edit'][visibleInfo.status],
@@ -490,7 +493,15 @@ const SpecialGoods = (props) => {
         }
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodDetail>
+      {/* 日志 */}
       <LogDetail></LogDetail>
+      {/* 审核拒绝 下架原因 */}
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={fetchSpecialGoodsStatus}
+        loading={loadings.models.specialGoods}
+      ></RefuseModal>
     </>
   );
 };

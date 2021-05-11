@@ -145,7 +145,7 @@ export const BANNER_LOOK_AREA = {
 };
 
 // 周边特惠 - 上架状态
-export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
+export const SPECIAL_STATUS = ['已下架', '活动中', '审核中', '未通过'];
 
 // 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
@@ -393,6 +393,9 @@ export const SPECIAL_RECOMMEND_TYPE = {
   todayRecommend: '爆品推荐',
   hotTop: '限时置顶',
   todayTop: '爆品置顶',
+  thisPeriod: '本期必抢',
+  nextPeriod: '下期预告',
+  novice: '新手视频',
   cancel: '取消推荐',
 };
 

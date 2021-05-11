@@ -32,6 +32,22 @@ export function fetchSpecialGoodsEdit(data) {
   });
 }
 
+// post 周边特惠 - 审核
+export function fetchSpecialGoodsVerify(data) {
+  return request('/admin/specialGoodsManagement/simpleVerifySpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 删除
+export function fetchSpecialGoodsDel(data) {
+  return request('/admin/specialGoodsManagement/deleteMerchantSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 周边特惠 - 新增
 export function fetchSpecialGoodsSave(data) {
   return request('/admin/specialGoodsManagement/saveSpecialGoods', {
