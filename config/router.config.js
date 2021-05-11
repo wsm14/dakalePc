@@ -174,6 +174,11 @@ export default [
         name: '数据概况',
         component: './Chart/ChartBlock',
       },
+      {
+        path: '/chart/dataGatherExport',
+        name: '数据明细查询',
+        component: './Chart/DataGatherExport',
+      },
       // 加盟管理 cityom
       {
         path: '/cityom/provCo',
@@ -393,6 +398,12 @@ export default [
           'goodsCode',
         ],
       },
+      {
+        path: '/operation/platformRights',
+        name: '平台权益',
+        component: './Operation/PlatformRights',
+        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
+      },
       // 客服中心 service
       {
         path: '/service/news',
@@ -435,6 +446,12 @@ export default [
         path: '/system/pageset',
         name: '菜单设置',
         component: './System/MenuList',
+      },
+      {
+        path: '/system/welfare',
+        name: '新人福利配置',
+        component: './System/WelfareConfig',
+        buttons: ['edit', 'save', 'del'],
       },
       {
         path: '/expert/allocation',

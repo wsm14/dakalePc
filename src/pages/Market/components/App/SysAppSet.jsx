@@ -106,6 +106,7 @@ const SysAppSet = (props) => {
       type: 'number',
       min: 1,
       precision: 0,
+      placeholder: '请输入数字，数值越大，权重越高，排在越前',
     },
     {
       label: '可见范围',

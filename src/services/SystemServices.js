@@ -166,3 +166,30 @@ export function fetchWalkManageGratiaClassAdd(data) {
 }
 
 // 逛逛页面配置 end
+
+// 新人下单配置 start
+
+//新人下单配置列表
+export function fetchWelfareConfigList(params) {
+  return request('/admin/systemConfig/listConfigNewcomerOrders', {
+    params,
+  });
+}
+
+//  新增、修改 新人下单配置
+export function fetchWelfareUpdate(data) {
+  return request('/admin/systemConfig/saveOrUpdateConfigNewcomerOrders', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 删除 新人下单配置
+export function fetchWelfareDelete(data) {
+  return request('/admin/systemConfig/deleteConfigNewcomerOrders', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 新人下单配置 end

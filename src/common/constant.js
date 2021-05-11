@@ -98,6 +98,9 @@ export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
+// 新人下单配置福利状态
+export const WELFARE_STATUS = ['未开始', '进行中', '已结束'];
+
 // 提现状态
 export const COLLECT_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
 
