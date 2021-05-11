@@ -77,6 +77,9 @@ const SearchCondition = (props) => {
           if (valuesKey) valuesKey.map((key, i) => (formObj[key] = values[name][i]));
           else formObj[name] = values[name][values[name].length - 1];
           delete values[name];
+        } else if (type === 'numberGroup') {
+          // 数字区间组合
+          formObj[name] = values[name].join('.');
         }
       } else {
         // 删除不存在值的key

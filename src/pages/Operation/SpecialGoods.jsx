@@ -82,6 +82,11 @@ const SpecialGoods = (props) => {
       }),
     },
     {
+      label: '佣金',
+      name: 'commission',
+      type: 'numberGroup',
+    },
+    {
       label: '有效期',
       name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
       disabled: !searchType,
@@ -162,17 +167,40 @@ const SpecialGoods = (props) => {
       ),
     },
     {
+      title: '佣金',
+      align: 'right',
+      dataIndex: 'realPrice',
+      render: (val, row) => `￥${(Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2)}`,
+      sorter: (a, b) =>
+        Number(a.realPrice) -
+        Number(a.merchantPrice) -
+        (Number(b.realPrice) - Number(b.merchantPrice)),
+    },
+    {
       title: '原价/售价',
       align: 'right',
       dataIndex: 'oriPrice',
-      render: (val, row) => (
-        <div>
-          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-            ￥{Number(val).toFixed(2)}
+      render: (val, row) => {
+        const zhe = (Number(row.realPrice) / Number(val)) * 10;
+        return (
+          <div>
+            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+              ￥{Number(val).toFixed(2)}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Tag color={'red'}>
+                {zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折
+              </Tag>
+              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+            </div>
           </div>
-          <div>￥{Number(row.realPrice).toFixed(2)}</div>
-        </div>
-      ),
+        );
+      },
+    },
+    {
+      title: '其它平台价格',
+      align: 'right',
+      dataIndex: 'realPrice',
     },
     {
       title: '使用有效期',
@@ -222,7 +250,18 @@ const SpecialGoods = (props) => {
       sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
     },
     {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
+      render: (val, row) => `${val}\n${row.creatorName}`,
+    },
+    {
+      title: '审核通过时间',
+      dataIndex: 'createTime',
+    },
+    {
       title: '推广位置',
+      fixed: 'right',
       dataIndex: 'recommendType',
       render: (val, row) => {
         if ((row.recommendStatus === '0' && (row.topStatus === '0' || !row.topStatus)) || !val)
@@ -230,10 +269,6 @@ const SpecialGoods = (props) => {
         let tagName = row.topStatus === '0' ? '推荐' : '置顶';
         return SPECIAL_RECOMMEND_LISTTYPE[val] + tagName;
       },
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
     },
     {
       title: '操作',
@@ -336,7 +371,28 @@ const SpecialGoods = (props) => {
       { key: 'merchantName', header: '店铺名称' },
       { key: 'oriPrice', header: '原价' },
       { key: 'realPrice', header: '特惠价格' },
+      {
+        key: 'businessHubIdString',
+        header: '折扣',
+        render: (val, row) => {
+          const zhe = (Number(row.realPrice) / Number(row.oriPrice)) * 10;
+          return `${zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折`;
+        },
+      },
       { key: 'merchantPrice', header: '商家结算价' },
+      {
+        key: 'realPrice',
+        header: '佣金',
+        render: (val, row) => (Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2),
+      },
+      {
+        key: 'activityStartTime',
+        header: '活动时间',
+        render: (val, row) =>
+          row.activityTimeRule === 'infinite'
+            ? `${row.createTime} ~ 长期`
+            : `${val} ~ ${row.activityEndTime}`,
+      },
       {
         key: 'useStartTime',
         header: '使用有效期',
@@ -361,6 +417,7 @@ const SpecialGoods = (props) => {
         header: '核销数量',
       },
       { key: 'createTime', header: '创建时间' },
+      { key: 'creatorName', header: '创建人' },
       { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
     ],
   };
