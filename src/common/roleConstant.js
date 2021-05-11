@@ -1,5 +1,6 @@
 // 权限按钮映射 和 HandleSetTable 对应
 export const ROLE_BUTTON_TYPE = {
+  again: '重新发布',
   adRoot: '广告配置',
   action: '使用规则',
   activate: '账户激活',
@@ -119,8 +120,6 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
 
   withdraw: '提现记录',
-
-  republish: '重新发布',
 };
 
 // 数据权限选项

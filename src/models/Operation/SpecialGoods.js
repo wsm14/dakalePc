@@ -61,7 +61,8 @@ export default {
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
       let newDetail = {};
-      if (type === 'edit' || type === 'info') {
+      // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
+      if (['info', 'edit', 'again'].includes(type)) {
         newDetail = {
           activityStartTime: [moment(activityStartTime), moment(activityEndTime)],
           useStartTime: [moment(useStartTime), moment(useEndTime)],

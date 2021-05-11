@@ -277,7 +277,7 @@ const SpecialGoods = (props) => {
       dataIndex: 'specialGoodsId',
       align: 'right',
       fixed: 'right',
-      width: 120,
+      width: 150,
       render: (val, record, index) => {
         const { specialGoodsId, merchantIdStr, status } = record;
         return (
@@ -318,9 +318,9 @@ const SpecialGoods = (props) => {
                 click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
               },
               {
-                type: 'republish',
+                type: 'again',
                 visible: ['0'].includes(status), // 已下架
-                click: () => fetchSpecialGoodsDetail(index, 'info'),
+                click: () => fetchSpecialGoodsDetail(index, 'again'),
               },
               {
                 pop: true,

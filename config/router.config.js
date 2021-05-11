@@ -386,7 +386,7 @@ export default [
           'info',
           'check',
           'diary',
-          'republish',
+          'again',
           'placement',
           'recommendStatus',
           'exportList',

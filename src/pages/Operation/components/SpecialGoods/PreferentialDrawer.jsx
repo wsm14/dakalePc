@@ -11,13 +11,14 @@ import PreferentialRuleSet from './Form/PreferentialRuleSet';
 const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
-  // info 详情，add 新增， active 活动中修改， edit 即将开始修改
+  // info 详情，add 新增，active 活动中修改，edit 即将开始修改，again 重新发布
   const { type = 'info', show = false, detail = {} } = visible;
 
-  const [form] = Form.useForm();
-  const [formEdit] = Form.useForm();
-  const [formRule] = Form.useForm(); // 数据表单
-  const [formRuleAdd] = Form.useForm(); // 数据表单
+  const [form] = Form.useForm(); // add
+  const [formEdit] = Form.useForm(); // edit
+  const [formRule] = Form.useForm(); // active 数据表单
+  const [formAgain] = Form.useForm(); // again 数据表单
+  const [formRuleAdd] = Form.useForm(); // 规则 数据表单
   const [saveData, setSaveData] = useState(null);
   const [showHtmlData, setShowHtmlData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
@@ -58,7 +59,7 @@ const PreferentialDrawer = (props) => {
     return aimg;
   };
 
-  // 确认提交数据 - 新增 / 修改所有数据
+  // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
       const { specialGoodsId, merchantIdStr } = detail;
@@ -80,6 +81,7 @@ const PreferentialDrawer = (props) => {
           type: {
             add: 'specialGoods/fetchSpecialGoodsSave',
             edit: 'specialGoods/fetchSpecialGoodsEdit',
+            again: 'specialGoods/fetchSpecialGoodsSave',
           }[type],
           payload: {
             ...visibleRule.preData,
@@ -130,9 +132,9 @@ const PreferentialDrawer = (props) => {
 
   // 下一步
   const handleUpAudit = () => {
-    (type === 'add' ? form : formEdit).validateFields().then((values) => {
+    ({ add: form, again: formAgain, edit: formEdit }[type].validateFields().then((values) => {
       setVisibleRule({ show: true, preData: values });
-    });
+    }));
   };
 
   // 统一处理弹窗
@@ -154,6 +156,10 @@ const PreferentialDrawer = (props) => {
           onValuesChange={setShowHtmlData}
         ></PreferentialSet>
       ),
+    },
+    again: {
+      title: '重新发布活动',
+      children: <PreferentialSet form={formAgain} initialValues={detail}></PreferentialSet>,
     },
     edit: {
       title: '修改活动',
@@ -184,22 +190,17 @@ const PreferentialDrawer = (props) => {
       setSaveData(null);
     }, // 关闭清空搜索的商家数据
     footer: {
-      add: (
+      true: (
         <Button onClick={handleUpAudit} type="primary">
           下一步
         </Button>
       ),
-      edit: (
-        <Button onClick={handleUpAudit} type="primary">
-          下一步
-        </Button>
-      ),
-      active: (
+      false: (
         <Button onClick={handleUpEdit} type="primary" loading={loading}>
           确定修改
         </Button>
       ),
-    }[type],
+    }[['add', 'again', 'edit'].includes(type)],
   };
 
   // 下一步：规则弹窗属性
