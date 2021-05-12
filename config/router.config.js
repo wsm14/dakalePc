@@ -468,6 +468,13 @@ export default [
         component: './User/BdLimitPop',
         buttons: ['save'],
       },
+      //结算管理
+      {
+        path:'/fund/withdrawRegular',
+        name: '提现规则',
+        component: './Fund/WithdrawRegular',
+
+      }
     ],
   },
 ];
