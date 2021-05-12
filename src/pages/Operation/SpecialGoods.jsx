@@ -84,16 +84,16 @@ const SpecialGoods = (props) => {
       }),
     },
     {
-      label: '佣金',
-      name: 'commission',
-      type: 'numberGroup',
-    },
-    {
       label: '有效期',
       name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
       disabled: !searchType,
       type: { gain: 'number', fixed: 'rangePicker' }[searchType],
       end: 'useEndTime',
+    },
+    {
+      label: '佣金',
+      name: 'commission',
+      type: 'numberGroup',
     },
     {
       label: '推广位置',

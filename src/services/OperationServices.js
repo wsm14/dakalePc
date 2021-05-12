@@ -366,7 +366,7 @@ export function fetchCouponStatus(data) {
   });
 }
 
-// 优惠券导出 /
+// get 优惠券导出
 export function fetchCouponToImport(params) {
   return request('/admin/coupon/listOwnerCouponToActionImport', {
     params,
