@@ -79,7 +79,10 @@ const SearchCondition = (props) => {
           delete values[name];
         } else if (type === 'numberGroup') {
           // 数字区间组合
-          formObj[name] = values[name].join('.');
+          formObj[name] =
+            values[name] && values[name].filter((i) => i).length === 2
+              ? values[name].join(',')
+              : undefined;
         }
       } else {
         // 删除不存在值的key

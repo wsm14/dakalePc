@@ -255,7 +255,7 @@ const SpecialGoods = (props) => {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName}`,
+      render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
     {
       title: '审核通过时间',
@@ -283,11 +283,11 @@ const SpecialGoods = (props) => {
         return (
           <HandleSetTable
             formItems={[
-              {
-                type: 'goodsCode',
-                visible: status !== '3', // '已下架', '活动中', '审核中'
-                click: () => fetchSpecialGoodsDetail(index, 'info'),
-              },
+              // {
+              //   type: 'goodsCode',
+              //   visible: status !== '3', // '已下架', '活动中', '审核中'
+              //   click: () => fetchSpecialGoodsDetail(index, 'info'),
+              // },
               {
                 type: 'info',
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
@@ -304,12 +304,12 @@ const SpecialGoods = (props) => {
               },
               {
                 type: 'edit',
-                visible: ['1', '2'].includes(status), // 活动中 审核中
+                visible: ['1', '2'].includes(status), // 活动中 即将开始
                 click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
               },
               {
                 type: 'check',
-                visible: ['2'].includes(status), // 活动中 审核中
+                visible: ['3'].includes(status), // 活动中 审核中
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
               {
@@ -330,10 +330,10 @@ const SpecialGoods = (props) => {
                 click: () =>
                   fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
-              {
-                type: 'diary',
-                click: () => fetchGetLogData(),
-              },
+              // {
+              //   type: 'diary',
+              //   click: () => fetchGetLogData(),
+              // },
             ]}
           />
         );
@@ -359,16 +359,17 @@ const SpecialGoods = (props) => {
 
   // 审核
   const fetchSpecialGoodsVerify = (values) => {
-    const { merchantIdStr, specialGoodsId, status } = visibleRefuse.detail;
+    const { merchantIdStr, specialGoodsId } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsVerify',
       payload: {
         merchantIdStr,
         specialGoodsId,
-        status,
+        status: 4,
         ...values,
       },
       callback: () => {
+        setVisibleInfo(false);
         setVisibleRefuse({ show: false, detail: {} });
         childRef.current.fetchGetData();
       },
@@ -499,7 +500,9 @@ const SpecialGoods = (props) => {
       <RefuseModal
         visible={visibleRefuse}
         onClose={() => setVisibleRefuse({ show: false, detail: {} })}
-        handleUpData={fetchSpecialGoodsStatus}
+        handleUpData={
+          visibleRefuse.type === 'refuse' ? fetchSpecialGoodsVerify : fetchSpecialGoodsStatus
+        }
         loading={loadings.models.specialGoods}
       ></RefuseModal>
     </>

@@ -28,7 +28,7 @@ const SpecialGoodDetail = (props) => {
 
   // 审核通过
   const handleVerifyAllow = () => {
-    const { specialGoodsId, merchantIdStr, status } = detail;
+    const { specialGoodsId, merchantIdStr } = detail;
     if (!form.getFieldValue('otherPlatformPrice')) {
       notification.info({
         message: '温馨提示',
@@ -36,7 +36,7 @@ const SpecialGoodDetail = (props) => {
       });
     }
     form.validateFields().then((values) => {
-      fetchSpecialGoodsVerify({ ...values, specialGoodsId, merchantIdStr, status });
+      fetchSpecialGoodsVerify({ ...values, specialGoodsId, merchantIdStr, status: 1 });
     });
   };
 
@@ -60,7 +60,7 @@ const SpecialGoodDetail = (props) => {
             </Button>
           </AuthConsumer>
         )}
-        {['2'].includes(status) && (
+        {['3'].includes(status) && (
           <AuthConsumer auth="check">
             <Button type="primary" onClick={handleVerifyAllow}>
               审核通过
@@ -72,6 +72,7 @@ const SpecialGoodDetail = (props) => {
                 setVisibleRefuse({
                   show: true,
                   detail: detail,
+                  type: 'refuse',
                   formProps: { type: 'refuse', key: 'failureReason' },
                 })
               }
@@ -94,7 +95,7 @@ const SpecialGoodDetail = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       {/* 驳回原因 */}
-      {status == '3' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />}
+      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />}
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">
@@ -105,7 +106,7 @@ const SpecialGoodDetail = (props) => {
         </Tabs.TabPane>
       </Tabs>
       {/* 审核时输入 其他平台价格 */}
-      {status == '2' && (
+      {status == '3' && (
         <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
       )}
     </DrawerCondition>

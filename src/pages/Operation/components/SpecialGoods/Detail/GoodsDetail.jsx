@@ -58,6 +58,10 @@ const GoodsDetail = (props) => {
       name: 'merchantPrice',
       label: '商家结算价',
     },
+    {
+      name: 'otherPlatformPrice',
+      label: '其他平台价格',
+    },
   ];
 
   const GoodDecItem = [
