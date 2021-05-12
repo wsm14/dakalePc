@@ -28,11 +28,11 @@
 
 <span id="formType"><h4>searchItems 表单组件通用配置</h4></span>
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| type | `（必填）` 表单的类型 `input | cascader | datePicker | rangePicker | number | select | multiple` | string | input |
-| name | `（必填）` 数据参数名 | string | - |
-| handle | 事件配置，向外传递 form 实例 | function: (form) => ({}) | - |
+| 参数   | 说明                         | 类型                     | 默认值     |
+| ------ | ---------------------------- | ------------------------ | ---------- | ----------- | ------ | ------ | -------- | ------------ | ------ | ----- |
+| type   | `（必填）` 表单的类型 `input | cascader                 | datePicker | rangePicker | number | select | multiple | numberGroup` | string | input |
+| name   | `（必填）` 数据参数名        | string                   | -          |
+| handle | 事件配置，向外传递 form 实例 | function: (form) => ({}) | -          |
 
 ---
 
@@ -44,16 +44,16 @@ handle={(form)=> ({
 
 #### DatePicker 日期选择框（[更多配置](https://ant.design/components/date-picker-cn/)）
 
-| 参数                | 说明                                             | 类型   | 默认值 |
-| ------------------- | ------------------------------------------------ | ------ | ------ |
-| type                | `（必填）` 类型 ，`datePicker | rangePicker`     | string | -      |
-| picker `datePicker` | 时间选择器展示类型，默认选择到日，`year | month` | string | date   |
-| end `rangePicker`   | `（必填）` 结束时间参数名                        | string | -      |
+| 参数                | 说明                                    | 类型         | 默认值 |
+| ------------------- | --------------------------------------- | ------------ | ------ | ---- |
+| type                | `（必填）` 类型 ，`datePicker           | rangePicker` | string | -    |
+| picker `datePicker` | 时间选择器展示类型，默认选择到日，`year | month`       | string | date |
+| end `rangePicker`   | `（必填）` 结束时间参数名               | string       | -      |
 
 #### Select 选择器（[更多配置](https://ant.design/components/select-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- |
 | type | `（必填）` 类型 ，`select | multiple` | string | - |
 | select | `（必填）` 选择值参数值 | `object | array | { list: array } | { list: object }` | - |
 | loading | 搜索等待状态 | boolean | false |
@@ -73,6 +73,10 @@ handle={(form)=> ({
 | onChange | 选择完成后的回调 | (value, form) => void | - |
 
 ## 更新日志
+
+- ### 2021 年 5 月 12 日 15:48:02 Dong
+
+> - 组件增加 `numberGroup` 配置，数字区间
 
 - ### 2021 年 2 月 22 日 15:48:57 Dong
 
