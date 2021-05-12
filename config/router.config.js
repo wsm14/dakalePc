@@ -285,7 +285,7 @@ export default [
         component: './Finance/PlatformIncome',
         buttons: ['exportList'],
       },
-      // 营销管理 market
+      // 广告营销 market
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -339,8 +339,14 @@ export default [
       {
         path: '/market/puzzleAd',
         name: '拼图广告',
-        component: './Market/PuzzleAd',
+        component: './Market/PuzzleAdvert',
         buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
+      },
+      {
+        path: '/market/videoAd',
+        name: '视频广告', // 新手视频
+        component: './Market/VideoAdvert',
+        buttons: ['save', 'edit', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation
       {

@@ -110,7 +110,6 @@ const ShareManage = (props) => {
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       valuesKey: ['topCategoryId', 'categoryId'],
-      placeholder: '选择行业',
     },
   ];
 

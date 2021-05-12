@@ -134,6 +134,9 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
+// 视频广告 - 新手视频状态
+export const VIDEO_NOVICE_STATUS = ['已下架', '上架中'];
+
 // 广告管理 - 展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 

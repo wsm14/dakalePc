@@ -116,7 +116,7 @@ const FormComponents = ({
     <Form
       form={form}
       layout={layout}
-      initialValues={initialValues}
+      // initialValues={initialValues}
       {...formItemLayout}
       {...formItemLayouts}
       scrollToFirstError={true}

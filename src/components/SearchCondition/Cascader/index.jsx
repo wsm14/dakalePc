@@ -12,7 +12,7 @@ const filter = (inputValue, path, label = 'label') => {
 };
 
 const CascaderBlock = (props) => {
-  const { form, select, placeholder, fieldNames, onChange } = props;
+  const { form, select, placeholder, label, fieldNames, onChange } = props;
 
   const divProps = Object.assign({}, props);
   delete divProps.valuesKey;
@@ -23,7 +23,7 @@ const CascaderBlock = (props) => {
       allowClear
       expandTrigger="hover"
       options={select || CITYJSON}
-      placeholder={placeholder || '选择城市'}
+      placeholder={placeholder || `选择${label || '城市'}`}
       showSearch={{
         filter: (inputValue, path) =>
           filter(inputValue, path, fieldNames ? fieldNames.label : 'label'),
