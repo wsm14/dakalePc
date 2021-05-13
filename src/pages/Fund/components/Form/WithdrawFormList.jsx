@@ -1,83 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Button } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+const { TextArea } = Input;
 
 const WithdrawFormList = (props) => {
-  const { form } = props;
+  const { form, setContentList } = props;
+  const list = [];
+  const isShow = form.getFieldValue('monthIsFree');
+
+  const handleadd = (add) => {
+    const contentList = form.getFieldValue('contentList');
+    list.push('');
+    setContentList([...contentList, ...list]);
+  };
+
+  const handleRemove = (romove, index) => {
+    const contentList = form.getFieldValue('contentList');
+    contentList.splice(index, 1);
+    console.log(index, contentList);
+    setContentList(contentList);
+    romove();
+  };
 
   return (
     <>
-      <Form.List name="names">
+      <Form.List name="contentList">
         {(fields, { add, remove }) => (
           <>
-            {fields.map(({ fieldKey, name, key, ...restField }, index) => (
-              <div
-                key={fieldKey + name}
-                style={{ border: '1px solid #cccccc', padding: '24px 0 0', marginBottom: 10 }}
-              >
-                <Form.Item {...restField} label="提现金额" style={{ marginBottom: '0' }} rules={[{ required: true,message:'请输入提现金额' }]}>
-                  <Input.Group compact>
-                    {fields.length !== index + 1 && (
-                      <>
-                        <Form.Item
-                          name={[name, 'Firstmoney']}
-                          fieldKey={[fieldKey, 'Firstmoney']}
-                          rules={[{ required: true,message:'请输入提现金额' }]}
-                          style={{ width: 150 }}
-                        >
-                          <Input suffix="元" style={{ width: 150 }} />
-                        </Form.Item>
-                        <Input
-                          placeholder="-"
-                          style={{ width: 30, pointerEvents: 'none' }}
-                          disabled
-                        />
-                      </>
-                    )}
-                    <Form.Item
-                      name={[name, 'money']}
-                      fieldKey={[fieldKey, 'money']}
-                      rules={[{ required: true,message:'请输入提现金额' }]}
-                      style={{ width: 150 }}
-                    >
-                      <Input
-                        suffix={fields.length == index + 1 ? '元以上' : '元'}
-                        style={{ width: fields.length == index + 1 ?300:150 }}
-                      />
-                    </Form.Item>
-                    {fields.length > 2 ? (
-                      <MinusCircleOutlined
-                        style={{ fontSize: 20, marginLeft: 10, marginTop: 5 }}
-                        onClick={() => remove(name)}
-                      />
-                    ) : null}
-                  </Input.Group>
+            {fields.map((field, index) => (
+              <div key={field.key} style={{ display: 'flex' }}>
+                <Form.Item {...field} rules={[{ required: true }]} style={{ width: 400 }}>
+                  <TextArea autoSize disabled={(isShow ? index <= 3 : index <= 2) ? true : false} />
                 </Form.Item>
-                <Form.Item
-                  {...restField}
-                  label="提现手续费"
-                  name={[name, 'name']}
-                  fieldKey={[fieldKey, 'name']}
-                  rules={[{ required: true }]}
-                >
-                  <Input suffix="元" style={{ width: 150 }} />
-                </Form.Item>
+                {(isShow ? index > 3 : index > 2) ? (
+                  <MinusCircleOutlined
+                    style={{ fontSize: 20, marginLeft: 10, marginTop: 5 }}
+                    onClick={() => handleRemove(() => remove(field.name), index)}
+                  />
+                ) : null}
               </div>
             ))}
             <Button
               type="dashed"
-              onClick={() => add()}
+              onClick={() => handleadd(() => add())}
               block
               icon={<PlusOutlined />}
               style={{
                 width: 250,
-                display: 'block',
-                margin: '0 auto',
                 marginBottom: 20,
               }}
-            >
-              新增层级
-            </Button>
+            ></Button>
           </>
         )}
       </Form.List>

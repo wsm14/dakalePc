@@ -1,106 +1,143 @@
-import React, { useState } from 'react';
-import { Card, Row, Col, Form, InputNumber } from 'antd';
-import FormCondition from '@/components/FormCondition';
-import WithdrawTable from './components/WithdrawTable';
+import React, { useState, useRef } from 'react';
+import { Button, Card } from 'antd';
+import { connect } from 'umi';
+import AuthConsumer from '@/layouts/AuthConsumer';
+import HandleSetTable from '@/components/HandleSetTable';
+import TableDataBlock from '@/components/TableDataBlock';
+import ProceDataForm from './components/Form/ProceDataForm';
+import moment from 'moment';
 
 const WithdrawRegular = (props) => {
-  
+  const { dispatch, loading, list } = props;
+  const [visible, setVisible] = useState(false);
+  const childRef = useRef();
 
-  const formItems = [
-    {
-      label: '每笔最低提现金额',
-      type: 'formItem',
-      required: true,
-      formItem: (
-        <Row>
-          <Col span={8} style={{ display: 'flex' }}>
-            <Form.Item label="店铺" name="username" style={{ marginBottom: '0' }}>
-              <InputNumber />
-            </Form.Item>
-            <div style={{ lineHeight: '30px', marginLeft: '10px' }}>笔</div>
-          </Col>
-          <Col span={8} style={{ display: 'flex' }}>
-            <Form.Item label="哒人" name="username" style={{ marginBottom: '0' }}>
-              <InputNumber />
-            </Form.Item>
-            <div style={{ lineHeight: '30px', marginLeft: '10px' }}>笔</div>
-          </Col>
-        </Row>
-      ),
-    },
-    {
-      label: '每日提现上限笔数',
-      type: 'formItem',
-      required: true,
-      formItem: (
-        <Row>
-          <Col span={8} style={{ display: 'flex' }}>
-            <Form.Item label="店铺" name="username" style={{ marginBottom: '0' }}>
-              <InputNumber />
-            </Form.Item>
-            <div style={{ lineHeight: '30px', marginLeft: '10px' }}>笔</div>
-          </Col>
-          <Col span={8} style={{ display: 'flex' }}>
-            <Form.Item label="哒人" name="username" style={{ marginBottom: '0' }}>
-              <InputNumber />
-            </Form.Item>
-            <div style={{ lineHeight: '30px', marginLeft: '10px' }}>笔</div>
-          </Col>
-        </Row>
-      ),
-    },
-    {
-      label: '每月提现上限笔数',
-      type: 'formItem',
-      required: true,
-      formItem: (
-        <Row>
-          <Col span={8} style={{ display: 'flex' }}>
-            <Form.Item label="店铺" name="username" style={{ marginBottom: '0' }}>
-              <InputNumber />
-            </Form.Item>
-            <div style={{ lineHeight: '30px', marginLeft: '10px' }}>元</div>
-          </Col>
-          <Col span={8} style={{ display: 'flex' }}>
-            <Form.Item label="哒人" name="username" style={{ marginBottom: '0' }}>
-              <InputNumber />
-            </Form.Item>
-            <div style={{ lineHeight: '30px', marginLeft: '10px' }}>元</div>
-          </Col>
-        </Row>
-      ),
-    },
+  //编辑
+  const handleEdit = (row) => {
+    const { provinceCode, areaCode, cityCode } = row;
+    const code = provinceCode ? provinceCode.split(',') : [];
+    code.push(cityCode);
+   
+    setVisible({
+      type: 'edit',
+      show: true,
+      detail: {
+          ...row,
+          areaCode:code,
+        effectiveTime: moment(row.effectiveTime, 'YYYY-MM-DD HH:mm:ss'),
+      },
+    });
+  };
 
+  const getColumns = [
     {
-      label: '每月首次提现免手续费',
-      name: 'content',
-      type: 'checkbox',
-      select: [
-        { label: '店铺', value: 'mechent' },
-        { label: '哒人', value: 'd' },
-      ],
+      title: '地区',
+
+      fixed: 'left',
+      dataIndex: 'areaType',
+      render: (val, row) => <>{val == 'all' ? '通用' : `${row.provinceName}-${row.cityName}`}</>,
     },
     {
-      label: '哒人提现个人所得税比例',
-      name: 'content',
-      suffix: '%',
-    //   wrapperCol: {offset:0, span: 4 },
+      title: '手续费规则',
+      align: 'center',
+      dataIndex: 'handlingFeeList',
+      render: (val, row) => (
+        <>
+          {val.map((item) => (
+            <div key={item.maxMoney}>
+              {item.maxMoney}以下：{item.handlingFee}元
+            </div>
+          ))}
+        </>
+      ),
+    },
+    {
+      title: '文案内容',
+      align: 'center',
+      dataIndex: 'contentList',
+      width: 500,
+      render: (val) =>
+        val.map((itemCon, indexs) => (
+          <div style={{ textAlign: 'left' }} key={indexs}>
+            {indexs + 1}、{itemCon}
+          </div>
+        )),
+    },
+    {
+      title: '生效时间',
+      align: 'center',
+      dataIndex: 'effectiveTime',
+    },
+    {
+      title: '最后修改人',
+      align: 'center',
+      dataIndex: 'updater',
+    },
+    {
+      title: '最后修改日期',
+      align: 'center',
+      dataIndex: 'updateTime',
+    },
+    {
+      title: '操作',
+      align: 'center',
+      dataIndex: 'city',
+      render: (val, row) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'edit',
+              click: () => handleEdit(row),
+            },
+            // {
+            //   type: 'edit',
+            //   title: '日志',
+            // },
+          ]}
+        />
+      ),
     },
   ];
 
   return (
     <>
-      <Card title={'提现规则'} bordered={false}>
-        <Row gutter={8}>
-          <Col span={12}>
-            <FormCondition formItems={formItems}></FormCondition>
-          </Col>
-        </Row>
-      </Card>
-      {/* <Card title="店铺提现手续费规则" bordered={false}></Card> */}
-      {/* 店铺提现手续费规则 */}
-      <WithdrawTable></WithdrawTable>
+      <TableDataBlock
+        order
+        keepData
+        cardProps={{
+          title: '店铺',
+          bordered: false,
+          extra: (
+            <Button
+              type="primary"
+              onClick={() =>
+                setVisible({
+                  type: 'add',
+                  show: true,
+                })
+              }
+            >
+              新增
+            </Button>
+          ),
+        }}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        rowKey={(record) => `${record.configWithdrawId}`}
+        dispatchType="widthdrawRegularList/fetchWithdrawRegularList"
+        {...list}
+      ></TableDataBlock>
+      {/* 新增，编辑 */}
+      <ProceDataForm
+        visible={visible}
+        onClose={() => setVisible(false)}
+        childRef={childRef}
+      ></ProceDataForm>
     </>
   );
 };
-export default WithdrawRegular;
+export default connect(({ widthdrawRegularList, loading }) => ({
+  list: widthdrawRegularList.list,
+  loading: loading.models.widthdrawRegularList,
+}))(WithdrawRegular);

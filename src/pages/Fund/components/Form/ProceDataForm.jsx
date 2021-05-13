@@ -1,35 +1,181 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
+import { Button, Form, Input, InputNumber, Switch } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import WithdrawFormList from './WithdrawFormList';
+import RegularForm from './RegularForm';
+import styles from '../index.less';
+import cityList from '@/common/city';
 
 const ProceDataForm = (props) => {
-  const { cRef, visible = {}, onClose } = props;
-  const { show = false, type = 'add', detail = { names: [{}, {}] } } = visible;
+  const { childRef, visible = {}, onClose, loading, dispatch } = props;
+  // const [singleMinMoney, setSingleMinMoney] = useState(0);
   const [form] = Form.useForm();
+  const [contentList, setContentList] = useState([]);
+
+  const {
+    show = false,
+    type = 'add',
+    detail = {
+      monthIsFree: 1,
+      contentList: [
+        `单笔提现金额最低为${form.getFieldValue('singleMinMoney') || 0}元人民币（2000卡豆`,
+        `每日可申请提现${form.getFieldValue('dayLimitCount') || 0}次，若当日次数已满，请次日申请；`,
+        `提现金额不满${form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0}元人民币（${
+          form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
+        }卡豆），每次提现手续费为${
+          form.getFieldValue(['handlingFeeList', 0, 'handlingFee']) || 0
+        }元人民币，超过或包含${
+          form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0
+        }元人民币（${
+          form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
+        }卡豆）免提现手续费；`,
+        '每月首次提现免手续费；',
+        '提现申请将在1-3个工作日内审核到账，请耐心等待；',
+        '如有任何疑问，请联系哒卡乐客服 400-8000-5881。',
+      ],
+      handlingFeeList: [{ handlingFee2: '0' }],
+    },
+  } = visible;
+
+  useEffect(() => {
+    form.setFieldsValue({ contentList: contentList });
+  }, [form.getFieldValue('contentList')]);
+
+  // 对应字段修改，contentList 更新
+ 
+  const handleChanges = (val, type) => {
+    // console.log(val, type);
+    let list = [
+      `单笔提现金额最低为${form.getFieldValue('singleMinMoney') || 0}元人民币（2000卡豆`,
+      `每日可申请提现${form.getFieldValue('dayLimitCount') || 0}次，若当日次数已满，请次日申请；`,
+      `提现金额不满${form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0}元人民币（${
+        form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
+      }卡豆），每次提现手续费为${
+        form.getFieldValue(['handlingFeeList', 0, 'handlingFee']) || 0
+      }元人民币，超过或包含${
+        form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0
+      }元人民币（${
+        form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
+      }卡豆）免提现手续费；`,
+      '每月首次提现免手续费；',
+      '提现申请将在1-3个工作日内审核到账，请耐心等待；',
+      '如有任何疑问，请联系哒卡乐客服 400-8000-5881。',
+    ];
+    // console.log(form.getFieldValue('contentList'), list, '333');
+
+    if (!form.getFieldValue('monthIsFree')) {
+      list.splice(3, 1);
+    }
+    setContentList(list);
+  };
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      console.log(values, '222');
+      const { handlingFeeList } = values;
+      let lists = [];
+      if (handlingFeeList && handlingFeeList.length) {
+        lists = handlingFeeList.map((items, index) => ({
+          handlingFee: items.handlingFee,
+          minMoney: 0,
+          maxMoney: items.maxMoney,
+          weight: index + 1,
+        }));
+      }
+      const payload = {
+        configWithdrawId: detail.configWithdrawId,
+        areaType: values.areaCode ? 'city' : 'all',
+        ...values,
+        areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
+        handlingFeeList: lists,
+        effectiveTime: values.effectiveTime.format('YYYY-MM-DD HH:mm:ss'),
+        monthIsFree: values.monthIsFree ? 1 : 0,
+        contentList: values.contentList,
+      };
+      console.log(values, payload, form.getFieldValue('contentList'), '222');
+
+      dispatch({
+        type: 'widthdrawRegularList/fetchWithdrawUpdate',
+        payload,
+        callback: () => {
+          childRef.current.fetchGetData();
+          onClose();
+        },
+      });
     });
   };
 
   const formItems = [
     {
       label: '地区',
-      name: 'city',
+      name: 'areaCode',
       type: 'cascader',
+      required: false,
+      select: JSON.parse(JSON.stringify(cityList)).map((item) => {
+        item.children = item.children.map((items) => {
+          return { label: items.label, value: items.value };
+        });
+        return item;
+      }),
     },
     {
-      type: 'noForm',
-      formItem: <WithdrawFormList form={form}></WithdrawFormList>,
+      label: '提现规则',
+      type: 'formItem',
+      required: true,
+      formItem: (
+        <div>
+          <div className={styles.flexCon}>
+            <Form.Item label="单笔最低提现金额" name="singleMinMoney" rules={[{ required: true }]}>
+              <InputNumber
+                onChange={(val) => handleChanges(val, 'singleMinMoney')}
+                style={{ width: 200 }}
+              />
+            </Form.Item>
+            <span className={styles.spanAfter} style={{ marginRight: 10 }}>
+              元
+            </span>
+          </div>
+          <div className={styles.flexCon}>
+            <Form.Item label="每日提现上限笔数" name="dayLimitCount" rules={[{ required: true }]}>
+              <InputNumber
+                onChange={(val) => handleChanges(val, 'dayLimitCount')}
+                style={{ width: 200 }}
+              />
+            </Form.Item>
+            <span className={styles.spanAfter} style={{ marginRight: 10 }}>
+              笔
+            </span>
+          </div>
+          <Form.Item
+            label="每月首次提现免手续费"
+            name="monthIsFree"
+            valuePropName="checked"
+            rules={[{ required: true }]}
+          >
+            <Switch onChange={(val) => handleChanges(val, 'monthIsFree')} />
+          </Form.Item>
+        </div>
+      ),
     },
     {
-      label: '生效日期',
-      name: 'time',
-      type: 'rangePicker',
+      label: '手续规则',
+      type: 'formItem',
+      required: true,
+      formItem: <RegularForm form={form} handleChangesFn={handleChanges}></RegularForm>,
+    },
+    {
+      type: 'formItem',
+      label: '文案显示',
+      name: 'regular',
+      formItem: <WithdrawFormList form={form} setContentList={setContentList}></WithdrawFormList>,
+    },
+    {
+      label: '生效时间',
+      name: 'effectiveTime',
+      type: 'dataPicker',
+      showTime: true,
+      format: 'YYYY-MM-DD HH:mm:ss',
     },
   ];
   const modalProps = {
@@ -37,7 +183,7 @@ const ProceDataForm = (props) => {
     visible: show,
     onClose,
     footer: (
-      <Button type="primary" onClick={handleSave}>
+      <Button type="primary" onClick={handleSave} loading={loading}>
         保存
       </Button>
     ),
@@ -49,4 +195,6 @@ const ProceDataForm = (props) => {
     </DrawerCondition>
   );
 };
-export default ProceDataForm;
+export default connect(({ fetchWithdrawUpdate, loading }) => ({
+  loading: loading.effects['widthdrawRegularList/fetchWithdrawUpdate'],
+}))(ProceDataForm);
