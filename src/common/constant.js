@@ -415,7 +415,7 @@ export const SPECIAL_RECOMMEND_LISTTYPE = {
 export const VIDEO_NOVICE_STATUS = ['已下架', '上架中'];
 
 // 视频广告 - 区域类型
-export const VIDEO_AREA_TYPE = { all: '全国', district: '按区县选择' };
+export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
 // 视频广告 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
