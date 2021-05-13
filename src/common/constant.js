@@ -411,8 +411,8 @@ export const SPECIAL_RECOMMEND_LISTTYPE = {
   novice: '新手视频',
 };
 
-// 视频广告 - 新手视频状态
-export const VIDEO_NOVICE_STATUS = ['已下架', '上架中'];
+// 视频广告 - 新手视频状态 1-上架 3-下架
+export const VIDEO_NOVICE_STATUS = [false, '已下架', false, '上架中'];
 
 // 视频广告 - 区域类型
 export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };

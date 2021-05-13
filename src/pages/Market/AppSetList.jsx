@@ -106,15 +106,22 @@ const SysAppSet = (props) => {
       dataIndex: 'jumpUrl',
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName } = row;
-        return { H5: val, inside: nativeJumpName, '': '--' }[jumpUrlType];
+        return {
+          H5: (
+            <Ellipsis length={15} tooltip>
+              {val}
+            </Ellipsis>
+          ),
+          inside: nativeJumpName,
+          '': '--',
+        }[jumpUrlType];
       },
     },
     {
       title: '展示时间',
       align: 'center',
       dataIndex: 'beginDate',
-      render: (val, row) =>
-        `${val} ~ ${row.endDate !== '2999.12.30' ? row.endDate : '长期'}`,
+      render: (val, row) => `${val} ~ ${row.endDate !== '2999.12.30' ? row.endDate : '长期'}`,
     },
     {
       title: '创建时间',

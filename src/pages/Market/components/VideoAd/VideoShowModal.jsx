@@ -1,24 +1,39 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Modal } from 'antd';
 
 const VideoShowModal = (props) => {
   const { visible = {}, onClose } = props;
 
-  const { show = false, detail = { imageContent: '[]' } } = visible;
+  const videoRef = useRef(null);
+
+  const { show = false, detail = { videoContentOb: {} } } = visible;
+
+  const videoData = detail.videoContentOb || {};
+
+  // 关闭 暂停播放
+  const handleVideoClose = () => {
+    videoRef.current.pause();
+    onClose();
+  };
 
   return (
     <Modal
       title={`视频 - ${detail.title}`}
-      width={548}
+      width={videoData.width / 2 + 48}
       destroyOnClose
       footer={null}
       visible={show}
-      onCancel={onClose}
+      onCancel={handleVideoClose}
     >
       <video
-        src={JSON.parse(detail.videoContent || '{}').url}
+        src={videoData.url}
+        ref={videoRef}
         controls="controls"
-        style={{ maxHeight: 300, margin: '0 auto', width: 500 }}
+        style={{
+          maxHeight: Number(videoData.height) / 2,
+          margin: '0 auto',
+          width: Number(videoData.width) / 2,
+        }}
         autoPlay
       >
         <track kind="captions" />

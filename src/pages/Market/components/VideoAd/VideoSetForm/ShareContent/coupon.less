@@ -1,39 +1,40 @@
 .share_Coupon {
+  display: flex;
+  align-items: center;
   width: 350px;
   height: 94px;
   padding: 8px;
   border: 1px solid #d9d9d9;
   border-radius: 2px;
-  display: flex;
-  align-items: center;
   user-select: none;
   &:hover {
     border-color: #1890ff;
   }
   .share_left {
-    font-size: 12px;
     position: relative;
-    width: 76px;
-    height: 100%;
     display: flex;
     align-items: center;
-    background-color: rgb(226, 226, 226);
+    width: 76px;
+    height: 100%;
     padding: 9px;
+    font-size: 12px;
+    background-color: rgb(226, 226, 226);
   }
   .titile {
     width: 100%;
-    font-weight: 600;
     overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 600;
     white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .share_title {
     flex: 1;
     padding-left: 10px;
-    font-weight: 600;
     overflow: hidden;
-    text-overflow: ellipsis;
+    font-weight: 600;
+    line-height: 2.1;
     white-space: nowrap;
+    text-overflow: ellipsis;
     .share_tip {
       font-weight: 400;
       font-size: 12px;
@@ -45,33 +46,33 @@
 }
 
 .share_Coupon.share_add {
-  cursor: pointer;
   justify-content: center;
   font-size: 30px;
+  cursor: pointer;
 }
 
 .share_select_list {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  width: 100%;
   &:after {
-    content: '';
     width: 300px;
     height: 0px;
     visibility: hidden;
+    content: '';
   }
 
   .share_Coupon.share_item {
     cursor: pointer;
     .share_select_icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 1px solid #b1b1b1;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 18px;
+      height: 18px;
+      border: 1px solid #b1b1b1;
+      border-radius: 50%;
       .share_select {
         width: 12px;
         height: 12px;

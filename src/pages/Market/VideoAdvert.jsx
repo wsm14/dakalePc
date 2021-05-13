@@ -13,7 +13,7 @@ import VideoSetDrawer from './components/VideoAd/VideoSetDrawer';
 import styles from './styles.less';
 
 const VideoAdvert = (props) => {
-  const { openAdvert, loading, dispatch, tradeList } = props;
+  const { videoAdvert, loading, dispatch, tradeList } = props;
 
   const childRef = useRef();
   const [visibleVideo, setVisibleVideo] = useState(false); // 查看视频
@@ -46,11 +46,11 @@ const VideoAdvert = (props) => {
   const searchItems = [
     {
       label: '视频标题',
-      name: 'launchOwner',
+      name: 'title',
     },
     {
       label: '店铺名称',
-      name: 'launc1hOwner',
+      name: 'merchantName',
     },
     {
       label: '行业',
@@ -63,26 +63,26 @@ const VideoAdvert = (props) => {
     },
     {
       label: '卡豆余额',
-      name: 'la22unchOwner',
       type: 'number',
+      name: 'remainBean',
       formatter: (value) => `< ${value}`,
       parser: (value) => value.replace(/\<\s?/g, ''),
     },
     {
       label: '创建时间',
       type: 'rangePicker',
-      name: 'beginTime',
-      end: 'endTime',
+      name: 'beginDate',
+      end: 'endDate',
     },
     {
       label: '状态',
-      name: 'status',
       type: 'select',
+      name: 'status',
       select: VIDEO_NOVICE_STATUS,
     },
     {
       label: '创建人',
-      name: 'launchOwner',
+      name: 'creatorName',
     },
   ];
 
@@ -91,15 +91,18 @@ const VideoAdvert = (props) => {
     {
       title: '视频/标题',
       fixed: 'left',
-      dataIndex: 'frontImage',
+      dataIndex: 'merchantCover',
       width: 280,
       render: (val, row) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div>
-            <PopImgShow url={val}></PopImgShow>
+            <PopImgShow
+              url={val}
+              onClick={() => setVisibleVideo({ show: true, detail: row })}
+            ></PopImgShow>
           </div>
           <div style={{ marginLeft: '15px' }}>
-            <Ellipsis length={10} tooltip lines={3}>
+            <Ellipsis length={10} tooltip lines={2}>
               {row.title}
             </Ellipsis>
           </div>
@@ -108,64 +111,74 @@ const VideoAdvert = (props) => {
     },
     {
       title: '关联店铺',
-      align: 'center',
-      dataIndex: 'url',
+      width: 200,
+      dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip lines={2}>
+          {val || '--'}
+        </Ellipsis>
+      ),
     },
     {
       title: '单次打赏卡豆',
       align: 'right',
-      dataIndex: 'launchDesc',
+      dataIndex: 'beanAmount',
       render: (val) => `${val}卡豆/人`,
     },
     {
       title: '观看人数',
       align: 'right',
-      dataIndex: 'jumpUrlType',
+      dataIndex: 'viewAmount',
     },
     {
       title: '领卡豆人',
       align: 'right',
-      dataIndex: 'jumpUrl',
+      dataIndex: 'getBeanPersonNum',
     },
     {
       title: '累计打赏卡豆数',
       align: 'right',
-      dataIndex: 'startDate',
+      dataIndex: 'rewardedBean',
     },
     {
       title: '卡豆余额',
       align: 'right',
-      dataIndex: 'createTime',
+      dataIndex: 'remainBean',
     },
     {
       title: '关联券/商品',
-      dataIndex: 'createTime',
+      dataIndex: 'freeCouponName',
+      width: 250,
+      render: (val, row) =>
+        `${val}\n${row.valuableCouponName || row.specialGoodsName || ''}\n（${row.stock}）`,
     },
     {
       title: '发布时间',
+      align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.p || ''}`,
+      render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
     {
       title: '状态',
       align: 'center',
+      fixed: 'right',
       dataIndex: 'status',
       render: (val) => VIDEO_NOVICE_STATUS[val],
     },
     {
       title: '操作',
-      dataIndex: 'idString',
+      dataIndex: 'guideMomentsId',
       align: 'right',
       fixed: 'right',
       width: 165,
-      render: (appLaunchImageId, row) => {
+      render: (guideMomentsId, row) => {
         const { status } = row;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'info',
-                click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
+                click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'info'),
               },
               {
                 type: 'down',
@@ -174,7 +187,7 @@ const VideoAdvert = (props) => {
               },
               {
                 type: 'again',
-                visible: status === '0',
+                visible: status === '3',
                 click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
               },
               {
@@ -205,9 +218,9 @@ const VideoAdvert = (props) => {
   };
 
   // 获取详情
-  const fetchOpenAdvertDetail = (payload, type) => {
+  const fetchVideoAdNoviceDetail = (payload, type) => {
     dispatch({
-      type: 'openAdvert/fetchOpenAdvertDetail',
+      type: 'videoAdvert/fetchVideoAdNoviceDetail',
       payload,
       callback: (detail) => setVisibleSet({ show: true, type, detail }),
     });
@@ -230,10 +243,10 @@ const VideoAdvert = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.idString}`}
-        rowClassName={(record) => (record.bucket <= 10 ? styles.video_rowColor : '')}
-        dispatchType="openAdvert/fetchGetList"
-        {...openAdvert}
+        rowKey={(record) => `${record.guideMomentsId}`}
+        rowClassName={(record) => (record.stock <= 10 ? styles.video_rowColor : '')}
+        dispatchType="videoAdvert/fetchGetList"
+        {...videoAdvert}
       ></TableDataBlock>
       {/* 领豆明细 */}
       <VideoPeasDetail
@@ -245,14 +258,14 @@ const VideoAdvert = (props) => {
         visible={visibleVideo}
         onClose={() => setVisibleVideo(false)}
       ></VideoShowModal>
-      {/* 发布 */}
+      {/* 发布 / 详情 */}
       <VideoSetDrawer visible={visibleSet} onClose={() => setVisibleSet(false)}></VideoSetDrawer>
     </>
   );
 };
 
-export default connect(({ openAdvert, sysTradeList, loading }) => ({
-  openAdvert,
+export default connect(({ videoAdvert, sysTradeList, loading }) => ({
+  videoAdvert,
   tradeList: sysTradeList.list.list,
-  loading: loading.models.openAdvert,
+  loading: loading.models.videoAdvert,
 }))(VideoAdvert);

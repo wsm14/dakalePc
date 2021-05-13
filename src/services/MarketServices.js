@@ -322,3 +322,21 @@ export function fetchOpenAdvertStatus(data) {
 }
 
 // 开屏广告 end
+
+// 视频广告
+
+// get 视频广告 - 新手视频 - 列表
+export function fetchVideoAdNovice(params) {
+  return request('/admin/guideMomentsManagement/listGuideMoments', {
+    params,
+  });
+}
+
+// get 视频广告 - 新手视频 - 详情
+export function fetchVideoAdNoviceDetail(params) {
+  return request('/admin/guideMomentsManagement/getGuideMomentsById', {
+    params,
+  });
+}
+
+// 开屏广告 end
