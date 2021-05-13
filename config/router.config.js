@@ -256,13 +256,13 @@ export default [
           'exportList',
           'taskSave',
           'taskDel',
-          'taskEnd',
+          // 'taskEnd',
           'taskInfo',
           'taskDetail',
           'direct',
           'directSave',
           'directDel',
-          'directEnd',
+          // 'directEnd',
           'directInfo',
           'directDetail',
           'action',
@@ -346,7 +346,7 @@ export default [
         path: '/market/videoAd',
         name: '视频广告', // 新手视频
         component: './Market/VideoAdvert',
-        buttons: ['save', 'edit', 'info', 'down', 'peasDetail', 'again', 'diary'],
+        buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation
       {

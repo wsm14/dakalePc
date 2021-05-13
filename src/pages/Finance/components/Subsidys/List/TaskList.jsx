@@ -86,13 +86,13 @@ const TaskManage = (props) => {
                 visible: status === '0',
                 click: () => fetchSubsidyTaskEndDel({ subsidyId, deleteFlag: 0 }),
               },
-              {
-                type: 'end',
-                auth: `${tabkey}End`,
-                pop: true,
-                visible: status === '1',
-                click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
-              },
+              // {
+              //   type: 'end',
+              //   auth: `${tabkey}End`,
+              //   pop: true,
+              //   visible: status === '1',
+              //   click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
+              // },
             ]}
           />
         );

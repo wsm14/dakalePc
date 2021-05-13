@@ -13,13 +13,16 @@ const ShareDrawer = (props) => {
   const { type = 'add', show = false } = visible;
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
-  const [dataStorage, setDataStorage] = useState({}); // 数据暂存
+  const [dataStorage, setDataStorage] = useState({
+    merchantIdStr: undefined,
+    categoryNode: [],
+    topCategoryName: [],
+  }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
 
   // 下一步
   const handleNextStep = () => {
     form.validateFields().then((values) => {
-      console.log(values);
       saveDataStorage({ ...dataStorage, ...values });
       setCurrent(current + 1);
     });

@@ -134,9 +134,6 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 // 员工在职状态
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
-// 视频广告 - 新手视频状态
-export const VIDEO_NOVICE_STATUS = ['已下架', '上架中'];
-
 // 广告管理 - 展示状态
 export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
 
@@ -409,4 +406,16 @@ export const SPECIAL_RECOMMEND_TYPE = {
 export const SPECIAL_RECOMMEND_LISTTYPE = {
   hot: '限时',
   today: '爆品',
+  thisPeriod: '本期必抢',
+  nextPeriod: '下期预告',
+  novice: '新手视频',
 };
+
+// 视频广告 - 新手视频状态
+export const VIDEO_NOVICE_STATUS = ['已下架', '上架中'];
+
+// 视频广告 - 区域类型
+export const VIDEO_AREA_TYPE = { all: '全国', district: '按区县选择' };
+
+// 视频广告 - 时间设置类型
+export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];

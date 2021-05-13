@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
+import { VIDEO_ADVERT } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from './ShareContent/ShareCoupon';
 import FreeCouponSelectModal from './ShareContent/FreeCouponSelectModal';
@@ -22,7 +23,7 @@ const VideoContentSet = (props) => {
     saveDataStorage,
   } = props;
 
-  const { merchantId, userType } = detail;
+  const { merchantIdStr, userType } = detail;
   const { free, contact } = couponData;
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
@@ -52,30 +53,61 @@ const VideoContentSet = (props) => {
       type: 'select',
       loading,
       placeholder: '请输入搜索',
-      name: 'merchantId',
+      name: 'merchantIdStr',
       select: selectList,
-      onChange: (val, data) => {
-        saveDataStorage({
-          merchantId: val,
-          topCategoryId: data.option.topCategoryId,
-          topCategoryName: data.option.topCategoryName,
-        });
-        form.setFieldsValue({ topCategoryId: data.option.topCategoryId });
-      },
       onSearch: (val) => fetchClassifyGetMre(val),
+      onChange: (val, data) => {
+        const { option } = data;
+        form.setFieldsValue({
+          categoryNode: option.topCategoryId,
+          topCategoryIdStr: option.topCategoryId[0],
+          categoryIdStr: option.topCategoryId[1],
+          topCategoryName: option.topCategoryName[0],
+          categoryName: option.topCategoryName[1],
+        });
+      },
     },
     {
       label: '上传封面',
       name: 'dasd',
       type: 'upload',
       maxFile: 1,
-      rules: [{ required: false }],
+      imgRatio: VIDEO_ADVERT,
     },
     {
       label: '上传视频',
       name: 'remssdson',
       type: 'videoUpload',
       maxFile: 1,
+      onChange: ({ file }) => {
+        const fileurl = URL.createObjectURL(file);
+        // 获取视频的时长 长宽高
+        const videoElement = document.createElement('video');
+        videoElement.addEventListener('loadedmetadata', function (_event) {
+          const duration = videoElement.duration; // 单位：秒
+          form.setFieldsValue({
+            length: duration,
+            videoContentOb: { height: videoElement.videoHeight, width: videoElement.videoWidth },
+          });
+        });
+        videoElement.src = fileurl;
+        videoElement.load();
+      },
+    },
+    {
+      label: '视频时长',
+      name: 'length',
+      hidden: true,
+    },
+    {
+      label: '视频宽度',
+      name: ['videoContentOb', 'height'],
+      hidden: true,
+    },
+    {
+      label: '视频高度',
+      name: ['videoContentOb', 'width'],
+      hidden: true,
     },
     {
       label: '视频标题',
@@ -91,10 +123,26 @@ const VideoContentSet = (props) => {
     {
       label: '行业分类',
       type: 'cascader',
-      name: 'topCategoryId',
+      name: 'categoryNode',
       select: tradeList,
       disabled: true,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+    },
+    {
+      name: 'topCategoryIdStr', // 一级行业id
+      hidden: true,
+    },
+    {
+      name: 'topCategoryName', // 一级行业名称
+      hidden: true,
+    },
+    {
+      name: 'categoryName', // 二级行业名称
+      hidden: true,
+    },
+    {
+      name: 'categoryIdStr', // 二级行业id
+      hidden: true,
     },
     {
       label: '免费券',
@@ -123,7 +171,7 @@ const VideoContentSet = (props) => {
   ];
 
   const selectProps = {
-    ownerId: merchantId,
+    ownerId: merchantIdStr,
     ownerType: userType,
   };
 

@@ -40,6 +40,20 @@ const addGroups = (props) => {
       <div style={{ textAlign: 'center' }}>
         <Space>
           <Button
+            onClick={() =>
+              saveVisible({
+                visible: false,
+                groupDetails: {},
+                merchantGroupDTO: {},
+                businessLicense: {},
+                initial: {},
+                bankBindingInfo: {},
+              })
+            }
+          >
+            取消
+          </Button>
+          <Button
             loading={loadingAdd}
             onClick={() =>
               fetchAddLists(() => {

@@ -168,11 +168,6 @@ const VideoAdvert = (props) => {
                 click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
               },
               {
-                type: 'edit',
-                visible: status === '1',
-                click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
-              },
-              {
                 type: 'down',
                 visible: status === '1',
                 click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),

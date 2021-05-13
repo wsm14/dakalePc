@@ -56,6 +56,7 @@ const tableList = (props) => {
       type: 'groupSet/save',
       payload: close
         ? {
+            visible: false,
             visible1: false,
             visible2: false,
             merchantGroupId: null,
