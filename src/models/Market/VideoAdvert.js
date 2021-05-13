@@ -3,9 +3,8 @@ import moment from 'moment';
 import {
   fetchVideoAdNovice,
   fetchVideoAdNoviceDetail,
+  fetchVideoAdNoviceStatus,
   fetchOpenAdvertSet,
-  fetchOpenAdvertEdit,
-  fetchOpenAdvertStatus,
 } from '@/services/MarketServices';
 
 export default {
@@ -38,31 +37,12 @@ export default {
         },
       });
     },
-    *fetchOpenAdvertSet({ payload, callback }, { call }) {
-      const response = yield call(fetchOpenAdvertSet, payload);
+    *fetchVideoAdNoviceStatus({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdNoviceStatus, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `开屏广告新增成功`,
-      });
-      callback();
-    },
-    *fetchOpenAdvertEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchOpenAdvertEdit, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: `开屏广告修改成功`,
-      });
-      callback();
-    },
-    *fetchOpenAdvertStatus({ payload, callback }, { call }) {
-      const { deleteFlag } = payload;
-      const response = yield call(fetchOpenAdvertStatus, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: `开屏广告${deleteFlag === 0 ? '删除' : '设置'}成功`,
+        description: `新手视频下架成功`,
       });
       callback();
     },
@@ -80,6 +60,24 @@ export default {
           ],
           rewardEndTime: `${rewardStartTime} ~ ${rewardEndTime}`,
         });
+    },
+    *fetchOpenAdvertSet({ payload, callback }, { call }) {
+      const response = yield call(fetchOpenAdvertSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `开屏广告新增成功`,
+      });
+      callback();
+    },
+    *fetchOpenAdvertEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchOpenAdvertEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `开屏广告修改成功`,
+      });
+      callback();
     },
   },
 };

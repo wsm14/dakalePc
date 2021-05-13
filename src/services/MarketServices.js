@@ -339,4 +339,12 @@ export function fetchVideoAdNoviceDetail(params) {
   });
 }
 
+// post 视频广告 - 新手视频 - 下架
+export function fetchVideoAdNoviceStatus(data) {
+  return request('/admin/guideMomentsManagement/offShelfGuideMoments', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 开屏广告 end

@@ -177,16 +177,16 @@ const VideoAdvert = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'info',
+                type: 'info', // 详情
                 click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'info'),
               },
               {
-                type: 'down',
+                type: 'down', // 下架
                 visible: status === '1',
-                click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
+                click: () => fetchVideoAdNoviceStatus({ guideMomentsId }),
               },
               {
-                type: 'again',
+                type: 'again', // 重新发布
                 visible: status === '3',
                 click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
               },
@@ -196,7 +196,7 @@ const VideoAdvert = (props) => {
                 click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
               },
               {
-                type: 'diary',
+                type: 'diary', // 日志
                 click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
               },
             ]}
@@ -226,10 +226,10 @@ const VideoAdvert = (props) => {
     });
   };
 
-  // 下架 删除
-  const fetchOpenAdvertStatus = (payload) => {
+  // 下架
+  const fetchVideoAdNoviceStatus = (payload) => {
     dispatch({
-      type: 'openAdvert/fetchOpenAdvertStatus',
+      type: 'videoAdvert/fetchVideoAdNoviceStatus',
       payload,
       callback: childRef.current.fetchGetData,
     });
