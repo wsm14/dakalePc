@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { Button, Form, Input, InputNumber, Switch } from 'antd';
+import { Button, Form, InputNumber, Switch } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import WithdrawFormList from './WithdrawFormList';
@@ -11,7 +11,6 @@ import cityList from '@/common/city';
 const ProceDataForm = (props) => {
   const { childRef, visible = {}, onClose, loading, dispatch } = props;
   const [form] = Form.useForm();
-  const [contentList, setContentList] = useState([]);
 
   const textDetail = () => [
     `单笔提现金额最低为${form.getFieldValue('singleMinMoney') || 0}元人民币（${
@@ -25,9 +24,9 @@ const ProceDataForm = (props) => {
     }元人民币，超过或包含${form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0}元人民币（${
       form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
     }卡豆）${
-      form.getFieldValue(['handlingFeeList', 1, 'handlingFee'])
-        ? '每次提现手续费为' + form.getFieldValue(['handlingFeeList', 1, 'handlingFee']) + '元；'
-        : '免提现手续费；'
+      form.getFieldValue(['handlingFeeList', 1, 'handlingFee']) == 0
+        ? '免提现手续费；'
+        : '每次提现手续费为' + form.getFieldValue(['handlingFeeList', 1, 'handlingFee']) + '元；'
     }`,
     '每月首次提现免手续费；',
   ];
@@ -52,7 +51,6 @@ const ProceDataForm = (props) => {
   // 对应字段修改，contentList 更新
 
   const handleChanges = (type, index) => {
-    console.log(type, index, '111');
     let list = textDetail(); // 更新后的不可修改数据
     const freeStatus = form.getFieldValue('monthIsFree'); // 每月首次提现免手续费状态开关
     const formListValue = form.getFieldValue('contentList'); // 表单内当前list 数据
@@ -76,22 +74,12 @@ const ProceDataForm = (props) => {
       form.setFieldsValue({ handlingFeeList: mins });
     }
     form.setFieldsValue({ contentList: [...list, ...formListEdit] });
-    // setContentList(contentPrv);
   };
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'values');
       const { handlingFeeList } = values;
-      // let lists = [];
-      // if (handlingFeeList && handlingFeeList.length) {
-      //   lists = handlingFeeList.map((items, index) => ({
-      //     handlingFee: items.handlingFee,
-      //     minMoney: 0,
-      //     maxMoney: items.maxMoney,
-      //     weight: index + 1,
-      //   }));
-      // }
+
       const payload = {
         configWithdrawId: detail.configWithdrawId,
         areaType: values.areaCode != '' ? 'city' : 'all',
