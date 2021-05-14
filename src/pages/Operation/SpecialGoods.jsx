@@ -8,6 +8,7 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
+  SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
 import { LogDetail, RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
@@ -229,7 +230,9 @@ const SpecialGoods = (props) => {
           {row.activityTimeRule === 'infinite'
             ? `${row.createTime} ~ 长期`
             : `${val} ~ ${row.activityEndTime}`}
-          <div>{SPECIAL_STATUS[row.status]}</div>
+          <div>
+            {row.deleteFlag === '0' ? SPECIAL_RECOMMEND_DELSTATUS[val] : SPECIAL_STATUS[row.status]}
+          </div>
         </>
       ),
     },
@@ -257,10 +260,10 @@ const SpecialGoods = (props) => {
       dataIndex: 'createTime',
       render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
-    {
-      title: '审核通过时间',
-      dataIndex: 'createTime',
-    },
+    // {
+    //   title: '审核通过时间',
+    //   dataIndex: 'verifyTime',
+    // },
     {
       title: '推广位置',
       fixed: 'right',
@@ -279,7 +282,7 @@ const SpecialGoods = (props) => {
       fixed: 'right',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, merchantIdStr, status } = record;
+        const { specialGoodsId, merchantIdStr, status, deleteFlag } = record;
         return (
           <HandleSetTable
             formItems={[
@@ -294,7 +297,7 @@ const SpecialGoods = (props) => {
               },
               {
                 type: 'down',
-                visible: status == '1',
+                visible: status == '1' && deleteFlag == '1',
                 click: () =>
                   setVisibleRefuse({
                     show: true,
@@ -304,22 +307,22 @@ const SpecialGoods = (props) => {
               },
               {
                 type: 'edit',
-                visible: ['1', '2'].includes(status), // 活动中 即将开始
+                visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始
                 click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
               },
               {
                 type: 'check',
-                visible: ['3'].includes(status), // 活动中 审核中
+                visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
-              {
-                type: 'del',
-                visible: ['0'].includes(status), // 已下架
-                click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
-              },
+              // {
+              //   type: 'del',
+              //   visible: ['0'].includes(status), // 已下架
+              //   click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
+              // },
               {
                 type: 'again',
-                visible: ['0'].includes(status), // 已下架
+                visible: ['0'].includes(status) && deleteFlag == '1', // 已下架
                 click: () => fetchSpecialGoodsDetail(index, 'again'),
               },
               {

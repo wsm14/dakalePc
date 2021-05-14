@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { NUM_PATTERN } from '@/common/regExp';
 import { EXPERT_TYPE } from '@/common/constant';
+import { checkFileData } from '@/utils/utils';
 import { LEVEL_ICON, UP_LEVEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -20,25 +21,6 @@ const ExpertAllocationSet = (props) => {
 
   // 用户身份 表单显示
   const fromShow = detail.type === 'normal';
-
-  // 检查文件上传格式
-  const checkFileData = (fileData) => {
-    let aimg = [];
-    switch (typeof fileData) {
-      case 'undefined':
-        break;
-      case 'object':
-        aimg = fileData.fileList.map((item) => {
-          if (item.originFileObj) return item.originFileObj;
-          return item.url;
-        });
-        break;
-      default:
-        aimg = [fileData];
-        break;
-    }
-    return aimg;
-  };
 
   // 提交
   const fetchGetFormData = () => {

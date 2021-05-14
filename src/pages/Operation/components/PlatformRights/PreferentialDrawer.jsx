@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
+import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import Html5Simulate from '@/components/Html5Simulate';
 import CouponDetail from './Detail/PreferentialDetail';
@@ -37,25 +38,6 @@ const PreferentialDrawer = (props) => {
         groupFlag: ownerType === 'merchant' ? 0 : 1,
       },
     });
-  };
-
-  // 检查文件上传格式
-  const checkFileData = (fileData) => {
-    let aimg = [];
-    switch (typeof fileData) {
-      case 'undefined':
-        break;
-      case 'object':
-        aimg = fileData.fileList.map((item) => {
-          if (item.url) return item.url;
-          return item.originFileObj;
-        });
-        break;
-      default:
-        aimg = [fileData];
-        break;
-    }
-    return aimg;
   };
 
   // 确认提交数据 - 新增 / 修改所有数据

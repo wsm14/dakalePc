@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps } from 'antd';
+import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareContentSet from './VideoSetForm/VideoContentSet';
 import SharePushSet from './VideoSetForm/VideoPushSet';
@@ -17,6 +18,48 @@ const ShareDrawer = (props) => {
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({}); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
+
+  // 确认发布
+  const handleVideoPush = () => {
+    form.validateFields().then((values) => {
+      const {
+        frontImage,
+        videoContentOb: { url },
+        categoryNode,
+        title,
+      } = dataStorage;
+      const { areaType, area, rewardStartTime: time } = values;
+      aliOssUpload(frontImage).then((imgRes) => {
+        aliOssUpload(url, { type: 'video', params: { title } }).then((res) => {
+          console.log(res);
+          //   dispatch({
+          //     type: 'videoAdvert/fetchVideoAdNoviceSet',
+          //     payload: {
+          //       userType: 'merchant',
+          //       contentType: 'video',
+          //       beanFlag: '1', // 是否打赏 0 1
+          //       ...values,
+          //       area: areaType === 'district' ? area[2] : undefined,
+          //       categoryNode: categoryNode.join('.'),
+          //       frontImage: imgRes.toString(), // 封面连接
+          //       frontImageWidth: 544, // 封面宽
+          //       frontImageHeight: 960, // 封面长
+          //       rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+          //       rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+          //       videoContentOb: {
+          //         ...dataStorage['videoContentOb'],
+          //         url: res.toString(),
+          //       },
+          //     },
+          //     callback: () => {
+          //       onClose();
+          //       childRef.current.fetchGetData();
+          //     },
+          //   });
+        });
+      });
+    });
+  };
 
   // 下一步
   const handleNextStep = () => {
@@ -74,7 +117,7 @@ const ShareDrawer = (props) => {
             </Button>
           )}
           {current === steps.length - 1 && (
-            <Button type="primary" onClick={() => 'Processing complete!'}>
+            <Button type="primary" onClick={handleVideoPush} loading={loading}>
               确认发布
             </Button>
           )}
@@ -106,5 +149,5 @@ const ShareDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['goodsManage/fetchGoodsAdd'],
+  loading: loading.effects['videoAdvert/fetchVideoAdNoviceSet'],
 }))(ShareDrawer);

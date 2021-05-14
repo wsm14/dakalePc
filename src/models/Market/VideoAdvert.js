@@ -2,9 +2,9 @@ import { notification } from 'antd';
 import moment from 'moment';
 import {
   fetchVideoAdNovice,
+  fetchVideoAdNoviceSet,
   fetchVideoAdNoviceDetail,
   fetchVideoAdNoviceStatus,
-  fetchOpenAdvertSet,
 } from '@/services/MarketServices';
 
 export default {
@@ -61,12 +61,12 @@ export default {
           rewardEndTime: `${rewardStartTime} ~ ${rewardEndTime}`,
         });
     },
-    *fetchOpenAdvertSet({ payload, callback }, { call }) {
-      const response = yield call(fetchOpenAdvertSet, payload);
+    *fetchVideoAdNoviceSet({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdNoviceSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `开屏广告新增成功`,
+        description: `视频广告新增成功`,
       });
       callback();
     },

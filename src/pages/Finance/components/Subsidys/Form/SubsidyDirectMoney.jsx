@@ -31,6 +31,7 @@ const SubsidyDirectMoney = (props) => {
       label: '适用店铺',
       name: 'merchantIds',
       type: 'formItem',
+      rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺

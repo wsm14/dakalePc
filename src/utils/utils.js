@@ -260,3 +260,22 @@ export const checkDataType = (data) => {
   }
   return checkType;
 };
+
+// 检查文件上传格式
+export const checkFileData = (fileData) => {
+  let aimg = [];
+  switch (typeof fileData) {
+    case 'undefined':
+      break;
+    case 'object':
+      aimg = fileData.fileList.map((item) => {
+        if (item.url) return item.url;
+        return item.originFileObj;
+      });
+      break;
+    default:
+      aimg = [fileData];
+      break;
+  }
+  return aimg;
+};

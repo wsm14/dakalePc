@@ -9,7 +9,18 @@ import TaskDetailList from '../Detail/TaskDetailList';
 const TaskManage = (props) => {
   const { subsidyManage, loading, childRef, tabkey, type, setVisible, dispatch } = props;
 
+  const [dates, setDates] = useState([]); // 时间选择器限制选择参数比较
   const [taskDetail, setTaskDates] = useState(false); // 补贴详情展示
+
+  // 时间限制选择一年
+  const disabledDate = (current) => {
+    if (!dates || dates.length === 0) {
+      return false;
+    }
+    const tooLate = dates[0] && current.diff(dates[0], 'days') > 365;
+    const tooEarly = dates[1] && dates[1].diff(current, 'days') > 365;
+    return tooEarly || tooLate;
+  };
 
   // 搜索参数
   const searchItems = [
@@ -20,6 +31,27 @@ const TaskManage = (props) => {
     {
       label: '创建人',
       name: 'creator',
+    },
+    {
+      label: '补贴类型',
+      type: 'select',
+      name: 'mode',
+      select: SUBSIDY_BEAN_TYPE,
+    },
+    {
+      label: '补贴角色',
+      type: 'select',
+      name: 'role',
+      select: SUBSIDY_TASK_ROLE,
+    },
+    {
+      label: '时间',
+      type: 'rangePicker',
+      name: 'startTime',
+      end: 'endTime',
+      onCalendarChange: setDates,
+      onOpenChange: () => setDates([]),
+      disabledDate,
     },
   ];
 
@@ -44,7 +76,7 @@ const TaskManage = (props) => {
       render: (val) => SUBSIDY_BEAN_TYPE[val],
     },
     {
-      title: '总参与人数',
+      title: '总参与店铺/人数',
       align: 'right',
       dataIndex: 'participants',
     },

@@ -5,7 +5,7 @@ import { couponsDom } from './CouponFreeDom';
 import './coupon.less';
 
 const FreeCouponSelectModal = (props) => {
-  const { couponList, ownerId, ownerType, dispatch, visible, onClose, onOk, loading } = props;
+  const { couponList, merchantId, ownerType, dispatch, visible, onClose, onOk, loading } = props;
   const { list, total } = couponList;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
@@ -18,12 +18,13 @@ const FreeCouponSelectModal = (props) => {
   // 获取免费券列表
   const fetchShareGetFreeCoupon = () => {
     dispatch({
-      type: 'shareManage/fetchShareGetFreeCoupon',
+      type: 'couponManage/fetchGetList',
       payload: {
-        ownerId,
+        merchantId,
+        freeOrValuable: 'free',
         ownerType, // merchant: '单店', group: '集团'
         page,
-        limit: 9,
+        limit: 10,
       },
     });
   };
@@ -31,19 +32,19 @@ const FreeCouponSelectModal = (props) => {
   return (
     <Modal
       title={`免费券（单选）`}
-      width={960}
+      width={780}
       visible={visible}
       afterClose={() => setPage(1)}
       maskStyle={{ background: 'none' }}
       destroyOnClose
-      okButtonProps={{ disabled: !selectItem.ownerCouponId }}
+      okButtonProps={{ disabled: !selectItem.ownerCouponIdString }}
       onOk={() => onOk(selectItem)}
       onCancel={onClose}
     >
       <Spin spinning={loading}>
         {list.length ? (
           <div className="share_select_list">
-            {list.map((item) => couponsDom(item, selectItem.ownerCouponId, setSelectItem))}
+            {list.map((item) => couponsDom(item, selectItem.ownerCouponIdString, setSelectItem))}
           </div>
         ) : (
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -52,7 +53,7 @@ const FreeCouponSelectModal = (props) => {
       <div style={{ textAlign: 'right', marginTop: 10 }}>
         <Pagination
           size="small"
-          pageSize={9}
+          pageSize={10}
           total={total}
           showTotal={() => `共 ${total} 项`}
           showQuickJumper
@@ -63,7 +64,7 @@ const FreeCouponSelectModal = (props) => {
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  couponList: shareManage.couponList,
-  loading: loading.effects['shareManage/fetchShareGetFreeCoupon'],
+export default connect(({ couponManage, loading }) => ({
+  couponList: couponManage,
+  loading: loading.effects['couponManage/fetchGetList'],
 }))(FreeCouponSelectModal);

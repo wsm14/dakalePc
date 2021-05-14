@@ -339,6 +339,14 @@ export function fetchVideoAdNoviceDetail(params) {
   });
 }
 
+// post 视频广告 - 新手视频 - 发布分享
+export function fetchVideoAdNoviceSet(data) {
+  return request('/admin/guideMomentsManagement/offShelfGuideMoments', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 视频广告 - 新手视频 - 下架
 export function fetchVideoAdNoviceStatus(data) {
   return request('/admin/guideMomentsManagement/offShelfGuideMoments', {

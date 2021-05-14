@@ -7,7 +7,7 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
     couponName,
     remain,
     buyPrice, // 售卖价格
-    ownerCouponId = 1,
+    ownerCouponIdString = 1,
     activeDateStr, //  使用有效期-固定时间-开始时间
     endDateStr, //  使用有效期-固定时间-结束时间
     delayDays = 0, // 使用有效期-领取后-延迟生效天数
@@ -18,8 +18,8 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
     <div style={{ width: 350 }}>
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
-          key={ownerCouponId}
-          className={`share_Coupon share_item ${id === ownerCouponId && 'select'}`}
+          key={ownerCouponIdString}
+          className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
           style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >

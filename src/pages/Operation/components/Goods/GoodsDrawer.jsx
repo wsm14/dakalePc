@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, notification } from 'antd';
+import { checkFileData } from '@/utils/utils';
 import aliOssUpload from '@/utils/aliOssUpload';
 import GoodsDetail from './Detail/GoodsDetail';
 import GoodsSet from './Form/GoodsSet';
@@ -11,25 +12,6 @@ const GoodsDrawer = (props) => {
 
   const { type = '', index, detail = [] } = visible;
   const [form] = Form.useForm();
-
-  // 检查文件上传格式
-  const checkFileData = (fileData) => {
-    let aimg = [];
-    switch (typeof fileData) {
-      case 'undefined':
-        break;
-      case 'object':
-        aimg = fileData.fileList.map((item) => {
-          if (item.url) return item.url;
-          return item.originFileObj;
-        });
-        break;
-      default:
-        aimg = [fileData];
-        break;
-    }
-    return aimg;
-  };
 
   // 确认提交
   const handleUpAudit = () => {

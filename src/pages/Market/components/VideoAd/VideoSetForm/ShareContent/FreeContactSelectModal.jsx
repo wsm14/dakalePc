@@ -7,7 +7,7 @@ import './coupon.less';
 const { TabPane } = Tabs;
 
 const FreeContactSelectModal = (props) => {
-  const { couponList, ownerId, ownerType, dispatch, visible, onClose, onOk, loading } = props;
+  const { couponList, merchantId, ownerType, dispatch, visible, onClose, onOk, loading } = props;
   const { list, total } = couponList;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
@@ -25,9 +25,10 @@ const FreeContactSelectModal = (props) => {
   // 获取免费券列表
   const fetchShareGetFreeCoupon = () => {
     dispatch({
-      type: 'shareManage/fetchShareGetFreeCoupon',
+      type: 'couponManage/fetchCouponList',
       payload: {
-        ownerId,
+        merchantId,
+        freeOrValuable: 'free',
         ownerType, // merchant: '单店', group: '集团'
         page,
         limit: 9,

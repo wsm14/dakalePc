@@ -259,7 +259,11 @@ const VideoAdvert = (props) => {
         onClose={() => setVisibleVideo(false)}
       ></VideoShowModal>
       {/* 发布 / 详情 */}
-      <VideoSetDrawer visible={visibleSet} onClose={() => setVisibleSet(false)}></VideoSetDrawer>
+      <VideoSetDrawer
+        childRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet(false)}
+      ></VideoSetDrawer>
     </>
   );
 };

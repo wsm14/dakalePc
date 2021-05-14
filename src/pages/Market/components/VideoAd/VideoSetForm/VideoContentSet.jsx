@@ -20,10 +20,8 @@ const VideoContentSet = (props) => {
     dispatch,
     detail,
     loading,
-    saveDataStorage,
   } = props;
 
-  const { merchantIdStr, userType } = detail;
   const { free, contact } = couponData;
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
@@ -69,14 +67,14 @@ const VideoContentSet = (props) => {
     },
     {
       label: '上传封面',
-      name: 'dasd',
+      name: 'frontImage',
       type: 'upload',
       maxFile: 1,
       imgRatio: VIDEO_ADVERT,
     },
     {
       label: '上传视频',
-      name: 'remssdson',
+      name: ['videoContentOb', 'url'],
       type: 'videoUpload',
       maxFile: 1,
       onChange: ({ file }) => {
@@ -116,7 +114,7 @@ const VideoContentSet = (props) => {
     },
     {
       label: '分享内容',
-      name: 'tisdtle',
+      name: 'message',
       type: 'textArea',
       maxLength: 500,
     },
@@ -171,8 +169,8 @@ const VideoContentSet = (props) => {
   ];
 
   const selectProps = {
-    ownerId: merchantIdStr,
-    ownerType: userType,
+    merchantId: form.getFieldValue('merchantIdStr'),
+    ownerType: 'merchant',
   };
 
   return (

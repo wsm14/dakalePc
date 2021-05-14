@@ -12,6 +12,7 @@ const VideoPushSet = (props) => {
 
   const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
   const [areaItem, setAreaItem] = useState(false); // 区域表单显示隐藏
+  const [timeSelect, setTimeSelect] = useState(false); // 投放时长
 
   useEffect(() => {
     setTotalBean({ pnum: detail.personBeanAmount || 0, bnum: detail.beanAmount || 0 });
@@ -29,14 +30,14 @@ const VideoPushSet = (props) => {
     },
     {
       label: '区域',
-      name: 'city',
+      name: 'area',
       type: 'cascader',
       visible: areaItem === 'district',
     },
     {
       title: '卡豆打赏',
       label: '目标曝光量',
-      name: 'personBeanAmount',
+      name: 'beanPersonAmount',
       suffix: '人',
       onChange: (e) => setTotalBean({ ...totalBean, pnum: Number(e.target.value) }),
       addRules: [{ pattern: NUM_PATTERN, message: '应为整数数字' }],
@@ -54,11 +55,13 @@ const VideoPushSet = (props) => {
       name: 'rewardCycle',
       type: 'radio',
       select: VIDEO_TIME_TYPE,
+      onChange: (e) => setTimeSelect(e.target.value),
     },
     {
       label: '时间选择',
       name: 'rewardStartTime',
       type: 'rangePicker',
+      visible: timeSelect === '1',
     },
   ];
 
