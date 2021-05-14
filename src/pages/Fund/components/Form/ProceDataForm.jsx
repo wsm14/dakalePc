@@ -24,7 +24,11 @@ const ProceDataForm = (props) => {
       form.getFieldValue(['handlingFeeList', 0, 'handlingFee']) || 0
     }元人民币，超过或包含${form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0}元人民币（${
       form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
-    }卡豆）免提现手续费；`,
+    }卡豆）${
+      form.getFieldValue(['handlingFeeList', 1, 'handlingFee'])
+        ? '每次提现手续费为' + form.getFieldValue(['handlingFeeList', 1, 'handlingFee']) + '元；'
+        : '免提现手续费；'
+    }`,
     '每月首次提现免手续费；',
   ];
 
@@ -38,13 +42,17 @@ const ProceDataForm = (props) => {
         '提现申请将在1-3个工作日内审核到账，请耐心等待；',
         '如有任何疑问，请联系哒卡乐客服 400-8000-5881。',
       ],
-      handlingFeeList: [{ handlingFee2: '0' }],
+      handlingFeeList: [
+        { minMoney: 0, maxMoney: '', handlingFee: '', weight: 1 },
+        { minMoney: '', maxMoney: 999999999, handlingFee: '', weight: 2 },
+      ],
     },
   } = visible;
 
   // 对应字段修改，contentList 更新
 
-  const handleChanges = (type) => {
+  const handleChanges = (type, index) => {
+    console.log(type, index, '111');
     let list = textDetail(); // 更新后的不可修改数据
     const freeStatus = form.getFieldValue('monthIsFree'); // 每月首次提现免手续费状态开关
     const formListValue = form.getFieldValue('contentList'); // 表单内当前list 数据
@@ -58,28 +66,38 @@ const ProceDataForm = (props) => {
       // 每月首次提现免手续费 按钮被点击时做数据截取 获取表单内原始数据的更新数据
       formListEdit = formListValue.slice(!freeStatus ? 4 : 3);
     }
+    if (type === 'maxMoney') {
+      const maxMoney = form.getFieldValue(['handlingFeeList', 0, 'maxMoney']);
+      const mins = [...form.getFieldValue('handlingFeeList')];
+      mins[1] = {
+        ...mins[1],
+        minMoney: maxMoney,
+      };
+      form.setFieldsValue({ handlingFeeList: mins });
+    }
     form.setFieldsValue({ contentList: [...list, ...formListEdit] });
     // setContentList(contentPrv);
   };
 
   const handleSave = () => {
     form.validateFields().then((values) => {
+      console.log(values, 'values');
       const { handlingFeeList } = values;
-      let lists = [];
-      if (handlingFeeList && handlingFeeList.length) {
-        lists = handlingFeeList.map((items, index) => ({
-          handlingFee: items.handlingFee,
-          minMoney: 0,
-          maxMoney: items.maxMoney,
-          weight: index + 1,
-        }));
-      }
+      // let lists = [];
+      // if (handlingFeeList && handlingFeeList.length) {
+      //   lists = handlingFeeList.map((items, index) => ({
+      //     handlingFee: items.handlingFee,
+      //     minMoney: 0,
+      //     maxMoney: items.maxMoney,
+      //     weight: index + 1,
+      //   }));
+      // }
       const payload = {
         configWithdrawId: detail.configWithdrawId,
-        areaType: values.areaCode ? 'city' : 'all',
+        areaType: values.areaCode != '' ? 'city' : 'all',
         ...values,
         areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
-        handlingFeeList: lists,
+        handlingFeeList: handlingFeeList,
         effectiveTime: values.effectiveTime.format('YYYY-MM-DD HH:mm:ss'),
         monthIsFree: values.monthIsFree ? 1 : 0,
         contentList: values.contentList,

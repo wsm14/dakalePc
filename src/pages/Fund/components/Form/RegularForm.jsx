@@ -6,31 +6,52 @@ import { format } from 'prettier';
 const RegularForm = (props) => {
   const { handleChangesFn } = props;
 
-  const handleChanges = (val) => {
-    handleChangesFn(val);
+  const handleChanges = (val,index) => {
+    handleChangesFn(val,index);
   };
 
   return (
     <Form.List name="handlingFeeList">
       {(fields, { add, remove }, { errors }) => (
         <>
-          {fields.map(({ fieldKey, name, key, index, ...restField }) => (
+          {fields.map(({ fieldKey, name, key, ...restField }, index) => (
             <Form.Item key={fieldKey + name}>
               <div className={styles.flexCon}>
                 <Form.Item
                   {...restField}
-                  name={[name, 'maxMoney']}
-                  rules={[{ required: true, message: '请输入金额' }]}
+                  name={[name, 'minMoney']}
+                  hidden={index == 0 ? true : false}
+                  rules={[{ required: false}]}
                   validateTrigger={['onChange', 'onBlur']}
                 >
                   <InputNumber
-                    onChange={(val) => handleChanges(val)}
+                    disabled={index == 1 ? true : false}
+                    onChange={() => handleChanges('minMoney',index)}
                     style={{ width: 120 }}
                   />
                 </Form.Item>
-                <span className={styles.spanAfter} style={{ marginRight: 10 }}>
-                  元以下
-                </span>
+                <Form.Item
+                  {...restField}
+                  name={[name, 'maxMoney']}
+                  hidden={index == 1 ? true : false}
+                  rules={index == 0 ?[{ required: true, message: '请输入金额' }]:[{ required: false}]}
+                  validateTrigger={['onChange', 'onBlur']}
+                >
+                  <InputNumber
+                    // disabled={index == 1 ? true : false}
+                    onChange={() => handleChanges('maxMoney',index)}
+                    style={{ width: 120 }}
+                  />
+                </Form.Item>
+                {fieldKey == 0 ? (
+                  <span className={styles.spanAfter} style={{ marginRight: 10 }}>
+                    元以下
+                  </span>
+                ) : (
+                  <span className={styles.spanAfter} style={{ marginRight: 10 }}>
+                    元以上
+                  </span>
+                )}
                 <span className={styles.spanAfter} style={{ marginRight: 10 }}>
                   提现手续费:
                 </span>
@@ -40,15 +61,12 @@ const RegularForm = (props) => {
                   rules={[{ required: true, message: '请输入手续费' }]}
                   validateTrigger={['onChange', 'onBlur']}
                 >
-                  <InputNumber
-                    onChange={(val) => handleChanges(val)}
-                    style={{ width: 120 }}
-                  />
+                  <InputNumber  onChange={(val) => handleChanges(val)} style={{ width: 120 }} />
                 </Form.Item>
                 <span className={styles.spanAfter}>元</span>
               </div>
-              <div className={styles.flexCon}>
-                <Form.Item {...restField} name={[name, 'maxMoney']}>
+              {/* <div className={styles.flexCon}>
+                <Form.Item {...restField} name={[name, 'minMoney']}>
                   <InputNumber disabled />
                 </Form.Item>
                 <span className={styles.spanAfter} style={{ marginRight: 10 }}>
@@ -59,13 +77,13 @@ const RegularForm = (props) => {
                 </span>
                 <Form.Item
                   {...restField}
-                  name={[name, 'handlingFee2']}
+                  name={[name, 'handlingFee']}
                   rules={[{ required: true, message: '请输入手续费' }]}
                 >
                   <InputNumber style={{ width: 120 }} />
                 </Form.Item>
                 <span className={styles.spanAfter}>元</span>
-              </div>
+              </div> */}
             </Form.Item>
           ))}
         </>

@@ -17,13 +17,13 @@ const WithdrawRegular = (props) => {
     const { provinceCode, areaCode, cityCode } = row;
     const code = provinceCode ? provinceCode.split(',') : [];
     code.push(cityCode);
-   
+
     setVisible({
       type: 'edit',
       show: true,
       detail: {
-          ...row,
-          areaCode:code,
+        ...row,
+        areaCode: code,
         effectiveTime: moment(row.effectiveTime, 'YYYY-MM-DD HH:mm:ss'),
       },
     });
@@ -32,7 +32,6 @@ const WithdrawRegular = (props) => {
   const getColumns = [
     {
       title: '地区',
-
       fixed: 'left',
       dataIndex: 'areaType',
       render: (val, row) => <>{val == 'all' ? '通用' : `${row.provinceName}-${row.cityName}`}</>,
@@ -45,7 +44,8 @@ const WithdrawRegular = (props) => {
         <>
           {val.map((item) => (
             <div key={item.maxMoney}>
-              {item.maxMoney}以下：{item.handlingFee}元
+              {item.maxMoney ? item.maxMoney + '以下' : item.minMoney + '以上'}：
+              {item.handlingFee == '0' ? '免提现手续费' : item.handlingFee + '元'}
             </div>
           ))}
         </>
