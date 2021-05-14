@@ -1,7 +1,8 @@
 import { Badge } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 
 // 优惠券样式
-export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
+export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) => {
   const {
     reduceObject = {},
     couponName,
@@ -9,16 +10,17 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
     buyPrice, // 售卖价格
     ownerCouponIdString = 1,
     activeDateStr, //  使用有效期-固定时间-开始时间
+    activeDate,
     endDateStr, //  使用有效期-固定时间-结束时间
+    endDate,
     delayDays = 0, // 使用有效期-领取后-延迟生效天数
     activeDays, // 使用有效期-领取后-有效天数
   } = item;
   const { couponPrice, thresholdPrice = '' } = reduceObject;
   return (
-    <div style={{ width: 350 }}>
+    <div style={{ width: 350 }} key={ownerCouponIdString}>
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
-          key={ownerCouponIdString}
           className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
           style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
@@ -31,8 +33,8 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
           <div className="share_title">
             <div className="titile">{couponName}</div>
             <div className="share_tip">
-              {activeDateStr && endDateStr
-                ? `有效期：${activeDateStr} - ${endDateStr}`
+              {(activeDateStr && endDateStr) || (activeDate && endDate)
+                ? `有效期：${activeDateStr || activeDate} - ${endDateStr || endDate}`
                 : delayDays != 0
                 ? `领取后${delayDays}天生效｜有效期${activeDays}天`
                 : `有效期：领取后${activeDays}天内`}
@@ -46,9 +48,15 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
               </div>
             </div>
           </div>
-          <div className="share_select_icon">
-            <div className="share_select"></div>
-          </div>
+          {!onDel ? (
+            <div className="share_select_icon">
+              <div className="share_select"></div>
+            </div>
+          ) : (
+            <div className="share_del_icon" onClick={onDel}>
+              <DeleteOutlined />
+            </div>
+          )}
         </div>
       </Badge.Ribbon>
     </div>
@@ -56,9 +64,10 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free') => {
 };
 
 // 商品样式
-export const goodsDom = (item = {}, id, setSelectItem) => {
+export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
   const {
-    goodsName = '12312312',
+    goodsImg,
+    goodsName = '',
     remain = 1,
     specialGoodsId = 2,
     realPrice = 15,
@@ -69,21 +78,19 @@ export const goodsDom = (item = {}, id, setSelectItem) => {
     activityEndTime,
   } = item;
   return (
-    <div style={{ width: 350 }}>
+    <div style={{ width: 350 }} key={specialGoodsId}>
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[goodsType]}>
         <div
-          key={specialGoodsId}
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
-          style={{ marginBottom: 6, height: 78 }}
+          style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >
           <div
             className="share_left"
             style={{
-              width: 60,
-              height: 60,
-              background:
-                'url("https://resource-new.dakale.net/dev/image/4f2e93d3aa15bd498f154d274ac5e592.jpeg") 100%/cover',
+              width: 76,
+              height: 76,
+              background: `url(${goodsImg}) 100%/cover`,
             }}
           ></div>
           <div className="share_title" style={{ lineHeight: 1.8 }}>
@@ -108,9 +115,15 @@ export const goodsDom = (item = {}, id, setSelectItem) => {
               </div>
             </div>
           </div>
-          <div className="share_select_icon">
-            <div className="share_select"></div>
-          </div>
+          {!onDel ? (
+            <div className="share_select_icon">
+              <div className="share_select"></div>
+            </div>
+          ) : (
+            <div className="share_del_icon" onClick={onDel}>
+              <DeleteOutlined />
+            </div>
+          )}
         </div>
       </Badge.Ribbon>
     </div>

@@ -7,8 +7,16 @@ import './coupon.less';
 const { TabPane } = Tabs;
 
 const FreeContactSelectModal = (props) => {
-  const { couponList, merchantId, ownerType, dispatch, visible, onClose, onOk, loading } = props;
-  const { list, total } = couponList;
+  const {
+    couponList,
+    specialGoodsList,
+    merchantId,
+    dispatch,
+    visible,
+    onClose,
+    onOk,
+    loading,
+  } = props;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
   const [tabKey, setTabKey] = useState('coupon'); // tab类型
@@ -16,35 +24,63 @@ const FreeContactSelectModal = (props) => {
 
   useEffect(() => {
     setPage(1);
-  }, [tabKey]);
+    if (visible) {
+      if (tabKey === 'coupon') fetchGetBuyCouponSelect(1);
+      if (tabKey === 'goods') fetchSpecialGoodsList(1);
+    }
+  }, [visible, page, tabKey]);
 
-  useEffect(() => {
-    visible && fetchShareGetFreeCoupon();
-  }, [visible, page]);
+  const listProps = {
+    coupon: {
+      list: couponList.list,
+      total: couponList.total,
+      key: 'ownerCouponIdString',
+      loading: loading.effects['baseData/fetchGetBuyCouponSelect'],
+    },
+    goods: {
+      list: specialGoodsList.list,
+      total: specialGoodsList.total,
+      key: 'specialGoodsId',
+      loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
+    },
+  }[tabKey];
 
-  // 获取免费券列表
-  const fetchShareGetFreeCoupon = () => {
+  // 获取有价券列表
+  const fetchGetBuyCouponSelect = (num) => {
     dispatch({
-      type: 'couponManage/fetchCouponList',
+      type: 'baseData/fetchGetBuyCouponSelect',
       payload: {
         merchantId,
-        freeOrValuable: 'free',
-        ownerType, // merchant: '单店', group: '集团'
-        page,
-        limit: 9,
+        couponType: 'reduce',
+        buyFlag: 1, // 有价券
+        page: num || page,
+        limit: 999,
+      },
+    });
+  };
+
+  // 获取特惠活动
+  const fetchSpecialGoodsList = (num) => {
+    dispatch({
+      type: 'baseData/fetchGetSpecialGoodsSelect',
+      payload: {
+        merchantId,
+        goodsStatus: 1,
+        page: num || page,
+        limit: 999,
       },
     });
   };
 
   const listDom = (
-    <Spin spinning={loading}>
-      {list.length ? (
+    <Spin spinning={listProps.loading}>
+      {listProps.list.length ? (
         <div className="share_select_list">
-          {list.map(
+          {listProps.list.map(
             (item) =>
               ({
-                coupon: couponsDom(item, selectItem.ownerCouponId, setSelectItem),
-                goods: goodsDom(item, selectItem.ownerCouponId, setSelectItem),
+                coupon: couponsDom(item, selectItem.ownerCouponIdString, setSelectItem, 'valuable'),
+                goods: goodsDom(item, selectItem.specialGoodsId, setSelectItem),
               }[tabKey]),
           )}
         </div>
@@ -57,16 +93,25 @@ const FreeContactSelectModal = (props) => {
   return (
     <Modal
       title={`选择优惠内容（单选）`}
-      width={1110}
+      width={780}
       visible={visible}
-      afterClose={() => setPage(1)}
+      afterClose={() => {
+        setPage(1);
+        setTabKey('coupon');
+      }}
       maskStyle={{ background: 'none' }}
+      bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
       destroyOnClose
-      okButtonProps={{ disabled: !selectItem.ownerCouponId }}
-      onOk={() => onOk(selectItem)}
+      okButtonProps={{
+        disabled: !selectItem[listProps.key],
+      }}
+      onOk={() => {
+        onOk(selectItem);
+        onClose();
+      }}
       onCancel={onClose}
     >
-      <Tabs type="card" onChange={setTabKey}>
+      <Tabs type="card" onChange={setTabKey} style={{ overflow: 'initial' }}>
         <TabPane tab="有价券" key="coupon">
           {listDom}
         </TabPane>
@@ -74,22 +119,24 @@ const FreeContactSelectModal = (props) => {
           {listDom}
         </TabPane>
       </Tabs>
-      <div style={{ textAlign: 'right', marginTop: 10 }}>
+      {/* <div style={{ textAlign: 'right', marginTop: 10 }}>
         <Pagination
           current={page}
           size="small"
           pageSize={9}
-          total={total}
-          showTotal={() => `共 ${total} 项`}
+          total={listProps.total}
+          showTotal={() => `共 ${listProps.total} 项`}
           showQuickJumper
+          showSizeChanger={false}
           onChange={(val) => setPage(val)}
         />
-      </div>
+      </div> */}
     </Modal>
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  couponList: shareManage.couponList,
-  loading: loading.effects['shareManage/fetchShareGetFreeCoupon'],
+export default connect(({ baseData, loading }) => ({
+  couponList: baseData.couponList,
+  specialGoodsList: baseData.specialGoods,
+  loading,
 }))(FreeContactSelectModal);

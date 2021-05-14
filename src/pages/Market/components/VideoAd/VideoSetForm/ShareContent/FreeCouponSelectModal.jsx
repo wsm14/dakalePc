@@ -18,13 +18,14 @@ const FreeCouponSelectModal = (props) => {
   // 获取免费券列表
   const fetchShareGetFreeCoupon = () => {
     dispatch({
-      type: 'couponManage/fetchGetList',
+      type: 'baseData/fetchGetFreeCouponSelect',
       payload: {
         merchantId,
-        freeOrValuable: 'free',
+        ownerId: merchantId,
+        couponType: 'reduce',
         ownerType, // merchant: '单店', group: '集团'
         page,
-        limit: 10,
+        limit: 999,
       },
     });
   };
@@ -37,8 +38,12 @@ const FreeCouponSelectModal = (props) => {
       afterClose={() => setPage(1)}
       maskStyle={{ background: 'none' }}
       destroyOnClose
+      bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
       okButtonProps={{ disabled: !selectItem.ownerCouponIdString }}
-      onOk={() => onOk(selectItem)}
+      onOk={() => {
+        onOk(selectItem);
+        onClose();
+      }}
       onCancel={onClose}
     >
       <Spin spinning={loading}>
@@ -50,7 +55,7 @@ const FreeCouponSelectModal = (props) => {
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
       </Spin>
-      <div style={{ textAlign: 'right', marginTop: 10 }}>
+      {/* <div style={{ textAlign: 'right', marginTop: 10 }}>
         <Pagination
           size="small"
           pageSize={10}
@@ -59,12 +64,12 @@ const FreeCouponSelectModal = (props) => {
           showQuickJumper
           onChange={(val) => setPage(val)}
         />
-      </div>
+      </div> */}
     </Modal>
   );
 };
 
-export default connect(({ couponManage, loading }) => ({
-  couponList: couponManage,
-  loading: loading.effects['couponManage/fetchGetList'],
+export default connect(({ baseData, loading }) => ({
+  couponList: baseData.couponList,
+  loading: loading.effects['baseData/fetchGetFreeCouponSelect'],
 }))(FreeCouponSelectModal);

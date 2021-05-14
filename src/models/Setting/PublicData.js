@@ -12,6 +12,9 @@ import {
   fetchHandleDetail,
   fetchGetPhoneComeLocation,
   fetchGetJumpNative,
+  fetchGetBuyCouponSelect,
+  fetchGetFreeCouponSelect,
+  fetchGetSpecialGoodsSelect,
 } from '@/services/PublicServices';
 
 export default {
@@ -24,6 +27,8 @@ export default {
     kolLevel: [],
     nativeList: [],
     logDetail: { show: false, data: [] },
+    couponList: { list: [], total: 0 },
+    specialGoods: { list: [], total: 0 },
   },
 
   reducers: {
@@ -160,6 +165,39 @@ export default {
       const response = yield call(fetchMerCheckData, payload);
       if (!response) return;
       callback(response.content);
+    },
+    *fetchGetFreeCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetFreeCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          couponList: { list: content.ownerCouponList, total: content.total },
+        },
+      });
+    },
+    *fetchGetBuyCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetBuyCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          couponList: { list: content.ownerCouponList, total: content.total },
+        },
+      });
+    },
+    *fetchGetSpecialGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetSpecialGoodsSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          specialGoods: { list: content.specialGoodsList, total: content.total },
+        },
+      });
     },
     *fetchGetLogData({ payload }, { call, put }) {
       // const response = yield call(fetchMerCheckData, payload);

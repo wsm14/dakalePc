@@ -56,6 +56,7 @@ const VideoContentSet = (props) => {
       onSearch: (val) => fetchClassifyGetMre(val),
       onChange: (val, data) => {
         const { option } = data;
+        saveCouponStorage({ free: {}, contact: {} });
         form.setFieldsValue({
           categoryNode: option.topCategoryId,
           topCategoryIdStr: option.topCategoryId[0],
@@ -159,7 +160,7 @@ const VideoContentSet = (props) => {
       type: 'formItem',
       formItem: (
         <ShareCoupon
-          type="goods"
+          type={contact.couponName ? 'coupon' : 'goods'}
           data={contact}
           onDel={() => saveCouponStorage({ contact: {} })}
           onSelect={() => setVisibleContact(true)}

@@ -2,6 +2,27 @@ import request from '@/utils/request';
 
 // 全局接口
 
+// get 店铺选择免费券列表
+export function fetchGetFreeCouponSelect(params) {
+  return request('/admin/coupon/listOwnerCouponByChannel', {
+    params,
+  });
+}
+
+// get 店铺选择有价券列表
+export function fetchGetBuyCouponSelect(params) {
+  return request('/admin/coupon/listOwnerCouponNeedBuy', {
+    params,
+  });
+}
+
+// get 店铺特惠商品列表
+export function fetchGetSpecialGoodsSelect(params) {
+  return request('/admin/specialGoodsManagement/listMerchantSpecialGoods', {
+    params,
+  });
+}
+
 // get 全部的订单查询 全局
 export function fetchOrderDetail(params) {
   return request('/admin/accountManagement/getRelatedOrderDetail', {

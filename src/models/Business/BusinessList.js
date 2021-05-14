@@ -175,7 +175,7 @@ export default {
         message: '温馨提示',
         description: '商家修改成功',
       });
-      callback();
+      callback && callback();
     },
     *fetchMerSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchMerSetBandCode, payload);

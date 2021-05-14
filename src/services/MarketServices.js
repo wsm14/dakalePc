@@ -341,7 +341,7 @@ export function fetchVideoAdNoviceDetail(params) {
 
 // post 视频广告 - 新手视频 - 发布分享
 export function fetchVideoAdNoviceSet(data) {
-  return request('/admin/guideMomentsManagement/offShelfGuideMoments', {
+  return request('/admin/guideMomentsManagement/saveGuideMoments', {
     method: 'POST',
     data,
   });
