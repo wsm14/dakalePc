@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Modal, Pagination, Empty, Spin, Tabs } from 'antd';
+import { Modal, Empty, Spin, Tabs } from 'antd';
 import { couponsDom, goodsDom } from './CouponFreeDom';
 import './coupon.less';
 
