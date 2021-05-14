@@ -6,8 +6,8 @@ import { format } from 'prettier';
 const RegularForm = (props) => {
   const { handleChangesFn } = props;
 
-  const handleChanges = (val, type) => {
-    handleChangesFn(val, type);
+  const handleChanges = (val) => {
+    handleChangesFn(val);
   };
 
   return (
@@ -24,7 +24,7 @@ const RegularForm = (props) => {
                   validateTrigger={['onChange', 'onBlur']}
                 >
                   <InputNumber
-                    onChange={(val) => handleChanges(val, 'maxMoney')}
+                    onChange={(val) => handleChanges(val)}
                     style={{ width: 120 }}
                   />
                 </Form.Item>
@@ -41,7 +41,7 @@ const RegularForm = (props) => {
                   validateTrigger={['onChange', 'onBlur']}
                 >
                   <InputNumber
-                    onChange={(val) => handleChanges(val, 'handlingFee')}
+                    onChange={(val) => handleChanges(val)}
                     style={{ width: 120 }}
                   />
                 </Form.Item>
