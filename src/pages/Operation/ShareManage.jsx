@@ -294,16 +294,16 @@ const ShareManage = (props) => {
     <>
       <TableDataBlock
         keepData
-        // btnExtra={
-        //   <AuthConsumer auth="save">
-        //     <Button
-        //       className="dkl_green_btn"
-        //       onClick={() => setVisibleShare({ type: 'add', show: true })}
-        //     >
-        //       新增
-        //     </Button>
-        //   </AuthConsumer>
-        // }
+        btnExtra={
+          <AuthConsumer auth="save">
+            <Button
+              className="dkl_green_btn"
+              onClick={() => setVisibleShare({ type: 'add', show: true })}
+            >
+              新增
+            </Button>
+          </AuthConsumer>
+        }
         cRef={childRef}
         loading={loading}
         columns={getColumns}
