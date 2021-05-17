@@ -15,7 +15,7 @@ const RegularForm = (props) => {
       {(fields, { add, remove }, { errors }) => (
         <>
           {fields.map(({ fieldKey, name, key, ...restField }, index) => (
-            <Form.Item key={fieldKey + name}>
+            <Form.Item key={fieldKey + name} style={{marginBottom:0}}>
               <div className={styles.flexCon} style={{flexWrap:'wrap'}}>
                 <Form.Item
                   {...restField}

@@ -32,6 +32,13 @@ export const PAY_TYPE = {
   wx_lite: '微信小程序',
 };
 
+export const EXPORT_TYPE = {
+  masterInvite: '哒人邀请明细',
+  userRegistration: '用户注册明细',
+  merchantMark: '到店打卡明细',
+  momentCollarBean: '视频领豆明细',
+};
+
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 

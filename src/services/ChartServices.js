@@ -112,3 +112,21 @@ export function fetchChartMapHubMreDeatil(params) {
 }
 
 // 数据概览 end
+
+// 数据明细查询 /admin/excelImport/importExcel
+
+export function fetchimportExcel(data) {
+  return request('/admin/excelImport/importExcel', {
+    method: 'POST',
+    data,
+  });
+}
+
+//导出列表 /admin/excelImport/listExcelImport get
+export function fetchimportExcelList(params) {
+  return request('/admin/excelImport/listExcelImport', {
+    params,
+  });
+}
+
+//数据明细查询 end
