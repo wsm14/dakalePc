@@ -87,6 +87,7 @@ const NewsPeople = (props) => {
                 type: 'edit',
                 auth: true,
                 click: () => fetchGetDetail(record, 'edit'),
+                visible: record.status == 0,
               },
               {
                 type: 'del',
