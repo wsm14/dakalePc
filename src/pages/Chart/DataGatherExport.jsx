@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Button, Form, Card,Checkbox } from 'antd';
+import { Button, Form, Card, Checkbox } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import { EXPORT_TYPE } from '@/common/constant';
 
@@ -28,7 +28,7 @@ const DataGatherExport = (props) => {
       type: 'checkbox',
       select: [{ label: '一种数据类型一天只允许导出一次', value: '1' }],
       rules: [{ required: true, message: '请勾选一种数据类型一天只允许导出一次' }],
-      // wrapperCol: { offset: 6, span: 12 },
+      wrapperCol: { offset: 6, span: 12 },
     },
   ];
 
@@ -52,7 +52,7 @@ const DataGatherExport = (props) => {
 
   return (
     <Card>
-      <div style={{ width: '500px', minHeight: '400px' }}>
+      <div style={{ width: '600px', minHeight: '400px' }}>
         <FormCondition formItems={formItems} form={form}></FormCondition>
         <Button
           type="primary"
