@@ -12,6 +12,8 @@ import {
   fetchHandleDetail,
   fetchGetPhoneComeLocation,
   fetchGetJumpNative,
+  fetchimportExcel,
+  fetchimportExcelList,
 } from '@/services/PublicServices';
 
 export default {
@@ -23,6 +25,10 @@ export default {
     tasteTag: [],
     kolLevel: [],
     nativeList: [],
+    excelList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -153,6 +159,30 @@ export default {
       const response = yield call(fetchMerCheckData, payload);
       if (!response) return;
       callback(response.content);
+    },
+
+    *fetchimportExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchimportExcel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '导出成功',
+      });
+      callback && callback();
+    },
+    *fetchimportExcelList({ payload }, { call, put }) {
+      const response = yield call(fetchimportExcelList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          excelList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
     },
   },
 };

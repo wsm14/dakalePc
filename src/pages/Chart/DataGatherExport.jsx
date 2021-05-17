@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Button, Form, Card } from 'antd';
+import { Button, Form, Card,Checkbox } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import { EXPORT_TYPE } from '@/common/constant';
 
@@ -24,11 +24,11 @@ const DataGatherExport = (props) => {
       format: 'YYYY-MM-DD HH:mm',
     },
     {
-      type: 'checkbox',
       name: 'check',
+      type: 'checkbox',
       select: [{ label: '一种数据类型一天只允许导出一次', value: '1' }],
       rules: [{ required: true, message: '请勾选一种数据类型一天只允许导出一次' }],
-      wrapperCol: { offset: 6, span: 12 },
+      // wrapperCol: { offset: 6, span: 12 },
     },
   ];
 
@@ -44,7 +44,7 @@ const DataGatherExport = (props) => {
         endTime: values.startTime[1].format('YYYY-MM-DD HH:mm'),
       };
       dispatch({
-        type: 'dataExportExcel/fetchimportExcel',
+        type: 'baseData/fetchimportExcel',
         payload,
       });
     });
@@ -66,7 +66,7 @@ const DataGatherExport = (props) => {
     </Card>
   );
 };
-export default connect(({ dataExportExcel, loading }) => ({
-  dataExportExcel,
-  loading: loading.models.dataExportExcel,
+export default connect(({ baseData, loading }) => ({
+  baseData,
+  loading: loading.effects['baseData/fetchimportExcel'],
 }))(DataGatherExport);

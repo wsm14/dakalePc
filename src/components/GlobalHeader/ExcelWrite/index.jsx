@@ -3,45 +3,55 @@ import { connect } from 'umi';
 import { HddOutlined } from '@ant-design/icons';
 import { Button, Tooltip, Modal, Alert } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import { EXPORT_TYPE } from '@/common/constant';
+import { downFile } from '@/utils/downFile';
 
 const ExcelWrite = (props) => {
-  const { detailList, loading } = props;
+  const { excelList, loading } = props;
   const [visible, setVisible] = useState(false);
+
+  const handleDownLoad = (url) => {
+    downFile(url);
+  };
 
   const getColumns = [
     {
       title: '文件名',
       align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'fileName',
     },
     {
       title: '类型',
       align: 'center',
-      dataIndex: 'detailTitle',
+      dataIndex: 'type',
+      render: (val) => EXPORT_TYPE[val],
     },
     {
       title: '导出人',
       align: 'center',
-      dataIndex: 'detailContent',
+      dataIndex: 'exporter',
       render: (val) => val || '--',
     },
     {
       title: '创建时间',
       align: 'center',
-      dataIndex: 'beanAmount',
-      render: (val, row) => `${row.detailType === 'add' ? '+' : '-'}${val}`,
+      dataIndex: 'createTime',
     },
     {
       title: '导出状态',
       align: 'center',
-      dataIndex: 'detailType',
-      render: (val) => (val === 'add' ? '收入' : '支出'),
+      dataIndex: 'status',
+      render: (val) => ['导出中', '导出完成'][val],
     },
     {
       title: '操作',
       align: 'center',
-      dataIndex: 'identification',
-      render: () => <a>下载</a>,
+      dataIndex: 'url',
+      render: (val) => (
+        <a onClick={() => handleDownLoad(val)} target="_blank">
+          下载
+        </a>
+      ),
     },
   ];
 
@@ -68,18 +78,17 @@ const ExcelWrite = (props) => {
           noCard={false}
           loading={loading}
           columns={getColumns}
-          rowKey={(row, i) => `${row.createTime}${i}`}
-          params={{ type: 'peas', userType: 'user' }}
-          dispatchType=""
+          rowKey={(row) => `${row.excelImportId}`}
+          dispatchType="baseData/fetchimportExcelList"
           size="middle"
-          {...detailList}
+          {...excelList}
         ></TableDataBlock>
       </Modal>
     </div>
   );
 };
 
-export default connect(({ accountUser, loading }) => ({
-  detailList: accountUser.detailList,
-  loading: loading.effects['accountUser/fetchDetailList'],
+export default connect(({ baseData, loading }) => ({
+  excelList: baseData.excelList,
+  loading: loading.effects['baseData/fetchimportExcelList'],
 }))(ExcelWrite);
