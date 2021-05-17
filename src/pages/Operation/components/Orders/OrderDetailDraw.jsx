@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import { connect } from 'umi';
-import { Spin, Popover } from 'antd';
+import React from 'react';
 import { PAY_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose } = props;
-  const { detail = {}, show = false } = visible;
-  const {verificationTime} = detail
+  const { visible, onClose, getDetail, total } = props;
+  const { detail = {}, show = false, index } = visible;
+  const { verificationTime } = detail;
   const formItems = [
     {
       label: '订单商品',
@@ -27,25 +24,24 @@ const OrderDetailDraw = (props) => {
     {
       label: '订单金额',
       name: 'totalFee',
+      render: (val) => (val ? `￥${val}` : '0'),
     },
     {
       label: '卡豆抵扣',
       name: 'beanFee',
       render: (val, row) => (
-        <span>
-          {val}卡豆（-￥{val / 100}）
-        </span>
+        <span>{val && val != '--' ? ` ${val}卡豆（-￥${val / 100}）` : '--'}</span>
       ),
     },
     {
       label: '优惠券',
       name: 'reduceFee',
-      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
+      render: (val) => (val && val !== '--' ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
     },
     {
       label: '实付金额',
       name: 'payFee',
-      render: (val) => `￥${val}|| 0`,
+      render: (val) => (val ? `￥${val}` : '0'),
     },
     {
       label: '订单号',
@@ -67,13 +63,18 @@ const OrderDetailDraw = (props) => {
     {
       label: '核销时间',
       name: 'verificationTime',
-      show:verificationTime
+      show: verificationTime,
     },
   ];
   const modalProps = {
     title: '订单详情',
     visible: show,
     onClose,
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size),
+    },
   };
   return (
     <DrawerCondition {...modalProps}>
