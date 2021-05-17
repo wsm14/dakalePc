@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// 销售业绩
+export function fetchSaleAchievementList(params) {
+  return request('/admin/BDInfo/listBDInfo', {
+    params,
+  });
+}
+
 // 运营看板
 export function fetchSaleBlock(params) {
   return request('/admin/emergency/data/byDate', {

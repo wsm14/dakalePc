@@ -176,6 +176,11 @@ export default [
         component: './Chart/ChartBlock',
       },
       {
+        path: '/chart/achievement',
+        name: 'BD业绩',
+        component: './Chart/SaleAchievement',
+      },
+      {
         path: '/chart/dataGatherExport',
         name: '数据明细查询',
         component: './Chart/DataGatherExport',
@@ -504,11 +509,10 @@ export default [
       },
       //结算管理
       {
-        path:'/fund/withdrawRegular',
+        path: '/fund/withdrawRegular',
         name: '提现规则',
         component: './Fund/WithdrawRegular',
-
-      }
+      },
     ],
   },
 ];

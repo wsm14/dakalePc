@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Form, Card } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
-const DataGatherExport = (props) => {
+const DataGatherExport = ({ loading }) => {
   const [form] = Form.useForm();
 
   const formItems = [
