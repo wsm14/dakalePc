@@ -1,29 +1,31 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, Card } from 'antd';
-import {EXPORT_TYPE} from '@/common/constant'
 import FormCondition from '@/components/FormCondition';
+import { EXPORT_TYPE } from '@/common/constant';
 
-const DataGatherExport = ({ loading }) => {
+const DataGatherExport = (props) => {
+  const { loading, dispatch } = props;
   const [form] = Form.useForm();
 
   const formItems = [
     {
       label: '数据选择',
       type: 'select',
-      name: 'datatype',
-      select:EXPORT_TYPE
+      name: 'type',
+      select: EXPORT_TYPE,
     },
     {
       label: '时间范围',
       type: 'rangePicker',
-      name: 'time',
+      name: 'startTime',
+      end: 'endTime',
       showTime: true,
       format: 'YYYY-MM-DD HH:mm',
     },
     {
-      type: 'checkbox',
       name: 'check',
+      type: 'checkbox',
       select: [{ label: '一种数据类型一天只允许导出一次', value: '1' }],
       rules: [{ required: true, message: '请勾选一种数据类型一天只允许导出一次' }],
       wrapperCol: { offset: 6, span: 12 },
