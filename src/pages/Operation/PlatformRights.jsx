@@ -18,7 +18,7 @@ import PreferentialDrawer from './components/PlatformRights/PreferentialDrawer';
 import PlatformRightsDetail from './components/PlatformRights/PlatformRightsDetail';
 
 const PlatformRights = (props) => {
-  const { specialGoods, loading,  dispatch } = props;
+  const { specialGoods, loading, dispatch } = props;
   const { list } = specialGoods;
 
   const childRef = useRef();
@@ -369,9 +369,8 @@ const PlatformRights = (props) => {
   );
 };
 
-export default connect(({ specialGoods, baseData, loading }) => ({
+export default connect(({ specialGoods, loading }) => ({
   specialGoods,
-  hubData: baseData.hubData,
   loading: loading.models.specialGoods,
   loadings: loading,
 }))(PlatformRights);

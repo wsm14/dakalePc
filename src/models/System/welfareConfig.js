@@ -4,7 +4,6 @@ import {
   fetchWelfareUpdate,
   fetchWelfareDelete,
 } from '@/services/SystemServices';
-
 export default {
   namespace: 'welfareConfigList',
   state: {

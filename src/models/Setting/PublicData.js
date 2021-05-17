@@ -16,6 +16,8 @@ import {
   fetchGetFreeCouponSelect,
   fetchGetPhoneComeLocation,
   fetchGetSpecialGoodsSelect,
+  fetchimportExcel,
+  fetchimportExcelList,
 } from '@/services/PublicServices';
 
 export default {
@@ -31,6 +33,7 @@ export default {
     couponList: { list: [], total: 0 },
     buyCoupon: { list: [], total: 0 },
     specialGoods: { list: [], total: 0 },
+    excelList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -219,13 +222,26 @@ export default {
         },
       });
     },
-    *fetchGetLogData({ payload }, { call, put }) {
-      // const response = yield call(fetchMerCheckData, payload);
-      // if (!response) return;
+    *fetchimportExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchimportExcel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '导出成功',
+      });
+      callback && callback();
+    },
+    *fetchimportExcelList({ payload }, { call, put }) {
+      const response = yield call(fetchimportExcelList, payload);
+      if (!response) return;
+      const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          logDetail: { show: true, data: [] },
+          excelList: {
+            list: content.recordList,
+            total: content.total,
+          },
         },
       });
     },

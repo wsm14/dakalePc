@@ -411,6 +411,12 @@ export default [
         component: './Operation/PlatformRights',
         buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
+      {
+        path: '/operation/platformRights',
+        name: '平台权益',
+        component: './Operation/PlatformRights',
+        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
+      },
       // 客服中心 service
       {
         path: '/service/news',
@@ -496,6 +502,13 @@ export default [
         component: './User/BdLimitPop',
         buttons: ['save'],
       },
+      //结算管理
+      {
+        path:'/fund/withdrawRegular',
+        name: '提现规则',
+        component: './Fund/WithdrawRegular',
+
+      }
     ],
   },
 ];

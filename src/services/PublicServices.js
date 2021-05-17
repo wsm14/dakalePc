@@ -157,3 +157,18 @@ export function fetchGetJumpNative(params) {
     params,
   });
 }
+
+// post 数据明细查询 全局导出
+export function fetchimportExcel(data) {
+  return request('/admin/excelImport/importExcel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 导出列表
+export function fetchimportExcelList(params) {
+  return request('/admin/excelImport/listExcelImport', {
+    params,
+  });
+}

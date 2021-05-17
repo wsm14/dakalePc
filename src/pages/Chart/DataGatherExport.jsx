@@ -30,7 +30,18 @@ const DataGatherExport = (props) => {
   //导出
   const exportData = () => {
     form.validateFields().then((values) => {
+      delete values.check;
       console.log(values);
+
+      const payload = {
+        ...values,
+        startTime: values.startTime[0].format('YYYY-MM-DD HH:mm'),
+        endTime: values.startTime[1].format('YYYY-MM-DD HH:mm'),
+      };
+      dispatch({
+        type: 'baseData/fetchimportExcel',
+        payload,
+      });
     });
   };
 
@@ -38,11 +49,19 @@ const DataGatherExport = (props) => {
     <Card>
       <div style={{ width: '500px', minHeight: '400px' }}>
         <FormCondition formItems={formItems} form={form}></FormCondition>
-        <Button type="primary" style={{ margin: '30px 125px' }} onClick={exportData}>
+        <Button
+          type="primary"
+          style={{ margin: '30px 125px' }}
+          onClick={exportData}
+          loading={loading}
+        >
           导出CSV
         </Button>
       </div>
     </Card>
   );
 };
-export default connect()(DataGatherExport);
+export default connect(({ baseData, loading }) => ({
+  baseData,
+  loading: loading.effects['baseData/fetchimportExcel'],
+}))(DataGatherExport);
