@@ -43,8 +43,10 @@ const WithdrawRegular = (props) => {
         <>
           {val.map((item) => (
             <div key={item.maxMoney}>
-              {item.maxMoney ? item.maxMoney + '以下' : item.minMoney + '以上'}：
-              {item.handlingFee == '0' ? '免提现手续费' : item.handlingFee + '元'}
+              {(item.maxMoney && item.minMoney == '0')
+                ? item.maxMoney + '以下'
+                : item.minMoney + '以上'}
+              ：{item.handlingFee == '0' ? '免提现手续费' : item.handlingFee + '元'}
             </div>
           ))}
         </>
