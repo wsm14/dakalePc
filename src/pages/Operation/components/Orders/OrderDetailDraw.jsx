@@ -1,7 +1,6 @@
 import React from 'react';
 import { PAY_TYPE } from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
-import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const OrderDetailDraw = (props) => {
