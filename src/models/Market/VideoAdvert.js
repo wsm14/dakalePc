@@ -92,6 +92,13 @@ export default {
         editData = {
           categoryNode: [topCategoryIdStr, categoryIdStr],
           area: [provinceCode, cityCode, districtCode],
+          videoUrl: videoContentOb.url,
+          videoId: videoContentOb.videoId,
+        };
+      }
+      if (callback)
+        callback({
+          ...content.guideMomentsDTO,
           free: freeOwnerCoupon // 免费券
             ? { ...freeOwnerCoupon, ownerCouponIdString: couponIds, buyFlag: 0 }
             : '',
@@ -104,16 +111,9 @@ export default {
                 ]]: promotionIdStr,
               }
             : '',
-          videoId: videoContentOb,
-        };
-      }
-      if (callback)
-        callback({
-          ...content.guideMomentsDTO,
-          rewardStartTime: [
-            moment(rewardStartTime, 'YYYY-MM-DD'),
-            moment(rewardEndTime, 'YYYY-MM-DD'),
-          ],
+          rewardStartTime: rewardStartTime
+            ? [moment(rewardStartTime, 'YYYY-MM-DD'), moment(rewardEndTime, 'YYYY-MM-DD')]
+            : undefined,
           rewardEndTime: `${rewardStartTime} ~ ${rewardEndTime}`,
           ...editData,
         });

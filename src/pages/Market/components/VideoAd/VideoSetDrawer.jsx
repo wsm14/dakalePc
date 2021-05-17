@@ -22,7 +22,7 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const { frontImage, videoId, categoryNode, title } = dataStorage;
+      const { frontImage, videoId, videoUrl, categoryNode, title } = dataStorage;
       const { areaType, area, rewardStartTime: time } = values;
       const {
         free: { ownerCouponIdString: couponIds },
@@ -33,7 +33,7 @@ const ShareDrawer = (props) => {
         data: frontImage, // 上传封面
         callback: (imgs) => {
           uploadLive({
-            data: videoId.videoId ? videoId.videoId : videoId.url, // 上传视频
+            data: videoId ? videoId : videoUrl, // 上传视频
             title,
             callback: (videos) => {
               dispatch({
@@ -44,6 +44,7 @@ const ShareDrawer = (props) => {
                   beanFlag: '1', // 是否打赏 0 1
                   ...values,
                   ...dataStorage,
+                  videoUrl: undefined,
                   area: areaType === 'district' ? area[2] : undefined,
                   categoryNode: categoryNode.join('.'),
                   frontImage: imgs, // 封面连接

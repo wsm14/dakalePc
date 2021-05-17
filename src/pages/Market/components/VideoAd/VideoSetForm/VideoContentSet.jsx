@@ -75,7 +75,7 @@ const VideoContentSet = (props) => {
     },
     {
       label: '上传视频',
-      name: ['videoId', 'url'],
+      name: 'videoUrl',
       type: 'videoUpload',
       maxFile: 1,
       onChange: ({ file }) => {
@@ -92,6 +92,12 @@ const VideoContentSet = (props) => {
         videoElement.src = fileurl;
         videoElement.load();
       },
+    },
+    {
+      label: '视频id',
+      name: 'videoId',
+      rules: [{ required: false }],
+      hidden: true,
     },
     {
       label: '视频宽度',

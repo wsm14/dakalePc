@@ -31,18 +31,16 @@ const VideoNoviceDetail = (props) => {
     },
     {
       label: '免费券',
-      name: 'freeOwnerCoupon',
+      name: 'free',
       render: (val) => val && couponsDom(val),
     },
     {
       label: '关联优惠',
-      name: 'valuableOwnerCoupon',
+      name: 'promotionType',
       render: (val, row) =>
-        !val && !row.specialGoods
-          ? '--'
-          : val
-          ? couponsDom(val, '', '', 'valuable')
-          : goodsDom(row.specialGoods),
+        ({ reduce: couponsDom(row.contact, '', '', 'valuable'), special: goodsDom(row.contact) }[
+          val
+        ]),
     },
     {
       label: '投放区域',

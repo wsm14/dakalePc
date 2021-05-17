@@ -91,7 +91,7 @@ const VideoAdvert = (props) => {
     {
       title: '视频/标题',
       fixed: 'left',
-      dataIndex: 'merchantCover',
+      dataIndex: 'frontImage',
       width: 280,
       render: (val, row) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
