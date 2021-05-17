@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Button } from 'antd';
 import { MreSelect } from '@/components/MerchantDataTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
