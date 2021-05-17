@@ -56,7 +56,7 @@ const DataGatherExport = (props) => {
         <FormCondition formItems={formItems} form={form}></FormCondition>
         <Button
           type="primary"
-          style={{ margin: '30px 125px' }}
+          style={{ margin: '30px 150px' }}
           onClick={exportData}
           loading={loading}
         >

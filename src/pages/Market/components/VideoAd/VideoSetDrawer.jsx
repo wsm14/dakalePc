@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps } from 'antd';
-import uploader from '@/utils/ossVideoImgUplosd';
+import uploadLive from '@/utils/uploadLive';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareContentSet from './VideoSetForm/VideoContentSet';
 import SharePushSet from './VideoSetForm/VideoPushSet';
@@ -29,50 +29,38 @@ const ShareDrawer = (props) => {
         contact = {},
       } = couponData;
       const { promotionType: cType } = contact;
-      console.log({
-        userType: 'merchant',
-        contentType: 'video',
-        beanFlag: '1', // 是否打赏 0 1
-        ...values,
-        ...dataStorage,
-        area: areaType === 'district' ? area[2] : undefined,
-        categoryNode: categoryNode.join('.'),
-        frontImage: 'imgRes.toString()', // 封面连接
-        frontImageWidth: 544, // 封面宽
-        frontImageHeight: 960, // 封面长
-        rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-        rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-        videoId: 'res.toString()',
-        couponIds,
-        promotionIdStr: contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
-        promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+      uploadLive({
+        file: frontImage.file,
+        title,
+        callback: (res) => {
+          dispatch({
+            type: 'videoAdvert/fetchVideoAdNoviceSet',
+            payload: {
+              userType: 'merchant',
+              contentType: 'video',
+              beanFlag: '1', // 是否打赏 0 1
+              ...values,
+              ...dataStorage,
+              area: areaType === 'district' ? area[2] : undefined,
+              categoryNode: categoryNode.join('.'),
+              frontImage: res.imageUrl, // 封面连接
+              frontImageWidth: 544, // 封面宽
+              frontImageHeight: 960, // 封面长
+              rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+              rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+              videoId: 'res.toString()',
+              couponIds,
+              promotionIdStr:
+                contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+              promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+            },
+            callback: () => {
+              onClose();
+              childRef.current.fetchGetData();
+            },
+          });
+        },
       });
-      // uploader.addFile(videoId.file);
-      // dispatch({
-      //   type: 'videoAdvert/fetchVideoAdNoviceSet',
-      //   payload: {
-      //     userType: 'merchant',
-      //     contentType: 'video',
-      //     beanFlag: '1', // 是否打赏 0 1
-      //     ...values,
-      //     ...dataStorage,
-      //     area: areaType === 'district' ? area[2] : undefined,
-      //     categoryNode: categoryNode.join('.'),
-      //     frontImage: 'imgRes.toString()', // 封面连接
-      //     frontImageWidth: 544, // 封面宽
-      //     frontImageHeight: 960, // 封面长
-      //     rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-      //     rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-      //     videoId: 'res.toString()',
-      //     couponIds,
-      //     promotionId: contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
-      //     promotionType: { coupon: 'reduce', goods: 'special' }[cType],
-      //   },
-      //   callback: () => {
-      //     onClose();
-      //     childRef.current.fetchGetData();
-      //   },
-      // });
     });
   };
 

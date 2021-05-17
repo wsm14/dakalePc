@@ -198,7 +198,7 @@ export function fetchWelfareDelete(data) {
 
 // get 提现规则 - 列表
 export function fetchWithdrawRegularList(params) {
-  return request(' /admin/systemConfig/listConfigWithdraw', {
+  return request('/admin/systemConfig/listConfigWithdraw', {
     params,
   });
 }
