@@ -1,13 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from '../OrdersDetail';
+import OrderDetailDraw from '../OrderDetailDraw';
+import HandleSetTable from '@/components/HandleSetTable';
 
 const GoodsOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
+  // const { orderDetail } = ordersList;
+
+  const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
 
@@ -18,6 +23,20 @@ const GoodsOrders = (props) => {
       payload: {
         districtCode,
       },
+    });
+  };
+
+  //详情
+  const fetchGoodsDetail = (orderId) => {
+    dispatch({
+      type: 'ordersList/fetchOrderDetail',
+      payload: { orderId },
+      callback:(detail)=>{
+        setVisible({
+          show:true,
+          detail
+        })
+      }
     });
   };
 
@@ -201,11 +220,21 @@ const GoodsOrders = (props) => {
       dataIndex: 'orderId',
       align: 'right',
       fixed: 'right',
-      render: (val, record) => <OrdersDetail order={val} name={record.goodsName}></OrdersDetail>,
+      render: (val, record) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'info',
+              click: () => fetchGoodsDetail(val),
+            },
+          ]}
+        />
+      ),
     },
   ];
 
   return (
+    <>
     <TableDataBlock
       btnExtra={({ get }) => (
         <ExcelButton
@@ -227,6 +256,8 @@ const GoodsOrders = (props) => {
       dispatchType="ordersList/fetchGetList"
       {...ordersList}
     ></TableDataBlock>
+    <OrderDetailDraw visible={visible} onClose={()=>setVisible(false)}></OrderDetailDraw>
+    </>
   );
 };
 

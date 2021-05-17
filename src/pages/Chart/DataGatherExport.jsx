@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, Card } from 'antd';
+import {EXPORT_TYPE} from '@/common/constant'
 import FormCondition from '@/components/FormCondition';
 
 const DataGatherExport = ({ loading }) => {
@@ -11,6 +12,7 @@ const DataGatherExport = ({ loading }) => {
       label: '数据选择',
       type: 'select',
       name: 'datatype',
+      select:EXPORT_TYPE
     },
     {
       label: '时间范围',
