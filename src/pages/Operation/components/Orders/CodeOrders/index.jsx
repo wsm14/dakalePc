@@ -9,6 +9,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 
 const CodeOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
+  const { list } = ordersList;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -24,13 +25,14 @@ const CodeOrders = (props) => {
   };
 
   //详情
-  const fetchGoodsDetail = (orderId) => {
-    console.log('0000');
+  const fetchGoodsDetail = (index) => {
+    const { orderId } = list[index];
     dispatch({
       type: 'ordersList/fetchOrderDetail',
       payload: { orderId },
       callback: (detail) => {
         setVisible({
+          index,
           show: true,
           detail,
         });
@@ -142,12 +144,12 @@ const CodeOrders = (props) => {
       dataIndex: 'orderId',
       align: 'right',
       fixed: 'right',
-      render: (val, record) => (
+      render: (val, record, index) => (
         <HandleSetTable
           formItems={[
             {
               type: 'info',
-              click: () => fetchGoodsDetail(val),
+              click: () => fetchGoodsDetail(index),
             },
           ]}
         />
@@ -178,7 +180,12 @@ const CodeOrders = (props) => {
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
       ></TableDataBlock>
-      <OrderDetailDraw visible={visible} onClose={() => setVisible(false)}></OrderDetailDraw>
+      <OrderDetailDraw
+        visible={visible}
+        total={list.length}
+        onClose={() => setVisible(false)}
+        getDetail={fetchGoodsDetail}
+      ></OrderDetailDraw>
     </>
   );
 };

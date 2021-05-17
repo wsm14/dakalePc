@@ -10,7 +10,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 
 const GoodsOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
-  // const { orderDetail } = ordersList;
+  const { list } = ordersList;
 
   const [visible, setVisible] = useState(false);
 
@@ -27,16 +27,18 @@ const GoodsOrders = (props) => {
   };
 
   //详情
-  const fetchGoodsDetail = (orderId) => {
+  const fetchGoodsDetail = (index) => {
+    const { orderId } = list[index];
     dispatch({
       type: 'ordersList/fetchOrderDetail',
       payload: { orderId },
-      callback:(detail)=>{
+      callback: (detail) => {
         setVisible({
-          show:true,
-          detail
-        })
-      }
+          index,
+          show: true,
+          detail,
+        });
+      },
     });
   };
 
@@ -220,12 +222,12 @@ const GoodsOrders = (props) => {
       dataIndex: 'orderId',
       align: 'right',
       fixed: 'right',
-      render: (val, record) => (
+      render: (val, record, index) => (
         <HandleSetTable
           formItems={[
             {
               type: 'info',
-              click: () => fetchGoodsDetail(val),
+              click: () => fetchGoodsDetail(index),
             },
           ]}
         />
@@ -235,28 +237,33 @@ const GoodsOrders = (props) => {
 
   return (
     <>
-    <TableDataBlock
-      btnExtra={({ get }) => (
-        <ExcelButton
-          dispatchType={'ordersList/fetchOrdersImport'}
-          dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
-          exportProps={{
-            header: getColumns.slice(0, -1),
-            fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
-          }}
-        ></ExcelButton>
-      )}
-      noCard={false}
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      searchItems={searchItems}
-      params={{ goodsOrScanFlag: tabkey }}
-      rowKey={(record) => `${record.orderSn}`}
-      dispatchType="ordersList/fetchGetList"
-      {...ordersList}
-    ></TableDataBlock>
-    <OrderDetailDraw visible={visible} onClose={()=>setVisible(false)}></OrderDetailDraw>
+      <TableDataBlock
+        btnExtra={({ get }) => (
+          <ExcelButton
+            dispatchType={'ordersList/fetchOrdersImport'}
+            dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
+            exportProps={{
+              header: getColumns.slice(0, -1),
+              fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
+            }}
+          ></ExcelButton>
+        )}
+        noCard={false}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        searchItems={searchItems}
+        params={{ goodsOrScanFlag: tabkey }}
+        rowKey={(record) => `${record.orderSn}`}
+        dispatchType="ordersList/fetchGetList"
+        {...ordersList}
+      ></TableDataBlock>
+      <OrderDetailDraw
+        visible={visible}
+        total={list.length}
+        onClose={() => setVisible(false)}
+        getDetail={fetchGoodsDetail}
+      ></OrderDetailDraw>
     </>
   );
 };
