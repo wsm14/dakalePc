@@ -193,7 +193,7 @@ const VideoAdvert = (props) => {
               {
                 type: 'peasDetail',
                 title: '领豆明细',
-                click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
+                click: () => setVisiblePeas({ show: true, detail: row }),
               },
               {
                 type: 'diary', // 日志

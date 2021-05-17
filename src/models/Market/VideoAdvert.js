@@ -3,6 +3,7 @@ import moment from 'moment';
 import {
   fetchVideoAdNovice,
   fetchVideoAdNoviceSet,
+  fetchVideoAdNoviceBean,
   fetchVideoAdNoviceDetail,
   fetchVideoAdNoviceStatus,
 } from '@/services/MarketServices';
@@ -13,6 +14,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    detailList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -20,6 +22,13 @@ export default {
       return {
         ...state,
         ...payload,
+      };
+    },
+    closeList(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        detailList: { list: [], total: 0 },
       };
     },
   },
@@ -34,6 +43,17 @@ export default {
         payload: {
           list: content.recordList,
           total: content.total,
+        },
+      });
+    },
+    *fetchVideoAdNoviceBean({ payload }, { call, put }) {
+      const response = yield call(fetchVideoAdNoviceBean, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: { list: content.recordList, total: content.total },
         },
       });
     },
@@ -67,15 +87,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: `视频广告新增成功`,
-      });
-      callback();
-    },
-    *fetchOpenAdvertEdit({ payload, callback }, { call }) {
-      const response = yield call(fetchOpenAdvertEdit, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: `开屏广告修改成功`,
       });
       callback();
     },

@@ -89,6 +89,7 @@ const SpecialGoodDetail = (props) => {
     {
       label: `其他平台价格`,
       name: 'otherPlatformPrice',
+      maxLength: 20,
     },
   ];
 

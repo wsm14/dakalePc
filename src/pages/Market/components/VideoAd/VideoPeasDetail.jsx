@@ -4,22 +4,29 @@ import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const VideoPeasDetail = (props) => {
-  const { businessAudit, loading, visible = {}, onClose } = props;
-
-  const { detailList: list } = businessAudit;
+  const { detailList, loading, visible, onClose, dispatch } = props;
   const { show = false, detail = {} } = visible;
+
+  const { guideMomentsId, merchantName, title } = detail;
+
+  // 关闭清除数据
+  const fetchCloseModal = () => {
+    dispatch({
+      type: 'videoAdvert/closeList',
+    });
+  };
 
   // 搜索参数
   const propItem = {
-    title: `领豆明细`,
-    dispatchType: 'businessAudit/fetchGetDetailList',
-    rowKey: 'userMerchantVerifyRecordId',
+    title: `领豆明细 - ${merchantName} - ${title}`,
+    dispatchType: 'videoAdvert/fetchVideoAdNoviceBean',
+    rowKey: 'beanDetailNewId',
     searchItems: [
       {
         label: '领豆时间',
         type: 'rangePicker',
-        name: 'beginTime',
-        end: 'endTime',
+        name: 'createTimeStart',
+        end: 'createTimeEnd',
       },
       {
         label: '领豆用户',
@@ -63,24 +70,26 @@ const VideoPeasDetail = (props) => {
     searchItems: propItem.searchItems,
     dispatchType: propItem.dispatchType,
     size: 'middle',
-    ...list,
+    params: { guideMomentsId },
+    ...detailList,
   };
 
   return (
     <Modal
       title={propItem.title}
-      width={900}
+      width={1200}
       destroyOnClose
       footer={null}
       visible={show}
       onCancel={onClose}
+      afterClose={fetchCloseModal}
     >
       <TableDataBlock order {...tableProps} rowKey={(row) => `${row[propItem.rowKey]}`} />
     </Modal>
   );
 };
 
-export default connect(({ businessAudit, loading }) => ({
-  businessAudit,
-  loading: loading.effects['businessAudit/fetchGetDetailList'],
+export default connect(({ videoAdvert, loading }) => ({
+  detailList: videoAdvert.detailList,
+  loading: loading.effects['videoAdvert/fetchVideoAdNoviceBean'],
 }))(VideoPeasDetail);

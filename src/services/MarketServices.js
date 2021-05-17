@@ -332,6 +332,13 @@ export function fetchVideoAdNovice(params) {
   });
 }
 
+// get 视频广告 - 新手视频 - 领豆明细
+export function fetchVideoAdNoviceBean(params) {
+  return request('/admin/guideMomentsManagement/listGuideMomentsDetail', {
+    params,
+  });
+}
+
 // get 视频广告 - 新手视频 - 详情
 export function fetchVideoAdNoviceDetail(params) {
   return request('/admin/guideMomentsManagement/getGuideMomentsById', {
