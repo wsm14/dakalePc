@@ -48,7 +48,7 @@ const ExcelWrite = (props) => {
       align: 'center',
       dataIndex: 'url',
       render: (val) => (
-        <a onClick={() => handleDownLoad(val)} target="_blank">
+        <a href={val} >
           下载
         </a>
       ),
