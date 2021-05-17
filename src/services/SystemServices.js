@@ -193,3 +193,22 @@ export function fetchWelfareDelete(data) {
 }
 
 // 新人下单配置 end
+
+// 提现规则
+
+// get 提现规则 - 列表
+export function fetchWithdrawRegularList(params) {
+  return request(' /admin/systemConfig/listConfigWithdraw', {
+    params,
+  });
+}
+
+// post 提现规则 - 新增编辑
+export function fetchWithdrawUpdate(data) {
+  return request('/admin/systemConfig/saveOrUpdateConfigWithdraw', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 提现规则 end

@@ -1,5 +1,5 @@
-import { fetchWithdrawRegularList, fetchWithdrawUpdate } from '@/services/Fund';
 import { notification } from 'antd';
+import { fetchWithdrawRegularList, fetchWithdrawUpdate } from '@/services/SystemServices';
 
 export default {
   namespace: 'widthdrawRegularList',

@@ -1,23 +1,22 @@
 import React, { useState, useRef } from 'react';
-import { Button, Card } from 'antd';
+import { Button } from 'antd';
 import { connect } from 'umi';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import ProceDataForm from './components/Form/ProceDataForm';
+import ProceDataForm from './components/Withdraw/Form/ProceDataForm';
 import moment from 'moment';
 
 const WithdrawRegular = (props) => {
-  const { dispatch, loading, list } = props;
+  const { loading, list } = props;
   const [visible, setVisible] = useState(false);
   const childRef = useRef();
 
   //编辑
   const handleEdit = (row) => {
-    const { provinceCode, areaCode, cityCode } = row;
+    const { provinceCode, cityCode } = row;
     const code = provinceCode ? provinceCode.split(',') : [];
     code.push(cityCode);
-
     setVisible({
       type: 'edit',
       show: true,
@@ -108,17 +107,11 @@ const WithdrawRegular = (props) => {
           title: '店铺',
           bordered: false,
           extra: (
-            <Button
-              type="primary"
-              onClick={() =>
-                setVisible({
-                  type: 'add',
-                  show: true,
-                })
-              }
-            >
-              新增
-            </Button>
+            <AuthConsumer auth="save">
+              <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
+                新增
+              </Button>
+            </AuthConsumer>
           ),
         }}
         cRef={childRef}

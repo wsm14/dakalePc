@@ -488,6 +488,12 @@ export default [
         name: '逛逛页面配置',
         component: './System/WalkingManage',
       },
+      {
+        path: '/system/withdrawRegular',
+        name: '提现规则',
+        component: './System/WithdrawRegular',
+        buttons: ['save', 'edit'],
+      },
       // 用户管理 user
       {
         path: '/user/list',
@@ -506,12 +512,6 @@ export default [
         name: 'BD白名单',
         component: './User/BdLimitPop',
         buttons: ['save'],
-      },
-      //结算管理
-      {
-        path: '/fund/withdrawRegular',
-        name: '提现规则',
-        component: './Fund/WithdrawRegular',
       },
     ],
   },
