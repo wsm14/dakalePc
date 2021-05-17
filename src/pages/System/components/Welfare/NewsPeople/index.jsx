@@ -93,7 +93,7 @@ const NewsPeople = (props) => {
                 type: 'del',
                 auth: true,
                 click: () => fetchDetailDel(val),
-                visible: record.status == 0 || record.status == 2,
+                visible: record.status == 0,
               },
             ]}
           />
