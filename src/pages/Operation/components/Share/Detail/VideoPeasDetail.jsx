@@ -8,7 +8,7 @@ const VideoPeasDetail = (props) => {
   const { beanDetal, userList, loading, loadingUser, visible, onClose, dispatch } = props;
   const { show = false, detail = {} } = visible;
 
-  const { guideMomentsId, merchantName, title } = detail;
+  const { userMomentIdString, merchantName, title } = detail;
 
   // 关闭清除数据
   const fetchCloseModal = () => {
@@ -90,7 +90,7 @@ const VideoPeasDetail = (props) => {
     searchItems: propItem.searchItems,
     dispatchType: propItem.dispatchType,
     size: 'middle',
-    params: { guideMomentsId },
+    params: { userMomentIdString },
     ...beanDetal,
   };
 

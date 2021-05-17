@@ -3,11 +3,11 @@ import { connect } from 'umi';
 import { Tag } from 'antd';
 import { MreSelect } from '@/components/MerchantDataTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
+import { RefuseModal } from '@/components/PublicComponents';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import { RefuseModal } from '@/components/PublicComponents';
 import ShareDetail from './components/Share/Detail/ShareDetail';
 import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';
 import ShareHandleDetail from './components/Share/Detail/ShareHandleDetail';
@@ -228,7 +228,7 @@ const ShareManage = (props) => {
               {
                 type: 'peasDetail',
                 title: '领豆明细',
-                click: () => fetchShareHandleDetail(userMomentIdString),
+                click: () => setVisiblePeas({ show: true, detail: record }),
               },
             ]}
           />
