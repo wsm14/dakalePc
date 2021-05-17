@@ -4,15 +4,10 @@ import { HddOutlined } from '@ant-design/icons';
 import { Button, Tooltip, Modal, Alert } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { EXPORT_TYPE } from '@/common/constant';
-import { downFile } from '@/utils/downFile';
 
 const ExcelWrite = (props) => {
   const { excelList, loading } = props;
   const [visible, setVisible] = useState(false);
-
-  const handleDownLoad = (url) => {
-    downFile(url);
-  };
 
   const getColumns = [
     {
@@ -48,7 +43,7 @@ const ExcelWrite = (props) => {
       align: 'center',
       dataIndex: 'url',
       render: (val) => (
-        <a onClick={() => handleDownLoad(val)} target="_blank">
+        <a href={val} >
           下载
         </a>
       ),

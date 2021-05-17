@@ -30,6 +30,7 @@ export const delectProps = (data) => {
   delete divProps.normalize;
   delete divProps.cityType;
   delete divProps.showTitle;
+  delete divProps.wrapperCol;
 
   return divProps;
 };

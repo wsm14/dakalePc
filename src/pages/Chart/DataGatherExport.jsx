@@ -23,6 +23,7 @@ const DataGatherExport = ({ loading }) => {
       type: 'checkbox',
       name: 'check',
       select: [{ label: '一种数据类型一天只允许导出一次', value: '1' }],
+      rules: [{ required: true, message: '请勾选一种数据类型一天只允许导出一次' }],
       wrapperCol: { offset: 6, span: 12 },
     },
   ];
@@ -47,7 +48,7 @@ const DataGatherExport = ({ loading }) => {
 
   return (
     <Card>
-      <div style={{ width: '500px', minHeight: '400px' }}>
+      <div style={{ width: '600px', minHeight: '400px' }}>
         <FormCondition formItems={formItems} form={form}></FormCondition>
         <Button
           type="primary"
