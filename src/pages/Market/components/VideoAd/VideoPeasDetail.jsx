@@ -57,28 +57,28 @@ const VideoPeasDetail = (props) => {
       {
         title: '领豆用户',
         align: 'center',
-        dataIndex: 'mobile',
+        dataIndex: 'userName',
       },
       {
         title: '用户手机号',
         align: 'center',
-        dataIndex: 'merchantName',
+        dataIndex: 'userMobile',
         render: (val) => val || '暂未授权',
       },
       {
         title: '用户豆号',
         align: 'center',
-        dataIndex: 'cityName',
+        dataIndex: 'userBeanCode',
       },
       {
         title: '领取卡豆数（个）',
         align: 'right',
-        dataIndex: 'address',
+        dataIndex: 'beanAmount',
       },
       {
         label: '领取时间',
         align: 'center',
-        name: 'businessHub',
+        name: 'createTime',
       },
     ],
   };
