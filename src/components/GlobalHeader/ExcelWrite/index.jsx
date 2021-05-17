@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { HddOutlined } from '@ant-design/icons';
+import { EXPORT_TYPE } from '@/common/constant';
 import { Button, Tooltip, Modal, Alert } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import { EXPORT_TYPE } from '@/common/constant';
 
 const ExcelWrite = (props) => {
   const { excelList, loading } = props;
