@@ -79,12 +79,11 @@ const ProceDataForm = (props) => {
   const handleSave = () => {
     form.validateFields().then((values) => {
       const { handlingFeeList } = values;
-
       const payload = {
         configWithdrawId: detail.configWithdrawId,
-        areaType: values.areaCode != '' ? 'city' : 'all',
         ...values,
         areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
+        areaType: (values.areaCode ==""|| values.areaCode == undefined) ? 'all' : 'city',
         handlingFeeList: handlingFeeList,
         effectiveTime: values.effectiveTime.format('YYYY-MM-DD HH:mm:ss'),
         monthIsFree: values.monthIsFree ? 1 : 0,
@@ -123,7 +122,7 @@ const ProceDataForm = (props) => {
         <div>
           <div className={styles.flexCon}>
             <Form.Item label="单笔最低提现金额" name="singleMinMoney" rules={[{ required: true }]}>
-              <InputNumber onChange={(val) => handleChanges(val)} style={{ width: 200 }} />
+              <InputNumber onChange={(val) => handleChanges(val)} style={{ width: 200 }} min={0} />
             </Form.Item>
             <span className={styles.spanAfter} style={{ marginRight: 10 }}>
               元
@@ -131,7 +130,7 @@ const ProceDataForm = (props) => {
           </div>
           <div className={styles.flexCon}>
             <Form.Item label="每日提现上限笔数" name="dayLimitCount" rules={[{ required: true }]}>
-              <InputNumber onChange={(val) => handleChanges(val)} style={{ width: 200 }} />
+              <InputNumber onChange={(val) => handleChanges(val)} style={{ width: 200 }}  min={0} precision={0} />
             </Form.Item>
             <span className={styles.spanAfter} style={{ marginRight: 10 }}>
               笔

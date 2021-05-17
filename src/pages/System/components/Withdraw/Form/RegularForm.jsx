@@ -28,6 +28,7 @@ const RegularForm = (props) => {
                     disabled={index == 1 ? true : false}
                     onChange={() => handleChanges('minMoney',index)}
                     style={{ width: 120 }}
+                    min={0}
                   />
                 </Form.Item>
                 <Form.Item
@@ -38,6 +39,7 @@ const RegularForm = (props) => {
                   validateTrigger={['onChange', 'onBlur']}
                 >
                   <InputNumber
+                   min={0}
                     // disabled={index == 1 ? true : false}
                     onChange={() => handleChanges('maxMoney',index)}
                     style={{ width: 120 }}
@@ -61,7 +63,7 @@ const RegularForm = (props) => {
                   rules={[{ required: true, message: '请输入手续费' }]}
                   validateTrigger={['onChange', 'onBlur']}
                 >
-                  <InputNumber  onChange={(val) => handleChanges(val)} style={{ width: 120 }} />
+                  <InputNumber  min={0}  onChange={(val) => handleChanges(val)} style={{ width: 120 }} />
                 </Form.Item>
                 <span className={styles.spanAfter}>元</span>
               </div>
