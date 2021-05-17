@@ -23,10 +23,10 @@ const LogDetail = (props) => {
     <DrawerCondition {...modalProps}>
       <Timeline>
         {data.map((item) => (
-          <Timeline.Item key={item.logRecordId}>
+          <Timeline.Item key={item.actionLogId}>
             <p style={{ margin: 0, fontWeight: 500 }}>{item.createTime}</p>
-            <p style={{ margin: 0 }}>{item.content}</p>
-            <p style={{ margin: 0, color: '#999999' }}> 操作人：{item.operator}</p>
+            <p style={{ margin: 0 }}>{item.actionDesc}</p>
+            {/* <p style={{ margin: 0, color: '#999999' }}> 操作人：{item.operator}</p> */}
           </Timeline.Item>
         ))}
       </Timeline>

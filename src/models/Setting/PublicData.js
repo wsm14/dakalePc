@@ -5,15 +5,16 @@ import {
   fetchGetTradeSelect,
   fetchSetTradeSelect,
   fetchGetMreTag,
-  fetchMerCheckData,
-  fetchGetPropertyJSON,
   fetchGetTasteTag,
   fetchGetKolLevel,
   fetchHandleDetail,
-  fetchGetPhoneComeLocation,
+  fetchGetLogDetail,
+  fetchMerCheckData,
   fetchGetJumpNative,
+  fetchGetPropertyJSON,
   fetchGetBuyCouponSelect,
   fetchGetFreeCouponSelect,
+  fetchGetPhoneComeLocation,
   fetchGetSpecialGoodsSelect,
 } from '@/services/PublicServices';
 
@@ -127,7 +128,25 @@ export default {
         });
         return;
       }
-      callback(content.logRecordList);
+      callback(content.recordList);
+    },
+    *fetchGetLogDetail({ payload }, { call, put }) {
+      const response = yield call(fetchGetLogDetail, { ...payload, page: 1, limit: 999 });
+      if (!response) return;
+      const { content } = response;
+      if (!content.recordList.length) {
+        notification.info({
+          message: '温馨提示',
+          description: '暂无日志记录',
+        });
+        return;
+      }
+      yield put({
+        type: 'save',
+        payload: {
+          logDetail: { show: true, data: content.recordList },
+        },
+      });
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);

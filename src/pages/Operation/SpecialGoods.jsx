@@ -333,10 +333,10 @@ const SpecialGoods = (props) => {
                 click: () =>
                   fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
-              // {
-              //   type: 'diary',
-              //   click: () => fetchGetLogData(),
-              // },
+              {
+                type: 'diary',
+                click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+              },
             ]}
           />
         );
@@ -347,7 +347,7 @@ const SpecialGoods = (props) => {
   // 获取日志信息
   const fetchGetLogData = (payload) => {
     dispatch({
-      type: 'baseData/fetchGetLogData',
+      type: 'baseData/fetchGetLogDetail',
       payload,
     });
   };
@@ -515,6 +515,6 @@ const SpecialGoods = (props) => {
 export default connect(({ specialGoods, baseData, loading }) => ({
   specialGoods,
   hubData: baseData.hubData,
-  loading: loading.models.specialGoods,
+  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
   loadings: loading,
 }))(SpecialGoods);

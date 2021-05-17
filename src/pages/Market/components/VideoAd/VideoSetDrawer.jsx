@@ -48,37 +48,37 @@ const ShareDrawer = (props) => {
         promotionType: { coupon: 'reduce', goods: 'special' }[cType],
       });
       // uploader.addFile(videoId.file);
-      //   dispatch({
-      //     type: 'videoAdvert/fetchVideoAdNoviceSet',
-      //     payload: {
-      //       userType: 'merchant',
-      //       contentType: 'video',
-      //       beanFlag: '1', // 是否打赏 0 1
-      //       ...values,
-      //       area: areaType === 'district' ? area[2] : undefined,
-      //       categoryNode: categoryNode.join('.'),
-      //       frontImage: imgRes.toString(), // 封面连接
-      //       frontImageWidth: 544, // 封面宽
-      //       frontImageHeight: 960, // 封面长
-      //       rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-      //       rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-      //       videoContentOb: {
-      //         ...dataStorage['videoContentOb'],
-      //         url: res.toString(),
-      //       },
-      //     },
-      //     callback: () => {
-      //       onClose();
-      //       childRef.current.fetchGetData();
-      //     },
-      //   });
+      // dispatch({
+      //   type: 'videoAdvert/fetchVideoAdNoviceSet',
+      //   payload: {
+      //     userType: 'merchant',
+      //     contentType: 'video',
+      //     beanFlag: '1', // 是否打赏 0 1
+      //     ...values,
+      //     ...dataStorage,
+      //     area: areaType === 'district' ? area[2] : undefined,
+      //     categoryNode: categoryNode.join('.'),
+      //     frontImage: 'imgRes.toString()', // 封面连接
+      //     frontImageWidth: 544, // 封面宽
+      //     frontImageHeight: 960, // 封面长
+      //     rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+      //     rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+      //     videoId: 'res.toString()',
+      //     couponIds,
+      //     promotionId: contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+      //     promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+      //   },
+      //   callback: () => {
+      //     onClose();
+      //     childRef.current.fetchGetData();
+      //   },
+      // });
     });
   };
 
   // 下一步
   const handleNextStep = (type) => {
     form.validateFields().then((values) => {
-      console.log({ ...dataStorage, ...values });
       saveDataStorage({ ...dataStorage, ...values });
       setCurrent(type === 'next' ? current + 1 : current - 1);
     });

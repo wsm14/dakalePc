@@ -37,6 +37,13 @@ export function fetchHandleDetail(params) {
   });
 }
 
+// get 日志记录 - 新
+export function fetchGetLogDetail(params) {
+  return request('/admin/actionLog/listActionLog', {
+    params,
+  });
+}
+
 // get 获取配置文件
 export function fetchGetPropertyJSON(params) {
   return request('/common/property/getLastProperty', {
