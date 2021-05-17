@@ -111,6 +111,13 @@ const ShareManage = (props) => {
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       valuesKey: ['topCategoryId', 'categoryId'],
     },
+    {
+      label: '卡豆余额',
+      type: 'number',
+      name: 'remainBean',
+      formatter: (value) => `< ${value}`,
+      parser: (value) => value.replace(/\<\s?/g, ''),
+    },
   ];
 
   // table 表头
@@ -206,11 +213,13 @@ const ShareManage = (props) => {
       title: '关联券/商品',
       align: 'right',
       dataIndex: 'goodsOrCouponName',
+      width: 200,
     },
     {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
+      render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
     {
       title: '状态',
@@ -222,7 +231,7 @@ const ShareManage = (props) => {
     {
       title: '操作',
       dataIndex: 'length',
-      width: 100,
+      width: 150,
       fixed: 'right',
       align: 'right',
       render: (val, record, index) => {
@@ -241,6 +250,11 @@ const ShareManage = (props) => {
               },
               {
                 type: 'handleDeatil', // 操作记录
+                click: () => fetchShareHandleDetail(userMomentIdString),
+              },
+              {
+                type: 'peasDetail',
+                title: '领豆明细',
                 click: () => fetchShareHandleDetail(userMomentIdString),
               },
             ]}
