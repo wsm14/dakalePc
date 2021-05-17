@@ -220,6 +220,7 @@ const BusinessListComponent = (props) => {
       dataIndex: 'userMerchantIdString',
       fixed: 'right',
       align: 'right',
+      width: 200,
       render: (val, record, index) => (
         <HandleSetTable
           formItems={[
@@ -240,11 +241,23 @@ const BusinessListComponent = (props) => {
               type: 'set',
               click: () => setVisible({ show: true, record }),
             },
+            {
+              type: 'diary',
+              click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
+            },
           ]}
         />
       ),
     },
   ];
+
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogDetail',
+      payload,
+    });
+  };
 
   // 获取商圈
   const fetchGetHubSelect = (payload) => {
