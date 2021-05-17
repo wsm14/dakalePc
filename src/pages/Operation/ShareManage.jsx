@@ -7,16 +7,17 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import CloseRefuse from './components/Share/CloseRefuse';
-import ShareDetail from './components/Share/ShareDetail';
-import ShareHandleDetail from './components/Share/ShareHandleDetail';
-import ShareVideoDetail from './components/Share/ShareVideoDetail';
+import { RefuseModal } from '@/components/PublicComponents';
+import ShareDetail from './components/Share/Detail/ShareDetail';
+import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';
+import ShareHandleDetail from './components/Share/Detail/ShareHandleDetail';
+import ShareVideoDetail from './components/Share/Detail/ShareVideoDetail';
 import ShareDrawer from './components/Share/ShareDrawer';
 import Ellipsis from '@/components/Ellipsis';
 import styles from './style.less';
 
 const ShareManage = (props) => {
-  const { shareManage, loading, tradeList, dispatch } = props;
+  const { shareManage, loading, loadingRefuse, tradeList, dispatch } = props;
   const { list } = shareManage;
 
   const childRef = useRef();
@@ -24,42 +25,9 @@ const ShareManage = (props) => {
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
   const [visibleMre, setVisibleMre] = useState(false); // 商户详情
   const [visibleVideo, setVisibleVideo] = useState(false); // 视屏
-  const [visibleDown, setVisibleDown] = useState(false); // 下架原因
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleHandle, setVisibleHandle] = useState(false); // 操作记录
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
-
-  // 获取行业选择项
-  const fetchTradeList = () => {
-    dispatch({
-      type: 'sysTradeList/fetchGetList',
-    });
-  };
-
-  // 获取详情
-  const fetchShareDetail = (index, type) => {
-    const { userMomentIdString } = list[index];
-    dispatch({
-      type: 'shareManage/fetchShareDetail',
-      payload: {
-        userMomentIdString,
-      },
-      callback: (detail) => setVisible({ show: true, index, type, detail }),
-    });
-  };
-
-  // 获取操作日志详情
-  const fetchShareHandleDetail = (val) => {
-    dispatch({
-      type: 'baseData/fetchHandleDetail',
-      payload: {
-        identifyIdStr: val,
-      },
-      callback: (detail) => setVisibleHandle({ show: true, detail }),
-    });
-  };
+  const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
 
   // 搜索参数
   const searchItems = [
@@ -242,7 +210,12 @@ const ShareManage = (props) => {
               {
                 type: 'down', // 下架
                 visible: status == 1,
-                click: () => setVisibleDown({ show: true, initialValues: record }),
+                click: () =>
+                  setVisibleRefuse({
+                    show: true,
+                    detail: record,
+                    formProps: { type: 'down', key: 'removalReason' },
+                  }),
               },
               {
                 type: 'info', // 详情
@@ -263,6 +236,59 @@ const ShareManage = (props) => {
       },
     },
   ];
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业选择项
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
+  // 下架
+  const fetchStatusClose = () => {
+    form.validateFields().then((payload) => {
+      const { detail } = visibleRefuse;
+      dispatch({
+        type: 'shareManage/fetchStatusClose',
+        payload: {
+          merchantId: detail.merchantIdString,
+          momentId: detail.userMomentIdString,
+          ...payload,
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
+    });
+  };
+
+  // 获取详情
+  const fetchShareDetail = (index, type) => {
+    const { userMomentIdString } = list[index];
+    dispatch({
+      type: 'shareManage/fetchShareDetail',
+      payload: {
+        userMomentIdString,
+      },
+      callback: (detail) => setVisible({ show: true, index, type, detail }),
+    });
+  };
+
+  // 获取操作日志详情
+  const fetchShareHandleDetail = (val) => {
+    dispatch({
+      type: 'baseData/fetchHandleDetail',
+      payload: {
+        identifyIdStr: val,
+      },
+      callback: (detail) => setVisibleHandle({ show: true, detail }),
+    });
+  };
 
   return (
     <>
@@ -307,13 +333,19 @@ const ShareManage = (props) => {
         onClose={() => setVisibleHandle(false)}
       ></ShareHandleDetail>
       {/* 下架 */}
-      <CloseRefuse
-        visible={visibleDown}
-        childRef={childRef}
-        onClose={() => setVisibleDown(false)}
-      ></CloseRefuse>
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={fetchStatusClose}
+        loading={loadingRefuse}
+      ></RefuseModal>
       {/* 查看商户 */}
       <MreSelect type="show" visible={visibleMre} onCancel={() => setVisibleMre(false)}></MreSelect>
+      {/* 领豆明细 */}
+      <VideoPeasDetail
+        visible={visiblePeas}
+        onClose={() => setVisiblePeas(false)}
+      ></VideoPeasDetail>
     </>
   );
 };
@@ -321,6 +353,7 @@ const ShareManage = (props) => {
 export default connect(({ sysTradeList, shareManage, loading }) => ({
   shareManage,
   tradeList: sysTradeList.list.list,
+  loadingRefuse: loading.effects['shareManage/fetchStatusClose'],
   loading:
     loading.effects['shareManage/fetchGetList'] ||
     loading.effects['shareManage/fetchShareDetail'] ||

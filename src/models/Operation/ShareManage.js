@@ -7,6 +7,7 @@ import {
   fetchShareStatusClose,
   fetchShareDetail,
   fetchShareGetPlatformBean,
+  fetchShareGetBeanDetail,
 } from '@/services/OperationServices';
 
 export default {
@@ -16,6 +17,7 @@ export default {
     list: [],
     total: 0,
     couponList: { list: [], total: 0 },
+    beanDetal: { list: [], total: 0 },
     platformBean: 0,
   },
 
@@ -24,6 +26,13 @@ export default {
       return {
         ...state,
         ...payload,
+      };
+    },
+    closeList(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        beanDetal: { list: [], total: 0 },
       };
     },
   },
@@ -60,6 +69,17 @@ export default {
         type: 'save',
         payload: {
           platformBean: content.platformBean,
+        },
+      });
+    },
+    *fetchShareGetBeanDetail({ payload }, { call, put }) {
+      const response = yield call(fetchShareGetBeanDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          beanDetal: { list: content.recordList, total: content.total },
         },
       });
     },

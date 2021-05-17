@@ -106,6 +106,13 @@ export function fetchShareGetPlatformBean(params) {
   });
 }
 
+// get 分享管理 - 领豆明细
+export function fetchShareGetBeanDetail(params) {
+  return request('/admin/marketingManagement/listUserMomentsDetail', {
+    params,
+  });
+}
+
 // post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {
