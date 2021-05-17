@@ -30,33 +30,38 @@ const ShareDrawer = (props) => {
       } = couponData;
       const { promotionType: cType } = contact;
       uploadLive({
-        file: frontImage.file,
-        title,
-        callback: (res) => {
-          dispatch({
-            type: 'videoAdvert/fetchVideoAdNoviceSet',
-            payload: {
-              userType: 'merchant',
-              contentType: 'video',
-              beanFlag: '1', // 是否打赏 0 1
-              ...values,
-              ...dataStorage,
-              area: areaType === 'district' ? area[2] : undefined,
-              categoryNode: categoryNode.join('.'),
-              frontImage: res.imageUrl, // 封面连接
-              frontImageWidth: 544, // 封面宽
-              frontImageHeight: 960, // 封面长
-              rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-              rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-              videoId: 'res.toString()',
-              couponIds,
-              promotionIdStr:
-                contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
-              promotionType: { coupon: 'reduce', goods: 'special' }[cType],
-            },
-            callback: () => {
-              onClose();
-              childRef.current.fetchGetData();
+        data: frontImage, // 上传封面
+        callback: (imgs) => {
+          uploadLive({
+            data: videoId.videoId ? videoId.videoId : videoId.url, // 上传视频
+            title,
+            callback: (videos) => {
+              dispatch({
+                type: 'videoAdvert/fetchVideoAdNoviceSet',
+                payload: {
+                  userType: 'merchant',
+                  contentType: 'video',
+                  beanFlag: '1', // 是否打赏 0 1
+                  ...values,
+                  ...dataStorage,
+                  area: areaType === 'district' ? area[2] : undefined,
+                  categoryNode: categoryNode.join('.'),
+                  frontImage: imgs, // 封面连接
+                  frontImageWidth: 544, // 封面宽
+                  frontImageHeight: 960, // 封面长
+                  rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+                  rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+                  videoId: videos,
+                  couponIds,
+                  promotionIdStr:
+                    contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+                  promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+                },
+                callback: () => {
+                  onClose();
+                  childRef.current.fetchGetData();
+                },
+              });
             },
           });
         },

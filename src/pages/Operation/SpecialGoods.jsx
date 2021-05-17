@@ -131,6 +131,10 @@ const SpecialGoods = (props) => {
       name: 'createStartTime',
       end: 'createEndTime',
     },
+    {
+      label: '创建人',
+      name: 'creatorName',
+    },
   ];
 
   // table 表头

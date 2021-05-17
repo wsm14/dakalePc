@@ -104,12 +104,12 @@ export default {
                 ]]: promotionIdStr,
               }
             : '',
+          videoId: videoContentOb,
         };
       }
       if (callback)
         callback({
           ...content.guideMomentsDTO,
-          videoId: videoContentOb.url,
           rewardStartTime: [
             moment(rewardStartTime, 'YYYY-MM-DD'),
             moment(rewardEndTime, 'YYYY-MM-DD'),

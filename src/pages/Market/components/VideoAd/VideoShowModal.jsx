@@ -19,7 +19,7 @@ const VideoShowModal = (props) => {
   return (
     <Modal
       title={`视频 - ${detail.title}`}
-      width={videoData.width / 2 + 48}
+      width={(Number(videoData.width) || 800) / 2 + 48}
       destroyOnClose
       footer={null}
       visible={show}
@@ -32,7 +32,7 @@ const VideoShowModal = (props) => {
         style={{
           maxHeight: Number(videoData.height) / 2,
           margin: '0 auto',
-          width: Number(videoData.width) / 2,
+          width: (Number(videoData.width) || 800) / 2,
         }}
         autoPlay
       >

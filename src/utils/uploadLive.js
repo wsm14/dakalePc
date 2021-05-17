@@ -3,7 +3,12 @@ import { uuid } from './utils';
 import { message } from 'antd';
 import '../../lib/aliyun-upload-sdk-1.5.2.min.js';
 
-const uploadLive = ({ file, title, callback }) => {
+const uploadLive = ({ data, title, callback }) => {
+  if (typeof data === 'string') {
+    callback(data);
+    return;
+  }
+  const { file } = data;
   const uploader = new AliyunUpload.Vod({
     userId: '202991694203247151', // 阿里账号ID，必须有值
     partSize: 1048576, // 分片大小默认1 MB，不能小于100 KB
@@ -17,8 +22,8 @@ const uploadLive = ({ file, title, callback }) => {
       message.loading(
         `${
           {
-            false: '图片',
-            true: '视频',
+            false: '视频',
+            true: '图片',
           }[isImage]
         }上传中......`,
         0,
@@ -49,7 +54,7 @@ const uploadLive = ({ file, title, callback }) => {
         const uploadAddress = content.uploadAddress;
         const videoId = content.videoId || content.imageId;
         console.log('content', content);
-        uploader.dakaleAuthContent = content;
+        uploader.dakaleAuthContent = { ...content, isImage };
         uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress, videoId);
       });
     },
@@ -99,7 +104,9 @@ const uploadLive = ({ file, title, callback }) => {
     },
     // 全部文件上传结束
     onUploadEnd: function () {
-      callback && callback(uploader.dakaleAuthContent);
+      message.destroy();
+      const { isImage, imageURL, videoId } = uploader.dakaleAuthContent;
+      callback && callback(isImage ? imageURL : videoId);
       console.log('onUploadEnd: uploaded all the files');
     },
   });
