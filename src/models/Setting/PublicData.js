@@ -12,6 +12,7 @@ import {
   fetchMerCheckData,
   fetchGetJumpNative,
   fetchGetPropertyJSON,
+  fetchGetSelectUserList,
   fetchGetBuyCouponSelect,
   fetchGetFreeCouponSelect,
   fetchGetPhoneComeLocation,
@@ -34,6 +35,7 @@ export default {
     buyCoupon: { list: [], total: 0 },
     specialGoods: { list: [], total: 0 },
     excelList: { list: [], total: 0 },
+    userList: [],
   },
 
   reducers: {
@@ -242,6 +244,17 @@ export default {
             list: content.recordList,
             total: content.total,
           },
+        },
+      });
+    },
+    *fetchGetSelectUserList({ payload }, { call, put }) {
+      const response = yield call(fetchGetSelectUserList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          userList: content.recordList,
         },
       });
     },

@@ -172,3 +172,10 @@ export function fetchimportExcelList(params) {
     params,
   });
 }
+
+// get 获取可选用户列表
+export function fetchGetSelectUserList(params) {
+  return request('/admin/userManagement/listUserManagement', {
+    params,
+  });
+}
