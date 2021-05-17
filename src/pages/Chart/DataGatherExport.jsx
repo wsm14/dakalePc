@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Button, Form, Card, Checkbox } from 'antd';
+import { Button, Form, Card } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import { EXPORT_TYPE } from '@/common/constant';
 
