@@ -106,7 +106,7 @@ const FreeContactSelectModal = (props) => {
         disabled: !selectItem[listProps.key],
       }}
       onOk={() => {
-        onOk(selectItem);
+        onOk({ ...selectItem, promotionType: tabKey });
         onClose();
       }}
       onCancel={onClose}
@@ -136,7 +136,7 @@ const FreeContactSelectModal = (props) => {
 };
 
 export default connect(({ baseData, loading }) => ({
-  couponList: baseData.couponList,
+  couponList: baseData.buyCoupon,
   specialGoodsList: baseData.specialGoods,
   loading,
 }))(FreeContactSelectModal);

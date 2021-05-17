@@ -38,7 +38,8 @@ const uploader = new AliyunUpload.Vod({
       const uploadAddress = content.uploadAddress;
       const videoId = content.videoId;
       const imageId = content.imageId;
-      uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress, videoId || imageId);
+      console.log(uploadInfo, uploadAuth, uploadAddress, videoId);
+      // uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress, videoId || imageId);
     });
   },
   // 文件上传成功

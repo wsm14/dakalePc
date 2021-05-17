@@ -75,37 +75,22 @@ const VideoContentSet = (props) => {
     },
     {
       label: '上传视频',
-      name: ['videoContentOb', 'url'],
+      name: 'videoId',
       type: 'videoUpload',
       maxFile: 1,
       onChange: ({ file }) => {
         const fileurl = URL.createObjectURL(file);
-        // 获取视频的时长 长宽高
-        const videoElement = document.createElement('video');
-        videoElement.addEventListener('loadedmetadata', function (_event) {
-          const duration = videoElement.duration; // 单位：秒
-          form.setFieldsValue({
-            length: duration,
-            videoContentOb: { height: videoElement.videoHeight, width: videoElement.videoWidth },
-          });
+        // 获取视频的时长
+        const audioElement = new Audio(fileurl);
+        audioElement.addEventListener('loadedmetadata', function (_event) {
+          const duration = audioElement.duration; // 单位：秒
+          form.setFieldsValue({ length: duration });
         });
-        videoElement.src = fileurl;
-        videoElement.load();
       },
     },
     {
       label: '视频时长',
       name: 'length',
-      hidden: true,
-    },
-    {
-      label: '视频宽度',
-      name: ['videoContentOb', 'height'],
-      hidden: true,
-    },
-    {
-      label: '视频高度',
-      name: ['videoContentOb', 'width'],
       hidden: true,
     },
     {

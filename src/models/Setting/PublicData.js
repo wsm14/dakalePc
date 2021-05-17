@@ -28,6 +28,7 @@ export default {
     nativeList: [],
     logDetail: { show: false, data: [] },
     couponList: { list: [], total: 0 },
+    buyCoupon: { list: [], total: 0 },
     specialGoods: { list: [], total: 0 },
   },
 
@@ -184,7 +185,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          couponList: { list: content.ownerCouponList, total: content.total },
+          buyCoupon: { list: content.ownerCouponList, total: content.total },
         },
       });
     },

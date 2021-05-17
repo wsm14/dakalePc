@@ -15,8 +15,9 @@ const VideoPushSet = (props) => {
   const [timeSelect, setTimeSelect] = useState(false); // 投放时长
 
   useEffect(() => {
-    setTotalBean({ pnum: detail.personBeanAmount || 0, bnum: detail.beanAmount || 0 });
+    setTotalBean({ pnum: detail.beanPersonAmount || 0, bnum: detail.beanAmount || 0 });
     setAreaItem(detail.areaType);
+    setTimeSelect(detail.rewardCycle);
   }, []);
 
   const formItems = [

@@ -22,13 +22,13 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const {
-        frontImage,
-        videoContentOb: { url },
-        categoryNode,
-        title,
-      } = dataStorage;
+      const { frontImage, videoId, categoryNode, title } = dataStorage;
       const { areaType, area, rewardStartTime: time } = values;
+      const {
+        free: { ownerCouponIdString: couponIds },
+        contact = {},
+      } = couponData;
+      const { promotionType: cType } = contact;
       console.log({
         userType: 'merchant',
         contentType: 'video',
@@ -42,12 +42,12 @@ const ShareDrawer = (props) => {
         frontImageHeight: 960, // 封面长
         rewardStartTime: time && time[0].format('YYYY-MM-DD'),
         rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-        videoContentOb: {
-          ...dataStorage['videoContentOb'],
-          url: 'res.toString()',
-        },
+        videoId: 'res.toString()',
+        couponIds,
+        promotionId: contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+        promotionType: { coupon: 'reduce', goods: 'special' }[cType],
       });
-      // uploader.addFile(url.file);
+      // uploader.addFile(videoId.file);
       //   dispatch({
       //     type: 'videoAdvert/fetchVideoAdNoviceSet',
       //     payload: {
@@ -76,10 +76,11 @@ const ShareDrawer = (props) => {
   };
 
   // 下一步
-  const handleNextStep = () => {
+  const handleNextStep = (type) => {
     form.validateFields().then((values) => {
+      console.log({ ...dataStorage, ...values });
       saveDataStorage({ ...dataStorage, ...values });
-      setCurrent(current + 1);
+      setCurrent(type === 'next' ? current + 1 : current - 1);
     });
   };
 
@@ -124,9 +125,9 @@ const ShareDrawer = (props) => {
       // 操作按钮
       footer: (
         <>
-          {current > 0 && <Button onClick={() => setCurrent(current - 1)}>上一步</Button>}
+          {current > 0 && <Button onClick={() => handleNextStep('up')}>上一步</Button>}
           {current < steps.length - 1 && (
-            <Button type="primary" onClick={handleNextStep}>
+            <Button type="primary" onClick={() => handleNextStep('next')}>
               下一步
             </Button>
           )}
