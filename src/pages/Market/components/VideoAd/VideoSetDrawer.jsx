@@ -44,7 +44,7 @@ const ShareDrawer = (props) => {
         rewardEndTime: time && time[1].format('YYYY-MM-DD'),
         videoId: 'res.toString()',
         couponIds,
-        promotionId: contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+        promotionIdStr: contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
         promotionType: { coupon: 'reduce', goods: 'special' }[cType],
       });
       // uploader.addFile(videoId.file);
