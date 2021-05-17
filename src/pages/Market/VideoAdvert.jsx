@@ -188,7 +188,7 @@ const VideoAdvert = (props) => {
               {
                 type: 'again', // 重新发布
                 visible: status === '3',
-                click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
+                click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'again'),
               },
               {
                 type: 'peasDetail',
@@ -221,7 +221,7 @@ const VideoAdvert = (props) => {
   const fetchVideoAdNoviceDetail = (payload, type) => {
     dispatch({
       type: 'videoAdvert/fetchVideoAdNoviceDetail',
-      payload,
+      payload: { ...payload, type },
       callback: (detail) => setVisibleSet({ show: true, type, detail }),
     });
   };

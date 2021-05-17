@@ -12,7 +12,7 @@ const { Step } = Steps;
 const ShareDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
-  const { type = 'add', show = false, detail } = visible;
+  const { type = 'add', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
@@ -76,11 +76,34 @@ const ShareDrawer = (props) => {
     });
   };
 
+  // 搜索店铺用于回显数据
+  const fetchGetMre = () => {
+    const { merchantName } = detail;
+    if (!merchantName) return;
+    dispatch({
+      type: 'businessList/fetchGetList',
+      payload: {
+        limit: 50,
+        page: 1,
+        bankStatus: 3,
+        businessStatus: 1,
+        merchantName,
+      },
+    });
+  };
+
+  // 弹窗打开时处理数据方法
+  const afterCallBack = () => {
+    fetchGetMre();
+    setDataStorage(detail);
+    setCouponData({ free: detail.free || {}, contact: detail.contact || {} });
+  };
+
   // 下一步
-  const handleNextStep = (type) => {
+  const handleNextStep = (buttonType) => {
     form.validateFields().then((values) => {
       saveDataStorage({ ...dataStorage, ...values });
-      setCurrent(type === 'next' ? current + 1 : current - 1);
+      setCurrent(buttonType === 'next' ? current + 1 : current - 1);
     });
   };
 
@@ -104,41 +127,43 @@ const ShareDrawer = (props) => {
     },
   ];
 
-  const contentProps = {
-    // 发布
-    add: {
-      title: '发布分享',
-      // 展示内容
-      children: (
-        <>
-          <div style={{ marginBottom: 24 }}>
-            <Steps current={current} style={{ margin: '0 auto', width: 400 }}>
-              {steps.map((item) => (
-                <Step key={item.title} title={item.title} />
-              ))}
-            </Steps>
-          </div>
+  // 重新发 / 发布 dom
+  const pushProps = {
+    title: '发布分享',
+    // 展示内容
+    children: (
+      <>
+        <div style={{ marginBottom: 24 }}>
+          <Steps current={current} style={{ margin: '0 auto', width: 400 }}>
+            {steps.map((item) => (
+              <Step key={item.title} title={item.title} />
+            ))}
+          </Steps>
+        </div>
+        <div className="steps-content">{steps[current].content}</div>
+      </>
+    ),
+    // 操作按钮
+    footer: (
+      <>
+        {current > 0 && <Button onClick={() => handleNextStep('up')}>上一步</Button>}
+        {current < steps.length - 1 && (
+          <Button type="primary" onClick={() => handleNextStep('next')}>
+            下一步
+          </Button>
+        )}
+        {current === steps.length - 1 && (
+          <Button type="primary" onClick={handleVideoPush} loading={loading}>
+            确认发布
+          </Button>
+        )}
+      </>
+    ),
+  };
 
-          <div className="steps-content">{steps[current].content}</div>
-        </>
-      ),
-      // 操作按钮
-      footer: (
-        <>
-          {current > 0 && <Button onClick={() => handleNextStep('up')}>上一步</Button>}
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => handleNextStep('next')}>
-              下一步
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button type="primary" onClick={handleVideoPush} loading={loading}>
-              确认发布
-            </Button>
-          )}
-        </>
-      ),
-    },
+  const contentProps = {
+    add: pushProps, // 发布
+    again: pushProps, // 重新发布
     // 详情
     info: {
       title: '查看详情',
@@ -152,6 +177,7 @@ const ShareDrawer = (props) => {
     width: 800,
     maskClosable: current === 0,
     onClose,
+    afterCallBack,
     closeCallBack: () => {
       setCurrent(0);
       setDataStorage({});

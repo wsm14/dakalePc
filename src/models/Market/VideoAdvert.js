@@ -69,16 +69,53 @@ export default {
     *fetchVideoAdNoviceDetail({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdNoviceDetail, payload);
       if (!response) return;
+      const { type } = payload;
       const { content = {} } = response;
-      const { rewardStartTime, rewardEndTime } = content.guideMomentsDTO;
+      const {
+        rewardStartTime,
+        rewardEndTime,
+        topCategoryIdStr,
+        categoryIdStr,
+        provinceCode,
+        cityCode,
+        districtCode,
+        videoContentOb,
+        freeOwnerCoupon, // 免费券
+        valuableOwnerCoupon, // 有价券
+        specialGoods, // 特惠商品
+        couponIds,
+        promotionType: pType,
+        promotionIdStr,
+      } = content.guideMomentsDTO;
+      let editData = {};
+      if (type === 'again') {
+        editData = {
+          categoryNode: [topCategoryIdStr, categoryIdStr],
+          area: [provinceCode, cityCode, districtCode],
+          free: freeOwnerCoupon // 免费券
+            ? { ...freeOwnerCoupon, ownerCouponIdString: couponIds, buyFlag: 0 }
+            : '',
+          contact: pType // 有价券 特惠商品
+            ? {
+                promotionType: { reduce: 'coupon', special: 'goods' }[pType],
+                ...{ reduce: valuableOwnerCoupon, special: specialGoods }[pType],
+                [{ reduce: 'ownerCouponIdString', special: 'specialGoodsId' }[
+                  pType
+                ]]: promotionIdStr,
+              }
+            : '',
+        };
+      }
       if (callback)
         callback({
           ...content.guideMomentsDTO,
+          videoId: videoContentOb.url,
           rewardStartTime: [
             moment(rewardStartTime, 'YYYY-MM-DD'),
             moment(rewardEndTime, 'YYYY-MM-DD'),
           ],
           rewardEndTime: `${rewardStartTime} ~ ${rewardEndTime}`,
+          ...editData,
         });
     },
     *fetchVideoAdNoviceSet({ payload, callback }, { call }) {
