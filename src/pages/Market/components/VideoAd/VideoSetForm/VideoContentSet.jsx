@@ -81,6 +81,7 @@ const VideoContentSet = (props) => {
           const duration = videoElement.duration; // 单位：秒
           form.setFieldsValue({
             length: duration,
+            videoId: undefined,
             videoContentOb: { height: videoElement.videoHeight, width: videoElement.videoWidth },
           });
         });

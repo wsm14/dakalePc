@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -21,6 +22,7 @@ const SharePushSet = (props) => {
   useEffect(() => {
     setTotalBean({ pnum: detail.personBeanAmount || 0, bnum: detail.beanAmount || 0 });
     setBeanFlag(detail.usePlatformBeanFlag);
+    setTimeSelect(detail.rewardCycle);
     fetchShareGetPlatformBean();
     fetchPromotionMoneyGet();
   }, []);
@@ -46,6 +48,10 @@ const SharePushSet = (props) => {
     });
   };
 
+  // 定时投放不超过当前时间31天
+  const disabledDate = (current) =>
+    (current && current < moment().endOf('day')) || current > moment().add(31, 'days');
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const formItems = [
@@ -65,6 +71,16 @@ const SharePushSet = (props) => {
       onChange: (e) => setTimeSelect(e.target.value),
     },
     {
+      label: '定时投放（可选）',
+      name: 'timedPublishTime',
+      type: 'dataPicker',
+      visible: timeSelect === '0',
+      rules: [{ required: false }],
+      format: 'YYYY-MM-DD HH:mm',
+      showTime: true,
+      disabledDate,
+    },
+    {
       label: '时间选择',
       name: 'rewardStartTime',
       type: 'rangePicker',
@@ -79,7 +95,7 @@ const SharePushSet = (props) => {
     },
     {
       label: '目标曝光量',
-      name: 'personBeanAmount',
+      name: 'beanPersonAmount',
       suffix: '人',
       onChange: (e) => setTotalBean({ ...totalBean, pnum: Number(e.target.value) }),
       addRules: [{ pattern: NUM_INT, message: '应为大于0的整数数字' }],

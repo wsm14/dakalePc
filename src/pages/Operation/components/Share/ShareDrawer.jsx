@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps } from 'antd';
+import uploadLive from '@/utils/uploadLive';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareContentSet from './SharePushForm/ShareContentSet';
 import SharePutInSet from './SharePushForm/SharePutInSet';
@@ -17,6 +18,59 @@ const ShareDrawer = (props) => {
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
   const [extraData, setExtraData] = useState({ city: [], taste: [] }); // 额外数据暂存 city 地域 taste 兴趣
+
+  // 确认发布
+  const handleVideoPush = () => {
+    form.validateFields().then((values) => {
+      const { frontImage, videoId, videoUrl, categoryNode, title } = dataStorage;
+      const { areaType, area, rewardStartTime: time } = values;
+      const {
+        free: { ownerCouponIdString: couponIds },
+        contact = {},
+      } = couponData;
+      const { promotionType: cType } = contact;
+      uploadLive({
+        data: frontImage, // 上传封面
+        callback: (imgs) => {
+          uploadLive({
+            data: videoId ? videoId : videoUrl, // 上传视频
+            title,
+            callback: (videos) => {
+              dispatch({
+                type: 'shareManage/fetchShareVideoPush',
+                payload: {
+                  userType: 'merchant',
+                  contentType: 'video',
+                  scope: 'all',
+                  merchantCount: 1,
+                  beanFlag: '1', // 是否打赏 0 1
+                  frontImageWidth: 544, // 封面宽
+                  frontImageHeight: 960, // 封面长
+                  ...values,
+                  ...dataStorage,
+                  videoUrl: undefined,
+                  area: areaType === 'district' ? area[2] : undefined,
+                  categoryNode: categoryNode.join('.'),
+                  frontImage: imgs, // 封面连接
+                  rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+                  rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+                  videoId: videos,
+                  couponIds,
+                  promotionId:
+                    contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+                  promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+                },
+                callback: () => {
+                  onClose();
+                  childRef.current.fetchGetData();
+                },
+              });
+            },
+          });
+        },
+      });
+    });
+  };
 
   useEffect(() => {
     fetchGetPropertyJSON();
@@ -103,7 +157,7 @@ const ShareDrawer = (props) => {
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button type="primary" onClick={() => 'Processing complete!'}>
+          <Button type="primary" onClick={handleVideoPush}>
             确认发布
           </Button>
         )}

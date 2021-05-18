@@ -3,11 +3,11 @@ import cityJson from '@/common/cityJson';
 import { SHARE_AREA_TYPE } from '@/common/constant';
 import {
   fetchShareList,
-  fetchShareGetFreeCoupon,
-  fetchShareStatusClose,
   fetchShareDetail,
-  fetchShareGetPlatformBean,
+  fetchShareVideoPush,
+  fetchShareStatusClose,
   fetchShareGetBeanDetail,
+  fetchShareGetPlatformBean,
 } from '@/services/OperationServices';
 
 export default {
@@ -50,16 +50,14 @@ export default {
         },
       });
     },
-    *fetchShareGetFreeCoupon({ payload }, { call, put }) {
-      const response = yield call(fetchShareGetFreeCoupon, payload);
+    *fetchShareVideoPush({ payload, callback }, { call }) {
+      const response = yield call(fetchShareVideoPush, payload);
       if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          couponList: { list: content.recordList, total: content.total },
-        },
+      notification.success({
+        message: '温馨提示',
+        description: `视频新增成功`,
       });
+      callback();
     },
     *fetchShareGetPlatformBean({ payload }, { call, put }) {
       const response = yield call(fetchShareGetPlatformBean, payload);

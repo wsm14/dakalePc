@@ -54,8 +54,8 @@ const ShareContentSet = (props) => {
         saveCouponStorage({ free: {}, contact: {} });
         form.setFieldsValue({
           categoryNode: option.topCategoryId,
-          topCategoryIdStr: option.topCategoryId[0],
-          categoryIdStr: option.topCategoryId[1],
+          topCategoryId: option.topCategoryId[0],
+          categoryId: option.topCategoryId[1],
           topCategoryName: option.topCategoryName[0],
           categoryName: option.topCategoryName[1],
         });
@@ -81,6 +81,7 @@ const ShareContentSet = (props) => {
           const duration = videoElement.duration; // 单位：秒
           form.setFieldsValue({
             length: duration,
+            videoId: undefined,
             videoContentOb: { height: videoElement.videoHeight, width: videoElement.videoWidth },
           });
         });
@@ -91,8 +92,8 @@ const ShareContentSet = (props) => {
     {
       label: '视频id',
       name: 'videoId',
-      rules: [{ required: false }],
       hidden: true,
+      rules: [{ required: false }],
     },
     {
       label: '视频宽度',
@@ -129,15 +130,15 @@ const ShareContentSet = (props) => {
       onChange: (val, option) => {
         form.setFieldsValue({
           categoryNode: val,
-          topCategoryIdStr: val[0],
-          categoryIdStr: val[1],
+          topCategoryId: val[0],
+          categoryId: val[1],
           topCategoryName: option[0].categoryName,
           categoryName: option[1].categoryName,
         });
       },
     },
     {
-      name: 'topCategoryIdStr', // 一级行业id
+      name: 'topCategoryId', // 一级行业id
       hidden: true,
     },
     {
@@ -149,7 +150,7 @@ const ShareContentSet = (props) => {
       hidden: true,
     },
     {
-      name: 'categoryIdStr', // 二级行业id
+      name: 'categoryId', // 二级行业id
       hidden: true,
     },
     {
