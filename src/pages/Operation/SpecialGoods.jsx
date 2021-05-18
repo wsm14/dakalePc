@@ -235,7 +235,9 @@ const SpecialGoods = (props) => {
             ? `${row.createTime} ~ 长期`
             : `${val} ~ ${row.activityEndTime}`}
           <div>
-            {row.deleteFlag === '0' ? SPECIAL_RECOMMEND_DELSTATUS[val] : SPECIAL_STATUS[row.status]}
+            {row.deleteFlag === '0'
+              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+              : SPECIAL_STATUS[row.status]}
           </div>
         </>
       ),
