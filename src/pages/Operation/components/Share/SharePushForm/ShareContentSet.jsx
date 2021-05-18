@@ -46,7 +46,7 @@ const ShareContentSet = (props) => {
       type: 'select',
       loading,
       placeholder: '请输入搜索',
-      name: 'merchantIdStr',
+      name: 'merchantId',
       select: selectList,
       onSearch: (val) => fetchClassifyGetMre(val),
       onChange: (val, data) => {
@@ -118,7 +118,7 @@ const ShareContentSet = (props) => {
       label: '分享内容',
       name: 'message',
       type: 'textArea',
-      maxLength: 500,
+      maxLength: 50,
     },
     {
       label: '行业分类',
@@ -158,6 +158,7 @@ const ShareContentSet = (props) => {
       formItem: (
         <ShareCoupon
           type="coupon"
+          merchantIdKey="merchantId"
           show="free"
           data={free}
           form={form}
@@ -167,11 +168,12 @@ const ShareContentSet = (props) => {
       ),
     },
     {
-      label: '关联优惠',
+      label: '推荐带货',
       type: 'formItem',
       formItem: (
         <ShareCoupon
           show="active"
+          merchantIdKey="merchantId"
           type={contact.couponName ? 'coupon' : 'goods'}
           data={contact}
           form={form}

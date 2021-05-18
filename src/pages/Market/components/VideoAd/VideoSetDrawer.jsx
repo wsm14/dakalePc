@@ -16,7 +16,7 @@ const ShareDrawer = (props) => {
 
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
-  const [dataStorage, setDataStorage] = useState({}); // 数据暂存
+  const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
 
   // 确认发布
@@ -95,10 +95,16 @@ const ShareDrawer = (props) => {
 
   // 下一步
   const handleNextStep = (buttonType) => {
-    form.validateFields().then((values) => {
-      saveDataStorage({ ...dataStorage, ...values });
-      setCurrent(buttonType === 'next' ? current + 1 : current - 1);
-    });
+    if (buttonType === 'next') {
+      form.validateFields().then((values) => {
+        saveDataStorage({ ...dataStorage, ...values });
+        setCurrent(current + 1);
+      });
+    } else {
+      const data = form.getFieldsValue();
+      saveDataStorage({ ...dataStorage, ...data });
+      setCurrent(current - 1);
+    }
   };
 
   // 暂存数据

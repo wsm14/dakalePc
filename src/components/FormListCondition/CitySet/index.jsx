@@ -5,7 +5,7 @@ import { Cascader } from '@/components/FormCondition/formModule';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
 
-const CitySelect = ({ form, name, areaType, setCityData, maxLength }) => {
+const CitySelect = ({ form, name, areaType, setCityData, maxLength, changeOnSelect = false }) => {
   // 检查城市是否已选
   const checkCityData = (rule, value) => {
     if (!value) {
@@ -47,7 +47,7 @@ const CitySelect = ({ form, name, areaType, setCityData, maxLength }) => {
                   rules={[{ required: true, message: '请选择' }, { validator: checkCityData }]}
                 >
                   <Cascader
-                    changeOnSelect={areaType ? areaType === 'city' : true}
+                    changeOnSelect={changeOnSelect}
                     cityType={areaType}
                     onChange={(val, option) => setCityData && setCityData(option)}
                   />

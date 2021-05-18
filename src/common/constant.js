@@ -335,9 +335,6 @@ export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 // 风向标跳转类型
 export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按场景显示' };
 
-// 分享设置 - 用户群
-export const SHARE_SCOPE_TYPE = { all: '所有人可见', family: '仅家人家店可见' };
-
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {
   all: '全国',

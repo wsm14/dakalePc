@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
 import {
-  SHARE_SCOPE_TYPE,
   BUSINESS_TYPE,
   SHARE_TIME_TYPE,
   SHARE_STATUS,
@@ -45,12 +44,6 @@ const ShareDetail = (props) => {
       label: '行业分类',
       name: 'topCategoryName',
       render: (val, row) => `${val}/${row.categoryName}`,
-    },
-    {
-      title: '投放详情',
-      label: '用户群',
-      name: 'scope',
-      render: (val) => SHARE_SCOPE_TYPE[val],
     },
     {
       label: '性别',

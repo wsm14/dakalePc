@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import ShareMreSelect from './SharePushForm/ShareMreSelect';
 import ShareContentSet from './SharePushForm/ShareContentSet';
 import SharePutInSet from './SharePushForm/SharePutInSet';
 import SharePushSet from './SharePushForm/SharePushSet';
@@ -39,12 +38,17 @@ const ShareDrawer = (props) => {
   };
 
   // 下一步
-  const handleNextStep = () => {
-    form.validateFields().then((values) => {
-      console.log(values);
-      saveDataStorage({ ...dataStorage, ...values });
-      setCurrent(current + 1);
-    });
+  const handleNextStep = (buttonType) => {
+    if (buttonType === 'next') {
+      form.validateFields().then((values) => {
+        saveDataStorage({ ...dataStorage, ...values });
+        setCurrent(current + 1);
+      });
+    } else {
+      const data = form.getFieldsValue();
+      saveDataStorage({ ...dataStorage, ...data });
+      setCurrent(current - 1);
+    }
   };
 
   // 暂存数据
@@ -84,17 +88,23 @@ const ShareDrawer = (props) => {
     width: 800,
     maskClosable: current === 0,
     onClose,
+    closeCallBack: () => {
+      setCurrent(0);
+      setDataStorage({});
+      setCouponData({ free: {}, contact: {} });
+      setExtraData({ city: [], taste: [] });
+    },
     footer: (
       <>
-        {current > 0 && <Button onClick={() => setCurrent(current - 1)}>上一步</Button>}
+        {current > 0 && <Button onClick={() => handleNextStep('up')}>上一步</Button>}
         {current < steps.length - 1 && (
-          <Button type="primary" onClick={handleNextStep}>
+          <Button type="primary" onClick={() => handleNextStep('next')}>
             下一步
           </Button>
         )}
         {current === steps.length - 1 && (
           <Button type="primary" onClick={() => 'Processing complete!'}>
-            Done
+            确认发布
           </Button>
         )}
       </>

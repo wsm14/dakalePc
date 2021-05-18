@@ -8,13 +8,21 @@ import './coupon.less';
  * 选择券
  */
 const ShareCoupon = (props) => {
-  const { data = {}, show = 'free', type, onDel, onOk, form } = props;
+  const {
+    data = {},
+    merchantIdKey = 'merchantIdStr',
+    show = 'free',
+    type,
+    onDel,
+    onOk,
+    form,
+  } = props;
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
   const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
 
   const selectProps = {
-    merchantId: form.getFieldValue('merchantIdStr'),
+    merchantId: form.getFieldValue(merchantIdKey),
     ownerType: 'merchant',
   };
 
