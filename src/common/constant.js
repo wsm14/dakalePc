@@ -33,7 +33,7 @@ export const PAY_TYPE = {
 };
 
 export const EXPORT_TYPE = {
-  masterInvite: '哒人邀请明细',
+  darenList: '哒人列表',
   userRegistration: '用户注册明细',
   merchantMark: '到店打卡明细',
   momentCollarBean: '视频领豆明细',
