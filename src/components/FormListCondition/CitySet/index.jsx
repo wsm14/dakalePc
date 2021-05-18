@@ -24,7 +24,8 @@ const CitySelect = ({ form, name, areaType, setCityData, maxLength, changeOnSele
           city &&
           (isEqual(value, city) ||
             (value.length === 1 && pCode) ||
-            (value.length >= 2 && ((city.length === 1 && pCode) || cCode)))
+            (value.length === 2 && ((city.length === 1 && pCode) || cCode)) ||
+            (value.length === 3 && ((city.length === 1 && pCode) || (city.length === 2 && cCode))))
         );
       },
     );

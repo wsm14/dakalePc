@@ -315,7 +315,11 @@ const ShareManage = (props) => {
         {...shareManage}
       ></TableDataBlock>
       {/* 发布分享 */}
-      <ShareDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareDrawer>
+      <ShareDrawer
+        childRef={childRef}
+        visible={visibleShare}
+        onClose={() => setVisibleShare(false)}
+      ></ShareDrawer>
       {/* 详情 */}
       <ShareDetail
         total={list.length}

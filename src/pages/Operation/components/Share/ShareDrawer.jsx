@@ -36,7 +36,7 @@ const ShareDrawer = (props) => {
         taste,
         tagsId = [],
       } = dataStorage;
-      const { rewardStartTime: time } = values;
+      const { rewardStartTime: time, timedPublishTime: pTime } = values;
       const {
         free: { ownerCouponIdString: couponIds },
         contact = {},
@@ -81,6 +81,8 @@ const ShareDrawer = (props) => {
                   ...dataStorage,
                   ...tasteData,
                   videoUrl: undefined,
+                  ageData: undefined,
+                  cityList: undefined,
                   age: age === 'age' ? ageData.toString() : age,
                   area: {
                     all: undefined,
@@ -92,6 +94,7 @@ const ShareDrawer = (props) => {
                   frontImage: imgs, // 封面连接
                   rewardStartTime: time && time[0].format('YYYY-MM-DD'),
                   rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+                  timedPublishTime: pTime && pTime.format('YYYY-MM-DD HH:mm:00'),
                   videoId: videos,
                   couponIds,
                   promotionId:

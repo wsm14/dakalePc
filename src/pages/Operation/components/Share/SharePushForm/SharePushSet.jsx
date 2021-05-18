@@ -145,9 +145,9 @@ const SharePushSet = (props) => {
       beanFlag && Number(platformBean) > totalBean.pnum * totalBean.bnum ? 0 : allTotal * freeNum;
     return (
       <div style={{ width: '100%', backgroundColor: '#f6fbff', padding: 20, borderRadius: 5 }}>
-        <div style={{ fontSize: 16 }}> 实付：{payNum}卡豆</div>
+        <div style={{ fontSize: 16 }}> 实付：{payNum.toFixed(0)}卡豆</div>
         <div>
-          推广费（{promotionMoney}%）：{pMoney}卡豆
+          推广费（{promotionMoney}%）：{pMoney.toFixed(0)}卡豆
         </div>
         <div>余额：{platformBean}卡豆</div>
       </div>

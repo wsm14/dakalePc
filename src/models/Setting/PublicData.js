@@ -133,7 +133,7 @@ export default {
         });
         return;
       }
-      callback(content.recordList);
+      callback(content.logRecordList);
     },
     *fetchGetLogDetail({ payload }, { call, put }) {
       const response = yield call(fetchGetLogDetail, { ...payload, page: 1, limit: 999 });
