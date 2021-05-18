@@ -105,19 +105,17 @@ export default {
         valuableOwnerCoupon, // 有价券
         specialGoods, // 特惠商品
         promotionType: pType,
-        promotionId,
       } = content.userMoments;
       const newObj = {
         ...content.userMoments,
         videoContent: JSON.parse(content.userMoments.videoContent),
         free: freeOwnerCoupon // 免费券
-          ? { ...freeOwnerCoupon, ownerCouponIdString: couponIds, buyFlag: 0 }
+          ? { ...freeOwnerCoupon, buyFlag: 0 }
           : '',
         contact: pType // 有价券 特惠商品
           ? {
               promotionType: { reduce: 'coupon', special: 'goods' }[pType],
               ...{ reduce: valuableOwnerCoupon, special: specialGoods }[pType],
-              [{ reduce: 'ownerCouponIdString', special: 'specialGoodsId' }[pType]]: promotionId,
             }
           : '',
         area:
