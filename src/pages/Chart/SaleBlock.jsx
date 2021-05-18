@@ -17,7 +17,7 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchUserAcquire',
       keyOther: [
         { title: '卡豆数', key: 'userAcquire' },
-        { title: '人数', key: 'userAcquir2e' },
+        { title: '人数', key: 'userAcquireUserCount' },
       ],
     },
     {
@@ -27,7 +27,7 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchUserConsume',
       keyOther: [
         { title: '卡豆数', key: 'userConsume' },
-        { title: '人数', key: 'user2Consume' },
+        { title: '人数', key: 'userConsumeUserCount' },
       ],
     },
     {

@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import { VIDEO_ADVERT } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
-import ShareCoupon from './ShareContent/ShareCoupon';
-import FreeCouponSelectModal from './ShareContent/FreeCouponSelectModal';
-import FreeContactSelectModal from './ShareContent/FreeContactSelectModal';
+import ShareCoupon from '@/components/VideoSelectBindContent';
 
 /**
  * 内容设置
@@ -23,9 +21,6 @@ const VideoContentSet = (props) => {
   } = props;
 
   const { free, contact } = couponData;
-
-  const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
-  const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
 
   // 搜索店铺
   const fetchClassifyGetMre = debounce((merchantName) => {
@@ -123,7 +118,7 @@ const VideoContentSet = (props) => {
       label: '分享内容',
       name: 'message',
       type: 'textArea',
-      maxLength: 500,
+      maxLength: 50,
     },
     {
       label: '行业分类',
@@ -155,9 +150,11 @@ const VideoContentSet = (props) => {
       formItem: (
         <ShareCoupon
           type="coupon"
+          show="free"
           data={free}
+          form={form}
           onDel={() => saveCouponStorage({ free: {} })}
-          onSelect={() => setVisibleSelect(true)}
+          onOk={(free) => saveCouponStorage({ free })}
         ></ShareCoupon>
       ),
     },
@@ -166,39 +163,18 @@ const VideoContentSet = (props) => {
       type: 'formItem',
       formItem: (
         <ShareCoupon
+          show="active"
           type={contact.couponName ? 'coupon' : 'goods'}
           data={contact}
+          form={form}
           onDel={() => saveCouponStorage({ contact: {} })}
-          onSelect={() => setVisibleContact(true)}
+          onOk={(contact) => saveCouponStorage({ contact })}
         ></ShareCoupon>
       ),
     },
   ];
 
-  const selectProps = {
-    merchantId: form.getFieldValue('merchantIdStr'),
-    ownerType: 'merchant',
-  };
-
-  return (
-    <>
-      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
-      {/* 免费券选择 */}
-      <FreeCouponSelectModal
-        {...selectProps}
-        visible={visibleSelect}
-        onOk={(free) => saveCouponStorage({ free })}
-        onClose={() => setVisibleSelect(false)}
-      ></FreeCouponSelectModal>
-      {/* 优惠选择 */}
-      <FreeContactSelectModal
-        {...selectProps}
-        visible={visibleContact}
-        onOk={(contact) => saveCouponStorage({ contact })}
-        onClose={() => setVisibleContact(false)}
-      ></FreeContactSelectModal>
-    </>
-  );
+  return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
 export default connect(({ businessList, sysTradeList, loading }) => ({

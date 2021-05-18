@@ -40,18 +40,15 @@ const WithdrawRegular = (props) => {
       title: '手续费规则',
       align: 'center',
       dataIndex: 'handlingFeeList',
-      render: (val, row) => (
-        <>
-          {val.map((item) => (
-            <div key={item.maxMoney}>
-              {item.maxMoney && item.minMoney == '0'
-                ? item.maxMoney + '以下'
-                : item.minMoney + '以上'}
-              ：{item.handlingFee == '0' ? '免提现手续费' : item.handlingFee + '元'}
-            </div>
-          ))}
-        </>
-      ),
+      render: (val) =>
+        val.map((item) => (
+          <div key={item.maxMoney}>
+            {item.maxMoney && item.minMoney == '0'
+              ? item.maxMoney + '以下'
+              : item.minMoney + '以上'}
+            ：{item.handlingFee == '0' ? '免提现手续费' : item.handlingFee + '元'}
+          </div>
+        )),
     },
     {
       title: '文案内容',

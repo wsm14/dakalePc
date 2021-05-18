@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -52,26 +53,25 @@ const SaleAchievement = (props) => {
         </Ellipsis>
       ),
     },
-    // {
-    //   title: '经营类目',
-    //   dataIndex: 'contentType',
-    //   render: (val) => (val == 'video' ? '视频' : '图片'),
-    // },
+    {
+      title: '经营类目',
+      dataIndex: 'topCategoryName',
+      render: (val, row) => `${val} / ${row.categoryName}`,
+    },
     {
       title: '所属区域',
       dataIndex: 'provinceName',
-      width: 150,
-      render: (val, row) => `${val} - ${row.cityName} - ${row.districtCode}`,
+      render: (val, row) => `${val} - ${row.cityName} - ${row.districtName}`,
     },
-    // {
-    //   title: '所属商圈',
-    //   dataIndex: 'username',
-    // },
-    // {
-    //   title: '归属BD',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    // },
+    {
+      title: '所属商圈',
+      dataIndex: 'businessHub',
+    },
+    {
+      title: '归属BD',
+      align: 'center',
+      dataIndex: 'bdInfo',
+    },
     {
       title: '扫码付金额',
       align: 'right',
@@ -110,6 +110,8 @@ const SaleAchievement = (props) => {
     });
   }, 500);
 
+  const preDate = moment().subtract(1, 'day');
+
   return (
     <TableDataBlock
       order
@@ -127,6 +129,13 @@ const SaleAchievement = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
+      timeParams={{
+        time: {
+          beginDate: preDate.format('YYYY-MM-DD'),
+          endDate: preDate.format('YYYY-MM-DD'),
+        },
+        show: { beginDate: [preDate, preDate] },
+      }}
       rowKey={(record) => `${record.kolMomentsId}`}
       dispatchType="saleAchievement/fetchGetList"
       {...saleAchievement}

@@ -65,10 +65,6 @@ const ShareDrawer = (props) => {
 
   const steps = [
     {
-      title: '选择店铺',
-      content: <ShareMreSelect {...stepProps}></ShareMreSelect>,
-    },
-    {
       title: '内容设置',
       content: <ShareContentSet {...stepProps} {...conentProps}></ShareContentSet>,
     },

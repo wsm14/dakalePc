@@ -5,7 +5,9 @@ import { couponsDom, goodsDom } from './CouponFreeDom';
 import './coupon.less';
 
 const { TabPane } = Tabs;
-
+/**
+ * 选择优惠内容（单选）
+ */
 const FreeContactSelectModal = (props) => {
   const {
     couponList,

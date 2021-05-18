@@ -1,7 +1,7 @@
 import React from 'react';
 import { VIDEO_TIME_TYPE, VIDEO_NOVICE_STATUS, VIDEO_AREA_TYPE } from '@/common/constant';
+import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import { couponsDom, goodsDom } from '../VideoSetForm/ShareContent/CouponFreeDom';
 
 const VideoNoviceDetail = (props) => {
   const { detail = {} } = props;

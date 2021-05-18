@@ -50,7 +50,7 @@ const BusinessDetailShow = (props) => {
     dispatch({
       type: 'businessList/fetchMerchantEdit',
       payload: {
-        merchantId,
+        userMerchantId: merchantId,
         ...values,
       },
       callback: () => {
@@ -310,7 +310,7 @@ const BusinessDetailShow = (props) => {
   const bdItems = [
     {
       label: '归属BD',
-      name: '',
+      name: 'bdInfo',
     },
   ];
 
@@ -396,7 +396,7 @@ const BusinessDetailShow = (props) => {
               onFinish={fetchMerEditBD}
             >
               <Form.Item label="归属BD" name="bdInfo" rules={[{ required: false }]}>
-                <Input placeholder="请输入开户行号"></Input>
+                <Input placeholder="请输入归属BD"></Input>
               </Form.Item>
               <Button
                 style={{ marginLeft: 60 }}
