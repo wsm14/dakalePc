@@ -22,13 +22,44 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const { frontImage, videoId, videoUrl, categoryNode, title } = dataStorage;
-      const { areaType, area, rewardStartTime: time } = values;
+      const {
+        frontImage,
+        videoId,
+        videoUrl,
+        categoryNode,
+        title,
+        age,
+        ageData,
+        areaType,
+        area,
+        cityList,
+        taste,
+        tagsId = [],
+      } = dataStorage;
+      const { rewardStartTime: time } = values;
       const {
         free: { ownerCouponIdString: couponIds },
         contact = {},
       } = couponData;
       const { promotionType: cType } = contact;
+      const { taste: tasteNodes } = extraData;
+      let tasteData = {};
+      if (taste === 'tag') {
+        tasteData = {
+          // 父级兴趣id，多个用逗号隔开
+          topTagsId: Array.from(
+            new Set(tasteNodes.map((item) => item.parentDomainIdStr)),
+          ).toString(),
+          // 父级兴趣名，多个用逗号隔开
+          topTagsName: Array.from(
+            new Set(tasteNodes.map((item) => item.parentDomainName)),
+          ).toString(),
+          // 子级兴趣id，多个豆号隔开
+          tags: tasteNodes.map((item) => item.domainName).toString(),
+          // 兴趣标签
+          tagsId: tagsId.toString(),
+        };
+      }
       uploadLive({
         data: frontImage, // 上传封面
         callback: (imgs) => {
@@ -48,8 +79,15 @@ const ShareDrawer = (props) => {
                   frontImageHeight: 960, // 封面长
                   ...values,
                   ...dataStorage,
+                  ...tasteData,
                   videoUrl: undefined,
-                  area: areaType === 'district' ? area[2] : undefined,
+                  age: age === 'age' ? ageData.toString() : age,
+                  area: {
+                    all: undefined,
+                    city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                    district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                    near: area,
+                  }[areaType],
                   categoryNode: categoryNode.join('.'),
                   frontImage: imgs, // 封面连接
                   rewardStartTime: time && time[0].format('YYYY-MM-DD'),
@@ -157,7 +195,7 @@ const ShareDrawer = (props) => {
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button type="primary" onClick={handleVideoPush}>
+          <Button type="primary" onClick={handleVideoPush} loading={loading}>
             确认发布
           </Button>
         )}
@@ -178,5 +216,5 @@ const ShareDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['goodsManage/fetchGoodsAdd'],
+  loading: loading.effects['shareManage/fetchShareVideoPush'],
 }))(ShareDrawer);

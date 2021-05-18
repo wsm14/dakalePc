@@ -46,7 +46,7 @@ const TreeSelectBlock = (props) => {
       treeNodeLabelProp={showTitle ? 'showName' : 'title'}
       treeNodeFilterProp="title"
       onChange={(val, options, extra) => {
-        console.log(val, options, extra);
+        console.log(val, 'options', options, 'extra', extra);
         if (onChange) onChange(val, options, extra);
       }}
     >
