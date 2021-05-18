@@ -130,7 +130,7 @@ const SharePushSet = (props) => {
    */
   const totalDom = () => {
     // 总数
-    const allTotal = beanFlag
+    const allTotal = beanFlag // 是否使用充值卡豆
       ? totalBean.pnum * totalBean.bnum - Number(platformBean)
       : totalBean.pnum * totalBean.bnum;
     // 推广费率

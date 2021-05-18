@@ -1,11 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
-import {
-  BUSINESS_TYPE,
-  SHARE_TIME_TYPE,
-  SHARE_STATUS,
-  SHARE_SEX_TYPE,
-} from '@/common/constant';
+import { BUSINESS_TYPE, SHARE_TIME_TYPE, SHARE_STATUS, SHARE_SEX_TYPE } from '@/common/constant';
+import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
@@ -44,6 +40,19 @@ const ShareDetail = (props) => {
       label: '行业分类',
       name: 'topCategoryName',
       render: (val, row) => `${val}/${row.categoryName}`,
+    },
+    {
+      label: '免费券',
+      name: 'free',
+      render: (val) => (val !== '--' ? couponsDom(val) : ''),
+    },
+    {
+      label: '推荐带货',
+      name: 'promotionType',
+      render: (val, row) =>
+        ({ reduce: couponsDom(row.contact, '', '', 'valuable'), special: goodsDom(row.contact) }[
+          val
+        ]),
     },
     {
       label: '性别',
