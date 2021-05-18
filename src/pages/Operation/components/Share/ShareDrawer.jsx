@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Form, Steps } from 'antd';
+import { Button, Form, Steps, Modal } from 'antd';
 import uploadLive from '@/utils/uploadLive';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareContentSet from './SharePushForm/ShareContentSet';
@@ -22,88 +22,94 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const {
-        frontImage,
-        videoId,
-        videoUrl,
-        categoryNode = [],
-        title,
-        age,
-        ageData,
-        areaType,
-        area,
-        cityList = [],
-        taste,
-        tagsId = [],
-      } = dataStorage;
-      const { rewardStartTime: time, timedPublishTime: pTime } = values;
-      const {
-        free: { ownerCouponIdString: couponIds },
-        contact = {},
-      } = couponData;
-      const { promotionType: cType } = contact;
-      const { taste: tasteNodes } = extraData;
-      let tasteData = {};
-      if (taste === 'tag') {
-        tasteData = {
-          // 父级兴趣id，多个用逗号隔开
-          topTagsId: Array.from(
-            new Set(tasteNodes.map((item) => item.parentDomainIdStr)),
-          ).toString(),
-          // 父级兴趣名，多个用逗号隔开
-          topTagsName: Array.from(
-            new Set(tasteNodes.map((item) => item.parentDomainName)),
-          ).toString(),
-          // 子级兴趣id，多个豆号隔开
-          tags: tasteNodes.map((item) => item.domainName).toString(),
-          // 兴趣标签
-          tagsId: tagsId.toString(),
-        };
-      }
-      uploadLive({
-        data: frontImage, // 上传封面
-        callback: (imgs) => {
-          uploadLive({
-            data: videoId ? videoId : videoUrl, // 上传视频
+      Modal.confirm({
+        title: '温馨提示',
+        content: '发布分享所需的卡豆将从【商户钱包】中扣除，确认扣除卡豆并发布吗？',
+        onOk: () => {
+          const {
+            frontImage,
+            videoId,
+            videoUrl,
+            categoryNode = [],
             title,
-            callback: (videos) => {
-              dispatch({
-                type: 'shareManage/fetchShareVideoPush',
-                payload: {
-                  userType: 'merchant',
-                  contentType: 'video',
-                  scope: 'all',
-                  merchantCount: 1,
-                  beanFlag: '1', // 是否打赏 0 1
-                  frontImageWidth: 544, // 封面宽
-                  frontImageHeight: 960, // 封面长
-                  ...values,
-                  ...dataStorage,
-                  ...tasteData,
-                  videoUrl: undefined,
-                  ageData: undefined,
-                  cityList: undefined,
-                  age: age === 'age' ? ageData.toString() : age,
-                  area: {
-                    all: undefined,
-                    city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-                    district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-                    near: area,
-                  }[areaType],
-                  categoryNode: categoryNode.join('.'),
-                  frontImage: imgs, // 封面连接
-                  rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-                  rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-                  timedPublishTime: pTime && pTime.format('YYYY-MM-DD HH:mm:00'),
-                  videoId: videos,
-                  couponIds,
-                  promotionId:
-                    contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
-                  promotionType: { coupon: 'reduce', goods: 'special' }[cType],
-                },
-                callback: () => {
-                  onClose();
-                  childRef.current.fetchGetData();
+            age,
+            ageData,
+            areaType,
+            area,
+            cityList = [],
+            taste,
+            tagsId = [],
+          } = dataStorage;
+          const { rewardStartTime: time, timedPublishTime: pTime } = values;
+          const {
+            free: { ownerCouponIdString: couponIds },
+            contact = {},
+          } = couponData;
+          const { promotionType: cType } = contact;
+          const { taste: tasteNodes } = extraData;
+          let tasteData = {};
+          if (taste === 'tag') {
+            tasteData = {
+              // 父级兴趣id，多个用逗号隔开
+              topTagsId: Array.from(
+                new Set(tasteNodes.map((item) => item.parentDomainIdStr)),
+              ).toString(),
+              // 父级兴趣名，多个用逗号隔开
+              topTagsName: Array.from(
+                new Set(tasteNodes.map((item) => item.parentDomainName)),
+              ).toString(),
+              // 子级兴趣id，多个豆号隔开
+              tags: tasteNodes.map((item) => item.domainName).toString(),
+              // 兴趣标签
+              tagsId: tagsId.toString(),
+            };
+          }
+          uploadLive({
+            data: frontImage, // 上传封面
+            callback: (imgs) => {
+              uploadLive({
+                data: videoId ? videoId : videoUrl, // 上传视频
+                title,
+                callback: (videos) => {
+                  dispatch({
+                    type: 'shareManage/fetchShareVideoPush',
+                    payload: {
+                      userType: 'merchant',
+                      contentType: 'video',
+                      scope: 'all',
+                      merchantCount: 1,
+                      beanFlag: '1', // 是否打赏 0 1
+                      frontImageWidth: 544, // 封面宽
+                      frontImageHeight: 960, // 封面长
+                      ...values,
+                      ...dataStorage,
+                      ...tasteData,
+                      videoUrl: undefined,
+                      ageData: undefined,
+                      cityList: undefined,
+                      age: age === 'age' ? ageData.toString() : age,
+                      area: {
+                        all: undefined,
+                        city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                        district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                        near: area,
+                      }[areaType],
+                      categoryNode: categoryNode.join('.'),
+                      frontImage: imgs, // 封面连接
+                      rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+                      rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+                      timedPublishTime: pTime && pTime.format('YYYY-MM-DD HH:mm:00'),
+                      videoId: videos,
+                      couponIds,
+                      promotionId:
+                        contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
+                      promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+                    },
+                    callback: () => {
+                      onClose();
+                      childRef.current.fetchGetData();
+                    },
+                  });
                 },
               });
             },

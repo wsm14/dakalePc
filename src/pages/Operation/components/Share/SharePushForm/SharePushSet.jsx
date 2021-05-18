@@ -71,16 +71,6 @@ const SharePushSet = (props) => {
       onChange: (e) => setTimeSelect(e.target.value),
     },
     {
-      label: '定时投放（可选）',
-      name: 'timedPublishTime',
-      type: 'dataPicker',
-      visible: timeSelect === '0',
-      rules: [{ required: false }],
-      format: 'YYYY-MM-DD HH:mm',
-      showTime: true,
-      disabledDate,
-    },
-    {
       label: '时间选择',
       name: 'rewardStartTime',
       type: 'rangePicker',
@@ -119,6 +109,17 @@ const SharePushSet = (props) => {
       loading: loading,
       onChange: setBeanFlag,
       extra: loading ? <Spin indicator={antIcon} /> : `可减${platformBean}卡豆`,
+    },
+    {
+      title: '发布设置',
+      label: '定时发布（可选）',
+      name: 'timedPublishTime',
+      type: 'dataPicker',
+      visible: timeSelect === '0',
+      rules: [{ required: false }],
+      format: 'YYYY-MM-DD HH:mm',
+      showTime: true,
+      disabledDate,
     },
   ];
 

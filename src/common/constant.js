@@ -32,6 +32,7 @@ export const PAY_TYPE = {
   wx_lite: '微信小程序',
 };
 
+// 导出excel枚举
 export const EXPORT_TYPE = {
   darenList: '哒人列表',
   userRegistration: '用户注册明细',
@@ -123,8 +124,8 @@ export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 // 拼图广告状态
 export const PUZZLE_AD_STATUS = ['下架', '上架'];
 
-// 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
-export const SHARE_STATUS = [false, '已上架', false, '已下架', '已删除', '分享结束'];
+// 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成 6-预发布
+export const SHARE_STATUS = [false, '已上架', false, '已下架', '已删除', '分享结束', '预发布'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
