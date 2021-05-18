@@ -14,7 +14,7 @@ const WithdrawRegular = (props) => {
 
   //编辑
   const handleEdit = (row) => {
-    const { provinceCode, cityCode } = row;
+    const { provinceCode, cityCode, monthIsFree } = row;
     const code = provinceCode ? provinceCode.split(',') : [];
     code.push(cityCode);
     setVisible({
@@ -22,6 +22,7 @@ const WithdrawRegular = (props) => {
       show: true,
       detail: {
         ...row,
+        monthIsFree: Number(monthIsFree),
         areaCode: code,
         effectiveTime: moment(row.effectiveTime, 'YYYY-MM-DD HH:mm:ss'),
       },
@@ -43,7 +44,7 @@ const WithdrawRegular = (props) => {
         <>
           {val.map((item) => (
             <div key={item.maxMoney}>
-              {(item.maxMoney && item.minMoney == '0')
+              {item.maxMoney && item.minMoney == '0'
                 ? item.maxMoney + '以下'
                 : item.minMoney + '以上'}
               ：{item.handlingFee == '0' ? '免提现手续费' : item.handlingFee + '元'}
