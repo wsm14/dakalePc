@@ -60,7 +60,7 @@ const DataGatherExport = (props) => {
           onClick={exportData}
           loading={loading}
         >
-          导出CSV
+          导出Excel
         </Button>
       </div>
     </Card>
