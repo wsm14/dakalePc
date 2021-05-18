@@ -51,7 +51,7 @@ const RegularForm = (props) => {
                   </span>
                 ) : (
                   <span className={styles.spanAfter} style={{ marginRight: 10 }}>
-                    元以上
+                    元及以上
                   </span>
                 )}
                 <span className={styles.spanAfter} style={{ marginRight: 10 }}>
@@ -63,7 +63,7 @@ const RegularForm = (props) => {
                   rules={[{ required: true, message: '请输入手续费' }]}
                   validateTrigger={['onChange', 'onBlur']}
                 >
-                  <InputNumber  min={0}  onChange={(val) => handleChanges(val)} style={{ width: 120 }} />
+                  <InputNumber  min={0}  onChange={(val) => handleChanges(val)} style={{ width: 100 }} />
                 </Form.Item>
                 <span className={styles.spanAfter}>元</span>
               </div>
