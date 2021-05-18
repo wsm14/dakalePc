@@ -12,7 +12,7 @@ import FormCondition from '@/components/FormCondition';
  * 发布设置
  */
 const SharePushSet = (props) => {
-  const { form, dispatch, loading, platformBean, detail } = props;
+  const { form, dispatch, loading, platformBean, bean, detail } = props;
 
   const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
   const [promotionMoney, setPromotionMoney] = useState(0); // 服务费比例
@@ -24,13 +24,24 @@ const SharePushSet = (props) => {
     setBeanFlag(detail.usePlatformBeanFlag);
     setTimeSelect(detail.rewardCycle);
     fetchShareGetPlatformBean();
+    fetchShareGetAccountBean();
     fetchPromotionMoneyGet();
   }, []);
 
-  // 获取商家卡豆数
+  // 获取商家平台卡豆数
   const fetchShareGetPlatformBean = () => {
     dispatch({
       type: 'shareManage/fetchShareGetPlatformBean',
+      payload: {
+        merchantId: detail.merchantId,
+      },
+    });
+  };
+
+  // 获取商家账户卡豆数
+  const fetchShareGetAccountBean = () => {
+    dispatch({
+      type: 'shareManage/fetchShareGetAccountBean',
       payload: {
         merchantId: detail.merchantId,
       },
@@ -150,7 +161,7 @@ const SharePushSet = (props) => {
         <div>
           推广费（{promotionMoney}%）：{pMoney.toFixed(0)}卡豆
         </div>
-        <div>余额：{platformBean}卡豆</div>
+        <div>余额：{bean}卡豆</div>
       </div>
     );
   };
@@ -164,5 +175,6 @@ const SharePushSet = (props) => {
 
 export default connect(({ shareManage, loading }) => ({
   platformBean: shareManage.platformBean,
+  bean: shareManage.bean,
   loading: loading.effects['shareManage/fetchShareGetPlatformBean'],
 }))(SharePushSet);

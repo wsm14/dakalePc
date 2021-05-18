@@ -99,6 +99,13 @@ export function fetchShareGetPlatformBean(params) {
   });
 }
 
+// get 分享管理 - 商家账户卡豆信息
+export function fetchShareGetAccountBean(params) {
+  return request('/admin/merchantManagement/merchantCredentialsInfo', {
+    params,
+  });
+}
+
 // get 分享管理 - 领豆明细
 export function fetchShareGetBeanDetail(params) {
   return request('/admin/marketingManagement/listUserMomentsDetail', {

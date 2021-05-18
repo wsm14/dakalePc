@@ -77,7 +77,7 @@ const PreferentialDrawer = (props) => {
             useStartTime: useStartTime && useStartTime[0].format('YYYY-MM-DD'),
             useEndTime: useStartTime && useStartTime[1].format('YYYY-MM-DD'),
             useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
-            buyDesc: buyDesc.filter((i) => i),
+            buyDesc: buyDesc.filter((i) => i).length ? buyDesc.filter((i) => i) : undefined,
             useTime:
               timeType !== 'part'
                 ? timeType

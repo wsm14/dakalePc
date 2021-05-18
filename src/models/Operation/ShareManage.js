@@ -8,6 +8,7 @@ import {
   fetchShareStatusClose,
   fetchShareGetBeanDetail,
   fetchShareGetPlatformBean,
+  fetchShareGetAccountBean,
 } from '@/services/OperationServices';
 
 export default {
@@ -19,6 +20,7 @@ export default {
     couponList: { list: [], total: 0 },
     beanDetal: { list: [], total: 0 },
     platformBean: 0,
+    bean: 0,
   },
 
   reducers: {
@@ -67,6 +69,17 @@ export default {
         type: 'save',
         payload: {
           platformBean: content.platformBean,
+        },
+      });
+    },
+    *fetchShareGetAccountBean({ payload }, { call, put }) {
+      const response = yield call(fetchShareGetAccountBean, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          bean: content.merchantDetail.bean || 0,
         },
       });
     },
