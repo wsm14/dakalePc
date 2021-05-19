@@ -17,6 +17,7 @@ const ShareContentSet = (props) => {
     selectList, // 店铺列表
     couponData,
     setCouponData,
+    getMerchantIdInfo,
     dispatch,
     detail,
     loading,
@@ -39,26 +40,6 @@ const ShareContentSet = (props) => {
     });
   }, 500);
 
-  // 获取商家平台卡豆数
-  const fetchShareGetPlatformBean = (merchantId) => {
-    dispatch({
-      type: 'shareManage/fetchShareGetPlatformBean',
-      payload: {
-        merchantId,
-      },
-    });
-  };
-
-  // 获取商家账户卡豆数
-  const fetchShareGetAccountBean = (merchantId) => {
-    dispatch({
-      type: 'shareManage/fetchShareGetAccountBean',
-      payload: {
-        merchantId,
-      },
-    });
-  };
-
   // 暂存券数据
   const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
 
@@ -72,8 +53,7 @@ const ShareContentSet = (props) => {
       select: selectList,
       onSearch: (val) => fetchClassifyGetMre(val),
       onChange: (val, data) => {
-        fetchShareGetAccountBean(val);
-        fetchShareGetPlatformBean(val);
+        getMerchantIdInfo(val);
         const { option } = data;
         saveCouponStorage({ free: {}, contact: {} });
         form.setFieldsValue({

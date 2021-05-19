@@ -125,6 +125,32 @@ const ShareDrawer = (props) => {
     fetchGetTasteTag();
   }, []);
 
+  // 商家id获取参数
+  const getMerchantIdInfo = (merchantId) => {
+    fetchShareGetPlatformBean(merchantId);
+    fetchShareGetAccountBean(merchantId);
+  };
+
+  // 获取商家平台卡豆数
+  const fetchShareGetPlatformBean = (merchantId) => {
+    dispatch({
+      type: 'shareManage/fetchShareGetPlatformBean',
+      payload: {
+        merchantId,
+      },
+    });
+  };
+
+  // 获取商家账户卡豆数
+  const fetchShareGetAccountBean = (merchantId) => {
+    dispatch({
+      type: 'shareManage/fetchShareGetAccountBean',
+      payload: {
+        merchantId,
+      },
+    });
+  };
+
   // 获取配置文件
   const fetchGetPropertyJSON = () => {
     dispatch({
@@ -164,7 +190,7 @@ const ShareDrawer = (props) => {
   };
 
   // 公有 props
-  const stepProps = { form, detail: dataStorage, saveDataStorage };
+  const stepProps = { form, detail: dataStorage, saveDataStorage, getMerchantIdInfo };
 
   // 内容设置props
   const conentProps = { couponData, setCouponData };

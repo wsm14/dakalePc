@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Spin, Alert } from 'antd';
-import { LoadingOutlined, ExclamationCircleFilled } from '@ant-design/icons';
+import { Spin, Alert, Button } from 'antd';
+import { LoadingOutlined, ExclamationCircleFilled, SyncOutlined } from '@ant-design/icons';
 import { NUM_INT } from '@/common/regExp';
 import { SHARE_TIME_TYPE } from '@/common/constant';
 import QuestionTooltip from '@/components/QuestionTooltip';
@@ -12,7 +12,17 @@ import FormCondition from '@/components/FormCondition';
  * 发布设置
  */
 const SharePushSet = (props) => {
-  const { form, dispatch, loading, setAllowPush, platformBean, bean, ruleBean, detail } = props;
+  const {
+    form,
+    dispatch,
+    loading,
+    setAllowPush,
+    getMerchantIdInfo,
+    platformBean,
+    bean,
+    ruleBean,
+    detail,
+  } = props;
 
   const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
   const [promotionMoney, setPromotionMoney] = useState(0); // 服务费比例
@@ -20,7 +30,7 @@ const SharePushSet = (props) => {
   const [timeSelect, setTimeSelect] = useState(false); // 投放时长
 
   useEffect(() => {
-    setTotalBean({ pnum: detail.personBeanAmount || 0, bnum: detail.beanAmount || 0 });
+    setTotalBean({ pnum: detail.beanPersonAmount || 0, bnum: detail.beanAmount || 0 });
     setBeanFlag(detail.usePlatformBeanFlag);
     setTimeSelect(detail.rewardCycle);
     fetchGetSubsidyRoleBean();
@@ -111,13 +121,9 @@ const SharePushSet = (props) => {
       type: 'switch',
       checkedChildren: `${platformBean}卡豆`,
       unCheckedChildren: `${platformBean}卡豆`,
-      loading: loading,
+      loading,
       onChange: setBeanFlag,
-      extra: loading ? (
-        <Spin indicator={antIcon} />
-      ) : (
-        `可减${totalBean.pnum * (totalBean.bnum > ruleBean ? ruleBean : totalBean.bnum)}卡豆`
-      ),
+      extra: `可减${totalBean.pnum * (totalBean.bnum > ruleBean ? ruleBean : totalBean.bnum)}卡豆`,
     },
     {
       title: '发布设置',
@@ -150,13 +156,14 @@ const SharePushSet = (props) => {
     setAllowPush(pushStatus);
     return (
       <Alert
+        style={{ height: 90 }}
         message={
           <div>
             <div style={{ fontSize: 16 }}> 实付：{payNum.toFixed(0)}卡豆</div>
             <div>
               推广费（{promotionMoney}%）：{pMoney.toFixed(0)}卡豆
             </div>
-            <div>余额：{bean}卡豆</div>
+            <div>余额：{loading ? <Spin indicator={antIcon} size="small" /> : `${bean}卡豆`}</div>
           </div>
         }
         action={
@@ -164,6 +171,16 @@ const SharePushSet = (props) => {
             <span>
               <ExclamationCircleFilled style={{ margin: '5px 5px 0 0', color: '#ff4d4f' }} />
               卡豆不足！请先联系商家充值或平台补贴卡豆。
+              <div style={{ textAlign: 'center', marginTop: 5 }}>
+                <Button
+                  type="primary"
+                  icon={<SyncOutlined />}
+                  onClick={() => getMerchantIdInfo(detail.merchantId)}
+                  loading={loading}
+                >
+                  刷新余额/平台补贴卡豆数
+                </Button>
+              </div>
             </span>
           ) : (
             ''
@@ -185,5 +202,7 @@ export default connect(({ shareManage, baseData, loading }) => ({
   ruleBean: baseData.ruleBean,
   platformBean: shareManage.platformBean,
   bean: shareManage.bean,
-  loading: loading.effects['shareManage/fetchShareGetPlatformBean'],
+  loading:
+    loading.effects['shareManage/fetchShareGetPlatformBean'] ||
+    loading.effects['shareManage/fetchShareGetAccountBean'],
 }))(SharePushSet);
