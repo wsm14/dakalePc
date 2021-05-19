@@ -30,7 +30,7 @@ const SaleAchievement = (props) => {
     },
     {
       label: 'BD名称',
-      name: 'mobile',
+      name: 'bdInfo',
     },
     {
       label: '地区',
