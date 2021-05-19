@@ -12,7 +12,7 @@ const SaleBlockComponent = ({}) => {
     },
     {
       title: '用户获取卡豆数',
-      tip: '指用户通过看视频、到店打卡、圈层收益或哒人分销收益获得的卡豆',
+      tip: '指用户通过看视频或者到店打卡获得的卡豆数和人数',
       keyName: 'userAcquire',
       api: 'saleTotal/fetchUserAcquire',
       keyOther: [
@@ -22,7 +22,7 @@ const SaleBlockComponent = ({}) => {
     },
     {
       title: '用户消耗卡豆数',
-      tip: '指用户购买商品、优惠券或扫码支付时使用的卡豆数',
+      tip: '指用户购买商品、优惠券或扫码支付时使用的卡豆数和人数',
       keyName: 'userConsume',
       api: 'saleTotal/fetchUserConsume',
       keyOther: [
