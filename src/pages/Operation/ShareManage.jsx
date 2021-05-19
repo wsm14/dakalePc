@@ -183,8 +183,16 @@ const ShareManage = (props) => {
     {
       title: '关联券/商品',
       align: 'right',
-      dataIndex: 'goodsOrCouponName',
+      dataIndex: 'freeOwnerCoupon',
       width: 200,
+      render: (val, row) => {
+        const { specialGoods, valuableOwnerCoupon: cInfo } = row;
+        const freeInfo = val ? `${val.couponName}(${val.remain})` : '';
+        const goodsInfo = specialGoods ? `${specialGoods.goodsName}(${specialGoods.remain})` : '';
+        const couponInfo = cInfo ? `${cInfo.couponName}(${cInfo.remain})` : '';
+        const pontInfo = goodsInfo || couponInfo;
+        return `${freeInfo}\n${pontInfo}`;
+      },
     },
     {
       title: '创建时间',
@@ -309,7 +317,13 @@ const ShareManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowClassName={(record) => (record.bucket < 200 ? styles.share_rowColor : '')}
+        rowClassName={(record) => {
+          const { freeOwnerCoupon = {}, specialGoods = {}, valuableOwnerCoupon = {} } = record;
+          const freeRemain = (freeOwnerCoupon.remain || 999999) < 10;
+          const goodsRemain = (specialGoods.remain || 999999) < 10;
+          const couponRemain = (valuableOwnerCoupon.remain || 999999) < 10;
+          return freeRemain || goodsRemain || couponRemain ? styles.share_rowColor : '';
+        }}
         rowKey={(record) => `${record.userMomentIdString}`}
         dispatchType="shareManage/fetchGetList"
         {...shareManage}
