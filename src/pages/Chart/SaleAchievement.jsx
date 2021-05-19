@@ -80,7 +80,7 @@ const SaleAchievement = (props) => {
       render: (val) => <a>{val}</a>,
     },
     {
-      title: '核销销售额',
+      title: '订单销售额',
       align: 'right',
       fixed: 'right',
       dataIndex: 'verificationFee',
