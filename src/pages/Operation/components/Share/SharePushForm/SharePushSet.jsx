@@ -61,7 +61,7 @@ const SharePushSet = (props) => {
 
   // 定时投放不超过当前时间31天
   const disabledDate = (current) =>
-    (current && current < moment().endOf('day')) || current > moment().add(31, 'days');
+    (current && current < moment().endOf('day').subtract(1, 'day')) || current > moment().add(31, 'days');
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
