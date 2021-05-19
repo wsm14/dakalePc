@@ -57,10 +57,10 @@ const NewsPeople = (props) => {
       dataIndex: 'activityStartDay',
       render: (val, record) => (val ? `${val}-${record.activityEndDay}` : '--'),
     },
-    // {
-    //   title: '创建时间',
-    //   dataIndex: 'name',
-    // },
+    {
+      title: '创建时间',
+      dataIndex: 'createTime',
+    },
     {
       title: '创建人',
       dataIndex: 'creator',

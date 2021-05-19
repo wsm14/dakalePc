@@ -88,10 +88,6 @@ const WithdrawRegular = (props) => {
               type: 'edit',
               click: () => handleEdit(row),
             },
-            // {
-            //   type: 'edit',
-            //   title: '日志',
-            // },
           ]}
         />
       ),
