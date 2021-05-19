@@ -83,15 +83,14 @@ const ShareDetail = (props) => {
       name: 'aaa',
       children: (
         <div>
-          <div>目标曝光量：{detail.personBeanAmount}</div>
-          <div>单次曝光打赏：{detail.beanAmount}</div>
-          <div>投放时长：{SHARE_TIME_TYPE[detail.rewardCycle]}</div>
+          <div>目标曝光量：{detail.personBeanAmount || 0}</div>
           <div>
-            投放时间：
-            {detail.rewardCycle !== '0'
-              ? `${detail.rewardStartTime} ~ ${detail.rewardEndTime}`
-              : '--'}
+            单次曝光打赏：{Math.round(detail.beanAmount + (detail.exposureBeanAmount || 0))}
           </div>
+          <div>投放时长：{SHARE_TIME_TYPE[detail.rewardCycle]}</div>
+          {detail.rewardCycle !== '0' && (
+            <div>投放时间：{`${detail.rewardStartTime} ~ ${detail.rewardEndTime}`}</div>
+          )}
         </div>
       ),
     },

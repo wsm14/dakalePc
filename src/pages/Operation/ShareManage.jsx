@@ -133,7 +133,9 @@ const ShareManage = (props) => {
       align: 'right',
       dataIndex: 'beanAmount',
       render: (val = 0, row) => Math.round(val + (row.exposureBeanAmount || 0)),
-      sorter: (a, b) => a.beanAmount - b.beanAmount,
+      sorter: (a, b) =>
+        Math.round(a.beanAmount + (a.exposureBeanAmount || 0)) -
+        Math.round(b.beanAmount + (b.exposureBeanAmount || 0)),
     },
     {
       title: (
