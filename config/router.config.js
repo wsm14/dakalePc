@@ -357,9 +357,9 @@ export default [
       // 店铺运营 operation
       {
         path: '/operation/share',
-        name: '分享管理',
+        name: '视频管理',
         component: './Operation/ShareManage',
-        buttons: ['save', 'info', 'down', 'handleDeatil', 'peasDetail'],
+        buttons: ['save', 'info', 'down', 'diary', 'peasDetail'],
       },
       {
         path: '/operation/goods',

@@ -223,7 +223,7 @@ const ShareManage = (props) => {
                 click: () => fetchShareDetail(index, record.contentType || 'video'),
               },
               {
-                type: 'handleDeatil', // 操作记录
+                type: 'diary', // 日志
                 click: () => fetchShareHandleDetail(userMomentIdString),
               },
               {
