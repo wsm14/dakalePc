@@ -78,7 +78,7 @@ const VideoPeasDetail = (props) => {
       {
         title: '领豆时间',
         align: 'center',
-        name: 'createTime',
+        dataIndex: 'createTime',
       },
     ],
   };

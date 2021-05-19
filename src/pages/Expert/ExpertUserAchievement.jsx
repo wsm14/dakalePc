@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
+import { Alert } from 'antd';
 import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -97,10 +98,10 @@ const ExpertUserAchievement = (props) => {
 
   return (
     <>
+      <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
         keepData
-        title={() => <div style={{ marginTop: -16, color: 'red' }}>当前数据统计到昨日</div>}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
