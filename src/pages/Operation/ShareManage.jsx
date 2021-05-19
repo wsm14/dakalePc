@@ -252,21 +252,19 @@ const ShareManage = (props) => {
   };
 
   // 下架
-  const fetchStatusClose = () => {
-    form.validateFields().then((payload) => {
-      const { detail } = visibleRefuse;
-      dispatch({
-        type: 'shareManage/fetchStatusClose',
-        payload: {
-          merchantId: detail.merchantIdString,
-          momentId: detail.userMomentIdString,
-          ...payload,
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
+  const fetchStatusClose = (values) => {
+    const { detail } = visibleRefuse;
+    dispatch({
+      type: 'shareManage/fetchStatusClose',
+      payload: {
+        merchantId: detail.merchantIdString,
+        momentId: detail.userMomentIdString,
+        ...values,
+      },
+      callback: () => {
+        onClose();
+        childRef.current.fetchGetData();
+      },
     });
   };
 
