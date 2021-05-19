@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { Spin, Alert } from 'antd';
+import { LoadingOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 import { NUM_INT } from '@/common/regExp';
 import { SHARE_TIME_TYPE } from '@/common/constant';
 import QuestionTooltip from '@/components/QuestionTooltip';
@@ -12,7 +12,7 @@ import FormCondition from '@/components/FormCondition';
  * 发布设置
  */
 const SharePushSet = (props) => {
-  const { form, dispatch, loading, platformBean, bean, detail } = props;
+  const { form, dispatch, loading, setAllowPush, platformBean, bean, ruleBean, detail } = props;
 
   const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
   const [promotionMoney, setPromotionMoney] = useState(0); // 服务费比例
@@ -23,27 +23,18 @@ const SharePushSet = (props) => {
     setTotalBean({ pnum: detail.personBeanAmount || 0, bnum: detail.beanAmount || 0 });
     setBeanFlag(detail.usePlatformBeanFlag);
     setTimeSelect(detail.rewardCycle);
-    fetchShareGetPlatformBean();
-    fetchShareGetAccountBean();
+    fetchGetSubsidyRoleBean();
     fetchPromotionMoneyGet();
   }, []);
 
-  // 获取商家平台卡豆数
-  const fetchShareGetPlatformBean = () => {
+  // 获取行业规则下卡豆数
+  const fetchGetSubsidyRoleBean = () => {
     dispatch({
-      type: 'shareManage/fetchShareGetPlatformBean',
+      type: 'baseData/fetchGetSubsidyRoleBean',
       payload: {
-        merchantId: detail.merchantId,
-      },
-    });
-  };
-
-  // 获取商家账户卡豆数
-  const fetchShareGetAccountBean = () => {
-    dispatch({
-      type: 'shareManage/fetchShareGetAccountBean',
-      payload: {
-        merchantId: detail.merchantId,
+        categoryId: detail.categoryNode[0],
+        subsidyRole: 'merchant',
+        subsidyType: 'video',
       },
     });
   };
@@ -61,7 +52,8 @@ const SharePushSet = (props) => {
 
   // 定时投放不超过当前时间31天
   const disabledDate = (current) =>
-    (current && current < moment().endOf('day').subtract(1, 'day')) || current > moment().add(31, 'days');
+    (current && current < moment().endOf('day').subtract(1, 'day')) ||
+    current > moment().add(31, 'days');
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -117,9 +109,15 @@ const SharePushSet = (props) => {
       ),
       name: 'usePlatformBeanFlag',
       type: 'switch',
+      checkedChildren: `${platformBean}卡豆`,
+      unCheckedChildren: `${platformBean}卡豆`,
       loading: loading,
       onChange: setBeanFlag,
-      extra: loading ? <Spin indicator={antIcon} /> : `可减${platformBean}卡豆`,
+      extra: loading ? (
+        <Spin indicator={antIcon} />
+      ) : (
+        `可减${totalBean.pnum * (totalBean.bnum > ruleBean ? ruleBean : totalBean.bnum)}卡豆`
+      ),
     },
     {
       title: '发布设置',
@@ -136,33 +134,43 @@ const SharePushSet = (props) => {
 
   /**
    * 统计内容
-   * 若勾选平台预存卡豆，则 实付 = (总需卡豆数 - 平台预存卡豆) * 推广费率 ，实时计算
+   * 若勾选平台预存卡豆，则 实付 = (总需卡豆数 - 可减卡豆) *(1 + 推广费率) ，实时计算
    * 若未勾选平台预存卡豆，则 实付 = 总需卡豆数 * 推广费率
    * 推广费率的百分比按照运营后台行业的不同变化
    */
   const totalDom = () => {
-    // 总数
-    const allTotal = beanFlag // 是否使用充值卡豆
-      ? totalBean.pnum * totalBean.bnum - Number(platformBean)
-      : totalBean.pnum * totalBean.bnum;
-    // 推广费率
-    const freeNum = Number(promotionMoney) / 100;
-    // 实付
-    const payNum =
-      beanFlag && Number(platformBean) > totalBean.pnum * totalBean.bnum
-        ? 0
-        : allTotal * (1 + freeNum);
-    // 推广费
-    const pMoney =
-      beanFlag && Number(platformBean) > totalBean.pnum * totalBean.bnum ? 0 : allTotal * freeNum;
+    const bnum = totalBean.bnum > ruleBean ? ruleBean : totalBean.bnum; // 单次打赏实际计算数值
+    const allPay = totalBean.pnum * totalBean.bnum; // 总需卡豆数
+    const rulePay = totalBean.pnum * bnum; // 可减卡豆数
+    const freeNum = Number(promotionMoney) / 100; // 推广费率
+    const nowPayNum = beanFlag ? allPay - rulePay : allPay; // 实际需要卡豆
+    const payNum = nowPayNum > 0 ? nowPayNum * (1 + freeNum) : 0; // 实付
+    const pMoney = payNum * freeNum; // 推广费
+    const pushStatus = payNum > bean; // 是否允许发布
+    setAllowPush(pushStatus);
     return (
-      <div style={{ width: '100%', backgroundColor: '#f6fbff', padding: 20, borderRadius: 5 }}>
-        <div style={{ fontSize: 16 }}> 实付：{payNum.toFixed(0)}卡豆</div>
-        <div>
-          推广费（{promotionMoney}%）：{pMoney.toFixed(0)}卡豆
-        </div>
-        <div>余额：{bean}卡豆</div>
-      </div>
+      <Alert
+        message={
+          <div>
+            <div style={{ fontSize: 16 }}> 实付：{payNum.toFixed(0)}卡豆</div>
+            <div>
+              推广费（{promotionMoney}%）：{pMoney.toFixed(0)}卡豆
+            </div>
+            <div>余额：{bean}卡豆</div>
+          </div>
+        }
+        action={
+          pushStatus ? (
+            <span>
+              <ExclamationCircleFilled style={{ margin: '5px 5px 0 0', color: '#ff4d4f' }} />
+              卡豆不足！请先联系商家充值或平台补贴卡豆。
+            </span>
+          ) : (
+            ''
+          )
+        }
+        type={pushStatus ? 'error' : 'success'}
+      />
     );
   };
 
@@ -173,7 +181,8 @@ const SharePushSet = (props) => {
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
+export default connect(({ shareManage, baseData, loading }) => ({
+  ruleBean: baseData.ruleBean,
   platformBean: shareManage.platformBean,
   bean: shareManage.bean,
   loading: loading.effects['shareManage/fetchShareGetPlatformBean'],

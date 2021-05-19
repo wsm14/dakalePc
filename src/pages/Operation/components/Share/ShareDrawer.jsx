@@ -18,6 +18,7 @@ const ShareDrawer = (props) => {
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
   const [extraData, setExtraData] = useState({ city: [], taste: [] }); // 额外数据暂存 city 地域 taste 兴趣
+  const [allowPush, setAllowPush] = useState(true); // 是否允许发布
 
   // 确认发布
   const handleVideoPush = () => {
@@ -179,7 +180,7 @@ const ShareDrawer = (props) => {
     },
     {
       title: '发布设置',
-      content: <SharePushSet {...stepProps}></SharePushSet>,
+      content: <SharePushSet {...stepProps} setAllowPush={setAllowPush}></SharePushSet>,
     },
   ];
 
@@ -190,7 +191,9 @@ const ShareDrawer = (props) => {
     maskClosable: current === 0,
     onClose,
     closeCallBack: () => {
+      dispatch({ type: 'shareManage/closeBean' });
       setCurrent(0);
+      setAllowPush(true);
       setDataStorage({});
       setCouponData({ free: {}, contact: {} });
       setExtraData({ city: [], taste: [] });
@@ -204,7 +207,7 @@ const ShareDrawer = (props) => {
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button type="primary" onClick={handleVideoPush} loading={loading}>
+          <Button type="primary" onClick={handleVideoPush} disabled={allowPush} loading={loading}>
             确认发布
           </Button>
         )}

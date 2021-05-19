@@ -30,6 +30,14 @@ export default {
         ...payload,
       };
     },
+    closeBean(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+        platformBean: 0,
+        bean: 0,
+      };
+    },
     closeList(state, { payload }) {
       return {
         ...state,
@@ -61,7 +69,7 @@ export default {
       });
       callback();
     },
-    *fetchShareGetPlatformBean({ payload }, { call, put }) {
+    *fetchShareGetPlatformBean({ payload, callback }, { call, put }) {
       const response = yield call(fetchShareGetPlatformBean, payload);
       if (!response) return;
       const { content } = response;
@@ -71,8 +79,9 @@ export default {
           platformBean: content.platformBean,
         },
       });
+      callback && callback();
     },
-    *fetchShareGetAccountBean({ payload }, { call, put }) {
+    *fetchShareGetAccountBean({ payload, callback }, { call, put }) {
       const response = yield call(fetchShareGetAccountBean, payload);
       if (!response) return;
       const { content } = response;
@@ -82,6 +91,7 @@ export default {
           bean: content.merchantDetail.bean || 0,
         },
       });
+      callback && callback();
     },
     *fetchShareGetBeanDetail({ payload }, { call, put }) {
       const response = yield call(fetchShareGetBeanDetail, payload);

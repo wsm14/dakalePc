@@ -147,10 +147,17 @@ const VideoAdvert = (props) => {
     },
     {
       title: '关联券/商品',
-      dataIndex: 'freeCouponName',
+      dataIndex: 'freeOwnerCoupon',
+      align: 'right',
       width: 250,
-      render: (val, row) =>
-        `${val}\n${row.valuableCouponName || row.specialGoodsName || ''}\n（${row.stock}）`,
+      render: (val, row) => {
+        const { specialGoods, valuableOwnerCoupon: cInfo } = row;
+        const freeInfo = val ? `${val.couponName}（${val.remain}）` : '';
+        const goodsInfo = specialGoods ? `${specialGoods.goodsName}（${specialGoods.remain}）` : '';
+        const couponInfo = cInfo ? `${cInfo.couponName}（${cInfo.remain}）` : '';
+        const pontInfo = goodsInfo || couponInfo;
+        return `${freeInfo}\n${pontInfo}`;
+      },
     },
     {
       title: '发布时间',
@@ -244,7 +251,15 @@ const VideoAdvert = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.guideMomentsId}`}
-        rowClassName={(record) => (record.stock <= 10 ? styles.video_rowColor : '')}
+        rowClassName={(row) => {
+          const { freeOwnerCoupon = {}, specialGoods = {}, valuableOwnerCoupon = {} } = row;
+          const freeRemain = (freeOwnerCoupon.remain || 999999) <= 10;
+          const goodsRemain = (specialGoods.remain || 999999) <= 10;
+          const couponRemain = (valuableOwnerCoupon.remain || 999999) <= 10;
+          return (freeRemain || goodsRemain || couponRemain) && [1].includes(Number(row.status))
+            ? styles.video_rowColor
+            : '';
+        }}
         dispatchType="videoAdvert/fetchGetList"
         {...videoAdvert}
       ></TableDataBlock>

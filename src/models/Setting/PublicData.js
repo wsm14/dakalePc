@@ -19,6 +19,7 @@ import {
   fetchGetSpecialGoodsSelect,
   fetchimportExcel,
   fetchimportExcelList,
+  fetchGetSubsidyRoleBean,
 } from '@/services/PublicServices';
 
 export default {
@@ -36,6 +37,7 @@ export default {
     specialGoods: { list: [], total: 0 },
     excelList: { list: [], total: 0 },
     userList: [],
+    ruleBean: 0,
   },
 
   reducers: {
@@ -54,6 +56,19 @@ export default {
   },
 
   effects: {
+    *fetchGetSubsidyRoleBean({ payload }, { call, put }) {
+      const response = yield call(fetchGetSubsidyRoleBean, payload);
+      if (!response) return;
+      const { content } = response;
+      const { configBehavior = {} } = content;
+      const { subsidyBean = 0 } = configBehavior;
+      yield put({
+        type: 'save',
+        payload: {
+          ruleBean: Number(subsidyBean),
+        },
+      });
+    },
     *fetchGetHubData({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetHubSelect, payload);
       if (!response) return;

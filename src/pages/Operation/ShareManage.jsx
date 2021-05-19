@@ -184,12 +184,13 @@ const ShareManage = (props) => {
       title: '关联券/商品',
       align: 'right',
       dataIndex: 'freeOwnerCoupon',
-      width: 200,
+      align: 'right',
+      width: 250,
       render: (val, row) => {
         const { specialGoods, valuableOwnerCoupon: cInfo } = row;
-        const freeInfo = val ? `${val.couponName}(${val.remain})` : '';
-        const goodsInfo = specialGoods ? `${specialGoods.goodsName}(${specialGoods.remain})` : '';
-        const couponInfo = cInfo ? `${cInfo.couponName}(${cInfo.remain})` : '';
+        const freeInfo = val ? `${val.couponName}（${val.remain}）` : '';
+        const goodsInfo = specialGoods ? `${specialGoods.goodsName}（${specialGoods.remain}）` : '';
+        const couponInfo = cInfo ? `${cInfo.couponName}（${cInfo.remain}）` : '';
         const pontInfo = goodsInfo || couponInfo;
         return `${freeInfo}\n${pontInfo}`;
       },
@@ -270,7 +271,7 @@ const ShareManage = (props) => {
         ...values,
       },
       callback: () => {
-        onClose();
+        setVisibleRefuse({ show: false, detail: {} });
         childRef.current.fetchGetData();
       },
     });
@@ -317,12 +318,15 @@ const ShareManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowClassName={(record) => {
-          const { freeOwnerCoupon = {}, specialGoods = {}, valuableOwnerCoupon = {} } = record;
-          const freeRemain = (freeOwnerCoupon.remain || 999999) < 10;
-          const goodsRemain = (specialGoods.remain || 999999) < 10;
-          const couponRemain = (valuableOwnerCoupon.remain || 999999) < 10;
-          return freeRemain || goodsRemain || couponRemain ? styles.share_rowColor : '';
+        rowClassName={(row) => {
+          const { freeOwnerCoupon = {}, specialGoods = {}, valuableOwnerCoupon = {} } = row;
+          const freeRemain = (freeOwnerCoupon.remain || 999999) <= 10;
+          const goodsRemain = (specialGoods.remain || 999999) <= 10;
+          const couponRemain = (valuableOwnerCoupon.remain || 999999) <= 10;
+          return (freeRemain || goodsRemain || couponRemain) &&
+            [0, 1, 6].includes(Number(row.status))
+            ? styles.share_rowColor
+            : '';
         }}
         rowKey={(record) => `${record.userMomentIdString}`}
         dispatchType="shareManage/fetchGetList"

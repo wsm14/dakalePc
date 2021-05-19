@@ -11,6 +11,8 @@ import ShareCoupon from '@/components/VideoSelectBindContent';
 const ShareContentSet = (props) => {
   const {
     form,
+    platformBean,
+    bean,
     tradeList, // 行业列表
     selectList, // 店铺列表
     couponData,
@@ -37,6 +39,26 @@ const ShareContentSet = (props) => {
     });
   }, 500);
 
+  // 获取商家平台卡豆数
+  const fetchShareGetPlatformBean = (merchantId) => {
+    dispatch({
+      type: 'shareManage/fetchShareGetPlatformBean',
+      payload: {
+        merchantId,
+      },
+    });
+  };
+
+  // 获取商家账户卡豆数
+  const fetchShareGetAccountBean = (merchantId) => {
+    dispatch({
+      type: 'shareManage/fetchShareGetAccountBean',
+      payload: {
+        merchantId,
+      },
+    });
+  };
+
   // 暂存券数据
   const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
 
@@ -50,6 +72,8 @@ const ShareContentSet = (props) => {
       select: selectList,
       onSearch: (val) => fetchClassifyGetMre(val),
       onChange: (val, data) => {
+        fetchShareGetAccountBean(val);
+        fetchShareGetPlatformBean(val);
         const { option } = data;
         saveCouponStorage({ free: {}, contact: {} });
         form.setFieldsValue({
@@ -60,6 +84,7 @@ const ShareContentSet = (props) => {
           categoryName: option.topCategoryName[1],
         });
       },
+      extra: `商家账户卡豆数：${bean}，平台补贴卡豆数：${platformBean}`,
     },
     {
       label: '上传封面',
@@ -188,7 +213,9 @@ const ShareContentSet = (props) => {
   return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
-export default connect(({ businessList, sysTradeList, loading }) => ({
+export default connect(({ shareManage, businessList, sysTradeList, loading }) => ({
+  platformBean: shareManage.platformBean,
+  bean: shareManage.bean,
   selectList: businessList.selectList,
   tradeList: sysTradeList.list.list,
   loading: loading.models.businessList,

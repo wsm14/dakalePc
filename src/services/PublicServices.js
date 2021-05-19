@@ -2,6 +2,13 @@ import request from '@/utils/request';
 
 // 全局接口
 
+// get 获取补贴卡豆类型的卡豆数
+export function fetchGetSubsidyRoleBean(params) {
+  return request('/admin/systemConfig/getByCategoryIdAndSubsidyRoleAndType', {
+    params,
+  });
+}
+
 // get 店铺选择免费券列表
 export function fetchGetFreeCouponSelect(params) {
   return request('/admin/coupon/listOwnerCouponByChannel', {
