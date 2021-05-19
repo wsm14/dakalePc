@@ -25,6 +25,10 @@ const UserListComponent = (props) => {
       name: 'mobile',
     },
     {
+      label: '豆号',
+      name: 'beanCode',
+    },
+    {
       label: '用户昵称',
       name: 'username',
     },
@@ -54,6 +58,11 @@ const UserListComponent = (props) => {
       title: '用户ID',
       fixed: 'left',
       dataIndex: 'userIdString',
+    },
+    {
+      title: '豆号',
+      fixed: 'left',
+      dataIndex: 'beanCode',
     },
     {
       title: '注册手机号',
