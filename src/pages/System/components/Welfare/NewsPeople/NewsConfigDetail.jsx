@@ -95,7 +95,6 @@ const NewsConfigDetail = (props) => {
         activityStartDay: activityStartDay[0].format('YYYY-MM-DD'),
         activityEndDay: activityStartDay[1].format('YYYY-MM-DD'),
       };
-      console.log(payload, 'payload');
       dispatch({
         type: 'welfareConfigList/fetchWelfareUpdates',
         payload,

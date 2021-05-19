@@ -67,25 +67,6 @@ const RegularForm = (props) => {
                 </Form.Item>
                 <span className={styles.spanAfter}>元</span>
               </div>
-              {/* <div className={styles.flexCon}>
-                <Form.Item {...restField} name={[name, 'minMoney']}>
-                  <InputNumber disabled />
-                </Form.Item>
-                <span className={styles.spanAfter} style={{ marginRight: 10 }}>
-                  元以上
-                </span>
-                <span className={styles.spanAfter} style={{ marginRight: 10 }}>
-                  提现手续费:
-                </span>
-                <Form.Item
-                  {...restField}
-                  name={[name, 'handlingFee']}
-                  rules={[{ required: true, message: '请输入手续费' }]}
-                >
-                  <InputNumber style={{ width: 120 }} />
-                </Form.Item>
-                <span className={styles.spanAfter}>元</span>
-              </div> */}
             </Form.Item>
           ))}
         </>
