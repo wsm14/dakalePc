@@ -40,7 +40,7 @@ const GoodsDetail = (props) => {
       label: '套餐单品',
       show: goodsType == 'package',
       render: (val, row) => (
-        <SetMealTable packageGroupObjects={row.packageGroupObjects}></SetMealTable>
+        <SetMealTable packageGroupObjects={row.packageGroupObjects || []}></SetMealTable>
       ),
     },
   ];
