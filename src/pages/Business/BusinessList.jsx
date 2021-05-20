@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import { LogDetail } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
@@ -375,7 +376,8 @@ const BusinessListComponent = (props) => {
         loading={
           loading.effects['businessList/fetchGetList'] ||
           loading.effects['businessList/fetchMerchantDetail'] ||
-          loading.effects['businessList/fetchMerchantGetExcel']
+          loading.effects['businessList/fetchMerchantGetExcel'] ||
+          loading.effects['baseData/fetchGetLogDetail']
         }
         columns={getColumns}
         searchItems={searchItems}
@@ -413,6 +415,8 @@ const BusinessListComponent = (props) => {
         childRef={childRef}
         onClose={() => setVisibleCodeSet(false)}
       ></BusinessVerificationCodeSet>
+      {/* 日志 */}
+      <LogDetail></LogDetail>
     </>
   );
 };

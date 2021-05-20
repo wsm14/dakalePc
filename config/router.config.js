@@ -252,6 +252,12 @@ export default [
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
       },
+      {
+        path: '/expert/uaerlist',
+        name: '实习豆长',
+        component: './Expert/ExpertUserList',
+        buttons: ['status', 'diary'],
+      },
       // 财务管理 finance
       {
         path: '/finance/subsidy',
