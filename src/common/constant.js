@@ -100,6 +100,9 @@ export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封�
 // 哒人类型
 export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
 
+// 哒人提现规则
+export const EXPERT_IS_WITHDRAW = ['不可提现', '可提现'];
+
 // 哒人类型
 export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
 
@@ -242,9 +245,11 @@ export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 
 // 补贴管理 补贴类型
 export const SUBSIDY_TYPE = {
-  behavior: '行为补贴',
   platform: '营销卡豆充值',
   directCharge: '平台直充',
+  recycleDirectCharge: '平台直充回收',
+  recyclePlatform: '营销卡豆回收',
+  platformSubsidy: '新手任务补贴',
 };
 
 // 补贴管理 补贴卡豆类型

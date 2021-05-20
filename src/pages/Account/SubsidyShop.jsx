@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Space } from 'antd';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
@@ -30,14 +29,11 @@ const SubsidyShop = (props) => {
 
   const [visible, setVisible] = useState(false);
 
-  // platform-运营平台 partner-区县平台 province-省代平台
-  const source = 'platform';
-
   // 搜索默认参数
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: source,
+    type: ['platform', 'directCharge', 'recycleDirectCharge', 'recyclePlatform', 'platformSubsidy'],
   };
 
   // 搜索参数
@@ -45,9 +41,8 @@ const SubsidyShop = (props) => {
 
   // 搜索参数格式化
   const newSearch = {
-    source,
     latitude: searchData.latitude,
-    type: source,
+    type: searchData.type.toString(),
     beginTime: searchData.time[0].format('YYYY-MM-DD'),
     endTime: searchData.time[1].format('YYYY-MM-DD'),
   };
@@ -133,11 +128,11 @@ const SubsidyShop = (props) => {
             fetchGetDetail,
           })}
           params={newSearch}
-          rowKey={(record) =>
+          rowKey={(row) =>
             `${
-              (record.merchantId && record.merchantId + record.gainTime) ||
-              record.gainMonth ||
-              record.gainTime
+              (row.identification && row.id + row.identification + row.gainTime) ||
+              row.gainMonth ||
+              row.gainTime
             }`
           }
           dispatchType="subsidyShop/fetchSubsidyShopList"

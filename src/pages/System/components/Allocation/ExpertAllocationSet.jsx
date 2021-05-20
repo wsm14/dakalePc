@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { NUM_PATTERN } from '@/common/regExp';
-import { EXPERT_TYPE } from '@/common/constant';
+import { EXPERT_TYPE, EXPERT_IS_WITHDRAW } from '@/common/constant';
 import { checkFileData } from '@/utils/utils';
 import { LEVEL_ICON, UP_LEVEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -142,61 +142,51 @@ const ExpertAllocationSet = (props) => {
     },
     {
       label: '可否提现',
-      name: 'payBeanCommission',
+      name: 'isWithdraw',
       type: 'radio',
-      select: ['可提现', '不可提现'],
+      select: EXPERT_IS_WITHDRAW,
       visible: !fromShow,
     },
     {
       title: '升级要求',
       label: '核销笔数要求',
-      name: 'shareCommission',
+      name: ['userLevelTargetObject', 'verificationCount'],
       suffix: '笔',
       rules: [{ required: false }],
-      addRules: [
-        { pattern: NUM_PATTERN, message: '核销笔数应为整数' },
-      ],
+      addRules: [{ pattern: NUM_PATTERN, message: '核销笔数应为整数' }],
       visible: !fromShow,
     },
     {
       label: '业绩流水要求',
-      name: 'shareCommission',
+      name: ['userLevelTargetObject', 'performance'],
       suffix: '元',
       rules: [{ required: false }],
-      addRules: [
-        { pattern: NUM_PATTERN, message: '业绩流水应为整数' },
-      ],
+      addRules: [{ pattern: NUM_PATTERN, message: '业绩流水应为整数' }],
       visible: !fromShow,
     },
     {
       title: '月度奖金',
       label: '核销笔数要求',
-      name: 'shareCommission',
+      name: ['userLevelMonthBonusObject', 'verificationNum'],
       suffix: '笔',
       rules: [{ required: false }],
-      addRules: [
-        { pattern: NUM_PATTERN, message: '核销笔数应为整数' },
-      ],
+      addRules: [{ pattern: NUM_PATTERN, message: '核销笔数应为整数' }],
       visible: !fromShow,
     },
     {
       label: '业绩流水要求',
-      name: 'shareCommission',
+      name: ['userLevelMonthBonusObject', 'performanceFlow'],
       suffix: '元',
       rules: [{ required: false }],
-      addRules: [
-        { pattern: NUM_PATTERN, message: '业绩流水应为整数' },
-      ],
+      addRules: [{ pattern: NUM_PATTERN, message: '业绩流水应为整数' }],
       visible: !fromShow,
     },
     {
       label: '业绩达标奖金',
-      name: 'shareCommission',
+      name: ['userLevelMonthBonusObject', 'performanceBonus'],
       suffix: '元',
       rules: [{ required: false }],
-      addRules: [
-        { pattern: NUM_PATTERN, message: '业绩达标奖金应为整数' },
-      ],
+      addRules: [{ pattern: NUM_PATTERN, message: '业绩达标奖金应为整数' }],
       visible: !fromShow,
     },
     {
