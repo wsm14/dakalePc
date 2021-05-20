@@ -52,11 +52,11 @@ const DataGatherExport = (props) => {
 
   return (
     <Card>
-      <div style={{ width: '600px', minHeight: '400px' }}>
+      <div style={{ width: '600px' }}>
         <FormCondition formItems={formItems} form={form}></FormCondition>
         <Button
           type="primary"
-          style={{ margin: '30px 150px' }}
+          style={{ margin: '0 150px 50px' }}
           onClick={exportData}
           loading={loading}
         >

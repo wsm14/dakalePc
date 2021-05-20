@@ -10,6 +10,7 @@ export default {
     { key: 'merchantName', header: '店铺名称' },
     { key: 'oriPrice', header: '原价' },
     { key: 'realPrice', header: '特惠价格' },
+    { key: 'otherPlatformPrice', header: '其它平台价格' },
     {
       key: 'businessHubIdString',
       header: '折扣',

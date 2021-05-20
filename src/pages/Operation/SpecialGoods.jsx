@@ -207,7 +207,7 @@ const SpecialGoods = (props) => {
     {
       title: '其它平台价格',
       align: 'right',
-      dataIndex: 'realPrice',
+      dataIndex: 'otherPlatformPrice',
     },
     {
       title: '使用有效期',
