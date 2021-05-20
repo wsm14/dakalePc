@@ -99,7 +99,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         },
         {
           title: '卡豆',
-          align: 'center',
+          align: 'right',
           dataIndex: 'bean',
         },
 

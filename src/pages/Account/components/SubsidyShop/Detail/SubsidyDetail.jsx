@@ -10,7 +10,6 @@ const SubsidyDetail = (props) => {
   const getColumnsM = [
     {
       title: '店铺名称',
-      align: 'center',
       dataIndex: 'merchantName',
       width: 280,
     },
@@ -31,8 +30,8 @@ const SubsidyDetail = (props) => {
     },
     {
       title: '地址',
-      align: 'center',
       dataIndex: 'address',
+      width: 200,
     },
     {
       title: '补贴/回收卡豆数',
@@ -83,7 +82,7 @@ const SubsidyDetail = (props) => {
   const modalProps = {
     title: `详情-${titles}-补贴/回收`,
     visible: show,
-    width: 1000,
+    width: 1200,
     onCancel: () => onClose(),
     footer: null,
   };
