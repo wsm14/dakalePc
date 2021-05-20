@@ -110,7 +110,7 @@ const SubsidyShop = (props) => {
                 searchData,
                 setSearchData,
                 fetchGetDetail,
-              }).slice(0, -1),
+              }),
             }}
           ></ExcelButton>
         }
@@ -148,5 +148,5 @@ export default connect(({ subsidyShop, loading }) => ({
   subsidyShop,
   outBean: subsidyShop.outBean,
   inBean: subsidyShop.inBean,
-  loading: loading.effects['subsidyShop/fetchSubsidyShopList'],
+  loading: loading.models.subsidyShop,
 }))(SubsidyShop);
