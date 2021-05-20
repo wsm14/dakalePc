@@ -302,7 +302,8 @@ const SpecialGoods = (props) => {
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
               {
-                type: 'down',
+                title: '下架',
+                auth: 'down',
                 visible: status == '1' && deleteFlag == '1',
                 click: () =>
                   setVisibleRefuse({
