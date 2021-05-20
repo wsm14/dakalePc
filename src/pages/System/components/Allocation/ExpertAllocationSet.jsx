@@ -146,7 +146,7 @@ const ExpertAllocationSet = (props) => {
       name: 'isWithdraw',
       type: 'radio',
       select: EXPERT_IS_WITHDRAW,
-      visible: !fromShow && isWithdraw,
+      visible: !fromShow && isWithdraw=='1' ,
     },
     {
       title: '升级要求',
