@@ -20,6 +20,7 @@ const SysAppSet = (props) => {
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
+  const [showTitle, setShowTitle] = useState(null); // 是否显示标题
   const [timeRule, setTimeRule] = useState(null); // 展示时间规则 fixed 固定 infinite 长期
 
   // 提交
@@ -95,11 +96,6 @@ const SysAppSet = (props) => {
       maxLength: 200,
     },
     {
-      label: '是否显示标题',
-      type: 'switch',
-      name: 'hideTitle',
-    },
-    {
       label: '权重',
       name: 'weight',
       type: 'number',
@@ -143,7 +139,20 @@ const SysAppSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <JumpFormSet form={form} detail={detail} port={tabKey}></JumpFormSet>,
+      formItem: (
+        <JumpFormSet
+          form={form}
+          detail={detail}
+          port={tabKey}
+          getJumpType={setShowTitle}
+        ></JumpFormSet>
+      ),
+    },
+    {
+      label: '是否显示标题',
+      type: 'switch',
+      name: 'hideTitle',
+      visible: showTitle === 'H5',
     },
   ];
 
@@ -152,6 +161,7 @@ const SysAppSet = (props) => {
     visible: show,
     onClose,
     afterCallBack: () => {
+      setShowTitle(detail.jumpUrlType);
       setTimeRule(detail.timeRuleData);
       setShowRadio(!!detail.bannerType);
       setShowArea(detail.deliveryAreaType === 'detail');
