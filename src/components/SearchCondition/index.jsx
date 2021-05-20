@@ -80,7 +80,7 @@ const SearchCondition = (props) => {
         } else if (type === 'numberGroup') {
           // 数字区间组合
           formObj[name] =
-            values[name] && values[name].filter((i) => i).length === 2
+            values[name] && values[name].filter((i) => typeof i == 'number').length === 2
               ? values[name].join(',')
               : undefined;
         }
