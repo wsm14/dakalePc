@@ -56,9 +56,11 @@ const SearchCard = ({ tabkey, searchData, setSearchData }) => {
 
   // 类型选择项目
   const options = [
-    { label: '全部', value: '' },
     { label: '营销卡豆充值', value: 'platform' },
-    // { label: '平台直充', value: 'directCharge' },
+    { label: '平台直充', value: 'directCharge' },
+    { label: '平台直充回收', value: 'recycleDirectCharge' },
+    { label: '营销卡豆回收', value: 'recyclePlatform' },
+    { label: '新手任务补贴', value: 'platformSubsidy' },
   ];
 
   return (
