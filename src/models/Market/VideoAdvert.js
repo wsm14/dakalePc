@@ -101,7 +101,7 @@ export default {
           ...content.guideMomentsDTO,
           free: freeOwnerCoupon // 免费券
             ? { ...freeOwnerCoupon, ownerCouponIdString: couponIds, buyFlag: 0 }
-            : '',
+            : undefined,
           contact: pType // 有价券 特惠商品
             ? {
                 promotionType: { reduce: 'coupon', special: 'goods' }[pType],

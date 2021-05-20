@@ -44,7 +44,7 @@ const ShareDetail = (props) => {
     {
       label: '免费券',
       name: 'free',
-      render: (val) => (val !== '--' ? couponsDom(val) : ''),
+      render: (val) => val !== '--' && couponsDom(val),
     },
     {
       label: '推荐带货',
@@ -83,7 +83,7 @@ const ShareDetail = (props) => {
       name: 'aaa',
       children: (
         <div>
-          <div>目标曝光量：{detail.personBeanAmount || 0}</div>
+          <div>目标曝光量：{detail.beanPersonAmount || 0}</div>
           <div>
             单次曝光打赏：{Math.round(detail.beanAmount + (detail.exposureBeanAmount || 0))}
           </div>
@@ -94,16 +94,16 @@ const ShareDetail = (props) => {
         </div>
       ),
     },
-    {
-      label: '平台补贴打赏奖励',
-      name: 'bbb',
-      children: (
-        <div>
-          <div>预计补贴人数：{detail.beanPersonAmount || 0}</div>
-          <div>单用户补贴卡豆数：{detail.exposureBeanAmount || 0}</div>
-        </div>
-      ),
-    },
+    // {
+    //   label: '平台补贴打赏奖励',
+    //   name: 'bbb',
+    //   children: (
+    //     <div>
+    //       <div>预计补贴人数：{detail.beanPersonAmount || 0}</div>
+    //       <div>单用户补贴卡豆数：{detail.exposureBeanAmount || 0}</div>
+    //     </div>
+    //   ),
+    // },
   ];
 
   const modalProps = {
