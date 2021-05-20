@@ -253,7 +253,7 @@ export default [
         component: './Expert/ExpertUserDistribution',
       },
       {
-        path: '/expert/uaerlist',
+        path: '/expert/trainee',
         name: '实习豆长',
         component: './Expert/ExpertUserList',
         buttons: ['status', 'diary'],
@@ -415,12 +415,6 @@ export default [
           'exportList',
           'goodsCode',
         ],
-      },
-      {
-        path: '/operation/platformRights',
-        name: '平台权益',
-        component: './Operation/PlatformRights',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
       {
         path: '/operation/platformRights',
