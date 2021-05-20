@@ -21,6 +21,7 @@ export default {
     beanDetal: { list: [], total: 0 },
     platformBean: 0,
     bean: 0,
+    promotionFee: 0,
   },
 
   reducers: {
@@ -89,6 +90,7 @@ export default {
         type: 'save',
         payload: {
           bean: content.merchantDetail.bean || 0,
+          promotionFee: Number(content.merchantDetail.promotionFee || 0),
         },
       });
       callback && callback();

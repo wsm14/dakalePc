@@ -19,13 +19,13 @@ const SharePushSet = (props) => {
     setAllowPush,
     getMerchantIdInfo,
     platformBean,
+    promotionFee,
     bean,
     ruleBean,
     detail,
   } = props;
 
   const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
-  const [promotionMoney, setPromotionMoney] = useState(0); // 服务费比例
   const [beanFlag, setBeanFlag] = useState(false); // 是否使用充值卡豆
   const [timeSelect, setTimeSelect] = useState(false); // 投放时长
 
@@ -34,7 +34,6 @@ const SharePushSet = (props) => {
     setBeanFlag(detail.usePlatformBeanFlag);
     setTimeSelect(detail.rewardCycle);
     fetchGetSubsidyRoleBean();
-    fetchPromotionMoneyGet();
   }, []);
 
   // 获取行业规则下卡豆数
@@ -46,17 +45,6 @@ const SharePushSet = (props) => {
         subsidyRole: 'merchant',
         subsidyType: 'video',
       },
-    });
-  };
-
-  // 行业推广费比例
-  const fetchPromotionMoneyGet = () => {
-    dispatch({
-      type: 'sysTradeList/fetchPromotionMoneyGet',
-      payload: {
-        categoryId: detail.categoryNode[0],
-      },
-      callback: (val) => setPromotionMoney(val.promotionFee || 0),
     });
   };
 
@@ -148,10 +136,10 @@ const SharePushSet = (props) => {
     const bnum = totalBean.bnum > ruleBean ? ruleBean : totalBean.bnum; // 单次打赏实际计算数值
     const allPay = totalBean.pnum * totalBean.bnum; // 总需卡豆数
     const rulePay = totalBean.pnum * bnum; // 可减卡豆数
-    const freeNum = Number(promotionMoney) / 100; // 推广费率
+    const freeNum = Number(promotionFee) / 100; // 推广费率
     const nowPayNum = beanFlag ? allPay - rulePay : allPay; // 实际需要卡豆
     const payNum = nowPayNum > 0 ? nowPayNum * (1 + freeNum) : 0; // 实付
-    const pMoney = payNum * freeNum; // 推广费
+    const pMoney = nowPayNum * freeNum; // 推广费
     const pushStatus = payNum > bean; // 是否允许发布
     setAllowPush(pushStatus);
     return (
@@ -161,7 +149,7 @@ const SharePushSet = (props) => {
           <div>
             <div style={{ fontSize: 16 }}> 实付：{payNum.toFixed(0)}卡豆</div>
             <div>
-              推广费（{promotionMoney}%）：{pMoney.toFixed(0)}卡豆
+              推广费（{promotionFee}%）：{pMoney.toFixed(0)}卡豆
             </div>
             <div>余额：{loading ? <Spin indicator={antIcon} size="small" /> : `${bean}卡豆`}</div>
           </div>
@@ -202,6 +190,7 @@ export default connect(({ shareManage, baseData, loading }) => ({
   ruleBean: baseData.ruleBean,
   platformBean: shareManage.platformBean,
   bean: shareManage.bean,
+  promotionFee: shareManage.promotionFee,
   loading:
     loading.effects['shareManage/fetchShareGetPlatformBean'] ||
     loading.effects['shareManage/fetchShareGetAccountBean'],
