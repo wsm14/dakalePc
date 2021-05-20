@@ -1,7 +1,6 @@
 import React from 'react';
-import TableDataBlock from '@/components/TableDataBlock';
-import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import { Modal } from 'antd';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;

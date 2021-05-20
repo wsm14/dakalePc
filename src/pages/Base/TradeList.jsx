@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Switch,Alert } from 'antd';
+import { Button, Switch, Alert } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -171,7 +171,11 @@ const SysTradeSet = (props) => {
 
   return (
     <>
-     <Alert message="说明：扫码支付服务费全行业为1%，核销订单服务费根据行业配置" type="info" banner />
+      <Alert
+        message="说明：扫码支付服务费全行业为1%，核销订单服务费根据行业配置"
+        type="info"
+        banner
+      />
       <TableDataBlock
         cRef={childRef}
         btnExtra={

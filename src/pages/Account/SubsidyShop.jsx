@@ -2,13 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Space } from 'antd';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
+import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
 import tableColums from './components/SubsidyShop/List/tableColums';
-import ExcelButton from '@/components/ExcelButton';
-
 import SubsidyDetail from './components/SubsidyShop/Detail/SubsidyDetail';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 const tabList = [
   {
@@ -64,23 +63,15 @@ const SubsidyShop = (props) => {
 
   // 获取详情
   const fetchGetDetail = (type, row) => {
-    console.log(type, 'yyy');
-    let payload = {};
-    if (type == 'merchant')
-      payload = {
-        subsidyId: row.identification,
-      };
-    if (type == 'user') {
-      payload = {
-        identification: row.identification,
-      };
-    }
+    const apiProps = {
+      merchant: { key: 'subsidyId', api: 'subsidyShop/fetchSubsidyShopDetailById' },
+      user: { key: 'identification', api: 'subsidyShop/fetchSubsidyUserDetailById' },
+    }[type];
     dispatch({
-      type: {
-        merchant: 'subsidyShop/fetchSubsidyShopDetailById',
-        user: 'subsidyShop/fetchSubsidyUserDetailById',
-      }[type],
-      payload: payload,
+      type: apiProps.api,
+      payload: {
+        [apiProps.key]: row.identification,
+      },
       callback: (info) => setVisible({ show: true, type, info, titles: row.taskName }),
     });
   };
