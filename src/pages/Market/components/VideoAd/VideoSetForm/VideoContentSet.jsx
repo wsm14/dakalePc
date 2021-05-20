@@ -80,7 +80,7 @@ const VideoContentSet = (props) => {
         videoElement.addEventListener('loadedmetadata', function (_event) {
           const duration = videoElement.duration; // 单位：秒
           form.setFieldsValue({
-            length: duration,
+            length: parseInt(duration),
             videoId: undefined,
             videoContentOb: { height: videoElement.videoHeight, width: videoElement.videoWidth },
           });
