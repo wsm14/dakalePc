@@ -65,8 +65,10 @@ const RegularDetail = (props) => {
       render: (val) => COUPON_BUY_RULE[val],
     },
     {
-      label: `单人每天购买份数`,
-      name: 'dayMaxBuyAmount',
+      label: `单人${
+        { personLimit: '每人', dayLimit: '每天', unlimited: '不限' }[detail.buyRule]
+      }购买份数`,
+      name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[detail.buyRule],
       render: (val) => (val && val !== '--' ? `${val}份` : '--'),
     },
     {
