@@ -8,6 +8,7 @@ import tableColums from './components/SubsidyShop/List/tableColums';
 import ExcelButton from '@/components/ExcelButton';
 
 import SubsidyDetail from './components/SubsidyShop/Detail/SubsidyDetail';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 const tabList = [
   {
@@ -63,10 +64,24 @@ const SubsidyShop = (props) => {
 
   // 获取详情
   const fetchGetDetail = (type, row) => {
+    console.log(type, 'yyy');
+    let payload = {};
+    if (type == 'merchant')
+      payload = {
+        subsidyId: row.identification,
+      };
+    if (type == 'user') {
+      payload = {
+        identification: row.identification,
+      };
+    }
     dispatch({
-      type: 'subsidyShop/fetchSubsidyShopDetailById',
-      payload: { subsidyId: row.identification },
-      callback: (info) => setVisible({ show: true, type, info }),
+      type: {
+        merchant: 'subsidyShop/fetchSubsidyShopDetailById',
+        user: 'subsidyShop/fetchSubsidyUserDetailById',
+      }[type],
+      payload: payload,
+      callback: (info) => setVisible({ show: true, type, info, titles: row.taskName }),
     });
   };
 

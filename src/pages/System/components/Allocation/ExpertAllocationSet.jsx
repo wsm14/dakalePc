@@ -141,6 +141,65 @@ const ExpertAllocationSet = (props) => {
       addRules: [{ pattern: NUM_PATTERN, message: '消费抵扣数应为整数' }],
     },
     {
+      label: '可否提现',
+      name: 'payBeanCommission',
+      type: 'radio',
+      select: ['可提现', '不可提现'],
+      visible: !fromShow,
+    },
+    {
+      title: '升级要求',
+      label: '核销笔数要求',
+      name: 'shareCommission',
+      suffix: '笔',
+      rules: [{ required: false }],
+      addRules: [
+        { pattern: NUM_PATTERN, message: '核销笔数应为整数' },
+      ],
+      visible: !fromShow,
+    },
+    {
+      label: '业绩流水要求',
+      name: 'shareCommission',
+      suffix: '元',
+      rules: [{ required: false }],
+      addRules: [
+        { pattern: NUM_PATTERN, message: '业绩流水应为整数' },
+      ],
+      visible: !fromShow,
+    },
+    {
+      title: '月度奖金',
+      label: '核销笔数要求',
+      name: 'shareCommission',
+      suffix: '笔',
+      rules: [{ required: false }],
+      addRules: [
+        { pattern: NUM_PATTERN, message: '核销笔数应为整数' },
+      ],
+      visible: !fromShow,
+    },
+    {
+      label: '业绩流水要求',
+      name: 'shareCommission',
+      suffix: '元',
+      rules: [{ required: false }],
+      addRules: [
+        { pattern: NUM_PATTERN, message: '业绩流水应为整数' },
+      ],
+      visible: !fromShow,
+    },
+    {
+      label: '业绩达标奖金',
+      name: 'shareCommission',
+      suffix: '元',
+      rules: [{ required: false }],
+      addRules: [
+        { pattern: NUM_PATTERN, message: '业绩达标奖金应为整数' },
+      ],
+      visible: !fromShow,
+    },
+    {
       title: '上传凭证',
       label: '凭证',
       name: 'certificate',

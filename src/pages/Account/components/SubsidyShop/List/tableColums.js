@@ -26,11 +26,11 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       align: 'center',
       dataIndex: 'gainTime',
     },
-    {
-      title: '营销卡豆充值',
-      align: 'right',
-      dataIndex: 'platformBean',
-    },
+    // {
+    //   title: '营销卡豆充值',
+    //   align: 'right',
+    //   dataIndex: 'platformBean',
+    // },
     {
       title: '收入（卡豆）',
       align: 'right',
@@ -48,17 +48,15 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       align: 'center',
       dataIndex: 'gainMonth',
     },
-
     {
-      title: '补贴店铺',
-      align: 'right',
-      dataIndex: 'platformBean',
-    },
-
-    {
-      title: '【总】补贴（卡豆）',
+      title: '收入（卡豆）',
       align: 'right',
       dataIndex: 'inBean',
+    },
+    {
+      title: '支出（卡豆）',
+      align: 'right',
+      dataIndex: 'outBean',
     },
   ];
 
@@ -89,11 +87,11 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           dataIndex: 'subsidyRole',
           render: (val) => SUBSIDY_TASK_ROLE[val],
         },
-        {
-          title: '店铺名称',
-          align: 'center',
-          dataIndex: 'merchantName',
-        },
+        // {
+        //   title: '店铺名称',
+        //   align: 'center',
+        //   dataIndex: 'merchantName',
+        // },
         {
           title: '任务名称',
           align: 'center',
@@ -109,7 +107,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '操作',
           align: 'center',
           dataIndex: 'time',
-          render: (val, row) => infoHandle(() => fetchGetDetail(row.type, row)),
+          render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole,row)),
         },
       ];
     // 按日显示
