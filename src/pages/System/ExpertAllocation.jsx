@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { EXPERT_TYPE } from '@/common/constant';
+import { EXPERT_TYPE, EXPERT_IS_WITHDRAW } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -79,6 +79,52 @@ const ExpertAllocation = (props) => {
           dataIndex: 'payBeanCommission',
           align: 'right',
           render: (val) => val && `${val}%`,
+        },
+        {
+          title: '是否可提现',
+          dataIndex: 'isWithdraw',
+          align: 'right',
+          render: (val) => EXPERT_IS_WITHDRAW[val],
+        },
+      ],
+    },
+    {
+      title: '升级要求',
+      children: [
+        {
+          title: '核销笔数要求（笔）',
+          dataIndex: ['userLevelTargetObject', 'verificationCount'],
+          align: 'right',
+          render: (val) => val && `${val}笔`,
+        },
+        {
+          title: '业绩流水要求（元）',
+          dataIndex: ['userLevelTargetObject', 'performance'],
+          align: 'right',
+          render: (val) => val && `${val}元`,
+        },
+      ],
+    },
+    {
+      title: '月度奖金',
+      children: [
+        {
+          title: '核销笔数要求（笔）',
+          dataIndex: ['userLevelMonthBonusObject', 'verificationNum'],
+          align: 'right',
+          render: (val) => val && `${val}笔`,
+        },
+        {
+          title: '业绩流水要求（元）',
+          dataIndex: ['userLevelMonthBonusObject', 'performanceFlow'],
+          align: 'right',
+          render: (val) => val && `${val}元`,
+        },
+        {
+          title: '业绩达标奖金（元）',
+          dataIndex: ['userLevelMonthBonusObject', 'performanceBonus'],
+          align: 'right',
+          render: (val) => val && `${val}元`,
         },
       ],
     },

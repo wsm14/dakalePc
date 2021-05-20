@@ -13,6 +13,7 @@ const ExpertAllocationSet = (props) => {
   const { visible, childRef, dispatch, onClose, loading } = props;
 
   const { type = 'add', show = false, detail = {} } = visible;
+  const { isWithdraw } = detail;
 
   const [form] = Form.useForm();
 
@@ -145,7 +146,7 @@ const ExpertAllocationSet = (props) => {
       name: 'isWithdraw',
       type: 'radio',
       select: EXPERT_IS_WITHDRAW,
-      visible: !fromShow,
+      visible: !fromShow && isWithdraw,
     },
     {
       title: '升级要求',
