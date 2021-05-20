@@ -20,12 +20,14 @@ const ExpertAllocation = (props) => {
         {
           title: '身份',
           dataIndex: 'type',
+          fixed: 'left',
           width: 150,
           render: (val) => EXPERT_TYPE[val],
         },
         {
           title: '等级',
           dataIndex: 'levelName',
+          fixed: 'left',
           align: 'center',
           width: 100,
         },
