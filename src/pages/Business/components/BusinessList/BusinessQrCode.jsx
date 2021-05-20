@@ -42,7 +42,7 @@ const BusinessQrCode = (props) => {
           <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
             <a
               id="down_link"
-              onClick={() => changeCanvasToPic('qrCodePay', '支付二维码', 'down_link')}
+              onClick={() => changeCanvasToPic('qrCodePay', '支付码', 'down_link')}
             >
               下载
             </a>
@@ -57,7 +57,7 @@ const BusinessQrCode = (props) => {
           />
           <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>打卡二维码</div>
           <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-            <a id="down_Da" onClick={() => changeCanvasToPic('qrCodeDa', '打卡二维码', 'down_Da')}>
+            <a id="down_Da" onClick={() => changeCanvasToPic('qrCodeDa', '打卡码', 'down_Da')}>
               下载
             </a>
           </div>
