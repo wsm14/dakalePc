@@ -49,7 +49,7 @@ const SysAppSet = (props) => {
             bannerId: detail.bannerIdString,
             ...values,
             userType: tabKey,
-            hideTitle: Number(hideTitle),
+            hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
             jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),

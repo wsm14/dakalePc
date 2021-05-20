@@ -78,7 +78,7 @@ export default {
         })),
         jumpUrlType: jumpUrlType ? jumpUrlType : '无',
         param: JSON.parse(param || '{}'),
-        hideTitle: Number(hideTitle),
+        hideTitle: !Number(hideTitle),
         timeRuleData: endDate === '2999.12.30' ? 'infinite' : 'fixed',
         beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
