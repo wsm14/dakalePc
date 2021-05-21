@@ -23,9 +23,7 @@ const PubCode = (props) => {
         <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>支付二维码</div>
         {visible.bankStatus === '3' ? (
           <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-            <a id="down_link" onClick={() => changeCanvasToPic('qrCodePay', '支付码', 'down_link')}>
-              下载
-            </a>
+            <a onClick={() => changeCanvasToPic('qrCodePay', '支付码', true)}>下载</a>
           </div>
         ) : (
           ''
@@ -40,7 +38,7 @@ const PubCode = (props) => {
         />
         <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>打卡二维码</div>
         <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-          <a id="down_Da" onClick={() => changeCanvasToPic('qrCodeDa', '打卡码', 'down_Da')}>
+          <a id="down_Da" onClick={() => changeCanvasToPic('qrCodeDa', '打卡码', true)}>
             下载
           </a>
         </div>

@@ -28,6 +28,7 @@ const ChartBlockComponent = ({
 
   // 选择时间
   const handleSearchData = (time, areaCode) => {
+    console.log(areaCode);
     let area = { provinceCode: undefined };
     if (areaCode && areaCode.length) {
       area = { provinceCode: areaCode[0], cityCode: areaCode[1], districtCode: areaCode[2] };
@@ -52,7 +53,11 @@ const ChartBlockComponent = ({
         <Affix offsetTop={49}>
           <Card bordered={false}>
             {/* 搜索框 */}
-            <SearchCard setSearchData={handleSearchData} bucket={bucket}></SearchCard>
+            <SearchCard
+              setSearchData={handleSearchData}
+              cityData={cityData}
+              bucket={bucket}
+            ></SearchCard>
           </Card>
         </Affix>
         {/* 营收统计 */}

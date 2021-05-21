@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Spin, Upload, Button } from 'antd';
 import canvasPic from '@/utils/canvasPic';
-import bybag from '../img/bybag.jpg';
-import paybag from '../img/paybag.jpg';
 
 const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
   const [imgUrl, setImgUrl] = useState(); // 打卡营销码
@@ -27,7 +25,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: pay || paybag,
+            url: pay || 'https://resource-new.dakale.net/admin/QrCode/paybag.png',
             width: 1346,
             height: 1890,
           },
@@ -62,7 +60,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: by || bybag,
+            url: by || 'https://resource-new.dakale.net/admin/QrCode/bybag.png',
             width: 2480,
             height: 3508,
           },
@@ -108,6 +106,12 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
     fileReader.readAsDataURL(file);
   };
 
+  const uploadProps = {
+    maxCount: 1,
+    accept: 'image/*',
+    beforeUpload: () => false,
+  };
+
   return (
     <Spin spinning={loading}>
       <div style={{ display: 'flex', minHeight: 571.72 }}>
@@ -116,20 +120,10 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
             <>
               <img src={payImgUrl} alt="" style={{ width: '100%' }} />
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                支付营销码{' '}
-                <a
-                  id="down_sale_pay"
-                  onClick={() => changeCanvasToPic(payImgUrl, '支付营销码', 'down_sale_pay')}
-                >
-                  下载
-                </a>
+                支付营销码 <a onClick={() => changeCanvasToPic(payImgUrl, '支付营销码')}>下载</a>
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                <Upload
-                  maxCount={1}
-                  beforeUpload={() => false}
-                  onChange={(file) => handleImgChange('pay', file.file)}
-                >
+                <Upload {...uploadProps} onChange={(file) => handleImgChange('pay', file.file)}>
                   <Button>上传背景图片</Button>
                 </Upload>
               </div>
@@ -141,20 +135,10 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
             <>
               <img src={imgUrl} alt="" style={{ width: '100%' }} />
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                打卡营销码{' '}
-                <a
-                  id="down_sale_by"
-                  onClick={() => changeCanvasToPic(imgUrl, '打卡营销码', 'down_sale_by')}
-                >
-                  下载
-                </a>
+                打卡营销码 <a onClick={() => changeCanvasToPic(imgUrl, '打卡营销码')}>下载</a>
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                <Upload
-                  maxCount={1}
-                  beforeUpload={() => false}
-                  onChange={(file) => handleImgChange('by', file.file)}
-                >
+                <Upload {...uploadProps} onChange={(file) => handleImgChange('by', file.file)}>
                   <Button>上传背景图片</Button>
                 </Upload>
               </div>
