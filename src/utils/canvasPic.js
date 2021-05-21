@@ -260,7 +260,7 @@ const makeImage = (options, callback) => {
       i++;
       // 是否最后一个绘制对西那个
       !(len - i)
-        ? callback && callback(error, canvas.toDataURL('image/jpeg', options.compress || 0.8))
+        ? callback && callback(error, canvas.toDataURL('image/jpeg', options.compress || 1))
         : start();
     };
 

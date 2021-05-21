@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Spin } from 'antd';
+import { Spin, Upload, Button } from 'antd';
 import canvasPic from '@/utils/canvasPic';
 import bybag from '../img/bybag.jpg';
 import paybag from '../img/paybag.jpg';
@@ -8,12 +8,13 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
   const [imgUrl, setImgUrl] = useState(); // 打卡营销码
   const [payImgUrl, setPayImgUrl] = useState(); // 打卡支付码
   const [loading, setLoading] = useState(false); // 绘制等待
+  const [bagUpload, setBagUpload] = useState({ pay: null, by: null }); // 绘制等待
 
   useEffect(() => {
-    if (tabKey === '2') canvasImghan();
-  }, [tabKey]);
+    if (tabKey === '2') canvasImghan({ pay: bagUpload.pay, by: bagUpload.by });
+  }, [tabKey, bagUpload]);
 
-  const canvasImghan = () => {
+  const canvasImghan = ({ pay, by }) => {
     setLoading(true);
     const qrCodePay = document.getElementById('qrCodePay'); // 获取支付码
     const qrCodeDa = document.getElementById('qrCodeDa'); // 获取打卡码
@@ -26,7 +27,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: paybag,
+            url: pay || paybag,
             width: 1346,
             height: 1890,
           },
@@ -61,7 +62,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: bybag,
+            url: by || bybag,
             width: 2480,
             height: 3508,
           },
@@ -93,6 +94,20 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
     );
   };
 
+  const handleImgChange = (type, file) => {
+    const { status } = file;
+    if (status === 'removed') {
+      setBagUpload((old) => ({ ...old, [type]: undefined }));
+      return;
+    }
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const dataURL = e.target.result;
+      setBagUpload((old) => ({ ...old, [type]: dataURL }));
+    };
+    fileReader.readAsDataURL(file);
+  };
+
   return (
     <Spin spinning={loading}>
       <div style={{ display: 'flex', minHeight: 571.72 }}>
@@ -100,14 +115,23 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
           {payImgUrl && (
             <>
               <img src={payImgUrl} alt="" style={{ width: '100%' }} />
-              <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>支付营销码</div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
+                支付营销码{' '}
                 <a
                   id="down_sale_pay"
                   onClick={() => changeCanvasToPic(payImgUrl, '支付营销码', 'down_sale_pay')}
                 >
                   下载
                 </a>
+              </div>
+              <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
+                <Upload
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  onChange={(file) => handleImgChange('pay', file.file)}
+                >
+                  <Button>上传背景图片</Button>
+                </Upload>
               </div>
             </>
           )}
@@ -116,14 +140,23 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
           {imgUrl && (
             <>
               <img src={imgUrl} alt="" style={{ width: '100%' }} />
-              <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>打卡营销码</div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
+                打卡营销码{' '}
                 <a
                   id="down_sale_by"
                   onClick={() => changeCanvasToPic(imgUrl, '打卡营销码', 'down_sale_by')}
                 >
                   下载
                 </a>
+              </div>
+              <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
+                <Upload
+                  maxCount={1}
+                  beforeUpload={() => false}
+                  onChange={(file) => handleImgChange('by', file.file)}
+                >
+                  <Button>上传背景图片</Button>
+                </Upload>
               </div>
             </>
           )}
