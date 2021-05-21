@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 
 const QrCodeShow = ({ url = null, onCancel, title }) => {
   const changeCanvasToPic = (type, down) => {
-    const canvas = document.createElement('canvas'); //创建canvas DOM元素
+    let canvas = document.createElement('canvas'); //创建canvas DOM元素
     const ctx = canvas.getContext('2d');
     const img = new Image();
     img.setAttribute('crossOrigin', 'anonymous');
@@ -23,11 +23,11 @@ const QrCodeShow = ({ url = null, onCancel, title }) => {
   return (
     <Modal title={title} visible={url} onCancel={onCancel} footer={null}>
       <img alt="example" style={{ width: '100%' }} src={url} />
-      {/* <div style={{ color: '#868686', textAlign: 'right', marginTop: 5 }}>
+      <div style={{ color: '#868686', textAlign: 'right', marginTop: 5 }}>
         <a id="down_link" onClick={() => changeCanvasToPic('商品码', 'down_link')}>
           下载
         </a>
-      </div> */}
+      </div>
     </Modal>
   );
 };
