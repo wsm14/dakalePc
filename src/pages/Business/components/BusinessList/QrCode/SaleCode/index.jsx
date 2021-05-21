@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Spin, Upload, Button } from 'antd';
 import canvasPic from '@/utils/canvasPic';
-import bybag from '../img/bybag.png';
-import paybag from '../img/paybag.png';
 
 const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
   const [imgUrl, setImgUrl] = useState(); // 打卡营销码
@@ -27,7 +25,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: pay || paybag,
+            url: pay || 'https://resource-new.dakale.net/admin/QrCode/paybag.png',
             width: 1346,
             height: 1890,
           },
@@ -62,7 +60,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: by || bybag,
+            url: by || 'https://resource-new.dakale.net/admin/QrCode/bybag.png',
             width: 2480,
             height: 3508,
           },
