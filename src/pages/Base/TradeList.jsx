@@ -37,7 +37,7 @@ const SysTradeSet = (props) => {
       dataIndex: 'categoryName',
     },
     {
-      title: '平台服务费',
+      title: '核销订单服务费',
       align: 'center',
       dataIndex: 'parentId',
       render: (val, record) => (
