@@ -126,6 +126,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
                 <Upload
+                  maxCount={1}
                   beforeUpload={() => false}
                   onChange={(file) => handleImgChange('pay', file.file)}
                 >
@@ -150,6 +151,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
                 <Upload
+                  maxCount={1}
                   beforeUpload={() => false}
                   onChange={(file) => handleImgChange('by', file.file)}
                 >
