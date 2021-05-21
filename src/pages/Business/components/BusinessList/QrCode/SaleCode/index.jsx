@@ -106,6 +106,12 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
     fileReader.readAsDataURL(file);
   };
 
+  const uploadProps = {
+    maxCount: 1,
+    accept: 'image/*',
+    beforeUpload: () => false,
+  };
+
   return (
     <Spin spinning={loading}>
       <div style={{ display: 'flex', minHeight: 571.72 }}>
@@ -117,11 +123,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
                 支付营销码 <a onClick={() => changeCanvasToPic(payImgUrl, '支付营销码')}>下载</a>
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                <Upload
-                  maxCount={1}
-                  beforeUpload={() => false}
-                  onChange={(file) => handleImgChange('pay', file.file)}
-                >
+                <Upload {...uploadProps} onChange={(file) => handleImgChange('pay', file.file)}>
                   <Button>上传背景图片</Button>
                 </Upload>
               </div>
@@ -136,11 +138,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
                 打卡营销码 <a onClick={() => changeCanvasToPic(imgUrl, '打卡营销码')}>下载</a>
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                <Upload
-                  maxCount={1}
-                  beforeUpload={() => false}
-                  onChange={(file) => handleImgChange('by', file.file)}
-                >
+                <Upload {...uploadProps} onChange={(file) => handleImgChange('by', file.file)}>
                   <Button>上传背景图片</Button>
                 </Upload>
               </div>
