@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Spin, Upload, Button } from 'antd';
 import canvasPic from '@/utils/canvasPic';
-import bybag from '../img/bybag.jpg';
-import paybag from '../img/paybag.jpg';
+import bybag from '../img/bybag.png';
+import paybag from '../img/paybag.png';
 
 const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
   const [imgUrl, setImgUrl] = useState(); // 打卡营销码
@@ -116,13 +116,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
             <>
               <img src={payImgUrl} alt="" style={{ width: '100%' }} />
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                支付营销码{' '}
-                <a
-                  id="down_sale_pay"
-                  onClick={() => changeCanvasToPic(payImgUrl, '支付营销码', 'down_sale_pay')}
-                >
-                  下载
-                </a>
+                支付营销码 <a onClick={() => changeCanvasToPic(payImgUrl, '支付营销码')}>下载</a>
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
                 <Upload
@@ -141,13 +135,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
             <>
               <img src={imgUrl} alt="" style={{ width: '100%' }} />
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
-                打卡营销码{' '}
-                <a
-                  id="down_sale_by"
-                  onClick={() => changeCanvasToPic(imgUrl, '打卡营销码', 'down_sale_by')}
-                >
-                  下载
-                </a>
+                打卡营销码 <a onClick={() => changeCanvasToPic(imgUrl, '打卡营销码')}>下载</a>
               </div>
               <div style={{ color: '#868686', textAlign: 'center', marginTop: 5 }}>
                 <Upload

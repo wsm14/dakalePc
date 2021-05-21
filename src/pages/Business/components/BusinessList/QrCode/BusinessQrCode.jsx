@@ -19,13 +19,14 @@ const BusinessQrCode = (props) => {
 
   const changeCanvasToPic = (id, type, down) => {
     let img = id;
-    if (!['down_sale_pay', 'down_sale_by'].includes(down)) {
+    if (down) {
       const canvasImg = document.getElementById(id); // 获取canvas类型的二维码
       img = canvasImg.toDataURL('image/png'); // 将canvas对象转换为图片的data url
     }
-    const downLink = document.getElementById(down);
-    downLink.href = img;
-    downLink.download = `${visible.merchantName}-${type}`; // 图片name
+    const elink = document.createElement('a');
+    elink.href = img;
+    elink.download = `${visible.merchantName}-${type}`; // 图片name
+    elink.click();
   };
 
   return (
