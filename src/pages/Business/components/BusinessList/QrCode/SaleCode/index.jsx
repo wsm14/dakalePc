@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Spin, Upload, Button } from 'antd';
 import canvasPic from '@/utils/canvasPic';
-import bybag from '../img/bybag.jpg';
-import paybag from '../img/paybag.jpg';
+import bybag from '../img/bybag.png';
+import paybag from '../img/paybag.png';
 
 const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
   const [imgUrl, setImgUrl] = useState(); // 打卡营销码

@@ -20,6 +20,13 @@ export function fetchSpecialGoodsDetail(params) {
   });
 }
 
+// get 周边特惠 - 商品码
+export function fetchSpecialGoodsQrCode(params) {
+  return request('/admin/miniProgramUrl/specialGoodsQcodeUrl', {
+    params,
+  });
+}
+
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
   return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {

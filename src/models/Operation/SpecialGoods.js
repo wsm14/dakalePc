@@ -10,6 +10,7 @@ import {
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
   fetchSpecialGoodsImport,
+  fetchSpecialGoodsQrCode,
 } from '@/services/OperationServices';
 
 export default {
@@ -129,6 +130,12 @@ export default {
         description: '特惠活动下架成功',
       });
       callback();
+    },
+    *fetchSpecialGoodsQrCode({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsQrCode, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.qcodeUrl);
     },
     *fetchSpecialGoodsRecommend({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsRecommend, payload);
