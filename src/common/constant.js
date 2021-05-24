@@ -106,6 +106,9 @@ export const EXPERT_IS_WITHDRAW = ['不可提现', '可提现'];
 // 哒人类型
 export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
 
+// 实习豆长状态
+export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 

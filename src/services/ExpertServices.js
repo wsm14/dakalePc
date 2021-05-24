@@ -153,3 +153,30 @@ export function fetchExpertUserDistributionList(params) {
 }
 
 // 哒人分销明细 end
+
+// 实习豆长
+
+// get 实习豆长 - 统计
+export function fetchExpertTempList(params) {
+  return request('/admin/userTempLevel/listUserTempLevel', {
+    params,
+  });
+}
+
+// post 实习豆长 - 新增实习
+export function fetchExpertTempAdd(data) {
+  return request('/admin/userTempLevel/saveUserTempLevel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 实习豆长 - 停止实习
+export function fetchExpertTempStop(data) {
+  return request('/admin/userTempLevel/cancelUserTempLevel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 实习豆长 end
