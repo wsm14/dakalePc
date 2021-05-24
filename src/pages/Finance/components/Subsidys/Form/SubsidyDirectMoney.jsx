@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { SUBSIDY_TASK_ROLE } from '@/common/constant';
-import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
+import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 
 const SubsidyDirectMoney = (props) => {

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag, Button } from 'antd';
-import { MreSelect } from '@/components/MerchantDataTable';
+import { MreSelect } from '@/components/MerUserSelectTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';

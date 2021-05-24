@@ -256,7 +256,7 @@ export default [
         path: '/expert/trainee',
         name: '实习豆长',
         component: './Expert/ExpertTempList',
-        buttons: ['cancelTemp'],
+        buttons: ['save', 'cancelTemp'],
       },
       // 财务管理 finance
       {

@@ -91,7 +91,7 @@ const SubsidyManage = () => {
                 className="dkl_green_btn"
                 onClick={() => setVisible({ type: 'add', tab: tabkey, show: true })}
               >
-                充值
+                {tabkey === 'action' ? '新增' : '充值'}
               </Button>
             </AuthConsumer>
           </Space>

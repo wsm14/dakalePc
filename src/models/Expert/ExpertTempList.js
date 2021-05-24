@@ -35,7 +35,7 @@ export default {
       });
     },
     *fetchExpertTempAdd({ payload, callback }, { call }) {
-      const response = yield call(fetchExpertTempStop, payload);
+      const response = yield call(fetchExpertTempAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

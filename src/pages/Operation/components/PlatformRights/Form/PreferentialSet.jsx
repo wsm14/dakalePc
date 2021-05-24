@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button, Checkbox } from 'antd';
 import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
-import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
+import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from '../GoodsGroupSet';
 
