@@ -106,13 +106,13 @@ const ExpertTempList = (props) => {
       title: '操作',
       align: 'right',
       dataIndex: 'userTempLevelId',
-      render: (userTempLevelId, record) => (
+      render: (userTempLevelId, row) => (
         <HandleSetTable
           formItems={[
             {
               type: 'cancelTemp',
               pop: true,
-              visible: record.tempLevel !== '2',
+              visible: row.status !== '2',
               click: () => fetchExpertStop({ userTempLevelId }),
             },
           ]}
