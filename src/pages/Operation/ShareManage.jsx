@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag, Button } from 'antd';
-import { MreSelect } from '@/components/MerchantDataTable';
+import { MreSelect } from '@/components/MerUserSelectTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
@@ -220,8 +220,16 @@ const ShareManage = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'down', // 下架
-                visible: status == 1,
+                title: '审核通过',
+                auth: 'check',
+                pop: true,
+                visible: status == 0,
+                click: () => fetchVerifyAllow({ userMomentIdString }),
+              },
+              {
+                title: '下架',
+                auth: 'down', // 下架
+                visible: status == 1 && status == 0,
                 click: () =>
                   setVisibleRefuse({
                     show: true,
@@ -257,6 +265,15 @@ const ShareManage = (props) => {
   const fetchTradeList = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
+    });
+  };
+
+  // 审核通过
+  const fetchVerifyAllow = (payload) => {
+    dispatch({
+      type: 'shareManage/fetchShareVerifyAllow',
+      payload,
+      callback: childRef.current.fetchGetData,
     });
   };
 

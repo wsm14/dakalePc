@@ -136,7 +136,7 @@ const SaleAchievement = (props) => {
         },
         show: { beginDate: [preDate, preDate] },
       }}
-      rowKey={(record) => `${record.kolMomentsId}`}
+      rowKey={(record) => `${record.bdInfo + record.merchantId}`}
       dispatchType="saleAchievement/fetchGetList"
       {...saleAchievement}
     ></TableDataBlock>

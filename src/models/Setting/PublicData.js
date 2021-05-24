@@ -1,25 +1,27 @@
 import { notification } from 'antd';
+import lodash from 'lodash';
 import {
-  fetchGetHubName,
-  fetchGetHubSelect,
-  fetchGetTradeSelect,
-  fetchSetTradeSelect,
   fetchGetMreTag,
+  fetchGetHubName,
+  fetchimportExcel,
   fetchGetTasteTag,
   fetchGetKolLevel,
+  fetchGetHubSelect,
   fetchHandleDetail,
   fetchGetLogDetail,
   fetchMerCheckData,
   fetchGetJumpNative,
+  fetchGetExpertLevel,
+  fetchGetTradeSelect,
+  fetchSetTradeSelect,
+  fetchimportExcelList,
   fetchGetPropertyJSON,
   fetchGetSelectUserList,
+  fetchGetSubsidyRoleBean,
   fetchGetBuyCouponSelect,
   fetchGetFreeCouponSelect,
   fetchGetPhoneComeLocation,
   fetchGetSpecialGoodsSelect,
-  fetchimportExcel,
-  fetchimportExcelList,
-  fetchGetSubsidyRoleBean,
 } from '@/services/PublicServices';
 
 export default {
@@ -38,6 +40,7 @@ export default {
     excelList: { list: [], total: 0 },
     userList: [],
     ruleBean: 0,
+    experLevel: {},
   },
 
   reducers: {
@@ -225,6 +228,27 @@ export default {
         type: 'save',
         payload: {
           buyCoupon: { list: content.ownerCouponList, total: content.total },
+        },
+      });
+    },
+    *fetchGetExpertLevel({ payload }, { call, put }) {
+      const response = yield call(fetchGetExpertLevel, payload);
+      if (!response) return;
+      const { content } = response;
+      const { userLevelList = [] } = content;
+      const levelObj = {};
+      const duplicate = (item) => {
+        if (item.configUserLevelList && item.configUserLevelList.length) {
+          lodash.flatMap(item.configUserLevelList, duplicate);
+        } else {
+          levelObj[item.level] = item.levelName;
+        }
+      };
+      lodash.flatMap(userLevelList, duplicate);
+      yield put({
+        type: 'save',
+        payload: {
+          experLevel: levelObj,
         },
       });
     },

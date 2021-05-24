@@ -2,6 +2,13 @@ import request from '@/utils/request';
 
 // 全局接口
 
+// get 获取哒人等级映射 - 等同哒人配置列表
+export function fetchGetExpertLevel(params) {
+  return request('/admin/systemConfig/listUserLevel', {
+    params,
+  });
+}
+
 // get 获取补贴卡豆类型的卡豆数
 export function fetchGetSubsidyRoleBean(params) {
   return request('/admin/systemConfig/getByCategoryIdAndSubsidyRoleAndType', {

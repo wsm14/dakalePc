@@ -21,6 +21,7 @@ import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
+import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
 import excelProps from './components/SpecialGoods/ExcelProps';
 
 const SpecialGoods = (props) => {
@@ -34,6 +35,7 @@ const SpecialGoods = (props) => {
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
+  const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -207,7 +209,7 @@ const SpecialGoods = (props) => {
     {
       title: '其它平台价格',
       align: 'right',
-      dataIndex: 'realPrice',
+      dataIndex: 'otherPlatformPrice',
     },
     {
       title: '使用有效期',
@@ -292,11 +294,15 @@ const SpecialGoods = (props) => {
         return (
           <HandleSetTable
             formItems={[
-              // {
-              //   type: 'goodsCode',
-              //   visible: status !== '3', // '已下架', '活动中', '审核中'
-              //   click: () => fetchSpecialGoodsDetail(index, 'info'),
-              // },
+              {
+                type: 'goodsCode',
+                visible: status !== '3', // '已下架', '活动中', '审核中'
+                click: () =>
+                  fetchSpecialGoodsQrCode(
+                    { specialGoodsId },
+                    `${record.merchantName}-${record.goodsName}`,
+                  ),
+              },
               {
                 type: 'info',
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
@@ -350,6 +356,15 @@ const SpecialGoods = (props) => {
       },
     },
   ];
+
+  // 获取商品码
+  const fetchSpecialGoodsQrCode = (payload, title) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsQrCode',
+      payload,
+      callback: (url) => setQrcode({ url, title }),
+    });
+  };
 
   // 获取日志信息
   const fetchGetLogData = (payload) => {
@@ -515,6 +530,8 @@ const SpecialGoods = (props) => {
         }
         loading={loadings.models.specialGoods}
       ></RefuseModal>
+      {/* 商品码 */}
+      <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
     </>
   );
 };

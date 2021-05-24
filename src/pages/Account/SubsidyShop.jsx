@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Card, Space } from 'antd';
+import { Card, Alert } from 'antd';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
@@ -76,7 +76,7 @@ const SubsidyShop = (props) => {
       <Card
         tabList={tabList}
         activeTabKey={searchData.latitude}
-        style={{ marginBottom: 10 }}
+        style={{ marginBottom: 5 }}
         onTabChange={(key) => {
           const tabTime = {
             order: [moment(), moment()],
@@ -86,21 +86,7 @@ const SubsidyShop = (props) => {
           // 切换tab 重置时间选项
           setSearchData({ ...searchData, latitude: key, time: tabTime, page: 1, limit: 10 });
         }}
-      >
-        <SearchCard
-          tabkey={searchData.latitude}
-          searchData={searchData}
-          setSearchData={setSearchData}
-        ></SearchCard>
-      </Card>
-      <Card
-        title={
-          <Space size="large" style={{ color: '#f00' }}>
-            <span> 收入（卡豆）：{inBean}</span>
-            <span style={{ marginLeft: '50px' }}>支出（卡豆）：{outBean}</span>
-          </Space>
-        }
-        extra={
+        tabBarExtraContent={
           <ExcelButton
             dispatchType={'subsidyShop/fetchSubsidyShopList'}
             dispatchData={newSearch}
@@ -110,11 +96,28 @@ const SubsidyShop = (props) => {
                 searchData,
                 setSearchData,
                 fetchGetDetail,
-              }).slice(0, -1),
+              }),
             }}
           ></ExcelButton>
         }
       >
+        <SearchCard
+          tabkey={searchData.latitude}
+          searchData={searchData}
+          setSearchData={setSearchData}
+        ></SearchCard>
+      </Card>
+      <Alert
+        message={
+          <div style={{ color: '#f00' }}>
+            <span> 收入（卡豆）：{inBean}</span>
+            <span style={{ marginLeft: '50px' }}>支出（卡豆）：{outBean}</span>
+          </div>
+        }
+        type="info"
+        banner
+      />
+      <Card>
         <TableDataBlock
           order
           firstFetch={false}
@@ -148,5 +151,5 @@ export default connect(({ subsidyShop, loading }) => ({
   subsidyShop,
   outBean: subsidyShop.outBean,
   inBean: subsidyShop.inBean,
-  loading: loading.effects['subsidyShop/fetchSubsidyShopList'],
+  loading: loading.models.subsidyShop,
 }))(SubsidyShop);

@@ -13,7 +13,6 @@ const ExpertAllocationSet = (props) => {
   const { visible, childRef, dispatch, onClose, loading } = props;
 
   const { type = 'add', show = false, detail = {} } = visible;
-  const { isWithdraw } = detail;
 
   const [form] = Form.useForm();
 

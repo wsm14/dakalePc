@@ -1,6 +1,7 @@
 import React from 'react';
 import { VIDEO_TIME_TYPE, VIDEO_NOVICE_STATUS, VIDEO_AREA_TYPE } from '@/common/constant';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import { checkCityName } from '@/utils/utils';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const VideoNoviceDetail = (props) => {
@@ -32,7 +33,7 @@ const VideoNoviceDetail = (props) => {
     {
       label: '免费券',
       name: 'free',
-      render: (val) => val && couponsDom(val),
+      render: (val) => val !== '--' && couponsDom(val),
     },
     {
       label: '关联优惠',
@@ -48,7 +49,7 @@ const VideoNoviceDetail = (props) => {
       render: (val, row) =>
         ({
           all: VIDEO_AREA_TYPE[val],
-          district: `${row.provinceName}-${row.cityName}-${row.districtName}`,
+          district: checkCityName(row.area),
         }[val]),
     },
     {

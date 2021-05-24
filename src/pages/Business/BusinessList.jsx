@@ -10,7 +10,7 @@ import ExcelButton from '@/components/ExcelButton';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
-import BusinessQrCode from './components/BusinessList/BusinessQrCode';
+import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';

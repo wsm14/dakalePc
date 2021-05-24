@@ -13,7 +13,7 @@ import {
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
 import { NUM_INT_MAXSIX, NUM_INT } from '@/common/regExp';
-import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
+import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 

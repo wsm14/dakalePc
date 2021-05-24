@@ -10,12 +10,12 @@ const tabList = [
   {
     key: 'task',
     auth: 'task',
-    tab: '营销卡豆充值',
+    tab: '营销卡豆',
   },
   {
     key: 'direct',
     auth: 'direct',
-    tab: '平台直充',
+    tab: '直充卡豆',
   },
   {
     key: 'action',
@@ -42,8 +42,8 @@ const SubsidyManage = () => {
   const tableProp = { childRef, setVisible };
 
   const contentList = {
-    task: <TaskList {...tableProp} tabkey="task" type="platform"></TaskList>, // 营销卡豆充值
-    direct: <TaskList {...tableProp} tabkey="direct" type="directCharge"></TaskList>, // 平台直充
+    task: <TaskList {...tableProp} tabkey="task" type="platform"></TaskList>, // 营销卡豆
+    direct: <TaskList {...tableProp} tabkey="direct" type="directCharge"></TaskList>, // 直充卡豆
     action: <ActionList {...tableProp} setActionIdList={setActionIdList}></ActionList>, // 使用规则
   };
 
@@ -74,7 +74,7 @@ const SubsidyManage = () => {
                   })
                 }
               >
-                卡豆回收
+                回收
               </Button>
             </AuthConsumer>
             <AuthConsumer auth={'batchEdit'} show={tabkey === 'action'}>
@@ -91,7 +91,7 @@ const SubsidyManage = () => {
                 className="dkl_green_btn"
                 onClick={() => setVisible({ type: 'add', tab: tabkey, show: true })}
               >
-                新增
+                {tabkey === 'action' ? '新增' : '充值'}
               </Button>
             </AuthConsumer>
           </Space>

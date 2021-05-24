@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { Button, InputNumber } from 'antd';
-import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
+import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 
 const SubsidyRecycleBean = (props) => {

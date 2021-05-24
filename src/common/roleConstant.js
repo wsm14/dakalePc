@@ -15,6 +15,7 @@ export const ROLE_BUTTON_TYPE = {
   copy: '复制',
   check: '审核',
   couponAdd: '优惠券新增',
+  cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
 
@@ -25,7 +26,7 @@ export const ROLE_BUTTON_TYPE = {
   directDel: '删除平台直充',
   directEnd: '结束平台直充',
   directInfo: '平台直充任务详情',
-  directSave: '新增平台直充',
+  directSave: '直充卡豆充值',
   directDetail: '平台直充补贴详情',
   destoryDetail: '核销明细',
 
