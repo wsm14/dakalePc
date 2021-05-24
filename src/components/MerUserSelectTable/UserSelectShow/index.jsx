@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -9,18 +9,15 @@ const UserSelectShow = ({
   showSelect,
   keys = [],
   list = [],
-  setSelectList,
   otherColumns = [],
+  onOk,
   onCancelShowSelect,
 }) => {
-  const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
-
   // table 表头
   const getColumns = [
     {
       title: '昵称',
       dataIndex: 'username',
-      width: 200,
       render: (val) => (
         <Ellipsis length={10} tooltip lines={2}>
           {val}
@@ -60,16 +57,16 @@ const UserSelectShow = ({
         rowKey={(record) => `${record.userIdString}`}
         rowSelection={{
           selectedRowKeys: keys,
-          onChange: (val) => setUserList({ list, keys: val }),
+          onChange: (val, resultList) => onOk({ list, keys: val, resultList }),
         }}
         list={list}
         total={list.length}
       ></TableDataBlock>
       <UserSelect
-        keys={userList.keys}
+        keys={keys}
         visible={showSelect}
-        userList={userList.list}
-        onOk={setUserList}
+        userList={list}
+        onOk={onOk}
         onCancel={() => onCancelShowSelect(false)}
       ></UserSelect>
     </div>

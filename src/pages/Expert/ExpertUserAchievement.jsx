@@ -49,8 +49,16 @@ const ExpertUserAchievement = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: 'ID',
+      dataIndex: 'kolUserId',
+    },
+    {
       title: '昵称',
       dataIndex: 'username',
+    },
+    {
+      title: '豆号',
+      dataIndex: 'beanCode',
     },
     {
       title: '身份',

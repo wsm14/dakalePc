@@ -3,122 +3,138 @@ import { Modal } from 'antd';
 import { connect } from 'umi';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import Search from './Search';
 
 const MreSelect = ({
   type = 'select',
   visible,
   keys = [],
-  mreList = [],
   onOk,
   onCancel,
-  subsidyList = [],
-  dispatchType = 'businessList/fetchGetList',
+  userList = [],
+  tableList = [],
+  dispatchType = 'userList/fetchGetList',
   params = {},
   loading,
+  experLevel,
 }) => {
   const childRef = useRef(); // 表格ref
-  const [selectMre, setSelectMre] = useState([]); // 选中的店铺
-  const [selectMreKey, setSelectMreKey] = useState([]);
+  const [selectUser, setSelectUser] = useState([]); // 选中的店铺
+  const [selectKey, setSelectKey] = useState([]);
 
   useEffect(() => {
-    visible && type === 'select' && setSelectMreKey(keys);
+    visible && type === 'select' && setSelectKey(keys);
   }, [visible]);
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '用户昵称',
+      name: 'username',
+    },
+    {
+      label: '用户豆号',
+      name: 'beanCode',
+    },
+    {
+      label: '用户手机号',
+      name: 'mobile',
+    },
+  ];
 
   // table 表头
   const getColumns = [
     {
-      title: '店铺名称',
-      dataIndex: 'merchantName',
+      title: '昵称',
+      dataIndex: 'username',
       render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '暂未授权'}
-        </Ellipsis>
-      ),
-    },
-    {
-      title: '店铺账号',
-      dataIndex: 'account',
-    },
-    {
-      title: '所属商圈',
-      dataIndex: 'businessHub',
-    },
-    {
-      title: '经营类目',
-      dataIndex: 'topCategoryName',
-    },
-    {
-      title: '地区',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
-    },
-    {
-      title: '详细地址',
-      dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
+        <Ellipsis length={10} tooltip lines={2}>
           {val}
         </Ellipsis>
       ),
+    },
+    {
+      title: '级别',
+      dataIndex: 'level',
+      render: (val) => experLevel[val],
+    },
+    {
+      title: '豆号',
+      dataIndex: 'beanCode',
+    },
+    {
+      title: '手机号',
+      dataIndex: 'mobile',
+      render: (val) => val || '小程序用户',
+    },
+    {
+      title: 'ID',
+      dataIndex: 'userIdString',
+    },
+    {
+      title: '注册地',
+      dataIndex: 'provinceName',
+      render: (val, row) =>
+        val ? `${val}/${row.cityName || '--'}/${row.districtName || '--'}` : '--',
     },
   ];
 
   const rowSelection = {
     preserveSelectedRowKeys: true,
-    selectedRowKeys: selectMreKey,
+    selectedRowKeys: selectKey,
     onChange: (val, list) => {
       // 先去重处理 排除重复已选数据
       // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
       const obj = {};
-      const newSelectList = [...mreList, ...list]
+      const newSelectList = [...userList, ...list]
         .reduce((item, next) => {
-          next && obj[next.userMerchantIdString]
+          next && obj[next.userIdString]
             ? ''
-            : next && (obj[next.userMerchantIdString] = true && item.push(next));
+            : next && (obj[next.userIdString] = true && item.push(next));
           return item;
         }, [])
-        .filter((item) => item && val.includes(item.userMerchantIdString));
-      setSelectMreKey(val);
-      setSelectMre(newSelectList);
+        .filter((item) => item && val.includes(item.userIdString));
+
+      setSelectKey(val);
+      setSelectUser(newSelectList);
     },
   };
 
   return (
     <Modal
-      title={`${type === 'select' ? '选择发布店铺' : '查看店铺'}`}
+      title={`${type === 'select' ? '选择用户' : '查看用户'}`}
       destroyOnClose
       maskClosable
-      width={900}
+      width={1100}
       visible={visible}
       footer={type === 'select' ? undefined : false}
-      okText={`确定（已选${selectMreKey.length}项）`}
+      okText={`确定（已选${selectKey.length}项）`}
       onOk={() => {
-        onOk({ keys: selectMreKey, list: selectMre });
+        onOk({ keys: selectKey, list: selectUser, resultList: selectUser });
         onCancel();
       }}
       onCancel={onCancel}
     >
-      <Search cRef={childRef}></Search>
       <TableDataBlock
         order
         noCard={false}
         size="middle"
         tableSize="small"
         cRef={childRef}
+        searchItems={searchItems}
         columns={getColumns}
-        loading={loading.effects['businessList/fetchGetList']}
-        rowKey={(record) => `${record.userMerchantIdString}`}
+        loading={loading.effects['userList/fetchGetList']}
+        rowKey={(record) => `${record.userIdString}`}
         dispatchType={dispatchType}
-        params={{ ...params, bankStatus: 3, businessStatus: 1 }}
+        params={{ ...params }}
         rowSelection={type === 'select' ? rowSelection : undefined}
-        {...subsidyList}
+        {...tableList}
       ></TableDataBlock>
     </Modal>
   );
 };
 
-export default connect(({ businessList, loading }) => ({
-  subsidyList: businessList.subsidyList,
+export default connect(({ userList, baseData, loading }) => ({
+  tableList: userList.list,
+  experLevel: baseData.experLevel,
   loading,
 }))(MreSelect);

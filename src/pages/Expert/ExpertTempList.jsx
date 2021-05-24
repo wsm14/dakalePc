@@ -158,7 +158,11 @@ const ExpertTempList = (props) => {
         {...list}
       ></TableDataBlock>
       {/* 新增 */}
-      <ExpertTempSet visible={visible} onClose={() => setVisible(false)}></ExpertTempSet>
+      <ExpertTempSet
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ExpertTempSet>
     </>
   );
 };

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import lodash from 'lodash';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { UserSelect, UserSelectShow } from '@/components/MerUserSelectTable';
+import { UserSelectShow } from '@/components/MerUserSelectTable';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
@@ -11,15 +12,19 @@ const ExpertTempSet = (props) => {
   const [form] = Form.useForm();
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择弹窗
-  const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
+  const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
+  const [maxLevel, setMaxLevel] = useState(999);
 
   // 新增
   const handleUpAction = () => {
     form.validateFields().then((values) => {
+      const { beginDate } = values;
       dispatch({
         type: 'expertTempList/fetchExpertTempAdd',
         payload: {
           ...values,
+          beginDate: beginDate[0].format('YYYY-MM-DD'),
+          endDate: beginDate[1].format('YYYY-MM-DD'),
         },
         callback: closeDrawer,
       });
@@ -34,7 +39,10 @@ const ExpertTempSet = (props) => {
 
   // 设置form表单值 店铺id
   useEffect(() => {
-    form.setFieldsValue({ userIdList: userList.keys.toString() });
+    const { resultList } = userList;
+    const maxLevelUser = lodash.maxBy(resultList, (item) => item.level) || {};
+    setMaxLevel(Number(maxLevelUser.level || 999));
+    form.setFieldsValue({ userIdList: userList.keys });
   }, [userList]);
 
   const formItems = [
@@ -58,15 +66,22 @@ const ExpertTempSet = (props) => {
           {...userList}
           showSelect={visibleSelect}
           onCancelShowSelect={() => setVisibleSelect(false)}
-          onOk={setUserList}
+          onOk={(val) => {
+            form.setFieldsValue({ tempLevel: undefined });
+            setUserList(val);
+          }}
         ></UserSelectShow>
       ),
     },
     {
       label: '实习级别',
       name: 'tempLevel',
-      type: 'select',
-      select: experLevel,
+      type: 'radio',
+      select: Object.keys(experLevel).map((item) => ({
+        name: experLevel[item],
+        value: `${item}`,
+        disabled: maxLevel >= Number(item),
+      })),
     },
     {
       label: '实习期',
@@ -81,6 +96,7 @@ const ExpertTempSet = (props) => {
     title: '新增',
     visible,
     onClose,
+    closeCallBack: () => setUserList({ keys: [], list: [], resultList: [] }),
     footer: (
       <Button onClick={handleUpAction} type="primary" loading={loading}>
         提交
