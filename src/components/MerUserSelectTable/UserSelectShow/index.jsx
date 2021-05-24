@@ -4,8 +4,15 @@ import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSelect from '../UserSelect';
 
-const UserSelectShow = ({ keys = [], list = [], experLevel, setSelectList, otherColumns = [] }) => {
-  const [visibleSelect, setVisibleSelect] = useState(false); // 选择弹窗
+const UserSelectShow = ({
+  experLevel,
+  showSelect,
+  keys = [],
+  list = [],
+  setSelectList,
+  otherColumns = [],
+  onCancelShowSelect,
+}) => {
   const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
 
   // table 表头
@@ -53,17 +60,17 @@ const UserSelectShow = ({ keys = [], list = [], experLevel, setSelectList, other
         rowKey={(record) => `${record.userIdString}`}
         rowSelection={{
           selectedRowKeys: keys,
-          onChange: (val) => setSelectList({ list, keys: val }),
+          onChange: (val) => setUserList({ list, keys: val }),
         }}
         list={list}
         total={list.length}
       ></TableDataBlock>
       <UserSelect
         keys={userList.keys}
-        visible={visibleSelect}
+        visible={showSelect}
         userList={userList.list}
-        onOk={(val) => setUserList(val)}
-        onCancel={() => setVisibleSelect(false)}
+        onOk={setUserList}
+        onCancel={() => onCancelShowSelect(false)}
       ></UserSelect>
     </div>
   );

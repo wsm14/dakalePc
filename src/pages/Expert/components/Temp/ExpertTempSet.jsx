@@ -53,7 +53,13 @@ const ExpertTempSet = (props) => {
       label: '适用店铺',
       type: 'noForm',
       formItem: (
-        <UserSelectShow key="UserTable" {...userList} setSelectList={setUserList}></UserSelectShow>
+        <UserSelectShow
+          key="UserTable"
+          {...userList}
+          showSelect={visibleSelect}
+          onCancelShowSelect={() => setVisibleSelect(false)}
+          onOk={setUserList}
+        ></UserSelectShow>
       ),
     },
     {
@@ -85,13 +91,6 @@ const ExpertTempSet = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       <FormCondition form={form} formItems={formItems}></FormCondition>
-      <UserSelect
-        keys={userList.keys}
-        visible={visibleSelect}
-        userList={userList.list}
-        onOk={(val) => setUserList(val)}
-        onCancel={() => setVisibleSelect(false)}
-      ></UserSelect>
     </DrawerCondition>
   );
 };

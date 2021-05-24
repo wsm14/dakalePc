@@ -229,7 +229,7 @@ const ShareManage = (props) => {
               {
                 title: '下架',
                 auth: 'down', // 下架
-                visible: status == 1,
+                visible: status == 1 && status == 0,
                 click: () =>
                   setVisibleRefuse({
                     show: true,
