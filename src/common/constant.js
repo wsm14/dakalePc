@@ -256,10 +256,10 @@ export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 
 // 补贴管理 补贴类型
 export const SUBSIDY_TYPE = {
-  platform: '营销卡豆充值',
+  platform: '营销卡豆',
   directCharge: '平台直充',
-  recycleDirectCharge: '平台直充回收',
-  recyclePlatform: '营销卡豆回收',
+  // recycleDirectCharge: '平台直充回收',
+  // recyclePlatform: '营销卡豆回收',
   platformSubsidy: '新手任务补贴',
 };
 
