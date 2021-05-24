@@ -128,7 +128,15 @@ export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 export const PUZZLE_AD_STATUS = ['下架', '上架'];
 
 // 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享结束 6-预发布
-export const SHARE_STATUS = [false, '已上架', false, '已下架', '已删除', '分享结束', '即将发布'];
+export const SHARE_STATUS = [
+  '待审核',
+  '已上架',
+  '审核拒绝',
+  '已下架',
+  '已删除',
+  '分享结束',
+  '即将发布',
+];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];

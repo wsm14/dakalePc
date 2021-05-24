@@ -220,7 +220,15 @@ const ShareManage = (props) => {
           <HandleSetTable
             formItems={[
               {
-                type: 'down', // 下架
+                title: '审核通过',
+                auth: 'check',
+                pop: true,
+                visible: status == 0,
+                click: () => fetchVerifyAllow({ userMomentIdString }),
+              },
+              {
+                title: '下架',
+                auth: 'down', // 下架
                 visible: status == 1,
                 click: () =>
                   setVisibleRefuse({
@@ -257,6 +265,15 @@ const ShareManage = (props) => {
   const fetchTradeList = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
+    });
+  };
+
+  // 审核通过
+  const fetchVerifyAllow = (payload) => {
+    dispatch({
+      type: 'shareManage/fetchShareVerifyAllow',
+      payload,
+      callback: childRef.current.fetchGetData,
     });
   };
 

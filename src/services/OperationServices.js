@@ -128,6 +128,14 @@ export function fetchShareStatusClose(data) {
   });
 }
 
+// post 分享管理 - 审核通过
+export function fetchShareVerifyAllow(data) {
+  return request('/admin/marketingManagement/simpleVerifyMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 分享管理 - 发布分享
 export function fetchShareVideoPush(data) {
   return request('/admin/marketingManagement/publishMerchantMoment', {

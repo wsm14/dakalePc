@@ -6,6 +6,7 @@ import {
   fetchShareDetail,
   fetchShareVideoPush,
   fetchShareStatusClose,
+  fetchShareVerifyAllow,
   fetchShareGetBeanDetail,
   fetchShareGetPlatformBean,
   fetchShareGetAccountBean,
@@ -60,6 +61,15 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchShareVerifyAllow({ payload, callback }, { call }) {
+      const response = yield call(fetchShareVerifyAllow, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `审核通过成功`,
+      });
+      callback();
     },
     *fetchShareVideoPush({ payload, callback }, { call }) {
       const response = yield call(fetchShareVideoPush, payload);

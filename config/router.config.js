@@ -365,7 +365,7 @@ export default [
         path: '/operation/share',
         name: '视频管理',
         component: './Operation/ShareManage',
-        buttons: ['save', 'info', 'down', 'diary', 'peasDetail'],
+        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail'],
       },
       {
         path: '/operation/goods',
