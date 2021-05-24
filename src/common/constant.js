@@ -267,7 +267,7 @@ export const SUBSIDY_TYPE = {
 export const SUBSIDY_BEAN_TYPE = { out: '补贴', in: '回收' };
 
 // 补贴管理 任务列表 补贴角色
-export const SUBSIDY_TASK_ROLE = { merchant: '店铺' };
+export const SUBSIDY_TASK_ROLE = { merchant: '店铺', user: '用户' };
 
 // 补贴管理 行为管理 补贴角色
 export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺' };
