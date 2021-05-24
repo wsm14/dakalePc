@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
+import { UserSelect, UserSelectShow } from '@/components/MerUserSelectTable';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
@@ -10,10 +10,8 @@ const ExpertTempSet = (props) => {
   const { dispatch, visible, childRef, experLevel, onClose, loading } = props;
   const [form] = Form.useForm();
 
-  // 选择店铺弹窗
-  const [visibleSelect, setVisibleSelect] = useState(false);
-  // 选择店铺后回显的数据
-  const [userList, setUserList] = useState({ keys: [], list: [] });
+  const [visibleSelect, setVisibleSelect] = useState(false); // 选择弹窗
+  const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
 
   // 新增
   const handleUpAction = () => {
@@ -55,7 +53,7 @@ const ExpertTempSet = (props) => {
       label: '适用店铺',
       type: 'noForm',
       formItem: (
-        <MreSelectShow key="MreTable" {...userList} setUserList={setUserList}></MreSelectShow>
+        <UserSelectShow key="UserTable" {...userList} setSelectList={setUserList}></UserSelectShow>
       ),
     },
     {
@@ -87,13 +85,13 @@ const ExpertTempSet = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       <FormCondition form={form} formItems={formItems}></FormCondition>
-      <MreSelect
+      <UserSelect
         keys={userList.keys}
         visible={visibleSelect}
         userList={userList.list}
         onOk={(val) => setUserList(val)}
         onCancel={() => setVisibleSelect(false)}
-      ></MreSelect>
+      ></UserSelect>
     </DrawerCondition>
   );
 };
