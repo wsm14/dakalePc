@@ -77,11 +77,13 @@ const ExpertTempSet = (props) => {
       label: '实习级别',
       name: 'tempLevel',
       type: 'radio',
-      select: Object.keys(experLevel).map((item) => ({
-        name: experLevel[item],
-        value: `${item}`,
-        disabled: maxLevel >= Number(item),
-      })),
+      select: Object.keys(experLevel)
+        .filter((i) => i != 0)
+        .map((item) => ({
+          name: experLevel[item],
+          value: `${item}`,
+          disabled: maxLevel >= Number(item),
+        })),
     },
     {
       label: '实习期',
