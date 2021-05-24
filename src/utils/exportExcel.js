@@ -18,7 +18,14 @@ const exportExcel = ({
   filterData = ['序号'],
 }) => {
   const { key = 'dataIndex', headerName = 'title' } = fieldNames;
-
+  console.log({
+    header,
+    data,
+    fileName,
+    fieldNames,
+    fieldRender,
+    filterData,
+  });
   // 逐级获取value
   const getArrKeyVal = (rowkey, rowData) => {
     const _len = rowkey.length;

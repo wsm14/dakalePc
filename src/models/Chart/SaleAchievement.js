@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { fetchSaleAchievementList } from '@/services/ChartServices';
 
 export default {
@@ -30,11 +31,18 @@ export default {
         },
       });
     },
-    *fetchGetExcel({ payload, callBack }, { call }) {
+    *fetchGetExcel({ payload, callback }, { call }) {
       const response = yield call(fetchSaleAchievementList, payload);
       if (!response) return;
       const { content } = response;
-      callBack(content.recordList);
+      if (!content.recordList.length) {
+        notification.success({
+          message: '温馨提示',
+          description: '请勿导出空数据',
+        });
+        return;
+      }
+      callback(content.recordList);
     },
   },
 };

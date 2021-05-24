@@ -121,7 +121,12 @@ const SaleAchievement = (props) => {
           dispatchData={get()}
           exportProps={{
             header: getColumns,
-            fieldRender: { merchantName: (val) => val, address: (val) => val },
+            fieldRender: {
+              merchantName: (val) => val,
+              scan: (val) => val,
+              verificationFee: (val) => val,
+              totalFee: (val) => val,
+            },
           }}
         ></ExcelButton>
       )}
