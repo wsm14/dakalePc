@@ -5,7 +5,6 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProceDataForm from './components/Withdraw/Form/ProceDataForm';
-import moment from 'moment';
 
 const WithdrawRegular = (props) => {
   const { loading, list } = props;
@@ -24,7 +23,6 @@ const WithdrawRegular = (props) => {
         ...row,
         monthIsFree: Number(monthIsFree),
         areaCode: code,
-        effectiveTime: moment(row.effectiveTime, 'YYYY-MM-DD HH:mm:ss'),
       },
     });
   };
@@ -61,11 +59,6 @@ const WithdrawRegular = (props) => {
             {indexs + 1}、{itemCon}
           </div>
         )),
-    },
-    {
-      title: '生效时间',
-      align: 'center',
-      dataIndex: 'effectiveTime',
     },
     {
       title: '最后修改人',

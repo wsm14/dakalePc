@@ -12,28 +12,26 @@ const ProceDataForm = (props) => {
   const { childRef, visible = {}, onClose, loading, dispatch } = props;
   const [form] = Form.useForm();
 
-  const textDetail = () => [
-    `单笔提现金额最低为${form.getFieldValue('singleMinMoney') || 0}元人民币（${
-      form.getFieldValue('singleMinMoney') * 100 || 0
-    }卡豆)`,
-    `每日可申请提现${form.getFieldValue('dayLimitCount') || 0}次，若当日次数已满，请次日申请；`,
-    `提现金额不满${form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0}元人民币（${
-      form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
-    }卡豆），每次提现手续费为${
-      form.getFieldValue(['handlingFeeList', 0, 'handlingFee']) || 0
-    }元人民币，超过或包含${form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) || 0}元人民币（${
-      form.getFieldValue(['handlingFeeList', 0, 'maxMoney']) * 100 || 0
-    }卡豆）${
-      form.getFieldValue(['handlingFeeList', 1, 'handlingFee']) == 0
-        ? '免提现手续费；'
-        : '每次提现手续费为' + form.getFieldValue(['handlingFeeList', 1, 'handlingFee']) + '元；'
-    }`,
-    '每月首次提现免手续费；',
-  ];
+  const textDetail = () => {
+    const key = 'handlingFeeList';
+    const getData = (name) => form.getFieldValue(name) || 0;
+    const handlingFeeTop = getData([key, 0, 'handlingFee']);
+    const handlingFee = getData([key, 1, 'handlingFee']);
+    const maxMoney = getData([key, 0, 'maxMoney']);
+    return [
+      `单笔提现金额最低为${getData('singleMinMoney')}元人民币（${getData('singleMinMoney') * 100 }卡豆)`,
+      `每日可申请提现${getData('dayLimitCount')}次，若当日次数已满，请次日申请；`,
+      `提现金额不满${maxMoney}元人民币（${
+        maxMoney * 100
+      }卡豆），每次提现手续费为${handlingFeeTop}元人民币，超过或包含${maxMoney}元人民币（${
+        maxMoney * 100
+      }卡豆）${!handlingFee ? '免提现手续费；' : `每次提现手续费为${handlingFee}元；`}`,
+      '每月首次提现免手续费；',
+    ];
+  };
 
   const {
     show = false,
-    type = 'add',
     detail = {
       monthIsFree: 1,
       contentList: [
@@ -50,7 +48,7 @@ const ProceDataForm = (props) => {
 
   // 对应字段修改，contentList 更新
 
-  const handleChanges = (type, index) => {
+  const handleChanges = (type) => {
     let list = textDetail(); // 更新后的不可修改数据
     const freeStatus = form.getFieldValue('monthIsFree'); // 每月首次提现免手续费状态开关
     const formListValue = form.getFieldValue('contentList'); // 表单内当前list 数据
@@ -83,9 +81,8 @@ const ProceDataForm = (props) => {
         configWithdrawId: detail.configWithdrawId,
         ...values,
         areaCode: values.areaCode ? values.areaCode[values.areaCode.length - 1] : '',
-        areaType: (values.areaCode ==""|| values.areaCode == undefined) ? 'all' : 'city',
+        areaType: values.areaCode == '' || values.areaCode == undefined ? 'all' : 'city',
         handlingFeeList: handlingFeeList,
-        effectiveTime: values.effectiveTime.format('YYYY-MM-DD HH:mm:ss'),
         monthIsFree: values.monthIsFree ? 1 : 0,
         contentList: values.contentList,
       };
@@ -130,7 +127,12 @@ const ProceDataForm = (props) => {
           </div>
           <div className={styles.flexCon}>
             <Form.Item label="每日提现上限笔数" name="dayLimitCount" rules={[{ required: true }]}>
-              <InputNumber onChange={(val) => handleChanges(val)} style={{ width: 200 }}  min={0} precision={0} />
+              <InputNumber
+                onChange={(val) => handleChanges(val)}
+                style={{ width: 200 }}
+                min={0}
+                precision={0}
+              />
             </Form.Item>
             <span className={styles.spanAfter} style={{ marginRight: 10 }}>
               笔
@@ -158,13 +160,6 @@ const ProceDataForm = (props) => {
       label: '文案显示',
       name: 'regular',
       formItem: <WithdrawFormList form={form}></WithdrawFormList>,
-    },
-    {
-      label: '生效时间',
-      name: 'effectiveTime',
-      type: 'dataPicker',
-      showTime: true,
-      format: 'YYYY-MM-DD HH:mm:ss',
     },
   ];
   const modalProps = {
