@@ -270,8 +270,8 @@ export const checkFileData = (fileData) => {
       break;
     case 'object':
       aimg = fileData.fileList.map((item) => {
-        if (item.url) return item.url;
-        return item.originFileObj;
+        if (item.originFileObj) return item.originFileObj;
+        return item.url;
       });
       break;
     default:

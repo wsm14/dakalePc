@@ -25,7 +25,12 @@ const ExpertAllocationSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { levelExtraParamObject, certificate } = values;
+      const {
+        levelExtraParamObject,
+        certificate,
+        teamCommission = 0,
+        shareCommission = 0,
+      } = values;
       const { levelIcon, upLevelIcon } = levelExtraParamObject;
       aliOssUpload([
         ...checkFileData(levelIcon),
@@ -38,9 +43,9 @@ const ExpertAllocationSet = (props) => {
             edit: 'expertAllocation/fetchExpertAllocationEdit',
           }[type],
           payload: {
-            shareCommission: 0,
-            teamCommission: 0,
             ...values,
+            shareCommission,
+            teamCommission,
             userLevelId: detail.userLevelId,
             level: detail.level,
             nextLevel: detail.nextLevel,
