@@ -76,10 +76,16 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           render: (val) => ADD_AND_MINUS[val],
         },
         {
-          title: '类型',
+          title: '卡豆类型',
           align: 'center',
           dataIndex: 'identificationType',
           render: (val) => SUBSIDY_TYPE[val],
+        },
+        {
+          title: '类型',
+          align: 'center',
+          dataIndex: 'detailType',
+          render: (val) => (val == 'minus' ? '补贴' : '回收'),
         },
         {
           title: '角色',
@@ -107,7 +113,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '操作',
           align: 'center',
           dataIndex: 'time',
-          render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole,row)),
+          render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
         },
       ];
     // 按日显示
