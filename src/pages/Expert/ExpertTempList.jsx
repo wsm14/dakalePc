@@ -13,6 +13,8 @@ const ExpertTempList = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增弹窗
 
+  const { 0: noneData, ...other } = experLevel; // 排除0 - 普通用户
+
   useEffect(() => {
     fetchGetExpertLevel();
   }, []);
@@ -31,7 +33,7 @@ const ExpertTempList = (props) => {
       label: '实习级别',
       type: 'select',
       name: 'tempLevel',
-      select: experLevel,
+      select: { ...other },
     },
     {
       label: '实习状态',
