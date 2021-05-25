@@ -58,6 +58,7 @@ export default {
         useStartTime,
         useEndTime,
         buyDesc = '[]',
+        activityTimeRule: activeTime,
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
@@ -65,8 +66,9 @@ export default {
       // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
       if (['info', 'edit', 'again'].includes(type)) {
         newDetail = {
-          activityStartTime: [moment(activityStartTime), moment(activityEndTime)],
-          useStartTime: [moment(useStartTime), moment(useEndTime)],
+          activityStartTime:
+            activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],
+          useStartTime: useTimeRule === 'fixed' ? [moment(useStartTime), moment(useEndTime)] : [],
           timeSplit: useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part',
           timeType: useTime === '00:00-23:59' ? useTime : 'part',
           useTime:
