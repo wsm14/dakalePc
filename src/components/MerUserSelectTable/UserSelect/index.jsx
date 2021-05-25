@@ -39,6 +39,10 @@ const MreSelect = ({
       label: '用户手机号',
       name: 'mobile',
     },
+    {
+      label: '用户ID',
+      name: 'userIdString',
+    },
   ];
 
   // table 表头
