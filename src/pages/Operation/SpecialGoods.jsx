@@ -294,7 +294,7 @@ const SpecialGoods = (props) => {
             formItems={[
               {
                 type: 'goodsCode',
-                visible: status !== '3', // '已下架', '活动中', '审核中'
+                visible: status !== '3' && deleteFlag == '1', // '已下架', '活动中', '审核中' && 未删除
                 click: () =>
                   fetchSpecialGoodsQrCode(
                     { specialGoodsId },
@@ -308,7 +308,7 @@ const SpecialGoods = (props) => {
               {
                 title: '下架',
                 auth: 'down',
-                visible: status == '1' && deleteFlag == '1',
+                visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
                 click: () =>
                   setVisibleRefuse({
                     show: true,
@@ -318,12 +318,12 @@ const SpecialGoods = (props) => {
               },
               {
                 type: 'edit',
-                visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始
+                visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
                 click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
               },
               {
                 type: 'check',
-                visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中
+                visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
                 click: () => fetchSpecialGoodsDetail(index, 'info'),
               },
               // {
@@ -333,7 +333,7 @@ const SpecialGoods = (props) => {
               // },
               {
                 type: 'again',
-                visible: ['0'].includes(status) && deleteFlag == '1', // 已下架
+                visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
                 click: () => fetchSpecialGoodsDetail(index, 'again'),
               },
               {
@@ -487,6 +487,9 @@ const SpecialGoods = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.specialGoodsId}`}
         rowSelection={{
+          getCheckboxProps: ({ status, deleteFlag }) => ({
+            disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除
+          }),
           onChange: setGoodsList,
         }}
         dispatchType="specialGoods/fetchGetList"
