@@ -58,6 +58,7 @@ export default {
         useStartTime,
         useEndTime,
         buyDesc = '[]',
+        useTimeRule,
         activityTimeRule: activeTime,
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',

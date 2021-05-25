@@ -12,7 +12,7 @@ const RegularDetail = (props) => {
       render: (val, row) =>
         val == 'infinite'
           ? `长期`
-          : `${row.activityStartTime[0].format('YYYY-MM-DD')}-${row.activityStartTime[1].format(
+          : `${row.activityStartTime[0].format('YYYY-MM-DD')}~${row.activityStartTime[1].format(
               'YYYY-MM-DD',
             )}`,
     },
