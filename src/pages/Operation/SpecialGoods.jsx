@@ -294,7 +294,7 @@ const SpecialGoods = (props) => {
             formItems={[
               {
                 type: 'goodsCode',
-                visible: status !== '3' && deleteFlag == '1', // '已下架', '活动中', '审核中' && 未删除
+                visible: ['1', '2'].includes(status) && deleteFlag == '1', // '活动中', '审核中' && 未删除
                 click: () =>
                   fetchSpecialGoodsQrCode(
                     { specialGoodsId },
