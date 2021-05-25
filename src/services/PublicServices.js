@@ -114,32 +114,10 @@ export function fetchGetHubSelect(params) {
   });
 }
 
-// get 获取商圈名称
-export function fetchGetHubName(params) {
-  return request('/admin/businessHub/getBusinessHubById', {
-    params,
-  });
-}
-
 // get 店铺标签
 export function fetchGetMreTag(params) {
   return request('/admin/systemConfig/listConfigMerchantTag', {
     params,
-  });
-}
-
-// get 行业类目 - 勾选列表
-export function fetchGetTradeSelect(params) {
-  return request('/common/category/listSpecialGoodsCategory', {
-    params,
-  });
-}
-
-// post 行业类目 - 勾选设置
-export function fetchSetTradeSelect(data) {
-  return request('/common/category/setSpecialGoodsCategory', {
-    method: 'POST',
-    data,
   });
 }
 

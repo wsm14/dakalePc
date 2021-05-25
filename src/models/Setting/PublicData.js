@@ -2,7 +2,6 @@ import { notification } from 'antd';
 import lodash from 'lodash';
 import {
   fetchGetMreTag,
-  fetchGetHubName,
   fetchimportExcel,
   fetchGetTasteTag,
   fetchGetKolLevel,
@@ -12,8 +11,6 @@ import {
   fetchMerCheckData,
   fetchGetJumpNative,
   fetchGetExpertLevel,
-  fetchGetTradeSelect,
-  fetchSetTradeSelect,
   fetchimportExcelList,
   fetchGetPropertyJSON,
   fetchGetSelectUserList,
@@ -182,27 +179,6 @@ export default {
       if (!response) return;
       const { content } = response;
       content && callback(content);
-    },
-    *fetchGetTradeSelect({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetTradeSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      content && callback(content.categoryIds);
-    },
-    *fetchGetHubName({ payload, callback }, { call, put }) {
-      const response = yield call(fetchGetHubName, payload);
-      if (!response) return;
-      const { content } = response;
-      content && callback(content.businessHubList);
-    },
-    *fetchSetTradeSelect({ payload, callback }, { call, put }) {
-      const response = yield call(fetchSetTradeSelect, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '设置成功',
-      });
-      callback();
     },
     *fetchMerCheckData({ payload, callback }, { call }) {
       const response = yield call(fetchMerCheckData, payload);

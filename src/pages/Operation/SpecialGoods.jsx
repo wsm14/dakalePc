@@ -17,7 +17,6 @@ import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
@@ -29,7 +28,6 @@ const SpecialGoods = (props) => {
   const { list } = specialGoods;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
@@ -494,10 +492,6 @@ const SpecialGoods = (props) => {
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
-      <SpecialGoodsTrade
-        visible={visible}
-        onCancel={() => setVisible({ show: false })}
-      ></SpecialGoodsTrade>
       <PreferentialDrawer
         childRef={childRef}
         visible={visibleSet}
