@@ -51,7 +51,7 @@ const MreSelect = ({
       title: '昵称',
       dataIndex: 'username',
       render: (val) => (
-        <Ellipsis length={10} tooltip lines={2}>
+        <Ellipsis length={10} tooltip>
           {val}
         </Ellipsis>
       ),
@@ -108,7 +108,7 @@ const MreSelect = ({
       title={`${type === 'select' ? '选择用户' : '查看用户'}`}
       destroyOnClose
       maskClosable
-      width={1100}
+      width={1000}
       visible={visible}
       footer={type === 'select' ? undefined : false}
       okText={`确定（已选${selectKey.length}项）`}

@@ -28,10 +28,9 @@ const SearchCondition = (props) => {
   } = props;
 
   const [ownForm] = Form.useForm();
-  // 动态获取当前屏幕大小
-  const screens = useBreakpoint();
-  // 展开状态
-  const [expand, setExpand] = useState(false);
+
+  const screens = useBreakpoint(); // 动态获取当前屏幕大小
+  const [expand, setExpand] = useState(componentSize !== 'default' ? true : false); // 展开状态
 
   // 重置
   const handleReset = () => {
