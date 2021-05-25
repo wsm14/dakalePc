@@ -332,6 +332,7 @@ export const BANNER_PORT_LINK = {
     hotWeal: '爆品福利',
     wanderAroundMainBanner: '逛逛主Banner',
     wanderAroundCapsule: '逛逛胶囊位',
+    wanderAroundGoodMerchant: '逛逛周边好店',
   },
   merchant: {
     merchantMain: '商家工作台',
