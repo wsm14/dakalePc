@@ -76,6 +76,7 @@ const SharePushSet = (props) => {
       name: 'rewardStartTime',
       type: 'rangePicker',
       visible: timeSelect === '1',
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '单次曝光打赏',

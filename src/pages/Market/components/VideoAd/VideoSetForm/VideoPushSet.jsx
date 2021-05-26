@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
 import { NUM_PATTERN } from '@/common/regExp';
 import { VIDEO_AREA_TYPE, VIDEO_TIME_TYPE } from '@/common/constant';
@@ -63,6 +64,7 @@ const VideoPushSet = (props) => {
       name: 'rewardStartTime',
       type: 'rangePicker',
       visible: timeSelect === '1',
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
   ];
 
