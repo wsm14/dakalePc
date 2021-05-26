@@ -15,7 +15,7 @@ const QrCodeShow = ({ url = null, onCancel, title }) => {
       const dataURL = canvas.toDataURL('image/png');
       const elink = document.createElement('a');
       elink.href = dataURL;
-      elink.download = `${title}-商品码`; // 图片name
+      elink.download = `${title}-商品码.jpg`; // 图片name
       elink.click();
       canvas = null;
     };
