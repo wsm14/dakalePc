@@ -56,10 +56,9 @@ const PuzzleAdSet = (props) => {
             startShowTime:
               timeRuleData === 'fixed'
                 ? time[0].format('YYYY-MM-DD')
-                : {
-                    add: moment().format('YYYY-MM-DD'),
-                    edit: activeDate[0].format('YYYY-MM-DD'),
-                  }[type],
+                : type === 'add'
+                ? moment().format('YYYY-MM-DD')
+                : activeDate[0].format('YYYY-MM-DD'),
             endShowTime: timeRuleData === 'fixed' ? time[1].format('YYYY-MM-DD') : '2999-12-30',
             activeDate: undefined,
           },
