@@ -25,7 +25,7 @@ const BusinessQrCode = (props) => {
     }
     const elink = document.createElement('a');
     elink.href = img;
-    elink.download = `${visible.merchantName}-${type}`; // 图片name
+    elink.download = `${visible.merchantName}-${type}.jpg`; // 图片name
     elink.click();
   };
 
