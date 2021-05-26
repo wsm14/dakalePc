@@ -307,6 +307,17 @@ const BusinessDetailShow = (props) => {
     },
   ];
 
+  const voiceInfo = [
+    {
+      label: '阿里云productKey',
+      name: 'iotProductKey',
+    },
+    {
+      label: '阿里云deviceName',
+      name: 'iotDeviceName',
+    },
+  ];
+
   const bdItems = [
     {
       label: '归属BD',
@@ -375,7 +386,10 @@ const BusinessDetailShow = (props) => {
             </Button>
           </Form>
         </TabPane>
-        <TabPane tab="归属BD" key="3">
+        <TabPane tab="语音播报信息" key="3">
+          <DescriptionsCondition formItems={voiceInfo} initialValues={visible} />
+        </TabPane>
+        <TabPane tab="归属BD" key="4">
           {!editBD ? (
             <>
               <DescriptionsCondition formItems={bdItems} initialValues={visible} />
