@@ -434,7 +434,7 @@ export const SPECIAL_RECOMMEND_LISTTYPE = {
   novice: '新手视频',
 };
 
-// 视频广告 - 是否删除
+// 特惠活动 - 是否删除
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
 // 视频广告 - 新手视频状态 1-上架 3-下架
