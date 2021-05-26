@@ -207,6 +207,17 @@ export default {
         },
       });
     },
+    *fetchGetSpecialGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetSpecialGoodsSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          specialGoods: { list: content.specialGoodsList, total: content.total },
+        },
+      });
+    },
     *fetchGetExpertLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetExpertLevel, payload);
       if (!response) return;
@@ -225,17 +236,6 @@ export default {
         type: 'save',
         payload: {
           experLevel: levelObj,
-        },
-      });
-    },
-    *fetchGetSpecialGoodsSelect({ payload }, { call, put }) {
-      const response = yield call(fetchGetSpecialGoodsSelect, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          specialGoods: { list: content.specialGoodsList, total: content.total },
         },
       });
     },
