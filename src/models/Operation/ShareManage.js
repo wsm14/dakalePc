@@ -152,14 +152,16 @@ export default {
           : '',
         area:
           areaType !== 'all'
-            ? (area ? area.split(',') : [])
-                .map((item) => {
-                  const cityIndex = cityJson.findIndex((city) => city.id === item);
-                  if (cityIndex > -1) {
-                    return cityJson[cityIndex].name;
-                  }
-                })
-                .toString()
+            ? areaType === 'near'
+              ? `附近 ${Number(area) / 1000} km`
+              : (area ? area.split(',') : [])
+                  .map((item) => {
+                    const cityIndex = cityJson.findIndex((city) => city.id === item);
+                    if (cityIndex > -1) {
+                      return cityJson[cityIndex].name;
+                    }
+                  })
+                  .toString()
             : SHARE_AREA_TYPE[areaType],
       };
       callback(newObj);
