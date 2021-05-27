@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import {
-  SHARE_SCOPE_TYPE,
   SHARE_AREA_TYPE,
   SHARE_TASTE_TYPE,
   SHARE_SEX_TYPE,
@@ -30,10 +29,25 @@ const SharePutInSet = (props) => {
 
   const formItems = [
     {
-      label: '用户群',
-      name: 'scope',
+      label: '性别',
+      name: 'gender',
       type: 'radio',
-      select: SHARE_SCOPE_TYPE,
+      select: SHARE_SEX_TYPE,
+    },
+    {
+      label: '年龄',
+      name: 'age',
+      type: 'radio',
+      select: SHARE_AGE_TYPE,
+      onChange: (e) => setAgeType(e.target.value),
+    },
+    {
+      label: '年龄段',
+      name: 'ageData',
+      type: 'checkbox',
+      visible: ageType === 'age',
+      select: propertyJSON['momentAge'],
+      fieldNames: { label: 'description' },
     },
     {
       label: '地域',
@@ -53,8 +67,10 @@ const SharePutInSet = (props) => {
         <CitySet
           name="cityList"
           form={form}
+          maxLength={50}
           areaType={areaType}
-          // 后端选择省时要所有市级code 省市数据分开字段 需要自己整理
+          changeOnSelect={false}
+          // 后端选择省时要所有市级code 省市数据分开字段 需要自己整理 这版没做处理 太麻烦了
           setCityData={(option) => option.length === 1 && saveExtraStorage('city', option)}
         ></CitySet>
       ),
@@ -77,7 +93,7 @@ const SharePutInSet = (props) => {
     {
       label: '选择兴趣',
       type: 'treeSelect',
-      name: 'scenesId',
+      name: 'tagsId',
       multiple: true,
       visible: tasteType === 'tag',
       select: tasteTag.map(({ domainId, domainName, domainDTOList }) => ({
@@ -92,36 +108,13 @@ const SharePutInSet = (props) => {
         children: 'domainDTOList',
       },
       onChange: (val, options, extra) => {
-        const { selected } = extra;
+        const { allCheckedNodes = [] } = extra;
         // 后端需要父级名字+id 子集名字+id 先将dom数据储存下来 后面整理数据给后端
         saveExtraStorage(
           'taste',
-          extra.allCheckedNodes.map((item) => {
-            return selected ? item.node.props.item : item.props.item;
-          }),
+          allCheckedNodes.map((item) => item.node.props.item),
         );
       },
-    },
-    {
-      label: '性别',
-      name: 'gender',
-      type: 'radio',
-      select: SHARE_SEX_TYPE,
-    },
-    {
-      label: '年龄',
-      name: 'age',
-      type: 'radio',
-      select: SHARE_AGE_TYPE,
-      onChange: (e) => setAgeType(e.target.value),
-    },
-    {
-      label: '年龄段',
-      name: 'ageData',
-      type: 'checkbox',
-      visible: ageType === 'age',
-      select: propertyJSON['momentAge'],
-      fieldNames: { label: 'description' },
     },
   ];
 

@@ -1,5 +1,9 @@
 import request from '@/utils/request';
 
+//平台权益
+
+//平台权益end
+
 // 周边特惠
 
 // get 周边特惠 - 列表
@@ -16,6 +20,13 @@ export function fetchSpecialGoodsDetail(params) {
   });
 }
 
+// get 周边特惠 - 商品码
+export function fetchSpecialGoodsQrCode(params) {
+  return request('/admin/miniProgramUrl/specialGoodsQcodeUrl', {
+    params,
+  });
+}
+
 // post 周边特惠 - 下架
 export function fetchSpecialGoodsStatus(data) {
   return request('/admin/specialGoodsManagement/offShelfSpecialGoods', {
@@ -27,6 +38,22 @@ export function fetchSpecialGoodsStatus(data) {
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
   return request('/admin/specialGoodsManagement/updateSpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 审核
+export function fetchSpecialGoodsVerify(data) {
+  return request('/admin/specialGoodsManagement/simpleVerifySpecialGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 周边特惠 - 删除
+export function fetchSpecialGoodsDel(data) {
+  return request('/admin/specialGoodsManagement/deleteMerchantSpecialGoods', {
     method: 'POST',
     data,
   });
@@ -72,13 +99,6 @@ export function fetchShareDetail(params) {
   });
 }
 
-// get 分享管理 - 获取免费券列表
-export function fetchShareGetFreeCoupon(params) {
-  return request('/admin/coupon/listOwnerCouponByChannel', {
-    params,
-  });
-}
-
 // get 分享管理 - 商家平台卡豆信息
 export function fetchShareGetPlatformBean(params) {
   return request('/admin/merchant/platformBean', {
@@ -86,9 +106,39 @@ export function fetchShareGetPlatformBean(params) {
   });
 }
 
+// get 分享管理 - 商家账户卡豆信息/推广费
+export function fetchShareGetAccountBean(params) {
+  return request('/admin/merchantManagement/merchantCredentialsInfo', {
+    params,
+  });
+}
+
+// get 分享管理 - 领豆明细
+export function fetchShareGetBeanDetail(params) {
+  return request('/admin/marketingManagement/listUserMomentsDetail', {
+    params,
+  });
+}
+
 // post 分享管理 - 下架分享
 export function fetchShareStatusClose(data) {
   return request('/admin/marketingManagement/closeUserMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 分享管理 - 审核通过
+export function fetchShareVerifyAllow(data) {
+  return request('/admin/marketingManagement/simpleVerifyMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 分享管理 - 发布分享
+export function fetchShareVideoPush(data) {
+  return request('/admin/marketingManagement/publishMerchantMoment', {
     method: 'POST',
     data,
   });
@@ -346,7 +396,7 @@ export function fetchCouponStatus(data) {
   });
 }
 
-// 优惠券导出 /
+// get 优惠券导出
 export function fetchCouponToImport(params) {
   return request('/admin/coupon/listOwnerCouponToActionImport', {
     params,

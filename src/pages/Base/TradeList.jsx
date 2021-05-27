@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Switch, Alert } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -37,7 +37,7 @@ const SysTradeSet = (props) => {
       dataIndex: 'categoryName',
     },
     {
-      title: '平台服务费',
+      title: '核销订单服务费',
       align: 'center',
       dataIndex: 'parentId',
       render: (val, record) => (
@@ -77,6 +77,24 @@ const SysTradeSet = (props) => {
       ),
     },
     {
+      title: '小程序展示',
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'isWechat',
+      render: (val, record) => (
+        <AuthConsumer auth="isWechat" noAuth={val === '1' ? '开' : '关'}>
+          <Switch
+            checkedChildren="开"
+            unCheckedChildren="关"
+            checked={val === '1'}
+            onClick={() =>
+              fetchTradeWeChat({ categoryId: record.categoryIdString, isWechat: 1 ^ val })
+            }
+          />
+        </AuthConsumer>
+      ),
+    },
+    {
       title: '操作',
       dataIndex: 'categoryIdString',
       fixed: 'right',
@@ -96,7 +114,7 @@ const SysTradeSet = (props) => {
               {
                 type: 'del',
                 visible: !record.categoryDTOList,
-                click: () => fetchTradeDel({ categoryId: val, isDelete: 1 }),
+                click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
               },
               {
                 type: 'tradeSecondAdd',
@@ -117,8 +135,17 @@ const SysTradeSet = (props) => {
   // 类目设置修改
   const handleClassSet = (type, detail) => setClassVisible({ show: true, type, detail });
 
-  // 删除类目
-  const fetchTradeDel = (values) => {
+  // 小程序是否可见开关
+  const fetchTradeWeChat = (values) => {
+    dispatch({
+      type: 'sysTradeList/fetchTradeWeChat',
+      payload: values,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 删除/修改类目
+  const fetchTradeSet = (values) => {
     dispatch({
       type: 'sysTradeList/fetchTradeSet',
       payload: values,
@@ -144,6 +171,11 @@ const SysTradeSet = (props) => {
 
   return (
     <>
+      <Alert
+        message="说明：扫码支付服务费全行业为1%，核销订单服务费根据行业配置"
+        type="info"
+        banner
+      />
       <TableDataBlock
         cRef={childRef}
         btnExtra={

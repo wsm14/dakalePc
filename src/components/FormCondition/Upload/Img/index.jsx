@@ -86,7 +86,7 @@ const UploadBlock = (props) => {
     onChange = undefined,
     isCut,
     imgRatio,
-    multiple,
+    multiple = true,
   } = props;
 
   const fileKeyName = Array.isArray(name) ? name[1] : name;
@@ -139,15 +139,16 @@ const UploadBlock = (props) => {
       : previewTitle.key;
     const uid = previewTitle.uid;
     let newimg = fileLists || [];
-    imageCompress(file).then(({ file, base64 }) => {
+    imageCompress(file).then(({ file }) => {
+      const thumbUrl = URL.createObjectURL(file);
       if (newimg.findIndex((i) => i.uid == uid) === -1) {
-        newimg = [...newimg, { uid, url: base64, thumbUrl: base64, originFileObj: file }];
+        newimg = [...newimg, { uid, url: thumbUrl, thumbUrl, originFileObj: file }];
       } else {
         newimg.map((fi) => {
           if (fi.uid === uid) {
             fi.originFileObj = file;
-            fi.url = base64;
-            fi.thumbUrl = base64;
+            fi.url = thumbUrl;
+            fi.thumbUrl = thumbUrl;
           }
           return fi;
         });
@@ -247,7 +248,7 @@ const UploadBlock = (props) => {
       <DragAndDropHOC>
         <Upload
           // 允许选择时裁剪的时候不允许多选
-          multiple={isCut ? false : multiple || true}
+          multiple={isCut ? false : multiple}
           listType="picture-card"
           fileList={fileLists}
           beforeUpload={(file) => beforeUpload(file)}

@@ -1,4 +1,8 @@
-import { fetchSubsidyShopList, fetchSubsidyShopDetailById } from '@/services/AccountServices';
+import {
+  fetchSubsidyShopList,
+  fetchSubsidyShopDetailById,
+  fetchSubsidyUserDetailById,
+} from '@/services/AccountServices';
 
 export default {
   namespace: 'subsidyShop',
@@ -30,11 +34,19 @@ export default {
       });
       if (callback) callback(content.subsidyStatisticObjectList);
     },
+    //店铺详情
     *fetchSubsidyShopDetailById({ payload, callback }, { call }) {
       const response = yield call(fetchSubsidyShopDetailById, payload);
       if (!response) return;
       const { content } = response;
-      if (callback) callback(content.subsidy);
+      if (callback) callback(content.subsidyList);
+    },
+    //用户补贴详情
+    *fetchSubsidyUserDetailById({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyUserDetailById, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.userList);
     },
   },
 };

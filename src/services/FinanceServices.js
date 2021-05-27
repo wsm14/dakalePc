@@ -30,9 +30,25 @@ export function fetchSubsidyTaskDetailList(params) {
   });
 }
 
-// post 补贴管理 - 任务列表 -  新增
+// post 补贴管理 - 营销卡豆充值 -  新增
 export function fetchSubsidyTaskAdd(data) {
   return request('/admin/subsidyManagement/platformDirectCharge', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 平台直充 -  新增
+export function fetchSubsidyDirectAdd(data) {
+  return request('/admin/subsidyManagement/addDirectCharge', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 卡豆回收
+export function fetchSubsidyRecycleBean(data) {
+  return request('/admin/subsidyManagement/recycleBean', {
     method: 'POST',
     data,
   });
@@ -46,14 +62,14 @@ export function fetchSubsidyTaskEndDel(data) {
   });
 }
 
-// get 补贴管理 - 行为管理 - 列表
+// get 补贴管理 - 使用规则 - 列表
 export function fetchSubsidyActionList(params) {
   return request('/admin/systemConfig/listConfigBehavior', {
     params,
   });
 }
 
-// post 补贴管理 - 行为管理 - 新增编辑
+// post 补贴管理 - 使用规则 - 新增编辑
 export function fetchSubsidyActionAdd(data) {
   return request('/admin/systemConfig/saveConfigBehavior', {
     method: 'POST',
@@ -61,9 +77,17 @@ export function fetchSubsidyActionAdd(data) {
   });
 }
 
-// post 补贴管理 - 行为管理 - 删除
+// post 补贴管理 - 使用规则 - 删除
 export function fetchSubsidyActionDel(data) {
   return request('/admin/systemConfig/deleteConfigBehavior', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 补贴管理 - 使用规则 - 批量修改
+export function fetchActionBatchEdit(data) {
+  return request('/admin/systemConfig/batchUpdateConfigBehavior', {
     method: 'POST',
     data,
   });

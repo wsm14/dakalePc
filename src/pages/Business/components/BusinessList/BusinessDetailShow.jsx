@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Tabs, Input, Modal, Tag } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
@@ -9,13 +9,15 @@ import DrawerCondition from '@/components/DrawerCondition';
 const { TabPane } = Tabs;
 
 const BusinessDetailShow = (props) => {
-  const { dispatch, cRef, visible = null, onClose, loading, sceneList } = props;
+  const { dispatch, cRef, visible = null, total, getDetail, onClose, loading, sceneList } = props;
 
   const loadings = loading.effects['businessList/fetchSetStatus'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
   const loadingCheck = loading.effects['baseData/fetchGetPhoneComeLocation'];
+  const loadingEditBd = loading.effects['businessList/fetchMerchantEdit'];
 
   const [mobileInfo, setMobileInfo] = useState({});
+  const [editBD, setEditBD] = useState(false);
 
   const {
     businessLicenseObject: blobj = {},
@@ -26,7 +28,15 @@ const BusinessDetailShow = (props) => {
     mobile,
     provinceName = '',
     cityName = '',
+    index,
+    headerContentObject = {},
   } = visible;
+
+  const { headerType = 'image' } = headerContentObject;
+
+  useEffect(() => {
+    fetchGetPhoneComeLocation();
+  }, [mobile]);
 
   const statusNum = Number(status);
   const businessStatusNum = Number(businessStatus);
@@ -34,6 +44,21 @@ const BusinessDetailShow = (props) => {
   const businessStatusText = !businessStatusNum ? '恢复营业' : '暂停营业';
 
   const [form] = Form.useForm();
+
+  // 修改bd
+  const fetchMerEditBD = (values) => {
+    dispatch({
+      type: 'businessList/fetchMerchantEdit',
+      payload: {
+        userMerchantId: merchantId,
+        ...values,
+      },
+      callback: () => {
+        visible.bdInfo = values.bdInfo;
+        setEditBD(false);
+      },
+    });
+  };
 
   // 设置开户行号
   const fetchMerSetBandCode = (values) => {
@@ -160,8 +185,8 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '店铺头图',
-      name: 'headerImg',
-      type: 'upload',
+      name: ['headerContentObject', { image: 'imageUrl', video: 'mp4Url' }[headerType]],
+      type: { image: 'upload', video: 'videoUpload' }[headerType],
     },
     {
       label: '店铺内景照',
@@ -282,14 +307,37 @@ const BusinessDetailShow = (props) => {
     },
   ];
 
+  const voiceInfo = [
+    {
+      label: '阿里云productKey',
+      name: 'iotProductKey',
+    },
+    {
+      label: '阿里云deviceName',
+      name: 'iotDeviceName',
+    },
+  ];
+
+  const bdItems = [
+    {
+      label: '归属BD',
+      name: 'bdInfo',
+    },
+  ];
+
   const modalProps = {
     title: `商家详情`,
     width: 800,
     visible,
     onClose,
+    loading: loading.effects['businessList/fetchMerchantDetail'],
+    dataPage: {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size),
+    },
     afterCallBack: () => {
       form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
-      fetchGetPhoneComeLocation();
     },
     footer: (
       <>
@@ -337,6 +385,46 @@ const BusinessDetailShow = (props) => {
               保存
             </Button>
           </Form>
+        </TabPane>
+        <TabPane tab="语音播报信息" key="3">
+          <DescriptionsCondition formItems={voiceInfo} initialValues={visible} />
+        </TabPane>
+        <TabPane tab="归属BD" key="4">
+          {!editBD ? (
+            <>
+              <DescriptionsCondition formItems={bdItems} initialValues={visible} />
+              <Button
+                style={{ marginLeft: 60, marginTop: 24 }}
+                type="primary"
+                onClick={() => setEditBD(true)}
+              >
+                编辑
+              </Button>
+            </>
+          ) : (
+            <Form
+              style={{ marginTop: 24 }}
+              form={form}
+              preserve={false}
+              initialValues={visible}
+              onFinish={fetchMerEditBD}
+            >
+              <Form.Item label="归属BD" name="bdInfo" rules={[{ required: false }]}>
+                <Input placeholder="请输入归属BD"></Input>
+              </Form.Item>
+              <Button
+                style={{ marginLeft: 60 }}
+                type="primary"
+                loading={loadingEditBd}
+                htmlType="submit"
+              >
+                保存
+              </Button>
+              <Button style={{ marginLeft: 20 }} onClick={() => setEditBD(false)}>
+                取消
+              </Button>
+            </Form>
+          )}
         </TabPane>
       </Tabs>
     </DrawerCondition>

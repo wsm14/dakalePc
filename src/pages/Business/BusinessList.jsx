@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
+import { LogDetail } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
@@ -18,22 +19,17 @@ const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessT
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, hubData, loading, dispatch } = props;
+  const { list } = businessList;
 
   const childRef = useRef();
-  // 设置
-  const [visible, setVisible] = useState({});
-  // 详情
-  const [visibleDetail, setVisibleDetail] = useState(false);
-  // 二维码
-  const [visibleQrcode, setVisibleQrcode] = useState('');
-  // 编辑
-  const [visibleEdit, setVisibleEdit] = useState('');
-  // 商圈搜索选择
-  const [hubSelect, setHubSelect] = useState(true);
-  // 设置商家验证码
-  const [visibleCodeSet, setVisibleCodeSet] = useState(false);
-  //场景checkbox列表
-  const [sceneList, setSceneList] = useState(false);
+
+  const [visible, setVisible] = useState({}); // 设置
+  const [visibleDetail, setVisibleDetail] = useState(false); // 详情
+  const [visibleQrcode, setVisibleQrcode] = useState(''); // 二维码
+  const [visibleEdit, setVisibleEdit] = useState(''); // 编辑
+  const [hubSelect, setHubSelect] = useState(true); // 商圈搜索选择
+  const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
+  const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
 
   // 搜索参数
   const searchItems = [
@@ -225,7 +221,8 @@ const BusinessListComponent = (props) => {
       dataIndex: 'userMerchantIdString',
       fixed: 'right',
       align: 'right',
-      render: (val, record) => (
+      width: 200,
+      render: (val, record, index) => (
         <HandleSetTable
           formItems={[
             {
@@ -234,24 +231,34 @@ const BusinessListComponent = (props) => {
             },
             {
               type: 'info',
-              click: () => fetchGetDetail(val, record.topCategoryIdString),
+              click: () => fetchGetDetail(index),
             },
             {
               type: 'edit',
               click: () =>
-                fetchGetDetail(val, record.topCategoryIdString, (info) =>
-                  setVisibleEdit({ show: true, type: 'edit', info }),
-                ),
+                fetchGetDetail(index, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
             },
             {
               type: 'set',
               click: () => setVisible({ show: true, record }),
+            },
+            {
+              type: 'diary',
+              click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
             },
           ]}
         />
       ),
     },
   ];
+
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogDetail',
+      payload,
+    });
+  };
 
   // 获取商圈
   const fetchGetHubSelect = (payload) => {
@@ -280,11 +287,13 @@ const BusinessListComponent = (props) => {
   };
 
   // 获取商家详情
-  const fetchGetDetail = (merchantId, categoryId, callback) => {
+  const fetchGetDetail = (index, callback) => {
+    const { userMerchantIdString: merchantId, topCategoryIdString: categoryId } = list[index];
     dispatch({
       type: 'businessList/fetchMerchantDetail',
       payload: { merchantId },
-      callback: (info) => (callback ? callback(info) : handleShowUserDetail(info, categoryId)),
+      callback: (info) =>
+        callback ? callback(info) : handleShowUserDetail({ ...info, index }, categoryId),
     });
   };
 
@@ -367,7 +376,8 @@ const BusinessListComponent = (props) => {
         loading={
           loading.effects['businessList/fetchGetList'] ||
           loading.effects['businessList/fetchMerchantDetail'] ||
-          loading.effects['businessList/fetchMerchantGetExcel']
+          loading.effects['businessList/fetchMerchantGetExcel'] ||
+          loading.effects['baseData/fetchGetLogDetail']
         }
         columns={getColumns}
         searchItems={searchItems}
@@ -375,29 +385,38 @@ const BusinessListComponent = (props) => {
         dispatchType="businessList/fetchGetList"
         {...businessList}
       ></TableDataBlock>
+      {/* 店铺设置 */}
       <BusinessAwardSet
         cRef={childRef}
         visible={visible}
         onClose={() => setVisible('')}
       ></BusinessAwardSet>
+      {/* 店铺编辑 */}
       <BusinessEdit
         cRef={childRef}
         visible={visibleEdit}
         initialValues={visibleEdit.info}
         onClose={() => setVisibleEdit(false)}
       ></BusinessEdit>
+      {/* 店铺详情 */}
       <BusinessDetailShow
         cRef={childRef}
         visible={visibleDetail}
         sceneList={sceneList}
+        total={list.length}
+        getDetail={fetchGetDetail}
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
+      {/* 店铺二维码 */}
       <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
+      {/* 店铺验证码 */}
       <BusinessVerificationCodeSet
         visible={visibleCodeSet}
         childRef={childRef}
         onClose={() => setVisibleCodeSet(false)}
       ></BusinessVerificationCodeSet>
+      {/* 日志 */}
+      <LogDetail></LogDetail>
     </>
   );
 };

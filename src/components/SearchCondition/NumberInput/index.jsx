@@ -6,13 +6,18 @@ import { InputNumber } from 'antd';
  */
 
 const NumberBlock = (props) => {
-  const { placeholder, label } = props;
+  const { placeholder, label, formatter, parser, onChange } = props;
+
   // 返回结果
   return (
     <InputNumber
       placeholder={placeholder || `请输入${label}`}
       style={{ width: '100%' }}
-      allowClear
+      formatter={formatter}
+      parser={parser}
+      onChange={(e) => {
+        if (onChange) onChange(e);
+      }}
     />
   );
 };

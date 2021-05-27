@@ -1,9 +1,10 @@
 import React from 'react';
-import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SubsidyDetail = (props) => {
-  const { detail } = props;
+  const { detail = {} } = props;
+  const { mode } = detail;
 
   const formItems = [
     {
@@ -12,8 +13,8 @@ const SubsidyDetail = (props) => {
     },
     {
       label: '补贴类型',
-      name: 'type',
-      render: (val) => SUBSIDY_TYPE[val],
+      name: 'mode',
+      render: (val) => SUBSIDY_BEAN_TYPE[val],
     },
     {
       label: '补贴角色',
@@ -25,12 +26,17 @@ const SubsidyDetail = (props) => {
       name: 'participants',
     },
     {
-      label: '已补贴卡豆数',
-      name: 'subsidizedBeans',
+      label: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
+      name: { out: 'subsidizedBeans', in: 'recycleBean' }[mode],
     },
     {
       label: '充值卡豆数',
       name: 'rechargeBeans',
+    },
+    {
+      label: '凭证',
+      name: 'certificate',
+      type: 'upload',
     },
     {
       label: '状态',

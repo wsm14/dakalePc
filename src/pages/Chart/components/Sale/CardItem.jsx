@@ -10,6 +10,7 @@ const SaleBlockComponent = ({
   tip,
   saleTotal,
   keyName,
+  keyOther,
   loading,
   dispatch,
   api,
@@ -39,24 +40,18 @@ const SaleBlockComponent = ({
       <Card>
         <QuestionTooltip type="quest" title={title} content={tip}></QuestionTooltip>
         {timeSearch && <Search timeData={timeData} setTimeData={setTimeData}></Search>}
-        {keyName === 'userOrderBean' ? (
+        {keyOther ? (
           <Row>
-            <Col span={12}>
-              <Statistic
-                title="核销订单"
-                value={saleTotal['userOrderBeanVerify'] || 0}
-                loading={loading.effects[api]}
-                valueStyle={{ color: '#1890ff' }}
-              />
-            </Col>
-            <Col span={12}>
-              <Statistic
-                title="扫码订单"
-                value={saleTotal['userOrderBeanScan'] || 0}
-                loading={loading.effects[api]}
-                valueStyle={{ color: '#1890ff' }}
-              />
-            </Col>
+            {keyOther.map((item) => (
+              <Col span={12} key={item.key}>
+                <Statistic
+                  title={item.title}
+                  value={saleTotal[item.key] || 0}
+                  loading={loading.effects[api]}
+                  valueStyle={{ color: '#1890ff' }}
+                />
+              </Col>
+            ))}
           </Row>
         ) : (
           <Statistic

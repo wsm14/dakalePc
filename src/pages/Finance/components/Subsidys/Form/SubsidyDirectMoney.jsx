@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'antd';
 import { SUBSIDY_TASK_ROLE } from '@/common/constant';
-import { MreSelect, MreSelectShow } from '@/components/MerchantDataTable';
+import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 
 const SubsidyDirectMoney = (props) => {
@@ -31,6 +31,7 @@ const SubsidyDirectMoney = (props) => {
       label: '适用店铺',
       name: 'merchantIds',
       type: 'formItem',
+      rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺
@@ -40,14 +41,7 @@ const SubsidyDirectMoney = (props) => {
     {
       label: '适用店铺',
       type: 'noForm',
-      formItem: (
-        <MreSelectShow
-          key="MreTable"
-          form={form}
-          {...mreList}
-          setMreList={setMreList}
-        ></MreSelectShow>
-      ),
+      formItem: <MreSelectShow key="MreTable" {...mreList} setMreList={setMreList}></MreSelectShow>,
     },
     {
       label: '充值卡豆数',
@@ -56,6 +50,12 @@ const SubsidyDirectMoney = (props) => {
       precision: 0,
       min: 0,
       max: 999999999,
+    },
+    {
+      label: '充值凭证',
+      name: 'certificate',
+      type: 'upload',
+      maxFile: 1,
     },
   ];
 

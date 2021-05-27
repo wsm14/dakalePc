@@ -15,6 +15,7 @@ const CascaderBlock = (props) => {
     placeholder,
     disabled,
     changeOnSelect = false,
+    allowClear = false,
     fieldNames = {},
     onChange,
     cityType = 'district',
@@ -34,7 +35,7 @@ const CascaderBlock = (props) => {
   return (
     <Cascader
       {...divProps}
-      allowClear={false}
+      allowClear={allowClear}
       expandTrigger="hover"
       showSearch={{
         filter: (inputValue, path) => filter(inputValue, path, label),

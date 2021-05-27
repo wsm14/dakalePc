@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Spin, Tag } from 'antd';
+import { Spin, Tag, Alert } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
@@ -80,7 +80,7 @@ const WithdrawDetail = (props) => {
     {
       title: '省市区',
       dataIndex: 'provinceName',
-      render:(val,row) =>`${val}-${row.cityName}-${row.districtName}`
+      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
     },
     {
       title: '提现账户',
@@ -151,11 +151,9 @@ const WithdrawDetail = (props) => {
 
   return (
     <>
-      <TableDataBlock
-        order
-        keepData
-        title={() => (
-          <div style={{ textAlign: 'right', marginTop: -16 }}>
+      <Alert
+        message={
+          <div style={{ textAlign: 'right' }}>
             <Tag color="orange">
               {searchTime[0]} ~ {searchTime[1]}
             </Tag>
@@ -166,7 +164,14 @@ const WithdrawDetail = (props) => {
             &nbsp;&nbsp; 成功提现手续费：
             {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum.toFixed(2)}`}
           </div>
-        )}
+        }
+        type="info"
+        showIcon={false}
+        banner
+      />
+      <TableDataBlock
+        order
+        keepData
         btnExtra={({ get }) => (
           <ExcelButton
             dispatchType={'withdrawDetail/fetchGetExcel'}

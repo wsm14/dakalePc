@@ -1,11 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_ACTION_TYPE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const ActionList = (props) => {
-  const { subsidyManage, loading, childRef, setVisible, dispatch } = props;
+  const {
+    subsidyManage,
+    loading,
+    childRef,
+    setVisible,
+    setActionIdList,
+    tradeList,
+    dispatch,
+  } = props;
+
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业选择项
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '行业',
+      type: 'select',
+      name: 'categoryId',
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
+    },
+    {
+      label: '补贴角色',
+      name: 'subsidyRole',
+      type: 'select',
+      select: SUBSIDY_ACTION_ROLE,
+    },
+    {
+      label: '补贴类型',
+      name: 'subsidyType',
+      type: 'select',
+      select: SUBSIDY_ACTION_TYPE,
+    },
+  ];
 
   // table 表头
   const getColumns = [
@@ -87,6 +129,10 @@ const ActionList = (props) => {
       cRef={childRef}
       loading={loading}
       columns={getColumns}
+      searchItems={searchItems}
+      rowSelection={{
+        onChange: (val) => setActionIdList(val),
+      }}
       rowKey={(record) => `${record.configBehaviorId}`}
       dispatchType="subsidyManage/fetchSubsidyActionList"
       {...subsidyManage.actionList}
@@ -94,7 +140,8 @@ const ActionList = (props) => {
   );
 };
 
-export default connect(({ subsidyManage, loading }) => ({
+export default connect(({ subsidyManage, sysTradeList, loading }) => ({
   subsidyManage,
+  tradeList: sysTradeList.list.list,
   loading: loading.models.subsidyManage,
 }))(ActionList);

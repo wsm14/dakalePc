@@ -6,6 +6,7 @@ import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
+import BusinessEditVoiceInfo from './Edit/BusinessEditVoiceInfo';
 import BusinessAuditRefuse from '../Audit/BusinessAuditRefuse';
 import BusinessAuditAllow from '../Audit/BusinessAuditAllow';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -96,6 +97,9 @@ const BusinessAdd = (props) => {
         payload.coverImg = cres.toString();
         aliOssUpload(headerImg).then((cres2) => {
           payload.headerImg = cres2.toString();
+          if (type !== 'audit') {
+            payload.headerContentObject = { headerType: 'image', imageUrl: cres2.toString() };
+          }
           aliOssUpload(interiorImg).then((res) => {
             dispatch({
               type: {
@@ -337,6 +341,7 @@ const BusinessAdd = (props) => {
         />
         <BusinessAddQuality form={form} initialValues={initialValues} />
         <BusinessAuditAllow form={form} initialValues={initialValues} categoryId={categId} />
+        {type !== 'audit' && <BusinessEditVoiceInfo form={form} initialValues={initialValues} />}
       </DrawerCondition>
       <BusinessAuditRefuse
         visible={visibleRefuse}

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { NUM_PATTERN } from '@/common/regExp';
-import { EXPERT_TYPE } from '@/common/constant';
+import { EXPERT_TYPE, EXPERT_IS_WITHDRAW } from '@/common/constant';
+import { checkFileData } from '@/utils/utils';
 import { LEVEL_ICON, UP_LEVEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
@@ -21,29 +22,15 @@ const ExpertAllocationSet = (props) => {
   // 用户身份 表单显示
   const fromShow = detail.type === 'normal';
 
-  // 检查文件上传格式
-  const checkFileData = (fileData) => {
-    let aimg = [];
-    switch (typeof fileData) {
-      case 'undefined':
-        break;
-      case 'object':
-        aimg = fileData.fileList.map((item) => {
-          if (item.originFileObj) return item.originFileObj;
-          return item.url;
-        });
-        break;
-      default:
-        aimg = [fileData];
-        break;
-    }
-    return aimg;
-  };
-
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { levelExtraParamObject, certificate } = values;
+      const {
+        levelExtraParamObject,
+        certificate,
+        teamCommission = 0,
+        shareCommission = 0,
+      } = values;
       const { levelIcon, upLevelIcon } = levelExtraParamObject;
       aliOssUpload([
         ...checkFileData(levelIcon),
@@ -56,9 +43,9 @@ const ExpertAllocationSet = (props) => {
             edit: 'expertAllocation/fetchExpertAllocationEdit',
           }[type],
           payload: {
-            shareCommission: 0,
-            teamCommission: 0,
             ...values,
+            shareCommission,
+            teamCommission,
             userLevelId: detail.userLevelId,
             level: detail.level,
             nextLevel: detail.nextLevel,
@@ -125,6 +112,23 @@ const ExpertAllocationSet = (props) => {
       visible: !fromShow,
     },
     {
+      title: '升级要求',
+      label: '核销笔数要求',
+      name: ['userLevelTargetObject', 'verificationCount'],
+      suffix: '笔',
+      rules: [{ required: false }],
+      addRules: [{ pattern: NUM_PATTERN, message: '核销笔数应为整数' }],
+      visible: !fromShow,
+    },
+    {
+      label: '业绩流水要求',
+      name: ['userLevelTargetObject', 'performance'],
+      suffix: '元',
+      rules: [{ required: false }],
+      addRules: [{ pattern: NUM_PATTERN, message: '业绩流水应为整数' }],
+      visible: !fromShow,
+    },
+    {
       title: '升级权益',
       label: '自购/分销奖励',
       name: 'shareCommission',
@@ -157,6 +161,37 @@ const ExpertAllocationSet = (props) => {
       name: 'payBeanCommission',
       suffix: '%',
       addRules: [{ pattern: NUM_PATTERN, message: '消费抵扣数应为整数' }],
+    },
+    {
+      label: '可否提现',
+      name: 'isWithdraw',
+      type: 'radio',
+      select: EXPERT_IS_WITHDRAW,
+    },
+    {
+      title: '月度奖金',
+      label: '核销笔数要求',
+      name: ['userLevelMonthBonusObject', 'verificationNum'],
+      suffix: '笔',
+      rules: [{ required: false }],
+      addRules: [{ pattern: NUM_PATTERN, message: '核销笔数应为整数' }],
+      visible: !fromShow,
+    },
+    {
+      label: '业绩流水要求',
+      name: ['userLevelMonthBonusObject', 'performanceFlow'],
+      suffix: '元',
+      rules: [{ required: false }],
+      addRules: [{ pattern: NUM_PATTERN, message: '业绩流水应为整数' }],
+      visible: !fromShow,
+    },
+    {
+      label: '业绩达标奖金',
+      name: ['userLevelMonthBonusObject', 'performanceBonus'],
+      suffix: '元',
+      rules: [{ required: false }],
+      addRules: [{ pattern: NUM_PATTERN, message: '业绩达标奖金应为整数' }],
+      visible: !fromShow,
     },
     {
       title: '上传凭证',

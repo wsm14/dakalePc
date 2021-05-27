@@ -106,6 +106,14 @@ export function fetchTradeSet(data) {
   });
 }
 
+// post 行业设置 - 小程序是否可见
+export function fetchTradeWeChat(data) {
+  return request('/admin/systemIndustry/setCategoryIsWeChat', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 帐号设置 - 修改密码
 export function fetchPassWordEdit(data) {
   return request('/admin/admin/account/updatePassword', {
@@ -320,40 +328,6 @@ export function fetchMerBankEdit(data) {
 }
 
 // 支行管理 end
-
-// 省公司 区县权限管理
-
-// get 员工管理 - 角色列表
-export function fetchWMSRoleList(params) {
-  return request('/admin/role/listAuthRole', {
-    params,
-  });
-}
-
-// get 员工管理 - 角色列表 - 获取角色详情
-export function fetchWMSRoleDetail(params) {
-  return request('/admin/role/roleDetail', {
-    params,
-  });
-}
-
-// post 员工管理 - 角色新增
-export function fetchWMSRoleAdd(data) {
-  return request('/admin/role/saveAuthRole', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 员工管理 - 角色修改
-export function fetchWMSRoleEdit(data) {
-  return request('/admin/role/updateAuthRole', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 省公司 区县权限管理 end
 
 // 行业设置 通过行业id获取行业场景列表
 export function fetchSceneListById(params) {

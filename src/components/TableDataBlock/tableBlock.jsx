@@ -60,9 +60,11 @@ const TableBlockComponent = (props) => {
     tableSort = false,
     order = false,
     tableSize = 'default',
+    timeParams = { time: {}, show: {} },
     children,
   } = props;
 
+  const { show } = timeParams;
   const dispatch = useDispatch();
 
   const [first, setFirst] = useState(firstFetch); // first No search
@@ -97,7 +99,9 @@ const TableBlockComponent = (props) => {
   // 获取列表
   const fetchGetList = (data) => {
     if (dispatchType) {
+      const { time } = timeParams;
       const payload = {
+        ...time,
         ...params,
         ...tableParems.searchData, // 搜索参数
         ...tableParems, // 表格参数
@@ -113,7 +117,8 @@ const TableBlockComponent = (props) => {
 
   // 搜索
   const handleSearch = (values = {}) => {
-    const newSearchValue = { ...params, ...values };
+    const { time } = timeParams;
+    const newSearchValue = { ...time, ...params, ...values };
     setTableParems({
       ...tableParems,
       searchData: newSearchValue,
@@ -172,7 +177,7 @@ const TableBlockComponent = (props) => {
           componentSize={size}
           searchItems={searchItems}
           handleSearch={handleSearch}
-          initialValues={params}
+          initialValues={{ ...show, ...params }}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}

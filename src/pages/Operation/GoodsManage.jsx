@@ -15,6 +15,7 @@ import styles from './style.less';
 
 const GoodsManageComponent = (props) => {
   const { goodsManage, loadings, loading, dispatch } = props;
+  const { list } = goodsManage;
 
   const childRef = useRef();
   const { mreSelect, classifySelect } = goodsManage;
@@ -145,14 +146,14 @@ const GoodsManageComponent = (props) => {
       fixed: 'right',
       align: 'right',
       dataIndex: 'goodsIdString',
-      render: (val, record) => {
+      render: (val, record, index) => {
         const { status, merchantIdStr, checkStatus } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'info',
-                click: () => fetchGoodsGetDetail({ goodsIdString: val }),
+                click: () => fetchGoodsGetDetail(index),
               },
               // 上架中
               {
@@ -266,11 +267,12 @@ const GoodsManageComponent = (props) => {
   };
 
   // 获取商品详情
-  const fetchGoodsGetDetail = (payload) => {
+  const fetchGoodsGetDetail = (index) => {
+    const { goodsIdString } = list[index];
     dispatch({
       type: 'goodsManage/fetchGoodsGetDetail',
-      payload,
-      callback: (detail) => setVisible({ type: 'showDetail', detail }),
+      payload: { goodsIdString },
+      callback: (detail) => setVisible({ type: 'showDetail', index, detail }),
     });
   };
 
@@ -312,6 +314,8 @@ const GoodsManageComponent = (props) => {
       <GoodsDrawer
         childRef={childRef}
         visible={visible}
+        total={list.length}
+        getDetail={fetchGoodsGetDetail}
         onClose={() => setVisible(false)}
       ></GoodsDrawer>
       <GoodsHandleDetail

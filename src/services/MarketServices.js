@@ -322,3 +322,44 @@ export function fetchOpenAdvertStatus(data) {
 }
 
 // 开屏广告 end
+
+// 视频广告
+
+// get 视频广告 - 新手视频 - 列表
+export function fetchVideoAdNovice(params) {
+  return request('/admin/guideMomentsManagement/listGuideMoments', {
+    params,
+  });
+}
+
+// get 视频广告 - 新手视频 - 领豆明细
+export function fetchVideoAdNoviceBean(params) {
+  return request('/admin/guideMomentsManagement/listGuideMomentsDetail', {
+    params,
+  });
+}
+
+// get 视频广告 - 新手视频 - 详情
+export function fetchVideoAdNoviceDetail(params) {
+  return request('/admin/guideMomentsManagement/getGuideMomentsById', {
+    params,
+  });
+}
+
+// post 视频广告 - 新手视频 - 发布分享
+export function fetchVideoAdNoviceSet(data) {
+  return request('/admin/guideMomentsManagement/saveGuideMoments', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视频广告 - 新手视频 - 下架
+export function fetchVideoAdNoviceStatus(data) {
+  return request('/admin/guideMomentsManagement/offShelfGuideMoments', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 开屏广告 end

@@ -13,3 +13,6 @@ export const UP_LEVEL_ICON = 540 / 320;
 
 // 开屏广告
 export const OPEN_ADVERT = 750 / 1624;
+
+// 视频封面
+export const VIDEO_ADVERT = 544 / 960;

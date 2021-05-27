@@ -75,7 +75,7 @@ const FormComponents = ({
 
       // 表单组件
       if (type === 'formItem') {
-        rules = [{ required: false }];
+        rules = item.rules || [{ required: false }];
       } else {
         // 根据类型获取不同的表单组件
         IFormItem = IFormModule[type];
@@ -116,7 +116,7 @@ const FormComponents = ({
     <Form
       form={form}
       layout={layout}
-      initialValues={initialValues}
+      // initialValues={initialValues}
       {...formItemLayout}
       {...formItemLayouts}
       scrollToFirstError={true}

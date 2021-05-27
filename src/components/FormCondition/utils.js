@@ -30,6 +30,7 @@ export const delectProps = (data) => {
   delete divProps.normalize;
   delete divProps.cityType;
   delete divProps.showTitle;
+  delete divProps.wrapperCol;
 
   return divProps;
 };
@@ -70,6 +71,8 @@ export const delectFormProps = (data) => {
   delete divProps.formatter;
   delete divProps.order;
   delete divProps.onCalendarChange;
+  delete divProps.checkedChildren;
+  delete divProps.unCheckedChildren;
 
   return divProps;
 };

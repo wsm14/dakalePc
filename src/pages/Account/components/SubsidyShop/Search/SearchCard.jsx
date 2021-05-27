@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { SUBSIDY_TYPE } from '@/common/constant';
 import { Tag, DatePicker, Space, Checkbox } from 'antd';
 import styles from './style.less';
 
@@ -55,10 +56,10 @@ const SearchCard = ({ tabkey, searchData, setSearchData }) => {
   }[tabkey];
 
   // 类型选择项目
-  const options = [
-    { label: '全部', value: '' },
-    { label: '平台直充', value: 'platform' },
-  ];
+  const options = Object.keys(SUBSIDY_TYPE).map((item) => ({
+    label: SUBSIDY_TYPE[item],
+    value: item,
+  }));
 
   return (
     <>

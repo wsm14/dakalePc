@@ -87,7 +87,7 @@ export default [
         path: '/system/tradeset',
         name: '行业管理',
         component: './Base/TradeList',
-        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd'],
+        buttons: ['baseTrade', 'tradeAdd', 'del', 'edit', 'tradeSecondAdd', 'isWechat'],
       },
       {
         path: '/system/brand',
@@ -144,6 +144,7 @@ export default [
           'status',
           'bussinessStatus',
           'set',
+          'diary',
         ],
       },
       {
@@ -173,6 +174,16 @@ export default [
         path: '/chart/block',
         name: '数据概况',
         component: './Chart/ChartBlock',
+      },
+      {
+        path: '/chart/achievement',
+        name: 'BD业绩',
+        component: './Chart/SaleAchievement',
+      },
+      {
+        path: '/chart/dataGatherExport',
+        name: '数据明细查询',
+        component: './Chart/DataGatherExport',
       },
       // 加盟管理 cityom
       {
@@ -241,6 +252,12 @@ export default [
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
       },
+      {
+        path: '/expert/trainee',
+        name: '实习豆长',
+        component: './Expert/ExpertTempList',
+        buttons: ['save', 'cancelTemp'],
+      },
       // 财务管理 finance
       {
         path: '/finance/subsidy',
@@ -251,13 +268,21 @@ export default [
           'exportList',
           'taskSave',
           'taskDel',
-          'taskEnd',
+          // 'taskEnd',
           'taskInfo',
           'taskDetail',
+          'direct',
+          'directSave',
+          'directDel',
+          // 'directEnd',
+          'directInfo',
+          'directDetail',
           'action',
           'actionSave',
           'actionDel',
           'actionEdit',
+          'batchEdit',
+          'recycleBean',
         ],
       },
       {
@@ -272,7 +297,7 @@ export default [
         component: './Finance/PlatformIncome',
         buttons: ['exportList'],
       },
-      // 营销管理 market
+      // 广告营销 market
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -326,15 +351,21 @@ export default [
       {
         path: '/market/puzzleAd',
         name: '拼图广告',
-        component: './Market/PuzzleAd',
+        component: './Market/PuzzleAdvert',
         buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
+      },
+      {
+        path: '/market/videoAd',
+        name: '视频广告', // 新手视频
+        component: './Market/VideoAdvert',
+        buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation
       {
         path: '/operation/share',
-        name: '分享管理',
+        name: '视频管理',
         component: './Operation/ShareManage',
-        buttons: ['info', 'down', 'handleDeatil'],
+        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail'],
       },
       {
         path: '/operation/goods',
@@ -370,6 +401,25 @@ export default [
         path: '/operation/special',
         name: '周边特惠',
         component: './Operation/SpecialGoods',
+        buttons: [
+          'save',
+          'del',
+          'edit',
+          'down',
+          'info',
+          'check',
+          'diary',
+          'again',
+          'placement',
+          'recommendStatus',
+          'exportList',
+          'goodsCode',
+        ],
+      },
+      {
+        path: '/operation/platformRights',
+        name: '平台权益',
+        component: './Operation/PlatformRights',
         buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
       // 客服中心 service
@@ -416,6 +466,12 @@ export default [
         component: './System/MenuList',
       },
       {
+        path: '/system/welfare',
+        name: '新人福利配置',
+        component: './System/WelfareConfig',
+        buttons: ['edit', 'save', 'del'],
+      },
+      {
         path: '/expert/allocation',
         name: '哒人配置',
         component: './System/ExpertAllocation',
@@ -431,6 +487,12 @@ export default [
         path: '/operation/walking',
         name: '逛逛页面配置',
         component: './System/WalkingManage',
+      },
+      {
+        path: '/system/withdrawRegular',
+        name: '提现规则',
+        component: './System/WithdrawRegular',
+        buttons: ['save', 'edit'],
       },
       // 用户管理 user
       {

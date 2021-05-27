@@ -41,10 +41,11 @@ export default {
       const { content } = response;
       if (callback) callback(content.orderDTOS);
     },
-    *fetchOrderDetail({ payload }, { call, put }) {
+    *fetchOrderDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchOrdersDetail, payload);
       if (!response) return;
       const { content } = response;
+      callback(content.order)
       yield put({
         type: 'save',
         payload: {

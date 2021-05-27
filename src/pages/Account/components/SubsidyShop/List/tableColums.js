@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ADD_AND_MINUS, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { ADD_AND_MINUS, SUBSIDY_ACTION_ROLE, SUBSIDY_TYPE } from '@/common/constant';
 import HandleSetTable from '@/components/HandleSetTable';
 
 const infoHandle = (click) => (
@@ -26,11 +26,11 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       align: 'center',
       dataIndex: 'gainTime',
     },
-    {
-      title: '平台直充',
-      align: 'right',
-      dataIndex: 'platformBean',
-    },
+    // {
+    //   title: '营销卡豆充值',
+    //   align: 'right',
+    //   dataIndex: 'platformBean',
+    // },
     {
       title: '收入（卡豆）',
       align: 'right',
@@ -48,17 +48,15 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       align: 'center',
       dataIndex: 'gainMonth',
     },
-
     {
-      title: '补贴店铺',
-      align: 'right',
-      dataIndex: 'platformBean',
-    },
-
-    {
-      title: '【总】补贴（卡豆）',
+      title: '收入（卡豆）',
       align: 'right',
       dataIndex: 'inBean',
+    },
+    {
+      title: '支出（卡豆）',
+      align: 'right',
+      dataIndex: 'outBean',
     },
   ];
 
@@ -78,22 +76,28 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           render: (val) => ADD_AND_MINUS[val],
         },
         {
-          title: '类型',
+          title: '卡豆类型',
           align: 'center',
           dataIndex: 'identificationType',
-          render: (val) => (val === 'platform' ? '平台直充' : '--'),
+          render: (val) => SUBSIDY_TYPE[val],
+        },
+        {
+          title: '类型',
+          align: 'center',
+          dataIndex: 'detailType',
+          render: (val) => (val == 'minus' ? '补贴' : '回收'),
         },
         {
           title: '角色',
           align: 'center',
           dataIndex: 'subsidyRole',
-          render: (val) => SUBSIDY_TASK_ROLE[val],
+          render: (val) => SUBSIDY_ACTION_ROLE[val],
         },
-        {
-          title: '店铺名称',
-          align: 'center',
-          dataIndex: 'merchantName',
-        },
+        // {
+        //   title: '店铺名称',
+        //   align: 'center',
+        //   dataIndex: 'merchantName',
+        // },
         {
           title: '任务名称',
           align: 'center',
@@ -101,7 +105,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         },
         {
           title: '卡豆',
-          align: 'center',
+          align: 'right',
           dataIndex: 'bean',
         },
 
@@ -109,7 +113,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '操作',
           align: 'center',
           dataIndex: 'time',
-          render: (val, row) => infoHandle(() => fetchGetDetail(row.type, row)),
+          render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
         },
       ];
     // 按日显示
@@ -143,7 +147,10 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
               setSearchData({
                 ...searchData,
                 latitude: 'day',
-                time: [moment(row.gainMonth).startOf('month'), moment(row.gainMonth).endOf('month')],
+                time: [
+                  moment(row.gainMonth).startOf('month'),
+                  moment(row.gainMonth).endOf('month'),
+                ],
               }),
             ),
         },

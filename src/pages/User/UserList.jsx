@@ -25,6 +25,10 @@ const UserListComponent = (props) => {
       name: 'mobile',
     },
     {
+      label: '豆号',
+      name: 'beanCode',
+    },
+    {
       label: '用户昵称',
       name: 'username',
     },
@@ -54,6 +58,11 @@ const UserListComponent = (props) => {
       title: '用户ID',
       fixed: 'left',
       dataIndex: 'userIdString',
+    },
+    {
+      title: '豆号',
+      fixed: 'left',
+      dataIndex: 'beanCode',
     },
     {
       title: '注册手机号',
@@ -111,12 +120,12 @@ const UserListComponent = (props) => {
       align: 'right',
       fixed: 'right',
       dataIndex: 'parentUserIdString',
-      render: (val, record) => (
+      render: (val, record, index) => (
         <HandleSetTable
           formItems={[
             {
               type: 'info',
-              click: () => fetchUserDetail(record.userIdString),
+              click: () => fetchUserDetail(index),
             },
           ]}
         />
@@ -138,11 +147,12 @@ const UserListComponent = (props) => {
   };
 
   // 获取用户详情
-  const fetchUserDetail = (userId) => {
+  const fetchUserDetail = (index) => {
+    const { userIdString: userId } = list.list[index];
     dispatch({
       type: 'userList/fetchUserDetail',
       payload: { userId },
-      callback: (detail) => setVisible({ shwo: true, detail }),
+      callback: (detail) => setVisible({ shwo: true, index, detail }),
     });
   };
 
@@ -168,8 +178,10 @@ const UserListComponent = (props) => {
         {...list}
       ></TableDataBlock>
       <UserDetailShow
+        total={list.list.length}
         childRef={childRef}
         visible={visible}
+        getDetail={fetchUserDetail}
         onClose={() => setVisible(false)}
       ></UserDetailShow>
     </>

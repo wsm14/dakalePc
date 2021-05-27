@@ -2,6 +2,41 @@ import request from '@/utils/request';
 
 // 全局接口
 
+// get 获取哒人等级映射 - 等同哒人配置列表
+export function fetchGetExpertLevel(params) {
+  return request('/admin/systemConfig/listUserLevel', {
+    params,
+  });
+}
+
+// get 获取补贴卡豆类型的卡豆数
+export function fetchGetSubsidyRoleBean(params) {
+  return request('/admin/systemConfig/getByCategoryIdAndSubsidyRoleAndType', {
+    params,
+  });
+}
+
+// get 店铺选择免费券列表
+export function fetchGetFreeCouponSelect(params) {
+  return request('/admin/coupon/listOwnerCouponByChannel', {
+    params,
+  });
+}
+
+// get 店铺选择有价券列表
+export function fetchGetBuyCouponSelect(params) {
+  return request('/admin/coupon/listOwnerCouponNeedBuy', {
+    params,
+  });
+}
+
+// get 店铺特惠商品列表
+export function fetchGetSpecialGoodsSelect(params) {
+  return request('/admin/specialGoodsManagement/listMerchantSpecialGoods', {
+    params,
+  });
+}
+
 // get 全部的订单查询 全局
 export function fetchOrderDetail(params) {
   return request('/admin/accountManagement/getRelatedOrderDetail', {
@@ -12,6 +47,13 @@ export function fetchOrderDetail(params) {
 // get 日志记录
 export function fetchHandleDetail(params) {
   return request('/admin/logRecord/listLogRecord', {
+    params,
+  });
+}
+
+// get 日志记录 - 新
+export function fetchGetLogDetail(params) {
+  return request('/admin/actionLog/listActionLog', {
     params,
   });
 }
@@ -72,32 +114,10 @@ export function fetchGetHubSelect(params) {
   });
 }
 
-// get 获取商圈名称
-export function fetchGetHubName(params) {
-  return request('/admin/businessHub/getBusinessHubById', {
-    params,
-  });
-}
-
 // get 店铺标签
 export function fetchGetMreTag(params) {
   return request('/admin/systemConfig/listConfigMerchantTag', {
     params,
-  });
-}
-
-// get 行业类目 - 勾选列表
-export function fetchGetTradeSelect(params) {
-  return request('/common/category/listSpecialGoodsCategory', {
-    params,
-  });
-}
-
-// post 行业类目 - 勾选设置
-export function fetchSetTradeSelect(data) {
-  return request('/common/category/setSpecialGoodsCategory', {
-    method: 'POST',
-    data,
   });
 }
 
@@ -126,6 +146,28 @@ export function fetchGetKolLevel(params) {
 // get 可跳转app选项列表
 export function fetchGetJumpNative(params) {
   return request('/admin/native/jump/listNativeJump', {
+    params,
+  });
+}
+
+// post 数据明细查询 全局导出
+export function fetchimportExcel(data) {
+  return request('/admin/excelImport/importExcel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 导出列表
+export function fetchimportExcelList(params) {
+  return request('/admin/excelImport/listExcelImport', {
+    params,
+  });
+}
+
+// get 获取可选用户列表
+export function fetchGetSelectUserList(params) {
+  return request('/admin/userManagement/listUserManagement', {
     params,
   });
 }

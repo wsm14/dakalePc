@@ -6,7 +6,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import EditableCell from './EditableCell';
 
 const GratiaClassManage = (props) => {
-  const { classList, loading, dispatch, style } = props;
+  const { classList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [form] = Form.useForm();
@@ -25,7 +25,7 @@ const GratiaClassManage = (props) => {
     });
   };
 
-  // 新增/修改
+  // 新增/修改 新列表传递回去
   const fetchDetailAdd = (val) => {
     dispatch({
       type: 'walkingManage/fetchWalkManageGratiaClassAdd',
@@ -111,6 +111,12 @@ const GratiaClassManage = (props) => {
                 click: () => edit(record),
               },
               {
+                type: 'del',
+                auth: true,
+                visible: !editable,
+                click: () => fetchDetailAdd(classList.filter(({ id }) => id !== record.id)),
+              },
+              {
                 auth: true,
                 title: '保存',
                 visible: editable,
@@ -153,12 +159,12 @@ const GratiaClassManage = (props) => {
       <TableDataBlock
         cardProps={{
           title: '特惠商品类目配置',
+          bordered: false,
           extra: (
             <Button type="primary" onClick={addRow}>
               新增
             </Button>
           ),
-          style,
         }}
         components={{
           body: {

@@ -105,6 +105,7 @@ const VaneManage = (props) => {
         tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
         cardProps={{
           title: '风向标配置',
+          bordered: false,
           extra: (
             <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
               新增

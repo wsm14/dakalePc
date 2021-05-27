@@ -11,6 +11,7 @@ import ExcelButton from '@/components/ExcelButton';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch } = props;
+  const { list } = couponManage;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
@@ -146,14 +147,14 @@ const CouponManageComponent = (props) => {
       fixed: 'right',
       align: 'right',
       dataIndex: 'ownerCouponIdString',
-      render: (ownerCouponId, record) => {
+      render: (ownerCouponId, record, index) => {
         const { merchantCouponStatus: status, ownerIdString: ownerId } = record;
         return (
           <HandleSetTable
             formItems={[
               {
                 type: 'info',
-                click: () => fetchCouponDetail({ ownerCouponId, ownerId }, 'info'),
+                click: () => fetchCouponDetail(index, 'info'),
               },
               {
                 type: 'del',
@@ -226,11 +227,12 @@ const CouponManageComponent = (props) => {
   };
 
   // 获取商品详情
-  const fetchCouponDetail = (payload, type) => {
+  const fetchCouponDetail = (index, type) => {
+    const { ownerCouponIdString: ownerCouponId, ownerIdString: ownerId } = list[index];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
-      payload,
-      callback: (detail) => setVisible({ type, show: true, detail }),
+      payload: { ownerCouponId, ownerId },
+      callback: (detail) => setVisible({ type, show: true, index, detail }),
     });
   };
 
@@ -267,6 +269,8 @@ const CouponManageComponent = (props) => {
       <CouponDrawer
         childRef={childRef}
         visible={visible}
+        total={list.length}
+        getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
       ></CouponDrawer>
     </>

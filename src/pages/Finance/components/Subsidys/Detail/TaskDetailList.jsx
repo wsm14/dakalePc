@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
+import { SUBSIDY_BEAN_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const TaskDetailList = (props) => {
   const { detailList, loading, visible = {}, onClose } = props;
 
   const { show = false, detail = {} } = visible;
-  const { subsidyId, taskName, subsidizedBeans } = detail;
+  const { subsidyId, taskName, subsidizedBeans, recycleBean, mode } = detail;
 
   // 搜索参数
   const searchItems = [
@@ -20,7 +22,13 @@ const TaskDetailList = (props) => {
   const getColumns = [
     {
       title: '店铺名称',
+      width: 200,
       dataIndex: 'merchantName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip lines={3}>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '店铺帐号',
@@ -40,7 +48,7 @@ const TaskDetailList = (props) => {
       dataIndex: 'address',
     },
     {
-      title: '补贴卡豆数',
+      title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
       align: 'right',
       dataIndex: 'rechargeBeans',
     },
@@ -53,7 +61,9 @@ const TaskDetailList = (props) => {
 
   return (
     <Modal
-      title={`补贴详情 - ${taskName} | 总补贴卡豆：${subsidizedBeans}`}
+      title={`补贴详情 - ${taskName} | 总${SUBSIDY_BEAN_TYPE[mode]}卡豆：${
+        { out: subsidizedBeans, in: recycleBean }[mode]
+      }`}
       width={1150}
       destroyOnClose
       footer={null}

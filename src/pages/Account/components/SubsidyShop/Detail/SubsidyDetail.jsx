@@ -1,57 +1,102 @@
 import React from 'react';
-import DescriptionsCondition from '@/components/DescriptionsCondition';
-import DrawerCondition from '@/components/DrawerCondition';
-import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { Modal } from 'antd';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
 
-  const { show = false, info } = visible;
+  const { show = false, info, type, titles } = visible;
 
-  const formItems = [
+  const getColumnsM = [
     {
-      label: '任务名称',
-      name: 'taskName',
+      title: '店铺名称',
+      dataIndex: 'merchantName',
+      width: 280,
     },
     {
-      label: '补贴类型',
-      name: 'type',
-      render: (val) => SUBSIDY_TYPE[val],
+      title: '店铺账号',
+      align: 'center',
+      dataIndex: 'account',
     },
     {
-      label: '补贴角色',
-      name: 'role',
-      render: (val) => SUBSIDY_TASK_ROLE[val],
+      title: '所属商圈',
+      align: 'center',
+      dataIndex: 'businessHub',
     },
     {
-      label: '总参与人数',
-      name: 'participants',
+      title: '所属行业',
+      align: 'center',
+      dataIndex: 'category',
     },
     {
-      label: '已补贴卡豆数',
-      name: 'subsidizedBeans',
+      title: '地址',
+      dataIndex: 'address',
+      width: 200,
     },
     {
-      label: '充值卡豆数',
-      name: 'rechargeBeans',
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'rechargeBeans',
+    },
+  ];
+
+  const getColumns = [
+    {
+      title: '用户ID',
+      align: 'center',
+      dataIndex: 'userIdString',
     },
     {
-      label: '状态',
-      name: 'status',
-      render: (val) => ['停用', '启用'][val],
+      title: '用户昵称',
+      align: 'center',
+      dataIndex: 'username',
+    },
+    {
+      title: '用户手机号',
+      align: 'center',
+      dataIndex: 'mobile',
+    },
+    {
+      title: '豆号',
+      align: 'center',
+      dataIndex: 'beanCode',
+    },
+    {
+      title: '级别',
+      align: 'center',
+      dataIndex: 'levelName',
+    },
+    {
+      title: '注册地',
+      align: 'center',
+      dataIndex: 'provinceName',
+      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
+    },
+    {
+      title: ' 补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
     },
   ];
 
   const modalProps = {
-    title: '查看详情',
+    title: `详情-${titles}-补贴/回收`,
     visible: show,
-    onClose,
+    width: 1200,
+    onCancel: () => onClose(),
+    footer: null,
   };
 
   return (
-    <DrawerCondition {...modalProps}>
-      <DescriptionsCondition formItems={formItems} initialValues={info}></DescriptionsCondition>
-    </DrawerCondition>
+    <Modal {...modalProps}>
+      <TableDataBlock
+        order
+        noCard={false}
+        columns={type == 'merchant' ? getColumnsM : getColumns}
+        rowKey={(record) => `${type == 'merchant' ? record.merchantId : record.userIdString}`}
+        list={info}
+      ></TableDataBlock>
+    </Modal>
   );
 };
 export default SubsidyDetail;

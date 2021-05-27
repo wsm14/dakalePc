@@ -28,26 +28,36 @@ export default {
       });
     },
     *fetchUserAcquire({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, payload);
-      const { dataType } = payload;
-      if (!response) return;
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userAcquire' });
+      const response2 = yield call(fetchSaleBlock, {
+        ...payload,
+        dataType: 'userAcquireUserCount',
+      });
+      if (!response || !response2) return;
       const { content } = response;
+      const { content: contentVerify } = response2;
       yield put({
         type: 'save',
         payload: {
-          [dataType]: content.data,
+          userAcquire: content.data,
+          userAcquireUserCount: contentVerify.data,
         },
       });
     },
     *fetchUserConsume({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, payload);
-      const { dataType } = payload;
-      if (!response) return;
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userConsume' });
+      const response2 = yield call(fetchSaleBlock, {
+        ...payload,
+        dataType: 'userConsumeUserCount',
+      });
+      if (!response || !response2) return;
       const { content } = response;
+      const { content: contentVerify } = response2;
       yield put({
         type: 'save',
         payload: {
-          [dataType]: content.data,
+          userConsume: content.data,
+          userConsumeUserCount: contentVerify.data,
         },
       });
     },

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { connect } from 'umi';
+import { Button } from 'antd';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
@@ -6,8 +8,7 @@ import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
-import { Button } from 'antd';
-import { connect } from 'umi';
+
 import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/Group/groupDetails';
 
@@ -50,10 +51,22 @@ const tableList = (props) => {
       },
     });
   };
-  const fetchSave = (payload) => {
+  const fetchSave = (payload, close) => {
     dispatch({
       type: 'groupSet/save',
-      payload: payload,
+      payload: close
+        ? {
+            visible: false,
+            visible1: false,
+            visible2: false,
+            merchantGroupId: null,
+            groupDetails: {},
+            merchantGroupDTO: {},
+            businessLicense: {},
+            bankBindingInfo: {},
+            initial: {},
+          }
+        : payload,
     });
   };
   const fetchGrounpDetails = (payload, callback) => {
@@ -146,73 +159,47 @@ const tableList = (props) => {
       title: '操作',
       dataIndex: 'merchantGroupId',
       align: 'right',
-      render: (val, record) =>
-        record.bankStatus === '0' ? (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => {
-                  fetchGrounpDetails(
-                    {
-                      merchantGroupId: val,
-                    },
-                    (res) => {
-                      fetchSave({ visible: true });
-                    },
-                  );
-                },
-              },
-              {
-                type: 'info',
-                click: () => {
-                  fetchSave({
-                    visible2: true,
+      render: (val, record, index) => (
+        <HandleSetTable
+          formItems={[
+            {
+              type: 'edit',
+              click: () => {
+                fetchGrounpDetails(
+                  {
                     merchantGroupId: val,
-                  });
-                },
+                  },
+                  (res) => {
+                    fetchSave({ visible: true });
+                  },
+                );
               },
-              {
-                type: 'activate',
-                click: () => {
-                  fetchSave({
-                    visible1: true,
+            },
+            {
+              type: 'info',
+              click: () => {
+                fetchSave({
+                  visible2: true,
                     merchantGroupId: val,
-                    groupDetails: {},
-                    initial: {},
-                  });
-                },
+                    merchantGroupIdIndex: index,
+                });
               },
-            ]}
-          />
-        ) : (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => {
-                  fetchGrounpDetails(
-                    {
-                      merchantGroupId: val,
-                    },
-                    (res) => {
-                      fetchSave({ visible: true });
-                    },
-                  );
-                },
+            },
+            {
+              type: 'activate',
+              visible: record.bankStatus === '0',
+              click: () => {
+                fetchSave({
+                  visible1: true,
+                  merchantGroupId: val,
+                  groupDetails: {},
+                  initial: {},
+                });
               },
-              {
-                type: 'info',
-                click: () => {
-                  fetchSave({
-                    visible2: true,
-                    merchantGroupId: val,
-                  });
-                },
-              },
-            ]}
-          />
-        ),
+            },
+          ]}
+        />
+      ),
     },
   ];
   return (
@@ -252,52 +239,19 @@ const tableList = (props) => {
         saveVisible={(res) => fetchSave(res)}
         visible={visible}
         childRef={childRef}
-        onClose={() =>
-          fetchSave({
-            visible: false,
-            merchantGroupId: null,
-            groupDetails: {},
-            merchantGroupDTO: {},
-            businessLicense: {},
-            bankBindingInfo: {},
-            initial: {},
-          })
-        }
+        onClose={() => fetchSave({}, () => {}, true)}
       ></DrawerForms>
-
       <SetDetailsForms
         saveVisible={(res) => fetchSave(res)}
         visible={visible1}
         childRef={childRef}
-        onClose={() =>
-          fetchSave({
-            visible1: false,
-            groupDetails: {},
-            merchantGroupDTO: {},
-            businessLicense: {},
-            bankBindingInfo: {},
-            initial: {},
-          })
-        }
+        onClose={() => fetchSave({}, () => {}, true)}
       ></SetDetailsForms>
-
-      {visible2 && (
-        <GroupDetails
-          saveVisible={(res) => fetchSave(res)}
-          visible={visible2}
-          onClose={() =>
-            fetchSave({
-              visible2: false,
-              merchantGroupId: null,
-              groupDetails: {},
-              merchantGroupDTO: {},
-              businessLicense: {},
-              bankBindingInfo: {},
-              initial: {},
-            })
-          }
-        ></GroupDetails>
-      )}
+      <GroupDetails
+        saveVisible={(res) => fetchSave(res)}
+        visible={visible2}
+        onClose={() => fetchSave({}, () => {}, true)}
+      ></GroupDetails>
     </>
   );
 };

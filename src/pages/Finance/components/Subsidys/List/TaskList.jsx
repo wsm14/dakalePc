@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { SUBSIDY_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
 import TaskDetailList from '../Detail/TaskDetailList';
 
 const TaskManage = (props) => {
-  const { subsidyManage, loading, childRef, setVisible, dispatch } = props;
+  const { subsidyManage, loading, childRef, tabkey, type, setVisible, dispatch } = props;
 
   const [dates, setDates] = useState([]); // 时间选择器限制选择参数比较
   const [taskDetail, setTaskDates] = useState(false); // 补贴详情展示
@@ -29,10 +29,14 @@ const TaskManage = (props) => {
       name: 'taskName',
     },
     {
+      label: '创建人',
+      name: 'creator',
+    },
+    {
       label: '补贴类型',
       type: 'select',
-      name: 'type',
-      select: SUBSIDY_TYPE,
+      name: 'mode',
+      select: SUBSIDY_BEAN_TYPE,
     },
     {
       label: '补贴角色',
@@ -60,26 +64,33 @@ const TaskManage = (props) => {
       width: 150,
     },
     {
-      title: '补贴类型',
-      align: 'center',
-      dataIndex: 'type',
-      render: (val) => SUBSIDY_TYPE[val],
-    },
-    {
-      title: '补贴角色',
+      title: '角色',
       align: 'center',
       dataIndex: 'role',
       render: (val) => SUBSIDY_TASK_ROLE[val],
     },
     {
-      title: '总参与人数',
+      title: '类型',
+      align: 'center',
+      dataIndex: 'mode',
+      render: (val) => SUBSIDY_BEAN_TYPE[val],
+    },
+    {
+      title: '总参与店铺/人数',
       align: 'right',
       dataIndex: 'participants',
     },
     {
-      title: '已补贴卡豆数',
+      title: '补贴/回收卡豆数',
       align: 'right',
       dataIndex: 'subsidizedBeans',
+      render: (val, row) => (row.mode == 'out' ? val : row.recycleBean),
+    },
+    {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
+      render: (val, row) => `${val}\n${row.creator}`,
     },
     {
       title: '操作',
@@ -93,26 +104,27 @@ const TaskManage = (props) => {
             formItems={[
               {
                 type: 'info',
-                auth: 'taskInfo',
+                auth: `${tabkey}Info`,
                 click: () => fetchSubsidyTaskDetail({ subsidyId }),
               },
               {
-                type: 'taskDetail',
+                type: `${tabkey}Detail`,
+                title: '补贴详情',
                 click: () => setTaskDates({ show: true, detail: record }),
               },
               {
                 type: 'del',
-                auth: 'taskDel',
+                auth: `${tabkey}Del`,
                 visible: status === '0',
                 click: () => fetchSubsidyTaskEndDel({ subsidyId, deleteFlag: 0 }),
               },
-              {
-                type: 'end',
-                auth: 'taskEnd',
-                pop: true,
-                visible: status === '1',
-                click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
-              },
+              // {
+              //   type: 'end',
+              //   auth: `${tabkey}End`,
+              //   pop: true,
+              //   visible: status === '1',
+              //   click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
+              // },
             ]}
           />
         );
@@ -146,14 +158,15 @@ const TaskManage = (props) => {
         btnExtra={({ get }) => (
           <ExcelButton
             dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
-            dispatchData={get()}
-            exportProps={{ header: getColumns.slice(0, -1) }}
+            dispatchData={{ type, ...get() }}
+            exportProps={{ header: getColumns }}
           ></ExcelButton>
         )}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        params={{ type }}
         rowKey={(record) => `${record.subsidyId}`}
         dispatchType="subsidyManage/fetchGetTaskList"
         {...subsidyManage.list}

@@ -6,9 +6,9 @@ import CouponDetail from './Detail/CouponDetail';
 import CouponSet from './Form/CouponSet';
 
 const CouponDrawer = (props) => {
-  const { visible, dispatch, childRef, onClose, loading } = props;
+  const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
 
-  const { type = 'info', show = false, detail = {} } = visible;
+  const { type = 'info', index, show = false, detail = {} } = visible;
   const [form] = Form.useForm();
 
   // 确认提交
@@ -63,8 +63,14 @@ const CouponDrawer = (props) => {
     title: drawerProps.title,
     visible: show,
     onClose,
+    loading: loadingDetail,
     closeCallBack: () => dispatch({ type: 'businessList/close' }), // 关闭清空搜索的商家数据
-    footer: type == 'add' && (
+    dataPage: type === 'info' && {
+      current: index,
+      total,
+      onChange: (size) => getDetail(size, 'info'),
+    },
+    footer: type === 'add' && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         发布申请
       </Button>
@@ -76,4 +82,5 @@ const CouponDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading: loading.effects['couponManage/fetchCouponSave'],
+  loadingDetail: loading.effects['couponManage/fetchCouponDetail'],
 }))(CouponDrawer);

@@ -28,10 +28,9 @@ const SearchCondition = (props) => {
   } = props;
 
   const [ownForm] = Form.useForm();
-  // 动态获取当前屏幕大小
-  const screens = useBreakpoint();
-  // 展开状态
-  const [expand, setExpand] = useState(false);
+
+  const screens = useBreakpoint(); // 动态获取当前屏幕大小
+  const [expand, setExpand] = useState(componentSize !== 'default' ? true : false); // 展开状态
 
   // 重置
   const handleReset = () => {
@@ -77,6 +76,12 @@ const SearchCondition = (props) => {
           if (valuesKey) valuesKey.map((key, i) => (formObj[key] = values[name][i]));
           else formObj[name] = values[name][values[name].length - 1];
           delete values[name];
+        } else if (type === 'numberGroup') {
+          // 数字区间组合
+          formObj[name] =
+            values[name] && values[name].filter((i) => typeof i == 'number').length === 2
+              ? values[name].join(',')
+              : undefined;
         }
       } else {
         // 删除不存在值的key

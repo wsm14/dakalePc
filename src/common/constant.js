@@ -32,6 +32,14 @@ export const PAY_TYPE = {
   wx_lite: '微信小程序',
 };
 
+// 导出excel枚举
+export const EXPORT_TYPE = {
+  darenList: '哒人列表',
+  userRegistration: '用户注册明细',
+  merchantMark: '到店打卡明细',
+  momentCollarBean: '视频领豆明细',
+};
+
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 
@@ -92,11 +100,20 @@ export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封�
 // 哒人类型
 export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
 
+// 哒人提现规则
+export const EXPERT_IS_WITHDRAW = ['不可提现', '可提现'];
+
 // 哒人类型
 export const EXPERT_LIST_TYPE = { daren: '哒人', douzhang: '豆长' };
 
+// 实习豆长状态
+export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
+
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
+
+// 新人下单配置福利状态
+export const WELFARE_STATUS = ['未开始', '进行中', '已结束'];
 
 // 提现状态
 export const COLLECT_STATUS = [false, '发起提现', '处理中', '成功', '失败'];
@@ -113,8 +130,16 @@ export const NEWS_STATUS = ['已发布', '已下架', '草稿'];
 // 拼图广告状态
 export const PUZZLE_AD_STATUS = ['下架', '上架'];
 
-// 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
-export const SHARE_STATUS = [false, '已上架', false, '已下架', '已删除', '分享结束'];
+// 分享状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享结束 6-预发布
+export const SHARE_STATUS = [
+  '待审核',
+  '已上架',
+  '审核拒绝',
+  '已下架',
+  '已删除',
+  '分享结束',
+  '即将发布',
+];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
@@ -144,8 +169,8 @@ export const BANNER_LOOK_AREA = {
   user: '仅用户可见',
 };
 
-// 周边特惠 - 上架状态
-export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始'];
+// 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
+export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
 
 // 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
@@ -230,16 +255,42 @@ export const MSG_PSUH_OBJECT = { all: '全部用户' };
 export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
 
 // 补贴管理 补贴类型
-export const SUBSIDY_TYPE = { behavior: '行为补贴', platform: '平台直充' };
+export const SUBSIDY_TYPE = {
+  platform: '营销卡豆',
+  directCharge: '平台直充',
+  // recycleDirectCharge: '平台直充回收',
+  // recyclePlatform: '营销卡豆回收',
+  platformSubsidy: '新手任务补贴',
+};
+
+// 补贴管理 补贴卡豆类型
+export const SUBSIDY_BEAN_TYPE = { out: '补贴', in: '回收' };
 
 // 补贴管理 任务列表 补贴角色
-export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', kol: '哒人' };
+export const SUBSIDY_TASK_ROLE = { merchant: '店铺' };
 
 // 补贴管理 行为管理 补贴角色
-export const SUBSIDY_ACTION_ROLE = { merchant: '店铺' };
+export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺' };
 
-// 补贴管理 行为管理 补贴类型
-export const SUBSIDY_ACTION_TYPE = { video: '发布视频', image: '发布图文', mark: '到店打卡' };
+// 补贴管理 行为管理 补贴类型 列表映射
+export const SUBSIDY_ACTION_TYPE = {
+  video: '发布视频',
+  image: '发布图文',
+  mark: '到店打卡',
+  newcomer: '新人核销',
+};
+
+// 补贴管理 行为管理 补贴类型 表单映射
+export const SUBSIDY_ACTION_TYPE_FORM = {
+  merchant: {
+    video: '发布视频',
+    image: '发布图文',
+    mark: '到店打卡',
+  },
+  user: {
+    newcomer: '新人核销',
+  },
+};
 
 // 分享类型
 export const SHARE_TYPE = { video: '视频', image: '图文' };
@@ -274,12 +325,14 @@ export const BANNER_PORT_LINK = {
     hotWeal: '爆品福利',
     wanderAroundMainBanner: '逛逛主Banner',
     wanderAroundCapsule: '逛逛胶囊位',
+    wanderAroundGoodMerchant: '逛逛周边好店',
   },
   weChat: {
     person: '个人',
     hotWeal: '爆品福利',
     wanderAroundMainBanner: '逛逛主Banner',
     wanderAroundCapsule: '逛逛胶囊位',
+    wanderAroundGoodMerchant: '逛逛周边好店',
   },
   merchant: {
     merchantMain: '商家工作台',
@@ -299,9 +352,6 @@ export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
 export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按场景显示' };
-
-// 分享设置 - 用户群
-export const SHARE_SCOPE_TYPE = { all: '所有人可见', family: '仅家人家店可见' };
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {
@@ -369,6 +419,9 @@ export const SPECIAL_RECOMMEND_TYPE = {
   todayRecommend: '爆品推荐',
   hotTop: '限时置顶',
   todayTop: '爆品置顶',
+  thisPeriod: '本期必抢',
+  nextPeriod: '下期预告',
+  novice: '新手视频',
   cancel: '取消推荐',
 };
 
@@ -376,4 +429,19 @@ export const SPECIAL_RECOMMEND_TYPE = {
 export const SPECIAL_RECOMMEND_LISTTYPE = {
   hot: '限时',
   today: '爆品',
+  thisPeriod: '本期必抢',
+  nextPeriod: '下期预告',
+  novice: '新手视频',
 };
+
+// 特惠活动 - 是否删除
+export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
+
+// 视频广告 - 新手视频状态 1-上架 3-下架
+export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
+
+// 视频广告 - 区域类型
+export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
+
+// 视频广告 - 时间设置类型
+export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];

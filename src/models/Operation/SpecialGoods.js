@@ -4,10 +4,13 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
+  fetchSpecialGoodsVerify,
+  fetchSpecialGoodsDel,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsRecommend,
-  fetchSpecialGoodsImport
+  fetchSpecialGoodsImport,
+  fetchSpecialGoodsQrCode,
 } from '@/services/OperationServices';
 
 export default {
@@ -55,14 +58,18 @@ export default {
         useStartTime,
         useEndTime,
         buyDesc = '[]',
+        useTimeRule,
+        activityTimeRule: activeTime,
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
       } = content.specialGoodsInfo;
       let newDetail = {};
-      if (type === 'edit' || type==='info') {
+      // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
+      if (['info', 'edit', 'again'].includes(type)) {
         newDetail = {
-          activityStartTime: [moment(activityStartTime), moment(activityEndTime)],
-          useStartTime: [moment(useStartTime), moment(useEndTime)],
+          activityStartTime:
+            activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],
+          useStartTime: useTimeRule === 'fixed' ? [moment(useStartTime), moment(useEndTime)] : [],
           timeSplit: useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part',
           timeType: useTime === '00:00-23:59' ? useTime : 'part',
           useTime:
@@ -91,6 +98,24 @@ export default {
       });
       callback();
     },
+    *fetchSpecialGoodsDel({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsDel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动删除成功',
+      });
+      callback();
+    },
+    *fetchSpecialGoodsVerify({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsVerify, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动审核完成',
+      });
+      callback();
+    },
     *fetchSpecialGoodsEdit({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsEdit, payload);
       if (!response) return;
@@ -109,6 +134,12 @@ export default {
       });
       callback();
     },
+    *fetchSpecialGoodsQrCode({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsQrCode, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.qcodeUrl);
+    },
     *fetchSpecialGoodsRecommend({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsRecommend, payload);
       if (!response) return;
@@ -123,12 +154,11 @@ export default {
       });
       callback();
     },
-    *fetchSpecialGoodsImport({ payload, callback }, { call }){
+    *fetchSpecialGoodsImport({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsImport, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.specialGoodsList);
-
-    }
+    },
   },
 };

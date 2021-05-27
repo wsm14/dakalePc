@@ -115,7 +115,9 @@ const PlatformIncome = ({ platformIncome, loadingList, dispatch }) => {
             fetchGetDetail,
           })}
           params={newSearch}
-          rowKey={(record) => `${record.identification || record.time}`}
+          rowKey={(record) =>
+            `${record.identification ? record.identification + record.gainTime : record.time}`
+          }
           dispatchType="platformIncome/fetchPlatformInconme"
           {...platformIncome.list}
         ></TableDataBlock>

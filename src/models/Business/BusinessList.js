@@ -91,14 +91,17 @@ export default {
         categoryName,
         businessTime,
         property = '{}',
+        headerContentObject = {},
         tag,
         scenesIds,
       } = content.merchantDetail;
+      const { imageUrl } = headerContentObject;
       const categoryNodeArr = categoryNode.split('.');
       // 检查值
       const dataCheck = (key) => (JSON.parse(property)[key] ? JSON.parse(property)[key] || '' : '');
       const initialValues = {
         ...content.merchantDetail,
+        headerImg: imageUrl,
         provinceCode: [p, c, d],
         selectCity: [
           { value: p, label: pN },
@@ -172,7 +175,7 @@ export default {
         message: '温馨提示',
         description: '商家修改成功',
       });
-      callback();
+      callback && callback();
     },
     *fetchMerSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchMerSetBandCode, payload);

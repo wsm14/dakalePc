@@ -8,27 +8,32 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_LISTTYPE,
+  SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
+import { LogDetail, RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
-import SpecialGoodsTrade from './components/SpecialGoods/SpecialGoodsTrade';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
+import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
+import excelProps from './components/SpecialGoods/ExcelProps';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
+  const { list } = specialGoods;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
+  const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -87,6 +92,11 @@ const SpecialGoods = (props) => {
       end: 'useEndTime',
     },
     {
+      label: '佣金',
+      name: 'commission',
+      type: 'numberGroup',
+    },
+    {
       label: '推广位置',
       type: 'select',
       name: 'promotionLocation',
@@ -120,6 +130,10 @@ const SpecialGoods = (props) => {
       type: 'rangePicker',
       name: 'createStartTime',
       end: 'createEndTime',
+    },
+    {
+      label: '创建人',
+      name: 'creatorName',
     },
   ];
 
@@ -160,17 +174,40 @@ const SpecialGoods = (props) => {
       ),
     },
     {
+      title: '佣金',
+      align: 'right',
+      dataIndex: 'realPrice',
+      render: (val, row) => `￥${(Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2)}`,
+      sorter: (a, b) =>
+        Number(a.realPrice) -
+        Number(a.merchantPrice) -
+        (Number(b.realPrice) - Number(b.merchantPrice)),
+    },
+    {
       title: '原价/售价',
       align: 'right',
       dataIndex: 'oriPrice',
-      render: (val, row) => (
-        <div>
-          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-            ￥{Number(val).toFixed(2)}
+      render: (val, row) => {
+        const zhe = (Number(row.realPrice) / Number(val)) * 10;
+        return (
+          <div>
+            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+              ￥{Number(val).toFixed(2)}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Tag color={'red'}>
+                {zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折
+              </Tag>
+              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+            </div>
           </div>
-          <div>￥{Number(row.realPrice).toFixed(2)}</div>
-        </div>
-      ),
+        );
+      },
+    },
+    {
+      title: '其它平台价格',
+      align: 'right',
+      dataIndex: 'otherPlatformPrice',
     },
     {
       title: '使用有效期',
@@ -197,7 +234,11 @@ const SpecialGoods = (props) => {
           {row.activityTimeRule === 'infinite'
             ? `${row.createTime} ~ 长期`
             : `${val} ~ ${row.activityEndTime}`}
-          <div>{SPECIAL_STATUS[row.status]}</div>
+          <div>
+            {row.deleteFlag === '0'
+              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+              : SPECIAL_STATUS[row.status]}
+          </div>
         </>
       ),
     },
@@ -220,7 +261,18 @@ const SpecialGoods = (props) => {
       sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
     },
     {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createTime',
+      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+    },
+    // {
+    //   title: '审核通过时间',
+    //   dataIndex: 'verifyTime',
+    // },
+    {
       title: '推广位置',
+      fixed: 'right',
       dataIndex: 'recommendType',
       render: (val, row) => {
         if ((row.recommendStatus === '0' && (row.topStatus === '0' || !row.topStatus)) || !val)
@@ -230,33 +282,59 @@ const SpecialGoods = (props) => {
       },
     },
     {
-      title: '创建时间',
-      dataIndex: 'createTime',
-    },
-    {
       title: '操作',
       dataIndex: 'specialGoodsId',
       align: 'right',
       fixed: 'right',
-      width: 100,
-      render: (val, record) => {
-        const { specialGoodsId, status } = record;
+      width: 150,
+      render: (val, record, index) => {
+        const { specialGoodsId, merchantIdStr, status, deleteFlag } = record;
         return (
           <HandleSetTable
             formItems={[
               {
-                type: 'info',
-                click: () => fetchSpecialGoodsDetail(record, 'info'),
+                type: 'goodsCode',
+                visible: ['1', '2'].includes(status) && deleteFlag == '1', // '活动中', '审核中' && 未删除
+                click: () =>
+                  fetchSpecialGoodsQrCode(
+                    { specialGoodsId },
+                    `${record.merchantName}-${record.goodsName}`,
+                  ),
               },
               {
-                type: 'down',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsStatus(record),
+                type: 'info',
+                click: () => fetchSpecialGoodsDetail(index, 'info'),
+              },
+              {
+                title: '下架',
+                auth: 'down',
+                visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
+                click: () =>
+                  setVisibleRefuse({
+                    show: true,
+                    detail: record,
+                    formProps: { type: 'down', key: 'offShelfReason' },
+                  }),
               },
               {
                 type: 'edit',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsDetail(record, [false, 'active', 'edit'][status]),
+                visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
+                click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
+              },
+              {
+                type: 'check',
+                visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
+                click: () => fetchSpecialGoodsDetail(index, 'info'),
+              },
+              // {
+              //   type: 'del',
+              //   visible: ['0'].includes(status), // 已下架
+              //   click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
+              // },
+              {
+                type: 'again',
+                visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+                click: () => fetchSpecialGoodsDetail(index, 'again'),
               },
               {
                 pop: true,
@@ -266,6 +344,10 @@ const SpecialGoods = (props) => {
                 click: () =>
                   fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
               },
+              {
+                type: 'diary',
+                click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+              },
             ]}
           />
         );
@@ -273,12 +355,65 @@ const SpecialGoods = (props) => {
     },
   ];
 
+  // 获取商品码
+  const fetchSpecialGoodsQrCode = (payload, title) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsQrCode',
+      payload,
+      callback: (url) => setQrcode({ url, title }),
+    });
+  };
+
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogDetail',
+      payload,
+    });
+  };
+
+  // 删除
+  const fetchSpecialGoodsDel = (payload) => {
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDel',
+      payload,
+    });
+  };
+
+  // 审核
+  const fetchSpecialGoodsVerify = (values) => {
+    const { merchantIdStr, specialGoodsId } = visibleRefuse.detail;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsVerify',
+      payload: {
+        merchantIdStr,
+        specialGoodsId,
+        status: 4,
+        ...values,
+      },
+      callback: () => {
+        setVisibleInfo(false);
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
   // 下架
-  const fetchSpecialGoodsStatus = (payload) => {
+  const fetchSpecialGoodsStatus = (values) => {
+    const { merchantIdStr, specialGoodsId, status } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
-      payload,
-      callback: childRef.current.fetchGetData,
+      payload: {
+        ...values,
+        merchantIdStr,
+        specialGoodsId,
+        status,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
     });
   };
 
@@ -292,8 +427,8 @@ const SpecialGoods = (props) => {
   };
 
   // 获取详情
-  const fetchSpecialGoodsDetail = (payload, type) => {
-    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = payload;
+  const fetchSpecialGoodsDetail = (index, type) => {
+    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, merchantIdStr, type },
@@ -304,51 +439,12 @@ const SpecialGoods = (props) => {
           detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
         };
         if (type == 'info') {
-          setVisibleInfo({ status, ...newProps });
+          setVisibleInfo({ status, index, ...newProps });
         } else {
           setVisibleSet({ type, ...newProps });
         }
       },
     });
-  };
-
-  //导出列表
-  const getExcelProps = {
-    fieldNames: { key: 'key', headerName: 'header' },
-    header: [
-      { key: 'goodsType', header: '商品类型', render: (val) => GOODS_CLASS_TYPE[val] },
-      { key: 'goodsName', header: '商品名称' },
-      { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
-      { key: 'merchantName', header: '店铺名称' },
-      { key: 'oriPrice', header: '原价' },
-      { key: 'realPrice', header: '特惠价格' },
-      { key: 'merchantPrice', header: '商家结算价' },
-      {
-        key: 'useStartTime',
-        header: '使用有效期',
-        render: (val, row) => {
-          const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-          if (!useTimeRule) return '';
-          if (useTimeRule === 'fixed') {
-            return useStartTime + '~' + useEndTime;
-          } else {
-            if (delayDays === '0') {
-              return `领取后立即生效\n有效期${activeDays}天`;
-            }
-            return `领取后${delayDays}天生效\n有效期${activeDays}天`;
-          }
-        },
-      },
-      { key: 'total', header: '投放总量' },
-      { key: 'remain', header: '剩余数量' },
-      { key: 'soldGoodsCount', header: '销量' },
-      {
-        key: 'writeOffGoodsCount',
-        header: '核销数量',
-      },
-      { key: 'createTime', header: '创建时间' },
-      { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
-    ],
   };
 
   return (
@@ -360,7 +456,7 @@ const SpecialGoods = (props) => {
             <ExcelButton
               dispatchType={'specialGoods/fetchSpecialGoodsImport'}
               dispatchData={get()}
-              exportProps={getExcelProps}
+              exportProps={excelProps}
             ></ExcelButton>
           </>
         )}
@@ -391,15 +487,14 @@ const SpecialGoods = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.specialGoodsId}`}
         rowSelection={{
+          getCheckboxProps: ({ status, deleteFlag }) => ({
+            disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除
+          }),
           onChange: setGoodsList,
         }}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
-      <SpecialGoodsTrade
-        visible={visible}
-        onCancel={() => setVisible({ show: false })}
-      ></SpecialGoodsTrade>
       <PreferentialDrawer
         childRef={childRef}
         visible={visibleSet}
@@ -408,6 +503,10 @@ const SpecialGoods = (props) => {
       {/* 详情 */}
       <SpecialGoodDetail
         visible={visibleInfo}
+        total={list.length}
+        getDetail={fetchSpecialGoodsDetail}
+        setVisibleRefuse={setVisibleRefuse}
+        fetchSpecialGoodsVerify={fetchSpecialGoodsVerify}
         onEdit={() =>
           setVisibleSet({
             type: [false, 'active', 'edit'][visibleInfo.status],
@@ -417,6 +516,19 @@ const SpecialGoods = (props) => {
         }
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodDetail>
+      {/* 日志 */}
+      <LogDetail></LogDetail>
+      {/* 审核拒绝 下架原因 */}
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={
+          visibleRefuse.type === 'refuse' ? fetchSpecialGoodsVerify : fetchSpecialGoodsStatus
+        }
+        loading={loadings.models.specialGoods}
+      ></RefuseModal>
+      {/* 商品码 */}
+      <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
     </>
   );
 };
@@ -424,6 +536,6 @@ const SpecialGoods = (props) => {
 export default connect(({ specialGoods, baseData, loading }) => ({
   specialGoods,
   hubData: baseData.hubData,
-  loading: loading.models.specialGoods,
+  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
   loadings: loading,
 }))(SpecialGoods);

@@ -1,24 +1,33 @@
 // 权限按钮映射 和 HandleSetTable 对应
 export const ROLE_BUTTON_TYPE = {
+  again: '重新发布',
   adRoot: '广告配置',
-  action: '行为管理',
+  action: '使用规则',
   activate: '账户激活',
   actionDel: '删除行为',
   actionEdit: '修改行为',
-  actionSave: '新增行为',
+  actionSave: '新增使用规则',
 
+  batchEdit: '批量修改',
   baseTrade: '基础设施',
   bussinessStatus: '营业状态',
 
   copy: '复制',
   check: '审核',
   couponAdd: '优惠券新增',
+  cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
 
   del: '删除',
   down: '下架',
   diary: '日志',
+  direct: '平台直充',
+  directDel: '删除平台直充',
+  directEnd: '结束平台直充',
+  directInfo: '平台直充任务详情',
+  directSave: '直充卡豆充值',
+  directDetail: '平台直充补贴详情',
   destoryDetail: '核销明细',
 
   eye: '查看',
@@ -26,11 +35,14 @@ export const ROLE_BUTTON_TYPE = {
   edit: '编辑',
   exportList: '导出',
 
+  goodsCode: '商品码',
+
   handle: '处理',
   handleDeatil: '操作记录',
 
   info: '详情',
   income: '收益明细',
+  isWechat: '小程序展示控制',
 
   jobClass: '职位类别',
 
@@ -62,6 +74,7 @@ export const ROLE_BUTTON_TYPE = {
   roleEdit: '角色权限设置',
   rightsSet: '权益设置',
   roleStatus: '角色状态',
+  recycleBean: '卡豆回收',
   reportCenter: '举报中心',
   recommendList: '推荐列表',
   rechargeDetail: '充值记录',
@@ -89,15 +102,15 @@ export const ROLE_BUTTON_TYPE = {
   savePClassify: '添加内容分类',
   shareTextEdit: '修改分享文案',
 
-  task: '任务列表',
+  task: '营销卡豆充值',
   topic: '创作设置',
-  taskDel: '删除任务',
-  taskEnd: '结束任务',
-  taskSave: '新增任务',
-  taskInfo: '任务详情',
+  taskDel: '删除营销卡豆充值',
+  taskEnd: '结束营销卡豆充值',
   tradeAdd: '新增类目',
-  targetSet: '任务设置',
-  taskDetail: '补贴详情',
+  taskSave: '新增营销卡豆充值',
+  taskInfo: '营销卡豆充值任务详情',
+  targetSet: '营销卡豆充值设置',
+  taskDetail: '营销卡豆充值补贴详情',
   tradeSecondAdd: '添加子类目',
 
   up: '上架',
@@ -108,8 +121,6 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
 
   withdraw: '提现记录',
-
-  republish:'重新发布'
 };
 
 // 数据权限选项
