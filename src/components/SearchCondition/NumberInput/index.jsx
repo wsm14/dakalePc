@@ -13,7 +13,6 @@ const NumberBlock = (props) => {
     <InputNumber
       placeholder={placeholder || `请输入${label}`}
       style={{ width: '100%' }}
-      allowClear
       formatter={formatter}
       parser={parser}
       onChange={(e) => {

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Upload, Modal, message } from 'antd';
+import { Upload, Button, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 // 上传文件按钮
 const uploadButton = (
   <div>
-    <PlusOutlined />
-    <div className="ant-upload-text">选择</div>
+    <Button icon={<PlusOutlined />}>选择</Button>
   </div>
 );
 
@@ -86,18 +85,18 @@ const UploadBlock = (props) => {
     <>
       <Upload
         multiple={multiple || true}
-        listType="picture-card"
+        listType="picture"
         accept="video/mp4,.mp4"
         maxCount={maxFile}
         fileList={fileLists}
         previewFile={(file) => {
           return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-              resolve(reader.result);
-            };
-            reader.onerror = (error) => reject(error);
+            const url = URL.createObjectURL(file);
+            if (url) {
+              resolve('url.mp4');
+            } else {
+              reject('文件错误');
+            }
           });
         }}
         onPreview={(file) => handlePreview(file, 'video')}
