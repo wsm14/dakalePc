@@ -86,7 +86,7 @@ const UploadBlock = (props) => {
     onChange = undefined,
     isCut,
     imgRatio,
-    multiple,
+    multiple = true,
   } = props;
 
   const fileKeyName = Array.isArray(name) ? name[1] : name;
@@ -248,7 +248,7 @@ const UploadBlock = (props) => {
       <DragAndDropHOC>
         <Upload
           // 允许选择时裁剪的时候不允许多选
-          multiple={isCut ? false : multiple || true}
+          multiple={isCut ? false : multiple}
           listType="picture-card"
           fileList={fileLists}
           beforeUpload={(file) => beforeUpload(file)}

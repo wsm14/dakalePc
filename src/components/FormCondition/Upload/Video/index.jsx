@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Upload, Button, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -17,16 +17,6 @@ const imgold = (url, uid) => ({
   url,
 });
 
-// 获取预览base64
-const getBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
-
 // 逐级获取value
 const getArrKeyVal = (key, value) => {
   const _len = key.length;
@@ -40,12 +30,21 @@ const getArrKeyVal = (key, value) => {
 };
 
 const UploadBlock = (props) => {
-  const { form, initialvalues: initialValues, name = '', multiple, maxFile, onChange } = props;
+  const {
+    form,
+    initialvalues: initialValues,
+    name = '',
+    multiple = true,
+    maxFile,
+    onChange,
+  } = props;
+
+  const videoRef = useRef(null);
+
   const fileKeyName = Array.isArray(name) ? name[1] : name;
 
-  const [previewVisible, setPreviewVisible] = useState(false); // 图片回显弹窗显示隐藏
-  const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
-  const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 属性
+  const [previewVisible, setPreviewVisible] = useState(false); // 回显弹窗显示隐藏
+  const [previewUrl, setPreviewUrl] = useState(''); // 回显 url
   // 文件控制列表
   const [fileLists, setFileLists] = useState(() => {
     if (initialValues && Object.keys(initialValues).length) {
@@ -70,33 +69,33 @@ const UploadBlock = (props) => {
     }
   });
 
-  // 查看图片视频
-  const handlePreview = async (file, fileType) => {
+  // 查看视频
+  const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj || file);
+      file.preview = URL.createObjectURL(file.originFileObj || file);
     }
     const showFile = file.url || file.preview;
-    setPreviewImage(showFile);
-    setPreviewTitle({ uid: file.uid, key: name, fileType });
+    setPreviewUrl(showFile);
     setPreviewVisible(true);
+  };
+
+  // 关闭 暂停播放
+  const handleVideoClose = () => {
+    videoRef.current.pause();
+    setPreviewVisible(false);
   };
 
   return (
     <>
       <Upload
-        multiple={multiple || true}
+        multiple={multiple}
         listType="picture"
         accept="video/mp4,.mp4"
         maxCount={maxFile}
         fileList={fileLists}
-        previewFile={(file) => {
-          return new Promise((resolve, reject) => {
-            const url = URL.createObjectURL(file);
-            if (url) {
-              resolve('url.mp4');
-            } else {
-              reject('文件错误');
-            }
+        previewFile={() => {
+          return new Promise((resolve) => {
+            resolve('url.mp4');
           });
         }}
         onPreview={(file) => handlePreview(file, 'video')}
@@ -126,17 +125,19 @@ const UploadBlock = (props) => {
       </Upload>
       <Modal
         title={'查看'}
-        visible={previewVisible && previewTitle.fileType === 'video'}
-        onCancel={() => setPreviewVisible(false)}
+        visible={previewVisible}
         width={548}
         footer={null}
         zIndex={100000}
+        destroyOnClose
+        onCancel={handleVideoClose}
       >
         <video
           controls="controls"
           style={{ maxHeight: 300, margin: '0 auto', width: 500 }}
+          ref={videoRef}
           autoPlay
-          src={previewImage}
+          src={previewUrl}
         >
           <track kind="captions" />
         </video>
