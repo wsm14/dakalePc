@@ -144,6 +144,13 @@ export function fetchShareVideoPush(data) {
   });
 }
 
+// post 分享管理 - 设置假数据 分享收藏数
+export function fetchShareLikeSet(params) {
+  return request('/admin/marketingManagement/modifyMomentParam', {
+    params,
+  });
+}
+
 // 分享管理 end
 
 // 种草管理

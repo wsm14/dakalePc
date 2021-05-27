@@ -13,7 +13,6 @@ const ShareDetail = (props) => {
   // 信息
   const formItems = [
     {
-      title: '所属店铺',
       label: '店铺类型',
       name: 'userType',
       render: (val) => BUSINESS_TYPE[val],
@@ -23,7 +22,6 @@ const ShareDetail = (props) => {
       name: 'merchantName',
     },
     {
-      title: '分享内容',
       label: `视频`,
       name: ['videoContent', 'url'],
       type: 'videoUpload',
@@ -35,6 +33,14 @@ const ShareDetail = (props) => {
     {
       label: '内容详情',
       name: 'message',
+    },
+    {
+      label: `收藏数`,
+      name: 'collectionAmount',
+    },
+    {
+      label: `分享数`,
+      name: 'shareAmount',
     },
     {
       label: '行业分类',
@@ -73,7 +79,6 @@ const ShareDetail = (props) => {
       name: 'tags',
     },
     {
-      title: '打赏详情',
       label: '发布状态',
       name: 'status',
       render: (val) => SHARE_STATUS[val],
