@@ -139,15 +139,16 @@ const UploadBlock = (props) => {
       : previewTitle.key;
     const uid = previewTitle.uid;
     let newimg = fileLists || [];
-    imageCompress(file).then(({ file, base64 }) => {
+    imageCompress(file).then(({ file }) => {
+      const thumbUrl = URL.createObjectURL(file);
       if (newimg.findIndex((i) => i.uid == uid) === -1) {
-        newimg = [...newimg, { uid, url: base64, thumbUrl: base64, originFileObj: file }];
+        newimg = [...newimg, { uid, url: thumbUrl, thumbUrl, originFileObj: file }];
       } else {
         newimg.map((fi) => {
           if (fi.uid === uid) {
             fi.originFileObj = file;
-            fi.url = base64;
-            fi.thumbUrl = base64;
+            fi.url = thumbUrl;
+            fi.thumbUrl = thumbUrl;
           }
           return fi;
         });
