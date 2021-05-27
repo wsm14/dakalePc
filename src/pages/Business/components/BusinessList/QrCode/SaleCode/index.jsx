@@ -21,6 +21,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         ? merchantName.replace(merchantName.substring(6, merchantName.length - 6), '**')
         : merchantName;
     const whSet = (w, h) => ({ width: w, height: h }); // 宽高
+    const timestamp = new Date().getTime();
     const textStyle = {
       type: 'text',
       textAlign: 'center',
@@ -33,7 +34,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: pay || 'https://resource-new.dakale.net/admin/QrCode/paybag.png',
+            url: pay || 'https://resource-new.dakale.net/admin/QrCode/paybag.png?' + timestamp,
             ...whSet(1346, 1890),
           },
           {
@@ -60,7 +61,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: by || 'https://resource-new.dakale.net/admin/QrCode/bybag.png',
+            url: by || 'https://resource-new.dakale.net/admin/QrCode/bybag.png?' + timestamp,
             ...whSet(2480, 3508),
           },
           {
