@@ -17,38 +17,39 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
     const qrCodePay = document.getElementById('qrCodePay'); // 获取支付码
     const qrCodeDa = document.getElementById('qrCodeDa'); // 获取打卡码
     const merchantNameText =
-      merchantName.length > 8
+      merchantName.length > 12
         ? merchantName.replace(merchantName.substring(6, merchantName.length - 6), '**')
         : merchantName;
+    const whSet = (w, h) => ({ width: w, height: h }); // 宽高
+    const textStyle = {
+      type: 'text',
+      textAlign: 'center',
+      color: '#000000',
+      size: '30px',
+      opacity: 0.6,
+    };
     canvasPic(
       {
         parts: [
           {
             type: 'image',
             url: pay || 'https://resource-new.dakale.net/admin/QrCode/paybag.png',
-            width: 1346,
-            height: 1890,
+            ...whSet(1346, 1890),
           },
           {
             type: 'image',
             url: qrCodePay && qrCodePay.toDataURL('image/png'),
-            width: 560,
-            height: 560,
+            ...whSet(560, 560),
             x: 393,
             y: 628,
           },
           {
-            type: 'text',
+            ...textStyle,
             text: merchantNameText,
-            textAlign: 'center',
             y: 1224,
-            color: '#000000',
-            size: '30px',
-            opacity: 0.6,
           },
         ],
-        width: 1346,
-        height: 1890,
+        ...whSet(1346, 1890),
       },
       (err, data) => {
         setPayImgUrl(data);
@@ -56,34 +57,26 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
     );
     canvasPic(
       {
-        type: 'url',
         parts: [
           {
             type: 'image',
             url: by || 'https://resource-new.dakale.net/admin/QrCode/bybag.png',
-            width: 2480,
-            height: 3508,
+            ...whSet(2480, 3508),
           },
           {
             type: 'image',
             url: qrCodeDa && qrCodeDa.toDataURL('image/png'),
-            width: 700,
-            height: 700,
+            ...whSet(700, 700),
             x: 890,
             y: 1731,
           },
           {
-            type: 'text',
+            ...textStyle,
             text: merchantNameText,
-            textAlign: 'center',
             y: 2527,
-            color: '#000000',
-            size: '30px',
-            opacity: 0.6,
           },
         ],
-        width: 2480,
-        height: 3508,
+        ...whSet(2480, 3508),
       },
       (err, data) => {
         setImgUrl(data);
