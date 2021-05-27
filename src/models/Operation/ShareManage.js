@@ -4,12 +4,13 @@ import { SHARE_AREA_TYPE } from '@/common/constant';
 import {
   fetchShareList,
   fetchShareDetail,
+  fetchShareLikeSet,
   fetchShareVideoPush,
   fetchShareStatusClose,
   fetchShareVerifyAllow,
   fetchShareGetBeanDetail,
-  fetchShareGetPlatformBean,
   fetchShareGetAccountBean,
+  fetchShareGetPlatformBean,
 } from '@/services/OperationServices';
 
 export default {
@@ -61,6 +62,15 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchShareLikeSet({ payload, callback }, { call }) {
+      const response = yield call(fetchShareLikeSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `分享收藏数设置成功`,
+      });
+      callback();
     },
     *fetchShareVerifyAllow({ payload, callback }, { call }) {
       const response = yield call(fetchShareVerifyAllow, payload);
@@ -142,14 +152,16 @@ export default {
           : '',
         area:
           areaType !== 'all'
-            ? (area ? area.split(',') : [])
-                .map((item) => {
-                  const cityIndex = cityJson.findIndex((city) => city.id === item);
-                  if (cityIndex > -1) {
-                    return cityJson[cityIndex].name;
-                  }
-                })
-                .toString()
+            ? areaType === 'near'
+              ? `附近 ${Number(area) / 1000} km`
+              : (area ? area.split(',') : [])
+                  .map((item) => {
+                    const cityIndex = cityJson.findIndex((city) => city.id === item);
+                    if (cityIndex > -1) {
+                      return cityJson[cityIndex].name;
+                    }
+                  })
+                  .toString()
             : SHARE_AREA_TYPE[areaType],
       };
       callback(newObj);

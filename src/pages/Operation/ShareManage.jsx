@@ -14,6 +14,7 @@ import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';
 import ShareHandleDetail from './components/Share/Detail/ShareHandleDetail';
 import ShareVideoDetail from './components/Share/Detail/ShareVideoDetail';
 import ShareDrawer from './components/Share/ShareDrawer';
+import ShareLikeDateSet from './components/Share/ShareLikeDateSet';
 import Ellipsis from '@/components/Ellipsis';
 import styles from './style.less';
 
@@ -29,6 +30,7 @@ const ShareManage = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleHandle, setVisibleHandle] = useState(false); // 操作记录
   const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
+  const [visibleLike, setVisibleLike] = useState(false); // 设置分享收藏数
 
   // 搜索参数
   const searchItems = [
@@ -242,6 +244,10 @@ const ShareManage = (props) => {
                 click: () => fetchShareDetail(index, record.contentType || 'video'),
               },
               {
+                type: 'set', // 设置假数据
+                click: () => fetchShareDetail(index, 'set'),
+              },
+              {
                 type: 'diary', // 日志
                 click: () => fetchShareHandleDetail(userMomentIdString),
               },
@@ -302,7 +308,10 @@ const ShareManage = (props) => {
       payload: {
         userMomentIdString,
       },
-      callback: (detail) => setVisible({ show: true, index, type, detail }),
+      callback: (detail) =>
+        type === 'set'
+          ? setVisibleLike({ show: true, detail })
+          : setVisible({ show: true, index, type, detail }),
     });
   };
 
@@ -386,6 +395,11 @@ const ShareManage = (props) => {
         visible={visiblePeas}
         onClose={() => setVisiblePeas(false)}
       ></VideoPeasDetail>
+      {/* 设置分享数 收藏数 */}
+      <ShareLikeDateSet
+        visible={visibleLike}
+        onClose={() => setVisibleLike(false)}
+      ></ShareLikeDateSet>
     </>
   );
 };
