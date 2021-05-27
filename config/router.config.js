@@ -179,6 +179,7 @@ export default [
         path: '/chart/achievement',
         name: 'BD业绩',
         component: './Chart/SaleAchievement',
+        buttons: ['exportList'],
       },
       {
         path: '/chart/dataGatherExport',
