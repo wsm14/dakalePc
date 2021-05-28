@@ -121,7 +121,14 @@ const SysAppSet = (props) => {
       label: '选择区县',
       type: 'formItem',
       visible: showArea,
-      formItem: <CitySet name="provinceCityDistrictObjects" form={form} maxLength={10}></CitySet>,
+      formItem: (
+        <CitySet
+          name="provinceCityDistrictObjects"
+          form={form}
+          maxLength={10}
+          changeOnSelect={true}
+        ></CitySet>
+      ),
     },
     {
       label: '展示时间',
