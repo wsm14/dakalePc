@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { FRANCHISE_APP_STATUS, FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import FranchiseDrawer from './components/Franchise/FranchiseDrawer';
 
@@ -86,26 +85,20 @@ const FranchiseApplication = (props) => {
       render: (val) => FRANCHISE_APP_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'userApplyIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'handle',
-              visible: record.handled === '0',
-              click: () => setVisible({ type: 'handle', shwo: true, detail: record }),
-            },
-            {
-              type: 'info',
-              visible: record.handled === '1',
-              click: () => fetchFranchiseHandle(val),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'handle',
+          visible: record.handled === '0',
+          click: () => setVisible({ type: 'handle', shwo: true, detail: record }),
+        },
+        {
+          type: 'info',
+          visible: record.handled === '1',
+          click: () => fetchFranchiseHandle(val),
+        },
+      ],
     },
   ];
 

@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
@@ -112,25 +111,19 @@ const ProvCompany = (props) => {
       render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'companyId',
-      render: (companyId, record) => (
-        <HandleSetTable
-          formItems={[
-            // {
-            //   title: '收益数据',
-            //   auth: 'income',
-            //   click: () => setVisible({ type: 'income', record }),
-            // },
-            {
-              type: 'info',
-              click: () => fetchProvDetail({ type: 'detail', companyId }),
-            },
-          ]}
-        />
-      ),
+      render: (companyId, record) => [
+        // {
+        //   title: '收益数据',
+        //   auth: 'income',
+        //   click: () => setVisible({ type: 'income', record }),
+        // },
+        {
+          type: 'info',
+          click: () => fetchProvDetail({ type: 'detail', companyId }),
+        },
+      ],
     },
   ];
 

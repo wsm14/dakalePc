@@ -4,7 +4,6 @@ import { Button } from 'antd';
 import CITYJSON from '@/common/city';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
 import AreaCompanySet from './components/Area/Form/AreaCompanySet';
@@ -116,20 +115,14 @@ const AreaCenter = (props) => {
       render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'partnerId',
-      fixed: 'right',
-      align: 'right',
-      render: (partnerId, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchAreaDetail({ type: 'detail', partnerId }),
-            },
-          ]}
-        />
-      ),
+      render: (partnerId) => [
+        {
+          type: 'info',
+          click: () => fetchAreaDetail({ type: 'detail', partnerId }),
+        },
+      ],
     },
   ];
 

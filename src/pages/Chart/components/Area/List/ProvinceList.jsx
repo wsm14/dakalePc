@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import { connect, history } from 'umi';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import CITYJSON from '@/common/city';
 
@@ -66,21 +65,15 @@ const ProvinceTotalComponent = (props) => {
       sorter: (a, b) => a.activeCount - b.activeCount,
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'parentUserIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              auth: true,
-              click: () => handleHistoryChart(record.bucket),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'info',
+          auth: true,
+          click: () => handleHistoryChart(record.bucket),
+        },
+      ],
     },
   ];
 

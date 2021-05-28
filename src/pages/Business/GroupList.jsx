@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -151,50 +150,45 @@ const tableList = (props) => {
       render: (val) => WORKER_BANK_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'merchantGroupId',
-      align: 'right',
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => {
-                fetchGrounpDetails(
-                  {
-                    merchantGroupId: val,
-                  },
-                  (res) => {
-                    fetchSave({ visible: true });
-                  },
-                );
+      render: (val, record, index) => [
+        {
+          type: 'edit',
+          click: () => {
+            fetchGrounpDetails(
+              {
+                merchantGroupId: val,
               },
-            },
-            {
-              type: 'info',
-              click: () => {
-                fetchSave({
-                  visible2: true,
-                    merchantGroupId: val,
-                    merchantGroupIdIndex: index,
-                });
+              (res) => {
+                fetchSave({ visible: true });
               },
-            },
-            {
-              type: 'activate',
-              visible: record.bankStatus === '0',
-              click: () => {
-                fetchSave({
-                  visible1: true,
-                  merchantGroupId: val,
-                  groupDetails: {},
-                  initial: {},
-                });
-              },
-            },
-          ]}
-        />
-      ),
+            );
+          },
+        },
+        {
+          type: 'info',
+          click: () => {
+            fetchSave({
+              visible2: true,
+              merchantGroupId: val,
+              merchantGroupIdIndex: index,
+            });
+          },
+        },
+        {
+          type: 'activate',
+          visible: record.bankStatus === '0',
+          click: () => {
+            fetchSave({
+              visible1: true,
+              merchantGroupId: val,
+              groupDetails: {},
+              initial: {},
+            });
+          },
+        },
+      ],
     },
   ];
   return (

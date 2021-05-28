@@ -6,7 +6,7 @@ import { LogDetail } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import CardLoading from '@/components/CardLoading';
 import ExcelButton from '@/components/ExcelButton';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
+import excelProps from './components/BusinessList/ExcelProps';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
@@ -208,38 +208,32 @@ const BusinessListComponent = (props) => {
       render: (val) => BUSINESS_STATUS[val],
     },
     {
-      title: '操作',
-      dataIndex: 'userMerchantIdString',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       width: 200,
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'qrCode',
-              click: () => setVisibleQrcode(record),
-            },
-            {
-              type: 'info',
-              click: () => fetchGetDetail(index),
-            },
-            {
-              type: 'edit',
-              click: () =>
-                fetchGetDetail(index, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
-            },
-            {
-              type: 'set',
-              click: () => setVisible({ show: true, record }),
-            },
-            {
-              type: 'diary',
-              click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
-            },
-          ]}
-        />
-      ),
+      dataIndex: 'userMerchantIdString',
+      render: (val, record, index) => [
+        {
+          type: 'qrCode',
+          click: () => setVisibleQrcode(record),
+        },
+        {
+          type: 'info',
+          click: () => fetchGetDetail(index),
+        },
+        {
+          type: 'edit',
+          click: () =>
+            fetchGetDetail(index, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+        },
+        {
+          type: 'set',
+          click: () => setVisible({ show: true, record }),
+        },
+        {
+          type: 'diary',
+          click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
+        },
+      ],
     },
   ];
 
@@ -303,33 +297,6 @@ const BusinessListComponent = (props) => {
     fetchTradeList();
   }, []);
 
-  // 获取商家导出excel 数据
-  const getExcelProps = {
-    fieldNames: { key: 'key', headerName: 'header' },
-    header: [
-      { key: 'account', header: '店铺账号' },
-      { key: 'merchantName', header: '店铺名称' },
-      { key: 'provinceName', header: '所在省' },
-      { key: 'cityName', header: '所在市' },
-      { key: 'districtName', header: '所在区' },
-      { key: 'businessHub', header: '所属商圈' },
-      { key: 'address', header: '详细地址' },
-      { key: 'topCategoryName', header: '一级经营类目' },
-      { key: 'categoryName', header: '二级经营类目' },
-      { key: 'businessArea', header: '经营面积' },
-      { key: 'commissionRatio', header: '服务费', render: (val) => (val ? `${val}%` : '') },
-      { key: 'settleTime', header: '入驻时间' },
-      { key: 'activationTime', header: '激活时间' },
-      {
-        key: 'bankStatus',
-        header: '账号状态',
-        render: (val) => (val === '3' ? '已激活' : '未激活'),
-      },
-      { key: 'businessStatus', header: '经营状态', render: (val) => BUSINESS_DO_STATUS[val] },
-      { key: 'status', header: '店铺状态', render: (val) => BUSINESS_STATUS[val] },
-    ],
-  };
-
   return (
     <>
       <Suspense fallback={<CardLoading></CardLoading>}>
@@ -360,7 +327,7 @@ const BusinessListComponent = (props) => {
           <ExcelButton
             dispatchType={'businessList/fetchMerchantGetExcel'}
             dispatchData={get()}
-            exportProps={getExcelProps}
+            exportProps={excelProps}
           ></ExcelButton>
         )}
         cRef={childRef}

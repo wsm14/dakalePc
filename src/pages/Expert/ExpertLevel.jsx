@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import LevelDetail from './components/Level/Detail/LevelDetail';
 
@@ -32,22 +31,16 @@ const ExpertLevel = (props) => {
       dataIndex: 'levelName',
     },
     {
-      title: `等级任务`,
-      align: 'right',
+      title: '等级任务',
+      type: 'handle',
       dataIndex: 'target',
-      render: (val, row) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'set',
-                auth: 'targetSet',
-                click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
-              },
-            ]}
-          />
-        );
-      },
+      render: (val, row) => [
+        {
+          type: 'set',
+          auth: 'targetSet',
+          click: () => setVisible({ show: true, type: 'eye', key: 'target', row }),
+        },
+      ],
     },
     {
       title: '等级权益',
