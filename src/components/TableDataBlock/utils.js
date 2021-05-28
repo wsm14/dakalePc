@@ -1,7 +1,10 @@
 import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
+import DraggableContent from './SortBlock';
 
 const tablePropsHandle = {
+  // 表格排序
+  tableSort: (list, tableSort) => (tableSort ? DraggableContent(list, tableSort) : {}),
   // 表头处理
   columns: ({ order, columns, list }, page) => {
     // 序号

@@ -2,7 +2,6 @@ import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { useDispatch } from 'umi';
 import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
-import DraggableContent from './SortBlock';
 import utils from './utils';
 
 /**
@@ -44,6 +43,7 @@ const TableBlockComponent = (props) => {
     cardProps = {},
     dispatchType,
     firstFetch = true,
+    columns = [],
     list = [],
     loading,
     noCard = true,
@@ -57,6 +57,7 @@ const TableBlockComponent = (props) => {
     searchForm,
     searchCallback,
     total,
+    order = false,
     tableSort = false,
     tableSize = 'default',
     timeParams = { time: {}, show: {} },
@@ -175,10 +176,9 @@ const TableBlockComponent = (props) => {
         pagination={pagination === false ? false : paginationProps}
         onChange={tableChange}
         size={tableSize || size}
-        // 排序
-        {...(tableSort ? DraggableContent(list, tableSort) : {})}
+        {...utils.columns(props, tableParems.page)} // 表头数据处理
+        {...utils.tableSort(list, tableSort)} // 内置排序处理
         {...other}
-        {...utils.columns(props, tableParems.page)}
       />
     </>
   );
