@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -55,11 +54,7 @@ const BusinessAuditList = (props) => {
       title: '店铺名称',
       fixed: 'left',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '所在城市',
@@ -68,11 +63,7 @@ const BusinessAuditList = (props) => {
     {
       title: '详细地址',
       dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '所属商圈',

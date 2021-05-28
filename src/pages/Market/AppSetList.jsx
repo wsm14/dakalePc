@@ -10,7 +10,6 @@ import {
   BANNER_SHOW_STATUS,
 } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -62,11 +61,7 @@ const SysAppSet = (props) => {
       title: '图片说明',
       align: 'center',
       dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '权重',
@@ -104,14 +99,11 @@ const SysAppSet = (props) => {
       title: '跳转内容',
       align: 'center',
       dataIndex: 'jumpUrl',
+      ellipsis: true,
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName } = row;
         return {
-          H5: (
-            <Ellipsis length={15} tooltip>
-              {val}
-            </Ellipsis>
-          ),
+          H5: val,
           inside: nativeJumpName,
           '': '--',
         }[jumpUrlType];

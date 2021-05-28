@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Switch, Button, Menu } from 'antd';
 import { WORKER_JOB_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSetForm from '../Form/UserSetForm';
@@ -77,11 +76,7 @@ const UserList = (props) => {
     {
       title: '角色',
       dataIndex: 'roleNames',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '入职日期',

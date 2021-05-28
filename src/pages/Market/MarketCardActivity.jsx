@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
@@ -38,21 +37,13 @@ const MarketCardActivity = (props) => {
       align: 'center',
       fixed: 'left',
       dataIndex: 'activityName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '活动简述',
       align: 'center',
       dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '活动商家',

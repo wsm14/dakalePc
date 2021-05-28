@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, Badge } from 'antd';
 import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/HandleSetTable';
@@ -71,11 +70,7 @@ const ExpertRecommend = (props) => {
     {
       title: '哒人昵称',
       dataIndex: 'username',
-      render: (val) => (
-        <Ellipsis length={8} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '哒人等级',

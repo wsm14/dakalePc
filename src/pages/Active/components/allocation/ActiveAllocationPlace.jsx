@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -46,13 +45,10 @@ const ActiveAllocationPlace = (props) => {
     {
       title: '跳转连接',
       dataIndex: 'jumpUrl',
+      ellipsis: true,
       render: (val, records) =>
         ({
-          h5: (
-            <Ellipsis length={20} tooltip>
-              {val}
-            </Ellipsis>
-          ),
+          h5: val,
           native: records.nativeName,
         }[records.jumpType]),
     },

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import MasterOrderDetail from './MasterOrderDetail';
 
@@ -82,11 +81,7 @@ const MasterDetail = (props) => {
           title: '详细地址',
           align: 'center',
           dataIndex: 'address',
-          render: (val) => (
-            <Ellipsis length={10} tooltip>
-              {val || '-'}
-            </Ellipsis>
-          ),
+          ellipsis: true,
         },
         {
           title: '入驻时间',

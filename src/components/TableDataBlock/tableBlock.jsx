@@ -3,6 +3,7 @@ import { useDispatch } from 'umi';
 import { Table, Card, Space } from 'antd';
 import SearchCondition from '@/components/SearchCondition';
 import DraggableContent from './SortBlock';
+import utils from './utils';
 
 /**
  *
@@ -40,7 +41,6 @@ const TableBlockComponent = (props) => {
   const {
     btnExtra,
     cRef,
-    columns = [],
     cardProps = {},
     dispatchType,
     firstFetch = true,
@@ -58,7 +58,6 @@ const TableBlockComponent = (props) => {
     searchCallback,
     total,
     tableSort = false,
-    order = false,
     tableSize = 'default',
     timeParams = { time: {}, show: {} },
     children,
@@ -151,18 +150,6 @@ const TableBlockComponent = (props) => {
     });
   };
 
-  // 表格是否展示排序字段
-  const orderData = {
-    true: {
-      dataSource: list.map((item, index) => ({
-        numId: (tableParems.page - 1) * 10 + index + 1,
-        ...item,
-      })),
-      columns: [{ title: '序号', fixed: 'left', width: 80, dataIndex: 'numId' }, ...columns],
-    },
-    false: { dataSource: list, columns: columns },
-  }[order];
-
   const tabContent = (
     <>
       {!searchItems && btnExtra && (
@@ -184,14 +171,13 @@ const TableBlockComponent = (props) => {
       <Table
         scroll={{ x: scrollX, y: scrollY }}
         loading={loading}
-        dataSource={orderData.dataSource}
         pagination={pagination === false ? false : paginationProps}
         onChange={tableChange}
         size={tableSize || size}
         // 排序
         {...(tableSort ? DraggableContent(list, tableSort) : {})}
         {...props}
-        columns={orderData.columns}
+        {...utils.columns(props, tableParems.page)}
       />
     </>
   );

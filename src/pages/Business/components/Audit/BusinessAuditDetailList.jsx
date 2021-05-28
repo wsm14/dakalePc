@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { BUSINESS_DETAIL_AUDIT } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessAuditDetailList = (props) => {
@@ -41,11 +40,7 @@ const BusinessAuditDetailList = (props) => {
         title: '店铺名称',
         fixed: 'left',
         dataIndex: 'merchantName',
-        render: (val) => (
-          <Ellipsis length={10} tooltip>
-            {val || '--'}
-          </Ellipsis>
-        ),
+        ellipsis: true,
       },
       {
         title: '所在城市',
@@ -54,11 +49,7 @@ const BusinessAuditDetailList = (props) => {
       {
         title: '详细地址',
         dataIndex: 'address',
-        render: (val) => (
-          <Ellipsis length={10} tooltip>
-            {val || '--'}
-          </Ellipsis>
-        ),
+        ellipsis: true,
       },
       {
         label: '所属商圈',
@@ -95,11 +86,7 @@ const BusinessAuditDetailList = (props) => {
         title: '驳回原因',
         align: 'center',
         dataIndex: 'rejectReason',
-        render: (val) => (
-          <Ellipsis length={10} tooltip>
-            {val || '--'}
-          </Ellipsis>
-        ),
+        ellipsis: true,
       },
     ],
   };

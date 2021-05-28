@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import NoticeImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -36,11 +35,7 @@ const MarketCardNotice = (props) => {
       title: '公告说明',
       align: 'center',
       dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={15} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '状态',

@@ -7,7 +7,6 @@ import {
   MRE_SORT_STATUS,
   BUSINESS_TYPE,
 } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -104,11 +103,7 @@ const BusinessSettled = (props) => {
     {
       title: '店铺名称',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '一级类目',
@@ -128,11 +123,7 @@ const BusinessSettled = (props) => {
     {
       title: '店铺地址',
       dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '店铺服务费',

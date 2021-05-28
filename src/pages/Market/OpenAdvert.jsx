@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, Space, Form } from 'antd';
 import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -54,11 +53,7 @@ const OpenAdvert = (props) => {
       title: '广告说明',
       align: 'center',
       dataIndex: 'launchDesc',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '点击事件',

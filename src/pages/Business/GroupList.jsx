@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
@@ -119,11 +118,7 @@ const tableList = (props) => {
       title: '经营类目',
       align: 'center',
       dataIndex: 'categoryName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '详细地址',

@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { JSOBS_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -58,11 +57,7 @@ const SolicitJobs = (props) => {
       title: '职位描述',
       dataIndex: 'jobDescription',
       width: 300,
-      render: (val) => (
-        <Ellipsis length={50} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: { length: 50 },
     },
     {
       title: '更新人',
@@ -144,11 +139,7 @@ const SolicitJobs = (props) => {
       {/* 职位信息管理 */}
       <JobsClass visible={visible} onClose={() => setVisible(false)}></JobsClass>
       {/* 招聘信息管理 */}
-      <JobsSet
-        cRef={childRef}
-        visible={visibleSet}
-        onClose={() => setVisibleSet(false)}
-      ></JobsSet>
+      <JobsSet cRef={childRef} visible={visibleSet} onClose={() => setVisibleSet(false)}></JobsSet>
     </>
   );
 };

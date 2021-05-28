@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelect = ({
@@ -50,11 +49,7 @@ const MreSelect = ({
     {
       title: '昵称',
       dataIndex: 'username',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '级别',

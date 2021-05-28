@@ -67,11 +67,14 @@ const WithdrawDetail = (props) => {
     },
     {
       title: '流水单号',
+      fixed: 'left',
       dataIndex: 'withdrawalSn',
     },
     {
       title: '店铺名称',
+      width: 200,
       dataIndex: 'merchantName',
+      ellipsis: { lines: 2 },
     },
     {
       title: '店铺账号',
@@ -108,6 +111,7 @@ const WithdrawDetail = (props) => {
     {
       title: '状态',
       align: 'right',
+      fixed: 'right',
       dataIndex: 'status',
       render: (val) => WITHDRAW_STATUS[val],
     },
@@ -115,7 +119,7 @@ const WithdrawDetail = (props) => {
       title: '备注',
       fixed: 'right',
       align: 'right',
-      width: 300,
+      width: 200,
       dataIndex: 'remark',
       render: (val, record) => {
         return (

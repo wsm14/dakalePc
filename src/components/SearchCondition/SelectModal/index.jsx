@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import Search from './Search';
 
@@ -30,11 +29,7 @@ const MreSelect = ({
     {
       title: '店铺名称',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '暂未授权'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '店铺账号',
@@ -56,11 +51,7 @@ const MreSelect = ({
     {
       title: '详细地址',
       dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
   ];
 

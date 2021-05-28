@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExcelButton from '@/components/ExcelButton';
 
@@ -47,11 +46,7 @@ const SaleAchievement = (props) => {
       title: '店铺名称',
       dataIndex: 'merchantName',
       width: 200,
-      render: (val) => (
-        <Ellipsis length={10} tooltip lines={3}>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: { lines: 3 },
     },
     {
       title: '经营类目',

@@ -113,11 +113,7 @@ const VideoAdvert = (props) => {
       title: '关联店铺',
       width: 200,
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip lines={2}>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: { lines: 2 },
     },
     {
       title: '单次打赏卡豆',

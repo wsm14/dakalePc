@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
@@ -47,6 +46,7 @@ const MarketCardActivityDetail = (props) => {
       align: 'center',
       fixed: 'left',
       dataIndex: 'merchantName',
+      ellipsis: true,
     },
     {
       title: '所在城市',
@@ -62,11 +62,7 @@ const MarketCardActivityDetail = (props) => {
       title: '详细地址',
       align: 'center',
       dataIndex: 'merchantAddress',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '原价',

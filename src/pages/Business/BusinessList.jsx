@@ -5,7 +5,6 @@ import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/
 import { LogDetail } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import CardLoading from '@/components/CardLoading';
-import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -137,11 +136,7 @@ const BusinessListComponent = (props) => {
       title: '店铺名称',
       fixed: 'left',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '暂未授权'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '所在地区',
@@ -153,11 +148,7 @@ const BusinessListComponent = (props) => {
       title: '详细地址',
       align: 'right',
       dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '所属商圈',

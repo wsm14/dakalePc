@@ -4,7 +4,6 @@ import { Button, message } from 'antd';
 import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
-import Ellipsis from '@/components/Ellipsis';
 import CloseRefuse from './components/Goods/Form/CloseRefuse';
 import StockSet from './components/Goods/Form/StockSet';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -77,11 +76,7 @@ const GoodsManageComponent = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '单位',
@@ -111,11 +106,7 @@ const GoodsManageComponent = (props) => {
       title: '所属店铺',
       align: 'center',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '库存',

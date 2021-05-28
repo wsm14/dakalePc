@@ -2,9 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import OrdersDetail from '../OrdersDetail';
 import OrderDetailDraw from '../OrderDetailDraw';
 import HandleSetTable from '@/components/HandleSetTable';
 
@@ -124,20 +122,12 @@ const GoodsOrders = (props) => {
     {
       title: '店铺名称',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={20} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '购买商品',
       dataIndex: 'goodsName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '购买数量',

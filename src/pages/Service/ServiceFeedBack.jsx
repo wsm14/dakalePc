@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { FEEDBACK_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
@@ -39,11 +38,7 @@ const ServiceFeedBack = (props) => {
     {
       title: '问题描述',
       dataIndex: 'problemDesc',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '反馈时间',
