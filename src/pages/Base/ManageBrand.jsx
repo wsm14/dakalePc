@@ -4,7 +4,6 @@ import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import BrandUpdate from './components/Brand/BrandUpdate';
 
 const BusinessBrandComponent = (props) => {
@@ -70,23 +69,18 @@ const BusinessBrandComponent = (props) => {
       ),
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configBrandIdString',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => handleBrandSet('edit', row),
-            },
-            {
-              type: 'del',
-              click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, row) => [
+        {
+          type: 'edit',
+          click: () => handleBrandSet('edit', row),
+        },
+        {
+          type: 'del',
+          click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 

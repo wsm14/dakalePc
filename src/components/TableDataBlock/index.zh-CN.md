@@ -58,7 +58,8 @@
 
 - ### 2021 年 5 月 28 日 13:43:49 Dong
 
-> - `columns` 增加 `ellipsis` 配置 `boolean | { length?: number, lines?: number }`
+> - `columns` 增加 `ellipsis` 配置 `boolean | { length?: number, lines?: number }` 配置字符缩略
+> - `columns` 增加 `type: handle` 配置 必须存在属性 `render:() => []` 配置表格操作按钮 同 HandleSetTable 组件
 
 - ### 2021 年 3 月 4 日 10:56:15 Dong
 

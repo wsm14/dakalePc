@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TradeBaseSet from '../Form/TradeBaseSet';
 
 const TradeBaseList = (props) => {
@@ -41,23 +40,18 @@ const TradeBaseList = (props) => {
           dataIndex: 'name',
         },
         {
-          title: '操作',
-          align: 'center',
+          type: 'handle',
           dataIndex: 'value',
-          render: (val) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  click: () => handleDataSet({ name: val }),
-                },
-                {
-                  type: 'del',
-                  click: () => fetchDataDel(val),
-                },
-              ]}
-            />
-          ),
+          render: (val) => [
+            {
+              type: 'edit',
+              click: () => handleDataSet({ name: val }),
+            },
+            {
+              type: 'del',
+              click: () => fetchDataDel(val),
+            },
+          ],
         },
       ],
     },
@@ -73,23 +67,18 @@ const TradeBaseList = (props) => {
           dataIndex: 'name',
         },
         {
-          title: '操作',
-          align: 'center',
+          type: 'handle',
           dataIndex: 'value',
-          render: (val) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  click: () => handleDataSet({ name: val }),
-                },
-                {
-                  type: 'del',
-                  click: () => fetchDataDel(val),
-                },
-              ]}
-            />
-          ),
+          render: (val) => [
+            {
+              type: 'edit',
+              click: () => handleDataSet({ name: val }),
+            },
+            {
+              type: 'del',
+              click: () => fetchDataDel(val),
+            },
+          ],
         },
       ],
     },

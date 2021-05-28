@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BankSet from './components/BankSet/BusinessBankSet';
 
@@ -32,19 +31,14 @@ const BusinessBankSetContent = (props) => {
       dataIndex: 'updateTimeString',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'bankBranchIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => setVisible({ show: true, info: record }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => setVisible({ show: true, info: record }),
+        },
+      ],
     },
   ];
 

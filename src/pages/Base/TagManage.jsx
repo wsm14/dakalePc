@@ -4,7 +4,6 @@ import { Button } from 'antd';
 import { MRE_TAG_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TagSet from './components/Tag/TagSet';
 
 const TagManage = (props) => {
@@ -50,27 +49,21 @@ const TagManage = (props) => {
       render: (val) => MRE_TAG_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configMerchantId',
       render: (val, record) => {
         const { status } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: status === '1' ? 'down' : 'up',
-                auth: 'edit',
-                click: () => fetchTagEdit({ ...record, status: 1 ^ Number(status) }),
-              },
-              {
-                type: 'edit',
-                click: () => setVisible({ type: 'edit', detail: record }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: status === '1' ? 'down' : 'up',
+            auth: 'edit',
+            click: () => fetchTagEdit({ ...record, status: 1 ^ Number(status) }),
+          },
+          {
+            type: 'edit',
+            click: () => setVisible({ type: 'edit', detail: record }),
+          },
+        ];
       },
     },
   ];

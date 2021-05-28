@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Switch, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from '../Form/RoleSetForm';
 
@@ -110,22 +109,16 @@ const RoleList = (props) => {
       ),
     },
     {
-      title: '操作',
+      type: 'handle',
       width: 200,
-      align: 'right',
-      fixed: 'right',
       dataIndex: 'idString',
-      render: (val) => (
-        <HandleSetTable
-          formItems={[
-            {
-              title: '权限设置',
-              auth: 'roleEdit',
-              click: () => fetchFlag({ roleId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val) => [
+        {
+          title: '权限设置',
+          auth: 'roleEdit',
+          click: () => fetchFlag({ roleId: val }),
+        },
+      ],
     },
   ];
 

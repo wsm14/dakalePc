@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
@@ -15,7 +14,7 @@ const BusinessAuditList = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleDetailList, setVisibleDetailList] = useState(false);
-  const [visibleAuditDetail,setVisibleAuditDetail]= useState(false)
+  const [visibleAuditDetail, setVisibleAuditDetail] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -31,7 +30,7 @@ const BusinessAuditList = (props) => {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
-      select:  BUSINESS_STATUS_AUDIT,
+      select: BUSINESS_STATUS_AUDIT,
     },
     {
       label: '省市区',
@@ -99,26 +98,20 @@ const BusinessAuditList = (props) => {
       render: (val) => BUSINESS_STATUS_AUDIT[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'userMerchantVerifyId',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'check',
-              visible: record.verifyStatus === '1',
-              click: () => fetchGetDetail(val),
-            },
-            {
-              type: 'eye',
-              visible: record.verifyStatus != '1',
-              click: () => handleShowUserDetail(record, record.verifyStatus),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'check',
+          visible: record.verifyStatus === '1',
+          click: () => fetchGetDetail(val),
+        },
+        {
+          type: 'eye',
+          visible: record.verifyStatus != '1',
+          click: () => handleShowUserDetail(record, record.verifyStatus),
+        },
+      ],
     },
   ];
 
@@ -134,10 +127,10 @@ const BusinessAuditList = (props) => {
   // 用户详情展示
   const handleShowUserDetail = (initialValues, verifyStatus) => {
     setVisibleAuditDetail({
-      show:true,
+      show: true,
       initialValues,
       verifyStatus,
-    })
+    });
   };
 
   // 经营类目
@@ -181,7 +174,10 @@ const BusinessAuditList = (props) => {
         visible={visibleDetailList}
         setVisible={setVisibleDetailList}
       ></BusinessAuditDetailList>
-      <BusinessAuditDetailShow visible={visibleAuditDetail} onClose={()=>setVisibleAuditDetail(false)}></BusinessAuditDetailShow>
+      <BusinessAuditDetailShow
+        visible={visibleAuditDetail}
+        onClose={() => setVisibleAuditDetail(false)}
+      ></BusinessAuditDetailShow>
     </>
   );
 };

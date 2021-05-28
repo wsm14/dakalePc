@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button, Table } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TradePlatformSet from '../Form/TradePlatformSet';
 
 const TradePlatformDetailList = (props) => {
@@ -55,23 +54,18 @@ const TradePlatformDetailList = (props) => {
         dataIndex: 'freeBean',
       },
       {
-        title: '操作',
-        align: 'right',
+        type: 'handle',
         dataIndex: 'configMerchantSettleIdString',
-        render: (val, row) => (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => handleDataSet('moneySet', row, '', data),
-              },
-              {
-                type: 'del',
-                click: () => fetchDataRowDel(row, data),
-              },
-            ]}
-          />
-        ),
+        render: (val, row) => [
+          {
+            type: 'edit',
+            click: () => handleDataSet('moneySet', row, '', data),
+          },
+          {
+            type: 'del',
+            click: () => fetchDataRowDel(row, data),
+          },
+        ],
       },
     ];
   };
@@ -94,38 +88,33 @@ const TradePlatformDetailList = (props) => {
       dataIndex: 'typeContent',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configMerchantSettleIdString',
-      render: (val, red) => (
-        <HandleSetTable
-          formItems={[
-            {
-              auth: true,
-              title: '新增服务费',
-              click: () => handleDataSet('moneySet', '', val, red),
-            },
-            {
-              type: 'edit',
-              click: () => {
-                const area = red.typeContent;
-                let areaArr = [];
-                if (area.indexOf('-') !== -1) {
-                  areaArr = area.split('-');
-                } else {
-                  const num = area.split('以')[0];
-                  areaArr = { true: [num, ''], false: [0, num] }[area.indexOf('上') !== -1];
-                }
-                handleDataSet('areaEdit', { areaMin: areaArr[0], areaMax: areaArr[1] }, val);
-              },
-            },
-            {
-              type: 'del',
-              click: () => fetchDataDel(val),
-            },
-          ]}
-        />
-      ),
+      render: (val, red) => [
+        {
+          auth: true,
+          title: '新增服务费',
+          click: () => handleDataSet('moneySet', '', val, red),
+        },
+        {
+          type: 'edit',
+          click: () => {
+            const area = red.typeContent;
+            let areaArr = [];
+            if (area.indexOf('-') !== -1) {
+              areaArr = area.split('-');
+            } else {
+              const num = area.split('以')[0];
+              areaArr = { true: [num, ''], false: [0, num] }[area.indexOf('上') !== -1];
+            }
+            handleDataSet('areaEdit', { areaMin: areaArr[0], areaMax: areaArr[1] }, val);
+          },
+        },
+        {
+          type: 'del',
+          click: () => fetchDataDel(val),
+        },
+      ],
     },
   ];
 

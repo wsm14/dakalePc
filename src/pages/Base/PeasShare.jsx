@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PeasShareSet from './components/PeasShare/PeasShareSet';
 
@@ -25,23 +24,18 @@ const SysPeasShare = (props) => {
       dataIndex: 'limitBean',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'configMomentIdString',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => handlePeasShareSet('edit', record),
-            },
-            {
-              type: 'del',
-              click: () => fetchPeasShareDel(val),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => handlePeasShareSet('edit', record),
+        },
+        {
+          type: 'del',
+          click: () => fetchPeasShareDel(val),
+        },
+      ],
     },
   ];
 

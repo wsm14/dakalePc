@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Switch, Alert } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeCategorySet from './components/Trade/Form/TradeCategorySet';
 import PromotionMoneySet from './components/Trade/Form/PromotionMoneySet';
@@ -95,40 +94,32 @@ const SysTradeSet = (props) => {
       ),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'categoryIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => {
-                  const { categoryName } = record;
-                  const detail = { categoryId: val, categoryName };
-                  handleClassSet('edit', detail);
-                },
-              },
-              {
-                type: 'del',
-                visible: !record.categoryDTOList,
-                click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
-              },
-              {
-                type: 'tradeSecondAdd',
-                visible: record.parentId === 0,
-                click: () => {
-                  const { categoryName: parentName } = record;
-                  const detail = { parentId: val, node: `${val}`, parentName, type: 'second' };
-                  handleClassSet('add', detail);
-                },
-              },
-            ]}
-          />
-        );
-      },
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => {
+            const { categoryName } = record;
+            const detail = { categoryId: val, categoryName };
+            handleClassSet('edit', detail);
+          },
+        },
+        {
+          type: 'del',
+          visible: !record.categoryDTOList,
+          click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
+        },
+        {
+          type: 'tradeSecondAdd',
+          visible: record.parentId === 0,
+          click: () => {
+            const { categoryName: parentName } = record;
+            const detail = { parentId: val, node: `${val}`, parentName, type: 'second' };
+            handleClassSet('add', detail);
+          },
+        },
+      ],
     },
   ];
 

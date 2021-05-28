@@ -33,10 +33,10 @@ const tablePropsHandle = {
     const newColumns = (order ? indexOrder : [])
       .concat(columns)
       .map(({ ellipsis = false, type, render, ...other }) => ({
-        ...other,
         render,
         ...(type === 'handle' ? tableRenderHandle(render) : {}),
         ...(ellipsis ? tableRenderEllipsis(ellipsis, render) : {}),
+        ...other,
       }));
 
     // 数据处理

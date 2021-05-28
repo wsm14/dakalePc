@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Switch, Button } from 'antd';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableEdit from '@/components/TableEdit';
 import SectionEdit from '../Form/SectionEditForm';
 
@@ -61,30 +60,25 @@ const SectionList = (props) => {
       ),
     },
     {
-      title: '操作',
-      align: 'center',
+      type: 'handle',
       width: 250,
       dataIndex: 'pid',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              auth: true,
-              title: '添加子部门',
-              click: () =>
-                setVisible({
-                  visible: true,
-                  setInfo: {
-                    ...record,
-                    weight: record.children
-                      ? record.children[record.children.length - 1].weight + 1
-                      : 1,
-                  },
-                }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          auth: true,
+          title: '添加子部门',
+          click: () =>
+            setVisible({
+              visible: true,
+              setInfo: {
+                ...record,
+                weight: record.children
+                  ? record.children[record.children.length - 1].weight + 1
+                  : 1,
+              },
+            }),
+        },
+      ],
     },
   ];
 

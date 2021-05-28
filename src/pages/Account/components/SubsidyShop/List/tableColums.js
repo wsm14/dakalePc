@@ -1,18 +1,13 @@
 import moment from 'moment';
 import { ADD_AND_MINUS, SUBSIDY_ACTION_ROLE, SUBSIDY_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
-const infoHandle = (click) => (
-  <HandleSetTable
-    formItems={[
-      {
-        type: 'info',
-        auth: true,
-        click,
-      },
-    ]}
-  />
-);
+const infoHandle = (click) => [
+  {
+    type: 'info',
+    auth: true,
+    click,
+  },
+];
 
 /**
  * 表格头
@@ -108,10 +103,8 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           align: 'right',
           dataIndex: 'bean',
         },
-
         {
-          title: '操作',
-          align: 'center',
+          type: 'handle',
           dataIndex: 'time',
           render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
         },
@@ -121,9 +114,8 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       return [
         ...dayColums,
         {
-          title: '操作',
-          align: 'right',
           dataIndex: 'remark',
+          type: 'handle',
           render: (val, row) =>
             infoHandle(() =>
               setSearchData({
@@ -139,8 +131,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
       return [
         ...monthColums,
         {
-          title: '操作',
-          align: 'right',
+          type: 'handle',
           dataIndex: 'remark',
           render: (val, row) =>
             infoHandle(() =>

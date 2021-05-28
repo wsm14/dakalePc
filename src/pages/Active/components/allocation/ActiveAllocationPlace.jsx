@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const ActiveAllocationPlace = (props) => {
@@ -53,29 +52,23 @@ const ActiveAllocationPlace = (props) => {
         }[records.jumpType]),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'promotionIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, records) => (
-        <HandleSetTable
-          formItems={[
-            {
-              title: '配置',
-              click: () =>
-                setVisibleSet({
-                  show: true,
-                  promotionId: val,
-                  records: {
-                    ...records,
-                    nativeId: records.nativeIdString ? Number(records.nativeIdString) : '',
-                  },
-                  childRef,
-                }),
-            },
-          ]}
-        />
-      ),
+      render: (val, records) => [
+        {
+          title: '配置',
+          click: () =>
+            setVisibleSet({
+              show: true,
+              promotionId: val,
+              records: {
+                ...records,
+                nativeId: records.nativeIdString ? Number(records.nativeIdString) : '',
+              },
+              childRef,
+            }),
+        },
+      ],
     },
   ];
 

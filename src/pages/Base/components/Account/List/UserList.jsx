@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Switch, Button, Menu } from 'antd';
 import { WORKER_JOB_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSetForm from '../Form/UserSetForm';
 
@@ -113,21 +112,15 @@ const UserList = (props) => {
       ),
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'adminAccountId',
-      render: (adminAccountId) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              auth: 'userEdit',
-              click: () => fetchDetail({ adminAccountId }),
-            },
-          ]}
-        />
-      ),
+      render: (adminAccountId) => [
+        {
+          type: 'edit',
+          auth: 'userEdit',
+          click: () => fetchDetail({ adminAccountId }),
+        },
+      ],
     },
   ];
 
