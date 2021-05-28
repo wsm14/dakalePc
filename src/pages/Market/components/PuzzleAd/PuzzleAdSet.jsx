@@ -142,7 +142,14 @@ const PuzzleAdSet = (props) => {
       type: 'formItem',
       show: false,
       visible: showArea,
-      formItem: <CitySet name="provinceCityDistrictObjects" form={form} maxLength={10}></CitySet>,
+      formItem: (
+        <CitySet
+          name="provinceCityDistrictObjects"
+          form={form}
+          maxLength={10}
+          changeOnSelect={true}
+        ></CitySet>
+      ),
     },
     {
       type: 'noForm',
