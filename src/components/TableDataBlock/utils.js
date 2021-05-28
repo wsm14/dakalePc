@@ -1,4 +1,5 @@
 import Ellipsis from '@/components/Ellipsis';
+import HandleSetTable from '@/components/HandleSetTable';
 
 const tablePropsHandle = {
   // 表头处理
@@ -6,20 +7,32 @@ const tablePropsHandle = {
     // 序号
     const indexOrder = [{ title: '序号', fixed: 'left', width: 80, dataIndex: 'numId' }];
 
+    // 文本缩略
     const tableRenderEllipsis = (ellipsis = {}, render) => ({
-      render: (val, row) => (
+      render: (val, row, index) => (
         <Ellipsis length={10} tooltip {...ellipsis}>
-          {render ? render(val, row) : val || '--'}
+          {render ? render(val, row, index) : val || '--'}
         </Ellipsis>
+      ),
+    });
+
+    // 操作按钮
+    const tableRenderHandle = (render = () => []) => ({
+      title: '操作',
+      fixed: 'right',
+      align: 'right',
+      render: (val, row, index) => (
+        <HandleSetTable formItems={render(val, row, index)}></HandleSetTable>
       ),
     });
 
     // 表头处理
     const newColumns = (order ? indexOrder : [])
       .concat(columns)
-      .map(({ ellipsis = false, render, ...other }) => ({
+      .map(({ ellipsis = false, type, render, ...other }) => ({
         ...other,
         render,
+        ...(type === 'handle' ? tableRenderHandle(render) : {}),
         ...(ellipsis ? tableRenderEllipsis(ellipsis, render) : {}),
       }));
 

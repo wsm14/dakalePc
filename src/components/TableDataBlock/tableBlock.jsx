@@ -61,6 +61,7 @@ const TableBlockComponent = (props) => {
     tableSize = 'default',
     timeParams = { time: {}, show: {} },
     children,
+    ...other
   } = props;
 
   const { show } = timeParams;
@@ -176,7 +177,7 @@ const TableBlockComponent = (props) => {
         size={tableSize || size}
         // 排序
         {...(tableSort ? DraggableContent(list, tableSort) : {})}
-        {...props}
+        {...other}
         {...utils.columns(props, tableParems.page)}
       />
     </>
