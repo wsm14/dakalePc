@@ -6,7 +6,7 @@ import { LogDetail } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import CardLoading from '@/components/CardLoading';
 import ExcelButton from '@/components/ExcelButton';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';

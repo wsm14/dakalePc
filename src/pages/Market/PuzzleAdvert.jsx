@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button, Tooltip } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
 import PuzzleAdRoot from './components/PuzzleAd/PuzzleAdRoot';

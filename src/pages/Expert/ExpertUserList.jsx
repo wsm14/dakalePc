@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { EXPERT_USER_STATUS, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import CloseExpert from './components/UserList/CloseExpert';
 import ExpertUserLog from './components/UserList/ExpertUserLog';
 

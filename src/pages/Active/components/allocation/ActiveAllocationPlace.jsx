@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const ActiveAllocationPlace = (props) => {

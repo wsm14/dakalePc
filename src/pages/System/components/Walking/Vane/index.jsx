@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import VaneDrawer from './VaneDrawer';
 
 const VaneManage = (props) => {

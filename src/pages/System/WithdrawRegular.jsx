@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Button } from 'antd';
 import { connect } from 'umi';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProceDataForm from './components/Withdraw/Form/ProceDataForm';
 

@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { JSOBS_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import JobsClass from './components/Jobs/JobsClass';
 import JobsSet from './components/Jobs/JobsSet';

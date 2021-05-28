@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Button, Card } from 'antd';
 import { connect } from 'umi';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const tabList = [

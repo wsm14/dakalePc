@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';

@@ -4,7 +4,7 @@ import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import BrandUpdate from './components/Brand/BrandUpdate';
 
 const BusinessBrandComponent = (props) => {

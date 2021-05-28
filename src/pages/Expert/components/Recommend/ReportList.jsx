@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import PocessReport from './ProcessReport';
 
 const ReportList = (props) => {

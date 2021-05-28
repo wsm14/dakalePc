@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardNoticeSet from './MarketCardNoticeSet';
 

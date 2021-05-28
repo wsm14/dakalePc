@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button, Table } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TradePlatformSet from '../Form/TradePlatformSet';
 
 const TradePlatformDetailList = (props) => {

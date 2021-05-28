@@ -5,7 +5,7 @@ import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import RecommendDetail from './components/Recommend/RecommendDetail';
 import OrdersDetail from './components/Recommend/OrdersDetail';
 import ReportList from './components/Recommend/ReportList';

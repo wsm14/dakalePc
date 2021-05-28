@@ -4,7 +4,7 @@ import { NEWS_STATUS } from '@/common/constant';
 import { Card, Result } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import NewsSet from './components/News/NewsSet';
 

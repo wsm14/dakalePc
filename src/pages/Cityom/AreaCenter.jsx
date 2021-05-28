@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import CITYJSON from '@/common/city';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
 import AreaCompanySet from './components/Area/Form/AreaCompanySet';

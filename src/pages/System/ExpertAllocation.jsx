@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { EXPERT_TYPE, EXPERT_IS_WITHDRAW } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import ExpertAllocationSet from './components/Allocation/ExpertAllocationSet';
 
 const ExpertAllocation = (props) => {

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { ADD_AND_MINUS, SUBSIDY_ACTION_ROLE, SUBSIDY_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
 const infoHandle = (click) => (
   <HandleSetTable

@@ -7,7 +7,7 @@ import { RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareDetail from './components/Share/Detail/ShareDetail';
 import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';

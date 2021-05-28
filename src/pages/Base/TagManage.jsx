@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { MRE_TAG_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TagSet from './components/Tag/TagSet';
 
 const TagManage = (props) => {

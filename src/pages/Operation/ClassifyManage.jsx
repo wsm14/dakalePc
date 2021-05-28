@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import debounce from 'lodash/debounce';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import ClassifySet from './components/Classify/ClassifySet';
 
 const ClassifyManageComponent = (props) => {

@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TaskDetailList from '../Detail/TaskDetailList';
 
 const TaskManage = (props) => {

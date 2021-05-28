@@ -4,7 +4,7 @@ import { Card, Button, Switch } from 'antd';
 import { CITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ManageCityLeft from './components/City/Left';
 import ManageCitySet from './components/City/ManageCitySet';

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { rightsJson, targetJson } from '@/common/expertLevelJSON';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelJSONSet = (props) => {

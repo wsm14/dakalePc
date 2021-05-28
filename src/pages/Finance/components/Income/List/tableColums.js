@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { PLATFORM_INCOME_ORDERS_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
 const infoHandle = (click) => (
   <HandleSetTable

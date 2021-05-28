@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { EXPERT_TEMP_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import ExpertTempSet from './components/Temp/ExpertTempSet';
 
 const ExpertTempList = (props) => {

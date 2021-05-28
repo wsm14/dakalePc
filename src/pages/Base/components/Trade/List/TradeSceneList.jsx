@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TradeSceneSet from '../Form/TradeSceneSet';
 import PopImgShow from '@/components/PopImgShow';
 

@@ -4,7 +4,7 @@ import { Modal, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import CheckInDetailSet from './CheckInDetailSet';
 
 const CheckInDetailList = (props) => {

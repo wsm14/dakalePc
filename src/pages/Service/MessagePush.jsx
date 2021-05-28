@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Card, Result, Button, Space, Modal } from 'antd';
 import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_STATUS } from '@/common/constant';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MessageDrawer from './components/MessagePush/MessageDrawer';
 

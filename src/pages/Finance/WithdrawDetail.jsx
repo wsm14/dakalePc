@@ -6,7 +6,7 @@ import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import WithdrawRemark from './components/Withdraw/WithdrawRemark';
 
 const WithdrawDetail = (props) => {

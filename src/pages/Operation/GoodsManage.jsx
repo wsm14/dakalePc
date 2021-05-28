@@ -7,7 +7,7 @@ import debounce from 'lodash/debounce';
 import CloseRefuse from './components/Goods/Form/CloseRefuse';
 import StockSet from './components/Goods/Form/StockSet';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
 import GoodsDrawer from './components/Goods/GoodsDrawer';
 import styles from './style.less';

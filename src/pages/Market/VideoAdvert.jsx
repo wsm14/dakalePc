@@ -5,7 +5,7 @@ import { VIDEO_NOVICE_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import VideoShowModal from './components/VideoAd/VideoShowModal';
 import VideoPeasDetail from './components/VideoAd/VideoPeasDetail';

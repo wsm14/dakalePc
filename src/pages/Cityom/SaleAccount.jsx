@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { SALE_ACCOUNT_TYPE, COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SaleAccountDrawer from './components/Sale/SaleAccountDrawer';
 

@@ -11,7 +11,7 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PreferentialDrawer from './components/PlatformRights/PreferentialDrawer';
 import PlatformRightsDetail from './components/PlatformRights/PlatformRightsDetail';

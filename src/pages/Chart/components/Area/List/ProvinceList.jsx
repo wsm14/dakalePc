@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { connect, history } from 'umi';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import CITYJSON from '@/common/city';
 

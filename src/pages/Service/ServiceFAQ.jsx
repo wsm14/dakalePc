@@ -4,7 +4,7 @@ import { checkSorterData } from '@/utils/utils';
 import { FAQ_LIKE_STATUS } from '@/common/constant';
 import { Card, Result, Switch, Button, Space, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import DraggableContent, { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import FAQSortList from './components/FAQ/List/FAQSortList';

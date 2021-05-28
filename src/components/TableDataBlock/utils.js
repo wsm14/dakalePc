@@ -1,5 +1,5 @@
 import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from './HandleSetTable';
 import DraggableContent from './SortBlock';
 
 const tablePropsHandle = {

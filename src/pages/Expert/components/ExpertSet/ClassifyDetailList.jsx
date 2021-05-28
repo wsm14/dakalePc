@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Modal, Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import ClassifyDetailSet from './ClassifyDetailSet';
 
 const ClassifyDetailList = (props) => {

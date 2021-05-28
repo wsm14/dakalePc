@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';

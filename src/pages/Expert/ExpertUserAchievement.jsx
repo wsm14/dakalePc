@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Alert } from 'antd';
 import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
 import RecommendModal from './components/Achievement/RecommendModal';
 
