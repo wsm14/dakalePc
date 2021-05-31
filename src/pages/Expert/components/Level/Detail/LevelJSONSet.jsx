@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { rightsJson, targetJson } from '@/common/expertLevelJSON';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelJSONSet = (props) => {
@@ -38,36 +37,31 @@ const LevelJSONSet = (props) => {
       },
     },
     {
-      title: '操作',
-      align: 'center',
+      type: 'handle',
       dataIndex: 'name',
       render: (val, row, i) => {
         const checkAdd = showlistData.some((item) => item.name == row.name);
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                auth: true,
-                title: '添加',
-                pop: true,
-                visible: !checkAdd,
-                click: () => {
-                  fetchExpertLevelSet([...showlistData, row]);
-                },
-              },
-              {
-                auth: true,
-                title: '取消添加',
-                pop: true,
-                visible: checkAdd,
-                click: () => {
-                  const newList = showlistData.filter((item) => item.name != row.name);
-                  fetchExpertLevelSet(newList);
-                },
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            auth: true,
+            title: '添加',
+            pop: true,
+            visible: !checkAdd,
+            click: () => {
+              fetchExpertLevelSet([...showlistData, row]);
+            },
+          },
+          {
+            auth: true,
+            title: '取消添加',
+            pop: true,
+            visible: checkAdd,
+            click: () => {
+              const newList = showlistData.filter((item) => item.name != row.name);
+              fetchExpertLevelSet(newList);
+            },
+          },
+        ];
       },
     },
   ];

@@ -15,7 +15,6 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SpecialRecommendMenu from './components/SpecialGoods/SpecialRecommendMenu';
 import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
@@ -282,75 +281,69 @@ const SpecialGoods = (props) => {
       },
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'specialGoodsId',
-      align: 'right',
-      fixed: 'right',
       width: 150,
       render: (val, record, index) => {
         const { specialGoodsId, merchantIdStr, status, deleteFlag } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'goodsCode',
-                visible: ['1', '2'].includes(status) && deleteFlag == '1', // '活动中', '审核中' && 未删除
-                click: () =>
-                  fetchSpecialGoodsQrCode(
-                    { specialGoodsId },
-                    `${record.merchantName}-${record.goodsName}`,
-                  ),
-              },
-              {
-                type: 'info',
-                click: () => fetchSpecialGoodsDetail(index, 'info'),
-              },
-              {
-                title: '下架',
-                auth: 'down',
-                visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
-                click: () =>
-                  setVisibleRefuse({
-                    show: true,
-                    detail: record,
-                    formProps: { type: 'down', key: 'offShelfReason' },
-                  }),
-              },
-              {
-                type: 'edit',
-                visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
-                click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
-              },
-              {
-                type: 'check',
-                visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
-                click: () => fetchSpecialGoodsDetail(index, 'info'),
-              },
-              // {
-              //   type: 'del',
-              //   visible: ['0'].includes(status), // 已下架
-              //   click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
-              // },
-              {
-                type: 'again',
-                visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
-                click: () => fetchSpecialGoodsDetail(index, 'again'),
-              },
-              {
-                pop: true,
-                title: '取消推荐',
-                auth: 'placement',
-                visible: record.recommendStatus !== '0' || record.topStatus !== '0',
-                click: () =>
-                  fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
-              },
-              {
-                type: 'diary',
-                click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'goodsCode',
+            visible: ['1', '2'].includes(status) && deleteFlag == '1', // '活动中', '审核中' && 未删除
+            click: () =>
+              fetchSpecialGoodsQrCode(
+                { specialGoodsId },
+                `${record.merchantName}-${record.goodsName}`,
+              ),
+          },
+          {
+            type: 'info',
+            click: () => fetchSpecialGoodsDetail(index, 'info'),
+          },
+          {
+            title: '下架',
+            auth: 'down',
+            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: record,
+                formProps: { type: 'down', key: 'offShelfReason' },
+              }),
+          },
+          {
+            type: 'edit',
+            visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
+            click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
+          },
+          {
+            type: 'check',
+            visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
+            click: () => fetchSpecialGoodsDetail(index, 'info'),
+          },
+          // {
+          //   type: 'del',
+          //   visible: ['0'].includes(status), // 已下架
+          //   click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
+          // },
+          {
+            type: 'again',
+            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            click: () => fetchSpecialGoodsDetail(index, 'again'),
+          },
+          {
+            pop: true,
+            title: '取消推荐',
+            auth: 'placement',
+            visible: record.recommendStatus !== '0' || record.topStatus !== '0',
+            click: () =>
+              fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
+          },
+          {
+            type: 'diary',
+            click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+          },
+        ]
       },
     },
   ];

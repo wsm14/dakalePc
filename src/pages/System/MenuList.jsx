@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import { Button, Card, Switch } from 'antd';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysMenuSet from './components/Menu/SysMenuSet';
 
@@ -60,30 +59,25 @@ const SysMenuList = (props) => {
       ),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'authAccessId',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              auth: true,
-              click: () => fetchGetMenuDetail({ accessId: val }),
-            },
-            {
-              auth: true,
-              title: '添加',
-              click: () =>
-                handleSysMenuSet({
-                  menuName: record.accessName,
-                  pid: val,
-                  type: 'addChildren',
-                }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          auth: true,
+          click: () => fetchGetMenuDetail({ accessId: val }),
+        },
+        {
+          auth: true,
+          title: '添加',
+          click: () =>
+            handleSysMenuSet({
+              menuName: record.accessName,
+              pid: val,
+              type: 'addChildren',
+            }),
+        },
+      ],
     },
   ];
 

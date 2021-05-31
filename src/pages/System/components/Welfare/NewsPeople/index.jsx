@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import NewsConfigDeatil from './NewsConfigDetail';
 import { WELFARE_STATUS } from '@/common/constant';
 import moment from 'moment';
@@ -75,29 +74,23 @@ const NewsPeople = (props) => {
       ),
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configNewcomerOrdersId',
       render: (val, record) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                auth: true,
-                click: () => fetchGetDetail(record, 'edit'),
-                visible: record.status == 0,
-              },
-              {
-                type: 'del',
-                auth: true,
-                click: () => fetchDetailDel(val),
-                visible: record.status == 0,
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'edit',
+            auth: true,
+            click: () => fetchGetDetail(record, 'edit'),
+            visible: record.status == 0,
+          },
+          {
+            type: 'del',
+            auth: true,
+            click: () => fetchDetailDel(val),
+            visible: record.status == 0,
+          },
+        ];
       },
     },
   ];

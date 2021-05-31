@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { Button } from 'antd';
 import { connect } from 'umi';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProceDataForm from './components/Withdraw/Form/ProceDataForm';
 
@@ -71,19 +70,14 @@ const WithdrawRegular = (props) => {
       dataIndex: 'updateTime',
     },
     {
-      title: '操作',
-      align: 'center',
+      type: 'handle',
       dataIndex: 'city',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => handleEdit(row),
-            },
-          ]}
-        />
-      ),
+      render: (val, row) =>[
+        {
+          type: 'edit',
+          click: () => handleEdit(row),
+        },
+      ]
     },
   ];
 

@@ -4,7 +4,6 @@ import { Modal, Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import CheckInDetailSet from './CheckInDetailSet';
 
 const CheckInDetailList = (props) => {
@@ -39,20 +38,16 @@ const CheckInDetailList = (props) => {
           dataIndex: 'content',
         },
         {
-          title: '操作',
+          type: 'handle',
           align: 'center',
           dataIndex: 'idString',
-          render: (val, row) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  auth: 'markImgEdit',
-                  click: () => handleCheckInDetailSet(row),
-                },
-              ]}
-            />
-          ),
+          render: (val, row) => [
+            {
+              type: 'edit',
+              auth: 'markImgEdit',
+              click: () => handleCheckInDetailSet(row),
+            },
+          ],
         },
       ],
     },
@@ -66,20 +61,16 @@ const CheckInDetailList = (props) => {
           render: (val) => <NoticeImgShow url={val} />,
         },
         {
-          title: '操作',
+          type: 'handle',
           align: 'center',
           dataIndex: 'idString',
-          render: (val, row) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  auth: 'shareTextEdit',
-                  click: () => handleCheckInDetailSet(row),
-                },
-              ]}
-            />
-          ),
+          render: (val, row) => [
+            {
+              type: 'edit',
+              auth: 'shareTextEdit',
+              click: () => handleCheckInDetailSet(row),
+            },
+          ],
         },
       ],
     },

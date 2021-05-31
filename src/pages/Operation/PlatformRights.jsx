@@ -11,7 +11,6 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PreferentialDrawer from './components/PlatformRights/PreferentialDrawer';
 import PlatformRightsDetail from './components/PlatformRights/PlatformRightsDetail';
@@ -185,41 +184,34 @@ const PlatformRights = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'specialGoodsId',
-      align: 'right',
-      fixed: 'right',
       width: 100,
       render: (val, record, index) => {
         const { specialGoodsId, status } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                click: () => fetchSpecialGoodsDetail(index, 'info'),
-              },
-              {
-                type: 'down',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsStatus(record),
-              },
-              {
-                type: 'edit',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
-              },
-              {
-                pop: true,
-                title: '取消推荐',
-                auth: 'placement',
-                visible: record.recommendStatus !== '0' || record.topStatus !== '0',
-                click: () =>
-                  fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            click: () => fetchSpecialGoodsDetail(index, 'info'),
+          },
+          {
+            type: 'down',
+            visible: status !== '0',
+            click: () => fetchSpecialGoodsStatus(record),
+          },
+          {
+            type: 'edit',
+            visible: status !== '0',
+            click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
+          },
+          {
+            pop: true,
+            title: '取消推荐',
+            auth: 'placement',
+            visible: record.recommendStatus !== '0' || record.topStatus !== '0',
+            click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
+          },
+        ];
       },
     },
   ];

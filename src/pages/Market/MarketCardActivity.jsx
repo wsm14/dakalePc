@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
 import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
@@ -64,25 +63,19 @@ const MarketCardActivity = (props) => {
       render: (val) => ACTIVITY_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'activityIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'eye',
-              click: () => setShow({ key: 'detail', record }),
-            },
-            {
-              type: 'down',
-              visible: record.activityStatus !== '2',
-              click: () => fetchMarketActivityCancel({ activityId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'eye',
+          click: () => setShow({ key: 'detail', record }),
+        },
+        {
+          type: 'down',
+          visible: record.activityStatus !== '2',
+          click: () => fetchMarketActivityCancel({ activityId: val }),
+        },
+      ],
     },
   ];
 

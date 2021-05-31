@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Form, Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import EditableCell from './EditableCell';
 
 const JobsClassManage = (props) => {
@@ -63,41 +62,36 @@ const JobsClassManage = (props) => {
       dataIndex: 'jobType',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'jobTypeId',
-      align: 'right',
       render: (jobTypeId, record) => {
         const editable = isEditing(record);
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                auth: true,
-                visible: !editable,
-                click: () => edit(record),
-              },
-              {
-                type: 'del',
-                auth: true,
-                visible: !editable,
-                click: () => fetchJobsClassSet({ jobTypeId, deleteFlag: 0 }),
-              },
-              {
-                auth: true,
-                title: '保存',
-                visible: editable,
-                click: () => fetchJobsClassSet(),
-              },
-              {
-                auth: true,
-                title: '取消',
-                visible: editable,
-                click: () => cancel(record),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'edit',
+            auth: true,
+            visible: !editable,
+            click: () => edit(record),
+          },
+          {
+            type: 'del',
+            auth: true,
+            visible: !editable,
+            click: () => fetchJobsClassSet({ jobTypeId, deleteFlag: 0 }),
+          },
+          {
+            auth: true,
+            title: '保存',
+            visible: editable,
+            click: () => fetchJobsClassSet(),
+          },
+          {
+            auth: true,
+            title: '取消',
+            visible: editable,
+            click: () => cancel(record),
+          },
+        ];
       },
     },
   ];

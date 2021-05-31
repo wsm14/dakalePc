@@ -1,18 +1,13 @@
 import moment from 'moment';
 import { PLATFORM_INCOME_ORDERS_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
-const infoHandle = (click) => (
-  <HandleSetTable
-    formItems={[
-      {
-        type: 'info',
-        auth: true,
-        click,
-      },
-    ]}
-  />
-);
+const infoHandle = (click) =>[
+  {
+    type: 'info',
+    auth: true,
+    click,
+  },
+]
 
 /**
  * 表格头
@@ -71,7 +66,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         },
         {
           title: '详情',
-          align: 'right',
+          type:"handle",
           dataIndex: 'identification',
           render: (val, row) => infoHandle(() => fetchGetDetail(val, row.type, row.bean)),
         },
@@ -82,7 +77,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         ...dayMonthColums,
         {
           title: '详情',
-          align: 'right',
+          type:"handle",
           dataIndex: 'remark',
           render: (val, row) =>
             infoHandle(() =>
@@ -100,7 +95,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         ...dayMonthColums,
         {
           title: '详情',
-          align: 'right',
+          type:"handle",
           dataIndex: 'remark',
           render: (val, row) =>
             infoHandle(() =>

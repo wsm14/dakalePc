@@ -4,7 +4,6 @@ import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant'
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
 const GoodsOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
@@ -208,20 +207,14 @@ const GoodsOrders = (props) => {
       render: (val) => ORDER_CLOSE_TYPE[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'orderId',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchGoodsDetail(index),
-            },
-          ]}
-        />
-      ),
+      render: (val, record, index) =>[
+        {
+          type: 'info',
+          click: () => fetchGoodsDetail(index),
+        },
+      ]
     },
   ];
 

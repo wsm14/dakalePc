@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { EXPERT_SORT_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SortSet from './components/Sort/SortSet';
 
@@ -24,21 +23,14 @@ const ExpertSort = (props) => {
       dataIndex: 'value',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'key',
-      align: 'right',
-      render: (key, record) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => handleSortSet({ key, value: record.value }),
-              },
-            ]}
-          />
-        );
-      },
+      render: (key, record) => [
+        {
+          type: 'edit',
+          click: () => handleSortSet({ key, value: record.value }),
+        },
+      ],
     },
   ];
 

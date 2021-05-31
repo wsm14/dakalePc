@@ -4,7 +4,6 @@ import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import PocessReport from './ProcessReport';
 
 const ReportList = (props) => {
@@ -109,23 +108,18 @@ const ReportList = (props) => {
         dataIndex: 'processTime',
       },
       {
-        title: '操作',
-        fixed: 'right',
-        align: 'right',
+       
+        type: 'handle',
         dataIndex: 'userReportId',
         render: (userReportId, record) => {
           const { status } = record;
-          return (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'handle',
-                  visible: status == 0,
-                  click: () => fetchExpertProcessReport({ userReportId }),
-                },
-              ]}
-            />
-          );
+          return [
+            {
+              type: 'handle',
+              visible: status == 0,
+              click: () => fetchExpertProcessReport({ userReportId }),
+            },
+          ];
         },
       },
     ],
