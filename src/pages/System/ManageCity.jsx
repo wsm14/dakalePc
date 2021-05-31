@@ -91,7 +91,7 @@ const ManageCity = (props) => {
     });
   };
 
-  const btnExtra = [
+  const extraBtn = [
     {
       disabled: !selectCode.provinceCode,
       onClick: () => handleManageCitySet('add', selectCode),
@@ -107,7 +107,7 @@ const ManageCity = (props) => {
       ></ManageCityLeft>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={btnExtra}
+          btnExtra={extraBtn}
           noCard={false}
           cRef={childRef}
           loading={loading.models.manageCity}

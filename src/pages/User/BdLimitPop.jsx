@@ -47,7 +47,7 @@ const ServiceLimitPop = (props) => {
   const extraBtn = [
     {
       auth: 'save',
-      onClick: handLimitPopSet(),
+      onClick: handLimitPopSet,
     },
   ];
 

@@ -107,24 +107,27 @@ const SaleAchievement = (props) => {
 
   const preDate = moment().subtract(1, 'day');
 
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'saleAchievement/fetchGetExcel',
+      dispatchData: get(),
+      exportProps: {
+        header: getColumns,
+        fieldRender: {
+          merchantName: (val) => val,
+          scan: (val) => val,
+          verificationFee: (val) => val,
+          totalFee: (val) => val,
+        },
+      },
+    },
+  ];
+
   return (
     <TableDataBlock
       order
-      btnExtra={({ get }) => (
-        <ExcelButton
-          dispatchType={'saleAchievement/fetchGetExcel'}
-          dispatchData={get()}
-          exportProps={{
-            header: getColumns,
-            fieldRender: {
-              merchantName: (val) => val,
-              scan: (val) => val,
-              verificationFee: (val) => val,
-              totalFee: (val) => val,
-            },
-          }}
-        ></ExcelButton>
-      )}
+      btnExtra={extraBtn}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
