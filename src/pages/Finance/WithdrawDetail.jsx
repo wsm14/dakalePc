@@ -4,7 +4,6 @@ import { connect } from 'umi';
 import { Spin, Tag, Alert } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS } from '@/common/constant';
-import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import WithdrawRemark from './components/Withdraw/WithdrawRemark';
@@ -153,6 +152,16 @@ const WithdrawDetail = (props) => {
     });
   };
 
+  // 导出excel按钮
+  const excelBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'withdrawDetail/fetchGetExcel',
+      data: get(),
+      exportProps: { header: getColumns.slice(0, -1) },
+    },
+  ];
+
   return (
     <>
       <Alert
@@ -176,13 +185,7 @@ const WithdrawDetail = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'withdrawDetail/fetchGetExcel'}
-            dispatchData={get()}
-            exportProps={{ header: getColumns.slice(0, -1) }}
-          ></ExcelButton>
-        )}
+        btnExtra={excelBtn}
         searchCallback={fetchWithdrawTotal}
         cRef={childRef}
         loading={loading.effects['withdrawDetail/fetchGetList']}

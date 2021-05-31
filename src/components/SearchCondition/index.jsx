@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Searchor } from './searchModule';
 import { Form, Row, Col, Button, Space, Grid } from 'antd';
 import { UpOutlined, DownOutlined } from '@ant-design/icons';
+import ExtraButton from '@/components/ExtraButton';
 import styles from './index.less';
 
 /**
@@ -22,7 +23,7 @@ const SearchCondition = (props) => {
     searchItems: formItems,
     resetSearch = () => {},
     handleSearch,
-    btnExtra = '',
+    btnExtra = [],
     componentSize = 'default',
     initialValues = {},
   } = props;
@@ -151,7 +152,9 @@ const SearchCondition = (props) => {
           查询
         </Button>
         <Button onClick={handleReset}>重置</Button>
-        {typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
+        <ExtraButton
+          list={typeof btnExtra == 'function' ? btnExtra({ get: getData }) : btnExtra}
+        ></ExtraButton>
       </Space>
       {len > (componentSize !== 'default' ? 6 : count) ? (
         <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => setExpand(!expand)}>

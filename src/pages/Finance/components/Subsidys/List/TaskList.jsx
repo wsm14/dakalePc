@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
-import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TaskDetailList from '../Detail/TaskDetailList';
@@ -150,18 +149,21 @@ const TaskManage = (props) => {
     });
   };
 
+  const btnList = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'subsidyManage/fetchSubsidyTaskGetExcel',
+      data: { type, ...get() },
+      exportProps: { header: getColumns },
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         noCard={false}
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
-            dispatchData={{ type, ...get() }}
-            exportProps={{ header: getColumns }}
-          ></ExcelButton>
-        )}
+        btnExtra={btnList}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

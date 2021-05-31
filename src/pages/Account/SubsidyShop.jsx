@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Alert } from 'antd';
-import ExcelButton from '@/components/ExcelButton';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
 import tableColums from './components/SubsidyShop/List/tableColums';
