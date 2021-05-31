@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import ExcelButton from '@/components/ExcelButton';
 
 const SaleAchievement = (props) => {
   const { saleAchievement, loading, selectList, loadingMre, dispatch } = props;

@@ -2,11 +2,11 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { ExcelButton } from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import CouponDrawer from './components/Coupon/CouponDrawer';
-import ExcelButton from '@/components/ExcelButton';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch } = props;

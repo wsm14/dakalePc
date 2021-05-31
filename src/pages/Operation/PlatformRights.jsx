@@ -7,9 +7,9 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_RECOMMEND_TYPE,
 } from '@/common/constant';
+import { ExcelButton } from '@/components/ExtraButton';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
-import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import PreferentialDrawer from './components/PlatformRights/PreferentialDrawer';
