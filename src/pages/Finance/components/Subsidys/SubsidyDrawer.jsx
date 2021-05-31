@@ -73,7 +73,7 @@ const SubsidyDrawer = (props) => {
   const subsudyProps = {
     add: {
       title: '新增',
-      children: <SubsidyDirectMoney form={form} detail={detail}></SubsidyDirectMoney>,
+      children: <SubsidyDirectMoney form={form} detail={detail} tab={tab}></SubsidyDirectMoney>,
       footer: (
         <Button onClick={handleUpAddTask} type="primary" loading={loading}>
           提交

@@ -58,7 +58,7 @@ const ExpertTempSet = (props) => {
       ),
     },
     {
-      label: '适用店铺',
+      label: '适用用户',
       type: 'noForm',
       formItem: (
         <UserSelectShow

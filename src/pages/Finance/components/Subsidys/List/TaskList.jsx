@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
@@ -42,7 +42,7 @@ const TaskManage = (props) => {
       label: '补贴角色',
       type: 'select',
       name: 'role',
-      select: SUBSIDY_TASK_ROLE,
+      select: tabkey === 'direct' ? SUBSIDY_ACTION_ROLE : SUBSIDY_TASK_ROLE,
     },
     {
       label: '时间',
@@ -67,7 +67,7 @@ const TaskManage = (props) => {
       title: '角色',
       align: 'center',
       dataIndex: 'role',
-      render: (val) => SUBSIDY_TASK_ROLE[val],
+      render: (val) => SUBSIDY_ACTION_ROLE[val],
     },
     {
       title: '类型',

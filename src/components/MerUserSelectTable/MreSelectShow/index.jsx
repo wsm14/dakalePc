@@ -36,6 +36,7 @@ const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) 
         columns={getColumns}
         rowKey={(record) => `${record.userMerchantIdString}`}
         rowSelection={{
+          fixed: true,
           selectedRowKeys: keys,
           onChange: (val) => setMreList({ list, keys: val }),
         }}
