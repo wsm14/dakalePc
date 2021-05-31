@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip } from 'antd';
 import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
@@ -16,24 +16,30 @@ const SubsidyDirectMoney = (props) => {
   const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
   const [userNumber, setUserNumber] = useState({}); // 卡豆数 暂存输入值
   const [userTotal, setUserTotal] = useState(0); // 卡豆数总数
+  const [rechargeBeans, setRechargeBeans] = useState(0); // 商户卡豆数总数
 
   // 设置form表单值 店铺id
   useEffect(() => {
+    const directChargeList = mreList.keys.map((item) => ({
+      roleId: item,
+      directChargeBean: rechargeBeans || 0,
+    }));
+    form.setFieldsValue({ directChargeList });
     form.setFieldsValue({ merchantIds: mreList.keys.toString() });
-  }, [mreList]);
+  }, [mreList, rechargeBeans]);
 
   // 监听用户卡豆数变化
   useEffect(() => {
     const newData = lodash.pickBy(userNumber, (value, key) => userList.keys.includes(key));
-    const recycleList = Object.keys(newData).map((item) => ({
-      merchantId: item,
-      recycleBean: newData[item] || 0,
+    const directChargeList = Object.keys(newData).map((item) => ({
+      roleId: item,
+      directChargeBean: newData[item] || 0,
     }));
-    setUserTotal(lodash.sumBy(recycleList, 'recycleBean'));
-    form.setFieldsValue({ recycleList });
+    setUserTotal(lodash.sumBy(directChargeList, 'directChargeBean'));
+    form.setFieldsValue({ directChargeList });
   }, [userList, userNumber]);
 
-  // 全部填充
+  // 向下填充
   const downBean = (bean) => {
     if (!bean) return;
     const obj = {};
@@ -51,11 +57,14 @@ const SubsidyDirectMoney = (props) => {
       name: 'role',
       type: 'select',
       select: tab === 'direct' ? SUBSIDY_ACTION_ROLE : SUBSIDY_TASK_ROLE,
-      onChange: setRole,
+      onChange: (val) => {
+        form.setFieldsValue({ directChargeList: undefined });
+        setRole(val);
+      },
     },
     {
       label: '适用店铺',
-      name: 'merchantIds',
+      name: tab === 'direct' ? 'directChargeList' : 'merchantIds', // 营销卡豆 merchantIds
       type: 'formItem',
       rules: [{ required: true, message: '请选择店铺' }],
       visible: role === 'merchant',
@@ -73,7 +82,7 @@ const SubsidyDirectMoney = (props) => {
     },
     {
       label: '适用用户',
-      name: 'userIdList',
+      name: 'directChargeList',
       type: 'formItem',
       visible: role === 'user',
       rules: [{ required: true, message: '请选择用户' }],
@@ -115,12 +124,12 @@ const SubsidyDirectMoney = (props) => {
                       }))
                     }
                   ></InputNumber>
-                  {index === 0 && (
-                    <Tooltip placement="top" title={'全部填充（所有已勾选数据）'}>
-                      <PlusSquareOutlined
+                  {userList.list[0].userIdString === record.userIdString && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
                         onClick={() => downBean(userNumber[record.userIdString])}
                         style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
-                      ></PlusSquareOutlined>
+                      ></DownSquareOutlined>
                     </Tooltip>
                   )}
                 </>
@@ -132,12 +141,13 @@ const SubsidyDirectMoney = (props) => {
     },
     {
       label: '充值卡豆数',
-      name: 'rechargeBeans',
+      name: 'rechargeBeans', // 营销卡豆
       type: role === 'user' ? 'formItem' : 'number',
       precision: 0,
       min: 0,
       max: 999999999,
       formItem: <>{userTotal}</>,
+      onChange: (e) => setRechargeBeans(e), // 平台直冲
     },
     {
       label: '充值凭证',

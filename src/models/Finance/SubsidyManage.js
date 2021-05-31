@@ -8,6 +8,7 @@ import {
   fetchSubsidyDirectAdd,
   fetchSubsidyRecycleBean,
   fetchSubsidyTaskDetailList,
+  fetchSubsidyTaskUserDetailList,
   fetchSubsidyActionList,
   fetchSubsidyActionAdd,
   fetchSubsidyActionDel,
@@ -46,6 +47,17 @@ export default {
     },
     *fetchSubsidyTaskDetailList({ payload }, { call, put }) {
       const response = yield call(fetchSubsidyTaskDetailList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          detailList: { list: content.subsidyList },
+        },
+      });
+    },
+    *fetchSubsidyTaskUserDetailList({ payload }, { call, put }) {
+      const response = yield call(fetchSubsidyTaskUserDetailList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
