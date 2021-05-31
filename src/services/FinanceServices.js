@@ -30,6 +30,13 @@ export function fetchSubsidyTaskDetailList(params) {
   });
 }
 
+// get 补贴管理 - 任务列表 -  补贴详情 用户列表
+export function fetchSubsidyTaskUserDetailList(params) {
+  return request('/admin/subsidyManagement/listUserSubsidyDetail', {
+    params,
+  });
+}
+
 // post 补贴管理 - 营销卡豆充值 -  新增
 export function fetchSubsidyTaskAdd(data) {
   return request('/admin/subsidyManagement/platformDirectCharge', {
