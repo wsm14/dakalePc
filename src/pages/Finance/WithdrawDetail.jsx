@@ -4,8 +4,7 @@ import { connect } from 'umi';
 import { Spin, Tag, Alert } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS } from '@/common/constant';
-import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
+import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import WithdrawRemark from './components/Withdraw/WithdrawRemark';
 
 const WithdrawDetail = (props) => {
