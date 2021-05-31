@@ -100,11 +100,6 @@ const TaskDetailList = (props) => {
           align: 'right',
           dataIndex: 'rechargeBeans',
         },
-        // {
-        //   title: '已消耗卡豆数',
-        //   align: 'right',
-        //   dataIndex: 'topicDesc',
-        // },
       ],
     },
   }[role];
