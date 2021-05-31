@@ -42,11 +42,7 @@ const ExcelWrite = (props) => {
       title: '操作',
       align: 'center',
       dataIndex: 'url',
-      render: (val) => (
-        <a href={val} >
-          下载
-        </a>
-      ),
+      render: (val) => val && <a href={val.replace(/^http:/, 'https:')}>下载</a>,
     },
   ];
 

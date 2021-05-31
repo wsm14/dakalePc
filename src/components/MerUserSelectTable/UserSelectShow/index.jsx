@@ -50,6 +50,7 @@ const UserSelectShow = ({
         columns={getColumns}
         rowKey={(record) => `${record.userIdString}`}
         rowSelection={{
+          fixed: true,
           selectedRowKeys: keys,
           onChange: (val, resultList) => onOk({ list, keys: val, resultList }),
         }}
