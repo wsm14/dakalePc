@@ -5,7 +5,6 @@ import { VIDEO_NOVICE_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import VideoShowModal from './components/VideoAd/VideoShowModal';
 import VideoPeasDetail from './components/VideoAd/VideoPeasDetail';
@@ -169,42 +168,36 @@ const VideoAdvert = (props) => {
       render: (val) => VIDEO_NOVICE_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'guideMomentsId',
-      align: 'right',
-      fixed: 'right',
       width: 165,
       render: (guideMomentsId, row) => {
         const { status } = row;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info', // 详情
-                click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'info'),
-              },
-              {
-                type: 'down', // 下架
-                visible: status === '1',
-                click: () => fetchVideoAdNoviceStatus({ guideMomentsId }),
-              },
-              {
-                type: 'again', // 重新发布
-                visible: status === '3',
-                click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'again'),
-              },
-              {
-                type: 'peasDetail',
-                title: '领豆明细',
-                click: () => setVisiblePeas({ show: true, detail: row }),
-              },
-              {
-                type: 'diary', // 日志
-                click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info', // 详情
+            click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'info'),
+          },
+          {
+            type: 'down', // 下架
+            visible: status === '1',
+            click: () => fetchVideoAdNoviceStatus({ guideMomentsId }),
+          },
+          {
+            type: 'again', // 重新发布
+            visible: status === '3',
+            click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'again'),
+          },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            click: () => setVisiblePeas({ show: true, detail: row }),
+          },
+          {
+            type: 'diary', // 日志
+            click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
+          },
+        ];
       },
     },
   ];

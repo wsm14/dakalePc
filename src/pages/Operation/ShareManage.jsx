@@ -7,7 +7,6 @@ import { RefuseModal } from '@/components/PublicComponents';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareDetail from './components/Share/Detail/ShareDetail';
 import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';
@@ -211,54 +210,48 @@ const ShareManage = (props) => {
       render: (val) => SHARE_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'length',
       width: 150,
-      fixed: 'right',
-      align: 'right',
       render: (val, record, index) => {
         const { status, userMomentIdString } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                title: '审核通过',
-                auth: 'check',
-                pop: true,
-                visible: status == 0,
-                click: () => fetchVerifyAllow({ userMomentIdString }),
-              },
-              {
-                title: '下架',
-                auth: 'down', // 下架
-                visible: status == 1 || status == 0,
-                click: () =>
-                  setVisibleRefuse({
-                    show: true,
-                    detail: record,
-                    formProps: { type: 'down', key: 'removalReason' },
-                  }),
-              },
-              {
-                type: 'info', // 详情
-                click: () => fetchShareDetail(index, record.contentType || 'video'),
-              },
-              {
-                type: 'set', // 设置假数据
-                click: () => fetchShareDetail(index, 'set'),
-              },
-              {
-                type: 'diary', // 日志
-                click: () => fetchShareHandleDetail(userMomentIdString),
-              },
-              {
-                type: 'peasDetail',
-                title: '领豆明细',
-                click: () => setVisiblePeas({ show: true, detail: record }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            title: '审核通过',
+            auth: 'check',
+            pop: true,
+            visible: status == 0,
+            click: () => fetchVerifyAllow({ userMomentIdString }),
+          },
+          {
+            title: '下架',
+            auth: 'down', // 下架
+            visible: status == 1 || status == 0,
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: record,
+                formProps: { type: 'down', key: 'removalReason' },
+              }),
+          },
+          {
+            type: 'info', // 详情
+            click: () => fetchShareDetail(index, record.contentType || 'video'),
+          },
+          {
+            type: 'set', // 设置假数据
+            click: () => fetchShareDetail(index, 'set'),
+          },
+          {
+            type: 'diary', // 日志
+            click: () => fetchShareHandleDetail(userMomentIdString),
+          },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            click: () => setVisiblePeas({ show: true, detail: record }),
+          },
+        ];
       },
     },
   ];

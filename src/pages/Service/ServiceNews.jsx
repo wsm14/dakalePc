@@ -4,7 +4,6 @@ import { NEWS_STATUS } from '@/common/constant';
 import { Card, Result } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import NewsSet from './components/News/NewsSet';
 
@@ -80,28 +79,22 @@ const ServiceNewsComponent = (props) => {
       render: (val) => NEWS_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'newsIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'down',
-              visible: record.status === '0',
-              click: () => fetchNewsStatus({ newsId: val, status: 0 }),
-            },
-            {
-              type: 'edit',
-              click: () => {
-                setDetail(record);
-                setTabKey('tab2');
-              },
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'down',
+          visible: record.status === '0',
+          click: () => fetchNewsStatus({ newsId: val, status: 0 }),
+        },
+        {
+          type: 'edit',
+          click: () => {
+            setDetail(record);
+            setTabKey('tab2');
+          },
+        },
+      ],
     },
   ];
 

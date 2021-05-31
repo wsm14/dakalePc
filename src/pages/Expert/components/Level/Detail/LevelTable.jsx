@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { targetJson } from '@/common/expertLevelJSON';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const LevelTable = (props) => {
@@ -137,37 +136,33 @@ const LevelTable = (props) => {
         keyRow == 'rights' ? rightsDataDetail(row.name, val) : targetDataDetail(row.name, val),
     },
     {
-      title: '操作',
-      align: 'right',
+     
+      type: 'handle',
       dataIndex: 'name',
       render: (val, row, i) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                auth: true,
-                visible: row.value,
-                auth: true,
-                click: () => {
-                  const titleName =
-                    keyRow == 'rights'
-                      ? row.title
-                      : targetJson.filter((i) => i.name == row.name)[0].title;
-                  setEditData({ show: true, detail: { ...row, titleName } });
-                },
-              },
-              {
-                type: 'del',
-                auth: true,
-                click: () => {
-                  const newList = list.filter((item, index) => index != i);
-                  fetchExpertLevelSet(newList);
-                },
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'edit',
+            auth: true,
+            visible: row.value,
+            auth: true,
+            click: () => {
+              const titleName =
+                keyRow == 'rights'
+                  ? row.title
+                  : targetJson.filter((i) => i.name == row.name)[0].title;
+              setEditData({ show: true, detail: { ...row, titleName } });
+            },
+          },
+          {
+            type: 'del',
+            auth: true,
+            click: () => {
+              const newList = list.filter((item, index) => index != i);
+              fetchExpertLevelSet(newList);
+            },
+          },
+        ];
       },
     },
   ];

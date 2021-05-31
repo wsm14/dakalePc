@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { EXPERT_TYPE, EXPERT_IS_WITHDRAW } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import ExpertAllocationSet from './components/Allocation/ExpertAllocationSet';
 
 const ExpertAllocation = (props) => {
@@ -131,27 +130,21 @@ const ExpertAllocation = (props) => {
       ],
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'levelName',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              auth: 'save',
-              title: '新增等级',
-              visible: !!row.children,
-              click: () => setVisible({ show: true, type: 'add', detail: row }),
-            },
-            {
-              type: 'edit',
-              visible: !row.children || row.type == 'normal',
-              click: () => setVisible({ show: true, type: 'edit', detail: row }),
-            },
-          ]}
-        />
-      ),
+      render: (val, row) => [
+        {
+          auth: 'save',
+          title: '新增等级',
+          visible: !!row.children,
+          click: () => setVisible({ show: true, type: 'add', detail: row }),
+        },
+        {
+          type: 'edit',
+          visible: !row.children || row.type == 'normal',
+          click: () => setVisible({ show: true, type: 'edit', detail: row }),
+        },
+      ]
     },
   ];
 

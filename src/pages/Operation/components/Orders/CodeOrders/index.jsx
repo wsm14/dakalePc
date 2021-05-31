@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
 const CodeOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
@@ -134,20 +133,14 @@ const CodeOrders = (props) => {
       render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'orderId',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchGoodsDetail(index),
-            },
-          ]}
-        />
-      ),
+      render: (val, record, index) => [
+        {
+          type: 'info',
+          click: () => fetchGoodsDetail(index),
+        },
+      ],
     },
   ];
 

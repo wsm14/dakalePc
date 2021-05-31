@@ -11,7 +11,6 @@ import {
 } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
 
@@ -128,31 +127,25 @@ const SysAppSet = (props) => {
       render: (val) => BANNER_SHOW_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'bannerIdString',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'down',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
-            },
-            {
-              type: 'edit',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerDetail({ bannerId: val }),
-            },
-            {
-              type: 'del',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'down',
+          visible: record.showStatus === '1',
+          click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+        },
+        {
+          type: 'edit',
+          visible: record.showStatus !== '2',
+          click: () => fetchBannerDetail({ bannerId: val }),
+        },
+        {
+          type: 'del',
+          visible: record.showStatus !== '2',
+          click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
+        },
+      ]
     },
   ];
 

@@ -5,7 +5,6 @@ import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import CouponDrawer from './components/Coupon/CouponDrawer';
 import ExcelButton from '@/components/ExcelButton';
 
@@ -143,38 +142,32 @@ const CouponManageComponent = (props) => {
       ),
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
         const { merchantCouponStatus: status, ownerIdString: ownerId } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                click: () => fetchCouponDetail(index, 'info'),
-              },
-              {
-                type: 'del',
-                visible: status !== '1',
-                click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
-              },
-              // {
-              //   type: 'edit',
-              //   click: () => fetchCouponDetail(val, 'edit'),
-              // },
-              // 上架中 已确认 | 上架中 已驳回
-              {
-                type: 'down',
-                popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
-                visible: status == '1',
-                click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            click: () => fetchCouponDetail(index, 'info'),
+          },
+          {
+            type: 'del',
+            visible: status !== '1',
+            click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
+          },
+          // {
+          //   type: 'edit',
+          //   click: () => fetchCouponDetail(val, 'edit'),
+          // },
+          // 上架中 已确认 | 上架中 已驳回
+          {
+            type: 'down',
+            popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
+            visible: status == '1',
+            click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
+          },
+        ];
       },
     },
   ];

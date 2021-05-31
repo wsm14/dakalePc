@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS, USER_SOURCE } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/UserList/Search/SearchCard';
 import UserDetailShow from './components/UserList/UserDetailShow';
@@ -116,20 +115,14 @@ const UserListComponent = (props) => {
       render: (val) => USER_SOURCE[val],
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'parentUserIdString',
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchUserDetail(index),
-            },
-          ]}
-        />
-      ),
+      render: (val, record, index) => [
+        {
+          type: 'info',
+          click: () => fetchUserDetail(index),
+        },
+      ]
     },
   ];
 

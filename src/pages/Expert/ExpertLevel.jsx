@@ -43,22 +43,15 @@ const ExpertLevel = (props) => {
       ],
     },
     {
-      title: '等级权益',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'rights',
-      render: (val, row) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'set',
-                auth: 'rightsSet',
-                click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
-              },
-            ]}
-          />
-        );
-      },
+      render: (val, row) => [
+        {
+          type: 'set',
+          auth: 'rightsSet',
+          click: () => setVisible({ show: true, type: 'eye', key: 'rights', row }),
+        },
+      ],
     },
   ];
 

@@ -7,7 +7,6 @@ import debounce from 'lodash/debounce';
 import CloseRefuse from './components/Goods/Form/CloseRefuse';
 import StockSet from './components/Goods/Form/StockSet';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
 import GoodsDrawer from './components/Goods/GoodsDrawer';
 import styles from './style.less';
@@ -133,55 +132,49 @@ const GoodsManageComponent = (props) => {
       render: (val) => MRE_STOCK_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'goodsIdString',
       render: (val, record, index) => {
         const { status, merchantIdStr, checkStatus } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                click: () => fetchGoodsGetDetail(index),
-              },
-              // 上架中
-              {
-                title: '库存',
-                auth: 'stockSet',
-                visible: status == 1,
-                click: () => fetchStockSet(record),
-              },
-              // 未发布 - | 已下架 已确认
-              {
-                type: 'del',
-                visible:
-                  (status == 3 && !['0', '1', '2'].includes(checkStatus)) ||
-                  (status == 0 && checkStatus == 2),
-                click: () => fetchGoodsDel({ goodsIdString: val, merchantIdStr }),
-              },
-              // 上架中 已确认 | 上架中 已驳回
-              {
-                type: 'down',
-                visible: status == 1 && (checkStatus == 2 || checkStatus == 0),
-                click: () => fetchAuditRefuse(record),
-              },
-              // 未发布 - | 未发布 已驳回 | 已下架 已确认
-              {
-                type: 'up',
-                visible:
-                  (status == 3 && ['1', '2'].indexOf(checkStatus) == -1) ||
-                  (status == 0 && checkStatus == 2),
-                click: () => fetchGoodsUp({ goodsIdString: val }),
-              },
-              {
-                type: 'handleDeatil',
-                click: () => fetchGoodsHandleDetail(val),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            click: () => fetchGoodsGetDetail(index),
+          },
+          // 上架中
+          {
+            title: '库存',
+            auth: 'stockSet',
+            visible: status == 1,
+            click: () => fetchStockSet(record),
+          },
+          // 未发布 - | 已下架 已确认
+          {
+            type: 'del',
+            visible:
+              (status == 3 && !['0', '1', '2'].includes(checkStatus)) ||
+              (status == 0 && checkStatus == 2),
+            click: () => fetchGoodsDel({ goodsIdString: val, merchantIdStr }),
+          },
+          // 上架中 已确认 | 上架中 已驳回
+          {
+            type: 'down',
+            visible: status == 1 && (checkStatus == 2 || checkStatus == 0),
+            click: () => fetchAuditRefuse(record),
+          },
+          // 未发布 - | 未发布 已驳回 | 已下架 已确认
+          {
+            type: 'up',
+            visible:
+              (status == 3 && ['1', '2'].indexOf(checkStatus) == -1) ||
+              (status == 0 && checkStatus == 2),
+            click: () => fetchGoodsUp({ goodsIdString: val }),
+          },
+          {
+            type: 'handleDeatil',
+            click: () => fetchGoodsHandleDetail(val),
+          },
+        ];
       },
     },
   ];

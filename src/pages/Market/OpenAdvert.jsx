@@ -4,7 +4,6 @@ import { Button, Space, Form } from 'antd';
 import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import OpenAdSet from './components/OpenAd/OpenAdSet';
 
@@ -88,35 +87,29 @@ const OpenAdvert = (props) => {
       render: (val) => BANNER_SHOW_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'idString',
-      align: 'right',
-      fixed: 'right',
-      render: (appLaunchImageId, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
-            },
-            {
-              type: 'edit',
-              visible: record.status === '1',
-              click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
-            },
-            {
-              type: 'down',
-              visible: record.onFlag === '1',
-              click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
-            },
-            {
-              type: 'del',
-              visible: record.onFlag === '0',
-              click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (appLaunchImageId, record) =>[
+        {
+          type: 'info',
+          click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
+        },
+        {
+          type: 'edit',
+          visible: record.status === '1',
+          click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
+        },
+        {
+          type: 'down',
+          visible: record.onFlag === '1',
+          click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
+        },
+        {
+          type: 'del',
+          visible: record.onFlag === '0',
+          click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
+        },
+      ]
     },
   ];
 

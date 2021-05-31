@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import { JSOBS_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import JobsClass from './components/Jobs/JobsClass';
 import JobsSet from './components/Jobs/JobsSet';
@@ -76,25 +75,19 @@ const SolicitJobs = (props) => {
       render: (val) => JSOBS_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'talentRecruitmentId',
-      fixed: 'right',
-      align: 'right',
-      render: (talentRecruitmentId, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => setVisibleSet({ type: 'edit', show: true, detail: row }),
-            },
-            {
-              type: 'down',
-              visible: row.status === '1',
-              click: () => fetchJobsSet({ talentRecruitmentId, status: 2 }),
-            },
-          ]}
-        />
-      ),
+      render: (talentRecruitmentId, row) => [
+        {
+          type: 'edit',
+          click: () => setVisibleSet({ type: 'edit', show: true, detail: row }),
+        },
+        {
+          type: 'down',
+          visible: row.status === '1',
+          click: () => fetchJobsSet({ talentRecruitmentId, status: 2 }),
+        },
+      ],
     },
   ];
 

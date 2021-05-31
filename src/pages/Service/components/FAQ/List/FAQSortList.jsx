@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import FaqSortSet from '../Form/FAQSortSet';
 
 const FAQSortList = (props) => {
@@ -27,30 +26,25 @@ const FAQSortList = (props) => {
       dataIndex: 'questionCategoryName',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'questionCategoryIdString',
       render: (id, row) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'del',
-                popText: (
-                  <>
-                    <div>删除此分类后</div>
-                    <div>分类下所有信息也都将删除（包含问题）</div>
-                  </>
-                ),
-                click: () => fetchFAQSortDel({ id }),
-              },
-              {
-                type: 'edit',
-                click: () => handleDataSet('edit', row),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'del',
+            popText: (
+              <>
+                <div>删除此分类后</div>
+                <div>分类下所有信息也都将删除（包含问题）</div>
+              </>
+            ),
+            click: () => fetchFAQSortDel({ id }),
+          },
+          {
+            type: 'edit',
+            click: () => handleDataSet('edit', row),
+          },
+        ]
       },
     },
   ];

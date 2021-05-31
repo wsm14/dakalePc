@@ -4,7 +4,6 @@ import { Card, Button, Switch } from 'antd';
 import { CITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ManageCityLeft from './components/City/Left';
 import ManageCitySet from './components/City/ManageCitySet';
@@ -18,7 +17,7 @@ const ManageCity = (props) => {
     provinceName: '浙江省',
   });
 
-  const [visibleSet, setVisibleSet] = useState(false)
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -57,35 +56,30 @@ const ManageCity = (props) => {
         ),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'locationCityIdString',
-      align: 'right',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: !!row.provinceCode,
-              click: () => handleManageCitySet('edit' ,{ ...row, id: val }),
-            },
-            {
-              type: 'del',
-              visible: !!row.provinceCode,
-              click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, row) => [
+        {
+          type: 'edit',
+          visible: !!row.provinceCode,
+          click: () => handleManageCitySet('edit', { ...row, id: val }),
+        },
+        {
+          type: 'del',
+          visible: !!row.provinceCode,
+          click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 
   // 城市新增修改
-  const handleManageCitySet = (type,initialValues) => {
+  const handleManageCitySet = (type, initialValues) => {
     setVisibleSet({
-      show:true,
+      show: true,
       type,
       initialValues,
-    })
+    });
   };
 
   // 城市状态修改
@@ -111,7 +105,7 @@ const ManageCity = (props) => {
               <Button
                 className="dkl_green_btn"
                 disabled={!selectCode.provinceCode}
-                onClick={() => handleManageCitySet('add',selectCode)}
+                onClick={() => handleManageCitySet('add', selectCode)}
               >
                 新增
               </Button>
@@ -128,7 +122,11 @@ const ManageCity = (props) => {
           {...manageCity}
         ></TableDataBlock>
       </div>
-      <ManageCitySet visible={visibleSet}  childRef={childRef} onClose={()=>setVisibleSet(false)}></ManageCitySet>
+      <ManageCitySet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ManageCitySet>
     </Card>
   );
 };

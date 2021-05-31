@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { MASTER_TYPE } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MasterTotalInfo from './components/Master/MasterTotalInfo';
 import MasterDetailList from './components/Master/MasterDetailList';
@@ -81,20 +80,14 @@ const CircleMasterList = (props) => {
       dataIndex: 'totalAdd',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'id',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'income',
-              click: () => showProps('income', record),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'income',
+          click: () => showProps('income', record),
+        },
+      ],
     },
   ];
 

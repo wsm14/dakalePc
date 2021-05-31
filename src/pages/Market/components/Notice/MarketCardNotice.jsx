@@ -4,7 +4,6 @@ import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import NoticeImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardNoticeSet from './MarketCardNoticeSet';
 
@@ -44,31 +43,25 @@ const MarketCardNotice = (props) => {
       render: (val) => MARKET_NOTICE_STATUS[val],
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'configAnnounceIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: record.status === '0',
-              click: () => handleNoticeSet('edit', record),
-            },
-            {
-              type: 'del',
-              visible: record.status === '0',
-              click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 0 }, 'del'),
-            },
-            {
-              type: 'send',
-              visible: record.status === '0',
-              click: () => fetchNoticePush({ configAnnounceId: val, status: 1 }, 'push'),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          visible: record.status === '0',
+          click: () => handleNoticeSet('edit', record),
+        },
+        {
+          type: 'del',
+          visible: record.status === '0',
+          click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 0 }, 'del'),
+        },
+        {
+          type: 'send',
+          visible: record.status === '0',
+          click: () => fetchNoticePush({ configAnnounceId: val, status: 1 }, 'push'),
+        },
+      ]
     },
   ];
 

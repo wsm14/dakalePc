@@ -4,7 +4,6 @@ import { Button } from 'antd';
 import { EXPERT_TEMP_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import ExpertTempSet from './components/Temp/ExpertTempSet';
 
 const ExpertTempList = (props) => {
@@ -105,21 +104,16 @@ const ExpertTempList = (props) => {
       render: (val) => experLevel[val],
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'userTempLevelId',
-      render: (userTempLevelId, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'cancelTemp',
-              pop: true,
-              visible: row.status !== '2',
-              click: () => fetchExpertStop({ userTempLevelId }),
-            },
-          ]}
-        />
-      ),
+      render: (userTempLevelId, row) => [
+        {
+          type: 'cancelTemp',
+          pop: true,
+          visible: row.status !== '2',
+          click: () => fetchExpertStop({ userTempLevelId }),
+        },
+      ],
     },
   ];
 

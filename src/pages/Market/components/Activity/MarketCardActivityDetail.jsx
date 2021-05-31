@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
 import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
@@ -92,29 +91,23 @@ const MarketCardActivityDetail = (props) => {
       render: (val) => val || 0,
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'marketCouponIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'destoryDetail',
-              click: () => setVisible({ type: 'destory', record }),
-            },
-            {
-              type: 'orderDetail',
-              click: () => setVisible({ type: 'order', record }),
-            },
-            {
-              title: '优惠券',
-              auth: 'couponDetail',
-              click: () => fetchGetCouponInfo(val, record.merchantName),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'destoryDetail',
+          click: () => setVisible({ type: 'destory', record }),
+        },
+        {
+          type: 'orderDetail',
+          click: () => setVisible({ type: 'order', record }),
+        },
+        {
+          title: '优惠券',
+          auth: 'couponDetail',
+          click: () => fetchGetCouponInfo(val, record.merchantName),
+        },
+      ],
     },
   ];
 

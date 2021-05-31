@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { FEEDBACK_STATUS } from '@/common/constant';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 
@@ -64,26 +63,20 @@ const ServiceFeedBack = (props) => {
       render: (val) => (val ? val : '--'),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'feedbackIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (feedbackIdString, info) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'eye',
-              visible: info.status === '2',
-              click: () => fetchFeedBackDetail({ feedbackIdString }),
-            },
-            {
-              type: 'replay',
-              visible: info.status !== '2',
-              click: () => fetchFeedBackDetail({ feedbackIdString }),
-            },
-          ]}
-        />
-      ),
+      render: (feedbackIdString, info) => [
+        {
+          type: 'eye',
+          visible: info.status === '2',
+          click: () => fetchFeedBackDetail({ feedbackIdString }),
+        },
+        {
+          type: 'replay',
+          visible: info.status !== '2',
+          click: () => fetchFeedBackDetail({ feedbackIdString }),
+        },
+      ],
     },
   ];
 

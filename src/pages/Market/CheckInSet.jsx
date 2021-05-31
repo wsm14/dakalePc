@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import CheckInSet from './components/CheckIn/CheckInSet';
 import CheckInDetailList from './components/CheckIn/CheckInDetailList';
@@ -43,37 +42,31 @@ const SysCheckIn = (props) => {
         ({ care: '--', custom: '--', health: '--', habit: val }[record.identify]),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'markConfigIdString',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: record.identify === 'habit',
-              click: () => handlePeasShareSet(record),
-            },
-            {
-              type: 'shareImg',
-              click: () => setVisible({ type: 'image', styleType: 'share', record }),
-            },
-            {
-              type: 'markImg',
-              click: () => setVisible({ type: 'image', styleType: 'mark', record }),
-            },
-            {
-              type: 'shareText',
-              click: () => setVisible({ type: 'text', styleType: 'share', record }),
-            },
-            {
-              type: 'markText',
-              click: () => setVisible({ type: 'text', styleType: 'mark', record }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          visible: record.identify === 'habit',
+          click: () => handlePeasShareSet(record),
+        },
+        {
+          type: 'shareImg',
+          click: () => setVisible({ type: 'image', styleType: 'share', record }),
+        },
+        {
+          type: 'markImg',
+          click: () => setVisible({ type: 'image', styleType: 'mark', record }),
+        },
+        {
+          type: 'shareText',
+          click: () => setVisible({ type: 'text', styleType: 'share', record }),
+        },
+        {
+          type: 'markText',
+          click: () => setVisible({ type: 'text', styleType: 'mark', record }),
+        },
+      ],
     },
   ];
 

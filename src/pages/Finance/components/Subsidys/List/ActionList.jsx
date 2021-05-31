@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_ACTION_TYPE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/TableDataBlock/HandleSetTable';
 
 const ActionList = (props) => {
   const {
@@ -81,34 +80,28 @@ const ActionList = (props) => {
       render: (val) => val || '--',
     },
     {
-      title: '操作',
       dataIndex: 'configBehaviorId',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       render: (id, record) => {
         const { categoryIdStr: categoryId } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'del',
-                auth: 'actionDel',
-                click: () => fetchSubsidyActionDel({ id, deleteFlag: 0 }),
-              },
-              {
+        return [
+          {
+            type: 'del',
+            auth: 'actionDel',
+            click: () => fetchSubsidyActionDel({ id, deleteFlag: 0 }),
+          },
+          {
+            type: 'edit',
+            auth: 'actionEdit',
+            click: () =>
+              setVisible({
                 type: 'edit',
-                auth: 'actionEdit',
-                click: () =>
-                  setVisible({
-                    type: 'edit',
-                    tab: 'action',
-                    show: true,
-                    detail: { categoryId, ...record },
-                  }),
-              },
-            ]}
-          />
-        );
+                tab: 'action',
+                show: true,
+                detail: { categoryId, ...record },
+              }),
+          },
+        ];
       },
     },
   ];
