@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag, Button, Space } from 'antd';
+import { Tag} from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -11,8 +11,7 @@ import {
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
 import { LogDetail, RefuseModal } from '@/components/PublicComponents';
-import { ExcelButton } from '@/components/ExtraButton';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -336,14 +335,13 @@ const SpecialGoods = (props) => {
             title: '取消推荐',
             auth: 'placement',
             visible: record.recommendStatus !== '0' || record.topStatus !== '0',
-            click: () =>
-              fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
+            click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
           },
           {
             type: 'diary',
             click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
           },
-        ]
+        ];
       },
     },
   ];
@@ -440,30 +438,28 @@ const SpecialGoods = (props) => {
     });
   };
 
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'specialGoods/fetchSpecialGoodsImport',
+      data: get(),
+      exportProps: excelProps,
+    },
+  ];
+
+  const btnList = [
+    {
+      onClick: () => setVisibleSet({ type: 'add', show: true }),
+    },
+  ];
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={({ get }) => (
-          <>
-            <ExcelButton
-              dispatchType={'specialGoods/fetchSpecialGoodsImport'}
-              dispatchData={get()}
-              exportProps={excelProps}
-            ></ExcelButton>
-          </>
-        )}
+        btnExtra={extraBtn}
         cardProps={{
           extra: (
-            <Space>
-              <AuthConsumer auth="save">
-                <Button
-                  className="dkl_green_btn"
-                  onClick={() => setVisibleSet({ type: 'add', show: true })}
-                >
-                  新增
-                </Button>
-              </AuthConsumer>
+            <ExtraButton list={btnList}>
               <SpecialRecommendMenu
                 num={goodsList.length}
                 handleRecommend={(val) =>
@@ -471,7 +467,7 @@ const SpecialGoods = (props) => {
                 }
                 disabled={!goodsList.length}
               ></SpecialRecommendMenu>
-            </Space>
+            </ExtraButton>
           ),
         }}
         cRef={childRef}

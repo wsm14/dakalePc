@@ -1,10 +1,7 @@
 import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import { LogDetail } from '@/components/PublicComponents';
-import { ExcelButton } from '@/components/ExtraButton';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import CardLoading from '@/components/CardLoading';
 import excelProps from './components/BusinessList/ExcelProps';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -297,39 +294,35 @@ const BusinessListComponent = (props) => {
     fetchTradeList();
   }, []);
 
+  // 额外按钮
+  const extraBtn = [
+    {
+      text: '新增店铺',
+      auth: 'save',
+      onClick: () => setVisibleEdit({ type: 'add', show: true, info: false }),
+    },
+    {
+      text: '设置商家验证码',
+      auth: 'setMreCord',
+      onClick: handleVCodeSet,
+    },
+  ];
+
   return (
     <>
       <Suspense fallback={<CardLoading></CardLoading>}>
-        <BusinessTotalInfo
-          key="businessTotalInfo"
-          btnExtra={
-            <>
-              <AuthConsumer auth="save">
-                <Button
-                  className="dkl_green_btn"
-                  onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
-                >
-                  新增店铺
-                </Button>
-              </AuthConsumer>
-              <AuthConsumer auth="setMreCord">
-                <Button className="dkl_green_btn" onClick={handleVCodeSet}>
-                  设置商家验证码
-                </Button>
-              </AuthConsumer>
-            </>
-          }
-        ></BusinessTotalInfo>
+        <BusinessTotalInfo key="businessTotalInfo" btnExtra={extraBtn}></BusinessTotalInfo>
       </Suspense>
       <TableDataBlock
         keepData
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'businessList/fetchMerchantGetExcel'}
-            dispatchData={get()}
-            exportProps={excelProps}
-          ></ExcelButton>
-        )}
+        btnExtra={({ get }) => [
+          {
+            type: 'excel',
+            dispatch: 'businessList/fetchMerchantGetExcel',
+            data: get(),
+            exportProps: excelProps,
+          },
+        ]}
         cRef={childRef}
         loading={
           loading.effects['businessList/fetchGetList'] ||

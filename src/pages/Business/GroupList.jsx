@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { WORKER_BANK_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -191,31 +189,28 @@ const tableList = (props) => {
       ],
     },
   ];
+
+  //表格额外按钮
+  const extraBtn = [
+    {
+      onClick: () =>
+        fetchSave({
+          visible: true,
+          merchantGroupId: null,
+          groupDetails: {},
+          merchantGroupDTO: {},
+          businessLicense: {},
+          bankBindingInfo: {},
+          initial: {},
+        }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() =>
-                fetchSave({
-                  visible: true,
-                  merchantGroupId: null,
-                  groupDetails: {},
-                  merchantGroupDTO: {},
-                  businessLicense: {},
-                  bankBindingInfo: {},
-                  initial: {},
-                })
-              }
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

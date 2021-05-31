@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Tabs, Alert, Button, Form, Modal, notification } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -88,6 +89,30 @@ const AreaCompanySet = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      auth: 'relieve',
+      show: detail.partnerStatus != 2,
+      onClick: () => fetchAreaEdit(2),
+      loading,
+      text: '解约',
+    },
+    {
+      auth: 'status',
+      show: detail.partnerStatus == 0 || detail.partnerStatus == 1,
+      onClick: () => fetchAreaEdit(1 ^ Number(detail.partnerStatus)),
+      loading,
+      text: detail.partnerStatus == 0 ? '冻结' : '启用',
+    },
+    {
+      auth: 'edit',
+      show: detail.partnerStatus != 2,
+      onClick: () => setVisibleSet({ ...visible, type: 'edit' }),
+      loading,
+      text: '编辑',
+    },
+  ];
+
   const modalProps = {
     title: `${{ add: '新增', edit: '编辑信息', detail: '公司详情' }[type]}`,
     visible: show,
@@ -114,36 +139,7 @@ const AreaCompanySet = (props) => {
       ),
       detail: (
         <>
-          {tabKey == '1' && (
-            <>
-              <AuthConsumer auth="relieve" show={detail.partnerStatus != 2}>
-                <Button onClick={() => fetchAreaEdit(2)} type="primary" loading={loading}>
-                  解约
-                </Button>
-              </AuthConsumer>
-              <AuthConsumer
-                auth="status"
-                show={detail.partnerStatus == 0 || detail.partnerStatus == 1}
-              >
-                <Button
-                  onClick={() => fetchAreaEdit(1 ^ Number(detail.partnerStatus))}
-                  type="primary"
-                  loading={loading}
-                >
-                  {detail.partnerStatus == 0 ? '冻结' : '启用'}
-                </Button>
-              </AuthConsumer>
-              <AuthConsumer auth="edit" show={detail.partnerStatus != 2}>
-                <Button
-                  onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                  type="primary"
-                  loading={loading}
-                >
-                  编辑
-                </Button>
-              </AuthConsumer>
-            </>
-          )}
+          {tabKey == '1' && <ExtraButton list={btnList}></ExtraButton>}
           <AuthConsumer auth="edit" show={tabKey == '2' && detail.partnerStatus != 2}>
             <Button
               onClick={() => setVisibleAct({ type: 'edit', show: true })}

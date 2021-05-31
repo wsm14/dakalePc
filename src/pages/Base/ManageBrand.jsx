@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Switch } from 'antd';
+import { Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -110,16 +110,13 @@ const BusinessBrandComponent = (props) => {
     });
   };
 
+  // 表格额外按钮
+  const extraBtn = [{ auth: 'save', onClick: () => handleBrandSet('add') }];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => handleBrandSet('add')}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading.models.businessBrand}
         columns={getColumns}

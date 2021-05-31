@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Switch, Alert } from 'antd';
+import { Switch, Alert } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeCategorySet from './components/Trade/Form/TradeCategorySet';
@@ -160,6 +160,19 @@ const SysTradeSet = (props) => {
     });
   }, [visible, baseVisible]);
 
+  const extraBtn = [
+    {
+      text: '基础设施',
+      auth: 'baseTrade',
+      onClick: () => setBaseVisible({ type: 'base' }),
+    },
+    {
+      text: '新增类目',
+      auth: 'tradeAdd',
+      onClick: () => handleClassSet('add', { parentId: 0, node: '0', type: 'first' }),
+    },
+  ];
+
   return (
     <>
       <Alert
@@ -169,23 +182,7 @@ const SysTradeSet = (props) => {
       />
       <TableDataBlock
         cRef={childRef}
-        btnExtra={
-          <>
-            <AuthConsumer auth="baseTrade">
-              <Button className="dkl_green_btn" onClick={() => setBaseVisible({ type: 'base' })}>
-                基础设施
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="tradeAdd">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => handleClassSet('add', { parentId: 0, node: '0', type: 'first' })}
-              >
-                新增类目
-              </Button>
-            </AuthConsumer>
-          </>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

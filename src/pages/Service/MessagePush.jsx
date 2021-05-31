@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Card, Result, Button, Space, Modal } from 'antd';
+import { Card, Result, Modal } from 'antd';
 import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_STATUS } from '@/common/constant';
-import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
+import { authCheck } from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import MessageDrawer from './components/MessagePush/MessageDrawer';
 
@@ -155,7 +156,7 @@ const MessagePush = (props) => {
             type: 'eye', // 查看
             click: () => fetchMsgPushDeatil(val, 'info'),
           },
-        ]
+        ];
       },
     },
   ];
@@ -201,6 +202,26 @@ const MessagePush = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      auth: 'del',
+      disabled: !delKey.length,
+      onClick: fetchMsgPushDel,
+      text: '批量删除',
+    },
+    {
+      auth: 'save',
+      disabled: !delKey.length,
+      onClick: () =>
+        setVisible({
+          type: 'add',
+          shwo: true,
+          detail: { pushObjectType: 'all', userType: tabkey },
+        }),
+      text: '新增推送',
+    },
+  ];
+
   return (
     <>
       <Card
@@ -209,29 +230,7 @@ const MessagePush = (props) => {
           setDelKey([]);
           setTabKey(key);
         }}
-        tabBarExtraContent={
-          <Space>
-            <AuthConsumer auth="del">
-              <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchMsgPushDel}>
-                批量删除
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() =>
-                  setVisible({
-                    type: 'add',
-                    shwo: true,
-                    detail: { pushObjectType: 'all', userType: tabkey },
-                  })
-                }
-              >
-                新增推送
-              </Button>
-            </AuthConsumer>
-          </Space>
-        }
+        tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
       >
         {check && check.length ? (
           <TableDataBlock

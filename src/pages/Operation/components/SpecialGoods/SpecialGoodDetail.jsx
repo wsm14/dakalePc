@@ -6,6 +6,7 @@ import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
 import FormCondition from '@/components/FormCondition';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 
 const SpecialGoodDetail = (props) => {
   const {
@@ -40,6 +41,20 @@ const SpecialGoodDetail = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      auth: 'edit',
+      onClick: handleEdit,
+      text: '编辑',
+      show: ['1', '2'].includes(status),
+    },
+    {
+      auth: 'check',
+      onClick: handleVerifyAllow,
+      text: '审核通过',
+      show: ['3'].includes(status),
+    },
+  ];
   // 弹出窗属性
   const modalProps = {
     title: '活动详情',
@@ -52,36 +67,24 @@ const SpecialGoodDetail = (props) => {
       onChange: (size) => getDetail(size, 'info'),
     },
     footer: (
-      <>
-        {['1', '2'].includes(status) && (
-          <AuthConsumer auth="edit">
-            <Button type="primary" onClick={handleEdit}>
-              编辑
-            </Button>
-          </AuthConsumer>
-        )}
+      <ExtraButton list={btnList}>
         {['3'].includes(status) && (
-          <AuthConsumer auth="check">
-            <Button type="primary" onClick={handleVerifyAllow}>
-              审核通过
-            </Button>
-            <Button
-              style={{ marginLeft: 8 }}
-              danger
-              onClick={() =>
-                setVisibleRefuse({
-                  show: true,
-                  detail: detail,
-                  type: 'refuse',
-                  formProps: { type: 'refuse', key: 'failureReason' },
-                })
-              }
-            >
-              审核驳回
-            </Button>
-          </AuthConsumer>
+          <Button
+            style={{ marginLeft: 8 }}
+            danger
+            onClick={() =>
+              setVisibleRefuse({
+                show: true,
+                detail: detail,
+                type: 'refuse',
+                formProps: { type: 'refuse', key: 'failureReason' },
+              })
+            }
+          >
+            审核驳回
+          </Button>
         )}
-      </>
+      </ExtraButton>
     ),
   };
 

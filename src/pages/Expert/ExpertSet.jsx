@@ -87,7 +87,7 @@ const ExpertSet = (props) => {
                 record,
               ),
           },
-        ]
+        ];
       },
     },
   ];
@@ -134,19 +134,18 @@ const ExpertSet = (props) => {
     fetchTradeList();
   }, [visible]);
 
+//表格额外按钮
+  const extraBtn = [
+    {
+      auth: 'savePClassify',
+      onClick: () => handleClassifySet('add', { parentDomainId: 0 }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="savePClassify">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => handleClassifySet('add', { parentDomainId: 0 })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         keepData
         cRef={childRef}
         loading={loading}

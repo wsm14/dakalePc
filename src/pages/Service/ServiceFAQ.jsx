@@ -2,8 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { checkSorterData } from '@/utils/utils';
 import { FAQ_LIKE_STATUS } from '@/common/constant';
-import { Card, Result, Switch, Button, Space, Modal } from 'antd';
+import { Card, Result, Switch, Modal } from 'antd';
 import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import DraggableContent, { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import FAQSortList from './components/FAQ/List/FAQSortList';
@@ -251,6 +252,25 @@ const ServiceFAQ = (props) => {
         sortKey: 'commonQuestionCategoryList', // 传递给后端的key
       };
 
+  const btnList = [
+    {
+      auth: 'sortFAQ',
+      onClick: () => setVisible(true),
+      text: '分类管理',
+    },
+    {
+      auth: 'del',
+      disabled: !delKey.length,
+      onClick: fetchFAQDel,
+      text: '批量删除',
+    },
+    {
+      auth: 'save',
+      onClick: () => setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } }),
+      text: '新增问题',
+    },
+  ];
+
   return (
     <Card
       tabList={check}
@@ -259,30 +279,7 @@ const ServiceFAQ = (props) => {
         setDelKey([]);
         setTabKey(key);
       }}
-      tabBarExtraContent={
-        <Space>
-          <AuthConsumer auth="sortFAQ">
-            <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
-              分类管理
-            </Button>
-          </AuthConsumer>
-          <AuthConsumer auth="del">
-            <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchFAQDel}>
-              批量删除
-            </Button>
-          </AuthConsumer>
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() =>
-                setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } })
-              }
-            >
-              新增问题
-            </Button>
-          </AuthConsumer>
-        </Space>
-      }
+      tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
     >
       {check && check.length ? (
         <TableDataBlock

@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { EXPERT_TEMP_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExpertTempSet from './components/Temp/ExpertTempSet';
 
@@ -133,18 +131,18 @@ const ExpertTempList = (props) => {
     });
   };
 
+  const eextraBtn = [
+    {
+      onClick: () => setVisible(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={eextraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

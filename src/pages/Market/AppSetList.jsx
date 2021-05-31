@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Tooltip, Form } from 'antd';
+import { Tooltip, Form } from 'antd';
 import {
   BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
@@ -9,7 +9,7 @@ import {
   BANNER_AREA_TYPE,
   BANNER_SHOW_STATUS,
 } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
@@ -145,7 +145,7 @@ const SysAppSet = (props) => {
           visible: record.showStatus !== '2',
           click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
         },
-      ]
+      ],
     },
   ];
 
@@ -174,6 +174,13 @@ const SysAppSet = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      onClick: () =>
+        setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
@@ -184,18 +191,7 @@ const SysAppSet = (props) => {
             key,
             tab: BANNER_PORT_TYPE[key],
           })),
-          tabBarExtraContent: (
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() =>
-                  setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } })
-                }
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          ),
+          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           onTabChange: (userType) => {
             setTabKey(userType);
             form.resetFields();

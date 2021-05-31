@@ -1,10 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tag, Button } from 'antd';
+import { Tag } from 'antd';
 import { MreSelect } from '@/components/MerUserSelectTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
@@ -319,20 +318,19 @@ const ShareManage = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      auth: 'save',
+      text: '新增',
+      onClick: () => setVisibleShare({ type: 'add', show: true }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleShare({ type: 'add', show: true })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

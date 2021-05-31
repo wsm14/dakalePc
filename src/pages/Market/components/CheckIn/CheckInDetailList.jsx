@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Modal } from 'antd';
 import NoticeImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import CheckInDetailSet from './CheckInDetailSet';
@@ -76,6 +75,21 @@ const CheckInDetailList = (props) => {
     },
   }[type];
 
+  const extraBtn = [
+    {
+      text: {
+        auth: 'markTextAdd',
+        show: detailList.list.length < 6,
+        onClick: () => handleCheckInDetailSet(),
+      },
+      image: {
+        auth: 'shareImgAdd',
+        show: detailList.list.length < 3,
+        onClick: () => handleCheckInDetailSet(),
+      },
+    }[type],
+  ];
+
   return (
     <Modal
       title={propItem.title}
@@ -86,24 +100,7 @@ const CheckInDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
-        btnExtra={
-          {
-            text: (
-              <AuthConsumer auth="markTextAdd" show={detailList.list.length < 6}>
-                <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                  新增
-                </Button>
-              </AuthConsumer>
-            ),
-            image: (
-              <AuthConsumer auth="shareImgAdd" show={detailList.list.length < 3}>
-                <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                  新增
-                </Button>
-              </AuthConsumer>
-            ),
-          }[type]
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         noCard={false}
         loading={loading}

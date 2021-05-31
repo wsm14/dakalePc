@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Button } from 'antd';
 import { connect } from 'umi';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProceDataForm from './components/Withdraw/Form/ProceDataForm';
 
@@ -72,14 +71,17 @@ const WithdrawRegular = (props) => {
     {
       type: 'handle',
       dataIndex: 'city',
-      render: (val, row) =>[
+      render: (val, row) => [
         {
           type: 'edit',
           click: () => handleEdit(row),
         },
-      ]
+      ],
     },
   ];
+
+  // 权限按钮
+  const btnList = [{ onClick: () => setVisible({ type: 'add', show: true }) }]; // 新增按钮
 
   return (
     <>
@@ -89,13 +91,7 @@ const WithdrawRegular = (props) => {
         cardProps={{
           title: '店铺',
           bordered: false,
-          extra: (
-            <AuthConsumer auth="save">
-              <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
-                新增
-              </Button>
-            </AuthConsumer>
-          ),
+          extra: <ExtraButton list={btnList}></ExtraButton>,
         }}
         cRef={childRef}
         loading={loading}

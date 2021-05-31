@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import LimitPopSet from './components/LimitPop/LimitPopSet';
 
@@ -43,19 +41,20 @@ const ServiceLimitPop = (props) => {
 
   // 新增
   const handLimitPopSet = () => {
-    setVisibleLimit(true)
+    setVisibleLimit(true);
   };
+
+  const extraBtn = [
+    {
+      auth: 'save',
+      onClick: handLimitPopSet(),
+    },
+  ];
 
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" key="1" onClick={handLimitPopSet}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         keepData
         cRef={childRef}
         loading={loading}
@@ -65,7 +64,11 @@ const ServiceLimitPop = (props) => {
         dispatchType="serviceLimitPop/fetchGetList"
         {...serviceLimitPop}
       ></TableDataBlock>
-      <LimitPopSet visible={visibleLimit} childRef={childRef} onClose={() => setVisibleLimit(false)}></LimitPopSet>
+      <LimitPopSet
+        visible={visibleLimit}
+        childRef={childRef}
+        onClose={() => setVisibleLimit(false)}
+      ></LimitPopSet>
     </>
   );
 };

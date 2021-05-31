@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import BankSet from './components/BankSet/BusinessBankSet';
 
@@ -53,17 +51,14 @@ const BusinessBankSetContent = (props) => {
     fetchMerBankTop();
   }, []);
 
+  // 表格额外按钮
+  const extraBtn = [{ auth: 'save', onClick: () => setVisible({ show: true, info: {} }) }];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ show: true, info: {} })}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
         cRef={childRef}
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import debounce from 'lodash/debounce';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import ClassifySet from './components/Classify/ClassifySet';
 
@@ -84,18 +82,19 @@ const ClassifyManageComponent = (props) => {
     },
   ];
 
+  const extraBtn = [
+    {
+      text: '新增分类',
+      onClick: () => setVisible({ type: 'add' }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
-              新增分类
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

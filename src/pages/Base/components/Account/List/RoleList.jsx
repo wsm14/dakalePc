@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch, Button } from 'antd';
+import { Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from '../Form/RoleSetForm';
@@ -122,16 +122,17 @@ const RoleList = (props) => {
     },
   ];
 
+  const extraBtn = [
+    {
+      auth: 'roleAdd',
+      onClick: () => fetchFlag(),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="roleAdd">
-            <Button className="dkl_green_btn" key="1" onClick={() => fetchFlag()}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}

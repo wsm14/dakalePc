@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
 import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
@@ -91,13 +89,12 @@ const MarketCardActivity = (props) => {
   // 设置活动
   const handleSetActive = () => setVisible(true);
 
-  const btnExtra = (
-    <AuthConsumer auth="save">
-      <Button className="dkl_green_btn" key="1" onClick={handleSetActive}>
-        新增活动
-      </Button>
-    </AuthConsumer>
-  );
+  const btnExtra = [
+    {
+      text: '新增活动',
+      onClick: handleSetActive,
+    },
+  ];
 
   return (
     <>
