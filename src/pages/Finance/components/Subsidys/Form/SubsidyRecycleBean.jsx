@@ -61,7 +61,7 @@ const SubsidyRecycleBean = (props) => {
                 <InputNumber
                   value={mreNumber[record.userMerchantIdString]}
                   precision={0}
-                  min={0}
+                  min={1}
                   onChange={(val) =>
                     setMreNumber(({ sum, ...other }) => ({
                       ...other,

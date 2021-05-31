@@ -50,12 +50,12 @@ const UserSelectShow = ({
   return (
     <div style={{ marginBottom: 20 }} key="table">
       <TableDataBlock
-        order
         noCard={false}
         size="small"
         columns={getColumns}
         rowKey={(record) => `${record.userIdString}`}
         rowSelection={{
+          fixed: true,
           selectedRowKeys: keys,
           onChange: (val, resultList) => onOk({ list, keys: val, resultList }),
         }}
