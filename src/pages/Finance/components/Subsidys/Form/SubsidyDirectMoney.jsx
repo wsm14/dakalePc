@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
-import { PlusSquareOutlined } from '@ant-design/icons';
+import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip } from 'antd';
 import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
@@ -33,7 +33,7 @@ const SubsidyDirectMoney = (props) => {
     form.setFieldsValue({ recycleList });
   }, [userList, userNumber]);
 
-  // 全部填充
+  // 向下填充
   const downBean = (bean) => {
     if (!bean) return;
     const obj = {};
@@ -115,12 +115,12 @@ const SubsidyDirectMoney = (props) => {
                       }))
                     }
                   ></InputNumber>
-                  {index === 0 && (
-                    <Tooltip placement="top" title={'全部填充（所有已勾选数据）'}>
-                      <PlusSquareOutlined
+                  {userList.list[0].userIdString === record.userIdString && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
                         onClick={() => downBean(userNumber[record.userIdString])}
                         style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
-                      ></PlusSquareOutlined>
+                      ></DownSquareOutlined>
                     </Tooltip>
                   )}
                 </>
