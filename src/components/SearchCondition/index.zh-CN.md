@@ -74,6 +74,10 @@ handle={(form)=> ({
 
 ## 更新日志
 
+- ### 2021 年 5 月 31 日 15:05:07 Dong
+
+> - 整合额外按钮组件渲染 修改 `btnExtra` 参数变更为 `array | ({ get: getData }) => array`
+
 - ### 2021 年 5 月 12 日 15:48:02 Dong
 
 > - 组件增加 `numberGroup` 配置，数字区间
