@@ -1,4 +1,6 @@
+import { Switch } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import HandleSetTable from './HandleSetTable';
 import DraggableContent from './SortBlock';
 
@@ -19,22 +21,12 @@ const tablePropsHandle = {
       ),
     });
 
-    // 操作按钮
-    const tableRenderHandle = (render = () => []) => ({
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
-      render: (val, row, index) => (
-        <HandleSetTable formItems={render(val, row, index)}></HandleSetTable>
-      ),
-    });
-
     // 表头处理
     const newColumns = (order ? indexOrder : [])
       .concat(columns)
       .map(({ ellipsis = false, type, render, ...other }) => ({
         render,
-        ...(type === 'handle' ? tableRenderHandle(render) : {}),
+        ...tablePropsHandle.tableComponents(type, render),
         ...(ellipsis ? tableRenderEllipsis(ellipsis, render) : {}),
         ...other,
       }));
@@ -48,6 +40,46 @@ const tablePropsHandle = {
       : list;
 
     return { dataSource: newDataSource, columns: newColumns };
+  },
+  // 表格头类型组件处理
+  tableComponents: (type, render = () => []) => {
+    switch (type) {
+      case 'handle':
+        return {
+          title: '操作',
+          fixed: 'right',
+          align: 'right',
+          render: (val, row, index) => (
+            <HandleSetTable formItems={render(val, row, index)}></HandleSetTable>
+          ),
+        };
+      case 'switch':
+        return {
+          align: 'center',
+          render: (val, row, index) => {
+            const data = render(val, row, index);
+            const {
+              auth = true,
+              noAuth,
+              show,
+              checkedChildren = '启',
+              unCheckedChildren = '停',
+              ...other
+            } = data;
+            return (
+              <AuthConsumer auth={auth} noAuth={noAuth} show={show}>
+                <Switch
+                  checkedChildren={checkedChildren}
+                  unCheckedChildren={unCheckedChildren}
+                  {...other}
+                />
+              </AuthConsumer>
+            );
+          },
+        };
+      default:
+        return {};
+    }
   },
 };
 

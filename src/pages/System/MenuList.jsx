@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { Button, Card, Switch } from 'antd';
+import { Button, Card } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysMenuSet from './components/Menu/SysMenuSet';
 
@@ -47,16 +47,16 @@ const SysMenuList = (props) => {
     },
     {
       title: '菜单状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, record) => (
-        <Switch
-          checkedChildren="启"
-          unCheckedChildren="停"
-          checked={val === '1'}
-          onClick={() => fetchGetMenuDetail({ accessId: record.authAccessId }, val)}
-        />
-      ),
+      render: (val, row) => {
+        const { authAccessId: accessId } = row;
+        return {
+          auth: true,
+          checked: val === '1',
+          onClick: () => fetchGetMenuDetail({ accessId }, val),
+        };
+      },
     },
     {
       type: 'handle',

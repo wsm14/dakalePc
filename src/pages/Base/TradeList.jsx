@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Switch, Alert } from 'antd';
+import { Alert } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeCategorySet from './components/Trade/Form/TradeCategorySet';
@@ -77,21 +77,20 @@ const SysTradeSet = (props) => {
     },
     {
       title: '小程序展示',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       dataIndex: 'isWechat',
-      render: (val, record) => (
-        <AuthConsumer auth="isWechat" noAuth={val === '1' ? '开' : '关'}>
-          <Switch
-            checkedChildren="开"
-            unCheckedChildren="关"
-            checked={val === '1'}
-            onClick={() =>
-              fetchTradeWeChat({ categoryId: record.categoryIdString, isWechat: 1 ^ val })
-            }
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { categoryIdString: categoryId } = row;
+        return {
+          auth: 'isWechat',
+          checkedChildren: '开',
+          unCheckedChildren: '关',
+          noAuth: val === '1' ? '开' : '关',
+          checked: val === '1',
+          onClick: () => fetchTradeWeChat({ categoryId, isWechat: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',

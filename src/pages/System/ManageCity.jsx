@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Switch } from 'antd';
+import { Card } from 'antd';
 import { CITY_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ManageCityLeft from './components/City/Left';
@@ -36,24 +35,20 @@ const ManageCity = (props) => {
     },
     {
       title: '状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, row) =>
-        val && (
-          <AuthConsumer auth="status" noAuth={CITY_STATUS[val]}>
-            <Switch
-              checked={val === '1'}
-              checkedChildren="已开通"
-              unCheckedChildren="未开通"
-              onClick={() =>
-                fetchCityManageStatus({
-                  id: row.locationCityIdString,
-                  status: 1 ^ Number(val),
-                })
-              }
-            />
-          </AuthConsumer>
-        ),
+      render: (val, row) => {
+        const { locationCityIdString: id } = row;
+        return {
+          auth: 'status',
+          checkedChildren: '已开通',
+          unCheckedChildren: '未开通',
+          show: !!val,
+          noAuth: CITY_STATUS[val],
+          checked: val === '1',
+          onClick: () => fetchCityManageStatus({ id, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',

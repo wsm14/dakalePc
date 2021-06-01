@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Switch } from 'antd';
+import { Modal } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ClassifyDetailSet from './ClassifyDetailSet';
@@ -30,16 +30,16 @@ const ClassifyDetailList = (props) => {
     },
     {
       title: '显示状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, record) => (
-        <Switch
-          checked={val == '1'}
-          onClick={() =>
-            fetchClassifyDetailSet({ topicId: record.topicIdString, status: 1 ^ Number(val) })
-          }
-        />
-      ),
+      render: (val, row) => {
+        const { topicIdString: topicId } = row;
+        return {
+          auth: true,
+          checked: val === '1',
+          onClick: () => fetchClassifyDetailSet({ topicId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       title: '推荐',
