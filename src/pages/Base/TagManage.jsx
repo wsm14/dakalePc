@@ -69,6 +69,7 @@ const TagManage = (props) => {
   const extraBtn = [
     {
       text: '新增标签',
+      auth: 'save',
       onClick: () => setVisible({ type: 'add' }),
     },
   ];

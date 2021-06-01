@@ -12,7 +12,7 @@ import ExcelButton from './ExcelButton';
 const ExtraButton = ({ list = [], children }) => {
   const btnSwitch = ({
     text = '新增',
-    auth = 'save',
+    auth = true,
     show,
     disabled,
     className = 'dkl_green_btn',

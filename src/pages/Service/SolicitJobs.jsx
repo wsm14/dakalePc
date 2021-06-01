@@ -100,14 +100,14 @@ const SolicitJobs = (props) => {
 
   const btnExtra = [
     {
+      text: '职位类别',
       auth: 'jobClass',
       onClick: () => setVisible(true),
-      text: '职位类别',
     },
     {
+      text: '新增',
       auth: 'save',
       onClick: () => setVisibleSet({ type: 'add', show: true, detail: '' }),
-      text: '新增',
     },
   ];
 

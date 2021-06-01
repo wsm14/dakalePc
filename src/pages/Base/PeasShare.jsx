@@ -56,11 +56,7 @@ const SysPeasShare = (props) => {
   };
 
   // 表格额外按钮
-  const extraBtn = [
-    {
-      onClick: () => handlePeasShareSet('add'),
-    },
-  ];
+  const extraBtn = [{ auth: 'save', onClick: () => handlePeasShareSet('add') }];
 
   return (
     <>

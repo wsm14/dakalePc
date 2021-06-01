@@ -130,6 +130,7 @@ const PuzzleAd = (props) => {
       onClick: fetchAdRootDetail,
     },
     {
+      auth: 'save',
       onClick: () => setVisibleSet({ type: 'add', show: true, info: '' }),
     },
   ];

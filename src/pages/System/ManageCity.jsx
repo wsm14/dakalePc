@@ -93,6 +93,7 @@ const ManageCity = (props) => {
 
   const extraBtn = [
     {
+      auth: 'save',
       disabled: !selectCode.provinceCode,
       onClick: () => handleManageCitySet('add', selectCode),
     },

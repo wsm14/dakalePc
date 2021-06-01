@@ -193,6 +193,7 @@ const tableList = (props) => {
   //表格额外按钮
   const extraBtn = [
     {
+      auth: 'save',
       onClick: () =>
         fetchSave({
           visible: true,

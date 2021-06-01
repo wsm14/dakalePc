@@ -178,10 +178,9 @@ const UserList = (props) => {
 
   const extraBtn = [
     {
-      auth: 'userAdd',
-      key: '1',
-      onClick: () => setVisible({ visible: true }),
       text: '新增用户',
+      auth: 'userAdd',
+      onClick: () => setVisible({ visible: true }),
     },
   ];
 

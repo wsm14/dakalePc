@@ -110,6 +110,7 @@ const TradeArea = (props) => {
   const extraBtn = [
     {
       text: '新增商圈',
+      auth: 'save',
       disabled: !(selectCode.districtCode && selectCode.cityCode),
       onClick: () => setData(),
     },

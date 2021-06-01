@@ -92,6 +92,7 @@ const MarketCardActivity = (props) => {
   const btnExtra = [
     {
       text: '新增活动',
+      auth: 'save',
       onClick: handleSetActive,
     },
   ];
