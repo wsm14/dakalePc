@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
@@ -144,17 +142,20 @@ const BusinessAuditList = (props) => {
     fetchTradeList();
   }, []);
 
+  //表格额外的按钮
+  const extraBtn = [
+    {
+      auth: 'checkDetail',
+      text: '审核记录',
+      onClick: () => setVisibleDetailList(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="checkDetail">
-            <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
-              审核记录
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

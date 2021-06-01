@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Button, Switch } from 'antd';
+import { Card, Switch } from 'antd';
 import { CITY_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
@@ -91,6 +91,13 @@ const ManageCity = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      disabled: !selectCode.provinceCode,
+      onClick: () => handleManageCitySet('add', selectCode),
+    },
+  ];
+
   return (
     <Card bordered={false} bodyStyle={{ display: 'flex' }}>
       <ManageCityLeft
@@ -100,17 +107,7 @@ const ManageCity = (props) => {
       ></ManageCityLeft>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                disabled={!selectCode.provinceCode}
-                onClick={() => handleManageCitySet('add', selectCode)}
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          }
+          btnExtra={extraBtn}
           noCard={false}
           cRef={childRef}
           loading={loading.models.manageCity}

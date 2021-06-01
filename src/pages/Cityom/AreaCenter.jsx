@@ -1,9 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import CITYJSON from '@/common/city';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
 import AreaCompanySet from './components/Area/Form/AreaCompanySet';
@@ -126,28 +124,24 @@ const AreaCenter = (props) => {
     },
   ];
 
+  const extraBtn = [
+    {
+      onClick: () => {
+        dispatch({
+          type: 'areaCenter/fetchCloseData',
+          callback: () => setVisibleSet({ type: 'add', show: true }),
+        });
+      },
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() => {
-                dispatch({
-                  type: 'areaCenter/fetchCloseData',
-                  callback: () => setVisibleSet({ type: 'add', show: true }),
-                });
-              }}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

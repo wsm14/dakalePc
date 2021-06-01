@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch, Button, Card } from 'antd';
+import { Switch, Card } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeAreaLeft from './components/TradeArea/Left';
@@ -105,6 +105,16 @@ const TradeArea = (props) => {
     });
   };
 
+  // 表格额外按钮
+
+  const extraBtn = [
+    {
+      text: '新增商圈',
+      disabled: !(selectCode.districtCode && selectCode.cityCode),
+      onClick: () => setData(),
+    },
+  ];
+
   return (
     <Card bordered={false} bodyStyle={{ display: 'flex' }}>
       <TradeAreaLeft
@@ -114,17 +124,7 @@ const TradeArea = (props) => {
       ></TradeAreaLeft>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                disabled={!(selectCode.districtCode && selectCode.cityCode)}
-                onClick={() => setData()}
-              >
-                新增商圈
-              </Button>
-            </AuthConsumer>
-          }
+          btnExtra={extraBtn}
           noCard={false}
           cRef={childRef}
           loading={loading}

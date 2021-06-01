@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Space } from 'antd';
 import { VIDEO_NOVICE_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -20,6 +19,11 @@ const VideoAdvert = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); // 发布
 
   // 表格card配置
+  const btnList = [
+    {
+      onClick: () => setVisibleSet({ type: 'add', show: true }),
+    },
+  ];
   const cardProps = {
     tabList: [
       {
@@ -27,18 +31,8 @@ const VideoAdvert = (props) => {
         key: 'novice',
       },
     ],
-    tabBarExtraContent: (
-      <Space>
-        <AuthConsumer auth="save">
-          <Button
-            className="dkl_green_btn"
-            onClick={() => setVisibleSet({ type: 'add', show: true })}
-          >
-            新增
-          </Button>
-        </AuthConsumer>
-      </Space>
-    ),
+
+    tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
   };
 
   // 搜索参数

@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { MRE_TAG_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import TagSet from './components/Tag/TagSet';
 
@@ -68,16 +66,17 @@ const TagManage = (props) => {
     },
   ];
 
+  const extraBtn = [
+    {
+      text: '新增标签',
+      onClick: () => setVisible({ type: 'add' }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
-              新增标签
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

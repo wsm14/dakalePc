@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import ExcelButton from '@/components/ExcelButton';
 
 const SaleAchievement = (props) => {
   const { saleAchievement, loading, selectList, loadingMre, dispatch } = props;
@@ -107,24 +107,27 @@ const SaleAchievement = (props) => {
 
   const preDate = moment().subtract(1, 'day');
 
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'saleAchievement/fetchGetExcel',
+      dispatchData: get(),
+      exportProps: {
+        header: getColumns,
+        fieldRender: {
+          merchantName: (val) => val,
+          scan: (val) => val,
+          verificationFee: (val) => val,
+          totalFee: (val) => val,
+        },
+      },
+    },
+  ];
+
   return (
     <TableDataBlock
       order
-      btnExtra={({ get }) => (
-        <ExcelButton
-          dispatchType={'saleAchievement/fetchGetExcel'}
-          dispatchData={get()}
-          exportProps={{
-            header: getColumns,
-            fieldRender: {
-              merchantName: (val) => val,
-              scan: (val) => val,
-              verificationFee: (val) => val,
-              totalFee: (val) => val,
-            },
-          }}
-        ></ExcelButton>
-      )}
+      btnExtra={extraBtn}
       cRef={childRef}
       loading={loading}
       columns={getColumns}

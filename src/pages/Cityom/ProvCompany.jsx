@@ -1,13 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
 import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
-import AuthConsumer from '@/layouts/AuthConsumer';
 
 const ProvCompany = (props) => {
   const { list, loading, dispatch } = props;
@@ -127,28 +125,24 @@ const ProvCompany = (props) => {
     },
   ];
 
+  const extraBtn = [
+    {
+      onClick: () => {
+        dispatch({
+          type: 'provCompany/fetchCloseData',
+          callback: () => setVisibleSet({ type: 'add', show: true }),
+        });
+      },
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() => {
-                dispatch({
-                  type: 'provCompany/fetchCloseData',
-                  callback: () => setVisibleSet({ type: 'add', show: true }),
-                });
-              }}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import debounce from 'lodash/debounce';
 import CloseRefuse from './components/Goods/Form/CloseRefuse';
 import StockSet from './components/Goods/Form/StockSet';
@@ -271,18 +270,17 @@ const GoodsManageComponent = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      onClick: () => setVisible({ type: 'addGoods' }),
+    },
+  ];
   return (
     <>
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'addGoods' })}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         resetSearch={() => {
           fetchClassifySelectClear();
           setMerchantId('');

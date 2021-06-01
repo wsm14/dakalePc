@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Switch, Button, Menu } from 'antd';
+import { Switch, Menu } from 'antd';
 import { WORKER_JOB_TYPE } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -163,6 +163,7 @@ const UserList = (props) => {
       );
     });
   };
+
   const filterOpenKeys = (list, val) => {
     let arr = [];
     const lists = list.filter((item) => {
@@ -174,6 +175,16 @@ const UserList = (props) => {
     });
     return [...lists, ...arr];
   };
+
+  const extraBtn = [
+    {
+      auth: 'userAdd',
+      key: '1',
+      onClick: () => setVisible({ visible: true }),
+      text: '新增用户',
+    },
+  ];
+
   return (
     <div style={{ display: 'flex' }}>
       <Menu
@@ -201,17 +212,7 @@ const UserList = (props) => {
       </Menu>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={
-            <AuthConsumer auth="userAdd">
-              <Button
-                className="dkl_green_btn"
-                key="1"
-                onClick={() => setVisible({ visible: true })}
-              >
-                新增用户
-              </Button>
-            </AuthConsumer>
-          }
+          btnExtra={extraBtn}
           noCard={false}
           cRef={childRef}
           loading={loading}

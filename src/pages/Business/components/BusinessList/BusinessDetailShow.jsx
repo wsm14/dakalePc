@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Tabs, Input, Modal, Tag } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
@@ -340,18 +340,22 @@ const BusinessDetailShow = (props) => {
       form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
     },
     footer: (
-      <>
-        <AuthConsumer auth="bussinessStatus">
-          <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
-            {businessStatusText}
-          </Button>
-        </AuthConsumer>
-        <AuthConsumer auth="status">
-          <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
-            {statusText}
-          </Button>
-        </AuthConsumer>
-      </>
+      <ExtraButton
+        list={[
+          {
+            text: businessStatusText,
+            auth: 'bussinessStatus',
+            onClick: () => handleMerStatus('sale'),
+            loading: loadings,
+          },
+          {
+            text: statusText,
+            auth: 'status',
+            onClick: () => handleMerStatus('acc'),
+            loading: loadings,
+          },
+        ]}
+      ></ExtraButton>
     ),
   };
 

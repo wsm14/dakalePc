@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import ExcelButton from '@/components/ExcelButton';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 
@@ -143,21 +143,22 @@ const CodeOrders = (props) => {
       ],
     },
   ];
-
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get(), goodsOrScanFlag: tabkey },
+      exportProps: {
+        header: getColumns.slice(0, -1),
+        fieldRender: { merchantName: (val) => val },
+      },
+    },
+  ];
   return (
     <>
       <TableDataBlock
         noCard={false}
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'ordersList/fetchOrdersImport'}
-            dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
-            exportProps={{
-              header: getColumns.slice(0, -1),
-              fieldRender: { merchantName: (val) => val },
-            }}
-          ></ExcelButton>
-        )}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Badge } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import ExcelButton from './ExcelButton';
 
@@ -11,17 +11,19 @@ import ExcelButton from './ExcelButton';
  */
 const ExtraButton = ({ list = [], children }) => {
   const btnSwitch = ({
-    auth,
+    text = '新增',
+    auth = 'save',
     show,
     disabled,
     className = 'dkl_green_btn',
     onClick,
+    count = 0, // 计数
     style = {},
-    text = '新增',
-    type,
-    dispatch,
-    data,
-    exportProps,
+    loading,
+    type, // excel
+    dispatch, // excel
+    data, // excel
+    exportProps, // excel
   }) => {
     switch (type) {
       case 'excel':
@@ -35,9 +37,17 @@ const ExtraButton = ({ list = [], children }) => {
       default:
         return (
           <AuthConsumer auth={auth} show={show}>
-            <Button className={className} disabled={disabled} onClick={onClick} style={style}>
-              {text}
-            </Button>
+            <Badge count={count}>
+              <Button
+                className={className}
+                disabled={disabled}
+                onClick={onClick}
+                style={style}
+                loading={loading}
+              >
+                {text}
+              </Button>
+            </Badge>
           </AuthConsumer>
         );
     }

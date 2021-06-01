@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { JSOBS_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import JobsClass from './components/Jobs/JobsClass';
 import JobsSet from './components/Jobs/JobsSet';
@@ -100,27 +98,24 @@ const SolicitJobs = (props) => {
     });
   };
 
+  const btnExtra = [
+    {
+      auth: 'jobClass',
+      onClick: () => setVisible(true),
+      text: '职位类别',
+    },
+    {
+      auth: 'save',
+      onClick: () => setVisibleSet({ type: 'add', show: true, detail: '' }),
+      text: '新增',
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
-        btnExtra={
-          <>
-            <AuthConsumer auth="jobClass">
-              <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
-                职位类别
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => setVisibleSet({ type: 'add', show: true, detail: '' })}
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          </>
-        }
+        btnExtra={btnExtra}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
-import ExcelButton from '@/components/ExcelButton';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 
@@ -209,28 +209,31 @@ const GoodsOrders = (props) => {
     {
       type: 'handle',
       dataIndex: 'orderId',
-      render: (val, record, index) =>[
+      render: (val, record, index) => [
         {
           type: 'info',
           click: () => fetchGoodsDetail(index),
         },
-      ]
+      ],
+    },
+  ];
+
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get(), goodsOrScanFlag: tabkey },
+      exportProps: {
+        header: getColumns.slice(0, -1),
+        fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
+      },
     },
   ];
 
   return (
     <>
       <TableDataBlock
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'ordersList/fetchOrdersImport'}
-            dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
-            exportProps={{
-              header: getColumns.slice(0, -1),
-              fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
-            }}
-          ></ExcelButton>
-        )}
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}

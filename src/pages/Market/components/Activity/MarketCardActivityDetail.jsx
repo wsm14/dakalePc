@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
 import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
@@ -162,13 +161,10 @@ const MarketCardActivityDetail = (props) => {
     handlePageShowBtn();
   }, []);
 
-  const btnExtra = (
-    <AuthConsumer auth="couponAdd">
-      <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
-        新增
-      </Button>
-    </AuthConsumer>
-  );
+  const btnExtra = {
+    auth: 'couponAdd',
+    onClick: () => setVisibleSet(true),
+  };
 
   return (
     <>

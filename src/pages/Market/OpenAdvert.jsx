@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Space, Form } from 'antd';
+import { Form } from 'antd';
 import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import OpenAdSet from './components/OpenAd/OpenAdSet';
@@ -89,7 +89,7 @@ const OpenAdvert = (props) => {
     {
       type: 'handle',
       dataIndex: 'idString',
-      render: (appLaunchImageId, record) =>[
+      render: (appLaunchImageId, record) => [
         {
           type: 'info',
           click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
@@ -109,7 +109,7 @@ const OpenAdvert = (props) => {
           visible: record.onFlag === '0',
           click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
         },
-      ]
+      ],
     },
   ];
 
@@ -131,6 +131,9 @@ const OpenAdvert = (props) => {
     });
   };
 
+  // 权限按钮
+  const btnList = [{ onClick: () => setVisibleSet({ show: true, type: 'add' }) }]; // 新增按钮
+
   return (
     <>
       <TableDataBlock
@@ -141,18 +144,7 @@ const OpenAdvert = (props) => {
             key,
             tab: OPEN_ADVERT_PORT[key],
           })),
-          tabBarExtraContent: (
-            <Space>
-              <AuthConsumer auth="save">
-                <Button
-                  className="dkl_green_btn"
-                  onClick={() => setVisibleSet({ show: true, type: 'add' })}
-                >
-                  新增
-                </Button>
-              </AuthConsumer>
-            </Space>
-          ),
+          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           onTabChange: (userType) => {
             setTabKey(userType);
             form.resetFields();

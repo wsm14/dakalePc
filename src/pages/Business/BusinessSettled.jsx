@@ -7,7 +7,7 @@ import {
   MRE_SORT_STATUS,
   BUSINESS_TYPE,
 } from '@/common/constant';
-import ExcelButton from '@/components/ExcelButton';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const BusinessSettled = (props) => {
@@ -191,20 +191,23 @@ const BusinessSettled = (props) => {
     },
   ];
 
+  const btnExtra = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'businessSettled/fetchMerchantGetExcel',
+      data: get(),
+      exportProps: {
+        header: getColumns.slice(0, -1),
+        fieldRender: { merchantName: (val) => val, address: (val) => val },
+      },
+    },
+  ];
+
   return (
     <TableDataBlock
       order
       keepData
-      btnExtra={({ get }) => (
-        <ExcelButton
-          dispatchType={'businessSettled/fetchMerchantGetExcel'}
-          dispatchData={get()}
-          exportProps={{
-            header: getColumns.slice(0, -1),
-            fieldRender: { merchantName: (val) => val, address: (val) => val },
-          }}
-        ></ExcelButton>
-      )}
+      btnExtra={btnExtra}
       params={{ sortField: '1' }}
       cRef={childRef}
       loading={loading}

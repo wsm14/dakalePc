@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
 import PuzzleAdRoot from './components/PuzzleAd/PuzzleAdRoot';
@@ -91,7 +90,7 @@ const PuzzleAd = (props) => {
           visible: record.status === '0',
           click: () => fetchPuzzleAdStatus({ puzzleAdsId: val, deleteFlag: 0 }),
         },
-      ]
+      ],
     },
   ];
 
@@ -124,29 +123,22 @@ const PuzzleAd = (props) => {
       callback: () => setVisibleRoot(true),
     });
   };
-
+  const extraBtn = [
+    {
+      text: '广告配置',
+      auth: 'adRoot',
+      onClick: fetchAdRootDetail,
+    },
+    {
+      onClick: () => setVisibleSet({ type: 'add', show: true, info: '' }),
+    },
+  ];
   return (
     <>
       <TableDataBlock
         keepData
         cRef={childRef}
-        btnExtra={
-          <>
-            <AuthConsumer auth="adRoot">
-              <Button className="dkl_green_btn" onClick={fetchAdRootDetail}>
-                广告配置
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => setVisibleSet({ type: 'add', show: true, info: '' })}
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          </>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
