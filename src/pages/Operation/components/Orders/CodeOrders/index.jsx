@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
+import { Tag } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
 
 const CodeOrders = (props) => {
   const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
@@ -87,49 +89,60 @@ const CodeOrders = (props) => {
       dataIndex: 'orderSn',
     },
     {
-      title: '手机号',
-      fixed: 'left',
-      dataIndex: 'mobile',
-    },
-    {
-      title: '店铺名称',
+      title: '店铺',
       dataIndex: 'merchantName',
-      ellipsis: true,
+      render: (val, row) => (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {/* //账号 */}
+          <div>账号:{row.mobile}</div>
+          <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
+            <Tag color="magenta">单品</Tag>
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</div>
+        </div>
+      ),
     },
     {
-      title: '用户支付',
-      align: 'right',
+      title: '用户',
+      dataIndex: 'mobile',
+      render: (val, row) => '--',
+    },
+    {
+      title: '用户实付',
+      align: 'center',
       dataIndex: 'payFee',
-      render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{`￥${val}`}</div>
+          <div>{+record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div>{(record.beanFee ? `+ ￥${(val - record.beanFee / 100).toFixed(2)}` : '+￥' + val) + ')'}</div>
+        </div>
+      ),
     },
     {
-      title: '店铺实收',
-      align: 'right',
+      title: '优惠券',
+      dataIndex: 'reduceFee',
+      render: (val) => (val ? `${val}元抵扣券` : '--'),
+    },
+    {
+      title: '商户实收',
       dataIndex: 'actualCashFee',
       render: (val, record) =>
         `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
     },
     {
-      title: '优惠券',
-      dataIndex: 'reduceFee',
-      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
-    },
-    {
       title: '支付时间',
       align: 'center',
       dataIndex: 'createTime',
-    },
-
-    {
-      title: '下单渠道',
-      align: 'center',
-      dataIndex: 'orderSource',
-    },
-    {
-      title: '区域',
-      align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+      render:(val,row)=>(
+        <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+          <div>{val}</div>
+          <Tag color="green" style={{marginLeft:5}}>{row.orderSource}</Tag>
+        </div>
+      )
     },
     {
       type: 'handle',
