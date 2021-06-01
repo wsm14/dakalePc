@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import { LogDetail } from '@/components/PublicComponents';
-import CardLoading from '@/components/CardLoading';
+import ExtraButton from '@/components/ExtraButton';
 import excelProps from './components/BusinessList/ExcelProps';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
@@ -10,8 +10,6 @@ import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
-
-const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, hubData, loading, dispatch } = props;
@@ -310,11 +308,10 @@ const BusinessListComponent = (props) => {
 
   return (
     <>
-      <Suspense fallback={<CardLoading></CardLoading>}>
-        <BusinessTotalInfo key="businessTotalInfo" btnExtra={extraBtn}></BusinessTotalInfo>
-      </Suspense>
       <TableDataBlock
         keepData
+        cardProps={{ title: <ExtraButton list={extraBtn}></ExtraButton> }}
+        cRef={childRef}
         btnExtra={({ get }) => [
           {
             type: 'excel',
@@ -323,7 +320,6 @@ const BusinessListComponent = (props) => {
             exportProps: excelProps,
           },
         ]}
-        cRef={childRef}
         loading={
           loading.effects['businessList/fetchGetList'] ||
           loading.effects['businessList/fetchMerchantDetail'] ||
