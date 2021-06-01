@@ -24,19 +24,20 @@ const ExtraButton = ({ list = [], children }) => {
     dispatch, // excel
     data, // excel
     exportProps, // excel
-  }) => {
+  },index) => {
     switch (type) {
       case 'excel':
         return (
           <ExcelButton
             dispatchType={dispatch}
             dispatchData={data}
+            key={index}
             exportProps={exportProps}
           ></ExcelButton>
         );
       default:
         return (
-          <AuthConsumer auth={auth} show={show}>
+          <AuthConsumer auth={auth} show={show} key={index}>
             <Badge count={count}>
               <Button
                 className={className}
@@ -55,7 +56,7 @@ const ExtraButton = ({ list = [], children }) => {
 
   return (
     <Space>
-      {list.map((item) => btnSwitch(item))}
+      {list.map((item,index) => btnSwitch(item,index))}
       {children}
     </Space>
   );
