@@ -143,13 +143,14 @@ const TableBlockComponent = (props) => {
   // table change
   const tableChange = (page, filters, sorter) => {
     console.log(page, filters, sorter);
-    setTableParems({
-      ...tableParems,
-      page: page.current, // 页码
-      limit: page.pageSize, // 每页条数
-      // sortOrder: sorter.order, // 排序字段
-      // sortField: sorter.field, // 排序规则 升降
-    });
+    if (page.current !== tableParems.page || page.pageSize !== tableParems.limit)
+      setTableParems({
+        ...tableParems,
+        page: page.current, // 页码
+        limit: page.pageSize, // 每页条数
+        // sortOrder: sorter.order, // 排序字段
+        // sortField: sorter.field, // 排序规则 升降
+      });
   };
 
   const tabContent = (
