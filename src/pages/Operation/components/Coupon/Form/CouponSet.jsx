@@ -12,7 +12,7 @@ import {
   COUPON_BUY_RULE,
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
-import { NUM_INT_MAXSIX, NUM_INT } from '@/common/regExp';
+import { NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
@@ -123,7 +123,6 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '券价值',
       name: ['reduceObject', 'couponPrice'],
       prefix: '￥',
-      addRules: [{ pattern: NUM_INT_MAXSIX, message: '价格必须为整数，不超过6位数' }],
     },
     {
       label: '售卖',
@@ -137,7 +136,6 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       name: 'buyPrice',
       prefix: '￥',
       visible: radioData.buyFlag === '1',
-      addRules: [{ pattern: NUM_INT_MAXSIX, message: '价格必须为整数，不超过6位数' }],
     },
     {
       label: '商家结算价',
@@ -145,7 +143,6 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       prefix: '￥',
       visible: radioData.buyFlag === '1',
       addRules: [
-        { pattern: NUM_INT_MAXSIX, message: '价格必须为整数，不超过6位数' },
         {
           validator: (rule, value) => {
             const merchantPrice = Number(value);
@@ -176,7 +173,6 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       name: ['reduceObject', 'thresholdPrice'],
       prefix: '￥',
       suffix: '元可使用',
-      addRules: [{ pattern: NUM_INT_MAXSIX, message: '价格必须为整数，不超过6位数' }],
       visible: radioData.userFlag === '1',
     },
     {
