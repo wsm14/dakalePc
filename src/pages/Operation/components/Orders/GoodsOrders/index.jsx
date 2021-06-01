@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
-import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 

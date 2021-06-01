@@ -31,12 +31,13 @@ const ExtraButton = ({ list = [], children }) => {
           <ExcelButton
             dispatchType={dispatch}
             dispatchData={data}
+            key={auth}
             exportProps={exportProps}
           ></ExcelButton>
         );
       default:
         return (
-          <AuthConsumer auth={auth} show={show}>
+          <AuthConsumer auth={auth} show={show} key={auth}>
             <Badge count={count}>
               <Button
                 className={className}
