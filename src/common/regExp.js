@@ -12,6 +12,9 @@ export const PHONE_PATTERN = /^1[3456789]\d{9}$/;
 // 全数字
 export const NUM_PATTERN = /^\d+$/;
 
+// 小数或整数 大于零
+export const NUM_ALL = /^[0-9]+([.]{1}[0-9]+){0,1}$/;
+
 // 大于0的正整数
 export const NUM_INT = /^\+?[1-9]\d*$/;
 
