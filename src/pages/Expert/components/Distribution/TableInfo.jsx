@@ -38,14 +38,12 @@ export const OrderInfo = ({ data }) => {
         <div>{orderSn}</div>
       </div>
       <div className={styles.order_info}>
-        <div>
-          <Ellipsis length={20} tooltip>
-            {goodsName}
-          </Ellipsis>
-        </div>
+        <Ellipsis length={17} tooltip>
+          {goodsName}
+        </Ellipsis>
         <div style={{ display: 'flex' }}>
           店铺：
-          <Ellipsis length={17} tooltip>
+          <Ellipsis length={14} tooltip>
             {merchantName}
           </Ellipsis>
         </div>
@@ -53,12 +51,12 @@ export const OrderInfo = ({ data }) => {
           <div>
             <span>结算价：</span>￥{Number(settlementFee).toFixed(2)}
           </div>
-          <div>
-            <span>
-              {settlementTime}
-              {EXPRET_DISTRIBUTION_PAY_STATUS[orderStatus]}
-            </span>
-          </div>
+        </div>
+        <div className={styles.footer}>
+          <span>
+            {settlementTime}&nbsp;
+            {EXPRET_DISTRIBUTION_PAY_STATUS[orderStatus]}
+          </span>
         </div>
       </div>
     </div>
