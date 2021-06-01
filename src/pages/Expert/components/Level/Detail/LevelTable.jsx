@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { targetJson } from '@/common/expertLevelJSON';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -136,7 +135,6 @@ const LevelTable = (props) => {
         keyRow == 'rights' ? rightsDataDetail(row.name, val) : targetDataDetail(row.name, val),
     },
     {
-     
       type: 'handle',
       dataIndex: 'name',
       render: (val, row, i) => {
@@ -170,12 +168,8 @@ const LevelTable = (props) => {
   return (
     <TableDataBlock
       order
-      btnExtra={
-        <Button className="dkl_green_btn" onClick={() => setSelectData({ show: true })}>
-          添加
-        </Button>
-      }
       noCard={false}
+      btnExtra={[{ text: '添加', onClick: () => setSelectData({ show: true }) }]}
       loading={loading}
       columns={getColumns}
       rowKey={(record) => `${record.name}`}

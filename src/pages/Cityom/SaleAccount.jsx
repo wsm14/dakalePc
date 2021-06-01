@@ -118,12 +118,7 @@ const SaleAccount = (props) => {
     },
   ];
 
-  const extraBtn = [
-    {
-      auth: 'save',
-      onClick: () => setVisible({ type: 'add', show: true }),
-    },
-  ];
+  const extraBtn = [{ auth: 'save', onClick: () => setVisible({ type: 'add', show: true }) }];
 
   return (
     <>

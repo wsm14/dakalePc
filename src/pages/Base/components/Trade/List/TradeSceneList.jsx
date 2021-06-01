@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeSceneSet from '../Form/TradeSceneSet';
 import PopImgShow from '@/components/PopImgShow';
@@ -72,11 +72,7 @@ const TradeSceneList = (props) => {
       onCancel={() => onClose('')}
     >
       <TableDataBlock
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-            新增
-          </Button>
-        }
+        btnExtra={[{ onClick: () => handleDataSet('add') }]}
         size="midden"
         cRef={childRef}
         noCard={false}

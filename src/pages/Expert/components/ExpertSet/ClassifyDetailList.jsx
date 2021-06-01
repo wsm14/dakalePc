@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Switch } from 'antd';
+import { Modal, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ClassifyDetailSet from './ClassifyDetailSet';
@@ -134,11 +134,7 @@ const ClassifyDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-            新增
-          </Button>
-        }
+        btnExtra={[{ onClick: () => handleDataSet('add') }]}
         cRef={childRef}
         noCard={false}
         loading={loading}

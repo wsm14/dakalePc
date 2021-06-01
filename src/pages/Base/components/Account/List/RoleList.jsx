@@ -122,12 +122,7 @@ const RoleList = (props) => {
     },
   ];
 
-  const extraBtn = [
-    {
-      auth: 'roleAdd',
-      onClick: () => fetchFlag(),
-    },
-  ];
+  const extraBtn = [{ auth: 'roleAdd', onClick: () => fetchFlag() }];
 
   return (
     <>

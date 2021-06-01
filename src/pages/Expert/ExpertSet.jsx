@@ -134,12 +134,9 @@ const ExpertSet = (props) => {
     fetchTradeList();
   }, [visible]);
 
-//表格额外按钮
+  //表格额外按钮
   const extraBtn = [
-    {
-      auth: 'savePClassify',
-      onClick: () => handleClassifySet('add', { parentDomainId: 0 }),
-    },
+    { auth: 'savePClassify', onClick: () => handleClassifySet('add', { parentDomainId: 0 }) },
   ];
 
   return (

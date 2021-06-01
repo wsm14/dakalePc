@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeBaseSet from '../Form/TradeBaseSet';
 
@@ -98,16 +98,12 @@ const TradeBaseList = (props) => {
         onCancel={() => onClose('')}
       >
         <TableDataBlock
-          btnExtra={
-            <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
-              新增
-            </Button>
-          }
           cRef={childRef}
           noCard={false}
           loading={loading}
           columns={propItem.getColumns}
           rowKey={(row) => `${row[propItem.rowKey]}`}
+          btnExtra={[{ onClick: () => handleDataSet('add') }]}
           params={{ type, categoryId: record.categoryIdString }}
           dispatchType="sysTradeList/fetchDetailList"
           size="middle"

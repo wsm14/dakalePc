@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import FaqSortSet from '../Form/FAQSortSet';
 
@@ -44,7 +44,7 @@ const FAQSortList = (props) => {
             type: 'edit',
             click: () => handleDataSet('edit', row),
           },
-        ]
+        ];
       },
     },
   ];
@@ -79,16 +79,12 @@ const FAQSortList = (props) => {
         afterClose={() => qRef.current.fetchGetData()} // 外围列表刷新
       >
         <TableDataBlock
-          btnExtra={
-            <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-              新增分类
-            </Button>
-          }
           cRef={childRef}
           noCard={false}
           loading={loading}
           searchItems={searchItems}
           columns={getColumns}
+          btnExtra={[{ text: '新增分类', onClick: () => handleDataSet('add') }]}
           rowKey={(row) => `${row.questionCategoryIdString}`}
           dispatchType="serviceFAQ/fetchFAQSortList"
           size="middle"
