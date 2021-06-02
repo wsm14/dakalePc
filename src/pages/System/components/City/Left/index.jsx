@@ -5,7 +5,11 @@ import CITYJSON from '@/common/city';
 const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
   const routerMenu = (list) => {
     return list.map((item) => {
-      return <Menu.Item key={item.value}>{item.label}</Menu.Item>;
+      return (
+        <Menu.Item key={item.value} data-name={item.label}>
+          {item.label}
+        </Menu.Item>
+      );
     });
   };
 
@@ -15,7 +19,7 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
       selectedKeys={[selectCode.provinceCode]}
       defaultSelectedKeys={[selectCode.provinceCode]}
       onClick={(e) => {
-        const name = e.item.props.children[1];
+        const name = e.domEvent.target.dataset.name;
         setSelectCode({
           provinceName: name,
           provinceCode: e.key,
