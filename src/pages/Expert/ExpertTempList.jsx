@@ -108,7 +108,7 @@ const ExpertTempList = (props) => {
         {
           type: 'cancelTemp',
           pop: true,
-          visible: row.status !== '2',
+          visible: row.status === '1',
           click: () => fetchExpertStop({ userTempLevelId }),
         },
       ],
