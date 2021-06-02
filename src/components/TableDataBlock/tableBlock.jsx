@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { useDispatch } from 'umi';
-import { Table, Card, Space } from 'antd';
+import { Table, Card } from 'antd';
 import ExtraButton from '@/components/ExtraButton';
 import SearchCondition from '@/components/SearchCondition';
 import utils from './utils';
