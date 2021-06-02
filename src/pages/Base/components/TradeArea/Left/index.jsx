@@ -58,9 +58,10 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
         inlineCollapsed={false}
         selectedKeys={[dCode]}
         defaultSelectedKeys={['3301']}
-        onClick={({ key, domEvent }) => {
+        onClick={(e) => {
+          const { key, item } = e;
           setDCode(key);
-          const name = domEvent.target.dataset.name;
+          const name = item.props['data-name'];
           setSelectCode({
             ...selectCode,
             districtName: name,

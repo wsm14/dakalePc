@@ -19,7 +19,7 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
       selectedKeys={[selectCode.provinceCode]}
       defaultSelectedKeys={[selectCode.provinceCode]}
       onClick={(e) => {
-        const name = e.domEvent.target.dataset.name;
+        const name = e.item.props['data-name'];
         setSelectCode({
           provinceName: name,
           provinceCode: e.key,
