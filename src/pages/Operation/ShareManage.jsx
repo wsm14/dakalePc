@@ -211,9 +211,9 @@ const ShareManage = (props) => {
     {
       type: 'handle',
       dataIndex: 'length',
-      width: 150,
+      width: 180,
       render: (val, record, index) => {
-        const { status, userMomentIdString } = record;
+        const { status, userMomentIdString, payedPersonAmount } = record;
         return [
           {
             title: '审核通过',
@@ -248,6 +248,7 @@ const ShareManage = (props) => {
           {
             type: 'peasDetail',
             title: '领豆明细',
+            visible: payedPersonAmount > 0,
             click: () => setVisiblePeas({ show: true, detail: record }),
           },
         ];
