@@ -334,9 +334,6 @@ const BusinessDetailShow = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
-    afterCallBack: () => {
-      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
-    },
     footer: (
       <ExtraButton
         list={[
