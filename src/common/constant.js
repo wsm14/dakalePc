@@ -400,6 +400,13 @@ export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
 
+//specialGoods-特惠商品 reduceCoupon-优惠券
+
+export const ORDER_TYPE_PROPS = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '优惠券',
+};
+
 // 哒人核销订单类型
 export const EXPRET_DISTRIBUTION_TYPE = {
   scan: '扫码支付',

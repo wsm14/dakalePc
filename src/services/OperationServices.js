@@ -226,6 +226,14 @@ export function fetchOrdersDetail(params) {
 
 // 订单列表 end
 
+// 核销列表 
+export function fetchVerificationList(params) {
+  return request('/admin/orderGoodsVerification/listOrderGoodsVerification', {
+    params,
+  });
+}
+
+
 // 退款管理
 
 // get 退款管理 - 列表

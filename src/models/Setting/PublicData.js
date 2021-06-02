@@ -269,7 +269,10 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          userList: content.recordList,
+          userList: content.recordList.map((item) => ({
+            ...item,
+            tipInfo: `${item.mobile} ${item.beanCode}`,
+          })),
         },
       });
     },
