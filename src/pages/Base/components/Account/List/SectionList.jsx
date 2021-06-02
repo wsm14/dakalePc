@@ -61,25 +61,30 @@ const SectionList = (props) => {
       ),
     },
     {
-      type: 'handle',
+      title: '操作',
+      align: 'center',
       width: 250,
       dataIndex: 'pid',
-      render: (val, record) => [
-        {
-          auth: true,
-          title: '添加子部门',
-          click: () =>
-            setVisible({
-              visible: true,
-              setInfo: {
-                ...record,
-                weight: record.children
-                  ? record.children[record.children.length - 1].weight + 1
-                  : 1,
-              },
-            }),
-        },
-      ],
+      render: (val, record) => (
+        <HandleSetTable
+          formItems={[
+            {
+              auth: true,
+              title: '添加子部门',
+              click: () =>
+                setVisible({
+                  visible: true,
+                  setInfo: {
+                    ...record,
+                    weight: record.children
+                      ? record.children[record.children.length - 1].weight + 1
+                      : 1,
+                  },
+                }),
+            },
+          ]}
+        />
+      ),
     },
   ];
 
