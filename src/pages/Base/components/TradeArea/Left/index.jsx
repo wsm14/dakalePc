@@ -26,7 +26,9 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
           {routerMenu(item[val], 'children')}
         </SubMenu>
       ) : (
-        <Menu.Item key={item.value}>{item.label}</Menu.Item>
+        <Menu.Item key={item.value} data-name={item.label}>
+          {item.label}
+        </Menu.Item>
       );
     });
   };
@@ -56,16 +58,15 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
         inlineCollapsed={false}
         selectedKeys={[dCode]}
         defaultSelectedKeys={['3301']}
-        onClick={(e) => {
-          setDCode(e.key);
-          const name = e.item.props.children[0];
-          console.log(e);
+        onClick={({ key, domEvent }) => {
+          setDCode(key);
+          const name = domEvent.target.dataset.name;
           setSelectCode({
             ...selectCode,
             districtName: name[name.length - 1],
-            districtCode: e.key,
+            districtCode: key,
           });
-          cRef.current.fetchGetData({ cityCode, districtCode: e.key });
+          cRef.current.fetchGetData({ cityCode, districtCode: key });
         }}
         mode="inline"
         style={{
