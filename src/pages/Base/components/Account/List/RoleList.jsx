@@ -98,7 +98,7 @@ const RoleList = (props) => {
       render: (val, row) => {
         const { idString: roleId } = row;
         return {
-          auth: 'status',
+          auth: 'roleStatus',
           noAuth: val === '1' ? '启用' : '停用',
           checked: val === '1',
           onClick: () => fetchEdit({ roleId, status: 1 ^ Number(val) }),
