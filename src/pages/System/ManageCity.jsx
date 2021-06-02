@@ -103,8 +103,8 @@ const ManageCity = (props) => {
       ></ManageCityLeft>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={extraBtn}
           noCard={false}
+          btnExtra={extraBtn}
           cRef={childRef}
           loading={loading.models.manageCity}
           columns={getColumns}
