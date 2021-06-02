@@ -63,7 +63,7 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
           const name = domEvent.target.dataset.name;
           setSelectCode({
             ...selectCode,
-            districtName: name[name.length - 1],
+            districtName: name,
             districtCode: key,
           });
           cRef.current.fetchGetData({ cityCode, districtCode: key });
