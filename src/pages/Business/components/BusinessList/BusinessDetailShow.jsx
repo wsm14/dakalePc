@@ -43,8 +43,6 @@ const BusinessDetailShow = (props) => {
   const statusText = !statusNum ? '启用' : '禁用';
   const businessStatusText = !businessStatusNum ? '恢复营业' : '暂停营业';
 
-  const [form] = Form.useForm();
-
   // 修改bd
   const fetchMerEditBD = (values) => {
     dispatch({
@@ -367,12 +365,7 @@ const BusinessDetailShow = (props) => {
         </TabPane>
         <TabPane tab="账号信息" key="2">
           <DescriptionsCondition formItems={accountItems} initialValues={bkInfo} />
-          <Form
-            style={{ marginTop: 24 }}
-            form={form}
-            preserve={false}
-            onFinish={fetchMerSetBandCode}
-          >
+          <Form style={{ marginTop: 24 }} preserve={false} onFinish={fetchMerSetBandCode}>
             <Form.Item
               name="bankSwiftCode"
               label="开户行号"
@@ -408,7 +401,6 @@ const BusinessDetailShow = (props) => {
           ) : (
             <Form
               style={{ marginTop: 24 }}
-              form={form}
               preserve={false}
               initialValues={visible}
               onFinish={fetchMerEditBD}
