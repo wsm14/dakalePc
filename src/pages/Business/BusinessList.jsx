@@ -28,11 +28,7 @@ const BusinessListComponent = (props) => {
   const [hubSelect, setHubSelect] = useState(true); // 商圈搜索选择
   const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
   const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
-  const [qrCodeBag, setQrCodeBag] = useState({
-    show: false,
-    payBag: undefined,
-    saleBag: undefined,
-  }); // 二维码背景图
+  const [qrCodeBag, setQrCodeBag] = useState({ show: false }); // 二维码背景图
 
   // 搜索参数
   const searchItems = [
