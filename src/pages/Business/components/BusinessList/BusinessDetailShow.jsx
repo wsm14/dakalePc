@@ -198,13 +198,13 @@ const BusinessDetailShow = (props) => {
       type: 'upload',
       initialValue: blobj.businessLicenseImg,
       children: (
-        <div style={{ maxWidth: 363 }}>
+        <>
           <div>店铺名称：{blobj.businessName}</div>
           <div>统一社会信用代码：{blobj.socialCreditCode}</div>
           <div>注册地址：{blobj.signInAddress}</div>
           <div>营业期限：{blobj.validityPeriod}</div>
           <div>经营范围：{blobj.businessScope}</div>
-        </div>
+        </>
       ),
     },
     {
