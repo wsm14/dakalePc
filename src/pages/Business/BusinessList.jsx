@@ -12,6 +12,7 @@ import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
+import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 
 const BusinessListComponent = (props) => {
@@ -27,6 +28,11 @@ const BusinessListComponent = (props) => {
   const [hubSelect, setHubSelect] = useState(true); // 商圈搜索选择
   const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
   const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
+  const [qrCodeBag, setQrCodeBag] = useState({
+    show: false,
+    payBag: undefined,
+    saleBag: undefined,
+  }); // 二维码背景图
 
   // 搜索参数
   const searchItems = [
@@ -297,6 +303,11 @@ const BusinessListComponent = (props) => {
       auth: 'setMreCord',
       onClick: handleVCodeSet,
     },
+    {
+      text: '上传二维码背景图',
+      auth: 'qrCode',
+      onClick: () => setQrCodeBag({ ...qrCodeBag, show: true }),
+    },
   ];
 
   return (
@@ -348,7 +359,11 @@ const BusinessListComponent = (props) => {
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
       {/* 店铺二维码 */}
-      <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
+      <BusinessQrCode
+        qrCodeBag={qrCodeBag}
+        visible={visibleQrcode}
+        onClose={() => setVisibleQrcode('')}
+      ></BusinessQrCode>
       {/* 店铺验证码 */}
       <BusinessVerificationCodeSet
         visible={visibleCodeSet}
@@ -357,6 +372,8 @@ const BusinessListComponent = (props) => {
       ></BusinessVerificationCodeSet>
       {/* 日志 */}
       <LogDetail></LogDetail>
+      {/* 设置二维码背景图片 */}
+      <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
     </>
   );
 };
