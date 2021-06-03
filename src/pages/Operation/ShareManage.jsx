@@ -97,16 +97,11 @@ const ShareManage = (props) => {
       dataIndex: 'frontImage',
       width: 280,
       render: (val, detail) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div>
-            <PopImgShow url={val}></PopImgShow>
-          </div>
-          <div style={{ marginLeft: '15px' }}>
-            <Ellipsis length={10} tooltip lines={3}>
-              {detail.title}
-            </Ellipsis>
-          </div>
-        </div>
+        <PopImgShow url={val}>
+          <Ellipsis length={10} tooltip lines={3}>
+            {detail.title}
+          </Ellipsis>
+        </PopImgShow>
       ),
     },
     {
@@ -122,7 +117,7 @@ const ShareManage = (props) => {
             </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag color={'magenta'}>{`${row.topCategoryName}-${row.categoryName}`}</Tag>
+            <Tag color="blue">{`${row.topCategoryName}-${row.categoryName}`}</Tag>
             <span>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</span>
           </div>
         </>
