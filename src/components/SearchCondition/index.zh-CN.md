@@ -72,7 +72,18 @@ handle={(form)=> ({
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
 | onChange | 选择完成后的回调 | (value, form) => void | - |
 
+#### Merchant 商户搜索组件 User 用户搜索组件
+
+| 参数        | 说明     | 类型    | 默认值 |
+| ----------- | -------- | ------- | ------ |
+| multiple    | 是否多选 | boolean | false  |
+| placeholder | 默认文本 | string  | --     |
+
 ## 更新日志
+
+- ### 2021 年 6 月 4 日 14:07:59 Dong
+
+> - 封装 `Merchant - 商户搜索组件` `User - 用户搜索组件` { multiple?: boolean } 是否多选
 
 - ### 2021 年 5 月 31 日 15:05:07 Dong
 
