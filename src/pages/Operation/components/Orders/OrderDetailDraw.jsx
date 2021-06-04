@@ -346,7 +346,7 @@ const OrderDetailDraw = (props) => {
               ></QuestionTooltip>
             </span>
 
-            <span>{detail.cashCommission}</span>
+            <span>￥{detail.cashCommission}({detail.beanCommission}卡豆)</span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span>
@@ -356,14 +356,8 @@ const OrderDetailDraw = (props) => {
                 type="quest"
               ></QuestionTooltip>
             </span>
-            <span>{`￥${
-              (Number(detail.actualCashFee) + detail.actualBeanFee ? detail.actualBeanFee / 100 : 0)
-                ? (Number(detail.actualCashFee) + detail.actualBeanFee
-                    ? detail.actualBeanFee / 100
-                    : 0
-                  ).toFixed(2)
-                : 0
-            }(含${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`}</span>
+            <span>{`￥${detail.actualCashFee}
+            (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`}</span>
           </div>
         </div>
       </div>
