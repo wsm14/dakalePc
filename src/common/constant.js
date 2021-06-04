@@ -1,5 +1,5 @@
-import appLogo from '../../public/app.jpg';
-import wechatLogo from '../../public/wechat.png';
+import appLogo from '@public/app.jpg';
+import wechatLogo from '@public/wechat.png';
 
 /**
  * 统一参数配置

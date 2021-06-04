@@ -7,7 +7,7 @@ import {
 } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
-import coupon from './coupon.png';
+import coupon from '@public/coupon.png';
 import styles from './style.less';
 
 // 订单信息

@@ -5,15 +5,10 @@ import { ORDER_PAY_LOGO } from '@/common/constant';
 import OrderDetailDraw from '../OrderDetailDraw';
 import { Tag, Avatar } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
-import styles from '../style.less'
+import styles from '../style.less';
 
 const CodeOrders = (props) => {
-  const {
-    ordersList,
-    loading,
-    dispatch,
-    tabkey,
-  } = props;
+  const { ordersList, loading, dispatch, tabkey } = props;
   const { list } = ordersList;
 
   const childRef = useRef();
@@ -90,7 +85,9 @@ const CodeOrders = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div className={styles.specFont}>{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+          <div
+            className={styles.specFont}
+          >{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
         </div>
       ),
     },
@@ -115,7 +112,9 @@ const CodeOrders = (props) => {
         return (
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
-            <div className={styles.fontColor}>{record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
+            <div className={styles.fontColor}>
+              {record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}
+            </div>
             <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
         );
@@ -138,28 +137,13 @@ const CodeOrders = (props) => {
               ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
               : 0
           }`}</div>
-          <div className={styles.fontColor}>{record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>
+            {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+          </div>
           <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },
-    {
-      title: '商品佣金',
-      align: 'center',
-      dataIndex: 'cashCommission',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div >{`￥${
-            (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0)
-              ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
-              : 0
-          }`}</div>
-          <div className={styles.fontColor}>{record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-        </div>
-      ),
-    },
-
     {
       title: '支付时间',
       align: 'center',
@@ -211,6 +195,7 @@ const CodeOrders = (props) => {
         visible={visible}
         total={list.length}
         tabkey={tabkey}
+        loading={loading}
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
@@ -221,5 +206,5 @@ const CodeOrders = (props) => {
 export default connect(({ ordersList, loading }) => ({
   loadings: loading,
   ordersList,
-  loading: loading.effects['ordersList/fetchGetList'],
+  loading: loading.models.ordersList,
 }))(CodeOrders);

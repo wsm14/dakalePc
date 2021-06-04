@@ -7,11 +7,20 @@ import QuestionTooltip from '@/components/QuestionTooltip';
 import { DownOutlined } from '@ant-design/icons';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, total, tabkey } = props;
+  const { visible, onClose, getDetail, total, tabkey, loading } = props;
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, orderGoodsVerifications = [] } = detail;
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
+
+  // 订单状态检查内容显示
+  /* 订单状态0-待支付；1-已支付待核销；2-订单关闭 3-交易完成 4-已确认，5-预支付 6-退款中 */
+  /* closeType :  unpaidExpiredCancel: '待付款超时自动关闭',
+     unpaidManualCancel: '订单已取消',
+     expiredRefund: '订单已过期，订单自动过期', //过期退款
+     manualRefund: '已退款成功，申请退款成功',  */
+  const orderStatusCheck = ['1', '3', '4', '6'].includes(status);
+  const orderCloseStatusCheck = ['expiredRefund', 'manualRefund'].includes(closeType);
 
   const handleShow = (type) => {
     switch (type) {
@@ -88,6 +97,7 @@ const OrderDetailDraw = (props) => {
       label: '店铺类型',
       name: 'address',
       render: () => '单店',
+      span: 2,
     },
     // {
     //   label: '集团名称',
@@ -115,33 +125,18 @@ const OrderDetailDraw = (props) => {
       label: '支付方式',
       name: 'payType',
       render: (val) => PAY_TYPE[val],
-      show:
-        status === '1' ||
-        status === '3' ||
-        status === '4' ||
-        status === '6' ||
-        (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund')),
+      show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
     },
     {
       label: '现金支付渠道',
       name: 'payType',
       render: (val) => PAY_TYPE[val],
-      show:
-        status === '1' ||
-        status === '3' ||
-        status === '4' ||
-        status === '6' ||
-        (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund')),
+      show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
     },
     {
       label: '付款编号',
       name: 'paySn',
-      show:
-        status === '1' ||
-        status === '3' ||
-        status === '4' ||
-        status === '6' ||
-        (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund')),
+      show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
     },
     {
       label: '有效期',
@@ -156,8 +151,7 @@ const OrderDetailDraw = (props) => {
       span: 2,
       show:
         status === '0' ||
-        (status === '2' &&
-          (closeType === 'unpaidManualCancel' || closeType === 'unpaidExpiredCancel')),
+        (status === '2' && ['unpaidManualCancel', 'unpaidExpiredCancel'].includes(closeType)),
     },
   ];
 
@@ -189,6 +183,7 @@ const OrderDetailDraw = (props) => {
     visible: show,
     onClose,
     width: 960,
+    loading,
     dataPage: {
       current: index,
       total,
@@ -202,11 +197,7 @@ const OrderDetailDraw = (props) => {
           <span className={styles.orderDetail_span}>创建时间</span>
           <span>{detail.createTime}</span>
         </div>
-        {(status === '1' ||
-          status === '3' ||
-          status === '4' ||
-          status === '6' ||
-          (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund'))) && (
+        {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
           <>
             <div className={styles.lineClass_con}></div>
             <div className={styles.item_detail_con}>
@@ -226,16 +217,7 @@ const OrderDetailDraw = (props) => {
             </>
           )}
       </div>
-      {/* //订单状态0-待支付；1-已支付待核销；2-订单关闭 3-交易完成 4-已确认，5-预支付 6-退款中 */}
-      {/* closeType :  unpaidExpiredCancel: '待付款超时自动关闭',
-          unpaidManualCancel: '订单已取消',
-          expiredRefund: '订单已过期，订单自动过期', //过期退款
-          manualRefund: '已退款成功，申请退款成功',  */}
-      {(status === '1' ||
-        status === '3' ||
-        status === '4' ||
-        status === '6' ||
-        (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund'))) && (
+      {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
         <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
       )}
       {orderGoodsVerifications.map((item) => (
@@ -267,12 +249,11 @@ const OrderDetailDraw = (props) => {
       ></DescriptionsCondition>
 
       {status === '6' ||
-        (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund') && (
+        (status === '2' && orderCloseStatusCheck && (
           <DescriptionsCondition
             title="退款信息"
             formItems={refundItem}
             initialValues={detail}
-            column={2}
           ></DescriptionsCondition>
         ))}
       <div
@@ -346,7 +327,9 @@ const OrderDetailDraw = (props) => {
               ></QuestionTooltip>
             </span>
 
-            <span>￥{detail.cashCommission}({detail.beanCommission}卡豆)</span>
+            <span>
+              ￥{detail.cashCommission}({detail.beanCommission}卡豆)
+            </span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span>
