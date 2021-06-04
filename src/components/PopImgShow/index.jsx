@@ -13,19 +13,22 @@ const PopImgShow = ({ url, onClick, children }) => {
   };
 
   const imgDiv = (
-    <div
-      onClick={onClick}
-      style={{
-        cursor: 'pointer',
-        width: 80,
-        height: 80,
-        borderRadius: 4,
-        backgroundImage: `url(${url})`,
-        display: 'inline-block',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    ></div>
+    <div className={styles.showImgClass}>
+      <div
+        onClick={onClick}
+        style={{
+          cursor: 'pointer',
+          width: 80,
+          height: 80,
+          borderRadius: 4,
+          backgroundImage: `url(${url})`,
+          display: 'inline-block',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      ></div>
+      <div style={{ display: 'inline-block', flex: 1 }}>{children}</div>
+    </div>
   );
 
   return (
