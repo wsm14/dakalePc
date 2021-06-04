@@ -387,6 +387,12 @@ export default [
         buttons: ['info', 'exportList'],
       },
       {
+        path: '/operation/verificationList',
+        name: '订单列表',
+        component: './Operation/VerificationList',
+        buttons: ['exportList'],
+      },
+      {
         path: '/operation/refund',
         name: '退款管理',
         component: './Operation/RefundOrder',

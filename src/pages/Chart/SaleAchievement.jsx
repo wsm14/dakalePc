@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
-import debounce from 'lodash/debounce';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SaleAchievement = (props) => {
-  const { saleAchievement, loading, selectList, loadingMre, dispatch } = props;
+  const { saleAchievement, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -20,11 +19,8 @@ const SaleAchievement = (props) => {
     {
       label: '店铺',
       name: 'merchantId',
-      type: 'select',
-      loading: loadingMre,
-      placeholder: '请输入店铺名称搜索',
-      select: selectList,
-      onSearch: (val) => fetchClassifyGetMre(val),
+      type: 'merchant',
+     
     },
     {
       label: 'BD名称',
@@ -89,21 +85,6 @@ const SaleAchievement = (props) => {
     },
   ];
 
-  // 搜索店铺
-  const fetchClassifyGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
-    dispatch({
-      type: 'businessList/fetchGetList',
-      payload: {
-        limit: 50,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-      },
-    });
-  }, 500);
-
   const preDate = moment().subtract(1, 'day');
 
   const extraBtn = ({ get }) => [
@@ -145,9 +126,7 @@ const SaleAchievement = (props) => {
   );
 };
 
-export default connect(({ saleAchievement, businessList, loading }) => ({
+export default connect(({ saleAchievement, loading }) => ({
   saleAchievement,
-  selectList: businessList.selectList,
   loading: loading.effects['saleAchievement/fetchGetList'],
-  loadingMre: loading.models.businessList,
 }))(SaleAchievement);

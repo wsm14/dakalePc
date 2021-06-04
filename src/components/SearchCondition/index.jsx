@@ -171,7 +171,7 @@ const SearchCondition = (props) => {
       initialValues={initialValues}
       size={componentSize}
       layout="horizontal"
-      className={styles.form}
+      className={styles.formSearch}
       onFinish={handleSearchsOver}
     >
       <Row gutter={[12, 0]}>

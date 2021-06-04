@@ -1,25 +1,23 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import { ORDER_PAY_LOGO } from '@/common/constant';
 import OrderDetailDraw from '../OrderDetailDraw';
+import { Tag, Avatar } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
 
 const CodeOrders = (props) => {
-  const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
+  const {
+    ordersList,
+    loading,
+    dispatch,
+    tabkey,
+  } = props;
   const { list } = ordersList;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
-
-  // 获取商圈
-  const fetchGetHubSelect = (districtCode) => {
-    dispatch({
-      type: 'baseData/fetchGetHubData',
-      payload: {
-        districtCode,
-      },
-    });
-  };
-
+  
   //详情
   const fetchGoodsDetail = (index) => {
     const { orderId } = list[index];
@@ -43,12 +41,14 @@ const CodeOrders = (props) => {
       name: 'orderSn',
     },
     {
-      label: '手机号',
-      name: 'mobile',
+      label: '下单人',
+      name: 'userId',
+      type: 'user',
     },
     {
-      label: '店铺名',
-      name: 'merchantName',
+      label: '店铺/集团',
+      name: 'merchantId',
+      type: 'merchant',
     },
     {
       label: '商品名称',
@@ -61,15 +61,6 @@ const CodeOrders = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
-    },
-    {
-      label: '商圈',
-      name: 'businessHubIdStr',
-      type: 'select',
-      loading: loadings.models.baseData,
-      allItem: false,
-      select: hubData,
-      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
     },
     {
       label: '支付日期',
@@ -87,49 +78,97 @@ const CodeOrders = (props) => {
       dataIndex: 'orderSn',
     },
     {
-      title: '手机号',
-      fixed: 'left',
-      dataIndex: 'mobile',
-    },
-    {
-      title: '店铺名称',
+      title: '店铺',
       dataIndex: 'merchantName',
-      ellipsis: true,
+      render: (val, row) => (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div>账号:{row.merchantMobile}</div>
+          <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
+            <Tag color="magenta">单店</Tag>
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div>{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+        </div>
+      ),
     },
     {
-      title: '用户支付',
-      align: 'right',
+      title: '用户',
+      align: 'center',
+      dataIndex: 'userMobile',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{row.userName}</div>
+          <div>{val}</div>
+          <div>{row.beanCode}</div>
+        </div>
+      ),
+    },
+    {
+      title: '用户实付',
+      align: 'center',
       dataIndex: 'payFee',
-      render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
-    },
-    {
-      title: '店铺实收',
-      align: 'right',
-      dataIndex: 'actualCashFee',
-      render: (val, record) =>
-        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+      render: (val, record) => {
+        const cashBean = record.beanFee ? record.beanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
+            <div>{+record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
+            <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
     },
     {
       title: '优惠券',
+      align: 'center',
       dataIndex: 'reduceFee',
-      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
+      render: (val) => (val ? `${val}元抵扣券` : '--'),
     },
+    {
+      title: '商户实收',
+      align: 'center',
+      dataIndex: 'actualCashFee',
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{`￥${
+            (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0)
+              ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
+              : 0
+          }`}</div>
+          <div>{+record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+        </div>
+      ),
+    },
+    {
+      title: '商品佣金',
+      align: 'center',
+      dataIndex: 'cashCommission',
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{`￥${
+            (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0)
+              ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
+              : 0
+          }`}</div>
+          <div>{+record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
+          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+        </div>
+      ),
+    },
+
     {
       title: '支付时间',
       align: 'center',
       dataIndex: 'createTime',
-    },
-
-    {
-      title: '下单渠道',
-      align: 'center',
-      dataIndex: 'orderSource',
-    },
-    {
-      title: '区域',
-      align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+      render: (val, row) => (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div>{val}</div>
+          <Avatar src={ORDER_PAY_LOGO[row.orderSource]} size="small" shape="square" />
+        </div>
+      ),
     },
     {
       type: 'handle',
@@ -177,9 +216,8 @@ const CodeOrders = (props) => {
   );
 };
 
-export default connect(({ ordersList, baseData, loading }) => ({
+export default connect(({ ordersList, loading }) => ({
   loadings: loading,
   ordersList,
-  hubData: baseData.hubData,
   loading: loading.effects['ordersList/fetchGetList'],
 }))(CodeOrders);
