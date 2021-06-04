@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PAY_TYPE, VERIFICATION_STATUS, ORDER_TYPE_PROPS, USER_SOURCE } from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import styles from './style.less';
-import { Collapse } from 'antd';
 import QuestionTooltip from '@/components/QuestionTooltip';
-const { Panel } = Collapse;
+import { DownOutlined } from '@ant-design/icons';
 
 const OrderDetailDraw = (props) => {
   const { visible, onClose, getDetail, total, tabkey } = props;
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, orderGoodsVerifications = [] } = detail;
+  const [isShow, setIsShow] = useState(true);
+  const [isShow1, setIsShow1] = useState(true);
+
+  const handleShow = (type) => {
+    switch (type) {
+      case 'sale':
+        setIsShow(!isShow);
+        break;
+      case 'user':
+        setIsShow1(!isShow1);
+        break;
+    }
+  };
 
   const couponItem = (item) => [
     {
@@ -285,20 +297,25 @@ const OrderDetailDraw = (props) => {
             <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>优惠合计</span>
+            <span onClick={() => handleShow('sale')}>
+              优惠合计 <DownOutlined />
+            </span>
             <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
           </div>
-          <div className={styles.detail_last_div}>
-            <span>抵扣券</span>
-            <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
-          </div>
+          {isShow && (
+            <div className={styles.detail_last_div}>
+              <span>抵扣券</span>
+              <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
+            </div>
+          )}
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>
+            <span onClick={() => handleShow('user')}>
               <QuestionTooltip
                 title="用户实付"
                 content="用户实际支付的金额，包含卡豆和现金金额，等于订单金额减去优惠的金额；"
                 type="quest"
               ></QuestionTooltip>
+              <DownOutlined />
             </span>
             <span>{`￥${
               Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0) > 0
@@ -306,16 +323,20 @@ const OrderDetailDraw = (props) => {
                 : 0
             }(含${detail.beanFee ? detail.beanFee : 0}卡豆)`}</span>
           </div>
-          <div className={styles.detail_last_div}>
-            <span>卡豆</span>
-            <span>
-              {detail.beanFee ? `￥${detail.beanFee / 100}（含${detail.beanFee}卡豆）` : 0}
-            </span>
-          </div>
-          <div className={styles.detail_last_div}>
-            <span>{PAY_TYPE[detail.payType] || '支付宝'}</span>
-            <span>{detail.payFee ? `￥${detail.payFee}` : 0}</span>
-          </div>
+          {isShow1 && (
+            <>
+              <div className={styles.detail_last_div}>
+                <span>卡豆</span>
+                <span>
+                  {detail.beanFee ? `￥${detail.beanFee / 100}（含${detail.beanFee}卡豆）` : 0}
+                </span>
+              </div>
+              <div className={styles.detail_last_div}>
+                <span>{PAY_TYPE[detail.payType] || '支付宝'}</span>
+                <span>{detail.payFee ? `￥${detail.payFee}` : 0}</span>
+              </div>
+            </>
+          )}
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span>
               <QuestionTooltip
