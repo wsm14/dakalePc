@@ -20,6 +20,7 @@ const PopImgShow = ({ url, onClick, children }) => {
         width: 80,
         height: 80,
         borderRadius: 4,
+        marginRight: 8,
         backgroundImage: `url(${url})`,
         display: 'inline-block',
         backgroundSize: 'cover',

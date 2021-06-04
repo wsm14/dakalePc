@@ -8,14 +8,9 @@ import Ellipsis from '@/components/Ellipsis';
 import coupon from './img/coupon.png';
 
 const VerificationList = (props) => {
-  const {
-    verificationList,
-    loading,
-    dispatch
-  } = props;
+  const { verificationList, loading } = props;
 
   const childRef = useRef();
-
 
   // 搜索参数
   const searchItems = [
@@ -27,13 +22,11 @@ const VerificationList = (props) => {
       label: '下单人',
       name: 'userId',
       type: 'user',
-     
     },
     {
       label: '店铺名',
       name: 'merchantId',
       type: 'merchant',
-    
     },
     {
       label: '商品名称',
@@ -67,28 +60,22 @@ const VerificationList = (props) => {
       title: '商品',
       dataIndex: 'goodsImg',
       render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <div>
-            <Badge.Ribbon text={ORDER_TYPE_PROPS[row.orderType]} color="cyan" placement="start">
-              <PopImgShow
-                url={row.goodsImg || coupon}
-                onClick={row.goodsImg ? null : () => {}}
-              ></PopImgShow>
-            </Badge.Ribbon>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {row.goodsType && row.goodsType !== 'reduce' && (
-                <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
-              )}
-              <Ellipsis length={10} tooltip>
-                {row.goodsName}
-              </Ellipsis>
-            </div>
+        <Badge.Ribbon text={ORDER_TYPE_PROPS[row.orderType]} color="cyan" placement="start">
+          <PopImgShow url={row.goodsImg || coupon} onClick={row.goodsImg ? null : () => {}}>
+            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {row.goodsType && row.goodsType !== 'reduce' && (
+                  <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
+                )}
+                <Ellipsis length={10} tooltip>
+                  {row.goodsName}
+                </Ellipsis>
+              </div>
 
-            <div style={{ marginTop: 5 }}>订单号：{row.orderSn}</div>
-          </div>
-        </div>
+              <div style={{ marginTop: 5 }}>订单号：{row.orderSn}</div>
+            </div>
+          </PopImgShow>
+        </Badge.Ribbon>
       ),
     },
     {
@@ -199,8 +186,6 @@ const VerificationList = (props) => {
 export default connect(({ verificationList, loading }) => ({
   loadings: loading,
   verificationList,
- 
-  loading: loading.effects['verificationList/fetchVerificationList'],
 
- 
+  loading: loading.effects['verificationList/fetchVerificationList'],
 }))(VerificationList);
