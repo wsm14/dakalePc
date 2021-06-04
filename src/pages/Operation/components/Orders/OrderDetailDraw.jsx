@@ -162,7 +162,7 @@ const OrderDetailDraw = (props) => {
     },
     {
       name: 'realPrice',
-      render: (val) => <div style={{ textAlign: 'center' }}>单价{val ? `￥${val}` : '0'}</div>,
+      render: (val) => <div style={{ textAlign: 'center' }}>单价：{val ? `￥${val}` : '0'}</div>,
     },
     {
       name: 'goodsCount',
