@@ -5,7 +5,7 @@ import number from './NumberInput';
 import numberGroup from './NumberGroup';
 import select from './Select';
 import merchant from './Merchant';
-import user from './user';
+import user from './User';
 
 const Searchor = {
   cascader,
