@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Spin } from 'antd';
-import debounce from 'lodash/debounce';
 import {
   EXPRET_DISTRIBUTION_TYPE,
   EXPRET_DISTRIBUTION_OWN_TYPE,
@@ -12,7 +11,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 
 const ExpertUserDistribution = (props) => {
-  const { expertUserDistribution, selectList, loadingMre, loading, dispatch } = props;
+  const { expertUserDistribution, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -35,11 +34,7 @@ const ExpertUserDistribution = (props) => {
     {
       label: '店铺',
       name: 'merchant',
-      type: 'select',
-      loading: loadingMre,
-      placeholder: '请输入搜索',
-      select: selectList,
-      onSearch: (val) => fetchClassifyGetMre(val),
+      type: 'merchant',
     },
     {
       label: '商品',
@@ -146,17 +141,6 @@ const ExpertUserDistribution = (props) => {
     },
   ];
 
-  // 搜索店铺
-  const fetchClassifyGetMre = debounce((content) => {
-    if (!content) return;
-    dispatch({
-      type: 'baseData/fetchGetMerchantsSearch',
-      payload: {
-        content,
-      },
-    });
-  }, 500);
-
   return (
     <>
       <TableDataBlock
@@ -184,7 +168,5 @@ const ExpertUserDistribution = (props) => {
 export default connect(({ expertUserDistribution, baseData, loading }) => ({
   expertUserDistribution,
   kolLevel: baseData.kolLevel,
-  selectList: baseData.merchantList,
   loading: loading.models.expertUserDistribution,
-  loadingMre: loading.effects['baseData/fetchGetMerchantsSearch'],
 }))(ExpertUserDistribution);

@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import debounce from 'lodash/debounce';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const VideoPeasDetail = (props) => {
-  const { detailList, userList, loading, loadingUser, visible, onClose, dispatch } = props;
+  const { detailList, loading, visible, onClose, dispatch } = props;
   const { show = false, detail = {} } = visible;
 
   const { guideMomentsId, merchantName, title } = detail;
@@ -16,17 +15,6 @@ const VideoPeasDetail = (props) => {
       type: 'videoAdvert/closeList',
     });
   };
-
-  // 获取用户搜索
-  const fetchGetUser = debounce((content) => {
-    if (!content) return;
-    dispatch({
-      type: 'baseData/fetchGetUsersSearch',
-      payload: {
-        content,
-      },
-    });
-  }, 500);
 
   // 搜索参数
   const propItem = {
@@ -43,12 +31,7 @@ const VideoPeasDetail = (props) => {
       {
         label: '领豆用户',
         name: 'userId',
-        type: 'select',
-        loading: loadingUser,
-        placeholder: '请输入搜索用户昵称',
-        select: userList,
-        onSearch: (val) => fetchGetUser(val),
-        fieldNames: { label: 'username', value: 'userIdString' },
+        type: 'user',
       },
     ],
     getColumns: [
@@ -111,5 +94,4 @@ export default connect(({ videoAdvert, baseData, loading }) => ({
   detailList: videoAdvert.detailList,
   userList: baseData.userList,
   loading: loading.effects['videoAdvert/fetchVideoAdNoviceBean'],
-  loadingUser: loading.effects['baseData/fetchGetUsersSearch'],
 }))(VideoPeasDetail);

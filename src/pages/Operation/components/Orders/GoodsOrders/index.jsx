@@ -9,7 +9,6 @@ import {
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
 } from '@/common/constant';
-import debounce from 'lodash/debounce';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';
@@ -22,39 +21,12 @@ const GoodsOrders = (props) => {
     loading,
     dispatch,
     tabkey,
-    merchantList,
-    loadingMerchant,
-    userList,
-    loadingUser,
   } = props;
   const { list } = ordersList;
 
   const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
-
-
-  // 搜索店铺
-  const fetchClassifyGetMerchant = debounce((content) => {
-    if (!content) return;
-    dispatch({
-      type: 'baseData/fetchGetMerchantsSearch',
-      payload: {
-        content,
-      },
-    });
-  }, 500);
-
-  // 获取用户搜索
-  const fetchGetUser = debounce((content) => {
-    if (!content) return;
-    dispatch({
-      type: 'baseData/fetchGetUsersSearch',
-      payload: {
-        content,
-      },
-    });
-  }, 500);
 
   //详情
   const fetchGoodsDetail = (index) => {
@@ -81,12 +53,7 @@ const GoodsOrders = (props) => {
     {
       label: '下单人',
       name: 'userId',
-      type: 'select',
-      loading: loadingUser,
-      placeholder: '请输入搜索用户昵称',
-      select: userList,
-      onSearch: (val) => fetchGetUser(val),
-      fieldNames: { label: 'username', value: 'userIdString', tip: 'tipInfo' },
+      type: 'user',
     },
     {
       label: '商品名称',
@@ -95,11 +62,7 @@ const GoodsOrders = (props) => {
     {
       label: '店铺/集团',
       name: 'merchantId',
-      type: 'select',
-      loading: loadingMerchant,
-      placeholder: '请输入店铺/集团名称或账号',
-      select: merchantList,
-      onSearch: (val) => fetchClassifyGetMerchant(val),
+      type: 'merchant',
     },
     {
       label: '订单属性',
@@ -348,10 +311,6 @@ const GoodsOrders = (props) => {
 export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
   ordersList,
-  userList: baseData.userList,
-  merchantList: baseData.merchantList,
   hubData: baseData.hubData,
   loading: loading.effects['ordersList/fetchGetList'],
-  loadingUser: loading.effects['baseData/fetchGetUsersSearch'],
-  loadingMerchant: loading.effects['baseData/fetchGetMerchantsSearch'],
 }))(GoodsOrders);

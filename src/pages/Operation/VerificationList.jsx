@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import debounce from 'lodash/debounce';
 import { Tag, Badge } from 'antd';
 import { ORDERS_TYPE, GOODS_CLASS_TYPE, ORDER_TYPE_PROPS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -11,37 +10,12 @@ import coupon from './img/coupon.png';
 const VerificationList = (props) => {
   const {
     verificationList,
-    userList,
     loading,
-    loadingUser,
-    dispatch,
-    selectList,
-    loadingMre,
+    dispatch
   } = props;
 
   const childRef = useRef();
 
-  // 搜索店铺
-  const fetchClassifyGetMre = debounce((content) => {
-    if (!content) return;
-    dispatch({
-      type: 'baseData/fetchGetMerchantsSearch',
-      payload: {
-        content,
-      },
-    });
-  }, 500);
-
-  // 获取用户搜索
-  const fetchGetUser = debounce((content) => {
-    if (!content) return;
-    dispatch({
-      type: 'baseData/fetchGetUsersSearch',
-      payload: {
-        content,
-      },
-    });
-  }, 500);
 
   // 搜索参数
   const searchItems = [
@@ -52,21 +26,14 @@ const VerificationList = (props) => {
     {
       label: '下单人',
       name: 'userId',
-      type: 'select',
-      loading: loadingUser,
-      placeholder: '请输入搜索用户昵称',
-      select: userList,
-      onSearch: (val) => fetchGetUser(val),
-      fieldNames: { label: 'username', value: 'userIdString', tip: 'tipInfo' },
+      type: 'user',
+     
     },
     {
       label: '店铺名',
       name: 'merchantId',
-      type: 'select',
-      loading: loadingMre,
-      placeholder: '请输入店铺名称搜索',
-      select: selectList,
-      onSearch: (val) => fetchClassifyGetMre(val),
+      type: 'merchant',
+    
     },
     {
       label: '商品名称',
@@ -229,12 +196,11 @@ const VerificationList = (props) => {
   );
 };
 
-export default connect(({ verificationList, baseData, loading }) => ({
+export default connect(({ verificationList, loading }) => ({
   loadings: loading,
   verificationList,
-  userList: baseData.userList,
+ 
   loading: loading.effects['verificationList/fetchVerificationList'],
-  selectList: baseData.merchantList,
-  loadingMre: loading.effects['baseData/fetchGetMerchantsSearch'],
-  loadingUser: loading.effects['baseData/fetchGetUsersSearch'],
+
+ 
 }))(VerificationList);
