@@ -47,13 +47,13 @@ const GoodsOrders = (props) => {
       name: 'orderSn',
     },
     {
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
       label: '下单人',
       name: 'userId',
       type: 'user',
-    },
-    {
-      label: '商品名称',
-      name: 'goodsName',
     },
     {
       label: '店铺/集团',
@@ -72,12 +72,6 @@ const GoodsOrders = (props) => {
       type: 'select',
       select: ORDERS_STATUS,
     },
-    // {
-    //   label: '订单关闭类型',
-    //   name: 'closeType',
-    //   type: 'select',
-    //   select: ORDER_CLOSE_TYPE,
-    // },
     {
       label: '下单日期',
       type: 'rangePicker',
@@ -91,7 +85,7 @@ const GoodsOrders = (props) => {
       end: 'verificationTimeEnd',
     },
     {
-      label: '区域',
+      label: '地区',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,

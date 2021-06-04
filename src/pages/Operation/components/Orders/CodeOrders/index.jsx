@@ -47,22 +47,18 @@ const CodeOrders = (props) => {
       type: 'merchant',
     },
     {
-      label: '商品名称',
-      name: 'goodsName',
+      label: '支付日期',
+      type: 'rangePicker',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
     },
     {
-      label: '区域',
+      label: '地区',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
-    },
-    {
-      label: '支付日期',
-      type: 'rangePicker',
-      name: 'orderTimeStart',
-      end: 'orderTimeEnd',
     },
   ];
 

@@ -154,7 +154,7 @@ const VerificationList = (props) => {
       },
     },
     {
-      title: '下单/核销时间',
+      title: '核销时间',
       dataIndex: 'verificationTime',
       align: 'center',
     },
