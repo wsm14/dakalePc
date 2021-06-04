@@ -44,7 +44,7 @@ const DataGatherExport = (props) => {
         endTime: values.startTime[1].format('YYYY-MM-DD HH:mm'),
       };
       dispatch({
-        type: 'baseData/fetchimportExcel',
+        type: 'baseData/fetchImportExcel',
         payload,
       });
     });
@@ -68,5 +68,5 @@ const DataGatherExport = (props) => {
 };
 export default connect(({ baseData, loading }) => ({
   baseData,
-  loading: loading.effects['baseData/fetchimportExcel'],
+  loading: loading.effects['baseData/fetchImportExcel'],
 }))(DataGatherExport);

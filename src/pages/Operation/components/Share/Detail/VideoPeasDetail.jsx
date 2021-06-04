@@ -18,14 +18,12 @@ const VideoPeasDetail = (props) => {
   };
 
   // 获取用户搜索
-  const fetchGetUser = debounce((username) => {
-    if (!username) return;
+  const fetchGetUser = debounce((content) => {
+    if (!content) return;
     dispatch({
-      type: 'baseData/fetchGetSelectUserList',
+      type: 'baseData/fetchGetUsersSearch',
       payload: {
-        username,
-        limit: 50,
-        page: 1,
+        content,
       },
     });
   }, 500);
@@ -113,5 +111,5 @@ export default connect(({ shareManage, baseData, loading }) => ({
   beanDetal: shareManage.beanDetal,
   userList: baseData.userList,
   loading: loading.effects['shareManage/fetchShareGetBeanDetail'],
-  loadingUser: loading.effects['baseData/fetchGetSelectUserList'],
+  loadingUser: loading.effects['baseData/fetchGetUsersSearch'],
 }))(VideoPeasDetail);

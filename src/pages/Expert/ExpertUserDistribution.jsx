@@ -7,17 +7,12 @@ import {
   EXPRET_DISTRIBUTION_OWN_TYPE,
   EXPRET_DISTRIBUTION_STATUS,
 } from '@/common/constant';
+import { OrderInfo, PayerInfo, OrderStatus, Promoter } from './components/Distribution/TableInfo';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import {
-  OrderInfo,
-  PayerInfo,
-  OrderStatusInfo,
-  PromoterInfo,
-} from './components/Distribution/TableInfo';
 
 const ExpertUserDistribution = (props) => {
-  const { expertUserDistribution, selectList, loadingMre, loading, loadingTotal, dispatch } = props;
+  const { expertUserDistribution, selectList, loadingMre, loading, dispatch } = props;
 
   const childRef = useRef();
 
@@ -116,7 +111,7 @@ const ExpertUserDistribution = (props) => {
       ),
       align: 'center',
       dataIndex: 'verificationCode',
-      render: (val, row) => <OrderStatusInfo data={row}></OrderStatusInfo>,
+      render: (val, row) => <OrderStatus data={row}></OrderStatus>,
     },
     {
       title: (
@@ -132,7 +127,7 @@ const ExpertUserDistribution = (props) => {
       align: 'right',
       dataIndex: 'promoterCommission',
       render: (val, row) => (
-        <PromoterInfo name={row.promoter} mobile={row.promoterMobile} price={val}></PromoterInfo>
+        <Promoter name={row.promoter} mobile={row.promoterMobile} price={val}></Promoter>
       ),
     },
     {
@@ -146,22 +141,18 @@ const ExpertUserDistribution = (props) => {
       align: 'right',
       dataIndex: 'douzhangCommission',
       render: (val, row) => (
-        <PromoterInfo name={row.douzhang} mobile={row.douzhangMobile} price={val}></PromoterInfo>
+        <Promoter name={row.douzhang} mobile={row.douzhangMobile} price={val}></Promoter>
       ),
     },
   ];
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchClassifyGetMre = debounce((content) => {
+    if (!content) return;
     dispatch({
-      type: 'businessList/fetchGetList',
+      type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
+        content,
       },
     });
   }, 500);
@@ -173,9 +164,9 @@ const ExpertUserDistribution = (props) => {
         title={() => (
           <div style={{ textAlign: 'right', marginTop: -16 }}>
             推广者总佣金：
-            {loadingTotal ? <Spin></Spin> : `￥${expertUserDistribution.shareBeanSum}`}
+            {loading ? <Spin></Spin> : `￥${expertUserDistribution.shareBeanSum}`}
             &nbsp;&nbsp; 豆长总佣金：
-            {loadingTotal ? <Spin></Spin> : `￥${expertUserDistribution.teamBeanSum}`}
+            {loading ? <Spin></Spin> : `￥${expertUserDistribution.teamBeanSum}`}
           </div>
         )}
         cRef={childRef}
@@ -190,11 +181,10 @@ const ExpertUserDistribution = (props) => {
   );
 };
 
-export default connect(({ businessList, expertUserDistribution, baseData, loading }) => ({
+export default connect(({ expertUserDistribution, baseData, loading }) => ({
   expertUserDistribution,
   kolLevel: baseData.kolLevel,
-  selectList: businessList.selectList,
+  selectList: baseData.merchantList,
   loading: loading.models.expertUserDistribution,
-  loadingMre: loading.models.businessList,
-  loadingTotal: loading.models.businessList,
+  loadingMre: loading.effects['baseData/fetchGetMerchantsSearch'],
 }))(ExpertUserDistribution);

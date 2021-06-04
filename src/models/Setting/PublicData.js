@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import lodash from 'lodash';
 import {
   fetchGetMreTag,
-  fetchimportExcel,
+  fetchImportExcel,
   fetchGetTasteTag,
   fetchGetKolLevel,
   fetchGetHubSelect,
@@ -11,14 +11,15 @@ import {
   fetchMerCheckData,
   fetchGetJumpNative,
   fetchGetExpertLevel,
-  fetchimportExcelList,
+  fetchImportExcelList,
   fetchGetPropertyJSON,
-  fetchGetSelectUserList,
   fetchGetSubsidyRoleBean,
   fetchGetBuyCouponSelect,
   fetchGetFreeCouponSelect,
   fetchGetPhoneComeLocation,
   fetchGetSpecialGoodsSelect,
+  fetchGetMerchantsSearch,
+  fetchGetUsersSearch,
 } from '@/services/PublicServices';
 
 export default {
@@ -36,6 +37,7 @@ export default {
     specialGoods: { list: [], total: 0 },
     excelList: { list: [], total: 0 },
     userList: [],
+    merchantList: [],
     ruleBean: 0,
     experLevel: {},
   },
@@ -239,17 +241,16 @@ export default {
         },
       });
     },
-    *fetchimportExcel({ payload, callback }, { call }) {
-      const response = yield call(fetchimportExcel, payload);
+    *fetchImportExcel({ payload }, { call }) {
+      const response = yield call(fetchImportExcel, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '导出成功',
       });
-      callback && callback();
     },
-    *fetchimportExcelList({ payload }, { call, put }) {
-      const response = yield call(fetchimportExcelList, payload);
+    *fetchImportExcelList({ payload }, { call, put }) {
+      const response = yield call(fetchImportExcelList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -262,16 +263,34 @@ export default {
         },
       });
     },
-    *fetchGetSelectUserList({ payload }, { call, put }) {
-      const response = yield call(fetchGetSelectUserList, payload);
+    *fetchGetUsersSearch({ payload }, { call, put }) {
+      const response = yield call(fetchGetUsersSearch, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          userList: content.recordList.map((item) => ({
+          userList: content.userDTOS.map((item) => ({
             ...item,
             tipInfo: `${item.mobile} ${item.beanCode}`,
+          })),
+        },
+      });
+    },
+    *fetchGetMerchantsSearch({ payload }, { put, call }) {
+      const response = yield call(fetchGetMerchantsSearch, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          merchantList: content.userMerchantDTOS.map((item) => ({
+            name: item.merchantName,
+            otherData: item.address,
+            value: item.userMerchantIdString,
+            commissionRatio: item.commissionRatio,
+            topCategoryName: [item.topCategoryName, item.categoryName],
+            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
           })),
         },
       });

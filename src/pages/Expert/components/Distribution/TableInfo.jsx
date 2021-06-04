@@ -80,7 +80,7 @@ export const PayerInfo = ({ data }) => {
 };
 
 // 订单状态
-export const OrderStatusInfo = ({ data }) => {
+export const OrderStatus = ({ data }) => {
   const { orderStatus, sumCommission = 0, subCommissionType } = data;
   return (
     <div className={styles.info_box}>
@@ -98,7 +98,7 @@ export const OrderStatusInfo = ({ data }) => {
 };
 
 // 豆长 推广者信息
-export const PromoterInfo = ({ name, mobile, price = 0 }) => {
+export const Promoter = ({ name, mobile, price = 0 }) => {
   return name ? (
     <div className={styles.info_box}>
       <div>{name}</div>

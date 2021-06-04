@@ -90,16 +90,12 @@ const SaleAchievement = (props) => {
   ];
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchClassifyGetMre = debounce((content) => {
+    if (!content) return;
     dispatch({
-      type: 'businessList/fetchGetList',
+      type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        limit: 50,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
+        content,
       },
     });
   }, 500);
@@ -145,9 +141,9 @@ const SaleAchievement = (props) => {
   );
 };
 
-export default connect(({ saleAchievement, businessList, loading }) => ({
+export default connect(({ saleAchievement, baseData, loading }) => ({
   saleAchievement,
-  selectList: businessList.selectList,
+  selectList: baseData.merchantList,
   loading: loading.effects['saleAchievement/fetchGetList'],
-  loadingMre: loading.models.businessList,
+  loadingMre: loading.effects['baseData/fetchGetMerchantsSearch'],
 }))(SaleAchievement);

@@ -22,27 +22,23 @@ const VerificationList = (props) => {
   const childRef = useRef();
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchClassifyGetMre = debounce((content) => {
+    if (!content) return;
     dispatch({
-      type: 'businessList/fetchGetList',
+      type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        limit: 50,
-        page: 1,
-        merchantName,
+        content,
       },
     });
   }, 500);
 
   // 获取用户搜索
-  const fetchGetUser = debounce((username) => {
-    if (!username) return;
+  const fetchGetUser = debounce((content) => {
+    if (!content) return;
     dispatch({
-      type: 'baseData/fetchGetSelectUserList',
+      type: 'baseData/fetchGetUsersSearch',
       payload: {
-        username,
-        limit: 50,
-        page: 1,
+        content,
       },
     });
   }, 500);
@@ -136,7 +132,7 @@ const VerificationList = (props) => {
           {/* //账号 */}
           <div>账号:{row.merchantMobile}</div>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            {/* <Tag color="magenta"></Tag> */}
+            <Tag color="magenta">单店</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
@@ -189,8 +185,8 @@ const VerificationList = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${
-            (val + record.beanCommission ? record.beanCommission / 100 : 0)
-              ? (val + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
+            (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0)
+              ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
               : 0
           }`}</div>
           <div>{+record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
@@ -214,12 +210,7 @@ const VerificationList = (props) => {
   const extraBtn = ({ get }) => [
     {
       type: 'excel',
-      dispatch: 'ordersList/fetchOrdersImport',
-      data: get(),
-      exportProps: {
-        header: getColumns.slice(0, -1),
-        fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
-      },
+      data: { type: 'verificationList', orderGoodsVerificationObject: get() },
     },
   ];
 
@@ -238,12 +229,12 @@ const VerificationList = (props) => {
   );
 };
 
-export default connect(({ verificationList, baseData, businessList, loading }) => ({
+export default connect(({ verificationList, baseData, loading }) => ({
   loadings: loading,
   verificationList,
   userList: baseData.userList,
   loading: loading.effects['verificationList/fetchVerificationList'],
-  selectList: businessList.selectList,
-  loadingMre: loading.models.businessList,
-  loadingUser: loading.effects['baseData/fetchGetSelectUserList'],
+  selectList: baseData.merchantList,
+  loadingMre: loading.effects['baseData/fetchGetMerchantsSearch'],
+  loadingUser: loading.effects['baseData/fetchGetUsersSearch'],
 }))(VerificationList);

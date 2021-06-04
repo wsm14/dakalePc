@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { HddOutlined } from '@ant-design/icons';
-import { EXPORT_TYPE } from '@/common/constant';
+import { EXPORT_TYPE, EXPORT_LIST_TYPE } from '@/common/constant';
 import { Button, Tooltip, Modal, Alert } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -19,7 +19,7 @@ const ExcelWrite = (props) => {
       title: '类型',
       align: 'center',
       dataIndex: 'type',
-      render: (val) => EXPORT_TYPE[val],
+      render: (val) => ({ ...EXPORT_TYPE, ...EXPORT_LIST_TYPE }[val]),
     },
     {
       title: '导出人',
@@ -70,7 +70,7 @@ const ExcelWrite = (props) => {
           loading={loading}
           columns={getColumns}
           rowKey={(row) => `${row.excelImportId}`}
-          dispatchType="baseData/fetchimportExcelList"
+          dispatchType="baseData/fetchImportExcelList"
           size="middle"
           {...excelList}
         ></TableDataBlock>
@@ -81,5 +81,5 @@ const ExcelWrite = (props) => {
 
 export default connect(({ baseData, loading }) => ({
   excelList: baseData.excelList,
-  loading: loading.effects['baseData/fetchimportExcelList'],
+  loading: loading.effects['baseData/fetchImportExcelList'],
 }))(ExcelWrite);
