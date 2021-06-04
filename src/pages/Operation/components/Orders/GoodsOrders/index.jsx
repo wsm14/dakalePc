@@ -301,6 +301,7 @@ const GoodsOrders = (props) => {
       <OrderDetailDraw
         visible={visible}
         total={list.length}
+        tabkey={tabkey}
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>

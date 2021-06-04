@@ -17,7 +17,7 @@ const CodeOrders = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
-  
+
   //详情
   const fetchGoodsDetail = (index) => {
     const { orderId } = list[index];
@@ -209,6 +209,7 @@ const CodeOrders = (props) => {
       <OrderDetailDraw
         visible={visible}
         total={list.length}
+        tabkey={tabkey}
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>

@@ -8,7 +8,7 @@ import QuestionTooltip from '@/components/QuestionTooltip';
 const { Panel } = Collapse;
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, total } = props;
+  const { visible, onClose, getDetail, total, tabkey } = props;
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, orderGoodsVerifications = [] } = detail;
 
@@ -19,20 +19,19 @@ const OrderDetailDraw = (props) => {
     },
     // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
     {
-      label: "核销号",
+      label: '核销号',
       name: 'orderGoodsVerificationId',
-      show:item.status==='1'
+      show: item.status === '1',
     },
     {
-      name:'status',
-      render:(val)=>`订单${VERIFICATION_STATUS[val]}`,
-      show:item.status!=='1',
+      name: 'status',
+      render: (val) => `订单${VERIFICATION_STATUS[val]}`,
+      show: item.status !== '1',
     },
     {
       label: '核销时间',
       name: 'verificationTime',
-      show:item.status==='1',
-     
+      show: item.status === '1',
     },
   ];
 
@@ -71,16 +70,17 @@ const OrderDetailDraw = (props) => {
       label: '营业时间',
       name: 'businessTime',
       span: 2,
+      show: tabkey === 'goods',
     },
     {
       label: '店铺类型',
       name: 'address',
       render: () => '单店',
     },
-    {
-      label: '集团名称',
-      name: 'groupName',
-    },
+    // {
+    //   label: '集团名称',
+    //   name: 'groupName',
+    // },
   ];
 
   //订单信息
@@ -136,6 +136,7 @@ const OrderDetailDraw = (props) => {
       name: 'useStartTime',
       span: 2,
       render: (val, row) => `${val}-${row.useEndTime}`,
+      show: tabkey === 'goods',
     },
     {
       label: '取消原因',
@@ -162,11 +163,12 @@ const OrderDetailDraw = (props) => {
     },
     {
       name: 'realPrice',
-      render: (val) => <div style={{ textAlign: 'center' }}>折扣价：{val ? `￥${val}` : '0'}</div>,
+      render: (val) => <div style={{ textAlign: 'center' }}>单价{val ? `￥${val}` : '0'}</div>,
     },
     {
       name: 'goodsCount',
-      render: (val) => <div style={{ textAlign: 'center' }}>数量：{val ? `￥${val}` : '0'}</div>,
+      render: (val) => <div style={{ textAlign: 'center' }}>数量：{val}</div>,
+      show: tabkey === 'goods',
     },
   ];
 
