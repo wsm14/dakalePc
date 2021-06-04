@@ -11,6 +11,7 @@ const MreSelect = ({
   onCancel,
   userList = [],
   tableList = [],
+  dispatch,
   dispatchType = 'userList/fetchGetList',
   params = {},
   loading,
@@ -21,8 +22,19 @@ const MreSelect = ({
   const [selectKey, setSelectKey] = useState([]);
 
   useEffect(() => {
+    fetchGetExpertLevel();
+  }, []);
+
+  useEffect(() => {
     visible && type === 'select' && setSelectKey(keys);
   }, [visible]);
+
+  // 获取哒人等级映射
+  const fetchGetExpertLevel = () => {
+    dispatch({
+      type: 'baseData/fetchGetExpertLevel',
+    });
+  };
 
   // 搜索参数
   const searchItems = [

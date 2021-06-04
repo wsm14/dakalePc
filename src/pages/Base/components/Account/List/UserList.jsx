@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Switch, Menu } from 'antd';
+import { Menu } from 'antd';
 import { WORKER_JOB_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSetForm from '../Form/UserSetForm';
 
@@ -97,19 +96,15 @@ const UserList = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="userStatus" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={val === '1'}
-            onClick={() => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val })}
-          />
-        </AuthConsumer>
-      ),
+      render: (val, record) => ({
+        auth: 'userStatus',
+        noAuth: val === '1' ? '启用' : '停用',
+        checked: val === '1',
+        onClick: () => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val }),
+      }),
     },
     {
       type: 'handle',
@@ -178,10 +173,9 @@ const UserList = (props) => {
 
   const extraBtn = [
     {
-      auth: 'userAdd',
-      key: '1',
-      onClick: () => setVisible({ visible: true }),
       text: '新增用户',
+      auth: 'userAdd',
+      onClick: () => setVisible({ visible: true }),
     },
   ];
 

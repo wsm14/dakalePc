@@ -4,9 +4,8 @@ import { Button, Tabs, Alert, Form, notification } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
-import FormCondition from '@/components/FormCondition';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import ExtraButton from '@/components/ExtraButton';
+import FormCondition from '@/components/FormCondition';
 
 const SpecialGoodDetail = (props) => {
   const {

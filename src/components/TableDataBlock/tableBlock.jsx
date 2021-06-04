@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { useDispatch } from 'umi';
-import { Table, Card, Space } from 'antd';
+import { Table, Card } from 'antd';
+import ExtraButton from '@/components/ExtraButton';
 import SearchCondition from '@/components/SearchCondition';
 import utils from './utils';
 
@@ -143,20 +144,21 @@ const TableBlockComponent = (props) => {
   // table change
   const tableChange = (page, filters, sorter) => {
     console.log(page, filters, sorter);
-    setTableParems({
-      ...tableParems,
-      page: page.current, // 页码
-      limit: page.pageSize, // 每页条数
-      // sortOrder: sorter.order, // 排序字段
-      // sortField: sorter.field, // 排序规则 升降
-    });
+    if (page.current !== tableParems.page || page.pageSize !== tableParems.limit)
+      setTableParems({
+        ...tableParems,
+        page: page.current, // 页码
+        limit: page.pageSize, // 每页条数
+        // sortOrder: sorter.order, // 排序字段
+        // sortField: sorter.field, // 排序规则 升降
+      });
   };
 
   const tabContent = (
     <>
       {!searchItems && btnExtra && (
         <div style={{ textAlign: 'right', marginBottom: 18 }}>
-          <Space>{btnExtra}</Space>
+          <ExtraButton list={btnExtra}></ExtraButton>
         </div>
       )}
       {searchItems && (

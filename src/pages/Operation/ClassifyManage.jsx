@@ -85,6 +85,7 @@ const ClassifyManageComponent = (props) => {
   const extraBtn = [
     {
       text: '新增分类',
+      auth: 'save',
       onClick: () => setVisible({ type: 'add' }),
     },
   ];

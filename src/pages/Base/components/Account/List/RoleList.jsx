@@ -1,7 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from '../Form/RoleSetForm';
 
@@ -93,20 +91,19 @@ const RoleList = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       width: 100,
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="roleStatus" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={val === '1'}
-            onClick={() => fetchEdit({ roleId: record.idString, status: 1 ^ val })}
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { idString: roleId } = row;
+        return {
+          auth: 'roleStatus',
+          noAuth: val === '1' ? '启用' : '停用',
+          checked: val === '1',
+          onClick: () => fetchEdit({ roleId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',
@@ -122,12 +119,7 @@ const RoleList = (props) => {
     },
   ];
 
-  const extraBtn = [
-    {
-      auth: 'roleAdd',
-      onClick: () => fetchFlag(),
-    },
-  ];
+  const extraBtn = [{ auth: 'roleAdd', onClick: () => fetchFlag() }];
 
   return (
     <>

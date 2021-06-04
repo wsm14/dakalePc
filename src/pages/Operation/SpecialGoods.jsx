@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag} from 'antd';
+import { Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -449,6 +449,7 @@ const SpecialGoods = (props) => {
 
   const btnList = [
     {
+      auth: 'save',
       onClick: () => setVisibleSet({ type: 'add', show: true }),
     },
   ];

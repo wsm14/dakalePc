@@ -108,7 +108,7 @@ const ExpertTempList = (props) => {
         {
           type: 'cancelTemp',
           pop: true,
-          visible: row.status !== '2',
+          visible: row.status === '1',
           click: () => fetchExpertStop({ userTempLevelId }),
         },
       ],
@@ -131,8 +131,9 @@ const ExpertTempList = (props) => {
     });
   };
 
-  const eextraBtn = [
+  const extraBtn = [
     {
+      auth: 'save',
       onClick: () => setVisible(true),
     },
   ];
@@ -142,7 +143,7 @@ const ExpertTempList = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={eextraBtn}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

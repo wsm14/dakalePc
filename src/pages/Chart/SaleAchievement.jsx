@@ -91,7 +91,7 @@ const SaleAchievement = (props) => {
     {
       type: 'excel',
       dispatch: 'saleAchievement/fetchGetExcel',
-      dispatchData: get(),
+      data: get(),
       exportProps: {
         header: getColumns,
         fieldRender: {

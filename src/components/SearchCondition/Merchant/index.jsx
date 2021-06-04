@@ -12,8 +12,6 @@ const { Option } = Select;
 const MerchantSelect = (props) => {
   const {
     dispatch,
-    allItem = 'true',
-    defaultValue = '',
     fieldNames = {},
     selectList,
     loading,
@@ -57,7 +55,6 @@ const MerchantSelect = (props) => {
       maxTagTextLength={5}
       {...multProps}
     >
-      {!multiple && allItem && <Option value={defaultValue}>全部</Option>}
       {selectList.map((data, j) => {
         if (data) {
           // 兼容数组

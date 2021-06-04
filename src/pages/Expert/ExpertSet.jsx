@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
 import ClassifySet from './components/ExpertSet/ClassifySet';
@@ -22,21 +21,17 @@ const ExpertSet = (props) => {
     },
     {
       title: '显示状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="status" noAuth={val === '1' ? '显示' : '不显示'}>
-          <Switch
-            checked={val == '1'}
-            onClick={() =>
-              fetchClassifyStatusEdit(
-                { domainId: record.domainId, status: 1 ^ Number(record.status) },
-                val,
-              )
-            }
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { domainId } = row;
+        return {
+          auth: 'status',
+          noAuth: val === '1' ? '显示' : '不显示',
+          checked: val === '1',
+          onClick: () => fetchClassifyStatusEdit({ domainId, status: 1 ^ Number(val) }, val),
+        };
+      },
     },
     {
       title: '话题',
@@ -134,12 +129,9 @@ const ExpertSet = (props) => {
     fetchTradeList();
   }, [visible]);
 
-//表格额外按钮
+  //表格额外按钮
   const extraBtn = [
-    {
-      auth: 'savePClassify',
-      onClick: () => handleClassifySet('add', { parentDomainId: 0 }),
-    },
+    { auth: 'savePClassify', onClick: () => handleClassifySet('add', { parentDomainId: 0 }) },
   ];
 
   return (

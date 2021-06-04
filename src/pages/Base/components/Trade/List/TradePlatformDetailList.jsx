@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Table } from 'antd';
+import { Modal, Table } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradePlatformSet from '../Form/TradePlatformSet';
 
@@ -123,24 +123,13 @@ const TradePlatformDetailList = (props) => {
       columns: columns(),
       rowKey: 'freeBean',
       list: detailList.list.length ? detailList.list[0].merchantSettleObjects : [],
-      btnExtra: (
-        <Button
-          className="dkl_green_btn"
-          onClick={() => handleDataSet('moneySet', '', 999, detailList.list[0])}
-        >
-          新增
-        </Button>
-      ),
+      btnExtra: [{ onClick: () => handleDataSet('moneySet', '', 999, detailList.list[0]) }],
     },
     false: {
       columns: getColumns,
       rowKey: 'configMerchantSettleIdString',
       list: detailList.list,
-      btnExtra: (
-        <Button className="dkl_green_btn" onClick={() => handleDataSet('areaAdd')}>
-          新增面积
-        </Button>
-      ),
+      btnExtra: [{ onClick: () => handleDataSet('areaAdd') }],
       expandable: {
         expandedRowRender: (data) => rowTable(data.merchantSettleObjects, data),
       },

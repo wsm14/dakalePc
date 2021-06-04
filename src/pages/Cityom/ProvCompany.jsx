@@ -127,6 +127,7 @@ const ProvCompany = (props) => {
 
   const extraBtn = [
     {
+      auth: 'save',
       onClick: () => {
         dispatch({
           type: 'provCompany/fetchCloseData',

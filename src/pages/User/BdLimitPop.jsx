@@ -4,7 +4,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import LimitPopSet from './components/LimitPop/LimitPopSet';
 
 const ServiceLimitPop = (props) => {
-  const { serviceLimitPop, loading, dispatch } = props;
+  const { serviceLimitPop, loading } = props;
 
   const [visibleLimit, setVisibleLimit] = useState(false);
 
@@ -54,8 +54,8 @@ const ServiceLimitPop = (props) => {
   return (
     <>
       <TableDataBlock
-        btnExtra={extraBtn}
         keepData
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

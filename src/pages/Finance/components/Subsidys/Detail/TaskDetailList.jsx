@@ -8,51 +8,96 @@ const TaskDetailList = (props) => {
   const { detailList, loading, visible = {}, onClose } = props;
 
   const { show = false, detail = {} } = visible;
-  const { subsidyId, taskName, subsidizedBeans, recycleBean, mode } = detail;
+  const { subsidyId, taskName, subsidizedBeans, recycleBean, role = 'user', mode } = detail;
 
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '店铺名称',
-      name: 'merchantName',
+  const tableProps = {
+    user: {
+      api: 'subsidyManage/fetchSubsidyTaskUserDetailList',
+      searchItems: [
+        {
+          label: '用户昵称',
+          name: 'userName',
+        },
+        {
+          label: '手机号',
+          name: 'mobile',
+        },
+      ],
+      getColumns: [
+        {
+          title: '用户ID',
+          dataIndex: 'userId',
+        },
+        {
+          title: '用户昵称',
+          dataIndex: 'userName',
+        },
+        {
+          title: '用户手机号',
+          dataIndex: 'userMobile',
+        },
+        {
+          title: '豆号',
+          align: 'center',
+          dataIndex: 'userBeanCode',
+        },
+        {
+          title: '级别',
+          dataIndex: 'userLevel',
+        },
+        {
+          title: '注册地',
+          dataIndex: 'provinceName',
+          render: (val, row) =>
+            `${val || '--'}/${row.cityName || '--'}/${row.districtName || '--'}`,
+        },
+        {
+          title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
+          align: 'right',
+          dataIndex: 'rechargeBeans',
+        },
+      ],
     },
-  ];
-
-  const getColumns = [
-    {
-      title: '店铺名称',
-      width: 200,
-      dataIndex: 'merchantName',
-      ellipsis: { lines: 3 },
+    merchant: {
+      api: 'subsidyManage/fetchSubsidyTaskDetailList',
+      searchItems: [
+        {
+          label: '店铺名称',
+          name: 'merchantName',
+        },
+      ],
+      getColumns: [
+        {
+          title: '店铺名称',
+          width: 200,
+          dataIndex: 'merchantName',
+          ellipsis: { lines: 3 },
+        },
+        {
+          title: '店铺帐号',
+          dataIndex: 'account',
+        },
+        {
+          title: '所属商圈',
+          dataIndex: 'businessHub',
+        },
+        {
+          title: '所属行业',
+          align: 'center',
+          dataIndex: 'category',
+        },
+        {
+          title: '地址',
+          dataIndex: 'address',
+        },
+        {
+          title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
+          align: 'right',
+          dataIndex: 'rechargeBeans',
+        },
+      ],
     },
-    {
-      title: '店铺帐号',
-      dataIndex: 'account',
-    },
-    {
-      title: '所属商圈',
-      dataIndex: 'businessHub',
-    },
-    {
-      title: '所属行业',
-      align: 'center',
-      dataIndex: 'category',
-    },
-    {
-      title: '地址',
-      dataIndex: 'address',
-    },
-    {
-      title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
-      align: 'right',
-      dataIndex: 'rechargeBeans',
-    },
-    // {
-    //   title: '已消耗卡豆数',
-    //   align: 'right',
-    //   dataIndex: 'topicDesc',
-    // },
-  ];
+  }[role];
 
   return (
     <Modal
@@ -69,11 +114,11 @@ const TaskDetailList = (props) => {
         order
         noCard={false}
         loading={loading}
-        searchItems={searchItems}
-        columns={getColumns}
-        rowKey={(row) => `${row.merchantId}`}
+        searchItems={tableProps.searchItems}
+        columns={tableProps.getColumns}
+        rowKey={(row) => row.merchantId || row.userId}
         params={{ subsidyId }}
-        dispatchType="subsidyManage/fetchSubsidyTaskDetailList"
+        dispatchType={tableProps.api}
         size="middle"
         {...detailList}
       ></TableDataBlock>
@@ -83,5 +128,7 @@ const TaskDetailList = (props) => {
 
 export default connect(({ subsidyManage, loading }) => ({
   detailList: subsidyManage.detailList,
-  loading: loading.effects['subsidyManage/fetchSubsidyTaskDetailList'],
+  loading:
+    loading.effects['subsidyManage/fetchSubsidyTaskDetailList'] ||
+    loading.effects['subsidyManage/fetchSubsidyTaskUserDetailList'],
 }))(TaskDetailList);

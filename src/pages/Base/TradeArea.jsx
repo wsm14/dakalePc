@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch, Card } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Card } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeAreaLeft from './components/TradeArea/Left';
 import TradeAreaSet from './components/TradeArea/Form/TradeAreaSet';
@@ -64,19 +63,18 @@ const TradeArea = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="edit" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={val === '1'}
-            onClick={() => fetchSet({ businessHubId: record.businessHubIdString, status: 1 ^ val })}
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { businessHubIdString: businessHubId } = row;
+        return {
+          auth: 'edit',
+          noAuth: val === '1' ? '启用' : '停用',
+          checked: val === '1',
+          onClick: () => fetchSet({ businessHubId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',
@@ -110,6 +108,7 @@ const TradeArea = (props) => {
   const extraBtn = [
     {
       text: '新增商圈',
+      auth: 'save',
       disabled: !(selectCode.districtCode && selectCode.cityCode),
       onClick: () => setData(),
     },

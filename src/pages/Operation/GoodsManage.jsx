@@ -272,6 +272,7 @@ const GoodsManageComponent = (props) => {
 
   const extraBtn = [
     {
+      auth: 'save',
       onClick: () => setVisible({ type: 'addGoods' }),
     },
   ];

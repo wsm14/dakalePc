@@ -126,6 +126,7 @@ const AreaCenter = (props) => {
 
   const extraBtn = [
     {
+      auth: 'save',
       onClick: () => {
         dispatch({
           type: 'areaCenter/fetchCloseData',

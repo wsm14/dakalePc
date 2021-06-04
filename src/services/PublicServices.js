@@ -165,13 +165,14 @@ export function fetchImportExcelList(params) {
   });
 }
 
-// 店铺列表搜索，
+// get 店铺列表搜索
 export function fetchGetMerchantsSearch(params) {
   return request('/admin/merchantManagement/listMerchantUsedToSearch', {
     params,
   });
 }
-//用户列表-用于搜索 
+
+// get 用户列表 - 用于搜索
 export function fetchGetUsersSearch(params) {
   return request('/admin/userManagement/listUserUsedToSearch', {
     params,

@@ -200,6 +200,7 @@ const CouponManageComponent = (props) => {
     },
     {
       text: '新建券',
+      auth: 'save',
       onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];

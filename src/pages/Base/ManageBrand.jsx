@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -52,21 +51,17 @@ const BusinessBrandComponent = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, row) => (
-        <AuthConsumer auth="status" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checked={val === '1'}
-            onClick={() =>
-              fetchMerBrandEdit({
-                configBrandIdString: row.configBrandIdString,
-                status: 1 ^ Number(val),
-              })
-            }
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { configBrandIdString } = row;
+        return {
+          auth: 'status',
+          noAuth: val === '1' ? '启用' : '停用',
+          checked: val === '1',
+          onClick: () => fetchMerBrandEdit({ configBrandIdString, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',
