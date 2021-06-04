@@ -156,7 +156,7 @@ const GoodsOrders = (props) => {
       ),
     },
     {
-      title: '价格/数量',
+      title: '单价/数量',
       dataIndex: 'realPrice',
       render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
