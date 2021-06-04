@@ -130,19 +130,20 @@ const CodeOrders = (props) => {
       title: '商户实收',
       align: 'center',
       dataIndex: 'actualCashFee',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{`￥${
-            (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0)
-              ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
-              : 0
-          }`}</div>
-          <div className={styles.fontColor}>
-            {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+      render: (val, record) => {
+        const actualBean= record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${
+              Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0 }`}</div>
+           
+            <div className={styles.fontColor}>
+              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '支付时间',

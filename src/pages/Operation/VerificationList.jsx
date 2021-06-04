@@ -140,19 +140,18 @@ const VerificationList = (props) => {
       title: '商品佣金',
       align: 'center',
       dataIndex: 'cashCommission',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{`￥${
-            (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0)
-              ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
-              : 0
-          }`}</div>
-          <div className={styles.fontColor}>
-            {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+      render: (val, record) => {
+        const bean = record.beanCommission ? record.beanCommission / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + bean ? (Number(val) + bean).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '下单/核销时间',
