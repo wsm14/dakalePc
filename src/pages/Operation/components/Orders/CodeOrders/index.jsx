@@ -12,8 +12,6 @@ const CodeOrders = (props) => {
     ordersList,
     loading,
     dispatch,
-    hubData,
-    loadings,
     tabkey,
     merchantList,
     loadingMerchant,

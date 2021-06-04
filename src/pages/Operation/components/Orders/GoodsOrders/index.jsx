@@ -21,8 +21,6 @@ const GoodsOrders = (props) => {
     ordersList,
     loading,
     dispatch,
-    hubData,
-    loadings,
     tabkey,
     merchantList,
     loadingMerchant,
@@ -35,15 +33,6 @@ const GoodsOrders = (props) => {
 
   const childRef = useRef();
 
-  // 获取商圈
-  const fetchGetHubSelect = (districtCode) => {
-    dispatch({
-      type: 'baseData/fetchGetHubData',
-      payload: {
-        districtCode,
-      },
-    });
-  };
 
   // 搜索店铺
   const fetchClassifyGetMerchant = debounce((content) => {
