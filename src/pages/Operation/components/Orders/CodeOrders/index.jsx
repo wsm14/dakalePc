@@ -92,7 +92,7 @@ const CodeOrders = (props) => {
       ),
     },
     {
-      title: '用户',
+      title: '下单人',
       align: 'center',
       dataIndex: 'userMobile',
       render: (val, row) => (
@@ -139,6 +139,23 @@ const CodeOrders = (props) => {
            
             <div className={styles.fontColor}>
               {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
+    },
+    {
+      title: '商品佣金',
+      align: 'center',
+      dataIndex: 'cashCommission',
+      render: (val, record) => {
+        const beanCount = record.beanCommission ? record.beanCommission / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
             </div>
             <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
