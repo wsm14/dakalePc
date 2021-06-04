@@ -122,12 +122,6 @@ const OrderDetailDraw = (props) => {
       render: (val) => USER_SOURCE[val],
     },
     {
-      label: '支付方式',
-      name: 'payType',
-      render: (val) => PAY_TYPE[val],
-      show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
-    },
-    {
       label: '现金支付渠道',
       name: 'payType',
       render: (val) => PAY_TYPE[val],
