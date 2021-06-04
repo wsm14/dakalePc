@@ -42,12 +42,11 @@ const OrderDetailDraw = (props) => {
     {
       label: '核销号',
       name: 'orderGoodsVerificationId',
-      show: item.status === '1',
+      show: item.orderGoodsVerificationId,
     },
     {
       name: 'status',
       render: (val) => `订单${VERIFICATION_STATUS[val]}`,
-      show: item.status !== '1',
     },
     {
       label: '核销时间',
