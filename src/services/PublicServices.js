@@ -171,7 +171,8 @@ export function fetchGetMerchantsSearch(params) {
     params,
   });
 }
-//用户列表-用于搜索 
+
+//用户列表-用于搜索
 export function fetchGetUsersSearch(params) {
   return request('/admin/userManagement/listUserUsedToSearch', {
     params,
