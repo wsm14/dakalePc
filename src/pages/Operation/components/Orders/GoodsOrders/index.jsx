@@ -51,8 +51,6 @@ const GoodsOrders = (props) => {
     dispatch({
       type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        limit: 50,
-        page: 1,
         content,
       },
     });
@@ -152,15 +150,7 @@ const GoodsOrders = (props) => {
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
-    {
-      label: '商圈',
-      name: 'businessHubIdStr',
-      type: 'select',
-      loading: loadings.models.baseData,
-      allItem: false,
-      select: hubData,
-      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
-    },
+   
   ];
 
   // table 表头
@@ -226,9 +216,6 @@ const GoodsOrders = (props) => {
       dataIndex: 'realPrice',
       render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
-          {/* <div style={{ textDecoration: 'line-through', color: '#999' }}>
-            {val ? `￥${val}` : 0}
-          </div> */}
           <div>{val ? `￥${val}` : 0}</div>
           <div>{row.goodsCount ? `×${row.goodsCount}` : ''}</div>
         </div>

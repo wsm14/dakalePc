@@ -12,19 +12,27 @@ const OrderDetailDraw = (props) => {
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, orderGoodsVerifications = [] } = detail;
 
-  const couponItem = [
+  const couponItem = (item) => [
     {
       label: '券码',
       name: 'verificationCode',
     },
+    // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
     {
-      label: '核销号',
+      label: "核销号",
       name: 'orderGoodsVerificationId',
-      render: (val, row) => ((row.status==='1'&& val&& row.verificationTime) ? val :  `订单${VERIFICATION_STATUS[row.status]}`),
+      show:item.status==='1'
+    },
+    {
+      name:'status',
+      render:(val)=>`订单${VERIFICATION_STATUS[val]}`,
+      show:item.status!=='1',
     },
     {
       label: '核销时间',
       name: 'verificationTime',
+      show:item.status==='1',
+     
     },
   ];
 
@@ -180,22 +188,19 @@ const OrderDetailDraw = (props) => {
           <span className={styles.orderDetail_span}>创建时间</span>
           <span>{detail.createTime}</span>
         </div>
-        {
-          (status === '1' ||
-            status === '3' ||
-            status === '4' ||
-            status === '6' ||
-            (status === '2' &&
-              (closeType === 'expiredRefund' || closeType === 'manualRefund'))) && (
-            <>
-              <div className={styles.lineClass_con}></div>
-              <div className={styles.item_detail_con}>
-                <span className={styles.orderDetail_span}>支付时间</span>
-                <span>{detail.payTime}</span>
-              </div>
-            </>
-          )
-        }
+        {(status === '1' ||
+          status === '3' ||
+          status === '4' ||
+          status === '6' ||
+          (status === '2' && (closeType === 'expiredRefund' || closeType === 'manualRefund'))) && (
+          <>
+            <div className={styles.lineClass_con}></div>
+            <div className={styles.item_detail_con}>
+              <span className={styles.orderDetail_span}>支付时间</span>
+              <span>{detail.payTime}</span>
+            </div>
+          </>
+        )}
         {status === '2' &&
           (closeType === 'unpaidManualCancel' || closeType === 'unpaidExpiredCancel') && (
             <>
@@ -221,9 +226,9 @@ const OrderDetailDraw = (props) => {
       )}
       {orderGoodsVerifications.map((item) => (
         <DescriptionsCondition
-          labelStyle={{width:100}}
+          labelStyle={{ width: 100 }}
           key={item.orderGoodsVerificationId}
-          formItems={couponItem}
+          formItems={couponItem(item)}
           initialValues={item}
           column={3}
         ></DescriptionsCondition>
@@ -263,7 +268,7 @@ const OrderDetailDraw = (props) => {
           alignItems: 'flex-start',
           borderTop: '1px solid #999',
           margin: '30px 0',
-          paddingTop:30,
+          paddingTop: 30,
         }}
       >
         <div>

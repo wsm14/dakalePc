@@ -41,8 +41,6 @@ const CodeOrders = (props) => {
     dispatch({
       type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        limit: 50,
-        page: 1,
         content,
       },
     });
@@ -112,15 +110,6 @@ const CodeOrders = (props) => {
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
-    // {
-    //   label: '商圈',
-    //   name: 'businessHubIdStr',
-    //   type: 'select',
-    //   loading: loadings.models.baseData,
-    //   allItem: false,
-    //   select: hubData,
-    //   fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
-    // },
     {
       label: '支付日期',
       type: 'rangePicker',
