@@ -292,7 +292,7 @@ const OrderDetailDraw = (props) => {
               <DownOutlined />
             </span>
             <span>{`￥${
-              Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0) > 0
+             (Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0)) > 0
                 ? (Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0)).toFixed(2)
                 : 0
             }(含${detail.beanFee ? detail.beanFee : 0}卡豆)`}</span>
