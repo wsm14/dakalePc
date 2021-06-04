@@ -154,7 +154,7 @@ export const SHARE_STATUS = [
   '即将发布',
 ];
 //核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
-export const VERIFICATION_STATUS= ["未核销","已核销","已过期","申请退款中","关闭"]
+export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
