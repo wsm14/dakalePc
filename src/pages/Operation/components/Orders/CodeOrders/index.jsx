@@ -5,6 +5,7 @@ import { ORDER_PAY_LOGO } from '@/common/constant';
 import OrderDetailDraw from '../OrderDetailDraw';
 import { Tag, Avatar } from 'antd';
 import Ellipsis from '@/components/Ellipsis';
+import styles from '../style.less'
 
 const CodeOrders = (props) => {
   const {
@@ -89,7 +90,7 @@ const CodeOrders = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div>{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+          <div className={styles.specFont}>{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
         </div>
       ),
     },
@@ -114,8 +115,8 @@ const CodeOrders = (props) => {
         return (
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
-            <div>{+record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
-            <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+            <div className={styles.fontColor}>{record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
         );
       },
@@ -137,8 +138,8 @@ const CodeOrders = (props) => {
               ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
               : 0
           }`}</div>
-          <div>{+record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -148,13 +149,13 @@ const CodeOrders = (props) => {
       dataIndex: 'cashCommission',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
-          <div>{`￥${
+          <div >{`￥${
             (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0)
               ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
               : 0
           }`}</div>
-          <div>{+record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },

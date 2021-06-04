@@ -6,6 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
 import coupon from './img/coupon.png';
+import styles from './style.less'
 
 const VerificationList = (props) => {
   const { verificationList, loading } = props;
@@ -72,7 +73,7 @@ const VerificationList = (props) => {
                 </Ellipsis>
               </div>
 
-              <div style={{ marginTop: 5 }}>订单号：{row.orderSn}</div>
+              <div style={{ marginTop: 5 }} className={styles.specFont}>订单号：{row.orderSn}</div>
             </div>
           </PopImgShow>
         </Badge.Ribbon>
@@ -91,7 +92,7 @@ const VerificationList = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</div>
+        <div className={styles.specFont}>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</div>
         </div>
       ),
     },
@@ -113,10 +114,10 @@ const VerificationList = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${val}`}</div>
-          <div>
-            {+record.verificationBeanFee ? `(${record.verificationBeanFee}卡豆` : '(' + '0卡豆'}
+          <div className={styles.fontColor}>
+            {record.verificationBeanFee ? `(${record.verificationBeanFee}卡豆` : '(' + '0卡豆'}
           </div>
-          <div>{(record.verificationPayFee ? `+ ￥${record.verificationPayFee}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{(record.verificationPayFee ? `+ ￥${record.verificationPayFee}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -127,8 +128,8 @@ const VerificationList = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${record.merchantTotalBean}`}</div>
-          <div>{+record.merchantBean ? `(${record.merchantBean}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{record.merchantBean ? `(${record.merchantBean}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -143,8 +144,8 @@ const VerificationList = (props) => {
               ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
               : 0
           }`}</div>
-          <div>{+record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },

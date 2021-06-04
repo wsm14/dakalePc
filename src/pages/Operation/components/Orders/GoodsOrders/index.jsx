@@ -14,6 +14,7 @@ import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
 import coupon from '../../../img/coupon.png';
+import styles from '../style.less'
 
 const GoodsOrders = (props) => {
   const {
@@ -130,7 +131,7 @@ const GoodsOrders = (props) => {
               </Ellipsis>
             </div>
 
-            <div style={{ marginTop: 5 }}>订单号：{row.orderSn}</div>
+            <div style={{ marginTop: 5 }} className={styles.specFont}>订单号：{row.orderSn}</div>
           </div>
         </div>
       ),
@@ -147,7 +148,7 @@ const GoodsOrders = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div>{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+          <div className={styles.specFont}>{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
         </div>
       ),
     },
@@ -183,8 +184,8 @@ const GoodsOrders = (props) => {
         return (
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
-            <div>{+record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
-            <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+            <div className={styles.fontColor}>{record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}</div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
         );
       },
@@ -200,8 +201,8 @@ const GoodsOrders = (props) => {
               ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
               : 0
           }`}</div>
-          <div>{+record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -216,8 +217,8 @@ const GoodsOrders = (props) => {
               ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
               : 0
           }`}</div>
-          <div>{+record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
-          <div>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
       ),
     },
@@ -229,8 +230,8 @@ const GoodsOrders = (props) => {
       render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
-          <div>已核销：{row.verificationCount}</div>
-          <div>{row.verificationTime}</div>
+          <div className={styles.fontColor} >已核销：{row.verificationCount}</div>
+          <div className={styles.fontColor}>{row.verificationTime}</div>
         </div>
       ),
     },
