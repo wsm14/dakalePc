@@ -284,7 +284,10 @@ const OrderDetailDraw = (props) => {
         <div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span>订单金额</span>
-            <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
+            <span>
+              {`￥${Number(detail.totalFee)*detail.goodsCount}`}
+              {/* {detail.totalFee ? `￥${detail.totalFee}` : 0} */}
+              </span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span onClick={() => handleShow('sale')}>
@@ -337,7 +340,8 @@ const OrderDetailDraw = (props) => {
             </span>
 
             <span>
-              ￥{detail.cashCommission}({detail.beanCommission}卡豆)
+            ￥{`${Number(detail.cashCommission)+Number(detail.beanCommission/100)}`}({detail.beanCommission}卡豆)
+              {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
             </span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
@@ -348,8 +352,11 @@ const OrderDetailDraw = (props) => {
                 type="quest"
               ></QuestionTooltip>
             </span>
-            <span>{`￥${detail.actualCashFee}
-            (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`}</span>
+            <span>
+            ￥{`${Number(detail.actualCashFee)+Number(detail.actualBeanFee/100)}`}({detail.actualBeanFee}卡豆)
+              {/* {`￥${detail.actualCashFee}
+            (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
+            </span>
           </div>
         </div>
       </div>
