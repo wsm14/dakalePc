@@ -196,8 +196,6 @@ const UserList = (props) => {
         style={{
           width: 200,
           marginRight: 24,
-          overflowY: 'auto',
-          overflowX: 'hidden',
           maxHeight: 770,
         }}
       >
