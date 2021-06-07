@@ -47,12 +47,12 @@ const SaleBlockComponent = ({
                 <Statistic
                   title={item.title}
                   value={
-                    saleTotal[item.key] >= 100000000
+                    saleTotal[item.key] > 999999
                       ? saleTotal[item.key] / 1000
                       : saleTotal[item.key] || 0
                   }
                   precision={0}
-                  suffix={saleTotal[item.key] > 100000000 ? 'w' : null}
+                  suffix={saleTotal[item.key] > 999999 ? 'w' : null}
                   loading={loading.effects[api]}
                   valueStyle={{ color: '#1890ff' }}
                 />
