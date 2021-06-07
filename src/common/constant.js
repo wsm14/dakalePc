@@ -312,10 +312,10 @@ export const SHARE_TYPE = { video: '视频', image: '图文' };
 
 // 订单类型
 export const ORDERS_TYPE = {
-  kolGoods: '哒人带货',
+  // kolGoods: '哒人带货',
   specialGoods: '周边特惠',
   reduceCoupon: '抵扣券订单',
-  marketCoupon: '兑换券订单',
+  // marketCoupon: '兑换券订单',
 };
 
 // 平台收益订单类型
