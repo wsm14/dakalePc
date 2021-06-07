@@ -13,7 +13,7 @@ const MerchantSelect = (props) => {
   const {
     dispatch,
     fieldNames = {},
-    selectList,
+    selectList = [],
     loading,
     placeholder,
     multiple = false,
@@ -43,7 +43,7 @@ const MerchantSelect = (props) => {
       allowClear
       showSearch
       optionFilterProp="children"
-      dropdownMatchSelectWidth
+      dropdownMatchSelectWidth={false}
       style={{ width: '100%' }}
       loading={loading}
       notFoundContent={
