@@ -339,7 +339,7 @@ const OrderDetailDraw = (props) => {
             </span>
 
             <span>
-            ￥{`${Number(detail.cashCommission)+Number(detail.beanCommission/100)}`}({detail.beanCommission}卡豆)
+            ￥{`${(Number(detail.cashCommission)+Number(detail.beanCommission/100)).toFixed(2)}`}(含{detail.beanCommission}卡豆)
               {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
             </span>
           </div>
@@ -352,7 +352,7 @@ const OrderDetailDraw = (props) => {
               ></QuestionTooltip>
             </span>
             <span>
-            ￥{`${Number(detail.actualCashFee)+Number(detail.actualBeanFee/100)}`}({detail.actualBeanFee}卡豆)
+            ￥{`${(Number(detail.actualCashFee)+Number(detail.actualBeanFee/100)).toFixed(2)}`}(含{detail.actualBeanFee}卡豆)
               {/* {`￥${detail.actualCashFee}
             (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
             </span>
