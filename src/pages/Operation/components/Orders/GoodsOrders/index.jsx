@@ -14,6 +14,7 @@ import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
 import coupon from '@public/coupon.png';
+import excelHeder from './excelHeder';
 import styles from '../style.less';
 
 const GoodsOrders = (props) => {
@@ -182,12 +183,11 @@ const GoodsOrders = (props) => {
       align: 'center',
       dataIndex: 'actualCashFee',
       render: (val, record) => {
-        const actualBean= record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${
-              Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0 }`}</div>
-           
+            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
+
             <div className={styles.fontColor}>
               {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
             </div>
@@ -262,10 +262,7 @@ const GoodsOrders = (props) => {
       type: 'excel',
       dispatch: 'ordersList/fetchOrdersImport',
       data: { ...get(), goodsOrScanFlag: tabkey },
-      exportProps: {
-        header: getColumns.slice(0, -1),
-        fieldRender: { merchantName: (val) => val, goodsName: (val) => val },
-      },
+      exportProps: { header: excelHeder },
     },
   ];
 
