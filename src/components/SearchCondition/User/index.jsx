@@ -43,7 +43,7 @@ const UserSelect = (props) => {
       allowClear
       showSearch
       optionFilterProp="children"
-      dropdownMatchSelectWidth
+      dropdownMatchSelectWidth={false}
       style={{ width: '100%' }}
       loading={loading}
       notFoundContent={
