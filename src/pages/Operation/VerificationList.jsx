@@ -128,7 +128,7 @@ const VerificationList = (props) => {
       dataIndex: 'merchantCash',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
-          <div>{`￥${record.merchantTotalBean}`}</div>
+          <div>{`￥${(record.merchantTotalBean?record.merchantTotalBean/100:0).toFixed(2)}`}</div>
           <div className={styles.fontColor}>
             {record.merchantBean ? `(${record.merchantBean}卡豆` : '(' + '0卡豆'}
           </div>
@@ -141,14 +141,17 @@ const VerificationList = (props) => {
       align: 'center',
       dataIndex: 'cashCommission',
       render: (val, record) => {
-        const bean = record.beanCommission ? record.beanCommission / 100 : 0;
+        const mecash =(record.merchantTotalBean?record.merchantTotalBean/100:0).toFixed(2);
+        const bean =(Number(record.verificationTotalFee) - Number(mecash)).toFixed(2)
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${Number(val) + bean ? (Number(val) + bean).toFixed(2) : 0}`}</div>
+            <div>{`￥${bean}`}</div>
             <div className={styles.fontColor}>
-              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+              {`(${record.verificationBeanFee-record.merchantBean}卡豆` }
             </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+            <div className={styles.fontColor}>
+              {`￥${(Number(record.verificationPayFee)-Number(record.merchantCash)).toFixed(2)})`}
+              </div>
           </div>
         );
       },
