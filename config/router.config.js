@@ -388,7 +388,7 @@ export default [
       },
       {
         path: '/operation/verificationList',
-        name: '订单列表',
+        name: '核销列表',
         component: './Operation/VerificationList',
         buttons: ['exportList'],
       },

@@ -285,7 +285,7 @@ export default {
         type: 'save',
         payload: {
           merchantList: content.userMerchantDTOS.map((item) => ({
-            name: item.merchantName,
+            name: `${item.merchantName} ${item.account}`,
             otherData: item.address,
             value: item.userMerchantIdString,
             commissionRatio: item.commissionRatio,

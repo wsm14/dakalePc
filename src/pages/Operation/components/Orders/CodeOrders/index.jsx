@@ -47,22 +47,18 @@ const CodeOrders = (props) => {
       type: 'merchant',
     },
     {
-      label: '商品名称',
-      name: 'goodsName',
+      label: '支付日期',
+      type: 'rangePicker',
+      name: 'orderTimeStart',
+      end: 'orderTimeEnd',
     },
     {
-      label: '区域',
+      label: '地区',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
       onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
-    },
-    {
-      label: '支付日期',
-      type: 'rangePicker',
-      name: 'orderTimeStart',
-      end: 'orderTimeEnd',
     },
   ];
 
@@ -92,7 +88,7 @@ const CodeOrders = (props) => {
       ),
     },
     {
-      title: '用户',
+      title: '下单人',
       align: 'center',
       dataIndex: 'userMobile',
       render: (val, row) => (
@@ -130,19 +126,37 @@ const CodeOrders = (props) => {
       title: '商户实收',
       align: 'center',
       dataIndex: 'actualCashFee',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{`￥${
-            (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0)
-              ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
-              : 0
-          }`}</div>
-          <div className={styles.fontColor}>
-            {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+      render: (val, record) => {
+        const actualBean= record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${
+              Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0 }`}</div>
+           
+            <div className={styles.fontColor}>
+              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-        </div>
-      ),
+        );
+      },
+    },
+    {
+      title: '商品佣金',
+      align: 'center',
+      dataIndex: 'cashCommission',
+      render: (val, record) => {
+        const beanCount = record.beanCommission ? record.beanCommission / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
     },
     {
       title: '支付时间',

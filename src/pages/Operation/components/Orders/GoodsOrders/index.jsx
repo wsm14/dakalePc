@@ -47,13 +47,13 @@ const GoodsOrders = (props) => {
       name: 'orderSn',
     },
     {
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
       label: '下单人',
       name: 'userId',
       type: 'user',
-    },
-    {
-      label: '商品名称',
-      name: 'goodsName',
     },
     {
       label: '店铺/集团',
@@ -72,12 +72,6 @@ const GoodsOrders = (props) => {
       type: 'select',
       select: ORDERS_STATUS,
     },
-    // {
-    //   label: '订单关闭类型',
-    //   name: 'closeType',
-    //   type: 'select',
-    //   select: ORDER_CLOSE_TYPE,
-    // },
     {
       label: '下单日期',
       type: 'rangePicker',
@@ -91,7 +85,7 @@ const GoodsOrders = (props) => {
       end: 'verificationTimeEnd',
     },
     {
-      label: '区域',
+      label: '地区',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
@@ -156,7 +150,7 @@ const GoodsOrders = (props) => {
       ),
     },
     {
-      title: '价格/数量',
+      title: '单价/数量',
       dataIndex: 'realPrice',
       render: (val, row) => (
         <div style={{ textAlign: 'center' }}>
@@ -187,37 +181,37 @@ const GoodsOrders = (props) => {
       title: '商户实收',
       align: 'center',
       dataIndex: 'actualCashFee',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{`￥${
-            (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0)
-              ? (Number(val) + record.actualBeanFee ? record.actualBeanFee / 100 : 0).toFixed(2)
-              : 0
-          }`}</div>
-          <div className={styles.fontColor}>
-            {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+      render: (val, record) => {
+        const actualBean= record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${
+              Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0 }`}</div>
+           
+            <div className={styles.fontColor}>
+              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '商品佣金',
       align: 'center',
       dataIndex: 'cashCommission',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{`￥${
-            (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0)
-              ? (Number(val) + record.beanCommission ? record.beanCommission / 100 : 0).toFixed(2)
-              : 0
-          }`}</div>
-          <div className={styles.fontColor}>
-            {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+      render: (val, record) => {
+        const beanCount = record.beanCommission ? record.beanCommission / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
           </div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-        </div>
-      ),
+        );
+      },
     },
 
     {

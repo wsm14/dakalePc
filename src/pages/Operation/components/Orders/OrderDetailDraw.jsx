@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { PAY_TYPE, VERIFICATION_STATUS, ORDER_TYPE_PROPS, USER_SOURCE } from '@/common/constant';
+import {
+  PAY_TYPE,
+  VERIFICATION_STATUS,
+  ORDER_TYPE_PROPS,
+  USER_SOURCE,
+  ORDERS_STATUS,
+} from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import styles from './style.less';
@@ -37,17 +43,20 @@ const OrderDetailDraw = (props) => {
     {
       label: '券码',
       name: 'verificationCode',
+      render: (val, row) => {
+        const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
+        return <span>{names}</span>;
+      },
     },
     // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
     {
       label: '核销号',
       name: 'orderGoodsVerificationId',
-      show: item.status === '1',
+      show: item.orderGoodsVerificationId,
     },
     {
       name: 'status',
-      render: (val) => `订单${VERIFICATION_STATUS[val]}`,
-      show: item.status !== '1',
+      render: (val) => `${VERIFICATION_STATUS[val]}`,
     },
     {
       label: '核销时间',
@@ -122,12 +131,6 @@ const OrderDetailDraw = (props) => {
       render: (val) => USER_SOURCE[val],
     },
     {
-      label: '支付方式',
-      name: 'payType',
-      render: (val) => PAY_TYPE[val],
-      show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
-    },
-    {
       label: '现金支付渠道',
       name: 'payType',
       render: (val) => PAY_TYPE[val],
@@ -169,7 +172,7 @@ const OrderDetailDraw = (props) => {
     },
     {
       name: 'realPrice',
-      render: (val) => <div style={{ textAlign: 'center' }}>单价{val ? `￥${val}` : '0'}</div>,
+      render: (val) => <div style={{ textAlign: 'center' }}>单价：{val ? `￥${val}` : '0'}</div>,
     },
     {
       name: 'goodsCount',
@@ -206,6 +209,7 @@ const OrderDetailDraw = (props) => {
             </div>
           </>
         )}
+
         {status === '2' &&
           (closeType === 'unpaidManualCancel' || closeType === 'unpaidExpiredCancel') && (
             <>
@@ -216,7 +220,12 @@ const OrderDetailDraw = (props) => {
               </div>
             </>
           )}
+        <div className={styles.lineClass_con}></div>
+        <div className={styles.item_detail_con}>
+          <span className={styles.orderDetail_span}>{ORDERS_STATUS[status]}</span>
+        </div>
       </div>
+
       {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
         <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
       )}
