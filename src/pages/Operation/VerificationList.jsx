@@ -104,7 +104,7 @@ const VerificationList = (props) => {
       title: '下单人',
       dataIndex: 'userMobile',
       align: 'center',
-      render: (val, row) => `${row.userName}\n${val}`,
+      render: (val, row) =>  `${row.userName}\n${val}\n${row.beanCode}`,,
     },
     {
       title: '用户实付',
