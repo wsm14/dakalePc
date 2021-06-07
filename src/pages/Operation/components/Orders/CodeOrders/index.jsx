@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import TableDataBlock from '@/components/TableDataBlock';
-import { ORDER_PAY_LOGO } from '@/common/constant';
-import OrderDetailDraw from '../OrderDetailDraw';
 import { Tag, Avatar } from 'antd';
+import { ORDER_PAY_LOGO } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import TableDataBlock from '@/components/TableDataBlock';
+import OrderDetailDraw from '../OrderDetailDraw';
+import excelHeder from './excelHeder';
 import styles from '../style.less';
 
 const CodeOrders = (props) => {
@@ -127,12 +128,11 @@ const CodeOrders = (props) => {
       align: 'center',
       dataIndex: 'actualCashFee',
       render: (val, record) => {
-        const actualBean= record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${
-              Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0 }`}</div>
-           
+            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
+
             <div className={styles.fontColor}>
               {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
             </div>
@@ -180,17 +180,16 @@ const CodeOrders = (props) => {
       ],
     },
   ];
+
   const extraBtn = ({ get }) => [
     {
       type: 'excel',
       dispatch: 'ordersList/fetchOrdersImport',
       data: { ...get(), goodsOrScanFlag: tabkey },
-      exportProps: {
-        header: getColumns.slice(0, -1),
-        fieldRender: { merchantName: (val) => val },
-      },
+      exportProps: { header: excelHeder },
     },
   ];
+
   return (
     <>
       <TableDataBlock
