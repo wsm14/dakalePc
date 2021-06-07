@@ -285,8 +285,7 @@ const OrderDetailDraw = (props) => {
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span>订单金额</span>
             <span>
-              {`￥${Number(detail.totalFee)*detail.goodsCount}`}
-              {/* {detail.totalFee ? `￥${detail.totalFee}` : 0} */}
+              {detail.totalFee ? `￥${detail.totalFee}` : 0}
               </span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
