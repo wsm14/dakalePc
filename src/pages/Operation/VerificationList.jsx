@@ -183,7 +183,7 @@ const VerificationList = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.orderSn}`}
+      rowKey={(record) => `${record.orderGoodsVerificationId}`}
       dispatchType="verificationList/fetchVerificationList"
       {...verificationList}
     ></TableDataBlock>
