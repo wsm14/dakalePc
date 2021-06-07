@@ -44,8 +44,8 @@ const OrderDetailDraw = (props) => {
       label: '券码',
       name: 'verificationCode',
       render: (val, row) => {
-        const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
-        return <span>{names}</span>;
+          const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
+        return <span>{row.status!=='1'?names:row.verificationCode}</span>;
       },
     },
     // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
