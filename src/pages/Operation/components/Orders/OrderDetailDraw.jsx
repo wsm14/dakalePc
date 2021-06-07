@@ -44,8 +44,8 @@ const OrderDetailDraw = (props) => {
       label: '券码',
       name: 'verificationCode',
       render: (val, row) => {
-        const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
-        return <span>{names}</span>;
+          const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
+        return <span>{row.status!=='1'?names:row.verificationCode}</span>;
       },
     },
     // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
@@ -339,7 +339,7 @@ const OrderDetailDraw = (props) => {
             </span>
 
             <span>
-            ￥{`${Number(detail.cashCommission)+Number(detail.beanCommission/100)}`}({detail.beanCommission}卡豆)
+            ￥{`${(Number(detail.cashCommission)+Number(detail.beanCommission/100)).toFixed(2)}`}(含{detail.beanCommission}卡豆)
               {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
             </span>
           </div>
@@ -352,7 +352,7 @@ const OrderDetailDraw = (props) => {
               ></QuestionTooltip>
             </span>
             <span>
-            ￥{`${Number(detail.actualCashFee)+Number(detail.actualBeanFee/100)}`}({detail.actualBeanFee}卡豆)
+            ￥{`${(Number(detail.actualCashFee)+Number(detail.actualBeanFee/100)).toFixed(2)}`}(含{detail.actualBeanFee}卡豆)
               {/* {`￥${detail.actualCashFee}
             (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
             </span>
