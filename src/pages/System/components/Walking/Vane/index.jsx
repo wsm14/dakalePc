@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
@@ -11,6 +11,12 @@ const VaneManage = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch({
+      type: 'walkingManage/fetchWalkManageNavigation',
+    });
+  }, []);
 
   // 获取详情
   const fetchGetDetail = (val, type) => {
