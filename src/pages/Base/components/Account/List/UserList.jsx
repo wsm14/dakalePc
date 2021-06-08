@@ -197,6 +197,7 @@ const UserList = (props) => {
           width: 200,
           marginRight: 24,
           maxHeight: 770,
+          overflowY: 'auto',
         }}
       >
         <Menu.Item key="-1">所有部门</Menu.Item>
