@@ -67,7 +67,7 @@ const BusinessListComponent = (props) => {
       select: ['单店', '集团'],
     },
     {
-      label: '地址',
+      label: '地区',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
