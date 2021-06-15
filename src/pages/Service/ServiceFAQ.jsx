@@ -286,6 +286,7 @@ const ServiceFAQ = (props) => {
           order
           firstFetch={false}
           noCard={false}
+          pagination={false}
           cRef={childRef}
           loading={loading.models.serviceFAQ}
           searchItems={searchItems}
