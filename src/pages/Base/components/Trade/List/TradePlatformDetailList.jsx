@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Modal, Table } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradePlatformSet from '../Form/TradePlatformSet';
+import { HandleSetTable } from '@/components/TableDataBlock';
 
 const TradePlatformDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
@@ -54,18 +55,23 @@ const TradePlatformDetailList = (props) => {
         dataIndex: 'freeBean',
       },
       {
-        type: 'handle',
+        title: '操作',
+        align: 'right',
         dataIndex: 'configMerchantSettleIdString',
-        render: (val, row) => [
-          {
-            type: 'edit',
-            click: () => handleDataSet('moneySet', row, '', data),
-          },
-          {
-            type: 'del',
-            click: () => fetchDataRowDel(row, data),
-          },
-        ],
+        render: (val, row) => (
+          <HandleSetTable
+            formItems={[
+              {
+                type: 'edit',
+                click: () => handleDataSet('moneySet', row, '', data),
+              },
+              {
+                type: 'del',
+                click: () => fetchDataRowDel(row, data),
+              },
+            ]}
+          />
+        ),
       },
     ];
   };
@@ -129,7 +135,7 @@ const TradePlatformDetailList = (props) => {
       columns: getColumns,
       rowKey: 'configMerchantSettleIdString',
       list: detailList.list,
-      btnExtra: [{ onClick: () => handleDataSet('areaAdd') }],
+      btnExtra: [{ text: '新增面积', onClick: () => handleDataSet('areaAdd') }],
       expandable: {
         expandedRowRender: (data) => rowTable(data.merchantSettleObjects, data),
       },
