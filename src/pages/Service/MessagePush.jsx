@@ -211,7 +211,6 @@ const MessagePush = (props) => {
     },
     {
       auth: 'save',
-      disabled: !delKey.length,
       onClick: () =>
         setVisible({
           type: 'add',
