@@ -51,7 +51,7 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
           <Tag.CheckableTag
             key={tag}
             checked={isActive(tag)}
-            onChange={() => handleSearchData(timeObj[tag])}
+            onChange={() => handleSearchData(timeObj[tag], Object.values(cityData))}
           >
             {tag}
           </Tag.CheckableTag>
