@@ -240,18 +240,21 @@ const OrderDetailDraw = (props) => {
       ))}
       <DescriptionsCondition
         title="用户信息"
+        labelStyle={{ width: 120 }}
         formItems={userFormItem}
         initialValues={detail}
         column={2}
       ></DescriptionsCondition>
       <DescriptionsCondition
         title="商家信息"
+        labelStyle={{ width: 120 }}
         formItems={merchartItem}
         column={2}
         initialValues={detail}
       ></DescriptionsCondition>
       <DescriptionsCondition
         title="订单信息"
+        labelStyle={{ width: 120 }}
         formItems={orderItem}
         initialValues={detail}
         column={2}
@@ -261,6 +264,7 @@ const OrderDetailDraw = (props) => {
         (status === '2' && orderCloseStatusCheck && (
           <DescriptionsCondition
             title="退款信息"
+            labelStyle={{ width: 120 }}
             formItems={refundItem}
             initialValues={detail}
           ></DescriptionsCondition>
