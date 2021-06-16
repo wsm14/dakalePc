@@ -20,7 +20,6 @@ const SaleAchievement = (props) => {
       label: '店铺',
       name: 'merchantId',
       type: 'merchant',
-     
     },
     {
       label: 'BD名称',
@@ -41,6 +40,7 @@ const SaleAchievement = (props) => {
       title: '店铺名称',
       dataIndex: 'merchantName',
       width: 200,
+      fixed: 'left',
       ellipsis: { lines: 3 },
     },
     {
