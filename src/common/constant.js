@@ -267,7 +267,7 @@ export const MSG_PSUH_TYPE = { official: '官方消息', system: '系统消息' 
 export const MSG_PSUH_OBJECT = { all: '全部用户' };
 
 // 消息推送 - 跳转类型
-export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
+export const MSG_PSUH_URL = { '': '无', h5: 'H5', native: '原生' };
 
 // 补贴管理 补贴类型
 export const SUBSIDY_TYPE = {
