@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { MRE_TAG_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import TagSet from './components/Tag/TagSet';
 
 const TagManage = (props) => {
@@ -50,41 +47,37 @@ const TagManage = (props) => {
       render: (val) => MRE_TAG_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configMerchantId',
       render: (val, record) => {
         const { status } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: status === '1' ? 'down' : 'up',
-                auth: 'edit',
-                click: () => fetchTagEdit({ ...record, status: 1 ^ Number(status) }),
-              },
-              {
-                type: 'edit',
-                click: () => setVisible({ type: 'edit', detail: record }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: status === '1' ? 'down' : 'up',
+            auth: 'edit',
+            click: () => fetchTagEdit({ ...record, status: 1 ^ Number(status) }),
+          },
+          {
+            type: 'edit',
+            click: () => setVisible({ type: 'edit', detail: record }),
+          },
+        ];
       },
+    },
+  ];
+
+  const extraBtn = [
+    {
+      text: '新增标签',
+      auth: 'save',
+      onClick: () => setVisible({ type: 'add' }),
     },
   ];
 
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
-              新增标签
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

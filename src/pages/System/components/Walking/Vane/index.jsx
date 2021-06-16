@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import VaneDrawer from './VaneDrawer';
 
 const VaneManage = (props) => {
@@ -12,6 +11,12 @@ const VaneManage = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    dispatch({
+      type: 'walkingManage/fetchWalkManageNavigation',
+    });
+  }, []);
 
   // 获取详情
   const fetchGetDetail = (val, type) => {
@@ -69,32 +74,26 @@ const VaneManage = (props) => {
       render: () => <DragHandle />,
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configWindVaneId',
       render: (val, record) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                auth: true,
-                click: () => fetchGetDetail(val, 'detail'),
-              },
-              {
-                type: 'edit',
-                auth: true,
-                click: () => fetchGetDetail(val, 'edit'),
-              },
-              {
-                type: 'del',
-                auth: true,
-                click: () => fetchDetailDel(val),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            auth: true,
+            click: () => fetchGetDetail(val, 'detail'),
+          },
+          {
+            type: 'edit',
+            auth: true,
+            click: () => fetchGetDetail(val, 'edit'),
+          },
+          {
+            type: 'del',
+            auth: true,
+            click: () => fetchDetailDel(val),
+          },
+        ];
       },
     },
   ];

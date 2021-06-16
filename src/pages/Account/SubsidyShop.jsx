@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Card, Alert } from 'antd';
-import ExcelButton from '@/components/ExcelButton';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/SubsidyShop/Search/SearchCard';
 import tableColums from './components/SubsidyShop/List/tableColums';
@@ -59,13 +59,17 @@ const SubsidyShop = (props) => {
   // 获取详情
   const fetchGetDetail = (type, row) => {
     const apiProps = {
-      merchant: { key: 'subsidyId', api: 'subsidyShop/fetchSubsidyShopDetailById' },
-      user: { key: 'identification', api: 'subsidyShop/fetchSubsidyUserDetailById' },
+      merchant: {
+        key: 'subsidyId',
+        value: 'identification',
+        api: 'subsidyShop/fetchSubsidyShopDetailById',
+      },
+      user: { key: 'identification', value: 'id', api: 'subsidyShop/fetchSubsidyUserDetailById' },
     }[type];
     dispatch({
       type: apiProps.api,
       payload: {
-        [apiProps.key]: row.identification,
+        [apiProps.key]: row[apiProps.value],
       },
       callback: (info) => setVisible({ show: true, type, info, titles: row.taskName }),
     });

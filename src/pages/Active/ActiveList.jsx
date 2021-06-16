@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Popover } from 'antd';
 import QRCode from 'qrcode.react';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import activeTemplateNameSet from './components/template/ActiveTemplateNameSet';
@@ -58,26 +57,20 @@ const ActiveListComponent = (props) => {
       ),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'promotionActivityIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              title: '修改',
-              click: () =>
-                handleSetActiveName({
-                  promotionActivityId: val,
-                  activeName: record.activityTitle,
-                  templateUrl: `${record.jumpUrl}?demo=1&times=${new Date().getTime()}`,
-                }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          title: '修改',
+          click: () =>
+            handleSetActiveName({
+              promotionActivityId: val,
+              activeName: record.activityTitle,
+              templateUrl: `${record.jumpUrl}?demo=1&times=${new Date().getTime()}`,
+            }),
+        },
+      ],
     },
   ];
 

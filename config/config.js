@@ -4,6 +4,7 @@ import defaultSettings from './defaultSettings';
 import routes from './router.config';
 import define from './env.config';
 
+const path = require('path');
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
@@ -13,6 +14,9 @@ export default defineConfig({
   antd: {},
   dva: {
     hmr: true,
+  },
+  alias: {
+    '@public': path.resolve(__dirname, '../public'),
   },
   publicPath: './',
   locale: {

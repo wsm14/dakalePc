@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Button, Switch } from 'antd';
+import { Card } from 'antd';
 import { CITY_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ManageCityLeft from './components/City/Left';
 import ManageCitySet from './components/City/ManageCitySet';
@@ -18,7 +16,7 @@ const ManageCity = (props) => {
     provinceName: '浙江省',
   });
 
-  const [visibleSet, setVisibleSet] = useState(false)
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -37,55 +35,46 @@ const ManageCity = (props) => {
     },
     {
       title: '状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, row) =>
-        val && (
-          <AuthConsumer auth="status" noAuth={CITY_STATUS[val]}>
-            <Switch
-              checked={val === '1'}
-              checkedChildren="已开通"
-              unCheckedChildren="未开通"
-              onClick={() =>
-                fetchCityManageStatus({
-                  id: row.locationCityIdString,
-                  status: 1 ^ Number(val),
-                })
-              }
-            />
-          </AuthConsumer>
-        ),
+      render: (val, row) => {
+        const { locationCityIdString: id } = row;
+        return {
+          auth: 'status',
+          checkedChildren: '已开通',
+          unCheckedChildren: '未开通',
+          show: !!val,
+          noAuth: CITY_STATUS[val],
+          checked: val === '1',
+          onClick: () => fetchCityManageStatus({ id, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'locationCityIdString',
-      align: 'right',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: !!row.provinceCode,
-              click: () => handleManageCitySet('edit' ,{ ...row, id: val }),
-            },
-            {
-              type: 'del',
-              visible: !!row.provinceCode,
-              click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, row) => [
+        {
+          type: 'edit',
+          visible: !!row.provinceCode,
+          click: () => handleManageCitySet('edit', { ...row, id: val }),
+        },
+        {
+          type: 'del',
+          visible: !!row.provinceCode,
+          click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 
   // 城市新增修改
-  const handleManageCitySet = (type,initialValues) => {
+  const handleManageCitySet = (type, initialValues) => {
     setVisibleSet({
-      show:true,
+      show: true,
       type,
       initialValues,
-    })
+    });
   };
 
   // 城市状态修改
@@ -97,6 +86,14 @@ const ManageCity = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      auth: 'save',
+      disabled: !selectCode.provinceCode,
+      onClick: () => handleManageCitySet('add', selectCode),
+    },
+  ];
+
   return (
     <Card bordered={false} bodyStyle={{ display: 'flex' }}>
       <ManageCityLeft
@@ -106,18 +103,8 @@ const ManageCity = (props) => {
       ></ManageCityLeft>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                disabled={!selectCode.provinceCode}
-                onClick={() => handleManageCitySet('add',selectCode)}
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          }
           noCard={false}
+          btnExtra={extraBtn}
           cRef={childRef}
           loading={loading.models.manageCity}
           columns={getColumns}
@@ -128,7 +115,11 @@ const ManageCity = (props) => {
           {...manageCity}
         ></TableDataBlock>
       </div>
-      <ManageCitySet visible={visibleSet}  childRef={childRef} onClose={()=>setVisibleSet(false)}></ManageCitySet>
+      <ManageCitySet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ManageCitySet>
     </Card>
   );
 };

@@ -1,6 +1,6 @@
 import { BUSINESS_TYPE, SPECIAL_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
 
-//导出列表
+// 导出列表
 export default {
   fieldNames: { key: 'key', headerName: 'header' },
   header: [

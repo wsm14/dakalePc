@@ -2,10 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { MARKET_NOTICE_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import NoticeImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardNoticeSet from './MarketCardNoticeSet';
 
@@ -36,11 +33,7 @@ const MarketCardNotice = (props) => {
       title: '公告说明',
       align: 'center',
       dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={15} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '状态',
@@ -49,31 +42,25 @@ const MarketCardNotice = (props) => {
       render: (val) => MARKET_NOTICE_STATUS[val],
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'configAnnounceIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: record.status === '0',
-              click: () => handleNoticeSet('edit', record),
-            },
-            {
-              type: 'del',
-              visible: record.status === '0',
-              click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 0 }, 'del'),
-            },
-            {
-              type: 'send',
-              visible: record.status === '0',
-              click: () => fetchNoticePush({ configAnnounceId: val, status: 1 }, 'push'),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          visible: record.status === '0',
+          click: () => handleNoticeSet('edit', record),
+        },
+        {
+          type: 'del',
+          visible: record.status === '0',
+          click: () => fetchNoticePush({ configAnnounceId: val, deleteFlag: 0 }, 'del'),
+        },
+        {
+          type: 'send',
+          visible: record.status === '0',
+          click: () => fetchNoticePush({ configAnnounceId: val, status: 1 }, 'push'),
+        },
+      ],
     },
   ];
 
@@ -122,13 +109,13 @@ const MarketCardNotice = (props) => {
     handlePageShowBtn();
   }, []);
 
-  const btnExtra = (
-    <AuthConsumer auth="noticeAdd">
-      <Button className="dkl_green_btn" key="1" onClick={() => handleNoticeSet('add')}>
-        新增公告
-      </Button>
-    </AuthConsumer>
-  );
+  const btnExtra = [
+    {
+      auth: 'noticeAdd',
+      text: '新增公告',
+      onClick: () => handleNoticeSet('add'),
+    },
+  ];
 
   return (
     <>

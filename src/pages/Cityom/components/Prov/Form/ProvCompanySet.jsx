@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Tabs, Alert, Button, Form, Modal, notification } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import AddDetail from './AddForm/index';
 import AccountForm from './AccountForm/CorporateAccount';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -88,6 +89,30 @@ const ProvCompanySet = (props) => {
 
   const closeDrawer = () => setVisibleSet(false);
 
+  const btnList = [
+    {
+    auth:"relieve" ,
+    show:detail.status != 2,
+    text:'解约',
+    loading,
+    onClick:() => fetchProvEdit(2)
+  },
+  {
+    auth:"status" ,
+    show:(detail.status == 0 || detail.status == 1),
+    text:detail.status == 0 ? '冻结' : '启用',
+    loading,
+    onClick:() => fetchProvEdit(1 ^ Number(detail.status))
+  },
+  {
+    auth:"edit" ,
+    show:detail.status != 2,
+    text:'编辑',
+    loading,
+    onClick:() => setVisibleSet({ ...visible, type: 'edit' })
+  },
+]
+
   const modalProps = {
     title: `${{ add: '新增省公司', edit: '编辑信息', detail: '省公司详情' }[type]}`,
     visible: show,
@@ -115,31 +140,7 @@ const ProvCompanySet = (props) => {
       detail: (
         <>
           {tabKey == '1' && (
-            <>
-              <AuthConsumer auth="relieve" show={detail.status != 2}>
-                <Button onClick={() => fetchProvEdit(2)} type="primary" loading={loading}>
-                  解约
-                </Button>
-              </AuthConsumer>
-              <AuthConsumer auth="status" show={detail.status == 0 || detail.status == 1}>
-                <Button
-                  onClick={() => fetchProvEdit(1 ^ Number(detail.status))}
-                  type="primary"
-                  loading={loading}
-                >
-                  {detail.status == 0 ? '冻结' : '启用'}
-                </Button>
-              </AuthConsumer>
-              <AuthConsumer auth="edit" show={detail.status != 2}>
-                <Button
-                  onClick={() => setVisibleSet({ ...visible, type: 'edit' })}
-                  type="primary"
-                  loading={loading}
-                >
-                  编辑
-                </Button>
-              </AuthConsumer>
-            </>
+            <ExtraButton list={btnList}></ExtraButton>
           )}
           <AuthConsumer auth="edit" show={tabKey == '2' && detail.status != 2}>
             <Button

@@ -7,7 +7,7 @@ import {
 } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
-import coupon from './coupon.png';
+import coupon from '@public/coupon.png';
 import styles from './style.less';
 
 // 订单信息
@@ -38,14 +38,12 @@ export const OrderInfo = ({ data }) => {
         <div>{orderSn}</div>
       </div>
       <div className={styles.order_info}>
-        <div>
-          <Ellipsis length={20} tooltip>
-            {goodsName}
-          </Ellipsis>
-        </div>
+        <Ellipsis length={17} tooltip>
+          {goodsName}
+        </Ellipsis>
         <div style={{ display: 'flex' }}>
           店铺：
-          <Ellipsis length={17} tooltip>
+          <Ellipsis length={14} tooltip>
             {merchantName}
           </Ellipsis>
         </div>
@@ -53,12 +51,12 @@ export const OrderInfo = ({ data }) => {
           <div>
             <span>结算价：</span>￥{Number(settlementFee).toFixed(2)}
           </div>
-          <div>
-            <span>
-              {settlementTime}
-              {EXPRET_DISTRIBUTION_PAY_STATUS[orderStatus]}
-            </span>
-          </div>
+        </div>
+        <div className={styles.footer}>
+          <span>
+            {settlementTime}&nbsp;
+            {EXPRET_DISTRIBUTION_PAY_STATUS[orderStatus]}
+          </span>
         </div>
       </div>
     </div>
@@ -80,7 +78,7 @@ export const PayerInfo = ({ data }) => {
 };
 
 // 订单状态
-export const OrderStatusInfo = ({ data }) => {
+export const OrderStatus = ({ data }) => {
   const { orderStatus, sumCommission = 0, subCommissionType } = data;
   return (
     <div className={styles.info_box}>
@@ -98,7 +96,7 @@ export const OrderStatusInfo = ({ data }) => {
 };
 
 // 豆长 推广者信息
-export const PromoterInfo = ({ name, mobile, price = 0 }) => {
+export const Promoter = ({ name, mobile, price = 0 }) => {
   return name ? (
     <div className={styles.info_box}>
       <div>{name}</div>

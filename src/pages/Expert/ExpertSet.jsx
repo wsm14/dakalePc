@@ -1,8 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Switch } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ClassifySet from './components/ExpertSet/ClassifySet';
 import ClassifyDetailList from './components/ExpertSet/ClassifyDetailList';
@@ -23,21 +21,17 @@ const ExpertSet = (props) => {
     },
     {
       title: '显示状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="status" noAuth={val === '1' ? '显示' : '不显示'}>
-          <Switch
-            checked={val == '1'}
-            onClick={() =>
-              fetchClassifyStatusEdit(
-                { domainId: record.domainId, status: 1 ^ Number(record.status) },
-                val,
-              )
-            }
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { domainId } = row;
+        return {
+          auth: 'status',
+          noAuth: val === '1' ? '显示' : '不显示',
+          checked: val === '1',
+          onClick: () => fetchClassifyStatusEdit({ domainId, status: 1 ^ Number(val) }, val),
+        };
+      },
     },
     {
       title: '话题',
@@ -50,51 +44,45 @@ const ExpertSet = (props) => {
       ),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'domainId',
-      fixed: 'right',
-      align: 'right',
       render: (val, record) => {
         const { topCategoryId: tcid, categoryId: cid, parentDomainId: pid } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                // visible: record.parentDomainId !== 0,
-                click: () =>
-                  handleClassifySet(
-                    'edit',
-                    {
-                      ...record,
-                      category: [`${tcid}`, `${cid}`],
-                      parentDomainId: pid == 0 ? 0 : null,
-                    },
-                    record,
-                  ),
-              },
-              {
-                type: 'del',
-                visible: pid !== 0,
-                click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
-              },
-              {
-                auth: 'saveClassify',
-                title: '添加内容分类',
-                visible: pid === 0,
-                click: () =>
-                  handleClassifySet(
-                    'own',
-                    {
-                      parentDomainId: val,
-                      domainNameShow: record.domainName,
-                    },
-                    record,
-                  ),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'edit',
+            // visible: record.parentDomainId !== 0,
+            click: () =>
+              handleClassifySet(
+                'edit',
+                {
+                  ...record,
+                  category: [`${tcid}`, `${cid}`],
+                  parentDomainId: pid == 0 ? 0 : null,
+                },
+                record,
+              ),
+          },
+          {
+            type: 'del',
+            visible: pid !== 0,
+            click: () => fetchClassifyDel({ domainId: val, deleteFlag: 0 }),
+          },
+          {
+            auth: 'saveClassify',
+            title: '添加内容分类',
+            visible: pid === 0,
+            click: () =>
+              handleClassifySet(
+                'own',
+                {
+                  parentDomainId: val,
+                  domainNameShow: record.domainName,
+                },
+                record,
+              ),
+          },
+        ];
       },
     },
   ];
@@ -141,19 +129,15 @@ const ExpertSet = (props) => {
     fetchTradeList();
   }, [visible]);
 
+  //表格额外按钮
+  const extraBtn = [
+    { auth: 'savePClassify', onClick: () => handleClassifySet('add', { parentDomainId: 0 }) },
+  ];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="savePClassify">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => handleClassifySet('add', { parentDomainId: 0 })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         keepData
         cRef={childRef}
         loading={loading}

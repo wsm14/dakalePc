@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import CITYJSON from '@/common/city';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import AreaCompanyDetailList from './components/Area/Detail/AreaDetailList';
 import AreaCompanySet from './components/Area/Form/AreaCompanySet';
@@ -116,20 +113,26 @@ const AreaCenter = (props) => {
       render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'partnerId',
-      fixed: 'right',
-      align: 'right',
-      render: (partnerId, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchAreaDetail({ type: 'detail', partnerId }),
-            },
-          ]}
-        />
-      ),
+      render: (partnerId) => [
+        {
+          type: 'info',
+          click: () => fetchAreaDetail({ type: 'detail', partnerId }),
+        },
+      ],
+    },
+  ];
+
+  const extraBtn = [
+    {
+      auth: 'save',
+      onClick: () => {
+        dispatch({
+          type: 'areaCenter/fetchCloseData',
+          callback: () => setVisibleSet({ type: 'add', show: true }),
+        });
+      },
     },
   ];
 
@@ -139,22 +142,7 @@ const AreaCenter = (props) => {
         order
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() => {
-                dispatch({
-                  type: 'areaCenter/fetchCloseData',
-                  callback: () => setVisibleSet({ type: 'add', show: true }),
-                });
-              }}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

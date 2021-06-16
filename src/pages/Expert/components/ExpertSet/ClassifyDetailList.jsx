@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Switch } from 'antd';
+import { Modal } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import ClassifyDetailSet from './ClassifyDetailSet';
 
 const ClassifyDetailList = (props) => {
@@ -31,16 +30,16 @@ const ClassifyDetailList = (props) => {
     },
     {
       title: '显示状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, record) => (
-        <Switch
-          checked={val == '1'}
-          onClick={() =>
-            fetchClassifyDetailSet({ topicId: record.topicIdString, status: 1 ^ Number(val) })
-          }
-        />
-      ),
+      render: (val, row) => {
+        const { topicIdString: topicId } = row;
+        return {
+          auth: true,
+          checked: val === '1',
+          onClick: () => fetchClassifyDetailSet({ topicId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       title: '推荐',
@@ -49,46 +48,41 @@ const ClassifyDetailList = (props) => {
       render: (val) => (val == '1' ? '推荐' : '不推荐'),
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'topicIdString',
-      render: (val, records) => (
-        <HandleSetTable
-          formItems={[
-            {
-              auth: true,
-              title: '推荐',
-              visible: records.recommendFlag === '0',
-              click: () =>
-                handleClassifyDetailSet({
-                  domainId: record.domainId,
-                  topicId: val,
-                  recommendFlag: 1,
-                  topicName: records.topicName,
-                }),
-            },
-            {
-              auth: true,
-              title: '取消推荐',
-              visible: records.recommendFlag === '1',
-              click: () =>
-                handleClassifyDetailSet({
-                  domainId: record.domainId,
-                  topicId: val,
-                  recommendFlag: 0,
-                }),
-            },
-            {
-              type: 'edit',
-              click: () => handleDataSet('edit', { topicId: val, ...records }),
-            },
-            {
-              type: 'del',
-              click: () => fetchClassifyDetailSet({ topicId: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, records) => [
+        {
+          auth: true,
+          title: '推荐',
+          visible: records.recommendFlag === '0',
+          click: () =>
+            handleClassifyDetailSet({
+              domainId: record.domainId,
+              topicId: val,
+              recommendFlag: 1,
+              topicName: records.topicName,
+            }),
+        },
+        {
+          auth: true,
+          title: '取消推荐',
+          visible: records.recommendFlag === '1',
+          click: () =>
+            handleClassifyDetailSet({
+              domainId: record.domainId,
+              topicId: val,
+              recommendFlag: 0,
+            }),
+        },
+        {
+          type: 'edit',
+          click: () => handleDataSet('edit', { topicId: val, ...records }),
+        },
+        {
+          type: 'del',
+          click: () => fetchClassifyDetailSet({ topicId: val, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 
@@ -140,11 +134,7 @@ const ClassifyDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-            新增
-          </Button>
-        }
+        btnExtra={[{ onClick: () => handleDataSet('add') }]}
         cRef={childRef}
         noCard={false}
         loading={loading}

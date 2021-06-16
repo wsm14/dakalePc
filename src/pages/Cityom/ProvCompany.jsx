@@ -1,14 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import ProvCompanyDetailList from './components/Prov/Detail/ProvDetailList';
 import ProvCompanySet from './components/Prov/Form/ProvCompanySet';
 import ProvAccountSet from './components/Prov/Form/ProvAccountSet';
-import AuthConsumer from '@/layouts/AuthConsumer';
 
 const ProvCompany = (props) => {
   const { list, loading, dispatch } = props;
@@ -112,25 +109,31 @@ const ProvCompany = (props) => {
       render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'companyId',
-      render: (companyId, record) => (
-        <HandleSetTable
-          formItems={[
-            // {
-            //   title: '收益数据',
-            //   auth: 'income',
-            //   click: () => setVisible({ type: 'income', record }),
-            // },
-            {
-              type: 'info',
-              click: () => fetchProvDetail({ type: 'detail', companyId }),
-            },
-          ]}
-        />
-      ),
+      render: (companyId, record) => [
+        // {
+        //   title: '收益数据',
+        //   auth: 'income',
+        //   click: () => setVisible({ type: 'income', record }),
+        // },
+        {
+          type: 'info',
+          click: () => fetchProvDetail({ type: 'detail', companyId }),
+        },
+      ],
+    },
+  ];
+
+  const extraBtn = [
+    {
+      auth: 'save',
+      onClick: () => {
+        dispatch({
+          type: 'provCompany/fetchCloseData',
+          callback: () => setVisibleSet({ type: 'add', show: true }),
+        });
+      },
     },
   ];
 
@@ -140,22 +143,7 @@ const ProvCompany = (props) => {
         order
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() => {
-                dispatch({
-                  type: 'provCompany/fetchCloseData',
-                  callback: () => setVisibleSet({ type: 'add', show: true }),
-                });
-              }}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

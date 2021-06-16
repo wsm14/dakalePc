@@ -1,9 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivitySetStore from './MarketCardActivitySetStore';
 import MarketCardActivitySetCoupon from './MarketCardActivitySetCoupon';
@@ -47,6 +44,7 @@ const MarketCardActivityDetail = (props) => {
       align: 'center',
       fixed: 'left',
       dataIndex: 'merchantName',
+      ellipsis: true,
     },
     {
       title: '所在城市',
@@ -62,11 +60,7 @@ const MarketCardActivityDetail = (props) => {
       title: '详细地址',
       align: 'center',
       dataIndex: 'merchantAddress',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '原价',
@@ -96,29 +90,23 @@ const MarketCardActivityDetail = (props) => {
       render: (val) => val || 0,
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'marketCouponIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'destoryDetail',
-              click: () => setVisible({ type: 'destory', record }),
-            },
-            {
-              type: 'orderDetail',
-              click: () => setVisible({ type: 'order', record }),
-            },
-            {
-              title: '优惠券',
-              auth: 'couponDetail',
-              click: () => fetchGetCouponInfo(val, record.merchantName),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'destoryDetail',
+          click: () => setVisible({ type: 'destory', record }),
+        },
+        {
+          type: 'orderDetail',
+          click: () => setVisible({ type: 'order', record }),
+        },
+        {
+          title: '优惠券',
+          auth: 'couponDetail',
+          click: () => fetchGetCouponInfo(val, record.merchantName),
+        },
+      ],
     },
   ];
 
@@ -173,13 +161,10 @@ const MarketCardActivityDetail = (props) => {
     handlePageShowBtn();
   }, []);
 
-  const btnExtra = (
-    <AuthConsumer auth="couponAdd">
-      <Button className="dkl_green_btn" key="1" onClick={() => setVisibleSet(true)}>
-        新增
-      </Button>
-    </AuthConsumer>
-  );
+  const btnExtra = {
+    auth: 'couponAdd',
+    onClick: () => setVisibleSet(true),
+  };
 
   return (
     <>

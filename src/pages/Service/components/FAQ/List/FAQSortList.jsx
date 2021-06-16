@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import FaqSortSet from '../Form/FAQSortSet';
 
 const FAQSortList = (props) => {
@@ -27,30 +26,25 @@ const FAQSortList = (props) => {
       dataIndex: 'questionCategoryName',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'questionCategoryIdString',
       render: (id, row) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'del',
-                popText: (
-                  <>
-                    <div>删除此分类后</div>
-                    <div>分类下所有信息也都将删除（包含问题）</div>
-                  </>
-                ),
-                click: () => fetchFAQSortDel({ id }),
-              },
-              {
-                type: 'edit',
-                click: () => handleDataSet('edit', row),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'del',
+            popText: (
+              <>
+                <div>删除此分类后</div>
+                <div>分类下所有信息也都将删除（包含问题）</div>
+              </>
+            ),
+            click: () => fetchFAQSortDel({ id }),
+          },
+          {
+            type: 'edit',
+            click: () => handleDataSet('edit', row),
+          },
+        ];
       },
     },
   ];
@@ -85,16 +79,12 @@ const FAQSortList = (props) => {
         afterClose={() => qRef.current.fetchGetData()} // 外围列表刷新
       >
         <TableDataBlock
-          btnExtra={
-            <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-              新增分类
-            </Button>
-          }
           cRef={childRef}
           noCard={false}
           loading={loading}
           searchItems={searchItems}
           columns={getColumns}
+          btnExtra={[{ text: '新增分类', onClick: () => handleDataSet('add') }]}
           rowKey={(row) => `${row.questionCategoryIdString}`}
           dispatchType="serviceFAQ/fetchFAQSortList"
           size="middle"

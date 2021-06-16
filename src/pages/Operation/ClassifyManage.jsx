@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import debounce from 'lodash/debounce';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import ClassifySet from './components/Classify/ClassifySet';
 
 const ClassifyManageComponent = (props) => {
@@ -62,32 +59,34 @@ const ClassifyManageComponent = (props) => {
       dataIndex: 'merchantName',
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'categoryCustomId',
       render: (categoryCustomId, record) => {
         const { merchantIdStr } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => setVisible({ type: 'edit', detail: record }),
-              },
-              {
-                type: 'del',
-                popText: (
-                  <div>
-                    删除后，该数据将无法恢复<div>确定要删除吗？</div>
-                  </div>
-                ),
-                click: () => fetchClassifyDel({ categoryCustomId, merchantIdStr }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'edit',
+            click: () => setVisible({ type: 'edit', detail: record }),
+          },
+          {
+            type: 'del',
+            popText: (
+              <div>
+                删除后，该数据将无法恢复<div>确定要删除吗？</div>
+              </div>
+            ),
+            click: () => fetchClassifyDel({ categoryCustomId, merchantIdStr }),
+          },
+        ];
       },
+    },
+  ];
+
+  const extraBtn = [
+    {
+      text: '新增分类',
+      auth: 'save',
+      onClick: () => setVisible({ type: 'add' }),
     },
   ];
 
@@ -96,13 +95,7 @@ const ClassifyManageComponent = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ type: 'add' })}>
-              新增分类
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

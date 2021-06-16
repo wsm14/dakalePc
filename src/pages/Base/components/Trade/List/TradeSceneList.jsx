@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import TradeSceneSet from '../Form/TradeSceneSet';
 import PopImgShow from '@/components/PopImgShow';
 
@@ -21,23 +20,18 @@ const TradeSceneList = (props) => {
       render: (val) => <PopImgShow url={val} />,
     },
     {
-      title: '操作',
-      align: 'center',
+      type: 'handle',
       dataIndex: 'value',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => handleDataSet('edit', record),
-            },
-            {
-              type: 'del',
-              click: () => fetchDataDel(record),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => handleDataSet('edit', record),
+        },
+        {
+          type: 'del',
+          click: () => fetchDataDel(record),
+        },
+      ],
     },
   ];
 
@@ -78,11 +72,7 @@ const TradeSceneList = (props) => {
       onCancel={() => onClose('')}
     >
       <TableDataBlock
-        btnExtra={
-          <Button className="dkl_green_btn" onClick={() => handleDataSet('add')}>
-            新增
-          </Button>
-        }
+        btnExtra={[{ onClick: () => handleDataSet('add') }]}
         size="midden"
         cRef={childRef}
         noCard={false}

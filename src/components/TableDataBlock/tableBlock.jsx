@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { useDispatch } from 'umi';
-import { Table, Card, Space } from 'antd';
+import { Table, Card } from 'antd';
+import ExtraButton from '@/components/ExtraButton';
 import SearchCondition from '@/components/SearchCondition';
-import DraggableContent from './SortBlock';
+import utils from './utils';
 
 /**
  *
@@ -40,10 +41,10 @@ const TableBlockComponent = (props) => {
   const {
     btnExtra,
     cRef,
-    columns = [],
     cardProps = {},
     dispatchType,
     firstFetch = true,
+    columns = [],
     list = [],
     loading,
     noCard = true,
@@ -57,11 +58,12 @@ const TableBlockComponent = (props) => {
     searchForm,
     searchCallback,
     total,
-    tableSort = false,
     order = false,
+    tableSort = false,
     tableSize = 'default',
     timeParams = { time: {}, show: {} },
     children,
+    ...other
   } = props;
 
   const { show } = timeParams;
@@ -142,32 +144,21 @@ const TableBlockComponent = (props) => {
   // table change
   const tableChange = (page, filters, sorter) => {
     console.log(page, filters, sorter);
-    setTableParems({
-      ...tableParems,
-      page: page.current, // 页码
-      limit: page.pageSize, // 每页条数
-      // sortOrder: sorter.order, // 排序字段
-      // sortField: sorter.field, // 排序规则 升降
-    });
+    if (page.current !== tableParems.page || page.pageSize !== tableParems.limit)
+      setTableParems({
+        ...tableParems,
+        page: page.current, // 页码
+        limit: page.pageSize, // 每页条数
+        // sortOrder: sorter.order, // 排序字段
+        // sortField: sorter.field, // 排序规则 升降
+      });
   };
-
-  // 表格是否展示排序字段
-  const orderData = {
-    true: {
-      dataSource: list.map((item, index) => ({
-        numId: (tableParems.page - 1) * 10 + index + 1,
-        ...item,
-      })),
-      columns: [{ title: '序号', fixed: 'left', width: 80, dataIndex: 'numId' }, ...columns],
-    },
-    false: { dataSource: list, columns: columns },
-  }[order];
 
   const tabContent = (
     <>
       {!searchItems && btnExtra && (
         <div style={{ textAlign: 'right', marginBottom: 18 }}>
-          <Space>{btnExtra}</Space>
+          <ExtraButton list={btnExtra}></ExtraButton>
         </div>
       )}
       {searchItems && (
@@ -184,14 +175,12 @@ const TableBlockComponent = (props) => {
       <Table
         scroll={{ x: scrollX, y: scrollY }}
         loading={loading}
-        dataSource={orderData.dataSource}
         pagination={pagination === false ? false : paginationProps}
         onChange={tableChange}
         size={tableSize || size}
-        // 排序
-        {...(tableSort ? DraggableContent(list, tableSort) : {})}
-        {...props}
-        columns={orderData.columns}
+        {...utils.columns(props, tableParems.page)} // 表头数据处理
+        {...utils.tableSort(list, tableSort)} // 内置排序处理
+        {...other}
       />
     </>
   );

@@ -4,6 +4,8 @@ import input from './Input';
 import number from './NumberInput';
 import numberGroup from './NumberGroup';
 import select from './Select';
+import merchant from './Merchant';
+import user from './User';
 
 const Searchor = {
   cascader,
@@ -14,6 +16,8 @@ const Searchor = {
   numberGroup,
   select,
   multiple: select,
+  merchant,
+  user,
 };
 
 export { Searchor };

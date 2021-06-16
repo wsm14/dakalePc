@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { ORDERS_STATUS, REFUND_ORDERS_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 
@@ -64,11 +63,7 @@ const RefundOrder = (props) => {
     {
       title: '购买商品',
       dataIndex: 'goodsName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '店铺名称',

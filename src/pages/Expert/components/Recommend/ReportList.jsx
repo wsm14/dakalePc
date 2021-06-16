@@ -2,10 +2,8 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { SHARE_TYPE } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import PocessReport from './ProcessReport';
 
 const ReportList = (props) => {
@@ -67,11 +65,7 @@ const ReportList = (props) => {
       {
         title: '哒人昵称',
         dataIndex: 'username',
-        render: (val) => (
-          <Ellipsis length={5} tooltip>
-            {val}
-          </Ellipsis>
-        ),
+        ellipsis: true,
       },
       {
         title: '哒人等级',
@@ -85,11 +79,7 @@ const ReportList = (props) => {
       {
         title: '举报人',
         dataIndex: 'complainant',
-        render: (val) => (
-          <Ellipsis length={5} tooltip>
-            {val}
-          </Ellipsis>
-        ),
+        ellipsis: true,
       },
       {
         title: '举报人手机',
@@ -118,23 +108,18 @@ const ReportList = (props) => {
         dataIndex: 'processTime',
       },
       {
-        title: '操作',
-        fixed: 'right',
-        align: 'right',
+       
+        type: 'handle',
         dataIndex: 'userReportId',
         render: (userReportId, record) => {
           const { status } = record;
-          return (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'handle',
-                  visible: status == 0,
-                  click: () => fetchExpertProcessReport({ userReportId }),
-                },
-              ]}
-            />
-          );
+          return [
+            {
+              type: 'handle',
+              visible: status == 0,
+              click: () => fetchExpertProcessReport({ userReportId }),
+            },
+          ];
         },
       },
     ],

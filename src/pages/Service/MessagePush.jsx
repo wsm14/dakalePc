@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Card, Result, Button, Space, Modal } from 'antd';
+import { Card, Result, Modal } from 'antd';
 import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_STATUS } from '@/common/constant';
-import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import { authCheck } from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import MessageDrawer from './components/MessagePush/MessageDrawer';
 
@@ -125,44 +125,38 @@ const MessagePush = (props) => {
       render: (val) => MSG_PSUH_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'messagePushId',
       render: (val, row) => {
         const { pushStatus: status } = row;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'push', // 推送 未推送
-                visible: status === '0',
-                pop: true,
-                click: () => fetchMsgPushHandle(val, 'push'),
-              },
-              {
-                type: 'edit', // 修改
-                visible: status === '0',
-                click: () => fetchMsgPushDeatil(val, 'edit'),
-              },
-              {
-                type: 'revoke', // 撤销 推送中 推送成功
-                visible: ['1', '2'].includes(status),
-                pop: true,
-                click: () => fetchMsgPushHandle(val, 'revoke'),
-              },
-              {
-                type: 'copy', // 复制
-                pop: true,
-                click: () => fetchMsgPushHandle(val, 'copy'),
-              },
-              {
-                type: 'eye', // 查看
-                click: () => fetchMsgPushDeatil(val, 'info'),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'push', // 推送 未推送
+            visible: status === '0',
+            pop: true,
+            click: () => fetchMsgPushHandle(val, 'push'),
+          },
+          {
+            type: 'edit', // 修改
+            visible: status === '0',
+            click: () => fetchMsgPushDeatil(val, 'edit'),
+          },
+          {
+            type: 'revoke', // 撤销 推送中 推送成功
+            visible: ['1', '2'].includes(status),
+            pop: true,
+            click: () => fetchMsgPushHandle(val, 'revoke'),
+          },
+          {
+            type: 'copy', // 复制
+            pop: true,
+            click: () => fetchMsgPushHandle(val, 'copy'),
+          },
+          {
+            type: 'eye', // 查看
+            click: () => fetchMsgPushDeatil(val, 'info'),
+          },
+        ];
       },
     },
   ];
@@ -208,6 +202,25 @@ const MessagePush = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      auth: 'del',
+      disabled: !delKey.length,
+      onClick: fetchMsgPushDel,
+      text: '批量删除',
+    },
+    {
+      auth: 'save',
+      onClick: () =>
+        setVisible({
+          type: 'add',
+          shwo: true,
+          detail: { pushObjectType: 'all', userType: tabkey },
+        }),
+      text: '新增推送',
+    },
+  ];
+
   return (
     <>
       <Card
@@ -216,29 +229,7 @@ const MessagePush = (props) => {
           setDelKey([]);
           setTabKey(key);
         }}
-        tabBarExtraContent={
-          <Space>
-            <AuthConsumer auth="del">
-              <Button className="dkl_green_btn" disabled={!delKey.length} onClick={fetchMsgPushDel}>
-                批量删除
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() =>
-                  setVisible({
-                    type: 'add',
-                    shwo: true,
-                    detail: { pushObjectType: 'all', userType: tabkey },
-                  })
-                }
-              >
-                新增推送
-              </Button>
-            </AuthConsumer>
-          </Space>
-        }
+        tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
       >
         {check && check.length ? (
           <TableDataBlock

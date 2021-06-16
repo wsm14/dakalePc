@@ -1,8 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Switch, Alert } from 'antd';
+import { Alert } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeCategorySet from './components/Trade/Form/TradeCategorySet';
 import PromotionMoneySet from './components/Trade/Form/PromotionMoneySet';
@@ -78,57 +77,48 @@ const SysTradeSet = (props) => {
     },
     {
       title: '小程序展示',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       dataIndex: 'isWechat',
-      render: (val, record) => (
-        <AuthConsumer auth="isWechat" noAuth={val === '1' ? '开' : '关'}>
-          <Switch
-            checkedChildren="开"
-            unCheckedChildren="关"
-            checked={val === '1'}
-            onClick={() =>
-              fetchTradeWeChat({ categoryId: record.categoryIdString, isWechat: 1 ^ val })
-            }
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { categoryIdString: categoryId } = row;
+        return {
+          auth: 'isWechat',
+          checkedChildren: '开',
+          unCheckedChildren: '关',
+          noAuth: val === '1' ? '开' : '关',
+          checked: val === '1',
+          onClick: () => fetchTradeWeChat({ categoryId, isWechat: 1 ^ Number(val) }),
+        };
+      },
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'categoryIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => {
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                click: () => {
-                  const { categoryName } = record;
-                  const detail = { categoryId: val, categoryName };
-                  handleClassSet('edit', detail);
-                },
-              },
-              {
-                type: 'del',
-                visible: !record.categoryDTOList,
-                click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
-              },
-              {
-                type: 'tradeSecondAdd',
-                visible: record.parentId === 0,
-                click: () => {
-                  const { categoryName: parentName } = record;
-                  const detail = { parentId: val, node: `${val}`, parentName, type: 'second' };
-                  handleClassSet('add', detail);
-                },
-              },
-            ]}
-          />
-        );
-      },
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => {
+            const { categoryName } = record;
+            const detail = { categoryId: val, categoryName };
+            handleClassSet('edit', detail);
+          },
+        },
+        {
+          type: 'del',
+          visible: !record.categoryDTOList,
+          click: () => fetchTradeSet({ categoryId: val, isDelete: 1 }),
+        },
+        {
+          type: 'tradeSecondAdd',
+          visible: record.parentId === 0,
+          click: () => {
+            const { categoryName: parentName } = record;
+            const detail = { parentId: val, node: `${val}`, parentName, type: 'second' };
+            handleClassSet('add', detail);
+          },
+        },
+      ],
     },
   ];
 
@@ -169,6 +159,19 @@ const SysTradeSet = (props) => {
     });
   }, [visible, baseVisible]);
 
+  const extraBtn = [
+    {
+      text: '基础设施',
+      auth: 'baseTrade',
+      onClick: () => setBaseVisible({ type: 'base' }),
+    },
+    {
+      text: '新增类目',
+      auth: 'tradeAdd',
+      onClick: () => handleClassSet('add', { parentId: 0, node: '0', type: 'first' }),
+    },
+  ];
+
   return (
     <>
       <Alert
@@ -178,23 +181,7 @@ const SysTradeSet = (props) => {
       />
       <TableDataBlock
         cRef={childRef}
-        btnExtra={
-          <>
-            <AuthConsumer auth="baseTrade">
-              <Button className="dkl_green_btn" onClick={() => setBaseVisible({ type: 'base' })}>
-                基础设施
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="tradeAdd">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => handleClassSet('add', { parentId: 0, node: '0', type: 'first' })}
-              >
-                新增类目
-              </Button>
-            </AuthConsumer>
-          </>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

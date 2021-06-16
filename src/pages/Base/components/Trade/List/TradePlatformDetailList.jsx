@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button, Table } from 'antd';
+import { Modal, Table } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import TradePlatformSet from '../Form/TradePlatformSet';
+import { HandleSetTable } from '@/components/TableDataBlock';
 
 const TradePlatformDetailList = (props) => {
   const { detailList, loading, visible, setVisible, dispatch } = props;
@@ -94,38 +94,33 @@ const TradePlatformDetailList = (props) => {
       dataIndex: 'typeContent',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configMerchantSettleIdString',
-      render: (val, red) => (
-        <HandleSetTable
-          formItems={[
-            {
-              auth: true,
-              title: '新增服务费',
-              click: () => handleDataSet('moneySet', '', val, red),
-            },
-            {
-              type: 'edit',
-              click: () => {
-                const area = red.typeContent;
-                let areaArr = [];
-                if (area.indexOf('-') !== -1) {
-                  areaArr = area.split('-');
-                } else {
-                  const num = area.split('以')[0];
-                  areaArr = { true: [num, ''], false: [0, num] }[area.indexOf('上') !== -1];
-                }
-                handleDataSet('areaEdit', { areaMin: areaArr[0], areaMax: areaArr[1] }, val);
-              },
-            },
-            {
-              type: 'del',
-              click: () => fetchDataDel(val),
-            },
-          ]}
-        />
-      ),
+      render: (val, red) => [
+        {
+          auth: true,
+          title: '新增服务费',
+          click: () => handleDataSet('moneySet', '', val, red),
+        },
+        {
+          type: 'edit',
+          click: () => {
+            const area = red.typeContent;
+            let areaArr = [];
+            if (area.indexOf('-') !== -1) {
+              areaArr = area.split('-');
+            } else {
+              const num = area.split('以')[0];
+              areaArr = { true: [num, ''], false: [0, num] }[area.indexOf('上') !== -1];
+            }
+            handleDataSet('areaEdit', { areaMin: areaArr[0], areaMax: areaArr[1] }, val);
+          },
+        },
+        {
+          type: 'del',
+          click: () => fetchDataDel(val),
+        },
+      ],
     },
   ];
 
@@ -134,24 +129,13 @@ const TradePlatformDetailList = (props) => {
       columns: columns(),
       rowKey: 'freeBean',
       list: detailList.list.length ? detailList.list[0].merchantSettleObjects : [],
-      btnExtra: (
-        <Button
-          className="dkl_green_btn"
-          onClick={() => handleDataSet('moneySet', '', 999, detailList.list[0])}
-        >
-          新增
-        </Button>
-      ),
+      btnExtra: [{ onClick: () => handleDataSet('moneySet', '', 999, detailList.list[0]) }],
     },
     false: {
       columns: getColumns,
       rowKey: 'configMerchantSettleIdString',
       list: detailList.list,
-      btnExtra: (
-        <Button className="dkl_green_btn" onClick={() => handleDataSet('areaAdd')}>
-          新增面积
-        </Button>
-      ),
+      btnExtra: [{ onClick: () => handleDataSet('areaAdd') }],
       expandable: {
         expandedRowRender: (data) => rowTable(data.merchantSettleObjects, data),
       },

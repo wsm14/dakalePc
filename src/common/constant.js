@@ -1,3 +1,6 @@
+import appLogo from '@public/app.jpg';
+import wechatLogo from '@public/wechat.png';
+
 /**
  * 统一参数配置
  */
@@ -23,6 +26,11 @@ export const EXPERT_SORT_TYPE = {
   quantity: '带货量',
   noviceProtection: '新手保护',
 };
+// 小程序-weChat APP-app
+export const ORDER_PAY_LOGO = {
+  weChat: wechatLogo,
+  app: appLogo,
+};
 
 // 订单支付类型
 export const PAY_TYPE = {
@@ -38,6 +46,11 @@ export const EXPORT_TYPE = {
   userRegistration: '用户注册明细',
   merchantMark: '到店打卡明细',
   momentCollarBean: '视频领豆明细',
+};
+
+// 导出excel枚举 - 列表枚举映射
+export const EXPORT_LIST_TYPE = {
+  verificationList: '核销列表',
 };
 
 // 加盟申请状态
@@ -140,6 +153,8 @@ export const SHARE_STATUS = [
   '分享结束',
   '即将发布',
 ];
+//核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
+export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
 // 种草状态 0-待审核；1-审核通过 2-审核拒绝 3-下架 4-删除 5-分享完成
 export const RECOMMEND_STATUS = [false, '审核通过', false, '下架', '删除', '分享完成'];
@@ -192,7 +207,7 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
-// 订单关闭状态
+// 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
   unpaidExpiredCancel: '待付款超时自动关闭',
   unpaidManualCancel: '订单已取消',
@@ -252,7 +267,7 @@ export const MSG_PSUH_TYPE = { official: '官方消息', system: '系统消息' 
 export const MSG_PSUH_OBJECT = { all: '全部用户' };
 
 // 消息推送 - 跳转类型
-export const MSG_PSUH_URL = { h5: 'H5', native: '原生' };
+export const MSG_PSUH_URL = { '': '无', h5: 'H5', native: '原生' };
 
 // 补贴管理 补贴类型
 export const SUBSIDY_TYPE = {
@@ -297,10 +312,10 @@ export const SHARE_TYPE = { video: '视频', image: '图文' };
 
 // 订单类型
 export const ORDERS_TYPE = {
-  kolGoods: '哒人带货',
+  // kolGoods: '哒人带货',
   specialGoods: '周边特惠',
   reduceCoupon: '抵扣券订单',
-  marketCoupon: '兑换券订单',
+  // marketCoupon: '兑换券订单',
 };
 
 // 平台收益订单类型
@@ -399,6 +414,14 @@ export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
 
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
+
+//specialGoods-特惠商品 reduceCoupon-优惠券
+
+export const ORDER_TYPE_PROPS = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '优惠券',
+  scan: '扫码',
+};
 
 // 哒人核销订单类型
 export const EXPRET_DISTRIBUTION_TYPE = {

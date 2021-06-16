@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form, Modal } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import DrawerCondition from '@/components/DrawerCondition';
 import SaleAccountDetail from './Detail/SaleAccountDetail';
 import SaleAccountSet from './Form/SaleAccountSet';
@@ -63,34 +63,36 @@ const SaleAccountDrawer = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      show: status !== '2',
+      auth: 'status',
+      loading,
+      onClick: () => fetchSaleStatueEdit('status'),
+      text: { 0: '冻结', 1: '解冻' }[status],
+    },
+    {
+      show: status !== '2',
+      auth: 'relieve',
+      loading,
+      onClick: () => fetchSaleStatueEdit('relieve'),
+      text: '解约',
+    },
+    {
+      show: status !== '2',
+      auth: 'edit',
+      onClick: () => setVisible({ ...visible, type: 'edit' }),
+      loading,
+      text: '编辑',
+    },
+  ];
+
   // 统一处理
   const drawerProps = {
     detail: {
       title: '查看详情',
       children: <SaleAccountDetail form={form} detail={detail}></SaleAccountDetail>,
-      footer: (
-        <>
-          <AuthConsumer show={status !== '2'} auth="status">
-            <Button onClick={() => fetchSaleStatueEdit('status')} type="primary" loading={loading}>
-              {{ 0: '冻结', 1: '解冻' }[status]}
-            </Button>
-          </AuthConsumer>
-          <AuthConsumer show={status !== '2'} auth="relieve">
-            <Button onClick={() => fetchSaleStatueEdit('relieve')} type="primary" loading={loading}>
-              解约
-            </Button>
-          </AuthConsumer>
-          <AuthConsumer show={status !== '2'} auth="edit">
-            <Button
-              onClick={() => setVisible({ ...visible, type: 'edit' })}
-              type="primary"
-              loading={loading}
-            >
-              编辑
-            </Button>
-          </AuthConsumer>
-        </>
-      ),
+      footer: <ExtraButton list={btnList}></ExtraButton>,
     },
     add: {
       title: '新增账户',

@@ -4,9 +4,7 @@ import { connect } from 'umi';
 import { Spin, Tag, Alert } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS } from '@/common/constant';
-import ExcelButton from '@/components/ExcelButton';
-import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import WithdrawRemark from './components/Withdraw/WithdrawRemark';
 
 const WithdrawDetail = (props) => {
@@ -67,11 +65,14 @@ const WithdrawDetail = (props) => {
     },
     {
       title: '流水单号',
+      fixed: 'left',
       dataIndex: 'withdrawalSn',
     },
     {
       title: '店铺名称',
+      width: 200,
       dataIndex: 'merchantName',
+      ellipsis: { lines: 2 },
     },
     {
       title: '店铺账号',
@@ -108,6 +109,7 @@ const WithdrawDetail = (props) => {
     {
       title: '状态',
       align: 'right',
+      fixed: 'right',
       dataIndex: 'status',
       render: (val) => WITHDRAW_STATUS[val],
     },
@@ -115,7 +117,7 @@ const WithdrawDetail = (props) => {
       title: '备注',
       fixed: 'right',
       align: 'right',
-      width: 300,
+      width: 200,
       dataIndex: 'remark',
       render: (val, record) => {
         return (
@@ -149,6 +151,16 @@ const WithdrawDetail = (props) => {
     });
   };
 
+  // 导出excel按钮
+  const excelBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'withdrawDetail/fetchGetExcel',
+      data: get(),
+      exportProps: { header: getColumns.slice(0, -1) },
+    },
+  ];
+
   return (
     <>
       <Alert
@@ -172,13 +184,7 @@ const WithdrawDetail = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'withdrawDetail/fetchGetExcel'}
-            dispatchData={get()}
-            exportProps={{ header: getColumns.slice(0, -1) }}
-          ></ExcelButton>
-        )}
+        btnExtra={excelBtn}
         searchCallback={fetchWithdrawTotal}
         cRef={childRef}
         loading={loading.effects['withdrawDetail/fetchGetList']}

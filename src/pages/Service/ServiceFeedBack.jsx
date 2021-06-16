@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { FEEDBACK_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 
@@ -39,11 +37,7 @@ const ServiceFeedBack = (props) => {
     {
       title: '问题描述',
       dataIndex: 'problemDesc',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '反馈时间',
@@ -69,26 +63,20 @@ const ServiceFeedBack = (props) => {
       render: (val) => (val ? val : '--'),
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'feedbackIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (feedbackIdString, info) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'eye',
-              visible: info.status === '2',
-              click: () => fetchFeedBackDetail({ feedbackIdString }),
-            },
-            {
-              type: 'replay',
-              visible: info.status !== '2',
-              click: () => fetchFeedBackDetail({ feedbackIdString }),
-            },
-          ]}
-        />
-      ),
+      render: (feedbackIdString, info) => [
+        {
+          type: 'eye',
+          visible: info.status === '2',
+          click: () => fetchFeedBackDetail({ feedbackIdString }),
+        },
+        {
+          type: 'replay',
+          visible: info.status !== '2',
+          click: () => fetchFeedBackDetail({ feedbackIdString }),
+        },
+      ],
     },
   ];
 

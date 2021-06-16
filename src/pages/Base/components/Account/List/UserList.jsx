@@ -1,10 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Switch, Button, Menu } from 'antd';
+import { Menu } from 'antd';
 import { WORKER_JOB_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSetForm from '../Form/UserSetForm';
 
@@ -77,11 +74,7 @@ const UserList = (props) => {
     {
       title: '角色',
       dataIndex: 'roleNames',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '入职日期',
@@ -103,36 +96,26 @@ const UserList = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="userStatus" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={val === '1'}
-            onClick={() => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val })}
-          />
-        </AuthConsumer>
-      ),
+      render: (val, record) => ({
+        auth: 'userStatus',
+        noAuth: val === '1' ? '启用' : '停用',
+        checked: val === '1',
+        onClick: () => fetchEdit({ adminAccountId: record.adminAccountId, status: 1 ^ val }),
+      }),
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'adminAccountId',
-      render: (adminAccountId) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              auth: 'userEdit',
-              click: () => fetchDetail({ adminAccountId }),
-            },
-          ]}
-        />
-      ),
+      render: (adminAccountId) => [
+        {
+          type: 'edit',
+          auth: 'userEdit',
+          click: () => fetchDetail({ adminAccountId }),
+        },
+      ],
     },
   ];
 
@@ -175,6 +158,7 @@ const UserList = (props) => {
       );
     });
   };
+
   const filterOpenKeys = (list, val) => {
     let arr = [];
     const lists = list.filter((item) => {
@@ -186,6 +170,15 @@ const UserList = (props) => {
     });
     return [...lists, ...arr];
   };
+
+  const extraBtn = [
+    {
+      text: '新增用户',
+      auth: 'userAdd',
+      onClick: () => setVisible({ visible: true }),
+    },
+  ];
+
   return (
     <div style={{ display: 'flex' }}>
       <Menu
@@ -203,9 +196,8 @@ const UserList = (props) => {
         style={{
           width: 200,
           marginRight: 24,
-          overflowY: 'auto',
-          overflowX: 'hidden',
           maxHeight: 770,
+          overflowY: 'auto',
         }}
       >
         <Menu.Item key="-1">所有部门</Menu.Item>
@@ -213,17 +205,7 @@ const UserList = (props) => {
       </Menu>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={
-            <AuthConsumer auth="userAdd">
-              <Button
-                className="dkl_green_btn"
-                key="1"
-                onClick={() => setVisible({ visible: true })}
-              >
-                新增用户
-              </Button>
-            </AuthConsumer>
-          }
+          btnExtra={extraBtn}
           noCard={false}
           cRef={childRef}
           loading={loading}

@@ -3,9 +3,7 @@ import { connect } from 'umi';
 import { NEWS_STATUS } from '@/common/constant';
 import { Card, Result } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import NewsSet from './components/News/NewsSet';
 
@@ -61,11 +59,7 @@ const ServiceNewsComponent = (props) => {
       title: '内容简介',
       dataIndex: 'description',
       width: 300,
-      render: (val) => (
-        <Ellipsis length={50} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: { length: 50 },
     },
     {
       title: '更新人',
@@ -85,28 +79,22 @@ const ServiceNewsComponent = (props) => {
       render: (val) => NEWS_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'newsIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'down',
-              visible: record.status === '0',
-              click: () => fetchNewsStatus({ newsId: val, status: 0 }),
-            },
-            {
-              type: 'edit',
-              click: () => {
-                setDetail(record);
-                setTabKey('tab2');
-              },
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'down',
+          visible: record.status === '0',
+          click: () => fetchNewsStatus({ newsId: val, status: 0 }),
+        },
+        {
+          type: 'edit',
+          click: () => {
+            setDetail(record);
+            setTabKey('tab2');
+          },
+        },
+      ],
     },
   ];
 

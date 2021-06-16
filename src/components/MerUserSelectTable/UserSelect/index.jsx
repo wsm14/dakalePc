@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelect = ({
@@ -12,6 +11,7 @@ const MreSelect = ({
   onCancel,
   userList = [],
   tableList = [],
+  dispatch,
   dispatchType = 'userList/fetchGetList',
   params = {},
   loading,
@@ -22,8 +22,19 @@ const MreSelect = ({
   const [selectKey, setSelectKey] = useState([]);
 
   useEffect(() => {
+    fetchGetExpertLevel();
+  }, []);
+
+  useEffect(() => {
     visible && type === 'select' && setSelectKey(keys);
   }, [visible]);
+
+  // 获取哒人等级映射
+  const fetchGetExpertLevel = () => {
+    dispatch({
+      type: 'baseData/fetchGetExpertLevel',
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -50,11 +61,7 @@ const MreSelect = ({
     {
       title: '昵称',
       dataIndex: 'username',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '级别',

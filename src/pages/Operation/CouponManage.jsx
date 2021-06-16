@@ -1,13 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Tag } from 'antd';
+import { Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import CouponDrawer from './components/Coupon/CouponDrawer';
-import ExcelButton from '@/components/ExcelButton';
+import excelProps from './components/Coupon/excelProps';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch } = props;
@@ -143,79 +141,35 @@ const CouponManageComponent = (props) => {
       ),
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
         const { merchantCouponStatus: status, ownerIdString: ownerId } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                click: () => fetchCouponDetail(index, 'info'),
-              },
-              {
-                type: 'del',
-                visible: status !== '1',
-                click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
-              },
-              // {
-              //   type: 'edit',
-              //   click: () => fetchCouponDetail(val, 'edit'),
-              // },
-              // 上架中 已确认 | 上架中 已驳回
-              {
-                type: 'down',
-                popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
-                visible: status == '1',
-                click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            click: () => fetchCouponDetail(index, 'info'),
+          },
+          {
+            type: 'del',
+            visible: status !== '1',
+            click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
+          },
+          // {
+          //   type: 'edit',
+          //   click: () => fetchCouponDetail(val, 'edit'),
+          // },
+          // 上架中 已确认 | 上架中 已驳回
+          {
+            type: 'down',
+            popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
+            visible: status == '1',
+            click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
+          },
+        ];
       },
     },
   ];
-
-  const getExcelProps = {
-    fieldNames: { key: 'key', headerName: 'header' },
-    header: [
-      { key: 'couponType', header: '券类型', render: (val) => COUPON_TYPE[val] },
-      { key: 'couponName', header: '券名称' },
-      { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
-      { key: 'ownerName', header: '店铺/集团名称' },
-      { key: ['reduceObject', 'couponPrice'], header: '券价值' },
-      { key: 'buyPrice', header: '售卖价' },
-      {
-        key: ['reduceObject', 'thresholdPrice'],
-        header: '使用门槛',
-        render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
-      },
-      {
-        key: 'activeDate',
-        header: '使用有效期',
-        render: (val, row) => {
-          const { activeDate, endDate, delayDays, activeDays } = row;
-          if (activeDate && endDate) {
-            return activeDate + '~' + endDate;
-          } else {
-            if (delayDays === '0') {
-              return `领取后立即生效\n有效期${activeDays}天`;
-            }
-            return `领取后${delayDays}天生效\n有效期${activeDays}天`;
-          }
-        },
-      },
-      { key: 'remain', header: '剩余数量' },
-      { key: 'total', header: '销量', render: (val, row) => val - row.remain },
-      { key: 'verifiedCount', header: '核销数量' },
-      { key: 'createTime', header: '创建时间' },
-      { key: 'updateTime', header: '发布时间' },
-      { key: 'merchantCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },
-    ],
-  };
 
   // 下架/删除
   const fetchCouponSet = (payload) => {
@@ -236,28 +190,27 @@ const CouponManageComponent = (props) => {
     });
   };
 
+  // 权限按钮
+  const btnList = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'couponManage/fetchCouponToImport',
+      data: get(),
+      exportProps: excelProps,
+    },
+    {
+      text: '新建券',
+      auth: 'save',
+      onClick: () => setVisible({ type: 'add', show: true }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         keepData
-        btnExtra={({ get }) => (
-          <>
-            <ExcelButton
-              dispatchType={'couponManage/fetchCouponToImport'}
-              dispatchData={get()}
-              exportProps={getExcelProps}
-            ></ExcelButton>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => setVisible({ type: 'add', show: true })}
-              >
-                新建券
-              </Button>
-            </AuthConsumer>
-          </>
-        )}
+        btnExtra={btnList}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

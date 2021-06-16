@@ -1,10 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { ACTIVITY_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import MarketCardActivityDetail from './components/Activity/MarketCardActivityDetail';
 import MarketCardActivitySet from './components/Activity/MarketCardActivitySet';
@@ -38,21 +34,13 @@ const MarketCardActivity = (props) => {
       align: 'center',
       fixed: 'left',
       dataIndex: 'activityName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '活动简述',
       align: 'center',
       dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '活动商家',
@@ -73,25 +61,19 @@ const MarketCardActivity = (props) => {
       render: (val) => ACTIVITY_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'activityIdString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'eye',
-              click: () => setShow({ key: 'detail', record }),
-            },
-            {
-              type: 'down',
-              visible: record.activityStatus !== '2',
-              click: () => fetchMarketActivityCancel({ activityId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'eye',
+          click: () => setShow({ key: 'detail', record }),
+        },
+        {
+          type: 'down',
+          visible: record.activityStatus !== '2',
+          click: () => fetchMarketActivityCancel({ activityId: val }),
+        },
+      ],
     },
   ];
 
@@ -107,13 +89,13 @@ const MarketCardActivity = (props) => {
   // 设置活动
   const handleSetActive = () => setVisible(true);
 
-  const btnExtra = (
-    <AuthConsumer auth="save">
-      <Button className="dkl_green_btn" key="1" onClick={handleSetActive}>
-        新增活动
-      </Button>
-    </AuthConsumer>
-  );
+  const btnExtra = [
+    {
+      text: '新增活动',
+      auth: 'save',
+      onClick: handleSetActive,
+    },
+  ];
 
   return (
     <>

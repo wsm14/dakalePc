@@ -1,10 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { EXPERT_TEMP_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import ExpertTempSet from './components/Temp/ExpertTempSet';
 
 const ExpertTempList = (props) => {
@@ -105,21 +102,16 @@ const ExpertTempList = (props) => {
       render: (val) => experLevel[val],
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'userTempLevelId',
-      render: (userTempLevelId, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'cancelTemp',
-              pop: true,
-              visible: row.status !== '2',
-              click: () => fetchExpertStop({ userTempLevelId }),
-            },
-          ]}
-        />
-      ),
+      render: (userTempLevelId, row) => [
+        {
+          type: 'cancelTemp',
+          pop: true,
+          visible: row.status === '1',
+          click: () => fetchExpertStop({ userTempLevelId }),
+        },
+      ],
     },
   ];
 
@@ -139,18 +131,19 @@ const ExpertTempList = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      auth: 'save',
+      onClick: () => setVisible(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

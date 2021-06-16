@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { WORKER_BANK_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
-import HandleSetTable from '@/components/HandleSetTable';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -119,11 +115,7 @@ const tableList = (props) => {
       title: '经营类目',
       align: 'center',
       dataIndex: 'categoryName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '详细地址',
@@ -156,77 +148,70 @@ const tableList = (props) => {
       render: (val) => WORKER_BANK_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'merchantGroupId',
-      align: 'right',
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => {
-                fetchGrounpDetails(
-                  {
-                    merchantGroupId: val,
-                  },
-                  (res) => {
-                    fetchSave({ visible: true });
-                  },
-                );
+      render: (val, record, index) => [
+        {
+          type: 'edit',
+          click: () => {
+            fetchGrounpDetails(
+              {
+                merchantGroupId: val,
               },
-            },
-            {
-              type: 'info',
-              click: () => {
-                fetchSave({
-                  visible2: true,
-                    merchantGroupId: val,
-                    merchantGroupIdIndex: index,
-                });
+              (res) => {
+                fetchSave({ visible: true });
               },
-            },
-            {
-              type: 'activate',
-              visible: record.bankStatus === '0',
-              click: () => {
-                fetchSave({
-                  visible1: true,
-                  merchantGroupId: val,
-                  groupDetails: {},
-                  initial: {},
-                });
-              },
-            },
-          ]}
-        />
-      ),
+            );
+          },
+        },
+        {
+          type: 'info',
+          click: () => {
+            fetchSave({
+              visible2: true,
+              merchantGroupId: val,
+              merchantGroupIdIndex: index,
+            });
+          },
+        },
+        {
+          type: 'activate',
+          visible: record.bankStatus === '0',
+          click: () => {
+            fetchSave({
+              visible1: true,
+              merchantGroupId: val,
+              groupDetails: {},
+              initial: {},
+            });
+          },
+        },
+      ],
     },
   ];
+
+  //表格额外按钮
+  const extraBtn = [
+    {
+      auth: 'save',
+      onClick: () =>
+        fetchSave({
+          visible: true,
+          merchantGroupId: null,
+          groupDetails: {},
+          merchantGroupDTO: {},
+          businessLicense: {},
+          bankBindingInfo: {},
+          initial: {},
+        }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() =>
-                fetchSave({
-                  visible: true,
-                  merchantGroupId: null,
-                  groupDetails: {},
-                  merchantGroupDTO: {},
-                  businessLicense: {},
-                  bankBindingInfo: {},
-                  initial: {},
-                })
-              }
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

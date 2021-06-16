@@ -1,10 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { BUSINESS_STATUS_AUDIT } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessAuditDetailShow from './components/Audit/BusinessAuditDetailShow';
 import BusinessAuditDetailList from './components/Audit/BusinessAuditDetailList';
@@ -16,7 +12,7 @@ const BusinessAuditList = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
   const [visibleDetailList, setVisibleDetailList] = useState(false);
-  const [visibleAuditDetail,setVisibleAuditDetail]= useState(false)
+  const [visibleAuditDetail, setVisibleAuditDetail] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -32,7 +28,7 @@ const BusinessAuditList = (props) => {
       label: '审核状态',
       name: 'verifyStatus',
       type: 'select',
-      select:  BUSINESS_STATUS_AUDIT,
+      select: BUSINESS_STATUS_AUDIT,
     },
     {
       label: '省市区',
@@ -55,11 +51,7 @@ const BusinessAuditList = (props) => {
       title: '店铺名称',
       fixed: 'left',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '所在城市',
@@ -68,11 +60,7 @@ const BusinessAuditList = (props) => {
     {
       title: '详细地址',
       dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '所属商圈',
@@ -108,26 +96,20 @@ const BusinessAuditList = (props) => {
       render: (val) => BUSINESS_STATUS_AUDIT[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'userMerchantVerifyId',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'check',
-              visible: record.verifyStatus === '1',
-              click: () => fetchGetDetail(val),
-            },
-            {
-              type: 'eye',
-              visible: record.verifyStatus != '1',
-              click: () => handleShowUserDetail(record, record.verifyStatus),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'check',
+          visible: record.verifyStatus === '1',
+          click: () => fetchGetDetail(val),
+        },
+        {
+          type: 'eye',
+          visible: record.verifyStatus != '1',
+          click: () => handleShowUserDetail(record, record.verifyStatus),
+        },
+      ],
     },
   ];
 
@@ -143,10 +125,10 @@ const BusinessAuditList = (props) => {
   // 用户详情展示
   const handleShowUserDetail = (initialValues, verifyStatus) => {
     setVisibleAuditDetail({
-      show:true,
+      show: true,
       initialValues,
       verifyStatus,
-    })
+    });
   };
 
   // 经营类目
@@ -160,17 +142,20 @@ const BusinessAuditList = (props) => {
     fetchTradeList();
   }, []);
 
+  //表格额外的按钮
+  const extraBtn = [
+    {
+      auth: 'checkDetail',
+      text: '审核记录',
+      onClick: () => setVisibleDetailList(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="checkDetail">
-            <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
-              审核记录
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -190,7 +175,10 @@ const BusinessAuditList = (props) => {
         visible={visibleDetailList}
         setVisible={setVisibleDetailList}
       ></BusinessAuditDetailList>
-      <BusinessAuditDetailShow visible={visibleAuditDetail} onClose={()=>setVisibleAuditDetail(false)}></BusinessAuditDetailShow>
+      <BusinessAuditDetailShow
+        visible={visibleAuditDetail}
+        onClose={() => setVisibleAuditDetail(false)}
+      ></BusinessAuditDetailShow>
     </>
   );
 };

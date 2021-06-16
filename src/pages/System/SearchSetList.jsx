@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchSetModal from './components/SearchSet/SearchSetModal';
 
@@ -27,21 +26,15 @@ const SearchSetList = (props) => {
       dataIndex: 'title',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'key',
-      align: 'right',
-      fixed: 'right',
-      render: (val) => (
-        <HandleSetTable
-          formItems={[
-            {
-              auth: 'searchSet',
-              title: '配置',
-              click: fetchSearchGetData,
-            },
-          ]}
-        />
-      ),
+      render: (val) => [
+        {
+          auth: 'searchSet',
+          title: '配置',
+          click: fetchSearchGetData,
+        },
+      ],
     },
   ];
 

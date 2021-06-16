@@ -1,7 +1,11 @@
 import React from 'react';
 import { useLocation, useSelector } from 'umi';
 import { KeepAlive } from 'react-activation';
+import HandleSetBtn from './HandleSetTable';
 import TableBlock from './tableBlock';
+
+// 表格操作按钮
+export const HandleSetTable = HandleSetBtn;
 
 /**
  * 表格组件父组件
