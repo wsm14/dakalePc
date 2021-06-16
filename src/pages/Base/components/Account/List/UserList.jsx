@@ -203,7 +203,7 @@ const UserList = (props) => {
         <Menu.Item key="-1">所有部门</Menu.Item>
         {menuList && routerMenu(menuList, 'children')}
       </Menu>
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1, overflowX: 'hidden' }}>
         <TableDataBlock
           btnExtra={extraBtn}
           noCard={false}
