@@ -366,7 +366,7 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按场景显示' };
+export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按行业显示' };
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {

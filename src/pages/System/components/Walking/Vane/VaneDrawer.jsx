@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
@@ -8,7 +8,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const VaneDrawer = (props) => {
-  const { navigation, dispatch, cRef, visible, onClose, loading } = props;
+  const { navigation, dispatch, cRef, visible, onClose, loading, tradeList } = props;
 
   const { show = false, type = 'add', detail = '' } = visible;
   const [form] = Form.useForm();
@@ -52,6 +52,16 @@ const VaneDrawer = (props) => {
       });
     });
   };
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业选择项
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
 
   const formItems = [
     {
@@ -93,26 +103,35 @@ const VaneDrawer = (props) => {
       visible: showUrl === 'url',
       show: showUrl === 'url',
     },
+    // {
+    //   label: '选择场景',
+    //   type: 'treeSelect',
+    //   multiple: true,
+    //   showCheckedStrategy: 'SHOW_ALL',
+    //   name: 'scenesId',
+    //   select: navigation.list.map(
+    //     ({
+    //       categoryIdString: categoryScenesId,
+    //       categoryName: scenesName,
+    //       categoryScenesDTOList,
+    //     }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
+    //   ),
+    //   fieldNames: {
+    //     label: 'scenesName',
+    //     value: 'categoryScenesId',
+    //     children: 'categoryScenesDTOList',
+    //   },
+    //   visible: showUrl === 'scenes',
+    //   show: false,
+    // },
     {
-      label: '选择场景',
-      type: 'treeSelect',
-      multiple: true,
-      showCheckedStrategy: 'SHOW_ALL',
-      name: 'scenesId',
-      select: navigation.list.map(
-        ({
-          categoryIdString: categoryScenesId,
-          categoryName: scenesName,
-          categoryScenesDTOList,
-        }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
-      ),
-      fieldNames: {
-        label: 'scenesName',
-        value: 'categoryScenesId',
-        children: 'categoryScenesDTOList',
-      },
-      visible: showUrl === 'scenes',
+      label: '选择行业',
+      type: 'cascader',
+      name: 'categoryId',
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'childList' },
       show: false,
+      visible: showUrl === 'scenes',
     },
   ];
 
@@ -142,7 +161,8 @@ const VaneDrawer = (props) => {
   );
 };
 
-export default connect(({ walkingManage, loading }) => ({
+export default connect(({ walkingManage, loading, sysTradeList }) => ({
+  tradeList: sysTradeList.list.list,
   navigation: walkingManage.navigation,
   loading: loading.models.walkingManage,
 }))(VaneDrawer);
