@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import TradeBaseSet from '../Form/TradeBaseSet';
 
 const TradeBaseList = (props) => {
@@ -41,23 +40,18 @@ const TradeBaseList = (props) => {
           dataIndex: 'name',
         },
         {
-          title: '操作',
-          align: 'center',
+          type: 'handle',
           dataIndex: 'value',
-          render: (val) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  click: () => handleDataSet({ name: val }),
-                },
-                {
-                  type: 'del',
-                  click: () => fetchDataDel(val),
-                },
-              ]}
-            />
-          ),
+          render: (val) => [
+            {
+              type: 'edit',
+              click: () => handleDataSet({ name: val }),
+            },
+            {
+              type: 'del',
+              click: () => fetchDataDel(val),
+            },
+          ],
         },
       ],
     },
@@ -73,23 +67,18 @@ const TradeBaseList = (props) => {
           dataIndex: 'name',
         },
         {
-          title: '操作',
-          align: 'center',
+          type: 'handle',
           dataIndex: 'value',
-          render: (val) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  click: () => handleDataSet({ name: val }),
-                },
-                {
-                  type: 'del',
-                  click: () => fetchDataDel(val),
-                },
-              ]}
-            />
-          ),
+          render: (val) => [
+            {
+              type: 'edit',
+              click: () => handleDataSet({ name: val }),
+            },
+            {
+              type: 'del',
+              click: () => fetchDataDel(val),
+            },
+          ],
         },
       ],
     },
@@ -109,16 +98,12 @@ const TradeBaseList = (props) => {
         onCancel={() => onClose('')}
       >
         <TableDataBlock
-          btnExtra={
-            <Button className="dkl_green_btn" onClick={() => handleDataSet()}>
-              新增
-            </Button>
-          }
           cRef={childRef}
           noCard={false}
           loading={loading}
           columns={propItem.getColumns}
           rowKey={(row) => `${row[propItem.rowKey]}`}
+          btnExtra={[{ onClick: () => handleDataSet('add') }]}
           params={{ type, categoryId: record.categoryIdString }}
           dispatchType="sysTradeList/fetchDetailList"
           size="middle"

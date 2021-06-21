@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Card, Result, Button, Space } from 'antd';
-import AuthConsumer, { authCheck } from '@/layouts/AuthConsumer';
+import { Card, Result } from 'antd';
+import { authCheck } from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import TaskList from './components/Subsidys/List/TaskList';
 import ActionList from './components/Subsidys/List/ActionList';
 import SubsidyDrawer from './components/Subsidys/SubsidyDrawer';
@@ -47,6 +48,33 @@ const SubsidyManage = () => {
     action: <ActionList {...tableProp} setActionIdList={setActionIdList}></ActionList>, // 使用规则
   };
 
+  const btnList = [
+    {
+      text: '回收',
+      auth: 'recycleBean',
+      show: tabkey !== 'action',
+      onClick: () =>
+        setVisible({
+          type: 'batch',
+          tab: tabkey,
+          show: true,
+          detail: { role: 'merchant' },
+        }),
+    },
+    {
+      text: '批量修改',
+      auth: 'batchEdit',
+      show: tabkey === 'action',
+      disabled: !actionIdList.length,
+      onClick: () => setVisibleActionEdit(true),
+    },
+    {
+      text: tabkey === 'action' ? '新增' : '充值',
+      auth: `${tabkey}Save`,
+      onClick: () => setVisible({ type: 'add', tab: tabkey, show: true }),
+    },
+  ];
+
   return (
     <>
       <Card
@@ -60,42 +88,7 @@ const SubsidyManage = () => {
             });
           setTabKey(key);
         }}
-        tabBarExtraContent={
-          <Space>
-            <AuthConsumer auth={'recycleBean'} show={tabkey !== 'action'}>
-              <Button
-                className="dkl_green_btn"
-                onClick={() =>
-                  setVisible({
-                    type: 'batch',
-                    tab: tabkey,
-                    show: true,
-                    detail: { role: 'merchant' },
-                  })
-                }
-              >
-                回收
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth={'batchEdit'} show={tabkey === 'action'}>
-              <Button
-                disabled={!actionIdList.length}
-                className="dkl_green_btn"
-                onClick={() => setVisibleActionEdit(true)}
-              >
-                批量修改
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth={`${tabkey}Save`}>
-              <Button
-                className="dkl_green_btn"
-                onClick={() => setVisible({ type: 'add', tab: tabkey, show: true })}
-              >
-                {tabkey === 'action' ? '新增' : '充值'}
-              </Button>
-            </AuthConsumer>
-          </Space>
-        }
+        tabBarExtraContent={<ExtraButton list={btnList}></ExtraButton>}
       >
         {check && check.length ? (
           contentList[tabkey]

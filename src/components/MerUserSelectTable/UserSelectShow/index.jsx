@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'umi';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSelect from '../UserSelect';
 
 const UserSelectShow = ({
+  maxLength,
   experLevel,
   showSelect,
   keys = [],
@@ -18,11 +18,7 @@ const UserSelectShow = ({
     {
       title: '昵称',
       dataIndex: 'username',
-      render: (val) => (
-        <Ellipsis length={10} tooltip lines={2}>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '级别',
@@ -63,6 +59,7 @@ const UserSelectShow = ({
         total={list.length}
       ></TableDataBlock>
       <UserSelect
+        maxLength={maxLength}
         keys={keys}
         visible={showSelect}
         userList={list}

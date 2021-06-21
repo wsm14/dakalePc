@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Modal } from 'antd';
+import { Modal, Alert } from 'antd';
 import { connect } from 'umi';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelect = ({
   type = 'select',
+  maxLength = 9999999,
   visible,
   keys = [],
   onOk,
@@ -62,11 +62,7 @@ const MreSelect = ({
     {
       title: '昵称',
       dataIndex: 'username',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '级别',
@@ -124,6 +120,7 @@ const MreSelect = ({
       visible={visible}
       footer={type === 'select' ? undefined : false}
       okText={`确定（已选${selectKey.length}项）`}
+      okButtonProps={{ disabled: selectKey.length > maxLength }}
       onOk={() => {
         onOk({ keys: selectKey, list: selectUser, resultList: selectUser });
         onCancel();
@@ -145,6 +142,12 @@ const MreSelect = ({
         rowSelection={type === 'select' ? rowSelection : undefined}
         {...tableList}
       ></TableDataBlock>
+      {selectKey.length > maxLength && (
+        <Alert
+          type="error"
+          message={`最多可选 ${maxLength} 项，当前已选 ${selectKey.length} 项，请检查`}
+        ></Alert>
+      )}
     </Modal>
   );
 };

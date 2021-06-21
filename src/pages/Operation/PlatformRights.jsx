@@ -1,17 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag, Button, Space } from 'antd';
+import { Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
   SPECIAL_RECOMMEND_TYPE,
 } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
-import ExcelButton from '@/components/ExcelButton';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PreferentialDrawer from './components/PlatformRights/PreferentialDrawer';
 import PlatformRightsDetail from './components/PlatformRights/PlatformRightsDetail';
@@ -185,41 +183,34 @@ const PlatformRights = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'specialGoodsId',
-      align: 'right',
-      fixed: 'right',
       width: 100,
       render: (val, record, index) => {
         const { specialGoodsId, status } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                click: () => fetchSpecialGoodsDetail(index, 'info'),
-              },
-              {
-                type: 'down',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsStatus(record),
-              },
-              {
-                type: 'edit',
-                visible: status !== '0',
-                click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
-              },
-              {
-                pop: true,
-                title: '取消推荐',
-                auth: 'placement',
-                visible: record.recommendStatus !== '0' || record.topStatus !== '0',
-                click: () =>
-                  fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            click: () => fetchSpecialGoodsDetail(index, 'info'),
+          },
+          {
+            type: 'down',
+            visible: status !== '0',
+            click: () => fetchSpecialGoodsStatus(record),
+          },
+          {
+            type: 'edit',
+            visible: status !== '0',
+            click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
+          },
+          {
+            pop: true,
+            title: '取消推荐',
+            auth: 'placement',
+            visible: record.recommendStatus !== '0' || record.topStatus !== '0',
+            click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
+          },
+        ];
       },
     },
   ];
@@ -302,32 +293,27 @@ const PlatformRights = (props) => {
     ],
   };
 
+  const btnList = [
+    {
+      onClick: () => setVisibleSet({ type: 'add', show: true }),
+    },
+  ];
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'specialGoods/fetchSpecialGoodsImport',
+      data: get(),
+      exportProps: getExcelProps,
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={({ get }) => (
-          <>
-            <ExcelButton
-              dispatchType={'specialGoods/fetchSpecialGoodsImport'}
-              dispatchData={get()}
-              exportProps={getExcelProps}
-            ></ExcelButton>
-          </>
-        )}
+        btnExtra={extraBtn}
         cardProps={{
-          extra: (
-            <Space>
-              <AuthConsumer auth="save">
-                <Button
-                  className="dkl_green_btn"
-                  onClick={() => setVisibleSet({ type: 'add', show: true })}
-                >
-                  新增
-                </Button>
-              </AuthConsumer>
-            </Space>
-          ),
+          extra: <ExtraButton list={btnList}></ExtraButton>,
         }}
         cRef={childRef}
         loading={loading}

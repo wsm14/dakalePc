@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Card } from 'antd';
 import { connect } from 'umi';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const tabList = [
@@ -40,21 +39,15 @@ const SysAccountSet = (props) => {
       render: (val) => val || '--',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'idString',
-      fixed: 'right',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              visible: record.username !== 'administrator',
-              click: () => fetchGetAccountInfo({ adminId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          visible: record.username !== 'administrator',
+          click: () => fetchGetAccountInfo({ adminId: val }),
+        },
+      ],
     },
   ];
 

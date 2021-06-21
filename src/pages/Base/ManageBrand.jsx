@@ -1,10 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Switch } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import BrandUpdate from './components/Brand/BrandUpdate';
 
 const BusinessBrandComponent = (props) => {
@@ -53,40 +51,31 @@ const BusinessBrandComponent = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       dataIndex: 'status',
-      render: (val, row) => (
-        <AuthConsumer auth="status" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checked={val === '1'}
-            onClick={() =>
-              fetchMerBrandEdit({
-                configBrandIdString: row.configBrandIdString,
-                status: 1 ^ Number(val),
-              })
-            }
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { configBrandIdString } = row;
+        return {
+          auth: 'status',
+          noAuth: val === '1' ? '启用' : '停用',
+          checked: val === '1',
+          onClick: () => fetchMerBrandEdit({ configBrandIdString, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'configBrandIdString',
-      render: (val, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => handleBrandSet('edit', row),
-            },
-            {
-              type: 'del',
-              click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, row) => [
+        {
+          type: 'edit',
+          click: () => handleBrandSet('edit', row),
+        },
+        {
+          type: 'del',
+          click: () => fetchMerBrandEdit({ configBrandIdString: val, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 
@@ -116,16 +105,13 @@ const BusinessBrandComponent = (props) => {
     });
   };
 
+  // 表格额外按钮
+  const extraBtn = [{ auth: 'save', onClick: () => handleBrandSet('add') }];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => handleBrandSet('add')}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading.models.businessBrand}
         columns={getColumns}

@@ -11,9 +11,11 @@ const InputBlock = (props) => {
     maxLength,
     addonAfter,
     onChange,
+    itemStyle,
+    ...other
   } = props;
 
-  const divProps = delectProps(props);
+  const divProps = delectProps(other);
   const [totalNum, setTotalNum] = useState(0); // 字数计算
 
   const numtext = () => {
@@ -31,6 +33,7 @@ const InputBlock = (props) => {
   return (
     <Input
       {...divProps}
+      style={itemStyle}
       addonAfter={addonAfter}
       suffix={dataNum || suffix || ''}
       onChange={(e) => {

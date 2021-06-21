@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import Ellipsis from '@/components/Ellipsis';
 import { SUBSIDY_BEAN_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -72,11 +71,7 @@ const TaskDetailList = (props) => {
           title: '店铺名称',
           width: 200,
           dataIndex: 'merchantName',
-          render: (val) => (
-            <Ellipsis length={10} tooltip lines={3}>
-              {val}
-            </Ellipsis>
-          ),
+          ellipsis: { lines: 3 },
         },
         {
           title: '店铺帐号',

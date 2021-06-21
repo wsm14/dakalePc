@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Modal, Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import { Modal } from 'antd';
 import NoticeImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import CheckInDetailSet from './CheckInDetailSet';
 
 const CheckInDetailList = (props) => {
@@ -39,20 +37,16 @@ const CheckInDetailList = (props) => {
           dataIndex: 'content',
         },
         {
-          title: '操作',
+          type: 'handle',
           align: 'center',
           dataIndex: 'idString',
-          render: (val, row) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  auth: 'markImgEdit',
-                  click: () => handleCheckInDetailSet(row),
-                },
-              ]}
-            />
-          ),
+          render: (val, row) => [
+            {
+              type: 'edit',
+              auth: 'markImgEdit',
+              click: () => handleCheckInDetailSet(row),
+            },
+          ],
         },
       ],
     },
@@ -66,24 +60,35 @@ const CheckInDetailList = (props) => {
           render: (val) => <NoticeImgShow url={val} />,
         },
         {
-          title: '操作',
+          type: 'handle',
           align: 'center',
           dataIndex: 'idString',
-          render: (val, row) => (
-            <HandleSetTable
-              formItems={[
-                {
-                  type: 'edit',
-                  auth: 'shareTextEdit',
-                  click: () => handleCheckInDetailSet(row),
-                },
-              ]}
-            />
-          ),
+          render: (val, row) => [
+            {
+              type: 'edit',
+              auth: 'shareTextEdit',
+              click: () => handleCheckInDetailSet(row),
+            },
+          ],
         },
       ],
     },
   }[type];
+
+  const extraBtn = [
+    {
+      text: {
+        auth: 'markTextAdd',
+        show: detailList.list.length < 6,
+        onClick: () => handleCheckInDetailSet(),
+      },
+      image: {
+        auth: 'shareImgAdd',
+        show: detailList.list.length < 3,
+        onClick: () => handleCheckInDetailSet(),
+      },
+    }[type],
+  ];
 
   return (
     <Modal
@@ -95,24 +100,7 @@ const CheckInDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
-        btnExtra={
-          {
-            text: (
-              <AuthConsumer auth="markTextAdd" show={detailList.list.length < 6}>
-                <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                  新增
-                </Button>
-              </AuthConsumer>
-            ),
-            image: (
-              <AuthConsumer auth="shareImgAdd" show={detailList.list.length < 3}>
-                <Button className="dkl_green_btn" onClick={() => handleCheckInDetailSet()}>
-                  新增
-                </Button>
-              </AuthConsumer>
-            ),
-          }[type]
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         noCard={false}
         loading={loading}

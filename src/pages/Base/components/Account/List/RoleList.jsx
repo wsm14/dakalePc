@@ -1,8 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch, Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import RoleSetForm from '../Form/RoleSetForm';
 
@@ -94,51 +91,40 @@ const RoleList = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       width: 100,
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="roleStatus" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={val === '1'}
-            onClick={() => fetchEdit({ roleId: record.idString, status: 1 ^ val })}
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { idString: roleId } = row;
+        return {
+          auth: 'roleStatus',
+          noAuth: val === '1' ? '启用' : '停用',
+          checked: val === '1',
+          onClick: () => fetchEdit({ roleId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
-      title: '操作',
+      type: 'handle',
       width: 200,
-      align: 'right',
-      fixed: 'right',
       dataIndex: 'idString',
-      render: (val) => (
-        <HandleSetTable
-          formItems={[
-            {
-              title: '权限设置',
-              auth: 'roleEdit',
-              click: () => fetchFlag({ roleId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val) => [
+        {
+          title: '权限设置',
+          auth: 'roleEdit',
+          click: () => fetchFlag({ roleId: val }),
+        },
+      ],
     },
   ];
+
+  const extraBtn = [{ auth: 'roleAdd', onClick: () => fetchFlag() }];
 
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="roleAdd">
-            <Button className="dkl_green_btn" key="1" onClick={() => fetchFlag()}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}

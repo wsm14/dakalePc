@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
-import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import TaskDetailList from '../Detail/TaskDetailList';
 
 const TaskManage = (props) => {
@@ -93,41 +91,35 @@ const TaskManage = (props) => {
       render: (val, row) => `${val}\n${row.creator}`,
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'subsidyId',
-      fixed: 'right',
-      align: 'right',
       render: (subsidyId, record) => {
         const { status } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info',
-                auth: `${tabkey}Info`,
-                click: () => fetchSubsidyTaskDetail({ subsidyId }),
-              },
-              {
-                type: `${tabkey}Detail`,
-                title: '补贴详情',
-                click: () => setTaskDates({ show: true, detail: record }),
-              },
-              {
-                type: 'del',
-                auth: `${tabkey}Del`,
-                visible: status === '0',
-                click: () => fetchSubsidyTaskEndDel({ subsidyId, deleteFlag: 0 }),
-              },
-              // {
-              //   type: 'end',
-              //   auth: `${tabkey}End`,
-              //   pop: true,
-              //   visible: status === '1',
-              //   click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
-              // },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info',
+            auth: `${tabkey}Info`,
+            click: () => fetchSubsidyTaskDetail({ subsidyId }),
+          },
+          {
+            type: `${tabkey}Detail`,
+            title: '补贴详情',
+            click: () => setTaskDates({ show: true, detail: record }),
+          },
+          {
+            type: 'del',
+            auth: `${tabkey}Del`,
+            visible: status === '0',
+            click: () => fetchSubsidyTaskEndDel({ subsidyId, deleteFlag: 0 }),
+          },
+          // {
+          //   type: 'end',
+          //   auth: `${tabkey}End`,
+          //   pop: true,
+          //   visible: status === '1',
+          //   click: () => fetchSubsidyTaskEndDel({ subsidyId, status: 0 }),
+          // },
+        ];
       },
     },
   ];
@@ -150,18 +142,21 @@ const TaskManage = (props) => {
     });
   };
 
+  const btnList = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'subsidyManage/fetchSubsidyTaskGetExcel',
+      data: { type, ...get() },
+      exportProps: { header: getColumns },
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
         noCard={false}
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'subsidyManage/fetchSubsidyTaskGetExcel'}
-            dispatchData={{ type, ...get() }}
-            exportProps={{ header: getColumns }}
-          ></ExcelButton>
-        )}
+        btnExtra={btnList}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

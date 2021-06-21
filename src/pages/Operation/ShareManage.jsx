@@ -1,13 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tag, Button } from 'antd';
+import { Tag } from 'antd';
 import { MreSelect } from '@/components/MerUserSelectTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
-import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareDetail from './components/Share/Detail/ShareDetail';
 import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';
@@ -99,16 +97,11 @@ const ShareManage = (props) => {
       dataIndex: 'frontImage',
       width: 280,
       render: (val, detail) => (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div>
-            <PopImgShow url={val}></PopImgShow>
-          </div>
-          <div style={{ marginLeft: '15px' }}>
-            <Ellipsis length={10} tooltip lines={3}>
-              {detail.title}
-            </Ellipsis>
-          </div>
-        </div>
+        <PopImgShow url={val}>
+          <Ellipsis length={10} tooltip lines={3}>
+            {detail.title}
+          </Ellipsis>
+        </PopImgShow>
       ),
     },
     {
@@ -124,7 +117,7 @@ const ShareManage = (props) => {
             </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag color={'magenta'}>{`${row.topCategoryName}-${row.categoryName}`}</Tag>
+            <Tag color="blue">{`${row.topCategoryName}-${row.categoryName}`}</Tag>
             <span>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</span>
           </div>
         </>
@@ -211,54 +204,49 @@ const ShareManage = (props) => {
       render: (val) => SHARE_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'length',
-      width: 150,
-      fixed: 'right',
-      align: 'right',
+      width: 180,
       render: (val, record, index) => {
-        const { status, userMomentIdString } = record;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                title: '审核通过',
-                auth: 'check',
-                pop: true,
-                visible: status == 0,
-                click: () => fetchVerifyAllow({ userMomentIdString }),
-              },
-              {
-                title: '下架',
-                auth: 'down', // 下架
-                visible: status == 1 || status == 0,
-                click: () =>
-                  setVisibleRefuse({
-                    show: true,
-                    detail: record,
-                    formProps: { type: 'down', key: 'removalReason' },
-                  }),
-              },
-              {
-                type: 'info', // 详情
-                click: () => fetchShareDetail(index, record.contentType || 'video'),
-              },
-              {
-                type: 'set', // 设置假数据
-                click: () => fetchShareDetail(index, 'set'),
-              },
-              {
-                type: 'diary', // 日志
-                click: () => fetchShareHandleDetail(userMomentIdString),
-              },
-              {
-                type: 'peasDetail',
-                title: '领豆明细',
-                click: () => setVisiblePeas({ show: true, detail: record }),
-              },
-            ]}
-          />
-        );
+        const { status, userMomentIdString, payedPersonAmount } = record;
+        return [
+          {
+            title: '审核通过',
+            auth: 'check',
+            pop: true,
+            visible: status == 0,
+            click: () => fetchVerifyAllow({ userMomentIdString }),
+          },
+          {
+            title: '下架',
+            auth: 'down', // 下架
+            visible: status == 1 || status == 0,
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: record,
+                formProps: { type: 'down', key: 'removalReason' },
+              }),
+          },
+          {
+            type: 'info', // 详情
+            click: () => fetchShareDetail(index, record.contentType || 'video'),
+          },
+          {
+            type: 'set', // 设置假数据
+            click: () => fetchShareDetail(index, 'set'),
+          },
+          {
+            type: 'diary', // 日志
+            click: () => fetchShareHandleDetail(userMomentIdString),
+          },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            visible: payedPersonAmount > 0,
+            click: () => setVisiblePeas({ show: true, detail: record }),
+          },
+        ];
       },
     },
   ];
@@ -326,20 +314,19 @@ const ShareManage = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      auth: 'save',
+      text: '新增',
+      onClick: () => setVisibleShare({ type: 'add', show: true }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              onClick={() => setVisibleShare({ type: 'add', show: true })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

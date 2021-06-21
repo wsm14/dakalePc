@@ -1,10 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { SALE_ACCOUNT_TYPE, COMPANY_PROV_STATUS } from '@/common/constant';
 import CITYJSON from '@/common/city';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SaleAccountDrawer from './components/Sale/SaleAccountDrawer';
 
@@ -110,22 +107,18 @@ const SaleAccount = (props) => {
       render: (val) => COMPANY_PROV_STATUS[val],
     },
     {
-      title: '操作',
-      fixed: 'right',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'sellMainId',
-      render: (sellMainId, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchSaleAccountDetail({ type: 'detail', sellMainId }),
-            },
-          ]}
-        />
-      ),
+      render: (sellMainId, record) => [
+        {
+          type: 'info',
+          click: () => fetchSaleAccountDetail({ type: 'detail', sellMainId }),
+        },
+      ],
     },
   ];
+
+  const extraBtn = [{ auth: 'save', onClick: () => setVisible({ type: 'add', show: true }) }];
 
   return (
     <>
@@ -133,17 +126,7 @@ const SaleAccount = (props) => {
         order
         keepData
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button
-              className="dkl_green_btn"
-              key="1"
-              onClick={() => setVisible({ type: 'add', show: true })}
-            >
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         resetSearch={() => setAgentType(undefined)}
         loading={loading}
         columns={getColumns}

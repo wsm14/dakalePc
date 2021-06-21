@@ -45,7 +45,6 @@ export default {
               questionIdString: item.questionCategoryIdString,
               ...item,
             })),
-            total: content.total,
           },
         },
       });

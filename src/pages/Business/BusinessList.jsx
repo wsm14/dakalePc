@@ -1,21 +1,19 @@
-import React, { useRef, useState, useEffect, lazy, Suspense } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Tag } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import { LogDetail } from '@/components/PublicComponents';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import CardLoading from '@/components/CardLoading';
 import Ellipsis from '@/components/Ellipsis';
-import ExcelButton from '@/components/ExcelButton';
-import HandleSetTable from '@/components/HandleSetTable';
+import PopImgShow from '@/components/PopImgShow';
+import ExtraButton from '@/components/ExtraButton';
+import excelProps from './components/BusinessList/ExcelProps';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
 import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
+import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
-
-const BusinessTotalInfo = lazy(() => import('./components/BusinessList/BusinessTotalInfo'));
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, hubData, loading, dispatch } = props;
@@ -30,6 +28,7 @@ const BusinessListComponent = (props) => {
   const [hubSelect, setHubSelect] = useState(true); // 商圈搜索选择
   const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
   const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
+  const [qrCodeBag, setQrCodeBag] = useState({ show: false }); // 二维码背景图
 
   // 搜索参数
   const searchItems = [
@@ -68,7 +67,7 @@ const BusinessListComponent = (props) => {
       select: ['单店', '集团'],
     },
     {
-      label: '地址',
+      label: '地区',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
@@ -129,126 +128,102 @@ const BusinessListComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '店铺账号',
+      title: '店铺',
       fixed: 'left',
-      dataIndex: 'account',
-    },
-    {
-      title: '店铺名称',
-      fixed: 'left',
-      dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val || '暂未授权'}
-        </Ellipsis>
+      dataIndex: 'headerImg',
+      width: 350,
+      render: (val, row) => (
+        <PopImgShow url={val}>
+          <Ellipsis tooltip lines={2}>
+            {row.merchantName}
+          </Ellipsis>
+          <div style={{ display: 'flex', alignItems: 'center', marginTop: 5, color: '#888888' }}>
+            <Ellipsis length={15} tooltip>
+              {row.account}
+            </Ellipsis>
+            <Tag style={{ marginLeft: 5 }}>{row.groupId ? '集团' : '单店'}</Tag>
+          </div>
+        </PopImgShow>
       ),
-    },
-    {
-      title: '所在地区',
-      align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
-    },
-    {
-      title: '详细地址',
-      align: 'right',
-      dataIndex: 'address',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
-    },
-    {
-      title: '所属商圈',
-      dataIndex: 'businessHub',
     },
     {
       title: '经营类目',
       align: 'center',
       dataIndex: 'topCategoryName',
-      render: (val, row) => `${val} / ${row.categoryName}`,
+      render: (val, row) => (
+        <>
+          <Tag color="blue">{val}</Tag>
+          <p></p>
+          <Tag color="blue">{row.categoryName}</Tag>
+        </>
+      ),
     },
     {
-      title: '入驻时间',
+      title: '商圈/地址',
+      dataIndex: 'businessHub',
+      render: (val, row) => (
+        <div>
+          {val}
+          <div style={{ fontSize: 13 }}>
+            {row.provinceName}-{row.cityName}-{row.districtName}
+            <div style={{ color: '#888888' }}>
+              <Ellipsis length={20} tooltip>
+                {row.address}
+              </Ellipsis>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: '入驻/激活时间',
       align: 'center',
       dataIndex: 'settleTime',
-      render: (val) => val || '--',
+      render: (val, row) => `${val || '--'}\n${row.activationTime || '--'}`,
     },
     {
-      title: '激活时间',
+      title: '品牌/所属集团',
       align: 'center',
-      dataIndex: 'activationTime',
-      render: (val) => val || '--',
-    },
-    {
-      title: '店铺类型',
-      align: 'center',
-      dataIndex: 'groupId',
-      render: (val) => (val ? '集团' : '单店'),
-    },
-    {
-      title: '集团名称',
       dataIndex: 'groupName',
-      render: (val) => val || '--',
+      render: (val, row) => `${row.brandName || '--'}\n${val}`,
     },
     {
-      title: '联系人手机号',
-      align: 'center',
-      dataIndex: 'mobile',
-      render: (val) => val || '--',
-    },
-    {
-      title: '账号状态',
-      align: 'center',
-      dataIndex: 'bankStatus',
-      render: (val) => (val === '3' ? '已激活' : '未激活'),
-    },
-    {
-      title: '经营状态',
-      align: 'center',
-      dataIndex: 'businessStatus',
-      render: (val) => BUSINESS_DO_STATUS[val],
-    },
-    {
-      title: '店铺状态',
+      title: '状态',
+      fixed: 'right',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => BUSINESS_STATUS[val],
+      render: (val, row) =>
+        `${row.bankStatus === '3' ? '已激活' : '未激活'}\n${
+          BUSINESS_DO_STATUS[row.businessStatus]
+        }\n${BUSINESS_STATUS[val]}`,
     },
     {
-      title: '操作',
+      type: 'handle',
+      width: 150,
       dataIndex: 'userMerchantIdString',
-      fixed: 'right',
-      align: 'right',
-      width: 200,
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'qrCode',
-              click: () => setVisibleQrcode(record),
-            },
-            {
-              type: 'info',
-              click: () => fetchGetDetail(index),
-            },
-            {
-              type: 'edit',
-              click: () =>
-                fetchGetDetail(index, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
-            },
-            {
-              type: 'set',
-              click: () => setVisible({ show: true, record }),
-            },
-            {
-              type: 'diary',
-              click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record, index) => [
+        {
+          type: 'qrCode',
+          click: () => setVisibleQrcode(record),
+        },
+        {
+          type: 'info',
+          click: () => fetchGetDetail(index),
+        },
+        {
+          type: 'edit',
+          click: () =>
+            fetchGetDetail(index, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
+        },
+        {
+          type: 'set',
+          click: () => setVisible({ show: true, record }),
+        },
+        {
+          type: 'diary',
+          click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
+        },
+      ],
     },
   ];
 
@@ -312,67 +287,39 @@ const BusinessListComponent = (props) => {
     fetchTradeList();
   }, []);
 
-  // 获取商家导出excel 数据
-  const getExcelProps = {
-    fieldNames: { key: 'key', headerName: 'header' },
-    header: [
-      { key: 'account', header: '店铺账号' },
-      { key: 'merchantName', header: '店铺名称' },
-      { key: 'provinceName', header: '所在省' },
-      { key: 'cityName', header: '所在市' },
-      { key: 'districtName', header: '所在区' },
-      { key: 'businessHub', header: '所属商圈' },
-      { key: 'address', header: '详细地址' },
-      { key: 'topCategoryName', header: '一级经营类目' },
-      { key: 'categoryName', header: '二级经营类目' },
-      { key: 'businessArea', header: '经营面积' },
-      { key: 'commissionRatio', header: '服务费', render: (val) => (val ? `${val}%` : '') },
-      { key: 'settleTime', header: '入驻时间' },
-      { key: 'activationTime', header: '激活时间' },
-      {
-        key: 'bankStatus',
-        header: '账号状态',
-        render: (val) => (val === '3' ? '已激活' : '未激活'),
-      },
-      { key: 'businessStatus', header: '经营状态', render: (val) => BUSINESS_DO_STATUS[val] },
-      { key: 'status', header: '店铺状态', render: (val) => BUSINESS_STATUS[val] },
-    ],
-  };
+  // 额外按钮
+  const extraBtn = [
+    {
+      text: '新增店铺',
+      auth: 'save',
+      onClick: () => setVisibleEdit({ type: 'add', show: true, info: false }),
+    },
+    {
+      text: '设置商家验证码',
+      auth: 'setMreCord',
+      onClick: handleVCodeSet,
+    },
+    {
+      text: '上传二维码背景图',
+      auth: 'qrCode',
+      onClick: () => setQrCodeBag({ ...qrCodeBag, show: true }),
+    },
+  ];
 
   return (
     <>
-      <Suspense fallback={<CardLoading></CardLoading>}>
-        <BusinessTotalInfo
-          key="businessTotalInfo"
-          btnExtra={
-            <>
-              <AuthConsumer auth="save">
-                <Button
-                  className="dkl_green_btn"
-                  onClick={() => setVisibleEdit({ type: 'add', show: true, info: false })}
-                >
-                  新增店铺
-                </Button>
-              </AuthConsumer>
-              <AuthConsumer auth="setMreCord">
-                <Button className="dkl_green_btn" onClick={handleVCodeSet}>
-                  设置商家验证码
-                </Button>
-              </AuthConsumer>
-            </>
-          }
-        ></BusinessTotalInfo>
-      </Suspense>
       <TableDataBlock
         keepData
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'businessList/fetchMerchantGetExcel'}
-            dispatchData={get()}
-            exportProps={getExcelProps}
-          ></ExcelButton>
-        )}
+        cardProps={{ title: <ExtraButton list={extraBtn}></ExtraButton> }}
         cRef={childRef}
+        btnExtra={({ get }) => [
+          {
+            type: 'excel',
+            dispatch: 'businessList/fetchMerchantGetExcel',
+            data: get(),
+            exportProps: excelProps,
+          },
+        ]}
         loading={
           loading.effects['businessList/fetchGetList'] ||
           loading.effects['businessList/fetchMerchantDetail'] ||
@@ -408,7 +355,11 @@ const BusinessListComponent = (props) => {
         onClose={() => setVisibleDetail(false)}
       ></BusinessDetailShow>
       {/* 店铺二维码 */}
-      <BusinessQrCode visible={visibleQrcode} onClose={() => setVisibleQrcode('')}></BusinessQrCode>
+      <BusinessQrCode
+        qrCodeBag={qrCodeBag}
+        visible={visibleQrcode}
+        onClose={() => setVisibleQrcode('')}
+      ></BusinessQrCode>
       {/* 店铺验证码 */}
       <BusinessVerificationCodeSet
         visible={visibleCodeSet}
@@ -417,6 +368,8 @@ const BusinessListComponent = (props) => {
       ></BusinessVerificationCodeSet>
       {/* 日志 */}
       <LogDetail></LogDetail>
+      {/* 设置二维码背景图片 */}
+      <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
     </>
   );
 };

@@ -1,8 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import BankSet from './components/BankSet/BusinessBankSet';
 
@@ -32,19 +29,14 @@ const BusinessBankSetContent = (props) => {
       dataIndex: 'updateTimeString',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'bankBranchIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => setVisible({ show: true, info: record }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => setVisible({ show: true, info: record }),
+        },
+      ],
     },
   ];
 
@@ -59,17 +51,14 @@ const BusinessBankSetContent = (props) => {
     fetchMerBankTop();
   }, []);
 
+  // 表格额外按钮
+  const extraBtn = [{ auth: 'save', onClick: () => setVisible({ show: true, info: {} }) }];
+
   return (
     <>
       <TableDataBlock
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => setVisible({ show: true, info: {} })}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
         cRef={childRef}
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}

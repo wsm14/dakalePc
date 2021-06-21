@@ -7,7 +7,7 @@ import SaleCode from './SaleCode';
 const { TabPane } = Tabs;
 
 const BusinessQrCode = (props) => {
-  const { visible, onClose } = props;
+  const { visible, onClose, qrCodeBag } = props;
   const [tabKey, setTabKey] = useState('1');
 
   const modalProps = {
@@ -38,6 +38,7 @@ const BusinessQrCode = (props) => {
         <TabPane tab="营销二维码" key="2" forceRender>
           <SaleCode
             tabKey={tabKey}
+            qrCodeBag={qrCodeBag}
             merchantName={visible.merchantName}
             changeCanvasToPic={changeCanvasToPic}
           ></SaleCode>

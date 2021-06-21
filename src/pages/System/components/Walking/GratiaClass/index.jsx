@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import EditableCell from './EditableCell';
 
 const GratiaClassManage = (props) => {
@@ -96,41 +95,36 @@ const GratiaClassManage = (props) => {
       dataIndex: 'subtitle',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'categoryName',
-      align: 'right',
       render: (val, record) => {
         const editable = isEditing(record);
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'edit',
-                auth: true,
-                visible: !editable,
-                click: () => edit(record),
-              },
-              {
-                type: 'del',
-                auth: true,
-                visible: !editable,
-                click: () => fetchDetailAdd(classList.filter(({ id }) => id !== record.id)),
-              },
-              {
-                auth: true,
-                title: '保存',
-                visible: editable,
-                click: save,
-              },
-              {
-                auth: true,
-                title: '取消',
-                visible: editable,
-                click: () => cancel(record),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'edit',
+            auth: true,
+            visible: !editable,
+            click: () => edit(record),
+          },
+          {
+            type: 'del',
+            auth: true,
+            visible: !editable,
+            click: () => fetchDetailAdd(classList.filter(({ id }) => id !== record.id)),
+          },
+          {
+            auth: true,
+            title: '保存',
+            visible: editable,
+            click: save,
+          },
+          {
+            auth: true,
+            title: '取消',
+            visible: editable,
+            click: () => cancel(record),
+          },
+        ];
       },
     },
   ];

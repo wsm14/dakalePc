@@ -1,12 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Badge } from 'antd';
 import { SHARE_TYPE, RECOMMEND_STATUS } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
+import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import RecommendDetail from './components/Recommend/RecommendDetail';
 import OrdersDetail from './components/Recommend/OrdersDetail';
 import ReportList from './components/Recommend/ReportList';
@@ -71,11 +68,7 @@ const ExpertRecommend = (props) => {
     {
       title: '哒人昵称',
       dataIndex: 'username',
-      render: (val) => (
-        <Ellipsis length={8} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '哒人等级',
@@ -174,19 +167,20 @@ const ExpertRecommend = (props) => {
     });
   };
 
+  const extraBtn = [
+    {
+      auth: 'reportCenter',
+      count: expertRecommend.totalReport, // 计数
+      text: '举报中心',
+      onClick: () => setVisibleDetailList(true),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
-        btnExtra={
-          <AuthConsumer auth="reportCenter">
-            <Badge count={expertRecommend.totalReport}>
-              <Button className="dkl_green_btn" onClick={() => setVisibleDetailList(true)}>
-                举报中心
-              </Button>
-            </Badge>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

@@ -1,8 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Switch, Button, Card } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
+import { Card } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import TradeAreaLeft from './components/TradeArea/Left';
 import TradeAreaSet from './components/TradeArea/Form/TradeAreaSet';
@@ -65,35 +63,28 @@ const TradeArea = (props) => {
     },
     {
       title: '启用状态',
-      align: 'center',
+      type: 'switch',
       fixed: 'right',
       dataIndex: 'status',
-      render: (val, record) => (
-        <AuthConsumer auth="edit" noAuth={val === '1' ? '启用' : '停用'}>
-          <Switch
-            checkedChildren="启"
-            unCheckedChildren="停"
-            checked={val === '1'}
-            onClick={() => fetchSet({ businessHubId: record.businessHubIdString, status: 1 ^ val })}
-          />
-        </AuthConsumer>
-      ),
+      render: (val, row) => {
+        const { businessHubIdString: businessHubId } = row;
+        return {
+          auth: 'edit',
+          noAuth: val === '1' ? '启用' : '停用',
+          checked: val === '1',
+          onClick: () => fetchSet({ businessHubId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
-      title: '操作',
-      align: 'right',
-      fixed: 'right',
+      type: 'handle',
       dataIndex: 'businessHubIdString',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => setData({ ...record, businessHubId: val }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => setData({ ...record, businessHubId: val }),
+        },
+      ],
     },
   ];
 
@@ -112,6 +103,17 @@ const TradeArea = (props) => {
     });
   };
 
+  // 表格额外按钮
+
+  const extraBtn = [
+    {
+      text: '新增商圈',
+      auth: 'save',
+      disabled: !(selectCode.districtCode && selectCode.cityCode),
+      onClick: () => setData(),
+    },
+  ];
+
   return (
     <Card bordered={false} bodyStyle={{ display: 'flex' }}>
       <TradeAreaLeft
@@ -121,17 +123,7 @@ const TradeArea = (props) => {
       ></TradeAreaLeft>
       <div style={{ flex: 1 }}>
         <TableDataBlock
-          btnExtra={
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                disabled={!(selectCode.districtCode && selectCode.cityCode)}
-                onClick={() => setData()}
-              >
-                新增商圈
-              </Button>
-            </AuthConsumer>
-          }
+          btnExtra={extraBtn}
           noCard={false}
           cRef={childRef}
           loading={loading}

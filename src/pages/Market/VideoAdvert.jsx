@@ -1,11 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Space } from 'antd';
 import { VIDEO_NOVICE_STATUS } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import VideoShowModal from './components/VideoAd/VideoShowModal';
 import VideoPeasDetail from './components/VideoAd/VideoPeasDetail';
@@ -21,6 +19,11 @@ const VideoAdvert = (props) => {
   const [visibleSet, setVisibleSet] = useState(false); // 发布
 
   // 表格card配置
+  const btnList = [
+    {
+      onClick: () => setVisibleSet({ type: 'add', show: true }),
+    },
+  ];
   const cardProps = {
     tabList: [
       {
@@ -28,18 +31,8 @@ const VideoAdvert = (props) => {
         key: 'novice',
       },
     ],
-    tabBarExtraContent: (
-      <Space>
-        <AuthConsumer auth="save">
-          <Button
-            className="dkl_green_btn"
-            onClick={() => setVisibleSet({ type: 'add', show: true })}
-          >
-            新增
-          </Button>
-        </AuthConsumer>
-      </Space>
-    ),
+
+    tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
   };
 
   // 搜索参数
@@ -113,11 +106,7 @@ const VideoAdvert = (props) => {
       title: '关联店铺',
       width: 200,
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={10} tooltip lines={2}>
-          {val || '--'}
-        </Ellipsis>
-      ),
+      ellipsis: { lines: 2 },
     },
     {
       title: '单次打赏卡豆',
@@ -173,42 +162,36 @@ const VideoAdvert = (props) => {
       render: (val) => VIDEO_NOVICE_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'guideMomentsId',
-      align: 'right',
-      fixed: 'right',
       width: 165,
       render: (guideMomentsId, row) => {
         const { status } = row;
-        return (
-          <HandleSetTable
-            formItems={[
-              {
-                type: 'info', // 详情
-                click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'info'),
-              },
-              {
-                type: 'down', // 下架
-                visible: status === '1',
-                click: () => fetchVideoAdNoviceStatus({ guideMomentsId }),
-              },
-              {
-                type: 'again', // 重新发布
-                visible: status === '3',
-                click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'again'),
-              },
-              {
-                type: 'peasDetail',
-                title: '领豆明细',
-                click: () => setVisiblePeas({ show: true, detail: row }),
-              },
-              {
-                type: 'diary', // 日志
-                click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
-              },
-            ]}
-          />
-        );
+        return [
+          {
+            type: 'info', // 详情
+            click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'info'),
+          },
+          {
+            type: 'down', // 下架
+            visible: status === '1',
+            click: () => fetchVideoAdNoviceStatus({ guideMomentsId }),
+          },
+          {
+            type: 'again', // 重新发布
+            visible: status === '3',
+            click: () => fetchVideoAdNoviceDetail({ guideMomentsId }, 'again'),
+          },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            click: () => setVisiblePeas({ show: true, detail: row }),
+          },
+          {
+            type: 'diary', // 日志
+            click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
+          },
+        ];
       },
     },
   ];

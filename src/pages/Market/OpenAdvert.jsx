@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Space, Form } from 'antd';
+import { Form } from 'antd';
 import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
+import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import OpenAdSet from './components/OpenAd/OpenAdSet';
 
@@ -54,11 +52,7 @@ const OpenAdvert = (props) => {
       title: '广告说明',
       align: 'center',
       dataIndex: 'launchDesc',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '点击事件',
@@ -93,35 +87,29 @@ const OpenAdvert = (props) => {
       render: (val) => BANNER_SHOW_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'idString',
-      align: 'right',
-      fixed: 'right',
-      render: (appLaunchImageId, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
-            },
-            {
-              type: 'edit',
-              visible: record.status === '1',
-              click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
-            },
-            {
-              type: 'down',
-              visible: record.onFlag === '1',
-              click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
-            },
-            {
-              type: 'del',
-              visible: record.onFlag === '0',
-              click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (appLaunchImageId, record) => [
+        {
+          type: 'info',
+          click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
+        },
+        {
+          type: 'edit',
+          visible: record.status === '1',
+          click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
+        },
+        {
+          type: 'down',
+          visible: record.onFlag === '1',
+          click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
+        },
+        {
+          type: 'del',
+          visible: record.onFlag === '0',
+          click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 
@@ -143,6 +131,9 @@ const OpenAdvert = (props) => {
     });
   };
 
+  // 权限按钮
+  const btnList = [{ onClick: () => setVisibleSet({ show: true, type: 'add' }) }]; // 新增按钮
+
   return (
     <>
       <TableDataBlock
@@ -153,18 +144,7 @@ const OpenAdvert = (props) => {
             key,
             tab: OPEN_ADVERT_PORT[key],
           })),
-          tabBarExtraContent: (
-            <Space>
-              <AuthConsumer auth="save">
-                <Button
-                  className="dkl_green_btn"
-                  onClick={() => setVisibleSet({ show: true, type: 'add' })}
-                >
-                  新增
-                </Button>
-              </AuthConsumer>
-            </Space>
-          ),
+          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           onTabChange: (userType) => {
             setTabKey(userType);
             form.resetFields();

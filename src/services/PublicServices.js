@@ -151,7 +151,7 @@ export function fetchGetJumpNative(params) {
 }
 
 // post 数据明细查询 全局导出
-export function fetchimportExcel(data) {
+export function fetchImportExcel(data) {
   return request('/admin/excelImport/importExcel', {
     method: 'POST',
     data,
@@ -159,15 +159,22 @@ export function fetchimportExcel(data) {
 }
 
 // get 导出列表
-export function fetchimportExcelList(params) {
+export function fetchImportExcelList(params) {
   return request('/admin/excelImport/listExcelImport', {
     params,
   });
 }
 
-// get 获取可选用户列表
-export function fetchGetSelectUserList(params) {
-  return request('/admin/userManagement/listUserManagement', {
+// get 店铺列表搜索
+export function fetchGetMerchantsSearch(params) {
+  return request('/admin/merchantManagement/listMerchantUsedToSearch', {
+    params,
+  });
+}
+
+// get 用户列表 - 用于搜索
+export function fetchGetUsersSearch(params) {
+  return request('/admin/userManagement/listUserUsedToSearch', {
     params,
   });
 }

@@ -1,28 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import { Tag, Avatar } from 'antd';
+import { ORDER_PAY_LOGO } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import ExcelButton from '@/components/ExcelButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import OrdersDetail from '../OrdersDetail';
 import OrderDetailDraw from '../OrderDetailDraw';
-import HandleSetTable from '@/components/HandleSetTable';
+import excelHeder from './excelHeder';
+import styles from '../style.less';
 
 const CodeOrders = (props) => {
-  const { ordersList, loading, dispatch, hubData, loadings, tabkey } = props;
+  const { ordersList, loading, dispatch, tabkey } = props;
   const { list } = ordersList;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
-
-  // 获取商圈
-  const fetchGetHubSelect = (districtCode) => {
-    dispatch({
-      type: 'baseData/fetchGetHubData',
-      payload: {
-        districtCode,
-      },
-    });
-  };
 
   //详情
   const fetchGoodsDetail = (index) => {
@@ -47,39 +38,28 @@ const CodeOrders = (props) => {
       name: 'orderSn',
     },
     {
-      label: '手机号',
-      name: 'mobile',
+      label: '下单人',
+      name: 'userId',
+      type: 'user',
     },
     {
-      label: '店铺名',
-      name: 'merchantName',
-    },
-    {
-      label: '商品名称',
-      name: 'goodsName',
-    },
-    {
-      label: '区域',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
-    },
-    {
-      label: '商圈',
-      name: 'businessHubIdStr',
-      type: 'select',
-      loading: loadings.models.baseData,
-      allItem: false,
-      select: hubData,
-      fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
+      label: '店铺/集团',
+      name: 'merchantId',
+      type: 'merchant',
     },
     {
       label: '支付日期',
       type: 'rangePicker',
       name: 'orderTimeStart',
       end: 'orderTimeEnd',
+    },
+    {
+      label: '地区',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
   ];
 
@@ -91,69 +71,122 @@ const CodeOrders = (props) => {
       dataIndex: 'orderSn',
     },
     {
-      title: '手机号',
-      fixed: 'left',
-      dataIndex: 'mobile',
-    },
-    {
-      title: '店铺名称',
+      title: '店铺',
       dataIndex: 'merchantName',
-      render: (val) => (
-        <Ellipsis length={20} tooltip>
-          {val}
-        </Ellipsis>
+      render: (val, row) => (
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div>账号:{row.merchantMobile}</div>
+          <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
+            <Tag color="magenta">单店</Tag>
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div
+            className={styles.specFont}
+          >{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+        </div>
       ),
     },
     {
-      title: '用户支付',
-      align: 'right',
-      dataIndex: 'payFee',
-      render: (val, record) => `￥${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
+      title: '下单人',
+      align: 'center',
+      dataIndex: 'userMobile',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{row.userName}</div>
+          <div>{val}</div>
+          <div>{row.beanCode}</div>
+        </div>
+      ),
     },
     {
-      title: '店铺实收',
-      align: 'right',
-      dataIndex: 'actualCashFee',
-      render: (val, record) =>
-        `￥${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+      title: '用户实付',
+      align: 'center',
+      dataIndex: 'payFee',
+      render: (val, record) => {
+        const cashBean = record.beanFee ? record.beanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
     },
     {
       title: '优惠券',
+      align: 'center',
       dataIndex: 'reduceFee',
-      render: (val) => (val ? `${val}元抵扣券（-￥${val || 0}）` : '--'),
+      render: (val) => (val ? `${val}元抵扣券` : '--'),
+    },
+    {
+      title: '商户实收',
+      align: 'center',
+      dataIndex: 'actualCashFee',
+      render: (val, record) => {
+        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
+
+            <div className={styles.fontColor}>
+              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
+    },
+    {
+      title: '商品佣金',
+      align: 'center',
+      dataIndex: 'cashCommission',
+      render: (val, record) => {
+        const beanCount = record.beanCommission ? record.beanCommission / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
     },
     {
       title: '支付时间',
       align: 'center',
       dataIndex: 'createTime',
-    },
-
-    {
-      title: '下单渠道',
-      align: 'center',
-      dataIndex: 'orderSource',
-    },
-    {
-      title: '区域',
-      align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
-    },
-    {
-      title: '操作',
-      dataIndex: 'orderId',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record, index) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'info',
-              click: () => fetchGoodsDetail(index),
-            },
-          ]}
-        />
+      render: (val, row) => (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div>{val}</div>
+          <Avatar src={ORDER_PAY_LOGO[row.orderSource]} size="small" shape="square" />
+        </div>
       ),
+    },
+    {
+      type: 'handle',
+      dataIndex: 'orderId',
+      render: (val, record, index) => [
+        {
+          type: 'info',
+          click: () => fetchGoodsDetail(index),
+        },
+      ],
+    },
+  ];
+
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get(), goodsOrScanFlag: tabkey },
+      exportProps: { header: excelHeder },
     },
   ];
 
@@ -161,16 +194,7 @@ const CodeOrders = (props) => {
     <>
       <TableDataBlock
         noCard={false}
-        btnExtra={({ get }) => (
-          <ExcelButton
-            dispatchType={'ordersList/fetchOrdersImport'}
-            dispatchData={{ ...get(), goodsOrScanFlag: tabkey }}
-            exportProps={{
-              header: getColumns.slice(0, -1),
-              fieldRender: { merchantName: (val) => val },
-            }}
-          ></ExcelButton>
-        )}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -183,6 +207,8 @@ const CodeOrders = (props) => {
       <OrderDetailDraw
         visible={visible}
         total={list.length}
+        tabkey={tabkey}
+        loading={loading}
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
@@ -190,9 +216,8 @@ const CodeOrders = (props) => {
   );
 };
 
-export default connect(({ ordersList, baseData, loading }) => ({
+export default connect(({ ordersList, loading }) => ({
   loadings: loading,
   ordersList,
-  hubData: baseData.hubData,
-  loading: loading.effects['ordersList/fetchGetList'],
+  loading: loading.models.ordersList,
 }))(CodeOrders);

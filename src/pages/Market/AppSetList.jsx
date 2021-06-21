@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Tooltip, Form } from 'antd';
+import { Tooltip, Form } from 'antd';
 import {
   BANNER_LOOK_AREA,
   BANNER_PORT_TYPE,
@@ -9,10 +9,8 @@ import {
   BANNER_AREA_TYPE,
   BANNER_SHOW_STATUS,
 } from '@/common/constant';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import Ellipsis from '@/components/Ellipsis';
+import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import SysAppSetForm from './components/App/SysAppSet';
 
@@ -62,11 +60,7 @@ const SysAppSet = (props) => {
       title: '图片说明',
       align: 'center',
       dataIndex: 'description',
-      render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: true,
     },
     {
       title: '权重',
@@ -104,14 +98,11 @@ const SysAppSet = (props) => {
       title: '跳转内容',
       align: 'center',
       dataIndex: 'jumpUrl',
+      ellipsis: true,
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName } = row;
         return {
-          H5: (
-            <Ellipsis length={15} tooltip>
-              {val}
-            </Ellipsis>
-          ),
+          H5: val,
           inside: nativeJumpName,
           '': '--',
         }[jumpUrlType];
@@ -136,31 +127,25 @@ const SysAppSet = (props) => {
       render: (val) => BANNER_SHOW_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'bannerIdString',
-      align: 'right',
-      fixed: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'down',
-              visible: record.showStatus === '1',
-              click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
-            },
-            {
-              type: 'edit',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerDetail({ bannerId: val }),
-            },
-            {
-              type: 'del',
-              visible: record.showStatus !== '2',
-              click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'down',
+          visible: record.showStatus === '1',
+          click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+        },
+        {
+          type: 'edit',
+          visible: record.showStatus !== '2',
+          click: () => fetchBannerDetail({ bannerId: val }),
+        },
+        {
+          type: 'del',
+          visible: record.showStatus !== '2',
+          click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
+        },
+      ],
     },
   ];
 
@@ -189,6 +174,13 @@ const SysAppSet = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      onClick: () =>
+        setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
@@ -199,18 +191,7 @@ const SysAppSet = (props) => {
             key,
             tab: BANNER_PORT_TYPE[key],
           })),
-          tabBarExtraContent: (
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() =>
-                  setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } })
-                }
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          ),
+          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
           onTabChange: (userType) => {
             setTabKey(userType);
             form.resetFields();

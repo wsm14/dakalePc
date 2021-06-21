@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Tabs, Input, Modal, Tag } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import AuthConsumer from '@/layouts/AuthConsumer';
+import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
@@ -42,8 +42,6 @@ const BusinessDetailShow = (props) => {
   const businessStatusNum = Number(businessStatus);
   const statusText = !statusNum ? '启用' : '禁用';
   const businessStatusText = !businessStatusNum ? '恢复营业' : '暂停营业';
-
-  const [form] = Form.useForm();
 
   // 修改bd
   const fetchMerEditBD = (values) => {
@@ -200,13 +198,13 @@ const BusinessDetailShow = (props) => {
       type: 'upload',
       initialValue: blobj.businessLicenseImg,
       children: (
-        <div style={{ maxWidth: 363 }}>
+        <>
           <div>店铺名称：{blobj.businessName}</div>
           <div>统一社会信用代码：{blobj.socialCreditCode}</div>
           <div>注册地址：{blobj.signInAddress}</div>
           <div>营业期限：{blobj.validityPeriod}</div>
           <div>经营范围：{blobj.businessScope}</div>
-        </div>
+        </>
       ),
     },
     {
@@ -336,22 +334,23 @@ const BusinessDetailShow = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
-    afterCallBack: () => {
-      form.setFieldsValue({ bankSwiftCode: visible.bankBindingInfo ? bkInfo.bankSwiftCode : '' });
-    },
     footer: (
-      <>
-        <AuthConsumer auth="bussinessStatus">
-          <Button type="primary" onClick={() => handleMerStatus('sale')} loading={loadings}>
-            {businessStatusText}
-          </Button>
-        </AuthConsumer>
-        <AuthConsumer auth="status">
-          <Button type="primary" onClick={() => handleMerStatus('acc')} loading={loadings}>
-            {statusText}
-          </Button>
-        </AuthConsumer>
-      </>
+      <ExtraButton
+        list={[
+          {
+            text: businessStatusText,
+            auth: 'bussinessStatus',
+            onClick: () => handleMerStatus('sale'),
+            loading: loadings,
+          },
+          {
+            text: statusText,
+            auth: 'status',
+            onClick: () => handleMerStatus('acc'),
+            loading: loadings,
+          },
+        ]}
+      ></ExtraButton>
     ),
   };
 
@@ -363,12 +362,7 @@ const BusinessDetailShow = (props) => {
         </TabPane>
         <TabPane tab="账号信息" key="2">
           <DescriptionsCondition formItems={accountItems} initialValues={bkInfo} />
-          <Form
-            style={{ marginTop: 24 }}
-            form={form}
-            preserve={false}
-            onFinish={fetchMerSetBandCode}
-          >
+          <Form style={{ marginTop: 24 }} preserve={false} onFinish={fetchMerSetBandCode}>
             <Form.Item
               name="bankSwiftCode"
               label="开户行号"
@@ -404,7 +398,6 @@ const BusinessDetailShow = (props) => {
           ) : (
             <Form
               style={{ marginTop: 24 }}
-              form={form}
               preserve={false}
               initialValues={visible}
               onFinish={fetchMerEditBD}

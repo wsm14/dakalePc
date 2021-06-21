@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
 import moment from 'moment';
-import ExcelButton from '@/components/ExcelButton';
+import { ExcelButton } from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import IncomeTotal from './components/Income/Total';
 import SearchCard from './components/Income/Search/SearchCard';

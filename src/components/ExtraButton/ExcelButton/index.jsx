@@ -17,7 +17,7 @@ import exportExcel from '@/utils/exportExcel';
 const ExcelButton = (props) => {
   const {
     auth = 'exportList',
-    dispatchType,
+    dispatchType = 'baseData/fetchImportExcel',
     dispatchData,
     dispatchProps,
     exportProps = {},

@@ -14,7 +14,7 @@
 ### TableDataBlock
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- |
 | list | 表格数据源`（必填）` | object[] | [] |
 | columns | 表头`（必填）` | object[] | - |
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数`（必填）` | `string | function(record): string` | - |
@@ -55,6 +55,11 @@
 ```
 
 ## 更新日志
+
+- ### 2021 年 5 月 28 日 13:43:49 Dong
+
+> - `columns` 增加 `ellipsis` 配置 `boolean | { length?: number, lines?: number }` 配置字符缩略
+> - `columns` 增加 `type: handle` 配置 必须存在属性 `render:() => []` 配置表格操作按钮 同 HandleSetTable 组件
 
 - ### 2021 年 3 月 4 日 10:56:15 Dong
 

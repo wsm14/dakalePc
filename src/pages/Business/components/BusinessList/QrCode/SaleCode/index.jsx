@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Spin, Upload, Button } from 'antd';
 import canvasPic from '@/utils/canvasPic';
 
-const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
+const SaleCode = ({ tabKey, merchantName, changeCanvasToPic, qrCodeBag }) => {
+  const { payBagurl = undefined, saleBagurl = undefined } = qrCodeBag;
+
   const [imgUrl, setImgUrl] = useState(); // 打卡营销码
   const [payImgUrl, setPayImgUrl] = useState(); // 打卡支付码
   const [loading, setLoading] = useState(false); // 绘制等待
@@ -34,7 +36,10 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: pay || 'https://resource-new.dakale.net/admin/QrCode/paybag.png?' + timestamp,
+            url:
+              pay ||
+              payBagurl ||
+              'https://resource-new.dakale.net/admin/QrCode/paybag.png?' + timestamp,
             ...whSet(1346, 1890),
           },
           {
@@ -61,7 +66,10 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic }) => {
         parts: [
           {
             type: 'image',
-            url: by || 'https://resource-new.dakale.net/admin/QrCode/bybag.png?' + timestamp,
+            url:
+              by ||
+              saleBagurl ||
+              'https://resource-new.dakale.net/admin/QrCode/bybag.png?' + timestamp,
             ...whSet(2480, 3508),
           },
           {

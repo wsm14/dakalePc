@@ -1,8 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import PeasShareSet from './components/PeasShare/PeasShareSet';
 
@@ -25,23 +22,18 @@ const SysPeasShare = (props) => {
       dataIndex: 'limitBean',
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'configMomentIdString',
-      align: 'right',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => handlePeasShareSet('edit', record),
-            },
-            {
-              type: 'del',
-              click: () => fetchPeasShareDel(val),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          type: 'edit',
+          click: () => handlePeasShareSet('edit', record),
+        },
+        {
+          type: 'del',
+          click: () => fetchPeasShareDel(val),
+        },
+      ],
     },
   ];
 
@@ -63,17 +55,14 @@ const SysPeasShare = (props) => {
     });
   };
 
+  // 表格额外按钮
+  const extraBtn = [{ auth: 'save', onClick: () => handlePeasShareSet('add') }];
+
   return (
     <>
       <TableDataBlock
         cRef={childRef}
-        btnExtra={
-          <AuthConsumer auth="save">
-            <Button className="dkl_green_btn" onClick={() => handlePeasShareSet('add')}>
-              新增
-            </Button>
-          </AuthConsumer>
-        }
+        btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.configMomentIdString}`}

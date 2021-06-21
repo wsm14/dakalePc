@@ -26,10 +26,7 @@ const MessagePushSet = (props) => {
       label: '跳转类型',
       name: 'linkType',
       type: 'radio',
-      select: [
-        { name: '无', value: '' },
-        ...Object.keys(MSG_PSUH_URL).map((item) => ({ name: MSG_PSUH_URL[item], value: item })),
-      ],
+      select: MSG_PSUH_URL,
       rules: [{ required: false }],
     },
     {
@@ -47,6 +44,7 @@ const MessagePushSet = (props) => {
       label: '推送时间',
       name: 'pushTime',
       type: 'dataPicker',
+      format: 'YYYY-MM-DD HH:mm',
       showTime: true,
     },
     {

@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { EXPERT_USER_STATUS, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import CloseExpert from './components/UserList/CloseExpert';
 import ExpertUserLog from './components/UserList/ExpertUserLog';
 
@@ -118,32 +117,27 @@ const ExpertUserList = (props) => {
       ),
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'kolUserId',
-      render: (val, record) => (
-        <HandleSetTable
-          formItems={[
-            {
-              visible: record.suspendStatus == 1,
-              auth: 'status',
-              title: '封停',
-              click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
-            },
-            {
-              pop: true,
-              visible: record.suspendStatus != 1,
-              auth: 'status',
-              title: '解封',
-              click: () => fetchExpertOpen({ kolUserId: val }),
-            },
-            {
-              type: 'diary', // 日志
-              click: () => fetchGetKolLog(val, record),
-            },
-          ]}
-        />
-      ),
+      render: (val, record) => [
+        {
+          visible: record.suspendStatus == 1,
+          auth: 'status',
+          title: '封停',
+          click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
+        },
+        {
+          pop: true,
+          visible: record.suspendStatus != 1,
+          auth: 'status',
+          title: '解封',
+          click: () => fetchExpertOpen({ kolUserId: val }),
+        },
+        {
+          type: 'diary', // 日志
+          click: () => fetchGetKolLog(val, record),
+        },
+      ],
     },
   ];
 

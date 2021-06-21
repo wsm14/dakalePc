@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Alert } from 'antd';
 import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import HandleSetTable from '@/components/HandleSetTable';
 import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
 import RecommendModal from './components/Achievement/RecommendModal';
 
@@ -76,24 +75,19 @@ const ExpertUserAchievement = (props) => {
       dataIndex: 'mobile',
     },
     {
-      title: '操作',
-      align: 'right',
+      type: 'handle',
       dataIndex: 'kolUserId',
-      render: (val, detail) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'recommendList',
-              click: () => setVisibleList({ show: true, detail }),
-            },
-            {
-              auth: 'statistics',
-              title: '分佣统计',
-              click: () => setVisible({ show: true, detail }),
-            },
-          ]}
-        />
-      ),
+      render: (val, detail) => [
+        {
+          type: 'recommendList',
+          click: () => setVisibleList({ show: true, detail }),
+        },
+        {
+          auth: 'statistics',
+          title: '分佣统计',
+          click: () => setVisible({ show: true, detail }),
+        },
+      ],
     },
   ];
 

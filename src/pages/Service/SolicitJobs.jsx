@@ -1,10 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { JSOBS_STATUS } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
-import AuthConsumer from '@/layouts/AuthConsumer';
-import HandleSetTable from '@/components/HandleSetTable';
 import TableDataBlock from '@/components/TableDataBlock';
 import JobsClass from './components/Jobs/JobsClass';
 import JobsSet from './components/Jobs/JobsSet';
@@ -58,11 +54,7 @@ const SolicitJobs = (props) => {
       title: '职位描述',
       dataIndex: 'jobDescription',
       width: 300,
-      render: (val) => (
-        <Ellipsis length={50} tooltip>
-          {val}
-        </Ellipsis>
-      ),
+      ellipsis: { length: 50 },
     },
     {
       title: '更新人',
@@ -81,25 +73,19 @@ const SolicitJobs = (props) => {
       render: (val) => JSOBS_STATUS[val],
     },
     {
-      title: '操作',
+      type: 'handle',
       dataIndex: 'talentRecruitmentId',
-      fixed: 'right',
-      align: 'right',
-      render: (talentRecruitmentId, row) => (
-        <HandleSetTable
-          formItems={[
-            {
-              type: 'edit',
-              click: () => setVisibleSet({ type: 'edit', show: true, detail: row }),
-            },
-            {
-              type: 'down',
-              visible: row.status === '1',
-              click: () => fetchJobsSet({ talentRecruitmentId, status: 2 }),
-            },
-          ]}
-        />
-      ),
+      render: (talentRecruitmentId, row) => [
+        {
+          type: 'edit',
+          click: () => setVisibleSet({ type: 'edit', show: true, detail: row }),
+        },
+        {
+          type: 'down',
+          visible: row.status === '1',
+          click: () => fetchJobsSet({ talentRecruitmentId, status: 2 }),
+        },
+      ],
     },
   ];
 
@@ -112,27 +98,24 @@ const SolicitJobs = (props) => {
     });
   };
 
+  const btnExtra = [
+    {
+      text: '职位类别',
+      auth: 'jobClass',
+      onClick: () => setVisible(true),
+    },
+    {
+      text: '新增',
+      auth: 'save',
+      onClick: () => setVisibleSet({ type: 'add', show: true, detail: '' }),
+    },
+  ];
+
   return (
     <>
       <TableDataBlock
         order
-        btnExtra={
-          <>
-            <AuthConsumer auth="jobClass">
-              <Button className="dkl_green_btn" onClick={() => setVisible(true)}>
-                职位类别
-              </Button>
-            </AuthConsumer>
-            <AuthConsumer auth="save">
-              <Button
-                className="dkl_green_btn"
-                onClick={() => setVisibleSet({ type: 'add', show: true, detail: '' })}
-              >
-                新增
-              </Button>
-            </AuthConsumer>
-          </>
-        }
+        btnExtra={btnExtra}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -144,11 +127,7 @@ const SolicitJobs = (props) => {
       {/* 职位信息管理 */}
       <JobsClass visible={visible} onClose={() => setVisible(false)}></JobsClass>
       {/* 招聘信息管理 */}
-      <JobsSet
-        cRef={childRef}
-        visible={visibleSet}
-        onClose={() => setVisibleSet(false)}
-      ></JobsSet>
+      <JobsSet cRef={childRef} visible={visibleSet} onClose={() => setVisibleSet(false)}></JobsSet>
     </>
   );
 };
