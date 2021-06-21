@@ -34,22 +34,22 @@ const ActiveTemplateHrard = (props) => {
     let fileUrl = '';
     if (activeUrl) fileUrl = getHtmlDocName();
     const blob = new Blob([moduleHtml], { type: 'text/html' });
-    aliOssUpload(blob, '', 'active', fileUrl).then((res) => {
-      if (!save) {
-        dispatchData({
-          type: 'showActive',
-          payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
-        });
-      } else {
-        dispatch({
-          type: !promotionActivityId
-            ? 'activeTemplate/fetchActiveAdd'
-            : 'activeTemplate/fetchActiveEdit',
-          payload: { jumpUrl: res.toString(), promotionActivityId, activityTitle: info.activeName },
-          callback: () => onClose(),
-        });
-      }
-    });
+    // aliOssUpload(blob, '', 'active', fileUrl).then((res) => {
+    //   if (!save) {
+    //     dispatchData({
+    //       type: 'showActive',
+    //       payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
+    //     });
+    //   } else {
+    //     // dispatch({
+    //     //   type: !promotionActivityId
+    //     //     ? 'activeTemplate/fetchActiveAdd'
+    //     //     : 'activeTemplate/fetchActiveEdit',
+    //     //   payload: { jumpUrl: res.toString(), promotionActivityId, activityTitle: info.activeName },
+    //     //   callback: () => onClose(),
+    //     // });
+    //   }
+    // });
   };
 
   // 监听html提交改变 获取值 生成文件
