@@ -98,7 +98,6 @@ const SubsidyDirectMoney = (props) => {
       visible: role === 'user',
       formItem: (
         <UserSelectShow
-          maxLength={500}
           key="UserTable"
           {...userList}
           showSelect={visibleSelect}

@@ -4,7 +4,6 @@ import TableDataBlock from '@/components/TableDataBlock';
 import UserSelect from '../UserSelect';
 
 const UserSelectShow = ({
-  maxLength,
   experLevel,
   showSelect,
   keys = [],
@@ -59,7 +58,6 @@ const UserSelectShow = ({
         total={list.length}
       ></TableDataBlock>
       <UserSelect
-        maxLength={maxLength}
         keys={keys}
         visible={showSelect}
         userList={list}
