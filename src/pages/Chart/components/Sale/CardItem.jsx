@@ -48,7 +48,7 @@ const SaleBlockComponent = ({
                   title={item.title}
                   value={
                     saleTotal[item.key] > 999999
-                      ? saleTotal[item.key] / 1000
+                      ? saleTotal[item.key] / 10000
                       : saleTotal[item.key] || 0
                   }
                   precision={0}
