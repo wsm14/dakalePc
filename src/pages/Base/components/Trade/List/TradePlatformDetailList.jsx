@@ -135,7 +135,7 @@ const TradePlatformDetailList = (props) => {
       columns: getColumns,
       rowKey: 'configMerchantSettleIdString',
       list: detailList.list,
-      btnExtra: [{ onClick: () => handleDataSet('areaAdd') }],
+      btnExtra: [{ text: '新增面积', onClick: () => handleDataSet('areaAdd') }],
       expandable: {
         expandedRowRender: (data) => rowTable(data.merchantSettleObjects, data),
       },
