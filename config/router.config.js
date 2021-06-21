@@ -15,32 +15,32 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
-      {
-        name: '活动设置',
-        path: '/active',
-        routes: [
-          {
-            path: '/active/template',
-            name: '营销活动模版',
-            component: './Active/ActiveTemplate',
-          },
-          {
-            path: '/active/allocation',
-            name: '活动配置',
-            component: './Active/ActiveAllocation',
-          },
-          {
-            path: '/active/list',
-            name: '活动列表',
-            component: './Active/ActiveList',
-          },
-          {
-            path: '/active/param',
-            name: '参数配置',
-            component: './Active/ActiveParam',
-          },
-        ],
-      },
+      // {
+      //   name: '活动设置',
+      //   path: '/active',
+      //   routes: [
+      //     {
+      //       path: '/active/template',
+      //       name: '营销活动模版',
+      //       component: './Active/ActiveTemplate',
+      //     },
+      //     {
+      //       path: '/active/allocation',
+      //       name: '活动配置',
+      //       component: './Active/ActiveAllocation',
+      //     },
+      //     {
+      //       path: '/active/list',
+      //       name: '活动列表',
+      //       component: './Active/ActiveList',
+      //     },
+      //     {
+      //       path: '/active/param',
+      //       name: '参数配置',
+      //       component: './Active/ActiveParam',
+      //     },
+      //   ],
+      // },
       // 账户管理 account
       {
         path: '/account/user',
