@@ -424,6 +424,22 @@ export default [
         ],
       },
       {
+        path: '/operation/specialGoodCheck',
+        name: '特惠商品审核',
+        component: './Operation/SpecialGoodCheck',
+        buttons: [
+        
+        ],
+      },
+      {
+        path: '/operation/couponCheck',
+        name: '特惠商品审核',
+        component: './Operation/CouponCheck',
+        buttons: [
+        
+        ],
+      },
+      {
         path: '/operation/platformRights',
         name: '平台权益',
         component: './Operation/PlatformRights',

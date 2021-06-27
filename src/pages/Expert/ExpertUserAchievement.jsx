@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { connect } from 'umi';
+import { connect, Link } from 'umi';
 import { Alert } from 'antd';
-import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE } from '@/common/constant';
+import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE, EXPERT_SORT } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
 import RecommendModal from './components/Achievement/RecommendModal';
@@ -38,10 +38,23 @@ const ExpertUserAchievement = (props) => {
       select: EXPERT_LIST_TYPE,
     },
     {
+      label: '注册地',
+      type: 'cascader',
+      name: 'city',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
       label: '状态',
       name: 'status',
       type: 'select',
       select: EXPERT_USER_TYPE,
+    },
+    {
+      label: '排序',
+      name: 'sortField',
+      type: 'select',
+      select: EXPERT_SORT,
     },
   ];
 
@@ -68,6 +81,54 @@ const ExpertUserAchievement = (props) => {
       title: '级别',
       align: 'center',
       dataIndex: 'level',
+    },
+    {
+      title: '团队人数',
+      align: 'center',
+      dataIndex: 'teamSize',
+      render:(val, row)=>{
+        return row.kolUserId
+      }
+    },
+    {
+      title: '用户｜哒人｜豆长',
+      align: 'center',
+      dataIndex: 'level',
+      // render:(val, row)=>{
+      //   return `${row.kolUserId}|${row.kolUserId}|${row.kolUserId}`
+      // }
+    },
+    {
+      title: '分销-核销笔数',
+      align: 'center',
+      dataIndex: 'level',
+      render:(val, row)=>{
+        return <Link to="/expert/distribution" > {row.number|| 'null'}</Link>
+      }
+    },
+    {
+      title: '分销-业绩流水',
+      align: 'center',
+      dataIndex: 'level',
+      render:(val, row)=>{
+        return `¥ ${row.kolUserId}`
+      }
+    },
+    {
+      title: '累计分佣',
+      align: 'center',
+      dataIndex: 'level',
+      render:(val, row)=>{
+        return `¥ ${row.kolUserId}`
+      }
+    },
+    {
+      title: '待分佣',
+      align: 'center',
+      dataIndex: 'level',
+      render:(val, row)=>{
+        return `¥ ${row.kolUserId}`
+      }
     },
     {
       title: '手机号',

@@ -113,6 +113,9 @@ export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封�
 // 哒人类型
 export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
 
+// 哒人查询排序
+export const EXPERT_SORT = ['按团队人数排序', '按直推哒人排序', '按分销-核销笔数排序', '按分销-业绩流水排序', '按累计分佣排序'];
+
 // 哒人提现规则
 export const EXPERT_IS_WITHDRAW = ['不可提现', '可提现'];
 
@@ -440,12 +443,12 @@ export const SPECIAL_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' 
 export const SPECIAL_RECOMMEND_TYPE = {
   hotRecommend: '限时推荐',
   todayRecommend: '爆品推荐',
-  hotTop: '限时置顶',
-  todayTop: '爆品置顶',
+  // hotTop: '限时置顶',
+  // todayTop: '爆品置顶',
   thisPeriod: '本期必抢',
   nextPeriod: '下期预告',
   novice: '新手视频',
-  cancel: '取消推荐',
+  // cancel: '取消推荐',
 };
 
 // 特惠活动 - 热销推荐列表枚举

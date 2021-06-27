@@ -6,6 +6,7 @@ import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from '../GoodsGroupSet';
+import PlatformProductTag from '../PlatformProductTag';
 
 const PreferentialSet = ({
   form,
@@ -189,6 +190,34 @@ const PreferentialSet = ({
           },
         },
       ],
+    },
+    {
+      label: '省代佣金',
+      name: 'provincialCommission',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+     
+    },
+    {
+      label: '区县佣金',
+      name: 'districtCommission',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+    },
+    {
+      title: `商品标签`,
+      // label: `平台商品标签`,
+      type: 'noForm',
+      // name: 'platformProduct',
+      // rules: [{ required: true }],
+      formItem: <PlatformProductTag key="platformProduct" form={form}></PlatformProductTag>,
+      maxLength: 200,
     },
     {
       title: `设置${goodsTypeName}介绍`,
