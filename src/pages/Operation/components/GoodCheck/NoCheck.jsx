@@ -6,6 +6,7 @@ import {
 } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
+// 待审核
 const NoCheck = (props) => {
     const { tabkey, globalColum = [], globalSearch,loading, specialGoods} = props 
     const childRef = useRef();
@@ -16,7 +17,20 @@ const NoCheck = (props) => {
 
     const getColumns = [
         ...globalColum,
-    ]
+        {
+            type: 'handle',
+            dataIndex: 'id',
+            render: (val, record) => {
+              const { merchantIdStr } = record;
+              return [
+                {
+                  type: 'check',
+                  title:"审核"
+                },
+              ];
+            }
+        }
+    ];
 
     return (
         <TableDataBlock

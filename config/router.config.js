@@ -102,6 +102,12 @@ export default [
         buttons: ['save', 'edit'],
       },
       {
+        path: '/system/goodsTag',
+        name: '商品标签',
+        component: './Base/GoodsTag',
+        buttons: ['save', 'edit'],
+      },
+      {
         path: '/system/bankSet',
         name: '支行管理',
         component: './Base/ManageBank',

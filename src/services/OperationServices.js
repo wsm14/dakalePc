@@ -376,6 +376,51 @@ export function fetchTagEdit(data) {
   });
 }
 
+//店铺标签end
+
+//商品标签start
+
+//商品标签列表
+export function fetchGoodsTagList(params) {
+  return request('/admin/goodsTag/listConfigGoodsTag', {
+    params,
+  });
+}
+
+//运营后台-新增商品标签
+export function fetchGoodsTagAdd(data) {
+  return request('/admin/goodsTag/saveConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//编辑
+export function fetchGoodsTagUpdate(data) {
+  return request('/admin/goodsTag/updateConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+
+//运营后台-商品标签排序
+export function fetchGoodsTagSort(data) {
+  return request('/admin/goodsTag/sortConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 运营后台-启用/禁用商品标签
+export function fetchGoodsTagSwitchStatus(data) {
+  return request('/admin/goodsTag/enableConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+
 // 分类列表 end
 
 // 优惠券管理

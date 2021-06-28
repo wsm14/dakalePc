@@ -5,6 +5,7 @@ import {
     SPECIAL_STATUS,
 } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+// 待确认
 
 const NoConfirm = (props) => {
     const { tabkey, globalColum = [], globalSearch,loading, specialGoods, hubData } = props 
@@ -16,6 +17,19 @@ const NoConfirm = (props) => {
 
     const getColumns = [
         ...globalColum,
+        {
+            type: 'handle',
+            dataIndex: 'id',
+            render: (val, record) => {
+              const { merchantIdStr } = record;
+              return [
+                {
+                  type: 'info',
+                  title:"详情"
+                },
+              ];
+            }
+        }
     ]
 
     return (

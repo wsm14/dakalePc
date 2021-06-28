@@ -315,11 +315,13 @@ const SpecialGoods = (props) => {
             visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
             click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
           },
-          {
-            type: 'check',
-            visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, 'info'),
-          },
+          //
+          // {
+          //   type: 'check',
+          //   visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
+          //   click: () => fetchSpecialGoodsDetail(index, 'info'),
+          // },
+
           // {
           //   type: 'del',
           //   visible: ['0'].includes(status), // 已下架
@@ -330,13 +332,14 @@ const SpecialGoods = (props) => {
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'again'),
           },
-          {
-            pop: true,
-            title: '取消推荐',
-            auth: 'placement',
-            visible: record.recommendStatus !== '0' || record.topStatus !== '0',
-            click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
-          },
+          // 
+          // {
+          //   pop: true,
+          //   title: '取消推荐',
+          //   auth: 'placement',
+          //   visible: record.recommendStatus !== '0' || record.topStatus !== '0',
+          //   click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
+          // },
           {
             type: 'diary',
             click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),

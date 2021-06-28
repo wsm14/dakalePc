@@ -32,17 +32,21 @@ const CouponManageComponent = (props) => {
       select: COUPON_STATUS,
     },
     {
+      label: '创建人',
+      name: 'creator',
+    },
+    {
       label: '创建时间',
       type: 'rangePicker',
       name: 'beginDate',
       end: 'endDate',
     },
-    {
-      label: '券类型',
-      type: 'select',
-      name: 'couponType',
-      select: COUPON_TYPE,
-    },
+    // {
+    //   label: '券类型',
+    //   type: 'select',
+    //   name: 'couponType',
+    //   select: COUPON_TYPE,
+    // },
     {
       label: '店铺类型',
       name: 'ownerType',
@@ -128,6 +132,10 @@ const CouponManageComponent = (props) => {
       title: '创建时间',
       align: 'right',
       dataIndex: 'createTime',
+      render: (val, record) => <div style={{textAlign:'center'}}>
+        <div>{val}</div>
+        <div>{运营后台-BD姓名}</div>
+      </div>,
     },
     {
       title: '发布时间',

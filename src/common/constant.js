@@ -471,3 +471,15 @@ export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
 // 视频广告 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
+
+//审核类型
+export const CHECK_TYPE = ['新增审核','编辑审核']
+
+//审核结果
+export const CHECK_STATUS = ["审核通过",'审核驳回','商家已确认','商家驳回']
+
+//标签类型
+export const TAG_TYPE = {
+  platform: '平台商品标签',
+  merchant: '店铺商品标签',
+}

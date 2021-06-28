@@ -25,6 +25,7 @@ export default {
     detailList: { list: [], total: 0 },
     platFormList: { list: [], total: 0 },
     sceneList: { list: [], total: 0 },
+    cateList: [], //一级行业类目
   },
 
   reducers: {
@@ -48,10 +49,16 @@ export default {
       const response = yield call(fetchTradeList, payload);
       if (!response) return;
       const { content } = response;
+      const cateList = content.categoryDTOList.map((items) => ({
+        categoryId: items.categoryIdString,
+        categoryName: items.categoryName,
+      }));
+
       yield put({
         type: 'save',
         payload: {
           list: { list: content.categoryDTOList },
+          cateList,
         },
       });
     },
