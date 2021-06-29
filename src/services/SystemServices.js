@@ -165,6 +165,36 @@ export function fetchWalkManageGratiaClassAdd(data) {
   });
 }
 
+// 集合页配置列表
+export function fetchGatherPageConfigList(params) {
+  return request('/admin/collectionPage/listConfigCollectionPage', {
+    params,
+  });
+}
+
+//集合页新增
+export function fetchGatherPageConfigAdd(data) {
+  return request('/admin/collectionPage/saveConfigCollectionPage', {
+    method: 'POST',
+    data,
+  });
+}
+
+//集合页编辑
+export function fetchGatherPageConfigUpdate(data) {
+  return request('/admin/collectionPage/updateConfigCollectionPage', {
+    method: 'POST',
+    data,
+  });
+}
+// 集合页结束
+export function fetchGatherPageConfigEnd(data) {
+  return request('/admin/collectionPage/endConfigCollectionPage', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 逛逛页面配置 end
 
 // 新人下单配置 start

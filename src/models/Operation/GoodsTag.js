@@ -25,7 +25,7 @@ export default {
   },
 
   effects: {
-    *fetchGoodsTagList({ payload }, { call, put }) {
+    *fetchGoodsTagList({ payload, callback }, { call, put }) {
       const response = yield call(fetchGoodsTagList, payload);
       if (!response) return;
       const { content } = response;
@@ -33,9 +33,10 @@ export default {
         type: 'save',
         payload: {
           list: content.configGoodsTagDTOS,
-          total: content.total,
+          // total: content.total,
         },
       });
+      callback && callback(content.configGoodsTagDTOS);
     },
     *fetchGoodsTagAdd({ payload, callback }, { call }) {
       const response = yield call(fetchGoodsTagAdd, payload);

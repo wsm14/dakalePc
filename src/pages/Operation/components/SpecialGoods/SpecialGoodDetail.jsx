@@ -47,12 +47,12 @@ const SpecialGoodDetail = (props) => {
       text: '编辑',
       show: ['1', '2'].includes(status),
     },
-    {
-      auth: 'check',
-      onClick: handleVerifyAllow,
-      text: '审核通过',
-      show: ['3'].includes(status),
-    },
+    // {
+    //   auth: 'check',
+    //   onClick: handleVerifyAllow,
+    //   text: '审核通过',
+    //   show: ['3'].includes(status),
+    // },
   ];
   // 弹出窗属性
   const modalProps = {
@@ -65,26 +65,26 @@ const SpecialGoodDetail = (props) => {
       total,
       onChange: (size) => getDetail(size, 'info'),
     },
-    footer: (
-      <ExtraButton list={btnList}>
-        {['3'].includes(status) && (
-          <Button
-            style={{ marginLeft: 8 }}
-            danger
-            onClick={() =>
-              setVisibleRefuse({
-                show: true,
-                detail: detail,
-                type: 'refuse',
-                formProps: { type: 'refuse', key: 'failureReason' },
-              })
-            }
-          >
-            审核驳回
-          </Button>
-        )}
-      </ExtraButton>
-    ),
+    // footer: (
+    //   <ExtraButton list={btnList}>
+    //     {['3'].includes(status) && (
+    //       <Button
+    //         style={{ marginLeft: 8 }}
+    //         danger
+    //         onClick={() =>
+    //           setVisibleRefuse({
+    //             show: true,
+    //             detail: detail,
+    //             type: 'refuse',
+    //             formProps: { type: 'refuse', key: 'failureReason' },
+    //           })
+    //         }
+    //       >
+    //         审核驳回
+    //       </Button>
+    //     )}
+    //   </ExtraButton>
+    // ),
   };
 
   const formItems = [

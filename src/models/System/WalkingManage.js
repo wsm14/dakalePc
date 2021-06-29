@@ -9,6 +9,11 @@ import {
   fetchWalkManageNavigationSort,
   fetchWalkManageGratiaClass,
   fetchWalkManageGratiaClassAdd,
+  fetchGatherPageConfigList,
+  fetchGatherPageConfigAdd,
+  fetchGatherPageConfigUpdate,
+  fetchGatherPageConfigEnd
+
 } from '@/services/SystemServices';
 
 export default {
@@ -18,6 +23,7 @@ export default {
     vaneList: { list: [] },
     navigation: { list: [] },
     class: [],
+    gatherList:{list:[]},
     nowTrade: [],
   },
 
@@ -129,5 +135,17 @@ export default {
       });
       callback();
     },
+    *fetchGatherPageConfigList({payload},{call,put}){
+      const response = yield call(fetchGatherPageConfigList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          gatherList: { list: content.configCollectionPageList },
+        },
+      });
+
+    }
   },
 };

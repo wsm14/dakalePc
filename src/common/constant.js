@@ -114,7 +114,13 @@ export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封�
 export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
 
 // 哒人查询排序
-export const EXPERT_SORT = ['按团队人数排序', '按直推哒人排序', '按分销-核销笔数排序', '按分销-业绩流水排序', '按累计分佣排序'];
+export const EXPERT_SORT = [
+  '按团队人数排序',
+  '按直推哒人排序',
+  '按分销-核销笔数排序',
+  '按分销-业绩流水排序',
+  '按累计分佣排序',
+];
 
 // 哒人提现规则
 export const EXPERT_IS_WITHDRAW = ['不可提现', '可提现'];
@@ -471,15 +477,38 @@ export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
 // 视频广告 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
+//特惠商品 审核
+// adminAudit-待审核
+// merchantAudit-待确认
+// adminConfirmed-已审核
+// merchantConfirmed-已确认
+export const SPECIAL_GOODS_CHECK_STATUS = {
+  adminAudit: '待审核',
+  merchantAudit: '待确认',
+  adminConfirmed: '已审核',
+  merchantConfirmed: '已确认',
+};
+
+// 操作类型 create-创建 update-修改 down-下架
+export const ACTION_TYPE={
+  create:'创建审核',
+  update:"修改审核",
+  down:'下架审核'
+}
+//周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
+export const GOODS_CHECK_RESSTATUS=['待审核' ,'已通过' ,'已驳回' ,'已关闭']
 
 //审核类型
-export const CHECK_TYPE = ['新增审核','编辑审核']
+export const CHECK_TYPE = ['新增审核', '编辑审核'];
 
 //审核结果
-export const CHECK_STATUS = ["审核通过",'审核驳回','商家已确认','商家驳回']
+export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];
 
 //标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
   merchant: '店铺商品标签',
-}
+};
+
+//集合页配置
+export const PAGE_STATUS = ['进行中', '已结束'];

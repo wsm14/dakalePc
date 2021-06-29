@@ -1,20 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, {  useState } from 'react';
 import { connect } from 'umi';
-import { CHECK_STATUS } from '@/common/constant';
+import { CHECK_STATUS,GOODS_CHECK_RESSTATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 已确认
 const AlConfirm = (props) => {
-  const { tabkey, globalColum = [], globalSearch, loading, specialGoods } = props;
-  const childRef = useRef();
+  const { tableRef,tabkey, globalColum = [], globalSearch, loading, specialGoodsCheck ,rowHandle} = props;
 
   const searchItems = [
     ...globalSearch,
     {
       label: '审核结果',
-      name: 'ownerType',
+      name: 'auditStatus',
       type: 'select',
-      select: CHECK_STATUS,
+      select: GOODS_CHECK_RESSTATUS,
     },
   ];
 
@@ -26,40 +25,32 @@ const AlConfirm = (props) => {
     },
     {
       title: '审核结果',
-      dataIndex: 'checkTime',
+      dataIndex: 'auditStatus',
+      render:(val)=>GOODS_CHECK_RESSTATUS[val]
     },
     {
       title: '驳回原因',
-      dataIndex: 'checkTime',
+      dataIndex: 'rejectReason',
     },
-    {
-      type: 'handle',
-      dataIndex: 'id',
-      render: (val, record) => {
-        return [
-          {
-            type: 'info',
-            title: '详情',
-          },
-        ];
-      },
-    },
+    ...rowHandle,
   ];
 
   return (
+
     <TableDataBlock
-      cRef={childRef}
+      cRef={tableRef}
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.specialGoodsId}`}
-      dispatchType="specialGoods/fetchGetList"
-      {...specialGoods}
+      rowKey={(record) => `${record.auditIdString}`}
+      dispatchType="specialGoodsCheck/fetchGetList"
+      params={{auditSearchType:tabkey}}
+      {...specialGoodsCheck}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ specialGoods, loading }) => ({
-  specialGoods,
-  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+export default connect(({ specialGoodsCheck, loading }) => ({
+  specialGoodsCheck,
+  loading: loading.models.specialGoodsCheck || loading.effects['baseData/fetchGetLogDetail'],
 }))(AlConfirm);

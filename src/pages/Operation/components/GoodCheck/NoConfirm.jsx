@@ -8,7 +8,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 // 待确认
 
 const NoConfirm = (props) => {
-    const { tabkey, globalColum = [], globalSearch,loading, specialGoods, hubData } = props 
+    const { tabkey, globalColum = [], globalSearch,loading, specialGoodsCheck, hubData,rowHandle } = props 
     const childRef = useRef();
 
     const searchItems = [
@@ -17,19 +17,7 @@ const NoConfirm = (props) => {
 
     const getColumns = [
         ...globalColum,
-        {
-            type: 'handle',
-            dataIndex: 'id',
-            render: (val, record) => {
-              const { merchantIdStr } = record;
-              return [
-                {
-                  type: 'info',
-                  title:"详情"
-                },
-              ];
-            }
-        }
+       ...rowHandle,
     ]
 
     return (
@@ -38,16 +26,16 @@ const NoConfirm = (props) => {
             loading={loading}
             columns={getColumns}
             searchItems={searchItems}
-            rowKey={(record) => `${record.specialGoodsId}`}
-            dispatchType="specialGoods/fetchGetList"
-            {...specialGoods}
+            rowKey={(record) => `${record.auditIdString}`}
+            dispatchType="specialGoodsCheck/fetchGetList"
+            params={{auditSearchType:tabkey}}
+            {...specialGoodsCheck}
         ></TableDataBlock>
-
     )
 }
 
-export default connect(({ specialGoods, baseData, loading }) => ({
-    specialGoods,
+export default connect(({ specialGoodsCheck, baseData, loading }) => ({
+    specialGoodsCheck,
     hubData: baseData.hubData,
-    loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+    loading: loading.models.specialGoodsCheck || loading.effects['baseData/fetchGetLogDetail'],
 }))(NoConfirm);

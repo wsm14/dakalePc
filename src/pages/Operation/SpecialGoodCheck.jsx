@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   CHECK_TYPE,
   SPECIAL_STATUS,
+  ACTION_TYPE,
   GOODS_CLASS_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
@@ -14,29 +15,34 @@ import NoCheck from './components/GoodCheck/NoCheck';
 import NoConfirm from './components/GoodCheck/NoConfirm';
 import AlCheck from './components/GoodCheck/AlCheck';
 import AlConfirm from './components/GoodCheck/AlConfirm';
+import SpecialGoodCheckDetail from './components/GoodCheck/SpecialGoodCheckDetail';
 
 const tabList = [
   {
-    key: '0',
+    key: 'adminAudit',
     tab: '待审核',
   },
   {
-    key: '1',
+    key: 'merchantAudit',
     tab: '待确认',
   },
   {
-    key: '2',
+    key: 'adminConfirmed',
     tab: '已审核',
   },
   {
-    key: '3',
+    key: 'merchantConfirmed',
     tab: '已确认',
   },
 ];
 
 const SpecialGoodCheck = (props) => {
-  const { dispatch, loading, hubData } = props;
-  const [tabkey, setTabKey] = useState('0');
+  const tableRef = useRef();
+  const { dispatch, loading, hubData, specialGoodsCheck } = props;
+  const [tabkey, setTabKey] = useState('adminAudit');
+  const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
+  const { list } = specialGoodsCheck;
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -107,9 +113,9 @@ const SpecialGoodCheck = (props) => {
 
     {
       label: '审核类型',
-      name: 'ownerType',
+      name: 'actionType',
       type: 'select',
-      select: CHECK_TYPE,
+      select: ACTION_TYPE,
     },
   ];
 
@@ -118,56 +124,68 @@ const SpecialGoodCheck = (props) => {
     {
       title: '商品/店铺名称',
       fixed: 'left',
-      dataIndex: 'goodsImg',
-      render: (val, row) => (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            flex: 1,
-            marginLeft: 5,
-          }}
-        >
-          <div style={{ display: 'flex' }}>
-            <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
-              {GOODS_CLASS_TYPE[row.goodsType]}
-            </Tag>
-            <Ellipsis length={10} tooltip>
-              {row.goodsName}
-            </Ellipsis>
+      dataIndex: 'activityGoodsDTO',
+      render: (val, row) => {
+        const { activityGoodsDTO = {} } = row;
+        const { goodsName, goodsType, ownerType, merchantName } = activityGoodsDTO;
+        return (
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Tag color={goodsType === 'single' ? 'orange' : 'magenta'}>
+                {GOODS_CLASS_TYPE[goodsType]}
+              </Tag>
+              <Ellipsis length={10} tooltip>
+                {goodsName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <Tag>{BUSINESS_TYPE[ownerType]}</Tag>
+              <Ellipsis length={10} tooltip>
+                {merchantName}
+              </Ellipsis>
+            </div>
           </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
-            <Ellipsis length={10} tooltip>
-              {row.merchantName}
-            </Ellipsis>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '佣金',
       align: 'right',
-      dataIndex: 'realPrice',
-      render: (val, row) => `￥${(Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2)}`,
+      dataIndex: 'activityGoodsDTO',
+      render: (val, row) => {
+        const { activityGoodsDTO = {} } = row;
+        const realPrice = activityGoodsDTO.realPrice ? activityGoodsDTO.realPrice : 0;
+        const merchantPrice = activityGoodsDTO.merchantPrice ? activityGoodsDTO.merchantPrice : 0;
+        return `￥${(Number(realPrice) - Number(merchantPrice)).toFixed(2)}`;
+      },
     },
     {
       title: '原价/售价',
       align: 'right',
-      dataIndex: 'oriPrice',
+      dataIndex: 'activityGoodsDTO',
       render: (val, row) => {
-        const zhe = (Number(row.realPrice) / Number(val)) * 10;
+        const { activityGoodsDTO = {} } = row;
+        const realPrice = activityGoodsDTO.realPrice ? activityGoodsDTO.realPrice : 0;
+        const oriPrice = activityGoodsDTO.oriPrice ? activityGoodsDTO.oriPrice : 0;
+        const zhe = (Number(realPrice) / Number(oriPrice)) * 10;
         return (
           <div>
             <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-              ￥{Number(val).toFixed(2)}
+              ￥{Number(oriPrice).toFixed(2)}
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Tag color={'red'}>
                 {zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折
               </Tag>
-              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+              <div>￥{Number(realPrice).toFixed(2)}</div>
             </div>
           </div>
         );
@@ -176,13 +194,21 @@ const SpecialGoodCheck = (props) => {
     {
       title: '成本价',
       align: 'center',
-      dataIndex: 'otherPlatformPrice',
+      dataIndex: 'activityGoodsDTO',
+      render: (val, row) => {
+        const { activityGoodsDTO = {} } = row;
+        const otherPlatformPrice = activityGoodsDTO.otherPlatformPrice
+          ? activityGoodsDTO.otherPlatformPrice
+          : 0;
+        return `￥${Number(otherPlatformPrice).toFixed(2)}`;
+      },
     },
     {
       title: '使用有效期',
-      dataIndex: 'useStartTime',
+      dataIndex: 'activityGoodsDTO',
       render: (val, row) => {
-        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+        const { activityGoodsDTO = {} } = row;
+        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = activityGoodsDTO;
         if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
           return useStartTime + '~' + useEndTime;
@@ -197,53 +223,138 @@ const SpecialGoodCheck = (props) => {
     {
       title: '审核创建时间',
       align: 'center',
-      dataIndex: 'activityStartTime',
+      dataIndex: 'createTime',
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div>{record.submitterUserName}</div>
+        </div>
+      ),
     },
     {
       title: '活动时间',
       align: 'center',
-      dataIndex: 'activityStartTime',
-      render: (val, row) => (
-        <>
-          {row.activityTimeRule === 'infinite'
-            ? `${row.createTime} ~ 长期`
-            : `${val} ~ ${row.activityEndTime}`}
-          <div>
-            {row.deleteFlag === '0'
-              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
-              : SPECIAL_STATUS[row.status]}
-          </div>
-        </>
-      ),
+      dataIndex: 'activityGoodsDTO',
+      render: (val, row) => {
+        const { activityGoodsDTO = {} } = row;
+        const { activityTimeRule, activityEndTime, activityStartTime } = activityGoodsDTO;
+        return (
+          <>
+            {activityTimeRule === 'infinite'
+              ? `${activityStartTime} ~ 长期` //
+              : `${activityStartTime} ~ ${activityEndTime}`}
+          </>
+        );
+      },
     },
     {
       title: '投放数量',
       align: 'center',
       dataIndex: 'activityStartTime',
+      render: (val, row) => {
+        const { activityGoodsDTO = {} } = row;
+        const { total = 0 } = activityGoodsDTO;
+        return total;
+      },
     },
     {
       title: '审核类型',
       align: 'center',
-      dataIndex: 'activityStartTime',
+      dataIndex: 'actionType',
+      render: (val) => ACTION_TYPE[val],
     },
   ];
-  const listProps = { tabkey, globalColum, globalSearch };
+
+  const rowHandle = [
+    {
+      type: 'handle',
+      dataIndex: 'auditIdString',
+      render: (val, record, index) => {
+        return [
+          {
+            type: 'info',
+            title: '详情',
+            click: () => fetchSpecialGoodsDetail(index, 'info'),
+          },
+          {
+            type: 'check',
+            title: '审核',
+            click: () => fetchSpecialGoodsVerify(),
+            visible: tabkey === 'adminAudit',
+          },
+        ];
+      },
+    },
+  ];
+  const listProps = { tableRef, tabkey, globalColum, globalSearch, rowHandle };
 
   const contentList = {
-    0: <NoCheck {...listProps}></NoCheck>,
-    1: <NoConfirm {...listProps}></NoConfirm>,
-    2: <AlCheck {...listProps}></AlCheck>,
-    3: <AlConfirm {...listProps}></AlConfirm>,
+    adminAudit: <NoCheck {...listProps}></NoCheck>,
+    merchantAudit: <NoConfirm {...listProps}></NoConfirm>,
+    adminConfirmed: <AlCheck {...listProps}></AlCheck>,
+    merchantConfirmed: <AlConfirm {...listProps}></AlConfirm>,
+  };
+
+  // 获取详情
+  const fetchSpecialGoodsDetail = (index, type) => {
+    const { ownerId, auditIdString } = list[index];
+    dispatch({
+      type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
+      payload: { ownerId, auditId: auditIdString, type },
+      callback: (val) => {
+        console.log(val, '2222');
+        const { status } = val;
+        const newProps = {
+          show: true,
+          detail: { ...val },
+        };
+        if (type == 'info') {
+          setVisibleInfo({ status, index, ...newProps });
+        } else {
+          setVisibleSet({ type, ...newProps });
+        }
+      },
+    });
+  };
+
+  // 审核
+  const fetchSpecialGoodsVerify = (values) => {
+    const { auditIdString, ownerId } = visibleRefuse.detail;
+    dispatch({
+      type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
+      payload: {
+        auditId: auditIdString,
+        ownerId,
+        // status: 4,
+        ...values,
+      },
+      callback: () => {
+        setVisibleInfo(false);
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
   };
 
   return (
-    <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
-      {contentList[tabkey]}
-    </Card>
+    <>
+      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
+        {contentList[tabkey]}
+      </Card>
+      {/* 详情 */}
+      <SpecialGoodCheckDetail
+        visible={visibleInfo}
+        total={list.length}
+        cRef={tableRef}
+        getDetail={fetchSpecialGoodsDetail}
+        fetchSpecialGoodsVerify={fetchSpecialGoodsVerify}
+        onClose={() => setVisibleInfo(false)}
+      ></SpecialGoodCheckDetail>
+    </>
   );
 };
-export default connect(({ baseData, loading }) => ({
-  // specialGoods,
+export default connect(({ baseData, loading, specialGoodsCheck }) => ({
+  specialGoodsCheck,
   hubData: baseData.hubData,
   loading: loading.models.baseData,
 }))(SpecialGoodCheck);

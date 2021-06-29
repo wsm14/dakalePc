@@ -1,52 +1,55 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import {
-    BUSINESS_TYPE,
-    SPECIAL_STATUS,
-} from '@/common/constant';
+import { BUSINESS_TYPE, SPECIAL_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 待审核
 const NoCheck = (props) => {
-    const { tabkey, globalColum = [], globalSearch,loading, specialGoods} = props 
-    const childRef = useRef();
+  const {
+    tabkey,
+    globalColum = [],
+    globalSearch,
+    loading,
+    specialGoodsCheck,
+    rowHandle,
+    tableRef,
+  } = props;
 
-    const searchItems = [
-      ...globalSearch
-    ];
+  const searchItems = [...globalSearch];
 
-    const getColumns = [
-        ...globalColum,
-        {
-            type: 'handle',
-            dataIndex: 'id',
-            render: (val, record) => {
-              const { merchantIdStr } = record;
-              return [
-                {
-                  type: 'check',
-                  title:"审核"
-                },
-              ];
-            }
-        }
-    ];
+  const getColumns = [
+    ...globalColum,
+    ...rowHandle,
+    // {
+    //     type: 'handle',
+    //     dataIndex: 'id',
+    //     render: (val, record) => {
+    //       const { merchantIdStr } = record;
+    //       return [
+    //         {
+    //           type: 'check',
+    //           title:"审核"
+    //         },
+    //       ];
+    //     }
+    // }
+  ];
 
-    return (
-        <TableDataBlock
-            cRef={childRef}
-            loading={loading}
-            columns={getColumns}
-            searchItems={searchItems}
-            rowKey={(record) => `${record.specialGoodsId}`}
-            dispatchType="specialGoods/fetchGetList"
-            {...specialGoods}
-        ></TableDataBlock>
+  return (
+    <TableDataBlock
+      cRef={tableRef}
+      loading={loading}
+      columns={getColumns}
+      searchItems={searchItems}
+      rowKey={(record) => `${record.auditIdString}`}
+      dispatchType="specialGoodsCheck/fetchGetList"
+      params={{ auditSearchType: tabkey }}
+      {...specialGoodsCheck}
+    ></TableDataBlock>
+  );
+};
 
-    )
-}
-
-export default connect(({ specialGoods, loading }) => ({
-    specialGoods,
-    loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+export default connect(({ specialGoodsCheck, loading }) => ({
+  specialGoodsCheck,
+  loading: loading.models.specialGoodsCheck || loading.effects['baseData/fetchGetLogDetail'],
 }))(NoCheck);

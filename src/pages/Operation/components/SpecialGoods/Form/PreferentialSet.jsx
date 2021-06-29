@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
@@ -22,6 +22,7 @@ const PreferentialSet = ({
   const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] });
   // 商品类型 goodsType 店铺范围 shopType
   const [radioData, setRadioData] = useState({ goodsType: 'single', shopType: '0' });
+  const [platTaglist, setPlatTaglist] = useState([]);
 
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
 
@@ -41,9 +42,23 @@ const PreferentialSet = ({
     });
   }, 500);
 
+  useEffect(() => {
+    getTagsPlat();
+  }, []);
+
   const saveMreData = (data) => setMreList({ ...mreList, ...data });
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
+  //获取平台商品标签
+  const getTagsPlat = () => {
+    dispatch({
+      type: 'goodsTag/fetchGoodsTagList',
+      payload: {
+        tagType: 'platform',
+      },
+      callback: (list) => setPlatTaglist(list),
+    });
+  };
 
   // 信息
   const formItems = [
@@ -53,7 +68,7 @@ const PreferentialSet = ({
       type: 'radio',
       disabled: editActive,
       name: 'ownerType',
-      select: { merchant: '单店',group:'集团' },
+      select: { merchant: '单店', group: '集团' },
       onChange: (e) => {
         saveSelectData({ shopType: '0' });
         saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
@@ -192,6 +207,17 @@ const PreferentialSet = ({
       ],
     },
     {
+      label: '佣金金额', // 手动分佣需要展示
+      name: 'provincialCommission',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+      visible:false,
+      show:false
+    },
+    {
       label: '省代佣金',
       name: 'provincialCommission',
       type: 'number',
@@ -199,7 +225,6 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
-     
     },
     {
       label: '区县佣金',
@@ -211,14 +236,21 @@ const PreferentialSet = ({
       formatter: (value) => `￥ ${value}`,
     },
     {
-      title: `商品标签`,
-      // label: `平台商品标签`,
-      type: 'noForm',
-      // name: 'platformProduct',
-      // rules: [{ required: true }],
-      formItem: <PlatformProductTag key="platformProduct" form={form}></PlatformProductTag>,
-      maxLength: 200,
+      label: '平台商品标签',
+      name: 'platformProduct',
+      type: 'tags',
+      select: platTaglist,
+      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },
+    // {
+    //   title: `商品标签`,
+    //   // label: `平台商品标签`,
+    //   type: 'noForm',
+    //   // name: 'platformProduct',
+    //   // rules: [{ required: true }],
+    //   formItem: <PlatformProductTag key="platformProduct" form={form}></PlatformProductTag>,
+    //   maxLength: 200,
+    // },
     {
       title: `设置${goodsTypeName}介绍`,
       label: `${goodsTypeName}介绍`,

@@ -94,7 +94,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '特惠活动新增成功',
+        description: '特惠活动新增成功，等待平台审核',
       });
       callback();
     },
@@ -121,7 +121,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '特惠活动编辑成功',
+        description: '特惠活动修改成功，等待平台审核',
       });
       callback();
     },

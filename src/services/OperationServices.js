@@ -83,6 +83,40 @@ export function fetchSpecialGoodsImport(params) {
 
 // 周边特惠 end
 
+//特惠审核
+
+//审核列表
+export function fetchSpecialGoodsCheckList(params) {
+  return request('/admin/marketing/audit/listSpecialGoodsAudit', {
+    params,
+  });
+}
+
+//特惠审核详情 
+export function fetchSpecialGoodsAuditDetail(params) {
+  return request('/admin/marketing/audit/getAuditDetail', {
+    params,
+  });
+}
+
+//特惠审核 
+export function fetchSpecialGoodsAudit(data) {
+  return request('/admin/marketing/audit/verifyAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
+//特惠审核拒绝
+export function fetchSpecialGoodsAuditReject(data) {
+  return request('/admin/marketing/audit/rejectAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
+//特惠审核end
+
 // 分享管理
 
 // get 分享管理 - 分享列表
