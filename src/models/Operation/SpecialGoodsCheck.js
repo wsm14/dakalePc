@@ -77,6 +77,10 @@ export default {
       }
       callback({
         ...content.auditDetail,
+        rejectObj:{
+          rejectReason:content.auditDetail.rejectReason,
+          rejectImg:content.auditDetail.rejectImg
+        },
         ...content.specialGoodsInfo,
         ...specialGoodsInfo.serviceDivisionDTO, //分佣
         ...newDetail,

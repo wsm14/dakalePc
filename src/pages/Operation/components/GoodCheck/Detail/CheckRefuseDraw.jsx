@@ -7,7 +7,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import { Button, Form } from 'antd';
 const CheckRefuseDraw = (props) => {
   const { visible = {}, onClose, dispatch, onCloseF, cRef, loading } = props;
-  const { show = false, auditId = 0, ownerId = 0 } = visible;
+  const { show = false, auditId, ownerId, type, detail } = visible;
 
   const [form] = Form.useForm();
 
@@ -50,7 +50,7 @@ const CheckRefuseDraw = (props) => {
     visible: show,
     title: '驳回原因',
     onClose,
-    footer: (
+    footer: type === 'edit' && (
       <Button type="primary" onClick={handleReject} loading={loading}>
         提交
       </Button>
@@ -59,7 +59,7 @@ const CheckRefuseDraw = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition formItems={formItems} form={form}></FormCondition>
+      <FormCondition formItems={formItems} form={form} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };

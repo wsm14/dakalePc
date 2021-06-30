@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Tabs, Alert, Form, notification } from 'antd';
+import { DoubleRightOutlined } from '@ant-design/icons';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
@@ -77,19 +78,21 @@ const SpecialGoodCheckDetail = (props) => {
       const { otherPlatformPrice, provinceFee, districtFee, darenFee, merTags, platTags } = values;
       console.log(merTags, platTags, 'merTags, platTagsv');
       let tags = [...merTags, ...platTags];
+      const serviceDivisionDTO = {
+        provinceFee,
+        districtFee,
+        darenFee,
+      };
+      const payload = {
+        auditId: auditIdString,
+        ownerId: ownerIdString,
+        serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
+        otherPlatformPrice: otherPlatformPrice,
+        goodsTags: tags && tags.toString(),
+      };
       dispatch({
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
-        payload: {
-          auditId: auditIdString,
-          ownerId: ownerIdString,
-          serviceDivisionDTO: {
-            provinceFee,
-            districtFee,
-            darenFee,
-          },
-          otherPlatformPrice: otherPlatformPrice,
-          goodsTags: tags && tags.toString(','),
-        },
+        payload: payload,
         callback: () => {
           onclose();
           cRef.current.fetchGetData();
@@ -132,7 +135,9 @@ const SpecialGoodCheckDetail = (props) => {
             onClick={() =>
               setVisibleRefuse({
                 show: true,
-                detail: detail,
+                type: 'edit',
+                auditId: auditIdString,
+                ownerId: ownerIdString,
               })
             }
           >
@@ -207,10 +212,33 @@ const SpecialGoodCheckDetail = (props) => {
     },
   ];
 
+  const handleErr = () => {};
+
   return (
     <DrawerCondition {...modalProps}>
       {/* 驳回原因 */}
-      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />}
+      {status == '2' && (
+        <Alert
+          message={`驳回原因：${detail.failureReason}`}
+          type="error"
+          banner
+          action={
+            <Button
+              size="small"
+              danger
+              onClick={() =>
+                setVisibleRefuse({
+                  show: true,
+                  type: 'info',
+                  detail: detail.rejectObj,
+                })
+              }
+            >
+              <DoubleRightOutlined />
+            </Button>
+          }
+        />
+      )}
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">
@@ -226,27 +254,33 @@ const SpecialGoodCheckDetail = (props) => {
 
       {/* 审核时输入 其他平台价格 */}
       {status == '0' && (
-      <>
-        <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
-
-        {/* 审核中并且分佣模板为手动分佣时 */}
-        {detail.divisionFlag === '1' && (
         <>
-          <div
-            style={{
-              fontSize: 16,
-              color: 'rgba(0,0,0,.85',
-              margin: '10px 0',
-              fontWeight: 'bold',
-            }}
-          >
-            分佣配置
-          </div>
           <FormCondition
-            formItems={formCommission}
+            formItems={formItems}
             form={form}
             style={{ marginTop: 10 }}
           ></FormCondition>
+
+          {/* 审核中并且分佣模板为手动分佣时 */}
+          {detail.divisionFlag === '1' && (
+            <>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: 'rgba(0,0,0,.85',
+                  margin: '10px 0',
+                  fontWeight: 'bold',
+                }}
+              >
+                分佣配置
+              </div>
+              <FormCondition
+                formItems={formCommission}
+                form={form}
+                style={{ marginTop: 10 }}
+              ></FormCondition>
+            </>
+          )}
           <div
             style={{
               fontSize: 16,
@@ -263,8 +297,6 @@ const SpecialGoodCheckDetail = (props) => {
             style={{ marginTop: 10 }}
           ></FormCondition>
         </>
-        )}
-      </>
       )}
       <CheckRefuseDraw
         cRef={cRef}
