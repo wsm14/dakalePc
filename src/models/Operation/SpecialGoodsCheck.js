@@ -44,7 +44,7 @@ export default {
       const { content } = response;
       const { auditId, ownerId } = payload;
       // divisionFlag 是否能手动设置佣金 0-否 1-是
-      const { specialGoodsInfo = {},divisionFlag } = content;
+      const { specialGoodsInfo = {}, divisionFlag } = content;
       const {
         allowRefund,
         allowExpireRefund,
@@ -76,8 +76,9 @@ export default {
         };
       }
       callback({
+        ...content.auditDetail,
         ...content.specialGoodsInfo,
-        ...content.serviceDivisionDTO, //分佣
+        ...specialGoodsInfo.serviceDivisionDTO, //分佣
         ...newDetail,
         divisionFlag,
         auditId,

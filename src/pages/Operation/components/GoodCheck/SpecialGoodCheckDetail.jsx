@@ -26,6 +26,8 @@ const SpecialGoodCheckDetail = (props) => {
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
 
+  console.log(detail, 'detail');
+
   const [form] = Form.useForm();
 
   const handleEdit = () => {
@@ -72,17 +74,24 @@ const SpecialGoodCheckDetail = (props) => {
       });
     }
     form.validateFields().then((values) => {
+      const { otherPlatformPrice, provinceFee, districtFee, darenFee, merTags, platTags } = values;
+      console.log(merTags, platTags, 'merTags, platTagsv');
+      let tags = [...merTags, ...platTags];
       dispatch({
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
         payload: {
           auditId: auditIdString,
           ownerId: ownerIdString,
-          serviceDivisionDTO:{
-            ...values,
-          }
+          serviceDivisionDTO: {
+            provinceFee,
+            districtFee,
+            darenFee,
+          },
+          otherPlatformPrice: otherPlatformPrice,
+          goodsTags: tags && tags.toString(','),
         },
         callback: () => {
-          setVisibleInfo(false);
+          onclose();
           cRef.current.fetchGetData();
         },
       });
@@ -100,7 +109,7 @@ const SpecialGoodCheckDetail = (props) => {
       auth: 'check',
       onClick: handleVerifyAllow,
       text: '审核通过',
-      show: ['3'].includes(status),
+      show: ['0'].includes(status),
     },
   ];
   // 弹出窗属性
@@ -116,7 +125,7 @@ const SpecialGoodCheckDetail = (props) => {
     },
     footer: (
       <ExtraButton list={btnList}>
-        {['3'].includes(status) && (
+        {['0'].includes(status) && (
           <Button
             style={{ marginLeft: 8 }}
             danger
@@ -185,13 +194,13 @@ const SpecialGoodCheckDetail = (props) => {
     {
       label: '商家商品标签',
       type: 'tags',
-      name: 'merchantParentFee',
+      name: 'merTags',
       select: merchantTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },
     {
       label: '平台商品标签',
-      name: 'userParentFee',
+      name: 'platTags',
       type: 'tags',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
@@ -216,50 +225,46 @@ const SpecialGoodCheckDetail = (props) => {
       </Tabs>
 
       {/* 审核时输入 其他平台价格 */}
-      {status == '3' && (
+      {status == '0' && (
+      <>
+        <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
+
+        {/* 审核中并且分佣模板为手动分佣时 */}
+        {detail.divisionFlag === '1' && (
         <>
+          <div
+            style={{
+              fontSize: 16,
+              color: 'rgba(0,0,0,.85',
+              margin: '10px 0',
+              fontWeight: 'bold',
+            }}
+          >
+            分佣配置
+          </div>
           <FormCondition
-            formItems={formItems}
+            formItems={formCommission}
             form={form}
             style={{ marginTop: 10 }}
           ></FormCondition>
-
-          {/* 审核中并且分佣模板为手动分佣时 */}
-          {detail.divisionFlag === '1' && (
-            <>
-              <div
-                style={{
-                  fontSize: 16,
-                  color: 'rgba(0,0,0,.85',
-                  margin: '10px 0',
-                  fontWeight: 'bold',
-                }}
-              >
-                分佣配置
-              </div>
-              <FormCondition
-                formItems={formCommission}
-                form={form}
-                style={{ marginTop: 10 }}
-              ></FormCondition>
-              <div
-                style={{
-                  fontSize: 16,
-                  color: 'rgba(0,0,0,.85',
-                  margin: '10px 0',
-                  fontWeight: 'bold',
-                }}
-              >
-                商品标签
-              </div>
-              <FormCondition
-                formItems={formTagItem}
-                form={form}
-                style={{ marginTop: 10 }}
-              ></FormCondition>
-            </>
-          )}
+          <div
+            style={{
+              fontSize: 16,
+              color: 'rgba(0,0,0,.85',
+              margin: '10px 0',
+              fontWeight: 'bold',
+            }}
+          >
+            商品标签
+          </div>
+          <FormCondition
+            formItems={formTagItem}
+            form={form}
+            style={{ marginTop: 10 }}
+          ></FormCondition>
         </>
+        )}
+      </>
       )}
       <CheckRefuseDraw
         cRef={cRef}

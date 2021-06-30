@@ -81,24 +81,81 @@ const GoodsDetail = (props) => {
     {
       label: '分佣配置',
       name: 'provinceFee',
+      show: detail.auditStatus !== '0',
       render: (val, row) => (
         <>
-          <div>省代分佣：</div>
-          <div>区县分佣：</div>
-          <div>哒人分佣：</div>
+          <div>省代分佣：{row.provinceFee}</div>
+          <div>区县分佣：{row.districtFee}</div>
+          <div>哒人分佣：{row.darenFee}</div>
         </>
       ),
     },
   ];
 
-  const formItemTag =[ {
-    label: '商家商品标签',
-    name: 'merchantParentFee',
-  },
-  {
-    label: '平台商品标签',
-    name: 'userParentFee',
-  },]
+  const formItemTag = [
+    {
+      label: '商家商品标签',
+      name: 'goodsTagList',
+      render: (val, row) => {
+        const { goodsTagList = [] } = row;
+        const tags = goodsTagList.map((items) => {
+          if (items.tagType === 'merchant') {
+            return items.tagName;
+          }
+        });
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '0 5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag}
+                >
+                  {tag}
+                </span>
+              ))}
+          </>
+        );
+      },
+      show: detail.auditStatus !== '0',
+    },
+    {
+      label: '平台商品标签',
+      name: 'goodsTagList',
+      render: (val, row) => {
+        const { goodsTagList = [] } = row;
+        const tags = goodsTagList.map((items) => {
+          if (items.tagType === 'platform') {
+            return items.tagName;
+          }
+        });
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '0 5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag}
+                >
+                  {tag}
+                </span>
+              ))}
+          </>
+        );
+      },
+      show: detail.auditStatus !== '0',
+    },
+  ];
 
   return (
     <>

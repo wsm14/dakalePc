@@ -278,12 +278,13 @@ const SpecialGoodCheck = (props) => {
             type: 'info',
             title: '详情',
             click: () => fetchSpecialGoodsDetail(index, 'info'),
+            visible: tabkey !== 'adminAudit',
           },
           {
             type: 'check',
             title: '审核',
             // fetchSpecialGoodsVerify(index)
-            click: () => fetchSpecialGoodsDetail(index, 'check') ,
+            click: () => fetchSpecialGoodsDetail(index, 'check'),
             visible: tabkey === 'adminAudit',
           },
         ];
@@ -301,17 +302,16 @@ const SpecialGoodCheck = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { ownerIdString, auditIdString } = list[index];
+    const { ownerIdString, auditIdString, auditStatus: status } = list[index];
     dispatch({
       type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
       payload: { ownerId: ownerIdString, auditId: auditIdString, type },
       callback: (val) => {
-        const { status } = val;
         const newProps = {
           show: true,
           detail: { ...val },
         };
-        if (type == 'info' || type==='check') {
+        if (type == 'info' || type === 'check') {
           setVisibleInfo({ status, index, ...newProps, ownerIdString, auditIdString });
         } else {
           setVisibleSet({ type, ...newProps });
@@ -319,8 +319,6 @@ const SpecialGoodCheck = (props) => {
       },
     });
   };
-
- 
 
   return (
     <>
