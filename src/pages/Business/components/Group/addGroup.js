@@ -7,7 +7,7 @@ import ManagementForm from './Form/ManagementForm';
 import UserForm from './Form/userForm';
 import UserDetailsForm from './Form/userDetailsForm';
 import ShopDetailsForm from './Form/shopDetailsForm';
-import CrmGroupSelect from './Form/CrmGroupSelect';
+import CrmGroupSelect, { CrmBtn } from './Form/CrmGroupSelect';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const addGroups = (props) => {
@@ -24,6 +24,8 @@ const addGroups = (props) => {
   } = props;
 
   const [form] = Form.useForm();
+  const [formCrm] = Form.useForm();
+
   const cRef = useRef();
   const cRef1 = useRef();
   const cRef2 = useRef();
@@ -51,11 +53,15 @@ const addGroups = (props) => {
     bankBindingInfo: {},
   };
 
+  const closeBtn = (
+    <Button onClick={() => saveVisible({ visible: false, ...defauleVale })}>取消</Button>
+  );
+
   const Btn = {
     add: (
       <div style={{ textAlign: 'center' }}>
         <Space>
-          <Button onClick={() => saveVisible({ visible: false, ...defauleVale })}>取消</Button>
+          {closeBtn}
           <Button
             loading={loadingAdd}
             onClick={() =>
@@ -83,9 +89,9 @@ const addGroups = (props) => {
       </div>
     ),
     update: (
-      <div style={{ textAlign: 'right' }}>
+      <div style={{ textAlign: 'center' }}>
         <Space>
-          <Button onClick={() => saveVisible({ visible: false, ...defauleVale })}>取消</Button>
+          {closeBtn}
           <Button
             onClick={() =>
               fetchUpdateGroup(() => {
@@ -102,10 +108,13 @@ const addGroups = (props) => {
       </div>
     ),
   }[bottomBtn];
+
   const panelList = [
     {
       title: '基础信息',
-      form: <BaseForm cRef={cRef} form={form} initialValues={merchantGroupDTO} />,
+      form: (
+        <BaseForm cRef={cRef} formType={formType} form={form} initialValues={merchantGroupDTO} />
+      ),
       showArrow: false,
       disabled: true,
     },
@@ -161,6 +170,7 @@ const addGroups = (props) => {
       }
     });
   };
+
   const fetchUpdateGroup = (callback) => {
     form.validateFields().then(async (val) => {
       const payload = cRef.current.fetchAllData();
@@ -183,6 +193,19 @@ const addGroups = (props) => {
       });
     });
   };
+
+  // 认领或创建店铺前往新增
+  const handleCrmAddGroup = (merchantGroupDTO) => {
+    dispatch({
+      type: 'groupSet/save',
+      payload: {
+        merchantGroupDTO,
+      },
+    });
+    setBottom('add');
+    setCrmSelect(false);
+  };
+
   return (
     <>
       <Drawer
@@ -192,9 +215,18 @@ const addGroups = (props) => {
         destroyOnClose={true}
         onClose={onClose}
         bodyStyle={{ paddingBottom: 80 }}
-        footer={Btn}
+        footer={
+          {
+            true: <CrmBtn form={formCrm}>{closeBtn}</CrmBtn>, // 认领搜索
+            false: Btn, // 原编辑
+          }[crmSelect]
+        }
       >
-        {crmSelect ? <CrmGroupSelect /> : <Title panelList={panelList}></Title>}
+        {crmSelect ? (
+          <CrmGroupSelect form={formCrm} goSet={handleCrmAddGroup} />
+        ) : (
+          <Title panelList={panelList}></Title>
+        )}
       </Drawer>
     </>
   );

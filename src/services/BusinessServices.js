@@ -190,6 +190,13 @@ export function fetchUpdateGroup(data) {
   });
 }
 
+// get 获取crm集团门店列表
+export function fetchCrmGrounpList(params) {
+  return request('/admin/merchantGroup/listSellMerchantGroup', {
+    params,
+  });
+}
+
 // post 获取子门店列表
 export function fetchGroupStoreList(data) {
   return request('/admin/merchantGroup/listMySubMerchantData', {
