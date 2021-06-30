@@ -9,11 +9,14 @@ import DrawerCondition from '@/components/DrawerCondition';
 
 const VaneDrawer = (props) => {
   const { navigation, dispatch, cRef, visible, onClose, loading, tradeList } = props;
+  const [categoryArr, setCategoryArr] = useState([]);
 
-  const { show = false, type = 'add', detail = '' } = visible;
+  const { show = false, type = 'add', detail = {} } = visible;
+  const { windVaneParamObject = {} } = detail;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
+  detail.categoryId = windVaneParamObject.categoryId;
 
   const allProps = {
     add: {
@@ -32,7 +35,17 @@ const VaneDrawer = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { image, bubbleFlag = 0, scenesId = [] } = values;
+      const { image, bubbleFlag = 0, categoryId = [], jumpType } = values;
+      let cateId = '';
+      if (categoryId && categoryId.length > 1) {
+        cateId = Number(categoryId[1]);
+      } else {
+        cateId = Number(categoryId[0]);
+      }
+      const windVaneParamObject = {
+        categoryId: cateId,
+        categoryName: categoryArr.categoryName,
+      };
       // 上传图片到oss -> 提交表单
       aliOssUpload(image).then((res) => {
         dispatch({
@@ -40,9 +53,11 @@ const VaneDrawer = (props) => {
           payload: {
             configWindVaneId: detail.configWindVaneId,
             ...values,
+            jumpType,
+            nativeJumpType: jumpType === 'native' ? 'category' : '',
             bubbleFlag: Number(bubbleFlag),
             image: res.toString(),
-            scenesId: scenesId.toString(),
+            windVaneParamObject: jumpType === 'native' ? windVaneParamObject : '',
           },
           callback: () => {
             onClose();
@@ -94,8 +109,16 @@ const VaneDrawer = (props) => {
       type: 'radio',
       name: 'jumpType',
       select: VANE_URL_TYPE,
-      onChange: (e) => setShowUrl(e.target.value),
+      onChange: (e) => {
+        setShowUrl(e.target.value);
+      },
       render: (val) => VANE_URL_TYPE[val],
+    },
+    {
+      label: '原生跳转类型',
+      name: 'nativeJumpType',
+      visible: false,
+      show: false,
     },
     {
       label: '链接',
@@ -128,10 +151,18 @@ const VaneDrawer = (props) => {
       label: '选择行业',
       type: 'cascader',
       name: 'categoryId',
+      changeOnSelect: true,
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'childList' },
       show: false,
-      visible: showUrl === 'scenes',
+      visible: showUrl === 'native',
+      onChange: (val, option) => {
+        if (val.length > 1) {
+          setCategoryArr(option[1]);
+        } else {
+          setCategoryArr(option[0]);
+        }
+      },
     },
   ];
 

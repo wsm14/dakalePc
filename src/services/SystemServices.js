@@ -103,21 +103,21 @@ export function fetchSearchSet(data) {
 
 // get 风向标配置 - 列表
 export function fetchWalkManageVaneList(params) {
-  return request('/admin/systemConfig/listConfigWindVane', {
+  return request('/admin/windVane/listConfigWindVane', {
     params,
   });
 }
 
 // get 风向标配置 - 详情
 export function fetchWalkManageVaneDetail(params) {
-  return request('/admin/systemConfig/getConfigWindVaneById', {
+  return request('/admin/windVane/getConfigWindVaneById', {
     params,
   });
 }
 
 // post 风向标配置 - 编辑删除
 export function fetchWalkManageVaneEditDel(data) {
-  return request('/admin/systemConfig/updateConfigWindVane', {
+  return request('/admin/windVane/updateConfigWindVane', {
     method: 'POST',
     data,
   });
@@ -125,7 +125,7 @@ export function fetchWalkManageVaneEditDel(data) {
 
 // post 风向标配置 - 排序
 export function fetchWalkManageVaneSort(data) {
-  return request('/admin/systemConfig/sortConfigWindVane', {
+  return request('/admin/windVane/sortConfigWindVane', {
     method: 'POST',
     data,
   });
@@ -133,7 +133,7 @@ export function fetchWalkManageVaneSort(data) {
 
 // post 风向标配置 - 新增
 export function fetchWalkManageVaneAdd(data) {
-  return request('/admin/systemConfig/saveConfigWindVane', {
+  return request('/admin/windVane/saveConfigWindVane', {
     method: 'POST',
     data,
   });
