@@ -4,6 +4,10 @@ export const base = [
     name: 'groupName',
   },
   {
+    label: '集团ID',
+    name: 'merchantGroupId',
+  },
+  {
     label: '经营类目',
     type: 'cascader',
     name: 'topCategoryName',

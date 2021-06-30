@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
-
 import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/Group/groupDetails';
+import StoreList from './components/Group/StoreList';
 
 const tableList = (props) => {
   const {
@@ -20,6 +20,9 @@ const tableList = (props) => {
     loading,
     // categoryDTOList
   } = props;
+
+  const [storeShow, setStoreShow] = useState(false); // 门店列表展示
+
   useEffect(() => {
     fetchMasterTotalList();
     fetchMasterManagementList();
@@ -194,14 +197,7 @@ const tableList = (props) => {
         {
           type: 'storeList',
           visible: record.bankStatus === '3',
-          click: () => {
-            fetchSave({
-              visible1: true,
-              merchantGroupId: val,
-              groupDetails: {},
-              initial: {},
-            });
-          },
+          click: () => setStoreShow({ show: true, detail: record }),
         },
       ],
     },
@@ -250,11 +246,14 @@ const tableList = (props) => {
         childRef={childRef}
         onClose={() => fetchSave({}, () => {}, true)}
       ></SetDetailsForms>
+      {/* 集团详情 */}
       <GroupDetails
         saveVisible={(res) => fetchSave(res)}
         visible={visible2}
         onClose={() => fetchSave({}, () => {}, true)}
       ></GroupDetails>
+      {/* 集团门店列表 */}
+      <StoreList visible={storeShow} onClose={() => setStoreShow(false)}></StoreList>
     </>
   );
 };

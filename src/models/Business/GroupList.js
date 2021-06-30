@@ -14,12 +14,14 @@ import {
   fetchWMSUserRoles,
   fetchGrounpDetails,
   fetchUpdateGroup,
+  fetchGroupStoreList,
 } from '@/services/BusinessServices';
 
 export default {
   namespace: 'groupSet',
   state: {
     list: { list: [], total: 0 },
+    storeList: { list: [] },
     visible: false,
     visible1: false,
     visible2: false,
@@ -56,6 +58,17 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList || [], total: content.total },
+        },
+      });
+    },
+    *fetchGroupStoreList({ payload }, { call, put }) {
+      const response = yield call(fetchGroupStoreList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          storeList: { list: content.merchantList || [] },
         },
       });
     },
