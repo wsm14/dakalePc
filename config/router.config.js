@@ -151,7 +151,7 @@ export default [
         path: '/business/group',
         name: '集团管理',
         component: './Business/GroupList',
-        buttons: ['save', 'edit', 'info', 'activate'],
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
       },
       {
         path: '/business/settled',

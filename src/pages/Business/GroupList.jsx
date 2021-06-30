@@ -4,6 +4,7 @@ import { WORKER_BANK_STATUS } from '@/common/constant';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 
 import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/Group/groupDetails';
@@ -80,10 +81,12 @@ const tableList = (props) => {
     },
     {
       label: '经营类目',
-      name: 'categoryId',
-      type: 'select',
+      type: 'cascader',
+      name: 'topCategoryId',
+      changeOnSelect: true,
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'id' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      valuesKey: ['topCategoryId', 'categoryId'],
     },
     {
       label: '账户状态',
@@ -95,21 +98,15 @@ const tableList = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '集团名称',
+      dataIndex: 'merchantGroupId',
+      render: (val, row) => `${row.groupName}\n${val || '--'}`,
+    },
+    {
       title: '品牌logo',
       align: 'center',
       dataIndex: 'brandLogo',
       render: (val) => <PopImgShow url={val || ''} />,
-    },
-    {
-      title: '集团id',
-      align: 'center',
-      dataIndex: 'merchantGroupId',
-      render: (val) => val || '--',
-    },
-    {
-      title: '集团名称',
-      align: 'center',
-      dataIndex: 'groupName',
     },
     {
       title: '经营类目',
@@ -118,10 +115,17 @@ const tableList = (props) => {
       ellipsis: true,
     },
     {
+      title: '所在地区',
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
+    },
+    {
       title: '详细地址',
       align: 'center',
+      ellipsis: true,
       dataIndex: 'address',
-      render: (val) => val || '-',
+      render: (val) => val || '--',
     },
     {
       title: '联系人',
@@ -149,6 +153,7 @@ const tableList = (props) => {
     },
     {
       type: 'handle',
+      width: 130,
       dataIndex: 'merchantGroupId',
       render: (val, record, index) => [
         {
@@ -186,6 +191,18 @@ const tableList = (props) => {
             });
           },
         },
+        {
+          type: 'storeList',
+          visible: record.bankStatus === '3',
+          click: () => {
+            fetchSave({
+              visible1: true,
+              merchantGroupId: val,
+              groupDetails: {},
+              initial: {},
+            });
+          },
+        },
       ],
     },
   ];
@@ -210,6 +227,7 @@ const tableList = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         keepData
         btnExtra={extraBtn}
         loading={loading}
