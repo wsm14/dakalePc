@@ -20,14 +20,13 @@ const SpecialGoodCheckDetail = (props) => {
     loading,
     // fetchSpecialGoodsVerify,
     dispatch,
+    tabkey,
     cRef,
   } = props;
   const { show = false, index, detail = {}, status, ownerIdString, auditIdString } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
-
-  console.log(detail, 'detail');
 
   const [form] = Form.useForm();
 
@@ -112,7 +111,7 @@ const SpecialGoodCheckDetail = (props) => {
       auth: 'check',
       onClick: handleVerifyAllow,
       text: '审核通过',
-      show: ['0'].includes(status),
+      show: ['0'].includes(status) && ['admin', 'sell'].includes(detail.auditorType),
     },
   ];
   // 弹出窗属性
@@ -128,7 +127,7 @@ const SpecialGoodCheckDetail = (props) => {
     },
     footer: (
       <ExtraButton list={btnList}>
-        {['0'].includes(status) && (
+        {['0'].includes(status) && ['admin', 'sell'].includes(detail.auditorType) && (
           <Button
             style={{ marginLeft: 8 }}
             danger
@@ -219,7 +218,7 @@ const SpecialGoodCheckDetail = (props) => {
       {/* 驳回原因 */}
       {status == '2' && (
         <Alert
-          message={`驳回原因：${detail.failureReason}`}
+          message={`驳回原因：${detail.rejectReason}`}
           type="error"
           banner
           action={
@@ -242,7 +241,7 @@ const SpecialGoodCheckDetail = (props) => {
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">
-          <GoodsDetailForm detail={detail} form={form}></GoodsDetailForm>
+          <GoodsDetailForm detail={detail} form={form} tabkey={tabkey}></GoodsDetailForm>
         </Tabs.TabPane>
         <Tabs.TabPane tab="投放规则" key="2">
           <RegularDetail detail={detail}></RegularDetail>
@@ -253,7 +252,7 @@ const SpecialGoodCheckDetail = (props) => {
       </Tabs>
 
       {/* 审核时输入 其他平台价格 */}
-      {status == '0' && (
+      {status == '0' && ['admin', 'sell'].includes(detail.auditorType) && (
         <>
           <FormCondition
             formItems={formItems}

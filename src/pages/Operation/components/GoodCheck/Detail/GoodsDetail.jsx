@@ -81,7 +81,6 @@ const GoodsDetail = (props) => {
     {
       label: '分佣配置',
       name: 'provinceFee',
-      show: detail.auditStatus !== '0',
       render: (val, row) => (
         <>
           <div>省代分佣：{row.provinceFee}</div>
@@ -96,13 +95,10 @@ const GoodsDetail = (props) => {
     {
       label: '商家商品标签',
       name: 'goodsTagList',
+      show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
-        const tags = goodsTagList.map((items) => {
-          if (items.tagType === 'merchant') {
-            return items.tagName;
-          }
-        });
+        const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
         return (
           <>
             {tags &&
@@ -111,29 +107,26 @@ const GoodsDetail = (props) => {
                   style={{
                     display: 'inline-block',
                     padding: 8,
-                    margin: '0 5px',
+                    margin: '5px',
                     border: '1px solid #ddd',
                   }}
-                  key={tag}
+                  key={tag.configGoodsTagId}
                 >
-                  {tag}
+                  {tag.tagName}
                 </span>
               ))}
           </>
         );
       },
-      show: detail.auditStatus !== '0',
+      // show: detail.auditStatus !== '0',
     },
     {
       label: '平台商品标签',
       name: 'goodsTagList',
+      show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
-        const tags = goodsTagList.map((items) => {
-          if (items.tagType === 'platform') {
-            return items.tagName;
-          }
-        });
+        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
             {tags &&
@@ -142,18 +135,17 @@ const GoodsDetail = (props) => {
                   style={{
                     display: 'inline-block',
                     padding: 8,
-                    margin: '0 5px',
+                    margin: '5px',
                     border: '1px solid #ddd',
                   }}
-                  key={tag}
+                  key={tag.configGoodsTagId}
                 >
-                  {tag}
+                  {tag.tagName}
                 </span>
               ))}
           </>
         );
       },
-      show: detail.auditStatus !== '0',
     },
   ];
 
@@ -179,11 +171,13 @@ const GoodsDetail = (props) => {
         formItems={GoodDecItem}
         initialValues={detail}
       ></DescriptionsCondition>
-      <DescriptionsCondition
-        title="分佣配置"
-        formItems={formItemComiss}
-        initialValues={detail}
-      ></DescriptionsCondition>
+      {detail.divisionFlag === '1' && detail.provinceFee && (
+        <DescriptionsCondition
+          title="分佣配置"
+          formItems={formItemComiss}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
       <DescriptionsCondition
         title="商品标签"
         formItems={formItemTag}

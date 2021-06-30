@@ -329,6 +329,7 @@ const SpecialGoodCheck = (props) => {
       <SpecialGoodCheckDetail
         visible={visibleInfo}
         total={list.length}
+        tabkey={tabkey}
         cRef={tableRef}
         getDetail={fetchSpecialGoodsDetail}
         onClose={() => setVisibleInfo(false)}
