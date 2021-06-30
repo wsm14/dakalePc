@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button, Drawer, Space, Form, notification } from 'antd';
-import FormCondition from '@/components/FormCondition';
+import { connect } from 'umi';
 import Title from './title';
 import BaseForm from './Form/BaseForm';
 import ManagementForm from './Form/ManagementForm';
 import UserForm from './Form/userForm';
 import UserDetailsForm from './Form/userDetailsForm';
 import ShopDetailsForm from './Form/shopDetailsForm';
-import { connect } from 'umi';
+import CrmGroupSelect from './Form/CrmGroupSelect';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const addGroups = (props) => {
@@ -22,49 +22,45 @@ const addGroups = (props) => {
     loadingAdd,
     loadingUpDate,
   } = props;
+
   const [form] = Form.useForm();
   const cRef = useRef();
   const cRef1 = useRef();
   const cRef2 = useRef();
+
+  const [formType, setFormType] = useState('add'); // 表单内容 edit add
+  const [crmSelect, setCrmSelect] = useState(true); // 是否显示crm 选择集团内容
   const [bottomBtn, setBottom] = useState('add');
+
   useEffect(() => {
     const { merchantGroupDTO } = groupDetails;
+    setFormType(Object.keys(groupDetails).length > 0 ? 'edit' : 'add');
+    setCrmSelect(Object.keys(groupDetails).length > 0 ? false : true);
     if (merchantGroupDTO) {
       setBottom('update');
     } else {
       setBottom('add');
     }
   }, [groupDetails]);
+
+  const defauleVale = {
+    groupDetails: {},
+    merchantGroupDTO: {},
+    businessLicense: {},
+    initial: {},
+    bankBindingInfo: {},
+  };
+
   const Btn = {
     add: (
       <div style={{ textAlign: 'center' }}>
         <Space>
-          <Button
-            onClick={() =>
-              saveVisible({
-                visible: false,
-                groupDetails: {},
-                merchantGroupDTO: {},
-                businessLicense: {},
-                initial: {},
-                bankBindingInfo: {},
-              })
-            }
-          >
-            取消
-          </Button>
+          <Button onClick={() => saveVisible({ visible: false, ...defauleVale })}>取消</Button>
           <Button
             loading={loadingAdd}
             onClick={() =>
               fetchAddLists(() => {
-                saveVisible({
-                  visible: false,
-                  groupDetails: {},
-                  merchantGroupDTO: {},
-                  businessLicense: {},
-                  bankBindingInfo: {},
-                  initial: {},
-                });
+                saveVisible({ visible: false, ...defauleVale });
                 childRef.current.fetchGetData();
               })
             }
@@ -89,32 +85,12 @@ const addGroups = (props) => {
     update: (
       <div style={{ textAlign: 'right' }}>
         <Space>
-          <Button
-            onClick={() =>
-              saveVisible({
-                visible: false,
-                groupDetails: {},
-                merchantGroupDTO: {},
-                businessLicense: {},
-                initial: {},
-                bankBindingInfo: {},
-              })
-            }
-          >
-            取消
-          </Button>
+          <Button onClick={() => saveVisible({ visible: false, ...defauleVale })}>取消</Button>
           <Button
             onClick={() =>
               fetchUpdateGroup(() => {
                 childRef.current.fetchGetData();
-                saveVisible({
-                  visible: false,
-                  groupDetails: {},
-                  merchantGroupDTO: {},
-                  businessLicense: {},
-                  bankBindingInfo: {},
-                  initial: {},
-                });
+                saveVisible({ visible: false, ...defauleVale });
               })
             }
             loading={loadingUpDate}
@@ -210,7 +186,7 @@ const addGroups = (props) => {
   return (
     <>
       <Drawer
-        title={Object.keys(groupDetails).length > 0 ? '修改集团信息' : `新增集团`}
+        title={formType == 'edit' ? '修改集团信息' : `新增集团`}
         width={850}
         visible={visible}
         destroyOnClose={true}
@@ -218,7 +194,7 @@ const addGroups = (props) => {
         bodyStyle={{ paddingBottom: 80 }}
         footer={Btn}
       >
-        <Title panelList={panelList}></Title>
+        {crmSelect ? <CrmGroupSelect /> : <Title panelList={panelList}></Title>}
       </Drawer>
     </>
   );

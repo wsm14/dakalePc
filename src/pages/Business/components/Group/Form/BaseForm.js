@@ -172,17 +172,33 @@ const BaseForm = (props) => {
       formItem: amap,
     },
     {
-      label: '服务费比例',
-      name: 'commissionRatio',
-      // type: 'number',
-      rules: [{ required: false }],
-      addRules:
-        Object.keys(groupDetails).length === 0
-          ? [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }]
-          : [],
-      addonAfter: '%',
-      disabled: Object.keys(groupDetails).length === 0 ? false : true,
+      label: '扫码付服务费（%）',
+      type: 'number',
+      min: 0,
+      precision: 0,
+      name: 'scanCommissionRatio',
+      disabled: initialValues.scanCommissionRatio ? true : false,
     },
+    {
+      label: '核销订单服务费（%）',
+      type: 'number',
+      min: 0,
+      precision: 0,
+      name: 'commissionRatio',
+      disabled: initialValues.commissionRatio ? true : false,
+    },
+    // {
+    //   label: '服务费比例',
+    //   name: 'commissionRatio',
+    //   // type: 'number',
+    //   rules: [{ required: false }],
+    //   addRules:
+    //     Object.keys(groupDetails).length === 0
+    //       ? [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }]
+    //       : [],
+    //   addonAfter: '%',
+    //   disabled: Object.keys(groupDetails).length === 0 ? false : true,
+    // },
   ];
 
   return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
