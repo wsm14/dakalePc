@@ -28,7 +28,7 @@ const MessageDrawer = (props) => {
         payload: {
           ...value,
           userType,
-          pushTime: pushTime ? pushTime.format('YYYY-MM-DD HH:mm:ss') : null,
+          pushTime: pushTime ? pushTime.format('YYYY-MM-DD HH:mm') : null,
           id: detail.messagePushId,
         },
         callback: () => {

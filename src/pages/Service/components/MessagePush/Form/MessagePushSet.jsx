@@ -44,6 +44,7 @@ const MessagePushSet = (props) => {
       label: '推送时间',
       name: 'pushTime',
       type: 'dataPicker',
+      format: 'YYYY-MM-DD HH:mm',
       showTime: true,
     },
     {

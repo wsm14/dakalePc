@@ -14,12 +14,16 @@ import {
   fetchWMSUserRoles,
   fetchGrounpDetails,
   fetchUpdateGroup,
+  fetchCrmGrounpList,
+  fetchGroupStoreList,
 } from '@/services/BusinessServices';
 
 export default {
   namespace: 'groupSet',
   state: {
     list: { list: [], total: 0 },
+    storeList: { list: [] },
+    crmList: [],
     visible: false,
     visible1: false,
     visible2: false,
@@ -33,6 +37,7 @@ export default {
 
   reducers: {
     save(state, { payload }) {
+      console.log(payload)
       return {
         ...state,
         ...payload,
@@ -43,6 +48,7 @@ export default {
         ...state,
         ...payload,
         detailList: { list: [], total: 0 },
+        crmList: [],
       };
     },
   },
@@ -56,6 +62,28 @@ export default {
         type: 'save',
         payload: {
           list: { list: content.recordList || [], total: content.total },
+        },
+      });
+    },
+    *fetchCrmGrounpList({ payload }, { call, put }) {
+      const response = yield call(fetchCrmGrounpList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          crmList: content.merchantGroupList,
+        },
+      });
+    },
+    *fetchGroupStoreList({ payload }, { call, put }) {
+      const response = yield call(fetchGroupStoreList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          storeList: { list: content.merchantList || [] },
         },
       });
     },

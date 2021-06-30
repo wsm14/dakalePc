@@ -145,45 +145,61 @@ export function fetchGetMerSettledExcel(params) {
 
 // 集团管理
 
-// get 集团列表 - 统计
+// get 集团列表 - 列表
 export function fetchMerchantGroup(params) {
   return request('/admin/merchantGroup/listMerchantGroup', {
     params,
   });
 }
 
-// post 集团列表 - 创作设置 删除 修改 推荐
+// post 新增集团
 export function fetchAddMerchantGroup(data) {
   return request('/admin/merchantGroup/saveMerchantGroup', {
     method: 'POST',
     data,
   });
 }
-//新增集团
 
+// post 绑定银行卡
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {
     method: 'POST',
     data,
   });
 }
-//绑定银行卡
 
+// get 获取角色列表
 export function fetchWMSUserRoles(params) {
   return request('/admin/role/listAuthRoleAll', {
     params,
   });
 }
-//获取角色列表
 
+// get 获取集团详情
 export function fetchGrounpDetails(params) {
   return request('/admin/merchantGroup/merchantGroupDetail', {
     params,
   });
 }
-//获取集团详情
+
+// post 修改集團
 export function fetchUpdateGroup(data) {
   return request('/admin/merchantGroup/updateMerchantGroup', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 获取crm集团门店列表
+export function fetchCrmGrounpList(params) {
+  return request('/admin/merchantGroup/listSellMerchantGroup', {
+    params,
+  });
+}
+
+// post 获取子门店列表
+export function fetchGroupStoreList(data) {
+  return request('/admin/merchantGroup/listMySubMerchantData', {
     method: 'POST',
     data,
   });

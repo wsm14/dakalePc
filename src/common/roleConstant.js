@@ -93,6 +93,7 @@ export const ROLE_BUTTON_TYPE = {
   shareText: '分享文案',
   sharePush: '发布分享',
   searchSet: '热门搜索配置',
+  storeList: '门店列表',
   statistics: '统计',
   signDetail: '打卡明细',
   setMreCord: '设置商家验证码',

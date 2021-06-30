@@ -117,7 +117,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       title: '设置券信息',
       label: '券名称',
       name: 'couponName',
-      maxLength: 10,
+      maxLength: 30,
     },
     {
       label: '券价值',

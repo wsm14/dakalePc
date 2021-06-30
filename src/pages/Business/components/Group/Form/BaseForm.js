@@ -7,7 +7,10 @@ import { Map, Marker } from 'react-amap';
 import FormCondition from '@/components/FormCondition';
 
 const BaseForm = (props) => {
-  const { tradeList, form, initialValues, cRef, groupDetails } = props;
+  const { tradeList, formType, form, initialValues, cRef, groupDetails } = props;
+
+  const { handle } = initialValues; // 获取crm 认领标识
+
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // [经度, 纬度]
   const [address, setAddress] = useState({
@@ -90,13 +93,24 @@ const BaseForm = (props) => {
       setLocation([longitude, latitude]);
     },
   };
+
+  useEffect(() => {
+    if (initialValues) {
+      const { cityName = [], categoryObj: cObj = {}, lat, lnt } = initialValues;
+      setCategoryObj(cObj);
+      setAddress({ city: cityName, latlnt: [lnt, lat] });
+      setLocation([lnt, lat]);
+    }
+  }, [initialValues]);
+
   useEffect(() => {
     const { merchantGroupDTO = {} } = groupDetails;
     if (Object.keys(merchantGroupDTO).length > 10) {
       const { lat, lnt } = merchantGroupDTO;
-      setLocation([lat, lnt]);
+      setLocation([lnt, lat]);
     }
   }, [groupDetails]);
+
   const amap = (
     <div style={{ height: 240, marginBottom: 24, position: 'relative' }}>
       <Map
@@ -115,9 +129,9 @@ const BaseForm = (props) => {
             ...address,
             disable: true,
             latlnt: location,
-          }),
-            message.success('保存新地址成功', 1.5),
-            setMap(false);
+          });
+          message.success('保存新地址成功', 1.5);
+          setMap(false);
         }}
         style={{ position: 'absolute', top: 20, right: 20 }}
       >
@@ -129,6 +143,13 @@ const BaseForm = (props) => {
     {
       label: '集团名称',
       name: 'groupName',
+      disabled: handle === 'crm',
+    },
+    {
+      label: '集团ID',
+      name: 'sellMerchantGroupId',
+      visible: handle === 'crm',
+      disabled: true,
     },
     {
       label: '经营类目',
@@ -157,6 +178,7 @@ const BaseForm = (props) => {
       type: 'cascader',
       name: 'allCode',
       visible: Object.keys(groupDetails).length !== 0 ? false : true,
+      disabled: handle === 'crm',
       onChange: (val, option) => {
         setAddress({ ...address, disable: false, city: option });
       },
@@ -165,24 +187,39 @@ const BaseForm = (props) => {
       label: '详细地址',
       name: 'address',
       addonAfter: <a onClick={onSearchAddress}>查询</a>,
+      disabled: formType === 'edit',
     },
     {
       type: 'noForm',
-      // visible: map,
+      visible: map,
       formItem: amap,
     },
     {
-      label: '服务费比例',
-      name: 'commissionRatio',
-      // type: 'number',
-      rules: [{ required: false }],
-      addRules:
-        Object.keys(groupDetails).length === 0
-          ? [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }]
-          : [],
-      addonAfter: '%',
-      disabled: Object.keys(groupDetails).length === 0 ? false : true,
+      label: '扫码付服务费（%）',
+      type: 'number',
+      min: 0,
+      precision: 0,
+      name: 'scanCommissionRatio',
     },
+    {
+      label: '核销订单服务费（%）',
+      type: 'number',
+      min: 0,
+      precision: 0,
+      name: 'commissionRatio',
+    },
+    // {
+    //   label: '服务费比例',
+    //   name: 'commissionRatio',
+    //   // type: 'number',
+    //   rules: [{ required: false }],
+    //   addRules:
+    //     Object.keys(groupDetails).length === 0
+    //       ? [{ pattern: NUM_PERCENTAGE, message: '请输入1-99内数字' }]
+    //       : [],
+    //   addonAfter: '%',
+    //   disabled: Object.keys(groupDetails).length === 0 ? false : true,
+    // },
   ];
 
   return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;

@@ -33,6 +33,7 @@ const InputBlock = (props) => {
   return (
     <Input
       {...divProps}
+      maxLength={maxLength}
       style={itemStyle}
       addonAfter={addonAfter}
       suffix={dataNum || suffix || ''}

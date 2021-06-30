@@ -103,7 +103,7 @@ const TradeBaseList = (props) => {
           loading={loading}
           columns={propItem.getColumns}
           rowKey={(row) => `${row[propItem.rowKey]}`}
-          btnExtra={[{ onClick: () => handleDataSet('add') }]}
+          btnExtra={[{ onClick: () => handleDataSet() }]}
           params={{ type, categoryId: record.categoryIdString }}
           dispatchType="sysTradeList/fetchDetailList"
           size="middle"
