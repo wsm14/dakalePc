@@ -447,23 +447,13 @@ export const SPECIAL_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' 
 
 // 特惠活动 - 热销推荐
 export const SPECIAL_RECOMMEND_TYPE = {
-  hotRecommend: '限时推荐',
-  todayRecommend: '爆品推荐',
-  // hotTop: '限时置顶',
-  // todayTop: '爆品置顶',
+  hot: '限时抢购',
+  today: '爆品福利',
   thisPeriod: '本期必抢',
   nextPeriod: '下期预告',
   novice: '新手视频',
-  // cancel: '取消推荐',
-};
-
-// 特惠活动 - 热销推荐列表枚举
-export const SPECIAL_RECOMMEND_LISTTYPE = {
-  hot: '限时',
-  today: '爆品',
-  thisPeriod: '本期必抢',
-  nextPeriod: '下期预告',
-  novice: '新手视频',
+  dayPush: '每日必推',
+  aroundSpecial: '特惠推荐',
 };
 
 // 特惠活动 - 是否删除
@@ -490,13 +480,13 @@ export const SPECIAL_GOODS_CHECK_STATUS = {
 };
 
 // 操作类型 create-创建 update-修改 down-下架
-export const ACTION_TYPE={
-  create:'创建审核',
-  update:"修改审核",
-  down:'下架审核'
-}
+export const ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+  down: '下架审核',
+};
 //周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
-export const GOODS_CHECK_RESSTATUS=['待审核' ,'已通过' ,'已驳回' ,'已关闭']
+export const GOODS_CHECK_RESSTATUS = ['待审核', '已通过', '已驳回', '已关闭'];
 
 //审核类型
 export const CHECK_TYPE = ['新增审核', '编辑审核'];
@@ -512,10 +502,9 @@ export const TAG_TYPE = {
 
 //集合页配置集合页状态
 export const PAGE_STATUS = ['进行中', '已结束'];
-//审核提交类型 
-export const SUBMIT_TYPE={
-  merchant:"商家",
-  admin:"运营后台",
-  sell:'CRM'
-}
-
+//审核提交类型
+export const SUBMIT_TYPE = {
+  merchant: '商家',
+  admin: '运营后台',
+  sell: 'CRM',
+};

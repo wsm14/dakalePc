@@ -7,7 +7,6 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
-  SPECIAL_RECOMMEND_LISTTYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
 import { LogDetail, RefuseModal } from '@/components/PublicComponents';
@@ -276,7 +275,7 @@ const SpecialGoods = (props) => {
         if ((row.recommendStatus === '0' && (row.topStatus === '0' || !row.topStatus)) || !val)
           return '';
         let tagName = row.topStatus === '0' ? '推荐' : '置顶';
-        return SPECIAL_RECOMMEND_LISTTYPE[val] + tagName;
+        return SPECIAL_RECOMMEND_TYPE[val] + tagName;
       },
     },
     {

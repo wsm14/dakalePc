@@ -18,7 +18,6 @@ const SpecialGoodCheckDetail = (props) => {
     total,
     getDetail,
     loading,
-    // fetchSpecialGoodsVerify,
     dispatch,
     tabkey,
     cRef,
