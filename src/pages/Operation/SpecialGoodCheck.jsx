@@ -7,6 +7,7 @@ import {
   SPECIAL_STATUS,
   ACTION_TYPE,
   GOODS_CLASS_TYPE,
+  SUBMIT_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
 
@@ -127,7 +128,7 @@ const SpecialGoodCheck = (props) => {
       dataIndex: 'activityGoodsDTO',
       render: (val, row) => {
         const { activityGoodsDTO = {} } = row;
-        const { goodsName, goodsType, ownerType, merchantName } = activityGoodsDTO;
+        const { goodsName, goodsType, ownerType, ownerName } = activityGoodsDTO;
         return (
           <div
             style={{
@@ -149,7 +150,7 @@ const SpecialGoodCheck = (props) => {
             <div style={{ display: 'flex', marginTop: 5 }}>
               <Tag>{BUSINESS_TYPE[ownerType]}</Tag>
               <Ellipsis length={10} tooltip>
-                {merchantName}
+                {ownerName}
               </Ellipsis>
             </div>
           </div>
@@ -227,7 +228,9 @@ const SpecialGoodCheck = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
-          <div>{record.submitterUserName}</div>
+          <div>
+            {SUBMIT_TYPE[record.submitterType]}--{record.submitterUserName}
+          </div>
         </div>
       ),
     },
@@ -279,7 +282,8 @@ const SpecialGoodCheck = (props) => {
           {
             type: 'check',
             title: '审核',
-            click: () => fetchSpecialGoodsVerify(index),
+            // fetchSpecialGoodsVerify(index)
+            click: () => fetchSpecialGoodsDetail(index, 'check') ,
             visible: tabkey === 'adminAudit',
           },
         ];
@@ -297,19 +301,18 @@ const SpecialGoodCheck = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { ownerId, auditIdString } = list[index];
+    const { ownerIdString, auditIdString } = list[index];
     dispatch({
       type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
-      payload: { ownerId, auditId: auditIdString, type },
+      payload: { ownerId: ownerIdString, auditId: auditIdString, type },
       callback: (val) => {
-        console.log(val, '2222');
         const { status } = val;
         const newProps = {
           show: true,
           detail: { ...val },
         };
-        if (type == 'info') {
-          setVisibleInfo({ status, index, ...newProps });
+        if (type == 'info' || type==='check') {
+          setVisibleInfo({ status, index, ...newProps, ownerIdString, auditIdString });
         } else {
           setVisibleSet({ type, ...newProps });
         }
@@ -317,25 +320,7 @@ const SpecialGoodCheck = (props) => {
     });
   };
 
-  // 审核
-  const fetchSpecialGoodsVerify = (index,values) => {
-    const { ownerId, auditIdString } = list[index];
-    // const { auditIdString, ownerId } = visibleRefuse.detail;
-    dispatch({
-      type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
-      payload: {
-        auditId: auditIdString,
-        ownerId,
-        // status: 4,
-        ...values,
-      },
-      callback: () => {
-        setVisibleInfo(false);
-        // setVisibleRefuse({ show: false, detail: {} });
-        tableRef.current.fetchGetData();
-      },
-    });
-  };
+ 
 
   return (
     <>
@@ -348,7 +333,6 @@ const SpecialGoodCheck = (props) => {
         total={list.length}
         cRef={tableRef}
         getDetail={fetchSpecialGoodsDetail}
-        fetchSpecialGoodsVerify={fetchSpecialGoodsVerify}
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodCheckDetail>
     </>

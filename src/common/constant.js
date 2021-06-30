@@ -510,5 +510,12 @@ export const TAG_TYPE = {
   merchant: '店铺商品标签',
 };
 
-//集合页配置
+//集合页配置集合页状态
 export const PAGE_STATUS = ['进行中', '已结束'];
+//审核提交类型 
+export const SUBMIT_TYPE={
+  merchant:"商家",
+  admin:"运营后台",
+  sell:'CRM'
+}
+

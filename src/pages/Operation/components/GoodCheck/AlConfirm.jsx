@@ -21,7 +21,7 @@ const AlConfirm = (props) => {
     ...globalColum,
     {
       title: '审核时间',
-      dataIndex: 'checkTime',
+      dataIndex: 'auditTime',
     },
     {
       title: '审核结果',

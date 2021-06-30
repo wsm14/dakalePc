@@ -7,7 +7,7 @@ import RegularDetail from './Detail/RegularDetail';
 import CheckRecord from './Detail/CheckRecord';
 import ExtraButton from '@/components/ExtraButton';
 import FormCondition from '@/components/FormCondition';
-import CheckRefuseDraw from './Detail/CheckRefuseDraw'
+import CheckRefuseDraw from './Detail/CheckRefuseDraw';
 
 const SpecialGoodCheckDetail = (props) => {
   const {
@@ -17,14 +17,14 @@ const SpecialGoodCheckDetail = (props) => {
     total,
     getDetail,
     loading,
-    fetchSpecialGoodsVerify,
+    // fetchSpecialGoodsVerify,
     dispatch,
-    cRef
+    cRef,
   } = props;
-  const { show = false, index, detail = {}, status } = visible;
+  const { show = false, index, detail = {}, status, ownerIdString, auditIdString } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
-  const [visibleRefuse,setVisibleRefuse] =useState(false)
+  const [visibleRefuse, setVisibleRefuse] = useState(false);
 
   const [form] = Form.useForm();
 
@@ -33,9 +33,11 @@ const SpecialGoodCheckDetail = (props) => {
   };
 
   useEffect(() => {
-    getTagsMerchant();
-    getTagsPlat();
-  }, []);
+    if (show) {
+      getTagsMerchant();
+      getTagsPlat();
+    }
+  }, [show]);
 
   //获取商品标签
   const getTagsMerchant = () => {
@@ -49,6 +51,7 @@ const SpecialGoodCheckDetail = (props) => {
       },
     });
   };
+  //平台标签
   const getTagsPlat = () => {
     dispatch({
       type: 'goodsTag/fetchGoodsTagList',
@@ -61,7 +64,7 @@ const SpecialGoodCheckDetail = (props) => {
 
   // 审核通过
   const handleVerifyAllow = () => {
-    const { specialGoodsId, merchantIdStr } = detail;
+    // const { specialGoodsId, merchantIdStr } = detail;
     if (!form.getFieldValue('otherPlatformPrice')) {
       notification.info({
         message: '温馨提示',
@@ -69,7 +72,20 @@ const SpecialGoodCheckDetail = (props) => {
       });
     }
     form.validateFields().then((values) => {
-      fetchSpecialGoodsVerify({ ...values, specialGoodsId, merchantIdStr, status: 1 });
+      dispatch({
+        type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
+        payload: {
+          auditId: auditIdString,
+          ownerId: ownerIdString,
+          serviceDivisionDTO:{
+            ...values,
+          }
+        },
+        callback: () => {
+          setVisibleInfo(false);
+          cRef.current.fetchGetData();
+        },
+      });
     });
   };
 
@@ -183,7 +199,6 @@ const SpecialGoodCheckDetail = (props) => {
   ];
 
   return (
-
     <DrawerCondition {...modalProps}>
       {/* 驳回原因 */}
       {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />}
@@ -210,29 +225,48 @@ const SpecialGoodCheckDetail = (props) => {
           ></FormCondition>
 
           {/* 审核中并且分佣模板为手动分佣时 */}
-          <div
-            style={{ fontSize: 16, color: 'rgba(0,0,0,.85', margin: '10px 0', fontWeight: 'bold' }}
-          >
-            分佣配置
-          </div>
-          <FormCondition
-            formItems={formCommission}
-            form={form}
-            style={{ marginTop: 10 }}
-          ></FormCondition>
-          <div
-            style={{ fontSize: 16, color: 'rgba(0,0,0,.85', margin: '10px 0', fontWeight: 'bold' }}
-          >
-            商品标签
-          </div>
-          <FormCondition
-            formItems={formTagItem}
-            form={form}
-            style={{ marginTop: 10 }}
-          ></FormCondition>
+          {detail.divisionFlag === '1' && (
+            <>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: 'rgba(0,0,0,.85',
+                  margin: '10px 0',
+                  fontWeight: 'bold',
+                }}
+              >
+                分佣配置
+              </div>
+              <FormCondition
+                formItems={formCommission}
+                form={form}
+                style={{ marginTop: 10 }}
+              ></FormCondition>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: 'rgba(0,0,0,.85',
+                  margin: '10px 0',
+                  fontWeight: 'bold',
+                }}
+              >
+                商品标签
+              </div>
+              <FormCondition
+                formItems={formTagItem}
+                form={form}
+                style={{ marginTop: 10 }}
+              ></FormCondition>
+            </>
+          )}
         </>
       )}
-      <CheckRefuseDraw cRef={cRef} visible={visibleRefuse} onClose={()=>setVisibleRefuse(false)} onCloseF={onClose}></CheckRefuseDraw>
+      <CheckRefuseDraw
+        cRef={cRef}
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse(false)}
+        onCloseF={onClose}
+      ></CheckRefuseDraw>
     </DrawerCondition>
   );
 };

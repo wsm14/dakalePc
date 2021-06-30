@@ -15,7 +15,7 @@ const GoodsDetail = (props) => {
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      name: 'merchantName',
+      name: 'ownerName',
       label: '店铺名称',
     },
   ];

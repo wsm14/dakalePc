@@ -87,11 +87,11 @@ const GatherPage = (props) => {
                 detail: record,
               }),
           },
-
           {
             auth: true,
             title: '结束',
             click: () => handleEnd(val),
+            visible:record.status==='0'
           },
         ];
       },

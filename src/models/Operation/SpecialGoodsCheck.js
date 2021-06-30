@@ -43,7 +43,8 @@ export default {
       if (!response) return;
       const { content } = response;
       const { auditId, ownerId } = payload;
-      const { specialGoodsInfo = {} } = content;
+      // divisionFlag 是否能手动设置佣金 0-否 1-是
+      const { specialGoodsInfo = {},divisionFlag } = content;
       const {
         allowRefund,
         allowExpireRefund,
@@ -76,7 +77,9 @@ export default {
       }
       callback({
         ...content.specialGoodsInfo,
+        ...content.serviceDivisionDTO, //分佣
         ...newDetail,
+        divisionFlag,
         auditId,
         ownerId,
         buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
