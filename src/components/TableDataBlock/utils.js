@@ -33,7 +33,7 @@ const tablePropsHandle = {
 
     // 数据处理
     const newDataSource = order
-      ? list.map((item, index) => ({
+      ? list?.map((item, index) => ({
           numId: (page - 1) * 10 + index + 1,
           ...item,
         }))
