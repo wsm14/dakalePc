@@ -1,17 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import { PAGE_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import ConditionsForm from './ConditionsForm';
 const GatherSet = (props) => {
+  const { visible = {}, onClose, cRef, dispatch, loading } = props;
+  const { show = false, type, detail = {} } = visible;
+  const { provinceCityDistrictObjects: cityArr = [], areaType } = detail;
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域
+  const [inValue, setInValue] = useState({}); // 区域
+
+  useEffect(() => {
+    if (show) {
+      const formCityArr = cityArr.map((item) => {
+        const { provinceCode: pCode, cityCode: cCode, districtCode: dCode } = item;
+        return { city: [pCode, cCode, dCode].filter((i) => i) };
+      });
+      setInValue({ ...detail, provinceCityDistrictObjects: formCityArr });
+      if (areaType === 'detail') {
+        setShowArea(true);
+      }
+    }
+  }, [show]);
+
+  const handleConfirm = () => {
+    const api = {
+      edit: 'walkingManage/fetchGatherPageConfigUpdate',
+      add: 'walkingManage/fetchGatherPageConfigAdd',
+    }[type];
+
+    form.validateFields().then((values) => {
+      const {
+        areaType,
+        provinceCityDistrictObjects = [],
+        evokeParamObjectList = [],
+        recommendParamObject,
+      } = values;
+
+      const cityCodeArr = provinceCityDistrictObjects.map((items) => {
+        const { city } = items;
+        const [provinceCode, cityCode, districtCode] = city;
+        return {
+          provinceCode: provinceCode || '',
+          cityCode: cityCode || '',
+          districtCode: districtCode || '',
+        };
+      });
+      const payload = {
+        recommendParamObject,
+        evokeParamObjectList,
+        provinceCityDistrictObjects: cityCodeArr,
+        areaType,
+        configCollectionPageId: detail.configCollectionPageId,
+      };
+      dispatch({
+        type: api,
+        payload: payload,
+        callback: () => {
+          onClose();
+          cRef.current.fetchGetData();
+        },
+      });
+    });
+  };
 
   const modalProps = {
-    visible: false,
+    visible: show,
     title: '配置',
-    footer: <Button type="primary">确定</Button>,
+    onClose,
+    footer: (
+      <Button type="primary" onClick={() => handleConfirm()} loading={loading}>
+        确定
+      </Button>
+    ),
   };
 
   const formItems = [
@@ -38,7 +103,9 @@ const GatherSet = (props) => {
     {
       label: '唤醒配置',
       type: 'formItem',
-      formItem: <>222</>,
+      name: 'evokeParamObjectList',
+      rules: [{ required: true }],
+      formItem: <ConditionsForm></ConditionsForm>,
     },
     {
       label: '推荐配置',
@@ -47,11 +114,15 @@ const GatherSet = (props) => {
         <div>
           <div style={{ height: 30, width: '100%' }}></div>
           <div style={{ display: 'flex', alignItem: 'center' }}>
-            <Form.Item label="价格" name="singleMinMoney" rules={[{ required: true }]}>
+            <Form.Item
+              label="价格"
+              name={['recommendParamObject', 'minPrice']}
+              rules={[{ required: true }]}
+            >
               <InputNumber style={{ width: 150 }} min={0} />
             </Form.Item>
             <span style={{ margin: '5px 10px' }}>至</span>
-            <Form.Item name="singleMinMoney" rules={[{ required: true }]}>
+            <Form.Item name={['recommendParamObject', 'maxPrice']} rules={[{ required: true }]}>
               <InputNumber style={{ width: 150 }} min={0} />
             </Form.Item>
             <span style={{ margin: '5px 10px' }}>元</span>
@@ -63,8 +134,8 @@ const GatherSet = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition formItems={formItems} form={form}></FormCondition>
+      <FormCondition formItems={formItems} form={form} initialValues={inValue}></FormCondition>
     </DrawerCondition>
   );
 };
-export default GatherSet;
+export default connect(({ loading }) => ({ loading: loading.models.walkingManage }))(GatherSet);

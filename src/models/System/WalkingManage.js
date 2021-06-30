@@ -12,8 +12,7 @@ import {
   fetchGatherPageConfigList,
   fetchGatherPageConfigAdd,
   fetchGatherPageConfigUpdate,
-  fetchGatherPageConfigEnd
-
+  fetchGatherPageConfigEnd,
 } from '@/services/SystemServices';
 
 export default {
@@ -23,7 +22,7 @@ export default {
     vaneList: { list: [] },
     navigation: { list: [] },
     class: [],
-    gatherList:{list:[]},
+    gatherList: { list: [] },
     nowTrade: [],
   },
 
@@ -135,7 +134,7 @@ export default {
       });
       callback();
     },
-    *fetchGatherPageConfigList({payload},{call,put}){
+    *fetchGatherPageConfigList({ payload }, { call, put }) {
       const response = yield call(fetchGatherPageConfigList, payload);
       if (!response) return;
       const { content } = response;
@@ -145,7 +144,33 @@ export default {
           gatherList: { list: content.configCollectionPageList },
         },
       });
-
-    }
+    },
+    *fetchGatherPageConfigAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchGatherPageConfigAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchGatherPageConfigUpdate({ payload, callback }, { call }) {
+      const response = yield call(fetchGatherPageConfigUpdate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchGatherPageConfigEnd({ payload, callback }, { call }) {
+      const response = yield call(fetchGatherPageConfigEnd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '结束成功',
+      });
+      callback();
+    },
   },
 };

@@ -279,7 +279,7 @@ const SpecialGoodCheck = (props) => {
           {
             type: 'check',
             title: '审核',
-            click: () => fetchSpecialGoodsVerify(),
+            click: () => fetchSpecialGoodsVerify(index),
             visible: tabkey === 'adminAudit',
           },
         ];
@@ -318,8 +318,9 @@ const SpecialGoodCheck = (props) => {
   };
 
   // 审核
-  const fetchSpecialGoodsVerify = (values) => {
-    const { auditIdString, ownerId } = visibleRefuse.detail;
+  const fetchSpecialGoodsVerify = (index,values) => {
+    const { ownerId, auditIdString } = list[index];
+    // const { auditIdString, ownerId } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
       payload: {
@@ -330,8 +331,8 @@ const SpecialGoodCheck = (props) => {
       },
       callback: () => {
         setVisibleInfo(false);
-        setVisibleRefuse({ show: false, detail: {} });
-        childRef.current.fetchGetData();
+        // setVisibleRefuse({ show: false, detail: {} });
+        tableRef.current.fetchGetData();
       },
     });
   };

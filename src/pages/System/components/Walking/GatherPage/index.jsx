@@ -3,12 +3,26 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { PAGE_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
-import GatherSet from './Form/GatherSet'
+import GatherSet from './Form/GatherSet';
 const GatherPage = (props) => {
   const { gatherList, loading, dispatch } = props;
   const childRef = useRef();
+  const [visibleSet, setVisibleSet] = useState(false);
 
   useEffect(() => {}, []);
+
+  const handleEnd = (configCollectionPageId) => {
+    console.log(configCollectionPageId);
+    dispatch({
+      type: 'walkingManage/fetchGatherPageConfigEnd',
+      payload: {
+        configCollectionPageId,
+      },
+      callback: () => {
+        childRef.current.fetchGetData();
+      },
+    });
+  };
 
   // table 表头
   const getColumns = [
@@ -22,12 +36,18 @@ const GatherPage = (props) => {
       title: '唤起条件',
       align: 'center',
       dataIndex: 'evokeParam',
-    //   render: (val,row) =>{
-    //     const {evokeParam} = row
-    //     return evokeParam.map((item, index) => {
-    //             <div key={index}>{item.bean}</div>;
-    //     }),
-    //   }
+      render: (val, row) => {
+        const evokeParams = val ? JSON.parse(val) : [];
+        return (
+          <>
+            {evokeParams.map((item, index) => (
+              <div key={index}>
+                {index + 1},日领卡豆: {item.bean}
+              </div>
+            ))}
+          </>
+        );
+      },
     },
     {
       title: '价格',
@@ -54,22 +74,36 @@ const GatherPage = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'categoryName',
+      dataIndex: 'configCollectionPageId',
       render: (val, record) => {
         return [
           {
             type: 'edit',
             auth: true,
+            click: () =>
+              setVisibleSet({
+                type: 'edit',
+                show: true,
+                detail: record,
+              }),
           },
 
           {
             auth: true,
             title: '结束',
+            click: () => handleEnd(val),
           },
         ];
       },
     },
   ];
+
+  const handleAdd = () => {
+    setVisibleSet({
+      type: 'add',
+      show: true,
+    });
+  };
 
   return (
     <>
@@ -77,7 +111,11 @@ const GatherPage = (props) => {
         cardProps={{
           title: '集合页配置',
           bordered: false,
-          extra: <Button type="primary">新增</Button>,
+          extra: (
+            <Button type="primary" onClick={handleAdd}>
+              新增
+            </Button>
+          ),
         }}
         cRef={childRef}
         loading={loading}
@@ -87,7 +125,11 @@ const GatherPage = (props) => {
         pagination={false}
         list={gatherList.list}
       ></TableDataBlock>
-      <GatherSet></GatherSet>
+      <GatherSet
+        visible={visibleSet}
+        cRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></GatherSet>
     </>
   );
 };
