@@ -53,6 +53,7 @@ const FAQSortSet = (props) => {
     title: `${{ add: '新增分类', edit: '修改分类' }[type]}`,
     visible: show,
     onClose,
+    zIndex: 99999,
     footer: (
       <Button type="primary" onClick={fetchDataEdit} loading={loading}>
         确定

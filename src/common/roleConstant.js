@@ -7,6 +7,7 @@ export const ROLE_BUTTON_TYPE = {
   actionDel: '删除行为',
   actionEdit: '修改行为',
   actionSave: '新增使用规则',
+  againUp: '再次上架',
 
   batchEdit: '批量修改',
   baseTrade: '基础设施',
@@ -18,7 +19,7 @@ export const ROLE_BUTTON_TYPE = {
   cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
-  cancleRecommend:'取消推荐',
+  cancleRecommend: '取消推荐',
 
   del: '删除',
   down: '下架',

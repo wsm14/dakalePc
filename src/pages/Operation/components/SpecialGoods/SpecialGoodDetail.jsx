@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Tabs, Alert, Form, notification } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -8,35 +8,30 @@ import ExtraButton from '@/components/ExtraButton';
 import FormCondition from '@/components/FormCondition';
 
 const SpecialGoodDetail = (props) => {
-  const {
-    visible,
-    onClose,
-    onEdit,
-    total,
-    getDetail,
-    loading,
-    setVisibleRefuse,
-    fetchSpecialGoodsVerify,
-  } = props;
-  const { show = false, index, detail = {}, status } = visible;
+  const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
+  const { show = false, index, detail = {}, status, specialGoodsId, ownerIdString } = visible;
 
   const [form] = Form.useForm();
+  const [merchantList, setMerchantList] = useState([]);
 
   const handleEdit = () => {
     onClose(), onEdit();
   };
 
-  // 审核通过
-  const handleVerifyAllow = () => {
-    const { specialGoodsId, merchantIdStr } = detail;
-    if (!form.getFieldValue('otherPlatformPrice')) {
-      notification.info({
-        message: '温馨提示',
-        description: '请输入其他平台价格',
-      });
-    }
-    form.validateFields().then((values) => {
-      fetchSpecialGoodsVerify({ ...values, specialGoodsId, merchantIdStr, status: 1 });
+  useEffect(() => {
+    getMerchantList();
+  }, [show]);
+
+  //sku通用-审核中sku挂靠商家列表
+  const getMerchantList = () => {
+    dispatch({
+      type: 'specialGoods/fetchSkuDetailMerchantList',
+      payload: {
+        ownerServiceId: specialGoodsId,
+        ownerId: ownerIdString,
+        serviceType: 'specialGoods',
+      },
+      callback: (list) => setMerchantList(list),
     });
   };
 
@@ -47,12 +42,6 @@ const SpecialGoodDetail = (props) => {
       text: '编辑',
       show: ['1', '2'].includes(status),
     },
-    // {
-    //   auth: 'check',
-    //   onClick: handleVerifyAllow,
-    //   text: '审核通过',
-    //   show: ['3'].includes(status),
-    // },
   ];
   // 弹出窗属性
   const modalProps = {
@@ -65,26 +54,7 @@ const SpecialGoodDetail = (props) => {
       total,
       onChange: (size) => getDetail(size, 'info'),
     },
-    // footer: (
-    //   <ExtraButton list={btnList}>
-    //     {['3'].includes(status) && (
-    //       <Button
-    //         style={{ marginLeft: 8 }}
-    //         danger
-    //         onClick={() =>
-    //           setVisibleRefuse({
-    //             show: true,
-    //             detail: detail,
-    //             type: 'refuse',
-    //             formProps: { type: 'refuse', key: 'failureReason' },
-    //           })
-    //         }
-    //       >
-    //         审核驳回
-    //       </Button>
-    //     )}
-    //   </ExtraButton>
-    // ),
+    footer: <ExtraButton list={btnList}></ExtraButton>,
   };
 
   const formItems = [
@@ -97,12 +67,16 @@ const SpecialGoodDetail = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      {/* 驳回原因 */}
-      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />}
+      {/* 驳回原因
+      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">
-          <GoodsDetailForm detail={detail} form={form}></GoodsDetailForm>
+          <GoodsDetailForm
+            detail={detail}
+            form={form}
+            merchantList={merchantList}
+          ></GoodsDetailForm>
         </Tabs.TabPane>
         <Tabs.TabPane tab="投放规则" key="2">
           <RegularDetail detail={detail}></RegularDetail>

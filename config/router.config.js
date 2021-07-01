@@ -433,11 +433,11 @@ export default [
         path: '/operation/specialGoodCheck',
         name: '特惠商品审核',
         component: './Operation/SpecialGoodCheck',
-        buttons: [],
+        buttons: ['info', 'check'],
       },
       {
         path: '/operation/couponCheck',
-        name: '特惠商品审核',
+        name: '券审核',
         component: './Operation/CouponCheck',
         buttons: ['info', 'check'],
       },

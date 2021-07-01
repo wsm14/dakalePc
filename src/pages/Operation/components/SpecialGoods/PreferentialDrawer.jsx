@@ -13,7 +13,8 @@ const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
   // info 详情，add 新增，active 活动中修改，edit 即将开始修改，again 重新发布
-  const { type = 'info', show = false, detail = {} } = visible;
+  const { type = 'info', show = false, detail = {},specialGoodsId, ownerIdString  } = visible;
+  console.log(visible,"visible")
 
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
@@ -44,7 +45,7 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
-      const { specialGoodsId, merchantIdStr } = detail;
+      const { specialGoodsId, ownerIdString } = detail;
       const { activityGoodsImg, goodsDescImg } = visibleRule.preData;
       const {
         activityStartTime,
@@ -64,12 +65,13 @@ const PreferentialDrawer = (props) => {
             add: 'specialGoods/fetchSpecialGoodsSave',
             edit: 'specialGoods/fetchSpecialGoodsEdit',
             again: 'specialGoods/fetchSpecialGoodsSave',
+            againUp:'specialGoods/fetchSpecialGoodsEdit'
           }[type],
           payload: {
             ...visibleRule.preData,
             ...other,
-            specialGoodsId,
-            merchantIdStr,
+            id:specialGoodsId,
+            ownerId:ownerIdString,
             activityGoodsImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
             activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),

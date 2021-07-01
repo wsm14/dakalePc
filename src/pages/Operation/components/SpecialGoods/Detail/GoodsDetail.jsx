@@ -1,11 +1,12 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
+import MerchantListTable from './MerchantListTable';
 import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
-  const { detail } = props;
-  const { goodsType } = detail;
+  const { detail, merchantList } = props;
+  const { goodsType, ownerType } = detail;
 
   const ActiveformItems = [
     {
@@ -16,7 +17,7 @@ const GoodsDetail = (props) => {
     },
     {
       name: 'merchantName',
-      label: '店铺名称',
+      label: `${BUSINESS_TYPE[ownerType]}名称`,
     },
   ];
 
@@ -77,6 +78,78 @@ const GoodsDetail = (props) => {
     },
   ];
 
+  const formItemComiss = [
+    {
+      label: '分佣配置',
+      name: 'provinceFee',
+      render: (val, row) => (
+        <>
+          <div>省代分佣：{row.provinceFee}</div>
+          <div>区县分佣：{row.districtFee}</div>
+          <div>哒人分佣：{row.darenFee}</div>
+        </>
+      ),
+    },
+  ];
+
+  const formItemTag = [
+    {
+      label: '商家商品标签',
+      name: 'goodsTagList',
+      show: detail.goodsTagList,
+      render: (val, row) => {
+        const { goodsTagList = [] } = row;
+        const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag.configGoodsTagId}
+                >
+                  {tag.tagName}
+                </span>
+              ))}
+          </>
+        );
+      },
+      // show: detail.auditStatus !== '0',
+    },
+    {
+      label: '平台商品标签',
+      name: 'goodsTagList',
+      show: detail.goodsTagList,
+      render: (val, row) => {
+        const { goodsTagList = [] } = row;
+        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag.configGoodsTagId}
+                >
+                  {tag.tagName}
+                </span>
+              ))}
+          </>
+        );
+      },
+    },
+  ];
+
   return (
     <>
       <DescriptionsCondition
@@ -84,6 +157,11 @@ const GoodsDetail = (props) => {
         formItems={ActiveformItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {ownerType === 'group' && (
+        <div style={{ margin: '10px' }}>
+          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
+        </div>
+      )}
       <DescriptionsCondition
         title="商品信息"
         formItems={GoodFormItem}
@@ -97,6 +175,18 @@ const GoodsDetail = (props) => {
       <DescriptionsCondition
         title="商品介绍"
         formItems={GoodDecItem}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      {detail.divisionFlag === '1' && detail.provinceFee && (
+        <DescriptionsCondition
+          title="分佣配置"
+          formItems={formItemComiss}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
+      <DescriptionsCondition
+        title="商品标签"
+        formItems={formItemTag}
         initialValues={detail}
       ></DescriptionsCondition>
     </>

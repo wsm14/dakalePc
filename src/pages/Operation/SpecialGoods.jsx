@@ -137,7 +137,7 @@ const SpecialGoods = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商品名称/店铺',
+      title: '商品/店铺名称',
       fixed: 'left',
       dataIndex: 'goodsImg',
       render: (val, row) => (
@@ -263,10 +263,6 @@ const SpecialGoods = (props) => {
       dataIndex: 'createTime',
       render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
-    // {
-    //   title: '审核通过时间',
-    //   dataIndex: 'verifyTime',
-    // },
     {
       title: '推广位置',
       fixed: 'right',
@@ -283,11 +279,11 @@ const SpecialGoods = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, merchantIdStr, status, deleteFlag } = record;
+        const { specialGoodsId, ownerIdString, status, deleteFlag } = record;
         return [
           {
             type: 'goodsCode',
-            visible: ['1', '2'].includes(status) && deleteFlag == '1', // '活动中', '审核中' && 未删除
+            visible: ['1', '2'].includes(status) && deleteFlag == '1', // '活动中'
             click: () =>
               fetchSpecialGoodsQrCode(
                 { specialGoodsId },
@@ -311,34 +307,20 @@ const SpecialGoods = (props) => {
           },
           {
             type: 'edit',
-            visible: ['1', '2'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
+            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
             click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
           },
-          //
-          // {
-          //   type: 'check',
-          //   visible: ['3'].includes(status) && deleteFlag == '1', // 活动中 审核中 && 未删除
-          //   click: () => fetchSpecialGoodsDetail(index, 'info'),
-          // },
-
+         
           {
-            type: 'del',
-            visible: ['0'].includes(status), // 已下架
-            click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
-          },
-          {
-            type: 'again',
+            type: 'again', //重新发布
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'again'),
           },
-          // 
-          // {
-          //   pop: true,
-          //   title: '取消推荐',
-          //   auth: 'placement',
-          //   visible: record.recommendStatus !== '0' || record.topStatus !== '0',
-          //   click: () => fetchSpecialGoodsRecommend({ specialGoodsId, operationFlag: 'cancel' }),
-          // },
+          {
+            type: 'againUp', //再次上架
+            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            click: () => fetchSpecialGoodsDetail(index, 'againUp'),
+          },
           {
             type: 'diary',
             click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
@@ -365,43 +347,15 @@ const SpecialGoods = (props) => {
     });
   };
 
-  // 删除
-  const fetchSpecialGoodsDel = (payload) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsDel',
-      payload,
-    });
-  };
-
-  // 审核
-  const fetchSpecialGoodsVerify = (values) => {
-    const { merchantIdStr, specialGoodsId } = visibleRefuse.detail;
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsVerify',
-      payload: {
-        merchantIdStr,
-        specialGoodsId,
-        status: 4,
-        ...values,
-      },
-      callback: () => {
-        setVisibleInfo(false);
-        setVisibleRefuse({ show: false, detail: {} });
-        childRef.current.fetchGetData();
-      },
-    });
-  };
-
   // 下架
   const fetchSpecialGoodsStatus = (values) => {
-    const { merchantIdStr, specialGoodsId, status } = visibleRefuse.detail;
+    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
       payload: {
         ...values,
-        merchantIdStr,
-        specialGoodsId,
-        status,
+        id: specialGoodsId,
+        ownerId: ownerIdString,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });
@@ -421,15 +375,15 @@ const SpecialGoods = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { specialGoodsId, merchantIdStr, merchantName, ownerType } = list[index];
+    const { specialGoodsId, ownerIdString, merchantName, ownerType } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { specialGoodsId, merchantIdStr, type },
+      payload: { specialGoodsId, ownerIdString, type },
       callback: (val) => {
         const { status } = val;
         const newProps = {
           show: true,
-          detail: { ...val, merchantName, ownerType, specialGoodsId, merchantIdStr },
+          detail: { ...val, merchantName, ownerType, specialGoodsId, ownerIdString },
         };
         if (type == 'info') {
           setVisibleInfo({ status, index, ...newProps });
@@ -497,8 +451,6 @@ const SpecialGoods = (props) => {
         visible={visibleInfo}
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
-        setVisibleRefuse={setVisibleRefuse}
-        fetchSpecialGoodsVerify={fetchSpecialGoodsVerify}
         onEdit={() =>
           setVisibleSet({
             type: [false, 'active', 'edit'][visibleInfo.status],
@@ -510,13 +462,11 @@ const SpecialGoods = (props) => {
       ></SpecialGoodDetail>
       {/* 日志 */}
       <LogDetail></LogDetail>
-      {/* 审核拒绝 下架原因 */}
+      {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}
         onClose={() => setVisibleRefuse({ show: false, detail: {} })}
-        handleUpData={
-          visibleRefuse.type === 'refuse' ? fetchSpecialGoodsVerify : fetchSpecialGoodsStatus
-        }
+        handleUpData={fetchSpecialGoodsStatus}
         loading={loadings.models.specialGoods}
       ></RefuseModal>
       {/* 商品码 */}

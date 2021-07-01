@@ -11,34 +11,43 @@ import FormCondition from '@/components/FormCondition';
 import CheckRefuseDraw from './Detail/CheckRefuseDraw';
 
 const SpecialGoodCheckDetail = (props) => {
-  const {
-    visible,
-    onClose,
-    onEdit,
-    total,
-    getDetail,
-    loading,
-    dispatch,
-    tabkey,
-    cRef,
-  } = props;
+  const { visible, onClose, onEdit, total, getDetail, loading, dispatch, tabkey, cRef } = props;
   const { show = false, index, detail = {}, status, ownerIdString, auditIdString } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
+  const [merchantList, setMerchantList] = useState([]);
+  
+  // 0-待审核 1-已通过 2-已驳回 3-已关闭
 
   const [form] = Form.useForm();
 
   const handleEdit = () => {
     onClose(), onEdit();
   };
-
   useEffect(() => {
     if (show) {
       getTagsMerchant();
       getTagsPlat();
+
+      //挂靠商家列表
+      if (detail.ownerType === 'group') {
+        getMerchantList();
+      }
     }
   }, [show]);
+
+  //sku通用-审核中sku挂靠商家列表
+  const getMerchantList = () => {
+    dispatch({
+      type: 'specialGoodsCheck/fetchAuditMerchantList',
+      payload: {
+        auditId: auditIdString,
+        ownerId: ownerIdString,
+      },
+      callback: (list) => setMerchantList(list),
+    });
+  };
 
   //获取商品标签
   const getTagsMerchant = () => {
@@ -240,7 +249,12 @@ const SpecialGoodCheckDetail = (props) => {
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">
-          <GoodsDetailForm detail={detail} form={form} tabkey={tabkey}></GoodsDetailForm>
+          <GoodsDetailForm
+            detail={detail}
+            form={form}
+            tabkey={tabkey}
+            merchantList={merchantList}
+          ></GoodsDetailForm>
         </Tabs.TabPane>
         <Tabs.TabPane tab="投放规则" key="2">
           <RegularDetail detail={detail}></RegularDetail>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Card, Tag, Button } from 'antd';
 import {
@@ -11,56 +11,27 @@ import {
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import HotGoods from './components/SpecialResource/HotGoods';
-import AroundSpecialGoods from './components/SpecialResource/AroundSpecialGoods';
-import DayPushGoods from './components/SpecialResource/DayPushGoods';
-import NextPeriodGoods from './components/SpecialResource/NextPeriodGoods';
-import NoviceGoods from './components/SpecialResource/NoviceGoods';
-import ThisPeriodGoods from './components/SpecialResource/ThisPeriodGoods';
-import TodayGoods from './components/SpecialResource/TodayGoods';
-
-const tabList = [
-  {
-    key: 'hot',
-    tab: '限时抢购',
-  },
-  {
-    key: 'today',
-    tab: '爆品福利',
-  },
-  {
-    key: 'thisPeriod',
-    tab: '本期必抢',
-  },
-  {
-    key: 'nextPeriod',
-    tab: '下期预告',
-  },
-  {
-    key: 'novice',
-    tab: '新手视频',
-  },
-  {
-    key: 'dayPush',
-    tab: '每日必推',
-  },
-  {
-    key: 'aroundSpecial',
-    tab: '特惠推荐',
-  },
-];
+import TableDataBlock from '@/components/TableDataBlock';
+import ExtraButton from '@/components/ExtraButton';
 
 const SpecialGoodsResource = (props) => {
-  const { loadings, hubData, dispatch, specialGoods } = props;
+  const { loadings, loading, hubData, dispatch, specialGoods } = props;
   const tableRef = useRef();
   const [searchType, setSearchType] = useState(null); // 搜索类型
-  const [tabkey, setTabKey] = useState('hot');
+  const [goodsList, setGoodsList] = useState([]); // 选择取消推荐的商品
+  const [tabKey, setTabKey] = useState('hot');
 
-  const { chooseList = [] } = specialGoods;
-  console.log(chooseList, 'vvvvv');
+  // tab 标签
+  const search_recommend = {
+    ...SPECIAL_RECOMMEND_TYPE,
+    highCommission: '高佣联盟',
+    todayNew: '今日上新',
+  };
 
-  const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
-  const search_recommend = { notPromoted: '未推广', ...other };
+  useEffect(() => {
+    setGoodsList([]);
+    tableRef.current.fetchGetData();
+  }, [tabKey]);
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -119,12 +90,6 @@ const SpecialGoodsResource = (props) => {
       label: '佣金',
       name: 'commission',
       type: 'numberGroup',
-    },
-    {
-      label: '推广位置',
-      type: 'select',
-      name: 'promotionLocation',
-      select: search_recommend,
     },
     {
       label: '区域',
@@ -293,44 +258,48 @@ const SpecialGoodsResource = (props) => {
       dataIndex: 'createTime',
       render: (val, row) => `${val}\n${row.creatorName || ''}`,
     },
+    {
+      type: 'handle',
+      dataIndex: 'length',
+      width: 180,
+      render: (val, record) => {
+        const { status } = record;
+        return [
+          {
+            // type: 'info',
+            title: '取消推荐', // 高佣联盟 和 今日上新 不显示
+            visible: !['highCommission', 'todayNew'].includes(tabKey),
+          },
+          {
+            // type: 'info',
+            title: '置顶', // 下期预告 高佣联盟 和 今日上新 不显示
+            visible: !['nextPeriod', 'highCommission', 'todayNew'].includes(tabKey),
+          },
+          {
+            // type: 'info',
+            title: '取消置顶', // 下期预告 高佣联盟 和 今日上新 不显示
+            visible: !['nextPeriod', 'highCommission', 'todayNew'].includes(tabKey),
+            // click: () => setVisiblePeas({ show: true, detail: record }),
+          },
+        ];
+      },
+    },
   ];
 
-  const rowHandle = [
-    {
-      // type: 'info',
-      title: '取消推荐',
-    },
-    {
-      // type: 'info',
-      title: '置顶',
-    },
-  ];
   const handleCancle = () => {
-    if (chooseList) {
+    if (goodsList) {
       const payload = {
-        specialGoodsId: chooseList ? chooseList.toString() : '',
-        recommendType: tabkey,
+        specialGoodsId: goodsList ? goodsList.toString() : '',
+        recommendType: tabKey,
       };
-      console.log(payload, 'dddddddddddd');
-      // dispatch({
-      //   type: 'specialGoods/fetchSpecialCancleRecommend',
-      //   payload:payload,
-      //   callback: () => {
-      //     tableRef.current.fetchGetData();
-      //   },
-      // });
+      dispatch({
+        type: 'specialGoods/fetchSpecialCancleRecommend',
+        payload:payload,
+        callback: () => {
+          tableRef.current.fetchGetData();
+        },
+      });
     }
-  };
-  const listProps = { tableRef, tabkey, globalColum, globalSearch };
-
-  const contentList = {
-    hot: <HotGoods {...listProps}></HotGoods>,
-    today: <TodayGoods {...listProps}></TodayGoods>,
-    thisPeriod: <ThisPeriodGoods {...listProps}></ThisPeriodGoods>,
-    nextPeriod: <NextPeriodGoods {...listProps}></NextPeriodGoods>,
-    novice: <NoviceGoods {...listProps}></NoviceGoods>,
-    dayPush: <DayPushGoods {...listProps}></DayPushGoods>,
-    aroundSpecial: <AroundSpecialGoods {...listProps}></AroundSpecialGoods>,
   };
 
   // 推荐状态 / 置顶状态
@@ -342,25 +311,48 @@ const SpecialGoodsResource = (props) => {
     });
   };
 
+  const btnList = [
+    {
+      auth: 'del',
+      text: '取消推荐',
+      disabled: !goodsList.length,
+      onClick: handleCancle,
+    },
+    {
+      auth: 'save',
+      text: '条件配置', // 高佣联盟 和 今日上新 存在
+      show: ['highCommission', 'todayNew'].includes(tabKey),
+      onClick: () => {},
+    },
+  ];
+
   return (
     <>
-      <Card
-        tabList={tabList}
-        activeTabKey={tabkey}
-        onTabChange={(key) => {
-          setTabKey(key);
-          dispatch({
-            type: 'specialGoods/cancleRecommend',
-            payload: {
-              chooseList: [],
-              tabkey: tabkey,
-            },
-          });
+      <TableDataBlock
+        cardProps={{
+          tabList: Object.keys(search_recommend)
+            .filter((i) => i !== 'null')
+            .map((key) => ({ key, tab: search_recommend[key] })),
+          activeTabKey: tabKey,
+          onTabChange: setTabKey,
+          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
         }}
-        extra={<Button onClick={handleCancle}>取消推荐</Button>}
-      >
-        {contentList[tabkey]}
-      </Card>
+        cRef={tableRef}
+        loading={loading}
+        columns={globalColum}
+        searchItems={globalSearch}
+        rowKey={(record) => `${record.specialGoodsId}`}
+        dispatchType="specialGoods/fetchGetList"
+        params={{ promotionLocation: tabKey }}
+        rowSelection={{
+          getCheckboxProps: ({ status, deleteFlag }) => ({
+            disabled: !['1', '2'].includes(status) || deleteFlag == '0', // 不是 活动中 即将开始 || 已删除
+          }),
+          selectedRowKeys: goodsList,
+          onChange: setGoodsList,
+        }}
+        {...specialGoods}
+      ></TableDataBlock>
     </>
   );
 };
@@ -368,6 +360,6 @@ const SpecialGoodsResource = (props) => {
 export default connect(({ baseData, loading, specialGoods }) => ({
   specialGoods,
   hubData: baseData.hubData,
-  loading: loading.effects['baseData/fetchGetLogDetail'],
   loadings: loading,
+  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
 }))(SpecialGoodsResource);

@@ -283,7 +283,6 @@ const SpecialGoodCheck = (props) => {
           {
             type: 'check',
             title: '审核',
-            // fetchSpecialGoodsVerify(index)
             click: () => fetchSpecialGoodsDetail(index, 'check'),
             visible: tabkey === 'adminAudit',
           },

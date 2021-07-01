@@ -5,6 +5,7 @@ import {
   fetchSpecialGoodsAuditDetail,
   fetchSpecialGoodsAudit,
   fetchSpecialGoodsAuditReject,
+  fetchAuditMerchantList,
 } from '@/services/OperationServices';
 
 export default {
@@ -77,9 +78,9 @@ export default {
       }
       callback({
         ...content.auditDetail,
-        rejectObj:{
-          rejectReason:content.auditDetail.rejectReason,
-          rejectImg:content.auditDetail.rejectImg
+        rejectObj: {
+          rejectReason: content.auditDetail.rejectReason,
+          rejectImg: content.auditDetail.rejectImg,
         },
         ...content.specialGoodsInfo,
         ...specialGoodsInfo.serviceDivisionDTO, //分佣
@@ -110,6 +111,12 @@ export default {
         description: '审核驳回成功',
       });
       callback();
+    },
+    *fetchAuditMerchantList({ payload, callback }, { call }) {
+      const response = yield call(fetchAuditMerchantList, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.merchantList);
     },
   },
 };

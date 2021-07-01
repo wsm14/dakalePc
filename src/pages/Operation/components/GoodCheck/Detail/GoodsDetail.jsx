@@ -1,11 +1,13 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
+import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
 import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
-  const { detail } = props;
-  const { goodsType } = detail;
+  const { detail, merchantList = [] } = props;
+  const { goodsType, ownerType } = detail;
+  console.log(merchantList, 'detail');
 
   const ActiveformItems = [
     {
@@ -156,6 +158,12 @@ const GoodsDetail = (props) => {
         formItems={ActiveformItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {ownerType === 'group' && (
+        <div style={{ margin: '10px' }}>
+          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
+        </div>
+      )}
+
       <DescriptionsCondition
         title="商品信息"
         formItems={GoodFormItem}

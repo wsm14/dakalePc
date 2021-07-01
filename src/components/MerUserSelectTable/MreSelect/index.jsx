@@ -4,6 +4,11 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 import Search from './Search';
 
+/**
+ *
+ * @param {Object} list 渲染的数组 { list:[], total:0 }
+ * @returns
+ */
 const MreSelect = ({
   type = 'select',
   visible,
@@ -11,9 +16,12 @@ const MreSelect = ({
   mreList = [],
   onOk,
   onCancel,
+  searchShow = true,
+  columns = null,
   subsidyList = [],
   dispatchType = 'businessList/fetchGetList',
   params = {},
+  list = null,
   loading,
 }) => {
   const childRef = useRef(); // 表格ref
@@ -90,20 +98,20 @@ const MreSelect = ({
       }}
       onCancel={onCancel}
     >
-      <Search cRef={childRef}></Search>
+      {searchShow && <Search cRef={childRef}></Search>}
       <TableDataBlock
         order
         noCard={false}
         size="middle"
         tableSize="small"
         cRef={childRef}
-        columns={getColumns}
-        loading={loading.effects['businessList/fetchGetList']}
+        columns={columns ? columns : getColumns}
+        loading={loading.effects[dispatchType]}
         rowKey={(record) => `${record.userMerchantIdString}`}
         dispatchType={dispatchType}
         params={{ ...params, bankStatus: 3, businessStatus: 1 }}
         rowSelection={type === 'select' ? rowSelection : undefined}
-        {...subsidyList}
+        {...(list ? list : subsidyList)}
       ></TableDataBlock>
     </Modal>
   );
