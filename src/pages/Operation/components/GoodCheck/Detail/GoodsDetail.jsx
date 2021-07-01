@@ -97,7 +97,7 @@ const GoodsDetail = (props) => {
     {
       label: '商家商品标签',
       name: 'goodsTagList',
-      show: detail.goodsTagList,
+      show: detail.goodsTagList && !['0'].includes(detail.auditStatus),
       render: (val, row) => {
         const { goodsTagList = [] } = row;
         const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
@@ -179,18 +179,20 @@ const GoodsDetail = (props) => {
         formItems={GoodDecItem}
         initialValues={detail}
       ></DescriptionsCondition>
-      {detail.divisionFlag === '1' && detail.provinceFee && (
+      {detail.divisionFlag === '1' && detail.provinceFee && !['0'].includes(detail.auditStatus) && (
         <DescriptionsCondition
           title="分佣配置"
           formItems={formItemComiss}
           initialValues={detail}
         ></DescriptionsCondition>
       )}
-      <DescriptionsCondition
-        title="商品标签"
-        formItems={formItemTag}
-        initialValues={detail}
-      ></DescriptionsCondition>
+      {!['0'].includes(detail.auditStatus) && (
+        <DescriptionsCondition
+          title="商品标签"
+          formItems={formItemTag}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
     </>
   );
 };

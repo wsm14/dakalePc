@@ -307,18 +307,19 @@ const SpecialGoods = (props) => {
           },
           {
             type: 'edit',
-            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 即将开始 && 未删除
+            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
             click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
           },
-         
+
           {
             type: 'again', //重新发布
-            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            visible: ['0'].includes(status), // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'again'),
           },
           {
             type: 'againUp', //再次上架
-            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            title: '再次上架',
+            visible: ['0'].includes(status), // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'againUp'),
           },
           {
@@ -378,7 +379,7 @@ const SpecialGoods = (props) => {
     const { specialGoodsId, ownerIdString, merchantName, ownerType } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { specialGoodsId, ownerIdString, type },
+      payload: { specialGoodsId, ownerId: ownerIdString, type },
       callback: (val) => {
         const { status } = val;
         const newProps = {

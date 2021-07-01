@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import lodash from 'lodash';
+import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import {
   fetchGetMreTag,
   fetchImportExcel,
@@ -20,6 +21,11 @@ import {
   fetchGetSpecialGoodsSelect,
   fetchGetMerchantsSearch,
   fetchGetUsersSearch,
+  fetchSkuAvailableMerchant,
+  fetchGoodsTagListByCategoryId,
+  fetchGoodsIsCommission,
+  fetchSkuDetailMerchantList,
+  fetchAuditMerchantList,
 } from '@/services/PublicServices';
 
 export default {
@@ -40,6 +46,8 @@ export default {
     merchantList: [],
     ruleBean: 0,
     experLevel: {},
+    groupMreList: [],
+    skuMerchantList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -53,6 +61,12 @@ export default {
       return {
         ...state,
         logDetail: { show: false, data: [] },
+      };
+    },
+    clearGroupMre(state) {
+      return {
+        ...state,
+        groupMreList: [],
       };
     },
   },
@@ -294,6 +308,68 @@ export default {
           })),
         },
       });
+    },
+    *fetchGetGroupMreList({ payload }, { put, call }) {
+      const { type = 'merchant', name } = payload;
+      const newPayload = {
+        merchant: { merchantName: name, businessStatus: 1 }, // 单店
+        group: { groupName: name }, // 集团
+      }[type];
+      const response = yield call(
+        { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
+        { limit: 300, page: 1, bankStatus: 3, ...newPayload },
+      );
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          groupMreList: content.recordList.map((item) => ({
+            name: `${item.merchantName || item.groupName} ${item.account || ''}`,
+            otherData: item.address,
+            value: item.userMerchantIdString || item.merchantGroupId,
+            commissionRatio: item.commissionRatio,
+            topCategoryName: [item.topCategoryName, item.categoryName],
+            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+          })),
+        },
+      });
+    },
+    // sku通用- sku挂靠商家列表
+    *fetchSkuAvailableMerchant({ payload }, { call, put }) {
+      const response = yield call(fetchSkuAvailableMerchant, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          skuMerchantList: content.merchantList,
+        },
+      });
+    },
+    *fetchGoodsTagListByCategoryId({ payload, callback }, { call }) {
+      const response = yield call(fetchGoodsTagListByCategoryId, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.configGoodsTagList);
+    },
+    *fetchGoodsIsCommission({ payload, callback }, { call }) {
+      const response = yield call(fetchGoodsIsCommission, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.manuallyFlag);
+    },
+    *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSkuDetailMerchantList, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.merchantList);
+    },
+    *fetchAuditMerchantList({ payload, callback }, { call }) {
+      const response = yield call(fetchAuditMerchantList, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.merchantList);
     },
   },
 };

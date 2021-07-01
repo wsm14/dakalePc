@@ -5,7 +5,6 @@ import {
   fetchSpecialGoodsAuditDetail,
   fetchSpecialGoodsAudit,
   fetchSpecialGoodsAuditReject,
-  fetchAuditMerchantList,
 } from '@/services/OperationServices';
 
 export default {
@@ -111,12 +110,6 @@ export default {
         description: '审核驳回成功',
       });
       callback();
-    },
-    *fetchAuditMerchantList({ payload, callback }, { call }) {
-      const response = yield call(fetchAuditMerchantList, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.merchantList);
     },
   },
 };

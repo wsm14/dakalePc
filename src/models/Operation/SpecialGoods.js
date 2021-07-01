@@ -12,10 +12,6 @@ import {
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
   fetchSpecialCancleRecommend,
-  fetchGoodsTagListByCategoryId,
-  fetchGoodsIsCommission,
-  fetchSkuAvailableMerchant,
-  fetchSkuDetailMerchantList
 } from '@/services/OperationServices';
 
 export default {
@@ -24,7 +20,6 @@ export default {
   state: {
     list: [],
     total: 0,
-    skuMerchantList:{list:[],total:0}
   },
 
   reducers: {
@@ -53,7 +48,7 @@ export default {
       const { type, ...other } = payload;
       const response = yield call(fetchSpecialGoodsDetail, { ...other });
       if (!response) return;
-      const { merchantIdStr: merchantId } = payload;
+      const { ownerId, specialGoodsId } = payload;
       const { content } = response;
       const { specialGoodsInfo = {}, divisionFlag } = content;
       const {
@@ -71,8 +66,8 @@ export default {
         useWeek = '1,2,3,4,5,6,7',
       } = specialGoodsInfo;
       let newDetail = {};
-      // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
-      if (['info', 'edit', 'again'].includes(type)) {
+      // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布 / againUp
+      if (['info', 'edit', 'again', 'againUp'].includes(type)) {
         newDetail = {
           activityStartTime:
             activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],
@@ -90,7 +85,8 @@ export default {
         ...content.specialGoodsInfo,
         ...specialGoodsInfo.serviceDivisionDTO, //分佣
         ...newDetail,
-        merchantId,
+        ownerId,
+        id: specialGoodsId,
         divisionFlag,
         buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
         allowRefund: Number(allowRefund),
@@ -179,35 +175,5 @@ export default {
       });
       callback();
     },
-    *fetchGoodsTagListByCategoryId({ payload, callback }, { call }) {
-      const response = yield call(fetchGoodsTagListByCategoryId, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.configGoodsTagList);
-    },
-    *fetchGoodsIsCommission({ payload, callback }, { call }) {
-      const response = yield call(fetchGoodsIsCommission, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.manuallyFlag);
-    },
-    *fetchSkuAvailableMerchant({ payload, callback }, { call, put }) {
-      const response = yield call(fetchSkuAvailableMerchant, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          skuMerchantList:content.merchantList
-        },
-      });
-    },
-    // sku通用-sku挂靠商家列表
-    *fetchSkuDetailMerchantList({ payload, callback }, { call, put }){
-      const response = yield call(fetchSkuDetailMerchantList, payload);
-      if (!response) return;
-      const { content } = response;
-      callback(content.merchantList);
-    }
   },
 };

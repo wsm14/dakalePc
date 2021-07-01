@@ -17,7 +17,7 @@ import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
-const CouponSet = ({ form, loading, selectList, dispatch }) => {
+const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] }); // 店铺备选参数，选择店铺后回显的数据
   const [radioData, setRadioData] = useState({
@@ -36,17 +36,13 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
   }, [mreList.keys]);
 
   // 搜索店铺
-  const fetchGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchGetMre = debounce((name) => {
+    if (!name) return;
     dispatch({
-      type: 'businessList/fetchGetList',
+      type: 'baseData/fetchGetGroupMreList',
       payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-        groupFlag: mreList.type === 'merchant' ? 0 : 1,
+        name,
+        type: mreList.type,
       },
     });
   }, 500);
@@ -61,7 +57,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '选择店铺类型',
       type: 'radio',
       name: 'ownerType',
-      select: { merchant: '单店' },
+      select: BUSINESS_TYPE,
       onChange: (e) => {
         saveSelectData({ shopType: '0' });
         saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
@@ -82,19 +78,19 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
         saveMreData({ name: option.name, ratio: option.commissionRatio, keys: [], list: [] });
       },
     },
-    {
-      label: '店铺范围',
-      type: 'radio',
-      name: 'shopType',
-      visible: mreList.name && mreList.type === 'group',
-      select: ['全部', '部分'],
-      onChange: (e) => saveSelectData({ shopType: e.target.value }),
-    },
+    // {
+    //   label: '店铺范围',
+    //   type: 'radio',
+    //   name: 'shopType',
+    //   visible: mreList.name && mreList.type === 'group',
+    //   select: ['全部', '部分'],
+    //   onChange: (e) => saveSelectData({ shopType: e.target.value }),
+    // },
     {
       label: '适用店铺',
       name: 'merchantIdList',
       type: 'formItem',
-      visible: mreList.name && radioData.shopType === '1',
+      visible: mreList.name && mreList.type == 'group',
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺
@@ -103,7 +99,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
     },
     {
       type: 'noForm',
-      visible: mreList.name && radioData.shopType === '1',
+      visible: mreList.name && mreList.type == 'group',
       formItem: (
         <MreSelectShow
           key="MreTable"
@@ -296,18 +292,23 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
         initialValues={{ ownerType: 'merchant' }}
       ></FormCondition>
       <MreSelect
+        dispatchType={'baseData/fetchSkuAvailableMerchant'}
         keys={mreList.keys}
         visible={visible}
         mreList={mreList.list}
-        params={{ groupFlag: 1, groupName: mreList.name }}
+        params={{ groupId: mreList.groupId }}
         onOk={saveMreData}
         onCancel={() => setVisible(false)}
+        columns={getColumns}
+        searchShow={false}
+        list={skuMerchantList}
       ></MreSelect>
     </>
   );
 };
 
-export default connect(({ businessList, loading }) => ({
-  selectList: businessList.selectList,
-  loading: loading.models.businessList,
+export default connect(({ baseData, loading }) => ({
+  selectList: baseData.groupMreList,
+  skuMerchantList: baseData.skuMerchantList,
+  loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(CouponSet);

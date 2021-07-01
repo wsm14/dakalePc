@@ -19,13 +19,13 @@ const SpecialGoodDetail = (props) => {
   };
 
   useEffect(() => {
-    getMerchantList();
+    show && getMerchantList();
   }, [show]);
 
   //sku通用-审核中sku挂靠商家列表
   const getMerchantList = () => {
     dispatch({
-      type: 'specialGoods/fetchSkuDetailMerchantList',
+      type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: specialGoodsId,
         ownerId: ownerIdString,

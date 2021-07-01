@@ -427,6 +427,7 @@ export default [
           'recommendStatus',
           'exportList',
           'goodsCode',
+          'againUp',
         ],
       },
       {
@@ -446,12 +447,6 @@ export default [
         name: '资源位配置',
         component: './Operation/SpecialGoodsResource',
         buttons: ['cancleRecommend'],
-      },
-      {
-        path: '/operation/platformRights',
-        name: '平台权益',
-        component: './Operation/PlatformRights',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
       },
       // 客服中心 service
       {
