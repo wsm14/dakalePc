@@ -18,6 +18,7 @@ const PreferentialSet = ({
   onValuesChange,
 }) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
+  const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] });
   // 商品类型 goodsType 店铺范围 shopType
@@ -49,6 +50,7 @@ const PreferentialSet = ({
   const saveMreData = (data) => setMreList({ ...mreList, ...data });
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
+
   //获取平台商品标签
   const getTagsPlat = () => {
     dispatch({
@@ -57,6 +59,17 @@ const PreferentialSet = ({
         tagType: 'platform',
       },
       callback: (list) => setPlatTaglist(list),
+    });
+  };
+
+  //获取平台商品标签
+  const getCommissionFlag = (id) => {
+    dispatch({
+      type: 'goodsTag/fetchGoodsTagList',
+      payload: {
+        id,
+      },
+      callback: (val) => setCommissionShow(val),
     });
   };
 
@@ -86,6 +99,8 @@ const PreferentialSet = ({
       disabled: editActive,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
+        console.log(val,data,"222")
+        // getCommissionFlag()
         const { option } = data;
         saveMreData({ name: option.name, ratio: option.commissionRatio, keys: [], list: [] });
       },
@@ -101,7 +116,7 @@ const PreferentialSet = ({
     },
     {
       label: '适用店铺',
-      name: 'merchantIdList',
+      name: 'merchantIds',
       type: 'formItem',
       visible: mreList.name && radioData.shopType === '1',
       formItem: (
@@ -119,8 +134,9 @@ const PreferentialSet = ({
           form={form}
           {...mreList}
           setMreList={(val) => {
+            console.log(val, 'vvvvvv');
             saveMreData(val);
-            form.setFieldsValue({ merchantIdList: val.keys });
+            form.setFieldsValue({ merchantIds: val.keys });
           }}
         ></MreSelectShow>
       ),
@@ -207,32 +223,13 @@ const PreferentialSet = ({
       ],
     },
     {
-      label: '佣金金额', // 手动分佣需要展示
-      name: 'provincialCommission',
+      label: '佣金总额', // 手动分佣需要展示
+      name: 'commission',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
-      visible:false,
-      show:false
-    },
-    {
-      label: '省代佣金',
-      name: 'provincialCommission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
-    },
-    {
-      label: '区县佣金',
-      name: 'districtCommission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      visible: commissionShow,
       formatter: (value) => `￥ ${value}`,
     },
     {

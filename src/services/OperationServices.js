@@ -81,6 +81,14 @@ export function fetchSpecialGoodsImport(params) {
   });
 }
 
+//周边特惠-取消推荐
+export function fetchSpecialCancleRecommend(data) {
+  return request('/admin/specialGoodsManagement/cancelRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 周边特惠 end
 
 //特惠审核

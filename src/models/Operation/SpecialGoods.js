@@ -11,6 +11,7 @@ import {
   fetchSpecialGoodsRecommend,
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
+  fetchSpecialCancleRecommend,
 } from '@/services/OperationServices';
 
 export default {
@@ -19,10 +20,19 @@ export default {
   state: {
     list: [],
     total: 0,
+    chooseList:[],
+    tabkey:'',
   },
 
   reducers: {
     save(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+      };
+    },
+    cancleRecommend(state, { payload }) {
+      console.log(state.chooseList,"3333")
       return {
         ...state,
         ...payload,
@@ -159,6 +169,16 @@ export default {
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.specialGoodsList);
+    },
+    //特惠资源位取消推荐
+    *fetchSpecialCancleRecommend({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialCancleRecommend, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '取消推荐成功',
+      });
+      callback();
     },
   },
 };

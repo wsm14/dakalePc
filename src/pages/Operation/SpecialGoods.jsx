@@ -274,8 +274,8 @@ const SpecialGoods = (props) => {
       render: (val, row) => {
         if ((row.recommendStatus === '0' && (row.topStatus === '0' || !row.topStatus)) || !val)
           return '';
-        let tagName = row.topStatus === '0' ? '推荐' : '置顶';
-        return SPECIAL_RECOMMEND_TYPE[val] + tagName;
+        // let tagName = row.topStatus === '0' ? '推荐' : '置顶';
+        return SPECIAL_RECOMMEND_TYPE[val];
       },
     },
     {
@@ -321,11 +321,11 @@ const SpecialGoods = (props) => {
           //   click: () => fetchSpecialGoodsDetail(index, 'info'),
           // },
 
-          // {
-          //   type: 'del',
-          //   visible: ['0'].includes(status), // 已下架
-          //   click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
-          // },
+          {
+            type: 'del',
+            visible: ['0'].includes(status), // 已下架
+            click: () => fetchSpecialGoodsDel({ specialGoodsId, merchantIdStr, status }),
+          },
           {
             type: 'again',
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除

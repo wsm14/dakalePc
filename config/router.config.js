@@ -433,17 +433,19 @@ export default [
         path: '/operation/specialGoodCheck',
         name: '特惠商品审核',
         component: './Operation/SpecialGoodCheck',
-        buttons: [
-        
-        ],
+        buttons: [],
       },
       {
         path: '/operation/couponCheck',
         name: '特惠商品审核',
         component: './Operation/CouponCheck',
-        buttons: [
-        
-        ],
+        buttons: ['info', 'check'],
+      },
+      {
+        path: '/operation/specialGoodsResource',
+        name: '资源位配置',
+        component: './Operation/SpecialGoodsResource',
+        buttons: ['cancleRecommend'],
       },
       {
         path: '/operation/platformRights',

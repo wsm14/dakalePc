@@ -18,6 +18,7 @@ export const ROLE_BUTTON_TYPE = {
   cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
+  cancleRecommend:'取消推荐',
 
   del: '删除',
   down: '下架',
