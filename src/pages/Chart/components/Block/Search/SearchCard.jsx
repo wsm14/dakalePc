@@ -62,9 +62,7 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
         value={selectedTime}
         onChange={(val) => handleSearchData(val, Object.values(cityData))}
         disabledDate={disabledDate}
-        style={{
-          width: 256,
-        }}
+        style={{ width: 256 }}
       />
       <Cascader
         defaultValue={bucket ? [bucket] : []}

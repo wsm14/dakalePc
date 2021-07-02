@@ -79,10 +79,13 @@ const ProvinceTotalComponent = (props) => {
 
   // 跳转数据统计
   const handleHistoryChart = (bucket) => {
+    const { beginDate, endDate } = searchData;
     history.push({
       pathname: '/chart/block',
       query: {
         bucket,
+        beginDate,
+        endDate,
       },
     });
   };
