@@ -59,10 +59,7 @@ const TagManage = (props) => {
       title: '关联行业',
       align: 'center',
       dataIndex: 'configGoodsTagCategoryList',
-      render: (val, record) =>
-        val &&
-        val.length &&
-        val.map((item) => <span key={item.categoryIdStr}>{item.categoryName}，</span>),
+      render: (val, record) => val?.map((item) => item.categoryName).join(','),
     },
     {
       title: '启用状态',

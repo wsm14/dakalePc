@@ -14,13 +14,13 @@ const PreferentialSet = ({
   loading,
   selectList,
   dispatch,
+  commissionShow,
+  setCommissionShow,
   initialValues = {},
   onValuesChange,
-  specialGoods,
   skuMerchantList,
 }) => {
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
     name: '',
@@ -36,17 +36,13 @@ const PreferentialSet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
 
   // 搜索店铺
-  const fetchGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchGetMre = debounce((name) => {
+    if (!name) return;
     dispatch({
-      type: 'businessList/fetchGetList',
+      type: 'baseData/fetchGetGroupMreList',
       payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-        groupFlag: mreList.type === 'merchant' ? 0 : 1,
+        name,
+        type: mreList.type,
       },
     });
   }, 500);
@@ -58,7 +54,7 @@ const PreferentialSet = ({
   //获取平台商品标签
   const getTagsPlat = (categoryId) => {
     dispatch({
-      type: 'specialGoods/fetchGoodsTagListByCategoryId',
+      type: 'baseData/fetchGoodsTagListByCategoryId',
       payload: {
         categoryId: categoryId,
         tagType: 'platform',
@@ -70,7 +66,7 @@ const PreferentialSet = ({
   //sku通用-是否需要设置佣金
   const getCommissionFlag = (categoryId) => {
     dispatch({
-      type: 'specialGoods/fetchGoodsIsCommission',
+      type: 'baseData/fetchGoodsIsCommission',
       payload: {
         serviceType: 'specialGoods',
         categoryId: categoryId,
@@ -89,6 +85,7 @@ const PreferentialSet = ({
       name: 'ownerType',
       select: BUSINESS_TYPE,
       onChange: (e) => {
+        setCommissionShow(false);
         saveSelectData({ shopType: '0' });
         saveMreData({
           type: e.target.value,
@@ -98,22 +95,22 @@ const PreferentialSet = ({
           keys: [],
           list: [],
         }); // 重置已选店铺数据
-        form.setFieldsValue({ merchantId: undefined }); // 重置数据
-        dispatch({ type: 'businessList/close' }); // 清空选择数据
+        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
       label: `选择${BUSINESS_TYPE[mreList.type]}`,
       type: 'select',
-      name: 'merchantId',
+      name: 'ownerId',
       placeholder: '请输入搜索',
       loading,
       select: selectList,
       disabled: editActive,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
-        console.log(val, data, '222');
         const { option } = data;
+        setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
         getTagsPlat(option.topCategoryId[0]);
         saveMreData({
@@ -125,6 +122,7 @@ const PreferentialSet = ({
         });
       },
     },
+
     // {
     //   label: '店铺范围',
     //   type: 'radio',
@@ -259,15 +257,7 @@ const PreferentialSet = ({
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },
-    // {
-    //   title: `商品标签`,
-    //   // label: `平台商品标签`,
-    //   type: 'noForm',
-    //   // name: 'platformProduct',
-    //   // rules: [{ required: true }],
-    //   formItem: <PlatformProductTag key="platformProduct" form={form}></PlatformProductTag>,
-    //   maxLength: 200,
-    // },
+
     {
       title: `设置${goodsTypeName}介绍`,
       label: `${goodsTypeName}介绍`,
@@ -308,7 +298,7 @@ const PreferentialSet = ({
         onValuesChange={(changedValues, allValues) => onValuesChange && onValuesChange(allValues)}
       ></FormCondition>
       <MreSelect
-        dispatchType={'specialGoods/fetchSkuAvailableMerchant'}
+        dispatchType={'baseData/fetchSkuAvailableMerchant'}
         keys={mreList.keys}
         visible={visible}
         mreList={mreList.list}
@@ -323,9 +313,9 @@ const PreferentialSet = ({
   );
 };
 
-export default connect(({ businessList, loading, specialGoods }) => ({
+export default connect(({ baseData, loading, specialGoods }) => ({
   specialGoods,
-  skuMerchantList: specialGoods.skuMerchantList,
-  selectList: businessList.selectList,
-  loading: loading.models.businessList,
+  skuMerchantList: baseData.skuMerchantList,
+  selectList: baseData.groupMreList,
+  loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(PreferentialSet);

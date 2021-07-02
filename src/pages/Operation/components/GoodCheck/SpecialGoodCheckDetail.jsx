@@ -17,7 +17,21 @@ const SpecialGoodCheckDetail = (props) => {
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [merchantList, setMerchantList] = useState([]);
-  
+
+  const { goodsTagList = [] } = detail;
+  useEffect(() => {
+    if (show) {
+      const merTags = goodsTagList
+        .filter((item) => item.tagType === 'merchant')
+        .map((key) => key.configGoodsTagId);
+      const platTags = goodsTagList
+        .filter((item) => item.tagType === 'group')
+        .map((key) => key.configGoodsTagId);
+      detail.platTags = platTags;
+      detail.merTags = merTags;
+    }
+  }, [show]);
+
   // 0-待审核 1-已通过 2-已驳回 3-已关闭
 
   const [form] = Form.useForm();
@@ -40,7 +54,7 @@ const SpecialGoodCheckDetail = (props) => {
   //sku通用-审核中sku挂靠商家列表
   const getMerchantList = () => {
     dispatch({
-      type: 'specialGoodsCheck/fetchAuditMerchantList',
+      type: 'baseData/fetchAuditMerchantList',
       payload: {
         auditId: auditIdString,
         ownerId: ownerIdString,
@@ -101,7 +115,7 @@ const SpecialGoodCheckDetail = (props) => {
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
         payload: payload,
         callback: () => {
-          onclose();
+          onClose();
           cRef.current.fetchGetData();
         },
       });
@@ -270,6 +284,7 @@ const SpecialGoodCheckDetail = (props) => {
           <FormCondition
             formItems={formItems}
             form={form}
+            initialValues={detail}
             style={{ marginTop: 10 }}
           ></FormCondition>
 
@@ -288,6 +303,7 @@ const SpecialGoodCheckDetail = (props) => {
               </div>
               <FormCondition
                 formItems={formCommission}
+                initialValues={detail}
                 form={form}
                 style={{ marginTop: 10 }}
               ></FormCondition>

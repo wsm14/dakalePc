@@ -178,3 +178,38 @@ export function fetchGetUsersSearch(params) {
     params,
   });
 }
+
+// 特惠sku通用-集团发布sku时可选商家列表
+export function fetchSkuAvailableMerchant(params) {
+  return request('/common/sku/config/skuAvailableMerchant', {
+    params,
+  });
+}
+
+//  sku通用-审核中sku挂靠商家列表
+export function fetchAuditMerchantList(params) {
+  return request('/common/sku/config/auditMerchantList', {
+    params,
+  });
+}
+
+//  sku通用-新建sku时可选择商品标签
+export function fetchGoodsTagListByCategoryId(params) {
+  return request('/common/config/goods/tag/listGoodsTagByCategoryId', {
+    params,
+  });
+}
+
+//sku通用-是否需要设置佣金
+export function fetchGoodsIsCommission(params) {
+  return request('/common/sku/config/manuallyCommission', {
+    params,
+  });
+}
+
+// sku通用-sku挂靠商家列表
+export function fetchSkuDetailMerchantList(params) {
+  return request('/common/sku/config/skuMerchantList', {
+    params,
+  });
+}
