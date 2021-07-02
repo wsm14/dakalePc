@@ -7,7 +7,6 @@ import {
   fetchMerSetBandCode,
   fetchMerchantStatus,
   fetchMerchantSet,
-  fetchMerchantAdd,
   fetchMerchantEdit,
   fetchMerchantTotal,
   fetchMerchantExportExcel,
@@ -184,15 +183,6 @@ export default {
         message: '温馨提示',
         description: '开户行号设置成功',
       });
-    },
-    *fetchMerchantAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchMerchantAdd, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '商家新增成功',
-      });
-      callback();
     },
     *fetchMerchantSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantSet, payload);
