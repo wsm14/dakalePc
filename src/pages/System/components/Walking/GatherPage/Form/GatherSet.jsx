@@ -8,7 +8,7 @@ import { CitySet, JumpFormSet } from '@/components/FormListCondition';
 import ConditionsForm from './ConditionsForm';
 const GatherSet = (props) => {
   const { visible = {}, onClose, cRef, dispatch, loading } = props;
-  const { show = false, type, detail = {} } = visible;
+  const { show = false, type, detail = {areaType:'all'} } = visible;
   const { provinceCityDistrictObjects: cityArr = [], areaType } = detail;
   const [form] = Form.useForm();
   const [showArea, setShowArea] = useState(false); // 区域
@@ -84,24 +84,24 @@ const GatherSet = (props) => {
       label: '应用范围',
       type: 'radio',
       name: 'areaType',
-      select: BANNER_AREA_TYPE,
+      select: { all: '全平台' },
       onChange: (e) => setShowArea(e.target.value === 'detail'),
     },
+    // {
+    //   label: '选择区县',
+    //   type: 'formItem',
+    //   visible: showArea,
+    //   formItem: (
+    //     <CitySet
+    //       name="provinceCityDistrictObjects"
+    //       form={form}
+    //       maxLength={10}
+    //       changeOnSelect={true}
+    //     ></CitySet>
+    //   ),
+    // },
     {
-      label: '选择区县',
-      type: 'formItem',
-      visible: showArea,
-      formItem: (
-        <CitySet
-          name="provinceCityDistrictObjects"
-          form={form}
-          maxLength={10}
-          changeOnSelect={true}
-        ></CitySet>
-      ),
-    },
-    {
-      label: '唤醒配置',
+      label: '唤起配置',
       type: 'formItem',
       name: 'evokeParamObjectList',
       rules: [{ required: true }],
