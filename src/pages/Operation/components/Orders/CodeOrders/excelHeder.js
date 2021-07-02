@@ -26,7 +26,7 @@ export default [
     render: (val) => val || 0,
   },
   {
-    title: '店铺实收',
+    title: '商户实收',
     dataIndex: 'actualCashFee',
     render: (val, record) => {
       const actualBean = record.actualBeanFee ? Number(record.actualBeanFee) / 100 : 0;
@@ -34,7 +34,7 @@ export default [
     },
   },
   {
-    title: '店铺实收卡豆',
+    title: '商户实收卡豆',
     dataIndex: 'beanFee',
     render: (val) => val || 0,
   },
