@@ -10,8 +10,8 @@ const ClassifySet = (props) => {
   const { dispatch, visible = {}, onClose, cRef, loading, list } = props;
   const { type = '', detail = {}, tabkey } = visible;
   const [form] = Form.useForm();
-  if(!detail.tagType){
-    detail.tagType = tabkey
+  if (!detail.tagType) {
+    detail.tagType = tabkey;
   }
 
   //获取一级行业类目
@@ -24,22 +24,30 @@ const ClassifySet = (props) => {
   // 确认数据
   const fetchUpData = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'values');
       const { configGoodsTagId } = detail;
-      dispatch({
-        type: {
-          add: 'goodsTag/fetchGoodsTagAdd',
-          edit: 'goodsTag/fetchGoodsTagUpdate',
-        }[type],
-        payload: {
-          ...values,
-          configGoodsTagId: configGoodsTagId,
-        },
-        callback: () => {
-          onClose();
-          cRef.current.fetchGetData();
-        },
-      });
+      const { configGoodsTagCategoryList = [] } = values;
+      let temObj = {};
+      //去除重复的行业类目
+      const noRepetCateArr = configGoodsTagCategoryList.reduce(function (item, next) {
+        temObj[next.categoryId] ? '' : (temObj[next.categoryId] = true && item.push(next));
+        return item;
+      }, []);
+
+        dispatch({
+          type: {
+            add: 'goodsTag/fetchGoodsTagAdd',
+            edit: 'goodsTag/fetchGoodsTagUpdate',
+          }[type],
+          payload: {
+            ...values,
+            configGoodsTagId: configGoodsTagId,
+            configGoodsTagCategoryList:noRepetCateArr
+          },
+          callback: () => {
+            onClose();
+            cRef.current.fetchGetData();
+          },
+        });
     });
   };
 
