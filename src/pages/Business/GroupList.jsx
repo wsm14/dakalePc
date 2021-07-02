@@ -143,7 +143,7 @@ const tableList = (props) => {
       render: (val) => `${val}`,
     },
     {
-      title: '服务费(%)',
+      title: '核销订单服务费(%)',
       align: 'center',
       dataIndex: 'commissionRatio',
       render: (val) => val + '%',
