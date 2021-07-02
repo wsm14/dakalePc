@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Tag, Button } from 'antd';
+import {  Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -266,17 +266,17 @@ const SpecialGoodsResource = (props) => {
         const { status } = record;
         return [
           {
-            // type: 'info',
+            type: 'cancleRecommend',
             title: '取消推荐', // 高佣联盟 和 今日上新 不显示
             visible: !['highCommission', 'todayNew'].includes(tabKey),
           },
           {
-            // type: 'info',
+            type: 'placement',
             title: '置顶', // 下期预告 高佣联盟 和 今日上新 不显示
             visible: !['nextPeriod', 'highCommission', 'todayNew'].includes(tabKey),
           },
           {
-            // type: 'info',
+            type: 'placement',
             title: '取消置顶', // 下期预告 高佣联盟 和 今日上新 不显示
             visible: !['nextPeriod', 'highCommission', 'todayNew'].includes(tabKey),
             // click: () => setVisiblePeas({ show: true, detail: record }),
@@ -294,7 +294,7 @@ const SpecialGoodsResource = (props) => {
       };
       dispatch({
         type: 'specialGoods/fetchSpecialCancleRecommend',
-        payload:payload,
+        payload: payload,
         callback: () => {
           tableRef.current.fetchGetData();
         },
@@ -307,7 +307,7 @@ const SpecialGoodsResource = (props) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsRecommend',
       payload,
-      callback: childRef.current.fetchGetData,
+      callback: tableRef.current.fetchGetData,
     });
   };
 

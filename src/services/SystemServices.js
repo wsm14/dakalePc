@@ -242,3 +242,33 @@ export function fetchWithdrawUpdate(data) {
 }
 
 // 提现规则 end
+
+// 分佣模板 list  start
+
+//分佣模板 list
+export function fetchDivisionTemplateList(params) {
+  return request('/admin/division/template/listDivisionTemplate', {
+    params,
+  });
+}
+//分佣模板-详情
+export function fetchDivisionTemplateDetail(params) {
+  return request('/admin/division/template/getTemplateById', {
+    params,
+  });
+}
+// 分佣模板-新增
+export function fetchDivisionTemplateAdd(data) {
+  return request('/admin/division/template/createDivisionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+//分佣模板-修改
+export function fetchDivisionTemplateUpdate(data) {
+  return request('/admin/division/template/updateDivisionTemplate', {
+    method: 'POST',
+    data,
+  });
+}

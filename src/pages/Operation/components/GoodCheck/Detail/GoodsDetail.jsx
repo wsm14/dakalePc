@@ -5,7 +5,7 @@ import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
 import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
-  const { detail, merchantList = [] } = props;
+  const { detail, merchantList = [],tabkey } = props;
   const { goodsType, ownerType } = detail;
   console.log(merchantList, 'detail');
 
@@ -97,7 +97,6 @@ const GoodsDetail = (props) => {
     {
       label: '商家商品标签',
       name: 'goodsTagList',
-      show: detail.goodsTagList && !['0'].includes(detail.auditStatus),
       render: (val, row) => {
         const { goodsTagList = [] } = row;
         const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
@@ -125,7 +124,6 @@ const GoodsDetail = (props) => {
     {
       label: '平台商品标签',
       name: 'goodsTagList',
-      show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
         const tags = goodsTagList.filter((items) => items.tagType === 'platform');
@@ -179,14 +177,14 @@ const GoodsDetail = (props) => {
         formItems={GoodDecItem}
         initialValues={detail}
       ></DescriptionsCondition>
-      {detail.divisionFlag === '1' && detail.provinceFee && !['0'].includes(detail.auditStatus) && (
+      {detail.divisionFlag === '1' && !['adminAudit'].includes(tabkey) && (
         <DescriptionsCondition
           title="分佣配置"
           formItems={formItemComiss}
           initialValues={detail}
         ></DescriptionsCondition>
       )}
-      {!['0'].includes(detail.auditStatus) && (
+      {!['adminAudit'].includes(tabkey) && (
         <DescriptionsCondition
           title="商品标签"
           formItems={formItemTag}
