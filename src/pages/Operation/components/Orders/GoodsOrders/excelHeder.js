@@ -69,11 +69,6 @@ export default [
     dataIndex: 'verificationCount',
   },
   {
-    title: '店铺实收',
-    dataIndex: 'actualCashFee',
-    render: (val, record) => `${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
-  },
-  {
     title: '下单渠道',
     dataIndex: 'orderSource',
   },
