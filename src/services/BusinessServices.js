@@ -43,14 +43,6 @@ export function fetchMerSetBandCode(data) {
   });
 }
 
-// post 店铺数据 - 商家新增
-export function fetchMerchantAdd(data) {
-  return request('/admin/userMerchantVerify/saveUserMerchantVerify', {
-    method: 'POST',
-    data,
-  });
-}
-
 // post 店铺数据 - 商家 修改
 export function fetchMerchantEdit(data) {
   return request('/admin/merchantManagement/editMerchant', {

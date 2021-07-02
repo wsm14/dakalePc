@@ -13,24 +13,30 @@ export default [
     dataIndex: 'merchantName',
   },
   {
-    title: '用户实付',
+    title: '用户实付（卡豆+现金）',
     dataIndex: 'payFee',
     render: (val, record) => {
-      const cashBean = record.beanFee ? record.beanFee / 100 : 0;
-      return `￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0} ${
-        record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'
-      }${(val ? `+ ￥${val}` : 0) + ')'}`;
+      const cashBean = record.beanFee ? Number(record.beanFee) / 100 : 0;
+      return Number(val) + cashBean;
     },
+  },
+  {
+    title: '用户实付卡豆',
+    dataIndex: 'beanFee',
+    render: (val) => val || 0,
   },
   {
     title: '店铺实收',
     dataIndex: 'actualCashFee',
     render: (val, record) => {
-      const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
-      return `￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}${
-        record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'
-      }${(val ? `+ ￥${val}` : 0) + ')'}`;
+      const actualBean = record.actualBeanFee ? Number(record.actualBeanFee) / 100 : 0;
+      return Number(val) + actualBean;
     },
+  },
+  {
+    title: '店铺实收卡豆',
+    dataIndex: 'beanFee',
+    render: (val) => val || 0,
   },
   {
     title: '优惠券',
