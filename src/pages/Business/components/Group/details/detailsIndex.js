@@ -18,9 +18,14 @@ export const base = [
     name: 'address',
   },
   {
-    label: '服务费比例',
+    label: '扫码付服务费（%）',
+    name: 'scanCommissionRatio',
+    render: (val) => (val || 0) + '%',
+  },
+  {
+    label: '核销订单服务费（%）',
     name: 'commissionRatio',
-    render: (val) => val + '%',
+    render: (val) => (val || 0) + '%',
   },
 ];
 export const user = [{ label: '登录账号', name: 'account' }];

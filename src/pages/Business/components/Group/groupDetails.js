@@ -71,7 +71,7 @@ const groupsDetails = (props) => {
       tab: '集团信息',
     },
   ];
-  if (groupDetails.merchantGroupDTO && groupDetails.merchantGroupDTO.bankStatus !== '0') {
+  if (groupDetails?.merchantGroupDTO?.bankStatus !== '0') {
     tabList = [
       {
         key: 'tab1',
@@ -88,9 +88,8 @@ const groupsDetails = (props) => {
   const btnShow = () => {
     if (
       tabKey === 'tab2' &&
-      groupDetails.merchantGroupDTO &&
-      (groupDetails.merchantGroupDTO.bankStatus === '3' ||
-        groupDetails.merchantGroupDTO.bankStatus === '1')
+      (groupDetails?.merchantGroupDTO?.bankStatus === '3' ||
+        groupDetails?.merchantGroupDTO?.bankStatus === '1')
     ) {
       return false;
     }
@@ -99,8 +98,8 @@ const groupsDetails = (props) => {
   const toastShow = () => {
     if (
       tabKey === 'tab2' &&
-      groupDetails.merchantGroupDTO.bankStatus === '2' &&
-      groupDetails.merchantGroupDTO.bankRejectReason
+      groupDetails?.merchantGroupDTO?.bankStatus === '2' &&
+      groupDetails?.merchantGroupDTO?.bankRejectReason
     ) {
       return true;
     }
