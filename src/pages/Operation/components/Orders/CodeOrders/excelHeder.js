@@ -35,7 +35,7 @@ export default [
   },
   {
     title: '商户实收卡豆',
-    dataIndex: 'beanFee',
+    dataIndex: 'actualBeanFee',
     render: (val) => val || 0,
   },
   {
