@@ -132,7 +132,6 @@ const CodeOrders = (props) => {
         return (
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
-
             <div className={styles.fontColor}>
               {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
             </div>

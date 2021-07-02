@@ -135,7 +135,6 @@ export default [
         name: '店铺列表',
         component: './Business/BusinessList',
         buttons: [
-          'save',
           'edit',
           'info',
           'setMreCord',
