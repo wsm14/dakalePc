@@ -13,14 +13,24 @@ export default [
     dataIndex: 'merchantName',
   },
   {
-    title: '用户支付',
+    title: '用户实付',
     dataIndex: 'payFee',
-    render: (val, record) => `${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
+    render: (val, record) => {
+      const cashBean = record.beanFee ? record.beanFee / 100 : 0;
+      return `￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0} ${
+        record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'
+      }${(val ? `+ ￥${val}` : 0) + ')'}`;
+    },
   },
   {
     title: '店铺实收',
     dataIndex: 'actualCashFee',
-    render: (val, record) => `${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+    render: (val, record) => {
+      const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+      return `￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}${
+        record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'
+      }${(val ? `+ ￥${val}` : 0) + ')'}`;
+    },
   },
   {
     title: '优惠券',
