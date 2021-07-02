@@ -1,17 +1,11 @@
 import React from 'react';
-import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_URL, MSG_PSUH_TAB } from '@/common/constant';
+import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_URL } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
 const MessagePushSet = (props) => {
   const { initialValues = {}, form } = props;
 
   const formItems = [
-    {
-      label: '推送目标',
-      name: 'userType',
-      type: 'radio',
-      select: MSG_PSUH_TAB,
-    },
     {
       label: '消息标题',
       name: 'title',
