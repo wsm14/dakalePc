@@ -136,7 +136,7 @@ const ShareManage = (props) => {
       title: (
         <QuestionTooltip
           type="quest"
-          title="观看人数（人）"
+          title="观看人次（人）"
           content={`观看视频3s及以上的人数`}
         ></QuestionTooltip>
       ),
@@ -145,7 +145,7 @@ const ShareManage = (props) => {
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
     {
-      title: '领卡豆人数（人）',
+      title: '领豆人次（人）',
       align: 'right',
       dataIndex: 'payedPersonAmount',
       sorter: (a, b) => a.payedPersonAmount - b.payedPersonAmount,

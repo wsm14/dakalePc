@@ -13,16 +13,20 @@ import styles from './style.less';
 
 const ChartBlockComponent = ({
   location: {
-    query: { bucket = '' },
+    query: { bucket = '', beginDate = '', endDate = '' },
   },
 }) => {
   // 搜索参数
   const [searchData, setSearchData] = useReducer(reducer, {
-    ...initialState,
+    beginDate: beginDate || initialState.beginDate,
+    endDate: endDate || initialState.endDate,
     provinceCode: bucket,
   });
   // 时间参数
-  const [timeData, setTimeData] = useState(initialState);
+  const [timeData, setTimeData] = useState({
+    beginDate: beginDate || initialState.beginDate,
+    endDate: endDate || initialState.endDate,
+  });
   // 城市参数
   const [cityData, setCityData] = useState({ provinceCode: bucket });
 

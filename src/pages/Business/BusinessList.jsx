@@ -290,11 +290,6 @@ const BusinessListComponent = (props) => {
   // 额外按钮
   const extraBtn = [
     {
-      text: '新增店铺',
-      auth: 'save',
-      onClick: () => setVisibleEdit({ type: 'add', show: true, info: false }),
-    },
-    {
       text: '设置商家验证码',
       auth: 'setMreCord',
       onClick: handleVCodeSet,

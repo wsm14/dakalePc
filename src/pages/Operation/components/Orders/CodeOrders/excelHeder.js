@@ -13,14 +13,30 @@ export default [
     dataIndex: 'merchantName',
   },
   {
-    title: '用户支付',
+    title: '用户实付（卡豆+现金）',
     dataIndex: 'payFee',
-    render: (val, record) => `${val}（含${record.beanFee ? record.beanFee : 0}卡豆）`,
+    render: (val, record) => {
+      const cashBean = record.beanFee ? Number(record.beanFee) / 100 : 0;
+      return Number(val) + cashBean;
+    },
   },
   {
-    title: '店铺实收',
+    title: '用户实付卡豆',
+    dataIndex: 'beanFee',
+    render: (val) => Number(val),
+  },
+  {
+    title: '商户实收',
     dataIndex: 'actualCashFee',
-    render: (val, record) => `${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
+    render: (val, record) => {
+      const actualBean = record.actualBeanFee ? Number(record.actualBeanFee) / 100 : 0;
+      return Number(val) + actualBean;
+    },
+  },
+  {
+    title: '商户实收卡豆',
+    dataIndex: 'actualBeanFee',
+    render: (val) => Number(val),
   },
   {
     title: '优惠券',

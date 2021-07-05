@@ -279,7 +279,7 @@ const SpecialGoods = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, ownerIdString, status, deleteFlag } = record;
+        const { specialGoodsId, ownerIdString: merchantId, status, deleteFlag } = record;
         return [
           {
             type: 'goodsCode',
@@ -288,6 +288,7 @@ const SpecialGoods = (props) => {
               fetchSpecialGoodsQrCode(
                 { specialGoodsId },
                 `${record.merchantName}-${record.goodsName}`,
+                { specialGoodsId, merchantId },
               ),
           },
           {
@@ -332,11 +333,11 @@ const SpecialGoods = (props) => {
   ];
 
   // 获取商品码
-  const fetchSpecialGoodsQrCode = (payload, title) => {
+  const fetchSpecialGoodsQrCode = (payload, title, data) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsQrCode',
       payload,
-      callback: (url) => setQrcode({ url, title }),
+      callback: (url) => setQrcode({ url, title, data }),
     });
   };
 

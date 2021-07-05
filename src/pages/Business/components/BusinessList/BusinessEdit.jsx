@@ -21,7 +21,7 @@ const BusinessAdd = (props) => {
     loading,
     businessAudit,
   } = props;
-  const { type = 'add', show = false } = visible;
+  const { type = 'edit', show = false } = visible;
   const { lnt = 116.407526, lat = 39.90403 } = initialValues;
 
   const [form] = Form.useForm();
@@ -103,7 +103,6 @@ const BusinessAdd = (props) => {
           aliOssUpload(interiorImg).then((res) => {
             dispatch({
               type: {
-                add: 'businessList/fetchMerchantAdd',
                 edit: 'businessList/fetchMerchantEdit',
                 audit: 'businessAudit/fetchMerSaleAuditAllow',
               }[type],
@@ -297,7 +296,7 @@ const BusinessAdd = (props) => {
   });
 
   const modalProps = {
-    title: `${{ audit: '审核', add: '新增', edit: '修改' }[type]}店铺`,
+    title: `${{ audit: '审核', edit: '修改' }[type]}店铺`,
     width: 750,
     visible: show,
     maskClosable: false,
@@ -308,11 +307,7 @@ const BusinessAdd = (props) => {
     },
     footer: (
       <>
-        {(type == 'add' || type == 'edit') && (
-          <Button {...buttonProps(fetchUpdataCheck)}>
-            {{ add: '提交审核', edit: '修改' }[type]}
-          </Button>
-        )}
+        {type == 'edit' && <Button {...buttonProps(fetchUpdataCheck)}>修改</Button>}
         {type == 'audit' && (
           <>
             <Button onClick={fetchAuditRefuse} type="primary" loading={loading}>

@@ -20,6 +20,11 @@ const addGroups = (props) => {
     initial,
     merchantGroupDTO: { bankAccountType },
   } = props;
+
+  const [form] = Form.useForm();
+  const cRef = useRef();
+  const [bankAccount, setBankAccount] = useState('2');
+
   const options = [
     {
       label: '对公(企业、组织机构)',
@@ -33,11 +38,9 @@ const addGroups = (props) => {
       setBankAccount(bankAccountType);
     }
   }, [bankAccountType]);
-  const [form] = Form.useForm();
-  const cRef = useRef();
-  const [bankAccount, setBankAccount] = useState('2');
+
   const panelList = {
-    '1': [
+    1: [
       {
         title: '对公账户信息',
         form: <ActiveSetForm cRef={cRef} form={form} initialValues={initial} />,
@@ -51,7 +54,7 @@ const addGroups = (props) => {
         disabled: true,
       },
     ],
-    '2': [
+    2: [
       {
         title: '对私账户信息',
         form: <ActiveSetOneForm cRef={cRef} form={form} initialValues={initial} />,

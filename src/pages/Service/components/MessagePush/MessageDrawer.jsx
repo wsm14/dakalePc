@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
+import { MSG_PSUH_TAB } from '@/common/constant';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import DrawerCondition from '@/components/DrawerCondition';
 import MessageDetail from './Deatil/MessageDetail';
@@ -75,7 +76,7 @@ const MessageDrawer = (props) => {
 
   // 弹出窗属性
   const modalProps = {
-    title: drawerProps.title,
+    title: `${drawerProps.title} - ${MSG_PSUH_TAB[userType]}`,
     visible: shwo,
     onClose,
     footer: drawerProps.footer,
