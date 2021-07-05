@@ -51,11 +51,12 @@ export default {
       const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
       const { configWindVane } = response.content;
-      const { bubbleFlag, scenesId = '' } = configWindVane;
+      const { bubbleFlag, windVaneParamObject = {} } = configWindVane;
+      const { categoryId, topCategoryId } = windVaneParamObject;
       callback({
         ...configWindVane,
         bubbleFlag: Boolean(Number(bubbleFlag)),
-        scenesId: scenesId.split(','),
+        categoryId: topCategoryId ? [topCategoryId, categoryId] : [categoryId],
       });
     },
     *fetchWalkManageVaneEditDel({ payload, callback }, { call }) {

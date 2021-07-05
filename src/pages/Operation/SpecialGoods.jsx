@@ -371,7 +371,7 @@ const SpecialGoods = (props) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsRecommend',
       payload,
-      callback: childRef.current.fetchGetData(),
+      callback: childRef.current.fetchGetData,
     });
   };
 

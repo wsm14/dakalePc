@@ -326,13 +326,17 @@ const SpecialGoodsResource = (props) => {
           {
             type: 'placement',
             title: '置顶', // 限时抢购，爆品福利，每日必推，特惠推荐显示 且
-            visible: ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey),
+            visible:
+              ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
+              record.isRecommendTop == '0',
             click: () => handletoTop(val),
           },
           {
             type: 'placement',
             title: '取消置顶', // 限时抢购，爆品福利，每日必推，‘特惠推荐显示
-            visible: ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey),
+            visible:
+              ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
+              record.isRecommendTop == '1',
             click: () => handleCancletoTop(val),
           },
         ];
@@ -351,7 +355,7 @@ const SpecialGoodsResource = (props) => {
       auth: 'save',
       text: '条件配置', // 高佣联盟 和 今日上新 存在
       show: ['highCommission', 'todayNew'].includes(tabKey),
-      onClick: () => setVisibleSet({show:true,tabKey})
+      onClick: () => setVisibleSet({ show: true, tabKey }),
     },
   ];
 
@@ -382,7 +386,11 @@ const SpecialGoodsResource = (props) => {
         }}
         {...specialGoods}
       ></TableDataBlock>
-      <GoodResourceSet visible={visibleSet}   cRef={tableRef} onClose={() => setVisibleSet(false)}></GoodResourceSet>
+      <GoodResourceSet
+        visible={visibleSet}
+        cRef={tableRef}
+        onClose={() => setVisibleSet(false)}
+      ></GoodResourceSet>
     </>
   );
 };

@@ -190,10 +190,9 @@ export function fetchCrmGrounpList(params) {
 }
 
 // post 获取子门店列表
-export function fetchGroupStoreList(data) {
+export function fetchGroupStoreList(params) {
   return request('/admin/merchantGroup/listMySubMerchantData', {
-    method: 'POST',
-    data,
+    params,
   });
 }
 

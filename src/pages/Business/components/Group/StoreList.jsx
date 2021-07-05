@@ -15,7 +15,7 @@ const StoreList = (props) => {
 
   const { show = false, detail = {} } = visible;
 
-  const { groupName, merchantGroupId } = detail;
+  const { groupName, merchantGroupIdString: merchantGroupId } = detail;
 
   const searchItems = [
     {

@@ -6,17 +6,18 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 const VaneDrawer = (props) => {
   const { navigation, dispatch, cRef, visible, onClose, loading, tradeList } = props;
   const [categoryArr, setCategoryArr] = useState([]);
 
   const { show = false, type = 'add', detail = {} } = visible;
-  const { windVaneParamObject = {} } = detail;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
-  detail.categoryId = windVaneParamObject.categoryId;
+
+  console.log(detail,"dddd")
 
   const allProps = {
     add: {
@@ -38,9 +39,9 @@ const VaneDrawer = (props) => {
       const { image, bubbleFlag = 0, categoryId = [], jumpType } = values;
       let cateId = '';
       if (categoryId && categoryId.length > 1) {
-        cateId = Number(categoryId[1]);
+        cateId = categoryId[1];
       } else {
-        cateId = Number(categoryId[0]);
+        cateId = categoryId[0];
       }
       const windVaneParamObject = {
         categoryId: cateId,
