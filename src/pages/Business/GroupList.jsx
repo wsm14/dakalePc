@@ -157,7 +157,7 @@ const tableList = (props) => {
     {
       type: 'handle',
       width: 130,
-      dataIndex: 'merchantGroupId',
+      dataIndex: 'merchantGroupIdString',
       render: (val, record, index) => [
         {
           type: 'edit',
@@ -230,7 +230,7 @@ const tableList = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         cRef={childRef}
-        rowKey={(record) => `${record.merchantGroupId}`}
+        rowKey={(record) => `${record.merchantGroupIdString}`}
         dispatchType="groupSet/fetchGetList"
         {...list}
       ></TableDataBlock>

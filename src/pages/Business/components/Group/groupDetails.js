@@ -51,7 +51,7 @@ const groupsDetails = (props) => {
       },
     });
     setTabKey('tab1');
-    const { merchantGroupId } = list.list[size];
+    const { merchantGroupIdString: merchantGroupId } = list.list[size];
     if (merchantGroupId) {
       dispatch({
         type: 'groupSet/fetchGrounpDetails',
@@ -59,10 +59,11 @@ const groupsDetails = (props) => {
           merchantGroupId,
         },
       });
-    } else
+    } else {
       message.error({
         content: '参数错误',
       });
+    }
   };
 
   let tabList = [
