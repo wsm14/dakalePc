@@ -30,6 +30,7 @@ const TemplateDrawSet = (props) => {
       name: 'categoryIds',
       type: 'tags',
       select: tradeList,
+      disabled: type === 'edit',
       fieldNames: { label: 'categoryName', value: 'categoryIdString' },
     },
     {
