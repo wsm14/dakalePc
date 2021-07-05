@@ -8,10 +8,13 @@ import {
   fetchSpecialGoodsDel,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
-  fetchSpecialGoodsRecommend,
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
+  fetchSpecialGoodsRecommend, //推荐
   fetchSpecialCancleRecommend,
+  fetchSpecialToTop,
+  fetchSpecialCancleToTop,
+  fetchSpecialConditConfig,
 } from '@/services/OperationServices';
 
 export default {
@@ -148,11 +151,7 @@ export default {
     *fetchSpecialGoodsRecommend({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsRecommend, payload);
       if (!response) return;
-      const { operationFlag } = payload;
       let mes = '设置推荐成功';
-      if (operationFlag === 'cancelRecommend') mes = '取消推荐成功';
-      if (operationFlag === 'top') mes = '置顶成功';
-      if (operationFlag === 'cancelTop') mes = '取消置顶成功';
       notification.success({
         message: '温馨提示',
         description: mes,
@@ -172,6 +171,34 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '取消推荐成功',
+      });
+      callback();
+    },
+    *fetchSpecialToTop({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialToTop, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '置顶成功',
+      });
+      callback();
+    },
+    *fetchSpecialCancleToTop({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialCancleToTop, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '取消置顶成功',
+      });
+      callback();
+    },
+    //条件配置
+    *fetchSpecialConditConfig({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialConditConfig, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '配置成功',
       });
       callback();
     },

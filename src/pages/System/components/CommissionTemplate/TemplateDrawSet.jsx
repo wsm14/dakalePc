@@ -8,7 +8,7 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const TemplateDrawSet = (props) => {
-  const { visible, onClose, tabKey, tradeList, dispatch } = props;
+  const { visible, onClose, tabKey, tradeList, dispatch, cRef } = props;
   const { show = false, type = 'add', detail = {} } = visible;
   detail.serviceType = tabKey;
 
@@ -131,7 +131,6 @@ const TemplateDrawSet = (props) => {
           },
           callback: () => {
             onClose();
-
             cRef.current.fetchGetData();
           },
         });
