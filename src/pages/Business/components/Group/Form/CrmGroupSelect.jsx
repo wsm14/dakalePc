@@ -117,8 +117,8 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                     cityName,
                     topCategSelect: [topCategoryIdStr, categoryIdStr],
                     categoryObj: {
-                      topCategoryIdStr,
-                      categoryIdStr,
+                      topCategoryId: topCategoryIdStr,
+                      categoryId: categoryIdStr,
                       categoryName,
                       categoryNode,
                       topCategoryName,
