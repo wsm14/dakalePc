@@ -147,6 +147,14 @@ export function fetchSpecialGoodsAuditReject(data) {
   });
 }
 
+// 特惠审核-关闭
+export function fetchSpecialGoodsAuditClose(data) {
+  return request('/admin/marketing/audit/closeAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
 //特惠审核end
 
 // 分享管理

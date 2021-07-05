@@ -455,7 +455,6 @@ export const SPECIAL_RECOMMEND_TYPE = {
   novice: '新手视频',
   dayPush: '每日必推',
   aroundSpecial: '特惠推荐',
-  null: '没有推荐类型',
 };
 
 // 特惠活动 - 是否删除
@@ -509,6 +508,7 @@ export const SUBMIT_TYPE = {
   merchant: '商家',
   admin: '运营后台',
   sell: 'CRM',
+  group:'集团'
 };
 
 //  serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板

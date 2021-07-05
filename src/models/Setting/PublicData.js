@@ -327,7 +327,7 @@ export default {
           groupMreList: content.recordList.map((item) => ({
             name: `${item.merchantName || item.groupName} ${item.account || ''}`,
             otherData: item.address,
-            value: item.userMerchantIdString || item.merchantGroupId,
+            value: item.userMerchantIdString || item.merchantGroupIdString,
             commissionRatio: item.commissionRatio,
             topCategoryName: [item.topCategoryName, item.categoryName],
             topCategoryId: [item.topCategoryIdString, item.categoryIdString],
@@ -343,7 +343,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          skuMerchantList: content.merchantList,
+          skuMerchantList: { list: content.merchantList, total: content.total },
         },
       });
     },

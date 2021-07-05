@@ -7,6 +7,7 @@ import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
   const { goodsType, ownerType } = detail;
+  console.log(detail, 'deeeee');
 
   const ActiveformItems = [
     {
@@ -16,7 +17,7 @@ const GoodsDetail = (props) => {
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      name: 'merchantName',
+      name: 'ownerName',
       label: `${BUSINESS_TYPE[ownerType]}名称`,
     },
   ];
@@ -84,9 +85,9 @@ const GoodsDetail = (props) => {
       name: 'provinceFee',
       render: (val, row) => (
         <>
-          <div>省代分佣：{row.provinceFee}</div>
-          <div>区县分佣：{row.districtFee}</div>
-          <div>哒人分佣：{row.darenFee}</div>
+          <div>省代分佣：{row.serviceDivisionDTO.provinceFee}元</div>
+          <div>区县分佣：{row.serviceDivisionDTO.districtFee}元</div>
+          <div>哒人分佣：{row.serviceDivisionDTO.darenFee}元</div>
         </>
       ),
     },
@@ -119,7 +120,6 @@ const GoodsDetail = (props) => {
           </>
         );
       },
-      // show: detail.auditStatus !== '0',
     },
     {
       label: '平台商品标签',
@@ -177,7 +177,8 @@ const GoodsDetail = (props) => {
         formItems={GoodDecItem}
         initialValues={detail}
       ></DescriptionsCondition>
-      {detail.divisionFlag === '1' && detail.provinceFee && (
+      {/* 当分佣方式为自定义佣金和手动分佣时才显示 */}
+      {detail.divisionFlag === '1' && (
         <DescriptionsCondition
           title="分佣配置"
           formItems={formItemComiss}

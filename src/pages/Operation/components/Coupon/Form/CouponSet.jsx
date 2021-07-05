@@ -51,6 +51,20 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
+  // table 表头
+  const getColumns = [
+    {
+      title: '店铺名称',
+      dataIndex: 'merchantName',
+      ellipsis: true,
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+      ellipsis: true,
+    },
+  ];
+
   // 信息
   const formItems = [
     {
@@ -104,6 +118,8 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
         <MreSelectShow
           key="MreTable"
           form={form}
+          columns={getColumns}
+          rowKey="merchantId"
           {...mreList}
           setMreList={saveMreData}
         ></MreSelectShow>
@@ -293,6 +309,7 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
+        rowKey="merchantId"
         keys={mreList.keys}
         visible={visible}
         mreList={mreList.list}

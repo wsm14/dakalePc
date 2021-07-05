@@ -5,6 +5,7 @@ import {
   fetchSpecialGoodsAuditDetail,
   fetchSpecialGoodsAudit,
   fetchSpecialGoodsAuditReject,
+  fetchSpecialGoodsAuditClose,
 } from '@/services/OperationServices';
 
 export default {
@@ -98,7 +99,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '审核完成',
+        description: '审核完成，等待商家确认',
       });
       callback();
     },
@@ -107,7 +108,16 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '审核驳回成功',
+        description: '审核完成',
+      });
+      callback();
+    },
+    *fetchSpecialGoodsAuditClose({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsAuditClose, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '关闭成功',
       });
       callback();
     },
