@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { TAG_TYPE } from '@/common/constant';
+import { SPACE_PATTERN } from '@/common/regExp';
 import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -33,21 +34,21 @@ const ClassifySet = (props) => {
         return item;
       }, []);
 
-        dispatch({
-          type: {
-            add: 'goodsTag/fetchGoodsTagAdd',
-            edit: 'goodsTag/fetchGoodsTagUpdate',
-          }[type],
-          payload: {
-            ...values,
-            configGoodsTagId: configGoodsTagId,
-            configGoodsTagCategoryList:noRepetCateArr
-          },
-          callback: () => {
-            onClose();
-            cRef.current.fetchGetData();
-          },
-        });
+      dispatch({
+        type: {
+          add: 'goodsTag/fetchGoodsTagAdd',
+          edit: 'goodsTag/fetchGoodsTagUpdate',
+        }[type],
+        payload: {
+          ...values,
+          configGoodsTagId: configGoodsTagId,
+          configGoodsTagCategoryList: noRepetCateArr,
+        },
+        callback: () => {
+          onClose();
+          cRef.current.fetchGetData();
+        },
+      });
     });
   };
 
@@ -62,6 +63,7 @@ const ClassifySet = (props) => {
       label: '标签名称',
       name: 'tagName',
       maxLength: 15,
+      addRules: [{ pattern: SPACE_PATTERN, message: '不能输入空格' }],
     },
     {
       label: '关联行业类目',
