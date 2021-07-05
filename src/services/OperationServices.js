@@ -67,7 +67,7 @@ export function fetchSpecialGoodsSave(data) {
   });
 }
 
-// post 周边特惠 - 推荐状态
+// post 周边特惠 - 设置推荐
 export function fetchSpecialGoodsRecommend(data) {
   return request('/admin/specialGoodsManagement/setRecommend', {
     method: 'POST',
@@ -84,6 +84,30 @@ export function fetchSpecialGoodsImport(params) {
 //周边特惠-取消推荐
 export function fetchSpecialCancleRecommend(data) {
   return request('/admin/specialGoodsManagement/cancelRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+//周边特惠-置顶 资源位
+export function fetchSpecialToTop(data) {
+  return request('/admin/specialGoodsManagement/topRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+//取消置顶 
+export function fetchSpecialCancleToTop(data) {
+  return request('/admin/specialGoodsManagement/cancelTopRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位条件配置 /admin/dictionaryAdmin/updateDictionaryAdmin
+export function fetchSpecialConditConfig(data) {
+  return request('/admin/dictionaryAdmin/updateDictionaryAdmin', {
     method: 'POST',
     data,
   });

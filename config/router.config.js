@@ -95,6 +95,8 @@ export default [
         component: './Base/ManageBrand',
         buttons: ['save', 'del', 'edit', 'status'],
       },
+    
+
       {
         path: '/system/tag',
         name: '店铺标签',
@@ -518,6 +520,12 @@ export default [
         name: '提现规则',
         component: './System/WithdrawRegular',
         buttons: ['save', 'edit'],
+      },
+      {
+        path: '/system/commissionTempate',
+        name: '分佣模板',
+        buttons: ['save', 'edit','info'],
+        component:'./System/CommissionTempate'
       },
       // 用户管理 user
       {

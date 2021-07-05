@@ -23,7 +23,7 @@ const ConditionsForm = (props) => {
                 ]}
                 noStyle
               >
-                <InputNumber placeholder="请输入卡豆数" style={{ width: '60%' }} />
+                <InputNumber precision={0} placeholder="请输入卡豆数" style={{ width: '60%' }} />
               </Form.Item>
               {fields.length > 1 && index > 1 ? (
                 <MinusCircleOutlined

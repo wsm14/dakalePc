@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Card, Tag, Button } from 'antd';
+import { Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -13,6 +13,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
+import GoodResourceSet from './components/SpecialGoods/GoodResourceSet';
 
 const SpecialGoodsResource = (props) => {
   const { loadings, loading, hubData, dispatch, specialGoods } = props;
@@ -20,6 +21,8 @@ const SpecialGoodsResource = (props) => {
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择取消推荐的商品
   const [tabKey, setTabKey] = useState('hot');
+
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // tab 标签
   const search_recommend = {
@@ -39,6 +42,55 @@ const SpecialGoodsResource = (props) => {
       type: 'baseData/fetchGetHubData',
       payload: {
         districtCode,
+      },
+    });
+  };
+
+  //取消推荐
+  const handleCancle = (val) => {
+    if (goodsList || val) {
+      const goodsLists = goodsList ? goodsList.toString() : '';
+      const payload = {
+        specialGoodsId: goodsLists || val,
+        recommendType: tabKey,
+      };
+      dispatch({
+        type: 'specialGoods/fetchSpecialCancleRecommend',
+        payload: payload,
+        callback: () => {
+          tableRef.current.fetchGetData();
+        },
+      });
+    } else {
+    }
+  };
+
+  //置顶
+  const handletoTop = (val) => {
+    const payload = {
+      specialGoodsId: val,
+      recommendType: tabKey,
+    };
+    dispatch({
+      type: 'specialGoods/fetchSpecialToTop',
+      payload: payload,
+      callback: () => {
+        tableRef.current.fetchGetData();
+      },
+    });
+  };
+
+  //取下置顶
+  const handleCancletoTop = (val) => {
+    const payload = {
+      specialGoodsId: val,
+      recommendType: tabKey,
+    };
+    dispatch({
+      type: 'specialGoods/fetchSpecialCancleToTop',
+      payload: payload,
+      callback: () => {
+        tableRef.current.fetchGetData();
       },
     });
   };
@@ -260,56 +312,33 @@ const SpecialGoodsResource = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'length',
+      dataIndex: 'specialGoodsId',
       width: 180,
       render: (val, record) => {
-        const { status } = record;
+        // const { status } = record;
         return [
           {
-            // type: 'info',
+            type: 'cancleRecommend',
             title: '取消推荐', // 高佣联盟 和 今日上新 不显示
             visible: !['highCommission', 'todayNew'].includes(tabKey),
+            click: () => handleCancle(val),
           },
           {
-            // type: 'info',
-            title: '置顶', // 下期预告 高佣联盟 和 今日上新 不显示
-            visible: !['nextPeriod', 'highCommission', 'todayNew'].includes(tabKey),
+            type: 'placement',
+            title: '置顶', // 限时抢购，爆品福利，每日必推，特惠推荐显示 且
+            visible: ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey),
+            click: () => handletoTop(val),
           },
           {
-            // type: 'info',
-            title: '取消置顶', // 下期预告 高佣联盟 和 今日上新 不显示
-            visible: !['nextPeriod', 'highCommission', 'todayNew'].includes(tabKey),
-            // click: () => setVisiblePeas({ show: true, detail: record }),
+            type: 'placement',
+            title: '取消置顶', // 限时抢购，爆品福利，每日必推，‘特惠推荐显示
+            visible: ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey),
+            click: () => handleCancletoTop(val),
           },
         ];
       },
     },
   ];
-
-  const handleCancle = () => {
-    if (goodsList) {
-      const payload = {
-        specialGoodsId: goodsList ? goodsList.toString() : '',
-        recommendType: tabKey,
-      };
-      dispatch({
-        type: 'specialGoods/fetchSpecialCancleRecommend',
-        payload:payload,
-        callback: () => {
-          tableRef.current.fetchGetData();
-        },
-      });
-    }
-  };
-
-  // 推荐状态 / 置顶状态
-  const fetchSpecialGoodsRecommend = (payload) => {
-    dispatch({
-      type: 'specialGoods/fetchSpecialGoodsRecommend',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
 
   const btnList = [
     {
@@ -322,7 +351,7 @@ const SpecialGoodsResource = (props) => {
       auth: 'save',
       text: '条件配置', // 高佣联盟 和 今日上新 存在
       show: ['highCommission', 'todayNew'].includes(tabKey),
-      onClick: () => {},
+      onClick: () => setVisibleSet({show:true,tabKey})
     },
   ];
 
@@ -353,6 +382,7 @@ const SpecialGoodsResource = (props) => {
         }}
         {...specialGoods}
       ></TableDataBlock>
+      <GoodResourceSet visible={visibleSet}   cRef={tableRef} onClose={() => setVisibleSet(false)}></GoodResourceSet>
     </>
   );
 };

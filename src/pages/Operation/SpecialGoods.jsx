@@ -366,12 +366,12 @@ const SpecialGoods = (props) => {
     });
   };
 
-  // 推荐状态 / 置顶状态
+  // 推荐
   const fetchSpecialGoodsRecommend = (payload) => {
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsRecommend',
       payload,
-      callback: childRef.current.fetchGetData,
+      callback: childRef.current.fetchGetData(),
     });
   };
 

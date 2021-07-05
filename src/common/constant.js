@@ -455,7 +455,7 @@ export const SPECIAL_RECOMMEND_TYPE = {
   novice: '新手视频',
   dayPush: '每日必推',
   aroundSpecial: '特惠推荐',
-  null: "没有推荐类型",
+  null: '没有推荐类型',
 };
 
 // 特惠活动 - 是否删除
@@ -509,4 +509,36 @@ export const SUBMIT_TYPE = {
   merchant: '商家',
   admin: '运营后台',
   sell: 'CRM',
+};
+
+//  serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
+export const SERVICE_TYPE = {
+  specialGoods: '特惠商品 ',
+  reduceCoupon: '优惠券',
+};
+//模板类型 divisionTemplateType
+export const DIVISION_TEMPLATE_TYPE = {
+  difference: '按差价',
+  manual: '手动分佣',
+};
+
+// 分佣模板创建人类别
+
+export const TEMPLATE_CREATE_TYPE = {
+  admin: '管理员',
+  user: '用户',
+  merchant: '商家',
+  business: 'business',
+  company: '省公司',
+  partner: '区县代理',
+  group: '集团',
+  sell: 'CRM',
+};
+//分佣配置
+export const COMMISSION_TYPE = {
+  province: '省代分佣',
+  district: '区县分佣',
+  userParent: '用户家主分佣',
+  merchantParent: '商家家主分佣',
+  daren: '达人分佣',
 };

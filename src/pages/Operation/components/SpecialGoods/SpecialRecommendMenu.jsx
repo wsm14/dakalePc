@@ -7,7 +7,7 @@ const SpecialRecommendMenu = (props) => {
   const { disabled, handleRecommend, num } = props;
 
   const menu = (
-    <Menu onClick={({ key }) => handleRecommend({ operationFlag: key })}>
+    <Menu onClick={({ key }) => handleRecommend({ recommendType: key })}>
       {Object.keys(SPECIAL_RECOMMEND_TYPE).map((item) => (
         <Menu.Item key={item}>{SPECIAL_RECOMMEND_TYPE[item]}</Menu.Item>
       ))}
@@ -16,7 +16,7 @@ const SpecialRecommendMenu = (props) => {
 
   return (
     <Dropdown overlay={menu} placement="bottomCenter" disabled={disabled}>
-      <Button type="primary">推广{num ? `(已选${num})` : ''}</Button>
+      <Button type="primary">推荐{num ? `(已选${num})` : ''}</Button>
     </Dropdown>
   );
 };

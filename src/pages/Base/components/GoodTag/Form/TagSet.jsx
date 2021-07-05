@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { TAG_TYPE } from '@/common/constant';
+import { SPACE_PATTERN } from '@/common/regExp';
 import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -10,8 +11,8 @@ const ClassifySet = (props) => {
   const { dispatch, visible = {}, onClose, cRef, loading, list } = props;
   const { type = '', detail = {}, tabkey } = visible;
   const [form] = Form.useForm();
-  if(!detail.tagType){
-    detail.tagType = tabkey
+  if (!detail.tagType) {
+    detail.tagType = tabkey;
   }
 
   //获取一级行业类目
@@ -24,8 +25,15 @@ const ClassifySet = (props) => {
   // 确认数据
   const fetchUpData = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'values');
       const { configGoodsTagId } = detail;
+      const { configGoodsTagCategoryList = [] } = values;
+      let temObj = {};
+      //去除重复的行业类目
+      const noRepetCateArr = configGoodsTagCategoryList.reduce(function (item, next) {
+        temObj[next.categoryId] ? '' : (temObj[next.categoryId] = true && item.push(next));
+        return item;
+      }, []);
+
       dispatch({
         type: {
           add: 'goodsTag/fetchGoodsTagAdd',
@@ -34,6 +42,7 @@ const ClassifySet = (props) => {
         payload: {
           ...values,
           configGoodsTagId: configGoodsTagId,
+          configGoodsTagCategoryList: noRepetCateArr,
         },
         callback: () => {
           onClose();
@@ -54,6 +63,7 @@ const ClassifySet = (props) => {
       label: '标签名称',
       name: 'tagName',
       maxLength: 15,
+      addRules: [{ pattern: SPACE_PATTERN, message: '不能输入空格' }],
     },
     {
       label: '关联行业类目',

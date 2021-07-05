@@ -289,7 +289,7 @@ const SpecialGoodCheckDetail = (props) => {
           ></FormCondition>
 
           {/* 审核中并且分佣模板为手动分佣时 */}
-          {detail.divisionFlag === '1' && (
+          {detail.divisionFlag === '1' && ['adminAudit'].includes(tabkey) && (
             <>
               <div
                 style={{
@@ -309,7 +309,7 @@ const SpecialGoodCheckDetail = (props) => {
               ></FormCondition>
             </>
           )}
-          <div
+          {['adminAudit'].includes(tabkey)&&<><div
             style={{
               fontSize: 16,
               color: 'rgba(0,0,0,.85',
@@ -323,7 +323,7 @@ const SpecialGoodCheckDetail = (props) => {
             formItems={formTagItem}
             form={form}
             style={{ marginTop: 10 }}
-          ></FormCondition>
+          ></FormCondition></>}
         </>
       )}
       <CheckRefuseDraw
