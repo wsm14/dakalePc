@@ -73,8 +73,8 @@ const StoreList = (props) => {
     {
       title: '联系人',
       align: 'right',
-      dataIndex: 'withholdingTax',
-      render: (val) => `￥ ${val || 0}`,
+      dataIndex: 'contactPerson',
+      render: (val, row) => `${val || '--'}\n${row.telephone || '--'}`,
     },
     {
       title: '状态',
