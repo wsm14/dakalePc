@@ -35,7 +35,7 @@ const StoreList = (props) => {
       dataIndex: 'headerContentObject',
       width: 350,
       render: (val, row) => (
-        <PopImgShow url={val.imageUrl}>
+        <PopImgShow url={val?.imageUrl}>
           <Ellipsis tooltip lines={2}>
             {row.merchantName}
           </Ellipsis>
