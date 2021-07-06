@@ -540,5 +540,5 @@ export const COMMISSION_TYPE = {
   district: '区县分佣',
   userParent: '用户家主分佣',
   merchantParent: '商家家主分佣',
-  daren: '达人分佣',
+  daren: '哒人分佣',
 };

@@ -25,7 +25,7 @@ const CommissionTempate = (props) => {
   const [visibleInfo, setVisibleInfo] = useState(false);
 
   useEffect(() => {
-    tableRef.current.fetchGetData();
+    tableRef.current.fetchGetData({ serviceType: tabKey });
     getCateList();
   }, [tabKey]);
 

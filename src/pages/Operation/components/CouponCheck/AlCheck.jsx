@@ -4,7 +4,7 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const AlCheck = (props) => {
-    const { tabkey, colum = [], globalSearch,loading, specialGoods} = props 
+    const { tabkey, globalColum = [], globalSearch,loading, couponAudit} = props 
     const childRef = useRef();
 
     const searchItems = [
@@ -12,7 +12,7 @@ const AlCheck = (props) => {
     ];
 
     const getColumns = [
-        ...colum,
+        ...globalColum,
     ]
 
     return (
@@ -21,15 +21,15 @@ const AlCheck = (props) => {
             loading={loading}
             columns={getColumns}
             searchItems={searchItems}
-            rowKey={(record) => `${record.specialGoodsId}`}
-            dispatchType="specialGoods/fetchGetList"
-            {...specialGoods}
+            rowKey={(record) => `${record.auditIdString}`}
+            dispatchType="couponAudit/fetchGetList"
+            {...couponAudit}
         ></TableDataBlock>
 
     )
 }
 
-export default connect(({ specialGoods, baseData, loading }) => ({
-    specialGoods,
-    loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+export default connect(({ couponAudit, baseData, loading }) => ({
+    couponAudit,
+    loading: loading.models.couponAudit || loading.effects['baseData/fetchGetLogDetail'],
 }))(AlCheck);

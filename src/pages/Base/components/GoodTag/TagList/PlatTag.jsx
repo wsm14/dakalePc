@@ -116,10 +116,12 @@ const TagManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        scroll={{ y: 500 }}
         rowKey={(record) => `${record.configGoodsTagId}`}
         dispatchType="goodsTag/fetchGoodsTagList"
         params={{ tagType: tabkey }}
         tableSort={{ key: 'configGoodsTagId', onSortEnd: fetchDetailSort }}
+        pagination={false}
         {...goodsTag}
       ></TableDataBlock>
       <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>

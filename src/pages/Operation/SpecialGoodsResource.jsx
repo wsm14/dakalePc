@@ -33,7 +33,7 @@ const SpecialGoodsResource = (props) => {
 
   useEffect(() => {
     setGoodsList([]);
-    tableRef.current.fetchGetData();
+    tableRef.current.fetchGetData({ promotionLocation: tabKey });
   }, [tabKey]);
 
   // 获取商圈

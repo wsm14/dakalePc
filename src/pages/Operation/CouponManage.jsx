@@ -134,7 +134,7 @@ const CouponManageComponent = (props) => {
       dataIndex: 'createTime',
       render: (val, record) => <div style={{textAlign:'center'}}>
         <div>{val}</div>
-        <div>{运营后台-BD姓名}</div>
+        {/* <div>{运营后台-BD姓名}</div> */}
       </div>,
     },
     {
