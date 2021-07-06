@@ -513,15 +513,30 @@ export function fetchCouponDetail(params) {
 
 // post 优惠券管理 - 新增
 export function fetchCouponSave(data) {
-  return request('/admin/coupon/saveOwnerCoupon', {
+  return request('/admin/coupon/createOwnerCoupon', {
     method: 'POST',
     data,
   });
 }
 
-// post 优惠券管理 - 下架/编辑/删除优惠券
-export function fetchCouponStatus(data) {
+//券修改
+export function fetchCouponUpdate(data) {
   return request('/admin/coupon/updateOwnerCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 券下架
+export function fetchCouponOff(data) {
+  return request('/admin/coupon/offOwnerCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+// 券删除
+export function fetchCouponDelete(data) {
+  return request('/admin/coupon/deleteOwnerCoupon', {
     method: 'POST',
     data,
   });
@@ -537,6 +552,12 @@ export function fetchCouponToImport(params) {
 //券审核-列表
 export function fetchCouponAuditList(params) {
   return request('/admin/marketing/audit/listReduceCouponAudit', {
+    params,
+  });
+}
+// 券审核详情
+export function fetchCouponAuditDetail(params) {
+  return request('/admin/marketing/audit/getAuditDetailCoupon', {
     params,
   });
 }

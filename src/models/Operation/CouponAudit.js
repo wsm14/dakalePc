@@ -1,12 +1,5 @@
 import { notification } from 'antd';
-import {
-  fetchCouponList,
-  fetchCouponStatus,
-  fetchCouponSave,
-  fetchCouponDetail,
-  fetchCouponToImport,
-  fetchCouponAuditList
-} from '@/services/OperationServices';
+import { fetchCouponAuditList, fetchCouponAuditDetail } from '@/services/OperationServices';
 
 export default {
   namespace: 'couponAudit',
@@ -38,42 +31,22 @@ export default {
         },
       });
     },
-    *fetchCouponDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchCouponDetail, payload);
+    //详情
+    *fetchCouponAuditDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponAuditDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { couponDesc } = content.couponDetail;
+      const { ownerCouponInfo = {}, auditDetail = {} } = content;
+      const { couponDesc } = content.ownerCouponInfo;
       callback({
-        ...content.couponDetail,
+        ...ownerCouponInfo,
+        ...auditDetail,
         couponDescString: couponDesc.includes(']')
           ? JSON.parse(couponDesc || '[]').join('\n')
           : couponDesc,
         couponDesc: couponDesc.includes(']') ? JSON.parse(couponDesc || '[]') : [],
+        ...content,
       });
     },
-    *fetchCouponSave({ payload, callback }, { call }) {
-      const response = yield call(fetchCouponSave, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '优惠券新增成功',
-      });
-      callback();
-    },
-    *fetchCouponSet({ payload, callback }, { call }) {
-      const response = yield call(fetchCouponStatus, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '优惠券操作成功',
-      });
-      callback();
-    },
-    *fetchCouponToImport({ payload, callback }, { call }){
-      const response = yield call(fetchCouponToImport, payload);
-      if (!response) return;
-      const { content } = response;
-      if (callback) callback(content.ownerCouponList);
-    }
   },
 };

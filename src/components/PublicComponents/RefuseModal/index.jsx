@@ -3,7 +3,13 @@ import { Modal, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const RefuseModal = (props) => {
-  const { visible = {}, onClose, handleUpData, loading } = props;
+  const {
+    visible = {},
+    onClose,
+    handleUpData,
+    loading,
+    extra = '',
+  } = props;
   const { show = false, formProps = {} } = visible;
   const { type = 'refuse', key = 'rejectReason', maxLength = 50 } = formProps;
 
@@ -24,6 +30,7 @@ const RefuseModal = (props) => {
       type: 'textArea',
       name: key,
       maxLength,
+      extra,
     },
   ];
 

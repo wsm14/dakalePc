@@ -2,18 +2,22 @@ import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import CouponDrawer from './components/Coupon/CouponDrawer';
 import excelProps from './components/Coupon/excelProps';
 
 const CouponManageComponent = (props) => {
-  const { couponManage, loading, dispatch } = props;
+  const { couponManage, loading, dispatch, loadings } = props;
   const { list } = couponManage;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
+
+  //下架原因框
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
 
   // 搜索参数
   const searchItems = [
@@ -132,10 +136,12 @@ const CouponManageComponent = (props) => {
       title: '创建时间',
       align: 'right',
       dataIndex: 'createTime',
-      render: (val, record) => <div style={{textAlign:'center'}}>
-        <div>{val}</div>
-        {/* <div>{运营后台-BD姓名}</div> */}
-      </div>,
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          {/* <div>{运营后台-BD姓名}</div> */}
+        </div>
+      ),
     },
     {
       title: '发布时间',
@@ -161,30 +167,59 @@ const CouponManageComponent = (props) => {
           {
             type: 'del',
             visible: status !== '1',
-            click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
+            click: () => fetchCouponSet({ ownerCouponId, ownerId }),
           },
-          // {
-          //   type: 'edit',
-          //   click: () => fetchCouponDetail(val, 'edit'),
-          // },
+          {
+            type: 'edit',
+            visible: ['1'].includes(status),
+            click: () => fetchCouponDetail(index, 'edit'),
+          },
+          {
+            type: 'again',
+            title: '重新发布',
+            visible: ['0'].includes(status), // 已下架 && 未删除
+            click: () => fetchCouponDetail(index, 'again'),
+          },
           // 上架中 已确认 | 上架中 已驳回
           {
-            type: 'down',
-            popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
-            visible: status == '1',
-            click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
+            title: '下架',
+            auth: 'down',
+            visible: ['1'].includes(status),
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: { ownerCouponId, ownerId },
+                formProps: { type: 'down', key: 'offShelfReason' },
+              }),
           },
         ];
       },
     },
   ];
 
-  // 下架/删除
+  // 删除
   const fetchCouponSet = (payload) => {
     dispatch({
-      type: 'couponManage/fetchCouponSet',
+      type: 'couponManage/fetchCouponDelete',
       payload,
       callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 下架
+  const fetchDownCoupon = (values) => {
+    const { ownerCouponId, ownerId } = visibleRefuse.detail;
+    dispatch({
+      type: 'couponManage/fetchCouponOff',
+      payload: {
+        ...values,
+        ownerCouponId,
+        ownerId,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
     });
   };
 
@@ -234,6 +269,14 @@ const CouponManageComponent = (props) => {
         getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
       ></CouponDrawer>
+      {/* 下架原因 */}
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={fetchDownCoupon}
+        loading={loadings.models.couponManage}
+        extra={'下架后不影响已购买的用户使用'}
+      ></RefuseModal>
     </>
   );
 };
