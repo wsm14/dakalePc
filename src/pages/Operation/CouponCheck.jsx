@@ -1,19 +1,14 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import {
-  BUSINESS_TYPE,
-  SPECIAL_STATUS,
-  GOODS_CLASS_TYPE,
-  SPECIAL_RECOMMEND_DELSTATUS,
-  BUSINESS_STATUS_AUDIT,
-} from '@/common/constant';
+import { BUSINESS_TYPE, SUBMIT_TYPE, ACTION_TYPE } from '@/common/constant';
 
 import Ellipsis from '@/components/Ellipsis';
 import NoCheck from './components/CouponCheck/NoCheck';
 import NoConfirm from './components/CouponCheck/NoConfirm';
 import AlCheck from './components/CouponCheck/AlCheck';
 import AlConfirm from './components/CouponCheck/AlConfirm';
+import CouponDetail from './components/CouponCheck/Detail/CouponDetail';
 
 const tabList = [
   {
@@ -35,39 +30,27 @@ const tabList = [
 ];
 
 const CouponCheck = (props) => {
-  const { dispatch, loading, hubData } = props;
+  const { dispatch, specialGoodsCheck } = props;
   const [tabkey, setTabKey] = useState('adminAudit');
-  const tableRef = useRef();
+  const [visibleInfo, setVisibleInfo] = useState(false);
 
-  // 获取商圈
-  const fetchGetHubSelect = (districtCode) => {
-    dispatch({
-      type: 'baseData/fetchGetHubData',
-      payload: {
-        districtCode,
-      },
-    });
-  };
+  const tableRef = useRef();
+  const { list } = specialGoodsCheck;
 
   //组建公用的搜索条件
   const globalSearch = [
     {
-      label: '商品名称',
-      name: 'goodsName',
+      label: '券名称',
+      name: 'couponName',
     },
     {
-      label: '集团/店铺名',
-      name: 'groupOrMerchantName',
+      label: '集团/店铺名称',
+      name: 'ownerName',
     },
-    // {
-    //     label: '活动状态',
-    //     name: 'status',
-    //     type: 'select',
-    //     select: SPECIAL_STATUS,
-    // },
+
     {
       label: '创建人',
-      name: 'creatorName',
+      name: 'creator',
     },
     {
       label: '创建时间',
@@ -75,43 +58,14 @@ const CouponCheck = (props) => {
       name: 'beginDate',
       end: 'endDate',
     },
-    // {
-    //     label: '活动有效期',
-    //     type: 'rangePicker',
-    //     name: 'activityStartTime',
-    //     end: 'activityEndTime',
-    // },
-    // {
-    //     label: '地区',
-    //     name: 'city',
-    //     type: 'cascader',
-    //     changeOnSelect: true,
-    //     valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    //     onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
-    // },
-    // {
-    //     label: '商圈',
-    //     name: 'businessHubId',
-    //     type: 'select',
-    //     // loading: loading,
-    //     allItem: false,
-    //     select: hubData,
-    //     fieldNames: { label: 'businessHubName', value: 'businessHubIdString' },
-    // },
-    {
-      label: '店铺类型',
-      name: 'ownerType',
-      type: 'select',
-      select: BUSINESS_TYPE,
-    },
     {
       label: '审核类型',
-      name: 'checkType',
+      name: 'actionType',
       type: 'select',
-      select: BUSINESS_STATUS_AUDIT,
+      select: ACTION_TYPE,
     },
     {
-      label: '券类型',
+      label: '店铺类型',
       name: 'ownerType',
       type: 'select',
       select: BUSINESS_TYPE,
@@ -122,88 +76,48 @@ const CouponCheck = (props) => {
   const globalColum = [
     {
       title: '券/店铺名称',
-      fixed: 'left',
-      dataIndex: 'goodsImg',
+      dataIndex: 'couponName',
       render: (val, row) => (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            flex: 1,
-            marginLeft: 5,
-          }}
-        >
-          <div style={{ display: 'flex' }}>
-            <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
-              {GOODS_CLASS_TYPE[row.goodsType]}
-            </Tag>
-            <Ellipsis length={10} tooltip>
-              {row.goodsName}
-            </Ellipsis>
+        <div>
+          <div>
+            <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
+            {val}
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
             <Ellipsis length={10} tooltip>
-              {row.merchantName}
+              {row.ownerName}
             </Ellipsis>
           </div>
         </div>
       ),
     },
-    // {
-    //     title: '佣金',
-    //     align: 'right',
-    //     dataIndex: 'realPrice',
-    //     render: (val, row) => `￥${(Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2)}`,
-    //     sorter: (a, b) =>
-    //         Number(a.realPrice) -
-    //         Number(a.merchantPrice) -
-    //         (Number(b.realPrice) - Number(b.merchantPrice)),
-    // },
     {
       title: '券价值/售价',
       align: 'right',
-      dataIndex: 'oriPrice',
-      render: (val, row) => {
-        const zhe = (Number(row.realPrice) / Number(val)) * 10;
-        return (
-          <div>
-            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-              ￥{Number(val).toFixed(2)}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Tag color={'red'}>
-                {zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折
-              </Tag>
-              <div>￥{Number(row.realPrice).toFixed(2)}</div>
-            </div>
+      dataIndex: ['reduceObject', 'couponPrice'],
+      render: (val, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(val).toFixed(2)}
           </div>
-        );
-      },
+          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
+        </div>
+      ),
     },
     {
       title: '使用门槛',
       align: 'center',
-      dataIndex: 'useThreshold',
-      render: (val, row) => {
-        const { useThreshold } = row;
-        switch (useThreshold) {
-          case 'threshold':
-            return '有门槛';
-          default:
-            return '无门槛';
-        }
-      },
+      dataIndex: ['reduceObject', 'thresholdPrice'],
+      render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
     },
     {
       title: '使用有效期',
-      dataIndex: 'useStartTime',
+      dataIndex: 'activeDate',
       render: (val, row) => {
-        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-        if (!useTimeRule) return '';
-        if (useTimeRule === 'fixed') {
-          return useStartTime + '~' + useEndTime;
+        const { activeDate, endDate, delayDays, activeDays } = row;
+        if (activeDate && endDate) {
+          return activeDate + '~' + endDate;
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -215,82 +129,25 @@ const CouponCheck = (props) => {
     {
       title: '审核创建时间',
       align: 'center',
-      dataIndex: 'activityStartTime',
-    },
-    {
-      title: '成本价',
-      align: 'center',
-      dataIndex: 'otherPlatformPrice',
-    },
-    {
-      title: '活动时间',
-      align: 'center',
-      dataIndex: 'activityStartTime',
-      render: (val, row) => (
-        <>
-          {row.activityTimeRule === 'infinite'
-            ? `${row.createTime} ~ 长期`
-            : `${val} ~ ${row.activityEndTime}`}
+      dataIndex: 'createTime',
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
           <div>
-            {row.deleteFlag === '0'
-              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
-              : SPECIAL_STATUS[row.status]}
+            {SUBMIT_TYPE[record.submitterType]}--{record.submitterUserName}
           </div>
-        </>
+        </div>
       ),
     },
     {
       title: '剩余数量',
-      align: 'center',
-      dataIndex: 'number',
+      align: 'right',
+      dataIndex: 'remain',
     },
     {
       title: '审核类型',
       align: 'center',
       dataIndex: 'checkType',
-    },
-  ];
-
-  // const noCheckcolumOperation = [
-  //     {
-  //         title: '操作',
-  //         align: 'center',
-  //         dataIndex: 'operation',
-  //         render: () => {
-  //             return <a>审核</a>
-  //         }
-  //     },
-  // ]
-
-  // const checkResult = [
-  //     {
-  //         title: '审核结果',
-  //         align: 'center',
-  //         dataIndex: 'checkResult',
-  //         render: (val, row) => {
-  //             return <a>审核成功</a>
-  //         }
-  //     },
-  //     {
-  //         title: '驳回原因',
-  //         align: 'center',
-  //         dataIndex: 'rejectionReasons',
-  //         render: (val, row) => {
-  //             return <Ellipsis length={12} tooltip>
-  //             {row.merchantName}
-  //         </Ellipsis>
-  //         }
-  //     },
-  // ]
-
-  const columOperation = [
-    {
-      title: '操作',
-      align: 'center',
-      dataIndex: 'operation',
-      render: () => {
-        return <a>详情</a>;
-      },
     },
   ];
 
@@ -332,13 +189,43 @@ const CouponCheck = (props) => {
     merchantConfirmed: <AlConfirm {...listProps}></AlConfirm>,
   };
 
+  // 获取详情
+  const fetchSpecialGoodsDetail = (index, type) => {
+    const { ownerIdString, auditIdString, auditStatus: status } = list[index];
+    dispatch({
+      type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
+      payload: { ownerId: ownerIdString, auditId: auditIdString, type },
+      callback: (val) => {
+        const newProps = {
+          show: true,
+          detail: { ...val },
+        };
+        if (type == 'info' || type === 'check') {
+          setVisibleInfo({ status, index, ...newProps, ownerIdString, auditIdString });
+        } else {
+          setVisibleSet({ type, ...newProps });
+        }
+      },
+    });
+  };
+
   return (
-    <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
-      {contentList[tabkey]}
-    </Card>
+    <>
+      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
+        {contentList[tabkey]}
+      </Card>
+      {/* 详情 */}
+      {/* <CouponDetail
+        visible={visibleInfo}
+        total={list.length}
+        tabkey={tabkey}
+        cRef={tableRef}
+        getDetail={fetchSpecialGoodsDetail}
+        onClose={() => setVisibleInfo(false)}
+      ></CouponDetail> */}
+    </>
   );
 };
-export default connect(({ baseData, loading }) => ({
-  hubData: baseData.hubData,
-  loading: loading.models.baseData,
+export default connect(({ specialGoodsCheck }) => ({
+  specialGoodsCheck,
 }))(CouponCheck);
