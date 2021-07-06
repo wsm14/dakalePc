@@ -55,6 +55,20 @@ const SpecialGoodCheck = (props) => {
     });
   };
 
+  const fetchSpecialGoodsClose = (record) => {
+    const { auditIdString, ownerIdString } = record;
+    dispatch({
+      type: 'specialGoodsCheck/fetchSpecialGoodsAuditClose',
+      payload: {
+        ownerId: ownerIdString,
+        auditId: auditIdString,
+      },
+      callback: () => {
+        tableRef.current.fetchGetData();
+      },
+    });
+  };
+
   //组建公用的搜索条件
   const globalSearch = [
     {
@@ -240,11 +254,16 @@ const SpecialGoodCheck = (props) => {
       dataIndex: 'activityGoodsDTO',
       render: (val, row) => {
         const { activityGoodsDTO = {} } = row;
-        const { activityTimeRule, activityEndTime, activityStartTime } = activityGoodsDTO;
+        const {
+          activityTimeRule,
+          activityEndTime,
+          activityStartTime,
+          createTime = '',
+        } = activityGoodsDTO;
         return (
           <>
             {activityTimeRule === 'infinite'
-              ? `${activityStartTime} ~ 长期` //
+              ? `${createTime} ~ 长期` //
               : `${activityStartTime} ~ ${activityEndTime}`}
           </>
         );
@@ -273,6 +292,7 @@ const SpecialGoodCheck = (props) => {
       type: 'handle',
       dataIndex: 'auditIdString',
       render: (val, record, index) => {
+        const { auditStatus } = record;
         return [
           {
             type: 'info',
@@ -285,6 +305,12 @@ const SpecialGoodCheck = (props) => {
             title: '审核',
             click: () => fetchSpecialGoodsDetail(index, 'check'),
             visible: tabkey === 'adminAudit',
+          },
+          {
+            type: 'close',
+            title: '关闭',  //驳回状态可以关闭
+            visible: tabkey === 'merchantConfirmed' && auditStatus === '2',
+            click: () => fetchSpecialGoodsClose(record),
           },
         ];
       },

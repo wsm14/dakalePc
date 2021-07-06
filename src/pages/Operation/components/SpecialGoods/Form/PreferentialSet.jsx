@@ -34,15 +34,20 @@ const PreferentialSet = ({
   const [platTaglist, setPlatTaglist] = useState([]);
 
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
+  useEffect(() => {
+    if (initialValues.ownerName) {
+      fetchGetMre(initialValues.ownerName, initialValues.ownerType);
+    }
+  }, [initialValues.ownerName]);
 
   // 搜索店铺
-  const fetchGetMre = debounce((name) => {
+  const fetchGetMre = debounce((name, type) => {
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
         name,
-        type: mreList.type,
+        type: type || mreList.type,
       },
     });
   }, 500);
@@ -74,6 +79,20 @@ const PreferentialSet = ({
       callback: (val) => setCommissionShow(val),
     });
   };
+
+  // table 表头
+  const getColumns = [
+    {
+      title: '店铺名称',
+      dataIndex: 'merchantName',
+      ellipsis: true,
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+      ellipsis: true,
+    },
+  ];
 
   // 信息
   const formItems = [
@@ -110,6 +129,7 @@ const PreferentialSet = ({
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
+        console.log(option, 'oooo');
         setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
         getTagsPlat(option.topCategoryId[0]);
@@ -122,7 +142,6 @@ const PreferentialSet = ({
         });
       },
     },
-
     // {
     //   label: '店铺范围',
     //   type: 'radio',
@@ -150,9 +169,10 @@ const PreferentialSet = ({
         <MreSelectShow
           key="MreTable"
           form={form}
+          rowKey="merchantId"
+          columns={getColumns}
           {...mreList}
           setMreList={(val) => {
-            console.log(val, 'vvvvvv');
             saveMreData(val);
             form.setFieldsValue({ merchantIds: val.keys });
           }}
@@ -249,10 +269,11 @@ const PreferentialSet = ({
       max: 999999.99,
       visible: commissionShow == '1',
       formatter: (value) => `￥ ${value}`,
+      rules: [{ required: false }],
     },
     {
       label: '平台商品标签',
-      name: 'platformProduct',
+      name: 'goodsTags',
       type: 'tags',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
@@ -275,20 +296,6 @@ const PreferentialSet = ({
     },
   ];
 
-  // table 表头
-  const getColumns = [
-    {
-      title: '店铺名称',
-      dataIndex: 'merchantName',
-      ellipsis: true,
-    },
-    {
-      title: '详细地址',
-      dataIndex: 'address',
-      ellipsis: true,
-    },
-  ];
-
   return (
     <>
       <FormCondition
@@ -299,11 +306,15 @@ const PreferentialSet = ({
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
+        rowKey="merchantId"
         keys={mreList.keys}
         visible={visible}
         mreList={mreList.list}
         params={{ groupId: mreList.groupId }}
-        onOk={saveMreData}
+        onOk={(val) => {
+          saveMreData(val);
+          form.setFieldsValue({ merchantIds: val.keys });
+        }}
         onCancel={() => setVisible(false)}
         columns={getColumns}
         searchShow={false}

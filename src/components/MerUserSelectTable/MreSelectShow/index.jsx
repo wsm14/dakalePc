@@ -1,7 +1,14 @@
 import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
 
-const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) => {
+const MreSelectShow = ({
+  keys = [],
+  rowKey = 'userMerchantIdString',
+  list = [],
+  columns,
+  setMreList,
+  otherColumns = [],
+}) => {
   // table 表头
   const getColumns = [
     {
@@ -33,8 +40,8 @@ const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) 
       <TableDataBlock
         noCard={false}
         size="small"
-        columns={getColumns}
-        rowKey={(record) => `${record.userMerchantIdString}`}
+        columns={columns || getColumns}
+        rowKey={(record) => `${record[rowKey]}`}
         rowSelection={{
           fixed: true,
           selectedRowKeys: keys,

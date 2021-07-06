@@ -19,7 +19,9 @@ const SpecialGoodDetail = (props) => {
   };
 
   useEffect(() => {
-    show && getMerchantList();
+    if (show && detail.ownerType === 'group') {
+      getMerchantList();
+    }
   }, [show]);
 
   //sku通用-审核中sku挂靠商家列表
@@ -57,13 +59,13 @@ const SpecialGoodDetail = (props) => {
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
 
-  const formItems = [
-    {
-      label: `其他平台价格`,
-      name: 'otherPlatformPrice',
-      maxLength: 20,
-    },
-  ];
+  // const formItems = [
+  //   {
+  //     label: `其他平台价格`,
+  //     name: 'otherPlatformPrice',
+  //     maxLength: 20,
+  //   },
+  // ];
 
   return (
     <DrawerCondition {...modalProps}>
@@ -82,10 +84,10 @@ const SpecialGoodDetail = (props) => {
           <RegularDetail detail={detail}></RegularDetail>
         </Tabs.TabPane>
       </Tabs>
-      {/* 审核时输入 其他平台价格 */}
+      {/* 审核时输入 其他平台价格
       {status == '3' && (
         <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
-      )}
+      )} */}
     </DrawerCondition>
   );
 };

@@ -207,7 +207,7 @@ const SpecialGoodsResource = (props) => {
             <div style={{ display: 'flex', marginTop: 5 }}>
               <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
               <Ellipsis length={10} tooltip>
-                {row.merchantName}
+                {row.ownerName}
               </Ellipsis>
             </div>
           </div>
@@ -315,7 +315,6 @@ const SpecialGoodsResource = (props) => {
       dataIndex: 'specialGoodsId',
       width: 180,
       render: (val, record) => {
-        // const { status } = record;
         return [
           {
             type: 'cancleRecommend',

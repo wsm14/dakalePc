@@ -14,7 +14,6 @@ const PreferentialDrawer = (props) => {
 
   // info 详情，add 新增，active 活动中修改，edit 即将开始修改，again 重新发布
   const { type = 'info', show = false, detail = {}, specialGoodsId, ownerIdString } = visible;
-  console.log(detail, 'detail');
 
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
@@ -48,7 +47,7 @@ const PreferentialDrawer = (props) => {
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
       const { id, ownerId } = detail;
-      const { activityGoodsImg, goodsDescImg } = visibleRule.preData;
+      const { activityGoodsImg, goodsDescImg, goodsTags = [] } = visibleRule.preData;
       const {
         activityStartTime,
         useStartTime,
@@ -74,6 +73,7 @@ const PreferentialDrawer = (props) => {
             id,
             ...visibleRule.preData,
             ...other,
+            goodsTags:goodsTags.toString(),
             activityGoodsImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
             activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),

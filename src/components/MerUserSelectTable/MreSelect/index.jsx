@@ -22,12 +22,12 @@ const MreSelect = ({
   dispatchType = 'businessList/fetchGetList',
   params = {},
   list = null,
+  rowKey = 'userMerchantIdString',
   loading,
 }) => {
   const childRef = useRef(); // 表格ref
   const [selectMre, setSelectMre] = useState([]); // 选中的店铺
   const [selectMreKey, setSelectMreKey] = useState([]);
-
   useEffect(() => {
     visible && type === 'select' && setSelectMreKey(keys);
   }, [visible]);
@@ -72,12 +72,10 @@ const MreSelect = ({
       const obj = {};
       const newSelectList = [...mreList, ...list]
         .reduce((item, next) => {
-          next && obj[next.userMerchantIdString]
-            ? ''
-            : next && (obj[next.userMerchantIdString] = true && item.push(next));
+          next && obj[next[rowKey]] ? '' : next && (obj[next[rowKey]] = true && item.push(next));
           return item;
         }, [])
-        .filter((item) => item && val.includes(item.userMerchantIdString));
+        .filter((item) => item && val.includes(item[rowKey]));
       setSelectMreKey(val);
       setSelectMre(newSelectList);
     },
@@ -93,6 +91,7 @@ const MreSelect = ({
       footer={type === 'select' ? undefined : false}
       okText={`确定（已选${selectMreKey.length}项）`}
       onOk={() => {
+        console.log(selectMreKey, selectMre, 'selectMre');
         onOk({ keys: selectMreKey, list: selectMre });
         onCancel();
       }}
@@ -107,7 +106,7 @@ const MreSelect = ({
         cRef={childRef}
         columns={columns ? columns : getColumns}
         loading={loading.effects[dispatchType]}
-        rowKey={(record) => `${record.userMerchantIdString}`}
+        rowKey={(record) => `${record[rowKey]}`}
         dispatchType={dispatchType}
         params={{ ...params, bankStatus: 3, businessStatus: 1 }}
         rowSelection={type === 'select' ? rowSelection : undefined}

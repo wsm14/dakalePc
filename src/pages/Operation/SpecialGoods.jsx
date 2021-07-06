@@ -163,7 +163,7 @@ const SpecialGoods = (props) => {
             <div style={{ display: 'flex', marginTop: 5 }}>
               <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
               <Ellipsis length={10} tooltip>
-                {row.merchantName}
+                {row.ownerName}
               </Ellipsis>
             </div>
           </div>
@@ -385,12 +385,12 @@ const SpecialGoods = (props) => {
         const { status } = val;
         const newProps = {
           show: true,
-          detail: { ...val, merchantName, ownerType, specialGoodsId, ownerIdString },
+          detail: { ...val, merchantName, ownerType },
         };
         if (type == 'info') {
-          setVisibleInfo({ status, index, ...newProps });
+          setVisibleInfo({ status, index, ...newProps, specialGoodsId, ownerIdString });
         } else {
-          setVisibleSet({ type, ...newProps });
+          setVisibleSet({ type, ...newProps, specialGoodsId, ownerIdString });
         }
       },
     });

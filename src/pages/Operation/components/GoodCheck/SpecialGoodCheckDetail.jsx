@@ -9,6 +9,7 @@ import CheckRecord from './Detail/CheckRecord';
 import ExtraButton from '@/components/ExtraButton';
 import FormCondition from '@/components/FormCondition';
 import CheckRefuseDraw from './Detail/CheckRefuseDraw';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SpecialGoodCheckDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch, tabkey, cRef } = props;
@@ -97,7 +98,6 @@ const SpecialGoodCheckDetail = (props) => {
     }
     form.validateFields().then((values) => {
       const { otherPlatformPrice, provinceFee, districtFee, darenFee, merTags, platTags } = values;
-      console.log(merTags, platTags, 'merTags, platTagsv');
       let tags = [...merTags, ...platTags];
       const serviceDivisionDTO = {
         provinceFee,
@@ -176,17 +176,15 @@ const SpecialGoodCheckDetail = (props) => {
       maxLength: 20,
     },
   ];
-
-  const formCommission = [
+  const commission = [
     {
       label: `佣金总额`,
       name: 'commission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
+      render: (val) => (val ? val + '元' : ''),
     },
+  ];
+
+  const formCommission = [
     {
       label: '省代佣金',
       name: 'provinceFee',
@@ -291,6 +289,11 @@ const SpecialGoodCheckDetail = (props) => {
           {/* 审核中并且分佣模板为手动分佣时 */}
           {detail.divisionFlag === '1' && ['adminAudit'].includes(tabkey) && (
             <>
+              <DescriptionsCondition
+                formItems={commission}
+                initialValues={detail}
+              ></DescriptionsCondition>
+
               <div
                 style={{
                   fontSize: 16,
@@ -309,21 +312,25 @@ const SpecialGoodCheckDetail = (props) => {
               ></FormCondition>
             </>
           )}
-          {['adminAudit'].includes(tabkey)&&<><div
-            style={{
-              fontSize: 16,
-              color: 'rgba(0,0,0,.85',
-              margin: '10px 0',
-              fontWeight: 'bold',
-            }}
-          >
-            商品标签
-          </div>
-          <FormCondition
-            formItems={formTagItem}
-            form={form}
-            style={{ marginTop: 10 }}
-          ></FormCondition></>}
+          {['adminAudit'].includes(tabkey) && (
+            <>
+              <div
+                style={{
+                  fontSize: 16,
+                  color: 'rgba(0,0,0,.85',
+                  margin: '10px 0',
+                  fontWeight: 'bold',
+                }}
+              >
+                商品标签
+              </div>
+              <FormCondition
+                formItems={formTagItem}
+                form={form}
+                style={{ marginTop: 10 }}
+              ></FormCondition>
+            </>
+          )}
         </>
       )}
       <CheckRefuseDraw
