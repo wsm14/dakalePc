@@ -9,6 +9,7 @@ import FormCondition from '@/components/FormCondition';
 import ExtraButton from '@/components/ExtraButton';
 import CheckRefuseDraw from './CheckRefuseDraw';
 import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
+import CheckRecord from '../../GoodCheck/Detail/CheckRecord';
 
 const GoodsDetail = (props) => {
   const { visible, onClose, total, getDetail, loading, dispatch, tabkey, cRef } = props;
@@ -270,34 +271,44 @@ const GoodsDetail = (props) => {
           }
         />
       )}
-      <DescriptionsCondition
-        title="参与活动的店铺"
-        formItems={mreFormItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
-      {detail.ownerType === 'group' && (
-        <div style={{ margin: '10px' }}>
-          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
-        </div>
-      )}
-      <DescriptionsCondition
-        title="券信息"
-        formItems={couponFormItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
-      <DescriptionsCondition
-        title="使用规则"
-        formItems={useFormItems}
-        initialValues={detail}
-      ></DescriptionsCondition>
-      {/* 详情 手动分佣*/}
-      {tabkey !== 'adminAudit' && detail.divisionFlag === '1' && (
-        <DescriptionsCondition
-          title="分佣配置"
-          formItems={commissionItem}
-          initialValues={detail}
-        ></DescriptionsCondition>
-      )}
+      <Tabs defaultActiveKey="1">
+        <Tabs.TabPane tab="商品信息" key="1">
+          <>
+            <DescriptionsCondition
+              title="参与活动的店铺"
+              formItems={mreFormItems}
+              initialValues={detail}
+            ></DescriptionsCondition>
+            {detail.ownerType === 'group' && (
+              <div style={{ margin: '10px' }}>
+                <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
+              </div>
+            )}
+            <DescriptionsCondition
+              title="券信息"
+              formItems={couponFormItems}
+              initialValues={detail}
+            ></DescriptionsCondition>
+            <DescriptionsCondition
+              title="使用规则"
+              formItems={useFormItems}
+              initialValues={detail}
+            ></DescriptionsCondition>
+            {/* 详情 手动分佣*/}
+            {tabkey !== 'adminAudit' && detail.divisionFlag === '1' && (
+              <DescriptionsCondition
+                title="分佣配置"
+                formItems={commissionItem}
+                initialValues={detail}
+              ></DescriptionsCondition>
+            )}
+          </>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="审核记录" key="2">
+          <CheckRecord detail={detail}></CheckRecord>
+        </Tabs.TabPane>
+      </Tabs>
+
       {/* 审核手动分佣展示 */}
       {tabkey === 'adminAudit' && detail.divisionFlag === '1' && (
         <>
