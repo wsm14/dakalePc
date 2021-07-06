@@ -1,26 +1,49 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
+import {
+    GOODS_CHECK_RESSTATUS
+} from '@/common/constant';
 
 import TableDataBlock from '@/components/TableDataBlock';
 
 const AlCheck = (props) => {
-    const { tabkey, globalColum = [], globalSearch,loading, couponAudit} = props 
-    const childRef = useRef();
+    const {tableRef, tabkey, globalColum = [], globalSearch, loading, couponAudit, rowHandle } = props;
 
     const searchItems = [
-      ...globalSearch
+      ...globalSearch,
+      {
+        label: '审核结果',
+        name: 'auditStatus',
+        type: 'select',
+        select: GOODS_CHECK_RESSTATUS,
+      },
     ];
 
     const getColumns = [
         ...globalColum,
+        {
+            title: '审核时间',
+            dataIndex: 'auditTime',
+          },
+          {
+            title: '审核结果',
+            dataIndex: 'auditStatus',
+            render: (val) => GOODS_CHECK_RESSTATUS[val],
+          },
+          {
+            title: '驳回原因',
+            dataIndex: 'rejectReason',
+          },
+          ...rowHandle,
     ]
 
     return (
         <TableDataBlock
-            cRef={childRef}
+            cRef={tableRef}
             loading={loading}
             columns={getColumns}
             searchItems={searchItems}
+            params={{ auditSearchType: tabkey }}
             rowKey={(record) => `${record.auditIdString}`}
             dispatchType="couponAudit/fetchGetList"
             {...couponAudit}

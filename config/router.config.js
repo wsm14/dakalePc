@@ -95,7 +95,6 @@ export default [
         component: './Base/ManageBrand',
         buttons: ['save', 'del', 'edit', 'status'],
       },
-    
 
       {
         path: '/system/tag',
@@ -435,13 +434,13 @@ export default [
         path: '/operation/specialGoodCheck',
         name: '特惠商品审核',
         component: './Operation/SpecialGoodCheck',
-        buttons: ['info', 'check'],
+        buttons: ['info', 'check', 'close'],
       },
       {
         path: '/operation/couponCheck',
         name: '券审核',
         component: './Operation/CouponCheck',
-        buttons: ['info', 'check'],
+        buttons: ['info', 'check', 'close'],
       },
       {
         path: '/operation/specialGoodsResource',
@@ -524,8 +523,8 @@ export default [
       {
         path: '/system/commissionTempate',
         name: '分佣模板',
-        buttons: ['save', 'edit','info'],
-        component:'./System/CommissionTempate'
+        buttons: ['save', 'edit', 'info'],
+        component: './System/CommissionTempate',
       },
       // 用户管理 user
       {
