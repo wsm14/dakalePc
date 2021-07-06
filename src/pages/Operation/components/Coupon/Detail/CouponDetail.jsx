@@ -117,6 +117,33 @@ const GoodsDetail = (props) => {
         }允许过期退款`,
     },
   ];
+  //分佣配置
+  const commissionItem = [
+    {
+      label: '省代分佣金额（元）',
+      name: ['serviceDivisionDTO', 'provinceFee'],
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+    },
+    {
+      label: '区县分佣金额（元）',
+      name: ['serviceDivisionDTO', 'districtFee'],
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+    },
+    {
+      label: '哒人分佣金额（元）',
+      name: ['serviceDivisionDTO', 'darenFee'],
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+    },
+  ];
 
   return (
     <>
@@ -135,6 +162,13 @@ const GoodsDetail = (props) => {
         formItems={useFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {detail.divisionFlag === '1' && (
+        <DescriptionsCondition
+          title="分佣配置"
+          formItems={commissionItem}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
     </>
   );
 };

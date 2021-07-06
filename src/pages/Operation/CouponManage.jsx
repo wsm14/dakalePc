@@ -139,7 +139,7 @@ const CouponManageComponent = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
-          {/* <div>{运营后台-BD姓名}</div> */}
+          <div>{record.creatorName}</div>
         </div>
       ),
     },
@@ -150,7 +150,7 @@ const CouponManageComponent = (props) => {
       render: (val, row) => (
         <div>
           {val}
-          <div>{COUPON_STATUS[row.merchantCouponStatus]}</div>
+          <div>{COUPON_STATUS[row.ownerCouponStatus]}</div>
         </div>
       ),
     },
@@ -158,7 +158,7 @@ const CouponManageComponent = (props) => {
       type: 'handle',
       dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
-        const { merchantCouponStatus: status, ownerIdString: ownerId } = record;
+        const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
         return [
           {
             type: 'info',

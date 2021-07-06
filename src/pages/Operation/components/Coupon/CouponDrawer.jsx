@@ -23,6 +23,7 @@ const CouponDrawer = (props) => {
         timeType,
         useWeek,
         useTime,
+        merchantIds=[],
         ...other
       } = values;
 
@@ -35,6 +36,7 @@ const CouponDrawer = (props) => {
         payload: {
           ...other,
           couponType: 'reduce',
+          merchantIds:merchantIds.toString(),
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
           useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),

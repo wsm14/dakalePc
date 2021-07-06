@@ -28,7 +28,7 @@ const CouponSet = (props) => {
     setCommissionShow,
     initialValues,
   } = props;
-console.log(initialValues,"vvvv")
+  console.log(initialValues, 'vvvv');
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
@@ -45,15 +45,15 @@ console.log(initialValues,"vvvv")
     timeType: 'all', // 时段内时间选择
     buyRule: 'all', // 购买规则
   });
-  const [platTaglist, setPlatTaglist] = useState([]);
+
   useEffect(() => {
     if (initialValues) {
-      const { buyFlag,userTime='',timeSplit='' } = initialValues;
+      const { buyFlag, userTime = '', timeSplit = '' } = initialValues;
       setRadioData({
         buyFlag,
         // userFlag:
-        userTime:userTime?'fixed':"gain",
-        timeSplit:timeSplit?(timeSplit==='part'?'part':'timeSplit'):''
+        userTime: userTime ? 'fixed' : 'gain',
+        timeSplit: timeSplit ? (timeSplit === 'part' ? 'part' : 'timeSplit') : '',
       });
     }
   }, [initialValues]);
@@ -74,8 +74,7 @@ console.log(initialValues,"vvvv")
   //       const topCategoryId = list[mreFindIndex].topCategoryId[0];
   //       // 是否分佣
   //       getCommissionFlag(topCategoryId);
-  //       // 平台标签
-  //       getTagsPlat(topCategoryId);
+
   //     });
   //     if (initialValues.ownerType === 'group') {
   //       getMerchantList();
@@ -117,17 +116,6 @@ console.log(initialValues,"vvvv")
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
-  //获取平台商品标签
-  const getTagsPlat = (categoryId) => {
-    dispatch({
-      type: 'baseData/fetchGoodsTagListByCategoryId',
-      payload: {
-        categoryId: categoryId,
-        tagType: 'platform',
-      },
-      callback: (list) => setPlatTaglist(list),
-    });
-  };
   //sku通用-是否需要设置佣金
   const getCommissionFlag = (categoryId) => {
     dispatch({
@@ -182,9 +170,12 @@ console.log(initialValues,"vvvv")
         setCommissionShow(false);
         //是否分佣
         getCommissionFlag(option.topCategoryId[0]);
-        //获取平台标签
-        getTagsPlat(option.topCategoryId[0]);
-        saveMreData({ name: option.name, ratio: option.commissionRatio, keys: [], list: [] });
+        saveMreData({
+          groupId: val,
+          ratio: option.commissionRatio,
+          keys: [],
+          list: [],
+        });
       },
     },
 
@@ -278,13 +269,6 @@ console.log(initialValues,"vvvv")
       rules: [{ required: false }],
     },
     {
-      label: '平台商品标签',
-      name: 'goodsTags',
-      type: 'tags',
-      select: platTaglist,
-      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-    },
-    {
       title: '设置使用规则',
       label: '使用门槛',
       type: 'radio',
@@ -335,7 +319,7 @@ console.log(initialValues,"vvvv")
     {
       label: '适用时段',
       type: 'radio',
-      select: COUPON_USER_TIME,//1,2,3,4,5,6,7': '每天', part: '部分'
+      select: COUPON_USER_TIME, //1,2,3,4,5,6,7': '每天', part: '部分'
       name: 'timeSplit',
       onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
     },
