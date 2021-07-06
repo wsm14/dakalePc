@@ -309,7 +309,7 @@ export default {
         },
       });
     },
-    *fetchGetGroupMreList({ payload }, { put, call }) {
+    *fetchGetGroupMreList({ payload, callback }, { put, call }) {
       const { type = 'merchant', name } = payload;
       const newPayload = {
         merchant: { merchantName: name, businessStatus: 1 }, // 单店
@@ -321,19 +321,21 @@ export default {
       );
       if (!response) return;
       const { content } = response;
+      const listData = content.recordList.map((item) => ({
+        name: `${item.merchantName || item.groupName} ${item.account || ''}`,
+        otherData: item.address,
+        value: item.userMerchantIdString || item.merchantGroupIdString,
+        commissionRatio: item.commissionRatio,
+        topCategoryName: [item.topCategoryName, item.categoryName],
+        topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+      }));
       yield put({
         type: 'save',
         payload: {
-          groupMreList: content.recordList.map((item) => ({
-            name: `${item.merchantName || item.groupName} ${item.account || ''}`,
-            otherData: item.address,
-            value: item.userMerchantIdString || item.merchantGroupIdString,
-            commissionRatio: item.commissionRatio,
-            topCategoryName: [item.topCategoryName, item.categoryName],
-            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
-          })),
+          groupMreList: listData,
         },
       });
+      callback && callback(listData);
     },
     // sku通用- sku挂靠商家列表
     *fetchSkuAvailableMerchant({ payload }, { call, put }) {
