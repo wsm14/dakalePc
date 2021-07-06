@@ -47,7 +47,7 @@ const PreferentialDrawer = (props) => {
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
       const { id, ownerId } = detail;
-      const { activityGoodsImg, goodsDescImg, goodsTags = [] } = visibleRule.preData;
+      const { activityGoodsImg, goodsDescImg, goodsTags = [], merchantIds=[] } = visibleRule.preData;
       const {
         activityStartTime,
         useStartTime,
@@ -73,7 +73,8 @@ const PreferentialDrawer = (props) => {
             id,
             ...visibleRule.preData,
             ...other,
-            goodsTags:goodsTags.toString(),
+            goodsTags: goodsTags.toString(),
+            merchantIds:merchantIds.toString(),
             activityGoodsImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
             activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),

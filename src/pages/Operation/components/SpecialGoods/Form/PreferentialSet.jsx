@@ -23,7 +23,6 @@ const PreferentialSet = ({
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
-    name: '',
     groupId: null,
     type: 'merchant',
     keys: [],
@@ -36,12 +35,44 @@ const PreferentialSet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
-      fetchGetMre(initialValues.ownerName, initialValues.ownerType);
+      setMreList({
+        type: initialValues.ownerType,
+        groupId: initialValues.ownerId,
+      });
+      // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
+      fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
+        const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+        const topCategoryId = list[mreFindIndex].topCategoryId[0];
+        // 是否分佣
+        getCommissionFlag(topCategoryId);
+        // 平台标签
+        getTagsPlat(topCategoryId);
+      });
+      if (initialValues.ownerType === 'group') {
+        getMerchantList();
+      }
     }
   }, [initialValues.ownerName]);
 
+  //sku通用-sku挂靠商家列表
+  const getMerchantList = () => {
+    dispatch({
+      type: 'baseData/fetchSkuDetailMerchantList',
+      payload: {
+        ownerServiceId: initialValues.specialGoodsId,
+        ownerId: initialValues.ownerIdString,
+        serviceType: 'specialGoods',
+      },
+      callback: (list) => {
+        const keys = list.map((item) => item.merchantId);
+        saveMreData({ keys: keys, list: list });
+        form.setFieldsValue({ merchantIds: keys });
+      },
+    });
+  };
+
   // 搜索店铺
-  const fetchGetMre = debounce((name, type) => {
+  const fetchGetMre = debounce((name, type, callback) => {
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -49,10 +80,11 @@ const PreferentialSet = ({
         name,
         type: type || mreList.type,
       },
+      callback,
     });
-  }, 500);
+  }, 100);
 
-  const saveMreData = (data) => setMreList({ ...mreList, ...data });
+  const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
@@ -110,7 +142,6 @@ const PreferentialSet = ({
           type: e.target.value,
           groupId: null,
           ratio: 0,
-          name: '',
           keys: [],
           list: [],
         }); // 重置已选店铺数据
@@ -129,12 +160,10 @@ const PreferentialSet = ({
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
-        console.log(option, 'oooo');
         setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
         getTagsPlat(option.topCategoryId[0]);
         saveMreData({
-          name: option.name,
           groupId: val,
           ratio: option.commissionRatio,
           keys: [],
@@ -155,7 +184,7 @@ const PreferentialSet = ({
       label: '适用店铺',
       name: 'merchantIds',
       type: 'formItem',
-      visible: mreList.name && mreList.type == 'group',
+      visible: mreList.type == 'group',
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)} disabled={editActive}>
           选择店铺
@@ -164,7 +193,7 @@ const PreferentialSet = ({
     },
     {
       type: 'noForm',
-      visible: mreList.name && mreList.type === 'group',
+      visible: mreList.type === 'group',
       formItem: (
         <MreSelectShow
           key="MreTable"

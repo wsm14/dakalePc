@@ -4,6 +4,11 @@ import { COUPON_BUY_RULE, COUPON_WEEK_TIME } from '@/common/constant';
 
 const RegularDetail = (props) => {
   const { detail } = props;
+  const { useTime } = detail;
+  // detail.useTime = useTime
+
+
+  console.log(detail, 'detail22222');
 
   const RegularItems = [
     {
@@ -12,9 +17,11 @@ const RegularDetail = (props) => {
       render: (val, row) =>
         val == 'infinite'
           ? `长期`
-          : `${row.activityStartTime[0].format('YYYY-MM-DD')}~${row.activityStartTime[1].format(
+          : activityStartTime
+          ? `${row.activityStartTime[0].format('YYYY-MM-DD')}~${row.activityStartTime[1].format(
               'YYYY-MM-DD',
-            )}`,
+            )}`
+          : '',
     },
     {
       name: 'goodsType',
@@ -24,7 +31,9 @@ const RegularDetail = (props) => {
         console.log(useStartTime, useEndTime, useTimeRule, 'v');
         if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
-          return useStartTime[0].format('YYYY-MM-DD') + '~' + useStartTime[1].format('YYYY-MM-DD');
+          return useStartTime
+            ? useStartTime[0].format('YYYY-MM-DD') + '~' + useStartTime[1].format('YYYY-MM-DD')
+            : '';
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -37,6 +46,7 @@ const RegularDetail = (props) => {
       name: 'useTime', // COUPON_USER_TIME
       label: '适用时段',
       render: (val, row) => {
+        console.log(val, 'val', typeof val);
         let week = '每周';
         if (row.timeSplit == 'part') {
           row.useWeek.forEach((item, index) => {
@@ -44,10 +54,9 @@ const RegularDetail = (props) => {
             return week;
           });
         }
-        const times =
-          val.length > 0
-            ? val[0].format('HH:mm:ss') + '-' + val[1].format('HH:mm:ss')
-            : row.timeType;
+        const times = val
+        //   ? val[0].format('HH:mm:ss') + '-' + val[1].format('HH:mm:ss')
+        //   : row.timeType;
         return <>{row.timeSplit == 'part' ? `${week}--${times}` : `每天--${times}`}</>;
       },
     },
