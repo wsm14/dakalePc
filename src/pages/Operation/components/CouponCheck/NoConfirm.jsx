@@ -7,7 +7,7 @@ import {
 import TableDataBlock from '@/components/TableDataBlock';
 
 const NoConfirm = (props) => {
-    const { tabkey, colum = [], globalSearch,loading, specialGoods, hubData } = props 
+    const { tabkey, globalColum = [], globalSearch,loading, couponAudit, hubData } = props 
     const childRef = useRef();
 
     const searchItems = [
@@ -15,7 +15,7 @@ const NoConfirm = (props) => {
     ];
 
     const getColumns = [
-        ...colum,
+        ...globalColum,
     ]
 
     return (
@@ -24,16 +24,16 @@ const NoConfirm = (props) => {
             loading={loading}
             columns={getColumns}
             searchItems={searchItems}
-            rowKey={(record) => `${record.specialGoodsId}`}
-            dispatchType="specialGoods/fetchGetList"
-            {...specialGoods}
+            rowKey={(record) => `${record.auditIdString}`}
+            dispatchType="couponAudit/fetchGetList"
+            {...couponAudit}
         ></TableDataBlock>
 
     )
 }
 
-export default connect(({ specialGoods, baseData, loading }) => ({
-    specialGoods,
+export default connect(({ couponAudit, baseData, loading }) => ({
+    couponAudit,
     hubData: baseData.hubData,
-    loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+    loading: loading.models.couponAudit || loading.effects['baseData/fetchGetLogDetail'],
 }))(NoConfirm);

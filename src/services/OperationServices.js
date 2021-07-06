@@ -97,7 +97,7 @@ export function fetchSpecialToTop(data) {
   });
 }
 
-//取消置顶 
+//取消置顶
 export function fetchSpecialCancleToTop(data) {
   return request('/admin/specialGoodsManagement/cancelTopRecommend', {
     method: 'POST',
@@ -530,6 +530,13 @@ export function fetchCouponStatus(data) {
 // get 优惠券导出
 export function fetchCouponToImport(params) {
   return request('/admin/coupon/listOwnerCouponToActionImport', {
+    params,
+  });
+}
+
+//券审核-列表
+export function fetchCouponAuditList(params) {
+  return request('/admin/marketing/audit/listReduceCouponAudit', {
     params,
   });
 }
