@@ -113,6 +113,7 @@ const TagManage = (props) => {
       <TableDataBlock
         btnExtra={extraBtn}
         cRef={childRef}
+        scroll={{ y: 500 }}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
@@ -120,6 +121,7 @@ const TagManage = (props) => {
         dispatchType="goodsTag/fetchGoodsTagList"
         params={{ tagType: tabkey }}
         tableSort={{ key: 'configGoodsTagId', onSortEnd: fetchDetailSort }}
+        pagination={false}
         {...goodsTag}
       ></TableDataBlock>
       <TagSet cRef={childRef} visible={visible} onClose={() => setVisible(false)}></TagSet>
