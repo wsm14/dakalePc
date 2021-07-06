@@ -22,10 +22,6 @@ const StoreList = (props) => {
       label: '店铺名称',
       name: 'name',
     },
-    {
-      label: '店铺帐号',
-      name: 'account',
-    },
   ];
 
   const getColumns = [
