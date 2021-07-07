@@ -345,13 +345,13 @@ const SpecialGoodsResource = (props) => {
 
   const btnList = [
     {
-      auth: 'del',
+      auth: 'cancleRecommend',
       text: '取消推荐',
       disabled: !goodsList.length,
       onClick: handleCancle,
     },
     {
-      auth: 'save',
+      auth: 'configCondit',
       text: '条件配置', // 高佣联盟 和 今日上新 存在
       show: ['highCommission', 'todayNew'].includes(tabKey),
       onClick: () => setVisibleSet({ show: true, tabKey }),

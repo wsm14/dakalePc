@@ -228,7 +228,7 @@ const CouponManageComponent = (props) => {
     const { ownerCouponIdString: ownerCouponId, ownerIdString: ownerId } = list[index];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
-      payload: { ownerCouponId, ownerId },
+      payload: { ownerCouponId, ownerId, type },
       callback: (detail) => setVisible({ type, show: true, index, detail, ownerCouponId, ownerId }),
     });
   };
