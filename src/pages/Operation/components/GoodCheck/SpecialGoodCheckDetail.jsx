@@ -26,7 +26,7 @@ const SpecialGoodCheckDetail = (props) => {
         .filter((item) => item.tagType === 'merchant')
         .map((key) => key.configGoodsTagId);
       const platTags = goodsTagList
-        .filter((item) => item.tagType === 'group')
+        .filter((item) => item.tagType === 'platform')
         .map((key) => key.configGoodsTagId);
       detail.platTags = platTags;
       detail.merTags = merTags;
