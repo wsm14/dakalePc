@@ -5,7 +5,6 @@ const target = 'http://192.168.0.103:6020';
 // const target = 'http://47.114.164.224:6020';
 // const target = 'http://192.168.0.62:6020';
 
-
 export default {
   dev: {
     define: {

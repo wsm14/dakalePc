@@ -44,32 +44,21 @@ const CouponSet = (props) => {
     timeType: 'all', // 时段内时间选择
     buyRule: 'all', // 购买规则
   });
+  const {
+    buyFlag,
+    timeSplit = '',
+    useTimeRule = '', //使用有效期
+    buyRule = 'all', // 购买规则
+    useTime = '',
+    useWeek = '',
+    reduceObject = {},
+  } = initialValues;
 
   useEffect(() => {
     if (initialValues.ownerCouponIdString) {
-      const {
-        buyFlag,
-        timeSplit = '',
-        useTimeRule = '',
-        buyRule = 'all', // 购买规则
-        useTime = '',
-        useWeek = '',
-        reduceObject = {},
-        activeDate = '',
-        endDate = '',
-      } = initialValues;
       const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
       const useWeekCheck = useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part';
       const userFlagCheck = !reduceObject.thresholdPrice ? '0' : '1'; // 使用门槛
-      // 适用时段
-      setRadioData({
-        buyFlag,
-        userFlag: userFlagCheck, //详情无返回//使用门槛
-        effectTime: useTimeRule ? useTimeRule : '',
-        timeSplit,
-        timeType: timeTypeCheck,
-        buyRule,
-      });
 
       initialValues.restrictions = userFlagCheck; // 使用门槛
       initialValues.timeSplit = useWeekCheck; // 适用时段
@@ -79,11 +68,16 @@ const CouponSet = (props) => {
       const times = useTime.split('-');
       initialValues.useTime =
         timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [];
-      //有效期国定时间
-      initialValues.activeDate =
-        useTimeRule === 'fixed' && activeDate && endDate
-          ? [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')]
-          : [];
+  
+      // 适用时段
+      setRadioData({
+        buyFlag,
+        userFlag: userFlagCheck, //详情无返回//使用门槛
+        effectTime: useTimeRule ? useTimeRule : '',
+        timeSplit,
+        timeType: timeTypeCheck,
+        buyRule,
+      });
 
       if (initialValues.ownerName || initialValues.ownerType) {
         setMreList({
@@ -103,8 +97,6 @@ const CouponSet = (props) => {
       }
     }
   }, [initialValues]);
-
-  console.log(initialValues, mreList, 'initialValues');
 
   // 设置form表单值 店铺id
   useEffect(() => {

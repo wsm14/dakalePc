@@ -8,6 +8,7 @@ import {
   fetchCouponOff, // 券下架
   fetchCouponDelete, //全删除
 } from '@/services/OperationServices';
+import moment from 'moment';
 
 export default {
   namespace: 'couponManage',
@@ -40,10 +41,34 @@ export default {
       });
     },
     *fetchCouponDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchCouponDetail, payload);
+      const { type, ...other } = payload;
+      const response = yield call(fetchCouponDetail, { ...other });
       if (!response) return;
       const { content } = response;
-      const { couponDesc } = content.ownerCouponInfo;
+      const {
+        couponDesc,
+        activeDate = '',
+        endDate = '',
+        useTimeRule = '',
+        useTime = '',
+      
+      } = content.ownerCouponInfo;
+      let newDetail = {};
+
+      if (['edit', 'again'].includes(type)) {
+        // //  // { '00:00-23:59': '全天', part: '固定时间' };
+        // const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
+
+        const times = useTime.split('-');
+        newDetail = {
+          activeDate:
+            useTimeRule === 'fixed'
+              ? [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')]
+              : [],
+          // useTime:
+          //   timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [],
+        };
+      }
       callback({
         ...content.ownerCouponInfo,
         couponDescString: couponDesc?.includes(']')
@@ -51,6 +76,7 @@ export default {
           : couponDesc,
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
+        ...newDetail,
       });
     },
     *fetchCouponSave({ payload, callback }, { call }) {
@@ -62,7 +88,7 @@ export default {
       });
       callback();
     },
-  
+
     *fetchCouponToImport({ payload, callback }, { call }) {
       const response = yield call(fetchCouponToImport, payload);
       if (!response) return;
