@@ -32,6 +32,11 @@ const PreferentialSet = ({
   const [radioData, setRadioData] = useState({ goodsType: 'single' });
   const [platTaglist, setPlatTaglist] = useState([]);
 
+  //编辑的时候数据回显的标签
+  const { goodsTagList = [] } = initialValues;
+  const goodsTags = goodsTagList.map((item) => item.configGoodsTagId);
+  initialValues.goodsTags = goodsTags;
+
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
