@@ -27,6 +27,8 @@ const CouponSet = (props) => {
     commissionShow,
     setCommissionShow,
     initialValues,
+    type,
+    status,
   } = props;
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
@@ -68,7 +70,7 @@ const CouponSet = (props) => {
       const times = useTime.split('-');
       initialValues.useTime =
         timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [];
-  
+
       // 适用时段
       setRadioData({
         buyFlag,
@@ -172,6 +174,7 @@ const CouponSet = (props) => {
       type: 'radio',
       name: 'ownerType',
       select: BUSINESS_TYPE,
+      disabled: type === 'edit' && status === '1',
       onChange: (e) => {
         setCommissionShow(false);
         saveMreData({
@@ -191,6 +194,7 @@ const CouponSet = (props) => {
       name: 'ownerId',
       placeholder: '请输入搜索',
       select: selectList,
+      disabled: type === 'edit' && status === '1',
       loading,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
@@ -213,10 +217,16 @@ const CouponSet = (props) => {
       label: '适用店铺',
       name: 'merchantIds',
       type: 'formItem',
+
       visible: mreList.type == 'group',
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)}>
+        <Button
+          type="primary"
+          ghost
+          disabled={type === 'edit' && status === '1'}
+          onClick={() => setVisible(true)}
+        >
           选择店铺
         </Button>
       ),
@@ -224,6 +234,7 @@ const CouponSet = (props) => {
     {
       type: 'noForm',
       visible: mreList.type == 'group',
+      disabled: type === 'edit' && status === '1',
       formItem: (
         <MreSelectShow
           key="MreTable"
@@ -318,6 +329,7 @@ const CouponSet = (props) => {
     {
       label: '使用有效期',
       type: 'radio',
+      disabled: type === 'edit' && status === '1',
       select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
       name: 'useTimeRule',
       onChange: (e) => saveSelectData({ effectTime: e.target.value }),
@@ -325,6 +337,7 @@ const CouponSet = (props) => {
     {
       label: '固定时间',
       name: 'activeDate',
+      disabled: type === 'edit' && status === '1',
       type: 'rangePicker',
       visible: radioData.effectTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
@@ -333,6 +346,7 @@ const CouponSet = (props) => {
       label: '领取后生效天数',
       name: 'delayDays',
       type: 'number',
+      disabled: type === 'edit' && status === '1',
       max: 999,
       min: 0,
       precision: 0,
@@ -342,6 +356,7 @@ const CouponSet = (props) => {
       label: '有效期天数',
       name: 'activeDays',
       type: 'number',
+      disabled: type === 'edit' && status === '1',
       max: 999,
       min: 0,
       precision: 0,

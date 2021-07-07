@@ -8,7 +8,15 @@ import CouponSet from './Form/CouponSet';
 const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
 
-  const { type = 'info', index, show = false, detail = {}, ownerCouponId, ownerId } = visible;
+  const {
+    type = 'info',
+    index,
+    show = false,
+    detail = {},
+    ownerCouponId,
+    ownerId,
+    status,
+  } = visible;
   const [commissionShow, setCommissionShow] = useState(false);
   const [form] = Form.useForm();
 
@@ -55,7 +63,7 @@ const CouponDrawer = (props) => {
       });
     });
   };
-  const listProp = { commissionShow, setCommissionShow };
+  const listProp = { commissionShow, setCommissionShow, type, status };
   // 统一处理弹窗
   const drawerProps = {
     info: {

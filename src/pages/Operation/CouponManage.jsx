@@ -32,7 +32,7 @@ const CouponManageComponent = (props) => {
     {
       label: '状态',
       type: 'select',
-      name: 'merchantCouponStatus',
+      name: 'ownerCouponStatus',
       select: COUPON_STATUS,
     },
     {
@@ -158,6 +158,7 @@ const CouponManageComponent = (props) => {
       type: 'handle',
       dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
+        // 1 上架 2 下架
         const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
         return [
           {
@@ -166,18 +167,17 @@ const CouponManageComponent = (props) => {
           },
           {
             type: 'del',
-            visible: status !== '1',
+            visible: status === '2', // 已下架可以删除
             click: () => fetchCouponSet({ ownerCouponId, ownerId }),
           },
           {
             type: 'edit',
-            visible: ['1'].includes(status),
             click: () => fetchCouponDetail(index, 'edit'),
           },
           {
             type: 'again',
             title: '重新发布',
-            visible: ['0'].includes(status), // 已下架 && 未删除
+            visible: ['2'].includes(status), // 已下架 && 未删除
             click: () => fetchCouponDetail(index, 'again'),
           },
           // 上架中 已确认 | 上架中 已驳回
@@ -192,10 +192,22 @@ const CouponManageComponent = (props) => {
                 formProps: { type: 'down', key: 'offShelfReason' },
               }),
           },
+          {
+            type: 'diary',
+            // click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+          },
         ];
       },
     },
   ];
+
+   // 获取日志信息
+   const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogDetail',
+      payload,
+    });
+  };
 
   // 删除
   const fetchCouponSet = (payload) => {
@@ -225,11 +237,16 @@ const CouponManageComponent = (props) => {
 
   // 获取详情
   const fetchCouponDetail = (index, type) => {
-    const { ownerCouponIdString: ownerCouponId, ownerIdString: ownerId } = list[index];
+    const {
+      ownerCouponIdString: ownerCouponId,
+      ownerIdString: ownerId,
+      ownerCouponStatus: status,
+    } = list[index];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
       payload: { ownerCouponId, ownerId, type },
-      callback: (detail) => setVisible({ type, show: true, index, detail, ownerCouponId, ownerId }),
+      callback: (detail) =>
+        setVisible({ type, show: true, index, detail, ownerCouponId, ownerId, status }),
     });
   };
 
