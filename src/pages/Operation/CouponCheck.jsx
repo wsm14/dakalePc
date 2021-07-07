@@ -44,10 +44,10 @@ const CouponCheck = (props) => {
       name: 'couponName',
     },
     {
-      label: '集团/店铺名称',
-      name: 'ownerName',
+      label: '集团/店铺名',
+      name: 'ownerId',
+      type: 'merchant',
     },
-
     {
       label: '创建人',
       name: 'creator',

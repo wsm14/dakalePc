@@ -66,6 +66,9 @@ const MreSelect = ({
   const rowSelection = {
     preserveSelectedRowKeys: true,
     selectedRowKeys: selectMreKey,
+    getCheckboxProps: ({ bankStatus }) => ({
+      disabled: !['3'].includes(bankStatus) , // 非激活状态
+    }),
     onChange: (val, list) => {
       // 先去重处理 排除重复已选数据
       // 再对 已选的数据mreList和最新数据进行去重处理 获得去重后结果
@@ -86,7 +89,7 @@ const MreSelect = ({
       title={`${type === 'select' ? '选择发布店铺' : '查看店铺'}`}
       destroyOnClose
       maskClosable
-      width={900}
+      width={1000}
       visible={visible}
       footer={type === 'select' ? undefined : false}
       okText={`确定（已选${selectMreKey.length}项）`}

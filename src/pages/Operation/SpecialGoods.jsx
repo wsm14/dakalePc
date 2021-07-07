@@ -319,7 +319,7 @@ const SpecialGoods = (props) => {
           },
           {
             type: 'againUp', //再次上架
-            title: '再次上架',
+            title: '编辑',
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'againUp'),
           },

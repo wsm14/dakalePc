@@ -77,8 +77,13 @@ const SpecialGoodCheck = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'groupOrMerchantName',
+      name: 'ownerId',
+      type: 'merchant',
     },
+    // {
+    //   label: '集团/店铺名',
+    //   name: 'groupOrMerchantName',
+    // },
     {
       label: '创建人',
       name: 'creatorName',
@@ -177,9 +182,8 @@ const SpecialGoodCheck = (props) => {
       dataIndex: 'activityGoodsDTO',
       render: (val, row) => {
         const { activityGoodsDTO = {} } = row;
-        const realPrice = activityGoodsDTO.realPrice ? activityGoodsDTO.realPrice : 0;
-        const merchantPrice = activityGoodsDTO.merchantPrice ? activityGoodsDTO.merchantPrice : 0;
-        return `￥${(Number(realPrice) - Number(merchantPrice)).toFixed(2)}`;
+        const commission = activityGoodsDTO.commission ? activityGoodsDTO.commission : 0;
+        return `￥${(Number(commission)).toFixed(2)}`;
       },
     },
     {
@@ -206,18 +210,7 @@ const SpecialGoodCheck = (props) => {
         );
       },
     },
-    {
-      title: '成本价',
-      align: 'center',
-      dataIndex: 'activityGoodsDTO',
-      render: (val, row) => {
-        const { activityGoodsDTO = {} } = row;
-        const otherPlatformPrice = activityGoodsDTO.otherPlatformPrice
-          ? activityGoodsDTO.otherPlatformPrice
-          : 0;
-        return `￥${Number(otherPlatformPrice).toFixed(2)}`;
-      },
-    },
+   
     {
       title: '使用有效期',
       dataIndex: 'activityGoodsDTO',
@@ -308,7 +301,7 @@ const SpecialGoodCheck = (props) => {
           },
           {
             type: 'close',
-            title: '关闭',  //驳回状态可以关闭
+            title: '关闭', //驳回状态可以关闭
             visible: tabkey === 'merchantConfirmed' && auditStatus === '2',
             click: () => fetchSpecialGoodsClose(record),
           },

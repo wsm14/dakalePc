@@ -73,7 +73,7 @@ const GoodsDetail = (props) => {
       auth: 'check',
       onClick: handleVerifyAllow,
       text: '审核通过',
-      show: ['0'].includes(status) && ['admin', 'sell'].includes(detail.auditorType),
+      show: ['0'].includes(status) && ['adminAudit'].includes(tabkey),
     },
   ];
   // 参与活动的店铺
@@ -227,7 +227,7 @@ const GoodsDetail = (props) => {
     },
     footer: (
       <ExtraButton list={btnList}>
-        {['0'].includes(status) && ['admin', 'sell'].includes(detail.auditorType) && (
+        {['0'].includes(status) && ['adminAudit'].includes(tabkey) && (
           <Button
             style={{ marginLeft: 8 }}
             danger
@@ -249,9 +249,13 @@ const GoodsDetail = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      {detail.auditStatus == '2' && (
+      {status == '2' && (
         <Alert
-          message={`驳回原因：${detail.rejectReason}`}
+          message={`驳回原因：${
+            detail.rejectReason.length > 12
+              ? detail.rejectReason.substr(0, 12) + '...'
+              : detail.rejectReason
+          }`}
           type="error"
           banner
           action={
@@ -312,15 +316,15 @@ const GoodsDetail = (props) => {
       {/* 审核手动分佣展示 */}
       {tabkey === 'adminAudit' && detail.divisionFlag === '1' && (
         <>
-          <DescriptionsCondition
-            formItems={commission}
-            initialValues={detail}
-          ></DescriptionsCondition>
           <div
             style={{ fontSize: 16, color: 'rgba(0,0,0,.85', margin: '10px 0', fontWeight: 'bold' }}
           >
             分佣配置
           </div>
+          <DescriptionsCondition
+            formItems={commission}
+            initialValues={detail}
+          ></DescriptionsCondition>
           <FormCondition
             form={form}
             style={{ marginTop: 10 }}

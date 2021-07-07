@@ -28,7 +28,8 @@ const TemplateDrawSet = (props) => {
     {
       label: '关联行业',
       name: 'categoryIds',
-      type: 'tags',
+      type: 'select',
+      mode: 'multiple',
       select: tradeList,
       disabled: type === 'edit',
       fieldNames: { label: 'categoryName', value: 'categoryIdString' },

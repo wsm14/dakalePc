@@ -50,6 +50,7 @@ export default {
           ? JSON.parse(couponDesc || '[]').join('\n')
           : couponDesc,
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
+        ...content,
       });
     },
     *fetchCouponSave({ payload, callback }, { call }) {
