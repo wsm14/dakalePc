@@ -69,6 +69,7 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch
       </FormItem>
       {/* 选择跳转类型后展示的表单 */}
       <JumpTypeBlock
+        form={form}
         showUrl={showUrl}
         setShowApi={setShowApi}
         setParamKey={setParamKey}

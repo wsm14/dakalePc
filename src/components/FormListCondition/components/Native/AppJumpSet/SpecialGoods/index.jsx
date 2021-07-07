@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form } from 'antd';
 import Merchant from '../Merchant';
 import ShareCoupon from './components/index';
@@ -12,9 +12,22 @@ const FormItem = Form.Item;
 const SpecialGoods = ({ form, paramKey }) => {
   const [data, setData] = useState({}); // 数据
 
+  useEffect(() => {
+    return () => {
+      form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
+    };
+  }, []);
+
   return (
     <>
-      <Merchant form={form} paramKey={paramKey}></Merchant>
+      <Merchant
+        form={form}
+        paramKey={paramKey}
+        onChange={() => {
+          form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
+          setData({});
+        }}
+      ></Merchant>
       <FormItem
         label="特惠商品"
         name={['param', paramKey[1]]}

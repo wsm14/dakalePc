@@ -14,7 +14,7 @@ const Merchant = ({ form, paramKey, dispatch, selectList, loading, onChange }) =
   useEffect(() => {
     return () => {
       dispatch({ type: 'baseData/clearGroupMre' });
-      form.setFieldsValue({ param: {} });
+      form.setFieldsValue({ param: { [paramKey[0]]: undefined } });
     };
   }, []);
 
