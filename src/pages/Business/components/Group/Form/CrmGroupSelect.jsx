@@ -78,7 +78,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
         ) : (
           crmList.map((item) => (
             <div
-              key={item.merchantGroupId}
+              key={item.merchantGroupIdString}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -94,7 +94,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                   {item.topCategoryName}/{item.categoryName}
                 </Tag>
                 {item.groupName}{' '}
-                <text style={{ fontSize: 13, color: '#a2a2a2' }}>{item.merchantGroupId}</text>
+                <text style={{ fontSize: 13, color: '#a2a2a2' }}>{item.merchantGroupIdString}</text>
                 <div style={{ fontSize: 13, color: '#a2a2a2', marginTop: 5 }}>{item.address}</div>
               </div>
               <Button
@@ -109,16 +109,16 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                     categoryName,
                     categoryNode,
                     topCategoryName,
-                    merchantGroupId,
+                    merchantGroupIdString,
                   } = item;
                   goSet({
                     ...item,
-                    sellMerchantGroupId: merchantGroupId,
+                    sellMerchantGroupId: merchantGroupIdString,
                     cityName,
                     topCategSelect: [topCategoryIdStr, categoryIdStr],
                     categoryObj: {
-                      topCategoryIdStr,
-                      categoryIdStr,
+                      topCategoryId: topCategoryIdStr,
+                      categoryId: categoryIdStr,
                       categoryName,
                       categoryNode,
                       topCategoryName,

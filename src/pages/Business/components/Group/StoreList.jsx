@@ -22,10 +22,6 @@ const StoreList = (props) => {
       label: '店铺名称',
       name: 'name',
     },
-    {
-      label: '店铺帐号',
-      name: 'account',
-    },
   ];
 
   const getColumns = [
@@ -35,7 +31,7 @@ const StoreList = (props) => {
       dataIndex: 'headerContentObject',
       width: 350,
       render: (val, row) => (
-        <PopImgShow url={val.imageUrl}>
+        <PopImgShow url={val?.imageUrl}>
           <Ellipsis tooltip lines={2}>
             {row.merchantName}
           </Ellipsis>
@@ -73,8 +69,8 @@ const StoreList = (props) => {
     {
       title: '联系人',
       align: 'right',
-      dataIndex: 'withholdingTax',
-      render: (val) => `￥ ${val || 0}`,
+      dataIndex: 'contactPerson',
+      render: (val, row) => `${val || '--'}\n${row.telephone || '--'}`,
     },
     {
       title: '状态',

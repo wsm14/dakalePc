@@ -16,3 +16,6 @@ export const OPEN_ADVERT = 750 / 1624;
 
 // 视频封面
 export const VIDEO_ADVERT = 544 / 960;
+
+// 风向标
+export const VANE_ICON = 80 / 80;

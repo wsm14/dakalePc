@@ -287,7 +287,7 @@ const SpecialGoods = (props) => {
             click: () =>
               fetchSpecialGoodsQrCode(
                 { specialGoodsId },
-                `${record.merchantName}-${record.goodsName}`,
+                `${record.ownerName}-${record.goodsName}`,
                 { specialGoodsId, merchantId },
               ),
           },
@@ -377,7 +377,7 @@ const SpecialGoods = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { specialGoodsId, ownerIdString, merchantName, ownerType } = list[index];
+    const { specialGoodsId, ownerIdString, ownerName, ownerType } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, ownerId: ownerIdString, type },
@@ -385,7 +385,7 @@ const SpecialGoods = (props) => {
         const { status } = val;
         const newProps = {
           show: true,
-          detail: { ...val, merchantName, ownerType },
+          detail: { ...val, merchantName: ownerName, ownerType },
         };
         if (type == 'info') {
           setVisibleInfo({ status, index, ...newProps, specialGoodsId, ownerIdString });

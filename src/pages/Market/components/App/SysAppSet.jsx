@@ -2,13 +2,8 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import {
-  BANNER_PORT_LINK,
-  BANNER_AREA_TYPE,
-  BANNER_LOOK_AREA,
-  COUPON_ACTIVE_TYPE,
-} from '@/common/constant';
-import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
+import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -131,28 +126,14 @@ const SysAppSet = (props) => {
       ),
     },
     {
-      label: '展示时间',
-      type: 'radio',
-      select: COUPON_ACTIVE_TYPE,
-      name: 'timeRuleData',
-      onChange: (e) => setTimeRule(e.target.value),
-    },
-    {
-      label: '设置时间',
-      name: 'beginDate',
-      type: 'rangePicker',
-      visible: timeRule === 'fixed',
-      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-    },
-    {
       type: 'noForm',
       formItem: (
-        <JumpFormSet
+        <NativeFormSet
           form={form}
           detail={detail}
           port={tabKey}
           getJumpType={setShowTitle}
-        ></JumpFormSet>
+        ></NativeFormSet>
       ),
     },
     {

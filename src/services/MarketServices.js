@@ -183,54 +183,54 @@ export function fetchCheckInTextImgAdd(data) {
 
 // 打卡设置 end
 
-// 广告管理
+// banner管理
 
-// get 广告管理 - 广告列表
+// get banner管理 - 广告列表
 export function fetchBannerList(params) {
-  return request('/admin/systemConfig/listBannerMarketPlatform', {
+  return request('/admin/bannerManagement/listBannerMarketPlatform', {
     params,
   });
 }
 
-// get 广告管理 - 获取banner图片分辨率
+// get banner管理 - 获取banner图片分辨率
 export function fetchBannerRatio(params) {
-  return request('/admin/systemConfig/getBannerPictureResolutionConfig', {
+  return request('/admin/bannerManagement/getBannerPictureResolutionConfig', {
     params,
   });
 }
 
-// get 广告管理 - 获取详情
+// get banner管理 - 获取详情
 export function fetchBannerDetail(params) {
-  return request('/admin/systemConfig/getBannerMarketPlatformById', {
+  return request('/admin/bannerManagement/getBannerMarketPlatformById', {
     params,
   });
 }
 
-// post 广告管理 - 下架/图片 修改
+// post banner管理 - 下架/图片 修改
 export function fetchBannerEdit(data) {
-  return request('/admin/systemConfig/updateBannerMarketPlatform', {
+  return request('/admin/bannerManagement/updateBannerMarketPlatform', {
     method: 'POST',
     data,
   });
 }
 
-// post 广告管理 - 下架/图片 下架删除
+// post banner管理 - 下架/图片 下架删除
 export function fetchBannerStatus(data) {
-  return request('/admin/systemConfig/onOffOrDeleteBannerMarketPlatform', {
+  return request('/admin/bannerManagement/onOffOrDeleteBannerMarketPlatform', {
     method: 'POST',
     data,
   });
 }
 
-// post 广告管理 - 新增
+// post banner管理 - 新增
 export function fetchBannerSet(data) {
-  return request('/admin/systemConfig/saveBannerMarketPlatform', {
+  return request('/admin/bannerManagement/saveBannerMarketPlatform', {
     method: 'POST',
     data,
   });
 }
 
-// 广告管理 end
+// banner管理 end
 
 // 拼图广告
 

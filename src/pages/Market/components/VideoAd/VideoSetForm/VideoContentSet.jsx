@@ -23,17 +23,11 @@ const VideoContentSet = (props) => {
   const { free, contact } = couponData;
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchClassifyGetMre = debounce((name) => {
+    if (!name) return;
     dispatch({
-      type: 'businessList/fetchGetList',
-      payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-      },
+      type: 'baseData/fetchGetGroupMreList',
+      payload: { name },
     });
   }, 500);
 
@@ -178,8 +172,8 @@ const VideoContentSet = (props) => {
   return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
-export default connect(({ businessList, sysTradeList, loading }) => ({
-  selectList: businessList.selectList,
+export default connect(({ baseData, sysTradeList, loading }) => ({
+  selectList: baseData.groupMreList,
   tradeList: sysTradeList.list.list,
-  loading: loading.models.businessList,
+  loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(VideoContentSet);

@@ -109,16 +109,9 @@ const SysAppSet = (props) => {
       },
     },
     {
-      title: '展示时间',
-      align: 'center',
-      dataIndex: 'beginDate',
-      render: (val, row) => `${val} ~ ${row.endDate !== '2999.12.30' ? row.endDate : '长期'}`,
-    },
-    {
       title: '创建时间',
       align: 'center',
-      dataIndex: 'beginDate',
-      render: (val, row) => `${val} ~ ${row.endDate}`,
+      dataIndex: 'createTime',
     },
     {
       title: '状态',
@@ -132,17 +125,14 @@ const SysAppSet = (props) => {
       render: (val, record) => [
         {
           type: 'down',
-          visible: record.showStatus === '1',
           click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
         },
         {
           type: 'edit',
-          visible: record.showStatus !== '2',
           click: () => fetchBannerDetail({ bannerId: val }),
         },
         {
           type: 'del',
-          visible: record.showStatus !== '2',
           click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
         },
       ],

@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { OPEN_ADVERT } from '@/common/imgRatio';
-import { JumpFormSet } from '@/components/FormListCondition';
+import { NativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const OpenAdForm = (props) => {
@@ -34,7 +34,7 @@ const OpenAdForm = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <JumpFormSet form={form} detail={detail} port={tabKey}></JumpFormSet>,
+      formItem: <NativeFormSet form={form} detail={detail} port={tabKey}></NativeFormSet>,
     },
   ];
 

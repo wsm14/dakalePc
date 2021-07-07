@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
+import { VANE_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
-import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
+import FormCondition from '@/components/FormCondition';
 
 const VaneDrawer = (props) => {
   const { navigation, dispatch, cRef, visible, onClose, loading, tradeList } = props;
@@ -17,7 +17,7 @@ const VaneDrawer = (props) => {
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
 
-  console.log(detail,"dddd")
+  console.log(detail, 'dddd');
 
   const allProps = {
     add: {
@@ -90,7 +90,8 @@ const VaneDrawer = (props) => {
       type: 'upload',
       name: 'image',
       maxFile: 1,
-      extra: '请上传XX*XX尺寸png、jpeg格式图片',
+      extra: '请上传80*80尺寸png、jpeg格式图片',
+      imgRatio: VANE_ICON,
     },
     {
       label: '显示气泡',

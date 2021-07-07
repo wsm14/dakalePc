@@ -8,7 +8,7 @@ import {
   BANNER_JUMP_TYPE,
   COUPON_ACTIVE_TYPE,
 } from '@/common/constant';
-import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -154,7 +154,7 @@ const PuzzleAdSet = (props) => {
     {
       type: 'noForm',
       show: false,
-      formItem: <JumpFormSet form={form} detail={info}></JumpFormSet>,
+      formItem: <NativeFormSet form={form} detail={info}></NativeFormSet>,
     },
     {
       label: '跳转事件',
