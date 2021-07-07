@@ -6,10 +6,10 @@ import ShareCoupon from './components/index';
 const FormItem = Form.Item;
 
 /**
- * 选择特惠商品
+ * 选择券
  * @param {Array} paramKey app跳转参数键值
  */
-const SpecialGoods = ({ form, paramKey }) => {
+const Coupon = ({ form, paramKey }) => {
   const [data, setData] = useState({}); // 数据
 
   useEffect(() => {
@@ -29,20 +29,20 @@ const SpecialGoods = ({ form, paramKey }) => {
         }}
       ></Merchant>
       <FormItem
-        label="特惠商品"
+        label="优惠券"
         name={['param', paramKey[1]]}
         key={'goodsKey'}
-        rules={[{ required: true, message: `请选择特惠商品` }]}
+        rules={[{ required: true, message: `请选择优惠券` }]}
         style={{ maxWidth: '100%' }}
       >
         <ShareCoupon
           data={data}
           form={form}
           merchantIdKey={paramKey[0]}
-          onOk={(free) => {
-            console.log(free);
-            form.setFieldsValue({ param: { [paramKey[1]]: free.specialGoodsId } });
-            setData(free);
+          onOk={(res) => {
+            console.log(res);
+            form.setFieldsValue({ param: { [paramKey[1]]: res.ownerCouponIdString } });
+            setData(res);
           }}
           onDel={() => {
             form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
@@ -54,4 +54,4 @@ const SpecialGoods = ({ form, paramKey }) => {
   );
 };
 
-export default SpecialGoods;
+export default Coupon;

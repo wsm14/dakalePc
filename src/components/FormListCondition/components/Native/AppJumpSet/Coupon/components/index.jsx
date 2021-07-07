@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { goodsDom } from './CouponFreeDom';
-import GoodsSelectModal from './GoodsSelectModal';
-import '../index.less';
+import { couponsDom } from './CouponFreeDom';
+import CoupomSelectModal from './CoupomSelectModal';
+import '../../SpecialGoods/index.less';
 
 /**
- * 选择商品或者券
+ * 选择优惠券
  * @param {Object} data 商品数据
  * @param {String} merchantIdKey 商家id
  * @param {Function} onDel 删除方法
@@ -15,7 +15,7 @@ const ShareCoupon = (props) => {
 
   const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
 
-  const { goodsName } = data; // 商品
+  const { couponName, buyFlag } = data; // 商品
 
   const selectProps = {
     merchantId: form.getFieldValue(['param', merchantIdKey]),
@@ -25,8 +25,8 @@ const ShareCoupon = (props) => {
   // 券
   return (
     <>
-      {goodsName ? (
-        goodsDom(data, '', '', onDel)
+      {couponName ? (
+        couponsDom(data, '', '', buyFlag == 0 ? 'free' : 'valuable', onDel)
       ) : (
         <div
           className="share_Coupon share_add"
@@ -40,12 +40,12 @@ const ShareCoupon = (props) => {
         </div>
       )}
       {/* 优惠选择 */}
-      <GoodsSelectModal
+      <CoupomSelectModal
         {...selectProps}
         visible={visibleContact}
         onOk={onOk}
         onClose={() => setVisibleContact(false)}
-      ></GoodsSelectModal>
+      ></CoupomSelectModal>
     </>
   );
 };
