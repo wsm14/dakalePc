@@ -58,7 +58,6 @@ const QrCodeShow = ({ url = null, onCancel, title, data = {} }) => {
         <a onClick={handleCopy} data-url={urlCopy}>
           复制
         </a>
-        <span id="url">{urlCopy}</span>
       </div>
       <img alt="example" style={{ width: '100%' }} src={url} />
       <div style={{ color: '#868686', textAlign: 'right', marginTop: 5 }}>
