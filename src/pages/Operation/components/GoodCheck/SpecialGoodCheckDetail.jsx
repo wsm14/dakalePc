@@ -186,31 +186,29 @@ const SpecialGoodCheckDetail = (props) => {
 
   const formCommission = [
     {
-      label: '省代佣金',
+      label: '省代分佣金额（元）',
       name: 'provinceFee',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '区县佣金',
+      label: '区县分佣金额（元）',
       name: 'districtFee',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
     },
     {
-      label: `哒人分佣金额`,
+      label: `哒人分佣金额(元)`,
       name: 'darenFee',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
+      // formatter: (value) => `￥ ${value}`,
     },
   ];
 
@@ -236,7 +234,7 @@ const SpecialGoodCheckDetail = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       {/* 驳回原因 */}
-      {status == '2' && (
+      {detail.auditStatus == '2' && (
         <Alert
           message={`驳回原因：${detail.rejectReason}`}
           type="error"

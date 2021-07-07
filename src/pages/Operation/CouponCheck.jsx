@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import { BUSINESS_TYPE, SUBMIT_TYPE, ACTION_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, SUBMIT_TYPE, ACTION_TYPE, COUPON_TYPE } from '@/common/constant';
 
 import Ellipsis from '@/components/Ellipsis';
 import NoCheck from './components/CouponCheck/NoCheck';
@@ -30,12 +30,12 @@ const tabList = [
 ];
 
 const CouponCheck = (props) => {
-  const { dispatch, specialGoodsCheck } = props;
+  const { dispatch, couponAudit } = props;
   const [tabkey, setTabKey] = useState('adminAudit');
   const [visibleInfo, setVisibleInfo] = useState(false);
 
   const tableRef = useRef();
-  const { list } = specialGoodsCheck;
+  const { list } = couponAudit;
 
   //组建公用的搜索条件
   const globalSearch = [
@@ -76,46 +76,62 @@ const CouponCheck = (props) => {
   const globalColum = [
     {
       title: '券/店铺名称',
-      dataIndex: 'couponName',
-      render: (val, row) => (
-        <div>
+      dataIndex: 'ownerCouponDTO',
+      render: (val, row) => {
+        const { ownerCouponDTO = {} } = row;
+        return (
           <div>
-            <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
-            {val}
+            <div>
+              {ownerCouponDTO.couponType && (
+                <Tag color="magenta">{COUPON_TYPE[ownerCouponDTO.couponType]}</Tag>
+              )}
+              {ownerCouponDTO.couponName}
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <Tag>{BUSINESS_TYPE[ownerCouponDTO.ownerType]}</Tag>
+              <Ellipsis length={10} tooltip>
+                {ownerCouponDTO.ownerName}
+              </Ellipsis>
+            </div>
           </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
-            <Ellipsis length={10} tooltip>
-              {row.ownerName}
-            </Ellipsis>
-          </div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '券价值/售价',
       align: 'right',
-      dataIndex: ['reduceObject', 'couponPrice'],
-      render: (val, row) => (
-        <div>
-          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-            ￥{Number(val).toFixed(2)}
+      dataIndex: 'ownerCouponDTO',
+      render: (val, row) => {
+        const { ownerCouponDTO = {} } = row;
+        const { reduceObject = {} } = ownerCouponDTO;
+        return (
+          <div>
+            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+              ￥{Number(reduceObject.couponPrice).toFixed(2)}
+            </div>
+            <div>￥{Number(ownerCouponDTO.buyPrice).toFixed(2)}</div>
           </div>
-          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '使用门槛',
       align: 'center',
       dataIndex: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
+      render: (val, row) => {
+        const { ownerCouponDTO = {} } = row;
+        const { reduceObject = {} } = ownerCouponDTO;
+        return reduceObject.thresholdPrice === '0' || !reduceObject.thresholdPrice
+          ? '无门槛'
+          : `满${reduceObject.thresholdPrice}元可使用`;
+      },
     },
     {
       title: '使用有效期',
       dataIndex: 'activeDate',
       render: (val, row) => {
-        const { activeDate, endDate, delayDays, activeDays } = row;
+        const { ownerCouponDTO = {} } = row;
+        const { activeDate, endDate, delayDays, activeDays } = ownerCouponDTO;
         if (activeDate && endDate) {
           return activeDate + '~' + endDate;
         } else {
@@ -143,13 +159,32 @@ const CouponCheck = (props) => {
       title: '剩余数量',
       align: 'right',
       dataIndex: 'remain',
+      render: (val, row) => {
+        const { ownerCouponDTO = {} } = row;
+        return ownerCouponDTO.remain;
+      },
     },
     {
       title: '审核类型',
       align: 'center',
-      dataIndex: 'checkType',
+      dataIndex: 'actionType',
+      render: (val) => ACTION_TYPE[val],
     },
   ];
+
+  const fetchSpecialGoodsClose = (record) => {
+    const { auditIdString, ownerIdString } = record;
+    dispatch({
+      type: 'specialGoodsCheck/fetchSpecialGoodsAuditClose',
+      payload: {
+        ownerId: ownerIdString,
+        auditId: auditIdString,
+      },
+      callback: () => {
+        tableRef.current.fetchGetData();
+      },
+    });
+  };
 
   const rowHandle = [
     {
@@ -161,19 +196,19 @@ const CouponCheck = (props) => {
           {
             type: 'info',
             title: '详情',
-            //   click: () => fetchSpecialGoodsDetail(index, 'info'),
+            click: () => fetchCouponDetail(index, 'info'),
             visible: tabkey !== 'adminAudit',
           },
           {
             type: 'check',
             title: '审核',
-            //   click: () => fetchSpecialGoodsDetail(index, 'check'),
+            click: () => fetchCouponDetail(index, 'check'),
             visible: tabkey === 'adminAudit',
           },
           {
             type: 'close',
             title: '关闭', //驳回状态可以关闭
-            //   visible: tabkey === 'merchantConfirmed' && auditStatus === '2',
+            visible: tabkey === 'merchantConfirmed' && auditStatus === '2',
             click: () => fetchSpecialGoodsClose(record),
           },
         ];
@@ -190,18 +225,18 @@ const CouponCheck = (props) => {
   };
 
   // 获取详情
-  const fetchSpecialGoodsDetail = (index, type) => {
-    const { ownerIdString, auditIdString, auditStatus: status } = list[index];
+  const fetchCouponDetail = (index, type) => {
+    const { ownerIdString: ownerId, auditIdString: auditId, auditStatus: status } = list[index];
     dispatch({
-      type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
-      payload: { ownerId: ownerIdString, auditId: auditIdString, type },
+      type: 'couponAudit/fetchCouponAuditDetail',
+      payload: { auditId, ownerId, type },
       callback: (val) => {
         const newProps = {
           show: true,
           detail: { ...val },
         };
         if (type == 'info' || type === 'check') {
-          setVisibleInfo({ status, index, ...newProps, ownerIdString, auditIdString });
+          setVisibleInfo({ status, index, ...newProps, ownerId, auditId });
         } else {
           setVisibleSet({ type, ...newProps });
         }
@@ -215,17 +250,17 @@ const CouponCheck = (props) => {
         {contentList[tabkey]}
       </Card>
       {/* 详情 */}
-      {/* <CouponDetail
+      <CouponDetail
         visible={visibleInfo}
         total={list.length}
         tabkey={tabkey}
         cRef={tableRef}
-        getDetail={fetchSpecialGoodsDetail}
+        getDetail={fetchCouponDetail}
         onClose={() => setVisibleInfo(false)}
-      ></CouponDetail> */}
+      ></CouponDetail>
     </>
   );
 };
-export default connect(({ specialGoodsCheck }) => ({
-  specialGoodsCheck,
+export default connect(({ couponAudit }) => ({
+  couponAudit,
 }))(CouponCheck);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -9,6 +9,7 @@ const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
 
   const { type = 'info', index, show = false, detail = {} } = visible;
+  const [commissionShow, setCommissionShow] = useState(false);
   const [form] = Form.useForm();
 
   // 确认提交
@@ -22,13 +23,20 @@ const CouponDrawer = (props) => {
         timeType,
         useWeek,
         useTime,
+        merchantIds=[],
         ...other
       } = values;
+
       dispatch({
-        type: 'couponManage/fetchCouponSave',
+        type: {
+          add: 'couponManage/fetchCouponSave',
+          edit: 'couponManage/fetchCouponUpdate',
+          again:'couponManage/fetchCouponSave'
+        }[type],
         payload: {
           ...other,
           couponType: 'reduce',
+          merchantIds:merchantIds.toString(),
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
           useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
@@ -45,7 +53,7 @@ const CouponDrawer = (props) => {
       });
     });
   };
-
+  const listProp = { commissionShow, setCommissionShow };
   // 统一处理弹窗
   const drawerProps = {
     info: {
@@ -54,8 +62,16 @@ const CouponDrawer = (props) => {
     },
     add: {
       title: '新建券',
-      children: <CouponSet form={form} initialValues={detail}></CouponSet>,
+      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
     },
+    edit: {
+      title: '编辑券',
+      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+    },
+    again:{
+      title: '重新发布',
+      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+    }
   }[type];
 
   // 弹窗属性
@@ -70,9 +86,9 @@ const CouponDrawer = (props) => {
       total,
       onChange: (size) => getDetail(size, 'info'),
     },
-    footer: type === 'add' && (
+    footer: ['add','edit','again'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
-        发布申请
+        发布
       </Button>
     ),
   };

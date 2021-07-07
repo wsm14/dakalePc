@@ -17,11 +17,27 @@ import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
-const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => {
+const CouponSet = (props) => {
+  const {
+    form,
+    loading,
+    selectList,
+    skuMerchantList,
+    dispatch,
+    commissionShow,
+    setCommissionShow,
+    initialValues,
+  } = props;
+  console.log(initialValues, 'vvvv');
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] }); // 店铺备选参数，选择店铺后回显的数据
+  // 店铺备选参数，选择店铺后回显的数据
+  const [mreList, setMreList] = useState({
+    groupId: null,
+    type: 'merchant',
+    keys: [],
+    list: [],
+  }); // 店铺备选参数，选择店铺后回显的数据
   const [radioData, setRadioData] = useState({
-    shopType: '0', // 店铺范围
     buyFlag: '0', // 是否售卖
     userFlag: '0', // 使用门槛
     userTime: '', // 使用有效期
@@ -30,26 +46,87 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
     buyRule: 'all', // 购买规则
   });
 
+  useEffect(() => {
+    if (initialValues) {
+      const { buyFlag, userTime = '', timeSplit = '' } = initialValues;
+      setRadioData({
+        buyFlag,
+        // userFlag:
+        userTime: userTime ? 'fixed' : 'gain',
+        timeSplit: timeSplit ? (timeSplit === 'part' ? 'part' : 'timeSplit') : '',
+      });
+    }
+  }, [initialValues]);
   // 设置form表单值 店铺id
   useEffect(() => {
-    form.setFieldsValue({ merchantIdList: mreList.keys });
+    form.setFieldsValue({ merchantIds: mreList.keys });
   }, [mreList.keys]);
 
+  // useEffect(() => {
+  //   if (initialValues.ownerName) {
+  //     setMreList({
+  //       type: initialValues.ownerType,
+  //       groupId: initialValues.ownerId,
+  //     });
+  //     // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
+  //     fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
+  //       const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+  //       const topCategoryId = list[mreFindIndex].topCategoryId[0];
+  //       // 是否分佣
+  //       getCommissionFlag(topCategoryId);
+
+  //     });
+  //     if (initialValues.ownerType === 'group') {
+  //       getMerchantList();
+  //     }
+  //   }
+  // }, [initialValues.ownerName]);
+
+  //sku通用-sku挂靠商家列表
+  const getMerchantList = () => {
+    dispatch({
+      type: 'baseData/fetchSkuDetailMerchantList',
+      payload: {
+        ownerServiceId: initialValues.specialGoodsId,
+        ownerId: initialValues.ownerIdString,
+        serviceType: 'specialGoods',
+      },
+      callback: (list) => {
+        const keys = list.map((item) => item.merchantId);
+        saveMreData({ keys: keys, list: list });
+        form.setFieldsValue({ merchantIds: keys });
+      },
+    });
+  };
+
   // 搜索店铺
-  const fetchGetMre = debounce((name) => {
+  const fetchGetMre = debounce((name, type, callback) => {
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
       payload: {
         name,
-        type: mreList.type,
+        type: type || mreList.type,
       },
+      callback,
     });
-  }, 500);
+  }, 100);
 
-  const saveMreData = (data) => setMreList({ ...mreList, ...data });
+  const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
+
+  //sku通用-是否需要设置佣金
+  const getCommissionFlag = (categoryId) => {
+    dispatch({
+      type: 'baseData/fetchGoodsIsCommission',
+      payload: {
+        serviceType: 'specialGoods',
+        categoryId: categoryId,
+      },
+      callback: (val) => setCommissionShow(val),
+    });
+  };
 
   // table 表头
   const getColumns = [
@@ -73,9 +150,9 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
       name: 'ownerType',
       select: BUSINESS_TYPE,
       onChange: (e) => {
-        saveSelectData({ shopType: '0' });
+        setCommissionShow(false);
         saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined, shopType: '0' }); // 重置数据
+        form.setFieldsValue({ ownerId: undefined }); // 重置数据
         dispatch({ type: 'businessList/close' }); // 清空选择数据
       },
     },
@@ -89,22 +166,24 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
-        saveMreData({ name: option.name, ratio: option.commissionRatio, keys: [], list: [] });
+        console.log(option, 'option');
+        setCommissionShow(false);
+        //是否分佣
+        getCommissionFlag(option.topCategoryId[0]);
+        saveMreData({
+          groupId: val,
+          ratio: option.commissionRatio,
+          keys: [],
+          list: [],
+        });
       },
     },
-    // {
-    //   label: '店铺范围',
-    //   type: 'radio',
-    //   name: 'shopType',
-    //   visible: mreList.name && mreList.type === 'group',
-    //   select: ['全部', '部分'],
-    //   onChange: (e) => saveSelectData({ shopType: e.target.value }),
-    // },
+
     {
       label: '适用店铺',
-      name: 'merchantIdList',
+      name: 'merchantIds',
       type: 'formItem',
-      visible: mreList.name && mreList.type == 'group',
+      visible: mreList.type == 'group',
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺
@@ -113,15 +192,18 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
     },
     {
       type: 'noForm',
-      visible: mreList.name && mreList.type == 'group',
+      visible: mreList.type == 'group',
       formItem: (
         <MreSelectShow
           key="MreTable"
           form={form}
-          columns={getColumns}
           rowKey="merchantId"
+          columns={getColumns}
           {...mreList}
-          setMreList={saveMreData}
+          setMreList={(val) => {
+            saveMreData(val);
+            form.setFieldsValue({ merchantIds: val.keys });
+          }}
         ></MreSelectShow>
       ),
     },
@@ -176,6 +258,17 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
       ],
     },
     {
+      label: '佣金总额', // 手动分佣需要展示
+      name: 'commission',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      visible: commissionShow == '1',
+      formatter: (value) => `￥ ${value}`,
+      rules: [{ required: false }],
+    },
+    {
       title: '设置使用规则',
       label: '使用门槛',
       type: 'radio',
@@ -226,7 +319,7 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
     {
       label: '适用时段',
       type: 'radio',
-      select: COUPON_USER_TIME,
+      select: COUPON_USER_TIME, //1,2,3,4,5,6,7': '每天', part: '部分'
       name: 'timeSplit',
       onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
     },
@@ -240,7 +333,7 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
     {
       label: '时间选择',
       type: 'radio',
-      select: COUPON_TIME_TYPE,
+      select: COUPON_TIME_TYPE, // { '00:00-23:59': '全天', part: '固定时间' };
       name: 'timeType',
       visible: radioData.timeSplit !== '',
       onChange: (e) => saveSelectData({ timeType: e.target.value }),
@@ -305,7 +398,7 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={{ ownerType: 'merchant' }}
+        initialValues={initialValues || { ownerType: 'merchant' }}
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
@@ -314,7 +407,10 @@ const CouponSet = ({ form, loading, selectList, skuMerchantList, dispatch }) => 
         visible={visible}
         mreList={mreList.list}
         params={{ groupId: mreList.groupId }}
-        onOk={saveMreData}
+        onOk={(val) => {
+          saveMreData(val);
+          form.setFieldsValue({ merchantIds: val.keys });
+        }}
         onCancel={() => setVisible(false)}
         columns={getColumns}
         searchShow={false}

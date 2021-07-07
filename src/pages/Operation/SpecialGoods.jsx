@@ -314,13 +314,13 @@ const SpecialGoods = (props) => {
 
           {
             type: 'again', //重新发布
-            visible: ['0'].includes(status), // 已下架 && 未删除
+            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'again'),
           },
           {
             type: 'againUp', //再次上架
             title: '再次上架',
-            visible: ['0'].includes(status), // 已下架 && 未删除
+            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'againUp'),
           },
           {

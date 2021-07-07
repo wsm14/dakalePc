@@ -85,9 +85,9 @@ const GoodsDetail = (props) => {
       name: 'provinceFee',
       render: (val, row) => (
         <>
-          <div>省代分佣：{row.serviceDivisionDTO.provinceFee}元</div>
-          <div>区县分佣：{row.serviceDivisionDTO.districtFee}元</div>
-          <div>哒人分佣：{row.serviceDivisionDTO.darenFee}元</div>
+          <div>省代分佣：{row.serviceDivisionDTO.provinceFee || '--'}元</div>
+          <div>区县分佣：{row.serviceDivisionDTO.districtFee || '--'}元</div>
+          <div>哒人分佣：{row.serviceDivisionDTO.darenFee || '--'}元</div>
         </>
       ),
     },
@@ -97,7 +97,7 @@ const GoodsDetail = (props) => {
     {
       label: '商家商品标签',
       name: 'goodsTagList',
-      show: detail.goodsTagList,
+      // show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
         const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
@@ -124,7 +124,7 @@ const GoodsDetail = (props) => {
     {
       label: '平台商品标签',
       name: 'goodsTagList',
-      show: detail.goodsTagList,
+      // show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
         const tags = goodsTagList.filter((items) => items.tagType === 'platform');
