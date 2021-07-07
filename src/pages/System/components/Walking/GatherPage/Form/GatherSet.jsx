@@ -4,7 +4,7 @@ import { Form, Button, InputNumber } from 'antd';
 import { PAGE_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import ConditionsForm from './ConditionsForm';
 const GatherSet = (props) => {
   const { visible = {}, onClose, cRef, dispatch, loading } = props;

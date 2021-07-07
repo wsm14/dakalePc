@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
-import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -128,12 +128,12 @@ const SysAppSet = (props) => {
     {
       type: 'noForm',
       formItem: (
-        <JumpFormSet
+        <NativeFormSet
           form={form}
           detail={detail}
           port={tabKey}
           getJumpType={setShowTitle}
-        ></JumpFormSet>
+        ></NativeFormSet>
       ),
     },
     {
