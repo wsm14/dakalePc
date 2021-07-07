@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
 import { BANNER_JUMP_TYPE } from '@/common/constant';
-import { Radio, Input, TreeSelect } from '@/components/FormCondition/formModule';
-import JumpTypeBlock from './components/Jump/JumpTypeBlock';
-import AppJumpSet from './components/Jump/AppJumpSet';
+import { Radio } from '@/components/FormCondition/formModule';
+import JumpTypeBlock from './components/Native/JumpTypeBlock';
+import AppJumpSet from './components/Native/AppJumpSet';
 
 const FormItem = Form.Item;
 
@@ -16,7 +16,7 @@ const FormItem = Form.Item;
  * @param {Function} getJumpType 外围获取跳转类型 回调
  * @returns
  */
-const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, navigation, form, dispatch }) => {
+const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch }) => {
   const [showUrl, setShowUrl] = useState(false); // 链接类型 h5 inside
   const [showApi, setShowApi] = useState(false); // 打开的页面类型
   const [paramKey, setParamKey] = useState(['paramName', 'paramValue']); // app 跳转需要的参数键
@@ -42,23 +42,6 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, navigation, fo
     dispatch({
       type: 'walkingManage/fetchWalkManageNavigation',
     });
-  };
-
-  const scenesProps = {
-    label: '选择场景',
-    showCheckedStrategy: 'SHOW_ALL',
-    select: navigation.list.map(
-      ({
-        categoryIdString: categoryScenesId,
-        categoryName: scenesName,
-        categoryScenesDTOList,
-      }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
-    ),
-    fieldNames: {
-      label: 'scenesName',
-      value: 'categoryScenesId',
-      children: 'categoryScenesDTOList',
-    },
   };
 
   return (
@@ -96,6 +79,4 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, navigation, fo
   );
 };
 
-export default connect(({ walkingManage }) => ({
-  navigation: walkingManage.navigation,
-}))(JumpFormBlock);
+export default connect()(JumpFormBlock);
