@@ -1,9 +1,16 @@
 import React from 'react';
-import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT, MSG_PSUH_URL } from '@/common/constant';
+import { MSG_PSUH_TYPE, MSG_PSUH_OBJECT } from '@/common/constant';
+import { NativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const MessagePushSet = (props) => {
   const { initialValues = {}, form } = props;
+  const { linkType, link = '', ...ohter } = initialValues;
+  const newDetail = {
+    ...ohter,
+    jumpUrl: link,
+    jumpUrlType: { '': '无', h5: 'H5', native: 'inside' }[linkType],
+  };
 
   const formItems = [
     {
@@ -17,16 +24,10 @@ const MessagePushSet = (props) => {
       type: 'textArea',
     },
     {
-      label: '跳转类型',
-      name: 'linkType',
-      type: 'radio',
-      select: MSG_PSUH_URL,
-      rules: [{ required: false }],
-    },
-    {
-      label: '跳转连接',
-      name: 'link',
-      rules: [{ required: false }],
+      type: 'noForm',
+      formItem: (
+        <NativeFormSet form={form} detail={newDetail}></NativeFormSet>
+      ),
     },
     {
       label: '消息类型',
@@ -50,7 +51,7 @@ const MessagePushSet = (props) => {
   ];
 
   return (
-    <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
+    <FormCondition form={form} formItems={formItems} initialValues={newDetail}></FormCondition>
   );
 };
 

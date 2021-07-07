@@ -14,9 +14,10 @@ const MessageDrawer = (props) => {
   const [form] = Form.useForm();
 
   // 确认提交 now 新增并推送时传参 用来区分是不是创建并保存接口调用
+  // { '': '无', h5: 'H5', native: 'inside' };
   const handleUpAudit = (now) => {
     form.validateFields().then((value) => {
-      const { pushTime } = value;
+      const { pushTime, jumpUrlType, jumpUrl } = value;
       const dispathType =
         now === 'too'
           ? 'messagePush/fetchMsgAddAndPush' // 新增并推送
@@ -29,6 +30,8 @@ const MessageDrawer = (props) => {
         payload: {
           ...value,
           userType,
+          link: jumpUrl,
+          linkType: { 无: '', H5: 'h5', inside: 'native' }[jumpUrlType],
           pushTime: pushTime ? pushTime.format('YYYY-MM-DD HH:mm') : null,
           id: detail.messagePushId,
         },
