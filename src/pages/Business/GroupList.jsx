@@ -102,7 +102,7 @@ const tableList = (props) => {
   const getColumns = [
     {
       title: '集团名称',
-      dataIndex: 'merchantGroupId',
+      dataIndex: 'merchantGroupIdString',
       render: (val, row) => `${row.groupName}\n${val || '--'}`,
     },
     {

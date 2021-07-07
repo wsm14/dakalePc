@@ -181,7 +181,7 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
 // 广告管理 - 展示状态
-export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
+export const BANNER_SHOW_STATUS = [false, '展示中', '已下架'];
 
 // 广告管理 - 投放区域类型
 export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
@@ -343,27 +343,26 @@ export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
 // Banner端口
 export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 
+const bannerType = {
+  person: '个人',
+  hotWeal: '爆品福利',
+  dayPush: '每日必推',
+  todayNew: '今日上新',
+  beanSelection: '小豆精选',
+  nearbyBusinessHub: '附近商圈',
+  highCommissionAlliance: '高佣联盟',
+  wanderAroundCapsule: '逛逛胶囊位',
+  wanderAroundMainBanner: '逛逛主Banner',
+  wanderAroundGoodMerchant: '逛逛周边好店',
+};
+
 // Banner类型
 export const BANNER_PORT_LINK = {
-  user: {
-    person: '个人',
-    hotWeal: '爆品福利',
-    wanderAroundMainBanner: '逛逛主Banner',
-    wanderAroundCapsule: '逛逛胶囊位',
-    wanderAroundGoodMerchant: '逛逛周边好店',
-  },
-  weChat: {
-    person: '个人',
-    hotWeal: '爆品福利',
-    wanderAroundMainBanner: '逛逛主Banner',
-    wanderAroundCapsule: '逛逛胶囊位',
-    wanderAroundGoodMerchant: '逛逛周边好店',
-  },
+  user: bannerType,
+  weChat: bannerType,
   merchant: {
     merchantMain: '商家工作台',
   },
-  // mainSpecial: '周边特惠首页',
-  // surroundingSpecial: '周边特惠列表',
 };
 
 // Banner跳转类型
@@ -508,7 +507,7 @@ export const SUBMIT_TYPE = {
   merchant: '商家',
   admin: '运营后台',
   sell: 'CRM',
-  group:'集团'
+  group: '集团',
 };
 
 //  serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
