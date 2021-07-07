@@ -72,17 +72,11 @@ const ShareDrawer = (props) => {
 
   // 搜索店铺用于回显数据
   const fetchGetMre = () => {
-    const { merchantName } = detail;
-    if (!merchantName) return;
+    const { name } = detail;
+    if (!name) return;
     dispatch({
-      type: 'businessList/fetchGetList',
-      payload: {
-        limit: 50,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-      },
+      type: 'baseData/fetchGetGroupMreList',
+      payload: { name },
     });
   };
 

@@ -26,17 +26,11 @@ const ShareContentSet = (props) => {
   const { free, contact } = couponData;
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  const fetchClassifyGetMre = debounce((name) => {
+    if (!name) return;
     dispatch({
-      type: 'businessList/fetchGetList',
-      payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-      },
+      type: 'baseData/fetchGetGroupMreList',
+      payload: { name },
     });
   }, 500);
 
@@ -193,10 +187,10 @@ const ShareContentSet = (props) => {
   return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
-export default connect(({ shareManage, businessList, sysTradeList, loading }) => ({
+export default connect(({ shareManage, baseData, sysTradeList, loading }) => ({
   platformBean: shareManage.platformBean,
   bean: shareManage.bean,
-  selectList: businessList.selectList,
+  selectList: baseData.groupMreList,
   tradeList: sysTradeList.list.list,
-  loading: loading.models.businessList,
+  loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(ShareContentSet);
