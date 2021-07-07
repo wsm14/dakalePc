@@ -28,7 +28,6 @@ const CouponSet = (props) => {
     setCommissionShow,
     initialValues,
   } = props;
-  console.log(initialValues, 'vvvv');
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
@@ -40,47 +39,79 @@ const CouponSet = (props) => {
   const [radioData, setRadioData] = useState({
     buyFlag: '0', // 是否售卖
     userFlag: '0', // 使用门槛
-    userTime: '', // 使用有效期
+    effectTime: '', // 使用有效期
     timeSplit: '', // 适用时段
     timeType: 'all', // 时段内时间选择
     buyRule: 'all', // 购买规则
   });
 
   useEffect(() => {
-    if (initialValues) {
-      const { buyFlag, userTime = '', timeSplit = '' } = initialValues;
+    if (initialValues.ownerCouponIdString) {
+      const {
+        buyFlag,
+        timeSplit = '',
+        useTimeRule = '',
+        buyRule = 'all', // 购买规则
+        useTime = '',
+        useWeek = '',
+        reduceObject = {},
+        activeDate = '',
+        endDate = '',
+      } = initialValues;
+      const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
+      const useWeekCheck = useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part';
+      const userFlagCheck = !reduceObject.thresholdPrice ? '0' : '1'; // 使用门槛
+      // 适用时段
       setRadioData({
         buyFlag,
-        // userFlag:
-        userTime: userTime ? 'fixed' : 'gain',
-        timeSplit: timeSplit ? (timeSplit === 'part' ? 'part' : 'timeSplit') : '',
+        userFlag: userFlagCheck, //详情无返回//使用门槛
+        effectTime: useTimeRule ? useTimeRule : '',
+        timeSplit,
+        timeType: timeTypeCheck,
+        buyRule,
       });
+
+      initialValues.restrictions = userFlagCheck; // 使用门槛
+      initialValues.timeSplit = useWeekCheck; // 适用时段
+      initialValues.timeType = timeTypeCheck; // 使用时间 小时
+      initialValues.useWeek = useWeekCheck === 'part' ? useWeek.split('-') : []; // 使用时间 周
+
+      const times = useTime.split('-');
+      initialValues.useTime =
+        timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [];
+      //有效期国定时间
+      initialValues.activeDate =
+        useTimeRule === 'fixed' && activeDate && endDate
+          ? [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')]
+          : [];
+
+      if (initialValues.ownerName || initialValues.ownerType) {
+        setMreList({
+          type: initialValues.ownerType,
+          groupId: initialValues.ownerId,
+        });
+        // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
+        fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
+          const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+          const topCategoryId = list[mreFindIndex].topCategoryId[0];
+          // 是否分佣
+          getCommissionFlag(topCategoryId);
+        });
+        if (initialValues.ownerType === 'group') {
+          getMerchantList();
+        }
+      }
     }
   }, [initialValues]);
+
+  console.log(initialValues, mreList, 'initialValues');
+
   // 设置form表单值 店铺id
   useEffect(() => {
     form.setFieldsValue({ merchantIds: mreList.keys });
   }, [mreList.keys]);
 
-  // useEffect(() => {
-  //   if (initialValues.ownerName) {
-  //     setMreList({
-  //       type: initialValues.ownerType,
-  //       groupId: initialValues.ownerId,
-  //     });
-  //     // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
-  //     fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
-  //       const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
-  //       const topCategoryId = list[mreFindIndex].topCategoryId[0];
-  //       // 是否分佣
-  //       getCommissionFlag(topCategoryId);
-
-  //     });
-  //     if (initialValues.ownerType === 'group') {
-  //       getMerchantList();
-  //     }
-  //   }
-  // }, [initialValues.ownerName]);
+  console.log(mreList.type, 'ddddd');
 
   //sku通用-sku挂靠商家列表
   const getMerchantList = () => {
@@ -151,9 +182,15 @@ const CouponSet = (props) => {
       select: BUSINESS_TYPE,
       onChange: (e) => {
         setCommissionShow(false);
-        saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
+        saveMreData({
+          type: e.target.value,
+          groupId: null,
+          ratio: 0,
+          keys: [],
+          list: [],
+        }); // 重置已选店铺数据
         form.setFieldsValue({ ownerId: undefined }); // 重置数据
-        dispatch({ type: 'businessList/close' }); // 清空选择数据
+        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
@@ -170,6 +207,7 @@ const CouponSet = (props) => {
         setCommissionShow(false);
         //是否分佣
         getCommissionFlag(option.topCategoryId[0]);
+        form.setFieldsValue({ merchantIds: undefined });
         saveMreData({
           groupId: val,
           ratio: option.commissionRatio,
@@ -184,6 +222,7 @@ const CouponSet = (props) => {
       name: 'merchantIds',
       type: 'formItem',
       visible: mreList.type == 'group',
+      rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)}>
           选择店铺
@@ -223,7 +262,7 @@ const CouponSet = (props) => {
       label: '售卖',
       name: 'buyFlag',
       type: 'radio',
-      select: COUPON_BUY_FLAG,
+      select: COUPON_BUY_FLAG, // ['关闭', '开启'] 0--1
       onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
     },
     {
@@ -287,15 +326,15 @@ const CouponSet = (props) => {
     {
       label: '使用有效期',
       type: 'radio',
-      select: SPECIAL_USERTIME_TYPE,
+      select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
       name: 'useTimeRule',
-      onChange: (e) => saveSelectData({ userTime: e.target.value }),
+      onChange: (e) => saveSelectData({ effectTime: e.target.value }),
     },
     {
       label: '固定时间',
       name: 'activeDate',
       type: 'rangePicker',
-      visible: radioData.userTime === 'fixed',
+      visible: radioData.effectTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
@@ -305,7 +344,7 @@ const CouponSet = (props) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === 'gain',
+      visible: radioData.effectTime === 'gain',
     },
     {
       label: '有效期天数',
@@ -314,7 +353,7 @@ const CouponSet = (props) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === 'gain',
+      visible: radioData.effectTime === 'gain',
     },
     {
       label: '适用时段',
@@ -335,7 +374,6 @@ const CouponSet = (props) => {
       type: 'radio',
       select: COUPON_TIME_TYPE, // { '00:00-23:59': '全天', part: '固定时间' };
       name: 'timeType',
-      visible: radioData.timeSplit !== '',
       onChange: (e) => saveSelectData({ timeType: e.target.value }),
     },
     {
@@ -355,7 +393,7 @@ const CouponSet = (props) => {
       label: `${['领取', '购买'][radioData.buyFlag]}上限`,
       type: 'radio',
       name: 'buyRule',
-      select: COUPON_BUY_RULE,
+      select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
       onChange: (e) => saveSelectData({ buyRule: e.target.value }),
     },
     {
@@ -367,7 +405,7 @@ const CouponSet = (props) => {
     },
     {
       label: `单人每天${['领取', '购买'][radioData.buyFlag]}份数`,
-      name: 'dayMaxByAmount',
+      name: 'dayMaxBuyAmount',
       suffix: '份',
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.buyRule === 'dayLimit',
@@ -389,7 +427,7 @@ const CouponSet = (props) => {
       label: '使用说明',
       name: 'couponDesc',
       type: 'formItem',
-      formItem: <DescSet name={'couponDesc'}></DescSet>,
+      formItem: <DescSet name={'couponDesc'} form={form}></DescSet>,
     },
   ];
 

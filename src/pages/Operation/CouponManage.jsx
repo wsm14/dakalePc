@@ -223,13 +223,13 @@ const CouponManageComponent = (props) => {
     });
   };
 
-  // 获取商品详情
+  // 获取详情
   const fetchCouponDetail = (index, type) => {
     const { ownerCouponIdString: ownerCouponId, ownerIdString: ownerId } = list[index];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
       payload: { ownerCouponId, ownerId },
-      callback: (detail) => setVisible({ type, show: true, index, detail }),
+      callback: (detail) => setVisible({ type, show: true, index, detail, ownerCouponId, ownerId }),
     });
   };
 

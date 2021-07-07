@@ -163,6 +163,7 @@ const PreferentialSet = ({
         setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
         getTagsPlat(option.topCategoryId[0]);
+        form.setFieldsValue({ merchantIds: undefined });
         saveMreData({
           groupId: val,
           ratio: option.commissionRatio,
@@ -185,6 +186,7 @@ const PreferentialSet = ({
       name: 'merchantIds',
       type: 'formItem',
       visible: mreList.type == 'group',
+      rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
         <Button type="primary" ghost onClick={() => setVisible(true)} disabled={editActive}>
           选择店铺
@@ -303,7 +305,8 @@ const PreferentialSet = ({
     {
       label: '平台商品标签',
       name: 'goodsTags',
-      type: 'tags',
+      type: 'select',
+      mode: 'multiple',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },

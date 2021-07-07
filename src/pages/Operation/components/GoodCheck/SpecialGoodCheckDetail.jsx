@@ -133,7 +133,10 @@ const SpecialGoodCheckDetail = (props) => {
       auth: 'check',
       onClick: handleVerifyAllow,
       text: '审核通过',
-      show: ['0'].includes(status) && ['admin', 'sell'].includes(detail.auditorType),
+      show:
+        ['0'].includes(status) &&
+        ['admin', 'sell'].includes(detail.auditorType) &&
+        ['adminAudit'].includes(tabkey),
     },
   ];
   // 弹出窗属性
@@ -149,22 +152,24 @@ const SpecialGoodCheckDetail = (props) => {
     },
     footer: (
       <ExtraButton list={btnList}>
-        {['0'].includes(status) && ['admin', 'sell'].includes(detail.auditorType) && (
-          <Button
-            style={{ marginLeft: 8 }}
-            danger
-            onClick={() =>
-              setVisibleRefuse({
-                show: true,
-                type: 'edit',
-                auditId: auditIdString,
-                ownerId: ownerIdString,
-              })
-            }
-          >
-            审核驳回
-          </Button>
-        )}
+        {['0'].includes(status) &&
+          ['admin', 'sell'].includes(detail.auditorType) &&
+          ['adminAudit'].includes(tabkey) && (
+            <Button
+              style={{ marginLeft: 8 }}
+              danger
+              onClick={() =>
+                setVisibleRefuse({
+                  show: true,
+                  type: 'edit',
+                  auditId: auditIdString,
+                  ownerId: ownerIdString,
+                })
+              }
+            >
+              审核驳回
+            </Button>
+          )}
       </ExtraButton>
     ),
   };
@@ -215,15 +220,27 @@ const SpecialGoodCheckDetail = (props) => {
   const formTagItem = [
     {
       label: '商家商品标签',
-      type: 'tags',
+      type: 'select',
+      mode: 'multiple',
       name: 'merTags',
       select: merchantTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value.length > 3) {
+              return Promise.reject('最多选择3个标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '平台商品标签',
       name: 'platTags',
-      type: 'tags',
+      type: 'select',
+      mode: 'multiple',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },
@@ -234,9 +251,13 @@ const SpecialGoodCheckDetail = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       {/* 驳回原因 */}
-      {detail.auditStatus == '2' && (
+      {status == '2' && (
         <Alert
-          message={`驳回原因：${detail.rejectReason}`}
+          message={`驳回原因：${
+            detail.rejectReason.length > 12
+              ? detail.rejectReason.substr(0, 12) + '...'
+              : detail.rejectReason
+          }`}
           type="error"
           banner
           action={
@@ -310,6 +331,7 @@ const SpecialGoodCheckDetail = (props) => {
               ></FormCondition>
             </>
           )}
+          {/* //审核编辑 */}
           {['adminAudit'].includes(tabkey) && (
             <>
               <div

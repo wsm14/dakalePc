@@ -5,7 +5,7 @@ import { Form, Input, Button } from 'antd';
 
 const { TextArea } = Input;
 
-const GoodsDescSet = ({ name }) => {
+const GoodsDescSet = ({ name, form }) => {
   const [textArr, setTextArr] = useState([]);
 
   // const totalStyle = { textAlign: 'right', paddingRight: 44, marginBottom: 10, marginTop: -16 };

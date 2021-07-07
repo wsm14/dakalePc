@@ -21,6 +21,7 @@ const CheckRefuseDraw = (props) => {
       label: `添加图片说明`,
       type: 'upload',
       name: 'rejectImg',
+      rules: [{ required: false }],
     },
   ];
 

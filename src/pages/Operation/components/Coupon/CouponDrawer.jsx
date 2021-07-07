@@ -8,7 +8,7 @@ import CouponSet from './Form/CouponSet';
 const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
 
-  const { type = 'info', index, show = false, detail = {} } = visible;
+  const { type = 'info', index, show = false, detail = {}, ownerCouponId, ownerId } = visible;
   const [commissionShow, setCommissionShow] = useState(false);
   const [form] = Form.useForm();
 
@@ -23,7 +23,7 @@ const CouponDrawer = (props) => {
         timeType,
         useWeek,
         useTime,
-        merchantIds=[],
+        merchantIds = [],
         ...other
       } = values;
 
@@ -31,12 +31,14 @@ const CouponDrawer = (props) => {
         type: {
           add: 'couponManage/fetchCouponSave',
           edit: 'couponManage/fetchCouponUpdate',
-          again:'couponManage/fetchCouponSave'
+          again: 'couponManage/fetchCouponSave',
         }[type],
         payload: {
+          ownerCouponId,
+          ownerId,
           ...other,
           couponType: 'reduce',
-          merchantIds:merchantIds.toString(),
+          merchantIds: merchantIds.toString(),
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
           useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
@@ -68,10 +70,10 @@ const CouponDrawer = (props) => {
       title: '编辑券',
       children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
     },
-    again:{
+    again: {
       title: '重新发布',
       children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
-    }
+    },
   }[type];
 
   // 弹窗属性
@@ -80,13 +82,13 @@ const CouponDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
-    closeCallBack: () => dispatch({ type: 'businessList/close' }), // 关闭清空搜索的商家数据
+    closeCallBack: () => dispatch({ type: 'baseData/clearGroupMre' }), // 关闭清空搜索的商家数据
     dataPage: type === 'info' && {
       current: index,
       total,
       onChange: (size) => getDetail(size, 'info'),
     },
-    footer: ['add','edit','again'].includes(type) && (
+    footer: ['add', 'edit', 'again'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         发布
       </Button>

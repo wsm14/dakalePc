@@ -47,7 +47,12 @@ const PreferentialDrawer = (props) => {
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
       const { id, ownerId } = detail;
-      const { activityGoodsImg, goodsDescImg, goodsTags = [], merchantIds=[] } = visibleRule.preData;
+      const {
+        activityGoodsImg,
+        goodsDescImg,
+        goodsTags = [],
+        merchantIds = [],
+      } = visibleRule.preData;
       const {
         activityStartTime,
         useStartTime,
@@ -74,7 +79,7 @@ const PreferentialDrawer = (props) => {
             ...visibleRule.preData,
             ...other,
             goodsTags: goodsTags.toString(),
-            merchantIds:merchantIds.toString(),
+            merchantIds: merchantIds.toString(),
             activityGoodsImg: res.slice(0, aimg.length).toString(),
             goodsDescImg: res.slice(aimg.length).toString(),
             activityStartTime: activityStartTime && activityStartTime[0].format('YYYY-MM-DD'),
@@ -191,9 +196,9 @@ const PreferentialDrawer = (props) => {
     onClose,
     afterCallBack: () => fetchGetMre(),
     closeCallBack: () => {
-      dispatch({ type: 'businessList/close' });
+      dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
       setSaveData(null);
-    }, // 关闭清空搜索的商家数据
+    },
     footer: {
       true: (
         <Button onClick={handleUpAudit} disabled={!commissionShow} type="primary">

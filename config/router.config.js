@@ -408,7 +408,7 @@ export default [
         path: '/operation/coupon',
         name: '优惠券管理',
         component: './Operation/CouponManage',
-        buttons: ['save', 'del', 'info', 'down', 'exportList'],
+        buttons: ['save', 'del', 'info', 'down','again' ,'exportList'],
       },
       {
         path: '/operation/special',
