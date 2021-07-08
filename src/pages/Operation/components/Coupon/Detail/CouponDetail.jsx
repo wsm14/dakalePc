@@ -16,13 +16,13 @@ const GoodsDetail = (props) => {
       label: `${BUSINESS_TYPE[ownerType]}名称`,
       name: 'ownerName',
     },
-    {
-      label: '店铺范围',
-      name: 'merchantIdList',
-      render: () => '',
-      show: ownerType === 'group',
-      children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
-    },
+    // {
+    //   label: '店铺范围',
+    //   name: 'merchantIdList',
+    //   render: () => '',
+    //   show: ownerType === 'group',
+    //   children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
+    // },
   ];
 
   // 券信息

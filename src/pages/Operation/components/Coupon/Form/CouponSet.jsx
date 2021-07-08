@@ -79,7 +79,7 @@ const CouponSet = (props) => {
         buyFlag,
         userFlag: userFlagCheck, //详情无返回//使用门槛
         effectTime: useTimeRule ? useTimeRule : '',
-        timeSplit,
+        timeSplit:useWeekCheck,
         timeType: timeTypeCheck,
         buyRule,
       });
