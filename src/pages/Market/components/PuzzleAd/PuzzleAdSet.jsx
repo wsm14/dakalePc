@@ -50,7 +50,6 @@ const PuzzleAdSet = (props) => {
           payload: {
             ...values,
             [showType]: res.toString(),
-            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             provinceCityDistrictObjects,
             puzzleAdsId: info.puzzleAdsId,
             startShowTime:
@@ -166,7 +165,7 @@ const PuzzleAdSet = (props) => {
       label: '跳转内容',
       name: 'jumpUrl',
       visible: false,
-      show: info.jumpUrlType !== '无',
+      show: !!info.jumpUrlType,
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName, param = {} } = row;
         return {

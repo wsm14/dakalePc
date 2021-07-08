@@ -9,7 +9,7 @@ const MessagePushSet = (props) => {
   const newDetail = {
     ...ohter,
     jumpUrl: link,
-    jumpUrlType: { '': '无', h5: 'H5', native: 'inside' }[linkType],
+    jumpUrlType: { '': '', h5: 'H5', native: 'inside' }[linkType],
   };
 
   const formItems = [

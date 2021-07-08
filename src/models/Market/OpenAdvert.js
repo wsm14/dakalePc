@@ -70,11 +70,10 @@ export default {
       const response = yield call(fetchOpenAdvertDetail, payload);
       if (!response) return;
       const { content = {} } = response;
-      const { startDate, endDate, param = '{}', jumpUrlType } = content.appLaunchImage;
+      const { startDate, endDate, param = '{}' } = content.appLaunchImage;
       if (callback)
         callback({
           ...content.appLaunchImage,
-          jumpUrlType: jumpUrlType === '' ? '无' : jumpUrlType,
           param: JSON.parse(param || '{}'),
           activeDate: [moment(startDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         });

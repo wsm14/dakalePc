@@ -16,7 +16,6 @@ const SysAppSet = (props) => {
   const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
   const [showTitle, setShowTitle] = useState(null); // 是否显示标题
-  const [timeRule, setTimeRule] = useState(null); // 展示时间规则 fixed 固定 infinite 长期
 
   // 提交
   const fetchGetFormData = () => {
@@ -25,7 +24,6 @@ const SysAppSet = (props) => {
       const {
         coverImg,
         beginDate: time = [],
-        jumpUrlType,
         hideTitle = false,
         timeRuleData, // fixed 固定 infinite 长期 长期时endDate 为2999-12-30 23:59:59
         provinceCityDistrictObjects: cityData = [],
@@ -46,7 +44,6 @@ const SysAppSet = (props) => {
             userType: tabKey,
             hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
-            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),
             beginDate:
               timeRuleData === 'fixed'
@@ -150,7 +147,6 @@ const SysAppSet = (props) => {
     onClose,
     afterCallBack: () => {
       setShowTitle(detail.jumpUrlType);
-      setTimeRule(detail.timeRuleData);
       setShowRadio(!!detail.bannerType);
       setShowArea(detail.deliveryAreaType === 'detail');
     },
