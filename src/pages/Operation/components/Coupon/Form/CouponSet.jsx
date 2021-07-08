@@ -177,7 +177,7 @@ const CouponSet = (props) => {
       type: 'radio',
       name: 'ownerType',
       select: BUSINESS_TYPE,
-      disabled: type === 'edit' && status === '1',
+      disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
       onChange: (e) => {
         setCommissionShow(false);
         saveMreData({
@@ -197,7 +197,7 @@ const CouponSet = (props) => {
       name: 'ownerId',
       placeholder: '请输入搜索',
       select: selectList,
-      disabled: type === 'edit' && status === '1',
+      disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
       loading,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
@@ -227,7 +227,7 @@ const CouponSet = (props) => {
         <Button
           type="primary"
           ghost
-          disabled={type === 'edit' && status === '1'}
+          disabled={['edit', 'again'].includes(type) && ['1', '2'].includes(status)}
           onClick={() => setVisible(true)}
         >
           选择店铺
@@ -242,7 +242,7 @@ const CouponSet = (props) => {
           key="MreTable"
           form={form}
           rowKey="merchantId"
-          disabled={type === 'edit' && status === '1'}
+          disabled={['edit', 'again'].includes(type) && ['1', '2'].includes(status)}
           columns={getColumns}
           {...mreList}
           setMreList={(val) => {
@@ -268,6 +268,7 @@ const CouponSet = (props) => {
       label: '售卖',
       name: 'buyFlag',
       type: 'radio',
+      disabled: type === 'edit' && status === '1',
       select: COUPON_BUY_FLAG, // ['关闭', '开启'] 0--1
       onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
     },
@@ -275,6 +276,7 @@ const CouponSet = (props) => {
       label: '售卖价格',
       name: 'buyPrice',
       prefix: '￥',
+      disabled: type === 'edit' && status === '1',
       visible: radioData.buyFlag === '1',
       addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
     },
@@ -282,6 +284,7 @@ const CouponSet = (props) => {
       label: '商家结算价',
       name: 'merchantPrice',
       prefix: '￥',
+      disabled: type === 'edit' && status === '1',
       visible: radioData.buyFlag === '1',
       addRules: [
         { pattern: NUM_ALL, message: '价格必须为数字，且大于0' },
@@ -310,6 +313,7 @@ const CouponSet = (props) => {
       min: 0,
       max: 999999.99,
       visible: commissionShow == '1',
+      disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
       formatter: (value) => `￥ ${value}`,
       rules: [{ required: false }],
     },
