@@ -307,7 +307,7 @@ const SpecialGoods = (props) => {
           {
             type: 'edit',
             visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
-            click: () => fetchSpecialGoodsDetail(index, [false, 'active', 'edit'][status]),
+            click: () => fetchSpecialGoodsDetail(index, 'edit'),
           },
 
           {

@@ -20,6 +20,11 @@ const PreferentialSet = ({
   onValuesChange,
   skuMerchantList,
 }) => {
+  // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
+  const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
+  //活动中隐藏的编辑项//edit 独有不展示
+  const editDisabled = ['edit'].includes(editActive);
+
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
@@ -140,7 +145,7 @@ const PreferentialSet = ({
       title: '设置参与活动的店铺',
       label: '选择店铺类型',
       type: 'radio',
-      disabled: editActive,
+      disabled: commonDisabled,
       name: 'ownerType',
       select: BUSINESS_TYPE,
       onChange: (e) => {
@@ -164,7 +169,7 @@ const PreferentialSet = ({
       placeholder: '请输入搜索',
       loading,
       select: selectList,
-      disabled: editActive,
+      disabled: commonDisabled,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
@@ -196,7 +201,7 @@ const PreferentialSet = ({
       visible: mreList.type == 'group',
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={editActive}>
+        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={commonDisabled}>
           选择店铺
         </Button>
       ),
@@ -208,6 +213,7 @@ const PreferentialSet = ({
         <MreSelectShow
           key="MreTable"
           form={form}
+          disabled={commonDisabled}
           rowKey="merchantId"
           columns={getColumns}
           {...mreList}
@@ -222,6 +228,7 @@ const PreferentialSet = ({
       title: '设置商品信息',
       label: '商品类型',
       name: 'goodsType',
+      disabled: commonDisabled,
       type: 'radio',
       select: GOODS_CLASS_TYPE,
       onChange: (e) => saveSelectData({ goodsType: e.target.value }),
@@ -248,6 +255,7 @@ const PreferentialSet = ({
       name: 'oriPrice',
       type: 'number',
       precision: 2,
+      disabled: editDisabled,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
@@ -257,6 +265,7 @@ const PreferentialSet = ({
       name: 'realPrice',
       type: 'number',
       precision: 2,
+      disabled: editDisabled,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
@@ -278,6 +287,7 @@ const PreferentialSet = ({
       name: 'merchantPrice',
       type: 'number',
       precision: 2,
+      disabled: editDisabled,
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
@@ -306,6 +316,7 @@ const PreferentialSet = ({
       precision: 2,
       min: 0,
       max: 999999.99,
+      disabled: commonDisabled,
       visible: commissionShow == '1',
       formatter: (value) => `￥ ${value}`,
       rules: [{ required: false }],

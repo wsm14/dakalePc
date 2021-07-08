@@ -113,6 +113,8 @@ export function fetchSpecialConditConfig(data) {
   });
 }
 
+// /admin/dictionaryAdmin/getDictionaryAdmin
+
 // 周边特惠 end
 
 //特惠审核

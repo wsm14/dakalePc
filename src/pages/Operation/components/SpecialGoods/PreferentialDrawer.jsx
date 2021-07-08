@@ -12,12 +12,11 @@ import PreferentialRuleSet from './Form/PreferentialRuleSet';
 const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
-  // info 详情，add 新增，active 活动中修改，edit 即将开始修改，again 重新发布
-  const { type = 'info', show = false, detail = {}, specialGoodsId, ownerIdString } = visible;
+  // info 详情，add 新增，edit 活动中修改，again 重新发布
+  const { type = 'info', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
-  const [formRule] = Form.useForm(); // active 数据表单
   const [formAgain] = Form.useForm(); // again 数据表单
   const [formAgainUp] = Form.useForm(); // againUp 数据表单
   const [formRuleAdd] = Form.useForm(); // 规则 数据表单
@@ -103,25 +102,6 @@ const PreferentialDrawer = (props) => {
     });
   };
 
-  // 确认修改 - 进行中的活动
-  const handleUpEdit = () => {
-    formRule.validateFields().then((values) => {
-      const { buyDesc = [] } = values;
-      dispatch({
-        type: 'specialGoods/fetchSpecialGoodsEdit',
-        payload: {
-          ...detail,
-          ...values,
-          buyDesc: buyDesc.filter((i) => i),
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
-    });
-  };
-
   // 下一步
   const handleUpAudit = () => {
     ({ add: form, again: formAgain, edit: formEdit, againUp: formAgainUp }[type]
@@ -131,7 +111,7 @@ const PreferentialDrawer = (props) => {
       }));
   };
 
-  const listProp = { commissionShow, setCommissionShow };
+  const listProp = { commissionShow, setCommissionShow, editActive: type };
 
   // 统一处理弹窗
   const drawerProps = {
@@ -161,7 +141,7 @@ const PreferentialDrawer = (props) => {
       ),
     },
     againUp: {
-      title: '重新上架',
+      title: '编辑',
       children: (
         <PreferentialSet
           {...listProp}
@@ -174,17 +154,7 @@ const PreferentialDrawer = (props) => {
     edit: {
       title: '修改活动',
       children: (
-        <PreferentialSet editActive={true} form={formEdit} initialValues={detail}></PreferentialSet>
-      ),
-    },
-    active: {
-      title: '修改活动',
-      children: (
-        <PreferentialRuleSet
-          form={formRule}
-          editActive={true}
-          initialValues={detail}
-        ></PreferentialRuleSet>
+        <PreferentialSet {...listProp} form={formEdit} initialValues={detail}></PreferentialSet>
       ),
     },
   }[type];
@@ -199,18 +169,11 @@ const PreferentialDrawer = (props) => {
       dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
       setSaveData(null);
     },
-    footer: {
-      true: (
-        <Button onClick={handleUpAudit} disabled={!commissionShow} type="primary">
-          下一步
-        </Button>
-      ),
-      false: (
-        <Button onClick={handleUpEdit} type="primary" loading={loading}>
-          确定修改
-        </Button>
-      ),
-    }[['add', 'again', 'edit', 'againUp'].includes(type)],
+    footer: (
+      <Button onClick={handleUpAudit} disabled={!commissionShow} type="primary">
+        下一步
+      </Button>
+    ),
   };
 
   // 下一步：规则弹窗属性
@@ -236,6 +199,7 @@ const PreferentialDrawer = (props) => {
         {drawerProps.children}
         <DrawerCondition {...ruleModalProps}>
           <PreferentialRuleSet
+            editActive={type}
             form={formRuleAdd}
             initialValues={saveData || detail}
           ></PreferentialRuleSet>

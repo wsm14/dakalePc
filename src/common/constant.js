@@ -203,6 +203,9 @@ export const MRE_TAG_STATUS = ['停用', '启用'];
 // FAQ猜你想问
 export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
 
+// FAQ端口类型
+export const FAQ_PART_TYPE = { user: '用户端', merchant: '商家端' };
+
 // 省代/区县公司/销售管理系统状态
 export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
 
