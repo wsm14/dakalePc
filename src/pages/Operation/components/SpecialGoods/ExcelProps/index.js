@@ -21,7 +21,7 @@ export default {
       header: '折扣',
       render: (val, row) => {
         const zhe = (Number(row.realPrice) / Number(row.oriPrice)) * 10;
-        return `${zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折`;
+        return `${`${zhe}`.substring(0, 4)}折`;
       },
     },
     { key: 'merchantPrice', header: '商家结算价' },

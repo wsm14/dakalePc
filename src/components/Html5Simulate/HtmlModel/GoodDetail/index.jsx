@@ -131,7 +131,7 @@ const GoodDetail = ({ data = {} }) => {
                             {itemsgood.goodsName}
                             {itemsgood.goodsNum}
                           </span>
-                        { itemsgood.goodsPrice&& <span>￥ {itemsgood.goodsPrice}</span>}
+                          {itemsgood.goodsPrice && <span>￥ {itemsgood.goodsPrice}</span>}
                         </div>
                       ))
                     : ''}
@@ -225,8 +225,10 @@ const GoodDetail = ({ data = {} }) => {
               <span style={{ fontSize: '11px', color: '#999999', textDecoration: 'line-through' }}>
                 ￥ {oriPrice}
               </span>
-              {(merchantPrice!=0 && oriPrice!=0) && (
-                <span className="spec_d">{((merchantPrice / oriPrice) * 10).toFixed(2)}折</span>
+              {merchantPrice != 0 && oriPrice != 0 && (
+                <span className="spec_d">
+                  {`${(merchantPrice / oriPrice) * 10}`.substring(0, 4)}折
+                </span>
               )}
             </div>
           </div>
