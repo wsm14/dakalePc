@@ -6,8 +6,7 @@ import FormCondition from '@/components/FormCondition';
 import { NUM_PATTERN } from '@/common/regExp';
 const GoodResourceSet = (props) => {
   const { visible, onClose, cRef, dispatch, loading } = props;
-  const { show = false, tabKey } = visible;
-  console.log(tabKey, 'tabKey');
+  const { show = false, tabKey, detail = {} } = visible;
 
   const [form] = Form.useForm();
   const handleSave = () => {
@@ -84,7 +83,7 @@ const GoodResourceSet = (props) => {
   ];
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition formItems={formItems} form={form}></FormCondition>
+      <FormCondition formItems={formItems} form={form} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };

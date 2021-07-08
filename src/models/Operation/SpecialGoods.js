@@ -15,6 +15,7 @@ import {
   fetchSpecialToTop,
   fetchSpecialCancleToTop,
   fetchSpecialConditConfig,
+  fetchResourceDicts,
 } from '@/services/OperationServices';
 
 export default {
@@ -201,6 +202,15 @@ export default {
         description: '配置成功',
       });
       callback();
+    },
+    *fetchResourceDicts({ payload, callback }, { call }) {
+      const response = yield call(fetchResourceDicts, payload);
+      if (!response) return;
+      const { content } = response;
+      const { dictionary = {} } = content;
+      const extraParam = dictionary.extraParam ? JSON.parse(dictionary.extraParam) : {};
+
+      callback({ ...content.dictionary, ...extraParam });
     },
   },
 };
