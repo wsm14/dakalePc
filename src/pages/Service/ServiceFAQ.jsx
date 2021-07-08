@@ -30,7 +30,7 @@ const ServiceFAQ = (props) => {
   const childRef = useRef();
   const check = authCheck(tabList);
 
-  const [tabkey, setTabKey] = useState(false); // tab分类
+  const [tabKey, setTabKey] = useState(false); // tab分类
   const [delKey, setDelKey] = useState([]); // 多选删除项木key
   const [visible, setVisible] = useState(false); // 分类列表
   const [faqSet, setFaqSet] = useState(false); // 设置faq
@@ -41,12 +41,11 @@ const ServiceFAQ = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!visible) fetchFAQSortList();
-  }, [visible]);
-
-  useEffect(() => {
-    tabkey && childRef.current.fetchGetData();
-  }, [tabkey]);
+    if (tabKey) {
+      fetchFAQSortList();
+      childRef.current.fetchGetData();
+    }
+  }, [tabKey]);
 
   // 搜索参数
   const searchItems = [
@@ -195,7 +194,7 @@ const ServiceFAQ = (props) => {
   const fetchFAQSortList = () => {
     dispatch({
       type: 'serviceFAQ/fetchFAQSortList',
-      payload: { page: 1, limit: 99 },
+      payload: { page: 1, limit: 99, type: tabKey },
     });
   };
 
@@ -266,7 +265,7 @@ const ServiceFAQ = (props) => {
     },
     {
       auth: 'save',
-      onClick: () => setFaqSet({ type: 'add', detail: { userType: tabkey, likeStatus: '0' } }),
+      onClick: () => setFaqSet({ type: 'add', detail: { userType: tabKey, likeStatus: '0' } }),
       text: '新增问题',
     },
   ];
@@ -291,7 +290,7 @@ const ServiceFAQ = (props) => {
           loading={loading.models.serviceFAQ}
           searchItems={searchItems}
           columns={getColumns}
-          params={{ userType: tabkey }}
+          params={{ userType: tabKey }}
           rowKey={(record) => `${record.questionIdString}`}
           dispatchType="serviceFAQ/fetchGetList"
           childrenColumnName="commonQuestionList"
@@ -343,12 +342,13 @@ const ServiceFAQ = (props) => {
         <Result status="403" title="403" subTitle="暂无权限"></Result>
       )}
       <FAQSortList
+        tabKey={tabKey}
         qRef={childRef}
         visible={visible}
         setVisible={() => setVisible(false)}
       ></FAQSortList>
       <FAQSet
-        typeList={check}
+        tabKey={tabKey}
         cRef={childRef}
         visible={faqSet}
         onClose={() => setFaqSet(false)}
