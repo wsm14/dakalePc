@@ -5,8 +5,6 @@ import { COUPON_BUY_RULE, COUPON_WEEK_TIME } from '@/common/constant';
 const RegularDetail = (props) => {
   const { detail } = props;
   const { useTime } = detail;
-  // detail.useTime = useTime
-
 
   console.log(detail, 'detail22222');
 
@@ -17,11 +15,10 @@ const RegularDetail = (props) => {
       render: (val, row) =>
         val == 'infinite'
           ? `长期`
-          : activityStartTime
-          ? `${row.activityStartTime[0].format('YYYY-MM-DD')}~${row.activityStartTime[1].format(
-              'YYYY-MM-DD',
-            )}`
+          : row.activityStartTime
+          ? `${row.activityStartTime}~${row.activityEndTime}`
           : '',
+    
     },
     {
       name: 'goodsType',
@@ -32,7 +29,7 @@ const RegularDetail = (props) => {
         if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
           return useStartTime
-            ? useStartTime[0].format('YYYY-MM-DD') + '~' + useStartTime[1].format('YYYY-MM-DD')
+            ? useStartTime + '~' + useEndTime
             : '';
         } else {
           if (delayDays === '0') {
@@ -54,9 +51,8 @@ const RegularDetail = (props) => {
             return week;
           });
         }
-        const times = val
-        //   ? val[0].format('HH:mm:ss') + '-' + val[1].format('HH:mm:ss')
-        //   : row.timeType;
+        const times = val;
+      
         return <>{row.timeSplit == 'part' ? `${week}--${times}` : `每天--${times}`}</>;
       },
     },

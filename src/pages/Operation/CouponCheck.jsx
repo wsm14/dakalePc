@@ -55,8 +55,8 @@ const CouponCheck = (props) => {
     {
       label: '创建时间',
       type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
+      name: 'createBeginDate',
+      end: 'createEndDate',
     },
     {
       label: '审核类型',

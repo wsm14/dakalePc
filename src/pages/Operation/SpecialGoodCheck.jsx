@@ -80,13 +80,10 @@ const SpecialGoodCheck = (props) => {
       name: 'ownerId',
       type: 'merchant',
     },
-    // {
-    //   label: '集团/店铺名',
-    //   name: 'groupOrMerchantName',
-    // },
+   
     {
       label: '创建人',
-      name: 'creatorName',
+      name: 'submitterUserName',
     },
     {
       label: '活动有效期',
@@ -94,12 +91,6 @@ const SpecialGoodCheck = (props) => {
       name: 'activityStartTime',
       end: 'activityEndTime',
     },
-    // {
-    //     label: '活动状态',
-    //     name: 'status',
-    //     type: 'select',
-    //     select: SPECIAL_STATUS,
-    // },
 
     {
       label: '地区',
@@ -121,8 +112,8 @@ const SpecialGoodCheck = (props) => {
     {
       label: '创建时间',
       type: 'rangePicker',
-      name: 'createStartTime',
-      end: 'createEndTime',
+      name: 'createBeginDate',
+      end: 'createEndDate',
     },
     {
       label: '店铺类型',

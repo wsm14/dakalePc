@@ -8,6 +8,7 @@ const MreSelectShow = ({
   columns,
   setMreList,
   otherColumns = [],
+  disabled = false,
 }) => {
   // table 表头
   const getColumns = [
@@ -45,6 +46,9 @@ const MreSelectShow = ({
         rowSelection={{
           fixed: true,
           selectedRowKeys: keys,
+          getCheckboxProps: (record) => ({
+            disabled: disabled, // Column configuration not to be checked
+          }),
           onChange: (val) => setMreList({ list, keys: val }),
         }}
         list={list}

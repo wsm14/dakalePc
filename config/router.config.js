@@ -408,7 +408,7 @@ export default [
         path: '/operation/coupon',
         name: '优惠券管理',
         component: './Operation/CouponManage',
-        buttons: ['save', 'del', 'info', 'down','again' ,'exportList'],
+        buttons: ['save', 'del', 'info', 'down', 'again', 'exportList', 'diary'],
       },
       {
         path: '/operation/special',
@@ -446,7 +446,7 @@ export default [
         path: '/operation/specialGoodsResource',
         name: '资源位配置',
         component: './Operation/SpecialGoodsResource',
-        buttons: ['cancleRecommend','placement','configCondit'],
+        buttons: ['cancleRecommend', 'placement', 'configCondit'],
       },
       // 客服中心 service
       {
