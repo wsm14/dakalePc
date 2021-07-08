@@ -92,7 +92,7 @@ const SysAppSet = (props) => {
       title: '跳转类型',
       align: 'center',
       dataIndex: 'jumpUrlType',
-      render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
+      render: (val) => BANNER_JUMP_TYPE[val],
     },
     {
       title: '跳转内容',

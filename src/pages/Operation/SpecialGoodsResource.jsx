@@ -263,9 +263,7 @@ const SpecialGoodsResource = (props) => {
               ￥{Number(val).toFixed(2)}
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Tag color={'red'}>
-                {zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折
-              </Tag>
+              <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
               <div>￥{Number(row.realPrice).toFixed(2)}</div>
             </div>
           </div>

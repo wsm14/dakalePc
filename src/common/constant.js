@@ -369,7 +369,7 @@ export const BANNER_PORT_LINK = {
 };
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', inside: '原生页面' };
+export const BANNER_JUMP_TYPE = { '': '无', H5: 'H5', inside: '原生页面' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
@@ -427,8 +427,7 @@ export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
 
-//specialGoods-特惠商品 reduceCoupon-优惠券
-
+// specialGoods-特惠商品 reduceCoupon-优惠券
 export const ORDER_TYPE_PROPS = {
   specialGoods: '特惠商品',
   reduceCoupon: '优惠券',
@@ -470,11 +469,8 @@ export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
 // 视频广告 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
-//特惠商品 审核
-// adminAudit-待审核
-// merchantAudit-待确认
-// adminConfirmed-已审核
-// merchantConfirmed-已确认
+
+// 特惠商品 审核
 export const SPECIAL_GOODS_CHECK_STATUS = {
   adminAudit: '待审核',
   merchantAudit: '待确认',
@@ -488,24 +484,25 @@ export const ACTION_TYPE = {
   update: '修改审核',
   down: '下架审核',
 };
-//周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
+// 周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
 export const GOODS_CHECK_RESSTATUS = ['待审核', '已通过', '已驳回', '已关闭'];
 
-//审核类型
+// 审核类型
 export const CHECK_TYPE = ['新增审核', '编辑审核'];
 
-//审核结果
+// 审核结果
 export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];
 
-//标签类型
+// 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
   merchant: '店铺商品标签',
 };
 
-//集合页配置集合页状态
+// 集合页配置集合页状态
 export const PAGE_STATUS = ['进行中', '已结束'];
-//审核提交类型
+
+// 审核提交类型
 export const SUBMIT_TYPE = {
   merchant: '商家',
   admin: '运营后台',
@@ -513,19 +510,19 @@ export const SUBMIT_TYPE = {
   group: '集团',
 };
 
-//  serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
+// serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
 export const SERVICE_TYPE = {
   specialGoods: '特惠商品 ',
   reduceCoupon: '优惠券',
 };
-//模板类型 divisionTemplateType
+
+// 模板类型 divisionTemplateType
 export const DIVISION_TEMPLATE_TYPE = {
   difference: '按差价',
   manual: '手动分佣',
 };
 
 // 分佣模板创建人类别
-
 export const TEMPLATE_CREATE_TYPE = {
   admin: '管理员',
   user: '用户',
@@ -536,7 +533,8 @@ export const TEMPLATE_CREATE_TYPE = {
   group: '集团',
   sell: 'CRM',
 };
-//分佣配置
+
+// 分佣配置
 export const COMMISSION_TYPE = {
   province: '省代分佣',
   district: '区县分佣',

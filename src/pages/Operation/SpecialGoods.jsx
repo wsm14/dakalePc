@@ -9,7 +9,7 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
-import { LogDetail, RefuseModal } from '@/components/PublicComponents';
+import { RefuseModal } from '@/components/PublicComponents';
 import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -192,9 +192,7 @@ const SpecialGoods = (props) => {
               ￥{Number(val).toFixed(2)}
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Tag color={'red'}>
-                {zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折
-              </Tag>
+              <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
               <div>￥{Number(row.realPrice).toFixed(2)}</div>
             </div>
           </div>
@@ -462,8 +460,6 @@ const SpecialGoods = (props) => {
         }
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodDetail>
-      {/* 日志 */}
-      <LogDetail></LogDetail>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}

@@ -64,9 +64,6 @@ export default {
       if (!response) return;
       const { content } = response;
       const {
-        jumpUrlType,
-        beginDate,
-        endDate,
         param,
         hideTitle = false,
         provinceCityDistrictObjects: cityData = [],
@@ -76,11 +73,8 @@ export default {
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
-        jumpUrlType: jumpUrlType ? jumpUrlType : '无',
         param: JSON.parse(param || '{}'),
         hideTitle: !Number(hideTitle),
-        timeRuleData: endDate === '2999.12.30' ? 'infinite' : 'fixed',
-        beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },
     *fetchBannerEdit({ payload, callback }, { call }) {

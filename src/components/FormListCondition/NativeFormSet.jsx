@@ -23,6 +23,7 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch
 
   useEffect(() => {
     const { jumpUrlType, nativeJumpType, param = {} } = detail;
+    if (!jumpUrlType) form.setFieldsValue({ jumpUrlType: '' });
     fetchGetJumpNative(); // 获取后端配置的 app打开的页面类型 和 参数键值对
     fetchWalkManageNavigation(); // 获取风向标
     setShowUrl(jumpUrlType); // 表单回填参数 链接类型
@@ -50,7 +51,6 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch
         key={`jumpUrlType`}
         label="跳转类型"
         name={'jumpUrlType'}
-        rules={[{ required: true, message: `请确认跳转类型` }]}
         style={{ maxWidth: '100%' }}
       >
         <Radio
@@ -69,6 +69,7 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch
       </FormItem>
       {/* 选择跳转类型后展示的表单 */}
       <JumpTypeBlock
+        form={form}
         showUrl={showUrl}
         setShowApi={setShowApi}
         setParamKey={setParamKey}

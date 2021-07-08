@@ -16,7 +16,7 @@ const OpenAdSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { url, activeDate: time, jumpUrlType, ...other } = values;
+      const { url, activeDate: time, ...other } = values;
       // 上传图片到oss -> 提交表单
       aliOssUpload(url).then((res) => {
         dispatch({
@@ -28,7 +28,6 @@ const OpenAdSet = (props) => {
             appLaunchImageId: detail.idString,
             userType: tabKey,
             mediaType: 'image',
-            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             url: res.toString(),
             startDate: time[0].format('YYYY-MM-DD 00:00:00'),
             endDate: time[1].format('YYYY-MM-DD 23:59:59'),

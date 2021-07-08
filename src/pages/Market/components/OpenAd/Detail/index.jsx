@@ -32,7 +32,7 @@ const OpenAdForm = (props) => {
     {
       label: '跳转内容',
       name: 'jumpUrl',
-      show: detail.jumpUrlType !== '无',
+      show: !!detail.jumpUrlType,
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName, param = {} } = row;
         return {

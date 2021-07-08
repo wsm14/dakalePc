@@ -1,4 +1,9 @@
-import { BUSINESS_TYPE, SPECIAL_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  SPECIAL_STATUS,
+  GOODS_CLASS_TYPE,
+  SPECIAL_RECOMMEND_DELSTATUS,
+} from '@/common/constant';
 
 // 导出列表
 export default {
@@ -16,7 +21,7 @@ export default {
       header: '折扣',
       render: (val, row) => {
         const zhe = (Number(row.realPrice) / Number(row.oriPrice)) * 10;
-        return `${zhe < 0.1 || (zhe > 0.1 && zhe < 1) ? zhe.toFixed(2) : zhe.toFixed(0)}折`;
+        return `${`${zhe}`.substring(0, 4)}折`;
       },
     },
     { key: 'merchantPrice', header: '商家结算价' },
@@ -58,6 +63,13 @@ export default {
     },
     { key: 'createTime', header: '创建时间' },
     { key: 'creatorName', header: '创建人' },
-    { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
+    {
+      key: 'status',
+      header: '状态',
+      render: (val, row) =>
+        row.deleteFlag === '0'
+          ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+          : SPECIAL_STATUS[row.status],
+    },
   ],
 };
