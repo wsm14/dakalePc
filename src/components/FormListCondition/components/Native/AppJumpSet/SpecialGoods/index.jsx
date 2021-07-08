@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'umi';
 import { Form } from 'antd';
 import Merchant from '../Merchant';
 import ShareCoupon from './components/index';
@@ -9,14 +10,29 @@ const FormItem = Form.Item;
  * 选择特惠商品
  * @param {Array} paramKey app跳转参数键值
  */
-const SpecialGoods = ({ form, paramKey }) => {
+const SpecialGoods = ({ form, dispatch, paramKey }) => {
   const [data, setData] = useState({}); // 数据
 
   useEffect(() => {
+    const specialGoodsId = form.getFieldValue(['param', paramKey[1]]);
+    if (specialGoodsId) fetchSpecialGoodsDetail();
     return () => {
       form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
     };
   }, []);
+
+  // 获取详情
+  const fetchSpecialGoodsDetail = () => {
+    const ownerId = form.getFieldValue(['param', paramKey[0]]);
+    const specialGoodsId = form.getFieldValue(['param', paramKey[1]]);
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, ownerId },
+      callback: (val) => {
+        setData(val);
+      },
+    });
+  };
 
   return (
     <>
@@ -54,4 +70,4 @@ const SpecialGoods = ({ form, paramKey }) => {
   );
 };
 
-export default SpecialGoods;
+export default connect()(SpecialGoods);

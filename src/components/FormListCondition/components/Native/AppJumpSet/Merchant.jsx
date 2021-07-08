@@ -12,6 +12,10 @@ const FormItem = Form.Item;
  */
 const Merchant = ({ form, paramKey, dispatch, selectList, loading, onChange }) => {
   useEffect(() => {
+    const merchantId = form.getFieldValue(['param', paramKey[0]]);
+    if (merchantId) {
+      fetchClassifyGetMre({ merchantId });
+    }
     return () => {
       dispatch({ type: 'baseData/clearGroupMre' });
       form.setFieldsValue({ param: { [paramKey[0]]: undefined } });
@@ -19,13 +23,13 @@ const Merchant = ({ form, paramKey, dispatch, selectList, loading, onChange }) =
   }, []);
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((name) => {
-    if (!name) return;
+  const fetchClassifyGetMre = debounce((data) => {
+    if (!data) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
-      payload: { name },
+      payload: data,
     });
-  }, 500);
+  }, 100);
 
   return (
     <FormItem
@@ -39,7 +43,7 @@ const Merchant = ({ form, paramKey, dispatch, selectList, loading, onChange }) =
         placeholder={'请输入搜索'}
         select={selectList}
         loading={loading}
-        onSearch={fetchClassifyGetMre}
+        onSearch={(name) => fetchClassifyGetMre(name ? { name } : '')}
         onChange={(val) => {
           onChange && onChange(val);
         }}

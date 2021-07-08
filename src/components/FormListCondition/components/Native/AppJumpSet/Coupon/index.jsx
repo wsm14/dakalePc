@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'umi';
 import { Form } from 'antd';
 import Merchant from '../Merchant';
 import ShareCoupon from './components/index';
@@ -9,14 +10,29 @@ const FormItem = Form.Item;
  * 选择券
  * @param {Array} paramKey app跳转参数键值
  */
-const Coupon = ({ form, paramKey }) => {
+const Coupon = ({ form, dispatch, paramKey }) => {
   const [data, setData] = useState({}); // 数据
 
   useEffect(() => {
+    const ownerCouponId = form.getFieldValue(['param', paramKey[1]]);
+    if (ownerCouponId) fetchCouponDetail();
     return () => {
       form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
     };
   }, []);
+
+  // 获取详情
+  const fetchCouponDetail = () => {
+    const ownerId = form.getFieldValue(['param', paramKey[0]]);
+    const ownerCouponId = form.getFieldValue(['param', paramKey[1]]);
+    dispatch({
+      type: 'couponManage/fetchCouponDetail',
+      payload: { ownerCouponId, ownerId },
+      callback: (val) => {
+        setData(val);
+      },
+    });
+  };
 
   return (
     <>
@@ -54,4 +70,4 @@ const Coupon = ({ form, paramKey }) => {
   );
 };
 
-export default Coupon;
+export default connect()(Coupon);

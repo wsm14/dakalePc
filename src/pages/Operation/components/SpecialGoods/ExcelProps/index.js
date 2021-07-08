@@ -1,4 +1,9 @@
-import { BUSINESS_TYPE, SPECIAL_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  SPECIAL_STATUS,
+  GOODS_CLASS_TYPE,
+  SPECIAL_RECOMMEND_DELSTATUS,
+} from '@/common/constant';
 
 // 导出列表
 export default {
@@ -58,6 +63,13 @@ export default {
     },
     { key: 'createTime', header: '创建时间' },
     { key: 'creatorName', header: '创建人' },
-    { key: 'status', header: '状态', render: (val) => SPECIAL_STATUS[val] },
+    {
+      key: 'status',
+      header: '状态',
+      render: (val, row) =>
+        row.deleteFlag === '0'
+          ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+          : SPECIAL_STATUS[row.status],
+    },
   ],
 };
