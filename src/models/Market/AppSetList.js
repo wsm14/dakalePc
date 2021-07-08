@@ -64,8 +64,6 @@ export default {
       if (!response) return;
       const { content } = response;
       const {
-        beginDate,
-        endDate,
         param,
         hideTitle = false,
         provinceCityDistrictObjects: cityData = [],
@@ -77,8 +75,6 @@ export default {
         })),
         param: JSON.parse(param || '{}'),
         hideTitle: !Number(hideTitle),
-        timeRuleData: endDate === '2999.12.30' ? 'infinite' : 'fixed',
-        beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },
     *fetchBannerEdit({ payload, callback }, { call }) {

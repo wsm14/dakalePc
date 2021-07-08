@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
@@ -20,14 +19,7 @@ const SysAppSet = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { beginDate } = detail;
-      const {
-        coverImg,
-        beginDate: time = [],
-        hideTitle = false,
-        timeRuleData, // fixed 固定 infinite 长期 长期时endDate 为2999-12-30 23:59:59
-        provinceCityDistrictObjects: cityData = [],
-      } = values;
+      const { coverImg, hideTitle = false, provinceCityDistrictObjects: cityData = [] } = values;
       // 城市数据整理
       const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
@@ -45,16 +37,6 @@ const SysAppSet = (props) => {
             hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
             coverImg: res.toString(),
-            beginDate:
-              timeRuleData === 'fixed'
-                ? time[0].format('YYYY-MM-DD 23:59:59')
-                : type === 'add' // 选择长期 新增开始时间为当前时间 修改 为原始数据的已选时间
-                ? moment().format('YYYY-MM-DD 00:00:00')
-                : beginDate[0].format('YYYY-MM-DD 00:00:00'),
-            endDate:
-              timeRuleData === 'fixed'
-                ? time[1].format('YYYY-MM-DD 23:59:59')
-                : '2999-12-30 23:59:59',
           },
           callback: () => {
             onClose();
