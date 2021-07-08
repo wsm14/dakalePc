@@ -19,7 +19,9 @@ const SpecialGoodCheckDetail = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [merchantList, setMerchantList] = useState([]);
 
-  const { goodsTagList = [] } = detail;
+  const { goodsTagList = [], categoryIdString = '' } = detail;
+  console.log(detail, 'detail12222');
+
   useEffect(() => {
     if (show) {
       const merTags = goodsTagList
@@ -37,13 +39,11 @@ const SpecialGoodCheckDetail = (props) => {
 
   const [form] = Form.useForm();
 
-  const handleEdit = () => {
-    onClose(), onEdit();
-  };
   useEffect(() => {
     if (show) {
-      getTagsMerchant();
-      getTagsPlat();
+      getTagList();
+      // getTagsMerchant();
+      // getTagsPlat();
 
       //挂靠商家列表
       if (detail.ownerType === 'group') {
@@ -64,32 +64,48 @@ const SpecialGoodCheckDetail = (props) => {
     });
   };
 
-  //获取商品标签
-  const getTagsMerchant = () => {
+  //获取标签--商品标签--平台标签list
+  const getTagList = () => {
     dispatch({
-      type: 'goodsTag/fetchGoodsTagList',
+      type: 'baseData/fetchGoodsTagListByCategoryId',
       payload: {
-        tagType: 'merchant',
+        categoryId: categoryIdString,
       },
       callback: (list) => {
-        setMerchantTaglist(list);
+        const merTagslist = list.filter((item) => item.tagType === 'merchant').map((key) => key);
+        const platTagslist = list.filter((item) => item.tagType === 'platform').map((key) => key);
+
+        setMerchantTaglist(merTagslist);
+        setPlatTaglist(platTagslist);
       },
-    });
-  };
-  //平台标签
-  const getTagsPlat = () => {
-    dispatch({
-      type: 'goodsTag/fetchGoodsTagList',
-      payload: {
-        tagType: 'platform',
-      },
-      callback: (list) => setPlatTaglist(list),
     });
   };
 
+  // //获取商品标签
+  // const getTagsMerchant = () => {
+  //   dispatch({
+  //     type: 'goodsTag/fetchGoodsTagList',
+  //     payload: {
+  //       tagType: 'merchant',
+  //     },
+  //     callback: (list) => {
+  //       setMerchantTaglist(list);
+  //     },
+  //   });
+  // };
+  // //平台标签
+  // const getTagsPlat = () => {
+  //   dispatch({
+  //     type: 'goodsTag/fetchGoodsTagList',
+  //     payload: {
+  //       tagType: 'platform',
+  //     },
+  //     callback: (list) => setPlatTaglist(list),
+  //   });
+  // };
+
   // 审核通过
   const handleVerifyAllow = () => {
-    // const { specialGoodsId, merchantIdStr } = detail;
     if (!form.getFieldValue('otherPlatformPrice')) {
       notification.info({
         message: '温馨提示',

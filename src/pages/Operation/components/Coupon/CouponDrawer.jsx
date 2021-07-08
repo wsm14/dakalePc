@@ -63,7 +63,8 @@ const CouponDrawer = (props) => {
       });
     });
   };
-  const listProp = { commissionShow, setCommissionShow, type, status };
+  const listProp = { commissionShow, setCommissionShow, type, status, ownerCouponId,
+    ownerId, };
   // 统一处理弹窗
   const drawerProps = {
     info: {

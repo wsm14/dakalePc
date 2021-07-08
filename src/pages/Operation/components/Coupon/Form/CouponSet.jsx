@@ -26,6 +26,8 @@ const CouponSet = (props) => {
     dispatch,
     commissionShow,
     setCommissionShow,
+    ownerCouponId,
+    ownerId,
     initialValues,
     type,
     status,
@@ -55,6 +57,7 @@ const CouponSet = (props) => {
     useWeek = '',
     reduceObject = {},
   } = initialValues;
+  console.log(initialValues);
 
   useEffect(() => {
     if (initialValues.ownerCouponIdString) {
@@ -112,9 +115,9 @@ const CouponSet = (props) => {
     dispatch({
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
-        ownerServiceId: initialValues.specialGoodsId,
-        ownerId: initialValues.ownerIdString,
-        serviceType: 'specialGoods',
+        ownerServiceId: ownerCouponId,
+        ownerId: ownerId,
+        serviceType: 'reduceCoupon',
       },
       callback: (list) => {
         const keys = list.map((item) => item.merchantId);
@@ -234,12 +237,12 @@ const CouponSet = (props) => {
     {
       type: 'noForm',
       visible: mreList.type == 'group',
-      disabled: type === 'edit' && status === '1',
       formItem: (
         <MreSelectShow
           key="MreTable"
           form={form}
           rowKey="merchantId"
+          disabled={type === 'edit' && status === '1'}
           columns={getColumns}
           {...mreList}
           setMreList={(val) => {
