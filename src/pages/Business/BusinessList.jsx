@@ -361,8 +361,6 @@ const BusinessListComponent = (props) => {
         childRef={childRef}
         onClose={() => setVisibleCodeSet(false)}
       ></BusinessVerificationCodeSet>
-      {/* 日志 */}
-      <LogDetail></LogDetail>
       {/* 设置二维码背景图片 */}
       <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
     </>

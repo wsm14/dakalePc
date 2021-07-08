@@ -14,6 +14,7 @@ import HeaderContent from '@/components/GlobalHeader/HeaderContent';
 import iconEnum from '@/common/iconEnum';
 import logo from '../../public/favicon.png';
 import { AliveScope } from 'react-activation';
+import { LogDetail } from '@/components/PublicComponents';
 
 const BasicLayout = (props) => {
   const {
@@ -140,6 +141,8 @@ const BasicLayout = (props) => {
           </RouteContext.Consumer>
         </RouteAuthority>
         <BackTop visibilityHeight={100} style={{ right: 25 }} />
+        {/* 日志 */}
+        <LogDetail></LogDetail>
       </ProLayout>
     </AliveScope>
   );

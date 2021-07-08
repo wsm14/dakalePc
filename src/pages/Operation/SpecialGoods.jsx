@@ -9,7 +9,7 @@ import {
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
-import { LogDetail, RefuseModal } from '@/components/PublicComponents';
+import { RefuseModal } from '@/components/PublicComponents';
 import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -462,8 +462,6 @@ const SpecialGoods = (props) => {
         }
         onClose={() => setVisibleInfo(false)}
       ></SpecialGoodDetail>
-      {/* 日志 */}
-      <LogDetail></LogDetail>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}
