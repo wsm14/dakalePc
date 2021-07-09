@@ -62,7 +62,7 @@ export default {
       } = specialGoodsInfo;
       let newDetail = {};
       // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
-      if (['info', 'edit', 'again'].includes(type)) {
+      if (['edit', 'again'].includes(type)) {
         newDetail = {
           activityStartTime:
             activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -26,8 +26,9 @@ const CouponManageComponent = (props) => {
       name: 'couponName',
     },
     {
-      label: '集团/店铺名称',
-      name: 'ownerName',
+      label: '集团/店铺名',
+      name: 'ownerId',
+      type: 'merchant',
     },
     {
       label: '状态',
@@ -139,7 +140,9 @@ const CouponManageComponent = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
-          <div>{record.creatorName}</div>
+          <div>
+            {SUBMIT_TYPE[record.creatorType]}--{record.creatorName}
+          </div>
         </div>
       ),
     },
@@ -192,17 +195,17 @@ const CouponManageComponent = (props) => {
                 formProps: { type: 'down', key: 'offShelfReason' },
               }),
           },
-          {
-            type: 'diary',
-            // click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
-          },
+          // {
+          //   type: 'diary',
+          //   click: () => fetchGetLogData({ type: 'reduceCoupon', identificationId: ownerCouponId }),
+          // },
         ];
       },
     },
   ];
 
-   // 获取日志信息
-   const fetchGetLogData = (payload) => {
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
     dispatch({
       type: 'baseData/fetchGetLogDetail',
       payload,
