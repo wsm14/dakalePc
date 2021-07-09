@@ -114,13 +114,11 @@ export function fetchSpecialConditConfig(data) {
 }
 
 //运营后台-特惠商品高佣联盟字典值 || 运营后台-特惠商品今日上新字典值
-
 export function fetchResourceDicts(params) {
   return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
     params,
   });
 }
-
 
 // 周边特惠 end
 
@@ -231,6 +229,14 @@ export function fetchShareVideoPush(data) {
 export function fetchShareLikeSet(params) {
   return request('/admin/marketingManagement/modifyMomentParam', {
     params,
+  });
+}
+
+// 视频管理新增打赏人数
+export function fetchShareRewardPeo(data) {
+  return request('/admin/marketingManagement/addBeanPersonAmount', {
+    method: 'POST',
+    data,
   });
 }
 
