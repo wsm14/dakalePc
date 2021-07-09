@@ -51,9 +51,22 @@ export default {
         endDate = '',
         useTimeRule = '',
         ownerIdString = '',
+        serviceDivisionDTO = {},
       } = content.ownerCouponInfo;
-      let newDetail = {};
+      //分佣详情
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean = provinceBean ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean = districtBean ? (Number(districtBean) / 100).toFixed(2) : '';
+      const daBean = darenBean ? (Number(darenBean) / 100).toFixed(2) : '';
+      const sDetail = {
+        serviceDivisionDTO: {
+          provinceBean: pBean,
+          districtBean: dBean,
+          darenBean: daBean,
+        },
+      };
 
+      let newDetail = {};
       if (['edit', 'again'].includes(type)) {
         newDetail = {
           activeDate:
@@ -71,6 +84,7 @@ export default {
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
         ...newDetail,
+        ...sDetail,
       });
     },
     *fetchCouponSave({ payload, callback }, { call }) {

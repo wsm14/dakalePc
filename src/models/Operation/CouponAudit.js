@@ -37,7 +37,20 @@ export default {
       if (!response) return;
       const { content } = response;
       const { ownerCouponInfo = {}, auditDetail = {} } = content;
-      const { couponDesc } = content.ownerCouponInfo;
+
+      const { couponDesc, serviceDivisionDTO = {} } = ownerCouponInfo;
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean = provinceBean ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean = districtBean ? (Number(districtBean) / 100).toFixed(2) : '';
+      const daBean = darenBean ? (Number(darenBean) / 100).toFixed(2) : '';
+
+      const newDetail = {
+        serviceDivisionDTO: {
+          provinceBean: pBean,
+          districtBean: dBean,
+          darenBean: daBean,
+        },
+      };
       callback({
         ...ownerCouponInfo,
         ...auditDetail,
@@ -46,6 +59,7 @@ export default {
           : couponDesc,
         couponDesc: couponDesc.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
+        ...newDetail,
       });
     },
   },

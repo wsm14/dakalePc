@@ -22,6 +22,8 @@ const GoodsDetail = (props) => {
     ownerIdString,
   } = detail;
 
+  console.log(detail, 'eeeee');
+
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [merchantList, setMerchantList] = useState([]);
 
@@ -40,10 +42,16 @@ const GoodsDetail = (props) => {
   const handleVerifyAllow = () => {
     form.validateFields().then((values) => {
       const { serviceDivisionDTO = {} } = values;
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean = Number(provinceBean) * 100;
+      const dBean = Number(districtBean) * 100;
+      const daBean = Number(darenBean) * 100;
+      //金额转卡豆
+      const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
       const payload = {
         auditId: auditIdString,
         ownerId: ownerIdString,
-        serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
+        serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
       };
       dispatch({
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
@@ -185,7 +193,7 @@ const GoodsDetail = (props) => {
   const commissionItem = [
     {
       label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceFee'],
+      name: ['serviceDivisionDTO', 'provinceBean'],
       type: 'number',
       precision: 2,
       min: 0,
@@ -193,7 +201,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtFee'],
+      name: ['serviceDivisionDTO', 'districtBean'],
       type: 'number',
       precision: 2,
       min: 0,
@@ -201,13 +209,14 @@ const GoodsDetail = (props) => {
     },
     {
       label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenFee'],
+      name: ['serviceDivisionDTO', 'darenBean'],
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
     },
   ];
+
   const commission = [
     {
       label: `佣金总额`,

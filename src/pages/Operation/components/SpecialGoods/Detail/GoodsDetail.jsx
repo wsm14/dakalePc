@@ -81,15 +81,16 @@ const GoodsDetail = (props) => {
 
   const formItemComiss = [
     {
-      label: '分佣配置',
-      name: 'provinceFee',
-      render: (val, row) => (
-        <>
-          <div>省代分佣：{row.serviceDivisionDTO.provinceFee || '--'}元</div>
-          <div>区县分佣：{row.serviceDivisionDTO.districtFee || '--'}元</div>
-          <div>哒人分佣：{row.serviceDivisionDTO.darenFee || '--'}元</div>
-        </>
-      ),
+      label: '省代分佣金额（元）',
+      name: ['serviceDivisionDTO', 'provinceBean'],
+    },
+    {
+      label: '区县分佣金额（元）',
+      name: ['serviceDivisionDTO', 'districtBean'],
+    },
+    {
+      label: '哒人分佣金额（元）',
+      name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];
 

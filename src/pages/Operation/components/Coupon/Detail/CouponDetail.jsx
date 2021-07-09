@@ -121,27 +121,15 @@ const GoodsDetail = (props) => {
   const commissionItem = [
     {
       label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceFee'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
       label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtFee'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      name: ['serviceDivisionDTO', 'districtBean'],
     },
     {
       label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenFee'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];
 
