@@ -16,13 +16,13 @@ const GoodsDetail = (props) => {
       label: `${BUSINESS_TYPE[ownerType]}名称`,
       name: 'ownerName',
     },
-    {
-      label: '店铺范围',
-      name: 'merchantIdList',
-      render: () => '',
-      show: ownerType === 'group',
-      children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
-    },
+    // {
+    //   label: '店铺范围',
+    //   name: 'merchantIdList',
+    //   render: () => '',
+    //   show: ownerType === 'group',
+    //   children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
+    // },
   ];
 
   // 券信息
@@ -121,27 +121,15 @@ const GoodsDetail = (props) => {
   const commissionItem = [
     {
       label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceFee'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
       label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtFee'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      name: ['serviceDivisionDTO', 'districtBean'],
     },
     {
       label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenFee'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
+      name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];
 

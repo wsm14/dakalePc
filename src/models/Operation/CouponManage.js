@@ -50,23 +50,30 @@ export default {
         activeDate = '',
         endDate = '',
         useTimeRule = '',
-        useTime = '',
-      
+        ownerIdString = '',
+        serviceDivisionDTO = {},
       } = content.ownerCouponInfo;
+      //分佣详情
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean = provinceBean ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean = districtBean ? (Number(districtBean) / 100).toFixed(2) : '';
+      const daBean = darenBean ? (Number(darenBean) / 100).toFixed(2) : '';
+      const sDetail = {
+        serviceDivisionDTO: {
+          provinceBean: pBean,
+          districtBean: dBean,
+          darenBean: daBean,
+        },
+      };
+
       let newDetail = {};
-
       if (['edit', 'again'].includes(type)) {
-        // //  // { '00:00-23:59': '全天', part: '固定时间' };
-        // const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
-
-        const times = useTime.split('-');
         newDetail = {
           activeDate:
             useTimeRule === 'fixed'
               ? [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')]
               : [],
-          // useTime:
-          //   timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [],
+          ownerId: ownerIdString,
         };
       }
       callback({
@@ -77,6 +84,7 @@ export default {
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
         ...newDetail,
+        ...sDetail,
       });
     },
     *fetchCouponSave({ payload, callback }, { call }) {

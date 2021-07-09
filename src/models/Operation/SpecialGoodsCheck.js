@@ -59,10 +59,22 @@ export default {
         activityTimeRule: activeTime,
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
+        serviceDivisionDTO = {},
       } = specialGoodsInfo;
       let newDetail = {};
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean = provinceBean ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean = districtBean ? (Number(districtBean) / 100).toFixed(2) : '';
+      const daBean = darenBean ? (Number(darenBean) / 100).toFixed(2) : '';
+      const sDetail = {
+        serviceDivisionDTO: {
+          provinceBean: pBean,
+          districtBean: dBean,
+          darenBean: daBean,
+        },
+      };
       // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
-      if (['info', 'edit', 'again'].includes(type)) {
+      if (['edit', 'again'].includes(type)) {
         newDetail = {
           activityStartTime:
             activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],
@@ -83,8 +95,8 @@ export default {
           rejectImg: content.auditDetail.rejectImg,
         },
         ...content.specialGoodsInfo,
-        ...specialGoodsInfo.serviceDivisionDTO, //分佣
         ...newDetail,
+        ...sDetail, //分佣
         divisionFlag,
         auditId,
         ownerId,

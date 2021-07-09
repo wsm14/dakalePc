@@ -8,6 +8,7 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
+  SUBMIT_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import ExtraButton from '@/components/ExtraButton';
@@ -53,7 +54,8 @@ const SpecialGoods = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'groupOrMerchantName',
+      name: 'ownerId',
+      type: 'merchant',
     },
     {
       label: '活动状态',
@@ -259,7 +261,7 @@ const SpecialGoods = (props) => {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
     },
     {
       title: '推广位置',
@@ -452,8 +454,10 @@ const SpecialGoods = (props) => {
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
         onEdit={() =>
+          //  活动中的编辑
           setVisibleSet({
-            type: [false, 'active', 'edit'][visibleInfo.status],
+            // type: [false, 'active', 'edit'][visibleInfo.status],
+            type: 'edit',
             show: true,
             detail: visibleInfo ? visibleInfo.detail : {},
           })

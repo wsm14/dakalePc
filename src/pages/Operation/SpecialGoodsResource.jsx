@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Badge } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -8,12 +8,14 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
+  SUBMIT_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
 import GoodResourceSet from './components/SpecialGoods/GoodResourceSet';
+import { checkCityName } from '@/utils/utils';
 
 const SpecialGoodsResource = (props) => {
   const { loadings, loading, hubData, dispatch, specialGoods } = props;
@@ -64,6 +66,21 @@ const SpecialGoodsResource = (props) => {
     } else {
     }
   };
+  //调教配置回显
+  const getConfigDetail = () => {
+    if (['highCommission', 'todayNew'].includes(tabKey)) {
+      dispatch({
+        type: 'specialGoods/fetchResourceDicts',
+        payload: {
+          parent: 'specialGoods',
+          child: tabKey,
+        },
+        callback: (detail) => {
+          setVisibleSet({ show: true, tabKey, detail });
+        },
+      });
+    }
+  };
 
   //置顶
   const handletoTop = (val) => {
@@ -103,7 +120,8 @@ const SpecialGoodsResource = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'groupOrMerchantName',
+      name: 'ownerId',
+      type: 'merchant',
     },
     {
       label: '活动状态',
@@ -186,7 +204,13 @@ const SpecialGoodsResource = (props) => {
       dataIndex: 'goodsImg',
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
-          <PopImgShow url={val} />
+          {row.isRecommendTop === '1' ? (
+            <Badge.Ribbon text="置顶">
+              <PopImgShow url={val} />
+            </Badge.Ribbon>
+          ) : (
+            <PopImgShow url={val} />
+          )}
           <div
             style={{
               display: 'flex',
@@ -216,6 +240,8 @@ const SpecialGoodsResource = (props) => {
     },
     {
       title: '所在地区',
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val),
     },
     {
       title: '佣金',
@@ -306,7 +332,7 @@ const SpecialGoodsResource = (props) => {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      // render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
     },
     {
       type: 'handle',
@@ -350,9 +376,9 @@ const SpecialGoodsResource = (props) => {
     },
     {
       auth: 'configCondit',
-      text: '条件配置', // 高佣联盟 和 今日上新 存在
+      text: '条件配置', // 高佣联盟 和 今日上新 存在条件配置
       show: ['highCommission', 'todayNew'].includes(tabKey),
-      onClick: () => setVisibleSet({ show: true, tabKey }),
+      onClick: getConfigDetail,
     },
   ];
 
@@ -383,6 +409,7 @@ const SpecialGoodsResource = (props) => {
         }}
         {...specialGoods}
       ></TableDataBlock>
+      {/* 条件配置 */}
       <GoodResourceSet
         visible={visibleSet}
         cRef={tableRef}

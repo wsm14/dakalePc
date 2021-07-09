@@ -70,6 +70,11 @@ const AccountBusinessList = (props) => {
       dataIndex: 'bean',
     },
     {
+      title: '营销卡豆余额（卡豆）',
+      // align: 'right',
+      // dataIndex: 'bean',
+    },
+    {
       type: 'handle',
       dataIndex: 'id',
       render: (val, record) => [

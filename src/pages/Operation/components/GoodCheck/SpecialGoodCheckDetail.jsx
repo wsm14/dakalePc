@@ -12,7 +12,7 @@ import CheckRefuseDraw from './Detail/CheckRefuseDraw';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SpecialGoodCheckDetail = (props) => {
-  const { visible, onClose, onEdit, total, getDetail, loading, dispatch, tabkey, cRef } = props;
+  const { visible, onClose, total, getDetail, loading, dispatch, tabkey, cRef } = props;
   const { show = false, index, detail = {}, status, ownerIdString, auditIdString } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
@@ -113,17 +113,18 @@ const SpecialGoodCheckDetail = (props) => {
       });
     }
     form.validateFields().then((values) => {
-      const { otherPlatformPrice, provinceFee, districtFee, darenFee, merTags, platTags } = values;
+      const { otherPlatformPrice, merTags, platTags, serviceDivisionDTO = {} } = values;
       let tags = [...merTags, ...platTags];
-      const serviceDivisionDTO = {
-        provinceFee,
-        districtFee,
-        darenFee,
-      };
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean = Number(provinceBean) * 100;
+      const dBean = Number(districtBean) * 100;
+      const daBean = Number(darenBean) * 100;
+      //金额转卡豆
+      const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
       const payload = {
         auditId: auditIdString,
         ownerId: ownerIdString,
-        serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
+        serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
         otherPlatformPrice: otherPlatformPrice,
         goodsTags: tags && tags.toString(),
       };
@@ -139,12 +140,6 @@ const SpecialGoodCheckDetail = (props) => {
   };
 
   const btnList = [
-    // {
-    //   auth: 'edit',
-    //   onClick: handleEdit,
-    //   text: '编辑',
-    //   show: ['1', '2'].includes(status),
-    // },
     {
       auth: 'check',
       onClick: handleVerifyAllow,
@@ -208,7 +203,7 @@ const SpecialGoodCheckDetail = (props) => {
   const formCommission = [
     {
       label: '省代分佣金额（元）',
-      name: 'provinceFee',
+      name: ['serviceDivisionDTO', 'provinceBean'],
       type: 'number',
       precision: 2,
       min: 0,
@@ -216,20 +211,19 @@ const SpecialGoodCheckDetail = (props) => {
     },
     {
       label: '区县分佣金额（元）',
-      name: 'districtFee',
+      name: ['serviceDivisionDTO', 'districtBean'],
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
     },
     {
-      label: `哒人分佣金额(元)`,
-      name: 'darenFee',
+      label: '哒人分佣金额（元）',
+      name: ['serviceDivisionDTO', 'darenBean'],
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      // formatter: (value) => `￥ ${value}`,
     },
   ];
 

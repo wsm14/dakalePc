@@ -42,7 +42,7 @@ const SpecialGoodDetail = (props) => {
       auth: 'edit',
       onClick: handleEdit,
       text: '编辑',
-      show: ['1', '2'].includes(status),
+      show: ['1'].includes(status),
     },
   ];
   // 弹出窗属性

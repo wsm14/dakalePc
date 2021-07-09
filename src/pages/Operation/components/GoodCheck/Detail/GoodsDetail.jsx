@@ -5,7 +5,7 @@ import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
 import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
-  const { detail, merchantList = [],tabkey } = props;
+  const { detail, merchantList = [], tabkey } = props;
   const { goodsType, ownerType } = detail;
   console.log(merchantList, 'detail');
 
@@ -79,17 +79,18 @@ const GoodsDetail = (props) => {
     },
   ];
 
-  const formItemComiss = [
+  const commissionItem = [
     {
-      label: '分佣配置',
-      name: 'provinceFee',
-      render: (val, row) => (
-        <>
-          <div>省代分佣：{row.provinceFee}</div>
-          <div>区县分佣：{row.districtFee}</div>
-          <div>哒人分佣：{row.darenFee}</div>
-        </>
-      ),
+      label: '省代分佣金额（元）',
+      name: ['serviceDivisionDTO', 'provinceBean'],
+    },
+    {
+      label: '区县分佣金额（元）',
+      name: ['serviceDivisionDTO', 'districtBean'],
+    },
+    {
+      label: '哒人分佣金额（元）',
+      name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];
 
@@ -180,7 +181,7 @@ const GoodsDetail = (props) => {
       {detail.divisionFlag === '1' && !['adminAudit'].includes(tabkey) && (
         <DescriptionsCondition
           title="分佣配置"
-          formItems={formItemComiss}
+          formItems={commissionItem}
           initialValues={detail}
         ></DescriptionsCondition>
       )}

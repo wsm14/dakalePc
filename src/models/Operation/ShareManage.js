@@ -11,6 +11,7 @@ import {
   fetchShareGetBeanDetail,
   fetchShareGetAccountBean,
   fetchShareGetPlatformBean,
+  fetchShareRewardPeo,
 } from '@/services/OperationServices';
 
 export default {
@@ -172,6 +173,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '分享下架成功',
+      });
+      callback();
+    },
+    *fetchShareRewardPeo({ payload, callback }, { call }) {
+      const response = yield call(fetchShareRewardPeo, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增打赏人数成功',
       });
       callback();
     },
