@@ -69,6 +69,11 @@ const ServiceFAQ = (props) => {
     },
   ];
 
+  //分端口删除
+  const handleDel = (questionCategoryId,questionId) => {
+    console.log(questionCategoryId,questionId);
+  };
+
   // table 表头
   const getColumns = [
     {
@@ -163,6 +168,11 @@ const ServiceFAQ = (props) => {
                       type: 'edit',
                       detail: { ...row, questionCategoryId: row.questionCategoryIdStr },
                     }),
+                },
+                {
+                  type: 'del',
+                  visible: !val,
+                  click: ()=>handleDel(row.questionCategoryIdStr,row.questionIdString),
                 },
               ]}
             />

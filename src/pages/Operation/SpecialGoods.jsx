@@ -8,7 +8,7 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
-  SUBMIT_TYPE
+  SUBMIT_TYPE,
 } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import ExtraButton from '@/components/ExtraButton';
@@ -454,8 +454,10 @@ const SpecialGoods = (props) => {
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
         onEdit={() =>
+          //  活动中的编辑
           setVisibleSet({
-            type: [false, 'active', 'edit'][visibleInfo.status],
+            // type: [false, 'active', 'edit'][visibleInfo.status],
+            type: 'edit',
             show: true,
             detail: visibleInfo ? visibleInfo.detail : {},
           })
