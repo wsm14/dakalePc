@@ -12,7 +12,7 @@ import CheckRefuseDraw from './Detail/CheckRefuseDraw';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SpecialGoodCheckDetail = (props) => {
-  const { visible, onClose, onEdit, total, getDetail, loading, dispatch, tabkey, cRef } = props;
+  const { visible, onClose, total, getDetail, loading, dispatch, tabkey, cRef } = props;
   const { show = false, index, detail = {}, status, ownerIdString, auditIdString } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
@@ -139,12 +139,6 @@ const SpecialGoodCheckDetail = (props) => {
   };
 
   const btnList = [
-    // {
-    //   auth: 'edit',
-    //   onClick: handleEdit,
-    //   text: '编辑',
-    //   show: ['1', '2'].includes(status),
-    // },
     {
       auth: 'check',
       onClick: handleVerifyAllow,
