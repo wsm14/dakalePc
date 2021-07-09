@@ -164,7 +164,7 @@ const tableList = (props) => {
           click: () => {
             fetchGrounpDetails(
               {
-                merchantGroupId: val,
+                merchantGroupIdString: val,
               },
               (res) => {
                 fetchSave({ visible: true });
