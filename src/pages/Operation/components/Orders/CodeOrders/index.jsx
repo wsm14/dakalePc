@@ -69,6 +69,7 @@ const CodeOrders = (props) => {
       title: '订单号',
       fixed: 'left',
       dataIndex: 'orderSn',
+      render: (val, row) => `${val}\n备注：${row.remark ? row.remark : '--'}`,
     },
     {
       title: '店铺',

@@ -14,7 +14,7 @@ import ShareVideoDetail from './components/Share/Detail/ShareVideoDetail';
 import ShareDrawer from './components/Share/ShareDrawer';
 import ShareLikeDateSet from './components/Share/ShareLikeDateSet';
 import Ellipsis from '@/components/Ellipsis';
-import RewardPeo from './components/Share/RewardPeo'
+import RewardPeo from './components/Share/RewardPeo';
 import styles from './style.less';
 
 const ShareManage = (props) => {
@@ -35,9 +35,9 @@ const ShareManage = (props) => {
   //新增打赏人数
   const fetRewardPeo = (userMomentIdString) => {
     setVisibleReward({
-     show:true,
-     userMomentIdString,
-    })
+      show: true,
+      userMomentIdString,
+    });
   };
 
   // 搜索参数
@@ -259,7 +259,8 @@ const ShareManage = (props) => {
           {
             type: 'rewardPeo',
             title: '新增打赏人数',
-            click: fetRewardPeo(userMomentIdString),
+            visible: record.rewardCycle == '0',
+            click: () => fetRewardPeo(userMomentIdString),
           },
         ];
       },
@@ -403,7 +404,11 @@ const ShareManage = (props) => {
         onClose={() => setVisibleLike(false)}
       ></ShareLikeDateSet>
       {/* //新增打赏人数 */}
-      <RewardPeo visible={visibleReward} childRef={childRef} onClose={()=>setVisibleReward(false)}></RewardPeo>
+      <RewardPeo
+        visible={visibleReward}
+        childRef={childRef}
+        onClose={() => setVisibleReward(false)}
+      ></RewardPeo>
     </>
   );
 };
