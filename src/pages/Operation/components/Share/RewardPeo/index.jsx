@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Col, Row, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -20,6 +20,11 @@ const RewardPeo = (props) => {
       </Button>
     ),
   };
+  useEffect(() => {
+    if (show) {
+      setTotal('');
+    }
+  }, [show]);
   const handleSave = () => {
     form.validateFields().then((values) => {
       const payload = {
