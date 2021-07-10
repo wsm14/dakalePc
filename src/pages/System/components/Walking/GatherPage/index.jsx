@@ -74,7 +74,7 @@ const GatherPage = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'configCollectionPageId',
+      dataIndex: 'configCollectionPageIdString',
       render: (val, record) => {
         return [
           {
@@ -91,7 +91,7 @@ const GatherPage = (props) => {
             auth: true,
             title: '结束',
             click: () => handleEnd(val),
-            visible:record.status==='0'
+            visible: record.status === '0',
           },
         ];
       },
@@ -120,7 +120,7 @@ const GatherPage = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.configCollectionPageId}`}
+        rowKey={(record) => `${record.configCollectionPageIdString}`}
         dispatchType="walkingManage/fetchGatherPageConfigList"
         pagination={false}
         list={gatherList.list}

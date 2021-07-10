@@ -48,6 +48,16 @@ const GoodsDetail = (props) => {
       const daBean = Number(darenBean) * 100;
       //金额转卡豆
       const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
+      const totalFee = (Number(provinceBean) + Number(districtBean) + Number(darenBean)).toFixed(2);
+      if (detail.divisionFlag === '1') {
+        if (totalFee > Number(detail.commission)) {
+          notification.info({
+            message: '温馨提示',
+            description: '分佣金额之和不能大于佣金总额',
+          });
+          return;
+        }
+      }
       const payload = {
         auditId: auditIdString,
         ownerId: ownerIdString,
@@ -197,7 +207,6 @@ const GoodsDetail = (props) => {
       type: 'number',
       precision: 2,
       min: 0,
-      max: 999999.99,
     },
     {
       label: '区县分佣金额（元）',
@@ -205,7 +214,6 @@ const GoodsDetail = (props) => {
       type: 'number',
       precision: 2,
       min: 0,
-      max: 999999.99,
     },
     {
       label: '哒人分佣金额（元）',
@@ -213,7 +221,6 @@ const GoodsDetail = (props) => {
       type: 'number',
       precision: 2,
       min: 0,
-      max: 999999.99,
     },
   ];
 

@@ -70,8 +70,15 @@ const ServiceFAQ = (props) => {
   ];
 
   //分端口删除
-  const handleDel = (questionCategoryId,questionId) => {
-    console.log(questionCategoryId,questionId);
+  const handleDel = (questionId) => {
+    console.log(Array.of(questionId), '222');
+    dispatch({
+      type: 'serviceFAQ/fetchFAQDel',
+      payload: { questionIds: Array.of(questionId) },
+      callback: () => {
+        childRef.current.fetchGetData();
+      },
+    });
   };
 
   // table 表头
@@ -172,7 +179,8 @@ const ServiceFAQ = (props) => {
                 {
                   type: 'del',
                   visible: !val,
-                  click: ()=>handleDel(row.questionCategoryIdStr,row.questionIdString),
+                  popText: '确定要删除当前问题吗？删除后数据不可找回',
+                  click: () => handleDel(row.questionIdString),
                 },
               ]}
             />

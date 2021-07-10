@@ -55,7 +55,7 @@ const GatherSet = (props) => {
         evokeParamObjectList,
         provinceCityDistrictObjects: cityCodeArr,
         areaType,
-        configCollectionPageId: detail.configCollectionPageId,
+        configCollectionPageId: detail.configCollectionPageIdString,
       };
       dispatch({
         type: api,
