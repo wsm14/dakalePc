@@ -315,7 +315,7 @@ const CouponSet = (props) => {
       visible: commissionShow == '1',
       disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
       formatter: (value) => `￥ ${value}`,
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       title: '设置使用规则',

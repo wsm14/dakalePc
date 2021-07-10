@@ -319,7 +319,7 @@ const PreferentialSet = ({
       disabled: commonDisabled,
       visible: commissionShow == '1',
       formatter: (value) => `￥ ${value}`,
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       label: '平台商品标签',
