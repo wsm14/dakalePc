@@ -65,14 +65,14 @@ const AccountBusinessList = (props) => {
       render: (val) => val || '--',
     },
     {
-      title: '当前余额（卡豆）',
+      title: '收益卡豆余额（卡豆）',
       align: 'right',
       dataIndex: 'bean',
     },
     {
       title: '营销卡豆余额（卡豆）',
-      // align: 'right',
-      // dataIndex: 'bean',
+      align: 'right',
+      dataIndex: 'platformBean',
     },
     {
       type: 'handle',
