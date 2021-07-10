@@ -5,7 +5,7 @@ import styles from '../style.less';
 
 const { Panel } = Collapse;
 
-const ActiveTemplateLeft = (props) => {
+const ModuleDrawer = (props) => {
   const { context } = props;
   const {
     // 组件选项打开类型
@@ -98,4 +98,4 @@ const ActiveTemplateLeft = (props) => {
   );
 };
 
-export default ActiveTemplateLeft;
+export default ModuleDrawer;

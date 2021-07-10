@@ -3,10 +3,13 @@ import { Button, Space, Row, Col, Modal, Popover, Spin } from 'antd';
 import QRCode from 'qrcode.react';
 import aliOssUpload from '@/utils/aliOssUpload';
 
-const ActiveTemplateHrard = (props) => {
-  const { onClose, context, dispatch, loading, promotionActivityId } = props;
+/**
+ * 顶部显示区域
+ */
+const SideMenu = (props) => {
+  const { onClose, context, dispatch, loading } = props;
 
-  const { info, dispatchData, showActive, moduleData, iframeRef } = useContext(context);
+  const { info, dispatchData, showActive, moduleData } = useContext(context);
 
   const { activeUrl, activeHtml, activePreviewQr, save } = showActive;
   // 提交模版数据
@@ -15,10 +18,6 @@ const ActiveTemplateHrard = (props) => {
       type: 'showActive',
       payload: { activePreviewQr: true, save },
     });
-    iframeRef.current.contentWindow.postMessage(
-      { type: 'getHtml', payload: { name: info.activeName, moduleData } },
-      '*',
-    );
   };
 
   // 获取activeUrl 文件名 覆盖原文件
@@ -115,4 +114,4 @@ const ActiveTemplateHrard = (props) => {
   );
 };
 
-export default ActiveTemplateHrard;
+export default SideMenu;

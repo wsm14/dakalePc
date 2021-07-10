@@ -5,33 +5,30 @@ import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
 const ActiveTemplate = () => {
-
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: {} });
 
   /**
    * 模版选项
    * @img 封面图片
-   * @templateUrl 模版链接
-   * @id 模版id
+   * @type 模版类型
    * @title 模版说明标题
    */
   const cardItem = [
     {
       img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
-      templateUrl: `https://resource-new.dakale.net/dev/active/template/demo.html?demo=1&times=${new Date().getTime()}`,
-      id: '1',
-      title: '活动模版1',
+      type: 'public',
+      title: '通用模版',
     },
   ];
 
-  // 选择活动
+  // 选择活动 设置活动名称
   const handleSelectActive = (item) => setVisibleName({ show: true, info: item });
 
-  // 设置活动名称
+  // 输入活动名称回调
   const handleSetActiveName = (activeName) => {
-    setVisible({ show: true, info: { ...visibleName.info, activeName } });
-    setVisibleName(false);
+    setVisibleName(false); // 关闭输入框
+    setVisible({ show: true, info: { ...visibleName.info, activeName } }); // 显示模版编辑
   };
 
   return (
@@ -39,7 +36,7 @@ const ActiveTemplate = () => {
       <Card>
         <Row gutter={[75, 28]}>
           {cardItem.map((item) => (
-            <Col key={item.id}>
+            <Col key={item.type}>
               <Card
                 cover={<img alt="example" src={item.img} />}
                 actions={[<div onClick={() => handleSelectActive(item)}>使用模版</div>]}
@@ -50,16 +47,18 @@ const ActiveTemplate = () => {
           ))}
         </Row>
       </Card>
-      <ActiveTemplateEdit
-        key="template"
-        visible={visible}
-        onClose={() => setVisible(false)}
-      ></ActiveTemplateEdit>
+      {/* 设置活动名称 */}
       <ActiveTemplateNameSet
         visible={visibleName}
         callback={handleSetActiveName}
         onClose={() => setVisibleName(false)}
       ></ActiveTemplateNameSet>
+      {/* 活动模版编辑区域 */}
+      <ActiveTemplateEdit
+        key="template"
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></ActiveTemplateEdit>
     </>
   );
 };
