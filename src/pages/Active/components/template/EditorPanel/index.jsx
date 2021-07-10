@@ -70,12 +70,7 @@ const EditorPanel = (props) => {
         <div className={styles.active_Template_right}>
           <Collapse bordered={false} activeKey={pActive} onChange={(val) => setPactive(val)}>
             {panelItem.map((item) => (
-              <Panel
-                forceRender
-                header={item.header}
-                key={item.type}
-                // disabled={ptype !== item.ptype}
-              >
+              <Panel forceRender header={item.header} key={item.type}>
                 <Radio.Group
                   value={showEditor.type}
                   className={styles.aT_Left_RadioGroup}

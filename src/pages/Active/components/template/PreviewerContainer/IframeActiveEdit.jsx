@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import IframeEditor from '@/components/IframeEditor';
 
 const IframeActiveEdit = (props) => {
-  const { context, iref } = props;
+  const { context } = props;
 
   const { showEditor, showPanel, dispatchData } = useContext(context);
 
@@ -16,7 +16,6 @@ const IframeActiveEdit = (props) => {
   // 向 iframe 发送数据
   const handleSendMessage = (values) => {
     console.log('send to iframe', { type: values.messageType, payload: values });
-    iref.current.contentWindow.postMessage({ type: values.messageType, payload: values }, '*');
     dispatchData({ type: 'saveModuleData', payload: values });
     handleCloseEdit();
   };

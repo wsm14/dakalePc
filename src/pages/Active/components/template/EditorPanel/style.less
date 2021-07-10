@@ -1,14 +1,9 @@
 @white: #ffffff;
 
 .active_Template_right {
-  right: 0;
-}
-
-.active_Template_right,
-.active_Template_Left {
   position: fixed;
   top: 65px;
-  left: 0;
+  right: 0;
   width: 250px;
   height: 100vh;
   padding-bottom: 67px;
@@ -42,52 +37,5 @@
     &_icon {
       margin-bottom: 5px;
     }
-  }
-}
-
-.active_Template_content {
-  position: relative;
-  width: 375px;
-  height: 100%;
-  margin: auto;
-  padding: 20px 0;
-  .previewer_component {
-    position: relative;
-    display: flex;
-    width: 375px;
-    min-height: 757px;
-    margin: auto;
-    background-color: #eeeeee;
-  }
-  .previewer_wrap {
-    position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    width: 375px;
-    min-height: 100%;
-    margin: auto;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    & > iframe {
-      width: 100%;
-      min-height: 100%;
-      border: none;
-    }
-  }
-}
-
-.previewer_active_warp {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 375px;
-  height: 100%;
-  pointer-events: none;
-  .previewer_active_mask {
-    position: absolute;
-    left: 0;
-    z-index: 1;
-    box-sizing: border-box;
-    width: 100%;
-    border: 3px solid #3089dc;
   }
 }
