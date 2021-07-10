@@ -302,9 +302,6 @@ export default {
             name: `${item.merchantName} ${item.account}`,
             otherData: item.address,
             value: item.userMerchantIdString,
-            commissionRatio: item.commissionRatio,
-            topCategoryName: [item.topCategoryName, item.categoryName],
-            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
           })),
         },
       });
