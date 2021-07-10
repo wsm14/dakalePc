@@ -47,7 +47,15 @@ const ActiveTemplate = (props) => {
     <TemplateContext.Provider value={{ ...moduleReducer, iframeRef, dispatchData, componentsShow }}>
       <Drawer
         destroyOnClose
-        bodyStyle={{ backgroundColor: '#f4f4f4' }}
+        bodyStyle={{
+          backgroundColor: '#e6e9ed',
+          overflow: 'hidden',
+          padding: 0,
+          display: 'flex',
+          alignItems: 'stretch',
+          height: '100%',
+        }}
+        headerStyle={{ borderBottom: '1px solid #e6e6e6' }}
         title={
           <SideMenu
             promotionActivityId={visible.info && visible.info.promotionActivityId}

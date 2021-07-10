@@ -1,20 +1,16 @@
 @white: #ffffff;
 
 .active_Template_Left {
-  position: fixed;
-  top: 65px;
-  left: 0;
+  position: relative;
   width: 250px;
   height: 100vh;
-  padding-bottom: 67px;
-  overflow: auto;
+  overflow-y: auto;
   background-color: @white;
   border-right: 1px solid #d9d9d9;
   &::-webkit-scrollbar {
     width: 3px !important;
     height: 6px;
   }
-
   :global {
     .ant-collapse-borderless {
       background-color: @white;

@@ -1,16 +1,21 @@
 .active_Template_content {
   position: relative;
-  width: 375px;
+  flex: 1;
   height: 100%;
   margin: auto;
   padding: 20px 0;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 0px !important;
+  }
   .previewer_component {
     position: relative;
     display: flex;
     width: 375px;
-    min-height: 757px;
+    min-height: 100%;
     margin: auto;
     background-color: #eeeeee;
+    box-shadow: #00000033 0px 0px 5px 0px;
   }
   .previewer_wrap {
     position: relative;
@@ -20,11 +25,6 @@
     min-height: 100%;
     margin: auto;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    & > iframe {
-      width: 100%;
-      min-height: 100%;
-      border: none;
-    }
   }
 }
 
