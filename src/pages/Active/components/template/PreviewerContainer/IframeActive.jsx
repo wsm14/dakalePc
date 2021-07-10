@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../style.less';
+import styles from './style.less';
 
 /**
  * iframe 选择区域高亮

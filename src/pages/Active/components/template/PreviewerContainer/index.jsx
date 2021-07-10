@@ -3,7 +3,7 @@ import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import IframeActive from './IframeActive';
 import IframeActiveEdit from './IframeActiveEdit';
-import styles from '../style.less';
+import styles from './style.less';
 
 const ActiveTemplateIframe = (props) => {
   const { context } = props;

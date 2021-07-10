@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Collapse, Radio } from 'antd';
 import panelItem from './panelItem';
-import styles from '../style.less';
+import styles from './style.less';
 
 const { Panel } = Collapse;
 

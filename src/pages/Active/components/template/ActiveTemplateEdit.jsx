@@ -5,7 +5,7 @@ import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import SideMenu from './SideMenu';
 import EditorPanel from './EditorPanel';
 import ModuleDrawer from './ModuleDrawer';
-import PreviewerContainer from './PreviewerContainer/IframeContent';
+import PreviewerContainer from './PreviewerContainer';
 
 const TemplateContext = createContext();
 
