@@ -37,7 +37,7 @@ export default {
 
   reducers: {
     save(state, { payload }) {
-      console.log(payload)
+      console.log(payload);
       return {
         ...state,
         ...payload,
@@ -190,6 +190,8 @@ export default {
           merchantGroupDTO:
             {
               ...content.merchantGroupDTO,
+              businessLicenseObject: content.businessLicense,
+              activeValidity,
               topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
               allCode: [
                 content.merchantGroupDTO.provinceCode,

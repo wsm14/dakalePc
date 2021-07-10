@@ -51,12 +51,12 @@ const groupsDetails = (props) => {
       },
     });
     setTabKey('tab1');
-    const { merchantGroupIdString } = list.list[size];
-    if (merchantGroupIdString) {
+    const { merchantGroupIdString: merchantGroupId } = list.list[size];
+    if (merchantGroupId) {
       dispatch({
         type: 'groupSet/fetchGrounpDetails',
         payload: {
-          merchantGroupIdString,
+          merchantGroupId,
         },
       });
     } else {
