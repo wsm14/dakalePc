@@ -9,6 +9,17 @@ const ModuleDrawer = (props) => {
   const { context } = props;
   const { dispatchData } = useContext(context);
 
+  // 显示对应的模块编辑内容
+  const handleShowEditor = (item) => {
+    dispatchData({
+      type: 'showEditor',
+      payload: {
+        type: item.type,
+        name: item.text,
+      },
+    });
+  };
+
   return (
     <div className={styles.active_Template_Left}>
       <Collapse bordered={false}>
@@ -20,6 +31,7 @@ const ModuleDrawer = (props) => {
                   className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
                   key={cell.text}
                   draggable={cell.drop}
+                  onClick={() => handleShowEditor(cell)}
                 >
                   <div className={styles.module_cell_icon}>{cell.icon}</div>
                   <span>{cell.text}</span>

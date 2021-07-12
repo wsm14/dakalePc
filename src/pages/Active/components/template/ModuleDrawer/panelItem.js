@@ -17,7 +17,7 @@ const panelItem = [
       {
         icon: <BgColorsOutlined style={{ fontSize: 24 }} />,
         text: '背景颜色',
-        type: 'background',
+        type: 'backgroundColor',
         drop: false,
       },
     ],

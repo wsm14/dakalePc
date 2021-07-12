@@ -219,9 +219,9 @@ const groupsDetails = (props) => {
                 ...businessLicense,
                 ...bankBindingInfo,
                 activeValidity:
-                  ((businessLicense && businessLicense.establishDate) || '') +
+                  ((businessLicense && businessLicense.validityPeriod) || '') +
                   '-' +
-                  ((businessLicense && businessLicense.validityPeriod) || ''),
+                  ((businessLicense && businessLicense.establishDate) || ''),
               }}
             ></DescriptionsCondition>
           ),

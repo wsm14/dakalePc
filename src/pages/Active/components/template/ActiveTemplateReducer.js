@@ -10,6 +10,12 @@ export const reducerValue = {
     title: '活动模版', // 模版名字
     activeName: '', // 活动名称
   },
+  // 组件编辑模块显示内容
+  showEditor: {
+    name: '', // 组件名称
+    type: '', // 组件类型
+    moduleEditData: {}, // 当前编辑组件的数据
+  },
   showActive: {
     activeUrl: '', // 活动的url路径
     activePreviewQr: true, // 活动的qr显示
@@ -24,13 +30,6 @@ export const reducerValue = {
     width: 0, // 组件宽
     ptype: '', // 组件选项面板类型
   },
-  // 组件编辑显示
-  showEditor: {
-    id: '', // 组件id
-    name: '', // 组件名称
-    type: '', // 组件类型
-    moduleEditData: {}, // 当前编辑组件的数据
-  },
   // 已储存的模版数据
   moduleData: [],
 };
@@ -39,7 +38,6 @@ export const reducerValue = {
  * reducer 处理
  * @type {*}  initialize 数据重置
  *            save 储存数据
- *            showPanel 展示组件选择面板
  *            showEditor 展示组件编辑面板
  *            closeEditor 关闭编辑面板
  *            saveModuleData 存储模版编辑数据
@@ -53,11 +51,6 @@ export const fetchReducerEdit = (state, action) => {
         ...state,
         ...payload,
       };
-    case 'showPanel':
-      return {
-        ...state,
-        showPanel: action.payload,
-      };
     case 'showEditor':
       return {
         ...state,
@@ -66,7 +59,6 @@ export const fetchReducerEdit = (state, action) => {
     case 'closeEditor':
       return {
         ...state,
-        showPanel: { height: 0, ptype: '' },
         showEditor: { type: '' },
       };
     case 'saveModuleData':

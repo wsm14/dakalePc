@@ -114,6 +114,7 @@ export const active = [
   {
     label: '营业期限',
     name: 'validityPeriod',
+    render: (val, row) => `${val}-${row.establishDate}`,
   },
   {
     label: '经营范围',
@@ -204,7 +205,6 @@ export const activeByOne = [
   },
   {
     label: '营业期限',
-    type: 'rangePicker',
     name: 'activeValidity',
   },
   {
@@ -230,7 +230,6 @@ export const activeByBank = [
   {
     label: '开户城市',
     name: 'city',
-    type: 'cascader',
   },
   {
     label: '银行预留手机号',

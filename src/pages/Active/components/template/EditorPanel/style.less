@@ -3,14 +3,51 @@
 .active_Template_right {
   position: relative;
   width: 408px;
-  height: 100vh;
   margin-right: -408px;
-  overflow-y: auto;
+  overflow-y: hidden;
   background-color: @white;
   border-right: 1px solid #d9d9d9;
+  border-left: 1px solid rgb(215, 219, 224);
   transition: margin 200ms ease 0s;
+  &.show {
+    margin-right: 0;
+  }
   &::-webkit-scrollbar {
     width: 3px !important;
     height: 6px;
+  }
+  .heard {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: 52px;
+    padding: 0px 22px;
+    .divideLine {
+      position: absolute;
+      bottom: 0px;
+      left: 8px;
+      width: 392px;
+      border-bottom: 1px solid rgb(230, 230, 230);
+    }
+  }
+  .content {
+    position: relative;
+    height: calc(100vh - 115px);
+    padding-bottom: 75px;
+    overflow-y: auto;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 68px;
+    padding: 0px 22px;
+    background-color: rgb(255, 255, 255);
+    border-top: 1px solid rgb(230, 230, 230);
   }
 }
