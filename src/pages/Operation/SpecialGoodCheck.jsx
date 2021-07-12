@@ -73,16 +73,15 @@ const SpecialGoodCheck = (props) => {
   const globalSearch = [
     {
       label: '商品名称',
-      name: 'goodsName',
+      name: 'marketingName',
     },
     {
       label: '集团/店铺名',
       name: 'ownerId',
       type: 'merchant',
     },
-
     {
-      label: '创建人',
+      label: '提交人',
       name: 'submitterUserName',
     },
     {

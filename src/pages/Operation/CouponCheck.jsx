@@ -41,7 +41,7 @@ const CouponCheck = (props) => {
   const globalSearch = [
     {
       label: '券名称',
-      name: 'couponName',
+      name: 'marketingName',
     },
     {
       label: '集团/店铺名',
@@ -49,8 +49,8 @@ const CouponCheck = (props) => {
       type: 'merchant',
     },
     {
-      label: '创建人',
-      name: 'creator',
+      label: '提交人',
+      name: 'submitterUserName',
     },
     {
       label: '创建时间',

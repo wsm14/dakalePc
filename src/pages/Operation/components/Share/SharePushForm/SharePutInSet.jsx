@@ -19,12 +19,12 @@ const SharePutInSet = (props) => {
 
   const [areaType, setAreaType] = useState('all'); // 地域选择
   const [ageType, setAgeType] = useState('1-100'); // 年龄
-  // const [tasteType, setTastetype] = useState('all'); // 兴趣选择
+  const [tasteType, setTastetype] = useState('all'); // 兴趣选择
 
   useEffect(() => {
     setAreaType(detail.areaType);
     setAgeType(detail.age);
-    // setTastetype(detail.taste);
+    setTastetype(detail.taste);
   }, []);
 
   const formItems = [
@@ -83,39 +83,39 @@ const SharePutInSet = (props) => {
       select: propertyJSON['nearDistance'],
       fieldNames: { label: 'description' },
     },
-    // {
-    //   label: '兴趣',
-    //   name: 'taste',
-    //   type: 'radio',
-    //   select: SHARE_TASTE_TYPE,
-    //   onChange: (e) => setTastetype(e.target.value),
-    // },
-    // {
-    //   label: '选择兴趣',
-    //   type: 'treeSelect',
-    //   name: 'tagsId',
-    //   multiple: true,
-    //   visible: tasteType === 'tag',
-    //   select: tasteTag.map(({ domainId, domainName, domainDTOList }) => ({
-    //     domainId,
-    //     domainName,
-    //     domainDTOList,
-    //     disabled: true,
-    //   })),
-    //   fieldNames: {
-    //     label: 'domainName',
-    //     value: 'domainId',
-    //     children: 'domainDTOList',
-    //   },
-    //   onChange: (val, options, extra) => {
-    //     const { allCheckedNodes = [] } = extra;
-    //     // 后端需要父级名字+id 子集名字+id 先将dom数据储存下来 后面整理数据给后端
-    //     saveExtraStorage(
-    //       'taste',
-    //       allCheckedNodes.map((item) => item.node.props.item),
-    //     );
-    //   },
-    // },
+    {
+      label: '兴趣',
+      name: 'taste',
+      type: 'radio',
+      select: SHARE_TASTE_TYPE,
+      onChange: (e) => setTastetype(e.target.value),
+    },
+    {
+      label: '选择兴趣',
+      type: 'treeSelect',
+      name: 'tagsId',
+      multiple: true,
+      visible: tasteType === 'tag',
+      select: tasteTag.map(({ domainId, domainName, domainDTOList }) => ({
+        domainId,
+        domainName,
+        domainDTOList,
+        disabled: true,
+      })),
+      fieldNames: {
+        label: 'domainName',
+        value: 'domainId',
+        children: 'domainDTOList',
+      },
+      onChange: (val, options, extra) => {
+        const { allCheckedNodes = [] } = extra;
+        // 后端需要父级名字+id 子集名字+id 先将dom数据储存下来 后面整理数据给后端
+        saveExtraStorage(
+          'taste',
+          allCheckedNodes.map((item) => item.node.props.item),
+        );
+      },
+    },
   ];
 
   return (
