@@ -5,7 +5,7 @@ export const base = [
   },
   {
     label: '集团ID',
-    name: 'merchantGroupId',
+    name: 'merchantGroupIdString',
   },
   {
     label: '经营类目',

@@ -1,7 +1,26 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { SketchPicker, CirclePicker } from 'react-color';
 
-const IframeEditor = () => {
-  return <>111</>;
+/**
+ * 颜色选择器
+ */
+export default ({ cRef }) => {
+  const [color, setColor] = useState('#ffffff');
+
+  // 向父组件暴露方法
+  useImperativeHandle(cRef, () => ({
+    getContent: () =>
+      new Promise((resolve) => {
+        resolve(color);
+      }),
+  }));
+
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <SketchPicker color={color} onChangeComplete={(val) => setColor(val)} />
+      <div style={{ marginTop: 20 }}>
+        <CirclePicker color={color} onChangeComplete={(val) => setColor(val)}></CirclePicker>
+      </div>
+    </div>
+  );
 };
-
-export default IframeEditor;

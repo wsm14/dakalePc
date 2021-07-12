@@ -1,18 +1,43 @@
-import React, { useContext } from 'react';
+import React, { useRef, useContext } from 'react';
 import { Button, Space } from 'antd';
 import Editor from './Editor';
 import styles from './style.less';
 
 const EditorPanel = ({ context }) => {
+  const cRef = useRef();
   // 组件选项打开类型
   const { dispatchData, showEditor } = useContext(context);
+
+  const { type, name, moduleEditData } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => {
     dispatchData({ type: 'closeEditor' });
   };
 
-  const { type, name, moduleEditData } = showEditor;
+  // 保存事件
+  const handleSaveData = () => {
+    cRef.current
+      .getContent()
+      .then((content) => {
+        console.log(content);
+        if (!content) return false;
+        const messageType = content.apiUrl !== undefined ? 'script' : 'save';
+        onSave({ id: showPanel.id, type, messageType, content });
+        return true;
+      })
+      .then((res) => {
+        if (!res) return;
+        message.destroy();
+        message.success({
+          content: '保存成功！',
+          className: 'custom-class',
+          style: {
+            marginTop: '30vh',
+          },
+        });
+      });
+  };
 
   return (
     <div className={`${styles.active_Template_right} ${type ? styles.show : ''}`}>
@@ -21,11 +46,11 @@ const EditorPanel = ({ context }) => {
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>
-        <Editor type={type}></Editor>
+        <Editor cRef={cRef} type={type}></Editor>
       </div>
       <div className={styles.footer}>
         <Space>
-          <Button type="primary" onClick={handleCloseEdit}>
+          <Button type="primary" onClick={handleSaveData}>
             保存
           </Button>
           <Button onClick={handleCloseEdit}>取消</Button>

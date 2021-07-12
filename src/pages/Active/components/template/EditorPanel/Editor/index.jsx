@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Form } from 'antd';
 import { IEditor } from './editorModule';
 import styles from './index.less';
@@ -10,9 +10,8 @@ import styles from './index.less';
  * @initialValues 默认值
  */
 const IframeEditor = (props) => {
-  const { type, initialValues, onSave } = props;
+  const { cRef, type, initialValues } = props;
 
-  const cRef = useRef();
   const [form] = Form.useForm();
   const EditorContent = IEditor[type];
 
