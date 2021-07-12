@@ -313,7 +313,7 @@ export default {
     *fetchGetGroupMreList({ payload, callback }, { put, call }) {
       const { type = 'merchant', name, ...other } = payload;
       const newPayload = {
-        merchant: { merchantName: name, businessStatus: 1 }, // 单店
+        merchant: { merchantName: name }, // 单店
         group: { groupName: name }, // 集团
       }[type];
       const response = yield call(
