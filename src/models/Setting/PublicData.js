@@ -26,6 +26,8 @@ import {
   fetchGoodsIsCommission,
   fetchSkuDetailMerchantList,
   fetchAuditMerchantList,
+  fetchGetCouponsSearch,
+  fetchGetGoodsSearch,
 } from '@/services/PublicServices';
 
 export default {
@@ -48,6 +50,8 @@ export default {
     experLevel: {},
     groupMreList: [],
     skuMerchantList: { list: [], total: 0 },
+    CouponListSearch: [],
+    goodsList: [],
   },
 
   reducers: {
@@ -369,6 +373,35 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.merchantList);
+    },
+    *fetchGetCouponsSearch({ payload }, { put, call }) {
+      const response = yield call(fetchGetCouponsSearch, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          CouponListSearch: content.ownerCouponList.map((item) => ({
+            name: `${item.couponName}`,
+            value: item.ownerCouponIdString,
+          })),
+        },
+      });
+    },
+    *fetchGetGoodsSearch({ payload }, { put, call }) {
+      const response = yield call(fetchGetGoodsSearch, payload);
+      if (!response) return;
+      const { content } = response;
+      console.log(content, 'content');
+      yield put({
+        type: 'save',
+        payload: {
+          goodsList: content.activityGoodsList.map((item) => ({
+            name: `${item.goodsName}`,
+            value: item.specialGoodsId,
+          })),
+        },
+      });
     },
   },
 };

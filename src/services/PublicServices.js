@@ -186,6 +186,20 @@ export function fetchSkuAvailableMerchant(params) {
   });
 }
 
+//  * 优惠券列表 用于运营后台筛选
+export function fetchGetCouponsSearch(params) {
+  return request('/admin/coupon/listOwnerCouponForSearch', {
+    params,
+  });
+}
+
+//  特惠商品列表 用于运营后台筛选
+export function fetchGetGoodsSearch(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsForSearch', {
+    params,
+  });
+}
+
 //  sku通用-审核中sku挂靠商家列表
 export function fetchAuditMerchantList(params) {
   return request('/common/sku/config/auditMerchantList', {

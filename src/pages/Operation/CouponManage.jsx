@@ -23,7 +23,8 @@ const CouponManageComponent = (props) => {
   const searchItems = [
     {
       label: '券名称',
-      name: 'couponName',
+      // name: 'couponName',
+      name: 'marketingName',
     },
     {
       label: '集团/店铺名',
@@ -63,7 +64,7 @@ const CouponManageComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '券名称',
+      title: '券/店铺名称',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>

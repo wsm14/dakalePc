@@ -122,7 +122,7 @@ const ShareDrawer = (props) => {
 
   useEffect(() => {
     fetchGetPropertyJSON();
-    // fetchGetTasteTag();
+    fetchGetTasteTag();
   }, []);
 
   // 商家id获取参数
@@ -158,12 +158,12 @@ const ShareDrawer = (props) => {
     });
   };
 
-  // // 获取兴趣标签
-  // const fetchGetTasteTag = () => {
-  //   dispatch({
-  //     type: 'baseData/fetchGetTasteTag',
-  //   });
-  // };
+  // 获取兴趣标签
+  const fetchGetTasteTag = () => {
+    dispatch({
+      type: 'baseData/fetchGetTasteTag',
+    });
+  };
 
   // 下一步
   const handleNextStep = (buttonType) => {
