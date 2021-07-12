@@ -1,4 +1,4 @@
-import { UserOutlined, PictureOutlined, MenuOutlined } from '@ant-design/icons';
+import { BgColorsOutlined, PictureOutlined, MenuOutlined } from '@ant-design/icons';
 /**
  * 类型选项
  * @header 类型名称
@@ -15,9 +15,9 @@ const panelItem = [
     type: 'public',
     children: [
       {
-        icon: <UserOutlined style={{ fontSize: 24 }} />,
-        text: '获取信息',
-        type: 'userInfo',
+        icon: <BgColorsOutlined style={{ fontSize: 24 }} />,
+        text: '背景颜色',
+        type: 'background',
         drop: false,
       },
     ],

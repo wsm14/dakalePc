@@ -17,21 +17,32 @@
       border: 0;
     }
   }
-  .aT_Left_RadioGroup {
+  .module_group {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
-    :global(.ant-radio-button-wrapper) {
+    .module_cell {
       width: 49%;
       height: auto;
       margin-bottom: 5px;
       padding: 10px 15px;
       line-height: 20px;
       text-align: center;
-    }
-    &_icon {
-      margin-bottom: 5px;
+      border: 1px solid #d9d9d9;
+      border-radius: 2px;
+      cursor: pointer;
+      &.move {
+        cursor: move;
+      }
+      .module_cell_icon {
+        margin-bottom: 5px;
+      }
+      &:hover {
+        position: relative;
+        color: #1890ff;
+        border: 1px solid #1890ff;
+      }
     }
   }
 }

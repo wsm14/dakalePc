@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { connect } from 'umi';
 import { Button, Space, Row, Col, Modal, Popover, Spin } from 'antd';
 import QRCode from 'qrcode.react';
 
@@ -114,6 +113,4 @@ const SideMenu = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
-  loading: loading.models.activeTemplate,
-}))(SideMenu);
+export default SideMenu;

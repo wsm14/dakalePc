@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useReducer, createContext } from 'react';
+import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import SideMenu from './SideMenu';
@@ -63,4 +64,6 @@ const ActiveTemplate = (props) => {
   );
 };
 
-export default ActiveTemplate;
+export default connect(({ loading }) => ({
+  loading: loading.models.activeTemplate,
+}))(ActiveTemplate);
