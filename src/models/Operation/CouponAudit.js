@@ -40,10 +40,10 @@ export default {
 
       const { couponDesc, serviceDivisionDTO = {} } = ownerCouponInfo;
       const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
-      const pBean = provinceBean ? (Number(provinceBean) / 100).toFixed(2) : '';
-      const dBean = districtBean ? (Number(districtBean) / 100).toFixed(2) : '';
-      const daBean = darenBean ? (Number(darenBean) / 100).toFixed(2) : '';
-
+      const pBean = provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean = districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
+      const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
+      
       const newDetail = {
         serviceDivisionDTO: {
           provinceBean: pBean,
