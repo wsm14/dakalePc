@@ -8,7 +8,7 @@ export default ({ cRef, value }) => {
   const [color, setColor] = useState('#eeeeee');
 
   useEffect(() => {
-    if (value) setColor(value);
+    if (value.backgroundColor) setColor(value.backgroundColor);
   }, []);
 
   // 向父组件暴露方法
@@ -18,16 +18,16 @@ export default ({ cRef, value }) => {
         resolve({
           type: 'backgroundColor',
           dom: false,
-          data: typeof color === 'string' ? color : color.hex,
+          data: { backgroundColor: typeof color === 'string' ? color : color.hex },
         });
       }),
   }));
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-      <SketchPicker color={color} onChangeComplete={(val) => setColor(val)} />
+      <SketchPicker disableAlpha color={color} onChangeComplete={(val) => setColor(val)} />
       <div style={{ marginTop: 20 }}>
-        <CirclePicker color={color} onChangeComplete={(val) => setColor(val)}></CirclePicker>
+        <CirclePicker color={color} onChangeComplete={(val) => setColor(val)} />
       </div>
     </div>
   );

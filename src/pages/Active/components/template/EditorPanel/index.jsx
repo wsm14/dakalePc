@@ -9,6 +9,7 @@ const EditorPanel = ({ context }) => {
   // 组件选项打开类型
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
+  const { data } = moduleData;
   const { index, type, name, moduleEditData } = showEditor;
 
   // 关闭编辑框
@@ -22,12 +23,19 @@ const EditorPanel = ({ context }) => {
       .getContent()
       .then((content) => {
         if (!content) return false;
-        const newData = update(moduleData, {
-          $splice: [[index, 1, content]],
-        });
+        const { dom = true } = content;
+        let payload = {};
+        if (!dom) {
+          payload = { ...moduleData, ...content.data };
+        } else {
+          const newData = update(data, {
+            $splice: [[index, 1, content]],
+          });
+          payload = { ...moduleData, data: newData };
+        }
         dispatchData({
           type: 'saveModuleData',
-          payload: newData,
+          payload,
         });
         return true;
       })

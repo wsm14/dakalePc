@@ -11,16 +11,17 @@ const ModuleDrawer = (props) => {
 
   // 显示对应的模块编辑内容
   const handleShowEditor = (ptype, item) => {
+    const { data } = moduleData;
     // 如果是公共模块 全局唯一只能存在一个 查询是否已经存在 存在则编辑
-    const checkData = ptype === 'public' ? moduleData.findIndex((i) => i.id === item.id) : -1;
+    const checkData = ptype !== 'public' ? data.findIndex((i) => i.id === item.id) : -1;
     dispatchData({
       type: 'showEditor',
       payload: {
-        id: moduleData[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
-        index: checkData != -1 ? checkData : moduleData.length,
+        id: data[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
+        index: checkData != -1 ? checkData : data.length,
         type: item.type,
         name: item.text,
-        moduleEditData: moduleData[checkData]?.data || {},
+        moduleEditData: data[checkData]?.data || {},
       },
     });
   };

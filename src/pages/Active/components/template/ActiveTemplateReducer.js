@@ -36,7 +36,7 @@ export const reducerValue = {
   /**
    * { id:'', type, data }
    */
-  moduleData: [],
+  moduleData: { data: [] },
 };
 
 /**
