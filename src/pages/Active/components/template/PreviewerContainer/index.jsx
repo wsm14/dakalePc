@@ -5,7 +5,10 @@ import styles from './style.less';
 const ActiveTemplateIframe = (props) => {
   const { context } = props;
   const { info, showPanel, moduleData } = useContext(context);
+
+  const { data } = moduleData;
   console.log(moduleData);
+
   return (
     <div className={styles.active_Template_content}>
       <div className={styles.previewer_component}>

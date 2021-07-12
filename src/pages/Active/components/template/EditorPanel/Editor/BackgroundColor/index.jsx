@@ -4,11 +4,11 @@ import { SketchPicker, CirclePicker } from 'react-color';
 /**
  * 颜色选择器
  */
-export default ({ cRef, value }) => {
+export default ({ cRef, type, value }) => {
   const [color, setColor] = useState('#eeeeee');
 
   useEffect(() => {
-    if (value.backgroundColor) setColor(value.backgroundColor);
+    if (value) setColor(value);
   }, []);
 
   // 向父组件暴露方法
@@ -16,7 +16,7 @@ export default ({ cRef, value }) => {
     getContent: () =>
       new Promise((resolve) => {
         resolve({
-          type: 'backgroundColor',
+          type,
           dom: false,
           data: { backgroundColor: typeof color === 'string' ? color : color.hex },
         });

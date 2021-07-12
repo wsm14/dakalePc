@@ -22,7 +22,7 @@ const IframeEditor = (props) => {
     <>
       {type && (
         <div className={styles.previewer_active_editor}>
-          <EditorContent cRef={cRef} form={form} value={value}></EditorContent>
+          <EditorContent cRef={cRef} type={type} form={form} value={value}></EditorContent>
         </div>
       )}
     </>

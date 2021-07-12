@@ -21,7 +21,7 @@ const ModuleDrawer = (props) => {
         index: checkData != -1 ? checkData : data.length,
         type: item.type,
         name: item.text,
-        moduleEditData: data[checkData]?.data || {},
+        moduleEditData: ptype == 'public' ? moduleData[item.type] : data[checkData]?.data || {},
       },
     });
   };

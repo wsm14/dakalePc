@@ -32,8 +32,8 @@ export const reducerValue = {
     width: 0, // 组件宽
     ptype: '', // 组件选项面板类型
   },
-  // 已储存的模版数据
   /**
+   * 已储存的模版数据
    * { id:'', type, data }
    */
   moduleData: { data: [] },
