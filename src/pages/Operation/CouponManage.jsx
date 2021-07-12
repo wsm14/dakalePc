@@ -63,7 +63,7 @@ const CouponManageComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '券名称',
+      title: '券/店铺名称',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
