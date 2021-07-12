@@ -20,23 +20,14 @@ const GoodsDetail = (props) => {
     buyFlag = '1',
     auditIdString,
     ownerIdString,
+    merchantList = [],
   } = detail;
 
   console.log(detail, 'eeeee');
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
-  const [merchantList, setMerchantList] = useState([]);
 
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (show) {
-      //挂靠商家列表
-      if (detail.ownerType === 'group') {
-        getMerchantList();
-      }
-    }
-  }, [show]);
 
   // 审核通过
   const handleVerifyAllow = () => {
@@ -71,18 +62,6 @@ const GoodsDetail = (props) => {
           cRef.current.fetchGetData();
         },
       });
-    });
-  };
-
-  //sku通用-审核中sku挂靠商家列表
-  const getMerchantList = () => {
-    dispatch({
-      type: 'baseData/fetchAuditMerchantList',
-      payload: {
-        auditId: auditIdString,
-        ownerId: ownerIdString,
-      },
-      callback: (list) => setMerchantList(list),
     });
   };
 
