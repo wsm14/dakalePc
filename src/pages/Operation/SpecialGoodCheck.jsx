@@ -85,13 +85,6 @@ const SpecialGoodCheck = (props) => {
       name: 'submitterUserName',
     },
     {
-      label: '活动有效期',
-      type: 'rangePicker',
-      name: 'activityStartTime',
-      end: 'activityEndTime',
-    },
-
-    {
       label: '地区',
       name: 'city',
       type: 'cascader',
