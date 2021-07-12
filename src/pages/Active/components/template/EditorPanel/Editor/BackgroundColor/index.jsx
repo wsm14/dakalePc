@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useImperativeHandle } from 'react';
 import { SketchPicker, CirclePicker } from 'react-color';
 
 /**
  * 颜色选择器
  */
-export default ({ cRef }) => {
-  const [color, setColor] = useState('#ffffff');
+export default ({ cRef, value }) => {
+  const [color, setColor] = useState('#eeeeee');
+
+  useEffect(() => {
+    setColor(value);
+  }, []);
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     getContent: () =>
       new Promise((resolve) => {
-        resolve(color);
+        resolve(color.hex || color);
       }),
   }));
 

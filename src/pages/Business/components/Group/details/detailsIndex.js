@@ -114,7 +114,7 @@ export const active = [
   {
     label: '营业期限',
     name: 'validityPeriod',
-    render: (val, row) => `${val}-${row.establishDate}`,
+    render: (val, row) => `${row.establishDate}-${val}`,
   },
   {
     label: '经营范围',

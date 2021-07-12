@@ -1,12 +1,12 @@
 import React, { useRef, useContext } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, message } from 'antd';
 import Editor from './Editor';
 import styles from './style.less';
 
 const EditorPanel = ({ context }) => {
   const cRef = useRef();
   // 组件选项打开类型
-  const { dispatchData, showEditor } = useContext(context);
+  const { dispatchData, showEditor, moduleData } = useContext(context);
 
   const { type, name, moduleEditData } = showEditor;
 
@@ -20,10 +20,7 @@ const EditorPanel = ({ context }) => {
     cRef.current
       .getContent()
       .then((content) => {
-        console.log(content);
         if (!content) return false;
-        const messageType = content.apiUrl !== undefined ? 'script' : 'save';
-        onSave({ id: showPanel.id, type, messageType, content });
         return true;
       })
       .then((res) => {
@@ -33,7 +30,7 @@ const EditorPanel = ({ context }) => {
           content: '保存成功！',
           className: 'custom-class',
           style: {
-            marginTop: '30vh',
+            marginTop: '5vh',
           },
         });
       });

@@ -6,11 +6,10 @@ import styles from './index.less';
 /**
  * 编辑模板
  * @type 组件编辑的类型
- * @onSave 保存回调
- * @initialValues 默认值
+ * @value 默认值
  */
 const IframeEditor = (props) => {
-  const { cRef, type, initialValues } = props;
+  const { cRef, type, value } = props;
 
   const [form] = Form.useForm();
   const EditorContent = IEditor[type];
@@ -23,7 +22,7 @@ const IframeEditor = (props) => {
     <>
       {type && (
         <div className={styles.previewer_active_editor}>
-          <EditorContent cRef={cRef} form={form} initialValues={initialValues}></EditorContent>
+          <EditorContent cRef={cRef} form={form} value={value}></EditorContent>
         </div>
       )}
     </>
