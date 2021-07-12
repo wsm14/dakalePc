@@ -3,11 +3,9 @@
  */
 export const reducerValue = {
   show: false, // 模版编辑是否显示
-  iframeHeight: 757, // iframe高度
   // 模版信息
   info: {
     img: '', // 模版封面
-    templateUrl: '', // 模版url
     id: '', // 模版id
     title: '活动模版', // 模版名字
     activeName: '', // 活动名称
@@ -40,7 +38,7 @@ export const reducerValue = {
 /**
  * reducer 处理
  * @type {*}  initialize 数据重置
- *            saveInfo 储存选择的模版信息
+ *            save 储存数据
  *            showPanel 展示组件选择面板
  *            showEditor 展示组件编辑面板
  *            closeEditor 关闭编辑面板
@@ -50,20 +48,10 @@ export const fetchReducerEdit = (state, action) => {
   switch (action.type) {
     case 'initialize':
       return reducerValue;
-    case 'saveIFrameHeight':
+    case 'save':
       return {
         ...state,
-        ...action.payload,
-      };
-    case 'saveInfo':
-      return {
-        ...state,
-        ...action.payload,
-      };
-    case 'showActive':
-      return {
-        ...state,
-        showActive: { ...state.showActive, ...action.payload },
+        ...payload,
       };
     case 'showPanel':
       return {
@@ -87,11 +75,6 @@ export const fetchReducerEdit = (state, action) => {
       return {
         ...state,
         moduleData: [...oldData, action.payload],
-      };
-    case 'saveHtmlModuleData':
-      return {
-        ...state,
-        ...action.payload,
       };
     default:
       return state;

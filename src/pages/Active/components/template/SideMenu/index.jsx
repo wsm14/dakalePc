@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react';
+import { connect } from 'umi';
 import { Button, Space, Row, Col, Modal, Popover, Spin } from 'antd';
 import QRCode from 'qrcode.react';
-import aliOssUpload from '@/utils/aliOssUpload';
 
 /**
  * 顶部显示区域
@@ -9,9 +9,9 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const SideMenu = (props) => {
   const { onClose, context, dispatch, loading } = props;
 
-  const { info, dispatchData, showActive, moduleData } = useContext(context);
+  const { info, dispatchData, showActive } = useContext(context);
 
-  const { activeUrl, activeHtml, activePreviewQr, save } = showActive;
+  const { activeUrl, activeHtml, activePreviewQr } = showActive;
   // 提交模版数据
   const handleSaveModuleData = (save = true) => {
     dispatchData({
@@ -114,5 +114,6 @@ const SideMenu = (props) => {
   );
 };
 
-export default SideMenu;
-  
+export default connect(({ loading }) => ({
+  loading: loading.models.activeTemplate,
+}))(SideMenu);

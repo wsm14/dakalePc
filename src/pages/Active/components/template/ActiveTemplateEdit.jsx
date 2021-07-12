@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useRef, useReducer, createContext } from 'react';
-import { connect } from 'umi';
+import React, { useEffect, useState, useReducer, createContext } from 'react';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
 import SideMenu from './SideMenu';
@@ -15,9 +14,8 @@ const TemplateContext = createContext();
  */
 
 const ActiveTemplate = (props) => {
-  const { visible, onClose, dispatch, loading } = props;
+  const { visible, onClose, loading } = props;
 
-  const iframeRef = useRef();
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [componentsShow, setComponentsShow] = useState(false);
 
@@ -25,12 +23,6 @@ const ActiveTemplate = (props) => {
     if (visible.show) {
       // 初始化数据
       dispatchData({ type: 'initialize' });
-      // 保存选择模版信息
-      dispatchData({ type: 'saveInfo', payload: visible });
-      // 保存修改的活动信息
-      if (visible.info.promotionActivityId) {
-        dispatchData({ type: 'showActive', payload: { activeUrl: visible.info.templateUrl } });
-      }
       // 拦截页面关闭刷新
       const listener = (ev) => {
         ev.preventDefault();
@@ -44,9 +36,16 @@ const ActiveTemplate = (props) => {
   }, [visible.show]);
 
   return (
-    <TemplateContext.Provider value={{ ...moduleReducer, iframeRef, dispatchData, componentsShow }}>
+    <TemplateContext.Provider value={{ ...moduleReducer, dispatchData, componentsShow }}>
       <Drawer
+        title={<SideMenu onClose={onClose} context={TemplateContext}></SideMenu>}
+        height={'100%'}
+        placement="top"
+        closable={false}
+        visible={visible.show}
+        afterVisibleChange={(show) => setComponentsShow(show)}
         destroyOnClose
+        headerStyle={{ borderBottom: '1px solid #e6e6e6' }}
         bodyStyle={{
           backgroundColor: '#e6e9ed',
           overflow: 'hidden',
@@ -55,21 +54,6 @@ const ActiveTemplate = (props) => {
           alignItems: 'stretch',
           height: '100%',
         }}
-        headerStyle={{ borderBottom: '1px solid #e6e6e6' }}
-        title={
-          <SideMenu
-            promotionActivityId={visible.info && visible.info.promotionActivityId}
-            loading={loading}
-            onClose={onClose}
-            dispatch={dispatch}
-            context={TemplateContext}
-          ></SideMenu>
-        }
-        height={'100%'}
-        placement="top"
-        closable={false}
-        visible={visible.show}
-        afterVisibleChange={(show) => setComponentsShow(show)}
       >
         <ModuleDrawer context={TemplateContext}></ModuleDrawer>
         <PreviewerContainer context={TemplateContext}></PreviewerContainer>
@@ -79,6 +63,4 @@ const ActiveTemplate = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
-  loading: loading.models.activeTemplate,
-}))(ActiveTemplate);
+export default ActiveTemplate;
