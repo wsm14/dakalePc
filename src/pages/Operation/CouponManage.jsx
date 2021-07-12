@@ -38,12 +38,8 @@ const CouponManageComponent = (props) => {
     },
     {
       label: '创建人',
-      name: 'creator',
+      name: 'creatorName',
     },
-    // {
-    //   label: '提交人',
-    //   name: 'submitterUserName',
-    // },
     {
       label: '创建时间',
       type: 'rangePicker',
