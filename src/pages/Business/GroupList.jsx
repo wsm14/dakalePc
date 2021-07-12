@@ -103,7 +103,7 @@ const tableList = (props) => {
     {
       title: '集团名称',
       dataIndex: 'groupName',
-      render: (val, row) => `${row.groupName}\n${val || '--'}`,
+      render: (val, row) => `${val}\n${row.merchantGroupIdString || '--'}`,
     },
     {
       title: '品牌logo',
