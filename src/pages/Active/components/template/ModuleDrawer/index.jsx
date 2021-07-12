@@ -14,7 +14,6 @@ const ModuleDrawer = (props) => {
     moduleData,
     showEditor,
     dispatchData,
-    componentsShow,
   } = useContext(context);
 
   const [pActive, setPactive] = useState([ptype]);
@@ -65,36 +64,26 @@ const ModuleDrawer = (props) => {
   };
 
   return (
-    <>
-      {componentsShow && (
-        <div className={styles.active_Template_Left}>
-          <Collapse bordered={false} activeKey={pActive} onChange={(val) => setPactive(val)}>
-            {panelItem.map((item) => (
-              <Panel
-                forceRender
-                header={item.header}
-                key={item.type}
-                // disabled={ptype !== item.ptype}
-              >
-                <Radio.Group
-                  value={showEditor.type}
-                  className={styles.aT_Left_RadioGroup}
-                  onChange={(e) => handlePanelChange(e, item.type)}
-                  disabled={ptype !== item.type && item.type !== 'public'}
-                >
-                  {item.children.map((children) => (
-                    <Radio.Button value={children.type} key={children.text}>
-                      <div className={styles.aT_Left_RadioGroup_icon}>{children.icon}</div>
-                      <span>{children.text}</span>
-                    </Radio.Button>
-                  ))}
-                </Radio.Group>
-              </Panel>
-            ))}
-          </Collapse>
-        </div>
-      )}
-    </>
+    <div className={styles.active_Template_Left}>
+      <Collapse bordered={false} activeKey={pActive} onChange={(val) => setPactive(val)}>
+        {panelItem.map((item) => (
+          <Panel forceRender header={item.header} key={item.type}>
+            <Radio.Group
+              value={showEditor.type}
+              className={styles.aT_Left_RadioGroup}
+              onChange={(e) => handlePanelChange(e, item.type)}
+            >
+              {item.children.map((children) => (
+                <Radio.Button value={children.type} key={children.text}>
+                  <div className={styles.aT_Left_RadioGroup_icon}>{children.icon}</div>
+                  <span>{children.text}</span>
+                </Radio.Button>
+              ))}
+            </Radio.Group>
+          </Panel>
+        ))}
+      </Collapse>
+    </div>
   );
 };
 

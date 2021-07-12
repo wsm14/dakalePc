@@ -5,8 +5,8 @@ import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
 const ActiveTemplate = () => {
-  const [visible, setVisible] = useState({ show: false, info: {} });
-  const [visibleName, setVisibleName] = useState({ show: false, info: {} });
+  const [visible, setVisible] = useState({ show: true, info: {} });
+  const [visibleName, setVisibleName] = useState({ show: false, info: { activeName: '11' } });
 
   /**
    * 模版选项
