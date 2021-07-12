@@ -12,6 +12,8 @@ export const reducerValue = {
   },
   // 组件编辑模块显示内容
   showEditor: {
+    id: '', // 组件id
+    index: '', // 数据下标
     name: '', // 组件名称
     type: '', // 组件类型
     moduleEditData: {}, // 当前编辑组件的数据
@@ -31,6 +33,9 @@ export const reducerValue = {
     ptype: '', // 组件选项面板类型
   },
   // 已储存的模版数据
+  /**
+   * { id:'', type, data }
+   */
   moduleData: [],
 };
 
@@ -62,11 +67,9 @@ export const fetchReducerEdit = (state, action) => {
         showEditor: { type: '' },
       };
     case 'saveModuleData':
-      const { moduleData } = state;
-      const oldData = moduleData.filter((i) => i.id !== action.payload.id);
       return {
         ...state,
-        moduleData: [...oldData, action.payload],
+        moduleData: action.payload,
       };
     default:
       return state;

@@ -1,5 +1,6 @@
 import React, { useRef, useContext } from 'react';
 import { Button, Space, message } from 'antd';
+import update from 'immutability-helper';
 import Editor from './Editor';
 import styles from './style.less';
 
@@ -8,7 +9,7 @@ const EditorPanel = ({ context }) => {
   // 组件选项打开类型
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
-  const { type, name, moduleEditData } = showEditor;
+  const { index, type, name, moduleEditData } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => {
@@ -21,6 +22,13 @@ const EditorPanel = ({ context }) => {
       .getContent()
       .then((content) => {
         if (!content) return false;
+        const newData = update(moduleData, {
+          $splice: [[index, 1, content]],
+        });
+        dispatchData({
+          type: 'saveModuleData',
+          payload: newData,
+        });
         return true;
       })
       .then((res) => {
@@ -43,7 +51,7 @@ const EditorPanel = ({ context }) => {
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>
-        <Editor cRef={cRef} type={type}></Editor>
+        <Editor cRef={cRef} type={type} value={moduleEditData}></Editor>
       </div>
       <div className={styles.footer}>
         <Space>

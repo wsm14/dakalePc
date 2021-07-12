@@ -8,14 +8,18 @@ export default ({ cRef, value }) => {
   const [color, setColor] = useState('#eeeeee');
 
   useEffect(() => {
-    setColor(value);
+    if (value) setColor(value);
   }, []);
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     getContent: () =>
       new Promise((resolve) => {
-        resolve(color.hex || color);
+        resolve({
+          type: 'backgroundColor',
+          dom: false,
+          data: typeof color === 'string' ? color : color.hex,
+        });
       }),
   }));
 
