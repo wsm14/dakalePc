@@ -186,8 +186,8 @@ const addGroups = (props) => {
             ...payload1,
             businessLicenseObject: {
               ...businessLicenseObject,
-              validityPeriod: TIME_YMD(activeValidity[0]),
-              establishDate: TIME_YMD(activeValidity[1]),
+              validityPeriod: TIME_YMD(activeValidity[1]),
+              establishDate: TIME_YMD(activeValidity[0]),
             },
             localImages: localImages.toString(),
             mainImages: mainImages.toString(),
@@ -222,8 +222,8 @@ const addGroups = (props) => {
           ...payload1,
           businessLicenseObject: {
             ...businessLicenseObject,
-            validityPeriod: TIME_YMD(activeValidity[0]),
-            establishDate: TIME_YMD(activeValidity[1]),
+            validityPeriod: TIME_YMD(activeValidity[1]),
+            establishDate: TIME_YMD(activeValidity[0]),
           },
           localImages: localImages.toString(),
           mainImages: mainImages.toString(),
