@@ -86,6 +86,7 @@ const UploadBlock = (props) => {
     onChange = undefined,
     isCut,
     imgRatio,
+    disabled,
     multiple = true,
   } = props;
 
@@ -204,8 +205,12 @@ const UploadBlock = (props) => {
    * 选择图片上传配置
    */
   const handleUpProps = () => {
+    const onPreview = disabled
+      ? {}
+      : { onPreview: (file) => !disabled && handlePreview(file, 'image') };
     return {
       accept: 'image/*',
+      ...onPreview,
       onChange: (value) => {
         const { fileList } = value;
         const newFileList = !maxSize
@@ -247,12 +252,12 @@ const UploadBlock = (props) => {
     <>
       <DragAndDropHOC>
         <Upload
+          disabled={disabled}
           // 允许选择时裁剪的时候不允许多选
           multiple={isCut ? false : multiple}
           listType="picture-card"
           fileList={fileLists}
           beforeUpload={(file) => beforeUpload(file)}
-          onPreview={(file) => handlePreview(file, 'image')}
           maxCount={maxFile}
           {...handleUpProps()}
           itemRender={(originNode, file, currFileList) => {

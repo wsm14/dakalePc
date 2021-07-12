@@ -102,7 +102,7 @@ const tableList = (props) => {
   const getColumns = [
     {
       title: '集团名称',
-      dataIndex: 'merchantGroupIdString',
+      dataIndex: 'groupName',
       render: (val, row) => `${row.groupName}\n${val || '--'}`,
     },
     {
@@ -164,7 +164,7 @@ const tableList = (props) => {
           click: () => {
             fetchGrounpDetails(
               {
-                merchantGroupIdString: val,
+                merchantGroupId: val,
               },
               (res) => {
                 fetchSave({ visible: true });

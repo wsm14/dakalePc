@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef, useReducer, createContext } from 'r
 import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
-import ActiveHeardTitle from './heard';
-import ActivetTemplateLeft from './left';
-import ActiveTemplateContent from './content/IframeContent';
+import SideMenu from './SideMenu';
+import EditorPanel from './EditorPanel';
+import ModuleDrawer from './ModuleDrawer';
+import PreviewerContainer from './PreviewerContainer';
 
 const TemplateContext = createContext();
 
@@ -46,15 +47,23 @@ const ActiveTemplate = (props) => {
     <TemplateContext.Provider value={{ ...moduleReducer, iframeRef, dispatchData, componentsShow }}>
       <Drawer
         destroyOnClose
-        bodyStyle={{ backgroundColor: '#f4f4f4' }}
+        bodyStyle={{
+          backgroundColor: '#e6e9ed',
+          overflow: 'hidden',
+          padding: 0,
+          display: 'flex',
+          alignItems: 'stretch',
+          height: '100%',
+        }}
+        headerStyle={{ borderBottom: '1px solid #e6e6e6' }}
         title={
-          <ActiveHeardTitle
+          <SideMenu
             promotionActivityId={visible.info && visible.info.promotionActivityId}
             loading={loading}
             onClose={onClose}
             dispatch={dispatch}
             context={TemplateContext}
-          ></ActiveHeardTitle>
+          ></SideMenu>
         }
         height={'100%'}
         placement="top"
@@ -62,8 +71,9 @@ const ActiveTemplate = (props) => {
         visible={visible.show}
         afterVisibleChange={(show) => setComponentsShow(show)}
       >
-        <ActivetTemplateLeft context={TemplateContext}></ActivetTemplateLeft>
-        <ActiveTemplateContent context={TemplateContext}></ActiveTemplateContent>
+        <ModuleDrawer context={TemplateContext}></ModuleDrawer>
+        <PreviewerContainer context={TemplateContext}></PreviewerContainer>
+        <EditorPanel context={TemplateContext}></EditorPanel>
       </Drawer>
     </TemplateContext.Provider>
   );

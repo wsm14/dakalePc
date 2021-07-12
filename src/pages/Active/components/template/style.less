@@ -1,15 +1,20 @@
 @white: #ffffff;
 
+.active_Template_right {
+  right: 0;
+}
+
+.active_Template_right,
 .active_Template_Left {
-  overflow: auto;
-  height: 100vh;
   position: fixed;
-  left: 0;
   top: 65px;
+  left: 0;
   width: 250px;
-  border-right: 1px solid #d9d9d9;
-  background-color: @white;
+  height: 100vh;
   padding-bottom: 67px;
+  overflow: auto;
+  background-color: @white;
+  border-right: 1px solid #d9d9d9;
   &::-webkit-scrollbar {
     width: 3px !important;
     height: 6px;
@@ -22,17 +27,17 @@
     }
   }
   .aT_Left_RadioGroup {
-    width: 100%;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
     :global(.ant-radio-button-wrapper) {
-      text-align: center;
-      height: auto;
       width: 49%;
+      height: auto;
       margin-bottom: 5px;
-      line-height: 20px;
       padding: 10px 15px;
+      line-height: 20px;
+      text-align: center;
     }
     &_icon {
       margin-bottom: 5px;
@@ -43,24 +48,24 @@
 .active_Template_content {
   position: relative;
   width: 375px;
+  height: 100%;
   margin: auto;
   padding: 20px 0;
-  height: 100%;
   .previewer_component {
-    width: 375px;
-    margin: auto;
     position: relative;
     display: flex;
+    width: 375px;
     min-height: 757px;
+    margin: auto;
     background-color: #eeeeee;
   }
   .previewer_wrap {
-    width: 375px;
-    margin: auto;
     position: relative;
     display: -ms-flexbox;
     display: flex;
+    width: 375px;
     min-height: 100%;
+    margin: auto;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     & > iframe {
       width: 100%;
@@ -71,19 +76,18 @@
 }
 
 .previewer_active_warp {
-  width: 375px;
   position: absolute;
-  height: 100%;
   top: 0;
   left: 0;
+  width: 375px;
+  height: 100%;
   pointer-events: none;
   .previewer_active_mask {
-    border: 3px solid #3089dc;
-    width: 100%;
-    left: 0;
     position: absolute;
-    box-sizing: border-box;
+    left: 0;
     z-index: 1;
+    box-sizing: border-box;
+    width: 100%;
+    border: 3px solid #3089dc;
   }
 }
-

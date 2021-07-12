@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Collapse, Radio } from 'antd';
 import panelItem from './panelItem';
-import styles from '../style.less';
+import styles from './style.less';
 
 const { Panel } = Collapse;
 
-const ActiveTemplateLeft = (props) => {
+const ModuleDrawer = (props) => {
   const { context } = props;
   const {
     // 组件选项打开类型
@@ -98,4 +98,4 @@ const ActiveTemplateLeft = (props) => {
   );
 };
 
-export default ActiveTemplateLeft;
+export default ModuleDrawer;

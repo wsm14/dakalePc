@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from '../style.less';
+import styles from './style.less';
 
 /**
- * iframe 选择区域高亮
+ * 选择区域高亮
  * @activeInfo {*}  定位信息
  */
-const IframeActive = (props) => {
+const PreviewerActive = (props) => {
   const { activeInfo } = props;
 
   const { height } = activeInfo;
@@ -21,4 +21,4 @@ const IframeActive = (props) => {
   );
 };
 
-export default IframeActive;
+export default PreviewerActive;

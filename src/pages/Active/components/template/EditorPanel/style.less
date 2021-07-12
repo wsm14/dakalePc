@@ -1,0 +1,16 @@
+@white: #ffffff;
+
+.active_Template_right {
+  position: relative;
+  width: 408px;
+  height: 100vh;
+  margin-right: -408px;
+  overflow-y: auto;
+  background-color: @white;
+  border-right: 1px solid #d9d9d9;
+  transition: margin 200ms ease 0s;
+  &::-webkit-scrollbar {
+    width: 3px !important;
+    height: 6px;
+  }
+}

@@ -7,7 +7,9 @@ import ManagementForm from './Form/ManagementForm';
 import UserForm from './Form/userForm';
 import UserDetailsForm from './Form/userDetailsForm';
 import ShopDetailsForm from './Form/shopDetailsForm';
+import ActiveSetOneForm from './Form/activeByOneForm';
 import CrmGroupSelect, { CrmBtn } from './Form/CrmGroupSelect';
+import { TIME_YMD } from '@/common/timeConstant';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const addGroups = (props) => {
@@ -18,6 +20,7 @@ const addGroups = (props) => {
     saveVisible,
     groupDetails,
     merchantGroupDTO,
+    businessLicense,
     childRef,
     loadingAdd,
     loadingUpDate,
@@ -119,6 +122,18 @@ const addGroups = (props) => {
       disabled: true,
     },
     {
+      title: '营业执照信息',
+      form: (
+        <ActiveSetOneForm
+          cRef={cRef}
+          formType={formType}
+          form={form}
+          initialValues={merchantGroupDTO}
+        />
+      ),
+      disabled: true,
+    },
+    {
       title: '品牌信息',
       form: <ManagementForm form={form} cRef={cRef2} initialValues={merchantGroupDTO} />,
     },
@@ -152,16 +167,28 @@ const addGroups = (props) => {
           message: '请点击查询!设置经纬度',
         });
       } else {
-        let { brandLogo, localImages, mainImages } = val;
+        let {
+          brandLogo,
+          localImages,
+          mainImages,
+          activeValidity,
+          businessLicenseObject,
+          ...other
+        } = val;
         brandLogo = await aliOssUpload(brandLogo);
         localImages = await aliOssUpload(localImages);
         mainImages = await aliOssUpload(mainImages);
         dispatch({
           type: 'groupSet/fetchAddList',
           payload: {
-            ...val,
+            ...other,
             ...payload,
             ...payload1,
+            businessLicenseObject: {
+              ...businessLicenseObject,
+              validityPeriod: TIME_YMD(activeValidity[0]),
+              establishDate: TIME_YMD(activeValidity[1]),
+            },
             localImages: localImages.toString(),
             mainImages: mainImages.toString(),
           },
@@ -175,7 +202,14 @@ const addGroups = (props) => {
     form.validateFields().then(async (val) => {
       const payload = cRef.current.fetchAllData();
       const payload1 = cRef2.current.getImage();
-      let { brandLogo, localImages, mainImages } = val;
+      let {
+        brandLogo,
+        localImages,
+        mainImages,
+        activeValidity,
+        businessLicenseObject,
+        ...other
+      } = val;
       brandLogo = await aliOssUpload(brandLogo);
       localImages = await aliOssUpload(localImages);
       mainImages = await aliOssUpload(mainImages);
@@ -183,9 +217,14 @@ const addGroups = (props) => {
         type: 'groupSet/fetchUpdateGroup',
         payload: {
           ...groupDetails.merchantGroupDTO,
-          ...val,
+          ...other,
           ...payload,
           ...payload1,
+          businessLicenseObject: {
+            ...businessLicenseObject,
+            validityPeriod: TIME_YMD(activeValidity[0]),
+            establishDate: TIME_YMD(activeValidity[1]),
+          },
           localImages: localImages.toString(),
           mainImages: mainImages.toString(),
         },

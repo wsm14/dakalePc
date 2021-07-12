@@ -10,6 +10,7 @@ export default ({ panelList = [] }) => {
         '品牌信息',
         '登录信息',
         '联系人信息',
+        '营业执照信息',
         '店铺信息',
         '对公账户信息',
         '法人信息',
@@ -21,7 +22,13 @@ export default ({ panelList = [] }) => {
       {panelList.map((item) => {
         const { title = '', extra = '', form = '', showArrow = true, disabled = false } = item;
         return (
-          <Panel header={title} extra={extra} key={title} collapsible={disabled?'disabled':''} showArrow={showArrow}>
+          <Panel
+            header={title}
+            extra={extra}
+            key={title}
+            collapsible={disabled ? 'disabled' : ''}
+            showArrow={showArrow}
+          >
             {form}
           </Panel>
         );
