@@ -1,10 +1,16 @@
 import React from 'react';
 import { BUSINESS_TYPE, COUPON_WEEK_TIME, COUPON_BUY_RULE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
-  const { ownerType = 'merchant', merchantIdList: mreList = [], buyFlag = '1' } = detail;
+  const {
+    ownerType = 'merchant',
+    merchantIdList: mreList = [],
+    buyFlag = '1',
+    merchantList = [],
+  } = detail;
   // 参与活动的店铺
   const mreFormItems = [
     {
@@ -140,6 +146,11 @@ const GoodsDetail = (props) => {
         formItems={mreFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {ownerType === 'group' && (
+        <div style={{ margin: '10px' }}>
+          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
+        </div>
+      )}
       <DescriptionsCondition
         title="券信息"
         formItems={couponFormItems}
