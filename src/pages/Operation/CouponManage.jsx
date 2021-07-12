@@ -23,8 +23,7 @@ const CouponManageComponent = (props) => {
   const searchItems = [
     {
       label: '券名称',
-      // name: 'couponName',
-      name: 'marketingName',
+      name: 'couponName',
     },
     {
       label: '集团/店铺名',
@@ -39,7 +38,7 @@ const CouponManageComponent = (props) => {
     },
     {
       label: '创建人',
-      name: 'creator',
+      name: 'creatorName',
     },
     {
       label: '创建时间',
