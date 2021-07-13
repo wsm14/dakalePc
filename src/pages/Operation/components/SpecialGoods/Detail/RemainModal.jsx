@@ -4,13 +4,12 @@ import { Button, Form, Modal } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {
-  const { visible = {}, onClose, dispatch, loading,childRef } = props;
+  const { visible = {}, onClose, dispatch, loading, childRef } = props;
   const { show = false, id, ownerId } = visible;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'ccc');
       dispatch({
         type: 'specialGoods/fetchSpecialGoodsAddRemain',
         payload: {
@@ -28,13 +27,13 @@ const RemainModal = (props) => {
 
   const formItems = [
     {
-      label: `投放总量`,
+      label: `增加库存`,
       name: 'remainIncrement',
     },
   ];
 
   const modalProps = {
-    title: '设置投放总量',
+    title: '设置增加库存',
     visible: show,
     onCancel: onClose,
     onOk: handleOk,
