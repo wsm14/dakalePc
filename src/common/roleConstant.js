@@ -84,6 +84,7 @@ export const ROLE_BUTTON_TYPE = {
   recommendList: '推荐列表',
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
+  rewardPeo: '新增打赏人数',
 
   set: '设置',
   save: '新增',

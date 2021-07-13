@@ -17,6 +17,7 @@ import {
   fetchSpecialConditConfig,
   fetchResourceDicts,
   fetchSpecialGoodsAddRemain, // 增加库存
+  fetchEditCurrentStatus, //编辑前校验
 } from '@/services/OperationServices';
 
 export default {
@@ -236,6 +237,13 @@ export default {
         description: '投放总量修改成功',
       });
       callback();
+    },
+
+    //  * 特惠或券编辑前校验
+    *fetchEditCurrentStatus({ payload, callback }, { call }) {
+      const response = yield call(fetchEditCurrentStatus, payload);
+      if (!response) return;
+      callback && callback(response.resultCode);
     },
   },
 };

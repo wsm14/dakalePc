@@ -398,6 +398,21 @@ const SpecialGoods = (props) => {
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
     const { specialGoodsId, ownerIdString, ownerName, ownerType } = list[index];
+    if (type === 'edit') {
+      dispatch({
+        type: 'specialGoods/fetchEditCurrentStatus',
+        payload: {
+          ownerId: ownerIdString,
+          ownerServiceId: specialGoodsId,
+          ownerType,
+        },
+        callback: (val) => {
+          if (val !== '1') {
+            return;
+          }
+        },
+      });
+    }
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, ownerId: ownerIdString, type },

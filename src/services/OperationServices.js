@@ -593,4 +593,11 @@ export function fetchCouponAddRemain(data) {
   });
 }
 
+// * 特惠或券编辑前校验
+export function fetchEditCurrentStatus(params) {
+  return request('/admin/specialGoodsManagement/judgeCurrentAuditStatus', {
+    params,
+  });
+}
+
 // 优惠券管理 end
