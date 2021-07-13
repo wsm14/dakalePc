@@ -23,7 +23,7 @@ const GoodsDetail = (props) => {
     merchantList = [],
   } = detail;
 
-  const [recordList, setRecordList] = useState([]);
+  const [recordList, setRecordList] = useState({});
 
   console.log(detail, 'eeeee');
 
@@ -82,6 +82,7 @@ const GoodsDetail = (props) => {
         type: 'baseData/fetchGetLogDetail',
         payload: {
           type: 'audit',
+          key: 'audit',
           identificationId: detail.ownerCouponIdString,
         },
         callback: (list) => {
@@ -322,7 +323,7 @@ const GoodsDetail = (props) => {
           </>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord list={recordList}></CheckRecord>
+          <CheckRecord recordList={recordList}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
 

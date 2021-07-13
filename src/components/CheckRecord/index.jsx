@@ -1,7 +1,8 @@
 import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
 const CheckRecord = (props) => {
-  const { list = [] } = props;
+  const { recordList = {} } = props;
+  console.log(recordList,"ssss")
 
   const getColumns = [
     {
@@ -17,8 +18,8 @@ const CheckRecord = (props) => {
     <TableDataBlock
       noCard={false}
       columns={getColumns}
-      rowKey={(record) => `${record.id}`}
-      list={list}
+      rowKey={(record) => `${record.actionLogId}`}
+      {...recordList}
     ></TableDataBlock>
   );
 };

@@ -171,23 +171,40 @@ export default {
       callback(content.logRecordList);
     },
     *fetchGetLogDetail({ payload, callback }, { call, put }) {
+      const { key = '' } = payload;
       const response = yield call(fetchGetLogDetail, { ...payload, page: 1, limit: 999 });
       if (!response) return;
       const { content } = response;
-      if (!content.recordList.length) {
-        notification.info({
-          message: '温馨提示',
-          description: '暂无日志记录',
+      if (key === 'audit') {
+        if (!content.recordList.length) {
+          notification.info({
+            message: '温馨提示',
+            description: '暂无审核记录',
+          });
+          return;
+        }
+      } else {
+        if (!content.recordList.length) {
+          notification.info({
+            message: '温馨提示',
+            description: '暂无日志记录',
+          });
+          return;
+        }
+        yield put({
+          type: 'save',
+          payload: {
+            logDetail: { show: true, data: content.recordList },
+          },
         });
-        return;
       }
-      yield put({
-        type: 'save',
-        payload: {
-          logDetail: { show: true, data: content.recordList },
-        },
-      });
-      callback && callback(content.recordList);
+
+      const recordList = {
+        list: content.recordList,
+        total: content.total,
+      };
+
+      callback && callback(recordList);
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);

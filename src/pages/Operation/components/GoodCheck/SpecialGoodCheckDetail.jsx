@@ -18,7 +18,7 @@ const SpecialGoodCheckDetail = (props) => {
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [merchantList, setMerchantList] = useState([]);
-  const [recordList,setRecordList] = useState([])
+  const [recordList, setRecordList] = useState({});
 
   const { goodsTagList = [], categoryIdString = '' } = detail;
   console.log(detail, 'detail12222');
@@ -271,10 +271,11 @@ const SpecialGoodCheckDetail = (props) => {
         type: 'baseData/fetchGetLogDetail',
         payload: {
           type: 'audit',
+          key: 'audit',
           identificationId: auditIdString,
         },
         callback: (list) => {
-          setRecordList(list)
+          setRecordList(list);
         },
       });
     }
@@ -325,13 +326,13 @@ const SpecialGoodCheckDetail = (props) => {
           <RegularDetail detail={detail}></RegularDetail>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord list={recordList}></CheckRecord>
+          <CheckRecord recordList={recordList}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
 
       {/* 审核时输入 其他平台价格 */}
       {status == '0' && ['admin', 'sell'].includes(detail.auditorType) && (
-        <div style={{marginTop:30}}>
+        <div style={{ marginTop: 30 }}>
           <FormCondition
             formItems={formItems}
             form={form}

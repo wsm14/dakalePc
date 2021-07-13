@@ -14,7 +14,7 @@ const SpecialGoodDetail = (props) => {
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
-  const [recordList, setRecordList] = useState([]);
+  const [recordList, setRecordList] = useState({});
 
   const handleEdit = () => {
     onClose(), onEdit();
@@ -45,6 +45,7 @@ const SpecialGoodDetail = (props) => {
         type: 'baseData/fetchGetLogDetail',
         payload: {
           type: 'audit',
+          key: 'audit',
           identificationId: specialGoodsId,
         },
         callback: (list) => {
@@ -101,7 +102,7 @@ const SpecialGoodDetail = (props) => {
           <RegularDetail detail={detail}></RegularDetail>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord list={recordList}></CheckRecord>
+          <CheckRecord recordList={recordList}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
       {/* 审核时输入 其他平台价格
