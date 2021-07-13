@@ -51,7 +51,7 @@ export function fetchHandleDetail(params) {
   });
 }
 
-// get 日志记录 - 新
+// get 日志记录 - 新   //特惠，券审核记录
 export function fetchGetLogDetail(params) {
   return request('/admin/actionLog/listActionLog', {
     params,

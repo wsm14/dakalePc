@@ -170,7 +170,7 @@ export default {
       }
       callback(content.logRecordList);
     },
-    *fetchGetLogDetail({ payload }, { call, put }) {
+    *fetchGetLogDetail({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetLogDetail, { ...payload, page: 1, limit: 999 });
       if (!response) return;
       const { content } = response;
@@ -187,6 +187,7 @@ export default {
           logDetail: { show: true, data: content.recordList },
         },
       });
+      callback && callback(content.recordList);
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);

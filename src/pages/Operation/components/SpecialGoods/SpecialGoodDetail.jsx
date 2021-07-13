@@ -6,6 +6,7 @@ import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
 import ExtraButton from '@/components/ExtraButton';
 import FormCondition from '@/components/FormCondition';
+import CheckRecord from '@/components/CheckRecord';
 
 const SpecialGoodDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
@@ -82,6 +83,9 @@ const SpecialGoodDetail = (props) => {
         </Tabs.TabPane>
         <Tabs.TabPane tab="投放规则" key="2">
           <RegularDetail detail={detail}></RegularDetail>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="审核记录" key="3">
+          <CheckRecord detail={detail}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
       {/* 审核时输入 其他平台价格

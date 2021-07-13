@@ -9,7 +9,7 @@ import FormCondition from '@/components/FormCondition';
 import ExtraButton from '@/components/ExtraButton';
 import CheckRefuseDraw from './CheckRefuseDraw';
 import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
-import CheckRecord from '../../GoodCheck/Detail/CheckRecord';
+import CheckRecord from '@/components/CheckRecord';
 
 const GoodsDetail = (props) => {
   const { visible, onClose, total, getDetail, loading, dispatch, tabkey, cRef } = props;

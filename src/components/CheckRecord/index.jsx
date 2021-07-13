@@ -1,6 +1,8 @@
 import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
 const CheckRecord = (props) => {
+  const { list = [] } = props;
+
   const getColumns = [
     {
       title: '审核角色',
@@ -15,6 +17,13 @@ const CheckRecord = (props) => {
       dataIndex: 'categoryName',
     },
   ];
-  return <TableDataBlock noCard={false} columns={getColumns} rowKey={(record) => `${record.id}`}></TableDataBlock>;
+  return (
+    <TableDataBlock
+      noCard={false}
+      columns={getColumns}
+      rowKey={(record) => `${record.id}`}
+      list={list}
+    ></TableDataBlock>
+  );
 };
 export default CheckRecord;

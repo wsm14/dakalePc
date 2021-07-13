@@ -32,6 +32,12 @@ const CouponSet = (props) => {
     type,
     status,
   } = props;
+
+  // 是否 编辑重新发布（上架，下架）都隐藏的数据
+  const commonDisabled = ['edit', 'again'].includes(type) && ['1', '2'].includes(status);
+  //活动中隐藏的编辑项//edit 且为上架中 独有不展示
+  const editDisabled = type === 'edit' && status === '1';
+
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
@@ -79,7 +85,7 @@ const CouponSet = (props) => {
         buyFlag,
         userFlag: userFlagCheck, //详情无返回//使用门槛
         effectTime: useTimeRule ? useTimeRule : '',
-        timeSplit:useWeekCheck,
+        timeSplit: useWeekCheck,
         timeType: timeTypeCheck,
         buyRule,
       });
@@ -177,7 +183,7 @@ const CouponSet = (props) => {
       type: 'radio',
       name: 'ownerType',
       select: BUSINESS_TYPE,
-      disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
+      disabled: commonDisabled,
       onChange: (e) => {
         setCommissionShow(false);
         saveMreData({
@@ -197,7 +203,7 @@ const CouponSet = (props) => {
       name: 'ownerId',
       placeholder: '请输入搜索',
       select: selectList,
-      disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
+      disabled: commonDisabled,
       loading,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
@@ -224,12 +230,7 @@ const CouponSet = (props) => {
       visible: mreList.type == 'group',
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
-        <Button
-          type="primary"
-          ghost
-          disabled={['edit', 'again'].includes(type) && ['1', '2'].includes(status)}
-          onClick={() => setVisible(true)}
-        >
+        <Button type="primary" ghost disabled={commonDisabled} onClick={() => setVisible(true)}>
           选择店铺
         </Button>
       ),
@@ -242,7 +243,7 @@ const CouponSet = (props) => {
           key="MreTable"
           form={form}
           rowKey="merchantId"
-          disabled={['edit', 'again'].includes(type) && ['1', '2'].includes(status)}
+          disabled={commonDisabled}
           columns={getColumns}
           {...mreList}
           setMreList={(val) => {
@@ -268,7 +269,7 @@ const CouponSet = (props) => {
       label: '售卖',
       name: 'buyFlag',
       type: 'radio',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       select: COUPON_BUY_FLAG, // ['关闭', '开启'] 0--1
       onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
     },
@@ -276,7 +277,7 @@ const CouponSet = (props) => {
       label: '售卖价格',
       name: 'buyPrice',
       prefix: '￥',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       visible: radioData.buyFlag === '1',
       addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
     },
@@ -284,7 +285,7 @@ const CouponSet = (props) => {
       label: '商家结算价',
       name: 'merchantPrice',
       prefix: '￥',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       visible: radioData.buyFlag === '1',
       addRules: [
         { pattern: NUM_ALL, message: '价格必须为数字，且大于0' },
@@ -313,7 +314,7 @@ const CouponSet = (props) => {
       min: 0,
       max: 999999.99,
       visible: commissionShow == '1',
-      disabled: ['edit', 'again'].includes(type) && ['1', '2'].includes(status),
+      disabled: commonDisabled,
       formatter: (value) => `￥ ${value}`,
       // rules: [{ required: false }],
     },
@@ -336,7 +337,7 @@ const CouponSet = (props) => {
     {
       label: '使用有效期',
       type: 'radio',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
       name: 'useTimeRule',
       onChange: (e) => saveSelectData({ effectTime: e.target.value }),
@@ -344,7 +345,7 @@ const CouponSet = (props) => {
     {
       label: '固定时间',
       name: 'activeDate',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       type: 'rangePicker',
       visible: radioData.effectTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
@@ -353,7 +354,7 @@ const CouponSet = (props) => {
       label: '领取后生效天数',
       name: 'delayDays',
       type: 'number',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       max: 999,
       min: 0,
       precision: 0,
@@ -363,7 +364,7 @@ const CouponSet = (props) => {
       label: '有效期天数',
       name: 'activeDays',
       type: 'number',
-      disabled: type === 'edit' && status === '1',
+      disabled: editDisabled,
       max: 999,
       min: 0,
       precision: 0,
@@ -400,6 +401,7 @@ const CouponSet = (props) => {
     {
       label: '投放总量',
       name: 'total',
+      disabled: editDisabled,
       addRules: [{ pattern: NUM_INT, message: '投放总量必须为整数，且不可为0' }],
       suffix: '张',
     },

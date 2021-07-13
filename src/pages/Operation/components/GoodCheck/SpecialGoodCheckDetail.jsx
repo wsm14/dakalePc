@@ -5,7 +5,7 @@ import { DoubleRightOutlined } from '@ant-design/icons';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
-import CheckRecord from './Detail/CheckRecord';
+import CheckRecord from '@/components/CheckRecord';
 import ExtraButton from '@/components/ExtraButton';
 import FormCondition from '@/components/FormCondition';
 import CheckRefuseDraw from './Detail/CheckRefuseDraw';
@@ -18,6 +18,7 @@ const SpecialGoodCheckDetail = (props) => {
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
   const [merchantList, setMerchantList] = useState([]);
+  const [recordList,setRecordList] = useState([])
 
   const { goodsTagList = [], categoryIdString = '' } = detail;
   console.log(detail, 'detail12222');
@@ -264,6 +265,21 @@ const SpecialGoodCheckDetail = (props) => {
     },
   ];
 
+  const handleTabChange = (val) => {
+    if (val === '3') {
+      dispatch({
+        type: 'baseData/fetchGetLogDetail',
+        payload: {
+          type: 'audit',
+          identificationId: auditIdString,
+        },
+        callback: (list) => {
+          setRecordList(list)
+        },
+      });
+    }
+  };
+
   const handleErr = () => {};
 
   return (
@@ -296,7 +312,7 @@ const SpecialGoodCheckDetail = (props) => {
         />
       )}
       {/* 信息展示 */}
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="1" onChange={handleTabChange}>
         <Tabs.TabPane tab="商品信息" key="1">
           <GoodsDetailForm
             detail={detail}
@@ -309,13 +325,13 @@ const SpecialGoodCheckDetail = (props) => {
           <RegularDetail detail={detail}></RegularDetail>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord detail={detail}></CheckRecord>
+          <CheckRecord list={recordList}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
 
       {/* 审核时输入 其他平台价格 */}
       {status == '0' && ['admin', 'sell'].includes(detail.auditorType) && (
-        <>
+        <div style={{marginTop:30}}>
           <FormCondition
             formItems={formItems}
             form={form}
@@ -369,7 +385,7 @@ const SpecialGoodCheckDetail = (props) => {
               ></FormCondition>
             </>
           )}
-        </>
+        </div>
       )}
       <CheckRefuseDraw
         cRef={cRef}

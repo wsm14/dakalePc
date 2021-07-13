@@ -13,7 +13,6 @@ import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
-  
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive);
 
@@ -147,6 +146,7 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       label: '投放总量',
       name: 'total',
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
+      disabled: editDisabled,
       suffix: '份',
     },
     {
