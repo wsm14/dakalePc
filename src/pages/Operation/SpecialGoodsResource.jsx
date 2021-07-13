@@ -246,12 +246,9 @@ const SpecialGoodsResource = (props) => {
     {
       title: '佣金',
       align: 'right',
-      dataIndex: 'realPrice',
-      render: (val, row) => `￥${(Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2)}`,
-      sorter: (a, b) =>
-        Number(a.realPrice) -
-        Number(a.merchantPrice) -
-        (Number(b.realPrice) - Number(b.merchantPrice)),
+      dataIndex: 'commission',
+      render: (val, row) => `￥${val}`,
+      sorter: (a, b) => Number(a.commission) - Number(b.commission),
     },
     {
       title: '原价/售价',

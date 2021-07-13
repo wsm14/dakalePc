@@ -183,12 +183,9 @@ const SpecialGoods = (props) => {
     {
       title: '佣金',
       align: 'right',
-      dataIndex: 'realPrice',
-      render: (val, row) => `￥${(Number(row.realPrice) - Number(row.merchantPrice)).toFixed(2)}`,
-      sorter: (a, b) =>
-        Number(a.realPrice) -
-        Number(a.merchantPrice) -
-        (Number(b.realPrice) - Number(b.merchantPrice)),
+      dataIndex: 'commission',
+      render: (val, row) => `￥${val}`,
+      sorter: (a, b) => Number(a.commission) - Number(b.commission),
     },
     {
       title: '原价/售价',
@@ -337,7 +334,7 @@ const SpecialGoods = (props) => {
           },
           {
             title: '增加库存',
-            type:'addRemain',
+            type: 'addRemain',
             visible: ['1'].includes(status) && deleteFlag == '1',
             click: () => fetAddRemain(specialGoodsId, record.ownerIdString),
           },
@@ -498,7 +495,11 @@ const SpecialGoods = (props) => {
       <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
 
       {/* 库存总量 */}
-      <RemainModal  childRef={childRef} visible={visibleRemain} onClose={() => setVisibleRemain(false)}></RemainModal>
+      <RemainModal
+        childRef={childRef}
+        visible={visibleRemain}
+        onClose={() => setVisibleRemain(false)}
+      ></RemainModal>
     </>
   );
 };
