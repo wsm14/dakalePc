@@ -5,16 +5,12 @@ const CheckRecord = (props) => {
 
   const getColumns = [
     {
-      title: '审核角色',
-      dataIndex: 'categoryName',
-    },
-    {
-      title: '审核结果',
-      dataIndex: 'categoryName',
+      title: '审核角色/结果',
+      dataIndex: 'actionDesc',
     },
     {
       title: '审核时间',
-      dataIndex: 'categoryName',
+      dataIndex: 'createTime',
     },
   ];
   return (

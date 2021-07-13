@@ -82,7 +82,7 @@ const GoodsDetail = (props) => {
         type: 'baseData/fetchGetLogDetail',
         payload: {
           type: 'audit',
-          identificationId: auditIdString,
+          identificationId: detail.ownerCouponIdString,
         },
         callback: (list) => {
           setRecordList(list);
