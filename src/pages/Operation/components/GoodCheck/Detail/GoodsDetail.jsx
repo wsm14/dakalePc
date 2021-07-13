@@ -7,7 +7,6 @@ import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 const GoodsDetail = (props) => {
   const { detail, merchantList = [], tabkey } = props;
   const { goodsType, ownerType } = detail;
-  console.log(merchantList, 'detail');
 
   const ActiveformItems = [
     {

@@ -6,8 +6,6 @@ const RegularDetail = (props) => {
   const { detail } = props;
   const { useTime } = detail;
 
-  console.log(detail, 'detail22222');
-
   const RegularItems = [
     {
       name: 'activityTimeRule',
@@ -43,7 +41,6 @@ const RegularDetail = (props) => {
       name: 'useTime', // COUPON_USER_TIME
       label: '适用时段',
       render: (val, row) => {
-        console.log(val, 'val', typeof val);
         let week = '每周';
         if (row.timeSplit == 'part') {
           row.useWeek.forEach((item, index) => {

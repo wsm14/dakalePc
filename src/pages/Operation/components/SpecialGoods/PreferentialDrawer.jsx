@@ -62,7 +62,6 @@ const PreferentialDrawer = (props) => {
         buyDesc = [],
         ...other
       } = values;
-      console.log(values, 'sssssss');
       const aimg = checkFileData(activityGoodsImg);
       const gimg = checkFileData(goodsDescImg);
       aliOssUpload([...aimg, ...gimg]).then((res) => {

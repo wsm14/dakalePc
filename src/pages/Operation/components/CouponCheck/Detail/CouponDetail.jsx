@@ -25,7 +25,6 @@ const GoodsDetail = (props) => {
 
   const [recordList, setRecordList] = useState({});
 
-  console.log(detail, 'eeeee');
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
 

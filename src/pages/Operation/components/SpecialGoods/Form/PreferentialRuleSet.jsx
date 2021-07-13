@@ -33,7 +33,6 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       activityTimeRule: activeTime,
       useTimeRule: userTime,
     } = initialValues;
-    console.log(initialValues);
     saveSelectData({ buyRule, timeType, timeSplit, activeTime, userTime });
   }, []);
 

@@ -21,7 +21,6 @@ const SpecialGoodCheckDetail = (props) => {
   const [recordList, setRecordList] = useState({});
 
   const { goodsTagList = [], categoryIdString = '' } = detail;
-  console.log(detail, 'detail12222');
 
   useEffect(() => {
     if (show) {
