@@ -174,6 +174,7 @@ export default {
       const { key = '' } = payload;
       const response = yield call(fetchGetLogDetail, { ...payload, page: 1, limit: 999 });
       if (!response) return;
+      let recordList = {};
       const { content } = response;
       if (key === 'audit') {
         if (!content.recordList.length) {
@@ -181,7 +182,14 @@ export default {
             message: '温馨提示',
             description: '暂无审核记录',
           });
+          callback && callback({});
           return;
+        } else {
+          recordList = {
+            list: content.recordList,
+            total: content.total,
+          };
+          callback && callback(recordList);
         }
       } else {
         if (!content.recordList.length) {
@@ -198,13 +206,6 @@ export default {
           },
         });
       }
-
-      const recordList = {
-        list: content.recordList,
-        total: content.total,
-      };
-
-      callback && callback(recordList);
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);
