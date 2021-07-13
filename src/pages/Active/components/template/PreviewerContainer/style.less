@@ -19,8 +19,6 @@
   }
   .previewer_wrap {
     position: relative;
-    display: -ms-flexbox;
-    display: flex;
     width: 375px;
     min-height: 100%;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -41,5 +39,22 @@
     box-sizing: border-box;
     width: 100%;
     border: 3px solid #3089dc;
+  }
+}
+
+.previewer_basket {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 0px;
+  overflow: hidden;
+  color: rgb(61, 127, 255);
+  font-size: 12px;
+  background: rgba(61, 127, 255, 0.08);
+  transition: all 200ms ease 0s;
+  &.show {
+    height: 80px;
+    margin: 6px 0px;
+    transition: all 200ms ease 0s;
   }
 }

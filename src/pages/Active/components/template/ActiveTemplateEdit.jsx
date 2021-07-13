@@ -1,7 +1,8 @@
-import React, { useEffect, useReducer, createContext } from 'react';
+import React, { useEffect, useState, useReducer, createContext } from 'react';
 import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
+import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
 import SideMenu from './SideMenu';
 import EditorPanel from './EditorPanel';
 import ModuleDrawer from './ModuleDrawer';
@@ -17,6 +18,10 @@ const ActiveTemplate = (props) => {
   const { visible, onClose, loading } = props;
 
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
+  const [cardList, setCardList] = useState([]);
+  const [styBasket, setStyBasket] = useState(false);
+
+  const changeCardList = (list) => setCardList([...list]);
 
   useEffect(() => {
     if (visible.show) {
@@ -53,8 +58,16 @@ const ActiveTemplate = (props) => {
           height: '100%',
         }}
       >
-        <ModuleDrawer context={TemplateContext}></ModuleDrawer>
-        <PreviewerContainer context={TemplateContext}></PreviewerContainer>
+        <DragAndDropHOC>
+          <ModuleDrawer context={TemplateContext} setStyBasket={setStyBasket}></ModuleDrawer>
+          <PreviewerContainer
+            styBasket={styBasket}
+            context={TemplateContext}
+            cardList={cardList}
+            changeCardList={changeCardList}
+            setStyBasket={setStyBasket}
+          ></PreviewerContainer>
+        </DragAndDropHOC>
         <EditorPanel context={TemplateContext}></EditorPanel>
       </Drawer>
     </TemplateContext.Provider>

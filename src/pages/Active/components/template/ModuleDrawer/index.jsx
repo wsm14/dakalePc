@@ -1,12 +1,16 @@
 import React, { useContext } from 'react';
+import { useDrag } from 'react-dnd';
 import { Collapse } from 'antd';
 import panelItem from './panelItem';
 import styles from './style.less';
 
 const { Panel } = Collapse;
 
+/**
+ * 组件库
+ */
 const ModuleDrawer = (props) => {
-  const { context } = props;
+  const { context, setStyBasket } = props;
   const { dispatchData, moduleData } = useContext(context);
 
   // 显示对应的模块编辑内容
@@ -26,23 +30,38 @@ const ModuleDrawer = (props) => {
     });
   };
 
+  // 拖拽项目
+  const dropItem = (cell, item) => {
+    const [, drag] = useDrag({
+      item: { ...cell, key: cell.type, type: 'Card' },
+      begin() {
+        setStyBasket(true);
+      },
+      end() {
+        setStyBasket(false);
+      },
+    });
+    return (
+      <div
+        ref={drag}
+        className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
+        key={cell.text}
+        draggable={cell.drop}
+        onClick={() => handleShowEditor(item.type, cell)}
+      >
+        <div className={styles.module_cell_icon}>{cell.icon}</div>
+        <span>{cell.text}</span>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.active_Template_Left}>
       <Collapse bordered={false}>
         {panelItem.map((item) => (
           <Panel forceRender header={item.header} key={item.type}>
             <div className={styles.module_group}>
-              {item.children.map((cell) => (
-                <div
-                  className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
-                  key={cell.text}
-                  draggable={cell.drop}
-                  onClick={() => handleShowEditor(item.type, cell)}
-                >
-                  <div className={styles.module_cell_icon}>{cell.icon}</div>
-                  <span>{cell.text}</span>
-                </div>
-              ))}
+              {item.children.map((cell) => dropItem(cell, item))}
             </div>
           </Panel>
         ))}
