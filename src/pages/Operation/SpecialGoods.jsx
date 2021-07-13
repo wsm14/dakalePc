@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import {
@@ -35,6 +35,12 @@ const SpecialGoods = (props) => {
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
+
+  useEffect(() => {
+    if (childRef.current) {
+      childRef.current.fetchGetData();
+    }
+  }, []);
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
