@@ -16,6 +16,7 @@ import ShareLikeDateSet from './components/Share/ShareLikeDateSet';
 import Ellipsis from '@/components/Ellipsis';
 import RewardPeo from './components/Share/RewardPeo';
 import styles from './style.less';
+import { checkCityName } from '@/utils/utils';
 
 const ShareManage = (props) => {
   const { shareManage, loading, loadingRefuse, tradeList, dispatch } = props;
@@ -128,7 +129,7 @@ const ShareManage = (props) => {
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag color="blue">{`${row.topCategoryName}-${row.categoryName}`}</Tag>
-            <span>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</span>
+            <span>{checkCityName(row.districtCode)}</span>
           </div>
         </>
       ),

@@ -204,7 +204,7 @@ const CouponManageComponent = (props) => {
           {
             title: '增加库存',
             type: 'addRemain',
-            visible: ['1'].includes(status) ,
+            visible: ['1'].includes(status),
             click: () => fetAddRemain(ownerCouponId, ownerId),
           },
         ];
@@ -260,7 +260,23 @@ const CouponManageComponent = (props) => {
       ownerCouponIdString: ownerCouponId,
       ownerIdString: ownerId,
       ownerCouponStatus: status,
+      ownerType,
     } = list[index];
+    if (type === 'edit' && status === '1') {
+      dispatch({
+        type: 'specialGoods/fetchEditCurrentStatus',
+        payload: {
+          ownerId,
+          ownerServiceId: ownerCouponId,
+          ownerType,
+        },
+        callback: (val) => {
+          if (val !== '1') {
+            return;
+          }
+        },
+      });
+    }
     dispatch({
       type: 'couponManage/fetchCouponDetail',
       payload: { ownerCouponId, ownerId, type },
