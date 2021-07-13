@@ -34,10 +34,12 @@ const ShareManage = (props) => {
   const [visibleReward, setVisibleReward] = useState(false); // 新增打赏人数
 
   //新增打赏人数
-  const fetRewardPeo = (userMomentIdString) => {
+  const fetRewardPeo = (userMomentIdString, record) => {
+    const { beanAmount } = record;
     setVisibleReward({
       show: true,
       userMomentIdString,
+      beanAmount,
     });
   };
 
@@ -261,7 +263,7 @@ const ShareManage = (props) => {
             type: 'rewardPeo',
             title: '新增打赏人数',
             visible: record.rewardCycle == '0',
-            click: () => fetRewardPeo(userMomentIdString),
+            click: () => fetRewardPeo(userMomentIdString, record),
           },
         ];
       },
