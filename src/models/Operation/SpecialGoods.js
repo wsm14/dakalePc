@@ -16,6 +16,7 @@ import {
   fetchSpecialCancleToTop,
   fetchSpecialConditConfig,
   fetchResourceDicts,
+  fetchSpecialGoodsAddRemain, // 增加库存
 } from '@/services/OperationServices';
 
 export default {
@@ -226,6 +227,15 @@ export default {
       const extraParam = dictionary.extraParam ? JSON.parse(dictionary.extraParam) : {};
 
       callback({ ...content.dictionary, ...extraParam });
+    },
+    *fetchSpecialGoodsAddRemain({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsAddRemain, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '投放总量修改成功',
+      });
+      callback();
     },
   },
 };

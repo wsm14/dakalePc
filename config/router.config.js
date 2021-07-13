@@ -398,7 +398,17 @@ export default [
         path: '/operation/coupon',
         name: '优惠券管理',
         component: './Operation/CouponManage',
-        buttons: ['save', 'del', 'info', 'edit', 'down', 'again', 'exportList', 'diary'],
+        buttons: [
+          'save',
+          'del',
+          'info',
+          'edit',
+          'down',
+          'again',
+          'exportList',
+          'diary',
+          'addRemain',
+        ],
       },
       {
         path: '/operation/special',
@@ -418,6 +428,7 @@ export default [
           'exportList',
           'goodsCode',
           'againUp',
+          'addRemain',
         ],
       },
       {

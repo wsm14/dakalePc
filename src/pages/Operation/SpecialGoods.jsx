@@ -20,6 +20,7 @@ import PreferentialDrawer from './components/SpecialGoods/PreferentialDrawer';
 import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
 import excelProps from './components/SpecialGoods/ExcelProps';
+import RemainModal from './components/SpecialGoods/Detail/RemainModal';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -32,6 +33,7 @@ const SpecialGoods = (props) => {
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
+  const [visibleRemain, setVisibleRemain] = useState(false);
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -333,6 +335,12 @@ const SpecialGoods = (props) => {
             type: 'diary',
             click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
           },
+          {
+            title: '增加库存',
+            type:'addRemain',
+            visible: ['1'].includes(status) && deleteFlag == '1',
+            click: () => fetAddRemain(specialGoodsId, record.ownerIdString),
+          },
         ];
       },
     },
@@ -352,6 +360,15 @@ const SpecialGoods = (props) => {
     dispatch({
       type: 'baseData/fetchGetLogDetail',
       payload,
+    });
+  };
+
+  // 增加库存
+  const fetAddRemain = (id, ownerId) => {
+    setVisibleRemain({
+      show: true,
+      id,
+      ownerId,
     });
   };
 
@@ -479,6 +496,9 @@ const SpecialGoods = (props) => {
       ></RefuseModal>
       {/* 商品码 */}
       <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
+
+      {/* 库存总量 */}
+      <RemainModal  childRef={childRef} visible={visibleRemain} onClose={() => setVisibleRemain(false)}></RemainModal>
     </>
   );
 };

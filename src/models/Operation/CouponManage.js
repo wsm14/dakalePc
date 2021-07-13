@@ -7,6 +7,7 @@ import {
   fetchCouponUpdate, //券编辑
   fetchCouponOff, // 券下架
   fetchCouponDelete, //全删除
+  fetchCouponAddRemain,
 } from '@/services/OperationServices';
 import moment from 'moment';
 
@@ -55,8 +56,10 @@ export default {
       } = content.ownerCouponInfo;
       //分佣详情
       const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
-      const pBean = provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
-      const dBean = districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
+      const pBean =
+        provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean =
+        districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
       const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
       const sDetail = {
         serviceDivisionDTO: {
@@ -127,6 +130,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '优惠券删除',
+      });
+      callback();
+    },
+    *fetchCouponAddRemain({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponAddRemain, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '投放总量修改成功',
       });
       callback();
     },

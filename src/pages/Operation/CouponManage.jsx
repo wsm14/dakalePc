@@ -7,6 +7,7 @@ import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import CouponDrawer from './components/Coupon/CouponDrawer';
 import excelProps from './components/Coupon/excelProps';
+import RemainModal from './components/Coupon/Detail/RemainModal';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch, loadings } = props;
@@ -18,6 +19,7 @@ const CouponManageComponent = (props) => {
 
   //下架原因框
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
+  const [visibleRemain, setVisibleRemain] = useState(false); //增加库存
 
   // 搜索参数
   const searchItems = [
@@ -199,10 +201,24 @@ const CouponManageComponent = (props) => {
             type: 'diary',
             click: () => fetchGetLogData({ type: 'reduceCoupon', identificationId: ownerCouponId }),
           },
+          {
+            title: '增加库存',
+            type: 'addRemain',
+            visible: ['1'].includes(status) ,
+            click: () => fetAddRemain(ownerCouponId, ownerId),
+          },
         ];
       },
     },
   ];
+  // 增加库存
+  const fetAddRemain = (ownerCouponId, ownerId) => {
+    setVisibleRemain({
+      show: true,
+      ownerCouponId,
+      ownerId,
+    });
+  };
 
   // 获取日志信息
   const fetchGetLogData = (payload) => {
@@ -297,6 +313,12 @@ const CouponManageComponent = (props) => {
         loading={loadings.models.couponManage}
         extra={'下架后不影响已购买的用户使用'}
       ></RefuseModal>
+      {/* 库存总量 */}
+      <RemainModal
+        childRef={childRef}
+        visible={visibleRemain}
+        onClose={() => setVisibleRemain(false)}
+      ></RemainModal>
     </>
   );
 };

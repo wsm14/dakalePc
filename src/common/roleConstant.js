@@ -8,6 +8,7 @@ export const ROLE_BUTTON_TYPE = {
   actionEdit: '修改行为',
   actionSave: '新增使用规则',
   againUp: '再次上架',
+  addRemain: '增加库存',
 
   batchEdit: '批量修改',
   baseTrade: '基础设施',

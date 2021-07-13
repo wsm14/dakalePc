@@ -162,6 +162,14 @@ export function fetchSpecialGoodsAuditClose(data) {
   });
 }
 
+// 特惠增加库存
+export function fetchSpecialGoodsAddRemain(data) {
+  return request('/admin/specialGoodsManagement/addGoodsRemain', {
+    method: 'POST',
+    data,
+  });
+}
+
 //特惠审核end
 
 // 分享管理
@@ -577,8 +585,12 @@ export function fetchCouponAuditDetail(params) {
   });
 }
 
-
-
-
+// 券增加库存
+export function fetchCouponAddRemain(data) {
+  return request('/admin/coupon/addGoodsRemain', {
+    method: 'POST',
+    data,
+  });
+}
 
 // 优惠券管理 end
