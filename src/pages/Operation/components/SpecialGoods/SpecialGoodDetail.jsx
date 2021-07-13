@@ -14,6 +14,7 @@ const SpecialGoodDetail = (props) => {
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
+  const [recordList, setRecordList] = useState([]);
 
   const handleEdit = () => {
     onClose(), onEdit();
@@ -36,6 +37,21 @@ const SpecialGoodDetail = (props) => {
       },
       callback: (list) => setMerchantList(list),
     });
+  };
+
+  const handleTabChange = (val) => {
+    if (val === '3') {
+      dispatch({
+        type: 'baseData/fetchGetLogDetail',
+        payload: {
+          type: 'audit',
+          identificationId: specialGoodsId,
+        },
+        callback: (list) => {
+          setRecordList(list);
+        },
+      });
+    }
   };
 
   const btnList = [
@@ -73,7 +89,7 @@ const SpecialGoodDetail = (props) => {
       {/* 驳回原因
       {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
       {/* 信息展示 */}
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="1" onChange={handleTabChange}>
         <Tabs.TabPane tab="商品信息" key="1">
           <GoodsDetailForm
             detail={detail}
@@ -85,7 +101,7 @@ const SpecialGoodDetail = (props) => {
           <RegularDetail detail={detail}></RegularDetail>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord detail={detail}></CheckRecord>
+          <CheckRecord list={recordList}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
       {/* 审核时输入 其他平台价格

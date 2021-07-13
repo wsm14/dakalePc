@@ -23,6 +23,8 @@ const GoodsDetail = (props) => {
     merchantList = [],
   } = detail;
 
+  const [recordList, setRecordList] = useState([]);
+
   console.log(detail, 'eeeee');
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
@@ -73,6 +75,22 @@ const GoodsDetail = (props) => {
       show: ['0'].includes(status) && ['adminAudit'].includes(tabkey),
     },
   ];
+
+  const handleTabChange = (val) => {
+    if (val === '3') {
+      dispatch({
+        type: 'baseData/fetchGetLogDetail',
+        payload: {
+          type: 'audit',
+          identificationId: auditIdString,
+        },
+        callback: (list) => {
+          setRecordList(list);
+        },
+      });
+    }
+  };
+
   // 参与活动的店铺
   const mreFormItems = [
     {
@@ -270,7 +288,7 @@ const GoodsDetail = (props) => {
           }
         />
       )}
-      <Tabs defaultActiveKey="1">
+      <Tabs defaultActiveKey="1" onChange={handleTabChange}>
         <Tabs.TabPane tab="商品信息" key="1">
           <>
             <DescriptionsCondition
@@ -303,8 +321,8 @@ const GoodsDetail = (props) => {
             )}
           </>
         </Tabs.TabPane>
-        <Tabs.TabPane tab="审核记录" key="2">
-          <CheckRecord detail={detail}></CheckRecord>
+        <Tabs.TabPane tab="审核记录" key="3">
+          <CheckRecord list={recordList}></CheckRecord>
         </Tabs.TabPane>
       </Tabs>
 
