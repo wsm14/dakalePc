@@ -52,7 +52,9 @@ export default {
         endDate = '',
         useTimeRule = '',
         ownerIdString = '',
+        useTime = '',
         serviceDivisionDTO = {},
+        useWeek = '',
       } = content.ownerCouponInfo;
       //分佣详情
       const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
@@ -69,6 +71,10 @@ export default {
         },
       };
 
+      const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
+      const useWeekCheck = useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part';
+      const times = useTime.split('-');
+
       let newDetail = {};
       if (['edit', 'again'].includes(type)) {
         newDetail = {
@@ -76,6 +82,11 @@ export default {
             useTimeRule === 'fixed'
               ? [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')]
               : [],
+          useTime:
+            timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [],
+          timeTypeCheck,
+          useWeekCheck,
+          useWeek: useWeekCheck === 'part' ? useWeek.split('') : [],
           ownerId: ownerIdString,
         };
       }

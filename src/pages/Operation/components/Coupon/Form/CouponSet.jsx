@@ -56,29 +56,20 @@ const CouponSet = (props) => {
   });
   const {
     buyFlag,
-    timeSplit = '',
     useTimeRule = '', //使用有效期
     buyRule = 'all', // 购买规则
-    useTime = '',
-    useWeek = '',
+    timeTypeCheck = '',
+    useWeekCheck = '',
     reduceObject = {},
   } = initialValues;
   console.log(initialValues);
 
   useEffect(() => {
     if (initialValues.ownerCouponIdString) {
-      const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
-      const useWeekCheck = useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part';
       const userFlagCheck = !reduceObject.thresholdPrice ? '0' : '1'; // 使用门槛
-
       initialValues.restrictions = userFlagCheck; // 使用门槛
       initialValues.timeSplit = useWeekCheck; // 适用时段
       initialValues.timeType = timeTypeCheck; // 使用时间 小时
-      initialValues.useWeek = useWeekCheck === 'part' ? useWeek.split('-') : []; // 使用时间 周
-
-      const times = useTime.split('-');
-      initialValues.useTime =
-        timeTypeCheck === 'part' ? [moment(times[0], 'HH:mm'), moment(times[1], 'HH:mm')] : [];
 
       // 适用时段
       setRadioData({
