@@ -76,6 +76,7 @@ const GoodsDetail = (props) => {
     },
   ];
 
+  //审核记录
   const handleTabChange = (val) => {
     if (val === '3') {
       dispatch({
