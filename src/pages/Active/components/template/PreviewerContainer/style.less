@@ -21,41 +21,65 @@
     position: relative;
     width: 375px;
     min-height: 100%;
-    overflow-x: hidden;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  }
-}
-
-.previewer_active_warp {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 375px;
-  height: 100%;
-  pointer-events: none;
-  .previewer_active_mask {
-    position: absolute;
-    left: 0;
-    z-index: 1;
-    box-sizing: border-box;
-    width: 100%;
-    border: 3px solid #3089dc;
-  }
-}
-
-.previewer_basket {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 0px;
-  overflow: hidden;
-  color: rgb(61, 127, 255);
-  font-size: 12px;
-  background: #e0e5ef;
-  transition: all 200ms ease 0s;
-  &.show {
-    height: 80px;
-    margin: 6px 0px;
-    transition: all 200ms ease 0s;
+    .previewer_cell {
+      position: relative;
+      width: 375px;
+      cursor: pointer;
+      transition: all 200ms ease 0s;
+      &:hover {
+        z-index: 1;
+        box-shadow: #32323233 0px 0px 24px 0px;
+      }
+      .previewer_active_warp {
+        position: absolute;
+        z-index: 2;
+        border-radius: 4px;
+        inset: 0px;
+        &.show {
+          border: 2px solid rgb(61, 127, 255);
+        }
+      }
+      .previewer_active_tool {
+        position: absolute;
+        top: 0;
+        right: -45px;
+        z-index: 3;
+        .tool_group {
+          margin-bottom: 8px;
+          overflow: hidden;
+          border-radius: 3px;
+          box-shadow: #0000004d 0px 0px 12px 0px;
+          .tool_cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            color: rgb(153, 153, 153);
+            background: rgb(255, 255, 255);
+            &:hover {
+              color: rgb(61, 127, 255);
+            }
+          }
+        }
+      }
+    }
+    .previewer_basket {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 0px;
+      overflow: hidden;
+      color: rgb(61, 127, 255);
+      font-size: 12px;
+      background: #e0e5ef;
+      transition: all 200ms ease 0s;
+      &.show {
+        height: 80px;
+        margin: 6px 0px;
+        transition: all 200ms ease 0s;
+      }
+    }
   }
 }

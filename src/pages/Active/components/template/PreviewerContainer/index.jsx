@@ -19,7 +19,7 @@ const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handl
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { icon, editorDom, drop, text, ...other } = dropItem;
+      const { icon, editorDom, drop, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
@@ -33,6 +33,7 @@ const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handl
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
+
   return (
     <div
       ref={drop}
@@ -52,24 +53,27 @@ const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handl
  */
 const ActiveTemplateIframe = (props) => {
   const { context, styBasket, setStyBasket } = props;
-  const { showPanel, dispatchData, moduleData } = useContext(context);
+  const { dispatchData, showPanel, moduleData } = useContext(context);
 
   const { data } = moduleData;
-
+  console.log(data);
   // 数据变化储存
   const changeCardList = (list) =>
     dispatchData({ type: 'saveModuleData', payload: { data: list } });
 
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell, index) => {
+    // 高亮选择项目
+    dispatchData({ type: 'showPanel', payload: index });
+    // 编辑区域模组显示
     dispatchData({
       type: 'showEditor',
       payload: {
-        id: new Date().getTime(), // 需要编辑的组件id
+        id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
         type: cell.type,
         name: cell.text,
-        moduleEditData: {},
+        moduleEditData: cell?.data || {},
       },
     });
   };
@@ -79,7 +83,6 @@ const ActiveTemplateIframe = (props) => {
   return (
     <div className={styles.active_Template_content}>
       <div className={styles.previewer_component}>
-        <PreviewerActive activeInfo={showPanel}></PreviewerActive>
         <div
           id="previewer_wrap"
           className={styles.previewer_wrap}
@@ -90,8 +93,18 @@ const ActiveTemplateIframe = (props) => {
             const { defaultImg } = item;
             return (
               <React.Fragment key={`${index}`}>
-                <div>
+                <div
+                  className={styles.previewer_cell}
+                  onClick={() => handleShowEditor(item, index)}
+                >
                   <img src={defaultImg} style={{ width: '100%' }} />
+                  {/* 高亮操作区域 */}
+                  <PreviewerActive
+                    data={data}
+                    index={index}
+                    show={showPanel === index}
+                    dispatchData={dispatchData}
+                  ></PreviewerActive>
                 </div>
                 <BasketDom index={index + 1} {...dropProps}></BasketDom>
               </React.Fragment>

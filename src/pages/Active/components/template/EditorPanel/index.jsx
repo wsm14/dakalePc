@@ -67,9 +67,11 @@ const EditorPanel = ({ context }) => {
       </div>
       <div className={styles.footer}>
         <Space>
-          <Button type="primary" onClick={handleSaveData}>
-            保存
-          </Button>
+          {editor[type] && editor[type].editorDom && (
+            <Button type="primary" onClick={handleSaveData}>
+              保存
+            </Button>
+          )}
           <Button onClick={handleCloseEdit}>取消</Button>
         </Space>
       </div>

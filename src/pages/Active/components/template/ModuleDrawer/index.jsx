@@ -19,6 +19,9 @@ const ModuleDrawer = (props) => {
     const { data } = moduleData;
     // 如果是不可拖拽的模块 全局唯一只能存在一个 查询是否已经存在 存在则编辑
     const checkData = !cell.drop ? data.findIndex((i) => i.id === cell.id) : -1;
+    // 高亮选择项目 重置
+    !cell.drop && dispatchData({ type: 'showPanel', payload: null });
+    // 编辑区域模组显示
     dispatchData({
       type: 'showEditor',
       payload: {
