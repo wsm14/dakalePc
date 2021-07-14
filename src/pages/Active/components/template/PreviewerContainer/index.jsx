@@ -56,7 +56,7 @@ const ActiveTemplateIframe = (props) => {
   const { dispatchData, showPanel, moduleData } = useContext(context);
 
   const { data } = moduleData;
-  console.log(data);
+
   // 数据变化储存
   const changeCardList = (list) =>
     dispatchData({ type: 'saveModuleData', payload: { data: list } });

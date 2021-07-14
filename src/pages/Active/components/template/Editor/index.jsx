@@ -1,6 +1,7 @@
-import { BgColorsOutlined, PictureOutlined, MenuOutlined } from '@ant-design/icons';
+import { BgColorsOutlined, PictureOutlined, ShoppingOutlined } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import img from './Img/img.png';
+import list from './Img/list.png';
 
 /**
  * 组件库
@@ -34,9 +35,10 @@ export default {
     defaultImg: img,
   },
   commonList: {
-    icon: <MenuOutlined style={{ fontSize: 24 }} />,
-    text: '普通列表',
+    icon: <ShoppingOutlined style={{ fontSize: 24 }} />,
+    text: '商品列表',
     type: 'commonList',
     drop: true,
+    defaultImg: list,
   },
 };

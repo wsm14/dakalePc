@@ -14,6 +14,9 @@ const EditorPanel = ({ context }) => {
 
   // 关闭编辑框
   const handleCloseEdit = () => {
+    // 高亮选择项目重置
+    dispatchData({ type: 'showPanel', payload: null });
+    // 关闭编辑框
     dispatchData({ type: 'closeEditor' });
   };
 
