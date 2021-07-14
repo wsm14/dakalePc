@@ -2,7 +2,7 @@ import { BgColorsOutlined, PictureOutlined, MenuOutlined } from '@ant-design/ico
 import BackgroundColor from './BackgroundColor';
 
 /**
- * 类型选项
+ * 组件库
  * @param {String} text  组件名称
  * @param {ReactDOM} icon  组件图标
  * @param {String} type  组件类型

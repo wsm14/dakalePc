@@ -8,7 +8,7 @@ import styles from './style.less';
 const { Panel } = Collapse;
 
 /**
- * 组件库
+ * 组件拖拽区域
  */
 const ModuleDrawer = (props) => {
   const { context, setStyBasket } = props;
