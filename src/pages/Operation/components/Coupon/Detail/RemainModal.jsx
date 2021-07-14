@@ -55,7 +55,7 @@ const RemainModal = (props) => {
     onOk: handleOk,
   };
   return (
-    <Modal {...modalProps} loading={loading}>
+    <Modal destroyOnClose {...modalProps} loading={loading}>
       <FormCondition form={form} formItems={formItems}></FormCondition>
     </Modal>
   );
