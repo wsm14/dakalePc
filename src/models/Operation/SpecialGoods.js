@@ -102,10 +102,22 @@ export default {
           useWeek: useWeek === '1,2,3,4,5,6,7' ? [] : useWeek.split(','),
         };
       }
+      //重新发布的时候如果活动开始时间小于当天，活动时间清空
+      let activeTimes = {};
+      if (type === 'again' && activeTime === 'fixed') {
+        let d = new Date();
+        const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        if (today > activityStartTime) {
+          activeTimes = {
+            activityStartTime: [],
+          };
+        }
+      }
       callback({
         ...content.specialGoodsInfo,
         ...sDetail, //分佣
         ...newDetail,
+        ...activeTimes,
         ownerId,
         id: specialGoodsId,
         divisionFlag,
