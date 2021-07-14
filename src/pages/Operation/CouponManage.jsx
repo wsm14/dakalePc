@@ -205,18 +205,19 @@ const CouponManageComponent = (props) => {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status),
-            click: () => fetAddRemain(ownerCouponId, ownerId),
+            click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
           },
         ];
       },
     },
   ];
   // 增加库存
-  const fetAddRemain = (ownerCouponId, ownerId) => {
+  const fetAddRemain = (ownerCouponId, ownerId, remain) => {
     setVisibleRemain({
       show: true,
       ownerCouponId,
       ownerId,
+      remain,
     });
   };
 

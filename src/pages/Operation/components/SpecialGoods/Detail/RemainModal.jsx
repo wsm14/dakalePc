@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef } = props;
-  const { show = false, id, ownerId } = visible;
+  const { show = false, id, ownerId, remain } = visible;
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -29,17 +29,33 @@ const RemainModal = (props) => {
     {
       label: `增加库存`,
       name: 'remainIncrement',
+      placeholder: `请输入库存增量`,
+      extra: `剩余${remain}`,
+      maxLength: 6,
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value && Number(remain) + Number(value) > 999999) {
+              return Promise.reject('库存量不能超过999999');
+            }
+            if (value && value == 0) {
+              return Promise.reject('库存增量不能为0');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
   ];
 
   const modalProps = {
-    title: '设置增加库存',
+    title: '调整库存',
     visible: show,
     onCancel: onClose,
     onOk: handleOk,
   };
   return (
-    <Modal {...modalProps} loading={loading}>
+    <Modal destroyOnClose {...modalProps} loading={loading}>
       <FormCondition form={form} formItems={formItems}></FormCondition>
     </Modal>
   );

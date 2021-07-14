@@ -336,7 +336,7 @@ const SpecialGoods = (props) => {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status) && deleteFlag == '1',
-            click: () => fetAddRemain(specialGoodsId, record.ownerIdString),
+            click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
           },
         ];
       },
@@ -361,11 +361,12 @@ const SpecialGoods = (props) => {
   };
 
   // 增加库存
-  const fetAddRemain = (id, ownerId) => {
+  const fetAddRemain = (id, ownerId,remain) => {
     setVisibleRemain({
       show: true,
       id,
       ownerId,
+      remain
     });
   };
 
