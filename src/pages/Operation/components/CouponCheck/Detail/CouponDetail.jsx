@@ -78,17 +78,24 @@ const GoodsDetail = (props) => {
   const handleTabChange = (val) => {
     console.log(detail, detail.marketingIdString, '0000');
     if (val === '3') {
-      dispatch({
-        type: 'baseData/fetchGetLogDetail',
-        payload: {
-          type: 'audit',
-          key: 'audit',
-          identificationId: detail.marketingIdString,
-        },
-        callback: (list) => {
-          setRecordList(list);
-        },
-      });
+      if (detail.marketingIdString) {
+        dispatch({
+          type: 'baseData/fetchGetLogDetail',
+          payload: {
+            type: 'audit',
+            key: 'audit',
+            identificationId: detail.marketingIdString,
+          },
+          callback: (list) => {
+            setRecordList(list);
+          },
+        });
+      } else {
+        notification.info({
+          message: '温馨提示',
+          description: '暂无审核记录',
+        });
+      }
     }
   };
 
