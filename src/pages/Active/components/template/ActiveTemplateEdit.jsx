@@ -18,10 +18,7 @@ const ActiveTemplate = (props) => {
   const { visible, onClose, loading } = props;
 
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
-  const [cardList, setCardList] = useState([]);
   const [styBasket, setStyBasket] = useState(false);
-
-  const changeCardList = (list) => setCardList([...list]);
 
   useEffect(() => {
     if (visible.show) {
@@ -63,8 +60,6 @@ const ActiveTemplate = (props) => {
           <PreviewerContainer
             styBasket={styBasket}
             context={TemplateContext}
-            cardList={cardList}
-            changeCardList={changeCardList}
             setStyBasket={setStyBasket}
           ></PreviewerContainer>
         </DragAndDropHOC>

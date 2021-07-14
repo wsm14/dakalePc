@@ -1,5 +1,6 @@
 import { BgColorsOutlined, PictureOutlined, MenuOutlined } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
+import img from './Img/img.png';
 
 /**
  * 组件库
@@ -7,6 +8,7 @@ import BackgroundColor from './BackgroundColor';
  * @param {ReactDOM} icon  组件图标
  * @param {String} type  组件类型
  * @param {Boolean} drop 是否可拖拽
+ * @param {ReactDOM} defaultImg 拖拽后默认显示占位图片
  * @param {ReactDOM} editor 详细组件编辑容器
  */
 export default {
@@ -22,12 +24,14 @@ export default {
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
     type: 'solaImg',
     drop: true,
+    defaultImg: img,
   },
   carouseal: {
     text: '轮播图片',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
     type: 'carouseal',
     drop: true,
+    defaultImg: img,
   },
   commonList: {
     icon: <MenuOutlined style={{ fontSize: 24 }} />,

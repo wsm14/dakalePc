@@ -34,7 +34,7 @@ export const reducerValue = {
   },
   /**
    * 已储存的模版数据
-   * { id:'', type, data }
+   * data = { id:'', type, data }
    */
   moduleData: { data: [] },
 };
@@ -69,7 +69,7 @@ export const fetchReducerEdit = (state, action) => {
     case 'saveModuleData':
       return {
         ...state,
-        moduleData: action.payload,
+        moduleData: { ...state.moduleData, ...action.payload },
       };
     default:
       return state;

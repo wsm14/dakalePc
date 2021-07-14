@@ -4,21 +4,32 @@ import update from 'immutability-helper';
 import PreviewerActive from './PreviewerActive';
 import styles from './style.less';
 
-// 放置接受组件 index  放置时的下标
-const BasketDom = ({ index, cardList, styBasket, setStyBasket, changeCardList }) => {
+/**
+ * 放置接收组件
+ * @param {Number} index 当前放置的下标
+ * @param {Array} data 当前原始数据
+ * @param {Boolean} styBasket 放置显示的状态
+ * @param {Function} setStyBasket 设置放置显示的状态
+ * @param {Function} changeCardList 修改数据方法
+ * @param {Function} handleShowEditor 显示编辑数据模组
+ * @returns
+ */
+const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handleShowEditor }) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
+      const { icon, editorDom, drop, text, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
-      // 更新 cardList 数据源
-      const movefile = update(cardList, {
-        $splice: [[index, 0, dropItem]],
+      // 更新 data 数据源
+      const movefile = update(data, {
+        $splice: [[index, 0, other]],
       });
       changeCardList(movefile);
+      handleShowEditor(dropItem, index);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
@@ -33,11 +44,37 @@ const BasketDom = ({ index, cardList, styBasket, setStyBasket, changeCardList })
   );
 };
 
+/**
+ * 显示区域
+ * @param {Boolean} styBasket 放置显示的状态
+ * @param {Function} setStyBasket 设置放置显示的状态
+ * @returns
+ */
 const ActiveTemplateIframe = (props) => {
-  const { context, cardList } = props;
-  const { info, showPanel, moduleData } = useContext(context);
+  const { context, styBasket, setStyBasket } = props;
+  const { showPanel, dispatchData, moduleData } = useContext(context);
 
   const { data } = moduleData;
+
+  // 数据变化储存
+  const changeCardList = (list) =>
+    dispatchData({ type: 'saveModuleData', payload: { data: list } });
+
+  // 显示对应的模块编辑内容
+  const handleShowEditor = (cell, index) => {
+    dispatchData({
+      type: 'showEditor',
+      payload: {
+        id: new Date().getTime(), // 需要编辑的组件id
+        index,
+        type: cell.type,
+        name: cell.text,
+        moduleEditData: {},
+      },
+    });
+  };
+
+  const dropProps = { data, changeCardList, styBasket, setStyBasket, handleShowEditor };
 
   return (
     <div className={styles.active_Template_content}>
@@ -48,13 +85,18 @@ const ActiveTemplateIframe = (props) => {
           className={styles.previewer_wrap}
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
-          <BasketDom index={0} {...props}></BasketDom>
-          {cardList.map((item, index) => (
-            <React.Fragment key={`${index}`}>
-              <div>{JSON.stringify(item)}</div>
-              <BasketDom index={index + 1} {...props}></BasketDom>
-            </React.Fragment>
-          ))}
+          <BasketDom index={0} {...dropProps}></BasketDom>
+          {data.map((item, index) => {
+            const { defaultImg } = item;
+            return (
+              <React.Fragment key={`${index}`}>
+                <div>
+                  <img src={defaultImg} style={{ width: '100%' }} />
+                </div>
+                <BasketDom index={index + 1} {...dropProps}></BasketDom>
+              </React.Fragment>
+            );
+          })}
         </div>
       </div>
     </div>
