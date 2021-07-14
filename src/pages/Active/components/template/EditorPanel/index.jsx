@@ -1,7 +1,7 @@
 import React, { useRef, useContext } from 'react';
 import { Button, Space, message } from 'antd';
 import update from 'immutability-helper';
-import Editor from './Editor';
+import editor from '../Editor';
 import styles from './style.less';
 
 const EditorPanel = ({ context }) => {
@@ -59,7 +59,11 @@ const EditorPanel = ({ context }) => {
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>
-        <Editor cRef={cRef} type={type} value={moduleEditData}></Editor>
+        <div className={styles.previewer_active_editor}>
+          {editor[type] && editor[type].editorDom
+            ? editor[type]?.editorDom({ cRef, type, value: moduleEditData })
+            : '控件暂未配置'}
+        </div>
       </div>
       <div className={styles.footer}>
         <Space>

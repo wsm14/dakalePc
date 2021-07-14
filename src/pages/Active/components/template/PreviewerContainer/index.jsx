@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 import PreviewerActive from './PreviewerActive';
@@ -15,7 +15,10 @@ const BasketDom = ({ index, cardList, styBasket, setStyBasket, changeCardList })
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
       // 更新 cardList 数据源
-      changeCardList([...cardList, dropItem]);
+      const movefile = update(cardList, {
+        $splice: [[index, 0, dropItem]],
+      });
+      changeCardList(movefile);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
@@ -23,7 +26,7 @@ const BasketDom = ({ index, cardList, styBasket, setStyBasket, changeCardList })
     <div
       ref={drop}
       className={`${styles.previewer_basket} ${styBasket ? styles.show : ''}`}
-      style={canDrop && isOver ? { background: '#00ff0814', color: '#239c1b' } : {}}
+      style={canDrop && isOver ? { background: '#e0efe2', color: '#239c1b' } : {}}
     >
       {canDrop && isOver ? '确认放置此处' : '将模块放置于此'}
     </div>
@@ -48,7 +51,7 @@ const ActiveTemplateIframe = (props) => {
           <BasketDom index={0} {...props}></BasketDom>
           {cardList.map((item, index) => (
             <React.Fragment key={`${index}`}>
-              <div key={index}>{JSON.stringify(item)}</div>
+              <div>{JSON.stringify(item)}</div>
               <BasketDom index={index + 1} {...props}></BasketDom>
             </React.Fragment>
           ))}

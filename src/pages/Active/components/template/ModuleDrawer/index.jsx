@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useDrag } from 'react-dnd';
 import { Collapse } from 'antd';
 import panelItem from './panelItem';
+import editor from '../Editor';
 import styles from './style.less';
 
 const { Panel } = Collapse;
@@ -30,29 +31,37 @@ const ModuleDrawer = (props) => {
     });
   };
 
+  // 组件显示项
+  const paneDom = ({ drag, cell, onClick }) => (
+    <div
+      ref={drag}
+      className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
+      onClick={onClick}
+    >
+      <div className={styles.module_cell_icon}>{cell.icon}</div>
+      <span>{cell.text}</span>
+    </div>
+  );
+
   // 拖拽项目
   const dropItem = (cell, item) => {
+    // 不可拖拽组件
+    if (!cell.drop) {
+      return paneDom({ cell, onClick: () => handleShowEditor(item.type, cell) });
+    }
+    // 可拖拽组件
     const [, drag] = useDrag({
       item: { ...cell, key: cell.type, type: 'Card' },
+      // 开始拖拽 显示放置位置
       begin() {
         setStyBasket(true);
       },
+      // 结束拖拽 隐藏放置位置
       end() {
         setStyBasket(false);
       },
     });
-    return (
-      <div
-        ref={drag}
-        className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
-        key={cell.text}
-        draggable={cell.drop}
-        onClick={() => handleShowEditor(item.type, cell)}
-      >
-        <div className={styles.module_cell_icon}>{cell.icon}</div>
-        <span>{cell.text}</span>
-      </div>
-    );
+    return paneDom({ drag, cell });
   };
 
   return (
@@ -61,7 +70,7 @@ const ModuleDrawer = (props) => {
         {panelItem.map((item) => (
           <Panel forceRender header={item.header} key={item.type}>
             <div className={styles.module_group}>
-              {item.children.map((cell) => dropItem(cell, item))}
+              {item.children.map((type) => dropItem(editor[type], item))}
             </div>
           </Panel>
         ))}
