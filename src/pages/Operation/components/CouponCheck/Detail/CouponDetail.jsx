@@ -25,7 +25,6 @@ const GoodsDetail = (props) => {
 
   const [recordList, setRecordList] = useState({});
 
-
   const [visibleRefuse, setVisibleRefuse] = useState(false);
 
   const [form] = Form.useForm();
@@ -77,13 +76,14 @@ const GoodsDetail = (props) => {
 
   //审核记录
   const handleTabChange = (val) => {
+    console.log(detail, detail.marketingIdString, '0000');
     if (val === '3') {
       dispatch({
         type: 'baseData/fetchGetLogDetail',
         payload: {
           type: 'audit',
           key: 'audit',
-          identificationId: detail.ownerCouponIdString,
+          identificationId: detail.marketingIdString,
         },
         callback: (list) => {
           setRecordList(list);

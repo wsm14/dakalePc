@@ -197,10 +197,10 @@ const CouponManageComponent = (props) => {
                 formProps: { type: 'down', key: 'offShelfReason' },
               }),
           },
-          {
-            type: 'diary',
-            click: () => fetchGetLogData({ type: 'reduceCoupon', identificationId: ownerCouponId }),
-          },
+          // {
+          //   type: 'diary',
+          //   click: () => fetchGetLogData({ type: 'reduceCoupon', identificationId: ownerCouponId }),
+          // },
           {
             title: '增加库存',
             type: 'addRemain',

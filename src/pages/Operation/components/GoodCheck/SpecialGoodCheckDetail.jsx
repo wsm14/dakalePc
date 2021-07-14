@@ -266,13 +266,14 @@ const SpecialGoodCheckDetail = (props) => {
 
   //审核记录
   const handleTabChange = (val) => {
+ 
     if (val === '3') {
       dispatch({
         type: 'baseData/fetchGetLogDetail',
         payload: {
           type: 'audit',
           key: 'audit',
-          identificationId: auditIdString,
+          identificationId: detail.marketingIdString,
         },
         callback: (list) => {
           setRecordList(list);
