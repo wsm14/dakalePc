@@ -133,6 +133,7 @@ const SysAppSet = (props) => {
         },
         {
           type: 'del',
+          visible: record.showStatus === '2',
           click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
         },
       ],
