@@ -110,6 +110,7 @@ export default [
         component: './Base/PeasShare',
         buttons: ['save', 'del', 'edit'],
       },
+
       {
         name: '修改密码',
         path: '/password',
@@ -487,6 +488,11 @@ export default [
         name: '城市管理',
         component: './System/ManageCity',
         buttons: ['save', 'del', 'edit', 'status'],
+      },
+      {
+        path: '/system/globalConfig',
+        name: '全局配置',
+        component: './System/GlobalConfig',
       },
       {
         path: '/system/pageset',

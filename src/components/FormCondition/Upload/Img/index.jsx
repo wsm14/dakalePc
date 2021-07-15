@@ -84,6 +84,7 @@ const UploadBlock = (props) => {
     maxFile,
     maxSize,
     onChange = undefined,
+    onRemove,
     isCut,
     imgRatio,
     disabled,
@@ -211,6 +212,7 @@ const UploadBlock = (props) => {
     return {
       accept: 'image/*',
       ...onPreview,
+      onRemove,
       onChange: (value) => {
         const { fileList } = value;
         const newFileList = !maxSize

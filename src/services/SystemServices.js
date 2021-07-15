@@ -272,3 +272,18 @@ export function fetchDivisionTemplateUpdate(data) {
     data,
   });
 }
+
+// 全局配置设置分享图片
+export function fetchInviteImgSave(data) {
+  return request('/admin/shareImg/saveShareImg', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 获取分享图片
+export function fetchInviteImgList(params) {
+  return request('/admin/shareImg/getShareImg', {
+    params,
+  });
+}

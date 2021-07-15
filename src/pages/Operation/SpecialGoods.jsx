@@ -354,11 +354,21 @@ const SpecialGoods = (props) => {
   //分享图
 
   const fetchShareImg = (record) => {
-    const { goodsName, ownerName } = record;
-    setVisibleShare({
-      show: true,
-      goodsName,
-      ownerName,
+    const { specialGoodsId, ownerIdString, goodsName, ownerName } = record;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, ownerId: ownerIdString },
+      callback: (val) => {
+        const { ShareImg } = val;
+        setVisibleShare({
+          show: true,
+          goodsName,
+          ownerName,
+          specialGoodsId,
+          ownerIdString,
+          ShareImg,
+        });
+      },
     });
   };
 
