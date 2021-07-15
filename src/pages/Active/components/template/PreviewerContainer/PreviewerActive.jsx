@@ -19,7 +19,7 @@ export default ({ show, index, data, dispatchData }) => {
     // 高亮选择项目重置
     dispatchData({ type: 'showPanel', payload: null });
     // 数据变化储存
-    dispatchData({ type: 'saveModuleData', payload: { data: movefile } });
+    dispatchData({ type: 'saveModuleData', payload: { dataList: movefile } });
   };
 
   // 移动数据 newIndex 新数据下标
@@ -35,7 +35,7 @@ export default ({ show, index, data, dispatchData }) => {
     // 高亮选择项目重置
     dispatchData({ type: 'showPanel', payload: newIndex });
     // 数据变化储存
-    dispatchData({ type: 'saveModuleData', payload: { data: movefile } });
+    dispatchData({ type: 'saveModuleData', payload: { dataList: movefile } });
   };
 
   return (

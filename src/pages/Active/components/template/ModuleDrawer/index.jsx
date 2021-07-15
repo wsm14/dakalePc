@@ -16,20 +16,20 @@ const ModuleDrawer = (props) => {
 
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell) => {
-    const { data } = moduleData;
+    const { dataList } = moduleData;
     // 如果是不可拖拽的模块 全局唯一只能存在一个 查询是否已经存在 存在则编辑
-    const checkData = !cell.drop ? data.findIndex((i) => i.id === cell.id) : -1;
+    const checkData = !cell.drop ? dataList.findIndex((i) => i.id === cell.id) : -1;
     // 高亮选择项目 重置
     !cell.drop && dispatchData({ type: 'showPanel', payload: null });
     // 编辑区域模组显示
     dispatchData({
       type: 'showEditor',
       payload: {
-        id: data[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
-        index: checkData != -1 ? checkData : data.length,
+        id: dataList[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
+        index: checkData != -1 ? checkData : dataList.length,
         type: cell.type,
         name: cell.text,
-        moduleEditData: !cell.drop ? moduleData[cell.type] : data[checkData]?.data || {},
+        data: !cell.drop ? moduleData[cell.type] : dataList[checkData]?.data || null,
       },
     });
   };

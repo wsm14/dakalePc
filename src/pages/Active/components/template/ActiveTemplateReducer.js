@@ -16,7 +16,7 @@ export const reducerValue = {
     index: '', // 数据下标
     type: '', // 组件类型
     name: '', // 组件名称
-    moduleEditData: {}, // 当前编辑组件的数据
+    data: null, // 当前编辑组件的数据
   },
   showActive: {
     activeUrl: '', // 活动的url路径
@@ -28,7 +28,7 @@ export const reducerValue = {
    * 已储存的模版数据
    * data = { id:'', type, data }
    */
-  moduleData: { data: [] },
+  moduleData: { backgroundColor: '#ffffff', dataList: [] },
 };
 
 /**
