@@ -28,10 +28,10 @@ const SubCommissionStatistics = (props) => {
       title: '待分佣',
       total: Number(pendingCommission),
     },
-    {
-      title: '累计提现',
-      total: Number(dividedCommissionsThisMonth),
-    },
+    // {
+    //   title: '累计提现',
+    //   total: Number(withdrawalFee),
+    // },
     {
       title: '本月已分佣',
       total: Number(dividedCommissionsThisMonth),
@@ -59,12 +59,12 @@ const SubCommissionStatistics = (props) => {
       dataIndex: 'settlementIncome',
       render: (val) => `￥ ${val}`,
     },
-    {
-      title: '提现金额',
-      align: 'right',
-      dataIndex: 'settlementIncome',
-      render: (val) => `￥ ${val}`,
-    },
+    // {
+    //   title: '提现金额',
+    //   align: 'right',
+    //   dataIndex: 'settlementIncome',
+    //   render: (val) => `￥ ${val}`,
+    // },
     {
       title: '预代扣税',
       align: 'right',

@@ -69,8 +69,9 @@ const ExpertUserAchievement = (props) => {
       dataIndex: 'username',
     },
     {
-      title: '豆号',
+      title: '手机号/豆号',
       dataIndex: 'beanCode',
+      render: (val, row) => `${row.mobile}\n${val}`,
     },
     {
       title: '身份',
@@ -82,59 +83,51 @@ const ExpertUserAchievement = (props) => {
       align: 'center',
       dataIndex: 'level',
     },
-    {
-      title: '团队人数',
-      align: 'center',
-      dataIndex: 'teamSize',
-      render:(val, row)=>{
-        return row.kolUserId
-      }
-    },
-    {
-      title: '用户｜哒人｜豆长',
-      align: 'center',
-      dataIndex: 'level',
-      // render:(val, row)=>{
-      //   return `${row.kolUserId}|${row.kolUserId}|${row.kolUserId}`
-      // }
-    },
-    {
-      title: '分销-核销笔数',
-      align: 'center',
-      dataIndex: 'level',
-      render:(val, row)=>{
-        return <Link to="/expert/distribution" > {row.number|| 'null'}</Link>
-      }
-    },
-    {
-      title: '分销-业绩流水',
-      align: 'center',
-      dataIndex: 'level',
-      render:(val, row)=>{
-        return `¥ ${row.kolUserId}`
-      }
-    },
-    {
-      title: '累计分佣',
-      align: 'center',
-      dataIndex: 'level',
-      render:(val, row)=>{
-        return `¥ ${row.kolUserId}`
-      }
-    },
-    {
-      title: '待分佣',
-      align: 'center',
-      dataIndex: 'level',
-      render:(val, row)=>{
-        return `¥ ${row.kolUserId}`
-      }
-    },
-    {
-      title: '手机号',
-      align: 'right',
-      dataIndex: 'mobile',
-    },
+    // {
+    //   title: '团队人数',
+    //   align: 'center',
+    //   dataIndex: 'teamSize',
+    //   render: (val, row) => {
+    //     return row.kolUserId;
+    //   },
+    // },
+    // {
+    //   title: '用户｜哒人｜豆长',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    // },
+    // {
+    //   title: '分销-核销笔数',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return <Link to="/expert/distribution"> {row.number || 'null'}</Link>;
+    //   },
+    // },
+    // {
+    //   title: '分销-业绩流水',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return `¥ ${row.kolUserId}`;
+    //   },
+    // },
+    // {
+    //   title: '累计分佣',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return `¥ ${row.kolUserId}`;
+    //   },
+    // },
+    // {
+    //   title: '待分佣',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return `¥ ${row.kolUserId}`;
+    //   },
+    // },
     {
       type: 'handle',
       dataIndex: 'kolUserId',
