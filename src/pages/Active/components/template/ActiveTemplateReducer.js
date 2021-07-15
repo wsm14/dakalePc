@@ -16,7 +16,7 @@ export const reducerValue = {
     index: '', // 数据下标
     type: '', // 组件类型
     name: '', // 组件名称
-    data: null, // 当前编辑组件的数据
+    data: null, // 当前编辑组件的数据 type data{表单数据}
   },
   showActive: {
     activeUrl: '', // 活动的url路径

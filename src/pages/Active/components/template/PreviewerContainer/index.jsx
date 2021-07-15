@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 import PreviewerActive from './PreviewerActive';
+import PreviewerContent from './PreviewerContent';
 import styles from './style.less';
 
 /**
@@ -97,27 +98,22 @@ const ActiveTemplateIframe = (props) => {
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
           <BasketDom index={0} {...dropProps}></BasketDom>
-          {dataList.map((item, index) => {
-            const { defaultImg, data } = item;
-            return (
-              <React.Fragment key={`${index}`}>
-                <div
-                  className={styles.previewer_cell}
-                  onClick={() => handleShowEditor(item, index)}
-                >
-                  {!data ? <img src={defaultImg} style={{ width: '100%' }} /> : 'item'}
-                  {/* 高亮操作区域 */}
-                  <PreviewerActive
-                    data={dataList}
-                    index={index}
-                    show={showPanel === index}
-                    dispatchData={dispatchData}
-                  ></PreviewerActive>
-                </div>
-                <BasketDom index={index + 1} {...dropProps}></BasketDom>
-              </React.Fragment>
-            );
-          })}
+          {dataList.map((item, index) => (
+            <React.Fragment key={`${index}`}>
+              <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
+                {/* 回显dom*/}
+                <PreviewerContent cell={item}></PreviewerContent>
+                {/* 高亮操作区域 */}
+                <PreviewerActive
+                  data={dataList}
+                  index={index}
+                  show={showPanel === index}
+                  dispatchData={dispatchData}
+                ></PreviewerActive>
+              </div>
+              <BasketDom index={index + 1} {...dropProps}></BasketDom>
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </div>
