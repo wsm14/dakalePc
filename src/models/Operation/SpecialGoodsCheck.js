@@ -63,8 +63,10 @@ export default {
       } = specialGoodsInfo;
       let newDetail = {};
       const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
-      const pBean = provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
-      const dBean = districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
+      const pBean =
+        provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean =
+        districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
       const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
       const sDetail = {
         serviceDivisionDTO: {
@@ -107,12 +109,21 @@ export default {
       });
     },
     *fetchSpecialGoodsAudit({ payload, callback }, { call }) {
+      const { submitterType } = payload;
       const response = yield call(fetchSpecialGoodsAudit, payload);
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '审核完成，等待商家确认',
-      });
+      if (submitterType === 'merchant') {
+        notification.success({
+          message: '温馨提示',
+          description: '审核完成',
+        });
+      } else {
+        notification.success({
+          message: '温馨提示',
+          description: '审核完成，等待商家确认',
+        });
+      }
+
       callback();
     },
     *fetchSpecialGoodsAuditReject({ payload, callback }, { call }) {
