@@ -16,8 +16,8 @@ export default ({ show, index, data, dispatchData }) => {
     e.stopPropagation();
     // 更新 data 数据源
     const movefile = update(data, { $splice: [[index, 1]] });
-    // 高亮选择项目重置
-    dispatchData({ type: 'showPanel', payload: null });
+    // 关闭编辑框
+    dispatchData({ type: 'closeEditor' });
     // 数据变化储存
     dispatchData({ type: 'saveModuleData', payload: { dataList: movefile } });
   };

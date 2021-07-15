@@ -17,9 +17,10 @@ export default (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: () => {
       return form.validateFields().then((content) => {
-        return aliOssUpload(content.data).then((res) => {
-          return { ...content, type, data: res.toString() };
-        });
+        return { ...content, type };
+        // aliOssUpload(content.data).then((res) => {
+        //   return { ...content, type, data: res.toString() };
+        // });
       });
     },
   }));

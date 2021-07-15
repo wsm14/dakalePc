@@ -28,7 +28,7 @@ const ModuleDrawer = (props) => {
         id: dataList[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
         index: checkData != -1 ? checkData : dataList.length,
         type: cell.type,
-        name: cell.text,
+        text: cell.text,
         data: !cell.drop ? moduleData[cell.type] : dataList[checkData]?.data || null,
       },
     });

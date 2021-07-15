@@ -62,6 +62,7 @@ export const fetchReducerEdit = (state, action) => {
     case 'closeEditor':
       return {
         ...state,
+        showPanel: null,
         showEditor: { type: '' },
       };
     case 'saveModuleData':

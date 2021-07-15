@@ -12,7 +12,7 @@ export const BANNER_JUMP_TYPE = { '': '无', H5: 'H5', inside: '原生页面' };
 /**
  * 跳转app h5 设置表单
  * @param {Object} detail 表单回填参数
- * @returns
+ * @returns {Object} { linkType , url | ( path , data ) }
  */
 const NativeForm = ({ form }) => {
   return (

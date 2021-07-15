@@ -14,7 +14,14 @@ import styles from './style.less';
  * @param {Function} handleShowEditor 显示编辑数据模组
  * @returns
  */
-const BasketDom = ({ index, dataList, styBasket, setStyBasket, changeCardList, handleShowEditor }) => {
+const BasketDom = ({
+  index,
+  dataList,
+  styBasket,
+  setStyBasket,
+  changeCardList,
+  handleShowEditor,
+}) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'Card',
     drop: (dropItem) => {
@@ -73,7 +80,7 @@ const ActiveTemplateIframe = (props) => {
         id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
         type: cell.type,
-        name: cell.text,
+        text: cell.text,
         data: cell?.data || null,
       },
     });
@@ -91,14 +98,14 @@ const ActiveTemplateIframe = (props) => {
         >
           <BasketDom index={0} {...dropProps}></BasketDom>
           {dataList.map((item, index) => {
-            const { defaultImg } = item;
+            const { defaultImg, data } = item;
             return (
               <React.Fragment key={`${index}`}>
                 <div
                   className={styles.previewer_cell}
                   onClick={() => handleShowEditor(item, index)}
                 >
-                  <img src={defaultImg} style={{ width: '100%' }} />
+                  {!data ? <img src={defaultImg} style={{ width: '100%' }} /> : 'item'}
                   {/* 高亮操作区域 */}
                   <PreviewerActive
                     data={dataList}

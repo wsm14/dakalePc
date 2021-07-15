@@ -10,15 +10,10 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { index, type, name, data } = showEditor;
+  const { index, type, text, data } = showEditor;
 
   // 关闭编辑框
-  const handleCloseEdit = () => {
-    // 高亮选择项目重置
-    dispatchData({ type: 'showPanel', payload: null });
-    // 关闭编辑框
-    dispatchData({ type: 'closeEditor' });
-  };
+  const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
 
   /**
    * 保存事件
@@ -37,7 +32,7 @@ const EditorPanel = ({ context }) => {
           payload = content.data;
         } else {
           const newData = update(dataList, {
-            $splice: [[index, 1, { ...showEditor, ...content }]],
+            $splice: [[index, 1, { ...showEditor, data: content }]],
           });
           payload = { dataList: newData };
         }
@@ -63,7 +58,7 @@ const EditorPanel = ({ context }) => {
   return (
     <div className={`${styles.active_Template_right} ${type ? styles.show : ''}`}>
       <div className={styles.heard}>
-        {name}
+        {text}
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>
