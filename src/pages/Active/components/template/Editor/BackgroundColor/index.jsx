@@ -4,26 +4,30 @@ import { SketchPicker, CirclePicker } from 'react-color';
 /**
  * 颜色选择器
  */
-export default ({ cRef, value }) => {
+export default ({ cRef, type, value }) => {
   const [color, setColor] = useState('#eeeeee');
 
   useEffect(() => {
-    setColor(value);
+    if (value) setColor(value);
   }, []);
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     getContent: () =>
       new Promise((resolve) => {
-        resolve(color.hex || color);
+        resolve({
+          type,
+          dom: false,
+          data: { backgroundColor: typeof color === 'string' ? color : color.hex },
+        });
       }),
   }));
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-      <SketchPicker color={color} onChangeComplete={(val) => setColor(val)} />
+      <SketchPicker disableAlpha color={color} onChangeComplete={(val) => setColor(val)} />
       <div style={{ marginTop: 20 }}>
-        <CirclePicker color={color} onChangeComplete={(val) => setColor(val)}></CirclePicker>
+        <CirclePicker color={color} onChangeComplete={(val) => setColor(val)} />
       </div>
     </div>
   );

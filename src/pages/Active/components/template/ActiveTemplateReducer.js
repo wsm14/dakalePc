@@ -12,8 +12,10 @@ export const reducerValue = {
   },
   // 组件编辑模块显示内容
   showEditor: {
-    name: '', // 组件名称
+    id: '', // 组件id
+    index: '', // 数据下标
     type: '', // 组件类型
+    name: '', // 组件名称
     moduleEditData: {}, // 当前编辑组件的数据
   },
   showActive: {
@@ -21,23 +23,19 @@ export const reducerValue = {
     activePreviewQr: true, // 活动的qr显示
     activeHtml: '', // 活动的html
   },
-  // 组件选项打开类型
-  showPanel: {
-    id: '', // 组件id
-    type: '', // 组件类型
-    top: 0, // 组件定位
-    height: 0, // 组件高
-    width: 0, // 组件宽
-    ptype: '', // 组件选项面板类型
-  },
-  // 已储存的模版数据
-  moduleData: [],
+  showPanel: null, // 展示区域高亮面板下标
+  /**
+   * 已储存的模版数据
+   * data = { id:'', type, data }
+   */
+  moduleData: { data: [] },
 };
 
 /**
  * reducer 处理
  * @type {*}  initialize 数据重置
  *            save 储存数据
+ *            showPanel 当前编辑组件选框下标
  *            showEditor 展示组件编辑面板
  *            closeEditor 关闭编辑面板
  *            saveModuleData 存储模版编辑数据
@@ -56,17 +54,20 @@ export const fetchReducerEdit = (state, action) => {
         ...state,
         showEditor: action.payload,
       };
+    case 'showPanel':
+      return {
+        ...state,
+        showPanel: action.payload,
+      };
     case 'closeEditor':
       return {
         ...state,
         showEditor: { type: '' },
       };
     case 'saveModuleData':
-      const { moduleData } = state;
-      const oldData = moduleData.filter((i) => i.id !== action.payload.id);
       return {
         ...state,
-        moduleData: [...oldData, action.payload],
+        moduleData: { ...state.moduleData, ...action.payload },
       };
     default:
       return state;

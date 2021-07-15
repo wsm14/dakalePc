@@ -1,23 +1,71 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
+import { useDrag } from 'react-dnd';
 import { Collapse } from 'antd';
 import panelItem from './panelItem';
+import editor from '../Editor';
 import styles from './style.less';
 
 const { Panel } = Collapse;
 
+/**
+ * 组件拖拽区域
+ */
 const ModuleDrawer = (props) => {
-  const { context } = props;
-  const { dispatchData } = useContext(context);
+  const { context, setStyBasket } = props;
+  const { dispatchData, moduleData } = useContext(context);
 
   // 显示对应的模块编辑内容
-  const handleShowEditor = (item) => {
+  const handleShowEditor = (cell) => {
+    const { data } = moduleData;
+    // 如果是不可拖拽的模块 全局唯一只能存在一个 查询是否已经存在 存在则编辑
+    const checkData = !cell.drop ? data.findIndex((i) => i.id === cell.id) : -1;
+    // 高亮选择项目 重置
+    !cell.drop && dispatchData({ type: 'showPanel', payload: null });
+    // 编辑区域模组显示
     dispatchData({
       type: 'showEditor',
       payload: {
-        type: item.type,
-        name: item.text,
+        id: data[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
+        index: checkData != -1 ? checkData : data.length,
+        type: cell.type,
+        name: cell.text,
+        moduleEditData: !cell.drop ? moduleData[cell.type] : data[checkData]?.data || {},
       },
     });
+  };
+
+  // 组件显示项
+  const paneDom = ({ drag, cell, onClick }) => (
+    <div
+      ref={drag}
+      key={cell.type}
+      className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
+      onClick={onClick}
+    >
+      <div className={styles.module_cell_icon}>{cell.icon}</div>
+      <span>{cell.text}</span>
+    </div>
+  );
+
+  // 拖拽项目
+  const dropItem = (cell) => {
+    // 不可拖拽组件
+    if (!cell.drop) {
+      return paneDom({ cell, onClick: () => handleShowEditor(cell) });
+    }
+    // 可拖拽组件
+    const [, drag] = useDrag({
+      item: { ...cell, key: cell.type, type: 'Card' },
+      // 开始拖拽 显示放置位置
+      begin() {
+        setStyBasket(true);
+      },
+      // 结束拖拽 隐藏放置位置
+      end() {
+        setStyBasket(false);
+      },
+    });
+    return paneDom({ drag, cell });
   };
 
   return (
@@ -26,17 +74,7 @@ const ModuleDrawer = (props) => {
         {panelItem.map((item) => (
           <Panel forceRender header={item.header} key={item.type}>
             <div className={styles.module_group}>
-              {item.children.map((cell) => (
-                <div
-                  className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
-                  key={cell.text}
-                  draggable={cell.drop}
-                  onClick={() => handleShowEditor(cell)}
-                >
-                  <div className={styles.module_cell_icon}>{cell.icon}</div>
-                  <span>{cell.text}</span>
-                </div>
-              ))}
+              {item.children.map((type) => dropItem(editor[type]))}
             </div>
           </Panel>
         ))}
