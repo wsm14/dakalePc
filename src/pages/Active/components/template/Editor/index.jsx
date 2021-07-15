@@ -10,7 +10,7 @@ import list from './Img/list.png';
  * @param {String} type  组件类型
  * @param {Boolean} drop 是否可拖拽
  * @param {ReactDOM} defaultImg 拖拽后默认显示占位图片
- * @param {ReactDOM} editor 详细组件编辑容器
+ * @param {ReactDOM} editor 详细组件编辑容器 ({ cRef, type 组件type, value 原值 })
  */
 export default {
   backgroundColor: {
