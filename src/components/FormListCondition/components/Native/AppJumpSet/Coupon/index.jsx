@@ -39,11 +39,12 @@ const Coupon = ({ form, dispatch, paramKey }) => {
       <Merchant
         form={form}
         paramKey={paramKey}
-        onChange={() => {
-          form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
+        onChange={(val) => {
+          form.setFieldsValue({ param: { [paramKey[1]]: undefined, ownerId: val } });
           setData({});
         }}
       ></Merchant>
+      <FormItem label="ownerId" name={['param', 'ownerId']} hidden></FormItem>
       <FormItem
         label="优惠券"
         name={['param', paramKey[1]]}

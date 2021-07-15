@@ -9,16 +9,11 @@ const EditorPanel = ({ context }) => {
   // 组件选项打开类型
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
-  const { data } = moduleData;
-  const { index, type, name, moduleEditData } = showEditor;
+  const { dataList } = moduleData;
+  const { index, type, name, data } = showEditor;
 
   // 关闭编辑框
-  const handleCloseEdit = () => {
-    // 高亮选择项目重置
-    dispatchData({ type: 'showPanel', payload: null });
-    // 关闭编辑框
-    dispatchData({ type: 'closeEditor' });
-  };
+  const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
 
   /**
    * 保存事件
@@ -36,10 +31,10 @@ const EditorPanel = ({ context }) => {
         if (!dom) {
           payload = content.data;
         } else {
-          const newData = update(data, {
-            $splice: [[index, 1, content]],
+          const newData = update(dataList, {
+            $splice: [[index, 1, { ...showEditor, data: content }]],
           });
-          payload = { data: newData };
+          payload = { dataList: newData };
         }
         dispatchData({
           type: 'saveModuleData',
@@ -69,7 +64,7 @@ const EditorPanel = ({ context }) => {
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
           {editor[type] && editor[type].editorDom
-            ? editor[type]?.editorDom({ cRef, type, value: moduleEditData })
+            ? editor[type]?.editorDom({ cRef, type, value: data })
             : '控件暂未配置'}
         </div>
       </div>

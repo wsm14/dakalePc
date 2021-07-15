@@ -16,10 +16,10 @@ export default ({ show, index, data, dispatchData }) => {
     e.stopPropagation();
     // 更新 data 数据源
     const movefile = update(data, { $splice: [[index, 1]] });
-    // 高亮选择项目重置
-    dispatchData({ type: 'showPanel', payload: null });
+    // 关闭编辑框
+    dispatchData({ type: 'closeEditor' });
     // 数据变化储存
-    dispatchData({ type: 'saveModuleData', payload: { data: movefile } });
+    dispatchData({ type: 'saveModuleData', payload: { dataList: movefile } });
   };
 
   // 移动数据 newIndex 新数据下标
@@ -35,12 +35,12 @@ export default ({ show, index, data, dispatchData }) => {
     // 高亮选择项目重置
     dispatchData({ type: 'showPanel', payload: newIndex });
     // 数据变化储存
-    dispatchData({ type: 'saveModuleData', payload: { data: movefile } });
+    dispatchData({ type: 'saveModuleData', payload: { dataList: movefile } });
   };
 
   return (
     <>
-      <div className={styles.previewer_title}>{data[index].text}</div>
+      <div className={styles.previewer_title}>{data[index].name}</div>
       {/* 选择区域高亮 */}
       <div className={`${styles.previewer_active_warp} ${show ? styles.show : ''}`}></div>
       {show && (

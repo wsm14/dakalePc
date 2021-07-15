@@ -16,7 +16,7 @@ export const reducerValue = {
     index: '', // 数据下标
     type: '', // 组件类型
     name: '', // 组件名称
-    moduleEditData: {}, // 当前编辑组件的数据
+    data: null, // 当前编辑组件的数据 type data{表单数据}
   },
   showActive: {
     activeUrl: '', // 活动的url路径
@@ -26,9 +26,9 @@ export const reducerValue = {
   showPanel: null, // 展示区域高亮面板下标
   /**
    * 已储存的模版数据
-   * data = { id:'', type, data }
+   * dataList[showEditor{}]
    */
-  moduleData: { data: [] },
+  moduleData: { backgroundColor: '#ffffff', dataList: [] },
 };
 
 /**
@@ -62,6 +62,7 @@ export const fetchReducerEdit = (state, action) => {
     case 'closeEditor':
       return {
         ...state,
+        showPanel: null,
         showEditor: { type: '' },
       };
     case 'saveModuleData':

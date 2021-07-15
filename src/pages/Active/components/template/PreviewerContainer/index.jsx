@@ -2,19 +2,27 @@ import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 import PreviewerActive from './PreviewerActive';
+import PreviewerContent from './PreviewerContent';
 import styles from './style.less';
 
 /**
  * 放置接收组件
  * @param {Number} index 当前放置的下标
- * @param {Array} data 当前原始数据
+ * @param {Array} dataList 当前原始数据
  * @param {Boolean} styBasket 放置显示的状态
  * @param {Function} setStyBasket 设置放置显示的状态
  * @param {Function} changeCardList 修改数据方法
  * @param {Function} handleShowEditor 显示编辑数据模组
  * @returns
  */
-const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handleShowEditor }) => {
+const BasketDom = ({
+  index,
+  dataList,
+  styBasket,
+  setStyBasket,
+  changeCardList,
+  handleShowEditor,
+}) => {
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: 'Card',
     drop: (dropItem) => {
@@ -25,8 +33,8 @@ const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handl
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
       const newData = { ...other, type: key };
-      // 更新 data 数据源
-      const movefile = update(data, {
+      // 更新 dataList 数据源
+      const movefile = update(dataList, {
         $splice: [[index, 0, newData]],
       });
       changeCardList(movefile);
@@ -56,11 +64,11 @@ const ActiveTemplateIframe = (props) => {
   const { context, styBasket, setStyBasket } = props;
   const { dispatchData, showPanel, moduleData } = useContext(context);
 
-  const { data } = moduleData;
+  const { dataList } = moduleData;
 
   // 数据变化储存
   const changeCardList = (list) =>
-    dispatchData({ type: 'saveModuleData', payload: { data: list } });
+    dispatchData({ type: 'saveModuleData', payload: { dataList: list } });
 
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell, index) => {
@@ -73,13 +81,13 @@ const ActiveTemplateIframe = (props) => {
         id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
         type: cell.type,
-        name: cell.text,
-        moduleEditData: cell?.data || {},
+        name: cell.name,
+        data: cell?.data || null,
       },
     });
   };
 
-  const dropProps = { data, changeCardList, styBasket, setStyBasket, handleShowEditor };
+  const dropProps = { dataList, changeCardList, styBasket, setStyBasket, handleShowEditor };
 
   return (
     <div className={styles.active_Template_content}>
@@ -90,27 +98,22 @@ const ActiveTemplateIframe = (props) => {
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
           <BasketDom index={0} {...dropProps}></BasketDom>
-          {data.map((item, index) => {
-            const { defaultImg } = item;
-            return (
-              <React.Fragment key={`${index}`}>
-                <div
-                  className={styles.previewer_cell}
-                  onClick={() => handleShowEditor(item, index)}
-                >
-                  <img src={defaultImg} style={{ width: '100%' }} />
-                  {/* 高亮操作区域 */}
-                  <PreviewerActive
-                    data={data}
-                    index={index}
-                    show={showPanel === index}
-                    dispatchData={dispatchData}
-                  ></PreviewerActive>
-                </div>
-                <BasketDom index={index + 1} {...dropProps}></BasketDom>
-              </React.Fragment>
-            );
-          })}
+          {dataList.map((item, index) => (
+            <React.Fragment key={`${index}`}>
+              <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
+                {/* 回显dom*/}
+                <PreviewerContent cell={item}></PreviewerContent>
+                {/* 高亮操作区域 */}
+                <PreviewerActive
+                  data={dataList}
+                  index={index}
+                  show={showPanel === index}
+                  dispatchData={dispatchData}
+                ></PreviewerActive>
+              </div>
+              <BasketDom index={index + 1} {...dropProps}></BasketDom>
+            </React.Fragment>
+          ))}
         </div>
       </div>
     </div>
