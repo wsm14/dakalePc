@@ -21,6 +21,8 @@ import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
 import excelProps from './components/SpecialGoods/ExcelProps';
 import RemainModal from './components/SpecialGoods/Detail/RemainModal';
+import ShareImg from './components/SpecialGoods/ShareImg';
+import { fetchShareVideoPush } from '@/services/OperationServices';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -34,6 +36,7 @@ const SpecialGoods = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
   const [visibleRemain, setVisibleRemain] = useState(false);
+  const [visibleShare, setVisibleShare] = useState(false);
 
   const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
   const search_recommend = { notPromoted: '未推广', ...other };
@@ -338,10 +341,26 @@ const SpecialGoods = (props) => {
             visible: ['1'].includes(status) && deleteFlag == '1',
             click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
           },
+          {
+            title: '分享图',
+            type: 'shareImg',
+            click: () => fetchShareImg(record),
+          },
         ];
       },
     },
   ];
+
+  //分享图
+
+  const fetchShareImg = (record) => {
+    const { goodsName, ownerName } = record;
+    setVisibleShare({
+      show: true,
+      goodsName,
+      ownerName,
+    });
+  };
 
   // 获取商品码
   const fetchSpecialGoodsQrCode = (payload, title, data) => {
@@ -516,6 +535,8 @@ const SpecialGoods = (props) => {
         visible={visibleRemain}
         onClose={() => setVisibleRemain(false)}
       ></RemainModal>
+      {/* 分享图 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };

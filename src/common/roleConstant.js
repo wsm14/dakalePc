@@ -108,6 +108,7 @@ export const ROLE_BUTTON_TYPE = {
   saveClassify: '添加内容子类',
   savePClassify: '添加内容分类',
   shareTextEdit: '修改分享文案',
+  shareImg: '分享图',
 
   task: '营销卡豆充值',
   topic: '创作设置',
