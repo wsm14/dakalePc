@@ -20,11 +20,11 @@ const EditorPanel = ({ context }) => {
     dispatchData({ type: 'closeEditor' });
   };
 
-  // 保存事件
   /**
+   * 保存事件
    * 判断是否是页面dom
    * 如果不是 比如 backgroundColor 则将数据保存在对象外围
-   * 如果是 则保存在 moduleData 的data[] 内
+   * 如果是 则保存在 moduleData 的 data[] 内
    */
   const handleSaveData = () => {
     cRef.current

@@ -19,17 +19,18 @@ const BasketDom = ({ index, data, styBasket, setStyBasket, changeCardList, handl
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { icon, editorDom, drop, ...other } = dropItem;
+      const { icon, editorDom, drop, key, type, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
+      const newData = { ...other, type: key };
       // 更新 data 数据源
       const movefile = update(data, {
-        $splice: [[index, 0, other]],
+        $splice: [[index, 0, newData]],
       });
       changeCardList(movefile);
-      handleShowEditor(dropItem, index);
+      handleShowEditor(newData, index);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });

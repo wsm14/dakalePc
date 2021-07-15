@@ -1,5 +1,6 @@
 import { BgColorsOutlined, PictureOutlined, ShoppingOutlined } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
+import SolaImg from './SolaImg';
 import img from './Img/img.png';
 import list from './Img/list.png';
 
@@ -26,6 +27,7 @@ export default {
     type: 'solaImg',
     drop: true,
     defaultImg: img,
+    editorDom: (props) => <SolaImg {...props}></SolaImg>,
   },
   carouseal: {
     text: '轮播图片',
