@@ -14,9 +14,9 @@ export const reducerValue = {
   showEditor: {
     id: '', // 组件id
     index: '', // 数据下标
-    type: '', // 组件类型
+    editorType: '', // 组件类型
     name: '', // 组件名称
-    data: null, // 当前编辑组件的数据 type data{表单数据}
+    data: null, // 当前编辑组件的数据 editorType data{表单数据}
   },
   showActive: {
     activeUrl: '', // 活动的url路径
@@ -63,7 +63,7 @@ export const fetchReducerEdit = (state, action) => {
       return {
         ...state,
         showPanel: null,
-        showEditor: { type: '' },
+        showEditor: { editorType: '' },
       };
     case 'saveModuleData':
       return {

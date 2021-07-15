@@ -37,7 +37,6 @@ const FormItem = Form.Item;
 const { Option } = Select;
 
 const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
-  const [imgcut, setImgcut] = useState({ file: {}, visible: false });
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url

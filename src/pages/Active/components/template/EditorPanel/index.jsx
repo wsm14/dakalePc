@@ -10,7 +10,7 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { index, type, name, data } = showEditor;
+  const { index, editorType, name, data } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
@@ -56,21 +56,21 @@ const EditorPanel = ({ context }) => {
   };
 
   return (
-    <div className={`${styles.active_Template_right} ${type ? styles.show : ''}`}>
+    <div className={`${styles.active_Template_right} ${editorType ? styles.show : ''}`}>
       <div className={styles.heard}>
         {name}
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
-          {editor[type] && editor[type].editorDom
-            ? editor[type]?.editorDom({ cRef, type, value: data })
+          {editor[editorType] && editor[editorType].editorDom
+            ? editor[editorType]?.editorDom({ cRef, editorType, value: data })
             : '控件暂未配置'}
         </div>
       </div>
       <div className={styles.footer}>
         <Space>
-          {editor[type] && editor[type].editorDom && (
+          {editor[editorType] && editor[editorType].editorDom && (
             <Button type="primary" onClick={handleSaveData}>
               保存
             </Button>

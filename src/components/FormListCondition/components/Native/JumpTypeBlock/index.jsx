@@ -12,7 +12,7 @@ const FormItem = Form.Item;
  * @param {Function} setShowApi inside 原生页面时 获取对应参数 展示自定义表单
  * @param {Function} setParamKey inside 原生页面时 app 跳转需要的参数键
  */
-const JumpTypeBlock = ({ form, nativeList, showUrl = false, setShowApi, setParamKey = {} }) => {
+const JumpTypeBlock = ({ nativeList, showUrl = false, setShowApi, setParamKey = {} }) => {
   if (!showUrl) return null;
   return {
     无: null,
@@ -44,7 +44,7 @@ const JumpTypeBlock = ({ form, nativeList, showUrl = false, setShowApi, setParam
       >
         <Select
           label="跳转内容"
-          select={nativeList}
+          select={nativeList.filter((item) => item.value !== 'windVaneCategory')}
           placeholder={'请选择跳转内容'}
           onChange={(val, item) => {
             console.log(val, item);
@@ -56,7 +56,6 @@ const JumpTypeBlock = ({ form, nativeList, showUrl = false, setShowApi, setParam
     ),
   }[showUrl];
 };
-
 export default connect(({ baseData }) => ({
   nativeList: baseData.nativeList,
 }))(JumpTypeBlock);

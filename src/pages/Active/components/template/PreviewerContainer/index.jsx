@@ -27,18 +27,17 @@ const BasketDom = ({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { icon, editorDom, drop, key, type, ...other } = dropItem;
+      const { icon, editorDom, drop, type, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
-      const newData = { ...other, type: key };
       // 更新 dataList 数据源
       const movefile = update(dataList, {
-        $splice: [[index, 0, newData]],
+        $splice: [[index, 0, other]],
       });
       changeCardList(movefile);
-      handleShowEditor(newData, index);
+      handleShowEditor(other, index);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
@@ -80,7 +79,7 @@ const ActiveTemplateIframe = (props) => {
       payload: {
         id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
-        type: cell.type,
+        editorType: cell.editorType,
         name: cell.name,
         data: cell?.data || null,
       },

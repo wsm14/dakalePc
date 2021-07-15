@@ -44,7 +44,6 @@ const Coupon = ({ form, dispatch, paramKey }) => {
           setData({});
         }}
       ></Merchant>
-      <FormItem label="ownerId" name={['param', 'ownerId']} hidden></FormItem>
       <FormItem
         label="优惠券"
         name={['param', paramKey[1]]}
@@ -67,6 +66,7 @@ const Coupon = ({ form, dispatch, paramKey }) => {
           }}
         ></ShareCoupon>
       </FormItem>
+      <FormItem label="ownerId" name={['param', 'ownerId']} hidden></FormItem>
     </>
   );
 };

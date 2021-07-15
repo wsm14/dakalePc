@@ -395,7 +395,7 @@ export const SHARE_TASTE_TYPE = { all: '不限', tag: '选择兴趣标签' };
 export const SHARE_SEX_TYPE = { ALL: '不限', M: '男', F: '女' };
 
 // 分享设置 - 年龄
-export const SHARE_AGE_TYPE = { '1-100': '不限', age: '选择年龄段(可多选)' };
+export const SHARE_AGE_TYPE = { '0-100': '不限', age: '选择年龄段(可多选)' };
 
 // 分享设置 - 时间设置类型
 export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];

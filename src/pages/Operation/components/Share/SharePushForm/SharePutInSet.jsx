@@ -15,10 +15,10 @@ import FormCondition from '@/components/FormCondition';
 const SharePutInSet = (props) => {
   const { form, propertyJSON = {}, saveExtraStorage, tasteTag, detail = {} } = props;
   // 默认选择项
-  const inputData = { scope: 'all', areaType: 'all', taste: 'all', gender: 'ALL', age: '1-100' };
+  const inputData = { scope: 'all', areaType: 'all', taste: 'all', gender: 'ALL', age: '0-100' };
 
   const [areaType, setAreaType] = useState('all'); // 地域选择
-  const [ageType, setAgeType] = useState('1-100'); // 年龄
+  const [ageType, setAgeType] = useState('0-100'); // 年龄
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
 
   useEffect(() => {
