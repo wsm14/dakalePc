@@ -226,7 +226,12 @@ const CouponCheck = (props) => {
 
   // 获取详情
   const fetchCouponDetail = (index, type) => {
-    const { ownerIdString: ownerId, auditIdString: auditId, auditStatus: status } = list[index];
+    const {
+      ownerIdString: ownerId,
+      auditIdString: auditId,
+      auditStatus: status,
+      submitterType,
+    } = list[index];
     dispatch({
       type: 'couponAudit/fetchCouponAuditDetail',
       payload: { auditId, ownerId, type },
@@ -236,7 +241,7 @@ const CouponCheck = (props) => {
           detail: { ...val },
         };
         if (type == 'info' || type === 'check') {
-          setVisibleInfo({ status, index, ...newProps, ownerId, auditId });
+          setVisibleInfo({ status, index, ...newProps, ownerId, auditId, submitterType });
         } else {
           setVisibleSet({ type, ...newProps });
         }

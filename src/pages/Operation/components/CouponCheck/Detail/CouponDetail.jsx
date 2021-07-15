@@ -13,7 +13,7 @@ import CheckRecord from '@/components/CheckRecord';
 
 const GoodsDetail = (props) => {
   const { visible, onClose, total, getDetail, loading, dispatch, tabkey, cRef } = props;
-  const { show = false, index, detail = {}, status } = visible;
+  const { show = false, index, detail = {}, status, submitterType } = visible;
   const {
     ownerType = 'merchant',
     merchantIdList: mreList = [],
@@ -52,6 +52,7 @@ const GoodsDetail = (props) => {
       const payload = {
         auditId: auditIdString,
         ownerId: ownerIdString,
+        submitterType,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
       };
       dispatch({

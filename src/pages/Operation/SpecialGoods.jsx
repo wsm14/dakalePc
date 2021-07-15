@@ -361,12 +361,12 @@ const SpecialGoods = (props) => {
   };
 
   // 增加库存
-  const fetAddRemain = (id, ownerId,remain) => {
+  const fetAddRemain = (id, ownerId, remain) => {
     setVisibleRemain({
       show: true,
       id,
       ownerId,
-      remain
+      remain,
     });
   };
 

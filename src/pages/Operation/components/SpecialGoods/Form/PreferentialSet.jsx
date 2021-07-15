@@ -41,7 +41,7 @@ const PreferentialSet = ({
   const { goodsTagList = [] } = initialValues;
 
   const goodsTags = goodsTagList
-    .filter((item) => item.tagType === 'platform')
+    .filter((item) => item.tagType === 'merchant')
     .map((key) => key.configGoodsTagId);
   initialValues.goodsTags = goodsTags;
 
@@ -52,13 +52,13 @@ const PreferentialSet = ({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
       });
-      // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
+      // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
         const topCategoryId = list[mreFindIndex].topCategoryId[0];
         // 是否分佣
         getCommissionFlag(topCategoryId);
-        // 平台标签
+        // 商品标签
         getTagsPlat(topCategoryId);
       });
       if (initialValues.ownerType === 'group') {
@@ -101,13 +101,13 @@ const PreferentialSet = ({
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
-  //获取平台商品标签
+  //获取商家商品标签
   const getTagsPlat = (categoryId) => {
     dispatch({
       type: 'baseData/fetchGoodsTagListByCategoryId',
       payload: {
         categoryId: categoryId,
-        tagType: 'platform',
+        tagType: 'merchant',
       },
       callback: (list) => setPlatTaglist(list),
     });
@@ -322,12 +322,22 @@ const PreferentialSet = ({
       // rules: [{ required: false }],
     },
     {
-      label: '平台商品标签',
+      label: '商家商品标签',
       name: 'goodsTags',
       type: 'select',
       mode: 'multiple',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value.length > 3) {
+              return Promise.reject('最多选择3个标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
 
     {

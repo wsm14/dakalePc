@@ -485,7 +485,7 @@ export const ACTION_TYPE = {
   down: '下架审核',
 };
 // 周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
-export const GOODS_CHECK_RESSTATUS = ['待审核', '已通过', '已驳回', '已关闭'];
+export const GOODS_CHECK_RESSTATUS = [false, '已通过', '已驳回', '已关闭'];
 
 // 审核类型
 export const CHECK_TYPE = ['新增审核', '编辑审核'];

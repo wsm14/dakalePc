@@ -301,7 +301,7 @@ const SpecialGoodCheck = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { ownerIdString, auditIdString, auditStatus: status } = list[index];
+    const { ownerIdString, auditIdString, auditStatus: status, submitterType } = list[index];
     dispatch({
       type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
       payload: { ownerId: ownerIdString, auditId: auditIdString, type },
@@ -311,7 +311,14 @@ const SpecialGoodCheck = (props) => {
           detail: { ...val },
         };
         if (type == 'info' || type === 'check') {
-          setVisibleInfo({ status, index, ...newProps, ownerIdString, auditIdString });
+          setVisibleInfo({
+            status,
+            index,
+            ...newProps,
+            ownerIdString,
+            auditIdString,
+            submitterType
+          });
         } else {
           setVisibleSet({ type, ...newProps });
         }

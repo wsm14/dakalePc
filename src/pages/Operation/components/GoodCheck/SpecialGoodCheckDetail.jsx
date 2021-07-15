@@ -13,7 +13,15 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SpecialGoodCheckDetail = (props) => {
   const { visible, onClose, total, getDetail, loading, dispatch, tabkey, cRef } = props;
-  const { show = false, index, detail = {}, status, ownerIdString, auditIdString } = visible;
+  const {
+    show = false,
+    index,
+    detail = {},
+    status,
+    ownerIdString,
+    auditIdString,
+    submitterType
+  } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
   const [visibleRefuse, setVisibleRefuse] = useState(false);
@@ -123,6 +131,7 @@ const SpecialGoodCheckDetail = (props) => {
       //金额转卡豆
       const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
       const payload = {
+        submitterType,
         auditId: auditIdString,
         ownerId: ownerIdString,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
