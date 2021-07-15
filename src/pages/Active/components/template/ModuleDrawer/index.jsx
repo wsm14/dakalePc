@@ -27,9 +27,9 @@ const ModuleDrawer = (props) => {
       payload: {
         id: dataList[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
         index: checkData != -1 ? checkData : dataList.length,
-        type: cell.type,
+        editorType: cell.editorType,
         name: cell.name,
-        data: !cell.drop ? moduleData[cell.type] : dataList[checkData]?.data || null,
+        data: !cell.drop ? moduleData[cell.editorType] : dataList[checkData]?.data || null,
       },
     });
   };
@@ -38,7 +38,7 @@ const ModuleDrawer = (props) => {
   const paneDom = ({ drag, cell, onClick }) => (
     <div
       ref={drag}
-      key={cell.type}
+      key={cell.editorType}
       className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
       onClick={onClick}
     >
@@ -55,7 +55,7 @@ const ModuleDrawer = (props) => {
     }
     // 可拖拽组件
     const [, drag] = useDrag({
-      item: { ...cell, key: cell.type, type: 'Card' },
+      item: { ...cell, type: 'Card' },
       // 开始拖拽 显示放置位置
       begin() {
         setStyBasket(true);
@@ -74,7 +74,7 @@ const ModuleDrawer = (props) => {
         {panelItem.map((item) => (
           <Panel forceRender header={item.header} key={item.type}>
             <div className={styles.module_group}>
-              {item.children.map((type) => dropItem(editor[type]))}
+              {item.children.map((editorType) => dropItem(editor[editorType]))}
             </div>
           </Panel>
         ))}

@@ -5,11 +5,13 @@ import EditorForm from '../editorForm';
 import NativeForm from '../NativeForm';
 import '../index.less';
 
+const showDom = ({ styleIndex = 0, data }) => [`<image src="${data}" style="width: 100%"></image>`][styleIndex];
+
 /**
  * 单图配置
  */
-export default (props) => {
-  const { value = {}, type, cRef } = props;
+const SolaImg = (props) => {
+  const { value = {}, editorType, cRef } = props;
 
   const [form] = Form.useForm();
 
@@ -17,10 +19,9 @@ export default (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: () => {
       return form.validateFields().then((content) => {
-        return { ...content, type };
-        // aliOssUpload(content.data).then((res) => {
-        //   return { ...content, type, data: res.toString() };
-        // });
+        return aliOssUpload(content.data).then((res) => {
+          return { ...content, editorType, data: res.toString() };
+        });
       });
     },
   }));
@@ -47,3 +48,7 @@ export default (props) => {
     </div>
   );
 };
+
+SolaImg.dom = showDom;
+
+export default SolaImg;
