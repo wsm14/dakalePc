@@ -10,7 +10,7 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { index, type, text, data } = showEditor;
+  const { index, type, name, data } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
@@ -58,7 +58,7 @@ const EditorPanel = ({ context }) => {
   return (
     <div className={`${styles.active_Template_right} ${type ? styles.show : ''}`}>
       <div className={styles.heard}>
-        {text}
+        {name}
         <div className={styles.divideLine}></div>
       </div>
       <div className={styles.content}>

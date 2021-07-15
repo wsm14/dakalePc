@@ -80,7 +80,7 @@ const ActiveTemplateIframe = (props) => {
         id: cell?.id || new Date().getTime(), // 需要编辑的组件id
         index,
         type: cell.type,
-        text: cell.text,
+        name: cell.name,
         data: cell?.data || null,
       },
     });

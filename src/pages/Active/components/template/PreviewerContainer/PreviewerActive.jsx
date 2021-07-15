@@ -40,7 +40,7 @@ export default ({ show, index, data, dispatchData }) => {
 
   return (
     <>
-      <div className={styles.previewer_title}>{data[index].text}</div>
+      <div className={styles.previewer_title}>{data[index].name}</div>
       {/* 选择区域高亮 */}
       <div className={`${styles.previewer_active_warp} ${show ? styles.show : ''}`}></div>
       {show && (

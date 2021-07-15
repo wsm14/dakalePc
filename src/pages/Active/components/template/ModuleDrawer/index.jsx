@@ -28,7 +28,7 @@ const ModuleDrawer = (props) => {
         id: dataList[checkData]?.id || new Date().getTime(), // 需要编辑的组件id
         index: checkData != -1 ? checkData : dataList.length,
         type: cell.type,
-        text: cell.text,
+        name: cell.name,
         data: !cell.drop ? moduleData[cell.type] : dataList[checkData]?.data || null,
       },
     });
@@ -43,7 +43,7 @@ const ModuleDrawer = (props) => {
       onClick={onClick}
     >
       <div className={styles.module_cell_icon}>{cell.icon}</div>
-      <span>{cell.text}</span>
+      <span>{cell.name}</span>
     </div>
   );
 

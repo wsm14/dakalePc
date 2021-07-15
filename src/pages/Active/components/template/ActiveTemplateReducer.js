@@ -26,7 +26,7 @@ export const reducerValue = {
   showPanel: null, // 展示区域高亮面板下标
   /**
    * 已储存的模版数据
-   * data = { id:'', type, data }
+   * dataList[showEditor{}]
    */
   moduleData: { backgroundColor: '#ffffff', dataList: [] },
 };
