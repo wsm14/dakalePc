@@ -68,7 +68,7 @@ const ShareDetail = (props) => {
     {
       label: '年龄',
       name: 'age',
-      render: (val) => (val === '1-100' ? '不限' : val),
+      render: (val) => (val === '0-100' ? '不限' : val),
     },
     {
       label: '地域',
