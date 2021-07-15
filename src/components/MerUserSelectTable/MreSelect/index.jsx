@@ -3,6 +3,7 @@ import { Modal } from 'antd';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 import Search from './Search';
+import { checkCityName } from '@/utils/utils';
 
 /**
  *
@@ -53,8 +54,8 @@ const MreSelect = ({
     },
     {
       title: '地区',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '详细地址',

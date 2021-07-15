@@ -1,5 +1,6 @@
 import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 
 const MreSelectShow = ({
   keys = [],
@@ -24,8 +25,8 @@ const MreSelectShow = ({
     },
     {
       title: '地区',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '详细地址',
