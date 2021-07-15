@@ -5,6 +5,7 @@ import { SyncOutlined } from '@ant-design/icons';
 import ExtraButton from '@/components/ExtraButton';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import { checkCityName } from '@/utils/utils';
 
 const { TabPane } = Tabs;
 
@@ -144,8 +145,8 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '省市区',
-      name: 'provinceName',
-      render: (val, row) => `${val} - ${row.cityName} - ${row.districtName}`,
+      name: 'districtCode',
+      render: (val, row) => checkCityName(row.districtCode ),
     },
     {
       label: '详细地址',
