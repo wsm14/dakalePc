@@ -12,6 +12,7 @@ const UserSelectShow = ({
   otherColumns = [],
   onOk,
   onCancelShowSelect,
+  columns=[]
 }) => {
   // table 表头
   const getColumns = [
@@ -48,7 +49,7 @@ const UserSelectShow = ({
       <TableDataBlock
         noCard={false}
         size="small"
-        columns={getColumns}
+        columns={columns|| getColumns}
         rowKey={(record) => `${record.userIdString}`}
         rowSelection={{
           fixed: true,
