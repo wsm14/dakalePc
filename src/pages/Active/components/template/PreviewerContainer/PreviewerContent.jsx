@@ -14,7 +14,5 @@ export default ({ cell }) => {
 
   if (!editor[editorType]?.dom) return '预览组件未配置';
 
-  console.log(editor[editorType]?.dom(cell.data))
-
   return editor[editorType]?.dom(cell.data);
 };
