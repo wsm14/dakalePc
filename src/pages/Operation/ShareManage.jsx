@@ -35,11 +35,12 @@ const ShareManage = (props) => {
 
   //新增打赏人数
   const fetRewardPeo = (userMomentIdString, record) => {
-    const { beanAmount } = record;
+    const { beanAmount, exposureBeanAmount } = record;
     setVisibleReward({
       show: true,
       userMomentIdString,
       beanAmount,
+      exposureBeanAmount,
     });
   };
 
