@@ -21,6 +21,7 @@ const GoodsDetail = (props) => {
     auditIdString,
     ownerIdString,
     merchantList = [],
+    divisionFlag
   } = detail;
 
   const [recordList, setRecordList] = useState({});
@@ -53,6 +54,7 @@ const GoodsDetail = (props) => {
         auditId: auditIdString,
         ownerId: ownerIdString,
         submitterType,
+        divisionFlag,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
       };
       dispatch({
