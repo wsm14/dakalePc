@@ -4,7 +4,7 @@ import { Form, Button, Modal } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import imageCompress from '@/utils/imageCompress';
 import EditorForm from '../editorForm';
-import FormList from './FormLisst';
+import FormList from './FormList';
 import showDomJs from './showDom';
 import '../index.less';
 
