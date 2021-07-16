@@ -3,9 +3,11 @@ import { Form } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import EditorForm from '../editorForm';
 import NativeForm from '../NativeForm';
+import showDomJs from './showDom';
 import '../index.less';
 
-const showDom = ({ styleIndex = 0, data }) => [`<image src="${data}" style="width: 100%"></image>`][styleIndex];
+// 回显dom
+const showDom = showDomJs;
 
 /**
  * 单图配置

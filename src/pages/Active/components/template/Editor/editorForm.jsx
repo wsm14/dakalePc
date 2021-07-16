@@ -36,7 +36,7 @@ const uploadButton = (
 const FormItem = Form.Item;
 const { Option } = Select;
 
-const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
+const FormCondition = ({ form, formItems = [], initialValues = {}, children }) => {
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -288,6 +288,7 @@ const FormCondition = ({ form, formItems = [], initialValues = {} }) => {
         validateMessages={validateMessages}
       >
         {formItems.length ? getFields() : ''}
+        {children}
       </Form>
       <Modal
         title={previewTitle}
