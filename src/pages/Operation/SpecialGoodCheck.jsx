@@ -283,7 +283,7 @@ const SpecialGoodCheck = (props) => {
           {
             type: 'close',
             title: '关闭', //驳回状态可以关闭
-            visible: tabkey === 'merchantConfirmed' && auditStatus === '2',
+            visible: auditStatus === '2',
             click: () => fetchSpecialGoodsClose(record),
           },
         ];
