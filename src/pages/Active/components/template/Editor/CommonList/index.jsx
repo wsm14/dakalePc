@@ -9,7 +9,7 @@ import '../index.less';
 /**
  * 单图配置
  */
-const SolaImg = (props) => {
+const CommonList = (props) => {
   const { value = {}, editorType, cRef } = props;
 
   const [form] = Form.useForm();
@@ -48,6 +48,7 @@ const SolaImg = (props) => {
   );
 };
 
-SolaImg.dom = showDomJs;
+// 回显dom
+CommonList.dom = showDomJs;
 
-export default SolaImg;
+export default CommonList;

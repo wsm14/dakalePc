@@ -8,8 +8,10 @@ import FormList from './FormList';
 import showDomJs from './showDom';
 import '../index.less';
 
-// 回显dom
-const showDom = showDomJs;
+/**
+ * 轮播图配置
+ * value = [{img: "https://resource-new.dakale.net/pre/image/78e20b4c-4c5e-4bf5-8f8c-a35fd9193c5a.jpg",linkType: "H5",path: undefined,url: "121212"}]
+ */
 
 // 图片默认值
 const imgold = (url, uid) => ({
@@ -19,10 +21,6 @@ const imgold = (url, uid) => ({
   url,
 });
 
-/**
- * 轮播图配置
- * value = [{img: "https://resource-new.dakale.net/pre/image/78e20b4c-4c5e-4bf5-8f8c-a35fd9193c5a.jpg",linkType: "H5",path: undefined,url: "121212"}]
- */
 const Carouseal = (props) => {
   const { value, cRef } = props;
 
@@ -156,6 +154,6 @@ const Carouseal = (props) => {
   );
 };
 
-Carouseal.dom = showDom;
+Carouseal.dom = showDomJs;
 
 export default Carouseal;
