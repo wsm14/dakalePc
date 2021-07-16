@@ -52,11 +52,12 @@ const CodeDrawerSet = (props) => {
     },
     {
       title: '昵称',
-      dataIndex: 'orderSn',
+      dataIndex: 'username',
     },
     {
       title: '级别',
-      dataIndex: 'orderSn',
+      dataIndex: 'level',
+      // render: (val) => experLevel[val],
     },
   ];
 
