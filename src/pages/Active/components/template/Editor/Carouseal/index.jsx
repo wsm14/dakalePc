@@ -5,10 +5,11 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import imageCompress from '@/utils/imageCompress';
 import EditorForm from '../editorForm';
 import FormList from './FormList';
+import showDomJs from './showDom';
 import '../index.less';
 
 // 回显dom
-const showDom = [];
+const showDom = showDomJs;
 
 // 图片默认值
 const imgold = (url, uid) => ({
@@ -32,7 +33,7 @@ const Carouseal = (props) => {
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 标题
   const [fileLists, setFileLists] = useState(() => {
     if (!value) return {};
-    const fileobj = value.map((item, i) => [imgold(item.img, i)]);
+    const fileobj = value.list.map((item, i) => [imgold(item.img, i)]);
     return { ...fileobj };
   }); // 文件控制列表
 
@@ -40,14 +41,14 @@ const Carouseal = (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: async () => {
       const values = await form.validateFields();
-      const { data } = values;
-      const fileArr = data.map((item) => {
+      const { list, ...other } = values;
+      const fileArr = list.map((item) => {
         if (typeof item.img === 'string') return item.img;
         else return item.img.fileList[0].originFileObj;
       });
       const res = await aliOssUpload(fileArr);
-      const newdata = data.map((item_1, i) => ({ ...item_1, img: res[i].toString() }));
-      return newdata;
+      const newdata = list.map((item_1, i) => ({ ...item_1, img: res[i].toString() }));
+      return { ...other, list: newdata };
     },
   }));
 
@@ -85,7 +86,7 @@ const Carouseal = (props) => {
           });
           setFileLists({ ...fileLists, [name]: fileList });
         } else {
-          form.getFieldValue('data')[name].img = undefined;
+          form.getFieldValue('list')[name].img = undefined;
           setFileLists({ ...fileLists, [name]: undefined });
         }
       },
@@ -95,10 +96,21 @@ const Carouseal = (props) => {
   return (
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
-      <div className="active_title_msg">图片大小请保持一致，否则将显示异常，高度自适应</div>
-      <EditorForm initialValues={value ? { data: value } : {}} form={form}>
-        <Form.List name="data">
-          {(fields, { add, remove, move }) => {
+      <div className="active_title_msg">图片长宽请保持一致，否则将显示异常，高度自适应</div>
+      <EditorForm initialValues={value || { list: [{}, {}] }} form={form}>
+        <Form.List
+          name="list"
+          rules={[
+            {
+              validator: async (_, names) => {
+                if (!names || names.length < 2) {
+                  return Promise.reject(new Error('请至少添加两张图片'));
+                }
+              },
+            },
+          ]}
+        >
+          {(fields, { add, remove, move }, { errors }) => {
             return (
               <>
                 {fields.map((field, i) => (
@@ -114,6 +126,7 @@ const Carouseal = (props) => {
                     handleUpProps={handleUpProps}
                   ></FormList>
                 ))}
+                <Form.ErrorList errors={errors} />
                 <Form.Item>
                   <Button
                     disabled={fields.length === 5}

@@ -38,6 +38,7 @@ export default {
     drop: true,
     defaultImg: img,
     editorDom: (props) => <Carouseal {...props}></Carouseal>,
+    dom: (props) => Carouseal.dom(props),
   },
   commonList: {
     icon: <ShoppingOutlined style={{ fontSize: 24 }} />,

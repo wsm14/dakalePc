@@ -21,7 +21,7 @@ const SolaImg = (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: () => {
       return form.validateFields().then((content) => {
-        return aliOssUpload(content.data).then((res) => {
+        return aliOssUpload(content.img).then((res) => {
           return { ...content, editorType, img: res.toString() };
         });
       });
@@ -31,7 +31,7 @@ const SolaImg = (props) => {
   const formItems = [
     {
       label: '图片',
-      name: 'data',
+      name: 'img',
       type: 'upload',
       required: true,
       maxFile: 1,

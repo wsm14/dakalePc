@@ -14,5 +14,7 @@ export default ({ cell }) => {
 
   if (!editor[editorType]?.dom) return '预览组件未配置';
 
-  return <div dangerouslySetInnerHTML={{ __html: editor[editorType]?.dom(cell.data) }}></div>;
+  console.log(editor[editorType]?.dom(cell.data))
+
+  return editor[editorType]?.dom(cell.data);
 };
