@@ -28,7 +28,7 @@ const SpecialGoodCheckDetail = (props) => {
   const [merchantList, setMerchantList] = useState([]);
   const [recordList, setRecordList] = useState({});
 
-  const { goodsTagList = [], categoryIdString = '' } = detail;
+  const { goodsTagList = [], categoryIdString = '',divisionFlag } = detail;
 
   useEffect(() => {
     if (show) {
@@ -132,6 +132,7 @@ const SpecialGoodCheckDetail = (props) => {
       const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
       const payload = {
         submitterType,
+        divisionFlag,
         auditId: auditIdString,
         ownerId: ownerIdString,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',

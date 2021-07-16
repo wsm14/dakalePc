@@ -272,12 +272,11 @@ const SpecialGoods = (props) => {
       title: '推广位置',
       fixed: 'right',
       dataIndex: 'recommendType',
-      render: (val, row) => {
-        if ((row.recommendStatus === '0' && (row.topStatus === '0' || !row.topStatus)) || !val)
-          return '';
-        // let tagName = row.topStatus === '0' ? '推荐' : '置顶';
-        return SPECIAL_RECOMMEND_TYPE[val];
-      },
+      render: (val, row) =>
+        val
+          .split(',')
+          .map((item) => SPECIAL_RECOMMEND_TYPE[item])
+          .join('\n'),
     },
     {
       type: 'handle',
