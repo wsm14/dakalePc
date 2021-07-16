@@ -1,6 +1,8 @@
 import { BgColorsOutlined, PictureOutlined, ShoppingOutlined } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
+import Carouseal from './Carouseal';
+import CommonList from './CommonList';
 import img from './Img/img.png';
 import list from './Img/list.png';
 
@@ -36,6 +38,8 @@ export default {
     editorType: 'carouseal',
     drop: true,
     defaultImg: img,
+    editorDom: (props) => <Carouseal {...props}></Carouseal>,
+    dom: (props) => Carouseal.dom(props),
   },
   commonList: {
     icon: <ShoppingOutlined style={{ fontSize: 24 }} />,
@@ -43,5 +47,6 @@ export default {
     editorType: 'commonList',
     drop: true,
     defaultImg: list,
+    editorDom: (props) => <CommonList {...props}></CommonList>,
   },
 };

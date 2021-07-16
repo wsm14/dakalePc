@@ -29,6 +29,7 @@ const ModuleDrawer = (props) => {
         index: checkData != -1 ? checkData : dataList.length,
         editorType: cell.editorType,
         name: cell.name,
+        drop: cell.drop,
         data: !cell.drop ? moduleData[cell.editorType] : dataList[checkData]?.data || null,
       },
     });

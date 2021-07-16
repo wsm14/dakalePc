@@ -10,32 +10,32 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { index, editorType, name, data } = showEditor;
+  const { index, editorType, name, drop, data } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
 
   /**
    * 保存事件
-   * 判断是否是页面dom
+   * 判断是否可拖拽组件 drop 如果不是则数据唯一存在对象外围
    * 如果不是 比如 backgroundColor 则将数据保存在对象外围
-   * 如果是 则保存在 moduleData 的 data[] 内
+   * 如果是 则保存在 moduleData 的 dataList[] 内
    */
   const handleSaveData = () => {
     cRef.current
       .getContent()
       .then((content) => {
         if (!content) return false;
-        const { dom = true } = content;
         let payload = {};
-        if (!dom) {
-          payload = content.data;
+        if (!drop) {
+          payload = content;
         } else {
           const newData = update(dataList, {
             $splice: [[index, 1, { ...showEditor, data: content }]],
           });
           payload = { dataList: newData };
         }
+        console.log('saveModuleData', payload);
         dispatchData({
           type: 'saveModuleData',
           payload,

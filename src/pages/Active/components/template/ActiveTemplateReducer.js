@@ -16,6 +16,7 @@ export const reducerValue = {
     index: '', // 数据下标
     editorType: '', // 组件类型
     name: '', // 组件名称
+    drop: false, // 是否可拖拽
     data: null, // 当前编辑组件的数据 editorType data{表单数据}
   },
   showActive: {

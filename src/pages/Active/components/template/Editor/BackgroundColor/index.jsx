@@ -4,7 +4,7 @@ import { SketchPicker, CirclePicker } from 'react-color';
 /**
  * 颜色选择器
  */
-export default ({ cRef, editorType, value }) => {
+export default ({ cRef, value }) => {
   const [color, setColor] = useState('#ffffff');
 
   useEffect(() => {
@@ -15,11 +15,7 @@ export default ({ cRef, editorType, value }) => {
   useImperativeHandle(cRef, () => ({
     getContent: () =>
       new Promise((resolve) => {
-        resolve({
-          editorType,
-          dom: false,
-          data: { backgroundColor: typeof color === 'string' ? color : color.hex },
-        });
+        resolve({ backgroundColor: typeof color === 'string' ? color : color.hex });
       }),
   }));
 

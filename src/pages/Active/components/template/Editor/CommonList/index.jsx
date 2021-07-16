@@ -4,12 +4,13 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import EditorForm from '../editorForm';
 import NativeForm from '../NativeForm';
 import showDomJs from './showDom';
+import list_1 from './img/list_1.png';
 import '../index.less';
 
 /**
  * 单图配置
  */
-const SolaImg = (props) => {
+const CommonList = (props) => {
   const { value = {}, editorType, cRef } = props;
 
   const [form] = Form.useForm();
@@ -27,11 +28,11 @@ const SolaImg = (props) => {
 
   const formItems = [
     {
-      label: '图片',
-      name: 'img',
-      type: 'upload',
+      label: '模块样式',
+      name: 'styleIndex',
+      type: 'classSelect',
       required: true,
-      maxFile: 1,
+      select: [list_1],
     },
     {
       type: 'noForm',
@@ -42,12 +43,13 @@ const SolaImg = (props) => {
   return (
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
-      <div className="active_title_msg">图片默认宽度100%，高度自适应</div>
-      <EditorForm formItems={formItems} initialValues={value || {}} form={form} />
+      {/* <div className="active_title_msg">图片默认宽度100%，高度自适应</div> */}
+      <EditorForm formItems={formItems} initialValues={value || { styleIndex: 0 }} form={form} />
     </div>
   );
 };
 
-SolaImg.dom = showDomJs;
+// 回显dom
+CommonList.dom = showDomJs;
 
-export default SolaImg;
+export default CommonList;

@@ -27,7 +27,7 @@ const BasketDom = ({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { icon, editorDom, drop, type, ...other } = dropItem;
+      const { icon, editorDom, type, ...other } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
@@ -81,6 +81,7 @@ const ActiveTemplateIframe = (props) => {
         index,
         editorType: cell.editorType,
         name: cell.name,
+        drop: cell.drop,
         data: cell?.data || null,
       },
     });

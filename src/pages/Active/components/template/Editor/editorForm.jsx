@@ -200,20 +200,33 @@ const FormCondition = ({ form, formItems = [], initialValues = {}, children }) =
           </Select>
         ),
         radio: (
-          <Radio.Group onChange={item.onChange} disabled={item.disabled}>
-            {select.map((data, j) => {
-              if (data) {
-                // 兼容数组
-                const value = typeof data == 'string' ? `${j}` : `${data.value}`;
-                const name = data.name ? data.name : data;
-                return (
-                  <Radio key={j} value={value}>
-                    {name}
-                  </Radio>
-                );
-              }
-            })}
-          </Radio.Group>
+          <Radio.Group
+            options={item.select}
+            onChange={item.onChange}
+            disabled={item.disabled}
+            optionType={item.optionType}
+            className={item.className}
+          ></Radio.Group>
+        ),
+        classSelect: (
+          <Radio.Group
+            options={
+              item.select?.map((item, index) => ({
+                value: index,
+                label: (
+                  <div className="class_select_radilo">
+                    <div className="class_index_cell">
+                      <img src={item} />
+                    </div>
+                    <div>样式{index + 1}</div>
+                  </div>
+                ),
+              })) || []
+            }
+            onChange={item.onChange}
+            optionType={'button'}
+            className={'class_select_radil'}
+          ></Radio.Group>
         ),
         switch: <Switch disabled={item.disabled} />,
         upload: (
