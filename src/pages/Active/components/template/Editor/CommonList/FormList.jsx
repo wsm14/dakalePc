@@ -28,13 +28,14 @@ const FormList = (props) => {
         return (
           <>
             <div className={styles.listItem_img}>
-              <img src="https://img.alicdn.com/imgextra/i1/1030217383/O1CN015YnVHM24PSqOEpNNb_!!1030217383.jpg_100x100" />
+              <img src={goodsItem.goodsImg} />
             </div>
             <div className={styles.listItem_info}>
-              <div>{goodsItem.name}</div>
-              <div>店铺名层店铺名层店铺名层店铺名层店铺名层店铺名层</div>
-              <div>￥124512</div>
-              <div className={styles.tip}>￥124512</div>
+              <div>商品名称：{goodsItem.goodsName}</div>
+              <div>原价：￥{goodsItem.realPrice}</div>
+              <div>
+                售价：<span className={styles.tip}>￥{goodsItem.oriPrice}</span>
+              </div>
             </div>
           </>
         );

@@ -1,6 +1,7 @@
-import React, { useImperativeHandle } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 import { Form, Button } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
+import GoodsSelectModal from './components/GoodsSelectModal';
 import FormList from './FormList';
 import EditorForm from '../editorForm';
 import showDomJs from './showDom';
@@ -14,6 +15,7 @@ const CommonList = (props) => {
   const { value = {}, editorType, cRef } = props;
 
   const [form] = Form.useForm();
+  const [visible, setVisible] = useState(false);
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
@@ -69,7 +71,7 @@ const CommonList = (props) => {
                   ></FormList>
                 ))}
                 <Form.Item>
-                  <Button disabled={fields.length === 50} block>
+                  <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
                     {fields.length} / {50} 选择商品
                   </Button>
                 </Form.Item>
@@ -78,6 +80,11 @@ const CommonList = (props) => {
           }}
         </Form.List>
       </EditorForm>
+      <GoodsSelectModal
+        form={form}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></GoodsSelectModal>
     </div>
   );
 };

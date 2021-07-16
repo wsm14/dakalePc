@@ -108,31 +108,40 @@ const SearchCondition = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, i) => {
-      const { type = 'input', name, handle, label, ...other } = item;
+      const { type = 'input', name, handle, label, col = true, ...other } = item;
       // 根据类型获取不同的表单组件
       const SearchItem = Searchor[type];
 
       const colcount = expand ? len : count;
-
-      // 排版填充
-      children.push(
-        <Col
-          lg={i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
-          xl={i < colcount ? 12 : 0}
-          xxl={i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
-          key={i}
-        >
-          <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
-            <SearchItem
-              type={type}
-              label={label}
-              name={name}
-              {...other}
-              {...(handle && handle(form || ownForm))}
-            ></SearchItem>
-          </FormItem>
-        </Col>,
+      const block = (
+        <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
+          <SearchItem
+            type={type}
+            label={label}
+            name={name}
+            {...other}
+            {...(handle && handle(form || ownForm))}
+          ></SearchItem>
+        </FormItem>
       );
+      // 排版填充
+      if (col) {
+        children.push(
+          <Col
+            lg={i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
+            xl={i < colcount ? 12 : 0}
+            xxl={i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
+            key={i}
+          >
+            {block}
+          </Col>,
+        );
+      } else
+        children.push(
+          <Col span={12} key={i}>
+            {block}
+          </Col>,
+        );
     });
     children.push(
       expand && (
