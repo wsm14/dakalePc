@@ -5,7 +5,7 @@ export default {
   namespace: 'globalConfig',
 
   state: {
-    list: [],
+    list: {},
   },
 
   reducers: {
@@ -18,17 +18,12 @@ export default {
   },
 
   effects: {
-    *fetchInviteImgList({ payload }, { call, put }) {
+    *fetchInviteImgList({ payload, callback }, { call, put }) {
       const response = yield call(fetchInviteImgList, payload);
       if (!response) return;
-      const { content } = response;
-      console.log(response,"ddd")
-    //   yield put({
-    //     type: 'save',
-    //     payload: {
-    //       list: content.locationCityList,
-    //     },
-    //   });
+      const { content = {} } = response;
+      const list = { shareImg: content.shareImg };
+      callback(list);
     },
     *fetchInviteImgSave({ payload, callback }, { call }) {
       const response = yield call(fetchInviteImgSave, payload);
