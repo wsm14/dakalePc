@@ -2,6 +2,7 @@ import { BgColorsOutlined, PictureOutlined, ShoppingOutlined } from '@ant-design
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
+import CommonList from './CommonList';
 import img from './Img/img.png';
 import list from './Img/list.png';
 
@@ -46,5 +47,6 @@ export default {
     editorType: 'commonList',
     drop: true,
     defaultImg: list,
+    editorDom: (props) => <CommonList {...props}></CommonList>,
   },
 };

@@ -4,6 +4,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 import EditorForm from '../editorForm';
 import NativeForm from '../NativeForm';
 import showDomJs from './showDom';
+import list_1 from './img/list_1.png';
 import '../index.less';
 
 /**
@@ -27,11 +28,11 @@ const CommonList = (props) => {
 
   const formItems = [
     {
-      label: '图片',
-      name: 'img',
-      type: 'upload',
+      label: '模块样式',
+      name: 'styleIndex',
+      type: 'classSelect',
       required: true,
-      maxFile: 1,
+      select: [list_1],
     },
     {
       type: 'noForm',
@@ -42,8 +43,8 @@ const CommonList = (props) => {
   return (
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
-      <div className="active_title_msg">图片默认宽度100%，高度自适应</div>
-      <EditorForm formItems={formItems} initialValues={value || {}} form={form} />
+      {/* <div className="active_title_msg">图片默认宽度100%，高度自适应</div> */}
+      <EditorForm formItems={formItems} initialValues={value || { styleIndex: 0 }} form={form} />
     </div>
   );
 };
