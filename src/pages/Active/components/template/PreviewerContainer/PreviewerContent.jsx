@@ -12,5 +12,7 @@ export default ({ cell }) => {
   // 无数据时展示
   if (!data) return <img src={defaultImg} style={{ width: '100%' }} />;
 
+  if (!editor[editorType]?.dom) return '预览组件未配置';
+
   return <div dangerouslySetInnerHTML={{ __html: editor[editorType]?.dom(cell.data) }}></div>;
 };

@@ -59,16 +59,16 @@ const FormList = (props) => {
       </Form.Item>
       <Form.Item shouldUpdate>
         {({ getFieldValue }) => {
-          const linkType = getFieldValue('content')[field.name];
+          const linkType = getFieldValue('data')[field.name];
           return (
             <div>
               <Form.Item name={[field.name, 'linkType']} fieldKey={[field.fieldKey, 'linkType']}>
                 <Radio
                   select={BANNER_JUMP_TYPE}
                   onChange={() => {
-                    const saveData = form.getFieldValue('content')[field.name];
-                    if (!saveData) form.getFieldValue('content')[field.name] = {};
-                    form.getFieldValue('content')[field.name].path = undefined;
+                    const saveData = form.getFieldValue('data')[field.name];
+                    if (!saveData) form.getFieldValue('data')[field.name] = {};
+                    form.getFieldValue('data')[field.name].path = undefined;
                   }}
                 ></Radio>
               </Form.Item>
