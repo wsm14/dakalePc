@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
+import { NATIVE_PATH_TYPE } from '../nativePath';
 import { Radio, Input, Select } from '@/components/FormCondition/formModule';
 
 const FormItem = Form.Item;
@@ -35,7 +36,7 @@ const NativeForm = ({ form }) => {
           if (getFieldValue('linkType') === 'inside') {
             return (
               <Form.Item key={`path`} label="链接" name={'path'} rules={[{ required: true }]}>
-                <Select placeholder="请选择跳转页面" select={[]} />
+                <Select placeholder="请选择跳转页面" select={NATIVE_PATH_TYPE} />
               </Form.Item>
             );
           }
@@ -43,7 +44,7 @@ const NativeForm = ({ form }) => {
       </FormItem>
       <FormItem noStyle shouldUpdate={(pre, cur) => pre.path !== cur.path}>
         {({ getFieldValue }) =>
-          getFieldValue('path') === 'merchant' && (
+          getFieldValue('path') === 'goMerchantBox' && (
             <Form.Item key={`data`} label="数据" name={'data'} rules={[{ required: true }]}>
               <Input
                 placeholder="请选择跳转的数据"

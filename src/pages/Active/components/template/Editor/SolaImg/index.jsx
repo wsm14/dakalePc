@@ -22,7 +22,7 @@ const SolaImg = (props) => {
     getContent: () => {
       return form.validateFields().then((content) => {
         return aliOssUpload(content.data).then((res) => {
-          return { ...content, editorType, data: res.toString() };
+          return { ...content, editorType, img: res.toString() };
         });
       });
     },
