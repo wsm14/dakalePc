@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 
 const RewardPeo = (props) => {
   const { onClose, visible = {}, childRef, loading, dispatch } = props;
-  const { show = false, userMomentIdString, beanAmount } = visible;
+  const { show = false, userMomentIdString, beanAmount, exposureBeanAmount } = visible;
   const [total, setTotal] = useState('');
   const [form] = Form.useForm();
 
@@ -55,13 +55,14 @@ const RewardPeo = (props) => {
         <Col span={6} style={{ textAlign: 'right', marginRight: 5 }}>
           打赏卡豆数:
         </Col>
-        <Col>{beanAmount}卡豆/人</Col>
+        <Col>{Number(beanAmount) + Number(exposureBeanAmount)}卡豆/人</Col>
       </Row>
       <FormCondition
         form={form}
         formItems={formItems}
         onValuesChange={(val) => {
-          const numTotal = Number(beanAmount) * Number(val.beanPersonAmount);
+          const numTotal =
+            (Number(beanAmount) + Number(exposureBeanAmount)) * Number(val.beanPersonAmount);
           setTotal(numTotal);
         }}
       ></FormCondition>
