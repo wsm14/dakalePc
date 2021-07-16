@@ -1,8 +1,8 @@
 import React, { useImperativeHandle } from 'react';
-import { Form } from 'antd';
+import { Form, Button } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
+import FormList from './FormList';
 import EditorForm from '../editorForm';
-import NativeForm from '../NativeForm';
 import showDomJs from './showDom';
 import list_1 from './img/list_1.png';
 import '../index.less';
@@ -34,17 +34,50 @@ const CommonList = (props) => {
       required: true,
       select: [list_1],
     },
-    {
-      type: 'noForm',
-      children: <NativeForm key="native" form={form}></NativeForm>,
-    },
   ];
 
   return (
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
       {/* <div className="active_title_msg">图片默认宽度100%，高度自适应</div> */}
-      <EditorForm formItems={formItems} initialValues={value || { styleIndex: 0 }} form={form} />
+      <EditorForm formItems={formItems} initialValues={value || { styleIndex: 0 }} form={form}>
+        <div className="active_title">选择商品</div>
+        <Form.List
+          name="list"
+          rules={[
+            {
+              validator: async (_, names) => {
+                if (!names || names.length < 1) {
+                  return Promise.reject(new Error('请至少选择1个商品'));
+                }
+              },
+            },
+          ]}
+        >
+          {(fields, { remove, move }, { errors }) => {
+            return (
+              <>
+                <Form.ErrorList errors={errors} />
+                {fields.map((field, i) => (
+                  <FormList
+                    key={field.fieldKey}
+                    form={form}
+                    fields={fields}
+                    field={field}
+                    remove={remove}
+                    move={move}
+                  ></FormList>
+                ))}
+                <Form.Item>
+                  <Button disabled={fields.length === 50} block>
+                    {fields.length} / {50} 选择商品
+                  </Button>
+                </Form.Item>
+              </>
+            );
+          }}
+        </Form.List>
+      </EditorForm>
     </div>
   );
 };

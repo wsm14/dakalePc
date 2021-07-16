@@ -1,5 +1,4 @@
 import React, { useImperativeHandle, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
 import { Form, Button, Modal } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import imageCompress from '@/utils/imageCompress';
@@ -133,7 +132,7 @@ const Carouseal = (props) => {
                     }}
                     block
                   >
-                    <PlusOutlined /> {fields.length} / {5} 添加
+                    {fields.length} / {5} 添加
                   </Button>
                 </Form.Item>
               </>
