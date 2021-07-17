@@ -40,14 +40,7 @@ const FormList = (props) => {
           </>
         );
       })()}
-      {fields.length > 1 && (
-        <MinusCircleOutlined
-          style={{ marginBottom: 12 }}
-          onClick={() => {
-            remove(field.name);
-          }}
-        />
-      )}
+      {fields.length > 1 && <MinusCircleOutlined onClick={() => remove(field.name)} />}
     </Space>
   );
 };

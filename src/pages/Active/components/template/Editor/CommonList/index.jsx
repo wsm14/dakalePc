@@ -1,6 +1,5 @@
 import React, { useImperativeHandle, useState } from 'react';
 import { Form, Button } from 'antd';
-import aliOssUpload from '@/utils/aliOssUpload';
 import GoodsSelectModal from './components/GoodsSelectModal';
 import FormList from './FormList';
 import EditorForm from '../editorForm';
@@ -12,7 +11,7 @@ import '../index.less';
  * 单图配置
  */
 const CommonList = (props) => {
-  const { value = {}, editorType, cRef } = props;
+  const { value = {}, cRef } = props;
 
   const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
@@ -21,9 +20,7 @@ const CommonList = (props) => {
   useImperativeHandle(cRef, () => ({
     getContent: () => {
       return form.validateFields().then((content) => {
-        return aliOssUpload(content.img).then((res) => {
-          return { ...content, editorType, img: res.toString() };
-        });
+        return content;
       });
     },
   }));
