@@ -15,7 +15,7 @@ const TemplateContext = createContext();
  */
 
 const ActiveTemplate = (props) => {
-  const { visible, onClose, loading } = props;
+  const { visible, dispatch, onClose, loading } = props;
 
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [styBasket, setStyBasket] = useState(false);
@@ -39,7 +39,9 @@ const ActiveTemplate = (props) => {
   return (
     <TemplateContext.Provider value={{ ...moduleReducer, dispatchData }}>
       <Drawer
-        title={<SideMenu onClose={onClose} context={TemplateContext}></SideMenu>}
+        title={
+          <SideMenu onClose={onClose} dispatch={dispatch} context={TemplateContext}></SideMenu>
+        }
         height={'100%'}
         placement="top"
         closable={false}

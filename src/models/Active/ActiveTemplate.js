@@ -1,5 +1,8 @@
 import { notification } from 'antd';
+import oss from 'ali-oss';
+import { uuid } from '@/utils/utils';
 import {
+  fetchGetOss,
   fetchActiveAdd,
   fetchActiveEdit,
   fetchSourceMerchant,
@@ -25,14 +28,27 @@ export default {
   },
 
   effects: {
-    *fetchActiveAdd({ payload, callback }, { call, put }) {
-      const response = yield call(fetchActiveAdd, payload);
+    *fetchGetOss({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetOss, { uploadType: 'resource', fileType: 'html' });
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '新增活动成功',
+      const { folder, host, securityToken: stsToken } = response.content;
+      const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...response.content });
+      let _fileRath = `${folder}/${uuid()}.html`;
+      client.put(_fileRath, payload.file).then((res) => {
+        const { status, statusCode } = res.res;
+        if (status === 200 && statusCode === 200) {
+          callback(host + _fileRath);
+          notification.info({
+            message: '温馨提示',
+            description: '上传成功',
+          });
+        } else {
+          notification.info({
+            message: '温馨提示',
+            description: '上传失败',
+          });
+        }
       });
-      callback();
     },
     *fetchActiveEdit({ payload, callback }, { call, put }) {
       const response = yield call(fetchActiveEdit, payload);

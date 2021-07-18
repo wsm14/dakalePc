@@ -1,6 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import { Button, Space, Row, Col, Modal, Popover, Spin } from 'antd';
+import aliOssUpload from '@/utils/aliOssUpload';
 import QRCode from 'qrcode.react';
+import init from '../CreateHtml';
 
 /**
  * 顶部显示区域
@@ -8,16 +10,7 @@ import QRCode from 'qrcode.react';
 const SideMenu = (props) => {
   const { onClose, context, dispatch, loading } = props;
 
-  const { info, dispatchData, showActive } = useContext(context);
-
-  const { activeUrl, activeHtml, activePreviewQr } = showActive;
-  // 提交模版数据
-  const handleSaveModuleData = (save = true) => {
-    dispatchData({
-      type: 'showActive',
-      payload: { activePreviewQr: true, save },
-    });
-  };
+  const { info, dispatchData, moduleData } = useContext(context);
 
   // 获取activeUrl 文件名 覆盖原文件
   const getHtmlDocName = () => {
@@ -28,32 +21,35 @@ const SideMenu = (props) => {
   };
 
   // 获取html生成文件上传oss
-  const fetchSaveModuleData = (moduleHtml) => {
+  const fetchSaveModuleData = () => {
+    console.log(moduleData, init());
     let fileUrl = '';
-    if (activeUrl) fileUrl = getHtmlDocName();
-    const blob = new Blob([moduleHtml], { type: 'text/html' });
+    // if (activeUrl) fileUrl = getHtmlDocName();
+    const blob = new Blob([init()], { type: 'text/html' });
+    console.log(blob);
+    dispatch({
+      type: 'activeTemplate/fetchGetOss',
+      payload: { file: blob },
+      callback: (data) => console.log(data),
+    });
     // aliOssUpload(blob, '', 'active', fileUrl).then((res) => {
-    //   if (!save) {
-    //     dispatchData({
-    //       type: 'showActive',
-    //       payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
-    //     });
-    //   } else {
+    //   console.log(res);
+    //   // if (!save) {
+    //   //   dispatchData({
+    //   //     type: 'showActive',
+    //   //     payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
+    //   //   });
+    //   // } else {
     //     // dispatch({
     //     //   type: !promotionActivityId
     //     //     ? 'activeTemplate/fetchActiveAdd'
     //     //     : 'activeTemplate/fetchActiveEdit',
     //     //   payload: { jumpUrl: res.toString(), promotionActivityId, activityTitle: info.activeName },
     //     //   callback: () => onClose(),
-    //     // });
+    //     // });}
     //   }
-    // });
+    // );
   };
-
-  // 监听html提交改变 获取值 生成文件
-  useEffect(() => {
-    if (activeHtml) fetchSaveModuleData(activeHtml);
-  }, [activeHtml]);
 
   useEffect(() => {
     return () => {
@@ -69,12 +65,12 @@ const SideMenu = (props) => {
           <Popover
             placement="bottom"
             onVisibleChange={(v) => {
-              if (v) handleSaveModuleData(false);
+              if (v) fetchSaveModuleData();
             }}
             content={
-              <Spin spinning={activePreviewQr}>
+              <Spin spinning={true}>
                 <QRCode
-                  value={`${activeUrl}?timestamp=${new Date().getTime()}`} //value参数为生成二维码的链接
+                  value={`${'activeUrl'}?timestamp=${new Date().getTime()}`} //value参数为生成二维码的链接
                   size={150} //二维码的宽高尺寸
                   fgColor="#000000" //二维码的颜色
                 />
@@ -104,7 +100,7 @@ const SideMenu = (props) => {
           >
             关闭
           </Button>
-          <Button type="primary" loading={loading} onClick={handleSaveModuleData}>
+          <Button type="primary" loading={loading} onClick={fetchSaveModuleData}>
             保存
           </Button>
         </Space>

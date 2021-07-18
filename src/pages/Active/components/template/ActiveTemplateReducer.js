@@ -19,11 +19,6 @@ export const reducerValue = {
     drop: false, // 是否可拖拽
     data: null, // 当前编辑组件的数据 editorType data{表单数据}
   },
-  showActive: {
-    activeUrl: '', // 活动的url路径
-    activePreviewQr: true, // 活动的qr显示
-    activeHtml: '', // 活动的html
-  },
   showPanel: null, // 展示区域高亮面板下标
   /**
    * 已储存的模版数据

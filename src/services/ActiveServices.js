@@ -1,5 +1,12 @@
 import request from '@/utils/request';
 
+// get 获取oss凭证 - 上传网页
+export async function fetchGetOss(params) {
+  return request('/common/oss/getOssPolicy', {
+    params,
+  });
+}
+
 // get 版本列表 - 列表
 export async function fetchAllocationList(params) {
   return request('/common/promotion/osVersion', {
