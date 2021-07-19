@@ -6,7 +6,7 @@ import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
 const ActiveTemplate = () => {
   const [visible, setVisible] = useState({ show: false, info: {} });
-  const [visibleName, setVisibleName] = useState({ show: false, info: { activeName: '' } });
+  const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
 
   /**
    * 模版选项
@@ -26,9 +26,9 @@ const ActiveTemplate = () => {
   const handleSelectActive = (item) => setVisibleName({ show: true, info: item });
 
   // 输入活动名称回调
-  const handleSetActiveName = (activeName) => {
+  const handleSetActiveName = (activityName) => {
     setVisibleName(false); // 关闭输入框
-    setVisible({ show: true, info: { ...visibleName.info, activeName } }); // 显示模版编辑
+    setVisible({ show: true, info: { ...visibleName.info, activityName } }); // 显示模版编辑
   };
 
   return (

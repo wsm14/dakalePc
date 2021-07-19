@@ -12,7 +12,7 @@ const SideMenu = (props) => {
 
   const { dispatchData, moduleData, info = {} } = useContext(context);
 
-  const { activeName, type } = info;
+  const { activityName, type } = info;
 
   const [previewerUrl, setPreviewerUrl] = useState(); // 预览连接
 
@@ -30,7 +30,7 @@ const SideMenu = (props) => {
     if (show === 'previewer') setPreviewerUrl('');
     let fileName = uuid();
     // if (activeUrl) fileUrl = getHtmlDocName();
-    const blob = new Blob([init({ ...moduleData, activeName })], { type: 'text/html' });
+    const blob = new Blob([init({ ...moduleData, activityName })], { type: 'text/html' });
     dispatch({
       type: 'activeTemplate/fetchGetOss',
       payload: { file: blob, fileName, show },
@@ -43,7 +43,7 @@ const SideMenu = (props) => {
         }
         dispatch({
           type: 'activeTemplate/fetchActiveAdd',
-          payload: { jumpUrl, activityName: activeName, templateType: type },
+          payload: { jumpUrl, activityName: activityName, templateType: type },
           callback: () => {
             message.destroy();
             onClose();
@@ -61,7 +61,7 @@ const SideMenu = (props) => {
 
   return (
     <Row align="middle">
-      <Col flex="auto">使用模版 - {activeName}</Col>
+      <Col flex="auto">使用模版 - {activityName}</Col>
       <Col>
         <Space>
           <Popover

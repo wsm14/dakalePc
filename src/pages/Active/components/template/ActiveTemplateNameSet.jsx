@@ -11,14 +11,14 @@ const ActiveTemplateNameSet = (props) => {
   // 提交表单
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      callback(values.activeName);
+      callback(values.activityName);
     });
   };
 
   const formItems = [
     {
       label: '活动名称',
-      name: 'activeName',
+      name: 'activityName',
       onPressEnter: (e) => fetchGetFormData(e.target.value),
     },
   ];

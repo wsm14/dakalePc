@@ -36,3 +36,10 @@ export async function fetchActiveList(params) {
     params,
   });
 }
+
+// get 活动列表 - 详情
+export async function fetchActiveDetail(params) {
+  return request('/admin/activityTemplate/getActivityTemplateById', {
+    params,
+  });
+}
