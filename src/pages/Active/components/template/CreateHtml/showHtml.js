@@ -45,7 +45,7 @@ const commonList = (styleIndex) => {
       ${item.goodsName}
       </div>
       <div style="font-size: ${vw(12)};margin-top: ${vw(
-        8,
+        10,
       )};color: #999999; display: flex; align-items: center;">
           <img src="${item.ownerImg}" style="border-radius: 50%;width: ${vw(15)};height: ${vw(
         15,
@@ -54,11 +54,11 @@ const commonList = (styleIndex) => {
       </div>
       <div style="width: 100%; display: flex; align-items: flex-end">
         <div style="flex: 1">
-          <div style="font-size: ${vw(12)}; color: #999999; margin-top: ${vw(16)}">
-            原价: <span style="text-decoration: line-through">¥${item.realPrice}</span>
+          <div style="font-size: ${vw(12)}; color: #999999; margin-top: ${vw(17)}">
+            原价：<span style="text-decoration: line-through">¥${item.realPrice}</span>
           </div>
-          <div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(4)}">
-            优惠价:<span style="font-size: ${vw(14)}; font-weight: bold">¥${item.oriPrice}</span>
+          <div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(7)}">
+            优惠价：<span style="font-size: ${vw(14)}; font-weight: bold">¥${item.oriPrice}</span>
           </div></div>
         <div data-key="specialActivityId,merchantId" data-specialActivityId=${
           item.specialGoodsId
