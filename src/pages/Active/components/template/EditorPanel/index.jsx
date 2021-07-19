@@ -10,7 +10,7 @@ const EditorPanel = ({ context }) => {
   const { dispatchData, showEditor, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { index, editorType, name, drop, data } = showEditor;
+  const { index, id, editorType, name, drop, data } = showEditor;
 
   // 关闭编辑框
   const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
@@ -64,7 +64,7 @@ const EditorPanel = ({ context }) => {
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
           {editor[editorType] && editor[editorType].editorDom
-            ? editor[editorType]?.editorDom({ cRef, editorType, value: data })
+            ? editor[editorType]?.editorDom({ id, cRef, editorType, value: data })
             : '控件暂未配置'}
         </div>
       </div>

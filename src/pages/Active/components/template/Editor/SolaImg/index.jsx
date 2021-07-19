@@ -10,7 +10,7 @@ import '../index.less';
  * 单图配置
  */
 const SolaImg = (props) => {
-  const { value = {}, editorType, cRef } = props;
+  const { id, value = {}, editorType, cRef } = props;
 
   const [form] = Form.useForm();
 
@@ -43,7 +43,7 @@ const SolaImg = (props) => {
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
       <div className="active_title_msg">图片默认宽度100%，高度自适应</div>
-      <EditorForm formItems={formItems} initialValues={value || {}} form={form} />
+      <EditorForm formItems={formItems} id={id} initialValues={value || {}} form={form} />
     </div>
   );
 };

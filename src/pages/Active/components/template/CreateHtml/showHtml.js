@@ -1,6 +1,23 @@
 // 单张图片
-const solaImg = ({ img }) =>
-  (document.body.innerHTML += `<img src="${img}" style="width: 100vw" ></img>`);
+const solaImg = ({ img }) => {
+  document.body.innerHTML += `<img src="${img}" style="width: 100vw" ></img>`;
+};
+
+// 轮播图片
+const carouseal = ({ list }) => {
+  document.body.innerHTML += `<div class="swiper-container">
+  <div class="swiper-wrapper">
+    ${list
+      .map(
+        (item) =>
+          `<div class="swiper-slide">
+        <img src="${item.img}" style="width: 100%"></img>
+      </div>`,
+      )
+      .join('')}
+  </div>
+  </div>`;
+};
 
 // 商品列表
 const commonList = (styleIndex) => {
@@ -42,8 +59,8 @@ const commonList = (styleIndex) => {
             优惠价:<span style="font-size: ${vw(14)}; font-weight: bold">¥${item.oriPrice}</span>
           </div></div>
         <div data-key="specialActivityId,merchantId" data-specialActivityId=${
-            item.specialGoodsId
-          } data-merchantId=${
+          item.specialGoodsId
+        } data-merchantId=${
         item.ownerIdString
       } data-path="goods" onclick="handleGoNative(this)" style="width: ${vw(52)};height: ${vw(
         27,
@@ -57,4 +74,4 @@ const commonList = (styleIndex) => {
   ][styleIndex];
 };
 
-export default { solaImg, commonList };
+export default { solaImg, commonList, carouseal };

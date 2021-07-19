@@ -36,7 +36,7 @@ const uploadButton = (
 const FormItem = Form.Item;
 const { Option } = Select;
 
-const FormCondition = ({ form, formItems = [], initialValues = {}, children }) => {
+const FormCondition = ({ form, id, formItems = [], initialValues = {}, children }) => {
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -75,6 +75,46 @@ const FormCondition = ({ form, formItems = [], initialValues = {}, children }) =
     });
     return fileobj;
   }); // 文件控制列表
+
+  const fileCheckArr = () => {
+    const fileobj = {};
+    formItems.map((item, i) => {
+      const { name } = item;
+      if (item.type === 'upload') {
+        if (Object.keys(initialValues).length) {
+          if (Array.isArray(name)) {
+            if (!initialValues[name[0]]) {
+              fileobj[name[1]] = [];
+              return;
+            }
+            const urlfile = initialValues[name[0]][name[1]];
+            fileobj[name[1]] = urlfile ? [imgold(urlfile, i)] : [];
+            return;
+          }
+          const fileArrar = initialValues[name];
+          if (fileArrar && !!fileArrar.fileList) {
+            fileobj[name] = fileArrar.fileList;
+            return;
+          }
+          fileobj[name] = !Array.isArray(fileArrar)
+            ? fileArrar && fileArrar.length > 0
+              ? fileArrar.indexOf(',') > -1
+                ? fileArrar.split(',').map((v, i) => imgold(v, i))
+                : [imgold(fileArrar, i)]
+              : []
+            : fileArrar.map((v, i) => imgold(v, i));
+        } else {
+          fileobj[Array.isArray(name) ? name[1] : name] = [];
+        }
+      }
+    });
+    return fileobj;
+  };
+
+  useEffect(() => {
+    form.resetFields();
+    setFileLists(fileCheckArr());
+  }, [id]);
 
   // 图片获取预览base64
   const getBase64 = (file) => {

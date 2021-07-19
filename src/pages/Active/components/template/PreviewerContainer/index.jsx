@@ -71,6 +71,7 @@ const ActiveTemplateIframe = (props) => {
 
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell, index) => {
+    console.log(cell, index)
     // 高亮选择项目
     dispatchData({ type: 'showPanel', payload: index });
     // 编辑区域模组显示

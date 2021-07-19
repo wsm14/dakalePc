@@ -1,16 +1,16 @@
 import React from 'react';
 import { Carousel } from 'antd';
 
-// 回显dom styleIndex 样式序号
+// 回显dom 样式序号
 export default (value) => {
-  const { styleIndex = 0, list = [] } = value;
-  return [
+  const { list = [] } = value;
+  return (
     <Carousel autoplay>
       {list.map((item) => (
-        <div>
+        <div key={item.img}>
           <img src={item.img} style={{ width: '100%' }}></img>
         </div>
       ))}
-    </Carousel>,
-  ][styleIndex];
+    </Carousel>
+  );
 };

@@ -46,6 +46,7 @@ export const fetchReducerEdit = (state, action) => {
         ...payload,
       };
     case 'showEditor':
+      console.log(action.payload)
       return {
         ...state,
         showEditor: action.payload,

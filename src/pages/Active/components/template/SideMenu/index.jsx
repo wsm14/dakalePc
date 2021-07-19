@@ -22,10 +22,10 @@ const SideMenu = (props) => {
 
   // 获取html生成文件上传oss
   const fetchSaveModuleData = () => {
-    console.log(moduleData, init());
+    console.log(moduleData, init(moduleData));
     let fileUrl = '';
     // if (activeUrl) fileUrl = getHtmlDocName();
-    const blob = new Blob([init()], { type: 'text/html' });
+    const blob = new Blob([init(moduleData)], { type: 'text/html' });
     dispatch({
       type: 'activeTemplate/fetchGetOss',
       payload: { file: blob },

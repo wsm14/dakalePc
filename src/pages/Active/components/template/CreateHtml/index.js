@@ -9,6 +9,7 @@ const scriptTag = (text) => `<script>${text}</script>`;
 
 const init = (htmlData = {}) => {
   const { dataList, backgroundColor } = htmlData;
+  console.log(htmlData);
   // 网页头部
   const htmlHeard = `<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8"/>
@@ -19,12 +20,17 @@ const init = (htmlData = {}) => {
   <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
   ${scriptTag(native)}
   </head><body>`;
-  // 网页底部
-  const htmlFooter = '</body></html>';
+  const carousealLink = `
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"> </script>`;
+  const carousealScript = `var mySwiper = new Swiper('.swiper-container', {autoplay:true, loop: true})`;
+  let carousealCheck = false;
+
   // 网页内容组件
   const bodyContent = dataList
     .map((item) => {
       const { editorType, data } = item;
+      if (editorType === 'carouseal') carousealCheck = true;
       if (typeof data.styleIndex === 'number') {
         return scriptTag(
           `(${showHtml[editorType](data.styleIndex).toString()})(${JSON.stringify(data.list)})`,
@@ -34,7 +40,9 @@ const init = (htmlData = {}) => {
       }
     })
     .join('');
-  return htmlHeard + bodyContent + htmlFooter;
+  // 网页底部
+  const htmlFooter = `</body>${scriptTag(carousealScript)}</html>`;
+  return htmlHeard + (carousealCheck ? carousealLink : '') + bodyContent + htmlFooter;
 };
 
 export default init;
