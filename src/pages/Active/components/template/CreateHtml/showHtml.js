@@ -2,7 +2,7 @@
 const solaImg = ({ img, linkType, url, path }) => {
   document.body.innerHTML += `<img src="${img}" data-linkType="${linkType}" data-path="${
     url || path
-  }" style="width: 100vw" onclick="handleGoNative(this)"></img>`;
+  }" style="width: 100vw;display: block;" onclick="handleGoNative(this)"></img>`;
 };
 
 // 轮播图片
@@ -11,10 +11,10 @@ const carouseal = ({ list }) => {
   <div class="swiper-wrapper">
     ${list
       .map(
-        (item) =>
-          `<div class="swiper-slide">
-        <img src="${item.img}" style="width: 100%"></img>
-      </div>`,
+        ({ img, linkType, url, path }) =>
+          `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${
+            url || path
+          }" style="width: 100%;display: block;" onclick="handleGoNative(this)"></img></div>`,
       )
       .join('')}
   </div>
