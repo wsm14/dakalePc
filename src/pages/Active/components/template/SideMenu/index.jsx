@@ -30,7 +30,16 @@ const SideMenu = (props) => {
     if (show === 'previewer') setPreviewerUrl('');
     let fileName = uuid();
     if (handle === 'edit') fileName = getHtmlDocName();
-    const blob = new Blob([init({ ...moduleData, activityName })], { type: 'text/html' });
+    const blob = new Blob(
+      [
+        init({
+          ...moduleData,
+          dataList: moduleData.dataList.filter((item) => item.data),
+          activityName,
+        }),
+      ],
+      { type: 'text/html' },
+    );
     dispatch({
       type: 'activeTemplate/fetchGetOss',
       payload: { file: blob, fileName, show },
