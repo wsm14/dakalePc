@@ -12,13 +12,13 @@ const SideMenu = (props) => {
 
   const { dispatchData, moduleData, info = {} } = useContext(context);
 
-  const { activityName, type } = info;
+  const { activityName, type, jumpUrl, handle, activityTemplateId } = info;
 
   const [previewerUrl, setPreviewerUrl] = useState(); // 预览连接
 
   // 获取activeUrl 文件名 覆盖原文件
   const getHtmlDocName = () => {
-    let str = activeUrl;
+    let str = jumpUrl;
     str = str.substring(str.lastIndexOf('/') + 1);
     str = str.substring(0, str.lastIndexOf('.'));
     return str;
@@ -29,7 +29,7 @@ const SideMenu = (props) => {
     message.loading({ content: '文件创建中...' });
     if (show === 'previewer') setPreviewerUrl('');
     let fileName = uuid();
-    // if (activeUrl) fileUrl = getHtmlDocName();
+    if (handle === 'edit') fileName = getHtmlDocName();
     const blob = new Blob([init({ ...moduleData, activityName })], { type: 'text/html' });
     dispatch({
       type: 'activeTemplate/fetchGetOss',
@@ -42,8 +42,15 @@ const SideMenu = (props) => {
           return;
         }
         dispatch({
-          type: 'activeTemplate/fetchActiveAdd',
-          payload: { jumpUrl, activityName: activityName, templateType: type },
+          type:
+            handle === 'edit' ? 'activeTemplate/fetchActiveEdit' : 'activeTemplate/fetchActiveAdd',
+          payload: {
+            activityTemplateId,
+            jumpUrl,
+            activityName: activityName,
+            templateType: type,
+            params: JSON.stringify(moduleData),
+          },
           callback: () => {
             message.destroy();
             onClose();

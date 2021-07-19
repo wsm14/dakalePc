@@ -14,11 +14,6 @@ const ActiveListComponent = (props) => {
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
 
-  // 修改设置活动名称
-  const handleSetActiveName = (initialValues) => {
-    setVisibleName({ show: true, info: initialValues });
-  };
-
   // table 表头
   const getColumns = [
     {
@@ -102,6 +97,12 @@ const ActiveListComponent = (props) => {
       message.success('复制成功！');
     }
     document.body.removeChild(copyDOMs);
+  };
+
+  // 修改设置活动名称
+  const handleSetActiveName = (activityName) => {
+    setVisibleName(false); // 关闭输入框
+    setVisible({ show: true, info: { ...visibleName.info, activityName } }); // 显示模版编辑
   };
 
   // 获取详情

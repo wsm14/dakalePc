@@ -30,11 +30,17 @@ export default {
         },
       });
     },
-    *fetchActiveDetail({ payload, callback }, { call, put }) {
+    *fetchActiveDetail({ payload, callback }, { call }) {
       const response = yield call(fetchActiveDetail, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.activityTemplate);
+      const { templateType, params } = content.activityTemplate;
+      callback({
+        ...content.activityTemplate,
+        type: templateType,
+        params: JSON.parse(params || '{}'),
+        handle: 'edit',
+      });
     },
   },
 };

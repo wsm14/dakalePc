@@ -23,8 +23,10 @@ const ActiveTemplate = (props) => {
 
   useEffect(() => {
     if (visible.show) {
+      const { params, handle } = info;
       // 初始化数据
       dispatchData({ type: 'initialize' });
+      handle === 'edit' && dispatchData({ type: 'saveModuleData', payload: params });
       // 拦截页面关闭刷新
       const listener = (ev) => {
         ev.preventDefault();

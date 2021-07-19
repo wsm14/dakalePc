@@ -1,11 +1,13 @@
 import React from 'react';
 import { Modal, Form } from 'antd';
+import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 
 const ActiveTemplateNameSet = (props) => {
   const { visible = {}, onClose, callback } = props;
 
-  const { show = '', info = [] } = visible;
+  const { show = '', info = {} } = visible;
+
   const [form] = Form.useForm();
 
   // 提交表单
@@ -25,7 +27,7 @@ const ActiveTemplateNameSet = (props) => {
 
   return (
     <Modal
-      title={`活动名称设置 - ${info.title}`}
+      title={`活动名称设置 - ${ACTIVE_TEMPLATE_TYPE[info.type]}`}
       width={548}
       destroyOnClose
       visible={show}
