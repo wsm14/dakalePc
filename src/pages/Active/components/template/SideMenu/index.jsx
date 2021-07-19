@@ -58,7 +58,10 @@ const SideMenu = (props) => {
             jumpUrl,
             activityName: activityName,
             templateType: type,
-            params: JSON.stringify(moduleData),
+            params: JSON.stringify({
+              ...moduleData,
+              dataList: moduleData.dataList.filter((item) => item.data), // 空数据不进入
+            }),
           },
           callback: () => {
             message.destroy();
