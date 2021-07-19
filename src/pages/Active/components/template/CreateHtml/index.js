@@ -106,11 +106,8 @@ const testData = {
   ],
 };
 
-// 跳转事件
-const handleGoNative = `function handleGoNative(e){let keyObj={};e.getAttribute('data-key').split(',').map((item)=>{keyObj[item]=e.getAttribute('data-'+item)});const path=e.getAttribute('data-path');const params={path,params:keyObj};native.nativeInit('linkTo',{ios:params,android:params,miniProgram:params,})}`;
-
 const init = (htmlData = {}) => {
-  const { dataList, backgroundColor } = testData;
+  const { dataList, backgroundColor } = htmlData;
   // 网页头部
   const htmlHeard = `<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8"/>
@@ -136,7 +133,7 @@ const init = (htmlData = {}) => {
       }
     })
     .join('');
-  return htmlHeard + scriptTag(handleGoNative) + bodyContent + htmlFooter;
+  return htmlHeard + bodyContent + htmlFooter;
 };
 
 export default init;
