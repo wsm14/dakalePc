@@ -3,6 +3,7 @@ import oss from 'ali-oss';
 import { uuid } from '@/utils/utils';
 import {
   fetchGetOss,
+  fetchSpecialGoodsSelect,
   fetchActiveAdd,
   fetchActiveEdit,
   fetchSourceMerchant,
@@ -15,7 +16,7 @@ export default {
 
   state: {
     merList: { list: [], total: 0 },
-    goodsList: { list: [], total: 0 },
+    specialGoods: { list: [], total: 0 },
   },
 
   reducers: {
@@ -50,14 +51,16 @@ export default {
         }
       });
     },
-    *fetchActiveEdit({ payload, callback }, { call, put }) {
-      const response = yield call(fetchActiveEdit, payload);
+    *fetchSpecialGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchSpecialGoodsSelect, payload);
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '修改活动成功',
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          specialGoods: { list: content.recordList, total: content.total },
+        },
       });
-      callback();
     },
     *fetchSourceMerchant({ payload, callback }, { call }) {
       const response = yield call(fetchSourceMerchant, payload);

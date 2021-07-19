@@ -7,6 +7,15 @@ export async function fetchGetOss(params) {
   });
 }
 
+// get 获取特惠商品选择列表
+export async function fetchSpecialGoodsSelect(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsForActivityTemp', {
+    params,
+  });
+}
+
+// --------------------------------------------------
+
 // get 版本列表 - 列表
 export async function fetchAllocationList(params) {
   return request('/common/promotion/osVersion', {

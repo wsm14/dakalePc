@@ -28,36 +28,31 @@ const commonList = (styleIndex) => {
       <div style="font-size: ${vw(12)};margin-top: ${vw(
         8,
       )};color: #999999; display: flex; align-items: center;">
-          <img src="https://resource-new.dakale.net/dev/image/1edfa57711200a22c5ad6a006e961f7e.jpg" style="border-radius: 50%;width: ${vw(
-            15,
-          )};height: ${vw(15)};margin-right: ${vw(4)}"></img>
-          鲜丰水果
+          <img src="${item.ownerImg}" style="border-radius: 50%;width: ${vw(15)};height: ${vw(
+        15,
+      )};margin-right: ${vw(4)};background-color: #f5f5f5;"></img>
+          ${item.ownerName}
       </div>
-        <div style="width: 100%; display: flex; align-items: flex-end">
-          <div style="flex: 1">
-            <div style="font-size: ${vw(12)}; color: #999999; margin-top: ${vw(16)}">
-              原价: <span style="text-decoration: line-through">¥${item.realPrice}</span>
-            </div>
-            <div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(4)}">
-              优惠价:
-              <span style="font-size: ${vw(14)}; font-weight: bold">¥${item.oriPrice}</span>
-            </div>
+      <div style="width: 100%; display: flex; align-items: flex-end">
+        <div style="flex: 1">
+          <div style="font-size: ${vw(12)}; color: #999999; margin-top: ${vw(16)}">
+            原价: <span style="text-decoration: line-through">¥${item.realPrice}</span>
           </div>
-          <div data-key="id,type" data-id=${
+          <div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(4)}">
+            优惠价:<span style="font-size: ${vw(14)}; font-weight: bold">¥${item.oriPrice}</span>
+          </div></div>
+        <div data-key="specialActivityId,merchantId" data-specialActivityId=${
             item.specialGoodsId
-          } data-type="goods" onclick="handleGoNative(this)" style="width: ${vw(52)};height: ${vw(
+          } data-merchantId=${
+        item.ownerIdString
+      } data-path="goods" onclick="handleGoNative(this)" style="width: ${vw(52)};height: ${vw(
         27,
       )};border-radius: ${vw(13)};font-size: ${vw(
         14,
       )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;">
-            抢购
-          </div>
-        </div>
-      </div>
-    </div>`,
+      抢购</div></div></div></div>`,
     )
-    .join('')}
-</div>`;
+    .join('')}</div>`;
     },
   ][styleIndex];
 };

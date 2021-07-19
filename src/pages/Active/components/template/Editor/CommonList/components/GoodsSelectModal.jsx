@@ -27,7 +27,7 @@ const GoodsSelectModal = (props) => {
   const searchItems = [
     {
       label: '选择店铺',
-      name: 'merchantId',
+      name: 'ownerId',
       type: 'merchant',
       col: false,
     },
@@ -43,12 +43,11 @@ const GoodsSelectModal = (props) => {
 
   // 获取特惠活动
   const fetchSpecialGoodsList = (data) => {
-    if (!data.merchantId) return;
+    if (!data.ownerId) return;
     dispatch({
-      type: 'baseData/fetchGetSpecialGoodsSelect',
+      type: 'activeTemplate/fetchSpecialGoodsSelect',
       payload: {
         ...data,
-        goodsStatus: 1,
         page: 1,
         limit: 999,
       },
@@ -65,7 +64,7 @@ const GoodsSelectModal = (props) => {
   };
 
   const listDom = (
-    <Spin spinning={!!loading.effects['baseData/fetchGetSpecialGoodsSelect']}>
+    <Spin spinning={!!loading.effects['activeTemplate/fetchSpecialGoodsSelect']}>
       {listProps?.list?.length ? (
         <div className="share_select_list">
           {listProps?.list.map(
@@ -111,7 +110,7 @@ const GoodsSelectModal = (props) => {
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  specialGoodsList: baseData.specialGoods,
+export default connect(({ activeTemplate, loading }) => ({
+  specialGoodsList: activeTemplate.specialGoods,
   loading,
 }))(GoodsSelectModal);

@@ -1,6 +1,7 @@
 /**
  * 新建html文件
  */
+import native from './native';
 import showHtml from './showHtml';
 
 // script
@@ -105,6 +106,9 @@ const testData = {
   ],
 };
 
+// 跳转事件
+const handleGoNative = `function handleGoNative(e){let keyObj={};e.getAttribute('data-key').split(',').map((item)=>{keyObj[item]=e.getAttribute('data-'+item)});const path=e.getAttribute('data-path');const params={path,params:keyObj};native.nativeInit('linkTo',{ios:params,android:params,miniProgram:params,})}`;
+
 const init = (htmlData = {}) => {
   const { dataList, backgroundColor } = testData;
   // 网页头部
@@ -114,6 +118,8 @@ const init = (htmlData = {}) => {
   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui, viewport-fit=cover"/>
   <title>Document</title>
   <style>*{box-sizing:border-box;}html,body{background-color:${backgroundColor};width:100vw;height:100%;margin:0;padding:0;line-height: 1;-webkit-overflow-scrolling: touch;}</style>
+  <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+  ${scriptTag(native)}
   </head><body>`;
   // 网页底部
   const htmlFooter = '</body></html>';
@@ -130,17 +136,7 @@ const init = (htmlData = {}) => {
       }
     })
     .join('');
-  return (
-    htmlHeard +
-    scriptTag(`function handleGoNative(e) {
-    let keyObj = {};
-    e.getAttribute("data-key").split(',').map(item => {
-      keyObj[item] = e.getAttribute("data-"+item)
-    })
-    }`) +
-    bodyContent +
-    htmlFooter
-  );
+  return htmlHeard + scriptTag(handleGoNative) + bodyContent + htmlFooter;
 };
 
 export default init;

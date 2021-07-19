@@ -49,10 +49,16 @@ export default ({ styleIndex = 0, list = [] }) => {
               }}
             >
               <img
-                style={{ borderRadius: '50%', width: 15, height: 15, marginRight: 4 }}
-                src="https://resource-new.dakale.net/dev/image/1edfa57711200a22c5ad6a006e961f7e.jpg"
+                style={{
+                  borderRadius: '50%',
+                  width: 15,
+                  height: 15,
+                  marginRight: 4,
+                  backgroundColor: '#f5f5f5',
+                }}
+                src={item.ownerImg}
               ></img>
-              鲜丰水果｜200m
+              {item.ownerName}
             </div>
             <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}>
               <div style={{ flex: 1 }}>

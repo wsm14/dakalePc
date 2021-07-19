@@ -8,7 +8,7 @@ import list_1 from './img/list_1.png';
 import '../index.less';
 
 /**
- * 单图配置
+ * 商品列表
  */
 const CommonList = (props) => {
   const { value = {}, cRef } = props;

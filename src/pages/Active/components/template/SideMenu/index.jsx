@@ -26,7 +26,6 @@ const SideMenu = (props) => {
     let fileUrl = '';
     // if (activeUrl) fileUrl = getHtmlDocName();
     const blob = new Blob([init()], { type: 'text/html' });
-    console.log(blob);
     dispatch({
       type: 'activeTemplate/fetchGetOss',
       payload: { file: blob },
