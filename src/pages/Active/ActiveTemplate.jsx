@@ -28,7 +28,7 @@ const ActiveTemplate = () => {
   // 输入活动名称回调
   const handleSetActiveName = (activeName) => {
     setVisibleName(false); // 关闭输入框
-    setVisible({ show: true, info: { ...visibleName.info, activeName } }); // 显示模版编辑
+    setVisible({ show: true, activeName }); // 显示模版编辑
   };
 
   return (
