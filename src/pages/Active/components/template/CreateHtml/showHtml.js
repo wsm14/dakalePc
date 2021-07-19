@@ -55,10 +55,10 @@ const commonList = (styleIndex) => {
       <div style="width: 100%; display: flex; align-items: flex-end">
         <div style="flex: 1">
           <div style="font-size: ${vw(12)}; color: #999999; margin-top: ${vw(17)}">
-            原价：<span style="text-decoration: line-through">¥${item.realPrice}</span>
+            原价：<span style="text-decoration: line-through">¥${item.oriPrice}</span>
           </div>
           <div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(7)}">
-            优惠价：<span style="font-size: ${vw(14)}; font-weight: bold">¥${item.oriPrice}</span>
+            优惠价：<span style="font-size: ${vw(14)}; font-weight: bold">¥${item.realPrice}</span>
           </div></div>
         <div data-key="specialActivityId,merchantId" data-specialActivityId=${
           item.specialGoodsId

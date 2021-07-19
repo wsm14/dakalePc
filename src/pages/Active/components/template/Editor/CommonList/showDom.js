@@ -63,11 +63,11 @@ export default ({ styleIndex = 0, list = [] }) => {
             <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}>
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 12, color: '#999999', marginTop: 16 }}>
-                  原价: <span style={{ textDecoration: 'line-through' }}>¥{item.realPrice}</span>
+                  原价: <span style={{ textDecoration: 'line-through' }}>¥{item.oriPrice}</span>
                 </div>
                 <div style={{ fontSize: 12, color: '#333333', marginTop: 4 }}>
                   优惠价:
-                  <span style={{ fontSize: 14, fontWeight: 'bold' }}>¥{item.oriPrice}</span>
+                  <span style={{ fontSize: 14, fontWeight: 'bold' }}>¥{item.realPrice}</span>
                 </div>
               </div>
               <div

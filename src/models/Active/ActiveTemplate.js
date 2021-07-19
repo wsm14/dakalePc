@@ -6,16 +6,12 @@ import {
   fetchSpecialGoodsSelect,
   fetchActiveAdd,
   fetchActiveEdit,
-  fetchSourceMerchant,
-  fetchSourceGoods,
-  fetchActiveList,
 } from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeTemplate',
 
   state: {
-    merList: { list: [], total: 0 },
     specialGoods: { list: [], total: 0 },
   },
 
@@ -29,20 +25,16 @@ export default {
   },
 
   effects: {
-    *fetchGetOss({ payload, callback }, { call, put }) {
+    *fetchGetOss({ payload, callback }, { call }) {
       const response = yield call(fetchGetOss, { uploadType: 'resource', fileType: 'html' });
       if (!response) return;
       const { folder, host, securityToken: stsToken } = response.content;
       const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...response.content });
-      let _fileRath = `${folder}/${uuid()}.html`;
+      let _fileRath = `${folder}/${payload.show}/${uuid()}.html`;
       client.put(_fileRath, payload.file).then((res) => {
         const { status, statusCode } = res.res;
         if (status === 200 && statusCode === 200) {
           callback(host + _fileRath);
-          notification.info({
-            message: '温馨提示',
-            description: '上传成功',
-          });
         } else {
           notification.info({
             message: '温馨提示',
@@ -62,23 +54,14 @@ export default {
         },
       });
     },
-    *fetchSourceMerchant({ payload, callback }, { call }) {
-      const response = yield call(fetchSourceMerchant, payload);
+    *fetchActiveAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchActiveAdd, payload);
       if (!response) return;
-      const { content } = response;
-      callback({ list: content.recordList, total: content.total });
-    },
-    *fetchActiveList({ payload, callback }, { call }) {
-      const response = yield call(fetchActiveList, payload);
-      if (!response) return;
-      const { content } = response;
-      callback({ list: content.recordList, total: content.total });
-    },
-    *fetchSourceGoods({ payload, callback }, { call }) {
-      const response = yield call(fetchSourceGoods, payload);
-      if (!response) return;
-      const { content } = response;
-      callback({ list: content.recordList, total: content.total });
+      notification.success({
+        message: '温馨提示',
+        description: '创建成功',
+      });
+      callback();
     },
   },
 };

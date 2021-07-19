@@ -5,8 +5,8 @@ import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
 const ActiveTemplate = () => {
-  const [visible, setVisible] = useState({ show: true, info: {} });
-  const [visibleName, setVisibleName] = useState({ show: false, info: { activeName: '11' } });
+  const [visible, setVisible] = useState({ show: false, info: {} });
+  const [visibleName, setVisibleName] = useState({ show: false, info: { activeName: '' } });
 
   /**
    * 模版选项
@@ -28,7 +28,7 @@ const ActiveTemplate = () => {
   // 输入活动名称回调
   const handleSetActiveName = (activeName) => {
     setVisibleName(false); // 关闭输入框
-    setVisible({ show: true, activeName }); // 显示模版编辑
+    setVisible({ show: true, info: { ...visible.info, activeName } }); // 显示模版编辑
   };
 
   return (

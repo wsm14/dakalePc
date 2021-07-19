@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react';
-import { Button, Space, Row, Col, Modal, Popover, Spin } from 'antd';
+import React, { useEffect, useState, useContext } from 'react';
+import { Button, Space, Row, Col, Modal, Popover, Spin, message } from 'antd';
 import QRCode from 'qrcode.react';
 import init from '../CreateHtml';
 
@@ -9,7 +9,11 @@ import init from '../CreateHtml';
 const SideMenu = (props) => {
   const { onClose, context, dispatch, loading } = props;
 
-  const { dispatchData, moduleData, activeName } = useContext(context);
+  const { dispatchData, moduleData, info = {} } = useContext(context);
+
+  const { activeName, type } = info;
+
+  const [previewerUrl, setPreviewerUrl] = useState(); // 预览连接
 
   // 获取activeUrl 文件名 覆盖原文件
   const getHtmlDocName = () => {
@@ -19,15 +23,32 @@ const SideMenu = (props) => {
     return str;
   };
 
-  // 获取html生成文件上传oss
-  const fetchSaveModuleData = () => {
+  // 获取html生成文件上传oss previewer 预览 active 创建
+  const fetchSaveModuleData = (show) => {
+    message.loading({ content: '文件创建中...' });
+    if (show === 'previewer') setPreviewerUrl('');
     let fileUrl = '';
     // if (activeUrl) fileUrl = getHtmlDocName();
     const blob = new Blob([init({ ...moduleData, activeName })], { type: 'text/html' });
     dispatch({
       type: 'activeTemplate/fetchGetOss',
-      payload: { file: blob },
-      callback: (data) => console.log(data),
+      payload: { file: blob, show },
+      callback: (jumpUrl) => {
+        // 预览显示
+        if (show === 'previewer') {
+          setPreviewerUrl(jumpUrl);
+          message.destroy();
+          return;
+        }
+        dispatch({
+          type: 'activeTemplate/fetchActiveAdd',
+          payload: { jumpUrl, activityName: activeName, templateType: type },
+          callback: () => {
+            message.destroy();
+            onClose();
+          },
+        });
+      },
     });
   };
 
@@ -45,12 +66,12 @@ const SideMenu = (props) => {
           <Popover
             placement="bottom"
             onVisibleChange={(v) => {
-              if (v) fetchSaveModuleData();
+              if (v) fetchSaveModuleData('previewer');
             }}
             content={
-              <Spin spinning={true}>
+              <Spin spinning={!previewerUrl}>
                 <QRCode
-                  value={`${'activeUrl'}?timestamp=${new Date().getTime()}`} //value参数为生成二维码的链接
+                  value={`${previewerUrl}?timestamp=${new Date().getTime()}`} //value参数为生成二维码的链接
                   size={150} //二维码的宽高尺寸
                   fgColor="#000000" //二维码的颜色
                 />
@@ -80,7 +101,7 @@ const SideMenu = (props) => {
           >
             关闭
           </Button>
-          <Button type="primary" loading={loading} onClick={fetchSaveModuleData}>
+          <Button type="primary" loading={loading} onClick={() => fetchSaveModuleData('active')}>
             保存
           </Button>
         </Space>
