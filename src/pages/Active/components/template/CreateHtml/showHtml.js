@@ -1,6 +1,8 @@
 // 单张图片
-const solaImg = ({ img }) => {
-  document.body.innerHTML += `<img src="${img}" style="width: 100vw" ></img>`;
+const solaImg = ({ img, linkType, url, path }) => {
+  document.body.innerHTML += `<img src="${img}" data-linkType="${linkType}" data-path="${
+    url || path
+  }" style="width: 100vw" onclick="handleGoNative(this)"></img>`;
 };
 
 // 轮播图片
@@ -62,9 +64,9 @@ const commonList = (styleIndex) => {
           item.specialGoodsId
         } data-merchantId=${
         item.ownerIdString
-      } data-path="goods" onclick="handleGoNative(this)" style="width: ${vw(52)};height: ${vw(
-        27,
-      )};border-radius: ${vw(13)};font-size: ${vw(
+      } data-path="goods" data-linkType="inside" onclick="handleGoNative(this)" style="width: ${vw(
+        52,
+      )};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
         14,
       )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;">
       抢购</div></div></div></div>`,

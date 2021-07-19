@@ -9,7 +9,6 @@ const scriptTag = (text) => `<script>${text}</script>`;
 
 const init = (htmlData = {}) => {
   const { dataList, backgroundColor } = htmlData;
-  console.log(htmlData);
   // 网页头部
   const htmlHeard = `<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8"/>
@@ -41,7 +40,7 @@ const init = (htmlData = {}) => {
     })
     .join('');
   // 网页底部
-  const htmlFooter = `</body>${scriptTag(carousealScript)}</html>`;
+  const htmlFooter = `</body>${carousealCheck ? scriptTag(carousealScript) : ''}</html>`;
   return htmlHeard + (carousealCheck ? carousealLink : '') + bodyContent + htmlFooter;
 };
 
