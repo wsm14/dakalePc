@@ -3,13 +3,6 @@
  */
 export const reducerValue = {
   show: false, // 模版编辑是否显示
-  // 模版信息
-  info: {
-    img: '', // 模版封面
-    id: '', // 模版id
-    title: '活动模版', // 模版名字
-    activeName: '', // 活动名称
-  },
   // 组件编辑模块显示内容
   showEditor: {
     id: '', // 组件id

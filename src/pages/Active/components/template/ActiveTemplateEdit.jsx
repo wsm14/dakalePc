@@ -19,7 +19,7 @@ const ActiveTemplate = (props) => {
 
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
   const [styBasket, setStyBasket] = useState(false);
-
+  const { activeName } = visible;
   useEffect(() => {
     if (visible.show) {
       // 初始化数据
@@ -37,7 +37,7 @@ const ActiveTemplate = (props) => {
   }, [visible.show]);
 
   return (
-    <TemplateContext.Provider value={{ ...moduleReducer, dispatchData }}>
+    <TemplateContext.Provider value={{ ...moduleReducer, activeName, dispatchData }}>
       <Drawer
         title={
           <SideMenu onClose={onClose} dispatch={dispatch} context={TemplateContext}></SideMenu>

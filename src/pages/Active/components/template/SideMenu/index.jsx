@@ -1,6 +1,5 @@
 import React, { useEffect, useContext } from 'react';
 import { Button, Space, Row, Col, Modal, Popover, Spin } from 'antd';
-import aliOssUpload from '@/utils/aliOssUpload';
 import QRCode from 'qrcode.react';
 import init from '../CreateHtml';
 
@@ -10,7 +9,7 @@ import init from '../CreateHtml';
 const SideMenu = (props) => {
   const { onClose, context, dispatch, loading } = props;
 
-  const { info, dispatchData, moduleData } = useContext(context);
+  const { dispatchData, moduleData, activeName } = useContext(context);
 
   // 获取activeUrl 文件名 覆盖原文件
   const getHtmlDocName = () => {
@@ -22,32 +21,14 @@ const SideMenu = (props) => {
 
   // 获取html生成文件上传oss
   const fetchSaveModuleData = () => {
-    console.log(moduleData, init(moduleData));
     let fileUrl = '';
     // if (activeUrl) fileUrl = getHtmlDocName();
-    const blob = new Blob([init(moduleData)], { type: 'text/html' });
+    const blob = new Blob([init({ ...moduleData, activeName })], { type: 'text/html' });
     dispatch({
       type: 'activeTemplate/fetchGetOss',
       payload: { file: blob },
       callback: (data) => console.log(data),
     });
-    // aliOssUpload(blob, '', 'active', fileUrl).then((res) => {
-    //   console.log(res);
-    //   // if (!save) {
-    //   //   dispatchData({
-    //   //     type: 'showActive',
-    //   //     payload: { activeUrl: res.toString(), activePreviewQr: false, activeHtml: '' },
-    //   //   });
-    //   // } else {
-    //     // dispatch({
-    //     //   type: !promotionActivityId
-    //     //     ? 'activeTemplate/fetchActiveAdd'
-    //     //     : 'activeTemplate/fetchActiveEdit',
-    //     //   payload: { jumpUrl: res.toString(), promotionActivityId, activityTitle: info.activeName },
-    //     //   callback: () => onClose(),
-    //     // });}
-    //   }
-    // );
   };
 
   useEffect(() => {
@@ -58,7 +39,7 @@ const SideMenu = (props) => {
 
   return (
     <Row align="middle">
-      <Col flex="auto">使用模版 - {info.activeName}</Col>
+      <Col flex="auto">使用模版 - {activeName}</Col>
       <Col>
         <Space>
           <Popover
