@@ -263,7 +263,7 @@ const ShareManage = (props) => {
           {
             type: 'rewardPeo',
             title: '新增打赏人数',
-            visible: record.rewardCycle == '0',
+            visible: status == 1,
             click: () => fetRewardPeo(userMomentIdString, record),
           },
         ];
