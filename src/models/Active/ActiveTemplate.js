@@ -1,6 +1,5 @@
 import { notification } from 'antd';
 import oss from 'ali-oss';
-import { uuid } from '@/utils/utils';
 import {
   fetchGetOss,
   fetchSpecialGoodsSelect,
@@ -30,7 +29,7 @@ export default {
       if (!response) return;
       const { folder, host, securityToken: stsToken } = response.content;
       const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...response.content });
-      let _fileRath = `${folder}/${payload.show}/${uuid()}.html`;
+      let _fileRath = `${folder}/${payload.show}/${payload.fileName}.html`;
       client.put(_fileRath, payload.file).then((res) => {
         const { status, statusCode } = res.res;
         if (status === 200 && statusCode === 200) {
@@ -60,6 +59,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '创建成功',
+      });
+      callback();
+    },
+    *fetchActiveEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchActiveEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '修改成功',
       });
       callback();
     },

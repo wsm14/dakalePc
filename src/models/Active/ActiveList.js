@@ -25,7 +25,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
+          list: content.activityTemplateList,
           total: content.total,
         },
       });

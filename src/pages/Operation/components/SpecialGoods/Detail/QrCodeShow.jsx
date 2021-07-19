@@ -40,16 +40,6 @@ const QrCodeShow = ({ url = null, onCancel, title, data = {} }) => {
     document.body.removeChild(copyDOMs);
   };
 
-  // const handleCopy = (e) => {
-  //   console.log(e.target.dataset.url);
-  //   const range = document.createRange();
-  //   window.getSelection().removeAllRanges();
-  //   range.selectNodeContents();
-  //   range.selectNode(e.target);
-  //   window.getSelection().addRange(range);
-  //   const suessUrl = document.execCommand('copy');
-  // };
-
   return (
     <Modal title={title} visible={url} onCancel={onCancel} footer={null}>
       <div>

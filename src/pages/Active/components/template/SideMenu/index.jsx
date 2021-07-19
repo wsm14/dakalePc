@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Button, Space, Row, Col, Modal, Popover, Spin, message } from 'antd';
+import { uuid } from '@/utils/utils';
 import QRCode from 'qrcode.react';
 import init from '../CreateHtml';
 
@@ -27,12 +28,12 @@ const SideMenu = (props) => {
   const fetchSaveModuleData = (show) => {
     message.loading({ content: '文件创建中...' });
     if (show === 'previewer') setPreviewerUrl('');
-    let fileUrl = '';
+    let fileName = uuid();
     // if (activeUrl) fileUrl = getHtmlDocName();
     const blob = new Blob([init({ ...moduleData, activeName })], { type: 'text/html' });
     dispatch({
       type: 'activeTemplate/fetchGetOss',
-      payload: { file: blob, show },
+      payload: { file: blob, fileName, show },
       callback: (jumpUrl) => {
         // 预览显示
         if (show === 'previewer') {

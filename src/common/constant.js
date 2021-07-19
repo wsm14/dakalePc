@@ -542,3 +542,8 @@ export const COMMISSION_TYPE = {
   merchantParent: '商家家主分佣',
   daren: '哒人分佣',
 };
+
+// 活动模版类型
+export const ACTIVE_TEMPLATE_TYPE = {
+  public: '通用模版',
+};

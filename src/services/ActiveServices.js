@@ -22,19 +22,17 @@ export function fetchActiveAdd(data) {
   });
 }
 
-// --------------------------------------------------
-
-// get 版本列表 - 列表
-export async function fetchActiveList(params) {
-  return request('/common/promotion/osVersion', {
-    params,
+// post 活动配置 - 修改
+export function fetchActiveEdit(data) {
+  return request('/admin/activityTemplate/updateActivityTemplate', {
+    method: 'POST',
+    data,
   });
 }
 
-// post 活动配置 - 修改
-export function fetchAllocationSetEdit(data) {
-  return request('/common/promotion/updatePromotion', {
-    method: 'POST',
-    data,
+// get 活动列表 - 列表
+export async function fetchActiveList(params) {
+  return request('/admin/activityTemplate/listActivityTemplate', {
+    params,
   });
 }
