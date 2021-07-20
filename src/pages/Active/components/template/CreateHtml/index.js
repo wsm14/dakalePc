@@ -7,6 +7,44 @@ import showHtml from './showHtml';
 // script
 const scriptTag = (text) => `<script>${text}</script>`;
 
+const scriptProxy = `const renderByToken = (callback) => {
+  this.token = '';
+  this.render = callback;
+  this.getUrlKey = (name) => {
+      return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null;
+  }
+  this.initToken = () => {
+      if(new nativeOther().getPhone() ==='miniProgram'){
+          this.token = getUrlKey('token')
+      } else {
+          native.nativeInit('getToken', {}, (val) => {
+              if (val && val.length > 0) {
+                  this.token = val
+              }
+          })
+      }
+  }
+  this.initProxy =  () =>{
+      let that = this
+      that.datas = new Proxy(this.token,{
+          get: function(target, p, receiver) {
+
+          },
+          set: function(target, p, value, receiver) {
+              this.render(that.token)
+          }
+      })
+  }
+  this.init = () => {
+      this.initProxy();
+      this.initToken()
+  }
+};
+
+new renderByToken().init();
+${scriptTag(scriptProxy)}
+`;
+
 const init = (htmlData = {}) => {
   const { dataList, backgroundColor, activityName } = htmlData;
   // 网页头部

@@ -411,7 +411,6 @@ export default {
       const response = yield call(fetchGetGoodsSearch, payload);
       if (!response) return;
       const { content } = response;
-      console.log(content, 'content');
       yield put({
         type: 'save',
         payload: {

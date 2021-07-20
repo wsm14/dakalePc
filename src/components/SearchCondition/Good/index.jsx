@@ -17,18 +17,21 @@ const GoodSelect = (props) => {
     loading,
     placeholder,
     multiple = false,
+    params = {},
+    disabled,
     onChange,
   } = props;
 
   const { label = 'name', value = 'value', tip = 'otherData' } = fieldNames;
 
   // 搜索店铺
-  const fetchGetMre = debounce((goodsName) => {
-    if (!goodsName || goodsName.length < 2) return;
+  const fetchGetMre = debounce((activityName) => {
+    if (!activityName || activityName.length < 2) return;
     dispatch({
       type: 'baseData/fetchGetGoodsSearch',
       payload: {
-        goodsName,
+        activityName,
+        ...params,
       },
     });
   }, 500);
@@ -53,6 +56,7 @@ const GoodSelect = (props) => {
       onSearch={(val) => fetchGetMre(val)}
       onChange={onChange}
       maxTagTextLength={5}
+      disabled={disabled}
       {...multProps}
     >
       {selectList.map((data, j) => {

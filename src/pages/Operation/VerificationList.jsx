@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge } from 'antd';
 import { ORDERS_TYPE, GOODS_CLASS_TYPE, ORDER_TYPE_PROPS } from '@/common/constant';
@@ -13,6 +13,7 @@ const VerificationList = (props) => {
   const { verificationList, loading } = props;
 
   const childRef = useRef();
+  const [merchantId, setMerchantId] = useState();
 
   // 搜索参数
   const searchItems = [
@@ -29,11 +30,14 @@ const VerificationList = (props) => {
       label: '店铺名',
       name: 'merchantId',
       type: 'merchant',
+      onChange: (val) => setMerchantId(val),
     },
     {
-      label: '商品名称',
+      label: '商品/券名称',
       name: 'goodsId',
       type: 'good',
+      disabled: !merchantId,
+      params: { ownerId: merchantId },
     },
     {
       label: '订单属性',
@@ -179,6 +183,7 @@ const VerificationList = (props) => {
     <TableDataBlock
       keepData
       btnExtra={extraBtn}
+      resetSearch={() => setMerchantId()}
       cRef={childRef}
       loading={loading}
       columns={getColumns}

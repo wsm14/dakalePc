@@ -193,9 +193,9 @@ export function fetchGetCouponsSearch(params) {
   });
 }
 
-//  特惠商品列表 用于运营后台筛选
+//  特惠商品券搜索 用于运营后台筛选
 export function fetchGetGoodsSearch(params) {
-  return request('/admin/specialGoodsManagement/listSpecialGoodsForSearch', {
+  return request('/admin/specialGoodsManagement/listActivityByNameForSearch', {
     params,
   });
 }
