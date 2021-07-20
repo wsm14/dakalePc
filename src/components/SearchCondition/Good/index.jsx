@@ -49,7 +49,7 @@ const GoodSelect = (props) => {
       notFoundContent={
         loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       }
-      placeholder={placeholder || `请输入券名称`}
+      placeholder={placeholder || `请输入商品名称`}
       onSearch={(val) => fetchGetMre(val)}
       onChange={onChange}
       maxTagTextLength={5}

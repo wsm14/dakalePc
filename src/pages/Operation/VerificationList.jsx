@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge } from 'antd';
 import { ORDERS_TYPE, GOODS_CLASS_TYPE, ORDER_TYPE_PROPS } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
@@ -31,7 +32,8 @@ const VerificationList = (props) => {
     },
     {
       label: '商品名称',
-      name: 'goodsName',
+      name: 'goodsId',
+      type: 'good',
     },
     {
       label: '订单属性',
@@ -94,9 +96,7 @@ const VerificationList = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div
-            className={styles.specFont}
-          >{`${row.provinceName}-${row.cityName}-${row.districtName}`}</div>
+          <div className={styles.specFont}>{checkCityName(row.districtCode)}</div>
         </div>
       ),
     },
@@ -104,20 +104,20 @@ const VerificationList = (props) => {
       title: '下单人',
       dataIndex: 'userMobile',
       align: 'center',
-      render: (val, row) =>  `${row.userName}\n${val}\n${row.beanCode}`,
+      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
       title: '用户实付',
       align: 'center',
-      dataIndex: 'verificationTotalFee',
+      dataIndex: 'settleTotalFee',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${val}`}</div>
           <div className={styles.fontColor}>
-            {record.verificationBeanFee ? `(${record.verificationBeanFee}卡豆` : '(' + '0卡豆'}
+            {record.settleBeanFee ? `(${record.settleBeanFee}卡豆` : '(' + '0卡豆'}
           </div>
           <div className={styles.fontColor}>
-            {(record.verificationPayFee ? `+ ￥${record.verificationPayFee}` : 0) + ')'}
+            {(record.settlePayFee ? `+ ￥${record.settlePayFee}` : 0) + ')'}
           </div>
         </div>
       ),
@@ -125,12 +125,12 @@ const VerificationList = (props) => {
     {
       title: '商户实收',
       align: 'center',
-      dataIndex: 'merchantCash',
+      dataIndex: 'settlerCash',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
-          <div>{`￥${(record.merchantTotalBean?record.merchantTotalBean/100:0).toFixed(2)}`}</div>
+          <div>{`￥${(record.settlerPrice ? record.settlerPrice / 100 : 0).toFixed(2)}`}</div>
           <div className={styles.fontColor}>
-            {record.merchantBean ? `(${record.merchantBean}卡豆` : '(' + '0卡豆'}
+            {record.settlerBean ? `(${record.settlerBean}卡豆` : '(' + '0卡豆'}
           </div>
           <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
@@ -141,24 +141,24 @@ const VerificationList = (props) => {
       align: 'center',
       dataIndex: 'cashCommission',
       render: (val, record) => {
-        const mecash =(record.merchantTotalBean?record.merchantTotalBean/100:0).toFixed(2);
-        const bean =(Number(record.verificationTotalFee) - Number(mecash)).toFixed(2)
+        const mecash = (record.settlerPrice ? record.settlerPrice / 100 : 0).toFixed(2);
+        const bean = (Number(record.settleTotalFee) - Number(mecash)).toFixed(2);
         return (
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${bean}`}</div>
             <div className={styles.fontColor}>
-              {`(${record.verificationBeanFee-record.merchantBean}卡豆` }
+              {`(${record.settleBeanFee - record.settlerBean}卡豆`}
             </div>
             <div className={styles.fontColor}>
-              {`￥${(Number(record.verificationPayFee)-Number(record.merchantCash)).toFixed(2)})`}
-              </div>
+              {`￥${(Number(record.settlePayFee) - Number(record.settlerCash)).toFixed(2)})`}
+            </div>
           </div>
         );
       },
     },
     {
       title: '核销时间',
-      dataIndex: 'verificationTime',
+      dataIndex: 'settleTime',
       align: 'center',
     },
     {
@@ -183,7 +183,7 @@ const VerificationList = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.orderGoodsVerificationId}`}
+      rowKey={(record) => `${record.verificationCode}`}
       dispatchType="verificationList/fetchVerificationList"
       {...verificationList}
     ></TableDataBlock>
