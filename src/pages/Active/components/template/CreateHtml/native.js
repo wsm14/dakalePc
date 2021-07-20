@@ -102,25 +102,26 @@ var bridge = {
 // 路由映射
 const pathNative = {
   goods: {
+    // 特惠商品详情
     ios: 'DKLAroundDiscountGoodsDetailViewController',
     android: 'SpecialGoodPage',
     miniProgram: '/pages/perimeter/favourableDetails/index',
   },
   limited: {
     // 限时抢购
-    ios: 'DKLAroundDiscountGoodsDetailViewController',
+    ios: 'DKLLookAroundLimitTimeSnapUpViewController',
     android: 'HotSellList',
     miniProgram: '/pages/perimeter/specialOffer/index',
   },
   explode: {
     // 爆品福利
-    ios: 'DKLAroundDiscountGoodsDetailViewController',
+    ios: 'DKLLookAroundExplosiveWelfaveViewController',
     android: 'TodaySellList',
     miniProgram: '/pages/perimeter/speciaMaterial/index?type=today',
   },
   recommend: {
     // 特惠推荐
-    ios: 'DKLAroundDiscountGoodsDetailViewController',
+    ios: 'DKLBaseTableViewController',
     android: 'AroundList',
     miniProgram: '/pages/perimeter/perimeterList/index',
   },
