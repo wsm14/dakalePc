@@ -7,43 +7,67 @@ import showHtml from './showHtml';
 // script
 const scriptTag = (text) => `<script>${text}</script>`;
 
-const scriptProxy = `const renderByToken = (callback) => {
-  this.token = '';
-  this.render = callback;
+const scriptProxy = `function renderByToken (){
+  this.tokenObj = {};
+  this.render = null;
   this.getUrlKey = (name) => {
       return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null;
   }
   this.initToken = () => {
+      let that = this
       if(new nativeOther().getPhone() ==='miniProgram'){
-          this.token = getUrlKey('token')
+          that.tokenObj.token = val
       } else {
           native.nativeInit('getToken', {}, (val) => {
               if (val && val.length > 0) {
-                  this.token = val
+
+                  that.tokenObj.token = val
+              }
+              else {
+                  that.tokenObj.token = val
               }
           })
       }
   }
-  this.initProxy =  () =>{
-      let that = this
-      that.datas = new Proxy(this.token,{
+  this.initProxy =  () => {
+       let that = this
+       that.tokenObj = new Proxy({},{
           get: function(target, p, receiver) {
 
           },
           set: function(target, p, value, receiver) {
-              this.render(that.token)
+              console.log(target,p,value)
+               that.render && that.render(value)
           }
       })
   }
-  this.init = () => {
+  this.init = (render = () => {}) => {
+      this.render = render
       this.initProxy();
       this.initToken()
+
   }
 };
 
-new renderByToken().init();
-${scriptTag(scriptProxy)}
-`;
+let a =  new renderByToken()
+a.init((e) => {console.log(e)})`;
+
+// 赚多少
+export const computedPrice = (price, scale) => {
+  let size = (price * (scale / 100)).toFixed(3);
+  size = size.substring(0, size.length - 1);
+  if (size === '0.00') {
+    return 0.01;
+  } else return size;
+};
+
+// // 卡豆省后商品最低价格
+// export const computedBeanPrice = (price, scale) => {
+//   let size = (price * (1 - scale / 100)).toFixed(2);
+//   if (size === '0.00') {
+//     return 0.01;
+//   } else return size;
+// };
 
 const init = (htmlData = {}) => {
   const { dataList, backgroundColor, activityName } = htmlData;
