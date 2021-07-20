@@ -109,21 +109,12 @@ export default {
       });
     },
     *fetchSpecialGoodsAudit({ payload, callback }, { call }) {
-      const { submitterType } = payload;
       const response = yield call(fetchSpecialGoodsAudit, payload);
       if (!response) return;
-      if (submitterType === 'merchant') {
-        notification.success({
-          message: '温馨提示',
-          description: '审核完成',
-        });
-      } else {
-        notification.success({
-          message: '温馨提示',
-          description: '审核完成，等待商家确认',
-        });
-      }
-
+      notification.success({
+        message: '温馨提示',
+        description: '审核完成',
+      });
       callback();
     },
     *fetchSpecialGoodsAuditReject({ payload, callback }, { call }) {
