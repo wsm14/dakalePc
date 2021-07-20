@@ -41,7 +41,7 @@ const commonList = (styleIndex) => {
       <div style="flex: 1">
       <div style="font-size: ${vw(
         14,
-      )};color: #333333; overflow: hidden; white-space:nowrap;text-overflow: ellipsis;">
+      )};color: #333333; white-space:nowrap;text-overflow: ellipsis;">
       ${item.goodsName}
       </div>
       <div style="font-size: ${vw(12)};margin-top: ${vw(
