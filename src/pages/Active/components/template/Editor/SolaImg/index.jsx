@@ -42,7 +42,9 @@ const SolaImg = (props) => {
   return (
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
-      <div className="active_title_msg">图片默认宽度100%，高度自适应</div>
+      <div className="active_title_msg">
+        图片默认宽度100%，高度自适应，图片大小建议不大于200kb左右，图片过大影响页面访问速度
+      </div>
       <EditorForm formItems={formItems} id={id} initialValues={value || {}} form={form} />
     </div>
   );
