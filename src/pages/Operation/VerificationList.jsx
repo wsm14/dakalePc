@@ -193,6 +193,5 @@ const VerificationList = (props) => {
 export default connect(({ verificationList, loading }) => ({
   loadings: loading,
   verificationList,
-
   loading: loading.effects['verificationList/fetchVerificationList'],
 }))(VerificationList);
