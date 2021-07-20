@@ -40,14 +40,14 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic, qrCodeBag }) => {
               pay ||
               payBagurl ||
               'https://resource-new.dakale.net/admin/QrCode/paybag2.jpg?' + timestamp,
-            ...whSet(1346, 1890),
+            ...whSet(1240, 1748),
           },
           {
             type: 'image',
             url: qrCodePay && qrCodePay.toDataURL('image/png'),
-            ...whSet(560, 560),
-            x: 393,
-            y: 628,
+            ...whSet(773, 773),
+            x: 234,
+            y: 322,
           },
           {
             ...textStyle,
@@ -55,7 +55,7 @@ const SaleCode = ({ tabKey, merchantName, changeCanvasToPic, qrCodeBag }) => {
             y: 1156,
           },
         ],
-        ...whSet(1346, 1890),
+        ...whSet(1240, 1748),
       },
       (err, data) => {
         setPayImgUrl(data);
