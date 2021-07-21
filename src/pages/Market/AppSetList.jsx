@@ -64,8 +64,8 @@ const SysAppSet = (props) => {
     },
     {
       title: '权重',
-      name: 'weight',
       align: 'right',
+      dataIndex: 'weight',
     },
     {
       title: '位置',
