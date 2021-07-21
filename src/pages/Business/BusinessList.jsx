@@ -142,7 +142,7 @@ const BusinessListComponent = (props) => {
             <Ellipsis length={15} tooltip>
               {row.mobile}
             </Ellipsis>
-            <Tag style={{ marginLeft: 5 }}>{row.groupId ? '集团' : '单店'}</Tag>
+            <Tag style={{ marginLeft: 5 }}>{row.groupId ? '子门店' : '单店'}</Tag>
           </div>
         </PopImgShow>
       ),

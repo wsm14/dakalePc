@@ -146,7 +146,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '省市区',
       name: 'districtCode',
-      render: (val, row) => checkCityName(row.districtCode ),
+      render: (val, row) => checkCityName(row.districtCode),
     },
     {
       label: '详细地址',
@@ -347,6 +347,7 @@ const BusinessDetailShow = (props) => {
           {
             text: statusText,
             auth: 'status',
+            disabled: visible.groupId,
             onClick: () => handleMerStatus('acc'),
             loading: loadings,
           },
