@@ -28,11 +28,6 @@ const carouseal = ({ list }) => {
           }" style="width: 100%;display: block;" onclick="handleGoNative(this)"></img></div>`,
       )
       .join('')}</div><div class="swiper-pagination"></div></div>`;
-    new Swiper('.swiper-container', {
-      autoplay: true,
-      loop: true,
-      pagination: { el: '.swiper-pagination' },
-    });
   };
 
   return css + script + scriptTag(dom, list);

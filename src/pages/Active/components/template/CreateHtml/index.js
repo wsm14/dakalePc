@@ -82,11 +82,20 @@ const init = (htmlData = {}) => {
   ${scriptTag(native)}
   </head><body>`;
 
+  // 是否是轮播图
+  const carousealScript = `var mySwiper = new Swiper('.swiper-container', {autoplay:true, loop: true})`;
+  let carousealCheck = false;
+
   // 网页内容组件
-  const bodyContent = dataList.map(({ editorType, data }) => showHtml[editorType](data)).join('');
+  const bodyContent = dataList
+    .map(({ editorType, data }) => {
+      if (editorType === 'carouseal') carousealCheck = true;
+      return showHtml[editorType](data);
+    })
+    .join('');
 
   // 网页底部
-  const htmlFooter = `</body></html>`;
+  const htmlFooter = `</body>${carousealCheck ? scriptTag(carousealScript) : ''}</html>`;
   return htmlHeard + bodyContent + htmlFooter;
 };
 
