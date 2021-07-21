@@ -83,7 +83,7 @@ const init = (htmlData = {}) => {
   </head><body>`;
 
   // 是否是轮播图
-  const carousealScript = `var mySwiper = new Swiper('.swiper-container', {autoplay:true, loop: true})`;
+  const carousealScript = `var mySwiper = new Swiper('.swiper-container',{autoplay:true,loop:true,pagination:{el:'.swiper-pagination'}})`;
   let carousealCheck = false;
 
   // 网页内容组件
