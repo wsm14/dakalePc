@@ -131,7 +131,7 @@ const BusinessListComponent = (props) => {
     {
       title: '店铺',
       fixed: 'left',
-      dataIndex: 'headerImg',
+      dataIndex: 'coverImg',
       width: 350,
       render: (val, row) => (
         <PopImgShow url={val}>
