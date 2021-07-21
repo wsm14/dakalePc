@@ -102,7 +102,7 @@ export default ({ styleIndex = 0, list = [] }) => {
                       width: 0,
                       height: 0,
                       borderTop: '16px solid #ef476f',
-                      borderRight: '5px solid transparent',
+                      borderRight: '2px solid transparent',
                     }}
                   ></div>
                   <div
