@@ -78,7 +78,6 @@ const VerificationList = (props) => {
                   {row.goodsName}
                 </Ellipsis>
               </div>
-
               <div style={{ marginTop: 5 }} className={styles.specFont}>
                 订单号：{row.orderSn}
               </div>
