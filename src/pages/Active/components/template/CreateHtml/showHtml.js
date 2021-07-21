@@ -68,7 +68,7 @@ const commonList = (styleIndex) => {
         52,
       )};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
         14,
-      )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;">
+      )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">
       抢购</div></div></div></div>`,
     )
     .join('')}</div>`;

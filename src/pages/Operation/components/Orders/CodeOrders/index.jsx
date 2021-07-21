@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag, Avatar } from 'antd';
-import { ORDER_PAY_LOGO } from '@/common/constant';
+import { ORDER_PAY_LOGO, BUSINESS_TYPE } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
@@ -78,14 +79,12 @@ const CodeOrders = (props) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div>账号:{row.merchantMobile}</div>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">单店</Tag>
+            <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
           </div>
-          <div
-            className={styles.specFont}
-          >{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+          <div className={styles.specFont}>{checkCityName(row.merchantDistrict)}</div>
         </div>
       ),
     },

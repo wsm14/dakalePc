@@ -344,7 +344,7 @@ export default [
         path: '/market/appset',
         name: '广告管理',
         component: './Market/AppSetList',
-        buttons: ['save', 'del', 'edit', 'down'],
+        buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
         path: '/market/puzzleAd',

@@ -1,3 +1,4 @@
+import { checkCityName } from '@/utils/utils';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
 
 // 导出表头
@@ -74,8 +75,8 @@ export default [
   },
   {
     title: '区域',
-    dataIndex: 'merchantProvince',
-    render: (val, row) => `${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`,
+    dataIndex: 'merchantDistrict',
+    render: (val) => checkCityName(val),
   },
 
   {

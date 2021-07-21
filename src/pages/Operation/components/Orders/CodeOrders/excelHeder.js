@@ -1,3 +1,5 @@
+import { checkCityName } from '@/utils/utils';
+
 // 导出表头
 export default [
   {
@@ -54,7 +56,7 @@ export default [
   },
   {
     title: '区域',
-    dataIndex: 'merchantProvince',
-    render: (val, row) => `${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`,
+    dataIndex: 'merchantDistrict',
+    render: (val) => checkCityName(val),
   },
 ];

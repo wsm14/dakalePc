@@ -330,6 +330,7 @@ const SpecialGoodsResource = (props) => {
     {
       type: 'handle',
       dataIndex: 'specialGoodsId',
+      show: !['highCommission', 'todayNew'].includes(tabKey), // 高佣联盟 和 今日上新 不显示
       width: 180,
       render: (val, record) => {
         return [

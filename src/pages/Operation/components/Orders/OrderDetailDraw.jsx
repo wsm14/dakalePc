@@ -6,11 +6,12 @@ import {
   USER_SOURCE,
   ORDERS_STATUS,
 } from '@/common/constant';
+import { DownOutlined } from '@ant-design/icons';
+import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import styles from './style.less';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import { DownOutlined } from '@ant-design/icons';
+import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
   const { visible, onClose, getDetail, total, tabkey, loading } = props;
@@ -44,8 +45,8 @@ const OrderDetailDraw = (props) => {
       label: '券码',
       name: 'verificationCode',
       render: (val, row) => {
-          const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
-        return <span>{row.status!=='1'?names:row.verificationCode}</span>;
+        const names = val.substring(0, 6) + '****' + val.substring(val.length - 4, val.length);
+        return <span>{row.status !== '1' ? names : row.verificationCode}</span>;
       },
     },
     // 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
@@ -94,7 +95,7 @@ const OrderDetailDraw = (props) => {
       label: '店铺地址',
       name: 'merchantProvince',
       span: 2,
-      render: (val, row) => `${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`,
+      render: (val, row) => checkCityName(row.merchantDistrict),
     },
     {
       label: '营业时间',
@@ -288,9 +289,7 @@ const OrderDetailDraw = (props) => {
         <div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span>订单金额</span>
-            <span>
-              {detail.totalFee ? `￥${detail.totalFee}` : 0}
-              </span>
+            <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
           </div>
           <div className={styles.detail_last_div} style={{ color: '#333' }}>
             <span onClick={() => handleShow('sale')}>
@@ -343,7 +342,11 @@ const OrderDetailDraw = (props) => {
             </span>
 
             <span>
-            ￥{`${(Number(detail.cashCommission)+Number(detail.beanCommission/100)).toFixed(2)}`}(含{detail.beanCommission}卡豆)
+              ￥
+              {`${(Number(detail.cashCommission) + Number(detail.beanCommission / 100)).toFixed(
+                2,
+              )}`}
+              (含{detail.beanCommission}卡豆)
               {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
             </span>
           </div>
@@ -356,7 +359,9 @@ const OrderDetailDraw = (props) => {
               ></QuestionTooltip>
             </span>
             <span>
-            ￥{`${(Number(detail.actualCashFee)+Number(detail.actualBeanFee/100)).toFixed(2)}`}(含{detail.actualBeanFee}卡豆)
+              ￥
+              {`${(Number(detail.actualCashFee) + Number(detail.actualBeanFee / 100)).toFixed(2)}`}
+              (含{detail.actualBeanFee}卡豆)
               {/* {`￥${detail.actualCashFee}
             (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
             </span>

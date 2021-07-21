@@ -125,7 +125,13 @@ const SysAppSet = (props) => {
       render: (val, record) => [
         {
           type: 'down',
-          click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+          visible: record.showStatus === '1',
+          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 0 }),
+        },
+        {
+          type: 'up',
+          visible: record.showStatus === '2',
+          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
         },
         {
           type: 'edit',
@@ -134,7 +140,7 @@ const SysAppSet = (props) => {
         {
           type: 'del',
           visible: record.showStatus === '2',
-          click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
+          click: () => fetchBannerStatus({ bannerId: val, deleteFlag: 0 }),
         },
       ],
     },
@@ -157,7 +163,7 @@ const SysAppSet = (props) => {
   };
 
   // 占位图下架
-  const fetchBannerStatusDel = (payload) => {
+  const fetchBannerStatus = (payload) => {
     dispatch({
       type: 'sysAppList/fetchBannerStatusDel',
       payload,

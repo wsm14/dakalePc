@@ -8,7 +8,9 @@ import {
   ORDER_TYPE_PROPS,
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
+  BUSINESS_TYPE,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';
@@ -48,8 +50,9 @@ const GoodsOrders = (props) => {
       name: 'orderSn',
     },
     {
-      label: '商品名称',
-      name: 'goodsName',
+      label: '商品/券名称',
+      name: 'goodsId',
+      type: 'good',
     },
     {
       label: '下单人',
@@ -127,14 +130,12 @@ const GoodsOrders = (props) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div>账号:{row.merchantMobile}</div>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">单店</Tag>
+            <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
           </div>
-          <div
-            className={styles.specFont}
-          >{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+          <div className={styles.specFont}>{checkCityName(row.merchantDistrict)}</div>
         </div>
       ),
     },

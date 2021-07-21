@@ -214,7 +214,7 @@ export function fetchBannerEdit(data) {
   });
 }
 
-// post banner管理 - 下架/图片 下架删除
+// post banner管理 - 下架/图片 下架 上架 删除
 export function fetchBannerStatus(data) {
   return request('/admin/bannerManagement/onOffOrDeleteBannerMarketPlatform', {
     method: 'POST',

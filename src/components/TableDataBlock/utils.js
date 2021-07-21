@@ -24,6 +24,7 @@ const tablePropsHandle = {
     // 表头处理
     const newColumns = (order ? indexOrder : [])
       .concat(columns)
+      .filter(({ show = true }) => show)
       .map(({ ellipsis = false, type, render, ...other }) => ({
         render,
         ...tablePropsHandle.tableComponents(type, render),
