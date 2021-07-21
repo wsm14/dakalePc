@@ -140,7 +140,7 @@ const BusinessListComponent = (props) => {
           </Ellipsis>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 5, color: '#888888' }}>
             <Ellipsis length={15} tooltip>
-              {row.account}
+              {row.mobile}
             </Ellipsis>
             <Tag style={{ marginLeft: 5 }}>{row.groupId ? '集团' : '单店'}</Tag>
           </div>
