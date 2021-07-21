@@ -104,7 +104,7 @@ const RefundOrder = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'orderRefundId',
+      dataIndex: 'orderId',
       align: 'right',
       fixed: 'right',
       render: (val, record) => <OrdersDetail order={val} name={record.goodsName}></OrdersDetail>,
