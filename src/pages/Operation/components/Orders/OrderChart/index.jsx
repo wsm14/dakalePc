@@ -23,7 +23,7 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
     {
       title: '特惠商品核销金额',
       info: '店铺核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
-      key: 'verificationFee',
+      key: 'specialGoods',
       numName: '核销数量',
     },
     {
@@ -40,17 +40,17 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
     {
       title: '特惠商品销售额',
       info: '用户通过特惠商品购买商品的实付金额',
-      key: 'specialGoods',
+      key: 'specialGoodsSale',
     },
-    // {
-    //   title: '抵扣券销售额',
-    //   info: '用户购买抵扣券的实付金额',
-    //   key: 'specialGoodss',
-    // },
+    {
+      title: '优惠券销售额',
+      info: '用户购买抵扣券的实付金额',
+      key: 'reduceCouponSale',
+    },
     {
       title: '退款金额',
       info: '用户发起退款申请后，实际退款成功的金额',
-      key: 'refundFee',
+      key: 'refund',
     },
   ];
 

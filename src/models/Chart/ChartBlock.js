@@ -52,8 +52,14 @@ export default {
       const dataCheck = (key, numKey) =>
         content.orderInfo[key] ? content.orderInfo[key][numKey] || 0 : 0;
       const allTotal = {
-        totalFee: dataCheck('scan', 'totalFee') + dataCheck('verificationFee', 'totalFee'),
-        docCount: dataCheck('scan', 'docCount') + dataCheck('verificationFee', 'docCount'),
+        totalFee:
+          dataCheck('scan', 'totalFee') +
+          dataCheck('reduceCoupon', 'totalFee') +
+          dataCheck('specialGoods', 'totalFee'),
+        docCount:
+          dataCheck('scan', 'docCount') +
+          dataCheck('reduceCoupon', 'docCount') +
+          dataCheck('specialGoods', 'docCount'),
       };
       yield put({
         type: 'save',

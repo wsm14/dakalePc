@@ -27,7 +27,7 @@ const VerificationList = (props) => {
       type: 'user',
     },
     {
-      label: '店铺名',
+      label: '店铺',
       name: 'merchantId',
       type: 'merchant',
       onChange: (val) => setMerchantId(val),

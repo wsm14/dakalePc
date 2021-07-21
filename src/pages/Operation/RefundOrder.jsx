@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { connect } from 'umi';
-import { ORDERS_STATUS, REFUND_ORDERS_STATUS } from '@/common/constant';
+import { REFUND_ORDERS_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrdersDetail from './components/RefundOrder/OrdersDetail';
 
@@ -16,12 +16,9 @@ const RefundOrder = (props) => {
       name: 'orderSn',
     },
     {
-      label: '手机号',
-      name: 'mobile',
-    },
-    {
-      label: '店铺名',
-      name: 'merchantName',
+      label: '店铺',
+      name: 'ownerId',
+      type: 'merchant',
     },
     {
       label: '退款原因',
@@ -98,7 +95,7 @@ const RefundOrder = (props) => {
       title: '状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => ORDERS_STATUS[val],
+      render: (val) => REFUND_ORDERS_STATUS[val],
     },
     {
       title: '退款完成时间',
@@ -107,7 +104,7 @@ const RefundOrder = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'orderId',
+      dataIndex: 'orderRefundId',
       align: 'right',
       fixed: 'right',
       render: (val, record) => <OrdersDetail order={val} name={record.goodsName}></OrdersDetail>,
@@ -121,7 +118,7 @@ const RefundOrder = (props) => {
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.orderId}`}
+      rowKey={(record) => `${record.orderRefundId}`}
       dispatchType="refundOrder/fetchGetList"
       {...refundOrder}
     ></TableDataBlock>
