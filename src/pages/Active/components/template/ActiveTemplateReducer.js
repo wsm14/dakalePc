@@ -17,7 +17,7 @@ export const reducerValue = {
    * 已储存的模版数据
    * dataList[showEditor{}]
    */
-  moduleData: { backgroundColor: '#ffffff', dataList: [] },
+  moduleData: { backgroundColor: '#f0f0f0', dataList: [] },
 };
 
 /**
