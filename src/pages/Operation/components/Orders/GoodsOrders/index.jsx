@@ -142,25 +142,14 @@ const GoodsOrders = (props) => {
       title: '下单人',
       align: 'center',
       dataIndex: 'userMobile',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{row.userName}</div>
-          <div>{val}</div>
-          <div>{row.beanCode}</div>
-        </div>
-      ),
+      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
       title: '单价/数量',
+      align: 'center',
       dataIndex: 'realPrice',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{val ? `￥${val}` : 0}</div>
-          <div>{row.goodsCount ? `×${row.goodsCount}` : ''}</div>
-        </div>
-      ),
+      render: (val, row) => `￥${val || 0}\n×${row.goodsCount || 0}`,
     },
-
     {
       title: '用户实付',
       align: 'center',
@@ -213,7 +202,6 @@ const GoodsOrders = (props) => {
         );
       },
     },
-
     {
       title: '下单/核销时间',
       dataIndex: 'createTime',
