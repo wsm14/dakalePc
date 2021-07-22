@@ -20,7 +20,7 @@ const SpecialGoodCheckDetail = (props) => {
     status,
     ownerIdString,
     auditIdString,
-    submitterType
+    submitterType,
   } = visible;
   const [merchantTaglist, setMerchantTaglist] = useState([]);
   const [platTaglist, setPlatTaglist] = useState([]);
@@ -28,7 +28,7 @@ const SpecialGoodCheckDetail = (props) => {
   const [merchantList, setMerchantList] = useState([]);
   const [recordList, setRecordList] = useState({});
 
-  const { goodsTagList = [], categoryIdString = '',divisionFlag } = detail;
+  const { goodsTagList = [], categoryIdString = '', divisionFlag } = detail;
 
   useEffect(() => {
     if (show) {
@@ -252,6 +252,7 @@ const SpecialGoodCheckDetail = (props) => {
       mode: 'multiple',
       name: 'merTags',
       select: merchantTaglist,
+      placeholder:'请选择商家商品标签',
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
       addRules: [
         {
@@ -270,14 +271,15 @@ const SpecialGoodCheckDetail = (props) => {
       type: 'select',
       mode: 'multiple',
       select: platTaglist,
+      placeholder:'请选择平台商品标签',
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },
   ];
 
   //审核记录
   const handleTabChange = (val) => {
-    console.log(detail.marketingIdString, 'detail.marketingIdString');
     if (val === '3') {
+      setRecordList([]);
       if (detail.marketingIdString) {
         dispatch({
           type: 'baseData/fetchGetLogDetail',

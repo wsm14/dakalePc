@@ -79,8 +79,8 @@ const GoodsDetail = (props) => {
 
   //审核记录
   const handleTabChange = (val) => {
-    console.log(detail, detail.marketingIdString, '0000');
     if (val === '3') {
+      setRecordList([]);
       if (detail.marketingIdString) {
         dispatch({
           type: 'baseData/fetchGetLogDetail',

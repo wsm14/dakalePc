@@ -41,6 +41,7 @@ const SpecialGoodDetail = (props) => {
 
   const handleTabChange = (val) => {
     if (val === '3') {
+    setRecordList([]);
       dispatch({
         type: 'baseData/fetchGetLogDetail',
         payload: {
