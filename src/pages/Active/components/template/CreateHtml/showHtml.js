@@ -25,7 +25,7 @@ const htmlDom = {
         uid,
       ).innerHTML = `<img src="${img}" data-linkType="${linkType}" data-path="${
         url || path
-      }" style="width: 100vw;display: block;" onclick="handleGoNative(this)"></img>`;
+      }" style="width: 100vw;display: block;" class="handleGoNative"></img>`;
     };
 
     return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
@@ -48,7 +48,7 @@ const htmlDom = {
           ({ img, linkType, url, path }) =>
             `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${
               url || path
-            }" style="width: 100%;display: block;" onclick="handleGoNative(this)"></img></div>`,
+            }" style="width: 100%;display: block;" class="handleGoNative"></img></div>`,
         )
         .join('')}</div><div class="swiper-pagination"></div></div>`;
     };

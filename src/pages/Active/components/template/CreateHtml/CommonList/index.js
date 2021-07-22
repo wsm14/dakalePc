@@ -96,7 +96,7 @@ ${source
       item.specialGoodsId
     } data-merchantId=${
       item.ownerIdString
-    } data-path="goods" data-linkType="inside" onclick="handleGoNative(this)" style="padding: 0 ${vw(
+    } data-path="goods" data-linkType="inside" class="handleGoNative" style="padding: 0 ${vw(
       8,
     )};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
       14,

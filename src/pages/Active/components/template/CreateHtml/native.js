@@ -38,10 +38,7 @@ var bridge = {
     this.register(b, a, !0);
   },
   hasNativeMethod: function (b, a) {
-    return this.call('_dsb.hasNativeMethod', {
-      name: b,
-      type: a || 'all',
-    });
+    return this.call('_dsb.hasNativeMethod', { name: b, type: a || 'all' });
   },
   disableJavascriptDialogBlock: function (b) {
     this.call('_dsb.disableJavascriptDialogBlock', { disable: !1 !== b });
@@ -101,6 +98,7 @@ var bridge = {
     });
   }
 })();
+
 // 路由映射
 const pathNative = {
   goods: {
@@ -128,6 +126,7 @@ const pathNative = {
     miniProgram: '/pages/perimeter/perimeterList/index',
   },
 };
+
 function nativeOther() {
   this.ios = {
     close: 'finish', //关闭
@@ -135,8 +134,18 @@ function nativeOther() {
     linkTo: 'goNativePage', //页面挑战
     getToken: 'getToken', //获取token
     getCode: 'goNativePage', //扫码打卡
+    savePay: 'DKLOrderPayInfoController', //支付页 参数 marketCouponId
+    goLogin: 'goNativePage', //qu登录
     goShare: 'callUpShare', //分享
+    merchatRule: 'userMerchantProtocol', //商家协议
+    getNoviteStatus: 'getAnnouncementReadStatus', //获取通知
+    setNoviteStatus: 'updateAnnouncementReadStatus', //设置通知
+    setRetail: 'setRetail', //是否同意分销权益
+    getClientVersion: 'getClientVersion', //获取版本号
     getUserLocationInfo: 'getUserLocationInfo', //获取用户定位信息，
+    mapGo: 'showMerchantNavigationLatAndLnt', //调取 app地图
+    getTop: 'getIphoneSafeTopHeight',
+    tabBar: 'goNativeRootPageFromIndex', //跳转主页
   };
   this.android = {
     close: 'finish', //关闭
@@ -144,8 +153,18 @@ function nativeOther() {
     linkTo: 'goNativePage', //路径跳转
     getToken: 'getToken',
     getCode: 'openScan', //唤起扫码
+    savePay: 'goNativePage', //支付页 参数 marketCouponId
+    goLogin: 'goLogin', //登录
     goShare: 'share', //分享
+    merchatRule: 'agreeLoginMerchantsRule', //商家协议
+    getNoviteStatus: 'getNotice', //获取通知
+    setNoviteStatus: 'saveNotice', //设置通知
+    setRetail: 'setRetail', //是否同意分销权益
+    getClientVersion: 'getClientVersion', //获取版本号
     getUserLocationInfo: 'getLatAndLnt', //获取用户定位信息
+    mapGo: 'getNavi', //调取 app地图
+    getTop: 'getTopHeight',
+    tabBar: 'goNativeRootPageFromIndex', //跳转主页
   };
   this.miniProgram = {
     linkTo: 'navigateTo', //路径跳转
@@ -228,66 +247,56 @@ function nativeOther() {
       callback(res);
     });
   };
+
   this.nativeInit = function (fnName, paramObj = {}, callback) {
     let that = this;
     const checkApp = that.getPhone();
     if (!checkApp) return;
-    const { ios = {}, android = {}, miniProgram = {} } = paramObj;
-    const paramKey = {
-      dakaleIOS: 'ios',
-      dakaleAndroid: 'android',
-      miniProgram: 'miniProgram',
-    }[checkApp];
-    if (paramObj[paramKey]?.linkType === 'H5') {
-      const path = paramObj[paramKey].path;
-      if (['dakaleIOS', 'dakaleAndroid'].includes(checkApp)) {
+    if (checkApp === 'dakaleIOS') {
+      const { ios = {} } = paramObj;
+      const { linkType } = ios;
+      if (linkType === 'H5') {
+        const { path } = ios;
         window.location.href = path;
         return;
-      } else {
-        wx.miniProgram.navigateTo({
-          url: '/pages/share/webView/index?link=' + path,
-        });
-        return;
       }
-    }
-    if (checkApp === 'dakaleIOS') {
-      const { fnKey, param } = this.checkAppParams(fnName, ios);
+      const { fnKey, param } = that.checkAppParams(fnName, ios);
       if (callback && typeof callback == 'function') {
         callback(window.prompt(fnKey, JSON.stringify(param)));
       } else {
         window.webkit.messageHandlers[fnKey].postMessage(JSON.stringify(param));
       }
     } else if (checkApp === 'dakaleAndroid') {
-      const { fnKey, param } = this.checkAppParams(fnName, android);
+      const { android = {} } = paramObj;
+      const { linkType } = android;
+      if (linkType === 'H5') {
+        const { path } = android;
+        window.location.href = path;
+        return;
+      }
+      const { fnKey, param } = that.checkAppParams(fnName, android);
+
       if (callback && typeof callback == 'function') {
         that.dsBridgeAsyc(fnKey, param, callback);
       } else {
         that.dsBridgeSynchro(fnKey, param);
       }
     } else if (checkApp === 'miniProgram') {
-      const { fnKey, param } = this.checkAppParams(fnName, miniProgram);
+      const { miniProgram = {} } = paramObj;
+      const { linkType } = miniProgram;
+      if (linkType === 'H5') {
+        const { path } = miniProgram;
+        wx.miniProgram.navigateTo({
+          url: '/pages/share/webView/index?link=' + path,
+        });
+        return;
+      }
+      const { fnKey, param } = that.checkAppParams(fnName, miniProgram);
       const { params, path } = param;
-      wx.miniProgram[fnKey]({ url: this.urlGet(path, params) });
+      wx.miniProgram[fnKey]({ url: that.urlGet(path, params) });
     }
   };
 }
-function handleGoNative(e) {
-  if (!e.getAttribute('data-linkType')) return;
-  let keyObj = {};
-  (e.getAttribute('data-key') ? e.getAttribute('data-key').split(',') : []).map((item) => {
-    keyObj[item] = e.getAttribute('data-' + item);
-  });
-  const path = e.getAttribute('data-path');
-  const params = {
-    path,
-    params: keyObj,
-    linkType: e.getAttribute('data-linkType'),
-  };
-  new nativeOther().nativeInit('linkTo', {
-    ios: params,
-    android: params,
-    miniProgram: params,
-  });
-}
 
-export default `var bridge={default:this,call:function(b,a,c){var e='';'function'==typeof a&&((c=a),(a={}));a={data:void 0===a?null:a};if('function'==typeof c){var g='dscb'+window.dscb++;window[g]=c;a._dscbstub=g;}a=JSON.stringify(a);if(window._dsbridge)e=_dsbridge.call(b,a);else if(window._dswk||-1!=navigator.userAgent.indexOf('_dsbridge'))e=prompt('_dsbridge='+b,a);return JSON.parse(e||'{}').data;},register:function(b,a,c){c=c?window._dsaf:window._dsf;window._dsInit||((window._dsInit=!0),setTimeout(function(){bridge.call('_dsb.dsinit');},0));'object'==typeof a?(c._obs[b]=a):(c[b]=a);},registerAsyn:function(b,a){this.register(b,a,!0);},hasNativeMethod:function(b,a){return this.call('_dsb.hasNativeMethod',{name:b,type:a||'all',});},disableJavascriptDialogBlock:function(b){this.call('_dsb.disableJavascriptDialogBlock',{disable:!1!==b});},};!(function(){if(!window._dsf){var b={_dsf:{_obs:{}},_dsaf:{_obs:{}},dscb:0,dsBridge:bridge,close:function(){bridge.call('_dsb.closePage');},_handleMessageFromNative:function(a){var e=JSON.parse(a.data),b={id:a.callbackId,complete:!0},c=this._dsf[a.method],d=this._dsaf[a.method],h=function(a,c){b.data=a.apply(c,e);bridge.call('_dsb.returnValue',b);},k=function(a,c){e.push(function(a,c){b.data=a;b.complete=!1!==c;bridge.call('_dsb.returnValue',b);});a.apply(c,e);};if(c)h(c,this._dsf);else if(d)k(d,this._dsaf);else if(((c=a.method.split('.')),!(2>c.length))){a=c.pop();var c=c.join('.'),d=this._dsf._obs,d=d[c]||{},f=d[a];f&&'function'==typeof f?h(f,d):((d=this._dsaf._obs),(d=d[c]||{}),(f=d[a])&&'function'==typeof f&&k(f,d));}},},a;for(a in b)window[a]=b[a];bridge.register('_hasJavascriptMethod',function(a,b){b=a.split('.');if(2>b.length)return!(!_dsf[b]&&!_dsaf[b]);a=b.pop();b=b.join('.');return(b=_dsf._obs[b]||_dsaf._obs[b])&&!!b[a];});}})();const pathNative={goods:{ios:'DKLAroundDiscountGoodsDetailViewController',android:'SpecialGoodPage',miniProgram:'/pages/perimeter/favourableDetails/index',},limited:{ios:'DKLLookAroundLimitTimeSnapUpViewController',android:'HotSellList',miniProgram:'/pages/perimeter/specialOffer/index',},explode:{ios:'DKLLookAroundExplosiveWelfaveViewController',android:'TodaySellList',miniProgram:'/pages/perimeter/speciaMaterial/index?type=today',},recommend:{ios:'DKLBaseTableViewController',android:'AroundList',miniProgram:'/pages/perimeter/perimeterList/index',},};function nativeOther(){this.ios={close:'finish',hideTitle:'hideTitle',linkTo:'goNativePage',getToken:'getToken',getCode:'goNativePage',goShare:'callUpShare',getUserLocationInfo:'getUserLocationInfo',};this.android={close:'finish',hideTitle:'hideTitle',linkTo:'goNativePage',getToken:'getToken',getCode:'openScan',goShare:'share',getUserLocationInfo:'getLatAndLnt',};this.miniProgram={linkTo:'navigateTo',};this.queryParams=(data)=>{if(!data)return'';let _result=[];for(let key in data){let value=data[key];if(['',undefined,null].includes(value)){continue;}if(Array.isArray(value)){value=value.toString();}_result.push(key+'='+value);}console.log(_result.length?'?'+_result.join('&'):'');return _result.length?'?'+_result.join('&'):'';};this.urlGet=(url,params)=>url+this.queryParams(params);this.getPhone=function(){var u=navigator.userAgent.toLowerCase();if(/miniProgram/i.test(u))return'miniProgram';if(u.indexOf('ios/dakale')>-1)return'dakaleIOS';if(u.indexOf('android/dakale')>-1)return'dakaleAndroid';return false;};this.checkAppParams=function(fnNames,paramObj={}){const checkApp=this.getPhone();let fnKey='';let param={};const{params={},path}=paramObj;switch(checkApp){case'dakaleIOS':let paramIos={param:params};if(fnNames==='linkTo'){paramIos={path:pathNative[path].ios,param:params};}fnKey=this.ios[fnNames];param=paramIos;break;case'dakaleAndroid':let paramAndroid={...params};if(fnNames==='linkTo'){paramAndroid={path:pathNative[path].android,...params};}fnKey=this.android[fnNames];param=paramAndroid;break;case'miniProgram':fnKey=this.miniProgram[fnNames];param={path:pathNative[path].miniProgram,params};break;default:break;}return{fnKey,param};};this.dsBridgeSynchro=function(fnName,params){bridge.call(fnName,params?JSON.stringify(params):'');};this.dsBridgeAsyc=function(fnName,params,callback){if(Object.keys(params).length>0){return bridge.call(fnName,JSON.stringify(params),function(res){callback(res);});}return bridge.call(fnName,function(res){callback(res);});};this.nativeInit=function(fnName,paramObj={},callback){let that=this;const checkApp=that.getPhone();if(!checkApp)return;const{ios={},android={},miniProgram={}}=paramObj;const paramKey={dakaleIOS:'ios',dakaleAndroid:'android',miniProgram:'miniProgram',}[checkApp];if(paramObj[paramKey]?.linkType==='H5'){const path=paramObj[paramKey].path;if(['dakaleIOS','dakaleAndroid'].includes(checkApp)){window.location.href=path;return;}else{wx.miniProgram.navigateTo({url:'/pages/share/webView/index?link='+path,});return;}}if(checkApp==='dakaleIOS'){const{fnKey,param}=this.checkAppParams(fnName,ios);if(callback&&typeof callback=='function'){callback(window.prompt(fnKey,JSON.stringify(param)));}else{window.webkit.messageHandlers[fnKey].postMessage(JSON.stringify(param));}}else if(checkApp==='dakaleAndroid'){const{fnKey,param}=this.checkAppParams(fnName,android);if(callback&&typeof callback=='function'){that.dsBridgeAsyc(fnKey,param,callback);}else{that.dsBridgeSynchro(fnKey,param);}}else if(checkApp==='miniProgram'){const{fnKey,param}=this.checkAppParams(fnName,miniProgram);const{params,path}=param;wx.miniProgram[fnKey]({url:this.urlGet(path,params)});}};}function handleGoNative(e){if(!e.getAttribute('data-linkType'))return;let keyObj={};(e.getAttribute('data-key')?e.getAttribute('data-key').split(','):[]).map((item)=>{keyObj[item]=e.getAttribute('data-'+item);});const path=e.getAttribute('data-path');const params={path,params:keyObj,linkType:e.getAttribute('data-linkType'),};new nativeOther().nativeInit('linkTo',{ios:params,android:params,miniProgram:params,});}`;
+const native = new nativeOther();
+export default `var bridge={default:this,call:function(b,a,c){var e='';'function'==typeof a&&((c=a),(a={}));a={data:void 0===a?null:a};if('function'==typeof c){var g='dscb'+window.dscb++;window[g]=c;a._dscbstub=g;}a=JSON.stringify(a);if(window._dsbridge)e=_dsbridge.call(b,a);else if(window._dswk||-1!=navigator.userAgent.indexOf('_dsbridge'))e=prompt('_dsbridge='+b,a);return JSON.parse(e||'{}').data;},register:function(b,a,c){c=c?window._dsaf:window._dsf;window._dsInit||((window._dsInit=!0),setTimeout(function(){bridge.call('_dsb.dsinit');},0));'object'==typeof a?(c._obs[b]=a):(c[b]=a);},registerAsyn:function(b,a){this.register(b,a,!0);},hasNativeMethod:function(b,a){return this.call('_dsb.hasNativeMethod',{name:b,type:a||'all'});},disableJavascriptDialogBlock:function(b){this.call('_dsb.disableJavascriptDialogBlock',{disable:!1!==b});},};!(function(){if(!window._dsf){var b={_dsf:{_obs:{}},_dsaf:{_obs:{}},dscb:0,dsBridge:bridge,close:function(){bridge.call('_dsb.closePage');},_handleMessageFromNative:function(a){var e=JSON.parse(a.data),b={id:a.callbackId,complete:!0},c=this._dsf[a.method],d=this._dsaf[a.method],h=function(a,c){b.data=a.apply(c,e);bridge.call('_dsb.returnValue',b);},k=function(a,c){e.push(function(a,c){b.data=a;b.complete=!1!==c;bridge.call('_dsb.returnValue',b);});a.apply(c,e);};if(c)h(c,this._dsf);else if(d)k(d,this._dsaf);else if(((c=a.method.split('.')),!(2>c.length))){a=c.pop();var c=c.join('.'),d=this._dsf._obs,d=d[c]||{},f=d[a];f&&'function'==typeof f?h(f,d):((d=this._dsaf._obs),(d=d[c]||{}),(f=d[a])&&'function'==typeof f&&k(f,d));}},},a;for(a in b)window[a]=b[a];bridge.register('_hasJavascriptMethod',function(a,b){b=a.split('.');if(2>b.length)return!(!_dsf[b]&&!_dsaf[b]);a=b.pop();b=b.join('.');return(b=_dsf._obs[b]||_dsaf._obs[b])&&!!b[a];});}})();const pathNative={goods:{ios:'DKLAroundDiscountGoodsDetailViewController',android:'SpecialGoodPage',miniProgram:'/pages/perimeter/favourableDetails/index',},limited:{ios:'DKLLookAroundLimitTimeSnapUpViewController',android:'HotSellList',miniProgram:'/pages/perimeter/specialOffer/index',},explode:{ios:'DKLLookAroundExplosiveWelfaveViewController',android:'TodaySellList',miniProgram:'/pages/perimeter/speciaMaterial/index?type=today',},recommend:{ios:'DKLBaseTableViewController',android:'AroundList',miniProgram:'/pages/perimeter/perimeterList/index',},};function nativeOther(){this.ios={close:'finish',hideTitle:'hideTitle',linkTo:'goNativePage',getToken:'getToken',getCode:'goNativePage',savePay:'DKLOrderPayInfoController',goLogin:'goNativePage',goShare:'callUpShare',merchatRule:'userMerchantProtocol',getNoviteStatus:'getAnnouncementReadStatus',setNoviteStatus:'updateAnnouncementReadStatus',setRetail:'setRetail',getClientVersion:'getClientVersion',getUserLocationInfo:'getUserLocationInfo',mapGo:'showMerchantNavigationLatAndLnt',getTop:'getIphoneSafeTopHeight',tabBar:'goNativeRootPageFromIndex',};this.android={close:'finish',hideTitle:'hideTitle',linkTo:'goNativePage',getToken:'getToken',getCode:'openScan',savePay:'goNativePage',goLogin:'goLogin',goShare:'share',merchatRule:'agreeLoginMerchantsRule',getNoviteStatus:'getNotice',setNoviteStatus:'saveNotice',setRetail:'setRetail',getClientVersion:'getClientVersion',getUserLocationInfo:'getLatAndLnt',mapGo:'getNavi',getTop:'getTopHeight',tabBar:'goNativeRootPageFromIndex',};this.miniProgram={linkTo:'navigateTo',};this.queryParams=(data)=>{if(!data)return'';let _result=[];for(let key in data){let value=data[key];if(['',undefined,null].includes(value)){continue;}if(Array.isArray(value)){value=value.toString();}_result.push(key+'='+value);}console.log(_result.length?'?'+_result.join('&'):'');return _result.length?'?'+_result.join('&'):'';};this.urlGet=(url,params)=>url+this.queryParams(params);this.getPhone=function(){var u=navigator.userAgent.toLowerCase();if(/miniProgram/i.test(u))return'miniProgram';if(u.indexOf('ios/dakale')>-1)return'dakaleIOS';if(u.indexOf('android/dakale')>-1)return'dakaleAndroid';return false;};this.checkAppParams=function(fnNames,paramObj={}){const checkApp=this.getPhone();let fnKey='';let param={};const{params={},path}=paramObj;switch(checkApp){case'dakaleIOS':let paramIos={param:params};if(fnNames==='linkTo'){paramIos={path:pathNative[path].ios,param:params};}fnKey=this.ios[fnNames];param=paramIos;break;case'dakaleAndroid':let paramAndroid={...params};if(fnNames==='linkTo'){paramAndroid={path:pathNative[path].android,...params};}fnKey=this.android[fnNames];param=paramAndroid;break;case'miniProgram':fnKey=this.miniProgram[fnNames];param={path:pathNative[path].miniProgram,params};break;default:break;}return{fnKey,param};};this.dsBridgeSynchro=function(fnName,params){bridge.call(fnName,params?JSON.stringify(params):'');};this.dsBridgeAsyc=function(fnName,params,callback){if(Object.keys(params).length>0){return bridge.call(fnName,JSON.stringify(params),function(res){callback(res);});}return bridge.call(fnName,function(res){callback(res);});};this.nativeInit=function(fnName,paramObj={},callback){let that=this;const checkApp=that.getPhone();if(!checkApp)return;if(checkApp==='dakaleIOS'){const{ios={}}=paramObj;const{linkType}=ios;if(linkType==='H5'){const{path}=ios;window.location.href=path;return;}const{fnKey,param}=that.checkAppParams(fnName,ios);if(callback&&typeof callback=='function'){callback(window.prompt(fnKey,JSON.stringify(param)));}else{window.webkit.messageHandlers[fnKey].postMessage(JSON.stringify(param));}}else if(checkApp==='dakaleAndroid'){const{android={}}=paramObj;const{linkType}=android;if(linkType==='H5'){const{path}=android;window.location.href=path;return;}const{fnKey,param}=that.checkAppParams(fnName,android);if(callback&&typeof callback=='function'){that.dsBridgeAsyc(fnKey,param,callback);}else{that.dsBridgeSynchro(fnKey,param);}}else if(checkApp==='miniProgram'){const{miniProgram={}}=paramObj;const{linkType}=miniProgram;if(linkType==='H5'){const{path}=miniProgram;wx.miniProgram.navigateTo({url:'/pages/share/webView/index?link='+path,});return;}const{fnKey,param}=that.checkAppParams(fnName,miniProgram);const{params,path}=param;wx.miniProgram[fnKey]({url:that.urlGet(path,params)});}};}const native=new nativeOther();`;
