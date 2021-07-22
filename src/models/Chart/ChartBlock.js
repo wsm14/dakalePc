@@ -61,10 +61,14 @@ export default {
           dataCheck('reduceCoupon', 'docCount') +
           dataCheck('specialGoods', 'docCount'),
       };
+      const heTotal = {
+        totalFee: dataCheck('reduceCoupon', 'totalFee') + dataCheck('specialGoods', 'totalFee'),
+        docCount: dataCheck('reduceCoupon', 'docCount') + dataCheck('specialGoods', 'docCount'),
+      };
       yield put({
         type: 'save',
         payload: {
-          orderInfo: { allTotal, ...content.orderInfo },
+          orderInfo: { allTotal, heTotal, ...content.orderInfo },
         },
       });
     },

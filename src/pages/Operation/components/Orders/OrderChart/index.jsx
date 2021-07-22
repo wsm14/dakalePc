@@ -21,9 +21,9 @@ const OrderChart = ({ dispatch, totalData, loading }) => {
       key: 'scan',
     },
     {
-      title: '特惠商品核销金额',
+      title: '核销金额',
       info: '店铺核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
-      key: 'specialGoods',
+      key: 'heTotal',
       numName: '核销数量',
     },
     {
