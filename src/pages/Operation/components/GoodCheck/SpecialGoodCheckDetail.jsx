@@ -278,7 +278,6 @@ const SpecialGoodCheckDetail = (props) => {
 
   //审核记录
   const handleTabChange = (val) => {
-    console.log(detail.marketingIdString, 'detail.marketingIdString');
     if (val === '3') {
       setRecordList([]);
       if (detail.marketingIdString) {
