@@ -1,87 +1,77 @@
-// vw 计算
-const vw = (px) => (px / 375) * 100 + 'vw';
+import commonList1 from './CommonList';
 
-// script
-const scriptTag = (dom, data) => `<script>(${dom.toString()})(${JSON.stringify(data)})</script>`;
+let head = {}; // [key]: value[]
+const body = [];
+let footer = {}; // [key]: value
 
-// 单张图片
-const solaImg = (data) => {
-  const dom = ({ img, linkType, url, path }) => {
-    document.body.innerHTML += `<img src="${img}" data-linkType="${linkType}" data-path="${
-      url || path
-    }" style="width: 100vw;display: block;" onclick="handleGoNative(this)"></img>`;
+// 请求方法
+const requestJs = [
+  "<style>.loading{position:fixed;top:0;left:0;right:0;bottom:0;display:flex;justify-content:center;align-items:center;z-index:100;background:rgba(255,255,255,0);}.loadingbg{width:100px;height:100px;display:flex;justify-content:center;align-items:center;border-radius:4px;background: #0000002b;}.pull_load{width:100%;padding:20px 20px;text-align:center;font-size:20px;color:#333333;}.loading_icon{display:inline-block;vertical-align:middle;background:url('https://web-new.dakale.net/public/image/load.png')no-repeat;background-size:100%100%;width:32px;height:32px}.animateload{position:relative;animation-name:loadingpush;animation-duration:10000ms;animation-timing-function:linear;animation-iteration-count:infinite;}@-webkit-keyframes loadingpush{from{transform:rotateZ(0deg)}to{transform:rotateZ(3600deg)}}</style>",
+  "<script src='https://resource-new.dakale.net/admin/activeJs/zepto.min.js'></script>",
+  "<script src='https://resource-new.dakale.net/admin/activeJs/axios.min.js'></script>",
+  "<script src='https://resource-new.dakale.net/admin/activeJs/md5.min.js'></script>",
+  "<script src='https://resource-new.dakale.net/admin/activeJs/request.js'></script>",
+];
+
+// script 标签
+const scriptTag = (dom, data) => `<script>(${dom.toString()})(${JSON.stringify(data)})<\/script>`;
+
+const htmlDom = {
+  // 单张图片
+  solaImg: (data) => {
+    const dom = ({ img, linkType, url, path }) => {
+      document.body.innerHTML += `<img src="${img}" data-linkType="${linkType}" data-path="${
+        url || path
+      }" style="width: 100vw;display: block;" onclick="handleGoNative(this)"></img>`;
+    };
+
+    return scriptTag(dom, data);
+  },
+
+  // 轮播图片
+  carouseal: ({ list }) => {
+    const swiperLink = [
+      "<link rel='stylesheet' href='https://unpkg.com/swiper/swiper-bundle.min.css'>",
+      "<script src='https://unpkg.com/swiper/swiper-bundle.min.js'></script>",
+    ];
+    const swiperFooter = `<script>var mySwiper = new Swiper('.swiper-container',{autoplay:true,loop:true,pagination:{el:'.swiper-pagination'}})</script>`;
+    head = { ...head, swiper: swiperLink };
+    footer = { ...footer, swiper: swiperFooter };
+    const dom = (list) => {
+      document.body.innerHTML += `<div class="swiper-container"><div class="swiper-wrapper">${list
+        .map(
+          ({ img, linkType, url, path }) =>
+            `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${
+              url || path
+            }" style="width: 100%;display: block;" onclick="handleGoNative(this)"></img></div>`,
+        )
+        .join('')}</div><div class="swiper-pagination"></div></div>`;
+    };
+    return scriptTag(dom, list);
+  },
+
+  // 商品列表
+  commonList: ({ styleIndex, list }) => {
+    head = { ...head, request: requestJs };
+    const functionIndex = [commonList1][styleIndex];
+    return `<script>;(${functionIndex})(${JSON.stringify(list)})<\/script>`;
+  },
+};
+
+const createHtml = (data = []) => {
+  data
+    .filter((i) => i.data)
+    .forEach(({ editorType, data }) => {
+      body.push(htmlDom[editorType](data));
+    });
+
+  return {
+    head: Object.values(head)
+      .map((i) => i.join(''))
+      .join(''),
+    body: body.join(''),
+    footer: Object.values(footer).join(''),
   };
-
-  return scriptTag(dom, data);
 };
 
-// 轮播图片
-const carouseal = ({ list }) => {
-  const dom = (list) => {
-    document.body.innerHTML += `<div class="swiper-container"><div class="swiper-wrapper">${list
-      .map(
-        ({ img, linkType, url, path }) =>
-          `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${
-            url || path
-          }" style="width: 100%;display: block;" onclick="handleGoNative(this)"></img></div>`,
-      )
-      .join('')}</div><div class="swiper-pagination"></div></div>`;
-  };
-  return scriptTag(dom, list);
-};
-
-// 商品列表
-const commonList = ({ styleIndex, list }) => {
-  const domClass = [
-    (source) => {
-      const vw = (px) => (px / 375) * 100 + 'vw';
-      document.body.innerHTML += `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
-  ${source
-    .map(
-      (item) => `<div style="padding: ${vw(8)};border-radius: ${vw(4)};margin-top: ${vw(
-        12,
-      )}; background: #FFFFFF;display: flex;align-items: center;"><div style="width: ${vw(
-        112,
-      )};height: ${vw(112)};margin-right: ${vw(8)};border-radius: ${vw(4)};background: url(${
-        item.goodsImg
-      });background-size: cover;"></div><div style="flex: 1"><div style="font-size: ${vw(
-        14,
-      )};color: #333333; white-space:nowrap;text-overflow: ellipsis;">${
-        item.goodsName
-      }</div><div style="font-size: ${vw(12)};margin-top: ${vw(
-        10,
-      )};color: #999999; display: flex; align-items: center;"><img src="${
-        item.ownerImg
-      }" style="border-radius: 50%;width: ${vw(15)};height: ${vw(15)};margin-right: ${vw(
-        4,
-      )};background-color: #f5f5f5;"></img>${
-        item.ownerName
-      }</div><div style="width: 100%; display: flex; align-items: flex-end"><div style="flex: 1"><div style="font-size: ${vw(
-        12,
-      )}; color: #999999; margin-top: ${vw(
-        17,
-      )}">原价：<span style="text-decoration: line-through">¥${
-        item.oriPrice
-      }</span></div><div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(
-        7,
-      )}">优惠价：<span style="font-size: ${vw(14)}; font-weight: bold">¥${
-        item.realPrice
-      }</span></div></div><div data-key="specialActivityId,merchantId" data-specialActivityId=${
-        item.specialGoodsId
-      } data-merchantId=${
-        item.ownerIdString
-      } data-path="goods" data-linkType="inside" onclick="handleGoNative(this)" style="width: ${vw(
-        52,
-      )};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
-        14,
-      )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">
-      抢购</div></div></div></div>`,
-    )
-    .join('')}</div>`;
-    },
-  ][styleIndex];
-
-  return scriptTag(domClass, list);
-};
-
-export default { solaImg, commonList, carouseal };
+export default createHtml;
