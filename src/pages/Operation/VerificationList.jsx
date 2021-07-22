@@ -27,7 +27,7 @@ const VerificationList = (props) => {
       type: 'user',
     },
     {
-      label: '店铺名',
+      label: '店铺',
       name: 'merchantId',
       type: 'merchant',
       onChange: (val) => setMerchantId(val),
@@ -78,7 +78,6 @@ const VerificationList = (props) => {
                   {row.goodsName}
                 </Ellipsis>
               </div>
-
               <div style={{ marginTop: 5 }} className={styles.specFont}>
                 订单号：{row.orderSn}
               </div>

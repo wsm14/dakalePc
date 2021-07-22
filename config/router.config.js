@@ -173,12 +173,6 @@ export default [
         component: './Chart/ChartBlock',
       },
       {
-        path: '/chart/achievement',
-        name: 'BD业绩',
-        component: './Chart/SaleAchievement',
-        buttons: ['exportList'],
-      },
-      {
         path: '/chart/dataGatherExport',
         name: '数据明细查询',
         component: './Chart/DataGatherExport',

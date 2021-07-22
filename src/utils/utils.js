@@ -284,7 +284,7 @@ export const checkFileData = (fileData) => {
 // 获取城市名
 const getCityName = (code) => {
   const cityIndex = cityJson.findIndex((item) => item.id === code);
-  return cityJson[cityIndex].name;
+  return cityJson[cityIndex]?.name;
 };
 
 // 根据城市code获取城市名称

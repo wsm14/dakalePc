@@ -5,7 +5,7 @@ import { SketchPicker, CirclePicker } from 'react-color';
  * 颜色选择器
  */
 export default ({ cRef, value }) => {
-  const [color, setColor] = useState('#ffffff');
+  const [color, setColor] = useState('#f0f0f0');
 
   useEffect(() => {
     if (value) setColor(value);
