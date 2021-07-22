@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { FRANCHISE_APP_STATUS, FRANCHISE_COOPERATION_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import FranchiseDrawer from './components/Franchise/FranchiseDrawer';
+import { checkCityName } from '@/utils/utils';
 
 const FranchiseApplication = (props) => {
   const { list, loading, dispatch } = props;
@@ -56,7 +57,8 @@ const FranchiseApplication = (props) => {
     {
       title: '意向合作城市',
       align: 'center',
-      dataIndex: 'intentionalProxyCity',
+      dataIndex: 'districtCode',
+      render: (val, row) => checkCityName(val || row.cityCode || row.provinceCode),
     },
     {
       title: '公司',
