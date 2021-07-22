@@ -35,7 +35,7 @@ export default (function (list) {
     if (evn === 'miniProgram') {
       getCommission(getUrlKey('token'));
     } else {
-      native.nativeInit('getToken', {}, (val) => {
+      new nativeOther().nativeInit('getToken', {}, (val) => {
         if (val && val.length > 0) {
           getCommission(val);
         } else {
