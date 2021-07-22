@@ -326,6 +326,7 @@ const PreferentialSet = ({
       name: 'goodsTags',
       type: 'select',
       mode: 'multiple',
+      placeholder:'请选择商家商品标签',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
       addRules: [
