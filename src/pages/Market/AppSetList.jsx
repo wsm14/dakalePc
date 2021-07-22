@@ -165,7 +165,7 @@ const SysAppSet = (props) => {
   // 占位图下架
   const fetchBannerStatus = (payload) => {
     dispatch({
-      type: 'sysAppList/fetchBannerStatusDel',
+      type: 'sysAppList/fetchBannerStatus',
       payload,
       callback: childRef.current.fetchGetData,
     });

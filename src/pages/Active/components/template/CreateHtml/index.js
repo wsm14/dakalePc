@@ -71,6 +71,36 @@ export const computedPrice = (price, scale) => {
 
 const init = (htmlData = {}) => {
   const { dataList, backgroundColor, activityName } = htmlData;
+
+  // 是否是轮播图
+  let swiperCheck = false;
+
+  // 网页内容组件
+  const bodyContent = dataList
+    .map(({ editorType, data }) => {
+      if (editorType === 'carouseal') swiperCheck = true;
+      return showHtml[editorType](data);
+    })
+    .join('');
+
+  const swiperLink = [
+    "<link rel='stylesheet' href='https://unpkg.com/swiper/swiper-bundle.min.css'>",
+    "<script src='https://unpkg.com/swiper/swiper-bundle.min.js'></script>",
+  ];
+
+  const swiperScript = [
+    scriptTag(`var mySwiper = new Swiper('.swiper-container',{autoplay:true,loop:true,pagination:{el:'.swiper-pagination'}})`)
+  ];
+
+  // 额外引用
+  let otherFile = [];
+  // 额外方法
+  let otherScript = [];
+  if (swiperCheck) {
+    otherFile = [...otherFile, ...swiperLink];
+    otherScript = [...otherScript, ...swiperScript];
+  }
+
   // 网页头部
   const htmlHeard = `<!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8"/>
@@ -79,23 +109,12 @@ const init = (htmlData = {}) => {
   <title>${activityName}</title>
   <style>*{box-sizing:border-box;font-family: PingFang SC;}html,body{background-color:${backgroundColor};width:100vw;height:100%;margin:0;padding:0;line-height: 1;-webkit-overflow-scrolling: touch;}</style>
   <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+  ${otherFile.join('')}
   ${scriptTag(native)}
   </head><body>`;
 
-  // 是否是轮播图
-  const carousealScript = `var mySwiper = new Swiper('.swiper-container',{autoplay:true,loop:true,pagination:{el:'.swiper-pagination'}})`;
-  let carousealCheck = false;
-
-  // 网页内容组件
-  const bodyContent = dataList
-    .map(({ editorType, data }) => {
-      if (editorType === 'carouseal') carousealCheck = true;
-      return showHtml[editorType](data);
-    })
-    .join('');
-
   // 网页底部
-  const htmlFooter = `</body>${carousealCheck ? scriptTag(carousealScript) : ''}</html>`;
+  const htmlFooter = `</body>${otherScript.join('')}</html>`;
   return htmlHeard + bodyContent + htmlFooter;
 };
 

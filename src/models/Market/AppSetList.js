@@ -86,13 +86,14 @@ export default {
       });
       callback();
     },
-    *fetchBannerStatusDel({ payload, callback }, { call }) {
+    *fetchBannerStatus({ payload, callback }, { call }) {
       const response = yield call(fetchBannerStatus, payload);
       if (!response) return;
       const { bannerStatus } = payload;
+      const text = ['下架', '上架'][bannerStatus];
       notification.success({
         message: '温馨提示',
-        description: `占位图${bannerStatus === 0 ? '下架' : '删除'}成功`,
+        description: `占位图${text ? text : '删除'}成功`,
       });
       callback();
     },

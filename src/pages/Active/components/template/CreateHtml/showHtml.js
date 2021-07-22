@@ -17,8 +17,6 @@ const solaImg = (data) => {
 
 // 轮播图片
 const carouseal = ({ list }) => {
-  const css = "<link rel='stylesheet' href='https://unpkg.com/swiper/swiper-bundle.min.css'>";
-  const script = "<script src='https://unpkg.com/swiper/swiper-bundle.min.js'></script>";
   const dom = (list) => {
     document.body.innerHTML += `<div class="swiper-container"><div class="swiper-wrapper">${list
       .map(
@@ -29,8 +27,7 @@ const carouseal = ({ list }) => {
       )
       .join('')}</div><div class="swiper-pagination"></div></div>`;
   };
-
-  return css + script + scriptTag(dom, list);
+  return scriptTag(dom, list);
 };
 
 // 商品列表
