@@ -1,4 +1,4 @@
-export default (function (list) {
+export default (function (list, id) {
   function getUrlKey(name) {
     return (
       decodeURIComponent(
@@ -51,7 +51,7 @@ export default (function (list) {
 
   function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
-    document.body.innerHTML += `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
+    document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
   .map(
     (item) => `<div style="padding: ${vw(8)};border-radius: ${vw(4)};margin-top: ${vw(
@@ -102,7 +102,7 @@ ${source
       14,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">
     ${
-      shareC ? `分享赚${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
+      shareC ? `分享赚￥${computedPrice(item.realPrice - item.merchantPrice, shareC)}` : '抢购'
     }</div></div></div></div>`,
   )
   .join('')}</div>`;

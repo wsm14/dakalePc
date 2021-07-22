@@ -1,3 +1,4 @@
+import { uuid } from '@/utils/utils';
 import commonList1 from './CommonList';
 
 let head = {}; // [key]: value[]
@@ -14,22 +15,25 @@ const requestJs = [
 ];
 
 // script 标签
-const scriptTag = (dom, data) => `<script>(${dom.toString()})(${JSON.stringify(data)})<\/script>`;
+const scriptTag = (dom, data, id) =>
+  `<script>(${dom.toString()})(${JSON.stringify(data)}, "${id}")<\/script>`;
 
 const htmlDom = {
   // 单张图片
-  solaImg: (data) => {
-    const dom = ({ img, linkType, url, path }) => {
-      document.body.innerHTML += `<img src="${img}" data-linkType="${linkType}" data-path="${
+  solaImg: (data, uid) => {
+    const dom = ({ img, linkType, url, path }, uid) => {
+      document.getElementById(
+        uid,
+      ).innerHTML = `<img src="${img}" data-linkType="${linkType}" data-path="${
         url || path
       }" style="width: 100vw;display: block;" onclick="handleGoNative(this)"></img>`;
     };
 
-    return scriptTag(dom, data);
+    return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
   },
 
   // 轮播图片
-  carouseal: ({ list }) => {
+  carouseal: ({ list }, uid) => {
     const swiperLink = [
       "<link rel='stylesheet' href='https://unpkg.com/swiper/swiper-bundle.min.css'>",
       "<script src='https://unpkg.com/swiper/swiper-bundle.min.js'></script>",
@@ -37,8 +41,10 @@ const htmlDom = {
     const swiperFooter = `<script>var mySwiper = new Swiper('.swiper-container',{autoplay:true,loop:true,pagination:{el:'.swiper-pagination'}})</script>`;
     head = { ...head, swiper: swiperLink };
     footer = { ...footer, swiper: swiperFooter };
-    const dom = (list) => {
-      document.body.innerHTML += `<div class="swiper-container"><div class="swiper-wrapper">${list
+    const dom = (list, uid) => {
+      document.getElementById(
+        uid,
+      ).innerHTML = `<div class="swiper-container"><div class="swiper-wrapper">${list
         .map(
           ({ img, linkType, url, path }) =>
             `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${
@@ -47,22 +53,25 @@ const htmlDom = {
         )
         .join('')}</div><div class="swiper-pagination"></div></div>`;
     };
-    return scriptTag(dom, list);
+    return `<div id="${uid}"></div>${scriptTag(dom, list, uid)}`;
   },
 
   // 商品列表
-  commonList: ({ styleIndex, list }) => {
+  commonList: ({ styleIndex, list }, uid) => {
     head = { ...head, request: requestJs };
     const functionIndex = [commonList1][styleIndex];
-    return `<script>;(${functionIndex})(${JSON.stringify(list)})<\/script>`;
+    return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
+      list,
+    )},"${uid}")<\/script>`;
   },
 };
 
 const createHtml = (data = []) => {
   data
     .filter((i) => i.data)
-    .forEach(({ editorType, data }) => {
-      body.push(htmlDom[editorType](data));
+    .forEach(({ editorType, data }, index) => {
+      const uid = `${uuid()}${index}`;
+      body.push(htmlDom[editorType](data, uid));
     });
 
   return {
