@@ -2,7 +2,6 @@ import { uuid } from '@/utils/utils';
 import commonList1 from './CommonList';
 
 let head = {}; // [key]: value[]
-const body = [];
 let footer = {}; // [key]: value
 
 // 请求方法
@@ -67,6 +66,7 @@ const htmlDom = {
 };
 
 const createHtml = (data = []) => {
+  let body = [];
   data
     .filter((i) => i.data)
     .forEach(({ editorType, data }, index) => {
