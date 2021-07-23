@@ -15,7 +15,7 @@ const init = (htmlData = {}) => {
   <meta http-equiv="X-UA-Compatible"content="IE=edge"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui, viewport-fit=cover"/>
   <title>${activityName}</title>
-  <style>*{box-sizing:border-box;font-family: PingFang SC;}html,body{background-color:${backgroundColor};width:100vw;height:100%;margin:0;padding:0;line-height: 1;-webkit-overflow-scrolling: touch;}</style>
+  <style>*{box-sizing:border-box;font-family: PingFang SC;}img{pointer-events:none;}html,body{background-color:${backgroundColor};width:100vw;height:100%;margin:0;padding:0;line-height: 1;-webkit-overflow-scrolling: touch;}</style>
   <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
   ${head}
   <script>${native}</script>
