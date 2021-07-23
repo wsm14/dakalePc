@@ -95,6 +95,7 @@ const SpecialGoods = (props) => {
       label: '有效期',
       name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
       disabled: !searchType,
+      disabledDate: () => false,
       type: { gain: 'number', fixed: 'rangePicker' }[searchType],
       end: 'useEndTime',
     },
