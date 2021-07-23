@@ -16,7 +16,7 @@ const AccountBusinessList = (props) => {
       name: 'merchantName',
     },
     {
-      label: '店铺帐号',
+      label: '店铺电话',
       name: 'account',
     },
     {
@@ -44,7 +44,7 @@ const AccountBusinessList = (props) => {
       render: (val) => val || '--',
     },
     {
-      title: '店铺帐号',
+      title: '店铺电话',
       align: 'center',
       dataIndex: 'account',
     },
