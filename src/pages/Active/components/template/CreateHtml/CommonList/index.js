@@ -76,9 +76,9 @@ ${source
       item.ownerImg
     }" style="border-radius: 50%;width: ${vw(15)};height: ${vw(15)};margin-right: ${vw(
       4,
-    )};background-color: #f5f5f5;"></img>${
+    )};background-color: #f5f5f5;"></img><div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">${
       item.ownerName
-    }</div><div style="width: 100%; display: flex; align-items: flex-end"><div style="flex: 1"><div style="font-size: ${vw(
+    }</div></div><div style="width: 100%; display: flex; align-items: flex-end"><div style="flex: 1"><div style="font-size: ${vw(
       12,
     )}; color: #999999; margin-top: ${vw(17)}">原价: <span style="text-decoration: line-through">¥${
       item.oriPrice
@@ -92,7 +92,9 @@ ${source
       <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
       3,
     )};height: inherit;background: #ef476f;display: flex;align-items: center;color: #ffffff;">卡豆再省</div>
-      <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(2)} solid transparent;"></div>
+      <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
+      2,
+    )} solid transparent;"></div>
       <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
       4,
     )};font-weight: bold;color: #ef476f;background: #ffffff;">￥${computedPrice(
