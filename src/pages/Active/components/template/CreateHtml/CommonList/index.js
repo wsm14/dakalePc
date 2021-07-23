@@ -11,13 +11,18 @@ export default (function (list, id) {
   }
 
   function getCommission(token) {
-    HTTP_GET('/user/userInfo/getUserShareCommission', { token }).then((res) => {
-      const { content } = res;
-      const { configUserLevelInfo } = content;
-      // payBeanCommission 省钱比例 shareCommission 分享赚比例
-      const { payBeanCommission, shareCommission } = configUserLevelInfo;
-      showList(list, payBeanCommission, shareCommission);
-    });
+    HTTP_GET('/user/userInfo/getUserShareCommission', { token })
+      .then((res) => {
+        const { content } = res;
+        const { configUserLevelInfo } = content;
+        // payBeanCommission 省钱比例 shareCommission 分享赚比例
+        const { payBeanCommission, shareCommission } = configUserLevelInfo;
+        showList(list, payBeanCommission, shareCommission);
+      })
+      .catch(() => {
+        // 没有获取到 直接渲染
+        showList(list);
+      });
   }
 
   // 赚多少 特惠价格realPrice-商家结算价merchantPrice*比例payBeanCommission
@@ -30,12 +35,12 @@ export default (function (list, id) {
     } else return size;
   };
 
-  var evn = new nativeOther().getPhone();
+  var evn = native.getPhone();
   if (evn) {
     if (evn === 'miniProgram') {
       getCommission(getUrlKey('token'));
     } else {
-      new nativeOther().nativeInit('getToken', {}, (val) => {
+      native.nativeInit('getToken', {}, (val) => {
         if (val && val.length > 0) {
           getCommission(val);
         } else {
@@ -49,6 +54,7 @@ export default (function (list, id) {
     showList(list);
   }
 
+  // 默认50%
   function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">

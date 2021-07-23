@@ -25,8 +25,7 @@ const init = (htmlData = {}) => {
     htmlHeard +
     body +
     `</body>${footer}
-    <script>$('body').on('click','.handleGoNative',function(){if(!$(this).attr('data-linkType'))return
-    let keyObj={};($(this).attr('data-key')?$(this).attr('data-key').split(','):[]).map((item)=>{keyObj[item]=$(this).attr('data-'+item)});const path=$(this).attr('data-path');const params={path,params:keyObj,linkType:$(this).attr('data-linkType'),};native.nativeInit('linkTo',{ios:params,android:params,miniProgram:params,})})</script>
+    <script>$('body').on('click','.handleGoNative',function(){if(!$(this).attr('data-linkType'))return;let keyObj={};($(this).attr('data-key')?$(this).attr('data-key').split(','):[]).map((item)=>{keyObj[item]=$(this).attr('data-'+item)});const path=$(this).attr('data-path');const params={path,params:keyObj,linkType:$(this).attr('data-linkType'),};native.nativeInit('linkTo',{ios:params,android:params,miniProgram:params,})})</script>
   </html>`
   );
 };
