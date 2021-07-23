@@ -30,11 +30,12 @@ const SideMenu = (props) => {
     if (show === 'previewer') setPreviewerUrl('');
     let fileName = uuid();
     if (handle === 'edit') fileName = getHtmlDocName();
+    const newData = moduleData.dataList.filter((item) => item.data); // 空数据不进入
     const blob = new Blob(
       [
         init({
           ...moduleData,
-          dataList: moduleData.dataList.filter((item) => item.data),
+          dataList: newData,
           activityName,
         }),
       ],
@@ -60,7 +61,7 @@ const SideMenu = (props) => {
             templateType: type,
             params: JSON.stringify({
               ...moduleData,
-              dataList: moduleData.dataList.filter((item) => item.data), // 空数据不进入
+              dataList: newData, // 空数据不进入
             }),
           },
           callback: () => {

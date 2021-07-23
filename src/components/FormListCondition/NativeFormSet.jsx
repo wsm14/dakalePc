@@ -27,8 +27,10 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch
     fetchGetJumpNative(); // 获取后端配置的 app打开的页面类型 和 参数键值对
     fetchWalkManageNavigation(); // 获取风向标
     setShowUrl(jumpUrlType); // 表单回填参数 链接类型
-    setShowApi(nativeJumpType); // 表单回填参数 app打开的页面类型
-    setParamKey(Object.keys(param)); // 表单回填参数 app 跳转需要的参数键
+    if (jumpUrlType !== 'H5') {
+      setShowApi(nativeJumpType); // 表单回填参数 app打开的页面类型
+      setParamKey(Object.keys(param)); // 表单回填参数 app 跳转需要的参数键
+    }
   }, []);
 
   // 获取后端配置的 app打开的页面类型 和 参数键值对
