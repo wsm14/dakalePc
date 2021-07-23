@@ -140,15 +140,9 @@ function nativeOther() {
     savePay: 'DKLOrderPayInfoController', //支付页 参数 marketCouponId
     goLogin: 'goNativePage', //qu登录
     goShare: 'callUpShare', //分享
-    merchatRule: 'userMerchantProtocol', //商家协议
-    getNoviteStatus: 'getAnnouncementReadStatus', //获取通知
-    setNoviteStatus: 'updateAnnouncementReadStatus', //设置通知
-    setRetail: 'setRetail', //是否同意分销权益
     getClientVersion: 'getClientVersion', //获取版本号
     getUserLocationInfo: 'getUserLocationInfo', //获取用户定位信息，
     mapGo: 'showMerchantNavigationLatAndLnt', //调取 app地图
-    getTop: 'getIphoneSafeTopHeight',
-    tabBar: 'goNativeRootPageFromIndex', //跳转主页
   };
   this.android = {
     close: 'finish', //关闭
@@ -159,15 +153,9 @@ function nativeOther() {
     savePay: 'goNativePage', //支付页 参数 marketCouponId
     goLogin: 'goLogin', //登录
     goShare: 'share', //分享
-    merchatRule: 'agreeLoginMerchantsRule', //商家协议
-    getNoviteStatus: 'getNotice', //获取通知
-    setNoviteStatus: 'saveNotice', //设置通知
-    setRetail: 'setRetail', //是否同意分销权益
     getClientVersion: 'getClientVersion', //获取版本号
     getUserLocationInfo: 'getLatAndLnt', //获取用户定位信息
     mapGo: 'getNavi', //调取 app地图
-    getTop: 'getTopHeight',
-    tabBar: 'goNativeRootPageFromIndex', //跳转主页
   };
   this.miniProgram = {
     linkTo: 'navigateTo', //路径跳转
@@ -203,7 +191,13 @@ function nativeOther() {
     if (u.indexOf('android/dakale') > -1) return 'dakaleAndroid';
     return false;
   };
-  // 检查路由参数键值
+  /**
+   * 检查路由所需参数键名 nativeSet 
+   * @param {*} nativeSet pathNative 内配置的端口方法 path key映射 path 为linkTo跳转页面时使用
+   * @param {*} params 点击时获取到的参数键值对
+   * @param {*} checkApp 当前浏览器环境
+   * @returns
+   */
   this.checkParamsKey = function (nativeSet, params, checkApp) {
     let nativeUrl = '';
     let nativeParam = params;
@@ -218,12 +212,18 @@ function nativeOther() {
     }
     return { nativeUrl, nativeParam };
   };
-  // 检查环境获取参数
+  /**
+   * 检查环境获取参数
+   * @param {*} fnNames nativeOther 桥接方法名映射
+   * @param {*} paramObj 不同端点击时获取到的参数 ios android miniProgram
+   * @returns {*} fnKey 桥接方法名称 param 桥接方法传递的参数
+   */
   this.checkAppParams = function (fnNames, paramObj = {}) {
     const checkApp = this.getPhone();
     let fnKey = '';
     let param = {};
     const { params = {}, path } = paramObj;
+    // 兼容不同端参数名不同校验
     const { nativeUrl, nativeParam } = this.checkParamsKey(pathNative[path], params, checkApp);
     switch (checkApp) {
       case 'dakaleIOS':
@@ -266,7 +266,7 @@ function nativeOther() {
       callback(res);
     });
   };
-
+  // 桥接内容
   this.nativeInit = function (fnName, paramObj = {}, callback) {
     let that = this;
     const checkApp = that.getPhone();
@@ -274,11 +274,13 @@ function nativeOther() {
     if (checkApp === 'dakaleIOS') {
       const { ios = {} } = paramObj;
       const { linkType } = ios;
+      // h5 跳转
       if (linkType === 'H5') {
         const { path } = ios;
         window.location.href = path;
         return;
       }
+      // 检查参数
       const { fnKey, param } = that.checkAppParams(fnName, ios);
       if (callback && typeof callback == 'function') {
         callback(window.prompt(fnKey, JSON.stringify(param)));
@@ -288,6 +290,7 @@ function nativeOther() {
     } else if (checkApp === 'dakaleAndroid') {
       const { android = {} } = paramObj;
       const { linkType } = android;
+      // h5 跳转
       if (linkType === 'H5') {
         const { path } = android;
         window.location.href = path;
@@ -303,6 +306,7 @@ function nativeOther() {
     } else if (checkApp === 'miniProgram') {
       const { miniProgram = {} } = paramObj;
       const { linkType } = miniProgram;
+      // h5 跳转
       if (linkType === 'H5') {
         const { path } = miniProgram;
         wx.miniProgram.navigateTo({
