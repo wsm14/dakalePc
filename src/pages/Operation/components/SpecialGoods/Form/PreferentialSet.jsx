@@ -6,7 +6,6 @@ import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from '../GoodsGroupSet';
-import PlatformProductTag from '../PlatformProductTag';
 
 const PreferentialSet = ({
   form,
@@ -326,7 +325,7 @@ const PreferentialSet = ({
       name: 'goodsTags',
       type: 'select',
       mode: 'multiple',
-      placeholder:'请选择商家商品标签',
+      placeholder: '请选择商家商品标签',
       select: platTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
       addRules: [

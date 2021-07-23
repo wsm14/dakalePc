@@ -4,6 +4,7 @@ import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 import { NUM_PATTERN } from '@/common/regExp';
+
 const GoodResourceSet = (props) => {
   const { visible, onClose, cRef, dispatch, loading } = props;
   const { show = false, tabKey, detail = {} } = visible;

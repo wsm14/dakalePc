@@ -1,15 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import {
-  BUSINESS_TYPE,
-  CHECK_TYPE,
-  SPECIAL_STATUS,
-  ACTION_TYPE,
-  GOODS_CLASS_TYPE,
-  SUBMIT_TYPE,
-  SPECIAL_RECOMMEND_DELSTATUS,
-} from '@/common/constant';
+import { BUSINESS_TYPE, ACTION_TYPE, GOODS_CLASS_TYPE, SUBMIT_TYPE } from '@/common/constant';
 
 import Ellipsis from '@/components/Ellipsis';
 import NoCheck from './components/GoodCheck/NoCheck';
@@ -42,7 +34,6 @@ const SpecialGoodCheck = (props) => {
   const { dispatch, loading, hubData, specialGoodsCheck } = props;
   const [tabkey, setTabKey] = useState('adminAudit');
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
-  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const { list } = specialGoodsCheck;
 
   // 获取商圈
@@ -317,7 +308,7 @@ const SpecialGoodCheck = (props) => {
             ...newProps,
             ownerIdString,
             auditIdString,
-            submitterType
+            submitterType,
           });
         } else {
           setVisibleSet({ type, ...newProps });
