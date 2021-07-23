@@ -94,7 +94,6 @@ const GoodsOrders = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
   ];
 
