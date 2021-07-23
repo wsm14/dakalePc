@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { NEWS_STATUS } from '@/common/constant';
+import { NEWS_STATUS, NEWS_TYPE } from '@/common/constant';
 import { Card, Result } from 'antd';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import PopImgShow from '@/components/PopImgShow';
@@ -60,6 +60,11 @@ const ServiceNewsComponent = (props) => {
       dataIndex: 'description',
       width: 300,
       ellipsis: { length: 50 },
+    },
+    {
+      title: '新闻分类',
+      dataIndex: 'type',
+      render: (val) => NEWS_TYPE[val],
     },
     {
       title: '更新人',

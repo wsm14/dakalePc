@@ -547,3 +547,13 @@ export const COMMISSION_TYPE = {
 export const ACTIVE_TEMPLATE_TYPE = {
   public: '通用模版',
 };
+
+//新闻分类
+
+export const NEWS_TYPE = {
+  newsReport: '新闻报道',
+  companyActivities: '公司活动',
+  daRenDynamic: '哒人动态',
+  companyEvents: '公司大事件',
+  productNews: '产品动态',
+};
