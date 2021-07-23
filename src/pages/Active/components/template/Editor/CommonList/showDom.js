@@ -61,7 +61,17 @@ export default ({ styleIndex = 0, list = [] }) => {
                 }}
                 src={item.ownerImg}
               ></img>
-              {item.ownerName}
+              <div
+                style={{
+                  flex: 1,
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  lineHeight: 'initial',
+                }}
+              >
+                {item.ownerName}
+              </div>
             </div>
             <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end' }}>
               <div style={{ flex: 1 }}>

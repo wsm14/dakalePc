@@ -76,7 +76,7 @@ ${source
       item.ownerImg
     }" style="border-radius: 50%;width: ${vw(15)};height: ${vw(15)};margin-right: ${vw(
       4,
-    )};background-color: #f5f5f5;"></img><div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">${
+    )};background-color: #f5f5f5;"></img><div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">${
       item.ownerName
     }</div></div><div style="width: 100%; display: flex; align-items: flex-end"><div style="flex: 1"><div style="font-size: ${vw(
       12,
