@@ -61,7 +61,6 @@ const VerificationList = (props) => {
   ];
 
   // table 表头
-  //
   const getColumns = [
     {
       title: '商品',
@@ -131,7 +130,7 @@ const VerificationList = (props) => {
       dataIndex: 'settlerCash',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
-          <div>{`￥${(record.settlerPrice ? record.settlerPrice / 100 : 0).toFixed(2)}`}</div>
+          <div>{`￥${record.settlerPrice ? record.settlerPrice : 0}`}</div>
           <div className={styles.fontColor}>
             {record.settlerBean ? `(${record.settlerBean}卡豆` : '(' + '0卡豆'}
           </div>
@@ -144,17 +143,11 @@ const VerificationList = (props) => {
       align: 'center',
       dataIndex: 'cashCommission',
       render: (val, record) => {
-        const mecash = (record.settlerPrice ? record.settlerPrice / 100 : 0).toFixed(2);
-        const bean = (Number(record.settleTotalFee) - Number(mecash)).toFixed(2);
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${bean}`}</div>
-            <div className={styles.fontColor}>
-              {`(${record.settleBeanFee - record.settlerBean}卡豆`}
-            </div>
-            <div className={styles.fontColor}>
-              {`￥${(Number(record.settlePayFee) - Number(record.settlerCash)).toFixed(2)})`}
-            </div>
+            <div>{`￥${record.beanCommission / 100 + Number(record.cashCommission)}`}</div>
+            <div className={styles.fontColor}>{`(${record.beanCommission}卡豆`}</div>
+            <div className={styles.fontColor}>{`￥${record.cashCommission})`}</div>
           </div>
         );
       },
