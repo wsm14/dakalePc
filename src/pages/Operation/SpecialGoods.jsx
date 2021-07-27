@@ -315,7 +315,6 @@ const SpecialGoods = (props) => {
             visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'edit'),
           },
-
           {
             type: 'again', //重新发布
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
@@ -508,7 +507,6 @@ const SpecialGoods = (props) => {
       ></RefuseModal>
       {/* 商品码 */}
       <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
-
       {/* 库存总量 */}
       <RemainModal
         childRef={childRef}
