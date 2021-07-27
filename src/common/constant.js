@@ -496,6 +496,7 @@ export const SUBMIT_TYPE = {
   admin: '运营后台',
   sell: 'CRM',
   group: '集团',
+  partner: '区县',
 };
 
 // serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板

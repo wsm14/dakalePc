@@ -123,14 +123,7 @@ const addGroups = (props) => {
     },
     {
       title: '营业执照信息',
-      form: (
-        <ActiveSetOneForm
-          cRef={cRef}
-          formType={formType}
-          form={form}
-          initialValues={merchantGroupDTO}
-        />
-      ),
+      form: <ActiveSetOneForm form={form} initialValues={merchantGroupDTO} />,
       disabled: true,
     },
     {

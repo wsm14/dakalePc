@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
-import { LogDetail } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';

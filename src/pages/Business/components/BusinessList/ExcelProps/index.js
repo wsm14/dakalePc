@@ -1,3 +1,4 @@
+import { checkCityName } from '@/utils/utils';
 import { BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 
 // 导出列表
@@ -6,9 +7,7 @@ export default {
   header: [
     { key: 'account', header: '店铺账号' },
     { key: 'merchantName', header: '店铺名称' },
-    { key: 'provinceName', header: '所在省' },
-    { key: 'cityName', header: '所在市' },
-    { key: 'districtName', header: '所在区' },
+    { key: 'districtCode', header: '省市区', render: (val) => checkCityName(val) },
     { key: 'businessHub', header: '所属商圈' },
     { key: 'address', header: '详细地址' },
     { key: 'topCategoryName', header: '一级经营类目' },
