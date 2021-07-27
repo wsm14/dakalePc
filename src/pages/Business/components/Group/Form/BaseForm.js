@@ -2,7 +2,6 @@ import React, { useImperativeHandle, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
-import { NUM_PERCENTAGE } from '@/common/regExp';
 import { Map, Marker } from 'react-amap';
 import FormCondition from '@/components/FormCondition';
 
