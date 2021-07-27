@@ -9,7 +9,6 @@ import excelProps from './components/BusinessList/ExcelProps';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessDetailShow from './components/BusinessList/BusinessDetailShow';
 import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
-import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
@@ -21,7 +20,6 @@ const BusinessListComponent = (props) => {
 
   const childRef = useRef();
 
-  const [visible, setVisible] = useState({}); // 设置
   const [visibleDetail, setVisibleDetail] = useState(false); // 详情
   const [visibleQrcode, setVisibleQrcode] = useState(''); // 二维码
   const [visibleEdit, setVisibleEdit] = useState(''); // 编辑
@@ -216,10 +214,6 @@ const BusinessListComponent = (props) => {
             fetchGetDetail(index, (info) => setVisibleEdit({ show: true, type: 'edit', info })),
         },
         {
-          type: 'set',
-          click: () => setVisible({ show: true, record }),
-        },
-        {
           type: 'diary',
           click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
         },
@@ -327,12 +321,6 @@ const BusinessListComponent = (props) => {
         dispatchType="businessList/fetchGetList"
         {...businessList}
       ></TableDataBlock>
-      {/* 店铺设置 */}
-      <BusinessAwardSet
-        cRef={childRef}
-        visible={visible}
-        onClose={() => setVisible('')}
-      ></BusinessAwardSet>
       {/* 店铺编辑 */}
       <BusinessEdit
         cRef={childRef}
