@@ -1,10 +1,16 @@
 import React from 'react';
 import { BUSINESS_TYPE, COUPON_WEEK_TIME, COUPON_BUY_RULE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
-  const { ownerType = 'merchant', merchantIdList: mreList = [], buyFlag = '1' } = detail;
+  const {
+    ownerType = 'merchant',
+    merchantIdList: mreList = [],
+    buyFlag = '1',
+    merchantList = [],
+  } = detail;
   // 参与活动的店铺
   const mreFormItems = [
     {
@@ -16,13 +22,13 @@ const GoodsDetail = (props) => {
       label: `${BUSINESS_TYPE[ownerType]}名称`,
       name: 'ownerName',
     },
-    {
-      label: '店铺范围',
-      name: 'merchantIdList',
-      render: () => '',
-      show: ownerType === 'group',
-      children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
-    },
+    // {
+    //   label: '店铺范围',
+    //   name: 'merchantIdList',
+    //   render: () => '',
+    //   show: ownerType === 'group',
+    //   children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
+    // },
   ];
 
   // 券信息
@@ -117,6 +123,21 @@ const GoodsDetail = (props) => {
         }允许过期退款`,
     },
   ];
+  //分佣配置
+  const commissionItem = [
+    {
+      label: '省代分佣金额（元）',
+      name: ['serviceDivisionDTO', 'provinceBean'],
+    },
+    {
+      label: '区县分佣金额（元）',
+      name: ['serviceDivisionDTO', 'districtBean'],
+    },
+    {
+      label: '哒人分佣金额（元）',
+      name: ['serviceDivisionDTO', 'darenBean'],
+    },
+  ];
 
   return (
     <>
@@ -125,6 +146,11 @@ const GoodsDetail = (props) => {
         formItems={mreFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {ownerType === 'group' && (
+        <div style={{ margin: '10px' }}>
+          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
+        </div>
+      )}
       <DescriptionsCondition
         title="券信息"
         formItems={couponFormItems}
@@ -135,6 +161,13 @@ const GoodsDetail = (props) => {
         formItems={useFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {detail.divisionFlag === '1' && (
+        <DescriptionsCondition
+          title="分佣配置"
+          formItems={commissionItem}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
     </>
   );
 };

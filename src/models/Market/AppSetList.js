@@ -64,9 +64,6 @@ export default {
       if (!response) return;
       const { content } = response;
       const {
-        jumpUrlType,
-        beginDate,
-        endDate,
         param,
         hideTitle = false,
         provinceCityDistrictObjects: cityData = [],
@@ -76,11 +73,8 @@ export default {
         provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
           city: [provinceCode, cityCode, districtCode].filter((i) => i),
         })),
-        jumpUrlType: jumpUrlType ? jumpUrlType : '无',
         param: JSON.parse(param || '{}'),
         hideTitle: !Number(hideTitle),
-        timeRuleData: endDate === '2999.12.30' ? 'infinite' : 'fixed',
-        beginDate: [moment(beginDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
       });
     },
     *fetchBannerEdit({ payload, callback }, { call }) {
@@ -92,13 +86,14 @@ export default {
       });
       callback();
     },
-    *fetchBannerStatusDel({ payload, callback }, { call }) {
+    *fetchBannerStatus({ payload, callback }, { call }) {
       const response = yield call(fetchBannerStatus, payload);
       if (!response) return;
       const { bannerStatus } = payload;
+      const text = ['下架', '上架'][bannerStatus];
       notification.success({
         message: '温馨提示',
-        description: `占位图${bannerStatus === 0 ? '下架' : '删除'}成功`,
+        description: `占位图${text ? text : '删除'}成功`,
       });
       callback();
     },

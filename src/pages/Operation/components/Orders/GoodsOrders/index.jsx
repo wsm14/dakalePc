@@ -8,7 +8,9 @@ import {
   ORDER_TYPE_PROPS,
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
+  BUSINESS_TYPE,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';
@@ -48,8 +50,9 @@ const GoodsOrders = (props) => {
       name: 'orderSn',
     },
     {
-      label: '商品名称',
-      name: 'goodsName',
+      label: '商品/券名称',
+      name: 'goodsId',
+      type: 'good',
     },
     {
       label: '下单人',
@@ -91,7 +94,6 @@ const GoodsOrders = (props) => {
       type: 'cascader',
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-      onChange: (val) => val.length === 3 && fetchGetHubSelect(val[2]),
     },
   ];
 
@@ -127,14 +129,12 @@ const GoodsOrders = (props) => {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div>账号:{row.merchantMobile}</div>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">单店</Tag>
+            <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
           </div>
-          <div
-            className={styles.specFont}
-          >{`${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`}</div>
+          <div className={styles.specFont}>{checkCityName(row.merchantDistrict)}</div>
         </div>
       ),
     },
@@ -142,25 +142,14 @@ const GoodsOrders = (props) => {
       title: '下单人',
       align: 'center',
       dataIndex: 'userMobile',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{row.userName}</div>
-          <div>{val}</div>
-          <div>{row.beanCode}</div>
-        </div>
-      ),
+      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
       title: '单价/数量',
+      align: 'center',
       dataIndex: 'realPrice',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{val ? `￥${val}` : 0}</div>
-          <div>{row.goodsCount ? `×${row.goodsCount}` : ''}</div>
-        </div>
-      ),
+      render: (val, row) => `￥${val || 0}\n×${row.goodsCount || 0}`,
     },
-
     {
       title: '用户实付',
       align: 'center',
@@ -213,7 +202,6 @@ const GoodsOrders = (props) => {
         );
       },
     },
-
     {
       title: '下单/核销时间',
       dataIndex: 'createTime',

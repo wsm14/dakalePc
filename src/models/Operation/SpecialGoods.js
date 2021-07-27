@@ -4,13 +4,13 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
-  fetchSpecialGoodsVerify,
-  fetchSpecialGoodsDel,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
-  fetchSpecialGoodsRecommend,
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
+  fetchSpecialGoodsRecommend, //推荐
+  fetchSpecialGoodsAddRemain, // 增加库存
+  fetchEditCurrentStatus, //编辑前校验
 } from '@/services/OperationServices';
 
 export default {
@@ -47,8 +47,9 @@ export default {
       const { type, ...other } = payload;
       const response = yield call(fetchSpecialGoodsDetail, { ...other });
       if (!response) return;
-      const { merchantIdStr: merchantId } = payload;
+      const { ownerId, specialGoodsId } = payload;
       const { content } = response;
+      const { specialGoodsInfo = {}, divisionFlag } = content;
       const {
         allowRefund,
         allowExpireRefund,
@@ -62,10 +63,25 @@ export default {
         activityTimeRule: activeTime,
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
-      } = content.specialGoodsInfo;
+        serviceDivisionDTO = {},
+      } = specialGoodsInfo;
       let newDetail = {};
-      // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布
-      if (['info', 'edit', 'again'].includes(type)) {
+
+      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const pBean =
+        provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
+      const dBean =
+        districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
+      const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
+      const sDetail = {
+        serviceDivisionDTO: {
+          provinceBean: pBean,
+          districtBean: dBean,
+          darenBean: daBean,
+        },
+      };
+      // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布 / againUp
+      if (['info', 'edit', 'again', 'againUp'].includes(type)) {
         newDetail = {
           activityStartTime:
             activeTime === 'infinite' ? [] : [moment(activityStartTime), moment(activityEndTime)],
@@ -79,10 +95,25 @@ export default {
           useWeek: useWeek === '1,2,3,4,5,6,7' ? [] : useWeek.split(','),
         };
       }
+      //重新发布的时候如果活动开始时间小于当天，活动时间清空
+      let activeTimes = {};
+      if (type === 'again' && activeTime === 'fixed') {
+        let d = new Date();
+        const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        if (today > activityStartTime) {
+          activeTimes = {
+            activityStartTime: [],
+          };
+        }
+      }
       callback({
         ...content.specialGoodsInfo,
+        ...sDetail, //分佣
         ...newDetail,
-        merchantId,
+        ...activeTimes,
+        ownerId,
+        id: specialGoodsId,
+        divisionFlag,
         buyDesc: buyDesc.includes(']') ? JSON.parse(buyDesc || '[]') : [],
         allowRefund: Number(allowRefund),
         allowExpireRefund: Number(allowExpireRefund),
@@ -94,25 +125,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '特惠活动新增成功',
-      });
-      callback();
-    },
-    *fetchSpecialGoodsDel({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialGoodsDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '特惠活动删除成功',
-      });
-      callback();
-    },
-    *fetchSpecialGoodsVerify({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialGoodsVerify, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '特惠活动审核完成',
+        description: '特惠活动新增成功，等待平台审核',
       });
       callback();
     },
@@ -121,7 +134,7 @@ export default {
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '特惠活动编辑成功',
+        description: '特惠活动修改成功，等待平台审核',
       });
       callback();
     },
@@ -143,11 +156,7 @@ export default {
     *fetchSpecialGoodsRecommend({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsRecommend, payload);
       if (!response) return;
-      const { operationFlag } = payload;
       let mes = '设置推荐成功';
-      if (operationFlag === 'cancelRecommend') mes = '取消推荐成功';
-      if (operationFlag === 'top') mes = '置顶成功';
-      if (operationFlag === 'cancelTop') mes = '取消置顶成功';
       notification.success({
         message: '温馨提示',
         description: mes,
@@ -159,6 +168,21 @@ export default {
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.specialGoodsList);
+    },
+    *fetchSpecialGoodsAddRemain({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsAddRemain, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '投放总量修改成功',
+      });
+      callback();
+    },
+    //  * 特惠或券编辑前校验
+    *fetchEditCurrentStatus({ payload, callback }, { call }) {
+      const response = yield call(fetchEditCurrentStatus, payload);
+      if (!response) return;
+      callback && callback(response.resultCode);
     },
   },
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import FormCondition from '@/components/FormCondition';
-import { PHONE_PATTERN } from '@/common/regExp';
 import { SEX_NEW_TYPE } from '@/common/constant';
 import { connect } from 'umi';
 
@@ -22,7 +21,6 @@ const userForm = (props) => {
     {
       label: '联系人电话',
       name: 'contactMobile',
-      addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
     },
   ];
 

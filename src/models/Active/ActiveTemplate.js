@@ -1,18 +1,17 @@
 import { notification } from 'antd';
+import oss from 'ali-oss';
 import {
+  fetchGetOss,
+  fetchSpecialGoodsSelect,
   fetchActiveAdd,
   fetchActiveEdit,
-  fetchSourceMerchant,
-  fetchSourceGoods,
-  fetchActiveList,
 } from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeTemplate',
 
   state: {
-    merList: { list: [], total: 0 },
-    goodsList: { list: [], total: 0 },
+    specialGoods: { list: [], total: 0 },
   },
 
   reducers: {
@@ -25,41 +24,52 @@ export default {
   },
 
   effects: {
-    *fetchActiveAdd({ payload, callback }, { call, put }) {
+    *fetchGetOss({ payload, callback }, { call }) {
+      const response = yield call(fetchGetOss, { uploadType: 'resource', fileType: 'html' });
+      if (!response) return;
+      const { folder, host, securityToken: stsToken } = response.content;
+      const client = new oss({ region: 'oss-cn-hangzhou', stsToken, ...response.content });
+      let _fileRath = `${folder}/${payload.show}/${payload.fileName}.html`;
+      client.put(_fileRath, payload.file).then((res) => {
+        const { status, statusCode } = res.res;
+        if (status === 200 && statusCode === 200) {
+          callback(host + _fileRath);
+        } else {
+          notification.info({
+            message: '温馨提示',
+            description: '上传失败',
+          });
+        }
+      });
+    },
+    *fetchSpecialGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchSpecialGoodsSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          specialGoods: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchActiveAdd({ payload, callback }, { call }) {
       const response = yield call(fetchActiveAdd, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '新增活动成功',
+        description: '创建成功',
       });
       callback();
     },
-    *fetchActiveEdit({ payload, callback }, { call, put }) {
+    *fetchActiveEdit({ payload, callback }, { call }) {
       const response = yield call(fetchActiveEdit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: '修改活动成功',
+        description: '修改成功',
       });
       callback();
-    },
-    *fetchSourceMerchant({ payload, callback }, { call }) {
-      const response = yield call(fetchSourceMerchant, payload);
-      if (!response) return;
-      const { content } = response;
-      callback({ list: content.recordList, total: content.total });
-    },
-    *fetchActiveList({ payload, callback }, { call }) {
-      const response = yield call(fetchActiveList, payload);
-      if (!response) return;
-      const { content } = response;
-      callback({ list: content.recordList, total: content.total });
-    },
-    *fetchSourceGoods({ payload, callback }, { call }) {
-      const response = yield call(fetchSourceGoods, payload);
-      if (!response) return;
-      const { content } = response;
-      callback({ list: content.recordList, total: content.total });
     },
   },
 };

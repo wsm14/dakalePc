@@ -1,3 +1,4 @@
+import { checkCityName } from '@/utils/utils';
 import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
 
 // 导出表头
@@ -33,7 +34,7 @@ export default [
   {
     title: '用户实付卡豆',
     dataIndex: 'beanFee',
-    render: (val) => val || 0,
+    render: (val) => Number(val),
   },
   {
     title: '商户实收',
@@ -46,7 +47,7 @@ export default [
   {
     title: '商户实收卡豆',
     dataIndex: 'actualBeanFee',
-    render: (val) => val || 0,
+    render: (val) => Number(val),
   },
   {
     title: '商品佣金',
@@ -69,18 +70,13 @@ export default [
     dataIndex: 'verificationCount',
   },
   {
-    title: '店铺实收',
-    dataIndex: 'actualCashFee',
-    render: (val, record) => `${val}（含${record.actualBeanFee ? record.actualBeanFee : 0}卡豆）`,
-  },
-  {
     title: '下单渠道',
     dataIndex: 'orderSource',
   },
   {
     title: '区域',
-    dataIndex: 'merchantProvince',
-    render: (val, row) => `${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`,
+    dataIndex: 'merchantDistrict',
+    render: (val) => checkCityName(val),
   },
 
   {

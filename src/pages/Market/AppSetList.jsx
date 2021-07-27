@@ -64,8 +64,8 @@ const SysAppSet = (props) => {
     },
     {
       title: '权重',
-      name: 'weight',
       align: 'right',
+      dataIndex: 'weight',
     },
     {
       title: '位置',
@@ -92,7 +92,7 @@ const SysAppSet = (props) => {
       title: '跳转类型',
       align: 'center',
       dataIndex: 'jumpUrlType',
-      render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
+      render: (val) => BANNER_JUMP_TYPE[val],
     },
     {
       title: '跳转内容',
@@ -109,16 +109,9 @@ const SysAppSet = (props) => {
       },
     },
     {
-      title: '展示时间',
-      align: 'center',
-      dataIndex: 'beginDate',
-      render: (val, row) => `${val} ~ ${row.endDate !== '2999.12.30' ? row.endDate : '长期'}`,
-    },
-    {
       title: '创建时间',
       align: 'center',
-      dataIndex: 'beginDate',
-      render: (val, row) => `${val} ~ ${row.endDate}`,
+      dataIndex: 'createTime',
     },
     {
       title: '状态',
@@ -133,17 +126,21 @@ const SysAppSet = (props) => {
         {
           type: 'down',
           visible: record.showStatus === '1',
-          click: () => fetchBannerStatusDel({ bannerId: val, bannerStatus: 0 }),
+          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 0 }),
+        },
+        {
+          type: 'up',
+          visible: record.showStatus === '2',
+          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
         },
         {
           type: 'edit',
-          visible: record.showStatus !== '2',
           click: () => fetchBannerDetail({ bannerId: val }),
         },
         {
           type: 'del',
-          visible: record.showStatus !== '2',
-          click: () => fetchBannerStatusDel({ bannerId: val, deleteFlag: 0 }),
+          visible: record.showStatus === '2',
+          click: () => fetchBannerStatus({ bannerId: val, deleteFlag: 0 }),
         },
       ],
     },
@@ -166,9 +163,9 @@ const SysAppSet = (props) => {
   };
 
   // 占位图下架
-  const fetchBannerStatusDel = (payload) => {
+  const fetchBannerStatus = (payload) => {
     dispatch({
-      type: 'sysAppList/fetchBannerStatusDel',
+      type: 'sysAppList/fetchBannerStatus',
       payload,
       callback: childRef.current.fetchGetData,
     });

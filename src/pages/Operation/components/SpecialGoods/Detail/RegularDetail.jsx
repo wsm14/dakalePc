@@ -21,7 +21,6 @@ const RegularDetail = (props) => {
       label: '使用有效期',
       render: (val, row) => {
         const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-        console.log(useStartTime, useEndTime, useTimeRule, 'v');
         if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
           return useStartTime[0].format('YYYY-MM-DD') + '~' + useStartTime[1].format('YYYY-MM-DD');

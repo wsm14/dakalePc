@@ -1,19 +1,19 @@
 .amap-marker-label {
-  border: 0;
   background-color: transparent;
+  border: 0;
 }
 
 .chart_amp_markey_info {
   position: relative;
   top: 0;
   right: 0;
-  min-width: 0;
-  padding: 0.55rem 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.25rem;
-  background-color: white;
   width: auto;
+  min-width: 0;
+  margin-bottom: 1rem;
+  padding: 0.55rem 1rem;
+  background-color: white;
   border-width: 0;
+  border-radius: 0.25rem;
   box-shadow: 0 2px 6px 0 rgba(114, 124, 245, 0.5);
   cursor: pointer;
   span {
@@ -23,33 +23,33 @@
 
 .chart_amp_markeys_info {
   position: relative;
+  width: auto;
   min-width: 0;
   padding: 0 5px;
-  border-radius: 0.25rem;
   background-color: white;
-  width: auto;
   border-width: 0;
+  border-radius: 0.25rem;
   box-shadow: 0 2px 6px 0 rgba(114, 124, 245, 0.5);
 }
 .chart_amp_mreInfo {
   position: absolute;
-  width: 350px;
   top: 40px;
   left: 10px;
+  width: 350px;
+  overflow: hidden;
+  background-color: #ffffff;
   border-radius: 3px;
   box-shadow: 1px 1px 1px #e0e0e0;
-  background-color: #ffffff;
-  overflow: hidden;
   .chart_amp_mreInfo_heard {
     position: relative;
     width: 100%;
-    background-color: #1890ff;
     padding: 15px;
     color: #ffffff;
+    background-color: #1890ff;
     .chart_amp_mreInfo_Close {
       position: absolute;
-      right: 5px;
       top: 7px;
+      right: 5px;
       cursor: pointer;
     }
     .title {
@@ -86,13 +86,14 @@
       display: inline-block;
       width: 102px;
       height: 102px;
-      overflow: hidden;
       margin: 0px 5px 0px 0;
+      overflow: hidden;
       border-radius: 3px;
     }
     .descript_img {
-      height: auto !important;
-      min-height: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
 }
@@ -103,10 +104,10 @@
   bottom: 10px;
   padding: 10px;
   color: black;
+  font-size: 10px;
+  background-color: #ffffffe0;
   border-radius: 5px;
   box-shadow: 1px 1px 1px #b9b9b9;
-  background-color: #ffffffe0;
-  font-size: 10px;
   .ruzhuColor {
     color: #ef476f;
   }
@@ -114,9 +115,9 @@
     color: #d5d5d5;
   }
   .amap_Legend_item {
-    cursor: pointer;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   .amap_Legend_item + .amap_Legend_item {
     margin-top: 5px;
@@ -130,7 +131,7 @@
 
 .chart_map_title_style {
   position: absolute;
-  z-index: 1;
-  left: 10px;
   top: 10px;
+  left: 10px;
+  z-index: 1;
 }

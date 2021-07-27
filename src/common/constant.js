@@ -172,7 +172,7 @@ export const MRE_STOCK_STATUS = ['已售罄', '未售罄'];
 export const WORKER_JOB_TYPE = ['离职', '在职'];
 
 // 广告管理 - 展示状态
-export const BANNER_SHOW_STATUS = ['待展示', '展示中', '已下架'];
+export const BANNER_SHOW_STATUS = [false, '展示中', '已下架'];
 
 // 广告管理 - 投放区域类型
 export const BANNER_AREA_TYPE = { all: '全平台', detail: '省市区' };
@@ -185,13 +185,17 @@ export const BANNER_LOOK_AREA = {
 };
 
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
-export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
+// export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
+export const SPECIAL_STATUS = ['已下架', '活动中'];
 
 // 店铺标签状态
 export const MRE_TAG_STATUS = ['停用', '启用'];
 
 // FAQ猜你想问
 export const FAQ_LIKE_STATUS = ['未设置', '已设置'];
+
+// FAQ端口类型
+export const FAQ_PART_TYPE = { user: '用户端', merchant: '商家端' };
 
 // 省代/区县公司/销售管理系统状态
 export const COMPANY_PROV_STATUS = ['正常', '冻结', '解约'];
@@ -216,7 +220,7 @@ export const ORDER_CLOSE_TYPE = {
 };
 
 // 退款订单状态
-export const REFUND_ORDERS_STATUS = [false, false, '订单关闭', '交易完成', false, false, '退款中'];
+export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
 
 // 哒人带货 订单状态
 export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
@@ -333,31 +337,30 @@ export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
 // Banner端口
 export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 
+const bannerType = {
+  person: '个人',
+  hotWeal: '爆品福利',
+  dayPush: '每日必推',
+  todayNew: '今日上新',
+  beanSelection: '小豆精选',
+  nearbyBusinessHub: '附近商圈',
+  highCommissionAlliance: '高佣联盟',
+  wanderAroundCapsule: '逛逛胶囊位',
+  wanderAroundMainBanner: '逛逛主Banner',
+  wanderAroundGoodMerchant: '逛逛周边好店',
+};
+
 // Banner类型
 export const BANNER_PORT_LINK = {
-  user: {
-    person: '个人',
-    hotWeal: '爆品福利',
-    wanderAroundMainBanner: '逛逛主Banner',
-    wanderAroundCapsule: '逛逛胶囊位',
-    wanderAroundGoodMerchant: '逛逛周边好店',
-  },
-  weChat: {
-    person: '个人',
-    hotWeal: '爆品福利',
-    wanderAroundMainBanner: '逛逛主Banner',
-    wanderAroundCapsule: '逛逛胶囊位',
-    wanderAroundGoodMerchant: '逛逛周边好店',
-  },
+  user: bannerType,
+  weChat: bannerType,
   merchant: {
     merchantMain: '商家工作台',
   },
-  // mainSpecial: '周边特惠首页',
-  // surroundingSpecial: '周边特惠列表',
 };
 
 // Banner跳转类型
-export const BANNER_JUMP_TYPE = { 无: '无', H5: 'H5', inside: '原生页面' };
+export const BANNER_JUMP_TYPE = { '': '无', H5: 'H5', inside: '原生页面' };
 
 // 用户类型
 export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
@@ -366,7 +369,7 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { url: '跳转至URL', scenes: '按场景显示' };
+export const VANE_URL_TYPE = { url: '跳转至URL', native: '按行业显示' };
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {
@@ -415,8 +418,7 @@ export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
 
-//specialGoods-特惠商品 reduceCoupon-优惠券
-
+// specialGoods-特惠商品 reduceCoupon-优惠券
 export const ORDER_TYPE_PROPS = {
   specialGoods: '特惠商品',
   reduceCoupon: '优惠券',
@@ -438,23 +440,13 @@ export const SPECIAL_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' 
 
 // 特惠活动 - 热销推荐
 export const SPECIAL_RECOMMEND_TYPE = {
-  hotRecommend: '限时推荐',
-  todayRecommend: '爆品推荐',
-  hotTop: '限时置顶',
-  todayTop: '爆品置顶',
+  hot: '限时抢购',
+  today: '爆品福利',
   thisPeriod: '本期必抢',
   nextPeriod: '下期预告',
   novice: '新手视频',
-  cancel: '取消推荐',
-};
-
-// 特惠活动 - 热销推荐列表枚举
-export const SPECIAL_RECOMMEND_LISTTYPE = {
-  hot: '限时',
-  today: '爆品',
-  thisPeriod: '本期必抢',
-  nextPeriod: '下期预告',
-  novice: '新手视频',
+  dayPush: '每日必推',
+  aroundSpecial: '特惠推荐',
 };
 
 // 特惠活动 - 是否删除
@@ -468,3 +460,91 @@ export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
 // 视频广告 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
+
+// 特惠商品 审核
+export const SPECIAL_GOODS_CHECK_STATUS = {
+  adminAudit: '待审核',
+  merchantAudit: '待确认',
+  adminConfirmed: '已审核',
+  merchantConfirmed: '已确认',
+};
+
+// 操作类型 create-创建 update-修改 down-下架
+export const ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+  down: '下架审核',
+};
+// 周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
+export const GOODS_CHECK_RESSTATUS = [false, '已通过', '已驳回', '已关闭'];
+
+// 审核结果
+export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];
+
+// 标签类型
+export const TAG_TYPE = {
+  platform: '平台商品标签',
+  merchant: '店铺商品标签',
+};
+
+// 集合页配置集合页状态
+export const PAGE_STATUS = ['进行中', '已结束'];
+
+// 审核提交类型
+export const SUBMIT_TYPE = {
+  merchant: '商家',
+  admin: '运营后台',
+  sell: 'CRM',
+  group: '集团',
+  partner: '区县',
+};
+
+// serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
+export const SERVICE_TYPE = {
+  specialGoods: '特惠商品 ',
+  reduceCoupon: '优惠券',
+};
+
+// 模板类型 divisionTemplateType
+export const DIVISION_TEMPLATE_TYPE = {
+  difference: '按差价',
+  manual: '手动分佣',
+};
+
+// 分佣模板创建人类别
+export const TEMPLATE_CREATE_TYPE = {
+  admin: '管理员',
+  user: '用户',
+  merchant: '商家',
+  business: 'business',
+  company: '省公司',
+  partner: '区县代理',
+  group: '集团',
+  sell: 'CRM',
+};
+
+// 分佣配置
+export const COMMISSION_TYPE = {
+  province: '省代分佣',
+  district: '区县分佣',
+  userParent: '用户家主分佣',
+  merchantParent: '商家家主分佣',
+  daren: '哒人分佣',
+};
+
+// 活动模版类型
+export const ACTIVE_TEMPLATE_TYPE = {
+  public: '通用模版',
+};
+
+//新闻分类
+
+export const NEWS_TYPE = {
+  newsReport: '新闻报道',
+  companyActivities: '公司活动',
+  daRenDynamic: '哒人动态',
+  companyEvents: '公司大事件',
+  productNews: '产品动态',
+};
+
+export const DAREN_TEMP_FLAG = ['否', '是'];

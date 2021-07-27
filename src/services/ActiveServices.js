@@ -1,35 +1,30 @@
 import request from '@/utils/request';
 
-// get 版本列表 - 列表
-export async function fetchAllocationList(params) {
-  return request('/common/promotion/osVersion', {
+// get 获取oss凭证 - 上传网页
+export async function fetchGetOss(params) {
+  return request('/common/oss/getOssPolicy', {
     params,
   });
 }
 
-// get 活动配置 - 广告位列表
-export function fetchAllocationPlaceList(params) {
-  return request('/common/promotion/getPromotionByVersionAndOsType', {
+// get 获取特惠商品选择列表
+export async function fetchSpecialGoodsSelect(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsForActivityTemp', {
     params,
   });
 }
 
-// get 活动配置 - 原生页面列表
-export function fetchAllocationNative(params) {
-  return request('/admin/promotionNative/listNative', {
-    params,
-  });
-}
-// post 活动配置 - 修改
-export function fetchAllocationSetEdit(data) {
-  return request('/common/promotion/updatePromotion', {
+// post 活动列表 - 新增
+export function fetchActiveAdd(data) {
+  return request('/admin/activityTemplate/saveActivityTemplate', {
     method: 'POST',
     data,
   });
 }
-// post 活动配置 - 活动新增配置
-export function fetchAllocationDetailAdd(data) {
-  return request('/common/promotion/savePromotion', {
+
+// post 活动配置 - 修改
+export function fetchActiveEdit(data) {
+  return request('/admin/activityTemplate/updateActivityTemplate', {
     method: 'POST',
     data,
   });
@@ -37,37 +32,14 @@ export function fetchAllocationDetailAdd(data) {
 
 // get 活动列表 - 列表
 export async function fetchActiveList(params) {
-  return request('/admin/promotionActivity/pagePromotionActivity', {
+  return request('/admin/activityTemplate/listActivityTemplate', {
     params,
   });
 }
 
-// post 活动列表 - 新增
-export function fetchActiveAdd(data) {
-  return request('/admin/promotionActivity/savePromotionActivity', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 活动列表 - 修改
-export function fetchActiveEdit(data) {
-  return request('/admin/promotionActivity/updatePromotionActivity', {
-    method: 'POST',
-    data,
-  });
-}
-
-// get 数据源 - 商家
-export async function fetchSourceMerchant(params) {
-  return request('/admin/merchantManagement/listMerchant', {
-    params,
-  });
-}
-
-// get 数据源 - 商品
-export async function fetchSourceGoods(params) {
-  return request('/admin/promotionData/pageMerchantGoodsInfo', {
+// get 活动列表 - 详情
+export async function fetchActiveDetail(params) {
+  return request('/admin/activityTemplate/getActivityTemplateById', {
     params,
   });
 }

@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge } from 'antd';
 import { ORDERS_TYPE, GOODS_CLASS_TYPE, ORDER_TYPE_PROPS } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
@@ -12,6 +13,7 @@ const VerificationList = (props) => {
   const { verificationList, loading } = props;
 
   const childRef = useRef();
+  const [merchantId, setMerchantId] = useState();
 
   // 搜索参数
   const searchItems = [
@@ -25,13 +27,17 @@ const VerificationList = (props) => {
       type: 'user',
     },
     {
-      label: '店铺名',
+      label: '店铺',
       name: 'merchantId',
       type: 'merchant',
+      onChange: (val) => setMerchantId(val),
     },
     {
-      label: '商品名称',
-      name: 'goodsName',
+      label: '商品/券名称',
+      name: 'goodsId',
+      type: 'good',
+      disabled: !merchantId,
+      params: { ownerId: merchantId },
     },
     {
       label: '订单属性',
@@ -55,7 +61,6 @@ const VerificationList = (props) => {
   ];
 
   // table 表头
-  //
   const getColumns = [
     {
       title: '商品',
@@ -72,7 +77,6 @@ const VerificationList = (props) => {
                   {row.goodsName}
                 </Ellipsis>
               </div>
-
               <div style={{ marginTop: 5 }} className={styles.specFont}>
                 订单号：{row.orderSn}
               </div>
@@ -94,9 +98,7 @@ const VerificationList = (props) => {
               {val}
             </Ellipsis>
           </div>
-          <div
-            className={styles.specFont}
-          >{`${row.provinceName}-${row.cityName}-${row.districtName}`}</div>
+          <div className={styles.specFont}>{checkCityName(row.districtCode)}</div>
         </div>
       ),
     },
@@ -104,20 +106,20 @@ const VerificationList = (props) => {
       title: '下单人',
       dataIndex: 'userMobile',
       align: 'center',
-      render: (val, row) =>  `${row.userName}\n${val}\n${row.beanCode}`,
+      render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
       title: '用户实付',
       align: 'center',
-      dataIndex: 'verificationTotalFee',
+      dataIndex: 'settleTotalFee',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${val}`}</div>
           <div className={styles.fontColor}>
-            {record.verificationBeanFee ? `(${record.verificationBeanFee}卡豆` : '(' + '0卡豆'}
+            {record.settleBeanFee ? `(${record.settleBeanFee}卡豆` : '(' + '0卡豆'}
           </div>
           <div className={styles.fontColor}>
-            {(record.verificationPayFee ? `+ ￥${record.verificationPayFee}` : 0) + ')'}
+            {(record.settlePayFee ? `+ ￥${record.settlePayFee}` : 0) + ')'}
           </div>
         </div>
       ),
@@ -125,12 +127,12 @@ const VerificationList = (props) => {
     {
       title: '商户实收',
       align: 'center',
-      dataIndex: 'merchantCash',
+      dataIndex: 'settlerCash',
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
-          <div>{`￥${(record.merchantTotalBean?record.merchantTotalBean/100:0).toFixed(2)}`}</div>
+          <div>{`￥${record.settlerPrice ? record.settlerPrice : 0}`}</div>
           <div className={styles.fontColor}>
-            {record.merchantBean ? `(${record.merchantBean}卡豆` : '(' + '0卡豆'}
+            {record.settlerBean ? `(${record.settlerBean}卡豆` : '(' + '0卡豆'}
           </div>
           <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
         </div>
@@ -141,24 +143,21 @@ const VerificationList = (props) => {
       align: 'center',
       dataIndex: 'cashCommission',
       render: (val, record) => {
-        const mecash =(record.merchantTotalBean?record.merchantTotalBean/100:0).toFixed(2);
-        const bean =(Number(record.verificationTotalFee) - Number(mecash)).toFixed(2)
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${bean}`}</div>
-            <div className={styles.fontColor}>
-              {`(${record.verificationBeanFee-record.merchantBean}卡豆` }
-            </div>
-            <div className={styles.fontColor}>
-              {`￥${(Number(record.verificationPayFee)-Number(record.merchantCash)).toFixed(2)})`}
-              </div>
+            <div>{`￥${(
+              Number(record.beanCommission) / 100 +
+              Number(record.cashCommission)
+            ).toFixed(2)}`}</div>
+            <div className={styles.fontColor}>{`(${record.beanCommission}卡豆`}</div>
+            <div className={styles.fontColor}>{`￥${record.cashCommission})`}</div>
           </div>
         );
       },
     },
     {
       title: '核销时间',
-      dataIndex: 'verificationTime',
+      dataIndex: 'settleTime',
       align: 'center',
     },
     {
@@ -179,11 +178,12 @@ const VerificationList = (props) => {
     <TableDataBlock
       keepData
       btnExtra={extraBtn}
+      resetSearch={() => setMerchantId()}
       cRef={childRef}
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
-      rowKey={(record) => `${record.orderGoodsVerificationId}`}
+      rowKey={(record) => `${record.verificationCode}`}
       dispatchType="verificationList/fetchVerificationList"
       {...verificationList}
     ></TableDataBlock>
@@ -193,6 +193,5 @@ const VerificationList = (props) => {
 export default connect(({ verificationList, loading }) => ({
   loadings: loading,
   verificationList,
-
   loading: loading.effects['verificationList/fetchVerificationList'],
 }))(VerificationList);

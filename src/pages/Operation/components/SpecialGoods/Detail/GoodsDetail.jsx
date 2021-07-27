@@ -1,11 +1,12 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
+import MerchantListTable from './MerchantListTable';
 import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
-  const { detail } = props;
-  const { goodsType } = detail;
+  const { detail, merchantList } = props;
+  const { goodsType, ownerType } = detail;
 
   const ActiveformItems = [
     {
@@ -15,8 +16,8 @@ const GoodsDetail = (props) => {
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      name: 'merchantName',
-      label: '店铺名称',
+      name: 'ownerName',
+      label: `${BUSINESS_TYPE[ownerType]}名称`,
     },
   ];
 
@@ -77,6 +78,78 @@ const GoodsDetail = (props) => {
     },
   ];
 
+  const formItemComiss = [
+    {
+      label: '省代分佣金额（元）',
+      name: ['serviceDivisionDTO', 'provinceBean'],
+    },
+    {
+      label: '区县分佣金额（元）',
+      name: ['serviceDivisionDTO', 'districtBean'],
+    },
+    {
+      label: '哒人分佣金额（元）',
+      name: ['serviceDivisionDTO', 'darenBean'],
+    },
+  ];
+
+  const formItemTag = [
+    {
+      label: '商家商品标签',
+      name: 'goodsTagList',
+      // show: detail.goodsTagList,
+      render: (val, row) => {
+        const { goodsTagList = [] } = row;
+        const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag.configGoodsTagId}
+                >
+                  {tag.tagName}
+                </span>
+              ))}
+          </>
+        );
+      },
+    },
+    {
+      label: '平台商品标签',
+      name: 'goodsTagList',
+      // show: detail.goodsTagList,
+      render: (val, row) => {
+        const { goodsTagList = [] } = row;
+        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        return (
+          <>
+            {tags &&
+              tags.map((tag) => (
+                <span
+                  style={{
+                    display: 'inline-block',
+                    padding: 8,
+                    margin: '5px',
+                    border: '1px solid #ddd',
+                  }}
+                  key={tag.configGoodsTagId}
+                >
+                  {tag.tagName}
+                </span>
+              ))}
+          </>
+        );
+      },
+    },
+  ];
+
   return (
     <>
       <DescriptionsCondition
@@ -84,6 +157,11 @@ const GoodsDetail = (props) => {
         formItems={ActiveformItems}
         initialValues={detail}
       ></DescriptionsCondition>
+      {ownerType === 'group' && (
+        <div style={{ margin: '10px' }}>
+          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
+        </div>
+      )}
       <DescriptionsCondition
         title="商品信息"
         formItems={GoodFormItem}
@@ -97,6 +175,19 @@ const GoodsDetail = (props) => {
       <DescriptionsCondition
         title="商品介绍"
         formItems={GoodDecItem}
+        initialValues={detail}
+      ></DescriptionsCondition>
+      {/* 当分佣方式为自定义佣金和手动分佣时才显示 */}
+      {detail.divisionFlag === '1' && (
+        <DescriptionsCondition
+          title="分佣配置"
+          formItems={formItemComiss}
+          initialValues={detail}
+        ></DescriptionsCondition>
+      )}
+      <DescriptionsCondition
+        title="商品标签"
+        formItems={formItemTag}
         initialValues={detail}
       ></DescriptionsCondition>
     </>

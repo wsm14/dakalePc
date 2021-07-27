@@ -9,6 +9,10 @@ import {
   fetchWalkManageNavigationSort,
   fetchWalkManageGratiaClass,
   fetchWalkManageGratiaClassAdd,
+  fetchGatherPageConfigList,
+  fetchGatherPageConfigAdd,
+  fetchGatherPageConfigUpdate,
+  fetchGatherPageConfigEnd,
 } from '@/services/SystemServices';
 
 export default {
@@ -18,6 +22,7 @@ export default {
     vaneList: { list: [] },
     navigation: { list: [] },
     class: [],
+    gatherList: { list: [] },
     nowTrade: [],
   },
 
@@ -46,11 +51,12 @@ export default {
       const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
       const { configWindVane } = response.content;
-      const { bubbleFlag, scenesId = '' } = configWindVane;
+      const { bubbleFlag, windVaneParamObject = {} } = configWindVane;
+      const { categoryId, topCategoryId } = windVaneParamObject;
       callback({
         ...configWindVane,
         bubbleFlag: Boolean(Number(bubbleFlag)),
-        scenesId: scenesId.split(','),
+        categoryId: topCategoryId ? [topCategoryId, categoryId] : [categoryId],
       });
     },
     *fetchWalkManageVaneEditDel({ payload, callback }, { call }) {
@@ -126,6 +132,44 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '类型设置成功',
+      });
+      callback();
+    },
+    *fetchGatherPageConfigList({ payload }, { call, put }) {
+      const response = yield call(fetchGatherPageConfigList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          gatherList: { list: content.configCollectionPageList },
+        },
+      });
+    },
+    *fetchGatherPageConfigAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchGatherPageConfigAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchGatherPageConfigUpdate({ payload, callback }, { call }) {
+      const response = yield call(fetchGatherPageConfigUpdate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchGatherPageConfigEnd({ payload, callback }, { call }) {
+      const response = yield call(fetchGatherPageConfigEnd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '结束成功',
       });
       callback();
     },

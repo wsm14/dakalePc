@@ -14,7 +14,9 @@ import ShareVideoDetail from './components/Share/Detail/ShareVideoDetail';
 import ShareDrawer from './components/Share/ShareDrawer';
 import ShareLikeDateSet from './components/Share/ShareLikeDateSet';
 import Ellipsis from '@/components/Ellipsis';
+import RewardPeo from './components/Share/RewardPeo';
 import styles from './style.less';
+import { checkCityName } from '@/utils/utils';
 
 const ShareManage = (props) => {
   const { shareManage, loading, loadingRefuse, tradeList, dispatch } = props;
@@ -29,6 +31,7 @@ const ShareManage = (props) => {
   const [visibleHandle, setVisibleHandle] = useState(false); // 操作记录
   const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
   const [visibleLike, setVisibleLike] = useState(false); // 设置分享收藏数
+  const [visibleReward, setVisibleReward] = useState(false); // 新增打赏人数
 
   // 搜索参数
   const searchItems = [
@@ -118,7 +121,7 @@ const ShareManage = (props) => {
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag color="blue">{`${row.topCategoryName}-${row.categoryName}`}</Tag>
-            <span>{`${row.provinceName}-${row.cityName}-${row.districtName}`}</span>
+            <span>{checkCityName(row.districtCode)}</span>
           </div>
         </>
       ),
@@ -136,7 +139,7 @@ const ShareManage = (props) => {
       title: (
         <QuestionTooltip
           type="quest"
-          title="观看人数（人）"
+          title="观看人次（人）"
           content={`观看视频3s及以上的人数`}
         ></QuestionTooltip>
       ),
@@ -145,7 +148,7 @@ const ShareManage = (props) => {
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
     {
-      title: '领卡豆人数（人）',
+      title: '领豆人次（人）',
       align: 'right',
       dataIndex: 'payedPersonAmount',
       sorter: (a, b) => a.payedPersonAmount - b.payedPersonAmount,
@@ -246,6 +249,12 @@ const ShareManage = (props) => {
             visible: payedPersonAmount > 0,
             click: () => setVisiblePeas({ show: true, detail: record }),
           },
+          {
+            type: 'rewardPeo',
+            title: '新增打赏人数',
+            visible: status == 1,
+            click: () => fetRewardPeo(userMomentIdString, record),
+          },
         ];
       },
     },
@@ -254,6 +263,17 @@ const ShareManage = (props) => {
   useEffect(() => {
     fetchTradeList();
   }, []);
+
+  //新增打赏人数
+  const fetRewardPeo = (userMomentIdString, record) => {
+    const { beanAmount, exposureBeanAmount } = record;
+    setVisibleReward({
+      show: true,
+      userMomentIdString,
+      beanAmount,
+      exposureBeanAmount,
+    });
+  };
 
   // 获取行业选择项
   const fetchTradeList = () => {
@@ -387,6 +407,12 @@ const ShareManage = (props) => {
         visible={visibleLike}
         onClose={() => setVisibleLike(false)}
       ></ShareLikeDateSet>
+      {/* //新增打赏人数 */}
+      <RewardPeo
+        visible={visibleReward}
+        childRef={childRef}
+        onClose={() => setVisibleReward(false)}
+      ></RewardPeo>
     </>
   );
 };

@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { BUSINESS_ACCOUNT_STATUS, BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
-import { LogDetail } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import ExtraButton from '@/components/ExtraButton';
@@ -14,6 +13,7 @@ import BusinessAwardSet from './components/BusinessList/BusinessAwardSet';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
+import { checkCityName } from '@/utils/utils';
 
 const BusinessListComponent = (props) => {
   const { businessList, tradeList, hubData, loading, dispatch } = props;
@@ -130,7 +130,7 @@ const BusinessListComponent = (props) => {
     {
       title: '店铺',
       fixed: 'left',
-      dataIndex: 'headerImg',
+      dataIndex: 'coverImg',
       width: 350,
       render: (val, row) => (
         <PopImgShow url={val}>
@@ -139,9 +139,9 @@ const BusinessListComponent = (props) => {
           </Ellipsis>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 5, color: '#888888' }}>
             <Ellipsis length={15} tooltip>
-              {row.account}
+              {row.mobile}
             </Ellipsis>
-            <Tag style={{ marginLeft: 5 }}>{row.groupId ? '集团' : '单店'}</Tag>
+            <Tag style={{ marginLeft: 5 }}>{row.groupId ? '子门店' : '单店'}</Tag>
           </div>
         </PopImgShow>
       ),
@@ -165,7 +165,7 @@ const BusinessListComponent = (props) => {
         <div>
           {val}
           <div style={{ fontSize: 13 }}>
-            {row.provinceName}-{row.cityName}-{row.districtName}
+            {checkCityName(row.districtCode)}
             <div style={{ color: '#888888' }}>
               <Ellipsis length={20} tooltip>
                 {row.address}
@@ -361,8 +361,6 @@ const BusinessListComponent = (props) => {
         childRef={childRef}
         onClose={() => setVisibleCodeSet(false)}
       ></BusinessVerificationCodeSet>
-      {/* 日志 */}
-      <LogDetail></LogDetail>
       {/* 设置二维码背景图片 */}
       <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
     </>

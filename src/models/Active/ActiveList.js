@@ -1,4 +1,4 @@
-import { fetchActiveList } from '@/services/ActiveServices';
+import { fetchActiveList, fetchActiveDetail } from '@/services/ActiveServices';
 
 export default {
   namespace: 'activeList',
@@ -28,6 +28,18 @@ export default {
           list: content.recordList,
           total: content.total,
         },
+      });
+    },
+    *fetchActiveDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchActiveDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const { templateType, params } = content.activityTemplate;
+      callback({
+        ...content.activityTemplate,
+        type: templateType,
+        params: JSON.parse(params || '{}'),
+        handle: 'edit',
       });
     },
   },

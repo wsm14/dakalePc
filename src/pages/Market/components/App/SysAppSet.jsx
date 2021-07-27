@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import {
-  BANNER_PORT_LINK,
-  BANNER_AREA_TYPE,
-  BANNER_LOOK_AREA,
-  COUPON_ACTIVE_TYPE,
-} from '@/common/constant';
-import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import { BANNER_PORT_LINK, BANNER_AREA_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
+import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -21,20 +15,11 @@ const SysAppSet = (props) => {
   const [showArea, setShowArea] = useState(false); // 区域
   const [showRadio, setShowRadio] = useState(null); // 图片分辨率
   const [showTitle, setShowTitle] = useState(null); // 是否显示标题
-  const [timeRule, setTimeRule] = useState(null); // 展示时间规则 fixed 固定 infinite 长期
 
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { beginDate } = detail;
-      const {
-        coverImg,
-        beginDate: time = [],
-        jumpUrlType,
-        hideTitle = false,
-        timeRuleData, // fixed 固定 infinite 长期 长期时endDate 为2999-12-30 23:59:59
-        provinceCityDistrictObjects: cityData = [],
-      } = values;
+      const { coverImg, hideTitle = false, provinceCityDistrictObjects: cityData = [] } = values;
       // 城市数据整理
       const provinceCityDistrictObjects = cityData.map(({ city }) => ({
         provinceCode: city[0],
@@ -51,18 +36,7 @@ const SysAppSet = (props) => {
             userType: tabKey,
             hideTitle: Number(!hideTitle),
             provinceCityDistrictObjects,
-            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             coverImg: res.toString(),
-            beginDate:
-              timeRuleData === 'fixed'
-                ? time[0].format('YYYY-MM-DD 23:59:59')
-                : type === 'add' // 选择长期 新增开始时间为当前时间 修改 为原始数据的已选时间
-                ? moment().format('YYYY-MM-DD 00:00:00')
-                : beginDate[0].format('YYYY-MM-DD 00:00:00'),
-            endDate:
-              timeRuleData === 'fixed'
-                ? time[1].format('YYYY-MM-DD 23:59:59')
-                : '2999-12-30 23:59:59',
           },
           callback: () => {
             onClose();
@@ -131,28 +105,14 @@ const SysAppSet = (props) => {
       ),
     },
     {
-      label: '展示时间',
-      type: 'radio',
-      select: COUPON_ACTIVE_TYPE,
-      name: 'timeRuleData',
-      onChange: (e) => setTimeRule(e.target.value),
-    },
-    {
-      label: '设置时间',
-      name: 'beginDate',
-      type: 'rangePicker',
-      visible: timeRule === 'fixed',
-      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-    },
-    {
       type: 'noForm',
       formItem: (
-        <JumpFormSet
+        <NativeFormSet
           form={form}
           detail={detail}
           port={tabKey}
           getJumpType={setShowTitle}
-        ></JumpFormSet>
+        ></NativeFormSet>
       ),
     },
     {
@@ -169,7 +129,6 @@ const SysAppSet = (props) => {
     onClose,
     afterCallBack: () => {
       setShowTitle(detail.jumpUrlType);
-      setTimeRule(detail.timeRuleData);
       setShowRadio(!!detail.bannerType);
       setShowArea(detail.deliveryAreaType === 'detail');
     },

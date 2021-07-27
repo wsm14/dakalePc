@@ -5,7 +5,6 @@ import ActiveSetForm from './Form/activeSetForm';
 import LegalForm from './Form/legalForm';
 import { connect } from 'umi';
 import { TIME_YMD } from '@/common/timeConstant';
-import ActiveSetOneForm from './Form/activeByOneForm';
 import ActiveBankForm from './Form/activeBankForm';
 import LegalByOneForm from './Form/legalByOneForm';
 
@@ -20,6 +19,11 @@ const addGroups = (props) => {
     initial,
     merchantGroupDTO: { bankAccountType },
   } = props;
+
+  const [form] = Form.useForm();
+  const cRef = useRef();
+  const [bankAccount, setBankAccount] = useState('2');
+
   const options = [
     {
       label: '对公(企业、组织机构)',
@@ -33,11 +37,9 @@ const addGroups = (props) => {
       setBankAccount(bankAccountType);
     }
   }, [bankAccountType]);
-  const [form] = Form.useForm();
-  const cRef = useRef();
-  const [bankAccount, setBankAccount] = useState('2');
+
   const panelList = {
-    '1': [
+    1: [
       {
         title: '对公账户信息',
         form: <ActiveSetForm cRef={cRef} form={form} initialValues={initial} />,
@@ -51,13 +53,7 @@ const addGroups = (props) => {
         disabled: true,
       },
     ],
-    '2': [
-      {
-        title: '对私账户信息',
-        form: <ActiveSetOneForm cRef={cRef} form={form} initialValues={initial} />,
-        showArrow: false,
-        disabled: false,
-      },
+    2: [
       {
         title: '银行卡信息',
         form: <ActiveBankForm cRef={cRef} form={form} initialValues={initial} />,
@@ -76,22 +72,15 @@ const addGroups = (props) => {
     if (bankAccount === '1') {
       form.validateFields().then((val) => {
         let city = cRef.current.getCity();
-        const { activeBeginDate, activeValidity } = val;
+        const { activeBeginDate } = val;
         let startDate = TIME_YMD(activeBeginDate[0]);
         let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
-        let establishDate = TIME_YMD(activeValidity[0]);
-        let validityPeriod = TIME_YMD(activeValidity[1]);
         let obj = {
           ...initial,
           ...val,
           ...city,
         };
         let {
-          businessLicenseImg,
-          businessName,
-          businessScope,
-          signInAddress,
-          socialCreditCode,
           bankBranchName,
           provCode,
           areaCode,
@@ -112,15 +101,6 @@ const addGroups = (props) => {
           payload: {
             merchantGroupId,
             bankAccountType: bankAccount,
-            businessLicenseObject: {
-              businessLicenseImg,
-              businessName,
-              businessScope,
-              signInAddress,
-              socialCreditCode,
-              validityPeriod,
-              establishDate,
-            },
             bankBindingObject: {
               bankBranchName,
               provCode,
@@ -145,22 +125,15 @@ const addGroups = (props) => {
     } else {
       form.validateFields().then((val) => {
         let city = cRef.current.getCityByOne();
-        const { activeBeginDate, activeValidity } = val;
+        const { activeBeginDate } = val;
         let startDate = TIME_YMD(activeBeginDate[0]);
         let legalCertIdExpires = TIME_YMD(activeBeginDate[1]);
-        let establishDate = TIME_YMD(activeValidity[0]);
-        let validityPeriod = TIME_YMD(activeValidity[1]);
         let obj = {
           ...initial,
           ...val,
           ...city,
         };
         let {
-          businessLicenseImg,
-          businessName,
-          businessScope,
-          signInAddress,
-          socialCreditCode,
           bankPhoto,
           bankBranchName,
           provCode,
@@ -179,15 +152,6 @@ const addGroups = (props) => {
           payload: {
             merchantGroupId,
             bankAccountType: bankAccount,
-            businessLicenseObject: {
-              businessLicenseImg,
-              businessName,
-              businessScope,
-              signInAddress,
-              socialCreditCode,
-              validityPeriod,
-              establishDate,
-            },
             bankBindingObject: {
               bankPhoto,
               cardNo,

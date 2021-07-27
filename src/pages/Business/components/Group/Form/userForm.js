@@ -43,7 +43,7 @@ const userForm = (props) => {
       name: 'password',
       visible: Object.keys(groupDetails).length !== 0 ? false : true,
       maxLength: 16,
-      addRules: [{ pattern: WORD_NUM_PATTERN, message: '账号格式不正确' }],
+      addRules: [{ pattern: WORD_NUM_PATTERN, message: '密码格式不正确' }],
     },
   ];
 

@@ -43,22 +43,6 @@ export function fetchSpecialGoodsEdit(data) {
   });
 }
 
-// post 周边特惠 - 审核
-export function fetchSpecialGoodsVerify(data) {
-  return request('/admin/specialGoodsManagement/simpleVerifySpecialGoods', {
-    method: 'POST',
-    data,
-  });
-}
-
-// post 周边特惠 - 删除
-export function fetchSpecialGoodsDel(data) {
-  return request('/admin/specialGoodsManagement/deleteMerchantSpecialGoods', {
-    method: 'POST',
-    data,
-  });
-}
-
 // post 周边特惠 - 新增
 export function fetchSpecialGoodsSave(data) {
   return request('/admin/specialGoodsManagement/saveSpecialGoods', {
@@ -67,7 +51,7 @@ export function fetchSpecialGoodsSave(data) {
   });
 }
 
-// post 周边特惠 - 推荐状态
+// post 周边特惠 - 设置推荐
 export function fetchSpecialGoodsRecommend(data) {
   return request('/admin/specialGoodsManagement/setRecommend', {
     method: 'POST',
@@ -81,7 +65,96 @@ export function fetchSpecialGoodsImport(params) {
   });
 }
 
+//周边特惠-取消推荐
+export function fetchSpecialCancleRecommend(data) {
+  return request('/admin/specialGoodsManagement/cancelRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+//周边特惠-置顶 资源位
+export function fetchSpecialToTop(data) {
+  return request('/admin/specialGoodsManagement/topRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 特惠增加库存
+export function fetchSpecialGoodsAddRemain(data) {
+  return request('/admin/specialGoodsManagement/addGoodsRemain', {
+    method: 'POST',
+    data,
+  });
+}
+
+//取消置顶
+export function fetchSpecialCancleToTop(data) {
+  return request('/admin/specialGoodsManagement/cancelTopRecommend', {
+    method: 'POST',
+    data,
+  });
+}
+
+//资源位条件配置 /admin/dictionaryAdmin/updateDictionaryAdmin
+export function fetchSpecialConditConfig(data) {
+  return request('/admin/dictionaryAdmin/updateDictionaryAdmin', {
+    method: 'POST',
+    data,
+  });
+}
+
+//运营后台-特惠商品高佣联盟字典值 || 运营后台-特惠商品今日上新字典值
+export function fetchResourceDicts(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
 // 周边特惠 end
+
+//特惠审核
+
+//审核列表
+export function fetchSpecialGoodsCheckList(params) {
+  return request('/admin/marketing/audit/listSpecialGoodsAudit', {
+    params,
+  });
+}
+
+//特惠审核详情
+export function fetchSpecialGoodsAuditDetail(params) {
+  return request('/admin/marketing/audit/getAuditDetail', {
+    params,
+  });
+}
+
+//特惠审核
+export function fetchSpecialGoodsAudit(data) {
+  return request('/admin/marketing/audit/verifyAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
+//特惠审核拒绝
+export function fetchSpecialGoodsAuditReject(data) {
+  return request('/admin/marketing/audit/rejectAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 特惠审核-关闭
+export function fetchSpecialGoodsAuditClose(data) {
+  return request('/admin/marketing/audit/closeAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
+//特惠审核end
 
 // 分享管理
 
@@ -148,6 +221,14 @@ export function fetchShareVideoPush(data) {
 export function fetchShareLikeSet(params) {
   return request('/admin/marketingManagement/modifyMomentParam', {
     params,
+  });
+}
+
+// 视频管理新增打赏人数
+export function fetchShareRewardPeo(data) {
+  return request('/admin/marketingManagement/addBeanPersonAmount', {
+    method: 'POST',
+    data,
   });
 }
 
@@ -226,7 +307,7 @@ export function fetchOrdersDetail(params) {
 
 // 订单列表 end
 
-// 核销列表 
+// 核销列表
 export function fetchVerificationList(params) {
   return request('/admin/orderGoodsVerification/listOrderGoodsVerification', {
     params,
@@ -376,6 +457,49 @@ export function fetchTagEdit(data) {
   });
 }
 
+//店铺标签end
+
+//商品标签start
+
+//商品标签列表
+export function fetchGoodsTagList(params) {
+  return request('/admin/goodsTag/listConfigGoodsTag', {
+    params,
+  });
+}
+
+//运营后台-新增商品标签
+export function fetchGoodsTagAdd(data) {
+  return request('/admin/goodsTag/saveConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//编辑
+export function fetchGoodsTagUpdate(data) {
+  return request('/admin/goodsTag/updateConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//运营后台-商品标签排序
+export function fetchGoodsTagSort(data) {
+  return request('/admin/goodsTag/sortConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 运营后台-启用/禁用商品标签
+export function fetchGoodsTagSwitchStatus(data) {
+  return request('/admin/goodsTag/enableConfigGoodsTag', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 分类列表 end
 
 // 优惠券管理
@@ -396,15 +520,30 @@ export function fetchCouponDetail(params) {
 
 // post 优惠券管理 - 新增
 export function fetchCouponSave(data) {
-  return request('/admin/coupon/saveOwnerCoupon', {
+  return request('/admin/coupon/createOwnerCoupon', {
     method: 'POST',
     data,
   });
 }
 
-// post 优惠券管理 - 下架/编辑/删除优惠券
-export function fetchCouponStatus(data) {
+//券修改
+export function fetchCouponUpdate(data) {
   return request('/admin/coupon/updateOwnerCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 券下架
+export function fetchCouponOff(data) {
+  return request('/admin/coupon/offOwnerCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+// 券删除
+export function fetchCouponDelete(data) {
+  return request('/admin/coupon/deleteOwnerCoupon', {
     method: 'POST',
     data,
   });
@@ -413,6 +552,34 @@ export function fetchCouponStatus(data) {
 // get 优惠券导出
 export function fetchCouponToImport(params) {
   return request('/admin/coupon/listOwnerCouponToActionImport', {
+    params,
+  });
+}
+
+//券审核-列表
+export function fetchCouponAuditList(params) {
+  return request('/admin/marketing/audit/listReduceCouponAudit', {
+    params,
+  });
+}
+// 券审核详情
+export function fetchCouponAuditDetail(params) {
+  return request('/admin/marketing/audit/getAuditDetailCoupon', {
+    params,
+  });
+}
+
+// 券增加库存
+export function fetchCouponAddRemain(data) {
+  return request('/admin/coupon/addGoodsRemain', {
+    method: 'POST',
+    data,
+  });
+}
+
+// * 特惠或券编辑前校验
+export function fetchEditCurrentStatus(params) {
+  return request('/admin/specialGoodsManagement/judgeCurrentAuditStatus', {
     params,
   });
 }

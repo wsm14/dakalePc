@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
+import { VANE_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
-import FormCondition from '@/components/FormCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import FormCondition from '@/components/FormCondition';
 
 const VaneDrawer = (props) => {
-  const { navigation, dispatch, cRef, visible, onClose, loading } = props;
+  const { navigation, dispatch, cRef, visible, onClose, loading, tradeList } = props;
+  const [categoryArr, setCategoryArr] = useState([]);
 
-  const { show = false, type = 'add', detail = '' } = visible;
+  const { show = false, type = 'add', detail = {} } = visible;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
+
+  console.log(detail, 'dddd');
 
   const allProps = {
     add: {
@@ -32,7 +36,17 @@ const VaneDrawer = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { image, bubbleFlag = 0, scenesId = [] } = values;
+      const { image, bubbleFlag = 0, categoryId = [], jumpType } = values;
+      let cateId = '';
+      if (categoryId && categoryId.length > 1) {
+        cateId = categoryId[1];
+      } else {
+        cateId = categoryId[0];
+      }
+      const windVaneParamObject = {
+        categoryId: cateId,
+        categoryName: categoryArr.categoryName,
+      };
       // 上传图片到oss -> 提交表单
       aliOssUpload(image).then((res) => {
         dispatch({
@@ -40,9 +54,11 @@ const VaneDrawer = (props) => {
           payload: {
             configWindVaneId: detail.configWindVaneId,
             ...values,
+            jumpType,
+            nativeJumpType: jumpType === 'native' ? 'category' : '',
             bubbleFlag: Number(bubbleFlag),
             image: res.toString(),
-            scenesId: scenesId.toString(),
+            windVaneParamObject: jumpType === 'native' ? windVaneParamObject : '',
           },
           callback: () => {
             onClose();
@@ -50,6 +66,16 @@ const VaneDrawer = (props) => {
           },
         });
       });
+    });
+  };
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
+  // 获取行业选择项
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
     });
   };
 
@@ -64,7 +90,8 @@ const VaneDrawer = (props) => {
       type: 'upload',
       name: 'image',
       maxFile: 1,
-      extra: '请上传XX*XX尺寸png、jpeg格式图片',
+      extra: '请上传80*80尺寸png、jpeg格式图片',
+      imgRatio: VANE_ICON,
     },
     {
       label: '显示气泡',
@@ -84,8 +111,16 @@ const VaneDrawer = (props) => {
       type: 'radio',
       name: 'jumpType',
       select: VANE_URL_TYPE,
-      onChange: (e) => setShowUrl(e.target.value),
+      onChange: (e) => {
+        setShowUrl(e.target.value);
+      },
       render: (val) => VANE_URL_TYPE[val],
+    },
+    {
+      label: '原生跳转类型',
+      name: 'nativeJumpType',
+      visible: false,
+      show: false,
     },
     {
       label: '链接',
@@ -93,26 +128,43 @@ const VaneDrawer = (props) => {
       visible: showUrl === 'url',
       show: showUrl === 'url',
     },
+    // {
+    //   label: '选择场景',
+    //   type: 'treeSelect',
+    //   multiple: true,
+    //   showCheckedStrategy: 'SHOW_ALL',
+    //   name: 'scenesId',
+    //   select: navigation.list.map(
+    //     ({
+    //       categoryIdString: categoryScenesId,
+    //       categoryName: scenesName,
+    //       categoryScenesDTOList,
+    //     }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
+    //   ),
+    //   fieldNames: {
+    //     label: 'scenesName',
+    //     value: 'categoryScenesId',
+    //     children: 'categoryScenesDTOList',
+    //   },
+    //   visible: showUrl === 'scenes',
+    //   show: false,
+    // },
     {
-      label: '选择场景',
-      type: 'treeSelect',
-      multiple: true,
-      showCheckedStrategy: 'SHOW_ALL',
-      name: 'scenesId',
-      select: navigation.list.map(
-        ({
-          categoryIdString: categoryScenesId,
-          categoryName: scenesName,
-          categoryScenesDTOList,
-        }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
-      ),
-      fieldNames: {
-        label: 'scenesName',
-        value: 'categoryScenesId',
-        children: 'categoryScenesDTOList',
-      },
-      visible: showUrl === 'scenes',
+      label: '选择行业',
+      type: 'cascader',
+      name: 'categoryId',
+      changeOnSelect: true,
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'childList' },
       show: false,
+      visible: showUrl === 'native',
+      onChange: (val, option) => {
+        if (val.length > 1) {
+          setCategoryArr(option[1]);
+        } else {
+          setCategoryArr(option[0]);
+        }
+      },
     },
   ];
 
@@ -142,7 +194,8 @@ const VaneDrawer = (props) => {
   );
 };
 
-export default connect(({ walkingManage, loading }) => ({
+export default connect(({ walkingManage, loading, sysTradeList }) => ({
+  tradeList: sysTradeList.list.list,
   navigation: walkingManage.navigation,
   loading: loading.models.walkingManage,
 }))(VaneDrawer);

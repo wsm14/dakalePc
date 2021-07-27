@@ -1,5 +1,6 @@
 import { notification } from 'antd';
 import lodash from 'lodash';
+import { fetchMerchantList, fetchMerchantGroup } from '@/services/BusinessServices';
 import {
   fetchGetMreTag,
   fetchImportExcel,
@@ -20,6 +21,13 @@ import {
   fetchGetSpecialGoodsSelect,
   fetchGetMerchantsSearch,
   fetchGetUsersSearch,
+  fetchSkuAvailableMerchant,
+  fetchGoodsTagListByCategoryId,
+  fetchGoodsIsCommission,
+  fetchSkuDetailMerchantList,
+  fetchAuditMerchantList,
+  fetchGetCouponsSearch,
+  fetchGetGoodsSearch,
 } from '@/services/PublicServices';
 
 export default {
@@ -40,6 +48,10 @@ export default {
     merchantList: [],
     ruleBean: 0,
     experLevel: {},
+    groupMreList: [],
+    skuMerchantList: { list: [], total: 0 },
+    CouponListSearch: [],
+    goodsList: [],
   },
 
   reducers: {
@@ -53,6 +65,12 @@ export default {
       return {
         ...state,
         logDetail: { show: false, data: [] },
+      };
+    },
+    clearGroupMre(state) {
+      return {
+        ...state,
+        groupMreList: [],
       };
     },
   },
@@ -152,23 +170,42 @@ export default {
       }
       callback(content.logRecordList);
     },
-    *fetchGetLogDetail({ payload }, { call, put }) {
+    *fetchGetLogDetail({ payload, callback }, { call, put }) {
+      const { key = '' } = payload;
       const response = yield call(fetchGetLogDetail, { ...payload, page: 1, limit: 999 });
       if (!response) return;
+      let recordList = {};
       const { content } = response;
-      if (!content.recordList.length) {
-        notification.info({
-          message: '温馨提示',
-          description: '暂无日志记录',
+      if (key === 'audit') {
+        if (!content.recordList.length) {
+          notification.info({
+            message: '温馨提示',
+            description: '暂无审核记录',
+          });
+          callback && callback({});
+          return;
+        } else {
+          recordList = {
+            list: content.recordList,
+            total: content.total,
+          };
+          callback && callback(recordList);
+        }
+      } else {
+        if (!content.recordList.length) {
+          notification.info({
+            message: '温馨提示',
+            description: '暂无日志记录',
+          });
+          return;
+        }
+        yield put({
+          type: 'save',
+          payload: {
+            logDetail: { show: true, data: content.recordList },
+          },
         });
-        return;
       }
-      yield put({
-        type: 'save',
-        payload: {
-          logDetail: { show: true, data: content.recordList },
-        },
-      });
     },
     *fetchGetMreTag({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetMreTag, payload);
@@ -288,9 +325,98 @@ export default {
             name: `${item.merchantName} ${item.account}`,
             otherData: item.address,
             value: item.userMerchantIdString,
-            commissionRatio: item.commissionRatio,
-            topCategoryName: [item.topCategoryName, item.categoryName],
-            topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+          })),
+        },
+      });
+    },
+    *fetchGetGroupMreList({ payload, callback }, { put, call }) {
+      const { type = 'merchant', name, ...other } = payload;
+      const newPayload = {
+        merchant: { merchantName: name }, // 单店
+        group: { groupName: name }, // 集团
+      }[type];
+      const response = yield call(
+        { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
+        { limit: 300, page: 1, bankStatus: 3, ...newPayload, ...other },
+      );
+      if (!response) return;
+      const { content } = response;
+      const listData = content.recordList.map((item) => ({
+        name: `${item.merchantName || item.groupName} ${item.account || ''}`,
+        otherData: item.address,
+        value: item.userMerchantIdString || item.merchantGroupIdString,
+        commissionRatio: item.commissionRatio,
+        topCategoryName: [item.topCategoryName, item.categoryName],
+        topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+      }));
+      yield put({
+        type: 'save',
+        payload: {
+          groupMreList: listData,
+        },
+      });
+      callback && callback(listData);
+    },
+    // sku通用- sku挂靠商家列表
+    *fetchSkuAvailableMerchant({ payload }, { call, put }) {
+      const response = yield call(fetchSkuAvailableMerchant, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          skuMerchantList: { list: content.merchantList, total: content.total },
+        },
+      });
+    },
+    *fetchGoodsTagListByCategoryId({ payload, callback }, { call }) {
+      const response = yield call(fetchGoodsTagListByCategoryId, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.configGoodsTagList);
+    },
+    *fetchGoodsIsCommission({ payload, callback }, { call }) {
+      const response = yield call(fetchGoodsIsCommission, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.manuallyFlag);
+    },
+    *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchSkuDetailMerchantList, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.merchantList);
+    },
+    *fetchAuditMerchantList({ payload, callback }, { call }) {
+      const response = yield call(fetchAuditMerchantList, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.merchantList);
+    },
+    *fetchGetCouponsSearch({ payload }, { put, call }) {
+      const response = yield call(fetchGetCouponsSearch, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          CouponListSearch: content.ownerCouponList.map((item) => ({
+            name: `${item.couponName}`,
+            value: item.ownerCouponIdString,
+          })),
+        },
+      });
+    },
+    *fetchGetGoodsSearch({ payload }, { put, call }) {
+      const response = yield call(fetchGetGoodsSearch, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          goodsList: content.activityGoodsList.map((item) => ({
+            name: `${item.goodsName}`,
+            value: item.specialGoodsId,
           })),
         },
       });

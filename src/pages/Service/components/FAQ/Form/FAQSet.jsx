@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
+import { FAQ_PART_TYPE } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const FAQSet = (props) => {
-  const { dispatch, visible = {}, typeList, onClose, cRef, loading, sortList } = props;
+  const { dispatch, visible = {}, tabKey, onClose, cRef, loading, sortList } = props;
   const { type = '', detail = {} } = visible;
 
   const [form] = Form.useForm();
@@ -24,6 +25,7 @@ const FAQSet = (props) => {
           payload: {
             ...detail,
             ...values,
+            userType: tabKey,
             questionDescImg: res.toString(),
             id: detail.questionIdString,
           },
@@ -41,12 +43,12 @@ const FAQSet = (props) => {
       label: 'FAQ标题',
       name: 'questionTitle',
     },
-    {
-      label: 'FAQ所属位置',
-      name: 'userType',
-      type: 'radio',
-      select: typeList ? typeList.map(({ key, tab }) => ({ value: key, name: tab })) : [],
-    },
+    // {
+    //   label: 'FAQ所属位置',
+    //   name: 'userType',
+    //   type: 'radio',
+    //   select: typeList ? typeList.map(({ key, tab }) => ({ value: key, name: tab })) : [],
+    // },
     {
       label: 'FAQ所属分类',
       name: 'questionCategoryId',
@@ -87,7 +89,7 @@ const FAQSet = (props) => {
   ];
 
   const modalProps = {
-    title: `${type == 'add' ? '新增' : '编辑'}问题`,
+    title: `${type == 'add' ? '新增' : '编辑'}问题 - ${FAQ_PART_TYPE[tabKey]}`,
     visible: !!type,
     onClose,
     footer: (

@@ -1,19 +1,25 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common/constant';
+import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import CouponDrawer from './components/Coupon/CouponDrawer';
 import excelProps from './components/Coupon/excelProps';
+import RemainModal from './components/Coupon/Detail/RemainModal';
 
 const CouponManageComponent = (props) => {
-  const { couponManage, loading, dispatch } = props;
+  const { couponManage, loading, dispatch, loadings } = props;
   const { list } = couponManage;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
+
+  //下架原因框
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
+  const [visibleRemain, setVisibleRemain] = useState(false); //增加库存
 
   // 搜索参数
   const searchItems = [
@@ -22,14 +28,19 @@ const CouponManageComponent = (props) => {
       name: 'couponName',
     },
     {
-      label: '集团/店铺名称',
-      name: 'ownerName',
+      label: '集团/店铺名',
+      name: 'ownerId',
+      type: 'merchant',
     },
     {
       label: '状态',
       type: 'select',
-      name: 'merchantCouponStatus',
+      name: 'ownerCouponStatus',
       select: COUPON_STATUS,
+    },
+    {
+      label: '创建人',
+      name: 'creatorName',
     },
     {
       label: '创建时间',
@@ -37,12 +48,12 @@ const CouponManageComponent = (props) => {
       name: 'beginDate',
       end: 'endDate',
     },
-    {
-      label: '券类型',
-      type: 'select',
-      name: 'couponType',
-      select: COUPON_TYPE,
-    },
+    // {
+    //   label: '券类型',
+    //   type: 'select',
+    //   name: 'couponType',
+    //   select: COUPON_TYPE,
+    // },
     {
       label: '店铺类型',
       name: 'ownerType',
@@ -54,7 +65,7 @@ const CouponManageComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '券名称',
+      title: '券/店铺名称',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
@@ -128,6 +139,14 @@ const CouponManageComponent = (props) => {
       title: '创建时间',
       align: 'right',
       dataIndex: 'createTime',
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div>
+            {SUBMIT_TYPE[record.creatorType]}--{record.creatorName}
+          </div>
+        </div>
+      ),
     },
     {
       title: '发布时间',
@@ -136,7 +155,7 @@ const CouponManageComponent = (props) => {
       render: (val, row) => (
         <div>
           {val}
-          <div>{COUPON_STATUS[row.merchantCouponStatus]}</div>
+          <div>{COUPON_STATUS[row.ownerCouponStatus]}</div>
         </div>
       ),
     },
@@ -144,7 +163,8 @@ const CouponManageComponent = (props) => {
       type: 'handle',
       dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
-        const { merchantCouponStatus: status, ownerIdString: ownerId } = record;
+        // 1 上架 2 下架
+        const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
         return [
           {
             type: 'info',
@@ -152,41 +172,117 @@ const CouponManageComponent = (props) => {
           },
           {
             type: 'del',
-            visible: status !== '1',
-            click: () => fetchCouponSet({ ownerCouponId, ownerId, deleteFlag: 0 }),
+            visible: status === '2', // 已下架可以删除
+            click: () => fetchCouponSet({ ownerCouponId, ownerId }),
           },
-          // {
-          //   type: 'edit',
-          //   click: () => fetchCouponDetail(val, 'edit'),
-          // },
+          {
+            type: 'edit',
+            click: () => fetchCouponDetail(index, 'edit'),
+          },
+          {
+            type: 'again',
+            title: '重新发布',
+            visible: ['2'].includes(status), // 已下架 && 未删除
+            click: () => fetchCouponDetail(index, 'again'),
+          },
           // 上架中 已确认 | 上架中 已驳回
           {
-            type: 'down',
-            popText: `下架后不影响已购买的用户使用，\n确定下架吗？`,
-            visible: status == '1',
-            click: () => fetchCouponSet({ ownerCouponId, ownerId, merchantCouponStatus: 2 }),
+            title: '下架',
+            auth: 'down',
+            visible: ['1'].includes(status),
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: { ownerCouponId, ownerId },
+                formProps: { type: 'down', key: 'offShelfReason' },
+              }),
+          },
+          // {
+          //   type: 'diary',
+          //   click: () => fetchGetLogData({ type: 'reduceCoupon', identificationId: ownerCouponId }),
+          // },
+          {
+            title: '增加库存',
+            type: 'addRemain',
+            visible: ['1'].includes(status),
+            click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
           },
         ];
       },
     },
   ];
+  // 增加库存
+  const fetAddRemain = (ownerCouponId, ownerId, remain) => {
+    setVisibleRemain({
+      show: true,
+      ownerCouponId,
+      ownerId,
+      remain,
+    });
+  };
 
-  // 下架/删除
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogDetail',
+      payload,
+    });
+  };
+
+  // 删除
   const fetchCouponSet = (payload) => {
     dispatch({
-      type: 'couponManage/fetchCouponSet',
+      type: 'couponManage/fetchCouponDelete',
       payload,
       callback: childRef.current.fetchGetData,
     });
   };
 
-  // 获取商品详情
+  // 下架
+  const fetchDownCoupon = (values) => {
+    const { ownerCouponId, ownerId } = visibleRefuse.detail;
+    dispatch({
+      type: 'couponManage/fetchCouponOff',
+      payload: {
+        ...values,
+        ownerCouponId,
+        ownerId,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
+  // 获取详情
   const fetchCouponDetail = (index, type) => {
-    const { ownerCouponIdString: ownerCouponId, ownerIdString: ownerId } = list[index];
+    const {
+      ownerCouponIdString: ownerCouponId,
+      ownerIdString: ownerId,
+      ownerCouponStatus: status,
+      ownerType,
+    } = list[index];
+    if (type === 'edit' && status === '1') {
+      dispatch({
+        type: 'specialGoods/fetchEditCurrentStatus',
+        payload: {
+          ownerId,
+          ownerServiceId: ownerCouponId,
+          ownerType,
+        },
+        callback: (val) => {
+          if (val !== '1') {
+            return;
+          }
+        },
+      });
+    }
     dispatch({
       type: 'couponManage/fetchCouponDetail',
-      payload: { ownerCouponId, ownerId },
-      callback: (detail) => setVisible({ type, show: true, index, detail }),
+      payload: { ownerCouponId, ownerId, type },
+      callback: (detail) =>
+        setVisible({ type, show: true, index, detail, ownerCouponId, ownerId, status }),
     });
   };
 
@@ -226,6 +322,20 @@ const CouponManageComponent = (props) => {
         getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
       ></CouponDrawer>
+      {/* 下架原因 */}
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={fetchDownCoupon}
+        loading={loadings.models.couponManage}
+        extra={'下架后不影响已购买的用户使用'}
+      ></RefuseModal>
+      {/* 库存总量 */}
+      <RemainModal
+        childRef={childRef}
+        visible={visibleRemain}
+        onClose={() => setVisibleRemain(false)}
+      ></RemainModal>
     </>
   );
 };

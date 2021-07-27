@@ -1,5 +1,5 @@
 import React from 'react';
-import Bar from '@ant-design/charts/lib/bar';
+import { Bar } from '@ant-design/charts';
 
 const BarChart = (props) => {
   const {

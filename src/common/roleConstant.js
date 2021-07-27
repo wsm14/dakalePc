@@ -7,6 +7,8 @@ export const ROLE_BUTTON_TYPE = {
   actionDel: '删除行为',
   actionEdit: '修改行为',
   actionSave: '新增使用规则',
+  againUp: '再次上架',
+  addRemain: '增加库存',
 
   batchEdit: '批量修改',
   baseTrade: '基础设施',
@@ -14,10 +16,13 @@ export const ROLE_BUTTON_TYPE = {
 
   copy: '复制',
   check: '审核',
+  close: '关闭',
   couponAdd: '优惠券新增',
   cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
+  cancleRecommend: '取消推荐',
+  configCondit: '条件配置',
 
   del: '删除',
   down: '下架',
@@ -79,6 +84,7 @@ export const ROLE_BUTTON_TYPE = {
   recommendList: '推荐列表',
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
+  rewardPeo: '新增打赏人数',
 
   set: '设置',
   save: '新增',
@@ -93,6 +99,7 @@ export const ROLE_BUTTON_TYPE = {
   shareText: '分享文案',
   sharePush: '发布分享',
   searchSet: '热门搜索配置',
+  storeList: '门店列表',
   statistics: '统计',
   signDetail: '打卡明细',
   setMreCord: '设置商家验证码',

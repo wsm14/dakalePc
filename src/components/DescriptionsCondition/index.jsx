@@ -45,6 +45,7 @@ const DescriptionsCondition = (props) => {
   const checkData = (type, value) => {
     const domShow = {
       text: value,
+      number: value,
       textArea: value,
       upload: <ImagePreviewGroup url={value}></ImagePreviewGroup>,
       videoUpload: <VideoPreview url={value}></VideoPreview>,

@@ -103,21 +103,21 @@ export function fetchSearchSet(data) {
 
 // get 风向标配置 - 列表
 export function fetchWalkManageVaneList(params) {
-  return request('/admin/systemConfig/listConfigWindVane', {
+  return request('/admin/windVane/listConfigWindVane', {
     params,
   });
 }
 
 // get 风向标配置 - 详情
 export function fetchWalkManageVaneDetail(params) {
-  return request('/admin/systemConfig/getConfigWindVaneById', {
+  return request('/admin/windVane/getConfigWindVaneById', {
     params,
   });
 }
 
 // post 风向标配置 - 编辑删除
 export function fetchWalkManageVaneEditDel(data) {
-  return request('/admin/systemConfig/updateConfigWindVane', {
+  return request('/admin/windVane/updateConfigWindVane', {
     method: 'POST',
     data,
   });
@@ -125,7 +125,7 @@ export function fetchWalkManageVaneEditDel(data) {
 
 // post 风向标配置 - 排序
 export function fetchWalkManageVaneSort(data) {
-  return request('/admin/systemConfig/sortConfigWindVane', {
+  return request('/admin/windVane/sortConfigWindVane', {
     method: 'POST',
     data,
   });
@@ -133,7 +133,7 @@ export function fetchWalkManageVaneSort(data) {
 
 // post 风向标配置 - 新增
 export function fetchWalkManageVaneAdd(data) {
-  return request('/admin/systemConfig/saveConfigWindVane', {
+  return request('/admin/windVane/saveConfigWindVane', {
     method: 'POST',
     data,
   });
@@ -160,6 +160,36 @@ export function fetchWalkManageGratiaClass() {
 // post 导航类目页面配置 - 新增
 export function fetchWalkManageGratiaClassAdd(data) {
   return request('/common/category/setSpecialGoodsCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 集合页配置列表
+export function fetchGatherPageConfigList(params) {
+  return request('/admin/collectionPage/listConfigCollectionPage', {
+    params,
+  });
+}
+
+//集合页新增
+export function fetchGatherPageConfigAdd(data) {
+  return request('/admin/collectionPage/saveConfigCollectionPage', {
+    method: 'POST',
+    data,
+  });
+}
+
+//集合页编辑
+export function fetchGatherPageConfigUpdate(data) {
+  return request('/admin/collectionPage/updateConfigCollectionPage', {
+    method: 'POST',
+    data,
+  });
+}
+// 集合页结束
+export function fetchGatherPageConfigEnd(data) {
+  return request('/admin/collectionPage/endConfigCollectionPage', {
     method: 'POST',
     data,
   });
@@ -212,3 +242,33 @@ export function fetchWithdrawUpdate(data) {
 }
 
 // 提现规则 end
+
+// 分佣模板 list  start
+
+//分佣模板 list
+export function fetchDivisionTemplateList(params) {
+  return request('/admin/division/template/listDivisionTemplate', {
+    params,
+  });
+}
+//分佣模板-详情
+export function fetchDivisionTemplateDetail(params) {
+  return request('/admin/division/template/getTemplateById', {
+    params,
+  });
+}
+// 分佣模板-新增
+export function fetchDivisionTemplateAdd(data) {
+  return request('/admin/division/template/createDivisionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+//分佣模板-修改
+export function fetchDivisionTemplateUpdate(data) {
+  return request('/admin/division/template/updateDivisionTemplate', {
+    method: 'POST',
+    data,
+  });
+}

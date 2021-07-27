@@ -15,32 +15,23 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
-      // {
-      //   name: '活动设置',
-      //   path: '/active',
-      //   routes: [
-      //     {
-      //       path: '/active/template',
-      //       name: '营销活动模版',
-      //       component: './Active/ActiveTemplate',
-      //     },
-      //     {
-      //       path: '/active/allocation',
-      //       name: '活动配置',
-      //       component: './Active/ActiveAllocation',
-      //     },
-      //     {
-      //       path: '/active/list',
-      //       name: '活动列表',
-      //       component: './Active/ActiveList',
-      //     },
-      //     {
-      //       path: '/active/param',
-      //       name: '参数配置',
-      //       component: './Active/ActiveParam',
-      //     },
-      //   ],
-      // },
+      {
+        name: '活动设置',
+        path: '/active',
+        routes: [
+          {
+            path: '/active/template',
+            name: '营销活动模版',
+            component: './Active/ActiveTemplate',
+          },
+          {
+            path: '/active/list',
+            name: '活动列表',
+            component: './Active/ActiveList',
+            buttons: ['edit', 'copy', 'del'],
+          },
+        ],
+      },
       // 账户管理 account
       {
         path: '/account/user',
@@ -95,10 +86,17 @@ export default [
         component: './Base/ManageBrand',
         buttons: ['save', 'del', 'edit', 'status'],
       },
+
       {
         path: '/system/tag',
         name: '店铺标签',
         component: './Base/TagManage',
+        buttons: ['save', 'edit'],
+      },
+      {
+        path: '/system/goodsTag',
+        name: '商品标签',
+        component: './Base/GoodsTag',
         buttons: ['save', 'edit'],
       },
       {
@@ -150,7 +148,7 @@ export default [
         path: '/business/group',
         name: '集团管理',
         component: './Business/GroupList',
-        buttons: ['save', 'edit', 'info', 'activate'],
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
       },
       {
         path: '/business/settled',
@@ -173,12 +171,6 @@ export default [
         path: '/chart/block',
         name: '数据概况',
         component: './Chart/ChartBlock',
-      },
-      {
-        path: '/chart/achievement',
-        name: 'BD业绩',
-        component: './Chart/SaleAchievement',
-        buttons: ['exportList'],
       },
       {
         path: '/chart/dataGatherExport',
@@ -245,7 +237,13 @@ export default [
         path: '/expert/achievement',
         name: '哒人业绩',
         component: './Expert/ExpertUserAchievement',
-        buttons: ['recommendList', 'statistics'],
+        // buttons: ['exportList'],
+      },
+      {
+        path: '/expert/achievementTotal',
+        name: '哒人业绩统计',
+        component: './Expert/ExpertUserAchievementTotal',
+        // buttons: ['exportList'],
       },
       {
         path: '/expert/distribution',
@@ -346,7 +344,7 @@ export default [
         path: '/market/appset',
         name: '广告管理',
         component: './Market/AppSetList',
-        buttons: ['save', 'del', 'edit', 'down'],
+        buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
         path: '/market/puzzleAd',
@@ -365,7 +363,7 @@ export default [
         path: '/operation/share',
         name: '视频管理',
         component: './Operation/ShareManage',
-        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set'],
+        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
       },
       {
         path: '/operation/goods',
@@ -401,7 +399,17 @@ export default [
         path: '/operation/coupon',
         name: '优惠券管理',
         component: './Operation/CouponManage',
-        buttons: ['save', 'del', 'info', 'down', 'exportList'],
+        buttons: [
+          'save',
+          'del',
+          'info',
+          'edit',
+          'down',
+          'again',
+          'exportList',
+          'diary',
+          'addRemain',
+        ],
       },
       {
         path: '/operation/special',
@@ -409,24 +417,35 @@ export default [
         component: './Operation/SpecialGoods',
         buttons: [
           'save',
-          'del',
           'edit',
           'down',
           'info',
-          'check',
           'diary',
           'again',
-          'placement',
           'recommendStatus',
           'exportList',
           'goodsCode',
+          'againUp',
+          'addRemain',
         ],
       },
       {
-        path: '/operation/platformRights',
-        name: '平台权益',
-        component: './Operation/PlatformRights',
-        buttons: ['save', 'edit', 'down', 'placement', 'recommendStatus', 'info', 'exportList'],
+        path: '/operation/specialGoodCheck',
+        name: '特惠商品审核',
+        component: './Operation/SpecialGoodCheck',
+        buttons: ['info', 'check', 'close'],
+      },
+      {
+        path: '/operation/couponCheck',
+        name: '券审核',
+        component: './Operation/CouponCheck',
+        buttons: ['info', 'check', 'close'],
+      },
+      {
+        path: '/operation/specialGoodsResource',
+        name: '资源位配置',
+        component: './Operation/SpecialGoodsResource',
+        buttons: ['cancleRecommend', 'placement', 'configCondit'],
       },
       // 客服中心 service
       {
@@ -499,6 +518,12 @@ export default [
         name: '提现规则',
         component: './System/WithdrawRegular',
         buttons: ['save', 'edit'],
+      },
+      {
+        path: '/system/commissionTempate',
+        name: '分佣模板',
+        buttons: ['save', 'edit', 'info'],
+        component: './System/CommissionTempate',
       },
       // 用户管理 user
       {

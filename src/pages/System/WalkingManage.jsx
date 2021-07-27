@@ -4,6 +4,7 @@ import { Menu } from 'antd';
 import VaneManage from './components/Walking/Vane';
 import NavigationManage from './components/Walking/Navigation';
 import GratiaClassManage from './components/Walking/GratiaClass';
+import GatherPage from './components/Walking/GatherPage';
 import styles from './index.less';
 
 const WalkingManage = () => {
@@ -57,6 +58,11 @@ const WalkingManage = () => {
       type: 'gratiaClassManage',
       menuName: '特惠商品类目配置',
       block: <GratiaClassManage></GratiaClassManage>,
+    },
+    {
+      type: 'gatherPage',
+      menuName: '集合页配置',
+      block: <GatherPage></GatherPage>,
     },
   ];
 

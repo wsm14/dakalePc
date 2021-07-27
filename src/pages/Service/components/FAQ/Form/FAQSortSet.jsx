@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
 import { SQUARE_ICON } from '@/common/imgRatio';
+import { FAQ_PART_TYPE } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const FAQSortSet = (props) => {
-  const { dispatch, visibleSet, onClose, childRef, loading } = props;
+  const { dispatch, visibleSet, tabKey, onClose, childRef, loading } = props;
   const { initialValues = {}, type, show = false } = visibleSet;
 
   const [form] = Form.useForm();
@@ -22,6 +23,7 @@ const FAQSortSet = (props) => {
           payload: {
             id: initialValues.questionCategoryIdString,
             ...values,
+            type: tabKey,
             image: res.toString(),
           },
           callback: () => {
@@ -50,9 +52,10 @@ const FAQSortSet = (props) => {
   ];
 
   const modalProps = {
-    title: `${{ add: '新增分类', edit: '修改分类' }[type]}`,
+    title: `${{ add: '新增分类', edit: '修改分类' }[type]}-${FAQ_PART_TYPE[tabKey]}`,
     visible: show,
     onClose,
+    zIndex: 99999,
     footer: (
       <Button type="primary" onClick={fetchDataEdit} loading={loading}>
         确定

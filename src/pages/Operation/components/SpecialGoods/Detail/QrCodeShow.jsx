@@ -1,7 +1,9 @@
 import React from 'react';
-import { Modal } from 'antd';
+import { message, Modal } from 'antd';
 
-const QrCodeShow = ({ url = null, onCancel, title }) => {
+const QrCodeShow = ({ url = null, onCancel, title, data = {} }) => {
+  const { specialGoodsId, merchantId } = data;
+
   const changeCanvasToPic = () => {
     let canvas = document.createElement('canvas'); //创建canvas DOM元素
     const ctx = canvas.getContext('2d');
@@ -21,8 +23,32 @@ const QrCodeShow = ({ url = null, onCancel, title }) => {
     };
   };
 
+  const urlCopy = `pages/perimeter/favourableDetails/index?specialActivityId=${specialGoodsId}&merchantId=${merchantId}`;
+
+  const handleCopy = (e) => {
+    const copyDOMs = document.createElement('span');
+    copyDOMs.innerHTML = e.target.dataset.url;
+    document.body.appendChild(copyDOMs);
+    const range = document.createRange();
+    window.getSelection().removeAllRanges();
+    range.selectNode(copyDOMs);
+    window.getSelection().addRange(range);
+    const suessUrl = document.execCommand('copy');
+    if (suessUrl) {
+      message.success('复制成功！');
+    }
+    document.body.removeChild(copyDOMs);
+  };
+
   return (
     <Modal title={title} visible={url} onCancel={onCancel} footer={null}>
+      <div>
+        商品链接：
+        <span title={urlCopy}>{urlCopy.slice(0, 50)}...</span>
+        <a onClick={handleCopy} data-url={urlCopy}>
+          复制
+        </a>
+      </div>
       <img alt="example" style={{ width: '100%' }} src={url} />
       <div style={{ color: '#868686', textAlign: 'right', marginTop: 5 }}>
         <a onClick={() => changeCanvasToPic()}>下载</a>

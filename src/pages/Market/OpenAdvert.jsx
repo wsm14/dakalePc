@@ -58,7 +58,7 @@ const OpenAdvert = (props) => {
       title: '点击事件',
       align: 'center',
       dataIndex: 'jumpUrlType',
-      render: (val) => (val ? BANNER_JUMP_TYPE[val] : '无'),
+      render: (val) => BANNER_JUMP_TYPE[val],
     },
     {
       title: '跳转内容',

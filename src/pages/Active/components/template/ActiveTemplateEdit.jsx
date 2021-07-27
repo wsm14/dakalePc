@@ -1,35 +1,32 @@
-import React, { useEffect, useState, useRef, useReducer, createContext } from 'react';
+import React, { useEffect, useState, useReducer, createContext } from 'react';
 import { connect } from 'umi';
 import { Drawer } from 'antd';
 import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
-import ActiveHeardTitle from './heard';
-import ActivetTemplateLeft from './left';
-import ActiveTemplateContent from './content/IframeContent';
+import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
+import SideMenu from './SideMenu';
+import EditorPanel from './EditorPanel';
+import ModuleDrawer from './ModuleDrawer';
+import PreviewerContainer from './PreviewerContainer';
 
 const TemplateContext = createContext();
 
 /**
- * @componentsShow 控制组件内子组件显示时间 Drawer afterVisibleChange后回调显示防止渲染卡顿
  * @moduleReducer 局部Reducer 此组件内公共参数
  */
 
 const ActiveTemplate = (props) => {
-  const { visible, onClose, dispatch, loading } = props;
+  const { visible = {}, dispatch, onClose, loading } = props;
 
-  const iframeRef = useRef();
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
-  const [componentsShow, setComponentsShow] = useState(false);
+  const [styBasket, setStyBasket] = useState(false);
+  const { info } = visible;
 
   useEffect(() => {
     if (visible.show) {
+      const { params, handle } = info;
       // 初始化数据
       dispatchData({ type: 'initialize' });
-      // 保存选择模版信息
-      dispatchData({ type: 'saveInfo', payload: visible });
-      // 保存修改的活动信息
-      if (visible.info.promotionActivityId) {
-        dispatchData({ type: 'showActive', payload: { activeUrl: visible.info.templateUrl } });
-      }
+      handle === 'edit' && dispatchData({ type: 'saveModuleData', payload: params });
       // 拦截页面关闭刷新
       const listener = (ev) => {
         ev.preventDefault();
@@ -43,27 +40,40 @@ const ActiveTemplate = (props) => {
   }, [visible.show]);
 
   return (
-    <TemplateContext.Provider value={{ ...moduleReducer, iframeRef, dispatchData, componentsShow }}>
+    <TemplateContext.Provider value={{ ...moduleReducer, info, dispatchData }}>
       <Drawer
-        destroyOnClose
-        bodyStyle={{ backgroundColor: '#f4f4f4' }}
         title={
-          <ActiveHeardTitle
-            promotionActivityId={visible.info && visible.info.promotionActivityId}
-            loading={loading}
+          <SideMenu
             onClose={onClose}
             dispatch={dispatch}
+            loading={loading}
             context={TemplateContext}
-          ></ActiveHeardTitle>
+          ></SideMenu>
         }
         height={'100%'}
         placement="top"
         closable={false}
         visible={visible.show}
-        afterVisibleChange={(show) => setComponentsShow(show)}
+        destroyOnClose
+        headerStyle={{ borderBottom: '1px solid #e6e6e6' }}
+        bodyStyle={{
+          backgroundColor: '#e6e9ed',
+          overflow: 'hidden',
+          padding: 0,
+          display: 'flex',
+          alignItems: 'stretch',
+          height: '100%',
+        }}
       >
-        <ActivetTemplateLeft context={TemplateContext}></ActivetTemplateLeft>
-        <ActiveTemplateContent context={TemplateContext}></ActiveTemplateContent>
+        <DragAndDropHOC>
+          <ModuleDrawer context={TemplateContext} setStyBasket={setStyBasket}></ModuleDrawer>
+          <PreviewerContainer
+            styBasket={styBasket}
+            context={TemplateContext}
+            setStyBasket={setStyBasket}
+          ></PreviewerContainer>
+        </DragAndDropHOC>
+        <EditorPanel context={TemplateContext}></EditorPanel>
       </Drawer>
     </TemplateContext.Provider>
   );

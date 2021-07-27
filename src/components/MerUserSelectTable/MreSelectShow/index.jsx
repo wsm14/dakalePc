@@ -1,7 +1,16 @@
 import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 
-const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) => {
+const MreSelectShow = ({
+  keys = [],
+  rowKey = 'userMerchantIdString',
+  list = [],
+  columns,
+  setMreList,
+  otherColumns = [],
+  disabled = false,
+}) => {
   // table 表头
   const getColumns = [
     {
@@ -16,8 +25,8 @@ const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) 
     },
     {
       title: '地区',
-      dataIndex: 'provinceName',
-      render: (val, record) => `${val}-${record.cityName}-${record.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '详细地址',
@@ -33,11 +42,14 @@ const MreSelectShow = ({ keys = [], list = [], setMreList, otherColumns = [] }) 
       <TableDataBlock
         noCard={false}
         size="small"
-        columns={getColumns}
-        rowKey={(record) => `${record.userMerchantIdString}`}
+        columns={columns || getColumns}
+        rowKey={(record) => `${record[rowKey]}`}
         rowSelection={{
           fixed: true,
           selectedRowKeys: keys,
+          getCheckboxProps: (record) => ({
+            disabled: disabled, // Column configuration not to be checked
+          }),
           onChange: (val) => setMreList({ list, keys: val }),
         }}
         list={list}

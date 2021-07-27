@@ -13,6 +13,9 @@ import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
+  //活动中隐藏的编辑项//edit 独有不展示
+  const editDisabled = ['edit'].includes(editActive);
+
   const [radioData, setRadioData] = useState({
     activeTime: '', // 活动时间
     userTime: '', // 使用有效期
@@ -30,7 +33,6 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       activityTimeRule: activeTime,
       useTimeRule: userTime,
     } = initialValues;
-    console.log(initialValues);
     saveSelectData({ buyRule, timeType, timeSplit, activeTime, userTime });
   }, []);
 
@@ -43,15 +45,16 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       label: '活动时间',
       type: 'radio',
       select: COUPON_ACTIVE_TYPE,
+      disabled: editDisabled,
       name: 'activityTimeRule',
-      visible: !editActive,
       onChange: (e) => saveSelectData({ activeTime: e.target.value }),
     },
     {
       label: '设置时间',
       name: 'activityStartTime',
       type: 'rangePicker',
-      visible: radioData.activeTime === 'fixed' && !editActive,
+      disabled: editDisabled,
+      visible: radioData.activeTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
       onChange: (val) => form.setFieldsValue({ activeDate: undefined }),
     },
@@ -60,14 +63,15 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       type: 'radio',
       select: SPECIAL_USERTIME_TYPE,
       name: 'useTimeRule',
-      visible: !editActive,
+      disabled: editDisabled,
       onChange: (e) => saveSelectData({ userTime: e.target.value }),
     },
     {
       label: '固定时间',
       name: 'useStartTime',
       type: 'rangePicker',
-      visible: radioData.userTime === 'fixed' && !editActive,
+      disabled: editDisabled,
+      visible: radioData.userTime === 'fixed',
       disabledDate: (time) => {
         const dates = form.getFieldValue('actsdiveDate');
         const noewdate = moment().endOf('day').subtract(1, 'day');
@@ -95,16 +99,18 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === 'gain' && !editActive,
+      disabled: editDisabled,
+      visible: radioData.userTime === 'gain',
     },
     {
       label: '有效期天数',
       name: 'activeDays',
       type: 'number',
+      disabled: editDisabled,
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === 'gain' && !editActive,
+      visible: radioData.userTime === 'gain',
     },
     {
       label: '适用时段',
@@ -112,21 +118,20 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       select: COUPON_USER_TIME,
       name: 'timeSplit',
       onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
-      visible: !editActive,
     },
     {
       label: '每周',
       type: 'checkbox',
       select: COUPON_WEEK_TIME,
       name: 'useWeek',
-      visible: radioData.timeSplit === 'part' && !editActive,
+      visible: radioData.timeSplit === 'part',
     },
     {
       label: '时间选择',
       type: 'radio',
       select: COUPON_TIME_TYPE,
       name: 'timeType',
-      visible: radioData.timeSplit !== '' && !editActive,
+      visible: radioData.timeSplit !== '',
       onChange: (e) => saveSelectData({ timeType: e.target.value }),
     },
     {
@@ -134,13 +139,13 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       name: 'useTime',
       type: 'timePicker',
       order: false,
-      visible: radioData.timeType === 'part' && !editActive,
+      visible: radioData.timeType === 'part',
     },
     {
-      title: !editActive ? '' : '设置投放规则',
       label: '投放总量',
       name: 'total',
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
+      disabled: editDisabled,
       suffix: '份',
     },
     {

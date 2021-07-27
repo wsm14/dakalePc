@@ -17,43 +17,153 @@ import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
-const CouponSet = ({ form, loading, selectList, dispatch }) => {
+const CouponSet = (props) => {
+  const {
+    form,
+    loading,
+    selectList,
+    skuMerchantList,
+    dispatch,
+    commissionShow,
+    setCommissionShow,
+    ownerCouponId,
+    ownerId,
+    initialValues,
+    type,
+    status,
+  } = props;
+
+  // 是否 编辑重新发布（上架，下架）都隐藏的数据
+  const commonDisabled = ['edit', 'again'].includes(type) && ['1', '2'].includes(status);
+  //活动中隐藏的编辑项//edit 且为上架中 独有不展示
+  const editDisabled = type === 'edit' && status === '1';
+
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [mreList, setMreList] = useState({ name: '', type: 'merchant', keys: [], list: [] }); // 店铺备选参数，选择店铺后回显的数据
+  // 店铺备选参数，选择店铺后回显的数据
+  const [mreList, setMreList] = useState({
+    groupId: null,
+    type: 'merchant',
+    keys: [],
+    list: [],
+  }); // 店铺备选参数，选择店铺后回显的数据
   const [radioData, setRadioData] = useState({
-    shopType: '0', // 店铺范围
     buyFlag: '0', // 是否售卖
     userFlag: '0', // 使用门槛
-    userTime: '', // 使用有效期
+    effectTime: '', // 使用有效期
     timeSplit: '', // 适用时段
     timeType: 'all', // 时段内时间选择
     buyRule: 'all', // 购买规则
   });
+  const {
+    buyFlag,
+    useTimeRule = '', //使用有效期
+    buyRule = 'all', // 购买规则
+    timeTypeCheck = '',
+    useWeekCheck = '',
+    reduceObject = {},
+  } = initialValues;
+  console.log(initialValues);
+
+  useEffect(() => {
+    if (initialValues.ownerCouponIdString) {
+      const userFlagCheck = !reduceObject.thresholdPrice ? '0' : '1'; // 使用门槛
+      initialValues.restrictions = userFlagCheck; // 使用门槛
+      initialValues.timeSplit = useWeekCheck; // 适用时段
+      initialValues.timeType = timeTypeCheck; // 使用时间 小时
+
+      // 适用时段
+      setRadioData({
+        buyFlag,
+        userFlag: userFlagCheck, //详情无返回//使用门槛
+        effectTime: useTimeRule ? useTimeRule : '',
+        timeSplit: useWeekCheck,
+        timeType: timeTypeCheck,
+        buyRule,
+      });
+
+      if (initialValues.ownerName || initialValues.ownerType) {
+        setMreList({
+          type: initialValues.ownerType,
+          groupId: initialValues.ownerId,
+        });
+        // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
+        fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
+          const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+          const topCategoryId = list[mreFindIndex].topCategoryId[0];
+          // 是否分佣
+          getCommissionFlag(topCategoryId);
+        });
+        if (initialValues.ownerType === 'group') {
+          getMerchantList();
+        }
+      }
+    }
+  }, [initialValues]);
 
   // 设置form表单值 店铺id
   useEffect(() => {
-    form.setFieldsValue({ merchantIdList: mreList.keys });
+    form.setFieldsValue({ merchantIds: mreList.keys });
   }, [mreList.keys]);
 
-  // 搜索店铺
-  const fetchGetMre = debounce((merchantName) => {
-    if (!merchantName) return;
+  //sku通用-sku挂靠商家列表
+  const getMerchantList = () => {
     dispatch({
-      type: 'businessList/fetchGetList',
+      type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
-        limit: 999,
-        page: 1,
-        bankStatus: 3,
-        businessStatus: 1,
-        merchantName,
-        groupFlag: mreList.type === 'merchant' ? 0 : 1,
+        ownerServiceId: ownerCouponId,
+        ownerId: ownerId,
+        serviceType: 'reduceCoupon',
+      },
+      callback: (list) => {
+        const keys = list.map((item) => item.merchantId);
+        saveMreData({ keys: keys, list: list });
+        form.setFieldsValue({ merchantIds: keys });
       },
     });
-  }, 500);
+  };
 
-  const saveMreData = (data) => setMreList({ ...mreList, ...data });
+  // 搜索店铺
+  const fetchGetMre = debounce((name, type, callback) => {
+    if (!name) return;
+    dispatch({
+      type: 'baseData/fetchGetGroupMreList',
+      payload: {
+        name,
+        type: type || mreList.type,
+      },
+      callback,
+    });
+  }, 100);
+
+  const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
+
+  //sku通用-是否需要设置佣金
+  const getCommissionFlag = (categoryId) => {
+    dispatch({
+      type: 'baseData/fetchGoodsIsCommission',
+      payload: {
+        serviceType: 'specialGoods',
+        categoryId: categoryId,
+      },
+      callback: (val) => setCommissionShow(val),
+    });
+  };
+
+  // table 表头
+  const getColumns = [
+    {
+      title: '店铺名称',
+      dataIndex: 'merchantName',
+      ellipsis: true,
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+      ellipsis: true,
+    },
+  ];
 
   // 信息
   const formItems = [
@@ -61,12 +171,19 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '选择店铺类型',
       type: 'radio',
       name: 'ownerType',
-      select: { merchant: '单店' },
+      select: BUSINESS_TYPE,
+      disabled: commonDisabled,
       onChange: (e) => {
-        saveSelectData({ shopType: '0' });
-        saveMreData({ type: e.target.value, ratio: 0, name: '', keys: [], list: [] }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined, shopType: '0' }); // 重置数据
-        dispatch({ type: 'businessList/close' }); // 清空选择数据
+        setCommissionShow(false);
+        saveMreData({
+          type: e.target.value,
+          groupId: null,
+          ratio: 0,
+          keys: [],
+          list: [],
+        }); // 重置已选店铺数据
+        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
@@ -75,41 +192,52 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       name: 'ownerId',
       placeholder: '请输入搜索',
       select: selectList,
+      disabled: commonDisabled,
       loading,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
-        saveMreData({ name: option.name, ratio: option.commissionRatio, keys: [], list: [] });
+        console.log(option, 'option');
+        setCommissionShow(false);
+        //是否分佣
+        getCommissionFlag(option.topCategoryId[0]);
+        form.setFieldsValue({ merchantIds: undefined });
+        saveMreData({
+          groupId: val,
+          ratio: option.commissionRatio,
+          keys: [],
+          list: [],
+        });
       },
     },
-    {
-      label: '店铺范围',
-      type: 'radio',
-      name: 'shopType',
-      visible: mreList.name && mreList.type === 'group',
-      select: ['全部', '部分'],
-      onChange: (e) => saveSelectData({ shopType: e.target.value }),
-    },
+
     {
       label: '适用店铺',
-      name: 'merchantIdList',
+      name: 'merchantIds',
       type: 'formItem',
-      visible: mreList.name && radioData.shopType === '1',
+      visible: mreList.type == 'group',
+      rules: [{ required: true, message: '请选择店铺' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)}>
+        <Button type="primary" ghost disabled={commonDisabled} onClick={() => setVisible(true)}>
           选择店铺
         </Button>
       ),
     },
     {
       type: 'noForm',
-      visible: mreList.name && radioData.shopType === '1',
+      visible: mreList.type == 'group',
       formItem: (
         <MreSelectShow
           key="MreTable"
           form={form}
+          rowKey="merchantId"
+          disabled={commonDisabled}
+          columns={getColumns}
           {...mreList}
-          setMreList={saveMreData}
+          setMreList={(val) => {
+            saveMreData(val);
+            form.setFieldsValue({ merchantIds: val.keys });
+          }}
         ></MreSelectShow>
       ),
     },
@@ -129,13 +257,15 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '售卖',
       name: 'buyFlag',
       type: 'radio',
-      select: COUPON_BUY_FLAG,
+      disabled: editDisabled,
+      select: COUPON_BUY_FLAG, // ['关闭', '开启'] 0--1
       onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
     },
     {
       label: '售卖价格',
       name: 'buyPrice',
       prefix: '￥',
+      disabled: editDisabled,
       visible: radioData.buyFlag === '1',
       addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
     },
@@ -143,6 +273,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '商家结算价',
       name: 'merchantPrice',
       prefix: '￥',
+      disabled: editDisabled,
       visible: radioData.buyFlag === '1',
       addRules: [
         { pattern: NUM_ALL, message: '价格必须为数字，且大于0' },
@@ -164,6 +295,18 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       ],
     },
     {
+      label: '佣金总额', // 手动分佣需要展示
+      name: 'commission',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      visible: commissionShow == '1',
+      disabled: commonDisabled,
+      formatter: (value) => `￥ ${value}`,
+      // rules: [{ required: false }],
+    },
+    {
       title: '设置使用规则',
       label: '使用门槛',
       type: 'radio',
@@ -182,39 +325,43 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
     {
       label: '使用有效期',
       type: 'radio',
-      select: SPECIAL_USERTIME_TYPE,
+      disabled: editDisabled,
+      select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
       name: 'useTimeRule',
-      onChange: (e) => saveSelectData({ userTime: e.target.value }),
+      onChange: (e) => saveSelectData({ effectTime: e.target.value }),
     },
     {
       label: '固定时间',
       name: 'activeDate',
+      disabled: editDisabled,
       type: 'rangePicker',
-      visible: radioData.userTime === 'fixed',
+      visible: radioData.effectTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '领取后生效天数',
       name: 'delayDays',
       type: 'number',
+      disabled: editDisabled,
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === 'gain',
+      visible: radioData.effectTime === 'gain',
     },
     {
       label: '有效期天数',
       name: 'activeDays',
       type: 'number',
+      disabled: editDisabled,
       max: 999,
       min: 0,
       precision: 0,
-      visible: radioData.userTime === 'gain',
+      visible: radioData.effectTime === 'gain',
     },
     {
       label: '适用时段',
       type: 'radio',
-      select: COUPON_USER_TIME,
+      select: COUPON_USER_TIME, //1,2,3,4,5,6,7': '每天', part: '部分'
       name: 'timeSplit',
       onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
     },
@@ -228,9 +375,8 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
     {
       label: '时间选择',
       type: 'radio',
-      select: COUPON_TIME_TYPE,
+      select: COUPON_TIME_TYPE, // { '00:00-23:59': '全天', part: '固定时间' };
       name: 'timeType',
-      visible: radioData.timeSplit !== '',
       onChange: (e) => saveSelectData({ timeType: e.target.value }),
     },
     {
@@ -243,6 +389,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
     {
       label: '投放总量',
       name: 'total',
+      disabled: editDisabled,
       addRules: [{ pattern: NUM_INT, message: '投放总量必须为整数，且不可为0' }],
       suffix: '张',
     },
@@ -250,7 +397,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: `${['领取', '购买'][radioData.buyFlag]}上限`,
       type: 'radio',
       name: 'buyRule',
-      select: COUPON_BUY_RULE,
+      select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
       onChange: (e) => saveSelectData({ buyRule: e.target.value }),
     },
     {
@@ -262,7 +409,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
     },
     {
       label: `单人每天${['领取', '购买'][radioData.buyFlag]}份数`,
-      name: 'dayMaxByAmount',
+      name: 'dayMaxBuyAmount',
       suffix: '份',
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.buyRule === 'dayLimit',
@@ -284,7 +431,7 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       label: '使用说明',
       name: 'couponDesc',
       type: 'formItem',
-      formItem: <DescSet name={'couponDesc'}></DescSet>,
+      formItem: <DescSet name={'couponDesc'} form={form}></DescSet>,
     },
   ];
 
@@ -293,21 +440,30 @@ const CouponSet = ({ form, loading, selectList, dispatch }) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={{ ownerType: 'merchant' }}
+        initialValues={initialValues || { ownerType: 'merchant' }}
       ></FormCondition>
       <MreSelect
+        dispatchType={'baseData/fetchSkuAvailableMerchant'}
+        rowKey="merchantId"
         keys={mreList.keys}
         visible={visible}
         mreList={mreList.list}
-        params={{ groupFlag: 1, groupName: mreList.name }}
-        onOk={saveMreData}
+        params={{ groupId: mreList.groupId }}
+        onOk={(val) => {
+          saveMreData(val);
+          form.setFieldsValue({ merchantIds: val.keys });
+        }}
         onCancel={() => setVisible(false)}
+        columns={getColumns}
+        searchShow={false}
+        list={skuMerchantList}
       ></MreSelect>
     </>
   );
 };
 
-export default connect(({ businessList, loading }) => ({
-  selectList: businessList.selectList,
-  loading: loading.models.businessList,
+export default connect(({ baseData, loading }) => ({
+  selectList: baseData.groupMreList,
+  skuMerchantList: baseData.skuMerchantList,
+  loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(CouponSet);

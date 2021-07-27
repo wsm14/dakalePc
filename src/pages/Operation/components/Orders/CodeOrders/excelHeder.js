@@ -1,3 +1,5 @@
+import { checkCityName } from '@/utils/utils';
+
 // 导出表头
 export default [
   {
@@ -23,7 +25,7 @@ export default [
   {
     title: '用户实付卡豆',
     dataIndex: 'beanFee',
-    render: (val) => val || 0,
+    render: (val) => Number(val),
   },
   {
     title: '商户实收',
@@ -36,7 +38,7 @@ export default [
   {
     title: '商户实收卡豆',
     dataIndex: 'actualBeanFee',
-    render: (val) => val || 0,
+    render: (val) => Number(val),
   },
   {
     title: '优惠券',
@@ -54,7 +56,7 @@ export default [
   },
   {
     title: '区域',
-    dataIndex: 'merchantProvince',
-    render: (val, row) => `${row.merchantProvince}-${row.merchantCity}-${row.merchantDistrict}`,
+    dataIndex: 'merchantDistrict',
+    render: (val) => checkCityName(val),
   },
 ];

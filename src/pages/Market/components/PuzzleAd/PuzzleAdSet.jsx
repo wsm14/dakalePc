@@ -8,7 +8,7 @@ import {
   BANNER_JUMP_TYPE,
   COUPON_ACTIVE_TYPE,
 } from '@/common/constant';
-import { CitySet, JumpFormSet } from '@/components/FormListCondition';
+import { CitySet, NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -50,7 +50,6 @@ const PuzzleAdSet = (props) => {
           payload: {
             ...values,
             [showType]: res.toString(),
-            jumpUrlType: jumpUrlType === '无' ? '' : jumpUrlType,
             provinceCityDistrictObjects,
             puzzleAdsId: info.puzzleAdsId,
             startShowTime:
@@ -154,7 +153,7 @@ const PuzzleAdSet = (props) => {
     {
       type: 'noForm',
       show: false,
-      formItem: <JumpFormSet form={form} detail={info}></JumpFormSet>,
+      formItem: <NativeFormSet form={form} detail={info}></NativeFormSet>,
     },
     {
       label: '跳转事件',
@@ -166,7 +165,7 @@ const PuzzleAdSet = (props) => {
       label: '跳转内容',
       name: 'jumpUrl',
       visible: false,
-      show: info.jumpUrlType !== '无',
+      show: !!info.jumpUrlType,
       render: (val, row) => {
         const { jumpUrlType, nativeJumpName, param = {} } = row;
         return {

@@ -1,7 +1,13 @@
+import { checkCityName } from '@/utils/utils';
+
 export const base = [
   {
     label: '集团名称',
     name: 'groupName',
+  },
+  {
+    label: '集团ID',
+    name: 'merchantGroupIdString',
   },
   {
     label: '经营类目',
@@ -14,9 +20,14 @@ export const base = [
     name: 'address',
   },
   {
-    label: '服务费比例',
+    label: '扫码付服务费（%）',
+    name: 'scanCommissionRatio',
+    render: (val) => (val || 0) + '%',
+  },
+  {
+    label: '核销订单服务费（%）',
     name: 'commissionRatio',
-    render: (val) => val + '%',
+    render: (val) => (val || 0) + '%',
   },
 ];
 export const user = [{ label: '登录账号', name: 'account' }];
@@ -105,6 +116,7 @@ export const active = [
   {
     label: '营业期限',
     name: 'validityPeriod',
+    render: (val, row) => `${row.establishDate}-${val}`,
   },
   {
     label: '经营范围',
@@ -195,7 +207,6 @@ export const activeByOne = [
   },
   {
     label: '营业期限',
-    type: 'rangePicker',
     name: 'activeValidity',
   },
   {
@@ -220,8 +231,10 @@ export const activeByBank = [
   },
   {
     label: '开户城市',
-    name: 'city',
-    type: 'cascader',
+    name: 'areaCode',
+    render: (val, row) => {
+      return val ? checkCityName(val || '') : '';
+    },
   },
   {
     label: '银行预留手机号',

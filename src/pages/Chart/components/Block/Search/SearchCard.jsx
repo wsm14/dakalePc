@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'umi';
 import moment from 'moment';
 import { Tag, DatePicker, Cascader, Space } from 'antd';
 import CITYJSON from '@/common/city';
@@ -11,6 +12,15 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
   ]);
+
+  const params = useLocation();
+
+  useEffect(() => {
+    const { beginDate, endDate } = params.query;
+    if (beginDate) {
+      setSelectedTime([moment(beginDate), moment(endDate)]);
+    }
+  }, []);
 
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), moment()];
@@ -62,9 +72,7 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
         value={selectedTime}
         onChange={(val) => handleSearchData(val, Object.values(cityData))}
         disabledDate={disabledDate}
-        style={{
-          width: 256,
-        }}
+        style={{ width: 256 }}
       />
       <Cascader
         defaultValue={bucket ? [bucket] : []}

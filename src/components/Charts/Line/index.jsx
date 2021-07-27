@@ -1,5 +1,5 @@
 import React from 'react';
-import Line from '@ant-design/charts/lib/line';
+import { Line } from '@ant-design/charts';
 
 const LineChart = (props) => {
   const {

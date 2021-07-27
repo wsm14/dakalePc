@@ -1,35 +1,41 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Popover } from 'antd';
+import { Button, Popover, message } from 'antd';
 import QRCode from 'qrcode.react';
+import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
-import activeTemplateNameSet from './components/template/ActiveTemplateNameSet';
+import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
 const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState({ show: false, info: {} });
-
-  // 设置活动名称
-  const handleSetActiveName = (initialValues) => {
-    const callback = (activeName) => {
-      setVisible({ show: true, info: { ...initialValues, activeName } });
-      dispatch({ type: 'drawerForm/close' });
-    };
-    // dispatch({
-    //   type: 'drawerForm/show',
-    //   payload: activeTemplateNameSet({ initialValues, callback: (values) => callback(values) }),
-    // });
-  };
+  const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
 
   // table 表头
   const getColumns = [
     {
-      title: '活动标题',
+      title: '活动名称',
       fixed: 'left',
-      dataIndex: 'activityTitle',
+      dataIndex: 'activityName',
+    },
+    {
+      title: '创建时间',
+      fixed: 'left',
+      dataIndex: 'createTime',
+    },
+    {
+      title: '模板类型',
+      fixed: 'left',
+      dataIndex: 'templateType',
+      render: (val) => ACTIVE_TEMPLATE_TYPE[val],
+    },
+    {
+      title: '创建人',
+      fixed: 'left',
+      dataIndex: 'creator',
     },
     {
       title: '活动链接',
@@ -58,21 +64,64 @@ const ActiveListComponent = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'promotionActivityIdString',
+      dataIndex: 'activityTemplateId',
       render: (val, record) => [
         {
           type: 'edit',
-          title: '修改',
-          click: () =>
-            handleSetActiveName({
-              promotionActivityId: val,
-              activeName: record.activityTitle,
-              templateUrl: `${record.jumpUrl}?demo=1&times=${new Date().getTime()}`,
-            }),
+          click: () => fetchActiveDetail({ activityTemplateId: val }),
+        },
+        {
+          title: '复制链接',
+          type: 'copy',
+          click: () => handleCopy(record.jumpUrl),
+        },
+        {
+          type: 'del',
+          click: () => handleDelActive({ activityTemplateId: val, deleteFlag: 0 }),
         },
       ],
     },
   ];
+
+  // 复制链接
+  const handleCopy = (jumpUrl) => {
+    const copyDOMs = document.createElement('span');
+    copyDOMs.innerHTML = jumpUrl;
+    document.body.appendChild(copyDOMs);
+    const range = document.createRange();
+    window.getSelection().removeAllRanges();
+    range.selectNode(copyDOMs);
+    window.getSelection().addRange(range);
+    const suessUrl = document.execCommand('copy');
+    if (suessUrl) {
+      message.success('复制成功！');
+    }
+    document.body.removeChild(copyDOMs);
+  };
+
+  // 修改设置活动名称
+  const handleSetActiveName = (activityName) => {
+    setVisibleName(false); // 关闭输入框
+    setVisible({ show: true, info: { ...visibleName.info, activityName } }); // 显示模版编辑
+  };
+
+  // 获取详情
+  const fetchActiveDetail = (payload) => {
+    dispatch({
+      type: 'activeList/fetchActiveDetail',
+      payload,
+      callback: (info) => setVisibleName({ show: true, info }),
+    });
+  };
+
+  // 删除活动
+  const handleDelActive = (payload) => {
+    dispatch({
+      type: 'activeTemplate/fetchActiveEdit',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
 
   return (
     <>
@@ -80,17 +129,21 @@ const ActiveListComponent = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.promotionActivityIdString}`}
+        rowKey={(record) => `${record.activityTemplateId}`}
         dispatchType="activeList/fetchGetList"
         {...activeList}
       ></TableDataBlock>
+      {/* 设置活动名称 */}
+      <ActiveTemplateNameSet
+        visible={visibleName}
+        callback={handleSetActiveName}
+        onClose={() => setVisibleName(false)}
+      ></ActiveTemplateNameSet>
+      {/* 活动模版编辑区域 */}
       <ActiveTemplateEdit
-        key="templateEdit"
+        key="template"
         visible={visible}
-        onClose={() => {
-          childRef.current.fetchGetData();
-          setVisible(false);
-        }}
+        onClose={() => setVisible(false)}
       ></ActiveTemplateEdit>
     </>
   );
@@ -98,5 +151,5 @@ const ActiveListComponent = (props) => {
 
 export default connect(({ activeList, loading }) => ({
   activeList,
-  loading: loading.models.activeList,
+  loading: loading.models.activeList || loading.models.activeTemplate,
 }))(ActiveListComponent);

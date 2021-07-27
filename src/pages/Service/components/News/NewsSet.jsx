@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Input, Row, Col, Button, Space } from 'antd';
+import { NEWS_TYPE } from '@/common/constant';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -9,7 +10,7 @@ import styles from '../style.less';
 const NewsSet = (props) => {
   const { dispatch, detail = {}, loading, setTabKey } = props;
 
-  const { content: oldData = '', title = '', newsIdString: newsId } = detail;
+  const { content: oldData = '', title = '', newsIdString: newsId, type = '' } = detail;
 
   const [form] = Form.useForm();
   const [titleNum, setTitleNum] = useState(title.length); // 输入标题
@@ -42,6 +43,12 @@ const NewsSet = (props) => {
       name: 'coverImg',
       type: 'upload',
       maxFile: 1,
+    },
+    {
+      label: '新闻类别',
+      name: 'type',
+      type: 'select',
+      select: NEWS_TYPE,
     },
     {
       label: '简介',

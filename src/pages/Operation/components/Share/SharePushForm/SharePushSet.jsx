@@ -93,7 +93,7 @@ const SharePushSet = (props) => {
       addRules: [{ pattern: NUM_INT, message: '应为大于0的整数数字' }],
     },
     {
-      title: `总需 ${totalBean.pnum * totalBean.bnum}卡豆`,
+      title: `总需 ${totalBean.pnum * totalBean.bnum}卡豆`, // 人数 * 单人补贴数
       label: (
         <QuestionTooltip
           placement="bottom"

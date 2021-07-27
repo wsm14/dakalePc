@@ -1,11 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
+import { FAQ_PART_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import FaqSortSet from '../Form/FAQSortSet';
 
 const FAQSortList = (props) => {
-  const { sortList, qRef, loading, visible, setVisible, dispatch } = props;
+  const { sortList, qRef, tabKey, loading, visible, setVisible, dispatch } = props;
 
   const [visibleSet, setVisibleSet] = useState(false);
 
@@ -70,7 +71,7 @@ const FAQSortList = (props) => {
   return (
     <>
       <Modal
-        title={'分类管理'}
+        title={`分类管理-${FAQ_PART_TYPE[tabKey]}`}
         width={1150}
         destroyOnClose
         footer={null}
@@ -87,11 +88,13 @@ const FAQSortList = (props) => {
           btnExtra={[{ text: '新增分类', onClick: () => handleDataSet('add') }]}
           rowKey={(row) => `${row.questionCategoryIdString}`}
           dispatchType="serviceFAQ/fetchFAQSortList"
+          params={{ type: tabKey }}
           size="middle"
           {...sortList}
         ></TableDataBlock>
       </Modal>
       <FaqSortSet
+        tabKey={tabKey}
         qRef={qRef}
         childRef={childRef}
         visibleSet={visibleSet}

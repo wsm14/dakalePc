@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import { WORKER_BANK_STATUS } from '@/common/constant';
 import DrawerForms from './components/Group/addGroup';
 import SetDetailsForms from './components/Group/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
-
+import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
 import GroupDetails from './components/Group/groupDetails';
+import StoreList from './components/Group/StoreList';
 
 const tableList = (props) => {
   const {
@@ -19,6 +20,9 @@ const tableList = (props) => {
     loading,
     // categoryDTOList
   } = props;
+
+  const [storeShow, setStoreShow] = useState(false); // 门店列表展示
+
   useEffect(() => {
     fetchMasterTotalList();
     fetchMasterManagementList();
@@ -80,10 +84,12 @@ const tableList = (props) => {
     },
     {
       label: '经营类目',
-      name: 'categoryId',
-      type: 'select',
+      type: 'cascader',
+      name: 'topCategoryId',
+      changeOnSelect: true,
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'id' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      valuesKey: ['topCategoryId', 'categoryId'],
     },
     {
       label: '账户状态',
@@ -95,21 +101,15 @@ const tableList = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '集团名称',
+      dataIndex: 'groupName',
+      render: (val, row) => `${val}\n${row.merchantGroupIdString || '--'}`,
+    },
+    {
       title: '品牌logo',
       align: 'center',
       dataIndex: 'brandLogo',
       render: (val) => <PopImgShow url={val || ''} />,
-    },
-    {
-      title: '集团id',
-      align: 'center',
-      dataIndex: 'merchantGroupId',
-      render: (val) => val || '--',
-    },
-    {
-      title: '集团名称',
-      align: 'center',
-      dataIndex: 'groupName',
     },
     {
       title: '经营类目',
@@ -118,10 +118,17 @@ const tableList = (props) => {
       ellipsis: true,
     },
     {
+      title: '所在地区',
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
+    },
+    {
       title: '详细地址',
       align: 'center',
+      ellipsis: true,
       dataIndex: 'address',
-      render: (val) => val || '-',
+      render: (val) => val || '--',
     },
     {
       title: '联系人',
@@ -136,7 +143,7 @@ const tableList = (props) => {
       render: (val) => `${val}`,
     },
     {
-      title: '服务费(%)',
+      title: '核销订单服务费(%)',
       align: 'center',
       dataIndex: 'commissionRatio',
       render: (val) => val + '%',
@@ -149,7 +156,8 @@ const tableList = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'merchantGroupId',
+      width: 130,
+      dataIndex: 'merchantGroupIdString',
       render: (val, record, index) => [
         {
           type: 'edit',
@@ -186,6 +194,11 @@ const tableList = (props) => {
             });
           },
         },
+        {
+          type: 'storeList',
+          visible: record.bankStatus === '3',
+          click: () => setStoreShow({ show: true, detail: record }),
+        },
       ],
     },
   ];
@@ -210,13 +223,14 @@ const tableList = (props) => {
   return (
     <>
       <TableDataBlock
+        order
         keepData
         btnExtra={extraBtn}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         cRef={childRef}
-        rowKey={(record) => `${record.merchantGroupId}`}
+        rowKey={(record) => `${record.merchantGroupIdString}`}
         dispatchType="groupSet/fetchGetList"
         {...list}
       ></TableDataBlock>
@@ -232,11 +246,14 @@ const tableList = (props) => {
         childRef={childRef}
         onClose={() => fetchSave({}, () => {}, true)}
       ></SetDetailsForms>
+      {/* 集团详情 */}
       <GroupDetails
         saveVisible={(res) => fetchSave(res)}
         visible={visible2}
         onClose={() => fetchSave({}, () => {}, true)}
       ></GroupDetails>
+      {/* 集团门店列表 */}
+      <StoreList visible={storeShow} onClose={() => setStoreShow(false)}></StoreList>
     </>
   );
 };

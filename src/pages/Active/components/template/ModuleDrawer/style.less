@@ -1,0 +1,49 @@
+@white: #ffffff;
+
+.active_Template_Left {
+  position: relative;
+  width: 250px;
+  height: 100vh;
+  padding-bottom: 100px;
+  overflow-y: auto;
+  background-color: @white;
+  border-right: 1px solid #d9d9d9;
+  &::-webkit-scrollbar {
+    width: 3px !important;
+    height: 6px;
+  }
+  :global {
+    .ant-collapse-borderless {
+      background-color: @white;
+      border: 0;
+    }
+  }
+  .module_group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    .module_cell {
+      width: 49%;
+      height: auto;
+      margin-bottom: 5px;
+      padding: 10px 15px;
+      line-height: 20px;
+      text-align: center;
+      border: 1px solid #d9d9d9;
+      border-radius: 2px;
+      cursor: pointer;
+      &.move {
+        cursor: move;
+      }
+      .module_cell_icon {
+        margin-bottom: 5px;
+      }
+      &:hover {
+        position: relative;
+        color: #1890ff;
+        border: 1px solid #1890ff;
+      }
+    }
+  }
+}
