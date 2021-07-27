@@ -4,7 +4,6 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
-  fetchSpecialGoodsDel,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsImport,
@@ -127,15 +126,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特惠活动新增成功，等待平台审核',
-      });
-      callback();
-    },
-    *fetchSpecialGoodsDel({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialGoodsDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '特惠活动删除成功',
       });
       callback();
     },
