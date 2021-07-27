@@ -34,6 +34,6 @@ export default {
     { key: 'verifiedCount', header: '核销数量' },
     { key: 'createTime', header: '创建时间' },
     { key: 'updateTime', header: '发布时间' },
-    { key: 'merchantCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },
+    { key: 'ownerCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },
   ],
 };
