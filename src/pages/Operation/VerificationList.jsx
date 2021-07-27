@@ -145,7 +145,10 @@ const VerificationList = (props) => {
       render: (val, record) => {
         return (
           <div style={{ textAlign: 'center' }}>
-            <div>{`￥${record.beanCommission / 100 + Number(record.cashCommission)}`}</div>
+            <div>{`￥${(
+              Number(record.beanCommission) / 100 +
+              Number(record.cashCommission)
+            ).toFixed(2)}`}</div>
             <div className={styles.fontColor}>{`(${record.beanCommission}卡豆`}</div>
             <div className={styles.fontColor}>{`￥${record.cashCommission})`}</div>
           </div>
