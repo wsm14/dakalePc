@@ -237,7 +237,7 @@ export default [
         path: '/expert/achievement',
         name: '哒人业绩',
         component: './Expert/ExpertUserAchievement',
-        buttons: ['recommendList', 'statistics'],
+        // buttons: ['recommendList', 'statistics'],
       },
       {
         path: '/expert/distribution',
@@ -411,14 +411,11 @@ export default [
         component: './Operation/SpecialGoods',
         buttons: [
           'save',
-          'del',
           'edit',
           'down',
           'info',
-          'check',
           'diary',
           'again',
-          'placement',
           'recommendStatus',
           'exportList',
           'goodsCode',
