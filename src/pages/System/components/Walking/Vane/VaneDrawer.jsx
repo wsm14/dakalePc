@@ -9,15 +9,12 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const VaneDrawer = (props) => {
-  const { navigation, dispatch, cRef, visible, onClose, loading, tradeList } = props;
-  const [categoryArr, setCategoryArr] = useState([]);
+  const { dispatch, cRef, visible, onClose, loading, tradeList } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
-
-  console.log(detail, 'dddd');
 
   const allProps = {
     add: {
@@ -36,16 +33,10 @@ const VaneDrawer = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { image, bubbleFlag = 0, categoryId = [], jumpType } = values;
-      let cateId = '';
-      if (categoryId && categoryId.length > 1) {
-        cateId = categoryId[1];
-      } else {
-        cateId = categoryId[0];
-      }
-      const windVaneParamObject = {
-        categoryId: cateId,
-        categoryName: categoryArr.categoryName,
+      const { image, bubbleFlag = 0, categoryId = [], windVaneParamObject = {}, jumpType } = values;
+      const windVaneParam = {
+        categoryId: categoryId && categoryId[categoryId.length - 1],
+        ...windVaneParamObject,
       };
       // 上传图片到oss -> 提交表单
       aliOssUpload(image).then((res) => {
@@ -58,7 +49,7 @@ const VaneDrawer = (props) => {
             nativeJumpType: jumpType === 'native' ? 'category' : '',
             bubbleFlag: Number(bubbleFlag),
             image: res.toString(),
-            windVaneParamObject: jumpType === 'native' ? windVaneParamObject : '',
+            windVaneParamObject: jumpType === 'native' ? windVaneParam : '',
           },
           callback: () => {
             onClose();
@@ -128,27 +119,6 @@ const VaneDrawer = (props) => {
       visible: showUrl === 'url',
       show: showUrl === 'url',
     },
-    // {
-    //   label: '选择场景',
-    //   type: 'treeSelect',
-    //   multiple: true,
-    //   showCheckedStrategy: 'SHOW_ALL',
-    //   name: 'scenesId',
-    //   select: navigation.list.map(
-    //     ({
-    //       categoryIdString: categoryScenesId,
-    //       categoryName: scenesName,
-    //       categoryScenesDTOList,
-    //     }) => ({ categoryScenesId, scenesName, categoryScenesDTOList, disabled: true }),
-    //   ),
-    //   fieldNames: {
-    //     label: 'scenesName',
-    //     value: 'categoryScenesId',
-    //     children: 'categoryScenesDTOList',
-    //   },
-    //   visible: showUrl === 'scenes',
-    //   show: false,
-    // },
     {
       label: '选择行业',
       type: 'cascader',
@@ -159,12 +129,17 @@ const VaneDrawer = (props) => {
       show: false,
       visible: showUrl === 'native',
       onChange: (val, option) => {
+        let categoryName = option[0].categoryName;
         if (val.length > 1) {
-          setCategoryArr(option[1]);
-        } else {
-          setCategoryArr(option[0]);
+          categoryName = option[1].categoryName;
         }
+        form.setFieldsValue({ windVaneParamObject: { categoryName } });
       },
+    },
+    {
+      label: '行业名称',
+      name: ['windVaneParamObject', 'categoryName'],
+      hidden: true,
     },
   ];
 
