@@ -120,9 +120,29 @@ export function fetchExpertLevelSet(data) {
 
 // 哒人业绩
 
-// get 哒人业绩 - 统计
+// get 哒人业绩
 export function fetchExpertUserAchievementList(params) {
-  // return request('/admin/kol/listKolPerformance', {
+  return request('/admin/kol/listKolPerformance', {
+    params,
+  });
+}
+
+// get 哒人业绩 - 推荐列表
+export function fetchExpertUserAchievementRecommend(params) {
+  return request('/admin/kol/listKolRecommended', {
+    params,
+  });
+}
+
+// get 哒人业绩 - 分佣统计
+export function fetchExpertUserSubCommissionStatistics(params) {
+  return request('/admin/kol/monthStatisticKolCommission', {
+    params,
+  });
+}
+
+// get 哒人业绩统计
+export function fetchExpertUserAchievementTotalList(params) {
   return request('/admin/achievement/daren', {
     params,
   });

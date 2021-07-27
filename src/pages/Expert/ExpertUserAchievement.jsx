@@ -1,20 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect, Link } from 'umi';
 import { Alert } from 'antd';
-import { DAREN_TEMP_FLAG } from '@/common/constant';
-import moment from 'moment';
+import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE, EXPERT_SORT } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import SearchCard from './components/Achievement/Search/SearchCard';
-import { checkCityName } from '@/utils/utils';
-import excelHeder from './components/Achievement/excelHeder';
+import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
+import RecommendModal from './components/Achievement/RecommendModal';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch } = props;
 
-  const [searchData, setSearchData] = useState({
-    beginDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-    endDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-  });
+  const [visible, setVisible] = useState(false);
+  const [visibleList, setVisibleList] = useState(false);
 
   const childRef = useRef();
 
@@ -36,10 +32,10 @@ const ExpertUserAchievement = (props) => {
       select: kolLevel,
     },
     {
-      label: '是否实习',
-      name: 'tempFlag',
+      label: '身份',
+      name: 'levelKey',
       type: 'select',
-      select: DAREN_TEMP_FLAG,
+      select: EXPERT_LIST_TYPE,
     },
     {
       label: '注册地',
@@ -48,19 +44,29 @@ const ExpertUserAchievement = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
+    {
+      label: '状态',
+      name: 'status',
+      type: 'select',
+      select: EXPERT_USER_TYPE,
+    },
+    {
+      label: '排序',
+      name: 'sortField',
+      type: 'select',
+      select: EXPERT_SORT,
+    },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '哒人昵称/ID',
+      title: 'ID',
+      dataIndex: 'kolUserId',
+    },
+    {
+      title: '昵称',
       dataIndex: 'username',
-      render: (val, row) => (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span>{val}</span>
-          <span style={{ color: '#999' }}>{row.userIdString}</span>
-        </div>
-      ),
     },
     {
       title: '手机号/豆号',
@@ -68,57 +74,76 @@ const ExpertUserAchievement = (props) => {
       render: (val, row) => `${row.mobile}\n${val}`,
     },
     {
+      title: '身份',
+      dataIndex: 'levelKey',
+      render: (val) => EXPERT_LIST_TYPE[val],
+    },
+    {
       title: '级别',
       align: 'center',
       dataIndex: 'level',
-      render: (val) => {
-        let name = '';
-        kolLevel?.forEach((item) => {
-          if (item.value == val) {
-            name = item.name;
-          }
-        });
-        return <span>{name}</span>;
-      },
     },
+    // {
+    //   title: '团队人数',
+    //   align: 'center',
+    //   dataIndex: 'teamSize',
+    //   render: (val, row) => {
+    //     return row.kolUserId;
+    //   },
+    // },
+    // {
+    //   title: '用户｜哒人｜豆长',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    // },
+    // {
+    //   title: '分销-核销笔数',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return <Link to="/expert/distribution"> {row.number || 'null'}</Link>;
+    //   },
+    // },
+    // {
+    //   title: '分销-业绩流水',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return `¥ ${row.kolUserId}`;
+    //   },
+    // },
+    // {
+    //   title: '累计分佣',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return `¥ ${row.kolUserId}`;
+    //   },
+    // },
+    // {
+    //   title: '待分佣',
+    //   align: 'center',
+    //   dataIndex: 'level',
+    //   render: (val, row) => {
+    //     return `¥ ${row.kolUserId}`;
+    //   },
+    // },
     {
-      title: '是否实习',
-      align: 'center',
-      dataIndex: 'tempLevelFlag',
-      render: (val) => DAREN_TEMP_FLAG[val],
-    },
-    {
-      title: '注册地',
-      align: 'center',
-      dataIndex: 'districtCode',
-      render: (val) => checkCityName(val),
-    },
-    {
-      title: '新增家人数',
-      align: 'center',
-      dataIndex: 'familyCount',
-    },
-    {
-      title: '新增直培哒人',
-      align: 'center',
-      dataIndex: 'familyDarenCount',
-    },
-    {
-      title: '分销-核销笔数',
-      align: 'center',
-      dataIndex: 'statisticOrderCount',
-    },
-    {
-      title: '分销-业绩流水',
-      align: 'center',
-      dataIndex: 'statisticTotalFee',
-      render: (val, row) => `¥ ${val ? val : '0'}`,
+      type: 'handle',
+      dataIndex: 'kolUserId',
+      render: (val, detail) => [
+        {
+          type: 'recommendList',
+          click: () => setVisibleList({ show: true, detail }),
+        },
+        {
+          auth: 'statistics',
+          title: '分佣统计',
+          click: () => setVisible({ show: true, detail }),
+        },
+      ],
     },
   ];
-
-  useEffect(() => {
-    childRef?.current?.fetchGetData(searchData);
-  }, [searchData]);
 
   // 获取哒人等级数据
   const fetchGetKolLevel = () => {
@@ -127,42 +152,27 @@ const ExpertUserAchievement = (props) => {
     });
   };
 
-  // 选择时间
-  const handleSearchData = (time) => {
-    setSearchData({
-      beginDate: time[0].format('YYYY-MM-DD'),
-      endDate: time[1].format('YYYY-MM-DD'),
-    });
-  };
-
-  const extraBtn = ({ get }) => [
-    {
-      type: 'excel',
-      dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get() },
-      exportProps: { header: excelHeder(kolLevel) },
-    },
-  ];
-
   return (
     <>
       <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
         keepData
-        cardProps={{
-          title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
-        }}
-        // btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={searchData}
-        rowKey={(record) => `${record.beanCode}`}
+        rowKey={(record) => `${record.kolUserId}`}
         dispatchType="expertUserAchievement/fetchGetList"
         {...list}
       ></TableDataBlock>
+      {/* 分佣统计 */}
+      <SubCommissionStatistics
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></SubCommissionStatistics>
+      {/* 推荐列表 */}
+      <RecommendModal visible={visibleList} onClose={() => setVisibleList(false)}></RecommendModal>
     </>
   );
 };
