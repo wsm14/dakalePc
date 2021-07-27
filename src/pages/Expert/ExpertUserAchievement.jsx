@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect, Link } from 'umi';
 import { Alert } from 'antd';
-import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE, EXPERT_SORT } from '@/common/constant';
+import { EXPERT_USER_TYPE, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
 import RecommendModal from './components/Achievement/RecommendModal';
@@ -49,12 +49,6 @@ const ExpertUserAchievement = (props) => {
       name: 'status',
       type: 'select',
       select: EXPERT_USER_TYPE,
-    },
-    {
-      label: '排序',
-      name: 'sortField',
-      type: 'select',
-      select: EXPERT_SORT,
     },
   ];
 
