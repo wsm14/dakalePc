@@ -26,7 +26,7 @@ const ExpertUserAchievement = (props) => {
   const searchItems = [
     {
       label: '哒人',
-      name: 'userNameOrBeanCodeOrMobile',
+      name: 'keyword',
       placeholder: '请输入昵称、豆号或手机号',
     },
     {
