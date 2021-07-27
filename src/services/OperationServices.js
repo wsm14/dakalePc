@@ -81,6 +81,14 @@ export function fetchSpecialToTop(data) {
   });
 }
 
+// 特惠增加库存
+export function fetchSpecialGoodsAddRemain(data) {
+  return request('/admin/specialGoodsManagement/addGoodsRemain', {
+    method: 'POST',
+    data,
+  });
+}
+
 //取消置顶
 export function fetchSpecialCancleToTop(data) {
   return request('/admin/specialGoodsManagement/cancelTopRecommend', {
@@ -141,14 +149,6 @@ export function fetchSpecialGoodsAuditReject(data) {
 // 特惠审核-关闭
 export function fetchSpecialGoodsAuditClose(data) {
   return request('/admin/marketing/audit/closeAudit', {
-    method: 'POST',
-    data,
-  });
-}
-
-// 特惠增加库存
-export function fetchSpecialGoodsAddRemain(data) {
-  return request('/admin/specialGoodsManagement/addGoodsRemain', {
     method: 'POST',
     data,
   });
