@@ -240,6 +240,12 @@ export default [
         // buttons: ['exportList'],
       },
       {
+        path: '/expert/achievementTotal',
+        name: '哒人业绩统计',
+        component: './Expert/ExpertUserAchievement',
+        // buttons: ['exportList'],
+      },
+      {
         path: '/expert/distribution',
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',
