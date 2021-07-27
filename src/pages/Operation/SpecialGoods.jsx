@@ -21,6 +21,7 @@ import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
 import excelProps from './components/SpecialGoods/ExcelProps';
 import RemainModal from './components/SpecialGoods/Detail/RemainModal';
+import AuthConsumer from '@/layouts/AuthConsumer';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -453,13 +454,15 @@ const SpecialGoods = (props) => {
         cardProps={{
           extra: (
             <ExtraButton list={btnList}>
-              <SpecialRecommendMenu
-                num={goodsList.length}
-                handleRecommend={(val) =>
-                  fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
-                }
-                disabled={!goodsList.length}
-              ></SpecialRecommendMenu>
+              <AuthConsumer auth={'recommendStatus'}>
+                <SpecialRecommendMenu
+                  num={goodsList.length}
+                  handleRecommend={(val) =>
+                    fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
+                  }
+                  disabled={!goodsList.length}
+                ></SpecialRecommendMenu>
+              </AuthConsumer>
             </ExtraButton>
           ),
         }}
