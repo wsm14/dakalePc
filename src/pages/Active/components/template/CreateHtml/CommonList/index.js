@@ -60,7 +60,9 @@ export default (function (list, id) {
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
   .map(
-    (item) => `<div style="padding: ${vw(8)};border-radius: ${vw(4)};margin-top: ${vw(
+    (item) => `<div class="handleGoNative" style="padding: ${vw(8)};border-radius: ${vw(
+      4,
+    )};margin-top: ${vw(
       12,
     )}; background: #FFFFFF;display: flex;align-items: center;"><div style="width: ${vw(
       112,
@@ -104,9 +106,9 @@ ${source
       item.specialGoodsId
     } data-merchantId=${
       item.ownerIdString
-    } data-path="goods" data-linkType="inside" class="handleGoNative" style="padding: 0 ${vw(
-      8,
-    )};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
+    } data-path="goods" data-linkType="inside" style="padding: 0 ${vw(8)};height: ${vw(
+      27,
+    )};border-radius: ${vw(13)};font-size: ${vw(
       14,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">
     ${
