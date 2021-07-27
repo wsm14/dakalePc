@@ -35,8 +35,7 @@ const SpecialGoods = (props) => {
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
   const [visibleRemain, setVisibleRemain] = useState(false);
 
-  const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
-  const search_recommend = { notPromoted: '未推广', ...other };
+  const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
 
   useEffect(() => {
     if (childRef.current) {
