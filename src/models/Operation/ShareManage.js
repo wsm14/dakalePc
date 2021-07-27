@@ -141,7 +141,7 @@ export default {
       } = content.userMoments;
       const newObj = {
         ...content.userMoments,
-        videoContent: JSON.parse(content.userMoments.videoContent),
+        videoContent: JSON.parse(content.userMoments.videoContent || '{}'),
         free: freeOwnerCoupon // 免费券
           ? { ...freeOwnerCoupon, buyFlag: 0 }
           : '',
