@@ -33,17 +33,6 @@ const ShareManage = (props) => {
   const [visibleLike, setVisibleLike] = useState(false); // 设置分享收藏数
   const [visibleReward, setVisibleReward] = useState(false); // 新增打赏人数
 
-  //新增打赏人数
-  const fetRewardPeo = (userMomentIdString, record) => {
-    const { beanAmount, exposureBeanAmount } = record;
-    setVisibleReward({
-      show: true,
-      userMomentIdString,
-      beanAmount,
-      exposureBeanAmount,
-    });
-  };
-
   // 搜索参数
   const searchItems = [
     {
@@ -274,6 +263,17 @@ const ShareManage = (props) => {
   useEffect(() => {
     fetchTradeList();
   }, []);
+
+  //新增打赏人数
+  const fetRewardPeo = (userMomentIdString, record) => {
+    const { beanAmount, exposureBeanAmount } = record;
+    setVisibleReward({
+      show: true,
+      userMomentIdString,
+      beanAmount,
+      exposureBeanAmount,
+    });
+  };
 
   // 获取行业选择项
   const fetchTradeList = () => {
