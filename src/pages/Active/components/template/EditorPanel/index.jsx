@@ -6,11 +6,11 @@ import styles from './style.less';
 
 const EditorPanel = ({ context }) => {
   const cRef = useRef();
-  // 组件选项打开类型
-  const { dispatchData, showEditor, moduleData } = useContext(context);
+  // 组件选项打开类型 showPanel 当前高亮选项数据
+  const { dispatchData, showEditor, showPanel, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
-  const { index, id, editorType, name, drop, data } = showEditor;
+  const { id, editorType, name, drop, data } = showEditor;
 
   const [form] = Form.useForm();
   // 关闭编辑框
@@ -20,7 +20,6 @@ const EditorPanel = ({ context }) => {
   useEffect(() => {
     if (id) form.setFieldsValue(data);
   }, [id]);
-
   /**
    * 保存事件
    * 判断是否可拖拽组件 drop 如果不是则数据唯一存在对象外围
@@ -37,7 +36,7 @@ const EditorPanel = ({ context }) => {
           payload = content;
         } else {
           const newData = update(dataList, {
-            $splice: [[index, 1, { ...showEditor, data: content }]],
+            $splice: [[showPanel, 1, { ...showEditor, data: content }]],
           });
           payload = { dataList: newData };
         }
