@@ -1,5 +1,5 @@
-import React, { useRef, useContext } from 'react';
-import { Button, Space, message } from 'antd';
+import React, { useRef, useEffect, useContext } from 'react';
+import { Button, Space, message, Form } from 'antd';
 import update from 'immutability-helper';
 import editor from '../Editor';
 import styles from './style.less';
@@ -12,8 +12,14 @@ const EditorPanel = ({ context }) => {
   const { dataList } = moduleData;
   const { index, id, editorType, name, drop, data } = showEditor;
 
+  const [form] = Form.useForm();
   // 关闭编辑框
   const handleCloseEdit = () => dispatchData({ type: 'closeEditor' });
+
+  // 每次重置数据显示
+  useEffect(() => {
+    if (id) form.setFieldsValue(data);
+  }, [id]);
 
   /**
    * 保存事件
@@ -64,7 +70,7 @@ const EditorPanel = ({ context }) => {
       <div className={styles.content}>
         <div className={styles.previewer_active_editor}>
           {editor[editorType] && editor[editorType].editorDom
-            ? editor[editorType]?.editorDom({ id, cRef, editorType, value: data })
+            ? editor[editorType]?.editorDom({ id, form, cRef, editorType, value: data })
             : '控件暂未配置'}
         </div>
       </div>

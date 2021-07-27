@@ -21,9 +21,7 @@ const imgold = (url, uid) => ({
 });
 
 const Carouseal = (props) => {
-  const { value, cRef } = props;
-
-  const [form] = Form.useForm();
+  const { value, cRef, form } = props;
 
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url

@@ -47,6 +47,7 @@ export default {
     editorType: 'commonList',
     drop: true,
     defaultImg: list,
+    defaultData: { styleIndex: 0, list: [] },
     editorDom: (props) => <CommonList {...props}></CommonList>,
     dom: (props) => CommonList.dom(props),
   },
