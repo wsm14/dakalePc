@@ -161,6 +161,7 @@ const CouponManageComponent = (props) => {
     },
     {
       type: 'handle',
+      width: 150,
       dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
         // 1 上架 2 下架

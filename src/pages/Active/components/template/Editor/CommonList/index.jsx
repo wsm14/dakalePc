@@ -11,9 +11,8 @@ import '../index.less';
  * 商品列表
  */
 const CommonList = (props) => {
-  const { value = {}, cRef } = props;
+  const { value = {}, cRef, form } = props;
 
-  const [form] = Form.useForm();
   const [visible, setVisible] = useState(false);
 
   // 向父组件暴露方法

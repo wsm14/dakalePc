@@ -13,6 +13,7 @@ import list from './Img/list.png';
  * @param {String} editorType  组件类型
  * @param {Boolean} drop 是否可拖拽
  * @param {ReactDOM} defaultImg 拖拽后默认显示占位图片
+ * @param {any} defaultData 表单默认值 null
  * @param {ReactDOM} editor 详细组件编辑容器 ({ cRef, editorType 组件type, value 原值 })
  */
 export default {
@@ -47,6 +48,7 @@ export default {
     editorType: 'commonList',
     drop: true,
     defaultImg: list,
+    defaultData: { styleIndex: 0, list: [] },
     editorDom: (props) => <CommonList {...props}></CommonList>,
     dom: (props) => CommonList.dom(props),
   },

@@ -1,4 +1,5 @@
 import {
+  SUBMIT_TYPE,
   BUSINESS_TYPE,
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
@@ -12,7 +13,7 @@ export default {
     { key: 'goodsType', header: '商品类型', render: (val) => GOODS_CLASS_TYPE[val] },
     { key: 'goodsName', header: '商品名称' },
     { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
-    { key: 'merchantName', header: '店铺名称' },
+    { key: 'ownerName', header: '店铺名称' },
     { key: 'oriPrice', header: '原价' },
     { key: 'realPrice', header: '特惠价格' },
     { key: 'otherPlatformPrice', header: '其它平台价格' },
@@ -62,7 +63,11 @@ export default {
       header: '核销数量',
     },
     { key: 'createTime', header: '创建时间' },
-    { key: 'creatorName', header: '创建人' },
+    {
+      key: 'creatorType',
+      header: '创建人',
+      render: (val, row) => `${SUBMIT_TYPE[val]}--${row.creatorName || ''}`,
+    },
     {
       key: 'status',
       header: '状态',

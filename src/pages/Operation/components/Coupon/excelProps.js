@@ -8,7 +8,7 @@ export default {
     { key: 'ownerType', header: '店铺类型', render: (val) => BUSINESS_TYPE[val] },
     { key: 'ownerName', header: '店铺/集团名称' },
     { key: ['reduceObject', 'couponPrice'], header: '券价值' },
-    { key: 'buyPrice', header: '售卖价' },
+    { key: 'buyPrice', header: '售卖价', render: (val) => val || '0.00' },
     {
       key: ['reduceObject', 'thresholdPrice'],
       header: '使用门槛',
@@ -34,6 +34,6 @@ export default {
     { key: 'verifiedCount', header: '核销数量' },
     { key: 'createTime', header: '创建时间' },
     { key: 'updateTime', header: '发布时间' },
-    { key: 'merchantCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },
+    { key: 'ownerCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },
   ],
 };

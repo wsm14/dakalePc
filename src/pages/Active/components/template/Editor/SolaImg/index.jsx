@@ -1,5 +1,4 @@
 import React, { useImperativeHandle } from 'react';
-import { Form } from 'antd';
 import aliOssUpload from '@/utils/aliOssUpload';
 import EditorForm from '../editorForm';
 import NativeForm from '../NativeForm';
@@ -10,9 +9,7 @@ import '../index.less';
  * 单图配置
  */
 const SolaImg = (props) => {
-  const { id, value = {}, editorType, cRef } = props;
-
-  const [form] = Form.useForm();
+  const { id, value = {}, editorType, cRef, form } = props;
 
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
