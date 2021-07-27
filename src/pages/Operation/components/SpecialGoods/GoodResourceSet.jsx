@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
-import DrawerCondition from '@/components/DrawerCondition';
-import FormCondition from '@/components/FormCondition';
 import { NUM_PATTERN } from '@/common/regExp';
+import FormCondition from '@/components/FormCondition';
+import DrawerCondition from '@/components/DrawerCondition';
 
 const GoodResourceSet = (props) => {
   const { visible, onClose, cRef, dispatch, loading } = props;
@@ -29,7 +29,7 @@ const GoodResourceSet = (props) => {
         },
       };
       dispatch({
-        type: 'specialGoods/fetchSpecialConditConfig',
+        type: 'specialGoodsResource/fetchSpecialConditConfig',
         payload,
         callback: () => {
           onClose();
@@ -90,5 +90,5 @@ const GoodResourceSet = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialConditConfig'],
+  loading: loading.effects['specialGoodsResource/fetchSpecialConditConfig'],
 }))(GoodResourceSet);
