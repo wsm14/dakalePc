@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { CHECK_STATUS, GOODS_CHECK_RESSTATUS } from '@/common/constant';
+import { GOODS_CHECK_RESSTATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 已审核
 const AlCheck = (props) => {
-  const {tableRef, tabkey, globalColum = [], globalSearch, loading, specialGoodsCheck, rowHandle } = props;
+  const {
+    tableRef,
+    tabkey,
+    globalColum = [],
+    globalSearch,
+    loading,
+    specialGoodsCheck,
+    rowHandle,
+  } = props;
 
   const searchItems = [
     ...globalSearch,
@@ -39,6 +47,7 @@ const AlCheck = (props) => {
   return (
     <>
       <TableDataBlock
+        noCard={false}
         cRef={tableRef}
         loading={loading}
         columns={getColumns}

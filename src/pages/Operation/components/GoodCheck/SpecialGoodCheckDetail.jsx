@@ -127,7 +127,7 @@ const SpecialGoodCheckDetail = (props) => {
       const pBean = Number(provinceBean) * 100;
       const dBean = Number(districtBean) * 100;
       const daBean = Number(darenBean) * 100;
-      const totalFee = (Number(provinceBean) + Number(districtBean) + Number(darenBean)).toFixed(2);
+      const totalFee = Number(provinceBean) + Number(districtBean) + Number(darenBean);
       //金额转卡豆
       const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
       const payload = {
@@ -252,7 +252,7 @@ const SpecialGoodCheckDetail = (props) => {
       mode: 'multiple',
       name: 'merTags',
       select: merchantTaglist,
-      placeholder:'请选择商家商品标签',
+      placeholder: '请选择商家商品标签',
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
       addRules: [
         {
@@ -271,7 +271,8 @@ const SpecialGoodCheckDetail = (props) => {
       type: 'select',
       mode: 'multiple',
       select: platTaglist,
-      placeholder:'请选择平台商品标签',
+      rules: [{ required: false }],
+      placeholder: '请选择平台商品标签',
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
     },
   ];
