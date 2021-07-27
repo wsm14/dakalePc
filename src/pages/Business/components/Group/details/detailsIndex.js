@@ -1,3 +1,5 @@
+import { checkCityName } from '@/utils/utils';
+
 export const base = [
   {
     label: '集团名称',
@@ -229,7 +231,10 @@ export const activeByBank = [
   },
   {
     label: '开户城市',
-    name: 'city',
+    name: 'areaCode',
+    render: (val, row) => {
+      return val ? checkCityName(val || '') : '';
+    },
   },
   {
     label: '银行预留手机号',
