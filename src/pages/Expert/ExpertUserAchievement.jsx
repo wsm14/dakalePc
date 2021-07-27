@@ -4,16 +4,13 @@ import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
 import TableDataBlock from '@/components/TableDataBlock';
-import SubCommissionStatistics from './components/Achievement/SubCommissionStatistics';
 import SearchCard from './components/Achievement/Search/SearchCard';
-import RecommendModal from './components/Achievement/RecommendModal';
 import { checkCityName } from '@/utils/utils';
+import excelHeder from './components/Achievement/excelHeder';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch } = props;
 
-  const [visible, setVisible] = useState(false);
-  const [visibleList, setVisibleList] = useState(false);
   const [searchData, setSearchData] = useState({
     beginDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
     endDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
@@ -24,8 +21,6 @@ const ExpertUserAchievement = (props) => {
   useEffect(() => {
     fetchGetKolLevel();
   }, []);
-
-  console.log(kolLevel, 'kolLevel');
 
   // 搜索参数
   const searchItems = [
@@ -108,12 +103,6 @@ const ExpertUserAchievement = (props) => {
       align: 'center',
       dataIndex: 'familyDarenCount',
     },
-    // {
-    //   title: '新增直培豆长',
-    //   align: 'center',
-    //   dataIndex: 'tempFlag',
-    // },
-
     {
       title: '分销-核销笔数',
       align: 'center',
@@ -125,14 +114,6 @@ const ExpertUserAchievement = (props) => {
       dataIndex: 'statisticTotalFee',
       render: (val, row) => `¥ ${val ? val : '0'}`,
     },
-    // {
-    //   title: '累计分佣',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    //   render: (val, row) => {
-    //     return `¥ ${row.kolUserId}`;
-    //   },
-    // },
   ];
 
   useEffect(() => {
@@ -154,6 +135,15 @@ const ExpertUserAchievement = (props) => {
     });
   };
 
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get() },
+      exportProps: { header: excelHeder(kolLevel) },
+    },
+  ];
+
   return (
     <>
       <Alert message="当前数据统计到昨日" type="info" banner />
@@ -163,6 +153,7 @@ const ExpertUserAchievement = (props) => {
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
+        // btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -172,13 +163,6 @@ const ExpertUserAchievement = (props) => {
         dispatchType="expertUserAchievement/fetchGetList"
         {...list}
       ></TableDataBlock>
-      {/* 分佣统计 */}
-      <SubCommissionStatistics
-        visible={visible}
-        onClose={() => setVisible(false)}
-      ></SubCommissionStatistics>
-      {/* 推荐列表 */}
-      <RecommendModal visible={visibleList} onClose={() => setVisibleList(false)}></RecommendModal>
     </>
   );
 };

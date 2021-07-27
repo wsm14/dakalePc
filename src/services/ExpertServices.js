@@ -123,21 +123,7 @@ export function fetchExpertLevelSet(data) {
 // get 哒人业绩 - 统计
 export function fetchExpertUserAchievementList(params) {
   // return request('/admin/kol/listKolPerformance', {
-    return request('/admin/achievement/daren', {
-    params,
-  });
-}
-
-// get 哒人业绩 - 推荐列表
-export function fetchExpertUserAchievementRecommend(params) {
-  return request('/admin/kol/listKolRecommended', {
-    params,
-  });
-}
-
-// get 哒人业绩 - 分佣统计
-export function fetchExpertUserSubCommissionStatistics(params) {
-  return request('/admin/kol/monthStatisticKolCommission', {
+  return request('/admin/achievement/daren', {
     params,
   });
 }
