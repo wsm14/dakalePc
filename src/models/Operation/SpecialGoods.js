@@ -4,18 +4,11 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
-  fetchSpecialGoodsVerify,
-  fetchSpecialGoodsDel,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
   fetchSpecialGoodsRecommend, //推荐
-  fetchSpecialCancleRecommend,
-  fetchSpecialToTop,
-  fetchSpecialCancleToTop,
-  fetchSpecialConditConfig,
-  fetchResourceDicts,
   fetchSpecialGoodsAddRemain, // 增加库存
   fetchEditCurrentStatus, //编辑前校验
 } from '@/services/OperationServices';
@@ -136,24 +129,6 @@ export default {
       });
       callback();
     },
-    *fetchSpecialGoodsDel({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialGoodsDel, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '特惠活动删除成功',
-      });
-      callback();
-    },
-    *fetchSpecialGoodsVerify({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialGoodsVerify, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '特惠活动审核完成',
-      });
-      callback();
-    },
     *fetchSpecialGoodsEdit({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsEdit, payload);
       if (!response) return;
@@ -194,53 +169,6 @@ export default {
       const { content } = response;
       if (callback) callback(content.specialGoodsList);
     },
-    //特惠资源位取消推荐
-    *fetchSpecialCancleRecommend({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialCancleRecommend, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '取消推荐成功',
-      });
-      callback();
-    },
-    *fetchSpecialToTop({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialToTop, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '置顶成功',
-      });
-      callback();
-    },
-    *fetchSpecialCancleToTop({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialCancleToTop, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '取消置顶成功',
-      });
-      callback();
-    },
-    //条件配置
-    *fetchSpecialConditConfig({ payload, callback }, { call }) {
-      const response = yield call(fetchSpecialConditConfig, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '配置成功',
-      });
-      callback();
-    },
-    *fetchResourceDicts({ payload, callback }, { call }) {
-      const response = yield call(fetchResourceDicts, payload);
-      if (!response) return;
-      const { content } = response;
-      const { dictionary = {} } = content;
-      const extraParam = dictionary.extraParam ? JSON.parse(dictionary.extraParam) : {};
-
-      callback({ ...content.dictionary, ...extraParam });
-    },
     *fetchSpecialGoodsAddRemain({ payload, callback }, { call }) {
       const response = yield call(fetchSpecialGoodsAddRemain, payload);
       if (!response) return;
@@ -250,7 +178,6 @@ export default {
       });
       callback();
     },
-
     //  * 特惠或券编辑前校验
     *fetchEditCurrentStatus({ payload, callback }, { call }) {
       const response = yield call(fetchEditCurrentStatus, payload);

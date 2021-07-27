@@ -8,7 +8,6 @@ import {
   SPECIAL_USERTIME_TYPE,
   SPECIAL_RECOMMEND_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
-  SUBMIT_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -18,7 +17,7 @@ import GoodResourceSet from './components/SpecialGoods/GoodResourceSet';
 import { checkCityName } from '@/utils/utils';
 
 const SpecialGoodsResource = (props) => {
-  const { loadings, loading, hubData, dispatch, specialGoods } = props;
+  const { loadings, loading, hubData, dispatch, specialGoodsResource } = props;
   const tableRef = useRef();
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择取消推荐的商品
@@ -57,7 +56,7 @@ const SpecialGoodsResource = (props) => {
         recommendType: tabKey,
       };
       dispatch({
-        type: 'specialGoods/fetchSpecialCancleRecommend',
+        type: 'specialGoodsResource/fetchSpecialCancleRecommend',
         payload: payload,
         callback: () => {
           tableRef.current.fetchGetData();
@@ -70,7 +69,7 @@ const SpecialGoodsResource = (props) => {
   const getConfigDetail = () => {
     if (['highCommission', 'todayNew'].includes(tabKey)) {
       dispatch({
-        type: 'specialGoods/fetchResourceDicts',
+        type: 'specialGoodsResource/fetchResourceDicts',
         payload: {
           parent: 'specialGoods',
           child: tabKey,
@@ -89,7 +88,7 @@ const SpecialGoodsResource = (props) => {
       recommendType: tabKey,
     };
     dispatch({
-      type: 'specialGoods/fetchSpecialToTop',
+      type: 'specialGoodsResource/fetchSpecialToTop',
       payload: payload,
       callback: () => {
         tableRef.current.fetchGetData();
@@ -104,7 +103,7 @@ const SpecialGoodsResource = (props) => {
       recommendType: tabKey,
     };
     dispatch({
-      type: 'specialGoods/fetchSpecialCancleToTop',
+      type: 'specialGoodsResource/fetchSpecialCancleToTop',
       payload: payload,
       callback: () => {
         tableRef.current.fetchGetData();
@@ -393,7 +392,7 @@ const SpecialGoodsResource = (props) => {
         columns={globalColum}
         searchItems={globalSearch}
         rowKey={(record) => `${record.specialGoodsId}`}
-        dispatchType="specialGoods/fetchGetList"
+        dispatchType="specialGoodsResource/fetchGetList"
         params={{ promotionLocation: tabKey }}
         rowSelection={{
           getCheckboxProps: ({ status, deleteFlag }) => ({
@@ -402,7 +401,7 @@ const SpecialGoodsResource = (props) => {
           selectedRowKeys: goodsList,
           onChange: setGoodsList,
         }}
-        {...specialGoods}
+        {...specialGoodsResource}
       ></TableDataBlock>
       {/* 条件配置 */}
       <GoodResourceSet
@@ -414,9 +413,9 @@ const SpecialGoodsResource = (props) => {
   );
 };
 
-export default connect(({ baseData, loading, specialGoods }) => ({
-  specialGoods,
+export default connect(({ baseData, loading, specialGoodsResource }) => ({
+  specialGoodsResource,
   hubData: baseData.hubData,
   loadings: loading,
-  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+  loading: loading.models.specialGoodsResource || loading.effects['baseData/fetchGetLogDetail'],
 }))(SpecialGoodsResource);

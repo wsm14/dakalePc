@@ -66,9 +66,9 @@ ${source
       112,
     )};height: ${vw(112)};margin-right: ${vw(8)};border-radius: ${vw(4)};background: url(${
       item.goodsImg
-    });background-size: cover;"></div><div style="flex: 1"><div style="font-size: ${vw(
+    });background-size: cover;"></div><div style="flex: 1;overflow: hidden;"><div style="font-size: ${vw(
       14,
-    )};color: #333333; white-space:nowrap;text-overflow: ellipsis;">${
+    )};color: #333333; white-space:nowrap;text-overflow: ellipsis;overflow: hidden;">${
       item.goodsName
     }</div><div style="font-size: ${vw(12)};margin-top: ${vw(
       10,
@@ -76,15 +76,15 @@ ${source
       item.ownerImg
     }" style="border-radius: 50%;width: ${vw(15)};height: ${vw(15)};margin-right: ${vw(
       4,
-    )};background-color: #f5f5f5;"></img>${
+    )};background-color: #f5f5f5;"></img><div style="flex: 1;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;line-height: initial">${
       item.ownerName
-    }</div><div style="width: 100%; display: flex; align-items: flex-end"><div style="flex: 1"><div style="font-size: ${vw(
+    }</div></div><div style="width: 100%; display: flex; align-items: flex-end"><div style="flex: 1"><div style="font-size: ${vw(
       12,
-    )}; color: #999999; margin-top: ${vw(17)}">原价：<span style="text-decoration: line-through">¥${
+    )}; color: #999999; margin-top: ${vw(17)}">原价: <span style="text-decoration: line-through">¥${
       item.oriPrice
     }</span></div><div style="font-size: ${vw(12)}; color: #333333; margin-top: ${vw(
       7,
-    )}">优惠价：<span style="font-size: ${vw(14)}; font-weight: bold">¥${
+    )}">优惠价: <span style="font-size: ${vw(14)}; font-weight: bold">¥${
       item.realPrice
     }</span></div><div style="height: ${vw(16)};border-radius: ${vw(8)};margin-top: ${vw(
       6,
@@ -92,7 +92,9 @@ ${source
       <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
       3,
     )};height: inherit;background: #ef476f;display: flex;align-items: center;color: #ffffff;">卡豆再省</div>
-      <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(2)} solid transparent;"></div>
+      <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
+      2,
+    )} solid transparent;"></div>
       <div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(50)} 0;padding-right: ${vw(
       4,
     )};font-weight: bold;color: #ef476f;background: #ffffff;">￥${computedPrice(

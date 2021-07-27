@@ -16,20 +16,6 @@ import {
   activeByBank,
   activeByLegal,
 } from './details/detailsIndex';
-import city from '@/common/city';
-
-const filterCity = (proCode, areCode) => {
-  if (proCode && areCode) {
-    const proList = city.filter((item) => {
-      return item.value == Number(proCode);
-    })[0];
-    const areList = proList['children'].filter((item) => {
-      return item.value === areCode;
-    })[0];
-    return proList.label + '/' + areList.label;
-  }
-  return '';
-};
 
 const groupsDetails = (props) => {
   const {
@@ -236,7 +222,6 @@ const groupsDetails = (props) => {
               initialValues={{
                 ...businessLicense,
                 ...bankBindingInfo,
-                city: filterCity(bankBindingInfo.provCode, bankBindingInfo.areaCode),
               }}
             ></DescriptionsCondition>
           ),

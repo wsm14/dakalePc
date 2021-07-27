@@ -56,6 +56,10 @@
 
 ## 更新日志
 
+- ### 2021 年 7 月 27 日 10:59:20 Dong
+
+> - `columns` 增加 `show` 配置 `boolean | any` 是否显示当前列
+
 - ### 2021 年 5 月 28 日 13:43:49 Dong
 
 > - `columns` 增加 `ellipsis` 配置 `boolean | { length?: number, lines?: number }` 配置字符缩略

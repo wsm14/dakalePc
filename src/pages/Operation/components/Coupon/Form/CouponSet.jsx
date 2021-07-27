@@ -105,8 +105,6 @@ const CouponSet = (props) => {
     form.setFieldsValue({ merchantIds: mreList.keys });
   }, [mreList.keys]);
 
-  console.log(mreList.type, 'ddddd');
-
   //sku通用-sku挂靠商家列表
   const getMerchantList = () => {
     dispatch({
@@ -217,7 +215,6 @@ const CouponSet = (props) => {
       label: '适用店铺',
       name: 'merchantIds',
       type: 'formItem',
-
       visible: mreList.type == 'group',
       rules: [{ required: true, message: '请选择店铺' }],
       formItem: (

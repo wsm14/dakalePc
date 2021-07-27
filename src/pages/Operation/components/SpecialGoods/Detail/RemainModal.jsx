@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { Button, Form, Modal } from 'antd';
+import { Form, Modal } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {

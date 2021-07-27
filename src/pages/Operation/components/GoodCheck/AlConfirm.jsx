@@ -1,11 +1,19 @@
-import React, {  useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { CHECK_STATUS,GOODS_CHECK_RESSTATUS } from '@/common/constant';
+import { GOODS_CHECK_RESSTATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 已确认
 const AlConfirm = (props) => {
-  const { tableRef,tabkey, globalColum = [], globalSearch, loading, specialGoodsCheck ,rowHandle} = props;
+  const {
+    tableRef,
+    tabkey,
+    globalColum = [],
+    globalSearch,
+    loading,
+    specialGoodsCheck,
+    rowHandle,
+  } = props;
 
   const searchItems = [
     ...globalSearch,
@@ -26,7 +34,7 @@ const AlConfirm = (props) => {
     {
       title: '审核结果',
       dataIndex: 'auditStatus',
-      render:(val)=>GOODS_CHECK_RESSTATUS[val]
+      render: (val) => GOODS_CHECK_RESSTATUS[val],
     },
     {
       title: '驳回原因',
@@ -36,15 +44,15 @@ const AlConfirm = (props) => {
   ];
 
   return (
-
     <TableDataBlock
+      noCard={false}
       cRef={tableRef}
       loading={loading}
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.auditIdString}`}
       dispatchType="specialGoodsCheck/fetchGetList"
-      params={{auditSearchType:tabkey}}
+      params={{ auditSearchType: tabkey }}
       {...specialGoodsCheck}
     ></TableDataBlock>
   );

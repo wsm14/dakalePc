@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Tabs, Alert, Form, notification } from 'antd';
+import { Tabs, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
 import RegularDetail from './Detail/RegularDetail';
@@ -41,7 +41,7 @@ const SpecialGoodDetail = (props) => {
 
   const handleTabChange = (val) => {
     if (val === '3') {
-    setRecordList([]);
+      setRecordList([]);
       dispatch({
         type: 'baseData/fetchGetLogDetail',
         payload: {

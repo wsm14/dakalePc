@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { BUSINESS_TYPE, SPECIAL_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 // 待审核
@@ -37,6 +36,7 @@ const NoCheck = (props) => {
 
   return (
     <TableDataBlock
+      noCard={false}
       cRef={tableRef}
       loading={loading}
       columns={getColumns}

@@ -21,6 +21,7 @@ import SpecialGoodDetail from './components/SpecialGoods/SpecialGoodDetail';
 import QrCodeShow from './components/SpecialGoods/Detail/QrCodeShow';
 import excelProps from './components/SpecialGoods/ExcelProps';
 import RemainModal from './components/SpecialGoods/Detail/RemainModal';
+import AuthConsumer from '@/layouts/AuthConsumer';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -35,8 +36,7 @@ const SpecialGoods = (props) => {
   const [qrcode, setQrcode] = useState({ url: null, title: '' }); // 商品码
   const [visibleRemain, setVisibleRemain] = useState(false);
 
-  const { cancel, ...other } = SPECIAL_RECOMMEND_TYPE;
-  const search_recommend = { notPromoted: '未推广', ...other };
+  const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
 
   useEffect(() => {
     if (childRef.current) {
@@ -316,7 +316,6 @@ const SpecialGoods = (props) => {
             visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'edit'),
           },
-
           {
             type: 'again', //重新发布
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
@@ -455,13 +454,15 @@ const SpecialGoods = (props) => {
         cardProps={{
           extra: (
             <ExtraButton list={btnList}>
-              <SpecialRecommendMenu
-                num={goodsList.length}
-                handleRecommend={(val) =>
-                  fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
-                }
-                disabled={!goodsList.length}
-              ></SpecialRecommendMenu>
+              <AuthConsumer auth={'recommendStatus'}>
+                <SpecialRecommendMenu
+                  num={goodsList.length}
+                  handleRecommend={(val) =>
+                    fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
+                  }
+                  disabled={!goodsList.length}
+                ></SpecialRecommendMenu>
+              </AuthConsumer>
             </ExtraButton>
           ),
         }}
@@ -509,7 +510,6 @@ const SpecialGoods = (props) => {
       ></RefuseModal>
       {/* 商品码 */}
       <QrCodeShow {...qrcode} onCancel={() => setQrcode({})}></QrCodeShow>
-
       {/* 库存总量 */}
       <RemainModal
         childRef={childRef}

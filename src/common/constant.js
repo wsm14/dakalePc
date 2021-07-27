@@ -220,7 +220,7 @@ export const ORDER_CLOSE_TYPE = {
 };
 
 // 退款订单状态
-export const REFUND_ORDERS_STATUS = ['已退款', '退款中', '取消退款'];
+export const REFUND_ORDERS_STATUS = ['退款中', '已退款', '取消退款'];
 
 // 哒人带货 订单状态
 export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, false, '已退款'];
@@ -477,9 +477,6 @@ export const ACTION_TYPE = {
 };
 // 周边特惠审核结果 审核状态0-待审核 1-已通过 2-已驳回 3-已关闭
 export const GOODS_CHECK_RESSTATUS = [false, '已通过', '已驳回', '已关闭'];
-
-// 审核类型
-export const CHECK_TYPE = ['新增审核', '编辑审核'];
 
 // 审核结果
 export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];

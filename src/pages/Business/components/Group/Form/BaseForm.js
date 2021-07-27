@@ -79,8 +79,8 @@ const BaseForm = (props) => {
       return {
         ...categoryObj,
         ...cityObj,
-        lat: address.latlnt[0],
-        lnt: address.latlnt[1],
+        lnt: address.latlnt[0],
+        lat: address.latlnt[1],
       };
     },
   }));
