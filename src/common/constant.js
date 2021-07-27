@@ -113,15 +113,6 @@ export const EXPERT_USER_STATUS = ['永久封停', '正常', '封停1天', '封�
 // 哒人类型
 export const EXPERT_TYPE = { normal: '用户', daren: '哒人', douzhang: '豆长' };
 
-// 哒人查询排序
-export const EXPERT_SORT = [
-  '按团队人数排序',
-  '按直推哒人排序',
-  '按分销-核销笔数排序',
-  '按分销-业绩流水排序',
-  '按累计分佣排序',
-];
-
 // 哒人提现规则
 export const EXPERT_IS_WITHDRAW = ['不可提现', '可提现'];
 
@@ -557,3 +548,5 @@ export const NEWS_TYPE = {
   companyEvents: '公司大事件',
   productNews: '产品动态',
 };
+
+export const DAREN_TEMP_FLAG = ['否', '是'];

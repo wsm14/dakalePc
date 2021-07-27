@@ -122,7 +122,8 @@ export function fetchExpertLevelSet(data) {
 
 // get 哒人业绩 - 统计
 export function fetchExpertUserAchievementList(params) {
-  return request('/admin/kol/listKolPerformance', {
+  // return request('/admin/kol/listKolPerformance', {
+    return request('/admin/achievement/daren', {
     params,
   });
 }
