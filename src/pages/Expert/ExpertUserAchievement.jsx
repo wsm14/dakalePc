@@ -63,7 +63,7 @@ const ExpertUserAchievement = (props) => {
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span>{val}</span>
-          <span style={{ color: '#999' }}>{row.kolUserId}</span>
+          <span style={{ color: '#999' }}>{row.userIdString}</span>
         </div>
       ),
     },
