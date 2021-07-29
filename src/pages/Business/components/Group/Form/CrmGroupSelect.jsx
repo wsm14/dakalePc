@@ -26,10 +26,10 @@ export const CrmBtn = connect(({ loading }) => ({
   return (
     <div style={{ textAlign: 'center' }}>
       <Space>
-        {children}
         <Button loading={loading} onClick={fetchCrmGrounpList} type="primary">
           搜索
         </Button>
+        {children}
       </Space>
     </div>
   );
@@ -54,25 +54,13 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
     {
       label: '集团名称',
       name: 'groupNameOrId',
-      addonAfter: (
-        <a
-          onClick={() => {
-            form.validateFields().then((val) => {
-              const { dcode, groupNameOrId } = val;
-              goSet({ allCode: dcode, cityName, groupName: groupNameOrId });
-            });
-          }}
-        >
-          创建店铺
-        </a>
-      ),
     },
   ];
 
   return (
     <>
       <FormCondition formItems={formItems} form={form} />
-      <div style={{ padding: '0 50px 0 200px', minHeight: 200 }}>
+      <div style={{ padding: '0 50px 0 200px', minHeight: 30 }}>
         {loading ? (
           <Spin></Spin>
         ) : (
@@ -134,6 +122,19 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
           ))
         )}
       </div>
+      <CrmBtn form={form}>
+        <Button
+          type="link"
+          onClick={() => {
+            form.validateFields().then((val) => {
+              const { dcode, groupNameOrId } = val;
+              goSet({ allCode: dcode, cityName, groupName: groupNameOrId });
+            });
+          }}
+        >
+          创建店铺
+        </Button>
+      </CrmBtn>
     </>
   );
 };

@@ -8,7 +8,7 @@ import UserForm from './Form/userForm';
 import UserDetailsForm from './Form/userDetailsForm';
 import ShopDetailsForm from './Form/shopDetailsForm';
 import ActiveSetOneForm from './Form/activeByOneForm';
-import CrmGroupSelect, { CrmBtn } from './Form/CrmGroupSelect';
+import CrmGroupSelect from './Form/CrmGroupSelect';
 import { TIME_YMD } from '@/common/timeConstant';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -249,7 +249,7 @@ const addGroups = (props) => {
         bodyStyle={{ paddingBottom: 80 }}
         footer={
           {
-            true: <CrmBtn form={formCrm}>{closeBtn}</CrmBtn>, // 认领搜索
+            true: closeBtn,
             false: Btn, // 原编辑
           }[crmSelect]
         }
