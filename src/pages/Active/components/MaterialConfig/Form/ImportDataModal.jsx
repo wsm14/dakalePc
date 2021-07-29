@@ -92,7 +92,7 @@ const ImportDataModal = (props) => {
   // 下载模版
   const handleDownExcelModel = () => {
     window.open(
-      `https://resource-new.dakale.net/excel/%E5%95%86%E6%88%B7%E4%BF%A1%E6%81%AF%E7%99%BB%E8%AE%B0%E8%A1%A8.xlsx`,
+      `https://resource-new.dakale.net/excel/%E7%94%A8%E6%88%B7%E6%89%8B%E6%9C%BA%E5%8F%B7.xlsx`,
     );
   };
 
