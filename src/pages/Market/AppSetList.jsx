@@ -36,7 +36,7 @@ const SysAppSet = (props) => {
     },
     {
       label: '状态',
-      name: 'showStatus',
+      name: 'bannerStatus',
       type: 'select',
       select: BANNER_SHOW_STATUS,
     },
@@ -116,7 +116,7 @@ const SysAppSet = (props) => {
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'showStatus',
+      dataIndex: 'bannerStatus',
       render: (val) => BANNER_SHOW_STATUS[val],
     },
     {

@@ -121,7 +121,6 @@ const ShareDrawer = (props) => {
   };
 
   useEffect(() => {
-    fetchGetPropertyJSON();
     fetchGetTasteTag();
   }, []);
 
@@ -216,6 +215,9 @@ const ShareDrawer = (props) => {
     width: 800,
     maskClosable: current === 0,
     onClose,
+    afterCallBack: () => {
+      fetchGetPropertyJSON();
+    },
     closeCallBack: () => {
       dispatch({ type: 'shareManage/closeBean' });
       setCurrent(0);

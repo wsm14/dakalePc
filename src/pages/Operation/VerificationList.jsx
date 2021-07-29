@@ -85,6 +85,11 @@ const VerificationList = (props) => {
         </Badge.Ribbon>
       ),
     },
+    /**
+     * groupIdString 有 merchantIdString 有 为子门店
+     * groupIdString 无 merchantIdString 有 为单店
+     * groupIdString 有 merchantIdString 无 为集团
+     */
     {
       title: '店铺',
       dataIndex: 'merchantName',
@@ -93,7 +98,11 @@ const VerificationList = (props) => {
           {/* //账号 */}
           <div>账号:{row.merchantMobile}</div>
           <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">单店</Tag>
+            <Tag color="magenta">
+              {!row.groupIdString
+                ? '单店'
+                : { true: '子门店', false: '集团' }[!row.merchantIdString]}
+            </Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>

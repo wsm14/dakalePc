@@ -40,8 +40,9 @@ const ShareManage = (props) => {
       name: 'title',
     },
     {
-      label: '集团/店铺名称',
-      name: 'merchantName',
+      label: '集团/店铺名',
+      name: 'ownerId',
+      type: 'merchant',
     },
     {
       label: '创建时间',

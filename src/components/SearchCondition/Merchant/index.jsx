@@ -24,11 +24,11 @@ const MerchantSelect = (props) => {
 
   // 搜索店铺
   const fetchGetMre = debounce((content) => {
-    if (!content || content.length < 2) return;
+    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
     dispatch({
       type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        content,
+        content: content.replace(/'/g, ''),
       },
     });
   }, 500);
