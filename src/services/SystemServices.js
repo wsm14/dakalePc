@@ -245,18 +245,20 @@ export function fetchWithdrawUpdate(data) {
 
 // 分佣模板 list  start
 
-//分佣模板 list
+// 分佣模板 list
 export function fetchDivisionTemplateList(params) {
   return request('/admin/division/template/listDivisionTemplate', {
     params,
   });
 }
-//分佣模板-详情
+
+// 分佣模板-详情
 export function fetchDivisionTemplateDetail(params) {
   return request('/admin/division/template/getTemplateById', {
     params,
   });
 }
+
 // 分佣模板-新增
 export function fetchDivisionTemplateAdd(data) {
   return request('/admin/division/template/createDivisionTemplate', {
@@ -272,3 +274,24 @@ export function fetchDivisionTemplateUpdate(data) {
     data,
   });
 }
+
+// 分佣模板 end
+
+// 全局配置
+
+// 全局配置设置分享图片
+export function fetchInviteImgSave(data) {
+  return request('/admin/shareImg/saveShareImg', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 获取分享图片
+export function fetchInviteImgList(params) {
+  return request('/admin/shareImg/getShareImg', {
+    params,
+  });
+}
+
+// 全局配置 end

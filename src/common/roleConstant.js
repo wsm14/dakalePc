@@ -34,6 +34,8 @@ export const ROLE_BUTTON_TYPE = {
   directSave: '直充卡豆充值',
   directDetail: '平台直充补贴详情',
   destoryDetail: '核销明细',
+  download: '下载',
+  downloadRecord: '下载记录',
 
   eye: '查看',
   end: '结束',
@@ -68,6 +70,7 @@ export const ROLE_BUTTON_TYPE = {
   push: '推送',
   placement: '置顶',
   peasDetail: '卡豆明细',
+  preview: '预览',
 
   qrCode: '获取二维码',
 
@@ -108,6 +111,7 @@ export const ROLE_BUTTON_TYPE = {
   saveClassify: '添加内容子类',
   savePClassify: '添加内容分类',
   shareTextEdit: '修改分享文案',
+  shareImg: '分享图',
 
   task: '营销卡豆充值',
   topic: '创作设置',

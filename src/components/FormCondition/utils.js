@@ -63,6 +63,7 @@ export const delectFormProps = (data) => {
   delete divProps.render;
   delete divProps.show;
   delete divProps.onChange;
+  delete divProps.onRemove;
   delete divProps.changeOnSelect;
   delete divProps.showTime;
   delete divProps.disabledDate;
