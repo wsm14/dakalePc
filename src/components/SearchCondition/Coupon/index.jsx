@@ -24,11 +24,11 @@ const CouponSelect = (props) => {
 
   // 搜索店铺
   const fetchGetMre = debounce((couponName) => {
-    if (!couponName || couponName.length < 2) return;
+    if (!couponName.replace(/'/g, '') || couponName.replace(/'/g, '').length < 2) return;
     dispatch({
       type: 'baseData/fetchGetCouponsSearch',
       payload: {
-        couponName,
+        couponName: couponName.replace(/'/g, ''),
       },
     });
   }, 500);
