@@ -62,7 +62,7 @@ const BusinessListComponent = (props) => {
       label: '店铺类型',
       name: 'groupFlag',
       type: 'select',
-      select: ['单店', '集团'],
+      select: ['单店', '子门店'],
     },
     {
       label: '地区',
