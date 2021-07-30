@@ -60,7 +60,13 @@ export default (function (list, id) {
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
   .map(
-    (item) => `<div class="handleGoNative" style="padding: ${vw(8)};border-radius: ${vw(
+    (
+      item,
+    ) => `<div class="handleGoNative"  data-key="specialActivityId,merchantId" data-specialActivityId=${
+      item.specialGoodsId
+    } data-merchantId=${
+      item.ownerIdString
+    } data-path="goods" data-linkType="inside" style="padding: ${vw(8)};border-radius: ${vw(
       4,
     )};margin-top: ${vw(
       12,
@@ -102,13 +108,9 @@ ${source
     )};font-weight: bold;color: #ef476f;background: #ffffff;">￥${computedPrice(
       item.realPrice,
       payC,
-    )}</div></div></div><div data-key="specialActivityId,merchantId" data-specialActivityId=${
-      item.specialGoodsId
-    } data-merchantId=${
-      item.ownerIdString
-    } data-path="goods" data-linkType="inside" style="padding: 0 ${vw(8)};height: ${vw(
-      27,
-    )};border-radius: ${vw(13)};font-size: ${vw(
+    )}</div></div></div><div style="padding: 0 ${vw(8)};height: ${vw(27)};border-radius: ${vw(
+      13,
+    )};font-size: ${vw(
       14,
     )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">
     ${

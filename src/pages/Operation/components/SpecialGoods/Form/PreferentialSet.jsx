@@ -51,6 +51,7 @@ const PreferentialSet = ({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
       });
+      setRadioData({ goodsType: initialValues.goodsType });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
