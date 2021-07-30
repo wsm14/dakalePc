@@ -45,11 +45,11 @@ export const EXPORT_TYPE = {
   darenList: '哒人列表',
   userRegistration: '用户注册明细',
   merchantMark: '到店打卡明细',
-  momentCollarBean: '视频领豆明细',
 };
 
 // 导出excel枚举 - 列表枚举映射
 export const EXPORT_LIST_TYPE = {
+  momentCollarBean: '视频领豆明细',
   verificationList: '核销列表',
 };
 
