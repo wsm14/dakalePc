@@ -25,6 +25,7 @@ const SetMealTable = (props) => {
           <div key={ins}>
             <div style={{ marginBottom: '10px' }}>单品组名称： {items.groupName}</div>
             <TableDataBlock
+              noCard={false}
               columns={getColumns}
               rowKey={(record) => `${record.goodsName}` + (0.5 - Math.random()).toString()}
               {...data}
