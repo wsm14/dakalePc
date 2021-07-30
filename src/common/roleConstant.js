@@ -35,7 +35,6 @@ export const ROLE_BUTTON_TYPE = {
   directDetail: '平台直充补贴详情',
   destoryDetail: '核销明细',
   download: '下载',
-  downloadRecord: '下载记录',
 
   eye: '查看',
   end: '结束',

@@ -31,7 +31,7 @@ export default [
         path: '/active/materialConfig',
         name: '营销物料配置',
         component: './Active/MaterialConfig',
-        buttons: ['downloadRecord', 'download', 'edit', 'preview'],
+        buttons: ['save', 'download'],
       },
       // 账户管理 account
       {

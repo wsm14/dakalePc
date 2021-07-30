@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Space } from 'antd';
-import FormComponents from '@/components/FormCondition';
 import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
 import ImportDataModal from './ImportDataModal';
 import DrawerCondition from '@/components/DrawerCondition';
+import FormComponents from '@/components/FormCondition';
 
 const CodeDrawerSet = (props) => {
-  const { childRef, visible, onClose } = props;
-  const { show = false, type, tabKey } = visible;
+  const { visible, onClose } = props;
+  const { show = false, tabKey } = visible;
 
   const [visibleMer, setVisibleMer] = useState(false); // 选择店铺弹窗
   const [mreList, setMreList] = useState({ keys: [], list: [] }); // 选择店铺后回显的数据
@@ -27,7 +27,7 @@ const CodeDrawerSet = (props) => {
 
   const modalProps = {
     visible: show,
-    title: '营销码配置',
+    title: `营销码配置 - ${{ user: '用户码', merchant: '商家码' }[tabKey]}`,
     onClose,
     footer: (
       <Button type="primary" onClick={handleSave}>
@@ -36,13 +36,8 @@ const CodeDrawerSet = (props) => {
     ),
   };
 
-  //批量导入事件2
-  const handleImport = () => {
-    setVisiblePort({
-      show: true,
-      tabKey,
-    });
-  };
+  //批量导入事件
+  const handleImport = () => setVisiblePort({ show: true, tabKey });
 
   //用户table
   const userColumns = [
@@ -80,7 +75,7 @@ const CodeDrawerSet = (props) => {
     },
     {
       label: '适用用户',
-      name: 'directChargeList',
+      name: 'userObjectList',
       type: 'formItem',
       visible: tabKey === 'user',
       rules: [{ required: true, message: '请选择用户' }],
@@ -88,23 +83,6 @@ const CodeDrawerSet = (props) => {
         <Space size="large">
           <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
             选择用户
-          </Button>
-          <Button type="primary" ghost onClick={handleImport}>
-            批量导入
-          </Button>
-        </Space>
-      ),
-    },
-    {
-      label: '选择店铺',
-      name: 'merchantIds',
-      type: 'formItem',
-      rules: [{ required: true, message: '请选择店铺' }],
-      visible: tabKey === 'merchant',
-      formItem: (
-        <Space size="large">
-          <Button type="primary" ghost onClick={() => setVisibleMer(true)}>
-            选择店铺
           </Button>
           <Button type="primary" ghost onClick={handleImport}>
             批量导入
@@ -126,12 +104,28 @@ const CodeDrawerSet = (props) => {
           onCancelShowSelect={() => setVisibleSelect(false)}
           onOk={(val) => {
             setUserList(val);
-            form.setFieldsValue({ userIdList: val });
+            form.setFieldsValue({ userObjectList: val });
           }}
         ></UserSelectShow>
       ),
     },
-
+    {
+      label: '选择店铺',
+      name: 'merchantIds',
+      type: 'formItem',
+      rules: [{ required: true, message: '请选择店铺' }],
+      visible: tabKey === 'merchant',
+      formItem: (
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleMer(true)}>
+            选择店铺
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
+      ),
+    },
     {
       label: '适用店铺',
       type: 'noForm',
@@ -146,23 +140,67 @@ const CodeDrawerSet = (props) => {
       ),
     },
     {
-      label: '选择模板',
+      label: '上传背景图',
       name: 'templateImg',
       type: 'upload',
+      onChange: ({ file }) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+          // 获取上传的图片的宽高
+          const img = new Image();
+          img.onload = function () {
+            form.setFieldsValue({
+              templateImg: e.target.result,
+              img: { height: img.naturalHeight, width: img.naturalWidth },
+            });
+          };
+          img.src = e.target.result;
+        };
+      },
+    },
+    {
+      label: '背景宽度',
+      name: ['img', 'height'],
+      hidden: true,
+    },
+    {
+      label: '背景高度',
+      name: ['img', 'width'],
+      hidden: true,
+    },
+    {
+      label: '二维码边长',
+      name: ['code', 'width'],
+    },
+    {
+      label: '二维码上边距',
+      type: 'number',
+      name: ['code', 'y'],
+      min: 0,
+      precision: 2,
+    },
+    {
+      label: '二维码左边距',
+      type: 'number',
+      name: ['code', 'x'],
+      min: 0,
+      precision: 2,
     },
     {
       label: '跳转链接',
       name: 'url',
       visible: tabKey === 'user',
+      extra: '请填小程序链接',
     },
     {
       label: '下载内容',
-      name: 'content',
+      name: 'codeType',
       type: 'radio',
       visible: tabKey === 'merchant',
       select: [
-        { value: '1', name: '支付营销码' },
-        { value: '2', name: '打卡营销码' },
+        { value: 'pay', name: '支付营销码' },
+        { value: 'daka', name: '打卡营销码' },
       ],
     },
   ];

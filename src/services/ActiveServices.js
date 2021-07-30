@@ -43,3 +43,14 @@ export async function fetchActiveDetail(params) {
     params,
   });
 }
+
+// 营销物料配置
+
+// get 营销物料配置 - 列表
+export async function fetchMaterialConfigList(params) {
+  return request('/admin/matterConfig/listMatterConfig', {
+    params,
+  });
+}
+
+// 营销物料配置 end
