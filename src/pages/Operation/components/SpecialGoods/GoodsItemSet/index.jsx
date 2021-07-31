@@ -1,4 +1,5 @@
 import React from 'react';
+import numeral from 'numeral';
 import { Form, Input, InputNumber, Button, Space } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import styles from './style.less';
@@ -63,6 +64,7 @@ const formList = ({ groupName, gooupKey, groupLength, handleRemove }) => {
                       fieldKey={[field.fieldKey, 'goodsPrice']}
                       wrapperCol={{ span: 24 }}
                       rules={[{ required: true, message: '请输入价格' }]}
+                      normalize={(val) => numeral(val).format('0.00')}
                     >
                       <InputNumber
                         style={{ width: '100%' }}

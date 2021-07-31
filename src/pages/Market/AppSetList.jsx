@@ -125,12 +125,12 @@ const SysAppSet = (props) => {
       render: (val, record) => [
         {
           type: 'down',
-          visible: record.showStatus === '1',
+          visible: record.bannerStatus === '1',
           click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 0 }),
         },
         {
           type: 'up',
-          visible: record.showStatus === '2',
+          visible: record.bannerStatus === '0',
           click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
         },
         {
@@ -139,7 +139,7 @@ const SysAppSet = (props) => {
         },
         {
           type: 'del',
-          visible: record.showStatus === '2',
+          visible: record.bannerStatus === '0',
           click: () => fetchBannerStatus({ bannerId: val, deleteFlag: 0 }),
         },
       ],
