@@ -92,7 +92,11 @@ const CodeDrawerSet = (props) => {
       <Button
         type="primary"
         onClick={handleSave}
-        loading={loading.effects['materialConfig/fetchMaterialConfigSave']}
+        loading={
+          loading.effects['materialConfig/fetchGetOssUploadFile'] ||
+          loading.effects['materialConfig/fetchMaterialConfigSave'] ||
+          loading.effects['materialConfig/fetchMaterialConfigUserCode']
+        }
       >
         保存
       </Button>
