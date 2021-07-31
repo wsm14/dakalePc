@@ -55,6 +55,22 @@ const VaneManage = (props) => {
     });
   };
 
+  const searchItems =[
+    // {
+    //   label: '选择城市',
+    //   name: 'city',
+    //   type: 'cascader',
+    //   changeOnSelect: true,
+    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    // },
+    {
+      label: '选择城市',
+      name: 'city',
+      type: 'select',
+      select:['杭州','湘西']
+    },
+  ]
+
   // table 表头
   const getColumns = [
     {
@@ -112,6 +128,7 @@ const VaneManage = (props) => {
           ),
         }}
         cRef={childRef}
+        searchItems={searchItems}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.configWindVaneId}`}

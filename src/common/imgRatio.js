@@ -22,3 +22,6 @@ export const VANE_ICON = 80 / 80;
 
 //商圈
 export const CIRCLE_ICON = 750 / 460;
+
+// 风向标配置中增加风向标banner图的配置
+export const VANE_BANNER = 702 / 140;

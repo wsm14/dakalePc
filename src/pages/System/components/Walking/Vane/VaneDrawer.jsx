@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
-import { VANE_ICON } from '@/common/imgRatio';
+import { VANE_ICON ,VANE_BANNER} from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -140,6 +140,14 @@ const VaneDrawer = (props) => {
       label: '行业名称',
       name: ['windVaneParamObject', 'categoryName'],
       hidden: true,
+    },
+    {
+      label: 'banner图:',
+      name: 'bannerIng',
+      type: 'upload',
+      extra:'请上传702*140尺寸png、jpeg格式图片',
+      // maxFile: 1,
+      imgRatio: VANE_BANNER,
     },
   ];
 
