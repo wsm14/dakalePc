@@ -53,4 +53,12 @@ export async function fetchMaterialConfigList(params) {
   });
 }
 
+// post 营销物料配置 - 获取用户二维码
+export function fetchMaterialConfigUserCode(data) {
+  return request('/admin/matterConfig/getUserMiniProgramQCode', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 营销物料配置 end

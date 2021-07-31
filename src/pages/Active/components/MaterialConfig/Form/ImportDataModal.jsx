@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
-import { connect } from 'umi';
 import * as XLSX from 'xlsx';
 import { UploadOutlined } from '@ant-design/icons';
 
 const ImportDataModal = (props) => {
-  const { dispatch, visible, onClose } = props;
+  const { visible, onClose, setMreList, setUserList } = props;
   const { show = false, tabKey } = visible;
   // 是否存在有效文件
   const [excelFile, setExcelFile] = useState(false);
@@ -34,7 +33,7 @@ const ImportDataModal = (props) => {
       excelRow: (item) => ({
         id: item['ID'],
         mobile: item['店铺账号'],
-        username: item['商户名称'],
+        merchantName: item['商户名称'],
       }),
       excelModelUrl:
         'https://resource-new.dakale.net/excel/%E8%90%A5%E9%94%80%E7%89%A9%E6%96%99-%E5%AF%BC%E5%85%A5%E5%95%86%E6%88%B6.xlsx',
@@ -47,14 +46,20 @@ const ImportDataModal = (props) => {
       message.error('excel无数据，导入失败');
       return;
     }
-    console.log(excelData);
-    onClose();
+    if (tabKey === 'user') {
+      setUserList(excelData);
+      onClose();
+    } else {
+      setMreList(excelData.map((i) => ({ userMerchantIdString: i.id, ...i })));
+      onClose();
+    }
   };
 
   // 上传文件模版
   const uploadFilesChange = (file) => {
     if (file.file.status == 'removed') {
       setExcelFile(false);
+      setExcelData([]);
       return;
     }
     // 通过FileReader对象读取文件
@@ -138,6 +143,4 @@ const ImportDataModal = (props) => {
     </Modal>
   );
 };
-export default connect(({ loading }) => ({
-  loading: loading.effects['waitMerchant/fetchImportExcel'],
-}))(ImportDataModal);
+export default ImportDataModal;

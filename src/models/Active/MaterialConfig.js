@@ -1,4 +1,4 @@
-import { fetchMaterialConfigList, fetchActiveDetail } from '@/services/ActiveServices';
+import { fetchMaterialConfigList, fetchMaterialConfigUserCode } from '@/services/ActiveServices';
 
 export default {
   namespace: 'materialConfig',
@@ -30,17 +30,11 @@ export default {
         },
       });
     },
-    *fetchActiveDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchActiveDetail, payload);
+    *fetchMaterialConfigUserCode({ payload, callback }, { call }) {
+      const response = yield call(fetchMaterialConfigUserCode, payload);
       if (!response) return;
       const { content } = response;
-      const { templateType, params } = content.activityTemplate;
-      callback({
-        ...content.activityTemplate,
-        type: templateType,
-        params: JSON.parse(params || '{}'),
-        handle: 'edit',
-      });
+      callback(content);
     },
   },
 };

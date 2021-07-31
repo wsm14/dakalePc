@@ -7,14 +7,13 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 
 const CodeDrawerSet = (props) => {
-  const { visible, onClose } = props;
+  const { visible, onClose, dispatch, loading } = props;
   const { show = false, tabKey } = visible;
 
   const [visibleMer, setVisibleMer] = useState(false); // 选择店铺弹窗
   const [mreList, setMreList] = useState({ keys: [], list: [] }); // 选择店铺后回显的数据
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
-  const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
-
+  const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
   const [visiblePort, setVisiblePort] = useState(false);
   const [form] = Form.useForm();
 
@@ -25,10 +24,25 @@ const CodeDrawerSet = (props) => {
     });
   };
 
+  // 获取用户小程序码
+  const handleGetUserCode = (data, callback) => {
+    dispatch({
+      type: 'materialConfig/fetchMaterialConfigUserCode',
+      payload: {
+        userObjectList: data,
+      },
+      callback,
+    });
+  };
+
   const modalProps = {
     visible: show,
     title: `营销码配置 - ${{ user: '用户码', merchant: '商家码' }[tabKey]}`,
     onClose,
+    closeCallBack: () => {
+      setMreList({ keys: [], list: [] });
+      setUserList({ keys: [], list: [] });
+    },
     footer: (
       <Button type="primary" onClick={handleSave}>
         保存
@@ -60,7 +74,7 @@ const CodeDrawerSet = (props) => {
   const merColumns = [
     {
       title: '店铺账号',
-      dataIndex: 'account',
+      dataIndex: 'mobile',
     },
     {
       title: '店铺名',
@@ -74,7 +88,7 @@ const CodeDrawerSet = (props) => {
       name: 'roleName',
     },
     {
-      label: '适用用户',
+      label: '选择用户',
       name: 'userObjectList',
       type: 'formItem',
       visible: tabKey === 'user',
@@ -98,20 +112,24 @@ const CodeDrawerSet = (props) => {
         <UserSelectShow
           maxLength={500}
           key="UserTable"
+          loading={loading.effects['materialConfig/fetchMaterialConfigUserCode']}
           columns={userColumns}
+          rowSelection={false}
           {...userList}
           showSelect={visibleSelect}
           onCancelShowSelect={() => setVisibleSelect(false)}
           onOk={(val) => {
-            setUserList(val);
-            form.setFieldsValue({ userObjectList: val });
+            handleGetUserCode(val.list, (list) => {
+              setUserList(val);
+              form.setFieldsValue({ userObjectList: list });
+            });
           }}
         ></UserSelectShow>
       ),
     },
     {
       label: '选择店铺',
-      name: 'merchantIds',
+      name: 'merchantObject',
       type: 'formItem',
       rules: [{ required: true, message: '请选择店铺' }],
       visible: tabKey === 'merchant',
@@ -134,8 +152,12 @@ const CodeDrawerSet = (props) => {
         <MreSelectShow
           key="MreTable"
           {...mreList}
+          rowSelection={false}
           columns={merColumns}
-          setMreList={setMreList}
+          setMreList={(val) => {
+            form.setFieldsValue({ merchantObject: val });
+            setMreList(val);
+          }}
         ></MreSelectShow>
       ),
     },
@@ -213,15 +235,34 @@ const CodeDrawerSet = (props) => {
         keys={mreList.keys}
         visible={visibleMer}
         mreList={mreList.list}
-        onOk={(val) => setMreList(val)}
+        onOk={(val) => {
+          setMreList(val);
+          form.setFieldsValue({ merchantObject: val });
+        }}
         onCancel={() => setVisibleMer(false)}
       ></MreSelect>
+      {/* 导入数据 */}
       <ImportDataModal
         visible={visiblePort}
         onClose={() => setVisiblePort(false)}
+        setMreList={(list) => {
+          form.setFieldsValue({ merchantObject: list });
+          setMreList({ list });
+        }}
+        setUserList={(list) => {
+          handleGetUserCode(list, (newList) => {
+            const userListNew = newList.map((i) => ({ userIdString: i.id, ...i }));
+            setUserList({ list: userListNew });
+            form.setFieldsValue({
+              userObjectList: newList,
+            });
+          });
+        }}
       ></ImportDataModal>
     </DrawerCondition>
   );
 };
 
-export default connect()(CodeDrawerSet);
+export default connect(({ loading }) => ({
+  loading,
+}))(CodeDrawerSet);
