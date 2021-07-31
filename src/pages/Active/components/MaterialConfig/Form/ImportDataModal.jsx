@@ -47,13 +47,8 @@ const ImportDataModal = (props) => {
       message.error('excel无数据，导入失败');
       return;
     }
-    dispatch({
-      type: 'waitMerchant/fetchImportExcel',
-      payload: {
-        undevelopedMerchantDTOS: excelData,
-      },
-      callback: () => onClose(),
-    });
+    console.log(excelData);
+    onClose();
   };
 
   // 上传文件模版
