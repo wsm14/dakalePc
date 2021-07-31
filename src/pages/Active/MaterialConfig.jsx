@@ -44,10 +44,10 @@ const MaterialConfig = ({ materialConfig, loading }) => {
     {
       type: 'handle',
       dataIndex: 'url',
-      render: (val, row) => [
+      render: (val) => [
         {
           type: 'download',
-          click: () => handleZipDown(row.matterName, val),
+          click: () => handleZipDown(val),
         },
       ],
     },

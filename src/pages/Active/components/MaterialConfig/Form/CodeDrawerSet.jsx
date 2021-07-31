@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Space } from 'antd';
 import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
+import { createZip } from '../downZip';
 import ImportDataModal from './ImportDataModal';
+import ZipCreateLoading from '../ZipCreateLoading';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 
 const CodeDrawerSet = (props) => {
-  const { visible, onClose, dispatch, loading } = props;
+  const { visible, childRef, onClose, dispatch, loading } = props;
   const { show = false, tabKey } = visible;
 
   const [visibleMer, setVisibleMer] = useState(false); // 选择店铺弹窗
@@ -15,12 +17,57 @@ const CodeDrawerSet = (props) => {
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
   const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
   const [visiblePort, setVisiblePort] = useState(false);
+  const [percent, setPercent] = useState({ show: false, percent: 0 }); // 文件绘制进度
   const [form] = Form.useForm();
+
+  // 提交数据
+  const handleSubmitData = (url, data) => {
+    dispatch({
+      type: 'materialConfig/fetchMaterialConfigSave',
+      payload: {
+        ...data,
+        url,
+        matterType: tabKey,
+      },
+      callback: () => {
+        childRef.current.fetchGetData();
+        onClose();
+      },
+    });
+  };
+
+  // 提交上传文件
+  const handleUpData = (zip, data) => {
+    dispatch({
+      type: 'baseData/fetchGetOssUploadFile',
+      payload: {
+        file: zip, // 文件
+        folderName: 'materials', // 文件夹名称
+        fileType: 'zip', // 文件类型
+        extension: '.zip', // 文件后缀名称
+      },
+      callback: (val) => handleSubmitData(val, data),
+    });
+  };
 
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'form');
+      setPercent({ show: true, percent: 0 });
+      const { userObjectList, page } = values;
+      if (tabKey === 'user') {
+        handleGetUserCode({ userObjectList, page }, (val) =>
+          createZip({ ...values, userObjectList: val }, tabKey, setPercent, (res, data) => {
+            handleUpData(res, data);
+            setPercent({ show: false });
+          }),
+        );
+        return;
+      }
+      createZip(values, tabKey, setPercent, (res, data) => {
+        handleUpData(res, data);
+        setPercent({ show: false });
+      });
     });
   };
 
@@ -28,9 +75,7 @@ const CodeDrawerSet = (props) => {
   const handleGetUserCode = (data, callback) => {
     dispatch({
       type: 'materialConfig/fetchMaterialConfigUserCode',
-      payload: {
-        userObjectList: data,
-      },
+      payload: data,
       callback,
     });
   };
@@ -44,7 +89,11 @@ const CodeDrawerSet = (props) => {
       setUserList({ keys: [], list: [] });
     },
     footer: (
-      <Button type="primary" onClick={handleSave}>
+      <Button
+        type="primary"
+        onClick={handleSave}
+        loading={loading.effects['materialConfig/fetchMaterialConfigSave']}
+      >
         保存
       </Button>
     ),
@@ -85,7 +134,7 @@ const CodeDrawerSet = (props) => {
   const formItems = [
     {
       label: '配置名称',
-      name: 'roleName',
+      name: 'matterName',
     },
     {
       label: '选择用户',
@@ -119,9 +168,9 @@ const CodeDrawerSet = (props) => {
           showSelect={visibleSelect}
           onCancelShowSelect={() => setVisibleSelect(false)}
           onOk={(val) => {
-            handleGetUserCode(val.list, (list) => {
-              setUserList(val);
-              form.setFieldsValue({ userObjectList: list });
+            setUserList(val);
+            form.setFieldsValue({
+              userObjectList: val.list.map((i) => ({ ...i, id: i.userIdString })),
             });
           }}
         ></UserSelectShow>
@@ -200,18 +249,18 @@ const CodeDrawerSet = (props) => {
       type: 'number',
       name: ['code', 'y'],
       min: 0,
-      precision: 2,
+      precision: 0,
     },
     {
       label: '二维码左边距',
       type: 'number',
       name: ['code', 'x'],
       min: 0,
-      precision: 2,
+      precision: 0,
     },
     {
       label: '跳转链接',
-      name: 'url',
+      name: 'page',
       visible: tabKey === 'user',
       extra: '请填小程序链接',
     },
@@ -220,16 +269,15 @@ const CodeDrawerSet = (props) => {
       name: 'codeType',
       type: 'radio',
       visible: tabKey === 'merchant',
-      select: [
-        { value: 'pay', name: '支付营销码' },
-        { value: 'daka', name: '打卡营销码' },
-      ],
+      select: { pay: '支付营销码', daka: '打卡营销码' },
     },
   ];
 
   return (
     <DrawerCondition {...modalProps}>
       <FormComponents form={form} formItems={formItems}></FormComponents>
+      {/* 等待绘制 */}
+      <ZipCreateLoading {...percent}></ZipCreateLoading>
       {/* 选择店铺选择*/}
       <MreSelect
         keys={mreList.keys}
@@ -237,7 +285,7 @@ const CodeDrawerSet = (props) => {
         mreList={mreList.list}
         onOk={(val) => {
           setMreList(val);
-          form.setFieldsValue({ merchantObject: val });
+          form.setFieldsValue({ merchantObject: val.list });
         }}
         onCancel={() => setVisibleMer(false)}
       ></MreSelect>
@@ -250,12 +298,10 @@ const CodeDrawerSet = (props) => {
           setMreList({ list });
         }}
         setUserList={(list) => {
-          handleGetUserCode(list, (newList) => {
-            const userListNew = newList.map((i) => ({ userIdString: i.id, ...i }));
-            setUserList({ list: userListNew });
-            form.setFieldsValue({
-              userObjectList: newList,
-            });
+          const userListNew = list.map((i) => ({ userIdString: i.id, ...i }));
+          setUserList({ list: userListNew });
+          form.setFieldsValue({
+            userObjectList: list,
           });
         }}
       ></ImportDataModal>

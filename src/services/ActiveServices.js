@@ -61,4 +61,12 @@ export function fetchMaterialConfigUserCode(data) {
   });
 }
 
+// post 营销物料配置 - 保存
+export function fetchMaterialConfigSave(data) {
+  return request('/admin/matterConfig/saveMatterConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 营销物料配置 end
