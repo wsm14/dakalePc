@@ -42,7 +42,7 @@ const MreSelect = ({
     },
     {
       title: '店铺账号',
-      dataIndex: 'account',
+      dataIndex: 'mobile',
     },
     {
       title: '所属商圈',
