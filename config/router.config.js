@@ -152,6 +152,12 @@ export default [
         buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
       },
       {
+        path: '/business/groupCopy',
+        name: '集团管理',
+        component: './Business/GroupList copy',
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
+      },
+      {
         path: '/business/settled',
         name: '入驻绑定查询',
         component: './Business/BusinessSettled',
