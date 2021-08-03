@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import { WORKER_BANK_STATUS } from '@/common/constant';
-import DrawerForms from './components/Group/addGroup';
-import SetDetailsForms from './components/Group/activateGroup';
-import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
-import GroupDetails from './components/Group/groupDetails';
+import TableDataBlock from '@/components/TableDataBlock';
 import StoreList from './components/Group/StoreList';
+import DrawerForms from './components/Group/addGroup';
+import GroupDetails from './components/Group/groupDetails';
+import SetDetailsForms from './components/Group/activateGroup';
 
 const tableList = (props) => {
   const { dispatch, list, visible, visible1, visible2, tradeList, loading } = props;
