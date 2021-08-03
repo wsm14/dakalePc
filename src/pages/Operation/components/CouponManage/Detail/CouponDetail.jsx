@@ -122,14 +122,14 @@ const GoodsDetail = (props) => {
           detail.reduceObject.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
     },
-    {
-      label: '优惠券介绍',
-      name: 'couponsDesc',
-    },
-    {
-      label: '优惠券图片',
-      name: 'couponDescImg',
-    },
+    // {
+    //   label: '优惠券介绍',
+    //   name: 'couponsDesc',
+    // },
+    // {
+    //   label: '优惠券图片',
+    //   name: 'couponDescImg',
+    // },
   ];
   //分佣配置
   const commissionItem = [
