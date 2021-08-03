@@ -12,6 +12,7 @@ import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
+import ReteDrawerSet from './components/RateDrawerSet';
 import { checkCityName } from '@/utils/utils';
 
 const BusinessListComponent = (props) => {
@@ -27,6 +28,7 @@ const BusinessListComponent = (props) => {
   const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
   const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
   const [qrCodeBag, setQrCodeBag] = useState({ show: false }); // 二维码背景图
+  const [visibleRate, setVisibleRate] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -217,9 +219,20 @@ const BusinessListComponent = (props) => {
           type: 'diary',
           click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
         },
+        {
+          type: 'rate',
+          title: '费率',
+          click: () => fetchGetRate({ type: 'merchant', identificationId: val, record }),
+        },
       ],
     },
   ];
+
+  // 费率
+  const fetchGetRate = (payload) => {
+    const { type, record } = payload;
+    setVisibleRate({ type, show: true, record });
+  };
 
   // 获取日志信息
   const fetchGetLogData = (payload) => {
@@ -351,6 +364,8 @@ const BusinessListComponent = (props) => {
       ></BusinessVerificationCodeSet>
       {/* 设置二维码背景图片 */}
       <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
+      {/* 费率设置 */}
+      <ReteDrawerSet visible={visibleRate} onClose={() => setVisibleRate(false)}></ReteDrawerSet>
     </>
   );
 };

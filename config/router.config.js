@@ -143,13 +143,14 @@ export default [
           'status',
           'bussinessStatus',
           'diary',
+          'rate',
         ],
       },
       {
         path: '/business/group',
         name: '集团管理',
         component: './Business/GroupList',
-        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList', 'rate'],
       },
       {
         path: '/business/groupCopy',
