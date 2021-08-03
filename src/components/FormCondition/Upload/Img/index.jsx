@@ -84,6 +84,7 @@ const UploadBlock = (props) => {
     maxFile,
     maxSize,
     onChange = undefined,
+    onRemove,
     isCut,
     imgRatio,
     disabled,
@@ -123,13 +124,19 @@ const UploadBlock = (props) => {
   });
 
   // 查看图片视频
-  const handlePreview = async (file, fileType) => {
+  const handlePreview = async (file) => {
+    const fileExtr = file.name.replace(/.+\./, '.');
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
-    const showFile = file.originFileObj ? file.originFileObj : file.url || file.preview;
+    const showFile =
+      fileExtr === '.gif'
+        ? file.url || file.preview
+        : file.originFileObj
+        ? file.originFileObj
+        : file.url || file.preview;
     setPreviewImage(showFile);
-    setPreviewTitle({ uid: file.uid, key: name, fileType });
+    setPreviewTitle({ uid: file.uid, key: name, fileType: fileExtr });
     setPreviewVisible(true);
   };
 
@@ -205,12 +212,11 @@ const UploadBlock = (props) => {
    * 选择图片上传配置
    */
   const handleUpProps = () => {
-    const onPreview = disabled
-      ? {}
-      : { onPreview: (file) => !disabled && handlePreview(file, 'image') };
+    const onPreview = disabled ? {} : { onPreview: (file) => !disabled && handlePreview(file) };
     return {
       accept: 'image/*',
       ...onPreview,
+      onRemove,
       onChange: (value) => {
         const { fileList } = value;
         const newFileList = !maxSize
@@ -218,25 +224,19 @@ const UploadBlock = (props) => {
           : // dklFileStatus  === out 的值 不允许上传
             fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
-          const fileName = value.file.name;
-          imageCompress(value.file.originFileObj || value.file).then(({ file, blob }) => {
-            // 是否传入时裁剪
-            if (imgRatio || isCut) {
+          const fileExtr = value.file.name.replace(/.+\./, '.');
+          // 是否传入时裁剪
+          if ((imgRatio || isCut) && fileExtr !== '.gif') {
+            imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
               blob.uid = value.file.uid;
               blob.name = value.file.name;
-              handlePreview(blob, 'image');
+              handlePreview(blob);
               return;
-            }
-            newFileList.map((fi) => {
-              if (fi.name == fileName) {
-                fi.originFileObj = file;
-              }
-              return fi;
             });
-            setFileLists(newFileList.slice(0, maxFile || 999));
-            form.setFieldsValue({
-              [fileKeyName]: { ...value, fileList: newFileList.slice(0, maxFile || 999) },
-            });
+          }
+          setFileLists(newFileList.slice(0, maxFile || 999));
+          form.setFieldsValue({
+            [fileKeyName]: { ...value, fileList: newFileList.slice(0, maxFile || 999) },
           });
           if (onChange) onChange(value);
         } else {
@@ -277,20 +277,26 @@ const UploadBlock = (props) => {
       </DragAndDropHOC>
       <Modal
         destroyOnClose
-        title="编辑图片"
+        title={previewTitle.fileType === '.gif' ? '查看图片' : '编辑图片'}
         width={950}
-        visible={previewVisible && previewTitle.fileType === 'image'}
-        maskClosable={false}
+        visible={previewVisible}
+        maskClosable={previewTitle.fileType === '.gif'}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
         zIndex={100000}
       >
-        <ImgCutView
-          uploadedImageFile={previewImage}
-          onSubmit={handleCutImg}
-          imgRatio={imgRatio}
-          onClose={() => setPreviewVisible(false)}
-        />
+        {previewTitle.fileType === '.gif' ? (
+          <div style={{ textAlign: 'center' }}>
+            <img src={previewImage} alt="" srcset="" />
+          </div>
+        ) : (
+          <ImgCutView
+            uploadedImageFile={previewImage}
+            onSubmit={handleCutImg}
+            imgRatio={imgRatio}
+            onClose={() => setPreviewVisible(false)}
+          />
+        )}
       </Modal>
     </>
   );
