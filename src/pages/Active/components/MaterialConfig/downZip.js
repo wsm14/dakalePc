@@ -19,9 +19,11 @@ const mreCodeProps = {
 const tabTypeProps = {
   merchant: {
     key: 'merchantName',
+    nameKey: 'merchantName',
   },
   user: {
     key: 'mobile',
+    nameKey: 'username',
   },
 };
 
@@ -56,6 +58,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
     templateImg,
     code = {},
     img = {},
+    name = {},
     codeType,
     ...ohter
   } = data;
@@ -88,6 +91,11 @@ export const createZip = (data, tabKey, setPercent, callback) => {
 
     let codeGet = obj.userQRCode; // 用户二维码
     let fileName = obj[typeProps.key]; // 用户手机号
+    const nameText = obj[typeProps.nameKey]; // 名称
+
+    const textStyle = {
+      textAlign: 'center',
+    };
     // 商家码数据
     if (tabKey === 'merchant') {
       fileName = mreCodeProps[codeType].name + fileName;
@@ -100,6 +108,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
         parts: [
           { type: 'image', url: templateImg, ...img },
           { type: 'image', url: codeGet, height: code.width, ...code },
+          { type: 'text', ...textStyle, text: nameText, ...name, size: `${name.size}px` },
         ],
       },
       (err, imgData) => {

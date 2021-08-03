@@ -22,7 +22,7 @@ const MaterialConfig = ({ materialConfig, loading }) => {
   const [visibleSet, setVisibleSet] = useState(false);
 
   useEffect(() => {
-    tableRef.current.fetchGetData({ matterType: tabKey });
+    tableRef.current.fetchGetData({ matterType: tabKey, page: 1 });
   }, [tabKey]);
 
   const searchItems = [
@@ -76,6 +76,7 @@ const MaterialConfig = ({ materialConfig, loading }) => {
   return (
     <>
       <TableDataBlock
+        firstFetch={false}
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,

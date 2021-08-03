@@ -245,22 +245,48 @@ const CodeDrawerSet = (props) => {
       hidden: true,
     },
     {
-      label: '二维码边长',
+      label: '二维码边长(px)',
       name: ['code', 'width'],
     },
     {
-      label: '二维码上边距',
+      label: '二维码上边距(px)',
       type: 'number',
       name: ['code', 'y'],
       min: 0,
       precision: 0,
     },
     {
-      label: '二维码左边距',
+      label: '二维码左边距(px)',
       type: 'number',
       name: ['code', 'x'],
       min: 0,
       precision: 0,
+    },
+    {
+      label: '名称上边距(px)',
+      type: 'number',
+      name: ['name', 'y'],
+      min: 0,
+      precision: 0,
+    },
+    {
+      label: '名称颜色',
+      name: ['name', 'color'],
+    },
+    {
+      label: '名称大小(px)',
+      type: 'number',
+      name: ['name', 'size'],
+      min: 12,
+      precision: 0,
+    },
+    {
+      label: '名称透明度',
+      type: 'number',
+      name: ['name', 'opacity'],
+      min: 0,
+      max: 1,
+      precision: 1,
     },
     {
       label: '跳转链接',
@@ -277,9 +303,17 @@ const CodeDrawerSet = (props) => {
     },
   ];
 
+  const defineValue = {
+    name: { color: '#ffffff', size: 30, opacity: 0.6 },
+  };
+
   return (
     <DrawerCondition {...modalProps}>
-      <FormComponents form={form} formItems={formItems}></FormComponents>
+      <FormComponents
+        form={form}
+        formItems={formItems}
+        initialValues={defineValue}
+      ></FormComponents>
       {/* 等待绘制 */}
       <ZipCreateLoading {...percent}></ZipCreateLoading>
       {/* 选择店铺选择*/}
