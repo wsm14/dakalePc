@@ -90,7 +90,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
       });
     }, 100);
 
-    const { before = '', after = '', size, ...ohter } = name;
+    const { before = '', after = '', size, ...ohterName } = name;
 
     let codeGet = obj.userQRCode; // 用户二维码
     let fileName = obj[typeProps.key]; // 用户手机号
@@ -109,7 +109,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
         parts: [
           { type: 'image', url: templateImg, ...img },
           { type: 'image', url: codeGet, height: code.width, ...code },
-          { type: 'text', ...textStyle, text: nameText, ...ohter, size: `${size}px` },
+          { type: 'text', ...textStyle, text: nameText, ...ohterName, size: `${size}px` },
         ],
       },
       (err, imgData) => {
