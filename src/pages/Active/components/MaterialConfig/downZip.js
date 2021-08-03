@@ -94,9 +94,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
     let fileName = obj[typeProps.key]; // 用户手机号
     const nameText = obj[typeProps.nameKey]; // 名称
 
-    const textStyle = {
-      textAlign: 'center',
-    };
+    const textStyle = { textAlign: 'center' };
     // 商家码数据
     if (tabKey === 'merchant') {
       fileName = mreCodeProps[codeType].name + fileName;
