@@ -38,6 +38,7 @@ const CodeDrawerSet = (props) => {
 
   // 提交上传文件
   const handleUpData = (zip, data) => {
+    setPercent({ show: true, percent: 100, text: '文件上传中......' });
     dispatch({
       type: 'baseData/fetchGetOssUploadFile',
       payload: {
@@ -46,27 +47,28 @@ const CodeDrawerSet = (props) => {
         fileType: 'zip', // 文件类型
         extension: '.zip', // 文件后缀名称
       },
-      callback: (val) => handleSubmitData(val, data),
+      callback: (val) => {
+        setPercent({ show: false });
+        handleSubmitData(val, data);
+      },
     });
   };
 
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      setPercent({ show: true, percent: 0 });
+      setPercent({ show: true, percent: 0, text: '文件绘制中......' });
       const { userObjectList, page } = values;
       if (tabKey === 'user') {
         handleGetUserCode({ userObjectList, page }, (val) =>
           createZip({ ...values, userObjectList: val }, tabKey, setPercent, (res, data) => {
             handleUpData(res, data);
-            setPercent({ show: false });
           }),
         );
         return;
       }
       createZip(values, tabKey, setPercent, (res, data) => {
         handleUpData(res, data);
-        setPercent({ show: false });
       });
     });
   };

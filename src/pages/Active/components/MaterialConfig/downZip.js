@@ -86,6 +86,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
       setPercent({
         show: true,
         percent: Math.floor(((index + 1) / dataList.length) * 100 * 100) / 100,
+        text: '文件绘制中......',
       });
     }, 100);
 

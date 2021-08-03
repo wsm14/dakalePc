@@ -1,7 +1,7 @@
 import React from 'react';
 import { Progress } from 'antd';
 
-const ZipCreateLoading = ({ show = false, percent = 0 }) => {
+const ZipCreateLoading = ({ show = false, percent = 0, text }) => {
   return show ? (
     <div
       style={{
@@ -14,6 +14,7 @@ const ZipCreateLoading = ({ show = false, percent = 0 }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column',
         zIndex: 9999,
       }}
     >
@@ -25,6 +26,7 @@ const ZipCreateLoading = ({ show = false, percent = 0 }) => {
         }}
         percent={percent}
       />
+      <div style={{ marginTop: 10, color: '#ffffff', fontSize: 16 }}>{text}</div>
     </div>
   ) : null;
 };
