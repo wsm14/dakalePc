@@ -15,7 +15,10 @@ const PromotionMoneySet = (props) => {
   // 提交表单
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
-      const apiUrl = { extend: 'sysTradeList/fetchPromotionMoneySet', scan: '' }[type];
+      const apiUrl = {
+        extend: 'sysTradeList/fetchPromotionMoneySet',
+        scan: 'sysTradeList/fetchTradeScanCommissionSet',
+      }[type];
       dispatch({
         type: apiUrl, //推广费设置
         payload: { categoryId: info.categoryIdString, ...values },
@@ -30,7 +33,7 @@ const PromotionMoneySet = (props) => {
   const formItems = [
     {
       label: { extend: '推广费比例', scan: '扫码付服务费比例' }[type],
-      name: 'promotionFee', //
+      name: { extend: 'promotionFee', scan: 'scanCommissionRatio' }[type], //
       addRules: [{ pattern: NUM_PATTERN, message: '请输正整数' }],
       addonAfter: '%',
     },
@@ -56,5 +59,7 @@ const PromotionMoneySet = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['sysTradeList/fetchPromotionMoneySet'],
+  loading:
+    loading.effects['sysTradeList/fetchPromotionMoneySet'] ||
+    loading.effects['sysTradeList/fetchTradeScanCommissionSet'],
 }))(PromotionMoneySet);

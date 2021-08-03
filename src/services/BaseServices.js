@@ -113,6 +113,21 @@ export function fetchTradeWeChat(data) {
     data,
   });
 }
+// 行业设置-扫码付服务费比例
+export function fetchTradeScanCommissionSet(data) {
+  return request('/admin/categoryScanCommission/setCategoryScanCommission', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 获取行业-扫码付服务费比例
+
+export function fetchTradeScanCommission(params) {
+  return request('/admin/categoryScanCommission/getCategoryScanCommission', {
+    params,
+  });
+}
 
 // post 帐号设置 - 修改密码
 export function fetchPassWordEdit(data) {

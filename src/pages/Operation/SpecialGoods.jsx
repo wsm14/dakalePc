@@ -74,6 +74,12 @@ const SpecialGoods = (props) => {
       select: SPECIAL_STATUS,
     },
     {
+      label: '商品状态',
+      name: 'deleteFlag',
+      type: 'select',
+      select: ['已删除','未删除'],
+    },
+    {
       label: '活动有效期',
       type: 'rangePicker',
       name: 'activityStartTime',
@@ -498,6 +504,7 @@ const SpecialGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        params={{deleteFlag:'1'}}
         rowKey={(record) => `${record.specialGoodsId}`}
         rowSelection={{
           getCheckboxProps: ({ status, deleteFlag }) => ({

@@ -35,16 +35,16 @@ const SysTradeSet = (props) => {
       align: 'center',
       dataIndex: 'categoryName',
     },
-    // {
-    //   title: '扫码付服务费',
-    //   align: 'center',
-    //   dataIndex: 'parentId',
-    //   render: (val, record) => (
-    //     <AuthConsumer auth="edit" show={!val}>
-    //       <a onClick={() => handlePromotionMoneyGet(record, 'scan')}>设置</a>
-    //     </AuthConsumer>
-    //   ),
-    // },
+    {
+      title: '扫码付服务费',
+      align: 'center',
+      dataIndex: 'parentId',
+      render: (val, record) => (
+        <AuthConsumer auth="edit" show={!val}>
+          <a onClick={() => handlePromotionMoneyGet(record, 'scan')}>设置</a>
+        </AuthConsumer>
+      ),
+    },
     {
       title: '核销订单服务费',
       align: 'center',
@@ -153,11 +153,15 @@ const SysTradeSet = (props) => {
     });
   };
 
-  // 获取推广费详情 -> 新增/修改推广费
+  // 获取推广费详情 -> 新增/修改推广费  获取行业-扫码付服务费比例
   const handlePromotionMoneyGet = (info, type) => {
     const { categoryIdString: categoryId } = info;
+    const apiUrl = {
+      scan: 'sysTradeList/fetchTradeScanCommission',
+      extend: 'sysTradeList/fetchPromotionMoneyGet',
+    }[type];
     dispatch({
-      type: 'sysTradeList/fetchPromotionMoneyGet',
+      type: apiUrl,
       payload: { categoryId },
       callback: (detail) => setMoneyVisible({ show: true, type, info, detail }),
     });
