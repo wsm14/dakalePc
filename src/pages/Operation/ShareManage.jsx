@@ -1,22 +1,22 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
+import { checkCityName } from '@/utils/utils';
 import { MreSelect } from '@/components/MerUserSelectTable';
 import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
+import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import ShareDetail from './components/Share/Detail/ShareDetail';
-import VideoPeasDetail from './components/Share/Detail/VideoPeasDetail';
-import ShareHandleDetail from './components/Share/Detail/ShareHandleDetail';
-import ShareVideoDetail from './components/Share/Detail/ShareVideoDetail';
-import ShareDrawer from './components/Share/ShareDrawer';
-import ShareLikeDateSet from './components/Share/ShareLikeDateSet';
-import Ellipsis from '@/components/Ellipsis';
-import RewardPeo from './components/Share/RewardPeo';
+import RewardPeo from './components/ShareManage/RewardPeo';
+import ShareDrawer from './components/ShareManage/ShareDrawer';
+import ShareDetail from './components/ShareManage/Detail/ShareDetail';
+import ShareLikeDateSet from './components/ShareManage/ShareLikeDateSet';
+import VideoPeasDetail from './components/ShareManage/Detail/VideoPeasDetail';
+import ShareVideoDetail from './components/ShareManage/Detail/ShareVideoDetail';
+import ShareHandleDetail from './components/ShareManage/Detail/ShareHandleDetail';
 import styles from './style.less';
-import { checkCityName } from '@/utils/utils';
 
 const ShareManage = (props) => {
   const { shareManage, loading, loadingRefuse, tradeList, dispatch } = props;

@@ -85,6 +85,7 @@ const ShareDrawer = (props) => {
                       ...dataStorage,
                       ...values,
                       ...tasteData,
+                      ...values,
                       videoUrl: undefined,
                       ageData: undefined,
                       cityList: undefined,

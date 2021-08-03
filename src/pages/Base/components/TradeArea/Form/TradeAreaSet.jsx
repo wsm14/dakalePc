@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import { AMAP_KEY } from '@/common/constant';
+import { CIRCLE_ICON } from '@/common/imgRatio';
 import { Map, Marker } from 'react-amap';
 import { Form, Button, Space, Select, Spin, Empty, message } from 'antd';
 import FormComponents from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import aliOssUpload from '@/utils/aliOssUpload';
 
 const TradeAreaSet = (props) => {
   const { info = {}, onSubmit, visible, onClose, loading } = props;
@@ -27,8 +29,10 @@ const TradeAreaSet = (props) => {
   // 新增 / 修改
   const handleUpdata = () => {
     form.validateFields().then((values) => {
-      delete values.provinceCode;
-      onSubmit({ ...info, ...values });
+      const { icon, provinceCode, ...other } = values;
+      aliOssUpload(icon).then((res) => {
+        onSubmit({ ...info, ...other, icon: res.toString() });
+      });
     });
   };
 
@@ -185,6 +189,13 @@ const TradeAreaSet = (props) => {
       suffix: '米',
       placeholder: '请输入商圈半径（米）',
       addRules: [{ pattern: /^\d+$/, message: '请输入数字' }],
+    },
+    {
+      label: '商圈图片',
+      type: 'upload',
+      name: 'icon',
+      maxFile: 1,
+      imgRatio: CIRCLE_ICON,
     },
     {
       label: '启用状态',

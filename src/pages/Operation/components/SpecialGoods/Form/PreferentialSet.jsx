@@ -340,7 +340,6 @@ const PreferentialSet = ({
         },
       ],
     },
-
     {
       title: `设置${goodsTypeName}介绍`,
       label: `${goodsTypeName}介绍`,
@@ -353,7 +352,7 @@ const PreferentialSet = ({
       label: `${goodsTypeName}图片`,
       name: 'goodsDescImg',
       type: 'upload',
-      maxFile: 5,
+      maxFile: 20,
       rules: [{ required: false }],
     },
   ];

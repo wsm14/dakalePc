@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Space, Tag, Spin } from 'antd';
+import { Button, Space, Tag, Spin, Empty } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 export const CrmBtn = connect(({ loading }) => ({
   loading: loading.effects['groupSet/fetchCrmGrounpList'],
-}))(({ dispatch, form, children, goSet, loading }) => {
+}))(({ dispatch, form, children, loading }) => {
   // 搜索店铺列表
   const fetchCrmGrounpList = () => {
     form.validateFields().then((val) => {
@@ -24,7 +24,7 @@ export const CrmBtn = connect(({ loading }) => ({
   };
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: 'center', marginTop: 15, paddingLeft: 170 }}>
       <Space>
         <Button loading={loading} onClick={fetchCrmGrounpList} type="primary">
           搜索
@@ -63,7 +63,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
       <div style={{ padding: '0 50px 0 200px', minHeight: 30 }}>
         {loading ? (
           <Spin></Spin>
-        ) : (
+        ) : crmList.length ? (
           crmList.map((item) => (
             <div
               key={item.merchantGroupIdString}
@@ -120,6 +120,8 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
               </Button>
             </div>
           ))
+        ) : (
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
       </div>
       <CrmBtn form={form}>

@@ -15,22 +15,23 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
+      // 活动设置 active
       {
-        name: '活动设置',
-        path: '/active',
-        routes: [
-          {
-            path: '/active/template',
-            name: '营销活动模版',
-            component: './Active/ActiveTemplate',
-          },
-          {
-            path: '/active/list',
-            name: '活动列表',
-            component: './Active/ActiveList',
-            buttons: ['edit', 'copy', 'del'],
-          },
-        ],
+        path: '/active/template',
+        name: '营销活动模版',
+        component: './Active/ActiveTemplate',
+      },
+      {
+        path: '/active/list',
+        name: '活动列表',
+        component: './Active/ActiveList',
+        buttons: ['edit', 'copy', 'del'],
+      },
+      {
+        path: '/active/materialConfig',
+        name: '营销物料配置',
+        component: './Active/MaterialConfig',
+        buttons: ['save', 'download'],
       },
       // 账户管理 account
       {
@@ -111,6 +112,7 @@ export default [
         component: './Base/PeasShare',
         buttons: ['save', 'del', 'edit'],
       },
+
       {
         name: '修改密码',
         path: '/password',
@@ -426,6 +428,7 @@ export default [
           'goodsCode',
           'againUp',
           'addRemain',
+          'shareImg',
         ],
       },
       {
@@ -483,6 +486,11 @@ export default [
         name: '城市管理',
         component: './System/ManageCity',
         buttons: ['save', 'del', 'edit', 'status'],
+      },
+      {
+        path: '/system/globalConfig',
+        name: '全局配置',
+        component: './System/GlobalConfig',
       },
       {
         path: '/system/pageset',

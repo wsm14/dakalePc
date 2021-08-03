@@ -1,26 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import { WORKER_BANK_STATUS } from '@/common/constant';
-import DrawerForms from './components/Group/addGroup';
-import SetDetailsForms from './components/Group/activateGroup';
-import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
-import GroupDetails from './components/Group/groupDetails';
+import TableDataBlock from '@/components/TableDataBlock';
 import StoreList from './components/Group/StoreList';
+import DrawerForms from './components/Group/addGroup';
+import GroupDetails from './components/Group/groupDetails';
+import SetDetailsForms from './components/Group/activateGroup';
 
 const tableList = (props) => {
-  const {
-    dispatch,
-    list,
-    visible,
-    visible1,
-    visible2,
-    tradeList,
-    loading,
-    // categoryDTOList
-  } = props;
+  const { dispatch, list, visible, visible1, visible2, tradeList, loading } = props;
 
+  const childRef = useRef();
   const [storeShow, setStoreShow] = useState(false); // 门店列表展示
 
   useEffect(() => {
@@ -76,7 +68,7 @@ const tableList = (props) => {
       callback: callback,
     });
   };
-  const childRef = useRef();
+
   const searchItems = [
     {
       label: '集团名称',
@@ -98,10 +90,11 @@ const tableList = (props) => {
       select: WORKER_BANK_STATUS,
     },
   ];
+
   // table 表头
   const getColumns = [
     {
-      title: '集团名称',
+      title: '集团名称/集团ID',
       dataIndex: 'groupName',
       render: (val, row) => `${val}\n${row.merchantGroupIdString || '--'}`,
     },
@@ -115,7 +108,6 @@ const tableList = (props) => {
       title: '经营类目',
       align: 'center',
       dataIndex: 'categoryName',
-      ellipsis: true,
     },
     {
       title: '所在地区',
@@ -140,10 +132,9 @@ const tableList = (props) => {
       title: '联系电话',
       align: 'center',
       dataIndex: 'contactMobile',
-      render: (val) => `${val}`,
     },
     {
-      title: '核销订单服务费(%)',
+      title: '服务费(%)',
       align: 'center',
       dataIndex: 'commissionRatio',
       render: (val) => val + '%',
@@ -158,7 +149,7 @@ const tableList = (props) => {
       type: 'handle',
       width: 130,
       dataIndex: 'merchantGroupIdString',
-      render: (val, record, index) => [
+      render: (val, row, index) => [
         {
           type: 'edit',
           click: () => {
@@ -183,8 +174,8 @@ const tableList = (props) => {
           },
         },
         {
-          type: 'activate',
-          visible: record.bankStatus === '0',
+          type: 'activate', // 激活
+          visible: row.bankStatus !== '3', // 激活成功 3 不显示
           click: () => {
             fetchSave({
               visible1: true,
@@ -195,9 +186,9 @@ const tableList = (props) => {
           },
         },
         {
-          type: 'storeList',
-          visible: record.bankStatus === '3',
-          click: () => setStoreShow({ show: true, detail: record }),
+          type: 'storeList', // 店铺列表
+          visible: row.bankStatus === '3',
+          click: () => setStoreShow({ show: true, detail: row }),
         },
       ],
     },
@@ -262,5 +253,4 @@ export default connect(({ sysTradeList, groupSet, loading }) => ({
   ...groupSet,
   loading: loading.models.groupSet,
   tradeList: sysTradeList.list.list,
-  categoryDTOList: sysTradeList.categoryDTOList,
 }))(tableList);

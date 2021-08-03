@@ -3,11 +3,11 @@ import { connect } from 'umi';
 import { message } from 'antd';
 import { GOODS_TYPE, MRE_SURE_TYPE, MRE_STOCK_STATUS, GOODS_CLASS_TYPE } from '@/common/constant';
 import debounce from 'lodash/debounce';
-import CloseRefuse from './components/Goods/Form/CloseRefuse';
-import StockSet from './components/Goods/Form/StockSet';
+import CloseRefuse from './components/GoodsManage/Form/CloseRefuse';
+import StockSet from './components/GoodsManage/Form/StockSet';
 import TableDataBlock from '@/components/TableDataBlock';
-import GoodsHandleDetail from './components/Goods/Detail/HandleDetail';
-import GoodsDrawer from './components/Goods/GoodsDrawer';
+import GoodsHandleDetail from './components/GoodsManage/Detail/HandleDetail';
+import GoodsDrawer from './components/GoodsManage/GoodsDrawer';
 import styles from './style.less';
 
 const GoodsManageComponent = (props) => {

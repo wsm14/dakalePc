@@ -2,6 +2,13 @@ import request from '@/utils/request';
 
 // 全局接口
 
+// get 获取oss凭证
+export async function fetchGetOss(params) {
+  return request('/common/oss/getOssPolicy', {
+    params,
+  });
+}
+
 // get 获取哒人等级映射 - 等同哒人配置列表
 export function fetchGetExpertLevel(params) {
   return request('/admin/systemConfig/listUserLevel', {

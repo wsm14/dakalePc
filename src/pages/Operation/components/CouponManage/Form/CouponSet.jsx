@@ -62,7 +62,6 @@ const CouponSet = (props) => {
     useWeekCheck = '',
     reduceObject = {},
   } = initialValues;
-  console.log(initialValues);
 
   useEffect(() => {
     if (initialValues.ownerCouponIdString) {
@@ -433,6 +432,21 @@ const CouponSet = (props) => {
       type: 'formItem',
       formItem: <DescSet name={'couponDesc'} form={form}></DescSet>,
     },
+    // {
+    //   title: `设置优惠券介绍`,
+    //   label: `优惠券介绍`,
+    //   type: 'textArea',
+    //   name: 'couponsDesc',
+    //   rules: [{ required: false }],
+    //   maxLength: 200,
+    // },
+    // {
+    //   label: `优惠券图片`,
+    //   name: 'couponDescImg',
+    //   type: 'upload',
+    //   maxFile: 20,
+    //   rules: [{ required: false }],
+    // },
   ];
 
   return (

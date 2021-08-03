@@ -19,3 +19,6 @@ export const VIDEO_ADVERT = 544 / 960;
 
 // 风向标
 export const VANE_ICON = 80 / 80;
+
+//商圈
+export const CIRCLE_ICON = 750 / 460;

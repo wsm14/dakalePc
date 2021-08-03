@@ -11,7 +11,10 @@ const UserSelectShow = ({
   list = [],
   otherColumns = [],
   onOk,
+  loading,
   onCancelShowSelect,
+  rowSelection,
+  columns,
 }) => {
   // table 表头
   const getColumns = [
@@ -48,13 +51,18 @@ const UserSelectShow = ({
       <TableDataBlock
         noCard={false}
         size="small"
-        columns={getColumns}
+        loading={loading}
+        columns={columns || getColumns}
         rowKey={(record) => `${record.userIdString}`}
-        rowSelection={{
-          fixed: true,
-          selectedRowKeys: keys,
-          onChange: (val, resultList) => onOk({ list, keys: val, resultList }),
-        }}
+        rowSelection={
+          rowSelection !== undefined
+            ? rowSelection
+            : {
+                fixed: true,
+                selectedRowKeys: keys,
+                onChange: (val, resultList) => onOk({ list, keys: val, resultList }),
+              }
+        }
         list={list}
         total={list.length}
       ></TableDataBlock>
