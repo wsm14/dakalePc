@@ -229,7 +229,7 @@ const tableList = (props) => {
         searchItems={searchItems}
         cRef={childRef}
         rowKey={(record) => `${record.merchantGroupIdString}`}
-        dispatchType="groupSet/fetchGetList"
+        dispatchType="groupSetCopy/fetchGetList"
         {...list}
       ></TableDataBlock>
       <DrawerForms
@@ -255,10 +255,10 @@ const tableList = (props) => {
     </>
   );
 };
-export default connect(({ sysTradeList, groupSet, loading }) => ({
+export default connect(({ sysTradeList, groupSetCopy, loading }) => ({
   ...sysTradeList,
-  ...groupSet,
-  loading: loading.models.groupSet,
+  ...groupSetCopy,
+  loading: loading.models.groupSetCopy,
   tradeList: sysTradeList.list.list,
   categoryDTOList: sysTradeList.categoryDTOList,
 }))(tableList);

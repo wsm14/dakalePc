@@ -10,17 +10,9 @@ import GroupDetails from './components/Group/groupDetails';
 import StoreList from './components/Group/StoreList';
 
 const tableList = (props) => {
-  const {
-    dispatch,
-    list,
-    visible,
-    visible1,
-    visible2,
-    tradeList,
-    loading,
-    // categoryDTOList
-  } = props;
+  const { dispatch, list, visible, visible1, visible2, tradeList, loading } = props;
 
+  const childRef = useRef();
   const [storeShow, setStoreShow] = useState(false); // 门店列表展示
 
   useEffect(() => {
@@ -76,7 +68,7 @@ const tableList = (props) => {
       callback: callback,
     });
   };
-  const childRef = useRef();
+
   const searchItems = [
     {
       label: '集团名称',
@@ -98,6 +90,7 @@ const tableList = (props) => {
       select: WORKER_BANK_STATUS,
     },
   ];
+
   // table 表头
   const getColumns = [
     {
@@ -260,5 +253,4 @@ export default connect(({ sysTradeList, groupSet, loading }) => ({
   ...groupSet,
   loading: loading.models.groupSet,
   tradeList: sysTradeList.list.list,
-  categoryDTOList: sysTradeList.categoryDTOList,
 }))(tableList);
