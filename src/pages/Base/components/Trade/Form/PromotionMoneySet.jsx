@@ -9,13 +9,15 @@ const PromotionMoneySet = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;
 
   const [form] = Form.useForm();
-  const { show = false, info = {}, detail = {} } = visible;
+  const { show = false, info = {}, detail = {}, type } = visible;
+  // type--scan :扫码付 extend：推广
 
   // 提交表单
   const handleUpAudit = () => {
     form.validateFields().then((values) => {
+      const apiUrl = { extend: 'sysTradeList/fetchPromotionMoneySet', scan: '' }[type];
       dispatch({
-        type: 'sysTradeList/fetchPromotionMoneySet',
+        type: apiUrl, //推广费设置
         payload: { categoryId: info.categoryIdString, ...values },
         callback: () => {
           onClose();
@@ -27,8 +29,8 @@ const PromotionMoneySet = (props) => {
 
   const formItems = [
     {
-      label: '推广费比例',
-      name: 'promotionFee',
+      label: { extend: '推广费比例', scan: '扫码付服务费比例' }[type],
+      name: 'promotionFee', //
       addRules: [{ pattern: NUM_PATTERN, message: '请输正整数' }],
       addonAfter: '%',
     },
@@ -36,7 +38,7 @@ const PromotionMoneySet = (props) => {
 
   // 弹出窗属性
   const modalProps = {
-    title: `推广费 - ${info.categoryName || '类目'}`,
+    title: { extend: `推广费 - ${info.categoryName || '类目'}`, scan: '扫码付服务费' }[type],
     visible: show,
     onClose,
     footer: (
