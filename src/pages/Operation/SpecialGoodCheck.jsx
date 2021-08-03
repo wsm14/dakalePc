@@ -3,11 +3,11 @@ import { connect } from 'umi';
 import { Card, Tag } from 'antd';
 import { BUSINESS_TYPE, ACTION_TYPE, GOODS_CLASS_TYPE, SUBMIT_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import NoCheck from './components/GoodCheck/NoCheck';
-import NoConfirm from './components/GoodCheck/NoConfirm';
-import AlCheck from './components/GoodCheck/AlCheck';
-import AlConfirm from './components/GoodCheck/AlConfirm';
-import SpecialGoodCheckDetail from './components/GoodCheck/SpecialGoodCheckDetail';
+import NoCheck from './components/SpecialGoodCheck/NoCheck';
+import NoConfirm from './components/SpecialGoodCheck/NoConfirm';
+import AlCheck from './components/SpecialGoodCheck/AlCheck';
+import AlConfirm from './components/SpecialGoodCheck/AlConfirm';
+import SpecialGoodCheckDetail from './components/SpecialGoodCheck/SpecialGoodCheckDetail';
 
 const tabList = [
   {

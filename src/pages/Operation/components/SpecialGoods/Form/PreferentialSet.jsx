@@ -340,7 +340,6 @@ const PreferentialSet = ({
         },
       ],
     },
-
     {
       title: `设置${goodsTypeName}介绍`,
       label: `${goodsTypeName}介绍`,

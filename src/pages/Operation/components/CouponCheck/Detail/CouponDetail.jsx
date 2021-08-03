@@ -21,7 +21,7 @@ const GoodsDetail = (props) => {
     auditIdString,
     ownerIdString,
     merchantList = [],
-    divisionFlag
+    divisionFlag,
   } = detail;
 
   const [recordList, setRecordList] = useState({});
@@ -205,6 +205,14 @@ const GoodsDetail = (props) => {
         `${val === '1' ? '' : '不'}允许随时退款 \n ${
           detail.reduceObject.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
+    },
+    {
+      label: '优惠券介绍',
+      name: 'couponsDesc',
+    },
+    {
+      label: '优惠券图片',
+      name: 'couponDescImg',
     },
   ];
   //分佣配置
