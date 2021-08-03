@@ -17,7 +17,7 @@ const CodeDrawerSet = (props) => {
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
   const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
   const [visiblePort, setVisiblePort] = useState(false);
-  const [percent, setPercent] = useState({ show: false, percent: 0 }); // 文件绘制进度
+  const [percent, setPercent] = useState({ show: false, percent: 0, text: '文件绘制中......' }); // 文件绘制进度
   const [form] = Form.useForm();
 
   // 提交数据
@@ -87,6 +87,7 @@ const CodeDrawerSet = (props) => {
     title: `营销码配置 - ${{ user: '用户码', merchant: '商家码' }[tabKey]}`,
     onClose,
     closeCallBack: () => {
+      setPercent({ show: false });
       setMreList({ keys: [], list: [] });
       setUserList({ keys: [], list: [] });
     },
