@@ -163,6 +163,13 @@ const ExpertAllocationSet = (props) => {
       addRules: [{ pattern: NUM_PATTERN, message: '消费抵扣数应为整数' }],
     },
     {
+      label: '解锁奖励(卡豆)',
+      name: 'payBeanCommission',
+      rules: [{ required: false }],
+      visible: !fromShow,
+      addRules: [{ pattern: NUM_PATTERN, message: '解锁奖励数应为整数' }],
+    },
+    {
       label: '可否提现',
       name: 'isWithdraw',
       type: 'radio',

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -8,6 +8,7 @@ import VaneDrawer from './VaneDrawer';
 
 const VaneManage = (props) => {
   const { list, loading, dispatch } = props;
+  const [cityCode, setCityCode] = useState('3301');
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -17,6 +18,10 @@ const VaneManage = (props) => {
       type: 'walkingManage/fetchWalkManageNavigation',
     });
   }, []);
+
+  useEffect(() => {
+    childRef.current.fetchGetData({ cityCode });
+  }, [cityCode]);
 
   // 获取详情
   const fetchGetDetail = (val, type) => {
@@ -55,7 +60,7 @@ const VaneManage = (props) => {
     });
   };
 
-  const searchItems =[
+  const searchItems = [
     // {
     //   label: '选择城市',
     //   name: 'city',
@@ -67,9 +72,9 @@ const VaneManage = (props) => {
       label: '选择城市',
       name: 'city',
       type: 'select',
-      select:['杭州','湘西']
+      select: { 3301: '杭州', 4331: '湘西' },
     },
-  ]
+  ];
 
   // table 表头
   const getColumns = [
@@ -114,8 +119,21 @@ const VaneManage = (props) => {
     },
   ];
 
+  const handleCityChange = (val) => {
+    console.log(val, '222');
+    setCityCode(val);
+  };
+
   return (
     <>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <span style={{ display: 'inline-block', width: 100, textAlign: 'center' }}>选择城市:</span>
+        <Select value={cityCode} style={{ width: 120 }} onChange={handleCityChange}>
+          <Option value="3301">杭州</Option>
+          <Option value="4331">湘西</Option>
+        </Select>
+      </div>
+
       <TableDataBlock
         tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
         cardProps={{
@@ -128,7 +146,7 @@ const VaneManage = (props) => {
           ),
         }}
         cRef={childRef}
-        searchItems={searchItems}
+        // searchItems={searchItems}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.configWindVaneId}`}
@@ -136,7 +154,7 @@ const VaneManage = (props) => {
         pagination={false}
         {...list}
       ></TableDataBlock>
-      <VaneDrawer cRef={childRef} visible={visible} onClose={() => setVisible(false)}></VaneDrawer>
+      <VaneDrawer cRef={childRef} visible={visible} cityCode={cityCode} onClose={() => setVisible(false)}></VaneDrawer>
     </>
   );
 };

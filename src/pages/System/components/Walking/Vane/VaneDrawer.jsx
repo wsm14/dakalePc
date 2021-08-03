@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
-import { VANE_ICON ,VANE_BANNER} from '@/common/imgRatio';
+import { VANE_ICON, VANE_BANNER } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const VaneDrawer = (props) => {
-  const { dispatch, cRef, visible, onClose, loading, tradeList } = props;
+  const { dispatch, cRef, visible, onClose, loading, tradeList, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
   const [form] = Form.useForm();
@@ -43,6 +43,7 @@ const VaneDrawer = (props) => {
         dispatch({
           type: allProps.api,
           payload: {
+            cityCode,
             configWindVaneId: detail.configWindVaneId,
             ...values,
             jumpType,
@@ -145,7 +146,7 @@ const VaneDrawer = (props) => {
       label: 'banner图:',
       name: 'bannerIng',
       type: 'upload',
-      extra:'请上传702*140尺寸png、jpeg格式图片',
+      extra: '请上传702*140尺寸png、jpeg格式图片',
       // maxFile: 1,
       imgRatio: VANE_BANNER,
     },

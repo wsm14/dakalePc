@@ -82,6 +82,12 @@ const ExpertAllocation = (props) => {
           render: (val) => val && `${val}%`,
         },
         {
+          title: '解锁奖励（卡豆）',
+          dataIndex: 'payBeanCommission',
+          align: 'right',
+          render: (val) => val && `${val}%`,
+        },
+        {
           title: '是否可提现',
           dataIndex: 'isWithdraw',
           align: 'right',
