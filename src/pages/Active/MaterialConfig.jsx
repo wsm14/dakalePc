@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import { handleZipDown } from './components/MaterialConfig/downZip';
 import ExtraButton from '@/components/ExtraButton';
@@ -17,9 +17,13 @@ const tabList = [
 ];
 
 const MaterialConfig = ({ materialConfig, loading }) => {
-  const [tabKey, setTabKey] = useState('user');
   const tableRef = useRef();
+  const [tabKey, setTabKey] = useState('user');
   const [visibleSet, setVisibleSet] = useState(false);
+
+  useEffect(() => {
+    tableRef.current.fetchGetData({ matterType: tabKey });
+  }, [tabKey]);
 
   const searchItems = [
     {

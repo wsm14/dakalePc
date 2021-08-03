@@ -82,9 +82,9 @@ const ShareDrawer = (props) => {
                       beanFlag: '1', // 是否打赏 0 1
                       frontImageWidth: 544, // 封面宽
                       frontImageHeight: 960, // 封面长
-                      ...values,
                       ...dataStorage,
                       ...tasteData,
+                      ...values,
                       videoUrl: undefined,
                       ageData: undefined,
                       cityList: undefined,
