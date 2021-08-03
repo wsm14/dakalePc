@@ -43,3 +43,30 @@ export async function fetchActiveDetail(params) {
     params,
   });
 }
+
+// 营销物料配置
+
+// get 营销物料配置 - 列表
+export async function fetchMaterialConfigList(params) {
+  return request('/admin/matterConfig/listMatterConfig', {
+    params,
+  });
+}
+
+// post 营销物料配置 - 获取用户二维码
+export function fetchMaterialConfigUserCode(data) {
+  return request('/admin/matterConfig/getUserMiniProgramQCode', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销物料配置 - 保存
+export function fetchMaterialConfigSave(data) {
+  return request('/admin/matterConfig/saveMatterConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 营销物料配置 end

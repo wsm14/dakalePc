@@ -31,7 +31,7 @@ export default [
         path: '/active/materialConfig',
         name: '营销物料配置',
         component: './Active/MaterialConfig',
-        buttons: ['downloadRecord', 'download', 'edit', 'preview'],
+        buttons: ['save', 'download'],
       },
       // 账户管理 account
       {
@@ -149,6 +149,12 @@ export default [
         path: '/business/group',
         name: '集团管理',
         component: './Business/GroupList',
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
+      },
+      {
+        path: '/business/groupCopy',
+        name: '集团管理',
+        component: './Business/GroupList copy',
         buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
       },
       {

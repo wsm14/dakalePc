@@ -202,7 +202,7 @@ export const getPageQuery = () => parse(window.location.href.split('?')[1]);
 // 设置uuid
 export const uuid = () => {
   var s = [];
-  var hexDigits = '0123456789abcdef';
+  var hexDigits = `${new Date().getTime()}abcdef`;
   for (var i = 0; i < 36; i++) {
     s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
   }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import TableDataBlock from '@/components/TableDataBlock';
+import { handleZipDown } from './components/MaterialConfig/downZip';
 import ExtraButton from '@/components/ExtraButton';
+import TableDataBlock from '@/components/TableDataBlock';
 import CodeDrawerSet from './components/MaterialConfig/Form/CodeDrawerSet';
 
 const tabList = [
@@ -15,86 +16,67 @@ const tabList = [
   },
 ];
 
-const MaterialConfig = (props) => {
-  const [tabKey, setTabKey] = useState('user');
+const MaterialConfig = ({ materialConfig, loading }) => {
   const tableRef = useRef();
+  const [tabKey, setTabKey] = useState('user');
   const [visibleSet, setVisibleSet] = useState(false);
+
+  useEffect(() => {
+    tableRef.current.fetchGetData({ matterType: tabKey, page: 1 });
+  }, [tabKey]);
 
   const searchItems = [
     {
       label: '配置名称',
-      name: 'orderSn',
-    },
-    {
-      label: `${{ user: '跳转内容', merchant: '下载内容' }[tabKey]}`,
-      name: 'userId',
+      name: 'matterName',
     },
   ];
 
   const getColumns = [
     {
       title: '配置名称',
-      dataIndex: 'orderSn',
-    },
-    {
-      title: `${{ user: '跳转内容', merchant: '下载内容' }[tabKey]}`,
-      dataIndex: 'orderSn',
+      dataIndex: 'matterName',
     },
     {
       title: '创建人',
-      dataIndex: 'orderSn',
+      dataIndex: 'creator',
     },
     {
       title: '创建时间',
-      dataIndex: 'orderSn',
+      dataIndex: 'createTime',
     },
     {
       type: 'handle',
-      dataIndex: 'orderId',
-      render: (val, record, index) => [
-        {
-          type: 'preview',
-          title: '预览',
-          // click: () => fetchGoodsDetail(index),
-        },
-        {
-          type: 'edit',
-          click: () => handleUpdateSet('edit'),
-        },
+      dataIndex: 'url',
+      render: (val) => [
         {
           type: 'download',
+          click: () => handleZipDown(val),
         },
       ],
     },
   ];
 
   //  新增/编辑
-  const handleUpdateSet = (type) => {
+  const handleUpdateSet = () => {
     setVisibleSet({
       show: true,
       tabKey,
-      type,
     });
   };
 
-  const tableBtnExtra = ({ get }) => [
+  const cardBtnList = [
     {
       text: '新增',
       auth: 'save',
-      onClick: () => handleUpdateSet('add'),
-    },
-  ];
-
-  const cardBtnList = [
-    {
-      auth: 'downloadRecord',
-      text: '下载记录',
+      onClick: handleUpdateSet,
     },
   ];
 
   return (
     <>
       <TableDataBlock
+        firstFetch={false}
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,
@@ -102,13 +84,13 @@ const MaterialConfig = (props) => {
           tabBarExtraContent: <ExtraButton list={cardBtnList}></ExtraButton>,
         }}
         cRef={tableRef}
-        btnExtra={tableBtnExtra}
-        // loading={loading}
+        loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.specialGoodsId}`}
-        dispatchType=""
-        params={{ promotionLocation: tabKey }}
+        rowKey={(record) => `${record.matterConfigId}`}
+        dispatchType="materialConfig/fetchGetList"
+        params={{ matterType: tabKey }}
+        {...materialConfig}
       ></TableDataBlock>
       {/* 新增/编辑 */}
       <CodeDrawerSet
@@ -119,4 +101,7 @@ const MaterialConfig = (props) => {
     </>
   );
 };
-export default connect()(MaterialConfig);
+export default connect(({ materialConfig, loading }) => ({
+  materialConfig,
+  loading: loading.models.materialConfig,
+}))(MaterialConfig);

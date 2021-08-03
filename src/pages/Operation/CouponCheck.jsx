@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
 import { BUSINESS_TYPE, SUBMIT_TYPE, ACTION_TYPE, COUPON_TYPE } from '@/common/constant';
-
 import Ellipsis from '@/components/Ellipsis';
 import NoCheck from './components/CouponCheck/NoCheck';
 import NoConfirm from './components/CouponCheck/NoConfirm';

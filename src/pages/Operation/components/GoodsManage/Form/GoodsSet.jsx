@@ -120,7 +120,7 @@ const GoodsSet = ({ form, loading, goodsManage, dispatch }) => {
       label: '介绍图片',
       type: 'upload',
       name: 'goodsDescImg',
-      maxFile: 5,
+      maxFile: 20,
       rules: [{ required: false }],
     },
     {

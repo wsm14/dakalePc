@@ -1,18 +1,26 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
 import { WORKER_BANK_STATUS } from '@/common/constant';
+import DrawerForms from './components/Group copy/addGroup';
+import SetDetailsForms from './components/Group copy/activateGroup';
+import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
-import StoreList from './components/Group/StoreList';
-import DrawerForms from './components/Group/addGroup';
-import GroupDetails from './components/Group/groupDetails';
-import SetDetailsForms from './components/Group/activateGroup';
+import GroupDetails from './components/Group copy/groupDetails';
+import StoreList from './components/Group copy/StoreList';
 
 const tableList = (props) => {
-  const { dispatch, list, visible, visible1, visible2, tradeList, loading } = props;
+  const {
+    dispatch,
+    list,
+    visible,
+    visible1,
+    visible2,
+    tradeList,
+    loading,
+    // categoryDTOList
+  } = props;
 
-  const childRef = useRef();
   const [storeShow, setStoreShow] = useState(false); // 门店列表展示
 
   useEffect(() => {
@@ -68,7 +76,7 @@ const tableList = (props) => {
       callback: callback,
     });
   };
-
+  const childRef = useRef();
   const searchItems = [
     {
       label: '集团名称',
@@ -90,7 +98,6 @@ const tableList = (props) => {
       select: WORKER_BANK_STATUS,
     },
   ];
-
   // table 表头
   const getColumns = [
     {
@@ -222,7 +229,7 @@ const tableList = (props) => {
         searchItems={searchItems}
         cRef={childRef}
         rowKey={(record) => `${record.merchantGroupIdString}`}
-        dispatchType="groupSet/fetchGetList"
+        dispatchType="groupSetCopy/fetchGetList"
         {...list}
       ></TableDataBlock>
       <DrawerForms
@@ -248,9 +255,10 @@ const tableList = (props) => {
     </>
   );
 };
-export default connect(({ sysTradeList, groupSet, loading }) => ({
+export default connect(({ sysTradeList, groupSetCopy, loading }) => ({
   ...sysTradeList,
-  ...groupSet,
-  loading: loading.models.groupSet,
+  ...groupSetCopy,
+  loading: loading.models.groupSetCopy,
   tradeList: sysTradeList.list.list,
+  categoryDTOList: sysTradeList.categoryDTOList,
 }))(tableList);

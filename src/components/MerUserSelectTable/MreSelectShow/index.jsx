@@ -1,6 +1,6 @@
 import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
-import { checkCityName } from '@/utils/utils';
+import { checkCityName } from '@/utils/utils';
 
 const MreSelectShow = ({
   keys = [],
@@ -10,6 +10,7 @@ const MreSelectShow = ({
   setMreList,
   otherColumns = [],
   disabled = false,
+  rowSelection,
 }) => {
   // table 表头
   const getColumns = [
@@ -44,14 +45,18 @@ const MreSelectShow = ({
         size="small"
         columns={columns || getColumns}
         rowKey={(record) => `${record[rowKey]}`}
-        rowSelection={{
-          fixed: true,
-          selectedRowKeys: keys,
-          getCheckboxProps: (record) => ({
-            disabled: disabled, // Column configuration not to be checked
-          }),
-          onChange: (val) => setMreList({ list, keys: val }),
-        }}
+        rowSelection={
+          rowSelection !== undefined
+            ? rowSelection
+            : {
+                fixed: true,
+                selectedRowKeys: keys,
+                getCheckboxProps: (record) => ({
+                  disabled: disabled, // Column configuration not to be checked
+                }),
+                onChange: (val) => setMreList({ list, keys: val }),
+              }
+        }
         list={list}
         total={list.length}
       ></TableDataBlock>

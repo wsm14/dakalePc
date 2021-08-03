@@ -1,48 +1,113 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Space } from 'antd';
-import FormComponents from '@/components/FormCondition';
 import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
+import { createZip } from '../downZip';
 import ImportDataModal from './ImportDataModal';
+import ZipCreateLoading from '../ZipCreateLoading';
 import DrawerCondition from '@/components/DrawerCondition';
+import FormComponents from '@/components/FormCondition';
 
 const CodeDrawerSet = (props) => {
-  const { childRef, visible, onClose } = props;
-  const { show = false, type, tabKey } = visible;
+  const { visible, childRef, onClose, dispatch, loading } = props;
+  const { show = false, tabKey } = visible;
 
   const [visibleMer, setVisibleMer] = useState(false); // 选择店铺弹窗
   const [mreList, setMreList] = useState({ keys: [], list: [] }); // 选择店铺后回显的数据
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
-  const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
-
+  const [userList, setUserList] = useState({ keys: [], list: [] }); // 选择后回显的数据
   const [visiblePort, setVisiblePort] = useState(false);
+  const [percent, setPercent] = useState({ show: false, percent: 0, text: '文件绘制中......' }); // 文件绘制进度
   const [form] = Form.useForm();
+
+  // 提交数据
+  const handleSubmitData = (url, data) => {
+    dispatch({
+      type: 'materialConfig/fetchMaterialConfigSave',
+      payload: {
+        ...data,
+        url,
+        matterType: tabKey,
+      },
+      callback: () => {
+        childRef.current.fetchGetData();
+        onClose();
+      },
+    });
+  };
+
+  // 提交上传文件
+  const handleUpData = (zip, data) => {
+    setPercent({ show: true, percent: 100, text: '文件上传中......' });
+    dispatch({
+      type: 'baseData/fetchGetOssUploadFile',
+      payload: {
+        file: zip, // 文件
+        folderName: 'materials', // 文件夹名称
+        fileType: 'zip', // 文件类型
+        extension: '.zip', // 文件后缀名称
+      },
+      callback: (val) => {
+        setPercent({ show: false });
+        handleSubmitData(val, data);
+      },
+    });
+  };
 
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'form');
+      setPercent({ show: true, percent: 0, text: '文件绘制中......' });
+      const { userObjectList, page } = values;
+      if (tabKey === 'user') {
+        handleGetUserCode({ userObjectList, page }, (val) =>
+          createZip({ ...values, userObjectList: val }, tabKey, setPercent, (res, data) => {
+            handleUpData(res, data);
+          }),
+        );
+        return;
+      }
+      createZip(values, tabKey, setPercent, (res, data) => {
+        handleUpData(res, data);
+      });
+    });
+  };
+
+  // 获取用户小程序码
+  const handleGetUserCode = (data, callback) => {
+    dispatch({
+      type: 'materialConfig/fetchMaterialConfigUserCode',
+      payload: data,
+      callback,
     });
   };
 
   const modalProps = {
     visible: show,
-    title: '营销码配置',
+    title: `营销码配置 - ${{ user: '用户码', merchant: '商家码' }[tabKey]}`,
     onClose,
+    closeCallBack: () => {
+      setPercent({ show: false });
+      setMreList({ keys: [], list: [] });
+      setUserList({ keys: [], list: [] });
+    },
     footer: (
-      <Button type="primary" onClick={handleSave}>
+      <Button
+        type="primary"
+        onClick={handleSave}
+        loading={
+          loading.effects['materialConfig/fetchGetOssUploadFile'] ||
+          loading.effects['materialConfig/fetchMaterialConfigSave'] ||
+          loading.effects['materialConfig/fetchMaterialConfigUserCode']
+        }
+      >
         保存
       </Button>
     ),
   };
 
-  //批量导入事件2
-  const handleImport = () => {
-    setVisiblePort({
-      show: true,
-      tabKey,
-    });
-  };
+  //批量导入事件
+  const handleImport = () => setVisiblePort({ show: true, tabKey });
 
   //用户table
   const userColumns = [
@@ -65,7 +130,7 @@ const CodeDrawerSet = (props) => {
   const merColumns = [
     {
       title: '店铺账号',
-      dataIndex: 'account',
+      dataIndex: 'mobile',
     },
     {
       title: '店铺名',
@@ -76,11 +141,11 @@ const CodeDrawerSet = (props) => {
   const formItems = [
     {
       label: '配置名称',
-      name: 'roleName',
+      name: 'matterName',
     },
     {
-      label: '适用用户',
-      name: 'directChargeList',
+      label: '选择用户',
+      name: 'userObjectList',
       type: 'formItem',
       visible: tabKey === 'user',
       rules: [{ required: true, message: '请选择用户' }],
@@ -96,8 +161,31 @@ const CodeDrawerSet = (props) => {
       ),
     },
     {
+      label: '适用用户',
+      type: 'noForm',
+      visible: tabKey === 'user',
+      formItem: (
+        <UserSelectShow
+          maxLength={500}
+          key="UserTable"
+          loading={loading.effects['materialConfig/fetchMaterialConfigUserCode']}
+          columns={userColumns}
+          rowSelection={false}
+          {...userList}
+          showSelect={visibleSelect}
+          onCancelShowSelect={() => setVisibleSelect(false)}
+          onOk={(val) => {
+            setUserList(val);
+            form.setFieldsValue({
+              userObjectList: val.list.map((i) => ({ ...i, id: i.userIdString })),
+            });
+          }}
+        ></UserSelectShow>
+      ),
+    },
+    {
       label: '选择店铺',
-      name: 'merchantIds',
+      name: 'merchantObject',
       type: 'formItem',
       rules: [{ required: true, message: '请选择店铺' }],
       visible: tabKey === 'merchant',
@@ -113,26 +201,6 @@ const CodeDrawerSet = (props) => {
       ),
     },
     {
-      label: '适用用户',
-      type: 'noForm',
-      visible: tabKey === 'user',
-      formItem: (
-        <UserSelectShow
-          maxLength={500}
-          key="UserTable"
-          columns={userColumns}
-          {...userList}
-          showSelect={visibleSelect}
-          onCancelShowSelect={() => setVisibleSelect(false)}
-          onOk={(val) => {
-            setUserList(val);
-            form.setFieldsValue({ userIdList: val });
-          }}
-        ></UserSelectShow>
-      ),
-    },
-
-    {
       label: '适用店铺',
       type: 'noForm',
       visible: tabKey === 'merchant',
@@ -140,50 +208,148 @@ const CodeDrawerSet = (props) => {
         <MreSelectShow
           key="MreTable"
           {...mreList}
+          rowSelection={false}
           columns={merColumns}
-          setMreList={setMreList}
+          setMreList={(val) => {
+            form.setFieldsValue({ merchantObject: val });
+            setMreList(val);
+          }}
         ></MreSelectShow>
       ),
     },
     {
-      label: '选择模板',
+      label: '上传背景图',
       name: 'templateImg',
       type: 'upload',
+      onChange: ({ file }) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (e) {
+          // 获取上传的图片的宽高
+          const img = new Image();
+          img.onload = function () {
+            form.setFieldsValue({
+              templateImg: e.target.result,
+              img: { height: img.naturalHeight, width: img.naturalWidth },
+            });
+          };
+          img.src = e.target.result;
+        };
+      },
+    },
+    {
+      label: '背景宽度',
+      name: ['img', 'height'],
+      hidden: true,
+    },
+    {
+      label: '背景高度',
+      name: ['img', 'width'],
+      hidden: true,
+    },
+    {
+      label: '二维码边长(px)',
+      name: ['code', 'width'],
+    },
+    {
+      label: '二维码上边距(px)',
+      type: 'number',
+      name: ['code', 'y'],
+      min: 0,
+      precision: 0,
+    },
+    {
+      label: '二维码左边距(px)',
+      type: 'number',
+      name: ['code', 'x'],
+      min: 0,
+      precision: 0,
+    },
+    {
+      label: '名称上边距(px)',
+      type: 'number',
+      name: ['name', 'y'],
+      min: 0,
+      precision: 0,
+    },
+    {
+      label: '名称颜色',
+      name: ['name', 'color'],
+    },
+    {
+      label: '名称大小(px)',
+      type: 'number',
+      name: ['name', 'size'],
+      min: 12,
+      precision: 0,
+    },
+    {
+      label: '名称透明度',
+      type: 'number',
+      name: ['name', 'opacity'],
+      min: 0,
+      max: 1,
+      precision: 1,
     },
     {
       label: '跳转链接',
-      name: 'url',
+      name: 'page',
       visible: tabKey === 'user',
+      extra: '请填小程序链接',
     },
     {
       label: '下载内容',
-      name: 'content',
+      name: 'codeType',
       type: 'radio',
       visible: tabKey === 'merchant',
-      select: [
-        { value: '1', name: '支付营销码' },
-        { value: '2', name: '打卡营销码' },
-      ],
+      select: { pay: '支付营销码', daka: '打卡营销码' },
     },
   ];
 
+  const defineValue = {
+    name: { color: '#ffffff', size: 30, opacity: 0.6 },
+  };
+
   return (
     <DrawerCondition {...modalProps}>
-      <FormComponents form={form} formItems={formItems}></FormComponents>
+      <FormComponents
+        form={form}
+        formItems={formItems}
+        initialValues={defineValue}
+      ></FormComponents>
+      {/* 等待绘制 */}
+      <ZipCreateLoading {...percent}></ZipCreateLoading>
       {/* 选择店铺选择*/}
       <MreSelect
         keys={mreList.keys}
         visible={visibleMer}
         mreList={mreList.list}
-        onOk={(val) => setMreList(val)}
+        onOk={(val) => {
+          setMreList(val);
+          form.setFieldsValue({ merchantObject: val.list });
+        }}
         onCancel={() => setVisibleMer(false)}
       ></MreSelect>
+      {/* 导入数据 */}
       <ImportDataModal
         visible={visiblePort}
         onClose={() => setVisiblePort(false)}
+        setMreList={(list) => {
+          form.setFieldsValue({ merchantObject: list });
+          setMreList({ list });
+        }}
+        setUserList={(list) => {
+          const userListNew = list.map((i) => ({ userIdString: i.id, ...i }));
+          setUserList({ list: userListNew });
+          form.setFieldsValue({
+            userObjectList: list,
+          });
+        }}
       ></ImportDataModal>
     </DrawerCondition>
   );
 };
 
-export default connect()(CodeDrawerSet);
+export default connect(({ loading }) => ({
+  loading,
+}))(CodeDrawerSet);

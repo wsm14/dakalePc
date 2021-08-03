@@ -92,6 +92,6 @@ export default [
   {
     title: '订单关闭类型',
     dataIndex: 'closeType',
-    render: (val) => ORDER_CLOSE_TYPE[val] || '--',
+    render: (val, row) => (row.status != 3 ? ORDER_CLOSE_TYPE[val] || '--' : '--'),
   },
 ];

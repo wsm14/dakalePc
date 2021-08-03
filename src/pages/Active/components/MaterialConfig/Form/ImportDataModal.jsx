@@ -1,39 +1,65 @@
 import React, { useState } from 'react';
 import { Modal, Button, Upload, message } from 'antd';
-import { connect } from 'umi';
 import * as XLSX from 'xlsx';
 import { UploadOutlined } from '@ant-design/icons';
 
 const ImportDataModal = (props) => {
-  const { dispatch, visible, onClose } = props;
+  const { visible, onClose, setMreList, setUserList } = props;
   const { show = false, tabKey } = visible;
   // 是否存在有效文件
   const [excelFile, setExcelFile] = useState(false);
   // excel数据储存
   const [excelData, setExcelData] = useState([]);
-  // 导入记录弹窗显示
-  const [visibleList, setVisibleList] = useState(false);
 
   const [fileLoading, setFileLoading] = useState(false);
+
+  // 导入时需要的参数配置等
+  const excelProps = {
+    user: {
+      excelName: '用户信息表', // excel 表名
+      // excel 导出列
+      excelRow: (item) => ({
+        id: item['ID'],
+        mobile: item['手机号'],
+        username: item['用户名'],
+        level: item['级别'],
+      }),
+      // 模版链接
+      excelModelUrl:
+        'https://resource-new.dakale.net/excel/%E8%90%A5%E9%94%80%E7%89%A9%E6%96%99-%E5%AF%BC%E5%85%A5%E7%94%A8%E6%88%B7.xlsx',
+    },
+    merchant: {
+      excelName: '商户信息表',
+      excelRow: (item) => ({
+        id: item['ID'],
+        mobile: item['店铺账号'],
+        merchantName: item['商户名称'],
+      }),
+      excelModelUrl:
+        'https://resource-new.dakale.net/excel/%E8%90%A5%E9%94%80%E7%89%A9%E6%96%99-%E5%AF%BC%E5%85%A5%E5%95%86%E6%88%B6.xlsx',
+    },
+  }[tabKey];
+
   // 上传文件模版数据
   const fetchUpExcelData = () => {
     if (!excelData.length) {
       message.error('excel无数据，导入失败');
       return;
     }
-    dispatch({
-      type: 'waitMerchant/fetchImportExcel',
-      payload: {
-        undevelopedMerchantDTOS: excelData,
-      },
-      callback: () => onClose(),
-    });
+    if (tabKey === 'user') {
+      setUserList(excelData);
+      onClose();
+    } else {
+      setMreList(excelData.map((i) => ({ userMerchantIdString: i.id, ...i })));
+      onClose();
+    }
   };
 
   // 上传文件模版
   const uploadFilesChange = (file) => {
     if (file.file.status == 'removed') {
       setExcelFile(false);
+      setExcelData([]);
       return;
     }
     // 通过FileReader对象读取文件
@@ -57,31 +83,18 @@ const ImportDataModal = (props) => {
         message.error('文件类型不正确！');
         setFileLoading(false);
       }
-      if (!data['商户信息登记表']) {
+      if (!data[excelProps.excelName]) {
         setFileLoading(false);
         message.error('Excel模版不正确');
         return;
       }
-      if (!data['商户信息登记表'].length) {
+      if (!data[excelProps.excelName].length) {
         setFileLoading(false);
         message.error('Excel未写入数据');
         return;
       }
       let dataSources = [];
-      dataSources = data['商户信息登记表'].map((item) => {
-        return {
-          category: item['经营类目'],
-          merchantName: item['商户名称'],
-          telephone: item['商户电话'],
-          provinceName: item['省'],
-          cityName: item['市'],
-          address: item['地址'],
-          businessHub: item['所属商圈'],
-          businessTime: item['营业时间'],
-          perCapitaConsumption: item['人均消费'],
-          storeService: item['店铺服务'],
-        };
-      });
+      dataSources = data[excelProps.excelName].map((item) => excelProps.excelRow(item));
       setExcelData(dataSources);
       setExcelFile(true);
       setFileLoading(false);
@@ -90,11 +103,7 @@ const ImportDataModal = (props) => {
     fileReader.readAsBinaryString(file.file);
   };
   // 下载模版
-  const handleDownExcelModel = () => {
-    window.open(
-      `https://resource-new.dakale.net/excel/%E7%94%A8%E6%88%B7%E6%89%8B%E6%9C%BA%E5%8F%B7.xlsx`,
-    );
-  };
+  const handleDownExcelModel = () => window.open(excelProps.excelModelUrl);
 
   const uploadProps = {
     listType: 'picture',
@@ -103,20 +112,12 @@ const ImportDataModal = (props) => {
   };
 
   const modalProps = {
-    title: '批量导入',
+    title: `批量导入 - ${excelProps?.excelName}`,
     visible: show,
     onCancel: onClose,
-    footer: (
-      <Button
-        key="submit"
-        type="primary"
-        disabled={!excelFile}
-        // loading={loading || fileLoading}
-        onClick={fetchUpExcelData}
-      >
-        确定导入
-      </Button>
-    ),
+    confirmLoading: fileLoading,
+    okText: '确定导入',
+    onOk: fetchUpExcelData,
   };
 
   return (
@@ -142,6 +143,4 @@ const ImportDataModal = (props) => {
     </Modal>
   );
 };
-export default connect(({ loading }) => ({
-  loading: loading.effects['waitMerchant/fetchImportExcel'],
-}))(ImportDataModal);
+export default ImportDataModal;

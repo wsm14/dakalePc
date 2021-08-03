@@ -5,9 +5,9 @@ import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import CouponDrawer from './components/Coupon/CouponDrawer';
-import excelProps from './components/Coupon/excelProps';
-import RemainModal from './components/Coupon/Detail/RemainModal';
+import CouponDrawer from './components/CouponManage/CouponDrawer';
+import excelProps from './components/CouponManage/excelProps';
+import RemainModal from './components/CouponManage/Detail/RemainModal';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch, loadings } = props;
