@@ -273,18 +273,28 @@ const CodeDrawerSet = (props) => {
       precision: 0,
     },
     {
-      label: '名称颜色',
+      label: '名称前缀',
+      name: ['name', 'before'],
+      rules: [{ required: false }],
+    },
+    {
+      label: '名称后缀',
+      name: ['name', 'after'],
+      rules: [{ required: false }],
+    },
+    {
+      label: '名称字体颜色',
       name: ['name', 'color'],
     },
     {
-      label: '名称大小(px)',
+      label: '名称字体大小(px)',
       type: 'number',
       name: ['name', 'size'],
       min: 12,
       precision: 0,
     },
     {
-      label: '名称透明度',
+      label: '名称字体透明度',
       type: 'number',
       name: ['name', 'opacity'],
       min: 0,
