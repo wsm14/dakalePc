@@ -353,7 +353,7 @@ const PreferentialSet = ({
       label: `${goodsTypeName}图片`,
       name: 'goodsDescImg',
       type: 'upload',
-      maxFile: 5,
+      maxFile: 20,
       rules: [{ required: false }],
     },
   ];
