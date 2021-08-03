@@ -164,7 +164,7 @@ const ExpertAllocationSet = (props) => {
     },
     {
       label: '解锁奖励(卡豆)',
-      name: 'payBeanCommission',
+      name: 'unlockRewardsBean',
       rules: [{ required: false }],
       visible: !fromShow,
       addRules: [{ pattern: NUM_PATTERN, message: '解锁奖励数应为整数' }],

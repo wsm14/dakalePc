@@ -43,7 +43,8 @@ const VaneDrawer = (props) => {
         dispatch({
           type: allProps.api,
           payload: {
-            cityCode,
+            areaType: 'city',
+            areaCode: type === 'edit' ? detail.areaCode : cityCode,
             configWindVaneId: detail.configWindVaneId,
             ...values,
             jumpType,
@@ -144,7 +145,7 @@ const VaneDrawer = (props) => {
     },
     {
       label: 'banner图:',
-      name: 'bannerIng',
+      name: 'bannerImage',
       type: 'upload',
       extra: '请上传702*140尺寸png、jpeg格式图片',
       // maxFile: 1,

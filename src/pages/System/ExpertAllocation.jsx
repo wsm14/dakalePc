@@ -83,7 +83,7 @@ const ExpertAllocation = (props) => {
         },
         {
           title: '解锁奖励（卡豆）',
-          dataIndex: 'payBeanCommission',
+          dataIndex: 'unlockRewardsBean',
           align: 'right',
           render: (val) => val && `${val}%`,
         },

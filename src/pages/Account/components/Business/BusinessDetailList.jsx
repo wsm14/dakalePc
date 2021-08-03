@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { COLLECT_STATUS } from '@/common/constant';
@@ -9,6 +9,18 @@ const BusinessDetailList = (props) => {
   const { detailList, loading, visible, setVisible } = props;
 
   const { type = 'peas', record = '' } = visible;
+  const [tabKey, setTabKey] = useState('0');
+
+  const tabList = [
+    {
+      key: '0',
+      tab: '收益卡豆',
+    },
+    {
+      key: '1',
+      tab: '营销卡豆',
+    },
+  ];
 
   // table
   const propItem = {
@@ -154,7 +166,10 @@ const BusinessDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
-        noCard={false}
+        cardProps={
+          type === 'peas' && { tabList: tabList, activeTabKey: tabKey, onTabChange: setTabKey }
+        }
+        // noCard={false}
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row, i) => `${row[propItem.rowKey] + i}`}

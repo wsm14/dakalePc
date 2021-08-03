@@ -1,14 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Select } from 'antd';
+import { Button, Select, Cascader } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import PopImgShow from '@/components/PopImgShow';
+import CITYJSON from '@/common/city';
 import TableDataBlock from '@/components/TableDataBlock';
 import VaneDrawer from './VaneDrawer';
 
 const VaneManage = (props) => {
   const { list, loading, dispatch } = props;
-  const [cityCode, setCityCode] = useState('3301');
+  const [cityCode, setCityCode] = useState(['33', '3301']);
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
@@ -20,26 +21,32 @@ const VaneManage = (props) => {
   }, []);
 
   useEffect(() => {
-    childRef.current.fetchGetData({ cityCode });
+    childRef.current.fetchGetData({ cityCode: cityCode[1] });
   }, [cityCode]);
 
   // 获取详情
-  const fetchGetDetail = (val, type) => {
+  const fetchGetDetail = (val, record, type) => {
+    const { areaCode = '' } = record;
     dispatch({
       type: 'walkingManage/fetchWalkManageVaneDetail',
       payload: {
         configWindVaneId: val,
+        areaType: 'city',
+        areaCode,
       },
       callback: (detail) => setVisible({ show: true, type, detail }),
     });
   };
 
   // 删除
-  const fetchDetailDel = (configWindVaneId) => {
+  const fetchDetailDel = (configWindVaneId, record) => {
+    const { areaCode = '' } = record;
     dispatch({
       type: 'walkingManage/fetchWalkManageVaneEditDel',
       payload: {
         configWindVaneId,
+        areaType: 'city',
+        areaCode,
         deleteFlag: 0,
       },
       callback: childRef.current.fetchGetData,
@@ -59,22 +66,6 @@ const VaneManage = (props) => {
       callback: childRef.current.fetchGetData,
     });
   };
-
-  const searchItems = [
-    // {
-    //   label: '选择城市',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   changeOnSelect: true,
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    // },
-    {
-      label: '选择城市',
-      name: 'city',
-      type: 'select',
-      select: { 3301: '杭州', 4331: '湘西' },
-    },
-  ];
 
   // table 表头
   const getColumns = [
@@ -102,25 +93,36 @@ const VaneManage = (props) => {
           {
             type: 'info',
             auth: true,
-            click: () => fetchGetDetail(val, 'detail'),
+            click: () => fetchGetDetail(val, record, 'detail'),
           },
           {
             type: 'edit',
             auth: true,
-            click: () => fetchGetDetail(val, 'edit'),
+            click: () => fetchGetDetail(val, record, 'edit'),
           },
           {
             type: 'del',
             auth: true,
-            click: () => fetchDetailDel(val),
+            click: () => fetchDetailDel(val, record),
           },
         ];
       },
     },
   ];
 
+  const cityList = CITYJSON.map((item) => {
+    const children = item.children.map((every) => ({
+      value: every.value,
+      label: every.label,
+      pid: every.pid,
+    }));
+    return {
+      ...item,
+      children: children,
+    };
+  });
+
   const handleCityChange = (val) => {
-    console.log(val, '222');
     setCityCode(val);
   };
 
@@ -128,10 +130,7 @@ const VaneManage = (props) => {
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <span style={{ display: 'inline-block', width: 100, textAlign: 'center' }}>选择城市:</span>
-        <Select value={cityCode} style={{ width: 120 }} onChange={handleCityChange}>
-          <Option value="3301">杭州</Option>
-          <Option value="4331">湘西</Option>
-        </Select>
+        <Cascader value={cityCode} options={cityList} onChange={handleCityChange} />
       </div>
 
       <TableDataBlock
@@ -146,7 +145,6 @@ const VaneManage = (props) => {
           ),
         }}
         cRef={childRef}
-        // searchItems={searchItems}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.configWindVaneId}`}
@@ -154,7 +152,12 @@ const VaneManage = (props) => {
         pagination={false}
         {...list}
       ></TableDataBlock>
-      <VaneDrawer cRef={childRef} visible={visible} cityCode={cityCode} onClose={() => setVisible(false)}></VaneDrawer>
+      <VaneDrawer
+        cRef={childRef}
+        visible={visible}
+        cityCode={cityCode[1]}
+        onClose={() => setVisible(false)}
+      ></VaneDrawer>
     </>
   );
 };
