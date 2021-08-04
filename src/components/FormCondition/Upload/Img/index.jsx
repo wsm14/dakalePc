@@ -59,7 +59,7 @@ const uploadButton = (
 );
 
 // 图片默认值
-const imgold = (url, uid) => ({
+const imgUrl = (url, uid) => ({
   uid: `-${uid}`,
   name: url,
   status: 'done',
@@ -74,6 +74,17 @@ const getBase64 = (file) => {
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => reject(error);
   });
+};
+
+// 图片数据数组还原
+const uploadValues = (fileArr) => {
+  return !Array.isArray(fileArr)
+    ? fileArr && fileArr.length > 0
+      ? fileArr.indexOf(',') > -1
+        ? fileArr.split(',').map((v, i) => imgUrl(v, i))
+        : [imgUrl(fileArr, fileArr)]
+      : []
+    : fileArr.map((v, i) => imgUrl(v, i));
 };
 
 const UploadBlock = (props) => {
@@ -96,7 +107,6 @@ const UploadBlock = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显弹窗显示隐藏
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
   const [previewTitle, setPreviewTitle] = useState(''); // 图片回显 属性
-
   // 文件控制列表
   const [fileLists, setFileLists] = useState(() => {
     if (initialValues && Object.keys(initialValues).length) {
@@ -105,19 +115,13 @@ const UploadBlock = (props) => {
         if (!initialValues[name[0]]) {
           return [];
         }
-        const urlfile = initialValues[name[0]][name[1]];
-        return urlfile ? [imgold(urlfile, urlfile)] : [];
+        const urlFile = initialValues[name[0]][name[1]];
+        return urlFile ? uploadValues(urlFile) : [];
       }
       // 键名是字符串的情况
       const fileArrar = initialValues[fileKeyName];
       if (fileArrar && !!fileArrar.fileList) return fileArrar.fileList;
-      return !Array.isArray(fileArrar)
-        ? fileArrar && fileArrar.length > 0
-          ? fileArrar.indexOf(',') > -1
-            ? fileArrar.split(',').map((v, i) => imgold(v, i))
-            : [imgold(fileArrar, fileArrar)]
-          : []
-        : fileArrar.map((v, i) => imgold(v, i));
+      return uploadValues(fileArrar);
     } else {
       return [];
     }

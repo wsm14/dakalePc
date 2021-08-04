@@ -88,8 +88,11 @@ const UserListComponent = (props) => {
       title: '注册地',
       align: 'center',
       dataIndex: 'provinceName',
-      render: (val, row) =>
-        val ? `${val}/${row.cityName || '--'}/${row.districtName || '--'}` : '--',
+      render: (val, row) => {
+        const city = row.cityName;
+        const dir = row.districtName;
+        return val ? `${val}${city ? '/' + city : ''}${dir ? '/' + dir : ''}` : '--';
+      },
     },
     {
       title: '常驻地',
@@ -122,7 +125,7 @@ const UserListComponent = (props) => {
           type: 'info',
           click: () => fetchUserDetail(index),
         },
-      ]
+      ],
     },
   ];
 

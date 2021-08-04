@@ -260,12 +260,12 @@ const BusinessAddBeas = (props) => {
         form.setFieldsValue({ commissionRatio: undefined });
       },
     },
-    {
-      label: '推广费比例',
-      name: 'promotionFee',
-      loading: loading.models.sysTradeList,
-      suffix: '%',
-    },
+    // {
+    //   label: '推广费比例',
+    //   name: 'promotionFee',
+    //   loading: loading.models.sysTradeList,
+    //   suffix: '%',
+    // },
   ];
 
   return <FormCondition formItems={formItems} initialValues={initialValues} form={form} />;

@@ -290,14 +290,16 @@ const getCityName = (code) => {
 // 根据城市code获取城市名称
 export const checkCityName = (code) => {
   if (!code) return;
+  const checkCityNull = (val) => (val ? '-' + val : '');
   const codeStr = `${code}`;
   if (codeStr.length === 2) {
     return getCityName(codeStr);
   } else if (codeStr.length === 4) {
-    return `${getCityName(codeStr.slice(0, 2))}-${getCityName(codeStr)}`;
+    const city = getCityName(codeStr);
+    return `${getCityName(codeStr.slice(0, 2))}${checkCityNull(city)}`;
   } else if (codeStr.length === 6) {
-    return `${getCityName(codeStr.slice(0, 2))}-${getCityName(codeStr.slice(0, 4))}-${getCityName(
-      codeStr,
-    )}`;
+    const citySix = getCityName(codeStr.slice(0, 4));
+    const district = getCityName(codeStr);
+    return `${getCityName(codeStr.slice(0, 2))}${checkCityNull(citySix)}${checkCityNull(district)}`;
   }
 };

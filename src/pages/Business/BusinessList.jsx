@@ -182,10 +182,9 @@ const BusinessListComponent = (props) => {
       render: (val, row) => `${val || '--'}\n${row.activationTime || '--'}`,
     },
     {
-      title: '品牌/所属集团',
+      title: '所属集团',
       align: 'center',
       dataIndex: 'groupName',
-      render: (val, row) => `${row.brandName || '--'}\n${val}`,
     },
     {
       title: '状态',

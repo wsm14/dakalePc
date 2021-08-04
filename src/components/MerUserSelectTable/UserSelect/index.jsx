@@ -85,8 +85,11 @@ const MreSelect = ({
     {
       title: '注册地',
       dataIndex: 'provinceName',
-      render: (val, row) =>
-        val ? `${val}/${row.cityName || '--'}/${row.districtName || '--'}` : '--',
+      render: (val, row) => {
+        const city = row.cityName;
+        const dir = row.districtName;
+        return val ? `${val}${city ? '/' + city : ''}${dir ? '/' + dir : ''}` : '--';
+      },
     },
   ];
 

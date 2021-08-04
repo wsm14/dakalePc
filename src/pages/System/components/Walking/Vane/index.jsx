@@ -134,6 +134,7 @@ const VaneManage = (props) => {
       </div>
 
       <TableDataBlock
+        firstFetch={false}
         tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
         cardProps={{
           title: '风向标配置',
@@ -147,6 +148,7 @@ const VaneManage = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
+        params={{ cityCode: cityCode[1] }}
         rowKey={(record) => `${record.configWindVaneId}`}
         dispatchType="walkingManage/fetchWalkManageVaneList"
         pagination={false}

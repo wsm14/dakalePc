@@ -165,6 +165,16 @@ const BusinessDetailShow = (props) => {
       name: 'category',
     },
     {
+      label: '扫码付服务费',
+      name: 'scanCommissionRatio',
+      render: (val) => `${val || 0}%`,
+    },
+    {
+      label: '核销订单服务费', 
+      name: 'promotionFee',
+      render: (val) => `${val || 0}%`,
+    },
+    {
       label: '推广费',
       name: 'promotionFee',
       render: (val) => `${val || 0}%`,

@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
 import { VANE_ICON, VANE_BANNER } from '@/common/imgRatio';
+import { checkFileData } from '@/utils/utils';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -34,12 +35,15 @@ const VaneDrawer = (props) => {
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
       const { image, bubbleFlag = 0, categoryId = [], windVaneParamObject = {}, jumpType } = values;
+      const { bannerImage } = windVaneParamObject;
       const windVaneParam = {
         categoryId: categoryId && categoryId[categoryId.length - 1],
         ...windVaneParamObject,
       };
+      const aImg = checkFileData(image);
+      const bImg = checkFileData(bannerImage);
       // 上传图片到oss -> 提交表单
-      aliOssUpload(image).then((res) => {
+      aliOssUpload([...aImg, ...bImg]).then((res) => {
         dispatch({
           type: allProps.api,
           payload: {
@@ -50,8 +54,11 @@ const VaneDrawer = (props) => {
             jumpType,
             nativeJumpType: jumpType === 'native' ? 'category' : '',
             bubbleFlag: Number(bubbleFlag),
-            image: res.toString(),
-            windVaneParamObject: jumpType === 'native' ? windVaneParam : '',
+            image: res[0],
+            windVaneParamObject:
+              jumpType === 'native'
+                ? { ...windVaneParam, bannerImage: res.slice(1).toString() }
+                : '',
           },
           callback: () => {
             onClose();
@@ -146,11 +153,12 @@ const VaneDrawer = (props) => {
     },
     {
       label: 'banner图:',
-      name: 'bannerImage',
+      name: ['windVaneParamObject', 'bannerImage'],
       type: 'upload',
       extra: '请上传702*140尺寸png、jpeg格式图片',
       // maxFile: 1,
       imgRatio: VANE_BANNER,
+      visible: showUrl === 'native',
     },
   ];
 
