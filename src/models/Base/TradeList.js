@@ -223,7 +223,7 @@ export default {
       const response = yield call(fetchTradeScanCommission, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.categoryScanCommission);
+      callback(content.categoryScanRateDTO);
     }
   },
 };

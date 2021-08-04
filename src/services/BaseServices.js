@@ -115,16 +115,15 @@ export function fetchTradeWeChat(data) {
 }
 // 行业设置-扫码付服务费比例
 export function fetchTradeScanCommissionSet(data) {
-  return request('/admin/categoryScanCommission/setCategoryScanCommission', {
+  return request('/admin/category/scanRate/setCategoryScanRate', {
     method: 'POST',
     data,
   });
 }
 
 // 获取行业-扫码付服务费比例
-
 export function fetchTradeScanCommission(params) {
-  return request('/admin/categoryScanCommission/getCategoryScanCommission', {
+  return request('/admin/category/scanRate', {
     params,
   });
 }

@@ -33,7 +33,7 @@ const PromotionMoneySet = (props) => {
   const formItems = [
     {
       label: { extend: '推广费比例', scan: '扫码付服务费比例' }[type],
-      name: { extend: 'promotionFee', scan: 'scanCommissionRatio' }[type], //
+      name: { extend: 'promotionFee', scan: 'scanRate' }[type], //
       addRules: [{ pattern: NUM_PATTERN, message: '请输正整数' }],
       addonAfter: '%',
     },
