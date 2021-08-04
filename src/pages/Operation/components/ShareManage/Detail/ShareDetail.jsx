@@ -50,7 +50,7 @@ const ShareDetail = (props) => {
     {
       label: '免费券',
       name: 'free',
-      render: (val) => val !== '--' && couponsDom(val),
+      render: (val) => val !== '' && couponsDom(val),
     },
     {
       label: '推荐带货',

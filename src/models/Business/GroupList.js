@@ -23,19 +23,10 @@ export default {
     list: { list: [], total: 0 },
     storeList: { list: [] },
     crmList: [],
-    visible: false,
-    visible1: false,
-    visible2: false,
-    groupDetails: {},
-    merchantGroupDTO: {},
-    businessLicense: {},
-    bankBindingInfo: {},
-    initial: {},
   },
 
   reducers: {
     save(state, { payload }) {
-      console.log(payload);
       return {
         ...state,
         ...payload,
@@ -199,7 +190,7 @@ export default {
           },
         },
       });
-      callback && callback();
+      callback && callback(content);
     },
     *fetchUpdateGroup({ payload, callback }, { call, put }) {
       const response = yield call(fetchUpdateGroup, payload);

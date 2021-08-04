@@ -13,7 +13,7 @@ const ShareImg = (props) => {
     ownerName,
     specialGoodsId = '',
     ownerIdString = '',
-    ShareImg = '',
+    shareImg = '',
   } = visible;
 
   const [form] = Form.useForm();
@@ -34,8 +34,9 @@ const ShareImg = (props) => {
           payload: {
             id: specialGoodsId,
             ownerId: ownerIdString,
-            ShareImg: res.toString(),
+            shareImg: res.toString(),
           },
+          callback: onClose,
         });
       });
     });
@@ -53,7 +54,11 @@ const ShareImg = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition form={form} formItems={formItems}></FormCondition>
+      <FormCondition
+        form={form}
+        formItems={formItems}
+        initialValues={{ shareImg: shareImg }}
+      ></FormCondition>
     </DrawerCondition>
   );
 };

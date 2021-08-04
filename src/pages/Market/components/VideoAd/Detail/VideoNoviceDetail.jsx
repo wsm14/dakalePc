@@ -33,7 +33,7 @@ const VideoNoviceDetail = (props) => {
     {
       label: '免费券',
       name: 'free',
-      render: (val) => val !== '--' && couponsDom(val),
+      render: (val) => val !== '' && couponsDom(val),
     },
     {
       label: '关联优惠',

@@ -1,297 +1,105 @@
 import React, { useState } from 'react';
-import { Button, Card, Alert, message } from 'antd';
-import Title from './title';
 import { connect } from 'umi';
-import DescriptionsCondition from '@/components/DescriptionsCondition';
+import { Button, Alert, Tabs } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 import {
   base,
-  user,
-  userDetails,
-  shopDetails,
-  active,
+  brand,
+  businessLicense,
+  login,
+  message,
+  shop,
   legal,
-  management,
   activeByOne,
   activeByBank,
   activeByLegal,
 } from './details/detailsIndex';
 
+const { TabPane } = Tabs;
+
 const GroupsDetails = (props) => {
-  const {
-    visible2,
-    onClose,
-    dispatch,
-    groupDetails,
-    saveVisible,
-    loading,
-    list,
-    merchantGroupIdIndex,
-  } = props;
+  const { visible, onClose, list, fetchGrounpDetails, loading } = props;
 
-  const fetchGrounpDetails = (size) => {
-    dispatch({
-      type: 'groupSet/save',
-      payload: {
-        merchantGroupIdIndex: size,
-      },
-    });
-    setTabKey('tab1');
-    const { merchantGroupIdString: merchantGroupId } = list.list[size];
-    if (merchantGroupId) {
-      dispatch({
-        type: 'groupSet/fetchGrounpDetails',
-        payload: {
-          merchantGroupId,
-        },
-      });
-    } else {
-      message.error({
-        content: '参数错误',
-      });
-    }
-  };
+  const { show, index, detail = {} } = visible;
 
-  let tabList = [
-    {
-      key: 'tab1',
-      tab: '集团信息',
-    },
-  ];
-  if (groupDetails?.merchantGroupDTO?.bankStatus !== '0') {
-    tabList = [
-      {
-        key: 'tab1',
-        tab: '集团信息',
-      },
-      {
-        key: 'tab2',
-        tab: '账户信息',
-      },
-    ];
-  }
-  const { businessLicense = {}, bankBindingInfo = {}, merchantGroupDTO = {} } = groupDetails;
-  const [tabKey, setTabKey] = useState('tab1');
-  const btnShow = () => {
-    if (
-      tabKey === 'tab2' &&
-      (groupDetails?.merchantGroupDTO?.bankStatus === '3' ||
-        groupDetails?.merchantGroupDTO?.bankStatus === '1')
-    ) {
-      return false;
-    }
-    return true;
-  };
-  const toastShow = () => {
-    if (
-      tabKey === 'tab2' &&
-      groupDetails?.merchantGroupDTO?.bankStatus === '2' &&
-      groupDetails?.merchantGroupDTO?.bankRejectReason
-    ) {
-      return true;
-    }
+  const { bankAccountType = 0, bankStatus } = visible;
 
-    return false;
-  };
-  const fetchGrounpGoBtn = () => {
-    if (tabKey === 'tab1') {
-      saveVisible({
-        visible2: false,
-        visible: true,
-      });
-    } else {
-      saveVisible({
-        visible2: false,
-        visible1: true,
-      });
-    }
-  };
-  const panelList = {
-    tab1: [
-      {
-        title: '基础信息',
-        form: (
-          <DescriptionsCondition
-            formItems={base}
-            initialValues={{ ...merchantGroupDTO }}
-          ></DescriptionsCondition>
-        ),
-        showArrow: false,
-        disabled: true,
-      },
-      {
-        title: '品牌信息',
-        form: (
-          <DescriptionsCondition
-            formItems={management}
-            initialValues={{ ...merchantGroupDTO }}
-          ></DescriptionsCondition>
-        ),
-      },
-      {
-        title: '登录信息',
-        form: (
-          <DescriptionsCondition
-            formItems={user}
-            initialValues={{ ...merchantGroupDTO }}
-          ></DescriptionsCondition>
-        ),
-        showArrow: false,
-        disabled: true,
-      },
-      {
-        title: '联系人信息',
-        form: (
-          <DescriptionsCondition
-            formItems={userDetails}
-            initialValues={{ ...merchantGroupDTO }}
-          ></DescriptionsCondition>
-        ),
-        showArrow: false,
-        disabled: true,
-      },
-      {
-        title: '店铺信息',
-        form: (
-          <DescriptionsCondition
-            formItems={shopDetails}
-            initialValues={{ ...merchantGroupDTO }}
-          ></DescriptionsCondition>
-        ),
-      },
-    ],
-    tab2: {
-      1: [
-        {
-          title: '对公账户信息',
-          form: (
-            <DescriptionsCondition
-              formItems={active}
-              initialValues={{
-                ...businessLicense,
-                ...bankBindingInfo,
-              }}
-            ></DescriptionsCondition>
-          ),
-          showArrow: false,
-          disabled: true,
-        },
-        {
-          title: '法人信息',
-          form: (
-            <DescriptionsCondition
-              formItems={legal}
-              initialValues={{
-                ...businessLicense,
-                ...bankBindingInfo,
-                activeBeginDate:
-                  ((bankBindingInfo && bankBindingInfo.startDate) || '') +
-                  '-' +
-                  ((bankBindingInfo && bankBindingInfo.legalCertIdExpires) || ''),
-              }}
-            ></DescriptionsCondition>
-          ),
-          showArrow: false,
-          disabled: true,
-        },
-      ],
-      2: [
-        {
-          title: '对私账户信息',
-          form: (
-            <DescriptionsCondition
-              formItems={activeByOne}
-              initialValues={{
-                ...businessLicense,
-                ...bankBindingInfo,
-                activeValidity:
-                  ((businessLicense && businessLicense.validityPeriod) || '') +
-                  '-' +
-                  ((businessLicense && businessLicense.establishDate) || ''),
-              }}
-            ></DescriptionsCondition>
-          ),
-          showArrow: false,
-          disabled: true,
-        },
-        {
-          title: '银行卡信息',
-          form: (
-            <DescriptionsCondition
-              formItems={activeByBank}
-              initialValues={{
-                ...businessLicense,
-                ...bankBindingInfo,
-              }}
-            ></DescriptionsCondition>
-          ),
-          showArrow: false,
-          disabled: true,
-        },
-        {
-          title: '结算人身份信息',
-          form: (
-            <DescriptionsCondition
-              formItems={activeByLegal}
-              initialValues={{
-                ...businessLicense,
-                ...bankBindingInfo,
-                activeBeginDate:
-                  ((bankBindingInfo && bankBindingInfo.startDate) || '') +
-                  '-' +
-                  ((bankBindingInfo && bankBindingInfo.legalCertIdExpires) || ''),
-              }}
-            ></DescriptionsCondition>
-          ),
-          showArrow: false,
-          disabled: true,
-        },
-      ],
-    }[merchantGroupDTO.bankAccountType],
-  }[tabKey];
+  const [tabKey, setTabKey] = useState('group');
+  const [info, setDetail] = useState({}); // 详情保存
 
   const modalProps = {
     title: `集团详情`,
-    visible: visible2,
+    visible: show,
     onClose,
-    bodyStyle: { padding: loading ? 24 : 0 },
-    loading: loading,
+    loading,
     dataPage: {
-      current: merchantGroupIdIndex,
-      total: list.list.length,
-      onChange: (size) => fetchGrounpDetails(size),
+      current: index,
+      total: list.length,
+      onChange: (size) =>
+        fetchGrounpDetails(size, (res) => {
+          setTabKey('group');
+          setDetail(res);
+        }),
     },
-    afterCallBack: () => fetchGrounpDetails(merchantGroupIdIndex),
-    footer: btnShow() && (
-      <Button onClick={() => fetchGrounpGoBtn()} type="primary">
+    afterCallBack: () => setDetail(detail),
+    footer: tabKey === 'group' && (
+      <Button onClick={() => {}} type="primary">
         去修改
       </Button>
     ),
   };
 
+  const showDome = {
+    group: [
+      { title: '基础信息', formItems: base, initialValues: detail },
+      { title: '营业执照信息', formItems: businessLicense, initialValues: detail },
+      { title: '品牌信息', formItems: brand, initialValues: detail },
+      { title: '登录信息', formItems: login, initialValues: detail },
+      { title: '联系人信息', formItems: message, initialValues: detail },
+      { title: '店铺信息', formItems: shop, initialValues: detail },
+    ],
+    account: {
+      0: [
+        { title: '对公账户信息', formItems: activeByOne, initialValues: detail },
+        { title: '法人信息', formItems: legal, initialValues: detail },
+      ], // 对公
+      1: [
+        { title: '银行卡信息', formItems: activeByBank, initialValues: detail },
+        { title: '结算人身份信息', formItems: activeByLegal, initialValues: detail },
+      ], // 对私
+    }[bankAccountType],
+  };
+
   return (
     <DrawerCondition {...modalProps}>
-      <Card
-        bordered={false}
-        tabList={tabList}
-        activeTabKey={tabKey}
-        onTabChange={(key) => setTabKey(key)}
-      >
-        {toastShow() && (
-          <Alert
-            style={{ marginBottom: '12px' }}
-            message={`失败原因：${merchantGroupDTO.bankRejectReason || ''}`}
-            type="error"
-            showIcon
-          />
+      {false && (
+        <Alert
+          style={{ marginBottom: '12px' }}
+          message={`失败原因：${merchantGroupDTO.bankRejectReason || ''}`}
+          type="error"
+          showIcon
+        />
+      )}
+      <Tabs onChange={setTabKey} type="card">
+        <TabPane tab="集团信息" key="group">
+          {showDome['group'].map((item) => (
+            <DescriptionsCondition {...item}></DescriptionsCondition>
+          ))}
+        </TabPane>
+        {bankStatus && bankStatus !== '0' && (
+          <TabPane tab="账户信息" key="account">
+            {showDome['account'].map((item) => (
+              <DescriptionsCondition {...item}></DescriptionsCondition>
+            ))}
+          </TabPane>
         )}
-        <Title panelList={panelList}></Title>
-      </Card>
+      </Tabs>
     </DrawerCondition>
   );
 };
 
 export default connect(({ groupSet, loading }) => ({
-  ...groupSet,
+  list: groupSet.list.list,
   loading: loading.effects['groupSet/fetchGrounpDetails'],
 }))(GroupsDetails);
