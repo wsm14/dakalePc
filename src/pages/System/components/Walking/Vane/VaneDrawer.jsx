@@ -142,6 +142,7 @@ const VaneDrawer = (props) => {
       label: '行业名称',
       name: ['windVaneParamObject', 'categoryName'],
       hidden: true,
+      visible: showUrl === 'native',
     },
     {
       label: 'banner图:',
