@@ -171,7 +171,7 @@ const BusinessDetailShow = (props) => {
     },
     {
       label: '核销订单服务费', 
-      name: 'promotionFee',
+      name: 'commissionRatio',
       render: (val) => `${val || 0}%`,
     },
     {
