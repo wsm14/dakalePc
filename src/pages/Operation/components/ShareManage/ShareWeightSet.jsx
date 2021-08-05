@@ -12,8 +12,8 @@ const FormItem = Form.Item;
 const ShareWeightSet = ({ detail, dispatch }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
-  
-  const { userMomentIdString: momentId } = detail;
+
+  const { userMomentIdString: momentId, recommendWeight } = detail;
 
   const setEdit = () => setEditType(!editType);
 
@@ -32,7 +32,7 @@ const ShareWeightSet = ({ detail, dispatch }) => {
   };
 
   return (
-    <Form initialValues={detail} form={form}>
+    <Form initialValues={{ recommendWeight: Number(recommendWeight) }} form={form}>
       <FormItem noStyle name={'recommendWeight'}>
         <div style={{ display: 'flex' }}>
           <InputNumber disabled={!editType} />

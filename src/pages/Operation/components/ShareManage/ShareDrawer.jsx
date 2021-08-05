@@ -32,7 +32,7 @@ const ShareDrawer = (props) => {
             frontImage,
             videoId,
             videoUrl,
-            shareImg,
+            friendShareImg,
             categoryNode = [],
             title,
             age,
@@ -74,7 +74,7 @@ const ShareDrawer = (props) => {
                 data: videoId ? videoId : videoUrl, // 上传视频
                 title,
                 callback: (videos) => {
-                  aliOssUpload(shareImg).then((res) => {
+                  aliOssUpload(friendShareImg).then((res) => {
                     dispatch({
                       type: 'shareManage/fetchShareVideoPush',
                       payload: {
@@ -89,7 +89,7 @@ const ShareDrawer = (props) => {
                         ...values,
                         ...tasteData,
                         ...values,
-                        shareImg: res.toString(),
+                        friendShareImg: res.toString(),
                         videoUrl: undefined,
                         ageData: undefined,
                         cityList: undefined,

@@ -111,7 +111,7 @@ const ShareDetail = (props) => {
     // },
     {
       label: '微信好友分享图',
-      name: 'shareImg',
+      name: 'friendShareImg',
       type: 'upload',
     },
   ];

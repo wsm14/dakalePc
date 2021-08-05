@@ -24,7 +24,7 @@ const ShareDrawer = (props) => {
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
       const { frontImage, videoId, videoUrl, categoryNode, title } = dataStorage;
-      const { areaType, area, rewardStartTime: time, shareImg, ...ohter } = values;
+      const { areaType, area, rewardStartTime: time, friendShareImg, ...ohter } = values;
       const {
         free: { ownerCouponIdString: couponIds },
         contact = {},
@@ -37,7 +37,7 @@ const ShareDrawer = (props) => {
             data: videoId ? videoId : videoUrl, // 上传视频
             title,
             callback: (videos) => {
-              aliOssUpload(shareImg).then((res) => {
+              aliOssUpload(friendShareImg).then((res) => {
                 dispatch({
                   type: 'videoAdvert/fetchVideoAdNoviceSet',
                   payload: {
@@ -46,7 +46,7 @@ const ShareDrawer = (props) => {
                     beanFlag: '1', // 是否打赏 0 1
                     ...dataStorage,
                     ...ohter,
-                    shareImg: res.toString(),
+                    friendShareImg: res.toString(),
                     videoUrl: undefined,
                     area: areaType === 'district' ? area[2] : undefined,
                     categoryNode: categoryNode.join('.'),
