@@ -84,6 +84,16 @@ const VideoContentSet = (props) => {
       },
     },
     {
+      label: '微信好友分享图',
+      name: 'friendShareImg',
+      type: 'upload',
+      maxFile: 1,
+      maxSize: 128,
+      imgRatio: VIDEO_SHARE_IMG,
+      rules: [{ required: false }],
+      extra: '请上传比例为5：4，大小128kb以内的jpg图片（250*200以上）',
+    },
+    {
       label: '视频id',
       name: 'videoId',
       rules: [{ required: false }],
@@ -166,16 +176,6 @@ const VideoContentSet = (props) => {
           onOk={(contact) => saveCouponStorage({ contact })}
         ></ShareCoupon>
       ),
-    },
-    {
-      label: '微信好友分享图',
-      name: 'friendShareImg',
-      type: 'upload',
-      maxFile: 1,
-      maxSize: 128,
-      imgRatio: VIDEO_SHARE_IMG,
-      rules: [{ required: false }],
-      extra: '请上传比例为5：4，大小128kb以内的jpg图片（250*200以上）',
     },
   ];
 
