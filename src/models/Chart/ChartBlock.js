@@ -50,7 +50,7 @@ export default {
       if (!response) return;
       const { content } = response;
       const dataCheck = (key, numKey) =>
-        content.orderInfo[key] ? content.orderInfo[key][numKey] || 0 : 0;
+        content.orderInfo[key] ? Number(content.orderInfo[key][numKey] || 0) : 0;
       const allTotal = {
         totalFee:
           dataCheck('scan', 'totalFee') +

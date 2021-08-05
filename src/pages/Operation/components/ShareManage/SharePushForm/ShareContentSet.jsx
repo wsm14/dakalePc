@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
-import { VIDEO_ADVERT } from '@/common/imgRatio';
+import { VIDEO_ADVERT, VIDEO_SHARE_IMG } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from '@/components/VideoSelectBindContent';
 
@@ -89,6 +89,16 @@ const ShareContentSet = (props) => {
       },
     },
     {
+      label: '微信好友分享图',
+      name: 'friendShareImg',
+      type: 'upload',
+      maxFile: 1,
+      maxSize: 128,
+      imgRatio: VIDEO_SHARE_IMG,
+      rules: [{ required: false }],
+      extra: '请上传比例为5：4，大小128kb以内的jpg图片（250*200以上）',
+    },
+    {
       label: '视频id',
       name: 'videoId',
       hidden: true,
@@ -135,6 +145,12 @@ const ShareContentSet = (props) => {
           categoryName: option[1].categoryName,
         });
       },
+    },
+    {
+      label: '权重',
+      type: 'number',
+      name: 'recommendWeight',
+      placeholder: '数值越大越靠前',
     },
     {
       name: 'topCategoryId', // 一级行业id

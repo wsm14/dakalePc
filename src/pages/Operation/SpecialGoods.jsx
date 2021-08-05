@@ -357,14 +357,14 @@ const SpecialGoods = (props) => {
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, ownerId: ownerIdString },
       callback: (val) => {
-        const { ShareImg } = val;
+        const { shareImg } = val;
         setVisibleShare({
           show: true,
           goodsName,
           ownerName,
           specialGoodsId,
           ownerIdString,
-          ShareImg,
+          shareImg,
         });
       },
     });

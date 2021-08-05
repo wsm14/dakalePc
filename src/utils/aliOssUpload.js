@@ -57,6 +57,7 @@ const fetchGetOssPolicy = async ({ policyType, ossType }) => {
 
 // 上传文件
 const aliOssUpload = async (file = '', fieldNames = {}, policyType = 'image', ossType = 'put') => {
+  if (!file) return new Promise((resolve) => resolve(''));
   // file 默认是数组直接赋值
   let fileDataArray = file || [];
 

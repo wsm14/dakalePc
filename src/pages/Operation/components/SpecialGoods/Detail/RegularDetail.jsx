@@ -53,7 +53,7 @@ const RegularDetail = (props) => {
     {
       name: 'total',
       label: '投放总量',
-      render: (val) => (val && val !== '--' ? `${val}份` : '--'),
+      render: (val) => (val ? `${val}份` : '--'),
     },
   ];
 
@@ -68,7 +68,7 @@ const RegularDetail = (props) => {
         { personLimit: '每人', dayLimit: '每天', unlimited: '不限' }[detail.buyRule]
       }购买份数`,
       name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[detail.buyRule],
-      render: (val) => (val && val !== '--' ? `${val}份` : '--'),
+      render: (val) => (val ? `${val}份` : '--'),
     },
     {
       name: 'needOrder',

@@ -33,7 +33,7 @@ const VideoNoviceDetail = (props) => {
     {
       label: '免费券',
       name: 'free',
-      render: (val) => val !== '--' && couponsDom(val),
+      render: (val) => val !== '' && couponsDom(val),
     },
     {
       label: '关联优惠',
@@ -68,6 +68,11 @@ const VideoNoviceDetail = (props) => {
           {detail.rewardCycle !== '0' && <div>投放时间：{detail.rewardEndTime}</div>}
         </div>
       ),
+    },
+    {
+      label: '微信好友分享图',
+      name: 'shareImg',
+      type: 'upload',
     },
     {
       label: '创建时间',
