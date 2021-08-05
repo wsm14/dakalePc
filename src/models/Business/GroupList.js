@@ -142,12 +142,14 @@ export default {
       const { establishDate: mre, validityPeriod, ...blsOther } = businessLicense;
       const activeBeginDate = startDate ? [moment(startDate), moment(legalCertIdExpires)] : ''; // 结算人/法人 身份有效期
       const establishDate = mre ? [moment(mre), moment(validityPeriod)] : ''; // 营业期限
+      const city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode];
       callback({
         ...bankOther,
         ...blsOther,
         ...merchantGroupDTO,
         activeBeginDate,
         establishDate,
+        city,
       });
     },
     *fetchUpdateGroup({ payload, callback }, { call }) {
