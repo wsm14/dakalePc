@@ -47,7 +47,7 @@ const GoodsDetail = (props) => {
       label: '套餐内单品',
       show: detail.goodsType == 'package',
       name: 'packageGoods',
-      render: (val) => <GoodsSetTable detail={val !== '--' ? JSON.parse(val) : []}></GoodsSetTable>,
+      render: (val) => <GoodsSetTable detail={val !== '' ? JSON.parse(val) : []}></GoodsSetTable>,
     },
     {
       label: detail.goodsType == 'single' ? '单品介绍' : '套餐介绍',
