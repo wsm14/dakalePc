@@ -23,7 +23,12 @@ const GroupsDetails = (props) => {
 
   const { show, index, detail = {} } = visible;
 
-  const { bankAccountType = 0, bankStatus } = visible;
+  /**
+   * bankAccountType 账户类型
+   * bankStatus 激活状态
+   * bankRejectReason 激活失败原因
+   */
+  const { bankAccountType = 0, bankStatus, bankRejectReason } = detail;
 
   const [tabKey, setTabKey] = useState('group');
   const [info, setDetail] = useState({}); // 详情保存
@@ -52,45 +57,53 @@ const GroupsDetails = (props) => {
 
   const showDome = {
     group: [
-      { title: '基础信息', formItems: base, initialValues: detail },
-      { title: '营业执照信息', formItems: businessLicense, initialValues: detail },
-      { title: '品牌信息', formItems: brand, initialValues: detail },
-      { title: '登录信息', formItems: login, initialValues: detail },
-      { title: '联系人信息', formItems: message, initialValues: detail },
-      { title: '店铺信息', formItems: shop, initialValues: detail },
+      { title: '基础信息', formItems: base },
+      { title: '营业执照信息', formItems: businessLicense },
+      { title: '品牌信息', formItems: brand },
+      { title: '登录信息', formItems: login },
+      { title: '联系人信息', formItems: message },
+      { title: '店铺信息', formItems: shop },
     ],
     account: {
-      0: [
-        { title: '对公账户信息', formItems: activeByOne, initialValues: detail },
-        { title: '法人信息', formItems: legal, initialValues: detail },
-      ], // 对公
       1: [
-        { title: '银行卡信息', formItems: activeByBank, initialValues: detail },
-        { title: '结算人身份信息', formItems: activeByLegal, initialValues: detail },
+        { title: '对公账户信息', formItems: activeByOne },
+        { title: '法人信息', formItems: legal },
+      ], // 对公
+      2: [
+        { title: '银行卡信息', formItems: activeByBank },
+        { title: '结算人身份信息', formItems: activeByLegal },
       ], // 对私
     }[bankAccountType],
   };
 
   return (
     <DrawerCondition {...modalProps}>
-      {false && (
+      {bankStatus === '2' && bankRejectReason && (
         <Alert
           style={{ marginBottom: '12px' }}
-          message={`失败原因：${merchantGroupDTO.bankRejectReason || ''}`}
+          message={`失败原因：${bankRejectReason}`}
           type="error"
           showIcon
         />
       )}
       <Tabs onChange={setTabKey} type="card">
         <TabPane tab="集团信息" key="group">
-          {showDome['group'].map((item) => (
-            <DescriptionsCondition {...item}></DescriptionsCondition>
+          {showDome['group'].map((item, index) => (
+            <DescriptionsCondition
+              key={`group${index}`}
+              {...item}
+              initialValues={detail}
+            ></DescriptionsCondition>
           ))}
         </TabPane>
         {bankStatus && bankStatus !== '0' && (
           <TabPane tab="账户信息" key="account">
-            {showDome['account'].map((item) => (
-              <DescriptionsCondition {...item}></DescriptionsCondition>
+            {showDome['account']?.map((item, index) => (
+              <DescriptionsCondition
+                key={`account${index}`}
+                {...item}
+                initialValues={detail}
+              ></DescriptionsCondition>
             ))}
           </TabPane>
         )}

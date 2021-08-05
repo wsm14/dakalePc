@@ -11,9 +11,7 @@ export const base = [
   },
   {
     label: '经营类目',
-    type: 'cascader',
     name: 'topCategoryName',
-    render: (val) => val,
   },
   {
     label: '详细地址',
@@ -51,8 +49,8 @@ export const businessLicense = [
   },
   {
     label: '营业期限',
-    name: 'validityPeriod',
-    render: (val, row) => `${row.establishDate || ''}-${val}`,
+    name: 'establishDate',
+    render: (val) => val && `${val[0].format('YYYY-MM-DD')}-${val[1].format('YYYY-MM-DD')}`,
   },
   {
     label: '经营范围',
@@ -124,6 +122,7 @@ export const legal = [
   {
     label: '法人身份有效期',
     name: 'activeBeginDate',
+    render: (val) => val && `${val[0].format('YYYY-MM-DD')}-${val[1].format('YYYY-MM-DD')}`,
   },
   {
     label: '法人手机号',
@@ -172,9 +171,7 @@ export const activeByBank = [
   {
     label: '开户城市',
     name: 'areaCode',
-    render: (val, row) => {
-      return val ? checkCityName(val || '') : '';
-    },
+    render: (val) => checkCityName(val || ''),
   },
   {
     label: '银行预留手机号',
@@ -208,5 +205,6 @@ export const activeByLegal = [
   {
     label: '结算人身份有效期',
     name: 'activeBeginDate',
+    render: (val) => val && `${val[0].format('YYYY-MM-DD')}-${val[1].format('YYYY-MM-DD')}`,
   },
 ];
