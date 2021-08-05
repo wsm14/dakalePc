@@ -30,21 +30,21 @@ const ShareWeightSet = ({ detail, dispatch }) => {
       });
     });
   };
-
+  console.log({ recommendWeight: Number(recommendWeight) });
   return (
     <Form initialValues={{ recommendWeight: Number(recommendWeight) }} form={form}>
-      <FormItem noStyle name={'recommendWeight'}>
-        <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
+        <FormItem noStyle name={'recommendWeight'}>
           <InputNumber disabled={!editType} />
-          <Button
-            style={{ width: 32 }}
-            type="link"
-            block
-            icon={!editType ? <EditOutlined /> : <CheckOutlined />}
-            onClick={!editType ? setEdit : fetchFormData}
-          ></Button>
-        </div>
-      </FormItem>
+        </FormItem>
+        <Button
+          style={{ width: 32 }}
+          type="link"
+          block
+          icon={!editType ? <EditOutlined /> : <CheckOutlined />}
+          onClick={!editType ? setEdit : fetchFormData}
+        ></Button>
+      </div>
     </Form>
   );
 };
