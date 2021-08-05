@@ -137,6 +137,12 @@ const ShareContentSet = (props) => {
       },
     },
     {
+      label: '权重',
+      type: 'number',
+      name: 'recommendWeight',
+      placeholder: '数值越大越靠前',
+    },
+    {
       name: 'topCategoryId', // 一级行业id
       hidden: true,
     },
@@ -190,6 +196,7 @@ const ShareContentSet = (props) => {
       maxSize: 128,
       imgRatio: VIDEO_SHARE_IMG,
       rules: [{ required: false }],
+      extra: '请上传比例为5：4，大小128kb以内的jpg图片（250*200以上）',
     },
   ];
 

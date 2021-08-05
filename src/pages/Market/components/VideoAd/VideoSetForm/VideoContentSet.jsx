@@ -175,6 +175,7 @@ const VideoContentSet = (props) => {
       maxSize: 128,
       imgRatio: VIDEO_SHARE_IMG,
       rules: [{ required: false }],
+      extra: '请上传比例为5：4，大小128kb以内的jpg图片（250*200以上）',
     },
   ];
 

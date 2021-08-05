@@ -12,6 +12,7 @@ import {
   fetchShareGetAccountBean,
   fetchShareGetPlatformBean,
   fetchShareRewardPeo,
+  fetchShareWeightSet,
 } from '@/services/OperationServices';
 
 export default {
@@ -182,6 +183,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '新增打赏人数成功',
+      });
+      callback();
+    },
+    *fetchShareWeightSet({ payload, callback }, { call }) {
+      const response = yield call(fetchShareWeightSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置成功',
       });
       callback();
     },
