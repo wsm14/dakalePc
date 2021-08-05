@@ -57,7 +57,6 @@ export const businessLicense = [
   {
     label: '经营范围',
     name: 'businessScope',
-    type: 'textArea',
   },
 ];
 
@@ -100,7 +99,6 @@ export const shop = [
   {
     label: '店铺介绍',
     name: 'groupDesc',
-    type: 'textArea',
   },
 ];
 
