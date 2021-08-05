@@ -97,7 +97,7 @@
 | 参数     | 说明                                     | 类型           | 默认值 |
 | -------- | ---------------------------------------- | -------------- | ------ |
 | maxFile  | 最大文件数                               | number         | 999    |
-| maxSize  | 图片大小限制`MB`                         | number         | 1      |
+| maxSize  | 图片大小限制`KB`                         | number         | 1      |
 | multiple | 是否允许多选,`isCut`为 true 默认为 false | boolean        | true   |
 | isCut    | 是否选择时裁剪                           | boolean        | false  |
 | imgRatio | 裁剪图片比例                             | number         | -      |

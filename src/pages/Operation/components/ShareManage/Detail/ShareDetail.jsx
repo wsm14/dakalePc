@@ -50,7 +50,7 @@ const ShareDetail = (props) => {
     {
       label: '免费券',
       name: 'free',
-      render: (val) => val !== '--' && couponsDom(val),
+      render: (val) => val !== '' && couponsDom(val),
     },
     {
       label: '推荐带货',
@@ -109,6 +109,11 @@ const ShareDetail = (props) => {
     //     </div>
     //   ),
     // },
+    {
+      label: '微信好友分享图',
+      name: 'friendShareImg',
+      type: 'upload',
+    },
   ];
 
   const modalProps = {

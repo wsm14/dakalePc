@@ -33,7 +33,7 @@ const MessageDetail = (props) => {
     {
       label: '跳转链接',
       name: 'linkType',
-      render: (val, row) => MSG_PSUH_URL[val === '--' ? '' : val] + ' ' + row.link,
+      render: (val, row) => MSG_PSUH_URL[val] + ' ' + row.link,
     },
     {
       label: '消息类型',

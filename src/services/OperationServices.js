@@ -224,9 +224,17 @@ export function fetchShareLikeSet(params) {
   });
 }
 
-// 视频管理新增打赏人数
+// post 视频管理 - 新增打赏人数
 export function fetchShareRewardPeo(data) {
   return request('/admin/marketingManagement/addBeanPersonAmount', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视频管理 - 视频权重设置
+export function fetchShareWeightSet(data) {
+  return request('/admin/marketingManagement/modifyRecommendWeight', {
     method: 'POST',
     data,
   });
