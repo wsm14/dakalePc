@@ -27,6 +27,6 @@ const userForm = (props) => {
   return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
 };
 
-export default connect(({ groupSet }) => ({
-  ...groupSet,
+export default connect(({ groupSetCopy }) => ({
+  ...groupSetCopy,
 }))(userForm);

@@ -97,7 +97,7 @@ const addGroups = (props) => {
         } = obj;
         provCode = provCode.includes('00') ? provCode : '00' + provCode;
         dispatch({
-          type: 'groupSet/fetchMerchantBank',
+          type: 'groupSetCopy/fetchMerchantBank',
           payload: {
             merchantGroupId,
             bankAccountType: bankAccount,
@@ -148,7 +148,7 @@ const addGroups = (props) => {
         } = obj;
         provCode = provCode.includes('00') ? provCode : '00' + provCode;
         dispatch({
-          type: 'groupSet/fetchMerchantBank',
+          type: 'groupSetCopy/fetchMerchantBank',
           payload: {
             merchantGroupId,
             bankAccountType: bankAccount,
@@ -221,7 +221,7 @@ const addGroups = (props) => {
   );
 };
 
-export default connect(({ groupSet, loading }) => ({
-  ...groupSet,
-  loading: loading.effects['groupSet/fetchMerchantBank'],
+export default connect(({ groupSetCopy, loading }) => ({
+  ...groupSetCopy,
+  loading: loading.effects['groupSetCopy/fetchMerchantBank'],
 }))(addGroups);

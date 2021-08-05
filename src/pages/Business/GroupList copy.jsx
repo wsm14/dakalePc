@@ -43,7 +43,7 @@ const tableList = (props) => {
   };
   const fetchSave = (payload, close) => {
     dispatch({
-      type: 'groupSet/save',
+      type: 'groupSetCopy/save',
       payload: close
         ? {
             visible: false,
@@ -61,7 +61,7 @@ const tableList = (props) => {
   };
   const fetchGrounpDetails = (payload, callback) => {
     dispatch({
-      type: 'groupSet/fetchGrounpDetails',
+      type: 'groupSetCopy/fetchGrounpDetails',
       payload: payload,
       callback: callback,
     });
