@@ -23,15 +23,14 @@ const GroupsDetails = (props) => {
 
   const { show, index, detail = {} } = visible;
 
+  const [tabKey, setTabKey] = useState('group');
+  const [info, setDetail] = useState({}); // 详情保存
   /**
    * bankAccountType 账户类型
    * bankStatus 激活状态
    * bankRejectReason 激活失败原因
    */
-  const { bankAccountType = 0, bankStatus, bankRejectReason } = detail;
-
-  const [tabKey, setTabKey] = useState('group');
-  const [info, setDetail] = useState({}); // 详情保存
+  const { bankAccountType = 0, bankStatus, bankRejectReason } = info;
 
   const modalProps = {
     title: `集团详情`,
@@ -92,7 +91,7 @@ const GroupsDetails = (props) => {
             <DescriptionsCondition
               key={`group${index}`}
               {...item}
-              initialValues={detail}
+              initialValues={info}
             ></DescriptionsCondition>
           ))}
         </TabPane>
@@ -102,7 +101,7 @@ const GroupsDetails = (props) => {
               <DescriptionsCondition
                 key={`account${index}`}
                 {...item}
-                initialValues={detail}
+                initialValues={info}
               ></DescriptionsCondition>
             ))}
           </TabPane>
