@@ -221,7 +221,7 @@ const BusinessListComponent = (props) => {
         {
           type: 'rate',
           title: '费率',
-          click: () => fetchGetRate({ type: 'merchant', identificationId: val, record }),
+          click: () => fetchGetRate({ type: 'merchant', record }),
         },
       ],
     },
@@ -229,8 +229,20 @@ const BusinessListComponent = (props) => {
 
   // 费率
   const fetchGetRate = (payload) => {
-    const { type, record } = payload;
-    setVisibleRate({ type, show: true, record });
+    const { type, record = {} } = payload;
+    const { userMerchantIdString: ownerId } = record;
+    // setVisibleRate({ type, show: true, initialValues: { ...record } });
+    dispatch({
+      type: 'businessList/fetchAllOwnerRate',
+      payload: {
+        ownerType: type,
+        ownerId,
+      },
+      callback: (detail) => {
+        const initialValues = { ...record, ...detail,listPayload:payload };
+        setVisibleRate({ type, show: true, initialValues });
+      },
+    });
   };
 
   // 获取日志信息
@@ -364,7 +376,11 @@ const BusinessListComponent = (props) => {
       {/* 设置二维码背景图片 */}
       <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
       {/* 费率设置 */}
-      <ReteDrawerSet visible={visibleRate} onClose={() => setVisibleRate(false)}></ReteDrawerSet>
+      <ReteDrawerSet
+        visible={visibleRate}
+        fetchGetRate={fetchGetRate}
+        onClose={() => setVisibleRate(false)}
+      ></ReteDrawerSet>
     </>
   );
 };

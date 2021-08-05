@@ -197,3 +197,26 @@ export function fetchGroupStoreList(params) {
 }
 
 // 集团管理 end
+
+//设置临时服务费
+export function fetchsetManualRate(data) {
+  return request('/admin/owner/rate/setManualRate', {
+    method: 'POST',
+    data,
+  });
+}
+
+//查询商家服务费
+export function fetchAllOwnerRate(params) {
+  return request('/admin/owner/rate/getAllOwnerRate', {
+    params,
+  });
+}
+
+// 修改商家服务费
+export function fetchUpdateManualRate(data) {
+  return request('/admin/owner/rate/updateManualRate', {
+    method: 'POST',
+    data,
+  });
+}
