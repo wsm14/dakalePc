@@ -70,6 +70,11 @@ const VideoNoviceDetail = (props) => {
       ),
     },
     {
+      label: '微信好友分享图',
+      name: 'shareImg',
+      type: 'upload',
+    },
+    {
       label: '创建时间',
       name: 'createTime',
     },

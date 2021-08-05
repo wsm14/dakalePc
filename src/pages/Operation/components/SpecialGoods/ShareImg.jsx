@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';

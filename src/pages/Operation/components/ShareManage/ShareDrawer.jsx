@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form, Steps, Modal } from 'antd';
 import uploadLive from '@/utils/uploadLive';
+import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareContentSet from './SharePushForm/ShareContentSet';
 import SharePutInSet from './SharePushForm/SharePutInSet';
@@ -31,6 +32,7 @@ const ShareDrawer = (props) => {
             frontImage,
             videoId,
             videoUrl,
+            shareImg,
             categoryNode = [],
             title,
             age,
@@ -72,45 +74,50 @@ const ShareDrawer = (props) => {
                 data: videoId ? videoId : videoUrl, // 上传视频
                 title,
                 callback: (videos) => {
-                  dispatch({
-                    type: 'shareManage/fetchShareVideoPush',
-                    payload: {
-                      userType: 'merchant',
-                      contentType: 'video',
-                      scope: 'all',
-                      merchantCount: 1,
-                      beanFlag: '1', // 是否打赏 0 1
-                      frontImageWidth: 544, // 封面宽
-                      frontImageHeight: 960, // 封面长
-                      ...dataStorage,
-                      ...values,
-                      ...tasteData,
-                      ...values,
-                      videoUrl: undefined,
-                      ageData: undefined,
-                      cityList: undefined,
-                      age: age === 'age' ? ageData.toString() : age,
-                      area: {
-                        all: undefined,
-                        city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-                        district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-                        near: area,
-                      }[areaType],
-                      categoryNode: categoryNode.join('.'),
-                      frontImage: imgs, // 封面连接
-                      rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-                      rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-                      timedPublishTime: pTime && pTime.format('YYYY-MM-DD HH:mm:00'),
-                      videoId: videos,
-                      couponIds,
-                      promotionId:
-                        contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
-                      promotionType: { coupon: 'reduce', goods: 'special' }[cType],
-                    },
-                    callback: () => {
-                      onClose();
-                      childRef.current.fetchGetData();
-                    },
+                  aliOssUpload(shareImg).then((res) => {
+                    dispatch({
+                      type: 'shareManage/fetchShareVideoPush',
+                      payload: {
+                        userType: 'merchant',
+                        contentType: 'video',
+                        scope: 'all',
+                        merchantCount: 1,
+                        beanFlag: '1', // 是否打赏 0 1
+                        frontImageWidth: 544, // 封面宽
+                        frontImageHeight: 960, // 封面长
+                        ...dataStorage,
+                        ...values,
+                        ...tasteData,
+                        ...values,
+                        shareImg: res.toString(),
+                        videoUrl: undefined,
+                        ageData: undefined,
+                        cityList: undefined,
+                        age: age === 'age' ? ageData.toString() : age,
+                        area: {
+                          all: undefined,
+                          city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                          district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                          near: area,
+                        }[areaType],
+                        categoryNode: categoryNode.join('.'),
+                        frontImage: imgs, // 封面连接
+                        rewardStartTime: time && time[0].format('YYYY-MM-DD'),
+                        rewardEndTime: time && time[1].format('YYYY-MM-DD'),
+                        timedPublishTime: pTime && pTime.format('YYYY-MM-DD HH:mm:00'),
+                        videoId: videos,
+                        couponIds,
+                        promotionId:
+                          contact[
+                            { coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]
+                          ],
+                        promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+                      },
+                      callback: () => {
+                        onClose();
+                        childRef.current.fetchGetData();
+                      },
+                    });
                   });
                 },
               });

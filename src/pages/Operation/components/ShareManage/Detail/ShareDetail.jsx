@@ -109,6 +109,11 @@ const ShareDetail = (props) => {
     //     </div>
     //   ),
     // },
+    {
+      label: '微信好友分享图',
+      name: 'shareImg',
+      type: 'upload',
+    },
   ];
 
   const modalProps = {
