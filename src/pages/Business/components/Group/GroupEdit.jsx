@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import { checkFileData } from '@/utils/utils';
 import aliOssUpload from '@/utils/aliOssUpload';
 import CrmGroupSelect from './Form/CrmGroupSelect';
 import GroupInfoForm from './Form/GroupInfoForm';
@@ -25,6 +26,51 @@ const GroupEdit = (props) => {
     setCrmSelect(false);
   };
 
+  // 提交集团数据
+  const fetchUpGroupData = (handle) => {
+    form.validateFields().then((values) => {
+      const {
+        localImages,
+        mainImages,
+        activeValidity,
+        topCategSelect,
+        businessLicenseObject,
+        allCode,
+        ...other
+      } = values;
+      const lImg = checkFileData(localImages);
+      const mImg = checkFileData(mainImages);
+      aliOssUpload([...lImg, ...mImg]).then((res) => {
+        dispatch({
+          type: { add: 'groupSet/fetchAddList', edit: 'groupSet/fetchUpdateGroup' }[type],
+          payload: {
+            ...other,
+            provinceCode: allCode[0],
+            cityCode: allCode[1],
+            districtCode: allCode[2],
+            categoryNode: topCategSelect.join('.'),
+            businessLicenseObject: {
+              ...businessLicenseObject,
+              validityPeriod: activeValidity[1].format('YYYY-MM-DD'),
+              establishDate: activeValidity[0].format('YYYY-MM-DD'),
+            },
+            localImages: res.slice(0, lImg.length).toString(),
+            mainImages: res.slice(lImg.length).toString(),
+          },
+          callback: () => {
+            // 保存和下一步
+            if (handle === 'save') {
+              cRef.current.fetchGetData();
+              onClose();
+            } else {
+              onClose();
+            }
+          },
+        });
+      });
+    });
+  };
+
   const modalProps = {
     title: type == 'edit' ? '修改集团信息' : `新增集团`,
     visible: show,
@@ -36,23 +82,30 @@ const GroupEdit = (props) => {
     },
     footer: (
       <>
-        <Button onClick={() => form.validateFields().then((res) => console.log(res))}>保存</Button>
-        <Button onClick={() => {}} type="primary">
-          下一步
-        </Button>
+        <Button onClick={() => fetchUpGroupData('save')}>保存</Button>
+        {type === 'add' && (
+          <Button onClick={() => fetchUpGroupData('next')} type="primary">
+            下一步
+          </Button>
+        )}
       </>
     ),
   };
 
   return (
     <DrawerCondition {...modalProps}>
-      {/* 基础信息 */}
-      <GroupInfoForm form={form} formType={type} initialValues={mreDetail}></GroupInfoForm>
-      {/* 营业执照信息 */}
-      <BusinessLicense form={form} formType={type}></BusinessLicense>
-      {/* 品牌信息 && 登录信息 && 联系人信息 && 店铺信息 */}
-      <OhterInfoForm form={form} formType={type} initialValues={mreDetail}></OhterInfoForm>
-      {/* <CrmGroupSelect form={formCrm} goSet={handleCrmAddGroup} /> */}
+      {crmSelect ? (
+        <CrmGroupSelect form={formCrm} goSet={handleCrmAddGroup} /> // 认领页面
+      ) : (
+        <>
+          {/* 基础信息 */}
+          <GroupInfoForm form={form} formType={type} initialValues={mreDetail}></GroupInfoForm>
+          {/* 营业执照信息 */}
+          <BusinessLicense form={form} formType={type}></BusinessLicense>
+          {/* 品牌信息 && 登录信息 && 联系人信息 && 店铺信息 */}
+          <OhterInfoForm form={form} formType={type} initialValues={mreDetail}></OhterInfoForm>
+        </>
+      )}
     </DrawerCondition>
   );
 };

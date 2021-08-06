@@ -38,12 +38,13 @@ const OhterInfoForm = ({ form, list, formType, dispatch, initialValues }) => {
       name: 'brandId',
       type: 'select',
       select: list,
+      allowClear: true,
       onChange: (e, value) => {
         form.setFieldsValue({
-          brandName: value.option.brandName,
-          brandLogo: value.option.brandLogo,
+          brandName: value?.option?.brandName || undefined,
+          brandLogo: value?.option?.brandLogo || undefined,
         });
-        setBandImg({ show: true, url: value.option.brandLogo });
+        setBandImg({ show: value?.option ? true : false, url: value?.option?.brandLogo });
       },
       rules: [{ required: false }],
       fieldNames: { label: 'brandName', value: 'configBrandIdString' },
@@ -122,7 +123,7 @@ const OhterInfoForm = ({ form, list, formType, dispatch, initialValues }) => {
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} />;
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
 };
 
 export default connect(({ businessBrand }) => ({

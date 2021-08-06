@@ -9,7 +9,7 @@ import FormCondition from '@/components/FormCondition';
 const GroupInfoForm = (props) => {
   const { tradeList, formType, form, initialValues } = props;
 
-  // const { handle = 'add' } = initialValues; // 获取crm 认领标识
+  const { handle = 'add' } = initialValues; // 获取crm 认领标识
 
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // 地图回显用 [经度 lnt , 纬度 lat]
@@ -90,12 +90,12 @@ const GroupInfoForm = (props) => {
       title: '01 基础信息',
       label: '集团名称',
       name: 'groupName',
-      // disabled: handle === 'crm',
+      disabled: handle === 'crm',
     },
     {
       label: '集团ID',
       name: 'sellMerchantGroupId',
-      // visible: handle === 'crm',
+      visible: handle === 'crm',
       disabled: true,
     },
     {
@@ -125,7 +125,7 @@ const GroupInfoForm = (props) => {
     },
     {
       label: '二级经营类目id',
-      name: 'topCategoryName',
+      name: 'categoryId',
       hidden: true,
     },
     {
@@ -137,7 +137,7 @@ const GroupInfoForm = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'allCode',
-      // disabled: handle === 'crm', // crm认领和编辑时候不允许修改省市区 先记录 不要忘了
+      disabled: handle === 'crm' || formType === 'edit', // crm认领和编辑时候不允许修改省市区
     },
     {
       label: '详细地址',
@@ -176,7 +176,7 @@ const GroupInfoForm = (props) => {
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+  return <FormCondition formItems={formItems} form={form} />;
 };
 
 export default connect(({ sysTradeList }) => ({

@@ -24,7 +24,7 @@ export const CrmBtn = connect(({ loading }) => ({
   };
 
   return (
-    <div style={{ marginTop: 15, paddingLeft: 155 }}>
+    <div style={{ marginTop: 15, paddingLeft: 163 }}>
       <Space>
         <Button loading={loading} onClick={fetchCrmGrounpList} type="primary">
           搜索
@@ -36,8 +36,6 @@ export const CrmBtn = connect(({ loading }) => ({
 });
 
 const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
-  const [cityName, setCityName] = useState(); // 城市名称
-
   useEffect(() => {
     dispatch({
       type: 'groupSet/clearDetail',
@@ -49,7 +47,6 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
       label: '所在地区',
       type: 'cascader',
       name: 'dcode',
-      onChange: (val, option) => setCityName(option),
     },
     {
       label: '集团名称',
@@ -60,7 +57,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
   return (
     <>
       <FormCondition formItems={formItems} form={form} />
-      <div style={{ padding: '0 50px 0 200px', minHeight: 30 }}>
+      <div style={{ padding: '0 50px 0 163px', minHeight: 30 }}>
         {loading ? (
           <Spin></Spin>
         ) : crmList.length ? (
@@ -95,22 +92,17 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                     topCategoryIdStr,
                     categoryIdStr,
                     categoryName,
-                    categoryNode,
                     topCategoryName,
                     merchantGroupIdString,
                   } = item;
                   goSet({
                     ...item,
                     sellMerchantGroupId: merchantGroupIdString,
-                    cityName,
                     topCategSelect: [topCategoryIdStr, categoryIdStr],
-                    categoryObj: {
-                      topCategoryId: topCategoryIdStr,
-                      categoryId: categoryIdStr,
-                      categoryName,
-                      categoryNode,
-                      topCategoryName,
-                    },
+                    topCategoryId: topCategoryIdStr,
+                    categoryId: categoryIdStr,
+                    categoryName,
+                    topCategoryName,
                     handle: 'crm',
                     allCode: [provinceCode, cityCode, districtCode],
                   });
@@ -130,7 +122,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
           onClick={() => {
             form.validateFields().then((val) => {
               const { dcode, groupNameOrId } = val;
-              goSet({ allCode: dcode, cityName, groupName: groupNameOrId });
+              goSet({ allCode: dcode, groupName: groupNameOrId });
             });
           }}
         >
