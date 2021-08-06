@@ -18,6 +18,21 @@ const ManagementForm = (props) => {
       </div>
     </div>
   );
+
+  useEffect(() => {
+    fetchMasterManagementList();
+  }, []);
+
+  const fetchMasterManagementList = () => {
+    dispatch({
+      type: 'businessBrand/fetchGetList',
+      payload: {
+        page: 1,
+        limit: 999,
+      },
+    });
+  };
+
   useImperativeHandle(cRef, () => ({
     getImage: () => {
       let obj = {};

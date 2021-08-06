@@ -331,9 +331,6 @@ export const PLATFORM_INCOME_ORDERS_TYPE = {
 // 账户激活状态
 export const GROUP_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
 
-// 账户激活状态 原集团 后期删除
-export const WORKER_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
-
 // 开屏广告端口
 export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
 

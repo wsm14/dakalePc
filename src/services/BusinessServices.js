@@ -160,13 +160,6 @@ export function fetchMerchantBank(data) {
   });
 }
 
-// get 获取角色列表
-export function fetchWMSUserRoles(params) {
-  return request('/admin/role/listAuthRoleAll', {
-    params,
-  });
-}
-
 // get 获取集团详情
 export function fetchGrounpDetails(params) {
   return request('/admin/merchantGroup/merchantGroupDetail', {
