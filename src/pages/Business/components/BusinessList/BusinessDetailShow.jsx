@@ -347,6 +347,7 @@ const BusinessDetailShow = (props) => {
           {
             text: statusText,
             auth: 'status',
+            disabled: visible.groupId,
             onClick: () => handleMerStatus('acc'),
             loading: loadings,
           },
