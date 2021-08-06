@@ -10,7 +10,6 @@ const ReteDrawerSet = (props) => {
   const { type, show, initialValues = {} } = visible;
   const { userMerchantIdString: ownerId, merchantName, groupId, listPayload } = initialValues;
 
-  console.log(initialValues, 'initialValues');
   // type merchant:'门店' ，group：集团
 
   const [scan] = Form.useForm();

@@ -20,6 +20,7 @@ const RateFormList = (props) => {
   } = props;
   const [isEdit, setIsEdit] = useState({});
 
+  // 子门店不可编辑
   useEffect(() => {
     setIsEdit(disabled);
   }, [disabled]);
@@ -31,59 +32,54 @@ const RateFormList = (props) => {
   const checkArr = { scan: scanArr, verification: verArr, promotion: proArr }[rateType];
   const checkEditType = (index) => (checkArr[index]?.rate ? !isEdit[index] : false);
 
+  const getDispatch = (url, payload, index, type) => {
+    dispatch({
+      type: url,
+      payload: payload,
+      callback: () => {
+        fetchGetRate(listPayload); // 获取详情
+        setIsEdit({ ...isEdit, [index]: type === 'edit' });
+      },
+    });
+  };
+
   //编辑 || 保存
   const handleSave = (index, type) => {
     console.log(index, type);
     if (type === 'edit') {
       setIsEdit({ ...isEdit, [index]: type === 'edit' });
+      console.log({ ...isEdit });
     }
     form.validateFields().then((values) => {
       const { scan, verification, promotion } = values;
+
       let beginDate = '';
       let endDate = '';
       let rate = '';
       let ownerManualId = '';
-      //编辑
-      if (type === 'edit') {
-        switch (rateType) {
-          case 'scan':
-            ownerManualId = scanValues.scan[index].ownerManualId; //详情index对应 的id
-            beginDate = scan[index].time[0].format('YYYY-MM-DD');
-            endDate = scan[index].time[1].format('YYYY-MM-DD');
-            rate = scan[index].rate;
-            break;
-          case 'verification':
-            ownerManualId = verificationValue.verification[index].ownerManualId;
-            beginDate = verification[index].time[0].format('YYYY-MM-DD');
-            endDate = verification[index].time[1].format('YYYY-MM-DD');
-            rate = verification[index].rate;
-            break;
-          case 'promotion':
-            ownerManualId = promotionValue.promotion[index].ownerManualId;
-            beginDate = promotion[index].time[0].format('YYYY-MM-DD');
-            endDate = promotion[index].time[1].format('YYYY-MM-DD');
-            rate = promotion[index].rate;
-            break;
-        }
-      } else {
-        switch (rateType) {
-          case 'scan':
-            beginDate = scan[index].time[0].format('YYYY-MM-DD');
-            endDate = scan[index].time[1].format('YYYY-MM-DD');
-            rate = scan[index].rate;
-            break;
-          case 'verification':
-            beginDate = verification[index].time[0].format('YYYY-MM-DD');
-            endDate = verification[index].time[1].format('YYYY-MM-DD');
-            rate = verification[index].rate;
-            break;
-          case 'promotion':
-            beginDate = promotion[index].time[0].format('YYYY-MM-DD');
-            endDate = promotion[index].time[1].format('YYYY-MM-DD');
-            rate = promotion[index].rate;
-            break;
-        }
+
+      switch (rateType) {
+        case 'scan':
+          ownerManualId = type === 'edit' ? scanValues.scan[index].ownerManualId : ''; //详情index对应 的id | 编辑
+          beginDate = scan[index].time[0].format('YYYY-MM-DD'); //新增|编辑参数
+          endDate = scan[index].time[1].format('YYYY-MM-DD');
+          rate = scan[index].rate;
+          break;
+        case 'verification':
+          ownerManualId =
+            type === 'edit' ? verificationValue.verification[index].ownerManualId : '';
+          beginDate = verification[index].time[0].format('YYYY-MM-DD');
+          endDate = verification[index].time[1].format('YYYY-MM-DD');
+          rate = verification[index].rate;
+          break;
+        case 'promotion':
+          ownerManualId = type === 'edit' ? promotionValue.promotion[index].ownerManualId : '';
+          beginDate = promotion[index].time[0].format('YYYY-MM-DD');
+          endDate = promotion[index].time[1].format('YYYY-MM-DD');
+          rate = promotion[index].rate;
+          break;
       }
+
       const apiUrl = {
         save: 'businessList/fetchsetManualRate',
         edit: 'businessList/fetchUpdateManualRate',
@@ -106,25 +102,12 @@ const RateFormList = (props) => {
       }[type];
 
       if (type === 'edit') {
+        //编辑时请求update接口
         if (!checkEditType(index)) {
-          dispatch({
-            type: apiUrl,
-            payload: payload,
-            callback: () => {
-              fetchGetRate(listPayload); // 获取详情
-              setIsEdit({ ...isEdit, [index]: type === 'edit' });
-            },
-          });
-        } else {
-          dispatch({
-            type: apiUrl,
-            payload: payload,
-            callback: () => {
-              fetchGetRate(listPayload); // 获取详情
-              setIsEdit({ ...isEdit, [index]: type === 'edit' });
-            },
-          });
+          getDispatch(apiUrl, payload, index, type);
         }
+      } else {
+        getDispatch(apiUrl, payload, index, type);
       }
     });
   };
@@ -147,13 +130,18 @@ const RateFormList = (props) => {
                 {...restField}
                 name={[name, 'rate']}
                 fieldKey={[fieldKey, 'rate']}
-                rules={[{ required: true, message: '请输入费率' }]}
+                rules={[{ required: false, message: '请输入费率' }]}
               >
                 <Input placeholder="请输入费率" suffix="%" disabled={checkEditType(index)} />
               </Form.Item>
-              <a onClick={() => handleSave(name, checkArr[index]?.rate ? 'edit' : 'save')}>
-                {checkEditType(index) && checkArr[index]?.rate ? '编辑' : '保存'}
-              </a>
+              {checkArr[index]?.isExpired}
+
+              {/* 过期无操作按钮 */}
+              {!checkArr[index]?.isExpired && (
+                <a onClick={() => handleSave(name, checkArr[index]?.rate ? 'edit' : 'save')}>
+                  {checkEditType(index) && checkArr[index]?.rate ? '编辑' : '保存'}
+                </a>
+              )}
               {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
             </Space>
           ))}
