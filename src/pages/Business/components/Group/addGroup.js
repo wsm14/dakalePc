@@ -7,7 +7,7 @@ import ManagementForm from './Form/ManagementForm';
 import UserForm from './Form/userForm';
 import UserDetailsForm from './Form/userDetailsForm';
 import ShopDetailsForm from './Form/shopDetailsForm';
-import ActiveSetOneForm from './Form/activeByOneForm';
+import ActiveSetOneForm from './Form/BusinessLicense';
 import CrmGroupSelect from './Form/CrmGroupSelect';
 import { TIME_YMD } from '@/common/timeConstant';
 import aliOssUpload from '@/utils/aliOssUpload';

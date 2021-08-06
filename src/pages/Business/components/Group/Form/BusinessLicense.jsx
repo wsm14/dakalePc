@@ -4,7 +4,14 @@ import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 
-const activeForm = ({ form, initialValues, dispatch, formType }) => {
+/**
+ * 营业执照信息
+ * @returns
+ */
+const BusinessLicense = ({ form, dispatch, loading, formType }) => {
+  const disabled = formType === 'edit' || loading;
+
+  // ocr 识别
   const fetchGetOcrBusinessLicense = (payload, callback) => {
     dispatch({
       type: 'groupSet/fetchGetOcrBusinessLicense',
@@ -13,18 +20,34 @@ const activeForm = ({ form, initialValues, dispatch, formType }) => {
     });
   };
 
+  // 清空营业执照信息
+  const closeBusinessInfo = () => {
+    form.setFieldsValue({
+      businessLicenseObject: {
+        businessLicenseImg: '',
+        socialCreditCode: '',
+        businessName: '',
+        signInAddress: '',
+        businessScope: '',
+      },
+      activeValidity: [],
+    });
+  };
+
   const formItems = [
     {
+      title: '02 营业执照信息',
       label: '营业执照',
       name: ['businessLicenseObject', 'businessLicenseImg'],
       type: 'upload',
-      maxSize: 1,
       maxFile: 1,
+      maxSize: 1024,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
-      disabled: formType === 'edit',
+      disabled,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
+          closeBusinessInfo();
           fetchGetOcrBusinessLicense({ imageUrl: imgUrl[0] }, (res) => {
             const { address, business, establishDate, name, regNum, validPeriod } = res;
             form.setFieldsValue({
@@ -33,7 +56,6 @@ const activeForm = ({ form, initialValues, dispatch, formType }) => {
                 socialCreditCode: regNum || '',
                 businessName: name || '',
                 signInAddress: address || '',
-
                 businessScope: business || '',
               },
               activeValidity: [
@@ -48,37 +70,35 @@ const activeForm = ({ form, initialValues, dispatch, formType }) => {
     {
       label: '社会信用代码',
       name: ['businessLicenseObject', 'socialCreditCode'],
-      disabled: formType === 'edit',
+      disabled,
     },
     {
       label: '公司名称',
       name: ['businessLicenseObject', 'businessName'],
-      disabled: formType === 'edit',
+      disabled,
     },
     {
       label: '注册地址',
       name: ['businessLicenseObject', 'signInAddress'],
-      disabled: formType === 'edit',
+      disabled,
     },
     {
       label: '营业期限',
       type: 'rangePicker',
       name: 'activeValidity',
-      // disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-      disabled: formType === 'edit',
+      disabled,
     },
     {
       label: '经营范围',
       type: 'textArea',
       name: ['businessLicenseObject', 'businessScope'],
-      // rules: [{ required: true, message: `请确认店铺门头照` }],
-      disabled: formType === 'edit',
+      disabled,
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+  return <FormCondition formItems={formItems} form={form} />;
 };
 
-export default connect(({ groupSet }) => ({
-  ...groupSet,
-}))(activeForm);
+export default connect(({ loading }) => ({
+  loading: loading.effects['groupSet/fetchGetOcrBusinessLicense'],
+}))(BusinessLicense);
