@@ -92,6 +92,7 @@ const PreferentialSet = ({
       payload: {
         name,
         type: type || mreList.type,
+        groupFlag: 0, // 不允许选择子门店
       },
       callback,
     });
