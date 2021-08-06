@@ -4,6 +4,7 @@ import { Button, Form, message, Modal } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
+import { checkFileData } from '@/utils/utils';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
 import BusinessEditVoiceInfo from './Edit/BusinessEditVoiceInfo';
@@ -33,7 +34,7 @@ const BusinessAdd = (props) => {
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(async (values) => {
       const {
         categoryName: cobj,
         coverImg,
@@ -93,31 +94,32 @@ const BusinessAdd = (props) => {
         lat: location[1],
         ...auditInfo,
       };
-      aliOssUpload(coverImg).then((cres) => {
-        payload.coverImg = cres.toString();
-        aliOssUpload(headerImg).then((cres2) => {
-          payload.headerImg = cres2.toString();
-          if (type !== 'audit') {
-            payload.headerContentObject = { headerType: 'image', imageUrl: cres2.toString() };
-          }
-          aliOssUpload(interiorImg).then((res) => {
-            dispatch({
-              type: {
-                edit: 'businessList/fetchMerchantEdit',
-                audit: 'businessAudit/fetchMerSaleAuditAllow',
-              }[type],
-              payload: {
-                ...payload,
-                interiorImg: res.toString(),
-              },
-              callback: () => {
-                onClose();
-                cRef.current.fetchGetData();
-              },
-            });
-          });
-        });
+      const cImg = await aliOssUpload(coverImg);
+      const hImg = await aliOssUpload(headerImg);
+      const iImg = await aliOssUpload(interiorImg);
+      payload.coverImg = cImg.toString();
+      payload.headerImg = hImg.toString();
+      payload.interiorImg = iImg.toString();
+      if (type !== 'audit') {
+        payload.headerContentObject = {
+          headerType: 'image',
+          imageUrl: hImg.toString(),
+        };
+      }
+      dispatch({
+        type: {
+          edit: 'businessList/fetchMerchantEdit',
+          audit: 'businessAudit/fetchMerSaleAuditAllow',
+        }[type],
+        payload: {
+          ...payload,
+        },
+        callback: () => {
+          onClose();
+          cRef.current.fetchGetData();
+        },
       });
+    
     });
   };
 
