@@ -224,7 +224,7 @@ const BaseForm = (props) => {
   return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
 };
 
-export default connect(({ sysTradeList, groupSet }) => ({
+export default connect(({ sysTradeList, groupSetCopy }) => ({
   tradeList: sysTradeList.list.list,
-  ...groupSet,
+  ...groupSetCopy,
 }))(BaseForm);

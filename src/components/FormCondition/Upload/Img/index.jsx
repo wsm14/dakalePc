@@ -202,9 +202,9 @@ const UploadBlock = (props) => {
   // 上传文件限制
   const beforeUpload = (file) => {
     if (!maxSize) return false;
-    const isLt1M = file.size / 1024 / 1024 < maxSize;
+    const isLt1M = file.size / 1024 < maxSize;
     if (!isLt1M) {
-      message.error(`上传图片过大，请小于${maxSize}MB！`);
+      message.error(`上传图片过大，请小于${maxSize}KB！`);
       // 图片过大 不允许上传 dklFileStatus 返回out
       // 默认可上传 dklFileStatus 不存在
       file.dklFileStatus = 'out';

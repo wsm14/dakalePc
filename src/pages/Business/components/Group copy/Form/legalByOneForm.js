@@ -87,7 +87,7 @@ const legalForm = (props) => {
   return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
 };
 
-export default connect(({ groupSet, loading }) => ({
-  ...groupSet,
-  loading: loading.models.groupSet,
+export default connect(({ groupSetCopy, loading }) => ({
+  ...groupSetCopy,
+  loading: loading.models.groupSetCopy,
 }))(legalForm);

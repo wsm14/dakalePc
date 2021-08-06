@@ -11,7 +11,6 @@ import {
   fetchMerchantGroup,
   fetchAddMerchantGroup,
   fetchMerchantBank,
-  fetchWMSUserRoles,
   fetchGrounpDetails,
   fetchUpdateGroup,
   fetchCrmGrounpList,
@@ -27,7 +26,6 @@ export default {
     visible: false,
     visible1: false,
     visible2: false,
-    rolesList: [],
     groupDetails: {},
     merchantGroupDTO: {},
     businessLicense: {},
@@ -84,21 +82,6 @@ export default {
         type: 'save',
         payload: {
           storeList: { list: content.merchantList || [] },
-        },
-      });
-    },
-    *fetchWMSUserRoles({ payload }, { call, put }) {
-      const response = yield call(fetchWMSUserRoles, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          rolesList: content.recordList.map((item) => ({
-            key: item.idString,
-            title: item.roleName,
-            description: item.roleName,
-          })),
         },
       });
     },

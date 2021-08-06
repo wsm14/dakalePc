@@ -264,10 +264,10 @@ const addGroups = (props) => {
   );
 };
 
-export default connect(({ sysTradeList, groupSet, loading }) => ({
+export default connect(({ sysTradeList, groupSetCopy, loading }) => ({
   ...sysTradeList,
-  ...groupSet,
+  ...groupSetCopy,
   loading: loading.effects['circleMaster/fetchMasterTotal'],
-  loadingAdd: loading.effects['groupSet/fetchAddList'],
-  loadingUpDate: loading.effects['groupSet/fetchUpdateGroup'],
+  loadingAdd: loading.effects['groupSetCopy/fetchAddList'],
+  loadingUpDate: loading.effects['groupSetCopy/fetchUpdateGroup'],
 }))(addGroups);

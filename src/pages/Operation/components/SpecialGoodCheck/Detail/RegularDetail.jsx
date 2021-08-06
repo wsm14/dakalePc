@@ -16,7 +16,6 @@ const RegularDetail = (props) => {
           : row.activityStartTime
           ? `${row.activityStartTime}~${row.activityEndTime}`
           : '',
-    
     },
     {
       name: 'goodsType',
@@ -26,9 +25,7 @@ const RegularDetail = (props) => {
         console.log(useStartTime, useEndTime, useTimeRule, 'v');
         if (!useTimeRule) return '';
         if (useTimeRule === 'fixed') {
-          return useStartTime
-            ? useStartTime + '~' + useEndTime
-            : '';
+          return useStartTime ? useStartTime + '~' + useEndTime : '';
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -49,14 +46,14 @@ const RegularDetail = (props) => {
           });
         }
         const times = val;
-      
+
         return <>{row.timeSplit == 'part' ? `${week}--${times}` : `每天--${times}`}</>;
       },
     },
     {
       name: 'total',
       label: '投放总量',
-      render: (val) => (val && val !== '--' ? `${val}份` : '--'),
+      render: (val) => (val ? `${val}份` : '--'),
     },
   ];
 
@@ -71,7 +68,7 @@ const RegularDetail = (props) => {
         { personLimit: '每人', dayLimit: '每天', unlimited: '不限' }[detail.buyRule]
       }购买份数`,
       name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[detail.buyRule],
-      render: (val) => (val && val !== '--' ? `${val}份` : '--'),
+      render: (val) => (val ? `${val}份` : '--'),
     },
     {
       name: 'needOrder',

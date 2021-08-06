@@ -11,6 +11,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import RewardPeo from './components/ShareManage/RewardPeo';
 import ShareDrawer from './components/ShareManage/ShareDrawer';
+import ShareWeightSet from './components/ShareManage/ShareWeightSet';
 import ShareDetail from './components/ShareManage/Detail/ShareDetail';
 import ShareLikeDateSet from './components/ShareManage/ShareLikeDateSet';
 import VideoPeasDetail from './components/ShareManage/Detail/VideoPeasDetail';
@@ -140,7 +141,7 @@ const ShareManage = (props) => {
       title: (
         <QuestionTooltip
           type="quest"
-          title="观看人次（人）"
+          title="观看人次(人)"
           content={`观看视频3s及以上的人数`}
         ></QuestionTooltip>
       ),
@@ -149,7 +150,7 @@ const ShareManage = (props) => {
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
     {
-      title: '领豆人次（人）',
+      title: '领豆人次(人)',
       align: 'right',
       dataIndex: 'payedPersonAmount',
       sorter: (a, b) => a.payedPersonAmount - b.payedPersonAmount,
@@ -199,6 +200,13 @@ const ShareManage = (props) => {
       align: 'center',
       dataIndex: 'createTime',
       render: (val, row) => `${val}\n${row.creatorName || ''}`,
+    },
+    {
+      title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'weight',
+      render: (val, row) => <ShareWeightSet detail={row}></ShareWeightSet>,
     },
     {
       title: '状态',

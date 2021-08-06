@@ -31,7 +31,7 @@ const groupsDetails = (props) => {
 
   const fetchGrounpDetails = (size) => {
     dispatch({
-      type: 'groupSet/save',
+      type: 'groupSetCopy/save',
       payload: {
         merchantGroupIdIndex: size,
       },
@@ -40,7 +40,7 @@ const groupsDetails = (props) => {
     const { merchantGroupIdString: merchantGroupId } = list.list[size];
     if (merchantGroupId) {
       dispatch({
-        type: 'groupSet/fetchGrounpDetails',
+        type: 'groupSetCopy/fetchGrounpDetails',
         payload: {
           merchantGroupId,
         },
@@ -291,7 +291,7 @@ const groupsDetails = (props) => {
   );
 };
 
-export default connect(({ groupSet, loading }) => ({
-  ...groupSet,
-  loading: loading.effects['groupSet/fetchGrounpDetails'],
+export default connect(({ groupSetCopy, loading }) => ({
+  ...groupSetCopy,
+  loading: loading.effects['groupSetCopy/fetchGrounpDetails'],
 }))(groupsDetails);

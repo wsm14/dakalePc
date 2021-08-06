@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
-import { WORKER_BANK_STATUS } from '@/common/constant';
+import { GROUP_BANK_STATUS } from '@/common/constant';
 import DrawerForms from './components/Group copy/addGroup';
 import SetDetailsForms from './components/Group copy/activateGroup';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -26,7 +26,6 @@ const tableList = (props) => {
   useEffect(() => {
     fetchMasterTotalList();
     fetchMasterManagementList();
-    fetchWMSUserRoles();
   }, []);
   const fetchMasterTotalList = () => {
     dispatch({
@@ -42,18 +41,9 @@ const tableList = (props) => {
       },
     });
   };
-  const fetchWMSUserRoles = () => {
-    dispatch({
-      type: 'groupSet/fetchWMSUserRoles',
-      payload: {
-        clusterId: '0',
-        ownerType: 'group',
-      },
-    });
-  };
   const fetchSave = (payload, close) => {
     dispatch({
-      type: 'groupSet/save',
+      type: 'groupSetCopy/save',
       payload: close
         ? {
             visible: false,
@@ -71,7 +61,7 @@ const tableList = (props) => {
   };
   const fetchGrounpDetails = (payload, callback) => {
     dispatch({
-      type: 'groupSet/fetchGrounpDetails',
+      type: 'groupSetCopy/fetchGrounpDetails',
       payload: payload,
       callback: callback,
     });
@@ -95,7 +85,7 @@ const tableList = (props) => {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select: WORKER_BANK_STATUS,
+      select: GROUP_BANK_STATUS,
     },
   ];
   // table 表头
@@ -150,7 +140,7 @@ const tableList = (props) => {
       title: '账户状态',
       align: 'center',
       dataIndex: 'bankStatus',
-      render: (val) => WORKER_BANK_STATUS[val],
+      render: (val) => GROUP_BANK_STATUS[val],
     },
     {
       type: 'handle',

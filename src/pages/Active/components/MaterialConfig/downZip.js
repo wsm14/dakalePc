@@ -90,9 +90,11 @@ export const createZip = (data, tabKey, setPercent, callback) => {
       });
     }, 100);
 
+    const { before = '', after = '', size, ...ohterName } = name;
+
     let codeGet = obj.userQRCode; // 用户二维码
     let fileName = obj[typeProps.key]; // 用户手机号
-    const nameText = obj[typeProps.nameKey]; // 名称
+    const nameText = `${before}${obj[typeProps.nameKey]}${after}`; // 名称
 
     const textStyle = { textAlign: 'center' };
     // 商家码数据
@@ -107,7 +109,7 @@ export const createZip = (data, tabKey, setPercent, callback) => {
         parts: [
           { type: 'image', url: templateImg, ...img },
           { type: 'image', url: codeGet, height: code.width, ...code },
-          { type: 'text', ...textStyle, text: nameText, ...name, size: `${name.size}px` },
+          { type: 'text', ...textStyle, text: nameText, ...ohterName, size: `${size}px` },
         ],
       },
       (err, imgData) => {

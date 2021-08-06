@@ -1,71 +1,27 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'umi';
-import { WORKER_BANK_STATUS } from '@/common/constant';
+import { GROUP_BANK_STATUS } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import StoreList from './components/Group/StoreList';
-import DrawerForms from './components/Group/addGroup';
-import GroupDetails from './components/Group/groupDetails';
-import SetDetailsForms from './components/Group/activateGroup';
+import GroupDetail from './components/Group/GroupDetail';
 
 const tableList = (props) => {
-  const { dispatch, list, visible, visible1, visible2, tradeList, loading } = props;
+  const { dispatch, list, tradeList, loading } = props;
 
   const childRef = useRef();
   const [storeShow, setStoreShow] = useState(false); // 门店列表展示
+  const [visible, setVisible] = useState({ show: false, detail: {} }); // 详情
 
   useEffect(() => {
-    fetchMasterTotalList();
-    fetchMasterManagementList();
-    fetchWMSUserRoles();
+    fetchGetTrade();
   }, []);
-  const fetchMasterTotalList = () => {
+
+  // 获取经营类目
+  const fetchGetTrade = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
-    });
-  };
-  const fetchMasterManagementList = () => {
-    dispatch({
-      type: 'businessBrand/fetchGetList',
-      payload: {
-        page: 1,
-        limit: 999,
-      },
-    });
-  };
-  const fetchWMSUserRoles = () => {
-    dispatch({
-      type: 'groupSet/fetchWMSUserRoles',
-      payload: {
-        clusterId: '0',
-        ownerType: 'group',
-      },
-    });
-  };
-  const fetchSave = (payload, close) => {
-    dispatch({
-      type: 'groupSet/save',
-      payload: close
-        ? {
-            visible: false,
-            visible1: false,
-            visible2: false,
-            merchantGroupId: null,
-            groupDetails: {},
-            merchantGroupDTO: {},
-            businessLicense: {},
-            bankBindingInfo: {},
-            initial: {},
-          }
-        : payload,
-    });
-  };
-  const fetchGrounpDetails = (payload, callback) => {
-    dispatch({
-      type: 'groupSet/fetchGrounpDetails',
-      payload: payload,
-      callback: callback,
     });
   };
 
@@ -87,7 +43,7 @@ const tableList = (props) => {
       label: '账户状态',
       name: 'bankStatus',
       type: 'select',
-      select: WORKER_BANK_STATUS,
+      select: GROUP_BANK_STATUS,
     },
   ];
 
@@ -143,7 +99,7 @@ const tableList = (props) => {
       title: '账户状态',
       align: 'center',
       dataIndex: 'bankStatus',
-      render: (val) => WORKER_BANK_STATUS[val],
+      render: (val) => GROUP_BANK_STATUS[val],
     },
     {
       type: 'handle',
@@ -153,37 +109,20 @@ const tableList = (props) => {
         {
           type: 'edit',
           click: () => {
-            fetchGrounpDetails(
-              {
-                merchantGroupId: val,
-              },
-              (res) => {
-                fetchSave({ visible: true });
-              },
-            );
+            fetchGrounpDetails({ merchantGroupId: val }, (res) => {
+              setVisible({ show: true, detail: res });
+            });
           },
         },
         {
           type: 'info',
-          click: () => {
-            fetchSave({
-              visible2: true,
-              merchantGroupId: val,
-              merchantGroupIdIndex: index,
-            });
-          },
+          click: () =>
+            fetchGrounpDetails(index, (info) => setVisible({ show: true, index, detail: info })),
         },
         {
           type: 'activate', // 激活
           visible: row.bankStatus !== '3', // 激活成功 3 不显示
-          click: () => {
-            fetchSave({
-              visible1: true,
-              merchantGroupId: val,
-              groupDetails: {},
-              initial: {},
-            });
-          },
+          click: () => {},
         },
         {
           type: 'storeList', // 店铺列表
@@ -194,20 +133,24 @@ const tableList = (props) => {
     },
   ];
 
+  // 获取集团详情
+  const fetchGrounpDetails = (index, callback) => {
+    const { merchantGroupIdString: merchantGroupId } = list.list[index];
+    dispatch({
+      type: 'groupSet/fetchGrounpDetails',
+      payload: { merchantGroupId },
+      callback: (info) => {
+        setVisible({ ...visible, index });
+        callback(info);
+      },
+    });
+  };
+
   //表格额外按钮
   const extraBtn = [
     {
       auth: 'save',
-      onClick: () =>
-        fetchSave({
-          visible: true,
-          merchantGroupId: null,
-          groupDetails: {},
-          merchantGroupDTO: {},
-          businessLicense: {},
-          bankBindingInfo: {},
-          initial: {},
-        }),
+      onClick: () => {},
     },
   ];
 
@@ -216,40 +159,27 @@ const tableList = (props) => {
       <TableDataBlock
         order
         keepData
-        btnExtra={extraBtn}
+        cRef={childRef}
         loading={loading}
+        btnExtra={extraBtn}
         columns={getColumns}
         searchItems={searchItems}
-        cRef={childRef}
         rowKey={(record) => `${record.merchantGroupIdString}`}
         dispatchType="groupSet/fetchGetList"
         {...list}
       ></TableDataBlock>
-      <DrawerForms
-        saveVisible={(res) => fetchSave(res)}
-        visible={visible}
-        childRef={childRef}
-        onClose={() => fetchSave({}, () => {}, true)}
-      ></DrawerForms>
-      <SetDetailsForms
-        saveVisible={(res) => fetchSave(res)}
-        visible={visible1}
-        childRef={childRef}
-        onClose={() => fetchSave({}, () => {}, true)}
-      ></SetDetailsForms>
       {/* 集团详情 */}
-      <GroupDetails
-        saveVisible={(res) => fetchSave(res)}
-        visible={visible2}
-        onClose={() => fetchSave({}, () => {}, true)}
-      ></GroupDetails>
+      <GroupDetail
+        visible={visible}
+        fetchGrounpDetails={fetchGrounpDetails}
+        onClose={() => setVisible({ show: false, detail: {} })}
+      ></GroupDetail>
       {/* 集团门店列表 */}
       <StoreList visible={storeShow} onClose={() => setStoreShow(false)}></StoreList>
     </>
   );
 };
 export default connect(({ sysTradeList, groupSet, loading }) => ({
-  ...sysTradeList,
   ...groupSet,
   loading: loading.models.groupSet,
   tradeList: sysTradeList.list.list,
