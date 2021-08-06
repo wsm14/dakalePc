@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
 import { checkFileData } from '@/utils/utils';
+import uploadLive from '@/utils/uploadLive';
 import aliOssUpload from '@/utils/aliOssUpload';
 import CrmGroupSelect from './Form/CrmGroupSelect';
 import GroupInfoForm from './Form/GroupInfoForm';
@@ -30,43 +31,65 @@ const GroupEdit = (props) => {
   const fetchUpGroupData = (handle) => {
     form.validateFields().then((values) => {
       const {
-        localImages,
-        mainImages,
+        mainImages, // 店铺头图
+        localImages, // 店铺环境图
+        brandPublicityImage, // 品牌宣传图片
+        frontImage, // 宣传视频封面
+        videoId,
+        videoUrl,
         activeValidity,
         topCategSelect,
         businessLicenseObject,
         allCode,
         ...other
       } = values;
-      const lImg = checkFileData(localImages);
       const mImg = checkFileData(mainImages);
-      aliOssUpload([...lImg, ...mImg]).then((res) => {
-        dispatch({
-          type: { add: 'groupSet/fetchAddList', edit: 'groupSet/fetchUpdateGroup' }[type],
-          payload: {
-            ...other,
-            provinceCode: allCode[0],
-            cityCode: allCode[1],
-            districtCode: allCode[2],
-            categoryNode: topCategSelect.join('.'),
-            businessLicenseObject: {
-              ...businessLicenseObject,
-              validityPeriod: activeValidity[1].format('YYYY-MM-DD'),
-              establishDate: activeValidity[0].format('YYYY-MM-DD'),
+      const lImg = checkFileData(localImages);
+      const bImg = checkFileData(brandPublicityImage);
+      uploadLive({
+        data: frontImage, // 上传封面
+        callback: (imgs) => {
+          uploadLive({
+            data: videoId ? videoId : videoUrl, // 上传视频
+            title: values.brandName,
+            callback: (videos) => {
+              aliOssUpload([...mImg, ...lImg, ...bImg]).then((res) => {
+                dispatch({
+                  type: { add: 'groupSet/fetchAddList', edit: 'groupSet/fetchUpdateGroup' }[type],
+                  payload: {
+                    ...other,
+                    provinceCode: allCode[0],
+                    cityCode: allCode[1],
+                    districtCode: allCode[2],
+                    categoryNode: topCategSelect.join('.'),
+                    videoUrl: undefined,
+                    videoId: videos,
+                    frontImage: imgs, // 封面连接
+                    frontImageWidth: imgs ? 480 : undefined, // 封面宽 16
+                    frontImageHeight: imgs ? 270 : undefined, // 封面长 9
+                    businessLicenseObject: {
+                      ...businessLicenseObject,
+                      validityPeriod: activeValidity[1].format('YYYY-MM-DD'),
+                      establishDate: activeValidity[0].format('YYYY-MM-DD'),
+                    },
+                    mainImages: res.slice(0, 1).toString(),
+                    localImages: res.slice(1, lImg.length + 1).toString(),
+                    brandPublicityImage: res.slice(lImg.length + 1).toString(),
+                  },
+                  callback: () => {
+                    // 保存和下一步
+                    if (handle === 'save') {
+                      cRef.current.fetchGetData();
+                      onClose();
+                    } else {
+                      onClose();
+                    }
+                  },
+                });
+              });
             },
-            localImages: res.slice(0, lImg.length).toString(),
-            mainImages: res.slice(lImg.length).toString(),
-          },
-          callback: () => {
-            // 保存和下一步
-            if (handle === 'save') {
-              cRef.current.fetchGetData();
-              onClose();
-            } else {
-              onClose();
-            }
-          },
-        });
+          });
+        },
       });
     });
   };

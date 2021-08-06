@@ -4,6 +4,7 @@ import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
 import { Map, Marker } from 'react-amap';
 import { checkCityName } from '@/utils/utils';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import FormCondition from '@/components/FormCondition';
 
 const GroupInfoForm = (props) => {
@@ -161,18 +162,43 @@ const GroupInfoForm = (props) => {
       hidden: true,
     },
     {
-      label: '扫码付服务费（%）',
+      label: '扫码付比例（%）',
       type: 'number',
       min: 0,
       precision: 0,
       name: 'scanCommissionRatio',
+      disabled: true,
+      rules: [{ required: false }],
     },
     {
-      label: '核销订单服务费（%）',
+      label: (
+        <QuestionTooltip
+          title="商品核销（%）"
+          content={'指特惠商品、抵扣券等线上购买业务创建商品/券所需要扣减的服务费'}
+        ></QuestionTooltip>
+      ),
       type: 'number',
       min: 0,
       precision: 0,
       name: 'commissionRatio',
+      placeholder: '请输入商品核销（%）',
+      disabled: true,
+      rules: [{ required: false }],
+    },
+    {
+      label: (
+        <QuestionTooltip
+          title="推广费（%）"
+          content={'推广费指发布广告视频精准投放时平台所收取的费用'}
+        ></QuestionTooltip>
+      ),
+      type: 'number',
+      min: 0,
+      precision: 0,
+      placeholder: '请输入推广费（%）',
+      name: 'promotionFee',
+      disabled: true,
+      rules: [{ required: false }],
     },
   ];
 
