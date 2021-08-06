@@ -4,7 +4,6 @@ import { Button, Form, message, Modal } from 'antd';
 import { Map, Marker } from 'react-amap';
 import { AMAP_KEY } from '@/common/constant';
 import aliOssUpload from '@/utils/aliOssUpload';
-import { checkFileData } from '@/utils/utils';
 import BusinessAddBeas from './Edit/BusinessEditBeas';
 import BusinessAddQuality from './Edit/BusinessEditQuality';
 import BusinessEditVoiceInfo from './Edit/BusinessEditVoiceInfo';
