@@ -537,8 +537,7 @@ export const ACTIVE_TEMPLATE_TYPE = {
   public: '通用模版',
 };
 
-//新闻分类
-
+// 新闻分类
 export const NEWS_TYPE = {
   newsReport: '新闻报道',
   companyActivities: '公司活动',
@@ -547,4 +546,11 @@ export const NEWS_TYPE = {
   productNews: '产品动态',
 };
 
+// 是否实习
 export const DAREN_TEMP_FLAG = ['否', '是'];
+
+// 独立运营
+export const BUS_OPERATION_FLAG = ['加盟', '直营'];
+
+// 独立结算
+export const BUS_SETTLEMENT_FLAG = ['统一结算', '独立结算'];

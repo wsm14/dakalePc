@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Alert, Tabs } from 'antd';
+import { Form, Button, Input, Alert, Tabs } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import {
@@ -19,7 +19,7 @@ import {
 const { TabPane } = Tabs;
 
 const GroupsDetails = (props) => {
-  const { visible, onClose, list, fetchGrounpDetails, loading } = props;
+  const { visible, onClose, dispatch, list, fetchGrounpDetails, loading, loadingBank } = props;
 
   const { show, index, detail = {} } = visible;
 
@@ -31,6 +31,17 @@ const GroupsDetails = (props) => {
    * bankRejectReason 激活失败原因
    */
   const { bankAccountType = 0, bankStatus, bankRejectReason } = info;
+
+  // 设置开户行号
+  const fetchMerSetBandCode = (values) => {
+    dispatch({
+      type: 'businessList/fetchMerSetBandCode',
+      payload: {
+        merchantId,
+        ...values,
+      },
+    });
+  };
 
   const modalProps = {
     title: `集团详情`,
@@ -104,6 +115,25 @@ const GroupsDetails = (props) => {
                 initialValues={info}
               ></DescriptionsCondition>
             ))}
+            {bankStatus === '3' && (
+              <Form style={{ marginTop: 24 }} preserve={false} onFinish={fetchMerSetBandCode}>
+                <Form.Item
+                  label="开户行号"
+                  name="bankSwiftCode"
+                  rules={[{ required: true, message: '请输入开户行号' }]}
+                >
+                  <Input placeholder="请输入开户行号"></Input>
+                </Form.Item>
+                <Button
+                  style={{ marginLeft: 80 }}
+                  type="primary"
+                  loading={loadingBank}
+                  htmlType="submit"
+                >
+                  保存
+                </Button>
+              </Form>
+            )}
           </TabPane>
         )}
       </Tabs>
@@ -114,4 +144,5 @@ const GroupsDetails = (props) => {
 export default connect(({ groupSet, loading }) => ({
   list: groupSet.list.list,
   loading: loading.effects['groupSet/fetchGrounpDetails'],
+  loadingBank: loading.effects['businessList/fetchMerSetBandCode'],
 }))(GroupsDetails);
