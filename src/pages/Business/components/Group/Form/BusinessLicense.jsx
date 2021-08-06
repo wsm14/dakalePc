@@ -8,8 +8,9 @@ import FormCondition from '@/components/FormCondition';
  * 营业执照信息
  * @returns
  */
-const BusinessLicense = ({ form, dispatch, loading, formType }) => {
-  const disabled = formType === 'edit' || loading;
+const BusinessLicense = ({ form, dispatch, loading, bankStatus }) => {
+  // 激活成功不可修改
+  const disabled = loading || bankStatus === '3';
 
   // ocr 识别
   const fetchGetOcrBusinessLicense = (payload, callback) => {

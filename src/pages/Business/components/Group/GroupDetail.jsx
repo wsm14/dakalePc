@@ -58,9 +58,9 @@ const GroupsDetails = (props) => {
     group: [
       { title: '基础信息', formItems: base },
       { title: '营业执照信息', formItems: businessLicense },
-      { title: '品牌信息', formItems: brand },
       { title: '登录信息', formItems: login },
       { title: '联系人信息', formItems: message },
+      { title: '品牌信息', formItems: brand },
       { title: '店铺信息', formItems: shop },
     ],
     account: {

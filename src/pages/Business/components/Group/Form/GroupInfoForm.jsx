@@ -96,13 +96,14 @@ const GroupInfoForm = (props) => {
     {
       label: '集团ID',
       name: 'sellMerchantGroupId',
-      visible: handle === 'crm',
+      visible: handle === 'crm' || formType === 'edit',
       disabled: true,
     },
     {
       label: '经营类目',
       type: 'cascader',
       name: 'topCategSelect',
+      disabled: formType === 'edit',
       select: tradeList?.filter((i) => i.categoryDTOList),
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
       onChange: (val, option) => {
@@ -138,13 +139,12 @@ const GroupInfoForm = (props) => {
       label: '省市区',
       type: 'cascader',
       name: 'allCode',
-      disabled: handle === 'crm' || formType === 'edit', // crm认领和编辑时候不允许修改省市区
+      disabled: handle === 'crm', // crm认领时候不允许修改省市区
     },
     {
       label: '详细地址',
       name: 'address',
       addonAfter: <a onClick={onSearchAddress}>查询</a>,
-      disabled: formType === 'edit',
     },
     {
       type: 'noForm',
@@ -197,8 +197,7 @@ const GroupInfoForm = (props) => {
       precision: 0,
       placeholder: '请输入推广费（%）',
       name: 'promotionFee',
-      disabled: true,
-      rules: [{ required: false }],
+      rules: [{ required: true, message: '请输入推广费' }],
     },
   ];
 

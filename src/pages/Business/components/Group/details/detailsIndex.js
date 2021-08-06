@@ -19,13 +19,18 @@ export const base = [
     name: 'address',
   },
   {
-    label: '扫码付服务费（%）',
+    label: '扫码付比例',
     name: 'scanCommissionRatio',
     render: (val) => (val || 0) + '%',
   },
   {
-    label: '核销订单服务费（%）',
+    label: '商品核销',
     name: 'commissionRatio',
+    render: (val) => (val || 0) + '%',
+  },
+  {
+    label: '推广费',
+    name: 'promotionFee',
     render: (val) => (val || 0) + '%',
   },
 ];
@@ -59,18 +64,6 @@ export const businessLicense = [
   },
 ];
 
-export const brand = [
-  {
-    label: '品牌',
-    name: 'brandName',
-  },
-  {
-    label: '品牌LOGO',
-    name: 'brandLogo',
-    type: 'upload',
-  },
-];
-
 export const login = [{ label: '登录账号', name: 'account' }];
 
 export const message = [
@@ -84,14 +77,40 @@ export const message = [
   },
 ];
 
+export const brand = [
+  {
+    label: '品牌',
+    name: 'brandName',
+  },
+  {
+    label: '品牌LOGO',
+    name: 'brandLogo',
+    type: 'upload',
+  },
+  {
+    label: '品牌宣传视频',
+    name: 'videoUpload',
+    type: 'upload',
+  },
+  {
+    label: '品牌宣传图片',
+    name: 'brandPublicityImage',
+    type: 'upload',
+  },
+  {
+    label: '品牌介绍',
+    name: 'brandStory',
+  },
+];
+
 export const shop = [
   {
-    label: '店铺主图',
+    label: '店铺头图',
     name: 'mainImages',
     type: 'upload',
   },
   {
-    label: '店铺小图',
+    label: '店铺环境图',
     name: 'localImages',
     type: 'upload',
   },

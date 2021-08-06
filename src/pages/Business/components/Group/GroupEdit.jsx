@@ -103,7 +103,7 @@ const GroupEdit = (props) => {
       setMreDetail(detail || {});
       setCrmSelect(type === 'add');
     },
-    footer: (
+    footer: !crmSelect && (
       <>
         <Button onClick={() => fetchUpGroupData('save')}>保存</Button>
         {type === 'add' && (
@@ -124,7 +124,7 @@ const GroupEdit = (props) => {
           {/* 基础信息 */}
           <GroupInfoForm form={form} formType={type} initialValues={mreDetail}></GroupInfoForm>
           {/* 营业执照信息 */}
-          <BusinessLicense form={form} formType={type}></BusinessLicense>
+          <BusinessLicense form={form} bankStatus={mreDetail.bankStatus}></BusinessLicense>
           {/* 品牌信息 && 登录信息 && 联系人信息 && 店铺信息 */}
           <OhterInfoForm form={form} formType={type} initialValues={mreDetail}></OhterInfoForm>
         </>
