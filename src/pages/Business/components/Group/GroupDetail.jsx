@@ -14,7 +14,7 @@ import {
   activeByOne,
   activeByBank,
   activeByLegal,
-} from './details/detailsIndex';
+} from './Details/detailsIndex';
 
 const { TabPane } = Tabs;
 

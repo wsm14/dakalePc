@@ -12,6 +12,7 @@ export const base = [
   {
     label: '经营类目',
     name: 'topCategoryName',
+    render: (val, row) => `${val}/${row.categoryName}`,
   },
   {
     label: '详细地址',

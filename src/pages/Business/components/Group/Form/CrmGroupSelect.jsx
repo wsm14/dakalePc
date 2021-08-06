@@ -24,7 +24,7 @@ export const CrmBtn = connect(({ loading }) => ({
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: 15, paddingLeft: 170 }}>
+    <div style={{ marginTop: 15, paddingLeft: 155 }}>
       <Space>
         <Button loading={loading} onClick={fetchCrmGrounpList} type="primary">
           搜索
