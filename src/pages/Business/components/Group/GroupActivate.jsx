@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Alert } from 'antd';
 import { BUS_BANKACCOUNT_TYPE } from '@/common/constant';
+import AccountInfo from './Form/Activate/AccountInfo';
+import ServerFree from './Form/Activate/ServerFree';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 
@@ -11,6 +13,7 @@ const GroupActivate = (props) => {
   const { show, detail = {} } = visible;
 
   const [form] = Form.useForm();
+  const [bankAccount, setBankAccount] = useState('1'); // 1 对公 2 对私
 
   /**
    * bankStatus 激活状态
@@ -32,7 +35,7 @@ const GroupActivate = (props) => {
       type: 'radio',
       name: 'bankAccountType',
       select: BUS_BANKACCOUNT_TYPE,
-      onChange: (e) => console.log(e.target.value),
+      onChange: (e) => setBankAccount(e.target.value),
     },
   ];
 
@@ -59,6 +62,10 @@ const GroupActivate = (props) => {
         />
       )}
       <FormComponents form={form} formItems={formItems} initialValues={detail}></FormComponents>
+      {/* 对公对私表单 */}
+      <AccountInfo form={form} initialValues={detail} bankAccount={bankAccount}></AccountInfo>
+      {/* 服务费比例 */}
+      <ServerFree form={form} initialValues={detail}></ServerFree>
     </DrawerCondition>
   );
 };

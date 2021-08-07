@@ -4,8 +4,8 @@ import { Form, Button, Modal, notification } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import uploadLive from '@/utils/uploadLive';
 import aliOssUpload from '@/utils/aliOssUpload';
-import CrmGroupSelect from './Form/CrmGroupSelect';
-import GroupInfoForm from './Form/GroupInfoForm';
+import CrmGroupSelect from './Form/Info/CrmGroupSelect';
+import BaseInfoForm from './Form/Info/BaseInfoForm';
 import BusinessLicense from './Form/Info/BusinessLicense';
 import OhterInfoForm from './Form/Info/OhterInfoForm';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -179,7 +179,7 @@ const GroupEdit = (props) => {
       ) : (
         <>
           {/* 基础信息 */}
-          <GroupInfoForm form={form} formType={type} initialValues={mreDetail}></GroupInfoForm>
+          <BaseInfoForm form={form} formType={type} initialValues={mreDetail}></BaseInfoForm>
           {/* 营业执照信息 */}
           <BusinessLicense form={form} initialValues={mreDetail}></BusinessLicense>
           {/* 品牌信息 && 登录信息 && 联系人信息 && 店铺信息 */}

@@ -158,17 +158,16 @@ export default {
       const allCode = [mInfo.provinceCode, mInfo.cityCode, mInfo.districtCode]; // 城市code
       const topCategSelect = [mInfo.topCategoryIdString, mInfo.categoryIdStr]; // 经营项目
       callback({
-        ...bankOther,
         ...blsOther,
         ...mInfo,
-        businessLicenseObject: businessLicense,
+        businessLicenseObject: businessLicense, // 营业执照
+        bankBindingInfo: { ...bankOther, city }, // 激活信息
         topCategSelect,
         sellMerchantGroupId: mInfo.merchantGroupIdString,
         topCategoryId: mInfo.topCategoryIdString,
         categoryId: mInfo.categoryIdStr,
         activeValidity: establishDate,
         activeBeginDate,
-        city,
         allCode,
         videoUrl: mInfo?.videoContentOb?.url,
         videoId: mInfo?.videoContentOb?.videoId,

@@ -195,32 +195,32 @@ export const activeByBank = [
   },
   {
     label: '银行预留手机号',
-    name: 'legalMp',
+    name: ['bankBindingInfo', 'legalMp'],
   },
   {
     label: '开户行号',
-    name: 'bankSwiftCode',
+    name: ['bankBindingInfo', 'bankSwiftCode'],
   },
 ];
 
 export const activeByLegal = [
   {
     label: '结算人身份证正面照',
-    name: 'certFrontPhoto',
+    name: ['bankBindingInfo', 'certFrontPhoto'],
     type: 'upload',
   },
   {
     label: '结算人身份证反面照',
-    name: 'certReversePhoto',
+    name: ['bankBindingInfo', 'certReversePhoto'],
     type: 'upload',
   },
   {
     label: '结算人姓名',
-    name: 'legalPerson',
+    name: ['bankBindingInfo', 'legalPerson'],
   },
   {
     label: '结算人身份证号码',
-    name: 'legalCertId',
+    name: ['bankBindingInfo', 'legalCertId'],
   },
   {
     label: '结算人身份有效期',
