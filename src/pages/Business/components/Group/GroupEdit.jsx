@@ -58,6 +58,7 @@ const GroupEdit = (props) => {
                   type: { add: 'groupSet/fetchAddList', edit: 'groupSet/fetchUpdateGroup' }[type],
                   payload: {
                     ...other,
+                    contentType: 'video',
                     provinceCode: allCode[0],
                     cityCode: allCode[1],
                     districtCode: allCode[2],
@@ -65,8 +66,8 @@ const GroupEdit = (props) => {
                     videoUrl: undefined,
                     videoId: videos,
                     frontImage: imgs, // 封面连接
-                    frontImageWidth: imgs ? 480 : undefined, // 封面宽 16
-                    frontImageHeight: imgs ? 270 : undefined, // 封面长 9
+                    frontImageWidth: imgs ? 960 : undefined, // 封面宽 16
+                    frontImageHeight: imgs ? 540 : undefined, // 封面长 9
                     businessLicenseObject: {
                       ...businessLicenseObject,
                       validityPeriod: activeValidity[1].format('YYYY-MM-DD'),
@@ -124,7 +125,7 @@ const GroupEdit = (props) => {
           {/* 基础信息 */}
           <GroupInfoForm form={form} formType={type} initialValues={mreDetail}></GroupInfoForm>
           {/* 营业执照信息 */}
-          <BusinessLicense form={form} bankStatus={mreDetail.bankStatus}></BusinessLicense>
+          <BusinessLicense form={form} initialValues={mreDetail}></BusinessLicense>
           {/* 品牌信息 && 登录信息 && 联系人信息 && 店铺信息 */}
           <OhterInfoForm form={form} formType={type} initialValues={mreDetail}></OhterInfoForm>
         </>

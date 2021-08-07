@@ -111,11 +111,7 @@ const tableList = (props) => {
       render: (val, row, index) => [
         {
           type: 'edit',
-          click: () => {
-            fetchGrounpDetails({ merchantGroupId: val }, (res) => {
-              setVisible({ show: true, detail: res });
-            });
-          },
+          click: () => fetchGrounpDetails(index, (res) => handleEditShow('edit', res)),
         },
         {
           type: 'info',

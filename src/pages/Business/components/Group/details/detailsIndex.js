@@ -55,7 +55,7 @@ export const businessLicense = [
   },
   {
     label: '营业期限',
-    name: 'establishDate',
+    name: 'activeValidity',
     render: (val) => val && `${val[0].format('YYYY-MM-DD')}-${val[1].format('YYYY-MM-DD')}`,
   },
   {
@@ -89,7 +89,7 @@ export const brand = [
   },
   {
     label: '品牌宣传视频',
-    name: 'videoUpload',
+    name: ['videoContentOb', 'url'],
     type: 'upload',
   },
   {

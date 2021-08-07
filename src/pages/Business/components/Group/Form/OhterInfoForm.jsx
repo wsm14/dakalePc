@@ -89,7 +89,7 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
       type: 'noForm',
       visible: bandImg.show,
       formItem: (
-        <div style={{ marginLeft: '18%', display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginLeft: 84, marginBottom: 10, display: 'flex', alignItems: 'center' }}>
           品牌LOGO:{' '}
           <div style={{ marginLeft: '10px' }}>
             <PopImgShow url={bandImg.url}></PopImgShow>

@@ -8,7 +8,8 @@ import FormCondition from '@/components/FormCondition';
  * 营业执照信息
  * @returns
  */
-const BusinessLicense = ({ form, dispatch, loading, bankStatus }) => {
+const BusinessLicense = ({ form, dispatch, loading, initialValues }) => {
+  const { bankStatus } = initialValues;
   // 激活成功不可修改
   const disabled = loading || bankStatus === '3';
 
@@ -97,7 +98,7 @@ const BusinessLicense = ({ form, dispatch, loading, bankStatus }) => {
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} />;
+  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
 };
 
 export default connect(({ loading }) => ({
