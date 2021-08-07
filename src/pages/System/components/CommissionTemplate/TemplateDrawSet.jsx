@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { SERVICE_TYPE, DIVISION_TEMPLATE_TYPE, COMMISSION_TYPE } from '@/common/constant';
-import { NUM_PERCENTAGE } from '@/common/regExp';
+import { NUM_ALL } from '@/common/regExp';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -56,35 +56,35 @@ const TemplateDrawSet = (props) => {
       name: ['differenceDivisionObjects', 'province'],
       addonAfter: '%',
       visible: commissType === 'difference',
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '输入格式不正确' }],
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {
       label: '区县分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'district'],
       addonAfter: '%',
       visible: commissType === 'difference',
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '输入格式不正确' }],
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {
       label: '用户家主分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'userParent'],
       addonAfter: '%',
       visible: commissType === 'difference',
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '输入格式不正确' }],
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {
       label: '店铺家主分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'merchantParent'],
       addonAfter: '%',
       visible: commissType === 'difference',
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '输入格式不正确' }],
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {
       label: '哒人分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'daren'],
       addonAfter: '%',
       visible: commissType === 'difference',
-      addRules: [{ pattern: NUM_PERCENTAGE, message: '输入格式不正确' }],
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {
       type: 'checkbox',
