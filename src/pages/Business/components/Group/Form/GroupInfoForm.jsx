@@ -138,7 +138,7 @@ const GroupInfoForm = (props) => {
     },
     {
       label: '一级经营类目名称',
-      name: 'topCategoryId',
+      name: 'topCategoryName',
       hidden: true,
     },
     {

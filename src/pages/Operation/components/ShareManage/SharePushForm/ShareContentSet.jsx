@@ -65,6 +65,7 @@ const ShareContentSet = (props) => {
       name: 'frontImage',
       type: 'upload',
       maxFile: 1,
+      maxSize: 500,
       imgRatio: VIDEO_ADVERT,
     },
     {

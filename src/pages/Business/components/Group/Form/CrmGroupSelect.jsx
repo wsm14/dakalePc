@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Space, Tag, Spin, Empty } from 'antd';
 import FormCondition from '@/components/FormCondition';
@@ -79,7 +79,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                   {item.topCategoryName}/{item.categoryName}
                 </Tag>
                 {item.groupName}{' '}
-                <text style={{ fontSize: 13, color: '#a2a2a2' }}>{item.merchantGroupIdString}</text>
+                <span style={{ fontSize: 13, color: '#a2a2a2' }}>{item.merchantGroupIdString}</span>
                 <div style={{ fontSize: 13, color: '#a2a2a2', marginTop: 5 }}>{item.address}</div>
               </div>
               <Button

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Form, Button } from 'antd';
+import { Form, Button, Modal, notification } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import uploadLive from '@/utils/uploadLive';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -10,8 +10,10 @@ import BusinessLicense from './Form/BusinessLicense';
 import OhterInfoForm from './Form/OhterInfoForm';
 import DrawerCondition from '@/components/DrawerCondition';
 
+const { confirm } = Modal;
+
 const GroupEdit = (props) => {
-  const { visible = false, onClose, dispatch, cRef } = props;
+  const { visible = false, onClose, loadingAdd, loadingUpDate, dispatch, cRef } = props;
   // 展示 表单内容类型 add edit 详情
   const { show, type, detail } = visible;
 
@@ -27,71 +29,114 @@ const GroupEdit = (props) => {
     setCrmSelect(false);
   };
 
+  // 上传提交
+  const fetchUpData = (values, handle) => {
+    const {
+      mainImages, // 店铺头图
+      localImages, // 店铺环境图
+      brandPublicityImage, // 品牌宣传图片
+      frontImage, // 宣传视频封面
+      videoId,
+      videoUrl,
+      activeValidity,
+      topCategSelect,
+      businessLicenseObject,
+      allCode,
+      ...other
+    } = values;
+    const mImg = checkFileData(mainImages);
+    const lImg = checkFileData(localImages);
+    const bImg = checkFileData(brandPublicityImage);
+    uploadLive({
+      data: frontImage, // 上传封面
+      callback: (imgs) => {
+        uploadLive({
+          data: videoId ? videoId : videoUrl, // 上传视频
+          title: values.brandName,
+          callback: (videos) => {
+            aliOssUpload([...mImg, ...lImg, ...bImg]).then((res) => {
+              dispatch({
+                type: { add: 'groupSet/fetchAddList', edit: 'groupSet/fetchUpdateGroup' }[type],
+                payload: {
+                  ...other,
+                  merchantGroupIdString: mreDetail.merchantGroupIdString,
+                  contentType: 'video',
+                  provinceCode: allCode[0],
+                  cityCode: allCode[1],
+                  districtCode: allCode[2],
+                  categoryNode: topCategSelect.join('.'),
+                  videoUrl: undefined,
+                  videoId: videos,
+                  frontImage: imgs, // 封面连接
+                  frontImageWidth: imgs ? 960 : undefined, // 封面宽 16
+                  frontImageHeight: imgs ? 540 : undefined, // 封面长 9
+                  businessLicenseObject: {
+                    ...businessLicenseObject,
+                    validityPeriod: activeValidity[1].format('YYYY-MM-DD'),
+                    establishDate: activeValidity[0].format('YYYY-MM-DD'),
+                  },
+                  mainImages: res.slice(0, 1).toString(),
+                  localImages: res.slice(1, lImg.length + 1).toString(),
+                  brandPublicityImage: res.slice(lImg.length + 1).toString(),
+                },
+                callback: () => {
+                  // 保存和下一步
+                  if (handle === 'save') {
+                    cRef.current.fetchGetData();
+                    onClose();
+                  } else {
+                    onClose();
+                  }
+                },
+              });
+            });
+          },
+        });
+      },
+    });
+  };
+
+  // 修改时显示确认同步消息框
+  function showConfirm(callback) {
+    confirm({
+      title: '温馨提示',
+      content: (
+        <div>
+          修改图片是否同步至所有子门店？
+          <br />
+          确定同步将同步至子门店，不同步仅更改集团内照片信息
+        </div>
+      ),
+      okText: '确定同步',
+      cancelText: '不同步',
+      onOk() {
+        callback(1); // 同步
+      },
+      onCancel() {
+        callback(0); // 不同步
+      },
+    });
+  }
+
   // 提交集团数据
   const fetchUpGroupData = (handle) => {
     form.validateFields().then((values) => {
       const {
         mainImages, // 店铺头图
         localImages, // 店铺环境图
-        brandPublicityImage, // 品牌宣传图片
-        frontImage, // 宣传视频封面
-        videoId,
-        videoUrl,
-        activeValidity,
-        topCategSelect,
-        businessLicenseObject,
-        allCode,
-        ...other
+        lat,
+        lnt,
       } = values;
-      const mImg = checkFileData(mainImages);
-      const lImg = checkFileData(localImages);
-      const bImg = checkFileData(brandPublicityImage);
-      uploadLive({
-        data: frontImage, // 上传封面
-        callback: (imgs) => {
-          uploadLive({
-            data: videoId ? videoId : videoUrl, // 上传视频
-            title: values.brandName,
-            callback: (videos) => {
-              aliOssUpload([...mImg, ...lImg, ...bImg]).then((res) => {
-                dispatch({
-                  type: { add: 'groupSet/fetchAddList', edit: 'groupSet/fetchUpdateGroup' }[type],
-                  payload: {
-                    ...other,
-                    contentType: 'video',
-                    provinceCode: allCode[0],
-                    cityCode: allCode[1],
-                    districtCode: allCode[2],
-                    categoryNode: topCategSelect.join('.'),
-                    videoUrl: undefined,
-                    videoId: videos,
-                    frontImage: imgs, // 封面连接
-                    frontImageWidth: imgs ? 960 : undefined, // 封面宽 16
-                    frontImageHeight: imgs ? 540 : undefined, // 封面长 9
-                    businessLicenseObject: {
-                      ...businessLicenseObject,
-                      validityPeriod: activeValidity[1].format('YYYY-MM-DD'),
-                      establishDate: activeValidity[0].format('YYYY-MM-DD'),
-                    },
-                    mainImages: res.slice(0, 1).toString(),
-                    localImages: res.slice(1, lImg.length + 1).toString(),
-                    brandPublicityImage: res.slice(lImg.length + 1).toString(),
-                  },
-                  callback: () => {
-                    // 保存和下一步
-                    if (handle === 'save') {
-                      cRef.current.fetchGetData();
-                      onClose();
-                    } else {
-                      onClose();
-                    }
-                  },
-                });
-              });
-            },
-          });
-        },
-      });
+      if (!lat && !lnt) {
+        notification.error({
+          message: '请点击查询！设置经纬度',
+        });
+        return;
+      }
+      const checkImg = (val) => val && typeof val !== 'string';
+      if (type === 'edit' && typeof checkImg(mainImages) && checkImg(localImages)) {
+        showConfirm((synFlag) => fetchUpData({ ...values, synFlag }, handle));
+      } else fetchUpData(values, handle);
     });
   };
 
@@ -106,7 +151,9 @@ const GroupEdit = (props) => {
     },
     footer: !crmSelect && (
       <>
-        <Button onClick={() => fetchUpGroupData('save')}>保存</Button>
+        <Button onClick={() => fetchUpGroupData('save')} loading={loadingUpDate || loadingAdd}>
+          保存
+        </Button>
         {type === 'add' && (
           <Button onClick={() => fetchUpGroupData('next')} type="primary">
             下一步
