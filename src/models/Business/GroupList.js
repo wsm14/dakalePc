@@ -15,6 +15,7 @@ import {
   fetchUpdateGroup,
   fetchCrmGrounpList,
   fetchGroupStoreList,
+  fetchGroupSetBandCode,
 } from '@/services/BusinessServices';
 
 export default {
@@ -91,6 +92,14 @@ export default {
         description: '添加成功',
       });
       callback && callback();
+    },
+    *fetchGroupSetBandCode({ payload }, { call, put }) {
+      const response = yield call(fetchGroupSetBandCode, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '开户行号设置成功',
+      });
     },
     *fetchGetOcrBusinessLicense({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrLicense, payload);

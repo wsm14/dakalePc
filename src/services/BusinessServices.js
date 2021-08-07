@@ -175,6 +175,14 @@ export function fetchUpdateGroup(data) {
   });
 }
 
+// post 修改集團 - 开户行号
+export function fetchGroupSetBandCode(data) {
+  return request('/admin/merchantGroup/updateGroupBankSwiftCode', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 获取crm集团门店列表
 export function fetchCrmGrounpList(params) {
   return request('/admin/merchantGroup/listSellMerchantGroup', {

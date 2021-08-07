@@ -35,9 +35,9 @@ const GroupsDetails = (props) => {
   // 设置开户行号
   const fetchMerSetBandCode = (values) => {
     dispatch({
-      type: 'businessList/fetchMerSetBandCode',
+      type: 'groupSet/fetchGroupSetBandCode',
       payload: {
-        merchantId,
+        merchantGroupId: detail.merchantGroupIdString,
         ...values,
       },
     });
@@ -144,5 +144,5 @@ const GroupsDetails = (props) => {
 export default connect(({ groupSet, loading }) => ({
   list: groupSet.list.list,
   loading: loading.effects['groupSet/fetchGrounpDetails'],
-  loadingBank: loading.effects['businessList/fetchMerSetBandCode'],
+  loadingBank: loading.effects['groupSet/fetchGroupSetBandCode'],
 }))(GroupsDetails);

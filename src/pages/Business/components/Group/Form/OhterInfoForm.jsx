@@ -86,6 +86,18 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
       fieldNames: { label: 'brandName', value: 'configBrandIdString' },
     },
     {
+      type: 'noForm',
+      visible: bandImg.show,
+      formItem: (
+        <div style={{ marginLeft: '18%', display: 'flex', alignItems: 'center' }}>
+          品牌LOGO:{' '}
+          <div style={{ marginLeft: '10px' }}>
+            <PopImgShow url={bandImg.url}></PopImgShow>
+          </div>
+        </div>
+      ),
+    },
+    {
       label: '品牌宣传图片',
       name: 'brandPublicityImage',
       type: 'upload',
@@ -162,18 +174,6 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
       label: '品牌名称',
       name: 'brandLogo',
       hidden: true,
-    },
-    {
-      type: 'noForm',
-      visible: bandImg.show,
-      formItem: (
-        <div style={{ marginLeft: '18%', display: 'flex', alignItems: 'center' }}>
-          品牌LOGO:{' '}
-          <div style={{ marginLeft: '10px' }}>
-            <PopImgShow url={bandImg.url}></PopImgShow>
-          </div>
-        </div>
-      ),
     },
     {
       title: '06 店铺信息（上传后将同步至各店铺）',
