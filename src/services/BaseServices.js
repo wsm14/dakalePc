@@ -123,7 +123,7 @@ export function fetchTradeScanCommissionSet(data) {
 
 // 获取行业-扫码付服务费比例
 export function fetchTradeScanCommission(params) {
-  return request('/admin/category/scanRate', {
+  return request('/admin/category/scanRate/categoryScanRate', {
     params,
   });
 }
