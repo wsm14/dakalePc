@@ -82,17 +82,11 @@ export default {
       const response = yield call(fetchAddMerchantGroup, payload);
       if (!response) return;
       const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          merchantGroupId: content.merchantGroupId,
-        },
-      });
       notification.success({
         message: '温馨提示',
         description: '添加成功',
       });
-      callback && callback();
+      callback && callback(content.merchantGroupId);
     },
     *fetchGroupSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchGroupSetBandCode, payload);
@@ -158,22 +152,25 @@ export default {
       const { establishDate: mre, validityPeriod, ...blsOther } = businessLicense;
       const activeBeginDate = startDate ? [moment(startDate), moment(legalCertIdExpires)] : ''; // 结算人/法人 身份有效期
       const establishDate = mre ? [moment(mre), moment(validityPeriod)] : ''; // 营业期限
-      const city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode];
+      const city = bankBindingInfo.areaCode
+        ? [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode]
+        : undefined;
       const allCode = [mInfo.provinceCode, mInfo.cityCode, mInfo.districtCode]; // 城市code
       const topCategSelect = [mInfo.topCategoryIdString, mInfo.categoryIdStr]; // 经营项目
       callback({
-        ...bankOther,
         ...blsOther,
         ...mInfo,
-        businessLicenseObject: businessLicense,
+        businessLicenseObject: businessLicense, // 营业执照
+        bankBindingInfo: bankOther, // 激活信息
         topCategSelect,
         sellMerchantGroupId: mInfo.merchantGroupIdString,
         topCategoryId: mInfo.topCategoryIdString,
         categoryId: mInfo.categoryIdStr,
         activeValidity: establishDate,
         activeBeginDate,
-        city,
         allCode,
+        videoUrl: mInfo?.videoContentOb?.url,
+        videoId: mInfo?.videoContentOb?.videoId,
       });
     },
     *fetchUpdateGroup({ payload, callback }, { call }) {

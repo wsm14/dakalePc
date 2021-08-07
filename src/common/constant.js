@@ -549,8 +549,11 @@ export const NEWS_TYPE = {
 // 是否实习
 export const DAREN_TEMP_FLAG = ['否', '是'];
 
-// 独立运营
+// 集团管理 - 独立运营
 export const BUS_OPERATION_FLAG = ['加盟', '直营'];
 
-// 独立结算
+// 集团管理 -  独立结算
 export const BUS_SETTLEMENT_FLAG = ['统一结算', '独立结算'];
+
+// 集团管理 - 对公 对私
+export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '对私(个体工店铺)'];

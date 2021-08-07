@@ -152,7 +152,7 @@ export function fetchAddMerchantGroup(data) {
   });
 }
 
-// post 绑定银行卡
+// post 激活集团 - 绑定银行卡
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {
     method: 'POST',

@@ -27,7 +27,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef }) => {
       name: 'bankPhoto',
       type: 'upload',
       rules: [{ required: false }],
-      maxSize: 1,
+      maxSize: 1024,
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       onChange: async (val) => {

@@ -26,7 +26,7 @@ const legalForm = (props) => {
       label: '法人身份证正面照',
       name: 'certFrontPhoto',
       type: 'upload',
-      maxSize: 1,
+      maxSize: 1024,
       maxFile: 1,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
@@ -48,7 +48,7 @@ const legalForm = (props) => {
       label: '法人身份证反面照',
       name: 'certReversePhoto',
       type: 'upload',
-      maxSize: 1,
+      maxSize: 1024,
       maxFile: 1,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);

@@ -18,7 +18,7 @@ const activeForm = ({ form, initialValues, dispatch, formType }) => {
       label: '营业执照',
       name: ['businessLicenseObject', 'businessLicenseImg'],
       type: 'upload',
-      maxSize: 1,
+      maxSize: 1024,
       maxFile: 1,
       extra: '以下信息通过OCR识别，请检查后再提交哦',
       disabled: formType === 'edit',

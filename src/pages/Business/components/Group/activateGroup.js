@@ -5,7 +5,7 @@ import ActiveSetForm from './Form/activeSetForm';
 import LegalForm from './Form/legalForm';
 import { connect } from 'umi';
 import { TIME_YMD } from '@/common/timeConstant';
-import ActiveBankForm from './Form/activeBankForm';
+import ActiveBankForm from './Form/Activate/activeBankForm';
 import LegalByOneForm from './Form/legalByOneForm';
 
 const addGroups = (props) => {

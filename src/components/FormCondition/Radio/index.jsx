@@ -29,7 +29,10 @@ const RadioBlock = (props) => {
         value: `${item[value]}`,
         disabled: item[disabled] || false,
       }));
-    } else selectList = select.map((item, index) => ({ label: item, value: `${index}` }));
+    } else
+      selectList = select
+        .map((item, index) => ({ label: item, value: `${index}` }))
+        .filter((i) => i.label !== false);
   } else if (lodash.isPlainObject(select)) {
     // 若为对象则将遍历成数组赋值
     selectList = arrObject(select);

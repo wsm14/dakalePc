@@ -7,7 +7,7 @@ import { checkCityName } from '@/utils/utils';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import FormCondition from '@/components/FormCondition';
 
-const GroupInfoForm = (props) => {
+const BaseInfoForm = (props) => {
   const { tradeList, dispatch, formType, form, initialValues } = props;
 
   const { handle = 'add' } = initialValues; // 获取crm 认领标识 认领 crm 创建 add
@@ -221,4 +221,4 @@ const GroupInfoForm = (props) => {
 
 export default connect(({ sysTradeList }) => ({
   tradeList: sysTradeList.list.list,
-}))(GroupInfoForm);
+}))(BaseInfoForm);

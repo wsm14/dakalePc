@@ -90,7 +90,7 @@ export const brand = [
   {
     label: '品牌宣传视频',
     name: ['videoContentOb', 'url'],
-    type: 'upload',
+    type: 'videoUpload',
   },
   {
     label: '品牌宣传图片',
@@ -123,21 +123,21 @@ export const shop = [
 export const legal = [
   {
     label: '法人身份证正面照',
-    name: 'certFrontPhoto',
+    name: ['bankBindingInfo', 'certFrontPhoto'],
     type: 'upload',
   },
   {
     label: '法人身份证反面照',
-    name: 'certReversePhoto',
+    name: ['bankBindingInfo', 'certReversePhoto'],
     type: 'upload',
   },
   {
     label: '法人姓名',
-    name: 'legalPerson',
+    name: ['bankBindingInfo', 'legalPerson'],
   },
   {
     label: '法人身份证号码',
-    name: 'legalCertId',
+    name: ['bankBindingInfo', 'legalCertId'],
   },
   {
     label: '法人身份有效期',
@@ -146,81 +146,81 @@ export const legal = [
   },
   {
     label: '法人手机号',
-    name: 'legalMp',
+    name: ['bankBindingInfo', 'legalMp'],
   },
 ];
 
 export const activeByOne = [
   {
     label: '开户许可证',
-    name: 'openAccountPermit',
+    name: ['bankBindingInfo', 'openAccountPermit'],
     type: 'upload',
   },
   {
     label: '开户名称',
-    name: 'cardName',
+    name: ['bankBindingInfo', 'cardName'],
   },
   {
     label: '银行卡号',
-    name: 'cardNo',
+    name: ['bankBindingInfo', 'cardNo'],
   },
   {
     label: '开户银行',
-    name: 'bankBranchName',
+    name: ['bankBindingInfo', 'bankBranchName'],
   },
   {
     label: '开户行号',
-    name: 'bankSwiftCode',
+    name: ['bankBindingInfo', 'bankSwiftCode'],
   },
 ];
 
 export const activeByBank = [
   {
     label: '银行卡',
-    name: 'bankPhoto',
+    name: ['bankBindingInfo', 'bankPhoto'],
     type: 'upload',
   },
   {
     label: '银行卡号',
-    name: 'cardNo',
+    name: ['bankBindingInfo', 'cardNo'],
   },
   {
     label: '开户支行',
-    name: 'bankBranchName',
+    name: ['bankBindingInfo', 'bankBranchName'],
   },
   {
     label: '开户城市',
-    name: 'areaCode',
+    name: ['bankBindingInfo', 'areaCode'],
     render: (val) => checkCityName(val || ''),
   },
   {
     label: '银行预留手机号',
-    name: 'legalMp',
+    name: ['bankBindingInfo', 'legalMp'],
   },
   {
     label: '开户行号',
-    name: 'bankSwiftCode',
+    name: ['bankBindingInfo', 'bankSwiftCode'],
   },
 ];
 
 export const activeByLegal = [
   {
     label: '结算人身份证正面照',
-    name: 'certFrontPhoto',
+    name: ['bankBindingInfo', 'certFrontPhoto'],
     type: 'upload',
   },
   {
     label: '结算人身份证反面照',
-    name: 'certReversePhoto',
+    name: ['bankBindingInfo', 'certReversePhoto'],
     type: 'upload',
   },
   {
     label: '结算人姓名',
-    name: 'legalPerson',
+    name: ['bankBindingInfo', 'legalPerson'],
   },
   {
     label: '结算人身份证号码',
-    name: 'legalCertId',
+    name: ['bankBindingInfo', 'legalCertId'],
   },
   {
     label: '结算人身份有效期',
