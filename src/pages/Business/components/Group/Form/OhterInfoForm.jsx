@@ -12,6 +12,7 @@ import FormCondition from '@/components/FormCondition';
 const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues }) => {
   const [bandImg, setBandImg] = useState({ show: false, url: '' });
   const [brandSet, setBrandSet] = useState({ show: false, url: '' });
+  const [videoImg, setVideoImg] = useState(false);
 
   // 创建品牌
   const handleShowBrandSet = () =>
@@ -111,7 +112,7 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
       type: 'upload',
       maxFile: 1,
       imgRatio: BRAND_VIDEO_ADVERT,
-      rules: [{ required: false }],
+      rules: [{ required: videoImg }],
     },
     {
       label: '品牌宣传视频',
@@ -119,7 +120,9 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
       type: 'videoUpload',
       maxFile: 1,
       rules: [{ required: false }],
+      onRemove: () => setVideoImg(false),
       onChange: ({ file }) => {
+        setVideoImg(true);
         const fileurl = URL.createObjectURL(file);
         // 获取视频的时长 长宽高
         const videoElement = document.createElement('video');

@@ -35,6 +35,7 @@ const UploadBlock = (props) => {
     initialvalues: initialValues,
     name = '',
     multiple = true,
+    onRemove,
     maxFile,
     onChange,
   } = props;
@@ -89,6 +90,7 @@ const UploadBlock = (props) => {
     <>
       <Upload
         multiple={multiple}
+        onRemove={onRemove}
         listType="picture"
         accept="video/mp4,.mp4"
         maxCount={maxFile}
