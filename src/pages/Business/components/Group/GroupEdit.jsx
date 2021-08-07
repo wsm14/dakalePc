@@ -6,14 +6,22 @@ import uploadLive from '@/utils/uploadLive';
 import aliOssUpload from '@/utils/aliOssUpload';
 import CrmGroupSelect from './Form/CrmGroupSelect';
 import GroupInfoForm from './Form/GroupInfoForm';
-import BusinessLicense from './Form/BusinessLicense';
-import OhterInfoForm from './Form/OhterInfoForm';
+import BusinessLicense from './Form/Info/BusinessLicense';
+import OhterInfoForm from './Form/Info/OhterInfoForm';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const { confirm } = Modal;
 
 const GroupEdit = (props) => {
-  const { visible = false, onClose, loadingAdd, loadingUpDate, dispatch, cRef } = props;
+  const {
+    cRef,
+    visible = false,
+    dispatch,
+    onClose,
+    loadingAdd,
+    loadingUpDate,
+    handleActivateShow,
+  } = props;
   // 展示 表单内容类型 add edit 详情
   const { show, type, detail } = visible;
 
@@ -79,12 +87,13 @@ const GroupEdit = (props) => {
                   localImages: res.slice(1, lImg.length + 1).toString(),
                   brandPublicityImage: res.slice(lImg.length + 1).toString(),
                 },
-                callback: () => {
-                  // 保存和下一步
+                callback: (id) => {
                   if (handle === 'save') {
-                    cRef.current.fetchGetData();
+                    cRef.current.fetchGetData(); // 保存
                     onClose();
                   } else {
+                    // 下一步 激活 merchantGroupIdString 和详情返回一致
+                    handleActivateShow({ merchantGroupIdString: id, ...other });
                     onClose();
                   }
                 },

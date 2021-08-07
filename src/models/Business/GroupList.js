@@ -82,17 +82,11 @@ export default {
       const response = yield call(fetchAddMerchantGroup, payload);
       if (!response) return;
       const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          merchantGroupId: content.merchantGroupId,
-        },
-      });
       notification.success({
         message: '温馨提示',
         description: '添加成功',
       });
-      callback && callback();
+      callback && callback(content.merchantGroupId);
     },
     *fetchGroupSetBandCode({ payload }, { call, put }) {
       const response = yield call(fetchGroupSetBandCode, payload);

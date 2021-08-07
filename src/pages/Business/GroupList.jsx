@@ -6,6 +6,7 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import StoreList from './components/Group/StoreList';
 import GroupEdit from './components/Group/GroupEdit';
+import GroupActivate from './components/Group/GroupActivate';
 import GroupDetail from './components/Group/GroupDetail';
 
 const tableList = (props) => {
@@ -14,6 +15,7 @@ const tableList = (props) => {
   const childRef = useRef();
   const [storeShow, setStoreShow] = useState(false); // 门店列表展示
   const [visible, setVisible] = useState({ show: false, detail: {} }); // 详情
+  const [visibleActivate, setVisibleActivate] = useState({ show: false, detail: {} }); // 激活
   const [visibleEdit, setVisibleEdit] = useState({ show: false, type: 'add', detail: {} }); // 新增编辑
 
   useEffect(() => {
@@ -121,7 +123,7 @@ const tableList = (props) => {
         {
           type: 'activate', // 激活
           visible: row.bankStatus !== '3', // 激活成功 3 不显示
-          click: () => {},
+          click: () => fetchGrounpDetails(index, handleActivateShow),
         },
         {
           type: 'storeList', // 店铺列表
@@ -135,6 +137,9 @@ const tableList = (props) => {
   // 新增修改打开
   const handleEditShow = (type, detail = {}) => setVisibleEdit({ show: true, type, detail });
 
+  // 激活打开
+  const handleActivateShow = (detail = {}) => setVisibleActivate({ show: true, detail });
+
   // 获取集团详情
   const fetchGrounpDetails = (index, callback) => {
     const { merchantGroupIdString: merchantGroupId } = list.list[index];
@@ -142,7 +147,7 @@ const tableList = (props) => {
       type: 'groupSet/fetchGrounpDetails',
       payload: { merchantGroupId },
       callback: (info) => {
-        setVisible({ ...visible, index });
+        setVisible({ ...visible, index }); // 详情下一条储存 其它组件不影响
         callback(info);
       },
     });
@@ -174,13 +179,20 @@ const tableList = (props) => {
       <GroupEdit
         cRef={childRef}
         visible={visibleEdit}
+        handleActivateShow={handleActivateShow} // 去激活
         onClose={() => setVisibleEdit({ show: false, detail: {} })}
       ></GroupEdit>
+      {/* 激活 */}
+      <GroupActivate
+        cRef={childRef}
+        visible={visibleActivate}
+        onClose={() => setVisibleActivate({ show: false, detail: {} })}
+      ></GroupActivate>
       {/* 集团详情 */}
       <GroupDetail
         visible={visible}
         fetchGrounpDetails={fetchGrounpDetails}
-        handleEditShow={(res) => handleEditShow('edit', res)}
+        handleEditShow={(res) => handleEditShow('edit', res)} // 去修改
         onClose={() => setVisible({ show: false, detail: {} })}
       ></GroupDetail>
       {/* 集团门店列表 */}
