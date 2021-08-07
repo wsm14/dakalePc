@@ -196,7 +196,11 @@ const tableList = (props) => {
         onClose={() => setVisible({ show: false, detail: {} })}
       ></GroupDetail>
       {/* 集团门店列表 */}
-      <StoreList visible={storeShow} onClose={() => setStoreShow(false)}></StoreList>
+      <StoreList
+        cRef={childRef}
+        visible={storeShow}
+        onClose={() => setStoreShow(false)}
+      ></StoreList>
     </>
   );
 };

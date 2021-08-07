@@ -8,7 +8,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 
 const GroupActivate = (props) => {
-  const { visible, onClose, dispatch, loading } = props;
+  const { cRef, visible, onClose, dispatch, loading } = props;
 
   const { show, detail = {} } = visible;
 
@@ -25,20 +25,24 @@ const GroupActivate = (props) => {
   // 提交数据
   const fetchUpData = () => {
     form.validateFields().then((values) => {
-      const { city, activeBeginDate, bankBindingInfo } = values;
+      const { city, activeBeginDate = [], bankBindingInfo, bankAccountType } = values;
       dispatch({
         type: 'groupSet/fetchMerchantBank',
         payload: {
           merchantGroupId: merchantGroupIdString,
+          bankAccountType,
           bankBindingObject: {
             ...bankBindingInfo,
             provCode: city[0].includes('00') ? city[0] : '00' + city[0],
-            areaCode: city[1],
-            startDate: activeBeginDate[0].format('YYYY-MM-DD'),
-            legalCertIdExpires: activeBeginDate[1].format('YYYY-MM-DD'),
+            areaCode: city[1] || undefined,
+            startDate: activeBeginDate[0]?.format('YYYY-MM-DD') || undefined,
+            legalCertIdExpires: activeBeginDate[1]?.format('YYYY-MM-DD') || undefined,
           },
         },
-        callback: callback,
+        callback: () => {
+          cRef.current.fetchGetData();
+          onClose();
+        },
       });
     });
   };
