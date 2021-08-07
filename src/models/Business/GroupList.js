@@ -15,6 +15,8 @@ import {
   fetchUpdateGroup,
   fetchCrmGrounpList,
   fetchGroupStoreList,
+  fetchGroupSetBandCode,
+  fetchRateByCategory,
 } from '@/services/BusinessServices';
 
 export default {
@@ -92,6 +94,14 @@ export default {
       });
       callback && callback();
     },
+    *fetchGroupSetBandCode({ payload }, { call, put }) {
+      const response = yield call(fetchGroupSetBandCode, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '开户行号设置成功',
+      });
+    },
     *fetchGetOcrBusinessLicense({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrLicense, payload);
       if (!response) return;
@@ -122,6 +132,12 @@ export default {
       const { content } = response;
       callback && callback(content);
     },
+    *fetchRateByCategory({ payload, callback }, { call }) {
+      const response = yield call(fetchRateByCategory, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
+    },
     *fetchMerchantBank({ payload, callback }, { call }) {
       const response = yield call(fetchMerchantBank, payload);
       if (!response) return;
@@ -136,20 +152,28 @@ export default {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
       const {
-        content: { bankBindingInfo = {}, businessLicense = {}, merchantGroupDTO = {} },
+        content: { bankBindingInfo = {}, businessLicense = {}, merchantGroupDTO: mInfo = {} },
       } = response;
       const { startDate, legalCertIdExpires, ...bankOther } = bankBindingInfo;
       const { establishDate: mre, validityPeriod, ...blsOther } = businessLicense;
       const activeBeginDate = startDate ? [moment(startDate), moment(legalCertIdExpires)] : ''; // 结算人/法人 身份有效期
       const establishDate = mre ? [moment(mre), moment(validityPeriod)] : ''; // 营业期限
       const city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode];
+      const allCode = [mInfo.provinceCode, mInfo.cityCode, mInfo.districtCode]; // 城市code
+      const topCategSelect = [mInfo.topCategoryIdString, mInfo.categoryIdStr]; // 经营项目
       callback({
         ...bankOther,
         ...blsOther,
-        ...merchantGroupDTO,
+        ...mInfo,
+        businessLicenseObject: businessLicense,
+        topCategSelect,
+        sellMerchantGroupId: mInfo.merchantGroupIdString,
+        topCategoryId: mInfo.topCategoryIdString,
+        categoryId: mInfo.categoryIdStr,
+        activeValidity: establishDate,
         activeBeginDate,
-        establishDate,
         city,
+        allCode,
       });
     },
     *fetchUpdateGroup({ payload, callback }, { call }) {

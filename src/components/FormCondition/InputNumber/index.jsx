@@ -3,10 +3,15 @@ import { InputNumber } from 'antd';
 import { delectProps } from '../utils';
 
 const InputNumberBlock = (props) => {
-  
-  const divProps = delectProps(props);
+  const { suffix, ...ohter } = props;
+  const divProps = delectProps(ohter);
 
-  return <InputNumber style={{ width: '100%' }} {...divProps} />;
+  return (
+    <>
+      <InputNumber style={{ width: suffix ? '75%' : '100%' }} {...divProps} />
+      {suffix && <span style={{ marginLeft: 10 }}>{suffix}</span>}
+    </>
+  );
 };
 
 export default InputNumberBlock;

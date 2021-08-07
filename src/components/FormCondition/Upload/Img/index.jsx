@@ -237,6 +237,7 @@ const UploadBlock = (props) => {
               handlePreview(blob);
               return;
             });
+            return;
           }
           setFileLists(newFileList.slice(0, maxFile || 999));
           form.setFieldsValue({

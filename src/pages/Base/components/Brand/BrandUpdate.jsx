@@ -7,9 +7,9 @@ import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const BrandUpdate = (props) => {
-  const { cRef, dispatch, visible = {}, onClose, loading } = props;
+  const { cRef, dispatch, visible = {}, tradeList = [], onClose, loading } = props;
 
-  const { type, show = false, tradeList = [], initialValues = {} } = visible;
+  const { type, show = false, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
   // 新增/编辑
@@ -45,6 +45,7 @@ const BrandUpdate = (props) => {
       name: 'brandLogo',
       maxFile: 1,
       imgRatio: SQUARE_ICON,
+      extra: '限1张，建议尺寸400*400',
     },
     {
       label: '品牌名',
@@ -56,7 +57,7 @@ const BrandUpdate = (props) => {
       type: 'select',
       name: 'categoryId',
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'id' },
+      fieldNames: { label: 'categoryName', value: 'configBrandIdString' },
     },
   ];
 
@@ -82,6 +83,7 @@ const BrandUpdate = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({
+export default connect(({ loading, sysTradeList }) => ({
+  tradeList: sysTradeList.list.list,
   loading: loading.models.businessBrand,
 }))(BrandUpdate);

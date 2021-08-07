@@ -12,19 +12,25 @@ export const base = [
   {
     label: '经营类目',
     name: 'topCategoryName',
+    render: (val, row) => `${val}/${row.categoryName}`,
   },
   {
     label: '详细地址',
     name: 'address',
   },
   {
-    label: '扫码付服务费（%）',
+    label: '扫码付比例',
     name: 'scanCommissionRatio',
     render: (val) => (val || 0) + '%',
   },
   {
-    label: '核销订单服务费（%）',
+    label: '商品核销',
     name: 'commissionRatio',
+    render: (val) => (val || 0) + '%',
+  },
+  {
+    label: '推广费',
+    name: 'promotionFee',
     render: (val) => (val || 0) + '%',
   },
 ];
@@ -49,24 +55,12 @@ export const businessLicense = [
   },
   {
     label: '营业期限',
-    name: 'establishDate',
+    name: 'activeValidity',
     render: (val) => val && `${val[0].format('YYYY-MM-DD')}-${val[1].format('YYYY-MM-DD')}`,
   },
   {
     label: '经营范围',
     name: 'businessScope',
-  },
-];
-
-export const brand = [
-  {
-    label: '品牌',
-    name: 'brandName',
-  },
-  {
-    label: '品牌LOGO',
-    name: 'brandLogo',
-    type: 'upload',
   },
 ];
 
@@ -83,14 +77,40 @@ export const message = [
   },
 ];
 
+export const brand = [
+  {
+    label: '品牌',
+    name: 'brandName',
+  },
+  {
+    label: '品牌LOGO',
+    name: 'brandLogo',
+    type: 'upload',
+  },
+  {
+    label: '品牌宣传视频',
+    name: ['videoContentOb', 'url'],
+    type: 'upload',
+  },
+  {
+    label: '品牌宣传图片',
+    name: 'brandPublicityImage',
+    type: 'upload',
+  },
+  {
+    label: '品牌介绍',
+    name: 'brandStory',
+  },
+];
+
 export const shop = [
   {
-    label: '店铺主图',
+    label: '店铺头图',
     name: 'mainImages',
     type: 'upload',
   },
   {
-    label: '店铺小图',
+    label: '店铺环境图',
     name: 'localImages',
     type: 'upload',
   },

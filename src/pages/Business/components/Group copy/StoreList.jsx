@@ -1,12 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import {
-  BUSINESS_DO_STATUS,
-  BUSINESS_STATUS,
-  BUS_OPERATION_FLAG,
-  BUS_SETTLEMENT_FLAG,
-} from '@/common/constant';
+import { BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
@@ -27,10 +22,6 @@ const StoreList = (props) => {
       label: '店铺名称',
       name: 'name',
     },
-    {
-      label: '店铺帐号',
-      name: 'account',
-    },
   ];
 
   const getColumns = [
@@ -45,7 +36,9 @@ const StoreList = (props) => {
             {row.merchantName}
           </Ellipsis>
           <div style={{ display: 'flex', alignItems: 'center', marginTop: 5, color: '#888888' }}>
-            {row.account}
+            <Ellipsis length={15} tooltip>
+              {row.account}
+            </Ellipsis>
           </div>
         </PopImgShow>
       ),
@@ -66,12 +59,6 @@ const StoreList = (props) => {
           </div>
         </div>
       ),
-    },
-    {
-      title: '店铺类型/结算类型',
-      align: 'center',
-      dataIndex: 'settlementFlag',
-      render: (val, row) => `${BUS_OPERATION_FLAG[val]}\n${BUS_SETTLEMENT_FLAG[row.operationFlag]}`,
     },
     {
       title: '入驻/激活时间',

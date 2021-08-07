@@ -5,6 +5,7 @@ import { checkCityName } from '@/utils/utils';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import StoreList from './components/Group/StoreList';
+import GroupEdit from './components/Group/GroupEdit';
 import GroupDetail from './components/Group/GroupDetail';
 
 const tableList = (props) => {
@@ -13,6 +14,7 @@ const tableList = (props) => {
   const childRef = useRef();
   const [storeShow, setStoreShow] = useState(false); // 门店列表展示
   const [visible, setVisible] = useState({ show: false, detail: {} }); // 详情
+  const [visibleEdit, setVisibleEdit] = useState({ show: false, type: 'add', detail: {} }); // 新增编辑
 
   useEffect(() => {
     fetchGetTrade();
@@ -63,7 +65,8 @@ const tableList = (props) => {
     {
       title: '经营类目',
       align: 'center',
-      dataIndex: 'categoryName',
+      dataIndex: 'topCategoryName',
+      render: (val, row) => `${val}/${row.categoryName}`,
     },
     {
       title: '所在地区',
@@ -108,11 +111,7 @@ const tableList = (props) => {
       render: (val, row, index) => [
         {
           type: 'edit',
-          click: () => {
-            fetchGrounpDetails({ merchantGroupId: val }, (res) => {
-              setVisible({ show: true, detail: res });
-            });
-          },
+          click: () => fetchGrounpDetails(index, (res) => handleEditShow('edit', res)),
         },
         {
           type: 'info',
@@ -133,6 +132,9 @@ const tableList = (props) => {
     },
   ];
 
+  // 新增修改打开
+  const handleEditShow = (type, detail = {}) => setVisibleEdit({ show: true, type, detail });
+
   // 获取集团详情
   const fetchGrounpDetails = (index, callback) => {
     const { merchantGroupIdString: merchantGroupId } = list.list[index];
@@ -150,7 +152,7 @@ const tableList = (props) => {
   const extraBtn = [
     {
       auth: 'save',
-      onClick: () => {},
+      onClick: () => handleEditShow('add'),
     },
   ];
 
@@ -168,6 +170,12 @@ const tableList = (props) => {
         dispatchType="groupSet/fetchGetList"
         {...list}
       ></TableDataBlock>
+      {/* 新增/编辑/集团 */}
+      <GroupEdit
+        cRef={childRef}
+        visible={visibleEdit}
+        onClose={() => setVisibleEdit({ show: false, detail: {} })}
+      ></GroupEdit>
       {/* 集团详情 */}
       <GroupDetail
         visible={visible}

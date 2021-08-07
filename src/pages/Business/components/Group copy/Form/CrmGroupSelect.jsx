@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Button, Space, Tag, Spin, Empty } from 'antd';
+import { Button, Space, Tag, Spin } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
 export const CrmBtn = connect(({ loading }) => ({
   loading: loading.effects['groupSet/fetchCrmGrounpList'],
-}))(({ dispatch, form, children, loading }) => {
+}))(({ dispatch, form, children, goSet, loading }) => {
   // 搜索店铺列表
   const fetchCrmGrounpList = () => {
     form.validateFields().then((val) => {
@@ -24,7 +24,7 @@ export const CrmBtn = connect(({ loading }) => ({
   };
 
   return (
-    <div style={{ marginTop: 15, paddingLeft: 163 }}>
+    <div style={{ textAlign: 'center' }}>
       <Space>
         <Button loading={loading} onClick={fetchCrmGrounpList} type="primary">
           搜索
@@ -36,6 +36,8 @@ export const CrmBtn = connect(({ loading }) => ({
 });
 
 const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
+  const [cityName, setCityName] = useState(); // 城市名称
+
   useEffect(() => {
     dispatch({
       type: 'groupSet/clearDetail',
@@ -47,6 +49,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
       label: '所在地区',
       type: 'cascader',
       name: 'dcode',
+      onChange: (val, option) => setCityName(option),
     },
     {
       label: '集团名称',
@@ -57,10 +60,10 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
   return (
     <>
       <FormCondition formItems={formItems} form={form} />
-      <div style={{ padding: '0 50px 0 163px', minHeight: 30 }}>
+      <div style={{ padding: '0 50px 0 200px', minHeight: 30 }}>
         {loading ? (
           <Spin></Spin>
-        ) : crmList.length ? (
+        ) : (
           crmList.map((item) => (
             <div
               key={item.merchantGroupIdString}
@@ -79,7 +82,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                   {item.topCategoryName}/{item.categoryName}
                 </Tag>
                 {item.groupName}{' '}
-                <span style={{ fontSize: 13, color: '#a2a2a2' }}>{item.merchantGroupIdString}</span>
+                <text style={{ fontSize: 13, color: '#a2a2a2' }}>{item.merchantGroupIdString}</text>
                 <div style={{ fontSize: 13, color: '#a2a2a2', marginTop: 5 }}>{item.address}</div>
               </div>
               <Button
@@ -92,18 +95,23 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                     topCategoryIdStr,
                     categoryIdStr,
                     categoryName,
+                    categoryNode,
                     topCategoryName,
                     merchantGroupIdString,
                   } = item;
                   goSet({
                     ...item,
                     sellMerchantGroupId: merchantGroupIdString,
+                    cityName,
                     topCategSelect: [topCategoryIdStr, categoryIdStr],
-                    topCategoryId: topCategoryIdStr,
-                    categoryId: categoryIdStr,
-                    categoryName,
-                    topCategoryName,
-                    handle: 'crm', // 认领标识
+                    categoryObj: {
+                      topCategoryId: topCategoryIdStr,
+                      categoryId: categoryIdStr,
+                      categoryName,
+                      categoryNode,
+                      topCategoryName,
+                    },
+                    handle: 'crm',
                     allCode: [provinceCode, cityCode, districtCode],
                   });
                 }}
@@ -112,8 +120,6 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
               </Button>
             </div>
           ))
-        ) : (
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
       </div>
       <CrmBtn form={form}>
@@ -122,7 +128,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
           onClick={() => {
             form.validateFields().then((val) => {
               const { dcode, groupNameOrId } = val;
-              goSet({ allCode: dcode, groupName: groupNameOrId });
+              goSet({ allCode: dcode, cityName, groupName: groupNameOrId });
             });
           }}
         >
