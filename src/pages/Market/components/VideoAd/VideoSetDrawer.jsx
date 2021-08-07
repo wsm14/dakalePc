@@ -46,6 +46,7 @@ const ShareDrawer = (props) => {
                     beanFlag: '1', // 是否打赏 0 1
                     ...dataStorage,
                     ...ohter,
+                    areaType,
                     friendShareImg: res.toString(),
                     videoUrl: undefined,
                     area: areaType === 'district' ? area[2] : undefined,
