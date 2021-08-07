@@ -169,6 +169,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       type: 'upload',
       maxFile: 1,
       maxSize: 1024,
+      disabled,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
@@ -187,6 +188,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       type: 'upload',
       maxFile: 1,
       maxSize: 1024,
+      disabled,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
@@ -207,15 +209,18 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
     {
       label: `${labelBefor}姓名`,
+      disabled,
       name: ['bankBindingInfo', 'legalPerson'],
     },
     {
       label: `${labelBefor}身份证号码`,
+      disabled,
       name: ['bankBindingInfo', 'legalCertId'],
     },
     {
       label: `${labelBefor}身份有效期`,
       type: 'rangePicker',
+      disabled,
       name: 'activeBeginDate',
     },
     {

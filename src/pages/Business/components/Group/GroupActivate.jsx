@@ -53,6 +53,7 @@ const GroupActivate = (props) => {
       type: 'radio',
       name: 'bankAccountType',
       select: BUS_BANKACCOUNT_TYPE,
+      disabled: bankStatus === '2',
       onChange: (e) => setBankAccount(e.target.value),
     },
   ];
@@ -61,9 +62,11 @@ const GroupActivate = (props) => {
     title: `激活账户信息`,
     visible: show,
     onClose,
-    loading,
+    afterCallBack: () => {
+      setBankAccount(detail.bankAccountType);
+    },
     footer: (
-      <Button onClick={fetchUpData} type="primary">
+      <Button onClick={fetchUpData} type="primary" loading={loading}>
         提交
       </Button>
     ),
@@ -81,7 +84,7 @@ const GroupActivate = (props) => {
       )}
       <FormComponents form={form} formItems={formItems} initialValues={detail}></FormComponents>
       {/* 对公对私表单 */}
-      <AccountInfo form={form} initialValues={detail} bankAccount={bankAccount}></AccountInfo>
+      <AccountInfo form={form} bankAccount={bankAccount} initialValues={detail}></AccountInfo>
       {/* 服务费比例 */}
       <ServerFree form={form} initialValues={detail}></ServerFree>
     </DrawerCondition>
@@ -90,6 +93,5 @@ const GroupActivate = (props) => {
 
 export default connect(({ groupSet, loading }) => ({
   list: groupSet.list.list,
-  loading: loading.effects['groupSet/fetchGrounpDetails'],
-  loadingBank: loading.effects['groupSet/fetchGroupSetBandCode'],
+  loading: loading.effects['groupSet/fetchMerchantBank'],
 }))(GroupActivate);
