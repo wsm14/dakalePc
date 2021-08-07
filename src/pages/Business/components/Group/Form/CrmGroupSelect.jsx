@@ -103,7 +103,7 @@ const CrmGroupSelect = ({ dispatch, crmList, goSet, loading, form }) => {
                     categoryId: categoryIdStr,
                     categoryName,
                     topCategoryName,
-                    handle: 'crm',
+                    handle: 'crm', // 认领标识
                     allCode: [provinceCode, cityCode, districtCode],
                   });
                 }}

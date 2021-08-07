@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { message, Button } from 'antd';
 import { AMAP_KEY } from '@/common/constant';
@@ -8,12 +8,27 @@ import QuestionTooltip from '@/components/QuestionTooltip';
 import FormCondition from '@/components/FormCondition';
 
 const GroupInfoForm = (props) => {
-  const { tradeList, formType, form, initialValues } = props;
+  const { tradeList, dispatch, formType, form, initialValues } = props;
 
-  const { handle = 'add' } = initialValues; // 获取crm 认领标识
+  const { handle = 'add' } = initialValues; // 获取crm 认领标识 认领 crm 创建 add
 
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // 地图回显用 [经度 lnt , 纬度 lat]
+
+  useEffect(() => {
+    // 认领进入时获取一次费率
+    if (handle === 'crm') fetchRateByCategory(initialValues.topCategoryId);
+  }, [initialValues.topCategoryId]);
+
+  // 获取费率
+  const fetchRateByCategory = (categoryId) => {
+    if (!categoryId) return;
+    dispatch({
+      type: 'groupSet/fetchRateByCategory',
+      payload: { categoryId },
+      callback: (res) => form.setFieldsValue(res),
+    });
+  };
 
   const onSearchAddress = () => {
     const address = form.getFieldValue('address');
@@ -113,6 +128,7 @@ const GroupInfoForm = (props) => {
           categoryId: val[1],
           categoryName: option[1].categoryName,
         });
+        fetchRateByCategory(val[0]);
       },
     },
     {
@@ -168,7 +184,6 @@ const GroupInfoForm = (props) => {
       precision: 0,
       name: 'scanCommissionRatio',
       disabled: true,
-      rules: [{ required: false }],
     },
     {
       label: (
@@ -183,7 +198,7 @@ const GroupInfoForm = (props) => {
       name: 'commissionRatio',
       placeholder: '请输入商品核销（%）',
       disabled: true,
-      rules: [{ required: false }],
+      rules: [{ required: true, message: '请输入商品核销费' }],
     },
     {
       label: (

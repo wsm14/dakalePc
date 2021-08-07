@@ -32,6 +32,7 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
     }
   }, [initialValues]);
 
+  // 获取品牌列表
   const fetchMasterManagementList = () => {
     dispatch({
       type: 'businessBrand/fetchGetList',

@@ -183,6 +183,13 @@ export function fetchGroupSetBandCode(data) {
   });
 }
 
+// get 获取行业费率
+export function fetchRateByCategory(params) {
+  return request('/admin/systemIndustry/getRateByCategory', {
+    params,
+  });
+}
+
 // get 获取crm集团门店列表
 export function fetchCrmGrounpList(params) {
   return request('/admin/merchantGroup/listSellMerchantGroup', {

@@ -16,6 +16,7 @@ import {
   fetchCrmGrounpList,
   fetchGroupStoreList,
   fetchGroupSetBandCode,
+  fetchRateByCategory,
 } from '@/services/BusinessServices';
 
 export default {
@@ -127,6 +128,12 @@ export default {
     },
     *fetchGetOcrIdBankCard({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrIdBankCard, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
+    },
+    *fetchRateByCategory({ payload, callback }, { call }) {
+      const response = yield call(fetchRateByCategory, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
