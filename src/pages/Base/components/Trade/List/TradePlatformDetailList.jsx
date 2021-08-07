@@ -33,7 +33,7 @@ const TradePlatformDetailList = (props) => {
       type: 'sysTradeList/fetchTradePlatformSet',
       payload: {
         ...data,
-        categoryId: record.id,
+        categoryId: record.categoryIdString,
         configMerchantSettleId: configMerchantSettleIdString,
         merchantSettleObjects: pObj.filter((item) => item.serviceFee !== value.serviceFee),
       },
@@ -160,7 +160,7 @@ const TradePlatformDetailList = (props) => {
           loading={loading}
           columns={propsItem.columns}
           rowKey={(row, i) => `${row[propsItem.rowKey] + i}`}
-          params={{ categoryId: record.id }}
+          params={{ categoryId: record.categoryIdString }}
           dispatchType="sysTradeList/fetchTradePlatformList"
           size="middle"
           expandable={propsItem.expandable}
@@ -169,7 +169,7 @@ const TradePlatformDetailList = (props) => {
       </Modal>
       <TradePlatformSet
         childRef={childRef}
-        categoryId={record.id}
+        categoryId={record.categoryIdString}
         visible={visibleSet}
         onClose={() => setVisibleSet(false)}
       ></TradePlatformSet>

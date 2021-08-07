@@ -185,7 +185,7 @@ const SysTradeSet = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.id}`}
+        rowKey={(record) => `${record.categoryIdString}`}
         dispatchType="sysTradeList/fetchGetList"
         {...list}
         expandable={{ childrenColumnName: ['categoryDTOList'] }}
