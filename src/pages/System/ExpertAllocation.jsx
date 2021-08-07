@@ -150,7 +150,7 @@ const ExpertAllocation = (props) => {
           visible: !row.children || row.type == 'normal',
           click: () => setVisible({ show: true, type: 'edit', detail: row }),
         },
-      ]
+      ],
     },
   ];
 
@@ -164,7 +164,7 @@ const ExpertAllocation = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.type || record.levelName}`}
         dispatchType="expertAllocation/fetchGetList"
-        expandable={{ defaultExpandAllRows: true }}
+        expandable={{ expandedRowKeys: list.map((i) => i.type) }}
         list={list}
       ></TableDataBlock>
       <ExpertAllocationSet
