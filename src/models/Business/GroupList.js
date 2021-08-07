@@ -161,7 +161,7 @@ export default {
         ...blsOther,
         ...mInfo,
         businessLicenseObject: businessLicense, // 营业执照
-        bankBindingInfo: { ...bankOther, city }, // 激活信息
+        bankBindingInfo: bankOther, // 激活信息
         topCategSelect,
         sellMerchantGroupId: mInfo.merchantGroupIdString,
         topCategoryId: mInfo.topCategoryIdString,

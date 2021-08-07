@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import aliOssUpload from '@/utils/aliOssUpload';
+import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 
 /**
@@ -224,9 +225,18 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
     },
   ];
 
-  return <FormCondition formItems={formItems} form={form} initialValues={initialValues} />;
+  const formItemArr = {
+    1: { ...formItems, ...formItemsLegal },
+    2: { ...formItemsOwn, ...formItemsLegal },
+  }[bankAccount];
+
+  return <FormCondition formItems={formItemArr} form={form} initialValues={initialValues} />;
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['groupSet/fetchGetOcrBusinessLicense'],
+  loading:
+    loading.effects['groupSet/fetchGetOcrBankLicense'] ||
+    loading.effects['groupSet/fetchGetOcrIdBankCard'] ||
+    loading.effects['groupSet/fetchGetOcrIdCardFront'] ||
+    loading.effects['groupSet/fetchGetOcrIdCardBack'],
 }))(AccountInfo);
