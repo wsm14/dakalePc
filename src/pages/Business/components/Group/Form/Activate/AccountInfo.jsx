@@ -163,6 +163,7 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
   // 身份证信息
   const formItemsLegal = [
     {
+      title: `${labelBefor}身份信息`,
       label: `${labelBefor}身份证正面照`,
       name: ['bankBindingInfo', 'certFrontPhoto'],
       type: 'upload',
@@ -226,8 +227,8 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
   ];
 
   const formItemArr = {
-    1: { ...formItems, ...formItemsLegal },
-    2: { ...formItemsOwn, ...formItemsLegal },
+    1: [...formItems, ...formItemsLegal],
+    2: [...formItemsOwn, ...formItemsLegal],
   }[bankAccount];
 
   return <FormCondition formItems={formItemArr} form={form} initialValues={initialValues} />;

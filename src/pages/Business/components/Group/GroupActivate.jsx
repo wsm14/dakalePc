@@ -25,7 +25,21 @@ const GroupActivate = (props) => {
   // 提交数据
   const fetchUpData = () => {
     form.validateFields().then((values) => {
-      console.log({ merchantGroupId: merchantGroupIdString, ...values });
+      const { city, activeBeginDate, bankBindingInfo } = values;
+      dispatch({
+        type: 'groupSet/fetchMerchantBank',
+        payload: {
+          merchantGroupId: merchantGroupIdString,
+          bankBindingObject: {
+            ...bankBindingInfo,
+            provCode: city[0].includes('00') ? city[0] : '00' + city[0],
+            areaCode: city[1],
+            startDate: activeBeginDate[0].format('YYYY-MM-DD'),
+            legalCertIdExpires: activeBeginDate[1].format('YYYY-MM-DD'),
+          },
+        },
+        callback: callback,
+      });
     });
   };
 
