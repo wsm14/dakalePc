@@ -158,7 +158,9 @@ export default {
       const { establishDate: mre, validityPeriod, ...blsOther } = businessLicense;
       const activeBeginDate = startDate ? [moment(startDate), moment(legalCertIdExpires)] : ''; // 结算人/法人 身份有效期
       const establishDate = mre ? [moment(mre), moment(validityPeriod)] : ''; // 营业期限
-      const city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode];
+      const city = bankBindingInfo.areaCode
+        ? [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode]
+        : undefined;
       const allCode = [mInfo.provinceCode, mInfo.cityCode, mInfo.districtCode]; // 城市code
       const topCategSelect = [mInfo.topCategoryIdString, mInfo.categoryIdStr]; // 经营项目
       callback({
@@ -174,6 +176,8 @@ export default {
         activeBeginDate,
         city,
         allCode,
+        videoUrl: mInfo?.videoContentOb?.url,
+        videoId: mInfo?.videoContentOb?.videoId,
       });
     },
     *fetchUpdateGroup({ payload, callback }, { call }) {

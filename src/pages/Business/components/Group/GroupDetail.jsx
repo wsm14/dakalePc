@@ -19,7 +19,16 @@ import {
 const { TabPane } = Tabs;
 
 const GroupsDetails = (props) => {
-  const { visible, onClose, dispatch, list, fetchGrounpDetails, loading, loadingBank } = props;
+  const {
+    visible,
+    onClose,
+    dispatch,
+    list,
+    fetchGrounpDetails,
+    handleEditShow,
+    loading,
+    loadingBank,
+  } = props;
 
   const { show, index, detail = {} } = visible;
 
@@ -59,7 +68,13 @@ const GroupsDetails = (props) => {
     },
     afterCallBack: () => setDetail(detail),
     footer: tabKey === 'group' && (
-      <Button onClick={() => {}} type="primary">
+      <Button
+        onClick={() => {
+          onClose();
+          handleEditShow(detail);
+        }}
+        type="primary"
+      >
         去修改
       </Button>
     ),

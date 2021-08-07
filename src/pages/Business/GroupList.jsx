@@ -180,6 +180,7 @@ const tableList = (props) => {
       <GroupDetail
         visible={visible}
         fetchGrounpDetails={fetchGrounpDetails}
+        handleEditShow={(res) => handleEditShow('edit', res)}
         onClose={() => setVisible({ show: false, detail: {} })}
       ></GroupDetail>
       {/* 集团门店列表 */}

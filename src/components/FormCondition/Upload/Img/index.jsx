@@ -76,6 +76,18 @@ const getBase64 = (file) => {
   });
 };
 
+// 逐级获取value
+const getArrKeyVal = (key, value) => {
+  const _len = key.length;
+  let newVal = value;
+  for (let _key = 0; _key < _len; _key++) {
+    // 当数组key 获取值时某一层不存在时直接返回null
+    const valGet = newVal ? newVal[key[_key]] : null;
+    newVal = valGet ? valGet : undefined;
+  }
+  return newVal;
+};
+
 // 图片数据数组还原
 const uploadValues = (fileArr) => {
   return !Array.isArray(fileArr)
@@ -112,10 +124,7 @@ const UploadBlock = (props) => {
     if (initialValues && Object.keys(initialValues).length) {
       // 键名是数组的情况
       if (Array.isArray(name)) {
-        if (!initialValues[name[0]]) {
-          return [];
-        }
-        const urlFile = initialValues[name[0]][name[1]];
+        const urlFile = getArrKeyVal(name, initialValues);
         return urlFile ? uploadValues(urlFile) : [];
       }
       // 键名是字符串的情况

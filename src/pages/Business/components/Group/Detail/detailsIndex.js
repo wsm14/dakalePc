@@ -90,7 +90,7 @@ export const brand = [
   {
     label: '品牌宣传视频',
     name: ['videoContentOb', 'url'],
-    type: 'upload',
+    type: 'videoUpload',
   },
   {
     label: '品牌宣传图片',
