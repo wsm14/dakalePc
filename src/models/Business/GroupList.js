@@ -169,6 +169,7 @@ export default {
         activeValidity: establishDate,
         activeBeginDate,
         allCode,
+        city,
         videoUrl: mInfo?.videoContentOb?.url,
         videoId: mInfo?.videoContentOb?.videoId,
       });
