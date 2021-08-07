@@ -1,9 +1,8 @@
 import React, { useState, useImperativeHandle } from 'react';
 import { connect } from 'umi';
+import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import cityList from '@/common/city';
-import { PHONE_PATTERN } from '@/common/regExp';
 
 const activeForm = ({ form, initialValues, dispatch, cRef }) => {
   const fetchGetOcrBankLicense = (payload, callback) => {
@@ -59,12 +58,7 @@ const activeForm = ({ form, initialValues, dispatch, cRef }) => {
       label: '开户城市',
       name: 'city',
       type: 'cascader',
-      select: JSON.parse(JSON.stringify(cityList)).map((item) => {
-        item.children = item.children.map((items) => {
-          return { label: items.label, value: items.value };
-        });
-        return item;
-      }),
+      cityType: 'city',
       onChange: (val, option) => {
         const { value } = option[0];
         setCity({
