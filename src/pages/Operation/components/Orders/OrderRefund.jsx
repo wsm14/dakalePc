@@ -7,7 +7,7 @@ import FormCondition from '@/components/FormCondition';
  * 订单退款
  */
 const OrderRefund = (props) => {
-  const { visible = {}, onClose, dispatch, loading } = props;
+  const { visible = {}, onClose, getDetail, dispatch, loading } = props;
   const { show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
@@ -23,7 +23,10 @@ const OrderRefund = (props) => {
           ...detail,
           refundReason: refundType !== '5' ? select[refundType] : refundReason,
         },
-        callback: onClose,
+        callback: () => {
+          onClose();
+          getDetail();
+        },
       });
     });
   };
