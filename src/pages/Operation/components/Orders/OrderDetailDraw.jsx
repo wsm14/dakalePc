@@ -16,7 +16,7 @@ import OrderRefund from './OrderRefund';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, total, tabkey, loading } = props;
+  const { visible, onClose, getDetail, childRef, total, tabkey, loading } = props;
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, orderGoodsVerifications = [] } = detail;
   const [isShow, setIsShow] = useState(true);
@@ -393,7 +393,14 @@ const OrderDetailDraw = (props) => {
           </div>
         </div>
       </DrawerCondition>
-      <OrderRefund visible={refund} onClose={() => setRefund(false)}></OrderRefund>
+      <OrderRefund
+        visible={refund}
+        getDetail={() => {
+          childRef.current.fetchGetData();
+          getDetail(index);
+        }}
+        onClose={() => setRefund(false)}
+      ></OrderRefund>
     </>
   );
 };
