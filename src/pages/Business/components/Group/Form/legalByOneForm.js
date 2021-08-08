@@ -25,8 +25,8 @@ const legalForm = (props) => {
       label: '结算人身份证正面照',
       name: 'certFrontPhoto',
       type: 'upload',
-      maxSize: 1,
       maxFile: 1,
+      maxSize: 1024,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         form.setFieldsValue({
@@ -47,8 +47,8 @@ const legalForm = (props) => {
       label: '结算人身份证反面照',
       name: 'certReversePhoto',
       type: 'upload',
-      maxSize: 1,
       maxFile: 1,
+      maxSize: 1024,
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         form.setFieldsValue({
