@@ -269,6 +269,7 @@ const GoodsOrders = (props) => {
         {...ordersList}
       ></TableDataBlock>
       <OrderDetailDraw
+        childRef={childRef}
         visible={visible}
         total={list.length}
         tabkey={tabkey}
