@@ -6,6 +6,7 @@ import {
   USER_SOURCE,
   ORDERS_STATUS,
 } from '@/common/constant';
+import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -60,24 +61,7 @@ const OrderDetailDraw = (props) => {
     {
       label: '状态',
       name: 'status',
-      render: (val) => (
-        <>
-          {VERIFICATION_STATUS[val]}
-          {val === '0' && (
-            <a
-              onClick={() =>
-                setRefund({
-                  show: true,
-                  detail: { status: val, userId: detail.userIdString, orderSn: detail.orderSn },
-                })
-              }
-              style={{ marginLeft: 20 }}
-            >
-              退款
-            </a>
-          )}
-        </>
-      ),
+      render: (val) => VERIFICATION_STATUS[val],
     },
     {
       label: '核销时间',
@@ -214,6 +198,23 @@ const OrderDetailDraw = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
+    footer: detail.status === '1' && (
+      <Button
+        type="primary"
+        onClick={() =>
+          setRefund({
+            show: true,
+            detail: {
+              status: detail.status,
+              userId: detail.userIdString,
+              orderSn: detail.orderSn,
+            },
+          })
+        }
+      >
+        退款
+      </Button>
+    ),
   };
   return (
     <>
