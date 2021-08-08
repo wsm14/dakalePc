@@ -313,6 +313,14 @@ export function fetchOrdersDetail(params) {
   });
 }
 
+// post 订单列表 - 手动退款
+export function fetchOrderRefundOwn(data) {
+  return request('/admin/orderManagement/manualRefund', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 订单列表 end
 
 // 核销列表
