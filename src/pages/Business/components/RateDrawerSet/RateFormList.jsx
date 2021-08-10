@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, InputNumber, Button, Space, DatePicker } from 'antd';
 import { connect } from 'umi';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 const RateFormList = (props) => {
   const {
@@ -136,8 +136,8 @@ const RateFormList = (props) => {
                   style={{ width: 150 }}
                   min={0}
                   placeholder="请输入费率"
-                  formatter={value => `${value}%`}
-                  parser={value => value.replace('%', '')}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace('%', '')}
                   disabled={checkEditType(index)}
                 />
               </Form.Item>
