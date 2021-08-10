@@ -35,6 +35,14 @@ export function fetchSpecialGoodsStatus(data) {
   });
 }
 
+// post 周边特惠 - 分享图修改
+export function fetchSpecialGoodsShareEdit(data) {
+  return request('/admin/specialGoodsManagement/updateActivityGoodsNotAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
   return request('/admin/specialGoodsManagement/updateSpecialGoods', {

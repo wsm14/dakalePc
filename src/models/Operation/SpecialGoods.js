@@ -4,6 +4,7 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
+  fetchSpecialGoodsShareEdit,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsImport,
@@ -126,6 +127,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特惠活动新增成功，等待平台审核',
+      });
+      callback();
+    },
+    *fetchSpecialGoodsShareEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsShareEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '特惠活动分享图设置成功',
       });
       callback();
     },
