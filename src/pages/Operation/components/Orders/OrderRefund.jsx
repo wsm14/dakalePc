@@ -21,6 +21,7 @@ const OrderRefund = (props) => {
         type: 'ordersList/fetchOrderRefundOwn',
         payload: {
           ...detail,
+          status: 6,
           refundReason: refundType !== '5' ? select[refundType] : refundReason,
         },
         callback: () => {

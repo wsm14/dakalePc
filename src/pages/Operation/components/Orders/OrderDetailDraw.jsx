@@ -205,7 +205,6 @@ const OrderDetailDraw = (props) => {
           setRefund({
             show: true,
             detail: {
-              status: detail.status,
               userId: detail.userIdString,
               orderSn: detail.orderSn,
             },
