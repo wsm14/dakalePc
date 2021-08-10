@@ -4,6 +4,7 @@ import {
   fetchSpecialGoodsList,
   fetchSpecialGoodsSave,
   fetchSpecialGoodsEdit,
+  fetchSpecialGoodsShareEdit,
   fetchSpecialGoodsDetail,
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsImport,
