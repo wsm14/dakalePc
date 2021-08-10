@@ -30,7 +30,7 @@ const ShareImg = (props) => {
       const { shareImg } = values;
       aliOssUpload(shareImg).then((res) => {
         dispatch({
-          type: 'specialGoods/fetchSpecialGoodsEdit',
+          type: 'specialGoods/fetchSpecialGoodsShareEdit',
           payload: {
             id: specialGoodsId,
             ownerId: ownerIdString,
