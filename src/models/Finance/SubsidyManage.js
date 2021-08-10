@@ -52,7 +52,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.subsidyList },
+          detailList: { list: content.subsidyList, total: content.subsidyList?.length || 0 },
         },
       });
     },
