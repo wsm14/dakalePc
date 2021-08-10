@@ -48,7 +48,6 @@ const RateFormList = (props) => {
   const handleSave = (index, type) => {
     if (type === 'edit') {
       setIsEdit({ ...isEdit, [index]: type === 'edit' });
-      console.log({ ...isEdit });
     }
     form.validateFields().then((values) => {
       const { scan, verification, promotion } = values;

@@ -49,6 +49,13 @@ export async function fetchBusinessPeasDetail(params) {
   });
 }
 
+// * 商家营销卡豆明细
+export async function fetchBusinessPlatformBeanDetail(params) {
+  return request('/admin/accountManagement/listMerchantPlatformBeanDetail', {
+    params,
+  });
+}
+
 // get 商家账户 - 提现记录
 export async function fetchBusinessCollectDetail(params) {
   return request('/admin/accountManagement/listMerchantWithdrawalDetail', {

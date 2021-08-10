@@ -8,7 +8,14 @@ import RateFormList from './RateFormList';
 const ReteDrawerSet = (props) => {
   const { visible = {}, onClose, fetchGetRate } = props;
   const { type, show, initialValues = {} } = visible;
-  const { userMerchantIdString: ownerId, merchantName, groupId, listPayload } = initialValues;
+  const {
+    userMerchantIdString: ownerId,
+    merchantGroupIdString,
+    merchantName = '',
+    groupId,
+    listPayload,
+    groupName = '',
+  } = initialValues;
 
   // type merchant:'门店' ，group：集团
 
@@ -18,7 +25,7 @@ const ReteDrawerSet = (props) => {
 
   const commonProps = {
     disabled: groupId ? true : false,
-    ownerId,
+    ownerId: type === 'merchant' ? ownerId : merchantGroupIdString,
     fetchGetRate,
     listPayload,
   };
@@ -108,7 +115,7 @@ const ReteDrawerSet = (props) => {
   ];
 
   const modalProps = {
-    title: `费率设置--${merchantName}`,
+    title: `费率设置--${type === 'merchant' ? merchantName : groupName}`,
     visible: show,
     onClose,
     width: 850,
