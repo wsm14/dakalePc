@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form, InputNumber, Button, Space, DatePicker } from 'antd';
 import { connect } from 'umi';
+import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 const RateFormList = (props) => {
@@ -45,7 +46,6 @@ const RateFormList = (props) => {
 
   //编辑 || 保存
   const handleSave = (index, type) => {
-    console.log(index, type);
     if (type === 'edit') {
       setIsEdit({ ...isEdit, [index]: type === 'edit' });
       console.log({ ...isEdit });
@@ -111,6 +111,10 @@ const RateFormList = (props) => {
       }
     });
   };
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current < moment().subtract(1, 'day');
+  };
 
   return (
     <Form.List name={name}>
@@ -124,7 +128,7 @@ const RateFormList = (props) => {
                 fieldKey={[fieldKey, 'time']}
                 rules={[{ required: true, message: '请选择时间范围' }]}
               >
-                <RangePicker disabled={checkEditType(index)} />
+                <RangePicker disabledDate={disabledDate} disabled={checkEditType(index)} />
               </Form.Item>
               <Form.Item
                 {...restField}
