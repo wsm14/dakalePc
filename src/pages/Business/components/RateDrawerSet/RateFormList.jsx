@@ -128,7 +128,17 @@ const RateFormList = (props) => {
                 fieldKey={[fieldKey, 'time']}
                 rules={[{ required: true, message: '请选择时间范围' }]}
               >
-                <RangePicker disabledDate={disabledDate} disabled={checkEditType(index)} />
+                <RangePicker
+                  ranges={{
+                    '3个月': [moment(), moment().add(3, 'month')],
+                    '6个月': [moment(), moment().add(6, 'month')],
+                    '1年': [moment(), moment().add(1, 'year')],
+                    '2年': [moment(), moment().add(2, 'year')],
+                    永久: [moment(), moment('2999-12-31', 'YYYY-MM-DD')],
+                  }}
+                  disabledDate={disabledDate}
+                  disabled={checkEditType(index)}
+                />
               </Form.Item>
               <Form.Item
                 {...restField}
