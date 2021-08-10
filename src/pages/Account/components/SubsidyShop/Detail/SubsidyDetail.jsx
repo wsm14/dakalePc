@@ -95,6 +95,7 @@ const SubsidyDetail = (props) => {
         columns={type == 'merchant' ? getColumnsM : getColumns}
         rowKey={(record) => `${type == 'merchant' ? record.merchantId : record.userIdString}`}
         list={info}
+        total={info?.length || 0}
       ></TableDataBlock>
     </Modal>
   );
