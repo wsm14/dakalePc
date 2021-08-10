@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Form, InputNumber, Button, Space, DatePicker } from 'antd';
 import { connect } from 'umi';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import moment from 'moment';
+import { PlusOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
 const RateFormList = (props) => {
   const {
@@ -45,7 +46,6 @@ const RateFormList = (props) => {
 
   //编辑 || 保存
   const handleSave = (index, type) => {
-    console.log(index, type);
     if (type === 'edit') {
       setIsEdit({ ...isEdit, [index]: type === 'edit' });
       console.log({ ...isEdit });
@@ -111,6 +111,10 @@ const RateFormList = (props) => {
       }
     });
   };
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current < moment().subtract(1, 'day');
+  };
 
   return (
     <Form.List name={name}>
@@ -124,7 +128,17 @@ const RateFormList = (props) => {
                 fieldKey={[fieldKey, 'time']}
                 rules={[{ required: true, message: '请选择时间范围' }]}
               >
-                <RangePicker disabled={checkEditType(index)} />
+                <RangePicker
+                  ranges={{
+                    '3个月': [moment(), moment().add(3, 'month')],
+                    '6个月': [moment(), moment().add(6, 'month')],
+                    '1年': [moment(), moment().add(1, 'year')],
+                    '2年': [moment(), moment().add(2, 'year')],
+                    永久: [moment(), moment('2999-12-31', 'YYYY-MM-DD')],
+                  }}
+                  disabledDate={disabledDate}
+                  disabled={checkEditType(index)}
+                />
               </Form.Item>
               <Form.Item
                 {...restField}
@@ -136,8 +150,8 @@ const RateFormList = (props) => {
                   style={{ width: 150 }}
                   min={0}
                   placeholder="请输入费率"
-                  formatter={value => `${value}%`}
-                  parser={value => value.replace('%', '')}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace('%', '')}
                   disabled={checkEditType(index)}
                 />
               </Form.Item>
