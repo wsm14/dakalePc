@@ -8,6 +8,7 @@ import StoreList from './components/Group/StoreList';
 import GroupEdit from './components/Group/GroupEdit';
 import GroupActivate from './components/Group/GroupActivate';
 import GroupDetail from './components/Group/GroupDetail';
+import ReteDrawerSet from './components/RateDrawerSet';
 
 const tableList = (props) => {
   const { dispatch, list, tradeList, loading } = props;
@@ -17,6 +18,7 @@ const tableList = (props) => {
   const [visible, setVisible] = useState({ show: false, detail: {} }); // 详情
   const [visibleActivate, setVisibleActivate] = useState({ show: false, detail: {} }); // 激活
   const [visibleEdit, setVisibleEdit] = useState({ show: false, type: 'add', detail: {} }); // 新增编辑
+  const [visibleRate, setVisibleRate] = useState(false); //费率
 
   useEffect(() => {
     fetchGetTrade();
@@ -130,9 +132,32 @@ const tableList = (props) => {
           visible: row.bankStatus === '3',
           click: () => setStoreShow({ show: true, detail: row }),
         },
+        {
+          type: 'rate',
+          title: '费率',
+          click: () => fetchGetRate({ type: 'group', row }),
+        },
       ],
     },
   ];
+
+  // 费率
+  const fetchGetRate = (payload) => {
+    const { type, row = {} } = payload;
+    const { merchantGroupIdString: ownerId } = row;
+    // setVisibleRate({ type, show: true, initialValues: { ...record } });
+    dispatch({
+      type: 'businessList/fetchAllOwnerRate',
+      payload: {
+        ownerType: type,
+        ownerId,
+      },
+      callback: (detail) => {
+        const initialValues = { ...row, ...detail, listPayload: payload };
+        setVisibleRate({ type, show: true, initialValues });
+      },
+    });
+  };
 
   // 新增修改打开
   const handleEditShow = (type, detail = {}) => setVisibleEdit({ show: true, type, detail });
@@ -201,6 +226,12 @@ const tableList = (props) => {
         visible={storeShow}
         onClose={() => setStoreShow(false)}
       ></StoreList>
+      {/* 费率设置 */}
+      <ReteDrawerSet
+        visible={visibleRate}
+        fetchGetRate={fetchGetRate}
+        onClose={() => setVisibleRate(false)}
+      ></ReteDrawerSet>
     </>
   );
 };
