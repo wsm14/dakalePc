@@ -46,6 +46,10 @@ export const businessLicense = [
     name: 'socialCreditCode',
   },
   {
+    label: '法人代表',
+    name: "legalPerson",
+  },
+  {
     label: '公司名称',
     name: 'businessName',
   },
