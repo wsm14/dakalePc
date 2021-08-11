@@ -5,7 +5,6 @@ import CITYJSON from '@/common/cityJson';
 const { SubMenu } = Menu;
 
 const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
-
   const routerMenu = (list) => {
     return list.map((item) => {
       return item.level === '1' ? (
@@ -29,6 +28,7 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
     <Menu
       inlineCollapsed={false}
       openKeys={[selectCode.provinceCode]}
+      selectedKeys={[selectCode.cityCode || selectCode.provinceCode]}
       defaultSelectedKeys={[selectCode.provinceCode]}
       onClick={(e) => setSelectCode({ ...selectCode, cityCode: e.key })}
       mode="inline"
