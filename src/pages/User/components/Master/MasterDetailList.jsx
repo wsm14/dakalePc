@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 import MasterOrderDetail from './MasterOrderDetail';
 
 const MasterDetail = (props) => {
@@ -37,9 +38,10 @@ const MasterDetail = (props) => {
           render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
         },
         {
-          title: '坐标',
+          title: '省市区',
           align: 'center',
-          dataIndex: 'residentAddress',
+          dataIndex: 'districtCode',
+          render: (val) => checkCityName(val) || '--',
         },
         {
           title: '注册时间',
