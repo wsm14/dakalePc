@@ -13,8 +13,8 @@ const AreaQueryRight = ({ item, onClick }) => {
         onClick={() => onClick({ name, id, level })}
         extra={
           <>
-            <Tag color="green">已签 3/10</Tag>
-            <Tag color="gold">定金 3/10</Tag>
+            <Tag color="green">已签 {level !== '3' ? '3/10' : ''}</Tag>
+            <Tag color="gold">定金 {level !== '3' ? '3/10' : ''}</Tag>
           </>
         }
       >
