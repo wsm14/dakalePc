@@ -4,6 +4,7 @@ import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 import { Card, Row, Col, Tag } from 'antd';
 import AreaQueryLeft from './components/AreaQuery/Left';
 import ManageCitySet from './components/AreaQuery/ManageCitySet';
+import ExtraButton from '@/components/ExtraButton';
 import CITYJSON from '@/common/cityJson';
 
 const AreaQuery = (props) => {
@@ -63,6 +64,20 @@ const AreaQuery = (props) => {
     </Col>
   );
 
+  const cardBtnList = [
+    {
+      text: '新增',
+      auth: 'save',
+      onClick: () => {},
+    },
+    {
+      type: 'excel',
+      text: '新增',
+      auth: 'save',
+      onClick: () => {},
+    },
+  ];
+
   return (
     <Card bordered={false} bodyStyle={{ display: 'flex' }}>
       <AreaQueryLeft
@@ -71,6 +86,16 @@ const AreaQuery = (props) => {
         setSelectCode={setSelectCode}
       ></AreaQueryLeft>
       <div style={{ flex: 1 }}>
+        <div
+          style={{
+            paddingBottom: 16,
+            marginBottom: 16,
+            borderBottom: '1px solid #f0f0f0',
+            textAlign: 'right',
+          }}
+        >
+          <ExtraButton list={cardBtnList}></ExtraButton>
+        </div>
         <Row gutter={[16, 16]}>
           {CITYJSON.filter(
             (i) => i.pid === (selectCode.cityCode ? selectCode.cityCode : selectCode.provinceCode),
