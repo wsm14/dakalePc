@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
-import { DatePicker, Select, Spin, Space, Empty } from 'antd';
+import CITYJSON from '@/common/city';
+import { DatePicker, Select, Spin, Space, Empty, Cascader } from 'antd';
 
 const disTime = moment('2020-03-01');
 
@@ -66,6 +67,22 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
           </Select.Option>
         ))}
       </Select>
+      {/* <Cascader
+        // defaultValue={bucket ? [bucket] : []}
+        changeOnSelect
+        expandTrigger="hover"
+        options={CITYJSON}
+        style={{
+          width: 256,
+        }}
+        placeholder={`请选择省市区`}
+        showSearch={{
+          filter: (inputValue, path) => {
+            return path.some((option) => option.label.indexOf(inputValue) > -1);
+          },
+        }}
+        // onChange={(val) => handleSearchData(selectedTime, val)}
+      ></Cascader> */}
     </Space>
   );
 };

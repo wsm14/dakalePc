@@ -139,7 +139,7 @@ const BusinessDetailShow = (props) => {
       name: 'type',
     },
     {
-      label: '集团名称',
+      label: '所属集团',
       name: 'groupName',
       show: visible.type === '集团',
     },

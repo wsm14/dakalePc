@@ -35,8 +35,8 @@ const GroupActivate = (props) => {
             ...bankBindingInfo,
             provCode: city[0].includes('00') ? city[0] : '00' + city[0],
             areaCode: city[1] || undefined,
-            startDate: activeBeginDate[0]?.format('YYYY-MM-DD') || undefined,
-            legalCertIdExpires: activeBeginDate[1]?.format('YYYY-MM-DD') || undefined,
+            startDate: activeBeginDate[0]?.format('YYYYMMDD') || undefined,
+            legalCertIdExpires: activeBeginDate[1]?.format('YYYYMMDD') || undefined,
           },
         },
         callback: () => {
