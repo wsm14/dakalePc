@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu } from 'antd';
-import CITYJSON from '@/common/city';
+import CITYJSON from '@/common/cityJson';
+
+const { SubMenu } = Menu;
 
 const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
+
   const routerMenu = (list) => {
     return list.map((item) => {
-      return (
-        <Menu.Item key={item.value} data-name={item.label}>
-          {item.label}
+      return item.level === '1' ? (
+        <SubMenu
+          className={item.id === selectCode.provinceCode ? 'ant-menu-item-selected' : ''}
+          onTitleClick={({ key }) => setSelectCode({ provinceCode: key })}
+          key={item.id}
+          title={item.name}
+        >
+          {routerMenu(CITYJSON.filter((i) => i.pid === item.id))}
+        </SubMenu>
+      ) : (
+        <Menu.Item key={item.id} data-name={item.name}>
+          {item.name}
         </Menu.Item>
       );
     });
@@ -16,16 +28,9 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
   return (
     <Menu
       inlineCollapsed={false}
-      selectedKeys={[selectCode.provinceCode]}
+      openKeys={[selectCode.provinceCode]}
       defaultSelectedKeys={[selectCode.provinceCode]}
-      onClick={(e) => {
-        const name = e.item.props['data-name'];
-        setSelectCode({
-          provinceName: name,
-          provinceCode: e.key,
-        });
-        cRef.current.fetchGetData({ provinceCode: e.key });
-      }}
+      onClick={(e) => setSelectCode({ ...selectCode, cityCode: e.key })}
       mode="inline"
       style={{
         width: 200,
@@ -35,7 +40,7 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
         maxHeight: 770,
       }}
     >
-      {routerMenu(CITYJSON)}
+      {routerMenu(CITYJSON.filter((i) => i.level === '1'))}
     </Menu>
   );
 };

@@ -1,98 +1,67 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Card } from 'antd';
-import { CITY_STATUS } from '@/common/constant';
-import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
+import { BankOutlined, TeamOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Tag } from 'antd';
 import AreaQueryLeft from './components/AreaQuery/Left';
 import ManageCitySet from './components/AreaQuery/ManageCitySet';
+import CITYJSON from '@/common/cityJson';
 
 const AreaQuery = (props) => {
   const { loading, manageCity, dispatch } = props;
 
   const childRef = useRef();
-  const [selectCode, setSelectCode] = useState({
-    provinceCode: '33',
-    provinceName: '浙江省',
-  });
-
+  const [selectCode, setSelectCode] = useState({ provinceCode: '33' });
   const [visibleSet, setVisibleSet] = useState(false);
 
-  // table 表头
-  const getColumns = [
-    {
-      title: '市',
-      dataIndex: 'cityName',
-    },
-    {
-      title: '背景图',
-      dataIndex: 'backgroundImg',
-      render: (val) => <PopImgShow url={val} />,
-    },
-    {
-      title: '城市文案',
-      dataIndex: 'cityDesc',
-    },
-    {
-      title: '状态',
-      type: 'switch',
-      dataIndex: 'status',
-      render: (val, row) => {
-        const { locationCityIdString: id } = row;
-        return {
-          auth: 'status',
-          checkedChildren: '已开通',
-          unCheckedChildren: '未开通',
-          show: !!val,
-          noAuth: CITY_STATUS[val],
-          checked: val === '1',
-          onClick: () => fetchCityManageStatus({ id, status: 1 ^ Number(val) }),
-        };
-      },
-    },
-    {
-      type: 'handle',
-      dataIndex: 'locationCityIdString',
-      render: (val, row) => [
-        {
-          type: 'edit',
-          visible: !!row.provinceCode,
-          click: () => handleManageCitySet('edit', { ...row, id: val }),
-        },
-        {
-          type: 'del',
-          visible: !!row.provinceCode,
-          click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
-        },
-      ],
-    },
-  ];
-
-  // 城市新增修改
-  const handleManageCitySet = (type, initialValues) => {
-    setVisibleSet({
-      show: true,
-      type,
-      initialValues,
-    });
-  };
-
-  // 城市状态修改
-  const fetchCityManageStatus = (payload) => {
-    dispatch({
-      type: 'manageCity/fetchCityManageStatus',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  const extraBtn = [
-    {
-      auth: 'save',
-      disabled: !selectCode.provinceCode,
-      onClick: () => handleManageCitySet('add', selectCode),
-    },
-  ];
+  const block = ({ name }) => (
+    <Col span={6}>
+      <Card
+        title={name}
+        headStyle={{ padding: '0 16px' }}
+        bodyStyle={{ padding: 0 }}
+        extra={
+          <>
+            <Tag color="green">已签 3/10</Tag>
+            <Tag color="gold">定金 3/10</Tag>
+          </>
+        }
+      >
+        <div
+          style={{
+            textAlign: 'right',
+            fontSize: 16,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            padding: 16,
+          }}
+        >
+          <div>
+            <div>
+              <BankOutlined style={{ fontSize: 20 }} />
+            </div>
+            <div>
+              <TeamOutlined style={{ fontSize: 20 }} />
+            </div>
+          </div>
+          <div style={{ marginLeft: 10 }}>
+            <div>200000</div>
+            <div>200</div>
+          </div>
+        </div>
+        <div
+          style={{
+            textAlign: 'center',
+            fontSize: 16,
+            backgroundColor: '#fffbe6',
+            color: '#d48806',
+            padding: 16,
+          }}
+        >
+          80万
+        </div>
+      </Card>
+    </Col>
+  );
 
   return (
     <Card bordered={false} bodyStyle={{ display: 'flex' }}>
@@ -102,18 +71,11 @@ const AreaQuery = (props) => {
         setSelectCode={setSelectCode}
       ></AreaQueryLeft>
       <div style={{ flex: 1 }}>
-        <TableDataBlock
-          noCard={false}
-          btnExtra={extraBtn}
-          cRef={childRef}
-          loading={loading.models.manageCity}
-          columns={getColumns}
-          rowKey={(record) => `${record.locationCityIdString}`}
-          pagination={false}
-          params={{ provinceCode: selectCode.provinceCode }}
-          dispatchType="manageCity/fetchGetList"
-          {...manageCity}
-        ></TableDataBlock>
+        <Row gutter={[16, 16]}>
+          {CITYJSON.filter(
+            (i) => i.pid === (selectCode.cityCode ? selectCode.cityCode : selectCode.provinceCode),
+          ).map((i) => block(i))}
+        </Row>
       </div>
       <ManageCitySet
         visible={visibleSet}
