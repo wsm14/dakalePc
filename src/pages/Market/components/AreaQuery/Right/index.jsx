@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Card, Tag } from 'antd';
 import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 
-const AreaQueryRight = ({ item }) => {
+const AreaQueryRight = ({ item, onClick }) => {
   const { name } = item;
   return (
     <Col span={6}>
@@ -10,6 +10,7 @@ const AreaQueryRight = ({ item }) => {
         title={name}
         headStyle={{ padding: '0 16px' }}
         bodyStyle={{ padding: 0 }}
+        onClick={() => onClick({ name })}
         extra={
           <>
             <Tag color="green">已签 3/10</Tag>

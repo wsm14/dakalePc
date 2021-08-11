@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload } from 'antd';
+import { Upload, Button } from 'antd';
 
 // 文件默认值
 const imgold = (url, uid) => ({
@@ -8,6 +8,18 @@ const imgold = (url, uid) => ({
   status: 'done',
   url,
 });
+
+// 逐级获取value
+const getArrKeyVal = (key, value) => {
+  const _len = key.length;
+  let newVal = value;
+  for (let _key = 0; _key < _len; _key++) {
+    // 当数组key 获取值时某一层不存在时直接返回null
+    const valGet = newVal ? newVal[key[_key]] : null;
+    newVal = valGet ? valGet : undefined;
+  }
+  return newVal;
+};
 
 const UploadBlock = (props) => {
   const { form, initialvalues: initialValues, name = '', maxFile, onChange } = props;
@@ -18,11 +30,9 @@ const UploadBlock = (props) => {
     if (initialValues && Object.keys(initialValues).length) {
       // 键名是数组的情况
       if (Array.isArray(name)) {
-        if (!initialValues[name[0]]) {
-          return [];
-        }
-        const urlfile = initialValues[name[0]][name[1]];
-        return urlfile ? [imgold(urlfile, urlfile)] : [];
+        const urlfile = getArrKeyVal(name, initialValues);
+
+        return urlfile ? (urlfile.fileList ? urlfile.fileList : [imgold(urlfile, urlfile)]) : [];
       }
       // 键名是字符串的情况
       const fileArrar = initialValues[fileKeyName];
@@ -57,7 +67,7 @@ const UploadBlock = (props) => {
         } else {
           if (!newFileList.length) form.setFieldsValue({ [fileKeyName]: undefined });
           else form.setFieldsValue({ [fileKeyName]: value });
-          setFileLists({ ...fileLists, [fileKeyName]: newFileList });
+          setFileLists(newFileList);
         }
       }}
     >
