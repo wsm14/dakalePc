@@ -19,7 +19,7 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
     setBrandSet({
       type: 'add',
       show: true,
-      initialValues: { categoryId: initialValues.topCategoryId },
+      initialValues: { categoryId: form.getFieldValue('topCategoryId') },
     });
 
   // 获取品牌信息
