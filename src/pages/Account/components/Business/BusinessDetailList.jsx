@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import { COLLECT_STATUS } from '@/common/constant';
@@ -7,6 +7,7 @@ import BusinessOrderDetail from '../CheckOrderDetail';
 
 const BusinessDetailList = (props) => {
   const { detailList, loading, visible, setVisible } = props;
+  const childRef = useRef();
 
   const { type = 'peas', record = '' } = visible;
   const [tabKey, setTabKey] = useState('0');
@@ -21,7 +22,11 @@ const BusinessDetailList = (props) => {
       tab: '营销卡豆',
     },
   ];
-
+  useEffect(() => {
+    if (type === 'peas') {
+      childRef.current?.fetchGetData();
+    }
+  }, [tabKey]);
   // table
   const propItem = {
     peas: {
@@ -171,10 +176,12 @@ const BusinessDetailList = (props) => {
         }
         // noCard={false}
         loading={loading}
+        cRef={childRef}
         columns={propItem.getColumns}
         rowKey={(row, i) => `${row[propItem.rowKey] + i}`}
         params={{
           type,
+          tabKey,
           ...{
             peas: { merchantId: record.userMerchantIdString },
             collect: { merchantId: record.userMerchantIdString },

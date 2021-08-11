@@ -4,6 +4,7 @@ import {
   fetchBusinessPeasDetail,
   fetchBusinessCollectDetail,
   fetchBusinessRechargeDetail,
+  fetchBusinessPlatformBeanDetail,
 } from '@/services/AccountServices';
 
 const data1 = [
@@ -55,13 +56,14 @@ export default {
       });
     },
     *fetchDetailList({ payload }, { call, put }) {
-      const { type } = payload;
+      const { type, tabKey } = payload;
       const inter = {
-        peas: fetchBusinessPeasDetail, // 卡豆明细
+        peas: tabKey == '1' ? fetchBusinessPlatformBeanDetail : fetchBusinessPeasDetail, // 卡豆明细
         collect: fetchBusinessCollectDetail, // 提现记录
         recharge: fetchBusinessRechargeDetail, // 充值记录
       }[type];
       delete payload.type;
+      delete payload.tabKey;
       const response = yield call(inter, payload);
       if (!response) return;
       const { content } = response;
@@ -88,7 +90,7 @@ export default {
       const merchantTotalIncome = indata.length ? totalReduce(indata, 'merchantTotalIncome') : 0;
       // 商家累计消费
       const merchantTotalOut = outdata.length ? totalReduce(outdata, 'merchantTotalOut') : 0;
-      
+
       yield put({
         type: 'save',
         payload: {

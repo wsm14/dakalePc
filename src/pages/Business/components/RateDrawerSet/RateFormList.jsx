@@ -31,7 +31,7 @@ const RateFormList = (props) => {
   const proArr = promotionValue.promotion ? promotionValue.promotion : [];
 
   const checkArr = { scan: scanArr, verification: verArr, promotion: proArr }[rateType];
-  const checkEditType = (index) => (checkArr[index]?.rate ? !isEdit[index] : false);
+  const checkEditType = (index) => (checkArr[index]?.time[0] ? !isEdit[index] : false);
 
   const getDispatch = (url, payload, index, type) => {
     dispatch({
@@ -39,7 +39,7 @@ const RateFormList = (props) => {
       payload: payload,
       callback: () => {
         fetchGetRate(listPayload); // 获取详情
-        setIsEdit({ ...isEdit, [index]: type === 'edit' });
+        setIsEdit({ ...isEdit, [index]: false });
       },
     });
   };
@@ -48,8 +48,8 @@ const RateFormList = (props) => {
   const handleSave = (index, type) => {
     if (type === 'edit') {
       setIsEdit({ ...isEdit, [index]: type === 'edit' });
-      console.log({ ...isEdit });
     }
+
     form.validateFields().then((values) => {
       const { scan, verification, promotion } = values;
 
@@ -159,8 +159,8 @@ const RateFormList = (props) => {
 
               {/* 过期无操作按钮 */}
               {!checkArr[index]?.isExpired && (
-                <a onClick={() => handleSave(name, checkArr[index]?.rate ? 'edit' : 'save')}>
-                  {checkEditType(index) && checkArr[index]?.rate ? '编辑' : '保存'}
+                <a onClick={() => handleSave(name, checkArr[index]?.time[0]? 'edit' : 'save')}>
+                  {checkEditType(index) && checkArr[index]?.time[0] != '' ? '编辑' : '保存'}
                 </a>
               )}
               {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
