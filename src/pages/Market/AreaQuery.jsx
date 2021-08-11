@@ -1,219 +1,130 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tooltip, Form } from 'antd';
-import {
-  BANNER_LOOK_AREA,
-  BANNER_PORT_TYPE,
-  BANNER_PORT_LINK,
-  BANNER_JUMP_TYPE,
-  BANNER_AREA_TYPE,
-  BANNER_SHOW_STATUS,
-} from '@/common/constant';
-import ExtraButton from '@/components/ExtraButton';
+import { Card } from 'antd';
+import { CITY_STATUS } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import SysAppSetForm from './components/App/SysAppSet';
+import AreaQueryLeft from './components/AreaQuery/Left';
+import ManageCitySet from './components/AreaQuery/ManageCitySet';
 
 const AreaQuery = (props) => {
-  const { sysAppList, loading, dispatch } = props;
+  const { loading, manageCity, dispatch } = props;
 
   const childRef = useRef();
-  const [form] = Form.useForm();
-  const [visibleSet, setVisibleSet] = useState({ show: false, info: '' });
-  const [tabKey, setTabKey] = useState('user');
+  const [selectCode, setSelectCode] = useState({
+    provinceCode: '33',
+    provinceName: '浙江省',
+  });
 
-  useEffect(() => {
-    fetchBannerRatio();
-  }, []);
-
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '位置',
-      name: 'bannerType',
-      type: 'select',
-      select: BANNER_PORT_LINK[tabKey],
-    },
-    {
-      label: '状态',
-      name: 'bannerStatus',
-      type: 'select',
-      select: BANNER_SHOW_STATUS,
-    },
-    {
-      label: '投放区域',
-      name: 'shoswStatus',
-      type: 'select',
-      select: BANNER_AREA_TYPE,
-    },
-  ];
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // table 表头
   const getColumns = [
     {
-      title: '占位图',
-      fixed: 'left',
-      dataIndex: 'coverImg',
+      title: '市',
+      dataIndex: 'cityName',
+    },
+    {
+      title: '背景图',
+      dataIndex: 'backgroundImg',
       render: (val) => <PopImgShow url={val} />,
     },
     {
-      title: '图片说明',
-      align: 'center',
-      dataIndex: 'description',
-      ellipsis: true,
-    },
-    {
-      title: '权重',
-      align: 'right',
-      dataIndex: 'weight',
-    },
-    {
-      title: '位置',
-      align: 'center',
-      dataIndex: 'bannerType',
-      render: (val) => BANNER_PORT_LINK[tabKey][val],
-    },
-    {
-      title: '可见范围',
-      dataIndex: 'visibleRange',
-      render: (val) => BANNER_LOOK_AREA[val],
-    },
-    {
-      title: '投放区域',
-      align: 'center',
-      dataIndex: 'deliveryAreaType',
-      render: (val, row) =>
-        ({
-          all: BANNER_AREA_TYPE[val],
-          detail: <Tooltip title={row.deliveryAreaNameStr}>按区县({row.deliveryAreaNum})</Tooltip>,
-        }[val]),
-    },
-    {
-      title: '跳转类型',
-      align: 'center',
-      dataIndex: 'jumpUrlType',
-      render: (val) => BANNER_JUMP_TYPE[val],
-    },
-    {
-      title: '跳转内容',
-      align: 'center',
-      dataIndex: 'jumpUrl',
-      ellipsis: true,
-      render: (val, row) => {
-        const { jumpUrlType, nativeJumpName } = row;
-        return {
-          H5: val,
-          inside: nativeJumpName,
-          '': '--',
-        }[jumpUrlType];
-      },
-    },
-    {
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createTime',
+      title: '城市文案',
+      dataIndex: 'cityDesc',
     },
     {
       title: '状态',
-      align: 'center',
-      dataIndex: 'bannerStatus',
-      render: (val) => BANNER_SHOW_STATUS[val],
+      type: 'switch',
+      dataIndex: 'status',
+      render: (val, row) => {
+        const { locationCityIdString: id } = row;
+        return {
+          auth: 'status',
+          checkedChildren: '已开通',
+          unCheckedChildren: '未开通',
+          show: !!val,
+          noAuth: CITY_STATUS[val],
+          checked: val === '1',
+          onClick: () => fetchCityManageStatus({ id, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',
-      dataIndex: 'bannerIdString',
-      render: (val, record) => [
-        {
-          type: 'down',
-          visible: record.bannerStatus === '1',
-          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 0 }),
-        },
-        {
-          type: 'up',
-          visible: record.bannerStatus === '0',
-          click: () => fetchBannerStatus({ bannerId: val, bannerStatus: 1 }),
-        },
+      dataIndex: 'locationCityIdString',
+      render: (val, row) => [
         {
           type: 'edit',
-          click: () => fetchBannerDetail({ bannerId: val }),
+          visible: !!row.provinceCode,
+          click: () => handleManageCitySet('edit', { ...row, id: val }),
         },
         {
           type: 'del',
-          visible: record.bannerStatus === '0',
-          click: () => fetchBannerStatus({ bannerId: val, deleteFlag: 0 }),
+          visible: !!row.provinceCode,
+          click: () => fetchCityManageStatus({ id: val, deleteFlag: 0 }),
         },
       ],
     },
   ];
 
-  // 获取banner分辨率配置
-  const fetchBannerRatio = () => {
-    dispatch({
-      type: 'sysAppList/fetchBannerRatio',
+  // 城市新增修改
+  const handleManageCitySet = (type, initialValues) => {
+    setVisibleSet({
+      show: true,
+      type,
+      initialValues,
     });
   };
 
-  // 获取详情
-  const fetchBannerDetail = (payload) => {
+  // 城市状态修改
+  const fetchCityManageStatus = (payload) => {
     dispatch({
-      type: 'sysAppList/fetchBannerDetail',
-      payload,
-      callback: (detail) => setVisibleSet({ show: true, type: 'edit', detail }),
-    });
-  };
-
-  // 占位图下架
-  const fetchBannerStatus = (payload) => {
-    dispatch({
-      type: 'sysAppList/fetchBannerStatus',
+      type: 'manageCity/fetchCityManageStatus',
       payload,
       callback: childRef.current.fetchGetData,
     });
   };
 
-  const btnList = [
+  const extraBtn = [
     {
-      onClick: () =>
-        setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } }),
+      auth: 'save',
+      disabled: !selectCode.provinceCode,
+      onClick: () => handleManageCitySet('add', selectCode),
     },
   ];
 
   return (
-    <>
-      <TableDataBlock
+    <Card bordered={false} bodyStyle={{ display: 'flex' }}>
+      <AreaQueryLeft
         cRef={childRef}
-        searchForm={form}
-        cardProps={{
-          tabList: Object.keys(BANNER_PORT_TYPE).map((key) => ({
-            key,
-            tab: BANNER_PORT_TYPE[key],
-          })),
-          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
-          onTabChange: (userType) => {
-            setTabKey(userType);
-            form.resetFields();
-            childRef.current.fetchGetData({ userType, page: 1 });
-          },
-        }}
-        params={{ userType: tabKey }}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.bannerIdString}`}
-        dispatchType="sysAppList/fetchGetList"
-        {...sysAppList}
-      ></TableDataBlock>
-      <SysAppSetForm
-        tabKey={tabKey}
-        cRef={childRef}
+        selectCode={selectCode}
+        setSelectCode={setSelectCode}
+      ></AreaQueryLeft>
+      <div style={{ flex: 1 }}>
+        <TableDataBlock
+          noCard={false}
+          btnExtra={extraBtn}
+          cRef={childRef}
+          loading={loading.models.manageCity}
+          columns={getColumns}
+          rowKey={(record) => `${record.locationCityIdString}`}
+          pagination={false}
+          params={{ provinceCode: selectCode.provinceCode }}
+          dispatchType="manageCity/fetchGetList"
+          {...manageCity}
+        ></TableDataBlock>
+      </div>
+      <ManageCitySet
         visible={visibleSet}
-        onClose={() => setVisibleSet({ show: false })}
-      ></SysAppSetForm>
-    </>
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></ManageCitySet>
+    </Card>
   );
 };
 
-export default connect(({ sysAppList, loading }) => ({
-  sysAppList,
-  loading: loading.models.sysAppList,
+export default connect(({ manageCity, loading }) => ({
+  manageCity,
+  loading,
 }))(AreaQuery);
