@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Card, Row } from 'antd';
 import AreaQueryLeft from './components/AreaQuery/Left';
 import AreaQueryRight from './components/AreaQuery/Right';
-import ManageCitySet from './components/AreaQuery/ManageCitySet';
+import AreaSet from './components/AreaQuery/AreaSet';
 import ExtraButton from '@/components/ExtraButton';
 import CITYJSON from '@/common/cityJson';
 
@@ -18,7 +18,7 @@ const AreaQuery = (props) => {
     {
       text: '配置',
       auth: 'save',
-      onClick: () => {},
+      onClick: () => setVisibleSet(true),
     },
     {
       type: 'excel',
@@ -53,11 +53,11 @@ const AreaQuery = (props) => {
           ))}
         </Row>
       </div>
-      <ManageCitySet
-        visible={visibleSet}
+      <AreaSet
         childRef={childRef}
+        visible={visibleSet}
         onClose={() => setVisibleSet(false)}
-      ></ManageCitySet>
+      ></AreaSet>
     </Card>
   );
 };
