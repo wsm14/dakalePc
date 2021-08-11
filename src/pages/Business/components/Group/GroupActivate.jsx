@@ -54,7 +54,17 @@ const GroupActivate = (props) => {
       name: 'bankAccountType',
       select: BUS_BANKACCOUNT_TYPE,
       disabled: bankStatus === '2',
-      onChange: (e) => setBankAccount(e.target.value),
+      onChange: (e) => {
+        form.setFieldsValue({
+          bankBindingInfo: {
+            cardName: '',
+            bankBranchName: '',
+            cardNo: '',
+          },
+          city: undefined,
+        });
+        setBankAccount(e.target.value);
+      },
     },
   ];
 
@@ -93,5 +103,10 @@ const GroupActivate = (props) => {
 
 export default connect(({ groupSet, loading }) => ({
   list: groupSet.list.list,
-  loading: loading.effects['groupSet/fetchMerchantBank'],
+  loading:
+    loading.effects['groupSet/fetchMerchantBank'] ||
+    loading.effects['groupSet/fetchGetOcrBankLicense'] ||
+    loading.effects['groupSet/fetchGetOcrIdBankCard'] ||
+    loading.effects['groupSet/fetchGetOcrIdCardFront'] ||
+    loading.effects['groupSet/fetchGetOcrIdCardBack'],
 }))(GroupActivate);

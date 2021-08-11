@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
 import { PHONE_PATTERN } from '@/common/regExp';
 import FormCondition from '@/components/FormCondition';
