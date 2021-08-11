@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Button } from 'antd';
 
 // 文件默认值
-const imgold = (url, uid) => ({
+const imgUrl = (url, uid) => ({
   uid: `-${uid}`,
   name: url,
   status: 'done',
@@ -21,6 +21,17 @@ const getArrKeyVal = (key, value) => {
   return newVal;
 };
 
+// 数据数组还原
+const uploadValues = (fileArr) => {
+  return !Array.isArray(fileArr)
+    ? fileArr && fileArr.length > 0
+      ? fileArr.indexOf(',') > -1
+        ? fileArr.split(',').map((v, i) => imgUrl(v, i))
+        : [imgUrl(fileArr, fileArr)]
+      : []
+    : fileArr.map((v, i) => imgUrl(v, i));
+};
+
 const UploadBlock = (props) => {
   const { form, initialvalues: initialValues, name = '', maxFile, onChange } = props;
   const fileKeyName = Array.isArray(name) ? name[1] : name;
@@ -31,19 +42,12 @@ const UploadBlock = (props) => {
       // 键名是数组的情况
       if (Array.isArray(name)) {
         const urlfile = getArrKeyVal(name, initialValues);
-
-        return urlfile ? (urlfile.fileList ? urlfile.fileList : [imgold(urlfile, urlfile)]) : [];
+        return urlfile ? uploadValues(urlFile) : [];
       }
       // 键名是字符串的情况
       const fileArrar = initialValues[fileKeyName];
       if (fileArrar && !!fileArrar.fileList) return fileArrar.fileList;
-      return !Array.isArray(fileArrar)
-        ? fileArrar && fileArrar.length > 0
-          ? fileArrar.indexOf(',') > -1
-            ? fileArrar.split(',').map((v, i) => imgold(v, i))
-            : [imgold(fileArrar, fileArrar)]
-          : []
-        : fileArrar.map((v, i) => imgold(v, i));
+      return uploadValues(fileArrar);
     } else {
       return [];
     }

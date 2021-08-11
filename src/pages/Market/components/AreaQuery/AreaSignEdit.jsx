@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Tabs } from 'antd';
 import CITYJSON from '@/common/city';
@@ -13,6 +13,8 @@ const AreaSignEdit = (props) => {
   const { show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
+  const [tabKey, setTabKey] = useState(0);
+
   // 新增
   const fetchCityManageSet = () => {
     form.validateFields().then((values) => {
@@ -34,9 +36,12 @@ const AreaSignEdit = (props) => {
     });
   };
 
+  const tabItem = ['定金', '签约'];
+  const tabItemFom = ['付定', '签约'];
+
   const formItems = [
     {
-      title: '填写付定信息',
+      title: `填写${tabItemFom[tabKey]}信息`,
       label: '客户姓名',
       name: 'backsndImg',
     },
@@ -49,12 +54,26 @@ const AreaSignEdit = (props) => {
       name: 'ba1n11dImg',
     },
     {
-      label: '定金金额',
+      label: `${tabItem[tabKey]}金额`,
       name: 'ba1n122g',
+      type: 'number',
     },
     {
-      label: '付定日期',
+      label: `${tabItemFom[tabKey]}日期`,
       name: 'ba1nsssg',
+      type: 'dataPicker',
+    },
+    {
+      label: '签约日期',
+      name: 'ba1nssssg',
+      type: 'dataPicker',
+      visible: tabKey === '1',
+    },
+    {
+      label: '合同期限',
+      name: 'ba1nssdsg',
+      type: 'rangePicker',
+      visible: tabKey === '1',
     },
     {
       label: '上传凭证',
@@ -67,6 +86,7 @@ const AreaSignEdit = (props) => {
       type: 'otherUpload',
       name: 'backgrossundImg',
       maxFile: 1,
+      rules: [{ required: false }],
     },
   ];
 
@@ -83,11 +103,11 @@ const AreaSignEdit = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <Tabs defaultActiveKey="1" type="card" onChange={() => {}}>
-        <TabPane tab="定金" key="1">
+      <Tabs defaultActiveKey="1" type="card" onChange={setTabKey}>
+        <TabPane tab="定金" key="0">
           <FormCondition form={form} formItems={formItems}></FormCondition>
         </TabPane>
-        <TabPane tab="签约" key="2">
+        <TabPane tab="签约" key="1">
           <FormCondition form={form} formItems={formItems}></FormCondition>
         </TabPane>
       </Tabs>
