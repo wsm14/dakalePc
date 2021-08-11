@@ -53,7 +53,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          masterList: { list: content.voList, total: content.voList.length },
+          masterList: { list: content.voList, total: content.voList?.length },
         },
       });
     },
