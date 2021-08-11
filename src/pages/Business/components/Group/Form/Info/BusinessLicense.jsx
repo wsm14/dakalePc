@@ -51,13 +51,14 @@ const BusinessLicense = ({ form, dispatch, loading, initialValues }) => {
         if (imgUrl) {
           closeBusinessInfo();
           fetchGetOcrBusinessLicense({ imageUrl: imgUrl[0] }, (res) => {
-            const { address, business, establishDate, name, regNum, validPeriod } = res;
+            const { address, business, establishDate, name, regNum, validPeriod, person } = res;
             form.setFieldsValue({
               businessLicenseObject: {
                 businessLicenseImg: imgUrl[0],
                 socialCreditCode: regNum || '',
                 businessName: name || '',
                 signInAddress: address || '',
+                legalPerson: person || '',
                 businessScope: business || '',
               },
               activeValidity: [
@@ -72,6 +73,11 @@ const BusinessLicense = ({ form, dispatch, loading, initialValues }) => {
     {
       label: '社会信用代码',
       name: ['businessLicenseObject', 'socialCreditCode'],
+      disabled,
+    },
+    {
+      label: '法人代表',
+      name: ['businessLicenseObject', 'legalPerson'],
       disabled,
     },
     {

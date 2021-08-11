@@ -48,7 +48,7 @@ const BrandUpdate = (props) => {
       extra: '限1张，建议尺寸400*400',
     },
     {
-      label: '品牌名',
+      label: '品牌名称',
       name: 'brandName',
       maxLength: 20,
     },
