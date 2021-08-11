@@ -136,6 +136,7 @@ const tableList = (props) => {
           type: 'rate',
           title: '费率',
           click: () => fetchGetRate({ type: 'group', row }),
+          visible: record.bankStatus === '3',
         },
       ],
     },

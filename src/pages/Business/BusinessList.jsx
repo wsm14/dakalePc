@@ -57,7 +57,7 @@ const BusinessListComponent = (props) => {
       select: BUSINESS_ACCOUNT_STATUS,
     },
     {
-      label: '集团名称',
+      label: '所属集团',
       name: 'groupName',
     },
     {
@@ -222,6 +222,7 @@ const BusinessListComponent = (props) => {
           type: 'rate',
           title: '费率',
           click: () => fetchGetRate({ type: 'merchant', record }),
+          visible: record.bankStatus === '3',
         },
       ],
     },
@@ -239,7 +240,7 @@ const BusinessListComponent = (props) => {
         ownerId,
       },
       callback: (detail) => {
-        const initialValues = { ...record, ...detail,listPayload:payload };
+        const initialValues = { ...record, ...detail, listPayload: payload };
         setVisibleRate({ type, show: true, initialValues });
       },
     });
