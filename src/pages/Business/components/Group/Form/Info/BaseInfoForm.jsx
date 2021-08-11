@@ -213,6 +213,7 @@ const BaseInfoForm = (props) => {
       placeholder: '请输入推广费（%）',
       name: 'promotionFee',
       rules: [{ required: true, message: '请输入推广费' }],
+      disabled: true,
     },
   ];
 
