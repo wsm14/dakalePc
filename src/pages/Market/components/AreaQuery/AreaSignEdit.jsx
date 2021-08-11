@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Tabs } from 'antd';
-import CITYJSON from '@/common/city';
+import { PHONE_PATTERN } from '@/common/regExp';
+import CITYJSON from '@/common/cityJson';
 import aliOssUpload from '@/utils/aliOssUpload';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -11,9 +12,12 @@ const { TabPane } = Tabs;
 const AreaSignEdit = (props) => {
   const { dispatch, childRef, visible, onClose, loading } = props;
   const { show = false, detail = {} } = visible;
+  const { id, level } = detail;
+
+  const checkIdType = { 2: 'pid', 3: 'id' }[level];
 
   const [form] = Form.useForm();
-  const [tabKey, setTabKey] = useState(0);
+  const [tabKey, setTabKey] = useState('0');
 
   // 新增
   const fetchCityManageSet = () => {
@@ -44,14 +48,23 @@ const AreaSignEdit = (props) => {
       title: `填写${tabItemFom[tabKey]}信息`,
       label: '客户姓名',
       name: 'backsndImg',
+      disabled: detail.Keyname && tabKey === '1',
     },
     {
       label: '客户手机号',
       name: 'ba1ndImg',
+      maxLength: 11,
+      addRules: [{ pattern: PHONE_PATTERN, message: '手机号格式不正确' }],
+      disabled: detail.Keyname && tabKey === '1',
     },
     {
       label: '签约区/县',
       name: 'ba1n11dImg',
+      type: 'checkbox',
+      select: level ? CITYJSON.filter((i) => i[checkIdType] === id) : [],
+      fieldNames: { label: 'name', value: 'id' },
+      disabled: detail.Keyname && tabKey === '1',
+      visible: level !== '3',
     },
     {
       label: `${tabItem[tabKey]}金额`,
@@ -94,6 +107,9 @@ const AreaSignEdit = (props) => {
     title: detail.name,
     visible: show,
     onClose,
+    afterCallBack: () => {
+      setTabKey('0');
+    },
     footer: (
       <Button type="primary" onClick={() => fetchCityManageSet()} loading={loading}>
         确定
@@ -103,7 +119,7 @@ const AreaSignEdit = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <Tabs defaultActiveKey="1" type="card" onChange={setTabKey}>
+      <Tabs type="card" onChange={setTabKey}>
         <TabPane tab="定金" key="0">
           <FormCondition form={form} formItems={formItems}></FormCondition>
         </TabPane>

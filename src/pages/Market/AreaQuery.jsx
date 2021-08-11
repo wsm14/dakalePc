@@ -66,7 +66,11 @@ const AreaQuery = (props) => {
         onClose={() => setVisibleSet(false)}
       ></AreaSet>
       {/* 签约/定金 设置 */}
-      <AreaSignEdit visible={visibleSign} onClose={() => setVisibleSign(false)}></AreaSignEdit>
+      <AreaSignEdit
+        selectCode={selectCode}
+        visible={visibleSign}
+        onClose={() => setVisibleSign(false)}
+      ></AreaSignEdit>
     </Card>
   );
 };

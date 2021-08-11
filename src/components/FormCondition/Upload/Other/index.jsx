@@ -33,7 +33,7 @@ const uploadValues = (fileArr) => {
 };
 
 const UploadBlock = (props) => {
-  const { form, initialvalues: initialValues, name = '', maxFile, onChange } = props;
+  const { form, initialvalues: initialValues, name = '', maxFile, onChange, disabled } = props;
   const fileKeyName = Array.isArray(name) ? name[1] : name;
 
   // 文件控制列表
@@ -60,6 +60,7 @@ const UploadBlock = (props) => {
       maxCount={maxFile || 1}
       fileList={fileLists}
       beforeUpload={() => false}
+      showUploadList={{ showDownloadIcon: disabled, showRemoveIcon: !disabled }}
       onChange={(value) => {
         const { fileList } = value;
         const newFileList = fileList.filter((file) => file.dklFileStatus !== 'out');

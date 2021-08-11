@@ -3,14 +3,14 @@ import { Col, Card, Tag } from 'antd';
 import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 
 const AreaQueryRight = ({ item, onClick }) => {
-  const { name } = item;
+  const { name, id, level } = item;
   return (
     <Col span={6}>
       <Card
         title={name}
         headStyle={{ padding: '0 16px' }}
         bodyStyle={{ padding: 0 }}
-        onClick={() => onClick({ name })}
+        onClick={() => onClick({ name, id, level })}
         extra={
           <>
             <Tag color="green">已签 3/10</Tag>
