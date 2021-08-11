@@ -1,48 +1,58 @@
-import React, { useState } from 'react';
-import { Menu } from 'antd';
-import CITYJSON from '@/common/cityJson';
+import React from 'react';
+import { Col, Card, Tag } from 'antd';
+import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 
-const { SubMenu } = Menu;
-
-const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
-  const routerMenu = (list) => {
-    return list.map((item) => {
-      return item.level === '1' ? (
-        <SubMenu
-          className={item.id === selectCode.provinceCode ? 'ant-menu-item-selected' : ''}
-          onTitleClick={({ key }) => setSelectCode({ provinceCode: key })}
-          key={item.id}
-          title={item.name}
-        >
-          {routerMenu(CITYJSON.filter((i) => i.pid === item.id))}
-        </SubMenu>
-      ) : (
-        <Menu.Item key={item.id} data-name={item.name}>
-          {item.name}
-        </Menu.Item>
-      );
-    });
-  };
-
+const AreaQueryRight = ({ item }) => {
+  const { name } = item;
   return (
-    <Menu
-      inlineCollapsed={false}
-      openKeys={[selectCode.provinceCode]}
-      selectedKeys={[selectCode.cityCode || selectCode.provinceCode]}
-      defaultSelectedKeys={[selectCode.provinceCode]}
-      onClick={(e) => setSelectCode({ ...selectCode, cityCode: e.key })}
-      mode="inline"
-      style={{
-        width: 200,
-        marginRight: 24,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        maxHeight: 770,
-      }}
-    >
-      {routerMenu(CITYJSON.filter((i) => i.level === '1'))}
-    </Menu>
+    <Col span={6}>
+      <Card
+        title={name}
+        headStyle={{ padding: '0 16px' }}
+        bodyStyle={{ padding: 0 }}
+        extra={
+          <>
+            <Tag color="green">已签 3/10</Tag>
+            <Tag color="gold">定金 3/10</Tag>
+          </>
+        }
+      >
+        <div
+          style={{
+            textAlign: 'right',
+            fontSize: 16,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            padding: 16,
+          }}
+        >
+          <div>
+            <div>
+              <BankOutlined style={{ fontSize: 20 }} />
+            </div>
+            <div>
+              <TeamOutlined style={{ fontSize: 20 }} />
+            </div>
+          </div>
+          <div style={{ marginLeft: 10 }}>
+            <div>200000</div>
+            <div>200</div>
+          </div>
+        </div>
+        <div
+          style={{
+            textAlign: 'center',
+            fontSize: 16,
+            backgroundColor: '#fffbe6',
+            color: '#d48806',
+            padding: 16,
+          }}
+        >
+          80万
+        </div>
+      </Card>
+    </Col>
   );
 };
 
-export default TradeAreaLeft;
+export default AreaQueryRight;
