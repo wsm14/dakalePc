@@ -1,9 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import Search from './Search';
-import { checkCityName } from '@/utils/utils';
 
 /**
  *
