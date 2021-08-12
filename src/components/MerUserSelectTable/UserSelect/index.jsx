@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal, Alert } from 'antd';
 import { connect } from 'umi';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MreSelect = ({
@@ -84,12 +85,8 @@ const MreSelect = ({
     },
     {
       title: '注册地',
-      dataIndex: 'provinceName',
-      render: (val, row) => {
-        const city = row.cityName;
-        const dir = row.districtName;
-        return val ? `${val}${city ? '/' + city : ''}${dir ? '/' + dir : ''}` : '--';
-      },
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
   ];
 

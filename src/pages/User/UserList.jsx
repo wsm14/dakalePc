@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
+import { checkCityName } from '@/utils/utils';
 import { ACCOUNT_STATUS, REAL_NAME_STATUS, USER_SOURCE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/UserList/Search/SearchCard';
@@ -87,12 +88,8 @@ const UserListComponent = (props) => {
     {
       title: '注册地',
       align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, row) => {
-        const city = row.cityName;
-        const dir = row.districtName;
-        return val ? `${val}${city ? '/' + city : ''}${dir ? '/' + dir : ''}` : '--';
-      },
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '常驻地',

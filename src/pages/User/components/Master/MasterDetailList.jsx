@@ -65,9 +65,9 @@ const MasterDetail = (props) => {
           dataIndex: 'merchantName',
         },
         {
-          title: '店铺账号',
+          title: '店铺电话',
           align: 'center',
-          dataIndex: 'account',
+          dataIndex: 'mobile',
         },
         {
           title: '商家类型',
@@ -77,7 +77,8 @@ const MasterDetail = (props) => {
         {
           title: '所在城市',
           align: 'center',
-          dataIndex: 'cityName',
+          dataIndex: 'cityCode',
+          render: (val) => checkCityName(val) || '--',
         },
         {
           title: '详细地址',
