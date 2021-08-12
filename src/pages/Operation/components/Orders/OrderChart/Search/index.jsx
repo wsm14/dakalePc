@@ -10,14 +10,20 @@ const disTime = moment('2020-03-01');
 const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
   const [selectedTime, setSelectedTime] = useState([moment(), moment()]);
   const [merchantId, setMerchantId] = useState('');
+  const [city, setCity] = useState([]);
 
   useEffect(() => {
+    const [provinceCode, cityCode, districtCode] = city;
+    
     fetchGetTotalData({
       beginDate: selectedTime[0].format('YYYY-MM-DD'),
       endDate: selectedTime[1].format('YYYY-MM-DD'),
       merchantId,
+      provinceCode,
+      cityCode,
+      districtCode,
     });
-  }, [merchantId, selectedTime]);
+  }, [merchantId, selectedTime, city]);
 
   // 禁止选择时间
   const disabledDate = (current) =>
@@ -67,8 +73,7 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
           </Select.Option>
         ))}
       </Select>
-      {/* <Cascader
-        // defaultValue={bucket ? [bucket] : []}
+      <Cascader
         changeOnSelect
         expandTrigger="hover"
         options={CITYJSON}
@@ -81,8 +86,8 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
             return path.some((option) => option.label.indexOf(inputValue) > -1);
           },
         }}
-        // onChange={(val) => handleSearchData(selectedTime, val)}
-      ></Cascader> */}
+        onChange={(val) => setCity(val)}
+      ></Cascader>
     </Space>
   );
 };
