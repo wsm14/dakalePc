@@ -13,21 +13,16 @@ class AvatarDropdown extends React.Component {
     color: '000000',
   };
 
-  onMenuClick = (event) => {
-    const { key } = event;
-    if (key === 'logout') {
+  onMenuClick = (opt) => {
+    if (opt.props.value === 'logout') {
       const { dispatch } = this.props;
-
       if (dispatch) {
         dispatch({
           type: 'login/logout',
         });
       }
-
       return;
     }
-
-    history.push(`/password`);
   };
 
   componentDidMount() {
@@ -52,13 +47,13 @@ class AvatarDropdown extends React.Component {
     } = this.props;
 
     const menuHeaderDropdown = [
-      <Item key="logout">
+      <Item key="logout" value="logout">
         <LogoutOutlined style={{ marginRight: 10 }} />
         退出登录
       </Item>,
     ];
     return currentUser && currentUser.username ? (
-      <HeaderDropdown overlay={menuHeaderDropdown}>
+      <HeaderDropdown overlay={menuHeaderDropdown} onSelect={this.onMenuClick}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar
             icon={<UserOutlined />}

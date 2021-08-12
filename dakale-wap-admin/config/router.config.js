@@ -15,7 +15,12 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     routes: [
-      
+      {
+        path: '/market/areaQuery',
+        name: '区域查询系统',
+        component: './Market/AreaQuery',
+        buttons: ['set', 'exportList'],
+      },
     ],
   },
 ];

@@ -2,10 +2,9 @@ import React from 'react';
 import { PageLoading } from '@ant-design/pro-layout';
 import pathRegexp from 'path-to-regexp';
 import { Result, Button } from 'antd';
-import { history, Link, connect } from 'umi';
+import { Link, connect } from 'umi';
 
 const getRouteAuthority = (path, routeData) => {
-
   let authorities = false;
   routeData.forEach((route) => {
     // match prefix
@@ -52,17 +51,7 @@ class SecurityLayout extends React.Component {
     }
 
     if (!getRouteAuthority(authority.path, authority.routes)) {
-      return (
-        <Result
-          status="404"
-          title="404"
-          extra={
-            <Button type="primary" onClick={() => history.push(authority.routes[0].path)}>
-              返回首页
-            </Button>
-          }
-        />
-      );
+      return <Result status="404" title="404" />;
     }
 
     if (!isLogin && window.location.pathname !== '/login/index') {
