@@ -9,7 +9,7 @@ const UserLayout = ({ children }) => {
         <div className={styles.dakale_user_title}>
           <div className={styles.dakale_user_logo}></div>
           <div className={styles.dakale_user_liner}></div>
-          <div className={styles.dakale_user_font}>哒卡乐运营后台</div>
+          <div className={styles.dakale_user_font}>哒卡乐区域查询系统</div>
         </div>
       </div>
       <div className={styles.dakale_user_content}>{children}</div>

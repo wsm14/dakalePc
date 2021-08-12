@@ -1,9 +1,12 @@
 import React from 'react';
-import { LogoutOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Spin } from 'antd';
+import { Popover } from 'antd-mobile';
 import { history, connect } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+
+const Item = Popover.Item;
 
 class AvatarDropdown extends React.Component {
   state = {
@@ -46,28 +49,14 @@ class AvatarDropdown extends React.Component {
         avatar: '',
         name: '',
       },
-      menu,
     } = this.props;
 
-    const menuHeaderDropdown = (
-      <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
-        {menu && (
-          <Menu.Item key="center">
-            <UserOutlined />
-            个人中心
-          </Menu.Item>
-        )}
-        <Menu.Item key="settings">
-          <LockOutlined />
-          修改密码
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="logout">
-          <LogoutOutlined />
-          退出登录
-        </Menu.Item>
-      </Menu>
-    );
+    const menuHeaderDropdown = [
+      <Item key="logout">
+        <LogoutOutlined style={{ marginRight: 10 }} />
+        退出登录
+      </Item>,
+    ];
     return currentUser && currentUser.username ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>

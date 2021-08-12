@@ -4,9 +4,8 @@
  * https://github.com/ant-design/ant-design-pro-layout
  */
 import React, { useEffect } from 'react';
-import ProLayout from '@ant-design/pro-layout';
+import ProLayout, { ProBreadcrumb, RouteContext } from '@ant-design/pro-layout';
 import { BackTop } from 'antd';
-import { RouteContext } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
 import RightContent from '@/components/GlobalHeader/RightContent';
@@ -103,6 +102,7 @@ const BasicLayout = (props) => {
       }}
       menuDataRender={() => menuDataRender(menuList)}
       menu={{ loading }}
+      headerContentRender={() => <ProBreadcrumb />}
       headerRender={() => <HeaderContent />}
       rightContentRender={() => <RightContent />}
       {...props}

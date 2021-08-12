@@ -1,10 +1,17 @@
-import { Dropdown } from 'antd';
+import { Popover } from 'antd-mobile';
 import React from 'react';
-import classNames from 'classnames';
-import styles from './index.less';
 
-const HeaderDropdown = ({ overlayClassName: cls, ...restProps }) => (
-  <Dropdown overlayClassName={classNames(styles.container, cls)} {...restProps} />
+const HeaderDropdown = ({ ...restProps }) => (
+  <Popover
+    mask
+    overlayClassName="fortest"
+    overlayStyle={{ color: 'currentColor' }}
+    align={{
+      overflow: { adjustY: 0, adjustX: 0 },
+      offset: [0, 10],
+    }}
+    {...restProps}
+  />
 );
 
 export default HeaderDropdown;
