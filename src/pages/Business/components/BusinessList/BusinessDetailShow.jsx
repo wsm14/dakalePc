@@ -141,7 +141,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '所属集团',
       name: 'groupName',
-      show: visible.type === '集团',
+      show: visible.type === '子门店',
     },
     {
       label: '省市区',
