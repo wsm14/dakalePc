@@ -9,7 +9,6 @@ const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
-  fastRefresh: {},
   history: { type: 'hash' },
   esbuild: {},
   antd: {},
@@ -45,8 +44,8 @@ export default defineConfig({
               test: /[\\/]node_modules[\\/]/,
               priority: 10,
             },
-            antdesigns: {
-              name: 'antdesigns',
+            antdmobile: {
+              name: 'antd-mobile',
               chunks: 'all',
               test: /[\\/]node_modules[\\/](@ant-design|antd)[\\/]/,
               priority: 11,

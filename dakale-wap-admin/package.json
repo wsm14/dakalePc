@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "set PORT=8010 && cross-env UMI_UI=none umi dev",
+    "start": "set PORT=8070 && cross-env UMI_UI=none umi dev",
     "start:test": "cross-env REACT_APP_ENV=test UMI_UI=none MOCK=none umi dev",
     "build": "cross-env REACT_APP_ENV=prod umi build",
     "build:test": "cross-env REACT_APP_ENV=test umi build",
@@ -27,6 +27,7 @@
     "@antv/data-set": "^0.11.4",
     "ali-oss": "^6.10.0",
     "antd": "^4.16.1",
+    "antd-mobile": "^2.3.4",
     "array-move": "^3.0.1",
     "classnames": "^2.2.6",
     "immutability-helper": "^3.1.1",
@@ -40,6 +41,7 @@
     "qrcode": "^1.4.4",
     "qrcode.react": "^1.0.0",
     "qs": "^6.9.0",
+    "rc-form": "^2.4.12",
     "react": "^16.8.6",
     "react-activation": "^0.5.7",
     "react-amap": "^1.2.8",
