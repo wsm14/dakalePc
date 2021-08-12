@@ -198,6 +198,11 @@ const BusinessDetailShow = (props) => {
       type: { image: 'upload', video: 'videoUpload' }[headerType],
     },
     {
+      label: '店铺LOGO',
+      name: 'logoImg',
+      type: 'upload',
+    },
+    {
       label: '店铺内景照',
       name: 'interiorImg',
       type: 'upload',

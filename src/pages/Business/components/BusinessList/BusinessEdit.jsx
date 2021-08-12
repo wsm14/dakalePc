@@ -39,6 +39,7 @@ const BusinessAdd = (props) => {
         coverImg,
         headerImg,
         interiorImg,
+        logoImg = '',
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
         businessTime,
@@ -96,6 +97,11 @@ const BusinessAdd = (props) => {
       const cImg = await aliOssUpload(coverImg);
       const hImg = await aliOssUpload(headerImg);
       const iImg = await aliOssUpload(interiorImg);
+      //编辑的时候可以修改店铺logo
+      if (type === 'edit') {
+        const logos = await aliOssUpload(logoImg);
+        payload.logoImg = logos.toString();
+      }
       payload.coverImg = cImg.toString();
       payload.headerImg = hImg.toString();
       payload.interiorImg = iImg.toString();
@@ -118,7 +124,6 @@ const BusinessAdd = (props) => {
           cRef.current.fetchGetData();
         },
       });
-    
     });
   };
 
