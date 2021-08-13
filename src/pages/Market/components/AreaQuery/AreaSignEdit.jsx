@@ -1,33 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
-import { Form, Button, Tabs } from 'antd';
+import { Form, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
-const { TabPane } = Tabs;
-
 const AreaSignEdit = (props) => {
-  const { dispatch, childRef, visible, onClose, loading } = props;
+  const { dispatch, callBack, visible, onClose, loading } = props;
   const { show = false, detail = {} } = visible;
-  const { id, level } = detail;
-
-  const checkIdType = { 2: 'pid', 3: 'id' }[level];
+  const { id } = detail;
 
   const [form] = Form.useForm();
-  const [tabKey, setTabKey] = useState('0');
 
   // 新增
   const fetchCityManageSet = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'manageCity/fetchCityManageSet',
+        type: 'areaQuery/fetchAreaQueryInfoSet',
         payload: {
-          ...detail,
+          id,
           ...values,
         },
         callback: () => {
           onClose();
-          childRef.current.fetchGetData();
+          callBack();
         },
       });
     });
@@ -38,7 +33,7 @@ const AreaSignEdit = (props) => {
       label: '是否签约',
       type: 'radio',
       name: 'status',
-      select: ['已签', '未签'],
+      select: { 1: '未签', 2: '已签' },
     },
     {
       label: '备注',
@@ -51,9 +46,6 @@ const AreaSignEdit = (props) => {
     title: detail.name,
     visible: show,
     onClose,
-    afterCallBack: () => {
-      setTabKey('0');
-    },
     footer: (
       <Button type="primary" onClick={() => fetchCityManageSet()} loading={loading}>
         确定
@@ -63,7 +55,7 @@ const AreaSignEdit = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition form={form} formItems={formItems}></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };
