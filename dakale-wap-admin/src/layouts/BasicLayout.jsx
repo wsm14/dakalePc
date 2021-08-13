@@ -12,6 +12,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import HeaderContent from '@/components/GlobalHeader/HeaderContent';
 import iconEnum from '@/common/iconEnum';
 import logo from '../../public/favicon.png';
+import './style.less';
 
 const BasicLayout = (props) => {
   const {
