@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -9,6 +9,25 @@ const UserDetailList = (props) => {
 
   const { type = 'peas', record = '' } = visible;
 
+  const childRef = useRef();
+
+  const [tabKey, setTabKey] = useState('award');
+
+  const tabList = [
+    {
+      key: 'award',
+      tab: '奖励卡豆',
+    },
+    {
+      key: 'earn',
+      tab: '收益卡豆',
+    },
+  ];
+  useEffect(() => {
+    if (type === 'peas') {
+      childRef.current?.fetchGetData();
+    }
+  }, [tabKey]);
   // table
   const propItem = {
     peas: {
@@ -110,11 +129,14 @@ const UserDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
-        noCard={false}
+        cRef={childRef}
+        cardProps={
+          type === 'peas' && { tabList: tabList, activeTabKey: tabKey, onTabChange: setTabKey }
+        }
         loading={loading}
         columns={propItem.getColumns}
         rowKey={(row, i) => `${row[propItem.rowKey]}${i}`}
-        params={{ type, userType: 'user', userId: record.userIdString }}
+        params={{ type, tabKey, userType: 'user', userId: record.userIdString }}
         dispatchType="accountUser/fetchDetailList"
         size="middle"
         {...detailList}

@@ -14,9 +14,15 @@ export async function fetchAccountUserTotal(params) {
   });
 }
 
-// get 用户账户 - 卡豆明细
+// get 用户账户 - 卡豆明细 -奖励卡豆
 export async function fetchUserPeasDetail(params) {
   return request('/admin/accountManagement/listUserBeanDetail', {
+    params,
+  });
+}
+//用户收益卡豆明细
+export async function fetchUserIncomeBeanDetail(params) {
+  return request('/admin/accountManagement/listUserIncomeBeanDetail', {
     params,
   });
 }
