@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Menu } from 'antd';
 import CITYJSON from '@/common/cityJson';
 
 const { SubMenu } = Menu;
 
-const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
+const TradeAreaLeft = ({ fetchGetInfo, selectCode, setSelectCode }) => {
   const routerMenu = (list) => {
     return list.map((item) => {
       return item.level === '1' ? (
         <SubMenu
           className={item.id === selectCode.provinceCode ? 'ant-menu-item-selected' : ''}
-          onTitleClick={({ key }) => setSelectCode({ provinceCode: key })}
+          onTitleClick={({ key }) => {
+            fetchGetInfo({ pid: key });
+            setSelectCode({ provinceCode: key });
+          }}
           key={item.id}
           title={item.name}
         >
@@ -31,7 +34,10 @@ const TradeAreaLeft = ({ cRef, selectCode, setSelectCode }) => {
         openKeys={[selectCode.provinceCode]}
         selectedKeys={[selectCode.cityCode || selectCode.provinceCode]}
         defaultSelectedKeys={[selectCode.provinceCode]}
-        onClick={(e) => setSelectCode({ ...selectCode, cityCode: e.key })}
+        onClick={(e) => {
+          fetchGetInfo({ pid: e.key });
+          setSelectCode({ ...selectCode, cityCode: e.key });
+        }}
         mode="inline"
         style={{
           width: 130,

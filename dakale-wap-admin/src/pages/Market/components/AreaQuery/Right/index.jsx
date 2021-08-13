@@ -4,22 +4,21 @@ import { Card } from 'antd-mobile';
 import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 
 const AreaQueryRight = ({ item, onClick }) => {
-  const { name, id, level } = item;
+  const { name, id, gdp, price, population, status } = item;
   return (
     <Col span={12}>
-      <Card onClick={() => onClick({ name, id, level })}>
-        <Card.Header title={<div style={{ fontSize: 14 }}>{name}</div>} />
+      <Card onClick={() => onClick({ name, id, status })}>
+        <Card.Header
+          title={<div style={{ fontSize: 12 }}>{name}</div>}
+          extra={
+            status === '2' && (
+              <Tag color="green" style={{ marginRight: 0, fontSize: 12 }}>
+                已签
+              </Tag>
+            )
+          }
+        />
         <Card.Body>
-          <div style={{ textAlign: 'right' }}>
-            <Tag color="green" style={{ marginRight: 0 }}>
-              已签 {level !== '3' ? '3/10' : ''}
-            </Tag>
-          </div>
-          <div style={{ textAlign: 'right', marginBottom: 5 }}>
-            <Tag color="gold" style={{ marginRight: 0 }}>
-              定金 {level !== '3' ? '3/10' : ''}
-            </Tag>
-          </div>
           <div
             style={{
               textAlign: 'right',
@@ -37,8 +36,8 @@ const AreaQueryRight = ({ item, onClick }) => {
               </div>
             </div>
             <div style={{ marginLeft: 10 }}>
-              <div>200000</div>
-              <div>200</div>
+              <div>{gdp || 0}</div>
+              <div>{population || 0}</div>
             </div>
           </div>
         </Card.Body>
@@ -52,7 +51,7 @@ const AreaQueryRight = ({ item, onClick }) => {
                 color: '#d48806',
               }}
             >
-              80万
+              {price || 0}
             </div>
           }
         />

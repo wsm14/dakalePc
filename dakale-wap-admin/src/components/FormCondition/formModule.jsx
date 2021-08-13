@@ -1,3 +1,9 @@
-import checkbox from './Checkbox';
+import radio from './Radio';
+import textArea from './TextArea';
 
-export { checkbox as Checkbox };
+const IFormModule = {
+  textArea,
+  radio,
+};
+
+export { IFormModule, radio as Radio };

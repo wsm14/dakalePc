@@ -61,5 +61,5 @@ const AreaSignEdit = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.models.manageCity,
+  loading: loading.models.areaQuery,
 }))(AreaSignEdit);
