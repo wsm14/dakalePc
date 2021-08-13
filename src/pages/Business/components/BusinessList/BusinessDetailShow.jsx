@@ -170,7 +170,7 @@ const BusinessDetailShow = (props) => {
       render: (val) => `${val || 0}%`,
     },
     {
-      label: '核销订单服务费', 
+      label: '核销订单服务费',
       name: 'commissionRatio',
       render: (val) => `${val || 0}%`,
     },
@@ -266,6 +266,12 @@ const BusinessDetailShow = (props) => {
   ];
 
   const accountItems = [
+    {
+      label: '结算类型',
+      name: 'settlementFlag',
+      render: (val) => (val === '1' ? '独立结算' : '统一结算'),
+      show: visible.type === '子门店',
+    },
     {
       label: '账户类型',
       name: 'bankAccountType',
