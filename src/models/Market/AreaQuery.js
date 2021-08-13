@@ -23,12 +23,19 @@ export default {
       const response = yield call(fetchAreaQueryInfo, payload);
       if (!response) return;
       const { content } = response;
+      const { level } = payload;
       yield put({
         type: 'save',
         payload: {
-          list: content.agentPriceList,
+          [level === 1 ? 'province' : 'list']: content.agentPriceList,
         },
       });
+    },
+    *fetchAreaQueryCityInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchAreaQueryInfo, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.agentPriceList);
     },
     *fetchAreaQueryInfoSet({ payload, callback }, { call, put }) {
       const response = yield call(fetchAreaQueryInfoSet, payload);

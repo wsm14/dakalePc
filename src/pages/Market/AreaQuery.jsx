@@ -70,6 +70,7 @@ const AreaQuery = (props) => {
       <AreaSet
         childRef={childRef}
         visible={visibleSet}
+        fetchAreaQueryInfo={fetchAreaQueryInfo}
         onClose={() => setVisibleSet(false)}
       ></AreaSet>
       {/* 签约/定金 设置 */}
