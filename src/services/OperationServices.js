@@ -35,6 +35,14 @@ export function fetchSpecialGoodsStatus(data) {
   });
 }
 
+// post 周边特惠 - 分享图修改
+export function fetchSpecialGoodsShareEdit(data) {
+  return request('/admin/specialGoodsManagement/updateActivityGoodsNotAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 周边特惠 - 编辑
 export function fetchSpecialGoodsEdit(data) {
   return request('/admin/specialGoodsManagement/updateSpecialGoods', {
@@ -310,6 +318,14 @@ export function fetchOrdersImport(params) {
 export function fetchOrdersDetail(params) {
   return request('/admin/orderManagement/getOrderById', {
     params,
+  });
+}
+
+// post 订单列表 - 手动退款
+export function fetchOrderRefundOwn(data) {
+  return request('/admin/orderManagement/manualRefund', {
+    method: 'POST',
+    data,
   });
 }
 

@@ -70,7 +70,7 @@ const DescriptionsCondition = (props) => {
     const valueKey = fieldNames || name;
 
     // 参数值获取
-    const detailVal = getRowVale(rowValue, valueKey) || '';
+    const detailVal = getRowVale(rowValue, valueKey);
 
     // 返回处理结果 存在render 情况下优先返回，否则走类型判断
     const resultsDom = render

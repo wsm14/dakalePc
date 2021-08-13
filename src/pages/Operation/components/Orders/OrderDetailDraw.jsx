@@ -6,19 +6,22 @@ import {
   USER_SOURCE,
   ORDERS_STATUS,
 } from '@/common/constant';
+import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
+import OrderRefund from './OrderRefund';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, total, tabkey, loading } = props;
+  const { visible, onClose, getDetail, childRef, total, tabkey, loading } = props;
   const { detail = {}, show = false, index } = visible;
   const { status, closeType, orderGoodsVerifications = [] } = detail;
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
+  const [refund, setRefund] = useState(true);
 
   // 订单状态检查内容显示
   /* 订单状态0-待支付；1-已支付待核销；2-订单关闭 3-交易完成 4-已确认，5-预支付 6-退款中 */
@@ -56,13 +59,15 @@ const OrderDetailDraw = (props) => {
       show: item.verificationCode,
     },
     {
+      label: '状态',
       name: 'status',
-      render: (val) => `${VERIFICATION_STATUS[val]}`,
+      render: (val) => VERIFICATION_STATUS[val],
     },
     {
       label: '核销时间',
       name: 'verificationTime',
       show: item.status === '1',
+      span: 3,
     },
   ];
 
@@ -193,182 +198,209 @@ const OrderDetailDraw = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
+    footer: detail.status === '1' && (
+      <Button
+        type="primary"
+        onClick={() =>
+          setRefund({
+            show: true,
+            detail: {
+              userId: detail.userIdString,
+              orderSn: detail.orderSn,
+            },
+          })
+        }
+      >
+        退款
+      </Button>
+    ),
   };
   return (
-    <DrawerCondition {...modalProps}>
-      <div className={styles.order_detail_cons}>
-        <div className={styles.item_detail_con}>
-          <span className={styles.orderDetail_span}>创建时间</span>
-          <span>{detail.createTime}</span>
-        </div>
-        {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
-          <>
-            <div className={styles.lineClass_con}></div>
-            <div className={styles.item_detail_con}>
-              <span className={styles.orderDetail_span}>支付时间</span>
-              <span>{detail.payTime}</span>
-            </div>
-          </>
-        )}
-
-        {status === '2' &&
-          (closeType === 'unpaidManualCancel' || closeType === 'unpaidExpiredCancel') && (
+    <>
+      <DrawerCondition {...modalProps}>
+        <div className={styles.order_detail_cons}>
+          <div className={styles.item_detail_con}>
+            <span className={styles.orderDetail_span}>创建时间</span>
+            <span>{detail.createTime}</span>
+          </div>
+          {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
             <>
               <div className={styles.lineClass_con}></div>
               <div className={styles.item_detail_con}>
-                <span className={styles.orderDetail_span}>取消时间</span>
-                <span>{detail.closeTime}</span>
+                <span className={styles.orderDetail_span}>支付时间</span>
+                <span>{detail.payTime}</span>
               </div>
             </>
           )}
-        <div className={styles.lineClass_con}></div>
-        <div className={styles.item_detail_con}>
-          <span className={styles.orderDetail_span}>{ORDERS_STATUS[status]}</span>
+
+          {status === '2' &&
+            (closeType === 'unpaidManualCancel' || closeType === 'unpaidExpiredCancel') && (
+              <>
+                <div className={styles.lineClass_con}></div>
+                <div className={styles.item_detail_con}>
+                  <span className={styles.orderDetail_span}>取消时间</span>
+                  <span>{detail.closeTime}</span>
+                </div>
+              </>
+            )}
+          <div className={styles.lineClass_con}></div>
+          <div className={styles.item_detail_con}>
+            <span className={styles.orderDetail_span}>{ORDERS_STATUS[status]}</span>
+          </div>
         </div>
-      </div>
-
-      {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
-        <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
-      )}
-      {orderGoodsVerifications.map((item) => (
-        <DescriptionsCondition
-          labelStyle={{ width: 100 }}
-          key={item.orderGoodsVerificationId}
-          formItems={couponItem(item)}
-          initialValues={item}
-          column={3}
-        ></DescriptionsCondition>
-      ))}
-      <DescriptionsCondition
-        title="用户信息"
-        labelStyle={{ width: 120 }}
-        formItems={userFormItem}
-        initialValues={detail}
-        column={2}
-      ></DescriptionsCondition>
-      <DescriptionsCondition
-        title="商家信息"
-        labelStyle={{ width: 120 }}
-        formItems={merchartItem}
-        column={2}
-        initialValues={detail}
-      ></DescriptionsCondition>
-      <DescriptionsCondition
-        title="订单信息"
-        labelStyle={{ width: 120 }}
-        formItems={orderItem}
-        initialValues={detail}
-        column={2}
-      ></DescriptionsCondition>
-
-      {status === '6' ||
-        (status === '2' && orderCloseStatusCheck && (
+        {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
+          <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
+        )}
+        {orderGoodsVerifications.map((item) => (
           <DescriptionsCondition
-            title="退款信息"
-            labelStyle={{ width: 120 }}
-            formItems={refundItem}
-            initialValues={detail}
+            labelStyle={{ width: 100 }}
+            key={item.orderGoodsVerificationId}
+            formItems={couponItem(item)}
+            initialValues={item}
+            column={3}
           ></DescriptionsCondition>
         ))}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'flex-start',
-          borderTop: '1px solid #999',
-          margin: '30px 0',
-          paddingTop: 30,
-        }}
-      >
-        <div>
-          <DescriptionsCondition
-            formItems={orderImgItem}
-            initialValues={detail}
-          ></DescriptionsCondition>
-        </div>
-        <div>
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>订单金额</span>
-            <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
+        <DescriptionsCondition
+          title="用户信息"
+          labelStyle={{ width: 120 }}
+          formItems={userFormItem}
+          initialValues={detail}
+          column={2}
+        ></DescriptionsCondition>
+        <DescriptionsCondition
+          title="商家信息"
+          labelStyle={{ width: 120 }}
+          formItems={merchartItem}
+          column={2}
+          initialValues={detail}
+        ></DescriptionsCondition>
+        <DescriptionsCondition
+          title="订单信息"
+          labelStyle={{ width: 120 }}
+          formItems={orderItem}
+          initialValues={detail}
+          column={2}
+        ></DescriptionsCondition>
+
+        {status === '6' ||
+          (status === '2' && orderCloseStatusCheck && (
+            <DescriptionsCondition
+              title="退款信息"
+              labelStyle={{ width: 120 }}
+              formItems={refundItem}
+              initialValues={detail}
+            ></DescriptionsCondition>
+          ))}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            alignItems: 'flex-start',
+            borderTop: '1px solid #999',
+            margin: '30px 0',
+            paddingTop: 30,
+          }}
+        >
+          <div>
+            <DescriptionsCondition
+              formItems={orderImgItem}
+              initialValues={detail}
+            ></DescriptionsCondition>
           </div>
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span onClick={() => handleShow('sale')}>
-              优惠合计 <DownOutlined />
-            </span>
-            <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
-          </div>
-          {isShow && (
-            <div className={styles.detail_last_div}>
-              <span>抵扣券</span>
+          <div>
+            <div className={styles.detail_last_div} style={{ color: '#333' }}>
+              <span>订单金额</span>
+              <span>{detail.totalFee ? `￥${detail.totalFee}` : 0}</span>
+            </div>
+            <div className={styles.detail_last_div} style={{ color: '#333' }}>
+              <span onClick={() => handleShow('sale')}>
+                优惠合计 <DownOutlined />
+              </span>
               <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
             </div>
-          )}
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span onClick={() => handleShow('user')}>
-              <QuestionTooltip
-                title="用户实付"
-                content="用户实际支付的金额，包含卡豆和现金金额，等于订单金额减去优惠的金额；"
-                type="quest"
-              ></QuestionTooltip>
-              <DownOutlined />
-            </span>
-            <span>{`￥${
-              Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0) > 0
-                ? (Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0)).toFixed(2)
-                : 0
-            }(含${detail.beanFee ? detail.beanFee : 0}卡豆)`}</span>
-          </div>
-          {isShow1 && (
-            <>
+            {isShow && (
               <div className={styles.detail_last_div}>
-                <span>卡豆</span>
-                <span>
-                  {detail.beanFee ? `￥${detail.beanFee / 100}（含${detail.beanFee}卡豆）` : 0}
-                </span>
+                <span>抵扣券</span>
+                <span>{detail.reduceFee ? `￥${detail.reduceFee}` : 0}</span>
               </div>
-              <div className={styles.detail_last_div}>
-                <span>{PAY_TYPE[detail.payType] || '支付宝'}</span>
-                <span>{detail.payFee ? `￥${detail.payFee}` : 0}</span>
-              </div>
-            </>
-          )}
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>
-              <QuestionTooltip
-                title="平台服务费"
-                content="交易成功后平台所收取的服务费"
-                type="quest"
-              ></QuestionTooltip>
-            </span>
+            )}
+            <div className={styles.detail_last_div} style={{ color: '#333' }}>
+              <span onClick={() => handleShow('user')}>
+                <QuestionTooltip
+                  title="用户实付"
+                  content="用户实际支付的金额，包含卡豆和现金金额，等于订单金额减去优惠的金额；"
+                  type="quest"
+                ></QuestionTooltip>
+                <DownOutlined />
+              </span>
+              <span>{`￥${
+                Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0) > 0
+                  ? (Number(detail.payFee) + (detail.beanFee ? detail.beanFee / 100 : 0)).toFixed(2)
+                  : 0
+              }(含${detail.beanFee ? detail.beanFee : 0}卡豆)`}</span>
+            </div>
+            {isShow1 && (
+              <>
+                <div className={styles.detail_last_div}>
+                  <span>卡豆</span>
+                  <span>
+                    {detail.beanFee ? `￥${detail.beanFee / 100}（含${detail.beanFee}卡豆）` : 0}
+                  </span>
+                </div>
+                <div className={styles.detail_last_div}>
+                  <span>{PAY_TYPE[detail.payType] || '支付宝'}</span>
+                  <span>{detail.payFee ? `￥${detail.payFee}` : 0}</span>
+                </div>
+              </>
+            )}
+            <div className={styles.detail_last_div} style={{ color: '#333' }}>
+              <span>
+                <QuestionTooltip
+                  title="平台服务费"
+                  content="交易成功后平台所收取的服务费"
+                  type="quest"
+                ></QuestionTooltip>
+              </span>
 
-            <span>
-              ￥
-              {`${(Number(detail.cashCommission) + Number(detail.beanCommission / 100)).toFixed(
-                2,
-              )}`}
-              (含{detail.beanCommission}卡豆)
-              {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
-            </span>
-          </div>
-          <div className={styles.detail_last_div} style={{ color: '#333' }}>
-            <span>
-              <QuestionTooltip
-                title="商户实收"
-                content="商家实际收到的金额，包含卡豆和现金金额"
-                type="quest"
-              ></QuestionTooltip>
-            </span>
-            <span>
-              ￥
-              {`${(Number(detail.actualCashFee) + Number(detail.actualBeanFee / 100)).toFixed(2)}`}
-              (含{detail.actualBeanFee}卡豆)
-              {/* {`￥${detail.actualCashFee}
+              <span>
+                ￥
+                {`${(Number(detail.cashCommission) + Number(detail.beanCommission / 100)).toFixed(
+                  2,
+                )}`}
+                (含{detail.beanCommission}卡豆)
+                {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
+              </span>
+            </div>
+            <div className={styles.detail_last_div} style={{ color: '#333' }}>
+              <span>
+                <QuestionTooltip
+                  title="商户实收"
+                  content="商家实际收到的金额，包含卡豆和现金金额"
+                  type="quest"
+                ></QuestionTooltip>
+              </span>
+              <span>
+                ￥
+                {`${(Number(detail.actualCashFee) + Number(detail.actualBeanFee / 100)).toFixed(
+                  2,
+                )}`}
+                (含{detail.actualBeanFee}卡豆)
+                {/* {`￥${detail.actualCashFee}
             (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
-            </span>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    </DrawerCondition>
+      </DrawerCondition>
+      <OrderRefund
+        visible={refund}
+        getDetail={() => {
+          childRef.current.fetchGetData();
+          getDetail(index);
+        }}
+        onClose={() => setRefund(false)}
+      ></OrderRefund>
+    </>
   );
 };
 export default OrderDetailDraw;

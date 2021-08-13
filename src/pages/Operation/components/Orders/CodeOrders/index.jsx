@@ -10,7 +10,7 @@ import excelHeder from './excelHeder';
 import styles from '../style.less';
 
 const CodeOrders = (props) => {
-  const { ordersList, loading, dispatch, tabkey } = props;
+  const { ordersList, loading, loadings, dispatch, tabkey } = props;
   const { list } = ordersList;
 
   const childRef = useRef();
@@ -203,10 +203,11 @@ const CodeOrders = (props) => {
         {...ordersList}
       ></TableDataBlock>
       <OrderDetailDraw
+        childRef={childRef}
         visible={visible}
         total={list.length}
         tabkey={tabkey}
-        loading={loading}
+        loading={loadings.effects['ordersList/fetchOrderDetail']}
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
