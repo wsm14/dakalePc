@@ -5,18 +5,13 @@ import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 const AreaQueryRight = ({ item, onClick }) => {
   const { name, id, level } = item;
   return (
-    <Col span={6}>
+    <Col span={4}>
       <Card
         title={name}
         headStyle={{ padding: '0 16px' }}
         bodyStyle={{ padding: 0 }}
         onClick={() => onClick({ name, id, level })}
-        extra={
-          <>
-            <Tag color="green">已签 {level !== '3' ? '3/10' : ''}</Tag>
-            <Tag color="gold">定金 {level !== '3' ? '3/10' : ''}</Tag>
-          </>
-        }
+        extra={<Tag color="green">已签</Tag>}
       >
         <div
           style={{
