@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Modal } from 'antd';
+import { Modal, Form, notification } from 'antd';
 import debounce from 'lodash/debounce';
 import EditorForm from '../../editorForm';
 import '../index.less';
@@ -11,13 +11,9 @@ import '../index.less';
 const GoodsSelectModal = (props) => {
   const { selectList = [], form, dispatch, visible, onClose, loading } = props;
 
-  const [selectItem, setSelectItem] = useState([]); // 当前选择项
+  const [selectItem, setSelectItem] = useState(null); // 当前选择项
 
-  useEffect(() => {
-    if (visible) {
-      setSelectItem(form.getFieldValue('list') || []);
-    }
-  }, [visible]);
+  const [sform] = Form.useForm();
 
   // 搜索店铺
   const fetchGetMre = debounce((content) => {
@@ -30,13 +26,14 @@ const GoodsSelectModal = (props) => {
     });
   }, 500);
 
-  // 获取商家统计信息
-  const fetchGetMreInfo = (data) => {
+  // 获取商家额外信息
+  const fetchGetMreInfo = (data, values) => {
     dispatch({
       type: 'activeTemplate/fetchSpecialGoodsSelect',
       payload: {
         ...data,
       },
+      callback: (val) => setSelectItem({ ...val, ...values }),
     });
   };
 
@@ -49,8 +46,14 @@ const GoodsSelectModal = (props) => {
       loading,
       onSearch: fetchGetMre,
       onChange: (val, op) => {
+        const mreList = form.getFieldValue('list') || [];
+        if (mreList.some((i) => i.userMerchantIdString === val)) {
+          notification.info({ message: '该店已存在' });
+          return;
+        }
         console.log(val, op.option.option);
-        // handleStoreGoodsType(val);
+        setSelectItem(op.option.option);
+        // fetchGetMreInfo(val, op.option.option);
       },
       select: selectList,
     },
@@ -63,15 +66,18 @@ const GoodsSelectModal = (props) => {
       visible={visible}
       destroyOnClose
       okButtonProps={{
-        disabled: !selectItem.length,
+        loading,
+        disabled: !selectItem,
       }}
+      afterClose={() => setSelectItem(null)}
       onOk={() => {
-        form.setFieldsValue({ list: selectItem });
+        const mreList = form.getFieldValue('list') || [];
+        form.setFieldsValue({ list: [...mreList, selectItem] });
         onClose();
       }}
       onCancel={onClose}
     >
-      <EditorForm form={form} formItems={formItems}></EditorForm>
+      <EditorForm form={sform} formItems={formItems}></EditorForm>
     </Modal>
   );
 };
