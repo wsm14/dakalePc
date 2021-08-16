@@ -9,6 +9,7 @@ import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
 import CommonList from './CommonList';
+import MerchantList from './MerchantList';
 import img from './Img/img.png';
 import list from './Img/list.png';
 import mrelist from './Img/mrelist.png';
@@ -66,8 +67,8 @@ export default {
     drop: true,
     defaultImg: mrelist,
     defaultData: { styleIndex: 0, list: [] },
-    editorDom: (props) => <CommonList {...props}></CommonList>,
-    dom: (props) => CommonList.dom(props),
+    editorDom: (props) => <MerchantList {...props}></MerchantList>,
+    dom: (props) => MerchantList.dom(props),
   },
   couponList: {
     icon: <MoneyCollectOutlined style={{ fontSize: 24 }} />,
