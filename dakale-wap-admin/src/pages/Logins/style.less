@@ -1,0 +1,159 @@
+@import '~antd/es/style/themes/default.less';
+
+.datale_layouts_Context {
+  width: 100%;
+  // min-height: 350px;
+  padding-bottom: 50px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 5px 20px 0px rgba(0, 114, 116, 0.25);
+  border-radius: 10px;
+  line-height: 1;
+  margin: 0 auto;
+  .dakale_getSmsDis {
+    background: rgba(7, 192, 194, 1);
+    color: #ffffff;
+  }
+}
+
+.dakale_contextBox {
+  padding: 0 30px;
+  :global(.ant-tabs-nav-wrap) {
+    width: 100%;
+  }
+  :global(.ant-tabs-nav-operations) {
+    display: none !important;
+  }
+  :global(.ant-tabs-nav-list) {
+    width: 130px !important;
+  }
+  :global(.ant-tabs-tab) {
+    display: inline-block;
+    width: 130px !important;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(153, 153, 153, 1);
+    padding: 18px 25px !important;
+    line-height: 1 !important;
+  }
+  :global(.ant-tabs-tab-active) {
+    font-weight: 600 !important;
+    color: rgba(51, 51, 51, 1) !important;
+  }
+  :global(.ant-tabs-ink-bar) {
+    background: rgba(7, 192, 194, 1) !important;
+    height: 3px !important;
+  }
+}
+
+.dakale_context_mobile {
+  padding-top: 20px;
+  font-size: 12px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(51, 51, 51, 1);
+  line-height: 1;
+  :global {
+    .ant-form-item-label {
+      padding: 0 0 3px;
+    }
+    .ant-form-item-label > label {
+      font-size: 12px;
+    }
+    .ant-btn:hover,
+    .ant-btn:focus {
+      color: white;
+      background-color: #06ced0;
+    }
+  }
+}
+
+.dakale_contextTitle {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 30px 0 0;
+}
+
+.dataleMobileBtn {
+  display: inline-block;
+  background: rgba(7, 192, 194, 1);
+  border-radius: 3px;
+  opacity: 0.5;
+  color: #ffffff;
+}
+
+:global(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: rgba(7, 192, 194, 1) !important;
+  border-color: rgba(7, 192, 194, 1) !important;
+}
+
+:global(.ant-checkbox-input) {
+  display: inline-block;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+:global(.ant-checkbox-checked::after) {
+  display: inline;
+}
+
+:global(.ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover
+    .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner) {
+  border-color: rgba(7, 192, 194, 1) !important;
+}
+
+.dakale_Submit {
+  margin: 0 auto;
+  margin-top: 30px;
+  width: 100%;
+  height: 40px;
+  background: rgba(7, 192, 194, 1);
+  box-shadow: 0px 5px 20px 0px rgba(0, 114, 116, 0.25);
+  border-radius: 3px;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: 2px;
+  text-shadow: 0px 5px 20px rgba(0, 114, 116, 0.25);
+  text-align: center;
+}
+
+.dakale_Submit {
+  outline: 0;
+  background: rgba(7, 192, 194, 1);
+  border-color: rgba(7, 192, 194, 1);
+  &:hover,
+  &:focus,
+  &:active {
+    outline: 0;
+    background: #0bdadc;
+    border-color: #0bdadc;
+  }
+}
+
+.dakale_user_form_item {
+  margin-bottom: 14px;
+}
+
+// 二维码
+
+.dakale_qrcode_box {
+  margin-top: 30px;
+  background: #ffffff;
+  .dakale_qrcode {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+  }
+  .dakale_user_qrcode_tip {
+    margin-top: 20px;
+    line-height: 1;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(51, 51, 51, 1);
+    text-align: center;
+  }
+}

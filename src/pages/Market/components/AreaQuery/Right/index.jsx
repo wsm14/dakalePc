@@ -3,20 +3,15 @@ import { Col, Card, Tag } from 'antd';
 import { BankOutlined, TeamOutlined } from '@ant-design/icons';
 
 const AreaQueryRight = ({ item, onClick }) => {
-  const { name } = item;
+  const { name, id, gdp, price, population, status } = item;
   return (
-    <Col span={6}>
+    <Col span={4}>
       <Card
         title={name}
         headStyle={{ padding: '0 16px' }}
         bodyStyle={{ padding: 0 }}
-        onClick={() => onClick({ name })}
-        extra={
-          <>
-            <Tag color="green">已签 3/10</Tag>
-            <Tag color="gold">定金 3/10</Tag>
-          </>
-        }
+        onClick={() => onClick({ name, id, status })}
+        extra={status === '2' && <Tag color="green">已签</Tag>}
       >
         <div
           style={{
@@ -36,8 +31,8 @@ const AreaQueryRight = ({ item, onClick }) => {
             </div>
           </div>
           <div style={{ marginLeft: 10 }}>
-            <div>200000</div>
-            <div>200</div>
+            <div>{gdp || 0}</div>
+            <div>{population || 0}</div>
           </div>
         </div>
         <div
@@ -49,7 +44,7 @@ const AreaQueryRight = ({ item, onClick }) => {
             padding: 16,
           }}
         >
-          80万
+          {price || 0}
         </div>
       </Card>
     </Col>

@@ -302,7 +302,7 @@ export default [
         path: '/market/areaQuery',
         name: '区域查询系统',
         component: './Market/AreaQuery',
-        buttons: ['set', 'exportList'],
+        buttons: ['set'],
       },
       {
         path: '/market/cardpeaspark',
