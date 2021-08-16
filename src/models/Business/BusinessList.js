@@ -230,21 +230,23 @@ export default {
       const { content } = response;
       const { manualMap = {}, verificationRate, scanRate, promotionRate } = content;
       const { scan = [], verification = [], promotion = [] } = manualMap;
+      const d = new Date();
+      const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 
       const scanNew = scan.map((itemScan) => ({
         ...itemScan,
         time: [moment(itemScan.beginDate, 'YYYY-MM-DD'), moment(itemScan.endDate, 'YYYY-MM-DD')],
-        isExpired: moment(itemScan.endDate).isBefore(moment()), // true itemScan.endDate < today,
+        isExpired: new Date(today).getTime() > new Date(itemScan.endDate).getTime(), // true itemScan.endDate < today,
       }));
       const verificationNew = verification.map((itemVer) => ({
         ...itemVer,
         time: [moment(itemVer.beginDate, 'YYYY-MM-DD'), moment(itemVer.endDate, 'YYYY-MM-DD')],
-        isExpired: moment(itemVer.endDate).isBefore(moment()),
+        isExpired: new Date(today).getTime() > new Date(itemVer.endDate).getTime(),
       }));
       const proNew = promotion.map((itemPro) => ({
         ...itemPro,
         time: [moment(itemPro.beginDate, 'YYYY-MM-DD'), moment(itemPro.endDate, 'YYYY-MM-DD')],
-        isExpired: moment(itemPro.endDate).isBefore(moment()),
+        isExpired: new Date(today).getTime() > new Date(itemPro.endDate).getTime(),
       }));
       //扫码付
       const scanDetail = {
