@@ -18,7 +18,7 @@ const AreaQueryRight = ({ item, onClick }) => {
             )
           }
         />
-        <Card.Body style={{ padding: '10px 5px 6px' }}>
+        <Card.Body style={{ padding: '10px 10px 6px 5px' }}>
           <div
             style={{
               textAlign: 'right',
