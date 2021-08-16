@@ -230,9 +230,11 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
                 // 兼容数组
                 const value = !data.value ? `${j}` : data.value;
                 const name = data.name ? data.name : data;
+                const otherData = data.otherData ? data.otherData : '';
                 return (
-                  <Option key={data.key || j} value={value}>
+                  <Option key={data.key || j} value={value} option={data}>
                     {name}
+                    {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
                   </Option>
                 );
               }

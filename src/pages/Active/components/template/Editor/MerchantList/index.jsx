@@ -68,7 +68,7 @@ const MerchantList = (props) => {
                 ))}
                 <Form.Item>
                   <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
-                    {fields.length} / {50} 选择商家
+                    {fields.length} / {50} 添加商家
                   </Button>
                 </Form.Item>
               </>

@@ -1,55 +1,66 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
+import debounce from 'lodash/debounce';
+import EditorForm from '../../editorForm';
 import '../index.less';
 
 /**
  * 选择特惠店铺
  */
 const GoodsSelectModal = (props) => {
-  const { specialGoodsList = {}, form, dispatch, visible, onClose, loading } = props;
+  const { selectList = [], form, dispatch, visible, onClose, loading } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
-  const [tabKey, setTabKey] = useState('goods'); // tab类型
 
   useEffect(() => {
     if (visible) {
-      if (tabKey === 'goods') {
-        setSelectItem(form.getFieldValue('list') || []);
-      }
+      setSelectItem(form.getFieldValue('list') || []);
     }
   }, [visible]);
 
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '选择店铺',
-      name: 'ownerId',
-      type: 'merchant',
-      col: false,
-    },
-  ];
+  // 搜索店铺
+  const fetchGetMre = debounce((content) => {
+    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
+    dispatch({
+      type: 'baseData/fetchGetMerchantsSearch',
+      payload: {
+        content: content.replace(/'/g, ''),
+      },
+    });
+  }, 500);
 
-  // 获取特惠活动
-  const fetchSpecialGoodsList = (data) => {
-    if (!data.ownerId) return;
+  // 获取商家统计信息
+  const fetchGetMreInfo = (data) => {
     dispatch({
       type: 'activeTemplate/fetchSpecialGoodsSelect',
       payload: {
         ...data,
-        page: 1,
-        limit: 999,
       },
     });
   };
+
+  // 搜索参数
+  const formItems = [
+    {
+      label: '商家名称',
+      name: 'merchantId',
+      type: 'select',
+      loading,
+      onSearch: fetchGetMre,
+      onChange: (val, op) => {
+        console.log(val, op.option.option);
+        // handleStoreGoodsType(val);
+      },
+      select: selectList,
+    },
+  ];
 
   return (
     <Modal
       title={`选择店铺`}
       width={500}
       visible={visible}
-      afterClose={() => setTabKey('goods')}
-      bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
       destroyOnClose
       okButtonProps={{
         disabled: !selectItem.length,
@@ -59,11 +70,13 @@ const GoodsSelectModal = (props) => {
         onClose();
       }}
       onCancel={onClose}
-    ></Modal>
+    >
+      <EditorForm form={form} formItems={formItems}></EditorForm>
+    </Modal>
   );
 };
 
-export default connect(({ activeTemplate, loading }) => ({
-  specialGoodsList: activeTemplate.specialGoods,
-  loading,
+export default connect(({ baseData, loading }) => ({
+  selectList: baseData.merchantList,
+  loading: loading.effects['baseData/fetchGetMerchantsSearch'],
 }))(GoodsSelectModal);
