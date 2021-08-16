@@ -18,7 +18,7 @@ const AreaQueryRight = ({ item, onClick }) => {
             )
           }
         />
-        <Card.Body>
+        <Card.Body style={{ padding: '10px 5px 6px' }}>
           <div
             style={{
               textAlign: 'right',
@@ -35,7 +35,7 @@ const AreaQueryRight = ({ item, onClick }) => {
                 <TeamOutlined style={{ fontSize: 16 }} />
               </div>
             </div>
-            <div style={{ marginLeft: 10 }}>
+            <div style={{ marginLeft: 5 }}>
               <div>{gdp || 0}</div>
               <div>{population || 0}</div>
             </div>
