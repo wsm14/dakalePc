@@ -1,10 +1,17 @@
-import { BgColorsOutlined, PictureOutlined, ShoppingOutlined } from '@ant-design/icons';
+import {
+  BgColorsOutlined,
+  PictureOutlined,
+  ShoppingOutlined,
+  ShopOutlined,
+  MoneyCollectOutlined,
+} from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
 import CommonList from './CommonList';
 import img from './Img/img.png';
 import list from './Img/list.png';
+import mrelist from './Img/mrelist.png';
 
 /**
  * 组件库
@@ -46,6 +53,26 @@ export default {
     icon: <ShoppingOutlined style={{ fontSize: 24 }} />,
     name: '商品列表',
     editorType: 'commonList',
+    drop: true,
+    defaultImg: list,
+    defaultData: { styleIndex: 0, list: [] },
+    editorDom: (props) => <CommonList {...props}></CommonList>,
+    dom: (props) => CommonList.dom(props),
+  },
+  merchantList: {
+    icon: <ShopOutlined style={{ fontSize: 24 }} />,
+    name: '店铺列表',
+    editorType: 'merchantList',
+    drop: true,
+    defaultImg: mrelist,
+    defaultData: { styleIndex: 0, list: [] },
+    editorDom: (props) => <CommonList {...props}></CommonList>,
+    dom: (props) => CommonList.dom(props),
+  },
+  couponList: {
+    icon: <MoneyCollectOutlined style={{ fontSize: 24 }} />,
+    name: '券列表',
+    editorType: 'couponList',
     drop: true,
     defaultImg: list,
     defaultData: { styleIndex: 0, list: [] },
