@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Radio, Select, Upload, Modal, Switch } from 'antd';
+import { Form, Input, Radio, Spin, Empty, Select, Upload, Modal, Switch } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
 
@@ -217,6 +217,9 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
           <Select
             showSearch
             optionFilterProp="children"
+            notFoundContent={
+              item.loading ? <Spin size="small" /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+            }
             loading={item.loading}
             disabled={item.disabled}
             defaultActiveFirstOption={false}

@@ -27,12 +27,10 @@ const GoodsSelectModal = (props) => {
   }, 500);
 
   // 获取商家额外信息
-  const fetchGetMreInfo = (data, values) => {
+  const fetchGetMreInfo = (values) => {
     dispatch({
-      type: 'activeTemplate/fetchSpecialGoodsSelect',
-      payload: {
-        ...data,
-      },
+      type: 'activeTemplate/fetchGetMreConfigInfo',
+      payload: { ownerId: values.userMerchantIdString, ownerType: values.merchantType },
       callback: (val) => setSelectItem({ ...val, ...values }),
     });
   };
@@ -44,6 +42,7 @@ const GoodsSelectModal = (props) => {
       name: 'merchantId',
       type: 'select',
       loading,
+      placeholder: '请输入商家或集团名称搜索',
       onSearch: fetchGetMre,
       onChange: (val, op) => {
         const mreList = form.getFieldValue('list') || [];
@@ -51,9 +50,7 @@ const GoodsSelectModal = (props) => {
           notification.info({ message: '该店已存在' });
           return;
         }
-        console.log(val, op.option.option);
-        setSelectItem(op.option.option);
-        // fetchGetMreInfo(val, op.option.option);
+        fetchGetMreInfo(op.option.option);
       },
       select: selectList,
     },
@@ -84,5 +81,7 @@ const GoodsSelectModal = (props) => {
 
 export default connect(({ baseData, loading }) => ({
   selectList: baseData.merchantList,
-  loading: loading.effects['baseData/fetchGetMerchantsSearch'],
+  loading:
+    loading.effects['baseData/fetchGetMerchantsSearch'] ||
+    loading.effects['activeTemplate/fetchGetMreConfigInfo'],
 }))(GoodsSelectModal);
