@@ -8,7 +8,7 @@ export default ({ styleIndex = 0, list = [] }) => {
   };
 
   return [
-    <div style={{ padding: '4px 12px 16px 12px' }}>
+    <div style={{ padding: '4px 12px 16px' }}>
       {list.map((item) => (
         <div
           style={{
@@ -46,7 +46,7 @@ export default ({ styleIndex = 0, list = [] }) => {
                   textOverflow: 'ellipsis',
                 }}
               >
-                肯德基（假装是肯德基）
+                {item.merchantName}
               </div>
               {item.businessTime && (
                 <div
@@ -91,7 +91,6 @@ export default ({ styleIndex = 0, list = [] }) => {
                 >
                   {item.address}
                 </div>
-                <div></div>
               </div>
             </div>
           </div>
