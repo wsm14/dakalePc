@@ -59,7 +59,7 @@ export default {
       if (!response) return;
       const { content = {} } = response;
       for (const key in content) {
-        if (!content[key] || !content.length) {
+        if (!content[key] || (Array.isArray(content[key]) && !content[key].length)) {
           delete content[key];
         }
       }
