@@ -28,7 +28,9 @@ ${source
         item.businessTime
           ? `<div style="font-size: ${vw(
               14,
-            )};color: #108588;backgroundColor: #10858817;padding: ${vw(3)} ${vw(4)};marginTop: ${vw(
+            )};color: #108588;background-color: #10858817;padding: ${vw(3)} ${vw(
+              4,
+            )};margin-top: ${vw(
               10,
             )};width: fit-content;"><span style="font-weight: bold">营业时间</span><span style="display: inline-block; width: 1px;height: ${vw(
               10,
@@ -49,8 +51,7 @@ ${source
           : ''
       }<div style="flex: 1;overflow: hidden;white-space: nowrap; text-overflow: ellipsis;">${
         item.address
-      }</div></div></div></div><div style="font-size: ${vw(12)}; color: #333333; display: flex">
-      ${
+      }</div></div></div></div><div style="font-size: ${vw(12)}; color: #333333; display: flex">${
         item.totalMarkBean
           ? `<div style="margin: ${vw(12)} 0 ${vw(
               4,
@@ -60,16 +61,16 @@ ${source
               8,
             )} 0 ${vw(4)}">打卡捡豆${item.totalMarkBean}</span></div>`
           : ''
-      }
-      ${
-        item.onSellGoodsNum &&
-        `<div style="margin:  ${vw(12)} 0  ${vw(
-          4,
-        )}; display: flex;align-items: center;"><img style="width: ${vw(
-          16,
-        )}"src="https://resource-new.dakale.net/admin/image/merchant/odds.png"></img><span style="margin: 0 ${vw(
-          8,
-        )} 0 ${vw(4)}">${item.onSellGoodsNum}款特惠热卖中</span></div>`
+      }${
+        item.onSellGoodsNum
+          ? `<div style="margin:  ${vw(12)} 0  ${vw(
+              4,
+            )}; display: flex;align-items: center;"><img style="width: ${vw(
+              16,
+            )}"src="https://resource-new.dakale.net/admin/image/merchant/odds.png"></img><span style="margin: 0 ${vw(
+              8,
+            )} 0 ${vw(4)}">${item.onSellGoodsNum}款特惠热卖中</span></div>`
+          : ''
       }
       ${
         item.onSellCouponList
@@ -80,7 +81,7 @@ ${source
             )}" src="https://resource-new.dakale.net/admin/image/merchant/bond.png"
           ></img><span style="margin: 0 ${vw(8)} 0 ${vw(
               4,
-            )};flex: 1;overflow: hidden;whiteSpace: nowrap;text-overflow: ellipsis;"
+            )};flex: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
           >${item.onSellCouponList.map((i) => i.couponName).join(',')}</span></div>`
           : ''
       }</div></div>`,
