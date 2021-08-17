@@ -3,9 +3,6 @@ import { Space } from 'antd';
 import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
-// Banner跳转类型
-export const BANNER_JUMP_TYPE = { '': '无', H5: 'H5', inside: '原生页面' };
-
 const FormList = (props) => {
   const { form, fields, field, remove, move } = props;
 

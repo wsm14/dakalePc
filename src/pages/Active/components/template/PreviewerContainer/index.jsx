@@ -99,9 +99,11 @@ const ActiveTemplateIframe = (props) => {
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
           <BasketDom index={0} {...dropProps}></BasketDom>
+          
           {dataList.map((item, index) => (
             <React.Fragment key={`${index}`}>
               <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
+                
                 {/* 回显dom*/}
                 <PreviewerContent cell={item}></PreviewerContent>
                 {/* 高亮操作区域 */}

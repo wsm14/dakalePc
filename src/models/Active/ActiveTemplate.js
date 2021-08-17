@@ -3,6 +3,7 @@ import oss from 'ali-oss';
 import {
   fetchGetOss,
   fetchSpecialGoodsSelect,
+  fetchGetMreConfigInfo,
   fetchActiveAdd,
   fetchActiveEdit,
 } from '@/services/ActiveServices';
@@ -52,6 +53,17 @@ export default {
           specialGoods: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchGetMreConfigInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetMreConfigInfo, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      for (const key in content) {
+        if (!content[key] || !content.length) {
+          delete content[key];
+        }
+      }
+      callback(content);
     },
     *fetchActiveAdd({ payload, callback }, { call }) {
       const response = yield call(fetchActiveAdd, payload);

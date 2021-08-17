@@ -74,7 +74,7 @@ ${source
       112,
     )};height: ${vw(112)};margin-right: ${vw(8)};border-radius: ${vw(4)};background: url(${
       item.goodsImg
-    });background-size: cover;"></div><div style="flex: 1;overflow: hidden;"><div style="font-size: ${vw(
+    }) center / cover;"></div><div style="flex: 1;overflow: hidden;"><div style="font-size: ${vw(
       14,
     )};color: #333333; white-space:nowrap;text-overflow: ellipsis;overflow: hidden;">${
       item.goodsName

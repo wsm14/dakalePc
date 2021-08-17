@@ -18,6 +18,6 @@ export default [
   {
     header: '列表类',
     type: 'list',
-    children: ['commonList'],
+    children: ['commonList', 'merchantList', 'couponList'],
   },
 ];

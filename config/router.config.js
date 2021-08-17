@@ -300,9 +300,9 @@ export default [
       // 广告营销 market
       {
         path: '/market/areaQuery',
-        name: '区域查询系统',
+        name: '合伙查询系统',
         component: './Market/AreaQuery',
-        buttons: ['set', 'exportList'],
+        buttons: ['set'],
       },
       {
         path: '/market/cardpeaspark',
