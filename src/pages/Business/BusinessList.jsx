@@ -58,7 +58,8 @@ const BusinessListComponent = (props) => {
     },
     {
       label: '所属集团',
-      name: 'groupName',
+      name: 'groupId',
+      type: 'group',
     },
     {
       label: '店铺类型',

@@ -433,21 +433,21 @@ const CouponSet = (props) => {
       type: 'formItem',
       formItem: <DescSet name={'couponDesc'} form={form}></DescSet>,
     },
-    // {
-    //   title: `设置优惠券介绍`,
-    //   label: `优惠券介绍`,
-    //   type: 'textArea',
-    //   name: 'couponsDesc',
-    //   rules: [{ required: false }],
-    //   maxLength: 200,
-    // },
-    // {
-    //   label: `优惠券图片`,
-    //   name: 'couponDescImg',
-    //   type: 'upload',
-    //   maxFile: 20,
-    //   rules: [{ required: false }],
-    // },
+    {
+      title: `设置优惠券介绍`,
+      label: `优惠券介绍`,
+      type: 'textArea',
+      name: 'couponDetail',
+      rules: [{ required: false }],
+      maxLength: 200,
+    },
+    {
+      label: `优惠券图片`,
+      name: 'couponDetailImg',
+      type: 'upload',
+      maxFile: 20,
+      rules: [{ required: false }],
+    },
   ];
 
   return (

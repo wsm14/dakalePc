@@ -185,6 +185,12 @@ export function fetchGetUsersSearch(params) {
     params,
   });
 }
+// 集团列表用于搜索
+export function fetchGetGroupForSearch(params) {
+  return request('/admin/merchantGroup/listGroupForSearch', {
+    params,
+  });
+}
 
 // get 特惠sku通用-集团发布sku时可选商家列表
 export function fetchSkuAvailableMerchant(params) {

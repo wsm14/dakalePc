@@ -141,7 +141,7 @@ const BusinessDetailShow = (props) => {
     {
       label: '所属集团',
       name: 'groupName',
-      show: visible.type === '集团',
+      show: visible.type === '子门店',
     },
     {
       label: '省市区',
@@ -170,7 +170,7 @@ const BusinessDetailShow = (props) => {
       render: (val) => `${val || 0}%`,
     },
     {
-      label: '核销订单服务费', 
+      label: '核销订单服务费',
       name: 'commissionRatio',
       render: (val) => `${val || 0}%`,
     },
@@ -196,6 +196,11 @@ const BusinessDetailShow = (props) => {
       label: '店铺头图',
       name: ['headerContentObject', { image: 'imageUrl', video: 'mp4Url' }[headerType]],
       type: { image: 'upload', video: 'videoUpload' }[headerType],
+    },
+    {
+      label: '店铺LOGO',
+      name: 'logoImg',
+      type: 'upload',
     },
     {
       label: '店铺内景照',
@@ -261,6 +266,12 @@ const BusinessDetailShow = (props) => {
   ];
 
   const accountItems = [
+    {
+      label: '结算类型',
+      name: 'settlementFlag',
+      render: (val) => (val === '1' ? '独立结算' : '统一结算'),
+      show: visible.type === '子门店',
+    },
     {
       label: '账户类型',
       name: 'bankAccountType',

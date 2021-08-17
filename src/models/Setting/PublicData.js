@@ -24,6 +24,7 @@ import {
   fetchGetSpecialGoodsSelect,
   fetchGetMerchantsSearch,
   fetchGetUsersSearch,
+  fetchGetGroupForSearch,
   fetchSkuAvailableMerchant,
   fetchGoodsTagListByCategoryId,
   fetchGoodsIsCommission,
@@ -49,6 +50,7 @@ export default {
     excelList: { list: [], total: 0 },
     userList: [],
     merchantList: [],
+    groupList: [],
     ruleBean: 0,
     experLevel: {},
     groupMreList: [],
@@ -359,6 +361,21 @@ export default {
             otherData: item.address,
             value: item.userMerchantIdString,
             option: item,
+          })),
+        },
+      });
+    },
+    *fetchGetGroupForSearch({ payload }, { put, call }) {
+      const response = yield call(fetchGetGroupForSearch, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          groupList: content.merchantGroupDTOS.map((item) => ({
+            name: `${item.groupName} ${item.account}`,
+            otherData: item.address,
+            value: item.merchantGroupIdString,
           })),
         },
       });
