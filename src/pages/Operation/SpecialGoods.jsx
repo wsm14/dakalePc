@@ -77,7 +77,7 @@ const SpecialGoods = (props) => {
       label: '商品状态',
       name: 'deleteFlag',
       type: 'select',
-      select: ['已删除','未删除'],
+      select: ['已删除', '未删除'],
     },
     {
       label: '活动有效期',
@@ -355,22 +355,25 @@ const SpecialGoods = (props) => {
     },
   ];
 
-  //分享图
-
+  // 分享图
   const fetchShareImg = (record) => {
     const { specialGoodsId, ownerIdString, goodsName, ownerName } = record;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, ownerId: ownerIdString },
       callback: (val) => {
-        const { shareImg } = val;
+        const { shareImg, friendShareImg } = val;
+        const initialValues = {
+          shareImg,
+          friendShareImg,
+        };
         setVisibleShare({
           show: true,
           goodsName,
           ownerName,
           specialGoodsId,
           ownerIdString,
-          shareImg,
+          initialValues,
         });
       },
     });
@@ -504,7 +507,7 @@ const SpecialGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{deleteFlag:'1'}}
+        params={{ deleteFlag: '1' }}
         rowKey={(record) => `${record.specialGoodsId}`}
         rowSelection={{
           getCheckboxProps: ({ status, deleteFlag }) => ({

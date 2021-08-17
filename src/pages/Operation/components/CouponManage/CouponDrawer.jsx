@@ -48,7 +48,7 @@ const CouponDrawer = (props) => {
           ownerCouponId,
           ownerId,
           ...other,
-          couponDetailImg: coupoImg,
+          couponDetailImg: coupoImg.toString(),
           couponType: 'reduce',
           merchantIds: merchantIds.toString(),
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
