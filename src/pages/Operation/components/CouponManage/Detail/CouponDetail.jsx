@@ -11,6 +11,8 @@ const GoodsDetail = (props) => {
     buyFlag = '1',
     merchantList = [],
   } = detail;
+
+  console.log(detail, '111');
   // 参与活动的店铺
   const mreFormItems = [
     {
@@ -61,7 +63,7 @@ const GoodsDetail = (props) => {
     {
       label: '使用门槛',
       name: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' || val === '' ? '无门槛' : `满${val}元可使用`),
+      render: (val) => (val != '0' && val ? `满${val}元可使用` : '无门槛'),
     },
     {
       label: '使用有效期',
@@ -128,6 +130,7 @@ const GoodsDetail = (props) => {
     },
     {
       label: '优惠券图片',
+      type: 'upload',
       name: 'couponDetailImg',
     },
   ];
