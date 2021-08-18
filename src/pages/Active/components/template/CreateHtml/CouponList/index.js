@@ -55,7 +55,7 @@ export default (function (list, id) {
   }
 
   // 默认50%
-  function showList(source, payC = 50) {
+  function showList(source, payC = 50, shareC) {
     const vw = (px) => (px / 375) * 100 + 'vw';
     document.getElementById(id).innerHTML = `<div style="padding: ${vw(4)} ${vw(12)} ${vw(16)}">
 ${source
@@ -113,7 +113,9 @@ ${source
       13,
     )};font-size: ${vw(
       14,
-    )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">抢购</div></div></div></div>`,
+    )};background: #EF476F;color: #FFFFFF;display: flex;align-items: center;justify-content: center;line-height: normal;">${
+      shareC ? `分享赚￥${computedPrice(item.buyPrice - item.merchantPrice, shareC)}` : '抢购'
+    }</div></div></div></div>`,
   )
   .join('')}</div>`;
   }
