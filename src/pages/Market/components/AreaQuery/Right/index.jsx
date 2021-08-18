@@ -20,11 +20,11 @@ const AreaQueryRight = ({ item, onClick }) => {
             padding: 16,
           }}
         >
-          <div style={{ display: 'flex', flex: 1 }}>
+          <div style={{ display: 'flex' }}>
             <BankOutlined style={{ fontSize: 20 }} />
             <div style={{ flex: 1 }}>{gdp || 0}</div>
           </div>
-          <div style={{ display: 'flex', flex: 1 }}>
+          <div style={{ display: 'flex' }}>
             <TeamOutlined style={{ fontSize: 20 }} />
             <div style={{ flex: 1 }}>{population || 0}</div>
           </div>

@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import {
   fetchGetOss,
+  fetchCouponSelect,
   fetchSpecialGoodsSelect,
   fetchGetMreConfigInfo,
   fetchActiveAdd,
@@ -13,6 +14,7 @@ export default {
 
   state: {
     specialGoods: { list: [], total: 0 },
+    coupon: [],
   },
 
   reducers: {
@@ -51,6 +53,18 @@ export default {
         type: 'save',
         payload: {
           specialGoods: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      const { ownerId } = payload;
+      yield put({
+        type: 'save',
+        payload: {
+          coupon: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
         },
       });
     },

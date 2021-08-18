@@ -14,6 +14,13 @@ export async function fetchSpecialGoodsSelect(params) {
   });
 }
 
+// get 获取优惠券选择列表
+export async function fetchCouponSelect(params) {
+  return request('/admin/coupon/listCouponForActivityTemp', {
+    params,
+  });
+}
+
 // get 获取商家详细数量 - 券/打卡豆数/券数量
 export async function fetchGetMreConfigInfo(params) {
   return request('/admin/merchantManagement/getSomeInfoByOwnerId', {

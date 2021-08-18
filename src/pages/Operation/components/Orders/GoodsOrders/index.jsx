@@ -229,7 +229,9 @@ const GoodsOrders = (props) => {
               style={{ marginLeft: 5 }}
             />
           </span>
-          {val != 3 && <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>}
+          {(val === 2 || val === 6) && (
+            <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
+          )}
         </>
       ),
     },
