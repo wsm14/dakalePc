@@ -29,7 +29,7 @@ const FormList = (props) => {
             </div>
             <div className={styles.listItem_info}>
               <div>券名称：{goodsItem.couponName}</div>
-              <div>券价值：{goodsItem.reduceObject.couponPrice}元</div>
+              <div>券价值：{goodsItem?.reduceObject?.couponPrice}元</div>
               <div>券售价：{goodsItem.buyPrice || 0}元</div>
             </div>
           </>
