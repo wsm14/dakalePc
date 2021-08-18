@@ -54,7 +54,7 @@ const PreferentialDetail = (props) => {
     {
       label: '使用门槛',
       name: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' ? '无门槛' : `满${val}元可使用`),
+      render: (val) => (val != '0' && val ? `满${val}元可使用` : '无门槛'),
     },
     {
       label: '使用有效期',
