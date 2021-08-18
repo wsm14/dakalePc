@@ -73,7 +73,8 @@ const AreaSet = (props) => {
         },
         callback: () => {
           if (`${row.id}`.length === 2) fetchAreaQueryInfo({ level: 1 });
-          else if (`${row.id}`.length === 4) fetchAreaQueryCityInfo({ pid: `${row.id}`.slice(0, 2) });
+          else if (`${row.id}`.length === 4)
+            fetchAreaQueryCityInfo({ pid: `${row.id}`.slice(0, 2) });
           else if (`${row.id}`.length === 6) fetchAreaQueryDInfo({ pid: `${row.id}`.slice(0, 4) });
           setEditingKey('');
         },

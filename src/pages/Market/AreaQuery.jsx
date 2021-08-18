@@ -30,7 +30,7 @@ const AreaQuery = (props) => {
   const cardBtnList = [
     {
       text: '配置',
-      auth: 'save',
+      auth: 'set',
       onClick: () => setVisibleSet(true),
     },
   ];
