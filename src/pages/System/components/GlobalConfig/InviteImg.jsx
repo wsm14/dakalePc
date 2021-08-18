@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Tabs, Form, Button } from 'antd';
+import { GLOBAL_CONFIG_SHARE } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import StoreList from '@/pages/Business/components/Group/StoreList';
@@ -52,6 +53,8 @@ const InviteImg = (props) => {
       name: 'shareImg',
       type: 'upload',
       maxFile: 6,
+      extra: '请上传1080*2340px的png/jpg格式图片',
+      imgRatio: GLOBAL_CONFIG_SHARE,
     },
   ];
   const handleChange = (key) => {

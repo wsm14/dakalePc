@@ -31,3 +31,6 @@ export const VANE_BANNER = 702 / 140;
 
 // 好友分享图
 export const VIDEO_SHARE_IMG = 500 / 400;
+
+//全局配置分享图
+export const GLOBAL_CONFIG_SHARE = 1080 / 2340;
