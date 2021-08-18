@@ -27,14 +27,14 @@ ${source
       }</div>${
         item.businessTime
           ? `<div style="font-size: ${vw(
-              14,
-            )};color: #108588;background-color: #10858817;padding: ${vw(3)} ${vw(
+              12,
+            )};color: #108588;background-color: rgba(16,133,136,0.09);padding: ${vw(3)} ${vw(
               4,
             )};margin-top: ${vw(
               10,
             )};width: fit-content;"><span style="font-weight: bold">营业时间</span><span style="display: inline-block; width: 1px;height: ${vw(
               10,
-            )}; background: #1085884d;margin: ${vw(0)} ${vw(
+            )}; background: rgba(16,133,136,0.3);margin: ${vw(0)} ${vw(
               4,
             )};"></span><span style="color: #108588">${item.businessTime}</span></div>`
           : ''
@@ -82,7 +82,7 @@ ${source
           ></img><span style="margin: 0 ${vw(8)} 0 ${vw(
               4,
             )};flex: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-          >${item.onSellCouponList.map((i) => i.couponName).join(',')}</span></div>`
+          >${item.onSellCouponList.map((i) => `${i.buyPrice}元代${i?.reduceObject?.couponPrice}元`).join('，')}</span></div>`
           : ''
       }</div></div>`,
   )

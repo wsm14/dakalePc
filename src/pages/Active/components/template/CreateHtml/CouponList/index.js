@@ -99,7 +99,7 @@ ${source
     )};border: 1px solid #ef476f;display: inline-flex;align-items: center;overflow: hidden;position: relative;">
       <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
       3,
-    )};height: inherit;background: #ef476f;display: flex;align-items: center;color: #ffffff;">卡豆再省</div>
+    )};height: ${vw(16)};background: #ef476f;display: flex;align-items: center;color: #ffffff;">卡豆再省</div>
       <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
       2,
     )} solid transparent;"></div><div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(
