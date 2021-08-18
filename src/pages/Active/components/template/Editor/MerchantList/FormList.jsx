@@ -1,5 +1,6 @@
 import React from 'react';
 import { Space } from 'antd';
+import { BUSINESS_TYPE } from '@/common/constant';
 import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-design/icons';
 import styles from './index.less';
 
@@ -21,18 +22,15 @@ const FormList = (props) => {
         />
       </div>
       {(() => {
-        const goodsItem = form.getFieldValue('list')[field.name];
+        const item = form.getFieldValue('list')[field.name];
         return (
           <>
             <div className={styles.listItem_img}>
-              <img src={goodsItem.goodsImg} />
+              <img src={item.coverImg} />
             </div>
             <div className={styles.listItem_info}>
-              <div>商品名称：{goodsItem.goodsName}</div>
-              <div>原价：￥{goodsItem.realPrice}</div>
-              <div>
-                售价：<span className={styles.tip}>￥{goodsItem.oriPrice}</span>
-              </div>
+              <div>店铺名称：{item.merchantName}</div>
+              <div>店铺类型：{BUSINESS_TYPE[item.merchantType]}</div>
             </div>
           </>
         );
