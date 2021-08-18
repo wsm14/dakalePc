@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
+import template1 from './components/Img/template1.png';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
@@ -16,9 +17,9 @@ const ActiveTemplate = () => {
    */
   const cardItem = [
     {
-      img: 'https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png',
+      img: template1,
       type: 'public',
-      title: '通用模版',
+      title: '支持定制各类节日、主题活动，包括商品类，券类，店铺类以及组合模板',
     },
   ];
 
@@ -38,8 +39,9 @@ const ActiveTemplate = () => {
           {cardItem.map((item) => (
             <Col key={item.type}>
               <Card
-                cover={<img alt="example" src={item.img} />}
+                cover={<img alt="example" src={item.img} style={{ width: 266, height: 160 }} />}
                 actions={[<div onClick={() => handleSelectActive(item)}>使用模版</div>]}
+                bodyStyle={{ maxWidth: 265 }}
               >
                 {item.title}
               </Card>
