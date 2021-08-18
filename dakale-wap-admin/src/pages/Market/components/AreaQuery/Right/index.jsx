@@ -19,25 +19,14 @@ const AreaQueryRight = ({ item, onClick }) => {
           }
         />
         <Card.Body style={{ padding: '10px 10px 6px 5px' }}>
-          <div
-            style={{
-              textAlign: 'right',
-              fontSize: 14,
-              display: 'flex',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <div>
-              <div>
-                <BankOutlined style={{ fontSize: 16 }} />
-              </div>
-              <div>
-                <TeamOutlined style={{ fontSize: 16 }} />
-              </div>
+          <div style={{ textAlign: 'right', fontSize: 16 }}>
+            <div style={{ display: 'flex' }}>
+              <BankOutlined style={{ fontSize: 20 }} />
+              <div style={{ flex: 1 }}>{gdp || 0}</div>
             </div>
-            <div style={{ marginLeft: 5 }}>
-              <div>{gdp || 0}</div>
-              <div>{population || 0}</div>
+            <div style={{ display: 'flex' }}>
+              <TeamOutlined style={{ fontSize: 20 }} />
+              <div style={{ flex: 1 }}>{population || 0}</div>
             </div>
           </div>
         </Card.Body>
