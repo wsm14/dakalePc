@@ -17,22 +17,16 @@ const AreaQueryRight = ({ item, onClick }) => {
           style={{
             textAlign: 'right',
             fontSize: 16,
-            display: 'flex',
-            justifyContent: 'flex-end',
             padding: 16,
           }}
         >
-          <div>
-            <div>
-              <BankOutlined style={{ fontSize: 20 }} />
-            </div>
-            <div>
-              <TeamOutlined style={{ fontSize: 20 }} />
-            </div>
+          <div style={{ display: 'flex' }}>
+            <BankOutlined style={{ fontSize: 20 }} />
+            <div style={{ flex: 1 }}>{gdp || 0}</div>
           </div>
-          <div style={{ marginLeft: 10 }}>
-            <div>{gdp || 0}</div>
-            <div>{population || 0}</div>
+          <div style={{ display: 'flex' }}>
+            <TeamOutlined style={{ fontSize: 20 }} />
+            <div style={{ flex: 1 }}>{population || 0}</div>
           </div>
         </div>
         <div

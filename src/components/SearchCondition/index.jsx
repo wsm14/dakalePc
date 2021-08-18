@@ -124,8 +124,8 @@ const SearchCondition = (props) => {
           ></SearchItem>
         </FormItem>
       );
-      // 排版填充
       if (col) {
+        // 排版填充
         children.push(
           <Col
             lg={i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}

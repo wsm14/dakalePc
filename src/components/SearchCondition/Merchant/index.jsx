@@ -62,7 +62,7 @@ const MerchantSelect = (props) => {
           const nameData = data[value] ? data[label] : data;
           const otherData = data[tip] ? data[tip] : '';
           return (
-            <Option key={j} value={valueData} className={styles.formSelect}>
+            <Option key={j} value={valueData} className={styles.formSelect} option={data}>
               {`${nameData}\n${otherData}`}
             </Option>
           );

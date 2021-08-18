@@ -10,6 +10,7 @@ import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
 import CommonList from './CommonList';
 import MerchantList from './MerchantList';
+import CouponList from './CouponList';
 import img from './Img/img.png';
 import list from './Img/list.png';
 import mrelist from './Img/mrelist.png';
@@ -77,7 +78,7 @@ export default {
     drop: true,
     defaultImg: list,
     defaultData: { styleIndex: 0, list: [] },
-    editorDom: (props) => <CommonList {...props}></CommonList>,
-    dom: (props) => CommonList.dom(props),
+    editorDom: (props) => <CouponList {...props}></CouponList>,
+    dom: (props) => CouponList.dom(props),
   },
 };

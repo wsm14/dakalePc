@@ -1,5 +1,7 @@
 import { uuid } from '@/utils/utils';
 import commonList1 from './CommonList';
+import couponList1 from './CouponList';
+import merchantList1 from './MerchantList';
 
 let head = {}; // [key]: value[]
 let footer = {}; // [key]: value
@@ -58,6 +60,23 @@ const htmlDom = {
   commonList: ({ styleIndex, list }, uid) => {
     head = { ...head, request: requestJs };
     const functionIndex = [commonList1][styleIndex];
+    return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
+      list,
+    )},"${uid}")<\/script>`;
+  },
+
+  // 商家列表
+  merchantList: ({ styleIndex, list }, uid) => {
+    const functionIndex = [merchantList1][styleIndex];
+    return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
+      list,
+    )},"${uid}")<\/script>`;
+  },
+
+  // 券列表
+  couponList: ({ styleIndex, list }, uid) => {
+    head = { ...head, request: requestJs };
+    const functionIndex = [couponList1][styleIndex];
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;
