@@ -79,7 +79,7 @@ const SelectBlock = (props) => {
           const nameData = data[value] ? data[label] : data;
           const otherData = data[tip] ? data[tip] : '';
           return (
-            <Option key={j} value={valueData}>
+            <Option key={j} value={valueData} option={data}>
               {nameData}
               {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
             </Option>
