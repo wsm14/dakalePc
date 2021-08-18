@@ -4,8 +4,8 @@ import { message } from 'antd';
 import '../../lib/aliyun-upload-sdk-1.5.2.min.js';
 
 const uploadLive = ({ data, title, callback }) => {
-  if (typeof data === 'string') {
-    callback(data);
+  if (typeof data === 'string' || !data) {
+    callback(data || undefined);
     return;
   }
   const { file } = data;
