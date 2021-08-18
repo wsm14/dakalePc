@@ -96,17 +96,19 @@ ${source
       16,
     )};border-radius: ${vw(8)};margin-top: ${vw(
       6,
-    )};border: 1px solid #ef476f;display: inline-flex;align-items: center;overflow: hidden;position: relative;">
-      <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(
-      3,
-    )};height: ${vw(16)};background: #ef476f;display: flex;align-items: center;color: #ffffff;">卡豆再省</div>
+    )};display: inline-flex;align-items: center;overflow: hidden;position: relative;">
+      <div style="font-size: ${vw(10)};padding-left: ${vw(4)};padding-right: ${vw(3)};height: ${vw(
+      16,
+    )};background: #ef476f;display: flex;align-items: center;color: #ffffff;z-index: 1">卡豆再省</div>
       <div style="width: 0;height: 0;border-top: ${vw(16)} solid #ef476f;border-right:${vw(
       2,
-    )} solid transparent;"></div><div style="font-size: ${vw(12)};border-radius: 0 ${vw(50)} ${vw(
+    )} solid transparent;z-index: 1"></div><div style="font-size: ${vw(12)};border-radius: 0 ${vw(
       50,
-    )} 0;padding-right: ${vw(
+    )} ${vw(50)} 0;padding-right: ${vw(
       4,
-    )};font-weight: bold;color: #ef476f;background: #ffffff;">￥${computedPrice(
+    )};font-weight: bold;color: #ef476f;background: #ffffff;padding-left: ${vw(
+      10,
+    )};margin-left: -${vw(10)};border: 1px solid #ef476f;height: ${vw(16)};display: flex;align-items: center;">￥${computedPrice(
       item.buyPrice,
       payC,
     )}</div></div></div><div style="padding: 0 ${vw(8)};height: ${vw(27)};border-radius: ${vw(
