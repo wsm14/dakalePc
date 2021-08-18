@@ -5,6 +5,7 @@
  */
 import React, { useEffect } from 'react';
 import ProLayout, { RouteContext } from '@ant-design/pro-layout';
+import FastClick from 'react-fastclick-alt';
 import { BackTop } from 'antd';
 import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
@@ -12,6 +13,7 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import HeaderContent from '@/components/GlobalHeader/HeaderContent';
 import iconEnum from '@/common/iconEnum';
 import logo from '../../public/favicon.png';
+import './style.less';
 
 const BasicLayout = (props) => {
   const {
@@ -87,31 +89,33 @@ const BasicLayout = (props) => {
   };
 
   return (
-    <ProLayout
-      onPageChange={handleCloseTitle}
-      logo={logo}
-      onCollapse={handleMenuCollapse}
-      menuItemRender={(menuItemProps, defaultDom) => {
-        if (menuItemProps.isUrl || !menuItemProps.path) {
-          return defaultDom;
-        }
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
-      }}
-      itemRender={(route, params, routes, paths) => {
-        return false;
-      }}
-      menuDataRender={() => menuDataRender(menuList)}
-      menu={{ loading }}
-      headerRender={() => <HeaderContent />}
-      rightContentRender={() => <RightContent />}
-      {...props}
-      {...settings}
-    >
-      <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
-        {children}
-      </RouteAuthority>
-      <BackTop visibilityHeight={100} style={{ right: 25 }} />
-    </ProLayout>
+    <FastClick>
+      <ProLayout
+        onPageChange={handleCloseTitle}
+        logo={logo}
+        onCollapse={handleMenuCollapse}
+        menuItemRender={(menuItemProps, defaultDom) => {
+          if (menuItemProps.isUrl || !menuItemProps.path) {
+            return defaultDom;
+          }
+          return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        }}
+        itemRender={(route, params, routes, paths) => {
+          return false;
+        }}
+        menuDataRender={() => menuDataRender(menuList)}
+        menu={{ loading }}
+        headerRender={() => <HeaderContent />}
+        rightContentRender={() => <RightContent />}
+        {...props}
+        {...settings}
+      >
+        <RouteAuthority authority={{ path: location.pathname, routes: props.route.routes }}>
+          {children}
+        </RouteAuthority>
+        <BackTop visibilityHeight={100} style={{ right: 25 }} />
+      </ProLayout>
+    </FastClick>
   );
 };
 

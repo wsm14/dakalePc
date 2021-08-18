@@ -17,7 +17,7 @@ export default [
     routes: [
       {
         path: '/market/areaQuery',
-        name: '区域查询系统',
+        name: '合伙查询系统',
         component: './Market/AreaQuery',
         buttons: ['set', 'exportList'],
       },
