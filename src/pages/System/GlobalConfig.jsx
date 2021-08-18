@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import styles from './index.less';
-import InviteImg from './components/GlobalConfig/InviteImg'
+import InviteImg from './components/GlobalConfig/InviteImg';
 
 const GlobalConfig = (props) => {
   let main = undefined;
