@@ -223,7 +223,7 @@ const BusinessListComponent = (props) => {
           type: 'rate',
           title: '费率',
           click: () => fetchGetRate({ type: 'merchant', record }),
-          visible: record.bankStatus === '3',
+          visible: record.bankStatus === '3' && !record.groupId,
         },
       ],
     },

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
+import { VIDEO_SHARE_IMG } from '@/common/imgRatio';
 import { Form, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
@@ -13,31 +14,39 @@ const ShareImg = (props) => {
     ownerName,
     specialGoodsId = '',
     ownerIdString = '',
-    shareImg = '',
+    initialValues = {},
   } = visible;
 
   const [form] = Form.useForm();
   const formItems = [
     {
-      label: '分享图',
+      label: '朋友圈分享图',
       name: 'shareImg',
       type: 'upload',
       maxFile: 1,
     },
+    {
+      label: '好友分享图',
+      name: 'friendShareImg',
+      type: 'upload',
+      maxFile: 1,
+      imgRatio: VIDEO_SHARE_IMG,
+    },
   ];
   const handleSave = () => {
-    form.validateFields().then((values) => {
-      const { shareImg } = values;
-      aliOssUpload(shareImg).then((res) => {
-        dispatch({
-          type: 'specialGoods/fetchSpecialGoodsShareEdit',
-          payload: {
-            id: specialGoodsId,
-            ownerId: ownerIdString,
-            shareImg: res.toString(),
-          },
-          callback: onClose,
-        });
+    form.validateFields().then(async (values) => {
+      const { shareImg, friendShareImg } = values;
+      const sImg = await aliOssUpload(shareImg);
+      const fImg = await aliOssUpload(friendShareImg);
+      dispatch({
+        type: 'specialGoods/fetchSpecialGoodsShareEdit',
+        payload: {
+          id: specialGoodsId,
+          ownerId: ownerIdString,
+          shareImg: sImg.toString(),
+          friendShareImg: fImg.toString(),
+        },
+        callback: onClose,
       });
     });
   };
@@ -57,7 +66,7 @@ const ShareImg = (props) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={{ shareImg: shareImg }}
+        initialValues={initialValues}
       ></FormCondition>
     </DrawerCondition>
   );

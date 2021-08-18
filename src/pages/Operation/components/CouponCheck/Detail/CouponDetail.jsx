@@ -145,7 +145,7 @@ const GoodsDetail = (props) => {
     {
       label: '使用门槛',
       name: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' || val === '' ? '无门槛' : `满${val}元可使用`),
+      render: (val) => (val != '0' && val ? `满${val}元可使用` : '无门槛'),
     },
     {
       label: '使用有效期',
@@ -206,14 +206,15 @@ const GoodsDetail = (props) => {
           detail.reduceObject.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
     },
-    // {
-    //   label: '优惠券介绍',
-    //   name: 'couponsDesc',
-    // },
-    // {
-    //   label: '优惠券图片',
-    //   name: 'couponDescImg',
-    // },
+    {
+      label: '优惠券介绍',
+      name: 'couponDetail',
+    },
+    {
+      label: '优惠券图片',
+      type: 'upload',
+      name: 'couponDetailImg',
+    },
   ];
   //分佣配置
   const commissionItem = [
