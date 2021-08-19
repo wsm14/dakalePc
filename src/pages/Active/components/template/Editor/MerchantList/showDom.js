@@ -141,7 +141,10 @@ export default ({ styleIndex = 0, list = [] }) => {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {item.onSellCouponList.map((i) => `${i.buyPrice}元代${i?.reduceObject?.couponPrice}元`).join('，')}
+                  {item.onSellCouponList
+                    .filter((i) => i.buyPrice)
+                    .map((i) => `${i.buyPrice}元代${i?.reduceObject?.couponPrice}元`)
+                    .join('，')}
                 </span>
               </div>
             )}

@@ -82,7 +82,10 @@ ${source
           ></img><span style="margin: 0 ${vw(8)} 0 ${vw(
               4,
             )};flex: 1;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
-          >${item.onSellCouponList.map((i) => `${i.buyPrice}元代${i?.reduceObject?.couponPrice}元`).join('，')}</span></div>`
+          >${item.onSellCouponList
+            .filter((i) => i.buyPrice)
+            .map((i) => `${i.buyPrice}元代${i?.reduceObject?.couponPrice}元`)
+            .join('，')}</span></div>`
           : ''
       }</div></div>`,
   )
