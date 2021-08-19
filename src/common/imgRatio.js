@@ -29,8 +29,8 @@ export const CIRCLE_ICON = 750 / 460;
 // 风向标配置中增加风向标banner图的配置
 export const VANE_BANNER = 702 / 140;
 
-// 好友分享图
-export const VIDEO_SHARE_IMG = 500 / 400;
+// 微信好友分享图
+export const WXFRIEND_SHARE_IMG = 375 / 300;
 
 //全局配置分享图
 export const GLOBAL_CONFIG_SHARE = 1080 / 1920;
