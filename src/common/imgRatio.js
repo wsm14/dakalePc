@@ -23,8 +23,8 @@ export const VANE_ICON = 80 / 80;
 // 商圈
 export const CIRCLE_ICON = 750 / 460;
 
-// 好友分享图
-export const VIDEO_SHARE_IMG = 500 / 400;
+// 微信好友分享图
+export const WXFRIEND_SHARE_IMG = 375 / 300;
 
 //全局配置分享图
-export const GLOBAL_CONFIG_SHARE = 1080 / 2340;
+export const GLOBAL_CONFIG_SHARE = 1080 / 1920;
