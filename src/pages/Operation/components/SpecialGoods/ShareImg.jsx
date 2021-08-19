@@ -24,6 +24,7 @@ const ShareImg = (props) => {
       name: 'shareImg',
       type: 'upload',
       maxFile: 1,
+      rules: [{ required: false }],
     },
     {
       label: '好友分享图',
@@ -31,11 +32,12 @@ const ShareImg = (props) => {
       type: 'upload',
       maxFile: 1,
       imgRatio: VIDEO_SHARE_IMG,
+      rules: [{ required: false }],
     },
   ];
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { shareImg, friendShareImg } = values;
+      const { shareImg = '', friendShareImg = '' } = values;
       const sImg = await aliOssUpload(shareImg);
       const fImg = await aliOssUpload(friendShareImg);
       dispatch({
