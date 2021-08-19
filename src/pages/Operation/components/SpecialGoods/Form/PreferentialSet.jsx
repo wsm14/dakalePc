@@ -252,6 +252,7 @@ const PreferentialSet = ({
       name: 'activityGoodsImg',
       type: 'upload',
       maxFile: 5,
+      maxSize: 500,
     },
     {
       label: `${goodsTypeName}名称`,
