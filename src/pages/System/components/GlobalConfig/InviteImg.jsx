@@ -53,7 +53,7 @@ const InviteImg = (props) => {
       name: 'shareImg',
       type: 'upload',
       maxFile: 6,
-      extra: '请上传1080*2340px的png/jpg格式图片',
+      extra: '请上传1080*1920px的png/jpg格式图片',
       imgRatio: GLOBAL_CONFIG_SHARE,
     },
   ];
