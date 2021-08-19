@@ -358,6 +358,7 @@ export default {
             name: `${item.merchantName} ${item.account}`,
             otherData: item.address,
             value: item.userMerchantIdString,
+            option: item,
           })),
         },
       });

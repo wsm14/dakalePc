@@ -1,0 +1,144 @@
+@import '~antd/es/style/themes/default.less';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  min-height: 28px;
+  background-color: #c2c2c2;
+  background-clip: padding-box;
+}
+
+.ant-checkbox-group-item {
+  margin-right: 5px;
+}
+
+.ant-breadcrumb + .ant-page-header-heading {
+  margin-top: 0 !important;
+}
+
+.ant-page-header.has-breadcrumb {
+  padding-top: 0px !important;
+}
+
+.ant-page-header-heading {
+  flex: 1;
+}
+
+.ant-pro-basicLayout-content {
+  position: relative;
+  margin: 0 !important;
+}
+
+:global(.ant-pro-basicLayout-content) {
+  position: relative;
+  margin: 0 !important;
+}
+
+.ant-page-header {
+  display: flex;
+  align-items: center;
+  height: 55px;
+  padding: 0 24px !important;
+}
+
+.antd-menu-item-title {
+  margin-left: 10px;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+.ant-tooltip-inner,
+.ant-table-cell {
+  white-space: pre-line;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// 兼容IE11
+@media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
+  body .ant-design-pro > .ant-layout {
+    min-height: 100vh;
+  }
+}
+
+.dkl_green_btn {
+  color: white;
+  background: #70b603;
+  border-color: #70b603;
+  outline: 0;
+  &:hover,
+  &:focus,
+  &:active {
+    color: white;
+    background: #7ccc00;
+    border-color: #7ccc00;
+    outline: 0;
+  }
+}
+
+.dkl_back_btn {
+  color: white;
+  background: #ef5e5e;
+  border-color: #ea6b6b;
+  outline: 0;
+  &:hover,
+  &:focus,
+  &:active {
+    color: white;
+    background: #ef5e5e;
+    border-color: #ef5e5e;
+    outline: 0;
+  }
+}
+
+.from_before_tip {
+  &::before {
+    display: inline-block;
+    margin-right: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+}

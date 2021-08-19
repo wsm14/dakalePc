@@ -2,7 +2,9 @@ import { notification } from 'antd';
 import oss from 'ali-oss';
 import {
   fetchGetOss,
+  fetchCouponSelect,
   fetchSpecialGoodsSelect,
+  fetchGetMreConfigInfo,
   fetchActiveAdd,
   fetchActiveEdit,
 } from '@/services/ActiveServices';
@@ -12,6 +14,7 @@ export default {
 
   state: {
     specialGoods: { list: [], total: 0 },
+    coupon: [],
   },
 
   reducers: {
@@ -52,6 +55,29 @@ export default {
           specialGoods: { list: content.recordList, total: content.total },
         },
       });
+    },
+    *fetchCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchCouponSelect, payload);
+      if (!response) return;
+      const { content } = response;
+      const { ownerId } = payload;
+      yield put({
+        type: 'save',
+        payload: {
+          coupon: content.ownerCouponDTOList.map((i) => ({ ...i, ownerId })),
+        },
+      });
+    },
+    *fetchGetMreConfigInfo({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetMreConfigInfo, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      for (const key in content) {
+        if (!content[key] || (Array.isArray(content[key]) && !content[key].length)) {
+          delete content[key];
+        }
+      }
+      callback(content);
     },
     *fetchActiveAdd({ payload, callback }, { call }) {
       const response = yield call(fetchActiveAdd, payload);

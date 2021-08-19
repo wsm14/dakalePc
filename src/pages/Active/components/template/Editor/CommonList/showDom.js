@@ -27,8 +27,7 @@ export default ({ styleIndex = 0, list = [] }) => {
               height: 112,
               marginRight: 8,
               borderRadius: 4,
-              background: `url(${item.goodsImg})`,
-              backgroundSize: 'cover',
+              background: `url(${item.goodsImg}) center/cover`,
             }}
           ></div>
           <div style={{ flex: 1, overflow: 'hidden' }}>

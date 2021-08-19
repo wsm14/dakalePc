@@ -6,6 +6,7 @@ import numberGroup from './NumberGroup';
 import select from './Select';
 import merchant from './Merchant';
 import user from './User';
+import group from './Group';//集团列表-用于搜索
 import coupon from './Coupon'; // 优惠券搜索
 import good from './Good'; //商品搜索
 
@@ -21,7 +22,8 @@ const Searchor = {
   merchant,
   user,
   coupon,
-  good
+  good,
+  group
 };
 
 export { Searchor };

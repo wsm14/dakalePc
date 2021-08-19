@@ -298,6 +298,12 @@ export default [
       },
       // 广告营销 market
       {
+        path: '/market/areaQuery',
+        name: '合伙查询系统',
+        component: './Market/AreaQuery',
+        buttons: ['set'],
+      },
+      {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
         component: './Market/MarketCardPeasPark',

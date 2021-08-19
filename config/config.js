@@ -9,6 +9,7 @@ const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
   hash: true,
+  fastRefresh: {},
   history: { type: 'hash' },
   esbuild: {},
   antd: {},
