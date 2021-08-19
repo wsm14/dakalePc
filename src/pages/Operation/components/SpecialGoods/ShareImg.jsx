@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
-import { VIDEO_SHARE_IMG } from '@/common/imgRatio';
+import { WXFRIEND_SHARE_IMG } from '@/common/imgRatio';
 import { Form, Button } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
@@ -31,8 +31,9 @@ const ShareImg = (props) => {
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
-      imgRatio: VIDEO_SHARE_IMG,
+      imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],
+      extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
     },
   ];
   const handleSave = () => {
