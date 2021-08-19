@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
+import HolidayConfigSet from './Form/HolidayConfigSet';
 
 const HolidayConfig = (props) => {
   const childRef = useRef();
@@ -10,20 +11,17 @@ const HolidayConfig = (props) => {
       title: '节日名称',
       dataIndex: 'name',
     },
+
     {
-      title: '节日名称',
-      dataIndex: 'name',
+      title: '状态',
+      dataIndex: 'status',
     },
     {
-      title: '节日名称',
-      dataIndex: 'name',
+      title: '展示时间',
+      dataIndex: 'time',
     },
     {
-      title: '节日名称',
-      dataIndex: 'name',
-    },
-    {
-      title: '节日名称',
+      title: '更新人',
       dataIndex: 'name',
     },
     {
@@ -44,15 +42,30 @@ const HolidayConfig = (props) => {
     },
   ];
 
+  const handleUpdateSet = () => {};
+
+  const cardBtnList = [
+    {
+      auth: 'save',
+      onClick: handleUpdateSet,
+    },
+  ];
+
   return (
+      <>
     <TableDataBlock
-      cardProps={{ title: '节日配置' }}
+      cardProps={{
+        title: '节日配置',
+        extra: <ExtraButton list={cardBtnList}></ExtraButton>,
+      }}
       cRef={childRef}
-      loading={loading}
+      //   loading={loading}
       columns={getColumns}
       //   rowKey={(record) => `${record.authAccessId}`}
       dispatchType=""
     ></TableDataBlock>
+    <HolidayConfigSet></HolidayConfigSet>
+    </>
   );
 };
 
