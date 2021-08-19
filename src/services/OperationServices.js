@@ -20,6 +20,13 @@ export function fetchSpecialGoodsDetail(params) {
   });
 }
 
+// get 周边特惠 - 查询店铺主体当前的费率
+export function fetchCheckMreRate(params) {
+  return request('/admin/owner/rate/getOwnerEffectiveRate', {
+    params,
+  });
+}
+
 // get 周边特惠 - 商品码
 export function fetchSpecialGoodsQrCode(params) {
   return request('/admin/miniProgramUrl/specialGoodsQcodeUrl', {
@@ -97,7 +104,7 @@ export function fetchSpecialGoodsAddRemain(data) {
   });
 }
 
-//取消置顶
+// 取消置顶
 export function fetchSpecialCancleToTop(data) {
   return request('/admin/specialGoodsManagement/cancelTopRecommend', {
     method: 'POST',
@@ -105,7 +112,7 @@ export function fetchSpecialCancleToTop(data) {
   });
 }
 
-//资源位条件配置 /admin/dictionaryAdmin/updateDictionaryAdmin
+// 资源位条件配置 /admin/dictionaryAdmin/updateDictionaryAdmin
 export function fetchSpecialConditConfig(data) {
   return request('/admin/dictionaryAdmin/updateDictionaryAdmin', {
     method: 'POST',
@@ -113,7 +120,7 @@ export function fetchSpecialConditConfig(data) {
   });
 }
 
-//运营后台-特惠商品高佣联盟字典值 || 运营后台-特惠商品今日上新字典值
+// 运营后台-特惠商品高佣联盟字典值 || 运营后台-特惠商品今日上新字典值
 export function fetchResourceDicts(params) {
   return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
     params,

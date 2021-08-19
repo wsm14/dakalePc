@@ -139,6 +139,24 @@ const CouponSet = (props) => {
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
+  // 查询店铺主体的费率
+  const fetchCheckMreRate = (ownerId, type) => {
+    dispatch({
+      type: 'specialGoods/fetchCheckMreRate',
+      payload: {
+        ownerId,
+        ownerType: type || mreList.type,
+      },
+      callback: ({ commissionRatio = 0 }) =>
+        saveMreData({
+          groupId: ownerId,
+          ratio: commissionRatio,
+          keys: [],
+          list: [],
+        }),
+    });
+  };
+
   //sku通用-是否需要设置佣金
   const getCommissionFlag = (categoryId) => {
     dispatch({
@@ -201,13 +219,8 @@ const CouponSet = (props) => {
         setCommissionShow(false);
         //是否分佣
         getCommissionFlag(option.topCategoryId[0]);
+        fetchCheckMreRate(val);
         form.setFieldsValue({ merchantIds: undefined });
-        saveMreData({
-          groupId: val,
-          ratio: option.commissionRatio,
-          keys: [],
-          list: [],
-        });
       },
     },
 
