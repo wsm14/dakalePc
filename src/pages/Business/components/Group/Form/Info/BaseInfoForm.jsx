@@ -37,7 +37,7 @@ const BaseInfoForm = (props) => {
       message.info('请选择省市区并输入地址');
       return;
     }
-    if (address && initialValues.lat && initialValues.lnt) {
+    if (address && initialValues.lat && initialValues.lnt && !map) {
       setMap(true);
       setLocation([initialValues.lnt, initialValues.lat]);
       return;
