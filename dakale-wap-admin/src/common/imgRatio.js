@@ -30,4 +30,4 @@ export const CIRCLE_ICON = 750 / 460;
 export const VANE_BANNER = 702 / 140;
 
 // 好友分享图
-export const VIDEO_SHARE_IMG = 500 / 400;
+export const WXFRIEND_SHARE_IMG = 500 / 400;
