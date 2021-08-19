@@ -109,7 +109,23 @@ const UploadBlock = (props) => {
           if (file.type !== 'video/mp4') {
             message.error(`${file.name} 不是mp4格式`);
             file.dklFileStatus = 'out';
+            return false;
           }
+          let maxSize = 10;
+          const fileurl = URL.createObjectURL(file);
+          // 获取视频的时长
+          const audioElement = new Audio(fileurl);
+          audioElement.addEventListener('loadedmetadata', function (_event) {
+            const duration = audioElement.duration;
+            console.log(duration); //单位：秒
+            if (duration > 30) maxSize = 20;
+            const isLt1M = file.size / 1024 / 1024 < maxSize;
+            if (!isLt1M) {
+              message.error(`30s以内不能超过10M， 30秒以上不能超过20M`);
+              file.dklFileStatus = 'out';
+              form.setFieldsValue({ [fileKeyName]: undefined });
+            }
+          });
           return false;
         }}
         onChange={(value) => {
