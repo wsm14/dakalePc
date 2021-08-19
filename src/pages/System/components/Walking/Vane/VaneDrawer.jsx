@@ -156,7 +156,7 @@ const VaneDrawer = (props) => {
       name: ['windVaneParamObject', 'bannerImage'],
       type: 'upload',
       extra: '请上传702*140尺寸png、jpeg格式图片',
-      // maxFile: 1,
+      maxFile: 1,
       imgRatio: VANE_BANNER,
       visible: showUrl === 'native',
     },
