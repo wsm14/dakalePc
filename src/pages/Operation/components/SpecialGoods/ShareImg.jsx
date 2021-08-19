@@ -7,7 +7,7 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ShareImg = (props) => {
-  const { visible, onClose, dispatch } = props;
+  const { visible, onClose, dispatch, loading } = props;
   const {
     show = false,
     goodsName,
@@ -56,7 +56,7 @@ const ShareImg = (props) => {
     title: `${ownerName}--${goodsName}`,
     onClose,
     footer: (
-      <Button type="primary" onClick={handleSave}>
+      <Button type="primary" onClick={handleSave} loading={loading}>
         确认
       </Button>
     ),
@@ -72,4 +72,6 @@ const ShareImg = (props) => {
   );
 };
 
-export default connect(() => ({}))(ShareImg);
+export default connect(({ loading }) => ({
+  loading: loading.effects['specialGoods/fetchSpecialGoodsShareEdit'],
+}))(ShareImg);
