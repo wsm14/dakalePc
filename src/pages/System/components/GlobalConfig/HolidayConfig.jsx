@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import ExtraButton from '@/components/ExtraButton';
+import { FESTIVAL_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HolidayConfigSet from './Form/HolidayConfigSet';
 
 const HolidayConfig = (props) => {
+  const { dispatch, loading, festivalConfigList } = props;
   const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
@@ -17,40 +19,60 @@ const HolidayConfig = (props) => {
     {
       title: '状态',
       dataIndex: 'status',
+      render: (val) => FESTIVAL_STATUS[val],
     },
     {
       title: '展示时间',
-      dataIndex: 'time',
+      dataIndex: 'beginDay',
+      render: (val, row) => `${val}--${row.endDay}`,
     },
     {
       title: '更新人',
-      dataIndex: 'name',
+      dataIndex: 'updater',
     },
     {
       title: '操作',
-      dataIndex: 'name',
+      type: 'handle',
+      dataIndex: 'configFestivalId',
       render: (val, row) => [
         {
           type: 'down',
           title: '下架',
+          visible: row.status !== '2',
         },
         {
           type: 'edit',
-          click: (val, row) => handleUpdateSet('edit', val),
+          click: () => handleUpdateSet('edit', val),
+          visible: row.status === '2',
         },
         {
           type: 'info',
-          click: (val, row) => handleUpdateSet('info', val),
+          click: () => handleUpdateSet('info', val),
+          visible: row.status !== '2',
         },
       ],
     },
   ];
 
-  const handleUpdateSet = (type, val) => {
-    setVisible({
-      show: true,
-      type,
-    });
+  const handleUpdateSet = (type, configFestivalId) => {
+    if (['edit', 'info'].includes(type)) {
+      dispatch({
+        type: 'globalConfig/fetchFestivalConfigDetail',
+        payload: { configFestivalId },
+        callback: (detail) => {
+          setVisible({
+            show: true,
+            type,
+            initialValues: detail,
+          });
+        },
+      });
+    } else {
+      setVisible({
+        show: true,
+        type,
+      });
+    }
   };
 
   const cardBtnList = [
@@ -68,14 +90,22 @@ const HolidayConfig = (props) => {
           extra: <ExtraButton list={cardBtnList}></ExtraButton>,
         }}
         cRef={childRef}
-        //   loading={loading}
+        loading={loading}
         columns={getColumns}
-        //   rowKey={(record) => `${record.authAccessId}`}
-        dispatchType=""
+        rowKey={(record) => `${record.configFestivalId}`}
+        dispatchType="globalConfig/fetchListFestivalConfig"
+        {...festivalConfigList}
       ></TableDataBlock>
-      <HolidayConfigSet visible={visible} onClose={() => setVisible(false)} ></HolidayConfigSet>
+      <HolidayConfigSet
+        visible={visible}
+        onClose={() => setVisible(false)}
+        childRef={childRef}
+      ></HolidayConfigSet>
     </>
   );
 };
 
-export default connect()(HolidayConfig);
+export default connect(({ loading, globalConfig }) => ({
+  festivalConfigList: globalConfig.festivalConfigList,
+  loading: loading.models.globalConfig,
+}))(HolidayConfig);

@@ -9,9 +9,11 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const HolidayConfigSet = (props) => {
-  const { initialValues = {}, visible, onClose } = props;
-  const { show, type } = visible;
+  const { visible, onClose, childRef } = props;
+  const { show, type, initialValues = {} } = visible;
   const [form] = Form.useForm();
+
+  console.log(initialValues,"222")
 
   const disabledDate = (current) => {
     return current && current < moment().endOf('day').subtract(1, 'day');
@@ -27,8 +29,7 @@ const HolidayConfigSet = (props) => {
     {
       label: '展示时间',
       type: 'rangePicker',
-      name: 'showTimeStart',
-      end: 'showTimeEnd',
+      name: 'showTime',
       disabledDate: disabledDate,
       style: { flex: 1 },
       labelCol: { span: 6 },
@@ -40,7 +41,7 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传140*48px的png格式图片',
       imgRatio: LEFT_TOP_ICON,
-      name: 'icon',
+      name: ['pickUpBeans', 'upperLeftCorner'],
     },
     {
       label: '右下角倒计时',
@@ -48,14 +49,14 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传84*84px的png格式图片',
       imgRatio: RIGHT_COUNT_DWON,
-      name: 'icon',
+      name: ['pickUpBeans', 'lowerRightCornerCountdown'],
     },
     {
       label: '右下角倒计时动效',
       type: 'upload',
       extra: '请上传100kb的png格式图片',
       maxSize: 100,
-      name: 'icon',
+      name: ['pickUpBeans', 'lowerRightCornerCountdownDynamic'],
       labelCol: { span: 5 },
       style: { flex: 1 },
     },
@@ -66,7 +67,7 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传750*360px的png格式图片',
       imgRatio: TOP_BGIMG,
-      name: 'icon',
+      name: ['wanderAround', 'topBackground'],
       labelCol: { span: 5 },
       style: { flex: 1 },
     },
@@ -77,7 +78,7 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
-      name: 'icon',
+      name: ['bottomIcon', 'pickUpBeans'],
     },
     {
       label: '逛逛',
@@ -85,7 +86,7 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
-      name: 'icon',
+      name: ['bottomIcon', 'wanderAround'],
     },
     {
       label: '订单',
@@ -93,7 +94,7 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
-      name: 'icon',
+      name: ['bottomIcon', 'order'],
     },
     {
       label: '我的',
@@ -101,14 +102,14 @@ const HolidayConfigSet = (props) => {
       maxFile: 1,
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
-      name: 'icon',
+      name: ['bottomIcon', 'main'],
     },
     {
       title: '配置文件',
       label: '顶部背景',
       type: 'otherUpload',
       extra: '请上传动效json文件',
-      name: 'icon',
+      name: ['pickUpBeans', 'file'],
       labelCol: { span: 4 },
       style: { flex: 1 },
     },
