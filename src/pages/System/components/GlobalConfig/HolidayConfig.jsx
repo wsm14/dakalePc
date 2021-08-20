@@ -5,6 +5,8 @@ import TableDataBlock from '@/components/TableDataBlock';
 import HolidayConfigSet from './Form/HolidayConfigSet';
 
 const HolidayConfig = (props) => {
+  const [visible, setVisible] = useState(false);
+
   const childRef = useRef();
   const getColumns = [
     {
@@ -34,37 +36,44 @@ const HolidayConfig = (props) => {
         },
         {
           type: 'edit',
+          click: (val, row) => handleUpdateSet('edit', val),
         },
         {
           type: 'info',
+          click: (val, row) => handleUpdateSet('info', val),
         },
       ],
     },
   ];
 
-  const handleUpdateSet = () => {};
+  const handleUpdateSet = (type, val) => {
+    setVisible({
+      show: true,
+      type,
+    });
+  };
 
   const cardBtnList = [
     {
       auth: 'save',
-      onClick: handleUpdateSet,
+      onClick: () => handleUpdateSet('save'),
     },
   ];
 
   return (
-      <>
-    <TableDataBlock
-      cardProps={{
-        title: '节日配置',
-        extra: <ExtraButton list={cardBtnList}></ExtraButton>,
-      }}
-      cRef={childRef}
-      //   loading={loading}
-      columns={getColumns}
-      //   rowKey={(record) => `${record.authAccessId}`}
-      dispatchType=""
-    ></TableDataBlock>
-    <HolidayConfigSet></HolidayConfigSet>
+    <>
+      <TableDataBlock
+        cardProps={{
+          title: '节日配置',
+          extra: <ExtraButton list={cardBtnList}></ExtraButton>,
+        }}
+        cRef={childRef}
+        //   loading={loading}
+        columns={getColumns}
+        //   rowKey={(record) => `${record.authAccessId}`}
+        dispatchType=""
+      ></TableDataBlock>
+      <HolidayConfigSet visible={visible} onClose={() => setVisible(false)} ></HolidayConfigSet>
     </>
   );
 };

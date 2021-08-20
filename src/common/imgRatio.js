@@ -34,3 +34,15 @@ export const VIDEO_SHARE_IMG = 500 / 400;
 
 //全局配置分享图
 export const GLOBAL_CONFIG_SHARE = 1080 / 2340;
+
+//节日配置
+// 左上角
+export const LEFT_TOP_ICON = 140 / 48;
+
+//右下角倒计时
+export const RIGHT_COUNT_DWON = 84 / 84;
+
+// 顶部背景
+export const TOP_BGIMG = 750 / 360;
+
+export const TABBAR_ICON = 88 / 88;

@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Tabs, Form, Button, Upload } from 'antd';
-import { GLOBAL_CONFIG_SHARE } from '@/common/imgRatio';
+import { LEFT_TOP_ICON, RIGHT_COUNT_DWON, TOP_BGIMG, TABBAR_ICON } from '@/common/imgRatio';
+import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const HolidayConfigSet = (props) => {
-  const { initialValues = {} } = props;
+  const { initialValues = {}, visible, onClose } = props;
+  const { show, type } = visible;
   const [form] = Form.useForm();
 
   const disabledDate = (current) => {
@@ -37,6 +39,7 @@ const HolidayConfigSet = (props) => {
       type: 'upload',
       maxFile: 1,
       extra: '请上传140*48px的png格式图片',
+      imgRatio: LEFT_TOP_ICON,
       name: 'icon',
     },
     {
@@ -44,12 +47,25 @@ const HolidayConfigSet = (props) => {
       type: 'upload',
       maxFile: 1,
       extra: '请上传84*84px的png格式图片',
+      imgRatio: RIGHT_COUNT_DWON,
       name: 'icon',
     },
     {
       label: '右下角倒计时动效',
       type: 'upload',
       extra: '请上传100kb的png格式图片',
+      maxSize: 100,
+      name: 'icon',
+      labelCol: { span: 5 },
+      style: { flex: 1 },
+    },
+    {
+      title: '逛逛',
+      label: '顶部背景',
+      type: 'upload',
+      maxFile: 1,
+      extra: '请上传750*360px的png格式图片',
+      imgRatio: TOP_BGIMG,
       name: 'icon',
       labelCol: { span: 5 },
       style: { flex: 1 },
@@ -59,48 +75,63 @@ const HolidayConfigSet = (props) => {
       label: '捡豆',
       type: 'upload',
       maxFile: 1,
-      extra: '请上传750*360px的png格式图片',
+      extra: '请上传88*88px的png格式图片',
+      imgRatio: TABBAR_ICON,
       name: 'icon',
     },
     {
       label: '逛逛',
       type: 'upload',
       maxFile: 1,
-      extra: '请上传750*360px的png格式图片',
+      extra: '请上传88*88px的png格式图片',
+      imgRatio: TABBAR_ICON,
       name: 'icon',
     },
     {
       label: '订单',
       type: 'upload',
       maxFile: 1,
-      extra: '请上传750*360px的png格式图片',
+      extra: '请上传88*88px的png格式图片',
+      imgRatio: TABBAR_ICON,
       name: 'icon',
     },
     {
       label: '我的',
       type: 'upload',
       maxFile: 1,
-      extra: '请上传750*360px的png格式图片',
+      extra: '请上传88*88px的png格式图片',
+      imgRatio: TABBAR_ICON,
       name: 'icon',
     },
     {
       title: '配置文件',
       label: '顶部背景',
       type: 'otherUpload',
-      extra: '请上传750*360px的png格式图片',
+      extra: '请上传动效json文件',
       name: 'icon',
       labelCol: { span: 4 },
       style: { flex: 1 },
     },
   ];
-  const modalProps = {
-    title: '编辑',
-    visible: true,
-    width: 700,
-    footer:(
-        <Button type='primary'>保存</Button>
-    )
+
+  const handleSave = () => {
+    form.validateFields().then((values) => {
+      console.log(values, 'sss');
+    });
   };
+
+  const modalProps = {
+    title: { edit: '编辑', info: '详情', save: '新增' }[type],
+    visible: show,
+    width: 700,
+    onClose,
+    footer: (
+      <Button type="primary" onClick={handleSave}>
+        保存
+      </Button>
+    ),
+  };
+
   return (
     <DrawerCondition {...modalProps}>
       <FormCondition
