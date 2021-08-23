@@ -49,6 +49,7 @@ const GroupEdit = (props) => {
       activeValidity,
       topCategSelect,
       businessLicenseObject,
+      videoContentOb,
       allCode,
       ...other
     } = values;
@@ -75,6 +76,7 @@ const GroupEdit = (props) => {
                   categoryNode: topCategSelect.join('.'),
                   videoUrl: undefined,
                   videoId: videos,
+                  videoContentOb: videos ? videoContentOb : undefined,
                   frontImage: imgs, // 封面连接
                   frontImageWidth: imgs ? 960 : undefined, // 封面宽 16
                   frontImageHeight: imgs ? 540 : undefined, // 封面长 9
