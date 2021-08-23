@@ -63,7 +63,7 @@ const HolidayConfigSet = (props) => {
       maxSize: 100,
       name: ['pickUpBeans', 'lowerRightCornerCountdownDynamic'],
       labelCol: { span: 7 },
-      style: { width:'100%' },
+      style: { width: '100%' },
     },
     {
       label: '倒计时动效前缀名',
@@ -165,7 +165,7 @@ const HolidayConfigSet = (props) => {
       bottomIcon.main = res.slice(7, 8).toString();
       pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
 
-      const { file, ...other } = pickUpBeans;
+      const { file, imagePrefix, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
         const ids = `${key}Id`;
         return {
