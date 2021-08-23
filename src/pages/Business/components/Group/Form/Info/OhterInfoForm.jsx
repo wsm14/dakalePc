@@ -29,6 +29,7 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
 
   useEffect(() => {
     if (initialValues.brandLogo) {
+      setVideoImg(!!initialValues.videoId);
       setBandImg({ show: true, url: initialValues.brandLogo });
     }
   }, [initialValues]);
