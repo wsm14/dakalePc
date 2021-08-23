@@ -13,7 +13,13 @@ const HolidayConfigSet = (props) => {
   const { show, type, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
-  const { configFestivalId = '' } = initialValues;
+  const {
+    configFestivalId = '',
+    bottomIcon: bObj = {},
+    pickUpBeans: pObj = {},
+    wanderAround: wObj = {},
+  } = initialValues;
+  console.log(initialValues, 'configFestivalDetailId');
 
   const disabledDate = (current) => {
     return current && current < moment().endOf('day').subtract(1, 'day');
@@ -57,7 +63,14 @@ const HolidayConfigSet = (props) => {
       extra: '请上传100kb的png格式图片',
       maxSize: 100,
       name: ['pickUpBeans', 'lowerRightCornerCountdownDynamic'],
-      labelCol: { span: 5 },
+      labelCol: { span: 7 },
+      style: { width:'100%' },
+    },
+    {
+      label: '倒计时动效前缀名',
+      maxSize: 100,
+      name: ['pickUpBeans', 'imagePrefix'],
+      labelCol: { span: 7 },
       style: { flex: 1 },
     },
     {
@@ -124,7 +137,7 @@ const HolidayConfigSet = (props) => {
       const pickTopimg = checkFileData(pickUpBeans.upperLeftCorner);
       const pickBimg = checkFileData(pickUpBeans.lowerRightCornerCountdown);
       const pickBnamicimg = checkFileData(pickUpBeans.lowerRightCornerCountdownDynamic);
-      const file = checkFileData(pickUpBeans.file);
+      const files = checkFileData(pickUpBeans.file);
       const wandTopImg = checkFileData(wanderAround.topBackground);
       const bottomPImg = checkFileData(bottomIcon.pickUpBeans);
       const bottomWImg = checkFileData(bottomIcon.wanderAround);
@@ -134,7 +147,7 @@ const HolidayConfigSet = (props) => {
       const res = await aliOssUpload([
         ...pickTopimg,
         ...pickBimg,
-        ...file,
+        ...files,
         ...wandTopImg,
         ...bottomPImg,
         ...bottomWImg,
@@ -152,26 +165,33 @@ const HolidayConfigSet = (props) => {
       bottomIcon.order = res.slice(6, 7).toString();
       bottomIcon.main = res.slice(7, 8).toString();
       pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
-
-      const pickArr = Object.keys(pickUpBeans).map((key) => {
+      const { file, ...other } = pickUpBeans;
+      const pickArr = Object.keys(other).map((key) => {
+        const ids = `${key}Id`;
         return {
           topType: 'pickUpBeans',
           type: key,
           image: pickUpBeans[key],
+          configFestivalDetailId: pObj[ids],
           file: key === 'lowerRightCornerCountdownDynamic' ? pickUpBeans.file : '',
+          imagePrefix: key === 'lowerRightCornerCountdownDynamic' ? pickUpBeans.imagePrefix : '',
         };
       });
       const wanderArr = Object.keys(wanderAround).map((key) => {
+        const ids = `${key}Id`;
         return {
           topType: 'wanderAround',
           type: key,
+          configFestivalDetailId: wObj[ids],
           image: wanderAround[key],
         };
       });
       const bottomArr = Object.keys(bottomIcon).map((key) => {
+        const ids = `${key}Id`;
         return {
           topType: 'bottomIcon',
           type: key,
+          configFestivalDetailId: bObj[ids],
           image: bottomIcon[key],
         };
       });
