@@ -114,6 +114,7 @@ const OhterInfoForm = ({ form, list, formType, loading, dispatch, initialValues 
       maxFile: 1,
       imgRatio: BRAND_VIDEO_ADVERT,
       rules: [{ required: videoImg }],
+      visible: videoImg,
     },
     {
       label: '品牌宣传视频',
