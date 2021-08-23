@@ -41,8 +41,8 @@ const UploadBlock = (props) => {
     if (initialValues && Object.keys(initialValues).length) {
       // 键名是数组的情况
       if (Array.isArray(name)) {
-        const urlfile = getArrKeyVal(name, initialValues);
-        return urlfile ? uploadValues(urlFile) : [];
+        const urlFile = getArrKeyVal(name, initialValues);
+        return urlFile ? uploadValues(urlFile) : [];
       }
       // 键名是字符串的情况
       const fileArrar = initialValues[fileKeyName];
