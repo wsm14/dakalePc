@@ -31,6 +31,8 @@ export const delectProps = (data) => {
   delete divProps.cityType;
   delete divProps.showTitle;
   delete divProps.wrapperCol;
+  delete divProps.labelCol;
+
 
   return divProps;
 };
