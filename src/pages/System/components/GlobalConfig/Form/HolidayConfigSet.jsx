@@ -24,7 +24,7 @@ const HolidayConfigSet = (props) => {
       label: '节日名称',
       name: 'name',
       style: { flex: 0.8 },
-      labelCol: { span: 6 },
+      labelCol: { span: 7 },
     },
     {
       label: '展示时间',
@@ -110,7 +110,7 @@ const HolidayConfigSet = (props) => {
       type: 'otherUpload',
       extra: '请上传动效json文件',
       name: ['pickUpBeans', 'file'],
-      labelCol: { span: 4 },
+      labelCol: { span: 6 },
       style: { flex: 1 },
     },
   ];
@@ -121,26 +121,37 @@ const HolidayConfigSet = (props) => {
       const beginDay = showTime[0].format('YYYY-MM-DD');
       const endDay = showTime[1].format('YYYY-MM-DD');
 
-      const upperLeftCorner = await aliOssUpload(pickUpBeans.upperLeftCorner);
-      const lowerRightCornerCountdown = await aliOssUpload(pickUpBeans.lowerRightCornerCountdown);
-      const lowerRightCornerCountdownDynamic = await aliOssUpload(
-        pickUpBeans.lowerRightCornerCountdownDynamic,
-      );
-      const file = await aliOssUpload(pickUpBeans.file);
-      const topBackground = await aliOssUpload(wanderAround.topBackground);
-      const pickUpBeansImg = await aliOssUpload(bottomIcon.pickUpBeans);
-      const wanderImg = await aliOssUpload(bottomIcon.wanderAround);
-      const order = await aliOssUpload(bottomIcon.order);
-      const main = await aliOssUpload(bottomIcon.main);
-      pickUpBeans.upperLeftCorner = upperLeftCorner.toString();
-      pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdown.toString();
-      pickUpBeans.lowerRightCornerCountdownDynamic = lowerRightCornerCountdownDynamic.toString();
-      pickUpBeans.file = file.toString();
-      wanderAround.topBackground = topBackground.toString();
-      bottomIcon.pickUpBeans = pickUpBeansImg.toString();
-      bottomIcon.wanderAround = wanderImg.toString();
-      bottomIcon.order = order.toString();
-      bottomIcon.main = main.toString();
+      const pickTopimg = checkFileData(pickUpBeans.upperLeftCorner);
+      const pickBimg = checkFileData(pickUpBeans.lowerRightCornerCountdown);
+      const pickBnamicimg = checkFileData(pickUpBeans.lowerRightCornerCountdownDynamic);
+      const file = checkFileData(pickUpBeans.file);
+      const wandTopImg = checkFileData(wanderAround.topBackground);
+      const bottomPImg = checkFileData(bottomIcon.pickUpBeans);
+      const bottomWImg = checkFileData(bottomIcon.wanderAround);
+      const bottomOImg = checkFileData(bottomIcon.order);
+      const bottomMImg = checkFileData(bottomIcon.main);
+
+      const res = await aliOssUpload([
+        ...pickTopimg,
+        ...pickBimg,
+        ...file,
+        ...wandTopImg,
+        ...bottomPImg,
+        ...bottomWImg,
+        ...bottomOImg,
+        ...bottomMImg,
+        ...pickBnamicimg,
+      ]);
+
+      pickUpBeans.upperLeftCorner = res.slice(0, 1).toString();
+      pickUpBeans.lowerRightCornerCountdown = res.slice(1, 2).toString();
+      pickUpBeans.file = res.slice(2, 3).toString();
+      wanderAround.topBackground = res.slice(3, 4).toString();
+      bottomIcon.pickUpBeans = res.slice(4, 5).toString();
+      bottomIcon.wanderAround = res.slice(5, 6).toString();
+      bottomIcon.order = res.slice(6, 7).toString();
+      bottomIcon.main = res.slice(7, 8).toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
 
       const pickArr = Object.keys(pickUpBeans).map((key) => {
         return {
