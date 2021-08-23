@@ -91,6 +91,7 @@ export default {
             pickObj.lowerRightCornerCountdownDynamic = pickItem.image;
             pickObj.lowerRightCornerCountdownDynamicId = pickItem.configFestivalDetailId;
             pickObj.file = pickItem.file;
+            pickObj.imagePrefix = pickItem.imagePrefix;
             break;
         }
       });
