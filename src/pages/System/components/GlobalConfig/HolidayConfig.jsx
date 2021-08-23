@@ -82,7 +82,7 @@ const HolidayConfig = (props) => {
     dispatch({
       type: 'globalConfig/fetchFestivalConfigDown',
       payload: { configFestivalId },
-      callback: () => childRef.current.fetchGetData,
+      callback: childRef.current.fetchGetData,
     });
   };
 
