@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
-import { Tabs, Form, Button, Upload } from 'antd';
+import { Form, Button } from 'antd';
 import { LEFT_TOP_ICON, RIGHT_COUNT_DWON, TOP_BGIMG, TABBAR_ICON } from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -9,11 +9,11 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const HolidayConfigSet = (props) => {
-  const { visible, onClose, childRef } = props;
+  const { visible, onClose, childRef, dispatch, loading } = props;
   const { show, type, initialValues = {} } = visible;
   const [form] = Form.useForm();
 
-  console.log(initialValues,"222")
+  const { configFestivalId = '' } = initialValues;
 
   const disabledDate = (current) => {
     return current && current < moment().endOf('day').subtract(1, 'day');
@@ -106,7 +106,7 @@ const HolidayConfigSet = (props) => {
     },
     {
       title: '配置文件',
-      label: '顶部背景',
+      label: '请上传动效json文件',
       type: 'otherUpload',
       extra: '请上传动效json文件',
       name: ['pickUpBeans', 'file'],
@@ -116,8 +116,73 @@ const HolidayConfigSet = (props) => {
   ];
 
   const handleSave = () => {
-    form.validateFields().then((values) => {
-      console.log(values, 'sss');
+    form.validateFields().then(async (values) => {
+      let { pickUpBeans = {}, wanderAround = {}, bottomIcon = {}, showTime, name = '' } = values;
+      const beginDay = showTime[0].format('YYYY-MM-DD');
+      const endDay = showTime[1].format('YYYY-MM-DD');
+
+      const upperLeftCorner = await aliOssUpload(pickUpBeans.upperLeftCorner);
+      const lowerRightCornerCountdown = await aliOssUpload(pickUpBeans.lowerRightCornerCountdown);
+      const lowerRightCornerCountdownDynamic = await aliOssUpload(
+        pickUpBeans.lowerRightCornerCountdownDynamic,
+      );
+      const file = await aliOssUpload(pickUpBeans.file);
+      const topBackground = await aliOssUpload(wanderAround.topBackground);
+      const pickUpBeansImg = await aliOssUpload(bottomIcon.pickUpBeans);
+      const wanderImg = await aliOssUpload(bottomIcon.wanderAround);
+      const order = await aliOssUpload(bottomIcon.order);
+      const main = await aliOssUpload(bottomIcon.main);
+      pickUpBeans.upperLeftCorner = upperLeftCorner.toString();
+      pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdown.toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic = lowerRightCornerCountdownDynamic.toString();
+      pickUpBeans.file = file.toString();
+      wanderAround.topBackground = topBackground.toString();
+      bottomIcon.pickUpBeans = pickUpBeansImg.toString();
+      bottomIcon.wanderAround = wanderImg.toString();
+      bottomIcon.order = order.toString();
+      bottomIcon.main = main.toString();
+
+      const pickArr = Object.keys(pickUpBeans).map((key) => {
+        return {
+          topType: 'pickUpBeans',
+          type: key,
+          image: pickUpBeans[key],
+          file: key === 'lowerRightCornerCountdownDynamic' ? pickUpBeans.file : '',
+        };
+      });
+      const wanderArr = Object.keys(wanderAround).map((key) => {
+        return {
+          topType: 'wanderAround',
+          type: key,
+          image: wanderAround[key],
+        };
+      });
+      const bottomArr = Object.keys(bottomIcon).map((key) => {
+        return {
+          topType: 'bottomIcon',
+          type: key,
+          image: bottomIcon[key],
+        };
+      });
+      const apis = {
+        save: 'globalConfig/fetchSaveFestivalConfig',
+        edit: 'globalConfig/fetchUpdateFestivalConfig',
+      }[type];
+
+      dispatch({
+        type: apis,
+        payload: {
+          configFestivalId,
+          name,
+          beginDay,
+          endDay,
+          configFestivalDetailDTOS: [...pickArr, ...wanderArr, ...bottomArr],
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
@@ -126,8 +191,8 @@ const HolidayConfigSet = (props) => {
     visible: show,
     width: 700,
     onClose,
-    footer: (
-      <Button type="primary" onClick={handleSave}>
+    footer: type !== 'info' && (
+      <Button type="primary" onClick={handleSave} loading={loading}>
         保存
       </Button>
     ),
@@ -145,4 +210,6 @@ const HolidayConfigSet = (props) => {
     </DrawerCondition>
   );
 };
-export default connect()(HolidayConfigSet);
+export default connect(({ loading }) => ({
+  loading: loading.models.globalConfig,
+}))(HolidayConfigSet);

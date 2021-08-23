@@ -4,6 +4,7 @@ import ExtraButton from '@/components/ExtraButton';
 import { FESTIVAL_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import HolidayConfigSet from './Form/HolidayConfigSet';
+import { handleZipDown } from '@/pages/Active/components/MaterialConfig/downZip';
 
 const HolidayConfig = (props) => {
   const { dispatch, loading, festivalConfigList } = props;
@@ -39,6 +40,7 @@ const HolidayConfig = (props) => {
           type: 'down',
           title: '下架',
           visible: row.status !== '2',
+          click: () => handleDown(val),
         },
         {
           type: 'edit',
@@ -54,6 +56,7 @@ const HolidayConfig = (props) => {
     },
   ];
 
+  //编辑、详情
   const handleUpdateSet = (type, configFestivalId) => {
     if (['edit', 'info'].includes(type)) {
       dispatch({
@@ -73,6 +76,14 @@ const HolidayConfig = (props) => {
         type,
       });
     }
+  };
+
+  const handleDown = (configFestivalId) => {
+    dispatch({
+      type: 'globalConfig/fetchFestivalConfigDown',
+      payload: { configFestivalId },
+      callback: () => cRef.current.fetchGetData,
+    });
   };
 
   const cardBtnList = [

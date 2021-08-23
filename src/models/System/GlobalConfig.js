@@ -63,18 +63,75 @@ export default {
       const { content = {} } = response;
       const { configFestivalDTO = {} } = content;
       const { configFestivalDetailDTOS = [], beginDay = '', endDay = '' } = configFestivalDTO;
+      // topType
+      // pickUpBeans 捡豆 // wanderAround 逛逛 // bottomIcon 底部icon
+      // type
+      // ["upperLeftCorner","lowerRightCornerCountdown","lowerRightCornerCountdownDynamic","topBackground","pickUpBeans","wanderAround","order","main"]
 
-      // pickUpBeans 捡豆
-      // wanderAround 逛逛
-      // bottomIcon 底部icon
-      const pickUpBeans = configFestivalDetailDTOS.filter(item => item.topType === 'pickUpBeans');
-      const wanderAround = configFestivalDetailDTOS.filter(item => item.topType == 'wanderAround')
-      const bottomIcon = configFestivalDetailDTOS.filter(item=> item.topType == 'bottomIcon')
+      const pickUpBeans = configFestivalDetailDTOS.filter((item) => item.topType === 'pickUpBeans');
+      const wanderAround = configFestivalDetailDTOS.filter(
+        (item) => item.topType == 'wanderAround',
+      );
+      const bottomIcon = configFestivalDetailDTOS.filter((item) => item.topType == 'bottomIcon');
+      let pickObj = {};
+      let wanderAObj = {};
+      let bottomIconObj = {};
+      //捡豆
+      pickUpBeans.map((pickItem) => {
+        switch (pickItem.type) {
+          case 'upperLeftCorner':
+            pickObj.upperLeftCorner = pickItem.image;
+            pickObj.upperLeftCornerId = pickItem.configFestivalDetailId;
+            break;
+          case 'lowerRightCornerCountdown':
+            pickObj.lowerRightCornerCountdown = pickItem.image;
+            pickObj.lowerRightCornerCountdownId = pickItem.configFestivalDetailId;
+            break;
+          case 'lowerRightCornerCountdownDynamic':
+            pickObj.lowerRightCornerCountdownDynamic = pickItem.image;
+            pickObj.lowerRightCornerCountdownDynamicId = pickItem.configFestivalDetailId;
+            pickObj.file = pickItem.file;
+            break;
+        }
+      });
+      //逛逛
+      wanderAround.map((wandItem) => {
+        switch (wandItem.type) {
+          case 'topBackground':
+            wanderAObj.topBackground = wandItem.image;
+            wanderAObj.topBackgroundId = wandItem.configFestivalDetailId;
+            break;
+        }
+      });
+
+      //tabbarIcon
+      bottomIcon.map((tabItem) => {
+        switch (tabItem.type) {
+          case 'pickUpBeans':
+            bottomIconObj.pickUpBeans = tabItem.image;
+            bottomIconObj.pickUpBeansId = tabItem.configFestivalDetailId;
+            break;
+          case 'wanderAround':
+            bottomIconObj.wanderAround = tabItem.image;
+            bottomIconObj.wanderAroundId = tabItem.configFestivalDetailId;
+            break;
+          case 'order':
+            bottomIconObj.order = tabItem.image;
+            bottomIconObj.orderId = tabItem.configFestivalDetailId;
+            break;
+          case 'main':
+            bottomIconObj.main = tabItem.image;
+            bottomIconObj.mainId = tabItem.configFestivalDetailId;
+            break;
+        }
+      });
 
       const dateFormat = 'YYYY-MM-DD';
       const newDetails = {
         ...configFestivalDTO,
-        pickUpBeans: pickUpBeans,
+        pickUpBeans: pickObj,
+        wanderAround: wanderAObj,
+        bottomIcon: bottomIconObj,
         showTime: [moment(beginDay, dateFormat), moment(endDay, dateFormat)],
       };
       callback && callback(newDetails);
