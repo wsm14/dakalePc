@@ -19,7 +19,6 @@ const HolidayConfigSet = (props) => {
     pickUpBeans: pObj = {},
     wanderAround: wObj = {},
   } = initialValues;
-  console.log(initialValues, 'configFestivalDetailId');
 
   const disabledDate = (current) => {
     return current && current < moment().endOf('day').subtract(1, 'day');
@@ -165,6 +164,7 @@ const HolidayConfigSet = (props) => {
       bottomIcon.order = res.slice(6, 7).toString();
       bottomIcon.main = res.slice(7, 8).toString();
       pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
+      
       const { file, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
         const ids = `${key}Id`;
