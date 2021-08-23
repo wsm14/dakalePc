@@ -21,7 +21,7 @@ const HolidayConfigSet = (props) => {
   } = initialValues;
 
   const disabledDate = (current) => {
-    return current && current < moment().endOf('day').subtract(1, 'day');
+    return current && current < moment().endOf('day');
   };
 
   const formItems = [
@@ -164,7 +164,7 @@ const HolidayConfigSet = (props) => {
       bottomIcon.order = res.slice(6, 7).toString();
       bottomIcon.main = res.slice(7, 8).toString();
       pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
-      
+
       const { file, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
         const ids = `${key}Id`;
