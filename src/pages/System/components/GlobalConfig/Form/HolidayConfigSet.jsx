@@ -120,7 +120,7 @@ const HolidayConfigSet = (props) => {
       title: '配置文件',
       label: '请上传动效json文件',
       type: 'otherUpload',
-      extra: '请上传动效json文件',
+      extra: '请上传动效zip文件',
       name: ['pickUpBeans', 'file'],
       labelCol: { span: 6 },
       style: { flex: 1 },
