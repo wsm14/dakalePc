@@ -498,6 +498,7 @@ export default [
         path: '/system/globalConfig',
         name: '全局配置',
         component: './System/GlobalConfig',
+        buttons: ['down', 'edit', 'save', 'info'],
       },
       {
         path: '/system/pageset',
