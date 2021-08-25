@@ -174,7 +174,7 @@ const HolidayConfigSet = (props) => {
       bottomIcon.order = res.slice(6, 7).toString();
       bottomIcon.main = res.slice(7, 8).toString();
       pickUpBeans.lowerRightCornerCountdownDraw = res.slice(8, 9).toString();
-      pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(9).toString();
 
       const { file, imagePrefix, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
