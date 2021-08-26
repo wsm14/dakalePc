@@ -240,6 +240,11 @@ const ExpertAllocationSet = (props) => {
       name: ['levelExtraParamObject', 'processInfo', 4],
       visible: fromShow,
     },
+    {
+      label: '升级激励语',
+      name: ['levelExtraParamObject', 'nextLevelInfo'],
+      visible: fromShow,
+    },
   ];
 
   const modalProps = {
