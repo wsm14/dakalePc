@@ -239,7 +239,7 @@ export default [
         path: '/expert/achievement',
         name: '哒人业绩',
         component: './Expert/ExpertUserAchievement',
-        // buttons: ['exportList'],
+        buttons: ['recommendList', 'statistics'],
       },
       {
         path: '/expert/achievementTotal',
