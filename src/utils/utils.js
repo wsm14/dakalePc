@@ -158,7 +158,7 @@ function getStr(obj) {
     if (obj.hasOwnProperty(key)) {
       if (Array.isArray(obj[key])) {
         // 数组
-        value = '[' + judge(obj[key]) + ']';
+        value = '[' + judge(obj[key]).replace(/\n/g, '\\n') + ']';
       } else if (Object.prototype.toString.call(obj[key]) == '[object Object]') {
         // 对象
         value = JSON.stringify(obj[key]);
