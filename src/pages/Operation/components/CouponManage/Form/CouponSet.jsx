@@ -320,6 +320,21 @@ const CouponSet = (props) => {
       // rules: [{ required: false }],
     },
     {
+      title: `设置优惠券介绍`,
+      label: `优惠券介绍`,
+      type: 'textArea',
+      name: 'couponDetail',
+      rules: [{ required: false }],
+      maxLength: 200,
+    },
+    {
+      label: `优惠券图片`,
+      name: 'couponDetailImg',
+      type: 'upload',
+      maxFile: 20,
+      rules: [{ required: false }],
+    },
+    {
       title: '设置使用规则',
       label: '使用门槛',
       type: 'radio',
@@ -445,21 +460,6 @@ const CouponSet = (props) => {
       name: 'couponDesc',
       type: 'formItem',
       formItem: <DescSet name={'couponDesc'} form={form}></DescSet>,
-    },
-    {
-      title: `设置优惠券介绍`,
-      label: `优惠券介绍`,
-      type: 'textArea',
-      name: 'couponDetail',
-      rules: [{ required: false }],
-      maxLength: 200,
-    },
-    {
-      label: `优惠券图片`,
-      name: 'couponDetailImg',
-      type: 'upload',
-      maxFile: 20,
-      rules: [{ required: false }],
     },
   ];
 

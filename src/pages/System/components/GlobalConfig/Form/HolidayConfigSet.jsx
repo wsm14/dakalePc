@@ -21,7 +21,7 @@ const HolidayConfigSet = (props) => {
   } = initialValues;
 
   const disabledDate = (current) => {
-    return current && current < moment().endOf('day').subtract(1, 'day');
+    return current && current < moment().endOf('day').subtract(1,'day');
   };
 
   const formItems = [
@@ -49,12 +49,20 @@ const HolidayConfigSet = (props) => {
       name: ['pickUpBeans', 'upperLeftCorner'],
     },
     {
-      label: '右下角倒计时',
+      label: '右下角倒计时（未领取）',
       type: 'upload',
       maxFile: 1,
       extra: '请上传84*84px的png格式图片',
       imgRatio: RIGHT_COUNT_DWON,
       name: ['pickUpBeans', 'lowerRightCornerCountdown'],
+    },
+    {
+      label: '右下角倒计时（已领取）',
+      type: 'upload',
+      maxFile: 1,
+      extra: '请上传84*84px的png格式图片',
+      imgRatio: RIGHT_COUNT_DWON,
+      name: ['pickUpBeans', 'lowerRightCornerCountdownDraw'],
     },
     {
       label: '右下角倒计时动效',
@@ -63,7 +71,7 @@ const HolidayConfigSet = (props) => {
       maxSize: 100,
       name: ['pickUpBeans', 'lowerRightCornerCountdownDynamic'],
       labelCol: { span: 7 },
-      style: { width:'100%' },
+      style: { width: '100%' },
     },
     {
       label: '倒计时动效前缀名',
@@ -120,7 +128,7 @@ const HolidayConfigSet = (props) => {
       title: '配置文件',
       label: '请上传动效json文件',
       type: 'otherUpload',
-      extra: '请上传动效json文件',
+      extra: '请上传动效zip文件',
       name: ['pickUpBeans', 'file'],
       labelCol: { span: 6 },
       style: { flex: 1 },
@@ -135,6 +143,7 @@ const HolidayConfigSet = (props) => {
 
       const pickTopimg = checkFileData(pickUpBeans.upperLeftCorner);
       const pickBimg = checkFileData(pickUpBeans.lowerRightCornerCountdown);
+      const pickBimgDraw = checkFileData(pickUpBeans.lowerRightCornerCountdownDraw);
       const pickBnamicimg = checkFileData(pickUpBeans.lowerRightCornerCountdownDynamic);
       const files = checkFileData(pickUpBeans.file);
       const wandTopImg = checkFileData(wanderAround.topBackground);
@@ -152,6 +161,7 @@ const HolidayConfigSet = (props) => {
         ...bottomWImg,
         ...bottomOImg,
         ...bottomMImg,
+        ...pickBimgDraw,
         ...pickBnamicimg,
       ]);
 
@@ -163,9 +173,10 @@ const HolidayConfigSet = (props) => {
       bottomIcon.wanderAround = res.slice(5, 6).toString();
       bottomIcon.order = res.slice(6, 7).toString();
       bottomIcon.main = res.slice(7, 8).toString();
-      pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(8).toString();
-      
-      const { file, ...other } = pickUpBeans;
+      pickUpBeans.lowerRightCornerCountdownDraw = res.slice(8, 9).toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(9).toString();
+
+      const { file, imagePrefix, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
         const ids = `${key}Id`;
         return {

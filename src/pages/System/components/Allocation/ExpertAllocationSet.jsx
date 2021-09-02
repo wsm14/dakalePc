@@ -201,6 +201,12 @@ const ExpertAllocationSet = (props) => {
       visible: !fromShow,
     },
     {
+      title: '激励语',
+      label: '激励语',
+      name: ['levelExtraParamObject', 'nextLevelInfo'],
+      visible: !fromShow,
+    },
+    {
       title: '上传凭证',
       label: '凭证',
       name: 'certificate',
@@ -232,6 +238,11 @@ const ExpertAllocationSet = (props) => {
     {
       label: '5人激励语',
       name: ['levelExtraParamObject', 'processInfo', 4],
+      visible: fromShow,
+    },
+    {
+      label: '升级激励语',
+      name: ['levelExtraParamObject', 'nextLevelInfo'],
       visible: fromShow,
     },
   ];

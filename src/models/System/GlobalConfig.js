@@ -87,10 +87,15 @@ export default {
             pickObj.lowerRightCornerCountdown = pickItem.image;
             pickObj.lowerRightCornerCountdownId = pickItem.configFestivalDetailId;
             break;
+          case 'lowerRightCornerCountdownDraw':
+            pickObj.lowerRightCornerCountdownDraw = pickItem.image;
+            pickObj.lowerRightCornerCountdownDrawId = pickItem.configFestivalDetailId;
+            break;
           case 'lowerRightCornerCountdownDynamic':
             pickObj.lowerRightCornerCountdownDynamic = pickItem.image;
             pickObj.lowerRightCornerCountdownDynamicId = pickItem.configFestivalDetailId;
             pickObj.file = pickItem.file;
+            pickObj.imagePrefix = pickItem.imagePrefix;
             break;
         }
       });

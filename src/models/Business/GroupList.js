@@ -170,7 +170,7 @@ export default {
         activeBeginDate,
         allCode,
         city,
-        videoUrl: mInfo?.videoContentOb?.url,
+        videoUrl: mInfo?.videoContentOb?.videoId ? mInfo?.videoContentOb?.url : undefined,
         videoId: mInfo?.videoContentOb?.videoId,
       });
     },
