@@ -78,6 +78,7 @@ const BusinessLicense = ({ form, dispatch, loading, initialValues }) => {
     {
       label: '法人代表',
       name: ['businessLicenseObject', 'legalPerson'],
+      rules: [{ required: false }],
       disabled,
     },
     {
