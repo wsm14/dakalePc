@@ -487,6 +487,12 @@ export default [
         component: './Service/SolicitJobs',
         buttons: ['save', 'edit', 'down', 'jobClass'],
       },
+      {
+        path: '/service/commentManage',
+        name: '人才招聘',
+        component: './Service/CommentManage',
+        buttons: ['delete', 'recover'],
+      },
       // 配置管理 system
       {
         path: '/system/city',
