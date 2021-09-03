@@ -10,10 +10,12 @@ import {
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
 import GoodResourceSet from './components/SpecialGoods/GoodResourceSet';
+import WeightSet from './components/WeightSet';
 import { checkCityName } from '@/utils/utils';
 
 const SpecialGoodsResource = (props) => {
@@ -326,6 +328,23 @@ const SpecialGoodsResource = (props) => {
       align: 'center',
       dataIndex: 'createTime',
       // render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
+    },
+    {
+      title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'weight',
+      show: !['highCommission', 'todayNew'].includes(tabKey),
+      render: (val, row) => (
+        <WeightSet detail={row} recommendId={{ specialGoodsId: row.specialGoodsId }}></WeightSet>
+      ),
+    },
+    {
+      title: '状态',
+      fixed: 'right',
+      align: 'right',
+      dataIndex: 'status',
+      render: (val) => SPECIAL_STATUS[val],
     },
     {
       type: 'handle',
