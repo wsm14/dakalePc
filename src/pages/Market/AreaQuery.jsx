@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Spin } from 'antd';
+import { authCheck } from '@/layouts/AuthConsumer';
 import AreaQueryLeft from './components/AreaQuery/Left';
 import AreaQueryRight from './components/AreaQuery/Right';
 import AreaSet from './components/AreaQuery/AreaSet';
@@ -14,6 +15,8 @@ const AreaQuery = (props) => {
   const [selectCode, setSelectCode] = useState({ provinceCode: '33' });
   const [visibleSet, setVisibleSet] = useState(false); // 区域设置
   const [visibleSign, setVisibleSign] = useState(false); // 定金 / 签约 设置
+
+  const editType = authCheck(['edit']);
 
   useEffect(() => {
     fetchAreaQueryInfo({ pid: 33 });
@@ -60,7 +63,9 @@ const AreaQuery = (props) => {
               <AreaQueryRight
                 key={i.id}
                 item={i}
-                onClick={(detail) => setVisibleSign({ show: true, detail })}
+                onClick={(detail) =>
+                  editType.includes('edit') && setVisibleSign({ show: true, detail })
+                }
               ></AreaQueryRight>
             ))}
           </Row>
