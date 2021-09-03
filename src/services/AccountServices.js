@@ -14,9 +14,15 @@ export async function fetchAccountUserTotal(params) {
   });
 }
 
-// get 用户账户 - 卡豆明细
+// get 用户账户 - 卡豆明细 -奖励卡豆
 export async function fetchUserPeasDetail(params) {
   return request('/admin/accountManagement/listUserBeanDetail', {
+    params,
+  });
+}
+//用户收益卡豆明细
+export async function fetchUserIncomeBeanDetail(params) {
+  return request('/admin/accountManagement/listUserIncomeBeanDetail', {
     params,
   });
 }
@@ -45,6 +51,13 @@ export async function fetchAccountBusinessTotal(params) {
 // get 商家账户 - 卡豆明细
 export async function fetchBusinessPeasDetail(params) {
   return request('/admin/accountManagement/listMerchantBeanDetail', {
+    params,
+  });
+}
+
+// * 商家营销卡豆明细
+export async function fetchBusinessPlatformBeanDetail(params) {
+  return request('/admin/accountManagement/listMerchantPlatformBeanDetail', {
     params,
   });
 }

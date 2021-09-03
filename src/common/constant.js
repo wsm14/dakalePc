@@ -331,9 +331,6 @@ export const PLATFORM_INCOME_ORDERS_TYPE = {
 // 账户激活状态
 export const GROUP_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
 
-// 账户激活状态 原集团 后期删除
-export const WORKER_BANK_STATUS = ['未激活', '审核中', '激活失败', '激活成功'];
-
 // 开屏广告端口
 export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
 
@@ -540,8 +537,7 @@ export const ACTIVE_TEMPLATE_TYPE = {
   public: '通用模版',
 };
 
-//新闻分类
-
+// 新闻分类
 export const NEWS_TYPE = {
   newsReport: '新闻报道',
   companyActivities: '公司活动',
@@ -550,4 +546,17 @@ export const NEWS_TYPE = {
   productNews: '产品动态',
 };
 
+// 是否实习
 export const DAREN_TEMP_FLAG = ['否', '是'];
+
+// 集团管理 - 独立运营
+export const BUS_OPERATION_FLAG = ['加盟', '直营'];
+
+// 集团管理 -  独立结算
+export const BUS_SETTLEMENT_FLAG = ['统一结算', '独立结算'];
+
+// 集团管理 - 对公 对私
+export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '对私(个体工店铺)'];
+
+//节日配置状态 状态 0-待上架 1-上架中 2-已下架
+export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];

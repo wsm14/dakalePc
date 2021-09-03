@@ -19,8 +19,8 @@ const GoodsDescSet = ({ name, form }) => {
         rules={[
           {
             validator: () => {
-              if (total > 200) {
-                return Promise.reject(new Error('介绍长度文案不能超过200字'));
+              if (total > 1000) {
+                return Promise.reject(new Error('介绍长度文案不能超过1000字'));
               }
               return Promise.resolve();
             },
@@ -34,7 +34,7 @@ const GoodsDescSet = ({ name, form }) => {
                 <Form.Item {...field} validateTrigger={['onChange', 'onBlur']} noStyle>
                   <TextArea
                     autoSize
-                    maxLength={200}
+                    maxLength={1000}
                     placeholder="请输入详情"
                     style={{ width: '90%' }}
                     onChange={(e) => {

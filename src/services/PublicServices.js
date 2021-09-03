@@ -185,50 +185,56 @@ export function fetchGetUsersSearch(params) {
     params,
   });
 }
+// 集团列表用于搜索
+export function fetchGetGroupForSearch(params) {
+  return request('/admin/merchantGroup/listGroupForSearch', {
+    params,
+  });
+}
 
-// 特惠sku通用-集团发布sku时可选商家列表
+// get 特惠sku通用-集团发布sku时可选商家列表
 export function fetchSkuAvailableMerchant(params) {
   return request('/common/sku/config/skuAvailableMerchant', {
     params,
   });
 }
 
-//  * 优惠券列表 用于运营后台筛选
+// get 优惠券列表 用于运营后台筛选
 export function fetchGetCouponsSearch(params) {
   return request('/admin/coupon/listOwnerCouponForSearch', {
     params,
   });
 }
 
-//  特惠商品券搜索 用于运营后台筛选
+// get 特惠商品券搜索 用于运营后台筛选
 export function fetchGetGoodsSearch(params) {
   return request('/admin/specialGoodsManagement/listActivityByNameForSearch', {
     params,
   });
 }
 
-//  sku通用-审核中sku挂靠商家列表
+// get sku通用-审核中sku挂靠商家列表
 export function fetchAuditMerchantList(params) {
   return request('/common/sku/config/auditMerchantList', {
     params,
   });
 }
 
-//  sku通用-新建sku时可选择商品标签
+// get sku通用-新建sku时可选择商品标签
 export function fetchGoodsTagListByCategoryId(params) {
   return request('/common/config/goods/tag/listGoodsTagByCategoryId', {
     params,
   });
 }
 
-//sku通用-是否需要设置佣金
+// get sku通用-是否需要设置佣金
 export function fetchGoodsIsCommission(params) {
   return request('/common/sku/config/manuallyCommission', {
     params,
   });
 }
 
-// sku通用-sku挂靠商家列表
+// get sku通用-sku挂靠商家列表
 export function fetchSkuDetailMerchantList(params) {
   return request('/common/sku/config/skuMerchantList', {
     params,

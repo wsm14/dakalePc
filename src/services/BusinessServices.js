@@ -152,18 +152,11 @@ export function fetchAddMerchantGroup(data) {
   });
 }
 
-// post 绑定银行卡
+// post 激活集团 - 绑定银行卡
 export function fetchMerchantBank(data) {
   return request('/admin/merchantGroup/bindingBankInfo', {
     method: 'POST',
     data,
-  });
-}
-
-// get 获取角色列表
-export function fetchWMSUserRoles(params) {
-  return request('/admin/role/listAuthRoleAll', {
-    params,
   });
 }
 
@@ -182,6 +175,21 @@ export function fetchUpdateGroup(data) {
   });
 }
 
+// post 修改集團 - 开户行号
+export function fetchGroupSetBandCode(data) {
+  return request('/admin/merchantGroup/updateGroupBankSwiftCode', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 获取行业费率
+export function fetchRateByCategory(params) {
+  return request('/admin/systemIndustry/getRateByCategory', {
+    params,
+  });
+}
+
 // get 获取crm集团门店列表
 export function fetchCrmGrounpList(params) {
   return request('/admin/merchantGroup/listSellMerchantGroup', {
@@ -197,3 +205,26 @@ export function fetchGroupStoreList(params) {
 }
 
 // 集团管理 end
+
+//设置临时服务费
+export function fetchsetManualRate(data) {
+  return request('/admin/owner/rate/setManualRate', {
+    method: 'POST',
+    data,
+  });
+}
+
+//查询商家服务费
+export function fetchAllOwnerRate(params) {
+  return request('/admin/owner/rate/getAllOwnerRate', {
+    params,
+  });
+}
+
+// 修改商家服务费
+export function fetchUpdateManualRate(data) {
+  return request('/admin/owner/rate/updateManualRate', {
+    method: 'POST',
+    data,
+  });
+}

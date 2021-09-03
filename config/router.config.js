@@ -143,13 +143,14 @@ export default [
           'status',
           'bussinessStatus',
           'diary',
+          'rate',
         ],
       },
       {
         path: '/business/group',
         name: '集团管理',
         component: './Business/GroupList',
-        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList', 'rate'],
       },
       {
         path: '/business/settled',
@@ -238,7 +239,7 @@ export default [
         path: '/expert/achievement',
         name: '哒人业绩',
         component: './Expert/ExpertUserAchievement',
-        // buttons: ['exportList'],
+        buttons: ['recommendList', 'statistics'],
       },
       {
         path: '/expert/achievementTotal',
@@ -497,6 +498,7 @@ export default [
         path: '/system/globalConfig',
         name: '全局配置',
         component: './System/GlobalConfig',
+        buttons: ['down', 'edit', 'save', 'info'],
       },
       {
         path: '/system/pageset',

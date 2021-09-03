@@ -53,9 +53,15 @@ const AccountUserList = (props) => {
       render: (val) => val || 0,
     },
     {
-      title: '当前余额（卡豆）',
+      title: '奖励卡豆余额',
       align: 'right',
       dataIndex: 'bean',
+      render: (val) => val || 0,
+    },
+    {
+      title: '收益卡豆余额',
+      align: 'right',
+      dataIndex: 'incomeBean',
       render: (val) => val || 0,
     },
     {

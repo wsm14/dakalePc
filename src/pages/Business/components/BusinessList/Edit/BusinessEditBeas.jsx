@@ -200,6 +200,15 @@ const BusinessAddBeas = (props) => {
       rules: [{ required: true, message: `请确认店铺头图` }],
     },
     {
+      label: '店铺LOGO',
+      name: 'logoImg',
+      type: 'upload',
+      maxFile: 1,
+      visible: setType === 'edit',
+      // extra: '最多上传 1 张图片，建议图片比例16：9，大小在3M以内',
+      rules: [{ required: true, message: `请确认店铺LOGO` }],
+    },
+    {
       label: '店内实景照',
       name: 'interiorImg',
       type: 'upload',
@@ -260,12 +269,12 @@ const BusinessAddBeas = (props) => {
         form.setFieldsValue({ commissionRatio: undefined });
       },
     },
-    {
-      label: '推广费比例',
-      name: 'promotionFee',
-      loading: loading.models.sysTradeList,
-      suffix: '%',
-    },
+    // {
+    //   label: '推广费比例',
+    //   name: 'promotionFee',
+    //   loading: loading.models.sysTradeList,
+    //   suffix: '%',
+    // },
   ];
 
   return <FormCondition formItems={formItems} initialValues={initialValues} form={form} />;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
+import { checkCityName } from '@/utils/utils';
 import { SUBSIDY_BEAN_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
@@ -47,9 +48,8 @@ const TaskDetailList = (props) => {
         },
         {
           title: '注册地',
-          dataIndex: 'provinceName',
-          render: (val, row) =>
-            `${val || '--'}/${row.cityName || '--'}/${row.districtName || '--'}`,
+          dataIndex: 'districtCode',
+          render: (val) => checkCityName(val) || '--',
         },
         {
           title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,

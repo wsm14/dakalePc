@@ -10,7 +10,7 @@ const uploadButton = (
 );
 
 // 文件默认值
-const imgold = (url, uid) => ({
+const imgUrl = (url, uid) => ({
   uid: `-${uid}`,
   name: url,
   status: 'done',
@@ -29,12 +29,24 @@ const getArrKeyVal = (key, value) => {
   return newVal;
 };
 
+// 数据数组还原
+const uploadValues = (fileArr) => {
+  return !Array.isArray(fileArr)
+    ? fileArr && fileArr.length > 0
+      ? fileArr.indexOf(',') > -1
+        ? fileArr.split(',').map((v, i) => imgUrl(v, i))
+        : [imgUrl(fileArr, fileArr)]
+      : []
+    : fileArr.map((v, i) => imgUrl(v, i));
+};
+
 const UploadBlock = (props) => {
   const {
     form,
     initialvalues: initialValues,
     name = '',
     multiple = true,
+    onRemove,
     maxFile,
     onChange,
   } = props;
@@ -50,20 +62,13 @@ const UploadBlock = (props) => {
     if (initialValues && Object.keys(initialValues).length) {
       // 键名是数组的情况
       if (Array.isArray(name)) {
-        const urlfile = getArrKeyVal(name, initialValues);
-
-        return urlfile ? (urlfile.fileList ? urlfile.fileList : [imgold(urlfile, urlfile)]) : [];
+        const urlFile = getArrKeyVal(name, initialValues);
+        return urlFile ? uploadValues(urlFile) : [];
       }
       // 键名是字符串的情况
       const fileArrar = initialValues[fileKeyName];
       if (fileArrar && !!fileArrar.fileList) return fileArrar.fileList;
-      return !Array.isArray(fileArrar)
-        ? fileArrar && fileArrar.length > 0
-          ? fileArrar.indexOf(',') > -1
-            ? fileArrar.split(',').map((v, i) => imgold(v, i))
-            : [imgold(fileArrar, fileArrar)]
-          : []
-        : fileArrar.map((v, i) => imgold(v, i));
+      return uploadValues(fileArrar);
     } else {
       return [];
     }
@@ -89,6 +94,7 @@ const UploadBlock = (props) => {
     <>
       <Upload
         multiple={multiple}
+        onRemove={onRemove}
         listType="picture"
         accept="video/mp4,.mp4"
         maxCount={maxFile}
@@ -103,7 +109,23 @@ const UploadBlock = (props) => {
           if (file.type !== 'video/mp4') {
             message.error(`${file.name} 不是mp4格式`);
             file.dklFileStatus = 'out';
+            return false;
           }
+          let maxSize = 10;
+          const fileurl = URL.createObjectURL(file);
+          // 获取视频的时长
+          const audioElement = new Audio(fileurl);
+          audioElement.addEventListener('loadedmetadata', function (_event) {
+            const duration = audioElement.duration;
+            console.log(duration); //单位：秒
+            if (duration > 30) maxSize = 20;
+            const isLt1M = file.size / 1024 / 1024 < maxSize;
+            if (!isLt1M) {
+              message.error(`30s以内不能超过10M， 30秒以上不能超过20M`);
+              file.dklFileStatus = 'out';
+              form.setFieldsValue({ [fileKeyName]: undefined });
+            }
+          });
           return false;
         }}
         onChange={(value) => {

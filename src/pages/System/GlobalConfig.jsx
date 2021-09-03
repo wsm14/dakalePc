@@ -3,12 +3,13 @@ import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import styles from './index.less';
 import InviteImg from './components/GlobalConfig/InviteImg';
+import HolidayConfig from './components/GlobalConfig/HolidayConfig';
 
 const GlobalConfig = (props) => {
   let main = undefined;
 
   const [mode, setMode] = useState('inline'); // 菜单显示状态
-  const [menuKey, setMenuKey] = useState('inviteImg'); // menu key
+  const [menuKey, setMenuKey] = useState('holidayConfig'); // menu key
 
   useEffect(() => {
     // 监听窗口大小变化
@@ -41,6 +42,11 @@ const GlobalConfig = (props) => {
   };
 
   const menuList = [
+    {
+      type: 'holidayConfig',
+      menuName: '节日配置',
+      block: <HolidayConfig></HolidayConfig>,
+    },
     {
       type: 'inviteImg',
       menuName: '邀请好友图片',

@@ -163,6 +163,13 @@ const ExpertAllocationSet = (props) => {
       addRules: [{ pattern: NUM_PATTERN, message: '消费抵扣数应为整数' }],
     },
     {
+      label: '解锁奖励(卡豆)',
+      name: 'unlockRewardsBean',
+      rules: [{ required: false }],
+      visible: !fromShow,
+      addRules: [{ pattern: NUM_PATTERN, message: '解锁奖励数应为整数' }],
+    },
+    {
       label: '可否提现',
       name: 'isWithdraw',
       type: 'radio',
@@ -191,6 +198,12 @@ const ExpertAllocationSet = (props) => {
       suffix: '元',
       rules: [{ required: false }],
       addRules: [{ pattern: NUM_PATTERN, message: '业绩达标奖金应为整数' }],
+      visible: !fromShow,
+    },
+    {
+      title: '激励语',
+      label: '激励语',
+      name: ['levelExtraParamObject', 'nextLevelInfo'],
       visible: !fromShow,
     },
     {
@@ -225,6 +238,11 @@ const ExpertAllocationSet = (props) => {
     {
       label: '5人激励语',
       name: ['levelExtraParamObject', 'processInfo', 4],
+      visible: fromShow,
+    },
+    {
+      label: '升级激励语',
+      name: ['levelExtraParamObject', 'nextLevelInfo'],
       visible: fromShow,
     },
   ];

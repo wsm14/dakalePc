@@ -73,6 +73,7 @@ export const ROLE_BUTTON_TYPE = {
 
   qrCode: '获取二维码',
 
+  rate :'费率',
   role: '角色',
   revoke: '撤销',
   replay: '回复',

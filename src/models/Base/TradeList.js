@@ -15,6 +15,8 @@ import {
   fetchSceneListById,
   fetchSceneAdd,
   fetchSceneUpdate,
+  fetchTradeScanCommission,
+  fetchTradeScanCommissionSet,
 } from '@/services/BaseServices';
 
 export default {
@@ -208,5 +210,20 @@ export default {
       });
       callback();
     },
+    *fetchTradeScanCommissionSet({ payload, callback }, { call }) {
+      const response = yield call(fetchTradeScanCommissionSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `操作成功`,
+      });
+      callback();
+    },
+    *fetchTradeScanCommission({ payload, callback }, { call }){
+      const response = yield call(fetchTradeScanCommission, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.categoryScanRateDTO);
+    }
   },
 };

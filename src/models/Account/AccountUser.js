@@ -3,6 +3,7 @@ import {
   fetchAccountUserList,
   fetchUserPeasDetail,
   fetchUserRechargeDetail,
+  fetchUserIncomeBeanDetail,
 } from '@/services/AccountServices';
 
 const data1 = [
@@ -54,12 +55,14 @@ export default {
       });
     },
     *fetchDetailList({ payload }, { call, put }) {
-      const { type } = payload;
+      // {award:'奖励',earn:'收益'}
+      const { type, tabKey } = payload;
       const inter = {
-        peas: fetchUserPeasDetail, // 卡豆明细
+        peas: tabKey == 'award' ? fetchUserPeasDetail : fetchUserIncomeBeanDetail, // 卡豆明细
         recharge: fetchUserRechargeDetail, // 充值记录
       }[type];
       delete payload.type;
+      delete payload.tabKey;
       const response = yield call(inter, payload);
       if (!response) return;
       const { content } = response;

@@ -12,6 +12,9 @@ import {
   fetchMerchantExportExcel,
   fetchMerchantTotalCategory,
   fetchMerVerificationCodeSet,
+  fetchsetManualRate, //设置临时服务费
+  fetchAllOwnerRate, //查询商家服务费
+  fetchUpdateManualRate, //修改商家服务费
 } from '@/services/BusinessServices';
 
 export default {
@@ -208,6 +211,72 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '验证码设置成功',
+      });
+      callback();
+    },
+    *fetchsetManualRate({ payload, callback }, { call }) {
+      const response = yield call(fetchsetManualRate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置成功',
+      });
+      callback();
+    },
+    // 查询商家服务费
+    *fetchAllOwnerRate({ payload, callback }, { call }) {
+      const response = yield call(fetchAllOwnerRate, payload);
+      if (!response) return;
+      const { content } = response;
+      const { manualMap = {}, verificationRate, scanRate, promotionRate } = content;
+      const { scan = [], verification = [], promotion = [] } = manualMap;
+      const d = new Date();
+      const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+
+      const scanNew = scan.map((itemScan) => ({
+        ...itemScan,
+        time: [moment(itemScan.beginDate, 'YYYY-MM-DD'), moment(itemScan.endDate, 'YYYY-MM-DD')],
+        isExpired: new Date(today).getTime() > new Date(itemScan.endDate).getTime(), // true itemScan.endDate < today,
+      }));
+      const verificationNew = verification.map((itemVer) => ({
+        ...itemVer,
+        time: [moment(itemVer.beginDate, 'YYYY-MM-DD'), moment(itemVer.endDate, 'YYYY-MM-DD')],
+        isExpired: new Date(today).getTime() > new Date(itemVer.endDate).getTime(),
+      }));
+      const proNew = promotion.map((itemPro) => ({
+        ...itemPro,
+        time: [moment(itemPro.beginDate, 'YYYY-MM-DD'), moment(itemPro.endDate, 'YYYY-MM-DD')],
+        isExpired: new Date(today).getTime() > new Date(itemPro.endDate).getTime(),
+      }));
+      //扫码付
+      const scanDetail = {
+        scanRate,
+        scan: scanNew,
+      };
+      //核销
+      const verificationDetail = {
+        verificationRate,
+        verification: verificationNew,
+      };
+      // 推广费
+      const promotionDetail = {
+        promotionRate,
+        promotion: proNew,
+      };
+      const newDetail = {
+        ...content,
+        scanDetail,
+        verificationDetail,
+        promotionDetail,
+      };
+      callback(newDetail);
+    },
+    *fetchUpdateManualRate({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateManualRate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '修改成功',
       });
       callback();
     },

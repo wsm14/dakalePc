@@ -2,21 +2,28 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
-import { DatePicker, Select, Spin, Space, Empty } from 'antd';
+import CITYJSON from '@/common/city';
+import { DatePicker, Select, Spin, Space, Empty, Cascader } from 'antd';
 
 const disTime = moment('2020-03-01');
 
 const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
   const [selectedTime, setSelectedTime] = useState([moment(), moment()]);
   const [merchantId, setMerchantId] = useState('');
+  const [city, setCity] = useState([]);
 
   useEffect(() => {
+    const [provinceCode, cityCode, districtCode] = city;
+    
     fetchGetTotalData({
       beginDate: selectedTime[0].format('YYYY-MM-DD'),
       endDate: selectedTime[1].format('YYYY-MM-DD'),
       merchantId,
+      provinceCode,
+      cityCode,
+      districtCode,
     });
-  }, [merchantId, selectedTime]);
+  }, [merchantId, selectedTime, city]);
 
   // 禁止选择时间
   const disabledDate = (current) =>
@@ -66,6 +73,21 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
           </Select.Option>
         ))}
       </Select>
+      <Cascader
+        changeOnSelect
+        expandTrigger="hover"
+        options={CITYJSON}
+        style={{
+          width: 256,
+        }}
+        placeholder={`请选择省市区`}
+        showSearch={{
+          filter: (inputValue, path) => {
+            return path.some((option) => option.label.indexOf(inputValue) > -1);
+          },
+        }}
+        onChange={(val) => setCity(val)}
+      ></Cascader>
     </Space>
   );
 };

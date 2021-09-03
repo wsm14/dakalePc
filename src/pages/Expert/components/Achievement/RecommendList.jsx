@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'umi';
 import { EXPERT_TYPE } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const RecommendList = (props) => {
@@ -71,8 +72,8 @@ const RecommendList = (props) => {
     {
       title: '注册地',
       align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val} - ${row.cityName} - ${row.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '注册时间',
