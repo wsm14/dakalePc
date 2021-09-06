@@ -81,7 +81,6 @@ const CommentManage = (props) => {
 
   return (
     <TableDataBlock
-      noCard={false}
       cRef={childRef}
       //   loading={loading}
       searchItems={searchItems}

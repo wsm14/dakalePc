@@ -489,7 +489,7 @@ export default [
       },
       {
         path: '/service/commentManage',
-        name: '人才招聘',
+        name: '评论管理',
         component: './Service/CommentManage',
         buttons: ['delete', 'recover'],
       },
