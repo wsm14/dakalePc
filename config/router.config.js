@@ -239,7 +239,7 @@ export default [
         path: '/expert/achievement',
         name: '哒人业绩',
         component: './Expert/ExpertUserAchievement',
-        // buttons: ['exportList'],
+        buttons: ['recommendList', 'statistics'],
       },
       {
         path: '/expert/achievementTotal',
@@ -302,7 +302,7 @@ export default [
         path: '/market/areaQuery',
         name: '合伙查询系统',
         component: './Market/AreaQuery',
-        buttons: ['set'],
+        buttons: ['set', 'edit'],
       },
       {
         path: '/market/cardpeaspark',
