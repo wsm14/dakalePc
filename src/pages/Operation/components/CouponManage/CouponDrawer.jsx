@@ -4,6 +4,7 @@ import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import CouponDetail from './Detail/CouponDetail';
 import CouponSet from './Form/CouponSet';
+import aliOssUpload from '@/utils/aliOssUpload';
 
 const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
@@ -22,7 +23,7 @@ const CouponDrawer = (props) => {
 
   // 确认提交
   const handleUpAudit = () => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(async (values) => {
       const {
         activeDate,
         restrictions,
@@ -32,8 +33,10 @@ const CouponDrawer = (props) => {
         useWeek,
         useTime,
         merchantIds = [],
+        couponDetailImg,
         ...other
       } = values;
+      const coupoImg = await aliOssUpload(couponDetailImg);
 
       dispatch({
         type: {
@@ -45,6 +48,7 @@ const CouponDrawer = (props) => {
           ownerCouponId,
           ownerId,
           ...other,
+          couponDetailImg: coupoImg.toString(),
           couponType: 'reduce',
           merchantIds: merchantIds.toString(),
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),

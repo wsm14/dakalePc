@@ -82,6 +82,11 @@ const ExpertAllocation = (props) => {
           render: (val) => val && `${val}%`,
         },
         {
+          title: '解锁奖励（卡豆）',
+          dataIndex: 'unlockRewardsBean',
+          align: 'right',
+        },
+        {
           title: '是否可提现',
           dataIndex: 'isWithdraw',
           align: 'right',
@@ -144,7 +149,7 @@ const ExpertAllocation = (props) => {
           visible: !row.children || row.type == 'normal',
           click: () => setVisible({ show: true, type: 'edit', detail: row }),
         },
-      ]
+      ],
     },
   ];
 
@@ -158,7 +163,7 @@ const ExpertAllocation = (props) => {
         columns={getColumns}
         rowKey={(record) => `${record.type || record.levelName}`}
         dispatchType="expertAllocation/fetchGetList"
-        expandable={{ defaultExpandAllRows: true }}
+        expandable={{ expandedRowKeys: list.map((i) => i.type) }}
         list={list}
       ></TableDataBlock>
       <ExpertAllocationSet

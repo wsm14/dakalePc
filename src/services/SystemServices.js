@@ -294,4 +294,42 @@ export function fetchInviteImgList(params) {
   });
 }
 
+// 节日配置 get 列表
+export function fetchListFestivalConfig(params) {
+  return request('/admin/festival/listFestivalConfig', {
+    params,
+  });
+}
+
+//节日配置新增
+export function fetchSaveFestivalConfig(data) {
+  return request('/admin/festival/saveFestivalConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+//节日配置编辑
+export function fetchUpdateFestivalConfig(data) {
+  return request('/admin/festival/updateFestivalConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 节日配置详情
+export function fetchFestivalConfigDetail(params) {
+  return request('/admin/festival/getFestivalConfig', {
+    params,
+  });
+}
+
+// 节日配置下架
+export function fetchFestivalConfigDown(data) {
+  return request('/admin/festival/offShelfFestivalConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 全局配置 end

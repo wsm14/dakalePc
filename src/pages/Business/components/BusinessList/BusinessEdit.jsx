@@ -33,12 +33,13 @@ const BusinessAdd = (props) => {
 
   // 提交
   const fetchFormData = (auditInfo = {}) => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(async (values) => {
       const {
         categoryName: cobj,
         coverImg,
         headerImg,
         interiorImg,
+        logoImg = '',
         otherBrand,
         businessLicenseObject: { businessLicenseImg: bimg },
         businessTime,
@@ -93,30 +94,35 @@ const BusinessAdd = (props) => {
         lat: location[1],
         ...auditInfo,
       };
-      aliOssUpload(coverImg).then((cres) => {
-        payload.coverImg = cres.toString();
-        aliOssUpload(headerImg).then((cres2) => {
-          payload.headerImg = cres2.toString();
-          if (type !== 'audit') {
-            payload.headerContentObject = { headerType: 'image', imageUrl: cres2.toString() };
-          }
-          aliOssUpload(interiorImg).then((res) => {
-            dispatch({
-              type: {
-                edit: 'businessList/fetchMerchantEdit',
-                audit: 'businessAudit/fetchMerSaleAuditAllow',
-              }[type],
-              payload: {
-                ...payload,
-                interiorImg: res.toString(),
-              },
-              callback: () => {
-                onClose();
-                cRef.current.fetchGetData();
-              },
-            });
-          });
-        });
+      const cImg = await aliOssUpload(coverImg);
+      const hImg = await aliOssUpload(headerImg);
+      const iImg = await aliOssUpload(interiorImg);
+      //编辑的时候可以修改店铺logo
+      if (type === 'edit') {
+        const logos = await aliOssUpload(logoImg);
+        payload.logoImg = logos.toString();
+      }
+      payload.coverImg = cImg.toString();
+      payload.headerImg = hImg.toString();
+      payload.interiorImg = iImg.toString();
+      if (type !== 'audit') {
+        payload.headerContentObject = {
+          headerType: 'image',
+          imageUrl: hImg.toString(),
+        };
+      }
+      dispatch({
+        type: {
+          edit: 'businessList/fetchMerchantEdit',
+          audit: 'businessAudit/fetchMerSaleAuditAllow',
+        }[type],
+        payload: {
+          ...payload,
+        },
+        callback: () => {
+          onClose();
+          cRef.current.fetchGetData();
+        },
       });
     });
   };

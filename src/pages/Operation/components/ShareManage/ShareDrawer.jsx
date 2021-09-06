@@ -86,7 +86,6 @@ const ShareDrawer = (props) => {
                         frontImageWidth: 544, // 封面宽
                         frontImageHeight: 960, // 封面长
                         ...dataStorage,
-                        ...values,
                         ...tasteData,
                         ...values,
                         friendShareImg: res.toString(),

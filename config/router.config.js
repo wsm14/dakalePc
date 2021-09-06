@@ -143,13 +143,14 @@ export default [
           'status',
           'bussinessStatus',
           'diary',
+          'rate',
         ],
       },
       {
         path: '/business/group',
         name: '集团管理',
         component: './Business/GroupList',
-        buttons: ['save', 'edit', 'info', 'activate', 'storeList'],
+        buttons: ['save', 'edit', 'info', 'activate', 'storeList', 'rate'],
       },
       {
         path: '/business/settled',
@@ -301,7 +302,7 @@ export default [
         path: '/market/areaQuery',
         name: '合伙查询系统',
         component: './Market/AreaQuery',
-        buttons: ['set'],
+        buttons: ['set', 'edit'],
       },
       {
         path: '/market/cardpeaspark',
@@ -497,6 +498,7 @@ export default [
         path: '/system/globalConfig',
         name: '全局配置',
         component: './System/GlobalConfig',
+        buttons: ['down', 'edit', 'save', 'info'],
       },
       {
         path: '/system/pageset',

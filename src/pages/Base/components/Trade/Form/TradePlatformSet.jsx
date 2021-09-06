@@ -44,7 +44,6 @@ const TradePlatformSet = (props) => {
         // 新增服务费 rowData 存在则修改
         if (rowData === undefined) {
           objdata = {
-            categoryId,
             merchantSettleObjects: values,
             type: 'no',
             typeContent: '',
@@ -52,7 +51,6 @@ const TradePlatformSet = (props) => {
         } else if (configMerchantSettleId) {
           const { merchantSettleObjects: pObj = [] } = rowData;
           objdata = {
-            categoryId,
             configMerchantSettleId: rowData.configMerchantSettleIdString,
             merchantSettleObjects: [...pObj, values],
           };
@@ -72,7 +70,7 @@ const TradePlatformSet = (props) => {
       }
       dispatch({
         type: 'sysTradeList/fetchTradePlatformSet',
-        payload: { ...propItem.payload, ...objdata },
+        payload: { ...propItem.payload, ...objdata, categoryId },
         callback: () => {
           onClose();
           childRef.current.fetchGetData();

@@ -9,6 +9,7 @@ import {
   fetchSpecialGoodsStatus,
   fetchSpecialGoodsImport,
   fetchSpecialGoodsQrCode,
+  fetchCheckMreRate, // 查询店铺主体费率
   fetchSpecialGoodsRecommend, //推荐
   fetchSpecialGoodsAddRemain, // 增加库存
   fetchEditCurrentStatus, //编辑前校验
@@ -187,6 +188,11 @@ export default {
         description: '投放总量修改成功',
       });
       callback();
+    },
+    *fetchCheckMreRate({ payload, callback }, { call }) {
+      const response = yield call(fetchCheckMreRate, payload);
+      if (!response) return;
+      callback(response.content);
     },
     //  * 特惠或券编辑前校验
     *fetchEditCurrentStatus({ payload, callback }, { call }) {

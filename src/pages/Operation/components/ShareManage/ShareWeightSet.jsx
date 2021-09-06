@@ -30,7 +30,7 @@ const ShareWeightSet = ({ detail, dispatch }) => {
       });
     });
   };
-  console.log({ recommendWeight: Number(recommendWeight) });
+
   return (
     <Form initialValues={{ recommendWeight: Number(recommendWeight) }} form={form}>
       <div style={{ display: 'flex' }}>

@@ -3,9 +3,9 @@
  * You can view component api by:
  * https://github.com/ant-design/ant-design-pro-layout
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProLayout from '@ant-design/pro-layout';
-import { Affix, BackTop } from 'antd';
+import { Affix, BackTop, Input } from 'antd';
 import { PageContainer, RouteContext } from '@ant-design/pro-layout';
 import { Link, connect } from 'umi';
 import RouteAuthority from './RouteAuthority';
@@ -29,7 +29,7 @@ const BasicLayout = (props) => {
     menuList,
     loading,
   } = props;
-
+  const [keyWord, setKeyWord] = useState('');
   // 本地菜单
   // const menuDataRender = (menuList, keys = true) => {
   //   return menuList.map((item) => {
@@ -60,6 +60,24 @@ const BasicLayout = (props) => {
       };
       return localItem;
     });
+  };
+
+  const filterByMenuDate = (data, keyWord) => {
+    return data
+      .map((item) => {
+        if (
+          (item.name && item.name.includes(keyWord)) ||
+          filterByMenuDate(item.children || [], keyWord)?.length > 0
+        ) {
+          return {
+            ...item,
+            path: item.path.split('/').length - 1 > 1 ? item.path : null,
+            children: filterByMenuDate(item.children || [], keyWord),
+          };
+        }
+        return undefined;
+      })
+      .filter((item) => item);
   };
 
   useEffect(() => {
@@ -98,6 +116,15 @@ const BasicLayout = (props) => {
         onPageChange={handleCloseTitle}
         logo={logo}
         onCollapse={handleMenuCollapse}
+        menuExtraRender={({ collapsed }) =>
+          !collapsed && (
+            <Input.Search
+              onSearch={(e) => {
+                setKeyWord(e);
+              }}
+            />
+          )
+        }
         menuItemRender={(menuItemProps, defaultDom) => {
           if (menuItemProps.isUrl || !menuItemProps.path) {
             return defaultDom;
@@ -110,6 +137,7 @@ const BasicLayout = (props) => {
         menuDataRender={() => menuDataRender(menuList)}
         menu={{ loading }}
         headerRender={() => <HeaderContent />}
+        postMenuData={(menus) => filterByMenuDate(menus, keyWord)}
         rightContentRender={() => <RightContent />}
         {...props}
         {...settings}
@@ -126,7 +154,7 @@ const BasicLayout = (props) => {
                       `${pageTitleInfo.id.split('.').slice(1, 3).join(' / ')}${
                         pageTitle.length > 0 ? ' / ' : ''
                       }
-                      ${pageTitle.join(' / ')}`
+                       ${pageTitle.join(' / ')}`
                     }
                     title={false}
                     extra={pageBtn.length ? <Affix offsetTop={60}>{pageBtn}</Affix> : ''}

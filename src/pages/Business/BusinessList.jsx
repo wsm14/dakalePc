@@ -12,6 +12,7 @@ import BusinessQrCode from './components/BusinessList/QrCode/BusinessQrCode';
 import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
+import ReteDrawerSet from './components/RateDrawerSet';
 import { checkCityName } from '@/utils/utils';
 
 const BusinessListComponent = (props) => {
@@ -27,6 +28,7 @@ const BusinessListComponent = (props) => {
   const [visibleCodeSet, setVisibleCodeSet] = useState(false); // 设置商家验证码
   const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
   const [qrCodeBag, setQrCodeBag] = useState({ show: false }); // 二维码背景图
+  const [visibleRate, setVisibleRate] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -55,8 +57,9 @@ const BusinessListComponent = (props) => {
       select: BUSINESS_ACCOUNT_STATUS,
     },
     {
-      label: '集团名称',
-      name: 'groupName',
+      label: '所属集团',
+      name: 'groupId',
+      type: 'group',
     },
     {
       label: '店铺类型',
@@ -180,10 +183,9 @@ const BusinessListComponent = (props) => {
       render: (val, row) => `${val || '--'}\n${row.activationTime || '--'}`,
     },
     {
-      title: '品牌/所属集团',
+      title: '所属集团',
       align: 'center',
       dataIndex: 'groupName',
-      render: (val, row) => `${row.brandName || '--'}\n${val}`,
     },
     {
       title: '状态',
@@ -217,9 +219,33 @@ const BusinessListComponent = (props) => {
           type: 'diary',
           click: () => fetchGetLogData({ type: 'merchant', identificationId: val }),
         },
+        {
+          type: 'rate',
+          title: '费率',
+          click: () => fetchGetRate({ type: 'merchant', record }),
+          visible: record.bankStatus === '3' && !record.groupId,
+        },
       ],
     },
   ];
+
+  // 费率
+  const fetchGetRate = (payload) => {
+    const { type, record = {} } = payload;
+    const { userMerchantIdString: ownerId } = record;
+    // setVisibleRate({ type, show: true, initialValues: { ...record } });
+    dispatch({
+      type: 'businessList/fetchAllOwnerRate',
+      payload: {
+        ownerType: type,
+        ownerId,
+      },
+      callback: (detail) => {
+        const initialValues = { ...record, ...detail, listPayload: payload };
+        setVisibleRate({ type, show: true, initialValues });
+      },
+    });
+  };
 
   // 获取日志信息
   const fetchGetLogData = (payload) => {
@@ -351,6 +377,12 @@ const BusinessListComponent = (props) => {
       ></BusinessVerificationCodeSet>
       {/* 设置二维码背景图片 */}
       <BusinessQrCodeBag visible={qrCodeBag} onOk={setQrCodeBag}></BusinessQrCodeBag>
+      {/* 费率设置 */}
+      <ReteDrawerSet
+        visible={visibleRate}
+        fetchGetRate={fetchGetRate}
+        onClose={() => setVisibleRate(false)}
+      ></ReteDrawerSet>
     </>
   );
 };

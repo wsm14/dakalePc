@@ -11,11 +11,12 @@ import {
   fetchMerchantGroup,
   fetchAddMerchantGroup,
   fetchMerchantBank,
-  fetchWMSUserRoles,
   fetchGrounpDetails,
   fetchUpdateGroup,
   fetchCrmGrounpList,
   fetchGroupStoreList,
+  fetchGroupSetBandCode,
+  fetchRateByCategory,
 } from '@/services/BusinessServices';
 
 export default {
@@ -24,20 +25,10 @@ export default {
     list: { list: [], total: 0 },
     storeList: { list: [] },
     crmList: [],
-    visible: false,
-    visible1: false,
-    visible2: false,
-    rolesList: [],
-    groupDetails: {},
-    merchantGroupDTO: {},
-    businessLicense: {},
-    bankBindingInfo: {},
-    initial: {},
   },
 
   reducers: {
     save(state, { payload }) {
-      console.log(payload);
       return {
         ...state,
         ...payload,
@@ -87,68 +78,61 @@ export default {
         },
       });
     },
-    *fetchWMSUserRoles({ payload }, { call, put }) {
-      const response = yield call(fetchWMSUserRoles, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          rolesList: content.recordList.map((item) => ({
-            key: item.idString,
-            title: item.roleName,
-            description: item.roleName,
-          })),
-        },
-      });
-    },
     *fetchAddList({ payload, callback }, { call, put }) {
       const response = yield call(fetchAddMerchantGroup, payload);
       if (!response) return;
       const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          merchantGroupId: content.merchantGroupId,
-        },
-      });
       notification.success({
         message: '温馨提示',
         description: '添加成功',
       });
-      callback && callback();
+      callback && callback(content.merchantGroupId);
     },
-    *fetchGetOcrBusinessLicense({ payload, callback }, { call, put }) {
+    *fetchGroupSetBandCode({ payload }, { call, put }) {
+      const response = yield call(fetchGroupSetBandCode, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '开户行号设置成功',
+      });
+    },
+    *fetchGetOcrBusinessLicense({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrLicense, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
-    *fetchGetOcrBankLicense({ payload, callback }, { call, put }) {
+    *fetchGetOcrBankLicense({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrBank, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
-    *fetchGetOcrIdCardFront({ payload, callback }, { call, put }) {
+    *fetchGetOcrIdCardFront({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrIdCardFront, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
-    *fetchGetOcrIdCardBack({ payload, callback }, { call, put }) {
+    *fetchGetOcrIdCardBack({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrIdCardBack, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
-    *fetchGetOcrIdBankCard({ payload, callback }, { call, put }) {
+    *fetchGetOcrIdBankCard({ payload, callback }, { call }) {
       const response = yield call(fetchGetOcrIdBankCard, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content);
     },
-    *fetchMerchantBank({ payload, callback }, { call, put }) {
+    *fetchRateByCategory({ payload, callback }, { call }) {
+      const response = yield call(fetchRateByCategory, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
+    },
+    *fetchMerchantBank({ payload, callback }, { call }) {
       const response = yield call(fetchMerchantBank, payload);
       if (!response) return;
       notification.success({
@@ -158,67 +142,39 @@ export default {
       const { content } = response;
       callback && callback(content);
     },
-    *fetchGrounpDetails({ payload, callback }, { call, put }) {
+    *fetchGrounpDetails({ payload, callback }, { call }) {
       const response = yield call(fetchGrounpDetails, payload);
       if (!response) return;
       const {
-        content,
-        content: { bankBindingInfo = {}, businessLicense = {} },
+        content: { bankBindingInfo = {}, businessLicense = {}, merchantGroupDTO: mInfo = {} },
       } = response;
-      let activeBeginDate = [];
-      let activeValidity = [];
-      let city = [];
-      if (bankBindingInfo.startDate && bankBindingInfo.legalCertIdExpires) {
-        activeBeginDate = [
-          moment(bankBindingInfo.startDate),
-          moment(bankBindingInfo.legalCertIdExpires),
-        ];
-      }
-      if (businessLicense.establishDate && businessLicense.validityPeriod) {
-        activeValidity = [
-          moment(businessLicense.establishDate),
-          moment(businessLicense.validityPeriod),
-        ];
-      }
-      if (content.bankBindingInfo) {
-        city = [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode];
-      }
-      yield put({
-        type: 'save',
-        payload: {
-          groupDetails: { ...content },
-          merchantGroupDTO:
-            {
-              ...content.merchantGroupDTO,
-              businessLicenseObject: content.businessLicense,
-              activeValidity,
-              topCategSelect: content.merchantGroupDTO.categoryNode.split('.'),
-              allCode: [
-                content.merchantGroupDTO.provinceCode,
-                content.merchantGroupDTO.cityCode,
-                content.merchantGroupDTO.districtCode,
-              ],
-            } || {},
-          businessLicense: content.businessLicense || {},
-          bankBindingInfo:
-            {
-              ...content.bankBindingInfo,
-              activeBeginDate,
-              activeValidity,
-              city,
-            } || {},
-          initial: {
-            ...businessLicense,
-            ...bankBindingInfo,
-            activeBeginDate,
-            activeValidity,
-            city,
-          },
-        },
+      const { startDate, legalCertIdExpires, ...bankOther } = bankBindingInfo;
+      const { establishDate: mre, validityPeriod, ...blsOther } = businessLicense;
+      const activeBeginDate = startDate ? [moment(startDate), moment(legalCertIdExpires)] : ''; // 结算人/法人 身份有效期
+      const establishDate = mre ? [moment(mre), moment(validityPeriod)] : ''; // 营业期限
+      const city = bankBindingInfo.areaCode
+        ? [parseInt(bankBindingInfo.provCode).toString(), bankBindingInfo.areaCode]
+        : undefined;
+      const allCode = [mInfo.provinceCode, mInfo.cityCode, mInfo.districtCode]; // 城市code
+      const topCategSelect = [mInfo.topCategoryIdString, mInfo.categoryIdStr]; // 经营项目
+      callback({
+        ...blsOther,
+        ...mInfo,
+        businessLicenseObject: businessLicense, // 营业执照
+        bankBindingInfo: bankOther, // 激活信息
+        topCategSelect,
+        sellMerchantGroupId: mInfo.merchantGroupIdString,
+        topCategoryId: mInfo.topCategoryIdString,
+        categoryId: mInfo.categoryIdStr,
+        activeValidity: establishDate,
+        activeBeginDate,
+        allCode,
+        city,
+        videoUrl: mInfo?.videoContentOb?.videoId ? mInfo?.videoContentOb?.url : undefined,
+        videoId: mInfo?.videoContentOb?.videoId,
       });
-      callback && callback();
     },
-    *fetchUpdateGroup({ payload, callback }, { call, put }) {
+    *fetchUpdateGroup({ payload, callback }, { call }) {
       const response = yield call(fetchUpdateGroup, payload);
       if (!response) return;
       notification.success({

@@ -36,6 +36,16 @@ const SysTradeSet = (props) => {
       dataIndex: 'categoryName',
     },
     {
+      title: '扫码付服务费',
+      align: 'center',
+      dataIndex: 'parentId',
+      render: (val, record) => (
+        <AuthConsumer auth="edit" show={!val}>
+          <a onClick={() => handlePromotionMoneyGet(record, 'scan')}>设置</a>
+        </AuthConsumer>
+      ),
+    },
+    {
       title: '核销订单服务费',
       align: 'center',
       dataIndex: 'parentId',
@@ -51,7 +61,7 @@ const SysTradeSet = (props) => {
       dataIndex: 'id',
       render: (val, record) => (
         <AuthConsumer auth="edit" show={!record.parentId}>
-          <a onClick={() => handlePromotionMoneyGet(record)}>设置</a>
+          <a onClick={() => handlePromotionMoneyGet(record, 'extend')}>设置</a>
         </AuthConsumer>
       ),
     },
@@ -143,13 +153,17 @@ const SysTradeSet = (props) => {
     });
   };
 
-  // 获取推广费详情 -> 新增/修改推广费
-  const handlePromotionMoneyGet = (info) => {
+  // 获取推广费详情 -> 新增/修改推广费  获取行业-扫码付服务费比例
+  const handlePromotionMoneyGet = (info, type) => {
     const { categoryIdString: categoryId } = info;
+    const apiUrl = {
+      scan: 'sysTradeList/fetchTradeScanCommission',
+      extend: 'sysTradeList/fetchPromotionMoneyGet',
+    }[type];
     dispatch({
-      type: 'sysTradeList/fetchPromotionMoneyGet',
+      type: apiUrl,
       payload: { categoryId },
-      callback: (detail) => setMoneyVisible({ show: true, info, detail }),
+      callback: (detail) => setMoneyVisible({ show: true, type, info, detail }),
     });
   };
 
@@ -185,7 +199,7 @@ const SysTradeSet = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.id}`}
+        rowKey={(record) => `${record.categoryIdString}`}
         dispatchType="sysTradeList/fetchGetList"
         {...list}
         expandable={{ childrenColumnName: ['categoryDTOList'] }}
@@ -195,7 +209,7 @@ const SysTradeSet = (props) => {
       <TradePlatformDetailList visible={visible} setVisible={setVisible}></TradePlatformDetailList>
       {/* 基础设施 */}
       <TradeDetailList visible={baseVisible} onClose={setBaseVisible}></TradeDetailList>
-      {/* 推广费设置修改 */}
+      {/* 推广费设置修改 扫码付服务费修改*/}
       <PromotionMoneySet
         childRef={childRef}
         visible={moneyVisible}

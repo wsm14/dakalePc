@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { history, connect } from 'umi';
-import { Form, Button, Input } from 'antd';
+import { Form, Button, Input, notification } from 'antd';
 import { getPageQuery } from '@/utils/utils';
 import style from './style.less';
 
@@ -41,6 +41,13 @@ const LoginForm = ({ dispatch, loading }) => {
           redirect = redirect.substr(redirect.indexOf('#') + 1);
         }
       }
+    }
+    if (!list.length) {
+      notification.info({
+        message: '提示',
+        description: '帐号权限未配置，请联系管理员设置',
+      });
+      return;
     }
     if (list[0].childList && list[0].childList.length) {
       // history.replace(redirect || list[0].subAuthAccessDTOList[0].accessUrl);

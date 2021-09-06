@@ -11,6 +11,8 @@ const GoodsDetail = (props) => {
     buyFlag = '1',
     merchantList = [],
   } = detail;
+
+  console.log(detail, '111');
   // 参与活动的店铺
   const mreFormItems = [
     {
@@ -53,6 +55,15 @@ const GoodsDetail = (props) => {
       name: 'merchantPrice',
       show: buyFlag === '1',
       render: (val) => `￥ ${val}`,
+    },
+    {
+      label: '优惠券介绍',
+      name: 'couponDetail',
+    },
+    {
+      label: '优惠券图片',
+      type: 'upload',
+      name: 'couponDetailImg',
     },
   ];
 
@@ -122,14 +133,7 @@ const GoodsDetail = (props) => {
           detail.reduceObject.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
     },
-    // {
-    //   label: '优惠券介绍',
-    //   name: 'couponsDesc',
-    // },
-    // {
-    //   label: '优惠券图片',
-    //   name: 'couponDescImg',
-    // },
+   
   ];
   //分佣配置
   const commissionItem = [

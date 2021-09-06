@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 import MasterOrderDetail from './MasterOrderDetail';
 
 const MasterDetail = (props) => {
@@ -37,9 +38,10 @@ const MasterDetail = (props) => {
           render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
         },
         {
-          title: '坐标',
+          title: '省市区',
           align: 'center',
-          dataIndex: 'residentAddress',
+          dataIndex: 'districtCode',
+          render: (val) => checkCityName(val) || '--',
         },
         {
           title: '注册时间',
@@ -63,9 +65,9 @@ const MasterDetail = (props) => {
           dataIndex: 'merchantName',
         },
         {
-          title: '店铺账号',
+          title: '店铺电话',
           align: 'center',
-          dataIndex: 'account',
+          dataIndex: 'mobile',
         },
         {
           title: '商家类型',
@@ -75,7 +77,8 @@ const MasterDetail = (props) => {
         {
           title: '所在城市',
           align: 'center',
-          dataIndex: 'cityName',
+          dataIndex: 'cityCode',
+          render: (val) => checkCityName(val) || '--',
         },
         {
           title: '详细地址',

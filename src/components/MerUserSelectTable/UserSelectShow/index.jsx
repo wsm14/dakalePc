@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSelect from '../UserSelect';
 
@@ -39,9 +40,8 @@ const UserSelectShow = ({
     },
     {
       title: '注册地',
-      dataIndex: 'provinceName',
-      render: (val, row) =>
-        val ? `${val}/${row.cityName || '--'}/${row.districtName || '--'}` : '--',
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     ...otherColumns,
   ];
