@@ -77,51 +77,6 @@ const ExpertUserAchievement = (props) => {
       align: 'center',
       dataIndex: 'level',
     },
-    // {
-    //   title: '团队人数',
-    //   align: 'center',
-    //   dataIndex: 'teamSize',
-    //   render: (val, row) => {
-    //     return row.kolUserId;
-    //   },
-    // },
-    // {
-    //   title: '用户｜哒人｜豆长',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    // },
-    // {
-    //   title: '分销-核销笔数',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    //   render: (val, row) => {
-    //     return <Link to="/expert/distribution"> {row.number || 'null'}</Link>;
-    //   },
-    // },
-    // {
-    //   title: '分销-业绩流水',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    //   render: (val, row) => {
-    //     return `¥ ${row.kolUserId}`;
-    //   },
-    // },
-    // {
-    //   title: '累计分佣',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    //   render: (val, row) => {
-    //     return `¥ ${row.kolUserId}`;
-    //   },
-    // },
-    // {
-    //   title: '待分佣',
-    //   align: 'center',
-    //   dataIndex: 'level',
-    //   render: (val, row) => {
-    //     return `¥ ${row.kolUserId}`;
-    //   },
-    // },
     {
       type: 'handle',
       dataIndex: 'kolUserId',
