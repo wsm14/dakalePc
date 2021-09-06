@@ -100,12 +100,11 @@ const GoodsDetail = (props) => {
       // show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
-        console.log(goodsTagList);
-        // const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
+        const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
         return (
           <>
-            {goodsTagList &&
-              goodsTagList.map((tag) => (
+            {tags &&
+              tags.map((tag) => (
                 <span
                   style={{
                     display: 'inline-block',
@@ -124,15 +123,15 @@ const GoodsDetail = (props) => {
     },
     {
       label: '平台商品标签',
-      name: 'goodsTagList',
+      name: 'platformGoodsTagList',
       // show: detail.goodsTagList,
       render: (val, row) => {
         const { platformGoodsTagList = [] } = row;
-        // const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
-            {platformGoodsTagList &&
-              platformGoodsTagList.map((tag) => (
+            {tags &&
+              tags.map((tag) => (
                 <span
                   style={{
                     display: 'inline-block',
