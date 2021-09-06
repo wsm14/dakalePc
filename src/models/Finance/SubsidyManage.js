@@ -7,12 +7,11 @@ import {
   fetchSubsidyTaskAdd,
   fetchSubsidyDirectAdd,
   fetchSubsidyRecycleBean,
-  fetchSubsidyTaskDetailList,
-  fetchSubsidyTaskUserDetailList,
   fetchSubsidyActionList,
   fetchSubsidyActionAdd,
   fetchSubsidyActionDel,
   fetchActionBatchEdit,
+  fetchListSubsidyDetailAll,
 } from '@/services/FinanceServices';
 
 export default {
@@ -46,27 +45,31 @@ export default {
       });
     },
     *fetchSubsidyTaskDetailList({ payload }, { call, put }) {
-      const response = yield call(fetchSubsidyTaskDetailList, payload);
+      const { role, ...other } = payload;
+      const response = yield call(fetchListSubsidyDetailAll, other);
       if (!response) return;
-      const { content } = response;
+      const { content = {} } = response;
+      const {
+        userInfoObjects = [],
+        merchantGroupObjects = [],
+        userMerchantObjects = [],
+        totalBeans
+      } = content.subsidyDTO;
+
+      const detailList = {
+        user: userInfoObjects,
+        group: merchantGroupObjects,
+        merchant: userMerchantObjects,
+      }[role];
+
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.subsidyList, total: content.subsidyList?.length || 0 },
+          detailList: { list: detailList, total: detailList?.length || 0,totalBeans },
         },
       });
     },
-    *fetchSubsidyTaskUserDetailList({ payload }, { call, put }) {
-      const response = yield call(fetchSubsidyTaskUserDetailList, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          detailList: { list: content.subsidyList },
-        },
-      });
-    },
+
     *fetchSubsidyActionList({ payload }, { call, put }) {
       const response = yield call(fetchSubsidyActionList, payload);
       if (!response) return;

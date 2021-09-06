@@ -4,7 +4,6 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const SubsidyDetail = (props) => {
   const { detail = {} } = props;
-  const { mode } = detail;
 
   const formItems = [
     {
@@ -25,13 +24,10 @@ const SubsidyDetail = (props) => {
       label: '总参与人数',
       name: 'participants',
     },
+ 
     {
-      label: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
-      name: { out: 'subsidizedBeans', in: 'recycleBean' }[mode],
-    },
-    {
-      label: '充值卡豆数',
-      name: 'rechargeBeans',
+      label: '总卡豆数',
+      name: 'totalBeans',
     },
     {
       label: '凭证',

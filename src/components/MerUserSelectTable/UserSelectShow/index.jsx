@@ -13,6 +13,7 @@ const UserSelectShow = ({
   otherColumns = [],
   onOk,
   loading,
+  params = {},
   onCancelShowSelect,
   rowSelection,
   columns,
@@ -71,6 +72,7 @@ const UserSelectShow = ({
         keys={keys}
         visible={showSelect}
         userList={list}
+        params={params}
         onOk={onOk}
         onCancel={() => onCancelShowSelect(false)}
       ></UserSelect>

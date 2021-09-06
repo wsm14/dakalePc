@@ -30,14 +30,12 @@ const SubsidyRecycleBean = (props) => {
     const newData = lodash.pickBy(number, (value, key) =>
       role === 'merchant' ? mreList.keys.includes(key) : groupList.keys.includes(key),
     );
-    const paramId = role === 'merchant' ? 'merchantId' : 'groupId';
-    const recycleList = Object.keys(newData).map((item) => ({
-      [paramId]: item,
-      recycleBean: newData[item] || 0,
+    const subsidyBeanObjects = Object.keys(newData).map((item) => ({
+      ownerId: item,
+      bean: newData[item] || 0,
     }));
-    console.log(recycleList, 'recycleList');
-    setMreTotal(lodash.sumBy(recycleList, 'recycleBean'));
-    form.setFieldsValue({ recycleList });
+    setMreTotal(lodash.sumBy(subsidyBeanObjects, 'bean'));
+    form.setFieldsValue({ subsidyBeanObjects });
   }, [mreList, mreNumber, groupList, groupNumber]);
 
   // 向下填充
@@ -74,7 +72,7 @@ const SubsidyRecycleBean = (props) => {
     },
     {
       label: '适用店铺',
-      name: 'merchantIds',
+      name: 'subsidyBeanObjects',
       type: 'formItem',
       visible: role === 'merchant',
       formItem: (
@@ -96,7 +94,7 @@ const SubsidyRecycleBean = (props) => {
             {
               fixed: 'right',
               title: '回收卡豆数',
-              dataIndex: 'recycleBean',
+              dataIndex: 'bean',
               render: (val, record) => (
                 <>
                   <InputNumber
@@ -131,7 +129,7 @@ const SubsidyRecycleBean = (props) => {
     },
     {
       label: '适用集团',
-      name: 'groupIds',
+      name: 'subsidyBeanObjects',
       type: 'formItem',
       visible: role === 'group',
       formItem: (
@@ -153,7 +151,7 @@ const SubsidyRecycleBean = (props) => {
             {
               fixed: 'right',
               title: '回收卡豆数',
-              dataIndex: 'recycleBean',
+              dataIndex: 'bean',
               render: (val, record) => (
                 <>
                   <InputNumber
@@ -184,7 +182,7 @@ const SubsidyRecycleBean = (props) => {
     },
     {
       label: '回收卡豆数',
-      name: 'recycleList',
+      name: 'subsidyBeanObjects',
       type: 'formItem',
       formItem: <>{mreTotal}</>,
     },

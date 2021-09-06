@@ -16,7 +16,7 @@ const SubsidyDetail = (props) => {
     {
       title: '店铺账号',
       align: 'center',
-      dataIndex: 'account',
+      dataIndex: 'mobile',
     },
     {
       title: '所属商圈',
@@ -26,7 +26,7 @@ const SubsidyDetail = (props) => {
     {
       title: '所属行业',
       align: 'center',
-      dataIndex: 'category',
+      dataIndex: 'topCategoryName',
     },
     {
       title: '地址',
@@ -36,7 +36,7 @@ const SubsidyDetail = (props) => {
     {
       title: '补贴/回收卡豆数',
       align: 'center',
-      dataIndex: 'rechargeBeans',
+      dataIndex: 'subsidyBean',
     },
   ];
 
