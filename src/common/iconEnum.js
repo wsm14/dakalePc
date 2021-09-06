@@ -16,6 +16,7 @@ import {
   DollarOutlined,
   ClusterOutlined,
   PayCircleOutlined,
+  RedEnvelopeOutlined
 } from '@ant-design/icons';
 
 const iconEnum = {
@@ -35,6 +36,7 @@ const iconEnum = {
   expert: <TeamOutlined />,
   sign: <UsergroupAddOutlined />,
   fund: <PayCircleOutlined />,
+  redEnvelopes: <RedEnvelopeOutlined />
 };
 
 export default iconEnum;

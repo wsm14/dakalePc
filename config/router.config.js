@@ -565,6 +565,13 @@ export default [
         component: './User/BdLimitPop',
         buttons: ['save'],
       },
+      // 卡豆红包明细
+      {
+        path: '/redEnvelopes/beanRedEnvelopes',
+        name: '卡豆红包',
+        component: './RedEnvelopes/BeanRedEnvelopes',
+        buttons: ['authEdit','getRecord'],
+      },
     ],
   },
 ];
