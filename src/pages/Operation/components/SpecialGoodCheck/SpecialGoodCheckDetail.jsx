@@ -137,7 +137,8 @@ const SpecialGoodCheckDetail = (props) => {
         ownerId: ownerIdString,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
         otherPlatformPrice: otherPlatformPrice,
-        goodsTags: tags && tags.toString(),
+        goodsTags: merTags?.toString(),
+        platformGoodsTags:platTags?.toString()
       };
       //手动分佣判断
       if (detail.divisionFlag === '1') {

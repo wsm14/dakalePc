@@ -125,8 +125,8 @@ const GoodsDetail = (props) => {
       label: '平台商品标签',
       name: 'goodsTagList',
       render: (val, row) => {
-        const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        const { platformGoodsTagList = [] } = row;
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
             {tags &&

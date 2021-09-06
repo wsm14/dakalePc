@@ -100,11 +100,12 @@ const GoodsDetail = (props) => {
       // show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
+        console.log(goodsTagList);
+        // const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
         return (
           <>
-            {tags &&
-              tags.map((tag) => (
+            {goodsTagList &&
+              goodsTagList.map((tag) => (
                 <span
                   style={{
                     display: 'inline-block',
@@ -126,12 +127,12 @@ const GoodsDetail = (props) => {
       name: 'goodsTagList',
       // show: detail.goodsTagList,
       render: (val, row) => {
-        const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        const { platformGoodsTagList = [] } = row;
+        // const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
-            {tags &&
-              tags.map((tag) => (
+            {platformGoodsTagList &&
+              platformGoodsTagList.map((tag) => (
                 <span
                   style={{
                     display: 'inline-block',
