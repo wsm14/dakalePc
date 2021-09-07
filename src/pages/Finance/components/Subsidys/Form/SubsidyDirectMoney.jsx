@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip, Space } from 'antd';
-import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLES } from '@/common/constant';
+import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLES,SUBSIDY_ACTION_ROLE} from '@/common/constant';
 import {
   MreSelect,
   MreSelectShow,
@@ -52,7 +52,6 @@ const SubsidyDirectMoney = (props) => {
     setUserTotal(lodash.sumBy(subsidyBeanObjects, 'bean'));
     form.setFieldsValue({ subsidyBeanObjects });
   }, [userList, userNumber, mreList, mreNumber, groupList, groupNumber]);
-  
 
   // 向下填充
   const downBean = (bean) => {
@@ -84,7 +83,8 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_TASK_ROLE,
+      select: SUBSIDY_ACTION_ROLES,
+      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_ACTION_ROLE,
       onChange: (val) => {
         form.setFieldsValue({ subsidyBeanObjects: undefined });
         setRole(val);
@@ -226,7 +226,7 @@ const SubsidyDirectMoney = (props) => {
       formItem: (
         <Space size="large">
           <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
-            选择哒人
+            {tab === 'direct' ? '选择哒人' : '选择用户'}
           </Button>
           <Button type="primary" ghost onClick={handleImport}>
             批量导入
@@ -243,7 +243,7 @@ const SubsidyDirectMoney = (props) => {
           maxLength={500}
           key="UserTable"
           {...userList}
-          params={{ isDaren: 1 }}
+          params={tab === 'direct' ? { isDaren: 1 } : {}}
           showSelect={visibleSelect}
           onCancelShowSelect={() => setVisibleSelect(false)}
           onOk={(val) => {
@@ -331,7 +331,7 @@ const SubsidyDirectMoney = (props) => {
           setUserNumber(numbers);
         }}
         setGroupList={(list) => {
-          setGroupList({...list});
+          setGroupList({ ...list });
           const groupNumbers = {};
           list.list.map((item) => (groupNumbers[item.merchantGroupIdString] = item.subsidyBean));
           setGroupNumber(groupNumbers);
