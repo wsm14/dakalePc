@@ -291,6 +291,9 @@ export const SUBSIDY_TASK_ROLE = { merchant: '店铺', group: '集团' };
 // 补贴管理 行为管理 补贴角色
 export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺', group: '集团' };
 
+// 补贴管理 行为管理 补贴角色
+export const SUBSIDY_ACTION_ROLES = { user: '哒人', merchant: '店铺', group: '集团' };
+
 // 补贴管理 行为管理 补贴类型 列表映射
 export const SUBSIDY_ACTION_TYPE = {
   video: '发布视频',

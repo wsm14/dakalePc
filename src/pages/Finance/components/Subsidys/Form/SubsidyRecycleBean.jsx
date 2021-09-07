@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
-import { Button, InputNumber, Tooltip } from 'antd';
+import { Button, InputNumber, Tooltip, Space } from 'antd';
 import { SUBSIDY_TASK_ROLE } from '@/common/constant';
 import {
   MreSelect,
@@ -10,6 +10,7 @@ import {
   GroupSelectShow,
 } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
+import ImportDataModal from './ImportDataModal';
 
 const SubsidyRecycleBean = (props) => {
   const { form, detail } = props;
@@ -22,6 +23,7 @@ const SubsidyRecycleBean = (props) => {
   const [groupNumber, setGroupNumber] = useState({}); // 集团回收卡豆数 暂存输入值
   const [mreTotal, setMreTotal] = useState(0); // 店铺、集团回收卡豆数
   const [role, setRole] = useState(false); // 补贴角色
+  const [visiblePort, setVisiblePort] = useState(false);
 
   // 设置form表单值 店铺id
 
@@ -54,6 +56,9 @@ const SubsidyRecycleBean = (props) => {
     }
   };
 
+  //批量导入事件
+  const handleImport = () => setVisiblePort({ show: true, role });
+
   const formItems = [
     {
       label: '任务名称',
@@ -76,9 +81,14 @@ const SubsidyRecycleBean = (props) => {
       type: 'formItem',
       visible: role === 'merchant',
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)}>
-          选择店铺
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisible(true)}>
+            选择店铺
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
@@ -133,9 +143,14 @@ const SubsidyRecycleBean = (props) => {
       type: 'formItem',
       visible: role === 'group',
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisibleGroup(true)}>
-          选择集团
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleGroup(true)}>
+            选择集团
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
@@ -211,6 +226,22 @@ const SubsidyRecycleBean = (props) => {
         onOk={(val) => setGroupList(val)}
         onCancel={() => setVisibleGroup(false)}
       ></GroupSelectModal>
+       <ImportDataModal
+        visible={visiblePort}
+        onClose={() => setVisiblePort(false)}
+        setMreList={(list) => {
+          setMreList({ ...list });
+          const merNumbers = {};
+          list.list.map((item) => (merNumbers[item.userMerchantIdString] = item.subsidyBean));
+          setMreNumber(merNumbers);
+        }}
+        setGroupList={(list) => {
+          setGroupList({...list});
+          const groupNumbers = {};
+          list.list.map((item) => (groupNumbers[item.merchantGroupIdString] = item.subsidyBean));
+          setGroupNumber(groupNumbers);
+        }}
+      ></ImportDataModal>
     </>
   );
 };

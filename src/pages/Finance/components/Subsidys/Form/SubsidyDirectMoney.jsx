@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
-import { Button, InputNumber, Tooltip } from 'antd';
-import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
+import { Button, InputNumber, Tooltip, Space } from 'antd';
+import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLES } from '@/common/constant';
 import {
   MreSelect,
   MreSelectShow,
@@ -11,6 +11,7 @@ import {
   GroupSelectShow,
 } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
+import ImportDataModal from './ImportDataModal';
 
 const SubsidyDirectMoney = (props) => {
   const { form, detail, tab } = props;
@@ -26,6 +27,7 @@ const SubsidyDirectMoney = (props) => {
   const [groupList, setGroupList] = useState({ keys: [], list: [] }); // 选择集团后回显的数据
   const [mreNumber, setMreNumber] = useState({}); // 店铺回收卡豆数 暂存输入值
   const [groupNumber, setGroupNumber] = useState({}); // 集团回收卡豆数 暂存输入值
+  const [visiblePort, setVisiblePort] = useState(false);
 
   // 设置form表单值 店铺id
   // useEffect(() => {
@@ -50,6 +52,7 @@ const SubsidyDirectMoney = (props) => {
     setUserTotal(lodash.sumBy(subsidyBeanObjects, 'bean'));
     form.setFieldsValue({ subsidyBeanObjects });
   }, [userList, userNumber, mreList, mreNumber, groupList, groupNumber]);
+  
 
   // 向下填充
   const downBean = (bean) => {
@@ -69,6 +72,8 @@ const SubsidyDirectMoney = (props) => {
         break;
     }
   };
+  //批量导入事件
+  const handleImport = () => setVisiblePort({ show: true, role });
 
   const formItems = [
     {
@@ -79,7 +84,7 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: tab === 'direct' ? SUBSIDY_ACTION_ROLE : SUBSIDY_TASK_ROLE,
+      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_TASK_ROLE,
       onChange: (val) => {
         form.setFieldsValue({ subsidyBeanObjects: undefined });
         setRole(val);
@@ -96,9 +101,14 @@ const SubsidyDirectMoney = (props) => {
       rules: [{ required: true, message: '请选择店铺/子门店' }],
       visible: role === 'merchant',
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)}>
-          选择店铺
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisible(true)}>
+            选择店铺
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
@@ -154,9 +164,14 @@ const SubsidyDirectMoney = (props) => {
       type: 'formItem',
       visible: role === 'group',
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisibleGroup(true)}>
-          选择集团
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleGroup(true)}>
+            选择集团
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
@@ -209,9 +224,14 @@ const SubsidyDirectMoney = (props) => {
       visible: role === 'user',
       rules: [{ required: true, message: '请选择用户' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
-          选择用户
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
+            选择用户
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
@@ -265,7 +285,6 @@ const SubsidyDirectMoney = (props) => {
     },
     {
       label: '充值卡豆数',
-      name: 'bean',
       type: 'formItem',
       formItem: <>{userTotal}</>,
     },
@@ -296,6 +315,28 @@ const SubsidyDirectMoney = (props) => {
         onOk={(val) => setGroupList(val)}
         onCancel={() => setVisibleGroup(false)}
       ></GroupSelectModal>
+      <ImportDataModal
+        visible={visiblePort}
+        onClose={() => setVisiblePort(false)}
+        setMreList={(list) => {
+          setMreList({ ...list });
+          const merNumbers = {};
+          list.list.map((item) => (merNumbers[item.userMerchantIdString] = item.subsidyBean));
+          setMreNumber(merNumbers);
+        }}
+        setUserList={(list) => {
+          setUserList({ ...list });
+          const numbers = {};
+          list.list.map((item) => (numbers[item.userIdString] = item.subsidyBean));
+          setUserNumber(numbers);
+        }}
+        setGroupList={(list) => {
+          setGroupList({...list});
+          const groupNumbers = {};
+          list.list.map((item) => (groupNumbers[item.merchantGroupIdString] = item.subsidyBean));
+          setGroupNumber(groupNumbers);
+        }}
+      ></ImportDataModal>
     </>
   );
 };

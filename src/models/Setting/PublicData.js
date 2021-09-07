@@ -32,6 +32,7 @@ import {
   fetchAuditMerchantList,
   fetchGetCouponsSearch,
   fetchGetGoodsSearch,
+  fetchListImportSubsidyRole,
 } from '@/services/PublicServices';
 
 export default {
@@ -471,6 +472,12 @@ export default {
           })),
         },
       });
+    },
+    *fetchListImportSubsidyRole({ payload, callback }, { put, call }) {
+      const response = yield call(fetchListImportSubsidyRole, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
     },
   },
 };

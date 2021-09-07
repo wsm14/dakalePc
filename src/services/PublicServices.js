@@ -240,3 +240,12 @@ export function fetchSkuDetailMerchantList(params) {
     params,
   });
 }
+
+// 根据导入  用户 匹配后返回 
+export function fetchListImportSubsidyRole(data) {
+  return request('/admin/subsidyManagement/listImportSubsidyRole', {
+    method: 'POST',
+    data,
+  });
+}
+
