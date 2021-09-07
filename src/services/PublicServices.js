@@ -241,7 +241,7 @@ export function fetchSkuDetailMerchantList(params) {
   });
 }
 
-// 根据导入  用户 匹配后返回 
+// 根据导入  用户,店铺，集团 匹配后返回 
 export function fetchListImportSubsidyRole(data) {
   return request('/admin/subsidyManagement/listImportSubsidyRole', {
     method: 'POST',
@@ -249,3 +249,10 @@ export function fetchListImportSubsidyRole(data) {
   });
 }
 
+//通过id list 批量查询用户
+export function fetchListUserByIds(data) {
+  return request('/admin/userManagement/listUserByIds', {
+    method: 'POST',
+    data,
+  });
+}

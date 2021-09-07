@@ -33,6 +33,7 @@ import {
   fetchGetCouponsSearch,
   fetchGetGoodsSearch,
   fetchListImportSubsidyRole,
+  fetchListUserByIds,
 } from '@/services/PublicServices';
 
 export default {
@@ -478,6 +479,12 @@ export default {
       if (!response) return;
       const { content } = response;
       callback && callback(content);
+    },
+    *fetchListUserByIds({ payload, callback }, { put, call }) {
+      const response = yield call(fetchListUserByIds, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content.userDTOS);
     },
   },
 };
