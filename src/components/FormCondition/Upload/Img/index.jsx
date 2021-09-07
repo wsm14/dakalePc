@@ -142,12 +142,12 @@ const UploadBlock = (props) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
-    const showFile =
-      fileExtr === '.gif'
-        ? file.url || file.preview
-        : file.originFileObj
-        ? file.originFileObj
-        : file.url || file.preview;
+
+    const showFile = ['.gif', '.GIF'].includes(fileExtr)
+      ? file.url || file.preview
+      : file.originFileObj
+      ? file.originFileObj
+      : file.url || file.preview;
     setPreviewImage(showFile);
     setPreviewTitle({ uid: file.uid, key: name, fileType: fileExtr });
     setPreviewVisible(true);
@@ -239,7 +239,7 @@ const UploadBlock = (props) => {
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileExtr = value.file.name.replace(/.+\./, '.');
           // 是否传入时裁剪
-          if ((imgRatio || isCut) && fileExtr !== '.gif') {
+          if ((imgRatio || isCut) && ['.gif', '.GIF'].includes(fileExtr)) {
             imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
               blob.uid = value.file.uid;
               blob.name = value.file.name;
@@ -291,15 +291,15 @@ const UploadBlock = (props) => {
       </DragAndDropHOC>
       <Modal
         destroyOnClose
-        title={previewTitle.fileType === '.gif' ? '查看图片' : '编辑图片'}
+        title={['.gif', '.GIF'].includes(previewTitle.fileType) ? '查看图片' : '编辑图片'}
         width={950}
         visible={previewVisible}
-        maskClosable={previewTitle.fileType === '.gif'}
+        maskClosable={['.gif', '.GIF'].includes(previewTitle.fileType)}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
         zIndex={100000}
       >
-        {previewTitle.fileType === '.gif' ? (
+        {['.gif', '.GIF'].includes(previewTitle.fileType) ? (
           <div style={{ textAlign: 'center' }}>
             <img src={previewImage} alt="" srcset="" />
           </div>
