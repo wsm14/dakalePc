@@ -47,6 +47,12 @@ export default [
         buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
       },
       {
+        path: '/account/group',
+        name: '集团账户',
+        component: './Account/AccountGroup',
+        buttons: ['info'],
+      },
+      {
         path: '/account/subsidyShop',
         name: '补贴店铺',
         component: './Account/SubsidyShop',
