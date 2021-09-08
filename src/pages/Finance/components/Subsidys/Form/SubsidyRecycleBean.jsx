@@ -83,7 +83,7 @@ const SubsidyRecycleBean = (props) => {
       formItem: (
         <Space size="large">
           <Button type="primary" ghost onClick={() => setVisible(true)}>
-            选择店铺
+            选择单店/子门店
           </Button>
           <Button type="primary" ghost onClick={handleImport}>
             批量导入
@@ -226,7 +226,7 @@ const SubsidyRecycleBean = (props) => {
         onOk={(val) => setGroupList(val)}
         onCancel={() => setVisibleGroup(false)}
       ></GroupSelectModal>
-       <ImportDataModal
+      <ImportDataModal
         visible={visiblePort}
         onClose={() => setVisiblePort(false)}
         setMreList={(list) => {
@@ -236,7 +236,7 @@ const SubsidyRecycleBean = (props) => {
           setMreNumber(merNumbers);
         }}
         setGroupList={(list) => {
-          setGroupList({...list});
+          setGroupList({ ...list });
           const groupNumbers = {};
           list.list.map((item) => (groupNumbers[item.merchantGroupIdString] = item.subsidyBean));
           setGroupNumber(groupNumbers);

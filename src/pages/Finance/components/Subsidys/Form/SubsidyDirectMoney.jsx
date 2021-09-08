@@ -103,7 +103,7 @@ const SubsidyDirectMoney = (props) => {
       formItem: (
         <Space size="large">
           <Button type="primary" ghost onClick={() => setVisible(true)}>
-            选择店铺
+            选择单店/子门店
           </Button>
           <Button type="primary" ghost onClick={handleImport}>
             批量导入
