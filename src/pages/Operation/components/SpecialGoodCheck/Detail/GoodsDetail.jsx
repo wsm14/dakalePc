@@ -119,14 +119,13 @@ const GoodsDetail = (props) => {
           </>
         );
       },
-      // show: detail.auditStatus !== '0',
     },
     {
       label: '平台商品标签',
-      name: 'goodsTagList',
+      name: 'platformGoodsTagList',
       render: (val, row) => {
-        const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        const { platformGoodsTagList = [] } = row;
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
             {tags &&

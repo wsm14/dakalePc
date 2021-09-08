@@ -81,8 +81,7 @@ const TaskManage = (props) => {
     {
       title: '补贴/回收卡豆数',
       align: 'right',
-      dataIndex: 'subsidizedBeans',
-      render: (val, row) => (row.mode == 'out' ? val : row.recycleBean),
+      dataIndex: 'totalBeans',
     },
     {
       title: '创建时间',

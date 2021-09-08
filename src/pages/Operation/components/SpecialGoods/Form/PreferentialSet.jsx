@@ -34,7 +34,7 @@ const PreferentialSet = ({
   });
   // 商品类型 goodsType
   const [radioData, setRadioData] = useState({ goodsType: 'single' });
-  const [platTaglist, setPlatTaglist] = useState([]);
+  const [goodsTaglist, setGoodsTaglist] = useState([]);
 
   //编辑的时候数据回显的标签
   const { goodsTagList = [] } = initialValues;
@@ -110,7 +110,7 @@ const PreferentialSet = ({
         categoryId: categoryId,
         tagType: 'merchant',
       },
-      callback: (list) => setPlatTaglist(list),
+      callback: (list) => setGoodsTaglist(list),
     });
   };
 
@@ -342,7 +342,7 @@ const PreferentialSet = ({
       type: 'select',
       mode: 'multiple',
       placeholder: '请选择商家商品标签',
-      select: platTaglist,
+      select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
       addRules: [
         {

@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
-import { Button, InputNumber, Tooltip } from 'antd';
-import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
-import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
+import { Button, InputNumber, Tooltip, Space } from 'antd';
+import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLES,SUBSIDY_ACTION_ROLE} from '@/common/constant';
+import {
+  MreSelect,
+  MreSelectShow,
+  UserSelectShow,
+  GroupSelectModal,
+  GroupSelectShow,
+} from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
+import ImportDataModal from './ImportDataModal';
 
 const SubsidyDirectMoney = (props) => {
   const { form, detail, tab } = props;
@@ -16,36 +23,56 @@ const SubsidyDirectMoney = (props) => {
   const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
   const [userNumber, setUserNumber] = useState({}); // 卡豆数 暂存输入值
   const [userTotal, setUserTotal] = useState(0); // 卡豆数总数
-  const [rechargeBeans, setRechargeBeans] = useState(0); // 商户卡豆数总数
+  const [visibleGroup, setVisibleGroup] = useState(false); // 选择店铺弹窗
+  const [groupList, setGroupList] = useState({ keys: [], list: [] }); // 选择集团后回显的数据
+  const [mreNumber, setMreNumber] = useState({}); // 店铺回收卡豆数 暂存输入值
+  const [groupNumber, setGroupNumber] = useState({}); // 集团回收卡豆数 暂存输入值
+  const [visiblePort, setVisiblePort] = useState(false);
 
   // 设置form表单值 店铺id
-  useEffect(() => {
-    const directChargeList = mreList.keys.map((item) => ({
-      roleId: item,
-      directChargeBean: rechargeBeans || 0,
-    }));
-    form.setFieldsValue({ directChargeList });
-    form.setFieldsValue({ merchantIds: mreList.keys.toString() });
-  }, [mreList, rechargeBeans]);
+  // useEffect(() => {
+  //   const subsidyBeanObjects = mreList.keys.map((item) => ({
+  //     ownerId: item,
+  //     bean: rechargeBeans || 0,
+  //   }));
+  //   form.setFieldsValue({ subsidyBeanObjects });
+  //   form.setFieldsValue({ merchantIds: mreList.keys.toString() });
+  // }, [mreList, rechargeBeans]);
 
   // 监听用户卡豆数变化
   useEffect(() => {
-    const newData = lodash.pickBy(userNumber, (value, key) => userList.keys.includes(key));
-    const directChargeList = Object.keys(newData).map((item) => ({
-      roleId: item,
-      directChargeBean: newData[item] || 0,
+    // user: '用户', merchant: '店铺', group: '集团'
+    const list = { user: userList, merchant: mreList, group: groupList }[role];
+    const number = { user: userNumber, merchant: mreNumber, group: groupNumber }[role];
+    const newData = lodash.pickBy(number, (value, key) => list.keys.includes(key));
+    const subsidyBeanObjects = Object.keys(newData).map((item) => ({
+      ownerId: item,
+      bean: newData[item] || 0,
     }));
-    setUserTotal(lodash.sumBy(directChargeList, 'directChargeBean'));
-    form.setFieldsValue({ directChargeList });
-  }, [userList, userNumber]);
+    setUserTotal(lodash.sumBy(subsidyBeanObjects, 'bean'));
+    form.setFieldsValue({ subsidyBeanObjects });
+  }, [userList, userNumber, mreList, mreNumber, groupList, groupNumber]);
 
   // 向下填充
   const downBean = (bean) => {
     if (!bean) return;
     const obj = {};
-    userList.keys.map((item) => (obj[item] = bean));
-    setUserNumber(obj);
+    const list = { user: userList, merchant: mreList, group: groupList }[role];
+    list.keys.map((item) => (obj[item] = bean));
+    switch (role) {
+      case 'user':
+        setUserNumber(obj);
+        break;
+      case 'merchant':
+        setMreNumber(obj);
+        break;
+      case 'group':
+        setGroupNumber(obj);
+        break;
+    }
   };
+  //批量导入事件
+  const handleImport = () => setVisiblePort({ show: true, role });
 
   const formItems = [
     {
@@ -56,40 +83,155 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: tab === 'direct' ? SUBSIDY_ACTION_ROLE : SUBSIDY_TASK_ROLE,
+      select: SUBSIDY_ACTION_ROLES,
+      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_ACTION_ROLE,
       onChange: (val) => {
-        form.setFieldsValue({ directChargeList: undefined });
+        form.setFieldsValue({ subsidyBeanObjects: undefined });
         setRole(val);
+        setUserList({ keys: [], list: [] });
+        setMreList({ keys: [], list: [] });
+        setGroupList({ keys: [], list: [] });
       },
     },
     {
       label: '适用店铺',
-      name: tab === 'direct' ? 'directChargeList' : 'merchantIds', // 营销卡豆 merchantIds
+      name: 'subsidyBeanObjects',
+      // name: tab === 'direct' ? 'subsidyBeanObjects' : 'merchantIds', // 营销卡豆 merchantIds
       type: 'formItem',
-      rules: [{ required: true, message: '请选择店铺' }],
+      rules: [{ required: true, message: '请选择店铺/子门店' }],
       visible: role === 'merchant',
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)}>
-          选择店铺
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisible(true)}>
+            选择单店/子门店
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
       label: '适用店铺',
       type: 'noForm',
       visible: role === 'merchant',
-      formItem: <MreSelectShow key="MreTable" {...mreList} setMreList={setMreList}></MreSelectShow>,
+      formItem: (
+        <MreSelectShow
+          key="MreTable"
+          {...mreList}
+          setMreList={setMreList}
+          otherColumns={[
+            {
+              fixed: 'right',
+              title: '回收卡豆数',
+              dataIndex: 'bean',
+              render: (val, record) => (
+                <>
+                  <InputNumber
+                    value={mreNumber[record.userMerchantIdString]}
+                    precision={0}
+                    min={1}
+                    onChange={(val) => {
+                      console.log(val, 'ddd');
+                      setMreNumber(({ sum, ...other }) => {
+                        console.log(sum, other, 'ooo');
+                        return {
+                          ...other,
+                          [record.userMerchantIdString]: val,
+                        };
+                      });
+                    }}
+                  ></InputNumber>
+                  {mreList.list[0].userMerchantIdString === record.userMerchantIdString && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
+                        onClick={() => downBean(mreNumber[record.userMerchantIdString])}
+                        style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
+                      ></DownSquareOutlined>
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+          ]}
+        ></MreSelectShow>
+      ),
+    },
+
+    {
+      label: '适用集团',
+      name: 'subsidyBeanObjects',
+      type: 'formItem',
+      visible: role === 'group',
+      formItem: (
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleGroup(true)}>
+            选择集团
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
+      ),
     },
     {
+      label: '适用集团',
+      type: 'noForm',
+      visible: role === 'group',
+      formItem: (
+        <GroupSelectShow
+          key="MreTable"
+          {...groupList}
+          setGroupList={setGroupList}
+          otherColumns={[
+            {
+              fixed: 'right',
+              title: '回收卡豆数',
+              dataIndex: 'bean',
+              render: (val, record) => (
+                <>
+                  <InputNumber
+                    value={groupNumber[record.merchantGroupIdString]}
+                    precision={0}
+                    min={1}
+                    onChange={(val) =>
+                      setGroupNumber(({ sum, ...other }) => ({
+                        ...other,
+                        [record.merchantGroupIdString]: val,
+                      }))
+                    }
+                  ></InputNumber>
+                  {groupList.list[0].merchantGroupIdString === record.merchantGroupIdString && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
+                        onClick={() => downBean(groupNumber[record.merchantGroupIdString])}
+                        style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
+                      ></DownSquareOutlined>
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+          ]}
+        ></GroupSelectShow>
+      ),
+    },
+
+    {
       label: '适用用户',
-      name: 'directChargeList',
+      name: 'subsidyBeanObjects',
       type: 'formItem',
       visible: role === 'user',
       rules: [{ required: true, message: '请选择用户' }],
       formItem: (
-        <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
-          选择用户
-        </Button>
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
+            {tab === 'direct' ? '选择哒人' : '选择用户'}
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
       ),
     },
     {
@@ -101,6 +243,7 @@ const SubsidyDirectMoney = (props) => {
           maxLength={500}
           key="UserTable"
           {...userList}
+          params={tab === 'direct' ? { isDaren: 1 } : {}}
           showSelect={visibleSelect}
           onCancelShowSelect={() => setVisibleSelect(false)}
           onOk={(val) => {
@@ -111,7 +254,7 @@ const SubsidyDirectMoney = (props) => {
             {
               fixed: 'right',
               title: '充值卡豆数',
-              dataIndex: 'recycleBean',
+              dataIndex: 'bean',
               render: (val, record, index) => (
                 <>
                   <InputNumber
@@ -142,13 +285,8 @@ const SubsidyDirectMoney = (props) => {
     },
     {
       label: '充值卡豆数',
-      name: 'rechargeBeans', // 营销卡豆
-      type: role === 'user' ? 'formItem' : 'number',
-      precision: 0,
-      min: 0,
-      max: 999999999,
+      type: 'formItem',
       formItem: <>{userTotal}</>,
-      onChange: (e) => setRechargeBeans(e), // 平台直冲
     },
     {
       label: '充值凭证',
@@ -161,6 +299,7 @@ const SubsidyDirectMoney = (props) => {
   return (
     <>
       <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+      {/* merchant */}
       <MreSelect
         keys={mreList.keys}
         visible={visible}
@@ -168,6 +307,36 @@ const SubsidyDirectMoney = (props) => {
         onOk={(val) => setMreList(val)}
         onCancel={() => setVisible(false)}
       ></MreSelect>
+      {/* group */}
+      <GroupSelectModal
+        keys={groupList.keys}
+        visible={visibleGroup}
+        groupList={groupList.list}
+        onOk={(val) => setGroupList(val)}
+        onCancel={() => setVisibleGroup(false)}
+      ></GroupSelectModal>
+      <ImportDataModal
+        visible={visiblePort}
+        onClose={() => setVisiblePort(false)}
+        setMreList={(list) => {
+          setMreList({ ...list });
+          const merNumbers = {};
+          list.list.map((item) => (merNumbers[item.userMerchantIdString] = item.subsidyBean));
+          setMreNumber(merNumbers);
+        }}
+        setUserList={(list) => {
+          setUserList({ ...list });
+          const numbers = {};
+          list.list.map((item) => (numbers[item.userIdString] = item.subsidyBean));
+          setUserNumber(numbers);
+        }}
+        setGroupList={(list) => {
+          setGroupList({ ...list });
+          const groupNumbers = {};
+          list.list.map((item) => (groupNumbers[item.merchantGroupIdString] = item.subsidyBean));
+          setGroupNumber(groupNumbers);
+        }}
+      ></ImportDataModal>
     </>
   );
 };

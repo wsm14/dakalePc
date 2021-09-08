@@ -47,6 +47,12 @@ export default [
         buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
       },
       {
+        path: '/account/group',
+        name: '集团账户',
+        component: './Account/AccountGroup',
+        buttons: ['info'],
+      },
+      {
         path: '/account/subsidyShop',
         name: '补贴店铺',
         component: './Account/SubsidyShop',
@@ -487,6 +493,12 @@ export default [
         component: './Service/SolicitJobs',
         buttons: ['save', 'edit', 'down', 'jobClass'],
       },
+      {
+        path: '/service/commentManage',
+        name: '评论管理',
+        component: './Service/CommentManage',
+        buttons: ['delete', 'recover'],
+      },
       // 配置管理 system
       {
         path: '/system/city',
@@ -558,6 +570,13 @@ export default [
         name: 'BD白名单',
         component: './User/BdLimitPop',
         buttons: ['save'],
+      },
+      // 卡豆红包明细
+      {
+        path: '/redEnvelopes/beanRedEnvelopes',
+        name: '卡豆红包',
+        component: './RedEnvelopes/BeanRedEnvelopes',
+        buttons: ['authEdit','getRecord'],
       },
     ],
   },

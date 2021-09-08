@@ -132,9 +132,14 @@ const VaneDrawer = (props) => {
       label: '选择行业',
       type: 'cascader',
       name: 'categoryId',
-      changeOnSelect: true,
+      // type: 'treeSelect',
+      // multiple: true,
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'childList' },
+      fieldNames: {
+        label: 'categoryName',
+        value: 'categoryIdString',
+        children: 'childList',
+      },
       show: false,
       visible: showUrl === 'native',
       onChange: (val, option) => {

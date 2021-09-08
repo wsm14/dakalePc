@@ -9,11 +9,11 @@ const TaskDetailList = (props) => {
   const { detailList, loading, visible = {}, onClose } = props;
 
   const { show = false, detail = {} } = visible;
-  const { subsidyId, taskName, subsidizedBeans, recycleBean, role = 'user', mode } = detail;
+  const { subsidyId, taskName, role = 'user', mode } = detail;
 
   const tableProps = {
     user: {
-      api: 'subsidyManage/fetchSubsidyTaskUserDetailList',
+      api: 'subsidyManage/fetchSubsidyTaskDetailList',
       searchItems: [
         {
           label: '用户昵称',
@@ -31,20 +31,20 @@ const TaskDetailList = (props) => {
         },
         {
           title: '用户昵称',
-          dataIndex: 'userName',
+          dataIndex: 'username',
         },
         {
           title: '用户手机号',
-          dataIndex: 'userMobile',
+          dataIndex: 'mobile',
         },
         {
           title: '豆号',
           align: 'center',
-          dataIndex: 'userBeanCode',
+          dataIndex: 'beanCode',
         },
         {
           title: '级别',
-          dataIndex: 'userLevel',
+          dataIndex: 'levelName',
         },
         {
           title: '注册地',
@@ -54,7 +54,7 @@ const TaskDetailList = (props) => {
         {
           title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
           align: 'right',
-          dataIndex: 'rechargeBeans',
+          dataIndex: 'subsidyBean',
         },
       ],
     },
@@ -75,7 +75,7 @@ const TaskDetailList = (props) => {
         },
         {
           title: '店铺帐号',
-          dataIndex: 'account',
+          dataIndex: 'mobile',
         },
         {
           title: '所属商圈',
@@ -84,7 +84,7 @@ const TaskDetailList = (props) => {
         {
           title: '所属行业',
           align: 'center',
-          dataIndex: 'category',
+          dataIndex: 'topCategoryName',
         },
         {
           title: '地址',
@@ -93,7 +93,43 @@ const TaskDetailList = (props) => {
         {
           title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
           align: 'right',
-          dataIndex: 'rechargeBeans',
+          dataIndex: 'subsidyBean',
+        },
+      ],
+    },
+    group: {
+      api: 'subsidyManage/fetchSubsidyTaskDetailList',
+      searchItems: [
+        {
+          label: '集团名称',
+          name: 'merchantName',
+        },
+      ],
+      getColumns: [
+        {
+          title: '集团名称',
+          dataIndex: 'groupName',
+          ellipsis: true,
+        },
+        {
+          title: '经营类目',
+          dataIndex: 'topCategoryName',
+          render: (val, row) => `${val}-${row.categoryName}`,
+        },
+        {
+          title: '地区',
+          dataIndex: 'districtCode',
+          render: (val) => checkCityName(val) || '--',
+        },
+        {
+          title: '详细地址',
+          dataIndex: 'address',
+          ellipsis: true,
+        },
+        {
+          title: `${SUBSIDY_BEAN_TYPE[mode]}卡豆数`,
+          align: 'right',
+          dataIndex: 'subsidyBean',
         },
       ],
     },
@@ -101,9 +137,7 @@ const TaskDetailList = (props) => {
 
   return (
     <Modal
-      title={`补贴详情 - ${taskName} | 总${SUBSIDY_BEAN_TYPE[mode]}卡豆：${
-        { out: subsidizedBeans, in: recycleBean }[mode]
-      }`}
+      title={`补贴详情 - ${taskName} | 总${SUBSIDY_BEAN_TYPE[mode]}卡豆：${detailList.totalBeans}`}
       width={1150}
       destroyOnClose
       footer={null}
@@ -117,7 +151,7 @@ const TaskDetailList = (props) => {
         searchItems={tableProps.searchItems}
         columns={tableProps.getColumns}
         rowKey={(row) => row.merchantId || row.userId}
-        params={{ subsidyId }}
+        params={{ subsidyId, role }}
         dispatchType={tableProps.api}
         size="middle"
         {...detailList}
@@ -128,7 +162,5 @@ const TaskDetailList = (props) => {
 
 export default connect(({ subsidyManage, loading }) => ({
   detailList: subsidyManage.detailList,
-  loading:
-    loading.effects['subsidyManage/fetchSubsidyTaskDetailList'] ||
-    loading.effects['subsidyManage/fetchSubsidyTaskUserDetailList'],
+  loading: loading.effects['subsidyManage/fetchSubsidyTaskDetailList'],
 }))(TaskDetailList);

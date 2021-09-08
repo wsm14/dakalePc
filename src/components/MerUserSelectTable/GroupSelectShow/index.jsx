@@ -2,12 +2,12 @@ import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 
-const MreSelectShow = ({
+const GroupSelectShow = ({
   keys = [],
-  rowKey = 'userMerchantIdString',
+  rowKey = 'merchantGroupIdString',
   list = [],
   columns,
-  setMreList,
+  setGroupList,
   otherColumns = [],
   disabled = false,
   rowSelection,
@@ -15,8 +15,8 @@ const MreSelectShow = ({
   // table 表头
   const getColumns = [
     {
-      title: '店铺名称',
-      dataIndex: 'merchantName',
+      title: '集团名称',
+      dataIndex: 'groupName',
       width: 200,
       ellipsis: { lines: 2 },
     },
@@ -28,7 +28,6 @@ const MreSelectShow = ({
       title: '地区',
       dataIndex: 'districtCode',
       render: (val) => checkCityName(val) || '--',
-      ellipsis: true,
     },
     {
       title: '详细地址',
@@ -55,7 +54,7 @@ const MreSelectShow = ({
                 getCheckboxProps: (record) => ({
                   disabled: disabled, // Column configuration not to be checked
                 }),
-                onChange: (val) => setMreList({ list, keys: val }),
+                onChange: (val) => setGroupList({ list, keys: val }),
               }
         }
         list={list}
@@ -65,4 +64,4 @@ const MreSelectShow = ({
   );
 };
 
-export default MreSelectShow;
+export default GroupSelectShow;

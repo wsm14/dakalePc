@@ -39,7 +39,8 @@ export default {
       const response = yield call(fetchSubsidyShopDetailById, payload);
       if (!response) return;
       const { content } = response;
-      if (callback) callback(content.subsidyList);
+      const { userMerchantObjects = [] } = content.subsidyDTO;
+      if (callback) callback(userMerchantObjects);
     },
     //用户补贴详情
     *fetchSubsidyUserDetailById({ payload, callback }, { call }) {
