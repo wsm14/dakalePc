@@ -35,9 +35,41 @@ const AccountUserList = (props) => {
       render: (val) => val || '--',
     },
     {
+      title: '豆号',
+      align: 'center',
+      dataIndex: 'beanCode',
+    },
+    {
+      title: '手机号',
+      align: 'center',
+      dataIndex: 'mobile',
+    },
+    {
+      title: '用户级别',
+      align: 'center',
+      dataIndex: 'levelName',
+    },
+    {
+      title: '累计提现（卡豆）',
+      align: 'center',
+      dataIndex: 'totalWithdrawBean',
+    },
+    {
+      title: '累计支出（卡豆）',
+      align: 'right',
+      dataIndex: 'totalExpendBean',
+      render: (val) => val || 0,
+    },
+    {
+      title: '累计奖励（卡豆）',
+      align: 'right',
+      dataIndex: 'totalRewardBean',
+      render: (val) => val || 0,
+    },
+    {
       title: '累计收益（卡豆）',
       align: 'right',
-      dataIndex: 'totalAdd',
+      dataIndex: 'totalIncomeBean',
       render: (val) => val || 0,
     },
     {
@@ -46,12 +78,7 @@ const AccountUserList = (props) => {
       dataIndex: 'totalCharge',
       render: (val) => val || 0,
     },
-    {
-      title: '累计支出（金额）',
-      align: 'right',
-      dataIndex: 'totalConsume',
-      render: (val) => val || 0,
-    },
+    
     {
       title: '奖励卡豆余额',
       align: 'right',
