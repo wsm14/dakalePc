@@ -359,22 +359,22 @@ const SpecialGoodsResource = (props) => {
             visible: !['highCommission', 'todayNew'].includes(tabKey),
             click: () => handleCancle(val),
           },
-          {
-            type: 'placement',
-            title: '置顶', // 限时抢购，爆品福利，每日必推，特惠推荐显示 且
-            visible:
-              ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
-              record.isRecommendTop == '0',
-            click: () => handletoTop(val),
-          },
-          {
-            type: 'placement',
-            title: '取消置顶', // 限时抢购，爆品福利，每日必推，‘特惠推荐显示
-            visible:
-              ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
-              record.isRecommendTop == '1',
-            click: () => handleCancletoTop(val),
-          },
+          // {
+          //   type: 'placement',
+          //   title: '置顶', // 限时抢购，爆品福利，每日必推，特惠推荐显示 且
+          //   visible:
+          //     ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
+          //     record.isRecommendTop == '0',
+          //   click: () => handletoTop(val),
+          // },
+          // {
+          //   type: 'placement',
+          //   title: '取消置顶', // 限时抢购，爆品福利，每日必推，‘特惠推荐显示
+          //   visible:
+          //     ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
+          //     record.isRecommendTop == '1',
+          //   click: () => handleCancletoTop(val),
+          // },
         ];
       },
     },

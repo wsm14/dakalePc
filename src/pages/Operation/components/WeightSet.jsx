@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
+import { authCheck } from '@/layouts/AuthConsumer';
 import { Form, InputNumber, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
 
@@ -18,7 +19,9 @@ const WeightSet = ({
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
-  const { userMomentIdString: momentId, recommendWeight } = detail;
+  const editAuth = authCheck(['weight']);
+
+  const { recommendWeight } = detail;
 
   const setEdit = () => setEditType(!editType);
   const name = Object.keys(recommendId)[0];
@@ -44,13 +47,15 @@ const WeightSet = ({
         <FormItem noStyle name={'recommendWeight'}>
           <InputNumber disabled={!editType} />
         </FormItem>
-        <Button
-          style={{ width: 32 }}
-          type="link"
-          block
-          icon={!editType ? <EditOutlined /> : <CheckOutlined />}
-          onClick={!editType ? setEdit : fetchFormData}
-        ></Button>
+        {editAuth && (
+          <Button
+            style={{ width: 32 }}
+            type="link"
+            block
+            icon={!editType ? <EditOutlined /> : <CheckOutlined />}
+            onClick={!editType ? setEdit : fetchFormData}
+          ></Button>
+        )}
       </div>
     </Form>
   );

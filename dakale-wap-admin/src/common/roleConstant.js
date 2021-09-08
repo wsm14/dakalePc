@@ -73,7 +73,7 @@ export const ROLE_BUTTON_TYPE = {
 
   qrCode: '获取二维码',
 
-  rate :'费率',
+  rate: '费率',
   role: '角色',
   revoke: '撤销',
   replay: '回复',
@@ -132,6 +132,7 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
 
   withdraw: '提现记录',
+  weight: '权重',
 };
 
 // 数据权限选项

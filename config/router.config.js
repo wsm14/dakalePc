@@ -460,7 +460,7 @@ export default [
         path: '/operation/specialGoodsResource',
         name: '资源位配置',
         component: './Operation/SpecialGoodsResource',
-        buttons: ['cancleRecommend', 'placement', 'configCondit'],
+        buttons: ['cancleRecommend', 'weight', 'configCondit'],
       },
       // 客服中心 service
       {
@@ -576,7 +576,7 @@ export default [
         path: '/redEnvelopes/beanRedEnvelopes',
         name: '卡豆红包',
         component: './RedEnvelopes/BeanRedEnvelopes',
-        buttons: ['authEdit','getRecord'],
+        buttons: ['authEdit', 'getRecord'],
       },
     ],
   },
