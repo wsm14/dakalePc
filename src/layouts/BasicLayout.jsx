@@ -176,7 +176,7 @@ const BasicLayout = (props) => {
   );
 };
 
-export default connect(({ global, settings, userInfo }) => ({
+export default connect(({ global, settings, userInfo, loading }) => ({
   collapsed: global.collapsed,
   menuList: userInfo.menuList,
   loading: userInfo.loading || loading.effects['userInfo/fetchGetAuthMenuTree'],
