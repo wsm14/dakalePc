@@ -179,7 +179,7 @@ const BasicLayout = (props) => {
 export default connect(({ global, settings, userInfo }) => ({
   collapsed: global.collapsed,
   menuList: userInfo.menuList,
-  loading: userInfo.loading,
+  loading: userInfo.loading || loading.effects['userInfo/fetchGetAuthMenuTree'],
   pageTitle: global.pageTitle,
   pageBtn: global.pageBtn,
   settings,
