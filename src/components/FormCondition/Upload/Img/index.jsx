@@ -138,7 +138,7 @@ const UploadBlock = (props) => {
 
   // 查看图片视频
   const handlePreview = async (file) => {
-    const fileExtr = file.name.replace(/.+\./, '.');
+    const fileExtr = file.name.replace(/.+\./, '.').toLowerCase();
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
@@ -237,7 +237,7 @@ const UploadBlock = (props) => {
           : // dklFileStatus  === out 的值 不允许上传
             fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
-          const fileExtr = value.file.name.replace(/.+\./, '.');
+          const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
           // 是否传入时裁剪
           if ((imgRatio || isCut) && fileExtr !== '.gif') {
             imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
