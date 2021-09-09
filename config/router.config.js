@@ -374,6 +374,12 @@ export default [
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
       },
       {
+        path: '/operation/videoplatform',
+        name: '平台视频',
+        component: './Operation/VideoPlatform',
+        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
+      },
+      {
         path: '/operation/goods',
         name: '商品管理',
         component: './Operation/GoodsManage',
