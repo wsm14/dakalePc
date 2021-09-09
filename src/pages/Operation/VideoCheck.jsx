@@ -4,10 +4,10 @@ import { Card, Tag } from 'antd';
 import { BUSINESS_TYPE, ACTION_TYPE, SHARE_TYPE } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
-import NoCheck from './components/VideoChecks/NoCheck';
-import NoConfirm from './components/VideoChecks/NoConfirm';
-import AlCheck from './components/VideoChecks/AlCheck';
-import AlConfirm from './components/VideoChecks/AlConfirm';
+import NoCheck from './components/VideoCheck/NoCheck';
+import NoConfirm from './components/VideoCheck/NoConfirm';
+import AlCheck from './components/VideoCheck/AlCheck';
+import AlConfirm from './components/VideoCheck/AlConfirm';
 import { checkCityName } from '@/utils/utils';
 
 const tabList = [
