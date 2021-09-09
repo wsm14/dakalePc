@@ -374,6 +374,12 @@ export default [
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
       },
       {
+        path: '/operation/videoCheck',
+        name: '视频管理',
+        component: './Operation/VideoCheck',
+        buttons: ['info', 'check'],
+      },
+      {
         path: '/operation/goods',
         name: '商品管理',
         component: './Operation/GoodsManage',
