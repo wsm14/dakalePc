@@ -9,8 +9,9 @@ export const ROLE_BUTTON_TYPE = {
   actionSave: '新增使用规则',
   againUp: '再次上架',
   addRemain: '增加库存',
-  authEdit:'权限设置',
+  authEdit: '权限设置',
 
+  BDSet: '关联BD',
   batchEdit: '批量修改',
   baseTrade: '基础设施',
   bussinessStatus: '营业状态',
@@ -43,7 +44,7 @@ export const ROLE_BUTTON_TYPE = {
   exportList: '导出',
 
   goodsCode: '商品码',
-  getRecord:'领取记录',
+  getRecord: '领取记录',
 
   handle: '处理',
   handleDeatil: '操作记录',
@@ -75,7 +76,7 @@ export const ROLE_BUTTON_TYPE = {
 
   qrCode: '获取二维码',
 
-  rate :'费率',
+  rate: '费率',
   role: '角色',
   revoke: '撤销',
   replay: '回复',
@@ -90,8 +91,7 @@ export const ROLE_BUTTON_TYPE = {
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
   rewardPeo: '新增打赏人数',
-  recover:'恢复',
-  
+  recover: '恢复',
 
   set: '设置',
   save: '新增',

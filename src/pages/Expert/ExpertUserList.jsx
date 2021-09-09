@@ -6,6 +6,7 @@ import CloseExpert from './components/UserList/CloseExpert';
 import ExpertUserLog from './components/UserList/ExpertUserLog';
 import SubCommissionStatistics from './components/UserList/SubCommissionStatistics';
 import RecommendModal from './components/UserList/RecommendModal';
+import BDSet from './components/UserList/BDSet';
 
 const ExpertUserList = (props) => {
   const { expertUserList, kolLevel, loading, dispatch } = props;
@@ -14,6 +15,7 @@ const ExpertUserList = (props) => {
   const [visibleLog, setVisibleLog] = useState(false); // 操作日志
   const [visibleCommission, setVisibleCommission] = useState(false); // 分佣统计
   const [visibleRecommend, setVisibleRecommend] = useState(false); // 推荐列表
+  const [visibleBD, setVisibleBD] = useState(false); // 关联bd
 
   const childRef = useRef();
 
@@ -119,8 +121,15 @@ const ExpertUserList = (props) => {
       dataIndex: 'unlockTime',
     },
     {
+      title: '关联BD',
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'unlockTime',
+    },
+    {
       title: '状态',
       align: 'center',
+      fixed: 'right',
       dataIndex: 'suspendStatus',
       render: (val) => (
         <span style={val !== '1' ? { color: 'red' } : {}}>{EXPERT_USER_STATUS[val]}</span>
@@ -128,7 +137,7 @@ const ExpertUserList = (props) => {
     },
     {
       type: 'handle',
-      width: 120,
+      width: 180,
       dataIndex: 'kolUserId',
       render: (val, detail) => [
         {
@@ -151,6 +160,10 @@ const ExpertUserList = (props) => {
           auth: 'status',
           title: '解封',
           click: () => fetchExpertOpen({ kolUserId: val }),
+        },
+        {
+          type: 'BDSet', // 关联BD
+          click: () => setVisibleBD({ show: true, detail }),
         },
         {
           type: 'diary', // 日志
@@ -220,6 +233,8 @@ const ExpertUserList = (props) => {
         visible={visibleRecommend}
         onClose={() => setVisibleRecommend(false)}
       ></RecommendModal>
+      {/* 关联BD */}
+      <BDSet visible={visibleBD} onClose={() => setVisibleBD(false)}></BDSet>
     </>
   );
 };
