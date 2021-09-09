@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Modal, Statistic, Row, Col } from 'antd';
-import { EXPERT_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const SubCommissionStatistics = (props) => {
@@ -9,7 +8,7 @@ const SubCommissionStatistics = (props) => {
 
   const { show = false, detail = {} } = visible;
 
-  const { username, levelKey, mobile, kolUserId } = detail;
+  const { username, level, mobile, kolUserId } = detail;
 
   // 统计数据
   const {
@@ -75,7 +74,7 @@ const SubCommissionStatistics = (props) => {
 
   return (
     <Modal
-      title={`分佣统计 - ${username} | ${mobile} | ${EXPERT_TYPE[levelKey]}`}
+      title={`分佣统计 - ${username} | ${mobile} | ${level}`}
       width={1300}
       destroyOnClose
       footer={null}
