@@ -125,6 +125,7 @@ const ExpertUserList = (props) => {
       align: 'center',
       fixed: 'right',
       dataIndex: 'unlockTime',
+      render: (val, row) => `${val}\n${row.beanCode}`,
     },
     {
       title: '状态',
