@@ -627,7 +627,7 @@ export function fetchListMomentAudit(params) {
 }
 // 视频审核详情
 export function fetchAuditMomentDetail(params) {
-  return request('/admin/marketing/getAuditMomentDetail', {
+  return request('/admin/marketing/audit/getAuditMomentDetail', {
     params,
   });
 }

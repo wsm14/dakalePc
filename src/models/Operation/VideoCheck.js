@@ -1,5 +1,7 @@
 import { notification } from 'antd';
 import moment from 'moment';
+import cityJson from '@/common/cityJson';
+import { SHARE_AREA_TYPE } from '@/common/constant';
 import { fetchListMomentAudit, fetchAuditMomentDetail } from '@/services/OperationServices';
 
 export default {
@@ -37,18 +39,43 @@ export default {
       const response = yield call(fetchAuditMomentDetail, other);
       if (!response) return;
       const { content } = response;
+      const { auditDetail = {}, momentInfo = {} } = content;
       const {
-        activityGoodsList = {},
         freeOwnerCouponList = {},
-        reduceObject = {},
-      } = content.moment;
+        ownerCouponList = {},
+        activityGoodsList = {},
+        area,
+        areaType,
+        promotionType: pType,
+      } = momentInfo;
 
       const newDetail = {
-        activityGoodsList,
-        freeOwnerCouponList,
-        reduceObject,
+        ...auditDetail,
+        ...momentInfo,
+        free: freeOwnerCouponList // 免费券
+          ? { ...freeOwnerCouponList, buyFlag: 0 }
+          : '',
+        contact: pType // 有价券 特惠商品
+          ? {
+              promotionType: { reduce: 'coupon', special: 'goods' }[pType],
+              ...{ reduce: ownerCouponList, special: activityGoodsList }[pType],
+            }
+          : '',
+        area:
+          areaType !== 'all'
+            ? areaType === 'near'
+              ? `附近 ${Number(area) / 1000} km`
+              : (area ? area.split(',') : [])
+                  .map((item) => {
+                    const cityIndex = cityJson.findIndex((city) => city.id === item);
+                    if (cityIndex > -1) {
+                      return cityJson[cityIndex].name;
+                    }
+                  })
+                  .toString()
+            : SHARE_AREA_TYPE[areaType],
       };
-      callback({ ...content.moment, ...newDetail });
+      callback({ ...content, ...newDetail });
     },
   },
 };

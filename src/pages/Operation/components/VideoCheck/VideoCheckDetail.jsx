@@ -21,36 +21,14 @@ const VideoCheck = (props) => {
     auditIdString,
     submitterType,
   } = visible;
+  console.log(status, 'ssss');
+  // status0-待审核 1-已通过 2-已驳回 3-已关闭
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
-  const [merchantList, setMerchantList] = useState([]);
   const [recordList, setRecordList] = useState({});
   const { divisionFlag } = detail;
 
   // 0-待审核 1-已通过 2-已驳回 3-已关闭
-
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (show) {
-      //挂靠商家列表
-      if (detail.ownerType === 'group') {
-        getMerchantList();
-      }
-    }
-  }, [show]);
-
-  //sku通用-审核中sku挂靠商家列表
-  const getMerchantList = () => {
-    dispatch({
-      type: 'baseData/fetchAuditMerchantList',
-      payload: {
-        auditId: auditIdString,
-        ownerId: ownerIdString,
-      },
-      callback: (list) => setMerchantList(list),
-    });
-  };
 
   // 审核通过
   const handleVerifyAllow = () => {
@@ -74,10 +52,7 @@ const VideoCheck = (props) => {
       auth: 'check',
       onClick: handleVerifyAllow,
       text: '审核通过',
-      show:
-        ['0'].includes(status) &&
-        ['admin', 'sell'].includes(detail.auditorType) &&
-        ['adminAudit'].includes(tabkey),
+      show: ['0'].includes(status) && ['adminAudit'].includes(tabkey),
     },
   ];
   // 弹出窗属性
@@ -93,24 +68,22 @@ const VideoCheck = (props) => {
     },
     footer: (
       <ExtraButton list={btnList}>
-        {['0'].includes(status) &&
-          ['admin', 'sell'].includes(detail.auditorType) &&
-          ['adminAudit'].includes(tabkey) && (
-            <Button
-              style={{ marginLeft: 8 }}
-              danger
-              onClick={() =>
-                setVisibleRefuse({
-                  show: true,
-                  type: 'edit',
-                  auditId: auditIdString,
-                  ownerId: ownerIdString,
-                })
-              }
-            >
-              审核驳回
-            </Button>
-          )}
+        {['0'].includes(status) && ['adminAudit'].includes(tabkey) && (
+          <Button
+            style={{ marginLeft: 8 }}
+            danger
+            onClick={() =>
+              setVisibleRefuse({
+                show: true,
+                type: 'edit',
+                auditId: auditIdString,
+                ownerId: ownerIdString,
+              })
+            }
+          >
+            审核驳回
+          </Button>
+        )}
       </ExtraButton>
     ),
   };
@@ -160,7 +133,10 @@ const VideoCheck = (props) => {
                 setVisibleRefuse({
                   show: true,
                   type: 'info',
-                  detail: detail.rejectObj,
+                  detail: {
+                    rejectReason: detail.rejectReason,
+                    rejectImg: detail.rejectImg || '',
+                  },
                 })
               }
             >
@@ -172,12 +148,7 @@ const VideoCheck = (props) => {
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1" onChange={handleTabChange}>
         <Tabs.TabPane tab="分享信息" key="1">
-          <DetailForm
-            detail={detail}
-            form={form}
-            tabkey={tabkey}
-            merchantList={merchantList}
-          ></DetailForm>
+          <DetailForm detail={detail} tabkey={tabkey}></DetailForm>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="2">
           <CheckRecord recordList={recordList}></CheckRecord>

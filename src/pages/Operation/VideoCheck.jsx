@@ -42,7 +42,6 @@ const VideoCheck = (props) => {
   const [tabkey, setTabKey] = useState('adminAudit');
   const { list } = videoCheck;
 
-  
   const fetchVideoCheckClose = (record) => {
     const { auditIdString, ownerIdString } = record;
     dispatch({
@@ -71,7 +70,7 @@ const VideoCheck = (props) => {
 
     {
       label: '创建人',
-      name: 'creator',
+      name: 'submitterUserName',
     },
     {
       label: '审核创建时间',
@@ -156,15 +155,15 @@ const VideoCheck = (props) => {
         return <>{VIDEO_TYPE[momentDTO.ownerType]}</>;
       },
     },
-    {
-      title: '单次打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      render: (val, row) => {
-        const { momentDTO = {} } = row;
-        return <>{momentDTO.beanAmount}</>;
-      },
-    },
+    // {
+    //   title: '单次打赏卡豆数',
+    //   align: 'right',
+    //   dataIndex: 'beanAmount',
+    //   render: (val, row) => {
+    //     const { momentDTO = {} } = row;
+    //     return <>{momentDTO.beanAmount}</>;
+    //   },
+    // },
     {
       title: '审核创建时间',
       align: 'center',
@@ -181,16 +180,17 @@ const VideoCheck = (props) => {
       dataIndex: 'submitTime',
       show: ['adminConfirmed'].includes(tabkey),
     },
-    {
-      title: '审核对象',
-      align: 'center',
-      dataIndex: 'submitterType',
-      show: ['adminConfirmed'].includes(tabkey), //已审核
-    },
+    // {
+    //   title: '审核对象',
+    //   align: 'center',
+    //   dataIndex: 'submitterType',
+    //   show: ['adminConfirmed'].includes(tabkey), //已审核
+    // },
     {
       title: '审核类型',
       align: 'center',
-      dataIndex: 'submitterType',
+      dataIndex: 'actionType',
+      render:(val)=>VIDEO_ACTION_TYPE[val]
     },
     {
       title: '审核结果',
@@ -245,34 +245,24 @@ const VideoCheck = (props) => {
   // 获取详情
   const fetchVideoCheckDetail = (index, type) => {
     const { ownerIdString, auditIdString, auditStatus: status, submitterType } = list[index];
-    setVisibleInfo({
-      status,
-      index,
-      show: true,
-      detail: {},
-      // ...newProps,
-      ownerIdString,
-      auditIdString,
-      submitterType,
+    dispatch({
+      type: 'videoCheck/fetchAuditMomentDetail',
+      payload: { ownerId: ownerIdString, auditId: auditIdString, type },
+      callback: (val) => {
+        const newProps = {
+          show: true,
+          detail: { ...val },
+        };
+        setVisibleInfo({
+          status,
+          index,
+          ...newProps,
+          ownerIdString,
+          auditIdString,
+          submitterType,
+        });
+      },
     });
-    // dispatch({
-    //   type: 'videoCheck/fetchAuditMomentDetail',
-    //   payload: { ownerId: ownerIdString, momentId: auditIdString, type },
-    //   callback: (val) => {
-    //     const newProps = {
-    //       show: true,
-    //       detail: { ...val },
-    //     };
-    //     setVisibleInfo({
-    //       status,
-    //       index,
-    //       ...newProps,
-    //       ownerIdString,
-    //       auditIdString,
-    //       submitterType,
-    //     });
-    //   },
-    // });
   };
 
   return (
