@@ -41,24 +41,21 @@ export default {
       const { content } = response;
       const { auditDetail = {}, momentInfo = {} } = content;
       const {
-        freeOwnerCouponList = [],
-        ownerCouponList = [],
-        activityGoodsList = [],
+        ownerCouponList, // 有价券信息
+        activityGoodsList, // 商品信息
         area,
         areaType,
-        promotionType: pType,
       } = momentInfo;
 
+      const promotionType = activityGoodsList ? 'special' : ownerCouponList ? 'reduce' : '';
       const newDetail = {
         ...auditDetail,
         ...momentInfo,
-        free: freeOwnerCouponList // 免费券
-          ? { ...freeOwnerCouponList, buyFlag: 0 }
-          : '',
-        contact: pType // 有价券 特惠商品
+        promotionType,
+        contact: promotionType // 有价券 特惠商品
           ? {
-              promotionType: { reduce: 'coupon', special: 'goods' }[pType],
-              ...{ reduce: ownerCouponList, special: activityGoodsList }[pType],
+              promotionType: { reduce: 'coupon', special: 'goods' }[promotionType],
+              ...{ reduce: ownerCouponList, special: activityGoodsList }[promotionType],
             }
           : '',
         area:

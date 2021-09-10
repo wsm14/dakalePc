@@ -45,11 +45,6 @@ const DetailForm = (props) => {
       render: (val, row) => `${val}/${row.categoryName}`,
     },
     {
-      label: '免费券',
-      name: 'free',
-      render: (val) => val !== '' && couponsDom(val),
-    },
-    {
       label: '推荐带货',
       name: 'promotionType',
       render: (val, row) =>
