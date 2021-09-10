@@ -41,9 +41,9 @@ export default {
       const { content } = response;
       const { auditDetail = {}, momentInfo = {} } = content;
       const {
-        freeOwnerCouponList = {},
-        ownerCouponList = {},
-        activityGoodsList = {},
+        freeOwnerCouponList = [],
+        ownerCouponList = [],
+        activityGoodsList = [],
         area,
         areaType,
         promotionType: pType,

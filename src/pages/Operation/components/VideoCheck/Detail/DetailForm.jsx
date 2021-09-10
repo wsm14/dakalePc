@@ -32,15 +32,22 @@ const DetailForm = (props) => {
     {
       label: `收藏数`,
       name: 'collectionAmount',
+      render:(val)=>val?val:'-'
     },
     {
       label: `分享数`,
       name: 'shareAmount',
+      render:(val)=>val?val:'-'
     },
     {
       label: '行业分类',
       name: 'topCategoryName',
       render: (val, row) => `${val}/${row.categoryName}`,
+    },
+    {
+      label: '免费券',
+      name: 'free',
+      render: (val) => val !== '' && couponsDom(val),
     },
     {
       label: '推荐带货',

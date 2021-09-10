@@ -5,6 +5,7 @@ import {
   BUSINESS_TYPE,
   VIDEO_ACTION_TYPE,
   GOODS_CHECK_RESSTATUS,
+  SUBMIT_TYPE,
   VIDEO_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -168,6 +169,14 @@ const VideoCheck = (props) => {
       title: '审核创建时间',
       align: 'center',
       dataIndex: 'createTime',
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div>
+            {SUBMIT_TYPE[record.submitterType]}--{record.submitterUserName}
+          </div>
+        </div>
+      ),
     },
     {
       title: '确认时间',
@@ -177,8 +186,9 @@ const VideoCheck = (props) => {
     },
     {
       title: '审核时间',
-      dataIndex: 'submitTime',
+      dataIndex: 'auditTime',
       show: ['adminConfirmed'].includes(tabkey),
+
     },
     // {
     //   title: '审核对象',
