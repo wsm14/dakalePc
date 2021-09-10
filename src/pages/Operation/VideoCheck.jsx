@@ -46,7 +46,7 @@ const VideoCheck = (props) => {
   const fetchVideoCheckClose = (record) => {
     const { auditIdString, ownerIdString } = record;
     dispatch({
-      type: 'videoCheck/fetchSpecialGoodsAuditClose',
+      type: 'specialGoodsCheck/fetchSpecialGoodsAuditClose',
       payload: {
         ownerId: ownerIdString,
         auditId: auditIdString,
