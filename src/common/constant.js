@@ -567,3 +567,9 @@ export const VIDEO_TYPE = {
   merchant: '店铺',
   group: '集团',
 };
+
+//視頻審核了惡行
+export const VIDEO_ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+};

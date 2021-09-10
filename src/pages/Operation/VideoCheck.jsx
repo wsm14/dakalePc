@@ -1,7 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import { BUSINESS_TYPE, ACTION_TYPE, GOODS_CHECK_RESSTATUS, VIDEO_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  VIDEO_ACTION_TYPE,
+  GOODS_CHECK_RESSTATUS,
+  VIDEO_TYPE,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import NoCheck from './components/VideoCheck/NoCheck';
@@ -34,10 +39,10 @@ const VideoCheck = (props) => {
   const tableRef = useRef();
   const { dispatch, videoCheck } = props;
   const [visibleInfo, setVisibleInfo] = useState(false);
-  const [visibleSet, setVisibleSet] = useState(false);
   const [tabkey, setTabKey] = useState('adminAudit');
   const { list } = videoCheck;
 
+  
   const fetchVideoCheckClose = (record) => {
     const { auditIdString, ownerIdString } = record;
     dispatch({
@@ -91,7 +96,7 @@ const VideoCheck = (props) => {
       label: '审核类型',
       name: 'actionType',
       type: 'select',
-      select: ACTION_TYPE,
+      select: VIDEO_ACTION_TYPE,
     },
     {
       label: '审核时间',
