@@ -560,3 +560,10 @@ export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '�
 
 //节日配置状态 状态 0-待上架 1-上架中 2-已下架
 export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
+
+// 视频审核店铺/视频类型
+export const VIDEO_TYPE = {
+  use: '用户',
+  merchant: '店铺',
+  group: '集团',
+};

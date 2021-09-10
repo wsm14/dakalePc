@@ -616,3 +616,20 @@ export function fetchEditCurrentStatus(params) {
 }
 
 // 优惠券管理 end
+
+// 视频审核
+
+// 视频审核 - 列表
+export function fetchListMomentAudit(params) {
+  return request('/admin/marketing/audit/listMomentAudit', {
+    params,
+  });
+}
+// 视频审核详情
+export function fetchAuditMomentDetail(params) {
+  return request('/admin/marketing/getAuditMomentDetail', {
+    params,
+  });
+}
+
+// 视频审核 end
