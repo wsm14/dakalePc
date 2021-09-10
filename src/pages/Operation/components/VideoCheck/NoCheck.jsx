@@ -4,35 +4,11 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 待审核
 const NoCheck = (props) => {
-  const {
-    tabkey,
-    globalColum = [],
-    globalSearch,
-    loading,
-    specialGoodsCheck,
-    rowHandle,
-    tableRef,
-  } = props;
+  const { tabkey, globalColum = [], globalSearch, loading, videoCheck, tableRef } = props;
 
   const searchItems = [...globalSearch];
 
-  const getColumns = [
-    ...globalColum,
-    ...rowHandle,
-    // {
-    //     type: 'handle',
-    //     dataIndex: 'id',
-    //     render: (val, record) => {
-    //       const { merchantIdStr } = record;
-    //       return [
-    //         {
-    //           type: 'check',
-    //           title:"审核"
-    //         },
-    //       ];
-    //     }
-    // }
-  ];
+  const getColumns = [...globalColum];
 
   return (
     <TableDataBlock
@@ -42,14 +18,14 @@ const NoCheck = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.auditIdString}`}
-      dispatchType="specialGoodsCheck/fetchGetList"
+      dispatchType="videoCheck/fetchGetList"
       params={{ auditSearchType: tabkey }}
-      {...specialGoodsCheck}
+      {...videoCheck}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ specialGoodsCheck, loading }) => ({
-  specialGoodsCheck,
-  loading: loading.models.specialGoodsCheck || loading.effects['baseData/fetchGetLogDetail'],
+export default connect(({ videoCheck, loading }) => ({
+  videoCheck,
+  loading: loading.models.videoCheck || loading.effects['baseData/fetchGetLogDetail'],
 }))(NoCheck);

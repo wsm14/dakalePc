@@ -374,8 +374,14 @@ export default [
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
       },
       {
+        path: '/operation/videoplatform',
+        name: '平台视频',
+        component: './Operation/VideoPlatform',
+        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
+      },
+      {
         path: '/operation/videoCheck',
-        name: '视频管理',
+        name: '视频审核',
         component: './Operation/VideoCheck',
         buttons: ['info', 'check'],
       },

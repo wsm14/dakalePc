@@ -4,12 +4,12 @@ import TableDataBlock from '@/components/TableDataBlock';
 // 待确认
 
 const NoConfirm = (props) => {
-  const { tabkey, globalColum = [], globalSearch, loading, specialGoodsCheck, rowHandle } = props;
+  const { tabkey, globalColum = [], globalSearch, loading, videoCheck } = props;
   const childRef = useRef();
 
   const searchItems = [...globalSearch];
 
-  const getColumns = [...globalColum, ...rowHandle];
+  const getColumns = [...globalColum];
 
   return (
     <TableDataBlock
@@ -19,15 +19,15 @@ const NoConfirm = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.auditIdString}`}
-      dispatchType="specialGoodsCheck/fetchGetList"
+      dispatchType="videoCheck/fetchGetList"
       params={{ auditSearchType: tabkey }}
-      {...specialGoodsCheck}
+      {...videoCheck}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ specialGoodsCheck, baseData, loading }) => ({
-  specialGoodsCheck,
+export default connect(({ videoCheck, baseData, loading }) => ({
+  videoCheck,
   hubData: baseData.hubData,
-  loading: loading.models.specialGoodsCheck || loading.effects['baseData/fetchGetLogDetail'],
+  loading: loading.models.videoCheck || loading.effects['baseData/fetchGetLogDetail'],
 }))(NoConfirm);
