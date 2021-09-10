@@ -383,7 +383,7 @@ export default [
         path: '/operation/videoCheck',
         name: '视频审核',
         component: './Operation/VideoCheck',
-        buttons: ['info', 'check'],
+        buttons: ['info', 'check', 'close'],
       },
       {
         path: '/operation/goods',
