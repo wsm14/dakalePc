@@ -153,6 +153,7 @@ export const SHARE_STATUS = [
   '分享结束',
   '即将发布',
 ];
+
 //核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
 export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
@@ -560,3 +561,9 @@ export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '�
 
 //节日配置状态 状态 0-待上架 1-上架中 2-已下架
 export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
+
+// 平台视频 - 状态 0-下架 1-上架 2-待上架
+export const NEW_SHARE_STATUS = ['下架', '上架', '待上架'];
+
+// 平台视频 - 归属人
+export const NEW_SHARE_OWNER = { user: '用户', merchant: '商家', group: '集团' };

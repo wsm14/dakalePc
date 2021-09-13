@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 /**
  * 视频权重设置
  */
-const ShareWeightSet = ({ detail, dispatch, loading }) => {
+const ShareWeightSet = ({ detail, onSubmit, loading }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
@@ -20,15 +20,14 @@ const ShareWeightSet = ({ detail, dispatch, loading }) => {
   // 提交
   const fetchFormData = () => {
     form.validateFields().then(({ weight }) => {
-      dispatch({
-        type: 'videoPlatform/fetchNewShareNoAudit',
-        payload: {
+      onSubmit(
+        {
           momentId,
           ownerId,
           weight,
         },
-        callback: setEdit,
-      });
+        setEdit,
+      );
     });
   };
 

@@ -3,12 +3,13 @@ import { connect } from 'umi';
 import { Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import { MreSelect } from '@/components/MerUserSelectTable';
-import { SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
+import { NEW_SHARE_STATUS, NEW_SHARE_OWNER } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
+import ShareImg from './components/VideoPlatform/ShareImg';
 import RewardPeo from './components/VideoPlatform/RewardPeo';
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
@@ -21,11 +22,11 @@ import styles from './style.less';
 
 const tabList = [
   {
-    key: 'user',
+    key: '0',
     tab: '未打赏视频',
   },
   {
-    key: 'merchant',
+    key: '1',
     tab: '已打赏视频',
   },
 ];
@@ -35,7 +36,7 @@ const VideoPlatform = (props) => {
   const { list } = videoPlatform;
 
   const childRef = useRef();
-  const [tabKey, setTabKey] = useState('user'); // tab
+  const [tabKey, setTabKey] = useState('0'); // tab
   const [visible, setVisible] = useState(false); // 详情
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
   const [visibleMre, setVisibleMre] = useState(false); // 商户详情
@@ -45,9 +46,10 @@ const VideoPlatform = (props) => {
   const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
   const [visibleLike, setVisibleLike] = useState(false); // 设置分享收藏数
   const [visibleReward, setVisibleReward] = useState(false); // 新增打赏人数
+  const [visibleImg, setVisibleImg] = useState(false); // 分享图
 
   useEffect(() => {
-    childRef.current && childRef.current.fetchGetData({ matterType: tabKey, page: 1 });
+    childRef.current && childRef.current.fetchGetData({ beanFlag: tabKey, page: 1 });
   }, [tabKey]);
 
   useEffect(() => {
@@ -57,12 +59,8 @@ const VideoPlatform = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '视频类型',
-      name: 'title',
-    },
-    {
       label: '视频ID',
-      name: 'title',
+      name: 'momentId',
     },
     {
       label: '行业',
@@ -81,14 +79,15 @@ const VideoPlatform = (props) => {
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
-      label: '店铺类型',
+      label: '视频类型',
       name: 'userType',
       type: 'select',
-      select: BUSINESS_TYPE,
+      select: NEW_SHARE_OWNER,
     },
     {
       label: '哒人昵称',
-      name: 'title',
+      name: 'ownerId',
+      type: 'user',
     },
     {
       label: '分享标题',
@@ -103,7 +102,7 @@ const VideoPlatform = (props) => {
       label: '状态',
       type: 'select',
       name: 'status',
-      select: SHARE_STATUS,
+      select: NEW_SHARE_STATUS,
     },
     {
       label: '创建时间',
@@ -130,14 +129,14 @@ const VideoPlatform = (props) => {
     },
     {
       title: '店铺/集团',
-      dataIndex: 'userType',
+      dataIndex: 'ownerType',
       width: 320,
       render: (val, row) => (
         <>
           <div style={{ display: 'flex' }}>
-            <Tag>{BUSINESS_TYPE[val]}</Tag>
+            <Tag>{NEW_SHARE_OWNER[val]}</Tag>
             <Ellipsis length={15} tooltip>
-              {row.merchantName}
+              {row.ownerName}
             </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
@@ -156,18 +155,15 @@ const VideoPlatform = (props) => {
     {
       title: '领卡豆人数',
       align: 'right',
-      dataIndex: 'payedPersonAmount',
-      sorter: (a, b) => a.payedPersonAmount - b.payedPersonAmount,
+      dataIndex: 'personAmount',
+      sorter: (a, b) => a.personAmount - b.personAmount,
     },
 
     {
       title: '累计打赏卡豆数',
       align: 'right',
-      dataIndex: 'exposureBeanAmount',
-      render: (val = 0, row) => Math.round((val + (row.beanAmount || 0)) * row.payedPersonAmount),
-      sorter: (a, b) =>
-        (a.exposureBeanAmount + (a.beanAmount || 0)) * a.payedPersonAmount -
-        (b.exposureBeanAmount + (b.beanAmount || 0)) * b.payedPersonAmount,
+      dataIndex: 'beanAmount',
+      sorter: (a, b) => a.beanAmount - b.beanAmount,
     },
     {
       title: '创建时间',
@@ -180,21 +176,23 @@ const VideoPlatform = (props) => {
       align: 'center',
       fixed: 'right',
       dataIndex: 'weight',
-      render: (val, row) => <ShareWeightSet detail={row}></ShareWeightSet>,
+      render: (val, row) => (
+        <ShareWeightSet detail={row} onSubmit={fetchNewShareNoAudit}></ShareWeightSet>
+      ),
     },
     {
       title: '状态',
       fixed: 'right',
       align: 'right',
       dataIndex: 'status',
-      render: (val) => SHARE_STATUS[val],
+      render: (val) => NEW_SHARE_STATUS[val],
     },
     {
       type: 'handle',
       dataIndex: 'momentId',
       width: 210,
       render: (val, record, index) => {
-        const { status, userMomentIdString, payedPersonAmount } = record;
+        const { status, userMomentIdString, personAmount } = record;
         return [
           {
             type: 'info', // 详情
@@ -207,12 +205,12 @@ const VideoPlatform = (props) => {
           {
             type: 'peasDetail',
             title: '领豆明细',
-            visible: payedPersonAmount > 0,
+            visible: personAmount > 0,
             click: () => setVisiblePeas({ show: true, detail: record }),
           },
           {
             type: 'down', // 下架
-            visible: status == 1 || status == 0,
+            visible: status == 1 || status == 2,
             click: () =>
               setVisibleRefuse({
                 show: true,
@@ -222,21 +220,22 @@ const VideoPlatform = (props) => {
           },
           {
             type: 'del', // 删除
+            visible: status == 0,
             click: () => fetchShareHandleDetail(userMomentIdString),
           },
           {
             type: 'edit', // 编辑
+            visible: status != 0,
             click: () => fetchShareHandleDetail(userMomentIdString),
           },
           {
             type: 'rewardPeo', // 打赏设置
-            visible: status == 1,
+            visible: status != 0,
             click: () => fetRewardPeo(userMomentIdString, record),
           },
           {
             type: 'shareImg', // 分享图
-            visible: status == 1,
-            click: () => fetRewardPeo(userMomentIdString, record),
+            click: () => setVisibleImg({ show: true, detail: record }),
           },
           {
             type: 'diary', // 日志
@@ -244,10 +243,12 @@ const VideoPlatform = (props) => {
           },
           {
             type: 'commerceSet', // 带货设置
+            visible: status != 0,
             click: () => fetchShareHandleDetail(userMomentIdString),
           },
           {
             type: 'portraitEdit', // 编辑画像
+            visible: status != 0,
             click: () => fetchShareHandleDetail(userMomentIdString),
           },
         ];
@@ -316,6 +317,15 @@ const VideoPlatform = (props) => {
     });
   };
 
+  // 修改不审核
+  const fetchNewShareNoAudit = (values, callback) => {
+    dispatch({
+      type: 'videoPlatform/fetchNewShareNoAudit',
+      payload: values,
+      callback,
+    });
+  };
+
   const extraBtn = [
     {
       auth: 'save',
@@ -334,7 +344,7 @@ const VideoPlatform = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ matterType: tabKey }}
+        params={{ beanFlag: tabKey }}
         rowClassName={(row) => {
           const { freeOwnerCoupon = {}, specialGoods = {}, valuableOwnerCoupon = {} } = row;
           const freeRemain = (freeOwnerCoupon.remain || 999999) <= 10;
@@ -397,6 +407,13 @@ const VideoPlatform = (props) => {
         childRef={childRef}
         onClose={() => setVisibleReward(false)}
       ></RewardPeo>
+      {/* 分享图 */}
+      <ShareImg
+        visible={visibleImg}
+        childRef={childRef}
+        onSubmit={fetchNewShareNoAudit}
+        onClose={() => setVisibleImg(false)}
+      ></ShareImg>
     </>
   );
 };
