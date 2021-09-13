@@ -221,6 +221,10 @@ const VideoPlatform = (props) => {
               }),
           },
           {
+            type: 'del', // 删除
+            click: () => fetchShareHandleDetail(userMomentIdString),
+          },
+          {
             type: 'edit', // 编辑
             click: () => fetchShareHandleDetail(userMomentIdString),
           },
