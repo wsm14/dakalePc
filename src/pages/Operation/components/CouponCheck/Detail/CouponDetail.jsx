@@ -216,6 +216,7 @@ const GoodsDetail = (props) => {
         }允许过期退款`,
     },
   ];
+  
   //分佣配置
   const commissionItem = [
     {

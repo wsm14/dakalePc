@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE } from '@/common/constant';
-import { Card } from 'antd';
+import { notification } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
 import { checkCityName } from '@/utils/utils';
@@ -57,6 +57,14 @@ const BeanRedEnvelopes = (props) => {
       name: 'envelopesType',
       type: 'multiple',
       select: RED_ENVELOPES_TYPE_SHE,
+      onChange: (val) => {
+        if (val.length === 0) {
+          notification.info({
+            message: '温馨提示',
+            description: '紅包类型为必选项，不可为空',
+          });
+        }
+      },
     },
   ];
 
