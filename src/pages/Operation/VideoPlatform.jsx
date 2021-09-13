@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import { MreSelect } from '@/components/MerUserSelectTable';
-import { SHARE_TYPE, SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
+import { SHARE_STATUS, BUSINESS_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -27,6 +27,7 @@ const tabList = [
   {
     key: 'merchant',
     tab: '已打赏视频',
+    u,
   },
 ];
 
@@ -50,34 +51,28 @@ const ShareManage = (props) => {
     childRef.current && childRef.current.fetchGetData({ matterType: tabKey, page: 1 });
   }, [tabKey]);
 
+  useEffect(() => {
+    fetchTradeList();
+  }, []);
+
   // 搜索参数
   const searchItems = [
     {
-      label: '分享标题',
+      label: '视频类型',
       name: 'title',
     },
     {
-      label: '集团/店铺名',
-      name: 'ownerId',
-      type: 'merchant',
+      label: '视频ID',
+      name: 'title',
     },
     {
-      label: '创建时间',
-      type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
-    },
-    {
-      label: '状态',
-      type: 'select',
-      name: 'status',
-      select: SHARE_STATUS,
-    },
-    {
-      label: '分享类型',
-      type: 'select',
-      name: 'contentType',
-      select: SHARE_TYPE,
+      label: '行业',
+      type: 'cascader',
+      name: 'topCategoryId',
+      changeOnSelect: true,
+      select: tradeList,
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+      valuesKey: ['topCategoryId', 'categoryId'],
     },
     {
       label: '地区',
@@ -93,20 +88,29 @@ const ShareManage = (props) => {
       select: BUSINESS_TYPE,
     },
     {
-      label: '行业',
-      type: 'cascader',
-      name: 'topCategoryId',
-      changeOnSelect: true,
-      select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      valuesKey: ['topCategoryId', 'categoryId'],
+      label: '哒人昵称',
+      name: 'title',
     },
     {
-      label: '卡豆余额',
-      type: 'number',
-      name: 'remainBean',
-      formatter: (value) => `< ${value}`,
-      parser: (value) => value.replace(/\<\s?/g, ''),
+      label: '分享标题',
+      name: 'title',
+    },
+    {
+      label: '集团/店铺名',
+      name: 'ownerId',
+      type: 'merchant',
+    },
+    {
+      label: '状态',
+      type: 'select',
+      name: 'status',
+      select: SHARE_STATUS,
+    },
+    {
+      label: '创建时间',
+      type: 'rangePicker',
+      name: 'beginDate',
+      end: 'endDate',
     },
   ];
 
@@ -154,13 +158,7 @@ const ShareManage = (props) => {
         Math.round(b.beanAmount + (b.exposureBeanAmount || 0)),
     },
     {
-      title: (
-        <QuestionTooltip
-          type="quest"
-          title="观看人次(人)"
-          content={`观看视频3s及以上的人数`}
-        ></QuestionTooltip>
-      ),
+      title: '观看人数',
       align: 'right',
       dataIndex: 'viewAmount',
       sorter: (a, b) => a.viewAmount - b.viewAmount,
@@ -284,10 +282,6 @@ const ShareManage = (props) => {
       },
     },
   ];
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
 
   //新增打赏人数
   const fetRewardPeo = (userMomentIdString, record) => {
