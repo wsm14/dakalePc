@@ -30,7 +30,6 @@ export function fetchListSubsidyDetailAll(params) {
   });
 }
 
-
 // post 补贴管理 - 营销卡豆充值 -  新增
 export function fetchSubsidyTaskAdd(data) {
   return request('/admin/subsidyManagement/platformDirectCharge', {
@@ -122,6 +121,28 @@ export function fetchWithdrawExportExcel(params) {
 // post 提现明细 - 设置备注
 export function fetchWithdrawSetRemark(data) {
   return request('/admin/merchantBeanManagement/merchantBeanWithdrawalRemark', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 提现明细 - 哒人列表
+export function fetchWithdrawExpertList(params) {
+  return request('/admin/userBeanWithdrawal/listUserBeanWithdrawalManagement', {
+    params,
+  });
+}
+
+// get 提现明细 - 哒人合计
+export function fetchWithdrawExpertTotal(params) {
+  return request('/admin/merchantBeanManagement/listMerchantBeanWithdrawalManagementTotal', {
+    params,
+  });
+}
+
+// post 提现明细 - 哒人设置备注
+export function fetchWithdrawExpertSetRemark(data) {
+  return request('/admin/userBeanWithdrawal/userBeanWithdrawalRemark', {
     method: 'POST',
     data,
   });
