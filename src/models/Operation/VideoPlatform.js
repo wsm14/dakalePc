@@ -8,6 +8,7 @@ import {
   fetchNewShareClose,
   fetchNewShareDetail,
   fetchNewShareRewardSet,
+  fetchNewShareRewardSave,
   fetchNewShareRewardCancel,
 } from '@/services/OperationServices';
 
@@ -82,6 +83,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '分享删除成功',
+      });
+      callback();
+    },
+    *fetchNewShareRewardSave({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareRewardSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `打赏创建成功`,
       });
       callback();
     },

@@ -304,6 +304,14 @@ export function fetchNewShareDel(data) {
   });
 }
 
+// post 平台视频 - 创建打赏
+export function fetchNewShareRewardSave(data) {
+  return request('/admin/marketing/moment/tipping/createMomentTipping', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 平台视频 - 取消打赏
 export function fetchNewShareRewardCancel(data) {
   return request('/admin/marketing/moment/tipping/cancelTipping', {
