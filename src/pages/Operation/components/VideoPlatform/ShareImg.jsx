@@ -7,7 +7,7 @@ import FormCondition from '@/components/FormCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const ShareImg = (props) => {
-  const { visible, onClose, onSubmit, loading } = props;
+  const { visible, onClose, onSubmit, childRef, loading } = props;
   const { show = false, detail = {} } = visible;
 
   const { momentId, ownerId, ownerName, title } = detail;
@@ -36,7 +36,10 @@ const ShareImg = (props) => {
           ownerId,
           friendShareImg: fImg.toString(),
         },
-        onClose,
+        () => {
+          childRef.current.fetchGetData();
+          onClose();
+        },
       );
     });
   };
@@ -53,15 +56,11 @@ const ShareImg = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={detail}
-      ></FormCondition>
+      <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialGoodsShareEdit'],
+  loading: loading.effects['videoPlatform/fetchNewShareNoAudit'],
 }))(ShareImg);
