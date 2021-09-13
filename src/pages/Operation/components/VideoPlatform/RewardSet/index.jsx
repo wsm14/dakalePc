@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import { NEW_SHAREREWARD_STATUS, NEW_SHARE_OWNER } from '@/common/constant';
+import { NEW_SHAREREWARD_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 /**
@@ -17,11 +17,10 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       title: '投放时长',
       dataIndex: 'tippingTimeType',
       render: (val, row) =>
-        tippingTimeType === 'permanent'
-          ? row.finishTime
-            ? `${row.beginDate} ~ ${row.finishTime}`
-            : '扣完为止'
-          : `${row?.beginDate} ~ ${row?.endDate || row?.finishTime}`,
+        ({
+          permanent: row.finishTime ? `${row.beginDate} ~ ${row.finishTime}` : '扣完为止',
+          fixed: `${row?.beginDate} ~ ${row?.endDate || row?.finishTime}`,
+        }[val]),
     },
     {
       title: '单次曝光打赏',
@@ -45,7 +44,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       title: '剩余卡豆',
       align: 'right',
       dataIndex: 'remainCount',
-      render: (val) => `${val * row?.tippingBean} 卡豆`,
+      render: (val, row) => `${val * row?.tippingBean} 卡豆`,
     },
     {
       title: '打赏状态',
@@ -63,13 +62,14 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
     {
       type: 'handle',
       dataIndex: 'momentId',
-      render: (val, record) => {
+      render: (val, row) => {
         return [
           {
             title: '停止打赏',
             auth: true,
             pop: true,
-            click: () => fetchNewShareRewardCancel(record),
+            visible: row.status != 0,
+            click: () => fetchNewShareRewardCancel(row),
           },
         ];
       },
@@ -89,17 +89,26 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
     });
   };
 
+  const extraBtn = [
+    {
+      auth: true,
+      text: '新增打赏规则',
+      onClick: () => setVisibleShare({ type: 'add', show: true }),
+    },
+  ];
+
   return (
     <Modal
-      title={'打赏设置'}
+      title={`${detail.title} - 打赏设置`}
       destroyOnClose
       maskClosable
-      width={1300}
+      width={1100}
       visible={show}
       footer={false}
       onCancel={onClose}
     >
       <TableDataBlock
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         columns={getColumns}
