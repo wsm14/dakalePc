@@ -4,16 +4,9 @@ import { SHARE_AREA_TYPE } from '@/common/constant';
 import {
   fetchNewShareList,
   fetchNewShareNoAudit,
-  fetchShareDetail,
-  fetchShareLikeSet,
-  fetchShareVideoPush,
-  fetchShareStatusClose,
-  fetchShareVerifyAllow,
-  fetchShareGetBeanDetail,
-  fetchShareGetAccountBean,
-  fetchShareGetPlatformBean,
-  fetchShareRewardPeo,
-  fetchShareWeightSet,
+  fetchNewShareDel,
+  fetchNewShareClose,
+  fetchNewShareDetail,
 } from '@/services/OperationServices';
 
 export default {
@@ -23,10 +16,6 @@ export default {
     list: [],
     total: 0,
     couponList: { list: [], total: 0 },
-    beanDetal: { list: [], total: 0 },
-    platformBean: 0,
-    bean: 0,
-    promotionFee: 0,
   },
 
   reducers: {
@@ -34,21 +23,6 @@ export default {
       return {
         ...state,
         ...payload,
-      };
-    },
-    closeBean(state, { payload }) {
-      return {
-        ...state,
-        ...payload,
-        platformBean: 0,
-        bean: 0,
-      };
-    },
-    closeList(state, { payload }) {
-      return {
-        ...state,
-        ...payload,
-        beanDetal: { list: [], total: 0 },
       };
     },
   },
@@ -75,62 +49,26 @@ export default {
       });
       callback();
     },
-    *fetchShareVerifyAllow({ payload, callback }, { call }) {
-      const response = yield call(fetchShareVerifyAllow, payload);
+    *fetchNewShareClose({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareClose, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `审核通过成功`,
+        description: '分享下架成功',
       });
       callback();
     },
-    *fetchShareVideoPush({ payload, callback }, { call }) {
-      const response = yield call(fetchShareVideoPush, payload);
+    *fetchNewShareDel({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareDel, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `视频新增成功`,
+        description: '分享删除成功',
       });
       callback();
     },
-    *fetchShareGetPlatformBean({ payload, callback }, { call, put }) {
-      const response = yield call(fetchShareGetPlatformBean, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          platformBean: content.platformBean,
-        },
-      });
-      callback && callback();
-    },
-    *fetchShareGetAccountBean({ payload, callback }, { call, put }) {
-      const response = yield call(fetchShareGetAccountBean, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          bean: content.merchantDetail.bean || 0,
-          promotionFee: Number(content.merchantDetail.promotionFee || 0),
-        },
-      });
-      callback && callback();
-    },
-    *fetchShareGetBeanDetail({ payload }, { call, put }) {
-      const response = yield call(fetchShareGetBeanDetail, payload);
-      if (!response) return;
-      const { content } = response;
-      yield put({
-        type: 'save',
-        payload: {
-          beanDetal: { list: content.recordList, total: content.total },
-        },
-      });
-    },
-    *fetchShareDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchShareDetail, payload);
+    *fetchNewShareDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareDetail, payload);
       if (!response) return;
       const { content } = response;
       const {
@@ -168,24 +106,6 @@ export default {
             : SHARE_AREA_TYPE[areaType],
       };
       callback(newObj);
-    },
-    *fetchStatusClose({ payload, callback }, { call }) {
-      const response = yield call(fetchShareStatusClose, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '分享下架成功',
-      });
-      callback();
-    },
-    *fetchShareRewardPeo({ payload, callback }, { call }) {
-      const response = yield call(fetchShareRewardPeo, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '新增打赏人数成功',
-      });
-      callback();
     },
   },
 };

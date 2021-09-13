@@ -266,9 +266,32 @@ export function fetchNewShareList(params) {
   });
 }
 
+// get 平台视频 - 内容详情
+export function fetchNewShareDetail(params) {
+  return request('/admin/marketing/moment/new/momentDetail', {
+    params,
+  });
+}
+
 // post 平台视频 - 修改视频（不审核）
 export function fetchNewShareNoAudit(data) {
   return request('/admin/marketing/moment/new/updateMomentDirect', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 下架分享
+export function fetchNewShareClose(data) {
+  return request('/admin/marketing/moment/new/offMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 删除分享
+export function fetchNewShareDel(data) {
+  return request('/admin/marketing/moment/new/deleteMoment', {
     method: 'POST',
     data,
   });

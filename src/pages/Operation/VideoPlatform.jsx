@@ -10,14 +10,9 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareImg from './components/VideoPlatform/ShareImg';
-import RewardPeo from './components/VideoPlatform/RewardPeo';
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
-import ShareLikeDateSet from './components/VideoPlatform/ShareLikeDateSet';
-import VideoPeasDetail from './components/VideoPlatform/Detail/VideoPeasDetail';
-import ShareVideoDetail from './components/VideoPlatform/Detail/ShareVideoDetail';
-import ShareHandleDetail from './components/VideoPlatform/Detail/ShareHandleDetail';
 import styles from './style.less';
 
 const tabList = [
@@ -40,12 +35,8 @@ const VideoPlatform = (props) => {
   const [visible, setVisible] = useState(false); // 详情
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
   const [visibleMre, setVisibleMre] = useState(false); // 商户详情
-  const [visibleVideo, setVisibleVideo] = useState(false); // 视屏
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  const [visibleHandle, setVisibleHandle] = useState(false); // 操作记录
-  const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
   const [visibleLike, setVisibleLike] = useState(false); // 设置分享收藏数
-  const [visibleReward, setVisibleReward] = useState(false); // 新增打赏人数
   const [visibleImg, setVisibleImg] = useState(false); // 分享图
 
   useEffect(() => {
@@ -192,24 +183,15 @@ const VideoPlatform = (props) => {
       dataIndex: 'momentId',
       width: 210,
       render: (val, record, index) => {
-        const { status, userMomentIdString, personAmount } = record;
+        const { status } = record;
         return [
           {
             type: 'info', // 详情
             click: () => fetchShareDetail(index, record.contentType || 'video'),
           },
           {
-            type: 'set', // 设置假数据
-            click: () => fetchShareDetail(index, 'set'),
-          },
-          {
-            type: 'peasDetail',
-            title: '领豆明细',
-            visible: personAmount > 0,
-            click: () => setVisiblePeas({ show: true, detail: record }),
-          },
-          {
             type: 'down', // 下架
+            pop: false,
             visible: status == 1 || status == 2,
             click: () =>
               setVisibleRefuse({
@@ -221,51 +203,40 @@ const VideoPlatform = (props) => {
           {
             type: 'del', // 删除
             visible: status == 0,
-            click: () => fetchShareHandleDetail(userMomentIdString),
+            click: () => fetchNewShareDel(record),
           },
           {
             type: 'edit', // 编辑
             visible: status != 0,
-            click: () => fetchShareHandleDetail(userMomentIdString),
+            click: () => fetchShareHandleDetail(val),
           },
           {
             type: 'rewardPeo', // 打赏设置
             visible: status != 0,
-            click: () => fetRewardPeo(userMomentIdString, record),
+            click: () => fetRewardPeo(val, record),
           },
           {
             type: 'shareImg', // 分享图
             click: () => setVisibleImg({ show: true, detail: record }),
           },
-          {
-            type: 'diary', // 日志
-            click: () => fetchShareHandleDetail(userMomentIdString),
-          },
+          // {
+          //   type: 'diary', // 日志
+          //   click: () => fetchShareHandleDetail(val),
+          // },
           {
             type: 'commerceSet', // 带货设置
             visible: status != 0,
-            click: () => fetchShareHandleDetail(userMomentIdString),
+            click: () => fetchShareHandleDetail(val),
           },
           {
             type: 'portraitEdit', // 编辑画像
             visible: status != 0,
-            click: () => fetchShareHandleDetail(userMomentIdString),
+            click: () => fetchShareHandleDetail(val),
           },
         ];
       },
     },
   ];
-
-  //新增打赏人数
-  const fetRewardPeo = (userMomentIdString, record) => {
-    const { beanAmount, exposureBeanAmount } = record;
-    setVisibleReward({
-      show: true,
-      userMomentIdString,
-      beanAmount,
-      exposureBeanAmount,
-    });
-  };
 
   // 获取行业选择项
   const fetchTradeList = () => {
@@ -274,14 +245,32 @@ const VideoPlatform = (props) => {
     });
   };
 
+  // 新增打赏人数
+  const fetRewardPeo = (userMomentIdString, record) => {
+    const { beanAmount, exposureBeanAmount } = record;
+  };
+
+  // 删除
+  const fetchNewShareDel = (detail) => {
+    const { momentId, ownerId } = detail;
+    dispatch({
+      type: 'videoPlatform/fetchNewShareDel',
+      payload: {
+        momentId,
+        ownerId,
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
   // 下架
   const fetchStatusClose = (values) => {
-    const { detail } = visibleRefuse;
+    const { momentId, ownerId } = visibleRefuse;
     dispatch({
-      type: 'videoPlatform/fetchStatusClose',
+      type: 'videoPlatform/fetchNewShareClose',
       payload: {
-        merchantId: detail.merchantIdString,
-        momentId: detail.userMomentIdString,
+        momentId,
+        ownerId,
         ...values,
       },
       callback: () => {
@@ -303,17 +292,6 @@ const VideoPlatform = (props) => {
         type === 'set'
           ? setVisibleLike({ show: true, detail })
           : setVisible({ show: true, index, type, detail }),
-    });
-  };
-
-  // 获取操作日志详情
-  const fetchShareHandleDetail = (val) => {
-    dispatch({
-      type: 'baseData/fetchHandleDetail',
-      payload: {
-        identifyIdStr: val,
-      },
-      callback: (detail) => setVisibleHandle({ show: true, detail }),
     });
   };
 
@@ -372,16 +350,6 @@ const VideoPlatform = (props) => {
         getDetail={fetchShareDetail}
         onClose={() => setVisible(false)}
       ></ShareDetail>
-      {/* 视频详情 */}
-      <ShareVideoDetail
-        visible={visibleVideo}
-        onClose={() => setVisibleVideo(false)}
-      ></ShareVideoDetail>
-      {/* 操作记录 */}
-      <ShareHandleDetail
-        visible={visibleHandle}
-        onClose={() => setVisibleHandle(false)}
-      ></ShareHandleDetail>
       {/* 下架 */}
       <RefuseModal
         visible={visibleRefuse}
@@ -391,22 +359,6 @@ const VideoPlatform = (props) => {
       ></RefuseModal>
       {/* 查看商户 */}
       <MreSelect type="show" visible={visibleMre} onCancel={() => setVisibleMre(false)}></MreSelect>
-      {/* 领豆明细 */}
-      <VideoPeasDetail
-        visible={visiblePeas}
-        onClose={() => setVisiblePeas(false)}
-      ></VideoPeasDetail>
-      {/* 设置分享数 收藏数 */}
-      <ShareLikeDateSet
-        visible={visibleLike}
-        onClose={() => setVisibleLike(false)}
-      ></ShareLikeDateSet>
-      {/* //新增打赏人数 */}
-      <RewardPeo
-        visible={visibleReward}
-        childRef={childRef}
-        onClose={() => setVisibleReward(false)}
-      ></RewardPeo>
       {/* 分享图 */}
       <ShareImg
         visible={visibleImg}
@@ -421,7 +373,7 @@ const VideoPlatform = (props) => {
 export default connect(({ sysTradeList, videoPlatform, loading }) => ({
   videoPlatform,
   tradeList: sysTradeList.list.list,
-  loadingRefuse: loading.effects['videoPlatform/fetchStatusClose'],
+  loadingRefuse: loading.effects['videoPlatform/fetchNewShareClose'],
   loading:
     loading.effects['videoPlatform/fetchGetList'] ||
     loading.effects['videoPlatform/fetchShareDetail'] ||
