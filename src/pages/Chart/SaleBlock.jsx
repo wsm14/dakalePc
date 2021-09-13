@@ -123,7 +123,7 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchUserPlayVideoGetBean',
       keyOther: [
         { title: '卡豆数', key: 'userAcquireWatchBean' },
-        { title: '人数', key: 'userAcquireWatchUser' },
+        { title: '人数', key: 'userWatchAmount' },
       ],
     },
     {

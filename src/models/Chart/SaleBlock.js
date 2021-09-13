@@ -48,7 +48,7 @@ export default {
       const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userAcquireWatchBean' });
       const response2 = yield call(fetchSaleBlock, {
         ...payload,
-        dataType: 'userAcquireWatchUser',
+        dataType: 'userWatchAmount',
       });
       if (!response || !response2) return;
       const { content } = response;
@@ -57,7 +57,7 @@ export default {
         type: 'save',
         payload: {
           userAcquireWatchBean: content.data,
-          userAcquireWatchUser: contentVerify.data,
+          userWatchAmount: contentVerify.data,
         },
       });
     },
