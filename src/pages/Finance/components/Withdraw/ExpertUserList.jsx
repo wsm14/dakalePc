@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
+import { checkCityName } from '@/utils/utils';
 import { WITHDRAW_STATUS } from '@/common/constant';
 import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
@@ -10,18 +11,17 @@ import WithdrawRemark from './WithdrawRemark';
 const ExpertUserList = (props) => {
   const { withdrawDetail, loading, dispatch } = props;
 
-  const { totalData } = withdrawDetail;
+  const { expretTotalData } = withdrawDetail;
 
-  const toatlLoading = loading.effects['withdrawDetail/fetchWithdrawTotal'];
+  const toatlLoading = loading.effects['withdrawDetail/fetchWithdrawExpertTotal'];
 
   const childRef = useRef();
 
   const [visible, setVisible] = useState(false); // 修改弹窗
-  // 显示当前数据的时间标记
   const [searchTime, setSearchTime] = useState([
     moment().subtract(1, 'month').format('YYYY-MM-DD'),
     moment().format('YYYY-MM-DD'),
-  ]);
+  ]); // 显示当前数据的时间标记
 
   useEffect(() => {
     fetchWithdrawTotal();
@@ -37,11 +37,14 @@ const ExpertUserList = (props) => {
     },
     {
       label: '提现状态',
-      name: 'merchantName',
+      name: 'status',
+      type: 'select',
+      select: WITHDRAW_STATUS,
     },
     {
       label: '哒人',
-      name: 'merchantName',
+      name: 'userId',
+      type: 'user',
     },
     {
       label: '提现单号',
@@ -64,33 +67,28 @@ const ExpertUserList = (props) => {
       dataIndex: 'withdrawalDate',
     },
     {
-      title: '提现时间',
-      fixed: 'left',
-      dataIndex: 'withdrawalDate',
-    },
-    {
-      title: '流水单号',
+      title: '提现单号',
       fixed: 'left',
       dataIndex: 'withdrawalSn',
     },
     {
       title: '哒人昵称',
       width: 200,
-      dataIndex: 'merchantName',
+      dataIndex: 'userName',
       ellipsis: { lines: 2 },
     },
     {
       title: '哒人手机号',
-      dataIndex: 'merchantAccount',
+      dataIndex: 'mobile',
     },
     {
       title: '哒人级别',
-      dataIndex: 'merchantAccount',
+      dataIndex: 'levelName',
     },
     {
       title: '注册地',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val, row) => checkCityName(val || row.cityCode || row.provinceCode),
     },
     {
       title: '提现账户',
@@ -102,12 +100,6 @@ const ExpertUserList = (props) => {
       title: '提现卡豆数',
       align: 'right',
       dataIndex: 'withdrawalBeanAmount',
-    },
-    {
-      title: '提现金额',
-      align: 'right',
-      dataIndex: 'withdrawalFee',
-      render: (val) => `￥ ${(Number(val) || 0).toFixed(2)}`,
     },
     {
       title: '实收提现手续费',
@@ -155,7 +147,7 @@ const ExpertUserList = (props) => {
     } = payload;
     setSearchTime([withdrawalDateStart, withdrawalDateEnd]);
     dispatch({
-      type: 'withdrawDetail/fetchWithdrawTotal',
+      type: 'withdrawDetail/fetchWithdrawExpertTotal',
       payload,
     });
   };
@@ -170,24 +162,29 @@ const ExpertUserList = (props) => {
               {searchTime[0]} ~ {searchTime[1]}
             </Tag>
             合计提现金额：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.allWithdrawalFeeSum.toFixed(2)}`}
+            {toatlLoading ? <Spin></Spin> : `￥${expretTotalData.allWithdrawalFeeSum.toFixed(2)}`}
             &nbsp;&nbsp; 成功提现金额：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalFeeSum.toFixed(2)}`}
+            {toatlLoading ? <Spin></Spin> : `￥${expretTotalData.withdrawalFeeSum.toFixed(2)}`}
             &nbsp;&nbsp; 成功提现手续费：
-            {toatlLoading ? <Spin></Spin> : `￥${totalData.withdrawalHandlingFeeSum.toFixed(2)}`}
+            {toatlLoading ? (
+              <Spin></Spin>
+            ) : (
+              `￥${expretTotalData.withdrawalHandlingFeeSum.toFixed(2)}`
+            )}
           </div>
         }
         cRef={childRef}
         noCard={false}
         searchCallback={fetchWithdrawTotal}
-        loading={loading.effects['withdrawDetail/fetchGetList']}
+        loading={loading.effects['withdrawDetail/fetchWithdrawExpertList']}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.merchantBeanWithdrawalId}`}
-        dispatchType="withdrawDetail/fetchGetList"
-        {...withdrawDetail.list}
+        dispatchType="withdrawDetail/fetchWithdrawExpertList"
+        {...withdrawDetail.expertlist}
       ></TableDataBlock>
       <WithdrawRemark
+        type={'expert'}
         childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}

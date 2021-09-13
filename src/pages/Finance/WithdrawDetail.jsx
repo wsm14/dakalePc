@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
 import MerchantList from './components/Withdraw/MerchantList';
@@ -20,7 +20,6 @@ const tabList = [
 const WithdrawDetail = () => {
   const check = authCheck(tabList); // 检查权限
 
-  const childRef = useRef(); // 表格ref
   const [tabkey, setTabKey] = useState(false); // tab分类
 
   // 检查权限获取key默认显示tab
@@ -28,12 +27,9 @@ const WithdrawDetail = () => {
     setTabKey(check && check.length ? check[0]['key'] : false);
   }, []);
 
-  // 表格公共props
-  const tableProp = { childRef };
-
   const contentList = {
-    task: <MerchantList {...tableProp}></MerchantList>, // 单店提现
-    direct: <ExpertUserList {...tableProp}></ExpertUserList>, // 哒人提现
+    task: <MerchantList></MerchantList>, // 单店提现
+    direct: <ExpertUserList></ExpertUserList>, // 哒人提现
   };
 
   return (
