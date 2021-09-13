@@ -215,7 +215,7 @@ export default [
         path: '/expert/uaerlist',
         name: '哒人列表',
         component: './Expert/ExpertUserList',
-        buttons: ['status', 'diary'],
+        buttons: ['status', 'recommendList', 'statistics', 'BDSet', 'diary'],
       },
       {
         path: '/expert/level',
@@ -240,12 +240,6 @@ export default [
         name: '哒人种草',
         component: './Expert/ExpertRecommend',
         buttons: ['info', 'down', 'handle', 'reportCenter'],
-      },
-      {
-        path: '/expert/achievement',
-        name: '哒人业绩',
-        component: './Expert/ExpertUserAchievement',
-        buttons: ['recommendList', 'statistics'],
       },
       {
         path: '/expert/achievementTotal',

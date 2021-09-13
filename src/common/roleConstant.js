@@ -9,8 +9,9 @@ export const ROLE_BUTTON_TYPE = {
   actionSave: '新增使用规则',
   againUp: '再次上架',
   addRemain: '增加库存',
-  authEdit:'权限设置',
+  authEdit: '权限设置',
 
+  BDSet: '关联BD',
   batchEdit: '批量修改',
   baseTrade: '基础设施',
   bussinessStatus: '营业状态',
@@ -43,7 +44,7 @@ export const ROLE_BUTTON_TYPE = {
   exportList: '导出',
 
   goodsCode: '商品码',
-  getRecord:'领取记录',
+  getRecord: '领取记录',
 
   handle: '处理',
   handleDeatil: '操作记录',
@@ -75,7 +76,7 @@ export const ROLE_BUTTON_TYPE = {
 
   qrCode: '获取二维码',
 
-  rate :'费率',
+  rate: '费率',
   role: '角色',
   revoke: '撤销',
   replay: '回复',
@@ -86,12 +87,11 @@ export const ROLE_BUTTON_TYPE = {
   roleStatus: '角色状态',
   recycleBean: '卡豆回收',
   reportCenter: '举报中心',
-  recommendList: '推荐列表',
+  recommendList: '团队',
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
   rewardPeo: '新增打赏人数',
-  recover:'恢复',
-  
+  recover: '恢复',
 
   set: '设置',
   save: '新增',
@@ -107,7 +107,7 @@ export const ROLE_BUTTON_TYPE = {
   sharePush: '发布分享',
   searchSet: '热门搜索配置',
   storeList: '门店列表',
-  statistics: '统计',
+  statistics: '分佣',
   signDetail: '打卡明细',
   setMreCord: '设置商家验证码',
   shareImgAdd: '新增分享图片',

@@ -44,6 +44,23 @@ export default {
         },
       });
     },
+    *fetchUserPlayVideoGetBean({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userVideoBean' });
+      const response2 = yield call(fetchSaleBlock, {
+        ...payload,
+        dataType: 'userUserCount',
+      });
+      if (!response || !response2) return;
+      const { content } = response;
+      const { content: contentVerify } = response2;
+      yield put({
+        type: 'save',
+        payload: {
+          userVideoBean: content.data,
+          userUserCount: contentVerify.data,
+        },
+      });
+    },
     *fetchUserConsume({ payload }, { call, put }) {
       const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userConsume' });
       const response2 = yield call(fetchSaleBlock, {

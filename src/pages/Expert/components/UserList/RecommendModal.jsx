@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Modal, Button } from 'antd';
-import { EXPERT_TYPE } from '@/common/constant';
 import RecommendList from './RecommendList';
 
 const RecommendModal = (props) => {
@@ -9,7 +8,7 @@ const RecommendModal = (props) => {
 
   const { show = false, detail = {} } = visible;
 
-  const { username, levelKey, mobile, kolUserId } = detail;
+  const { username, level, mobile, kolUserId } = detail;
 
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
@@ -17,7 +16,7 @@ const RecommendModal = (props) => {
 
   return (
     <Modal
-      title={`推荐列表 - ${username} | ${mobile} | ${EXPERT_TYPE[levelKey]}`}
+      title={`推荐列表 - ${username} | ${mobile} | ${level}`}
       width={1300}
       destroyOnClose
       afterClose={() => {

@@ -40,6 +40,7 @@ import utils from './utils';
 const TableBlockComponent = (props) => {
   const {
     btnExtra,
+    content,
     cRef,
     cardProps = {},
     dispatchType,
@@ -172,6 +173,7 @@ const TableBlockComponent = (props) => {
           btnExtra={btnExtra}
         ></SearchCondition>
       )}
+      {content}
       <Table
         scroll={{ x: scrollX, y: scrollY }}
         loading={loading}

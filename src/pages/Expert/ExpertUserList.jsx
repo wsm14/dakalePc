@@ -4,12 +4,18 @@ import { EXPERT_USER_STATUS, EXPERT_LIST_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import CloseExpert from './components/UserList/CloseExpert';
 import ExpertUserLog from './components/UserList/ExpertUserLog';
+import SubCommissionStatistics from './components/UserList/SubCommissionStatistics';
+import RecommendModal from './components/UserList/RecommendModal';
+import BDSet from './components/UserList/BDSet';
 
 const ExpertUserList = (props) => {
   const { expertUserList, kolLevel, loading, dispatch } = props;
 
   const [visible, setVisible] = useState(false); // 封停理由
   const [visibleLog, setVisibleLog] = useState(false); // 操作日志
+  const [visibleCommission, setVisibleCommission] = useState(false); // 分佣统计
+  const [visibleRecommend, setVisibleRecommend] = useState(false); // 推荐列表
+  const [visibleBD, setVisibleBD] = useState(false); // 关联bd
 
   const childRef = useRef();
 
@@ -54,21 +60,39 @@ const ExpertUserList = (props) => {
   const getColumns = [
     {
       title: '昵称',
+      fixed: 'left',
       dataIndex: 'username',
+      render: (val, row) => `${val}\n${row.kolUserId}`,
     },
-
+    {
+      title: '手机号/豆号',
+      dataIndex: 'mobile',
+      render: (val, row) => `${val}\n${row.beanCode}`,
+    },
     {
       title: '级别',
-      align: 'center',
       dataIndex: 'level',
     },
     {
-      title: '豆号',
-      dataIndex: 'beanCode',
+      title: '是否实习',
+      dataIndex: 'goodsCount',
+      render: (val) => '--',
     },
     {
-      title: '手机号',
-      dataIndex: 'mobile',
+      title: '性别',
+      dataIndex: 'cargoIncome',
+      render: (val) => '--',
+    },
+    {
+      title: '注册地',
+      dataIndex: 'cargoIncome',
+      render: (val) => '--',
+    },
+    {
+      title: '家人数',
+      align: 'right',
+      dataIndex: 'cargoIncome',
+      render: (val) => '--',
     },
     {
       title: '发布视频',
@@ -91,26 +115,22 @@ const ExpertUserList = (props) => {
       dataIndex: 'likeAmount',
       render: (val, record) => `${val || 0} || ${record.collectionAmount || 0}`,
     },
-    // {
-    //   title: '带货成交量',
-    //   align: 'right',
-    //   dataIndex: 'goodsCount',
-    //   render: (val) => val || 0,
-    // },
-    // {
-    //   title: '带货收益',
-    //   align: 'right',
-    //   dataIndex: 'cargoIncome',
-    //   render: (val) => val || 0,
-    // },
     {
       title: '解锁时间',
       align: 'center',
       dataIndex: 'unlockTime',
     },
     {
+      title: '关联BD',
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'unlockTime',
+      render: (val, row) => `${val}\n${row.beanCode}`,
+    },
+    {
       title: '状态',
       align: 'center',
+      fixed: 'right',
       dataIndex: 'suspendStatus',
       render: (val) => (
         <span style={val !== '1' ? { color: 'red' } : {}}>{EXPERT_USER_STATUS[val]}</span>
@@ -118,24 +138,37 @@ const ExpertUserList = (props) => {
     },
     {
       type: 'handle',
+      width: 180,
       dataIndex: 'kolUserId',
-      render: (val, record) => [
+      render: (val, detail) => [
         {
-          visible: record.suspendStatus == 1,
+          type: 'recommendList',
+          click: () => setVisibleRecommend({ show: true, detail }),
+        },
+        {
+          type: 'statistics',
+          click: () => setVisibleCommission({ show: true, detail }),
+        },
+        {
+          visible: detail.suspendStatus == 1,
           auth: 'status',
           title: '封停',
-          click: () => fetchCloseExpert({ kolUserId: val, username: record.username }),
+          click: () => fetchCloseExpert({ kolUserId: val, username: detail.username }),
         },
         {
           pop: true,
-          visible: record.suspendStatus != 1,
+          visible: detail.suspendStatus != 1,
           auth: 'status',
           title: '解封',
           click: () => fetchExpertOpen({ kolUserId: val }),
         },
         {
+          type: 'BDSet', // 关联BD
+          click: () => setVisibleBD({ show: true, detail }),
+        },
+        {
           type: 'diary', // 日志
-          click: () => fetchGetKolLog(val, record),
+          click: () => fetchGetKolLog(val, detail),
         },
       ],
     },
@@ -191,6 +224,18 @@ const ExpertUserList = (props) => {
         onClose={() => setVisible(false)}
       ></CloseExpert>
       <ExpertUserLog visible={visibleLog} onClose={() => setVisibleLog(false)}></ExpertUserLog>
+      {/* 分佣统计 */}
+      <SubCommissionStatistics
+        visible={visibleCommission}
+        onClose={() => setVisibleCommission(false)}
+      ></SubCommissionStatistics>
+      {/* 推荐列表 */}
+      <RecommendModal
+        visible={visibleRecommend}
+        onClose={() => setVisibleRecommend(false)}
+      ></RecommendModal>
+      {/* 关联BD */}
+      <BDSet visible={visibleBD} onClose={() => setVisibleBD(false)}></BDSet>
     </>
   );
 };

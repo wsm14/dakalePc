@@ -117,6 +117,17 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchMomentXiangxi',
     },
     {
+      // 接口没对
+      title: '用户看视频获取卡豆数',
+      tip: '指用户通过看视频获取的卡豆数区县同步增加，看所属自己区的用户',
+      keyName: 'userVideoBean',
+      api: 'saleTotal/fetchUserPlayVideoGetBean',
+      keyOther: [
+        { title: '卡豆数', key: 'userVideoBean' },
+        { title: '人数', key: 'userUserCount' },
+      ],
+    },
+    {
       title: '浙江注册用户数',
       tip: '指注册时IP地址是浙江的新用户',
       keyName: 'UserZJ',
