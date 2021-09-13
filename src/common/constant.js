@@ -590,3 +590,5 @@ export const RED_ENVELOPES_TYPE_SHE = {
   normal: '普通',
   lucky: '拼手气',
 };
+
+export const RED_ENVELOP_STATUS = ['未领取', '已领取', '已退款'];

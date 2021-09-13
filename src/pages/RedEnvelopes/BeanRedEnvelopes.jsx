@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
-import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE } from '@/common/constant';
+import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE,RED_ENVELOP_STATUS } from '@/common/constant';
 import { notification } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
@@ -25,6 +25,11 @@ const BeanRedEnvelopes = (props) => {
   const [tabKey, setTabKey] = useState('0');
   const [visibleSet, setVisibleSet] = useState(false);
   const [visibleRecord, setVisibleRecord] = useState(false);
+  useEffect(() => {
+    childRef.current.fetchGetData(
+      tabKey === '0' ? { envelopesType: 'lucky' } : { envelopesType: 'message' },
+    );
+  }, tabKey);
 
   const searchItems = [
     {
@@ -38,9 +43,11 @@ const BeanRedEnvelopes = (props) => {
       name: 'sendBeginTime',
       end: 'sendEndTime',
     },
+
     {
       label: '红包金额',
       name: 'envelopeAmount',
+      type: 'numberGroup',
     },
     {
       label: '注册地',
@@ -155,17 +162,17 @@ const BeanRedEnvelopes = (props) => {
     {
       title: '红包类型',
       dataIndex: 'envelopesType',
+      show: tabKey === '0',
       render: (val) => RED_ENVELOPES_TYPE_SHE[val],
     },
     {
-      title: '红包金额（元）',
+      title: '红包金额（卡豆）',
       dataIndex: 'bean',
     },
     {
       title: '领取情况',
-      dataIndex: 'personAmount',
-      render: (val, row) =>
-        `可领取红包的总人数:${val}\n已领取红包的人数:${row.receivePersonAmount}`,
+      dataIndex: 'status',
+      render: (val, row) =>RED_ENVELOP_STATUS[val]
     },
     {
       title: '发放时间',
@@ -217,7 +224,7 @@ const BeanRedEnvelopes = (props) => {
         }
         columns={getColumns}
         rowKey={(record) => `${record.redEnvelopesIdString}`}
-        params={{ envelopesType: 'lucky' }}
+        params={tabKey === '0' ? { envelopesType: 'lucky' } : { envelopesType: 'message' }}
         dispatchType="redEnvelopes/fetchListRedEnvelopesManagement"
         {...redEnvelopes}
       ></TableDataBlock>

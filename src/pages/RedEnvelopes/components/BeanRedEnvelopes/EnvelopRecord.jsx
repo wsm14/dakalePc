@@ -4,7 +4,7 @@ import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { checkCityName } from '@/utils/utils';
-import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE } from '@/common/constant';
+import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE, RED_ENVELOP_STATUS } from '@/common/constant';
 
 const tabList = [
   {
@@ -18,15 +18,13 @@ const tabList = [
 ];
 
 const EnvelopRecord = (props) => {
-  const cRef = useRef();
-  const { loading, recordList, visible, onClose, dispatch } = props;
+  const { loading, recordList, visible, onClose, dispatch, recordObj } = props;
   const { show = false, redEnvelopesIdString, detail = {} } = visible;
   const { sendUser = {} } = detail;
-  const initialValues = { ...detail, ...sendUser };
+  const initialValues = { ...detail, ...sendUser, ...recordObj };
 
   useEffect(() => {
     if (redEnvelopesIdString) {
-      //   cRef.current.fetchGetData();
       dispatch({
         type: 'redEnvelopes/fetchListRedEnvelopesReceives',
         payload: {
@@ -47,14 +45,13 @@ const EnvelopRecord = (props) => {
     },
     {
       label: '红包金额',
-      name: 'bean',
+      name: 'receiveBean',
       render: (val) => val + '卡豆',
     },
     {
       label: '领取情况',
-      name: 'personAmount',
-      render: (val, row) =>
-        `可领取红包的总人数:${val}\n已领取红包的人数:${row.receivePersonAmount}`,
+      name: 'status',
+      render: (val, row) => RED_ENVELOP_STATUS[val],
     },
     {
       label: '发放时间',
@@ -99,7 +96,7 @@ const EnvelopRecord = (props) => {
       dataIndex: 'gender',
       render: (val, row) => {
         const { receiveUser = {} } = row;
-        return SHARE_SEX_TYPE[receiveUser.val];
+        return SHARE_SEX_TYPE[receiveUser.gender];
       },
     },
     {
@@ -138,14 +135,15 @@ const EnvelopRecord = (props) => {
     <Modal {...modalProps}>
       <DescriptionsCondition
         formItems={formItems}
+        column={2}
         initialValues={initialValues}
       ></DescriptionsCondition>
       <TableDataBlock
         cardProps={{
           bordered: false,
-        //   tabList: tabList,
-        //   activeTabKey: tabKey,
-        //   onTabChange: setTabKey,
+          //   tabList: tabList,
+          //   activeTabKey: tabKey,
+          //   onTabChange: setTabKey,
         }}
         loading={loading}
         columns={getColumns}
