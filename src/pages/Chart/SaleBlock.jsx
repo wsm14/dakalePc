@@ -117,14 +117,13 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchMomentXiangxi',
     },
     {
-      // 接口没对
-      title: '用户看视频获取卡豆数',
+      title: '用户看视频获取卡豆数', // userAcquireWatchBeanZJ 浙江的 userAcquireWatchBeanHN 湖南的
       tip: '指用户通过看视频获取的卡豆数区县同步增加，看所属自己区的用户',
-      keyName: 'userVideoBean',
+      keyName: 'userAcquireWatchBean',
       api: 'saleTotal/fetchUserPlayVideoGetBean',
       keyOther: [
-        { title: '卡豆数', key: 'userVideoBean' },
-        { title: '人数', key: 'userUserCount' },
+        { title: '卡豆数', key: 'userAcquireWatchBean' },
+        { title: '人数', key: 'userWatchAmount' },
       ],
     },
     {
