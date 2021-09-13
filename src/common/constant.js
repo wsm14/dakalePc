@@ -571,8 +571,21 @@ export const VIDEO_TYPE = {
   group: '集团',
 };
 
-//視頻審核了惡行
+// 視頻審核了惡行
 export const VIDEO_ACTION_TYPE = {
   create: '创建审核',
   update: '修改审核',
+};
+
+// 卡豆红包类型
+export const RED_ENVELOPES_TYPE = {
+  message: '私信',
+  normal: '普通',
+  lucky: '拼手气',
+};
+
+// 社群红包类型
+export const RED_ENVELOPES_TYPE_SHE = {
+  normal: '普通',
+  lucky: '拼手气',
 };
