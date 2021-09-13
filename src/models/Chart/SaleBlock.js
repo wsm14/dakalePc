@@ -45,10 +45,10 @@ export default {
       });
     },
     *fetchUserPlayVideoGetBean({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userVideoBean' });
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userAcquireWatchBean' });
       const response2 = yield call(fetchSaleBlock, {
         ...payload,
-        dataType: 'userUserCount',
+        dataType: 'userAcquireWatchUser',
       });
       if (!response || !response2) return;
       const { content } = response;
@@ -56,8 +56,8 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          userVideoBean: content.data,
-          userUserCount: contentVerify.data,
+          userAcquireWatchBean: content.data,
+          userAcquireWatchUser: contentVerify.data,
         },
       });
     },
