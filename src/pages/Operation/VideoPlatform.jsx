@@ -191,7 +191,7 @@ const VideoPlatform = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'length',
+      dataIndex: 'momentId',
       width: 210,
       render: (val, record, index) => {
         const { status, userMomentIdString, payedPersonAmount } = record;
@@ -345,7 +345,7 @@ const VideoPlatform = (props) => {
             ? styles.share_rowColor
             : '';
         }}
-        rowKey={(record) => `${record.userMomentIdString}`}
+        rowKey={(record) => `${record.momentId}`}
         dispatchType="videoPlatform/fetchGetList"
         {...videoPlatform}
       ></TableDataBlock>

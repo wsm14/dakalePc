@@ -9,22 +9,23 @@ const FormItem = Form.Item;
 /**
  * 视频权重设置
  */
-const ShareWeightSet = ({ detail, dispatch }) => {
+const ShareWeightSet = ({ detail, dispatch, loading }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
-  const { userMomentIdString: momentId, recommendWeight } = detail;
+  const { momentId, weight, ownerId } = detail;
 
   const setEdit = () => setEditType(!editType);
 
   // 提交
   const fetchFormData = () => {
-    form.validateFields().then(({ recommendWeight }) => {
+    form.validateFields().then(({ weight }) => {
       dispatch({
-        type: 'videoPlatform/fetchShareWeightSet',
+        type: 'videoPlatform/fetchNewShareNoAudit',
         payload: {
           momentId,
-          recommendWeight: recommendWeight || 0,
+          ownerId,
+          weight,
         },
         callback: setEdit,
       });
@@ -32,15 +33,16 @@ const ShareWeightSet = ({ detail, dispatch }) => {
   };
 
   return (
-    <Form initialValues={{ recommendWeight: Number(recommendWeight) }} form={form}>
+    <Form initialValues={{ weight: Number(weight) }} form={form}>
       <div style={{ display: 'flex' }}>
-        <FormItem noStyle name={'recommendWeight'}>
+        <FormItem noStyle name={'weight'}>
           <InputNumber disabled={!editType} />
         </FormItem>
         <Button
           style={{ width: 32 }}
           type="link"
           block
+          loading={loading}
           icon={!editType ? <EditOutlined /> : <CheckOutlined />}
           onClick={!editType ? setEdit : fetchFormData}
         ></Button>
@@ -50,5 +52,5 @@ const ShareWeightSet = ({ detail, dispatch }) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['videoPlatform/fetchShareLikeSet'],
+  loading: loading.effects['videoPlatform/fetchNewShareNoAudit'],
 }))(ShareWeightSet);

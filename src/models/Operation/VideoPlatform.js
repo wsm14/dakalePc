@@ -2,7 +2,8 @@ import { notification } from 'antd';
 import cityJson from '@/common/cityJson';
 import { SHARE_AREA_TYPE } from '@/common/constant';
 import {
-  fetchShareList,
+  fetchNewShareList,
+  fetchNewShareNoAudit,
   fetchShareDetail,
   fetchShareLikeSet,
   fetchShareVideoPush,
@@ -54,7 +55,7 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchShareList, payload);
+      const response = yield call(fetchNewShareList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -65,12 +66,12 @@ export default {
         },
       });
     },
-    *fetchShareLikeSet({ payload, callback }, { call }) {
-      const response = yield call(fetchShareLikeSet, payload);
+    *fetchNewShareNoAudit({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareNoAudit, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `分享收藏数设置成功`,
+        description: `修改成功`,
       });
       callback();
     },
@@ -183,15 +184,6 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '新增打赏人数成功',
-      });
-      callback();
-    },
-    *fetchShareWeightSet({ payload, callback }, { call }) {
-      const response = yield call(fetchShareWeightSet, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '设置成功',
       });
       callback();
     },

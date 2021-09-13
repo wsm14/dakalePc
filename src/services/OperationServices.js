@@ -257,6 +257,25 @@ export function fetchShareWeightSet(data) {
 
 // 分享管理 end
 
+// 平台视频
+
+// get 平台视频 - 列表
+export function fetchNewShareList(params) {
+  return request('/admin/marketing/moment/new/listMoment', {
+    params,
+  });
+}
+
+// post 平台视频 - 修改视频（不审核）
+export function fetchNewShareNoAudit(data) {
+  return request('/admin/marketing/moment/new/updateMomentDirect', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 平台视频 end
+
 // 种草管理
 
 // get 种草管理 - 列表
