@@ -8,7 +8,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const ShareDetail = (props) => {
   const { visible, total, getDetail, onClose, loadingDetail } = props;
 
-  const { type = 'img', index, show = false, detail = {} } = visible;
+  const { index, show = false, detail = {} } = visible;
 
   // 信息
   const formItems = [
@@ -117,7 +117,7 @@ const ShareDetail = (props) => {
   ];
 
   const modalProps = {
-    title: '分享详情',
+    title: '视频详情',
     visible: show,
     onClose,
     loading: loadingDetail,

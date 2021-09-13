@@ -273,6 +273,13 @@ export function fetchNewShareDetail(params) {
   });
 }
 
+// get 平台视频 - 打赏设置
+export function fetchNewShareRewardSet(params) {
+  return request('/admin/marketing/moment/tipping/momentTippingList', {
+    params,
+  });
+}
+
 // post 平台视频 - 修改视频（不审核）
 export function fetchNewShareNoAudit(data) {
   return request('/admin/marketing/moment/new/updateMomentDirect', {
@@ -292,6 +299,14 @@ export function fetchNewShareClose(data) {
 // post 平台视频 - 删除分享
 export function fetchNewShareDel(data) {
   return request('/admin/marketing/moment/new/deleteMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 取消打赏
+export function fetchNewShareRewardCancel(data) {
+  return request('/admin/marketing/moment/tipping/cancelTipping', {
     method: 'POST',
     data,
   });

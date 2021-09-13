@@ -7,14 +7,16 @@ import {
   fetchNewShareDel,
   fetchNewShareClose,
   fetchNewShareDetail,
+  fetchNewShareRewardSet,
+  fetchNewShareRewardCancel,
 } from '@/services/OperationServices';
 
 export default {
   namespace: 'videoPlatform',
 
   state: {
-    list: [],
-    total: 0,
+    list: { list: [], total: 0 },
+    rewardList: { list: [], total: 0 },
     couponList: { list: [], total: 0 },
   },
 
@@ -35,8 +37,24 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchNewShareRewardSetList({ payload }, { call, put }) {
+      const response = yield call(fetchNewShareRewardSet, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          rewardList: {
+            list: content.tippingList,
+            total: content.total,
+          },
         },
       });
     },
@@ -64,6 +82,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '分享删除成功',
+      });
+      callback();
+    },
+    *fetchNewShareRewardCancel({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareRewardCancel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '取消打赏成功',
       });
       callback();
     },

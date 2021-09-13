@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { MreSelect } from '@/components/MerUserSelectTable';
 import { NEW_SHARE_STATUS, NEW_SHARE_OWNER } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
@@ -10,10 +9,10 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareImg from './components/VideoPlatform/ShareImg';
+import RewardSet from './components/VideoPlatform/RewardSet';
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
-import styles from './style.less';
 
 const tabList = [
   {
@@ -34,9 +33,9 @@ const VideoPlatform = (props) => {
   const [tabKey, setTabKey] = useState('0'); // tab
   const [visible, setVisible] = useState(false); // 详情
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
-  const [visibleMre, setVisibleMre] = useState(false); // 商户详情
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleImg, setVisibleImg] = useState(false); // 分享图
+  const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
 
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ beanFlag: tabKey, page: 1 });
@@ -213,16 +212,12 @@ const VideoPlatform = (props) => {
           {
             type: 'rewardPeo', // 打赏设置
             visible: status != 0 && typeUser,
-            click: () => setVisibleImg(val, record),
+            click: () => setVisibleReward({ show: true, detail: record }),
           },
           {
             type: 'shareImg', // 分享图
             click: () => setVisibleImg({ show: true, detail: record }),
           },
-          // {
-          //   type: 'diary', // 日志
-          //   click: () => fetchShareHandleDetail(val),
-          // },
           {
             type: 'commerceSet', // 带货设置
             visible: status != 0 && typeUser,
@@ -315,16 +310,6 @@ const VideoPlatform = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         params={{ beanFlag: tabKey }}
-        rowClassName={(row) => {
-          const { freeOwnerCoupon = {}, specialGoods = {}, valuableOwnerCoupon = {} } = row;
-          const freeRemain = (freeOwnerCoupon.remain || 999999) <= 10;
-          const goodsRemain = (specialGoods.remain || 999999) <= 10;
-          const couponRemain = (valuableOwnerCoupon.remain || 999999) <= 10;
-          return (freeRemain || goodsRemain || couponRemain) &&
-            [0, 1, 6].includes(Number(row.status))
-            ? styles.share_rowColor
-            : '';
-        }}
         rowKey={(record) => `${record.momentId}`}
         dispatchType="videoPlatform/fetchGetList"
         {...videoPlatform}
@@ -349,8 +334,6 @@ const VideoPlatform = (props) => {
         handleUpData={fetchStatusClose}
         loading={loadingRefuse}
       ></RefuseModal>
-      {/* 查看商户 */}
-      <MreSelect type="show" visible={visibleMre} onCancel={() => setVisibleMre(false)}></MreSelect>
       {/* 分享图 */}
       <ShareImg
         visible={visibleImg}
@@ -358,12 +341,14 @@ const VideoPlatform = (props) => {
         onSubmit={fetchNewShareNoAudit}
         onClose={() => setVisibleImg(false)}
       ></ShareImg>
+      {/* 打赏设置 */}
+      <RewardSet visible={visibleReward} onClose={() => setVisibleReward(false)}></RewardSet>
     </>
   );
 };
 
 export default connect(({ sysTradeList, videoPlatform, loading }) => ({
-  videoPlatform,
+  videoPlatform: videoPlatform.list,
   tradeList: sysTradeList.list.list,
   loadingRefuse: loading.effects['videoPlatform/fetchNewShareClose'],
   loading:
