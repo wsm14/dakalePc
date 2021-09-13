@@ -9,14 +9,14 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import RewardPeo from './components/ShareManage/RewardPeo';
-import ShareDrawer from './components/ShareManage/ShareDrawer';
-import ShareWeightSet from './components/ShareManage/ShareWeightSet';
-import ShareDetail from './components/ShareManage/Detail/ShareDetail';
-import ShareLikeDateSet from './components/ShareManage/ShareLikeDateSet';
-import VideoPeasDetail from './components/ShareManage/Detail/VideoPeasDetail';
-import ShareVideoDetail from './components/ShareManage/Detail/ShareVideoDetail';
-import ShareHandleDetail from './components/ShareManage/Detail/ShareHandleDetail';
+import RewardPeo from './components/VideoPlatform/RewardPeo';
+import ShareDrawer from './components/VideoPlatform/ShareDrawer';
+import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
+import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
+import ShareLikeDateSet from './components/VideoPlatform/ShareLikeDateSet';
+import VideoPeasDetail from './components/VideoPlatform/Detail/VideoPeasDetail';
+import ShareVideoDetail from './components/VideoPlatform/Detail/ShareVideoDetail';
+import ShareHandleDetail from './components/VideoPlatform/Detail/ShareHandleDetail';
 import styles from './style.less';
 
 const tabList = [
@@ -27,13 +27,12 @@ const tabList = [
   {
     key: 'merchant',
     tab: '已打赏视频',
-    u,
   },
 ];
 
-const ShareManage = (props) => {
-  const { shareManage, loading, loadingRefuse, tradeList, dispatch } = props;
-  const { list } = shareManage;
+const VideoPlatform = (props) => {
+  const { videoPlatform, loading, loadingRefuse, tradeList, dispatch } = props;
+  const { list } = videoPlatform;
 
   const childRef = useRef();
   const [tabKey, setTabKey] = useState('user'); // tab
@@ -164,7 +163,7 @@ const ShareManage = (props) => {
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
     {
-      title: '领豆人次(人)',
+      title: '领卡豆人数',
       align: 'right',
       dataIndex: 'payedPersonAmount',
       sorter: (a, b) => a.payedPersonAmount - b.payedPersonAmount,
@@ -178,36 +177,6 @@ const ShareManage = (props) => {
       sorter: (a, b) =>
         (a.exposureBeanAmount + (a.beanAmount || 0)) * a.payedPersonAmount -
         (b.exposureBeanAmount + (b.beanAmount || 0)) * b.payedPersonAmount,
-    },
-    {
-      title: '剩余卡豆数',
-      align: 'right',
-      dataIndex: 'beanPersonAmount',
-      render: (val = 0, row) =>
-        Math.round(
-          ((row.beanAmount || 0) + (row.exposureBeanAmount || 0)) *
-            ((row.beanPersonAmount || 0) - row.payedPersonAmount || 0),
-        ),
-      sorter: (a, b) =>
-        ((a.beanAmount || 0) + (a.exposureBeanAmount || 0)) *
-          ((a.beanPersonAmount || 0) - (a.payedPersonAmount || 0)) -
-        ((b.beanAmount || 0) + (b.exposureBeanAmount || 0)) *
-          ((b.beanPersonAmount || 0) - (b.payedPersonAmount || 0)),
-    },
-    {
-      title: '关联券/商品',
-      align: 'right',
-      dataIndex: 'freeOwnerCoupon',
-      align: 'right',
-      width: 250,
-      render: (val, row) => {
-        const { specialGoods, valuableOwnerCoupon: cInfo } = row;
-        const freeInfo = val ? `${val.couponName}（${val.remain}）` : '';
-        const goodsInfo = specialGoods ? `${specialGoods.goodsName}（${specialGoods.remain}）` : '';
-        const couponInfo = cInfo ? `${cInfo.couponName}（${cInfo.remain}）` : '';
-        const pontInfo = goodsInfo || couponInfo;
-        return `${freeInfo}\n${pontInfo}`;
-      },
     },
     {
       title: '创建时间',
@@ -236,13 +205,6 @@ const ShareManage = (props) => {
       render: (val, record, index) => {
         const { status, userMomentIdString, payedPersonAmount } = record;
         return [
-          {
-            title: '审核通过',
-            auth: 'check',
-            pop: true,
-            visible: status == 0,
-            click: () => fetchVerifyAllow({ userMomentIdString }),
-          },
           {
             title: '下架',
             auth: 'down', // 下架
@@ -301,20 +263,11 @@ const ShareManage = (props) => {
     });
   };
 
-  // 审核通过
-  const fetchVerifyAllow = (payload) => {
-    dispatch({
-      type: 'shareManage/fetchShareVerifyAllow',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
   // 下架
   const fetchStatusClose = (values) => {
     const { detail } = visibleRefuse;
     dispatch({
-      type: 'shareManage/fetchStatusClose',
+      type: 'videoPlatform/fetchStatusClose',
       payload: {
         merchantId: detail.merchantIdString,
         momentId: detail.userMomentIdString,
@@ -331,7 +284,7 @@ const ShareManage = (props) => {
   const fetchShareDetail = (index, type) => {
     const { userMomentIdString } = list[index];
     dispatch({
-      type: 'shareManage/fetchShareDetail',
+      type: 'videoPlatform/fetchShareDetail',
       payload: {
         userMomentIdString,
       },
@@ -384,8 +337,8 @@ const ShareManage = (props) => {
             : '';
         }}
         rowKey={(record) => `${record.userMomentIdString}`}
-        dispatchType="shareManage/fetchGetList"
-        {...shareManage}
+        dispatchType="videoPlatform/fetchGetList"
+        {...videoPlatform}
       ></TableDataBlock>
       {/* 发布分享 */}
       <ShareDrawer
@@ -439,12 +392,12 @@ const ShareManage = (props) => {
   );
 };
 
-export default connect(({ sysTradeList, shareManage, loading }) => ({
-  shareManage,
+export default connect(({ sysTradeList, videoPlatform, loading }) => ({
+  videoPlatform,
   tradeList: sysTradeList.list.list,
-  loadingRefuse: loading.effects['shareManage/fetchStatusClose'],
+  loadingRefuse: loading.effects['videoPlatform/fetchStatusClose'],
   loading:
-    loading.effects['shareManage/fetchGetList'] ||
-    loading.effects['shareManage/fetchShareDetail'] ||
+    loading.effects['videoPlatform/fetchGetList'] ||
+    loading.effects['videoPlatform/fetchShareDetail'] ||
     loading.effects['baseData/fetchHandleDetail'],
-}))(ShareManage);
+}))(VideoPlatform);
