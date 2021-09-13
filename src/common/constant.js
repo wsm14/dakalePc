@@ -563,3 +563,13 @@ export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '�
 
 //节日配置状态 状态 0-待上架 1-上架中 2-已下架
 export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
+
+//卡豆红包类型
+
+export const RED_ENVELOPES_TYPE={
+  message:'私信',normal:'普通',lucky:'拼手气'
+}
+//社群红包类型
+export const RED_ENVELOPES_TYPE_SHE={
+ normal:'普通',lucky:'拼手气'
+}
