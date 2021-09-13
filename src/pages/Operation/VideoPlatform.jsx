@@ -36,7 +36,6 @@ const VideoPlatform = (props) => {
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
   const [visibleMre, setVisibleMre] = useState(false); // 商户详情
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  const [visibleLike, setVisibleLike] = useState(false); // 设置分享收藏数
   const [visibleImg, setVisibleImg] = useState(false); // 分享图
 
   useEffect(() => {
@@ -160,7 +159,7 @@ const VideoPlatform = (props) => {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      render: (val, row) => `${val}\n${NEW_SHARE_OWNER[row.creatorType]} ${row.creatorName || ''}`,
     },
     {
       title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
@@ -183,11 +182,12 @@ const VideoPlatform = (props) => {
       dataIndex: 'momentId',
       width: 210,
       render: (val, record, index) => {
-        const { status } = record;
+        const { status, creatorType } = record;
+        const typeUser = !(creatorType === 'user');
         return [
           {
             type: 'info', // 详情
-            click: () => fetchShareDetail(index, record.contentType || 'video'),
+            click: () => fetchShareDetail(index),
           },
           {
             type: 'down', // 下架
@@ -207,13 +207,13 @@ const VideoPlatform = (props) => {
           },
           {
             type: 'edit', // 编辑
-            visible: status != 0,
+            visible: status != 0 && typeUser,
             click: () => fetchShareHandleDetail(val),
           },
           {
             type: 'rewardPeo', // 打赏设置
-            visible: status != 0,
-            click: () => fetRewardPeo(val, record),
+            visible: status != 0 && typeUser,
+            click: () => setVisibleImg(val, record),
           },
           {
             type: 'shareImg', // 分享图
@@ -225,12 +225,12 @@ const VideoPlatform = (props) => {
           // },
           {
             type: 'commerceSet', // 带货设置
-            visible: status != 0,
+            visible: status != 0 && typeUser,
             click: () => fetchShareHandleDetail(val),
           },
           {
             type: 'portraitEdit', // 编辑画像
-            visible: status != 0,
+            visible: status != 0 && typeUser,
             click: () => fetchShareHandleDetail(val),
           },
         ];
@@ -243,11 +243,6 @@ const VideoPlatform = (props) => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
     });
-  };
-
-  // 新增打赏人数
-  const fetRewardPeo = (userMomentIdString, record) => {
-    const { beanAmount, exposureBeanAmount } = record;
   };
 
   // 删除
@@ -284,14 +279,11 @@ const VideoPlatform = (props) => {
   const fetchShareDetail = (index, type) => {
     const { userMomentIdString } = list[index];
     dispatch({
-      type: 'videoPlatform/fetchShareDetail',
+      type: 'videoPlatform/fetchNewShareDetail',
       payload: {
         userMomentIdString,
       },
-      callback: (detail) =>
-        type === 'set'
-          ? setVisibleLike({ show: true, detail })
-          : setVisible({ show: true, index, type, detail }),
+      callback: (detail) => setVisible({ show: true, index, type, detail }),
     });
   };
 
