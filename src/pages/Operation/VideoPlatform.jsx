@@ -148,15 +148,6 @@ const VideoPlatform = (props) => {
       ),
     },
     {
-      title: '单次打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      render: (val = 0, row) => Math.round(val + (row.exposureBeanAmount || 0)),
-      sorter: (a, b) =>
-        Math.round(a.beanAmount + (a.exposureBeanAmount || 0)) -
-        Math.round(b.beanAmount + (b.exposureBeanAmount || 0)),
-    },
-    {
       title: '观看人数',
       align: 'right',
       dataIndex: 'viewAmount',
@@ -201,21 +192,10 @@ const VideoPlatform = (props) => {
     {
       type: 'handle',
       dataIndex: 'length',
-      width: 180,
+      width: 210,
       render: (val, record, index) => {
         const { status, userMomentIdString, payedPersonAmount } = record;
         return [
-          {
-            title: '下架',
-            auth: 'down', // 下架
-            visible: status == 1 || status == 0,
-            click: () =>
-              setVisibleRefuse({
-                show: true,
-                detail: record,
-                formProps: { type: 'down', key: 'removalReason' },
-              }),
-          },
           {
             type: 'info', // 详情
             click: () => fetchShareDetail(index, record.contentType || 'video'),
@@ -225,20 +205,46 @@ const VideoPlatform = (props) => {
             click: () => fetchShareDetail(index, 'set'),
           },
           {
-            type: 'diary', // 日志
-            click: () => fetchShareHandleDetail(userMomentIdString),
-          },
-          {
             type: 'peasDetail',
             title: '领豆明细',
             visible: payedPersonAmount > 0,
             click: () => setVisiblePeas({ show: true, detail: record }),
           },
           {
-            type: 'rewardPeo',
-            title: '新增打赏人数',
+            type: 'down', // 下架
+            visible: status == 1 || status == 0,
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: record,
+                formProps: { type: 'down', key: 'removalReason' },
+              }),
+          },
+          {
+            type: 'edit', // 编辑
+            click: () => fetchShareHandleDetail(userMomentIdString),
+          },
+          {
+            type: 'rewardPeo', // 打赏设置
             visible: status == 1,
             click: () => fetRewardPeo(userMomentIdString, record),
+          },
+          {
+            type: 'shareImg', // 分享图
+            visible: status == 1,
+            click: () => fetRewardPeo(userMomentIdString, record),
+          },
+          {
+            type: 'diary', // 日志
+            click: () => fetchShareHandleDetail(userMomentIdString),
+          },
+          {
+            type: 'commerceSet', // 带货设置
+            click: () => fetchShareHandleDetail(userMomentIdString),
+          },
+          {
+            type: 'portraitEdit', // 编辑画像
+            click: () => fetchShareHandleDetail(userMomentIdString),
           },
         ];
       },
@@ -318,7 +324,6 @@ const VideoPlatform = (props) => {
     <>
       <TableDataBlock
         keepData
-        firstFetch={false}
         cardProps={{ tabList: tabList, activeTabKey: tabKey, onTabChange: setTabKey }}
         btnExtra={extraBtn}
         cRef={childRef}

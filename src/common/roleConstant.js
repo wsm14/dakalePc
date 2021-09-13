@@ -23,6 +23,7 @@ export const ROLE_BUTTON_TYPE = {
   couponDetail: '优惠券详情',
   cancleRecommend: '取消推荐',
   configCondit: '条件配置',
+  commerceSet: '带货设置',
 
   del: '删除',
   down: '下架',
@@ -70,10 +71,11 @@ export const ROLE_BUTTON_TYPE = {
   placement: '置顶',
   peasDetail: '卡豆明细',
   preview: '预览',
+  portraitEdit: '编辑画像',
 
   qrCode: '获取二维码',
 
-  rate :'费率',
+  rate: '费率',
   role: '角色',
   revoke: '撤销',
   replay: '回复',
@@ -87,7 +89,7 @@ export const ROLE_BUTTON_TYPE = {
   recommendList: '推荐列表',
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
-  rewardPeo: '新增打赏人数',
+  rewardPeo: '打赏设置',
 
   set: '设置',
   save: '新增',
