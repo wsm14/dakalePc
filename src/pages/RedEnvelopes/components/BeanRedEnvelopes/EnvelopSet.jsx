@@ -54,14 +54,7 @@ const EnvelopSet = (props) => {
 
   const formItems = [
     {
-      label: '红包类型',
-      name: 'matterName',
-      type: 'select',
-      select: RED_ENVELOPES_TYPE_SHE,
-      onChange: (val) => setEnvelopType(val),
-    },
-    {
-      label: '使用权限设置',
+      label: '紅包使用权限设置',
       name: 'extraParam',
       type: 'select',
       select: kolLevel,

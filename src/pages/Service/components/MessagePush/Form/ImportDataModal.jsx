@@ -87,7 +87,10 @@ const ImportDataModal = (props) => {
       dataSources = data[excelProps.excelName].map((item) => excelProps.excelRow(item));
       const keys = dataSources.map((item) => item.id);
       //添加userIdString
-      dataSources.forEach((items) => (items.userIdString = items.id));
+      dataSources.forEach((items) => {
+        items.userIdString = items.id;
+        items.levelName = items.level;
+      });
       setExcelData({ keys, list: dataSources });
       setExcelFile(true);
       setFileLoading(false);

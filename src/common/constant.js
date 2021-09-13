@@ -529,6 +529,7 @@ export const TEMPLATE_CREATE_TYPE = {
 // 分佣配置
 export const COMMISSION_TYPE = {
   province: '省代分佣',
+  city: '地級市',
   district: '区县分佣',
   userParent: '用户家主分佣',
   merchantParent: '商家家主分佣',
