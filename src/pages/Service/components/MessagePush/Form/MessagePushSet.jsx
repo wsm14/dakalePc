@@ -8,7 +8,7 @@ import { UserSelectShow } from '@/components/MerUserSelectTable';
 import ImportDataModal from './ImportDataModal';
 
 const MessagePushSet = (props) => {
-  const { initialValues = {}, form, experLevel, dispatch } = props;
+  const { initialValues = {}, form, experLevel, dispatch, userType = '' } = props;
   const { linkType, link = '', pushObjectIds, ...ohter } = initialValues;
   const [pushObj, setPushObj] = useState('all');
   const [visiblePort, setVisiblePort] = useState(false);
@@ -63,8 +63,7 @@ const MessagePushSet = (props) => {
     },
     {
       title: '级别',
-      dataIndex: 'level',
-      render: (val) => (val.length > 2 ? val : experLevel[val]),
+      dataIndex: 'levelName',
     },
   ];
 
@@ -100,7 +99,7 @@ const MessagePushSet = (props) => {
       label: '推送对象',
       name: 'pushObjectType',
       type: 'radio',
-      select: MSG_PSUH_OBJECT,
+      select: userType == 'user' ? MSG_PSUH_OBJECT : { all: '全部用户' },
       onChange: (e) => {
         setUserList({ keys: [], list: [] });
         setPushObj(e.target.value);
@@ -110,7 +109,7 @@ const MessagePushSet = (props) => {
       label: '适用用户',
       name: 'pushObjectIds',
       type: 'formItem',
-      visible: pushObj === 'specific',
+      visible: pushObj === 'specific' && userType == 'user',
       rules: [{ required: true, message: '请选择用户' }],
       formItem: (
         <Space size="large">
@@ -126,7 +125,7 @@ const MessagePushSet = (props) => {
     {
       label: '适用用户',
       type: 'noForm',
-      visible: pushObj === 'specific',
+      visible: pushObj === 'specific' && userType == 'user',
       formItem: (
         <UserSelectShow
           maxLength={500}
