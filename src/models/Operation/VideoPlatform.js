@@ -114,12 +114,11 @@ export default {
         freeOwnerCouponList = [], // 免费券
         ownerCouponList = [], // 有价券
         activityGoodsList = [], // 特惠商品
-        promotionType: pType,
         videoContent,
-        ...ohter
+        ...other
       } = content.momentDetail;
       const newObj = {
-        ...ohter,
+        ...other,
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
