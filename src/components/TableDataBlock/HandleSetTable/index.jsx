@@ -14,19 +14,11 @@ const HandleSetTable = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, index) => {
-      const {
-        type = 'button',
-        title,
-        visible = true,
-        pop = false,
-        auth = false,
-        click,
-        popText,
-      } = item;
+      const { type = 'button', title, visible = true, pop, auth = false, click, popText } = item;
 
       // 默认pop确认弹窗
       const popType = ['del', 'send', 'up', 'down'];
-      const popShow = pop || popType.includes(type);
+      const popShow = typeof pop === 'boolean' ? pop : popType.includes(type);
 
       // 显示名称
       const btnText = title || ROLE_BUTTON_TYPE[type] || '按钮';

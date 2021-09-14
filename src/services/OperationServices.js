@@ -257,6 +257,71 @@ export function fetchShareWeightSet(data) {
 
 // 分享管理 end
 
+// 平台视频
+
+// get 平台视频 - 列表
+export function fetchNewShareList(params) {
+  return request('/admin/marketing/moment/new/listMoment', {
+    params,
+  });
+}
+
+// get 平台视频 - 内容详情
+export function fetchNewShareDetail(params) {
+  return request('/admin/marketing/moment/new/momentDetail', {
+    params,
+  });
+}
+
+// get 平台视频 - 打赏设置
+export function fetchNewShareRewardSet(params) {
+  return request('/admin/marketing/moment/tipping/momentTippingList', {
+    params,
+  });
+}
+
+// post 平台视频 - 修改视频（不审核）
+export function fetchNewShareNoAudit(data) {
+  return request('/admin/marketing/moment/new/updateMomentDirect', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 下架分享
+export function fetchNewShareClose(data) {
+  return request('/admin/marketing/moment/new/offMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 删除分享
+export function fetchNewShareDel(data) {
+  return request('/admin/marketing/moment/new/deleteMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 创建打赏
+export function fetchNewShareRewardSave(data) {
+  return request('/admin/marketing/moment/tipping/createMomentTipping', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 取消打赏
+export function fetchNewShareRewardCancel(data) {
+  return request('/admin/marketing/moment/tipping/cancelTipping', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 平台视频 end
+
 // 种草管理
 
 // get 种草管理 - 列表

@@ -153,6 +153,7 @@ export const SHARE_STATUS = [
   '分享结束',
   '即将发布',
 ];
+
 //核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
 export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
@@ -592,3 +593,15 @@ export const RED_ENVELOPES_TYPE_SHE = {
 };
 
 export const RED_ENVELOP_STATUS = ['未领取', '已领取', '已退款'];
+
+// 平台视频 - 状态 0-下架 1-上架 2-待上架
+export const NEW_SHARE_STATUS = ['下架', '上架', '待上架'];
+
+// 平台视频 - 归属人
+export const NEW_SHARE_OWNER = { user: '哒人', merchant: '商家', group: '集团' };
+
+// 平台视频 - 打赏状态 0-失效 1-生效 2-待生效
+export const NEW_SHAREREWARD_STATUS = ['失效', '生效', '待生效'];
+
+// 平台视频 - 时间设置类型
+export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时间' };
