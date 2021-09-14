@@ -570,3 +570,6 @@ export const NEW_SHARE_OWNER = { user: '用户', merchant: '商家', group: '集
 
 // 平台视频 - 打赏状态 0-失效 1-生效 2-待生效
 export const NEW_SHAREREWARD_STATUS = ['失效', '生效', '待生效'];
+
+// 平台视频 - 时间设置类型
+export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时间' };

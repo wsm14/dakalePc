@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
+import { NUM_INT } from '@/common/regExp';
 import { Button, Form, message } from 'antd';
 import {
   AMAP_KEY,
@@ -7,6 +9,7 @@ import {
   SHARE_TASTE_TYPE,
   SHARE_SEX_TYPE,
   SHARE_AGE_TYPE,
+  NEW_SHARETIME_TYPE,
 } from '@/common/constant';
 import { Map, Circle, Marker } from 'react-amap';
 import { CitySet } from '@/components/FormListCondition';
@@ -18,6 +21,7 @@ const RewardCreate = (props) => {
     dispatch,
     visible,
     propertyJSON = {},
+    params,
     childRef,
     cityName,
     onClose,
@@ -37,9 +41,48 @@ const RewardCreate = (props) => {
   const [radius, setRadius] = useState(0); // 地域选择 - 半径
   const [ageType, setAgeType] = useState('0-100'); // 年龄
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
+  const [timeSelect, setTimeSelect] = useState(false); // 投放时长
+  const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
 
   // 确认发布
-  const handleVideoPush = () => {};
+  const handleVideoPush = () => {
+    form.validateFields().then((values) => {
+      const {
+        rewardStartTime: time,
+        age,
+        ageData,
+        areaType,
+        area,
+        cityList = [],
+        taste,
+        tagsId = [],
+        ...ohter
+      } = values;
+      dispatch({
+        type: 'videoPlatform/fetchNewShareRewardSave',
+        payload: {
+          ...params,
+          ...ohter,
+          scope: 'all',
+          age: age === 'age' ? ageData.toString() : age,
+          areaType,
+          tagsId: tagsId.toString(),
+          area: {
+            all: undefined,
+            city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+            district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+            near: area,
+          }[areaType],
+          beginDate: time && time[0].format('YYYY-MM-DD'),
+          endDate: time && time[1].format('YYYY-MM-DD'),
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
+    });
+  };
 
   // 获取配置文件
   const fetchGetPropertyJSON = () => {
@@ -125,6 +168,7 @@ const RewardCreate = (props) => {
 
   const formItems = [
     {
+      title: '画像设置',
       label: '性别',
       name: 'gender',
       type: 'radio',
@@ -226,6 +270,36 @@ const RewardCreate = (props) => {
         children: 'domainDTOList',
       },
     },
+    {
+      title: '打赏设置',
+      label: '投放时长',
+      name: 'tippingTimeType',
+      type: 'radio',
+      select: NEW_SHARETIME_TYPE,
+      onChange: (e) => setTimeSelect(e.target.value),
+    },
+    {
+      label: '时间选择',
+      name: 'rewardStartTime',
+      type: 'rangePicker',
+      visible: timeSelect === 'fixed',
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
+    },
+    {
+      label: '单次曝光打赏',
+      name: 'tippingBean',
+      suffix: '卡豆/人',
+      addRules: [{ pattern: NUM_INT, message: '应为大于0的整数数字' }],
+      onChange: (e) => setTotalBean((old) => ({ ...old, bnum: Number(e.target.value) })),
+    },
+    {
+      label: '目标曝光量',
+      name: 'tippingCount',
+      suffix: '人',
+      addRules: [{ pattern: NUM_INT, message: '应为大于0的整数数字' }],
+      onChange: (e) => setTotalBean((old) => ({ ...old, pnum: Number(e.target.value) })),
+      extra: `平台补贴总需：${totalBean.pnum * totalBean.bnum}卡豆`,
+    },
   ];
 
   const modalProps = {
@@ -239,14 +313,15 @@ const RewardCreate = (props) => {
     },
     closeCallBack: () => {
       setMap(false);
+      setAgeType('0-100');
       setAreaType('all');
+      setTastetype('all');
+      setTimeSelect(false);
     },
     footer: (
-      <>
-        <Button type="primary" onClick={handleVideoPush} loading={loading}>
-          确认发布
-        </Button>
-      </>
+      <Button type="primary" onClick={handleVideoPush} loading={loading}>
+        确认发布
+      </Button>
     ),
   };
 
@@ -261,5 +336,5 @@ export default connect(({ loading, baseData }) => ({
   tasteTag: baseData.tasteTag,
   propertyJSON: baseData.propertyJSON,
   loadingJSON: loading.effects['baseData/fetchGetPropertyJSON'],
-  loading: loading.effects['videoPlatform/fetchShareVideoPush'],
+  loading: loading.effects['videoPlatform/fetchNewShareRewardSave'],
 }))(RewardCreate);

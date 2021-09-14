@@ -15,7 +15,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
 
   const { show = false, detail = {} } = visible;
 
-  const { districtCode } = detail;
+  const { districtCode, momentId, ownerId } = detail;
 
   // table 表头
   const getColumns = [
@@ -129,6 +129,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       </Modal>
       {/* 创建打赏 */}
       <RewardCreate
+        params={{ momentId, ownerId }}
         cityName={checkCityName(districtCode)}
         childRef={childRef}
         visible={visibleCreate}
