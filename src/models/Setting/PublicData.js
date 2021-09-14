@@ -399,6 +399,7 @@ export default {
         commissionRatio: item.commissionRatio,
         topCategoryName: [item.topCategoryName, item.categoryName],
         topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+        districtCode: item.districtCode,
       }));
       yield put({
         type: 'save',

@@ -288,6 +288,14 @@ export function fetchNewShareNoAudit(data) {
   });
 }
 
+// post 平台视频 - 发布分享
+export function fetchNewSharePush(data) {
+  return request('/admin/marketing/moment/new/publishMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 平台视频 - 下架分享
 export function fetchNewShareClose(data) {
   return request('/admin/marketing/moment/new/offMoment', {

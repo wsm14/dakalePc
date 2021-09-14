@@ -5,6 +5,7 @@ import {
   fetchNewShareList,
   fetchNewShareNoAudit,
   fetchNewShareDel,
+  fetchNewSharePush,
   fetchNewShareClose,
   fetchNewShareDetail,
   fetchNewShareRewardSet,
@@ -58,6 +59,15 @@ export default {
           },
         },
       });
+    },
+    *fetchNewSharePush({ payload, callback }, { call }) {
+      const response = yield call(fetchNewSharePush, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分享发布成功',
+      });
+      callback();
     },
     *fetchNewShareNoAudit({ payload, callback }, { call }) {
       const response = yield call(fetchNewShareNoAudit, payload);

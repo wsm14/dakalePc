@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import debounce from 'lodash/debounce';
-import { VIDEO_ADVERT, WXFRIEND_SHARE_IMG } from '@/common/imgRatio';
+import { VIDEO_ADVERT } from '@/common/imgRatio';
+import { BUSINESS_TYPE } from '@/common/constant';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from '@/components/VideoSelectBindContent';
 
@@ -11,26 +12,24 @@ import ShareCoupon from '@/components/VideoSelectBindContent';
 const ShareContentSet = (props) => {
   const {
     form,
-    platformBean,
-    bean,
     tradeList, // 行业列表
     selectList, // 店铺列表
     couponData,
     setCouponData,
-    getMerchantIdInfo,
     dispatch,
     detail,
     loading,
   } = props;
 
   const { free, contact } = couponData;
+  const [ownerType, setOwnerType] = useState('merchant'); // 店铺类型
 
   // 搜索店铺
   const fetchClassifyGetMre = debounce((name) => {
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
-      payload: { name },
+      payload: { name, type: ownerType },
     });
   }, 500);
 
@@ -39,26 +38,39 @@ const ShareContentSet = (props) => {
 
   const formItems = [
     {
-      label: '选择店铺',
+      label: '选择店铺类型',
+      type: 'radio',
+      name: 'ownerType',
+      select: BUSINESS_TYPE,
+      onChange: (e) => {
+        setOwnerType(e.target.value); // 重置店铺类型
+        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
+      },
+    },
+    {
+      label: `选择${BUSINESS_TYPE[ownerType]}`,
       type: 'select',
       loading,
       placeholder: '请输入搜索',
-      name: 'merchantId',
+      name: 'ownerId',
       select: selectList,
       onSearch: (val) => fetchClassifyGetMre(val),
       onChange: (val, data) => {
-        getMerchantIdInfo(val);
         const { option } = data;
-        saveCouponStorage({ free: {}, contact: {} });
+        saveCouponStorage({ free: {}, contact: [] });
         form.setFieldsValue({
           categoryNode: option.topCategoryId,
           topCategoryId: option.topCategoryId[0],
           categoryId: option.topCategoryId[1],
-          topCategoryName: option.topCategoryName[0],
-          categoryName: option.topCategoryName[1],
+          districtCode: option.districtCode,
         });
       },
-      extra: `商家账户卡豆数：${bean}，平台补贴卡豆数：${platformBean}`,
+    },
+    {
+      label: '地区名称用来搜索地图',
+      name: 'districtCode',
+      hidden: true,
     },
     {
       label: '上传封面',
@@ -82,7 +94,6 @@ const ShareContentSet = (props) => {
           form.setFieldsValue({
             length: parseInt(duration),
             videoId: undefined,
-            videoContentOb: { height: videoElement.videoHeight, width: videoElement.videoWidth },
           });
         });
         videoElement.src = fileurl;
@@ -90,30 +101,10 @@ const ShareContentSet = (props) => {
       },
     },
     {
-      label: '微信好友分享图',
-      name: 'friendShareImg',
-      type: 'upload',
-      maxFile: 1,
-      maxSize: 128,
-      imgRatio: WXFRIEND_SHARE_IMG,
-      rules: [{ required: false }],
-      extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
-    },
-    {
       label: '视频id',
       name: 'videoId',
       hidden: true,
       rules: [{ required: false }],
-    },
-    {
-      label: '视频宽度',
-      name: ['videoContentOb', 'height'],
-      hidden: true,
-    },
-    {
-      label: '视频高度',
-      name: ['videoContentOb', 'width'],
-      hidden: true,
     },
     {
       label: '视频时长',
@@ -137,32 +128,15 @@ const ShareContentSet = (props) => {
       name: 'categoryNode',
       select: tradeList,
       fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      onChange: (val, option) => {
+      onChange: (val) => {
         form.setFieldsValue({
-          categoryNode: val,
           topCategoryId: val[0],
           categoryId: val[1],
-          topCategoryName: option[0].categoryName,
-          categoryName: option[1].categoryName,
         });
       },
     },
     {
-      label: '权重',
-      type: 'number',
-      name: 'recommendWeight',
-      placeholder: '数值越大越靠前',
-    },
-    {
       name: 'topCategoryId', // 一级行业id
-      hidden: true,
-    },
-    {
-      name: 'topCategoryName', // 一级行业名称
-      hidden: true,
-    },
-    {
-      name: 'categoryName', // 二级行业名称
       hidden: true,
     },
     {
@@ -175,7 +149,7 @@ const ShareContentSet = (props) => {
       formItem: (
         <ShareCoupon
           type="coupon"
-          merchantIdKey="merchantId"
+          merchantIdKey="ownerId"
           show="free"
           data={free}
           form={form}
@@ -188,15 +162,35 @@ const ShareContentSet = (props) => {
       label: '推荐带货',
       type: 'formItem',
       formItem: (
-        <ShareCoupon
-          show="active"
-          merchantIdKey="merchantId"
-          type={contact.couponName ? 'coupon' : 'goods'}
-          data={contact}
-          form={form}
-          onDel={() => saveCouponStorage({ contact: {} })}
-          onOk={(contact) => saveCouponStorage({ contact })}
-        ></ShareCoupon>
+        <>
+          <ShareCoupon
+            show="active"
+            merchantIdKey="ownerId"
+            type={contact[0]?.couponName ? 'coupon' : 'goods'}
+            data={contact[0]}
+            form={form}
+            onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
+            onOk={(data) => saveCouponStorage({ contact: [data] })}
+          ></ShareCoupon>
+          <ShareCoupon
+            show="active"
+            merchantIdKey="ownerId"
+            type={contact[1]?.couponName ? 'coupon' : 'goods'}
+            data={contact[1]}
+            form={form}
+            onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 1) })}
+            onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
+          ></ShareCoupon>
+          <ShareCoupon
+            show="active"
+            merchantIdKey="ownerId"
+            type={contact[2]?.couponName ? 'coupon' : 'goods'}
+            data={contact[2]}
+            form={form}
+            onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 2) })}
+            onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
+          ></ShareCoupon>
+        </>
       ),
     },
   ];
@@ -204,9 +198,7 @@ const ShareContentSet = (props) => {
   return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
-export default connect(({ videoPlatform, baseData, sysTradeList, loading }) => ({
-  platformBean: videoPlatform.platformBean,
-  bean: videoPlatform.bean,
+export default connect(({ baseData, sysTradeList, loading }) => ({
   selectList: baseData.groupMreList,
   tradeList: sysTradeList.list.list,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
