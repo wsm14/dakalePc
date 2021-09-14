@@ -192,8 +192,7 @@ const BeanRedEnvelopes = (props) => {
         const ids = receiveUserList.length
           ? receiveUserList.map((items) => items.userIdString)
           : [];
-        return ids.toString();
-        // return receiveUserList.length ? receiveUserList[0].userIdString : '-';
+        return ids.map((id) => <div key={id}>{id}</div>);
       },
     },
     {
