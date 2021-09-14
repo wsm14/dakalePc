@@ -310,6 +310,12 @@ const SubsidyRecycleBean = (props) => {
           list.list.map((item) => (merNumbers[item.userMerchantIdString] = item.subsidyBean));
           setMreNumber(merNumbers);
         }}
+        setUserList={(list) => {
+          setUserList({ ...list });
+          const numbers = {};
+          list.list.map((item) => (numbers[item.userIdString] = item.subsidyBean));
+          setUserNumber(numbers);
+        }}
         setGroupList={(list) => {
           setGroupList({ ...list });
           const groupNumbers = {};
