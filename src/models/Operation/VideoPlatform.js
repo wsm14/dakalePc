@@ -111,23 +111,16 @@ export default {
       const {
         area,
         areaType,
-        freeOwnerCoupon, // 免费券
-        valuableOwnerCoupon, // 有价券
-        specialGoods, // 特惠商品
+        freeOwnerCouponList, // 免费券
+        ownerCouponList, // 有价券
+        activityGoodsList, // 特惠商品
         promotionType: pType,
-      } = content.userMoments;
+        videoContent,
+        ...ohter
+      } = content.momentDetail;
       const newObj = {
-        ...content.userMoments,
-        videoContent: JSON.parse(content.userMoments.videoContent || '{}'),
-        free: freeOwnerCoupon // 免费券
-          ? { ...freeOwnerCoupon, buyFlag: 0 }
-          : '',
-        contact: pType // 有价券 特惠商品
-          ? {
-              promotionType: { reduce: 'coupon', special: 'goods' }[pType],
-              ...{ reduce: valuableOwnerCoupon, special: specialGoods }[pType],
-            }
-          : '',
+        ...ohter,
+        videoContent: JSON.parse(videoContent || '{}'),
         area:
           areaType !== 'all'
             ? areaType === 'near'

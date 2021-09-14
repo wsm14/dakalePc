@@ -272,11 +272,12 @@ const VideoPlatform = (props) => {
 
   // 获取详情
   const fetchShareDetail = (index, type) => {
-    const { userMomentIdString } = list[index];
+    const { momentId, ownerId } = list[index];
     dispatch({
       type: 'videoPlatform/fetchNewShareDetail',
       payload: {
-        userMomentIdString,
+        momentId,
+        ownerId,
       },
       callback: (detail) => setVisible({ show: true, index, type, detail }),
     });

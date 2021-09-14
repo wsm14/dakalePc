@@ -25,7 +25,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       render: (val, row) =>
         ({
           permanent: row.finishTime ? `${row.createTime} ~ ${row.finishTime}` : '扣完为止',
-          fixed: `${row?.beginDate} ~ ${row?.endDate || row?.finishTime}`,
+          fixed: `${row?.beginDate} ~ ${row?.finishTime || row?.endDate}`,
         }[val]),
     },
     {

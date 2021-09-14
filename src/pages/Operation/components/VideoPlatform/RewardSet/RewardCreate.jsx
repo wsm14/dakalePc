@@ -31,7 +31,13 @@ const RewardCreate = (props) => {
   } = props;
 
   // 默认选择项
-  const inputData = { scope: 'all', areaType: 'all', taste: 'all', gender: 'ALL', age: '0-100' };
+  const inputData = {
+    momentDTO: { gender: 'ALL' },
+    tippingTimeType: 'permanent',
+    areaType: 'all',
+    taste: 'all',
+    age: '0-100',
+  };
 
   const [form] = Form.useForm();
 
@@ -56,6 +62,7 @@ const RewardCreate = (props) => {
         cityList = [],
         taste,
         tagsId = [],
+        momentDTO,
         ...ohter
       } = values;
       dispatch({
@@ -63,18 +70,21 @@ const RewardCreate = (props) => {
         payload: {
           ...params,
           ...ohter,
-          scope: 'all',
-          age: age === 'age' ? ageData.toString() : age,
-          areaType,
-          tagsId: tagsId.toString(),
-          area: {
-            all: undefined,
-            city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-            district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-            near: area,
-          }[areaType],
           beginDate: time && time[0].format('YYYY-MM-DD'),
           endDate: time && time[1].format('YYYY-MM-DD'),
+          momentDTO: {
+            ...momentDTO,
+            scope: 'all',
+            age: age === 'age' ? ageData.toString() : age,
+            areaType,
+            tagsId: tagsId.toString(),
+            area: {
+              all: undefined,
+              city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+              district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+              near: area,
+            }[areaType],
+          },
         },
         callback: () => {
           onClose();
@@ -99,8 +109,8 @@ const RewardCreate = (props) => {
   };
 
   const onSearchAddress = () => {
-    form.validateFields(['beanAddress']).then(({ beanAddress }) => {
-      const address = beanAddress;
+    form.validateFields(['momentDTO', 'beanAddress']).then(({ momentDTO }) => {
+      const address = momentDTO.beanAddress;
       fetch(
         `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&city=${cityName}&keywords=${
           cityName + address
@@ -115,7 +125,7 @@ const RewardCreate = (props) => {
                 const geocodes = list[0].location.split(',');
                 const longitude = parseFloat(geocodes[0]); // 经度 lnt
                 const latitude = parseFloat(geocodes[1]); // 纬度 lat
-                form.setFieldsValue({ beanLnt: longitude, beanLat: latitude });
+                form.setFieldsValue({ momentDTO: { beanLnt: longitude, beanLat: latitude } });
                 setLocation([longitude, latitude]);
                 setMap(true);
               }
@@ -156,7 +166,7 @@ const RewardCreate = (props) => {
       </Map>
       <Button
         onClick={() => {
-          form.setFieldsValue({ beanLnt: location[0], beanLat: location[1] });
+          form.setFieldsValue({ momentDTO: { beanLnt: location[0], beanLat: location[1] } });
           message.success('保存新地址成功', 1.5);
         }}
         style={{ position: 'absolute', top: 20, right: 20 }}
@@ -170,7 +180,7 @@ const RewardCreate = (props) => {
     {
       title: '画像设置',
       label: '性别',
-      name: 'gender',
+      name: ['momentDTO', 'gender'],
       type: 'radio',
       select: SHARE_SEX_TYPE,
     },
@@ -225,7 +235,7 @@ const RewardCreate = (props) => {
     {
       label: '选择地址',
       visible: areaType === 'near',
-      name: 'beanAddress',
+      name: ['momentDTO', 'beanAddress'],
       addonAfter: <a onClick={onSearchAddress}>查询</a>,
     },
     {
@@ -235,13 +245,13 @@ const RewardCreate = (props) => {
     },
     {
       label: '经度',
-      name: 'beanLnt',
+      name: ['momentDTO', 'beanLnt'],
       visible: areaType === 'near',
       hidden: true,
     },
     {
       label: '纬度',
-      name: 'beanLat',
+      name: ['momentDTO', 'beanLat'],
       visible: areaType === 'near',
       hidden: true,
     },
