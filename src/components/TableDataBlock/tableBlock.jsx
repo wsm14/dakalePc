@@ -32,6 +32,7 @@ import utils from './utils';
  * @scrollX 横向滚动
  * @firstFetch 原NoSearch 刚打开是否请求 默认true 请求接口
  * @params 搜索时默认参数 移除 pParams params替代全部职能
+ * @searchShowData 搜索时默认显示参数 不参与首次搜索
  * @order 排序序号是否显示
  * @tableSize 表格大小 small default middle
  * @children
@@ -58,6 +59,7 @@ const TableBlockComponent = (props) => {
     searchItems,
     searchForm,
     searchCallback,
+    searchShowData,
     total,
     order = false,
     tableSort = false,
@@ -169,7 +171,7 @@ const TableBlockComponent = (props) => {
           componentSize={size}
           searchItems={searchItems}
           handleSearch={handleSearch}
-          initialValues={{ ...show, ...params }}
+          initialValues={{ ...show, ...params, ...searchShowData }}
           btnExtra={btnExtra}
         ></SearchCondition>
       )}

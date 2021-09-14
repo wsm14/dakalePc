@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE, RED_ENVELOP_STATUS } from '@/common/constant';
-import { notification } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
-import ExtraButton from '@/components/ExtraButton';
 import { checkCityName } from '@/utils/utils';
 import EnvelopSet from './components/BeanRedEnvelopes/EnvelopSet';
 import EnvelopRecord from './components/BeanRedEnvelopes/EnvelopRecord';
@@ -25,9 +23,10 @@ const BeanRedEnvelopes = (props) => {
   const [tabKey, setTabKey] = useState('0');
   const [visibleSet, setVisibleSet] = useState(false);
   const [visibleRecord, setVisibleRecord] = useState(false);
+
   useEffect(() => {
     childRef.current.fetchGetData(
-      tabKey === '0' ? { envelopesType: 'lucky' } : { envelopesType: 'message' },
+      tabKey === '0' ? { envelopesType: 'normal,lucky' } : { envelopesType: 'message' },
     );
   }, tabKey);
 
@@ -56,31 +55,20 @@ const BeanRedEnvelopes = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
-  ];
-
-  const communitedSearch = [
     {
       label: '红包类型',
       name: 'envelopesType',
       type: 'multiple',
+      show: tabKey === '0',
+      required: true,
       select: RED_ENVELOPES_TYPE_SHE,
-      onChange: (val) => {
-        if (val.length === 0) {
-          notification.info({
-            message: '温馨提示',
-            description: '紅包类型为必选项，不可为空',
-          });
-        }
-      },
     },
-  ];
-
-  const privateSearch = [
     {
       label: '领取时间',
       type: 'rangePicker',
       name: 'acquireBeginTime',
       end: 'acquireEndTime',
+      show: tabKey === '1',
     },
   ];
 
@@ -221,6 +209,7 @@ const BeanRedEnvelopes = (props) => {
   return (
     <>
       <TableDataBlock
+        firstFetch={false}
         cardProps={{
           tabList: tabList,
           activeTabKey: tabKey,
@@ -229,14 +218,11 @@ const BeanRedEnvelopes = (props) => {
         cRef={childRef}
         loading={loading}
         btnExtra={tabKey === '0' ? btnList : []}
-        searchItems={
-          tabKey === '0'
-            ? [...searchItems, ...communitedSearch]
-            : [...searchItems, ...privateSearch]
-        }
+        searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.redEnvelopesIdString}`}
-        params={tabKey === '0' ? { envelopesType: 'lucky' } : { envelopesType: 'message' }}
+        params={{ envelopesType: 'message' }}
+        searchShowData={{ envelopesType: ['normal', 'lucky'] }}
         dispatchType="redEnvelopes/fetchListRedEnvelopesManagement"
         {...redEnvelopes}
       ></TableDataBlock>
