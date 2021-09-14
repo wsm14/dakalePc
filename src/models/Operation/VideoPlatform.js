@@ -5,8 +5,10 @@ import {
   fetchNewShareList,
   fetchNewShareNoAudit,
   fetchNewShareDel,
+  fetchNewSharePush,
   fetchNewShareClose,
   fetchNewShareDetail,
+  fetchNewShareAuditEdit,
   fetchNewShareRewardSet,
   fetchNewShareRewardSave,
   fetchNewShareRewardCancel,
@@ -59,6 +61,24 @@ export default {
         },
       });
     },
+    *fetchNewSharePush({ payload, callback }, { call }) {
+      const response = yield call(fetchNewSharePush, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '分享发布成功',
+      });
+      callback();
+    },
+    *fetchNewShareAuditEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareAuditEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `提交修改审核成功`,
+      });
+      callback();
+    },
     *fetchNewShareNoAudit({ payload, callback }, { call }) {
       const response = yield call(fetchNewShareNoAudit, payload);
       if (!response) return;
@@ -105,7 +125,8 @@ export default {
       callback();
     },
     *fetchNewShareDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchNewShareDetail, payload);
+      const { type = 'info', ...cell } = payload;
+      const response = yield call(fetchNewShareDetail, cell);
       if (!response) return;
       const { content } = response;
       const {
@@ -115,10 +136,21 @@ export default {
         ownerCouponList = [], // 有价券
         activityGoodsList = [], // 特惠商品
         videoContent,
-        ...other
+        age,
+        ...ohter
       } = content.momentDetail;
+      const editData =
+        type !== 'info'
+          ? {
+              videoUrl: JSON.parse(videoContent || '{}').url,
+              categoryNode: [ohter.topCategoryId, ohter.categoryId],
+              free: freeOwnerCouponList[0] || {},
+              contact: [...activityGoodsList, ...ownerCouponList],
+            }
+          : {};
       const newObj = {
-        ...other,
+        ...ohter,
+        ...editData,
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),

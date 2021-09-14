@@ -60,7 +60,6 @@ const RewardCreate = (props) => {
         areaType,
         area,
         cityList = [],
-        taste,
         tagsId = [],
         momentDTO,
         ...ohter
@@ -109,7 +108,7 @@ const RewardCreate = (props) => {
   };
 
   const onSearchAddress = () => {
-    form.validateFields(['momentDTO', 'beanAddress']).then(({ momentDTO }) => {
+    form.validateFields([['momentDTO', 'beanAddress']]).then(({ momentDTO }) => {
       const address = momentDTO.beanAddress;
       fetch(
         `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&city=${cityName}&keywords=${

@@ -566,19 +566,6 @@ export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '�
 //节日配置状态 状态 0-待上架 1-上架中 2-已下架
 export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
 
-// 视频审核店铺/视频类型
-export const VIDEO_TYPE = {
-  use: '用户',
-  merchant: '店铺',
-  group: '集团',
-};
-
-// 視頻審核了惡行
-export const VIDEO_ACTION_TYPE = {
-  create: '创建审核',
-  update: '修改审核',
-};
-
 // 卡豆红包类型
 export const RED_ENVELOPES_TYPE = {
   message: '私信',
@@ -605,3 +592,19 @@ export const NEW_SHAREREWARD_STATUS = ['失效', '生效', '待生效'];
 
 // 平台视频 - 时间设置类型
 export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时间' };
+
+// 平台视频 - 投放类型
+export const NEW_SHAREPUBLISHTIME_TYPE = { rightNow: '立即发布', fixed: '定时发布' };
+
+// 视频审核店铺/视频类型
+export const VIDEO_TYPE = {
+  use: '用户',
+  merchant: '店铺',
+  group: '集团',
+};
+
+// 视频审核类型
+export const VIDEO_ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+};

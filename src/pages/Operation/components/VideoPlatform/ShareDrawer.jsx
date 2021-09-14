@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Form, Steps, Modal } from 'antd';
+import { Button, Form, Steps } from 'antd';
 import uploadLive from '@/utils/uploadLive';
-import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareContentSet from './SharePushForm/ShareContentSet';
 import SharePutInSet from './SharePushForm/SharePutInSet';
@@ -17,157 +16,88 @@ const ShareDrawer = (props) => {
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
-  const [couponData, setCouponData] = useState({ free: {}, contact: {} }); // 选择券的信息
-  const [extraData, setExtraData] = useState({ city: [], taste: [] }); // 额外数据暂存 city 地域 taste 兴趣
-  const [allowPush, setAllowPush] = useState(true); // 是否允许发布
+  const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
 
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      Modal.confirm({
-        title: '温馨提示',
-        content: '发布分享所需的卡豆将从【商户钱包】中扣除，确认扣除卡豆并发布吗？',
-        onOk: () => {
-          const {
-            frontImage,
-            videoId,
-            videoUrl,
-            friendShareImg,
-            categoryNode = [],
-            title,
-            age,
-            ageData,
-            areaType,
-            area,
-            cityList = [],
-            taste,
-            tagsId = [],
-          } = dataStorage;
-          const { rewardStartTime: time, timedPublishTime: pTime } = values;
-          const {
-            free: { ownerCouponIdString: couponIds },
-            contact = {},
-          } = couponData;
-          const { promotionType: cType } = contact;
-          const { taste: tasteNodes } = extraData;
-          let tasteData = {};
-          if (taste === 'tag') {
-            tasteData = {
-              // 父级兴趣id，多个用逗号隔开
-              topTagsId: Array.from(
-                new Set(tasteNodes.map((item) => item.parentDomainIdStr)),
-              ).toString(),
-              // 父级兴趣名，多个用逗号隔开
-              topTagsName: Array.from(
-                new Set(tasteNodes.map((item) => item.parentDomainName)),
-              ).toString(),
-              // 子级兴趣id，多个豆号隔开
-              tags: tasteNodes.map((item) => item.domainName).toString(),
-              // 兴趣标签
-              tagsId: tagsId.toString(),
-            };
-          }
+      const {
+        age,
+        title,
+        tagsId = [],
+        ageData,
+        videoId,
+        cityList = [],
+        area,
+        areaType,
+        videoUrl,
+        frontImage,
+        categoryNode,
+        ownerId,
+        ...other
+      } = dataStorage;
+      const { free = {}, contact = [] } = couponData;
+      const { publishTime, publishType } = values;
+      // 券数据整理
+      const newCoupon = [
+        ...contact,
+        ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
+      ];
+      uploadLive({
+        data: frontImage, // 上传封面
+        callback: (imgs) => {
           uploadLive({
-            data: frontImage, // 上传封面
-            callback: (imgs) => {
-              uploadLive({
-                data: videoId ? videoId : videoUrl, // 上传视频
-                title,
-                callback: (videos) => {
-                  aliOssUpload(friendShareImg).then((res) => {
-                    dispatch({
-                      type: 'videoPlatform/fetchShareVideoPush',
-                      payload: {
-                        userType: 'merchant',
-                        contentType: 'video',
-                        scope: 'all',
-                        merchantCount: 1,
-                        beanFlag: '1', // 是否打赏 0 1
-                        frontImageWidth: 544, // 封面宽
-                        frontImageHeight: 960, // 封面长
-                        ...dataStorage,
-                        ...tasteData,
-                        ...values,
-                        friendShareImg: res.toString(),
-                        videoUrl: undefined,
-                        ageData: undefined,
-                        cityList: undefined,
-                        age: age === 'age' ? ageData.toString() : age,
-                        area: {
-                          all: undefined,
-                          city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-                          district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-                          near: area,
-                        }[areaType],
-                        categoryNode: categoryNode.join('.'),
-                        frontImage: imgs, // 封面连接
-                        rewardStartTime: time && time[0].format('YYYY-MM-DD'),
-                        rewardEndTime: time && time[1].format('YYYY-MM-DD'),
-                        timedPublishTime: pTime && pTime.format('YYYY-MM-DD HH:mm:00'),
-                        videoId: videos,
-                        couponIds,
-                        promotionId:
-                          contact[
-                            { coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]
-                          ],
-                        promotionType: { coupon: 'reduce', goods: 'special' }[cType],
-                      },
-                      callback: () => {
-                        onClose();
-                        childRef.current.fetchGetData();
-                      },
-                    });
-                  });
+            data: videoId ? videoId : videoUrl, // 上传视频
+            title,
+            callback: (videos) => {
+              dispatch({
+                type: 'videoPlatform/fetchNewSharePush',
+                payload: {
+                  ...other,
+                  scope: 'all',
+                  title,
+                  ownerId,
+                  areaType,
+                  publishType,
+                  frontImageWidth: 544, // 封面宽
+                  frontImageHeight: 960, // 封面长
+                  frontImage: imgs, // 封面连接
+                  videoId: videos,
+                  tagsId: tagsId.toString(),
+                  area: {
+                    all: undefined,
+                    city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                    district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+                    near: area,
+                  }[areaType],
+                  momentRelateList: newCoupon.map((item) => ({
+                    relateId:
+                      item[
+                        {
+                          goods: 'specialGoodsId', // 特惠
+                          free: 'ownerCouponIdString', // 免费
+                          coupon: 'ownerCouponIdString', // 有价
+                        }[item.promotionType]
+                      ],
+                    relateType: {
+                      goods: 'specialGoods',
+                      coupon: 'reduceCoupon',
+                      free: 'freeReduceCoupon',
+                    }[item.promotionType],
+                    relateShardingKey: ownerId,
+                  })),
+                  age: age === 'age' ? ageData.toString() : age,
+                  publishTime: publishTime && publishTime.format('YYYY-MM-DD HH:mm:00'),
+                },
+                callback: () => {
+                  onClose();
+                  childRef.current.fetchGetData();
                 },
               });
             },
           });
         },
       });
-    });
-  };
-
-  useEffect(() => {
-    fetchGetTasteTag();
-  }, []);
-
-  // 商家id获取参数
-  const getMerchantIdInfo = (merchantId) => {
-    fetchShareGetPlatformBean(merchantId);
-    fetchShareGetAccountBean(merchantId);
-  };
-
-  // 获取商家平台卡豆数
-  const fetchShareGetPlatformBean = (merchantId) => {
-    dispatch({
-      type: 'videoPlatform/fetchShareGetPlatformBean',
-      payload: {
-        merchantId,
-      },
-    });
-  };
-
-  // 获取商家账户卡豆数
-  const fetchShareGetAccountBean = (merchantId) => {
-    dispatch({
-      type: 'videoPlatform/fetchShareGetAccountBean',
-      payload: {
-        merchantId,
-      },
-    });
-  };
-
-  // 获取配置文件
-  const fetchGetPropertyJSON = () => {
-    dispatch({
-      type: 'baseData/fetchGetPropertyJSON',
-    });
-  };
-
-  // 获取兴趣标签
-  const fetchGetTasteTag = () => {
-    dispatch({
-      type: 'baseData/fetchGetTasteTag',
     });
   };
 
@@ -188,15 +118,8 @@ const ShareDrawer = (props) => {
   // 暂存数据
   const saveDataStorage = (val) => setDataStorage({ ...dataStorage, ...val });
 
-  // 额外数据暂存
-  const saveExtraStorage = (name, val) => {
-    let data = val;
-    if (name === 'city') data = [...extraData[name], data];
-    setExtraData({ ...extraData, [name]: data });
-  };
-
   // 公有 props
-  const stepProps = { form, detail: dataStorage, saveDataStorage, getMerchantIdInfo };
+  const stepProps = { form, detail: dataStorage, saveDataStorage };
 
   // 内容设置props
   const conentProps = { couponData, setCouponData };
@@ -208,11 +131,11 @@ const ShareDrawer = (props) => {
     },
     {
       title: '投放设置',
-      content: <SharePutInSet {...stepProps} saveExtraStorage={saveExtraStorage}></SharePutInSet>,
+      content: <SharePutInSet {...stepProps}></SharePutInSet>,
     },
     {
       title: '发布设置',
-      content: <SharePushSet {...stepProps} setAllowPush={setAllowPush}></SharePushSet>,
+      content: <SharePushSet {...stepProps}></SharePushSet>,
     },
   ];
 
@@ -222,16 +145,10 @@ const ShareDrawer = (props) => {
     width: 800,
     maskClosable: current === 0,
     onClose,
-    afterCallBack: () => {
-      fetchGetPropertyJSON();
-    },
     closeCallBack: () => {
-      dispatch({ type: 'videoPlatform/closeBean' });
       setCurrent(0);
-      setAllowPush(true);
       setDataStorage({});
-      setCouponData({ free: {}, contact: {} });
-      setExtraData({ city: [], taste: [] });
+      setCouponData({ free: {}, contact: [] });
     },
     footer: (
       <>
@@ -242,7 +159,7 @@ const ShareDrawer = (props) => {
           </Button>
         )}
         {current === steps.length - 1 && (
-          <Button type="primary" onClick={handleVideoPush} disabled={allowPush} loading={loading}>
+          <Button type="primary" onClick={handleVideoPush} loading={loading}>
             确认发布
           </Button>
         )}
@@ -263,5 +180,5 @@ const ShareDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['videoPlatform/fetchShareVideoPush'],
+  loading: loading.effects['videoPlatform/fetchNewSharePush'],
 }))(ShareDrawer);

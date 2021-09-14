@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { notification } from 'antd';
 import { couponsDom, goodsDom } from './CouponFreeDom';
 import BuyContactModal from './BuyContactModal';
 import FreeCouponModal from './FreeCouponModal';
@@ -45,6 +46,13 @@ const ShareCoupon = (props) => {
         <div
           className="share_Coupon share_add"
           onClick={() => {
+            if (!form.getFieldValue(merchantIdKey)) {
+              notification.info({
+                message: '温馨提示',
+                description: '请选择店铺',
+              });
+              return;
+            }
             if (show === 'free') {
               setVisibleSelect(true);
             } else setVisibleContact(true);

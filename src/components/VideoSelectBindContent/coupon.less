@@ -22,11 +22,11 @@
   }
   .titile {
     width: 100%;
+    padding-right: 40px;
     overflow: hidden;
     font-weight: 600;
     white-space: nowrap;
     text-overflow: ellipsis;
-    padding-right: 40px;
   }
   .share_title {
     flex: 1;
@@ -50,6 +50,9 @@
   justify-content: center;
   font-size: 30px;
   cursor: pointer;
+  & + .share_add {
+    margin-top: 6px;
+  }
 }
 
 .share_select_list {

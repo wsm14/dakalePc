@@ -386,7 +386,7 @@ export default [
           'rewardPeo',
           'shareImg',
           'commerceSet',
-          'portraitEdit',
+          // 'portraitEdit',
         ],
       },
       {
