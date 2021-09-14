@@ -3,12 +3,14 @@ import { connect } from 'umi';
 import { FEEDBACK_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
+import FeedBackSet from './components/FeedBack/FeedBackSet';
 
 const ServiceFeedBack = (props) => {
   const { list, loading, dispatch } = props;
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [visibleSet, setVisibleSet] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -89,10 +91,15 @@ const ServiceFeedBack = (props) => {
     });
   };
 
+  const extraBtn = [
+    { auth: 'config', text: '配置', onClick: () => setVisibleSet({ show: true, info: {} }) },
+  ];
+
   return (
     <>
       <TableDataBlock
         keepData
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
@@ -106,6 +113,11 @@ const ServiceFeedBack = (props) => {
         visible={visible}
         onClose={() => setVisible({ show: false, info: {} })}
       ></FeedBackDetail>
+      <FeedBackSet
+        cRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisible(false)}
+      ></FeedBackSet>
     </>
   );
 };

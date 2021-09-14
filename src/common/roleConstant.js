@@ -19,6 +19,7 @@ export const ROLE_BUTTON_TYPE = {
   copy: '复制',
   check: '审核',
   close: '关闭',
+  config: '配置',
   couponAdd: '优惠券新增',
   cancelTemp: '取消实习',
   checkDetail: '审核记录',

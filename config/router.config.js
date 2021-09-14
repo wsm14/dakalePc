@@ -479,7 +479,7 @@ export default [
         path: '/service/feedback',
         name: '问题反馈',
         component: './Service/ServiceFeedBack',
-        buttons: ['eye', 'replay'],
+        buttons: ['eye', 'replay','config'],
       },
       {
         path: '/service/msg',
