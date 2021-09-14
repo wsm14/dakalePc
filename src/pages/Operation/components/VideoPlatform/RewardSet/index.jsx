@@ -1,14 +1,17 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
 import { NEW_SHAREREWARD_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import RewardCreate from './RewardCreate';
 
 /**
  * 打赏设置
  */
 const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
   const childRef = useRef(); // 表格ref
+  const [visibleCreate, setVisibleCreate] = useState(false); // 创建打赏
+
   const { show = false, detail = {} } = visible;
 
   // table 表头
@@ -93,32 +96,40 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
     {
       auth: true,
       text: '新增打赏规则',
-      onClick: () => setVisibleShare({ type: 'add', show: true }),
+      onClick: () => setVisibleCreate(true),
     },
   ];
 
   return (
-    <Modal
-      title={`${detail.title} - 打赏设置`}
-      destroyOnClose
-      maskClosable
-      width={1100}
-      visible={show}
-      footer={false}
-      onCancel={onClose}
-    >
-      <TableDataBlock
-        btnExtra={extraBtn}
-        noCard={false}
-        cRef={childRef}
-        columns={getColumns}
-        loading={loading}
-        rowKey={(record) => record.momentTippingId}
-        params={{ momentId: detail.momentId }}
-        dispatchType="videoPlatform/fetchNewShareRewardSetList"
-        {...list}
-      ></TableDataBlock>
-    </Modal>
+    <>
+      <Modal
+        title={`${detail.title} - 打赏设置`}
+        destroyOnClose
+        maskClosable
+        width={1100}
+        visible={show}
+        footer={false}
+        onCancel={onClose}
+      >
+        <TableDataBlock
+          noCard={false}
+          cRef={childRef}
+          loading={loading}
+          btnExtra={extraBtn}
+          columns={getColumns}
+          params={{ momentId: detail.momentId }}
+          rowKey={(record) => record.momentTippingId}
+          dispatchType="videoPlatform/fetchNewShareRewardSetList"
+          {...list}
+        ></TableDataBlock>
+      </Modal>
+      {/* 创建打赏 */}
+      <RewardCreate
+        childRef={childRef}
+        visible={visibleCreate}
+        onClose={() => setVisibleCreate(false)}
+      ></RewardCreate>
+    </>
   );
 };
 
