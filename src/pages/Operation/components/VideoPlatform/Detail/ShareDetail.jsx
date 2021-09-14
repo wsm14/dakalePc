@@ -55,11 +55,11 @@ const ShareDetail = (props) => {
     },
     {
       label: '推荐带货',
-      name: 'promotionType',
+      name: 'promotionList',
       render: (val, row) =>
-        ({ reduce: couponsDom(row.contact, '', '', 'valuable'), special: goodsDom(row.contact) }[
-          val
-        ]),
+        val.map((item) =>
+          item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
+        ),
     },
     {
       label: '性别',

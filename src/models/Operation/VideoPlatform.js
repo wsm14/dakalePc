@@ -111,15 +111,20 @@ export default {
       const {
         area,
         areaType,
-        freeOwnerCouponList, // 免费券
-        ownerCouponList, // 有价券
-        activityGoodsList, // 特惠商品
+        freeOwnerCouponList = [], // 免费券
+        ownerCouponList = [], // 有价券
+        activityGoodsList = [], // 特惠商品
         promotionType: pType,
         videoContent,
         ...ohter
       } = content.momentDetail;
       const newObj = {
         ...ohter,
+        promotionList: [
+          ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
+          ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
+          ...activityGoodsList.map((item) => ({ ...item, type: 'special' })),
+        ],
         videoContent: JSON.parse(videoContent || '{}'),
         area:
           areaType !== 'all'
