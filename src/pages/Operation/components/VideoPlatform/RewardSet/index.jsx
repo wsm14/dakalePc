@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
+import { checkCityName } from '@/utils/utils';
 import { NEW_SHAREREWARD_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import RewardCreate from './RewardCreate';
@@ -13,6 +14,8 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
   const [visibleCreate, setVisibleCreate] = useState(false); // 创建打赏
 
   const { show = false, detail = {} } = visible;
+
+  const { districtCode } = detail;
 
   // table 表头
   const getColumns = [
@@ -110,6 +113,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
         visible={show}
         footer={false}
         onCancel={onClose}
+        zIndex={100}
       >
         <TableDataBlock
           noCard={false}
@@ -125,6 +129,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       </Modal>
       {/* 创建打赏 */}
       <RewardCreate
+        cityName={checkCityName(districtCode)}
         childRef={childRef}
         visible={visibleCreate}
         onClose={() => setVisibleCreate(false)}
