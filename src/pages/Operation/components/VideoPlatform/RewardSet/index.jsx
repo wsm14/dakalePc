@@ -24,7 +24,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       dataIndex: 'tippingTimeType',
       render: (val, row) =>
         ({
-          permanent: row.finishTime ? `${row.beginDate} ~ ${row.finishTime}` : '扣完为止',
+          permanent: row.finishTime ? `${row.createTime} ~ ${row.finishTime}` : '扣完为止',
           fixed: `${row?.beginDate} ~ ${row?.endDate || row?.finishTime}`,
         }[val]),
     },
