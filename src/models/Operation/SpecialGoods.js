@@ -13,6 +13,7 @@ import {
   fetchSpecialGoodsRecommend, //推荐
   fetchSpecialGoodsAddRemain, // 增加库存
   fetchEditCurrentStatus, //编辑前校验
+  fetchSetTopRecommendWeight, //资源位权重
 } from '@/services/OperationServices';
 
 export default {
@@ -199,6 +200,15 @@ export default {
       const response = yield call(fetchEditCurrentStatus, payload);
       if (!response) return;
       callback && callback(response.resultCode);
+    },
+    *fetchSetTopRecommendWeight({ payload, callback }, { call }) {
+      const response = yield call(fetchSetTopRecommendWeight, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权重设置成功',
+      });
+      callback();
     },
   },
 };

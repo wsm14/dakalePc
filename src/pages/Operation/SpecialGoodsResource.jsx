@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Tag, Badge } from 'antd';
+import { Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -202,13 +202,7 @@ const SpecialGoodsResource = (props) => {
       dataIndex: 'goodsImg',
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
-          {row.isRecommendTop === '1' ? (
-            <Badge.Ribbon text="置顶">
-              <PopImgShow url={val} />
-            </Badge.Ribbon>
-          ) : (
-            <PopImgShow url={val} />
-          )}
+          <PopImgShow url={val} />
           <div
             style={{
               display: 'flex',
@@ -336,7 +330,15 @@ const SpecialGoodsResource = (props) => {
       dataIndex: 'weight',
       show: !['highCommission', 'todayNew'].includes(tabKey),
       render: (val, row) => (
-        <WeightSet detail={row} recommendId={{ specialGoodsId: row.specialGoodsId }}></WeightSet>
+        <WeightSet
+          detail={row}
+          childRef={tableRef}
+          params={{
+            specialGoodsId: row.specialGoodsId,
+            ownerIdString: row.ownerIdString,
+            recommendType: tabKey,
+          }}
+        ></WeightSet>
       ),
     },
     {

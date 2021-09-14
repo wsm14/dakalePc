@@ -127,6 +127,14 @@ export function fetchResourceDicts(params) {
   });
 }
 
+// 资源位权重
+export function fetchSetTopRecommendWeight(data) {
+  return request('/admin/specialGoodsManagement/setTopRecommendWeight', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 周边特惠 end
 
 //特惠审核
