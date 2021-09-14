@@ -32,12 +32,12 @@ const DetailForm = (props) => {
     {
       label: `收藏数`,
       name: 'collectionAmount',
-      render:(val)=>val?val:'-'
+      render: (val) => (val ? val : '-'),
     },
     {
       label: `分享数`,
       name: 'shareAmount',
-      render:(val)=>val?val:'-'
+      render: (val) => (val ? val : '-'),
     },
     {
       label: '行业分类',
@@ -46,11 +46,11 @@ const DetailForm = (props) => {
     },
     {
       label: '推荐带货',
-      name: 'promotionType',
+      name: 'promotionList',
       render: (val, row) =>
-        ({ reduce: couponsDom(row.contact, '', '', 'valuable'), special: goodsDom(row.contact) }[
-          val
-        ]),
+        val.map((item) =>
+          item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
+        ),
     },
     {
       name: 'gender',
@@ -65,7 +65,7 @@ const DetailForm = (props) => {
     {
       name: 'tags',
       label: '兴趣',
-      render:(val)=>val?val:'-'
+      render: (val) => (val ? val : '-'),
     },
     {
       label: '发布状态',

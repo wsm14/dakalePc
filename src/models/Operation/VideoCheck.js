@@ -41,23 +41,23 @@ export default {
       const { content } = response;
       const { auditDetail = {}, momentInfo = {} } = content;
       const {
-        ownerCouponList, // 有价券信息
-        activityGoodsList, // 商品信息
         area,
         areaType,
+        freeOwnerCouponList = [], // 免费券
+        ownerCouponList = [], // 有价券
+        activityGoodsList = [], // 特惠商品
+        videoContent,
       } = momentInfo;
 
-      const promotionType = activityGoodsList ? 'special' : ownerCouponList ? 'reduce' : '';
       const newDetail = {
         ...auditDetail,
         ...momentInfo,
-        promotionType,
-        contact: promotionType // 有价券 特惠商品
-          ? {
-              promotionType: { reduce: 'coupon', special: 'goods' }[promotionType],
-              ...{ reduce: ownerCouponList, special: activityGoodsList }[promotionType],
-            }
-          : '',
+        promotionList: [
+          ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
+          ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
+          ...activityGoodsList.map((item) => ({ ...item, type: 'special' })),
+        ],
+        videoContent: JSON.parse(videoContent || '{}'),
         area:
           areaType !== 'all'
             ? areaType === 'near'
