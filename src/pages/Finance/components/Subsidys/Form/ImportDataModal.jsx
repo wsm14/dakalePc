@@ -30,7 +30,7 @@ const ImportDataModal = (props) => {
     merchant: {
       excelName: '店铺信息表',
       excelRow: (item) => ({
-        merchantName: item['集团/店铺名'],
+        merchantName: item['店铺名'],
         subsidyBean: item['充值卡豆数'],
       }),
       excelModelUrl:

@@ -56,7 +56,8 @@ export default {
       callback({
         ...configWindVane,
         bubbleFlag: Boolean(Number(bubbleFlag)),
-        categoryId: topCategoryId ? [topCategoryId, categoryId] : [categoryId],
+        categoryId: categoryId ? categoryId.split(',') : [],
+        topCategoryId: topCategoryId ? [topCategoryId] : [],
       });
     },
     *fetchWalkManageVaneEditDel({ payload, callback }, { call }) {

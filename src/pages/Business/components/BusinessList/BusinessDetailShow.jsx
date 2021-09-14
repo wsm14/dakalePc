@@ -32,7 +32,7 @@ const BusinessDetailShow = (props) => {
     index,
     headerContentObject = {},
   } = visible;
-
+console.log(visible,"bkInfo")
   const { headerType = 'image' } = headerContentObject;
 
   useEffect(() => {

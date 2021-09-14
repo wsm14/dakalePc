@@ -240,7 +240,7 @@ const SubsidyRecycleBean = (props) => {
           otherColumns={[
             {
               fixed: 'right',
-              title: '充值卡豆数',
+              title: '回收卡豆数',
               dataIndex: 'bean',
               render: (val, record, index) => (
                 <>
