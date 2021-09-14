@@ -13,7 +13,6 @@ const VaneDrawer = (props) => {
   const { dispatch, cRef, visible, onClose, loading, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
-  console.log(detail, 'detail');
   const { topCategoryId } = detail;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
@@ -52,7 +51,6 @@ const VaneDrawer = (props) => {
         categoryId: categoryId && categoryId.toString(),
         ...windVaneParamObject,
       };
-      console.log(windVaneParam, 'windVaneParam');
       const aImg = checkFileData(image);
       const bImg = checkFileData(bannerImage);
       // 上传图片到oss -> 提交表单
@@ -169,7 +167,6 @@ const VaneDrawer = (props) => {
         children: 'childList',
       },
       onChange: (val, option) => {
-        console.log(val, option, '222');
         const childList = option.option.childList;
         const topCategoryName = option.option.categoryName;
         setCateList(childList);
@@ -214,6 +211,10 @@ const VaneDrawer = (props) => {
       hidden: true,
       rules: [{ required: false }],
       visible: showUrl === 'native',
+      render: (val, row) => {
+        const { windVaneParamObject = {} } = row;
+        return `${windVaneParamObject.topCategoryName} ${val ? '(' + val + ')' : ''}`;
+      },
     },
     {
       label: 'banner图:',
