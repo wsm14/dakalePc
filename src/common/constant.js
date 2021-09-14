@@ -573,3 +573,16 @@ export const NEW_SHAREREWARD_STATUS = ['失效', '生效', '待生效'];
 
 // 平台视频 - 时间设置类型
 export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时间' };
+
+// 视频审核店铺/视频类型
+export const VIDEO_TYPE = {
+  use: '用户',
+  merchant: '店铺',
+  group: '集团',
+};
+
+// 视频审核类型
+export const VIDEO_ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+};
