@@ -135,7 +135,7 @@ export function fetchWithdrawExpertList(params) {
 
 // get 提现明细 - 哒人合计
 export function fetchWithdrawExpertTotal(params) {
-  return request('/admin/merchantBeanManagement/listMerchantBeanWithdrawalManagementTotal', {
+  return request('/admin/userBeanWithdrawal/listUserBeanWithdrawalManagementTotal', {
     params,
   });
 }

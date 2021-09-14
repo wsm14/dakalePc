@@ -136,6 +136,8 @@ export const ROLE_BUTTON_TYPE = {
   userStatus: '用户状态',
 
   withdraw: '提现记录',
+  withdrawMerchant: '单店提现',
+  withdrawExpert: '哒人提现',
 };
 
 // 数据权限选项
