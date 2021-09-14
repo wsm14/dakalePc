@@ -6,13 +6,13 @@ import ExpertUserList from './components/Withdraw/ExpertUserList';
 
 const tabList = [
   {
-    key: 'task',
-    auth: 'task',
+    key: 'withdrawMerchant',
+    auth: 'withdrawMerchant',
     tab: '单店提现',
   },
   {
-    key: 'direct',
-    auth: 'direct',
+    key: 'withdrawExpert',
+    auth: 'withdrawExpert',
     tab: '哒人提现',
   },
 ];
@@ -28,8 +28,8 @@ const WithdrawDetail = () => {
   }, []);
 
   const contentList = {
-    task: <MerchantList></MerchantList>, // 单店提现
-    direct: <ExpertUserList></ExpertUserList>, // 哒人提现
+    withdrawMerchant: <MerchantList></MerchantList>, // 单店提现
+    withdrawExpert: <ExpertUserList></ExpertUserList>, // 哒人提现
   };
 
   return (

@@ -24,7 +24,7 @@ const ExpertUserList = (props) => {
   ]); // 显示当前数据的时间标记
 
   useEffect(() => {
-    fetchWithdrawTotal();
+    fetchWithdrawExpertTotal();
   }, []);
 
   // 搜索参数
@@ -140,7 +140,7 @@ const ExpertUserList = (props) => {
   ];
 
   // 统计数据
-  const fetchWithdrawTotal = (payload = {}) => {
+  const fetchWithdrawExpertTotal = (payload = {}) => {
     const {
       withdrawalDateEnd = moment().format('YYYY-MM-DD'),
       withdrawalDateStart = moment().subtract(1, 'month').format('YYYY-MM-DD'),
@@ -175,7 +175,7 @@ const ExpertUserList = (props) => {
         }
         cRef={childRef}
         noCard={false}
-        searchCallback={fetchWithdrawTotal}
+        searchCallback={fetchWithdrawExpertTotal}
         loading={loading.effects['withdrawDetail/fetchWithdrawExpertList']}
         columns={getColumns}
         searchItems={searchItems}

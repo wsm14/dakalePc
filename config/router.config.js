@@ -289,7 +289,7 @@ export default [
         path: '/finance/withdraw',
         name: '提现明细',
         component: './Finance/WithdrawDetail',
-        buttons: ['edit', 'exportList'],
+        buttons: ['edit', 'exportList', 'withdrawMerchant', 'withdrawExpert'],
       },
       {
         path: '/finance/income',
