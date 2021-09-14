@@ -17,7 +17,7 @@ import FormCondition from '@/components/FormCondition';
  * 投放设置
  */
 const SharePutInSet = (props) => {
-  const { form, propertyJSON = {}, tasteTag, detail = {} } = props;
+  const { form, dispatch, propertyJSON = {}, tasteTag, detail = {} } = props;
   // 默认选择项
   const inputData = { gender: 'ALL', areaType: 'all', taste: 'all', age: '0-100' };
 
@@ -29,10 +29,26 @@ const SharePutInSet = (props) => {
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
 
   useEffect(() => {
+    fetchGetPropertyJSON();
+    fetchGetTasteTag();
     setAreaType(detail.areaType);
     setAgeType(detail.age);
     setTastetype(detail.taste);
   }, []);
+
+  // 获取配置文件
+  const fetchGetPropertyJSON = () => {
+    dispatch({
+      type: 'baseData/fetchGetPropertyJSON',
+    });
+  };
+
+  // 获取兴趣标签
+  const fetchGetTasteTag = () => {
+    dispatch({
+      type: 'baseData/fetchGetTasteTag',
+    });
+  };
 
   const onSearchAddress = () => {
     form.validateFields(['beanAddress']).then(({ beanAddress }) => {

@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import {
-  NEW_SHARE_OWNER,
-  NEW_SHARETIME_TYPE,
-  NEW_SHARE_STATUS,
-  SHARE_SEX_TYPE,
-} from '@/common/constant';
+import { Form, Button } from 'antd';
+import { NEW_SHARE_OWNER, NEW_SHARE_STATUS, SHARE_SEX_TYPE } from '@/common/constant';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import GoodsSet from './GoodsSet';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const ShareDetail = (props) => {
-  const { visible, total, getDetail, onClose, loadingDetail } = props;
+  const {
+    visible,
+    total,
+    getDetail,
+    onClose,
+    fetchNewShareNoAudit,
+    loading,
+    loadingDetail,
+  } = props;
 
-  const { index, show = false, detail = {} } = visible;
+  const { index, show = false, type = 'info', detail = {} } = visible;
+  const { ownerId, momentId } = detail;
+
+  const [form] = Form.useForm();
+  const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
+
+  useEffect(() => {
+    if (type !== 'info') {
+      form.setFieldsValue({ ownerId });
+      setCouponData({ free: detail.free, contact: detail.contact });
+    }
+  }, [type]);
 
   // 信息
   const formItems = [
@@ -105,25 +121,74 @@ const ShareDetail = (props) => {
     },
   ];
 
+  const handleUpdataSava = () => {
+    form.validateFields().then(() => {
+      const { free, contact } = couponData;
+      fetchNewShareNoAudit(
+        {
+          ownerId,
+          momentId,
+          freeOwnerCouponList: free.couponName
+            ? [
+                {
+                  ownerCouponId: free.ownerCouponIdString || free.ownerCouponId,
+                  ownerId,
+                },
+              ]
+            : [],
+          activityGoodsList: contact
+            .filter((i) => i.goodsName)
+            .map((i) => ({ activityGoodsId: i.specialGoodsId || i.activityGoodsId, ownerId })),
+          ownerCouponList: contact
+            .filter((i) => i.couponName)
+            .map((i) => ({ ownerCouponId: i.ownerCouponIdString || i.ownerCouponId, ownerId })),
+        },
+        onClose,
+      );
+    });
+  };
+
   const modalProps = {
     title: '视频详情',
     visible: show,
     onClose,
     loading: loadingDetail,
-    dataPage: {
+    dataPage: type == 'info' && {
       current: index,
       total,
       onChange: (size) => getDetail(size, 'video'),
     },
+    footer: (
+      <>
+        {type !== 'info' && (
+          <Button type="primary" onClick={handleUpdataSava} loading={loading}>
+            保存
+          </Button>
+        )}
+      </>
+    ),
   };
 
   return (
     <DrawerCondition {...modalProps}>
-      <DescriptionsCondition formItems={formItems} initialValues={detail}></DescriptionsCondition>
+      {
+        {
+          info: (
+            <DescriptionsCondition
+              formItems={formItems}
+              initialValues={detail}
+            ></DescriptionsCondition>
+          ),
+          commerce: (
+            <GoodsSet form={form} couponData={couponData} setCouponData={setCouponData}></GoodsSet>
+          ),
+        }[type]
+      }
     </DrawerCondition>
   );
 };
 
 export default connect(({ loading }) => ({
   loadingDetail: loading.effects['videoPlatform/fetchShareDetail'],
+  loading: loading.effects['videoPlatform/fetchNewShareNoAudit'],
 }))(ShareDetail);

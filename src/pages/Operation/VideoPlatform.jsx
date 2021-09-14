@@ -207,7 +207,7 @@ const VideoPlatform = (props) => {
           {
             type: 'edit', // 编辑
             visible: status != 0 && typeUser,
-            click: () => fetchShareHandleDetail(val),
+            click: () => fetchShareDetail(index, 'edit'),
           },
           {
             type: 'rewardPeo', // 打赏设置
@@ -221,13 +221,13 @@ const VideoPlatform = (props) => {
           {
             type: 'commerceSet', // 带货设置
             visible: status != 0 && typeUser,
-            click: () => fetchShareHandleDetail(val),
+            click: () => fetchShareDetail(index, 'commerce'),
           },
-          {
-            type: 'portraitEdit', // 编辑画像
-            visible: status != 0 && typeUser,
-            click: () => fetchShareHandleDetail(val),
-          },
+          // {
+          //   type: 'portraitEdit', // 编辑画像
+          //   visible: status != 0 && typeUser,
+          //   click: () => fetchShareDetail(index, 'portrait'),
+          // },
         ];
       },
     },
@@ -278,6 +278,7 @@ const VideoPlatform = (props) => {
       payload: {
         momentId,
         ownerId,
+        type,
       },
       callback: (detail) => setVisible({ show: true, index, type, detail }),
     });
@@ -327,7 +328,8 @@ const VideoPlatform = (props) => {
         visible={visible}
         getDetail={fetchShareDetail}
         onClose={() => setVisible(false)}
-      ></ShareDetail>
+        fetchNewShareNoAudit={fetchNewShareNoAudit}
+        ></ShareDetail>
       {/* 下架 */}
       <RefuseModal
         visible={visibleRefuse}
@@ -354,6 +356,5 @@ export default connect(({ sysTradeList, videoPlatform, loading }) => ({
   loadingRefuse: loading.effects['videoPlatform/fetchNewShareClose'],
   loading:
     loading.effects['videoPlatform/fetchGetList'] ||
-    loading.effects['videoPlatform/fetchShareDetail'] ||
-    loading.effects['baseData/fetchHandleDetail'],
+    loading.effects['videoPlatform/fetchNewShareDetail'],
 }))(VideoPlatform);

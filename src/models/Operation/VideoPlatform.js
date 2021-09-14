@@ -115,7 +115,8 @@ export default {
       callback();
     },
     *fetchNewShareDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchNewShareDetail, payload);
+      const { type = 'info', ...cell } = payload;
+      const response = yield call(fetchNewShareDetail, cell);
       if (!response) return;
       const { content } = response;
       const {
@@ -126,10 +127,21 @@ export default {
         activityGoodsList = [], // 特惠商品
         promotionType: pType,
         videoContent,
+        age,
         ...ohter
       } = content.momentDetail;
+      const editData =
+        type !== 'info'
+          ? {
+              age: age !== '0-100' ? 'age' : age,
+              ageData: age !== '0-100' ? age.split(',') : [],
+              free: freeOwnerCouponList[0] || {},
+              contact: [...activityGoodsList, ...ownerCouponList],
+            }
+          : {};
       const newObj = {
         ...ohter,
+        ...editData,
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),

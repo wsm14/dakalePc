@@ -101,20 +101,6 @@ const ShareDrawer = (props) => {
     });
   };
 
-  // 获取配置文件
-  const fetchGetPropertyJSON = () => {
-    dispatch({
-      type: 'baseData/fetchGetPropertyJSON',
-    });
-  };
-
-  // 获取兴趣标签
-  const fetchGetTasteTag = () => {
-    dispatch({
-      type: 'baseData/fetchGetTasteTag',
-    });
-  };
-
   // 下一步
   const handleNextStep = (buttonType) => {
     if (buttonType === 'next') {
@@ -159,10 +145,6 @@ const ShareDrawer = (props) => {
     width: 800,
     maskClosable: current === 0,
     onClose,
-    afterCallBack: () => {
-      fetchGetPropertyJSON();
-      fetchGetTasteTag();
-    },
     closeCallBack: () => {
       setCurrent(0);
       setDataStorage({});
