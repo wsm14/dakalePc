@@ -24,7 +24,7 @@ const RewardCreate = (props) => {
   } = props;
 
   // 默认选择项
-  const inputData = { areaType: 'all', taste: 'all', gender: 'ALL', age: '0-100' };
+  const inputData = { scope: 'all', areaType: 'all', taste: 'all', gender: 'ALL', age: '0-100' };
 
   const [form] = Form.useForm();
 
