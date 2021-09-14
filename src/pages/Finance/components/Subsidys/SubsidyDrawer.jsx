@@ -82,7 +82,7 @@ const SubsidyDrawer = (props) => {
     },
     batch: {
       title: '卡豆回收',
-      children: <SubsidyRecycleBean form={form} detail={detail}></SubsidyRecycleBean>,
+      children: <SubsidyRecycleBean form={form} detail={detail} tab={tab}></SubsidyRecycleBean>,
       footer: (
         <Button onClick={handleUpAddTask} type="primary" loading={loading}>
           提交
