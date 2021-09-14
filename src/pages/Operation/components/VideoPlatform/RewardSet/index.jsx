@@ -84,12 +84,12 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
 
   // 取消打赏
   const fetchNewShareRewardCancel = (row) => {
-    const { momentId, ownerId } = row;
+    const { momentId, momentTippingId } = row;
     dispatch({
       type: 'videoPlatform/fetchNewShareRewardCancel',
       payload: {
         momentId,
-        ownerId,
+        momentTippingId,
       },
       callback: childRef.current.fetchGetData,
     });
