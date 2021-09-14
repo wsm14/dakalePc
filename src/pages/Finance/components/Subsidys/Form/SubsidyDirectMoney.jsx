@@ -83,7 +83,6 @@ const SubsidyDirectMoney = (props) => {
       label: '补贴角色',
       name: 'role',
       type: 'select',
-      select: SUBSIDY_ACTION_ROLES,
       select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_ACTION_ROLE,
       onChange: (val) => {
         form.setFieldsValue({ subsidyBeanObjects: undefined });
