@@ -48,7 +48,7 @@ export default {
         activityGoodsList = [], // 特惠商品
         videoContent,
       } = momentInfo;
-      
+
       const newDetail = {
         ...auditDetail,
         ...momentInfo,

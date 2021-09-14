@@ -8,7 +8,8 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) =
     couponName,
     remain,
     buyPrice, // 售卖价格
-    ownerCouponIdString = 1,
+    ownerCouponIdString = '',
+    ownerCouponId,
     activeDateStr, //  使用有效期-固定时间-开始时间
     activeDate,
     endDateStr, //  使用有效期-固定时间-结束时间
@@ -18,7 +19,7 @@ export const couponsDom = (item = {}, id, setSelectItem, type = 'free', onDel) =
   } = item;
   const { couponPrice, thresholdPrice = '' } = reduceObject;
   return (
-    <div style={{ width: 350 }} key={ownerCouponIdString}>
+    <div style={{ width: 350 }} key={ownerCouponId || ownerCouponIdString}>
       <Badge.Ribbon text={{ free: '免费券', valuable: '抵扣券' }[type]}>
         <div
           className={`share_Coupon share_item ${id === ownerCouponIdString && 'select'}`}
@@ -70,6 +71,7 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     goodsName = '',
     remain,
     specialGoodsId,
+    activityGoodsId,
     realPrice,
     oriPrice,
     goodsType = 'single',
@@ -78,7 +80,7 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     activityEndTime,
   } = item;
   return (
-    <div style={{ width: 350 }} key={specialGoodsId}>
+    <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[goodsType]}>
         <div
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
