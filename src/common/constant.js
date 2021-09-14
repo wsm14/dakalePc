@@ -566,7 +566,7 @@ export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
 export const NEW_SHARE_STATUS = ['下架', '上架', '待上架'];
 
 // 平台视频 - 归属人
-export const NEW_SHARE_OWNER = { user: '用户', merchant: '商家', group: '集团' };
+export const NEW_SHARE_OWNER = { user: '哒人', merchant: '商家', group: '集团' };
 
 // 平台视频 - 打赏状态 0-失效 1-生效 2-待生效
 export const NEW_SHAREREWARD_STATUS = ['失效', '生效', '待生效'];

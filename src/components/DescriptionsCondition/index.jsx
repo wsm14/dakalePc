@@ -51,7 +51,7 @@ const DescriptionsCondition = (props) => {
       videoUpload: <VideoPreview url={value}></VideoPreview>,
     }[type];
     // 类型错误返回
-    if (!domShow) return 'type error';
+    if (domShow === undefined) return 'type error';
     return domShow;
   };
 

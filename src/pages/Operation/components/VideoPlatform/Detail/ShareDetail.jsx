@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'umi';
-import { BUSINESS_TYPE, SHARE_TIME_TYPE, SHARE_STATUS, SHARE_SEX_TYPE } from '@/common/constant';
+import {
+  NEW_SHARE_OWNER,
+  NEW_SHARETIME_TYPE,
+  NEW_SHARE_STATUS,
+  SHARE_SEX_TYPE,
+} from '@/common/constant';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -13,13 +18,13 @@ const ShareDetail = (props) => {
   // 信息
   const formItems = [
     {
-      label: '店铺类型',
-      name: 'userType',
-      render: (val) => BUSINESS_TYPE[val],
+      label: '视频类型',
+      name: 'ownerType',
+      render: (val) => NEW_SHARE_OWNER[val],
     },
     {
-      label: '店铺名称',
-      name: 'merchantName',
+      label: `${NEW_SHARE_OWNER[detail.ownerType]}名称`,
+      name: 'ownerName',
     },
     {
       label: `视频`,
@@ -45,12 +50,8 @@ const ShareDetail = (props) => {
     {
       label: '行业分类',
       name: 'topCategoryName',
+      show: detail.ownerType !== 'user',
       render: (val, row) => `${val}/${row.categoryName}`,
-    },
-    {
-      label: '免费券',
-      name: 'free',
-      render: (val) => val !== '' && couponsDom(val),
     },
     {
       label: '推荐带货',
@@ -63,49 +64,37 @@ const ShareDetail = (props) => {
     {
       label: '性别',
       name: 'gender',
+      show: detail.ownerType !== 'user',
       render: (val) => SHARE_SEX_TYPE[val],
     },
     {
       label: '年龄',
       name: 'age',
+      show: detail.ownerType !== 'user',
       render: (val) => (val === '0-100' ? '不限' : val),
-    },
-    {
-      label: '地域',
-      name: 'area',
     },
     {
       label: '兴趣',
       name: 'tags',
+      show: detail.ownerType !== 'user',
     },
     {
       label: '发布状态',
       name: 'status',
-      render: (val) => SHARE_STATUS[val],
-    },
-    {
-      label: '卡豆打赏',
-      name: 'aaa',
-      children: (
-        <div>
-          <div>目标曝光量：{detail.beanPersonAmount || 0}</div>
-          <div>
-            单次曝光打赏：{Math.round(detail.beanAmount + (detail.exposureBeanAmount || 0))}
-          </div>
-          <div>投放时长：{SHARE_TIME_TYPE[detail.rewardCycle]}</div>
-          {detail.rewardCycle !== '0' && (
-            <div>投放时间：{`${detail.rewardStartTime} ~ ${detail.rewardEndTime}`}</div>
-          )}
-        </div>
-      ),
+      render: (val) => NEW_SHARE_STATUS[val],
+      show: detail.ownerType !== 'user',
     },
     // {
-    //   label: '平台补贴打赏奖励',
-    //   name: 'bbb',
-    //   children: (
+    //   label: '卡豆打赏',
+    //   name: 'aaa',
+    //   render: () => (
     //     <div>
-    //       <div>预计补贴人数：{detail.beanPersonAmount || 0}</div>
-    //       <div>单用户补贴卡豆数：{detail.exposureBeanAmount || 0}</div>
+    //       <div>目标曝光量：{detail.tippingCount || 0}</div>
+    //       <div>单次曝光打赏：{Math.round(detail.tippingBean || 0)}</div>
+    //       <div>投放时长：{NEW_SHARETIME_TYPE[detail.tippingTimeType]}</div>
+    //       {detail.tippingTimeType !== '0' && (
+    //         <div>投放时间：{`${detail.beginDate} ~ ${detail.endDate}`}</div>
+    //       )}
     //     </div>
     //   ),
     // },
