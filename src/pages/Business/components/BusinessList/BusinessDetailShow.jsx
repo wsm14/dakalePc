@@ -24,6 +24,7 @@ const BusinessDetailShow = (props) => {
     businessLicenseObject: blobj = {},
     bankBindingInfo: bkInfo = {},
     userMerchantIdString: merchantId,
+    settlementFlag,
     businessStatus,
     status,
     mobile,
@@ -32,7 +33,7 @@ const BusinessDetailShow = (props) => {
     index,
     headerContentObject = {},
   } = visible;
-console.log(visible,"bkInfo")
+
   const { headerType = 'image' } = headerContentObject;
 
   useEffect(() => {
@@ -269,7 +270,7 @@ console.log(visible,"bkInfo")
     {
       label: '结算类型',
       name: 'settlementFlag',
-      render: (val) => (val === '1' ? '独立结算' : '统一结算'),
+      render: () => (settlementFlag == '1' ? '独立结算' : '统一结算'),
       show: visible.type === '子门店',
     },
     {
