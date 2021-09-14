@@ -144,7 +144,7 @@ export default {
         type !== 'info'
           ? {
               videoUrl: JSON.parse(videoContent || '{}').url,
-              categoryNode: [ohter.topCategoryId, ohter.categoryId],
+              categoryNode: [ohter.topCategoryIdString, ohter.categoryIdString],
               free: freeOwnerCouponList[0] || {},
               contact: [...activityGoodsList, ...ownerCouponList],
             }
