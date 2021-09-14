@@ -377,7 +377,17 @@ export default [
         path: '/operation/videoplatform',
         name: '平台视频',
         component: './Operation/VideoPlatform',
-        buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
+        buttons: [
+          'save',
+          'del',
+          'edit',
+          'down',
+          'info',
+          'rewardPeo',
+          'shareImg',
+          'commerceSet',
+          'portraitEdit',
+        ],
       },
       {
         path: '/operation/videoCheck',
