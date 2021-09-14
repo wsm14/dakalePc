@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
-import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE,RED_ENVELOP_STATUS } from '@/common/constant';
+import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE, RED_ENVELOP_STATUS } from '@/common/constant';
 import { notification } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
@@ -172,7 +172,7 @@ const BeanRedEnvelopes = (props) => {
     {
       title: '领取情况',
       dataIndex: 'status',
-      render: (val, row) =>RED_ENVELOP_STATUS[val]
+      render: (val, row) => RED_ENVELOP_STATUS[val],
     },
     {
       title: '发放时间',
@@ -182,6 +182,19 @@ const BeanRedEnvelopes = (props) => {
       title: '领取时间',
       dataIndex: 'acquireTime',
       show: tabKey === '1',
+    },
+    {
+      title: '领取人ID',
+      dataIndex: 'userIdString',
+      show: tabKey === '1',
+      render: (val, row) => {
+        const { receiveUserList = [] } = row;
+        const ids = receiveUserList.length
+          ? receiveUserList.map((items) => items.userIdString)
+          : [];
+        return ids.toString();
+        // return receiveUserList.length ? receiveUserList[0].userIdString : '-';
+      },
     },
     {
       title: '操作',
