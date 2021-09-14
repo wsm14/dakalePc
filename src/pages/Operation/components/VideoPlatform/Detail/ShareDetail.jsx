@@ -3,12 +3,15 @@ import { connect } from 'umi';
 import { Form, Button } from 'antd';
 import { NEW_SHARE_OWNER, NEW_SHARE_STATUS, SHARE_SEX_TYPE } from '@/common/constant';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import uploadLive from '@/utils/uploadLive';
 import GoodsSet from './GoodsSet';
+import GoodsEdit from './GoodsEdit';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const ShareDetail = (props) => {
   const {
+    dispatch,
     visible,
     total,
     getDetail,
@@ -121,8 +124,42 @@ const ShareDetail = (props) => {
     },
   ];
 
+  // 修改审核提交
+  const fetchEditData = (values) => {
+    const { frontImage, videoUrl, categoryNode, title, videoId, ...other } = values;
+    uploadLive({
+      data: frontImage, // 上传封面
+      callback: (imgs) => {
+        uploadLive({
+          data: videoId ? videoId : videoUrl, // 上传视频
+          title,
+          callback: (videos) => {
+            dispatch({
+              type: 'videoPlatform/fetchNewShareAuditEdit',
+              payload: {
+                ...other,
+                momentId,
+                title,
+                ownerId,
+                frontImageWidth: 544, // 封面宽
+                frontImageHeight: 960, // 封面长
+                frontImage: imgs, // 封面连接
+                videoId: videos,
+              },
+              callback: onClose,
+            });
+          },
+        });
+      },
+    });
+  };
+
   const handleUpdataSava = () => {
-    form.validateFields().then(() => {
+    form.validateFields().then((values) => {
+      if (type === 'edit') {
+        fetchEditData(values);
+        return;
+      }
       const { free, contact } = couponData;
       fetchNewShareNoAudit(
         {
@@ -173,15 +210,19 @@ const ShareDetail = (props) => {
     <DrawerCondition {...modalProps}>
       {
         {
+          // 详情
           info: (
             <DescriptionsCondition
               formItems={formItems}
               initialValues={detail}
             ></DescriptionsCondition>
           ),
+          // 带货修改
           commerce: (
             <GoodsSet form={form} couponData={couponData} setCouponData={setCouponData}></GoodsSet>
           ),
+          // 修改
+          edit: <GoodsEdit form={form} detail={detail}></GoodsEdit>,
         }[type]
       }
     </DrawerCondition>
@@ -190,5 +231,7 @@ const ShareDetail = (props) => {
 
 export default connect(({ loading }) => ({
   loadingDetail: loading.effects['videoPlatform/fetchShareDetail'],
-  loading: loading.effects['videoPlatform/fetchNewShareNoAudit'],
+  loading:
+    loading.effects['videoPlatform/fetchNewShareNoAudit'] ||
+    loading.effects['videoPlatform/fetchNewShareAuditEdit'],
 }))(ShareDetail);

@@ -280,6 +280,14 @@ export function fetchNewShareRewardSet(params) {
   });
 }
 
+// post 平台视频 - 修改视频（审核）
+export function fetchNewShareAuditEdit(data) {
+  return request('/admin/marketing/moment/new/updateMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 平台视频 - 修改视频（不审核）
 export function fetchNewShareNoAudit(data) {
   return request('/admin/marketing/moment/new/updateMomentDirect', {

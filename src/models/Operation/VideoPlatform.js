@@ -8,6 +8,7 @@ import {
   fetchNewSharePush,
   fetchNewShareClose,
   fetchNewShareDetail,
+  fetchNewShareAuditEdit,
   fetchNewShareRewardSet,
   fetchNewShareRewardSave,
   fetchNewShareRewardCancel,
@@ -66,6 +67,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '分享发布成功',
+      });
+      callback();
+    },
+    *fetchNewShareAuditEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchNewShareAuditEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `提交修改审核成功`,
       });
       callback();
     },
@@ -133,8 +143,8 @@ export default {
       const editData =
         type !== 'info'
           ? {
-              age: age !== '0-100' ? 'age' : age,
-              ageData: age !== '0-100' ? age.split(',') : [],
+              videoUrl: JSON.parse(videoContent || '{}').url,
+              categoryNode: [ohter.topCategoryId, ohter.categoryId],
               free: freeOwnerCouponList[0] || {},
               contact: [...activityGoodsList, ...ownerCouponList],
             }
