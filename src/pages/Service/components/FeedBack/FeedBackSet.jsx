@@ -26,25 +26,25 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
 
   const showInput = () => {
     setInputVisible(true);
-    console.log(saveInputRef, 'saveInputRef');
-    saveInputRef.current?.focus();
-    // this.setState({ inputVisible: true }, () => this.input.focus());
+    setTimeout(() => {
+      saveInputRef.current?.focus();
+    }, 100);
   };
 
   const handleInputChange = (e) => {
-    console.log(e, 'handleInputChange');
     setInputValue(e.target.value);
   };
 
   const handleInputConfirm = () => {
     console.log(inputValue, tags, 'handleInputConfirm');
-    let newTag = [];
+    let newTag = [...tags];
     if (inputValue && tags.indexOf(inputValue) === -1) {
       newTag = [...tags, inputValue];
     }
     setTags(newTag);
     setInputValue('');
     setInputVisible(false);
+    form.setFieldsValue({ tag: newTag });
   };
 
   const handleEditInputChange = (e) => {
@@ -55,6 +55,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
     setTags(newTags);
+    form.setFieldsValue({ tag: newTags });
     setEditInputIndex('-1');
     setEditInputValue('');
   };
@@ -68,7 +69,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     {
       label: '反馈标签',
       type: 'formItem',
-      name:'tags',
+      name: 'tag',
       rules: [{ required: true }],
       formItem: (
         <>
@@ -92,15 +93,12 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
               <Tag className="edit-tag" key={tag} closable onClose={() => handleClose(tag)}>
                 <span
                   onDoubleClick={(e) => {
-                   
                     setEditInputIndex(index);
                     setEditInputValue(tag);
-                    saveEditInputRef.current?.focus();
-                    // this.setState({ editInputIndex: index, editInputValue: tag }, () => {
-                    //   this.editInput.focus();
-                    // });
+                    setTimeout(() => {
+                      saveEditInputRef.current?.focus();
+                    }, 100);
                     e.preventDefault();
-               
                   }}
                 >
                   {isLongTag ? `${tag.slice(0, 20)}...` : tag}

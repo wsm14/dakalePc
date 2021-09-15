@@ -98,12 +98,6 @@ const VideoCheck = (props) => {
       type: 'select',
       select: VIDEO_ACTION_TYPE,
     },
-    {
-      label: '审核时间',
-      type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
-    },
   ];
 
   //tab自组件Table公用的colum数据部分
