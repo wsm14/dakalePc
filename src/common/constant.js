@@ -502,17 +502,8 @@ export const SUBMIT_TYPE = {
   group: '集团',
   partner: '区县',
 };
-//视频 审核类型
-export const SUBMIT_TYPE_VIDEO = {
-  merchant: '商家',
-  admin: '运营后台',
-  sell: 'CRM',
-  group: '集团',
-  partner: '区县',
-  user: '哒人',
-};
 
-//视频 审核类型
+// 视频 审核类型
 export const SUBMIT_TYPE_VIDEO = {
   merchant: '商家',
   admin: '运营后台',
