@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
@@ -95,8 +96,8 @@ const SubsidyDetail = (props) => {
     {
       title: '注册地',
       align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: ' 补贴/回收卡豆数',

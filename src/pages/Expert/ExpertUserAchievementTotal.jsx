@@ -91,7 +91,7 @@ const ExpertUserAchievement = (props) => {
       title: '注册地',
       align: 'center',
       dataIndex: 'districtCode',
-      render: (val) => checkCityName(val),
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '新增家人数',
