@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
+import { FEEDBACK_TYPE } from '@/common/constant';
 import { Button, Form, Tag, Input, Tooltip } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import FormCondition from '@/components/FormCondition';
@@ -14,6 +15,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
   const [inputValue, setInputValue] = useState('');
   const [editInputIndex, setEditInputIndex] = useState('-1');
   const [editInputValue, setEditInputValue] = useState('');
+  const [dictionaryId, setDictionaryId] = useState('');
 
   const saveEditInputRef = useRef();
   const saveInputRef = useRef();
@@ -44,7 +46,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     setTags(newTag);
     setInputValue('');
     setInputVisible(false);
-    form.setFieldsValue({ tag: newTag });
+    form.setFieldsValue({ extraParam: newTag });
   };
 
   const handleEditInputChange = (e) => {
@@ -55,21 +57,39 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
     setTags(newTags);
-    form.setFieldsValue({ tag: newTags });
+    form.setFieldsValue({ extraParam: newTags });
     setEditInputIndex('-1');
     setEditInputValue('');
+  };
+
+  const handleTagChange = (child) => {
+    dispatch({
+      type: 'serviceFeedBack/fetchGetDictionaryAdmin',
+      payload: {
+        parent: 'feedback',
+        child,
+      },
+      callback: (info) => {
+        const extraParam = info.extraParam;
+        setTags(extraParam);
+        setDictionaryId(info.dictionaryId);
+        form.setFieldsValue({ extraParam });
+      },
+    });
   };
 
   const formItems = [
     {
       type: 'select',
-      label: '反馈内容',
-      name: 'content',
+      label: '反馈类型',
+      name: 'child',
+      select: FEEDBACK_TYPE,
+      onChange: (val) => handleTagChange(val),
     },
     {
       label: '反馈标签',
       type: 'formItem',
-      name: 'tag',
+      name: 'extraParam',
       rules: [{ required: true }],
       formItem: (
         <>
@@ -137,10 +157,13 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
 
   const handleFinish = () => {
     form.validateFields().then((values) => {
+      const { child, extraParam } = values;
       dispatch({
-        type: 'serviceFeedBack/',
+        type: 'serviceFeedBack/fetchSetFeedbackTags',
         payload: {
           ...values,
+          dictionaryId,
+          extraParam: extraParam.toString(),
         },
         callback: () => {
           onClose();
@@ -154,6 +177,10 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     title: '类型配置',
     visible: show,
     onClose,
+    destroyOnClose: true,
+    afterCallBack:()=>{
+      setTags([])
+    },
     footer: (
       <Button onClick={handleFinish} type="primary" loading={loading}>
         确认

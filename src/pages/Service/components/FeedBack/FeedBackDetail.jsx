@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import FormCondition from '@/components/FormCondition';
+import { FEEDBACK_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
@@ -21,6 +22,15 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     {
       label: '提交时间',
       name: 'createTime',
+    },
+    {
+      label: '反馈类型',
+      name: 'feedbackType',
+      render: (val) => FEEDBACK_TYPE[val],
+    },
+    {
+      label: '反馈标签',
+      name: 'tags',
     },
     {
       label: '问题描述',
