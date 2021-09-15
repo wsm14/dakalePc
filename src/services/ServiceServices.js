@@ -24,6 +24,20 @@ export function fetchFeedBackPush(data) {
   });
 }
 
+// 问题反馈 设置-读取
+export async function fetchGetDictionaryAdmin(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+//运营后台-客服中心-配置功能反馈标签
+export function fetchSetFeedbackTags(data) {
+  return request('/admin/marketCustomer/setFeedbackTags', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 问题反馈 end
 
 // 新闻动态

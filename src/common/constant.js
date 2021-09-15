@@ -619,3 +619,9 @@ export const VIDEO_ACTION_TYPE = {
   create: '创建审核',
   update: '修改审核',
 };
+
+// 反馈问题类型 advice-功能反馈 problem-商家问题
+export const FEEDBACK_TYPE ={
+  advice:'功能反馈',
+  problem:'商家问题'
+}

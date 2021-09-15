@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { FEEDBACK_STATUS } from '@/common/constant';
+import { FEEDBACK_STATUS, FEEDBACK_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import FeedBackDetail from './components/FeedBack/FeedBackDetail';
 import FeedBackSet from './components/FeedBack/FeedBackSet';
@@ -19,6 +19,12 @@ const ServiceFeedBack = (props) => {
       name: 'username',
     },
     {
+      label: '反馈类型',
+      name: 'feedbackType',
+      type: 'select',
+      select: FEEDBACK_TYPE,
+    },
+    {
       label: '问题状态',
       name: 'status',
       type: 'select',
@@ -35,6 +41,11 @@ const ServiceFeedBack = (props) => {
     {
       title: '身份',
       dataIndex: 'identity',
+    },
+    {
+      title: '反馈类型',
+      dataIndex: 'feedbackType',
+      render: (val) => FEEDBACK_TYPE[val],
     },
     {
       title: '问题描述',
