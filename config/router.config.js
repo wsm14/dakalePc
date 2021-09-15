@@ -305,6 +305,12 @@ export default [
         buttons: ['set', 'edit'],
       },
       {
+        path: '/market/advertisement',
+        name: '广告投放管理',
+        component: './Market/Advertisement',
+        buttons: ['set', 'edit'],
+      },
+      {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
         component: './Market/MarketCardPeasPark',
@@ -350,7 +356,7 @@ export default [
       },
       {
         path: '/market/appset',
-        name: '广告管理',
+        name: 'Banner管理',
         component: './Market/AppSetList',
         buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
