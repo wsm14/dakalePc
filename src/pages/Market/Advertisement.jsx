@@ -1,26 +1,48 @@
-import React, { useState } from 'react';
-import { Card } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Result } from 'antd';
+import { authCheck } from '@/layouts/AuthConsumer';
 import ExtraButton from '@/components/ExtraButton';
 
-const Advertisement = (props) => {
-  const [tabKey, setTabKey] = useState('video'); // tab页
+const tabList = [
+  {
+    tab: '视频广告',
+    key: 'video',
+    auth: 'video',
+  },
+  {
+    tab: '开屏广告',
+    key: 'open',
+    auth: 'open',
+  },
+  {
+    tab: '拼图广告',
+    key: 'puzzle',
+    auth: 'puzzle',
+  },
+];
 
-  const tabList = [
-    {
-      tab: '视频广告',
-      key: 'video',
-    },
-    {
-      tab: '开屏广告',
-      key: 'open',
-    },
-    {
-      tab: '拼图广告',
-      key: 'puzzle',
-    },
-  ];
+const Advertisement = () => {
+  const [tabKey, setTabKey] = useState(false); // tab页
+  const check = authCheck(tabList); // 检查权限
 
-  return <Card tabList={tabList} onTabChange={setTabKey} tabBarExtraContent={'111'}></Card>;
+  // 检查权限获取key默认显示tab
+  useEffect(() => {
+    setTabKey(check && check.length ? check[0]['key'] : false);
+  }, []);
+
+  return (
+    <Card tabList={check} onTabChange={setTabKey} tabBarExtraContent={'111'}>
+      {check && check.length ? (
+        {
+          video: 1, // 视频广告
+          open: 2, // 开屏广告
+          puzzle: 3, // 拼图广告
+        }[tabKey]
+      ) : (
+        <Result status="403" title="403" subTitle="暂无权限"></Result>
+      )}
+    </Card>
+  );
 };
 
 export default Advertisement;
