@@ -369,7 +369,7 @@ export default [
       {
         path: '/market/videoAd',
         name: '视频广告', // 新手视频
-        component: './Market/VideoAdvert',
+        component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation

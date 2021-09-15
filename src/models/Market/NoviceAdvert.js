@@ -9,7 +9,7 @@ import {
 } from '@/services/MarketServices';
 
 export default {
-  namespace: 'videoAdvert',
+  namespace: 'noviceAdvert',
 
   state: {
     list: [],
