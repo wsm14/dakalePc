@@ -304,12 +304,7 @@ export default [
         component: './Market/AreaQuery',
         buttons: ['set', 'edit'],
       },
-      {
-        path: '/market/advertisement',
-        name: '广告投放管理',
-        component: './Market/Advertisement',
-        buttons: ['set', 'edit'],
-      },
+
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -348,18 +343,23 @@ export default [
           'markTextEdit',
         ],
       },
-      // {
-      //   path: '/market/openAd',
-      //   name: '开屏广告',
-      //   component: './Market/OpenAdvert',
-      //   buttons: ['save', 'del', 'edit', 'down', 'info'],
-      // },
-      // {
-      //   path: '/market/puzzleAd',
-      //   name: '拼图广告',
-      //   component: './Market/PuzzleAdvert',
-      //   buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
-      // },
+      {
+        path: '/market/advertisement',
+        name: '广告投放管理',
+        component: './Market/Advertisement',
+        buttons: [
+          'videoAd',
+          'openAd',
+          'puzzleAd',
+          'save',
+          'del',
+          'edit',
+          'info',
+          'up',
+          'down',
+          'adRoot',
+        ],
+      },
       {
         path: '/market/appset',
         name: 'Banner管理',

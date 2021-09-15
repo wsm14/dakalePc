@@ -339,6 +339,12 @@ export const GROUP_BANK_STATUS = ['未激活', '审核中', '激活失败', '激
 // 开屏广告端口
 export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
 
+// 开屏广告 - 类型
+export const OPEN_ADVERT_TYPE = { image: '图片广告', video: '视频广告' };
+
+// 开屏广告 - 状态
+export const OPEN_ADVERT_STATUS = ['待展示', '展示中', '已下架'];
+
 // Banner端口
 export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 

@@ -5,9 +5,9 @@ import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import VideoShowModal from './components/VideoAd/VideoShowModal';
-import VideoPeasDetail from './components/VideoAd/VideoPeasDetail';
-import VideoSetDrawer from './components/VideoAd/VideoSetDrawer';
+import VideoShowModal from './components/NoviceAdvert/VideoShowModal';
+import VideoPeasDetail from './components/NoviceAdvert/VideoPeasDetail';
+import VideoSetDrawer from './components/NoviceAdvert/VideoSetDrawer';
 import styles from './styles.less';
 
 const VideoAdvert = (props) => {

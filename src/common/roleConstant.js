@@ -69,9 +69,11 @@ export const ROLE_BUTTON_TYPE = {
   noticeDel: '公告删除',
   noticeSend: '公告发送',
 
+  openAd: '开屏广告',
   orderDetail: '订单明细',
 
   push: '推送',
+  puzzleAd: '拼图广告',
   placement: '置顶',
   peasDetail: '卡豆明细',
   preview: '预览',
@@ -137,6 +139,8 @@ export const ROLE_BUTTON_TYPE = {
   userAdd: '新增用户',
   userEdit: '用户编辑',
   userStatus: '用户状态',
+
+  videoAd: '视频广告',
 
   withdraw: '提现记录',
   withdrawMerchant: '单店提现',
