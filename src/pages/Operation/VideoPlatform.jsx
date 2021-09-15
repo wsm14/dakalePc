@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { NEW_SHARE_STATUS, TEMPLATE_CREATE_TYPE, NEW_SHARE_OWNER } from '@/common/constant';
+import { NEW_SHARE_STATUS, SUBMIT_TYPE_VIDEO, NEW_SHARE_OWNER } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -159,7 +159,7 @@ const VideoPlatform = (props) => {
       align: 'center',
       dataIndex: 'createTime',
       render: (val, row) =>
-        `${val}\n${TEMPLATE_CREATE_TYPE[row.creatorType]} ${row.creatorName || ''}`,
+        `${val}\n${SUBMIT_TYPE_VIDEO[row.creatorType]} ${row.creatorName || ''}`,
     },
     {
       title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
