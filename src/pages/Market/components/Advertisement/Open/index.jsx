@@ -1,7 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
-import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
+import {
+  OPEN_ADVERT_PORT,
+  OPEN_ADVERT_TYPE,
+  BANNER_SHOW_STATUS,
+  BANNER_JUMP_TYPE,
+} from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -41,6 +46,11 @@ const OpenAdvert = (props) => {
       title: '广告主名',
       fixed: 'left',
       dataIndex: 'launchOwner',
+    },
+    {
+      title: '广告类型',
+      dataIndex: 'mediaType',
+      render: (val) => OPEN_ADVERT_TYPE[val],
     },
     {
       title: '广告内容',
