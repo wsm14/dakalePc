@@ -4,7 +4,7 @@ import { Form } from 'antd';
 import {
   OPEN_ADVERT_PORT,
   OPEN_ADVERT_TYPE,
-  BANNER_SHOW_STATUS,
+  OPEN_ADVERT_STATUS,
   BANNER_JUMP_TYPE,
 } from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
@@ -30,7 +30,7 @@ const OpenAdvert = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: BANNER_SHOW_STATUS,
+      select: OPEN_ADVERT_STATUS,
     },
     {
       label: '创建时间',
@@ -94,7 +94,7 @@ const OpenAdvert = (props) => {
       title: '状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => BANNER_SHOW_STATUS[val],
+      render: (val) => OPEN_ADVERT_STATUS[val],
     },
     {
       type: 'handle',

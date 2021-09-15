@@ -38,7 +38,7 @@ const OpenAdForm = (props) => {
       maxFile: 1,
       maxSize: 500,
       visible: mediaType === 'video',
-      imgRatio: VIDEO_ADVERT,
+      imgRatio: OPEN_ADVERT,
     },
     {
       label: '上传视频',

@@ -137,7 +137,6 @@ const PuzzleAdvertisement = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
         noCard={false}
         cRef={childRef}
         btnExtra={extraBtn}
