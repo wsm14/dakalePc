@@ -500,7 +500,7 @@ export const SUBMIT_TYPE = {
   partner: '区县',
 };
 
-//视频 审核类型
+// 视频 审核类型
 export const SUBMIT_TYPE_VIDEO = {
   merchant: '商家',
   admin: '运营后台',
