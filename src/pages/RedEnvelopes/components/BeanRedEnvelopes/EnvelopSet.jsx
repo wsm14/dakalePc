@@ -16,11 +16,15 @@ const EnvelopSet = (props) => {
 
   const handleSave = () => {
     form.validateFields().then((values) => {
+      const {level,levelName}=values
       dispatch({
         type: 'redEnvelopes/fetchSetLuckyRedEnvelopeAuthority',
         payload: {
           dictionaryId: detail.dictionaryId,
-          extraParam: values.extraParam,
+          extraParam: {
+            level,
+            levelName,
+          },
         },
         callback: () => {
           onClose();
@@ -58,6 +62,24 @@ const EnvelopSet = (props) => {
       name: 'extraParam',
       type: 'select',
       select: kolLevel,
+      onChange: (val, option) => {
+        form.setFieldsValue({
+          level: val,
+          levelName: option.option.name,
+        });
+      },
+    },
+    {
+      label: '等级',
+      name: 'level',
+      rules: [{ required: false }],
+      hidden: true,
+    },
+    {
+      label: '等级名称',
+      name: 'levelName',
+      rules: [{ required: false }],
+      hidden: true,
     },
     // {
     //   label: '白名单列表',
