@@ -106,7 +106,7 @@ const OpenAdvert = (props) => {
         },
         {
           type: 'edit',
-          visible: record.status === '1',
+          visible: record.status !== '2',
           click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
         },
         {
