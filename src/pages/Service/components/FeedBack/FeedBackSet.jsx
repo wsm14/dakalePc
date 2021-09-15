@@ -68,6 +68,8 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     {
       label: '反馈标签',
       type: 'formItem',
+      name:'tags',
+      rules: [{ required: true }],
       formItem: (
         <>
           {tags.map((tag, index) => {
@@ -85,19 +87,12 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
                 />
               );
             }
-
             const isLongTag = tag.length > 20;
-
             const tagElem = (
-              <Tag
-                className="edit-tag"
-                key={tag}
-                closable
-                onClose={() => handleClose(tag)}
-              >
+              <Tag className="edit-tag" key={tag} closable onClose={() => handleClose(tag)}>
                 <span
                   onDoubleClick={(e) => {
-                    // if (index !== 0) {
+                   
                     setEditInputIndex(index);
                     setEditInputValue(tag);
                     saveEditInputRef.current?.focus();
@@ -105,7 +100,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
                     //   this.editInput.focus();
                     // });
                     e.preventDefault();
-                    // }
+               
                   }}
                 >
                   {isLongTag ? `${tag.slice(0, 20)}...` : tag}

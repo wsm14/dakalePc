@@ -502,6 +502,15 @@ export const SUBMIT_TYPE = {
   group: '集团',
   partner: '区县',
 };
+//视频 审核类型
+export const SUBMIT_TYPE_VIDEO = {
+  merchant: '商家',
+  admin: '运营后台',
+  sell: 'CRM',
+  group: '集团',
+  partner: '区县',
+  user: '哒人',
+};
 
 // serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
 export const SERVICE_TYPE = {
@@ -568,7 +577,7 @@ export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
 
 // 视频审核店铺/视频类型
 export const VIDEO_TYPE = {
-  use: '用户',
+  user: '哒人',
   merchant: '店铺',
   group: '集团',
 };

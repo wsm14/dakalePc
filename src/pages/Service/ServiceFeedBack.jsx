@@ -116,7 +116,7 @@ const ServiceFeedBack = (props) => {
       <FeedBackSet
         cRef={childRef}
         visible={visibleSet}
-        onClose={() => setVisible(false)}
+        onClose={() => setVisibleSet(false)}
       ></FeedBackSet>
     </>
   );

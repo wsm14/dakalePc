@@ -5,7 +5,7 @@ import {
   BUSINESS_TYPE,
   VIDEO_ACTION_TYPE,
   GOODS_CHECK_RESSTATUS,
-  SUBMIT_TYPE,
+  SUBMIT_TYPE_VIDEO,
   VIDEO_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
@@ -153,7 +153,12 @@ const VideoCheck = (props) => {
       show: tabkey === 'adminAudit',
       render: (val, row) => {
         const { momentDTO = {} } = row;
-        return <>{VIDEO_TYPE[momentDTO.ownerType]}</>;
+        return (
+          <>
+            {VIDEO_TYPE[momentDTO.ownerType]}
+            {momentDTO.ownerType ? '视频' : '-'}
+          </>
+        );
       },
     },
     // {
@@ -173,7 +178,7 @@ const VideoCheck = (props) => {
         <div style={{ textAlign: 'center' }}>
           <div>{val}</div>
           <div>
-            {SUBMIT_TYPE[record.submitterType]}--{record.submitterUserName}
+            {SUBMIT_TYPE_VIDEO[record.submitterType]}--{record.submitterUserName}
           </div>
         </div>
       ),
