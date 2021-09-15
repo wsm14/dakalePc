@@ -502,6 +502,15 @@ export const SUBMIT_TYPE = {
   group: '集团',
   partner: '区县',
 };
+//视频 审核类型
+export const SUBMIT_TYPE_VIDEO = {
+  merchant: '商家',
+  admin: '运营后台',
+  sell: 'CRM',
+  group: '集团',
+  partner: '区县',
+  user: '哒人',
+};
 
 // serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
 export const SERVICE_TYPE = {
@@ -565,6 +574,19 @@ export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '�
 
 //节日配置状态 状态 0-待上架 1-上架中 2-已下架
 export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
+
+// 视频审核店铺/视频类型
+export const VIDEO_TYPE = {
+  user: '哒人',
+  merchant: '店铺',
+  group: '集团',
+};
+
+// 視頻審核了惡行
+export const VIDEO_ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+};
 
 // 卡豆红包类型
 export const RED_ENVELOPES_TYPE = {
