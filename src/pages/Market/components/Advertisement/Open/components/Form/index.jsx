@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { OPEN_ADVERT_TYPE } from '@/common/constant';
 import { OPEN_ADVERT } from '@/common/imgRatio';
@@ -6,9 +6,13 @@ import { NativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const OpenAdForm = (props) => {
-  const { detail, form, tabKey } = props;
+  const { detail = {}, form, tabKey } = props;
 
-  const [mediaType, setMediaType] = useState('user');
+  const [mediaType, setMediaType] = useState('image');
+
+  useEffect(() => {
+    setMediaType(detail.mediaType);
+  }, []);
 
   const formItems = [
     {
@@ -42,7 +46,7 @@ const OpenAdForm = (props) => {
     },
     {
       label: '上传视频',
-      name: 'videoUrl',
+      name: ['videoContentObject', 'url'],
       type: 'videoUpload',
       maxFile: 1,
       visible: mediaType === 'video',
