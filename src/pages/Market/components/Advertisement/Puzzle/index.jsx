@@ -3,10 +3,10 @@ import { connect } from 'umi';
 import { Tooltip } from 'antd';
 import { PUZZLE_AD_TYPE, PUZZLE_AD_STATUS, BANNER_AREA_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import PuzzleAdSet from './components/PuzzleAd/PuzzleAdSet';
-import PuzzleAdRoot from './components/PuzzleAd/PuzzleAdRoot';
+import PuzzleAdSet from './components/PuzzleAdSet';
+import PuzzleAdRoot from './components/PuzzleAdRoot';
 
-const PuzzleAd = (props) => {
+const PuzzleAdvertisement = (props) => {
   const { puzzleAd, loading, dispatch } = props;
 
   const childRef = useRef();
@@ -137,7 +137,7 @@ const PuzzleAd = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
+        noCard={false}
         cRef={childRef}
         btnExtra={extraBtn}
         loading={loading}
@@ -162,4 +162,4 @@ const PuzzleAd = (props) => {
 export default connect(({ puzzleAd, loading }) => ({
   puzzleAd,
   loading: loading.models.puzzleAd,
-}))(PuzzleAd);
+}))(PuzzleAdvertisement);

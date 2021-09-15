@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
-import ExtraButton from '@/components/ExtraButton';
+import Puzzle from './components/Advertisement/Puzzle';
+import Open from './components/Advertisement/Open';
 
 const tabList = [
   {
     tab: '视频广告',
     key: 'video',
-    auth: 'video',
+    auth: 'videoAd',
   },
   {
     tab: '开屏广告',
     key: 'open',
-    auth: 'open',
+    auth: 'openAd',
   },
   {
     tab: '拼图广告',
     key: 'puzzle',
-    auth: 'puzzle',
+    auth: 'puzzleAd',
   },
 ];
 
@@ -31,12 +32,16 @@ const Advertisement = () => {
   }, []);
 
   return (
-    <Card tabList={check} onTabChange={setTabKey} tabBarExtraContent={'111'}>
+    <Card
+      tabList={check}
+      bodyStyle={{ padding: tabKey === 'open' ? 0 : 24 }}
+      onTabChange={setTabKey}
+    >
       {check && check.length ? (
         {
           video: 1, // 视频广告
-          open: 2, // 开屏广告
-          puzzle: 3, // 拼图广告
+          open: <Open></Open>, // 开屏广告
+          puzzle: <Puzzle></Puzzle>, // 拼图广告
         }[tabKey]
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>
