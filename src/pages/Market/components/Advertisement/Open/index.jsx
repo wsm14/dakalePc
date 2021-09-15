@@ -5,7 +5,7 @@ import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common
 import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import OpenAdSet from './components/OpenAd/OpenAdSet';
+import OpenAdSet from './components/OpenAdSet';
 
 const OpenAdvert = (props) => {
   const { openAdvert, loading, dispatch } = props;
@@ -140,6 +140,8 @@ const OpenAdvert = (props) => {
         cRef={childRef}
         searchForm={form}
         cardProps={{
+          style: { marginTop: 1 },
+          bordered: false,
           tabList: Object.keys(OPEN_ADVERT_PORT).map((key) => ({
             key,
             tab: OPEN_ADVERT_PORT[key],
