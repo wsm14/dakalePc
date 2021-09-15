@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { NEW_SHARE_STATUS, NEW_SHARE_OWNER } from '@/common/constant';
+import { NEW_SHARE_STATUS, TEMPLATE_CREATE_TYPE, NEW_SHARE_OWNER } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -158,12 +158,14 @@ const VideoPlatform = (props) => {
       title: '创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${NEW_SHARE_OWNER[row.creatorType]} ${row.creatorName || ''}`,
+      render: (val, row) =>
+        `${val}\n${TEMPLATE_CREATE_TYPE[row.creatorType]} ${row.creatorName || ''}`,
     },
     {
       title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
       align: 'center',
       fixed: 'right',
+      show: tabKey === '1',
       dataIndex: 'weight',
       render: (val, row) => (
         <ShareWeightSet detail={row} onSubmit={fetchNewShareNoAudit}></ShareWeightSet>
@@ -329,7 +331,7 @@ const VideoPlatform = (props) => {
         getDetail={fetchShareDetail}
         onClose={() => setVisible(false)}
         fetchNewShareNoAudit={fetchNewShareNoAudit}
-        ></ShareDetail>
+      ></ShareDetail>
       {/* 下架 */}
       <RefuseModal
         visible={visibleRefuse}
