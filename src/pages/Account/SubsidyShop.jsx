@@ -33,7 +33,7 @@ const SubsidyShop = (props) => {
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: ['platform', 'directCharge', 'recycleDirectCharge', 'recyclePlatform', 'platformSubsidy'],
+    type: ['platform', 'directCharge', 'platformSubsidy',"pushVideo"],
   };
 
   // 搜索参数

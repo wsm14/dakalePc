@@ -57,7 +57,15 @@ export default {
       const response = yield call(fetchgetDictionaryAdmin, payload);
       if (!response) return;
       const { content } = response;
-      callback && callback(content.dictionary);
+      const { extraParam } = content.dictionary;
+      const params = extraParam ? JSON.parse(extraParam) : {};
+      const newDetail = {
+        ...content.dictionary,
+        level: params.level,
+        extraParam: params.level,
+        levelName: params.levelName,
+      };
+      callback && callback(newDetail);
     },
 
     *fetchSetLuckyRedEnvelopeAuthority({ payload, callback }, { call }) {

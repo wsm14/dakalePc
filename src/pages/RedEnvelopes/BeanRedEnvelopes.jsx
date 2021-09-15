@@ -28,7 +28,7 @@ const BeanRedEnvelopes = (props) => {
     childRef.current.fetchGetData(
       tabKey === '0' ? { envelopesType: 'normal,lucky' } : { envelopesType: 'message' },
     );
-  }, tabKey);
+  }, [tabKey]);
 
   const searchItems = [
     {
