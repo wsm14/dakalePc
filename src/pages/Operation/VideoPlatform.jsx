@@ -68,7 +68,7 @@ const VideoPlatform = (props) => {
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
-      label: '视频类型',
+      label: '店铺/视频类型',
       name: 'userType',
       type: 'select',
       select: NEW_SHARE_OWNER,
@@ -108,11 +108,12 @@ const VideoPlatform = (props) => {
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
-      render: (val, detail) => (
+      render: (val, row) => (
         <PopImgShow url={val}>
           <Ellipsis length={10} tooltip lines={3}>
-            {detail.title}
+            {row.title}
           </Ellipsis>
+          <span style={{ color: '#999999' }}>{row.momentId}</span>
         </PopImgShow>
       ),
     },
@@ -257,7 +258,7 @@ const VideoPlatform = (props) => {
 
   // 下架
   const fetchStatusClose = (values) => {
-    const { momentId, ownerId } = visibleRefuse;
+    const { momentId, ownerId } = visibleRefuse.detail;
     dispatch({
       type: 'videoPlatform/fetchNewShareClose',
       payload: {
