@@ -166,19 +166,14 @@ const ShareDetail = (props) => {
           ownerId,
           momentId,
           freeOwnerCouponList: free.couponName
-            ? [
-                {
-                  ownerCouponId: free.ownerCouponIdString || free.ownerCouponId,
-                  ownerId,
-                },
-              ]
+            ? [{ ownerCouponId: free.ownerCouponIdString, ownerId }]
             : [],
           activityGoodsList: contact
             .filter((i) => i.goodsName)
             .map((i) => ({ activityGoodsId: i.specialGoodsId || i.activityGoodsId, ownerId })),
           ownerCouponList: contact
             .filter((i) => i.couponName)
-            .map((i) => ({ ownerCouponId: i.ownerCouponIdString || i.ownerCouponId, ownerId })),
+            .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
         },
         onClose,
       );
