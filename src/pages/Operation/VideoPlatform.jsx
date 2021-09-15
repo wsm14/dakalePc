@@ -258,7 +258,7 @@ const VideoPlatform = (props) => {
 
   // 下架
   const fetchStatusClose = (values) => {
-    const { momentId, ownerId } = visibleRefuse;
+    const { momentId, ownerId } = visibleRefuse.detail;
     dispatch({
       type: 'videoPlatform/fetchNewShareClose',
       payload: {
