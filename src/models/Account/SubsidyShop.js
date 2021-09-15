@@ -1,7 +1,6 @@
 import {
   fetchSubsidyShopList,
-  fetchSubsidyShopDetailById,
-  fetchSubsidyUserDetailById,
+  fetchSubsidyStatisticDetail,
 } from '@/services/AccountServices';
 
 export default {
@@ -34,20 +33,19 @@ export default {
       });
       if (callback) callback(content.subsidyStatisticObjectList);
     },
-    //店铺详情
-    *fetchSubsidyShopDetailById({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyShopDetailById, payload);
+    //补贴详情
+    *fetchSubsidyStatisticDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyStatisticDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { userMerchantObjects = [] } = content.subsidyDTO;
-      if (callback) callback(userMerchantObjects);
-    },
-    //用户补贴详情
-    *fetchSubsidyUserDetailById({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyUserDetailById, payload);
-      if (!response) return;
-      const { content } = response;
-      if (callback) callback(content.userList);
+      const type=content.type.split('-')
+      console.log(type,"112222")
+      const detail = {
+        checkType:type[0],
+        role: type[1],
+        list: content.detailList,
+      };
+      if (callback) callback(detail);
     },
   },
 };
