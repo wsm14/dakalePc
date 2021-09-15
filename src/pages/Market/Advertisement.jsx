@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
+import Puzzle from './components/Advertisement/Puzzle';
 import ExtraButton from '@/components/ExtraButton';
 
 const tabList = [
@@ -31,12 +32,12 @@ const Advertisement = () => {
   }, []);
 
   return (
-    <Card tabList={check} onTabChange={setTabKey} tabBarExtraContent={'111'}>
+    <Card tabList={check} onTabChange={setTabKey}>
       {check && check.length ? (
         {
           video: 1, // 视频广告
           open: 2, // 开屏广告
-          puzzle: 3, // 拼图广告
+          puzzle: <Puzzle></Puzzle>, // 拼图广告
         }[tabKey]
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>
