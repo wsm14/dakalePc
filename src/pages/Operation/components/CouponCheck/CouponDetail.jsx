@@ -8,7 +8,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 import ExtraButton from '@/components/ExtraButton';
 import CheckRefuseDraw from './CheckRefuseDraw';
-import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
+import MerchantListTable from '../SpecialGoods/Detail/MerchantListTable';
 import CheckRecord from '@/components/CheckRecord';
 
 const GoodsDetail = (props) => {
@@ -174,7 +174,7 @@ const GoodsDetail = (props) => {
     {
       label: '适用时段',
       name: 'useWeek',
-      render: (val) => COUPON_WEEK_TIME.filter((item, index) => val.includes(index)),
+      render: (val) => val && COUPON_WEEK_TIME.filter((item, index) => val.includes(index)),
     },
     {
       label: '使用时间',
@@ -212,11 +212,11 @@ const GoodsDetail = (props) => {
       name: ['reduceObject', 'anytimeRefund'],
       render: (val) =>
         `${val === '1' ? '' : '不'}允许随时退款 \n ${
-          detail.reduceObject.expireRefund === '1' ? '' : '不'
+          detail?.reduceObject?.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
     },
   ];
-  
+
   //分佣配置
   const commissionItem = [
     {

@@ -56,10 +56,10 @@ export default {
       callback({
         ...ownerCouponInfo,
         ...auditDetail,
-        couponDescString: couponDesc.includes(']')
+        couponDescString: couponDesc?.includes(']')
           ? JSON.parse(couponDesc || '[]').join('\n')
           : couponDesc,
-        couponDesc: couponDesc.includes(']') ? JSON.parse(couponDesc || '[]') : [],
+        couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
         ...newDetail,
       });

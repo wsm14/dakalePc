@@ -49,10 +49,10 @@ const DescriptionsCondition = (props) => {
       textArea: value,
       upload: <ImagePreviewGroup url={value}></ImagePreviewGroup>,
       videoUpload: <VideoPreview url={value}></VideoPreview>,
-    }[type];
+    };
     // 类型错误返回
-    if (domShow === undefined) return 'type error';
-    return domShow;
+    if (!Object.keys(domShow).includes(type)) return 'type error';
+    return domShow[type];
   };
 
   // 区分表单信息
