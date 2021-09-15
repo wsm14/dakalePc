@@ -348,12 +348,18 @@ export default [
           'markTextEdit',
         ],
       },
-      {
-        path: '/market/openAd',
-        name: '开屏广告',
-        component: './Market/OpenAdvert',
-        buttons: ['save', 'del', 'edit', 'down', 'info'],
-      },
+      // {
+      //   path: '/market/openAd',
+      //   name: '开屏广告',
+      //   component: './Market/OpenAdvert',
+      //   buttons: ['save', 'del', 'edit', 'down', 'info'],
+      // },
+      // {
+      //   path: '/market/puzzleAd',
+      //   name: '拼图广告',
+      //   component: './Market/PuzzleAdvert',
+      //   buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
+      // },
       {
         path: '/market/appset',
         name: 'Banner管理',
@@ -361,15 +367,9 @@ export default [
         buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
-        path: '/market/puzzleAd',
-        name: '拼图广告',
-        component: './Market/PuzzleAdvert',
-        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
-      },
-      {
         path: '/market/videoAd',
-        name: '视频广告', // 新手视频
-        component: './Market/VideoAdvert',
+        name: '新手视频',
+        component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation

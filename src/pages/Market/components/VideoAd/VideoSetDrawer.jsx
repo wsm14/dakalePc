@@ -39,7 +39,7 @@ const ShareDrawer = (props) => {
             callback: (videos) => {
               aliOssUpload(friendShareImg).then((res) => {
                 dispatch({
-                  type: 'videoAdvert/fetchVideoAdNoviceSet',
+                  type: 'noviceAdvert/fetchVideoAdNoviceSet',
                   payload: {
                     userType: 'merchant',
                     contentType: 'video',
@@ -189,5 +189,5 @@ const ShareDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['videoAdvert/fetchVideoAdNoviceSet'],
+  loading: loading.effects['noviceAdvert/fetchVideoAdNoviceSet'],
 }))(ShareDrawer);

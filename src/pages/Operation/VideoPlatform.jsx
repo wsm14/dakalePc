@@ -209,7 +209,7 @@ const VideoPlatform = (props) => {
           },
           {
             type: 'edit', // 编辑
-            visible: status != 0 && typeUser,
+            visible: typeUser,
             click: () => fetchShareDetail(index, 'edit'),
           },
           {

@@ -1,168 +1,48 @@
-import React, { useRef, useState } from 'react';
-import { connect } from 'umi';
-import { Form } from 'antd';
-import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
+import React, { useState, useEffect } from 'react';
+import { Card, Result } from 'antd';
+import { authCheck } from '@/layouts/AuthConsumer';
 import ExtraButton from '@/components/ExtraButton';
-import PopImgShow from '@/components/PopImgShow';
-import TableDataBlock from '@/components/TableDataBlock';
 
-const OpenAdvert = (props) => {
-  const { openAdvert, loading, dispatch } = props;
+const tabList = [
+  {
+    tab: '视频广告',
+    key: 'video',
+    auth: 'video',
+  },
+  {
+    tab: '开屏广告',
+    key: 'open',
+    auth: 'open',
+  },
+  {
+    tab: '拼图广告',
+    key: 'puzzle',
+    auth: 'puzzle',
+  },
+];
 
-  const childRef = useRef();
-  const [form] = Form.useForm();
-  const [visibleSet, setVisibleSet] = useState({ show: false, detail: '' });
-  const [tabKey, setTabKey] = useState('user');
+const Advertisement = () => {
+  const [tabKey, setTabKey] = useState(false); // tab页
+  const check = authCheck(tabList); // 检查权限
 
-  // 搜索参数
-  const searchItems = [
-    {
-      label: '广告主',
-      name: 'launchOwner',
-    },
-    {
-      label: '状态',
-      name: 'status',
-      type: 'select',
-      select: BANNER_SHOW_STATUS,
-    },
-    {
-      label: '创建时间',
-      type: 'rangePicker',
-      name: 'beginTime',
-      end: 'endTime',
-    },
-  ];
-
-  // table 表头
-  const getColumns = [
-    {
-      title: '广告主名',
-      fixed: 'left',
-      dataIndex: 'launchOwner',
-    },
-    {
-      title: '广告内容',
-      align: 'center',
-      dataIndex: 'url',
-      render: (val) => <PopImgShow url={val} />,
-    },
-    {
-      title: '广告说明',
-      align: 'center',
-      dataIndex: 'launchDesc',
-      ellipsis: true,
-    },
-    {
-      title: '点击事件',
-      align: 'center',
-      dataIndex: 'jumpUrlType',
-      render: (val) => BANNER_JUMP_TYPE[val],
-    },
-    {
-      title: '跳转内容',
-      align: 'center',
-      dataIndex: 'jumpUrl',
-      render: (val, row) => {
-        const { jumpUrlType, nativeJumpName } = row;
-        return { H5: val, inside: nativeJumpName, '': '--' }[jumpUrlType];
-      },
-    },
-    {
-      title: '展示时间',
-      align: 'center',
-      dataIndex: 'startDate',
-      render: (val, record) => `${val} ~ ${record.endDate}`,
-    },
-    {
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createTime',
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status',
-      render: (val) => BANNER_SHOW_STATUS[val],
-    },
-    {
-      type: 'handle',
-      dataIndex: 'idString',
-      render: (appLaunchImageId, record) => [
-        {
-          type: 'info',
-          click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'info'),
-        },
-        {
-          type: 'edit',
-          visible: record.status === '1',
-          click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
-        },
-        {
-          type: 'down',
-          visible: record.onFlag === '1',
-          click: () => fetchOpenAdvertStatus({ appLaunchImageId, onFlag: 0 }),
-        },
-        {
-          type: 'del',
-          visible: record.onFlag === '0',
-          click: () => fetchOpenAdvertStatus({ appLaunchImageId, deleteFlag: 0 }),
-        },
-      ],
-    },
-  ];
-
-  // 获取详情
-  const fetchOpenAdvertDetail = (payload, type) => {
-    dispatch({
-      type: 'openAdvert/fetchOpenAdvertDetail',
-      payload,
-      callback: (detail) => setVisibleSet({ show: true, type, detail }),
-    });
-  };
-
-  // 下架 删除
-  const fetchOpenAdvertStatus = (payload) => {
-    dispatch({
-      type: 'openAdvert/fetchOpenAdvertStatus',
-      payload,
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // 权限按钮
-  const btnList = [{ onClick: () => setVisibleSet({ show: true, type: 'add' }) }]; // 新增按钮
+  // 检查权限获取key默认显示tab
+  useEffect(() => {
+    setTabKey(check && check.length ? check[0]['key'] : false);
+  }, []);
 
   return (
-    <>
-      <TableDataBlock
-        cRef={childRef}
-        searchForm={form}
-        cardProps={{
-          tabList: Object.keys(OPEN_ADVERT_PORT).map((key) => ({
-            key,
-            tab: OPEN_ADVERT_PORT[key],
-          })),
-          tabBarExtraContent: <ExtraButton list={btnList}></ExtraButton>,
-          onTabChange: (userType) => {
-            setTabKey(userType);
-            form.resetFields();
-            childRef.current.fetchGetData({ userType, page: 1 });
-          },
-        }}
-        params={{ userType: tabKey }}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.idString}`}
-        dispatchType="openAdvert/fetchGetList"
-        {...openAdvert}
-      ></TableDataBlock>
-    </>
+    <Card tabList={check} onTabChange={setTabKey} tabBarExtraContent={'111'}>
+      {check && check.length ? (
+        {
+          video: 1, // 视频广告
+          open: 2, // 开屏广告
+          puzzle: 3, // 拼图广告
+        }[tabKey]
+      ) : (
+        <Result status="403" title="403" subTitle="暂无权限"></Result>
+      )}
+    </Card>
   );
 };
 
-export default connect(({ openAdvert, loading }) => ({
-  openAdvert,
-  loading: loading.models.openAdvert,
-}))(OpenAdvert);
+export default Advertisement;
