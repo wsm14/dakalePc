@@ -130,14 +130,14 @@ export default {
       if (!response) return;
       const { content } = response;
       const {
+        age,
         area,
         areaType,
+        tagsId,
         freeOwnerCouponList = [], // 免费券
         ownerCouponList = [], // 有价券
         activityGoodsList = [], // 特惠商品
-        promotionType: pType,
         videoContent,
-        age,
         ...ohter
       } = content.momentDetail;
       const editData =
@@ -148,30 +148,36 @@ export default {
               categoryNode: [ohter.topCategoryIdString, ohter.categoryIdString],
               free: freeOwnerCouponList[0] || {},
               contact: [...activityGoodsList, ...ownerCouponList],
+              age: age !== '0-100' ? 'age' : age,
+              ageData: age !== '0-100' ? age.split(',') : [],
+              taste: tagsId ? 'tag' : 'all',
+              tagsId: tagsId?.split(',') || [],
+              area: {
+                all: '',
+                city: [],
+                district: [],
+                near: area,
+              }[areaType],
+              cityList: {
+                all: [],
+                city: area.split(',').map((i) => ({ city: [i.slice(0, 2), i.slice(0, 4)] })),
+                district: area.split(',').map((i) => ({ city: [i.slice(0, 2), i.slice(0, 4), i] })),
+                near: [],
+              }[areaType],
             }
           : {};
       const newObj = {
         ...ohter,
-        ...editData,
+        age,
+        area,
+        areaType,
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
           ...activityGoodsList.map((item) => ({ ...item, type: 'special' })),
         ],
         videoContent: JSON.parse(videoContent || '{}'),
-        area:
-          areaType !== 'all'
-            ? areaType === 'near'
-              ? `附近 ${Number(area) / 1000} km`
-              : (area ? area.split(',') : [])
-                  .map((item) => {
-                    const cityIndex = cityJson.findIndex((city) => city.id === item);
-                    if (cityIndex > -1) {
-                      return cityJson[cityIndex].name;
-                    }
-                  })
-                  .toString()
-            : SHARE_AREA_TYPE[areaType],
+        ...editData,
       };
       callback(newObj);
     },

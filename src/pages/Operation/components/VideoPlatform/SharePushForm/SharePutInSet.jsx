@@ -27,7 +27,7 @@ const SharePutInSet = (props) => {
   const [radius, setRadius] = useState(0); // 地域选择 - 半径
   const [ageType, setAgeType] = useState('0-100'); // 年龄
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
-
+  console.log(detail)
   useEffect(() => {
     fetchGetPropertyJSON();
     fetchGetTasteTag();

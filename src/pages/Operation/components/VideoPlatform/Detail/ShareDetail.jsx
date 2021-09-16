@@ -162,19 +162,24 @@ const ShareDetail = (props) => {
         return;
       }
       if (type === 'portrait') {
-        const { areaType, age, ageData, area, tagsId, cityList, ...other } = values;
-        fetchNewShareNoAudit({
-          ...other,
-          areaType,
-          age: age === 'age' ? ageData.toString() : age,
-          tagsId: tagsId.toString(),
-          area: {
-            all: undefined,
-            city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-            district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-            near: area,
-          }[areaType],
-        });
+        const { areaType, age, ageData = '', area, tagsId = '', cityList = [], ...other } = values;
+        fetchNewShareNoAudit(
+          {
+            ...other,
+            ownerId,
+            momentId,
+            areaType,
+            age: age === 'age' ? ageData.toString() : age,
+            tagsId: tagsId.toString(),
+            area: {
+              all: undefined,
+              city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+              district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+              near: area,
+            }[areaType],
+          },
+          onClose,
+        );
         return;
       }
       const { free, contact } = couponData;
