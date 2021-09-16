@@ -459,13 +459,13 @@ export const SPECIAL_RECOMMEND_TYPE = {
 // 特惠活动 - 是否删除
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
-// 视频广告 - 新手视频状态 1-上架 3-下架
+// 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
 
-// 视频广告 - 区域类型
+// 新手视频 - 区域类型
 export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
-// 视频广告 - 时间设置类型
+// 新手视频 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
 
 // 特惠商品 审核
@@ -605,3 +605,21 @@ export const VIDEO_ACTION_TYPE = {
   create: '创建审核',
   update: '修改审核',
 };
+
+// 视频广告 - 位置
+export const VIDEO_ADVERT_PLACE = {
+  commend: '推荐',
+  near: '附近',
+  follow: '关注',
+  pickUp: '捡豆',
+};
+
+// 视频广告 - 广告类型
+export const VIDEO_ADVERT_TYPE = {
+  merchant: '单店',
+  group: '集团',
+  brand: '品牌',
+};
+
+// 视频广告 - 状态 0-下架 1-发布中
+export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
