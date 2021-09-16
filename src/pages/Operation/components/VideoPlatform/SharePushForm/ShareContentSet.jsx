@@ -153,6 +153,7 @@ const ShareContentSet = (props) => {
           show="free"
           data={free}
           form={form}
+          ownerType={ownerType}
           onDel={() => saveCouponStorage({ free: {} })}
           onOk={(free) => saveCouponStorage({ free })}
         ></ShareCoupon>
@@ -165,28 +166,30 @@ const ShareContentSet = (props) => {
         <>
           <ShareCoupon
             show="active"
+            form={form}
             merchantIdKey="ownerId"
             type={contact[0]?.couponName ? 'coupon' : 'goods'}
             data={contact[0]}
-            form={form}
+            ownerType={ownerType}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
             onOk={(data) => saveCouponStorage({ contact: [data] })}
           ></ShareCoupon>
           <ShareCoupon
+            form={form}
             show="active"
             merchantIdKey="ownerId"
             type={contact[1]?.couponName ? 'coupon' : 'goods'}
             data={contact[1]}
-            form={form}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 1) })}
             onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
           ></ShareCoupon>
           <ShareCoupon
+            form={form}
             show="active"
             merchantIdKey="ownerId"
             type={contact[2]?.couponName ? 'coupon' : 'goods'}
             data={contact[2]}
-            form={form}
+            ownerType={ownerType}
             onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 2) })}
             onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
           ></ShareCoupon>
