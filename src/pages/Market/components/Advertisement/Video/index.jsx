@@ -1,20 +1,31 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { checkCityName } from '@/utils/utils';
-import { NEW_SHARE_STATUS, SUBMIT_TYPE_VIDEO, BUSINESS_TYPE } from '@/common/constant';
+import {
+  SHARE_AREA_TYPE,
+  VIDEO_ADVERT_TYPE,
+  VIDEO_ADVERT_PLACE,
+  VIDEO_ADVERT_STATUS,
+  SUBMIT_TYPE_VIDEO,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
+import VideoAdRoot from './components/VideoAdRoot';
+import VideoSetDrawer from './components/VideoSetDrawer';
+import VideoDetail from './components/Detail/VideoDetail';
+import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
 
 const ShareManage = (props) => {
-  const { shareManage, loading, dispatch } = props;
-  const { list } = shareManage;
+  const { videoAdvert, loading, dispatch } = props;
+  const { list } = videoAdvert;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false); // 详情
-  const [visibleShare, setVisibleShare] = useState(false); // 发布分享
+  const [visible, setVisible] = useState(false); // 新增
+  const [visibleDetail, setVisibleDetail] = useState(false); // 详情 编辑
+  const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
+  const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
 
   // 搜索参数
   const searchItems = [
@@ -22,17 +33,17 @@ const ShareManage = (props) => {
       label: '状态',
       type: 'select',
       name: 'status',
-      select: NEW_SHARE_STATUS,
+      select: VIDEO_ADVERT_STATUS,
     },
     {
       label: '视频ID',
-      name: 'contentType',
+      name: 'platformMomentId',
     },
     {
       label: '推荐位置',
       name: 'browseType',
       type: 'select',
-      select: BUSINESS_TYPE,
+      select: VIDEO_ADVERT_PLACE,
     },
     {
       label: '分享标题',
@@ -40,8 +51,7 @@ const ShareManage = (props) => {
     },
     {
       label: '店铺/品牌名',
-      name: 'ownerId',
-      type: 'merchant',
+      name: 'relateName',
     },
     {
       label: '投放区域',
@@ -72,24 +82,23 @@ const ShareManage = (props) => {
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
-      render: (val, detail) => (
+      render: (val, row) => (
         <PopImgShow url={val}>
           <Ellipsis length={10} tooltip lines={3}>
-            {detail.title}
+            {row.title}
           </Ellipsis>
-          {detail.platformMomentId}
+          <span style={{ color: '#999999' }}>{row.platformMomentId}</span>
         </PopImgShow>
       ),
     },
     {
       title: '店铺/品牌',
-      dataIndex: 'userType',
-      width: 320,
+      dataIndex: 'relateType',
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
-          <Tag>{BUSINESS_TYPE[val]}</Tag>
-          <Ellipsis length={15} tooltip>
-            {row.merchantName}
+          <Tag>{VIDEO_ADVERT_TYPE[val]}</Tag>
+          <Ellipsis length={10} tooltip>
+            {row.relateName}
           </Ellipsis>
         </div>
       ),
@@ -97,11 +106,8 @@ const ShareManage = (props) => {
     {
       title: '投放区域',
       align: 'right',
-      dataIndex: 'beanAmount',
-      render: (val = 0, row) => Math.round(val + (row.exposureBeanAmount || 0)),
-      sorter: (a, b) =>
-        Math.round(a.beanAmount + (a.exposureBeanAmount || 0)) -
-        Math.round(b.beanAmount + (b.exposureBeanAmount || 0)),
+      dataIndex: 'areaType',
+      render: (val) => SHARE_AREA_TYPE[val],
     },
     {
       title: '观看人数',
@@ -125,8 +131,8 @@ const ShareManage = (props) => {
     {
       title: '推荐位置',
       align: 'right',
-      dataIndex: 'beanPersonAmount',
-      render: (val = 0, row) => 111,
+      dataIndex: 'browseType',
+      render: (val) => VIDEO_ADVERT_PLACE[val],
     },
     {
       title: '创建时间',
@@ -147,27 +153,33 @@ const ShareManage = (props) => {
       fixed: 'right',
       align: 'right',
       dataIndex: 'status',
-      render: (val) => NEW_SHARE_STATUS[val],
+      render: (val) => VIDEO_ADVERT_STATUS[val],
     },
     {
       type: 'handle',
-      dataIndex: 'length',
-      width: 180,
+      dataIndex: 'platformMomentId',
+      width: 150,
       render: (val, record, index) => {
         const { status } = record;
         return [
           {
             type: 'info', // 详情
-            click: () => fetchShareDetail(index, record.contentType || 'video'),
+            click: () => fetchVideoAdvertDetail(index, 'info'),
           },
           {
             type: 'edit', // 编辑
-            click: () => fetchShareDetail(index, record.contentType || 'video'),
+            click: () => fetchVideoAdvertDetail(index, 'edit'),
           },
           {
             type: 'down', // 下架
-            visible: status == 1 || status == 0,
-            click: () => fetchStatusClose({}),
+            visible: status == 1,
+            click: () => fetchStatusClose(val),
+          },
+          {
+            type: 'rewardPeo', // 打赏设置
+            visible: status != 0,
+            click: () =>
+              setVisibleReward({ show: true, detail: { ...record, momentId: val, ownerId: -1 } }),
           },
         ];
       },
@@ -175,54 +187,88 @@ const ShareManage = (props) => {
   ];
 
   // 下架
-  const fetchStatusClose = (values) => {
+  const fetchStatusClose = (val) => {
     dispatch({
-      type: 'shareManage/fetchStatusClose',
-      payload: values,
+      type: 'videoAdvert/fetchVideoAdvertStatus',
+      payload: { platformMomentId: val },
       callback: childRef.current.fetchGetData,
     });
   };
 
   // 获取详情
-  const fetchShareDetail = (index, type) => {
-    const { userMomentIdString } = list[index];
+  const fetchVideoAdvertDetail = (index, type) => {
+    const { platformMomentId } = list[index];
     dispatch({
-      type: 'shareManage/fetchShareDetail',
+      type: 'videoAdvert/fetchVideoAdvertDetail',
       payload: {
-        userMomentIdString,
+        platformMomentId,
+        type,
       },
-      callback: (detail) => setVisible({ show: true, index, type, detail }),
+      callback: (detail) => setVisibleDetail({ show: true, index, type, detail }),
+    });
+  };
+
+  // 获取广告配置详情
+  const fetchVideoAdvertRootCount = () => {
+    dispatch({
+      type: 'videoAdvert/fetchVideoAdvertRootCount',
+      callback: () => setVisibleRoot(true),
     });
   };
 
   const extraBtn = [
     {
+      text: '配置',
+      auth: 'adRoot',
+      onClick: fetchVideoAdvertRootCount,
+    },
+    {
       auth: 'save',
       text: '新增',
-      onClick: () => setVisibleShare({ type: 'add', show: true }),
+      onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];
 
   return (
     <>
       <TableDataBlock
+        noCard={false}
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.platformMomentId}`}
-        dispatchType="shareManage/fetchGetList"
-        {...shareManage}
+        dispatchType="videoAdvert/fetchGetList"
+        {...videoAdvert}
       ></TableDataBlock>
+      {/* 配置 */}
+      <VideoAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></VideoAdRoot>
+      {/* 新增 */}
+      <VideoSetDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></VideoSetDrawer>
+      {/* 详情 修改 */}
+      <VideoDetail
+        visible={visibleDetail}
+        childRef={childRef}
+        total={list.length}
+        getDetail={fetchVideoAdvertDetail}
+        onClose={() => setVisibleDetail(false)}
+      ></VideoDetail>
+      {/* 打赏设置 */}
+      <RewardSet
+        type="videoAdvert"
+        visible={visibleReward}
+        onClose={() => setVisibleReward(false)}
+      ></RewardSet>
     </>
   );
 };
 
-export default connect(({ shareManage, loading }) => ({
-  shareManage,
-  loading:
-    loading.effects['shareManage/fetchGetList'] ||
-    loading.effects['shareManage/fetchShareDetail'] ||
-    loading.effects['baseData/fetchHandleDetail'],
+export default connect(({ videoAdvert, loading }) => ({
+  videoAdvert,
+  loading: loading.models.videoAdvert,
 }))(ShareManage);

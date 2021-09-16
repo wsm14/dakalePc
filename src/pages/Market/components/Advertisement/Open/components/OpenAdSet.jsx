@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { OPEN_ADVERT_PORT } from '@/common/constant';
-import uploadLive from '@/utils/uploadLive';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DrawerCondition from '@/components/DrawerCondition';
 import OpenAdForm from './Form';
@@ -28,14 +27,7 @@ const OpenAdSet = (props) => {
   // 上传文件判断
   const fetchCheckUpFile = () => {
     form.validateFields().then((values) => {
-      const {
-        url,
-        mediaType,
-        launchOwner,
-        activeDate: time,
-        videoContentObject: vObj,
-        ...other
-      } = values;
+      const { url, mediaType, launchOwner, activeDate: time, ...other } = values;
 
       const payload = {
         ...other,
@@ -49,28 +41,7 @@ const OpenAdSet = (props) => {
 
       // 视频上传
       if (mediaType === 'video') {
-        const { videoId, url, frontImage, ...objOther } = vObj;
-        uploadLive({
-          data: frontImage, // 上传封面
-          callback: (imgs) => {
-            uploadLive({
-              data: videoId ? videoId : url, // 上传视频
-              title: launchOwner,
-              callback: (videos) => {
-                fetchGetFormData({
-                  ...payload,
-                  videoContentObject: {
-                    ...objOther,
-                    videoId: videos,
-                    frontImage: imgs, // 封面连接
-                    frontImageWidth: 750, // 封面宽
-                    frontImageHeight: 1624, // 封面长
-                  },
-                });
-              },
-            });
-          },
-        });
+        fetchGetFormData(payload);
         return;
       }
 

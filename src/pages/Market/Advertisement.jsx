@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
-import Puzzle from './components/Advertisement/Puzzle';
+import Video from './components/Advertisement/Video';
 import Open from './components/Advertisement/Open';
+import Puzzle from './components/Advertisement/Puzzle';
 
 const tabList = [
   {
@@ -39,7 +40,7 @@ const Advertisement = () => {
     >
       {check && check.length ? (
         {
-          video: 1, // 视频广告
+          video: <Video></Video>, // 视频广告
           open: <Open></Open>, // 开屏广告
           puzzle: <Puzzle></Puzzle>, // 拼图广告
         }[tabKey]

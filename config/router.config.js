@@ -358,6 +358,7 @@ export default [
           'up',
           'down',
           'adRoot',
+          'rewardPeo',
         ],
       },
       {
@@ -392,7 +393,7 @@ export default [
           'rewardPeo',
           'shareImg',
           'commerceSet',
-          // 'portraitEdit',
+          'portraitEdit',
         ],
       },
       {

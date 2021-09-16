@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Form } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import { NEW_SHARE_STATUS, SUBMIT_TYPE_VIDEO, NEW_SHARE_OWNER } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
@@ -30,6 +30,7 @@ const VideoPlatform = (props) => {
   const { list } = videoPlatform;
 
   const childRef = useRef();
+  const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState('0'); // tab
   const [visible, setVisible] = useState(false); // 详情
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
@@ -226,11 +227,11 @@ const VideoPlatform = (props) => {
             visible: status != 0 && typeUser,
             click: () => fetchShareDetail(index, 'commerce'),
           },
-          // {
-          //   type: 'portraitEdit', // 编辑画像
-          //   visible: status != 0 && typeUser,
-          //   click: () => fetchShareDetail(index, 'portrait'),
-          // },
+          {
+            type: 'portraitEdit', // 编辑画像
+            visible: status != 0 && typeUser,
+            click: () => fetchShareDetail(index, 'portrait'),
+          },
         ];
       },
     },
@@ -300,6 +301,7 @@ const VideoPlatform = (props) => {
     {
       auth: 'save',
       text: '新增',
+      show: tabKey === '0',
       onClick: () => setVisibleShare({ type: 'add', show: true }),
     },
   ];
@@ -308,7 +310,15 @@ const VideoPlatform = (props) => {
     <>
       <TableDataBlock
         keepData
-        cardProps={{ tabList: tabList, activeTabKey: tabKey, onTabChange: setTabKey }}
+        searchForm={form}
+        cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: (key) => {
+            form.resetFields();
+            setTabKey(key);
+          },
+        }}
         btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
@@ -325,7 +335,7 @@ const VideoPlatform = (props) => {
         visible={visibleShare}
         onClose={() => setVisibleShare(false)}
       ></ShareDrawer>
-      {/* 详情 */}
+      {/* 详情 修改 编辑画像 带货设置*/}
       <ShareDetail
         total={list.length}
         visible={visible}

@@ -1,52 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import moment from 'moment';
-import { NUM_INT } from '@/common/regExp';
-import { Button, Form, message } from 'antd';
+import { Button, message } from 'antd';
 import {
   AMAP_KEY,
+  VIDEO_ADVERT_PLACE,
   SHARE_AREA_TYPE,
   SHARE_TASTE_TYPE,
   SHARE_SEX_TYPE,
   SHARE_AGE_TYPE,
-  NEW_SHARETIME_TYPE,
 } from '@/common/constant';
 import { Map, Circle, Marker } from 'react-amap';
+import { checkCityName } from '@/utils/utils';
 import { CitySet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
-import DrawerCondition from '@/components/DrawerCondition';
 
 /**
- * 打赏创建
- * type videoAdvert 视频广告 新增时没有画像设置
+ * 投放设置
  */
-const RewardCreate = (props) => {
-  const {
-    type,
-    dispatch,
-    visible,
-    propertyJSON = {},
-    params,
-    childRef,
-    cityName,
-    onClose,
-    tasteTag,
-    loading,
-    loadingJSON,
-  } = props;
-
+const VideoPutInSet = (props) => {
+  const { form, dispatch, propertyJSON = {}, tasteTag, detail = {} } = props;
   // 默认选择项
   const inputData = {
-    momentDTO: { gender: 'ALL' },
-    tippingTimeType: 'permanent',
+    gender: 'ALL',
+    browseType: 'all',
     areaType: 'all',
     taste: 'all',
     age: '0-100',
   };
-
-  const [form] = Form.useForm();
-
-  const showUserSet = type !== 'videoAdvert';
 
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // 地图回显用 [经度 lnt , 纬度 lat]
@@ -54,57 +34,14 @@ const RewardCreate = (props) => {
   const [radius, setRadius] = useState(0); // 地域选择 - 半径
   const [ageType, setAgeType] = useState('0-100'); // 年龄
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
-  const [timeSelect, setTimeSelect] = useState(false); // 投放时长
-  const [totalBean, setTotalBean] = useState({ pnum: 0, bnum: 0 }); // 计算总卡豆
 
-  // 确认发布
-  const handleVideoPush = () => {
-    form.validateFields().then((values) => {
-      const {
-        rewardStartTime: time,
-        age,
-        ageData,
-        areaType,
-        area,
-        cityList = [],
-        tagsId = [],
-        momentDTO,
-        ...ohter
-      } = values;
-      let payload = {};
-      if (showUserSet) {
-        payload = {
-          momentDTO: {
-            ...momentDTO,
-            scope: 'all',
-            age: age === 'age' ? ageData.toString() : age,
-            areaType,
-            tagsId: tagsId.toString(),
-            area: {
-              all: undefined,
-              city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-              district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
-              near: area,
-            }[areaType],
-          },
-        };
-      }
-      dispatch({
-        type: 'videoPlatform/fetchNewShareRewardSave',
-        payload: {
-          ...params,
-          ...ohter,
-          ...payload,
-          beginDate: time && time[0].format('YYYY-MM-DD'),
-          endDate: time && time[1].format('YYYY-MM-DD'),
-        },
-        callback: () => {
-          onClose();
-          childRef.current.fetchGetData();
-        },
-      });
-    });
-  };
+  useEffect(() => {
+    fetchGetPropertyJSON();
+    fetchGetTasteTag();
+    setAreaType(detail.areaType);
+    setAgeType(detail.age);
+    setTastetype(detail.taste);
+  }, []);
 
   // 获取配置文件
   const fetchGetPropertyJSON = () => {
@@ -121,8 +58,9 @@ const RewardCreate = (props) => {
   };
 
   const onSearchAddress = () => {
-    form.validateFields([['momentDTO', 'beanAddress']]).then(({ momentDTO }) => {
-      const address = momentDTO.beanAddress;
+    form.validateFields(['beanAddress']).then(({ beanAddress }) => {
+      const address = beanAddress;
+      const cityName = checkCityName(form.getFieldValue('districtCode'));
       fetch(
         `https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&city=${cityName}&keywords=${
           cityName + address
@@ -137,7 +75,7 @@ const RewardCreate = (props) => {
                 const geocodes = list[0].location.split(',');
                 const longitude = parseFloat(geocodes[0]); // 经度 lnt
                 const latitude = parseFloat(geocodes[1]); // 纬度 lat
-                form.setFieldsValue({ momentDTO: { beanLnt: longitude, beanLat: latitude } });
+                form.setFieldsValue({ beanLnt: longitude, beanLat: latitude });
                 setLocation([longitude, latitude]);
                 setMap(true);
               }
@@ -178,7 +116,7 @@ const RewardCreate = (props) => {
       </Map>
       <Button
         onClick={() => {
-          form.setFieldsValue({ momentDTO: { beanLnt: location[0], beanLat: location[1] } });
+          form.setFieldsValue({ beanLnt: location[0], beanLat: location[1] });
           message.success('保存新地址成功', 1.5);
         }}
         style={{ position: 'absolute', top: 20, right: 20 }}
@@ -190,11 +128,15 @@ const RewardCreate = (props) => {
 
   const formItems = [
     {
-      title: '画像设置',
-      label: '性别',
-      name: ['momentDTO', 'gender'],
+      label: '推荐位置',
+      name: 'browseType',
       type: 'radio',
-      visible: showUserSet,
+      select: { all: '全部', ...VIDEO_ADVERT_PLACE },
+    },
+    {
+      label: '性别',
+      name: 'gender',
+      type: 'radio',
       select: SHARE_SEX_TYPE,
     },
     {
@@ -202,7 +144,6 @@ const RewardCreate = (props) => {
       name: 'age',
       type: 'radio',
       select: SHARE_AGE_TYPE,
-      visible: showUserSet,
       onChange: (e) => setAgeType(e.target.value),
     },
     {
@@ -218,7 +159,6 @@ const RewardCreate = (props) => {
       name: 'areaType',
       type: 'radio',
       select: SHARE_AREA_TYPE,
-      visible: showUserSet,
       onChange: (e) => {
         form.setFieldsValue({ cityList: [[]] });
         setAreaType(e.target.value);
@@ -250,7 +190,7 @@ const RewardCreate = (props) => {
     {
       label: '选择地址',
       visible: areaType === 'near',
-      name: ['momentDTO', 'beanAddress'],
+      name: 'beanAddress',
       addonAfter: <a onClick={onSearchAddress}>查询</a>,
     },
     {
@@ -260,13 +200,13 @@ const RewardCreate = (props) => {
     },
     {
       label: '经度',
-      name: ['momentDTO', 'beanLnt'],
+      name: 'beanLnt',
       visible: areaType === 'near',
       hidden: true,
     },
     {
       label: '纬度',
-      name: ['momentDTO', 'beanLat'],
+      name: 'beanLat',
       visible: areaType === 'near',
       hidden: true,
     },
@@ -275,104 +215,34 @@ const RewardCreate = (props) => {
       name: 'taste',
       type: 'radio',
       select: SHARE_TASTE_TYPE,
-      visible: showUserSet,
       onChange: (e) => setTastetype(e.target.value),
     },
     {
       label: '选择兴趣',
-      type: 'treeSelect',
+      type: 'tags',
       name: 'tagsId',
       multiple: true,
       visible: tasteType === 'tag',
-      select: tasteTag.map(({ domainId, domainName, domainDTOList }) => ({
-        domainId,
-        domainName,
-        domainDTOList,
-        disabled: true,
-      })),
+      select: tasteTag,
       fieldNames: {
         label: 'domainName',
         value: 'domainId',
-        children: 'domainDTOList',
       },
-    },
-    {
-      title: '打赏设置',
-      label: '投放时长',
-      name: 'tippingTimeType',
-      type: 'radio',
-      select: NEW_SHARETIME_TYPE,
-      onChange: (e) => setTimeSelect(e.target.value),
-    },
-    {
-      label: '时间选择',
-      name: 'rewardStartTime',
-      type: 'rangePicker',
-      visible: timeSelect === 'fixed',
-      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-    },
-    {
-      label: '单次曝光打赏',
-      name: 'tippingBean',
-      suffix: '卡豆/人',
-      addRules: [{ pattern: NUM_INT, message: '应为大于0的整数数字' }],
-      onChange: (e) => setTotalBean((old) => ({ ...old, bnum: Number(e.target.value) })),
-    },
-    {
-      label: '目标曝光量',
-      name: 'tippingCount',
-      suffix: '人',
-      addRules: [{ pattern: NUM_INT, message: '应为大于0的整数数字' }],
-      onChange: (e) => setTotalBean((old) => ({ ...old, pnum: Number(e.target.value) })),
     },
   ];
 
-  /**
-   * 统计卡豆
-   */
-  const totalDom = () => {
-    return (
-      <div style={{ width: '100%', backgroundColor: '#f6fbff', padding: 20, borderRadius: 5 }}>
-        <div>平台补贴总需：{totalBean.pnum * totalBean.bnum}卡豆</div>
-      </div>
-    );
-  };
-
-  const modalProps = {
-    title: '发布分享',
-    visible,
-    onClose,
-    loading: loadingJSON,
-    afterCallBack: () => {
-      fetchGetPropertyJSON();
-      fetchGetTasteTag();
-    },
-    closeCallBack: () => {
-      setMap(false);
-      setAgeType('0-100');
-      setAreaType('all');
-      setTastetype('all');
-      setTimeSelect(false);
-    },
-    footer: (
-      <Button type="primary" onClick={handleVideoPush} loading={loading}>
-        确认发布
-      </Button>
-    ),
-  };
-
   return (
-    <DrawerCondition {...modalProps}>
-      <FormCondition form={form} formItems={formItems} initialValues={inputData}>
-        {totalDom()}
-      </FormCondition>
-    </DrawerCondition>
+    <FormCondition
+      form={form}
+      formItems={formItems}
+      initialValues={{ ...inputData, ...detail }}
+    ></FormCondition>
   );
 };
 
-export default connect(({ loading, baseData }) => ({
+export default connect(({ baseData, businessList, loading }) => ({
   tasteTag: baseData.tasteTag,
   propertyJSON: baseData.propertyJSON,
-  loadingJSON: loading.effects['baseData/fetchGetPropertyJSON'],
-  loading: loading.effects['videoPlatform/fetchNewShareRewardSave'],
-}))(RewardCreate);
+  selectList: businessList.selectList,
+  loading: loading.models.businessList,
+}))(VideoPutInSet);

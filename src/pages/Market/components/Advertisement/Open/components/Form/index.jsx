@@ -1,18 +1,37 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'umi';
 import moment from 'moment';
-import { OPEN_ADVERT_TYPE } from '@/common/constant';
+import debounce from 'lodash/debounce';
 import { OPEN_ADVERT } from '@/common/imgRatio';
+import { OPEN_ADVERT_TYPE } from '@/common/constant';
 import { NativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const OpenAdForm = (props) => {
-  const { detail = {}, form, tabKey } = props;
+  const { detail = {}, form, tabKey, dispatch, loading } = props;
 
   const [mediaType, setMediaType] = useState('image');
+  const [selectList, setSelectList] = useState([]);
 
   useEffect(() => {
     setMediaType(detail.mediaType);
+    setSelectList([]);
+    if (detail.platformMomentId) {
+      fetchGetSearch(detail.platformMomentId);
+    }
   }, []);
+
+  // 搜索
+  const fetchGetSearch = debounce((content) => {
+    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
+    dispatch({
+      type: 'videoAdvert/fetchVideoAdvertSearch',
+      payload: {
+        title: content.replace(/'/g, ''),
+      },
+      callback: setSelectList,
+    });
+  }, 500);
 
   const formItems = [
     {
@@ -36,46 +55,14 @@ const OpenAdForm = (props) => {
       imgRatio: OPEN_ADVERT,
     },
     {
-      label: '上传封面',
-      name: ['videoContentObject', 'frontImage'],
-      type: 'upload',
-      maxFile: 1,
-      maxSize: 500,
+      label: '选择视频',
+      loading,
+      type: 'select',
+      select: selectList,
+      name: 'platformMomentId',
+      placeholder: '请输入视频名称搜索',
       visible: mediaType === 'video',
-      imgRatio: OPEN_ADVERT,
-    },
-    {
-      label: '上传视频',
-      name: ['videoContentObject', 'url'],
-      type: 'videoUpload',
-      maxFile: 1,
-      visible: mediaType === 'video',
-      onChange: ({ file }) => {
-        const fileurl = URL.createObjectURL(file);
-        // 获取视频的时长 长宽高
-        const videoElement = document.createElement('video');
-        videoElement.addEventListener('loadedmetadata', function (_event) {
-          const duration = videoElement.duration; // 单位：秒
-          form.setFieldsValue({
-            videoContentObject: { videoId: undefined, length: parseInt(duration) },
-          });
-        });
-        videoElement.src = fileurl;
-        videoElement.load();
-      },
-    },
-    {
-      label: '视频id',
-      name: ['videoContentObject', 'videoId'],
-      visible: mediaType === 'video',
-      rules: [{ required: false }],
-      hidden: true,
-    },
-    {
-      label: '视频时长',
-      visible: mediaType === 'video',
-      name: ['videoContentObject', 'length'],
-      hidden: true,
+      onSearch: fetchGetSearch,
     },
     {
       label: '广告说明',
@@ -98,4 +85,6 @@ const OpenAdForm = (props) => {
   return <FormCondition initialValues={detail} formItems={formItems} form={form} />;
 };
 
-export default OpenAdForm;
+export default connect(({ loading }) => ({
+  loading: loading.effects['videoAdvert/fetchVideoAdvertSearch'],
+}))(OpenAdForm);

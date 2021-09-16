@@ -325,28 +325,85 @@ export function fetchOpenAdvertStatus(data) {
 
 // 视频广告
 
-// get 视频广告 - 新手视频 - 列表
+// get 视频广告 - 列表
+export function fetchVideoAdvertList(params) {
+  return request('/admin/marketing/moment/platform/momentList', {
+    params,
+  });
+}
+
+// post 视频广告 - 下架
+export function fetchVideoAdvertStatus(data) {
+  return request('/admin/marketing/moment/platform/offMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视频广告 - 新增
+export function fetchVideoAdvertCreate(data) {
+  return request('/admin/marketing/moment/platform/createMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 视频广告 - 修改
+export function fetchVideoAdvertEdit(data) {
+  return request('/admin/marketing/moment/platform/updateMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 视频广告 - 详情
+export function fetchVideoAdvertDetail(params) {
+  return request('/admin/marketing/moment/platform/momentDetail', {
+    params,
+  });
+}
+
+// get 视频广告 - 配置详情
+export function fetchVideoAdvertRootCount(params) {
+  return request('/admin/marketing/moment/platform/getConfig', {
+    params,
+  });
+}
+
+// post 视频广告 - 配置数量
+export function fetchVideoAdvertRootCountSet(data) {
+  return request('/admin/marketing/moment/platform/setConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 视频广告 end
+
+// 新手视频
+
+// get 新手视频 - 列表
 export function fetchVideoAdNovice(params) {
   return request('/admin/guideMomentsManagement/listGuideMoments', {
     params,
   });
 }
 
-// get 视频广告 - 新手视频 - 领豆明细
+// get 新手视频 - 领豆明细
 export function fetchVideoAdNoviceBean(params) {
   return request('/admin/guideMomentsManagement/listGuideMomentsDetail', {
     params,
   });
 }
 
-// get 视频广告 - 新手视频 - 详情
+// get 新手视频 - 详情
 export function fetchVideoAdNoviceDetail(params) {
   return request('/admin/guideMomentsManagement/getGuideMomentsById', {
     params,
   });
 }
 
-// post 视频广告 - 新手视频 - 发布分享
+// post 新手视频 - 发布分享
 export function fetchVideoAdNoviceSet(data) {
   return request('/admin/guideMomentsManagement/saveGuideMoments', {
     method: 'POST',
@@ -354,7 +411,7 @@ export function fetchVideoAdNoviceSet(data) {
   });
 }
 
-// post 视频广告 - 新手视频 - 下架
+// post 新手视频 - 下架
 export function fetchVideoAdNoviceStatus(data) {
   return request('/admin/guideMomentsManagement/offShelfGuideMoments', {
     method: 'POST',
