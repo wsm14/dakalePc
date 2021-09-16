@@ -14,7 +14,6 @@ export default {
   state: {
     list: [],
     total: 0,
-    detailList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -22,13 +21,6 @@ export default {
       return {
         ...state,
         ...payload,
-      };
-    },
-    closeList(state, { payload }) {
-      return {
-        ...state,
-        ...payload,
-        detailList: { list: [], total: 0 },
       };
     },
   },
@@ -45,6 +37,12 @@ export default {
           total: content.total,
         },
       });
+    },
+    *fetchVideoAdvertSearch({ payload, callback }, { call, put }) {
+      const response = yield call(fetchVideoAdvertList, { ...payload, limit: 50, page: 1 });
+      if (!response) return;
+      const { content } = response;
+      callback(content.recordList);
     },
     *fetchVideoAdNoviceBean({ payload }, { call, put }) {
       const response = yield call(fetchVideoAdNoviceBean, payload);
