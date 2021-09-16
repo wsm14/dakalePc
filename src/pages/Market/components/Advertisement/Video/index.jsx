@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { checkCityName } from '@/utils/utils';
 import {
   SHARE_AREA_TYPE,
   VIDEO_ADVERT_TYPE,
@@ -13,6 +12,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
+import VideoAdRoot from './components/VideoAdRoot';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, dispatch } = props;
@@ -21,6 +21,7 @@ const ShareManage = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 详情
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
+  const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
 
   // 搜索参数
   const searchItems = [
@@ -152,7 +153,7 @@ const ShareManage = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'length',
+      dataIndex: 'platformMomentId',
       width: 180,
       render: (val, record, index) => {
         const { status } = record;
@@ -167,8 +168,8 @@ const ShareManage = (props) => {
           },
           {
             type: 'down', // 下架
-            visible: status == 1 || status == 0,
-            click: () => fetchStatusClose({}),
+            visible: status == 1,
+            click: () => fetchStatusClose(val),
           },
         ];
       },
@@ -176,10 +177,10 @@ const ShareManage = (props) => {
   ];
 
   // 下架
-  const fetchStatusClose = (values) => {
+  const fetchStatusClose = (val) => {
     dispatch({
-      type: 'videoAdvert/fetchStatusClose',
-      payload: values,
+      type: 'videoAdvert/fetchVideoAdvertStatus',
+      payload: { platformMomentId: val },
       callback: childRef.current.fetchGetData,
     });
   };
@@ -196,7 +197,20 @@ const ShareManage = (props) => {
     });
   };
 
+  // 获取广告配置详情
+  const fetchVideoAdvertRootCount = () => {
+    dispatch({
+      type: 'videoAdvert/fetchVideoAdvertRootCount',
+      callback: () => setVisibleRoot(true),
+    });
+  };
+
   const extraBtn = [
+    {
+      text: '配置',
+      auth: 'adRoot',
+      onClick: fetchVideoAdvertRootCount,
+    },
     {
       auth: 'save',
       text: '新增',
@@ -217,11 +231,13 @@ const ShareManage = (props) => {
         dispatchType="videoAdvert/fetchGetList"
         {...videoAdvert}
       ></TableDataBlock>
+      {/* 配置 */}
+      <VideoAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></VideoAdRoot>
     </>
   );
 };
 
 export default connect(({ videoAdvert, loading }) => ({
   videoAdvert,
-  loading: loading.effects['videoAdvert/fetchGetList'],
+  loading: loading.models.videoAdvert,
 }))(ShareManage);

@@ -2,10 +2,12 @@ import { notification } from 'antd';
 import moment from 'moment';
 import {
   fetchVideoAdvertList,
+  fetchVideoAdvertStatus,
+  fetchVideoAdvertRootCount,
+  fetchVideoAdvertRootCountSet,
   fetchVideoAdNoviceSet,
   fetchVideoAdNoviceBean,
   fetchVideoAdNoviceDetail,
-  fetchVideoAdNoviceStatus,
 } from '@/services/MarketServices';
 
 export default {
@@ -14,6 +16,7 @@ export default {
   state: {
     list: [],
     total: 0,
+    rootCount: {},
   },
 
   reducers: {
@@ -38,32 +41,43 @@ export default {
         },
       });
     },
+    *fetchVideoAdvertStatus({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertStatus, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `视频下架成功`,
+      });
+      callback();
+    },
     *fetchVideoAdvertSearch({ payload, callback }, { call, put }) {
       const response = yield call(fetchVideoAdvertList, { ...payload, limit: 50, page: 1 });
       if (!response) return;
       const { content } = response;
       callback(content.recordList);
     },
-    *fetchVideoAdNoviceBean({ payload }, { call, put }) {
-      const response = yield call(fetchVideoAdNoviceBean, payload);
+    *fetchVideoAdvertRootCount({ payload, callback }, { call, put }) {
+      const response = yield call(fetchVideoAdvertRootCount, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.recordList, total: content.total },
+          rootCount: content,
         },
-      });
-    },
-    *fetchVideoAdNoviceStatus({ payload, callback }, { call }) {
-      const response = yield call(fetchVideoAdNoviceStatus, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: `新手视频下架成功`,
       });
       callback();
     },
+    *fetchVideoAdvertRootCountSet({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertRootCountSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `设置成功`,
+      });
+      callback();
+    },
+
     *fetchVideoAdNoviceDetail({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdNoviceDetail, payload);
       if (!response) return;

@@ -34,14 +34,13 @@ const AccountBusinessList = (props) => {
     },
     {
       title: '店铺名称',
-      align: 'center',
       dataIndex: 'merchantName',
+      ellipsis: true,
     },
     {
       title: '集团名称',
-      align: 'center',
       dataIndex: 'groupName',
-      render: (val) => val || '--',
+      ellipsis: true,
     },
     {
       title: '店铺电话',

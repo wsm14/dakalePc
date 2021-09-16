@@ -332,6 +332,29 @@ export function fetchVideoAdvertList(params) {
   });
 }
 
+// post 视频广告 - 下架
+export function fetchVideoAdvertStatus(data) {
+  return request('/admin/marketing/moment/platform/offMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 视频广告 - 配置详情
+export function fetchVideoAdvertRootCount(params) {
+  return request('/admin/marketing/moment/platform/getConfig', {
+    params,
+  });
+}
+
+// post 视频广告 - 配置数量
+export function fetchVideoAdvertRootCountSet(data) {
+  return request('/admin/marketing/moment/platform/setConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 视频广告 end
 
 // 新手视频
