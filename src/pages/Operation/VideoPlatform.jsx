@@ -230,7 +230,8 @@ const VideoPlatform = (props) => {
           {
             type: 'portraitEdit', // 编辑画像
             visible: status != 0 && typeUser,
-            click: () => fetchShareDetail(index, 'portrait'),
+            click: () => setVisible({ show: true, type: 'portrait', detail: {} }),
+            // click: () => fetchShareDetail(index, 'portrait'),
           },
         ];
       },
@@ -329,13 +330,13 @@ const VideoPlatform = (props) => {
         dispatchType="videoPlatform/fetchGetList"
         {...videoPlatform}
       ></TableDataBlock>
-      {/* 发布分享 不审核修改 编辑画像 带货设置*/}
+      {/* 发布分享 */}
       <ShareDrawer
         childRef={childRef}
         visible={visibleShare}
         onClose={() => setVisibleShare(false)}
       ></ShareDrawer>
-      {/* 详情 */}
+      {/* 详情 修改 编辑画像 带货设置*/}
       <ShareDetail
         total={list.length}
         visible={visible}

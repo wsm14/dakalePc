@@ -6,6 +6,7 @@ import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/Coupon
 import uploadLive from '@/utils/uploadLive';
 import GoodsSet from './GoodsSet';
 import GoodsEdit from './GoodsEdit';
+import SharePutInSet from '../SharePushForm/SharePutInSet';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
@@ -160,6 +161,22 @@ const ShareDetail = (props) => {
         fetchEditData(values);
         return;
       }
+      if (type === 'portrait') {
+        const { areaType, age, ageData, area, tagsId, cityList, ...other } = values;
+        fetchNewShareNoAudit({
+          ...other,
+          areaType,
+          age: age === 'age' ? ageData.toString() : age,
+          tagsId: tagsId.toString(),
+          area: {
+            all: undefined,
+            city: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+            district: cityList.map((i) => i.city[i.city.length - 1]).toString(),
+            near: area,
+          }[areaType],
+        });
+        return;
+      }
       const { free, contact } = couponData;
       fetchNewShareNoAudit(
         {
@@ -218,6 +235,8 @@ const ShareDetail = (props) => {
           ),
           // 修改
           edit: <GoodsEdit form={form} detail={detail}></GoodsEdit>,
+          // 编辑画像
+          portrait: <SharePutInSet form={form} detail={detail}></SharePutInSet>,
         }[type]
       }
     </DrawerCondition>
