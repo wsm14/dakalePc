@@ -608,10 +608,8 @@ export const VIDEO_ACTION_TYPE = {
 
 // 视频广告 - 位置
 export const VIDEO_ADVERT_PLACE = {
-  commend: '推荐',
-  near: '附近',
   follow: '关注',
-  pickUp: '捡豆',
+  commend: '推荐',
 };
 
 // 视频广告 - 广告类型

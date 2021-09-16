@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
 import Video from './components/Advertisement/Video';
-import Puzzle from './components/Advertisement/Puzzle';
 import Open from './components/Advertisement/Open';
+import Puzzle from './components/Advertisement/Puzzle';
 
 const tabList = [
   {

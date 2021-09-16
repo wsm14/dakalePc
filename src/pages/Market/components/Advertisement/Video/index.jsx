@@ -13,13 +13,14 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
 import VideoAdRoot from './components/VideoAdRoot';
+import VideoSetDrawer from './components/VideoSetDrawer';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, dispatch } = props;
   const { list } = videoAdvert;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false); // 详情
+  const [visible, setVisible] = useState(false); // 新增 详情
   const [visibleShare, setVisibleShare] = useState(false); // 发布分享
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
 
@@ -214,7 +215,7 @@ const ShareManage = (props) => {
     {
       auth: 'save',
       text: '新增',
-      onClick: () => setVisibleShare({ type: 'add', show: true }),
+      onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];
 
@@ -233,6 +234,8 @@ const ShareManage = (props) => {
       ></TableDataBlock>
       {/* 配置 */}
       <VideoAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></VideoAdRoot>
+      {/* 新增 详情 */}
+      <VideoSetDrawer visible={visible} onClose={() => setVisible(false)}></VideoSetDrawer>
     </>
   );
 };
