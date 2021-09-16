@@ -13,6 +13,7 @@ const ShareCoupon = (props) => {
     data = {},
     merchantIdKey = 'merchantIdStr',
     show = 'free',
+    ownerType = 'merchant',
     type,
     onDel,
     onOk,
@@ -24,7 +25,7 @@ const ShareCoupon = (props) => {
 
   const selectProps = {
     merchantId: form.getFieldValue(merchantIdKey),
-    ownerType: 'merchant',
+    ownerType,
   };
 
   const {
