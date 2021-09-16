@@ -14,15 +14,16 @@ import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
 import VideoAdRoot from './components/VideoAdRoot';
 import VideoSetDrawer from './components/VideoSetDrawer';
+import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, dispatch } = props;
   const { list } = videoAdvert;
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false); // 新增 详情
-  const [visibleShare, setVisibleShare] = useState(false); // 发布分享
+  const [visible, setVisible] = useState(false); // 新增
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
+  const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
 
   // 搜索参数
   const searchItems = [
@@ -155,9 +156,9 @@ const ShareManage = (props) => {
     {
       type: 'handle',
       dataIndex: 'platformMomentId',
-      width: 180,
+      width: 150,
       render: (val, record, index) => {
-        const { status } = record;
+        const { status, relateId: ownerId } = record;
         return [
           {
             type: 'info', // 详情
@@ -171,6 +172,12 @@ const ShareManage = (props) => {
             type: 'down', // 下架
             visible: status == 1,
             click: () => fetchStatusClose(val),
+          },
+          {
+            type: 'rewardPeo', // 打赏设置
+            visible: status != 0,
+            click: () =>
+              setVisibleReward({ show: true, detail: { ...record, momentId: val, ownerId } }),
           },
         ];
       },
@@ -240,6 +247,12 @@ const ShareManage = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></VideoSetDrawer>
+      {/* 打赏设置 */}
+      <RewardSet
+        type="videoAdvert"
+        visible={visibleReward}
+        onClose={() => setVisibleReward(false)}
+      ></RewardSet>
     </>
   );
 };

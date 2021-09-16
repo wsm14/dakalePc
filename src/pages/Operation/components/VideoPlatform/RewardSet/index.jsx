@@ -8,8 +8,9 @@ import RewardCreate from './RewardCreate';
 
 /**
  * 打赏设置
+ * type videoAdvert 视频广告 新增时没有画像设置
  */
-const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
+const RewardSet = ({ list, type, visible, onClose, dispatch, loading }) => {
   const childRef = useRef(); // 表格ref
   const [visibleCreate, setVisibleCreate] = useState(false); // 创建打赏
 
@@ -129,6 +130,7 @@ const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
       </Modal>
       {/* 创建打赏 */}
       <RewardCreate
+        type={type}
         params={{ momentId, ownerId }}
         cityName={checkCityName(districtCode)}
         childRef={childRef}

@@ -16,8 +16,13 @@ import { CitySet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 
+/**
+ * 打赏创建
+ * type videoAdvert 视频广告 新增时没有画像设置
+ */
 const RewardCreate = (props) => {
   const {
+    type,
     dispatch,
     visible,
     propertyJSON = {},
@@ -40,6 +45,8 @@ const RewardCreate = (props) => {
   };
 
   const [form] = Form.useForm();
+
+  const showUserSet = type !== 'videoAdvert';
 
   const [map, setMap] = useState(false);
   const [location, setLocation] = useState([120, 30]); // 地图回显用 [经度 lnt , 纬度 lat]
@@ -64,13 +71,9 @@ const RewardCreate = (props) => {
         momentDTO,
         ...ohter
       } = values;
-      dispatch({
-        type: 'videoPlatform/fetchNewShareRewardSave',
-        payload: {
-          ...params,
-          ...ohter,
-          beginDate: time && time[0].format('YYYY-MM-DD'),
-          endDate: time && time[1].format('YYYY-MM-DD'),
+      let payload = {};
+      if (showUserSet) {
+        payload = {
           momentDTO: {
             ...momentDTO,
             scope: 'all',
@@ -84,6 +87,16 @@ const RewardCreate = (props) => {
               near: area,
             }[areaType],
           },
+        };
+      }
+      dispatch({
+        type: 'videoPlatform/fetchNewShareRewardSave',
+        payload: {
+          ...params,
+          ...ohter,
+          ...payload,
+          beginDate: time && time[0].format('YYYY-MM-DD'),
+          endDate: time && time[1].format('YYYY-MM-DD'),
         },
         callback: () => {
           onClose();
@@ -181,6 +194,7 @@ const RewardCreate = (props) => {
       label: '性别',
       name: ['momentDTO', 'gender'],
       type: 'radio',
+      visible: showUserSet,
       select: SHARE_SEX_TYPE,
     },
     {
@@ -188,6 +202,7 @@ const RewardCreate = (props) => {
       name: 'age',
       type: 'radio',
       select: SHARE_AGE_TYPE,
+      visible: showUserSet,
       onChange: (e) => setAgeType(e.target.value),
     },
     {
@@ -203,6 +218,7 @@ const RewardCreate = (props) => {
       name: 'areaType',
       type: 'radio',
       select: SHARE_AREA_TYPE,
+      visible: showUserSet,
       onChange: (e) => {
         form.setFieldsValue({ cityList: [[]] });
         setAreaType(e.target.value);
@@ -259,6 +275,7 @@ const RewardCreate = (props) => {
       name: 'taste',
       type: 'radio',
       select: SHARE_TASTE_TYPE,
+      visible: showUserSet,
       onChange: (e) => setTastetype(e.target.value),
     },
     {

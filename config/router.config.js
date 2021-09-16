@@ -358,6 +358,7 @@ export default [
           'up',
           'down',
           'adRoot',
+          'rewardPeo',
         ],
       },
       {
