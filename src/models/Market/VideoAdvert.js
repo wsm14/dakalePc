@@ -5,8 +5,7 @@ import {
   fetchVideoAdvertStatus,
   fetchVideoAdvertRootCount,
   fetchVideoAdvertRootCountSet,
-  fetchVideoAdNoviceSet,
-  fetchVideoAdNoviceBean,
+  fetchVideoAdvertCreate,
   fetchVideoAdNoviceDetail,
 } from '@/services/MarketServices';
 
@@ -77,6 +76,15 @@ export default {
       });
       callback();
     },
+    *fetchVideoAdvertCreate({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertCreate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `广告新增成功`,
+      });
+      callback();
+    },
 
     *fetchVideoAdNoviceDetail({ payload, callback }, { call }) {
       const response = yield call(fetchVideoAdNoviceDetail, payload);
@@ -129,15 +137,6 @@ export default {
           rewardEndTime: `${rewardStartTime} ~ ${rewardEndTime}`,
           ...editData,
         });
-    },
-    *fetchVideoAdNoviceSet({ payload, callback }, { call }) {
-      const response = yield call(fetchVideoAdNoviceSet, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: `视频广告新增成功`,
-      });
-      callback();
     },
   },
 };

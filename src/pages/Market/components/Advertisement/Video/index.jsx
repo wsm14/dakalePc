@@ -79,10 +79,10 @@ const ShareManage = (props) => {
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
-      render: (val, detail) => (
+      render: (val, row) => (
         <PopImgShow url={val}>
           <Ellipsis length={10} tooltip lines={3}>
-            {detail.title}
+            {row.title}
           </Ellipsis>
           <span style={{ color: '#999999' }}>{row.platformMomentId}</span>
         </PopImgShow>
@@ -235,7 +235,11 @@ const ShareManage = (props) => {
       {/* 配置 */}
       <VideoAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></VideoAdRoot>
       {/* 新增 详情 */}
-      <VideoSetDrawer visible={visible} onClose={() => setVisible(false)}></VideoSetDrawer>
+      <VideoSetDrawer
+        childRef={childRef}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></VideoSetDrawer>
     </>
   );
 };

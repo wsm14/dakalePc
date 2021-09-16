@@ -67,7 +67,7 @@ const ShareDrawer = (props) => {
             title,
             callback: (videos) => {
               dispatch({
-                type: 'videoPlatform/fetchNewSharePush',
+                type: 'videoAdvert/fetchVideoAdvertCreate',
                 payload: {
                   ...other,
                   ...otherValus,
@@ -199,5 +199,5 @@ const ShareDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['videoPlatform/fetchNewSharePush'],
+  loading: loading.effects['videoAdvert/fetchVideoAdvertCreate'],
 }))(ShareDrawer);
