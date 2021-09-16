@@ -348,6 +348,21 @@ export function fetchVideoAdvertCreate(data) {
   });
 }
 
+// post 视频广告 - 修改
+export function fetchVideoAdvertEdit(data) {
+  return request('/admin/marketing/moment/platform/updateMoment', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 视频广告 - 详情
+export function fetchVideoAdvertDetail(params) {
+  return request('/admin/marketing/moment/platform/momentDetail', {
+    params,
+  });
+}
+
 // get 视频广告 - 配置详情
 export function fetchVideoAdvertRootCount(params) {
   return request('/admin/marketing/moment/platform/getConfig', {

@@ -14,6 +14,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import WeightSet from './components/WeightSet';
 import VideoAdRoot from './components/VideoAdRoot';
 import VideoSetDrawer from './components/VideoSetDrawer';
+import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
 
 const ShareManage = (props) => {
@@ -22,6 +23,7 @@ const ShareManage = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增
+  const [visibleDetail, setVisibleDetail] = useState(false); // 详情 编辑
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
 
@@ -158,15 +160,15 @@ const ShareManage = (props) => {
       dataIndex: 'platformMomentId',
       width: 150,
       render: (val, record, index) => {
-        const { status, relateId: ownerId } = record;
+        const { status } = record;
         return [
           {
             type: 'info', // 详情
-            click: () => fetchShareDetail(index, record.contentType || 'video'),
+            click: () => fetchVideoAdvertDetail(index, 'info'),
           },
           {
             type: 'edit', // 编辑
-            click: () => fetchShareDetail(index, record.contentType || 'video'),
+            click: () => fetchVideoAdvertDetail(index, 'edit'),
           },
           {
             type: 'down', // 下架
@@ -177,7 +179,7 @@ const ShareManage = (props) => {
             type: 'rewardPeo', // 打赏设置
             visible: status != 0,
             click: () =>
-              setVisibleReward({ show: true, detail: { ...record, momentId: val, ownerId } }),
+              setVisibleReward({ show: true, detail: { ...record, momentId: val, ownerId: -1 } }),
           },
         ];
       },
@@ -194,14 +196,15 @@ const ShareManage = (props) => {
   };
 
   // 获取详情
-  const fetchShareDetail = (index, type) => {
-    const { userMomentIdString } = list[index];
+  const fetchVideoAdvertDetail = (index, type) => {
+    const { platformMomentId } = list[index];
     dispatch({
-      type: 'videoAdvert/fetchShareDetail',
+      type: 'videoAdvert/fetchVideoAdvertDetail',
       payload: {
-        userMomentIdString,
+        platformMomentId,
+        type,
       },
-      callback: (detail) => setVisible({ show: true, index, type, detail }),
+      callback: (detail) => setVisibleDetail({ show: true, index, type, detail }),
     });
   };
 
@@ -241,12 +244,20 @@ const ShareManage = (props) => {
       ></TableDataBlock>
       {/* 配置 */}
       <VideoAdRoot visible={visibleRoot} onClose={() => setVisibleRoot(false)}></VideoAdRoot>
-      {/* 新增 详情 */}
+      {/* 新增 */}
       <VideoSetDrawer
         childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
       ></VideoSetDrawer>
+      {/* 详情 修改 */}
+      <VideoDetail
+        visible={visibleDetail}
+        childRef={childRef}
+        total={list.length}
+        getDetail={fetchVideoAdvertDetail}
+        onClose={() => setVisibleDetail(false)}
+      ></VideoDetail>
       {/* 打赏设置 */}
       <RewardSet
         type="videoAdvert"
