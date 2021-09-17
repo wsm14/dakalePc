@@ -74,7 +74,7 @@ const VideoDetail = (props) => {
       name: 'browseType',
       render: (val) => (
         <>
-          <div>推荐位置：{val === 'all' ? '全部' : VIDEO_ADVERT_PLACE[val]}</div>
+          <div>推荐位置：{val === '' ? '全部' : VIDEO_ADVERT_PLACE[val]}</div>
           <div>用户性别：{SHARE_SEX_TYPE[detail.gender]}</div>
           <div>用户年龄：{detail.age}</div>
           <div>
