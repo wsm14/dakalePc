@@ -67,17 +67,20 @@ const OpenAdForm = (props) => {
     {
       label: '广告说明',
       type: 'textArea',
+      visible: mediaType === 'image',
       name: 'launchDesc',
       maxLength: 200,
     },
     {
       label: '展示时间',
+      visible: mediaType === 'image',
       name: 'activeDate',
       type: 'rangePicker',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       type: 'noForm',
+      visible: mediaType === 'image',
       formItem: <NativeFormSet form={form} detail={detail} port={tabKey}></NativeFormSet>,
     },
   ];
