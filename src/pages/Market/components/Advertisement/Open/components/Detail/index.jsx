@@ -41,6 +41,7 @@ const OpenAdForm = (props) => {
     {
       label: '跳转事件',
       name: 'jumpUrlType',
+      show: !!detail.jumpUrlType,
       render: (val) => BANNER_JUMP_TYPE[val],
     },
     {

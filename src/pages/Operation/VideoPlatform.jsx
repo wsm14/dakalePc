@@ -214,8 +214,8 @@ const VideoPlatform = (props) => {
             click: () => fetchShareDetail(index, 'edit'),
           },
           {
-            type: 'rewardPeo', // 打赏设置
-            visible: status != 0 && typeUser,
+            type: 'rewardPeo', // 打赏设置 已打赏显示按钮 未打赏只有下架状态不显示按钮
+            visible: (status != 0 || tabKey === '1') && typeUser,
             click: () => setVisibleReward({ show: true, detail: record }),
           },
           {
