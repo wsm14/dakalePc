@@ -2,7 +2,7 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList = [], tabkey } = props;
@@ -66,6 +66,11 @@ const GoodsDetail = (props) => {
   ];
 
   const GoodDecItem = [
+    {
+      label: '介绍类型',
+      name: 'goodsDescType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
     {
       name: 'goodsDesc',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
