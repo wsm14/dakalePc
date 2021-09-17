@@ -281,7 +281,8 @@ export const SUBSIDY_TYPE = {
   // recycleDirectCharge: '平台直充回收',
   // recyclePlatform: '营销卡豆回收',
   platformSubsidy: '新手任务补贴',
-  pushVideo: '平台视频打赏',
+  pushVideo: '打赏补贴',
+  momentStop: '打赏回收',
 };
 
 // 补贴管理 补贴卡豆类型

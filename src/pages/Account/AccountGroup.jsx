@@ -73,7 +73,7 @@ const AccountUserList = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.userIdString}`}
+        rowKey={(record) => `${record.merchantGroupIdString}`}
         dispatchType="accountGroup/fetchGetList"
         {...grouplist}
       ></TableDataBlock>

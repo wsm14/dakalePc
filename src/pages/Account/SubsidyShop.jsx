@@ -33,7 +33,7 @@ const SubsidyShop = (props) => {
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: ['platform', 'directCharge', 'platformSubsidy', 'pushVideo'],
+    type: ['platform', 'directCharge', 'platformSubsidy', 'pushVideo', 'momentStop'],
   };
 
   // 搜索参数
@@ -59,13 +59,13 @@ const SubsidyShop = (props) => {
   // 获取详情
   const fetchGetDetail = (_, row) => {
     dispatch({
-      type:'subsidyShop/fetchSubsidyStatisticDetail',
+      type: 'subsidyShop/fetchSubsidyStatisticDetail',
       payload: {
-        platformBeanDetailId:row.id
+        platformBeanDetailId: row.id,
       },
-      callback: (info) =>{
-        setVisible({ show: true, ...info, titles: row.taskName })
-      } ,
+      callback: (info) => {
+        setVisible({ show: true, ...info, titles: row.taskName });
+      },
     });
   };
 
