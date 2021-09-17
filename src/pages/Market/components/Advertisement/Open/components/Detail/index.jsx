@@ -26,7 +26,7 @@ const OpenAdForm = (props) => {
     {
       label: '广告内容',
       type: 'videoUpload',
-      name: ['videoContentObject', 'url'],
+      name: 'url',
       show: mediaType === 'video',
     },
     {
