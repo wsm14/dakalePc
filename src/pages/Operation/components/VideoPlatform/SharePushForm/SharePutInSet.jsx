@@ -207,20 +207,14 @@ const SharePutInSet = (props) => {
     },
     {
       label: '选择兴趣',
-      type: 'treeSelect',
+      type: 'tags',
       name: 'tagsId',
       multiple: true,
       visible: tasteType === 'tag',
-      select: tasteTag.map(({ domainId, domainName, domainDTOList }) => ({
-        domainId,
-        domainName,
-        domainDTOList,
-        disabled: true,
-      })),
+      select: tasteTag,
       fieldNames: {
         label: 'domainName',
         value: 'domainId',
-        children: 'domainDTOList',
       },
     },
   ];
