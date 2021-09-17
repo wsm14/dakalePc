@@ -123,13 +123,30 @@ const SpecialGoodCheckDetail = (props) => {
     form.validateFields().then((values) => {
       const { otherPlatformPrice, merTags, platTags, serviceDivisionDTO = {} } = values;
       let tags = [...merTags, ...platTags];
-      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const {
+        provinceBean = '',
+        districtBean = '',
+        darenBean = '',
+        cityBean = '',
+      } = serviceDivisionDTO;
       const pBean = Number(provinceBean) * 100;
       const dBean = Number(districtBean) * 100;
       const daBean = Number(darenBean) * 100;
-      const totalFee = Number(provinceBean) + Number(districtBean) + Number(darenBean);
+      const cBean = Number(cityBean) * 100;
+      //总分佣
+      const totalFee = (
+        Number(provinceBean) +
+        Number(districtBean) +
+        Number(darenBean) +
+        Number(cityBean)
+      ).toFixed(2);
       //金额转卡豆
-      const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
+      const serDivisionDTO = {
+        provinceBean: pBean,
+        districtBean: dBean,
+        darenBean: daBean,
+        cityBean: cBean,
+      };
       const payload = {
         submitterType,
         divisionFlag,
@@ -138,7 +155,7 @@ const SpecialGoodCheckDetail = (props) => {
         serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
         otherPlatformPrice: otherPlatformPrice,
         goodsTags: merTags?.toString(),
-        platformGoodsTags:platTags?.toString()
+        platformGoodsTags: platTags?.toString(),
       };
       //手动分佣判断
       if (detail.divisionFlag === '1') {
@@ -231,12 +248,20 @@ const SpecialGoodCheckDetail = (props) => {
       min: 0,
     },
     {
+      label: '地级市分佣金额（元）',
+      name: ['serviceDivisionDTO', 'cityBean'],
+      type: 'number',
+      precision: 2,
+      min: 0,
+    },
+    {
       label: '区县分佣金额（元）',
       name: ['serviceDivisionDTO', 'districtBean'],
       type: 'number',
       precision: 2,
       min: 0,
     },
+
     {
       label: '哒人分佣金额（元）',
       name: ['serviceDivisionDTO', 'darenBean'],

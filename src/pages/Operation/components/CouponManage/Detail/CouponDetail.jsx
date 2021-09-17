@@ -133,13 +133,16 @@ const GoodsDetail = (props) => {
           detail.reduceObject.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
     },
-   
   ];
   //分佣配置
   const commissionItem = [
     {
       label: '省代分佣金额（元）',
       name: ['serviceDivisionDTO', 'provinceBean'],
+    },
+    {
+      label: '地级市分佣金额（元）',
+      name: ['serviceDivisionDTO', 'cityBean'],
     },
     {
       label: '区县分佣金额（元）',
