@@ -20,12 +20,12 @@ const CircleMasterList = (props) => {
       select: MASTER_TYPE,
     },
     {
-      label: '用户/店铺名',
-      name: 'name',
-    },
-    {
       label: '手机号',
       name: 'mobile',
+    },
+    {
+      label: '用户/店铺名',
+      name: 'name',
     },
     {
       label: '省市区',
