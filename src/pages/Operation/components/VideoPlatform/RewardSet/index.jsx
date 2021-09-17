@@ -1,22 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import { checkCityName } from '@/utils/utils';
 import { NEW_SHAREREWARD_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import RewardCreate from './RewardCreate';
 
 /**
  * 打赏设置
- * type videoAdvert 视频广告 新增时没有画像设置
  */
-const RewardSet = ({ list, type, visible, onClose, dispatch, loading }) => {
+const RewardSet = ({ list, visible, onClose, dispatch, loading }) => {
   const childRef = useRef(); // 表格ref
   const [visibleCreate, setVisibleCreate] = useState(false); // 创建打赏
 
   const { show = false, detail = {} } = visible;
 
-  const { districtCode, momentId, ownerId } = detail;
+  const { momentId, ownerId } = detail;
 
   // table 表头
   const getColumns = [
@@ -107,7 +105,7 @@ const RewardSet = ({ list, type, visible, onClose, dispatch, loading }) => {
   return (
     <>
       <Modal
-        title={`${detail.title} - 打赏设置`}
+        title={`打赏设置 - ${detail.title}`}
         destroyOnClose
         maskClosable
         width={1100}
@@ -130,9 +128,7 @@ const RewardSet = ({ list, type, visible, onClose, dispatch, loading }) => {
       </Modal>
       {/* 创建打赏 */}
       <RewardCreate
-        type={type}
         params={{ momentId, ownerId }}
-        cityName={checkCityName(districtCode)}
         childRef={childRef}
         visible={visibleCreate}
         onClose={() => setVisibleCreate(false)}
