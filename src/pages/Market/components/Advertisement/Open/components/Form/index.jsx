@@ -43,7 +43,7 @@ const OpenAdForm = (props) => {
       label: '广告类型',
       type: 'radio',
       name: 'mediaType',
-      select: OPEN_ADVERT_TYPE,
+      select: tabKey === 'user' ? OPEN_ADVERT_TYPE : { image: '图片广告' },
       onChange: (e) => setMediaType(e.target.value),
     },
     {
