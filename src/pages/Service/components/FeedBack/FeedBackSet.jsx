@@ -24,6 +24,7 @@ const FeedBackDetail = ({ loading, visible, dispatch, onClose, cRef }) => {
     console.log(removedTag, 'removedTag');
     const tagsNew = tags.filter((tag) => tag !== removedTag);
     setTags(tagsNew);
+    form.setFieldsValue({ extraParam: tagsNew });
   };
 
   const showInput = () => {
