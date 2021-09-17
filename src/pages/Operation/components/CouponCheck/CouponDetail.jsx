@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
-import { BUSINESS_TYPE, COUPON_WEEK_TIME, COUPON_BUY_RULE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  COUPON_WEEK_TIME,
+  COUPON_BUY_RULE,
+  SPECIAL_DESC_TYPE,
+} from '@/common/constant';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import { Button, Tabs, Alert, Form, notification } from 'antd';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -22,6 +27,7 @@ const GoodsDetail = (props) => {
     ownerIdString,
     merchantList = [],
     divisionFlag,
+    couponDetailType,
   } = detail;
 
   const [recordList, setRecordList] = useState({});
@@ -156,13 +162,26 @@ const GoodsDetail = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
+      label: '介绍类型',
+      name: 'couponDetailType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
+    {
+      label: `优惠券介绍`,
+      name: 'richText',
+      show: couponDetailType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
       label: '优惠券介绍',
       name: 'couponDetail',
+      show: couponDetailType === '0',
     },
     {
       label: '优惠券图片',
       type: 'upload',
       name: 'couponDetailImg',
+      show: couponDetailType === '0',
     },
   ];
 
@@ -278,6 +297,7 @@ const GoodsDetail = (props) => {
     visible: show,
     title: '详情',
     onClose,
+    loading,
     dataPage: {
       current: index,
       total,
@@ -402,5 +422,5 @@ const GoodsDetail = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoodsCheck/fetchSpecialGoodsAuditDetail'],
+  loading: loading.effects['couponAudit/fetchCouponAuditDetail'],
 }))(GoodsDetail);

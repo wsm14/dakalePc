@@ -151,7 +151,7 @@ export default {
               age: age !== '0-100' ? 'age' : age,
               ageData: age !== '0-100' ? age.split(',') : [],
               taste: tagsId ? 'tag' : 'all',
-              tagsId: tagsId?.split(',') || [],
+              tagsId: tagsId ? tagsId?.split(',') : [],
               area: {
                 all: '',
                 city: [],

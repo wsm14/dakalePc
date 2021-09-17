@@ -2,11 +2,11 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from './MerchantListTable';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, ownerType } = detail;
+  const { goodsType, ownerType, goodsDescType } = detail;
 
   const ActiveformItems = [
     {
@@ -67,13 +67,26 @@ const GoodsDetail = (props) => {
 
   const GoodDecItem = [
     {
-      name: 'goodsDesc',
+      label: '介绍类型',
+      name: 'goodsDescType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
+    {
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      name: 'richText',
+      show: goodsDescType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      name: 'goodsDesc',
+      show: goodsDescType === '0',
       type: 'textArea',
     },
     {
-      name: 'goodsDescImg',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍图片`,
+      name: 'goodsDescImg',
+      show: goodsDescType === '0',
       type: 'upload',
     },
   ];

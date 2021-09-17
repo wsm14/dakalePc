@@ -93,7 +93,6 @@ const SpecialGoods = (props) => {
       select: SPECIAL_USERTIME_TYPE,
       handle: (form) => ({
         onChange: (val) => {
-          console.log(val);
           setSearchType(val);
           form.setFieldsValue({ gain: undefined });
         },

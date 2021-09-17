@@ -10,11 +10,13 @@ import {
   COUPON_TIME_TYPE,
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
+  SPECIAL_DESC_TYPE,
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
+import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 
 const CouponSet = (props) => {
@@ -31,6 +33,7 @@ const CouponSet = (props) => {
     initialValues,
     type,
     status,
+    setContent,
   } = props;
 
   // 是否 编辑重新发布（上架，下架）都隐藏的数据
@@ -39,6 +42,7 @@ const CouponSet = (props) => {
   const editDisabled = type === 'edit' && status === '1';
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
+  const [couponDetailType, setCouponDetailType] = useState('0'); // 商品介绍类型
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
     groupId: null,
@@ -69,7 +73,8 @@ const CouponSet = (props) => {
       initialValues.restrictions = userFlagCheck; // 使用门槛
       initialValues.timeSplit = useWeekCheck; // 适用时段
       initialValues.timeType = timeTypeCheck; // 使用时间 小时
-
+      // 图文介绍类型
+      setCouponDetailType(initialValues.couponDetailType);
       // 适用时段
       setRadioData({
         buyFlag,
@@ -321,9 +326,18 @@ const CouponSet = (props) => {
     },
     {
       title: `设置优惠券介绍`,
+      label: '选择介绍类型',
+      type: 'radio',
+      name: 'couponDetailType',
+      select: SPECIAL_DESC_TYPE,
+      onChange: (e) => setCouponDetailType(e.target.value),
+    },
+    {
+      title: `设置优惠券介绍`,
       label: `优惠券介绍`,
       type: 'textArea',
       name: 'couponDetail',
+      hidden: couponDetailType !== '0',
       rules: [{ required: false }],
       maxLength: 200,
     },
@@ -332,7 +346,18 @@ const CouponSet = (props) => {
       name: 'couponDetailImg',
       type: 'upload',
       maxFile: 20,
+      hidden: couponDetailType !== '0',
       rules: [{ required: false }],
+    },
+    {
+      type: 'noForm',
+      visible: couponDetailType === '1',
+      formItem: (
+        <EditorForm
+          content={initialValues.richText}
+          editCallback={(val) => setContent(val)}
+        ></EditorForm>
+      ),
     },
     {
       title: '设置使用规则',
@@ -468,7 +493,7 @@ const CouponSet = (props) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={initialValues || { ownerType: 'merchant' }}
+        initialValues={initialValues || { ownerType: 'merchant', couponDetailType: '0' }}
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
