@@ -132,7 +132,7 @@ const ShareManage = (props) => {
       title: '推荐位置',
       align: 'right',
       dataIndex: 'browseType',
-      render: (val) => VIDEO_ADVERT_PLACE[val],
+      render: (val) => (val ? VIDEO_ADVERT_PLACE[val] : '全部'),
     },
     {
       title: '创建时间',
