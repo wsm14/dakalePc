@@ -229,7 +229,7 @@ const VideoPlatform = (props) => {
           },
           {
             type: 'portraitEdit', // 编辑画像
-            visible: status != 0 && typeUser,
+            visible: typeUser,
             click: () => fetchShareDetail(index, 'portrait'),
           },
         ];
