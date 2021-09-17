@@ -148,14 +148,14 @@ const VideoDetail = (props) => {
   };
 
   const modalProps = {
-    title: '视频广告详情',
+    title: `视频广告${{ info: '详情', edit: '编辑' }[type]} - ${detail.title}`,
     visible: show,
     onClose,
     loading: loadingDetail,
     dataPage: type == 'info' && {
       current: index,
       total,
-      onChange: (size) => getDetail(size, 'video'),
+      onChange: (size) => getDetail(size, 'info'),
     },
     footer: (
       <>
@@ -195,6 +195,6 @@ const VideoDetail = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loadingDetail: loading.effects['videoPlatform/fetchShareDetail'],
+  loadingDetail: loading.effects['videoAdvert/fetchVideoAdvertDetail'],
   loading: loading.effects['videoAdvert/fetchVideoAdvertEdit'],
 }))(VideoDetail);

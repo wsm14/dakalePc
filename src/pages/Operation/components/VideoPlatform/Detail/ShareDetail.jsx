@@ -249,7 +249,7 @@ const ShareDetail = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loadingDetail: loading.effects['videoPlatform/fetchShareDetail'],
+  loadingDetail: loading.effects['videoPlatform/fetchNewShareDetail'],
   loading:
     loading.effects['videoPlatform/fetchNewShareNoAudit'] ||
     loading.effects['videoPlatform/fetchNewShareAuditEdit'],
