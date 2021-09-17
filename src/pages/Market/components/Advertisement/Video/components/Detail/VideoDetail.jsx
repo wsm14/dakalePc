@@ -82,10 +82,10 @@ const VideoDetail = (props) => {
             {
               {
                 all: '全国',
-                city: area.split(',').map((i) => checkCityName(i)),
-                district: area.split(',').map((i) => checkCityName(i)),
+                city: detail.area.split(',').map((i) => checkCityName(i)),
+                district: detail.area.split(',').map((i) => checkCityName(i)),
                 near: `${detail.beanAddress} 附近${detail.area}米`,
-              }[areaType]
+              }[detail.areaType]
             }
           </div>
           <div>兴趣标签：{detail.tags}</div>
