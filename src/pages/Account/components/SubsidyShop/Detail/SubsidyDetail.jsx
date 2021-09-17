@@ -9,7 +9,7 @@ const SubsidyDetail = (props) => {
   const { show = false, titles, checkType = '', role = '', list = [] } = visible;
   console.log(checkType, 'checkType');
 
-  // pushVideo  "platformSubsidy" platform，directCharge
+  // pushVideo momentStop  "platformSubsidy" platform，directCharge
   // role :
   // (user: string;
   // merchant: string;
