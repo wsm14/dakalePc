@@ -2,18 +2,18 @@ import React from 'react';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
+import { brand } from '@/pages/Business/components/Group/Detail/detailsIndex';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
 
   const { show = false, titles, checkType = '', role = '', list = [] } = visible;
-  console.log(checkType, 'checkType');
-
   // pushVideo momentStop  "platformSubsidy" platform，directCharge
   // role :
   // (user: string;
   // merchant: string;
   // group: string;)
+  // brand
 
   const getColumnsVideo = [
     {
@@ -113,10 +113,11 @@ const SubsidyDetail = (props) => {
     onCancel: () => onClose(),
     footer: null,
   };
-  const commonType = ['platformSubsidy', 'platform', 'directCharge'].includes(checkType);
+  // const commonType = ['platformSubsidy', 'platform', 'directCharge'].includes(checkType);
   const columns = {
     user: getColumns,
     merchant: getColumnsM,
+    brand: getColumnsVideo,
   }[role];
 
   return (
@@ -124,8 +125,8 @@ const SubsidyDetail = (props) => {
       <TableDataBlock
         order
         noCard={false}
-        columns={commonType ? columns : getColumnsVideo}
-        rowKey={(record) => `${record.id}`}
+        columns={role ? columns : []}
+        rowKey={(record) => (role == 'brand' ? `${record.id}` : `${record.configBrandIdString}`)}
         list={list || []}
         total={list?.length || 0}
       ></TableDataBlock>
