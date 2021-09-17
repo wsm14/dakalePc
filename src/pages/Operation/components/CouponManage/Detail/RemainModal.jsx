@@ -10,7 +10,6 @@ const RemainModal = (props) => {
 
   const handleOk = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'ccc');
       dispatch({
         type: 'couponManage/fetchCouponAddRemain',
         payload: {
