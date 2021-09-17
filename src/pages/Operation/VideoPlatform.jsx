@@ -70,7 +70,7 @@ const VideoPlatform = (props) => {
     },
     {
       label: '店铺/视频类型',
-      name: 'userType',
+      name: 'ownerType',
       type: 'select',
       select: NEW_SHARE_OWNER,
     },

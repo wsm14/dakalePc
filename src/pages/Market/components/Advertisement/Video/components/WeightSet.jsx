@@ -13,18 +13,18 @@ const ShareWeightSet = ({ detail, dispatch }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
-  const { userMomentIdString: momentId, recommendWeight } = detail;
+  const { platformMomentId, weight } = detail;
 
   const setEdit = () => setEditType(!editType);
 
   // 提交
   const fetchFormData = () => {
-    form.validateFields().then(({ recommendWeight }) => {
+    form.validateFields().then(({ weight }) => {
       dispatch({
-        type: 'shareManage/fetchShareWeightSet',
+        type: 'videoAdvert/fetchVideoAdvertEdit',
         payload: {
-          momentId,
-          recommendWeight: recommendWeight || 0,
+          platformMomentId,
+          weight: weight || 0,
         },
         callback: setEdit,
       });
@@ -32,9 +32,9 @@ const ShareWeightSet = ({ detail, dispatch }) => {
   };
 
   return (
-    <Form initialValues={{ recommendWeight: Number(recommendWeight) }} form={form}>
+    <Form initialValues={{ weight: Number(weight) }} form={form}>
       <div style={{ display: 'flex' }}>
-        <FormItem noStyle name={'recommendWeight'}>
+        <FormItem noStyle name={'weight'}>
           <InputNumber disabled={!editType} />
         </FormItem>
         <Button
@@ -50,5 +50,5 @@ const ShareWeightSet = ({ detail, dispatch }) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['shareManage/fetchShareLikeSet'],
+  loading: loading.effects['videoAdvert/fetchVideoAdvertEdit'],
 }))(ShareWeightSet);
