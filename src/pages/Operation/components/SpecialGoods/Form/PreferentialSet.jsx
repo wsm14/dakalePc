@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
+import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from '../GoodsGroupSet';
 
@@ -18,6 +19,7 @@ const PreferentialSet = ({
   initialValues = {},
   onValuesChange,
   skuMerchantList,
+  setContent,
 }) => {
   // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
@@ -25,16 +27,15 @@ const PreferentialSet = ({
   const editDisabled = ['edit'].includes(editActive);
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  // 店铺备选参数，选择店铺后回显的数据
+  const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
+  const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
+  const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
   const [mreList, setMreList] = useState({
     groupId: null,
     type: 'merchant',
     keys: [],
     list: [],
-  });
-  // 商品类型 goodsType
-  const [radioData, setRadioData] = useState({ goodsType: 'single' });
-  const [goodsTaglist, setGoodsTaglist] = useState([]);
+  }); // 店铺备选参数，选择店铺后回显的数据
 
   //编辑的时候数据回显的标签
   const { goodsTagList = [] } = initialValues;
@@ -47,6 +48,8 @@ const PreferentialSet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
+      // 图文介绍类型
+      setGoodsDescType(initialValues.goodsDescType);
       setMreList({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
@@ -357,9 +360,17 @@ const PreferentialSet = ({
     },
     {
       title: `设置${goodsTypeName}介绍`,
+      label: '选择介绍类型',
+      type: 'radio',
+      name: 'goodsDescType',
+      select: SPECIAL_DESC_TYPE,
+      onChange: (e) => setGoodsDescType(e.target.value),
+    },
+    {
       label: `${goodsTypeName}介绍`,
       type: 'textArea',
       name: 'goodsDesc',
+      hidden: goodsDescType !== '0',
       rules: [{ required: false }],
       maxLength: 200,
     },
@@ -368,7 +379,18 @@ const PreferentialSet = ({
       name: 'goodsDescImg',
       type: 'upload',
       maxFile: 20,
+      hidden: goodsDescType !== '0',
       rules: [{ required: false }],
+    },
+    {
+      type: 'noForm',
+      visible: goodsDescType === '1',
+      formItem: (
+        <EditorForm
+          content={initialValues.richText}
+          editCallback={(val) => setContent(val)}
+        ></EditorForm>
+      ),
     },
   ];
 
