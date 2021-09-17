@@ -6,7 +6,7 @@ import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/con
 
 const GoodsDetail = (props) => {
   const { detail, merchantList = [], tabkey } = props;
-  const { goodsType, ownerType } = detail;
+  const { goodsType, ownerType, goodsDescType } = detail;
 
   const ActiveformItems = [
     {
@@ -72,13 +72,21 @@ const GoodsDetail = (props) => {
       render: (val) => SPECIAL_DESC_TYPE[val],
     },
     {
+      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      name: 'richText',
+      show: goodsDescType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
       name: 'goodsDesc',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      show: goodsDescType === '0',
       type: 'textArea',
     },
     {
       name: 'goodsDescImg',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍图片`,
+      show: goodsDescType === '0',
       type: 'upload',
     },
   ];
