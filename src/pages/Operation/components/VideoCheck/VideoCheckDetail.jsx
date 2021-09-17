@@ -150,9 +150,9 @@ const VideoCheck = (props) => {
         <Tabs.TabPane tab="分享信息" key="1">
           <DetailForm detail={detail} tabkey={tabkey}></DetailForm>
         </Tabs.TabPane>
-        <Tabs.TabPane tab="审核记录" key="2">
+        {/* <Tabs.TabPane tab="审核记录" key="2">
           <CheckRecord recordList={recordList}></CheckRecord>
-        </Tabs.TabPane>
+        </Tabs.TabPane> */}
       </Tabs>
       <CheckRefuseDraw
         cRef={cRef}
