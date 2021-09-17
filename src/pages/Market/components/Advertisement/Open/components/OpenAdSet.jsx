@@ -35,8 +35,6 @@ const OpenAdSet = (props) => {
         launchOwner,
         userType: tabKey,
         appLaunchImageId: detail.idString,
-        startDate: time[0].format('YYYY-MM-DD 00:00:00'),
-        endDate: time[1].format('YYYY-MM-DD 23:59:59'),
       };
 
       // 视频上传
@@ -47,7 +45,12 @@ const OpenAdSet = (props) => {
 
       // 上传图片
       aliOssUpload(url).then((res) => {
-        fetchGetFormData({ ...payload, url: res.toString() });
+        fetchGetFormData({
+          ...payload,
+          url: res.toString(),
+          startDate: time[0].format('YYYY-MM-DD 00:00:00'),
+          endDate: time[1].format('YYYY-MM-DD 23:59:59'),
+        });
       });
     });
   };

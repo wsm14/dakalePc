@@ -51,7 +51,12 @@ export default {
       callback();
     },
     *fetchVideoAdvertSearch({ payload, callback }, { call, put }) {
-      const response = yield call(fetchVideoAdvertList, { ...payload, limit: 50, page: 1 });
+      const response = yield call(fetchVideoAdvertList, {
+        ...payload,
+        status: 1,
+        limit: 50,
+        page: 1,
+      });
       if (!response) return;
       const { content } = response;
       callback(content.recordList);
