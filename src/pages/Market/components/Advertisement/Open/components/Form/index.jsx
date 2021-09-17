@@ -17,17 +17,18 @@ const OpenAdForm = (props) => {
     setMediaType(detail.mediaType);
     setSelectList([]);
     if (detail.platformMomentId) {
-      fetchGetSearch(detail.platformMomentId);
+      fetchGetSearch('', { platformMomentId: detail.platformMomentId });
     }
   }, []);
 
   // 搜索
-  const fetchGetSearch = debounce((content) => {
-    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
+  const fetchGetSearch = debounce((content, id) => {
+    if (!id) if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
     dispatch({
       type: 'videoAdvert/fetchVideoAdvertSearch',
       payload: {
         title: content.replace(/'/g, ''),
+        ...(id || {}),
       },
       callback: setSelectList,
     });
