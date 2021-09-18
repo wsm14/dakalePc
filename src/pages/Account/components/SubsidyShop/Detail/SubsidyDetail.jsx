@@ -15,6 +15,29 @@ const SubsidyDetail = (props) => {
   // group: string;)
   // brand
 
+  const getColumnsGroup=[
+    {
+      title: '集团名称',
+      dataIndex: 'groupName',
+      width: 280,
+    },
+    {
+      title: '所属行业',
+      align: 'center',
+      dataIndex: 'topCategoryName',
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      width: 200,
+    },
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ]
+
   const getColumnsVideo = [
     {
       title: '品牌名',
@@ -24,7 +47,7 @@ const SubsidyDetail = (props) => {
     {
       title: '品牌类型',
       align: 'center',
-      dataIndex: 'topCategoryName',
+      dataIndex: 'categoryName',
     },
 
     {
@@ -117,6 +140,7 @@ const SubsidyDetail = (props) => {
   const columns = {
     user: getColumns,
     merchant: getColumnsM,
+    group:getColumnsGroup,
     brand: getColumnsVideo,
   }[role];
 
