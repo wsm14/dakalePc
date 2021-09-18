@@ -89,7 +89,7 @@ const OpenAdvert = (props) => {
       title: '展示时间',
       align: 'center',
       dataIndex: 'startDate',
-      render: (val, record) => (record.mediaType == 'image' ? `${val} ~ ${record.endDate}` : '--'),
+      render: (val, record) => `${val} ~ ${record.endDate}`,
     },
     {
       title: '创建时间',
