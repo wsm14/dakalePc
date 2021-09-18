@@ -26,7 +26,8 @@ const BrandUpdate = (props) => {
           payload: {
             ...values,
             configBrandIdString,
-            categoryName: tradeList.filter((item) => item.categoryIdString === categoryId)[0].categoryName,
+            categoryName: tradeList.filter((item) => item.categoryIdString === categoryId)[0]
+              .categoryName,
             brandLogo: res.toString(),
           },
           callback: () => {
@@ -57,7 +58,7 @@ const BrandUpdate = (props) => {
       type: 'select',
       name: 'categoryId',
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'configBrandIdString' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
     },
   ];
 

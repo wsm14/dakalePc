@@ -24,6 +24,10 @@ const BusinessBankSetContent = (props) => {
       dataIndex: 'bankBranchName',
     },
     {
+      title: '总行编号',
+      dataIndex: 'bankCode',
+    },
+    {
       title: '编辑时间',
       align: 'center',
       dataIndex: 'updateTimeString',

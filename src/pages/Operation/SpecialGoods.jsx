@@ -23,6 +23,7 @@ import excelProps from './components/SpecialGoods/ExcelProps';
 import RemainModal from './components/SpecialGoods/Detail/RemainModal';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import ShareImg from './components/SpecialGoods/ShareImg';
+import { checkCityName } from '@/utils/utils';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -269,6 +270,17 @@ const SpecialGoods = (props) => {
       align: 'right',
       dataIndex: 'writeOffGoodsCount',
       sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
+    },
+    {
+      title: '地区/行业',
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val, row) => (
+        <>
+        <div> {checkCityName(val) || '--'} </div>
+        <div>{row.topCategoryName} / {row.categoryName}</div>
+        </>
+      ),
     },
     {
       title: '创建时间',
