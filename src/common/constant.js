@@ -356,8 +356,9 @@ const bannerType = {
   todayNew: '今日上新',
   beanSelection: '小豆精选',
   nearbyBusinessHub: '附近商圈',
-  highCommissionAlliance: '高佣联盟',
+  popularityRanking: '人气排行榜',
   wanderAroundCapsule: '逛逛胶囊位',
+  highCommissionAlliance: '高佣联盟',
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundGoodMerchant: '逛逛周边好店',
 };
