@@ -27,7 +27,7 @@ const BusinessBrandComponent = (props) => {
       type: 'select',
       loading: loading.models.sysTradeList,
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'configBrandIdString' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
     },
   ];
 
