@@ -57,7 +57,7 @@ const BrandUpdate = (props) => {
       type: 'select',
       name: 'categoryId',
       select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'configBrandIdString' },
+      fieldNames: { label: 'categoryName', value: 'categoryIdString' },
     },
   ];
 
