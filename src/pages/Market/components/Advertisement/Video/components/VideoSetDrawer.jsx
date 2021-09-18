@@ -21,16 +21,7 @@ const ShareDrawer = (props) => {
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
       const { title, videoId, url, frontImage, relateId, ...other } = dataStorage;
-      const {
-        browseType,
-        age,
-        tagsId = [],
-        ageData,
-        cityList = [],
-        area,
-        areaType,
-        ...otherValus
-      } = values;
+      const { age, tagsId = [], ageData, cityList = [], area, areaType, ...otherValus } = values;
       const { free = {}, contact = [] } = couponData;
       let goodsList = {};
       if (dataStorage.relateType !== 'brand') {
@@ -71,7 +62,6 @@ const ShareDrawer = (props) => {
                 payload: {
                   ...other,
                   ...otherValus,
-                  browseType: browseType == 'all' ? '' : browseType,
                   scope: 'all',
                   title,
                   relateId,

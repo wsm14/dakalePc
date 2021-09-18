@@ -44,7 +44,7 @@ const ShareManage = (props) => {
       label: '推荐位置',
       name: 'browseType',
       type: 'select',
-      select: VIDEO_ADVERT_PLACE,
+      select: (({ ALL, ...other }) => other)(VIDEO_ADVERT_PLACE),
     },
     {
       label: '分享标题',
@@ -149,7 +149,7 @@ const ShareManage = (props) => {
       title: '推荐位置',
       align: 'right',
       dataIndex: 'browseType',
-      render: (val) => (val ? VIDEO_ADVERT_PLACE[val] : '全部'),
+      render: (val) => VIDEO_ADVERT_PLACE[val],
     },
     {
       title: '创建时间',

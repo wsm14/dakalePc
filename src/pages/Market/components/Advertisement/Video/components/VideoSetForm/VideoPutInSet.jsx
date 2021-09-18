@@ -22,7 +22,7 @@ const VideoPutInSet = (props) => {
   // 默认选择项
   const inputData = {
     gender: 'ALL',
-    browseType: 'all',
+    browseType: 'ALL',
     areaType: 'all',
     taste: 'all',
     age: '0-100',
@@ -131,7 +131,7 @@ const VideoPutInSet = (props) => {
       label: '推荐位置',
       name: 'browseType',
       type: 'radio',
-      select: { all: '全部', ...VIDEO_ADVERT_PLACE },
+      select: VIDEO_ADVERT_PLACE,
     },
     {
       label: '性别',
