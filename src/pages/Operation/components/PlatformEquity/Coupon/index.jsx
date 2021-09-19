@@ -4,6 +4,7 @@ import { Tag } from 'antd';
 import { SUBMIT_TYPE, BUSINESS_TYPE, SPECIAL_STATUS } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
+import PlatformEquityDrawer from './components/PlatformEquityCoupon';
 
 /**
  * 权益券
@@ -215,6 +216,12 @@ const PlatformEquityCoupon = (props) => {
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
+      {/* 新增 编辑 详情*/}
+      <PlatformEquityDrawer
+        childRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet({ show: false })}
+      ></PlatformEquityDrawer>
     </>
   );
 };

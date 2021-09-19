@@ -11,7 +11,7 @@ import {
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import PlatformEquityDrawer from './components/PlatformEquityDrawer';
+import PlatformEquityDrawer from './components/PlatformEquityGoods';
 
 /**
  * 权益商品
@@ -275,7 +275,7 @@ const PlatformEquityGoods = (props) => {
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
-      {/* 新增 编辑 */}
+      {/* 新增 编辑 详情*/}
       <PlatformEquityDrawer
         childRef={childRef}
         visible={visibleSet}
