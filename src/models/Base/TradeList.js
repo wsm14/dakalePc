@@ -47,7 +47,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
+    *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeList, payload);
       if (!response) return;
       const { content } = response;
@@ -63,6 +63,7 @@ export default {
           cateList,
         },
       });
+      callback && callback(content.categoryDTOList);
     },
     *fetchTradePlatformList({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradePlatformList, payload);
@@ -219,11 +220,11 @@ export default {
       });
       callback();
     },
-    *fetchTradeScanCommission({ payload, callback }, { call }){
+    *fetchTradeScanCommission({ payload, callback }, { call }) {
       const response = yield call(fetchTradeScanCommission, payload);
       if (!response) return;
       const { content } = response;
       callback(content.categoryScanRateDTO);
-    }
+    },
   },
 };

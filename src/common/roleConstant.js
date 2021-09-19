@@ -19,12 +19,14 @@ export const ROLE_BUTTON_TYPE = {
   copy: '复制',
   check: '审核',
   close: '关闭',
+  config: '配置',
   couponAdd: '优惠券新增',
   cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
   cancleRecommend: '取消推荐',
   configCondit: '条件配置',
+  commerceSet: '带货设置',
 
   del: '删除',
   down: '下架',
@@ -67,12 +69,15 @@ export const ROLE_BUTTON_TYPE = {
   noticeDel: '公告删除',
   noticeSend: '公告发送',
 
+  openAd: '开屏广告',
   orderDetail: '订单明细',
 
   push: '推送',
+  puzzleAd: '拼图广告',
   placement: '置顶',
   peasDetail: '卡豆明细',
   preview: '预览',
+  portraitEdit: '编辑画像',
 
   qrCode: '获取二维码',
 
@@ -90,7 +95,7 @@ export const ROLE_BUTTON_TYPE = {
   recommendList: '团队',
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
-  rewardPeo: '新增打赏人数',
+  rewardPeo: '打赏设置',
   recover: '恢复',
 
   set: '设置',
@@ -134,6 +139,8 @@ export const ROLE_BUTTON_TYPE = {
   userAdd: '新增用户',
   userEdit: '用户编辑',
   userStatus: '用户状态',
+
+  videoAd: '视频广告',
 
   withdraw: '提现记录',
   withdrawMerchant: '单店提现',

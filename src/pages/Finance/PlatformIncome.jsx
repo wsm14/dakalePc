@@ -28,7 +28,7 @@ const tabList = [
 const defaultValue = {
   latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
   time: [moment(), moment()],
-  type: ['scan', 'goods', 'coupon', 'moment'],
+  type: ['scan', 'writeOff', 'moment'],
 };
 
 // platform-运营平台 partner-区县平台 province-省代平台

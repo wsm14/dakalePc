@@ -112,7 +112,7 @@ const MreSelect = ({
         loading={loading.effects[dispatchType]}
         rowKey={(record) => `${record[rowKey]}`}
         dispatchType={dispatchType}
-        params={{ ...params, bankStatus: 3, businessStatus: 1 }}
+        params={{ ...params, bankStatus: 3 }}
         rowSelection={type === 'select' ? rowSelection : undefined}
         {...(list ? list : subsidyList)}
       ></TableDataBlock>

@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip, Space } from 'antd';
-import { SUBSIDY_TASK_ROLE } from '@/common/constant';
+import { SUBSIDY_ACTION_ROLES, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import {
   MreSelect,
   MreSelectShow,
   GroupSelectModal,
   GroupSelectShow,
+  UserSelectShow,
 } from '@/components/MerUserSelectTable';
 import FormCondition from '@/components/FormCondition';
 import ImportDataModal from './ImportDataModal';
 
 const SubsidyRecycleBean = (props) => {
-  const { form, detail } = props;
+  const { form, detail, tab } = props;
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [visibleGroup, setVisibleGroup] = useState(false); // 选择店铺弹窗
@@ -24,29 +25,34 @@ const SubsidyRecycleBean = (props) => {
   const [mreTotal, setMreTotal] = useState(0); // 店铺、集团回收卡豆数
   const [role, setRole] = useState(false); // 补贴角色
   const [visiblePort, setVisiblePort] = useState(false);
+  const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
+  const [userList, setUserList] = useState({ keys: [], list: [], resultList: [] }); // 选择后回显的数据
+  const [userNumber, setUserNumber] = useState({}); // 卡豆数 暂存输入值
 
-  // 设置form表单值 店铺id
-
-  useEffect(() => {
-    const number = role === 'merchant' ? mreNumber : groupNumber;
-    const newData = lodash.pickBy(number, (value, key) =>
-      role === 'merchant' ? mreList.keys.includes(key) : groupList.keys.includes(key),
-    );
+   // 监听用户卡豆数变化
+   useEffect(() => {
+    // user: '用户', merchant: '店铺', group: '集团'
+    const list = { user: userList, merchant: mreList, group: groupList }[role];
+    const number = { user: userNumber, merchant: mreNumber, group: groupNumber }[role];
+    const newData = lodash.pickBy(number, (value, key) => list.keys.includes(key));
     const subsidyBeanObjects = Object.keys(newData).map((item) => ({
       ownerId: item,
       bean: newData[item] || 0,
     }));
     setMreTotal(lodash.sumBy(subsidyBeanObjects, 'bean'));
     form.setFieldsValue({ subsidyBeanObjects });
-  }, [mreList, mreNumber, groupList, groupNumber]);
+  }, [userList, userNumber, mreList, mreNumber, groupList, groupNumber]);
 
   // 向下填充
   const downBean = (bean) => {
     if (!bean) return;
     const obj = {};
-    const list = { merchant: mreList, group: groupList }[role];
+    const list = { user: userList, merchant: mreList, group: groupList }[role];
     list.keys.map((item) => (obj[item] = bean));
     switch (role) {
+      case 'user':
+        setUserNumber(obj);
+        break;
       case 'merchant':
         setMreNumber(obj);
         break;
@@ -68,9 +74,11 @@ const SubsidyRecycleBean = (props) => {
       label: '角色',
       name: 'role',
       type: 'select',
-      select: SUBSIDY_TASK_ROLE,
+      select: tab === 'direct' ? SUBSIDY_ACTION_ROLES : SUBSIDY_ACTION_ROLE,
       onChange: (val) => {
+        form.setFieldsValue({ subsidyBeanObjects: undefined });
         setRole(val);
+        setUserList({ keys: [], list: [] });
         setMreList({ keys: [], list: [] });
         setGroupList({ keys: [], list: [] });
       },
@@ -195,6 +203,73 @@ const SubsidyRecycleBean = (props) => {
         ></GroupSelectShow>
       ),
     },
+
+    {
+      label: '适用用户',
+      name: 'subsidyBeanObjects',
+      type: 'formItem',
+      visible: role === 'user',
+      rules: [{ required: true, message: '请选择用户' }],
+      formItem: (
+        <Space size="large">
+          <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
+            {tab === 'direct' ? '选择哒人' : '选择用户'}
+          </Button>
+          <Button type="primary" ghost onClick={handleImport}>
+            批量导入
+          </Button>
+        </Space>
+      ),
+    },
+    {
+      label: '适用用户',
+      type: 'noForm',
+      visible: role === 'user',
+      formItem: (
+        <UserSelectShow
+          maxLength={500}
+          key="UserTable"
+          {...userList}
+          params={tab === 'direct' ? { isDaren: 1 } : {}}
+          showSelect={visibleSelect}
+          onCancelShowSelect={() => setVisibleSelect(false)}
+          onOk={(val) => {
+            setUserList(val);
+            form.setFieldsValue({ userIdList: val });
+          }}
+          otherColumns={[
+            {
+              fixed: 'right',
+              title: '回收卡豆数',
+              dataIndex: 'bean',
+              render: (val, record, index) => (
+                <>
+                  <InputNumber
+                    value={userNumber[record.userIdString]}
+                    precision={0}
+                    min={0}
+                    onChange={(val) =>
+                      setUserNumber(({ sum, ...other }) => ({
+                        ...other,
+                        [record.userIdString]: val,
+                      }))
+                    }
+                  ></InputNumber>
+                  {userList.list[0].userIdString === record.userIdString && (
+                    <Tooltip placement="top" title={'向下填充（已勾选数据）'}>
+                      <DownSquareOutlined
+                        onClick={() => downBean(userNumber[record.userIdString])}
+                        style={{ fontSize: 20, marginLeft: 5, cursor: 'pointer' }}
+                      ></DownSquareOutlined>
+                    </Tooltip>
+                  )}
+                </>
+              ),
+            },
+          ]}
+        ></UserSelectShow>
+      ),
+    },
     {
       label: '回收卡豆数',
       name: 'subsidyBeanObjects',
@@ -234,6 +309,12 @@ const SubsidyRecycleBean = (props) => {
           const merNumbers = {};
           list.list.map((item) => (merNumbers[item.userMerchantIdString] = item.subsidyBean));
           setMreNumber(merNumbers);
+        }}
+        setUserList={(list) => {
+          setUserList({ ...list });
+          const numbers = {};
+          list.list.map((item) => (numbers[item.userIdString] = item.subsidyBean));
+          setUserNumber(numbers);
         }}
         setGroupList={(list) => {
           setGroupList({ ...list });

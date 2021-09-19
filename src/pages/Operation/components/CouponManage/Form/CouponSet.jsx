@@ -263,7 +263,7 @@ const CouponSet = (props) => {
       title: '设置券信息',
       label: '券名称',
       name: 'couponName',
-      maxLength: 30,
+      maxLength: 80,
     },
     {
       label: '券价值',

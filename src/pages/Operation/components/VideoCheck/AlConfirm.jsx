@@ -5,15 +5,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 // 已确认
 const AlConfirm = (props) => {
-  const {
-    tableRef,
-    tabkey,
-    globalColum = [],
-    globalSearch,
-    loading,
-    specialGoodsCheck,
-    rowHandle,
-  } = props;
+  const { tableRef, tabkey, globalColum = [], globalSearch, loading, videoCheck } = props;
 
   const searchItems = [
     ...globalSearch,
@@ -25,23 +17,7 @@ const AlConfirm = (props) => {
     },
   ];
 
-  const getColumns = [
-    ...globalColum,
-    {
-      title: '审核时间',
-      dataIndex: 'auditTime',
-    },
-    {
-      title: '审核结果',
-      dataIndex: 'auditStatus',
-      render: (val) => GOODS_CHECK_RESSTATUS[val],
-    },
-    {
-      title: '驳回原因',
-      dataIndex: 'rejectReason',
-    },
-    ...rowHandle,
-  ];
+  const getColumns = [...globalColum];
 
   return (
     <TableDataBlock
@@ -51,14 +27,14 @@ const AlConfirm = (props) => {
       columns={getColumns}
       searchItems={searchItems}
       rowKey={(record) => `${record.auditIdString}`}
-      dispatchType="specialGoodsCheck/fetchGetList"
+      dispatchType="videoCheck/fetchGetList"
       params={{ auditSearchType: tabkey }}
-      {...specialGoodsCheck}
+      {...videoCheck}
     ></TableDataBlock>
   );
 };
 
-export default connect(({ specialGoodsCheck, loading }) => ({
-  specialGoodsCheck,
-  loading: loading.models.specialGoodsCheck || loading.effects['baseData/fetchGetLogDetail'],
+export default connect(({ videoCheck, loading }) => ({
+  videoCheck,
+  loading: loading.models.videoCheck || loading.effects['baseData/fetchGetLogDetail'],
 }))(AlConfirm);

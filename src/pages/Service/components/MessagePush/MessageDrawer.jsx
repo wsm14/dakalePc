@@ -46,7 +46,7 @@ const MessageDrawer = (props) => {
 
   // 新增修改公共处理
   const addEditProps = {
-    children: <MessagePushSet form={form} initialValues={detail}></MessagePushSet>,
+    children: <MessagePushSet form={form} initialValues={detail} userType={userType}></MessagePushSet>,
     footer: (
       <>
         {/* 修改时只有保存按钮 新增时有这个按钮 */}

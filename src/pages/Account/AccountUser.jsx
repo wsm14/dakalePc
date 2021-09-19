@@ -5,9 +5,20 @@ import UserDetailList from './components/User/UserDetailList';
 import UserTotalInfo from './components/User/UserTotalInfo';
 
 const AccountUserList = (props) => {
-  const { userlist, loading, dispatch } = props;
+  const { userlist, loading, dispatch, kolLevel } = props;
 
   const [visible, setVisible] = useState('');
+
+  useEffect(() => {
+    fetchGetKolLevel();
+  }, []);
+
+  // 获取哒人等级数据
+  const fetchGetKolLevel = () => {
+    dispatch({
+      type: 'baseData/fetchGetKolLevel',
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -18,6 +29,12 @@ const AccountUserList = (props) => {
     {
       label: '手机号',
       name: 'mobile',
+    },
+    {
+      label: '用户等级',
+      name: 'level',
+      type: 'select',
+      select: kolLevel,
     },
   ];
 
@@ -78,7 +95,7 @@ const AccountUserList = (props) => {
       dataIndex: 'totalCharge',
       render: (val) => val || 0,
     },
-    
+
     {
       title: '奖励卡豆余额',
       align: 'right',
@@ -132,7 +149,8 @@ const AccountUserList = (props) => {
   );
 };
 
-export default connect(({ accountUser, loading }) => ({
+export default connect(({ accountUser, loading, baseData }) => ({
   userlist: accountUser.userlist,
+  kolLevel: baseData.kolLevel,
   loading: loading.effects['accountUser/fetchGetList'],
 }))(AccountUserList);

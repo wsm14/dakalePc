@@ -1,13 +1,20 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import { BUSINESS_TYPE, ACTION_TYPE, SHARE_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  VIDEO_ACTION_TYPE,
+  GOODS_CHECK_RESSTATUS,
+  SUBMIT_TYPE_VIDEO,
+  VIDEO_TYPE,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import NoCheck from './components/VideoCheck/NoCheck';
 import NoConfirm from './components/VideoCheck/NoConfirm';
 import AlCheck from './components/VideoCheck/AlCheck';
 import AlConfirm from './components/VideoCheck/AlConfirm';
+import VideoCheckDetail from './components/VideoCheck/VideoCheckDetail';
 import { checkCityName } from '@/utils/utils';
 
 const tabList = [
@@ -29,13 +36,14 @@ const tabList = [
   },
 ];
 
-const SpecialGoodCheck = (props) => {
+const VideoCheck = (props) => {
   const tableRef = useRef();
-  const { dispatch, specialGoodsCheck } = props;
+  const { dispatch, videoCheck } = props;
+  const [visibleInfo, setVisibleInfo] = useState(false);
   const [tabkey, setTabKey] = useState('adminAudit');
-  const { list } = specialGoodsCheck;
+  const { list } = videoCheck;
 
-  const fetchSpecialGoodsClose = (record) => {
+  const fetchVideoCheckClose = (record) => {
     const { auditIdString, ownerIdString } = record;
     dispatch({
       type: 'specialGoodsCheck/fetchSpecialGoodsAuditClose',
@@ -63,29 +71,13 @@ const SpecialGoodCheck = (props) => {
 
     {
       label: '创建人',
-      name: 'creator',
+      name: 'submitterUserName',
     },
     {
       label: '审核创建时间',
       type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
-    },
-    {
-      label: '审核对象',
-      name: 'creator',
-    },
-    {
-      label: '审核时间',
-      type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
-    },
-    {
-      label: '分享类型',
-      type: 'select',
-      name: 'contentType',
-      select: SHARE_TYPE,
+      name: 'createBeginDate',
+      end: 'createEndDate',
     },
     {
       label: '地区',
@@ -95,17 +87,16 @@ const SpecialGoodCheck = (props) => {
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
     {
-      label: '店铺类型',
-      name: 'userType',
+      label: '店铺类型/视频类型',
+      name: 'ownerType',
       type: 'select',
-      select: BUSINESS_TYPE,
+      select: VIDEO_TYPE,
     },
-
     {
       label: '审核类型',
       name: 'actionType',
       type: 'select',
-      select: ACTION_TYPE,
+      select: VIDEO_ACTION_TYPE,
     },
   ];
 
@@ -114,86 +105,115 @@ const SpecialGoodCheck = (props) => {
     {
       title: '视频/标题',
       fixed: 'left',
-      dataIndex: 'frontImage',
+      dataIndex: 'momentDTO',
       width: 280,
-      render: (val, detail) => (
-        <PopImgShow url={val}>
-          <Ellipsis length={10} tooltip lines={3}>
-            {detail.title}
-          </Ellipsis>
-        </PopImgShow>
-      ),
+      render: (val, row) => {
+        const { momentDTO = {} } = row;
+        return (
+          <PopImgShow url={momentDTO.frontImage}>
+            <Ellipsis length={10} tooltip lines={3}>
+              {momentDTO.title}
+            </Ellipsis>
+          </PopImgShow>
+        );
+      },
     },
     {
       title: '店铺/集团',
       dataIndex: 'userType',
       width: 320,
-      render: (val, row) => (
-        <>
-          <div style={{ display: 'flex' }}>
-            <Tag>{BUSINESS_TYPE[val]}</Tag>
-            <Ellipsis length={15} tooltip>
-              {row.merchantName}
-            </Ellipsis>
-          </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag color="blue">{`${row.topCategoryName}-${row.categoryName}`}</Tag>
-            <span>{checkCityName(row.districtCode)}</span>
-          </div>
-        </>
-      ),
+      render: (val, row) => {
+        const { momentDTO = {} } = row;
+        return (
+          <>
+            <div style={{ display: 'flex' }}>
+              <Tag>{BUSINESS_TYPE[momentDTO.ownerType]}</Tag>
+              <Ellipsis length={15} tooltip>
+                {momentDTO.ownerName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <Tag color="blue">{`${momentDTO.topCategoryName}-${momentDTO.categoryName}`}</Tag>
+              <span>{checkCityName(momentDTO.districtCode)}</span>
+            </div>
+          </>
+        );
+      },
     },
     {
-      title: '单次打赏卡豆数',
+      title: '视频类型',
       align: 'right',
-      dataIndex: 'beanAmount',
+      dataIndex: 'momentDTO',
+      show: tabkey === 'adminAudit',
+      render: (val, row) => {
+        const { momentDTO = {} } = row;
+        return (
+          <>
+            {VIDEO_TYPE[momentDTO.ownerType]}
+            {momentDTO.ownerType ? '视频' : '-'}
+          </>
+        );
+      },
     },
+    // {
+    //   title: '单次打赏卡豆数',
+    //   align: 'right',
+    //   dataIndex: 'beanAmount',
+    //   render: (val, row) => {
+    //     const { momentDTO = {} } = row;
+    //     return <>{momentDTO.beanAmount}</>;
+    //   },
+    // },
     {
       title: '审核创建时间',
       align: 'center',
       dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      render: (val, record) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div>
+            {SUBMIT_TYPE_VIDEO[record.submitterType]}--{record.submitterUserName}
+          </div>
+        </div>
+      ),
     },
     {
       title: '确认时间',
       align: 'center',
-      dataIndex: 'createTime',
-      show:tabkey==='', // 审核已确认
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      dataIndex: 'submitTime',
+      show: tabkey === 'merchantConfirmed', // 审核已确认
     },
     {
       title: '审核时间',
-      align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      dataIndex: 'auditTime',
+      show: ['adminConfirmed'].includes(tabkey),
     },
-    {
-      title: '审核对象',
-      align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
-    },
+    // {
+    //   title: '审核对象',
+    //   align: 'center',
+    //   dataIndex: 'submitterType',
+    //   show: ['adminConfirmed'].includes(tabkey), //已审核
+    // },
     {
       title: '审核类型',
       align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => `${val}\n${row.creatorName || ''}`,
+      dataIndex: 'actionType',
+      render: (val) => VIDEO_ACTION_TYPE[val],
     },
     {
       title: '审核结果',
-      align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'auditStatus',
+      render: (val) => GOODS_CHECK_RESSTATUS[val],
+      show: ['adminConfirmed', 'merchantConfirmed'].includes(tabkey),
     },
     {
       title: '驳回原因',
-      align: 'center',
-      dataIndex: 'createTime',
+      dataIndex: 'rejectReason',
+      show: ['adminConfirmed', 'merchantConfirmed'].includes(tabkey),
     },
-  ];
-
-  const rowHandle = [
     {
       type: 'handle',
+      title: '操作',
       dataIndex: 'auditIdString',
       render: (val, record, index) => {
         const { auditStatus } = record;
@@ -201,26 +221,27 @@ const SpecialGoodCheck = (props) => {
           {
             type: 'info',
             title: '详情',
-            click: () => fetchSpecialGoodsDetail(index, 'info'),
+            click: () => fetchVideoCheckDetail(index, 'info'),
             visible: tabkey !== 'adminAudit',
           },
           {
             type: 'check',
             title: '审核',
-            click: () => fetchSpecialGoodsDetail(index, 'check'),
+            click: () => fetchVideoCheckDetail(index, 'check'),
             visible: tabkey === 'adminAudit',
           },
           {
             type: 'close',
             title: '关闭', //驳回状态可以关闭
             visible: auditStatus === '2',
-            click: () => fetchSpecialGoodsClose(record),
+            click: () => fetchVideoCheckClose(record),
           },
         ];
       },
     },
   ];
-  const listProps = { tableRef, tabkey, globalColum, globalSearch, rowHandle };
+
+  const listProps = { tableRef, tabkey, globalColum, globalSearch };
 
   const contentList = {
     adminAudit: <NoCheck {...listProps}></NoCheck>,
@@ -230,31 +251,27 @@ const SpecialGoodCheck = (props) => {
   };
 
   // 获取详情
-  //   const fetchSpecialGoodsDetail = (index, type) => {
-  //     const { ownerIdString, auditIdString, auditStatus: status, submitterType } = list[index];
-  //     dispatch({
-  //       type: 'specialGoodsCheck/fetchSpecialGoodsAuditDetail',
-  //       payload: { ownerId: ownerIdString, auditId: auditIdString, type },
-  //       callback: (val) => {
-  //         const newProps = {
-  //           show: true,
-  //           detail: { ...val },
-  //         };
-  //         if (type == 'info' || type === 'check') {
-  //           setVisibleInfo({
-  //             status,
-  //             index,
-  //             ...newProps,
-  //             ownerIdString,
-  //             auditIdString,
-  //             submitterType,
-  //           });
-  //         } else {
-  //           setVisibleSet({ type, ...newProps });
-  //         }
-  //       },
-  //     });
-  //   };
+  const fetchVideoCheckDetail = (index, type) => {
+    const { ownerIdString, auditIdString, auditStatus: status, submitterType } = list[index];
+    dispatch({
+      type: 'videoCheck/fetchAuditMomentDetail',
+      payload: { ownerId: ownerIdString, auditId: auditIdString, type },
+      callback: (val) => {
+        const newProps = {
+          show: true,
+          detail: { ...val },
+        };
+        setVisibleInfo({
+          status,
+          index,
+          ...newProps,
+          ownerIdString,
+          auditIdString,
+          submitterType,
+        });
+      },
+    });
+  };
 
   return (
     <>
@@ -262,17 +279,17 @@ const SpecialGoodCheck = (props) => {
         {contentList[tabkey]}
       </Card>
       {/* 详情 */}
-      {/* <SpecialGoodCheckDetail
+      <VideoCheckDetail
         visible={visibleInfo}
         total={list.length}
         tabkey={tabkey}
         cRef={tableRef}
-        getDetail={fetchSpecialGoodsDetail}
+        getDetail={fetchVideoCheckDetail}
         onClose={() => setVisibleInfo(false)}
-      ></SpecialGoodCheckDetail> */}
+      ></VideoCheckDetail>
     </>
   );
 };
-export default connect(({ specialGoodsCheck }) => ({
-  specialGoodsCheck,
-}))(SpecialGoodCheck);
+export default connect(({ videoCheck }) => ({
+  videoCheck,
+}))(VideoCheck);

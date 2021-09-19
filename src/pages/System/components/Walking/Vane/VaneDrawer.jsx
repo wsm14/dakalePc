@@ -10,12 +10,15 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const VaneDrawer = (props) => {
-  const { dispatch, cRef, visible, onClose, loading, tradeList, cityCode } = props;
+  const { dispatch, cRef, visible, onClose, loading, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
+  const { topCategoryId } = detail;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
+  const [tradeList, setTradeList] = useState([]);
+  const [cateList, setCateList] = useState([]);
 
   const allProps = {
     add: {
@@ -34,10 +37,18 @@ const VaneDrawer = (props) => {
   // 提交
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
-      const { image, bubbleFlag = 0, categoryId = [], windVaneParamObject = {}, jumpType } = values;
+      const {
+        image,
+        bubbleFlag = 0,
+        topCategoryId = [],
+        categoryId = [],
+        windVaneParamObject = {},
+        jumpType,
+      } = values;
       const { bannerImage } = windVaneParamObject;
       const windVaneParam = {
-        categoryId: categoryId && categoryId[categoryId.length - 1],
+        topCategoryId: topCategoryId[0],
+        categoryId: categoryId && categoryId.toString(),
         ...windVaneParamObject,
       };
       const aImg = checkFileData(image);
@@ -69,6 +80,20 @@ const VaneDrawer = (props) => {
     });
   };
   useEffect(() => {
+    if (show) {
+      if (topCategoryId && topCategoryId.length) {
+        const topId = topCategoryId[0];
+        tradeList.map((items) => {
+          if (items.categoryIdString == topId) {
+            const childList = items.childList;
+            setCateList(childList);
+          }
+        });
+      }
+    }
+  }, [show]);
+
+  useEffect(() => {
     fetchTradeList();
   }, []);
 
@@ -76,6 +101,7 @@ const VaneDrawer = (props) => {
   const fetchTradeList = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
+      callback: (list) => setTradeList(list),
     });
   };
 
@@ -129,32 +155,66 @@ const VaneDrawer = (props) => {
       show: showUrl === 'url',
     },
     {
-      label: '选择行业',
-      type: 'cascader',
-      name: 'categoryId',
-      // type: 'treeSelect',
-      // multiple: true,
+      label: '一级行业类目',
+      name: 'topCategoryId',
+      type: 'select',
       select: tradeList,
+      visible: showUrl === 'native',
+      show: false,
       fieldNames: {
         label: 'categoryName',
         value: 'categoryIdString',
         children: 'childList',
       },
+      onChange: (val, option) => {
+        const childList = option.option.childList;
+        const topCategoryName = option.option.categoryName;
+        setCateList(childList);
+        form.setFieldsValue({
+          windVaneParamObject: { topCategoryName, categoryName: '' },
+          categoryId: [],
+        });
+      },
+    },
+    {
+      label: '二级行业类目',
+      mode: 'multiple',
+      type: 'select',
+      name: 'categoryId',
+      // type: 'treeSelect',
+      // multiple: true,
+      select: cateList,
+      fieldNames: {
+        label: 'categoryName',
+        value: 'categoryIdString',
+      },
       show: false,
       visible: showUrl === 'native',
+      rules: [{ required: false }],
       onChange: (val, option) => {
-        let categoryName = option[0].categoryName;
-        if (val.length > 1) {
-          categoryName = option[1].categoryName;
+        if (val.length) {
+          const categoryName = option.map((items) => items.option.categoryName).toString();
+          form.setFieldsValue({ windVaneParamObject: { categoryName } });
         }
-        form.setFieldsValue({ windVaneParamObject: { categoryName } });
       },
+    },
+    {
+      label: '行业名称',
+      name: ['windVaneParamObject', 'topCategoryName'],
+      hidden: true,
+      visible: showUrl === 'native',
+      show: false,
     },
     {
       label: '行业名称',
       name: ['windVaneParamObject', 'categoryName'],
       hidden: true,
+      rules: [{ required: false }],
       visible: showUrl === 'native',
+      render: (val, row) => {
+        const { windVaneParamObject = {} } = row;
+        return `${windVaneParamObject.topCategoryName} ${val ? '(' + val + ')' : ''}`;
+      },
     },
     {
       label: 'banner图:',
@@ -194,7 +254,6 @@ const VaneDrawer = (props) => {
 };
 
 export default connect(({ walkingManage, loading, sysTradeList }) => ({
-  tradeList: sysTradeList.list.list,
   navigation: walkingManage.navigation,
   loading: loading.models.walkingManage,
 }))(VaneDrawer);

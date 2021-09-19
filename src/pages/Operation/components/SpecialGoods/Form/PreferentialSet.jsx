@@ -260,7 +260,7 @@ const PreferentialSet = ({
     {
       label: `${goodsTypeName}名称`,
       name: 'goodsName',
-      maxLength: 30,
+      maxLength: 80,
     },
     {
       type: 'noForm',

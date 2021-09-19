@@ -7,6 +7,7 @@ import ExpertUserLog from './components/UserList/ExpertUserLog';
 import SubCommissionStatistics from './components/UserList/SubCommissionStatistics';
 import RecommendModal from './components/UserList/RecommendModal';
 import BDSet from './components/UserList/BDSet';
+import { checkCityName } from '@/utils/utils';
 
 const ExpertUserList = (props) => {
   const { expertUserList, kolLevel, loading, dispatch } = props;
@@ -75,24 +76,23 @@ const ExpertUserList = (props) => {
     },
     {
       title: '是否实习',
-      dataIndex: 'goodsCount',
-      render: (val) => '--',
+      dataIndex: 'tempLevelFlag',
+      render: (val) => (val === '1' ? '是' : '否'),
     },
     {
       title: '性别',
-      dataIndex: 'cargoIncome',
-      render: (val) => '--',
+      dataIndex: 'gender',
+      render: (val) => ({ M: '男', F: '女', '': '--' }[val]),
     },
     {
       title: '注册地',
-      dataIndex: 'cargoIncome',
-      render: (val) => '--',
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '家人数',
       align: 'right',
-      dataIndex: 'cargoIncome',
-      render: (val) => '--',
+      dataIndex: 'familyCount',
     },
     {
       title: '发布视频',

@@ -1,11 +1,38 @@
 import React from 'react';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
 
-  const { show = false, info, type, titles } = visible;
+  const { show = false, titles, checkType = '', role = '', list = [] } = visible;
+  console.log(checkType, 'checkType');
+
+  // pushVideo momentStop  "platformSubsidy" platform，directCharge
+  // role :
+  // (user: string;
+  // merchant: string;
+  // group: string;)
+
+  const getColumnsVideo = [
+    {
+      title: '品牌名',
+      dataIndex: 'brandName',
+      width: 280,
+    },
+    {
+      title: '品牌类型',
+      align: 'center',
+      dataIndex: 'topCategoryName',
+    },
+
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ];
 
   const getColumnsM = [
     {
@@ -69,8 +96,8 @@ const SubsidyDetail = (props) => {
     {
       title: '注册地',
       align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: ' 补贴/回收卡豆数',
@@ -86,16 +113,21 @@ const SubsidyDetail = (props) => {
     onCancel: () => onClose(),
     footer: null,
   };
+  const commonType = ['platformSubsidy', 'platform', 'directCharge'].includes(checkType);
+  const columns = {
+    user: getColumns,
+    merchant: getColumnsM,
+  }[role];
 
   return (
     <Modal {...modalProps}>
       <TableDataBlock
         order
         noCard={false}
-        columns={type == 'merchant' ? getColumnsM : getColumns}
-        rowKey={(record) => `${type == 'merchant' ? record.merchantId : record.userIdString}`}
-        list={info}
-        total={info?.length || 0}
+        columns={commonType ? columns : getColumnsVideo}
+        rowKey={(record) => `${record.id}`}
+        list={list || []}
+        total={list?.length || 0}
       ></TableDataBlock>
     </Modal>
   );

@@ -13,38 +13,41 @@ const FormItem = Form.Item;
 const WeightSet = ({
   detail,
   dispatch,
-  dispatchType = 'shareManage/fetchShareWeightSet',
-  recommendId,
+  dispatchType = 'specialGoods/fetchSetTopRecommendWeight',
+  params = {},
+  childRef,
 }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
   const editAuth = authCheck(['weight']);
 
-  const { recommendWeight } = detail;
+  const { weight } = detail;
 
   const setEdit = () => setEditType(!editType);
-  const name = Object.keys(recommendId)[0];
 
   // 提交
   const fetchFormData = () => {
-    form.validateFields().then(({ recommendWeight }) => {
+    form.validateFields().then(({ weight }) => {
       const payload = {
-        [name]: recommendId[name],
-        recommendWeight: recommendWeight || 0,
+        ...params,
+        weight: weight || 0,
       };
       dispatch({
         type: dispatchType,
         payload,
-        callback: setEdit,
+        callback:()=>{
+          childRef.current.fetchGetData();
+          setEdit()
+        } 
       });
     });
   };
 
   return (
-    <Form initialValues={{ recommendWeight: Number(recommendWeight) }} form={form}>
+    <Form initialValues={{ weight: weight}} form={form}>
       <div style={{ display: 'flex' }}>
-        <FormItem noStyle name={'recommendWeight'}>
+        <FormItem noStyle name={'weight'}>
           <InputNumber disabled={!editType} />
         </FormItem>
         {editAuth && (
@@ -62,5 +65,5 @@ const WeightSet = ({
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['shareManage/fetchShareLikeSet'],
+  loading: loading.effects['specialGoods/fetchSetTopRecommendWeight'],
 }))(WeightSet);
