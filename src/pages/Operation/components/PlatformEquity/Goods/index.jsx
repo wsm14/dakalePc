@@ -2,11 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
 import {
+  SUBMIT_TYPE,
   BUSINESS_TYPE,
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
   SPECIAL_USERTIME_TYPE,
-  SUBMIT_TYPE,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
