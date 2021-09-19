@@ -4,7 +4,7 @@ import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import Html5Simulate from '@/components/Html5Simulate';
-import CouponDetail from './Detail/PreferentialDetail';
+import PreferentialDetail from './Detail/PreferentialDetail';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PreferentialSet from './Form/PreferentialSet';
 import PreferentialRuleSet from './Form/PreferentialRuleSet';
@@ -118,7 +118,7 @@ const PreferentialDrawer = (props) => {
   const drawerProps = {
     info: {
       title: '活动详情',
-      children: <CouponDetail initialValues={detail}></CouponDetail>,
+      children: <PreferentialDetail initialValues={detail}></PreferentialDetail>,
     },
     add: {
       title: '新增活动',

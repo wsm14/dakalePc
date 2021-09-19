@@ -3,8 +3,7 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
-import Html5Simulate from '@/components/Html5Simulate';
-import CouponDetail from './Detail/PreferentialDetail';
+import PreferentialDetail from './Detail/PreferentialDetail';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PreferentialSet from './Form/PlatformEquitySet';
 import PreferentialRuleSet from './Form/PlatformEquityRuleSet';
@@ -118,7 +117,7 @@ const PlatformEquityDrawer = (props) => {
   const drawerProps = {
     info: {
       title: '活动详情',
-      children: <CouponDetail initialValues={detail}></CouponDetail>,
+      children: <PreferentialDetail initialValues={detail}></PreferentialDetail>,
     },
     add: {
       title: '新增活动',
@@ -196,19 +195,16 @@ const PlatformEquityDrawer = (props) => {
   };
 
   return (
-    <>
-      <DrawerCondition {...modalProps}>
-        {drawerProps.children}
-        <DrawerCondition {...ruleModalProps}>
-          <PreferentialRuleSet
-            editActive={type}
-            form={formRuleAdd}
-            initialValues={saveData || detail}
-          ></PreferentialRuleSet>
-        </DrawerCondition>
+    <DrawerCondition {...modalProps}>
+      {drawerProps.children}
+      <DrawerCondition {...ruleModalProps}>
+        <PreferentialRuleSet
+          editActive={type}
+          form={formRuleAdd}
+          initialValues={saveData || detail}
+        ></PreferentialRuleSet>
       </DrawerCondition>
-      {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}
-    </>
+    </DrawerCondition>
   );
 };
 
