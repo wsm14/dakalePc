@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { GOODS_CLASS_TYPE, PEQUITY_GOODSBUY_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
@@ -27,7 +27,6 @@ const PlatformEquitySet = ({
   const editDisabled = ['edit'].includes(editActive);
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
   const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
   const [mreList, setMreList] = useState({
@@ -48,8 +47,6 @@ const PlatformEquitySet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
-      // 图文介绍类型
-      setGoodsDescType(initialValues.goodsDescType);
       setMreList({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
@@ -260,7 +257,7 @@ const PlatformEquitySet = ({
     },
     {
       title: '设置商品价格',
-      label: `${goodsTypeName}原价`,
+      label: '原价',
       name: 'oriPrice',
       type: 'number',
       precision: 2,
@@ -270,7 +267,7 @@ const PlatformEquitySet = ({
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '特惠价格',
+      label: '成本价',
       name: 'realPrice',
       type: 'number',
       precision: 2,
@@ -284,7 +281,7 @@ const PlatformEquitySet = ({
             const realPrice = Number(value);
             const buyPrice = Number(form.getFieldValue('oriPrice'));
             if (realPrice > buyPrice) {
-              return Promise.reject('特惠价格需小于套餐价格');
+              return Promise.reject('成本价需小于原价');
             }
             return Promise.resolve();
           },
@@ -292,52 +289,61 @@ const PlatformEquitySet = ({
       ],
     },
     {
-      label: '商家结算价',
-      name: 'merchantPrice',
-      type: 'number',
-      precision: 2,
-      disabled: editDisabled,
-      min: 0,
-      max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
-      addRules: [
-        {
-          validator: (rule, value) => {
-            const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('realPrice'));
-            if (merchantPrice > buyPrice) {
-              return Promise.reject('商家结算价不可超过售卖价格');
-            }
-            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            if (merchantPrice > getPrice) {
-              return Promise.reject(`商家结算价不可超过${getPrice}`);
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
+      label: '售卖类型',
+      name: 'goodsTsaype',
+      type: 'radio',
+      select: PEQUITY_GOODSBUY_TYPE,
+      onChange: (e) => saveSelectData({ buyType: e.target.value }),
     },
     {
-      label: '佣金总额', // 手动分佣需要展示
-      name: 'commission',
+      label: '卡豆数',
+      name: 'coon',
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: radioData.buyType == '0',
+      suffix: '卡豆',
+    },
+    {
+      label: '现金（元）',
+      name: 'price',
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999.99,
+      visible: radioData.buyType == '0',
+      formatter: (value) => `￥ ${value}`,
+    },
+    {
+      label: '分佣总额', // 手动分佣需要展示
+      name: 'commisspion',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      disabled: commonDisabled,
-      visible: commissionShow == '1',
+      visible: radioData.buyType == '1',
       formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
     },
     {
-      label: '商家商品标签',
+      label: '哒人分配佣金', // 手动分佣需要展示
+      name: 'commqission',
+      type: 'number',
+      precision: 2,
+      min: 0,
+      max: 999999.99,
+      visible: radioData.buyType == '1',
+      formatter: (value) => `￥ ${value}`,
+    },
+    {
+      label: '店铺商品标签',
       name: 'goodsTags',
       type: 'select',
       mode: 'multiple',
-      placeholder: '请选择商家商品标签',
+      placeholder: '请选择店铺商品标签',
       select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      rules: [{ required: false }],
       addRules: [
         {
           validator: (rule, value) => {
@@ -350,32 +356,8 @@ const PlatformEquitySet = ({
       ],
     },
     {
-      title: `设置${goodsTypeName}介绍`,
-      label: '选择介绍类型',
-      type: 'radio',
-      name: 'goodsDescType',
-      select: SPECIAL_DESC_TYPE,
-      onChange: (e) => setGoodsDescType(e.target.value),
-    },
-    {
-      label: `${goodsTypeName}介绍`,
-      type: 'textArea',
-      name: 'goodsDesc',
-      hidden: goodsDescType !== '0',
-      rules: [{ required: false }],
-      maxLength: 200,
-    },
-    {
-      label: `${goodsTypeName}图片`,
-      name: 'goodsDescImg',
-      type: 'upload',
-      maxFile: 20,
-      hidden: goodsDescType !== '0',
-      rules: [{ required: false }],
-    },
-    {
+      title: '设置单品介绍',
       type: 'noForm',
-      visible: goodsDescType === '1',
       formItem: (
         <EditorForm
           content={initialValues.richText}

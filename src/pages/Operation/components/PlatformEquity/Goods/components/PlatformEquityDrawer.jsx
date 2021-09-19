@@ -182,7 +182,7 @@ const PlatformEquityDrawer = (props) => {
     maskShow: false,
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>
-        发布申请
+        发布商品
       </Button>
     ),
   };

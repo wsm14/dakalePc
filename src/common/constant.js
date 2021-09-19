@@ -652,3 +652,6 @@ export const VIDEO_ADVERT_TYPE = {
 
 // 视频广告 - 状态 0-下架 1-发布中
 export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
+
+// 平台权益 - 商品售卖类型
+export const PEQUITY_GOODSBUY_TYPE = ['卡豆+现金', '免费'];
