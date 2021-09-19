@@ -83,21 +83,32 @@ const EditorForm = ({
     },
     // 自定义图片上传
     uploadImg: (files, insert) => {
-      // files 是 input 中选中的文件列表
+      const uploadImgFun = (fileArrs) => {
+        aliOssUpload(fileArrs).then((res) => {
+          // 上传代码返回结果之后，将图片插入到编辑器中
+          res.map((item) => {
+            insert(item);
+          });
+        });
+      };
       const fileArr = [];
-      files.map((item, i) =>
-        imageCompress(item).then(({ file }) => {
-          fileArr.push(file);
+      // files 是 input 中选中的文件列表
+      files.map((item, i) => {
+        const fileExtr = item.name.replace(/.+\./, '.').toLowerCase();
+        if (fileExtr !== '.gif') {
+          imageCompress(item).then(({ file }) => {
+            fileArr.push(file);
+            if (i === files.length - 1) {
+              uploadImgFun(fileArr);
+            }
+          });
+        } else {
+          fileArr.push(item);
           if (i === files.length - 1) {
-            aliOssUpload(fileArr).then((res) => {
-              // 上传代码返回结果之后，将图片插入到编辑器中
-              res.map((item) => {
-                insert(item);
-              });
-            });
+            uploadImgFun(fileArr);
           }
-        }),
-      );
+        }
+      });
     },
     // 富文本内容修改回调
     change: (html) => {
