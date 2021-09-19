@@ -78,6 +78,8 @@ export const ROLE_BUTTON_TYPE = {
   peasDetail: '卡豆明细',
   preview: '预览',
   portraitEdit: '编辑画像',
+  equityCoupon: '权益券',
+  equityGoods: '权益商品',
 
   qrCode: '获取二维码',
 
