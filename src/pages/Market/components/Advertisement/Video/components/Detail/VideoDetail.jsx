@@ -98,7 +98,7 @@ const VideoDetail = (props) => {
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
       const { frontImage, url, title, videoId, ...other } = values;
-      const { free, contact } = couponData;
+      const { free = {}, contact = [] } = couponData;
       if (!values.jumpUrl && !contact.length && !free.goodsName) {
         notification.info({
           message: '温馨提示',
@@ -106,6 +106,52 @@ const VideoDetail = (props) => {
         });
         return;
       }
+
+      //   freeOwnerCouponList: free.couponName
+      //   ? [{ ownerCouponId: free.ownerCouponIdString, ownerId }]
+      //   : [],
+      // activityGoodsList: contact
+      //   .filter((i) => i.goodsName)
+      //   .map((i) => ({
+      //     activityGoodsId: i.specialGoodsId || i.activityGoodsId,
+      //     ownerId,
+      //   })),
+      // ownerCouponList: contact
+      //   .filter((i) => i.couponName)
+      //   .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
+
+      let goodsList = {};
+      if (detail.relateType !== 'brand') {
+        // 券数据整理
+        const newCoupon = [
+          ...contact.map((item) => ({
+            ...item,
+            promotionType: item.ownerCouponIdString ? 'coupon' : 'goods',
+          })),
+          ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
+        ];
+
+        goodsList = {
+          momentRelateList: newCoupon.map((item) => ({
+            relateId:
+              item.promotionType === 'goods' // 特惠
+                ? item.specialGoodsId || item.activityGoodsId
+                : item[
+                    {
+                      free: 'ownerCouponIdString', // 免费
+                      coupon: 'ownerCouponIdString', // 有价
+                    }[item.promotionType]
+                  ],
+            relateType: {
+              goods: 'specialGoods',
+              coupon: 'reduceCoupon',
+              free: 'freeReduceCoupon',
+            }[item.promotionType],
+            relateShardingKey: ownerId,
+          })),
+        };
+      }
+
       uploadLive({
         data: frontImage, // 上传封面
         callback: (imgs) => {
@@ -123,18 +169,7 @@ const VideoDetail = (props) => {
                   frontImageHeight: 960, // 封面长
                   frontImage: imgs, // 封面连接
                   videoId: videos,
-                  freeOwnerCouponList: free.couponName
-                    ? [{ ownerCouponId: free.ownerCouponIdString, ownerId }]
-                    : [],
-                  activityGoodsList: contact
-                    .filter((i) => i.goodsName)
-                    .map((i) => ({
-                      activityGoodsId: i.specialGoodsId || i.activityGoodsId,
-                      ownerId,
-                    })),
-                  ownerCouponList: contact
-                    .filter((i) => i.couponName)
-                    .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
+                  ...goodsList,
                 },
                 callback: () => {
                   onClose();
