@@ -202,15 +202,6 @@ const PlatformEquitySet = ({
         form.setFieldsValue({ merchantIds: undefined });
       },
     },
-    // {
-    //   label: '店铺范围',
-    //   type: 'radio',
-    //   name: 'shopType',
-    //   disabled: editActive,
-    //   visible: mreList.name && mreList.type === 'group',
-    //   select: ['全部', '部分'],
-    //   onChange: (e) => saveSelectData({ shopType: e.target.value }),
-    // },
     {
       label: '适用店铺',
       name: 'merchantIds',

@@ -44,7 +44,7 @@ const PlatformEquityDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
-      const { id, ownerId } = detail;
+      const { id } = detail;
       const {
         activityGoodsImg,
         goodsDescImg,
