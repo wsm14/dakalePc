@@ -638,6 +638,7 @@ export const FEEDBACK_TYPE = {
 };
 // 视频广告 - 位置
 export const VIDEO_ADVERT_PLACE = {
+  ALL: '全部',
   pickUp: '捡豆',
   commend: '推荐',
 };

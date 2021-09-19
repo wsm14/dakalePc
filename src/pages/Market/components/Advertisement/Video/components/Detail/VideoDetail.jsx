@@ -14,13 +14,14 @@ const VideoDetail = (props) => {
 
   const { index, show = false, type = 'info', detail = {} } = visible;
 
-  const { platformMomentId } = detail;
+  const { platformMomentId, relateId: ownerId } = detail;
 
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
 
   useEffect(() => {
     if (type !== 'info') {
+      form.setFieldsValue({ ownerId });
       setCouponData({ free: detail.free, contact: detail.contact });
     }
   }, [type]);
@@ -74,7 +75,7 @@ const VideoDetail = (props) => {
       name: 'browseType',
       render: (val) => (
         <>
-          <div>推荐位置：{val === '' ? '全部' : VIDEO_ADVERT_PLACE[val]}</div>
+          <div>推荐位置：{VIDEO_ADVERT_PLACE[val]}</div>
           <div>用户性别：{SHARE_SEX_TYPE[detail.gender]}</div>
           <div>用户年龄：{detail.age}</div>
           <div>
@@ -97,7 +98,7 @@ const VideoDetail = (props) => {
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
       const { frontImage, url, title, videoId, ...other } = values;
-      const { free, contact } = couponData;
+      const { free = {}, contact = [] } = couponData;
       if (!values.jumpUrl && !contact.length && !free.goodsName) {
         notification.info({
           message: '温馨提示',
@@ -105,6 +106,39 @@ const VideoDetail = (props) => {
         });
         return;
       }
+
+      let goodsList = {};
+      if (detail.relateType !== 'brand') {
+        // 券数据整理
+        const newCoupon = [
+          ...contact.map((item) => ({
+            ...item,
+            promotionType: item.ownerCouponIdString ? 'coupon' : 'goods',
+          })),
+          ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
+        ];
+
+        goodsList = {
+          momentRelateList: newCoupon.map((item) => ({
+            relateId:
+              item.promotionType === 'goods' // 特惠
+                ? item.specialGoodsId || item.activityGoodsId
+                : item[
+                    {
+                      free: 'ownerCouponIdString', // 免费
+                      coupon: 'ownerCouponIdString', // 有价
+                    }[item.promotionType]
+                  ],
+            relateType: {
+              goods: 'specialGoods',
+              coupon: 'reduceCoupon',
+              free: 'freeReduceCoupon',
+            }[item.promotionType],
+            relateShardingKey: ownerId,
+          })),
+        };
+      }
+
       uploadLive({
         data: frontImage, // 上传封面
         callback: (imgs) => {
@@ -122,18 +156,7 @@ const VideoDetail = (props) => {
                   frontImageHeight: 960, // 封面长
                   frontImage: imgs, // 封面连接
                   videoId: videos,
-                  freeOwnerCouponList: free.couponName
-                    ? [{ ownerCouponId: free.ownerCouponIdString, ownerId }]
-                    : [],
-                  activityGoodsList: contact
-                    .filter((i) => i.goodsName)
-                    .map((i) => ({
-                      activityGoodsId: i.specialGoodsId || i.activityGoodsId,
-                      ownerId,
-                    })),
-                  ownerCouponList: contact
-                    .filter((i) => i.couponName)
-                    .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
+                  ...goodsList,
                 },
                 callback: () => {
                   onClose();

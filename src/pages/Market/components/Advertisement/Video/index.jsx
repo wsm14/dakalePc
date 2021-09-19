@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Tooltip } from 'antd';
 import {
   SHARE_AREA_TYPE,
   VIDEO_ADVERT_TYPE,
@@ -8,6 +8,7 @@ import {
   VIDEO_ADVERT_STATUS,
   SUBMIT_TYPE_VIDEO,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -43,7 +44,7 @@ const ShareManage = (props) => {
       label: '推荐位置',
       name: 'browseType',
       type: 'select',
-      select: VIDEO_ADVERT_PLACE,
+      select: (({ ALL, ...other }) => other)(VIDEO_ADVERT_PLACE),
     },
     {
       label: '分享标题',
@@ -107,7 +108,23 @@ const ShareManage = (props) => {
       title: '投放区域',
       align: 'right',
       dataIndex: 'areaType',
-      render: (val) => SHARE_AREA_TYPE[val],
+      render: (val, row) =>
+        ({
+          all: SHARE_AREA_TYPE[val],
+          city: (
+            <Tooltip title={row?.area?.split(',').map((i) => checkCityName(i))}>
+              {SHARE_AREA_TYPE[val]}
+            </Tooltip>
+          ),
+          district: (
+            <Tooltip title={row?.area?.split(',').map((i) => checkCityName(i))}>
+              {SHARE_AREA_TYPE[val]}
+            </Tooltip>
+          ),
+          near: (
+            <Tooltip title={`${row.beanAddress} 附近${row.area}米`}>{SHARE_AREA_TYPE[val]}</Tooltip>
+          ),
+        }[val]),
     },
     {
       title: '观看人数',
@@ -132,7 +149,7 @@ const ShareManage = (props) => {
       title: '推荐位置',
       align: 'right',
       dataIndex: 'browseType',
-      render: (val) => (val ? VIDEO_ADVERT_PLACE[val] : '全部'),
+      render: (val) => VIDEO_ADVERT_PLACE[val],
     },
     {
       title: '创建时间',
