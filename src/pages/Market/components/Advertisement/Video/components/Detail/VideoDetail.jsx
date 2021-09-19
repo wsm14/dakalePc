@@ -14,13 +14,14 @@ const VideoDetail = (props) => {
 
   const { index, show = false, type = 'info', detail = {} } = visible;
 
-  const { platformMomentId } = detail;
+  const { platformMomentId, relateId: ownerId } = detail;
 
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
 
   useEffect(() => {
     if (type !== 'info') {
+      form.setFieldsValue({ ownerId });
       setCouponData({ free: detail.free, contact: detail.contact });
     }
   }, [type]);

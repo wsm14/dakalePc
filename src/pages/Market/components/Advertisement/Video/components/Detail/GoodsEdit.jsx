@@ -55,6 +55,11 @@ const GoodsEdit = (props) => {
       hidden: true,
     },
     {
+      label: '商户id',
+      name: 'ownerId',
+      hidden: true,
+    },
+    {
       label: '视频标题',
       name: 'title',
       maxLength: 20,
