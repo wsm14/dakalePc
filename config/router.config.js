@@ -472,6 +472,18 @@ export default [
         ],
       },
       {
+        path: '/operation/platformEquityOrder',
+        name: '平台权益',
+        component: './Operation/PlatformEquityOrder',
+        buttons: [
+          'equityCoupon',
+          'equityGoods',
+          'equityDummy',
+          'info',
+          'exportList',
+        ],
+      },
+      {
         path: '/operation/special',
         name: '特惠商品',
         component: './Operation/SpecialGoods',
