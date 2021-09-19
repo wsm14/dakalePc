@@ -66,12 +66,15 @@ const CouponManageComponent = (props) => {
   const getColumns = [
     {
       title: '券/店铺名称',
+      fixed: 'left',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
           <div>
             <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
-            {val}
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
