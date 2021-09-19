@@ -13,9 +13,9 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 
 /**
- * 平台权益
+ * 权益商品
  */
-const PlatformEquity = (props) => {
+const PlatformEquityGoods = (props) => {
   const { specialGoods, loading, dispatch } = props;
   const { list } = specialGoods;
 
@@ -281,4 +281,4 @@ const PlatformEquity = (props) => {
 export default connect(({ specialGoods, loading }) => ({
   specialGoods,
   loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
-}))(PlatformEquity);
+}))(PlatformEquityGoods);
