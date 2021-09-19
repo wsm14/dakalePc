@@ -33,7 +33,7 @@ const PlatformEquity = () => {
       {check && check.length ? (
         {
           goods: <Goods></Goods>, // 权益商品
-          coupon: <Open></Open>, // 权益券
+          coupon: <Goods></Goods>, // 权益券
         }[tabKey]
       ) : (
         <Result status="403" title="403" subTitle="暂无权限"></Result>

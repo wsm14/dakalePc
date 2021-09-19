@@ -146,7 +146,6 @@ const PlatformEquity = (props) => {
               ￥{Number(val).toFixed(2)}
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
               <div>￥{Number(row.realPrice).toFixed(2)}</div>
             </div>
           </div>
