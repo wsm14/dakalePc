@@ -8,10 +8,13 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
+import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformEquityDrawer from './components/PlatformEquityGoods';
+import SpecialGoodDetail from './components/SpecialGoodDetail';
+import RemainModal from './components/Detail/RemainModal';
 
 /**
  * 权益商品
@@ -23,6 +26,9 @@ const PlatformEquityGoods = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
+  const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
+  const [visibleRemain, setVisibleRemain] = useState(false);
 
   useEffect(() => {
     if (childRef.current) {
@@ -223,35 +229,108 @@ const PlatformEquityGoods = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (val, record, index) => {
-        const { status, deleteFlag } = record;
+        const { specialGoodsId, ownerIdString: merchantId, status, deleteFlag } = record;
         return [
           {
             type: 'info',
-            click: () => setVisibleSet(index, 'info'),
-          },
-          {
-            auth: 'up',
-            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
-            click: () => setVisibleSet({}),
+            click: () => fetchSpecialGoodsDetail(index, 'info'),
           },
           {
             auth: 'down',
             visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
-            click: () => setVisibleSet({}),
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: record,
+                formProps: { type: 'down', key: 'offShelfReason' },
+              }),
           },
           {
             type: 'edit',
             visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
-            click: () => setVisibleSet(index, 'edit'),
+            click: () => fetchSpecialGoodsDetail(index, 'edit'),
+          },
+          {
+            type: 'again', //重新发布
+            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            click: () => fetchSpecialGoodsDetail(index, 'again'),
+          },
+          {
+            type: 'againUp', // 再次上架
+            title: '编辑',
+            visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
+            click: () => fetchSpecialGoodsDetail(index, 'againUp'),
           },
           {
             type: 'diary',
-            click: () => setVisibleSet({ type: 'specialGoods', identificationId: val }),
+            click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+          },
+          {
+            title: '增加库存',
+            type: 'addRemain',
+            visible: ['1'].includes(status) && deleteFlag == '1',
+            click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
           },
         ];
       },
     },
   ];
+
+  // 获取详情
+  const fetchSpecialGoodsDetail = (index, type) => {
+    const { specialGoodsId, ownerIdString, ownerName, ownerType } = list[index];
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsDetail',
+      payload: { specialGoodsId, ownerId: ownerIdString, type },
+      callback: (val) => {
+        const { status } = val;
+        const newProps = {
+          show: true,
+          detail: { ...val, merchantName: ownerName, ownerType },
+        };
+        if (type == 'info') {
+          setVisibleInfo({ status, index, ...newProps, specialGoodsId, ownerIdString });
+        } else {
+          setVisibleSet({ type, ...newProps, specialGoodsId, ownerIdString });
+        }
+      },
+    });
+  };
+
+  // 获取日志信息
+  const fetchGetLogData = (payload) => {
+    dispatch({
+      type: 'baseData/fetchGetLogDetail',
+      payload,
+    });
+  };
+
+  // 增加库存
+  const fetAddRemain = (id, ownerId, remain) => {
+    setVisibleRemain({
+      show: true,
+      id,
+      ownerId,
+      remain,
+    });
+  };
+
+  // 下架
+  const fetchSpecialGoodsStatus = (values) => {
+    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
+    dispatch({
+      type: 'specialGoods/fetchSpecialGoodsStatus',
+      payload: {
+        ...values,
+        id: specialGoodsId,
+        ownerId: ownerIdString,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
 
   const btnList = [
     {
@@ -270,7 +349,7 @@ const PlatformEquityGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ deleteFlag: '1' }}
+        params={{ ownerType: -1 }}
         rowKey={(record) => `${record.specialGoodsId}`}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
@@ -281,6 +360,35 @@ const PlatformEquityGoods = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></PlatformEquityDrawer>
+      {/* 详情 */}
+      <SpecialGoodDetail
+        visible={visibleInfo}
+        total={list.length}
+        getDetail={fetchSpecialGoodsDetail}
+        onEdit={() =>
+          //  活动中的编辑
+          setVisibleSet({
+            // type: [false, 'active', 'edit'][visibleInfo.status],
+            type: 'edit',
+            show: true,
+            detail: visibleInfo ? visibleInfo.detail : {},
+          })
+        }
+        onClose={() => setVisibleInfo(false)}
+      ></SpecialGoodDetail>
+      {/* 下架原因 */}
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={fetchSpecialGoodsStatus}
+        loading={loading}
+      ></RefuseModal>{' '}
+      {/* 库存总量 */}
+      <RemainModal
+        childRef={childRef}
+        visible={visibleRemain}
+        onClose={() => setVisibleRemain(false)}
+      ></RemainModal>
     </>
   );
 };

@@ -17,7 +17,6 @@ const PlatformEquitySet = ({
   commissionShow,
   setCommissionShow,
   initialValues = {},
-  onValuesChange,
   skuMerchantList,
   setContent,
 }) => {
@@ -51,7 +50,7 @@ const PlatformEquitySet = ({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
       });
-      setRadioData({ goodsType: initialValues.goodsType });
+      setRadioData({ goodsType: initialValues.goodsType, buyFlag: initialValues.buyFlag });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
@@ -290,50 +289,47 @@ const PlatformEquitySet = ({
     },
     {
       label: '售卖类型',
-      name: 'goodsTsaype',
+      name: 'buyFlag',
       type: 'radio',
       select: PEQUITY_GOODSBUY_TYPE,
-      onChange: (e) => saveSelectData({ buyType: e.target.value }),
+      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+    },
+    {
+      label: '售卖',
+      name: ['paymentModeObject', 'type'],
+      hidden: true,
     },
     {
       label: '卡豆数',
-      name: 'coon',
+      name: ['paymentModeObject', 'bean'],
       type: 'number',
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyType == '0',
+      visible: radioData.buyFlag == '0',
       suffix: '卡豆',
     },
     {
       label: '现金（元）',
-      name: 'price',
+      name: ['paymentModeObject', 'cash'],
       type: 'number',
       precision: 0,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyType == '0',
+      visible: radioData.buyFlag == '0',
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '分佣总额', // 手动分佣需要展示
-      name: 'commisspion',
+      label: '佣金总额', // 手动分佣需要展示
+      name: 'commission',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyType == '1',
+      disabled: commonDisabled,
+      visible: commissionShow == '1',
       formatter: (value) => `￥ ${value}`,
-    },
-    {
-      label: '哒人分配佣金', // 手动分佣需要展示
-      name: 'commqission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
-      visible: radioData.buyType == '1',
-      formatter: (value) => `￥ ${value}`,
+      // rules: [{ required: false }],
     },
     {
       label: '店铺商品标签',
@@ -356,6 +352,11 @@ const PlatformEquitySet = ({
       ],
     },
     {
+      label: '介绍类型',
+      name: 'goodsDescType',
+      hidden: true,
+    },
+    {
       title: '设置单品介绍',
       type: 'noForm',
       formItem: (
@@ -373,7 +374,6 @@ const PlatformEquitySet = ({
         form={form}
         formItems={formItems}
         initialValues={initialValues}
-        onValuesChange={(changedValues, allValues) => onValuesChange && onValuesChange(allValues)}
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}

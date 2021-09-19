@@ -50,6 +50,9 @@ const PlatformEquityDrawer = (props) => {
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
+        ownerType: relateType,
+        ownerId: relateId,
+        ...otherPre
       } = visibleRule.preData;
       const {
         activityStartTime,
@@ -73,8 +76,10 @@ const PlatformEquityDrawer = (props) => {
           }[type],
           payload: {
             id,
-            ...visibleRule.preData,
+            ...otherPre,
             ...other,
+            relateId,
+            relateType,
             richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),
             merchantIds: merchantIds.toString(),
@@ -127,7 +132,8 @@ const PlatformEquityDrawer = (props) => {
           initialValues={{
             ownerType: 'merchant',
             goodsType: 'single',
-            goodsDescType: '0',
+            goodsDescType: '1',
+            paymentModeObject: { type: 'self' },
             packageGoodsObjects: [{}],
           }}
         ></PreferentialSet>

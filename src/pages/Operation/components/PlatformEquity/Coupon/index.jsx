@@ -16,11 +16,11 @@ const PlatformEquityCoupon = (props) => {
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
 
-  useEffect(() => {
-    if (childRef.current) {
-      childRef.current.fetchGetData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (childRef.current) {
+  //     childRef.current.fetchGetData();
+  //   }
+  // }, []);
 
   // 搜索参数
   const searchItems = [
@@ -213,7 +213,7 @@ const PlatformEquityCoupon = (props) => {
         searchItems={searchItems}
         params={{ deleteFlag: '1' }}
         rowKey={(record) => `${record.specialGoodsId}`}
-        dispatchType="specialGoods/fetchGetList"
+        // dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
       {/* 新增 编辑 详情*/}
