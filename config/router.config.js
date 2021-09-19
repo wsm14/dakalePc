@@ -473,7 +473,7 @@ export default [
       },
       {
         path: '/operation/platformEquityOrder',
-        name: '平台权益',
+        name: '权益订单',
         component: './Operation/PlatformEquityOrder',
         buttons: [
           'equityCoupon',
