@@ -22,7 +22,6 @@ const PlatformEquityDrawer = (props) => {
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [saveData, setSaveData] = useState(null);
-  const [showHtmlData, setShowHtmlData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 搜索店铺
@@ -131,7 +130,6 @@ const PlatformEquityDrawer = (props) => {
             goodsDescType: '0',
             packageGoodsObjects: [{}],
           }}
-          onValuesChange={setShowHtmlData}
         ></PreferentialSet>
       ),
     },
@@ -144,12 +142,7 @@ const PlatformEquityDrawer = (props) => {
     againUp: {
       title: '编辑',
       children: (
-        <PreferentialSet
-          {...listProp}
-          form={formAgainUp}
-          initialValues={detail}
-          onValuesChange={setShowHtmlData}
-        ></PreferentialSet>
+        <PreferentialSet {...listProp} form={formAgainUp} initialValues={detail}></PreferentialSet>
       ),
     },
     edit: {

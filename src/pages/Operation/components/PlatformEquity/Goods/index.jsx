@@ -276,7 +276,11 @@ const PlatformEquityGoods = (props) => {
         {...specialGoods}
       ></TableDataBlock>
       {/* 新增 编辑 */}
-      <PlatformEquityDrawer visible={visible} onClose={onClose}></PlatformEquityDrawer>
+      <PlatformEquityDrawer
+        childRef={childRef}
+        visible={visibleSet}
+        onClose={() => setVisibleSet({ show: false })}
+      ></PlatformEquityDrawer>
     </>
   );
 };
