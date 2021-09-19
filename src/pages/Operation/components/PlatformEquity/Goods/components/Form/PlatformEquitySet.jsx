@@ -50,7 +50,10 @@ const PlatformEquitySet = ({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
       });
-      setRadioData({ goodsType: initialValues.goodsType, buyFlag: initialValues.buyFlag });
+      setRadioData({
+        goodsType: initialValues.goodsType,
+        buyFlag: initialValues?.paymentModeObject?.buyFlag,
+      });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
@@ -306,18 +309,46 @@ const PlatformEquitySet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyFlag == '0',
+      visible: radioData.buyFlag == '1',
       suffix: '卡豆',
     },
     {
       label: '现金（元）',
       name: ['paymentModeObject', 'cash'],
       type: 'number',
-      precision: 0,
+      precision: 0.2,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyFlag == '0',
+      visible: radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
+    },
+    {
+      label: '商家结算价',
+      name: 'merchantPrice',
+      type: 'number',
+      precision: 2,
+      disabled: editDisabled,
+      min: 0,
+      max: 999999.99,
+      visible: radioData.buyFlag == '1',
+      formatter: (value) => `￥ ${value}`,
+      addRules: [
+        {
+          validator: (rule, value) => {
+            const merchantPrice = Number(value);
+            const buyPrice = Number(form.getFieldValue('realPrice'));
+            if (merchantPrice > buyPrice) {
+              return Promise.reject('商家结算价不可超过售卖价格');
+            }
+            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
+            const getPrice = buyPrice * (1 - mreList.ratio / 100);
+            if (merchantPrice > getPrice) {
+              return Promise.reject(`商家结算价不可超过${getPrice}`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '佣金总额', // 手动分佣需要展示
@@ -327,7 +358,7 @@ const PlatformEquitySet = ({
       min: 0,
       max: 999999.99,
       disabled: commonDisabled,
-      visible: commissionShow == '1',
+      visible: commissionShow == '1' && radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       // rules: [{ required: false }],
     },

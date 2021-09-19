@@ -44,7 +44,7 @@ const PlatformEquityGoods = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'ownerId',
+      name: 'relateId',
       type: 'merchant',
     },
     {
@@ -89,7 +89,7 @@ const PlatformEquityGoods = (props) => {
     },
     {
       label: '店铺类型',
-      name: 'ownerType',
+      name: 'relateType',
       type: 'select',
       select: BUSINESS_TYPE,
     },
@@ -349,7 +349,7 @@ const PlatformEquityGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ ownerType: -1 }}
+        params={{ adminFlag: 1 }}
         rowKey={(record) => `${record.specialGoodsId}`}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}

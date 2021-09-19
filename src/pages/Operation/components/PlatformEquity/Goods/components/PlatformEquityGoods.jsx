@@ -50,8 +50,8 @@ const PlatformEquityDrawer = (props) => {
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
-        ownerType: relateType,
-        ownerId: relateId,
+        ownerType,
+        ownerId,
         ...otherPre
       } = visibleRule.preData;
       const {
@@ -69,17 +69,19 @@ const PlatformEquityDrawer = (props) => {
       aliOssUpload([...aimg, ...gimg]).then((res) => {
         dispatch({
           type: {
-            add: 'specialGoods/fetchSpecialGoodsSave',
+            add: 'specialGoods/fetchPlatformEquityGoodsSave',
             edit: 'specialGoods/fetchSpecialGoodsEdit',
-            again: 'specialGoods/fetchSpecialGoodsSave',
+            again: 'specialGoods/fetchPlatformEquityGoodsSave',
             againUp: 'specialGoods/fetchSpecialGoodsEdit',
           }[type],
           payload: {
             id,
             ...otherPre,
             ...other,
-            relateId,
-            relateType,
+            ownerType: 'admin',
+            ownerId: -1,
+            relateId: ownerId,
+            relateType: ownerType,
             richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),
             merchantIds: merchantIds.toString(),
@@ -209,7 +211,7 @@ const PlatformEquityDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading:
-    loading.effects['specialGoods/fetchSpecialGoodsSave'] ||
+    loading.effects['specialGoods/fetchPlatformEquityGoodsSave'] ||
     loading.effects['specialGoods/fetchSpecialGoodsEdit'] ||
     loading.effects['baseData/fetchGetGroupMreList'],
 }))(PlatformEquityDrawer);
