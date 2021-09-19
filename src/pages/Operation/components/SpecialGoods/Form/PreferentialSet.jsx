@@ -6,7 +6,7 @@ import { GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE, BUSINESS_TYPE } from '@/common/con
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
-import GoodsGroupSet from '../GoodsGroupSet';
+import GoodsGroupSet from './GoodsGroupSet';
 
 const PreferentialSet = ({
   form,
