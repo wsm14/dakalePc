@@ -8,6 +8,7 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_USERTIME_TYPE,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -214,9 +215,9 @@ const PlatformEquityGoods = (props) => {
     },
     {
       title: '商家所属地区/行业',
-      align: 'right',
-      dataIndex: 'writeOffGoodsCount',
-      sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val, row) => `${checkCityName(val)}\n${row.topCategoryName}/${row.categoryName}`,
     },
     {
       title: '创建时间',

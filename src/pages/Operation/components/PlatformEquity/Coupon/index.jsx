@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Tag } from 'antd';
 import { SUBMIT_TYPE, BUSINESS_TYPE, COUPON_STATUS } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
+import { checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformEquityDrawer from './components/PlatformEquityCoupon';
@@ -136,8 +137,9 @@ const PlatformEquityCoupon = (props) => {
     },
     {
       title: '商家所属地区/行业',
-      align: 'right',
-      dataIndex: 'writeOffGoodsCount',
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val, row) => `${checkCityName(val)}\n${row.topCategoryName}/${row.categoryName}`,
     },
     {
       title: '状态',
