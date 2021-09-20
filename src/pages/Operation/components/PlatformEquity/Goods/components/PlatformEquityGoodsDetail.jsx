@@ -9,7 +9,7 @@ import RegularDetail from './Detail/RegularDetail';
 
 const PlatformEquityGoodsDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
-  const { show = false, index, detail = {}, status, specialGoodsId, ownerIdString } = visible;
+  const { show = false, index, detail = {}, status, specialGoodsId } = visible;
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
@@ -19,7 +19,7 @@ const PlatformEquityGoodsDetail = (props) => {
   };
 
   useEffect(() => {
-    if (show && detail.ownerType === 'group') {
+    if (show && detail.relateType === 'group') {
       getMerchantList();
     }
   }, [show]);
@@ -30,7 +30,7 @@ const PlatformEquityGoodsDetail = (props) => {
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: specialGoodsId,
-        ownerId: ownerIdString,
+        ownerId: -1,
         serviceType: 'specialGoods',
       },
       callback: (list) => setMerchantList(list),
@@ -61,8 +61,6 @@ const PlatformEquityGoodsDetail = (props) => {
 
   return (
     <DrawerCondition {...modalProps}>
-      {/* 驳回原因
-      {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
       {/* 信息展示 */}
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">

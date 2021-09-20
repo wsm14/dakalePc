@@ -132,9 +132,9 @@ const PlatformEquityGoods = (props) => {
               </Ellipsis>
             </div>
             <div style={{ display: 'flex', marginTop: 5 }}>
-              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+              <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
               <Ellipsis length={10} tooltip>
-                {row.ownerName}
+                {row.relateName}
               </Ellipsis>
             </div>
           </div>
@@ -229,7 +229,7 @@ const PlatformEquityGoods = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, ownerIdString: merchantId, status, deleteFlag } = record;
+        const { specialGoodsId, status, deleteFlag } = record;
         return [
           {
             type: 'info',
@@ -269,7 +269,7 @@ const PlatformEquityGoods = (props) => {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status) && deleteFlag == '1',
-            click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
+            click: () => fetAddRemain(specialGoodsId, record.remain),
           },
         ];
       },
@@ -278,20 +278,20 @@ const PlatformEquityGoods = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { specialGoodsId, ownerIdString, ownerName, ownerType } = list[index];
+    const { specialGoodsId, relateName, relateType } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { specialGoodsId, ownerId: ownerIdString, type },
+      payload: { specialGoodsId, ownerId: -1, type },
       callback: (val) => {
         const { status } = val;
         const newProps = {
           show: true,
-          detail: { ...val, merchantName: ownerName, ownerType },
+          detail: { ...val, merchantName: relateName, relateType },
         };
         if (type == 'info') {
-          setVisibleInfo({ status, index, ...newProps, specialGoodsId, ownerIdString });
+          setVisibleInfo({ status, index, ...newProps, specialGoodsId });
         } else {
-          setVisibleSet({ type, ...newProps, specialGoodsId, ownerIdString });
+          setVisibleSet({ type, ...newProps });
         }
       },
     });
@@ -306,24 +306,23 @@ const PlatformEquityGoods = (props) => {
   };
 
   // 增加库存
-  const fetAddRemain = (id, ownerId, remain) => {
+  const fetAddRemain = (id, remain) => {
     setVisibleRemain({
       show: true,
       id,
-      ownerId,
       remain,
     });
   };
 
   // 下架
   const fetchSpecialGoodsStatus = (values) => {
-    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
+    const { specialGoodsId } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
       payload: {
         ...values,
         id: specialGoodsId,
-        ownerId: ownerIdString,
+        ownerId: -1,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });

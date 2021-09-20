@@ -17,23 +17,19 @@ const SetMealTable = (props) => {
       dataIndex: 'goodsPrice',
     },
   ];
-  return (
-    <>
-      {packageGroupObjects.map((items, ins) => {
-        const data = { list: items.packageGoodsObjects };
-        return (
-          <div key={ins}>
-            <div style={{ marginBottom: '10px' }}>单品组名称： {items.groupName}</div>
-            <TableDataBlock
-              noCard={false}
-              columns={getColumns}
-              rowKey={(record) => `${record.goodsName}` + (0.5 - Math.random()).toString()}
-              {...data}
-            ></TableDataBlock>
-          </div>
-        );
-      })}
-    </>
-  );
+  return packageGroupObjects.map((items, ins) => {
+    const data = { list: items.packageGoodsObjects };
+    return (
+      <div key={ins}>
+        <div style={{ marginBottom: '10px' }}>单品组名称： {items.groupName}</div>
+        <TableDataBlock
+          noCard={false}
+          columns={getColumns}
+          rowKey={(record) => `${record.goodsName}` + (0.5 - Math.random()).toString()}
+          {...data}
+        ></TableDataBlock>
+      </div>
+    );
+  });
 };
 export default SetMealTable;

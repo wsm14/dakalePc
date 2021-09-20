@@ -25,7 +25,7 @@ const PlatformEquityDrawer = (props) => {
 
   // 搜索店铺
   const fetchGetMre = () => {
-    const { merchantName, ownerType } = detail;
+    const { merchantName, relateType } = detail;
     if (!merchantName) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -35,7 +35,7 @@ const PlatformEquityDrawer = (props) => {
         bankStatus: 3,
         businessStatus: 1,
         merchantName,
-        groupFlag: ownerType === 'merchant' ? 0 : 1,
+        groupFlag: relateType === 'merchant' ? 0 : 1,
       },
     });
   };
@@ -49,8 +49,6 @@ const PlatformEquityDrawer = (props) => {
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
-        ownerType,
-        ownerId,
         ...otherPre
       } = visibleRule.preData;
       const {
@@ -79,8 +77,6 @@ const PlatformEquityDrawer = (props) => {
             ...other,
             ownerType: 'admin',
             ownerId: -1,
-            relateId: ownerId,
-            relateType: ownerType,
             richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),
             merchantIds: merchantIds.toString(),
@@ -127,7 +123,7 @@ const PlatformEquityDrawer = (props) => {
           {...listProp}
           form={form}
           initialValues={{
-            ownerType: 'merchant',
+            relateType: 'merchant',
             goodsType: 'single',
             goodsDescType: '1',
             paymentModeObject: { type: 'self' },

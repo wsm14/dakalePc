@@ -2,22 +2,27 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from './MerchantListTable';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  GOODS_CLASS_TYPE,
+  SPECIAL_DESC_TYPE,
+  PEQUITY_GOODSBUY_TYPE,
+} from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, ownerType, goodsDescType } = detail;
+  const { goodsType, relateType, goodsDescType, buyFlag } = detail;
 
   const ActiveformItems = [
     {
       title: '参与活动的店铺',
-      name: 'ownerType',
+      name: 'relateType',
       label: '店铺类型',
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      name: 'ownerName',
-      label: `${BUSINESS_TYPE[ownerType]}名称`,
+      name: 'relateName',
+      label: `${BUSINESS_TYPE[relateType]}名称`,
     },
   ];
 
@@ -49,19 +54,22 @@ const GoodsDetail = (props) => {
   const GoodPriceItem = [
     {
       name: 'oriPrice',
-      label: `${GOODS_CLASS_TYPE[goodsType]}原价`,
+      label: `原价`,
     },
     {
       name: 'realPrice',
-      label: '特惠价格',
+      label: '成本价',
     },
     {
-      name: 'merchantPrice',
-      label: '商家结算价',
+      name: 'buyFlag',
+      label: '售卖类型',
+      render: (val) => PEQUITY_GOODSBUY_TYPE[val],
     },
     {
-      name: 'otherPlatformPrice',
-      label: '其他平台价格',
+      name: 'paymentModeObject',
+      shwo: buyFlag === '1',
+      label: '卡豆+现金',
+      render: (val) => `${val.bean || 0} 卡豆 + ${val.cash} 元`,
     },
   ];
 
@@ -106,59 +114,36 @@ const GoodsDetail = (props) => {
     },
   ];
 
+  const TagCell = ({ children }) => (
+    <span
+      style={{
+        display: 'inline-block',
+        padding: 8,
+        margin: '5px',
+        border: '1px solid #ddd',
+      }}
+    >
+      {children}
+    </span>
+  );
+
   const formItemTag = [
     {
       label: '商家商品标签',
       name: 'goodsTagList',
-      // show: detail.goodsTagList,
       render: (val, row) => {
         const { goodsTagList = [] } = row;
         const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
-        return (
-          <>
-            {tags &&
-              tags.map((tag) => (
-                <span
-                  style={{
-                    display: 'inline-block',
-                    padding: 8,
-                    margin: '5px',
-                    border: '1px solid #ddd',
-                  }}
-                  key={tag.configGoodsTagId}
-                >
-                  {tag.tagName}
-                </span>
-              ))}
-          </>
-        );
+        return tags.map((tag) => <TagCell key={tag.configGoodsTagId}>{tag.tagName}</TagCell>);
       },
     },
     {
       label: '平台商品标签',
       name: 'platformGoodsTagList',
-      // show: detail.goodsTagList,
       render: (val, row) => {
         const { platformGoodsTagList = [] } = row;
         const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
-        return (
-          <>
-            {tags &&
-              tags.map((tag) => (
-                <span
-                  style={{
-                    display: 'inline-block',
-                    padding: 8,
-                    margin: '5px',
-                    border: '1px solid #ddd',
-                  }}
-                  key={tag.configGoodsTagId}
-                >
-                  {tag.tagName}
-                </span>
-              ))}
-          </>
-        );
+        return tags.map((tag) => <TagCell key={tag.configGoodsTagId}>{tag.tagName}</TagCell>);
       },
     },
   ];
@@ -170,7 +155,7 @@ const GoodsDetail = (props) => {
         formItems={ActiveformItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {ownerType === 'group' && (
+      {relateType === 'group' && (
         <div style={{ margin: '10px' }}>
           <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
         </div>
@@ -191,7 +176,7 @@ const GoodsDetail = (props) => {
         initialValues={detail}
       ></DescriptionsCondition>
       {/* 当分佣方式为自定义佣金和手动分佣时才显示 */}
-      {detail.divisionFlag === '1' && (
+      {detail.divisionFlag === '1' && buyFlag == '1' && (
         <DescriptionsCondition
           title="分佣配置"
           formItems={formItemComiss}

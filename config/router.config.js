@@ -463,12 +463,12 @@ export default [
           'equityGoods',
           'save',
           'edit',
-          'up',
           'down',
           'info',
           'again',
           'againUp',
           'addRemain',
+          'diary',
         ],
       },
       {

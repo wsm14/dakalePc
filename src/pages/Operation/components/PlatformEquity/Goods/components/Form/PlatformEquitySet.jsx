@@ -45,29 +45,29 @@ const PlatformEquitySet = ({
 
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
-    if (initialValues.ownerName) {
+    if (initialValues.relateName) {
       setMreList({
-        type: initialValues.ownerType,
-        groupId: initialValues.ownerId,
+        type: initialValues.relateType,
+        groupId: initialValues.relateId,
       });
       setRadioData({
         goodsType: initialValues.goodsType,
         buyFlag: initialValues?.paymentModeObject?.buyFlag,
       });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
-      fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
-        const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+      fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
+        const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
         const topCategoryId = list[mreFindIndex].topCategoryId[0];
         // 是否分佣
         getCommissionFlag(topCategoryId);
         // 商品标签
         getTagsPlat(topCategoryId);
       });
-      if (initialValues.ownerType === 'group') {
+      if (initialValues.relateType === 'group') {
         getMerchantList();
       }
     }
-  }, [initialValues.ownerName]);
+  }, [initialValues.relateName]);
 
   //sku通用-sku挂靠商家列表
   const getMerchantList = () => {
@@ -75,7 +75,7 @@ const PlatformEquitySet = ({
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: initialValues.specialGoodsId,
-        ownerId: initialValues.ownerIdString,
+        ownerId: -1,
         serviceType: 'specialGoods',
       },
       callback: (list) => {
@@ -167,7 +167,7 @@ const PlatformEquitySet = ({
       label: '选择店铺类型',
       type: 'radio',
       disabled: commonDisabled,
-      name: 'ownerType',
+      name: 'relateType',
       select: BUSINESS_TYPE,
       onChange: (e) => {
         setCommissionShow(false);
@@ -179,14 +179,14 @@ const PlatformEquitySet = ({
           keys: [],
           list: [],
         }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        form.setFieldsValue({ relateId: undefined }); // 重置数据
         dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
       label: `选择${BUSINESS_TYPE[mreList.type]}`,
       type: 'select',
-      name: 'ownerId',
+      name: 'relateId',
       placeholder: '请输入搜索',
       loading,
       select: selectList,
