@@ -271,7 +271,7 @@ const PlatformEquityCoupon = (props) => {
         visible={visibleRefuse}
         onClose={() => setVisibleRefuse({ show: false, detail: {} })}
         handleUpData={fetchDownCoupon}
-        loading={loadings.models.couponManage}
+        loading={loading}
         extra={'下架后不影响已购买的用户使用'}
       ></RefuseModal>
       {/* 库存总量 */}
