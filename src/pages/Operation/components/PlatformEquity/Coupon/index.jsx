@@ -29,7 +29,7 @@ const PlatformEquityCoupon = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'ownerId',
+      name: 'relateId',
       type: 'merchant',
     },
     {
@@ -47,7 +47,7 @@ const PlatformEquityCoupon = (props) => {
     },
     {
       label: '店铺类型',
-      name: 'ownerType',
+      name: 'relateType',
       type: 'select',
       select: BUSINESS_TYPE,
     },
@@ -75,9 +75,9 @@ const PlatformEquityCoupon = (props) => {
             {val}
           </Ellipsis>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+            <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
             <Ellipsis length={10} tooltip>
-              {row.ownerName}
+              {row.relateName}
             </Ellipsis>
           </div>
         </div>
@@ -158,8 +158,7 @@ const PlatformEquityCoupon = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (ownerCouponId, record, index) => {
-        // 1 上架 2 下架
-        const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
+        const { ownerCouponStatus: status } = record; // 1 上架 2 下架
         return [
           {
             type: 'info',
@@ -183,7 +182,7 @@ const PlatformEquityCoupon = (props) => {
             click: () =>
               setVisibleRefuse({
                 show: true,
-                detail: { ownerCouponId, ownerId },
+                detail: { ownerCouponId },
                 formProps: { type: 'down', key: 'offShelfReason' },
               }),
           },
@@ -191,7 +190,7 @@ const PlatformEquityCoupon = (props) => {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status),
-            click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
+            click: () => fetAddRemain(ownerCouponId, record.remain),
           },
         ];
       },
@@ -199,24 +198,23 @@ const PlatformEquityCoupon = (props) => {
   ];
 
   // 增加库存
-  const fetAddRemain = (ownerCouponId, ownerId, remain) => {
+  const fetAddRemain = (ownerCouponId, remain) => {
     setVisibleRemain({
       show: true,
       ownerCouponId,
-      ownerId,
       remain,
     });
   };
 
   // 下架
   const fetchDownCoupon = (values) => {
-    const { ownerCouponId, ownerId } = visibleRefuse.detail;
+    const { ownerCouponId } = visibleRefuse.detail;
     dispatch({
       type: 'couponManage/fetchCouponOff',
       payload: {
         ...values,
         ownerCouponId,
-        ownerId,
+        ownerId: -1,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });
@@ -227,17 +225,11 @@ const PlatformEquityCoupon = (props) => {
 
   // 获取详情
   const fetchCouponDetail = (index, type) => {
-    const {
-      ownerCouponIdString: ownerCouponId,
-      ownerIdString: ownerId,
-      ownerCouponStatus: status,
-      ownerType,
-    } = list[index];
+    const { ownerCouponIdString: ownerCouponId, ownerCouponStatus: status } = list[index];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
-      payload: { ownerCouponId, ownerId, type },
-      callback: (detail) =>
-        setVisible({ type, show: true, index, detail, ownerCouponId, ownerId, status }),
+      payload: { ownerCouponId, ownerId: -1, type },
+      callback: (detail) => setVisible({ type, show: true, index, detail, ownerCouponId, status }),
     });
   };
 

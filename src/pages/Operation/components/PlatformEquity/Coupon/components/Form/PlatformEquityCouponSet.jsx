@@ -5,7 +5,6 @@ import { connect } from 'umi';
 import { Button } from 'antd';
 import {
   BUSINESS_TYPE,
-  COUPON_BUY_FLAG,
   COUPON_USER_TIME,
   COUPON_TIME_TYPE,
   COUPON_WEEK_TIME,
@@ -29,7 +28,6 @@ const PlatformEquityCouponSet = (props) => {
     commissionShow,
     setCommissionShow,
     ownerCouponId,
-    ownerId,
     initialValues,
     type,
     status,
@@ -82,24 +80,24 @@ const PlatformEquityCouponSet = (props) => {
         buyRule,
       });
 
-      if (initialValues.ownerName || initialValues.ownerType) {
+      if (initialValues.ownerName || initialValues.relateType) {
         setMreList({
-          type: initialValues.ownerType,
-          groupId: initialValues.ownerId,
+          type: initialValues.relateType,
+          groupId: initialValues.relateId,
         });
         // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
-        fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
-          const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+        fetchGetMre(initialValues.ownerName, initialValues.relateType, (list = []) => {
+          const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
           const topCategoryId = list[mreFindIndex].topCategoryId[0];
           // 是否分佣
           getCommissionFlag(topCategoryId);
         });
-        if (initialValues.ownerType === 'group') {
+        if (initialValues.relateType === 'group') {
           getMerchantList();
         }
       }
     }
-  }, [initialValues]);
+  }, [initialValues.relateName]);
 
   // 设置form表单值 店铺id
   useEffect(() => {
@@ -112,7 +110,7 @@ const PlatformEquityCouponSet = (props) => {
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: ownerCouponId,
-        ownerId: ownerId,
+        ownerId: -1,
         serviceType: 'reduceCoupon',
       },
       callback: (list) => {
@@ -190,7 +188,7 @@ const PlatformEquityCouponSet = (props) => {
     {
       label: '选择店铺类型',
       type: 'radio',
-      name: 'ownerType',
+      name: 'relateType',
       select: BUSINESS_TYPE,
       disabled: commonDisabled,
       onChange: (e) => {
@@ -202,14 +200,14 @@ const PlatformEquityCouponSet = (props) => {
           keys: [],
           list: [],
         }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        form.setFieldsValue({ relateId: undefined }); // 重置数据
         dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
       label: `选择${BUSINESS_TYPE[mreList.type]}`,
       type: 'select',
-      name: 'ownerId',
+      name: 'relateId',
       placeholder: '请输入搜索',
       select: selectList,
       disabled: commonDisabled,
@@ -217,7 +215,6 @@ const PlatformEquityCouponSet = (props) => {
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
-        console.log(option, 'option');
         setCommissionShow(false);
         //是否分佣
         getCommissionFlag(option.topCategoryId[0]);
@@ -270,30 +267,63 @@ const PlatformEquityCouponSet = (props) => {
     },
     {
       label: '售卖类型',
-      name: 'goodsTsaype',
+      name: 'buyFlag',
       type: 'radio',
       select: PEQUITY_GOODSBUY_TYPE,
-      onChange: (e) => saveSelectData({ buyType: e.target.value }),
+      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+    },
+    {
+      label: '售卖',
+      name: ['paymentModeObject', 'type'],
+      hidden: true,
     },
     {
       label: '卡豆数',
-      name: 'coon',
+      name: ['paymentModeObject', 'bean'],
       type: 'number',
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyType == '0',
+      visible: radioData.buyFlag == '1',
       suffix: '卡豆',
     },
     {
       label: '现金（元）',
-      name: 'price',
+      name: ['paymentModeObject', 'cash'],
       type: 'number',
-      precision: 0,
+      precision: 2,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyType == '0',
+      visible: radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
+    },
+    {
+      label: '商家结算价',
+      name: 'merchantPrice',
+      type: 'number',
+      precision: 2,
+      disabled: editDisabled,
+      min: 0,
+      max: 999999.99,
+      visible: radioData.buyFlag == '1',
+      formatter: (value) => `￥ ${value}`,
+      addRules: [
+        {
+          validator: (rule, value) => {
+            const merchantPrice = Number(value);
+            const buyPrice = Number(form.getFieldValue('realPrice'));
+            if (merchantPrice > buyPrice) {
+              return Promise.reject('商家结算价不可超过售卖价格');
+            }
+            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
+            const getPrice = buyPrice * (1 - mreList.ratio / 100);
+            if (merchantPrice > getPrice) {
+              return Promise.reject(`商家结算价不可超过${getPrice}`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
     {
       label: '佣金总额', // 手动分佣需要展示
@@ -302,10 +332,15 @@ const PlatformEquityCouponSet = (props) => {
       precision: 2,
       min: 0,
       max: 999999.99,
-      visible: commissionShow == '1',
+      visible: commissionShow == '1' && radioData.buyFlag == '1',
       disabled: commonDisabled,
       formatter: (value) => `￥ ${value}`,
       // rules: [{ required: false }],
+    },
+    {
+      label: '介绍类型',
+      name: 'couponDetailType',
+      hidden: true,
     },
     {
       title: `设置优惠券介绍`,
@@ -451,7 +486,7 @@ const PlatformEquityCouponSet = (props) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={initialValues || { ownerType: 'merchant', couponDetailType: '0' }}
+        initialValues={initialValues || { relateType: 'merchant', couponDetailType: '0' }}
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}

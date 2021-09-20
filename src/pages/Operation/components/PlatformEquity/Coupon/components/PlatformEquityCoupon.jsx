@@ -9,15 +9,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
 
-  const {
-    type = 'info',
-    index,
-    show = false,
-    detail = {},
-    ownerCouponId,
-    ownerId,
-    status,
-  } = visible;
+  const { type = 'info', index, show = false, detail = {}, ownerCouponId, status } = visible;
   const [commissionShow, setCommissionShow] = useState(false);
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [form] = Form.useForm();
@@ -47,8 +39,9 @@ const CouponDrawer = (props) => {
         }[type],
         payload: {
           ownerCouponId,
-          ownerId,
           ...other,
+          ownerType: 'admin',
+          ownerId: -1,
           richText: content, // 富文本内容
           couponDetailImg: coupoImg.toString(),
           couponType: 'reduce',
@@ -75,7 +68,6 @@ const CouponDrawer = (props) => {
     type,
     status,
     ownerCouponId,
-    ownerId,
     setContent,
   };
   // 统一处理弹窗
@@ -86,7 +78,17 @@ const CouponDrawer = (props) => {
     },
     add: {
       title: '新建券',
-      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+      children: (
+        <CouponSet
+          {...listProp}
+          form={form}
+          initialValues={{
+            relateType: 'merchant',
+            couponDetailType: '1',
+            paymentModeObject: { type: 'self' },
+          }}
+        ></CouponSet>
+      ),
     },
     edit: {
       title: '编辑券',

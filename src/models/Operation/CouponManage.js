@@ -55,6 +55,7 @@ export default {
         useTime = '',
         serviceDivisionDTO = {},
         useWeek = '',
+        relateIdString: relateId,
       } = content.ownerCouponInfo;
       //分佣详情
       const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
@@ -92,6 +93,7 @@ export default {
       }
       callback({
         ...content.ownerCouponInfo,
+        relateId,
         couponDescString: couponDesc?.includes(']')
           ? JSON.parse(couponDesc || '[]').join('\n')
           : couponDesc,
