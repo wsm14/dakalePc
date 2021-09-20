@@ -52,7 +52,7 @@ const PlatformEquitySet = ({
       });
       setRadioData({
         goodsType: initialValues.goodsType,
-        buyFlag: initialValues?.paymentModeObject?.buyFlag,
+        buyFlag: initialValues.buyFlag,
       });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
@@ -316,7 +316,7 @@ const PlatformEquitySet = ({
       label: '现金（元）',
       name: ['paymentModeObject', 'cash'],
       type: 'number',
-      precision: 0.2,
+      precision: 2,
       min: 0,
       max: 999999.99,
       visible: radioData.buyFlag == '1',
