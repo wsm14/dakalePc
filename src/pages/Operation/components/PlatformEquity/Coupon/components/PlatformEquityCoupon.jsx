@@ -33,9 +33,9 @@ const CouponDrawer = (props) => {
 
       dispatch({
         type: {
-          add: 'couponManage/fetchCouponSave',
-          edit: 'couponManage/fetchCouponUpdate',
-          again: 'couponManage/fetchCouponSave',
+          add: 'couponManage/fetchPlatformEquityCouponSave',
+          edit: 'couponManage/fetchPlatformEquityCouponUpdate',
+          again: 'couponManage/fetchPlatformEquityCouponSave',
         }[type],
         payload: {
           ownerCouponId,
@@ -123,6 +123,8 @@ const CouponDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['couponManage/fetchCouponSave'],
+  loading:
+    loading.effects['couponManage/fetchPlatformEquityCouponSave'] ||
+    loading.effects['couponManage/fetchPlatformEquityCouponUpdate'],
   loadingDetail: loading.effects['couponManage/fetchCouponDetail'],
 }))(CouponDrawer);

@@ -112,12 +112,29 @@ export default {
       });
       callback();
     },
-
+    *fetchPlatformEquityCouponSave({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益券新增成功',
+      });
+      callback();
+    },
     *fetchCouponToImport({ payload, callback }, { call }) {
       const response = yield call(fetchCouponToImport, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.ownerCouponList);
+    },
+    *fetchPlatformEquityCouponUpdate({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponUpdate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益券修改成功',
+      });
+      callback();
     },
     *fetchCouponUpdate({ payload, callback }, { call }) {
       const response = yield call(fetchCouponUpdate, payload);
