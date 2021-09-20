@@ -1,32 +1,30 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { SUBMIT_TYPE, BUSINESS_TYPE, SPECIAL_STATUS } from '@/common/constant';
+import { SUBMIT_TYPE, BUSINESS_TYPE, COUPON_STATUS } from '@/common/constant';
+import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformEquityDrawer from './components/PlatformEquityCoupon';
+import RemainModal from './components/Detail/RemainModal';
 
 /**
  * 权益券
  */
 const PlatformEquityCoupon = (props) => {
-  const { specialGoods, loading, dispatch } = props;
-  const { list } = specialGoods;
+  const { couponManage, loading, dispatch } = props;
+  const { list } = couponManage;
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
-
-  // useEffect(() => {
-  //   if (childRef.current) {
-  //     childRef.current.fetchGetData();
-  //   }
-  // }, []);
+  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
+  const [visibleRemain, setVisibleRemain] = useState(false); //增加库存
 
   // 搜索参数
   const searchItems = [
     {
       label: '券名称',
-      name: 'goodsName',
+      name: 'couponName',
     },
     {
       label: '集团/店铺名',
@@ -35,9 +33,9 @@ const PlatformEquityCoupon = (props) => {
     },
     {
       label: '状态',
-      name: 'status',
       type: 'select',
-      select: SPECIAL_STATUS,
+      name: 'ownerCouponStatus',
+      select: COUPON_STATUS,
     },
     {
       label: '商家所属地区',
@@ -55,8 +53,8 @@ const PlatformEquityCoupon = (props) => {
     {
       label: '创建时间',
       type: 'rangePicker',
-      name: 'createStartTime',
-      end: 'createEndTime',
+      name: 'beginDate',
+      end: 'endDate',
     },
     {
       label: '创建人',
@@ -69,11 +67,11 @@ const PlatformEquityCoupon = (props) => {
     {
       title: '券/店铺名称',
       fixed: 'left',
-      dataIndex: 'goodsImg',
+      dataIndex: 'couponName',
       render: (val, row) => (
-        <>
-          <Ellipsis length={15} tooltip>
-            {row.goodsName}
+        <div>
+          <Ellipsis length={10} tooltip>
+            {val}
           </Ellipsis>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
@@ -81,41 +79,35 @@ const PlatformEquityCoupon = (props) => {
               {row.ownerName}
             </Ellipsis>
           </div>
-        </>
+        </div>
       ),
     },
     {
       title: '券价值/售价',
       align: 'right',
-      dataIndex: 'oriPrice',
-      render: (val, row) => {
-        const zhe = (Number(row.realPrice) / Number(val)) * 10;
-        return (
-          <div>
-            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-              ￥{Number(val).toFixed(2)}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <div>￥{Number(row.realPrice).toFixed(2)}</div>
-            </div>
+      dataIndex: ['reduceObject', 'couponPrice'],
+      render: (val, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(val).toFixed(2)}
           </div>
-        );
-      },
+          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
+        </div>
+      ),
     },
     {
       title: '使用门槛',
-      align: 'right',
-      dataIndex: 'otherPlatformPrice',
-      render: (val) => `￥${val}`,
+      align: 'center',
+      dataIndex: ['reduceObject', 'thresholdPrice'],
+      render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
     },
     {
       title: '使用有效期',
-      dataIndex: 'useStartTime',
+      dataIndex: 'activeDate',
       render: (val, row) => {
-        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-        if (!useTimeRule) return '';
-        if (useTimeRule === 'fixed') {
-          return useStartTime + '~' + useEndTime;
+        const { activeDate, endDate, delayDays, activeDays } = row;
+        if (activeDate && endDate) {
+          return activeDate + '~' + endDate;
         } else {
           if (delayDays === '0') {
             return `领取后立即生效\n有效期${activeDays}天`;
@@ -133,26 +125,25 @@ const PlatformEquityCoupon = (props) => {
     {
       title: '下单数量',
       align: 'right',
-      dataIndex: 'soldGoodsCount',
-      sorter: (a, b) => a.soldGoodsCount - b.soldGoodsCount,
+      dataIndex: 'total',
+      sorter: (a, b) => a.total - b.total,
     },
     {
       title: '核销数量',
       align: 'right',
-      dataIndex: 'writeOffGoodsCount',
-      sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
+      dataIndex: 'verifiedCount',
+      sorter: (a, b) => a.verifiedCount - b.verifiedCount,
     },
     {
       title: '商家所属地区/行业',
       align: 'right',
       dataIndex: 'writeOffGoodsCount',
-      sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
     },
     {
       title: '状态',
       align: 'center',
-      dataIndex: 'createTime',
-      render: (val, row) => SUBMIT_TYPE[row.creatorType],
+      dataIndex: 'ownerCouponStatus',
+      render: (val, row) => COUPON_STATUS[val],
     },
     {
       title: '创建时间',
@@ -164,36 +155,89 @@ const PlatformEquityCoupon = (props) => {
       type: 'handle',
       dataIndex: 'specialGoodsId',
       width: 150,
-      render: (val, record, index) => {
-        const { status, deleteFlag } = record;
+      render: (ownerCouponId, record, index) => {
+        // 1 上架 2 下架
+        const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
         return [
           {
             type: 'info',
-            click: () => setVisibleSet(index, 'info'),
-          },
-          {
-            auth: 'up',
-            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
-            click: () => setVisibleSet({}),
-          },
-          {
-            auth: 'down',
-            visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
-            click: () => setVisibleSet({}),
+            click: () => fetchCouponDetail(index, 'info'),
           },
           {
             type: 'edit',
-            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
-            click: () => setVisibleSet(index, 'edit'),
+            click: () => fetchCouponDetail(index, 'edit'),
           },
           {
-            type: 'diary',
-            click: () => setVisibleSet({ type: 'specialGoods', identificationId: val }),
+            type: 'again',
+            title: '重新发布',
+            visible: ['2'].includes(status), // 已下架 && 未删除
+            click: () => fetchCouponDetail(index, 'again'),
+          },
+          // 上架中 已确认 | 上架中 已驳回
+          {
+            title: '下架',
+            auth: 'down',
+            visible: ['1'].includes(status),
+            click: () =>
+              setVisibleRefuse({
+                show: true,
+                detail: { ownerCouponId, ownerId },
+                formProps: { type: 'down', key: 'offShelfReason' },
+              }),
+          },
+          {
+            title: '增加库存',
+            type: 'addRemain',
+            visible: ['1'].includes(status),
+            click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
           },
         ];
       },
     },
   ];
+
+  // 增加库存
+  const fetAddRemain = (ownerCouponId, ownerId, remain) => {
+    setVisibleRemain({
+      show: true,
+      ownerCouponId,
+      ownerId,
+      remain,
+    });
+  };
+
+  // 下架
+  const fetchDownCoupon = (values) => {
+    const { ownerCouponId, ownerId } = visibleRefuse.detail;
+    dispatch({
+      type: 'couponManage/fetchCouponOff',
+      payload: {
+        ...values,
+        ownerCouponId,
+        ownerId,
+      },
+      callback: () => {
+        setVisibleRefuse({ show: false, detail: {} });
+        childRef.current.fetchGetData();
+      },
+    });
+  };
+
+  // 获取详情
+  const fetchCouponDetail = (index, type) => {
+    const {
+      ownerCouponIdString: ownerCouponId,
+      ownerIdString: ownerId,
+      ownerCouponStatus: status,
+      ownerType,
+    } = list[index];
+    dispatch({
+      type: 'couponManage/fetchCouponDetail',
+      payload: { ownerCouponId, ownerId, type },
+      callback: (detail) =>
+        setVisible({ type, show: true, index, detail, ownerCouponId, ownerId, status }),
+    });
+  };
 
   const btnList = [
     {
@@ -211,10 +255,10 @@ const PlatformEquityCoupon = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ deleteFlag: '1' }}
-        rowKey={(record) => `${record.specialGoodsId}`}
-        // dispatchType="specialGoods/fetchGetList"
-        {...specialGoods}
+        params={{ adminFlag: 1 }}
+        rowKey={(record) => `${record.ownerCouponIdString}`}
+        dispatchType="couponManage/fetchGetList"
+        {...couponManage}
       ></TableDataBlock>
       {/* 新增 编辑 详情*/}
       <PlatformEquityDrawer
@@ -222,11 +266,25 @@ const PlatformEquityCoupon = (props) => {
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></PlatformEquityDrawer>
+      {/* 下架原因 */}
+      <RefuseModal
+        visible={visibleRefuse}
+        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
+        handleUpData={fetchDownCoupon}
+        loading={loadings.models.couponManage}
+        extra={'下架后不影响已购买的用户使用'}
+      ></RefuseModal>
+      {/* 库存总量 */}
+      <RemainModal
+        childRef={childRef}
+        visible={visibleRemain}
+        onClose={() => setVisibleRemain(false)}
+      ></RemainModal>
     </>
   );
 };
 
-export default connect(({ specialGoods, loading }) => ({
-  specialGoods,
-  loading: loading.models.specialGoods || loading.effects['baseData/fetchGetLogDetail'],
+export default connect(({ couponManage, loading }) => ({
+  couponManage,
+  loading: loading.models.couponManage,
 }))(PlatformEquityCoupon);
