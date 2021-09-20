@@ -67,9 +67,9 @@ const PlatformEquityDrawer = (props) => {
         dispatch({
           type: {
             add: 'specialGoods/fetchPlatformEquityGoodsSave',
-            edit: 'specialGoods/fetchSpecialGoodsEdit',
+            edit: 'specialGoods/fetchPlatformEquityGoodsEdit',
             again: 'specialGoods/fetchPlatformEquityGoodsSave',
-            againUp: 'specialGoods/fetchSpecialGoodsEdit',
+            againUp: 'specialGoods/fetchPlatformEquityGoodsEdit',
           }[type],
           payload: {
             id,
@@ -203,6 +203,6 @@ const PlatformEquityDrawer = (props) => {
 export default connect(({ loading }) => ({
   loading:
     loading.effects['specialGoods/fetchPlatformEquityGoodsSave'] ||
-    loading.effects['specialGoods/fetchSpecialGoodsEdit'] ||
+    loading.effects['specialGoods/fetchPlatformEquityGoodsEdit'] ||
     loading.effects['baseData/fetchGetGroupMreList'],
 }))(PlatformEquityDrawer);
