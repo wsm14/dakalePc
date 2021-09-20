@@ -317,7 +317,7 @@ const PlatformEquitySet = ({
       name: ['paymentModeObject', 'cash'],
       type: 'number',
       precision: 2,
-      min: 0,
+      min: 0.01,
       max: 999999.99,
       visible: radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,

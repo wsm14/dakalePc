@@ -229,7 +229,7 @@ const PlatformEquityCoupon = (props) => {
     dispatch({
       type: 'couponManage/fetchCouponDetail',
       payload: { ownerCouponId, ownerId: -1, type },
-      callback: (detail) => setVisible({ type, show: true, index, detail, ownerCouponId, status }),
+      callback: (detail) => setVisibleSet({ type, show: true, index, detail, ownerCouponId, status }),
     });
   };
 

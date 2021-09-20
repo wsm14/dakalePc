@@ -11,18 +11,18 @@ import MerchantListTable from '@/pages/Operation/components/SpecialGoods/Detail/
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
-  const { ownerType = 'merchant', buyFlag = '1', merchantList = [], couponDetailType } = detail;
+  const { relateType = 'merchant', buyFlag = '1', merchantList = [], couponDetailType } = detail;
 
   // 参与活动的店铺
   const mreFormItems = [
     {
       label: '店铺类型',
-      name: 'ownerType',
+      name: 'relateType',
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      label: `${BUSINESS_TYPE[ownerType]}名称`,
-      name: 'ownerName',
+      label: `${BUSINESS_TYPE[relateType]}名称`,
+      name: 'relateName',
     },
   ];
 
@@ -168,7 +168,7 @@ const GoodsDetail = (props) => {
         formItems={mreFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {ownerType === 'group' && (
+      {relateType === 'group' && (
         <div style={{ margin: '10px' }}>
           <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
         </div>
