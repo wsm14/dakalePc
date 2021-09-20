@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Tabs, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import GoodsDetailForm from './Detail/GoodsDetail';
-import RegularDetail from './Detail/RegularDetail';
 import ExtraButton from '@/components/ExtraButton';
 import FormCondition from '@/components/FormCondition';
-import CheckRecord from '@/components/CheckRecord';
+import GoodsDetailForm from './Detail/GoodsDetail';
+import RegularDetail from './Detail/RegularDetail';
 
-const SpecialGoodDetail = (props) => {
+const PlatformEquityGoodsDetail = (props) => {
   const { visible, onClose, onEdit, total, getDetail, loading, dispatch } = props;
   const { show = false, index, detail = {}, status, specialGoodsId, ownerIdString } = visible;
 
   const [form] = Form.useForm();
   const [merchantList, setMerchantList] = useState([]);
-  const [recordList, setRecordList] = useState({});
 
   const handleEdit = () => {
     onClose(), onEdit();
@@ -39,23 +37,6 @@ const SpecialGoodDetail = (props) => {
     });
   };
 
-  const handleTabChange = (val) => {
-    if (val === '3') {
-      setRecordList([]);
-      dispatch({
-        type: 'baseData/fetchGetLogDetail',
-        payload: {
-          type: 'audit',
-          key: 'audit',
-          identificationId: specialGoodsId,
-        },
-        callback: (list) => {
-          setRecordList(list);
-        },
-      });
-    }
-  };
-
   const btnList = [
     {
       auth: 'edit',
@@ -78,20 +59,12 @@ const SpecialGoodDetail = (props) => {
     footer: <ExtraButton list={btnList}></ExtraButton>,
   };
 
-  // const formItems = [
-  //   {
-  //     label: `其他平台价格`,
-  //     name: 'otherPlatformPrice',
-  //     maxLength: 20,
-  //   },
-  // ];
-
   return (
     <DrawerCondition {...modalProps}>
       {/* 驳回原因
       {status == '4' && <Alert message={`驳回原因：${detail.failureReason}`} type="error" banner />} */}
       {/* 信息展示 */}
-      <Tabs defaultActiveKey="1" onChange={handleTabChange}>
+      <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="商品信息" key="1">
           <GoodsDetailForm
             detail={detail}
@@ -102,18 +75,11 @@ const SpecialGoodDetail = (props) => {
         <Tabs.TabPane tab="投放规则" key="2">
           <RegularDetail detail={detail}></RegularDetail>
         </Tabs.TabPane>
-        <Tabs.TabPane tab="审核记录" key="3">
-          <CheckRecord recordList={recordList}></CheckRecord>
-        </Tabs.TabPane>
       </Tabs>
-      {/* 审核时输入 其他平台价格
-      {status == '3' && (
-        <FormCondition formItems={formItems} form={form} style={{ marginTop: 10 }}></FormCondition>
-      )} */}
     </DrawerCondition>
   );
 };
 
 export default connect(({ loading }) => ({
   loading: loading.effects['specialGoods/fetchSpecialGoodsDetail'],
-}))(SpecialGoodDetail);
+}))(PlatformEquityGoodsDetail);

@@ -13,7 +13,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import PlatformEquityDrawer from './components/PlatformEquityGoods';
-import SpecialGoodDetail from './components/SpecialGoodDetail';
+import PlatformEquityGoodsDetail from './components/PlatformEquityGoodsDetail';
 import RemainModal from './components/Detail/RemainModal';
 
 /**
@@ -361,7 +361,7 @@ const PlatformEquityGoods = (props) => {
         onClose={() => setVisibleSet({ show: false })}
       ></PlatformEquityDrawer>
       {/* 详情 */}
-      <SpecialGoodDetail
+      <PlatformEquityGoodsDetail
         visible={visibleInfo}
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
@@ -375,7 +375,7 @@ const PlatformEquityGoods = (props) => {
           })
         }
         onClose={() => setVisibleInfo(false)}
-      ></SpecialGoodDetail>
+      ></PlatformEquityGoodsDetail>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}

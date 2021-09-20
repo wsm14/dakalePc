@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
-import PreferentialDetail from './Detail/PreferentialDetail';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PreferentialSet from './Form/PlatformEquitySet';
 import PreferentialRuleSet from './Form/PlatformEquityRuleSet';
@@ -11,8 +10,8 @@ import PreferentialRuleSet from './Form/PlatformEquityRuleSet';
 const PlatformEquityDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
-  // info 详情，add 新增，edit 活动中修改，again 重新发布
-  const { type = 'info', show = false, detail = {} } = visible;
+  // add 新增，edit 活动中修改，again 重新发布
+  const { type = 'add', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
@@ -121,10 +120,6 @@ const PlatformEquityDrawer = (props) => {
 
   // 统一处理弹窗
   const drawerProps = {
-    info: {
-      title: '活动详情',
-      children: <PreferentialDetail initialValues={detail}></PreferentialDetail>,
-    },
     add: {
       title: '新增活动',
       children: (
