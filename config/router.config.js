@@ -455,8 +455,37 @@ export default [
         ],
       },
       {
+        path: '/operation/platformEquity',
+        name: '平台权益',
+        component: './Operation/PlatformEquity',
+        buttons: [
+          'equityCoupon',
+          'equityGoods',
+          'save',
+          'edit',
+          'down',
+          'info',
+          'again',
+          'againUp',
+          'addRemain',
+          'diary',
+        ],
+      },
+      {
+        path: '/operation/platformEquityOrder',
+        name: '权益订单',
+        component: './Operation/PlatformEquityOrder',
+        buttons: [
+          'equityCoupon',
+          'equityGoods',
+          'equityDummy',
+          'info',
+          'exportList',
+        ],
+      },
+      {
         path: '/operation/special',
-        name: '周边特惠',
+        name: '特惠商品',
         component: './Operation/SpecialGoods',
         buttons: [
           'save',

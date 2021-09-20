@@ -12,7 +12,9 @@ const { TabPane } = Tabs;
 const BusinessDetailShow = (props) => {
   const { dispatch, cRef, visible = null, total, getDetail, onClose, loading, sceneList } = props;
 
-  const loadings = loading.effects['businessList/fetchSetStatus'];
+  const loadings =
+    loading.effects['businessList/fetchSetStatus'] ||
+    loading.effects['businessList/fetchMerchantProhibitCheck'];
   const loadingSave = loading.effects['businessList/fetchMerSetBandCode'];
   const loadingCheck = loading.effects['baseData/fetchGetPhoneComeLocation'];
   const loadingEditBd = loading.effects['businessList/fetchMerchantEdit'];
@@ -82,23 +84,16 @@ const BusinessDetailShow = (props) => {
     });
   };
 
-  // acc帐号状态 sale营业状态 恢复营业status 给1 只有停业用 businessStatus 0
-  const handleMerStatus = (type) => {
-    if (type === 'sale' && businessStatusNum === 0) type = 'hsale';
-    const propsItem = {
-      hsale: { title: '恢复营业', payload: { businessStatus: 1 } },
-      sale: { title: '停业', payload: { businessStatus: 0 } },
-      acc: { title: statusText, payload: { status: Number(!statusNum) } },
-    }[type];
-
+  // 提示修改状态
+  const handleTipEditMre = (title, payload) => {
     Modal.confirm({
-      title: `确认对该店铺 ${propsItem.title}`,
+      title,
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
         dispatch({
           type: 'businessList/fetchSetStatus',
-          payload: { merchantId, ...propsItem.payload },
+          payload: { merchantId, ...payload },
           callback: () => {
             onClose();
             cRef.current.fetchGetData();
@@ -106,6 +101,34 @@ const BusinessDetailShow = (props) => {
         });
       },
     });
+  };
+
+  // 店铺禁用检查在售券
+  const fetchMerchantProhibitCheck = () => {
+    dispatch({
+      type: 'businessList/fetchMerchantProhibitCheck',
+      payload: {
+        userMerchantId: merchantId,
+      },
+      callback: ({ msg, isWarn }) => {
+        handleTipEditMre(isWarn ? msg : '确认对该店铺帐号 禁用？', { status: 0 });
+      },
+    });
+  };
+
+  // acc帐号状态 sale营业状态 恢复营业status 给1 只有停业用 businessStatus 0
+  const handleMerStatus = (type) => {
+    if (type === 'sale' && businessStatusNum === 0) type = 'hsale';
+    if (type === 'acc' && statusNum) {
+      fetchMerchantProhibitCheck();
+      return;
+    }
+    const propsItem = {
+      hsale: { title: '确认对该店铺 恢复营业？', payload: { businessStatus: 1 } },
+      sale: { title: '确认对该店铺 停业？', payload: { businessStatus: 0 } },
+      acc: { title: '确认对该店铺帐号 启用？', payload: { status: 1 } },
+    }[type];
+    handleTipEditMre(propsItem.title, propsItem.payload);
   };
 
   // 检查归属地和所在地是否相同

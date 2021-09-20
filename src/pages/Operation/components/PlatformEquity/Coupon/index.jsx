@@ -1,24 +1,23 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common/constant';
+import { SUBMIT_TYPE, BUSINESS_TYPE, COUPON_STATUS } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
+import { checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import CouponDrawer from './components/CouponManage/CouponDrawer';
-import excelProps from './components/CouponManage/excelProps';
-import RemainModal from './components/CouponManage/Detail/RemainModal';
-import { checkCityName } from '@/utils/utils';
+import PlatformEquityDrawer from './components/PlatformEquityCoupon';
+import RemainModal from './components/Detail/RemainModal';
 
-const CouponManageComponent = (props) => {
-  const { couponManage, loading, dispatch, loadings } = props;
+/**
+ * 权益券
+ */
+const PlatformEquityCoupon = (props) => {
+  const { couponManage, loading, dispatch } = props;
   const { list } = couponManage;
 
   const childRef = useRef();
-  // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
-  const [visible, setVisible] = useState(false);
-
-  //下架原因框
+  const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false); //增加库存
 
@@ -30,7 +29,7 @@ const CouponManageComponent = (props) => {
     },
     {
       label: '集团/店铺名',
-      name: 'ownerId',
+      name: 'relateId',
       type: 'merchant',
     },
     {
@@ -40,8 +39,17 @@ const CouponManageComponent = (props) => {
       select: COUPON_STATUS,
     },
     {
-      label: '创建人',
-      name: 'creatorName',
+      label: '商家所属地区',
+      name: 'city',
+      type: 'cascader',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    },
+    {
+      label: '店铺类型',
+      name: 'relateType',
+      type: 'select',
+      select: BUSINESS_TYPE,
     },
     {
       label: '创建时间',
@@ -49,17 +57,9 @@ const CouponManageComponent = (props) => {
       name: 'beginDate',
       end: 'endDate',
     },
-    // {
-    //   label: '券类型',
-    //   type: 'select',
-    //   name: 'couponType',
-    //   select: COUPON_TYPE,
-    // },
     {
-      label: '店铺类型',
-      name: 'ownerType',
-      type: 'select',
-      select: BUSINESS_TYPE,
+      label: '创建人',
+      name: 'creatorName',
     },
   ];
 
@@ -71,16 +71,13 @@ const CouponManageComponent = (props) => {
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
-          <div>
-            <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
-            <Ellipsis length={10} tooltip>
-              {val}
-            </Ellipsis>
-          </div>
+          <Ellipsis length={10} tooltip>
+            {val}
+          </Ellipsis>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+            <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
             <Ellipsis length={10} tooltip>
-              {row.ownerName}
+              {row.relateName}
             </Ellipsis>
           </div>
         </div>
@@ -127,11 +124,10 @@ const CouponManageComponent = (props) => {
       sorter: (a, b) => a.remain - b.remain,
     },
     {
-      title: '销量',
-      dataIndex: 'total',
+      title: '下单数量',
       align: 'right',
-      render: (val, row) => val - row.remain,
-      sorter: (a, b) => a.total - a.remain - (b.total - b.remain),
+      dataIndex: 'total',
+      sorter: (a, b) => a.total - b.total,
     },
     {
       title: '核销数量',
@@ -140,56 +136,33 @@ const CouponManageComponent = (props) => {
       sorter: (a, b) => a.verifiedCount - b.verifiedCount,
     },
     {
-      title: '地区/行业',
+      title: '商家所属地区/行业',
       align: 'center',
       dataIndex: 'districtCode',
-      render: (val, row) => (
-        <>
-        <div> {checkCityName(val) || '--'} </div>
-        <div>{row.topCategoryName} / {row.categoryName}</div>
-        </>
-      ),
+      render: (val, row) => `${checkCityName(val)}\n${row.topCategoryName}/${row.categoryName}`,
+    },
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'ownerCouponStatus',
+      render: (val, row) => COUPON_STATUS[val],
     },
     {
       title: '创建时间',
-      align: 'right',
+      align: 'center',
       dataIndex: 'createTime',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{val}</div>
-          <div>
-            {SUBMIT_TYPE[record.creatorType]}--{record.creatorName}
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: '发布时间',
-      align: 'right',
-      dataIndex: 'updateTime',
-      render: (val, row) => (
-        <div>
-          {val}
-          <div>{COUPON_STATUS[row.ownerCouponStatus]}</div>
-        </div>
-      ),
+      render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
     },
     {
       type: 'handle',
+      dataIndex: 'specialGoodsId',
       width: 150,
-      dataIndex: 'ownerCouponIdString',
       render: (ownerCouponId, record, index) => {
-        // 1 上架 2 下架
-        const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
+        const { ownerCouponStatus: status } = record; // 1 上架 2 下架
         return [
           {
             type: 'info',
             click: () => fetchCouponDetail(index, 'info'),
-          },
-          {
-            type: 'del',
-            visible: status === '2', // 已下架可以删除
-            click: () => fetchCouponSet({ ownerCouponId, ownerId }),
           },
           {
             type: 'edit',
@@ -209,60 +182,39 @@ const CouponManageComponent = (props) => {
             click: () =>
               setVisibleRefuse({
                 show: true,
-                detail: { ownerCouponId, ownerId },
+                detail: { ownerCouponId },
                 formProps: { type: 'down', key: 'offShelfReason' },
               }),
           },
-          // {
-          //   type: 'diary',
-          //   click: () => fetchGetLogData({ type: 'reduceCoupon', identificationId: ownerCouponId }),
-          // },
           {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status),
-            click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
+            click: () => fetAddRemain(ownerCouponId, record.remain),
           },
         ];
       },
     },
   ];
+
   // 增加库存
-  const fetAddRemain = (ownerCouponId, ownerId, remain) => {
+  const fetAddRemain = (ownerCouponId, remain) => {
     setVisibleRemain({
       show: true,
       ownerCouponId,
-      ownerId,
       remain,
-    });
-  };
-
-  // 获取日志信息
-  const fetchGetLogData = (payload) => {
-    dispatch({
-      type: 'baseData/fetchGetLogDetail',
-      payload,
-    });
-  };
-
-  // 删除
-  const fetchCouponSet = (payload) => {
-    dispatch({
-      type: 'couponManage/fetchCouponDelete',
-      payload,
-      callback: childRef.current.fetchGetData,
     });
   };
 
   // 下架
   const fetchDownCoupon = (values) => {
-    const { ownerCouponId, ownerId } = visibleRefuse.detail;
+    const { ownerCouponId } = visibleRefuse.detail;
     dispatch({
       type: 'couponManage/fetchCouponOff',
       payload: {
         ...values,
         ownerCouponId,
-        ownerId,
+        ownerId: -1,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });
@@ -273,77 +225,47 @@ const CouponManageComponent = (props) => {
 
   // 获取详情
   const fetchCouponDetail = (index, type) => {
-    const {
-      ownerCouponIdString: ownerCouponId,
-      ownerIdString: ownerId,
-      ownerCouponStatus: status,
-      ownerType,
-    } = list[index];
-    if (type === 'edit' && status === '1') {
-      dispatch({
-        type: 'specialGoods/fetchEditCurrentStatus',
-        payload: {
-          ownerId,
-          ownerServiceId: ownerCouponId,
-          ownerType,
-        },
-        callback: (val) => {
-          if (val !== '1') {
-            return;
-          }
-        },
-      });
-    }
+    const { ownerCouponIdString: ownerCouponId, ownerCouponStatus: status } = list[index];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
-      payload: { ownerCouponId, ownerId, type },
-      callback: (detail) =>
-        setVisible({ type, show: true, index, detail, ownerCouponId, ownerId, status }),
+      payload: { ownerCouponId, ownerId: -1, type },
+      callback: (detail) => setVisibleSet({ type, show: true, index, detail, ownerCouponId, status }),
     });
   };
 
-  // 权限按钮
-  const btnList = ({ get }) => [
+  const btnList = [
     {
-      type: 'excel',
-      dispatch: 'couponManage/fetchCouponToImport',
-      data: get(),
-      exportProps: excelProps,
-    },
-    {
-      text: '新建券',
       auth: 'save',
-      onClick: () => setVisible({ type: 'add', show: true }),
+      onClick: () => setVisibleSet({ type: 'add', show: true }),
     },
   ];
 
   return (
     <>
       <TableDataBlock
-        order
-        keepData
         btnExtra={btnList}
+        noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
+        params={{ adminFlag: 1 }}
         rowKey={(record) => `${record.ownerCouponIdString}`}
         dispatchType="couponManage/fetchGetList"
         {...couponManage}
       ></TableDataBlock>
-      <CouponDrawer
+      {/* 新增 编辑 详情*/}
+      <PlatformEquityDrawer
         childRef={childRef}
-        visible={visible}
-        total={list.length}
-        getDetail={fetchCouponDetail}
-        onClose={() => setVisible(false)}
-      ></CouponDrawer>
+        visible={visibleSet}
+        onClose={() => setVisibleSet({ show: false })}
+      ></PlatformEquityDrawer>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}
         onClose={() => setVisibleRefuse({ show: false, detail: {} })}
         handleUpData={fetchDownCoupon}
-        loading={loadings.models.couponManage}
+        loading={loading}
         extra={'下架后不影响已购买的用户使用'}
       ></RefuseModal>
       {/* 库存总量 */}
@@ -358,9 +280,5 @@ const CouponManageComponent = (props) => {
 
 export default connect(({ couponManage, loading }) => ({
   couponManage,
-  loadings: loading,
-  loading:
-    loading.effects['couponManage/fetchGetList'] ||
-    loading.effects['couponManage/fetchCouponSet'] ||
-    loading.effects['couponManage/fetchCouponDetail'],
-}))(CouponManageComponent);
+  loading: loading.models.couponManage,
+}))(PlatformEquityCoupon);

@@ -4,38 +4,26 @@ import {
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
   SPECIAL_DESC_TYPE,
+  PEQUITY_GOODSBUY_TYPE,
 } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import MerchantListTable from '@/pages/Operation/components/SpecialGoods/Detail/MerchantListTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
-  const {
-    ownerType = 'merchant',
-    merchantIdList: mreList = [],
-    buyFlag = '1',
-    merchantList = [],
-    couponDetailType,
-  } = detail;
+  const { relateType = 'merchant', buyFlag = '1', merchantList = [], couponDetailType } = detail;
 
   // 参与活动的店铺
   const mreFormItems = [
     {
       label: '店铺类型',
-      name: 'ownerType',
+      name: 'relateType',
       render: (val) => BUSINESS_TYPE[val],
     },
     {
-      label: `${BUSINESS_TYPE[ownerType]}名称`,
-      name: 'ownerName',
+      label: `${BUSINESS_TYPE[relateType]}名称`,
+      name: 'relateName',
     },
-    // {
-    //   label: '店铺范围',
-    //   name: 'merchantIdList',
-    //   render: () => '',
-    //   show: ownerType === 'group',
-    //   children: mreList && mreList.length ? `部分(${mreList.length})` : '全部',
-    // },
   ];
 
   // 券信息
@@ -50,10 +38,15 @@ const GoodsDetail = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
-      label: '售卖价格',
-      name: 'buyPrice',
-      show: buyFlag === '1',
-      render: (val) => `￥ ${val}`,
+      name: 'buyFlag',
+      label: '售卖类型',
+      render: (val) => PEQUITY_GOODSBUY_TYPE[val],
+    },
+    {
+      name: 'paymentModeObject',
+      shwo: buyFlag === '1',
+      label: '卡豆+现金',
+      render: (val) => `${val.bean || 0} 卡豆 + ${val.cash} 元`,
     },
     {
       label: '商家结算价',
@@ -159,10 +152,6 @@ const GoodsDetail = (props) => {
       name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
-      label: '地级市分佣金额（元）',
-      name: ['serviceDivisionDTO', 'cityBean'],
-    },
-    {
       label: '区县分佣金额（元）',
       name: ['serviceDivisionDTO', 'districtBean'],
     },
@@ -179,7 +168,7 @@ const GoodsDetail = (props) => {
         formItems={mreFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {ownerType === 'group' && (
+      {relateType === 'group' && (
         <div style={{ margin: '10px' }}>
           <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
         </div>
@@ -194,7 +183,7 @@ const GoodsDetail = (props) => {
         formItems={useFormItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {detail.divisionFlag === '1' && (
+      {detail.divisionFlag === '1' && buyFlag === '1' && (
         <DescriptionsCondition
           title="分佣配置"
           formItems={commissionItem}

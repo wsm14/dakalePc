@@ -3,12 +3,11 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
-import Html5Simulate from '@/components/Html5Simulate';
 import aliOssUpload from '@/utils/aliOssUpload';
-import PreferentialSet from './Form/PreferentialSet';
-import PreferentialRuleSet from './Form/PreferentialRuleSet';
+import PreferentialSet from './Form/PlatformEquitySet';
+import PreferentialRuleSet from './Form/PlatformEquityRuleSet';
 
-const PreferentialDrawer = (props) => {
+const PlatformEquityDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
   // add 新增，edit 活动中修改，again 重新发布
@@ -22,12 +21,11 @@ const PreferentialDrawer = (props) => {
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [saveData, setSaveData] = useState(null);
-  const [showHtmlData, setShowHtmlData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 搜索店铺
   const fetchGetMre = () => {
-    const { merchantName, ownerType } = detail;
+    const { merchantName, relateType } = detail;
     if (!merchantName) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -37,7 +35,7 @@ const PreferentialDrawer = (props) => {
         bankStatus: 3,
         businessStatus: 1,
         merchantName,
-        groupFlag: ownerType === 'merchant' ? 0 : 1,
+        groupFlag: relateType === 'merchant' ? 0 : 1,
       },
     });
   };
@@ -45,12 +43,13 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
-      const { id, ownerId } = detail;
+      const { id } = detail;
       const {
         activityGoodsImg,
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
+        ...otherPre
       } = visibleRule.preData;
       const {
         activityStartTime,
@@ -67,15 +66,17 @@ const PreferentialDrawer = (props) => {
       aliOssUpload([...aimg, ...gimg]).then((res) => {
         dispatch({
           type: {
-            add: 'specialGoods/fetchSpecialGoodsSave',
-            edit: 'specialGoods/fetchSpecialGoodsEdit',
-            again: 'specialGoods/fetchSpecialGoodsSave',
-            againUp: 'specialGoods/fetchSpecialGoodsEdit',
+            add: 'specialGoods/fetchPlatformEquityGoodsSave',
+            edit: 'specialGoods/fetchPlatformEquityGoodsEdit',
+            again: 'specialGoods/fetchPlatformEquityGoodsSave',
+            againUp: 'specialGoods/fetchPlatformEquityGoodsEdit',
           }[type],
           payload: {
             id,
-            ...visibleRule.preData,
+            ...otherPre,
             ...other,
+            ownerType: 'admin',
+            ownerId: -1,
             richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),
             merchantIds: merchantIds.toString(),
@@ -122,12 +123,12 @@ const PreferentialDrawer = (props) => {
           {...listProp}
           form={form}
           initialValues={{
-            ownerType: 'merchant',
+            relateType: 'merchant',
             goodsType: 'single',
-            goodsDescType: '0',
+            goodsDescType: '1',
+            paymentModeObject: { type: 'self' },
             packageGoodsObjects: [{}],
           }}
-          onValuesChange={setShowHtmlData}
         ></PreferentialSet>
       ),
     },
@@ -140,12 +141,7 @@ const PreferentialDrawer = (props) => {
     againUp: {
       title: '编辑',
       children: (
-        <PreferentialSet
-          {...listProp}
-          form={formAgainUp}
-          initialValues={detail}
-          onValuesChange={setShowHtmlData}
-        ></PreferentialSet>
+        <PreferentialSet {...listProp} form={formAgainUp} initialValues={detail}></PreferentialSet>
       ),
     },
     edit: {
@@ -185,31 +181,28 @@ const PreferentialDrawer = (props) => {
     maskShow: false,
     footer: (
       <Button type="primary" onClick={handleUpData} loading={loading}>
-        发布申请
+        发布商品
       </Button>
     ),
   };
 
   return (
-    <>
-      <DrawerCondition {...modalProps}>
-        {drawerProps.children}
-        <DrawerCondition {...ruleModalProps}>
-          <PreferentialRuleSet
-            editActive={type}
-            form={formRuleAdd}
-            initialValues={saveData || detail}
-          ></PreferentialRuleSet>
-        </DrawerCondition>
+    <DrawerCondition {...modalProps}>
+      {drawerProps.children}
+      <DrawerCondition {...ruleModalProps}>
+        <PreferentialRuleSet
+          editActive={type}
+          form={formRuleAdd}
+          initialValues={saveData || detail}
+        ></PreferentialRuleSet>
       </DrawerCondition>
-      {/* <Html5Simulate type="goods" show={show} data={showHtmlData}></Html5Simulate> */}
-    </>
+    </DrawerCondition>
   );
 };
 
 export default connect(({ loading }) => ({
   loading:
-    loading.effects['specialGoods/fetchSpecialGoodsSave'] ||
-    loading.effects['specialGoods/fetchSpecialGoodsEdit'] ||
+    loading.effects['specialGoods/fetchPlatformEquityGoodsSave'] ||
+    loading.effects['specialGoods/fetchPlatformEquityGoodsEdit'] ||
     loading.effects['baseData/fetchGetGroupMreList'],
-}))(PreferentialDrawer);
+}))(PlatformEquityDrawer);

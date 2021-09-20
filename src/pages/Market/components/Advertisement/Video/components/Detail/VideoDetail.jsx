@@ -107,19 +107,6 @@ const VideoDetail = (props) => {
         return;
       }
 
-      //   freeOwnerCouponList: free.couponName
-      //   ? [{ ownerCouponId: free.ownerCouponIdString, ownerId }]
-      //   : [],
-      // activityGoodsList: contact
-      //   .filter((i) => i.goodsName)
-      //   .map((i) => ({
-      //     activityGoodsId: i.specialGoodsId || i.activityGoodsId,
-      //     ownerId,
-      //   })),
-      // ownerCouponList: contact
-      //   .filter((i) => i.couponName)
-      //   .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
-
       let goodsList = {};
       if (detail.relateType !== 'brand') {
         // 券数据整理

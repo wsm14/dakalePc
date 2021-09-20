@@ -67,6 +67,7 @@ export default {
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
         serviceDivisionDTO = {},
+        relateIdString: relateId,
       } = specialGoodsInfo;
       let newDetail = {};
       const {
@@ -120,6 +121,7 @@ export default {
         ...sDetail, //分佣
         ...newDetail,
         ...activeTimes,
+        relateId,
         ownerId,
         id: specialGoodsId,
         divisionFlag,
@@ -135,6 +137,24 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特惠活动新增成功，等待平台审核',
+      });
+      callback();
+    },
+    *fetchPlatformEquityGoodsSave({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益商品新增成功',
+      });
+      callback();
+    },
+    *fetchPlatformEquityGoodsEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益商品修改成功',
       });
       callback();
     },

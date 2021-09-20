@@ -15,6 +15,7 @@ import {
   fetchsetManualRate, //设置临时服务费
   fetchAllOwnerRate, //查询商家服务费
   fetchUpdateManualRate, //修改商家服务费
+  fetchMerchantProhibitCheck, // 禁用检查提示
 } from '@/services/BusinessServices';
 
 export default {
@@ -278,6 +279,11 @@ export default {
         message: '温馨提示',
         description: '修改成功',
       });
+      callback();
+    },
+    *fetchMerchantProhibitCheck({ payload, callback }, { call }) {
+      const response = yield call(fetchMerchantProhibitCheck, payload);
+      if (!response) return;
       callback();
     },
   },

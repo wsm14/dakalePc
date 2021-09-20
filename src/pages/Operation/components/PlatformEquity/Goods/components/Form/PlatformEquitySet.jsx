@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { GOODS_CLASS_TYPE, PEQUITY_GOODSBUY_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import GoodsGroupSet from './GoodsGroupSet';
 
-const PreferentialSet = ({
+const PlatformEquitySet = ({
   form,
   editActive,
   loading,
@@ -17,7 +17,6 @@ const PreferentialSet = ({
   commissionShow,
   setCommissionShow,
   initialValues = {},
-  onValuesChange,
   skuMerchantList,
   setContent,
 }) => {
@@ -27,7 +26,6 @@ const PreferentialSet = ({
   const editDisabled = ['edit'].includes(editActive);
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
   const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
   const [mreList, setMreList] = useState({
@@ -47,28 +45,29 @@ const PreferentialSet = ({
 
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
-    if (initialValues.ownerName) {
-      // 图文介绍类型
-      setGoodsDescType(initialValues.goodsDescType);
+    if (initialValues.relateName) {
       setMreList({
-        type: initialValues.ownerType,
-        groupId: initialValues.ownerId,
+        type: initialValues.relateType,
+        groupId: initialValues.relateId,
       });
-      setRadioData({ goodsType: initialValues.goodsType });
+      setRadioData({
+        goodsType: initialValues.goodsType,
+        buyFlag: initialValues.buyFlag,
+      });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
-      fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
-        const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
+      fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
+        const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
         const topCategoryId = list[mreFindIndex].topCategoryId[0];
         // 是否分佣
         getCommissionFlag(topCategoryId);
         // 商品标签
         getTagsPlat(topCategoryId);
       });
-      if (initialValues.ownerType === 'group') {
+      if (initialValues.relateType === 'group') {
         getMerchantList();
       }
     }
-  }, [initialValues.ownerName]);
+  }, [initialValues.relateName]);
 
   //sku通用-sku挂靠商家列表
   const getMerchantList = () => {
@@ -76,7 +75,7 @@ const PreferentialSet = ({
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: initialValues.specialGoodsId,
-        ownerId: initialValues.ownerIdString,
+        ownerId: -1,
         serviceType: 'specialGoods',
       },
       callback: (list) => {
@@ -168,7 +167,7 @@ const PreferentialSet = ({
       label: '选择店铺类型',
       type: 'radio',
       disabled: commonDisabled,
-      name: 'ownerType',
+      name: 'relateType',
       select: BUSINESS_TYPE,
       onChange: (e) => {
         setCommissionShow(false);
@@ -180,14 +179,14 @@ const PreferentialSet = ({
           keys: [],
           list: [],
         }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined }); // 重置数据
+        form.setFieldsValue({ relateId: undefined }); // 重置数据
         dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
       },
     },
     {
       label: `选择${BUSINESS_TYPE[mreList.type]}`,
       type: 'select',
-      name: 'ownerId',
+      name: 'relateId',
       placeholder: '请输入搜索',
       loading,
       select: selectList,
@@ -202,15 +201,6 @@ const PreferentialSet = ({
         form.setFieldsValue({ merchantIds: undefined });
       },
     },
-    // {
-    //   label: '店铺范围',
-    //   type: 'radio',
-    //   name: 'shopType',
-    //   disabled: editActive,
-    //   visible: mreList.name && mreList.type === 'group',
-    //   select: ['全部', '部分'],
-    //   onChange: (e) => saveSelectData({ shopType: e.target.value }),
-    // },
     {
       label: '适用店铺',
       name: 'merchantIds',
@@ -269,7 +259,7 @@ const PreferentialSet = ({
     },
     {
       title: '设置商品价格',
-      label: `${goodsTypeName}原价`,
+      label: '原价',
       name: 'oriPrice',
       type: 'number',
       precision: 2,
@@ -279,7 +269,7 @@ const PreferentialSet = ({
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '特惠价格',
+      label: '成本价',
       name: 'realPrice',
       type: 'number',
       precision: 2,
@@ -293,12 +283,44 @@ const PreferentialSet = ({
             const realPrice = Number(value);
             const buyPrice = Number(form.getFieldValue('oriPrice'));
             if (realPrice > buyPrice) {
-              return Promise.reject('特惠价格需小于套餐价格');
+              return Promise.reject('成本价需小于原价');
             }
             return Promise.resolve();
           },
         },
       ],
+    },
+    {
+      label: '售卖类型',
+      name: 'buyFlag',
+      type: 'radio',
+      select: PEQUITY_GOODSBUY_TYPE,
+      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+    },
+    {
+      label: '售卖',
+      name: ['paymentModeObject', 'type'],
+      hidden: true,
+    },
+    {
+      label: '卡豆数',
+      name: ['paymentModeObject', 'bean'],
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: radioData.buyFlag == '1',
+      suffix: '卡豆',
+    },
+    {
+      label: '现金（元）',
+      name: ['paymentModeObject', 'cash'],
+      type: 'number',
+      precision: 2,
+      min: 0.01,
+      max: 999999.99,
+      visible: radioData.buyFlag == '1',
+      formatter: (value) => `￥ ${value}`,
     },
     {
       label: '商家结算价',
@@ -308,6 +330,7 @@ const PreferentialSet = ({
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
+      visible: radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       addRules: [
         {
@@ -335,18 +358,19 @@ const PreferentialSet = ({
       min: 0,
       max: 999999.99,
       disabled: commonDisabled,
-      visible: commissionShow == '1',
+      visible: commissionShow == '1' && radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       // rules: [{ required: false }],
     },
     {
-      label: '商家商品标签',
+      label: '店铺商品标签',
       name: 'goodsTags',
       type: 'select',
       mode: 'multiple',
-      placeholder: '请选择商家商品标签',
+      placeholder: '请选择店铺商品标签',
       select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
+      rules: [{ required: false }],
       addRules: [
         {
           validator: (rule, value) => {
@@ -359,32 +383,13 @@ const PreferentialSet = ({
       ],
     },
     {
-      title: `设置${goodsTypeName}介绍`,
-      label: '选择介绍类型',
-      type: 'radio',
+      label: '介绍类型',
       name: 'goodsDescType',
-      select: SPECIAL_DESC_TYPE,
-      onChange: (e) => setGoodsDescType(e.target.value),
+      hidden: true,
     },
     {
-      label: `${goodsTypeName}介绍`,
-      type: 'textArea',
-      name: 'goodsDesc',
-      hidden: goodsDescType !== '0',
-      rules: [{ required: false }],
-      maxLength: 200,
-    },
-    {
-      label: `${goodsTypeName}图片`,
-      name: 'goodsDescImg',
-      type: 'upload',
-      maxFile: 20,
-      hidden: goodsDescType !== '0',
-      rules: [{ required: false }],
-    },
-    {
+      title: '设置单品介绍',
       type: 'noForm',
-      visible: goodsDescType === '1',
       formItem: (
         <EditorForm
           content={initialValues.richText}
@@ -400,7 +405,6 @@ const PreferentialSet = ({
         form={form}
         formItems={formItems}
         initialValues={initialValues}
-        onValuesChange={(changedValues, allValues) => onValuesChange && onValuesChange(allValues)}
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}
@@ -427,4 +431,4 @@ export default connect(({ baseData, loading, specialGoods }) => ({
   skuMerchantList: baseData.skuMerchantList,
   selectList: baseData.groupMreList,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
-}))(PreferentialSet);
+}))(PlatformEquitySet);
