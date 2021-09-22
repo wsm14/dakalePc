@@ -343,7 +343,7 @@ const PlatformEquityCouponSet = (props) => {
     },
     ...manualList.map((i) => ({
       label: `${COMMISSION_TYPE[i.divisionParticipantType]}`,
-      name: ['serviceDivisonDTO', `${i.divisionParticipantType}Bean`],
+      name: ['serviceDivisionDTO', `${i.divisionParticipantType}Bean`],
       type: 'number',
       precision: 0,
       min: 0,
@@ -352,14 +352,14 @@ const PlatformEquityCouponSet = (props) => {
       suffix: '卡豆',
       onChange: () => {
         const keyArr = manualList.map((i) => [
-          'serviceDivisonDTO',
+          'serviceDivisionDTO',
           `${i.divisionParticipantType}Bean`,
         ]);
         const valObj = form.getFieldsValue(keyArr);
-        const { serviceDivisonDTO = {} } = valObj;
+        const { serviceDivisionDTO = {} } = valObj;
         form.setFieldsValue({
           commission:
-            Object.values(serviceDivisonDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
+            Object.values(serviceDivisionDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
         });
       },
     })),
