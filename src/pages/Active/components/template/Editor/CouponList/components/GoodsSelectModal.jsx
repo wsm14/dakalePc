@@ -33,6 +33,11 @@ const GoodsSelectModal = (props) => {
       col: false,
       onChange: (val, op) => setOwnerType(op.option.option.merchantType),
     },
+    {
+      label: '券名称',
+      name: 'couponName',
+      col: false,
+    },
   ];
 
   const listProps = {
