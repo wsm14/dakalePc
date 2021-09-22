@@ -22,7 +22,7 @@ const GoodsSelectModal = (props) => {
     if (visible) {
       if (tabKey === 'coupon') fetchGetBuyCouponSelect();
     }
-  }, [visible, tabKey]);
+  }, [visible, tabKey, searchValue]);
 
   const listProps = {
     coupon: {

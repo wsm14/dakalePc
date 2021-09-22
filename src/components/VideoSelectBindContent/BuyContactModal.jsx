@@ -32,7 +32,7 @@ const FreeContactSelectModal = (props) => {
       if (tabKey === 'coupon') fetchGetBuyCouponSelect(1);
       if (tabKey === 'goods') fetchSpecialGoodsList(1);
     }
-  }, [visible, page, tabKey]);
+  }, [visible, page, tabKey, searchValue]);
 
   const listProps = {
     coupon: {
