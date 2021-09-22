@@ -8,7 +8,6 @@ import { Button, Form } from 'antd';
 const CheckRefuseDraw = (props) => {
   const { visible = {}, onClose, dispatch, onCloseF, cRef, loading } = props;
   const { show = false, auditId, ownerId, type, detail } = visible;
-  console.log(detail,"ddd")
 
   const [form] = Form.useForm();
 
