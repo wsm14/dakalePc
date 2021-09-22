@@ -49,6 +49,10 @@ const ShareDetail = (props) => {
       render: (val) => NEW_SHARE_OWNER[val],
     },
     {
+      label: `${NEW_SHARE_OWNER[detail.ownerType]}ID`,
+      name: 'ownerId',
+    },
+    {
       label: `${NEW_SHARE_OWNER[detail.ownerType]}名称`,
       name: 'ownerName',
     },
