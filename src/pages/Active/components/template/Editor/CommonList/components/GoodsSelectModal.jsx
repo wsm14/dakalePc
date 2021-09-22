@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Modal, Empty, Spin, Tabs } from 'antd';
+import { Input, Modal, Empty, Spin, Tabs } from 'antd';
 import { goodsDom } from './CouponFreeDom';
 import SearchCondition from '@/components/SearchCondition';
 import '../index.less';
 
 const { TabPane } = Tabs;
+const { Search } = Input;
 /**
  * 选择特惠商品（多选）
  */
@@ -48,6 +49,7 @@ const GoodsSelectModal = (props) => {
       type: 'activeTemplate/fetchSpecialGoodsSelect',
       payload: {
         ...data,
+        goodsName: searchValue,
         page: 1,
         limit: 999,
       },
@@ -101,7 +103,14 @@ const GoodsSelectModal = (props) => {
         searchItems={searchItems}
         handleSearch={fetchSpecialGoodsList}
       ></SearchCondition>
-      <Tabs type="card" onChange={setTabKey} style={{ overflow: 'initial' }}>
+      <Tabs
+        type="card"
+        onChange={setTabKey}
+        style={{ overflow: 'initial' }}
+        tabBarExtraContent={
+          <Search placeholder="请输入名称" enterButton allowClear onSearch={setSearchValue} />
+        }
+      >
         <TabPane tab="特惠商品" key="goods">
           {listDom}
         </TabPane>
