@@ -133,7 +133,7 @@ const VideoCheck = (props) => {
         return (
           <>
             <div style={{ display: 'flex' }}>
-              <Tag>{BUSINESS_TYPE[momentDTO.ownerType]}</Tag>
+              <Tag>{VIDEO_TYPE[momentDTO.ownerType]}</Tag>
               <Ellipsis length={15} tooltip>
                 {momentDTO.ownerName}
               </Ellipsis>
