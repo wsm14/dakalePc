@@ -75,6 +75,7 @@ const PlatformEquityDrawer = (props) => {
             id,
             ...otherPre,
             ...other,
+            rightFlag: 1,
             ownerType: 'admin',
             ownerId: -1,
             richText: content, // 富文本内容
