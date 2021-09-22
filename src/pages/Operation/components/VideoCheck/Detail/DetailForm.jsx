@@ -1,7 +1,7 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import { BUSINESS_TYPE, SHARE_SEX_TYPE, SHARE_STATUS } from '@/common/constant';
+import { BUSINESS_TYPE, SHARE_SEX_TYPE, SHARE_STATUS, VIDEO_TYPE } from '@/common/constant';
 
 const DetailForm = (props) => {
   const { detail = {}, tabkey } = props;
@@ -9,12 +9,12 @@ const DetailForm = (props) => {
   const formItems = [
     {
       name: 'ownerType',
-      label: '店铺类型',
-      render: (val) => BUSINESS_TYPE[val],
+      label: '类型',
+      render: (val) => VIDEO_TYPE[val],
     },
     {
       name: 'ownerName',
-      label: '店铺名称',
+      label: `${VIDEO_TYPE[detail.ownerType]}名称`,
     },
     {
       name: ['videoContent', 'url'],
