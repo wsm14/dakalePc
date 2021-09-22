@@ -433,7 +433,7 @@ export default {
       const response = yield call(fetchGoodsIsCommission, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.manuallyFlag);
+      callback(content);
     },
     *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {
       const response = yield call(fetchSkuDetailMerchantList, payload);
