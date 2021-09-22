@@ -1,4 +1,5 @@
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 
 export default {
   fieldNames: { key: 'key', headerName: 'header' },
@@ -32,6 +33,10 @@ export default {
     { key: 'remain', header: '剩余数量' },
     { key: 'total', header: '销量', render: (val, row) => val - row.remain },
     { key: 'verifiedCount', header: '核销数量' },
+    { key: 'districtCode', header: '地区' , render: (val) => checkCityName(val) || '--'},
+    { key: 'businessHub', header: '商圈'},
+    { key: 'address', header: '详细地址'},
+    { key: 'topCategoryName', header: '所属行业',render: (val, row) => `${val} / ${row.categoryName}`, },
     { key: 'createTime', header: '创建时间' },
     { key: 'updateTime', header: '发布时间' },
     { key: 'ownerCouponStatus', header: '状态', render: (val) => COUPON_STATUS[val] },

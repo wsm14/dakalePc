@@ -159,6 +159,10 @@ const GoodsDetail = (props) => {
       name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
+      label: '地级市分佣金额（元）',
+      name: ['serviceDivisionDTO', 'cityBean'],
+    },
+    {
       label: '区县分佣金额（元）',
       name: ['serviceDivisionDTO', 'districtBean'],
     },

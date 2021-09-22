@@ -58,17 +58,24 @@ export default {
         relateIdString: relateId,
       } = content.ownerCouponInfo;
       //分佣详情
-      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const {
+        provinceBean = 0,
+        districtBean = 0,
+        darenBean = 0,
+        cityBean = 0,
+      } = serviceDivisionDTO;
       const pBean =
         provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
       const dBean =
         districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
       const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
+      const cBean = cityBean || cityBean == '0' ? (Number(cityBean) / 100).toFixed(2) : '';
       const sDetail = {
         serviceDivisionDTO: {
           provinceBean: pBean,
           districtBean: dBean,
           darenBean: daBean,
+          cityBean: cBean,
         },
       };
 

@@ -13,6 +13,7 @@ const VideoContentSet = (props) => {
   const {
     list,
     form,
+    tradeList,
     selectList, // 店铺列表
     couponData,
     setCouponData,
@@ -104,6 +105,14 @@ const VideoContentSet = (props) => {
       },
     },
     {
+      label: '行业',
+      type: 'cascader',
+      name: 'categoryId',
+      select: tradeList,
+      visible: relateType == 'brand',
+      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'childList' },
+    },
+    {
       label: '视频id',
       name: 'videoId',
       rules: [{ required: false }],
@@ -190,8 +199,9 @@ const VideoContentSet = (props) => {
   return <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>;
 };
 
-export default connect(({ baseData, businessBrand, loading }) => ({
+export default connect(({ baseData, sysTradeList, businessBrand, loading }) => ({
   list: businessBrand.list,
   selectList: baseData.groupMreList,
+  tradeList: sysTradeList.list.list,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
 }))(VideoContentSet);

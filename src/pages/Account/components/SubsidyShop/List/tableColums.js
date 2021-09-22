@@ -1,11 +1,10 @@
 import moment from 'moment';
 import { ADD_AND_MINUS, SUBSIDY_ACTION_ROLE, SUBSIDY_TYPE } from '@/common/constant';
 
-const infoHandle = (click, type) => [
+const infoHandle = (click) => [
   {
     type: 'info',
     auth: true,
-    visible: type !== 'group',
     click,
   },
 ];
@@ -108,7 +107,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           type: 'handle',
           dataIndex: 'time',
           render: (val, row) =>
-            infoHandle(() => fetchGetDetail(row.subsidyRole, row), row.subsidyRole),
+            infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
         },
       ];
     // 按日显示

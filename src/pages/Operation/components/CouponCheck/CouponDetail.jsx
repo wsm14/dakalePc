@@ -40,13 +40,30 @@ const GoodsDetail = (props) => {
   const handleVerifyAllow = () => {
     form.validateFields().then((values) => {
       const { serviceDivisionDTO = {} } = values;
-      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
+      const {
+        provinceBean = 0,
+        districtBean = 0,
+        darenBean = 0,
+        cityBean = 0,
+      } = serviceDivisionDTO;
       const pBean = Number(provinceBean) * 100;
       const dBean = Number(districtBean) * 100;
       const daBean = Number(darenBean) * 100;
+      const cBean = Number(cityBean) * 100;
       //金额转卡豆
-      const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
-      const totalFee = (Number(provinceBean) + Number(districtBean) + Number(darenBean)).toFixed(2);
+      const serDivisionDTO = {
+        provinceBean: pBean,
+        districtBean: dBean,
+        darenBean: daBean,
+        cityBean: cBean,
+      };
+      //总分佣
+      const totalFee = (
+        Number(provinceBean) +
+        Number(districtBean) +
+        Number(darenBean) +
+        Number(cityBean)
+      ).toFixed(2);
       if (detail.divisionFlag === '1') {
         if (totalFee > Number(detail.commission)) {
           notification.info({
@@ -241,6 +258,13 @@ const GoodsDetail = (props) => {
     {
       label: '省代分佣金额（元）',
       name: ['serviceDivisionDTO', 'provinceBean'],
+      type: 'number',
+      precision: 2,
+      min: 0,
+    },
+    {
+      label: '地级市分佣金额（元）',
+      name: ['serviceDivisionDTO', 'cityBean'],
       type: 'number',
       precision: 2,
       min: 0,

@@ -2,18 +2,41 @@ import React from 'react';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
+import { brand } from '@/pages/Business/components/Group/Detail/detailsIndex';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
 
   const { show = false, titles, checkType = '', role = '', list = [] } = visible;
-  console.log(checkType, 'checkType');
-
   // pushVideo momentStop  "platformSubsidy" platform，directCharge
   // role :
   // (user: string;
   // merchant: string;
   // group: string;)
+  // brand
+
+  const getColumnsGroup=[
+    {
+      title: '集团名称',
+      dataIndex: 'groupName',
+      width: 280,
+    },
+    {
+      title: '所属行业',
+      align: 'center',
+      dataIndex: 'topCategoryName',
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      width: 200,
+    },
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ]
 
   const getColumnsVideo = [
     {
@@ -24,7 +47,7 @@ const SubsidyDetail = (props) => {
     {
       title: '品牌类型',
       align: 'center',
-      dataIndex: 'topCategoryName',
+      dataIndex: 'categoryName',
     },
 
     {
@@ -113,10 +136,12 @@ const SubsidyDetail = (props) => {
     onCancel: () => onClose(),
     footer: null,
   };
-  const commonType = ['platformSubsidy', 'platform', 'directCharge'].includes(checkType);
+  // const commonType = ['platformSubsidy', 'platform', 'directCharge'].includes(checkType);
   const columns = {
     user: getColumns,
     merchant: getColumnsM,
+    group:getColumnsGroup,
+    brand: getColumnsVideo,
   }[role];
 
   return (
@@ -124,8 +149,8 @@ const SubsidyDetail = (props) => {
       <TableDataBlock
         order
         noCard={false}
-        columns={commonType ? columns : getColumnsVideo}
-        rowKey={(record) => `${record.id}`}
+        columns={role ? columns : []}
+        rowKey={(record) => (role == 'brand' ? `${record.id}` : `${record.configBrandIdString}`)}
         list={list || []}
         total={list?.length || 0}
       ></TableDataBlock>

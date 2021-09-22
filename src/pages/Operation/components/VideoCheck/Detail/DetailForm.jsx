@@ -1,7 +1,7 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import { BUSINESS_TYPE, SHARE_SEX_TYPE, SHARE_STATUS } from '@/common/constant';
+import { BUSINESS_TYPE, SHARE_SEX_TYPE, NEW_SHARE_STATUS } from '@/common/constant';
 
 const DetailForm = (props) => {
   const { detail = {}, tabkey } = props;
@@ -70,7 +70,7 @@ const DetailForm = (props) => {
     {
       label: '发布状态',
       name: 'status',
-      render: (val) => (val && val !== '-1' ? SHARE_STATUS[val] : '-'),
+      render: (val) => (val && val !== '-1' ? NEW_SHARE_STATUS[val] : '-'),
     },
   ];
 

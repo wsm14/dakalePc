@@ -5,6 +5,7 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 
 // 导出列表
 export default {
@@ -62,6 +63,10 @@ export default {
       key: 'writeOffGoodsCount',
       header: '核销数量',
     },
+    { key: 'districtCode', header: '地区' , render: (val) => checkCityName(val) || '--'},
+    { key: 'businessHub', header: '商圈'},
+    { key: 'address', header: '详细地址'},
+    { key: 'topCategoryName', header: '所属行业',render: (val, row) => `${val} / ${row.categoryName}`, },
     { key: 'createTime', header: '创建时间' },
     {
       key: 'creatorType',
