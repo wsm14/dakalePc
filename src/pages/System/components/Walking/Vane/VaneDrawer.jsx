@@ -4,6 +4,7 @@ import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
 import { VANE_ICON, VANE_BANNER } from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
+import { NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -19,6 +20,12 @@ const VaneDrawer = (props) => {
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
   const [tradeList, setTradeList] = useState([]);
   const [cateList, setCateList] = useState([]);
+
+  const NATIVE_TYPE = {
+    specialArea: '卡豆专区',
+    phoneBill: '话费充值',
+    memberRecharge: '会员充值',
+  };
 
   const allProps = {
     add: {
@@ -44,6 +51,7 @@ const VaneDrawer = (props) => {
         categoryId = [],
         windVaneParamObject = {},
         jumpType,
+        nativeJumpType,
       } = values;
       const { bannerImage } = windVaneParamObject;
       const windVaneParam = {
@@ -63,11 +71,11 @@ const VaneDrawer = (props) => {
             configWindVaneId: detail.configWindVaneId,
             ...values,
             jumpType,
-            nativeJumpType: jumpType === 'native' ? 'category' : '',
+            nativeJumpType: { trade: 'category', native: nativeJumpType }[jumpType],
             bubbleFlag: Number(bubbleFlag),
             image: res[0],
             windVaneParamObject:
-              jumpType === 'native'
+              jumpType === 'trade'
                 ? { ...windVaneParam, bannerImage: res.slice(1).toString() }
                 : '',
           },
@@ -159,7 +167,7 @@ const VaneDrawer = (props) => {
       name: 'topCategoryId',
       type: 'select',
       select: tradeList,
-      visible: showUrl === 'native',
+      visible: showUrl === 'trade',
       show: false,
       fieldNames: {
         label: 'categoryName',
@@ -189,7 +197,7 @@ const VaneDrawer = (props) => {
         value: 'categoryIdString',
       },
       show: false,
-      visible: showUrl === 'native',
+      visible: showUrl === 'trade',
       rules: [{ required: false }],
       onChange: (val, option) => {
         if (val.length) {
@@ -202,7 +210,7 @@ const VaneDrawer = (props) => {
       label: '行业名称',
       name: ['windVaneParamObject', 'topCategoryName'],
       hidden: true,
-      visible: showUrl === 'native',
+      visible: showUrl === 'trade',
       show: false,
     },
     {
@@ -210,7 +218,7 @@ const VaneDrawer = (props) => {
       name: ['windVaneParamObject', 'categoryName'],
       hidden: true,
       rules: [{ required: false }],
-      visible: showUrl === 'native',
+      visible: showUrl === 'trade',
       render: (val, row) => {
         const { windVaneParamObject = {} } = row;
         return `${windVaneParamObject.topCategoryName} ${val ? '(' + val + ')' : ''}`;
@@ -223,7 +231,16 @@ const VaneDrawer = (props) => {
       extra: '请上传702*140尺寸png、jpeg格式图片',
       maxFile: 1,
       imgRatio: VANE_BANNER,
+      visible: showUrl === 'trade',
+    },
+    {
+      label: '跳转内容',
+      type: 'select',
+      name: 'nativeJumpType',
+      select: NATIVE_TYPE,
+      show: showUrl === 'native',
       visible: showUrl === 'native',
+      render: (val) => NATIVE_TYPE[val],
     },
   ];
 
