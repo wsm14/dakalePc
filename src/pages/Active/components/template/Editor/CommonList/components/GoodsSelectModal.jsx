@@ -31,6 +31,11 @@ const GoodsSelectModal = (props) => {
       type: 'merchant',
       col: false,
     },
+    {
+      label: '商品名称',
+      name: 'goodsName',
+      col: false,
+    },
   ];
 
   const listProps = {
