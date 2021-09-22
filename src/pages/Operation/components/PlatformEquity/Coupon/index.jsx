@@ -155,7 +155,7 @@ const PlatformEquityCoupon = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'specialGoodsId',
+      dataIndex: 'ownerCouponIdString',
       width: 150,
       render: (ownerCouponId, record, index) => {
         const { ownerCouponStatus: status } = record; // 1 上架 2 下架
