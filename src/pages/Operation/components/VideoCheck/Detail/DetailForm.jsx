@@ -92,6 +92,11 @@ const DetailForm = (props) => {
       name: 'status',
       render: (val) => (val && val !== '-1' ? NEW_SHARE_STATUS[val] : '-'),
     },
+    {
+      label: '发布时间',
+      name: 'publishTime',
+      render: (val, row) => (row.publishType == 'fixed' ? `${val}` : '立即发布'),
+    },
   ];
 
   return (
