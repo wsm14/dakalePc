@@ -529,6 +529,8 @@ export const SUBMIT_TYPE_VIDEO = {
 export const SERVICE_TYPE = {
   specialGoods: '特惠商品 ',
   reduceCoupon: '优惠券',
+  rightGoods: '权益商品',
+  rightReduceCoupon: '权益券',
 };
 
 // 模板类型 divisionTemplateType
