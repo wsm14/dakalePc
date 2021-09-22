@@ -20,6 +20,7 @@ const PlatformEquityDrawer = (props) => {
   const [formRuleAdd] = Form.useForm(); // 规则 数据表单
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
+  const [buyFlag, setBuyFlag] = useState('0'); // 商品购买类型
   const [saveData, setSaveData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
@@ -113,7 +114,14 @@ const PlatformEquityDrawer = (props) => {
       }));
   };
 
-  const listProp = { commissionShow, setCommissionShow, editActive: type, setContent };
+  const listProp = {
+    commissionShow,
+    setCommissionShow,
+    buyFlag,
+    setBuyFlag,
+    editActive: type,
+    setContent,
+  };
 
   // 统一处理弹窗
   const drawerProps = {
@@ -164,7 +172,11 @@ const PlatformEquityDrawer = (props) => {
       setSaveData(null);
     },
     footer: (
-      <Button onClick={handleUpAudit} disabled={!commissionShow} type="primary">
+      <Button
+        onClick={handleUpAudit}
+        disabled={{ 0: false, 1: !commissionShow }[buyFlag]}
+        type="primary"
+      >
         下一步
       </Button>
     ),
