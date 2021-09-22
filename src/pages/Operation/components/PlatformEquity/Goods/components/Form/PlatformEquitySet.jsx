@@ -19,6 +19,8 @@ const PlatformEquitySet = ({
   loading,
   selectList,
   dispatch,
+  buyFlag,
+  setBuyFlag,
   commissionShow,
   setCommissionShow,
   initialValues = {},
@@ -56,10 +58,8 @@ const PlatformEquitySet = ({
         type: initialValues.relateType,
         groupId: initialValues.relateId,
       });
-      setRadioData({
-        goodsType: initialValues.goodsType,
-        buyFlag: initialValues.buyFlag,
-      });
+      setBuyFlag(initialValues.buyFlag);
+      setRadioData({ goodsType: initialValues.goodsType });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
@@ -304,7 +304,7 @@ const PlatformEquitySet = ({
       name: 'buyFlag',
       type: 'radio',
       select: PEQUITY_GOODSBUY_TYPE,
-      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+      onChange: (e) => setBuyFlag(e.target.value),
     },
     {
       label: '售卖',
@@ -318,7 +318,7 @@ const PlatformEquitySet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       suffix: '卡豆',
     },
     {
@@ -328,7 +328,7 @@ const PlatformEquitySet = ({
       precision: 2,
       min: 0.01,
       max: 999999.99,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
     },
     {
@@ -339,7 +339,7 @@ const PlatformEquitySet = ({
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       addRules: [
         {
@@ -367,7 +367,7 @@ const PlatformEquitySet = ({
       min: 0,
       max: 999999.99,
       disabled: true,
-      visible: commissionShow == '1' && radioData.buyFlag == '1',
+      visible: commissionShow == '1' && buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
     },
@@ -378,7 +378,7 @@ const PlatformEquitySet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyFlag == '1' && commissionShow === '1',
+      visible: buyFlag == '1' && commissionShow === '1',
       suffix: '卡豆',
       onChange: () => {
         const keyArr = manualList.map((i) => [
