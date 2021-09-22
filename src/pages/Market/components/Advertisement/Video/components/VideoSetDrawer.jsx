@@ -20,12 +20,12 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const { title, videoId, url, frontImage, relateId, ...other } = dataStorage;
+      const { title, videoId, url, frontImage, relateId, categoryId = [], ...other } = dataStorage;
       const { age, tagsId = [], ageData, cityList = [], area, areaType, ...otherValus } = values;
       const { free = {}, contact = [] } = couponData;
       let goodsList = {};
       if (dataStorage.relateType !== 'brand') {
-        // 券数据整理
+        // 自选商品数据整理
         const newCoupon = [
           ...contact,
           ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
@@ -48,6 +48,9 @@ const ShareDrawer = (props) => {
             relateShardingKey: relateId,
           })),
         };
+      } else {
+        // 品牌行业信息
+        goodsList = { topCategoryId: categoryId[0], categoryId: categoryId[1] };
       }
 
       uploadLive({
@@ -125,6 +128,13 @@ const ShareDrawer = (props) => {
     }
   };
 
+  // 获取行业选择项
+  const fetchTradeList = () => {
+    dispatch({
+      type: 'sysTradeList/fetchGetList',
+    });
+  };
+
   // 暂存数据
   const saveDataStorage = (val) => setDataStorage({ ...dataStorage, ...val });
 
@@ -146,12 +156,13 @@ const ShareDrawer = (props) => {
   ];
 
   const modalProps = {
-    title: '发布分享',
+    title: '发布广告',
     visible: show,
     width: 800,
     maskClosable: current === 0,
     onClose,
     afterCallBack: () => {
+      fetchTradeList();
       fetchBrandManagementList();
     },
     closeCallBack: () => {
