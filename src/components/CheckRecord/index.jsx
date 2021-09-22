@@ -2,7 +2,6 @@ import React from 'react';
 import TableDataBlock from '@/components/TableDataBlock';
 const CheckRecord = (props) => {
   const { recordList = {} } = props;
-  console.log(recordList,"ssss")
 
   const getColumns = [
     {

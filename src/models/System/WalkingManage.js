@@ -51,10 +51,11 @@ export default {
       const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
       const { configWindVane } = response.content;
-      const { bubbleFlag, windVaneParamObject = {} } = configWindVane;
+      const { bubbleFlag, windVaneParamObject = {}, jumpType } = configWindVane;
       const { categoryId, topCategoryId } = windVaneParamObject;
       callback({
         ...configWindVane,
+        jumpType: { native: categoryId ? 'trade' : 'native', url: jumpType }[jumpType],
         bubbleFlag: Boolean(Number(bubbleFlag)),
         categoryId: categoryId ? categoryId.split(',') : [],
         topCategoryId: topCategoryId ? [topCategoryId] : [],

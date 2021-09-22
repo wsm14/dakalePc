@@ -1,7 +1,13 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import { BUSINESS_TYPE, SHARE_SEX_TYPE, NEW_SHARE_STATUS } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  SHARE_SEX_TYPE,
+  NEW_SHARE_STATUS,
+  SHARE_AREA_TYPE,
+} from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 
 const DetailForm = (props) => {
   const { detail = {}, tabkey } = props;
@@ -61,6 +67,20 @@ const DetailForm = (props) => {
       label: '年龄',
       name: 'age',
       render: (val) => (val === '0-100' ? '不限' : val),
+    },
+    {
+      label: '地域',
+      name: 'areaType',
+      show: detail.ownerType !== 'user',
+      render: (val, row) =>
+        `${SHARE_AREA_TYPE[val]}\n${
+          {
+            all: '',
+            city: row?.area?.split(',').map((i) => checkCityName(i)),
+            district: row?.area?.split(',').map((i) => checkCityName(i)),
+            near: `${row.beanAddress || '--'}\n附近${row.area || 0}米`,
+          }[val]
+        }`,
     },
     {
       name: 'tags',

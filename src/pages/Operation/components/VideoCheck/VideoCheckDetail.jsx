@@ -21,7 +21,6 @@ const VideoCheck = (props) => {
     auditIdString,
     submitterType,
   } = visible;
-  console.log(status, 'ssss');
   // status0-待审核 1-已通过 2-已驳回 3-已关闭
 
   const [visibleRefuse, setVisibleRefuse] = useState(false);
