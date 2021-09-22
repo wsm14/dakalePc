@@ -7,11 +7,9 @@ import {
   NEW_SHARE_STATUS,
   SHARE_AREA_TYPE,
 } from '@/common/constant';
-import { checkCityName } from '@/utils/utils';
 
 const DetailForm = (props) => {
   const { detail = {}, tabkey } = props;
-  console.log(detail);
 
   const formItems = [
     {

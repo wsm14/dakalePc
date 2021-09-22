@@ -143,7 +143,7 @@ const PreferentialSet = ({
         serviceType: 'specialGoods',
         categoryId: categoryId,
       },
-      callback: (val) => setCommissionShow(val),
+      callback: ({ manuallyFlag, manualDivisions }) => setCommissionShow(manuallyFlag),
     });
   };
 

@@ -11,6 +11,7 @@ import {
   COUPON_BUY_RULE,
   PEQUITY_GOODSBUY_TYPE,
   SPECIAL_USERTIME_TYPE,
+  COMMISSION_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
@@ -40,6 +41,7 @@ const PlatformEquityCouponSet = (props) => {
   const editDisabled = type === 'edit' && status === '1';
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
+  const [manualList, setManualList] = useState([]); // 分佣模版字段
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
     groupId: null,
@@ -162,10 +164,13 @@ const PlatformEquityCouponSet = (props) => {
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'specialGoods',
+        serviceType: 'rightReduceCoupon',
         categoryId: categoryId,
       },
-      callback: (val) => setCommissionShow(val),
+      callback: ({ manuallyFlag, manualDivisions }) => {
+        setCommissionShow(manuallyFlag);
+        setManualList(manualDivisions);
+      },
     });
   };
 
@@ -333,10 +338,31 @@ const PlatformEquityCouponSet = (props) => {
       min: 0,
       max: 999999.99,
       visible: commissionShow == '1' && radioData.buyFlag == '1',
-      disabled: commonDisabled,
-      formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
+      disabled: true,
+      suffix: '元',
     },
+    ...manualList.map((i) => ({
+      label: `${COMMISSION_TYPE[i.divisionParticipantType]}`,
+      name: ['serviceDivisonDTO', `${i.divisionParticipantType}Bean`],
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: radioData.buyFlag == '1' && commissionShow === '1',
+      suffix: '卡豆',
+      onChange: () => {
+        const keyArr = manualList.map((i) => [
+          'serviceDivisonDTO',
+          `${i.divisionParticipantType}Bean`,
+        ]);
+        const valObj = form.getFieldsValue(keyArr);
+        const { serviceDivisonDTO = {} } = valObj;
+        form.setFieldsValue({
+          commission:
+            Object.values(serviceDivisonDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
+        });
+      },
+    })),
     {
       label: '介绍类型',
       name: 'couponDetailType',

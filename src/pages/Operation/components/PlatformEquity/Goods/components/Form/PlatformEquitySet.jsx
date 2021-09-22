@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, PEQUITY_GOODSBUY_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import {
+  GOODS_CLASS_TYPE,
+  PEQUITY_GOODSBUY_TYPE,
+  BUSINESS_TYPE,
+  COMMISSION_TYPE,
+} from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
@@ -28,6 +33,7 @@ const PlatformEquitySet = ({
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
+  const [manualList, setManualList] = useState([]); // 分佣模版字段
   const [mreList, setMreList] = useState({
     groupId: null,
     type: 'merchant',
@@ -139,10 +145,13 @@ const PlatformEquitySet = ({
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'specialGoods',
+        serviceType: 'rightGoods',
         categoryId: categoryId,
       },
-      callback: (val) => setCommissionShow(val),
+      callback: ({ manuallyFlag, manualDivisions }) => {
+        setCommissionShow(manuallyFlag);
+        setManualList(manualDivisions);
+      },
     });
   };
 
@@ -357,11 +366,33 @@ const PlatformEquitySet = ({
       precision: 2,
       min: 0,
       max: 999999.99,
-      disabled: commonDisabled,
+      disabled: true,
       visible: commissionShow == '1' && radioData.buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
+      suffix: '元',
     },
+    ...manualList.map((i) => ({
+      label: `${COMMISSION_TYPE[i.divisionParticipantType]}`,
+      name: ['serviceDivisonDTO', `${i.divisionParticipantType}Bean`],
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: radioData.buyFlag == '1' && commissionShow === '1',
+      suffix: '卡豆',
+      onChange: () => {
+        const keyArr = manualList.map((i) => [
+          'serviceDivisonDTO',
+          `${i.divisionParticipantType}Bean`,
+        ]);
+        const valObj = form.getFieldsValue(keyArr);
+        const { serviceDivisonDTO = {} } = valObj;
+        form.setFieldsValue({
+          commission:
+            Object.values(serviceDivisonDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
+        });
+      },
+    })),
     {
       label: '店铺商品标签',
       name: 'goodsTags',
