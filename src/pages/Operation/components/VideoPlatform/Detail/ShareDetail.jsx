@@ -147,6 +147,11 @@ const ShareDetail = (props) => {
       name: 'friendShareImg',
       type: 'upload',
     },
+    {
+      label: '发布时间',
+      name: 'publishTime',
+      render: (val, row) => (row.publishType == 'fixed' ? `${val}` : '立即发布'),
+    },
   ];
 
   // 修改审核提交
