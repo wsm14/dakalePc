@@ -61,7 +61,7 @@ const VideoCheck = (props) => {
   const globalSearch = [
     {
       label: '分享标题',
-      name: 'title',
+      name: 'marketingName',
     },
     {
       label: '集团/店铺名',
