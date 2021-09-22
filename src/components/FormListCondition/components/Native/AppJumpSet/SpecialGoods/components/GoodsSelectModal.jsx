@@ -21,7 +21,7 @@ const GoodsSelectModal = (props) => {
     if (visible) {
       if (tabKey === 'goods') fetchSpecialGoodsList();
     }
-  }, [visible, tabKey]);
+  }, [visible, tabKey, searchValue]);
 
   const listProps = {
     goods: {

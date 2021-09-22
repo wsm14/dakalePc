@@ -11,6 +11,7 @@ import { checkCityName } from '@/utils/utils';
 
 const DetailForm = (props) => {
   const { detail = {}, tabkey } = props;
+  console.log(detail);
 
   const formItems = [
     {
@@ -76,8 +77,8 @@ const DetailForm = (props) => {
         `${SHARE_AREA_TYPE[val]}\n${
           {
             all: '',
-            city: row?.area?.split(',').map((i) => checkCityName(i)),
-            district: row?.area?.split(',').map((i) => checkCityName(i)),
+            city: row?.area,
+            district: row?.area,
             near: `${row.beanAddress || '--'}\n附近${row.area || 0}米`,
           }[val]
         }`,
