@@ -304,6 +304,7 @@ export default [
         component: './Market/AreaQuery',
         buttons: ['set', 'edit'],
       },
+
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -343,27 +344,33 @@ export default [
         ],
       },
       {
-        path: '/market/openAd',
-        name: '开屏广告',
-        component: './Market/OpenAdvert',
-        buttons: ['save', 'del', 'edit', 'down', 'info'],
+        path: '/market/advertisement',
+        name: '广告投放管理',
+        component: './Market/Advertisement',
+        buttons: [
+          'videoAd',
+          'openAd',
+          'puzzleAd',
+          'save',
+          'del',
+          'edit',
+          'info',
+          'up',
+          'down',
+          'adRoot',
+          'rewardPeo',
+        ],
       },
       {
         path: '/market/appset',
-        name: '广告管理',
+        name: 'Banner管理',
         component: './Market/AppSetList',
         buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
-        path: '/market/puzzleAd',
-        name: '拼图广告',
-        component: './Market/PuzzleAdvert',
-        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
-      },
-      {
         path: '/market/videoAd',
-        name: '视频广告', // 新手视频
-        component: './Market/VideoAdvert',
+        name: '新手视频',
+        component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       // 店铺运营 operation
@@ -372,6 +379,28 @@ export default [
         name: '视频管理',
         component: './Operation/ShareManage',
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
+      },
+      {
+        path: '/operation/videoplatform',
+        name: '平台视频',
+        component: './Operation/VideoPlatform',
+        buttons: [
+          'save',
+          'del',
+          'edit',
+          'down',
+          'info',
+          'rewardPeo',
+          'shareImg',
+          'commerceSet',
+          'portraitEdit',
+        ],
+      },
+      {
+        path: '/operation/videoCheck',
+        name: '视频审核',
+        component: './Operation/VideoCheck',
+        buttons: ['info', 'check', 'close'],
       },
       {
         path: '/operation/goods',

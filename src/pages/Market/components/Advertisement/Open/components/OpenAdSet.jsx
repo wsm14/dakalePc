@@ -10,32 +10,46 @@ import OpenAdDetail from './Detail';
 const OpenAdSet = (props) => {
   const { dispatch, cRef, visible, onClose, tabKey, loading } = props;
 
-  const { show = false, type = 'add', detail = {} } = visible;
+  const { show = false, type = 'add', detail = { mediaType: 'image' } } = visible;
   const [form] = Form.useForm();
 
-  // 提交
-  const fetchGetFormData = () => {
+  const fetchGetFormData = (data) => {
+    dispatch({
+      type: { add: 'openAdvert/fetchOpenAdvertSet', edit: 'openAdvert/fetchOpenAdvertEdit' }[type],
+      payload: data,
+      callback: () => {
+        onClose();
+        cRef.current.fetchGetData();
+      },
+    });
+  };
+
+  // 上传文件判断
+  const fetchCheckUpFile = () => {
     form.validateFields().then((values) => {
-      const { url, activeDate: time, ...other } = values;
-      // 上传图片到oss -> 提交表单
+      const { url, mediaType, launchOwner, activeDate: time, ...other } = values;
+
+      const payload = {
+        ...other,
+        mediaType,
+        launchOwner,
+        userType: tabKey,
+        appLaunchImageId: detail.idString,
+        startDate: time[0].format('YYYY-MM-DD 00:00:00'),
+        endDate: time[1].format('YYYY-MM-DD 23:59:59'),
+      };
+
+      // 视频上传
+      if (mediaType === 'video') {
+        fetchGetFormData(payload);
+        return;
+      }
+
+      // 上传图片
       aliOssUpload(url).then((res) => {
-        dispatch({
-          type: { add: 'openAdvert/fetchOpenAdvertSet', edit: 'openAdvert/fetchOpenAdvertEdit' }[
-            type
-          ],
-          payload: {
-            ...other,
-            appLaunchImageId: detail.idString,
-            userType: tabKey,
-            mediaType: 'image',
-            url: res.toString(),
-            startDate: time[0].format('YYYY-MM-DD 00:00:00'),
-            endDate: time[1].format('YYYY-MM-DD 23:59:59'),
-          },
-          callback: () => {
-            onClose();
-            cRef.current.fetchGetData();
-          },
+        fetchGetFormData({
+          ...payload,
+          url: res.toString(),
         });
       });
     });
@@ -46,7 +60,7 @@ const OpenAdSet = (props) => {
     visible: show,
     onClose,
     footer: type !== 'info' && (
-      <Button onClick={fetchGetFormData} type="primary" loading={loading}>
+      <Button onClick={fetchCheckUpFile} type="primary" loading={loading}>
         确认
       </Button>
     ),

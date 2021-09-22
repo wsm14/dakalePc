@@ -1,11 +1,12 @@
 import { notification } from 'antd';
-import moment from 'moment';
 import {
-  fetchVideoAdNovice,
-  fetchVideoAdNoviceSet,
-  fetchVideoAdNoviceBean,
-  fetchVideoAdNoviceDetail,
-  fetchVideoAdNoviceStatus,
+  fetchVideoAdvertList,
+  fetchVideoAdvertStatus,
+  fetchVideoAdvertRootCount,
+  fetchVideoAdvertRootCountSet,
+  fetchVideoAdvertCreate,
+  fetchVideoAdvertEdit,
+  fetchVideoAdvertDetail,
 } from '@/services/MarketServices';
 
 export default {
@@ -14,7 +15,7 @@ export default {
   state: {
     list: [],
     total: 0,
-    detailList: { list: [], total: 0 },
+    rootCount: {},
   },
 
   reducers: {
@@ -24,18 +25,11 @@ export default {
         ...payload,
       };
     },
-    closeList(state, { payload }) {
-      return {
-        ...state,
-        ...payload,
-        detailList: { list: [], total: 0 },
-      };
-    },
   },
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchVideoAdNovice, payload);
+      const response = yield call(fetchVideoAdvertList, payload);
       if (!response) return;
       const { content } = response;
       yield put({
@@ -46,86 +40,104 @@ export default {
         },
       });
     },
-    *fetchVideoAdNoviceBean({ payload }, { call, put }) {
-      const response = yield call(fetchVideoAdNoviceBean, payload);
+    *fetchVideoAdvertStatus({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertStatus, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `视频下架成功`,
+      });
+      callback();
+    },
+    *fetchVideoAdvertSearch({ payload, callback }, { call, put }) {
+      const response = yield call(fetchVideoAdvertList, {
+        ...payload,
+        status: 1,
+        limit: 50,
+        page: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      callback(content.recordList);
+    },
+    *fetchVideoAdvertRootCount({ payload, callback }, { call, put }) {
+      const response = yield call(fetchVideoAdvertRootCount, payload);
       if (!response) return;
       const { content } = response;
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.recordList, total: content.total },
+          rootCount: content,
         },
       });
+      callback();
     },
-    *fetchVideoAdNoviceStatus({ payload, callback }, { call }) {
-      const response = yield call(fetchVideoAdNoviceStatus, payload);
+    *fetchVideoAdvertRootCountSet({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertRootCountSet, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
-        description: `新手视频下架成功`,
+        description: `设置成功`,
       });
       callback();
     },
-    *fetchVideoAdNoviceDetail({ payload, callback }, { call }) {
-      const response = yield call(fetchVideoAdNoviceDetail, payload);
+    *fetchVideoAdvertCreate({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertCreate, payload);
       if (!response) return;
-      const { type } = payload;
+      notification.success({
+        message: '温馨提示',
+        description: `广告新增成功`,
+      });
+      callback();
+    },
+    *fetchVideoAdvertEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `广告修改成功`,
+      });
+      callback();
+    },
+    *fetchVideoAdvertDetail({ payload, callback }, { call }) {
+      const { type = 'info', ...cell } = payload;
+      const response = yield call(fetchVideoAdvertDetail, cell);
+      if (!response) return;
       const { content = {} } = response;
       const {
-        rewardStartTime,
-        rewardEndTime,
-        topCategoryIdStr,
-        categoryIdStr,
-        provinceCode,
-        cityCode,
-        districtCode,
-        videoContentOb,
-        freeOwnerCoupon, // 免费券
-        valuableOwnerCoupon, // 有价券
-        specialGoods, // 特惠商品
-        couponIds,
-        promotionType: pType,
-        promotionIdStr,
-      } = content.guideMomentsDTO;
-      let editData = {};
-      if (type === 'again') {
-        editData = {
-          categoryNode: [topCategoryIdStr, categoryIdStr],
-          area: [provinceCode, cityCode, districtCode],
-          videoUrl: videoContentOb.url,
-          videoId: videoContentOb.videoId,
-        };
-      }
-      if (callback)
-        callback({
-          ...content.guideMomentsDTO,
-          free: freeOwnerCoupon // 免费券
-            ? { ...freeOwnerCoupon, ownerCouponIdString: couponIds, buyFlag: 0 }
-            : undefined,
-          contact: pType // 有价券 特惠商品
-            ? {
-                promotionType: { reduce: 'coupon', special: 'goods' }[pType],
-                ...{ reduce: valuableOwnerCoupon, special: specialGoods }[pType],
-                [{ reduce: 'ownerCouponIdString', special: 'specialGoodsId' }[
-                  pType
-                ]]: promotionIdStr,
-              }
-            : '',
-          rewardStartTime: rewardStartTime
-            ? [moment(rewardStartTime, 'YYYY-MM-DD'), moment(rewardEndTime, 'YYYY-MM-DD')]
-            : undefined,
-          rewardEndTime: `${rewardStartTime} ~ ${rewardEndTime}`,
-          ...editData,
-        });
-    },
-    *fetchVideoAdNoviceSet({ payload, callback }, { call }) {
-      const response = yield call(fetchVideoAdNoviceSet, payload);
-      if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: `视频广告新增成功`,
-      });
-      callback();
+        age,
+        area,
+        areaType,
+        tagsId,
+        freeOwnerCouponList = [], // 免费券
+        ownerCouponList = [], // 有价券
+        activityGoodsList = [], // 特惠商品
+        videoContent,
+        ...ohter
+      } = content?.momentDetail || {};
+      const editData =
+        type !== 'info'
+          ? {
+              url: JSON.parse(videoContent || '{}').url,
+              videoId: JSON.parse(videoContent || '{}').videoId,
+              free: freeOwnerCouponList[0] || {},
+              contact: [...activityGoodsList, ...ownerCouponList],
+            }
+          : {};
+      const newObj = {
+        ...ohter,
+        age,
+        area,
+        areaType,
+        promotionList: [
+          ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
+          ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),
+          ...activityGoodsList.map((item) => ({ ...item, type: 'special' })),
+        ],
+        videoContent: JSON.parse(videoContent || '{}'),
+        ...editData,
+      };
+      callback(newObj);
     },
   },
 };

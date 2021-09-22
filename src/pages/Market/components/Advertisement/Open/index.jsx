@@ -1,11 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
-import { OPEN_ADVERT_PORT, BANNER_SHOW_STATUS, BANNER_JUMP_TYPE } from '@/common/constant';
+import {
+  OPEN_ADVERT_PORT,
+  OPEN_ADVERT_TYPE,
+  OPEN_ADVERT_STATUS,
+  BANNER_JUMP_TYPE,
+} from '@/common/constant';
 import ExtraButton from '@/components/ExtraButton';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import OpenAdSet from './components/OpenAd/OpenAdSet';
+import OpenAdSet from './components/OpenAdSet';
 
 const OpenAdvert = (props) => {
   const { openAdvert, loading, dispatch } = props;
@@ -25,13 +30,19 @@ const OpenAdvert = (props) => {
       label: '状态',
       name: 'status',
       type: 'select',
-      select: BANNER_SHOW_STATUS,
+      select: OPEN_ADVERT_STATUS,
     },
     {
       label: '创建时间',
       type: 'rangePicker',
       name: 'beginTime',
       end: 'endTime',
+    },
+    {
+      label: '广告类型',
+      name: 'mediaType',
+      type: 'select',
+      select: OPEN_ADVERT_TYPE,
     },
   ];
 
@@ -41,6 +52,11 @@ const OpenAdvert = (props) => {
       title: '广告主名',
       fixed: 'left',
       dataIndex: 'launchOwner',
+    },
+    {
+      title: '广告类型',
+      dataIndex: 'mediaType',
+      render: (val) => OPEN_ADVERT_TYPE[val],
     },
     {
       title: '广告内容',
@@ -84,7 +100,7 @@ const OpenAdvert = (props) => {
       title: '状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => BANNER_SHOW_STATUS[val],
+      render: (val) => OPEN_ADVERT_STATUS[val],
     },
     {
       type: 'handle',
@@ -96,7 +112,7 @@ const OpenAdvert = (props) => {
         },
         {
           type: 'edit',
-          visible: record.status === '1',
+          visible: record.status !== '2',
           click: () => fetchOpenAdvertDetail({ appLaunchImageId }, 'edit'),
         },
         {
@@ -140,6 +156,8 @@ const OpenAdvert = (props) => {
         cRef={childRef}
         searchForm={form}
         cardProps={{
+          style: { marginTop: 1 },
+          bordered: false,
           tabList: Object.keys(OPEN_ADVERT_PORT).map((key) => ({
             key,
             tab: OPEN_ADVERT_PORT[key],
@@ -159,6 +177,7 @@ const OpenAdvert = (props) => {
         dispatchType="openAdvert/fetchGetList"
         {...openAdvert}
       ></TableDataBlock>
+      {/* 新增 修改 */}
       <OpenAdSet
         tabKey={tabKey}
         cRef={childRef}

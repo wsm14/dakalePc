@@ -1,9 +1,11 @@
 import React from 'react';
-import { BANNER_JUMP_TYPE } from '@/common/constant';
+import { BANNER_JUMP_TYPE, OPEN_ADVERT_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const OpenAdForm = (props) => {
   const { detail = {} } = props;
+
+  const { mediaType } = detail;
 
   const formItems = [
     {
@@ -11,9 +13,21 @@ const OpenAdForm = (props) => {
       name: 'launchOwner',
     },
     {
+      label: '广告类型',
+      name: 'mediaType',
+      render: (val) => OPEN_ADVERT_TYPE[val],
+    },
+    {
       label: '广告内容',
       type: 'upload',
       name: 'url',
+      show: mediaType === 'image',
+    },
+    {
+      label: '广告内容',
+      type: 'videoUpload',
+      name: ['videoContentObject', 'url'],
+      show: mediaType === 'video',
     },
     {
       label: '广告说明',
@@ -27,6 +41,7 @@ const OpenAdForm = (props) => {
     {
       label: '跳转事件',
       name: 'jumpUrlType',
+      show: !!detail.jumpUrlType,
       render: (val) => BANNER_JUMP_TYPE[val],
     },
     {

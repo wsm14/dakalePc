@@ -12,14 +12,14 @@ const VideoPeasDetail = (props) => {
   // 关闭清除数据
   const fetchCloseModal = () => {
     dispatch({
-      type: 'videoAdvert/closeList',
+      type: 'noviceAdvert/closeList',
     });
   };
 
   // 搜索参数
   const propItem = {
     title: `领豆明细 - ${merchantName} - ${title}`,
-    dispatchType: 'videoAdvert/fetchVideoAdNoviceBean',
+    dispatchType: 'noviceAdvert/fetchVideoAdNoviceBean',
     rowKey: 'beanDetailNewId',
     searchItems: [
       {
@@ -90,8 +90,8 @@ const VideoPeasDetail = (props) => {
   );
 };
 
-export default connect(({ videoAdvert, baseData, loading }) => ({
-  detailList: videoAdvert.detailList,
+export default connect(({ noviceAdvert, baseData, loading }) => ({
+  detailList: noviceAdvert.detailList,
   userList: baseData.userList,
-  loading: loading.effects['videoAdvert/fetchVideoAdNoviceBean'],
+  loading: loading.effects['noviceAdvert/fetchVideoAdNoviceBean'],
 }))(VideoPeasDetail);

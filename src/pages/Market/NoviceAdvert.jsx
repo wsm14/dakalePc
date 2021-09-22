@@ -5,13 +5,13 @@ import ExtraButton from '@/components/ExtraButton';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import VideoShowModal from './components/VideoAd/VideoShowModal';
-import VideoPeasDetail from './components/VideoAd/VideoPeasDetail';
-import VideoSetDrawer from './components/VideoAd/VideoSetDrawer';
+import VideoShowModal from './components/NoviceAdvert/VideoShowModal';
+import VideoPeasDetail from './components/NoviceAdvert/VideoPeasDetail';
+import VideoSetDrawer from './components/NoviceAdvert/VideoSetDrawer';
 import styles from './styles.less';
 
 const VideoAdvert = (props) => {
-  const { videoAdvert, loading, dispatch, tradeList } = props;
+  const { noviceAdvert, loading, dispatch, tradeList } = props;
 
   const childRef = useRef();
   const [visibleVideo, setVisibleVideo] = useState(false); // 查看视频
@@ -210,7 +210,7 @@ const VideoAdvert = (props) => {
   // 获取详情
   const fetchVideoAdNoviceDetail = (payload, type) => {
     dispatch({
-      type: 'videoAdvert/fetchVideoAdNoviceDetail',
+      type: 'noviceAdvert/fetchVideoAdNoviceDetail',
       payload: { ...payload, type },
       callback: (detail) => setVisibleSet({ show: true, type, detail }),
     });
@@ -219,7 +219,7 @@ const VideoAdvert = (props) => {
   // 下架
   const fetchVideoAdNoviceStatus = (payload) => {
     dispatch({
-      type: 'videoAdvert/fetchVideoAdNoviceStatus',
+      type: 'noviceAdvert/fetchVideoAdNoviceStatus',
       payload,
       callback: childRef.current.fetchGetData,
     });
@@ -243,8 +243,8 @@ const VideoAdvert = (props) => {
             ? styles.video_rowColor
             : '';
         }}
-        dispatchType="videoAdvert/fetchGetList"
-        {...videoAdvert}
+        dispatchType="noviceAdvert/fetchGetList"
+        {...noviceAdvert}
       ></TableDataBlock>
       {/* 领豆明细 */}
       <VideoPeasDetail
@@ -266,8 +266,8 @@ const VideoAdvert = (props) => {
   );
 };
 
-export default connect(({ videoAdvert, sysTradeList, loading }) => ({
-  videoAdvert,
+export default connect(({ noviceAdvert, sysTradeList, loading }) => ({
+  noviceAdvert,
   tradeList: sysTradeList.list.list,
-  loading: loading.models.videoAdvert,
+  loading: loading.models.noviceAdvert,
 }))(VideoAdvert);
