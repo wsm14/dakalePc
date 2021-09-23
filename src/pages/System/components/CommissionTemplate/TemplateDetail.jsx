@@ -36,12 +36,13 @@ const TemplateDetail = (props) => {
     {
       label: '分佣比例', // 手动分佣需要展示
       name: 'differenceDivisionObjects',
-      show:detail.divisionTemplateType==='difference',
+      show: detail.divisionTemplateType === 'difference',
       render: (val, row) => {
+        const COMMISSION_TYPE_new = { ...COMMISSION_TYPE, platform: '平台分佣' };
         const { differenceDivisionObjects = {} } = row;
         return Object.keys(differenceDivisionObjects).map((key) => (
           <div key={key}>
-            {COMMISSION_TYPE[key]}：{differenceDivisionObjects[key]}%
+            {COMMISSION_TYPE_new[key]}：{differenceDivisionObjects[key]}%
           </div>
         ));
       },
@@ -49,7 +50,7 @@ const TemplateDetail = (props) => {
     {
       label: '已勾选',
       name: 'manualDivisionObjects',
-      show:detail.divisionTemplateType==='manual',
+      show: detail.divisionTemplateType === 'manual',
       render: (val, row) => {
         const { manualDivisionObjects = [] } = row;
         return manualDivisionObjects.map((item) => <div key={item}>{COMMISSION_TYPE[item]}</div>);
