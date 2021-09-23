@@ -402,6 +402,8 @@ export default {
         topCategoryName: [item.topCategoryName, item.categoryName],
         topCategoryId: [item.topCategoryIdString, item.categoryIdString],
         districtCode: item.districtCode,
+        businessStatus: item.businessStatus,
+        status: item.status,
       }));
       yield put({
         type: 'save',

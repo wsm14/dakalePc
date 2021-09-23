@@ -94,8 +94,11 @@ const CouponSet = (props) => {
         fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
           const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
           const topCategoryId = list[mreFindIndex].topCategoryId[0];
+          const { businessStatus, status } = list[mreFindIndex];
           // 是否分佣
           getCommissionFlag(topCategoryId);
+          // 商家状态
+          form.setFieldsValue({ businessStatus, status });
         });
         if (initialValues.ownerType === 'group') {
           getMerchantList();
@@ -221,14 +224,38 @@ const CouponSet = (props) => {
       onChange: (val, data) => {
         const { option } = data;
         console.log(option, 'option');
+        const { businessStatus, status } = option;
+        form.setFieldsValue({ merchantIds: undefined, businessStatus, status });
         setCommissionShow(false);
         //是否分佣
         getCommissionFlag(option.topCategoryId[0]);
         fetchCheckMreRate(val);
-        form.setFieldsValue({ merchantIds: undefined });
       },
+      addRules: [
+        {
+          validator: () => {
+            const statusVal = form.getFieldsValue(['businessStatus', 'status']);
+            const { businessStatus, status } = statusVal;
+            if (businessStatus === '0' || status === '0') {
+              return Promise.reject(
+                '该店铺已禁用/已暂停营业，请先将店铺状态改成正常营业再进行发布。',
+              );
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
     },
-
+    {
+      label: `商家状态`,
+      name: 'status',
+      hidden: true,
+    },
+    {
+      label: `商家营业状态`,
+      name: 'businessStatus',
+      hidden: true,
+    },
     {
       label: '适用店铺',
       name: 'merchantIds',

@@ -45,12 +45,15 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
-      const { id, ownerId } = detail;
+      const { id } = detail;
       const {
         activityGoodsImg,
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
+        businessStatus,
+        status,
+        ...preOther
       } = visibleRule.preData;
       const {
         activityStartTime,
@@ -74,7 +77,7 @@ const PreferentialDrawer = (props) => {
           }[type],
           payload: {
             id,
-            ...visibleRule.preData,
+            ...preOther,
             ...other,
             richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),

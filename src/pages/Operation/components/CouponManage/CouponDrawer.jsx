@@ -35,6 +35,8 @@ const CouponDrawer = (props) => {
         useTime,
         merchantIds = [],
         couponDetailImg,
+        businessStatus,
+        status,
         ...other
       } = values;
       const coupoImg = await aliOssUpload(couponDetailImg);
