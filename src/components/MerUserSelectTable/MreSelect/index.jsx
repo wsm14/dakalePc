@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal } from 'antd';
 import { connect } from 'umi';
-import { checkCityName } from '@/utils/utils';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import Search from './Search';
 
@@ -67,8 +67,8 @@ const MreSelect = ({
   const rowSelection = {
     preserveSelectedRowKeys: true,
     selectedRowKeys: selectMreKey,
-    getCheckboxProps: ({ bankStatus }) => ({
-      disabled: !['3'].includes(bankStatus) , // 非激活状态
+    getCheckboxProps: ({ bankStatus, businessStatus, status }) => ({
+      disabled: !['3'].includes(bankStatus) || businessStatus === '0' || status === '0', // 非激活状态
     }),
     onChange: (val, list) => {
       // 先去重处理 排除重复已选数据
@@ -87,7 +87,7 @@ const MreSelect = ({
 
   return (
     <Modal
-      title={`${type === 'select' ? '选择发布店铺' : '查看店铺'}`}
+      title={`${type === 'select' ? '选择发布店铺（未激活，暂停营业，禁用不可选）' : '查看店铺'}`}
       destroyOnClose
       maskClosable
       width={1000}
