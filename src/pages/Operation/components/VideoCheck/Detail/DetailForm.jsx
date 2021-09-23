@@ -1,10 +1,10 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
-import { BUSINESS_TYPE, SHARE_SEX_TYPE, SHARE_STATUS, VIDEO_TYPE } from '@/common/constant';
+import { SHARE_SEX_TYPE, NEW_SHARE_STATUS, SHARE_AREA_TYPE, VIDEO_TYPE } from '@/common/constant';
 
 const DetailForm = (props) => {
-  const { detail = {}, tabkey } = props;
+  const { detail = {} } = props;
 
   const formItems = [
     {
@@ -63,6 +63,20 @@ const DetailForm = (props) => {
       render: (val) => (val === '0-100' ? '不限' : val),
     },
     {
+      label: '地域',
+      name: 'areaType',
+      show: detail.ownerType !== 'user',
+      render: (val, row) =>
+        `${SHARE_AREA_TYPE[val]}\n${
+          {
+            all: '',
+            city: row?.area,
+            district: row?.area,
+            near: `${row.beanAddress || '--'}\n附近${row.area || 0}米`,
+          }[val]
+        }`,
+    },
+    {
       name: 'tags',
       label: '兴趣',
       render: (val) => (val ? val : '-'),
@@ -70,7 +84,7 @@ const DetailForm = (props) => {
     {
       label: '发布状态',
       name: 'status',
-      render: (val) => (val && val !== '-1' ? SHARE_STATUS[val] : '-'),
+      render: (val) => (val && val !== '-1' ? NEW_SHARE_STATUS[val] : '-'),
     },
     {
       label: '发布时间',
