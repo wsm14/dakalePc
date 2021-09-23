@@ -13,7 +13,22 @@ const CouponDrawer = (props) => {
   const [commissionShow, setCommissionShow] = useState(false);
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [buyFlag, setBuyFlag] = useState('0'); // 商品购买类型
+  const [merchantList, setMerchantList] = useState([]);
   const [form] = Form.useForm();
+
+  //sku通用-审核中sku挂靠商家列表
+  const getMerchantList = () => {
+    dispatch({
+      type: 'baseData/fetchSkuDetailMerchantList',
+      payload: {
+        ownerServiceId: ownerCouponId,
+        ownerId: -1,
+        relateId: detail.relateId,
+        serviceType: 'reduceCoupon',
+      },
+      callback: (list) => setMerchantList(list),
+    });
+  };
 
   // 确认提交
   const handleUpAudit = () => {
@@ -78,7 +93,7 @@ const CouponDrawer = (props) => {
   const drawerProps = {
     info: {
       title: '查看详情',
-      children: <CouponDetail detail={detail}></CouponDetail>,
+      children: <CouponDetail detail={detail} merchantList={merchantList}></CouponDetail>,
     },
     add: {
       title: '新建券',
@@ -110,6 +125,11 @@ const CouponDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
+    afterCallBack: () => {
+      if (detail.relateType === 'group') {
+        getMerchantList();
+      }
+    },
     closeCallBack: () => dispatch({ type: 'baseData/clearGroupMre' }), // 关闭清空搜索的商家数据
     dataPage: type === 'info' && {
       current: index,
