@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
 import {
@@ -38,6 +38,10 @@ const SpecialGoodCheck = (props) => {
   const [tabkey, setTabKey] = useState('adminAudit');
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const { list } = specialGoodsCheck;
+
+  useEffect(() => {
+    tableRef.current.fetchGetData();
+  }, [tabkey]);
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -336,6 +340,7 @@ const SpecialGoodCheck = (props) => {
     <>
       <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
         <TableDataBlock
+          firstFetch={false}
           noCard={false}
           cRef={tableRef}
           loading={loading}
