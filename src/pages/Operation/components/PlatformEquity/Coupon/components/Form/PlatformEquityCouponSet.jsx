@@ -88,7 +88,7 @@ const PlatformEquityCouponSet = (props) => {
           groupId: initialValues.relateId,
         });
         // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
-        fetchGetMre(initialValues.ownerName, initialValues.relateType, (list = []) => {
+        fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
           const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
           const topCategoryId = list[mreFindIndex].topCategoryId[0];
           // 是否分佣

@@ -5,13 +5,22 @@ import {
   COUPON_BUY_RULE,
   SPECIAL_DESC_TYPE,
   PEQUITY_GOODSBUY_TYPE,
+  COMMISSION_TYPE,
 } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import MerchantListTable from '@/pages/Operation/components/SpecialGoods/Detail/MerchantListTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
-  const { relateType = 'merchant', buyFlag = '1', merchantList = [], couponDetailType } = detail;
+  const {
+    relateType = 'merchant',
+    buyFlag = '1',
+    merchantList = [],
+    couponDetailType,
+    serviceDivisionDTO = {},
+  } = detail;
+
+  const { divisionTemplateType, ...other } = serviceDivisionDTO; // 分佣
 
   // 参与活动的店铺
   const mreFormItems = [
@@ -145,21 +154,12 @@ const GoodsDetail = (props) => {
         }允许过期退款`,
     },
   ];
+
   //分佣配置
-  const commissionItem = [
-    {
-      label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceBean'],
-    },
-    {
-      label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtBean'],
-    },
-    {
-      label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenBean'],
-    },
-  ];
+  const commissionItem = Object.keys(other).map((i) => ({
+    label: `${COMMISSION_TYPE[i.replace('Bean', '')]}分佣`,
+    name: ['serviceDivisionDTO', i],
+  }));
 
   return (
     <>
@@ -185,7 +185,7 @@ const GoodsDetail = (props) => {
       ></DescriptionsCondition>
       {detail.divisionFlag === '1' && buyFlag === '1' && (
         <DescriptionsCondition
-          title="分佣配置"
+          title="分佣配置（卡豆）"
           formItems={commissionItem}
           initialValues={detail}
         ></DescriptionsCondition>
