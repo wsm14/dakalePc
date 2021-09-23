@@ -248,7 +248,7 @@ const GoodsOrders = (props) => {
     {
       type: 'excel',
       dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get(), goodsOrScanFlag: 'goods', orderType: tabkey },
+      data: { ...get(), orderType: tabkey },
       exportProps: { header: excelHeder },
     },
   ];
@@ -263,7 +263,7 @@ const GoodsOrders = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ goodsOrScanFlag: 'goods', orderType: tabkey }}
+        params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
