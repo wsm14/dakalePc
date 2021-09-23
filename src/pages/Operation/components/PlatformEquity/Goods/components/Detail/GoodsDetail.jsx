@@ -65,11 +65,6 @@ const GoodsDetail = (props) => {
       label: `原价`,
     },
     {
-      name: 'realPrice',
-      label: '成本价',
-      visible: buyFlag == '1',
-    },
-    {
       label: '卡豆+现金',
       show: buyFlag === '1',
       name: 'paymentModeObject',

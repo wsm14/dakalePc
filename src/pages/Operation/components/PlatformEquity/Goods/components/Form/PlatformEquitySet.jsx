@@ -286,29 +286,6 @@ const PlatformEquitySet = ({
       onChange: (e) => setBuyFlag(e.target.value),
     },
     {
-      label: '成本价',
-      name: 'realPrice',
-      type: 'number',
-      precision: 2,
-      disabled: editDisabled,
-      min: 0,
-      max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
-      visible: buyFlag == '1',
-      addRules: [
-        {
-          validator: (rule, value) => {
-            const realPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('oriPrice'));
-            if (realPrice > buyPrice) {
-              return Promise.reject('成本价需小于原价');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
-    {
       label: '售卖',
       name: ['paymentModeObject', 'type'],
       hidden: true,
