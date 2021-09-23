@@ -175,6 +175,7 @@ const SpecialGoodCheckDetail = (props) => {
       maxLength: 20,
     },
   ];
+
   const commission = [
     {
       label: `佣金总额`,
@@ -322,17 +323,16 @@ const SpecialGoodCheckDetail = (props) => {
           ></FormCondition>
 
           {/* 审核中并且分佣模板为手动分佣时 */}
-          {detail.divisionFlag === '1' && ['adminAudit'].includes(tabkey) && (
+          {tabkey === 'adminAudit' && detail.divisionFlag === '1' && (
             <>
               <DescriptionsCondition
                 formItems={commission}
                 initialValues={detail}
               ></DescriptionsCondition>
-
               <div
                 style={{
                   fontSize: 16,
-                  color: 'rgba(0,0,0,.85',
+                  color: 'rgba(0,0,0,.85)',
                   margin: '10px 0',
                   fontWeight: 'bold',
                 }}
