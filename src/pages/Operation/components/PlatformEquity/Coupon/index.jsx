@@ -155,7 +155,7 @@ const PlatformEquityCoupon = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'specialGoodsId',
+      dataIndex: 'ownerCouponIdString',
       width: 150,
       render: (ownerCouponId, record, index) => {
         const { ownerCouponStatus: status } = record; // 1 上架 2 下架
@@ -176,8 +176,7 @@ const PlatformEquityCoupon = (props) => {
           },
           // 上架中 已确认 | 上架中 已驳回
           {
-            title: '下架',
-            auth: 'down',
+            type: 'down',
             visible: ['1'].includes(status),
             click: () =>
               setVisibleRefuse({
@@ -229,7 +228,8 @@ const PlatformEquityCoupon = (props) => {
     dispatch({
       type: 'couponManage/fetchCouponDetail',
       payload: { ownerCouponId, ownerId: -1, type },
-      callback: (detail) => setVisibleSet({ type, show: true, index, detail, ownerCouponId, status }),
+      callback: (detail) =>
+        setVisibleSet({ type, show: true, index, detail, ownerCouponId, status }),
     });
   };
 

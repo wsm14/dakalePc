@@ -237,7 +237,7 @@ const PlatformEquityGoods = (props) => {
             click: () => fetchSpecialGoodsDetail(index, 'info'),
           },
           {
-            auth: 'down',
+            type: 'down',
             visible: status == '1' && deleteFlag == '1', // 活动中 && 未删除
             click: () =>
               setVisibleRefuse({

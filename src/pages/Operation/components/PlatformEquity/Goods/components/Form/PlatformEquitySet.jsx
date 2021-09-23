@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, PEQUITY_GOODSBUY_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import {
+  GOODS_CLASS_TYPE,
+  PEQUITY_GOODSBUY_TYPE,
+  BUSINESS_TYPE,
+  COMMISSION_TYPE,
+} from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
@@ -14,6 +19,8 @@ const PlatformEquitySet = ({
   loading,
   selectList,
   dispatch,
+  buyFlag,
+  setBuyFlag,
   commissionShow,
   setCommissionShow,
   initialValues = {},
@@ -28,6 +35,7 @@ const PlatformEquitySet = ({
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
+  const [manualList, setManualList] = useState([]); // 分佣模版字段
   const [mreList, setMreList] = useState({
     groupId: null,
     type: 'merchant',
@@ -50,10 +58,8 @@ const PlatformEquitySet = ({
         type: initialValues.relateType,
         groupId: initialValues.relateId,
       });
-      setRadioData({
-        goodsType: initialValues.goodsType,
-        buyFlag: initialValues.buyFlag,
-      });
+      setBuyFlag(initialValues.buyFlag);
+      setRadioData({ goodsType: initialValues.goodsType });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
@@ -76,7 +82,7 @@ const PlatformEquitySet = ({
       payload: {
         ownerServiceId: initialValues.specialGoodsId,
         ownerId: -1,
-        serviceType: 'specialGoods',
+        serviceType: 'rightGoods',
       },
       callback: (list) => {
         const keys = list.map((item) => item.merchantId);
@@ -139,10 +145,13 @@ const PlatformEquitySet = ({
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'specialGoods',
+        serviceType: 'rightGoods',
         categoryId: categoryId,
       },
-      callback: (val) => setCommissionShow(val),
+      callback: ({ manuallyFlag, manualDivisions }) => {
+        setCommissionShow(manuallyFlag);
+        setManualList(manualDivisions);
+      },
     });
   };
 
@@ -295,7 +304,7 @@ const PlatformEquitySet = ({
       name: 'buyFlag',
       type: 'radio',
       select: PEQUITY_GOODSBUY_TYPE,
-      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+      onChange: (e) => setBuyFlag(e.target.value),
     },
     {
       label: '售卖',
@@ -309,7 +318,7 @@ const PlatformEquitySet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       suffix: '卡豆',
     },
     {
@@ -319,7 +328,7 @@ const PlatformEquitySet = ({
       precision: 2,
       min: 0.01,
       max: 999999.99,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
     },
     {
@@ -330,7 +339,7 @@ const PlatformEquitySet = ({
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       addRules: [
         {
@@ -357,11 +366,33 @@ const PlatformEquitySet = ({
       precision: 2,
       min: 0,
       max: 999999.99,
-      disabled: commonDisabled,
-      visible: commissionShow == '1' && radioData.buyFlag == '1',
+      disabled: true,
+      visible: commissionShow == '1' && buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
+      suffix: '元',
     },
+    ...manualList.map((i) => ({
+      label: `${COMMISSION_TYPE[i.divisionParticipantType]}`,
+      name: ['serviceDivisionDTO', `${i.divisionParticipantType}Bean`],
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: buyFlag == '1' && commissionShow === '1',
+      suffix: '卡豆',
+      onChange: () => {
+        const keyArr = manualList.map((i) => [
+          'serviceDivisionDTO',
+          `${i.divisionParticipantType}Bean`,
+        ]);
+        const valObj = form.getFieldsValue(keyArr);
+        const { serviceDivisionDTO = {} } = valObj;
+        form.setFieldsValue({
+          commission:
+            Object.values(serviceDivisionDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
+        });
+      },
+    })),
     {
       label: '店铺商品标签',
       name: 'goodsTags',

@@ -12,6 +12,7 @@ const CouponDrawer = (props) => {
   const { type = 'info', index, show = false, detail = {}, ownerCouponId, status } = visible;
   const [commissionShow, setCommissionShow] = useState(false);
   const [content, setContent] = useState(''); // 输入的富文本内容
+  const [buyFlag, setBuyFlag] = useState('0'); // 商品购买类型
   const [form] = Form.useForm();
 
   // 确认提交
@@ -64,6 +65,8 @@ const CouponDrawer = (props) => {
     });
   };
   const listProp = {
+    buyFlag,
+    setBuyFlag,
     commissionShow,
     setCommissionShow,
     type,
@@ -114,7 +117,12 @@ const CouponDrawer = (props) => {
       onChange: (size) => getDetail(size, 'info'),
     },
     footer: ['add', 'edit', 'again'].includes(type) && (
-      <Button onClick={handleUpAudit} type="primary" loading={loading}>
+      <Button
+        onClick={handleUpAudit}
+        type="primary"
+        disabled={{ 0: false, 1: !commissionShow }[buyFlag]}
+        loading={loading}
+      >
         发布
       </Button>
     ),

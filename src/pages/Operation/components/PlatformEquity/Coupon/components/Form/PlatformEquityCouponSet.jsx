@@ -11,6 +11,7 @@ import {
   COUPON_BUY_RULE,
   PEQUITY_GOODSBUY_TYPE,
   SPECIAL_USERTIME_TYPE,
+  COMMISSION_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
@@ -25,6 +26,8 @@ const PlatformEquityCouponSet = (props) => {
     selectList,
     skuMerchantList,
     dispatch,
+    buyFlag,
+    setBuyFlag,
     commissionShow,
     setCommissionShow,
     ownerCouponId,
@@ -40,6 +43,7 @@ const PlatformEquityCouponSet = (props) => {
   const editDisabled = type === 'edit' && status === '1';
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
+  const [manualList, setManualList] = useState([]); // 分佣模版字段
   // 店铺备选参数，选择店铺后回显的数据
   const [mreList, setMreList] = useState({
     groupId: null,
@@ -48,7 +52,6 @@ const PlatformEquityCouponSet = (props) => {
     list: [],
   }); // 店铺备选参数，选择店铺后回显的数据
   const [radioData, setRadioData] = useState({
-    buyFlag: '0', // 是否售卖
     userFlag: '0', // 使用门槛
     effectTime: '', // 使用有效期
     timeSplit: '', // 适用时段
@@ -56,7 +59,7 @@ const PlatformEquityCouponSet = (props) => {
     buyRule: 'all', // 购买规则
   });
   const {
-    buyFlag,
+    buyFlag: buyflagIV,
     useTimeRule = '', //使用有效期
     buyRule = 'all', // 购买规则
     timeTypeCheck = '',
@@ -72,14 +75,13 @@ const PlatformEquityCouponSet = (props) => {
       initialValues.timeType = timeTypeCheck; // 使用时间 小时
       // 适用时段
       setRadioData({
-        buyFlag,
         userFlag: userFlagCheck, //详情无返回//使用门槛
         effectTime: useTimeRule ? useTimeRule : '',
         timeSplit: useWeekCheck,
         timeType: timeTypeCheck,
         buyRule,
       });
-
+      setBuyFlag(buyflagIV);
       if (initialValues.ownerName || initialValues.relateType) {
         setMreList({
           type: initialValues.relateType,
@@ -162,10 +164,13 @@ const PlatformEquityCouponSet = (props) => {
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'specialGoods',
+        serviceType: 'rightReduceCoupon',
         categoryId: categoryId,
       },
-      callback: (val) => setCommissionShow(val),
+      callback: ({ manuallyFlag, manualDivisions }) => {
+        setCommissionShow(manuallyFlag);
+        setManualList(manualDivisions);
+      },
     });
   };
 
@@ -270,7 +275,7 @@ const PlatformEquityCouponSet = (props) => {
       name: 'buyFlag',
       type: 'radio',
       select: PEQUITY_GOODSBUY_TYPE,
-      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+      onChange: (e) => setBuyFlag(e.target.value),
     },
     {
       label: '售卖',
@@ -284,7 +289,7 @@ const PlatformEquityCouponSet = (props) => {
       precision: 0,
       min: 0,
       max: 999999,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       suffix: '卡豆',
     },
     {
@@ -294,7 +299,7 @@ const PlatformEquityCouponSet = (props) => {
       precision: 2,
       min: 0.01,
       max: 999999.99,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
     },
     {
@@ -305,7 +310,7 @@ const PlatformEquityCouponSet = (props) => {
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
-      visible: radioData.buyFlag == '1',
+      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       addRules: [
         {
@@ -332,11 +337,32 @@ const PlatformEquityCouponSet = (props) => {
       precision: 2,
       min: 0,
       max: 999999.99,
-      visible: commissionShow == '1' && radioData.buyFlag == '1',
-      disabled: commonDisabled,
-      formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
+      visible: commissionShow == '1' && buyFlag == '1',
+      disabled: true,
+      suffix: '元',
     },
+    ...manualList.map((i) => ({
+      label: `${COMMISSION_TYPE[i.divisionParticipantType]}`,
+      name: ['serviceDivisionDTO', `${i.divisionParticipantType}Bean`],
+      type: 'number',
+      precision: 0,
+      min: 0,
+      max: 999999,
+      visible: buyFlag == '1' && commissionShow === '1',
+      suffix: '卡豆',
+      onChange: () => {
+        const keyArr = manualList.map((i) => [
+          'serviceDivisionDTO',
+          `${i.divisionParticipantType}Bean`,
+        ]);
+        const valObj = form.getFieldsValue(keyArr);
+        const { serviceDivisionDTO = {} } = valObj;
+        form.setFieldsValue({
+          commission:
+            Object.values(serviceDivisionDTO).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100,
+        });
+      },
+    })),
     {
       label: '介绍类型',
       name: 'couponDetailType',
@@ -440,21 +466,21 @@ const PlatformEquityCouponSet = (props) => {
       suffix: '张',
     },
     {
-      label: `${['领取', '购买'][radioData.buyFlag]}上限`,
+      label: `${['领取', '购买'][buyFlag]}上限`,
       type: 'radio',
       name: 'buyRule',
       select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
       onChange: (e) => saveSelectData({ buyRule: e.target.value }),
     },
     {
-      label: `单人每人${['领取', '购买'][radioData.buyFlag]}份数`,
+      label: `单人每人${['领取', '购买'][buyFlag]}份数`,
       name: 'personLimit',
       suffix: '份',
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.buyRule === 'personLimit',
     },
     {
-      label: `单人每天${['领取', '购买'][radioData.buyFlag]}份数`,
+      label: `单人每天${['领取', '购买'][buyFlag]}份数`,
       name: 'dayMaxBuyAmount',
       suffix: '份',
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
@@ -462,13 +488,13 @@ const PlatformEquityCouponSet = (props) => {
     },
     {
       label: '是否允许随时退款',
-      visible: radioData.buyFlag === '1',
+      visible: buyFlag === '1',
       type: 'switch',
       name: ['reduceObject', 'anytimeRefund'],
     },
     {
       label: '是否允许过期退款',
-      visible: radioData.buyFlag === '1',
+      visible: buyFlag === '1',
       type: 'switch',
       name: ['reduceObject', 'expireRefund'],
     },
