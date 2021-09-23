@@ -43,16 +43,11 @@ const SpecialGoodCheckDetail = (props) => {
     }
   }, [show]);
 
-  // 0-待审核 1-已通过 2-已驳回 3-已关闭
-
   const [form] = Form.useForm();
 
   useEffect(() => {
     if (show) {
       getTagList();
-      // getTagsMerchant();
-      // getTagsPlat();
-
       //挂靠商家列表
       if (detail.ownerType === 'group') {
         getMerchantList();
@@ -89,29 +84,6 @@ const SpecialGoodCheckDetail = (props) => {
     });
   };
 
-  // //获取商品标签
-  // const getTagsMerchant = () => {
-  //   dispatch({
-  //     type: 'goodsTag/fetchGoodsTagList',
-  //     payload: {
-  //       tagType: 'merchant',
-  //     },
-  //     callback: (list) => {
-  //       setMerchantTaglist(list);
-  //     },
-  //   });
-  // };
-  // //平台标签
-  // const getTagsPlat = () => {
-  //   dispatch({
-  //     type: 'goodsTag/fetchGoodsTagList',
-  //     payload: {
-  //       tagType: 'platform',
-  //     },
-  //     callback: (list) => setPlatTaglist(list),
-  //   });
-  // };
-
   // 审核通过
   const handleVerifyAllow = () => {
     if (!form.getFieldValue('otherPlatformPrice')) {
@@ -122,7 +94,6 @@ const SpecialGoodCheckDetail = (props) => {
     }
     form.validateFields().then((values) => {
       const { otherPlatformPrice, merTags, platTags, serviceDivisionDTO = {} } = values;
-      let tags = [...merTags, ...platTags];
       const {
         provinceBean = '',
         districtBean = '',
@@ -241,21 +212,21 @@ const SpecialGoodCheckDetail = (props) => {
 
   const formCommission = [
     {
-      label: '省代分佣金额（元）',
+      label: '省代分佣（卡豆）',
       name: ['serviceDivisionDTO', 'provinceBean'],
       type: 'number',
       precision: 2,
       min: 0,
     },
     {
-      label: '地级市分佣金额（元）',
+      label: '地级市分佣（卡豆）',
       name: ['serviceDivisionDTO', 'cityBean'],
       type: 'number',
       precision: 2,
       min: 0,
     },
     {
-      label: '区县分佣金额（元）',
+      label: '区县分佣（卡豆）',
       name: ['serviceDivisionDTO', 'districtBean'],
       type: 'number',
       precision: 2,
@@ -263,7 +234,7 @@ const SpecialGoodCheckDetail = (props) => {
     },
 
     {
-      label: '哒人分佣金额（元）',
+      label: '哒人分佣（卡豆）',
       name: ['serviceDivisionDTO', 'darenBean'],
       type: 'number',
       precision: 2,
@@ -327,8 +298,6 @@ const SpecialGoodCheckDetail = (props) => {
       }
     }
   };
-
-  const handleErr = () => {};
 
   return (
     <DrawerCondition {...modalProps}>
