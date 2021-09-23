@@ -63,7 +63,7 @@ const TemplateDrawSet = (props) => {
       Number(daren);
     form.setFieldsValue({
       differenceDivisionObjects: {
-        platform: 100 - total,
+        platform: (100 - total).toFixed(2),
       },
     });
   };
