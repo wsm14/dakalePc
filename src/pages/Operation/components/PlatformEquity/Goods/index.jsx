@@ -145,26 +145,19 @@ const PlatformEquityGoods = (props) => {
     {
       title: '原价/售价',
       align: 'right',
-      dataIndex: 'oriPrice',
-      render: (val, row) => {
-        const zhe = (Number(row.realPrice) / Number(val)) * 10;
-        return (
-          <div>
-            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-              ￥{Number(val).toFixed(2)}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+      dataIndex: 'paymentModeObject',
+      render: (val = {}, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(row.oriPrice).toFixed(2)}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div>
+              {row.buyFlag === '0' ? '免费' : `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`}
             </div>
           </div>
-        );
-      },
-    },
-    {
-      title: '成本价',
-      align: 'right',
-      dataIndex: 'otherPlatformPrice',
-      render: (val) => `￥${val}`,
+        </div>
+      ),
     },
     {
       title: '使用有效期',

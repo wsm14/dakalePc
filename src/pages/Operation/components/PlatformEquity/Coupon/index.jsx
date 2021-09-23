@@ -87,14 +87,19 @@ const PlatformEquityCoupon = (props) => {
       title: '券价值/售价',
       align: 'right',
       dataIndex: ['reduceObject', 'couponPrice'],
-      render: (val, row) => (
-        <div>
-          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-            ￥{Number(val).toFixed(2)}
+      render: (val, row) => {
+        const { paymentModeObject: vals } = row;
+        return (
+          <div>
+            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+              ￥{Number(val).toFixed(2)}
+            </div>
+            <div>
+              {row.buyFlag === '0' ? '免费' : `${vals.bean || 0} 卡豆 + ${vals.cash || 0} 元`}
+            </div>
           </div>
-          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
-        </div>
-      ),
+        );
+      },
     },
     {
       title: '使用门槛',
