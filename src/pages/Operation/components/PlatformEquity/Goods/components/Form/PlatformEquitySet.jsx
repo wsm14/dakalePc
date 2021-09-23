@@ -82,6 +82,7 @@ const PlatformEquitySet = ({
       payload: {
         ownerServiceId: initialValues.specialGoodsId,
         ownerId: -1,
+        relateId: initialValues.relateId,
         serviceType: 'rightGoods',
       },
       callback: (list) => {
