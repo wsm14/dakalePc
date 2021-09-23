@@ -165,7 +165,7 @@ const PlatformEquityCouponSet = (props) => {
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'rightReduceCoupon',
+        serviceType: 'rightCoupon',
         categoryId: categoryId,
       },
       callback: ({ manuallyFlag, manualDivisions }) => {
