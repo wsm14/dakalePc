@@ -93,20 +93,20 @@ const GoodsDetail = (props) => {
 
   const formItemComiss = [
     {
-      label: '省代分佣金额（元）',
+      label: '省代分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
-      label: '地级市分佣金额（元）',
+      label: '地级市分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'cityBean'],
     },
     {
-      label: '区县分佣金额（元）',
+      label: '区县分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'districtBean'],
     },
    
     {
-      label: '哒人分佣金额（元）',
+      label: '哒人分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];

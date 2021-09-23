@@ -53,31 +53,8 @@ export default {
         useTimeRule = '',
         ownerIdString = '',
         useTime = '',
-        serviceDivisionDTO = {},
         useWeek = '',
-        relateIdString: relateId,
       } = content.ownerCouponInfo;
-      //分佣详情
-      const {
-        provinceBean = 0,
-        districtBean = 0,
-        darenBean = 0,
-        cityBean = 0,
-      } = serviceDivisionDTO;
-      const pBean =
-        provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
-      const dBean =
-        districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
-      const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
-      const cBean = cityBean || cityBean == '0' ? (Number(cityBean) / 100).toFixed(2) : '';
-      const sDetail = {
-        serviceDivisionDTO: {
-          provinceBean: pBean,
-          districtBean: dBean,
-          darenBean: daBean,
-          cityBean: cBean,
-        },
-      };
 
       const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
       const useWeekCheck = useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part';
@@ -100,14 +77,12 @@ export default {
       }
       callback({
         ...content.ownerCouponInfo,
-        relateId,
         couponDescString: couponDesc?.includes(']')
           ? JSON.parse(couponDesc || '[]').join('\n')
           : couponDesc,
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
         ...newDetail,
-        ...sDetail,
       });
     },
     *fetchCouponSave({ payload, callback }, { call }) {
