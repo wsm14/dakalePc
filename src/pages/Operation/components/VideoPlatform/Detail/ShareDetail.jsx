@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button } from 'antd';
-import { NEW_SHARE_OWNER, NEW_SHARE_STATUS, SHARE_SEX_TYPE } from '@/common/constant';
+import { Form, Button, Tooltip } from 'antd';
+import {
+  NEW_SHARE_OWNER,
+  NEW_SHARE_STATUS,
+  SHARE_SEX_TYPE,
+  SHARE_AREA_TYPE,
+} from '@/common/constant';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import { checkCityName } from '@/utils/utils';
 import uploadLive from '@/utils/uploadLive';
 import GoodsSet from './GoodsSet';
 import GoodsEdit from './GoodsEdit';
@@ -96,6 +102,20 @@ const ShareDetail = (props) => {
       name: 'age',
       show: detail.ownerType !== 'user',
       render: (val) => (val === '0-100' ? '不限' : val),
+    },
+    {
+      label: '地域',
+      name: 'areaType',
+      show: detail.ownerType !== 'user',
+      render: (val, row) =>
+        `${SHARE_AREA_TYPE[val]}\n${
+          {
+            all: '',
+            city: row?.area?.split(',').map((i) => checkCityName(i)),
+            district: row?.area?.split(',').map((i) => checkCityName(i)),
+            near: `${row.beanAddress || '--'}\n附近${row.area || 0}米`,
+          }[val]
+        }`,
     },
     {
       label: '兴趣',
