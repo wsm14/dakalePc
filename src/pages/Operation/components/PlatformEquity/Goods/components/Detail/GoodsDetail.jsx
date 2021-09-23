@@ -56,17 +56,18 @@ const GoodsDetail = (props) => {
 
   const GoodPriceItem = [
     {
+      name: 'buyFlag',
+      label: '售卖类型',
+      render: (val) => PEQUITY_GOODSBUY_TYPE[val],
+    },
+    {
       name: 'oriPrice',
       label: `原价`,
     },
     {
       name: 'realPrice',
       label: '成本价',
-    },
-    {
-      name: 'buyFlag',
-      label: '售卖类型',
-      render: (val) => PEQUITY_GOODSBUY_TYPE[val],
+      visible: buyFlag == '1',
     },
     {
       label: '卡豆+现金',

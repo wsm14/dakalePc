@@ -1,12 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import { BUSINESS_TYPE, ACTION_TYPE, GOODS_CLASS_TYPE, SUBMIT_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  ACTION_TYPE,
+  GOODS_CLASS_TYPE,
+  SUBMIT_TYPE,
+  GOODS_CHECK_RESSTATUS,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import NoCheck from './components/SpecialGoodCheck/NoCheck';
-import NoConfirm from './components/SpecialGoodCheck/NoConfirm';
-import AlCheck from './components/SpecialGoodCheck/AlCheck';
-import AlConfirm from './components/SpecialGoodCheck/AlConfirm';
+import TableDataBlock from '@/components/TableDataBlock';
 import SpecialGoodCheckDetail from './components/SpecialGoodCheck/SpecialGoodCheckDetail';
 
 const tabList = [
@@ -31,9 +34,14 @@ const tabList = [
 const SpecialGoodCheck = (props) => {
   const tableRef = useRef();
   const { dispatch, loading, hubData, specialGoodsCheck } = props;
+
   const [tabkey, setTabKey] = useState('adminAudit');
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const { list } = specialGoodsCheck;
+
+  useEffect(() => {
+    tableRef.current.fetchGetData();
+  }, [tabkey]);
 
   // 获取商圈
   const fetchGetHubSelect = (districtCode) => {
@@ -60,7 +68,7 @@ const SpecialGoodCheck = (props) => {
   };
 
   //组建公用的搜索条件
-  const globalSearch = [
+  const searchItems = [
     {
       label: '商品名称',
       name: 'marketingName',
@@ -103,17 +111,23 @@ const SpecialGoodCheck = (props) => {
       type: 'select',
       select: BUSINESS_TYPE,
     },
-
     {
       label: '审核类型',
       name: 'actionType',
       type: 'select',
       select: ACTION_TYPE,
     },
+    {
+      label: '审核结果',
+      name: 'auditStatus',
+      type: 'select',
+      show: ['adminConfirmed', 'merchantConfirmed'].includes(tabkey),
+      select: GOODS_CHECK_RESSTATUS,
+    },
   ];
 
   //tab自组件Table公用的colum数据部分
-  const globalColum = [
+  const getColumns = [
     {
       title: '商品/店铺名称',
       fixed: 'left',
@@ -247,11 +261,25 @@ const SpecialGoodCheck = (props) => {
       title: '审核类型',
       align: 'center',
       dataIndex: 'actionType',
+      show: tabkey === 'adminConfirmed',
       render: (val) => ACTION_TYPE[val],
     },
-  ];
-
-  const rowHandle = [
+    {
+      title: '审核时间',
+      dataIndex: 'auditTime',
+      show: ['adminConfirmed', 'merchantConfirmed'].includes(tabkey),
+    },
+    {
+      title: '审核结果',
+      dataIndex: 'auditStatus',
+      show: ['adminConfirmed', 'merchantConfirmed'].includes(tabkey),
+      render: (val) => GOODS_CHECK_RESSTATUS[val],
+    },
+    {
+      title: '驳回原因',
+      dataIndex: 'rejectReason',
+      show: ['adminConfirmed', 'merchantConfirmed'].includes(tabkey),
+    },
     {
       type: 'handle',
       dataIndex: 'auditIdString',
@@ -280,14 +308,6 @@ const SpecialGoodCheck = (props) => {
       },
     },
   ];
-  const listProps = { tableRef, tabkey, globalColum, globalSearch, rowHandle };
-
-  const contentList = {
-    adminAudit: <NoCheck {...listProps}></NoCheck>,
-    merchantAudit: <NoConfirm {...listProps}></NoConfirm>,
-    adminConfirmed: <AlCheck {...listProps}></AlCheck>,
-    merchantConfirmed: <AlConfirm {...listProps}></AlConfirm>,
-  };
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
@@ -319,7 +339,18 @@ const SpecialGoodCheck = (props) => {
   return (
     <>
       <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
-        {contentList[tabkey]}
+        <TableDataBlock
+          firstFetch={false}
+          noCard={false}
+          cRef={tableRef}
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          rowKey={(record) => `${record.auditIdString}`}
+          dispatchType="specialGoodsCheck/fetchGetList"
+          params={{ auditSearchType: tabkey }}
+          {...specialGoodsCheck}
+        ></TableDataBlock>
       </Card>
       {/* 详情 */}
       <SpecialGoodCheckDetail
@@ -336,5 +367,5 @@ const SpecialGoodCheck = (props) => {
 export default connect(({ baseData, loading, specialGoodsCheck }) => ({
   specialGoodsCheck,
   hubData: baseData.hubData,
-  loading: loading.models.baseData,
+  loading: loading.models.baseData || loading.models.specialGoodsCheck,
 }))(SpecialGoodCheck);

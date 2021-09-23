@@ -82,6 +82,7 @@ const PlatformEquitySet = ({
       payload: {
         ownerServiceId: initialValues.specialGoodsId,
         ownerId: -1,
+        relateId: initialValues.relateId,
         serviceType: 'rightGoods',
       },
       callback: (list) => {
@@ -278,6 +279,13 @@ const PlatformEquitySet = ({
       formatter: (value) => `￥ ${value}`,
     },
     {
+      label: '售卖类型',
+      name: 'buyFlag',
+      type: 'radio',
+      select: PEQUITY_GOODSBUY_TYPE,
+      onChange: (e) => setBuyFlag(e.target.value),
+    },
+    {
       label: '成本价',
       name: 'realPrice',
       type: 'number',
@@ -286,6 +294,7 @@ const PlatformEquitySet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
+      visible: buyFlag == '1',
       addRules: [
         {
           validator: (rule, value) => {
@@ -298,13 +307,6 @@ const PlatformEquitySet = ({
           },
         },
       ],
-    },
-    {
-      label: '售卖类型',
-      name: 'buyFlag',
-      type: 'radio',
-      select: PEQUITY_GOODSBUY_TYPE,
-      onChange: (e) => setBuyFlag(e.target.value),
     },
     {
       label: '售卖',
