@@ -2,7 +2,12 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 
-import { BUSINESS_TYPE, SHARE_SEX_TYPE, NEW_SHARE_STATUS, VIDEO_TYPE } from '@/common/constant';
+import {
+  SHARE_SEX_TYPE,
+  NEW_SHARE_STATUS,
+  VIDEO_TYPE,
+  SHARE_AREA_TYPE,
+} from '@/common/constant';
 
 const DetailForm = (props) => {
   const { detail = {}, tabkey } = props;
