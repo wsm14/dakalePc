@@ -49,8 +49,8 @@ const VideoPlatform = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '视频ID',
-      name: 'momentId',
+      label: '分享标题',
+      name: 'title',
     },
     {
       label: '行业',
@@ -80,8 +80,9 @@ const VideoPlatform = (props) => {
       type: 'user',
     },
     {
-      label: '分享标题',
-      name: 'title',
+      label: '视频ID',
+      name: 'momentId',
+      type: 'number',
     },
     {
       label: '集团/店铺名',
