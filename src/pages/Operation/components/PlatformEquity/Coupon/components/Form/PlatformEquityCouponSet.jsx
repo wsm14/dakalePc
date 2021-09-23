@@ -112,6 +112,7 @@ const PlatformEquityCouponSet = (props) => {
       type: 'baseData/fetchSkuDetailMerchantList',
       payload: {
         ownerServiceId: ownerCouponId,
+        relateId: initialValues.relateId,
         ownerId: -1,
         serviceType: 'reduceCoupon',
       },

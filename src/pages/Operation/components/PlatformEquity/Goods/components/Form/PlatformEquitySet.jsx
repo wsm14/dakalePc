@@ -82,6 +82,7 @@ const PlatformEquitySet = ({
       payload: {
         ownerServiceId: initialValues.specialGoodsId,
         ownerId: -1,
+        relateId: initialValues.relateId,
         serviceType: 'rightGoods',
       },
       callback: (list) => {
@@ -276,28 +277,6 @@ const PlatformEquitySet = ({
       min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
-    },
-    {
-      label: '成本价',
-      name: 'realPrice',
-      type: 'number',
-      precision: 2,
-      disabled: editDisabled,
-      min: 0,
-      max: 999999.99,
-      formatter: (value) => `￥ ${value}`,
-      addRules: [
-        {
-          validator: (rule, value) => {
-            const realPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('oriPrice'));
-            if (realPrice > buyPrice) {
-              return Promise.reject('成本价需小于原价');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
     },
     {
       label: '售卖类型',

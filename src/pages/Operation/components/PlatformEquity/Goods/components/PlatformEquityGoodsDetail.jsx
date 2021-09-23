@@ -31,7 +31,8 @@ const PlatformEquityGoodsDetail = (props) => {
       payload: {
         ownerServiceId: specialGoodsId,
         ownerId: -1,
-        serviceType: 'specialGoods',
+        relateId: detail.relateId,
+        serviceType: 'rightGoods',
       },
       callback: (list) => setMerchantList(list),
     });

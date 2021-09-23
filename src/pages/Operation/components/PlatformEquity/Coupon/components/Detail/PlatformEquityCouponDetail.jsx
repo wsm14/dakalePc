@@ -11,11 +11,10 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import MerchantListTable from '@/pages/Operation/components/SpecialGoods/Detail/MerchantListTable';
 
 const GoodsDetail = (props) => {
-  const { detail = {} } = props;
+  const { detail = {}, merchantList = [] } = props;
   const {
     relateType = 'merchant',
     buyFlag = '1',
-    merchantList = [],
     couponDetailType,
     serviceDivisionDTO = {},
   } = detail;

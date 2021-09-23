@@ -5,6 +5,7 @@ import {
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
   SPECIAL_DESC_TYPE,
+  COMMISSION_TYPE,
 } from '@/common/constant';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import { Button, Tabs, Alert, Form, notification } from 'antd';
@@ -21,13 +22,13 @@ const GoodsDetail = (props) => {
   const { show = false, index, detail = {}, status, submitterType } = visible;
   const {
     ownerType = 'merchant',
-    merchantIdList: mreList = [],
     buyFlag = '1',
     auditIdString,
     ownerIdString,
     merchantList = [],
     divisionFlag,
     couponDetailType,
+    serviceDivisionDTO: dService = {},
   } = detail;
 
   const [recordList, setRecordList] = useState({});
@@ -40,45 +41,12 @@ const GoodsDetail = (props) => {
   const handleVerifyAllow = () => {
     form.validateFields().then((values) => {
       const { serviceDivisionDTO = {} } = values;
-      const {
-        provinceBean = 0,
-        districtBean = 0,
-        darenBean = 0,
-        cityBean = 0,
-      } = serviceDivisionDTO;
-      const pBean = Number(provinceBean) * 100;
-      const dBean = Number(districtBean) * 100;
-      const daBean = Number(darenBean) * 100;
-      const cBean = Number(cityBean) * 100;
-      //金额转卡豆
-      const serDivisionDTO = {
-        provinceBean: pBean,
-        districtBean: dBean,
-        darenBean: daBean,
-        cityBean: cBean,
-      };
-      //总分佣
-      const totalFee = (
-        Number(provinceBean) +
-        Number(districtBean) +
-        Number(darenBean) +
-        Number(cityBean)
-      ).toFixed(2);
-      if (detail.divisionFlag === '1') {
-        if (totalFee > Number(detail.commission)) {
-          notification.info({
-            message: '温馨提示',
-            description: '分佣金额之和不能大于佣金总额',
-          });
-          return;
-        }
-      }
       const payload = {
         auditId: auditIdString,
         ownerId: ownerIdString,
         submitterType,
         divisionFlag,
-        serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
+        serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
       };
       dispatch({
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
@@ -253,45 +221,38 @@ const GoodsDetail = (props) => {
     },
   ];
 
-  //分佣配置
-  const commissionItem = [
-    {
-      label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-    {
-      label: '地级市分佣金额（元）',
-      name: ['serviceDivisionDTO', 'cityBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-    {
-      label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-    {
-      label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-  ];
-
   const commission = [
     {
       label: `佣金总额`,
       name: 'commission',
-      render: (val) => (val ? val + '元' : ''),
+      render: (val) => (val ? `${val}元（${Number(val) * 100}卡豆）` : ''),
     },
   ];
+
+  //分佣配置
+  const commissionItem = Object.keys(dService).map((i) => ({
+    label: `${COMMISSION_TYPE[i.replace('Bean', '')]}分佣`,
+    name: ['serviceDivisionDTO', i],
+    type: 'number',
+    precision: 2,
+    min: 0,
+    suffix: '卡豆',
+    addRules: [
+      {
+        validator: (rule, time) => {
+          const keyArr = Object.keys(dService).map((i) => ['serviceDivisionDTO', i]);
+          const valObj = form.getFieldsValue(keyArr);
+          const { serviceDivisionDTO: sVal = {} } = valObj;
+          const allPrice =
+            Object.values(sVal).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100;
+          if (allPrice > Number(detail.commission)) {
+            return Promise.reject('分佣金额之和不能大于佣金总额');
+          }
+          return Promise.resolve();
+        },
+      },
+    ],
+  }));
 
   const modalProps = {
     visible: show,
@@ -395,9 +356,9 @@ const GoodsDetail = (props) => {
       {tabkey === 'adminAudit' && detail.divisionFlag === '1' && (
         <>
           <div
-            style={{ fontSize: 16, color: 'rgba(0,0,0,.85', margin: '10px 0', fontWeight: 'bold' }}
+            style={{ fontSize: 16, color: 'rgba(0,0,0,.85)', margin: '10px 0', fontWeight: 'bold' }}
           >
-            分佣配置
+            分佣配置（卡豆）
           </div>
           <DescriptionsCondition
             formItems={commission}

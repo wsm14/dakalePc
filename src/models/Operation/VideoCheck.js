@@ -1,5 +1,3 @@
-import { notification } from 'antd';
-import moment from 'moment';
 import cityJson from '@/common/cityJson';
 import { SHARE_AREA_TYPE } from '@/common/constant';
 import { fetchListMomentAudit, fetchAuditMomentDetail } from '@/services/OperationServices';
