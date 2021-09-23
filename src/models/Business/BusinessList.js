@@ -284,7 +284,7 @@ export default {
     *fetchMerchantProhibitCheck({ payload, callback }, { call }) {
       const response = yield call(fetchMerchantProhibitCheck, payload);
       if (!response) return;
-      callback();
+      callback(response.content);
     },
   },
 };
