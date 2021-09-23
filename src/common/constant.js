@@ -325,6 +325,9 @@ export const ORDERS_TYPE = {
   // kolGoods: '哒人带货',
   specialGoods: '周边特惠',
   reduceCoupon: '抵扣券订单',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  virtualProduct: '虚拟商品',
   // marketCoupon: '兑换券订单',
 };
 
