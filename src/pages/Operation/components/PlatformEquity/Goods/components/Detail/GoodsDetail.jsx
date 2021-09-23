@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'umi';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from './MerchantListTable';
@@ -7,11 +8,13 @@ import {
   GOODS_CLASS_TYPE,
   SPECIAL_DESC_TYPE,
   PEQUITY_GOODSBUY_TYPE,
+  COMMISSION_TYPE,
 } from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, relateType, goodsDescType, buyFlag } = detail;
+  const { goodsType, relateType, goodsDescType, buyFlag, serviceDivisionDTO = {} } = detail;
+  const { divisionTemplateType, ...other } = serviceDivisionDTO; // 分佣
 
   const ActiveformItems = [
     {
@@ -99,20 +102,10 @@ const GoodsDetail = (props) => {
     },
   ];
 
-  const formItemComiss = [
-    {
-      label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceBean'],
-    },
-    {
-      label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtBean'],
-    },
-    {
-      label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenBean'],
-    },
-  ];
+  const formItemComiss = Object.keys(other).map((i) => ({
+    label: `${COMMISSION_TYPE[i.replace('Bean', '')]}分佣`,
+    name: ['serviceDivisionDTO', i],
+  }));
 
   const TagCell = ({ children }) => (
     <span
@@ -178,7 +171,7 @@ const GoodsDetail = (props) => {
       {/* 当分佣方式为自定义佣金和手动分佣时才显示 */}
       {detail.divisionFlag === '1' && buyFlag == '1' && (
         <DescriptionsCondition
-          title="分佣配置"
+          title="分佣配置（卡豆）"
           formItems={formItemComiss}
           initialValues={detail}
         ></DescriptionsCondition>
