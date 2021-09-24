@@ -85,6 +85,7 @@ const SpecialGoods = (props) => {
       type: 'rangePicker',
       name: 'activityStartTime',
       end: 'activityEndTime',
+      disabledDate: () => false,
     },
     {
       label: '使用有效期',
@@ -277,8 +278,10 @@ const SpecialGoods = (props) => {
       dataIndex: 'districtCode',
       render: (val, row) => (
         <>
-        <div> {checkCityName(val) || '--'} </div>
-        <div>{row.topCategoryName} / {row.categoryName}</div>
+          <div> {checkCityName(val) || '--'} </div>
+          <div>
+            {row.topCategoryName} / {row.categoryName}
+          </div>
         </>
       ),
     },
