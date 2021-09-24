@@ -59,6 +59,7 @@ const PlatformEquityGoods = (props) => {
       type: 'rangePicker',
       name: 'activityStartTime',
       end: 'activityEndTime',
+      disabledDate: () => false,
     },
     {
       label: '使用有效期',
