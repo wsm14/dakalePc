@@ -54,13 +54,13 @@ const ShareManage = (props) => {
     //   label: '店铺/品牌名',
     //   name: 'relateName',
     // },
-    {
-      label: '投放区域',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
+    // {
+    //   label: '投放区域',
+    //   name: 'city',
+    //   type: 'cascader',
+    //   changeOnSelect: true,
+    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    // },
     {
       label: '卡豆余额',
       type: 'number',
