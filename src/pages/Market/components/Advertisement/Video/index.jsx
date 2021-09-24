@@ -50,10 +50,10 @@ const ShareManage = (props) => {
       label: '分享标题',
       name: 'title',
     },
-    {
-      label: '店铺/品牌名',
-      name: 'relateName',
-    },
+    // {
+    //   label: '店铺/品牌名',
+    //   name: 'relateName',
+    // },
     {
       label: '投放区域',
       name: 'city',
