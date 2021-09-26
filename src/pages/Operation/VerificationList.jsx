@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge } from 'antd';
-import { ORDERS_TYPE, GOODS_CLASS_TYPE, ORDER_TYPE_PROPS } from '@/common/constant';
+import { ORDER_TYPE_PROPS, GOODS_CLASS_TYPE, ORDER_TYPE_PROPS } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import PopImgShow from '@/components/PopImgShow';
@@ -43,7 +43,7 @@ const VerificationList = (props) => {
       label: '订单属性',
       type: 'select',
       name: 'orderType',
-      select: ORDERS_TYPE,
+      select: ORDER_TYPE_PROPS,
     },
     {
       label: '核销日期',

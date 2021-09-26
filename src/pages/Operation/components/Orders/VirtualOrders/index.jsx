@@ -7,9 +7,7 @@ import {
   ORDER_TYPE_PROPS,
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
-  BUSINESS_TYPE,
 } from '@/common/constant';
-import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';

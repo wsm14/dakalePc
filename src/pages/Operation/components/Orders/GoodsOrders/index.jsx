@@ -3,9 +3,8 @@ import { connect } from 'umi';
 import { Tag, Badge, Avatar } from 'antd';
 import {
   ORDERS_STATUS,
-  ORDERS_TYPE,
-  ORDER_CLOSE_TYPE,
   ORDER_TYPE_PROPS,
+  ORDER_CLOSE_TYPE,
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
   BUSINESS_TYPE,
@@ -68,7 +67,7 @@ const GoodsOrders = (props) => {
       label: '订单属性',
       type: 'select',
       name: 'orderType',
-      select: ORDERS_TYPE,
+      select: ORDER_TYPE_PROPS,
     },
     {
       label: '状态',
