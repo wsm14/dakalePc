@@ -71,7 +71,7 @@ const VaneDrawer = (props) => {
             configWindVaneId: detail.configWindVaneId,
             ...values,
             jumpType: jumpType === 'trade' ? 'native' : jumpType,
-            nativeJumpType: { trade: 'category', native: nativeJumpType }[jumpType],
+            nativeJumpType: { trade: 'windVaneCategory', native: nativeJumpType }[jumpType],
             bubbleFlag: Number(bubbleFlag),
             image: res[0],
             windVaneParamObject:
