@@ -78,6 +78,7 @@ const SpecialGoods = (props) => {
       label: '商品状态',
       name: 'deleteFlag',
       type: 'select',
+      allItem: false,
       select: ['已删除', '未删除'],
     },
     {
