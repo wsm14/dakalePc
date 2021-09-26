@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Tag, Form } from 'antd';
 import { checkCityName } from '@/utils/utils';
 import { NEW_SHARE_STATUS, SUBMIT_TYPE_VIDEO, NEW_SHARE_OWNER } from '@/common/constant';
+import { NUM_PATTERN } from '@/common/regExp';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -82,7 +83,7 @@ const VideoPlatform = (props) => {
     {
       label: '视频ID',
       name: 'momentId',
-      type: 'number',
+      rules: [{ pattern: NUM_PATTERN, message: '请输入数字' }],
     },
     {
       label: '集团/店铺名',

@@ -8,6 +8,7 @@ import {
   VIDEO_ADVERT_STATUS,
   SUBMIT_TYPE_VIDEO,
 } from '@/common/constant';
+import { NUM_PATTERN } from '@/common/regExp';
 import { checkCityName } from '@/utils/utils';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
@@ -39,6 +40,7 @@ const ShareManage = (props) => {
     {
       label: '视频ID',
       name: 'platformMomentId',
+      rules: [{ pattern: NUM_PATTERN, message: '请输入数字' }],
     },
     {
       label: '推荐位置',
