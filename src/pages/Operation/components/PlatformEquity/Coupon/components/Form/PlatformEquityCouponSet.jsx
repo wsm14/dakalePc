@@ -275,6 +275,7 @@ const PlatformEquityCouponSet = (props) => {
       label: '售卖类型',
       name: 'buyFlag',
       type: 'radio',
+      disabled: commonDisabled,
       select: PEQUITY_GOODSBUY_TYPE,
       onChange: (e) => setBuyFlag(e.target.value),
     },
@@ -292,6 +293,7 @@ const PlatformEquityCouponSet = (props) => {
       max: 999999,
       visible: buyFlag == '1',
       suffix: '卡豆',
+      disabled: commonDisabled,
     },
     {
       label: '现金（元）',
@@ -301,10 +303,11 @@ const PlatformEquityCouponSet = (props) => {
       min: 0.01,
       max: 999999.99,
       visible: buyFlag == '1',
+      disabled: commonDisabled,
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '商家结算价',
+      label: '平台结算价',
       name: 'merchantPrice',
       type: 'number',
       precision: 2,
@@ -350,6 +353,7 @@ const PlatformEquityCouponSet = (props) => {
       min: 0,
       max: 999999,
       visible: buyFlag == '1' && commissionShow === '1',
+      disabled: commonDisabled,
       suffix: '卡豆',
       onChange: () => {
         const keyArr = manualList.map((i) => [
