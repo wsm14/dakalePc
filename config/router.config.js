@@ -475,13 +475,7 @@ export default [
         path: '/operation/platformEquityOrder',
         name: '权益订单',
         component: './Operation/PlatformEquityOrder',
-        buttons: [
-          'equityCoupon',
-          'equityGoods',
-          'equityDummy',
-          'info',
-          'exportList',
-        ],
+        buttons: ['equityCoupon', 'equityGoods', 'equityDummy', 'info', 'exportList'],
       },
       {
         path: '/operation/special',
@@ -528,6 +522,12 @@ export default [
         buttons: ['save', 'edit', 'down'],
       },
       {
+        path: '/service/userFollow',
+        name: '用户跟进',
+        component: './Service/UserFollow',
+        buttons: ['save', 'edit', 'info'],
+      },
+      {
         path: '/service/feedback',
         name: '问题反馈',
         component: './Service/ServiceFeedBack',
@@ -555,7 +555,7 @@ export default [
         path: '/service/commentManage',
         name: '评论管理',
         component: './Service/CommentManage',
-        buttons: ['delete', 'recover'],
+        buttons: ['del', 'recover'],
       },
       // 配置管理 system
       {
