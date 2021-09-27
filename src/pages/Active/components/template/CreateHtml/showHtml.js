@@ -24,7 +24,7 @@ const htmlDom = {
     const dom = ({ url }, uid) => {
       document.getElementById(
         uid,
-      ).innerHTML = `<video src="${url}" controls="controls" style="width: 100vw;display: block;"></video>`;
+      ).innerHTML = `<video src="${url}" preload="preload" controls="controls" style="width: 100vw;display: block;"></video>`;
     };
 
     return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
