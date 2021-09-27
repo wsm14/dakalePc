@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
-import UserFollowDetail from './components/UserFollow/UserFollowDetail'
+import UserFollowDetail from './components/UserFollow/UserFollowDetail';
 const UserFollow = (props) => {
   const childRef = useRef();
+  const [visibleInfo, setVisibleInfo] = useState(false);
   // 搜索参数
   const searchItems = [
     {
@@ -68,7 +69,7 @@ const UserFollow = (props) => {
       render: (val) => [
         {
           type: 'info',
-          // click: () => fetchFeedBackDetail({ feedbackIdString }),
+          click: () => fetchDetail(),
         },
         {
           type: 'edit',
@@ -78,19 +79,29 @@ const UserFollow = (props) => {
     },
   ];
 
+  const fetchDetail = () => {
+    setVisibleInfo({
+      show: true,
+      detail: {},
+    });
+  };
+
   return (
-      <>
-    <TableDataBlock
-      order
-      cRef={childRef}
-      //   loading={loading}
-      searchItems={searchItems}
-      columns={getColumns}
-      rowKey={(record) => `${record.newsIdString}`}
-      dispatchType="serviceNews/fetchGetList"
-      //   {...serviceNews}
-    ></TableDataBlock>
-    <UserFollowDetail></UserFollowDetail>
+    <>
+      <TableDataBlock
+        order
+        cRef={childRef}
+        //   loading={loading}
+        searchItems={searchItems}
+        columns={getColumns}
+        rowKey={(record) => `${record.newsIdString}`}
+        dispatchType="serviceNews/fetchGetList"
+        //   {...serviceNews}
+      ></TableDataBlock>
+      <UserFollowDetail
+        visible={visibleInfo}
+        onClose={() => setVisibleInfo(false)}
+      ></UserFollowDetail>
     </>
   );
 };

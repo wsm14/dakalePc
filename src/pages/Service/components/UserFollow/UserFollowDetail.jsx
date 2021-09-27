@@ -3,7 +3,10 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 
-const UserFollowDetail = () => {
+const UserFollowDetail = (props) => {
+  const { visible, onClose } = props;
+  const { show = false, detail = {} } = visible;
+  
   const formItems = [
     {
       label: '用户昵称',
@@ -81,7 +84,8 @@ const UserFollowDetail = () => {
 
   const modalProps = {
     title: '详情',
-    visible: false,
+    visible: show,
+    onClose,
   };
   return (
     <DrawerCondition {...modalProps}>
@@ -97,7 +101,7 @@ const UserFollowDetail = () => {
         formItems={tagItems}
       ></DescriptionsCondition>
       <div>
-        <a style={{ float: 'right',marginTop:5 }}>历史跟进情况</a>
+        <a style={{ float: 'right', marginTop: 5 }}>历史跟进情况</a>
         <DescriptionsCondition
           title="跟进详情"
           labelStyle={{ width: 120 }}
