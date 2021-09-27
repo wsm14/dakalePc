@@ -6,7 +6,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 const UserFollowDetail = (props) => {
   const { visible, onClose } = props;
   const { show = false, detail = {} } = visible;
-  
+
   const formItems = [
     {
       label: '用户昵称',

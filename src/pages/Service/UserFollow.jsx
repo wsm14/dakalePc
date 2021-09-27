@@ -16,6 +16,25 @@ const UserFollow = (props) => {
       label: '跟进人',
       name: 'people',
     },
+    {
+      label: '跟进标签',
+      name: 'people',
+    },
+    {
+      label: '跟进方式',
+      name: 'people',
+    },
+    {
+      label: '跟进类型',
+      name: 'people',
+      type: 'select',
+    },
+    {
+      label: '跟进时间',
+      type: 'rangePicker',
+      name: 'createBeginTime',
+      end: 'createEndTime',
+    },
   ];
 
   // table 表头
