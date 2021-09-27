@@ -219,7 +219,10 @@ const VaneDrawer = (props) => {
       hidden: true,
       rules: [{ required: false }],
       visible: showUrl === 'trade',
-      render: (val, row) => val,
+      render: (val, row) => {
+        const { windVaneParamObject = {} } = row;
+        return `${windVaneParamObject.topCategoryName || ''} ${val || ''}`;
+      },
     },
     {
       label: 'banner图:',
