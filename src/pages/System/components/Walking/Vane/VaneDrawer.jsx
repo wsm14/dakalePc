@@ -55,9 +55,9 @@ const VaneDrawer = (props) => {
       } = values;
       const { bannerImage } = windVaneParamObject;
       const windVaneParam = {
+        ...windVaneParamObject,
         topCategoryId: topCategoryId[0],
         categoryId: categoryId && categoryId.toString(),
-        ...windVaneParamObject,
       };
       const aImg = checkFileData(image);
       const bImg = checkFileData(bannerImage);
