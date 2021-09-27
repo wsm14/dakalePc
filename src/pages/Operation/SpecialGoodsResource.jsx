@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
-import { Tag, Badge } from 'antd';
+import { Tag } from 'antd';
 import {
   BUSINESS_TYPE,
   SPECIAL_STATUS,
@@ -10,10 +10,12 @@ import {
   SPECIAL_RECOMMEND_DELSTATUS,
 } from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
+import QuestionTooltip from '@/components/QuestionTooltip';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import ExtraButton from '@/components/ExtraButton';
 import GoodResourceSet from './components/SpecialGoods/GoodResourceSet';
+import WeightSet from './components/WeightSet';
 import { checkCityName } from '@/utils/utils';
 
 const SpecialGoodsResource = (props) => {
@@ -200,13 +202,7 @@ const SpecialGoodsResource = (props) => {
       dataIndex: 'goodsImg',
       render: (val, row) => (
         <div style={{ display: 'flex' }}>
-          {row.isRecommendTop === '1' ? (
-            <Badge.Ribbon text="置顶">
-              <PopImgShow url={val} />
-            </Badge.Ribbon>
-          ) : (
-            <PopImgShow url={val} />
-          )}
+          <PopImgShow url={val} />
           <div
             style={{
               display: 'flex',
@@ -328,6 +324,31 @@ const SpecialGoodsResource = (props) => {
       // render: (val, row) => `${val}\n${SUBMIT_TYPE[row.creatorType]}--${row.creatorName || ''}`,
     },
     {
+      title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
+      align: 'center',
+      fixed: 'right',
+      dataIndex: 'weight',
+      show: !['highCommission', 'todayNew'].includes(tabKey),
+      render: (val, row) => (
+        <WeightSet
+          detail={row}
+          childRef={tableRef}
+          params={{
+            specialGoodsId: row.specialGoodsId,
+            ownerIdString: row.ownerIdString,
+            recommendType: tabKey,
+          }}
+        ></WeightSet>
+      ),
+    },
+    {
+      title: '状态',
+      fixed: 'right',
+      align: 'right',
+      dataIndex: 'status',
+      render: (val) => SPECIAL_STATUS[val],
+    },
+    {
       type: 'handle',
       dataIndex: 'specialGoodsId',
       show: !['highCommission', 'todayNew'].includes(tabKey), // 高佣联盟 和 今日上新 不显示
@@ -340,22 +361,22 @@ const SpecialGoodsResource = (props) => {
             visible: !['highCommission', 'todayNew'].includes(tabKey),
             click: () => handleCancle(val),
           },
-          {
-            type: 'placement',
-            title: '置顶', // 限时抢购，爆品福利，每日必推，特惠推荐显示 且
-            visible:
-              ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
-              record.isRecommendTop == '0',
-            click: () => handletoTop(val),
-          },
-          {
-            type: 'placement',
-            title: '取消置顶', // 限时抢购，爆品福利，每日必推，‘特惠推荐显示
-            visible:
-              ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
-              record.isRecommendTop == '1',
-            click: () => handleCancletoTop(val),
-          },
+          // {
+          //   type: 'placement',
+          //   title: '置顶', // 限时抢购，爆品福利，每日必推，特惠推荐显示 且
+          //   visible:
+          //     ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
+          //     record.isRecommendTop == '0',
+          //   click: () => handletoTop(val),
+          // },
+          // {
+          //   type: 'placement',
+          //   title: '取消置顶', // 限时抢购，爆品福利，每日必推，‘特惠推荐显示
+          //   visible:
+          //     ['hot', 'today', 'dayPush', 'aroundSpecial'].includes(tabKey) &&
+          //     record.isRecommendTop == '1',
+          //   click: () => handleCancletoTop(val),
+          // },
         ];
       },
     },

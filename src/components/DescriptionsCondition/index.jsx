@@ -23,12 +23,14 @@ const DescriptionsCondition = (props) => {
 
   // 逐级获取value
   const getArrKeyVal = (key) => {
+    if (!initialValues) return null;
     const _len = key.length;
     let newVal = initialValues;
     for (let _key = 0; _key < _len; _key++) {
+      if (!newVal) return null;
       // 当数组key 获取值时某一层不存在时直接返回null
-      const valGet = newVal ? newVal[key[_key]] : null;
-      newVal = valGet ? valGet : undefined;
+      const valGet = newVal !== null || newVal !== undefined ? newVal[key[_key]] : null;
+      newVal = valGet !== null || valGet !== undefined ? valGet : undefined;
     }
     return newVal;
   };
@@ -49,10 +51,10 @@ const DescriptionsCondition = (props) => {
       textArea: value,
       upload: <ImagePreviewGroup url={value}></ImagePreviewGroup>,
       videoUpload: <VideoPreview url={value}></VideoPreview>,
-    }[type];
+    };
     // 类型错误返回
-    if (!domShow) return 'type error';
-    return domShow;
+    if (!Object.keys(domShow).includes(type)) return 'type error';
+    return domShow[type];
   };
 
   // 区分表单信息

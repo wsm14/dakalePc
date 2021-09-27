@@ -33,7 +33,7 @@ const SubsidyShop = (props) => {
   const defaultValue = {
     latitude: 'order', // 统计纬度 order-按单显示 day-按日显示 month-按月显示
     time: [moment(), moment()],
-    type: ['platform', 'directCharge', 'recycleDirectCharge', 'recyclePlatform', 'platformSubsidy'],
+    type: ['platform', 'directCharge', 'platformSubsidy', 'pushVideo', 'momentStop'],
   };
 
   // 搜索参数
@@ -57,21 +57,15 @@ const SubsidyShop = (props) => {
   }, [searchData]);
 
   // 获取详情
-  const fetchGetDetail = (type, row) => {
-    const apiProps = {
-      merchant: {
-        key: 'subsidyId',
-        value: 'identification',
-        api: 'subsidyShop/fetchSubsidyShopDetailById',
-      },
-      user: { key: 'identification', value: 'id', api: 'subsidyShop/fetchSubsidyUserDetailById' },
-    }[type];
+  const fetchGetDetail = (_, row) => {
     dispatch({
-      type: apiProps.api,
+      type: 'subsidyShop/fetchSubsidyStatisticDetail',
       payload: {
-        [apiProps.key]: row[apiProps.value],
+        platformBeanDetailId: row.id,
       },
-      callback: (info) => setVisible({ show: true, type, info, titles: row.taskName }),
+      callback: (info) => {
+        setVisible({ show: true, ...info, titles: row.taskName });
+      },
     });
   };
 

@@ -5,7 +5,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const FranchiseDrawer = (props) => {
-  const { dispatch, visible, childRef, onClose, loading } = props;
+  const { dispatch, visible, type = 'mre', childRef, onClose, loading } = props;
 
   const { shwo = false, detail = {} } = visible;
   const [form] = Form.useForm();
@@ -14,10 +14,13 @@ const FranchiseDrawer = (props) => {
   const handleUpAudit = () => {
     form.validateFields().then((value) => {
       dispatch({
-        type: 'withdrawDetail/fetchWithdrawSetRemark',
+        type: {
+          mre: 'withdrawDetail/fetchWithdrawSetRemark',
+          expert: 'withdrawDetail/fetchWithdrawExpertSetRemark',
+        }[type],
         payload: {
           ...value,
-          id: detail.merchantBeanWithdrawalId,
+          id: detail.merchantBeanWithdrawalId || detail.id,
         },
         callback: () => {
           onClose();

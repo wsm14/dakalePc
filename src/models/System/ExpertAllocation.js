@@ -23,7 +23,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
+    *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchExpertAllocationList, payload);
       if (!response) return;
       const { content } = response;
@@ -58,6 +58,7 @@ export default {
           }),
         },
       });
+      callback && callback(userLevelList);
     },
     *fetchExpertAllocationSave({ payload, callback }, { call }) {
       const response = yield call(fetchExpertAllocationSave, payload);

@@ -1,7 +1,12 @@
 import React from 'react';
-import { BUSINESS_TYPE, COUPON_WEEK_TIME, COUPON_BUY_RULE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  COUPON_WEEK_TIME,
+  COUPON_BUY_RULE,
+  SPECIAL_DESC_TYPE,
+} from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
+import MerchantListTable from '@/pages/Operation/components/SpecialGoods/Detail/MerchantListTable';
 
 const GoodsDetail = (props) => {
   const { detail = {} } = props;
@@ -10,9 +15,9 @@ const GoodsDetail = (props) => {
     merchantIdList: mreList = [],
     buyFlag = '1',
     merchantList = [],
+    couponDetailType,
   } = detail;
 
-  console.log(detail, '111');
   // 参与活动的店铺
   const mreFormItems = [
     {
@@ -57,13 +62,26 @@ const GoodsDetail = (props) => {
       render: (val) => `￥ ${val}`,
     },
     {
+      label: '介绍类型',
+      name: 'couponDetailType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
+    {
+      label: `优惠券介绍`,
+      name: 'richText',
+      show: couponDetailType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
       label: '优惠券介绍',
       name: 'couponDetail',
+      show: couponDetailType === '0',
     },
     {
       label: '优惠券图片',
       type: 'upload',
       name: 'couponDetailImg',
+      show: couponDetailType === '0',
     },
   ];
 
@@ -133,20 +151,23 @@ const GoodsDetail = (props) => {
           detail.reduceObject.expireRefund === '1' ? '' : '不'
         }允许过期退款`,
     },
-   
   ];
   //分佣配置
   const commissionItem = [
     {
-      label: '省代分佣金额（元）',
+      label: '省代分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
-      label: '区县分佣金额（元）',
+      label: '地级市分佣金额（卡豆）',
+      name: ['serviceDivisionDTO', 'cityBean'],
+    },
+    {
+      label: '区县分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'districtBean'],
     },
     {
-      label: '哒人分佣金额（元）',
+      label: '哒人分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];

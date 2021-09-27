@@ -314,14 +314,6 @@ export const SUBSIDY_ACTION_TYPE_FORM = {
 // 分享类型
 export const SHARE_TYPE = { video: '视频', image: '图文' };
 
-// 订单类型
-export const ORDERS_TYPE = {
-  // kolGoods: '哒人带货',
-  specialGoods: '周边特惠',
-  reduceCoupon: '抵扣券订单',
-  // marketCoupon: '兑换券订单',
-};
-
 // 平台收益订单类型
 export const PLATFORM_INCOME_ORDERS_TYPE = {
   scan: '扫码订单',
@@ -417,13 +409,6 @@ export const COUPON_ACTIVE_TYPE = { fixed: '固定时间', infinite: '长期' };
 
 // 收入/支出
 export const ADD_AND_MINUS = { add: '收入', minus: '支出' };
-
-// specialGoods-特惠商品 reduceCoupon-优惠券
-export const ORDER_TYPE_PROPS = {
-  specialGoods: '特惠商品',
-  reduceCoupon: '优惠券',
-  scan: '扫码',
-};
 
 // 哒人核销订单类型
 export const EXPRET_DISTRIBUTION_TYPE = {

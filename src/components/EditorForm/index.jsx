@@ -83,21 +83,32 @@ const EditorForm = ({
     },
     // 自定义图片上传
     uploadImg: (files, insert) => {
-      // files 是 input 中选中的文件列表
+      const uploadImgFun = (fileArrs) => {
+        aliOssUpload(fileArrs).then((res) => {
+          // 上传代码返回结果之后，将图片插入到编辑器中
+          res.map((item) => {
+            insert(item);
+          });
+        });
+      };
       const fileArr = [];
-      files.map((item, i) =>
-        imageCompress(item).then(({ file }) => {
-          fileArr.push(file);
+      // files 是 input 中选中的文件列表
+      files.map((item, i) => {
+        const fileExtr = item.name.replace(/.+\./, '.').toLowerCase();
+        if (fileExtr !== '.gif') {
+          imageCompress(item).then(({ file }) => {
+            fileArr.push(file);
+            if (i === files.length - 1) {
+              uploadImgFun(fileArr);
+            }
+          });
+        } else {
+          fileArr.push(item);
           if (i === files.length - 1) {
-            aliOssUpload(fileArr).then((res) => {
-              // 上传代码返回结果之后，将图片插入到编辑器中
-              res.map((item) => {
-                insert(item);
-              });
-            });
+            uploadImgFun(fileArr);
           }
-        }),
-      );
+        }
+      });
     },
     // 富文本内容修改回调
     change: (html) => {
@@ -115,7 +126,7 @@ const EditorForm = ({
     editor.config.pasteIgnoreImg = true; // 忽略粘贴内容中的图片
     editor.config.showLinkImg = false; // 隐藏“网络图片”tab
     editor.config.zIndex = 100; // 配置编辑区域的 z-index
-    editor.config.uploadImgMaxLength = 3; // 上传图片数量
+    editor.config.uploadImgMaxLength = 20; // 上传图片数量
     editor.config.pasteFilterStyle = true; // 过滤掉复制文本的样式
     editor.config.pasteTextHandle = customhandle['pasteText']; // 赋值粘贴文本a标签替换
     editor.config.customUploadImg = customhandle['uploadImg']; // 自定义图片上传

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
 import { Button } from 'antd';
-import { GOODS_CLASS_TYPE, BUSINESS_TYPE } from '@/common/constant';
+import { GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE, BUSINESS_TYPE } from '@/common/constant';
 import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
+import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
-import GoodsGroupSet from '../GoodsGroupSet';
+import GoodsGroupSet from './GoodsGroupSet';
 
 const PreferentialSet = ({
   form,
@@ -18,6 +19,7 @@ const PreferentialSet = ({
   initialValues = {},
   onValuesChange,
   skuMerchantList,
+  setContent,
 }) => {
   // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
@@ -25,16 +27,15 @@ const PreferentialSet = ({
   const editDisabled = ['edit'].includes(editActive);
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  // 店铺备选参数，选择店铺后回显的数据
+  const [goodsDescType, setGoodsDescType] = useState('0'); // 商品介绍类型
+  const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
+  const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
   const [mreList, setMreList] = useState({
     groupId: null,
     type: 'merchant',
     keys: [],
     list: [],
-  });
-  // 商品类型 goodsType
-  const [radioData, setRadioData] = useState({ goodsType: 'single' });
-  const [platTaglist, setPlatTaglist] = useState([]);
+  }); // 店铺备选参数，选择店铺后回显的数据
 
   //编辑的时候数据回显的标签
   const { goodsTagList = [] } = initialValues;
@@ -47,6 +48,8 @@ const PreferentialSet = ({
   const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.ownerName) {
+      // 图文介绍类型
+      setGoodsDescType(initialValues.goodsDescType);
       setMreList({
         type: initialValues.ownerType,
         groupId: initialValues.ownerId,
@@ -56,10 +59,13 @@ const PreferentialSet = ({
       fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
         const topCategoryId = list[mreFindIndex].topCategoryId[0];
+        const { businessStatus, status } = list[mreFindIndex];
         // 是否分佣
         getCommissionFlag(topCategoryId);
         // 商品标签
         getTagsPlat(topCategoryId);
+        // 商家状态
+        form.setFieldsValue({ businessStatus, status });
       });
       if (initialValues.ownerType === 'group') {
         getMerchantList();
@@ -110,7 +116,7 @@ const PreferentialSet = ({
         categoryId: categoryId,
         tagType: 'merchant',
       },
-      callback: (list) => setPlatTaglist(list),
+      callback: (list) => setGoodsTaglist(list),
     });
   };
 
@@ -140,7 +146,7 @@ const PreferentialSet = ({
         serviceType: 'specialGoods',
         categoryId: categoryId,
       },
-      callback: (val) => setCommissionShow(val),
+      callback: ({ manuallyFlag, manualDivisions }) => setCommissionShow(manuallyFlag),
     });
   };
 
@@ -192,12 +198,37 @@ const PreferentialSet = ({
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
+        const { businessStatus, status } = option;
+        form.setFieldsValue({ merchantIds: undefined, businessStatus, status });
         setCommissionShow(false);
         getCommissionFlag(option.topCategoryId[0]);
         getTagsPlat(option.topCategoryId[0]);
         fetchCheckMreRate(val);
-        form.setFieldsValue({ merchantIds: undefined });
       },
+      addRules: [
+        {
+          validator: () => {
+            const statusVal = form.getFieldsValue(['businessStatus', 'status']);
+            const { businessStatus, status } = statusVal;
+            if (businessStatus === '0' || status === '0') {
+              return Promise.reject(
+                '该店铺已禁用/已暂停营业，请先将店铺状态改成正常营业再进行发布。',
+              );
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+    },
+    {
+      label: `商家状态`,
+      name: 'status',
+      hidden: true,
+    },
+    {
+      label: `商家营业状态`,
+      name: 'businessStatus',
+      hidden: true,
     },
     // {
     //   label: '店铺范围',
@@ -257,7 +288,7 @@ const PreferentialSet = ({
     {
       label: `${goodsTypeName}名称`,
       name: 'goodsName',
-      maxLength: 30,
+      maxLength: 80,
     },
     {
       type: 'noForm',
@@ -342,7 +373,7 @@ const PreferentialSet = ({
       type: 'select',
       mode: 'multiple',
       placeholder: '请选择商家商品标签',
-      select: platTaglist,
+      select: goodsTaglist,
       fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
       addRules: [
         {
@@ -357,9 +388,17 @@ const PreferentialSet = ({
     },
     {
       title: `设置${goodsTypeName}介绍`,
+      label: '选择介绍类型',
+      type: 'radio',
+      name: 'goodsDescType',
+      select: SPECIAL_DESC_TYPE,
+      onChange: (e) => setGoodsDescType(e.target.value),
+    },
+    {
       label: `${goodsTypeName}介绍`,
       type: 'textArea',
       name: 'goodsDesc',
+      hidden: goodsDescType !== '0',
       rules: [{ required: false }],
       maxLength: 200,
     },
@@ -368,7 +407,18 @@ const PreferentialSet = ({
       name: 'goodsDescImg',
       type: 'upload',
       maxFile: 20,
+      hidden: goodsDescType !== '0',
       rules: [{ required: false }],
+    },
+    {
+      type: 'noForm',
+      visible: goodsDescType === '1',
+      formItem: (
+        <EditorForm
+          content={initialValues.richText}
+          editCallback={(val) => setContent(val)}
+        ></EditorForm>
+      ),
     },
   ];
 

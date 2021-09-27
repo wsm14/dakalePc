@@ -19,6 +19,7 @@ const CouponDrawer = (props) => {
     status,
   } = visible;
   const [commissionShow, setCommissionShow] = useState(false);
+  const [content, setContent] = useState(''); // 输入的富文本内容
   const [form] = Form.useForm();
 
   // 确认提交
@@ -34,6 +35,8 @@ const CouponDrawer = (props) => {
         useTime,
         merchantIds = [],
         couponDetailImg,
+        businessStatus,
+        status,
         ...other
       } = values;
       const coupoImg = await aliOssUpload(couponDetailImg);
@@ -48,6 +51,7 @@ const CouponDrawer = (props) => {
           ownerCouponId,
           ownerId,
           ...other,
+          richText: content, // 富文本内容
           couponDetailImg: coupoImg.toString(),
           couponType: 'reduce',
           merchantIds: merchantIds.toString(),
@@ -67,7 +71,15 @@ const CouponDrawer = (props) => {
       });
     });
   };
-  const listProp = { commissionShow, setCommissionShow, type, status, ownerCouponId, ownerId };
+  const listProp = {
+    commissionShow,
+    setCommissionShow,
+    type,
+    status,
+    ownerCouponId,
+    ownerId,
+    setContent,
+  };
   // 统一处理弹窗
   const drawerProps = {
     info: {

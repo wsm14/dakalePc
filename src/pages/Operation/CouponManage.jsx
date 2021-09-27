@@ -8,6 +8,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import CouponDrawer from './components/CouponManage/CouponDrawer';
 import excelProps from './components/CouponManage/excelProps';
 import RemainModal from './components/CouponManage/Detail/RemainModal';
+import { checkCityName } from '@/utils/utils';
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch, loadings } = props;
@@ -66,12 +67,15 @@ const CouponManageComponent = (props) => {
   const getColumns = [
     {
       title: '券/店铺名称',
+      fixed: 'left',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
           <div>
             <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
-            {val}
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
             <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
@@ -134,6 +138,17 @@ const CouponManageComponent = (props) => {
       align: 'right',
       dataIndex: 'verifiedCount',
       sorter: (a, b) => a.verifiedCount - b.verifiedCount,
+    },
+    {
+      title: '地区/行业',
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val, row) => (
+        <>
+        <div> {checkCityName(val) || '--'} </div>
+        <div>{row.topCategoryName} / {row.categoryName}</div>
+        </>
+      ),
     },
     {
       title: '创建时间',

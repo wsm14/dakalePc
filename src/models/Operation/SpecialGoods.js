@@ -13,6 +13,7 @@ import {
   fetchSpecialGoodsRecommend, //推荐
   fetchSpecialGoodsAddRemain, // 增加库存
   fetchEditCurrentStatus, //编辑前校验
+  fetchSetTopRecommendWeight, //资源位权重
 } from '@/services/OperationServices';
 
 export default {
@@ -65,23 +66,10 @@ export default {
         activityTimeRule: activeTime,
         useTime = '00:00-23:59',
         useWeek = '1,2,3,4,5,6,7',
-        serviceDivisionDTO = {},
+        relateIdString: relateId,
       } = specialGoodsInfo;
       let newDetail = {};
 
-      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
-      const pBean =
-        provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
-      const dBean =
-        districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
-      const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
-      const sDetail = {
-        serviceDivisionDTO: {
-          provinceBean: pBean,
-          districtBean: dBean,
-          darenBean: daBean,
-        },
-      };
       // 可编辑 info 查看 /  edit 修改所有数据 / again 重新发布 / againUp
       if (['info', 'edit', 'again', 'againUp'].includes(type)) {
         newDetail = {
@@ -110,9 +98,9 @@ export default {
       }
       callback({
         ...content.specialGoodsInfo,
-        ...sDetail, //分佣
         ...newDetail,
         ...activeTimes,
+        relateId,
         ownerId,
         id: specialGoodsId,
         divisionFlag,
@@ -128,6 +116,24 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '特惠活动新增成功，等待平台审核',
+      });
+      callback();
+    },
+    *fetchPlatformEquityGoodsSave({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益商品新增成功',
+      });
+      callback();
+    },
+    *fetchPlatformEquityGoodsEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchSpecialGoodsEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益商品修改成功',
       });
       callback();
     },
@@ -199,6 +205,15 @@ export default {
       const response = yield call(fetchEditCurrentStatus, payload);
       if (!response) return;
       callback && callback(response.resultCode);
+    },
+    *fetchSetTopRecommendWeight({ payload, callback }, { call }) {
+      const response = yield call(fetchSetTopRecommendWeight, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权重设置成功',
+      });
+      callback();
     },
   },
 };

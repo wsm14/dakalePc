@@ -47,6 +47,12 @@ export default [
         buttons: ['peasDetail', 'withdraw', 'rechargeDetail'],
       },
       {
+        path: '/account/group',
+        name: '集团账户',
+        component: './Account/AccountGroup',
+        buttons: ['info'],
+      },
+      {
         path: '/account/subsidyShop',
         name: '补贴店铺',
         component: './Account/SubsidyShop',
@@ -209,7 +215,7 @@ export default [
         path: '/expert/uaerlist',
         name: '哒人列表',
         component: './Expert/ExpertUserList',
-        buttons: ['status', 'diary'],
+        buttons: ['status', 'recommendList', 'statistics', 'BDSet', 'diary'],
       },
       {
         path: '/expert/level',
@@ -234,12 +240,6 @@ export default [
         name: '哒人种草',
         component: './Expert/ExpertRecommend',
         buttons: ['info', 'down', 'handle', 'reportCenter'],
-      },
-      {
-        path: '/expert/achievement',
-        name: '哒人业绩',
-        component: './Expert/ExpertUserAchievement',
-        buttons: ['recommendList', 'statistics'],
       },
       {
         path: '/expert/achievementTotal',
@@ -289,7 +289,7 @@ export default [
         path: '/finance/withdraw',
         name: '提现明细',
         component: './Finance/WithdrawDetail',
-        buttons: ['edit', 'exportList'],
+        buttons: ['edit', 'exportList', 'withdrawMerchant', 'withdrawExpert'],
       },
       {
         path: '/finance/income',
@@ -304,6 +304,7 @@ export default [
         component: './Market/AreaQuery',
         buttons: ['set', 'edit'],
       },
+
       {
         path: '/market/cardpeaspark',
         name: '卡豆乐园',
@@ -343,28 +344,40 @@ export default [
         ],
       },
       {
-        path: '/market/openAd',
-        name: '开屏广告',
-        component: './Market/OpenAdvert',
-        buttons: ['save', 'del', 'edit', 'down', 'info'],
+        path: '/market/advertisement',
+        name: '广告投放管理',
+        component: './Market/Advertisement',
+        buttons: [
+          'videoAd',
+          'openAd',
+          'puzzleAd',
+          'save',
+          'del',
+          'edit',
+          'info',
+          'up',
+          'down',
+          'adRoot',
+          'rewardPeo',
+        ],
       },
       {
         path: '/market/appset',
-        name: '广告管理',
+        name: 'Banner管理',
         component: './Market/AppSetList',
         buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
-        path: '/market/puzzleAd',
-        name: '拼图广告',
-        component: './Market/PuzzleAdvert',
-        buttons: ['save', 'del', 'edit', 'info', 'eye', 'up', 'down', 'adRoot'],
+        path: '/market/videoAd',
+        name: '新手视频',
+        component: './Market/NoviceAdvert',
+        buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
       {
-        path: '/market/videoAd',
-        name: '视频广告', // 新手视频
-        component: './Market/VideoAdvert',
-        buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
+        path: '/market/globalPop',
+        name: '全局弹框',
+        component: './Market/GlobalPop',
+        buttons: ['save', 'edit', 'down'],
       },
       // 店铺运营 operation
       {
@@ -372,6 +385,28 @@ export default [
         name: '视频管理',
         component: './Operation/ShareManage',
         buttons: ['save', 'info', 'down', 'check', 'diary', 'peasDetail', 'set', 'rewardPeo'],
+      },
+      {
+        path: '/operation/videoplatform',
+        name: '平台视频',
+        component: './Operation/VideoPlatform',
+        buttons: [
+          'save',
+          'del',
+          'edit',
+          'down',
+          'info',
+          'rewardPeo',
+          'shareImg',
+          'commerceSet',
+          'portraitEdit',
+        ],
+      },
+      {
+        path: '/operation/videoCheck',
+        name: '视频审核',
+        component: './Operation/VideoCheck',
+        buttons: ['info', 'check', 'close'],
       },
       {
         path: '/operation/goods',
@@ -420,8 +455,31 @@ export default [
         ],
       },
       {
+        path: '/operation/platformEquity',
+        name: '平台权益',
+        component: './Operation/PlatformEquity',
+        buttons: [
+          'equityCoupon',
+          'equityGoods',
+          'save',
+          'edit',
+          'down',
+          'info',
+          'again',
+          'againUp',
+          'addRemain',
+          'diary',
+        ],
+      },
+      {
+        path: '/operation/platformEquityOrder',
+        name: '权益订单',
+        component: './Operation/PlatformEquityOrder',
+        buttons: ['equityCoupon', 'equityGoods', 'equityDummy', 'info', 'exportList'],
+      },
+      {
         path: '/operation/special',
-        name: '周边特惠',
+        name: '特惠商品',
         component: './Operation/SpecialGoods',
         buttons: [
           'save',
@@ -454,7 +512,7 @@ export default [
         path: '/operation/specialGoodsResource',
         name: '资源位配置',
         component: './Operation/SpecialGoodsResource',
-        buttons: ['cancleRecommend', 'placement', 'configCondit'],
+        buttons: ['cancleRecommend', 'weight', 'configCondit'],
       },
       // 客服中心 service
       {
@@ -464,10 +522,16 @@ export default [
         buttons: ['save', 'edit', 'down'],
       },
       {
+        path: '/service/userFollow',
+        name: '用户跟进',
+        component: './Service/UserFollow',
+        buttons: ['save', 'edit', 'info'],
+      },
+      {
         path: '/service/feedback',
         name: '问题反馈',
         component: './Service/ServiceFeedBack',
-        buttons: ['eye', 'replay'],
+        buttons: ['eye', 'replay', 'config'],
       },
       {
         path: '/service/msg',
@@ -486,6 +550,12 @@ export default [
         name: '人才招聘',
         component: './Service/SolicitJobs',
         buttons: ['save', 'edit', 'down', 'jobClass'],
+      },
+      {
+        path: '/service/commentManage',
+        name: '评论管理',
+        component: './Service/CommentManage',
+        buttons: ['del', 'recover'],
       },
       // 配置管理 system
       {
@@ -558,6 +628,13 @@ export default [
         name: 'BD白名单',
         component: './User/BdLimitPop',
         buttons: ['save'],
+      },
+      // 卡豆红包明细
+      {
+        path: '/redEnvelopes/beanRedEnvelopes',
+        name: '卡豆红包',
+        component: './RedEnvelopes/BeanRedEnvelopes',
+        buttons: ['authEdit', 'getRecord'],
       },
     ],
   },

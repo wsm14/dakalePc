@@ -24,6 +24,20 @@ export function fetchFeedBackPush(data) {
   });
 }
 
+// 问题反馈 设置-读取
+export async function fetchGetDictionaryAdmin(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+//运营后台-客服中心-配置功能反馈标签
+export function fetchSetFeedbackTags(data) {
+  return request('/admin/marketCustomer/setFeedbackTags', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 问题反馈 end
 
 // 新闻动态
@@ -250,3 +264,22 @@ export function fetchJobsClassSet(data) {
 }
 
 // 人才招聘 end
+
+// 评论管理 start
+
+// 评论管理 get
+export function fetchListMomentCommentManagement(params) {
+  return request('/admin/momentComment/listMomentCommentManagement', {
+    params,
+  });
+}
+
+// 运营后台-评论管理批量删除、恢复
+export function fetchUpdateCommentsDeleteFlag(data) {
+  return request('/admin/momentComment/batchUpdateCommentsDeleteFlag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 评论管理 end

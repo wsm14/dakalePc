@@ -20,6 +20,11 @@ const AccountBusinessList = (props) => {
       name: 'account',
     },
     {
+      label: '所属集团',
+      name: 'groupId',
+      type: 'group',
+    },
+    {
       label: '手机号',
       name: 'mobile',
     },
@@ -33,15 +38,20 @@ const AccountBusinessList = (props) => {
       dataIndex: 'userMerchantIdString',
     },
     {
-      title: '店铺名称',
+      title: '店铺类型',
       align: 'center',
+      dataIndex: 'groupId',
+      render: (val) => (val ? '子门店' : '单店'),
+    },
+    {
+      title: '店铺名称',
       dataIndex: 'merchantName',
+      ellipsis: true,
     },
     {
       title: '集团名称',
-      align: 'center',
       dataIndex: 'groupName',
-      render: (val) => val || '--',
+      ellipsis: true,
     },
     {
       title: '店铺电话',
@@ -49,30 +59,46 @@ const AccountBusinessList = (props) => {
       dataIndex: 'account',
     },
     {
+      title: '所属集团',
+      align: 'center',
+      dataIndex: 'groupName',
+      render: (val) => val || '--',
+    },
+    {
       title: '累计收益（卡豆）',
       align: 'right',
-      dataIndex: 'totalAdd',
+      dataIndex: 'totalIncomeBean',
+      render: (val) => val || 0,
     },
     {
       title: '累计充值（卡豆）',
       align: 'right',
-      dataIndex: 'totalCharge',
+      dataIndex: 'totalRechargeBean',
+      render: (val) => val || 0,
     },
     {
       title: '累计提现（卡豆）',
       align: 'right',
-      dataIndex: 'totalConsume',
-      render: (val) => val || '--',
+      dataIndex: 'totalWithdrawBean',
+      render: (val) => val || 0,
+    },
+    {
+      title: '累计营销（卡豆）',
+      align: 'right',
+      dataIndex: 'totalPlatformBean',
+      render: (val) => val || 0,
     },
     {
       title: '收益卡豆余额（卡豆）',
       align: 'right',
       dataIndex: 'bean',
+      render: (val) => val || 0,
     },
     {
       title: '营销卡豆余额（卡豆）',
       align: 'right',
       dataIndex: 'platformBean',
+      render: (val) => val || 0,
     },
     {
       type: 'handle',

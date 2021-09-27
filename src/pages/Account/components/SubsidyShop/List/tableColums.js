@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { ADD_AND_MINUS, SUBSIDY_ACTION_ROLE, SUBSIDY_TYPE } from '@/common/constant';
+import { ADD_AND_MINUS, SUBSIDY_TASK_ROLE, SUBSIDY_TYPE } from '@/common/constant';
 
 const infoHandle = (click) => [
   {
@@ -86,7 +86,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '角色',
           align: 'center',
           dataIndex: 'subsidyRole',
-          render: (val) => SUBSIDY_ACTION_ROLE[val],
+          render: (val) => SUBSIDY_TASK_ROLE[val],
         },
         // {
         //   title: '店铺名称',
@@ -106,7 +106,8 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         {
           type: 'handle',
           dataIndex: 'time',
-          render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
+          render: (val, row) =>
+            infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
         },
       ];
     // 按日显示

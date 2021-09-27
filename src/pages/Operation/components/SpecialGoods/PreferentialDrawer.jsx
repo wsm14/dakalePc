@@ -4,7 +4,6 @@ import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import Html5Simulate from '@/components/Html5Simulate';
-import CouponDetail from './Detail/PreferentialDetail';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PreferentialSet from './Form/PreferentialSet';
 import PreferentialRuleSet from './Form/PreferentialRuleSet';
@@ -12,14 +11,15 @@ import PreferentialRuleSet from './Form/PreferentialRuleSet';
 const PreferentialDrawer = (props) => {
   const { visible, dispatch, childRef, loading, onClose } = props;
 
-  // info 详情，add 新增，edit 活动中修改，again 重新发布
-  const { type = 'info', show = false, detail = {} } = visible;
+  // add 新增，edit 活动中修改，again 重新发布
+  const { type = 'add', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm(); // add
   const [formEdit] = Form.useForm(); // edit
   const [formAgain] = Form.useForm(); // again 数据表单
   const [formAgainUp] = Form.useForm(); // againUp 数据表单
   const [formRuleAdd] = Form.useForm(); // 规则 数据表单
+  const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [saveData, setSaveData] = useState(null);
   const [showHtmlData, setShowHtmlData] = useState(null);
@@ -45,12 +45,15 @@ const PreferentialDrawer = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     formRuleAdd.validateFields().then((values) => {
-      const { id, ownerId } = detail;
+      const { id } = detail;
       const {
         activityGoodsImg,
         goodsDescImg,
         goodsTags = [],
         merchantIds = [],
+        businessStatus,
+        status,
+        ...preOther
       } = visibleRule.preData;
       const {
         activityStartTime,
@@ -74,8 +77,9 @@ const PreferentialDrawer = (props) => {
           }[type],
           payload: {
             id,
-            ...visibleRule.preData,
+            ...preOther,
             ...other,
+            richText: content, // 富文本内容
             goodsTags: goodsTags.toString(),
             merchantIds: merchantIds.toString(),
             activityGoodsImg: res.slice(0, aimg.length).toString(),
@@ -110,14 +114,10 @@ const PreferentialDrawer = (props) => {
       }));
   };
 
-  const listProp = { commissionShow, setCommissionShow, editActive: type };
+  const listProp = { commissionShow, setCommissionShow, editActive: type, setContent };
 
   // 统一处理弹窗
   const drawerProps = {
-    info: {
-      title: '活动详情',
-      children: <CouponDetail initialValues={detail}></CouponDetail>,
-    },
     add: {
       title: '新增活动',
       children: (
@@ -127,6 +127,7 @@ const PreferentialDrawer = (props) => {
           initialValues={{
             ownerType: 'merchant',
             goodsType: 'single',
+            goodsDescType: '0',
             packageGoodsObjects: [{}],
           }}
           onValuesChange={setShowHtmlData}

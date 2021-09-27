@@ -153,6 +153,7 @@ export const SHARE_STATUS = [
   '分享结束',
   '即将发布',
 ];
+
 //核销状态 0：未核销，1：已核销 2：已过期 3-申请退款中 4-关闭
 export const VERIFICATION_STATUS = ['未核销', '已核销', '已过期', '申请退款中', '关闭'];
 
@@ -268,7 +269,7 @@ export const MSG_PSUH_TAB = { user: '用户端', merchant: '商家端' };
 export const MSG_PSUH_TYPE = { official: '官方消息', system: '系统消息' };
 
 // 消息推送 - 推送对象, specific: '指定用户', group: '用户群体'
-export const MSG_PSUH_OBJECT = { all: '全部用户' };
+export const MSG_PSUH_OBJECT = { all: '全部用户', specific: '指定用户' };
 
 // 消息推送 - 跳转类型
 export const MSG_PSUH_URL = { '': '无', h5: 'H5', native: '原生' };
@@ -280,16 +281,21 @@ export const SUBSIDY_TYPE = {
   // recycleDirectCharge: '平台直充回收',
   // recyclePlatform: '营销卡豆回收',
   platformSubsidy: '新手任务补贴',
+  pushVideo: '打赏补贴',
+  momentStop: '打赏回收',
 };
 
 // 补贴管理 补贴卡豆类型
 export const SUBSIDY_BEAN_TYPE = { out: '补贴', in: '回收' };
 
 // 补贴管理 任务列表 补贴角色
-export const SUBSIDY_TASK_ROLE = { merchant: '店铺' };
+export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', group: '集团' };
 
 // 补贴管理 行为管理 补贴角色
-export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺' };
+export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺', group: '集团', brand: '品牌' };
+
+// 补贴管理 行为管理 补贴角色
+export const SUBSIDY_ACTION_ROLES = { user: '哒人', merchant: '店铺', group: '集团' };
 
 // 补贴管理 行为管理 补贴类型 列表映射
 export const SUBSIDY_ACTION_TYPE = {
@@ -334,6 +340,12 @@ export const GROUP_BANK_STATUS = ['未激活', '审核中', '激活失败', '激
 // 开屏广告端口
 export const OPEN_ADVERT_PORT = { user: '用户端', merchant: '商家端' };
 
+// 开屏广告 - 类型
+export const OPEN_ADVERT_TYPE = { image: '图片广告', video: '视频广告' };
+
+// 开屏广告 - 状态
+export const OPEN_ADVERT_STATUS = ['待展示', '展示中', '已下架'];
+
 // Banner端口
 export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
 
@@ -344,8 +356,9 @@ const bannerType = {
   todayNew: '今日上新',
   beanSelection: '小豆精选',
   nearbyBusinessHub: '附近商圈',
-  highCommissionAlliance: '高佣联盟',
+  popularityRanking: '人气排行榜',
   wanderAroundCapsule: '逛逛胶囊位',
+  highCommissionAlliance: '高佣联盟',
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundGoodMerchant: '逛逛周边好店',
 };
@@ -369,7 +382,7 @@ export const MASTER_TYPE = { user: '用户', merchant: '店铺' };
 export const GOODS_CLASS_TYPE = { single: '单品', package: '套餐' };
 
 // 风向标跳转类型
-export const VANE_URL_TYPE = { url: '跳转至URL', native: '按行业显示' };
+export const VANE_URL_TYPE = { url: '跳转至URL', trade: '按行业显示', native: '原生页面' };
 
 // 分享设置 - 区域类型
 export const SHARE_AREA_TYPE = {
@@ -423,6 +436,9 @@ export const ORDER_TYPE_PROPS = {
   specialGoods: '特惠商品',
   reduceCoupon: '优惠券',
   scan: '扫码',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  virtualProduct: '虚拟商品',
 };
 
 // 哒人核销订单类型
@@ -452,13 +468,16 @@ export const SPECIAL_RECOMMEND_TYPE = {
 // 特惠活动 - 是否删除
 export const SPECIAL_RECOMMEND_DELSTATUS = ['已删除', '未删除'];
 
-// 视频广告 - 新手视频状态 1-上架 3-下架
+// 特惠活动 - 介绍类型
+export const SPECIAL_DESC_TYPE = ['图文介绍', '富文本'];
+
+// 新手视频 - 状态 1-上架 3-下架
 export const VIDEO_NOVICE_STATUS = [false, '上架中', false, '已下架'];
 
-// 视频广告 - 区域类型
+// 新手视频 - 区域类型
 export const VIDEO_AREA_TYPE = { all: '全国', district: '单区域投放' };
 
-// 视频广告 - 时间设置类型
+// 新手视频 - 时间设置类型
 export const VIDEO_TIME_TYPE = ['扣完为止', '固定时间'];
 
 // 特惠商品 审核
@@ -499,10 +518,22 @@ export const SUBMIT_TYPE = {
   partner: '区县',
 };
 
+// 视频 审核类型
+export const SUBMIT_TYPE_VIDEO = {
+  merchant: '商家',
+  admin: '运营后台',
+  sell: 'CRM',
+  group: '集团',
+  partner: '区县',
+  user: '哒人',
+};
+
 // serviceType specialGoods-特惠reduceCoupon-有价券 自定义分佣模板
 export const SERVICE_TYPE = {
   specialGoods: '特惠商品 ',
   reduceCoupon: '优惠券',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
 };
 
 // 模板类型 divisionTemplateType
@@ -526,6 +557,7 @@ export const TEMPLATE_CREATE_TYPE = {
 // 分佣配置
 export const COMMISSION_TYPE = {
   province: '省代分佣',
+  city: '地级市分佣',
   district: '区县分佣',
   userParent: '用户家主分佣',
   merchantParent: '商家家主分佣',
@@ -560,3 +592,74 @@ export const BUS_BANKACCOUNT_TYPE = [false, '对公(企业、组织机构)', '�
 
 //节日配置状态 状态 0-待上架 1-上架中 2-已下架
 export const FESTIVAL_STATUS = ['待上架', '上架中', '已下架'];
+
+// 卡豆红包类型
+export const RED_ENVELOPES_TYPE = {
+  message: '私信',
+  normal: '普通',
+  lucky: '拼手气',
+};
+
+// 社群红包类型
+export const RED_ENVELOPES_TYPE_SHE = {
+  normal: '普通',
+  lucky: '拼手气',
+};
+
+export const RED_ENVELOP_STATUS = ['未领取', '已领取', '已退款'];
+
+// 平台视频 - 状态 0-下架 1-上架 2-待上架
+export const NEW_SHARE_STATUS = ['下架', '上架', '待上架'];
+
+// 平台视频 - 归属人
+export const NEW_SHARE_OWNER = { user: '哒人', merchant: '商家', group: '集团' };
+
+// 平台视频 - 打赏状态 0-失效 1-生效 2-待生效
+export const NEW_SHAREREWARD_STATUS = ['失效', '生效', '待生效'];
+
+// 平台视频 - 时间设置类型
+export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时间' };
+
+// 平台视频 - 投放类型
+export const NEW_SHAREPUBLISHTIME_TYPE = { rightNow: '立即发布', fixed: '定时发布' };
+
+// 视频审核店铺/视频类型
+export const VIDEO_TYPE = {
+  user: '哒人',
+  merchant: '店铺',
+  group: '集团',
+};
+
+// 视频审核类型
+export const VIDEO_ACTION_TYPE = {
+  create: '创建审核',
+  update: '修改审核',
+};
+
+// 反馈问题类型 advice-功能反馈 problem-商家问题
+export const FEEDBACK_TYPE = {
+  advice: '功能反馈',
+  problem: '商家问题',
+};
+// 视频广告 - 位置
+export const VIDEO_ADVERT_PLACE = {
+  ALL: '全部',
+  pickUp: '捡豆',
+  commend: '推荐',
+};
+
+// 视频广告 - 广告类型
+export const VIDEO_ADVERT_TYPE = {
+  merchant: '单店',
+  group: '集团',
+  brand: '品牌',
+};
+
+// 视频广告 - 状态 0-下架 1-发布中
+export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
+
+// 平台权益 - 商品售卖类型
+export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
+
+//评论状态
+export const COMMENT_DELETFLAG = ['已删除', '正常'];

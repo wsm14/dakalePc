@@ -2,11 +2,11 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from './MerchantListTable';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList } = props;
-  const { goodsType, ownerType } = detail;
+  const { goodsType, ownerType, goodsDescType } = detail;
 
   const ActiveformItems = [
     {
@@ -67,28 +67,46 @@ const GoodsDetail = (props) => {
 
   const GoodDecItem = [
     {
-      name: 'goodsDesc',
+      label: '介绍类型',
+      name: 'goodsDescType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
+    {
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      name: 'richText',
+      show: goodsDescType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      name: 'goodsDesc',
+      show: goodsDescType === '0',
       type: 'textArea',
     },
     {
-      name: 'goodsDescImg',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍图片`,
+      name: 'goodsDescImg',
+      show: goodsDescType === '0',
       type: 'upload',
     },
   ];
 
   const formItemComiss = [
     {
-      label: '省代分佣金额（元）',
+      label: '省代分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'provinceBean'],
     },
     {
-      label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtBean'],
+      label: '地级市分佣金额（卡豆）',
+      name: ['serviceDivisionDTO', 'cityBean'],
     },
     {
-      label: '哒人分佣金额（元）',
+      label: '区县分佣金额（卡豆）',
+      name: ['serviceDivisionDTO', 'districtBean'],
+    },
+   
+    {
+      label: '哒人分佣金额（卡豆）',
       name: ['serviceDivisionDTO', 'darenBean'],
     },
   ];
@@ -123,11 +141,11 @@ const GoodsDetail = (props) => {
     },
     {
       label: '平台商品标签',
-      name: 'goodsTagList',
+      name: 'platformGoodsTagList',
       // show: detail.goodsTagList,
       render: (val, row) => {
-        const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        const { platformGoodsTagList = [] } = row;
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
             {tags &&

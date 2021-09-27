@@ -58,7 +58,9 @@ const SubsidyManage = () => {
           type: 'batch',
           tab: tabkey,
           show: true,
-          detail: { role: 'merchant' },
+          detail: {
+            // role: 'merchant',
+          },
         }),
     },
     {

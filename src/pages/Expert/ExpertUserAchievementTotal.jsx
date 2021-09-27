@@ -91,7 +91,7 @@ const ExpertUserAchievement = (props) => {
       title: '注册地',
       align: 'center',
       dataIndex: 'districtCode',
-      render: (val) => checkCityName(val),
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: '新增家人数',
@@ -103,6 +103,32 @@ const ExpertUserAchievement = (props) => {
       align: 'center',
       dataIndex: 'familyDarenCount',
     },
+    {
+      title: '分享次數',
+      align: 'center',
+      dataIndex: 'shareCount',
+    },
+    {
+      title: '直推/自购总订单数',
+      align: 'center',
+      dataIndex: 'statisticOrderCount',
+    },
+    {
+      title: '直推/自购总gmv',
+      align: 'center',
+      dataIndex: 'statisticTotalFee',
+    },
+    {
+      title: '直推/自购核销',
+      align: 'center',
+      dataIndex: 'statisticVerificationOrderCount',
+    },
+    {
+      title: '直推/自购核销总GMV',
+      align: 'center',
+      dataIndex: 'statisticVerificationTotalFee',
+    },
+
     {
       title: '分销-核销笔数',
       align: 'center',

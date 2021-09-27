@@ -59,6 +59,14 @@ export function fetchMerchantSet(data) {
   });
 }
 
+// post 店铺数据 - 店铺禁用校验
+export function fetchMerchantProhibitCheck(data) {
+  return request('/admin/merchantManagement/disableMerchantCheck', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 店铺数据 - 商家 店铺状态 经营状态 修改
 export function fetchMerchantStatus(data) {
   return request('/admin/merchantManagement/updateUserMerchant', {

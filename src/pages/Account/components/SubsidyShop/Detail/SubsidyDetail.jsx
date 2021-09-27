@@ -1,11 +1,61 @@
 import React from 'react';
 import { Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import { checkCityName } from '@/utils/utils';
+import { brand } from '@/pages/Business/components/Group/Detail/detailsIndex';
 
 const SubsidyDetail = (props) => {
   const { onClose, visible } = props;
 
-  const { show = false, info, type, titles } = visible;
+  const { show = false, titles, checkType = '', role = '', list = [] } = visible;
+  // pushVideo momentStop  "platformSubsidy" platform，directCharge
+  // role :
+  // (user: string;
+  // merchant: string;
+  // group: string;)
+  // brand
+
+  const getColumnsGroup=[
+    {
+      title: '集团名称',
+      dataIndex: 'groupName',
+      width: 280,
+    },
+    {
+      title: '所属行业',
+      align: 'center',
+      dataIndex: 'topCategoryName',
+    },
+    {
+      title: '地址',
+      dataIndex: 'address',
+      width: 200,
+    },
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ]
+
+  const getColumnsVideo = [
+    {
+      title: '品牌名',
+      dataIndex: 'brandName',
+      width: 280,
+    },
+    {
+      title: '品牌类型',
+      align: 'center',
+      dataIndex: 'categoryName',
+    },
+
+    {
+      title: '补贴/回收卡豆数',
+      align: 'center',
+      dataIndex: 'subsidyBean',
+    },
+  ];
 
   const getColumnsM = [
     {
@@ -16,7 +66,7 @@ const SubsidyDetail = (props) => {
     {
       title: '店铺账号',
       align: 'center',
-      dataIndex: 'account',
+      dataIndex: 'mobile',
     },
     {
       title: '所属商圈',
@@ -26,7 +76,7 @@ const SubsidyDetail = (props) => {
     {
       title: '所属行业',
       align: 'center',
-      dataIndex: 'category',
+      dataIndex: 'topCategoryName',
     },
     {
       title: '地址',
@@ -36,7 +86,7 @@ const SubsidyDetail = (props) => {
     {
       title: '补贴/回收卡豆数',
       align: 'center',
-      dataIndex: 'rechargeBeans',
+      dataIndex: 'subsidyBean',
     },
   ];
 
@@ -69,8 +119,8 @@ const SubsidyDetail = (props) => {
     {
       title: '注册地',
       align: 'center',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val) => checkCityName(val) || '--',
     },
     {
       title: ' 补贴/回收卡豆数',
@@ -86,16 +136,23 @@ const SubsidyDetail = (props) => {
     onCancel: () => onClose(),
     footer: null,
   };
+  // const commonType = ['platformSubsidy', 'platform', 'directCharge'].includes(checkType);
+  const columns = {
+    user: getColumns,
+    merchant: getColumnsM,
+    group:getColumnsGroup,
+    brand: getColumnsVideo,
+  }[role];
 
   return (
     <Modal {...modalProps}>
       <TableDataBlock
         order
         noCard={false}
-        columns={type == 'merchant' ? getColumnsM : getColumns}
-        rowKey={(record) => `${type == 'merchant' ? record.merchantId : record.userIdString}`}
-        list={info}
-        total={info?.length || 0}
+        columns={role ? columns : []}
+        rowKey={(record) => (role == 'brand' ? `${record.id}` : `${record.configBrandIdString}`)}
+        list={list || []}
+        total={list?.length || 0}
       ></TableDataBlock>
     </Modal>
   );

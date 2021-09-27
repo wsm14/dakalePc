@@ -1,24 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { SERVICE_TYPE, DIVISION_TEMPLATE_TYPE, TEMPLATE_CREATE_TYPE } from '@/common/constant';
-import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import ExtraButton from '@/components/ExtraButton';
 import TemplateDrawSet from './components/CommissionTemplate/TemplateDrawSet';
 import TemplateDetail from './components/CommissionTemplate/TemplateDetail';
-const tabList = [
-  {
-    key: 'specialGoods',
-    tab: '特惠商品',
-  },
-  {
-    key: 'reduceCoupon',
-    tab: '优惠券',
-  },
-];
 
 const CommissionTempate = (props) => {
-  const { commissionTemplate, loading, dispatch, tradeList, cRef } = props;
+  const { commissionTemplate, loading, dispatch, tradeList } = props;
   const tableRef = useRef();
   const [tabKey, setTabKey] = useState('specialGoods');
   const [visibleSet, setVisibleSet] = useState(false);
@@ -131,7 +119,10 @@ const CommissionTempate = (props) => {
     <>
       <TableDataBlock
         cardProps={{
-          tabList,
+          tabList: Object.keys(SERVICE_TYPE).map((item) => ({
+            key: item,
+            tab: SERVICE_TYPE[item],
+          })),
           activeTabKey: tabKey,
           onTabChange: setTabKey,
         }}

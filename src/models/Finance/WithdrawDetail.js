@@ -4,6 +4,9 @@ import {
   fetchWithdrawTotal,
   fetchWithdrawExportExcel,
   fetchWithdrawSetRemark,
+  fetchWithdrawExpertList,
+  fetchWithdrawExpertTotal,
+  fetchWithdrawExpertSetRemark,
 } from '@/services/FinanceServices';
 
 export default {
@@ -11,7 +14,9 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    expertlist: { list: [], total: 0 },
     totalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
+    expretTotalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
   },
 
   reducers: {
@@ -54,6 +59,37 @@ export default {
     },
     *fetchWithdrawSetRemark({ payload, callback }, { call }) {
       const response = yield call(fetchWithdrawSetRemark, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '备注设置成功',
+      });
+      callback();
+    },
+    *fetchWithdrawExpertList({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawExpertList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          expertlist: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    *fetchWithdrawExpertTotal({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawExpertTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          expretTotalData: content,
+        },
+      });
+    },
+    *fetchWithdrawExpertSetRemark({ payload, callback }, { call }) {
+      const response = yield call(fetchWithdrawExpertSetRemark, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',

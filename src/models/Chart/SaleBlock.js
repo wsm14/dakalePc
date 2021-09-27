@@ -44,6 +44,23 @@ export default {
         },
       });
     },
+    *fetchUserPlayVideoGetBean({ payload }, { call, put }) {
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userAcquireWatchBean' });
+      const response2 = yield call(fetchSaleBlock, {
+        ...payload,
+        dataType: 'userWatchAmount',
+      });
+      if (!response || !response2) return;
+      const { content } = response;
+      const { content: contentVerify } = response2;
+      yield put({
+        type: 'save',
+        payload: {
+          userAcquireWatchBean: content.data,
+          userWatchAmount: contentVerify.data,
+        },
+      });
+    },
     *fetchUserConsume({ payload }, { call, put }) {
       const response = yield call(fetchSaleBlock, { ...payload, dataType: 'userConsume' });
       const response2 = yield call(fetchSaleBlock, {

@@ -1,8 +1,5 @@
-import {
-  fetchSubsidyShopList,
-  fetchSubsidyShopDetailById,
-  fetchSubsidyUserDetailById,
-} from '@/services/AccountServices';
+import { fetchSubsidyShopList, fetchSubsidyStatisticDetail } from '@/services/AccountServices';
+import { notification } from 'antd';
 
 export default {
   namespace: 'subsidyShop',
@@ -34,19 +31,26 @@ export default {
       });
       if (callback) callback(content.subsidyStatisticObjectList);
     },
-    //店铺详情
-    *fetchSubsidyShopDetailById({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyShopDetailById, payload);
+    //补贴详情
+    *fetchSubsidyStatisticDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchSubsidyStatisticDetail, payload);
       if (!response) return;
-      const { content } = response;
-      if (callback) callback(content.subsidyList);
-    },
-    //用户补贴详情
-    *fetchSubsidyUserDetailById({ payload, callback }, { call }) {
-      const response = yield call(fetchSubsidyUserDetailById, payload);
-      if (!response) return;
-      const { content } = response;
-      if (callback) callback(content.userList);
+      const { content = {} } = response;
+      let detail = {};
+      if (content.detailList && content.type) {
+        const type = content.type ? content.type.split('-') : [];
+        detail = {
+          checkType: type[0],
+          role: type[1],
+          list: content.detailList,
+        };
+        if (callback) callback(detail);
+      } else {
+        notification.info({
+          message: '温馨提示',
+          description: '暂无数据',
+        });
+      }
     },
   },
 };

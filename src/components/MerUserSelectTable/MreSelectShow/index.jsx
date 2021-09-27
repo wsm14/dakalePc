@@ -28,6 +28,7 @@ const MreSelectShow = ({
       title: '地区',
       dataIndex: 'districtCode',
       render: (val) => checkCityName(val) || '--',
+      ellipsis: true,
     },
     {
       title: '详细地址',

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import { Button, Tabs, Alert, Form, notification } from 'antd';
+import { COMMISSION_TYPE } from '@/common/constant';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import DrawerCondition from '@/components/DrawerCondition';
 import GoodsDetailForm from './Detail/GoodsDetail';
@@ -28,7 +29,12 @@ const SpecialGoodCheckDetail = (props) => {
   const [merchantList, setMerchantList] = useState([]);
   const [recordList, setRecordList] = useState({});
 
-  const { goodsTagList = [], categoryIdString = '', divisionFlag } = detail;
+  const {
+    goodsTagList = [],
+    categoryIdString = '',
+    divisionFlag,
+    serviceDivisionDTO: dService = {},
+  } = detail;
 
   useEffect(() => {
     if (show) {
@@ -43,16 +49,11 @@ const SpecialGoodCheckDetail = (props) => {
     }
   }, [show]);
 
-  // 0-待审核 1-已通过 2-已驳回 3-已关闭
-
   const [form] = Form.useForm();
 
   useEffect(() => {
     if (show) {
       getTagList();
-      // getTagsMerchant();
-      // getTagsPlat();
-
       //挂靠商家列表
       if (detail.ownerType === 'group') {
         getMerchantList();
@@ -89,29 +90,6 @@ const SpecialGoodCheckDetail = (props) => {
     });
   };
 
-  // //获取商品标签
-  // const getTagsMerchant = () => {
-  //   dispatch({
-  //     type: 'goodsTag/fetchGoodsTagList',
-  //     payload: {
-  //       tagType: 'merchant',
-  //     },
-  //     callback: (list) => {
-  //       setMerchantTaglist(list);
-  //     },
-  //   });
-  // };
-  // //平台标签
-  // const getTagsPlat = () => {
-  //   dispatch({
-  //     type: 'goodsTag/fetchGoodsTagList',
-  //     payload: {
-  //       tagType: 'platform',
-  //     },
-  //     callback: (list) => setPlatTaglist(list),
-  //   });
-  // };
-
   // 审核通过
   const handleVerifyAllow = () => {
     if (!form.getFieldValue('otherPlatformPrice')) {
@@ -122,33 +100,17 @@ const SpecialGoodCheckDetail = (props) => {
     }
     form.validateFields().then((values) => {
       const { otherPlatformPrice, merTags, platTags, serviceDivisionDTO = {} } = values;
-      let tags = [...merTags, ...platTags];
-      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
-      const pBean = Number(provinceBean) * 100;
-      const dBean = Number(districtBean) * 100;
-      const daBean = Number(darenBean) * 100;
-      const totalFee = Number(provinceBean) + Number(districtBean) + Number(darenBean);
-      //金额转卡豆
-      const serDivisionDTO = { provinceBean: pBean, districtBean: dBean, darenBean: daBean };
+
       const payload = {
         submitterType,
         divisionFlag,
         auditId: auditIdString,
         ownerId: ownerIdString,
-        serviceDivisionDTO: detail.divisionFlag === '1' ? serDivisionDTO : '',
+        serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
         otherPlatformPrice: otherPlatformPrice,
-        goodsTags: tags && tags.toString(),
+        goodsTags: merTags?.toString(),
+        platformGoodsTags: platTags?.toString(),
       };
-      //手动分佣判断
-      if (detail.divisionFlag === '1') {
-        if (totalFee > Number(detail.commission)) {
-          notification.info({
-            message: '温馨提示',
-            description: '分佣金额之和不能大于佣金总额',
-          });
-          return;
-        }
-      }
       dispatch({
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
         payload: payload,
@@ -213,37 +175,38 @@ const SpecialGoodCheckDetail = (props) => {
       maxLength: 20,
     },
   ];
+
   const commission = [
     {
       label: `佣金总额`,
       name: 'commission',
-      render: (val) => (val ? val + '元' : ''),
+      render: (val) => (val ? `${val}元（${Number(val) * 100}卡豆）` : ''),
     },
   ];
 
-  const formCommission = [
-    {
-      label: '省代分佣金额（元）',
-      name: ['serviceDivisionDTO', 'provinceBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-    {
-      label: '区县分佣金额（元）',
-      name: ['serviceDivisionDTO', 'districtBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-    {
-      label: '哒人分佣金额（元）',
-      name: ['serviceDivisionDTO', 'darenBean'],
-      type: 'number',
-      precision: 2,
-      min: 0,
-    },
-  ];
+  const formCommission = Object.keys(dService).map((i) => ({
+    label: `${COMMISSION_TYPE[i.replace('Bean', '')]}分佣`,
+    name: ['serviceDivisionDTO', i],
+    type: 'number',
+    precision: 2,
+    min: 0,
+    suffix: '卡豆',
+    addRules: [
+      {
+        validator: (rule, time) => {
+          const keyArr = Object.keys(dService).map((i) => ['serviceDivisionDTO', i]);
+          const valObj = form.getFieldsValue(keyArr);
+          const { serviceDivisionDTO: sVal = {} } = valObj;
+          const allPrice =
+            Object.values(sVal).reduce((pre, cur) => pre + Number(cur || 0), 0) / 100;
+          if (allPrice > Number(detail.commission)) {
+            return Promise.reject('分佣金额之和不能大于佣金总额');
+          }
+          return Promise.resolve();
+        },
+      },
+    ],
+  }));
 
   const formTagItem = [
     {
@@ -301,8 +264,6 @@ const SpecialGoodCheckDetail = (props) => {
       }
     }
   };
-
-  const handleErr = () => {};
 
   return (
     <DrawerCondition {...modalProps}>
@@ -362,22 +323,21 @@ const SpecialGoodCheckDetail = (props) => {
           ></FormCondition>
 
           {/* 审核中并且分佣模板为手动分佣时 */}
-          {detail.divisionFlag === '1' && ['adminAudit'].includes(tabkey) && (
+          {tabkey === 'adminAudit' && detail.divisionFlag === '1' && (
             <>
               <DescriptionsCondition
                 formItems={commission}
                 initialValues={detail}
               ></DescriptionsCondition>
-
               <div
                 style={{
                   fontSize: 16,
-                  color: 'rgba(0,0,0,.85',
+                  color: 'rgba(0,0,0,.85)',
                   margin: '10px 0',
                   fontWeight: 'bold',
                 }}
               >
-                分佣配置
+                分佣配置（卡豆）
               </div>
               <FormCondition
                 formItems={formCommission}

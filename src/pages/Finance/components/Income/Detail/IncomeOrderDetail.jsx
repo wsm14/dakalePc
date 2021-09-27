@@ -193,9 +193,10 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           type === 'reduceCoupon' ||
           type === 'specialGoods' ||
           type === 'writeOff' ? (
-            <Popover content={detailProps.kolFormDom()} placement="left">
-              <a>查看计算公式</a>
-            </Popover>
+            <></>
+            // <Popover content={detailProps.kolFormDom()} placement="left">
+            //   <a>查看计算公式</a>
+            // </Popover>
           ) : (
             <Popover content={detailProps.formulaDom()} placement="left">
               <a>查看计算公式</a>

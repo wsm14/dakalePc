@@ -9,7 +9,9 @@ export const ROLE_BUTTON_TYPE = {
   actionSave: '新增使用规则',
   againUp: '再次上架',
   addRemain: '增加库存',
+  authEdit: '权限设置',
 
+  BDSet: '关联BD',
   batchEdit: '批量修改',
   baseTrade: '基础设施',
   bussinessStatus: '营业状态',
@@ -17,12 +19,14 @@ export const ROLE_BUTTON_TYPE = {
   copy: '复制',
   check: '审核',
   close: '关闭',
+  config: '配置',
   couponAdd: '优惠券新增',
   cancelTemp: '取消实习',
   checkDetail: '审核记录',
   couponDetail: '优惠券详情',
   cancleRecommend: '取消推荐',
   configCondit: '条件配置',
+  commerceSet: '带货设置',
 
   del: '删除',
   down: '下架',
@@ -42,6 +46,7 @@ export const ROLE_BUTTON_TYPE = {
   exportList: '导出',
 
   goodsCode: '商品码',
+  getRecord: '领取记录',
 
   handle: '处理',
   handleDeatil: '操作记录',
@@ -64,16 +69,22 @@ export const ROLE_BUTTON_TYPE = {
   noticeDel: '公告删除',
   noticeSend: '公告发送',
 
+  openAd: '开屏广告',
   orderDetail: '订单明细',
 
   push: '推送',
+  puzzleAd: '拼图广告',
   placement: '置顶',
   peasDetail: '卡豆明细',
   preview: '预览',
+  portraitEdit: '编辑画像',
+  equityCoupon: '权益券',
+  equityGoods: '权益商品',
+  equityDummy: '虚拟权益',
 
   qrCode: '获取二维码',
 
-  rate :'费率',
+  rate: '费率',
   role: '角色',
   revoke: '撤销',
   replay: '回复',
@@ -84,10 +95,11 @@ export const ROLE_BUTTON_TYPE = {
   roleStatus: '角色状态',
   recycleBean: '卡豆回收',
   reportCenter: '举报中心',
-  recommendList: '推荐列表',
+  recommendList: '团队',
   rechargeDetail: '充值记录',
   recommendStatus: '推荐状态',
-  rewardPeo: '新增打赏人数',
+  rewardPeo: '打赏设置',
+  recover: '恢复',
 
   set: '设置',
   save: '新增',
@@ -103,7 +115,7 @@ export const ROLE_BUTTON_TYPE = {
   sharePush: '发布分享',
   searchSet: '热门搜索配置',
   storeList: '门店列表',
-  statistics: '统计',
+  statistics: '分佣',
   signDetail: '打卡明细',
   setMreCord: '设置商家验证码',
   shareImgAdd: '新增分享图片',
@@ -131,7 +143,11 @@ export const ROLE_BUTTON_TYPE = {
   userEdit: '用户编辑',
   userStatus: '用户状态',
 
+  videoAd: '视频广告',
+
   withdraw: '提现记录',
+  withdrawMerchant: '单店提现',
+  withdrawExpert: '哒人提现',
 };
 
 // 数据权限选项

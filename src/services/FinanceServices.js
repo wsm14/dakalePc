@@ -24,15 +24,8 @@ export function fetchSubsidyTaskDetail(params) {
 }
 
 // get 补贴管理 - 任务列表 -  补贴详情列表
-export function fetchSubsidyTaskDetailList(params) {
-  return request('/admin/subsidyManagement/listSubsidyDetail', {
-    params,
-  });
-}
-
-// get 补贴管理 - 任务列表 -  补贴详情 用户列表
-export function fetchSubsidyTaskUserDetailList(params) {
-  return request('/admin/subsidyManagement/listUserSubsidyDetail', {
+export function fetchListSubsidyDetailAll(params) {
+  return request('/admin/subsidyManagement/listSubsidyDetailAll', {
     params,
   });
 }
@@ -128,6 +121,28 @@ export function fetchWithdrawExportExcel(params) {
 // post 提现明细 - 设置备注
 export function fetchWithdrawSetRemark(data) {
   return request('/admin/merchantBeanManagement/merchantBeanWithdrawalRemark', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 提现明细 - 哒人列表
+export function fetchWithdrawExpertList(params) {
+  return request('/admin/userBeanWithdrawal/listUserBeanWithdrawalManagement', {
+    params,
+  });
+}
+
+// get 提现明细 - 哒人合计
+export function fetchWithdrawExpertTotal(params) {
+  return request('/admin/userBeanWithdrawal/listUserBeanWithdrawalManagementTotal', {
+    params,
+  });
+}
+
+// post 提现明细 - 哒人设置备注
+export function fetchWithdrawExpertSetRemark(data) {
+  return request('/admin/userBeanWithdrawal/userBeanWithdrawalRemark', {
     method: 'POST',
     data,
   });

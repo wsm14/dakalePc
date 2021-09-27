@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { SUBSIDY_BEAN_TYPE, SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLE } from '@/common/constant';
+import {
+  SUBSIDY_BEAN_TYPE,
+  SUBSIDY_TASK_ROLE,
+  SUBSIDY_ACTION_ROLE,
+  SUBSIDY_ACTION_ROLES,
+} from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import TaskDetailList from '../Detail/TaskDetailList';
 
@@ -65,7 +70,7 @@ const TaskManage = (props) => {
       title: '角色',
       align: 'center',
       dataIndex: 'role',
-      render: (val) => SUBSIDY_ACTION_ROLE[val],
+      render: (val) => (tabkey === 'direct' ? SUBSIDY_ACTION_ROLES[val] : SUBSIDY_ACTION_ROLE[val]),
     },
     {
       title: '类型',
@@ -81,8 +86,7 @@ const TaskManage = (props) => {
     {
       title: '补贴/回收卡豆数',
       align: 'right',
-      dataIndex: 'subsidizedBeans',
-      render: (val, row) => (row.mode == 'out' ? val : row.recycleBean),
+      dataIndex: 'totalBeans',
     },
     {
       title: '创建时间',

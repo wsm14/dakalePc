@@ -2,11 +2,11 @@ import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import SetMealTable from './SetMealTable';
 import MerchantListTable from '../../SpecialGoods/Detail/MerchantListTable';
-import { BUSINESS_TYPE, GOODS_CLASS_TYPE } from '@/common/constant';
+import { BUSINESS_TYPE, GOODS_CLASS_TYPE, SPECIAL_DESC_TYPE } from '@/common/constant';
 
 const GoodsDetail = (props) => {
   const { detail, merchantList = [], tabkey } = props;
-  const { goodsType, ownerType } = detail;
+  const { goodsType, ownerType, goodsDescType } = detail;
 
   const ActiveformItems = [
     {
@@ -67,13 +67,26 @@ const GoodsDetail = (props) => {
 
   const GoodDecItem = [
     {
+      label: '介绍类型',
+      name: 'goodsDescType',
+      render: (val) => SPECIAL_DESC_TYPE[val],
+    },
+    {
+      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      name: 'richText',
+      show: goodsDescType === '1',
+      render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
+    },
+    {
       name: 'goodsDesc',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
+      show: goodsDescType === '0',
       type: 'textArea',
     },
     {
       name: 'goodsDescImg',
       label: `${GOODS_CLASS_TYPE[goodsType]}介绍图片`,
+      show: goodsDescType === '0',
       type: 'upload',
     },
   ];
@@ -82,6 +95,10 @@ const GoodsDetail = (props) => {
     {
       label: '省代分佣金额（元）',
       name: ['serviceDivisionDTO', 'provinceBean'],
+    },
+    {
+      label: '地级市分佣金额（元）',
+      name: ['serviceDivisionDTO', 'cityBean'],
     },
     {
       label: '区县分佣金额（元）',
@@ -119,14 +136,13 @@ const GoodsDetail = (props) => {
           </>
         );
       },
-      // show: detail.auditStatus !== '0',
     },
     {
       label: '平台商品标签',
-      name: 'goodsTagList',
+      name: 'platformGoodsTagList',
       render: (val, row) => {
-        const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'platform');
+        const { platformGoodsTagList = [] } = row;
+        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
         return (
           <>
             {tags &&

@@ -5,7 +5,7 @@ import { BUSINESS_DO_STATUS, BUSINESS_STATUS } from '@/common/constant';
 export default {
   fieldNames: { key: 'key', headerName: 'header' },
   header: [
-    { key: 'account', header: '店铺账号' },
+    { key: 'mobile', header: '店铺账号' },
     { key: 'merchantName', header: '店铺名称' },
     { key: 'districtCode', header: '省市区', render: (val) => checkCityName(val) },
     { key: 'businessHub', header: '所属商圈' },

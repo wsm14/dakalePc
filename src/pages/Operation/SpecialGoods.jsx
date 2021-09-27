@@ -23,6 +23,7 @@ import excelProps from './components/SpecialGoods/ExcelProps';
 import RemainModal from './components/SpecialGoods/Detail/RemainModal';
 import AuthConsumer from '@/layouts/AuthConsumer';
 import ShareImg from './components/SpecialGoods/ShareImg';
+import { checkCityName } from '@/utils/utils';
 
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
@@ -77,6 +78,7 @@ const SpecialGoods = (props) => {
       label: '商品状态',
       name: 'deleteFlag',
       type: 'select',
+      allItem: false,
       select: ['已删除', '未删除'],
     },
     {
@@ -84,6 +86,7 @@ const SpecialGoods = (props) => {
       type: 'rangePicker',
       name: 'activityStartTime',
       end: 'activityEndTime',
+      disabledDate: () => false,
     },
     {
       label: '使用有效期',
@@ -93,7 +96,6 @@ const SpecialGoods = (props) => {
       select: SPECIAL_USERTIME_TYPE,
       handle: (form) => ({
         onChange: (val) => {
-          console.log(val);
           setSearchType(val);
           form.setFieldsValue({ gain: undefined });
         },
@@ -270,6 +272,19 @@ const SpecialGoods = (props) => {
       align: 'right',
       dataIndex: 'writeOffGoodsCount',
       sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
+    },
+    {
+      title: '地区/行业',
+      align: 'center',
+      dataIndex: 'districtCode',
+      render: (val, row) => (
+        <>
+          <div> {checkCityName(val) || '--'} </div>
+          <div>
+            {row.topCategoryName} / {row.categoryName}
+          </div>
+        </>
+      ),
     },
     {
       title: '创建时间',

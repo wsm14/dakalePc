@@ -53,23 +53,8 @@ export default {
         useTimeRule = '',
         ownerIdString = '',
         useTime = '',
-        serviceDivisionDTO = {},
         useWeek = '',
       } = content.ownerCouponInfo;
-      //分佣详情
-      const { provinceBean = '', districtBean = '', darenBean = '' } = serviceDivisionDTO;
-      const pBean =
-        provinceBean || provinceBean == '0' ? (Number(provinceBean) / 100).toFixed(2) : '';
-      const dBean =
-        districtBean || districtBean == '0' ? (Number(districtBean) / 100).toFixed(2) : '';
-      const daBean = darenBean || darenBean == '0' ? (Number(darenBean) / 100).toFixed(2) : '';
-      const sDetail = {
-        serviceDivisionDTO: {
-          provinceBean: pBean,
-          districtBean: dBean,
-          darenBean: daBean,
-        },
-      };
 
       const timeTypeCheck = useTime === '00:00-23:59' ? useTime : 'part';
       const useWeekCheck = useWeek === '1,2,3,4,5,6,7' ? useWeek : 'part';
@@ -98,7 +83,6 @@ export default {
         couponDesc: couponDesc?.includes(']') ? JSON.parse(couponDesc || '[]') : [],
         ...content,
         ...newDetail,
-        ...sDetail,
       });
     },
     *fetchCouponSave({ payload, callback }, { call }) {
@@ -110,12 +94,29 @@ export default {
       });
       callback();
     },
-
+    *fetchPlatformEquityCouponSave({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponSave, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益券新增成功',
+      });
+      callback();
+    },
     *fetchCouponToImport({ payload, callback }, { call }) {
       const response = yield call(fetchCouponToImport, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.ownerCouponList);
+    },
+    *fetchPlatformEquityCouponUpdate({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponUpdate, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '权益券修改成功',
+      });
+      callback();
     },
     *fetchCouponUpdate({ payload, callback }, { call }) {
       const response = yield call(fetchCouponUpdate, payload);

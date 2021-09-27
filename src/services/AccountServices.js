@@ -83,16 +83,16 @@ export async function fetchSubsidyShopList(params) {
   });
 }
 
-// get 补贴店铺 - 详情
-export async function fetchSubsidyShopDetailById(params) {
-  return request('/admin/subsidyManagement/listSubsidyDetail', {
+// 补贴详情
+export async function fetchSubsidyStatisticDetail(params) {
+  return request('/admin/subsidyStatistic/subsidyStatisticDetail', {
     params,
   });
 }
 
-// get 补贴店铺 - 补贴用户详情
-export async function fetchSubsidyUserDetailById(params) {
-  return request('/admin/subsidyStatistic/getUserSubsidyStatisticDetail', {
+// 集团账户 列表
+export async function fetchListMerchantGroupAccount(params) {
+  return request('/admin/merchantGroup/listMerchantGroupAccount', {
     params,
   });
 }

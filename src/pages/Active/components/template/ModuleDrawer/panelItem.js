@@ -20,4 +20,9 @@ export default [
     type: 'list',
     children: ['commonList', 'merchantList', 'couponList'],
   },
+  {
+    header: '视频类',
+    type: 'video',
+    children: ['normalVideo'],
+  },
 ];

@@ -1,13 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import { Card, Tag } from 'antd';
-import { BUSINESS_TYPE, SUBMIT_TYPE, ACTION_TYPE, COUPON_TYPE } from '@/common/constant';
+import {
+  BUSINESS_TYPE,
+  SUBMIT_TYPE,
+  ACTION_TYPE,
+  COUPON_TYPE,
+  GOODS_CHECK_RESSTATUS,
+} from '@/common/constant';
 import Ellipsis from '@/components/Ellipsis';
-import NoCheck from './components/CouponCheck/NoCheck';
-import NoConfirm from './components/CouponCheck/NoConfirm';
-import AlCheck from './components/CouponCheck/AlCheck';
-import AlConfirm from './components/CouponCheck/AlConfirm';
-import CouponDetail from './components/CouponCheck/Detail/CouponDetail';
+import CouponDetail from './components/CouponCheck/CouponDetail';
+import TableDataBlock from '@/components/TableDataBlock';
 
 const tabList = [
   {
@@ -29,15 +32,19 @@ const tabList = [
 ];
 
 const CouponCheck = (props) => {
-  const { dispatch, couponAudit } = props;
+  const { dispatch, couponAudit, loading } = props;
   const [tabkey, setTabKey] = useState('adminAudit');
   const [visibleInfo, setVisibleInfo] = useState(false);
 
   const tableRef = useRef();
   const { list } = couponAudit;
 
-  //组建公用的搜索条件
-  const globalSearch = [
+  useEffect(() => {
+    tableRef.current.fetchGetData();
+  }, [tabkey]);
+
+  // 组建公用的搜索条件
+  const searchItems = [
     {
       label: '券名称',
       name: 'marketingName',
@@ -69,10 +76,17 @@ const CouponCheck = (props) => {
       type: 'select',
       select: BUSINESS_TYPE,
     },
+    {
+      label: '审核结果',
+      name: 'auditStatus',
+      type: 'select',
+      show: ['merchantConfirmed', 'adminConfirmed'].includes(tabkey),
+      select: GOODS_CHECK_RESSTATUS,
+    },
   ];
 
-  //tab自组件Table公用的colum数据部分
-  const globalColum = [
+  // tab自组件Table公用的colum数据部分
+  const getColumns = [
     {
       title: '券/店铺名称',
       dataIndex: 'ownerCouponDTO',
@@ -84,7 +98,9 @@ const CouponCheck = (props) => {
               {ownerCouponDTO.couponType && (
                 <Tag color="magenta">{COUPON_TYPE[ownerCouponDTO.couponType]}</Tag>
               )}
-              {ownerCouponDTO.couponName}
+              <Ellipsis length={15} tooltip>
+                {ownerCouponDTO.couponName}
+              </Ellipsis>
             </div>
             <div style={{ display: 'flex', marginTop: 5 }}>
               <Tag>{BUSINESS_TYPE[ownerCouponDTO.ownerType]}</Tag>
@@ -169,23 +185,22 @@ const CouponCheck = (props) => {
       dataIndex: 'actionType',
       render: (val) => ACTION_TYPE[val],
     },
-  ];
-
-  const fetchSpecialGoodsClose = (record) => {
-    const { auditIdString, ownerIdString } = record;
-    dispatch({
-      type: 'specialGoodsCheck/fetchSpecialGoodsAuditClose',
-      payload: {
-        ownerId: ownerIdString,
-        auditId: auditIdString,
-      },
-      callback: () => {
-        tableRef.current.fetchGetData();
-      },
-    });
-  };
-
-  const rowHandle = [
+    {
+      title: '审核时间',
+      show: ['merchantConfirmed', 'adminConfirmed'].includes(tabkey),
+      dataIndex: 'auditTime',
+    },
+    {
+      title: '审核结果',
+      dataIndex: 'auditStatus',
+      show: ['merchantConfirmed', 'adminConfirmed'].includes(tabkey),
+      render: (val) => GOODS_CHECK_RESSTATUS[val],
+    },
+    {
+      title: '驳回原因',
+      dataIndex: 'rejectReason',
+      show: ['merchantConfirmed', 'adminConfirmed'].includes(tabkey),
+    },
     {
       type: 'handle',
       dataIndex: 'auditIdString',
@@ -215,12 +230,18 @@ const CouponCheck = (props) => {
     },
   ];
 
-  const listProps = { tableRef, tabkey, globalColum, globalSearch, rowHandle };
-  const contentList = {
-    adminAudit: <NoCheck {...listProps}></NoCheck>,
-    merchantAudit: <NoConfirm {...listProps}></NoConfirm>,
-    adminConfirmed: <AlCheck {...listProps}></AlCheck>,
-    merchantConfirmed: <AlConfirm {...listProps}></AlConfirm>,
+  const fetchSpecialGoodsClose = (record) => {
+    const { auditIdString, ownerIdString } = record;
+    dispatch({
+      type: 'specialGoodsCheck/fetchSpecialGoodsAuditClose',
+      payload: {
+        ownerId: ownerIdString,
+        auditId: auditIdString,
+      },
+      callback: () => {
+        tableRef.current.fetchGetData();
+      },
+    });
   };
 
   // 获取详情
@@ -250,8 +271,19 @@ const CouponCheck = (props) => {
 
   return (
     <>
-      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={(key) => setTabKey(key)}>
-        {contentList[tabkey]}
+      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={setTabKey}>
+        <TableDataBlock
+          firstFetch={false}
+          noCard={false}
+          cRef={tableRef}
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          params={{ auditSearchType: tabkey }}
+          rowKey={(record) => `${record.auditIdString}`}
+          dispatchType="couponAudit/fetchGetList"
+          {...couponAudit}
+        ></TableDataBlock>
       </Card>
       {/* 详情 */}
       <CouponDetail
@@ -265,6 +297,7 @@ const CouponCheck = (props) => {
     </>
   );
 };
-export default connect(({ couponAudit }) => ({
+export default connect(({ couponAudit, loading }) => ({
   couponAudit,
+  loading: loading.models.couponAudit || loading.effects['baseData/fetchGetLogDetail'],
 }))(CouponCheck);

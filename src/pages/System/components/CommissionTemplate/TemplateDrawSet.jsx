@@ -17,12 +17,56 @@ const TemplateDrawSet = (props) => {
 
   const [form] = Form.useForm();
   useEffect(() => {
+    handleRate();
     if (show && type === 'edit') {
       setCommissType(detail.divisionTemplateType);
     } else {
       setCommissType(false);
     }
   }, [show]);
+
+  //哒人分佣显示达人最高等级（当前为四星豆长，根据配置）的直推和团队收益之和
+  const handleRate = () => {
+    dispatch({
+      type: 'expertAllocation/fetchGetList',
+      callback: (list) => {
+        const configUserLevelList = list[list.length - 1].configUserLevelList;
+        const data = configUserLevelList[configUserLevelList.length - 1];
+        form.setFieldsValue({
+          differenceDivisionObjects: {
+            daren: Number(data.shareCommission) + Number(data.teamCommission),
+          },
+        });
+      },
+    });
+  };
+
+  //平台分佣比例自动计算。
+  // 计算公式：100%-省代分佣比例-地级市分佣比例-区县分佣比例-用户家主分佣比例-店铺家主分佣比例-哒人最高分佣比例
+  const handleChange = () => {
+    const values = form.getFieldsValue();
+    const { differenceDivisionObjects = {} } = values;
+    const {
+      province = 0,
+      city = 0,
+      district = 0,
+      userParent = 0,
+      merchantParent = 0,
+      daren = 0,
+    } = differenceDivisionObjects;
+    const total =
+      Number(province) +
+      Number(city) +
+      Number(district) +
+      Number(userParent) +
+      Number(merchantParent) +
+      Number(daren);
+    form.setFieldsValue({
+      differenceDivisionObjects: {
+        platform: (100 - total).toFixed(2),
+      },
+    });
+  };
 
   const formItems = [
     {
@@ -57,6 +101,15 @@ const TemplateDrawSet = (props) => {
       addonAfter: '%',
       visible: commissType === 'difference',
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      onChange: (e) => handleChange(),
+    },
+    {
+      label: '地级市分佣比例', // 手动分佣需要展示
+      name: ['differenceDivisionObjects', 'city'],
+      addonAfter: '%',
+      visible: commissType === 'difference',
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      onChange: (e) => handleChange(),
     },
     {
       label: '区县分佣比例', // 手动分佣需要展示
@@ -64,6 +117,7 @@ const TemplateDrawSet = (props) => {
       addonAfter: '%',
       visible: commissType === 'difference',
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      onChange: (e) => handleChange(),
     },
     {
       label: '用户家主分佣比例', // 手动分佣需要展示
@@ -71,6 +125,7 @@ const TemplateDrawSet = (props) => {
       addonAfter: '%',
       visible: commissType === 'difference',
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      onChange: (e) => handleChange(),
     },
     {
       label: '店铺家主分佣比例', // 手动分佣需要展示
@@ -78,12 +133,22 @@ const TemplateDrawSet = (props) => {
       addonAfter: '%',
       visible: commissType === 'difference',
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+      onChange: (e) => handleChange(),
     },
     {
       label: '哒人分佣比例', // 手动分佣需要展示
       name: ['differenceDivisionObjects', 'daren'],
       addonAfter: '%',
       visible: commissType === 'difference',
+      disabled: true,
+      addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
+    },
+    {
+      label: '平台分佣比例', // 手动分佣需要展示
+      name: ['differenceDivisionObjects', 'platform'],
+      addonAfter: '%',
+      visible: commissType === 'difference',
+      disabled: true,
       addRules: [{ pattern: NUM_ALL, message: '输入格式不正确' }],
     },
     {

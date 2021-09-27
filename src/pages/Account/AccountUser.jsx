@@ -5,9 +5,20 @@ import UserDetailList from './components/User/UserDetailList';
 import UserTotalInfo from './components/User/UserTotalInfo';
 
 const AccountUserList = (props) => {
-  const { userlist, loading, dispatch } = props;
+  const { userlist, loading, dispatch, kolLevel } = props;
 
   const [visible, setVisible] = useState('');
+
+  useEffect(() => {
+    fetchGetKolLevel();
+  }, []);
+
+  // 获取哒人等级数据
+  const fetchGetKolLevel = () => {
+    dispatch({
+      type: 'baseData/fetchGetKolLevel',
+    });
+  };
 
   // 搜索参数
   const searchItems = [
@@ -18,6 +29,12 @@ const AccountUserList = (props) => {
     {
       label: '手机号',
       name: 'mobile',
+    },
+    {
+      label: '用户等级',
+      name: 'level',
+      type: 'select',
+      select: kolLevel,
     },
   ];
 
@@ -35,9 +52,41 @@ const AccountUserList = (props) => {
       render: (val) => val || '--',
     },
     {
+      title: '豆号',
+      align: 'center',
+      dataIndex: 'beanCode',
+    },
+    {
+      title: '手机号',
+      align: 'center',
+      dataIndex: 'mobile',
+    },
+    {
+      title: '用户级别',
+      align: 'center',
+      dataIndex: 'levelName',
+    },
+    {
+      title: '累计提现（卡豆）',
+      align: 'center',
+      dataIndex: 'totalWithdrawBean',
+    },
+    {
+      title: '累计支出（卡豆）',
+      align: 'right',
+      dataIndex: 'totalExpendBean',
+      render: (val) => val || 0,
+    },
+    {
+      title: '累计奖励（卡豆）',
+      align: 'right',
+      dataIndex: 'totalRewardBean',
+      render: (val) => val || 0,
+    },
+    {
       title: '累计收益（卡豆）',
       align: 'right',
-      dataIndex: 'totalAdd',
+      dataIndex: 'totalIncomeBean',
       render: (val) => val || 0,
     },
     {
@@ -46,12 +95,7 @@ const AccountUserList = (props) => {
       dataIndex: 'totalCharge',
       render: (val) => val || 0,
     },
-    {
-      title: '累计支出（金额）',
-      align: 'right',
-      dataIndex: 'totalConsume',
-      render: (val) => val || 0,
-    },
+
     {
       title: '奖励卡豆余额',
       align: 'right',
@@ -105,7 +149,8 @@ const AccountUserList = (props) => {
   );
 };
 
-export default connect(({ accountUser, loading }) => ({
+export default connect(({ accountUser, loading, baseData }) => ({
   userlist: accountUser.userlist,
+  kolLevel: baseData.kolLevel,
   loading: loading.effects['accountUser/fetchGetList'],
 }))(AccountUserList);

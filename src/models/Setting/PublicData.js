@@ -32,6 +32,8 @@ import {
   fetchAuditMerchantList,
   fetchGetCouponsSearch,
   fetchGetGoodsSearch,
+  fetchListImportSubsidyRole,
+  fetchListUserByIds,
 } from '@/services/PublicServices';
 
 export default {
@@ -399,6 +401,9 @@ export default {
         commissionRatio: item.commissionRatio,
         topCategoryName: [item.topCategoryName, item.categoryName],
         topCategoryId: [item.topCategoryIdString, item.categoryIdString],
+        districtCode: item.districtCode,
+        businessStatus: item.businessStatus || '1',
+        status: item.status || '1',
       }));
       yield put({
         type: 'save',
@@ -430,7 +435,7 @@ export default {
       const response = yield call(fetchGoodsIsCommission, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.manuallyFlag);
+      callback(content);
     },
     *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {
       const response = yield call(fetchSkuDetailMerchantList, payload);
@@ -471,6 +476,18 @@ export default {
           })),
         },
       });
+    },
+    *fetchListImportSubsidyRole({ payload, callback }, { put, call }) {
+      const response = yield call(fetchListImportSubsidyRole, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content);
+    },
+    *fetchListUserByIds({ payload, callback }, { put, call }) {
+      const response = yield call(fetchListUserByIds, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content.userDTOS);
     },
   },
 };

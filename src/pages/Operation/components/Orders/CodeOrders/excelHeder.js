@@ -55,6 +55,14 @@ export default [
     dataIndex: 'orderSource',
   },
   {
+    title: '所属商圈',
+    dataIndex: 'businessHub',
+  },
+  {
+    title: '详细地址',
+    dataIndex: 'address',
+  },
+  {
     title: '区域',
     dataIndex: 'merchantDistrict',
     render: (val) => checkCityName(val),

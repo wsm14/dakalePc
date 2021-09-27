@@ -108,13 +108,26 @@ const SearchCondition = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, i) => {
-      const { type = 'input', name, handle, label, col = true, ...other } = item;
+      const {
+        type = 'input',
+        name,
+        handle,
+        label,
+        col = true,
+        show = true,
+        required = false,
+        rules: rs = [],
+        ...other
+      } = item;
       // 根据类型获取不同的表单组件
       const SearchItem = Searchor[type];
 
+      // 规则 默认必填
+      const rules = [{ required, message: `请确认${label}` }, ...rs];
+
       const colcount = expand ? len : count;
-      const block = (
-        <FormItem label={label} style={{ paddingBottom: 8 }} name={name}>
+      const block = show ? (
+        <FormItem label={label} style={{ paddingBottom: 8 }} name={name} rules={rules}>
           <SearchItem
             type={type}
             label={label}
@@ -123,14 +136,15 @@ const SearchCondition = (props) => {
             {...(handle && handle(form || ownForm))}
           ></SearchItem>
         </FormItem>
-      );
+      ) : null;
+
       if (col) {
         // 排版填充
         children.push(
           <Col
-            lg={i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
-            xl={i < colcount ? 12 : 0}
-            xxl={i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
+            lg={show === false ? 0 : i < colcount ? (componentSize !== 'default' ? 8 : 12) : 0}
+            xl={show === false ? 0 : i < colcount ? 12 : 0}
+            xxl={show === false ? 0 : i < colcount ? (componentSize !== 'default' ? 8 : 6) : 0}
             key={i}
           >
             {block}
@@ -138,7 +152,7 @@ const SearchCondition = (props) => {
         );
       } else
         children.push(
-          <Col span={12} key={i}>
+          <Col span={show === false ? 0 : 12} key={i}>
             {block}
           </Col>,
         );

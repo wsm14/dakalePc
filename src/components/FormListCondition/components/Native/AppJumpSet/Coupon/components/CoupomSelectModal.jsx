@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Modal, Empty, Spin, Tabs } from 'antd';
+import { Input, Modal, Empty, Spin, Tabs } from 'antd';
 import { couponsDom } from './CouponFreeDom';
 import '../../SpecialGoods/index.less';
 
 const { TabPane } = Tabs;
+const { Search } = Input;
+
 /**
  * 选择特惠商品（单选）
  * @param {String} merchantId 商家id
@@ -14,12 +16,13 @@ const GoodsSelectModal = (props) => {
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
   const [tabKey, setTabKey] = useState('coupon'); // tab类型
+  const [searchValue, setSearchValue] = useState(''); // 搜索值
 
   useEffect(() => {
     if (visible) {
       if (tabKey === 'coupon') fetchGetBuyCouponSelect();
     }
-  }, [visible, tabKey]);
+  }, [visible, tabKey, searchValue]);
 
   const listProps = {
     coupon: {
@@ -36,6 +39,7 @@ const GoodsSelectModal = (props) => {
       type: 'baseData/fetchGetBuyCouponSelect',
       payload: {
         merchantId,
+        couponName: searchValue,
         couponType: 'reduce',
         buyFlag: 1, // 有价券
         page: 1,
@@ -80,7 +84,14 @@ const GoodsSelectModal = (props) => {
       }}
       onCancel={onClose}
     >
-      <Tabs type="card" onChange={setTabKey} style={{ overflow: 'initial' }}>
+      <Tabs
+        type="card"
+        onChange={setTabKey}
+        style={{ overflow: 'initial' }}
+        tabBarExtraContent={
+          <Search placeholder="请输入名称" enterButton allowClear onSearch={setSearchValue} />
+        }
+      >
         <TabPane tab="有价券" key="coupon">
           {listDom}
         </TabPane>

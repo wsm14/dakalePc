@@ -17,7 +17,7 @@ const MessageDrawer = (props) => {
   // { '': '无', h5: 'H5', native: 'inside' };
   const handleUpAudit = (now) => {
     form.validateFields().then((value) => {
-      const { pushTime, jumpUrlType, jumpUrl } = value;
+      const { pushTime, jumpUrlType, jumpUrl, pushObjectIds = [] } = value;
       const dispathType =
         now === 'too'
           ? 'messagePush/fetchMsgAddAndPush' // 新增并推送
@@ -29,6 +29,7 @@ const MessageDrawer = (props) => {
         type: dispathType,
         payload: {
           ...value,
+          pushObjectIds: pushObjectIds.toString(),
           userType,
           link: jumpUrl,
           linkType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
@@ -45,7 +46,9 @@ const MessageDrawer = (props) => {
 
   // 新增修改公共处理
   const addEditProps = {
-    children: <MessagePushSet form={form} initialValues={detail}></MessagePushSet>,
+    children: (
+      <MessagePushSet form={form} initialValues={detail} userType={userType}></MessagePushSet>
+    ),
     footer: (
       <>
         {/* 修改时只有保存按钮 新增时有这个按钮 */}
@@ -81,6 +84,7 @@ const MessageDrawer = (props) => {
   const modalProps = {
     title: `${drawerProps.title} - ${MSG_PSUH_TAB[userType]}`,
     visible: shwo,
+    width: 800,
     onClose,
     footer: drawerProps.footer,
   };
