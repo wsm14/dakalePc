@@ -1,15 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge, Avatar } from 'antd';
 import {
   ORDERS_STATUS,
-  ORDER_TYPE_PROPS,
   ORDER_CLOSE_TYPE,
+  ORDER_TYPE_PROPS,
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
-  BUSINESS_TYPE,
 } from '@/common/constant';
-import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import PopImgShow from '@/components/PopImgShow';
@@ -18,13 +16,17 @@ import coupon from '@public/coupon.png';
 import excelHeder from './excelHeder';
 import styles from '../style.less';
 
-const GoodsOrders = (props) => {
+const VirtualOrders = (props) => {
   const { ordersList, loading, loadings, dispatch, tabkey } = props;
   const { list } = ordersList;
 
   const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
+
+  useEffect(() => {
+    childRef.current.fetchGetData();
+  }, [tabkey]);
 
   //详情
   const fetchGoodsDetail = (index) => {
@@ -59,17 +61,6 @@ const GoodsOrders = (props) => {
       type: 'user',
     },
     {
-      label: '店铺/集团',
-      name: 'merchantId',
-      type: 'merchant',
-    },
-    {
-      label: '订单属性',
-      type: 'select',
-      name: 'orderType',
-      select: ORDER_TYPE_PROPS,
-    },
-    {
       label: '状态',
       name: 'status',
       type: 'select',
@@ -80,12 +71,6 @@ const GoodsOrders = (props) => {
       type: 'rangePicker',
       name: 'orderTimeStart',
       end: 'orderTimeEnd',
-    },
-    {
-      label: '核销日期',
-      type: 'rangePicker',
-      name: 'verificationTimeStart',
-      end: 'verificationTimeEnd',
     },
     {
       label: '地区',
@@ -122,26 +107,14 @@ const GoodsOrders = (props) => {
       ),
     },
     {
-      title: '店铺',
-      dataIndex: 'merchantName',
-      render: (val, row) => (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div>账号:{row.merchantMobile}</div>
-          <div style={{ display: 'flex', alignItems: 'center', margin: '5px 0' }}>
-            <Tag color="magenta">{BUSINESS_TYPE[row.relateOwnerType]}</Tag>
-            <Ellipsis length={10} tooltip>
-              {val}
-            </Ellipsis>
-          </div>
-          <div className={styles.specFont}>{checkCityName(row.merchantDistrict)}</div>
-        </div>
-      ),
-    },
-    {
       title: '下单人',
       align: 'center',
       dataIndex: 'userMobile',
       render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
+    },
+    {
+      title: '充值帐号',
+      dataIndex: 'virtualProductAccount',
     },
     {
       title: '单价/数量',
@@ -167,51 +140,9 @@ const GoodsOrders = (props) => {
       },
     },
     {
-      title: '商户实收',
-      align: 'center',
-      dataIndex: 'actualCashFee',
-      render: (val, record) => {
-        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
-
-            <div className={styles.fontColor}>
-              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
-            </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-          </div>
-        );
-      },
-    },
-    {
-      title: '商品佣金',
-      align: 'center',
-      dataIndex: 'cashCommission',
-      render: (val, record) => {
-        const beanCount = record.beanCommission ? record.beanCommission / 100 : 0;
-        return (
-          <div style={{ textAlign: 'center' }}>
-            <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
-            <div className={styles.fontColor}>
-              {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
-            </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
-          </div>
-        );
-      },
-    },
-    {
-      title: '下单/核销时间',
+      title: '下单时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{val}</div>
-          <div className={styles.fontColor}>已核销：{row.verificationCount}</div>
-          <div className={styles.fontColor}>{row.verificationTime}</div>
-        </div>
-      ),
     },
     {
       title: '状态',
@@ -250,7 +181,7 @@ const GoodsOrders = (props) => {
     {
       type: 'excel',
       dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get(), goodsOrScanFlag: tabkey },
+      data: { ...get(), orderType: tabkey },
       exportProps: { header: excelHeder },
     },
   ];
@@ -259,12 +190,13 @@ const GoodsOrders = (props) => {
     <>
       <TableDataBlock
         btnExtra={extraBtn}
+        firstFetch={false}
         noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ goodsOrScanFlag: tabkey }}
+        params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
@@ -287,4 +219,4 @@ export default connect(({ ordersList, baseData, loading }) => ({
   ordersList,
   hubData: baseData.hubData,
   loading: loading.models.ordersList,
-}))(GoodsOrders);
+}))(VirtualOrders);

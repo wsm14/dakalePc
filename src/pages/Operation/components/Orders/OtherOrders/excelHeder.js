@@ -1,5 +1,5 @@
 import { checkCityName } from '@/utils/utils';
-import { ORDERS_STATUS, ORDERS_TYPE, ORDER_CLOSE_TYPE } from '@/common/constant';
+import { ORDERS_STATUS, ORDER_TYPE_PROPS, ORDER_CLOSE_TYPE } from '@/common/constant';
 
 // 导出表头
 export default [
@@ -90,7 +90,7 @@ export default [
   {
     title: '订单属性',
     dataIndex: 'orderType',
-    render: (val) => ORDERS_TYPE[val],
+    render: (val) => ORDER_TYPE_PROPS[val],
   },
   {
     title: '状态',

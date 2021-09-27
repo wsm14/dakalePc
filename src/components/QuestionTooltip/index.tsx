@@ -23,7 +23,7 @@ const QuestionTooltip = (props: any) => {
     <>
       {title}&nbsp;
       <Tooltip title={content} overlayStyle={overlayStyle} placement={placement}>
-        <span style={{ position: 'relative', zIndex: 20 }}> {icon}</span>
+        <span style={{ position: 'relative', zIndex: 5 }}> {icon}</span>
       </Tooltip>
     </>
   );

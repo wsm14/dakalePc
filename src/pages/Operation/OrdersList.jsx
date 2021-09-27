@@ -4,6 +4,7 @@ import OrderChart from './components/Orders/OrderChart';
 import CodeOrders from './components/Orders/CodeOrders';
 import GoodsOrders from './components/Orders/GoodsOrders';
 import OtherOrders from './components/Orders/OtherOrders';
+import VirtualOrders from './components/Orders/VirtualOrders';
 
 const tabList = [
   {
@@ -38,7 +39,7 @@ const OrdersList = () => {
     scan: <CodeOrders {...listProps}></CodeOrders>,
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,
-    virtualProduct: <OtherOrders {...listProps}></OtherOrders>,
+    virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
   };
 
   return (

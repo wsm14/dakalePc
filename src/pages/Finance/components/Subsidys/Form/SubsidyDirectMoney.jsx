@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import lodash from 'lodash';
 import { DownSquareOutlined } from '@ant-design/icons';
 import { Button, InputNumber, Tooltip, Space } from 'antd';
-import { SUBSIDY_TASK_ROLE, SUBSIDY_ACTION_ROLES, SUBSIDY_ACTION_ROLE } from '@/common/constant';
+import { SUBSIDY_ACTION_ROLES, SUBSIDY_ACTION_ROLE } from '@/common/constant';
 import {
   MreSelect,
   MreSelectShow,

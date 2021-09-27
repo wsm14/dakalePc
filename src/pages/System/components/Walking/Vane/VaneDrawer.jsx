@@ -70,8 +70,8 @@ const VaneDrawer = (props) => {
             areaCode: type === 'edit' ? detail.areaCode : cityCode,
             configWindVaneId: detail.configWindVaneId,
             ...values,
-            jumpType,
-            nativeJumpType: { trade: 'category', native: nativeJumpType }[jumpType],
+            jumpType: jumpType === 'trade' ? 'native' : jumpType,
+            nativeJumpType: { trade: 'windVaneCategory', native: nativeJumpType }[jumpType],
             bubbleFlag: Number(bubbleFlag),
             image: res[0],
             windVaneParamObject:

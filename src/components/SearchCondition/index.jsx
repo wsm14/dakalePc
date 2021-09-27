@@ -116,13 +116,14 @@ const SearchCondition = (props) => {
         col = true,
         show = true,
         required = false,
+        rules: rs = [],
         ...other
       } = item;
       // 根据类型获取不同的表单组件
       const SearchItem = Searchor[type];
 
       // 规则 默认必填
-      const rules = [{ required, message: `请确认${label}` }];
+      const rules = [{ required, message: `请确认${label}` }, ...rs];
 
       const colcount = expand ? len : count;
       const block = show ? (
