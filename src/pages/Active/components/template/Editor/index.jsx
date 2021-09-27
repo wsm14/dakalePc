@@ -4,11 +4,13 @@ import {
   ShoppingOutlined,
   ShopOutlined,
   MoneyCollectOutlined,
+  VideoCameraAddOutlined,
 } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
 import CommonList from './CommonList';
+import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
 import CouponList from './CouponList';
 import img from './Img/img.png';
@@ -80,5 +82,15 @@ export default {
     defaultData: { styleIndex: 0, list: [] },
     editorDom: (props) => <CouponList {...props}></CouponList>,
     dom: (props) => CouponList.dom(props),
+  },
+  normalVideo: {
+    icon: <VideoCameraAddOutlined style={{ fontSize: 24 }} />,
+    name: '视频',
+    editorType: 'normalVideo',
+    drop: true,
+    defaultImg: img,
+    defaultData: '',
+    editorDom: (props) => <NormalVideo {...props}></NormalVideo>,
+    dom: (props) => NormalVideo.dom(props),
   },
 };

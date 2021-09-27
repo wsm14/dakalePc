@@ -19,6 +19,16 @@ const scriptTag = (dom, data, id) =>
   `<script>(${dom.toString()})(${JSON.stringify(data)}, "${id}")<\/script>`;
 
 const htmlDom = {
+  // 视频
+  normalVideo: (data, uid) => {
+    const dom = ({ url }, uid) => {
+      document.getElementById(
+        uid,
+      ).innerHTML = `<video src="${url}" controls="controls" style="width: 100vw;display: block;"></video>`;
+    };
+
+    return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
+  },
   // 单张图片
   solaImg: (data, uid) => {
     const dom = ({ img, linkType, url, path }, uid) => {
