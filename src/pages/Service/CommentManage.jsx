@@ -1,37 +1,42 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import { COMMENT_DELETFLAG } from '@/common/constant';
 
 const CommentManage = (props) => {
+  const { commentManage, loading, dispatch } = props;
   const childRef = useRef();
+  const [commentList, setCommentList] = useState([]);
   // 搜索参数
   const searchItems = [
     {
       label: '用户',
-      name: 'username',
+      name: 'userId',
+      type: 'user',
     },
     {
       label: '视频ID',
-      name: 'status',
+      name: 'momentId',
     },
     {
       label: '状态',
       type: 'select',
-      name: 'status',
+      name: 'deleteFlag',
+      select: COMMENT_DELETFLAG,
     },
     {
       label: '评论ID',
-      name: 'status',
+      name: 'momentCommentId',
     },
     {
       label: '评论内容',
-      name: 'status',
+      name: 'content',
     },
     {
       label: '评论时间',
       type: 'rangePicker',
-      name: 'commentStartTime',
-      end: 'commentEndTime',
+      name: 'createBeginTime',
+      end: 'createEndTime',
     },
   ];
 
@@ -39,57 +44,83 @@ const CommentManage = (props) => {
   const getColumns = [
     {
       title: '评论ID',
-      dataIndex: 'id',
+      dataIndex: 'momentCommentIdString',
     },
     {
       title: '评论内容',
-      dataIndex: 'id',
+      dataIndex: 'content',
       width: 300,
-      ellipsis: { length: 50 },
+      ellipsis: { length: 15 },
     },
     {
       title: '评论时间',
-      dataIndex: 'id',
+      dataIndex: 'createTime',
     },
     {
       title: '用户信息',
-      dataIndex: 'id',
+      dataIndex: 'username',
+      render: (val, row) => `${val}\n${row.mobile}`,
     },
     {
       title: '视频ID',
-      dataIndex: 'id',
+      dataIndex: 'momentIdString',
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'deleteFlag',
+      render: (val) => COMMENT_DELETFLAG[val],
     },
     {
       title: '操作',
       type: 'handle',
-      dataIndex: 'status',
-      render: (val) => [
+      dataIndex: 'deleteFlag',
+      render: (val, row) => [
         {
-          type: 'delete',
-          // click: () => fetchFeedBackDetail({ feedbackIdString }),
+          type: 'del',
+          visible: val === '1',
+          click: () => fetchDel(val, row.momentCommentIdString),
         },
         {
           type: 'recover',
-          // click: () => fetchFeedBackDetail({ feedbackIdString }),
+          visible: val === '0',
+          click: () => fetchDel(val, row.momentCommentIdString),
         },
       ],
     },
   ];
-
+  const fetchDel = (deleteFlag, momentCommentIds) => {
+    dispatch({
+      type: 'commentManage/fetchUpdateCommentsDeleteFlag',
+      payload: {
+        deleteFlag: deleteFlag == '0' ? 1 : 0,
+        momentCommentIds: momentCommentIds ? momentCommentIds : commentList.toString(),
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+  const btnList = [
+    {
+      auth: 'del',
+      disabled: !commentList.length,
+      onClick: fetchDel,
+      text: '批量删除',
+    },
+  ];
   return (
     <TableDataBlock
       cRef={childRef}
-      //   loading={loading}
+      btnExtra={btnList}
+      loading={loading}
       searchItems={searchItems}
       columns={getColumns}
-      rowKey={(record) => `${record.newsIdString}`}
-      dispatchType="serviceNews/fetchGetList"
-    //   {...serviceNews}
+      rowKey={(record) => `${record.momentCommentIdString}`}
+      dispatchType="commentManage/fetchGetList"
+      rowSelection={{ onChange: setCommentList }}
+      {...commentManage}
     ></TableDataBlock>
   );
 };
-export default connect()(CommentManage);
+export default connect(({ commentManage, loading }) => ({
+  commentManage,
+  loading: loading.models.commentManage,
+}))(CommentManage);
