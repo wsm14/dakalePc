@@ -45,8 +45,8 @@ const VaneDrawer = (props) => {
       const {
         image,
         bubbleFlag = 0,
-        topCategoryId: tId,
-        categoryId = [],
+        topCategoryId: tId = '',
+        categoryId = '',
         windVaneParamObject = {},
         jumpType,
         nativeJumpType,
@@ -54,7 +54,7 @@ const VaneDrawer = (props) => {
       const { bannerImage, ...other } = windVaneParamObject;
       const windVaneParam = {
         ...other,
-        topCategoryId: tId.toString(),
+        topCategoryId: tId && tId.toString(),
         categoryId: categoryId && categoryId.toString(),
       };
       const aImg = checkFileData(image);
