@@ -122,7 +122,7 @@ const SubsidyDirectMoney = (props) => {
           otherColumns={[
             {
               fixed: 'right',
-              title: '回收卡豆数',
+              title: '充值卡豆数',
               dataIndex: 'bean',
               render: (val, record) => (
                 <>
@@ -131,9 +131,7 @@ const SubsidyDirectMoney = (props) => {
                     precision={0}
                     min={1}
                     onChange={(val) => {
-                      console.log(val, 'ddd');
                       setMreNumber(({ sum, ...other }) => {
-                        console.log(sum, other, 'ooo');
                         return {
                           ...other,
                           [record.userMerchantIdString]: val,
@@ -185,7 +183,7 @@ const SubsidyDirectMoney = (props) => {
           otherColumns={[
             {
               fixed: 'right',
-              title: '回收卡豆数',
+              title: '充值卡豆数',
               dataIndex: 'bean',
               render: (val, record) => (
                 <>
