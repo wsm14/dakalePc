@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
+import HistoryFollow from './HistoryFollow';
 
 const UserFollowDetail = (props) => {
   const { visible, onClose } = props;
   const { show = false, detail = {} } = visible;
+  const [visibleHistory, setVisibleHistory] = useState(false);
 
   const formItems = [
     {
@@ -84,32 +86,43 @@ const UserFollowDetail = (props) => {
 
   const modalProps = {
     title: '详情',
-    visible: show,
+    visible: true,
     onClose,
   };
+  const handleOpenRecord = () => {
+    setVisibleHistory(true);
+  };
   return (
-    <DrawerCondition {...modalProps}>
-      <DescriptionsCondition
-        title="用户信息"
-        labelStyle={{ width: 120 }}
-        formItems={formItems}
-        column={2}
-      ></DescriptionsCondition>
-      <DescriptionsCondition
-        title="用户标签"
-        labelStyle={{ width: 120 }}
-        formItems={tagItems}
-      ></DescriptionsCondition>
-      <div>
-        <a style={{ float: 'right', marginTop: 5 }}>历史跟进情况</a>
+    <>
+      <DrawerCondition {...modalProps}>
         <DescriptionsCondition
-          title="跟进详情"
+          title="用户信息"
           labelStyle={{ width: 120 }}
-          formItems={followItem}
+          formItems={formItems}
           column={2}
         ></DescriptionsCondition>
-      </div>
-    </DrawerCondition>
+        <DescriptionsCondition
+          title="用户标签"
+          labelStyle={{ width: 120 }}
+          formItems={tagItems}
+        ></DescriptionsCondition>
+        <div>
+          <a style={{ float: 'right', marginTop: 5 }} onClick={handleOpenRecord}>
+            历史跟进情况
+          </a>
+          <DescriptionsCondition
+            title="跟进详情"
+            labelStyle={{ width: 120 }}
+            formItems={followItem}
+            column={2}
+          ></DescriptionsCondition>
+        </div>
+      </DrawerCondition>
+      <HistoryFollow
+        visible={visibleHistory}
+        onClose={() => setVisibleHistory(false)}
+      ></HistoryFollow>
+    </>
   );
 };
 export default UserFollowDetail;

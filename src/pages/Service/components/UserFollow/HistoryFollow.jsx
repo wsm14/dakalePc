@@ -5,7 +5,6 @@ import DrawerCondition from '@/components/DrawerCondition';
 
 const HistoryFollow = (props) => {
   const { visible, onClose } = props;
-  const { show = false, detail = {} } = visible;
 
   const followItem = [
     {
@@ -34,13 +33,15 @@ const HistoryFollow = (props) => {
   ];
 
   const modalProps = {
-    title: '详情',
-    visible: show,
+    title: '历史跟进情况',
+    visible,
     onClose,
   };
   return (
     <DrawerCondition {...modalProps}>
-      <div style={{ color: '#999', margin: 5 }}>炜烽 2021-08-18 17:02</div>
+      <div style={{ color: '#999', marginBottom: 15 }}>
+        炜烽 <span style={{ marginLeft: 10 }}>2021-08-18 17:02</span>
+      </div>
       <DescriptionsCondition
         title="用户信息"
         labelStyle={{ width: 120 }}
