@@ -65,7 +65,7 @@ const OrderChart = ({ dispatch, searchData = {}, totalData, loading }) => {
     },
     {
       title: '团购金额',
-      info: '用户发起退款申请后，实际退款成功的金额',
+      info: '',
       key: 'communityGoods',
     },
   ];
