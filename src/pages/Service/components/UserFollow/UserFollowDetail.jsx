@@ -86,7 +86,7 @@ const UserFollowDetail = (props) => {
 
   const modalProps = {
     title: '详情',
-    visible: true,
+    visible: show,
     onClose,
   };
   const handleOpenRecord = () => {

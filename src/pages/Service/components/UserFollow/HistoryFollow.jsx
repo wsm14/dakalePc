@@ -1,6 +1,5 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 
 const HistoryFollow = (props) => {
