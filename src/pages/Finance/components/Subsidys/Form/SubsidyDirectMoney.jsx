@@ -131,9 +131,7 @@ const SubsidyDirectMoney = (props) => {
                     precision={0}
                     min={1}
                     onChange={(val) => {
-                      console.log(val, 'ddd');
                       setMreNumber(({ sum, ...other }) => {
-                        console.log(sum, other, 'ooo');
                         return {
                           ...other,
                           [record.userMerchantIdString]: val,
