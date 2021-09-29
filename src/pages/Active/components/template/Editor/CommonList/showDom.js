@@ -312,9 +312,9 @@ export default ({ styleIndex = 0, list = [] }) => {
           style={{
             width: 115,
             background: ' #FFFFFF',
-            borderRadius: 4,
+            borderRadius: 3,
             marginBottom: 4,
-            padding: '4px 4px 12px',
+            padding: '4px 4px 8px',
           }}
         >
           <div
@@ -325,7 +325,7 @@ export default ({ styleIndex = 0, list = [] }) => {
               background: `url(${item.goodsImg}) center/cover`,
             }}
           ></div>
-          <div style={{ padding: '12px 4px 0' }}>
+          <div style={{ padding: '12px 2px 0' }}>
             <div
               style={{
                 fontSize: 13,
@@ -370,7 +370,7 @@ export default ({ styleIndex = 0, list = [] }) => {
             <div
               style={{
                 fontSize: 12,
-                marginLeft: 4,
+                marginTop: 12,
                 color: '#999999',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
@@ -383,6 +383,7 @@ export default ({ styleIndex = 0, list = [] }) => {
             <div
               style={{
                 fontSize: 12,
+                marginTop: 5,
                 color: '#333333',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
