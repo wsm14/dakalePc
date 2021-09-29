@@ -114,39 +114,60 @@ const UserFollow = (props) => {
       title: '操作',
       type: 'handle',
       dataIndex: 'userFollowUpId',
-      render: (val) => [
+      render: (val, row) => [
         {
           type: 'info',
-          click: () => fetchDetail(),
+          click: () => fetchDetailInfo(val, row, 'info'),
         },
         {
           type: 'edit',
-          click: () => fetchDetailInfo(val),
+          click: () => fetchDetailInfo(val, row, 'edit'),
         },
       ],
     },
   ];
 
-  const fetchDetailInfo =(userFollowUpId)=>{
+  const fetchDetailInfo = (userFollowUpId, row, type) => {
+    const { userId } = row;
+    //获取用户信息
     dispatch({
-      type:'userFollow/'
-    })
-    
-
-  }
-
-  const fetchDetail = () => {
-    setVisibleInfo({
-      type: 'add',
-      show: true,
-      detail: {},
+      type: 'userFollow/fetchGetUserDetail',
+      payload: {
+        userId,
+      },
+      callback: (userInfo) => {
+        dispatch({
+          type: 'userFollow/fetchGetUserFollowUp',
+          payload: {
+            userFollowUpId,
+          },
+          callback: (detail) => {
+            if (type === 'info') {
+              setVisibleInfo({
+                show: true,
+                detail: {
+                  ...detail,
+                  ...userInfo,
+                },
+              });
+            } else {
+              setVisible({
+                show: true,
+                type: 'edit',
+                detail: {
+                  ...detail,
+                  ...userInfo,
+                },
+              });
+            }
+          },
+        });
+      },
     });
   };
 
   // 表格额外按钮
-  const extraBtn = [
-    { auth: 'save', onClick: () => setVisible({ show: true, type: 'add', info: {} }) },
-  ];
+  const extraBtn = [{ auth: 'save', onClick: () => setVisible({ show: true, type: 'add' }) }];
 
   return (
     <>
@@ -176,7 +197,6 @@ const UserFollow = (props) => {
   );
 };
 export default connect(({ userFollow, loading }) => {
-  console.log(userFollow, 'userFollow');
   return {
     userFollow,
     loading: loading.models.userFollow,

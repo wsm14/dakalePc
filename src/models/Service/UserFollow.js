@@ -3,6 +3,7 @@ import {
   fetchListUserFollowUp,
   fetchGetUserFollowUp,
   fetchGetDictionaryAdmin,
+  fetchGetUserDetail,
 } from '@/services/ServiceServices';
 
 export default {
@@ -35,7 +36,7 @@ export default {
         },
       });
     },
-    *fetchUpdateCommentsDeleteFlag({ payload, callback }, { call }) {
+    *fetchGetUserFollowUp({ payload, callback }, { call }) {
       const response = yield call(fetchGetUserFollowUp, payload);
       if (!response) return;
       const { content } = response;
@@ -46,6 +47,12 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.dictionary);
+    },
+    *fetchGetUserDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchGetUserDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      callback(content.userDetail);
     },
   },
 };

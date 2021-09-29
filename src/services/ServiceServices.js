@@ -300,4 +300,11 @@ export function fetchGetUserFollowUp(params) {
   });
 }
 
+// 运营后台-用户详情
+export function fetchGetUserDetail(params) {
+  return request('/admin/userManagement/getUserDetail', {
+    params,
+  });
+}
+
 
