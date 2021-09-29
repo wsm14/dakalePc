@@ -67,7 +67,7 @@ const ActiveListComponent = (props) => {
     {
       type: 'handle',
       dataIndex: 'activityTemplateId',
-      render: (val, record) => [
+      render: (val, row) => [
         {
           type: 'edit',
           click: () => fetchActiveDetail({ activityTemplateId: val }),
@@ -77,11 +77,12 @@ const ActiveListComponent = (props) => {
           type: 'copy',
           click: () =>
             handleCopy(
-              `${record.jumpUrl}?shareKey=${record.activityTemplateId}&shareType=${record.activityTemplateId}`,
+              `${row.jumpUrl}?shareKey=${row.activityTemplateId}&shareType=${row.activityTemplateId}`,
             ),
         },
         {
           type: 'shareImg',
+          visible: row.shareFlag,
           click: () => fetchActiveDetail({ activityTemplateId: val }, 'share'),
         },
         {

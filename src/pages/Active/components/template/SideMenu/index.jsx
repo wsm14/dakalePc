@@ -51,6 +51,7 @@ const SideMenu = (props) => {
           message.destroy();
           return;
         }
+        const { share } = moduleData;
         dispatch({
           type:
             handle === 'edit' ? 'activeTemplate/fetchActiveEdit' : 'activeTemplate/fetchActiveAdd',
@@ -59,6 +60,7 @@ const SideMenu = (props) => {
             jumpUrl,
             activityName: activityName,
             templateType: type,
+            shareFlag: Number(share.open),
             params: JSON.stringify({
               ...moduleData,
               dataList: newData, // 空数据不进入
