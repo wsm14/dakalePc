@@ -1,6 +1,7 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import { Pagination } from 'antd';
 
 const HistoryFollow = (props) => {
   const { visible, onClose } = props;
@@ -47,6 +48,7 @@ const HistoryFollow = (props) => {
         formItems={followItem}
         column={2}
       ></DescriptionsCondition>
+      <Pagination defaultCurrent={page} total={total} />
     </DrawerCondition>
   );
 };

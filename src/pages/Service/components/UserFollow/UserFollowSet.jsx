@@ -32,11 +32,11 @@ const UserFollowSet = (props) => {
   ];
 
   const followwItem = [
-    {
-      title: '用户标签',
-      label: '用户标签',
-      name: 'pushStatus',
-    },
+    // {
+    //   title: '用户标签',
+    //   label: '用户标签',
+    //   name: 'pushStatus',
+    // },
     {
       title: '跟进详情',
       label: '跟进方式',
