@@ -660,3 +660,22 @@ export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
 
 // 平台权益 - 商品售卖类型
 export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
+
+//评论状态
+export const COMMENT_DELETFLAG = ['已删除', '正常'];
+
+export const FOLLOW_TYPE = {
+  consultation: '用户咨询',
+  complaints: '用户投诉',
+  activityVisit: '活动回访',
+  normalVisit: '日常回访',
+  other: '其他',
+};
+
+export const FOLLOW_MANNER = {
+  weChat: '微信',
+  mobile: '电话',
+  applets: '小程序',
+  public: '公众号',
+  other: '其他',
+};

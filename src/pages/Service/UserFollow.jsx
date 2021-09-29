@@ -1,0 +1,168 @@
+import React, { useRef, useState, useEffect } from 'react';
+import { connect } from 'umi';
+import TableDataBlock from '@/components/TableDataBlock';
+import { FOLLOW_TYPE, FOLLOW_MANNER } from '@/common/constant';
+import UserFollowDetail from './components/UserFollow/UserFollowDetail';
+import UserFollowSet from './components/UserFollow/UserFollowSet';
+const UserFollow = (props) => {
+  const { userFollow, dispatch, loading } = props;
+  const childRef = useRef();
+  const [visibleInfo, setVisibleInfo] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [tags, setTags] = useState([]);
+
+  //获取标签列表
+  useEffect(() => {
+    // dispatch({
+    //   type: 'userFollow/fetchGetDictionaryAdmin',
+    //   payload: {
+    //     parent: 'userFollowUp',
+    //     child: 'tags',
+    //   },
+    //   callback: (tag) => {
+    //     console.log(tag,"sss")
+    //   }
+    // });
+  }, []);
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '用户',
+      type: 'user',
+      name: 'userId',
+    },
+    {
+      label: '跟进人',
+      name: 'follower',
+    },
+    {
+      label: '跟进标签',
+      name: 'tags',
+      type: 'tag',
+      select: tags,
+    },
+    {
+      label: '跟进方式',
+      name: 'manner',
+      type: 'select',
+      select: FOLLOW_MANNER,
+    },
+    {
+      label: '跟进类型',
+      name: 'type',
+      type: 'select',
+      select: FOLLOW_TYPE,
+    },
+    {
+      label: '跟进时间',
+      type: 'rangePicker',
+      name: 'followBeginTime',
+      end: 'followEndTime',
+    },
+  ];
+
+  // table 表头
+  const getColumns = [
+    {
+      title: '用户昵称',
+      dataIndex: 'id',
+    },
+    {
+      title: '注册手机号',
+      dataIndex: 'id',
+      width: 300,
+      ellipsis: { length: 50 },
+    },
+    {
+      title: '性别',
+      dataIndex: 'id',
+    },
+    {
+      title: '跟进方式',
+      dataIndex: 'id',
+    },
+    {
+      title: '跟进类型',
+      dataIndex: 'id',
+    },
+    {
+      title: '跟进内容',
+      dataIndex: 'status',
+    },
+    {
+      title: '跟进标签',
+      dataIndex: 'status',
+    },
+    {
+      title: '跟进结果',
+      dataIndex: 'status',
+    },
+    {
+      title: '跟进人',
+      dataIndex: 'status',
+    },
+    {
+      title: '跟进时间',
+      dataIndex: 'status',
+    },
+    {
+      title: '操作',
+      type: 'handle',
+      dataIndex: 'status',
+      render: (val) => [
+        {
+          type: 'info',
+          click: () => fetchDetail(),
+        },
+        {
+          type: 'edit',
+          // click: () => fetchFeedBackDetail({ feedbackIdString }),
+        },
+      ],
+    },
+  ];
+
+  const fetchDetail = () => {
+    setVisibleInfo({
+      type: 'add',
+      show: true,
+      detail: {},
+    });
+  };
+
+  // 表格额外按钮
+  const extraBtn = [
+    { auth: 'save', onClick: () => setVisible({ show: true, type: 'add', info: {} }) },
+  ];
+
+  return (
+    <>
+      <TableDataBlock
+        order
+        cRef={childRef}
+        btnExtra={extraBtn}
+        // loading={loading}
+        searchItems={searchItems}
+        columns={getColumns}
+        rowKey={(record) => `${record.userFollowUpId}`}
+        // dispatchType="userFollow/fetchGetList"
+        // {...userFollow}
+      ></TableDataBlock>
+      {/* 详情 */}
+      <UserFollowDetail
+        visible={visibleInfo}
+        onClose={() => setVisibleInfo(false)}
+      ></UserFollowDetail>
+      {/* 新增 编辑 */}
+      <UserFollowSet
+        visible={visible}
+        onClose={() => setVisible(false)}
+        childRef={childRef}
+      ></UserFollowSet>
+    </>
+  );
+};
+export default connect(({ userFollow, loading }) => ({
+  userFollow,
+  loading: loading.models.userFollow,
+}))(UserFollow);

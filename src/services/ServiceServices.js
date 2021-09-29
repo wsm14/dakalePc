@@ -264,3 +264,40 @@ export function fetchJobsClassSet(data) {
 }
 
 // 人才招聘 end
+
+// 评论管理 start
+
+// 评论管理 get
+export function fetchListMomentCommentManagement(params) {
+  return request('/admin/momentComment/listMomentCommentManagement', {
+    params,
+  });
+}
+
+// 运营后台-评论管理批量删除、恢复
+export function fetchUpdateCommentsDeleteFlag(data) {
+  return request('/admin/momentComment/batchUpdateCommentsDeleteFlag', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 评论管理 end
+
+//用户跟进 start
+
+// 用户跟进列表
+export function fetchListUserFollowUp(params) {
+  return request('/admin/userFollowUp/listUserFollowUp', {
+    params,
+  });
+}
+
+// 用户跟进详情
+export function fetchGetUserFollowUp(params) {
+  return request('/admin/userFollowUp/getUserFollowUp', {
+    params,
+  });
+}
+
+
