@@ -17,7 +17,7 @@ const ActiveListComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '活动名称1',
+      title: '活动名称',
       fixed: 'left',
       dataIndex: 'activityName',
     },
