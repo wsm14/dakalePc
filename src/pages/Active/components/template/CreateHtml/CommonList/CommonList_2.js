@@ -123,6 +123,7 @@ ${source
       payC,
     )}</div>
     </div>
+    </div>
     <div style="width: ${vw(154)};height: ${vw(27)};border-radius: ${vw(13)};font-size: ${vw(
       14,
     )}; margin-top: ${vw(
