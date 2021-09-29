@@ -1,10 +1,29 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import { FOLLOW_TYPE, FOLLOW_MANNER } from '@/common/constant';
 import UserFollowDetail from './components/UserFollow/UserFollowDetail';
+import UserFollowSet from './components/UserFollow/UserFollowSet';
 const UserFollow = (props) => {
+  const { userFollow, dispatch, loading } = props;
   const childRef = useRef();
   const [visibleInfo, setVisibleInfo] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [tags, setTags] = useState([]);
+
+  //获取标签列表
+  useEffect(() => {
+    // dispatch({
+    //   type: 'userFollow/fetchGetDictionaryAdmin',
+    //   payload: {
+    //     parent: 'userFollowUp',
+    //     child: 'tags',
+    //   },
+    //   callback: (tag) => {
+    //     console.log(tag,"sss")
+    //   }
+    // });
+  }, []);
   // 搜索参数
   const searchItems = [
     {
@@ -14,26 +33,31 @@ const UserFollow = (props) => {
     },
     {
       label: '跟进人',
-      name: 'people',
+      name: 'follower',
     },
     {
       label: '跟进标签',
-      name: 'people',
+      name: 'tags',
+      type: 'tag',
+      select: tags,
     },
     {
       label: '跟进方式',
-      name: 'people',
+      name: 'manner',
+      type: 'select',
+      select: FOLLOW_MANNER,
     },
     {
       label: '跟进类型',
-      name: 'people',
+      name: 'type',
       type: 'select',
+      select: FOLLOW_TYPE,
     },
     {
       label: '跟进时间',
       type: 'rangePicker',
-      name: 'createBeginTime',
-      end: 'createEndTime',
+      name: 'followBeginTime',
+      end: 'followEndTime',
     },
   ];
 
@@ -100,29 +124,45 @@ const UserFollow = (props) => {
 
   const fetchDetail = () => {
     setVisibleInfo({
+      type: 'add',
       show: true,
       detail: {},
     });
   };
+
+  // 表格额外按钮
+  const extraBtn = [
+    { auth: 'save', onClick: () => setVisible({ show: true, type: 'add', info: {} }) },
+  ];
 
   return (
     <>
       <TableDataBlock
         order
         cRef={childRef}
-        //   loading={loading}
+        btnExtra={extraBtn}
+        // loading={loading}
         searchItems={searchItems}
         columns={getColumns}
-        rowKey={(record) => `${record.newsIdString}`}
-        dispatchType="serviceNews/fetchGetList"
-        //   {...serviceNews}
+        rowKey={(record) => `${record.userFollowUpId}`}
+        // dispatchType="userFollow/fetchGetList"
+        // {...userFollow}
       ></TableDataBlock>
+      {/* 详情 */}
       <UserFollowDetail
         visible={visibleInfo}
         onClose={() => setVisibleInfo(false)}
       ></UserFollowDetail>
+      {/* 新增 编辑 */}
+      <UserFollowSet
+        visible={visible}
+        onClose={() => setVisible(false)}
+        childRef={childRef}
+      ></UserFollowSet>
     </>
   );
 };
-
-export default connect()(UserFollow);
+export default connect(({ userFollow, loading }) => ({
+  userFollow,
+  loading: loading.models.userFollow,
+}))(UserFollow);

@@ -283,3 +283,21 @@ export function fetchUpdateCommentsDeleteFlag(data) {
 }
 
 // 评论管理 end
+
+//用户跟进 start
+
+// 用户跟进列表
+export function fetchListUserFollowUp(params) {
+  return request('/admin/userFollowUp/listUserFollowUp', {
+    params,
+  });
+}
+
+// 用户跟进详情
+export function fetchGetUserFollowUp(params) {
+  return request('/admin/userFollowUp/getUserFollowUp', {
+    params,
+  });
+}
+
+
