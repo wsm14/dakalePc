@@ -134,6 +134,7 @@ ${source
     }
     </div></div>`,
   )
-  .join('')}</div>`;
+  .join('')}
+  <div style="border: 1px solid transparent; width: ${vw(115)}"></div></div>`;
   }
 }.toString());
