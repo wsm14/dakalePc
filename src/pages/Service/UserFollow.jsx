@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
-import { FOLLOW_TYPE, FOLLOW_MANNER } from '@/common/constant';
+import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 import UserFollowDetail from './components/UserFollow/UserFollowDetail';
 import UserFollowSet from './components/UserFollow/UserFollowSet';
+
 const UserFollow = (props) => {
   const { userFollow, dispatch, loading } = props;
   const childRef = useRef();
@@ -13,17 +14,20 @@ const UserFollow = (props) => {
 
   //获取标签列表
   useEffect(() => {
-    // dispatch({
-    //   type: 'userFollow/fetchGetDictionaryAdmin',
-    //   payload: {
-    //     parent: 'userFollowUp',
-    //     child: 'tags',
-    //   },
-    //   callback: (tag) => {
-    //     console.log(tag,"sss")
-    //   }
-    // });
+    dispatch({
+      type: 'userFollow/fetchGetDictionaryAdmin',
+      payload: {
+        parent: 'userFollowUp',
+        child: 'tags',
+      },
+      callback: (tag) => {
+        const { extraParam = '' } = tag;
+        const tagArr = extraParam?.split(',');
+        setTags(tagArr);
+      },
+    });
   }, []);
+
   // 搜索参数
   const searchItems = [
     {
@@ -38,7 +42,7 @@ const UserFollow = (props) => {
     {
       label: '跟进标签',
       name: 'tags',
-      type: 'tag',
+      type: 'multiple',
       select: tags,
     },
     {
@@ -65,50 +69,51 @@ const UserFollow = (props) => {
   const getColumns = [
     {
       title: '用户昵称',
-      dataIndex: 'id',
+      dataIndex: 'userName',
     },
     {
       title: '注册手机号',
-      dataIndex: 'id',
-      width: 300,
-      ellipsis: { length: 50 },
+      dataIndex: 'mobile',
     },
     {
       title: '性别',
-      dataIndex: 'id',
+      dataIndex: 'gender',
+      render: (val) => SHARE_SEX_TYPE[val],
     },
     {
       title: '跟进方式',
-      dataIndex: 'id',
+      dataIndex: 'manner',
+      render: (val) => FOLLOW_MANNER[val],
     },
     {
       title: '跟进类型',
-      dataIndex: 'id',
+      dataIndex: 'type',
+      render: (val) => FOLLOW_TYPE[val],
     },
     {
       title: '跟进内容',
-      dataIndex: 'status',
+      dataIndex: 'content',
     },
     {
       title: '跟进标签',
-      dataIndex: 'status',
+      dataIndex: 'tags',
     },
     {
       title: '跟进结果',
-      dataIndex: 'status',
+      dataIndex: 'result',
     },
     {
       title: '跟进人',
-      dataIndex: 'status',
+      dataIndex: 'follower',
     },
     {
       title: '跟进时间',
-      dataIndex: 'status',
+      dataIndex: 'followTime',
     },
     {
       title: '操作',
       type: 'handle',
-      dataIndex: 'status',
+      dataIndex: 'userFollowUpId',
       render: (val) => [
         {
           type: 'info',
@@ -116,11 +121,19 @@ const UserFollow = (props) => {
         },
         {
           type: 'edit',
-          // click: () => fetchFeedBackDetail({ feedbackIdString }),
+          click: () => fetchDetailInfo(val),
         },
       ],
     },
   ];
+
+  const fetchDetailInfo =(userFollowUpId)=>{
+    dispatch({
+      type:'userFollow/'
+    })
+    
+
+  }
 
   const fetchDetail = () => {
     setVisibleInfo({
@@ -141,12 +154,12 @@ const UserFollow = (props) => {
         order
         cRef={childRef}
         btnExtra={extraBtn}
-        // loading={loading}
+        loading={loading}
         searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.userFollowUpId}`}
-        // dispatchType="userFollow/fetchGetList"
-        // {...userFollow}
+        dispatchType="userFollow/fetchGetList"
+        {...userFollow}
       ></TableDataBlock>
       {/* 详情 */}
       <UserFollowDetail
@@ -162,7 +175,10 @@ const UserFollow = (props) => {
     </>
   );
 };
-export default connect(({ userFollow, loading }) => ({
-  userFollow,
-  loading: loading.models.userFollow,
-}))(UserFollow);
+export default connect(({ userFollow, loading }) => {
+  console.log(userFollow, 'userFollow');
+  return {
+    userFollow,
+    loading: loading.models.userFollow,
+  };
+})(UserFollow);
