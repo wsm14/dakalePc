@@ -2,6 +2,7 @@ import { uuid } from '@/utils/utils';
 import commonList1 from './CommonList/CommonList_1';
 import commonList2 from './CommonList/CommonList_2';
 import commonList3 from './CommonList/commonList_3';
+import share from './Share';
 import couponList1 from './CouponList';
 import merchantList1 from './MerchantList';
 
@@ -21,6 +22,10 @@ const scriptTag = (dom, data, id) =>
   `<script>(${dom.toString()})(${JSON.stringify(data)}, "${id}")<\/script>`;
 
 const htmlDom = {
+  // 分享
+  share: (data, uid) => {
+    return `<div id="${uid}"></div><script>;(${share})(${JSON.stringify(data)},"${uid}")<\/script>`;
+  },
   // 视频
   normalVideo: (data, uid) => {
     const dom = ({ url }, uid) => {

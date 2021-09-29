@@ -122,6 +122,7 @@ ${source
       payC,
     )}</div>
     </div>
+    </div>
     ${
       shareC
         ? `<div style="margin-top: ${vw(4)};font-size: ${vw(
@@ -131,8 +132,7 @@ ${source
             shareC,
           )}</div>`
         : ''
-    }
-    </div></div></div>`,
+    }</div></div>`,
   )
   .join('')}
   <div style="border: 1px solid transparent; width: ${vw(115)}"></div></div>`;

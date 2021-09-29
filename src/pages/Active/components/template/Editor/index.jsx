@@ -5,10 +5,12 @@ import {
   ShopOutlined,
   MoneyCollectOutlined,
   VideoCameraAddOutlined,
+  SwapOutlined,
 } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
+import Share from './Share';
 import CommonList from './CommonList';
 import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
@@ -34,6 +36,13 @@ export default {
     editorType: 'backgroundColor',
     drop: false,
     editorDom: (props) => <BackgroundColor {...props}></BackgroundColor>,
+  },
+  share: {
+    name: '分享配置',
+    icon: <SwapOutlined style={{ fontSize: 24 }} />,
+    editorType: 'share',
+    drop: false,
+    editorDom: (props) => <Share {...props}></Share>,
   },
   solaImg: {
     name: '单张图片',

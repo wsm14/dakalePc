@@ -116,9 +116,7 @@ ${source
       10,
     )};margin-left: -${vw(10)};border: 1px solid #ef476f;height: ${vw(
       16,
-    )};display: flex;align-items: center;max-width: ${vw(
-      60,
-    )}">￥<div style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">${computedPrice(
+    )};display: flex;align-items: center;max-width:max-content;">￥<div style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">${computedPrice(
       item.realPrice,
       payC,
     )}</div>

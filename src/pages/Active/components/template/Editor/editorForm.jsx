@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Radio, Spin, Empty, Select, Upload, Modal, Switch } from 'antd';
+import { Form, Input, Radio, Spin, Empty, Select, Upload, Modal, Switch, InputNumber } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
 
@@ -222,6 +222,7 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
             }}
           />
         ),
+        number: <InputNumber min={0}></InputNumber>,
         textArea: (
           <Input.TextArea
             placeholder={placeholder}
@@ -291,7 +292,7 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
             className={'class_select_radil'}
           ></Radio.Group>
         ),
-        switch: <Switch disabled={item.disabled} />,
+        switch: <Switch disabled={item.disabled} onChange={item.onChange} />,
         upload: (
           <Upload
             accept={item.accept || 'image/*'}

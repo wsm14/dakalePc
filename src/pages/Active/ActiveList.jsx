@@ -73,7 +73,10 @@ const ActiveListComponent = (props) => {
         {
           title: '复制链接',
           type: 'copy',
-          click: () => handleCopy(record.jumpUrl),
+          click: () =>
+            handleCopy(
+              `${record.jumpUrl}?shareKey=${record.activityTemplateId}&shareType=${record.activityTemplateId}`,
+            ),
         },
         {
           type: 'del',
