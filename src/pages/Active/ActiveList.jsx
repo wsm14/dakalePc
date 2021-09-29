@@ -6,6 +6,7 @@ import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
+import ShareImg from './components/ShareImg';
 
 const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;
@@ -13,6 +14,7 @@ const ActiveListComponent = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
+  const [visibleShare, setVisibleShare] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -79,6 +81,10 @@ const ActiveListComponent = (props) => {
             ),
         },
         {
+          type: 'shareImg',
+          click: () => fetchActiveDetail({ activityTemplateId: val }, 'share'),
+        },
+        {
           type: 'del',
           click: () => handleDelActive({ activityTemplateId: val, deleteFlag: 0 }),
         },
@@ -109,11 +115,14 @@ const ActiveListComponent = (props) => {
   };
 
   // 获取详情
-  const fetchActiveDetail = (payload) => {
+  const fetchActiveDetail = (payload, type) => {
     dispatch({
       type: 'activeList/fetchActiveDetail',
       payload,
-      callback: (info) => setVisibleName({ show: true, info }),
+      callback: (info) =>
+        type == 'share'
+          ? setVisibleShare({ show: true, info })
+          : setVisibleName({ show: true, info }),
     });
   };
 
@@ -148,6 +157,8 @@ const ActiveListComponent = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></ActiveTemplateEdit>
+      {/* 分享图 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };
