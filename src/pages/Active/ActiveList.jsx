@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Popover, message } from 'antd';
 import QRCode from 'qrcode.react';
@@ -108,6 +108,12 @@ const ActiveListComponent = (props) => {
     }
     document.body.removeChild(copyDOMs);
   };
+
+  useEffect(() => {
+    if (!visible.show) {
+      childRef.current.fetchGetData();
+    }
+  }, [visible]);
 
   // 修改设置活动名称
   const handleSetActiveName = (activityName) => {

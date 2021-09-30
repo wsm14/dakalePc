@@ -62,7 +62,7 @@ const SideMenu = (props) => {
             jumpUrl,
             activityName: activityName,
             templateType: type,
-            shareFlag: Number(share.open || 0),
+            shareFlag: Number(share?.open || 0),
             params: JSON.stringify({
               ...moduleData,
               dataList: newData, // 空数据不进入

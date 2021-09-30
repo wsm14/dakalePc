@@ -12,7 +12,7 @@ const Share = (props) => {
   const [opens, setOpen] = useState(false);
 
   useEffect(() => {
-    setOpen(value.open || false);
+    setOpen(value?.open || false);
     return () => {
       setOpen(false);
     };
