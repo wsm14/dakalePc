@@ -117,7 +117,8 @@ const UserFollowDetail = (props) => {
           column={2}
           initialValues={detail}
         ></DescriptionsCondition>
-        {/* <DescriptionsCondition
+        {/* 暂无用户标签 */}
+        {/* <DescriptionsCondition  
           title="用户标签"
           labelStyle={{ width: 120 }}
           formItems={tagItems}
@@ -136,6 +137,7 @@ const UserFollowDetail = (props) => {
           ></DescriptionsCondition>
         </div>
       </DrawerCondition>
+      {/* 历史跟进情况 */}
       <HistoryFollow
         visible={visibleHistory}
         onClose={() => setVisibleHistory(false)}

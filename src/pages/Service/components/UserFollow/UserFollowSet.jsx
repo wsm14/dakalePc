@@ -11,12 +11,13 @@ import TagModal from './TagModal';
 import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 
 const UserFollowSet = (props) => {
-  const { visible, onClose, childRef } = props;
+  const { visible, onClose, childRef, dispatch } = props;
   const { show = false, type, detail = {} } = visible;
   const [form] = Form.useForm();
   const [tagList, setTagList] = useState([]);
-  const [visibleTag, setVisibleTag] = useState(false);
-  const [visibleHistory, setVisibleHistory] = useState(false);
+
+  const [visibleTag, setVisibleTag] = useState(false); //tag选择弹框
+  const [visibleHistory, setVisibleHistory] = useState(false); //跟进记录
 
   useEffect(() => {
     if (show) {
@@ -35,8 +36,9 @@ const UserFollowSet = (props) => {
       dispatch({
         type: apiUrl,
         payload: {
-          ...detail.userFollowUpId,
+          userFollowUpId: detail.userFollowUpId,
           ...values,
+          tags: tagList.toString(),
         },
         callback: () => {
           childRef.current.fetchGetData();
@@ -68,7 +70,7 @@ const UserFollowSet = (props) => {
   const useItem = [
     {
       label: '用户',
-      name: 'pushStatus',
+      name: 'userId',
     },
   ];
 
@@ -197,6 +199,8 @@ const UserFollowSet = (props) => {
           <FormCondition formItems={followwItem} form={form} initialValues={detail}></FormCondition>
         </div>
       </DrawerCondition>
+
+      {/* 历史跟进详情 */}
       <HistoryFollow
         visible={visibleHistory}
         onClose={() => setVisibleHistory(false)}
