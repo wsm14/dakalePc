@@ -8,7 +8,7 @@ export default [
   {
     header: '通用配置',
     type: 'public',
-    children: ['backgroundColor'],
+    children: ['backgroundColor', 'share'],
   },
   {
     header: '图片类',

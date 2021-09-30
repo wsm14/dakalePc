@@ -109,7 +109,6 @@ export const ROLE_BUTTON_TYPE = {
   section: '部门',
   setLike: '设置猜你想问',
   sortFAQ: '分类管理',
-  shareImg: '分享图片',
   stockSet: '库存设置',
   shareText: '分享文案',
   sharePush: '发布分享',

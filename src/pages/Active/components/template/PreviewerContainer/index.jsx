@@ -3,6 +3,7 @@ import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 import PreviewerActive from './PreviewerActive';
 import PreviewerContent from './PreviewerContent';
+import ShareShowDom from '../Editor/Share/showDom';
 import styles from './style.less';
 
 /**
@@ -98,6 +99,7 @@ const ActiveTemplateIframe = (props) => {
           className={styles.previewer_wrap}
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
+          {moduleData['share'] && <ShareShowDom data={moduleData['share']}></ShareShowDom>}
           <BasketDom index={0} {...dropProps}></BasketDom>
           {dataList.map((item, index) => (
             <React.Fragment key={`${index}`}>

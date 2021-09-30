@@ -5,9 +5,10 @@ import native from './native'; // 桥接文件
 import createHtml from './showHtml';
 
 const init = (htmlData = {}) => {
-  const { dataList, backgroundColor, activityName } = htmlData;
+  console.log(htmlData);
+  const { dataList, backgroundColor, activityName, share = {} } = htmlData;
 
-  const { head, body, footer } = createHtml(dataList);
+  const { head, body, footer } = createHtml([{ data: share, editorType: 'share' }, ...dataList]);
 
   // 网页头部
   const htmlHeard = `<!DOCTYPE html><html lang="zh-cmn-Hans"><head>
@@ -26,7 +27,7 @@ const init = (htmlData = {}) => {
     htmlHeard +
     body +
     `</body>${footer}
-    <script>$('body').on('click','.handleGoNative',function(){if(!$(this).attr('data-linkType'))return;let keyObj={};($(this).attr('data-key')?$(this).attr('data-key').split(','):[]).map((item)=>{keyObj[item]=$(this).attr('data-'+item)});const path=$(this).attr('data-path');const params={path,params:keyObj,linkType:$(this).attr('data-linkType'),};native.nativeInit('linkTo',params)})</script>
+    <script>$('body').on('click','.handleGoNative',function(){if(!$(this).attr('data-linkType')&&!$(this).attr('data-native'))return;let keyObj={};($(this).attr('data-key')?$(this).attr('data-key').split(','):[]).map((item)=>{keyObj[item]=$(this).attr('data-'+item)});const path=$(this).attr('data-path');const params={path,params:keyObj,linkType:$(this).attr('data-linkType'),};native.nativeInit($(this).attr('data-native')||'linkTo',params)})</script>
   </html>`
   );
 };
