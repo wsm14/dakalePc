@@ -15,8 +15,9 @@ const UserFollowSet = (props) => {
   const { show = false, type, detail = {} } = visible;
   const [form] = Form.useForm();
   const [tagList, setTagList] = useState([]);
-  const [visibleTag, setVisibleTag] = useState(false);
-  const [visibleHistory, setVisibleHistory] = useState(false);
+
+  const [visibleTag, setVisibleTag] = useState(false); //tag选择弹框
+  const [visibleHistory, setVisibleHistory] = useState(false); //跟进记录
 
   useEffect(() => {
     if (show) {
@@ -68,7 +69,7 @@ const UserFollowSet = (props) => {
   const useItem = [
     {
       label: '用户',
-      name: 'pushStatus',
+      name: 'userId',
     },
   ];
 
@@ -197,6 +198,8 @@ const UserFollowSet = (props) => {
           <FormCondition formItems={followwItem} form={form} initialValues={detail}></FormCondition>
         </div>
       </DrawerCondition>
+
+      {/* 历史跟进详情 */}
       <HistoryFollow
         visible={visibleHistory}
         onClose={() => setVisibleHistory(false)}
