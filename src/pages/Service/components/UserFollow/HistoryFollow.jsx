@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import { Pagination } from 'antd';
 
 const HistoryFollow = (props) => {
   const { visible, onClose } = props;
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState('100');
 
   const followItem = [
     {
@@ -37,6 +39,10 @@ const HistoryFollow = (props) => {
     visible,
     onClose,
   };
+
+  const handlePageChange = (val) => {
+    setPage(val);
+  };
   return (
     <DrawerCondition {...modalProps}>
       <div style={{ color: '#999', marginBottom: 15 }}>
@@ -48,7 +54,15 @@ const HistoryFollow = (props) => {
         formItems={followItem}
         column={2}
       ></DescriptionsCondition>
-      <Pagination defaultCurrent={page} total={total} />
+      {/* 分页数据 */}
+      <div style={{ marginTop: 30, display: 'flex', justifyContent: 'flex-end' }}>
+        <Pagination
+          showSizeChanger
+          onShowSizeChange={handlePageChange}
+          defaultCurrent={page}
+          total={total}
+        />
+      </div>
     </DrawerCondition>
   );
 };
