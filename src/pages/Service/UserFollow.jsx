@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import { Tag } from 'antd';
 import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 import UserFollowDetail from './components/UserFollow/UserFollowDetail';
 import UserFollowSet from './components/UserFollow/UserFollowSet';
@@ -97,6 +98,15 @@ const UserFollow = (props) => {
     {
       title: '跟进标签',
       dataIndex: 'tags',
+      render: (val) => {
+        return val?.split(',').map((tags) => {
+          return (
+            <Tag key={tags} color="blue">
+              {tags}
+            </Tag>
+          );
+        });
+      },
     },
     {
       title: '跟进结果',
