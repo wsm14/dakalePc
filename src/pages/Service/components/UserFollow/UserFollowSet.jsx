@@ -16,6 +16,7 @@ const UserFollowSet = (props) => {
   const [form] = Form.useForm();
   const [tagList, setTagList] = useState([]);
   const [visibleTag, setVisibleTag] = useState(false);
+  const [visibleHistory, setVisibleHistory] = useState(false);
 
   useEffect(() => {
     if (show) {
@@ -160,6 +161,10 @@ const UserFollowSet = (props) => {
     },
   ];
 
+  const handleOpenRecord = () => {
+    setVisibleHistory(true);
+  };
+
   return (
     <>
       <DrawerCondition {...modalProps}>
@@ -170,8 +175,18 @@ const UserFollowSet = (props) => {
           column={2}
           initialValues={detail}
         ></DescriptionsCondition>
-        <FormCondition formItems={followwItem} form={form} initialValues={detail}></FormCondition>
+        <div>
+          <a style={{ float: 'right', marginTop: 5 }} onClick={handleOpenRecord}>
+            历史跟进情况
+          </a>
+          <FormCondition formItems={followwItem} form={form} initialValues={detail}></FormCondition>
+        </div>
       </DrawerCondition>
+      <HistoryFollow
+        visible={visibleHistory}
+        onClose={() => setVisibleHistory(false)}
+        userId={detail.userId}
+      ></HistoryFollow>
       <TagModal visible={visibleTag} onClose={() => setVisibleTag(false)}></TagModal>
     </>
   );
