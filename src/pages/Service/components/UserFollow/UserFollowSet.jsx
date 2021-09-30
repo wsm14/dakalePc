@@ -36,8 +36,9 @@ const UserFollowSet = (props) => {
       dispatch({
         type: apiUrl,
         payload: {
-          ...detail.userFollowUpId,
+          userFollowUpId: detail.userFollowUpId,
           ...values,
+          tags: tagList.toString(),
         },
         callback: () => {
           childRef.current.fetchGetData();
