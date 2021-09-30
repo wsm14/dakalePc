@@ -11,7 +11,7 @@ import TagModal from './TagModal';
 import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 
 const UserFollowSet = (props) => {
-  const { visible, onClose, childRef } = props;
+  const { visible, onClose, childRef, dispatch } = props;
   const { show = false, type, detail = {} } = visible;
   const [form] = Form.useForm();
   const [tagList, setTagList] = useState([]);
