@@ -100,6 +100,7 @@ const UserFollowSet = (props) => {
       label: '跟进标签',
       name: 'tags',
       type: 'formItem',
+      rules: [{ required: true }],
       formItem: (
         <>
           {tagList.map((tag, index) => (
