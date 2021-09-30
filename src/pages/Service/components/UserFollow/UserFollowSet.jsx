@@ -28,7 +28,21 @@ const UserFollowSet = (props) => {
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'sss');
+      const apiUrl = {
+        add: 'userFollow/fetchSaveUserFollowUp',
+        edit: 'userFollow/fetchUpdateUserFollowUp',
+      }[type];
+      dispatch({
+        type: apiUrl,
+        payload: {
+          ...detail.userFollowUpId,
+          ...values,
+        },
+        callback: () => {
+          childRef.current.fetchGetData();
+          onClose();
+        },
+      });
     });
   };
 

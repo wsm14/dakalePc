@@ -306,5 +306,17 @@ export function fetchGetUserDetail(params) {
     params,
   });
 }
-
-
+// 运营后台-用户跟进-编辑
+export function fetchUpdateUserFollowUp(data) {
+  return request('/admin/userFollowUp/updateUserFollowUp', {
+    method: 'POST',
+    data,
+  });
+}
+// 运营后台-用户跟进-新增
+export function fetchSaveUserFollowUp(data) {
+  return request('/admin/userFollowUp/saveUserFollowUp', {
+    method: 'POST',
+    data,
+  });
+}

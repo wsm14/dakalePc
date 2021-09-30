@@ -4,6 +4,8 @@ import {
   fetchGetUserFollowUp,
   fetchGetDictionaryAdmin,
   fetchGetUserDetail,
+  fetchUpdateUserFollowUp,
+  fetchSaveUserFollowUp,
 } from '@/services/ServiceServices';
 
 export default {
@@ -58,6 +60,24 @@ export default {
       if (!response) return;
       const { content } = response;
       callback(content.userDetail);
+    },
+    *fetchUpdateUserFollowUp({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateUserFollowUp, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
+    },
+    *fetchSaveUserFollowUp({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveUserFollowUp, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
     },
   },
 };
