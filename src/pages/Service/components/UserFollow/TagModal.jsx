@@ -8,6 +8,7 @@ const { CheckableTag } = Tag;
 
 const TagModal = (props) => {
   const { visible, onClose } = props;
+  const { show = false, tagArr = [], setTagList = null, oldTag = [] } = visible;
   const [form] = Form.useForm();
   const [tags, setTags] = useState([]);
   const [inputVisible, setInputVisible] = useState(false);
@@ -15,13 +16,21 @@ const TagModal = (props) => {
   const [editInputIndex, setEditInputIndex] = useState('-1');
   const [editInputValue, setEditInputValue] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
+  useEffect(() => {
+    if (show) {
+      setTags(tagArr);
+    }
+  }, [show]);
 
   const saveEditInputRef = useRef();
   const saveInputRef = useRef();
 
   const handleFinish = () => {
     form.validateFields().then((values) => {
-      console.log(values, 'wwwww');
+      const { extraParam = [] } = values;
+      const newTags = Array.from(new Set([...oldTag, ...extraParam]));
+      setTagList(newTags);
+      onClose();
     });
   };
 
@@ -31,6 +40,9 @@ const TagModal = (props) => {
       : selectedTags.filter((t) => t !== tag);
     console.log('You are interested in: ', nextSelectedTags);
     setSelectedTags(nextSelectedTags);
+    form.setFieldsValue({
+      extraParam: nextSelectedTags,
+    });
   };
 
   const showInput = () => {
@@ -53,7 +65,7 @@ const TagModal = (props) => {
     setTags(newTag);
     setInputValue('');
     setInputVisible(false);
-    form.setFieldsValue({ extraParam: newTag });
+    // form.setFieldsValue({ extraParam: newTag });
   };
 
   const handleEditInputChange = (e) => {
@@ -64,7 +76,7 @@ const TagModal = (props) => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
     setTags(newTags);
-    form.setFieldsValue({ extraParam: newTags });
+    // form.setFieldsValue({ extraParam: newTags });
     setEditInputIndex('-1');
     setEditInputValue('');
   };
@@ -72,7 +84,7 @@ const TagModal = (props) => {
   const modalProps = {
     zIndex: 1002,
     title: '选择标签',
-    visible: visible,
+    visible: show,
     onCancel: onClose,
     afterCallBack: () => {
       setTags([]);

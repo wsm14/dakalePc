@@ -22,7 +22,7 @@ const UserFollow = (props) => {
       },
       callback: (tag) => {
         const { extraParam = '' } = tag;
-        const tagArr = extraParam?.split(',');
+        const tagArr = extraParam ? extraParam.split(',') : [];
         setTags(tagArr);
       },
     });
@@ -148,6 +148,7 @@ const UserFollow = (props) => {
                 detail: {
                   ...detail,
                   ...userInfo,
+                  userId,
                 },
               });
             } else {
@@ -157,6 +158,8 @@ const UserFollow = (props) => {
                 detail: {
                   ...detail,
                   ...userInfo,
+                  userId,
+                  tagArr: tags,
                 },
               });
             }
@@ -167,7 +170,12 @@ const UserFollow = (props) => {
   };
 
   // 表格额外按钮
-  const extraBtn = [{ auth: 'save', onClick: () => setVisible({ show: true, type: 'add' }) }];
+  const extraBtn = [
+    {
+      auth: 'save',
+      onClick: () => setVisible({ show: true, type: 'add', detail: { tagArr: tags } }),
+    },
+  ];
 
   return (
     <>

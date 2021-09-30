@@ -139,6 +139,7 @@ const UserFollowDetail = (props) => {
       <HistoryFollow
         visible={visibleHistory}
         onClose={() => setVisibleHistory(false)}
+        userId={detail.userId}
       ></HistoryFollow>
     </>
   );

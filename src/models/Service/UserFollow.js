@@ -24,7 +24,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload }, { call, put }) {
+    *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchListUserFollowUp, payload);
       if (!response) return;
       const { content } = response;
@@ -35,6 +35,11 @@ export default {
           total: content.total,
         },
       });
+      callback &&
+        callback({
+          list: content.recordList,
+          total: content.total,
+        });
     },
     *fetchGetUserFollowUp({ payload, callback }, { call }) {
       const response = yield call(fetchGetUserFollowUp, payload);
