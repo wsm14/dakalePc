@@ -18,7 +18,7 @@ const ShareImg = (props) => {
       const sImg = await aliOssUpload(shareImg);
       const fImg = await aliOssUpload(friendShareImg);
       dispatch({
-        type: 'specialGoods/fetchSpecialGoodsShareEdit',
+        type: 'activeTemplate/fetchActiveEdit',
         payload: {
           activityTemplateId: info.activityTemplateId,
           shareImg: sImg.toString(),
@@ -42,6 +42,7 @@ const ShareImg = (props) => {
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
+      maxSize: 128,
       imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],
       extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
@@ -66,5 +67,5 @@ const ShareImg = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialGoodsShareEdit'],
+  loading: loading.effects['activeTemplate/fetchActiveEdit'],
 }))(ShareImg);

@@ -82,7 +82,7 @@ const ActiveListComponent = (props) => {
         },
         {
           type: 'shareImg',
-          visible: row.shareFlag,
+          visible: row.shareFlag === '1',
           click: () => fetchActiveDetail({ activityTemplateId: val }, 'share'),
         },
         {
