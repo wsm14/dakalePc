@@ -152,25 +152,18 @@ const UserFollow = (props) => {
             userFollowUpId,
           },
           callback: (detail) => {
+            const data = {
+              ...detail,
+              ...userInfo,
+              userId,
+            };
             if (type === 'info') {
-              setVisibleInfo({
-                show: true,
-                detail: {
-                  ...detail,
-                  ...userInfo,
-                  userId,
-                },
-              });
+              setVisibleInfo({ show: true, detail: data });
             } else {
               setVisible({
                 show: true,
                 type: 'edit',
-                detail: {
-                  ...detail,
-                  ...userInfo,
-                  userId,
-                  tagArr: tags,
-                },
+                detail: { ...data, tagArr: tags },
               });
             }
           },
