@@ -36,8 +36,7 @@ export default [
       {
         path: '/active/prizeConfig',
         name: '抽奖配置',
-        component: './Active/MaterialConfig',
-        buttons: ['save', 'download'],
+        component: './Active/PrizeConfig',
       },
       // 账户管理 account
       {

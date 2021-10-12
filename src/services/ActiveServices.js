@@ -84,3 +84,22 @@ export function fetchMaterialConfigSave(data) {
 }
 
 // 营销物料配置 end
+
+// 盲盒抽奖配置
+
+// get 盲盒抽奖配置 - 列表
+export async function fetchBlindBoxConfigList(params) {
+  return request('/admin/config/blindBox/getBlindBoxRule', {
+    params,
+  });
+}
+
+// post 盲盒抽奖配置 - 设置
+export function fetchBlindBoxConfigSet(data) {
+  return request('/admin/config/blindBox/setBlindBoxRule', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 盲盒抽奖配置 end

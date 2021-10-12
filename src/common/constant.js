@@ -679,3 +679,9 @@ export const FOLLOW_MANNER = {
   public: '公众号',
   other: '其他',
 };
+
+// 盲盒商品类型枚举
+export const BLINDBOX_PRIZE_TYPE = {
+  bean: '卡豆',
+  commerce: '电商商品',
+};
