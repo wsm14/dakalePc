@@ -87,6 +87,13 @@ export function fetchMaterialConfigSave(data) {
 
 // 盲盒抽奖配置
 
+// get 盲盒奖池列表 - 列表
+export async function fetchBlindBoxList(params) {
+  return request('/admin/config/blindBox/listBlindBoxProduct', {
+    params,
+  });
+}
+
 // get 盲盒抽奖配置 - 列表
 export async function fetchBlindBoxConfigList(params) {
   return request('/admin/config/blindBox/getBlindBoxRule', {

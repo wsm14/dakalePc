@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Button } from 'antd';
 import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
+import PrizeSelectModal from './PrizeSelectModal';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const NoobJackPot = (props) => {
@@ -11,8 +12,7 @@ const NoobJackPot = (props) => {
   const { allBlindBoxProducts: list } = blindBoxRule;
 
   const childRef = useRef();
-
-  const addRow = () => {};
+  const [visible, setVisible] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -28,13 +28,11 @@ const NoobJackPot = (props) => {
     },
     {
       title: '中奖图',
-      align: 'center',
       dataIndex: 'winningImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
       title: '奖品图',
-      align: 'center',
       dataIndex: 'prizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
@@ -53,10 +51,7 @@ const NoobJackPot = (props) => {
             auth: true,
             click: () =>
               handleBlindConfigSet(
-                {
-                  ruleType: 'novice',
-                  allBlindBoxProducts: list.filter((item) => item.id !== row.id),
-                },
+                list.filter((item) => item.id !== row.id),
                 childRef.current.fetchGetData,
               ),
           },
@@ -66,34 +61,47 @@ const NoobJackPot = (props) => {
   ];
 
   // 规则配置
-  const handleBlindConfigSet = (payload, callback) => {
+  const handleBlindConfigSet = (lists, callback) => {
     dispatch({
       type: 'prizeConfig/fetchBlindBoxConfigSet',
-      payload,
+      payload: {
+        ruleType: 'novice',
+        allBlindBoxProducts: lists,
+      },
       callback,
     });
   };
 
   return (
-    <TableDataBlock
-      cardProps={{
-        title: '新手必中奖池',
-        bordered: false,
-        extra: (
-          <Button type="primary" onClick={addRow}>
-            新增
-          </Button>
-        ),
-      }}
-      cRef={childRef}
-      loading={loading}
-      columns={getColumns}
-      params={{ ruleType: 'novice' }}
-      rowKey={(record) => `${record.id}`}
-      dispatchType="prizeConfig/fetchGetList"
-      pagination={false}
-      list={list}
-    ></TableDataBlock>
+    <>
+      <TableDataBlock
+        cardProps={{
+          title: '新手必中奖池',
+          bordered: false,
+          extra: (
+            <Button type="primary" onClick={() => setVisible(true)}>
+              新增
+            </Button>
+          ),
+        }}
+        cRef={childRef}
+        loading={loading}
+        columns={getColumns}
+        params={{ ruleType: 'novice' }}
+        rowKey={(record) => `${record.id}`}
+        dispatchType="prizeConfig/fetchGetList"
+        pagination={false}
+        list={list}
+      ></TableDataBlock>
+      {/* 新增 */}
+      <PrizeSelectModal
+        childRef={childRef}
+        visible={visible}
+        selectList={list}
+        onOk={handleBlindConfigSet}
+        onCancel={() => setVisible(false)}
+      ></PrizeSelectModal>
+    </>
   );
 };
 

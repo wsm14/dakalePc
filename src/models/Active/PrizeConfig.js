@@ -1,10 +1,15 @@
 import { notification } from 'antd';
-import { fetchBlindBoxConfigList, fetchBlindBoxConfigSet } from '@/services/ActiveServices';
+import {
+  fetchBlindBoxList,
+  fetchBlindBoxConfigList,
+  fetchBlindBoxConfigSet,
+} from '@/services/ActiveServices';
 
 export default {
   namespace: 'prizeConfig',
 
   state: {
+    blindBox: [],
     blindBoxRule: { participateBlindBoxProducts: [] },
   },
 
@@ -18,6 +23,17 @@ export default {
   },
 
   effects: {
+    *fetchBlindBoxList({ payload }, { call, put }) {
+      const response = yield call(fetchBlindBoxList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          blindBox: content.blindBoxProductObjects,
+        },
+      });
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchBlindBoxConfigList, payload);
       if (!response) return;
