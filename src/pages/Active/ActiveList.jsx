@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Popover, message } from 'antd';
 import QRCode from 'qrcode.react';
@@ -6,6 +6,7 @@ import { ACTIVE_TEMPLATE_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
+import ShareImg from './components/ShareImg';
 
 const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;
@@ -13,6 +14,7 @@ const ActiveListComponent = (props) => {
   const childRef = useRef();
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
+  const [visibleShare, setVisibleShare] = useState(false);
 
   // table 表头
   const getColumns = [
@@ -65,7 +67,7 @@ const ActiveListComponent = (props) => {
     {
       type: 'handle',
       dataIndex: 'activityTemplateId',
-      render: (val, record) => [
+      render: (val, row) => [
         {
           type: 'edit',
           click: () => fetchActiveDetail({ activityTemplateId: val }),
@@ -73,7 +75,15 @@ const ActiveListComponent = (props) => {
         {
           title: '复制链接',
           type: 'copy',
-          click: () => handleCopy(record.jumpUrl),
+          click: () =>
+            handleCopy(
+              `${row.jumpUrl}?shareKey=${row.activityTemplateId}&shareType=${row.activityTemplateId}`,
+            ),
+        },
+        {
+          type: 'shareImg',
+          visible: row.shareFlag === '1',
+          click: () => fetchActiveDetail({ activityTemplateId: val }, 'share'),
         },
         {
           type: 'del',
@@ -99,6 +109,12 @@ const ActiveListComponent = (props) => {
     document.body.removeChild(copyDOMs);
   };
 
+  useEffect(() => {
+    if (!visible.show) {
+      childRef.current.fetchGetData();
+    }
+  }, [visible]);
+
   // 修改设置活动名称
   const handleSetActiveName = (activityName) => {
     setVisibleName(false); // 关闭输入框
@@ -106,11 +122,14 @@ const ActiveListComponent = (props) => {
   };
 
   // 获取详情
-  const fetchActiveDetail = (payload) => {
+  const fetchActiveDetail = (payload, type) => {
     dispatch({
       type: 'activeList/fetchActiveDetail',
       payload,
-      callback: (info) => setVisibleName({ show: true, info }),
+      callback: (info) =>
+        type == 'share'
+          ? setVisibleShare({ show: true, info })
+          : setVisibleName({ show: true, info }),
     });
   };
 
@@ -145,6 +164,8 @@ const ActiveListComponent = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></ActiveTemplateEdit>
+      {/* 分享图 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };

@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
 import { VANE_ICON, VANE_BANNER } from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
-import { NativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const VaneDrawer = (props) => {
-  const { dispatch, cRef, visible, onClose, loading, cityCode } = props;
+  const { dispatch, cRef, visible, onClose, loading, tradeList, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
   const { topCategoryId } = detail;
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
-  const [tradeList, setTradeList] = useState([]);
   const [cateList, setCateList] = useState([]);
 
   const NATIVE_TYPE = {
@@ -47,17 +45,17 @@ const VaneDrawer = (props) => {
       const {
         image,
         bubbleFlag = 0,
-        topCategoryId = [],
-        categoryId = [],
+        topCategoryId: tId = '',
+        categoryId = '',
         windVaneParamObject = {},
         jumpType,
         nativeJumpType,
       } = values;
-      const { bannerImage } = windVaneParamObject;
+      const { bannerImage, ...other } = windVaneParamObject;
       const windVaneParam = {
-        topCategoryId: topCategoryId[0],
+        ...other,
+        topCategoryId: tId && tId.toString(),
         categoryId: categoryId && categoryId.toString(),
-        ...windVaneParamObject,
       };
       const aImg = checkFileData(image);
       const bImg = checkFileData(bannerImage);
@@ -87,29 +85,22 @@ const VaneDrawer = (props) => {
       });
     });
   };
-  useEffect(() => {
-    if (show) {
-      if (topCategoryId && topCategoryId.length) {
-        const topId = topCategoryId[0];
-        tradeList.map((items) => {
-          if (items.categoryIdString == topId) {
-            const childList = items.childList;
-            setCateList(childList);
-          }
-        });
-      }
-    }
-  }, [show]);
-
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
 
   // 获取行业选择项
   const fetchTradeList = () => {
     dispatch({
       type: 'sysTradeList/fetchGetList',
-      callback: (list) => setTradeList(list),
+      callback: (list) => {
+        if (topCategoryId && topCategoryId.length) {
+          const topId = topCategoryId[0];
+          list.map((items) => {
+            if (items.categoryIdString == topId) {
+              const childList = items.childList;
+              setCateList(childList);
+            }
+          });
+        }
+      },
     });
   };
 
@@ -177,6 +168,7 @@ const VaneDrawer = (props) => {
       onChange: (val, option) => {
         const childList = option.option.childList;
         const topCategoryName = option.option.categoryName;
+        console.log(childList, topCategoryName);
         setCateList(childList);
         form.setFieldsValue({
           windVaneParamObject: { topCategoryName, categoryName: '' },
@@ -189,8 +181,6 @@ const VaneDrawer = (props) => {
       mode: 'multiple',
       type: 'select',
       name: 'categoryId',
-      // type: 'treeSelect',
-      // multiple: true,
       select: cateList,
       fieldNames: {
         label: 'categoryName',
@@ -200,6 +190,7 @@ const VaneDrawer = (props) => {
       visible: showUrl === 'trade',
       rules: [{ required: false }],
       onChange: (val, option) => {
+        console.log(val);
         if (val.length) {
           const categoryName = option.map((items) => items.option.categoryName).toString();
           form.setFieldsValue({ windVaneParamObject: { categoryName } });
@@ -221,7 +212,7 @@ const VaneDrawer = (props) => {
       visible: showUrl === 'trade',
       render: (val, row) => {
         const { windVaneParamObject = {} } = row;
-        return `${windVaneParamObject.topCategoryName} ${val ? '(' + val + ')' : ''}`;
+        return `${windVaneParamObject.topCategoryName || ''} ${val || ''}`;
       },
     },
     {
@@ -251,6 +242,10 @@ const VaneDrawer = (props) => {
     afterCallBack: () => {
       setShowPop(Boolean(detail.bubbleFlag));
       setShowUrl(detail.jumpType || false);
+      fetchTradeList();
+    },
+    closeCallBack: () => {
+      setCateList([]);
     },
     footer: type !== 'detail' && (
       <Button onClick={fetchGetFormData} type="primary" loading={loading}>
@@ -271,6 +266,7 @@ const VaneDrawer = (props) => {
 };
 
 export default connect(({ walkingManage, loading, sysTradeList }) => ({
+  tradeList: sysTradeList.list.list,
   navigation: walkingManage.navigation,
   loading: loading.models.walkingManage,
 }))(VaneDrawer);

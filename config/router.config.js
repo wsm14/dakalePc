@@ -25,7 +25,7 @@ export default [
         path: '/active/list',
         name: '活动列表',
         component: './Active/ActiveList',
-        buttons: ['edit', 'copy', 'del'],
+        buttons: ['edit', 'copy', 'shareImg', 'del'],
       },
       {
         path: '/active/materialConfig',

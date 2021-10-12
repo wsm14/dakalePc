@@ -7,14 +7,14 @@ import { DatePicker, Select, Spin, Space, Empty, Cascader } from 'antd';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
+const SearchCard = ({ fetchGetTotalData, selectList, dispatch, mreSelect, loading }) => {
   const [selectedTime, setSelectedTime] = useState([moment(), moment()]);
   const [merchantId, setMerchantId] = useState('');
   const [city, setCity] = useState([]);
 
   useEffect(() => {
     const [provinceCode, cityCode, districtCode] = city;
-    
+
     fetchGetTotalData({
       beginDate: selectedTime[0].format('YYYY-MM-DD'),
       endDate: selectedTime[1].format('YYYY-MM-DD'),
@@ -30,14 +30,12 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
     (current && current > moment().endOf('day')) || current < disTime;
 
   // 搜索店铺
-  const fetchClassifyGetMre = debounce((keyword) => {
-    if (!keyword) return;
+  const fetchClassifyGetMre = debounce((content) => {
+    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
     dispatch({
-      type: 'goodsManage/fetchClassifyGetMre',
+      type: 'baseData/fetchGetMerchantsSearch',
       payload: {
-        limit: 999,
-        page: 1,
-        keyword,
+        content: content.replace(/'/g, ''),
       },
     });
   }, 500);
@@ -66,7 +64,7 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
         optionFilterProp="children"
         style={{ width: 256 }}
       >
-        {mreSelect.map((d) => (
+        {selectList.map((d) => (
           <Select.Option key={d.value} value={d.value}>
             {d.name}
             {d.otherData && <div style={{ fontSize: 12, color: '#989898' }}>{d.otherData}</div>}
@@ -92,7 +90,7 @@ const SearchCard = ({ fetchGetTotalData, dispatch, mreSelect, loading }) => {
   );
 };
 
-export default connect(({ goodsManage, loading }) => ({
-  mreSelect: goodsManage.mreSelect,
-  loading: loading.models.goodsManage,
+export default connect(({ baseData, loading }) => ({
+  selectList: baseData.merchantList,
+  loading: loading.effects['baseData/fetchGetMerchantsSearch'],
 }))(SearchCard);

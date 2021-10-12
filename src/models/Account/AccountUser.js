@@ -86,9 +86,9 @@ export default {
           return pre + Number(cur.content || 0);
         }, 0);
       // 用户累计收益卡豆
-      const userTotalIn = indata.length ? totalReduce(indata, 'userTotalIn') : 0;
+      const userTotalIn = indata.length ? totalReduce(indata, 'userTotalIn s') : 0;
       // 商家累计消费
-      const userTotalOut = outdata.length ? totalReduce(outdata, 'userTotalOut') : 0;
+      const userTotalOut = outdata.length ? totalReduce(outdata, 'userTotalOut s') : 0;
 
       yield put({
         type: 'save',
@@ -98,7 +98,7 @@ export default {
           userTotalBean,
           indata: indata.length
             ? indata
-                .filter((item) => item.statisticType != 'userTotalIn')
+                .filter((item) => item.statisticType != 'userTotalIn s')
                 .map((item) => ({
                   content: Number(item.content),
                   statisticDesc: item.statisticDesc.replace('用户', ''),
@@ -106,7 +106,7 @@ export default {
             : data1,
           outdata: outdata.length
             ? outdata
-                .filter((item) => item.statisticType != 'userTotalOut')
+                .filter((item) => item.statisticType != 'userTotalOut s')
                 .map((item) => ({
                   content: Number(item.content),
                   statisticDesc: item.statisticDesc.replace('用户', ''),

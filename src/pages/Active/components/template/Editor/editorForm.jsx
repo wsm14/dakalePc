@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Radio, Spin, Empty, Select, Upload, Modal, Switch } from 'antd';
+import { Form, Input, Radio, Spin, Empty, Select, Upload, Modal, Switch, InputNumber } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import imageCompress from '@/utils/imageCompress';
 
@@ -20,7 +20,7 @@ const validateMessages = {
 // 图片默认值
 const imgold = (url, uid) => ({
   uid: `-${uid}`,
-  name: 'image.png',
+  name: url,
   status: 'done',
   url,
 });
@@ -131,7 +131,18 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
    */
   const handleUpProps = (name, setFunction) => {
     return {
-      accept: 'image/*',
+      previewFile: (file) => {
+        return new Promise((resolve) => {
+          if (file.type.includes('video')) {
+            resolve('url.mp4');
+          } else {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+          }
+        });
+      },
       onChange: (value) => {
         const { fileList } = value;
         if (!value.file.status) {
@@ -150,11 +161,18 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
 
   // 预览图片
   const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+    const fileExtr = file.name.replace(/.+\./, '.').toLowerCase();
+    if (fileExtr.includes('.mp4') && !file.url && !file.preview) {
+      file.preview = URL.createObjectURL(file.originFileObj || file);
+    } else if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj || file);
     }
-    setPreviewImage(file.url || file.preview);
-    setPreviewTitle(file.name || file.url.substring(file.url.lastIndexOf('/') + 1));
+    const showFile = file.url || file.preview;
+    setPreviewImage(showFile);
+    setPreviewTitle({
+      name: file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
+      fileType: fileExtr,
+    });
     setPreviewVisible(true);
   };
 
@@ -204,6 +222,7 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
             }}
           />
         ),
+        number: <InputNumber min={0}></InputNumber>,
         textArea: (
           <Input.TextArea
             placeholder={placeholder}
@@ -273,9 +292,10 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
             className={'class_select_radil'}
           ></Radio.Group>
         ),
-        switch: <Switch disabled={item.disabled} />,
+        switch: <Switch disabled={item.disabled} onChange={item.onChange} />,
         upload: (
           <Upload
+            accept={item.accept || 'image/*'}
             multiple={item.multiple || false}
             listType="picture-card"
             className={item.className}
@@ -349,13 +369,17 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
         {children}
       </Form>
       <Modal
-        title={previewTitle}
+        title={'查看'}
         visible={previewVisible}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
         zIndex={1009}
       >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        {previewTitle.fileType === '.mp4' ? (
+          <video alt="example" style={{ width: '100%' }} controls="controls" src={previewImage} />
+        ) : (
+          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        )}
       </Modal>
     </>
   );

@@ -1,5 +1,8 @@
 import { uuid } from '@/utils/utils';
-import commonList1 from './CommonList';
+import commonList1 from './CommonList/CommonList_1';
+import commonList2 from './CommonList/CommonList_2';
+import commonList3 from './CommonList/CommonList_3';
+import share from './Share';
 import couponList1 from './CouponList';
 import merchantList1 from './MerchantList';
 
@@ -19,6 +22,20 @@ const scriptTag = (dom, data, id) =>
   `<script>(${dom.toString()})(${JSON.stringify(data)}, "${id}")<\/script>`;
 
 const htmlDom = {
+  // 分享
+  share: (data, uid) => {
+    return `<div id="${uid}"></div><script>;(${share})(${JSON.stringify(data)},"${uid}")<\/script>`;
+  },
+  // 视频
+  normalVideo: (data, uid) => {
+    const dom = ({ url }, uid) => {
+      document.getElementById(
+        uid,
+      ).innerHTML = `<video src="${url}" preload="preload" controls="controls" style="width: 100vw;display: block;"></video>`;
+    };
+
+    return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
+  },
   // 单张图片
   solaImg: (data, uid) => {
     const dom = ({ img, linkType, url, path }, uid) => {
@@ -59,7 +76,7 @@ const htmlDom = {
   // 商品列表
   commonList: ({ styleIndex, list }, uid) => {
     head = { ...head, request: requestJs };
-    const functionIndex = [commonList1][styleIndex];
+    const functionIndex = [commonList1, commonList2, commonList3][styleIndex];
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;

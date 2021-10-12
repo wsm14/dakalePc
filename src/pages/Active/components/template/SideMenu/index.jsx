@@ -12,7 +12,7 @@ const SideMenu = (props) => {
 
   const { dispatchData, moduleData, info = {} } = useContext(context);
 
-  const { activityName, type, jumpUrl, handle, activityTemplateId } = info;
+  const { activityName, type, jumpUrl, handle = 'add', activityTemplateId } = info;
 
   const [previewerUrl, setPreviewerUrl] = useState(); // 预览连接
 
@@ -51,14 +51,18 @@ const SideMenu = (props) => {
           message.destroy();
           return;
         }
+        const { share = {} } = moduleData;
         dispatch({
-          type:
-            handle === 'edit' ? 'activeTemplate/fetchActiveEdit' : 'activeTemplate/fetchActiveAdd',
+          type: {
+            add: 'activeTemplate/fetchActiveAdd',
+            edit: 'activeTemplate/fetchActiveEdit',
+          }[handle],
           payload: {
             activityTemplateId,
             jumpUrl,
             activityName: activityName,
             templateType: type,
+            shareFlag: Number(share?.open || 0),
             params: JSON.stringify({
               ...moduleData,
               dataList: newData, // 空数据不进入

@@ -8,7 +8,7 @@ export default [
   {
     header: '通用配置',
     type: 'public',
-    children: ['backgroundColor'],
+    children: ['backgroundColor', 'share'],
   },
   {
     header: '图片类',
@@ -19,5 +19,10 @@ export default [
     header: '列表类',
     type: 'list',
     children: ['commonList', 'merchantList', 'couponList'],
+  },
+  {
+    header: '视频类',
+    type: 'video',
+    children: ['normalVideo'],
   },
 ];

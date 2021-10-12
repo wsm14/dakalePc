@@ -4,11 +4,15 @@ import {
   ShoppingOutlined,
   ShopOutlined,
   MoneyCollectOutlined,
+  VideoCameraAddOutlined,
+  SwapOutlined,
 } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
+import Share from './Share';
 import CommonList from './CommonList';
+import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
 import CouponList from './CouponList';
 import img from './Img/img.png';
@@ -32,6 +36,13 @@ export default {
     editorType: 'backgroundColor',
     drop: false,
     editorDom: (props) => <BackgroundColor {...props}></BackgroundColor>,
+  },
+  share: {
+    name: '分享配置',
+    icon: <SwapOutlined style={{ fontSize: 24 }} />,
+    editorType: 'share',
+    drop: false,
+    editorDom: (props) => <Share {...props}></Share>,
   },
   solaImg: {
     name: '单张图片',
@@ -80,5 +91,15 @@ export default {
     defaultData: { styleIndex: 0, list: [] },
     editorDom: (props) => <CouponList {...props}></CouponList>,
     dom: (props) => CouponList.dom(props),
+  },
+  normalVideo: {
+    icon: <VideoCameraAddOutlined style={{ fontSize: 24 }} />,
+    name: '视频',
+    editorType: 'normalVideo',
+    drop: true,
+    defaultImg: img,
+    defaultData: '',
+    editorDom: (props) => <NormalVideo {...props}></NormalVideo>,
+    dom: (props) => NormalVideo.dom(props),
   },
 };
