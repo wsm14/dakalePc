@@ -58,6 +58,20 @@ export async function fetchActiveDetail(params) {
   });
 }
 
+// get 助力列表 - 列表
+export async function fetchAssistanceList(params) {
+  return request('/admin/config/blindBox/listUserBlindBoxHelp', {
+    params,
+  });
+}
+
+// get 助力列表 - 详情
+export async function fetchAssistanceDetail(params) {
+  return request('/admin/config/blindBox/boostDetails', {
+    params,
+  });
+}
+
 // 营销物料配置
 
 // get 营销物料配置 - 列表

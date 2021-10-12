@@ -10,6 +10,7 @@ export const ROLE_BUTTON_TYPE = {
   againUp: '再次上架',
   addRemain: '增加库存',
   authEdit: '权限设置',
+  assistanceInfo:'助力详情',
 
   BDSet: '关联BD',
   batchEdit: '批量修改',

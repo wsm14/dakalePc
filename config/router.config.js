@@ -33,6 +33,12 @@ export default [
         component: './Active/MaterialConfig',
         buttons: ['save', 'download'],
       },
+      {
+        path: '/active/assistance',
+        name: '助力记录',
+        component: './Active/Assistance',
+        buttons: ['assistanceInfo'],
+      },
       // 账户管理 account
       {
         path: '/account/user',
