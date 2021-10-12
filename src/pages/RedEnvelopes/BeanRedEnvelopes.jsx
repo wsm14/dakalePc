@@ -221,7 +221,7 @@ const BeanRedEnvelopes = (props) => {
         searchItems={searchItems}
         columns={getColumns}
         rowKey={(record) => `${record.redEnvelopesIdString}`}
-        params={{ envelopesType: 'message' }}
+        params={{ envelopesType: 'normal,lucky' }}
         searchShowData={{ envelopesType: ['normal', 'lucky'] }}
         dispatchType="redEnvelopes/fetchListRedEnvelopesManagement"
         {...redEnvelopes}

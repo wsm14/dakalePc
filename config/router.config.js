@@ -33,6 +33,12 @@ export default [
         component: './Active/MaterialConfig',
         buttons: ['save', 'download'],
       },
+      {
+        path: '/active/prizeConfig',
+        name: '抽奖配置',
+        component: './Active/MaterialConfig',
+        buttons: ['save', 'download'],
+      },
       // 账户管理 account
       {
         path: '/account/user',
