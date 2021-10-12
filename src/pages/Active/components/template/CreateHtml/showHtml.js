@@ -1,7 +1,7 @@
 import { uuid } from '@/utils/utils';
 import commonList1 from './CommonList/CommonList_1';
 import commonList2 from './CommonList/CommonList_2';
-import commonList3 from './CommonList/commonList_3';
+import commonList3 from './CommonList/CommonList_3';
 import share from './Share';
 import couponList1 from './CouponList';
 import merchantList1 from './MerchantList';
