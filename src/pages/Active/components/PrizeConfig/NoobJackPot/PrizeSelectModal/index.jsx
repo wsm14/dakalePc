@@ -7,7 +7,12 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 /**
  * 盲盒商品选择列表
- * @param {Object} list 渲染的数组 { list:[], total:0 }
+ * @param {Boolean} visible 开启关闭状态
+ * @param {Array} selectList 已选数据原数组
+ * @param {Function} onOk 确认回调 返回已选的所有数据
+ * @param {Function} onCancel 取消关闭
+ * @param {Object} data 可覆盖已选数据每一项的参数
+ * @param {String} rowKey 数据唯一id
  * @returns
  */
 const GroupSelect = ({
