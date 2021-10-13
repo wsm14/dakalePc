@@ -30,6 +30,20 @@ const GroupSelect = ({
     }
   }, [visible]);
 
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '奖品类型',
+      type: 'select',
+      name: 'type',
+      select: BLINDBOX_PRIZE_TYPE,
+    },
+    {
+      label: '奖品名称',
+      name: 'prize',
+    },
+  ];
+
   // table 表头
   const getColumns = [
     {
@@ -99,6 +113,7 @@ const GroupSelect = ({
         noCard={false}
         size="middle"
         tableSize="small"
+        searchItems={searchItems}
         columns={getColumns}
         loading={loading}
         rowKey={(record) => `${record[rowKey]}`}
