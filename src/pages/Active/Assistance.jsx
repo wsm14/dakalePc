@@ -3,24 +3,26 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 import AssistanceModal from './components/AssistanceModal/AssistanceModal';
+import { Button } from 'antd';
 
 function Assistance(props) {
-  const { list, loading, dispatch } = props;
+  const { list, loading, infoList, dispatch } = props;
+  console.log(list, 'list');
 
   const [visible, setVisible] = useState(false);
+  const [info, setInfo] = useState(null);
   // 搜索参数
   const searchItems = [
     {
       label: '发起用户',
-      name: 'activityName',
-      placeholder: '请输入用户昵称、手机号或豆号',
+      type: 'user',
+      name: 'userId',
     },
     {
       label: '助力日期',
       type: 'rangePicker',
       name: 'helpStartTime',
       end: 'helpEndTime',
-      placeholder: '开始日期  -  结束日期',
     },
     {
       label: '用户所属地区',
@@ -68,31 +70,23 @@ function Assistance(props) {
     },
     {
       type: 'handle',
-      dataIndex: 'activityTemplateId',
+      dataIndex: 'userId',
       render: (val, row) => [
         {
           type: 'assistanceInfo',
-          click: () => fetchAssistanceDetail({ userId: val }),
+          click: () => AssistanceInfo({ userId: val, helpDate: row.helpDate }),
         },
       ],
     },
   ];
 
   // 获取详情
-  const fetchAssistanceDetail = (payload, type) => {
+  const AssistanceInfo = (payload) => {
     setVisible(true);
-    // dispatch({
-    //   type: 'assistanceList/fetchAssistanceDetail',
-    //   payload,
-    //   // callback: (info) => setVisible({ show: true, info }),
-    // });
+    setInfo(payload);
   };
 
   const handleOk = () => {
-    setVisible(false);
-  };
-
-  const handleCancel = () => {
     setVisible(false);
   };
 
@@ -104,15 +98,16 @@ function Assistance(props) {
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.userId}`}
-        dispatchType="assistanceList/fetchGetAssistanceList"
+        dispatchType="assistanceList/fetchGetList"
         {...list}
       ></TableDataBlock>
       {/* 助力详情 */}
       <AssistanceModal
-        title="Basic Modal"
         visible={visible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        width={1300}
+        infoList={infoList}
+        info={info}
+        onCancel={() => setVisible(false)}
       ></AssistanceModal>
     </>
   );
@@ -120,5 +115,6 @@ function Assistance(props) {
 
 export default connect(({ assistanceList, loading }) => ({
   list: assistanceList.list,
+  infoList: assistanceList.info,
   loading: loading.models.assistanceList,
 }))(Assistance);

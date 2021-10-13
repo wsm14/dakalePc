@@ -23,7 +23,7 @@ export default {
   },
 
   effects: {
-    *fetchGetAssistanceList({ payload }, { call, put }) {
+    *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchAssistanceList, payload);
       if (!response) return;
       const { content } = response;
@@ -37,18 +37,19 @@ export default {
         },
       });
     },
-    *fetchAssistanceDetail({ payload, callback }, { call }) {
+    *fetchAssistanceDetail({ payload }, { call, put }) {
       const response = yield call(fetchAssistanceDetail, payload);
       if (!response) return;
-      console.log(response);
-      // const { content } = response;
-      // const { templateType, params } = content.activityTemplate;
-      // callback({
-      //   ...content.activityTemplate,
-      //   type: templateType,
-      //   params: JSON.parse(params || '{}'),
-      //   handle: 'assistanceInfo',
-      // });
+      const { content } = response;
+      console.log(content, 'content');
+      yield put({
+        type: 'save',
+        payload: {
+          info: {
+            list: content.userBlindBoxHelpDTOS,
+          },
+        },
+      });
     },
   },
 };
