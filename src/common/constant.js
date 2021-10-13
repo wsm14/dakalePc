@@ -664,3 +664,34 @@ export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
+
+export const FOLLOW_TYPE = {
+  consultation: '用户咨询',
+  complaints: '用户投诉',
+  activityVisit: '活动回访',
+  normalVisit: '日常回访',
+  other: '其他',
+};
+
+export const FOLLOW_MANNER = {
+  weChat: '微信',
+  mobile: '电话',
+  applets: '小程序',
+  public: '公众号',
+  other: '其他',
+};
+
+// 盲盒商品类型枚举
+export const BLINDBOX_PRIZE_TYPE = {
+  bean: '卡豆',
+  commerce: '电商商品',
+};
+
+//盲盒抽奖记录 - 抽奖状态
+export const BOXLOTTERY_STATUS = ['未完善地址', '待发货', '已发货'];
+
+// 盲盒抽奖记录 - 抽奖场次
+export const BOXLOTTERY_TYPE = {
+  bean: '卡豆',
+  invitation: '邀请',
+};

@@ -337,7 +337,7 @@ export default {
         },
       });
     },
-    *fetchGetUsersSearch({ payload }, { call, put }) {
+    *fetchGetUsersSearch({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetUsersSearch, payload);
       if (!response) return;
       const { content } = response;
@@ -350,6 +350,7 @@ export default {
           })),
         },
       });
+      callback && callback(content.userDTOS);
     },
     *fetchGetMerchantsSearch({ payload }, { put, call }) {
       const response = yield call(fetchGetMerchantsSearch, payload);
