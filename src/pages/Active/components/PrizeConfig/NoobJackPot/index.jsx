@@ -98,6 +98,7 @@ const NoobJackPot = (props) => {
         childRef={childRef}
         visible={visible}
         selectList={list}
+        data={{ isNovice: 1 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
         onOk={handleBlindConfigSet}
         onCancel={() => setVisible(false)}
       ></PrizeSelectModal>

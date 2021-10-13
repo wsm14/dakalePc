@@ -17,6 +17,7 @@ const GroupSelect = ({
   selectList = [],
   onOk,
   onCancel,
+  data = {},
   rowKey = 'id',
   loading,
 }) => {
@@ -90,7 +91,7 @@ const GroupSelect = ({
 
   return (
     <Modal
-      title="新增"
+      title="选择商品"
       destroyOnClose
       maskClosable
       width={1000}
@@ -98,12 +99,11 @@ const GroupSelect = ({
       confirmLoading={loading}
       okText={`确定（已选${selectGroupKey.length}项）`}
       onOk={() => {
-        // isNovice 是否属于新手必中奖池 0-否 1-是 默认值0
         onOk(
-          selectGroup.map((item) => ({ ...item, isNovice: 1 })),
+          selectGroup.map((item) => ({ ...item, ...data })),
           () => {
             onCancel();
-            childRef.current.fetchGetData();
+            childRef && childRef.current.fetchGetData();
           },
         );
       }}
