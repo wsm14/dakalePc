@@ -34,10 +34,15 @@ export default [
         buttons: ['save', 'download'],
       },
       {
+        path: '/active/prizeConfig',
+        name: '抽奖配置',
+        component: './Active/PrizeConfig',
+      },
+      {
         path: '/active/boxLottery',
         name: '盲盒抽奖记录',
         component: './Active/BoxLottery',
-        buttons: ['goodsDeliver', 'goodsView','exportList'],
+        buttons: ['goodsDeliver', 'goodsView', 'exportList'],
       },
       // 账户管理 account
       {

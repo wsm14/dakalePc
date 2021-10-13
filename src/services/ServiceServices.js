@@ -283,3 +283,40 @@ export function fetchUpdateCommentsDeleteFlag(data) {
 }
 
 // 评论管理 end
+
+//用户跟进 start
+
+// 用户跟进列表
+export function fetchListUserFollowUp(params) {
+  return request('/admin/userFollowUp/listUserFollowUp', {
+    params,
+  });
+}
+
+// 用户跟进详情
+export function fetchGetUserFollowUp(params) {
+  return request('/admin/userFollowUp/getUserFollowUp', {
+    params,
+  });
+}
+
+// 运营后台-用户详情
+export function fetchGetUserDetail(params) {
+  return request('/admin/userManagement/getUserDetail', {
+    params,
+  });
+}
+// 运营后台-用户跟进-编辑
+export function fetchUpdateUserFollowUp(data) {
+  return request('/admin/userFollowUp/updateUserFollowUp', {
+    method: 'POST',
+    data,
+  });
+}
+// 运营后台-用户跟进-新增
+export function fetchSaveUserFollowUp(data) {
+  return request('/admin/userFollowUp/saveUserFollowUp', {
+    method: 'POST',
+    data,
+  });
+}
