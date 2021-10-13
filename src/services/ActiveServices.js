@@ -84,3 +84,33 @@ export function fetchMaterialConfigSave(data) {
 }
 
 // 营销物料配置 end
+
+
+// get 盲盒中奖记录 - 列表
+export function fetchBoxLotteryList(params) {
+  return request('/admin/config/blindBox/listUserBlindBoxReward', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 列表导出
+export function fetchBoxLotteryExport(params) {
+  return request('/admin/config/blindBox/listUserBlindBoxRewardImport', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 查看物流
+export function fetchBoxDetail(params) {
+  return request('/admin/config/blindBox/viewLogistics', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 查看物流
+export function fetchBoxAddAndPush(data) {
+  return request('/admin/config/blindBox/deliverGoods', {
+    method: 'POST',
+    data,
+  });
+}

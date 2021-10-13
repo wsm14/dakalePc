@@ -33,6 +33,12 @@ export default [
         component: './Active/MaterialConfig',
         buttons: ['save', 'download'],
       },
+      {
+        path: '/active/boxLottery',
+        name: '盲盒抽奖记录',
+        component: './Active/BoxLottery',
+        buttons: ['goodsDeliver', 'goodsView','exportList'],
+      },
       // 账户管理 account
       {
         path: '/account/user',

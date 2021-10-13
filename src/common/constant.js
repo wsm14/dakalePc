@@ -664,3 +664,12 @@ export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
+
+//盲盒抽奖记录 - 抽奖状态
+export const BOXLOTTERY_STATUS = ['未完善地址', '待发货','已发货'];
+
+// 盲盒抽奖记录 - 抽奖场次
+export const BOXLOTTERY_TYPE = {
+  bean: '卡豆',
+  invitation: '邀请',
+};
