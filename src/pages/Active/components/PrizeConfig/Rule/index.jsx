@@ -16,7 +16,7 @@ const Rule = (props) => {
   const { TabPane } = Tabs;
 
   useEffect(() => {
-    callback('bean');
+    callback(keyType);
   }, []);
 
   // 切换tab
@@ -40,6 +40,9 @@ const Rule = (props) => {
       编辑规则
     </Button>
   );
+  const editRule = () => {
+    setVisible(true);
+  };
 
   // table 表头
   const getColumns = [
@@ -116,9 +119,7 @@ const Rule = (props) => {
   ];
 
   // useEffect(() => {}, []);
-  const editRule = () => {
-    setVisible(true);
-  };
+
   return (
     <>
       <Card size="small" title="APP盲盒规则配置" bordered={false}>
@@ -137,6 +138,7 @@ const Rule = (props) => {
       </Card>
       {/* 规则编辑 */}
       <EditBean
+        keyType={keyType}
         visible={visible}
         blindBoxRule={blindBoxRule}
         onClose={() => {

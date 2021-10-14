@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import PrizeSelectModal from '../../NoobJackPot/PrizeSelectModal';
@@ -9,9 +9,15 @@ import FormCondition from '@/components/FormCondition';
 import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import InputNumber from '@/components/FormCondition/InputNumber';
+import ChangeInvite from './ChangeInvite';
 
 function EditBean(props) {
-  const { visible, onClose, blindBoxRule, loading } = props;
+  const { visible, onClose, blindBoxRule, loading, keyType } = props;
+
+  const numRef = useRef();
+  const timesRef = useRef();
+  // const [num, setNum] = useState(null);
+  // const [times, setTimes] = useState(null);
 
   const { allBlindBoxProducts: list } = blindBoxRule;
 
@@ -27,6 +33,16 @@ function EditBean(props) {
   const handleUpAction = () => {
     form.validateFields().then(async (values) => {
       console.log(values);
+    });
+    console.log(numRef.current.ariaValueNow, 'numRef');
+    console.log(timesRef.current.ariaValueNow, 'timesRef');
+    dispatch({
+      type: 'prizeConfig/fetchBlindBoxConfigSet',
+      payload: {
+        ruleType: 'novice',
+        allBlindBoxProducts: lists,
+      },
+      callback,
     });
   };
 
@@ -195,10 +211,32 @@ function EditBean(props) {
     ),
   };
 
+  // 修改邀请数据
+  const onChange1 = (val) => {
+    setNum(val);
+    console.log(num, 'num');
+    console.log(val, 'val');
+  };
+  const onChange2 = (val) => {
+    setTimes(val);
+    console.log(times, 'times');
+  };
+
   return (
     <>
       <DrawerCondition {...modalProps}>
-        <FormCondition form={form} formItems={formItems}></FormCondition>
+        {keyType === 'bean' ? (
+          <FormCondition form={form} formItems={formItems}></FormCondition>
+        ) : (
+          <ChangeInvite
+            // onChange1={onChange1}
+            // onChange2={onChange2}
+            // num={num}
+            // times={times}
+            numRef={numRef}
+            timesRef={timesRef}
+          ></ChangeInvite>
+        )}
       </DrawerCondition>
       <PrizeSelectModal
         visible={modalVisible}
