@@ -14,15 +14,19 @@ const Rule = (props) => {
 
   const { TabPane } = Tabs;
 
+  useEffect(() => {
+    callback('bean');
+  }, []);
+
   // 切换tab
-  function callback(key) {
+  const callback = (key) => {
     dispatch({
       type: 'UpdateBlindBoxRule/fetchGetList',
       payload: {
         ruleType: key,
       },
     });
-  }
+  };
   // 编辑规则按钮
   const operations = (
     <Button
@@ -130,7 +134,13 @@ const Rule = (props) => {
         </Tabs>
       </Card>
       {/* 规则编辑 */}
-      <EditBean visible={visible} blindBoxRule={blindBoxRule} setVisible={setVisible}></EditBean>
+      <EditBean
+        visible={visible}
+        blindBoxRule={blindBoxRule}
+        onClose={() => {
+          setVisible(false);
+        }}
+      ></EditBean>
     </>
   );
 };
