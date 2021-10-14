@@ -2,6 +2,7 @@ import React from 'react';
 import { Descriptions } from 'antd';
 import ImagePreviewGroup from './ImagePreviewGroup';
 import VideoPreview from './VideoPreview';
+import OtherUpload from './OtherUpload';
 import styles from './index.less';
 
 /**
@@ -14,12 +15,20 @@ import styles from './index.less';
  * @extra 描述列表的操作区域，显示在右上方
  * @initialValues 默认值
  * @style Descriptions 样式
+ * @bordered 是否显示边框
  * @column 一行的 DescriptionItems 数量，可以写成像素值或支持响应式的对象写法 { xs: 8, sm: 16, md: 24}
  * @children Descriptions 附加内容 显示在底部
  */
 
 const DescriptionsCondition = (props) => {
-  const { formItems = [], initialValues = {}, column = 1, children, ...other } = props;
+  const {
+    formItems = [],
+    initialValues = {},
+    bordered = true,
+    column = 1,
+    children,
+    ...other
+  } = props;
 
   // 逐级获取value
   const getArrKeyVal = (key) => {
@@ -51,6 +60,7 @@ const DescriptionsCondition = (props) => {
       textArea: value,
       upload: <ImagePreviewGroup url={value}></ImagePreviewGroup>,
       videoUpload: <VideoPreview url={value}></VideoPreview>,
+      otherUpload: <OtherUpload url={value}></OtherUpload>,
     };
     // 类型错误返回
     if (!Object.keys(domShow).includes(type)) return 'type error';
@@ -115,7 +125,7 @@ const DescriptionsCondition = (props) => {
   return (
     <>
       <Descriptions
-        bordered
+        bordered={bordered}
         size="small"
         column={column}
         {...other}

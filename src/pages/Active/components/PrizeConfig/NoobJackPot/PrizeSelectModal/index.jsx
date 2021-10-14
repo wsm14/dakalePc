@@ -7,7 +7,12 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 /**
  * 盲盒商品选择列表
- * @param {Object} list 渲染的数组 { list:[], total:0 }
+ * @param {Boolean} visible 开启关闭状态
+ * @param {Array} selectList 已选数据原数组
+ * @param {Function} onOk 确认回调 返回已选的所有数据
+ * @param {Function} onCancel 取消关闭
+ * @param {Object} data 可覆盖已选数据每一项的参数
+ * @param {String} rowKey 数据唯一id
  * @returns
  */
 const GroupSelect = ({
@@ -17,6 +22,7 @@ const GroupSelect = ({
   selectList = [],
   onOk,
   onCancel,
+  data = {},
   rowKey = 'id',
   loading,
 }) => {
@@ -29,6 +35,20 @@ const GroupSelect = ({
       setSelectGroupKey(selectList.map((item) => `${item[rowKey]}`));
     }
   }, [visible]);
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '奖品类型',
+      type: 'select',
+      name: 'type',
+      select: BLINDBOX_PRIZE_TYPE,
+    },
+    {
+      label: '奖品名称',
+      name: 'prize',
+    },
+  ];
 
   // table 表头
   const getColumns = [
@@ -76,7 +96,7 @@ const GroupSelect = ({
 
   return (
     <Modal
-      title="新增"
+      title="选择商品"
       destroyOnClose
       maskClosable
       width={1000}
@@ -84,12 +104,11 @@ const GroupSelect = ({
       confirmLoading={loading}
       okText={`确定（已选${selectGroupKey.length}项）`}
       onOk={() => {
-        // isNovice 是否属于新手必中奖池 0-否 1-是 默认值0
         onOk(
-          selectGroup.map((item) => ({ ...item, isNovice: 1 })),
+          selectGroup.map((item) => ({ ...item, ...data })),
           () => {
             onCancel();
-            childRef.current.fetchGetData();
+            childRef && childRef.current.fetchGetData();
           },
         );
       }}
@@ -99,6 +118,7 @@ const GroupSelect = ({
         noCard={false}
         size="middle"
         tableSize="small"
+        searchItems={searchItems}
         columns={getColumns}
         loading={loading}
         rowKey={(record) => `${record[rowKey]}`}

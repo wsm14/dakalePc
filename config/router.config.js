@@ -34,6 +34,12 @@ export default [
         buttons: ['save', 'download'],
       },
       {
+        path: '/active/assistance',
+        name: '助力记录',
+        component: './Active/Assistance',
+        buttons: ['assistanceInfo'],
+      },
+      {
         path: '/active/prizeConfig',
         name: '抽奖配置',
         component: './Active/PrizeConfig',
