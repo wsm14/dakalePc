@@ -94,6 +94,30 @@ export async function fetchBlindBoxList(params) {
   });
 }
 
+// post 盲盒奖池 - 添加
+export function fetchBlindBoxAdd(data) {
+  return request('/admin/config/blindBox/saveBlindBoxProduct', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 盲盒奖池 - 修改
+export function fetchBlindBoxEdit(data) {
+  return request('/admin/config/blindBox/updateBlindBoxProduct', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 盲盒奖池 - 删除
+export function fetchBlindBoxDelete(data) {
+  return request('/admin/config/blindBox/deleteBlindBoxProduct', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 盲盒抽奖配置 - 列表
 export async function fetchBlindBoxConfigList(params) {
   return request('/admin/config/blindBox/getBlindBoxRule', {
