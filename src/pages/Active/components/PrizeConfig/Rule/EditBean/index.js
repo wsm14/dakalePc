@@ -1,114 +1,217 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'umi';
+import { Button, Form } from 'antd';
+import PrizeSelectModal from '../../NoobJackPot/PrizeSelectModal';
 import DrawerCondition from '@/components/DrawerCondition';
 import TableDataBlock from '@/components/TableDataBlock';
+
+import FormCondition from '@/components/FormCondition';
 import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
-import { Button, Form } from 'antd';
-import FormCondition from '@/components/FormCondition';
-import ChangeInvite from './changeInvite';
+import InputNumber from '@/components/FormCondition/InputNumber';
 
 function EditBean(props) {
-  const { visible, setVisible, blindBoxRule, loading, keyType } = props;
+  const { visible, onClose, blindBoxRule, loading } = props;
+
+  const { allBlindBoxProducts: list } = blindBoxRule;
 
   const [form] = Form.useForm();
-  const inviteRef = useRef();
 
-  // table 表头
-  // const getColumns = [
-  //   {
-  //     title: '奖品ID',
-  //     fixed: 'left',
-  //     dataIndex: 'id',
-  //   },
-  //   {
-  //     title: '奖品类型',
-  //     fixed: 'left',
-  //     dataIndex: 'type',
-  //     render: (val) => BLINDBOX_PRIZE_TYPE[val],
-  //   },
-  //   {
-  //     title: '中奖图',
-  //     dataIndex: 'winningImg',
-  //     render: (val) => <PopImgShow url={val}></PopImgShow>,
-  //   },
-  //   {
-  //     title: '奖池图',
-  //     dataIndex: 'winningImg',
-  //     render: (val) => <PopImgShow url={val}></PopImgShow>,
-  //   },
-  //   {
-  //     title: '奖品名称',
-  //     dataIndex: 'prize',
-  //     ellipsis: true,
-  //   },
-  //   {
-  //     title: '盲盒展示名称',
-  //     dataIndex: 'showName',
-  //     ellipsis: true,
-  //   },
-  //   {
-  //     title: '抽中概率',
-  //     dataIndex: 'rate',
-  //   },
-  //   {
-  //     title: '是否真实奖品',
-  //     dataIndex: 'isParticipate',
-  //     render: (val) => (val = 1 ? '是' : '仅展示'),
-  //   },
-  // ];
-  const formItems = [
+  //弹窗显示
+  const [modalVisible, setModalVisible] = useState(false);
+
+  //列表数据
+  const [tableList, setTableList] = useState([]);
+
+  //表单提交
+  const handleUpAction = () => {
+    form.validateFields().then(async (values) => {
+      console.log(values);
+    });
+  };
+
+  //弹窗点击确认
+  const handleBlindConfigSet = (lists, callback) => {
+    setTableList(lists);
+    callback();
+  };
+
+  //改变抽中概率
+  const onChangeInput = (val, index, type) => {
+    switch (type) {
+      case 'add':
+        tableList[index].rate = val;
+        break;
+      case 'delete':
+        tableList.splice(index, 1);
+        break;
+      default:
+        break;
+    }
+    setTableList([...tableList]);
+  };
+
+  const getColumns = [
     {
-      label: '每次抽取所需卡豆',
-      type: 'number',
-      name: 'bean',
-      //   disabled: !editType.includes('edit'),
+      title: '奖品ID',
+      fixed: 'left',
+      dataIndex: 'id',
     },
     {
-      label: '盲盒背景图',
+      title: '奖品类型',
+      fixed: 'left',
+      dataIndex: 'type',
+      render: (val) => BLINDBOX_PRIZE_TYPE[val],
+    },
+    {
+      title: '中奖图',
+      dataIndex: 'winningImg',
+      render: (val) => <PopImgShow url={val}></PopImgShow>,
+    },
+    {
+      title: '奖池图',
+      dataIndex: 'winningImg',
+      render: (val) => <PopImgShow url={val}></PopImgShow>,
+    },
+    {
+      title: '奖品名称',
+      dataIndex: 'prize',
+      ellipsis: true,
+    },
+    {
+      title: '盲盒展示名称',
+      dataIndex: 'showName',
+      ellipsis: true,
+    },
+    {
+      title: '抽中概率',
+      dataIndex: 'rate',
+      render: (val, row, index) => (
+        <InputNumber
+          style={{ width: '100px' }}
+          precision={2}
+          suffix={'%'}
+          onChange={(e) => {
+            onChangeInput(e, index, 'add');
+          }}
+        ></InputNumber>
+      ),
+    },
+    {
+      title: '是否真实奖品',
+      dataIndex: 'isParticipate',
+      render: (val) => (val = 1 ? '是' : '仅展示'),
+    },
+    {
+      type: 'handle',
+      dataIndex: 'id',
+      fixed: 'right',
+      render: (val, row, index) => [
+        {
+          type: 'del',
+          auth: 'true',
+          click: () => onChangeInput(val, index, 'delete'),
+        },
+      ],
+    },
+  ];
+
+  const formItems = [
+    {
+      label: '每次抽取需要卡豆',
+      name: 'userIdList',
+      type: 'number',
+      suffix: '卡豆',
+    },
+    {
+      label: '中奖图',
       type: 'upload',
-      name: 'backImg',
-      //   disabled: !editType.includes('edit'),
+
+      name: 'winningImg',
+      maxFile: 1,
     },
     {
       label: '盲盒动效',
       type: 'otherUpload',
-      name: 'backFile',
-      //   disabled: !editType.includes('edit'),
+      extra: '请上传动效zip文件',
+      name: ['pickUpBeans', 'file'],
+      labelCol: { span: 6 },
+      style: { flex: 1 },
     },
     {
       label: '奖池',
-      name: 'participateBlindBoxProducts',
-
-      //   disabled: !editType.includes('edit'),
+      name: 'userIdList',
+      type: 'formItem',
+      addRules: [
+        {
+          validator: () => {
+            const total = tableList.reduce((item, next) => {
+              return item + next.rate;
+            }, 0);
+            if (total < 100) {
+              return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+      formItem: (
+        <Button
+          type="primary"
+          ghost
+          onClick={() => {
+            setModalVisible(true);
+          }}
+        >
+          选择
+        </Button>
+      ),
+    },
+    {
+      label: '适用用户',
+      type: 'noForm',
+      formItem: (
+        <TableDataBlock
+          noCard={false}
+          loading={loading}
+          columns={getColumns}
+          rowKey={(record) => `${record.id}`}
+          list={tableList}
+        ></TableDataBlock>
+      ),
     },
   ];
-  const submitInvite = (lists, callback) => {
-    setVisible(false);
-    console.log(inviteRef);
-    // dispatch({
-    //   type: 'UpdateBlindBoxRule/fetchBlindBoxConfigSet',
-    //   payload: {
-    //     ruleType: 'invite',
-    //     allBlindBoxProducts: lists,
-    //   },
-    //   callback,
-    // });
+
+  // 弹出窗属性
+  const modalProps = {
+    title: '编辑规则',
+    width: '800',
+    visible,
+    onClose,
+    footer: (
+      <Button onClick={handleUpAction} type="primary">
+        提交
+      </Button>
+    ),
   };
+
   return (
     <>
-      <DrawerCondition title="编辑场次" visible={visible} onClose={submitInvite}>
-        {keyType === 'bean' ? (
-          <FormCondition
-            form={form}
-            formItems={formItems}
-            initialValues={blindBoxRule}
-          ></FormCondition>
-        ) : (
-          <ChangeInvite ref={inviteRef}></ChangeInvite>
-        )}
+      <DrawerCondition {...modalProps}>
+        <FormCondition form={form} formItems={formItems}></FormCondition>
       </DrawerCondition>
+      <PrizeSelectModal
+        visible={modalVisible}
+        selectList={tableList}
+        data={{ isNovice: 1 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
+        onOk={handleBlindConfigSet}
+        onCancel={() => setModalVisible(false)}
+      ></PrizeSelectModal>
     </>
   );
 }
 
-export default EditBean;
+export default connect(({ prizeConfig, loading }) => ({
+  blindBoxRule: prizeConfig.blindBoxRule,
+  loading: loading.effects['prizeConfig/fetchGetList'],
+}))(EditBean);
