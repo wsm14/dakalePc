@@ -12,14 +12,12 @@ import InputNumber from '@/components/FormCondition/InputNumber';
 import ChangeInvite from './ChangeInvite';
 
 function EditBean(props) {
-  const { visible, onClose, blindBoxRule, loading, keyType } = props;
+  const { visible, onClose, blindBoxRule = {}, loading, keyType } = props;
 
   const numRef = useRef();
   const timesRef = useRef();
   // const [num, setNum] = useState(null);
   // const [times, setTimes] = useState(null);
-
-  const { allBlindBoxProducts: list } = blindBoxRule;
 
   const [form] = Form.useForm();
 
@@ -48,6 +46,7 @@ function EditBean(props) {
 
   //弹窗点击确认
   const handleBlindConfigSet = (lists, callback) => {
+    console.log(lists);
     setTableList(lists);
     callback();
   };
@@ -107,6 +106,7 @@ function EditBean(props) {
           style={{ width: '100px' }}
           precision={2}
           suffix={'%'}
+          value={val}
           onChange={(e) => {
             onChangeInput(e, index, 'add');
           }}
@@ -135,28 +135,26 @@ function EditBean(props) {
   const formItems = [
     {
       label: '每次抽取需要卡豆',
-      name: 'userIdList',
+      name: 'bean',
       type: 'number',
       suffix: '卡豆',
     },
     {
-      label: '中奖图',
+      label: '盲盒背景图',
       type: 'upload',
-
-      name: 'winningImg',
-      maxFile: 1,
+      name: 'backImg',
     },
     {
       label: '盲盒动效',
       type: 'otherUpload',
       extra: '请上传动效zip文件',
-      name: ['pickUpBeans', 'file'],
-      labelCol: { span: 6 },
-      style: { flex: 1 },
+      name: 'backFile',
+      // labelCol: { span: 6 },
+      // style: { flex: 1 },
     },
     {
       label: '奖池',
-      name: 'userIdList',
+      name: 'participateBlindBoxProducts',
       type: 'formItem',
       addRules: [
         {
@@ -204,6 +202,9 @@ function EditBean(props) {
     width: '800',
     visible,
     onClose,
+    afterCallBack: () => {
+      setTableList(blindBoxRule?.participateBlindBoxProducts);
+    },
     footer: (
       <Button onClick={handleUpAction} type="primary">
         提交
@@ -226,7 +227,11 @@ function EditBean(props) {
     <>
       <DrawerCondition {...modalProps}>
         {keyType === 'bean' ? (
-          <FormCondition form={form} formItems={formItems}></FormCondition>
+          <FormCondition
+            form={form}
+            formItems={formItems}
+            initialValues={blindBoxRule}
+          ></FormCondition>
         ) : (
           <ChangeInvite
             // onChange1={onChange1}
@@ -250,6 +255,6 @@ function EditBean(props) {
 }
 
 export default connect(({ prizeConfig, loading }) => ({
-  blindBoxRule: prizeConfig.blindBoxRule,
+  // blindBoxRule: prizeConfig.blindBoxRule,
   loading: loading.effects['prizeConfig/fetchGetList'],
 }))(EditBean);

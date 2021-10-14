@@ -5,6 +5,7 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
+
 import EditBean from './EditBean';
 
 const Rule = (props) => {
