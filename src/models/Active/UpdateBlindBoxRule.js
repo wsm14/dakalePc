@@ -1,4 +1,4 @@
-import { fetchBlindBoxConfigList } from '@/services/ActiveServices';
+import { fetchBlindBoxConfigList, fetchBlindBoxConfigSet } from '@/services/ActiveServices';
 
 export default {
   namespace: 'UpdateBlindBoxRule',
@@ -28,6 +28,15 @@ export default {
           blindBoxRule: content.blindBoxRule,
         },
       });
+    },
+    *fetchBlindBoxConfigSet({ payload, callback }, { call }) {
+      const response = yield call(fetchBlindBoxConfigSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '配置成功',
+      });
+      callback && callback();
     },
     // *fetchBlindBoxList({ payload }, { call, put }) {
     //   const response = yield call(fetchBlindBoxList, payload);

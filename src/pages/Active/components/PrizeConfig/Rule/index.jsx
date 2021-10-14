@@ -11,6 +11,7 @@ const Rule = (props) => {
   const { blindBoxRule, loading, dispatch } = props;
 
   const [visible, setVisible] = useState(false); // 设置 修改 详情
+  const [keyType, setKeyType] = useState('bean');
 
   const { TabPane } = Tabs;
 
@@ -22,6 +23,7 @@ const Rule = (props) => {
         ruleType: key,
       },
     });
+    setKeyType(key);
   }
   // 编辑规则按钮
   const operations = (
@@ -130,7 +132,13 @@ const Rule = (props) => {
         </Tabs>
       </Card>
       {/* 规则编辑 */}
-      <EditBean visible={visible} blindBoxRule={blindBoxRule} setVisible={setVisible}></EditBean>
+      <EditBean
+        keyType={keyType}
+        visible={visible}
+        loading={loading}
+        blindBoxRule={blindBoxRule}
+        setVisible={setVisible}
+      ></EditBean>
     </>
   );
 };
