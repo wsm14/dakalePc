@@ -40,7 +40,7 @@ function EditBean(props) {
                 bean: values.bean,
                 backImg: values.backImg,
                 backFile: values.backFile,
-                allBlindBoxProducts: values.participateBlindBoxProducts,
+                allBlindBoxProducts: tableList,
               },
               callback: () => {
                 onClose();
@@ -56,7 +56,7 @@ function EditBean(props) {
               times: timesRef.current.ariaValueNow,
               backImg: blindBoxRule.backImg,
               backFile: blindBoxRule.backFile,
-              allBlindBoxProducts: blindBoxRule.participateBlindBoxProducts,
+              allBlindBoxProducts: tableList,
             },
             callback: () => {
               onClose();
