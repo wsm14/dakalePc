@@ -3,26 +3,23 @@ import { connect } from 'umi';
 import { InputNumber } from 'antd';
 
 function changeInvite(props) {
-  // const { onChange1, onChange2, num, times } = props;
-  const { numRef, timesRef } = props;
+  const { numRef, timesRef, blindBoxRule } = props;
 
   return (
     <>
       助力获得免费次数：每邀请
       {
         <InputNumber
-          // value={num}
           ref={numRef}
-          // onChange={onChange1}
+          defaultValue={blindBoxRule.num}
           placeholder={'请输入'}
         ></InputNumber>
       }
       个新用户助力获得
       {
         <InputNumber
-          // value={times}
           ref={timesRef}
-          // onChange={onChange2}
+          defaultValue={blindBoxRule.times}
           placeholder={'请输入'}
         ></InputNumber>
       }

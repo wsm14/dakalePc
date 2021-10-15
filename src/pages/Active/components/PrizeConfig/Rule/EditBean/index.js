@@ -12,7 +12,7 @@ import InputNumber from '@/components/FormCondition/InputNumber';
 import ChangeInvite from './ChangeInvite';
 
 function EditBean(props) {
-  const { visible, onClose, blindBoxRule = {}, loading, keyType } = props;
+  const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
 
   const numRef = useRef();
   const timesRef = useRef();
@@ -29,25 +29,49 @@ function EditBean(props) {
 
   //表单提交
   const handleUpAction = () => {
-    form.validateFields().then(async (values) => {
-      console.log(values);
-    });
-    console.log(numRef.current.ariaValueNow, 'numRef');
-    console.log(timesRef.current.ariaValueNow, 'timesRef');
-    dispatch({
-      type: 'prizeConfig/fetchBlindBoxConfigSet',
-      payload: {
-        ruleType: 'novice',
-        allBlindBoxProducts: lists,
-      },
-      callback,
-    });
+    try {
+      keyType === 'bean'
+        ? form.validateFields().then(async (values) => {
+            console.log(values, 'values');
+            await dispatch({
+              type: 'prizeConfig/fetchBlindBoxConfigSet',
+              payload: {
+                ruleType: 'bean',
+                bean: values.bean,
+                backImg: values.backImg,
+                backFile: values.backFile,
+                allBlindBoxProducts: values.participateBlindBoxProducts,
+              },
+              callback: () => {
+                onClose();
+                callBack(keyType);
+              },
+            });
+          })
+        : dispatch({
+            type: 'prizeConfig/fetchBlindBoxConfigSet',
+            payload: {
+              ruleType: 'invitation',
+              num: numRef.current.ariaValueNow,
+              times: timesRef.current.ariaValueNow,
+              backImg: blindBoxRule.backImg,
+              backFile: blindBoxRule.backFile,
+              allBlindBoxProducts: blindBoxRule.participateBlindBoxProducts,
+            },
+            callback: () => {
+              onClose();
+              callBack(keyType);
+            },
+          });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   //弹窗点击确认
-  const handleBlindConfigSet = (lists, callback) => {
-    console.log(lists);
-    setTableList(lists);
+  const handleBlindConfigSet = async (lists, callback) => {
+    console.log(lists, 'lists');
+    await setTableList(lists);
     callback();
   };
 
@@ -212,41 +236,29 @@ function EditBean(props) {
     ),
   };
 
-  // 修改邀请数据
-  const onChange1 = (val) => {
-    setNum(val);
-    console.log(num, 'num');
-    console.log(val, 'val');
-  };
-  const onChange2 = (val) => {
-    setTimes(val);
-    console.log(times, 'times');
-  };
-
   return (
     <>
       <DrawerCondition {...modalProps}>
         {keyType === 'bean' ? (
+          // 卡豆专场
           <FormCondition
             form={form}
             formItems={formItems}
             initialValues={blindBoxRule}
           ></FormCondition>
         ) : (
+          // 邀请专场
           <ChangeInvite
-            // onChange1={onChange1}
-            // onChange2={onChange2}
-            // num={num}
-            // times={times}
             numRef={numRef}
             timesRef={timesRef}
+            blindBoxRule={blindBoxRule}
           ></ChangeInvite>
         )}
       </DrawerCondition>
       <PrizeSelectModal
         visible={modalVisible}
         selectList={tableList}
-        data={{ isNovice: 1 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
+        data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
         onOk={handleBlindConfigSet}
         onCancel={() => setModalVisible(false)}
       ></PrizeSelectModal>

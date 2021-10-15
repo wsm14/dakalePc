@@ -145,6 +145,7 @@ const Rule = (props) => {
         onClose={() => {
           setVisible(false);
         }}
+        callBack={callback}
       ></EditBean>
     </>
   );
