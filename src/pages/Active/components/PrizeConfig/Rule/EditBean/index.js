@@ -184,7 +184,7 @@ function EditBean(props) {
         {
           validator: () => {
             const total = tableList.reduce((item, next) => {
-              return item + next.rate;
+              return item + Number(next.rate);
             }, 0);
             if (total < 100) {
               return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);

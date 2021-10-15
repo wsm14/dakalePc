@@ -11,7 +11,7 @@ function changeInvite(props) {
       {
         <InputNumber
           ref={numRef}
-          defaultValue={blindBoxRule.num}
+          defaultValue={blindBoxRule?.num}
           placeholder={'请输入'}
         ></InputNumber>
       }
@@ -19,7 +19,7 @@ function changeInvite(props) {
       {
         <InputNumber
           ref={timesRef}
-          defaultValue={blindBoxRule.times}
+          defaultValue={blindBoxRule?.times}
           placeholder={'请输入'}
         ></InputNumber>
       }

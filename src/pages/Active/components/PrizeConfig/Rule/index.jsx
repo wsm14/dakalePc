@@ -132,8 +132,8 @@ const Rule = (props) => {
             ></DescriptionsCondition>
           </TabPane>
           <TabPane tab="邀请专场" key="invitation">
-            助力获得免费次数：每邀请 <b>{blindBoxRule.num}</b> 个新用户助力获得
-            <b> {blindBoxRule.times}</b> 次。
+            助力获得免费次数：每邀请 <b>{blindBoxRule?.num}</b> 个新用户助力获得
+            <b> {blindBoxRule?.times}</b> 次。
           </TabPane>
         </Tabs>
       </Card>
