@@ -10,14 +10,14 @@ import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import InputNumber from '@/components/FormCondition/InputNumber';
 import ChangeInvite from './ChangeInvite';
+import aliOssUpload from '@/utils/aliOssUpload';
 
 function EditBean(props) {
   const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
+  // console.log(blindBoxRule, '22222');
 
   const numRef = useRef();
   const timesRef = useRef();
-  // const [num, setNum] = useState(null);
-  // const [times, setTimes] = useState(null);
 
   const [form] = Form.useForm();
 
@@ -29,17 +29,21 @@ function EditBean(props) {
 
   //表单提交
   const handleUpAction = () => {
+    // console.log(tableList, 'tableList');
     try {
       keyType === 'bean'
         ? form.validateFields().then(async (values) => {
-            console.log(values, 'values');
-            await dispatch({
+            const { backImg = '', backFile = '' } = values;
+            const sImg = await aliOssUpload(backImg);
+            const fImg = await aliOssUpload(backFile);
+            // console.log(values, 'values');
+            dispatch({
               type: 'prizeConfig/fetchBlindBoxConfigSet',
               payload: {
                 ruleType: 'bean',
                 bean: values.bean,
-                backImg: values.backImg,
-                backFile: values.backFile,
+                backImg: sImg.toString(),
+                backFile: fImg.toString(),
                 allBlindBoxProducts: tableList,
               },
               callback: () => {
@@ -69,9 +73,9 @@ function EditBean(props) {
   };
 
   //弹窗点击确认
-  const handleBlindConfigSet = async (lists, callback) => {
-    console.log(lists, 'lists');
-    await setTableList(lists);
+  const handleBlindConfigSet = (lists, callback) => {
+    // console.log(lists, 'lists');
+    setTableList(lists);
     callback();
   };
 
@@ -90,6 +94,7 @@ function EditBean(props) {
     setTableList([...tableList]);
   };
 
+  // table 表头
   const getColumns = [
     {
       title: '奖品ID',
@@ -166,12 +171,14 @@ function EditBean(props) {
     {
       label: '盲盒背景图',
       type: 'upload',
+      extra: '(请上传XXX*XXX尺寸，大小50KB以内的PNG格式图片)',
       name: 'backImg',
     },
     {
       label: '盲盒动效',
       type: 'otherUpload',
-      extra: '请上传动效zip文件',
+      extra: '请上传大小XX以内的XX格式文件',
+      rules: [{ required: false }],
       name: 'backFile',
       // labelCol: { span: 6 },
       // style: { flex: 1 },
@@ -184,9 +191,10 @@ function EditBean(props) {
         {
           validator: () => {
             const total = tableList.reduce((item, next) => {
-              return item + next.rate;
+              return item + Number(next.rate);
             }, 0);
-            if (total < 100) {
+            // console.log(total);
+            if (total != 100) {
               return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
             }
             return Promise.resolve();
@@ -227,6 +235,7 @@ function EditBean(props) {
     visible,
     onClose,
     afterCallBack: () => {
+      // console.log(blindBoxRule, 'participateBlindBoxProducts');
       setTableList(blindBoxRule?.participateBlindBoxProducts);
     },
     footer: (
@@ -258,7 +267,7 @@ function EditBean(props) {
       <PrizeSelectModal
         visible={modalVisible}
         selectList={tableList}
-        data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里是新手奖池
+        data={{ isNovice: 0 }} // 覆盖数据 isNovice 是否属于新手必中奖池 0-否 1-是 这里不是新手奖池
         onOk={handleBlindConfigSet}
         onCancel={() => setModalVisible(false)}
       ></PrizeSelectModal>
