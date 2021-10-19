@@ -23,7 +23,7 @@ const Rule = (props) => {
   // 切换tab
   const callback = (key) => {
     dispatch({
-      type: 'UpdateBlindBoxRule/fetchGetList',
+      type: 'prizeConfig/fetchGetList',
       payload: {
         ruleType: key,
       },
@@ -132,8 +132,8 @@ const Rule = (props) => {
             ></DescriptionsCondition>
           </TabPane>
           <TabPane tab="邀请专场" key="invitation">
-            助力获得免费次数：每邀请 <b>{blindBoxRule?.num}</b> 个新用户助力获得
-            <b> {blindBoxRule?.times}</b> 次。
+            助力获得免费次数：每邀请 <b>{blindBoxRule?.num || 0}</b> 个新用户助力获得
+            <b> {blindBoxRule?.times || 0}</b> 次。
           </TabPane>
         </Tabs>
       </Card>
@@ -151,7 +151,7 @@ const Rule = (props) => {
   );
 };
 
-export default connect(({ UpdateBlindBoxRule, loading }) => ({
-  blindBoxRule: UpdateBlindBoxRule.blindBoxRule,
+export default connect(({ prizeConfig, loading }) => ({
+  blindBoxRule: prizeConfig.blindBoxRule,
   loading: loading.models.assistanceList,
 }))(Rule);
