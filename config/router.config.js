@@ -43,6 +43,7 @@ export default [
         path: '/active/prizeConfig',
         name: '抽奖配置',
         component: './Active/PrizeConfig',
+        buttons: ['del', 'edit'],
       },
       {
         path: '/active/boxLottery',

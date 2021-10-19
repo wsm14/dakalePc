@@ -3,6 +3,9 @@ import {
   fetchBlindBoxList,
   fetchBlindBoxConfigList,
   fetchBlindBoxConfigSet,
+  fetchBlindBoxAdd,
+  fetchBlindBoxEdit,
+  fetchBlindBoxDelete,
 } from '@/services/ActiveServices';
 
 export default {
@@ -33,6 +36,33 @@ export default {
           blindBox: content.blindBoxProductObjects,
         },
       });
+    },
+    *fetchBlindBoxAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchBlindBoxAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `添加成功`,
+      });
+      callback();
+    },
+    *fetchBlindBoxEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchBlindBoxEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `修改成功`,
+      });
+      callback();
+    },
+    *fetchBlindBoxDelete({ payload, callback }, { call }) {
+      const response = yield call(fetchBlindBoxDelete, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `删除成功`,
+      });
+      callback();
     },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchBlindBoxConfigList, payload);
