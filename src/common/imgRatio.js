@@ -46,3 +46,6 @@ export const RIGHT_COUNT_DWON = 84 / 84;
 export const TOP_BGIMG = 750 / 360;
 
 export const TABBAR_ICON = 88 / 88;
+
+//标签图片
+export const LABEL_ICON = 230 / 184;

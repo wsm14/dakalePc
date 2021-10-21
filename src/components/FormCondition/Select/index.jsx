@@ -57,7 +57,12 @@ const SelectBlock = (props) => {
             const nameData = nameD ? nameD : typeof data == 'string' ? data : '--';
             const otherData = data[tip] ? data[tip] : '';
             return (
-              <Select.Option key={valueData} value={valueData} option={data}>
+              <Select.Option
+                key={valueData}
+                disabled={data.disabled || false}
+                value={valueData}
+                option={data}
+              >
                 {nameData}
                 {otherData && <div style={{ fontSize: 12, color: '#989898' }}>{otherData}</div>}
               </Select.Option>

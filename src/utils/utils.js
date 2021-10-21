@@ -282,7 +282,7 @@ export const checkFileData = (fileData) => {
 };
 
 // 获取城市名
-const getCityName = (code) => {
+export const getCityName = (code) => {
   const cityIndex = cityJson.findIndex((item) => item.id === code);
   return cityJson[cityIndex]?.name;
 };

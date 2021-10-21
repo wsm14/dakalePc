@@ -332,4 +332,72 @@ export function fetchFestivalConfigDown(data) {
   });
 }
 
+//视频标签配置-列表
+export function fetchListMomentTag(params) {
+  return request('/admin/momentTag/listMomentTag', {
+    params,
+  });
+}
+
+//视频标签配置-新增
+export function fetchSaveMomentTagAdd(data) {
+  return request('/admin/momentTag/saveMomentTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//视频标签配置-详情
+export function fetchGetMomentTagById(params) {
+  return request('/admin/momentTag/getMomentTagById', {
+    params,
+  });
+}
+
+//视频标签配置-编辑
+export function fetchUpdateMomentTag(data) {
+  return request('/admin/momentTag/updateMomentTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//首页tab配置-版本列表
+export function fetchIndexTabList(params) {
+  return request('/admin/indexTab/listIndexTab', {
+    params,
+  });
+}
+
+//首页tab配置-新增版本
+export function fetchIndexTabAdd(data) {
+  return request('/admin/indexTab/saveIndexTab', {
+    method: 'POST',
+    data,
+  });
+}
+
+//首页tab配置-编辑详情
+export function fetchIndexTabEdit(data) {
+  return request('/admin/indexTab/updateIndexTab', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 读取充值分享海报配置
+export function fetchGetRechargeShareImg(params) {
+  return request('/admin/shareImg/getRechargeShareImg', {
+    params,
+  });
+}
+
+// 充值分享海报配置
+export function fetchSaveRechargeShareImg(data) {
+  return request('/admin/shareImg/saveRechargeShareImg', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 全局配置 end

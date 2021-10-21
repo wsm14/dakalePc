@@ -283,6 +283,7 @@ export const SUBSIDY_TYPE = {
   platformSubsidy: '新手任务补贴',
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
+  Ugc: 'UGC视频平台奖励',
 };
 
 // 补贴管理 补贴卡豆类型
@@ -694,4 +695,13 @@ export const BOXLOTTERY_STATUS = ['未完善地址', '待发货', '已发货'];
 export const BOXLOTTERY_TYPE = {
   bean: '卡豆',
   invitation: '邀请',
+};
+
+// 全局配置 - 首页tab配置
+export const TAB_INDEX_TYPE = { iOS: 'IOS', android: 'Android', weChat: '小程序' };
+
+// 全局配置 - 首页tab配置 - 标签类型
+export const TABINDEX_VIDEO_TYPE = {
+  all: '通用',
+  detail: '城市',
 };
