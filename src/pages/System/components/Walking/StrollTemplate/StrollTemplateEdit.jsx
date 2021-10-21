@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useReducer, createContext } from 'react';
 import { connect } from 'umi';
 import { Drawer } from 'antd';
-import { reducerValue, fetchReducerEdit } from './ActiveTemplateReducer';
+import { reducerValue, fetchReducerEdit } from './StrollTemplateReducer';
 import DragAndDropHOC from '@/components/DndDragContext/DragAndDropHOC';
 import SideMenu from './SideMenu';
 import ModuleDrawer from './ModuleDrawer';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons';
+import showImg from '../showImg';
 import update from 'immutability-helper';
 import styles from './style.less';
 
@@ -38,7 +39,7 @@ export default ({ show, index, data, dispatchData }) => {
 
   return (
     <>
-      <div className={styles.previewer_title}>{data[index].name}</div>
+      <div className={styles.previewer_title}>{showImg[data[index].moduleType].name}</div>
       {/* 选择区域高亮 */}
       <div className={`${styles.previewer_active_warp} ${show ? styles.show : ''}`}></div>
       {show && (

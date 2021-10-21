@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { Button, Space, Row, Col, Modal, message } from 'antd';
+import { Button, Space, Row, Col, Modal } from 'antd';
 
 /**
  * 顶部显示区域
@@ -13,7 +13,8 @@ const SideMenu = (props) => {
 
   // active 创建
   const fetchSaveModuleData = () => {
-    const newData = moduleData.dataList.filter((item) => item.data); // 空数据不进入
+    console.log(moduleData.dataList);
+    return;
     dispatch({
       type: {
         add: 'activeTemplate/fetchActiveAddaa',
@@ -24,7 +25,6 @@ const SideMenu = (props) => {
         newData,
       },
       callback: () => {
-        message.destroy();
         onClose();
       },
     });

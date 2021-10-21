@@ -8,7 +8,7 @@ export default [
   {
     header: '通用配置',
     type: 'public',
-    children: ['solaImg', 'solaImg'],
+    children: ['solaImg', 'list'],
   },
   {
     header: '图片类',

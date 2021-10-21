@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
-import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
+import StrollTemplateEdit from './components/Walking/StrollTemplate/StrollTemplateEdit';
 
 const ActiveTemplate = () => {
   const [visible, setVisible] = useState({ show: false, info: {} });
@@ -41,11 +41,11 @@ const ActiveTemplate = () => {
         </Row>
       </Card>
       {/* 活动模版编辑区域 */}
-      <ActiveTemplateEdit
+      <StrollTemplateEdit
         key="template"
         visible={visible}
         onClose={() => setVisible(false)}
-      ></ActiveTemplateEdit>
+      ></StrollTemplateEdit>
     </>
   );
 };

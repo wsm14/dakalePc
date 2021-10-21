@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
+import showImg from '../showImg';
 import PreviewerActive from './PreviewerActive';
 import PreviewerContent from './PreviewerContent';
 import styles from './style.less';
@@ -27,17 +28,17 @@ const BasketDom = ({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { icon, editorDom, type, ...other } = dropItem;
+      const { moduleType } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
       // 更新 dataList 数据源
       const movefile = update(dataList, {
-        $splice: [[index, 0, other]],
+        $splice: [[index, 0, { moduleType }]],
       });
       changeCardList(movefile);
-      handleShowEditor(other, index);
+      handleShowEditor({ moduleType }, index);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
@@ -91,7 +92,7 @@ const ActiveTemplateIframe = (props) => {
             <React.Fragment key={`${index}`}>
               <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
                 {/* 回显dom*/}
-                <PreviewerContent cell={item}></PreviewerContent>
+                <PreviewerContent cell={showImg[item.moduleType]}></PreviewerContent>
                 {/* 高亮操作区域 */}
                 <PreviewerActive
                   data={dataList}
