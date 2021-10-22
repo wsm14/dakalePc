@@ -9,7 +9,7 @@ import PopImgShow from '@/components/PopImgShow';
 import InputNumber from '@/components/FormCondition/InputNumber';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PrizeSelectModal from '../../NoobJackPot/PrizeSelectModal';
-import ChangeInvtei from './ChangeInvites';
+import ChangeInvtei from './ChangeInvite';
 
 function EditBean(props) {
   const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
