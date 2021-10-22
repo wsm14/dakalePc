@@ -18,6 +18,7 @@ import VideoAdRoot from './components/VideoAdRoot';
 import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
+import VideoSet from './components/VideoSet';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, dispatch } = props;
@@ -28,6 +29,7 @@ const ShareManage = (props) => {
   const [visibleDetail, setVisibleDetail] = useState(false); // 详情 编辑
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
+  const [visibleSet, setVisibleSet] = useState(false); // 设置
 
   // 搜索参数
   const searchItems = [
@@ -190,6 +192,12 @@ const ShareManage = (props) => {
             click: () => fetchVideoAdvertDetail(index, 'edit'),
           },
           {
+            type: 'set', // 设置
+            click: () => {
+              setVisibleSet({ show: true, detail: record });
+            },
+          },
+          {
             type: 'down', // 下架
             visible: status == 1,
             click: () => fetchStatusClose(val),
@@ -283,6 +291,12 @@ const ShareManage = (props) => {
         visible={visibleReward}
         onClose={() => setVisibleReward(false)}
       ></RewardSet>
+      {/* 设置 */}
+      <VideoSet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></VideoSet>
     </>
   );
 };

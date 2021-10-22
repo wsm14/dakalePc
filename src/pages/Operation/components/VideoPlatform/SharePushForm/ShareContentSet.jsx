@@ -19,6 +19,7 @@ const ShareContentSet = (props) => {
     dispatch,
     detail,
     loading,
+    tabtype,
   } = props;
 
   const { free, contact } = couponData;
@@ -146,6 +147,7 @@ const ShareContentSet = (props) => {
     {
       label: '免费券',
       type: 'formItem',
+      visible: tabtype === '1',
       formItem: (
         <ShareCoupon
           type="coupon"
@@ -162,6 +164,7 @@ const ShareContentSet = (props) => {
     {
       label: '推荐带货',
       type: 'formItem',
+      visible: tabtype === '1',
       formItem: (
         <>
           <ShareCoupon

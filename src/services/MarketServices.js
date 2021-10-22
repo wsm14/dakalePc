@@ -349,6 +349,7 @@ export function fetchVideoAdvertCreate(data) {
 }
 
 // post 视频广告 - 修改
+// post 视频广告 - 设置初始收藏数和分享数
 export function fetchVideoAdvertEdit(data) {
   return request('/admin/marketing/moment/platform/updateMoment', {
     method: 'POST',
@@ -375,6 +376,13 @@ export function fetchVideoAdvertRootCountSet(data) {
   return request('/admin/marketing/moment/platform/setConfig', {
     method: 'POST',
     data,
+  });
+}
+
+// get 视频标签 - 列表
+export function fetchVideoListMomentTag(params) {
+  return request('/admin/momentTag/listMomentTag', {
+    params,
   });
 }
 

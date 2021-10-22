@@ -7,6 +7,7 @@ import {
   fetchVideoAdvertCreate,
   fetchVideoAdvertEdit,
   fetchVideoAdvertDetail,
+  fetchVideoListMomentTag,
 } from '@/services/MarketServices';
 
 export default {
@@ -16,6 +17,8 @@ export default {
     list: [],
     total: 0,
     rootCount: {},
+    tagList: {},
+    tabs: [],
   },
 
   reducers: {
@@ -28,6 +31,38 @@ export default {
   },
 
   effects: {
+    // 视频广告 - 设置初始收藏数和分享数
+    *fetchVideoAdvertShareSet({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoAdvertEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `设置成功`,
+      });
+      callback();
+    },
+    *fetchVideoListMomentTag({ payload, callback }, { call, put }) {
+      // 获取所有视频标签列表
+      const response = yield call(fetchVideoListMomentTag, payload);
+      // 获取UGC视频标签列表
+      const responseUGC = yield call(fetchVideoListMomentTag, { type: 'UGC' });
+      if (!response && !responseUGC) return;
+      const { content } = response;
+      const { content: contentUGC } = responseUGC;
+      const newObj = {};
+      content.configMomentTagList.forEach((i) => (newObj[`${i.configMomentTagId}`] = i.name));
+      yield put({
+        type: 'save',
+        payload: {
+          tagList: newObj,
+          tabs: contentUGC.configMomentTagList.map((i) => ({
+            key: i.configMomentTagId,
+            tab: i.name,
+          })),
+        },
+      });
+      callback && callback(contentUGC.configMomentTagList[0].configMomentTagId, newObj);
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchVideoAdvertList, payload);
       if (!response) return;

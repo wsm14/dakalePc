@@ -626,6 +626,9 @@ export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时
 // 平台视频 - 投放类型
 export const NEW_SHAREPUBLISHTIME_TYPE = { rightNow: '立即发布', fixed: '定时发布' };
 
+// 商家视频 - 是否已打赏
+export const NEW_SHARE_AWARD = { user: '哒人', merchant: '商家', group: '集团' };
+
 // 视频审核店铺/视频类型
 export const VIDEO_TYPE = {
   user: '哒人',
@@ -646,7 +649,6 @@ export const FEEDBACK_TYPE = {
 };
 // 视频广告 - 位置
 export const VIDEO_ADVERT_PLACE = {
-  ALL: '全部',
   pickUp: '捡豆',
   commend: '推荐',
 };
@@ -706,3 +708,6 @@ export const TABINDEX_VIDEO_TYPE = {
   all: '通用',
   detail: '城市',
 };
+
+// 是否已打赏
+export const BEANFLAG_TYPE = ['未打赏', '已打赏'];
