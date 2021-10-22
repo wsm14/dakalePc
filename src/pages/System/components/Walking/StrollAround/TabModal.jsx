@@ -24,5 +24,5 @@ const TabModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['globalConfig/fetchIndexTabList'],
+  loading: loading.effects['globalConfig/fetchAroundModuleList'],
 }))(TabModal);

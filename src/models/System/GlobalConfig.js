@@ -15,6 +15,7 @@ import {
   fetchIndexTabList,
   fetchIndexTabAdd,
   fetchIndexTabEdit,
+  fetchGetIndexTabById,
   fetchGetRechargeShareImg,
   fetchSaveRechargeShareImg,
 } from '@/services/SystemServices';
@@ -281,6 +282,20 @@ export default {
         },
       });
       callback && callback(pickUpId);
+    },
+    *fetchGetIndexTabById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetIndexTabById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { configIndexTab = {} } = content;
+      const { defaultTags: dtag, tags, cityCode, ...other } = configIndexTab;
+      const newDetails = {
+        ...other,
+        cityCode: cityCode ? [cityCode.slice(0, 2), cityCode] : [],
+        defaultTags: dtag ? dtag.split(',') : [],
+        tags: tags ? tags.split(',') : [],
+      };
+      callback(newDetails);
     },
     *fetchGetShareImgValue({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetRechargeShareImg, payload);

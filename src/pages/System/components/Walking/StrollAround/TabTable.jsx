@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import TabDrawerSet from './TabDrawerSet';
 
 const TabTable = (props) => {
-  const { dispatch, loading, IndexTabModalList, tabKey, version, fetchTable } = props;
+  const { dispatch, loading, configureList, tabKey, version, fetchTable } = props;
   const [visible, setVisible] = useState(false);
 
   const childRef = useRef();
@@ -40,32 +40,29 @@ const TabTable = (props) => {
       type: 'handle',
       dataIndex: 'configIndexTabId',
       render: (val, row) => {
+        const { defaultTags: dtag, tags, cityCode, ...other } = row;
         return [
           {
             type: 'edit',
             title: '编辑',
-            click: () => handleUpdateSet('edit', val),
+            click: () => {
+              setVisible({
+                show: true,
+                type: 'edit',
+                detail: {
+                  ...other,
+                  cityCode: cityCode ? [cityCode.slice(0, 2), cityCode] : [],
+                  defaultTags: dtag ? dtag.split(',') : [],
+                  tags: tags ? tags.split(',') : [],
+                },
+              });
+            },
             auth: true,
           },
         ];
       },
     },
   ];
-
-  const handleUpdateSet = (type, configIndexTabId) => {
-    dispatch({
-      type: 'globalConfig/fetchGetIndexTabById',
-      payload: { configIndexTabId },
-      callback: (detail) => {
-        console.log(detail);
-        setVisible({
-          show: true,
-          type,
-          detail: detail,
-        });
-      },
-    });
-  };
 
   const cardBtnList = [
     {
@@ -90,8 +87,8 @@ const TabTable = (props) => {
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configIndexTabId}`}
         params={{ userOs: tabKey, version }}
-        dispatchType="globalConfig/fetchIndexTabModalList"
-        {...IndexTabModalList}
+        dispatchType="globalConfig/fetchAroundModuleList"
+        {...configureList}
       ></TableDataBlock>
       <TabDrawerSet
         visible={visible}
@@ -105,6 +102,6 @@ const TabTable = (props) => {
 };
 
 export default connect(({ loading, globalConfig }) => ({
-  IndexTabModalList: globalConfig.IndexTabModalList,
-  loading: loading.effects['globalConfig/fetchIndexTabModalList'],
+  configureList: globalConfig.configureList,
+  loading: loading.effects['globalConfig/fetchAroundModuleList'],
 }))(TabTable);

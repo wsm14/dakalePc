@@ -362,6 +362,7 @@ const bannerType = {
   highCommissionAlliance: '高佣联盟',
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundGoodMerchant: '逛逛周边好店',
+  wanderAroundRecharge: '逛逛话费充值',
 };
 
 // Banner类型

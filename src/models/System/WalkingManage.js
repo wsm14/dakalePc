@@ -13,6 +13,9 @@ import {
   fetchGatherPageConfigAdd,
   fetchGatherPageConfigUpdate,
   fetchGatherPageConfigEnd,
+  fetchAroundModuleList,
+  fetchAroundModuleAdd,
+  fetchAroundModuleEdit,
 } from '@/services/SystemServices';
 
 export default {
@@ -24,6 +27,8 @@ export default {
     class: [],
     gatherList: { list: [] },
     nowTrade: [],
+    editionList: { list: [] },
+    configureList: { list: [] },
   },
 
   reducers: {
@@ -176,6 +181,36 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '结束成功',
+      });
+      callback();
+    },
+    *fetchAroundModuleList({ payload }, { call, put }) {
+      const response = yield call(fetchAroundModuleList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          editionList: { list: content.configWanderAroundModuleList },
+          configureList: { list: content.configWanderAroundModuleList },
+        },
+      });
+    },
+    *fetchAroundModuleAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchAroundModuleAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchAroundModuleEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchAroundModuleEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
       });
       callback();
     },

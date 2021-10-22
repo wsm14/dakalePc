@@ -5,13 +5,14 @@ import VaneManage from './components/Walking/Vane';
 import NavigationManage from './components/Walking/Navigation';
 import GratiaClassManage from './components/Walking/GratiaClass';
 import GatherPage from './components/Walking/GatherPage';
+import StrollAround from './components/Walking/StrollAround';
 import styles from './index.less';
 
 const WalkingManage = () => {
   let main = undefined;
 
   const [mode, setMode] = useState('inline'); // 菜单显示状态
-  const [menuKey, setMenuKey] = useState('vaneManage'); // menu key
+  const [menuKey, setMenuKey] = useState('strollAround'); // menu key
 
   useEffect(() => {
     // 监听窗口大小变化
@@ -44,6 +45,11 @@ const WalkingManage = () => {
   };
 
   const menuList = [
+    {
+      type: 'strollAround',
+      menuName: '逛逛页面配置',
+      block: <StrollAround></StrollAround>,
+    },
     {
       type: 'vaneManage',
       menuName: '风向标配置',

@@ -195,6 +195,29 @@ export function fetchGatherPageConfigEnd(data) {
   });
 }
 
+//逛逛模块化配置-版本列表
+export function fetchAroundModuleList(params) {
+  return request('/admin/wanderAroundModule/listWanderAroundModule', {
+    params,
+  });
+}
+
+//逛逛模块化配置-新增版本
+export function fetchAroundModuleAdd(data) {
+  return request('/admin/wanderAroundModule/saveWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-修改版本
+export function fetchAroundModuleEdit(data) {
+  return request('/admin/wanderAroundModule/updateWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 逛逛页面配置 end
 
 // 新人下单配置 start
@@ -377,11 +400,18 @@ export function fetchIndexTabAdd(data) {
   });
 }
 
-//首页tab配置-编辑详情
+//首页tab配置-编辑
 export function fetchIndexTabEdit(data) {
   return request('/admin/indexTab/updateIndexTab', {
     method: 'POST',
     data,
+  });
+}
+
+//首页tab配置-详情
+export function fetchGetIndexTabById(params) {
+  return request('/admin/indexTab/getIndexTabById', {
+    params,
   });
 }
 
