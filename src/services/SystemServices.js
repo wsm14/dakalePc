@@ -218,6 +218,14 @@ export function fetchAroundModuleEdit(data) {
   });
 }
 
+//逛逛模块化配置-新增城市
+export function fetchWanderAroundModuleAdd(data) {
+  return request('/admin/wanderAroundModule/saveWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 逛逛页面配置 end
 
 // 新人下单配置 start

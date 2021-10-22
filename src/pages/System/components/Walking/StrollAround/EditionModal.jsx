@@ -6,7 +6,7 @@ import FormCondition from '@/components/FormCondition';
 const EditionModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef, tabKey } = props;
   const { show = false, type, detail = {} } = visible;
-  const { configIndexTabId } = detail;
+  const { configWanderAroundModuleId } = detail;
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -18,7 +18,7 @@ const EditionModal = (props) => {
         }[type],
         payload: {
           userOs: tabKey,
-          configIndexTabId,
+          configWanderAroundModuleId,
           flag: {
             add: 'addVersion',
             edit: 'updateVersion',

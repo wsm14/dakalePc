@@ -23,21 +23,8 @@ const TabTable = (props) => {
       render: (val, row) => (val === 'all' ? '通用' : getCityName(row?.cityCode)),
     },
     {
-      title: '展示标签',
-      align: 'center',
-      dataIndex: 'defaultTagNames',
-      render: (val, row) => {
-        const { defaultTagNames: dtag, tagNames: tag = '' } = row;
-        const nameVlaue = `${dtag}${tag ? `,${tag}` : ''}`;
-        return nameVlaue.split(',').map((item) => (
-          <Tag color="orange" key={item}>
-            {item}
-          </Tag>
-        ));
-      },
-    },
-    {
       type: 'handle',
+      align: 'center',
       dataIndex: 'configIndexTabId',
       render: (val, row) => {
         const { defaultTags: dtag, tags, cityCode, ...other } = row;
@@ -46,16 +33,14 @@ const TabTable = (props) => {
             type: 'edit',
             title: '编辑',
             click: () => {
-              setVisible({
-                show: true,
-                type: 'edit',
-                detail: {
-                  ...other,
-                  cityCode: cityCode ? [cityCode.slice(0, 2), cityCode] : [],
-                  defaultTags: dtag ? dtag.split(',') : [],
-                  tags: tags ? tags.split(',') : [],
-                },
-              });
+              // setVisible({
+              //   show: true,
+              //   type: 'edit',
+              //   detail: {
+              //     ...other,
+              //     cityCode: cityCode ? [cityCode.slice(0, 2), cityCode] : [],
+              //   },
+              // });
             },
             auth: true,
           },
@@ -68,6 +53,7 @@ const TabTable = (props) => {
     {
       auth: 'save',
       text: '新增城市',
+      className: 'dkl_blue_btn',
       onClick: () => {
         setVisible({
           show: true,
@@ -85,9 +71,9 @@ const TabTable = (props) => {
         loading={loading}
         columns={getColumns}
         btnExtra={cardBtnList}
-        rowKey={(record) => `${record.configIndexTabId}`}
+        rowKey={(record) => `${record.configWanderAroundModuleId}`}
         params={{ userOs: tabKey, version }}
-        dispatchType="globalConfig/fetchAroundModuleList"
+        dispatchType="walkingManage/fetchAroundModuleCityList"
         {...configureList}
       ></TableDataBlock>
       <TabDrawerSet
@@ -101,7 +87,7 @@ const TabTable = (props) => {
   );
 };
 
-export default connect(({ loading, globalConfig }) => ({
-  configureList: globalConfig.configureList,
-  loading: loading.effects['globalConfig/fetchAroundModuleList'],
+export default connect(({ loading, walkingManage }) => ({
+  configureList: walkingManage.configureList,
+  loading: loading.effects['walkingManage/fetchAroundModuleCityList'],
 }))(TabTable);

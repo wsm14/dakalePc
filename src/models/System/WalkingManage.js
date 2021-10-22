@@ -16,6 +16,7 @@ import {
   fetchAroundModuleList,
   fetchAroundModuleAdd,
   fetchAroundModuleEdit,
+  fetchWanderAroundModuleAdd,
 } from '@/services/SystemServices';
 
 export default {
@@ -192,6 +193,16 @@ export default {
         type: 'save',
         payload: {
           editionList: { list: content.configWanderAroundModuleList },
+        },
+      });
+    },
+    *fetchAroundModuleCityList({ payload }, { call, put }) {
+      const response = yield call(fetchAroundModuleList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
           configureList: { list: content.configWanderAroundModuleList },
         },
       });
@@ -211,6 +222,15 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '编辑成功',
+      });
+      callback();
+    },
+    *fetchWanderAroundModuleAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchWanderAroundModuleAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
       });
       callback();
     },

@@ -283,7 +283,7 @@ export const SUBSIDY_TYPE = {
   platformSubsidy: '新手任务补贴',
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
-  Ugc: 'UGC视频平台奖励',
+  watchMoment: 'UGC视频平台奖励',
 };
 
 // 补贴管理 补贴卡豆类型
