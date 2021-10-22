@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button, Tooltip } from 'antd';
+import { Form, Button } from 'antd';
+import { EnvironmentOutlined } from '@ant-design/icons';
 import {
   NEW_SHARE_OWNER,
   NEW_SHARE_STATUS,
@@ -10,14 +11,16 @@ import {
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import { checkCityName } from '@/utils/utils';
 import uploadLive from '@/utils/uploadLive';
+import QuestionTooltip from '@/components/QuestionTooltip';
+import DrawerCondition from '@/components/DrawerCondition';
+import DescriptionsCondition from '@/components/DescriptionsCondition';
 import GoodsSet from './GoodsSet';
 import GoodsEdit from './GoodsEdit';
 import SharePutInSet from '../SharePushForm/SharePutInSet';
-import DrawerCondition from '@/components/DrawerCondition';
-import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const ShareDetail = (props) => {
   const {
+    tabKey,
     dispatch,
     visible,
     total,
@@ -29,6 +32,7 @@ const ShareDetail = (props) => {
   } = props;
 
   const { index, show = false, type = 'info', detail = {} } = visible;
+  console.log(detail, 'detail');
   const { ownerId, momentId } = detail;
 
   const [form] = Form.useForm();
@@ -41,7 +45,7 @@ const ShareDetail = (props) => {
     }
   }, [type]);
 
-  // 信息
+  // 表单信息
   const formItems = [
     {
       label: '视频类型',
@@ -70,11 +74,34 @@ const ShareDetail = (props) => {
       name: 'message',
     },
     {
-      label: `收藏数`,
+      label: '定位数',
+      name: 'address',
+      show: tabKey === '0' || tabKey === '1' ? false : true,
+      render: (val) => (
+        <>
+          <EnvironmentOutlined />
+          {val}
+        </>
+      ),
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="收藏数"
+          content="视频收藏数为初始数据+真实数据"
+        ></QuestionTooltip>
+      ),
       name: 'collectionAmount',
     },
     {
-      label: `分享数`,
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="分享数"
+          content="视频分享数为初始数据+真实数据"
+        ></QuestionTooltip>
+      ),
       name: 'shareAmount',
     },
     {
@@ -86,6 +113,7 @@ const ShareDetail = (props) => {
     {
       label: '推荐带货',
       name: 'promotionList',
+      show: tabKey === '1',
       render: (val, row) =>
         val.map((item) =>
           item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
@@ -231,6 +259,7 @@ const ShareDetail = (props) => {
     });
   };
 
+  // 抽屉属性
   const modalProps = {
     title: '视频详情',
     visible: show,
@@ -239,7 +268,7 @@ const ShareDetail = (props) => {
     dataPage: type == 'info' && {
       current: index,
       total,
-      onChange: (size) => getDetail(size, 'video'),
+      onChange: (size) => getDetail(size),
     },
     footer: (
       <>

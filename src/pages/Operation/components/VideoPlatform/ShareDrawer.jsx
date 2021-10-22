@@ -12,7 +12,7 @@ const { Step } = Steps;
 const ShareDrawer = (props) => {
   const { dispatch, visible, childRef, onClose, loading } = props;
 
-  const { type = 'add', show = false } = visible;
+  const { tabtype, show = false } = visible;
   const [form] = Form.useForm();
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ userType: 'merchant' }); // 数据暂存
@@ -119,7 +119,7 @@ const ShareDrawer = (props) => {
   const saveDataStorage = (val) => setDataStorage({ ...dataStorage, ...val });
 
   // 公有 props
-  const stepProps = { form, detail: dataStorage, saveDataStorage };
+  const stepProps = { tabtype, form, detail: dataStorage, saveDataStorage };
 
   // 内容设置props
   const conentProps = { couponData, setCouponData };

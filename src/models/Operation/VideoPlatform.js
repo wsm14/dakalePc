@@ -12,6 +12,11 @@ import {
   fetchNewShareRewardSet,
   fetchNewShareRewardSave,
   fetchNewShareRewardCancel,
+  fetchUGCVideoBeanRules,
+  fetchUGCVideoBeanRulesSet,
+  fetchUGCVideoRulesSet,
+  fetchUGCVideoList,
+  fetchUGCVideoRewardInfo,
 } from '@/services/OperationServices';
 
 export default {
@@ -19,8 +24,10 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    UGCList: { list: [], total: 0 },
     rewardList: { list: [], total: 0 },
     couponList: { list: [], total: 0 },
+    infoList: { list: [], total: 0, sumRewardBean: 0 },
   },
 
   reducers: {
@@ -33,6 +40,86 @@ export default {
   },
 
   effects: {
+    // UGC视频打赏明细
+    *fetchUGCVideoRewardInfo({ payload }, { call, put }) {
+      const response = yield call(fetchUGCVideoRewardInfo, payload);
+      if (!response) return;
+      const { content } = response;
+      console.log(content, 'content');
+      yield put({
+        type: 'save',
+        payload: {
+          infoList: {
+            list: content.recordList,
+            total: content.total,
+            sumRewardBean: content.sumRewardBean,
+          },
+        },
+      });
+    },
+    // 获取商家视频列表
+    *fetchMerchVideoList({ payload }, { call, put }) {
+      const response = yield call(fetchUGCVideoList, payload);
+      if (!response) return;
+      const { content } = response;
+      // console.log(content, 'content');
+      yield put({
+        type: 'save',
+        payload: {
+          list: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    // 获取UGC视频列表
+    *fetchUGCVideoList({ payload }, { call, put }) {
+      const response = yield call(fetchUGCVideoList, payload);
+      if (!response) return;
+      const { content } = response;
+      // console.log(content, 'content');
+      yield put({
+        type: 'save',
+        payload: {
+          UGCList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    *fetchUGCVideoBeanRulesSet({ payload, payload2, callback }, { call }) {
+      // UGC视频平台奖励卡豆规则设置
+      const response = yield call(fetchUGCVideoBeanRulesSet, payload);
+      // UGC视频打赏规则设置
+      const response2 = yield call(fetchUGCVideoRulesSet, payload2);
+      if (!response && !response2) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置成功',
+      });
+      callback();
+    },
+    *fetchUGCVideoBeanRules({ callback }, { call, put }) {
+      // 读取UGC视频平台奖励卡豆规则
+      const response = yield call(fetchUGCVideoBeanRules, {
+        parent: 'ugcMoment',
+        child: 'platformRewardBeanRule',
+      });
+      // 读取UGC视频打赏规则
+      const response2 = yield call(fetchUGCVideoBeanRules, {
+        parent: 'ugcMoment',
+        child: 'rewardRule',
+      });
+      if (!response && !response2) return;
+      const { content } = response;
+      const { content: rule } = response2;
+      callback({
+        beanRule: JSON.parse(content.dictionary.extraParam),
+        rewardRule: JSON.parse(rule.dictionary.extraParam),
+      });
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchNewShareList, payload);
       if (!response) return;
@@ -79,6 +166,8 @@ export default {
       });
       callback();
     },
+    // 修改视频（不审核）
+    // 商家、UGC视频设置收藏分享数
     *fetchNewShareNoAudit({ payload, callback }, { call }) {
       const response = yield call(fetchNewShareNoAudit, payload);
       if (!response) return;
@@ -124,11 +213,13 @@ export default {
       });
       callback();
     },
+    // +UGC视频详情展示定位
     *fetchNewShareDetail({ payload, callback }, { call }) {
       const { type = 'info', ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);
       if (!response) return;
       const { content } = response;
+      console.log(content, 'content');
       const {
         age,
         area,
@@ -137,6 +228,8 @@ export default {
         freeOwnerCouponList = [], // 免费券
         ownerCouponList = [], // 有价券
         activityGoodsList = [], // 特惠商品
+        // addressContentList = [], // 定位
+        ugcAddressObject, // UGC定位
         videoContent,
         ...ohter
       } = content.momentDetail;
@@ -171,6 +264,8 @@ export default {
         age,
         area,
         areaType,
+        // address: addressContentList[0]?.address || '',
+        address: ugcAddressObject?.address,
         promotionList: [
           ...freeOwnerCouponList.map((item) => ({ ...item, type: 'free' })),
           ...ownerCouponList.map((item) => ({ ...item, type: 'valuable' })),

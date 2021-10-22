@@ -10,7 +10,7 @@ export const ROLE_BUTTON_TYPE = {
   againUp: '再次上架',
   addRemain: '增加库存',
   authEdit: '权限设置',
-  assistanceInfo:'助力详情',
+  assistanceInfo: '助力详情',
 
   BDSet: '关联BD',
   batchEdit: '批量修改',
@@ -48,8 +48,8 @@ export const ROLE_BUTTON_TYPE = {
 
   goodsCode: '商品码',
   getRecord: '领取记录',
-  goodsDeliver: "发货",
-  goodsView: "查看物流",
+  goodsDeliver: '发货',
+  goodsView: '查看物流',
 
   handle: '处理',
   handleDeatil: '操作记录',
@@ -103,6 +103,7 @@ export const ROLE_BUTTON_TYPE = {
   recommendStatus: '推荐状态',
   rewardPeo: '打赏设置',
   recover: '恢复',
+  rewardInfo: '打赏明细',
 
   set: '设置',
   save: '新增',

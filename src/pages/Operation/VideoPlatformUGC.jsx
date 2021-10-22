@@ -2,13 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag, Form } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import {
-  NEW_SHARE_STATUS,
-  SUBMIT_TYPE_VIDEO,
-  NEW_SHARE_OWNER,
-  NEW_SHARE_AWARD,
-  BEANFLAG_TYPE,
-} from '@/common/constant';
+import { NEW_SHARE_STATUS, SUBMIT_TYPE_VIDEO, NEW_SHARE_OWNER } from '@/common/constant';
 import { NUM_PATTERN } from '@/common/regExp';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
@@ -16,44 +10,47 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareImg from './components/VideoPlatform/ShareImg';
-import RewardSet from './components/VideoPlatform/RewardSet';
-
-import ShareDrawer from './components/VideoPlatform/ShareDrawer';
+import RewarInfo from './components/VideoPlatform/RewardSet/RewarInfo';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
+import UGCDrawer from './components/VideoPlatform/UGCDrawer';
 
-const tabList = [
-  {
-    key: '0',
-    tab: '探店视频',
-  },
-  {
-    key: '1',
-    tab: '带货视频',
-  },
-];
-
-const VideoPlatform = (props) => {
-  const { videoPlatform, loading, loadingRefuse, tradeList, dispatch } = props;
-  const { list } = videoPlatform;
+const VideoPlatformUGC = (props) => {
+  const {
+    loading,
+    loadingTab,
+    loadingRefuse,
+    // tradeList,
+    dispatch,
+    videoBeanRules,
+    tabs,
+    videoRules,
+    UGCList,
+  } = props;
+  const { list } = UGCList;
 
   const childRef = useRef();
   const [form] = Form.useForm();
-  const [tabKey, setTabKey] = useState('0'); // tab
+  const [tabKey, setTabKey] = useState(null); // tab
   const [visible, setVisible] = useState(false); // 详情
-  const [visibleShare, setVisibleShare] = useState(false); // 新增
+  const [visibleShare, setVisibleShare] = useState(false); // 配置
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleImg, setVisibleImg] = useState(false); // 设置
-  const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
+  const [visibleReward, setVisibleReward] = useState(false); // 打赏明细
+  // tab列表
+  const tabList = tabs;
 
   useEffect(() => {
-    childRef.current &&
-      childRef.current.fetchGetData({ pickUpOrUgcFlag: 'pickUp', isCommerceFlag: tabKey });
-  }, [tabKey]);
-
-  useEffect(() => {
-    fetchTradeList();
+    fetchTabList();
   }, []);
+
+  useEffect(() => {
+    tabKey &&
+      childRef.current.fetchGetData({
+        pickUpOrUgcFlag: 'UGC',
+        momentTagId: tabKey,
+      });
+  }, [tabKey]);
 
   // 搜索参数
   const searchItems = [
@@ -61,15 +58,15 @@ const VideoPlatform = (props) => {
       label: '分享标题',
       name: 'title',
     },
-    {
-      label: '行业',
-      type: 'cascader',
-      name: 'topCategoryId',
-      changeOnSelect: true,
-      select: tradeList,
-      fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-      valuesKey: ['topCategoryId', 'categoryId'],
-    },
+    // {
+    //   label: '行业',
+    //   type: 'cascader',
+    //   name: 'topCategoryId',
+    //   changeOnSelect: true,
+    //   select: tradeList,
+    //   fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
+    //   valuesKey: ['topCategoryId', 'categoryId'],
+    // },
     {
       label: '地区',
       name: 'city',
@@ -77,33 +74,27 @@ const VideoPlatform = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
-    {
-      label: '店铺/视频类型',
-      name: 'ownerType',
-      type: 'select',
-      select: NEW_SHARE_OWNER,
-    },
-    {
-      label: '是否已打赏',
-      name: 'beanFlag',
-      type: 'select',
-      select: BEANFLAG_TYPE,
-    },
     // {
-    //   label: '哒人昵称',
-    //   name: 'ownerId',
-    //   type: 'user',
+    //   label: '店铺/视频类型',
+    //   name: 'ownerType',
+    //   type: 'select',
+    //   select: NEW_SHARE_OWNER,
     // },
+    {
+      label: '哒人昵称',
+      name: 'ownerId',
+      type: 'user',
+    },
     {
       label: '视频ID',
       name: 'momentId',
       rules: [{ pattern: NUM_PATTERN, message: '请输入数字' }],
     },
-    {
-      label: '集团/店铺名',
-      name: 'ownerId',
-      type: 'merchant',
-    },
+    // {
+    //   label: '集团/店铺名',
+    //   name: 'ownerId',
+    //   type: 'merchant',
+    // },
     {
       label: '状态',
       type: 'select',
@@ -159,19 +150,18 @@ const VideoPlatform = (props) => {
       dataIndex: 'viewAmount',
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
-    {
-      title: '领卡豆人数',
-      align: 'right',
-      dataIndex: 'personAmount',
-      sorter: (a, b) => a.personAmount - b.personAmount,
-    },
-
-    {
-      title: '累计打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      sorter: (a, b) => a.beanAmount - b.beanAmount,
-    },
+    // {
+    //   title: '领卡豆人数',
+    //   align: 'right',
+    //   dataIndex: 'personAmount',
+    //   sorter: (a, b) => a.personAmount - b.personAmount,
+    // },
+    // {
+    //   title: '累计打赏卡豆数',
+    //   align: 'right',
+    //   dataIndex: 'beanAmount',
+    //   sorter: (a, b) => a.beanAmount - b.beanAmount,
+    // },
     {
       title: '创建时间',
       align: 'center',
@@ -219,59 +209,66 @@ const VideoPlatform = (props) => {
                 formProps: { type: 'down', key: 'removalReason' },
               }),
           },
-          {
-            type: 'del', // 删除
-            visible: status == 0,
-            click: () => fetchNewShareDel(record),
-          },
-          {
-            type: 'edit', // 编辑
-            visible: typeUser,
-            click: () => fetchShareDetail(index, 'edit'),
-          },
-          {
-            type: 'rewardPeo', // 打赏设置 已打赏显示按钮 未打赏只有下架状态不显示按钮
-            visible: (status != 0 || tabKey === '1') && typeUser,
-            click: () => setVisibleReward({ show: true, detail: record }),
-          },
+          // {
+          //   type: 'del', // 删除
+          //   visible: status == 0,
+          //   click: () => fetchNewShareDel(record),
+          // },
+          // {
+          //   type: 'edit', // 编辑
+          //   visible: typeUser,
+          //   click: () => fetchShareDetail(index, 'edit'),
+          // },
           {
             type: 'set', // 设置
             click: () => setVisibleImg({ show: true, detail: record }),
           },
           {
-            type: 'commerceSet', // 带货设置
-            visible: tabKey === '1' && status != 0 && typeUser,
-            click: () => fetchShareDetail(index, 'commerce'),
+            type: 'rewardInfo', // 打赏明细 已打赏显示按钮 未打赏只有下架状态不显示按钮
+            click: () => setVisibleReward({ show: true, detail: record }),
           },
-          {
-            type: 'portraitEdit', // 编辑画像
-            visible: typeUser,
-            click: () => fetchShareDetail(index, 'portrait'),
-          },
+          // {
+          //   type: 'commerceSet', // 带货设置
+          //   visible: status != 0 && typeUser,
+          //   click: () => fetchShareDetail(index, 'commerce'),
+          // },
+          // {
+          //   type: 'portraitEdit', // 编辑画像
+          //   visible: typeUser,
+          //   click: () => fetchShareDetail(index, 'portrait'),
+          // },
         ];
       },
     },
   ];
 
   // 获取行业选择项
-  const fetchTradeList = () => {
+  // const fetchTradeList = () => {
+  //   dispatch({
+  //     type: 'sysTradeList/fetchGetList',
+  //   });
+  // };
+
+  //  获取tab页列表
+  const fetchTabList = () => {
     dispatch({
-      type: 'sysTradeList/fetchGetList',
+      type: 'videoAdvert/fetchVideoListMomentTag',
+      callback: setTabKey,
     });
   };
 
   // 删除
-  const fetchNewShareDel = (detail) => {
-    const { momentId, ownerId } = detail;
-    dispatch({
-      type: 'videoPlatform/fetchNewShareDel',
-      payload: {
-        momentId,
-        ownerId,
-      },
-      callback: childRef.current.fetchGetData,
-    });
-  };
+  // const fetchNewShareDel = (detail) => {
+  //   const { momentId, ownerId } = detail;
+  //   dispatch({
+  //     type: 'videoPlatform/fetchNewShareDel',
+  //     payload: {
+  //       momentId,
+  //       ownerId,
+  //     },
+  //     callback: childRef.current.fetchGetData,
+  //   });
+  // };
 
   // 下架
   const fetchStatusClose = (values) => {
@@ -315,10 +312,12 @@ const VideoPlatform = (props) => {
 
   const extraBtn = [
     {
-      auth: 'save',
-      text: '新增',
+      auth: 'config',
+      text: '配置',
       // show: tabKey === '0',
-      onClick: () => setVisibleShare({ tabtype: tabKey, show: true }),
+      onClick: () => {
+        setVisibleShare({ videoRules: videoRules, videoBeanRules: videoBeanRules, show: true });
+      },
     },
   ];
 
@@ -326,10 +325,10 @@ const VideoPlatform = (props) => {
     <>
       <TableDataBlock
         firstFetch={false}
-        // keepData
         searchForm={form}
         cardProps={{
           tabList: tabList,
+          loading: loadingTab,
           activeTabKey: tabKey,
           onTabChange: (key) => {
             form.resetFields();
@@ -343,18 +342,14 @@ const VideoPlatform = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.momentId}`}
         params={{
-          pickUpOrUgcFlag: 'pickUp',
-          isCommerceFlag: tabKey,
+          pickUpOrUgcFlag: 'UGC',
+          momentTagId: tabKey,
         }}
-        dispatchType="videoPlatform/fetchMerchVideoList"
-        {...videoPlatform}
+        dispatchType="videoPlatform/fetchUGCVideoList"
+        {...UGCList}
       ></TableDataBlock>
-      {/* 新增 */}
-      <ShareDrawer
-        childRef={childRef}
-        visible={visibleShare}
-        onClose={() => setVisibleShare(false)}
-      ></ShareDrawer>
+      {/* UGC配置 */}
+      <UGCDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></UGCDrawer>
       {/* 详情 修改 编辑画像 带货设置*/}
       <ShareDetail
         tabKey={tabKey}
@@ -378,17 +373,18 @@ const VideoPlatform = (props) => {
         onSubmit={fetchNewShareNoAudit}
         onClose={() => setVisibleImg(false)}
       ></ShareImg>
-      {/* 打赏设置 */}
-      <RewardSet visible={visibleReward} onClose={() => setVisibleReward(false)}></RewardSet>
+      {/* 打赏明细 */}
+      <RewarInfo visible={visibleReward} onClose={() => setVisibleReward(false)}></RewarInfo>
     </>
   );
 };
 
-export default connect(({ sysTradeList, videoPlatform, loading }) => ({
-  videoPlatform: videoPlatform.list,
-  tradeList: sysTradeList.list.list,
+export default connect(({ videoAdvert, videoPlatform, loading }) => ({
+  UGCList: videoPlatform.UGCList,
+  tabs: videoAdvert.tabs,
+  loadingTab: loading.effects['videoAdvert/fetchVideoListMomentTag'],
   loadingRefuse: loading.effects['videoPlatform/fetchNewShareClose'],
   loading:
-    loading.effects['videoPlatform/fetchMerchVideoList'] ||
+    loading.effects['videoPlatform/fetchUGCVideoList'] ||
     loading.effects['videoPlatform/fetchNewShareDetail'],
-}))(VideoPlatform);
+}))(VideoPlatformUGC);
