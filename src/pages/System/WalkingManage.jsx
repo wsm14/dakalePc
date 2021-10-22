@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
+import HotCityPage from './components/Walking/HotCityPage';
 import VaneManage from './components/Walking/Vane';
 import NavigationManage from './components/Walking/Navigation';
 import GratiaClassManage from './components/Walking/GratiaClass';
@@ -69,6 +70,11 @@ const WalkingManage = () => {
       type: 'gatherPage',
       menuName: '集合页配置',
       block: <GatherPage></GatherPage>,
+    },
+    {
+      type: 'hotCityPage',
+      menuName: '热门城市配置',
+      block: <HotCityPage></HotCityPage>,
     },
   ];
 
