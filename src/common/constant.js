@@ -677,6 +677,7 @@ export const FOLLOW_TYPE = {
   other: '其他',
 };
 
+// 用户跟进类型
 export const FOLLOW_MANNER = {
   weChat: '微信',
   mobile: '电话',
