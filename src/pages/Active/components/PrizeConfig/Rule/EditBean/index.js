@@ -1,16 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import PrizeSelectModal from '../../NoobJackPot/PrizeSelectModal';
+import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
 import TableDataBlock from '@/components/TableDataBlock';
-
 import FormCondition from '@/components/FormCondition';
-import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
 import PopImgShow from '@/components/PopImgShow';
 import InputNumber from '@/components/FormCondition/InputNumber';
-import ChangeInvite from './ChangeInvite';
 import aliOssUpload from '@/utils/aliOssUpload';
+import PrizeSelectModal from '../../NoobJackPot/PrizeSelectModal';
+import ChangeInvtei from './ChangeInvites';
 
 function EditBean(props) {
   const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
