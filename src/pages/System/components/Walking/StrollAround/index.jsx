@@ -58,6 +58,7 @@ const TabConfigure = (props) => {
     {
       auth: 'save',
       text: '新增版本',
+      className: 'dkl_blue_btn',
       onClick: () => {
         setVisibleEdition({
           show: true,
@@ -77,7 +78,7 @@ const TabConfigure = (props) => {
   return (
     <>
       <Card
-        title="视频标签配置"
+        title="逛逛页面配置"
         tabList={Object.keys(TAB_INDEX_TYPE).map((i) => ({ key: i, tab: TAB_INDEX_TYPE[i] }))}
         activeTabKey={tabKey}
         onTabChange={handleTabChange}
@@ -90,7 +91,7 @@ const TabConfigure = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
-            rowKey={(record) => `${record.configIndexTabId}`}
+            rowKey={(record) => `${record.configWanderAroundModuleId}`}
             params={{ userOs: tabKey, area: 'all' }}
             dispatchType="walkingManage/fetchAroundModuleList"
             {...editionList}
