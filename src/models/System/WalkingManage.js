@@ -17,6 +17,8 @@ import {
   fetchAroundModuleAdd,
   fetchAroundModuleEdit,
   fetchWanderAroundModuleAdd,
+  fetchHotCityPageList,
+  fetchHotCityPageConfig,
 } from '@/services/SystemServices';
 
 export default {
@@ -30,6 +32,7 @@ export default {
     nowTrade: [],
     editionList: { list: [] },
     configureList: { list: [] },
+    hotCity: { list: [], dictionaryId: '' },
   },
 
   reducers: {
@@ -42,6 +45,55 @@ export default {
   },
 
   effects: {
+    // 删除热门城市
+    *fetchHotCityPageConfigDel({ payload, callback }, { call }) {
+      const response = yield call(fetchHotCityPageConfig, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '热门城市删除成功',
+      });
+      callback();
+    },
+    // 修改热门城市
+    *fetchHotCityPageConfigChange({ payload, callback }, { call }) {
+      const response = yield call(fetchHotCityPageConfig, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '热门城市修改成功',
+      });
+      callback();
+    },
+    // 热门城市排序
+    *fetchHotCityPageConfigSort({ payload, callback }, { call }) {
+      const response = yield call(fetchHotCityPageConfig, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '热门城市排序成功',
+      });
+      callback();
+    },
+    // 读取热门城市配置
+    *fetchHotCityPageList({ payload }, { call, put }) {
+      const response = yield call(fetchHotCityPageList, payload);
+      if (!response) return;
+      const { content } = response;
+      console.log(JSON.parse(content.dictionary.extraParam), 'content');
+      yield put({
+        type: 'save',
+        payload: {
+          hotCity: {
+            list: JSON.parse(content.dictionary.extraParam).map((i) => ({
+              ...i,
+              cityCode: `${i.cityCode}`,
+            })),
+            dictionaryId: content.dictionary.dictionaryId,
+          },
+        },
+      });
+    },
     *fetchWalkManageVaneList({ payload }, { call, put }) {
       const response = yield call(fetchWalkManageVaneList, payload);
       if (!response) return;

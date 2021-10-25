@@ -2,27 +2,26 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Select, Cascader } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
-import PopImgShow from '@/components/PopImgShow';
 import CITYJSON from '@/common/city';
 import TableDataBlock from '@/components/TableDataBlock';
-import VaneDrawer from './VaneDrawer';
+import HotCityDrawer from './HotCityDrawer';
 
 const VaneManage = (props) => {
-  const { list, loading, dispatch } = props;
-  const [cityCode, setCityCode] = useState(['33', '3301']);
+  const { list, loading, dispatch, hotCityList, dictionaryId } = props;
+  // const [cityCode, setCityCode] = useState(['33', '3301']);
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    dispatch({
-      type: 'walkingManage/fetchWalkManageNavigation',
-    });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'walkingManage/fetchWalkManageNavigation',
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    childRef.current.fetchGetData({ cityCode: cityCode[1] });
-  }, [cityCode]);
+  // useEffect(() => {
+  //   childRef.current.fetchGetData({ cityCode: cityCode[1] });
+  // }, [cityCode]);
 
   // 获取详情
   // const fetchGetDetail = (val, record, type) => {
@@ -39,15 +38,16 @@ const VaneManage = (props) => {
   // };
 
   // 删除
-  const fetchDetailDel = (configWindVaneId, record) => {
-    const { areaCode = '' } = record;
+  const fetchDetailDel = (codeId, record) => {
+    const list = hotCityList.filter((item) => {
+      return item.cityCode !== codeId;
+    });
+    console.log('list', list);
     dispatch({
-      type: 'walkingManage/fetchWalkManageVaneEditDel',
+      type: 'walkingManage/fetchHotCityPageConfigDel',
       payload: {
-        configWindVaneId,
-        areaType: 'city',
-        areaCode,
-        deleteFlag: 0,
+        dictionaryId,
+        extraParam: list,
       },
       callback: childRef.current.fetchGetData,
     });
@@ -55,13 +55,16 @@ const VaneManage = (props) => {
 
   // 排序
   const fetchDetailSort = (list) => {
+    console.log(list, 'newList');
     dispatch({
-      type: 'walkingManage/fetchWalkManageVaneSort',
+      type: 'walkingManage/fetchHotCityPageConfigSort',
       payload: {
-        configWindVaneDTOList: list.map((item, i) => ({
-          configWindVaneId: item.configWindVaneId,
-          sort: i,
-        })),
+        dictionaryId,
+        extraParam: JSON.stringify(list),
+        // configWindVaneDTOList: list.map((item, i) => ({
+        //   configWindVaneId: item.configWindVaneId,
+        //   sort: i,
+        // })),
       },
       callback: childRef.current.fetchGetData,
     });
@@ -76,8 +79,7 @@ const VaneManage = (props) => {
     // },
     {
       title: '城市',
-      dataIndex: 'name',
-      className: 'drag-visible',
+      dataIndex: 'cityName',
     },
     {
       title: '排序',
@@ -87,7 +89,7 @@ const VaneManage = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'configWindVaneId',
+      dataIndex: 'cityCode',
       render: (val, record) => {
         return [
           // {
@@ -110,21 +112,21 @@ const VaneManage = (props) => {
     },
   ];
 
-  const cityList = CITYJSON.map((item) => {
-    const children = item.children.map((every) => ({
-      value: every.value,
-      label: every.label,
-      pid: every.pid,
-    }));
-    return {
-      ...item,
-      children: children,
-    };
-  });
+  // const cityList = CITYJSON.map((item) => {
+  //   const children = item.children.map((every) => ({
+  //     value: every.value,
+  //     label: every.label,
+  //     pid: every.pid,
+  //   }));
+  //   return {
+  //     ...item,
+  //     children: children,
+  //   };
+  // });
 
-  const handleCityChange = (val) => {
-    setCityCode(val);
-  };
+  // const handleCityChange = (val) => {
+  //   setCityCode(val);
+  // };
 
   return (
     <>
@@ -135,13 +137,16 @@ const VaneManage = (props) => {
 
       <TableDataBlock
         order={true}
-        firstFetch={false}
-        tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
+        // firstFetch={false}
+        tableSort={{ key: 'cityCode', onSortEnd: fetchDetailSort }}
         cardProps={{
           title: '热门城市配置',
           bordered: false,
           extra: (
-            <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
+            <Button
+              type="primary"
+              onClick={() => setVisible({ dictionaryId, detail: hotCityList, show: true })}
+            >
               新增
             </Button>
           ),
@@ -149,27 +154,28 @@ const VaneManage = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
-        params={{ cityCode: cityCode[1] }}
-        rowKey={(record) => `${record.configWindVaneId}`}
-        dispatchType="walkingManage/fetchWalkManageVaneList"
+        params={{ parent: 'hotCityConfig', child: 'hotCityList' }}
+        rowKey={(record) => `${record.cityCode}`}
+        dispatchType="walkingManage/fetchHotCityPageList"
         pagination={false}
-        {...list}
+        list={hotCityList}
       ></TableDataBlock>
-      <VaneDrawer
-        cRef={childRef}
+      <HotCityDrawer
+        childRef={childRef}
         visible={visible}
-        cityCode={cityCode[1]}
         onClose={() => setVisible(false)}
-      ></VaneDrawer>
+      ></HotCityDrawer>
     </>
   );
 };
 
 export default connect(({ walkingManage, loading }) => ({
-  list: walkingManage.vaneList,
+  // list: walkingManage.vaneList,
+  hotCityList: walkingManage.hotCity.list,
+  dictionaryId: walkingManage.hotCity.dictionaryId,
   loading:
-    loading.effects['walkingManage/fetchWalkManageVaneList'] ||
+    loading.effects['walkingManage/fetchHotCityPageList'] ||
     loading.effects['walkingManage/fetchWalkManageVaneEditDel'] ||
     loading.effects['walkingManage/fetchWalkManageVaneDetail'] ||
-    loading.effects['walkingManage/fetchWalkManageVaneSort'],
+    loading.effects['walkingManage/fetchHotCityPageConfigSort'],
 }))(VaneManage);

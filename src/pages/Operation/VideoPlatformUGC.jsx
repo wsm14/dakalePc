@@ -173,7 +173,6 @@ const VideoPlatformUGC = (props) => {
       title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
       align: 'center',
       fixed: 'right',
-      show: tabKey === '1',
       dataIndex: 'weight',
       render: (val, row) => (
         <ShareWeightSet detail={row} onSubmit={fetchNewShareNoAudit}></ShareWeightSet>

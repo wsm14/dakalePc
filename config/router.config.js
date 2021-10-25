@@ -434,6 +434,7 @@ export default [
           'down',
           'info',
           'rewardPeo',
+          'rewardInfo',
           'config',
           // 'shareImg',
           'commerceSet',

@@ -148,10 +148,10 @@ const VideoPutInSet = (props) => {
       },
     },
     {
-      label: '自定义位置',
+      label: '位置选择',
       name: 'browseType',
       type: 'checkbox',
-      hidden: browseTypes === 'All',
+      disabled: browseTypes === 'All',
       select: tagList,
     },
     {

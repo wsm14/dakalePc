@@ -101,6 +101,21 @@ export function fetchSearchSet(data) {
 
 // 逛逛页面配置
 
+// get 热门城市配置 - 列表
+export function fetchHotCityPageList(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// post 热门城市配置 - 设置
+export function fetchHotCityPageConfig(data) {
+  return request('/admin/systemConfig/setHotCityConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 风向标配置 - 列表
 export function fetchWalkManageVaneList(params) {
   return request('/admin/windVane/listConfigWindVane', {
