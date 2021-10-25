@@ -25,11 +25,24 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import ShareImg from './components/SpecialGoods/ShareImg';
 import { checkCityName } from '@/utils/utils';
 
+// tab栏列表
+const tabList = [
+  {
+    key: '0',
+    tab: '特惠商品',
+  },
+  {
+    key: '1',
+    tab: '自我游',
+  },
+];
+
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
   const { list } = specialGoods;
 
   const childRef = useRef();
+  const [tabKey, setTabKey] = useState('0'); // tab
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
@@ -504,6 +517,9 @@ const SpecialGoods = (props) => {
         keepData
         btnExtra={extraBtn}
         cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: setTabKey,
           extra: (
             <ExtraButton list={btnList}>
               <AuthConsumer auth={'recommendStatus'}>
