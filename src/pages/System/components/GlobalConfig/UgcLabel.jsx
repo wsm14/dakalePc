@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import UgcLabelSet from './Form/UgcLabelSet';
 import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
-import styles from '../../../System/index.less';
+import styles from './index.less';
 
 const UgcLabel = (props) => {
   const { dispatch, loading, UgcLabelList } = props;
@@ -37,7 +37,9 @@ const UgcLabel = (props) => {
               </Tag>
             </div>
             <div style={{ marginTop: 5 }} className={styles.specFont}>
-              {row?.introduce}
+              <Ellipsis length={50} tooltip>
+                {row?.introduce}
+              </Ellipsis>
             </div>
           </div>
         </div>

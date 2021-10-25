@@ -9,7 +9,7 @@ const SideMenu = (props) => {
 
   const { dispatchData, moduleData, info = {} } = useContext(context);
 
-  const { handle = 'add', activityTemplateId } = info;
+  const { handle = 'add', activityTemplateId, activityName } = info;
 
   // active 创建
   const fetchSaveModuleData = () => {
@@ -38,7 +38,7 @@ const SideMenu = (props) => {
 
   return (
     <Row align="middle">
-      <Col flex="auto">编辑页面模版</Col>
+      <Col flex="auto">{activityName || '编辑页面模版'}</Col>
       <Col>
         <Space>
           <Button
