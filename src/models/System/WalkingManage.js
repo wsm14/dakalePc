@@ -80,7 +80,7 @@ export default {
       const response = yield call(fetchHotCityPageList, payload);
       if (!response) return;
       const { content } = response;
-      console.log(JSON.parse(content.dictionary.extraParam), 'content');
+      // console.log(JSON.parse(content.dictionary.extraParam), 'content');
       yield put({
         type: 'save',
         payload: {

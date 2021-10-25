@@ -42,7 +42,7 @@ const VaneManage = (props) => {
     const list = hotCityList.filter((item) => {
       return item.cityCode !== codeId;
     });
-    console.log('list', list);
+    // console.log('list', list);
     dispatch({
       type: 'walkingManage/fetchHotCityPageConfigDel',
       payload: {
@@ -175,7 +175,7 @@ export default connect(({ walkingManage, loading }) => ({
   dictionaryId: walkingManage.hotCity.dictionaryId,
   loading:
     loading.effects['walkingManage/fetchHotCityPageList'] ||
-    loading.effects['walkingManage/fetchWalkManageVaneEditDel'] ||
-    loading.effects['walkingManage/fetchWalkManageVaneDetail'] ||
+    loading.effects['walkingManage/fetchHotCityPageConfigDel'] ||
+    loading.effects['walkingManage/fetchHotCityPageConfigChange'] ||
     loading.effects['walkingManage/fetchHotCityPageConfigSort'],
 }))(VaneManage);
