@@ -6,23 +6,23 @@
  */
 export default [
   {
-    header: '通用配置',
+    header: '广告营销',
     type: 'public',
-    children: ['solaImg', 'list'],
+    children: ['mainBanner', 'capsulePosition', 'recharge', 'notify'],
   },
   {
-    header: '图片类',
+    header: '功能区',
     type: 'img',
-    children: ['solaImg', 'solaImg'],
+    children: ['windVane', 'resource'],
   },
   {
-    header: '列表类',
+    header: '商品推荐',
     type: 'list',
-    children: ['solaImg', 'solaImg', 'solaImg'],
+    children: ['limitedTimeAndExplosive', 'limitedTime', 'explosive', 'member'],
   },
   {
-    header: '视频类',
+    header: '商品推荐流',
     type: 'video',
-    children: ['solaImg'],
+    children: ['selfTour', 'specialRecommend'],
   },
 ];
