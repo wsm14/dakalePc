@@ -71,7 +71,7 @@ const RewardSet = ({ list, visible, onClose, loading }) => {
           searchItems={searchItems}
           loading={loading}
           columns={getColumns}
-          params={{ momentId: '1439835825589059585' }}
+          params={{ momentId }}
           rowKey={(record) => record.userRewardRecordId}
           dispatchType="videoPlatform/fetchUGCVideoRewardInfo"
           {...ohter}
