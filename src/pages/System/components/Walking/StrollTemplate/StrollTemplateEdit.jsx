@@ -17,6 +17,7 @@ const ActiveTemplate = (props) => {
   const { visible = {}, dispatch, onClose, loading } = props;
 
   const [moduleReducer, dispatchData] = useReducer(fetchReducerEdit, reducerValue);
+  console.log(moduleReducer);
   const [styBasket, setStyBasket] = useState(false);
   const { info } = visible;
 

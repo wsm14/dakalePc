@@ -37,6 +37,7 @@ const BasketDom = ({
       const movefile = update(dataList, {
         $splice: [[index, 0, { moduleType }]],
       });
+      console.log(movefile, 'movefile');
       changeCardList(movefile);
       handleShowEditor({ moduleType }, index);
     }, // 放置方法
