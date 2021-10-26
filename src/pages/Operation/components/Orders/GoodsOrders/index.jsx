@@ -176,10 +176,10 @@ const GoodsOrders = (props) => {
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
 
-            <div className={styles.fontColor}>
+            {/* <div className={styles.fontColor}>
               {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
             </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div> */}
           </div>
         );
       },
@@ -193,10 +193,10 @@ const GoodsOrders = (props) => {
         return (
           <div style={{ textAlign: 'center' }}>
             <div>{`￥${Number(val) + beanCount ? (Number(val) + beanCount).toFixed(2) : 0}`}</div>
-            <div className={styles.fontColor}>
+            {/* <div className={styles.fontColor}>
               {record.beanCommission ? `(${record.beanCommission}卡豆` : '(' + '0卡豆'}
             </div>
-            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div> */}
           </div>
         );
       },

@@ -5,10 +5,14 @@ import CardItem from './components/Sale/CardItem';
 const SaleBlockComponent = ({}) => {
   const itemArr = [
     {
-      title: '补贴卡豆数',
+      title: '补贴情况',
       tip: '指平台总补贴的卡豆数，包括补贴商家和补贴用户的',
       keyName: 'platformSubsidy',
       api: 'saleTotal/fetchPlatformSubsidy',
+      // keyOther: [
+      //   { title: '卡豆数', key: 'userAcquire' },
+      //   { title: '人数', key: 'userAcquireUserCount' },
+      // ],
     },
     {
       title: '用户获取卡豆数',

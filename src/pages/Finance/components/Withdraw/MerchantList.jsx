@@ -90,7 +90,7 @@ const MerchantList = (props) => {
       render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
     },
     {
-      title: '提现卡豆数',
+      title: '提现账户类型',
       align: 'right',
       dataIndex: 'withdrawalBeanAmount',
     },
