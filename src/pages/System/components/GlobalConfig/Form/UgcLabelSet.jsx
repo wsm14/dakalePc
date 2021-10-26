@@ -97,6 +97,7 @@ const UgcLabelSet = (props) => {
         label: '标签介绍',
         type: 'textArea',
         name: 'introduce',
+        maxLength: 30,
       },
     ],
     [type],
