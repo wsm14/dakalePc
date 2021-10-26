@@ -123,6 +123,7 @@ const UgcLabel = (props) => {
         dispatchType="globalConfig/fetchListMomentTag"
         {...UgcLabelList}
       ></TableDataBlock>
+      {/* 新增编辑弹窗 */}
       <UgcLabelSet
         visible={visible}
         onClose={() => setVisible(false)}
