@@ -4,13 +4,17 @@ import { SPECIAL_RECOMMEND_TYPE } from '@/common/constant';
 import { Button, Menu, Dropdown } from 'antd';
 
 const SpecialRecommendMenu = (props) => {
-  const { disabled, handleRecommend, num } = props;
+  const { disabled, handleRecommend, num, tabKey } = props;
 
   const menu = (
     <Menu onClick={({ key }) => handleRecommend({ recommendType: key })}>
-      {Object.keys(SPECIAL_RECOMMEND_TYPE).map((item) => (
-        <Menu.Item key={item}>{SPECIAL_RECOMMEND_TYPE[item]}</Menu.Item>
-      ))}
+      {tabKey === '0' ? (
+        Object.keys(SPECIAL_RECOMMEND_TYPE).map((item) => (
+          <Menu.Item key={item}>{SPECIAL_RECOMMEND_TYPE[item]}</Menu.Item>
+        ))
+      ) : (
+        <Menu.Item key={'selfTour'}>自我游</Menu.Item>
+      )}
     </Menu>
   );
 

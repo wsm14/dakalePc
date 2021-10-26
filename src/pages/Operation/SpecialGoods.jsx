@@ -55,6 +55,10 @@ const SpecialGoods = (props) => {
   const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
 
   useEffect(() => {
+    childRef.current && childRef.current.fetchGetData({ deleteFlag: '1', selfTourFlag: tabKey });
+  }, [tabKey]);
+
+  useEffect(() => {
     if (childRef.current) {
       childRef.current.fetchGetData();
     }
@@ -130,6 +134,7 @@ const SpecialGoods = (props) => {
     {
       label: '推广位置',
       type: 'select',
+      show: tabKey === '0',
       name: 'promotionLocation',
       select: search_recommend,
     },
@@ -309,11 +314,20 @@ const SpecialGoods = (props) => {
       title: '推广位置',
       fixed: 'right',
       dataIndex: 'recommendType',
-      render: (val, row) =>
-        val
-          .split(',')
-          .map((item) => SPECIAL_RECOMMEND_TYPE[item])
-          .join('\n'),
+      render: (val, row) => (
+        <>
+          {val === 'selfTour'
+            ? '自我游'
+            : val
+                .split(',')
+                .map((item) => SPECIAL_RECOMMEND_TYPE[item])
+                .join('\n')}
+        </>
+      ),
+      // val
+      //   .split(',')
+      //   .map((item) => SPECIAL_RECOMMEND_TYPE[item])
+      //   .join('\n')
     },
     {
       type: 'handle',
@@ -525,6 +539,7 @@ const SpecialGoods = (props) => {
               <AuthConsumer auth={'recommendStatus'}>
                 <SpecialRecommendMenu
                   num={goodsList.length}
+                  tabKey={tabKey}
                   handleRecommend={(val) =>
                     fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
                   }
@@ -538,7 +553,7 @@ const SpecialGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ deleteFlag: '1' }}
+        params={{ deleteFlag: '1', selfTourFlag: tabKey }}
         rowKey={(record) => `${record.specialGoodsId}`}
         rowSelection={{
           getCheckboxProps: ({ status, deleteFlag }) => ({
