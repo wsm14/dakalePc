@@ -25,21 +25,21 @@ function UGCDrawer(props) {
       type: 'number',
       name: ['beanRule', 'second'],
       suffix: '秒视频',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       label: '获得',
       type: 'number',
       name: ['beanRule', 'bean'],
       suffix: '卡豆',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       label: '每日上限',
       type: 'number',
       name: ['beanRule', 'upperLimit'],
       suffix: '卡豆',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       title: 'UGC视频打赏规则',
@@ -47,14 +47,14 @@ function UGCDrawer(props) {
       type: 'number',
       name: ['rewardRule', 'bean'],
       suffix: '卡豆',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
     {
       label: '最多打赏',
       type: 'number',
       name: ['rewardRule', 'times'],
       suffix: '次',
-      rules: [{ required: false }],
+      // rules: [{ required: false }],
     },
   ];
   // 提交表单
@@ -91,11 +91,7 @@ function UGCDrawer(props) {
     footer: (
       <>
         {
-          <Button
-            type="primary"
-            onClick={handleUpdataSava}
-            // loading={loading}
-          >
+          <Button type="primary" onClick={handleUpdataSava} loading={loading}>
             保存
           </Button>
         }
@@ -115,5 +111,6 @@ export default connect(({ loading }) => ({
   loadingData: loading.effects['videoPlatform/fetchUGCVideoBeanRules'],
   loading:
     loading.effects['videoPlatform/fetchGetList'] ||
-    loading.effects['videoPlatform/fetchNewShareDetail'],
+    loading.effects['videoPlatform/fetchNewShareDetail'] ||
+    loading.effects['videoPlatform/fetchUGCVideoBeanRulesSet'],
 }))(UGCDrawer);
