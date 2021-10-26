@@ -241,6 +241,21 @@ export function fetchWanderAroundModuleAdd(data) {
   });
 }
 
+//逛逛模块化配置-编辑
+export function fetchUpdateWanderAroundModule(data) {
+  return request('/admin/wanderAroundModule/updateWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-详情
+export function fetchGetWanderAroundModuleById(params) {
+  return request('/admin/wanderAroundModule/getWanderAroundModuleById', {
+    params,
+  });
+}
+
 // 逛逛页面配置 end
 
 // 新人下单配置 start

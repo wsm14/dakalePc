@@ -19,6 +19,8 @@ import {
   fetchWanderAroundModuleAdd,
   fetchHotCityPageList,
   fetchHotCityPageConfig,
+  fetchUpdateWanderAroundModule,
+  fetchGetWanderAroundModuleById,
 } from '@/services/SystemServices';
 
 export default {
@@ -285,6 +287,22 @@ export default {
         description: '新增成功',
       });
       callback();
+    },
+    *fetchUpdateWanderAroundModule({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateWanderAroundModule, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '保存成功',
+      });
+      callback();
+    },
+    *fetchGetWanderAroundModuleById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetWanderAroundModuleById, payload);
+      if (!response) return;
+      const { content } = response;
+      const strollContent = content;
+      callback(content?.configWanderAroundModule);
     },
   },
 };

@@ -4,6 +4,7 @@ import update from 'immutability-helper';
 import showImg from '../showImg';
 import PreviewerActive from './PreviewerActive';
 import PreviewerContent from './PreviewerContent';
+import search from '../Img/search.png';
 import styles from './style.less';
 
 /**
@@ -28,18 +29,18 @@ const BasketDom = ({
     accept: 'Card',
     drop: (dropItem) => {
       setStyBasket(false);
-      const { moduleType } = dropItem;
+      const { moduleName } = dropItem;
       /**
        * 拖拽结束时，判断是否将拖拽元素放入了目标接收组件中
        *  1、如果是，则使用真正传入的 box 元素代替占位元素
        */
       // 更新 dataList 数据源
       const movefile = update(dataList, {
-        $splice: [[index, 0, { moduleType }]],
+        $splice: [[index, 0, { moduleName }]],
       });
       console.log(movefile, 'movefile');
       changeCardList(movefile);
-      handleShowEditor({ moduleType }, index);
+      handleShowEditor({ moduleName }, index);
     }, // 放置方法
     collect: (monitor) => ({ isOver: monitor.isOver(), canDrop: monitor.canDrop() }),
   });
@@ -66,6 +67,7 @@ const ActiveTemplateIframe = (props) => {
   const { dispatchData, showPanel, moduleData } = useContext(context);
 
   const { dataList } = moduleData;
+  console.log(dataList, 'dataList');
 
   // 数据变化储存
   const changeCardList = (list) =>
@@ -88,12 +90,13 @@ const ActiveTemplateIframe = (props) => {
           className={styles.previewer_wrap}
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
+          <img src={search} style={{ width: '100%' }} />
           <BasketDom index={0} {...dropProps}></BasketDom>
           {dataList.map((item, index) => (
             <React.Fragment key={`${index}`}>
               <div className={styles.previewer_cell} onClick={() => handleShowEditor(item, index)}>
                 {/* 回显dom*/}
-                <PreviewerContent cell={showImg[item.moduleType]}></PreviewerContent>
+                <PreviewerContent cell={showImg[item.moduleName]}></PreviewerContent>
                 {/* 高亮操作区域 */}
                 <PreviewerActive
                   data={dataList}

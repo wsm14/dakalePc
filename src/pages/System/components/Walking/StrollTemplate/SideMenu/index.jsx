@@ -9,20 +9,25 @@ const SideMenu = (props) => {
 
   const { dispatchData, moduleData, info = {} } = useContext(context);
 
-  const { handle = 'add', activityTemplateId, activityName } = info;
+  const { configWanderAroundModuleId, activityName } = info;
 
   // active 创建
   const fetchSaveModuleData = () => {
-    console.log(moduleData.dataList);
-    return;
+    const newData = moduleData.dataList.filter((item) => item.moduleName); // 空数据不进入
+    console.log(
+      {
+        configWanderAroundModuleId,
+        flag: 'updateModule',
+        wanderAroundModuleObjects: newData,
+      },
+      'newData',
+    );
     dispatch({
-      type: {
-        add: 'activeTemplate/fetchActiveAddaa',
-        edit: 'activeTemplate/fetchActiveEditdd',
-      }[handle],
+      type: 'walkingManage/fetchUpdateWanderAroundModule',
       payload: {
-        activityTemplateId,
-        newData,
+        configWanderAroundModuleId,
+        flag: 'updateModule',
+        wanderAroundModuleObjects: newData,
       },
       callback: () => {
         onClose();

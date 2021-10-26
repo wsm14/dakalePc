@@ -44,6 +44,7 @@ export const fetchReducerEdit = (state, action) => {
         showPanel: action.payload,
       };
     case 'saveModuleData':
+      console.log(action.payload, 'action.payload');
       return {
         ...state,
         moduleData: { ...state.moduleData, ...action.payload },

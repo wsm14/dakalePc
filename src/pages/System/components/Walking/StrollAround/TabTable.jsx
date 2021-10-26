@@ -26,28 +26,40 @@ const TabTable = (props) => {
     {
       type: 'handle',
       align: 'center',
-      dataIndex: 'configIndexTabId',
-      render: (val, row) => {
-        return [
-          {
-            type: 'edit',
-            title: '编辑',
-            click: () => {
-              setVisibleConfigure({
-                show: true,
-                info: {
-                  activityName: `逛逛页面配置-${TAB_INDEX_TYPE[row?.userOs]}${
-                    row?.version ? '-' : ''
-                  }${row?.version}`,
-                },
-              });
-            },
-            auth: true,
-          },
-        ];
-      },
+      dataIndex: 'configWanderAroundModuleId',
+      render: (val, row) => [
+        {
+          type: 'edit',
+          title: '编辑',
+          click: () => handleEdit(val, row),
+          auth: true,
+        },
+      ],
     },
   ];
+
+  const handleEdit = (configWanderAroundModuleId, row) => {
+    dispatch({
+      type: 'walkingManage/fetchGetWanderAroundModuleById',
+      payload: {
+        configWanderAroundModuleId,
+      },
+      callback: (detail) => {
+        const info = {
+          activityName: `逛逛页面配置-${TAB_INDEX_TYPE[row?.userOs]}${row?.version ? '-' : ''}${
+            row?.version
+          }`,
+          handle: 'edit',
+          configWanderAroundModuleId,
+          params: { ...detail, dataList: detail?.wanderAroundModuleObjects || [] },
+        };
+        setVisibleConfigure({
+          show: true,
+          info,
+        });
+      },
+    });
+  };
 
   const cardBtnList = [
     {

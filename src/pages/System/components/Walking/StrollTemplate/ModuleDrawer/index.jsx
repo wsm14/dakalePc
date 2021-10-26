@@ -18,7 +18,7 @@ const ModuleDrawer = (props) => {
   const paneDom = ({ drag, cell, onClick }) => (
     <div
       ref={drag}
-      key={cell.moduleType}
+      key={cell.moduleName}
       className={`${styles.module_cell} ${cell.drop ? styles.move : ''}`}
       onClick={onClick}
     >
