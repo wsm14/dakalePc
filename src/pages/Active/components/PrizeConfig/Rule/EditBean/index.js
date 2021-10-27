@@ -15,9 +15,6 @@ function EditBean(props) {
   const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
   // console.log(blindBoxRule, '22222');
 
-  const numRef = useRef();
-  const timesRef = useRef();
-
   const [form] = Form.useForm();
 
   //弹窗显示
@@ -29,46 +26,43 @@ function EditBean(props) {
   //表单提交
   const handleUpAction = () => {
     // console.log(tableList, 'tableList');
-    try {
-      keyType === 'bean'
-        ? form.validateFields().then(async (values) => {
-            const { backImg = '', backFile = '' } = values;
-            const sImg = await aliOssUpload(backImg);
-            const fImg = await aliOssUpload(backFile);
-            // console.log(values, 'values');
-            dispatch({
-              type: 'prizeConfig/fetchBlindBoxConfigSet',
-              payload: {
-                ruleType: 'bean',
-                bean: values.bean,
-                backImg: sImg.toString(),
-                backFile: fImg.toString(),
-                allBlindBoxProducts: tableList,
-              },
-              callback: () => {
-                onClose();
-                callBack(keyType);
-              },
-            });
-          })
-        : dispatch({
-            type: 'prizeConfig/fetchBlindBoxConfigSet',
-            payload: {
-              ruleType: 'invitation',
-              num: numRef.current.ariaValueNow,
-              times: timesRef.current.ariaValueNow,
-              backImg: blindBoxRule.backImg,
-              backFile: blindBoxRule.backFile,
-              allBlindBoxProducts: tableList,
-            },
-            callback: () => {
-              onClose();
-              callBack(keyType);
-            },
-          });
-    } catch (error) {
-      console.log(error);
-    }
+    // keyType === 'bean'
+    // ?
+    form.validateFields().then(async (values) => {
+      // console.log(values, 'values');
+      const { backImg = '', backFile = '' } = values;
+
+      let payload = {};
+
+      if (keyType === 'bean') {
+        const sImg = await aliOssUpload(backImg);
+        const fImg = await aliOssUpload(backFile);
+        payload = {
+          bean: values.bean,
+          backImg: sImg.toString(),
+          backFile: fImg.toString(),
+          allBlindBoxProducts: tableList,
+        };
+      } else {
+        payload = {
+          num: values.num,
+          times: values.times,
+          allBlindBoxProducts: tableList,
+        };
+      }
+
+      dispatch({
+        type: 'prizeConfig/fetchBlindBoxConfigSet',
+        payload: {
+          ruleType: keyType,
+          ...payload,
+        },
+        callback: () => {
+          onClose();
+          callBack(keyType);
+        },
+      });
+    });
   };
 
   //弹窗点击确认
@@ -170,6 +164,7 @@ function EditBean(props) {
     {
       label: '盲盒背景图',
       type: 'upload',
+      rules: [{ required: false }],
       extra: '(请上传XXX*XXX尺寸，大小50KB以内的PNG格式图片)',
       name: 'backImg',
     },
@@ -227,6 +222,56 @@ function EditBean(props) {
     },
   ];
 
+  const formItemsInvitation = [
+    {
+      type: 'noForm',
+      formItem: <ChangeInvite></ChangeInvite>,
+    },
+    {
+      label: '奖池',
+      name: 'participateBlindBoxProducts',
+      type: 'formItem',
+      addRules: [
+        {
+          validator: () => {
+            const total = tableList.reduce((item, next) => {
+              return item + Number(next.rate);
+            }, 0);
+            // console.log(total);
+            if (total != 100) {
+              return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+      formItem: (
+        <Button
+          type="primary"
+          ghost
+          onClick={() => {
+            setModalVisible(true);
+          }}
+        >
+          选择
+        </Button>
+      ),
+    },
+    {
+      label: '适用用户',
+      type: 'noForm',
+      formItem: (
+        <TableDataBlock
+          noCard={false}
+          loading={loading}
+          columns={getColumns}
+          rowKey={(record) => `${record.id}`}
+          list={tableList}
+        ></TableDataBlock>
+      ),
+    },
+  ];
+
   // 弹出窗属性
   const modalProps = {
     title: '编辑规则',
@@ -238,7 +283,7 @@ function EditBean(props) {
       setTableList(blindBoxRule?.participateBlindBoxProducts);
     },
     footer: (
-      <Button onClick={handleUpAction} type="primary">
+      <Button onClick={handleUpAction} type="primary" loading={loading}>
         提交
       </Button>
     ),
@@ -247,21 +292,11 @@ function EditBean(props) {
   return (
     <>
       <DrawerCondition {...modalProps}>
-        {keyType === 'bean' ? (
-          // 卡豆专场
-          <FormCondition
-            form={form}
-            formItems={formItems}
-            initialValues={blindBoxRule}
-          ></FormCondition>
-        ) : (
-          // 邀请专场
-          <ChangeInvite
-            numRef={numRef}
-            timesRef={timesRef}
-            blindBoxRule={blindBoxRule}
-          ></ChangeInvite>
-        )}
+        <FormCondition
+          form={form}
+          formItems={keyType === 'bean' ? formItems : formItemsInvitation}
+          initialValues={blindBoxRule}
+        ></FormCondition>
       </DrawerCondition>
       <PrizeSelectModal
         visible={modalVisible}
@@ -276,5 +311,7 @@ function EditBean(props) {
 
 export default connect(({ prizeConfig, loading }) => ({
   // blindBoxRule: prizeConfig.blindBoxRule,
-  loading: loading.effects['prizeConfig/fetchGetList'],
+  loading:
+    loading.effects['prizeConfig/fetchGetList'] ||
+    loading.effects['prizeConfig/fetchBlindBoxConfigSet'],
 }))(EditBean);

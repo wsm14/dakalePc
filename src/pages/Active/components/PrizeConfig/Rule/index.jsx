@@ -118,6 +118,31 @@ const Rule = (props) => {
       ),
     },
   ];
+  const baseInvitation = [
+    {
+      label: '助力获得免费次数',
+      // name: { num, times },
+      render: (val, record) => (
+        <>
+          每邀请 <b>{record?.num || 0}</b> 个新用户助力获得
+          <b> {record?.times || 0}</b> 次。
+        </>
+      ),
+    },
+    {
+      label: '奖池',
+      name: 'participateBlindBoxProducts',
+      render: (val) => (
+        <TableDataBlock
+          noCard={false}
+          loading={loading}
+          columns={getColumns}
+          rowKey={(record) => `${record.id}`}
+          list={val}
+        ></TableDataBlock>
+      ),
+    },
+  ];
 
   // useEffect(() => {}, []);
 
@@ -132,8 +157,12 @@ const Rule = (props) => {
             ></DescriptionsCondition>
           </TabPane>
           <TabPane tab="邀请专场" key="invitation">
-            助力获得免费次数：每邀请 <b>{blindBoxRule?.num || 0}</b> 个新用户助力获得
-            <b> {blindBoxRule?.times || 0}</b> 次。
+            {/* 助力获得免费次数：每邀请 <b>{blindBoxRule?.num || 0}</b> 个新用户助力获得
+            <b> {blindBoxRule?.times || 0}</b> 次。 */}
+            <DescriptionsCondition
+              formItems={baseInvitation}
+              initialValues={blindBoxRule}
+            ></DescriptionsCondition>
           </TabPane>
         </Tabs>
       </Card>
