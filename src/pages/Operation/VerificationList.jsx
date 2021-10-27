@@ -140,10 +140,10 @@ const VerificationList = (props) => {
       render: (val, record) => (
         <div style={{ textAlign: 'center' }}>
           <div>{`￥${record.settlerPrice ? record.settlerPrice : 0}`}</div>
-          <div className={styles.fontColor}>
+          {/* <div className={styles.fontColor}>
             {record.settlerBean ? `(${record.settlerBean}卡豆` : '(' + '0卡豆'}
           </div>
-          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div> */}
         </div>
       ),
     },
@@ -158,8 +158,8 @@ const VerificationList = (props) => {
               Number(record.beanCommission) / 100 +
               Number(record.cashCommission)
             ).toFixed(2)}`}</div>
-            <div className={styles.fontColor}>{`(${record.beanCommission}卡豆`}</div>
-            <div className={styles.fontColor}>{`￥${record.cashCommission})`}</div>
+            {/* <div className={styles.fontColor}>{`(${record.beanCommission}卡豆`}</div>
+            <div className={styles.fontColor}>{`￥${record.cashCommission})`}</div> */}
           </div>
         );
       },

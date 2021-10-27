@@ -56,7 +56,7 @@ const TabConfigure = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: true,
       text: '新增版本',
       className: 'dkl_blue_btn',
       onClick: () => {

@@ -712,3 +712,6 @@ export const TABINDEX_VIDEO_TYPE = {
 
 // 是否已打赏
 export const BEANFLAG_TYPE = ['未打赏', '已打赏'];
+
+//账户类型
+export const ACCOUNT_TYPE = ['--', '卡豆账户', '现金账户'];

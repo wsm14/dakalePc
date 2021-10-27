@@ -5,10 +5,14 @@ import CardItem from './components/Sale/CardItem';
 const SaleBlockComponent = ({}) => {
   const itemArr = [
     {
-      title: '补贴卡豆数',
+      title: '补贴情况',
       tip: '指平台总补贴的卡豆数，包括补贴商家和补贴用户的',
       keyName: 'platformSubsidy',
       api: 'saleTotal/fetchPlatformSubsidy',
+      keyOther: [
+        { title: '卡豆补贴', key: 'platformSubsidy' },
+        { title: '现金补贴', key: 'platformDirectSubsidy', precision: 2, prefix: '￥' },
+      ],
     },
     {
       title: '用户获取卡豆数',
@@ -41,10 +45,14 @@ const SaleBlockComponent = ({}) => {
       ],
     },
     {
-      title: '商家提现卡豆数',
+      title: '商家提现金额',
       tip: '指商家（不含集团）提现的卡豆数',
       keyName: 'merchantWithdrawal',
       api: 'saleTotal/fetchMerchantWithdrawal',
+      keyOther: [
+        { title: '卡豆账户', key: 'merchantWithdrawal' },
+        { title: '现金账户', key: 'merchantDirectWithdrawal', precision: 2, prefix: '￥' },
+      ],
     },
     {
       title: '裂变数',
@@ -59,10 +67,11 @@ const SaleBlockComponent = ({}) => {
       api: 'saleTotal/fetchDarenCount',
     },
     {
-      title: '哒人收益卡豆数',
+      title: '哒人收益金额',
       tip: '指哒人实际获得的分佣（不含待分佣）',
       keyName: 'darenIncome',
       api: 'saleTotal/fetchDarenIncome',
+      keyOther: [{ title: '现金账户', key: 'darenIncome', precision: 2, prefix: '￥' }],
     },
     {
       title: '杭州上架中特惠商品数',
