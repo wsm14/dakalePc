@@ -10,7 +10,7 @@ const TabModal = (props) => {
   const [form] = Form.useForm();
 
   const modalProps = {
-    title: `${{ iOS: 'IOS', android: 'Android' }[tabKey]}-${detail?.version}-编辑`,
+    title: `${{ iOS: 'iOS', android: 'Android' }[tabKey]}-${detail?.version}-编辑`,
     visible: show,
     onCancel: onClose,
     width: 1000,
