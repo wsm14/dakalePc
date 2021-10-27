@@ -20,7 +20,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
-    detailList: { list: [], total: 0 },
+    detailList: { list: [], total: 0, sumAdd: 0, sumMinus: 0 },
     indata: data1,
     outdata: data1,
     merchantTotalIncome: 0,
@@ -57,7 +57,7 @@ export default {
       });
     },
     *fetchDetailList({ payload }, { call, put }) {
-      console.log('payload', payload);
+      // console.log('payload', payload);
       const { type, tabKey } = payload;
       const inter = {
         peas: tabKey == '1' ? fetchBusinessPlatformBeanDetail : fetchBusinessPeasDetail, // 卡豆明细
@@ -69,11 +69,16 @@ export default {
       const response = yield call(inter, payload);
       if (!response) return;
       const { content } = response;
-      console.log('content', content);
+      // console.log('content', content);
       yield put({
         type: 'save',
         payload: {
-          detailList: { list: content.recordList, total: content.total },
+          detailList: {
+            list: content.recordList,
+            total: content.total,
+            sumAdd: content.sumAdd,
+            sumMinus: content.sumMinus,
+          },
         },
       });
     },

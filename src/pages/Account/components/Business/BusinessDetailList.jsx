@@ -132,25 +132,28 @@ const BusinessDetailList = (props) => {
         },
         {
           title: '事件',
-          dataIndex: 'withdrawalSn',
+          dataIndex: 'detailTitle',
         },
         {
           title: '关联用户',
-          dataIndex: 'incomeSn',
+          dataIndex: 'detailContent',
         },
         {
           title: '现金明细',
-          dataIndex: 'createTime',
-          render: () => `123`,
+          dataIndex: 'amount',
+          render: (val, record) =>
+            record.detailType === 'add'
+              ? `+￥${val.toFixed(2) / 100}`
+              : `-￥${val.toFixed(2) / 100}`,
         },
         {
           title: '收支状态',
           dataIndex: 'detailType',
-          render: (val) => ADD_AND_MINUS['add'],
+          render: (val) => ADD_AND_MINUS[val],
         },
         {
           title: '关联订单',
-          dataIndex: 'incomeSn',
+          dataIndex: 'identification',
         },
       ],
     },
@@ -216,7 +219,9 @@ const BusinessDetailList = (props) => {
     >
       <TableDataBlock
         searchItems={searchItems}
-        // content={`总收入：￥${}  总支出：￥${}`}
+        content={`总收入：￥${Number(detailList.sumAdd).toFixed(2) / 100}  总支出：￥${
+          Number(detailList.sumMinus).toFixed(2) / 100
+        }`}
         cardProps={
           type === 'peas' && { tabList: tabList, activeTabKey: tabKey, onTabChange: setTabKey }
         }
@@ -230,7 +235,8 @@ const BusinessDetailList = (props) => {
           tabKey,
           ...{
             peas: { merchantId: record.userMerchantIdString },
-            collect: { merchantId: record.userMerchantIdString },
+            // collect: { merchantId: record.userMerchantIdString },
+            collect: { merchantId: '1391637505683419137' },
             recharge: { userId: record.userMerchantIdString, userType: 'merchant' },
           }[type],
         }}
