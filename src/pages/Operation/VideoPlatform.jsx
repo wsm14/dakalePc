@@ -239,7 +239,7 @@ const VideoPlatform = (props) => {
           },
           {
             type: 'commerceSet', // 带货设置
-            visible: tabKey === '1' && status != 0 && typeUser,
+            visible: status != 0 && typeUser,
             click: () => fetchShareDetail(index, 'commerce'),
           },
           {
@@ -356,6 +356,7 @@ const VideoPlatform = (props) => {
       ></ShareDrawer>
       {/* 详情 修改 编辑画像 带货设置*/}
       <ShareDetail
+        childRef={childRef}
         tabKey={tabKey}
         total={list.length}
         visible={visible}
