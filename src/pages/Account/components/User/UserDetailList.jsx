@@ -54,7 +54,10 @@ const UserDetailList = (props) => {
           title: tabKey === 'earn' ? '现金明细' : '卡豆明细',
           align: 'center',
           dataIndex: 'beanAmount',
-          render: (val, row) => `${row.detailType === 'add' ? '+' : '-'}${val}`,
+          render: (val, row) =>
+            `${row.detailType === 'add' ? '+' : '-'}${
+              tabKey === 'earn' ? (val / 100).toFixed(2) : val
+            }`,
         },
         {
           title: '收支状态',

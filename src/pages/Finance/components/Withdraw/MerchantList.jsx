@@ -6,6 +6,7 @@ import { FormOutlined } from '@ant-design/icons';
 import { WITHDRAW_STATUS, ACCOUNT_TYPE } from '@/common/constant';
 import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
+import { checkCityName } from '@/utils/utils';
 
 const MerchantList = (props) => {
   const { withdrawDetail, loading, dispatch } = props;
@@ -80,8 +81,8 @@ const MerchantList = (props) => {
     },
     {
       title: '省市区',
-      dataIndex: 'provinceName',
-      render: (val, row) => `${val}-${row.cityName}-${row.districtName}`,
+      dataIndex: 'districtCode',
+      render: (val, row) => checkCityName(val),
     },
     {
       title: '提现账户',
@@ -93,7 +94,7 @@ const MerchantList = (props) => {
       title: '提现账户类型',
       align: 'right',
       dataIndex: 'withdrawalType',
-      render: (val) => ACCOUNT_TYPE[val],
+      render: (val) => ACCOUNT_TYPE[val - 1],
     },
     {
       title: '提现金额',
