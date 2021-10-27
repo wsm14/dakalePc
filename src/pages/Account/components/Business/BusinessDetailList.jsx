@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import { COLLECT_STATUS } from '@/common/constant';
+import { COLLECT_STATUS, ADD_AND_MINUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import BusinessOrderDetail from '../CheckOrderDetail';
 
@@ -27,11 +27,27 @@ const BusinessDetailList = (props) => {
       childRef.current?.fetchGetData();
     }
   }, [tabKey]);
+
+  // 搜索参数
+  const searchItems = [
+    {
+      label: '日期查询',
+      type: 'rangePicker',
+      name: '',
+      end: '',
+    },
+    {
+      label: '收支状态',
+      type: 'select',
+      name: 'logisticsStatus',
+      select: ADD_AND_MINUS,
+    },
+  ];
+
   // table
   const propItem = {
     peas: {
-      title: `卡豆明细 - 店铺名称：${record.merchantName}`,
-      // title: `卡豆明细 - 店铺ID：${record.userMerchantIdString} 店铺名称：${record.merchantName}`,
+      title: `卡豆明细 - 店铺ID：${record.userMerchantIdString} 店铺名称：${record.merchantName}`,
       rowKey: 'createTime',
       getColumns: [
         {
@@ -71,43 +87,70 @@ const BusinessDetailList = (props) => {
       ],
     },
     collect: {
-      title: `提现记录 - 店铺ID：${record.userMerchantIdString} 店铺名称：${
-        record.merchantName
-      } 累计提现：${record.totalConsume / 100}元（${record.totalConsume}卡豆）`,
+      // title: `现金账户明细 - 店铺ID：${record.userMerchantIdString} 店铺名称：${
+      //   record.merchantName
+      // } 累计提现：${record.totalConsume / 100}元（${record.totalConsume}卡豆）`,
+      title: `现金账户明细 - 店铺名称：${record.merchantName}`,
       rowKey: 'withdrawalSn',
       getColumns: [
+        // {
+        //   title: '提现日期',
+        //   dataIndex: 'createTime',
+        // },
+        // {
+        //   title: '提现单号',
+        //   dataIndex: 'incomeSn',
+        // },
+        // {
+        //   title: '订单流水',
+        //   dataIndex: 'withdrawalSn',
+        // },
+        // {
+        //   title: '提现卡豆',
+        //   align: 'right',
+        //   dataIndex: 'withdrawalBeanAmount',
+        // },
+        // {
+        //   title: '提现到',
+        //   align: 'right',
+        //   dataIndex: 'withdrawalChannelName',
+        // },
+        // {
+        //   title: '提现状态',
+        //   align: 'center',
+        //   dataIndex: 'status',
+        //   render: (val) => COLLECT_STATUS[val],
+        // },
+        // {
+        //   title: '到账日期',
+        //   align: 'center',
+        //   dataIndex: 'finishTime',
+        // },
         {
-          title: '提现日期',
+          title: '日期',
           dataIndex: 'createTime',
         },
         {
-          title: '提现单号',
-          dataIndex: 'incomeSn',
-        },
-        {
-          title: '订单流水',
+          title: '事件',
           dataIndex: 'withdrawalSn',
         },
         {
-          title: '提现卡豆',
-          align: 'right',
-          dataIndex: 'withdrawalBeanAmount',
+          title: '关联用户',
+          dataIndex: 'incomeSn',
         },
         {
-          title: '提现到',
-          align: 'right',
-          dataIndex: 'withdrawalChannelName',
+          title: '现金明细',
+          dataIndex: 'createTime',
+          render: () => `123`,
         },
         {
-          title: '提现状态',
-          align: 'center',
-          dataIndex: 'status',
-          render: (val) => COLLECT_STATUS[val],
+          title: '收支状态',
+          dataIndex: 'detailType',
+          render: (val) => ADD_AND_MINUS['add'],
         },
         {
-          title: '到账日期',
-          align: 'center',
-          dataIndex: 'finishTime',
+          title: '关联订单',
+          dataIndex: 'incomeSn',
         },
       ],
     },
@@ -172,6 +215,8 @@ const BusinessDetailList = (props) => {
       onCancel={() => setVisible('')}
     >
       <TableDataBlock
+        searchItems={searchItems}
+        // content={`总收入：￥${}  总支出：￥${}`}
         cardProps={
           type === 'peas' && { tabList: tabList, activeTabKey: tabKey, onTabChange: setTabKey }
         }

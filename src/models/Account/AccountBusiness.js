@@ -5,6 +5,7 @@ import {
   fetchBusinessCollectDetail,
   fetchBusinessRechargeDetail,
   fetchBusinessPlatformBeanDetail,
+  fetchBusinessCashDetail,
 } from '@/services/AccountServices';
 
 const data1 = [
@@ -59,7 +60,7 @@ export default {
       const { type, tabKey } = payload;
       const inter = {
         peas: tabKey == '1' ? fetchBusinessPlatformBeanDetail : fetchBusinessPeasDetail, // 卡豆明细
-        collect: fetchBusinessCollectDetail, // 提现记录
+        collect: fetchBusinessCashDetail, // 提现记录 => 改为现金账户明细
         recharge: fetchBusinessRechargeDetail, // 充值记录
       }[type];
       delete payload.type;
@@ -67,6 +68,7 @@ export default {
       const response = yield call(inter, payload);
       if (!response) return;
       const { content } = response;
+      console.log('content', content);
       yield put({
         type: 'save',
         payload: {
