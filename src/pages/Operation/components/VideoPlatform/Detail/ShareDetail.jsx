@@ -29,6 +29,7 @@ const ShareDetail = (props) => {
     fetchNewShareNoAudit,
     loading,
     loadingDetail,
+    childRef,
   } = props;
 
   const { index, show = false, type = 'info', detail = {} } = visible;
@@ -74,7 +75,7 @@ const ShareDetail = (props) => {
       name: 'message',
     },
     {
-      label: '定位数',
+      label: '定位',
       name: 'address',
       show: tabKey === '0' || tabKey === '1' ? false : true,
       render: (val) => (
@@ -254,7 +255,11 @@ const ShareDetail = (props) => {
             .filter((i) => i.couponName)
             .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),
         },
-        onClose,
+        // onClose,
+        () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
       );
     });
   };
