@@ -702,7 +702,7 @@ export const BOXLOTTERY_TYPE = {
 };
 
 // 全局配置 - 首页tab配置
-export const TAB_INDEX_TYPE = { iOS: 'IOS', android: 'Android', weChat: '小程序' };
+export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
 
 // 全局配置 - 首页tab配置 - 标签类型
 export const TABINDEX_VIDEO_TYPE = {
