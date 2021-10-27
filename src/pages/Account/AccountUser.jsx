@@ -87,7 +87,7 @@ const AccountUserList = (props) => {
       title: '累计收益（现金）',
       align: 'right',
       dataIndex: 'totalIncomeBean',
-      render: (val) => `￥${(val || 0).toFixed(2)}`,
+      render: (val) => `￥${(Number(val) / 100 || 0).toFixed(2)}`,
     },
     {
       title: '累计充值',

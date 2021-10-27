@@ -46,13 +46,13 @@ const AccountUserList = (props) => {
       title: '累计收益（现金）',
       align: 'right',
       dataIndex: 'totalDirectCash',
-      render: (val) => `￥${(val || 0).toFixed(2)}`,
+      render: (val) => `￥${(Number(val) || 0).toFixed(2)}`,
     },
     {
       title: '累计提现（现金）',
       align: 'right',
       dataIndex: 'totalWithdrawFee',
-      render: (val) => `￥${(val || 0).toFixed(2)}`,
+      render: (val) => `￥${(Number(val) || 0).toFixed(2)}`,
     },
     {
       title: '收益卡豆余额',
@@ -70,7 +70,7 @@ const AccountUserList = (props) => {
       title: '现金账户余额',
       align: 'right',
       dataIndex: 'directCash',
-      render: (val) => `￥${(val || 0).toFixed(2)}`,
+      render: (val) => `￥${(Number(val) || 0).toFixed(2)}`,
     },
     // {
     //   title: '操作',
