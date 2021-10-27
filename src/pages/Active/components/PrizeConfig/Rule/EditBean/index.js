@@ -147,7 +147,7 @@ function EditBean(props) {
       render: (val, row, index) => [
         {
           type: 'del',
-          auth: 'true',
+          auth: true,
           click: () => onChangeInput(val, index, 'delete'),
         },
       ],

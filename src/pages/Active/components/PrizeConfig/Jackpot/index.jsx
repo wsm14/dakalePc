@@ -53,7 +53,7 @@ const Jackpot = (props) => {
       render: (val, row) => [
         {
           type: 'edit',
-          auth: 'true',
+          auth: true,
           click: () =>
             setVisible({
               show: true,
@@ -63,7 +63,7 @@ const Jackpot = (props) => {
         },
         {
           type: 'del',
-          auth: 'true',
+          auth: true,
           click: () => fetchBlindBoxDelete({ id: val }),
         },
       ],
