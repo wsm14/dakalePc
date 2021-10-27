@@ -235,8 +235,8 @@ const BusinessDetailList = (props) => {
           tabKey,
           ...{
             peas: { merchantId: record.userMerchantIdString },
-            // collect: { merchantId: record.userMerchantIdString },
-            collect: { merchantId: '1391637505683419137' },
+            collect: { merchantId: record.userMerchantIdString },
+            // collect: { merchantId: '1391637505683419137' },
             recharge: { userId: record.userMerchantIdString, userType: 'merchant' },
           }[type],
         }}
