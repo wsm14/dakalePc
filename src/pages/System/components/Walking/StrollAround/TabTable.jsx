@@ -63,7 +63,7 @@ const TabTable = (props) => {
 
   const cardBtnList = [
     {
-      auth: 'save',
+      auth: true,
       text: '新增城市',
       className: 'dkl_blue_btn',
       onClick: () => {
