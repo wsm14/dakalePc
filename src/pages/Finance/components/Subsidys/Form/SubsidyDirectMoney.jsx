@@ -218,6 +218,7 @@ const SubsidyDirectMoney = (props) => {
       label: '适用用户',
       name: 'subsidyBeanObjects',
       type: 'formItem',
+      extra: '充值成功后在用户端将直接显示现金，哒人可直接提现，请慎重充值！',
       visible: role === 'user',
       rules: [{ required: true, message: '请选择用户' }],
       formItem: (
