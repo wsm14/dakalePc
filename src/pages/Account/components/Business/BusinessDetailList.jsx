@@ -30,7 +30,8 @@ const BusinessDetailList = (props) => {
   // table
   const propItem = {
     peas: {
-      title: `卡豆明细 - 店铺ID：${record.userMerchantIdString} 店铺名称：${record.merchantName}`,
+      title: `卡豆明细 - 店铺名称：${record.merchantName}`,
+      // title: `卡豆明细 - 店铺ID：${record.userMerchantIdString} 店铺名称：${record.merchantName}`,
       rowKey: 'createTime',
       getColumns: [
         {
