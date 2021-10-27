@@ -57,6 +57,7 @@ export default {
       });
     },
     *fetchDetailList({ payload }, { call, put }) {
+      console.log('payload', payload);
       const { type, tabKey } = payload;
       const inter = {
         peas: tabKey == '1' ? fetchBusinessPlatformBeanDetail : fetchBusinessPeasDetail, // 卡豆明细
