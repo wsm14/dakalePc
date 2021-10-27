@@ -314,20 +314,11 @@ const SpecialGoods = (props) => {
       title: '推广位置',
       fixed: 'right',
       dataIndex: 'recommendType',
-      render: (val, row) => (
-        <>
-          {val === 'selfTour'
-            ? '自我游'
-            : val
-                .split(',')
-                .map((item) => SPECIAL_RECOMMEND_TYPE[item])
-                .join('\n')}
-        </>
-      ),
-      // val
-      //   .split(',')
-      //   .map((item) => SPECIAL_RECOMMEND_TYPE[item])
-      //   .join('\n')
+      render: (val, row) =>
+        val
+          .split(',')
+          .map((item) => SPECIAL_RECOMMEND_TYPE[item])
+          .join('\n'),
     },
     {
       type: 'handle',

@@ -88,18 +88,6 @@ const AccountBusinessList = (props) => {
       dataIndex: 'totalPlatformBean',
       render: (val) => val || 0,
     },
-    // {
-    //   title: '累计收益（现金）',
-    //   align: 'right',
-    //   dataIndex: 'totalIncomeBean',
-    //   render: (val) => `￥${val}` || 0,
-    // },
-    // {
-    //   title: '累计提现（现金）',
-    //   align: 'right',
-    //   dataIndex: 'totalWithdrawBean',
-    //   render: (val) => `￥${val}` || 0,
-    // },
     {
       title: '收益卡豆余额（卡豆）',
       align: 'right',
@@ -112,12 +100,6 @@ const AccountBusinessList = (props) => {
       dataIndex: 'platformBean',
       render: (val) => val || 0,
     },
-    // {
-    //   title: '现金账户余额',
-    //   align: 'right',
-    //   dataIndex: 'platformBean',
-    //   render: (val) => `￥${val}` || 0,
-    // },
     {
       type: 'handle',
       dataIndex: 'id',
@@ -130,7 +112,6 @@ const AccountBusinessList = (props) => {
         {
           auth: 'withdraw',
           title: '提现记录',
-          // title: '现金账户明细',
           click: () => setVisible({ type: 'collect', record }),
         },
         {
