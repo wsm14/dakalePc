@@ -3,7 +3,7 @@ import moment from 'moment';
 import { connect } from 'umi';
 import { Spin, Tag } from 'antd';
 import { FormOutlined } from '@ant-design/icons';
-import { WITHDRAW_STATUS } from '@/common/constant';
+import { WITHDRAW_STATUS, ACCOUNT_TYPE } from '@/common/constant';
 import TableDataBlock, { HandleSetTable } from '@/components/TableDataBlock';
 import WithdrawRemark from './WithdrawRemark';
 
@@ -92,7 +92,8 @@ const MerchantList = (props) => {
     {
       title: '提现账户类型',
       align: 'right',
-      dataIndex: 'withdrawalBeanAmount',
+      dataIndex: 'withdrawalType',
+      render: (val) => ACCOUNT_TYPE[val],
     },
     {
       title: '提现金额',
