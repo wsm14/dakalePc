@@ -157,7 +157,11 @@ const ShareManage = (props) => {
       align: 'right',
       dataIndex: 'browseType',
       ellipsis: true,
-      render: (val) => val.split(',').map((i) => tagList[i]),
+      render: (val) =>
+        val
+          .split(',')
+          .map((i) => tagList[i])
+          .toString(),
     },
     {
       title: '创建时间',
