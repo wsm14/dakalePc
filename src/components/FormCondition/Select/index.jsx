@@ -32,6 +32,8 @@ const SelectBlock = (props) => {
   // type === tags 配置
   let multProps = {};
   if (type === 'tags') multProps = { mode: 'tags', tokenSeparators: [',', '，'] };
+  // type === multiple 配置
+  if (type === 'multiple') multProps = { mode: 'multiple', tokenSeparators: [',', '，'] };
 
   return (
     <>

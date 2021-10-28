@@ -37,7 +37,7 @@ const HotCityDrawer = (props) => {
     {
       label: '选择热门城市',
       name: 'cityName',
-      type: 'tags',
+      type: 'multiple',
       rules: [{ required: false }],
       select: CITYJSON.filter((item) => item.level === '2'),
       fieldNames: { label: 'name', value: 'id' },

@@ -77,7 +77,7 @@ const TabDrawerSet = (props) => {
     {
       label: '选择标签（默认标签）',
       name: 'defaultTags',
-      type: 'tags',
+      type: 'multiple',
       select: defaultTagNames,
       rules: [{ required: false }],
       fieldNames: {
@@ -88,7 +88,7 @@ const TabDrawerSet = (props) => {
     {
       label: '选择标签（UCG标签）',
       name: 'tags',
-      type: 'tags',
+      type: 'multiple',
       select: tagNames,
       rules: [{ required: false }],
       fieldNames: {
