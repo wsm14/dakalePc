@@ -25,7 +25,7 @@ const ConfigureFrawerSet = (props) => {
           ...ohter,
           winningImg: winningImgList.toString(),
           prizeImg: prizeImgList.toString(),
-          isParticipate: Number(isParticipate),
+          isParticipate: isParticipate ? Number(isParticipate) : 0,
           id: detail?.id,
         },
         callback: () => {
@@ -101,7 +101,7 @@ const ConfigureFrawerSet = (props) => {
         maxFile: 1,
       },
       {
-        label: '是否仅展示',
+        label: '是否真实奖品',
         name: 'isParticipate',
         type: 'switch',
       },

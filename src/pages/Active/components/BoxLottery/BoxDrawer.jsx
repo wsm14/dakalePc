@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { MSG_PSUH_TAB } from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
 import BoxPushSet from './BoxPushSet';
 import BoxDetail from './BoxDetail';

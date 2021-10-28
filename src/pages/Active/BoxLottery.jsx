@@ -109,24 +109,39 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
         {
           type: 'goodsDeliver',
           visible: row.logisticsStatus === '1',
-          click: () => setVisible({ type: 'add', shwo: true, detail: { blindBoxRewardId: val } }),
+          click: () => fetchBoxDeatil(val, row, 'add'),
         },
         {
           type: 'goodsView',
           visible: row.logisticsStatus === '2',
-          click: () => fetchBoxDeatil(val, row.userId, 'info'),
+          click: () => fetchBoxDeatil(val, row, 'info'),
         },
       ],
     },
   ];
 
   // 获取详情 type：info 查看
-  const fetchBoxDeatil = (id, userId, type) => {
-    dispatch({
-      type: 'boxLottery/fetchBoxPushDetail',
-      payload: { blindBoxRewardId: id, userId },
-      callback: (detail) => setVisible({ type, shwo: true, detail }),
-    });
+  const fetchBoxDeatil = (id, row, type) => {
+    let contentParam = {};
+    if (row.contentParam) {
+      const contentObj = JSON.parse(row.contentParam);
+      contentParam = `${contentObj.addressName},${contentObj.mobile},${contentObj.address}`;
+    }
+
+    if (type === 'add') {
+      setVisible({ type: 'add', shwo: true, detail: { blindBoxRewardId: id, contentParam } });
+    } else {
+      dispatch({
+        type: 'boxLottery/fetchBoxPushDetail',
+        payload: { blindBoxRewardId: id, userId: row?.userId },
+        callback: (detail) =>
+          setVisible({
+            type,
+            shwo: true,
+            detail: { ...detail, contentParam },
+          }),
+      });
+    }
   };
 
   // 导出excel按钮

@@ -19,7 +19,7 @@ const BoxDetail = (props) => {
     },
     {
       label: '收货信息',
-      name: 'receivingInfo',
+      name: 'contentParam',
     },
   ];
   return (
