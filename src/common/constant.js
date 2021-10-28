@@ -648,11 +648,6 @@ export const FEEDBACK_TYPE = {
   advice: '功能反馈',
   problem: '商家问题',
 };
-// 视频广告 - 位置
-export const VIDEO_ADVERT_PLACE = {
-  pickUp: '捡豆',
-  commend: '推荐',
-};
 
 // 视频广告 - 广告类型
 export const VIDEO_ADVERT_TYPE = {

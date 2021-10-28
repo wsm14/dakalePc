@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag, Tooltip } from 'antd';
 import {
   SHARE_AREA_TYPE,
   VIDEO_ADVERT_TYPE,
-  VIDEO_ADVERT_PLACE,
   VIDEO_ADVERT_STATUS,
   SUBMIT_TYPE_VIDEO,
 } from '@/common/constant';
@@ -21,7 +20,7 @@ import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
 import VideoSet from './components/VideoSet';
 
 const ShareManage = (props) => {
-  const { videoAdvert, loading, dispatch } = props;
+  const { videoAdvert, loading, tagList, dispatch } = props;
   const { list } = videoAdvert;
 
   const childRef = useRef();
@@ -30,6 +29,10 @@ const ShareManage = (props) => {
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   const [visibleSet, setVisibleSet] = useState(false); // 设置
+
+  useEffect(() => {
+    fetchGetUgcTag();
+  }, []);
 
   // 搜索参数
   const searchItems = [
@@ -48,7 +51,7 @@ const ShareManage = (props) => {
       label: '推荐位置',
       name: 'browseType',
       type: 'select',
-      select: (({ ALL, ...other }) => other)(VIDEO_ADVERT_PLACE),
+      select: tagList,
     },
     {
       label: '分享标题',
@@ -153,7 +156,8 @@ const ShareManage = (props) => {
       title: '推荐位置',
       align: 'right',
       dataIndex: 'browseType',
-      render: (val) => VIDEO_ADVERT_PLACE[val],
+      ellipsis: true,
+      render: (val) => val.split(',').map((i) => tagList[i]),
     },
     {
       title: '创建时间',
@@ -212,6 +216,13 @@ const ShareManage = (props) => {
       },
     },
   ];
+
+  // 获取推荐位置ugc标签
+  const fetchGetUgcTag = () => {
+    dispatch({
+      type: 'videoAdvert/fetchVideoListMomentTag',
+    });
+  };
 
   // 下架
   const fetchStatusClose = (val) => {
@@ -303,5 +314,6 @@ const ShareManage = (props) => {
 
 export default connect(({ videoAdvert, loading }) => ({
   videoAdvert,
+  tagList: videoAdvert.tagList,
   loading: loading.models.videoAdvert,
 }))(ShareManage);
