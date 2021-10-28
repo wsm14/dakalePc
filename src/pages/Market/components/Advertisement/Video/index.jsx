@@ -57,17 +57,6 @@ const ShareManage = (props) => {
       label: '分享标题',
       name: 'title',
     },
-    // {
-    //   label: '店铺/品牌名',
-    //   name: 'relateName',
-    // },
-    // {
-    //   label: '投放区域',
-    //   name: 'city',
-    //   type: 'cascader',
-    //   changeOnSelect: true,
-    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    // },
     {
       label: '卡豆余额',
       type: 'number',
@@ -155,13 +144,8 @@ const ShareManage = (props) => {
     {
       title: '推荐位置',
       align: 'right',
-      dataIndex: 'browseType',
+      dataIndex: 'momentTagNames',
       ellipsis: true,
-      render: (val) =>
-        val
-          .split(',')
-          .map((i) => tagList[i])
-          .toString(),
     },
     {
       title: '创建时间',

@@ -82,10 +82,10 @@ const VideoDetail = (props) => {
     },
     {
       label: '投放设置',
-      name: 'browseType',
+      name: 'momentTagNames',
       render: (val) => (
         <>
-          <div>推荐位置：{val.split(',').map((i) => tagList[i])}</div>
+          <div>推荐位置：{val}</div>
           <div>用户性别：{SHARE_SEX_TYPE[detail.gender]}</div>
           <div>用户年龄：{detail.age}</div>
           <div>
@@ -227,8 +227,7 @@ const VideoDetail = (props) => {
   );
 };
 
-export default connect(({ videoAdvert, loading }) => ({
-  tagList: videoAdvert.tagList,
+export default connect(({ loading }) => ({
   loadingDetail: loading.effects['videoAdvert/fetchVideoAdvertDetail'],
   loading: loading.effects['videoAdvert/fetchVideoAdvertEdit'],
 }))(VideoDetail);
