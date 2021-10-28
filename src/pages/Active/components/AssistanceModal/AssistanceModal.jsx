@@ -19,35 +19,36 @@ function AssistanceModal(props) {
   const getColumns = [
     {
       title: '助力用户昵称',
-      fixed: 'left',
       dataIndex: 'userName',
       ellipsis: true,
     },
     {
       title: '用户手机号',
-      fixed: 'left',
       dataIndex: 'mobile',
     },
     {
       title: '用户豆号',
-      fixed: 'left',
       dataIndex: 'beanCode',
     },
     {
       title: '用户所属地区',
-      fixed: 'left',
       dataIndex: 'districtCode',
       render: (val) => checkCityName(val) || '--',
     },
     {
       title: '助力时间',
-      fixed: 'left',
       dataIndex: 'createTime',
     },
   ];
 
   return (
-    <Modal title="助力详情" destroyOnClose footer={false} {...rest}>
+    <Modal
+      title="助力详情"
+      destroyOnClose
+      footer={false}
+      {...rest}
+      bodyStyle={{ maxHeight: 600, overflowY: 'auto' }}
+    >
       <TableDataBlock
         order
         noCard={false}
@@ -55,8 +56,9 @@ function AssistanceModal(props) {
         loading={loading}
         columns={getColumns}
         params={info}
-        rowKey={(record) => `${record.helpUserId}`}
+        rowKey={(record) => `${record.blindBoxHelpId}`}
         dispatchType="assistanceList/fetchAssistanceDetail"
+        pagination={false}
         {...infoList}
       ></TableDataBlock>
     </Modal>

@@ -18,7 +18,7 @@ import FormCondition from '@/components/FormCondition';
  */
 const VideoPutInSet = (props) => {
   const { form, dispatch, propertyJSON = {}, tasteTag, detail = {}, tagList } = props;
-  console.log(tagList, 'tagList');
+
   // 默认选择项
   const inputData = {
     gender: 'ALL',
@@ -43,14 +43,9 @@ const VideoPutInSet = (props) => {
     setAgeType(detail.age);
     setTastetype(detail.taste);
     setBrowseTypes(detail.browse || 'All');
-    dispatch({
-      type: 'videoAdvert/fetchVideoListMomentTag',
-      callback: (id, list) => {
-        if (detail.browse != 'other') {
-          form.setFieldsValue({ browseType: Object.keys(list) });
-        }
-      },
-    });
+    if (detail.browse != 'other') {
+      form.setFieldsValue({ browseType: Object.keys(tagList) });
+    }
   }, []);
 
   // 获取配置文件
@@ -240,7 +235,7 @@ const VideoPutInSet = (props) => {
     },
     {
       label: '选择兴趣',
-      type: 'tags',
+      type: 'multiple',
       name: 'tagsId',
       multiple: true,
       visible: tasteType === 'tag',
