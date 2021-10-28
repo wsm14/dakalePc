@@ -20,7 +20,6 @@ const VideoPlatformUGC = (props) => {
     loading,
     loadingTab,
     loadingRefuse,
-    // tradeList,
     dispatch,
     videoBeanRules,
     tabs,
@@ -58,15 +57,6 @@ const VideoPlatformUGC = (props) => {
       label: '分享标题',
       name: 'title',
     },
-    // {
-    //   label: '行业',
-    //   type: 'cascader',
-    //   name: 'topCategoryId',
-    //   changeOnSelect: true,
-    //   select: tradeList,
-    //   fieldNames: { label: 'categoryName', value: 'categoryIdString', children: 'categoryDTOList' },
-    //   valuesKey: ['topCategoryId', 'categoryId'],
-    // },
     {
       label: '地区',
       name: 'city',
@@ -74,12 +64,6 @@ const VideoPlatformUGC = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
-    // {
-    //   label: '店铺/视频类型',
-    //   name: 'ownerType',
-    //   type: 'select',
-    //   select: NEW_SHARE_OWNER,
-    // },
     {
       label: '哒人昵称',
       name: 'ownerId',
@@ -90,11 +74,6 @@ const VideoPlatformUGC = (props) => {
       name: 'momentId',
       rules: [{ pattern: NUM_PATTERN, message: '请输入数字' }],
     },
-    // {
-    //   label: '集团/店铺名',
-    //   name: 'ownerId',
-    //   type: 'merchant',
-    // },
     {
       label: '状态',
       type: 'select',
@@ -126,7 +105,7 @@ const VideoPlatformUGC = (props) => {
       ),
     },
     {
-      title: '店铺/集团',
+      title: '发布人',
       dataIndex: 'ownerType',
       width: 320,
       render: (val, row) => (
@@ -150,18 +129,6 @@ const VideoPlatformUGC = (props) => {
       dataIndex: 'viewAmount',
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
-    // {
-    //   title: '领卡豆人数',
-    //   align: 'right',
-    //   dataIndex: 'personAmount',
-    //   sorter: (a, b) => a.personAmount - b.personAmount,
-    // },
-    // {
-    //   title: '累计打赏卡豆数',
-    //   align: 'right',
-    //   dataIndex: 'beanAmount',
-    //   sorter: (a, b) => a.beanAmount - b.beanAmount,
-    // },
     {
       title: '创建时间',
       align: 'center',
@@ -208,16 +175,6 @@ const VideoPlatformUGC = (props) => {
                 formProps: { type: 'down', key: 'removalReason' },
               }),
           },
-          // {
-          //   type: 'del', // 删除
-          //   visible: status == 0,
-          //   click: () => fetchNewShareDel(record),
-          // },
-          // {
-          //   type: 'edit', // 编辑
-          //   visible: typeUser,
-          //   click: () => fetchShareDetail(index, 'edit'),
-          // },
           {
             type: 'set', // 设置
             click: () => setVisibleImg({ show: true, detail: record }),
@@ -226,27 +183,10 @@ const VideoPlatformUGC = (props) => {
             type: 'rewardInfo', // 打赏明细 已打赏显示按钮 未打赏只有下架状态不显示按钮
             click: () => setVisibleReward({ show: true, detail: record }),
           },
-          // {
-          //   type: 'commerceSet', // 带货设置
-          //   visible: status != 0 && typeUser,
-          //   click: () => fetchShareDetail(index, 'commerce'),
-          // },
-          // {
-          //   type: 'portraitEdit', // 编辑画像
-          //   visible: typeUser,
-          //   click: () => fetchShareDetail(index, 'portrait'),
-          // },
         ];
       },
     },
   ];
-
-  // 获取行业选择项
-  // const fetchTradeList = () => {
-  //   dispatch({
-  //     type: 'sysTradeList/fetchGetList',
-  //   });
-  // };
 
   //  获取tab页列表
   const fetchTabList = () => {
@@ -255,19 +195,6 @@ const VideoPlatformUGC = (props) => {
       callback: setTabKey,
     });
   };
-
-  // 删除
-  // const fetchNewShareDel = (detail) => {
-  //   const { momentId, ownerId } = detail;
-  //   dispatch({
-  //     type: 'videoPlatform/fetchNewShareDel',
-  //     payload: {
-  //       momentId,
-  //       ownerId,
-  //     },
-  //     callback: childRef.current.fetchGetData,
-  //   });
-  // };
 
   // 下架
   const fetchStatusClose = (values) => {
