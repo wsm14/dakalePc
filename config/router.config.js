@@ -598,11 +598,6 @@ export default [
       },
       // 配置管理 system
       {
-        path: '/system/pageSets',
-        name: '页面信息设置',
-        component: './System/ActiveTemplate',
-      },
-      {
         path: '/system/city',
         name: '城市管理',
         component: './System/ManageCity',

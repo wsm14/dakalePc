@@ -34,7 +34,7 @@
 <span id="formItems"><h4>formItems 表单组件通用配置（[更多配置](https://ant.design/components/form-cn/#Form.Item)）</h4></span>
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | type | `（必填）` 表单的类型 `input | cascader | textArea | datePicker | rangePicker | timePicker | number | select | multiple | checkbox | radio | tags | switch | upload | videoUpload | otherUpload | noForm | formItem`，`noForm` 不使用`formItem`组件包裹，`formItem`使用`formItem`包裹自定义表单组件 | string | input |
 | title | 标题 | ReactNode | - |
 | label | label 标签的文本 | ReactNode | - |
@@ -64,7 +64,7 @@
 #### Cascader 级联选择（[更多配置](https://ant.design/components/cascader-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | select | 选择值，默认城市数据，可配置 `cityType` 不同范围 | [] | CITYJSON |
 | placeholder | 默认文本 | string | 选择城市 |
 | disabled | 是否禁用 | boolean | false |
@@ -83,7 +83,7 @@
 #### Select 选择器 && Tags 选择器 （[更多配置](https://ant.design/components/select-cn/)）
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | select | `（必填）` 选择值 | `[] | [{ }] | { label: string; value: string; tip?: string; }` | [] |
 | fieldNames | 自定义 select 中 label value children 的字段 | object | { label: name, value: value, tip: otherData } |
 | loading | loading 状态 | boolean | false |
@@ -127,7 +127,7 @@
 #### Radio 单选框
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- |
 | select | `（必填）` 选择值 | `[] | [{ }] | { label: string; value: string; disabled?: boolean; }` | [] |
 | fieldNames | 自定义 select 中 label name children 的字段 | object | { label: label, value: value, children: children } |
 
@@ -138,6 +138,11 @@
 | format | 展示的时间格式 | string | 'HH:mm' |
 
 ## 更新日志
+
+- ### 2021 年 10 月 28 日 10:32:42 Dong
+
+> - 增加 `multiple` 多选类型
+>   > - `tags` 存在自定义输入标签 ，`multiple` 单纯多选
 
 - ### 2021 年 3 月 15 日 12:51:39 Dong
 
