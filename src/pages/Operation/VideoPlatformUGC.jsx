@@ -117,7 +117,6 @@ const VideoPlatformUGC = (props) => {
             </Ellipsis>
           </div>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag color="blue">{`${row.topCategoryName}-${row.categoryName}`}</Tag>
             <span>{checkCityName(row.districtCode)}</span>
           </div>
         </>
