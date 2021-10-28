@@ -86,7 +86,7 @@ const GroupSelect = ({
     preserveSelectedRowKeys: true,
     selectedRowKeys: selectGroupKey,
     getCheckboxProps: ({ isParticipate }) => ({
-      disabled: ['0'].includes(isParticipate), // 是否真实奖品 0-否 1-是 默认值1
+      disabled: ['0'].includes(isParticipate) && data?.isNovice === 1, // 是否真实奖品 0-否 1-是 默认值1
     }),
     onChange: (val, list) => {
       setSelectGroupKey(val);

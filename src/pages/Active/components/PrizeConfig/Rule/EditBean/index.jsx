@@ -10,6 +10,7 @@ import InputNumber from '@/components/FormCondition/InputNumber';
 import aliOssUpload from '@/utils/aliOssUpload';
 import PrizeSelectModal from '../../NoobJackPot/PrizeSelectModal';
 import ChangeInvite from './ChangeInvite';
+import { DAREN_TEMP_FLAG } from '@/common/constant';
 
 function EditBean(props) {
   const { visible, onClose, blindBoxRule = {}, loading, keyType, dispatch, callBack } = props;
@@ -126,7 +127,7 @@ function EditBean(props) {
       render: (val, row, index) => (
         <InputNumber
           style={{ width: '100px' }}
-          precision={2}
+          precision={5}
           suffix={'%'}
           value={val}
           onChange={(e) => {
@@ -138,7 +139,7 @@ function EditBean(props) {
     {
       title: '是否真实奖品',
       dataIndex: 'isParticipate',
-      render: (val) => (val = 1 ? '是' : '仅展示'),
+      render: (val) => DAREN_TEMP_FLAG[val],
     },
     {
       type: 'handle',
@@ -184,9 +185,11 @@ function EditBean(props) {
       addRules: [
         {
           validator: () => {
-            const total = tableList.reduce((item, next) => {
-              return item + Number(next.rate);
-            }, 0);
+            const total = tableList
+              .filter((item) => item.isParticipate === '1')
+              .reduce((item, next) => {
+                return item + Number(next.rate);
+              }, 0);
             // console.log(total);
             if (total != 100) {
               return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
@@ -234,9 +237,11 @@ function EditBean(props) {
       addRules: [
         {
           validator: () => {
-            const total = tableList.reduce((item, next) => {
-              return item + Number(next.rate);
-            }, 0);
+            const total = tableList
+              .filter((item) => item.isParticipate === '1')
+              .reduce((item, next) => {
+                return item + Number(next.rate);
+              }, 0);
             // console.log(total);
             if (total != 100) {
               return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
