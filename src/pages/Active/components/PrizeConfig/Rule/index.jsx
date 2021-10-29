@@ -4,7 +4,7 @@ import { Card, Tabs, Button } from 'antd';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import { BLINDBOX_PRIZE_TYPE } from '@/common/constant';
+import { BLINDBOX_PRIZE_TYPE, DAREN_TEMP_FLAG } from '@/common/constant';
 
 import EditBean from './EditBean';
 
@@ -86,7 +86,7 @@ const Rule = (props) => {
     {
       title: '是否真实奖品',
       dataIndex: 'isParticipate',
-      render: (val) => (val = 1 ? '是' : '仅展示'),
+      render: (val) => DAREN_TEMP_FLAG[val],
     },
   ];
 
