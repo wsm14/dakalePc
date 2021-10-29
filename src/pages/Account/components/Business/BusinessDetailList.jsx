@@ -10,6 +10,7 @@ const BusinessDetailList = (props) => {
   const childRef = useRef();
 
   const { type = 'peas', record = '' } = visible;
+  console.log('record', record);
   const [tabKey, setTabKey] = useState('0');
 
   const tabList = [
@@ -33,13 +34,13 @@ const BusinessDetailList = (props) => {
     {
       label: '日期查询',
       type: 'rangePicker',
-      name: '',
-      end: '',
+      name: 'createBeginTime',
+      end: 'createEndTime',
     },
     {
       label: '收支状态',
       type: 'select',
-      name: 'logisticsStatus',
+      name: 'detailType',
       select: ADD_AND_MINUS,
     },
   ];

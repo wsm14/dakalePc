@@ -90,6 +90,7 @@ const Rule = (props) => {
     },
   ];
 
+  // 卡豆专场
   const base = [
     {
       label: '每次抽取所需卡豆',
@@ -120,6 +121,8 @@ const Rule = (props) => {
       ),
     },
   ];
+
+  // 邀请专场
   const baseInvitation = [
     {
       label: '助力获得免费次数',
