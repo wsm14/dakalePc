@@ -68,7 +68,14 @@ function EditBean(props) {
 
   //弹窗点击确认
   const handleBlindConfigSet = (lists, callback) => {
-    // console.log(lists, 'lists');
+    tableList.forEach((item) => {
+      const num = lists.findIndex((val) => {
+        return val.id === item.id;
+      });
+      if (num !== -1) {
+        lists.splice(num, 1, item);
+      }
+    });
     setTableList(lists);
     callback();
   };
