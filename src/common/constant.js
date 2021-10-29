@@ -710,4 +710,4 @@ export const TABINDEX_VIDEO_TYPE = {
 export const BEANFLAG_TYPE = ['未打赏', '已打赏'];
 
 //账户类型
-export const ACCOUNT_TYPE = ['卡豆账户', '现金账户'];
+export const ACCOUNT_TYPE = ['现金账户', '卡豆账户'];
