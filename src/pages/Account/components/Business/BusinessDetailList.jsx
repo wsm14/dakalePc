@@ -10,7 +10,7 @@ const BusinessDetailList = (props) => {
   const childRef = useRef();
 
   const { type = 'peas', record = '' } = visible;
-  console.log('record', record);
+  // console.log('record', record);
   const [tabKey, setTabKey] = useState('0');
 
   const tabList = [
