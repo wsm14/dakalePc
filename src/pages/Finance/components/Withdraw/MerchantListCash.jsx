@@ -165,7 +165,7 @@ const MerchantListCash = (props) => {
         searchItems={searchItems}
         rowKey={(record) => `${record.directWithdrawalId}`}
         dispatchType="withdrawDetail/fetchGetCashList"
-        {...withdrawDetail.list}
+        {...withdrawDetail.listCash}
       ></TableDataBlock>
     </>
   );
