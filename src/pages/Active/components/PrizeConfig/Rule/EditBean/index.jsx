@@ -228,6 +228,7 @@ function EditBean(props) {
           columns={getColumns}
           rowKey={(record) => `${record.id}`}
           list={tableList}
+          pagination={false}
         ></TableDataBlock>
       ),
     },
