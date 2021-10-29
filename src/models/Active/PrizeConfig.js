@@ -13,7 +13,7 @@ export default {
 
   state: {
     blindBox: [],
-    blindBoxRule: { participateBlindBoxProducts: [] },
+    blindBoxRule: { allBlindBoxProducts: [] },
   },
 
   reducers: {

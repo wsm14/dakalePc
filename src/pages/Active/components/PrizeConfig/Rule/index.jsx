@@ -107,7 +107,7 @@ const Rule = (props) => {
     },
     {
       label: '奖池',
-      name: 'participateBlindBoxProducts',
+      name: 'allBlindBoxProducts',
       render: (val) => (
         <TableDataBlock
           noCard={false}
@@ -133,7 +133,7 @@ const Rule = (props) => {
     },
     {
       label: '奖池',
-      name: 'participateBlindBoxProducts',
+      name: 'allBlindBoxProducts',
       render: (val) => (
         <TableDataBlock
           noCard={false}

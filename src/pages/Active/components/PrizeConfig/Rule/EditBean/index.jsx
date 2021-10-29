@@ -68,6 +68,7 @@ function EditBean(props) {
 
   //弹窗点击确认
   const handleBlindConfigSet = (lists, callback) => {
+    console.log(lists);
     tableList.forEach((item) => {
       const num = lists.findIndex((val) => {
         return val.id === item.id;
@@ -188,7 +189,7 @@ function EditBean(props) {
     },
     {
       label: '奖池',
-      name: 'participateBlindBoxProducts',
+      name: 'allBlindBoxProducts',
       type: 'formItem',
       addRules: [
         {
@@ -242,7 +243,7 @@ function EditBean(props) {
     },
     {
       label: '奖池',
-      name: 'participateBlindBoxProducts',
+      name: 'allBlindBoxProducts',
       type: 'formItem',
       addRules: [
         {
@@ -295,7 +296,7 @@ function EditBean(props) {
     onClose,
     afterCallBack: () => {
       // console.log(blindBoxRule, 'participateBlindBoxProducts');
-      setTableList(blindBoxRule?.participateBlindBoxProducts);
+      setTableList(blindBoxRule?.allBlindBoxProducts);
     },
     footer: (
       <Button onClick={handleUpAction} type="primary" loading={loading}>
