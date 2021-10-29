@@ -65,7 +65,7 @@ const Rule = (props) => {
     },
     {
       title: '奖池图',
-      dataIndex: 'winningImg',
+      dataIndex: 'prizeImg',
       render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
