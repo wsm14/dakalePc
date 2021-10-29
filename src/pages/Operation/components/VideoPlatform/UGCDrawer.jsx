@@ -54,6 +54,7 @@ function UGCDrawer(props) {
       type: 'number',
       name: ['rewardRule', 'times'],
       suffix: '次',
+      extra: '指每个人每天对单个视频最多打赏几次。',
       // rules: [{ required: false }],
     },
   ];
