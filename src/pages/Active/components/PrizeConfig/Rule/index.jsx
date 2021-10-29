@@ -81,6 +81,7 @@ const Rule = (props) => {
     {
       title: '抽中概率',
       dataIndex: 'rate',
+      render: (val) => `${val}%`,
     },
     {
       title: '是否真实奖品',

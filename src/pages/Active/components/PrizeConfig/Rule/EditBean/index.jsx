@@ -155,6 +155,7 @@ function EditBean(props) {
     },
   ];
 
+  // 卡豆专场 编辑规则
   const formItems = [
     {
       label: '每次抽取需要卡豆',
@@ -225,6 +226,7 @@ function EditBean(props) {
     },
   ];
 
+  // 邀请专场 编辑规则
   const formItemsInvitation = [
     {
       type: 'noForm',
