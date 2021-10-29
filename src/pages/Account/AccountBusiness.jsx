@@ -6,6 +6,7 @@ import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
 
 const AccountBusinessList = (props) => {
   const { list, loading, dispatch } = props;
+  // console.log('list', list);
 
   const [visible, setVisible] = useState('');
 

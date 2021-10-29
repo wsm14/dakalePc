@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
 import { checkCityName } from '@/utils/utils';
 import AssistanceModal from './components/AssistanceModal/AssistanceModal';
-import { Button } from 'antd';
 
 function Assistance(props) {
   const { list, loading, infoList, dispatch } = props;
