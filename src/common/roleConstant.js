@@ -149,7 +149,8 @@ export const ROLE_BUTTON_TYPE = {
   videoAd: '视频广告',
 
   withdraw: '提现记录',
-  withdrawMerchant: '单店提现',
+  withdrawMerchant: '单店卡豆提现',
+  withdrawMerchantCash: '单店现金提现',
   withdrawExpert: '哒人提现',
 };
 

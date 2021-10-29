@@ -97,23 +97,44 @@ export function fetchActionBatchEdit(data) {
 
 // 提现明细
 
-// get 提现明细 - 列表
+// get 单店卡豆提现明细 - 列表
 export function fetchWithdrawList(params) {
   return request('/admin/merchantBeanManagement/listMerchantBeanWithdrawalManagement', {
     params,
   });
 }
 
-// get 提现明细 - 合计
+// get 单店卡豆提现明细 - 合计
 export function fetchWithdrawTotal(params) {
   return request('/admin/merchantBeanManagement/listMerchantBeanWithdrawalManagementTotal', {
     params,
   });
 }
 
-// get 提现明细 - 导出excel
+// get 单店卡豆提现明细 - 导出excel
 export function fetchWithdrawExportExcel(params) {
   return request('/admin/merchantBeanManagement/listMerchantBeanWithdrawalManagementImport', {
+    params,
+  });
+}
+
+// get 单店现金提现明细 - 列表
+export function fetchWithdrawManagementList(params) {
+  return request('/admin/merchantBeanManagement/listMerchantDirectWithdrawalManagement', {
+    params,
+  });
+}
+
+// get 单店现金提现明细 - 合计
+export function fetchWithdrawManagementTotal(params) {
+  return request('/admin/merchantBeanManagement/listMerchantDirectWithdrawalManagementTotal', {
+    params,
+  });
+}
+
+// get 单店现金提现明细 - 导出excel
+export function fetchWithdrawExportManagementExcel(params) {
+  return request('/admin/merchantBeanManagement/listMerchantDirectWithdrawalManagementExport', {
     params,
   });
 }

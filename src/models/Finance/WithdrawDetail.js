@@ -7,6 +7,9 @@ import {
   fetchWithdrawExpertList,
   fetchWithdrawExpertTotal,
   fetchWithdrawExpertSetRemark,
+  fetchWithdrawManagementList,
+  fetchWithdrawManagementTotal,
+  fetchWithdrawExportManagementExcel,
 } from '@/services/FinanceServices';
 
 export default {
@@ -53,6 +56,37 @@ export default {
     },
     *fetchGetExcel({ payload, callback }, { call }) {
       const response = yield call(fetchWithdrawExportExcel, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.merchantBeanWithdrawalList);
+    },
+    //单店现金列表
+    *fetchGetCashList({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawManagementList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          list: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    //单店现金总和
+    *fetchWithdrawCashTotal({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawManagementTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content,
+        },
+      });
+    },
+    //单店列表导出
+    *fetchGetCashExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchWithdrawExportManagementExcel, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.merchantBeanWithdrawalList);
