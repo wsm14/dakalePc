@@ -100,6 +100,7 @@ const GroupSelect = ({
       destroyOnClose
       maskClosable
       width={1000}
+      bodyStyle={{ maxHeight: 600, overflowY: 'auto' }}
       visible={visible}
       confirmLoading={loading}
       okText={`确定（已选${selectGroupKey.length}项）`}
@@ -124,6 +125,7 @@ const GroupSelect = ({
         rowKey={(record) => `${record[rowKey]}`}
         dispatchType={'prizeConfig/fetchBlindBoxList'}
         rowSelection={rowSelection}
+        pagination={false}
         list={blindBox}
       ></TableDataBlock>
     </Modal>

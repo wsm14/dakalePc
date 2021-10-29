@@ -158,7 +158,7 @@ export function fetchBoxLotteryList(params) {
 
 // get 盲盒中奖记录 - 列表导出
 export function fetchBoxLotteryExport(params) {
-  return request('/admin/config/blindBox/listUserBlindBoxRewardImport', {
+  return request('/admin/config/blindBox/listUserBlindBoxRewardExport', {
     params,
   });
 }
