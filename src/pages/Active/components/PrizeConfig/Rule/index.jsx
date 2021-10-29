@@ -115,6 +115,7 @@ const Rule = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.id}`}
           list={val}
+          pagination={false}
         ></TableDataBlock>
       ),
     },
@@ -140,6 +141,7 @@ const Rule = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.id}`}
           list={val}
+          pagination={false}
         ></TableDataBlock>
       ),
     },
