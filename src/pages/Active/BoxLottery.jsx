@@ -113,7 +113,7 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
         },
         {
           type: 'goodsView',
-          visible: row.logisticsStatus === '2' && row.luckDrawType !== 'bean',
+          visible: row.logisticsStatus === '2',
           click: () => fetchBoxDeatil(val, row, 'info'),
         },
       ],
@@ -125,9 +125,9 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
     let contentParam = {};
     if (row.contentParam) {
       const contentObj = JSON.parse(row.contentParam);
-      contentParam = `${contentObj.addressName},${contentObj.mobile},${checkCityName(
-        contentObj.districtCode,
-      )}${contentObj.address}`;
+      contentParam = `${contentObj.addressName || '-'},${contentObj.mobile || '-'},${
+        checkCityName(contentObj.districtCode) || '-'
+      }${contentObj.address || '-'}`;
     }
 
     if (type === 'add') {
