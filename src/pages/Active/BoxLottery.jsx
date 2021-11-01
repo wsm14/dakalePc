@@ -113,7 +113,7 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
         },
         {
           type: 'goodsView',
-          visible: row.logisticsStatus === '2',
+          visible: row.logisticsStatus === '2' && row.luckDrawType !== 'bean',
           click: () => fetchBoxDeatil(val, row, 'info'),
         },
       ],
