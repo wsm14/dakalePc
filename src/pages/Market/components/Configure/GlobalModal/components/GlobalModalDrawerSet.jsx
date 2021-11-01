@@ -63,7 +63,6 @@ const UgcLabelSet = (props) => {
       </Button>
     ),
   };
-  console.log(modalType);
   const formItems = useMemo(
     () => [
       {

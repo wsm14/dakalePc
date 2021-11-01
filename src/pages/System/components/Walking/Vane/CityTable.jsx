@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
+import { TAB_INDEX_TYPE } from '@/common/constant';
 import { getCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import CityDrawerSet from './components/CityDrawerSet';
-import CityGlobalModal from './CityGlobalModal';
-
-const CityTable = (props) => {
+import VaneManage from './VaneManage';
+const TabTable = (props) => {
   const { dispatch, loading, configureList, tabKey, version, fetchTable } = props;
   const [visible, setVisible] = useState(false);
-  const [visibleConfigure, setVisibleConfigure] = useState({ show: false, info: {} });
+  const [visibleConfigure, setVisibleConfigure] = useState({ show: false });
   const childRef = useRef();
 
   useEffect(() => {
@@ -39,17 +39,28 @@ const CityTable = (props) => {
 
   const handleEdit = (configWanderAroundModuleId, row) => {
     // dispatch({
-    //   type: 'marketConfigure/fetchGetWanderAroundModuleById',
+    //   type: 'walkingManage/fetchGetWanderAroundModuleById',
     //   payload: {
     //     configWanderAroundModuleId,
     //   },
     //   callback: (detail) => {
-
+    //     const info = {
+    //       activityName: `逛逛页面配置-${TAB_INDEX_TYPE[row?.userOs]}${row?.version ? '-' : ''}${
+    //         row?.version
+    //       }`,
+    //       handle: 'edit',
+    //       configWanderAroundModuleId,
+    //       params: { ...detail, dataList: detail?.wanderAroundModuleObjects || [] },
+    //     };
+    //     setVisibleConfigure({
+    //       show: true,
+    //       info,
+    //     });
     //   },
     // });
     setVisibleConfigure({
       show: true,
-      info: { name: '111' },
+      detail: {},
     });
   };
 
@@ -77,7 +88,7 @@ const CityTable = (props) => {
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configWanderAroundModuleId}`}
         params={{ userOs: tabKey, version }}
-        dispatchType="marketConfigure/fetchAroundModuleCityList"
+        dispatchType="walkingManage/fetchAroundModuleCityList"
         {...configureList}
       ></TableDataBlock>
       {/* 新增弹窗 */}
@@ -89,16 +100,15 @@ const CityTable = (props) => {
         version={version}
       ></CityDrawerSet>
       {/* 编辑弹窗 */}
-      <CityGlobalModal
+      <VaneManage
         visible={visibleConfigure}
         onClose={() => setVisibleConfigure(false)}
-        childRef={childRef}
-      ></CityGlobalModal>
+      ></VaneManage>
     </>
   );
 };
 
-export default connect(({ loading, marketConfigure }) => ({
-  configureList: marketConfigure.configureList,
-  loading: loading.effects['marketConfigure/fetchAroundModuleCityList'],
-}))(CityTable);
+export default connect(({ loading, walkingManage }) => ({
+  configureList: walkingManage.configureList,
+  loading: loading.effects['walkingManage/fetchAroundModuleCityList'],
+}))(TabTable);

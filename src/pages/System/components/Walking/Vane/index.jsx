@@ -1,174 +1,124 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
-import { Button, Select, Cascader } from 'antd';
-import { DragHandle } from '@/components/TableDataBlock/SortBlock';
-import PopImgShow from '@/components/PopImgShow';
-import CITYJSON from '@/common/city';
+import { Card } from 'antd';
+import { TAB_INDEX_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import VaneDrawer from './VaneDrawer';
+import EditionModal from './EditionModal';
+import CityModal from './CityModal';
+import CityTable from './CityTable';
 
-const VaneManage = (props) => {
-  const { list, loading, dispatch } = props;
-  const [cityCode, setCityCode] = useState(['33', '3301']);
+const TabConfigure = (props) => {
+  const { dispatch, loading, editionList } = props;
+  const [visible, setVisible] = useState(false);
+  const [tabKey, setTabKey] = useState('iOS');
+  const [visibleEdition, setVisibleEdition] = useState(false);
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    dispatch({
-      type: 'walkingManage/fetchWalkManageNavigation',
-    });
-  }, []);
-
-  useEffect(() => {
-    childRef.current.fetchGetData({ cityCode: cityCode[1] });
-  }, [cityCode]);
-
-  // 获取详情
-  const fetchGetDetail = (val, record, type) => {
-    const { areaCode = '' } = record;
-    dispatch({
-      type: 'walkingManage/fetchWalkManageVaneDetail',
-      payload: {
-        configWindVaneId: val,
-        areaType: 'city',
-        areaCode,
-      },
-      callback: (detail) => setVisible({ show: true, type, detail }),
-    });
-  };
-
-  // 删除
-  const fetchDetailDel = (configWindVaneId, record) => {
-    const { areaCode = '' } = record;
-    dispatch({
-      type: 'walkingManage/fetchWalkManageVaneEditDel',
-      payload: {
-        configWindVaneId,
-        areaType: 'city',
-        areaCode,
-        deleteFlag: 0,
-      },
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // 排序
-  const fetchDetailSort = (list) => {
-    dispatch({
-      type: 'walkingManage/fetchWalkManageVaneSort',
-      payload: {
-        configWindVaneDTOList: list.map((item, i) => ({
-          configWindVaneId: item.configWindVaneId,
-          sort: i,
-        })),
-      },
-      callback: childRef.current.fetchGetData,
-    });
-  };
-
-  // table 表头
   const getColumns = [
     {
-      title: '图标',
-      dataIndex: 'image',
-      render: (val) => <PopImgShow url={val}></PopImgShow>,
-    },
-    {
-      title: '显示名称',
-      dataIndex: 'name',
-      className: 'drag-visible',
-    },
-    {
-      title: '排序',
-      align: 'right',
-      dataIndex: 'sort',
-      render: () => <DragHandle />,
+      title: '最低支持版本',
+      align: 'center',
+      dataIndex: 'version',
     },
     {
       type: 'handle',
-      dataIndex: 'configWindVaneId',
-      render: (val, record) => {
-        return [
-          {
-            type: 'info',
-            auth: true,
-            click: () => fetchGetDetail(val, record, 'detail'),
+      // align: 'center',
+      dataIndex: 'configIndexTabId',
+      render: (val, row) => [
+        {
+          type: 'edit',
+          title: '编辑详情',
+          click: () => {
+            setVisible({
+              show: true,
+              type: 'edit',
+              detail: row,
+            });
           },
-          {
-            type: 'edit',
-            auth: true,
-            click: () => fetchGetDetail(val, record, 'edit'),
+          auth: true,
+        },
+        {
+          type: 'edit',
+          title: '修改版本',
+          click: () => {
+            setVisibleEdition({
+              show: true,
+              type: 'edit',
+              detail: row,
+            });
           },
-          {
-            type: 'del',
-            auth: true,
-            click: () => fetchDetailDel(val, record),
-          },
-        ];
+          auth: true,
+        },
+      ],
+    },
+  ];
+
+  const cardBtnList = [
+    {
+      auth: true,
+      text: '新增版本',
+      className: 'dkl_blue_btn',
+      onClick: () => {
+        setVisibleEdition({
+          show: true,
+          type: 'add',
+        });
       },
     },
   ];
 
-  const cityList = CITYJSON.map((item) => {
-    const children = item.children.map((every) => ({
-      value: every.value,
-      label: every.label,
-      pid: every.pid,
-    }));
-    return {
-      ...item,
-      children: children,
-    };
-  });
-
-  const handleCityChange = (val) => {
-    setCityCode(val);
+  const handleTabChange = (key) => {
+    setTabKey(key);
+    if (key !== 'weChat') {
+      childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
+    }
   };
 
   return (
     <>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <span style={{ display: 'inline-block', width: 100, textAlign: 'center' }}>选择城市:</span>
-        <Cascader value={cityCode} options={cityList} onChange={handleCityChange} />
-      </div>
-
-      <TableDataBlock
-        firstFetch={false}
-        tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
-        cardProps={{
-          title: '风向标配置',
-          bordered: false,
-          extra: (
-            <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
-              新增
-            </Button>
-          ),
-        }}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        params={{ cityCode: cityCode[1] }}
-        rowKey={(record) => `${record.configWindVaneId}`}
-        dispatchType="walkingManage/fetchWalkManageVaneList"
-        pagination={false}
-        {...list}
-      ></TableDataBlock>
-      <VaneDrawer
-        cRef={childRef}
+      <Card
+        title="逛逛页面配置"
+        tabList={Object.keys(TAB_INDEX_TYPE).map((i) => ({ key: i, tab: TAB_INDEX_TYPE[i] }))}
+        activeTabKey={tabKey}
+        onTabChange={handleTabChange}
+      >
+        {tabKey !== 'weChat' ? (
+          <TableDataBlock
+            order
+            noCard={false}
+            cRef={childRef}
+            loading={loading}
+            columns={getColumns}
+            btnExtra={cardBtnList}
+            rowKey={(record) => `${record.configWanderAroundModuleId}`}
+            params={{ userOs: tabKey, area: 'all' }}
+            dispatchType="walkingManage/fetchAroundModuleList"
+            {...editionList}
+          />
+        ) : (
+          <CityTable tabKey={tabKey} />
+        )}
+      </Card>
+      {/* 弹窗-新增版本 */}
+      <EditionModal
+        childRef={childRef}
+        visible={visibleEdition}
+        tabKey={tabKey}
+        onClose={() => setVisibleEdition(false)}
+      ></EditionModal>
+      {/* 编辑详情-弹窗 */}
+      <CityModal
+        childRef={childRef}
         visible={visible}
-        cityCode={cityCode[1]}
+        tabKey={tabKey}
         onClose={() => setVisible(false)}
-      ></VaneDrawer>
+      ></CityModal>
     </>
   );
 };
 
-export default connect(({ walkingManage, loading }) => ({
-  list: walkingManage.vaneList,
-  loading:
-    loading.effects['walkingManage/fetchWalkManageVaneList'] ||
-    loading.effects['walkingManage/fetchWalkManageVaneEditDel'] ||
-    loading.effects['walkingManage/fetchWalkManageVaneDetail'] ||
-    loading.effects['walkingManage/fetchWalkManageVaneSort'],
-}))(VaneManage);
+export default connect(({ loading, walkingManage }) => ({
+  editionList: walkingManage.editionList,
+  loading: loading.models.walkingManage,
+}))(TabConfigure);

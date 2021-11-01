@@ -3,7 +3,6 @@ import { Modal } from 'antd';
 import { connect } from 'umi';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import ShareWeightSet from './components/ShareWeightSet';
 import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
 
 const tabList = [
