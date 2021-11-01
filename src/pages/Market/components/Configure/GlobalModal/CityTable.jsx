@@ -39,17 +39,18 @@ const CityTable = (props) => {
   ];
 
   const handleEdit = (configWanderAroundModuleId, row) => {
-    dispatch({
-      type: 'marketConfigure/fetchGetWanderAroundModuleById',
-      payload: {
-        configWanderAroundModuleId,
-      },
-      callback: (detail) => {
-        setVisibleConfigure({
-          show: true,
-          info: { name: '111' },
-        });
-      },
+    // dispatch({
+    //   type: 'marketConfigure/fetchGetWanderAroundModuleById',
+    //   payload: {
+    //     configWanderAroundModuleId,
+    //   },
+    //   callback: (detail) => {
+
+    //   },
+    // });
+    setVisibleConfigure({
+      show: true,
+      info: { name: '111' },
     });
   };
 

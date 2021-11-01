@@ -3,13 +3,19 @@ import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
-import { MODAL_FREQUENCY, BANNER_JUMP_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
+import {
+  MODAL_FREQUENCY,
+  BANNER_JUMP_TYPE,
+  BANNER_LOOK_AREA,
+  MARKET_MODAL_TYPE,
+} from '@/common/constant';
 import { LABEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const UgcLabelSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef } = props;
-  const { show = false, type = 'add', detail = {} } = visible;
+  const { show = false, type = 'add', detail = { messageType: 'pic' } } = visible;
+  const [modalType, setModalType] = useState('');
   const [form] = Form.useForm();
   //保存
   const handleSave = () => {
@@ -40,6 +46,10 @@ const UgcLabelSet = (props) => {
     visible: show,
     title: '弹窗内容配置',
     onClose,
+    afterCallBack: () => {
+      setModalType(detail.messageType);
+    },
+    zIndex: 1001,
     footer: (
       <Button
         type="primary"
@@ -53,6 +63,7 @@ const UgcLabelSet = (props) => {
       </Button>
     ),
   };
+  console.log(modalType);
   const formItems = useMemo(
     () => [
       {
@@ -62,58 +73,53 @@ const UgcLabelSet = (props) => {
       },
       {
         label: '弹窗频率',
-        name: 'messageType',
-        type: 'select',
+        name: 'aaa',
+        type: 'radio',
         select: MODAL_FREQUENCY,
       },
       {
         label: '推送时间',
-        name: 'pushTime',
-        type: 'dataPicker',
-        format: 'YYYY-MM-DD HH:mm',
-        showTime: true,
+        type: 'rangePicker',
+        name: 'arraignmentTimeStart',
+        end: 'arraignmentTimeEnd',
+      },
+      {
+        label: '弹窗类型',
+        name: 'messageType',
+        type: 'radio',
+        select: MARKET_MODAL_TYPE,
+        onChange: (e) => {
+          setModalType(e.target.value);
+        },
       },
       {
         label: '弹窗图片',
         type: 'upload',
         name: 'img',
         maxFile: 1,
-        extra: '请上传5:4比例的图片，大小不得小于230*184px',
+        extra: '请上传900*1077px png、jpeg、gif图片',
         imgRatio: LABEL_ICON,
+        visible: modalType === 'pic',
       },
       {
-        label: '标签数据',
-        type: 'formItem',
-        required: true,
-        rules: 'false',
-        formItem: (
-          <>
-            <Form.Item
-              name="participateNum"
-              rules={[{ required: true, message: '请输入参与人数' }]}
-              style={{ display: 'inline-block', width: 'calc(23%)' }}
-            >
-              <InputNumber min={0} placeholder={'请输入数字'} />
-            </Form.Item>
-            <span style={{ display: 'inline-block', marginTop: 5 }}>人参与，</span>
-            <Form.Item
-              name="onlookersNum"
-              rules={[{ required: true, message: '请输入围观人数' }]}
-              style={{ display: 'inline-block', width: 'calc(23%)' }}
-            >
-              <InputNumber min={0} placeholder={'请输入数字'} />
-            </Form.Item>
-            <span style={{ display: 'inline-block', marginTop: 5 }}>人围观</span>
-          </>
-        ),
+        label: '弹窗链接',
+        name: 'link11',
+        visible: modalType === 'link',
       },
       {
-        label: '标签介绍',
-        type: 'textArea',
-        name: 'introduce',
+        label: '跳转内容',
+        name: '22',
+        type: 'radio',
+        select: BANNER_JUMP_TYPE,
+      },
+      {
+        label: '可见范围',
+        name: '333',
+        type: 'radio',
+        select: BANNER_LOOK_AREA,
       },
     ],
-    [type],
+    [modalType],
   );
   return (
     <DrawerCondition {...modalProps}>

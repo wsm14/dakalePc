@@ -9,19 +9,11 @@ import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
 const tabList = [
   {
     key: 'user',
-    tab: '捡豆页面',
+    tab: '浮窗1',
   },
   {
     key: 'merchant',
-    tab: '逛逛页面',
-  },
-  {
-    key: '11',
-    tab: '我的页面',
-  },
-  {
-    key: '22',
-    tab: '商品详情页',
+    tab: '浮窗2',
   },
 ];
 
@@ -34,33 +26,16 @@ const CityGlobalModal = (props) => {
 
   const getColumns = [
     {
-      title: '弹窗名称',
+      title: '浮窗名称',
       dataIndex: 'matterName',
-    },
-    {
-      title: '弹窗频率',
-      dataIndex: 'creator',
     },
     {
       title: '活动时间',
       dataIndex: 'createTime',
     },
     {
-      title: '可见范围',
-      dataIndex: 'creator',
-    },
-    {
       title: '活动状态',
       dataIndex: 'creator',
-    },
-    {
-      title: '权重',
-      align: 'center',
-      // fixed: 'right',
-      dataIndex: 'weight',
-      render: (val, row) => (
-        <ShareWeightSet detail={row} onSubmit={fetchNewShareNoAudit}></ShareWeightSet>
-      ),
     },
     {
       type: 'handle',

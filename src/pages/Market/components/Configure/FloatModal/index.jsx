@@ -12,7 +12,6 @@ const Index = (props) => {
   const [visible, setVisible] = useState(false);
   const [tabKey, setTabKey] = useState('iOS');
   const [visibleEdition, setVisibleEdition] = useState(false);
-
   const childRef = useRef();
 
   const getColumns = [

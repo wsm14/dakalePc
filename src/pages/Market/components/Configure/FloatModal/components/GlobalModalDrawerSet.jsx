@@ -3,6 +3,12 @@ import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
+import {
+  MODAL_FREQUENCY,
+  BANNER_JUMP_TYPE,
+  BANNER_LOOK_AREA,
+  MARKET_MODAL_TYPE,
+} from '@/common/constant';
 import { LABEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -37,8 +43,9 @@ const UgcLabelSet = (props) => {
 
   const modalProps = {
     visible: show,
-    title: type === 'edit' ? '编辑' : '新增',
+    title: '弹窗内容配置',
     onClose,
+    zIndex: 1001,
     footer: (
       <Button
         type="primary"
@@ -55,51 +62,32 @@ const UgcLabelSet = (props) => {
   const formItems = useMemo(
     () => [
       {
-        label: '标签名称',
+        label: '浮窗名称',
         name: 'name',
-        maxLength: '10',
+        maxLength: '15',
       },
       {
-        label: '标签图片',
+        label: '活动时间',
+        type: 'rangePicker',
+        name: 'arraignmentTimeStart',
+        end: 'arraignmentTimeEnd',
+      },
+      {
+        label: '浮窗图片',
         type: 'upload',
         name: 'img',
         maxFile: 1,
-        extra: '请上传5:4比例的图片，大小不得小于230*184px',
+        extra: '请上传165*147px png、jpeg、gif图片',
         imgRatio: LABEL_ICON,
       },
       {
-        label: '标签数据',
-        type: 'formItem',
-        required: true,
-        rules: 'false',
-        formItem: (
-          <>
-            <Form.Item
-              name="participateNum"
-              rules={[{ required: true, message: '请输入参与人数' }]}
-              style={{ display: 'inline-block', width: 'calc(23%)' }}
-            >
-              <InputNumber min={0} placeholder={'请输入数字'} />
-            </Form.Item>
-            <span style={{ display: 'inline-block', marginTop: 5 }}>人参与，</span>
-            <Form.Item
-              name="onlookersNum"
-              rules={[{ required: true, message: '请输入围观人数' }]}
-              style={{ display: 'inline-block', width: 'calc(23%)' }}
-            >
-              <InputNumber min={0} placeholder={'请输入数字'} />
-            </Form.Item>
-            <span style={{ display: 'inline-block', marginTop: 5 }}>人围观</span>
-          </>
-        ),
-      },
-      {
-        label: '标签介绍',
-        type: 'textArea',
-        name: 'introduce',
+        label: '跳转内容',
+        name: '22',
+        type: 'radio',
+        select: BANNER_JUMP_TYPE,
       },
     ],
-    [type],
+    [],
   );
   return (
     <DrawerCondition {...modalProps}>

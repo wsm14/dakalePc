@@ -188,6 +188,9 @@ export const BANNER_LOOK_AREA = {
 // 广告管理 - 弹窗频率
 export const MODAL_FREQUENCY = { all: '每天一次', detail: '每次进入页面', only: '仅弹一次' };
 
+// 广告管理 - 弹窗类型
+export const MARKET_MODAL_TYPE = { pic: '图片', link: '链接' };
+
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
 export const SPECIAL_STATUS = ['已下架', '活动中'];
