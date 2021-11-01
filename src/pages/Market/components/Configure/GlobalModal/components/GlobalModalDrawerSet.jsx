@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
+import { MODAL_FREQUENCY, BANNER_JUMP_TYPE, BANNER_LOOK_AREA } from '@/common/constant';
 import { LABEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
@@ -58,6 +59,12 @@ const UgcLabelSet = (props) => {
         label: '弹窗名称',
         name: 'name',
         maxLength: '15',
+      },
+      {
+        label: '弹窗频率',
+        name: 'messageType',
+        type: 'select',
+        select: MODAL_FREQUENCY,
       },
       {
         label: '推送时间',
