@@ -87,6 +87,7 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
     {
       title: '消耗卡豆数',
       dataIndex: 'consumeNum',
+      render: (val, row) => (row.luckDrawType === 'bean' ? val : '--'),
     },
     {
       title: '抽奖结果',
