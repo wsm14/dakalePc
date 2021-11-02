@@ -17,6 +17,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    listCash: { list: [], total: 0 },
     expertlist: { list: [], total: 0 },
     totalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
     expretTotalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
@@ -68,7 +69,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: { list: content.recordList, total: content.total },
+          listCash: { list: content.recordList, total: content.total },
         },
       });
     },

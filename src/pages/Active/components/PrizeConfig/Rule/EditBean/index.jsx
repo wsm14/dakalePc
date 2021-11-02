@@ -191,22 +191,22 @@ function EditBean(props) {
       label: '奖池',
       name: 'allBlindBoxProducts',
       type: 'formItem',
-      addRules: [
-        {
-          validator: () => {
-            const total = tableList
-              .filter((item) => item.isParticipate === '1')
-              .reduce((item, next) => {
-                return item + Number(next.rate);
-              }, 0);
-            // console.log(total);
-            if (total != 100) {
-              return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
+      // addRules: [
+      //   {
+      //     validator: () => {
+      //       const total = tableList
+      //         .filter((item) => item.isParticipate === '1')
+      //         .reduce((item, next) => {
+      //           return item + Number(next.rate);
+      //         }, 0);
+      //       // console.log(total);
+      //       if (total != 100) {
+      //         return Promise.reject(`当前各奖品抽中概率之和（不含仅展示）不等于100%，请修改`);
+      //       }
+      //       return Promise.resolve();
+      //     },
+      //   },
+      // ],
       formItem: (
         <Button
           type="primary"

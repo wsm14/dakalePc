@@ -87,6 +87,7 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
     {
       title: '消耗卡豆数',
       dataIndex: 'consumeNum',
+      render: (val, row) => (row.luckDrawType === 'bean' ? val : '--'),
     },
     {
       title: '抽奖结果',
@@ -125,9 +126,9 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
     let contentParam = {};
     if (row.contentParam) {
       const contentObj = JSON.parse(row.contentParam);
-      contentParam = `${contentObj.addressName},${contentObj.mobile},${checkCityName(
-        contentObj.districtCode,
-      )}${contentObj.address}`;
+      contentParam = `${contentObj.addressName || '-'},${contentObj.mobile || '-'},${
+        checkCityName(contentObj.districtCode) || '-'
+      }${contentObj.address || '-'}`;
     }
 
     if (type === 'add') {
