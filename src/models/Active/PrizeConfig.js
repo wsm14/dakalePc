@@ -71,7 +71,9 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          blindBoxRule: content.blindBoxRule,
+          blindBoxRule: content.blindBoxRule.allBlindBoxProducts
+            ? content.blindBoxRule
+            : { allBlindBoxProducts: [] },
         },
       });
     },
