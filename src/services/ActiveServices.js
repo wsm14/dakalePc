@@ -58,6 +58,20 @@ export async function fetchActiveDetail(params) {
   });
 }
 
+// get 助力列表 - 列表
+export async function fetchAssistanceList(params) {
+  return request('/admin/config/blindBox/listUserBlindBoxHelp', {
+    params,
+  });
+}
+
+// get 助力列表 - 详情
+export async function fetchAssistanceDetail(params) {
+  return request('/admin/config/blindBox/boostDetails', {
+    params,
+  });
+}
+
 // 营销物料配置
 
 // get 营销物料配置 - 列表
@@ -84,3 +98,82 @@ export function fetchMaterialConfigSave(data) {
 }
 
 // 营销物料配置 end
+
+// 盲盒抽奖配置
+
+// get 盲盒奖池列表 - 列表
+export async function fetchBlindBoxList(params) {
+  return request('/admin/config/blindBox/listBlindBoxProduct', {
+    params,
+  });
+}
+
+// post 盲盒奖池 - 添加
+export function fetchBlindBoxAdd(data) {
+  return request('/admin/config/blindBox/saveBlindBoxProduct', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 盲盒奖池 - 修改
+export function fetchBlindBoxEdit(data) {
+  return request('/admin/config/blindBox/updateBlindBoxProduct', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 盲盒奖池 - 删除
+export function fetchBlindBoxDelete(data) {
+  return request('/admin/config/blindBox/deleteBlindBoxProduct', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 盲盒抽奖配置 - 列表
+export async function fetchBlindBoxConfigList(params) {
+  return request('/admin/config/blindBox/getBlindBoxRule', {
+    params,
+  });
+}
+
+// post 盲盒抽奖配置 - 设置
+export function fetchBlindBoxConfigSet(data) {
+  return request('/admin/config/blindBox/setBlindBoxRule', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 盲盒抽奖配置 end
+
+// get 盲盒中奖记录 - 列表
+export function fetchBoxLotteryList(params) {
+  return request('/admin/config/blindBox/listUserBlindBoxReward', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 列表导出
+export function fetchBoxLotteryExport(params) {
+  return request('/admin/config/blindBox/listUserBlindBoxRewardExport', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 查看物流
+export function fetchBoxDetail(params) {
+  return request('/admin/config/blindBox/viewLogistics', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 查看物流
+export function fetchBoxAddAndPush(data) {
+  return request('/admin/config/blindBox/deliverGoods', {
+    method: 'POST',
+    data,
+  });
+}

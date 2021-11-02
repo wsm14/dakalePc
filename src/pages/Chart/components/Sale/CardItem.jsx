@@ -55,6 +55,7 @@ const SaleBlockComponent = ({
                   suffix={saleTotal[item.key] > 999999 ? 'w' : null}
                   loading={loading.effects[api]}
                   valueStyle={{ color: '#1890ff' }}
+                  {...item}
                 />
               </Col>
             ))}

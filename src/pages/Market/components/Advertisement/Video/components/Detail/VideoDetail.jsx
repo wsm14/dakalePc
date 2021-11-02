@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Form, Button, notification } from 'antd';
-import { VIDEO_ADVERT_TYPE, VIDEO_ADVERT_PLACE, SHARE_SEX_TYPE } from '@/common/constant';
+import { VIDEO_ADVERT_TYPE, SHARE_SEX_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import uploadLive from '@/utils/uploadLive';
@@ -10,7 +10,17 @@ import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 
 const VideoDetail = (props) => {
-  const { dispatch, visible, total, getDetail, onClose, childRef, loading, loadingDetail } = props;
+  const {
+    dispatch,
+    visible,
+    tagList,
+    total,
+    getDetail,
+    onClose,
+    childRef,
+    loading,
+    loadingDetail,
+  } = props;
 
   const { index, show = false, type = 'info', detail = {} } = visible;
 
@@ -72,10 +82,10 @@ const VideoDetail = (props) => {
     },
     {
       label: '投放设置',
-      name: 'browseType',
+      name: 'momentTagNames',
       render: (val) => (
         <>
-          <div>推荐位置：{VIDEO_ADVERT_PLACE[val]}</div>
+          <div>推荐位置：{val}</div>
           <div>用户性别：{SHARE_SEX_TYPE[detail.gender]}</div>
           <div>用户年龄：{detail.age}</div>
           <div>

@@ -69,6 +69,13 @@ export async function fetchBusinessCollectDetail(params) {
   });
 }
 
+// get 商家账户 - 现金账户明细
+export async function fetchBusinessCashDetail(params) {
+  return request('/admin/accountManagement/listMerchantBeanDirectDetail', {
+    params,
+  });
+}
+
 // get 商家账户 - 充值记录
 export async function fetchBusinessRechargeDetail(params) {
   return request('/admin/accountManagement/listUserChargeRecord', {

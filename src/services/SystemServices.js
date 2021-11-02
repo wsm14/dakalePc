@@ -101,6 +101,21 @@ export function fetchSearchSet(data) {
 
 // 逛逛页面配置
 
+// get 热门城市配置 - 列表
+export function fetchHotCityPageList(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// post 热门城市配置 - 设置
+export function fetchHotCityPageConfig(data) {
+  return request('/admin/systemConfig/setHotCityConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 风向标配置 - 列表
 export function fetchWalkManageVaneList(params) {
   return request('/admin/windVane/listConfigWindVane', {
@@ -192,6 +207,52 @@ export function fetchGatherPageConfigEnd(data) {
   return request('/admin/collectionPage/endConfigCollectionPage', {
     method: 'POST',
     data,
+  });
+}
+
+//逛逛模块化配置-版本列表
+export function fetchAroundModuleList(params) {
+  return request('/admin/wanderAroundModule/listWanderAroundModule', {
+    params,
+  });
+}
+
+//逛逛模块化配置-新增版本
+export function fetchAroundModuleAdd(data) {
+  return request('/admin/wanderAroundModule/saveWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-修改版本
+export function fetchAroundModuleEdit(data) {
+  return request('/admin/wanderAroundModule/updateWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-新增城市
+export function fetchWanderAroundModuleAdd(data) {
+  return request('/admin/wanderAroundModule/saveWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-编辑
+export function fetchUpdateWanderAroundModule(data) {
+  return request('/admin/wanderAroundModule/updateWanderAroundModule', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-详情
+export function fetchGetWanderAroundModuleById(params) {
+  return request('/admin/wanderAroundModule/getWanderAroundModuleById', {
+    params,
   });
 }
 
@@ -327,6 +388,81 @@ export function fetchFestivalConfigDetail(params) {
 // 节日配置下架
 export function fetchFestivalConfigDown(data) {
   return request('/admin/festival/offShelfFestivalConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+//视频标签配置-列表
+export function fetchListMomentTag(params) {
+  return request('/admin/momentTag/listMomentTag', {
+    params,
+  });
+}
+
+//视频标签配置-新增
+export function fetchSaveMomentTagAdd(data) {
+  return request('/admin/momentTag/saveMomentTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//视频标签配置-详情
+export function fetchGetMomentTagById(params) {
+  return request('/admin/momentTag/getMomentTagById', {
+    params,
+  });
+}
+
+//视频标签配置-编辑
+export function fetchUpdateMomentTag(data) {
+  return request('/admin/momentTag/updateMomentTag', {
+    method: 'POST',
+    data,
+  });
+}
+
+//首页tab配置-版本列表
+export function fetchIndexTabList(params) {
+  return request('/admin/indexTab/listIndexTab', {
+    params,
+  });
+}
+
+//首页tab配置-新增版本
+export function fetchIndexTabAdd(data) {
+  return request('/admin/indexTab/saveIndexTab', {
+    method: 'POST',
+    data,
+  });
+}
+
+//首页tab配置-编辑
+export function fetchIndexTabEdit(data) {
+  return request('/admin/indexTab/updateIndexTab', {
+    method: 'POST',
+    data,
+  });
+}
+
+//首页tab配置-详情
+export function fetchGetIndexTabById(params) {
+  return request('/admin/indexTab/getIndexTabById', {
+    params,
+  });
+}
+
+// 读取充值分享海报配置
+export function fetchGetRechargeShareImg(params) {
+  return request('/admin/shareImg/getRechargeShareImg', {
+    params,
+  });
+}
+
+// 充值分享海报配置
+export function fetchSaveRechargeShareImg(data) {
+  return request('/admin/shareImg/saveRechargeShareImg', {
     method: 'POST',
     data,
   });

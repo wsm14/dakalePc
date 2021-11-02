@@ -4,6 +4,9 @@ import { Menu } from 'antd';
 import styles from './index.less';
 import InviteImg from './components/GlobalConfig/InviteImg';
 import HolidayConfig from './components/GlobalConfig/HolidayConfig';
+import RechargeShare from './components/GlobalConfig/RechargeShare';
+import UgcLabel from './components/GlobalConfig/UgcLabel';
+import TabConfigure from './components/GlobalConfig/TabConfigure';
 
 const GlobalConfig = (props) => {
   let main = undefined;
@@ -51,6 +54,21 @@ const GlobalConfig = (props) => {
       type: 'inviteImg',
       menuName: '邀请好友图片',
       block: <InviteImg></InviteImg>,
+    },
+    {
+      type: 'rechargeShare',
+      menuName: '充值分享海报配置',
+      block: <RechargeShare></RechargeShare>,
+    },
+    {
+      type: 'ugcLabel',
+      menuName: 'UGC视频标签配置',
+      block: <UgcLabel></UgcLabel>,
+    },
+    {
+      type: 'tabConfigure',
+      menuName: '首页tab配置',
+      block: <TabConfigure></TabConfigure>,
     },
   ];
   // 显示内容判断

@@ -10,11 +10,23 @@ const ShareImg = (props) => {
   const { visible, onClose, onSubmit, childRef, loading } = props;
   const { show = false, detail = {} } = visible;
 
-  const { momentId, ownerId, ownerName, title } = detail;
-
+  const { momentId, ownerId, ownerName, title, videoContent } = detail;
+  const videoUrl = JSON.parse(videoContent || '{}')['url'];
   const [form] = Form.useForm();
 
   const formItems = [
+    {
+      label: '初始收藏数',
+      type: 'number',
+      name: 'collectionAmount',
+      rules: [{ required: false }],
+    },
+    {
+      label: '初始分享数',
+      type: 'number',
+      name: 'shareAmount',
+      rules: [{ required: false }],
+    },
     {
       label: '好友分享图',
       name: 'friendShareImg',
@@ -28,12 +40,14 @@ const ShareImg = (props) => {
 
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { friendShareImg = '' } = values;
+      const { friendShareImg = '', collectionAmount, shareAmount } = values;
       const fImg = await aliOssUpload(friendShareImg);
       onSubmit(
         {
           momentId,
           ownerId,
+          collectionAmount,
+          shareAmount,
           friendShareImg: fImg.toString(),
         },
         () => {
@@ -56,6 +70,7 @@ const ShareImg = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
+      <video src={videoUrl} style={{ width: '100%', height: '300px' }} controls></video>
       <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
     </DrawerCondition>
   );

@@ -16,14 +16,19 @@ export default {
 
   effects: {
     *fetchPlatformSubsidy({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, payload);
-      const { dataType } = payload;
-      if (!response) return;
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'platformSubsidy' });
+      const response2 = yield call(fetchSaleBlock, {
+        ...payload,
+        dataType: 'platformDirectSubsidy',
+      });
+      if (!response || !response2) return;
       const { content } = response;
+      const { content: contentVerify } = response2;
       yield put({
         type: 'save',
         payload: {
-          [dataType]: content.data,
+          platformSubsidy: content.data,
+          platformDirectSubsidy: contentVerify.data,
         },
       });
     },
@@ -93,14 +98,19 @@ export default {
       });
     },
     *fetchMerchantWithdrawal({ payload }, { call, put }) {
-      const response = yield call(fetchSaleBlock, payload);
-      const { dataType } = payload;
-      if (!response) return;
+      const response = yield call(fetchSaleBlock, { ...payload, dataType: 'merchantWithdrawal' });
+      const response2 = yield call(fetchSaleBlock, {
+        ...payload,
+        dataType: 'merchantDirectWithdrawal',
+      });
+      if (!response || !response2) return;
       const { content } = response;
+      const { content: contentVerify } = response2;
       yield put({
         type: 'save',
         payload: {
-          [dataType]: content.data,
+          merchantWithdrawal: content.data,
+          merchantDirectWithdrawal: contentVerify.data,
         },
       });
     },

@@ -30,6 +30,7 @@ const IFormModule = {
   videoUpload,
   otherUpload,
   tags: select,
+  multiple: select,
   switch: switchBlock,
 };
 

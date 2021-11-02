@@ -283,6 +283,7 @@ export const SUBSIDY_TYPE = {
   platformSubsidy: '新手任务补贴',
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
+  watchMoment: '看分享',
 };
 
 // 补贴管理 补贴卡豆类型
@@ -361,6 +362,7 @@ const bannerType = {
   highCommissionAlliance: '高佣联盟',
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundGoodMerchant: '逛逛周边好店',
+  wanderAroundRecharge: '逛逛话费充值',
 };
 
 // Banner类型
@@ -464,6 +466,7 @@ export const SPECIAL_RECOMMEND_TYPE = {
   novice: '新手视频',
   dayPush: '每日必推',
   aroundSpecial: '特惠推荐',
+  selfTour: '自我游',
 };
 
 // 特惠活动 - 是否删除
@@ -624,6 +627,9 @@ export const NEW_SHARETIME_TYPE = { permanent: '扣完为止', fixed: '固定时
 // 平台视频 - 投放类型
 export const NEW_SHAREPUBLISHTIME_TYPE = { rightNow: '立即发布', fixed: '定时发布' };
 
+// 商家视频 - 是否已打赏
+export const NEW_SHARE_AWARD = { user: '哒人', merchant: '商家', group: '集团' };
+
 // 视频审核店铺/视频类型
 export const VIDEO_TYPE = {
   user: '哒人',
@@ -642,12 +648,6 @@ export const FEEDBACK_TYPE = {
   advice: '功能反馈',
   problem: '商家问题',
 };
-// 视频广告 - 位置
-export const VIDEO_ADVERT_PLACE = {
-  ALL: '全部',
-  pickUp: '捡豆',
-  commend: '推荐',
-};
 
 // 视频广告 - 广告类型
 export const VIDEO_ADVERT_TYPE = {
@@ -664,3 +664,50 @@ export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
+
+export const FOLLOW_TYPE = {
+  consultation: '用户咨询',
+  complaints: '用户投诉',
+  activityVisit: '活动回访',
+  normalVisit: '日常回访',
+  other: '其他',
+};
+
+// 用户跟进类型
+export const FOLLOW_MANNER = {
+  weChat: '微信',
+  mobile: '电话',
+  applets: '小程序',
+  public: '公众号',
+  other: '其他',
+};
+
+// 盲盒商品类型枚举
+export const BLINDBOX_PRIZE_TYPE = {
+  bean: '卡豆',
+  commerce: '电商商品',
+};
+
+//盲盒抽奖记录 - 抽奖状态
+export const BOXLOTTERY_STATUS = ['未完善地址', '待发货', '已发货'];
+
+// 盲盒抽奖记录 - 抽奖场次
+export const BOXLOTTERY_TYPE = {
+  bean: '卡豆',
+  invitation: '邀请',
+};
+
+// 全局配置 - 首页tab配置
+export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
+
+// 全局配置 - 首页tab配置 - 标签类型
+export const TABINDEX_VIDEO_TYPE = {
+  all: '通用',
+  detail: '城市',
+};
+
+// 是否已打赏
+export const BEANFLAG_TYPE = ['未打赏', '已打赏'];
+
+//账户类型
+export const ACCOUNT_TYPE = ['现金账户', '卡豆账户'];

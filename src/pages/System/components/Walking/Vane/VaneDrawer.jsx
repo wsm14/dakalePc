@@ -23,6 +23,7 @@ const VaneDrawer = (props) => {
     specialArea: '卡豆专区',
     phoneBill: '话费充值',
     memberRecharge: '会员充值',
+    blindBox: '盲盒',
   };
 
   const allProps = {

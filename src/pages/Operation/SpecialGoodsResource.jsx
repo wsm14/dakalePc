@@ -32,6 +32,7 @@ const SpecialGoodsResource = (props) => {
     ...SPECIAL_RECOMMEND_TYPE,
     highCommission: '高佣联盟',
     todayNew: '今日上新',
+    selfTour: '自我游',
   };
 
   useEffect(() => {

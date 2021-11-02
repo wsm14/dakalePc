@@ -2,7 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Tag, Form } from 'antd';
 import { checkCityName } from '@/utils/utils';
-import { NEW_SHARE_STATUS, SUBMIT_TYPE_VIDEO, NEW_SHARE_OWNER } from '@/common/constant';
+import {
+  NEW_SHARE_STATUS,
+  SUBMIT_TYPE_VIDEO,
+  NEW_SHARE_OWNER,
+  NEW_SHARE_AWARD,
+  BEANFLAG_TYPE,
+} from '@/common/constant';
 import { NUM_PATTERN } from '@/common/regExp';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
@@ -11,6 +17,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import ShareImg from './components/VideoPlatform/ShareImg';
 import RewardSet from './components/VideoPlatform/RewardSet';
+
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
@@ -18,11 +25,11 @@ import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
 const tabList = [
   {
     key: '0',
-    tab: '未打赏视频',
+    tab: '探店视频',
   },
   {
     key: '1',
-    tab: '已打赏视频',
+    tab: '带货视频',
   },
 ];
 
@@ -34,13 +41,14 @@ const VideoPlatform = (props) => {
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState('0'); // tab
   const [visible, setVisible] = useState(false); // 详情
-  const [visibleShare, setVisibleShare] = useState(false); // 发布分享
+  const [visibleShare, setVisibleShare] = useState(false); // 新增
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  const [visibleImg, setVisibleImg] = useState(false); // 分享图
+  const [visibleImg, setVisibleImg] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
 
   useEffect(() => {
-    childRef.current && childRef.current.fetchGetData({ beanFlag: tabKey, page: 1 });
+    childRef.current &&
+      childRef.current.fetchGetData({ pickUpOrUgcFlag: 'pickUp', isCommerceFlag: tabKey });
   }, [tabKey]);
 
   useEffect(() => {
@@ -76,10 +84,16 @@ const VideoPlatform = (props) => {
       select: NEW_SHARE_OWNER,
     },
     {
-      label: '哒人昵称',
-      name: 'ownerId',
-      type: 'user',
+      label: '是否已打赏',
+      name: 'beanFlag',
+      type: 'select',
+      select: BEANFLAG_TYPE,
     },
+    // {
+    //   label: '哒人昵称',
+    //   name: 'ownerId',
+    //   type: 'user',
+    // },
     {
       label: '视频ID',
       name: 'momentId',
@@ -169,7 +183,6 @@ const VideoPlatform = (props) => {
       title: <QuestionTooltip type="quest" title="权重" content="数值越大越靠前"></QuestionTooltip>,
       align: 'center',
       fixed: 'right',
-      show: tabKey === '1',
       dataIndex: 'weight',
       render: (val, row) => (
         <ShareWeightSet detail={row} onSubmit={fetchNewShareNoAudit}></ShareWeightSet>
@@ -221,7 +234,7 @@ const VideoPlatform = (props) => {
             click: () => setVisibleReward({ show: true, detail: record }),
           },
           {
-            type: 'shareImg', // 分享图
+            type: 'set', // 设置
             click: () => setVisibleImg({ show: true, detail: record }),
           },
           {
@@ -303,15 +316,16 @@ const VideoPlatform = (props) => {
     {
       auth: 'save',
       text: '新增',
-      show: tabKey === '0',
-      onClick: () => setVisibleShare({ type: 'add', show: true }),
+      // show: tabKey === '0',
+      onClick: () => setVisibleShare({ tabtype: tabKey, show: true }),
     },
   ];
 
   return (
     <>
       <TableDataBlock
-        keepData
+        firstFetch={false}
+        // keepData
         searchForm={form}
         cardProps={{
           tabList: tabList,
@@ -326,12 +340,15 @@ const VideoPlatform = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ beanFlag: tabKey }}
         rowKey={(record) => `${record.momentId}`}
-        dispatchType="videoPlatform/fetchGetList"
+        params={{
+          pickUpOrUgcFlag: 'pickUp',
+          isCommerceFlag: tabKey,
+        }}
+        dispatchType="videoPlatform/fetchMerchVideoList"
         {...videoPlatform}
       ></TableDataBlock>
-      {/* 发布分享 */}
+      {/* 新增 */}
       <ShareDrawer
         childRef={childRef}
         visible={visibleShare}
@@ -339,6 +356,8 @@ const VideoPlatform = (props) => {
       ></ShareDrawer>
       {/* 详情 修改 编辑画像 带货设置*/}
       <ShareDetail
+        childRef={childRef}
+        tabKey={tabKey}
         total={list.length}
         visible={visible}
         getDetail={fetchShareDetail}
@@ -352,7 +371,7 @@ const VideoPlatform = (props) => {
         handleUpData={fetchStatusClose}
         loading={loadingRefuse}
       ></RefuseModal>
-      {/* 分享图 */}
+      {/* 设置 */}
       <ShareImg
         visible={visibleImg}
         childRef={childRef}
@@ -370,6 +389,6 @@ export default connect(({ sysTradeList, videoPlatform, loading }) => ({
   tradeList: sysTradeList.list.list,
   loadingRefuse: loading.effects['videoPlatform/fetchNewShareClose'],
   loading:
-    loading.effects['videoPlatform/fetchGetList'] ||
+    loading.effects['videoPlatform/fetchMerchVideoList'] ||
     loading.effects['videoPlatform/fetchNewShareDetail'],
 }))(VideoPlatform);

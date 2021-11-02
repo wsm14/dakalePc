@@ -207,7 +207,7 @@ const SharePutInSet = (props) => {
     },
     {
       label: '选择兴趣',
-      type: 'tags',
+      type: 'multiple',
       name: 'tagsId',
       multiple: true,
       visible: tasteType === 'tag',

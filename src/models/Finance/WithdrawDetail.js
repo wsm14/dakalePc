@@ -7,6 +7,9 @@ import {
   fetchWithdrawExpertList,
   fetchWithdrawExpertTotal,
   fetchWithdrawExpertSetRemark,
+  fetchWithdrawManagementList,
+  fetchWithdrawManagementTotal,
+  fetchWithdrawExportManagementExcel,
 } from '@/services/FinanceServices';
 
 export default {
@@ -14,6 +17,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    listCash: { list: [], total: 0 },
     expertlist: { list: [], total: 0 },
     totalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
     expretTotalData: { withdrawalFeeSum: 0, allWithdrawalFeeSum: 0, withdrawalHandlingFeeSum: 0 },
@@ -53,6 +57,37 @@ export default {
     },
     *fetchGetExcel({ payload, callback }, { call }) {
       const response = yield call(fetchWithdrawExportExcel, payload);
+      if (!response) return;
+      const { content } = response;
+      if (callback) callback(content.merchantBeanWithdrawalList);
+    },
+    //单店现金列表
+    *fetchGetCashList({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawManagementList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          listCash: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    //单店现金总和
+    *fetchWithdrawCashTotal({ payload }, { call, put }) {
+      const response = yield call(fetchWithdrawManagementTotal, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          totalData: content,
+        },
+      });
+    },
+    //单店列表导出
+    *fetchGetCashExcel({ payload, callback }, { call }) {
+      const response = yield call(fetchWithdrawExportManagementExcel, payload);
       if (!response) return;
       const { content } = response;
       if (callback) callback(content.merchantBeanWithdrawalList);

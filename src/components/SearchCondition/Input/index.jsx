@@ -6,7 +6,7 @@ import { Input } from 'antd';
  */
 
 const InputBlock = (props) => {
-  const { placeholder, label, ...other } = props;
+  const { placeholder, label, disabledDate, ...other } = props;
   // 返回结果
   return (
     <Input

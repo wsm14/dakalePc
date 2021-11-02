@@ -20,7 +20,7 @@ const UserDetailList = (props) => {
     },
     {
       key: 'earn',
-      tab: '收益卡豆',
+      tab: '现金收益',
     },
   ];
   useEffect(() => {
@@ -45,16 +45,19 @@ const UserDetailList = (props) => {
           dataIndex: 'detailTitle',
         },
         {
-          title: '关联店铺',
+          title: tabKey === 'earn' ? '关联店铺' : '关联店铺/视频',
           align: 'center',
           dataIndex: 'detailContent',
           render: (val) => val || '--',
         },
         {
-          title: '卡豆明细',
+          title: tabKey === 'earn' ? '现金明细' : '卡豆明细',
           align: 'center',
           dataIndex: 'beanAmount',
-          render: (val, row) => `${row.detailType === 'add' ? '+' : '-'}${val}`,
+          render: (val, row) =>
+            `${row.detailType === 'add' ? '+' : '-'}${
+              tabKey === 'earn' ? (val / 100).toFixed(2) : val
+            }`,
         },
         {
           title: '收支状态',

@@ -6,6 +6,7 @@ import BusinessTotalInfo from './components/Business/BusinessTotalInfo';
 
 const AccountBusinessList = (props) => {
   const { list, loading, dispatch } = props;
+  // console.log('list', list);
 
   const [visible, setVisible] = useState('');
 
@@ -89,6 +90,18 @@ const AccountBusinessList = (props) => {
       render: (val) => val || 0,
     },
     {
+      title: '累计收益（现金）',
+      align: 'right',
+      dataIndex: 'totalDirectCash',
+      render: (val) => `￥${(Number(val) || 0).toFixed(2)}`,
+    },
+    {
+      title: '累计提现（现金）',
+      align: 'right',
+      dataIndex: 'totalWithdrawFee',
+      render: (val) => `￥${(Number(val) || 0).toFixed(2)}`,
+    },
+    {
       title: '收益卡豆余额（卡豆）',
       align: 'right',
       dataIndex: 'bean',
@@ -101,6 +114,12 @@ const AccountBusinessList = (props) => {
       render: (val) => val || 0,
     },
     {
+      title: '现金账户余额',
+      align: 'right',
+      dataIndex: 'directCash',
+      render: (val) => `￥${(Number(val) || 0).toFixed(2)}`,
+    },
+    {
       type: 'handle',
       dataIndex: 'id',
       render: (val, record) => [
@@ -111,7 +130,7 @@ const AccountBusinessList = (props) => {
         },
         {
           auth: 'withdraw',
-          title: '提现记录',
+          title: '现金账户明细',
           click: () => setVisible({ type: 'collect', record }),
         },
         {

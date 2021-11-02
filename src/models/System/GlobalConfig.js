@@ -8,6 +8,16 @@ import {
   fetchUpdateFestivalConfig,
   fetchFestivalConfigDetail,
   fetchFestivalConfigDown,
+  fetchListMomentTag,
+  fetchSaveMomentTagAdd,
+  fetchGetMomentTagById,
+  fetchUpdateMomentTag,
+  fetchIndexTabList,
+  fetchIndexTabAdd,
+  fetchIndexTabEdit,
+  fetchGetIndexTabById,
+  fetchGetRechargeShareImg,
+  fetchSaveRechargeShareImg,
 } from '@/services/SystemServices';
 
 export default {
@@ -18,6 +28,10 @@ export default {
       list: [],
       total: 0,
     },
+    UgcLabelList: { list: [] },
+    IndexTabList: { list: [] },
+    IndexTabModalList: { list: [] },
+    TagObj: { defaultTagNames: [], tagNames: [] },
   },
 
   reducers: {
@@ -165,6 +179,138 @@ export default {
       notification.success({
         message: '温馨提示',
         description: '下架成功',
+      });
+      callback();
+    },
+    *fetchListMomentTag({ payload }, { call, put }) {
+      const response = yield call(fetchListMomentTag, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          UgcLabelList: { list: content.configMomentTagList, total: content.total },
+        },
+      });
+    },
+    *fetchSaveMomentTagAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveMomentTagAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchGetMomentTagById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetMomentTagById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { configMomentTag = {} } = content;
+      callback(configMomentTag);
+    },
+    *fetchUpdateMomentTag({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateMomentTag, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
+    },
+    *fetchIndexTabList({ payload }, { call, put }) {
+      const response = yield call(fetchIndexTabList, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          IndexTabList: { list: content.configIndexTabList },
+        },
+      });
+    },
+    *fetchIndexTabModalList({ payload }, { call, put }) {
+      const response = yield call(fetchIndexTabList, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          IndexTabModalList: { list: content.configIndexTabList },
+        },
+      });
+    },
+    *fetchIndexTabAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchIndexTabAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchIndexTabEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchIndexTabEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
+    },
+    *fetchTabIndexTag({ payload, callback }, { call, put }) {
+      const response = yield call(fetchListMomentTag, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { configMomentTagList = [] } = content;
+      let pickUpId = '';
+      yield put({
+        type: 'save',
+        payload: {
+          TagObj: {
+            defaultTagNames: configMomentTagList
+              .filter((item) => item.type !== 'UGC')
+              .map((i) => {
+                if (i.type === 'pickUp') {
+                  pickUpId = i.configMomentTagId;
+                  return { ...i, disabled: true };
+                }
+                return i;
+              }),
+            tagNames: configMomentTagList.filter((item) => item.type === 'UGC'),
+          },
+        },
+      });
+      callback && callback(pickUpId);
+    },
+    *fetchGetIndexTabById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetIndexTabById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { configIndexTab = {} } = content;
+      const { defaultTags: dtag, tags, cityCode, ...other } = configIndexTab;
+      const newDetails = {
+        ...other,
+        cityCode: cityCode ? [cityCode.slice(0, 2), cityCode] : [],
+        defaultTags: dtag ? dtag.split(',') : [],
+        tags: tags ? tags.split(',') : [],
+      };
+      callback(newDetails);
+    },
+    *fetchGetShareImgValue({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetRechargeShareImg, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const list = { shareImg: content.shareImg };
+      console.log(list);
+      callback(list);
+    },
+    *fetchSaveRechargeShareImg({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveRechargeShareImg, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '图片上传成功',
       });
       callback();
     },

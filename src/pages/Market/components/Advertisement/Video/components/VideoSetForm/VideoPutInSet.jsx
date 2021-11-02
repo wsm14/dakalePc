@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, message } from 'antd';
 import {
   AMAP_KEY,
-  VIDEO_ADVERT_PLACE,
   SHARE_AREA_TYPE,
   SHARE_TASTE_TYPE,
   SHARE_SEX_TYPE,
@@ -18,11 +17,12 @@ import FormCondition from '@/components/FormCondition';
  * 投放设置
  */
 const VideoPutInSet = (props) => {
-  const { form, dispatch, propertyJSON = {}, tasteTag, detail = {} } = props;
+  const { form, dispatch, propertyJSON = {}, tasteTag, detail = {}, tagList } = props;
+
   // 默认选择项
   const inputData = {
     gender: 'ALL',
-    browseType: 'ALL',
+    browse: 'All',
     areaType: 'all',
     taste: 'all',
     age: '0-100',
@@ -34,6 +34,7 @@ const VideoPutInSet = (props) => {
   const [radius, setRadius] = useState(0); // 地域选择 - 半径
   const [ageType, setAgeType] = useState('0-100'); // 年龄
   const [tasteType, setTastetype] = useState('all'); // 兴趣选择
+  const [browseTypes, setBrowseTypes] = useState('All'); // 推荐位置
 
   useEffect(() => {
     fetchGetPropertyJSON();
@@ -41,6 +42,10 @@ const VideoPutInSet = (props) => {
     setAreaType(detail.areaType);
     setAgeType(detail.age);
     setTastetype(detail.taste);
+    setBrowseTypes(detail.browse || 'All');
+    if (detail.browse != 'other') {
+      form.setFieldsValue({ browseType: Object.keys(tagList) });
+    }
   }, []);
 
   // 获取配置文件
@@ -129,9 +134,20 @@ const VideoPutInSet = (props) => {
   const formItems = [
     {
       label: '推荐位置',
-      name: 'browseType',
+      name: 'browse',
       type: 'radio',
-      select: VIDEO_ADVERT_PLACE,
+      select: { All: '全部', other: '自定义' },
+      onChange: (e) => {
+        form.setFieldsValue({ browseType: Object.keys(tagList) });
+        setBrowseTypes(e.target.value);
+      },
+    },
+    {
+      label: '位置选择',
+      name: 'browseType',
+      type: 'checkbox',
+      disabled: browseTypes === 'All',
+      select: tagList,
     },
     {
       label: '性别',
@@ -219,7 +235,7 @@ const VideoPutInSet = (props) => {
     },
     {
       label: '选择兴趣',
-      type: 'tags',
+      type: 'multiple',
       name: 'tagsId',
       multiple: true,
       visible: tasteType === 'tag',
@@ -240,7 +256,8 @@ const VideoPutInSet = (props) => {
   );
 };
 
-export default connect(({ baseData, businessList, loading }) => ({
+export default connect(({ videoAdvert, baseData, businessList, loading }) => ({
+  tagList: videoAdvert.tagList,
   tasteTag: baseData.tasteTag,
   propertyJSON: baseData.propertyJSON,
   selectList: businessList.selectList,

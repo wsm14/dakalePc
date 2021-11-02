@@ -25,11 +25,24 @@ import AuthConsumer from '@/layouts/AuthConsumer';
 import ShareImg from './components/SpecialGoods/ShareImg';
 import { checkCityName } from '@/utils/utils';
 
+// tab栏列表
+const tabList = [
+  {
+    key: '0',
+    tab: '特惠商品',
+  },
+  {
+    key: '1',
+    tab: '自我游',
+  },
+];
+
 const SpecialGoods = (props) => {
   const { specialGoods, loading, loadings, hubData, dispatch } = props;
   const { list } = specialGoods;
 
   const childRef = useRef();
+  const [tabKey, setTabKey] = useState('0'); // tab
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
   const [searchType, setSearchType] = useState(null); // 搜索类型
   const [goodsList, setGoodsList] = useState([]); // 选择推荐的商品
@@ -40,6 +53,10 @@ const SpecialGoods = (props) => {
   const [visibleShare, setVisibleShare] = useState(false);
 
   const search_recommend = { notPromoted: '未推广', ...SPECIAL_RECOMMEND_TYPE };
+
+  useEffect(() => {
+    childRef.current && childRef.current.fetchGetData({ deleteFlag: '1', selfTourFlag: tabKey });
+  }, [tabKey]);
 
   useEffect(() => {
     if (childRef.current) {
@@ -117,6 +134,7 @@ const SpecialGoods = (props) => {
     {
       label: '推广位置',
       type: 'select',
+      show: tabKey === '0',
       name: 'promotionLocation',
       select: search_recommend,
     },
@@ -504,11 +522,15 @@ const SpecialGoods = (props) => {
         keepData
         btnExtra={extraBtn}
         cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: setTabKey,
           extra: (
             <ExtraButton list={btnList}>
               <AuthConsumer auth={'recommendStatus'}>
                 <SpecialRecommendMenu
                   num={goodsList.length}
+                  tabKey={tabKey}
                   handleRecommend={(val) =>
                     fetchSpecialGoodsRecommend({ specialGoodsId: goodsList.toString(), ...val })
                   }
@@ -522,7 +544,7 @@ const SpecialGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ deleteFlag: '1' }}
+        params={{ deleteFlag: '1', selfTourFlag: tabKey }}
         rowKey={(record) => `${record.specialGoodsId}`}
         rowSelection={{
           getCheckboxProps: ({ status, deleteFlag }) => ({

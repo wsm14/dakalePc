@@ -265,7 +265,7 @@ export function fetchShareWeightSet(data) {
 
 // 分享管理 end
 
-// 平台视频
+// 平台视频  分为 -商家视频-UGC视频
 
 // get 平台视频 - 列表
 export function fetchNewShareList(params) {
@@ -275,6 +275,7 @@ export function fetchNewShareList(params) {
 }
 
 // get 平台视频 - 内容详情
+// get UGC视频 - UGC视频详情展示定位
 export function fetchNewShareDetail(params) {
   return request('/admin/marketing/moment/new/momentDetail', {
     params,
@@ -297,6 +298,7 @@ export function fetchNewShareAuditEdit(data) {
 }
 
 // post 平台视频 - 修改视频（不审核）
+// post 商家/UGC视频 - 商家、UGC视频设置收藏分享数
 export function fetchNewShareNoAudit(data) {
   return request('/admin/marketing/moment/new/updateMomentDirect', {
     method: 'POST',
@@ -341,6 +343,43 @@ export function fetchNewShareRewardCancel(data) {
   return request('/admin/marketing/moment/tipping/cancelTipping', {
     method: 'POST',
     data,
+  });
+}
+
+// get UGC视频 - 读取UGC视频平台奖励卡豆规则/读取UGC视频打赏规则
+export function fetchUGCVideoBeanRules(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// post UGC视频 - UGC视频平台奖励卡豆规则设置
+export function fetchUGCVideoBeanRulesSet(data) {
+  return request('/admin/marketing/moment/new/setUGCMomentPlatformRewardBeanRule', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post UGC视频 - UGC视频打赏规则设置
+export function fetchUGCVideoRulesSet(data) {
+  return request('/admin/marketing/moment/new/setUGCMomentRewardRule', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 商家/UGC视频 - 获取商家、UGC视频列表
+export function fetchUGCVideoList(params) {
+  return request('/admin/marketing/moment/new/listMoment', {
+    params,
+  });
+}
+
+// get UGC视频 - 获取UGC视频打赏明细
+export function fetchUGCVideoRewardInfo(params) {
+  return request('/admin/marketing/moment/new/listUserRewardRecord', {
+    params,
   });
 }
 
