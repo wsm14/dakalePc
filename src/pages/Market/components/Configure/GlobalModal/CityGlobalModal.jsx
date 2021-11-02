@@ -5,41 +5,43 @@ import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ShareWeightSet from './components/ShareWeightSet';
 import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
+import { MODAL_FREQUENCY, BANNER_LOOK_AREA } from '@/common/constant';
 
 const tabList = [
   {
-    key: 'user',
+    key: 'pickup',
     tab: '捡豆页面',
   },
   {
-    key: 'merchant',
+    key: 'wanderAround',
     tab: '逛逛页面',
   },
   {
-    key: '11',
+    key: 'main',
     tab: '我的页面',
   },
   {
-    key: '22',
+    key: 'goodsDetail',
     tab: '商品详情页',
   },
 ];
 
 const CityGlobalModal = (props) => {
-  const { configureList, loading, visible, onClose } = props;
+  const { modalConfigureList, loading, visible, onClose, dispatch } = props;
   const { show } = visible;
   const tableRef = useRef();
-  const [tabKey, setTabKey] = useState('user');
+  const [tabKey, setTabKey] = useState('pickup');
   const [visibleSet, setVisibleSet] = useState(false);
 
   const getColumns = [
     {
       title: '弹窗名称',
-      dataIndex: 'matterName',
+      dataIndex: 'name',
     },
     {
       title: '弹窗频率',
-      dataIndex: 'creator',
+      dataIndex: 'frequencyType',
+      render: (val) => MODAL_FREQUENCY[val],
     },
     {
       title: '活动时间',
@@ -47,11 +49,12 @@ const CityGlobalModal = (props) => {
     },
     {
       title: '可见范围',
-      dataIndex: 'creator',
+      dataIndex: 'visibleRange',
+      render: (val) => BANNER_LOOK_AREA[val],
     },
     {
       title: '活动状态',
-      dataIndex: 'creator',
+      dataIndex: 'status',
     },
     {
       title: '权重',
@@ -95,8 +98,9 @@ const CityGlobalModal = (props) => {
 
   // 修改不审核
   const fetchNewShareNoAudit = (values, callback) => {
+    console.log(values, callback);
     dispatch({
-      type: 'videoPlatform/fetchNewShareNoAudit',
+      type: 'marketConfigure/fetchGlobalPopUpEdit',
       payload: values,
       callback,
     });
@@ -123,7 +127,7 @@ const CityGlobalModal = (props) => {
     <>
       <Modal destroyOnClose {...modalProps} loading={loading}>
         <TableDataBlock
-          firstFetch={false}
+          // firstFetch={false}
           cardProps={{
             tabList: tabList,
             activeTabKey: tabKey,
@@ -134,10 +138,10 @@ const CityGlobalModal = (props) => {
           cRef={tableRef}
           loading={loading}
           columns={getColumns}
-          rowKey={(record) => `${record.matterConfigId}`}
-          dispatchType="marketConfigure/fetchAroundModuleCityList"
-          params={{ matterType: tabKey }}
-          {...configureList}
+          rowKey={(record) => `${record.configGlobalPopUpId}`}
+          dispatchType="marketConfigure/fetchGlobalPopUpModalList"
+          params={{ pageType: tabKey }}
+          {...modalConfigureList}
         ></TableDataBlock>
       </Modal>
       {/* 新增/编辑 */}
@@ -150,6 +154,6 @@ const CityGlobalModal = (props) => {
   );
 };
 export default connect(({ loading, marketConfigure }) => ({
-  configureList: marketConfigure.configureList,
-  loading: loading.effects['marketConfigure/fetchAroundModuleCityList'],
+  modalConfigureList: marketConfigure.modalConfigureList,
+  loading: loading.effects['marketConfigure/fetchGlobalPopUpModalList'],
 }))(CityGlobalModal);

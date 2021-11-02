@@ -13,7 +13,7 @@ const ShareWeightSet = ({ detail, onSubmit, loading }) => {
   const [form] = Form.useForm();
   const [editType, setEditType] = useState(false);
 
-  const { momentId, weight, ownerId } = detail;
+  const { configGlobalPopUpId, weight } = detail;
 
   const setEdit = () => setEditType(!editType);
 
@@ -22,8 +22,8 @@ const ShareWeightSet = ({ detail, onSubmit, loading }) => {
     form.validateFields().then(({ weight }) => {
       onSubmit(
         {
-          momentId,
-          ownerId,
+          flag: 'updateWeight',
+          configGlobalPopUpId,
           weight,
         },
         setEdit,

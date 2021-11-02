@@ -120,5 +120,5 @@ const TabConfigure = (props) => {
 
 export default connect(({ loading, walkingManage }) => ({
   editionList: walkingManage.editionList,
-  loading: loading.models.walkingManage,
+  loading: loading.effects['walkingManage/fetchAroundModuleList'],
 }))(TabConfigure);

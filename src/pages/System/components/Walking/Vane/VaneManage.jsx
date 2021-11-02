@@ -10,7 +10,6 @@ import VaneDrawer from './components/VaneDrawer';
 const VaneManage = (props) => {
   const { list, loading, dispatch, visible = {}, onClose } = props;
   const { show } = visible;
-  console.log(show);
   const [cityCode, setCityCode] = useState(['33', '3301']);
 
   const childRef = useRef();
@@ -23,9 +22,10 @@ const VaneManage = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(childRef.current);
-    // childRef.current.fetchGetData({ cityCode: cityCode[1] });
-  }, [cityCode]);
+    if (show) {
+      childRef?.current?.fetchGetData({ cityCode: cityCode[1] });
+    }
+  }, [cityCode, show]);
 
   // 获取详情
   const fetchGetDetail = (val, record, type) => {
@@ -37,7 +37,7 @@ const VaneManage = (props) => {
         areaType: 'city',
         areaCode,
       },
-      callback: (detail) => setVisible({ show: true, type, detail }),
+      callback: (detail) => setVisibleDrawer({ show: true, type, detail }),
     });
   };
 
@@ -140,7 +140,7 @@ const VaneManage = (props) => {
 
   return (
     <>
-      <Modal destroyOnClose {...modalProps} loading={loading}>
+      <Modal destroyOnClose {...modalProps}>
         <TableDataBlock
           firstFetch={false}
           tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
@@ -155,7 +155,7 @@ const VaneManage = (props) => {
             ),
             bordered: false,
             extra: (
-              <Button type="primary" onClick={() => setVisible({ type: 'add', show: true })}>
+              <Button type="primary" onClick={() => setVisibleDrawer({ type: 'add', show: true })}>
                 新增
               </Button>
             ),

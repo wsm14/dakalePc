@@ -447,3 +447,35 @@ export function fetchAreaQueryInfoSet(data) {
 }
 
 // 区域查询系统 end
+
+//营销功能配置
+// get 区域查询系统 - 版本列表
+export function fetchGlobalPopUpList(params) {
+  return request('/admin/configGlobalPopUp/listConfigGlobalPopUp', {
+    params,
+  });
+}
+
+// post 全局弹窗配置-新增版本-新增城市-新增版本
+export function fetchGlobalPopUpAdd(data) {
+  return request('/admin/configGlobalPopUp/saveConfigGlobalPopUp', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-修改版本-编辑配置-编辑权重
+export function fetchGlobalPopUpEdit(data) {
+  return request('/admin/configGlobalPopUp/updateConfigGlobalPopUp', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-详情
+export function fetchGlobalPopUpConfigureDetail(data) {
+  return request('/admin/configGlobalPopUp/getConfigGlobalPopUpById', {
+    method: 'POST',
+    data,
+  });
+}

@@ -7,14 +7,10 @@ import CityDrawerSet from './components/CityDrawerSet';
 import CityGlobalModal from './CityGlobalModal';
 
 const CityTable = (props) => {
-  const { dispatch, loading, configureList, tabKey, version, fetchTable } = props;
+  const { dispatch, loading, modalCityList, tabKey, version } = props;
   const [visible, setVisible] = useState(false);
   const [visibleConfigure, setVisibleConfigure] = useState({ show: false, info: {} });
   const childRef = useRef();
-
-  useEffect(() => {
-    fetchTable && fetchTable(childRef);
-  }, []);
 
   const getColumns = [
     {
@@ -76,10 +72,10 @@ const CityTable = (props) => {
         loading={loading}
         columns={getColumns}
         btnExtra={cardBtnList}
-        rowKey={(record) => `${record.configWanderAroundModuleId}`}
+        rowKey={(record) => `${record.configGlobalPopUpId}`}
         params={{ userOs: tabKey, version }}
-        dispatchType="marketConfigure/fetchAroundModuleCityList"
-        {...configureList}
+        dispatchType="marketConfigure/fetchGlobalPopUpCityList"
+        {...modalCityList}
       ></TableDataBlock>
       {/* 新增弹窗 */}
       <CityDrawerSet
@@ -100,6 +96,6 @@ const CityTable = (props) => {
 };
 
 export default connect(({ loading, marketConfigure }) => ({
-  configureList: marketConfigure.configureList,
-  loading: loading.effects['marketConfigure/fetchAroundModuleCityList'],
+  modalCityList: marketConfigure.modalCityList,
+  loading: loading.effects['marketConfigure/fetchGlobalPopUpCityList'],
 }))(CityTable);

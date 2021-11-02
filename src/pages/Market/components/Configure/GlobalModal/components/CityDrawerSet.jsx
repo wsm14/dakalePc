@@ -16,7 +16,7 @@ const CityDrawerSet = (props) => {
     form.validateFields().then((values) => {
       const { cityCode, defaultTags = [], tags = [], ...ohter } = values;
       dispatch({
-        type: 'marketConfigure/fetchWanderAroundModuleAdd',
+        type: 'marketConfigure/fetchGlobalPopUpAdd',
         payload: {
           ...ohter,
           userOs: tabKey,
@@ -46,7 +46,7 @@ const CityDrawerSet = (props) => {
       <Button
         type="primary"
         onClick={handleSave}
-        loading={loading.effects['marketConfigure/fetchWanderAroundModuleAdd']}
+        loading={loading.effects['marketConfigure/fetchGlobalPopUpAdd']}
       >
         保存
       </Button>
