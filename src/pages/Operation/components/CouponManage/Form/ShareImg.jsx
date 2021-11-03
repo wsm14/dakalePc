@@ -10,9 +10,9 @@ const ShareImg = (props) => {
   const { visible, onClose, dispatch, loading } = props;
   const {
     show = false,
-    goodsName,
+    couponName,
     ownerName,
-    specialGoodsId = '',
+    ownerCouponIdString = '',
     ownerIdString = '',
     initialValues = {},
   } = visible;
@@ -36,14 +36,6 @@ const ShareImg = (props) => {
       extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
     },
     {
-      label: '推荐理由',
-      name: 'recommendReason',
-      type: 'textArea',
-      maxLength: 100,
-      rows: 3,
-      rules: [{ required: false }],
-    },
-    {
       label: '自定义标题',
       name: 'customTitle',
       type: 'textArea',
@@ -54,17 +46,16 @@ const ShareImg = (props) => {
   ];
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { shareImg = '', friendShareImg = '', recommendReason, customTitle } = values;
+      const { shareImg = '', friendShareImg = '', customTitle } = values;
       const sImg = await aliOssUpload(shareImg);
       const fImg = await aliOssUpload(friendShareImg);
       dispatch({
-        type: 'specialGoods/fetchSpecialGoodsShareEdit',
+        type: 'couponManage/fetchCouponManageShareEdit',
         payload: {
-          id: specialGoodsId,
-          ownerId: ownerIdString,
+          ownerCouponIdString,
+          ownerIdString,
           shareImg: sImg.toString(),
           friendShareImg: fImg.toString(),
-          recommendReason,
           customTitle,
         },
         callback: onClose,
@@ -74,7 +65,7 @@ const ShareImg = (props) => {
 
   const modalProps = {
     visible: show,
-    title: `${ownerName}--${goodsName}`,
+    title: `${ownerName}--${couponName}`,
     onClose,
     footer: (
       <Button type="primary" onClick={handleSave} loading={loading}>
@@ -94,5 +85,5 @@ const ShareImg = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialGoodsShareEdit'],
+  loading: loading.effects['couponManage/fetchCouponManageShareEdit'],
 }))(ShareImg);

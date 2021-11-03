@@ -168,6 +168,7 @@ export default [
           'bussinessStatus',
           'diary',
           'rate',
+          'shareImg',
         ],
       },
       {
@@ -322,6 +323,21 @@ export default [
         buttons: ['exportList'],
       },
       // 广告营销 market
+      {
+        path: '/market/addNewActivity',
+        name: '拉新活动',
+        component: './Market/AddNewActivity',
+        buttons: [
+          'save',
+          'eye',
+          'edit',
+          'down',
+          'couponAdd',
+          'destoryDetail',
+          'orderDetail',
+          'couponDetail',
+        ],
+      },
       {
         path: '/market/areaQuery',
         name: '合伙查询系统',
@@ -497,6 +513,7 @@ export default [
           'exportList',
           'diary',
           'addRemain',
+          'shareImg',
         ],
       },
       {

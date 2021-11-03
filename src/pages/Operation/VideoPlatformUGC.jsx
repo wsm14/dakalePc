@@ -31,11 +31,12 @@ const VideoPlatformUGC = (props) => {
   const childRef = useRef();
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState(null); // tab
-  const [visible, setVisible] = useState(false); // 详情
+  const [visible, setVisible] = useState(false); // 详情+分享配置
   const [visibleShare, setVisibleShare] = useState(false); // 配置
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleImg, setVisibleImg] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏明细
+
   // tab列表
   const tabList = tabs;
 
@@ -182,6 +183,11 @@ const VideoPlatformUGC = (props) => {
             type: 'rewardInfo', // 打赏明细 已打赏显示按钮 未打赏只有下架状态不显示按钮
             click: () => setVisibleReward({ show: true, detail: record }),
           },
+          {
+            title: '分享配置',
+            type: 'shareImg',
+            click: () => fetchShareDetail(index, 'share'),
+          },
         ];
       },
     },
@@ -275,8 +281,9 @@ const VideoPlatformUGC = (props) => {
       ></TableDataBlock>
       {/* UGC配置 */}
       <UGCDrawer visible={visibleShare} onClose={() => setVisibleShare(false)}></UGCDrawer>
-      {/* 详情 修改 编辑画像 带货设置*/}
+      {/* 详情 修改 编辑画像 带货设置 分享配置*/}
       <ShareDetail
+        childRef={childRef}
         tabKey={tabKey}
         total={list.length}
         visible={visible}

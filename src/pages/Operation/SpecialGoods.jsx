@@ -379,7 +379,7 @@ const SpecialGoods = (props) => {
             click: () => fetAddRemain(specialGoodsId, record.ownerIdString, record.remain),
           },
           {
-            title: '分享图',
+            title: '分享配置',
             type: 'shareImg',
             click: () => fetchShareImg(record),
           },
@@ -388,17 +388,19 @@ const SpecialGoods = (props) => {
     },
   ];
 
-  // 分享图
+  // 分享配置
   const fetchShareImg = (record) => {
     const { specialGoodsId, ownerIdString, goodsName, ownerName } = record;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
       payload: { specialGoodsId, ownerId: ownerIdString },
       callback: (val) => {
-        const { shareImg, friendShareImg } = val;
+        const { shareImg, friendShareImg, recommendReason, customTitle } = val;
         const initialValues = {
           shareImg,
           friendShareImg,
+          recommendReason,
+          customTitle,
         };
         setVisibleShare({
           show: true,
@@ -591,7 +593,7 @@ const SpecialGoods = (props) => {
         visible={visibleRemain}
         onClose={() => setVisibleRemain(false)}
       ></RemainModal>
-      {/* 分享图 */}
+      {/* 分享配置 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
