@@ -16,17 +16,14 @@ const CityDrawerSet = (props) => {
     form.validateFields().then((values) => {
       const { cityCode, defaultTags = [], tags = [], ...ohter } = values;
       dispatch({
-        type: 'marketConfigure/fetchWanderAroundModuleAdd',
+        type: 'marketConfigure/fetchGlobalPopUpAdd',
         payload: {
           ...ohter,
           userOs: tabKey,
           version: version,
           cityCode: cityCode && cityCode[1],
           configIndexTabId: detail?.configIndexTabId,
-          flag: {
-            add: 'addCity',
-            edit: 'updateTag',
-          }[type],
+          flag: 'addCity',
         },
         callback: () => {
           onClose();
@@ -46,7 +43,7 @@ const CityDrawerSet = (props) => {
       <Button
         type="primary"
         onClick={handleSave}
-        loading={loading.effects['marketConfigure/fetchWanderAroundModuleAdd']}
+        loading={loading.effects['marketConfigure/fetchGlobalPopUpAdd']}
       >
         保存
       </Button>

@@ -185,11 +185,17 @@ export const BANNER_LOOK_AREA = {
   user: '仅用户可见',
 };
 
-// 广告管理 - 弹窗频率
+// 全局弹窗配置 - 弹窗频率
 export const MODAL_FREQUENCY = { day: '每天一次', times: '每次进入页面', only: '仅弹一次' };
 
-// 广告管理 - 弹窗类型
+// 全局弹窗配置 - 弹窗类型
 export const MARKET_MODAL_TYPE = { image: '图片', url: '链接' };
+
+// 全局弹窗配置 - 活动状态
+export const MARKET_STATUS_TYPE = ['即将开始', '展示中', '已结束'];
+
+//全局弹窗配置 - 跳转类型
+export const MARKET_JUMP_TYPE = { '': '无', H5: 'H5', native: '原生页面' };
 
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];

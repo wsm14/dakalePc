@@ -456,7 +456,7 @@ export function fetchGlobalPopUpList(params) {
   });
 }
 
-// post 全局弹窗配置-新增版本-新增城市-新增版本
+// post 全局弹窗配置-新增版本-新增城市-新增版本-新增配置
 export function fetchGlobalPopUpAdd(data) {
   return request('/admin/configGlobalPopUp/saveConfigGlobalPopUp', {
     method: 'POST',
@@ -464,7 +464,7 @@ export function fetchGlobalPopUpAdd(data) {
   });
 }
 
-// post 全局弹窗配置-修改版本-编辑配置-编辑权重
+// post 全局弹窗配置-修改版本-编辑配置-编辑权重-下架-删除
 export function fetchGlobalPopUpEdit(data) {
   return request('/admin/configGlobalPopUp/updateConfigGlobalPopUp', {
     method: 'POST',
@@ -473,9 +473,8 @@ export function fetchGlobalPopUpEdit(data) {
 }
 
 // post 全局弹窗配置-详情
-export function fetchGlobalPopUpConfigureDetail(data) {
+export function fetchGlobalPopUpConfigureDetail(params) {
   return request('/admin/configGlobalPopUp/getConfigGlobalPopUpById', {
-    method: 'POST',
-    data,
+    params,
   });
 }

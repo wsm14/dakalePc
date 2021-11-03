@@ -1,8 +1,10 @@
 import { notification } from 'antd';
+import moment from 'moment';
 import {
   fetchGlobalPopUpList,
   fetchGlobalPopUpAdd,
   fetchGlobalPopUpEdit,
+  fetchGlobalPopUpConfigureDetail,
 } from '@/services/MarketServices';
 
 export default {
@@ -12,6 +14,7 @@ export default {
     modalEditionList: { list: [] },
     modalCityList: { list: [] },
     modalConfigureList: { list: [] },
+    addParams: {},
   },
 
   reducers: {
@@ -44,7 +47,7 @@ export default {
       });
       callback();
     },
-    //全局弹窗配置-修改版本-编辑配置-编辑权重
+    //全局弹窗配置-修改版本-编辑配置-编辑权重-下架-删除
     *fetchGlobalPopUpEdit({ payload, callback }, { call }) {
       const response = yield call(fetchGlobalPopUpEdit, payload);
       if (!response) return;
@@ -75,6 +78,21 @@ export default {
           modalConfigureList: { list: content.configGlobalPopUpDTOS },
         },
       });
+    },
+    //全局弹窗配置-详情
+    *fetchGlobalPopUpConfigureDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchGlobalPopUpConfigureDetail, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { configGlobalPopUpDTO = {} } = content;
+      //开始时间和结束时间
+      let { activityBeginTime, activityEndTime } = configGlobalPopUpDTO;
+
+      activityBeginTime = activityBeginTime
+        ? [moment(activityBeginTime), moment(activityEndTime)]
+        : '';
+
+      callback({ ...configGlobalPopUpDTO, activityBeginTime });
     },
   },
 };

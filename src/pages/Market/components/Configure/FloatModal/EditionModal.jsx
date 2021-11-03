@@ -6,19 +6,19 @@ import FormCondition from '@/components/FormCondition';
 const EditionModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef, tabKey } = props;
   const { show = false, type, detail = {} } = visible;
-  const { configWanderAroundModuleId } = detail;
+  const { configGlobalPopUpId } = detail;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
         type: {
-          add: 'marketConfigure/fetchAroundModuleAdd',
-          edit: 'marketConfigure/fetchAroundModuleEdit',
+          add: 'marketConfigure/fetchGlobalPopUpAdd',
+          edit: 'marketConfigure/fetchGlobalPopUpEdit',
         }[type],
         payload: {
           userOs: tabKey,
-          configWanderAroundModuleId,
+          configGlobalPopUpId,
           flag: {
             add: 'addVersion',
             edit: 'updateVersion',
@@ -55,5 +55,7 @@ const EditionModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['marketConfigure/fetchAroundModuleAdd'],
+  loading:
+    loading.effects['marketConfigure/fetchGlobalPopUpAdd'] ||
+    loading.effects['marketConfigure/fetchGlobalPopUpEdit'],
 }))(EditionModal);

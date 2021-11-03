@@ -5,7 +5,7 @@ import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ShareWeightSet from './components/ShareWeightSet';
 import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
-import { MODAL_FREQUENCY, BANNER_LOOK_AREA } from '@/common/constant';
+import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_STATUS_TYPE } from '@/common/constant';
 
 const tabList = [
   {
@@ -28,10 +28,15 @@ const tabList = [
 
 const CityGlobalModal = (props) => {
   const { modalConfigureList, loading, visible, onClose, dispatch } = props;
-  const { show } = visible;
-  const tableRef = useRef();
+  const { show, detail = {} } = visible;
+  const childRef = useRef();
+  //tab切换
   const [tabKey, setTabKey] = useState('pickup');
   const [visibleSet, setVisibleSet] = useState(false);
+
+  useEffect(() => {
+    childRef.current && childRef.current.fetchGetData({ pageType: tabKey });
+  }, [tabKey]);
 
   const getColumns = [
     {
@@ -45,7 +50,8 @@ const CityGlobalModal = (props) => {
     },
     {
       title: '活动时间',
-      dataIndex: 'createTime',
+      dataIndex: 'activityBeginTime',
+      render: (val, row) => (val ? `${val}~${row?.activityEndTime}` : '--'),
     },
     {
       title: '可见范围',
@@ -55,6 +61,7 @@ const CityGlobalModal = (props) => {
     {
       title: '活动状态',
       dataIndex: 'status',
+      render: (val) => MARKET_STATUS_TYPE[val],
     },
     {
       title: '权重',
@@ -67,38 +74,82 @@ const CityGlobalModal = (props) => {
     },
     {
       type: 'handle',
-      dataIndex: 'url',
-      render: (val) => [
-        {
-          type: 'edit',
-          click: () => handleEdit(val, row),
-          auth: true,
-        },
-        {
-          type: 'down',
-          click: () => handleEdit(val, row),
-          auth: true,
-        },
-        {
-          type: 'del',
-          click: () => handleEdit(val, row),
-          auth: true,
-        },
-      ],
+      dataIndex: 'configGlobalPopUpId',
+      render: (val, row) => {
+        const { status } = row;
+
+        return [
+          {
+            type: 'edit',
+            visible: status !== '2',
+            click: () => handleEdit(val),
+          },
+          {
+            type: 'down',
+            visible: status !== '2',
+            click: () => handleDown(val),
+          },
+          {
+            type: 'del',
+            visible: status === '2',
+            click: () => handleDelete(val),
+          },
+        ];
+      },
     },
   ];
 
-  //  新增/编辑
-  const handleUpdateSet = () => {
+  //  新增
+  const handleAdd = () => {
     setVisibleSet({
       show: true,
-      tabKey,
+      detail: { ...detail, pageType: tabKey, popUpType: 'image' },
     });
   };
 
-  // 修改不审核
+  //编辑
+  const handleEdit = (configGlobalPopUpId) => {
+    dispatch({
+      type: 'marketConfigure/fetchGlobalPopUpConfigureDetail',
+      payload: {
+        configGlobalPopUpId,
+      },
+      callback: (detail) => {
+        setVisibleSet({
+          show: true,
+          type: 'edit',
+          detail,
+        });
+      },
+    });
+  };
+
+  //下架
+  const handleDown = (configGlobalPopUpId) => {
+    dispatch({
+      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      payload: {
+        configGlobalPopUpId,
+        flag: 'offShelf',
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  //删除
+  const handleDelete = (configGlobalPopUpId) => {
+    dispatch({
+      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      payload: {
+        configGlobalPopUpId,
+        flag: 'delete',
+      },
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 编辑权重
   const fetchNewShareNoAudit = (values, callback) => {
-    console.log(values, callback);
     dispatch({
       type: 'marketConfigure/fetchGlobalPopUpEdit',
       payload: values,
@@ -111,7 +162,7 @@ const CityGlobalModal = (props) => {
       text: '新增',
       auth: 'save',
       className: 'dkl_blue_btn',
-      onClick: handleUpdateSet,
+      onClick: handleAdd,
     },
   ];
   const modalProps = {
@@ -121,13 +172,13 @@ const CityGlobalModal = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
+    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
 
   return (
     <>
       <Modal destroyOnClose {...modalProps} loading={loading}>
         <TableDataBlock
-          // firstFetch={false}
           cardProps={{
             tabList: tabList,
             activeTabKey: tabKey,
@@ -135,7 +186,8 @@ const CityGlobalModal = (props) => {
             tabBarExtraContent: <ExtraButton list={cardBtnList}></ExtraButton>,
             bordered: false,
           }}
-          cRef={tableRef}
+          pagination={false}
+          cRef={childRef}
           loading={loading}
           columns={getColumns}
           rowKey={(record) => `${record.configGlobalPopUpId}`}
@@ -147,7 +199,7 @@ const CityGlobalModal = (props) => {
       {/* 新增/编辑 */}
       <GlobalModalDrawerSet
         visible={visibleSet}
-        childRef={tableRef}
+        childRef={childRef}
         onClose={() => setVisibleSet(false)}
       ></GlobalModalDrawerSet>
     </>

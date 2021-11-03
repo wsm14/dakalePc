@@ -16,6 +16,7 @@ const CityModal = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
+    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
   return (
     <Modal destroyOnClose {...modalProps} loading={loading}>
@@ -24,5 +25,5 @@ const CityModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['marketConfigure/fetchAroundModuleCityList'],
+  loading: loading.effects['marketConfigure/fetchGlobalPopUpCityList'],
 }))(CityModal);

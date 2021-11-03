@@ -23,10 +23,7 @@ const CityDrawerSet = (props) => {
           version: version,
           cityCode: cityCode && cityCode[1],
           configIndexTabId: detail?.configIndexTabId,
-          flag: {
-            add: 'addCity',
-            edit: 'updateTag',
-          }[type],
+          flag: 'addCity',
         },
         callback: () => {
           onClose();

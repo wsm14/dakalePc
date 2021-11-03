@@ -70,7 +70,12 @@ const Index = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat') {
-      childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
+      childRef?.current?.fetchGetData({
+        userOs: key,
+        area: 'all',
+        pageType: 'pickup',
+        isAutomatic: 1,
+      });
     }
   };
 
@@ -90,9 +95,9 @@ const Index = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
-            rowKey={(record) => `${record.configWanderAroundModuleId}`}
-            params={{ userOs: tabKey, area: 'all' }}
-            dispatchType="marketConfigure/fetchAroundModuleList"
+            rowKey={(record) => `${record.configGlobalPopUpId}`}
+            params={{ userOs: tabKey, area: 'all', pageType: 'pickup', isAutomatic: 1 }}
+            dispatchType="marketConfigure/fetchGlobalPopUpEditionList"
             {...editionList}
           />
         ) : (
@@ -118,6 +123,6 @@ const Index = (props) => {
 };
 
 export default connect(({ loading, marketConfigure }) => ({
-  editionList: marketConfigure.editionList,
+  editionList: marketConfigure.modalEditionList,
   loading: loading.models.marketConfigure,
 }))(Index);

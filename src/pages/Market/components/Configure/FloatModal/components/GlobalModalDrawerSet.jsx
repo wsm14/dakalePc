@@ -3,35 +3,39 @@ import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
-import {
-  MODAL_FREQUENCY,
-  BANNER_JUMP_TYPE,
-  BANNER_LOOK_AREA,
-  MARKET_MODAL_TYPE,
-} from '@/common/constant';
+import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_MODAL_TYPE } from '@/common/constant';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import { LABEL_ICON } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
-const UgcLabelSet = (props) => {
+const GlobalModalDrawerSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef } = props;
   const { show = false, type = 'add', detail = {} } = visible;
+  console.log(detail);
+  const [modalType, setModalType] = useState('');
   const [form] = Form.useForm();
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       console.log(values);
-      const { img, ...ohter } = values;
+      const { popUpImage, ...ohter } = values;
+      const { userOs, version, area, cityCode, pageType } = detail;
+      const detailParam = { userOs, version, area, cityCode, pageType };
       // 上传图片到oss -> 提交表单
-      const imgList = await aliOssUpload(img);
+      const imgList = await aliOssUpload(popUpImage);
       dispatch({
         type: {
-          add: 'globalConfig/fetchSaveMomentTagAdd',
-          edit: 'globalConfig/fetchUpdateMomentTag',
+          add: 'marketConfigure/fetchGlobalPopUpAdd',
+          edit: 'marketConfigure/fetchGlobalPopUpEdit',
         }[type],
         payload: {
           ...ohter,
-          img: imgList.toString(),
-          configMomentTagId: detail?.configMomentTagId,
+          ...detailParam,
+          flag: { add: 'addConfig', edit: 'updateConfig' }[type],
+          popUpImage: imgList.toString(),
+          configGlobalPopUpId: detail?.configGlobalPopUpId,
+          activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD'),
+          activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD'),
         },
         callback: () => {
           onClose();
@@ -45,50 +49,75 @@ const UgcLabelSet = (props) => {
     visible: show,
     title: '弹窗内容配置',
     onClose,
+    afterCallBack: () => {
+      setModalType(detail.popUpType);
+    },
     zIndex: 1001,
     footer: (
       <Button
         type="primary"
         onClick={handleSave}
         loading={
-          loading.effects['globalConfig/fetchSaveMomentTagAdd'] ||
-          loading.effects['globalConfig/fetchUpdateMomentTag']
+          loading.effects['marketConfigure/fetchGlobalPopUpAdd'] ||
+          loading.effects['marketConfigure/fetchGlobalPopUpEdit']
         }
       >
         保存
       </Button>
     ),
   };
-  const formItems = useMemo(
-    () => [
-      {
-        label: '浮窗名称',
-        name: 'name',
-        maxLength: '15',
+  const formItems = [
+    {
+      label: '弹窗名称',
+      name: 'name',
+      maxLength: '15',
+    },
+    {
+      label: '弹窗频率',
+      name: 'frequencyType',
+      type: 'radio',
+      select: MODAL_FREQUENCY,
+    },
+    {
+      label: '推送时间',
+      type: 'rangePicker',
+      name: 'activityBeginTime',
+      end: 'activityEndTime',
+    },
+    {
+      label: '弹窗类型',
+      name: 'popUpType',
+      type: 'radio',
+      select: MARKET_MODAL_TYPE,
+      onChange: (e) => {
+        setModalType(e.target.value);
       },
-      {
-        label: '活动时间',
-        type: 'rangePicker',
-        name: 'arraignmentTimeStart',
-        end: 'arraignmentTimeEnd',
-      },
-      {
-        label: '浮窗图片',
-        type: 'upload',
-        name: 'img',
-        maxFile: 1,
-        extra: '请上传165*147px png、jpeg、gif图片',
-        imgRatio: LABEL_ICON,
-      },
-      {
-        label: '跳转内容',
-        name: '22',
-        type: 'radio',
-        select: BANNER_JUMP_TYPE,
-      },
-    ],
-    [],
-  );
+    },
+    {
+      label: '弹窗图片',
+      type: 'upload',
+      name: 'popUpImage',
+      maxFile: 1,
+      extra: '请上传900*1077px png、jpeg、gif图片',
+      imgRatio: LABEL_ICON,
+      visible: modalType === 'image',
+    },
+    {
+      label: '弹窗链接',
+      name: 'popUpUrl',
+      visible: modalType === 'url',
+    },
+    {
+      type: 'noForm',
+      formItem: <NewNativeFormSet form={form} detail={detail}></NewNativeFormSet>,
+    },
+    {
+      label: '可见范围',
+      name: 'visibleRange',
+      type: 'radio',
+      select: BANNER_LOOK_AREA,
+    },
+  ];
   return (
     <DrawerCondition {...modalProps}>
       <FormComponents form={form} formItems={formItems} initialValues={detail}></FormComponents>
@@ -96,4 +125,4 @@ const UgcLabelSet = (props) => {
   );
 };
 
-export default connect(({ loading }) => ({ loading }))(UgcLabelSet);
+export default connect(({ loading }) => ({ loading }))(GlobalModalDrawerSet);
