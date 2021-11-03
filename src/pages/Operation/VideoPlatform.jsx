@@ -40,11 +40,12 @@ const VideoPlatform = (props) => {
   const childRef = useRef();
   const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState('0'); // tab
-  const [visible, setVisible] = useState(false); // 详情
+  const [visible, setVisible] = useState(false); // 详情+分享配置
   const [visibleShare, setVisibleShare] = useState(false); // 新增
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleImg, setVisibleImg] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
+  // const [visibleShareEdit, setVisibleShareEdit] = useState(false); // 分享配置
 
   useEffect(() => {
     childRef.current &&
@@ -159,8 +160,23 @@ const VideoPlatform = (props) => {
       dataIndex: 'viewAmount',
       sorter: (a, b) => a.viewAmount - b.viewAmount,
     },
+    // {
+    //   title: '浏览量',
+    //   align: 'right',
+    //   dataIndex: '',
+    // },
+    // {
+    //   title: '完播量',
+    //   align: 'right',
+    //   dataIndex: '',
+    // },
+    // {
+    //   title: '完播率',
+    //   align: 'right',
+    //   render:()=>(完播量/浏览量)
+    // },
     {
-      title: '领卡豆人数',
+      title: '领豆人次',
       align: 'right',
       dataIndex: 'personAmount',
       sorter: (a, b) => a.personAmount - b.personAmount,
@@ -246,6 +262,11 @@ const VideoPlatform = (props) => {
             type: 'portraitEdit', // 编辑画像
             visible: typeUser,
             click: () => fetchShareDetail(index, 'portrait'),
+          },
+          {
+            title: '分享配置',
+            type: 'shareImg',
+            click: () => fetchShareDetail(index, 'share'),
           },
         ];
       },
@@ -354,7 +375,7 @@ const VideoPlatform = (props) => {
         visible={visibleShare}
         onClose={() => setVisibleShare(false)}
       ></ShareDrawer>
-      {/* 详情 修改 编辑画像 带货设置*/}
+      {/* 详情 修改 编辑画像 带货设置 分享配置*/}
       <ShareDetail
         childRef={childRef}
         tabKey={tabKey}

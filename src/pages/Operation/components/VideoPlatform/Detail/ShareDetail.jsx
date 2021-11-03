@@ -10,6 +10,7 @@ import {
 } from '@/common/constant';
 import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
 import { checkCityName } from '@/utils/utils';
+import aliOssUpload from '@/utils/aliOssUpload';
 import uploadLive from '@/utils/uploadLive';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -17,6 +18,7 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 import GoodsSet from './GoodsSet';
 import GoodsEdit from './GoodsEdit';
 import SharePutInSet from '../SharePushForm/SharePutInSet';
+import ShareImgEdit from '../Form/ShareImgEdit';
 
 const ShareDetail = (props) => {
   const {
@@ -33,8 +35,8 @@ const ShareDetail = (props) => {
   } = props;
 
   const { index, show = false, type = 'info', detail = {} } = visible;
-  console.log(detail, 'detail');
-  const { ownerId, momentId } = detail;
+  // console.log(detail, 'detail');
+  const { ownerId, momentId, ownerName } = detail;
 
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
@@ -214,9 +216,29 @@ const ShareDetail = (props) => {
   };
 
   const handleUpdataSava = () => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(async (values) => {
       if (type === 'edit') {
         fetchEditData(values);
+        return;
+      }
+      // 分享配置
+      if (type === 'share') {
+        const { shareImg = '', friendShareImg = '', customTitle } = values;
+        const sImg = await aliOssUpload(shareImg);
+        const fImg = await aliOssUpload(friendShareImg);
+        fetchNewShareNoAudit(
+          {
+            momentId,
+            ownerId,
+            customTitle,
+            shareImg: sImg.toString(),
+            friendShareImg: fImg.toString(),
+          },
+          () => {
+            childRef.current.fetchGetData();
+            onClose();
+          },
+        );
         return;
       }
       if (type === 'portrait') {
@@ -266,7 +288,7 @@ const ShareDetail = (props) => {
 
   // 抽屉属性
   const modalProps = {
-    title: '视频详情',
+    title: type == 'share' ? `${ownerName}` : '视频详情',
     visible: show,
     onClose,
     loading: loadingDetail,
@@ -305,6 +327,8 @@ const ShareDetail = (props) => {
           edit: <GoodsEdit form={form} detail={detail}></GoodsEdit>,
           // 编辑画像
           portrait: <SharePutInSet form={form} detail={detail}></SharePutInSet>,
+          // 分享配置
+          share: <ShareImgEdit form={form} detail={detail}></ShareImgEdit>,
         }[type]
       }
     </DrawerCondition>

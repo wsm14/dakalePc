@@ -8,6 +8,7 @@ import {
   fetchCouponOff, // 券下架
   fetchCouponDelete, //全删除
   fetchCouponAddRemain,
+  fetchCouponManageShareEdit, // 分享配置
 } from '@/services/OperationServices';
 import moment from 'moment';
 
@@ -29,6 +30,16 @@ export default {
   },
 
   effects: {
+    // 修改分享配置
+    *fetchCouponManageShareEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchCouponManageShareEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '优惠券分享图设置成功',
+      });
+      callback();
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchCouponList, payload);
       if (!response) return;
