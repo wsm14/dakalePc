@@ -83,6 +83,14 @@ export function fetchMerVerificationCodeSet(data) {
   });
 }
 
+// post 店铺数据 - 分享配置
+export function fetchBusinessShareEdit(data) {
+  return request('/admin/merchantManagement/setMerchantShareInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 店铺数据 end
 
 // 新店审核
