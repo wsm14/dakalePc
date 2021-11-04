@@ -5,7 +5,7 @@ import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
 import ShareWeightSet from './components/ShareWeightSet';
 import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
-import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_STATUS_TYPE } from '@/common/constant';
+import { MODAL_FREQUENCY, MARKET_LOOK_AREA, MARKET_STATUS_TYPE } from '@/common/constant';
 
 const tabList = [
   {
@@ -55,7 +55,7 @@ const CityGlobalModal = (props) => {
     {
       title: '可见范围',
       dataIndex: 'visibleRange',
-      render: (val) => BANNER_LOOK_AREA[val],
+      render: (val) => MARKET_LOOK_AREA[val],
     },
     {
       title: '活动状态',
