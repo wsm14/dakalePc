@@ -34,6 +34,7 @@ import {
   fetchGetGoodsSearch,
   fetchListImportSubsidyRole,
   fetchListUserByIds,
+  fetchGetPlatformEquitySelect,
 } from '@/services/PublicServices';
 
 export default {
@@ -59,6 +60,7 @@ export default {
     skuMerchantList: { list: [], total: 0 },
     CouponListSearch: [],
     goodsList: [],
+    platformEquity: { list: [], total: 0 },
   },
 
   reducers: {
@@ -291,6 +293,21 @@ export default {
         type: 'save',
         payload: {
           specialGoods: { list: content.specialGoodsList, total: content.total },
+        },
+      });
+    },
+    *fetchGetPlatformEquitySelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetPlatformEquitySelect, {
+        ...payload,
+        status: 1,
+        adminFlag: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          platformEquity: { list: content.recordList, total: content.total },
         },
       });
     },
