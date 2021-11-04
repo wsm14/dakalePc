@@ -82,7 +82,7 @@ const Index = (props) => {
   return (
     <>
       <Card
-        title="全局弹窗配置"
+        title="浮窗配置"
         tabList={Object.keys(TAB_INDEX_TYPE).map((i) => ({ key: i, tab: TAB_INDEX_TYPE[i] }))}
         activeTabKey={tabKey}
         onTabChange={handleTabChange}

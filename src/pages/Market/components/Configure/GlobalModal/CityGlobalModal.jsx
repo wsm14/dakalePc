@@ -33,7 +33,6 @@ const CityGlobalModal = (props) => {
   //tab切换
   const [tabKey, setTabKey] = useState('pickup');
   const [visibleSet, setVisibleSet] = useState(false);
-  console.log(111111111);
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ pageType: tabKey });
   }, [tabKey]);
