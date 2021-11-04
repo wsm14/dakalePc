@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
-import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_MODAL_TYPE } from '@/common/constant';
+import { MODAL_FREQUENCY, MARKET_LOOK_AREA, MARKET_MODAL_TYPE } from '@/common/constant';
 import { NewNativeFormSet } from '@/components/FormListCondition';
 import { GLOBAL_MODAL_IMG } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -112,7 +112,7 @@ const GlobalModalDrawerSet = (props) => {
       label: '可见范围',
       name: 'visibleRange',
       type: 'radio',
-      select: BANNER_LOOK_AREA,
+      select: MARKET_LOOK_AREA,
     },
   ];
   return (
