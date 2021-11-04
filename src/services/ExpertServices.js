@@ -16,6 +16,21 @@ export function fetchExpertUserList(params) {
   });
 }
 
+// get 达人列表 - 获取哒人标识
+export function fetchDarenTag(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// post 达人列表 - 设置哒人标识
+export function fetchDarenTagSet(data) {
+  return request('/admin/kol/setUserIdentification', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 达人列表 - 封停哒人
 export function fetchExpertStop(data) {
   return request('/admin/kol/suspendKol', {

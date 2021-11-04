@@ -8,6 +8,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import CouponDrawer from './components/CouponManage/CouponDrawer';
 import excelProps from './components/CouponManage/excelProps';
 import RemainModal from './components/CouponManage/Detail/RemainModal';
+import ShareImg from './components/CouponManage/Form/ShareImg';
 import { checkCityName } from '@/utils/utils';
 
 const CouponManageComponent = (props) => {
@@ -17,6 +18,7 @@ const CouponManageComponent = (props) => {
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
+  const [visibleShare, setVisibleShare] = useState(false); // 分享配置
 
   //下架原因框
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
@@ -145,8 +147,10 @@ const CouponManageComponent = (props) => {
       dataIndex: 'districtCode',
       render: (val, row) => (
         <>
-        <div> {checkCityName(val) || '--'} </div>
-        <div>{row.topCategoryName} / {row.categoryName}</div>
+          <div> {checkCityName(val) || '--'} </div>
+          <div>
+            {row.topCategoryName} / {row.categoryName}
+          </div>
         </>
       ),
     },
@@ -223,10 +227,41 @@ const CouponManageComponent = (props) => {
             visible: ['1'].includes(status),
             click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
           },
+          {
+            title: '分享配置',
+            type: 'shareImg',
+            click: () => fetchShareImg(record),
+          },
         ];
       },
     },
   ];
+
+  // 分享配置
+  const fetchShareImg = (record) => {
+    const { ownerCouponIdString, ownerIdString, couponName, ownerName } = record;
+    dispatch({
+      type: 'couponManage/fetchCouponDetail',
+      payload: { ownerCouponId: ownerCouponIdString, ownerId: ownerIdString },
+      callback: (val) => {
+        const { shareImg, friendShareImg, customTitle } = val;
+        const initialValues = {
+          shareImg,
+          friendShareImg,
+          customTitle,
+        };
+        setVisibleShare({
+          show: true,
+          couponName,
+          ownerName,
+          ownerCouponIdString,
+          ownerIdString,
+          initialValues,
+        });
+      },
+    });
+  };
+
   // 增加库存
   const fetAddRemain = (ownerCouponId, ownerId, remain) => {
     setVisibleRemain({
@@ -352,6 +387,8 @@ const CouponManageComponent = (props) => {
         visible={visibleRemain}
         onClose={() => setVisibleRemain(false)}
       ></RemainModal>
+      {/* 分享配置 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };
