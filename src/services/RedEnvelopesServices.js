@@ -13,17 +13,26 @@ export async function fetchListRedEnvelopesReceives(params) {
   });
 }
 
-//红包设置回显 
-export async function fetchgetDictionaryAdmin(params) {
+//拼手气红包设置回显
+export async function fetchGetRedEnvelopeDetail(params) {
   return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
     params,
   });
 }
 
-// 红包设置
+// 拼手气红包设置
 
 export function fetchSetLuckyRedEnvelopeAuthority(data) {
   return request('/admin/redEnvelopes/setLuckyRedEnvelopeAuthority', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 普通红包设置
+
+export function fetchSetNormalRedEnvelopeAuthority(data) {
+  return request('/admin/redEnvelopes/setNormalRedEnvelopeAuthority', {
     method: 'POST',
     data,
   });

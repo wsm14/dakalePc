@@ -75,11 +75,7 @@ const BeanRedEnvelopes = (props) => {
   //红包设置回显
   const handleSet = () => {
     dispatch({
-      type: 'redEnvelopes/fetchgetDictionaryAdmin',
-      payload: {
-        parent: 'redEnvelope',
-        child: 'lucky',
-      },
+      type: 'redEnvelopes/fetchGetRedEnvelopeDetail',
       callback: (detail) => {
         setVisibleSet({
           show: true,

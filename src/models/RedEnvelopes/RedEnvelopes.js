@@ -2,8 +2,9 @@ import { notification } from 'antd';
 import {
   fetchListRedEnvelopesManagement,
   fetchListRedEnvelopesReceives,
-  fetchgetDictionaryAdmin,
+  fetchGetRedEnvelopeDetail,
   fetchSetLuckyRedEnvelopeAuthority,
+  fetchSetNormalRedEnvelopeAuthority,
 } from '@/services/RedEnvelopesServices';
 
 export default {
@@ -53,24 +54,43 @@ export default {
       });
       callback && callback(content.userRedEnvelopesDTO);
     },
-    *fetchgetDictionaryAdmin({ payload, callback }, { call }) {
-      const response = yield call(fetchgetDictionaryAdmin, payload);
-      if (!response) return;
-      const { content } = response;
-      const { extraParam } = content.dictionary;
-      const params = extraParam ? JSON.parse(extraParam) : {};
-      const newDetail = {
-        ...content.dictionary,
-        level: params.level,
-        extraParam: params.level,
-        levelName: params.levelName,
-      };
-      callback && callback(newDetail);
+    *fetchGetRedEnvelopeDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchGetRedEnvelopeDetail, {
+        parent: 'redEnvelope',
+        child: 'lucky',
+      });
+      const responseNormal = yield call(fetchGetRedEnvelopeDetail, {
+        parent: 'redEnvelope',
+        child: 'normal',
+      });
+      if (!response || !responseNormal) return;
+      const { dictionary } = response.content;
+      const { dictionary: dictionaryNormal } = responseNormal.content;
+      const extraParam = dictionary.extraParam;
+      const extraParamNormal = dictionaryNormal.extraParam;
+      const params = extraParam ? JSON.parse(extraParam || '{}') : {};
+      const paramsNormal = extraParamNormal ? JSON.parse(extraParamNormal || '{}') : {};
+      callback &&
+        callback({
+          extraParam: {
+            ...dictionary,
+            ...params,
+          },
+          extraParamNormal: { ...dictionaryNormal, ...paramsNormal },
+        });
     },
 
     *fetchSetLuckyRedEnvelopeAuthority({ payload, callback }, { call }) {
-      const response = yield call(fetchSetLuckyRedEnvelopeAuthority, payload);
-      if (!response) return;
+      const { dictionaryId, extraParam, extraParamNormal } = payload;
+      const response = yield call(fetchSetLuckyRedEnvelopeAuthority, {
+        dictionaryId,
+        extraParam,
+      });
+      const responseNormal = yield call(fetchSetNormalRedEnvelopeAuthority, {
+        dictionaryId,
+        extraParam: extraParamNormal,
+      });
+      if (!response || !responseNormal) return;
       notification.success({
         message: '温馨提示',
         description: '设置成功',
