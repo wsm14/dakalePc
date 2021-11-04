@@ -49,7 +49,20 @@ const NewNativeFormSet = ({ detail = {}, port = 'user', getJumpType, form, dispa
 
   return (
     <>
-      <FormItem key={`jumpType`} label="跳转类型" name={'jumpType'} style={{ maxWidth: '100%' }}>
+      <FormItem
+        key={`jumpType`}
+        label="跳转类型"
+        name={'jumpType'}
+        style={{ maxWidth: '100%' }}
+        rules={[
+          {
+            required: true,
+            validator: () => {
+              return Promise.resolve();
+            },
+          },
+        ]}
+      >
         <Radio
           select={
             port === 'merchant' // 商家端进入时映射
