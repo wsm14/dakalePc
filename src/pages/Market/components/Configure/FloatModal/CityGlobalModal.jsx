@@ -128,7 +128,7 @@ const CityGlobalModal = (props) => {
     },
   ];
   const modalProps = {
-    title: '全局弹窗配置',
+    title: '浮窗配置',
     visible: show,
     onCancel: onClose,
     width: 1000,
