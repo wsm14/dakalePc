@@ -16,13 +16,12 @@ const CityDrawerSet = (props) => {
     form.validateFields().then((values) => {
       const { cityCode, defaultTags = [], tags = [], ...ohter } = values;
       dispatch({
-        type: 'marketConfigure/fetchGlobalPopUpAdd',
+        type: 'marketConfigure/fetchFloatingWindowAdd',
         payload: {
           ...ohter,
           userOs: tabKey,
           version: version,
           cityCode: cityCode && cityCode[1],
-          configIndexTabId: detail?.configIndexTabId,
           flag: 'addCity',
         },
         callback: () => {
@@ -43,7 +42,7 @@ const CityDrawerSet = (props) => {
       <Button
         type="primary"
         onClick={handleSave}
-        loading={loading.effects['marketConfigure/fetchGlobalPopUpAdd']}
+        loading={loading.effects['marketConfigure/fetchFloatingWindowAdd']}
       >
         保存
       </Button>

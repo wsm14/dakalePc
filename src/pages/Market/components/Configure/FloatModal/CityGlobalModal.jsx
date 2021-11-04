@@ -3,35 +3,26 @@ import { Modal } from 'antd';
 import { connect } from 'umi';
 import ExtraButton from '@/components/ExtraButton';
 import TableDataBlock from '@/components/TableDataBlock';
-import ShareWeightSet from './components/ShareWeightSet';
 import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
-import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_STATUS_TYPE } from '@/common/constant';
+import { MARKET_STATUS_TYPE } from '@/common/constant';
 
 const tabList = [
   {
-    key: 'pickup',
-    tab: '捡豆页面',
+    key: 'first',
+    tab: '浮窗一',
   },
   {
-    key: 'wanderAround',
-    tab: '逛逛页面',
-  },
-  {
-    key: 'main',
-    tab: '我的页面',
-  },
-  {
-    key: 'goodsDetail',
-    tab: '商品详情页',
+    key: 'second',
+    tab: '浮窗二',
   },
 ];
 
 const CityGlobalModal = (props) => {
-  const { modalConfigureList, loading, visible, onClose, dispatch } = props;
+  const { floatConfigureList, loading, visible, onClose, dispatch } = props;
   const { show, detail = {} } = visible;
   const childRef = useRef();
   //tab切换
-  const [tabKey, setTabKey] = useState('pickup');
+  const [tabKey, setTabKey] = useState('first');
   const [visibleSet, setVisibleSet] = useState(false);
 
   useEffect(() => {
@@ -40,13 +31,8 @@ const CityGlobalModal = (props) => {
 
   const getColumns = [
     {
-      title: '弹窗名称',
+      title: '浮窗名称',
       dataIndex: 'name',
-    },
-    {
-      title: '弹窗频率',
-      dataIndex: 'frequencyType',
-      render: (val) => MODAL_FREQUENCY[val],
     },
     {
       title: '活动时间',
@@ -54,30 +40,16 @@ const CityGlobalModal = (props) => {
       render: (val, row) => (val ? `${val}~${row?.activityEndTime}` : '--'),
     },
     {
-      title: '可见范围',
-      dataIndex: 'visibleRange',
-      render: (val) => BANNER_LOOK_AREA[val],
-    },
-    {
       title: '活动状态',
       dataIndex: 'status',
       render: (val) => MARKET_STATUS_TYPE[val],
     },
-    {
-      title: '权重',
-      align: 'center',
-      // fixed: 'right',
-      dataIndex: 'weight',
-      render: (val, row) => (
-        <ShareWeightSet detail={row} onSubmit={fetchNewShareNoAudit}></ShareWeightSet>
-      ),
-    },
+
     {
       type: 'handle',
-      dataIndex: 'configGlobalPopUpId',
+      dataIndex: 'configFloatingWindowId',
       render: (val, row) => {
         const { status } = row;
-
         return [
           {
             type: 'edit',
@@ -103,16 +75,16 @@ const CityGlobalModal = (props) => {
   const handleAdd = () => {
     setVisibleSet({
       show: true,
-      detail: { ...detail, pageType: tabKey, popUpType: 'image' },
+      detail: { ...detail, windowType: tabKey },
     });
   };
 
   //编辑
-  const handleEdit = (configGlobalPopUpId) => {
+  const handleEdit = (configFloatingWindowId) => {
     dispatch({
-      type: 'marketConfigure/fetchGlobalPopUpConfigureDetail',
+      type: 'marketConfigure/fetchFloatingWindowConfigureDetail',
       payload: {
-        configGlobalPopUpId,
+        configFloatingWindowId,
       },
       callback: (detail) => {
         setVisibleSet({
@@ -125,11 +97,11 @@ const CityGlobalModal = (props) => {
   };
 
   //下架
-  const handleDown = (configGlobalPopUpId) => {
+  const handleDown = (configFloatingWindowId) => {
     dispatch({
-      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      type: 'marketConfigure/fetchFloatingWindowEdit',
       payload: {
-        configGlobalPopUpId,
+        configFloatingWindowId,
         flag: 'offShelf',
       },
       callback: childRef.current.fetchGetData,
@@ -137,26 +109,16 @@ const CityGlobalModal = (props) => {
   };
 
   //删除
-  const handleDelete = (configGlobalPopUpId) => {
+  const handleDelete = (configFloatingWindowId) => {
     dispatch({
-      type: 'marketConfigure/fetchGlobalPopUpEdit',
+      type: 'marketConfigure/fetchFloatingWindowEdit',
       payload: {
-        configGlobalPopUpId,
+        configFloatingWindowId,
         flag: 'delete',
       },
       callback: childRef.current.fetchGetData,
     });
   };
-
-  // 编辑权重
-  const fetchNewShareNoAudit = (values, callback) => {
-    dispatch({
-      type: 'marketConfigure/fetchGlobalPopUpEdit',
-      payload: values,
-      callback,
-    });
-  };
-
   const cardBtnList = [
     {
       text: '新增',
@@ -190,10 +152,10 @@ const CityGlobalModal = (props) => {
           cRef={childRef}
           loading={loading}
           columns={getColumns}
-          rowKey={(record) => `${record.configGlobalPopUpId}`}
-          dispatchType="marketConfigure/fetchGlobalPopUpModalList"
-          params={{ pageType: tabKey }}
-          {...modalConfigureList}
+          rowKey={(record) => `${record.configFloatingWindowId}`}
+          dispatchType="marketConfigure/fetchFloatingWindowConfigureList"
+          params={{ ...detail, windowType: tabKey, deleteFlag: '1' }}
+          {...floatConfigureList}
         ></TableDataBlock>
       </Modal>
       {/* 新增/编辑 */}
@@ -206,6 +168,6 @@ const CityGlobalModal = (props) => {
   );
 };
 export default connect(({ loading, marketConfigure }) => ({
-  modalConfigureList: marketConfigure.modalConfigureList,
-  loading: loading.effects['marketConfigure/fetchGlobalPopUpModalList'],
+  floatConfigureList: marketConfigure.floatConfigureList,
+  loading: loading.effects['marketConfigure/fetchFloatingWindowConfigureList'],
 }))(CityGlobalModal);

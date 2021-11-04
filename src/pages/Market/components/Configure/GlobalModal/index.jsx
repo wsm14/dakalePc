@@ -23,7 +23,7 @@ const Index = (props) => {
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configIndexTabId',
+      dataIndex: 'configGlobalPopUpId',
       render: (val, row) => [
         {
           type: 'edit',

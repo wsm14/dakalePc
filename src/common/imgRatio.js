@@ -49,3 +49,9 @@ export const TABBAR_ICON = 88 / 88;
 
 //标签图片
 export const LABEL_ICON = 230 / 184;
+
+//全局弹窗配置图片
+export const GLOBAL_MODAL_IMG = 900 / 1077;
+
+//浮窗配置图片
+export const FLOAT_IMG = 165 / 147;

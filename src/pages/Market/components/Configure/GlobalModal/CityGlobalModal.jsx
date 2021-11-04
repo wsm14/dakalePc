@@ -33,7 +33,7 @@ const CityGlobalModal = (props) => {
   //tab切换
   const [tabKey, setTabKey] = useState('pickup');
   const [visibleSet, setVisibleSet] = useState(false);
-
+  console.log(111111111);
   useEffect(() => {
     childRef.current && childRef.current.fetchGetData({ pageType: tabKey });
   }, [tabKey]);
@@ -192,7 +192,7 @@ const CityGlobalModal = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.configGlobalPopUpId}`}
           dispatchType="marketConfigure/fetchGlobalPopUpModalList"
-          params={{ pageType: tabKey }}
+          params={{ ...detail, pageType: tabKey, deleteFlag: '1' }}
           {...modalConfigureList}
         ></TableDataBlock>
       </Modal>
@@ -207,5 +207,7 @@ const CityGlobalModal = (props) => {
 };
 export default connect(({ loading, marketConfigure }) => ({
   modalConfigureList: marketConfigure.modalConfigureList,
-  loading: loading.effects['marketConfigure/fetchGlobalPopUpModalList'],
+  loading:
+    loading.effects['marketConfigure/fetchGlobalPopUpModalList'] ||
+    loading.effects['marketConfigure/fetchGlobalPopUpEdit'],
 }))(CityGlobalModal);

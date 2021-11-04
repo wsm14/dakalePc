@@ -25,5 +25,5 @@ const CityModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['marketConfigure/fetchGlobalPopUpCityList'],
+  loading: loading.effects['marketConfigure/fetchFloatingWindowCityList'],
 }))(CityModal);

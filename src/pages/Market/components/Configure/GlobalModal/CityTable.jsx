@@ -21,7 +21,7 @@ const CityTable = (props) => {
     {
       type: 'handle',
       align: 'center',
-      dataIndex: 'configWanderAroundModuleId',
+      dataIndex: 'configGlobalPopUpId',
       render: (_, row) => [
         {
           type: 'edit',

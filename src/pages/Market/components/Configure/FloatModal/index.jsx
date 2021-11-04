@@ -23,7 +23,7 @@ const Index = (props) => {
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configIndexTabId',
+      dataIndex: 'configFloatingWindowId',
       render: (val, row) => [
         {
           type: 'edit',
@@ -73,7 +73,7 @@ const Index = (props) => {
       childRef?.current?.fetchGetData({
         userOs: key,
         area: 'all',
-        pageType: 'pickup',
+        windowType: 'first',
         isAutomatic: 1,
       });
     }
@@ -95,9 +95,9 @@ const Index = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
-            rowKey={(record) => `${record.configGlobalPopUpId}`}
-            params={{ userOs: tabKey, area: 'all', pageType: 'pickup', isAutomatic: 1 }}
-            dispatchType="marketConfigure/fetchGlobalPopUpEditionList"
+            rowKey={(record) => `${record.configFloatingWindowId}`}
+            params={{ userOs: tabKey, area: 'all', windowType: 'first', isAutomatic: 1 }}
+            dispatchType="marketConfigure/fetchFloatingWindowList"
             {...editionList}
           />
         ) : (
@@ -123,6 +123,6 @@ const Index = (props) => {
 };
 
 export default connect(({ loading, marketConfigure }) => ({
-  editionList: marketConfigure.modalEditionList,
+  editionList: marketConfigure.floatEditionList,
   loading: loading.models.marketConfigure,
 }))(Index);

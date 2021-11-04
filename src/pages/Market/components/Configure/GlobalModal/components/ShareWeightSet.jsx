@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
 import { Form, InputNumber, Button } from 'antd';
@@ -30,6 +30,11 @@ const ShareWeightSet = ({ detail, onSubmit, loading }) => {
       );
     });
   };
+  useEffect(() => {
+    // console.log(detail, 'detail');
+    // console.log(weight, 'weight');
+    weight && form.setFieldsValue({ weight: Number(weight) });
+  }, [weight]);
   return (
     <Form initialValues={{ weight: Number(weight) }} form={form}>
       <div style={{ display: 'flex' }}>
@@ -50,5 +55,5 @@ const ShareWeightSet = ({ detail, onSubmit, loading }) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['videoPlatform/fetchNewShareNoAudit'],
+  loading: loading.effects['marketConfigure/fetchGlobalPopUpEdit'],
 }))(ShareWeightSet);

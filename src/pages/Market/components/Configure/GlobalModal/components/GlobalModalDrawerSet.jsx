@@ -5,22 +5,20 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_MODAL_TYPE } from '@/common/constant';
 import { NewNativeFormSet } from '@/components/FormListCondition';
-import { LABEL_ICON } from '@/common/imgRatio';
+import { GLOBAL_MODAL_IMG } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const GlobalModalDrawerSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef } = props;
   const { show = false, type = 'add', detail = {} } = visible;
-  console.log(detail);
   const [modalType, setModalType] = useState('');
   const [form] = Form.useForm();
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      console.log(values);
       const { popUpImage, ...ohter } = values;
-      const { userOs, version, area, cityCode, pageType } = detail;
-      const detailParam = { userOs, version, area, cityCode, pageType };
+      const { userOs, version, area, cityCode, pageType, configGlobalPopUpId } = detail;
+      const detailParam = { userOs, version, area, cityCode, pageType, configGlobalPopUpId };
       // 上传图片到oss -> 提交表单
       const imgList = await aliOssUpload(popUpImage);
       dispatch({
@@ -33,7 +31,6 @@ const GlobalModalDrawerSet = (props) => {
           ...detailParam,
           flag: { add: 'addConfig', edit: 'updateConfig' }[type],
           popUpImage: imgList.toString(),
-          configGlobalPopUpId: detail?.configGlobalPopUpId,
           activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD'),
           activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD'),
         },
@@ -99,7 +96,7 @@ const GlobalModalDrawerSet = (props) => {
       name: 'popUpImage',
       maxFile: 1,
       extra: '请上传900*1077px png、jpeg、gif图片',
-      imgRatio: LABEL_ICON,
+      imgRatio: GLOBAL_MODAL_IMG,
       visible: modalType === 'image',
     },
     {

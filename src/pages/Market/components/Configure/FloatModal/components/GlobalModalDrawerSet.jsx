@@ -3,37 +3,34 @@ import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
-import { MODAL_FREQUENCY, BANNER_LOOK_AREA, MARKET_MODAL_TYPE } from '@/common/constant';
 import { NewNativeFormSet } from '@/components/FormListCondition';
-import { LABEL_ICON } from '@/common/imgRatio';
+import { FLOAT_IMG } from '@/common/imgRatio';
 import aliOssUpload from '@/utils/aliOssUpload';
 
 const GlobalModalDrawerSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef } = props;
   const { show = false, type = 'add', detail = {} } = visible;
   console.log(detail);
-  const [modalType, setModalType] = useState('');
   const [form] = Form.useForm();
   //保存
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       console.log(values);
-      const { popUpImage, ...ohter } = values;
-      const { userOs, version, area, cityCode, pageType } = detail;
-      const detailParam = { userOs, version, area, cityCode, pageType };
+      const { windowImage, ...ohter } = values;
+      const { userOs, version, area, cityCode, windowType, configFloatingWindowId } = detail;
+      const detailParam = { userOs, version, area, cityCode, windowType, configFloatingWindowId };
       // 上传图片到oss -> 提交表单
-      const imgList = await aliOssUpload(popUpImage);
+      const imgList = await aliOssUpload(windowImage);
       dispatch({
         type: {
-          add: 'marketConfigure/fetchGlobalPopUpAdd',
-          edit: 'marketConfigure/fetchGlobalPopUpEdit',
+          add: 'marketConfigure/fetchFloatingWindowAdd',
+          edit: 'marketConfigure/fetchFloatingWindowEdit',
         }[type],
         payload: {
           ...ohter,
           ...detailParam,
           flag: { add: 'addConfig', edit: 'updateConfig' }[type],
-          popUpImage: imgList.toString(),
-          configGlobalPopUpId: detail?.configGlobalPopUpId,
+          windowImage: imgList.toString(),
           activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD'),
           activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD'),
         },
@@ -49,17 +46,14 @@ const GlobalModalDrawerSet = (props) => {
     visible: show,
     title: '弹窗内容配置',
     onClose,
-    afterCallBack: () => {
-      setModalType(detail.popUpType);
-    },
     zIndex: 1001,
     footer: (
       <Button
         type="primary"
         onClick={handleSave}
         loading={
-          loading.effects['marketConfigure/fetchGlobalPopUpAdd'] ||
-          loading.effects['marketConfigure/fetchGlobalPopUpEdit']
+          loading.effects['marketConfigure/fetchFloatingWindowAdd'] ||
+          loading.effects['marketConfigure/fetchFloatingWindowEdit']
         }
       >
         保存
@@ -68,54 +62,27 @@ const GlobalModalDrawerSet = (props) => {
   };
   const formItems = [
     {
-      label: '弹窗名称',
+      label: '浮窗名称',
       name: 'name',
       maxLength: '15',
     },
     {
-      label: '弹窗频率',
-      name: 'frequencyType',
-      type: 'radio',
-      select: MODAL_FREQUENCY,
-    },
-    {
-      label: '推送时间',
+      label: '活动时间',
       type: 'rangePicker',
       name: 'activityBeginTime',
       end: 'activityEndTime',
     },
     {
-      label: '弹窗类型',
-      name: 'popUpType',
-      type: 'radio',
-      select: MARKET_MODAL_TYPE,
-      onChange: (e) => {
-        setModalType(e.target.value);
-      },
-    },
-    {
-      label: '弹窗图片',
+      label: '浮窗图片',
       type: 'upload',
-      name: 'popUpImage',
+      name: 'windowImage',
       maxFile: 1,
-      extra: '请上传900*1077px png、jpeg、gif图片',
-      imgRatio: LABEL_ICON,
-      visible: modalType === 'image',
-    },
-    {
-      label: '弹窗链接',
-      name: 'popUpUrl',
-      visible: modalType === 'url',
+      extra: '请上传165*147px png、jpeg、gif图片',
+      imgRatio: FLOAT_IMG,
     },
     {
       type: 'noForm',
       formItem: <NewNativeFormSet form={form} detail={detail}></NewNativeFormSet>,
-    },
-    {
-      label: '可见范围',
-      name: 'visibleRange',
-      type: 'radio',
-      select: BANNER_LOOK_AREA,
     },
   ];
   return (

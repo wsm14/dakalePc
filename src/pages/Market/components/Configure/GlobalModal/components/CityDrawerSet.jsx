@@ -22,7 +22,6 @@ const CityDrawerSet = (props) => {
           userOs: tabKey,
           version: version,
           cityCode: cityCode && cityCode[1],
-          configIndexTabId: detail?.configIndexTabId,
           flag: 'addCity',
         },
         callback: () => {

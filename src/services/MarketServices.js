@@ -449,7 +449,7 @@ export function fetchAreaQueryInfoSet(data) {
 // 区域查询系统 end
 
 //营销功能配置
-// get 区域查询系统 - 版本列表
+// get 全局弹窗配置 - 版本列表
 export function fetchGlobalPopUpList(params) {
   return request('/admin/configGlobalPopUp/listConfigGlobalPopUp', {
     params,
@@ -475,6 +475,36 @@ export function fetchGlobalPopUpEdit(data) {
 // post 全局弹窗配置-详情
 export function fetchGlobalPopUpConfigureDetail(params) {
   return request('/admin/configGlobalPopUp/getConfigGlobalPopUpById', {
+    params,
+  });
+}
+
+// get 浮窗配置 - 版本列表
+export function fetchFloatingWindowList(params) {
+  return request('/admin/configFloatingWindow/listConfigFloatingWindowManagement', {
+    params,
+  });
+}
+
+// post 浮窗配置-新增版本-新增城市-新增版本-新增配置
+export function fetchFloatingWindowAdd(data) {
+  return request('/admin/configFloatingWindow/saveConfigFloatingWindow', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-修改版本-编辑配置-编辑权重-下架-删除
+export function fetchFloatingWindowEdit(data) {
+  return request('/admin/configFloatingWindow/updateConfigFloatingWindow', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-详情
+export function fetchFloatingWindowDetail(params) {
+  return request('/admin/configFloatingWindow/getConfigFloatingWindowById', {
     params,
   });
 }
