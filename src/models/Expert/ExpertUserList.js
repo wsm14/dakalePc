@@ -4,6 +4,8 @@ import {
   fetchExpertUserList,
   fetchExpertStop,
   fetchExpertOpen,
+  fetchDarenTag,
+  fetchDarenTagSet,
 } from '@/services/ExpertServices';
 
 export default {
@@ -12,6 +14,7 @@ export default {
   state: {
     list: { list: [], total: 0 },
     userTotal: 0,
+    darenTag: {},
   },
 
   reducers: {
@@ -24,6 +27,28 @@ export default {
   },
 
   effects: {
+    // 设置哒人标识
+    *fetchDarenTagSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchDarenTagSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '哒人标识设置成功',
+      });
+      callback();
+    },
+    // 获取哒人标识
+    *fetchDarenTag({ payload }, { call, put }) {
+      const response = yield call(fetchDarenTag, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          darenTag: content.dictionary,
+        },
+      });
+    },
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchExpertUserList, payload);
       if (!response) return;
