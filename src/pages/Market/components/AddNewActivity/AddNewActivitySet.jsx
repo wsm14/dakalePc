@@ -6,14 +6,17 @@ import { Form, Button, Tabs } from 'antd';
 import CITYJSON from '@/common/cityJson';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
+import ShareCoupon from '@/components/VideoSelectBindContent';
 
 const AddNewActivitySet = (props) => {
-  const { dispatch, childRef, visible = false, onClose } = props;
+  const { dispatch, childRef, visible, onClose } = props;
+  const { show = false, detail } = visible;
+
   const [form] = Form.useForm();
 
   const { TabPane } = Tabs;
   const [tabKey, setTabKey] = useState('1'); // tab
-  const [prizeTypes, setPrizeTypes] = useState('a'); // 奖品类型
+  const [prizeTypes, setPrizeTypes] = useState('bean'); // 奖品类型
 
   // 新增活动
   const fetchMarketActivityAdd = () => {
@@ -48,7 +51,7 @@ const AddNewActivitySet = (props) => {
   const formItems = [
     {
       label: '活动城市',
-      name: 'cityName',
+      name: 'cityCode',
       type: 'select',
       select: CITYJSON.filter((item) => item.level === '2'),
       // fieldNames: { label: 'name', value: 'id' },
@@ -63,26 +66,26 @@ const AddNewActivitySet = (props) => {
     },
     {
       label: '活动名称',
-      name: 'activityName',
+      name: 'name',
       maxLength: 15,
     },
     {
       label: '邀请条件',
       type: 'number',
-      name: 'activityName',
+      name: 'inviteNum',
       suffix: '位用户即可获奖',
       formatter: (value) => `邀请 ${value}`,
       parser: (value) => value.replace('邀请', ''),
     },
-    {
-      label: '活动时间',
-      type: 'rangePicker',
-      name: 'activityBeginTime',
-      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-    },
+    // {
+    //   label: '活动时间',
+    //   type: 'rangePicker',
+    //   name: 'activityBeginTime',
+    //   disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
+    // },
     {
       label: '活动规则',
-      name: 'activityUrl',
+      name: 'activityRuleUrl',
       placeholder: '请输入链接',
       addRules: [
         {
@@ -95,7 +98,7 @@ const AddNewActivitySet = (props) => {
       title: '图片配置',
       label: '活动主页图',
       type: 'upload',
-      name: 'activityBanner',
+      name: 'mainImg',
       imgRatio: 750 / 600,
       extra: '请上传750*600px的jpg、png图片',
       maxFile: 1,
@@ -103,7 +106,7 @@ const AddNewActivitySet = (props) => {
     {
       label: '分享海报图',
       type: 'upload',
-      name: 'activityBanner',
+      name: 'shareImg',
       imgRatio: 750 / 1334,
       extra: '请上传750*1334px的jpg、png图片',
       maxFile: 1,
@@ -111,7 +114,7 @@ const AddNewActivitySet = (props) => {
     {
       label: '小程序分享图',
       type: 'upload',
-      name: 'activityBanner',
+      name: 'friendShareImg',
       imgRatio: 5 / 4,
       maxSize: 128,
       extra: '请上传比例为5*4，大小128kb以内的jpg图片（375*300以上）',
@@ -120,7 +123,7 @@ const AddNewActivitySet = (props) => {
     {
       label: '奖品图',
       type: 'upload',
-      name: 'activityBanner',
+      name: 'prizeImg',
       imgRatio: 600 / 240,
       extra: '请上传600*240px的jpg、png图片',
       maxFile: 1,
@@ -128,7 +131,7 @@ const AddNewActivitySet = (props) => {
     {
       label: '活动介绍图',
       type: 'upload',
-      name: 'activityBanner',
+      name: 'introductionImg',
       imgRatio: 686 / 800,
       extra: '请上传686*800px的jpg、png图片',
       maxFile: 1,
@@ -136,49 +139,57 @@ const AddNewActivitySet = (props) => {
     {
       label: '领奖成功跳转路径',
       type: 'select',
-      name: 'uuu',
-      select: ['卡豆盲盒', '新手福利页'],
+      name: 'successfulJumpUrl',
+      select: {
+        blindIndex: '卡豆盲盒',
+        new: '新手福利页',
+      },
     },
     {
       label: '奖品类型',
-      name: 'abc',
+      name: 'prizeType',
       type: 'radio',
-      select: { a: '卡豆', b: 'KA商品', c: '权益商品' },
+      select: { bean: '卡豆', equity: '权益商品' },
       onChange: (e) => {
         setPrizeTypes(e.target.value);
       },
     },
     {
       label: '卡豆',
-      name: 'activityName',
+      name: 'prizeBean',
       placeholder: '请输入奖励卡豆数',
-      visible: prizeTypes === 'a',
+      visible: prizeTypes === 'bean',
     },
     {
       label: '发放数量',
-      name: 'activityName',
-      visible: prizeTypes === 'a',
-    },
-    {
-      label: '短信模板编号',
-      name: 'activityName',
-      visible: prizeTypes === 'b',
-    },
-    {
-      label: '发放数量',
-      name: 'activityName',
-      visible: prizeTypes === 'b',
+      name: 'issuedQuantity',
+      visible: prizeTypes === 'bean',
     },
     {
       label: '权益商品',
-      name: 'activityName',
-      visible: prizeTypes === 'c',
+      name: 'prizeRightGoodsIds',
+      type: 'formItem',
+      visible: prizeTypes === 'equity',
+      formItem: (
+        <>
+          123
+          {/* <ShareCoupon
+            show="active"
+            merchantIdKey="ownerId"
+            type={contact[0]?.couponName ? 'coupon' : 'goods'}
+            data={contact[0]}
+            form={form}
+            onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
+            onOk={(data) => saveCouponStorage({ contact: [data] })}
+          ></ShareCoupon> */}
+        </>
+      ),
     },
   ];
 
   const modalProps = {
     title: `新增活动`,
-    visible,
+    visible: show,
     onClose,
     width: 800,
     afterCallBack: () => {
@@ -193,14 +204,10 @@ const AddNewActivitySet = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       <Tabs activeKey={tabKey} onChange={callback}>
-        <TabPane tab="Tab 1" key="1">
-          <FormCondition
-            form={form}
-            formItems={formItems}
-            initialValues={{ abc: 'a', uuu: 0 }}
-          ></FormCondition>
+        <TabPane tab="活动配置" key="1">
+          <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
         </TabPane>
-        <TabPane tab="Tab 2" key="2">
+        <TabPane tab="推荐商品" key="2">
           Content of Tab Pane 2
         </TabPane>
       </Tabs>

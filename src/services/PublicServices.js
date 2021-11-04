@@ -44,6 +44,13 @@ export function fetchGetSpecialGoodsSelect(params) {
   });
 }
 
+// get 店铺权益商品列表
+export function fetchGetPlatformEquitySelect(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
 // get 全部的订单查询 全局
 export function fetchOrderDetail(params) {
   return request('/admin/accountManagement/getRelatedOrderDetail', {
@@ -241,7 +248,7 @@ export function fetchSkuDetailMerchantList(params) {
   });
 }
 
-// 根据导入  用户,店铺，集团 匹配后返回 
+// 根据导入  用户,店铺，集团 匹配后返回
 export function fetchListImportSubsidyRole(data) {
   return request('/admin/subsidyManagement/listImportSubsidyRole', {
     method: 'POST',

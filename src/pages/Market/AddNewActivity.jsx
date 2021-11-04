@@ -3,45 +3,32 @@ import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
-
-const data = {
-  list: [
-    {
-      activityName: '肯德基邀请好友活动',
-      activityBeginTime: '2021-10-01',
-      activityEndTime: '2021-10-03',
-      cityCity: '浙江省-杭州市',
-      activityStatus: '1',
-      kuCun: '999',
-      aaaaa: 'aaaaa',
-    },
-  ],
-  total: 0,
-};
+import { checkCityName } from '@/utils/utils';
 
 // 拉新活动
 const AddNewActivity = (props) => {
-  const { marketCardActivity, loading, dispatch } = props;
+  const { addNewList, loading, dispatch } = props;
+
+  console.log('addNewList', addNewList);
 
   const childRef = useRef();
-  const [visible, setVisible] = useState(false); // 新增
-  const [params] = useState({});
+  const [visible, setVisible] = useState(false); // 新增+编辑
 
   // 搜索参数
   const searchItems = [
     {
       label: '活动名称',
-      name: 'activityName',
+      name: 'name',
     },
     {
       label: '活动状态',
-      name: 'activityStatus',
+      name: 'status',
       type: 'select',
       select: ACTIVITY_STATUS,
     },
     {
       label: '活动城市',
-      name: 'activityStatus',
+      name: 'cityCode',
       type: 'select',
       select: ACTIVITY_STATUS,
     },
@@ -53,43 +40,44 @@ const AddNewActivity = (props) => {
       title: '活动名称',
       align: 'center',
       fixed: 'left',
-      dataIndex: 'activityName',
+      dataIndex: 'name',
       ellipsis: true,
     },
     {
       title: '活动时间',
       align: 'center',
       dataIndex: 'activityBeginTime',
-      render: (val, record) => `${val} - ${record.activityEndTime}`,
+      render: (val, record) => `${val.slice(0, 10)} ~ ${record.activityEndTime.slice(0, 10)}`,
     },
     {
       title: '活动城市',
       align: 'center',
-      dataIndex: 'cityCity',
+      dataIndex: 'cityCode',
       ellipsis: true,
+      render: (val) => checkCityName(val),
     },
     {
       title: '活动状态',
       align: 'center',
-      dataIndex: 'activityStatus',
+      dataIndex: 'status',
       render: (val) => ACTIVITY_STATUS[val],
     },
     {
       title: '剩余库存',
       align: 'center',
-      dataIndex: 'kuCun',
+      dataIndex: 'remain',
       render: (val) => (val ? val : '--'),
     },
     {
       title: '创建时间/创建人',
       align: 'center',
-      dataIndex: 'aaaaa',
-      //   render: (val) => (val ? val : '--'),
+      // dataIndex: 'aaaaa',
+      render: (val, record) => `${record.createTime}\n${record.creator}`,
     },
     {
       type: 'handle',
-      dataIndex: 'activityIdString',
-      render: (val, record) => [
+      dataIndex: 'configFissionTemplateId',
+      render: (val, record, index) => [
         {
           // 下架
           type: 'down',
@@ -99,11 +87,34 @@ const AddNewActivity = (props) => {
         {
           // 编辑
           type: 'edit',
-          click: () => setVisible(true),
+          click: () => fetchAddNewDetail(val),
         },
       ],
     },
   ];
+
+  // 获取详情
+  const fetchAddNewDetail = (id) => {
+    dispatch({
+      type: 'addNewActivity/fetchMarketAddNewActivityDetail',
+      payload: {
+        configFissionTemplateId: id,
+      },
+      callback: (detail) => setVisible({ show: true, detail }),
+    });
+  };
+  // const fetchShareDetail = (index, type) => {
+  //   const { momentId, ownerId } = list[index];
+  //   dispatch({
+  //     type: 'videoPlatform/fetchNewShareDetail',
+  //     payload: {
+  //       momentId,
+  //       ownerId,
+  //       type,
+  //     },
+  //     callback: (detail) => setVisible({ show: true, index, type, detail }),
+  //   });
+  // };
 
   // 活动下架
   const fetchMarketActivityCancel = (payload) => {
@@ -134,11 +145,9 @@ const AddNewActivity = (props) => {
         btnExtra={btnExtra}
         columns={getColumns}
         searchItems={searchItems}
-        params={params}
-        rowKey={(record) => record.activityIdString}
-        dispatchType="marketCardActivity/fetchGetList"
-        //   {...marketCardActivity.active}
-        {...data}
+        rowKey={(record) => record.configFissionTemplateId}
+        dispatchType="addNewActivity/fetchGetList"
+        {...addNewList}
       ></TableDataBlock>
       {/* 新增，编辑 */}
       <AddNewActivitySet
@@ -150,7 +159,7 @@ const AddNewActivity = (props) => {
   );
 };
 
-export default connect(({ marketCardActivity, loading }) => ({
-  marketCardActivity,
-  loading: loading.effects['marketCardActivity/fetchGetList'],
+export default connect(({ addNewActivity, loading }) => ({
+  addNewList: addNewActivity,
+  loading: loading.effects['addNewActivity/fetchGetList'],
 }))(AddNewActivity);
