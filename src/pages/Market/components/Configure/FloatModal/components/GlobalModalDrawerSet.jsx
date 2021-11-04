@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import { Form, Button, InputNumber } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
@@ -71,6 +72,7 @@ const GlobalModalDrawerSet = (props) => {
       type: 'rangePicker',
       name: 'activityBeginTime',
       end: 'activityEndTime',
+      disabledDate: (current) => current && current < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '浮窗图片',

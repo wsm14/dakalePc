@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { connect } from 'umi';
 import { Form, Button, InputNumber } from 'antd';
+import moment from 'moment';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 import { MODAL_FREQUENCY, MARKET_LOOK_AREA, MARKET_MODAL_TYPE } from '@/common/constant';
@@ -80,6 +81,7 @@ const GlobalModalDrawerSet = (props) => {
       type: 'rangePicker',
       name: 'activityBeginTime',
       end: 'activityEndTime',
+      disabledDate: (current) => current && current < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '弹窗类型',
