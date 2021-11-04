@@ -7,12 +7,11 @@ import EditionModal from './EditionModal';
 import CityModal from './CityModal';
 import CityTable from './CityTable';
 
-const TabConfigure = (props) => {
+const Index = (props) => {
   const { dispatch, loading, editionList } = props;
   const [visible, setVisible] = useState(false);
   const [tabKey, setTabKey] = useState('iOS');
   const [visibleEdition, setVisibleEdition] = useState(false);
-
   const childRef = useRef();
 
   const getColumns = [
@@ -24,7 +23,7 @@ const TabConfigure = (props) => {
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configIndexTabId',
+      dataIndex: 'configFloatingWindowId',
       render: (val, row) => [
         {
           type: 'edit',
@@ -71,14 +70,19 @@ const TabConfigure = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat') {
-      childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
+      childRef?.current?.fetchGetData({
+        userOs: key,
+        area: 'all',
+        windowType: 'first',
+        isAutomatic: 1,
+      });
     }
   };
 
   return (
     <>
       <Card
-        title="逛逛页面配置"
+        title="全局弹窗配置"
         tabList={Object.keys(TAB_INDEX_TYPE).map((i) => ({ key: i, tab: TAB_INDEX_TYPE[i] }))}
         activeTabKey={tabKey}
         onTabChange={handleTabChange}
@@ -91,9 +95,9 @@ const TabConfigure = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
-            rowKey={(record) => `${record.configWanderAroundModuleId}`}
-            params={{ userOs: tabKey, area: 'all' }}
-            dispatchType="walkingManage/fetchAroundModuleList"
+            rowKey={(record) => `${record.configFloatingWindowId}`}
+            params={{ userOs: tabKey, area: 'all', windowType: 'first', isAutomatic: 1 }}
+            dispatchType="marketConfigure/fetchFloatingWindowList"
             {...editionList}
           />
         ) : (
@@ -118,7 +122,7 @@ const TabConfigure = (props) => {
   );
 };
 
-export default connect(({ loading, walkingManage }) => ({
-  editionList: walkingManage.editionList,
-  loading: loading.effects['walkingManage/fetchAroundModuleList'],
-}))(TabConfigure);
+export default connect(({ loading, marketConfigure }) => ({
+  editionList: marketConfigure.floatEditionList,
+  loading: loading.models.marketConfigure,
+}))(Index);

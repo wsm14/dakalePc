@@ -393,6 +393,12 @@ export default [
         buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
+        path: '/market/markConfigure',
+        name: '营销功能配置',
+        component: './Market/MarketConfigure',
+        buttons: ['save', 'del', 'edit', 'up', 'down'],
+      },
+      {
         path: '/market/videoAd',
         name: '新手视频',
         component: './Market/NoviceAdvert',
