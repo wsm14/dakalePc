@@ -84,7 +84,12 @@ const TableBlockComponent = (props) => {
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     fetchGetData: (data = {}) => {
-      const { page } = data;
+      const { page, checkOnly = false } = data;
+      if (checkOnly) {
+        const { page } = tableParems;
+        if (page > 1) setTableParems({ ...tableParems, page: page - 1 });
+        return;
+      }
       if (page) {
         handleSearch(data);
         return;

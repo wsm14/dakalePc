@@ -73,13 +73,16 @@ const EnvelopSet = (props) => {
       title: '操作',
       dataIndex: 'configRedEnvelopeWhiteAccountId',
       type: 'handle',
-      render: (val, row, index) => [
-        {
-          type: 'del',
-          auth: true,
-          click: () => handleDelete(val),
-        },
-      ],
+      render: (val, row, index) => {
+        const checkOnly = whiteNameList.list.length === 1;
+        return [
+          {
+            type: 'del',
+            auth: true,
+            click: () => handleDelete(val, checkOnly),
+          },
+        ];
+      },
     },
   ];
 
@@ -168,21 +171,19 @@ const EnvelopSet = (props) => {
   ];
 
   //白名单删除
-  const handleDelete = (configRedEnvelopeWhiteAccountId) => {
+  const handleDelete = (configRedEnvelopeWhiteAccountId, checkOnly) => {
     dispatch({
       type: 'redEnvelopes/fetchWhiteNameListDelete',
       payload: {
         configRedEnvelopeWhiteAccountId,
       },
-      callback: tableRef.current.fetchGetData,
+      callback: () => tableRef.current.fetchGetData({ checkOnly }),
     });
   };
 
   //确认
   const onOk = (keysObj, list, resultList) => {
     const { keys = [] } = keysObj;
-    console.log(keys);
-    // return;
     dispatch({
       type: 'redEnvelopes/fetchWhiteNameListAdd',
       payload: {
@@ -209,5 +210,7 @@ const EnvelopSet = (props) => {
 export default connect(({ baseData, redEnvelopes, loading }) => ({
   kolLevel: baseData.kolLevel,
   whiteNameList: redEnvelopes.whiteNameList,
-  loading: loading.effects['redEnvelopes/fetchWhiteNameList'],
+  loading:
+    loading.effects['redEnvelopes/fetchWhiteNameList'] ||
+    loading.effects['redEnvelopes/fetchWhiteNameListDelete'],
 }))(EnvelopSet);
