@@ -16,7 +16,7 @@ const JumpTypeBlock = ({ nativeList, showUrl = false, setShowApi, setParamKey = 
   if (!showUrl) return null;
   return {
     无: null,
-    H5: (
+    h5: (
       <FormItem
         key={`jumpUrl`}
         label="链接"
