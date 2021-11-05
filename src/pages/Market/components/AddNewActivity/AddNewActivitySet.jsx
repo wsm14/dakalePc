@@ -6,11 +6,18 @@ import { Form, Button, Tabs } from 'antd';
 import CITYJSON from '@/common/cityJson';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
-import ShareCoupon from '@/components/VideoSelectBindContent';
+import ShareCoupon from './components/ShareCoupon';
 
 const AddNewActivitySet = (props) => {
   const { dispatch, childRef, visible, onClose } = props;
   const { show = false, detail } = visible;
+
+  console.log('detail', detail);
+
+  const [couponData, setCouponData] = useState({ free: {}, discounts: [], equities: [] }); // 奖品权益商品的信息
+  const { free, discounts, equities } = couponData;
+  // 暂存券数据
+  const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
 
   const [form] = Form.useForm();
 
@@ -20,27 +27,28 @@ const AddNewActivitySet = (props) => {
 
   // 新增活动
   const fetchMarketActivityAdd = () => {
-    // form.validateFields().then((values) => {
-    //   const {
-    //     activityBeginTime: time,
-    //     activityBanner: { fileList },
-    //   } = values;
-    //   const payload = {
-    //     ...values,
-    //     activityBeginTime: time[0].format('YYYY-MM-DD 00:00:00'),
-    //     activityEndTime: time[1].format('YYYY-MM-DD 00:00:00'),
-    //   };
-    //   aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
-    //     dispatch({
-    //       type: 'marketCardActivity/fetchMarketActivityAdd',
-    //       payload: { ...payload, activityBanner: res.toString() },
-    //       callback: () => {
-    //         onClose();
-    //         childRef.current.fetchGetData();
-    //       },
-    //     });
-    //   });
-    // });
+    form.validateFields().then((values) => {
+      console.log('values', values);
+      //   const {
+      //     activityBeginTime: time,
+      //     activityBanner: { fileList },
+      //   } = values;
+      //   const payload = {
+      //     ...values,
+      //     activityBeginTime: time[0].format('YYYY-MM-DD 00:00:00'),
+      //     activityEndTime: time[1].format('YYYY-MM-DD 00:00:00'),
+      //   };
+      //   aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
+      //     dispatch({
+      //       type: 'marketCardActivity/fetchMarketActivityAdd',
+      //       payload: { ...payload, activityBanner: res.toString() },
+      //       callback: () => {
+      //         onClose();
+      //         childRef.current.fetchGetData();
+      //       },
+      //     });
+      //   });
+    });
   };
 
   // 切换tab标签页
@@ -56,13 +64,13 @@ const AddNewActivitySet = (props) => {
       select: CITYJSON.filter((item) => item.level === '2'),
       // fieldNames: { label: 'name', value: 'id' },
       // onChange: (val, group) =>
-      // // console.log(group, 'group'),
-      // setCityArr(
-      //   group.map(({ option }) => ({
-      //     cityCode: option.id,
-      //     cityName: option.name,
-      //   })),
-      // ),
+      //   // console.log(group, 'group'),
+      //   setCityArr(
+      //     group.map(({ option }) => ({
+      //       cityCode: option.id,
+      //       cityName: option.name,
+      //     })),
+      //   ),
     },
     {
       label: '活动名称',
@@ -166,22 +174,74 @@ const AddNewActivitySet = (props) => {
       visible: prizeTypes === 'bean',
     },
     {
+      label: `活动信息`,
+      name: 'configFissionTemplateId',
+      hidden: true,
+    },
+    {
       label: '权益商品',
       name: 'prizeRightGoodsIds',
       type: 'formItem',
       visible: prizeTypes === 'equity',
       formItem: (
         <>
-          123
-          {/* <ShareCoupon
-            show="active"
-            merchantIdKey="ownerId"
-            type={contact[0]?.couponName ? 'coupon' : 'goods'}
-            data={contact[0]}
+          <ShareCoupon
+            type="goodsRight"
+            data={free}
             form={form}
-            onDel={() => saveCouponStorage({ contact: contact.filter((c, i) => i != 0) })}
-            onOk={(data) => saveCouponStorage({ contact: [data] })}
-          ></ShareCoupon> */}
+            onDel={() => saveCouponStorage({ free: {} })}
+            onOk={(free) => saveCouponStorage({ free })}
+          ></ShareCoupon>
+        </>
+      ),
+    },
+  ];
+
+  const formItemsRecommend = [
+    {
+      title: '标题图片配置',
+      label: '特惠商品标题图片',
+      name: 'specialGoodsTitleImg',
+      type: 'upload',
+      maxFile: 1,
+      imgRatio: 368 / 110,
+    },
+    {
+      label: '权益商品标题图片',
+      name: 'rightGoodsTitleImg',
+      type: 'upload',
+      maxFile: 1,
+      imgRatio: 368 / 110,
+    },
+    {
+      label: '选择特惠商品',
+      name: 'specialGoodsIds',
+      type: 'formItem',
+      formItem: (
+        <>
+          <ShareCoupon
+            type="specialGoods"
+            data={discounts}
+            form={form}
+            onDel={() => saveCouponStorage({ discounts: [] })}
+            onOk={(data) => saveCouponStorage({ discounts: [data] })}
+          ></ShareCoupon>
+        </>
+      ),
+    },
+    {
+      label: '选择权益商品',
+      name: 'rightGoodsIds',
+      type: 'formItem',
+      formItem: (
+        <>
+          <ShareCoupon
+            type="rightGoods"
+            data={equities}
+            form={form}
+            onDel={() => saveCouponStorage({ equities: [] })}
+            onOk={(data) => saveCouponStorage({ equities: [data] })}
+          ></ShareCoupon>
         </>
       ),
     },
@@ -194,6 +254,7 @@ const AddNewActivitySet = (props) => {
     width: 800,
     afterCallBack: () => {
       form.resetFields();
+      setPrizeTypes('bean');
     },
     footer: (
       <Button type="primary" onClick={() => fetchMarketActivityAdd()}>
@@ -208,7 +269,11 @@ const AddNewActivitySet = (props) => {
           <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
         </TabPane>
         <TabPane tab="推荐商品" key="2">
-          Content of Tab Pane 2
+          <FormCondition
+            form={form}
+            formItems={formItemsRecommend}
+            initialValues={detail}
+          ></FormCondition>
         </TabPane>
       </Tabs>
     </DrawerCondition>
