@@ -14,7 +14,7 @@
 ### TableDataBlock
 
 | 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- |
 | list | 表格数据源`（必填）` | object[] | [] |
 | columns | 表头`（必填）` | object[] | - |
 | rowKey | 表格行 key 的取值，可以是字符串或一个函数`（必填）` | `string | function(record): string` | - |
@@ -55,6 +55,10 @@
 ```
 
 ## 更新日志
+
+- ### 2021 年 11 月 5 日 13:52:05 Dong
+
+> - `cref.current.fetchGetData` 增加 `checkOnly[Boolean]` 检查是否是最后一页唯一一条 true 请求上一页数据
 
 - ### 2021 年 7 月 27 日 10:59:20 Dong
 

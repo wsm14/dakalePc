@@ -32,8 +32,8 @@ const GlobalModalDrawerSet = (props) => {
           ...detailParam,
           flag: { add: 'addConfig', edit: 'updateConfig' }[type],
           popUpImage: imgList.toString(),
-          activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD'),
-          activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD'),
+          activityBeginTime: ohter.activityBeginTime[0].format('YYYY-MM-DD HH:mm'),
+          activityEndTime: ohter.activityBeginTime[1].format('YYYY-MM-DD HH:mm'),
         },
         callback: () => {
           onClose();
@@ -81,6 +81,8 @@ const GlobalModalDrawerSet = (props) => {
       type: 'rangePicker',
       name: 'activityBeginTime',
       end: 'activityEndTime',
+      showTime: true,
+      format: 'YYYY-MM-DD HH:mm',
       disabledDate: (current) => current && current < moment().endOf('day').subtract(1, 'day'),
     },
     {
@@ -108,6 +110,7 @@ const GlobalModalDrawerSet = (props) => {
     },
     {
       type: 'noForm',
+      visible: modalType === 'image',
       formItem: <NewNativeFormSet form={form} detail={detail}></NewNativeFormSet>,
     },
     {
