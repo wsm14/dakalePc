@@ -74,7 +74,6 @@ export default {
       const extraParamNormal = dictionaryNormal.extraParam;
       const params = extraParam ? JSON.parse(extraParam || '{}') : {};
       const paramsNormal = extraParamNormal ? JSON.parse(extraParamNormal || '{}') : {};
-      console.log(params, paramsNormal, '2212');
       callback &&
         callback({
           extraParam: {
