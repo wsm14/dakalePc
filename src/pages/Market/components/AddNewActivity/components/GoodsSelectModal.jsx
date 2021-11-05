@@ -10,7 +10,16 @@ const { TabPane } = Tabs;
  * 选择特惠商品（多选）
  */
 const GoodsSelectModal = (props) => {
-  const { specialGoodsList = {}, form, dispatch, visible, onClose, loading, typeGoods } = props;
+  const {
+    specialGoodsList = {},
+    platformEquityList = {},
+    form,
+    dispatch,
+    visible,
+    onClose,
+    loading,
+    typeGoods,
+  } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
   const [tabKey, setTabKey] = useState('goods'); // tab类型
@@ -37,25 +46,42 @@ const GoodsSelectModal = (props) => {
   ];
 
   const listProps = {
-    goods: {
+    specialGoods: {
       list: specialGoodsList.list,
       total: specialGoodsList.total,
       key: 'specialGoodsId',
+      loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
     },
-  }[tabKey];
+    rightGoods: {
+      list: platformEquityList.list,
+      total: platformEquityList.total,
+      key: 'specialGoodsId',
+      loading: loading.effects['baseData/fetchGetPlatformEquitySelect'],
+    },
+  }[typeGoods];
 
   // 获取特惠活动
   const fetchSpecialGoodsList = (data) => {
     // if (!data.ownerId) return;
-    dispatch({
-      type: 'baseData/fetchGetSpecialGoodsSelect',
-      payload: {
-        ...data,
-        deleteFlag: 1,
-        page: 1,
-        limit: 999,
-      },
-    });
+    typeGoods === 'specialGoods'
+      ? dispatch({
+          type: 'baseData/fetchGetSpecialGoodsSelect',
+          payload: {
+            ...data,
+            deleteFlag: 1,
+            page: 1,
+            limit: 999,
+          },
+        })
+      : dispatch({
+          type: 'baseData/fetchGetPlatformEquitySelect',
+          payload: {
+            ...data,
+            goodsStatus: 1,
+            page: 1,
+            limit: 999,
+          },
+        });
   };
 
   // 选择商品逻辑
@@ -68,7 +94,7 @@ const GoodsSelectModal = (props) => {
   };
 
   const listDom = (
-    <Spin spinning={!!loading.effects['baseData/fetchGetSpecialGoodsSelect']}>
+    <Spin spinning={listProps.loading}>
       {listProps?.list?.length ? (
         <div className="share_select_list">
           {listProps?.list.map(
@@ -116,5 +142,6 @@ const GoodsSelectModal = (props) => {
 
 export default connect(({ baseData, loading }) => ({
   specialGoodsList: baseData.specialGoods,
+  platformEquityList: baseData.platformEquity,
   loading,
 }))(GoodsSelectModal);

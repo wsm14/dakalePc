@@ -58,6 +58,14 @@ export async function fetchMarketAddNewActivityDetail(params) {
   });
 }
 
+// post 营销活动 - 营销活动下架
+export function fetchMarketAddNewActivityCancel(data) {
+  return request('/admin/configFissionTemplate/offShelfConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 营销活动 - 营销活动列表
 export async function fetchMarketActivity(params) {
   return request('/admin/marketingActivity/listActivity', {

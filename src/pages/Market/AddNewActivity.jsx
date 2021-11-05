@@ -3,7 +3,7 @@ import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
-import { checkCityName } from '@/utils/utils';
+import { checkCityName, getCityName } from '@/utils/utils';
 
 // 拉新活动
 const AddNewActivity = (props) => {
@@ -81,8 +81,8 @@ const AddNewActivity = (props) => {
         {
           // 下架
           type: 'down',
-          visible: record.activityStatus !== '2',
-          click: () => fetchMarketActivityCancel({ activityId: val }),
+          visible: record.status !== '2',
+          click: () => fetchMarketActivityCancel({ configFissionTemplateId: val }),
         },
         {
           // 编辑
@@ -100,7 +100,8 @@ const AddNewActivity = (props) => {
       payload: {
         configFissionTemplateId: id,
       },
-      callback: (detail) => setVisible({ show: true, detail }),
+      callback: (detail) =>
+        setVisible({ show: true, detail: { ...detail, cityCode: getCityName(detail.cityCode) } }),
     });
   };
   // const fetchShareDetail = (index, type) => {
@@ -119,14 +120,14 @@ const AddNewActivity = (props) => {
   // 活动下架
   const fetchMarketActivityCancel = (payload) => {
     dispatch({
-      type: 'marketCardActivity/fetchMarketActivityCancel',
+      type: 'addNewActivity/fetchMarketAddNewActivityCancel',
       payload,
       callback: childRef.current.fetchGetData,
     });
   };
 
   // 设置活动
-  const handleSetActive = () => setVisible(true);
+  const handleSetActive = () => setVisible({ show: true });
 
   const btnExtra = [
     {

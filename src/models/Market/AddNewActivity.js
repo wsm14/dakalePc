@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import {
   fetchMarketAddNewActivity,
   fetchMarketAddNewActivityDetail,
+  fetchMarketAddNewActivityCancel,
 } from '@/services/MarketServices';
 
 export default {
@@ -22,6 +23,16 @@ export default {
   },
 
   effects: {
+    // 裂变拉新活动下架
+    *fetchMarketAddNewActivityCancel({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketAddNewActivityCancel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `下架修改成功`,
+      });
+      callback();
+    },
     // 获取裂变模板-列表
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchMarketAddNewActivity, payload);

@@ -10,9 +10,7 @@ import ShareCoupon from './components/ShareCoupon';
 
 const AddNewActivitySet = (props) => {
   const { dispatch, childRef, visible, onClose } = props;
-  const { show = false, detail } = visible;
-
-  console.log('detail', detail);
+  const { show = false, detail = {} } = visible;
 
   const [couponData, setCouponData] = useState({ free: {}, discounts: [], equities: [] }); // 奖品权益商品的信息
   const { free, discounts, equities } = couponData;
