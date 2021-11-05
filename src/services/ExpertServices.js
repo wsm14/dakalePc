@@ -23,6 +23,21 @@ export function fetchDarenTag(params) {
   });
 }
 
+// get 达人列表 - 获取BD列表
+export function fetchGetBDList(params) {
+  return request('/admin/sell/getSell', {
+    params,
+  });
+}
+
+// post 达人列表 - 设置BD
+export function fetchGetBDSet(data) {
+  return request('/admin/userManagement/updateUserSellId', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 达人列表 - 设置哒人标识
 export function fetchDarenTagSet(data) {
   return request('/admin/kol/setUserIdentification', {

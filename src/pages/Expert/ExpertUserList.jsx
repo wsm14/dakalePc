@@ -27,7 +27,7 @@ const ExpertUserList = (props) => {
     fetchGetKolLevel();
     fetchDarenTag();
   }, []);
-  console.log(darenTag);
+
   // 搜索参数
   const searchItems = [
     {
