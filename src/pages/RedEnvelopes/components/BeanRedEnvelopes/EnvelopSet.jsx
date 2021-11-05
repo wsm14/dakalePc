@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import DrawerCondition from '@/components/DrawerCondition';
 import { Form, Button } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import FormCondition from '@/components/FormCondition';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSelect from '@/components/MerUserSelectTable/UserSelect';
@@ -75,6 +76,7 @@ const EnvelopSet = (props) => {
       render: (val, row, index) => [
         {
           type: 'del',
+          auth: true,
           click: () => handleDelete(val),
         },
       ],
@@ -123,6 +125,12 @@ const EnvelopSet = (props) => {
       label: '白名单列表',
       name: ['extraParamNormal', 'userIdList'],
       type: 'formItem',
+      extra: (
+        <div>
+          <ExclamationCircleOutlined style={{ marginRight: 3 }}></ExclamationCircleOutlined>
+          白名单选择成功（确认删除）之后即添加（删除）成功
+        </div>
+      ),
       addRules: [
         {
           validator: () => {

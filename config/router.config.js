@@ -685,7 +685,7 @@ export default [
         path: '/redEnvelopes/beanRedEnvelopes',
         name: '卡豆红包',
         component: './RedEnvelopes/BeanRedEnvelopes',
-        buttons: ['authEdit', 'getRecord'],
+        buttons: ['authEdit', 'getRecord', 'del'],
       },
     ],
   },
