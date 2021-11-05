@@ -663,6 +663,14 @@ export function fetchGoodsTagSwitchStatus(data) {
 
 // 优惠券管理
 
+// post 优惠券管理 - 分享配置
+export function fetchCouponManageShareEdit(data) {
+  return request('/admin/coupon/updateOwnerCouponNotAudit', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 优惠券管理 - 列表
 export function fetchCouponList(params) {
   return request('/admin/coupon/listOwnerCouponToAction', {

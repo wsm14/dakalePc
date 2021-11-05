@@ -8,14 +8,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 
 const ShareImg = (props) => {
   const { visible, onClose, dispatch, loading } = props;
-  const {
-    show = false,
-    goodsName,
-    ownerName,
-    specialGoodsId = '',
-    ownerIdString = '',
-    initialValues = {},
-  } = visible;
+  const { show = false, merchantName, userMerchantIdString = '', initialValues = {} } = visible;
 
   const [form] = Form.useForm();
   const formItems = [
@@ -36,14 +29,6 @@ const ShareImg = (props) => {
       extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
     },
     {
-      label: '推荐理由',
-      name: 'recommendReason',
-      type: 'textArea',
-      maxLength: 100,
-      rows: 3,
-      rules: [{ required: false }],
-    },
-    {
       label: '自定义标题',
       name: 'customTitle',
       type: 'textArea',
@@ -54,17 +39,15 @@ const ShareImg = (props) => {
   ];
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { shareImg = '', friendShareImg = '', recommendReason, customTitle } = values;
+      const { shareImg = '', friendShareImg = '', customTitle } = values;
       const sImg = await aliOssUpload(shareImg);
       const fImg = await aliOssUpload(friendShareImg);
       dispatch({
-        type: 'specialGoods/fetchSpecialGoodsShareEdit',
+        type: 'businessList/fetchBusinessShareEdit',
         payload: {
-          id: specialGoodsId,
-          ownerId: ownerIdString,
+          userMerchantIdString,
           shareImg: sImg.toString(),
           friendShareImg: fImg.toString(),
-          recommendReason,
           customTitle,
         },
         callback: onClose,
@@ -74,7 +57,7 @@ const ShareImg = (props) => {
 
   const modalProps = {
     visible: show,
-    title: `${ownerName}--${goodsName}`,
+    title: `${merchantName}`,
     onClose,
     footer: (
       <Button type="primary" onClick={handleSave} loading={loading}>
@@ -94,5 +77,5 @@ const ShareImg = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['specialGoods/fetchSpecialGoodsShareEdit'],
+  loading: loading.effects['businessList/fetchBusinessShareEdit'],
 }))(ShareImg);

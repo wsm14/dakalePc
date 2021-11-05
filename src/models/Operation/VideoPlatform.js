@@ -219,7 +219,7 @@ export default {
       const response = yield call(fetchNewShareDetail, cell);
       if (!response) return;
       const { content } = response;
-      console.log(content, 'content');
+      // console.log(content, 'content');
       const {
         age,
         area,

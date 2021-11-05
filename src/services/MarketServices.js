@@ -44,6 +44,20 @@ export function fetchMarketNoticeSet(data) {
   });
 }
 
+// get 营销活动 - 拉新活动列表
+export async function fetchMarketAddNewActivity(params) {
+  return request('/admin/configFissionTemplate/listConfigFissionTemplate', {
+    params,
+  });
+}
+
+// get 营销活动 - 拉新活动详情
+export async function fetchMarketAddNewActivityDetail(params) {
+  return request('/admin/configFissionTemplate/getConfigFissionTemplateById', {
+    params,
+  });
+}
+
 // get 营销活动 - 营销活动列表
 export async function fetchMarketActivity(params) {
   return request('/admin/marketingActivity/listActivity', {
