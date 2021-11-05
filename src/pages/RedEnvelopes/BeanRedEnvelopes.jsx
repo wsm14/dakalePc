@@ -75,11 +75,7 @@ const BeanRedEnvelopes = (props) => {
   //红包设置回显
   const handleSet = () => {
     dispatch({
-      type: 'redEnvelopes/fetchgetDictionaryAdmin',
-      payload: {
-        parent: 'redEnvelope',
-        child: 'lucky',
-      },
+      type: 'redEnvelopes/fetchGetRedEnvelopeDetail',
       callback: (detail) => {
         setVisibleSet({
           show: true,
@@ -241,5 +237,5 @@ const BeanRedEnvelopes = (props) => {
 
 export default connect(({ redEnvelopes, loading }) => ({
   redEnvelopes,
-  loading: loading.models.redEnvelopes,
+  loading: loading.effects['redEnvelopes/fetchListRedEnvelopesManagement'],
 }))(BeanRedEnvelopes);
