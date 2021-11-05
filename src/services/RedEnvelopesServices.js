@@ -37,3 +37,26 @@ export function fetchSetNormalRedEnvelopeAuthority(data) {
     data,
   });
 }
+
+// get 普通红包 - 列表
+export async function fetchWhiteNameList(params) {
+  return request('/admin/redEnvelopes/listConfigRedEnvelopeWhiteAccountManagement', {
+    params,
+  });
+}
+
+// 普通红包 - 白名单 - 删除
+export function fetchWhiteNameListDelete(data) {
+  return request('/admin/redEnvelopes/deleteNormalRedEnvelopeWhiteAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 普通红包 - 白名单 - 设置
+export function fetchWhiteNameListAdd(data) {
+  return request('/admin/redEnvelopes/setNormalRedEnvelopeWhiteAccount', {
+    method: 'POST',
+    data,
+  });
+}

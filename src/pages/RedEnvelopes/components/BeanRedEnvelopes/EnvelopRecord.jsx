@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { Modal } from 'antd';
+import { Modal, Tag } from 'antd';
+import { CrownOutlined } from '@ant-design/icons';
 import TableDataBlock from '@/components/TableDataBlock';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import { checkCityName } from '@/utils/utils';
@@ -22,6 +23,7 @@ const EnvelopRecord = (props) => {
   const { show = false, redEnvelopesIdString, detail = {} } = visible;
   const { sendUser = {} } = detail;
   const initialValues = { ...detail, ...sendUser, ...recordObj };
+  console.log(initialValues, 'initialValues');
 
   useEffect(() => {
     if (redEnvelopesIdString) {
@@ -110,6 +112,17 @@ const EnvelopRecord = (props) => {
     {
       title: '领取卡豆数',
       dataIndex: 'bean',
+      render: (val, row) => (
+        <div>
+          {val}
+          {initialValues.envelopesType === 'lucky' && row.isBestLuck === 1 && (
+            <Tag color="orange" style={{ marginLeft: 5 }}>
+              <CrownOutlined></CrownOutlined>
+              手气最佳
+            </Tag>
+          )}
+        </div>
+      ),
     },
     {
       title: '注册时间',

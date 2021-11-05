@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import DrawerCondition from '@/components/DrawerCondition';
 import { Form, Button } from 'antd';
 import FormCondition from '@/components/FormCondition';
-import { RED_ENVELOPES_TYPE_SHE, SHARE_SEX_TYPE } from '@/common/constant';
-import { UserSelectShow } from '@/components/MerUserSelectTable';
-import { set } from 'lodash-es';
-
+import TableDataBlock from '@/components/TableDataBlock';
+import UserSelect from '@/components/MerUserSelectTable/UserSelect';
 const EnvelopSet = (props) => {
-  const { kolLevel, onClose, childRef, visible, dispatch } = props;
+  const { kolLevel, onClose, childRef, visible, dispatch, whiteNameList, loading } = props;
+  const tableRef = useRef();
   const { show = false, detail = {} } = visible;
   const [form] = Form.useForm();
-  const [envelopType, setEnvelopType] = useState(false);
   const [visibleSelect, setVisibleSelect] = useState(false); // 选择用户弹窗
-  const [userList, setUserList] = useState({ keys: [], list: [] });
 
   const handleSave = () => {
     form.validateFields().then((values) => {
-      console.log(values);
       const { extraParam, extraParamNormal } = values;
-      return;
       dispatch({
         type: 'redEnvelopes/fetchSetLuckyRedEnvelopeAuthority',
         payload: {
@@ -59,7 +54,7 @@ const EnvelopSet = (props) => {
   const columns = [
     {
       title: '用户昵称',
-      dataIndex: 'username',
+      dataIndex: 'userName',
     },
     {
       title: '注册手机号',
@@ -75,19 +70,12 @@ const EnvelopSet = (props) => {
     },
     {
       title: '操作',
-      dataIndex: 'userIdString',
+      dataIndex: 'configRedEnvelopeWhiteAccountId',
       type: 'handle',
       render: (val, row, index) => [
         {
           type: 'del',
-          click: () => {
-            userList.list.splice(index, 1);
-            userList.keys.splice(index, 1);
-            setUserList({
-              keys: [...userList.keys],
-              list: [...userList.list],
-            });
-          },
+          click: () => handleDelete(val),
         },
       ],
     },
@@ -110,13 +98,15 @@ const EnvelopSet = (props) => {
       select: kolLevel,
       onChange: (val, option) => {
         form.setFieldsValue({
-          levelName: option.option.name,
+          extraParam: {
+            levelName: option.option.name,
+          },
         });
       },
     },
     {
       label: '等级名称',
-      name: 'levelName',
+      name: ['extraParam', 'levelName'],
       rules: [{ required: false }],
       hidden: true,
     },
@@ -136,15 +126,13 @@ const EnvelopSet = (props) => {
       addRules: [
         {
           validator: () => {
-            if (userList?.list.length === 0) {
+            if (whiteNameList?.list.length === 0) {
               return Promise.reject(`请选择用户`);
             }
             return Promise.resolve();
           },
         },
       ],
-      // visible: envelopType == '1',
-      // rules: [{ required: true, message: '请选择用户' }],
       formItem: (
         <Button type="primary" ghost onClick={() => setVisibleSelect(true)}>
           选择用户
@@ -156,30 +144,62 @@ const EnvelopSet = (props) => {
       type: 'noForm',
       // visible: envelopType == '1',
       formItem: (
-        <UserSelectShow
-          maxLength={500}
-          key="UserTable"
+        <TableDataBlock
+          noCard={false}
+          size="small"
+          cRef={tableRef}
+          loading={loading}
           columns={columns}
-          {...userList}
-          showSelect={visibleSelect}
-          onCancelShowSelect={() => setVisibleSelect(false)}
-          onOk={(val) => {
-            console.log(val);
-            setUserList(val);
-            form.setFieldsValue({ userIdList: val });
-          }}
-        ></UserSelectShow>
+          rowKey={(record) => `${record.configRedEnvelopeWhiteAccountId}`}
+          params={{ page: 1, limit: 10 }}
+          dispatchType="redEnvelopes/fetchWhiteNameList"
+          {...whiteNameList}
+        ></TableDataBlock>
       ),
     },
   ];
 
+  //白名单删除
+  const handleDelete = (configRedEnvelopeWhiteAccountId) => {
+    dispatch({
+      type: 'redEnvelopes/fetchWhiteNameListDelete',
+      payload: {
+        configRedEnvelopeWhiteAccountId,
+      },
+      callback: tableRef.current.fetchGetData,
+    });
+  };
+
+  //确认
+  const onOk = (keysObj, list, resultList) => {
+    const { keys = [] } = keysObj;
+    console.log(keys);
+    // return;
+    dispatch({
+      type: 'redEnvelopes/fetchWhiteNameListAdd',
+      payload: {
+        userIds: keys,
+      },
+      callback: tableRef.current.fetchGetData,
+    });
+  };
+
   return (
     <DrawerCondition {...modalProps}>
       <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+      <UserSelect
+        // keys={whiteNameList.keys}
+        visible={visibleSelect}
+        // userList={whiteNameList.list}
+        onOk={onOk}
+        onCancel={() => setVisibleSelect(false)}
+      ></UserSelect>
     </DrawerCondition>
   );
 };
 
-export default connect(({ baseData }) => ({
+export default connect(({ baseData, redEnvelopes, loading }) => ({
   kolLevel: baseData.kolLevel,
+  whiteNameList: redEnvelopes.whiteNameList,
+  loading: loading.effects['redEnvelopes/fetchWhiteNameList'],
 }))(EnvelopSet);

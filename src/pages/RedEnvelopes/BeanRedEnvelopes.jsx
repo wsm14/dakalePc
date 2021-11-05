@@ -237,5 +237,5 @@ const BeanRedEnvelopes = (props) => {
 
 export default connect(({ redEnvelopes, loading }) => ({
   redEnvelopes,
-  loading: loading.models.redEnvelopes,
+  loading: loading.effects['redEnvelopes/fetchListRedEnvelopesManagement'],
 }))(BeanRedEnvelopes);
