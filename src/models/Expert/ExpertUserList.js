@@ -6,6 +6,8 @@ import {
   fetchExpertOpen,
   fetchDarenTag,
   fetchDarenTagSet,
+  fetchGetBDList,
+  fetchGetBDSet,
 } from '@/services/ExpertServices';
 
 export default {
@@ -13,6 +15,7 @@ export default {
 
   state: {
     list: { list: [], total: 0 },
+    BDlist: [],
     userTotal: 0,
     darenTag: {},
   },
@@ -70,6 +73,27 @@ export default {
           userTotal: content.kolCount,
         },
       });
+    },
+    *fetchGetBDList({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetBDList, payload);
+      if (!response) return;
+      const { content } = response;
+      callback &&
+        callback(
+          content.recordList.map((item) => ({
+            ...item,
+            sellName: `${item.sellName} ${item.departmentName} ${item.mobile}`,
+          })),
+        );
+    },
+    *fetchGetBDSet({ payload, callback }, { call, put }) {
+      const response = yield call(fetchGetBDSet, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: 'BD关联成功',
+      });
+      callback();
     },
     *fetchExpertStop({ payload, callback }, { call, put }) {
       const response = yield call(fetchExpertStop, payload);
