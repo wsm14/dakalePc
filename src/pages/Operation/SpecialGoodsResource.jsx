@@ -33,7 +33,7 @@ const SpecialGoodsResource = (props) => {
     highCommission: '高佣联盟',
     todayNew: '今日上新',
     selfTour: '自我游',
-    newGoods: '新品推荐',
+    newProductRecommend: '新品推荐',
   };
 
   useEffect(() => {

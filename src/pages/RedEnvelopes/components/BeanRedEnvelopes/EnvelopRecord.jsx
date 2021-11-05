@@ -23,7 +23,6 @@ const EnvelopRecord = (props) => {
   const { show = false, redEnvelopesIdString, detail = {} } = visible;
   const { sendUser = {} } = detail;
   const initialValues = { ...detail, ...sendUser, ...recordObj };
-  console.log(initialValues, 'initialValues');
 
   useEffect(() => {
     if (redEnvelopesIdString) {

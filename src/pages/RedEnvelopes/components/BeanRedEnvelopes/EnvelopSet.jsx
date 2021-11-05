@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
 import DrawerCondition from '@/components/DrawerCondition';
 import { Form, Button } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import FormCondition from '@/components/FormCondition';
 import TableDataBlock from '@/components/TableDataBlock';
 import UserSelect from '@/components/MerUserSelectTable/UserSelect';
@@ -72,12 +73,16 @@ const EnvelopSet = (props) => {
       title: '操作',
       dataIndex: 'configRedEnvelopeWhiteAccountId',
       type: 'handle',
-      render: (val, row, index) => [
-        {
-          type: 'del',
-          click: () => handleDelete(val),
-        },
-      ],
+      render: (val, row, index) => {
+        const checkOnly = whiteNameList.list.length === 1;
+        return [
+          {
+            type: 'del',
+            auth: true,
+            click: () => handleDelete(val, checkOnly),
+          },
+        ];
+      },
     },
   ];
 
@@ -123,6 +128,12 @@ const EnvelopSet = (props) => {
       label: '白名单列表',
       name: ['extraParamNormal', 'userIdList'],
       type: 'formItem',
+      extra: (
+        <div>
+          <ExclamationCircleOutlined style={{ marginRight: 3 }}></ExclamationCircleOutlined>
+          白名单选择成功（确认删除）之后即添加（删除）成功
+        </div>
+      ),
       addRules: [
         {
           validator: () => {
@@ -160,21 +171,19 @@ const EnvelopSet = (props) => {
   ];
 
   //白名单删除
-  const handleDelete = (configRedEnvelopeWhiteAccountId) => {
+  const handleDelete = (configRedEnvelopeWhiteAccountId, checkOnly) => {
     dispatch({
       type: 'redEnvelopes/fetchWhiteNameListDelete',
       payload: {
         configRedEnvelopeWhiteAccountId,
       },
-      callback: tableRef.current.fetchGetData,
+      callback: () => tableRef.current.fetchGetData({ checkOnly }),
     });
   };
 
   //确认
   const onOk = (keysObj, list, resultList) => {
     const { keys = [] } = keysObj;
-    console.log(keys);
-    // return;
     dispatch({
       type: 'redEnvelopes/fetchWhiteNameListAdd',
       payload: {
@@ -201,5 +210,7 @@ const EnvelopSet = (props) => {
 export default connect(({ baseData, redEnvelopes, loading }) => ({
   kolLevel: baseData.kolLevel,
   whiteNameList: redEnvelopes.whiteNameList,
-  loading: loading.effects['redEnvelopes/fetchWhiteNameList'],
+  loading:
+    loading.effects['redEnvelopes/fetchWhiteNameList'] ||
+    loading.effects['redEnvelopes/fetchWhiteNameListDelete'],
 }))(EnvelopSet);
