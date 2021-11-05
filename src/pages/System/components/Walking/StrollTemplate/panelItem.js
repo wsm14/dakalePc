@@ -23,8 +23,8 @@ export default [
       'limitedTime',
       'explosive',
       'member',
-      'selfTour',
-      'specialRecommend',
+      'selfTourResource',
+      'newProductRecommend',
     ],
   },
   {
