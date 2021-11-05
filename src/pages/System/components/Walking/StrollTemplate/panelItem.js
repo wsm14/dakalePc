@@ -18,7 +18,14 @@ export default [
   {
     header: '商品推荐',
     type: 'list',
-    children: ['limitedTimeAndExplosive', 'limitedTime', 'explosive', 'member'],
+    children: [
+      'limitedTimeAndExplosive',
+      'limitedTime',
+      'explosive',
+      'member',
+      'selfTour',
+      'specialRecommend',
+    ],
   },
   {
     header: '商品推荐流',
