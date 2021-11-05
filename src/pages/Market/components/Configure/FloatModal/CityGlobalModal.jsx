@@ -29,6 +29,23 @@ const CityGlobalModal = (props) => {
     childRef.current && childRef.current.fetchGetData({ pageType: tabKey });
   }, [tabKey]);
 
+  const changeTime = (row) => {
+    let { activityBeginTime, activityEndTime } = row;
+    if (activityBeginTime && activityEndTime) {
+      const nowTime = new Date().getTime();
+      activityBeginTime = new Date(activityBeginTime).getTime();
+      activityEndTime = new Date(activityEndTime).getTime();
+      if (nowTime >= activityBeginTime && nowTime <= activityEndTime) {
+        return 1;
+      } else if (nowTime < activityBeginTime) {
+        return 0;
+      } else if (nowTime > activityEndTime) {
+        return 2;
+      }
+    }
+    return '';
+  };
+
   const getColumns = [
     {
       title: '浮窗名称',
@@ -42,28 +59,28 @@ const CityGlobalModal = (props) => {
     {
       title: '活动状态',
       dataIndex: 'status',
-      render: (val) => MARKET_STATUS_TYPE[val],
+      render: (val, row) => MARKET_STATUS_TYPE[changeTime(row)],
     },
 
     {
       type: 'handle',
       dataIndex: 'configFloatingWindowId',
       render: (val, row) => {
-        const { status } = row;
+        const status = changeTime(row);
         return [
           {
             type: 'edit',
-            visible: status !== '2',
+            visible: status !== 2,
             click: () => handleEdit(val),
           },
           {
             type: 'down',
-            visible: status !== '2',
+            visible: status !== 2,
             click: () => handleDown(val),
           },
           {
             type: 'del',
-            visible: status === '2',
+            visible: status === 2,
             click: () => handleDelete(val),
           },
         ];
