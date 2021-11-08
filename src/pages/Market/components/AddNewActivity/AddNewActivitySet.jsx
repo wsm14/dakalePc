@@ -25,6 +25,7 @@ const AddNewActivitySet = (props) => {
 
   useEffect(() => {
     setTabKey('1');
+    setPrizeTypes('bean');
   }, []);
 
   // 新增活动
@@ -164,6 +165,7 @@ const AddNewActivitySet = (props) => {
       type: 'radio',
       select: { bean: '卡豆', equity: '权益商品' },
       onChange: (e) => {
+        console.log('e', e);
         setPrizeTypes(e.target.value);
       },
     },
@@ -226,10 +228,10 @@ const AddNewActivitySet = (props) => {
         <>
           <ShareCoupon
             type="specialGoods"
-            data={discounts}
+            // data={discounts}
             form={form}
-            onDel={() => saveCouponStorage({ discounts: [] })}
-            onOk={(data) => saveCouponStorage({ discounts: [...discounts, data] })}
+            // onDel={() => saveCouponStorage({ discounts: [] })}
+            // onOk={(data) => saveCouponStorage({ discounts: [...discounts, data] })}
           ></ShareCoupon>
         </>
       ),
@@ -242,10 +244,10 @@ const AddNewActivitySet = (props) => {
         <>
           <ShareCoupon
             type="rightGoods"
-            data={equities}
+            // data={equities}
             form={form}
-            onDel={() => saveCouponStorage({ equities: [] })}
-            onOk={(data) => saveCouponStorage({ equities: [...equities, data] })}
+            // onDel={() => saveCouponStorage({ equities: [] })}
+            // onOk={(data) => saveCouponStorage({ equities: [...equities, data] })}
           ></ShareCoupon>
         </>
       ),

@@ -28,9 +28,10 @@ const AddNewActivity = (props) => {
     },
     {
       label: '活动城市',
-      name: 'cityCode',
-      type: 'select',
-      select: ACTIVITY_STATUS,
+      type: 'cascader',
+      name: 'city',
+      changeOnSelect: true,
+      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
   ];
 
@@ -126,7 +127,7 @@ const AddNewActivity = (props) => {
     });
   };
 
-  // 设置活动
+  // 设置新增活动
   const handleSetActive = () => setVisible({ show: true });
 
   const btnExtra = [
