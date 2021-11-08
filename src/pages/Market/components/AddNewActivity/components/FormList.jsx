@@ -4,7 +4,7 @@ import { MinusCircleOutlined, UpSquareOutlined, DownSquareOutlined } from '@ant-
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { form, fields, field, remove, move } = props;
+  const { type, form, fields, field, remove, move } = props;
 
   return (
     <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
@@ -21,7 +21,7 @@ const FormList = (props) => {
         />
       </div>
       {(() => {
-        const goodsItem = form.getFieldValue('list')[field.name];
+        const goodsItem = form.getFieldValue(type)[field.name];
         return (
           <>
             <div className={styles.listItem_img}>

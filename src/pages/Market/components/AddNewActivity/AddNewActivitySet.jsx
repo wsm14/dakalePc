@@ -10,7 +10,8 @@ import ShareCoupon from './components/ShareCoupon';
 
 const AddNewActivitySet = (props) => {
   const { dispatch, childRef, visible, onClose } = props;
-  const { show = false, detail = {} } = visible;
+  const { show = false, detail = { specialGoods: [], rightGoods: [], prizeType: 'bean' } } =
+    visible;
 
   const [couponData, setCouponData] = useState({ free: {}, discounts: [], equities: [] }); // 奖品权益商品的信息
   const { free, discounts, equities } = couponData;
@@ -23,14 +24,16 @@ const AddNewActivitySet = (props) => {
   const [tabKey, setTabKey] = useState('1'); // tab
   const [prizeTypes, setPrizeTypes] = useState('bean'); // 奖品类型
 
-  useEffect(() => {
-    setTabKey('1');
-  }, []);
-
   // 新增活动
   const fetchMarketActivityAdd = () => {
     form.validateFields().then((values) => {
+      const { specialGoods, rightGoods } = values;
       console.log('values', values);
+      // const payload = {
+      //   ...values,
+      //   specialGoodsIds: specialGoods.map((item) => item.specialGoodsId).toString(),
+      //   rightGoodsIds: rightGoods.map((item) => item.specialGoodsId).toString()
+      // }
       //   const {
       //     activityBeginTime: time,
       //     activityBanner: { fileList },
@@ -161,6 +164,7 @@ const AddNewActivitySet = (props) => {
       type: 'radio',
       select: { bean: '卡豆', equity: '权益商品' },
       onChange: (e) => {
+        console.log('e', e);
         setPrizeTypes(e.target.value);
       },
     },
@@ -223,10 +227,10 @@ const AddNewActivitySet = (props) => {
         <>
           <ShareCoupon
             type="specialGoods"
-            data={discounts}
+            // data={discounts}
             form={form}
-            onDel={() => saveCouponStorage({ discounts: [] })}
-            onOk={(data) => saveCouponStorage({ discounts: [...discounts, data] })}
+            // onDel={() => saveCouponStorage({ discounts: [] })}
+            // onOk={(data) => saveCouponStorage({ discounts: [...discounts, data] })}
           ></ShareCoupon>
         </>
       ),
@@ -239,10 +243,10 @@ const AddNewActivitySet = (props) => {
         <>
           <ShareCoupon
             type="rightGoods"
-            data={equities}
+            // data={equities}
             form={form}
-            onDel={() => saveCouponStorage({ equities: [] })}
-            onOk={(data) => saveCouponStorage({ equities: [...equities, data] })}
+            // onDel={() => saveCouponStorage({ equities: [] })}
+            // onOk={(data) => saveCouponStorage({ equities: [...equities, data] })}
           ></ShareCoupon>
         </>
       ),

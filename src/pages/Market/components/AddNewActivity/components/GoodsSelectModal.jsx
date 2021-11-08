@@ -18,7 +18,7 @@ const GoodsSelectModal = (props) => {
     visible,
     onClose,
     loading,
-    typeGoods,
+    typeGoods = 'specialGoods',
   } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
@@ -27,7 +27,7 @@ const GoodsSelectModal = (props) => {
   useEffect(() => {
     if (visible) {
       if (tabKey === 'goods') {
-        setSelectItem(form.getFieldValue('list') || []);
+        setSelectItem(form.getFieldValue(typeGoods) || []);
       }
     }
   }, [visible]);
@@ -63,31 +63,31 @@ const GoodsSelectModal = (props) => {
   // 获取特惠活动
   const fetchSpecialGoodsList = (data) => {
     // if (!data.ownerId) return;
-    typeGoods === 'specialGoods'
-      ? dispatch({
-          type: 'baseData/fetchGetSpecialGoodsSelect',
-          payload: {
-            ...data,
-            deleteFlag: 1,
-            page: 1,
-            limit: 999,
-          },
-        })
-      : dispatch({
-          type: 'baseData/fetchGetPlatformEquitySelect',
-          payload: {
-            ...data,
-            goodsStatus: 1,
-            page: 1,
-            limit: 999,
-          },
-        });
+    const payload = {
+      specialGoods: {
+        type: 'baseData/fetchGetSpecialGoodsSelect',
+        data: { deleteFlag: 1 },
+      },
+      rightGoods: {
+        type: 'baseData/fetchGetPlatformEquitySelect',
+        data: { goodsStatus: 1 },
+      },
+    }[typeGoods];
+    dispatch({
+      type: payload.type,
+      payload: {
+        ...data,
+        ...payload.data,
+        page: 1,
+        limit: 999,
+      },
+    });
   };
 
   // 选择商品逻辑
   const handleSelect = (item) => {
     if (selectItem.length >= 50) return;
-    const key = 'specialGoodsId';
+    const key = listProps.key;
     if (selectItem.findIndex((ci) => ci[key] === item[key]) > -1) {
       setSelectItem(selectItem.filter((ci) => ci[key] !== item[key]));
     } else setSelectItem([...selectItem, item]);
@@ -100,7 +100,11 @@ const GoodsSelectModal = (props) => {
           {listProps?.list.map(
             (item) =>
               ({
-                goods: goodsDom({ typeGoods, ...item }, selectItem.specialGoodsId, handleSelect),
+                goods: goodsDom(
+                  { typeGoods, ...item },
+                  selectItem.map((item) => item.specialGoodsId),
+                  handleSelect,
+                ),
               }[tabKey]),
           )}
         </div>
@@ -122,7 +126,7 @@ const GoodsSelectModal = (props) => {
         disabled: !selectItem.length,
       }}
       onOk={() => {
-        form.setFieldsValue({ list: selectItem });
+        form.setFieldsValue({ [typeGoods]: selectItem });
         onClose();
       }}
       onCancel={onClose}
