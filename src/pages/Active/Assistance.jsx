@@ -96,7 +96,7 @@ function Assistance(props) {
         searchItems={searchItems}
         loading={loading}
         columns={getColumns}
-        rowKey={(record, index) => `${record.userId}${index}`}
+        rowKey={(record) => `${record.userId}${record.helpDate}`}
         dispatchType="assistanceList/fetchGetList"
         {...list}
       ></TableDataBlock>
