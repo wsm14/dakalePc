@@ -208,7 +208,7 @@ const CityGlobalModal = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.configGlobalPopUpId}`}
           dispatchType="marketConfigure/fetchGlobalPopUpModalList"
-          params={{ ...detail, pageType: tabKey, isAutomatic: 0 }}
+          params={{ ...detail, pageType: tabKey, isAutomatic: 0, deleteFlag: 1 }}
           {...modalConfigureList}
         ></TableDataBlock>
       </Modal>
