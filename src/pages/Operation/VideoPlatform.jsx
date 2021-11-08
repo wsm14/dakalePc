@@ -263,11 +263,11 @@ const VideoPlatform = (props) => {
             visible: typeUser,
             click: () => fetchShareDetail(index, 'portrait'),
           },
-          {
-            title: '分享配置',
-            type: 'shareImg',
-            click: () => fetchShareDetail(index, 'share'),
-          },
+          // {
+          //   title: '分享配置',
+          //   type: 'shareImg',
+          //   click: () => fetchShareDetail(index, 'share'),
+          // },
         ];
       },
     },

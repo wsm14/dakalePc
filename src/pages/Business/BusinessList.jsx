@@ -227,11 +227,11 @@ const BusinessListComponent = (props) => {
           click: () => fetchGetRate({ type: 'merchant', record }),
           visible: record.bankStatus === '3' && !record.groupId,
         },
-        {
-          title: '分享配置',
-          type: 'shareImg',
-          click: () => fetchShareImg(record),
-        },
+        // {
+        //   title: '分享配置',
+        //   type: 'shareImg',
+        //   click: () => fetchShareImg(record),
+        // },
       ],
     },
   ];

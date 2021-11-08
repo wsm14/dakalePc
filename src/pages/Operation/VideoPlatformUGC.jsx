@@ -183,11 +183,11 @@ const VideoPlatformUGC = (props) => {
             type: 'rewardInfo', // 打赏明细 已打赏显示按钮 未打赏只有下架状态不显示按钮
             click: () => setVisibleReward({ show: true, detail: record }),
           },
-          {
-            title: '分享配置',
-            type: 'shareImg',
-            click: () => fetchShareDetail(index, 'share'),
-          },
+          // {
+          //   title: '分享配置',
+          //   type: 'shareImg',
+          //   click: () => fetchShareDetail(index, 'share'),
+          // },
         ];
       },
     },
