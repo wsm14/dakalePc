@@ -85,23 +85,20 @@ const ShareCoupon = (props) => {
         </Form.List>
       )}
 
-      {type === 'goodsRight' ? (
-        // 奖品权益商品选择
-        <BuyContactModal
-          typeGoods={type}
-          visible={visibleContact}
-          onOk={onOk}
-          onClose={() => setVisibleContact(false)}
-        ></BuyContactModal>
-      ) : (
-        //  特惠商品
-        <GoodsSelectModal
-          typeGoods={type}
-          form={form}
-          visible={visible}
-          onClose={() => setVisible(false)}
-        ></GoodsSelectModal>
-      )}
+      {/* 奖品权益商品选择 */}
+      <BuyContactModal
+        typeGoods={type}
+        visible={visibleContact}
+        onOk={onOk}
+        onClose={() => setVisibleContact(false)}
+      ></BuyContactModal>
+      {/* 特惠商品 */}
+      <GoodsSelectModal
+        typeGoods={type}
+        form={form}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      ></GoodsSelectModal>
     </>
   );
 };
