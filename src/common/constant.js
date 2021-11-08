@@ -485,6 +485,8 @@ export const SPECIAL_RECOMMEND_TYPE = {
   novice: '新手视频',
   dayPush: '每日必推',
   aroundSpecial: '特惠推荐',
+  selfTour: '自我游',
+  newProductRecommend: '新品推荐',
 };
 
 // 特惠活动 - 是否删除
