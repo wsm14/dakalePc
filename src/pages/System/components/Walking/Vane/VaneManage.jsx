@@ -23,6 +23,7 @@ const VaneManage = (props) => {
 
   useEffect(() => {
     if (show) {
+      console.log(111111, childRef);
       childRef?.current?.fetchGetData({ cityCode: cityCode[1] });
     }
   }, [cityCode, show]);
@@ -136,6 +137,7 @@ const VaneManage = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
+    forceRender: true,
   };
 
   return (
