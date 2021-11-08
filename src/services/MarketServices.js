@@ -58,7 +58,23 @@ export async function fetchMarketAddNewActivityDetail(params) {
   });
 }
 
-// post 营销活动 - 营销活动下架
+// post 营销活动 - 拉新活动新增
+export function fetchMarketAddNewActivityAdd(data) {
+  return request('/admin/configFissionTemplate/saveConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 拉新活动编辑
+export function fetchMarketAddNewActivityEdit(data) {
+  return request('/admin/configFissionTemplate/updateConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 拉新活动下架
 export function fetchMarketAddNewActivityCancel(data) {
   return request('/admin/configFissionTemplate/offShelfConfigFissionTemplate', {
     method: 'POST',

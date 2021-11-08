@@ -30,6 +30,7 @@ const GoodsSelectModal = (props) => {
         setSelectItem(form.getFieldValue(typeGoods) || []);
       }
     }
+    fetchSpecialGoodsList();
   }, [visible]);
 
   // 搜索参数

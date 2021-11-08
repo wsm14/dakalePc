@@ -59,7 +59,7 @@ const ShareCoupon = (props) => {
           ]}
         >
           {(fields, { remove, move }, { errors }) => {
-            console.log(fields);
+            // console.log(fields);
             return (
               <>
                 <Form.ErrorList errors={errors} />
