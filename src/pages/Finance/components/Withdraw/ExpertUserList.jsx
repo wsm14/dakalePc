@@ -100,7 +100,7 @@ const ExpertUserList = (props) => {
       title: '提现现金金额',
       align: 'right',
       dataIndex: 'withdrawalBeanAmount',
-      render: (value) => value / 100,
+      render: (val) => val / 100,
     },
     {
       title: '实收提现手续费',
