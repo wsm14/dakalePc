@@ -23,6 +23,10 @@ const AddNewActivitySet = (props) => {
   const [tabKey, setTabKey] = useState('1'); // tab
   const [prizeTypes, setPrizeTypes] = useState('bean'); // 奖品类型
 
+  useEffect(() => {
+    setTabKey('1');
+  }, []);
+
   // 新增活动
   const fetchMarketActivityAdd = () => {
     form.validateFields().then((values) => {
@@ -222,7 +226,7 @@ const AddNewActivitySet = (props) => {
             data={discounts}
             form={form}
             onDel={() => saveCouponStorage({ discounts: [] })}
-            onOk={(data) => saveCouponStorage({ discounts: [data] })}
+            onOk={(data) => saveCouponStorage({ discounts: [...discounts, data] })}
           ></ShareCoupon>
         </>
       ),
@@ -238,7 +242,7 @@ const AddNewActivitySet = (props) => {
             data={equities}
             form={form}
             onDel={() => saveCouponStorage({ equities: [] })}
-            onOk={(data) => saveCouponStorage({ equities: [data] })}
+            onOk={(data) => saveCouponStorage({ equities: [...equities, data] })}
           ></ShareCoupon>
         </>
       ),
@@ -253,6 +257,7 @@ const AddNewActivitySet = (props) => {
     afterCallBack: () => {
       form.resetFields();
       setPrizeTypes('bean');
+      setTabKey('1');
     },
     footer: (
       <Button type="primary" onClick={() => fetchMarketActivityAdd()}>

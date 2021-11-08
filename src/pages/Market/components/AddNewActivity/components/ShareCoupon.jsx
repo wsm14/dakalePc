@@ -48,6 +48,7 @@ const ShareCoupon = (props) => {
       ) : type === 'specialGoods' ? (
         <Form.List
           name="list"
+          initialValue={data}
           rules={[
             {
               validator: async (_, names) => {
@@ -84,6 +85,7 @@ const ShareCoupon = (props) => {
       ) : (
         <Form.List
           name="list"
+          initialValue={data}
           rules={[
             {
               validator: async (_, names) => {
