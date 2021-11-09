@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
+import CITYJSON from '@/common/cityJson';
 import TableDataBlock from '@/components/TableDataBlock';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
 import { checkCityName, getCityName } from '@/utils/utils';
@@ -47,10 +48,10 @@ const AddNewActivity = (props) => {
     },
     {
       label: '活动城市',
-      type: 'cascader',
-      name: 'city',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      type: 'select',
+      name: 'cityCode',
+      fieldNames: { label: 'name', value: 'id' },
+      select: CITYJSON.filter((item) => item.level === '2'),
     },
   ];
 

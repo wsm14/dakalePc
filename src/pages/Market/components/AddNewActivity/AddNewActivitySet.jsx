@@ -281,11 +281,6 @@ const AddNewActivitySet = (props) => {
       visible: prizeTypes === 'bean',
     },
     {
-      label: '发放数量',
-      name: 'issuedQuantity',
-      visible: prizeTypes === 'bean',
-    },
-    {
       label: '权益商品',
       required: true,
       // name: 'prizeRightGoodsIds',
@@ -312,6 +307,10 @@ const AddNewActivitySet = (props) => {
           ></ShareCoupon>
         </>
       ),
+    },
+    {
+      label: '发放数量',
+      name: 'issuedQuantity',
     },
   ];
 
