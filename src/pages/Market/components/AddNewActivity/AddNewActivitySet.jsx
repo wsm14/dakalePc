@@ -1,6 +1,6 @@
 import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Tabs } from 'antd';
 import reactCSS from 'reactcss';
@@ -17,7 +17,7 @@ const AddNewActivitySet = (props) => {
     type,
     detail = { specialGoods: [], rightGoods: [], prizeType: 'bean', configFissionTemplateId: '' },
   } = visible;
-  const { configFissionTemplateId = '' } = detail;
+  const { configFissionTemplateId = '', prizeType, goodsRightInfo } = detail;
 
   const { TabPane } = Tabs;
   const [form] = Form.useForm();
@@ -26,17 +26,13 @@ const AddNewActivitySet = (props) => {
   const [cityArr, setCityArr] = useState({});
   const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色状态
   const [color, setColor] = useState(''); //  背景色状态
-  const [couponData, setCouponData] = useState({ free: {} }); // 奖品权益商品的信息
-
-  const { free } = couponData;
-  // 暂存券数据
-  const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
+  const [couponData, setCouponData] = useState({}); // 奖品权益商品的信息
 
   // 新增活动
   const fetchAddNewActivityAdd = () => {
     form.validateFields().then(async (values) => {
-      console.log(values);
-      return;
+      // console.log(values);
+      // return;
       const {
         specialGoods,
         rightGoods,
@@ -67,11 +63,11 @@ const AddNewActivitySet = (props) => {
         ...other,
         backgroundColor: color,
         cityCode: cityArr.cityCode,
-        activityBeginTime: time[0].format('YYYY-MM-DD 00:00:00'),
-        activityEndTime: time[1].format('YYYY-MM-DD 00:00:00'),
-        prizeRightGoodsIds: free.specialGoodsId,
-        issuedQuantity: Number(issuedQuantity),
-        prizeBean: Number(prizeBean),
+        activityBeginTime: time[0].format('YYYY-MM-DD hh:mm'),
+        activityEndTime: time[1].format('YYYY-MM-DD hh:mm'),
+        prizeRightGoodsIds: couponData?.specialGoodsId || undefined,
+        issuedQuantity: Number(issuedQuantity) || undefined,
+        prizeBean: Number(prizeBean) || undefined,
         mainImg: mImg.toString(),
         shareImg: sImg.toString(),
         friendShareImg: fImg.toString(),
@@ -233,6 +229,17 @@ const AddNewActivitySet = (props) => {
     {
       label: `背景色`,
       type: 'formItem',
+      required: true,
+      addRules: [
+        {
+          validator: () => {
+            if (!color) {
+              return Promise.reject(`请选择背景色`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       formItem: (
         <div>
           <div style={styles.swatch} onClick={() => setDisplayColorPicker(true)}>
@@ -280,17 +287,28 @@ const AddNewActivitySet = (props) => {
     },
     {
       label: '权益商品',
-      name: 'prizeRightGoodsIds',
+      required: true,
+      // name: 'prizeRightGoodsIds',
       type: 'formItem',
       visible: prizeTypes === 'equity',
+      addRules: [
+        {
+          validator: () => {
+            if (!couponData.specialGoodsId) {
+              return Promise.reject(`请选择权益商品`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       formItem: (
         <>
           <ShareCoupon
             type="goodsRight"
-            data={free}
+            data={couponData}
             form={form}
-            onDel={() => saveCouponStorage({ free: {} })}
-            onOk={(free) => saveCouponStorage({ free })}
+            onDel={() => setCouponData({})}
+            onOk={(free) => setCouponData(free)}
           ></ShareCoupon>
         </>
       ),
@@ -317,15 +335,10 @@ const AddNewActivitySet = (props) => {
       label: '选择特惠商品',
       name: 'specialGoodsIds',
       type: 'formItem',
+      required: true,
       formItem: (
         <>
-          <ShareCoupon
-            type="specialGoods"
-            data={detail.specialGoodsIds?.split(',')}
-            form={form}
-            // onDel={() => saveCouponStorage({ discounts: [] })}
-            // onOk={(data) => saveCouponStorage({ discounts: [...discounts, data] })}
-          ></ShareCoupon>
+          <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
         </>
       ),
     },
@@ -333,15 +346,10 @@ const AddNewActivitySet = (props) => {
       label: '选择权益商品',
       name: 'rightGoodsIds',
       type: 'formItem',
+      required: true,
       formItem: (
         <>
-          <ShareCoupon
-            type="rightGoods"
-            data={detail.rightGoodsIds?.split(',')}
-            form={form}
-            // onDel={() => saveCouponStorage({ equities: [] })}
-            // onOk={(data) => saveCouponStorage({ equities: [...equities, data] })}
-          ></ShareCoupon>
+          <ShareCoupon type="rightGoods" form={form}></ShareCoupon>
         </>
       ),
     },
@@ -353,10 +361,14 @@ const AddNewActivitySet = (props) => {
     onClose,
     width: 800,
     afterCallBack: () => {
-      form.resetFields();
-      setPrizeTypes('bean');
-      setTabKey('1');
+      setPrizeTypes(prizeType);
       setColor(detail.backgroundColor);
+      setCouponData(goodsRightInfo);
+    },
+    closeCallBack: () => {
+      setTabKey('1');
+      setCouponData({});
+      form.resetFields();
     },
     footer: (
       <Button type="primary" onClick={fetchAddNewActivityAdd} loading={loading}>
