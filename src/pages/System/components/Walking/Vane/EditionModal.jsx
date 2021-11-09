@@ -6,19 +6,19 @@ import FormCondition from '@/components/FormCondition';
 const EditionModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef, tabKey } = props;
   const { show = false, type, detail = {} } = visible;
-  const { configWanderAroundModuleId } = detail;
+  const { configWindVaneId } = detail;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
         type: {
-          add: 'walkingManage/fetchAroundModuleAdd',
-          edit: 'walkingManage/fetchAroundModuleEdit',
+          add: 'walkingManage/fetchGetWindVaneManagementAdd',
+          edit: 'walkingManage/fetchGetWindVaneManagementEdit',
         }[type],
         payload: {
           userOs: tabKey,
-          configWanderAroundModuleId,
+          configWindVaneId,
           flag: {
             add: 'addVersion',
             edit: 'updateVersion',
@@ -55,5 +55,7 @@ const EditionModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['walkingManage/fetchAroundModuleAdd'],
+  loading:
+    loading.effects['walkingManage/fetchGetWindVaneManagementAdd'] ||
+    loading.effects['walkingManage/fetchGetWindVaneManagementEdit'],
 }))(EditionModal);
