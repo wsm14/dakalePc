@@ -83,7 +83,7 @@ const FreeContactSelectModal = (props) => {
       }}
       maskStyle={{ background: 'none' }}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
-      destroyOnClose
+      destroyOnClose={true}
       okButtonProps={{
         disabled: !selectItem[listProps.key],
       }}

@@ -3,6 +3,8 @@ import {
   fetchMarketAddNewActivity,
   fetchMarketAddNewActivityDetail,
   fetchMarketAddNewActivityCancel,
+  fetchMarketAddNewActivityAdd,
+  fetchMarketAddNewActivityEdit,
 } from '@/services/MarketServices';
 
 export default {
@@ -23,6 +25,26 @@ export default {
   },
 
   effects: {
+    // 裂变拉新活动新增
+    *fetchMarketAddNewActivityEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketAddNewActivityEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `活动编辑修改成功`,
+      });
+      callback();
+    },
+    // 裂变拉新活动新增
+    *fetchMarketAddNewActivityAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchMarketAddNewActivityAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `活动新增成功`,
+      });
+      callback();
+    },
     // 裂变拉新活动下架
     *fetchMarketAddNewActivityCancel({ payload, callback }, { call }) {
       const response = yield call(fetchMarketAddNewActivityCancel, payload);
@@ -47,8 +69,10 @@ export default {
     },
     *fetchMarketAddNewActivityDetail({ payload, callback }, { call }) {
       const response = yield call(fetchMarketAddNewActivityDetail, payload);
+      const responseGoods = yield call(fetchMarketAddNewActivityDetail, payload);
       if (!response) return;
       const { content } = response;
+      const { content: contentGoods } = responseGoods;
       // const {
       //   param,
       //   hideTitle = false,

@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -9,10 +10,28 @@ import { checkCityName, getCityName } from '@/utils/utils';
 const AddNewActivity = (props) => {
   const { addNewList, loading, dispatch } = props;
 
-  console.log('addNewList', addNewList);
+  // console.log('addNewList', addNewList);
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增+编辑
+  const [state, setstate] = useState(0);
+
+  const changeTime = (row) => {
+    let { activityBeginTime, activityEndTime } = row;
+    if (activityBeginTime && activityEndTime) {
+      const nowTime = new Date().getTime();
+      activityBeginTime = new Date(activityBeginTime).getTime();
+      activityEndTime = new Date(activityEndTime).getTime();
+      if (nowTime >= activityBeginTime && nowTime <= activityEndTime) {
+        return 1;
+      } else if (nowTime < activityBeginTime) {
+        return 0;
+      } else if (nowTime > activityEndTime) {
+        return 2;
+      }
+    }
+    return '';
+  };
 
   // 搜索参数
   const searchItems = [
@@ -48,7 +67,7 @@ const AddNewActivity = (props) => {
       title: '活动时间',
       align: 'center',
       dataIndex: 'activityBeginTime',
-      render: (val, record) => `${val.slice(0, 10)} ~ ${record.activityEndTime.slice(0, 10)}`,
+      render: (val, row) => (val ? `${val}~${row?.activityEndTime}` : '--'),
     },
     {
       title: '活动城市',
@@ -61,13 +80,13 @@ const AddNewActivity = (props) => {
       title: '活动状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => ACTIVITY_STATUS[val],
+      render: (val, row) => ACTIVITY_STATUS[changeTime(row)],
     },
     {
       title: '剩余库存',
       align: 'center',
-      dataIndex: 'remain',
-      render: (val) => (val ? val : '--'),
+      dataIndex: 'recipientsNum',
+      render: (val, row) => row.issuedQuantity - val,
     },
     {
       title: '创建时间/创建人',
@@ -82,7 +101,7 @@ const AddNewActivity = (props) => {
         {
           // 下架
           type: 'down',
-          visible: record.status !== '2',
+          visible: changeTime(record) !== 2,
           click: () => fetchMarketActivityCancel({ configFissionTemplateId: val }),
         },
         {
@@ -102,21 +121,17 @@ const AddNewActivity = (props) => {
         configFissionTemplateId: id,
       },
       callback: (detail) =>
-        setVisible({ show: true, detail: { ...detail, cityCode: getCityName(detail.cityCode) } }),
+        setVisible({
+          show: true,
+          type: 'edit',
+          detail: {
+            ...detail,
+            activityBeginTime: [moment(detail.activityBeginTime), moment(detail.activityEndTime)],
+            // cityCode: getCityName(detail.cityCode),
+          },
+        }),
     });
   };
-  // const fetchShareDetail = (index, type) => {
-  //   const { momentId, ownerId } = list[index];
-  //   dispatch({
-  //     type: 'videoPlatform/fetchNewShareDetail',
-  //     payload: {
-  //       momentId,
-  //       ownerId,
-  //       type,
-  //     },
-  //     callback: (detail) => setVisible({ show: true, index, type, detail }),
-  //   });
-  // };
 
   // 活动下架
   const fetchMarketActivityCancel = (payload) => {
@@ -128,7 +143,7 @@ const AddNewActivity = (props) => {
   };
 
   // 设置新增活动
-  const handleSetActive = () => setVisible({ show: true });
+  const handleSetActive = () => setVisible({ show: true, type: 'add' });
 
   const btnExtra = [
     {
