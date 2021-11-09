@@ -21,12 +21,9 @@ const ShareCoupon = (props) => {
   } = props;
 
   const [visibleContact, setVisibleContact] = useState(false); // 奖品权益商品选择
-  const [visible, setVisible] = useState(false); // 选择
+  const [visible, setVisible] = useState(false); // 特惠和权益商品多选
 
   const {
-    // 券
-    couponName,
-    buyFlag,
     // 商品
     goodsName,
   } = data || {};
@@ -62,7 +59,6 @@ const ShareCoupon = (props) => {
             // console.log(fields);
             return (
               <>
-                <Form.ErrorList errors={errors} />
                 {fields.map((field, i) => (
                   <FormList
                     type={type}
@@ -74,6 +70,7 @@ const ShareCoupon = (props) => {
                     move={move}
                   ></FormList>
                 ))}
+                <Form.ErrorList errors={errors} />
                 <Form.Item>
                   <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
                     {fields.length} / {50} 选择商品

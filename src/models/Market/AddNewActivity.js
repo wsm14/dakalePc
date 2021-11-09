@@ -5,7 +5,9 @@ import {
   fetchMarketAddNewActivityCancel,
   fetchMarketAddNewActivityAdd,
   fetchMarketAddNewActivityEdit,
+  fetchAddNewActivityDetailCheck,
 } from '@/services/MarketServices';
+import { fetchSpecialGoodsDetail } from '@/services/OperationServices';
 
 export default {
   namespace: 'addNewActivity',
@@ -25,7 +27,7 @@ export default {
   },
 
   effects: {
-    // 裂变拉新活动新增
+    // 裂变拉新活动编辑
     *fetchMarketAddNewActivityEdit({ payload, callback }, { call }) {
       const response = yield call(fetchMarketAddNewActivityEdit, payload);
       if (!response) return;
@@ -67,104 +69,35 @@ export default {
         },
       });
     },
+    // 裂变拉新活动详情
     *fetchMarketAddNewActivityDetail({ payload, callback }, { call }) {
       const response = yield call(fetchMarketAddNewActivityDetail, payload);
-      const responseGoods = yield call(fetchMarketAddNewActivityDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { content: contentGoods } = responseGoods;
-      // const {
-      //   param,
-      //   hideTitle = false,
-      //   provinceCityDistrictObjects: cityData = [],
-      // } = content.configFissionTemplateDTO;
-      callback(content.configFissionTemplateDTO);
-      //   callback({
-      //     ...content.bannerDTO,
-      //     provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
-      //       city: [provinceCode, cityCode, districtCode].filter((i) => i),
-      //     })),
-      //     param: JSON.parse(param || '{}'),
-      //     hideTitle: !Number(hideTitle),
-      //   });
+      const { prizeRightGoodsIds, rightGoodsIds, specialGoodsIds } =
+        content.configFissionTemplateDTO;
+      let prizeRightGoodsDetail = {};
+      if (prizeRightGoodsIds) {
+        prizeRightGoodsDetail = yield call(fetchSpecialGoodsDetail, {
+          specialGoodsId: prizeRightGoodsIds,
+          ownerId: -1,
+        });
+      }
+      const rightGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
+        activityIds: rightGoodsIds,
+      });
+      const specialGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
+        activityIds: specialGoodsIds,
+      });
+      // console.log('1', prizeRightGoodsDetail?.content?.specialGoodsInfo);
+      // console.log('2', rightGoodsDetail.content.activityGoodsDTOS);
+      // console.log('3', specialGoodsDetail.content.activityGoodsDTOS);
+      callback({
+        ...content.configFissionTemplateDTO,
+        goodsRightInfo: prizeRightGoodsDetail?.content?.specialGoodsInfo || {},
+        specialGoods: specialGoodsDetail?.content?.activityGoodsDTOS || [],
+        rightGoods: rightGoodsDetail?.content?.activityGoodsDTOS || [],
+      });
     },
-    // *fetchGetList({ payload }, { call, put }) {
-    //   const response = yield call(fetchBannerList, payload);
-    //   if (!response) return;
-    //   const { content } = response;
-    //   yield put({
-    //     type: 'save',
-    //     payload: {
-    //       list: content.recordList,
-    //       total: content.total,
-    //     },
-    //   });
-    // },
-    // *fetchBannerRatio({ payload }, { call, put }) {
-    //   const response = yield call(fetchBannerRatio, payload);
-    //   if (!response) return;
-    //   const { content } = response;
-    //   let dataObj = {};
-    //   content.banner.bannerPictureResolutionConfigs.forEach((item) => {
-    //     let newObj = {};
-    //     item.pictureResolutionConfigs.forEach((it) => {
-    //       newObj[it.bannerType] = it.height / it.width;
-    //     });
-    //     dataObj[item.terminalType] = newObj;
-    //   });
-    //   yield put({
-    //     type: 'save',
-    //     payload: {
-    //       radioType: dataObj,
-    //     },
-    //   });
-    // },
-    // *fetchBannerDetail({ payload, callback }, { call }) {
-    //   const response = yield call(fetchBannerDetail, payload);
-    //   if (!response) return;
-    //   const { content } = response;
-    //   const {
-    //     param,
-    //     hideTitle = false,
-    //     provinceCityDistrictObjects: cityData = [],
-    //   } = content.bannerDTO;
-    //   callback({
-    //     ...content.bannerDTO,
-    //     provinceCityDistrictObjects: cityData.map(({ provinceCode, cityCode, districtCode }) => ({
-    //       city: [provinceCode, cityCode, districtCode].filter((i) => i),
-    //     })),
-    //     param: JSON.parse(param || '{}'),
-    //     hideTitle: !Number(hideTitle),
-    //   });
-    // },
-    // *fetchBannerEdit({ payload, callback }, { call }) {
-    //   const response = yield call(fetchBannerEdit, payload);
-    //   if (!response) return;
-    //   notification.success({
-    //     message: '温馨提示',
-    //     description: `占位图修改成功`,
-    //   });
-    //   callback();
-    // },
-    // *fetchBannerStatus({ payload, callback }, { call }) {
-    //   const response = yield call(fetchBannerStatus, payload);
-    //   if (!response) return;
-    //   const { bannerStatus } = payload;
-    //   const text = ['下架', '上架'][bannerStatus];
-    //   notification.success({
-    //     message: '温馨提示',
-    //     description: `占位图${text ? text : '删除'}成功`,
-    //   });
-    //   callback();
-    // },
-    // *fetchBannerSet({ payload, callback }, { call }) {
-    //   const response = yield call(fetchBannerSet, payload);
-    //   if (!response) return;
-    //   notification.success({
-    //     message: '温馨提示',
-    //     description: '占位图新增成功',
-    //   });
-    //   callback();
-    // },
   },
 };

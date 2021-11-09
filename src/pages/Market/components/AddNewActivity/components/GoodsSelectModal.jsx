@@ -29,16 +29,17 @@ const GoodsSelectModal = (props) => {
       if (tabKey === 'goods') {
         setSelectItem(form.getFieldValue(typeGoods) || []);
       }
+      dispatch({ type: 'baseData/clearPlatformEquity' });
     }
-    fetchSpecialGoodsList();
   }, [visible]);
 
   // 搜索参数
   const searchItems = [
     {
       label: '集团/店铺名',
-      name: 'merchantId',
+      name: 'id',
       type: 'merchant',
+      required: true,
     },
     {
       label: '商品名称',
@@ -63,21 +64,20 @@ const GoodsSelectModal = (props) => {
 
   // 获取特惠活动
   const fetchSpecialGoodsList = (data) => {
-    // if (!data.ownerId) return;
+    if (!data?.id) return;
     const payload = {
       specialGoods: {
         type: 'baseData/fetchGetSpecialGoodsSelect',
-        data: { deleteFlag: 1 },
+        data: { goodsStatus: 1, merchantId: data.id },
       },
       rightGoods: {
         type: 'baseData/fetchGetPlatformEquitySelect',
-        data: { goodsStatus: 1 },
+        data: { relateId: data.id },
       },
     }[typeGoods];
     dispatch({
       type: payload.type,
       payload: {
-        ...data,
         ...payload.data,
         page: 1,
         limit: 999,
@@ -95,7 +95,7 @@ const GoodsSelectModal = (props) => {
   };
 
   const listDom = (
-    <Spin spinning={listProps.loading}>
+    <Spin spinning={!!listProps.loading}>
       {listProps?.list?.length ? (
         <div className="share_select_list">
           {listProps?.list.map(

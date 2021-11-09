@@ -58,6 +58,13 @@ export async function fetchMarketAddNewActivityDetail(params) {
   });
 }
 
+// get 营销活动 - 拉新活动多选商品详情
+export async function fetchAddNewActivityDetailCheck(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsByIds', {
+    params,
+  });
+}
+
 // post 营销活动 - 拉新活动新增
 export function fetchMarketAddNewActivityAdd(data) {
   return request('/admin/configFissionTemplate/saveConfigFissionTemplate', {

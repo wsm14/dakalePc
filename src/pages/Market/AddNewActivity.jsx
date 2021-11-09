@@ -14,7 +14,7 @@ const AddNewActivity = (props) => {
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增+编辑
-  const [state, setstate] = useState(0);
+  // const [state, setstate] = useState(0);
 
   const changeTime = (row) => {
     let { activityBeginTime, activityEndTime } = row;
@@ -107,18 +107,19 @@ const AddNewActivity = (props) => {
         {
           // 编辑
           type: 'edit',
-          click: () => fetchAddNewDetail(val),
+          click: () => fetchAddNewDetail(index),
         },
       ],
     },
   ];
 
   // 获取详情
-  const fetchAddNewDetail = (id) => {
+  const fetchAddNewDetail = (index) => {
+    const { configFissionTemplateId } = addNewList?.list[index];
     dispatch({
       type: 'addNewActivity/fetchMarketAddNewActivityDetail',
       payload: {
-        configFissionTemplateId: id,
+        configFissionTemplateId,
       },
       callback: (detail) =>
         setVisible({
@@ -127,7 +128,6 @@ const AddNewActivity = (props) => {
           detail: {
             ...detail,
             activityBeginTime: [moment(detail.activityBeginTime), moment(detail.activityEndTime)],
-            // cityCode: getCityName(detail.cityCode),
           },
         }),
     });
@@ -178,5 +178,7 @@ const AddNewActivity = (props) => {
 
 export default connect(({ addNewActivity, loading }) => ({
   addNewList: addNewActivity,
-  loading: loading.effects['addNewActivity/fetchGetList'],
+  loading:
+    loading.effects['addNewActivity/fetchGetList'] ||
+    loading.effects['addNewActivity/fetchMarketAddNewActivityDetail'],
 }))(AddNewActivity);
