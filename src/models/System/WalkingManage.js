@@ -21,6 +21,9 @@ import {
   fetchHotCityPageConfig,
   fetchUpdateWanderAroundModule,
   fetchGetWanderAroundModuleById,
+  fetchGetWindVaneManagementList,
+  fetchGetWindVaneManagementAdd,
+  fetchGetWindVaneManagementEdit,
 } from '@/services/SystemServices';
 
 export default {
@@ -35,6 +38,8 @@ export default {
     editionList: { list: [] },
     configureList: { list: [] },
     hotCity: { list: [], dictionaryId: '' },
+    vaneEditionList: { list: [] },
+    vaneCityList: { list: [] },
   },
 
   reducers: {
@@ -303,6 +308,35 @@ export default {
       const { content } = response;
       const strollContent = content;
       callback(content?.configWanderAroundModule);
+    },
+    *fetchGetWindVaneEditionList({ payload }, { call, put }) {
+      const response = yield call(fetchGetWindVaneManagementList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          vaneEditionList: { list: content.configWanderAroundModuleList },
+        },
+      });
+    },
+    *fetchGetWindVaneManagementAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchGetWindVaneManagementAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    *fetchGetWindVaneManagementEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchGetWindVaneManagementEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
     },
   },
 };

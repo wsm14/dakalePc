@@ -256,6 +256,29 @@ export function fetchGetWanderAroundModuleById(params) {
   });
 }
 
+//逛逛模块化配置-风向标配置-版本列表-城市列表
+export function fetchGetWindVaneManagementList(params) {
+  return request('/admin/configWindVane/listConfigWindVaneManagement', {
+    params,
+  });
+}
+
+//逛逛模块化配置-风向标配置-版本新增-新增城市
+export function fetchGetWindVaneManagementAdd(data) {
+  return request('/admin/configWindVane/saveConfigWindVaneManagement', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-风向标配置-版本修改
+export function fetchGetWindVaneManagementEdit(data) {
+  return request('/admin/configWindVane/updateConfigWindVaneManagement', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 逛逛页面配置 end
 
 // 新人下单配置 start
