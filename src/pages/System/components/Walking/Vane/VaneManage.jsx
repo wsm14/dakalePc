@@ -21,12 +21,12 @@ const VaneManage = (props) => {
     });
   }, []);
 
-  useEffect(() => {
-    if (show) {
-      console.log(111111, childRef);
-      childRef?.current?.fetchGetData({ cityCode: cityCode[1] });
-    }
-  }, [cityCode, show]);
+  // useEffect(() => {
+  //   if (show) {
+  //     console.log(111111, childRef);
+  //     childRef?.current?.fetchGetData({ cityCode: cityCode[1] });
+  //   }
+  // }, [cityCode, show]);
 
   // 获取详情
   const fetchGetDetail = (val, record, type) => {
@@ -137,32 +137,43 @@ const VaneManage = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
-    forceRender: true,
+    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
-
+  const cardBtnList = [
+    {
+      auth: true,
+      text: '新增',
+      className: 'dkl_blue_btn',
+      onClick: () => {
+        setVisibleDrawer({ type: 'add', show: true });
+      },
+    },
+  ];
   return (
     <>
       <Modal destroyOnClose {...modalProps}>
         <TableDataBlock
-          firstFetch={false}
+          // firstFetch={false}
           tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
-          cardProps={{
-            title: (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span style={{ display: 'inline-block', width: 100, textAlign: 'center' }}>
-                  选择城市:
-                </span>
-                <Cascader value={cityCode} options={cityList} onChange={handleCityChange} />
-              </div>
-            ),
-            bordered: false,
-            extra: (
-              <Button type="primary" onClick={() => setVisibleDrawer({ type: 'add', show: true })}>
-                新增
-              </Button>
-            ),
-          }}
+          // cardProps={{
+          //   title: (
+          //     <div style={{ display: 'flex', alignItems: 'center' }}>
+          //       <span style={{ display: 'inline-block', width: 100, textAlign: 'center' }}>
+          //         选择城市:
+          //       </span>
+          //       <Cascader value={cityCode} options={cityList} onChange={handleCityChange} />
+          //     </div>
+          //   ),
+          //   bordered: false,
+          //   extra: (
+          //     <Button type="primary" onClick={() => setVisibleDrawer({ type: 'add', show: true })}>
+          //       新增
+          //     </Button>
+          //   ),
+          // }}
+          noCard={false}
           cRef={childRef}
+          btnExtra={cardBtnList}
           loading={loading}
           columns={getColumns}
           params={{ cityCode: cityCode[1] }}
