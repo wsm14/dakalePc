@@ -95,6 +95,7 @@ const Index = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
+            pagination={false}
             rowKey={(record) => `${record.configFloatingWindowId}`}
             params={{ userOs: tabKey, area: 'all', windowType: 'first', isAutomatic: 1 }}
             dispatchType="marketConfigure/fetchFloatingWindowList"

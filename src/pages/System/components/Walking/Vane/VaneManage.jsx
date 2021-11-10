@@ -105,7 +105,6 @@ const VaneManage = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
-    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
   const cardBtnList = [
     {
@@ -126,6 +125,7 @@ const VaneManage = (props) => {
           cRef={childRef}
           btnExtra={cardBtnList}
           loading={loading}
+          pagination={false}
           columns={getColumns}
           params={{ userOs, version, areaType, areaCode, isAutomatic: 0, deleteFlag: 1 }}
           rowKey={(record) => `${record.configWindVaneId}`}

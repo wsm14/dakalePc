@@ -1,4 +1,4 @@
-import { checkCityName } from '@/utils/utils';
+import { checkCityName, getCityName } from '@/utils/utils';
 import { BOXLOTTERY_TYPE, BOXLOTTERY_STATUS } from '@/common/constant';
 // 导出列表
 export default {
@@ -68,18 +68,18 @@ export default {
       title: '收货地址（省）',
       dataIndex: 'contentParam',
       render: (val) =>
-        checkCityName(((val && JSON.parse(val.replace(//g, ''))) || {})?.provinceCode),
+        getCityName(((val && JSON.parse(val.replace(//g, ''))) || {})?.provinceCode),
     },
     {
       title: '收货地址（市)',
       dataIndex: 'contentParam',
-      render: (val) => checkCityName(((val && JSON.parse(val.replace(//g, ''))) || {})?.cityCode),
+      render: (val) => getCityName(((val && JSON.parse(val.replace(//g, ''))) || {})?.cityCode),
     },
     {
       title: '收货地址（区/县）',
       dataIndex: 'contentParam',
       render: (val) =>
-        checkCityName(((val && JSON.parse(val.replace(//g, ''))) || {})?.districtCode),
+        getCityName(((val && JSON.parse(val.replace(//g, ''))) || {})?.districtCode),
     },
     {
       title: '收货地址（详细地址）',
