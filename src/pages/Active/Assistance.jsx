@@ -5,8 +5,7 @@ import { checkCityName } from '@/utils/utils';
 import AssistanceModal from './components/AssistanceModal/AssistanceModal';
 
 function Assistance(props) {
-  const { list, loading, infoList, dispatch } = props;
-  console.log(list, 'list');
+  const { list, loading, infoList } = props;
 
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState(null);
@@ -85,10 +84,6 @@ function Assistance(props) {
     setInfo(payload);
   };
 
-  const handleOk = () => {
-    setVisible(false);
-  };
-
   return (
     <>
       <TableDataBlock
@@ -96,7 +91,7 @@ function Assistance(props) {
         searchItems={searchItems}
         loading={loading}
         columns={getColumns}
-        rowKey={(record) => `${record.userId}`}
+        rowKey={(record) => `${record.userId}${record.helpDate}`}
         dispatchType="assistanceList/fetchGetList"
         {...list}
       ></TableDataBlock>
