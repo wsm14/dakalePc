@@ -154,40 +154,24 @@ const VideoPlatform = (props) => {
         </>
       ),
     },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-      sorter: (a, b) => a.viewAmount - b.viewAmount,
-    },
     // {
-    //   title: '浏览量',
+    //   title: '观看人数',
     //   align: 'right',
-    //   dataIndex: '',
+    //   dataIndex: 'viewAmount',
+    //   sorter: (a, b) => a.viewAmount - b.viewAmount,
     // },
     // {
-    //   title: '完播量',
+    //   title: '领豆人次',
     //   align: 'right',
-    //   dataIndex: '',
+    //   dataIndex: 'personAmount',
+    //   sorter: (a, b) => a.personAmount - b.personAmount,
     // },
     // {
-    //   title: '完播率',
+    //   title: '累计打赏卡豆数',
     //   align: 'right',
-    //   render:()=>(完播量/浏览量)
+    //   dataIndex: 'beanAmount',
+    //   sorter: (a, b) => a.beanAmount - b.beanAmount,
     // },
-    {
-      title: '领豆人次',
-      align: 'right',
-      dataIndex: 'personAmount',
-      sorter: (a, b) => a.personAmount - b.personAmount,
-    },
-
-    {
-      title: '累计打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      sorter: (a, b) => a.beanAmount - b.beanAmount,
-    },
     {
       title: '创建时间',
       align: 'center',

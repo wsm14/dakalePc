@@ -260,7 +260,7 @@ const AddNewActivitySet = (props) => {
       name: 'successfulJumpUrl',
       select: {
         blindIndex: '卡豆盲盒',
-        new: '新手福利页',
+        userNewArtist: '新手福利页',
       },
     },
     {
@@ -268,7 +268,7 @@ const AddNewActivitySet = (props) => {
       name: 'prizeType',
       type: 'radio',
       disabled: type === 'edit',
-      select: { bean: '卡豆', equity: '权益商品' },
+      select: { bean: '卡豆', rightGoods: '权益商品' },
       onChange: (e) => {
         console.log('e', e);
         setPrizeTypes(e.target.value);
@@ -285,7 +285,7 @@ const AddNewActivitySet = (props) => {
       required: true,
       // name: 'prizeRightGoodsIds',
       type: 'formItem',
-      visible: prizeTypes === 'equity',
+      visible: prizeTypes === 'rightGoods',
       addRules: [
         {
           validator: () => {
