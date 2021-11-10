@@ -67,12 +67,12 @@ export default {
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchBlindBoxConfigList, payload);
       if (!response) return;
-      const { content } = response;
+      const { content = {} } = response;
       yield put({
         type: 'save',
         payload: {
-          blindBoxRule: content.blindBoxRule.allBlindBoxProducts
-            ? content.blindBoxRule
+          blindBoxRule: content?.blindBoxRule?.allBlindBoxProducts
+            ? content?.blindBoxRule
             : { allBlindBoxProducts: [] },
         },
       });
