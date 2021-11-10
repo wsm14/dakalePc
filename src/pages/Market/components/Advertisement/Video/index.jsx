@@ -122,25 +122,25 @@ const ShareManage = (props) => {
           ),
         }[val]),
     },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-      sorter: (a, b) => a.viewAmount - b.viewAmount,
-    },
-    {
-      title: '领卡豆人数',
-      align: 'right',
-      dataIndex: 'personAmount',
-      sorter: (a, b) => a.personAmount - b.personAmount,
-    },
+    // {
+    //   title: '观看人数',
+    //   align: 'right',
+    //   dataIndex: 'viewAmount',
+    //   sorter: (a, b) => a.viewAmount - b.viewAmount,
+    // },
+    // {
+    //   title: '领卡豆人数',
+    //   align: 'right',
+    //   dataIndex: 'personAmount',
+    //   sorter: (a, b) => a.personAmount - b.personAmount,
+    // },
 
-    {
-      title: '累计打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      sorter: (a, b) => a.beanAmount - b.beanAmount,
-    },
+    // {
+    //   title: '累计打赏卡豆数',
+    //   align: 'right',
+    //   dataIndex: 'beanAmount',
+    //   sorter: (a, b) => a.beanAmount - b.beanAmount,
+    // },
     {
       title: '推荐位置',
       align: 'right',

@@ -123,12 +123,12 @@ const VideoPlatformUGC = (props) => {
         </>
       ),
     },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-      sorter: (a, b) => a.viewAmount - b.viewAmount,
-    },
+    // {
+    //   title: '观看人数',
+    //   align: 'right',
+    //   dataIndex: 'viewAmount',
+    //   sorter: (a, b) => a.viewAmount - b.viewAmount,
+    // },
     {
       title: '创建时间',
       align: 'center',

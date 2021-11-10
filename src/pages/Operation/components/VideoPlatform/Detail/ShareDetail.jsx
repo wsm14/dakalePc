@@ -88,26 +88,6 @@ const ShareDetail = (props) => {
       ),
     },
     {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="收藏数"
-          content="视频收藏数为初始数据+真实数据"
-        ></QuestionTooltip>
-      ),
-      name: 'collectionAmount',
-    },
-    {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="分享数"
-          content="视频分享数为初始数据+真实数据"
-        ></QuestionTooltip>
-      ),
-      name: 'shareAmount',
-    },
-    {
       label: '行业分类',
       name: 'topCategoryName',
       show: detail.ownerType !== 'user',
@@ -182,6 +162,68 @@ const ShareDetail = (props) => {
       label: '发布时间',
       name: 'publishTime',
       render: (val, row) => (row.publishType == 'fixed' ? `${val}` : '立即发布'),
+    },
+  ];
+
+  const formItemsData = [
+    {
+      label: '浏览量',
+      name: '',
+    },
+    {
+      label: '完播量',
+      name: '',
+    },
+    {
+      label: '完播率',
+      name: '',
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="收藏数"
+          content="视频收藏数为初始数据+真实数据"
+        ></QuestionTooltip>
+      ),
+      name: 'collectionAmount',
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="分享数"
+          content="视频分享数为初始数据+真实数据"
+        ></QuestionTooltip>
+      ),
+      name: 'shareAmount',
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="打赏卡豆数"
+          content="设置中填写的仿真打赏卡豆数+真实打赏卡豆数"
+        ></QuestionTooltip>
+      ),
+      name: '',
+      show: tabKey !== '0' && tabKey !== '1',
+    },
+    {
+      label: '打赏人次',
+      name: '',
+      show: tabKey !== '0' && tabKey !== '1',
+    },
+    {
+      label: '累计打赏卡豆数',
+      name: '',
+      show: tabKey === '0' || tabKey === '1',
+    },
+
+    {
+      label: '领豆人次',
+      name: '',
+      show: tabKey === '0' || tabKey === '1',
     },
   ];
 
@@ -314,10 +356,17 @@ const ShareDetail = (props) => {
         {
           // 详情
           info: (
-            <DescriptionsCondition
-              formItems={formItems}
-              initialValues={detail}
-            ></DescriptionsCondition>
+            <>
+              <DescriptionsCondition
+                formItems={formItems}
+                initialValues={detail}
+              ></DescriptionsCondition>
+              <DescriptionsCondition
+                title="数据统计"
+                formItems={formItemsData}
+                initialValues={detail}
+              ></DescriptionsCondition>
+            </>
           ),
           // 带货修改
           commerce: (
