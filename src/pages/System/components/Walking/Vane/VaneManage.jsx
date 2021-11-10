@@ -112,7 +112,7 @@ const VaneManage = (props) => {
       text: '新增',
       className: 'dkl_blue_btn',
       onClick: () => {
-        setVisibleDrawer({ type: 'add', show: true, detail: { userOs, version } });
+        setVisibleDrawer({ type: 'add', show: true, detail: { userOs, version, areaType } });
       },
     },
   ];

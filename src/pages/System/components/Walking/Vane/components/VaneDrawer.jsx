@@ -13,7 +13,7 @@ const VaneDrawer = (props) => {
   const { dispatch, cRef, visible, onClose, loading, tradeList, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
-  const { topCategoryId, version, userOs } = detail;
+  const { topCategoryId, version, userOs, areaType } = detail;
   console.log(detail);
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
@@ -68,7 +68,7 @@ const VaneDrawer = (props) => {
         dispatch({
           type: allProps.api,
           payload: {
-            areaType: 'city',
+            areaType: areaType,
             flag: allProps.flag,
             userOs,
             version,
