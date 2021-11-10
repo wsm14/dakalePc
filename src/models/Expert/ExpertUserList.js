@@ -80,7 +80,7 @@ export default {
       const { content } = response;
       callback &&
         callback(
-          content.recordList.map((item) => ({
+          content.sellInfo.map((item) => ({
             ...item,
             sellName: `${item.sellName} ${item.departmentName} ${item.mobile}`,
           })),
