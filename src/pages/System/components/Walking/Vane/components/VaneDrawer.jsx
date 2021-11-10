@@ -13,7 +13,8 @@ const VaneDrawer = (props) => {
   const { dispatch, cRef, visible, onClose, loading, tradeList, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
-  const { topCategoryId } = detail;
+  const { topCategoryId, version, userOs } = detail;
+  console.log(detail);
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
@@ -29,11 +30,13 @@ const VaneDrawer = (props) => {
   const allProps = {
     add: {
       title: '新增',
-      api: 'walkingManage/fetchWalkManageVaneAdd',
+      api: 'walkingManage/fetchGetWindVaneManagementAdd',
+      flag: 'addConfig',
     },
     edit: {
       title: '修改',
-      api: 'walkingManage/fetchWalkManageVaneEditDel',
+      api: 'walkingManage/fetchGetWindVaneManagementEdit',
+      flag: 'updateConfig',
     },
     detail: {
       title: '详情',
@@ -66,6 +69,9 @@ const VaneDrawer = (props) => {
           type: allProps.api,
           payload: {
             areaType: 'city',
+            flag: allProps.flag,
+            userOs,
+            version,
             areaCode: type === 'edit' ? detail.areaCode : cityCode,
             configWindVaneId: detail.configWindVaneId,
             ...values,
@@ -239,6 +245,7 @@ const VaneDrawer = (props) => {
   const modalProps = {
     title: allProps.title,
     visible: show,
+    zIndex: 1001,
     onClose,
     afterCallBack: () => {
       setShowPop(Boolean(detail.bubbleFlag));

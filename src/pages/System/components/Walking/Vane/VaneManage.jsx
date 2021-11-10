@@ -1,32 +1,18 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Button, Select, Cascader, Modal } from 'antd';
+import { Modal } from 'antd';
 import { DragHandle } from '@/components/TableDataBlock/SortBlock';
 import PopImgShow from '@/components/PopImgShow';
-import CITYJSON from '@/common/city';
 import TableDataBlock from '@/components/TableDataBlock';
 import VaneDrawer from './components/VaneDrawer';
 
 const VaneManage = (props) => {
   const { list, loading, dispatch, visible = {}, onClose } = props;
-  const { show } = visible;
-  const [cityCode, setCityCode] = useState(['33', '3301']);
+  const { show, detail = {} } = visible;
+  const { userOs, version, areaType, areaCode } = detail;
 
   const childRef = useRef();
   const [visibleDrawer, setVisibleDrawer] = useState(false);
-
-  useEffect(() => {
-    dispatch({
-      type: 'walkingManage/fetchWalkManageNavigation',
-    });
-  }, []);
-
-  // useEffect(() => {
-  //   if (show) {
-  //     console.log(111111, childRef);
-  //     childRef?.current?.fetchGetData({ cityCode: cityCode[1] });
-  //   }
-  // }, [cityCode, show]);
 
   // 获取详情
   const fetchGetDetail = (val, record, type) => {
@@ -35,8 +21,6 @@ const VaneManage = (props) => {
       type: 'walkingManage/fetchWalkManageVaneDetail',
       payload: {
         configWindVaneId: val,
-        areaType: 'city',
-        areaCode,
       },
       callback: (detail) => setVisibleDrawer({ show: true, type, detail }),
     });
@@ -114,22 +98,6 @@ const VaneManage = (props) => {
     },
   ];
 
-  const cityList = CITYJSON.map((item) => {
-    const children = item.children.map((every) => ({
-      value: every.value,
-      label: every.label,
-      pid: every.pid,
-    }));
-    return {
-      ...item,
-      children: children,
-    };
-  });
-
-  const handleCityChange = (val) => {
-    setCityCode(val);
-  };
-
   const modalProps = {
     title: '风向标配置',
     visible: show,
@@ -137,7 +105,6 @@ const VaneManage = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
-    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
   const cardBtnList = [
     {
@@ -145,7 +112,7 @@ const VaneManage = (props) => {
       text: '新增',
       className: 'dkl_blue_btn',
       onClick: () => {
-        setVisibleDrawer({ type: 'add', show: true });
+        setVisibleDrawer({ type: 'add', show: true, detail: { userOs, version } });
       },
     },
   ];
@@ -153,32 +120,16 @@ const VaneManage = (props) => {
     <>
       <Modal destroyOnClose {...modalProps}>
         <TableDataBlock
-          // firstFetch={false}
           tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
-          // cardProps={{
-          //   title: (
-          //     <div style={{ display: 'flex', alignItems: 'center' }}>
-          //       <span style={{ display: 'inline-block', width: 100, textAlign: 'center' }}>
-          //         选择城市:
-          //       </span>
-          //       <Cascader value={cityCode} options={cityList} onChange={handleCityChange} />
-          //     </div>
-          //   ),
-          //   bordered: false,
-          //   extra: (
-          //     <Button type="primary" onClick={() => setVisibleDrawer({ type: 'add', show: true })}>
-          //       新增
-          //     </Button>
-          //   ),
-          // }}
           noCard={false}
           cRef={childRef}
           btnExtra={cardBtnList}
           loading={loading}
+          pagination={false}
           columns={getColumns}
-          params={{ cityCode: cityCode[1] }}
+          params={{ userOs, version, areaType, areaCode, isAutomatic: 0, deleteFlag: 1 }}
           rowKey={(record) => `${record.configWindVaneId}`}
-          dispatchType="walkingManage/fetchWalkManageVaneList"
+          dispatchType="walkingManage/fetchGetWindVaneConfigureList"
           pagination={false}
           {...list}
         ></TableDataBlock>
@@ -186,7 +137,7 @@ const VaneManage = (props) => {
       <VaneDrawer
         cRef={childRef}
         visible={visibleDrawer}
-        cityCode={cityCode[1]}
+        cityCode={areaCode}
         onClose={() => setVisibleDrawer(false)}
       ></VaneDrawer>
     </>
@@ -194,7 +145,7 @@ const VaneManage = (props) => {
 };
 
 export default connect(({ walkingManage, loading }) => ({
-  list: walkingManage.vaneList,
+  list: walkingManage.vaneConfigureList,
   loading:
     loading.effects['walkingManage/fetchWalkManageVaneList'] ||
     loading.effects['walkingManage/fetchWalkManageVaneEditDel'] ||
