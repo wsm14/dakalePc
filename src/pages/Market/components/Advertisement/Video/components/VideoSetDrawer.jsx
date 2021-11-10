@@ -120,14 +120,14 @@ const ShareDrawer = (props) => {
   const handleNextStep = (buttonType) => {
     if (buttonType === 'next') {
       form.validateFields().then((values) => {
-        const { free, contact } = couponData;
-        if (current == 0 && !values.jumpUrl && !contact.length && !free.goodsName) {
-          notification.info({
-            message: '温馨提示',
-            description: '请选择一个商品或输入一个链接',
-          });
-          return;
-        }
+        // const { free, contact } = couponData;
+        // if (current == 0 && !values.jumpUrl && !contact.length && !free.goodsName) {
+        //   notification.info({
+        //     message: '温馨提示',
+        //     description: '请选择一个商品或输入一个链接',
+        //   });
+        //   return;
+        // }
         saveDataStorage({ ...dataStorage, ...values });
         setCurrent(current + 1);
       });

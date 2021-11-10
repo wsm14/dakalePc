@@ -108,14 +108,14 @@ const VideoDetail = (props) => {
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
       const { frontImage, url, title, videoId, ...other } = values;
-      const { free = {}, contact = [] } = couponData;
-      if (!values.jumpUrl && !contact.length && !free.goodsName) {
-        notification.info({
-          message: '温馨提示',
-          description: '请选择一个商品或输入一个链接',
-        });
-        return;
-      }
+      // const { free = {}, contact = [] } = couponData;
+      // if (!values.jumpUrl && !contact.length && !free.goodsName) {
+      //   notification.info({
+      //     message: '温馨提示',
+      //     description: '请选择一个商品或输入一个链接',
+      //   });
+      //   return;
+      // }
 
       let goodsList = {};
       if (detail.relateType !== 'brand') {
