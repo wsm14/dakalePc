@@ -171,7 +171,7 @@ const CityGlobalModal = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.configFloatingWindowId}`}
           dispatchType="marketConfigure/fetchFloatingWindowConfigureList"
-          params={{ ...detail, windowType: tabKey, deleteFlag: '1' }}
+          params={{ ...detail, windowType: tabKey, isAutomatic: 0 }}
           {...floatConfigureList}
         ></TableDataBlock>
       </Modal>
