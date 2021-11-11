@@ -22,6 +22,7 @@ const FormList = (props) => {
       </div>
       {(() => {
         const goodsItem = form.getFieldValue(type)[field.name];
+        console.log('goodsItem', goodsItem);
         return (
           <>
             <div className={styles.listItem_img}>
@@ -29,9 +30,9 @@ const FormList = (props) => {
             </div>
             <div className={styles.listItem_info}>
               <div>商品名称：{goodsItem.goodsName}</div>
-              <div>原价：￥{goodsItem.realPrice}</div>
+              <div>售价：{goodsItem.buyFlag === '0' ? '免费' : `￥${goodsItem.realPrice}`}</div>
               <div>
-                售价：<span className={styles.tip}>￥{goodsItem.oriPrice}</span>
+                <span className={styles.tip}>原价：￥{goodsItem.oriPrice}</span>
               </div>
             </div>
           </>
