@@ -16,6 +16,13 @@ export function fetchExpertUserList(params) {
   });
 }
 
+// get 达人列表 - 团购业绩统计列表
+export function fetchCombineBuyList(params) {
+  return request('/admin/communityConsume/performanceStatistics', {
+    params,
+  });
+}
+
 // get 达人列表 - 获取哒人标识
 export function fetchDarenTag(params) {
   return request('/admin/dictionaryAdmin/getDictionaryAdmin', {

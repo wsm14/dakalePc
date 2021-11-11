@@ -267,6 +267,11 @@ export default [
         // buttons: ['exportList'],
       },
       {
+        path: '/expert/combineBuyAchievementTotal',
+        name: '团购业绩',
+        component: './Expert/CombineBuyAchievementTotal',
+      },
+      {
         path: '/expert/distribution',
         name: '哒人分销明细',
         component: './Expert/ExpertUserDistribution',

@@ -138,8 +138,8 @@ const ExpertUserList = (props) => {
       title: '关联BD',
       align: 'center',
       fixed: 'right',
-      dataIndex: 'unlockTime',
-      render: (val, row) => `${val}\n${row.beanCode}`,
+      dataIndex: 'sellName',
+      render: (val, row) => `${val}\n${row.sellMobile}`,
     },
     {
       title: '状态',
