@@ -261,6 +261,8 @@ const AddNewActivitySet = (props) => {
       select: {
         blindIndex: '卡豆盲盒',
         userNewArtist: '新手福利页',
+        shareActive: '活动页',
+        shareUser: '活动助力页面',
       },
     },
     {
