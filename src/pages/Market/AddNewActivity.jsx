@@ -58,6 +58,12 @@ const AddNewActivity = (props) => {
   // table 表头
   const getColumns = [
     {
+      title: '活动id',
+      align: 'center',
+      fixed: 'left',
+      dataIndex: 'configFissionTemplateId',
+    },
+    {
       title: '活动名称',
       align: 'center',
       fixed: 'left',

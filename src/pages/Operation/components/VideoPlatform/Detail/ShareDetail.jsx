@@ -34,6 +34,8 @@ const ShareDetail = (props) => {
     childRef,
   } = props;
 
+  // tabKey 0:探店视频 1：带货视频  other：UGC视频tab
+
   const { index, show = false, type = 'info', detail = {} } = visible;
   // console.log(detail, 'detail');
   const { ownerId, momentId, ownerName } = detail;
@@ -214,17 +216,17 @@ const ShareDetail = (props) => {
       name: '',
       show: tabKey !== '0' && tabKey !== '1',
     },
-    {
-      label: '累计打赏卡豆数',
-      name: '',
-      show: tabKey === '0' || tabKey === '1',
-    },
+    // {
+    //   label: '累计打赏卡豆数',
+    //   name: '',
+    //   show: tabKey === '0' || tabKey === '1',
+    // },
 
-    {
-      label: '领豆人次',
-      name: '',
-      show: tabKey === '0' || tabKey === '1',
-    },
+    // {
+    //   label: '领豆人次',
+    //   name: '',
+    //   show: tabKey === '0' || tabKey === '1',
+    // },
   ];
 
   // 修改审核提交

@@ -8,29 +8,30 @@ const RateFormList = (props) => {
   const {
     dispatch,
     loading,
-    name = 'scan',
+    name = 'collection',
     form,
-    scanValues = {},
-    verificationValue = {},
-    promotionValue = {},
-    rateType,
+    collectionValues = {},
+    shareValues = {},
+    rewardValues = {},
+    ruleType,
     fetchGetRate,
-    disabled,
     ownerId,
+    momentId,
     listPayload,
   } = props;
   const [isEdit, setIsEdit] = useState({});
 
-  // 子门店不可编辑
-  useEffect(() => {
-    setIsEdit(disabled);
-  }, [disabled]);
+  console.log('collectionValues', collectionValues);
 
-  const scanArr = scanValues.scan ? scanValues.scan : [];
-  const verArr = verificationValue.verification ? verificationValue.verification : [];
-  const proArr = promotionValue.promotion ? promotionValue.promotion : [];
+  const collectionArr = collectionValues.collection ? collectionValues.collection : [];
+  const shareArr = shareValues.share ? shareValues.share : [];
+  const rewardArr = rewardValues.reward ? rewardValues.reward : [];
 
-  const checkArr = { scan: scanArr, verification: verArr, promotion: proArr }[rateType];
+  const checkArr = {
+    collection: collectionArr,
+    share: shareArr,
+    reward: rewardArr,
+  }[ruleType];
   const checkEditType = (index) => (checkArr[index]?.time[0] ? !isEdit[index] : false);
 
   const getDispatch = (url, payload, index, type) => {
@@ -51,53 +52,55 @@ const RateFormList = (props) => {
     }
 
     form.validateFields().then((values) => {
-      const { scan, verification, promotion } = values;
+      const { collection, share, reward } = values;
 
       let beginDate = '';
       let endDate = '';
-      let rate = '';
-      let ownerManualId = '';
+      let simulationNum = '';
+      let configMomentSimulationId = '';
 
-      switch (rateType) {
-        case 'scan':
-          ownerManualId = type === 'edit' ? scanValues.scan[index].ownerManualId : ''; //详情index对应 的id | 编辑
-          beginDate = scan[index].time[0].format('YYYY-MM-DD'); //新增|编辑参数
-          endDate = scan[index].time[1].format('YYYY-MM-DD');
-          rate = scan[index].rate;
+      switch (ruleType) {
+        case 'collection':
+          configMomentSimulationId =
+            type === 'edit' ? collectionValues.collection[index].configMomentSimulationId : ''; //详情index对应 的id | 编辑
+          beginDate = collection[index].time[0].format('YYYY-MM-DD'); //新增|编辑参数
+          endDate = collection[index].time[1].format('YYYY-MM-DD');
+          simulationNum = collection[index].simulationNum;
           break;
-        case 'verification':
-          ownerManualId =
-            type === 'edit' ? verificationValue.verification[index].ownerManualId : '';
-          beginDate = verification[index].time[0].format('YYYY-MM-DD');
-          endDate = verification[index].time[1].format('YYYY-MM-DD');
-          rate = verification[index].rate;
+        case 'share':
+          configMomentSimulationId =
+            type === 'edit' ? shareValues.share[index].configMomentSimulationId : '';
+          beginDate = share[index].time[0].format('YYYY-MM-DD');
+          endDate = share[index].time[1].format('YYYY-MM-DD');
+          simulationNum = share[index].simulationNum;
           break;
-        case 'promotion':
-          ownerManualId = type === 'edit' ? promotionValue.promotion[index].ownerManualId : '';
-          beginDate = promotion[index].time[0].format('YYYY-MM-DD');
-          endDate = promotion[index].time[1].format('YYYY-MM-DD');
-          rate = promotion[index].rate;
+        case 'reward':
+          configMomentSimulationId =
+            type === 'edit' ? rewardValues.reward[index].configMomentSimulationId : '';
+          beginDate = reward[index].time[0].format('YYYY-MM-DD');
+          endDate = reward[index].time[1].format('YYYY-MM-DD');
+          simulationNum = reward[index].simulationNum;
           break;
       }
 
       const apiUrl = {
-        save: 'businessList/fetchsetManualRate',
-        edit: 'businessList/fetchUpdateManualRate',
+        save: 'videoPlatform/fetchVideoFakeListAdd',
+        edit: 'videoPlatform/fetchVideoFakeListEdit',
       }[type];
       const payload = {
         save: {
           ownerId,
-          ownerType: listPayload.type,
-          rateType,
-          rate,
+          momentId,
+          ruleType,
+          simulationNum,
           beginDate,
           endDate,
         },
         edit: {
-          ownerManualId,
+          configMomentSimulationId,
           beginDate,
           endDate,
-          rate,
+          simulationNum,
         },
       }[type];
 
@@ -142,16 +145,14 @@ const RateFormList = (props) => {
               </Form.Item>
               <Form.Item
                 {...restField}
-                name={[name, 'rate']}
-                fieldKey={[fieldKey, 'rate']}
-                rules={[{ required: false, message: '请输入费率' }]}
+                name={[name, 'simulationNum']}
+                fieldKey={[fieldKey, 'simulationNum']}
+                rules={[{ required: false, message: '请输入仿真数' }]}
               >
                 <InputNumber
                   style={{ width: 150 }}
                   min={0}
-                  placeholder="请输入费率"
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace('%', '')}
+                  placeholder="请输入仿真数"
                   disabled={checkEditType(index)}
                 />
               </Form.Item>
@@ -163,17 +164,10 @@ const RateFormList = (props) => {
                   {checkEditType(index) && checkArr[index]?.time[0] != '' ? '编辑' : '保存'}
                 </a>
               )}
-              {/* <MinusCircleOutlined onClick={() => remove(name)} /> */}
             </Space>
           ))}
           <Form.Item>
-            <Button
-              type="dashed"
-              disabled={disabled}
-              onClick={() => add()}
-              block
-              icon={<PlusOutlined />}
-            >
+            <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
               新增
             </Button>
           </Form.Item>

@@ -274,6 +274,13 @@ export function fetchNewShareList(params) {
   });
 }
 
+// get 平台视频 - 查询视频统计信息
+export function fetchNewShareStatisticsList(params) {
+  return request('/admin/marketing/moment/new/momentStatisticParamById', {
+    params,
+  });
+}
+
 // get 平台视频 - 内容详情
 // get UGC视频 - UGC视频详情展示定位
 export function fetchNewShareDetail(params) {
@@ -286,6 +293,29 @@ export function fetchNewShareDetail(params) {
 export function fetchNewShareRewardSet(params) {
   return request('/admin/marketing/moment/tipping/momentTippingList', {
     params,
+  });
+}
+
+// get 平台视频 - 设置-分享数，收藏数，打赏卡豆数-列表
+export function fetchVideoFakeList(params) {
+  return request('/admin/configMomentSimulation/listConfigMomentSimulation', {
+    params,
+  });
+}
+
+// post 平台视频 - 设置-分享数，收藏数，打赏卡豆数-配置
+export function fetchVideoFakeListAdd(data) {
+  return request('/admin/configMomentSimulation/setMomentSimulationConfig', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台视频 - 设置-分享数，收藏数，打赏卡豆数-编辑
+export function fetchVideoFakeListEdit(data) {
+  return request('/admin/marketing/moment/new/updateMoment', {
+    method: 'POST',
+    data,
   });
 }
 

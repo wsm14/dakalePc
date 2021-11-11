@@ -15,7 +15,8 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import ShareImg from './components/VideoPlatform/ShareImg';
+// import ShareImg from './components/VideoPlatform/ShareImg';
+import VideoSet from './components/VideoPlatform/VideoSet';
 import RewardSet from './components/VideoPlatform/RewardSet';
 
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
@@ -43,7 +44,8 @@ const VideoPlatform = (props) => {
   const [visible, setVisible] = useState(false); // 详情+分享配置
   const [visibleShare, setVisibleShare] = useState(false); // 新增
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  const [visibleImg, setVisibleImg] = useState(false); // 设置
+  // const [visibleImg, setVisibleImg] = useState(false); // 设置
+  const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   // const [visibleShareEdit, setVisibleShareEdit] = useState(false); // 分享配置
 
@@ -233,9 +235,13 @@ const VideoPlatform = (props) => {
             visible: (status != 0 || tabKey === '1') && typeUser,
             click: () => setVisibleReward({ show: true, detail: record }),
           },
+          // {
+          //   type: 'set', // 设置
+          //   click: () => setVisibleImg({ show: true, detail: record }),
+          // },
           {
             type: 'set', // 设置
-            click: () => setVisibleImg({ show: true, detail: record }),
+            click: () => fetchGetRate({ type: 'merchant', record }),
           },
           {
             type: 'commerceSet', // 带货设置
@@ -256,6 +262,31 @@ const VideoPlatform = (props) => {
       },
     },
   ];
+
+  // 设置
+  const fetchGetRate = (payload) => {
+    const { type, record = {} } = payload;
+    // const { momentId, ownerId } = record;
+    // console.log('payload', payload);
+    // setVisibleRate({ type, show: true, initialValues: { ...record } });
+    dispatch({
+      type: 'videoPlatform/fetchVideoFakeList',
+      payload: {
+        momentId: '1455790773950697474',
+        ownerId: '1417755169849782273',
+      },
+      callback: (detail) => {
+        const initialValues = {
+          ...record,
+          ...detail,
+          listPayload: payload,
+          momentId: '1455790773950697474',
+          ownerId: '1417755169849782273',
+        };
+        setVisibleSet({ type: 'ugc', show: true, initialValues });
+      },
+    });
+  };
 
   // 获取行业选择项
   const fetchTradeList = () => {
@@ -377,12 +408,17 @@ const VideoPlatform = (props) => {
         loading={loadingRefuse}
       ></RefuseModal>
       {/* 设置 */}
-      <ShareImg
+      <VideoSet
+        visible={visibleSet}
+        fetchGetRate={fetchGetRate}
+        onClose={() => setVisibleSet(false)}
+      ></VideoSet>
+      {/* <ShareImg
         visible={visibleImg}
         childRef={childRef}
         onSubmit={fetchNewShareNoAudit}
         onClose={() => setVisibleImg(false)}
-      ></ShareImg>
+      ></ShareImg> */}
       {/* 打赏设置 */}
       <RewardSet visible={visibleReward} onClose={() => setVisibleReward(false)}></RewardSet>
     </>

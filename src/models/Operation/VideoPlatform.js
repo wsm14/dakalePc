@@ -1,4 +1,5 @@
 import { notification } from 'antd';
+import moment from 'moment';
 import cityJson from '@/common/cityJson';
 import { SHARE_AREA_TYPE } from '@/common/constant';
 import {
@@ -17,6 +18,10 @@ import {
   fetchUGCVideoRulesSet,
   fetchUGCVideoList,
   fetchUGCVideoRewardInfo,
+  fetchVideoFakeList,
+  fetchNewShareStatisticsList,
+  fetchVideoFakeListAdd,
+  fetchVideoFakeListEdit,
 } from '@/services/OperationServices';
 
 export default {
@@ -40,6 +45,67 @@ export default {
   },
 
   effects: {
+    // 仿真数据编辑修改
+    *fetchVideoFakeListEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoFakeListEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `提交修改成功`,
+      });
+      callback();
+    },
+    // 仿真数据配置
+    *fetchVideoFakeListAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchVideoFakeListAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: `提交修改成功`,
+      });
+      callback();
+    },
+    // 获取视频仿真数据
+    *fetchVideoFakeList({ payload: { momentId, ownerId }, callback }, { call, put }) {
+      const response = yield call(fetchVideoFakeList, { momentId, ownerId });
+      if (!response) return;
+      const { content } = response;
+      console.log('content', content);
+      const { collection = [], share = [], reward = [] } = content;
+
+      const collectionNew = collection.map((itemScan) => ({
+        ...itemScan,
+        time: [moment(itemScan.beginTime, 'YYYY-MM-DD'), moment(itemScan.endTime, 'YYYY-MM-DD')],
+      }));
+      const shareNew = share.map((itemVer) => ({
+        ...itemVer,
+        time: [moment(itemVer.beginTime, 'YYYY-MM-DD'), moment(itemVer.endTime, 'YYYY-MM-DD')],
+      }));
+      const rewardNew = reward.map((itemPro) => ({
+        ...itemPro,
+        time: [moment(itemPro.beginTime, 'YYYY-MM-DD'), moment(itemPro.endTime, 'YYYY-MM-DD')],
+      }));
+
+      //收藏数
+      const collectionList = {
+        collection: collectionNew,
+      };
+      //分享数
+      const shareList = {
+        share: shareNew,
+      };
+      // 打赏卡豆数
+      const rewardList = {
+        reward: rewardNew,
+      };
+      const newDetail = {
+        ...content,
+        collectionList,
+        shareList,
+        rewardList,
+      };
+      callback(newDetail);
+    },
     // UGC视频打赏明细
     *fetchUGCVideoRewardInfo({ payload }, { call, put }) {
       const response = yield call(fetchUGCVideoRewardInfo, payload);
@@ -213,12 +279,15 @@ export default {
       });
       callback();
     },
-    // +UGC视频详情展示定位
+    // +UGC视频详情展示定位 fetchNewShareStatisticsList
     *fetchNewShareDetail({ payload, callback }, { call }) {
       const { type = 'info', ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);
-      if (!response) return;
+      // 查询视频统计信息
+      const response2 = yield call(fetchNewShareStatisticsList, cell);
+      if (!response && !response2) return;
       const { content } = response;
+      const { content: content2 } = response2;
       // console.log(content, 'content');
       const {
         age,
