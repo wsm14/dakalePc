@@ -10,7 +10,7 @@ const VideoSet = (props) => {
   const { type, show, initialValues = {} } = visible;
   const { listPayload, title, ownerId, momentId } = initialValues;
 
-  // type merchant:'商家' ，ugc：UGC视频
+  // type merchant:'商家' ，ugc：UGC视频 , videoAD: 视频广告
 
   const [collection] = Form.useForm();
   const [share] = Form.useForm();
@@ -23,6 +23,7 @@ const VideoSet = (props) => {
     listPayload,
   };
 
+  // show  判断是否是UGC视频，是的话显示打赏卡豆数设置
   const formContent = [
     {
       show: false,
@@ -97,11 +98,6 @@ const VideoSet = (props) => {
   };
   return (
     <DrawerCondition {...modalProps}>
-      {/* <FormCondition
-        form={form}
-        formItems={formItems}
-        initialValues={initialValues.collectionList}
-      ></FormCondition> */}
       {formContent.map((item) =>
         !item.show ? (
           <div key={item.rateType}>

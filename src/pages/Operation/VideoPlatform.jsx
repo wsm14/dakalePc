@@ -15,10 +15,8 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-// import ShareImg from './components/VideoPlatform/ShareImg';
 import VideoSet from './components/VideoPlatform/VideoSet';
 import RewardSet from './components/VideoPlatform/RewardSet';
-
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
@@ -44,7 +42,6 @@ const VideoPlatform = (props) => {
   const [visible, setVisible] = useState(false); // 详情+分享配置
   const [visibleShare, setVisibleShare] = useState(false); // 新增
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  // const [visibleImg, setVisibleImg] = useState(false); // 设置
   const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   // const [visibleShareEdit, setVisibleShareEdit] = useState(false); // 分享配置
@@ -207,7 +204,7 @@ const VideoPlatform = (props) => {
         return [
           {
             type: 'info', // 详情
-            click: () => fetchShareDetail(index),
+            click: () => fetchShareDetail(index, 'info'),
           },
           {
             type: 'down', // 下架
@@ -266,24 +263,20 @@ const VideoPlatform = (props) => {
   // 设置
   const fetchGetRate = (payload) => {
     const { type, record = {} } = payload;
-    // const { momentId, ownerId } = record;
-    // console.log('payload', payload);
-    // setVisibleRate({ type, show: true, initialValues: { ...record } });
+    const { momentId, ownerId } = record;
     dispatch({
       type: 'videoPlatform/fetchVideoFakeList',
       payload: {
-        momentId: '1455790773950697474',
-        ownerId: '1417755169849782273',
+        momentId,
+        ownerId,
       },
       callback: (detail) => {
         const initialValues = {
           ...record,
           ...detail,
           listPayload: payload,
-          momentId: '1455790773950697474',
-          ownerId: '1417755169849782273',
         };
-        setVisibleSet({ type: 'ugc', show: true, initialValues });
+        setVisibleSet({ type, show: true, initialValues });
       },
     });
   };
@@ -326,7 +319,7 @@ const VideoPlatform = (props) => {
   };
 
   // 获取详情
-  const fetchShareDetail = (index, type) => {
+  const fetchShareDetail = (index, type, momentType) => {
     const { momentId, ownerId } = list[index];
     dispatch({
       type: 'videoPlatform/fetchNewShareDetail',
@@ -334,6 +327,7 @@ const VideoPlatform = (props) => {
         momentId,
         ownerId,
         type,
+        momentType,
       },
       callback: (detail) => setVisible({ show: true, index, type, detail }),
     });
@@ -413,12 +407,6 @@ const VideoPlatform = (props) => {
         fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}
       ></VideoSet>
-      {/* <ShareImg
-        visible={visibleImg}
-        childRef={childRef}
-        onSubmit={fetchNewShareNoAudit}
-        onClose={() => setVisibleImg(false)}
-      ></ShareImg> */}
       {/* 打赏设置 */}
       <RewardSet visible={visibleReward} onClose={() => setVisibleReward(false)}></RewardSet>
     </>

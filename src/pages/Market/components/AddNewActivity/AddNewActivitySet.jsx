@@ -324,6 +324,7 @@ const AddNewActivitySet = (props) => {
       type: 'upload',
       maxFile: 1,
       imgRatio: 368 / 110,
+      rules: [{ required: false }],
     },
     {
       label: '权益商品标题图片',
@@ -331,12 +332,13 @@ const AddNewActivitySet = (props) => {
       type: 'upload',
       maxFile: 1,
       imgRatio: 368 / 110,
+      rules: [{ required: false }],
     },
     {
       label: '选择特惠商品',
       name: 'specialGoodsIds',
       type: 'formItem',
-      required: true,
+      // required: true,
       formItem: (
         <>
           <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
@@ -347,7 +349,7 @@ const AddNewActivitySet = (props) => {
       label: '选择权益商品',
       name: 'rightGoodsIds',
       type: 'formItem',
-      required: true,
+      // required: true,
       formItem: (
         <>
           <ShareCoupon type="rightGoods" form={form}></ShareCoupon>
