@@ -17,7 +17,7 @@ import VideoAdRoot from './components/VideoAdRoot';
 import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
-import VideoSet from './components/VideoSet';
+import VideoSet from '@/pages/Operation/components/VideoPlatform/VideoSet';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, tagList, dispatch } = props;
@@ -185,9 +185,7 @@ const ShareManage = (props) => {
           },
           {
             type: 'set', // 设置
-            click: () => {
-              setVisibleSet({ show: true, detail: record });
-            },
+            click: () => fetchGetRate({ type: 'videoAD', record }),
           },
           {
             type: 'down', // 下架
@@ -204,6 +202,27 @@ const ShareManage = (props) => {
       },
     },
   ];
+
+  // 设置
+  const fetchGetRate = (payload) => {
+    const { type, record = {} } = payload;
+    const { platformMomentId, relateId } = record;
+    dispatch({
+      type: 'videoPlatform/fetchVideoFakeList',
+      payload: {
+        momentId: platformMomentId,
+        ownerId: relateId,
+      },
+      callback: (detail) => {
+        const initialValues = {
+          ...record,
+          ...detail,
+          listPayload: payload,
+        };
+        setVisibleSet({ type, show: true, initialValues });
+      },
+    });
+  };
 
   // 获取推荐位置ugc标签
   const fetchGetUgcTag = () => {
@@ -293,7 +312,7 @@ const ShareManage = (props) => {
       {/* 设置 */}
       <VideoSet
         visible={visibleSet}
-        childRef={childRef}
+        fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}
       ></VideoSet>
     </>

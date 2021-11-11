@@ -281,10 +281,10 @@ export default {
     },
     // +UGC视频详情展示定位 fetchNewShareStatisticsList
     *fetchNewShareDetail({ payload, callback }, { call }) {
-      const { type = 'info', ...cell } = payload;
+      const { type = 'info', momentType, ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);
       // 查询视频统计信息
-      const response2 = yield call(fetchNewShareStatisticsList, cell);
+      const response2 = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
       if (!response && !response2) return;
       const { content } = response;
       const { content: content2 } = response2;
@@ -330,6 +330,7 @@ export default {
           : {};
       const newObj = {
         ...ohter,
+        ...content2,
         age,
         area,
         areaType,

@@ -45,15 +45,15 @@ const ShareCoupon = (props) => {
       ) : (
         <Form.List
           name={type}
-          rules={[
-            {
-              validator: async (_, names) => {
-                if (!names || names.length < 1) {
-                  return Promise.reject(new Error('请至少选择1个商品'));
-                }
-              },
-            },
-          ]}
+          // rules={[
+          //   {
+          //     validator: async (_, names) => {
+          //       if (!names || names.length < 1) {
+          //         return Promise.reject(new Error('请至少选择1个商品'));
+          //       }
+          //     },
+          //   },
+          // ]}
         >
           {(fields, { remove, move }, { errors }) => {
             // console.log(fields);

@@ -313,7 +313,7 @@ export function fetchVideoFakeListAdd(data) {
 
 // post 平台视频 - 设置-分享数，收藏数，打赏卡豆数-编辑
 export function fetchVideoFakeListEdit(data) {
-  return request('/admin/marketing/moment/new/updateMoment', {
+  return request('/admin/configMomentSimulation/updateMomentSimulationConfig', {
     method: 'POST',
     data,
   });

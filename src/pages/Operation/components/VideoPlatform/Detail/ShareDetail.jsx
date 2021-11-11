@@ -170,50 +170,54 @@ const ShareDetail = (props) => {
   const formItemsData = [
     {
       label: '浏览量',
-      name: '',
+      name: 'onlookersNum',
     },
     {
       label: '完播量',
-      name: '',
+      name: 'viewNum',
     },
     {
       label: '完播率',
-      name: '',
+      // name: '',
+      render: (val, row) => {},
     },
     {
       label: (
         <QuestionTooltip
           type="quest"
           title="收藏数"
-          content="视频收藏数为初始数据+真实数据"
+          content="视频收藏数为仿真数据+真实数据"
         ></QuestionTooltip>
       ),
-      name: 'collectionAmount',
+      name: 'collectionSimulationNum',
+      render: (val, row) => `${val}+${row.collectionRealNum}`,
     },
     {
       label: (
         <QuestionTooltip
           type="quest"
           title="分享数"
-          content="视频分享数为初始数据+真实数据"
+          content="视频分享数为仿真数据+真实数据"
         ></QuestionTooltip>
       ),
-      name: 'shareAmount',
+      name: 'shareSimulationNum',
+      render: (val, row) => `${val}+${row.shareRealNum}`,
     },
     {
       label: (
         <QuestionTooltip
           type="quest"
           title="打赏卡豆数"
-          content="设置中填写的仿真打赏卡豆数+真实打赏卡豆数"
+          content="视频打赏数为仿真打赏卡豆数+真实打赏卡豆数"
         ></QuestionTooltip>
       ),
-      name: '',
+      name: 'ugcSimulationNum',
       show: tabKey !== '0' && tabKey !== '1',
+      render: (val, row) => `${val}+${row.ugcRewardRealNum}`,
     },
     {
       label: '打赏人次',
-      name: '',
+      name: 'ugcRewardPerson',
       show: tabKey !== '0' && tabKey !== '1',
     },
     // {

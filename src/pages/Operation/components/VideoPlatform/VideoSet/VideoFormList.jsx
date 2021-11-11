@@ -4,7 +4,7 @@ import { connect } from 'umi';
 import moment from 'moment';
 import { PlusOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
-const RateFormList = (props) => {
+const VideoFormList = (props) => {
   const {
     dispatch,
     loading,
@@ -54,8 +54,8 @@ const RateFormList = (props) => {
     form.validateFields().then((values) => {
       const { collection, share, reward } = values;
 
-      let beginDate = '';
-      let endDate = '';
+      let beginTime = '';
+      let endTime = '';
       let simulationNum = '';
       let configMomentSimulationId = '';
 
@@ -63,22 +63,22 @@ const RateFormList = (props) => {
         case 'collection':
           configMomentSimulationId =
             type === 'edit' ? collectionValues.collection[index].configMomentSimulationId : ''; //详情index对应 的id | 编辑
-          beginDate = collection[index].time[0].format('YYYY-MM-DD'); //新增|编辑参数
-          endDate = collection[index].time[1].format('YYYY-MM-DD');
+          beginTime = collection[index].time[0].format('YYYY-MM-DD'); //新增|编辑参数
+          endTime = collection[index].time[1].format('YYYY-MM-DD');
           simulationNum = collection[index].simulationNum;
           break;
         case 'share':
           configMomentSimulationId =
             type === 'edit' ? shareValues.share[index].configMomentSimulationId : '';
-          beginDate = share[index].time[0].format('YYYY-MM-DD');
-          endDate = share[index].time[1].format('YYYY-MM-DD');
+          beginTime = share[index].time[0].format('YYYY-MM-DD');
+          endTime = share[index].time[1].format('YYYY-MM-DD');
           simulationNum = share[index].simulationNum;
           break;
         case 'reward':
           configMomentSimulationId =
             type === 'edit' ? rewardValues.reward[index].configMomentSimulationId : '';
-          beginDate = reward[index].time[0].format('YYYY-MM-DD');
-          endDate = reward[index].time[1].format('YYYY-MM-DD');
+          beginTime = reward[index].time[0].format('YYYY-MM-DD');
+          endTime = reward[index].time[1].format('YYYY-MM-DD');
           simulationNum = reward[index].simulationNum;
           break;
       }
@@ -93,13 +93,13 @@ const RateFormList = (props) => {
           momentId,
           ruleType,
           simulationNum,
-          beginDate,
-          endDate,
+          beginTime,
+          endTime,
         },
         edit: {
           configMomentSimulationId,
-          beginDate,
-          endDate,
+          beginTime,
+          endTime,
           simulationNum,
         },
       }[type];
@@ -177,5 +177,5 @@ const RateFormList = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.models.businessList,
-}))(RateFormList);
+  // loading: loading.models.businessList,
+}))(VideoFormList);
