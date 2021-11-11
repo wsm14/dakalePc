@@ -279,7 +279,7 @@ export default {
       });
       callback();
     },
-    // +UGC视频详情展示定位 fetchNewShareStatisticsList
+    // +UGC视频详情展示定位
     *fetchNewShareDetail({ payload, callback }, { call }) {
       const { type = 'info', momentType, ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);

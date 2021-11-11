@@ -218,6 +218,8 @@ const ShareManage = (props) => {
           ...record,
           ...detail,
           listPayload: payload,
+          momentId: platformMomentId,
+          ownerId: relateId,
         };
         setVisibleSet({ type, show: true, initialValues });
       },
@@ -242,10 +244,11 @@ const ShareManage = (props) => {
 
   // 获取详情
   const fetchVideoAdvertDetail = (index, type) => {
-    const { platformMomentId } = list[index];
+    const { platformMomentId, relateId } = list[index];
     dispatch({
       type: 'videoAdvert/fetchVideoAdvertDetail',
       payload: {
+        relateId,
         platformMomentId,
         type,
       },

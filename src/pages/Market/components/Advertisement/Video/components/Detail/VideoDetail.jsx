@@ -109,15 +109,16 @@ const VideoDetail = (props) => {
   const formItemsData = [
     {
       label: '浏览量',
-      name: '',
+      name: 'onlookersNum',
     },
     {
       label: '完播量',
-      name: '',
+      name: 'viewNum',
     },
     {
       label: '完播率',
-      name: '',
+      // name: '',
+      render: (val, row) => (row.onlookersNum === 0 ? '0' : `${row.viewNum / row.onlookersNum}%`),
     },
     {
       label: (
@@ -127,7 +128,8 @@ const VideoDetail = (props) => {
           content="视频收藏数为初始数据+真实数据"
         ></QuestionTooltip>
       ),
-      name: 'collectionAmount',
+      name: 'collectionSimulationNum',
+      render: (val, row) => `${val}+${row.collectionRealNum}`,
     },
     {
       label: (
@@ -137,7 +139,8 @@ const VideoDetail = (props) => {
           content="视频分享数为初始数据+真实数据"
         ></QuestionTooltip>
       ),
-      name: 'shareAmount',
+      name: 'shareSimulationNum',
+      render: (val, row) => `${val}+${row.shareRealNum}`,
     },
     // {
     //   label: '累计打赏卡豆数',

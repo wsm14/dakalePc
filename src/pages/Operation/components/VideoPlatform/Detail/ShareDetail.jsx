@@ -179,7 +179,7 @@ const ShareDetail = (props) => {
     {
       label: '完播率',
       // name: '',
-      render: (val, row) => {},
+      render: (val, row) => (row.onlookersNum === 0 ? '0' : `${row.viewNum / row.onlookersNum}%`),
     },
     {
       label: (
