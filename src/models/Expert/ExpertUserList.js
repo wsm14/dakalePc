@@ -78,12 +78,17 @@ export default {
       const response = yield call(fetchGetBDList, payload);
       if (!response) return;
       const { content } = response;
+      const sellInfo = content.sellInfo;
       callback &&
         callback(
-          content.sellInfo.map((item) => ({
-            ...item,
-            sellName: `${item.sellName} ${item.departmentName} ${item.mobile}`,
-          })),
+          sellInfo.sellName
+            ? [
+                {
+                  ...sellInfo,
+                  sellName: `${sellInfo.sellName} ${sellInfo.departmentName} ${sellInfo.mobile}`,
+                },
+              ]
+            : [],
         );
     },
     *fetchGetBDSet({ payload, callback }, { call, put }) {

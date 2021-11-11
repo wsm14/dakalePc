@@ -83,12 +83,19 @@ export default {
           ownerId: -1,
         });
       }
-      const rightGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
-        activityIds: rightGoodsIds,
-      });
-      const specialGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
-        activityIds: specialGoodsIds,
-      });
+      let rightGoodsDetail = '';
+      let specialGoodsDetail = '';
+      if (rightGoodsIds) {
+        rightGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
+          activityIds: rightGoodsIds,
+        });
+      }
+      if (rightGoodsIds) {
+        specialGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
+          activityIds: specialGoodsIds,
+        });
+      }
+
       // console.log('1', prizeRightGoodsDetail?.content?.specialGoodsInfo);
       // console.log('2', rightGoodsDetail.content.activityGoodsDTOS);
       // console.log('3', specialGoodsDetail.content.activityGoodsDTOS);
