@@ -5,8 +5,7 @@ import { checkCityName } from '@/utils/utils';
 import AssistanceModal from './components/AssistanceModal/AssistanceModal';
 
 function Assistance(props) {
-  const { list, loading, infoList, dispatch } = props;
-  console.log(list, 'list');
+  const { list, loading, infoList } = props;
 
   const [visible, setVisible] = useState(false);
   const [info, setInfo] = useState(null);
@@ -83,10 +82,6 @@ function Assistance(props) {
   const AssistanceInfo = (payload) => {
     setVisible(true);
     setInfo(payload);
-  };
-
-  const handleOk = () => {
-    setVisible(false);
   };
 
   return (
