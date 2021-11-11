@@ -116,7 +116,7 @@ const VideoFormList = (props) => {
   };
   const disabledDate = (current) => {
     // Can not select days before today and today
-    return current && current < moment().subtract(1, 'day');
+    return current && current < moment();
   };
 
   return (
