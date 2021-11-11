@@ -156,7 +156,7 @@ const GoodsDetail = (props) => {
 
   //分佣配置
   const commissionItem = Object.keys(other).map((i) => ({
-    label: `${COMMISSION_TYPE[i.replace('Bean', '')]}分佣`,
+    label: `${COMMISSION_TYPE[i.replace('Bean', '')]}卡豆`,
     name: ['serviceDivisionDTO', i],
   }));
 

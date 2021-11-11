@@ -96,11 +96,12 @@ const ExpertUserList = (props) => {
       dataIndex: 'withdrawalAccount',
       render: (val, row) => `${row.withdrawalChannelName}\n${val}`,
     },
-    // {
-    //   title: '提现卡豆数',
-    //   align: 'right',
-    //   dataIndex: 'withdrawalBeanAmount',
-    // },
+    {
+      title: '提现现金金额',
+      align: 'right',
+      dataIndex: 'withdrawalBeanAmount',
+      render: (val) => val / 100,
+    },
     {
       title: '实收提现手续费',
       align: 'right',
