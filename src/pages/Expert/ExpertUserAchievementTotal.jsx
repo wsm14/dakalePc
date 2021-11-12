@@ -3,11 +3,11 @@ import { connect, Link } from 'umi';
 import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
 import { checkCityName } from '@/utils/utils';
 import excelHeder from './components/AchievementTotal/excelHeder';
-import debounce from 'lodash/debounce';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch, loadings } = props;
