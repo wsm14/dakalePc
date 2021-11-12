@@ -53,7 +53,7 @@ const ExpertUserAchievement = (props) => {
     },
     {
       label: '关联BD',
-      loadings,
+      loading: loadings,
       name: 'sellId',
       type: 'select',
       select: selectList,

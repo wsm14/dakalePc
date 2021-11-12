@@ -264,7 +264,7 @@ const ExpertUserList = (props) => {
         onClose={() => setVisibleRecommend(false)}
       ></RecommendModal>
       {/* 关联BD */}
-      <BDSet visible={visibleBD} onClose={() => setVisibleBD(false)}></BDSet>
+      <BDSet visible={visibleBD} childRef={childRef} onClose={() => setVisibleBD(false)}></BDSet>
       {/* 设置哒人标识 */}
       <DarenTagSet
         visible={visibleSet}

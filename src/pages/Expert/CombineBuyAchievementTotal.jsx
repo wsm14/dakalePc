@@ -3,11 +3,11 @@ import { connect, Link } from 'umi';
 import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
-import { checkCityName } from '@/utils/utils';
 // import excelHeder from './components/AchievementTotal/excelHeder';
-import debounce from 'lodash/debounce';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch, loadings } = props;
@@ -53,11 +53,11 @@ const ExpertUserAchievement = (props) => {
     },
     {
       label: '关联BD',
-      loadings,
+      loading: loadings,
       name: 'sellId',
       type: 'select',
       select: selectList,
-      onSearch: fetchGetSearch,
+      onSearch: (val) => fetchGetSearch(val),
       placeholder: '请输入BD姓名',
       fieldNames: { label: 'sellName', value: 'sellId' },
     },
@@ -65,6 +65,7 @@ const ExpertUserAchievement = (props) => {
 
   // 搜索BD
   const fetchGetSearch = debounce((content) => {
+    console.log(content);
     if (!content.replace(/'/g, '')) return;
     dispatch({
       type: 'expertUserList/fetchGetBDList',
@@ -164,18 +165,12 @@ const ExpertUserAchievement = (props) => {
   //     exportProps: { header: excelHeder(kolLevel) },
   //   },
   // ];
-  const extraBtn = (data) => [
+
+  const extraBtn = ({ get }) => [
     {
-      text: '导出',
-      auth: 'exportList',
-      onClick: () =>
-        dispatch({
-          type: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
-          payload: {
-            type: 'performanceStatistics',
-            communityConsumeObject: { ...searchData, ...data },
-          },
-        }),
+      type: 'excel',
+      dispatch: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
+      data: { type: 'performanceStatistics', ...searchData, ...get() },
     },
   ];
 
@@ -188,7 +183,7 @@ const ExpertUserAchievement = (props) => {
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
-        btnExtra={({ get }) => extraBtn(get())}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
