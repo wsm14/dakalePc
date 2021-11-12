@@ -7,6 +7,7 @@ import NavigationManage from './components/Walking/Navigation';
 import GratiaClassManage from './components/Walking/GratiaClass';
 import GatherPage from './components/Walking/GatherPage';
 import StrollAround from './components/Walking/StrollAround';
+import SelfTour from './components/Walking/SelfTour';
 import styles from './index.less';
 
 const WalkingManage = () => {
@@ -75,6 +76,11 @@ const WalkingManage = () => {
       type: 'hotCityPage',
       menuName: '热门城市配置',
       block: <HotCityPage></HotCityPage>,
+    },
+    {
+      type: 'selfTour',
+      menuName: '自我游',
+      block: <SelfTour></SelfTour>,
     },
   ];
 
