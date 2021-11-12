@@ -403,6 +403,8 @@ const VideoPlatform = (props) => {
       ></RefuseModal>
       {/* 设置 */}
       <VideoSet
+        onSubmit={fetchNewShareNoAudit}
+        childRef={childRef}
         visible={visibleSet}
         fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}

@@ -1,17 +1,19 @@
 import React from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
+import { WXFRIEND_SHARE_IMG } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import VideoFormList from './VideoFormList';
+import aliOssUpload from '@/utils/aliOssUpload';
 
 const VideoSet = (props) => {
-  const { visible = {}, onClose, fetchGetRate } = props;
+  const { visible = {}, onClose, fetchGetRate, loading, onSubmit, childRef } = props;
   const { type, show, initialValues = {} } = visible;
   const { listPayload, title, ownerId, momentId } = initialValues;
 
   // type merchant:'商家' ，ugc：UGC视频 , videoAD: 视频广告
-
+  const [form] = Form.useForm();
   const [collection] = Form.useForm();
   const [share] = Form.useForm();
   const [reward] = Form.useForm();
@@ -90,11 +92,47 @@ const VideoSet = (props) => {
     },
   ];
 
+  const formItems = [
+    {
+      label: '好友分享图',
+      name: 'friendShareImg',
+      type: 'upload',
+      maxFile: 1,
+      imgRatio: WXFRIEND_SHARE_IMG,
+      rules: [{ required: false }],
+      extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
+    },
+  ];
+
+  const handleSave = () => {
+    form.validateFields().then(async (values) => {
+      const { friendShareImg = '' } = values;
+      const fImg = await aliOssUpload(friendShareImg);
+      onSubmit(
+        {
+          momentId,
+          ownerId,
+          friendShareImg: fImg.toString(),
+        },
+        () => {
+          childRef.current.fetchGetData();
+          onClose();
+        },
+      );
+    });
+  };
+
   const modalProps = {
     title: `设置--${title}`,
     visible: show,
     onClose,
     width: 850,
+    footer:
+      type === 'videoAD' ? null : (
+        <Button type="primary" onClick={handleSave} loading={loading}>
+          确认
+        </Button>
+      ),
   };
   return (
     <DrawerCondition {...modalProps}>
@@ -109,8 +147,17 @@ const VideoSet = (props) => {
           </div>
         ) : null,
       )}
+      {type === 'videoAD' ? null : (
+        <FormCondition
+          form={form}
+          formItems={formItems}
+          initialValues={initialValues}
+        ></FormCondition>
+      )}
     </DrawerCondition>
   );
 };
 
-export default connect()(VideoSet);
+export default connect(({ loading }) => ({
+  loading: loading.effects['videoPlatform/fetchNewShareNoAudit'],
+}))(VideoSet);
