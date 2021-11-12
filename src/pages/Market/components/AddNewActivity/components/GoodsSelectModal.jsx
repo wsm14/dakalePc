@@ -72,7 +72,7 @@ const GoodsSelectModal = (props) => {
       },
       rightGoods: {
         type: 'baseData/fetchGetPlatformEquitySelect',
-        data: { relateId: data.id },
+        data: { buyFlag: 1, relateId: data.id },
       },
     }[typeGoods];
     dispatch({
