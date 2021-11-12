@@ -89,6 +89,7 @@ const VideoContentSet = (props) => {
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
+      compress: true,
       maxSize: 128,
       imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],
