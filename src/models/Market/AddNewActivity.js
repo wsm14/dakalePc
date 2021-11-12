@@ -90,7 +90,7 @@ export default {
           activityIds: rightGoodsIds,
         });
       }
-      if (rightGoodsIds) {
+      if (specialGoodsIds) {
         specialGoodsDetail = yield call(fetchAddNewActivityDetailCheck, {
           activityIds: specialGoodsIds,
         });
