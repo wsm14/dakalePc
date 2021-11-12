@@ -7,15 +7,15 @@ export default (kolLevel) => [
     dataIndex: 'userIdString',
   },
   {
-    title: '哒人昵称/ID',
+    title: '哒人昵称',
     dataIndex: 'username',
   },
   {
-    title: '手机号',
+    title: '哒人手机号',
     dataIndex: 'mobile',
   },
   {
-    title: '豆号',
+    title: '哒人豆号',
     dataIndex: 'beanCode',
   },
   {
@@ -45,24 +45,23 @@ export default (kolLevel) => [
     render: (val) => checkCityName(val),
   },
   {
-    title: '新增家人数',
+    title: '团购销售额',
     align: 'center',
-    dataIndex: 'familyCount',
+    dataIndex: 'communitySaleVolume',
   },
   {
-    title: '新增直培哒人',
+    title: '团购订单数',
     align: 'center',
-    dataIndex: 'familyDarenCount',
+    dataIndex: 'communityOrderNum',
   },
   {
-    title: '分销-核销笔数',
+    title: '关联BD',
     align: 'center',
-    dataIndex: 'statisticOrderCount',
+    dataIndex: 'sellName',
   },
   {
-    title: '分销-业绩流水',
+    title: 'BD手机号',
     align: 'center',
-    dataIndex: 'statisticTotalFee',
-    render: (val, row) => `¥ ${val ? val : '0'}`,
+    dataIndex: 'sellMobile',
   },
 ];

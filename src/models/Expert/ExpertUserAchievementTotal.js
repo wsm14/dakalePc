@@ -1,6 +1,8 @@
+import { notification } from 'antd';
 import {
   fetchExpertUserAchievementTotalList,
   fetchCombineBuyList,
+  fetchCombineBuyImportExcel,
 } from '@/services/ExpertServices';
 
 export default {
@@ -51,6 +53,15 @@ export default {
         payload: {
           combineBuyList: { list: content.userList, total: content.total },
         },
+      });
+    },
+    // 导出团购业绩列表
+    *fetchCombineBuyImportExcel({ payload }, { call, put }) {
+      const response = yield call(fetchCombineBuyImportExcel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '导出成功',
       });
     },
   },

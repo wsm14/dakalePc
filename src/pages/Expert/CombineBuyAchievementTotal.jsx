@@ -6,7 +6,7 @@ import moment from 'moment';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
 import { checkCityName } from '@/utils/utils';
-import excelHeder from './components/AchievementTotal/excelHeder';
+// import excelHeder from './components/AchievementTotal/excelHeder';
 import debounce from 'lodash/debounce';
 
 const ExpertUserAchievement = (props) => {
@@ -156,12 +156,26 @@ const ExpertUserAchievement = (props) => {
     });
   };
 
-  const extraBtn = ({ get }) => [
+  // const extraBtn = ({ get }) => [
+  //   {
+  //     type: 'excel',
+  //     dispatch: 'ordersList/fetchOrdersImport',
+  //     data: { ...get() },
+  //     exportProps: { header: excelHeder(kolLevel) },
+  //   },
+  // ];
+  const extraBtn = (data) => [
     {
-      type: 'excel',
-      dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get() },
-      exportProps: { header: excelHeder(kolLevel) },
+      text: '导出',
+      auth: 'exportList',
+      onClick: () =>
+        dispatch({
+          type: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
+          payload: {
+            type: 'performanceStatistics',
+            communityConsumeObject: { ...searchData, ...data },
+          },
+        }),
     },
   ];
 
@@ -174,7 +188,7 @@ const ExpertUserAchievement = (props) => {
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
-        // btnExtra={extraBtn}
+        btnExtra={({ get }) => extraBtn(get())}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
