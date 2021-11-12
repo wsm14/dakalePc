@@ -156,11 +156,7 @@ const VideoDetail = (props) => {
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
       const { frontImage, url, title, videoId, ...other } = values;
-<<<<<<< HEAD
-      // const { free = {}, contact = [] } = couponData;
-=======
       const { free = {}, contact = [] } = couponData;
->>>>>>> develop-code
       // if (!values.jumpUrl && !contact.length && !free.goodsName) {
       //   notification.info({
       //     message: '温馨提示',
