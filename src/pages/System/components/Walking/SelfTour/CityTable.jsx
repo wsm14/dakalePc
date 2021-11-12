@@ -4,7 +4,7 @@ import { TAB_INDEX_TYPE } from '@/common/constant';
 import { getCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import CityDrawerSet from './components/CityDrawerSet';
-import SelfTourManage from './SelfTourManage';
+import SelfDrawer from './components/SelfDrawer';
 const TabTable = (props) => {
   const { dispatch, loading, vaneCityList, tabKey, version, fetchTable } = props;
   const [visible, setVisible] = useState(false);
@@ -81,10 +81,10 @@ const TabTable = (props) => {
         version={version}
       ></CityDrawerSet>
       {/* 编辑弹窗 */}
-      <SelfTourManage
+      <SelfDrawer
         visible={visibleConfigure}
         onClose={() => setVisibleConfigure(false)}
-      ></SelfTourManage>
+      ></SelfDrawer>
     </>
   );
 };
