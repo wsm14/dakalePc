@@ -164,6 +164,7 @@ const AddNewActivity = (props) => {
     <>
       <TableDataBlock
         keepData
+        pagination={false}
         cRef={childRef}
         loading={loading}
         btnExtra={btnExtra}
