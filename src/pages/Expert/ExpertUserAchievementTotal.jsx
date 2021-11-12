@@ -57,7 +57,7 @@ const ExpertUserAchievement = (props) => {
       name: 'sellId',
       type: 'select',
       select: selectList,
-      onSearch: fetchGetSearch,
+      onSearch: (val) => fetchGetSearch(val),
       placeholder: '请输入BD姓名',
       fieldNames: { label: 'sellName', value: 'sellId' },
     },
