@@ -1,18 +1,38 @@
 import React, { useRef, useState } from 'react';
+import moment from 'moment';
 import { connect } from 'umi';
 import { ACTIVITY_STATUS } from '@/common/constant';
+import CITYJSON from '@/common/cityJson';
 import TableDataBlock from '@/components/TableDataBlock';
 import AddNewActivitySet from './components/AddNewActivity/AddNewActivitySet';
-import { checkCityName } from '@/utils/utils';
+import { checkCityName, getCityName } from '@/utils/utils';
 
 // 拉新活动
 const AddNewActivity = (props) => {
   const { addNewList, loading, dispatch } = props;
 
-  console.log('addNewList', addNewList);
+  // console.log('addNewList', addNewList);
 
   const childRef = useRef();
   const [visible, setVisible] = useState(false); // 新增+编辑
+  // const [state, setstate] = useState(0);
+
+  const changeTime = (row) => {
+    let { activityBeginTime, activityEndTime } = row;
+    if (activityBeginTime && activityEndTime) {
+      const nowTime = new Date().getTime();
+      activityBeginTime = new Date(activityBeginTime).getTime();
+      activityEndTime = new Date(activityEndTime).getTime();
+      if (nowTime >= activityBeginTime && nowTime <= activityEndTime) {
+        return 1;
+      } else if (nowTime < activityBeginTime) {
+        return 0;
+      } else if (nowTime > activityEndTime) {
+        return 2;
+      }
+    }
+    return '';
+  };
 
   // 搜索参数
   const searchItems = [
@@ -28,14 +48,21 @@ const AddNewActivity = (props) => {
     },
     {
       label: '活动城市',
-      name: 'cityCode',
       type: 'select',
-      select: ACTIVITY_STATUS,
+      name: 'cityCode',
+      fieldNames: { label: 'name', value: 'id' },
+      select: CITYJSON.filter((item) => item.level === '2'),
     },
   ];
 
   // table 表头
   const getColumns = [
+    {
+      title: '活动id',
+      align: 'center',
+      fixed: 'left',
+      dataIndex: 'configFissionTemplateId',
+    },
     {
       title: '活动名称',
       align: 'center',
@@ -47,7 +74,7 @@ const AddNewActivity = (props) => {
       title: '活动时间',
       align: 'center',
       dataIndex: 'activityBeginTime',
-      render: (val, record) => `${val.slice(0, 10)} ~ ${record.activityEndTime.slice(0, 10)}`,
+      render: (val, row) => (val ? `${val}~${row?.activityEndTime}` : '--'),
     },
     {
       title: '活动城市',
@@ -60,13 +87,13 @@ const AddNewActivity = (props) => {
       title: '活动状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => ACTIVITY_STATUS[val],
+      render: (val, row) => ACTIVITY_STATUS[changeTime(row)],
     },
     {
       title: '剩余库存',
       align: 'center',
-      dataIndex: 'remain',
-      render: (val) => (val ? val : '--'),
+      dataIndex: 'recipientsNum',
+      render: (val, row) => row.issuedQuantity - val,
     },
     {
       title: '创建时间/创建人',
@@ -81,52 +108,49 @@ const AddNewActivity = (props) => {
         {
           // 下架
           type: 'down',
-          visible: record.activityStatus !== '2',
-          click: () => fetchMarketActivityCancel({ activityId: val }),
+          visible: changeTime(record) !== 2,
+          click: () => fetchMarketActivityCancel({ configFissionTemplateId: val }),
         },
         {
           // 编辑
           type: 'edit',
-          click: () => fetchAddNewDetail(val),
+          click: () => fetchAddNewDetail(index),
         },
       ],
     },
   ];
 
   // 获取详情
-  const fetchAddNewDetail = (id) => {
+  const fetchAddNewDetail = (index) => {
+    const { configFissionTemplateId } = addNewList?.list[index];
     dispatch({
       type: 'addNewActivity/fetchMarketAddNewActivityDetail',
       payload: {
-        configFissionTemplateId: id,
+        configFissionTemplateId,
       },
-      callback: (detail) => setVisible({ show: true, detail }),
+      callback: (detail) =>
+        setVisible({
+          show: true,
+          type: 'edit',
+          detail: {
+            ...detail,
+            activityBeginTime: [moment(detail.activityBeginTime), moment(detail.activityEndTime)],
+          },
+        }),
     });
   };
-  // const fetchShareDetail = (index, type) => {
-  //   const { momentId, ownerId } = list[index];
-  //   dispatch({
-  //     type: 'videoPlatform/fetchNewShareDetail',
-  //     payload: {
-  //       momentId,
-  //       ownerId,
-  //       type,
-  //     },
-  //     callback: (detail) => setVisible({ show: true, index, type, detail }),
-  //   });
-  // };
 
   // 活动下架
   const fetchMarketActivityCancel = (payload) => {
     dispatch({
-      type: 'marketCardActivity/fetchMarketActivityCancel',
+      type: 'addNewActivity/fetchMarketAddNewActivityCancel',
       payload,
       callback: childRef.current.fetchGetData,
     });
   };
 
-  // 设置活动
-  const handleSetActive = () => setVisible(true);
+  // 设置新增活动
+  const handleSetActive = () => setVisible({ show: true, type: 'add' });
 
   const btnExtra = [
     {
@@ -140,6 +164,7 @@ const AddNewActivity = (props) => {
     <>
       <TableDataBlock
         keepData
+        pagination={false}
         cRef={childRef}
         loading={loading}
         btnExtra={btnExtra}
@@ -161,5 +186,7 @@ const AddNewActivity = (props) => {
 
 export default connect(({ addNewActivity, loading }) => ({
   addNewList: addNewActivity,
-  loading: loading.effects['addNewActivity/fetchGetList'],
+  loading:
+    loading.effects['addNewActivity/fetchGetList'] ||
+    loading.effects['addNewActivity/fetchMarketAddNewActivityDetail'],
 }))(AddNewActivity);

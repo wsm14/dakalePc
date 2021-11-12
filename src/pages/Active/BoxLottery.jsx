@@ -4,6 +4,7 @@ import { BOXLOTTERY_STATUS, BOXLOTTERY_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import BoxDrawer from './components/BoxLottery/BoxDrawer';
+import excelProps from './components/BoxLottery/ExcelProps';
 
 const BoxLottery = ({ boxLottery, loading, dispatch }) => {
   const tableRef = useRef();
@@ -54,7 +55,6 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
   const getColumns = [
     {
       title: '中奖记录编号',
-      // fixed: 'left',
       dataIndex: 'blindBoxRewardId',
     },
     {
@@ -153,7 +153,7 @@ const BoxLottery = ({ boxLottery, loading, dispatch }) => {
       type: 'excel',
       dispatch: 'boxLottery/fetchGetExcel',
       data: get(),
-      exportProps: { header: getColumns },
+      exportProps: excelProps,
     },
   ];
 

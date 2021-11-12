@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button } from 'antd';
-import { TABINDEX_VIDEO_TYPE } from '@/common/constant';
+import { TABINDEX_VANE_TYPE } from '@/common/constant';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 
-const TabDrawerSet = (props) => {
+const CityDrawerSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef, tabKey, version } = props;
-  const { show = false, type = 'add', detail = { area: 'all' } } = visible;
+  const { show = false, type = 'add', detail = { areaType: 'all' } } = visible;
   const [form] = Form.useForm();
   const [areaType, setAreaType] = useState();
 
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      const { cityCode, defaultTags = [], tags = [], ...ohter } = values;
+      const { areaCode, defaultTags = [], tags = [], ...ohter } = values;
       dispatch({
-        type: 'walkingManage/fetchWanderAroundModuleAdd',
+        type: 'walkingManage/fetchGetWindVaneManagementAdd',
         payload: {
           ...ohter,
           userOs: tabKey,
           version: version,
-          cityCode: cityCode && cityCode[1],
-          configIndexTabId: detail?.configIndexTabId,
+          areaCode: areaCode && areaCode[1],
           flag: {
             add: 'addCity',
             edit: 'updateTag',
@@ -40,13 +39,13 @@ const TabDrawerSet = (props) => {
     title: type === 'edit' ? '编辑' : '新增',
     onClose,
     afterCallBack: () => {
-      setAreaType(detail.area);
+      setAreaType(detail.areaType);
     },
     footer: (
       <Button
         type="primary"
         onClick={handleSave}
-        loading={loading.effects['walkingManage/fetchWanderAroundModuleAdd']}
+        loading={loading.effects['walkingManage/fetchGetWindVaneManagementAdd']}
       >
         保存
       </Button>
@@ -56,19 +55,19 @@ const TabDrawerSet = (props) => {
   const formItems = [
     {
       label: '城市类型',
-      name: 'area',
+      name: 'areaType',
       type: 'radio',
-      select: TABINDEX_VIDEO_TYPE,
+      select: TABINDEX_VANE_TYPE,
       onChange: (val) => {
         setAreaType(val.target.value);
       },
     },
     {
       label: '城市',
-      name: 'cityCode',
+      name: 'areaCode',
       type: 'cascader',
       cityType: 'city',
-      visible: areaType === 'detail',
+      visible: areaType === 'city',
     },
   ];
 
@@ -79,6 +78,6 @@ const TabDrawerSet = (props) => {
   );
 };
 
-export default connect(({ loading, globalConfig }) => ({
+export default connect(({ loading }) => ({
   loading: loading,
-}))(TabDrawerSet);
+}))(CityDrawerSet);

@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 export default ({ paramKey }) => {
   return (
     <FormItem
-      key={`activityInput`}
+      key={`activityInput${paramKey[0]}`}
       label="请输入参数"
       name={['param', paramKey[0]]}
       rules={[{ required: true, message: `请输入参数` }]}

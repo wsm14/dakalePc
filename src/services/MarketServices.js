@@ -58,6 +58,37 @@ export async function fetchMarketAddNewActivityDetail(params) {
   });
 }
 
+// get 营销活动 - 拉新活动多选商品详情
+export async function fetchAddNewActivityDetailCheck(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsByIds', {
+    params,
+  });
+}
+
+// post 营销活动 - 拉新活动新增
+export function fetchMarketAddNewActivityAdd(data) {
+  return request('/admin/configFissionTemplate/saveConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 拉新活动编辑
+export function fetchMarketAddNewActivityEdit(data) {
+  return request('/admin/configFissionTemplate/updateConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 拉新活动下架
+export function fetchMarketAddNewActivityCancel(data) {
+  return request('/admin/configFissionTemplate/offShelfConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 营销活动 - 营销活动列表
 export async function fetchMarketActivity(params) {
   return request('/admin/marketingActivity/listActivity', {

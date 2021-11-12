@@ -2,7 +2,7 @@ import { Badge } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
 // 商品样式
-export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
+export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
   const {
     goodsImg,
     goodsName = '',
@@ -28,7 +28,7 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
         }
       >
         <div
-          className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
+          className={`share_Coupon share_item ${id.includes(specialGoodsId) && 'select'}`}
           style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >

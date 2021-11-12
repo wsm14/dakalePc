@@ -21,6 +21,9 @@ import {
   fetchHotCityPageConfig,
   fetchUpdateWanderAroundModule,
   fetchGetWanderAroundModuleById,
+  fetchGetWindVaneManagementList,
+  fetchGetWindVaneManagementAdd,
+  fetchGetWindVaneManagementEdit,
 } from '@/services/SystemServices';
 
 export default {
@@ -35,6 +38,9 @@ export default {
     editionList: { list: [] },
     configureList: { list: [] },
     hotCity: { list: [], dictionaryId: '' },
+    vaneEditionList: { list: [] },
+    vaneCityList: { list: [] },
+    vaneConfigureList: { list: [] },
   },
 
   reducers: {
@@ -110,11 +116,11 @@ export default {
     *fetchWalkManageVaneDetail({ payload, callback }, { call }) {
       const response = yield call(fetchWalkManageVaneDetail, payload);
       if (!response) return;
-      const { configWindVane } = response.content;
-      const { bubbleFlag, param = '{}', jumpType, nativeJumpType } = configWindVane;
+      const { configWindVaneDTO } = response.content;
+      const { bubbleFlag, param = '{}', jumpType, nativeJumpType } = configWindVaneDTO;
       const { categoryId, topCategoryId } = JSON.parse(param || '{}');
       callback({
-        ...configWindVane,
+        ...configWindVaneDTO,
         jumpType: {
           native: nativeJumpType === 'windVaneCategory' ? 'trade' : 'native',
           url: jumpType,
@@ -246,7 +252,9 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          editionList: { list: content.configWanderAroundModuleList },
+          editionList: {
+            list: content.configWanderAroundModuleList,
+          },
         },
       });
     },
@@ -303,6 +311,62 @@ export default {
       const { content } = response;
       const strollContent = content;
       callback(content?.configWanderAroundModule);
+    },
+    //逛逛模块化配置-风向标配置-版本列表
+    *fetchGetWindVaneEditionList({ payload }, { call, put }) {
+      const response = yield call(fetchGetWindVaneManagementList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          vaneEditionList: { list: content.configWindVaneDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-风向标配置-城市列表
+    *fetchGetWindVaneCityList({ payload }, { call, put }) {
+      const response = yield call(fetchGetWindVaneManagementList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          vaneCityList: { list: content.configWindVaneDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-风向标配置-配置列表
+    *fetchGetWindVaneConfigureList({ payload }, { call, put }) {
+      const response = yield call(fetchGetWindVaneManagementList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          vaneConfigureList: { list: content.configWindVaneDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-风向标配置-版本新增-新增城市
+    *fetchGetWindVaneManagementAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchGetWindVaneManagementAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    //逛逛模块化配置-风向标配置-版本修改
+    *fetchGetWindVaneManagementEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchGetWindVaneManagementEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
     },
   },
 };

@@ -9,7 +9,7 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import ShareImg from './components/VideoPlatform/ShareImg';
+import VideoSet from './components/VideoPlatform/VideoSet';
 import RewarInfo from './components/VideoPlatform/RewardSet/RewarInfo';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
@@ -34,7 +34,7 @@ const VideoPlatformUGC = (props) => {
   const [visible, setVisible] = useState(false); // 详情+分享配置
   const [visibleShare, setVisibleShare] = useState(false); // 配置
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  const [visibleImg, setVisibleImg] = useState(false); // 设置
+  const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏明细
 
   // tab列表
@@ -123,12 +123,12 @@ const VideoPlatformUGC = (props) => {
         </>
       ),
     },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-      sorter: (a, b) => a.viewAmount - b.viewAmount,
-    },
+    // {
+    //   title: '观看人数',
+    //   align: 'right',
+    //   dataIndex: 'viewAmount',
+    //   sorter: (a, b) => a.viewAmount - b.viewAmount,
+    // },
     {
       title: '创建时间',
       align: 'center',
@@ -162,7 +162,7 @@ const VideoPlatformUGC = (props) => {
         return [
           {
             type: 'info', // 详情
-            click: () => fetchShareDetail(index),
+            click: () => fetchShareDetail(index, 'info', 'ugc'),
           },
           {
             type: 'down', // 下架
@@ -177,21 +177,42 @@ const VideoPlatformUGC = (props) => {
           },
           {
             type: 'set', // 设置
-            click: () => setVisibleImg({ show: true, detail: record }),
+            click: () => fetchGetRate({ type: 'ugc', record }),
           },
           {
             type: 'rewardInfo', // 打赏明细 已打赏显示按钮 未打赏只有下架状态不显示按钮
             click: () => setVisibleReward({ show: true, detail: record }),
           },
-          {
-            title: '分享配置',
-            type: 'shareImg',
-            click: () => fetchShareDetail(index, 'share'),
-          },
+          // {
+          //   title: '分享配置',
+          //   type: 'shareImg',
+          //   click: () => fetchShareDetail(index, 'share'),
+          // },
         ];
       },
     },
   ];
+
+  // 设置
+  const fetchGetRate = (payload) => {
+    const { type, record = {} } = payload;
+    const { momentId, ownerId } = record;
+    dispatch({
+      type: 'videoPlatform/fetchVideoFakeList',
+      payload: {
+        momentId,
+        ownerId,
+      },
+      callback: (detail) => {
+        const initialValues = {
+          ...record,
+          ...detail,
+          listPayload: payload,
+        };
+        setVisibleSet({ type, show: true, initialValues });
+      },
+    });
+  };
 
   //  获取tab页列表
   const fetchTabList = () => {
@@ -219,7 +240,7 @@ const VideoPlatformUGC = (props) => {
   };
 
   // 获取详情
-  const fetchShareDetail = (index, type) => {
+  const fetchShareDetail = (index, type, momentType) => {
     const { momentId, ownerId } = list[index];
     dispatch({
       type: 'videoPlatform/fetchNewShareDetail',
@@ -227,6 +248,7 @@ const VideoPlatformUGC = (props) => {
         momentId,
         ownerId,
         type,
+        momentType,
       },
       callback: (detail) => setVisible({ show: true, index, type, detail }),
     });
@@ -299,12 +321,13 @@ const VideoPlatformUGC = (props) => {
         loading={loadingRefuse}
       ></RefuseModal>
       {/* 设置 */}
-      <ShareImg
-        visible={visibleImg}
-        childRef={childRef}
+      <VideoSet
         onSubmit={fetchNewShareNoAudit}
-        onClose={() => setVisibleImg(false)}
-      ></ShareImg>
+        childRef={childRef}
+        visible={visibleSet}
+        fetchGetRate={fetchGetRate}
+        onClose={() => setVisibleSet(false)}
+      ></VideoSet>
       {/* 打赏明细 */}
       <RewarInfo visible={visibleReward} onClose={() => setVisibleReward(false)}></RewarInfo>
     </>

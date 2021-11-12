@@ -1,53 +1,98 @@
 import moment from 'moment';
 import aliOssUpload from '@/utils/aliOssUpload';
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Tabs } from 'antd';
+import reactCSS from 'reactcss';
+import { ChromePicker } from 'react-color';
 import CITYJSON from '@/common/cityJson';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import ShareCoupon from './components/ShareCoupon';
 
 const AddNewActivitySet = (props) => {
-  const { dispatch, childRef, visible, onClose } = props;
-  const { show = false, detail } = visible;
-
-  console.log('detail', detail);
-
-  const [couponData, setCouponData] = useState({ free: {}, discounts: [], equities: [] }); // 奖品权益商品的信息
-  const { free, discounts, equities } = couponData;
-  // 暂存券数据
-  const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
-
-  const [form] = Form.useForm();
+  const { dispatch, childRef, visible, onClose, loading } = props;
+  const {
+    show = false,
+    type,
+    detail = { specialGoods: [], rightGoods: [], prizeType: 'bean', configFissionTemplateId: '' },
+  } = visible;
+  const { configFissionTemplateId = '', prizeType, goodsRightInfo } = detail;
 
   const { TabPane } = Tabs;
+  const [form] = Form.useForm();
   const [tabKey, setTabKey] = useState('1'); // tab
   const [prizeTypes, setPrizeTypes] = useState('bean'); // 奖品类型
+  const [cityArr, setCityArr] = useState({});
+  const [displayColorPicker, setDisplayColorPicker] = useState(false); //  背景色状态
+  const [color, setColor] = useState(''); //  背景色状态
+  const [couponData, setCouponData] = useState({}); // 奖品权益商品的信息
 
   // 新增活动
-  const fetchMarketActivityAdd = () => {
-    form.validateFields().then((values) => {
-      console.log('values', values);
-      //   const {
-      //     activityBeginTime: time,
-      //     activityBanner: { fileList },
-      //   } = values;
-      //   const payload = {
-      //     ...values,
-      //     activityBeginTime: time[0].format('YYYY-MM-DD 00:00:00'),
-      //     activityEndTime: time[1].format('YYYY-MM-DD 00:00:00'),
-      //   };
-      //   aliOssUpload(fileList.map((item) => item.originFileObj)).then((res) => {
-      //     dispatch({
-      //       type: 'marketCardActivity/fetchMarketActivityAdd',
-      //       payload: { ...payload, activityBanner: res.toString() },
-      //       callback: () => {
-      //         onClose();
-      //         childRef.current.fetchGetData();
-      //       },
-      //     });
-      //   });
+  const fetchAddNewActivityAdd = () => {
+    form.validateFields().then(async (values) => {
+      // console.log(values);
+      // return;
+      const {
+        specialGoods,
+        rightGoods,
+        mainImg = '',
+        shareImg = '',
+        friendShareImg = '',
+        prizeImg = '',
+        introductionImg = '',
+        specialGoodsTitleImg = '',
+        rightGoodsTitleImg = '',
+        prizeBean,
+        issuedQuantity,
+        activityBeginTime: time,
+        ...other
+      } = values;
+      const mImg = await aliOssUpload(mainImg);
+      const sImg = await aliOssUpload(shareImg);
+      const fImg = await aliOssUpload(friendShareImg);
+      const pImg = await aliOssUpload(prizeImg);
+      const iImg = await aliOssUpload(introductionImg);
+      const sTitleImg = await aliOssUpload(specialGoodsTitleImg);
+      const rTitleImg = await aliOssUpload(rightGoodsTitleImg);
+      const newActivity = {
+        add: 'addNewActivity/fetchMarketAddNewActivityAdd',
+        edit: 'addNewActivity/fetchMarketAddNewActivityEdit',
+      }[type];
+      const payload = {
+        ...other,
+        backgroundColor: color,
+        cityCode: cityArr.cityCode,
+        activityBeginTime: moment(time[0]).format('YYYY-MM-DD HH:mm'),
+        activityEndTime: moment(time[1]).format('YYYY-MM-DD HH:mm'),
+        prizeRightGoodsIds: couponData?.specialGoodsId || undefined,
+        issuedQuantity: Number(issuedQuantity) || undefined,
+        prizeBean: Number(prizeBean) || undefined,
+        mainImg: mImg.toString(),
+        shareImg: sImg.toString(),
+        friendShareImg: fImg.toString(),
+        prizeImg: pImg.toString(),
+        introductionImg: iImg.toString(),
+        specialGoodsTitleImg: sTitleImg.toString(),
+        rightGoodsTitleImg: rTitleImg.toString(),
+        specialGoodsIds: specialGoods.map((item) => item.specialGoodsId).toString(),
+        rightGoodsIds: rightGoods.map((item) => item.specialGoodsId).toString(),
+      };
+      console.log('payload', payload);
+      dispatch({
+        type: newActivity,
+        payload:
+          type === 'add'
+            ? payload
+            : {
+                ...payload,
+                configFissionTemplateId,
+              },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
@@ -56,21 +101,54 @@ const AddNewActivitySet = (props) => {
     setTabKey(key);
   }
 
+  const styles = reactCSS({
+    default: {
+      color: {
+        width: '36px',
+        height: '14px',
+        borderRadius: '2px',
+        background: `${color}`,
+      },
+      swatch: {
+        padding: '5px',
+        background: '#fff',
+        borderRadius: '1px',
+        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+        display: 'inline-block',
+        cursor: 'pointer',
+      },
+      popover: {
+        position: 'absolute',
+        zIndex: '2',
+      },
+      cover: {
+        position: 'fixed',
+        top: '0px',
+        right: '0px',
+        bottom: '0px',
+        left: '0px',
+      },
+    },
+  });
+
+  const handleChange = ({ hex }) => {
+    setColor(hex);
+  };
+
   const formItems = [
     {
       label: '活动城市',
       name: 'cityCode',
       type: 'select',
+      disabled: type === 'edit',
       select: CITYJSON.filter((item) => item.level === '2'),
-      // fieldNames: { label: 'name', value: 'id' },
-      // onChange: (val, group) =>
-      //   // console.log(group, 'group'),
-      //   setCityArr(
-      //     group.map(({ option }) => ({
-      //       cityCode: option.id,
-      //       cityName: option.name,
-      //     })),
-      //   ),
+      fieldNames: { label: 'name', value: 'id' },
+      onChange: (val, group) =>
+        // console.log(group, 'group'),
+        setCityArr({
+          cityCode: group.option.id,
+          cityName: group.option.name,
+        }),
     },
     {
       label: '活动名称',
@@ -81,16 +159,20 @@ const AddNewActivitySet = (props) => {
       label: '邀请条件',
       type: 'number',
       name: 'inviteNum',
+      disabled: type === 'edit',
       suffix: '位用户即可获奖',
       formatter: (value) => `邀请 ${value}`,
       parser: (value) => value.replace('邀请', ''),
     },
-    // {
-    //   label: '活动时间',
-    //   type: 'rangePicker',
-    //   name: 'activityBeginTime',
-    //   disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
-    // },
+    {
+      label: '活动时间',
+      type: 'rangePicker',
+      name: 'activityBeginTime',
+      end: 'activityEndTime',
+      showTime: true,
+      format: 'YYYY-MM-DD HH:mm',
+      disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
+    },
     {
       label: '活动规则',
       name: 'activityRuleUrl',
@@ -143,6 +225,35 @@ const AddNewActivitySet = (props) => {
       imgRatio: 686 / 800,
       extra: '请上传686*800px的jpg、png图片',
       maxFile: 1,
+      rules: [{ required: false }],
+    },
+    {
+      label: `背景色`,
+      type: 'formItem',
+      required: true,
+      addRules: [
+        {
+          validator: () => {
+            if (!color) {
+              return Promise.reject(`请选择背景色`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
+      formItem: (
+        <div>
+          <div style={styles.swatch} onClick={() => setDisplayColorPicker(true)}>
+            <div style={styles.color} />
+          </div>
+          {displayColorPicker ? (
+            <div style={styles.popover}>
+              <div style={styles.cover} onClick={() => setDisplayColorPicker(false)} />
+              <ChromePicker color={color} disableAlpha={true} onChange={handleChange} />
+            </div>
+          ) : null}
+        </div>
+      ),
     },
     {
       label: '领奖成功跳转路径',
@@ -150,15 +261,17 @@ const AddNewActivitySet = (props) => {
       name: 'successfulJumpUrl',
       select: {
         blindIndex: '卡豆盲盒',
-        new: '新手福利页',
+        userNewArtist: '新手福利页',
       },
     },
     {
       label: '奖品类型',
       name: 'prizeType',
       type: 'radio',
-      select: { bean: '卡豆', equity: '权益商品' },
+      disabled: type === 'edit',
+      select: { bean: '卡豆', rightGoods: '权益商品' },
       onChange: (e) => {
+        console.log('e', e);
         setPrizeTypes(e.target.value);
       },
     },
@@ -169,31 +282,36 @@ const AddNewActivitySet = (props) => {
       visible: prizeTypes === 'bean',
     },
     {
-      label: '发放数量',
-      name: 'issuedQuantity',
-      visible: prizeTypes === 'bean',
-    },
-    {
-      label: `活动信息`,
-      name: 'configFissionTemplateId',
-      hidden: true,
-    },
-    {
       label: '权益商品',
-      name: 'prizeRightGoodsIds',
+      required: true,
+      // name: 'prizeRightGoodsIds',
       type: 'formItem',
-      visible: prizeTypes === 'equity',
+      visible: prizeTypes === 'rightGoods',
+      addRules: [
+        {
+          validator: () => {
+            if (!couponData.specialGoodsId) {
+              return Promise.reject(`请选择权益商品`);
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       formItem: (
         <>
           <ShareCoupon
             type="goodsRight"
-            data={free}
+            data={couponData}
             form={form}
-            onDel={() => saveCouponStorage({ free: {} })}
-            onOk={(free) => saveCouponStorage({ free })}
+            onDel={() => setCouponData({})}
+            onOk={(free) => setCouponData(free)}
           ></ShareCoupon>
         </>
       ),
+    },
+    {
+      label: '发放数量',
+      name: 'issuedQuantity',
     },
   ];
 
@@ -205,6 +323,7 @@ const AddNewActivitySet = (props) => {
       type: 'upload',
       maxFile: 1,
       imgRatio: 368 / 110,
+      rules: [{ required: false }],
     },
     {
       label: '权益商品标题图片',
@@ -212,20 +331,16 @@ const AddNewActivitySet = (props) => {
       type: 'upload',
       maxFile: 1,
       imgRatio: 368 / 110,
+      rules: [{ required: false }],
     },
     {
       label: '选择特惠商品',
       name: 'specialGoodsIds',
       type: 'formItem',
+      // required: true,
       formItem: (
         <>
-          <ShareCoupon
-            type="specialGoods"
-            data={discounts}
-            form={form}
-            onDel={() => saveCouponStorage({ discounts: [] })}
-            onOk={(data) => saveCouponStorage({ discounts: [data] })}
-          ></ShareCoupon>
+          <ShareCoupon type="specialGoods" form={form}></ShareCoupon>
         </>
       ),
     },
@@ -233,15 +348,10 @@ const AddNewActivitySet = (props) => {
       label: '选择权益商品',
       name: 'rightGoodsIds',
       type: 'formItem',
+      // required: true,
       formItem: (
         <>
-          <ShareCoupon
-            type="rightGoods"
-            data={equities}
-            form={form}
-            onDel={() => saveCouponStorage({ equities: [] })}
-            onOk={(data) => saveCouponStorage({ equities: [data] })}
-          ></ShareCoupon>
+          <ShareCoupon type="rightGoods" form={form}></ShareCoupon>
         </>
       ),
     },
@@ -253,11 +363,17 @@ const AddNewActivitySet = (props) => {
     onClose,
     width: 800,
     afterCallBack: () => {
+      setPrizeTypes(prizeType);
+      setColor(detail.backgroundColor);
+      setCouponData(goodsRightInfo);
+    },
+    closeCallBack: () => {
+      setTabKey('1');
+      setCouponData({});
       form.resetFields();
-      setPrizeTypes('bean');
     },
     footer: (
-      <Button type="primary" onClick={() => fetchMarketActivityAdd()}>
+      <Button type="primary" onClick={fetchAddNewActivityAdd} loading={loading}>
         确定
       </Button>
     ),
@@ -265,10 +381,14 @@ const AddNewActivitySet = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       <Tabs activeKey={tabKey} onChange={callback}>
-        <TabPane tab="活动配置" key="1">
-          <FormCondition form={form} formItems={formItems} initialValues={detail}></FormCondition>
+        <TabPane tab="活动配置" forceRender={true} key="1">
+          <FormCondition
+            form={form}
+            formItems={formItems}
+            initialValues={{ ...detail, cityName: detail.cityCode }}
+          ></FormCondition>
         </TabPane>
-        <TabPane tab="推荐商品" key="2">
+        <TabPane tab="推荐商品" forceRender={true} key="2">
           <FormCondition
             form={form}
             formItems={formItemsRecommend}
@@ -280,7 +400,8 @@ const AddNewActivitySet = (props) => {
   );
 };
 
-export default connect(({ marketCardActivity, loading }) => ({
-  // marketCardActivity,
-  // loading,
+export default connect(({ addNewActivity, loading }) => ({
+  loading:
+    loading.effects['addNewActivity/fetchMarketAddNewActivityAdd'] ||
+    loading.effects['addNewActivity/fetchMarketAddNewActivityEdit'],
 }))(AddNewActivitySet);

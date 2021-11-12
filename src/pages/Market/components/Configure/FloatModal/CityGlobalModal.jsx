@@ -171,7 +171,7 @@ const CityGlobalModal = (props) => {
           columns={getColumns}
           rowKey={(record) => `${record.configFloatingWindowId}`}
           dispatchType="marketConfigure/fetchFloatingWindowConfigureList"
-          params={{ ...detail, windowType: tabKey, isAutomatic: 0 }}
+          params={{ ...detail, windowType: tabKey, isAutomatic: 0, deleteFlag: 1 }}
           {...floatConfigureList}
         ></TableDataBlock>
       </Modal>
@@ -186,5 +186,7 @@ const CityGlobalModal = (props) => {
 };
 export default connect(({ loading, marketConfigure }) => ({
   floatConfigureList: marketConfigure.floatConfigureList,
-  loading: loading.effects['marketConfigure/fetchFloatingWindowConfigureList'],
+  loading:
+    loading.effects['marketConfigure/fetchFloatingWindowConfigureList'] ||
+    loading.effects['marketConfigure/fetchFloatingWindowEdit'],
 }))(CityGlobalModal);

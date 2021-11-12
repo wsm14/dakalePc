@@ -34,6 +34,8 @@ const ShareDetail = (props) => {
     childRef,
   } = props;
 
+  // tabKey 0:探店视频 1：带货视频  other：UGC视频tab
+
   const { index, show = false, type = 'info', detail = {} } = visible;
   // console.log(detail, 'detail');
   const { ownerId, momentId, ownerName } = detail;
@@ -86,26 +88,6 @@ const ShareDetail = (props) => {
           {val}
         </>
       ),
-    },
-    {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="收藏数"
-          content="视频收藏数为初始数据+真实数据"
-        ></QuestionTooltip>
-      ),
-      name: 'collectionAmount',
-    },
-    {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="分享数"
-          content="视频分享数为初始数据+真实数据"
-        ></QuestionTooltip>
-      ),
-      name: 'shareAmount',
     },
     {
       label: '行业分类',
@@ -183,6 +165,72 @@ const ShareDetail = (props) => {
       name: 'publishTime',
       render: (val, row) => (row.publishType == 'fixed' ? `${val}` : '立即发布'),
     },
+  ];
+
+  const formItemsData = [
+    {
+      label: '浏览量',
+      name: 'onlookersNum',
+    },
+    {
+      label: '完播量',
+      name: 'viewNum',
+    },
+    {
+      label: '完播率',
+      // name: '',
+      render: (val, row) => (row.onlookersNum === 0 ? '0' : `${row.viewNum / row.onlookersNum}%`),
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="收藏数"
+          content="视频收藏数为仿真数据+真实数据"
+        ></QuestionTooltip>
+      ),
+      name: 'collectionSimulationNum',
+      render: (val, row) => `${val}+${row.collectionRealNum}`,
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="分享数"
+          content="视频分享数为仿真数据+真实数据"
+        ></QuestionTooltip>
+      ),
+      name: 'shareSimulationNum',
+      render: (val, row) => `${val}+${row.shareRealNum}`,
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="打赏卡豆数"
+          content="视频打赏数为仿真打赏卡豆数+真实打赏卡豆数"
+        ></QuestionTooltip>
+      ),
+      name: 'ugcSimulationNum',
+      show: tabKey !== '0' && tabKey !== '1',
+      render: (val, row) => `${val}+${row.ugcRewardRealNum}`,
+    },
+    {
+      label: '打赏人次',
+      name: 'ugcRewardPerson',
+      show: tabKey !== '0' && tabKey !== '1',
+    },
+    // {
+    //   label: '累计打赏卡豆数',
+    //   name: '',
+    //   show: tabKey === '0' || tabKey === '1',
+    // },
+
+    // {
+    //   label: '领豆人次',
+    //   name: '',
+    //   show: tabKey === '0' || tabKey === '1',
+    // },
   ];
 
   // 修改审核提交
@@ -314,10 +362,17 @@ const ShareDetail = (props) => {
         {
           // 详情
           info: (
-            <DescriptionsCondition
-              formItems={formItems}
-              initialValues={detail}
-            ></DescriptionsCondition>
+            <>
+              <DescriptionsCondition
+                formItems={formItems}
+                initialValues={detail}
+              ></DescriptionsCondition>
+              <DescriptionsCondition
+                title="数据统计"
+                formItems={formItemsData}
+                initialValues={detail}
+              ></DescriptionsCondition>
+            </>
           ),
           // 带货修改
           commerce: (

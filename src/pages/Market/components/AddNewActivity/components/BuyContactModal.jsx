@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Input, Modal, Empty, Spin, Tabs } from 'antd';
-import { couponsDom, goodsDom } from './CouponFreeDom';
+import { goodsDom } from './CouponFreeDom';
 import SearchCondition from '@/components/SearchCondition';
 
 import './coupon.less';
 
 const { TabPane } = Tabs;
-const { Search } = Input;
 /**
  * 选择优惠内容（单选）
  */
 const FreeContactSelectModal = (props) => {
-  const { platformEquityList, merchantId, dispatch, visible, onClose, onOk, loading, typeGoods } =
-    props;
+  const { platformEquityList, dispatch, visible, onClose, onOk, loading, typeGoods } = props;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
-  // const [tabKey, setTabKey] = useState('goods'); // tab类型
-  const [page, setPage] = useState(1); // 页码
 
   useEffect(() => {
-    setPage(1);
     if (visible) {
-      fetchPlatformEquityList(1);
+      // 清除上次请求列表数据
+      dispatch({ type: 'baseData/clearPlatformEquity' });
+      setSelectItem({});
     }
-  }, [visible, page]);
+  }, [visible]);
 
   const listProps = {
     list: platformEquityList.list,
@@ -34,12 +31,11 @@ const FreeContactSelectModal = (props) => {
   };
 
   // 获取特惠活动
-  const fetchPlatformEquityList = (num) => {
+  const fetchPlatformEquityList = (data) => {
     dispatch({
       type: 'baseData/fetchGetPlatformEquitySelect',
       payload: {
-        ...num,
-        goodsStatus: 1,
+        ...data,
         buyFlag: '0',
         page: 1,
         limit: 999,
@@ -48,7 +44,7 @@ const FreeContactSelectModal = (props) => {
   };
 
   const listDom = (
-    <Spin spinning={listProps.loading}>
+    <Spin spinning={!!listProps.loading}>
       {listProps.list.length ? (
         <div className="share_select_list">
           {listProps.list.map((item) =>
@@ -63,27 +59,25 @@ const FreeContactSelectModal = (props) => {
 
   const searchItems = [
     {
-      label: '商品名称',
-      name: 'goodsName',
-    },
-    {
       label: '集团/店铺名',
       name: 'relateId',
       type: 'merchant',
+      required: true,
+    },
+    {
+      label: '商品名称',
+      name: 'goodsName',
     },
   ];
 
   return (
     <Modal
       title={`选择权益商品（单选）`}
-      width={780}
+      width={1125}
       visible={visible}
-      afterClose={() => {
-        setPage(1);
-      }}
       maskStyle={{ background: 'none' }}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
-      destroyOnClose
+      destroyOnClose={true}
       okButtonProps={{
         disabled: !selectItem[listProps.key],
       }}

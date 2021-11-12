@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import CityDrawerSet from './components/CityDrawerSet';
 import VaneManage from './VaneManage';
 const TabTable = (props) => {
-  const { dispatch, loading, configureList, tabKey, version, fetchTable } = props;
+  const { dispatch, loading, vaneCityList, tabKey, version, fetchTable } = props;
   const [visible, setVisible] = useState(false);
   const [visibleConfigure, setVisibleConfigure] = useState({ show: false });
   const childRef = useRef();
@@ -19,48 +19,28 @@ const TabTable = (props) => {
     {
       title: '城市',
       align: 'center',
-      dataIndex: 'area',
-      render: (val, row) => (val === 'all' ? '通用' : getCityName(row?.cityCode)),
+      dataIndex: 'areaType',
+      render: (val, row) => (val === 'all' ? '通用' : getCityName(row?.areaCode)),
     },
     {
       type: 'handle',
       align: 'center',
-      dataIndex: 'configWanderAroundModuleId',
+      dataIndex: 'configWindVaneId',
       render: (val, row) => [
         {
           type: 'edit',
           title: '编辑',
-          click: () => handleEdit(val, row),
+          click: () => handleEdit(row),
           auth: true,
         },
       ],
     },
   ];
 
-  const handleEdit = (configWanderAroundModuleId, row) => {
-    // dispatch({
-    //   type: 'walkingManage/fetchGetWanderAroundModuleById',
-    //   payload: {
-    //     configWanderAroundModuleId,
-    //   },
-    //   callback: (detail) => {
-    //     const info = {
-    //       activityName: `逛逛页面配置-${TAB_INDEX_TYPE[row?.userOs]}${row?.version ? '-' : ''}${
-    //         row?.version
-    //       }`,
-    //       handle: 'edit',
-    //       configWanderAroundModuleId,
-    //       params: { ...detail, dataList: detail?.wanderAroundModuleObjects || [] },
-    //     };
-    //     setVisibleConfigure({
-    //       show: true,
-    //       info,
-    //     });
-    //   },
-    // });
+  const handleEdit = (detail) => {
     setVisibleConfigure({
       show: true,
-      detail: {},
+      detail: detail,
     });
   };
 
@@ -85,11 +65,12 @@ const TabTable = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
+        pagination={false}
         btnExtra={cardBtnList}
-        rowKey={(record) => `${record.configWanderAroundModuleId}`}
-        params={{ userOs: tabKey, version }}
-        dispatchType="walkingManage/fetchAroundModuleCityList"
-        {...configureList}
+        rowKey={(record) => `${record.configWindVaneId}`}
+        params={{ userOs: tabKey, version, isAutomatic: 1 }}
+        dispatchType="walkingManage/fetchGetWindVaneCityList"
+        {...vaneCityList}
       ></TableDataBlock>
       {/* 新增弹窗 */}
       <CityDrawerSet
@@ -109,6 +90,6 @@ const TabTable = (props) => {
 };
 
 export default connect(({ loading, walkingManage }) => ({
-  configureList: walkingManage.configureList,
-  loading: loading.effects['walkingManage/fetchAroundModuleCityList'],
+  vaneCityList: walkingManage.vaneCityList,
+  loading: loading.effects['walkingManage/fetchGetWindVaneCityList'],
 }))(TabTable);

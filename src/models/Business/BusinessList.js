@@ -242,6 +242,7 @@ export default {
       const { content } = response;
       const { manualMap = {}, verificationRate, scanRate, promotionRate } = content;
       const { scan = [], verification = [], promotion = [] } = manualMap;
+      console.log('content', content);
       const d = new Date();
       const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 

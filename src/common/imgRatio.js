@@ -54,4 +54,4 @@ export const LABEL_ICON = 230 / 184;
 export const GLOBAL_MODAL_IMG = 900 / 1077;
 
 //浮窗配置图片
-export const FLOAT_IMG = 165 / 147;
+export const FLOAT_IMG = 165 / 165;

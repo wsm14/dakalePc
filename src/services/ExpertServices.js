@@ -180,6 +180,25 @@ export function fetchExpertUserAchievementTotalList(params) {
 
 // 哒人业绩 end
 
+// 团购业绩
+
+// get 团购业绩 - 团购业绩统计列表
+export function fetchCombineBuyList(params) {
+  return request('/admin/communityConsume/performanceStatistics', {
+    params,
+  });
+}
+
+// post 团购业绩 - 导出
+export function fetchCombineBuyImportExcel(data) {
+  return request('/admin/excelImport/importExcel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 团购业绩 end
+
 // 哒人分销明细
 
 // get 哒人分销明细 - 统计

@@ -303,6 +303,7 @@ export const SUBSIDY_TYPE = {
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
   watchMoment: '看分享',
+  beanGame: '卡豆游戏',
 };
 
 // 补贴管理 补贴卡豆类型
@@ -486,6 +487,7 @@ export const SPECIAL_RECOMMEND_TYPE = {
   dayPush: '每日必推',
   aroundSpecial: '特惠推荐',
   selfTour: '自我游',
+  newProductRecommend: '新品推荐',
 };
 
 // 特惠活动 - 是否删除
@@ -723,6 +725,12 @@ export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程�
 export const TABINDEX_VIDEO_TYPE = {
   all: '通用',
   detail: '城市',
+};
+
+// 全局配置 - 风向标 - 标签类型
+export const TABINDEX_VANE_TYPE = {
+  all: '通用',
+  city: '城市',
 };
 
 // 是否已打赏

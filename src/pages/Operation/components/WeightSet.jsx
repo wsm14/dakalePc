@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
 import { authCheck } from '@/layouts/AuthConsumer';
@@ -25,7 +25,9 @@ const WeightSet = ({
   const { weight } = detail;
 
   const setEdit = () => setEditType(!editType);
-
+  useEffect(() => {
+    weight && form.setFieldsValue({ weight: Number(weight) });
+  }, [weight]);
   // 提交
   const fetchFormData = () => {
     form.validateFields().then(({ weight }) => {
@@ -36,16 +38,16 @@ const WeightSet = ({
       dispatch({
         type: dispatchType,
         payload,
-        callback:()=>{
+        callback: () => {
           childRef.current.fetchGetData();
-          setEdit()
-        } 
+          setEdit();
+        },
       });
     });
   };
 
   return (
-    <Form initialValues={{ weight: weight}} form={form}>
+    <Form initialValues={{ weight: weight }} form={form}>
       <div style={{ display: 'flex' }}>
         <FormItem noStyle name={'weight'}>
           <InputNumber disabled={!editType} />

@@ -16,6 +16,7 @@ const TabModal = (props) => {
     width: 1000,
     maskClosable: true,
     footer: false,
+    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
   };
   return (
     <Modal destroyOnClose {...modalProps} loading={loading}>
@@ -24,5 +25,5 @@ const TabModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['walkingManage/fetchAroundModuleCityList'],
+  loading: loading.effects['walkingManage/fetchGetWindVaneCityList'],
 }))(TabModal);

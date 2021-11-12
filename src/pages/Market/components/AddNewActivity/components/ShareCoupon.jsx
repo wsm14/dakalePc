@@ -10,7 +10,7 @@ import './coupon.less';
 
 const ShareCoupon = (props) => {
   const {
-    data = {},
+    data,
     // merchantIdKey = 'merchantIdStr',
     // show = 'free',
     // ownerType = 'merchant',
@@ -21,15 +21,12 @@ const ShareCoupon = (props) => {
   } = props;
 
   const [visibleContact, setVisibleContact] = useState(false); // 奖品权益商品选择
-  const [visible, setVisible] = useState(false); // 选择
+  const [visible, setVisible] = useState(false); // 特惠和权益商品多选
 
   const {
-    // 券
-    couponName,
-    buyFlag,
     // 商品
     goodsName,
-  } = data;
+  } = data || {};
 
   // 券
   return (
@@ -45,61 +42,26 @@ const ShareCoupon = (props) => {
         >
           +
         </div>
-      ) : type === 'specialGoods' ? (
-        <Form.List
-          name="list"
-          rules={[
-            {
-              validator: async (_, names) => {
-                if (!names || names.length < 1) {
-                  return Promise.reject(new Error('请至少选择1个商品'));
-                }
-              },
-            },
-          ]}
-        >
-          {(fields, { remove, move }, { errors }) => {
-            return (
-              <>
-                <Form.ErrorList errors={errors} />
-                {fields.map((field, i) => (
-                  <FormList
-                    key={field.fieldKey}
-                    form={form}
-                    fields={fields}
-                    field={field}
-                    remove={remove}
-                    move={move}
-                  ></FormList>
-                ))}
-                <Form.Item>
-                  <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
-                    {fields.length} / {50} 选择商品
-                  </Button>
-                </Form.Item>
-              </>
-            );
-          }}
-        </Form.List>
       ) : (
         <Form.List
-          name="list"
-          rules={[
-            {
-              validator: async (_, names) => {
-                if (!names || names.length < 1) {
-                  return Promise.reject(new Error('请至少选择1个商品'));
-                }
-              },
-            },
-          ]}
+          name={type}
+          // rules={[
+          //   {
+          //     validator: async (_, names) => {
+          //       if (!names || names.length < 1) {
+          //         return Promise.reject(new Error('请至少选择1个商品'));
+          //       }
+          //     },
+          //   },
+          // ]}
         >
           {(fields, { remove, move }, { errors }) => {
+            // console.log(fields);
             return (
               <>
-                <Form.ErrorList errors={errors} />
                 {fields.map((field, i) => (
                   <FormList
+                    type={type}
                     key={field.fieldKey}
                     form={form}
                     fields={fields}
@@ -108,6 +70,7 @@ const ShareCoupon = (props) => {
                     move={move}
                   ></FormList>
                 ))}
+                <Form.ErrorList errors={errors} />
                 <Form.Item>
                   <Button disabled={fields.length === 50} block onClick={() => setVisible(true)}>
                     {fields.length} / {50} 选择商品
@@ -118,21 +81,23 @@ const ShareCoupon = (props) => {
           }}
         </Form.List>
       )}
-
-      {/* 奖品权益商品选择 */}
-      <BuyContactModal
-        typeGoods={type}
-        visible={visibleContact}
-        onOk={onOk}
-        onClose={() => setVisibleContact(false)}
-      ></BuyContactModal>
-      {/* 特惠商品 */}
-      <GoodsSelectModal
-        typeGoods={type}
-        form={form}
-        visible={visible}
-        onClose={() => setVisible(false)}
-      ></GoodsSelectModal>
+      {type === 'goodsRight' ? (
+        //  奖品权益商品选择
+        <BuyContactModal
+          typeGoods={type}
+          visible={visibleContact}
+          onOk={onOk}
+          onClose={() => setVisibleContact(false)}
+        ></BuyContactModal>
+      ) : (
+        //  特惠商品
+        <GoodsSelectModal
+          typeGoods={type}
+          form={form}
+          visible={visible}
+          onClose={() => setVisible(false)}
+        ></GoodsSelectModal>
+      )}
     </>
   );
 };

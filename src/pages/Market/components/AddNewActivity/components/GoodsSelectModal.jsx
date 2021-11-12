@@ -10,7 +10,16 @@ const { TabPane } = Tabs;
  * 选择特惠商品（多选）
  */
 const GoodsSelectModal = (props) => {
-  const { specialGoodsList = {}, form, dispatch, visible, onClose, loading, typeGoods } = props;
+  const {
+    specialGoodsList = {},
+    platformEquityList = {},
+    form,
+    dispatch,
+    visible,
+    onClose,
+    loading,
+    typeGoods = 'specialGoods',
+  } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
   const [tabKey, setTabKey] = useState('goods'); // tab类型
@@ -18,8 +27,9 @@ const GoodsSelectModal = (props) => {
   useEffect(() => {
     if (visible) {
       if (tabKey === 'goods') {
-        setSelectItem(form.getFieldValue('list') || []);
+        setSelectItem(form.getFieldValue(typeGoods) || []);
       }
+      dispatch({ type: 'baseData/clearPlatformEquity' });
     }
   }, [visible]);
 
@@ -27,8 +37,9 @@ const GoodsSelectModal = (props) => {
   const searchItems = [
     {
       label: '集团/店铺名',
-      name: 'merchantId',
+      name: 'id',
       type: 'merchant',
+      required: true,
     },
     {
       label: '商品名称',
@@ -37,21 +48,37 @@ const GoodsSelectModal = (props) => {
   ];
 
   const listProps = {
-    goods: {
+    specialGoods: {
       list: specialGoodsList.list,
       total: specialGoodsList.total,
       key: 'specialGoodsId',
+      loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
     },
-  }[tabKey];
+    rightGoods: {
+      list: platformEquityList.list,
+      total: platformEquityList.total,
+      key: 'specialGoodsId',
+      loading: loading.effects['baseData/fetchGetPlatformEquitySelect'],
+    },
+  }[typeGoods];
 
   // 获取特惠活动
   const fetchSpecialGoodsList = (data) => {
-    // if (!data.ownerId) return;
+    if (!data?.id) return;
+    const payload = {
+      specialGoods: {
+        type: 'baseData/fetchGetSpecialGoodsSelect',
+        data: { goodsStatus: 1, merchantId: data.id },
+      },
+      rightGoods: {
+        type: 'baseData/fetchGetPlatformEquitySelect',
+        data: { relateId: data.id },
+      },
+    }[typeGoods];
     dispatch({
-      type: 'baseData/fetchGetSpecialGoodsSelect',
+      type: payload.type,
       payload: {
-        ...data,
-        deleteFlag: 1,
+        ...payload.data,
         page: 1,
         limit: 999,
       },
@@ -61,20 +88,24 @@ const GoodsSelectModal = (props) => {
   // 选择商品逻辑
   const handleSelect = (item) => {
     if (selectItem.length >= 50) return;
-    const key = 'specialGoodsId';
+    const key = listProps.key;
     if (selectItem.findIndex((ci) => ci[key] === item[key]) > -1) {
       setSelectItem(selectItem.filter((ci) => ci[key] !== item[key]));
     } else setSelectItem([...selectItem, item]);
   };
 
   const listDom = (
-    <Spin spinning={!!loading.effects['baseData/fetchGetSpecialGoodsSelect']}>
+    <Spin spinning={!!listProps.loading}>
       {listProps?.list?.length ? (
         <div className="share_select_list">
           {listProps?.list.map(
             (item) =>
               ({
-                goods: goodsDom({ typeGoods, ...item }, selectItem.specialGoodsId, handleSelect),
+                goods: goodsDom(
+                  { typeGoods, ...item },
+                  selectItem.map((item) => item.specialGoodsId),
+                  handleSelect,
+                ),
               }[tabKey]),
           )}
         </div>
@@ -96,7 +127,7 @@ const GoodsSelectModal = (props) => {
         disabled: !selectItem.length,
       }}
       onOk={() => {
-        form.setFieldsValue({ list: selectItem });
+        form.setFieldsValue({ [typeGoods]: selectItem });
         onClose();
       }}
       onCancel={onClose}
@@ -116,5 +147,6 @@ const GoodsSelectModal = (props) => {
 
 export default connect(({ baseData, loading }) => ({
   specialGoodsList: baseData.specialGoods,
+  platformEquityList: baseData.platformEquity,
   loading,
 }))(GoodsSelectModal);

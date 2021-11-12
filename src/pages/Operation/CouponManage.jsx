@@ -227,11 +227,11 @@ const CouponManageComponent = (props) => {
             visible: ['1'].includes(status),
             click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
           },
-          {
-            title: '分享配置',
-            type: 'shareImg',
-            click: () => fetchShareImg(record),
-          },
+          // {
+          //   title: '分享配置',
+          //   type: 'shareImg',
+          //   click: () => fetchShareImg(record),
+          // },
         ];
       },
     },

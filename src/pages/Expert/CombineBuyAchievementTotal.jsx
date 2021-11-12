@@ -4,10 +4,10 @@ import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
-import { checkCityName } from '@/utils/utils';
-import excelHeder from './components/AchievementTotal/excelHeder';
+// import excelHeder from './components/AchievementTotal/excelHeder';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch, loadings } = props;
@@ -28,9 +28,9 @@ const ExpertUserAchievement = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '哒人',
+      label: '团长',
       name: 'keyword',
-      placeholder: '请输入昵称、豆号或手机号',
+      placeholder: '请输入团长昵称、豆号或手机号',
     },
     {
       label: '级别',
@@ -65,6 +65,7 @@ const ExpertUserAchievement = (props) => {
 
   // 搜索BD
   const fetchGetSearch = debounce((content) => {
+    console.log(content);
     if (!content.replace(/'/g, '')) return;
     dispatch({
       type: 'expertUserList/fetchGetBDList',
@@ -78,7 +79,7 @@ const ExpertUserAchievement = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '哒人昵称/ID',
+      title: '团长昵称/ID',
       dataIndex: 'username',
       render: (val, row) => (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -119,51 +120,14 @@ const ExpertUserAchievement = (props) => {
       render: (val) => checkCityName(val) || '--',
     },
     {
-      title: '新增家人数',
+      title: '团购销售额',
       align: 'center',
-      dataIndex: 'familyCount',
+      dataIndex: 'communitySaleVolume',
     },
     {
-      title: '新增直培哒人',
+      title: '团购订单数',
       align: 'center',
-      dataIndex: 'familyDarenCount',
-    },
-    {
-      title: '分享次數',
-      align: 'center',
-      dataIndex: 'shareCount',
-    },
-    {
-      title: '直推/自购总订单数',
-      align: 'center',
-      dataIndex: 'statisticOrderCount',
-    },
-    {
-      title: '直推/自购总gmv',
-      align: 'center',
-      dataIndex: 'statisticTotalFee',
-    },
-    {
-      title: '直推/自购核销',
-      align: 'center',
-      dataIndex: 'statisticVerificationOrderCount',
-    },
-    {
-      title: '直推/自购核销总GMV',
-      align: 'center',
-      dataIndex: 'statisticVerificationTotalFee',
-    },
-
-    {
-      title: '分销-核销笔数',
-      align: 'center',
-      dataIndex: 'statisticOrderCount',
-    },
-    {
-      title: '分销-业绩流水',
-      align: 'center',
-      dataIndex: 'statisticTotalFee',
-      render: (val, row) => `¥ ${val ? val : '0'}`,
+      dataIndex: 'communityOrderNum',
     },
     {
       title: '关联BD',
@@ -193,12 +157,20 @@ const ExpertUserAchievement = (props) => {
     });
   };
 
+  // const extraBtn = ({ get }) => [
+  //   {
+  //     type: 'excel',
+  //     dispatch: 'ordersList/fetchOrdersImport',
+  //     data: { ...get() },
+  //     exportProps: { header: excelHeder(kolLevel) },
+  //   },
+  // ];
+
   const extraBtn = ({ get }) => [
     {
       type: 'excel',
-      dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get() },
-      exportProps: { header: excelHeder(kolLevel) },
+      dispatch: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
+      data: { type: 'performanceStatistics', ...searchData, ...get() },
     },
   ];
 
@@ -211,14 +183,14 @@ const ExpertUserAchievement = (props) => {
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
-        // btnExtra={extraBtn}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
         params={searchData}
         rowKey={(record) => `${record.beanCode}`}
-        dispatchType="expertUserAchievementTotal/fetchGetList"
+        dispatchType="expertUserAchievementTotal/fetchCombineBuyList"
         {...list}
       ></TableDataBlock>
     </>
@@ -226,7 +198,7 @@ const ExpertUserAchievement = (props) => {
 };
 
 export default connect(({ expertUserAchievementTotal, baseData, loading }) => ({
-  list: expertUserAchievementTotal.list,
+  list: expertUserAchievementTotal.combineBuyList,
   kolLevel: baseData.kolLevel,
   loading: loading.effects['expertUserAchievementTotal/fetchGetList'],
   loadings: loading.models.expertUserList,

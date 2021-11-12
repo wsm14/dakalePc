@@ -82,6 +82,12 @@ export default {
         groupMreList: [],
       };
     },
+    clearPlatformEquity(state) {
+      return {
+        ...state,
+        platformEquity: { list: [], total: 0 },
+      };
+    },
   },
 
   effects: {
@@ -285,6 +291,7 @@ export default {
         },
       });
     },
+    // 特惠商品
     *fetchGetSpecialGoodsSelect({ payload }, { call, put }) {
       const response = yield call(fetchGetSpecialGoodsSelect, payload);
       if (!response) return;
@@ -296,9 +303,11 @@ export default {
         },
       });
     },
+    // 权益商品
     *fetchGetPlatformEquitySelect({ payload }, { call, put }) {
       const response = yield call(fetchGetPlatformEquitySelect, {
         ...payload,
+        goodsStatus: 1,
         status: 1,
         adminFlag: 1,
       });

@@ -15,9 +15,8 @@ import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
-import ShareImg from './components/VideoPlatform/ShareImg';
+import VideoSet from './components/VideoPlatform/VideoSet';
 import RewardSet from './components/VideoPlatform/RewardSet';
-
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
@@ -43,7 +42,7 @@ const VideoPlatform = (props) => {
   const [visible, setVisible] = useState(false); // 详情+分享配置
   const [visibleShare, setVisibleShare] = useState(false); // 新增
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
-  const [visibleImg, setVisibleImg] = useState(false); // 设置
+  const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   // const [visibleShareEdit, setVisibleShareEdit] = useState(false); // 分享配置
 
@@ -154,40 +153,24 @@ const VideoPlatform = (props) => {
         </>
       ),
     },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-      sorter: (a, b) => a.viewAmount - b.viewAmount,
-    },
     // {
-    //   title: '浏览量',
+    //   title: '观看人数',
     //   align: 'right',
-    //   dataIndex: '',
+    //   dataIndex: 'viewAmount',
+    //   sorter: (a, b) => a.viewAmount - b.viewAmount,
     // },
     // {
-    //   title: '完播量',
+    //   title: '领豆人次',
     //   align: 'right',
-    //   dataIndex: '',
+    //   dataIndex: 'personAmount',
+    //   sorter: (a, b) => a.personAmount - b.personAmount,
     // },
     // {
-    //   title: '完播率',
+    //   title: '累计打赏卡豆数',
     //   align: 'right',
-    //   render:()=>(完播量/浏览量)
+    //   dataIndex: 'beanAmount',
+    //   sorter: (a, b) => a.beanAmount - b.beanAmount,
     // },
-    {
-      title: '领豆人次',
-      align: 'right',
-      dataIndex: 'personAmount',
-      sorter: (a, b) => a.personAmount - b.personAmount,
-    },
-
-    {
-      title: '累计打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      sorter: (a, b) => a.beanAmount - b.beanAmount,
-    },
     {
       title: '创建时间',
       align: 'center',
@@ -221,7 +204,7 @@ const VideoPlatform = (props) => {
         return [
           {
             type: 'info', // 详情
-            click: () => fetchShareDetail(index),
+            click: () => fetchShareDetail(index, 'info'),
           },
           {
             type: 'down', // 下架
@@ -249,9 +232,13 @@ const VideoPlatform = (props) => {
             visible: (status != 0 || tabKey === '1') && typeUser,
             click: () => setVisibleReward({ show: true, detail: record }),
           },
+          // {
+          //   type: 'set', // 设置
+          //   click: () => setVisibleImg({ show: true, detail: record }),
+          // },
           {
             type: 'set', // 设置
-            click: () => setVisibleImg({ show: true, detail: record }),
+            click: () => fetchGetRate({ type: 'merchant', record }),
           },
           {
             type: 'commerceSet', // 带货设置
@@ -263,15 +250,36 @@ const VideoPlatform = (props) => {
             visible: typeUser,
             click: () => fetchShareDetail(index, 'portrait'),
           },
-          {
-            title: '分享配置',
-            type: 'shareImg',
-            click: () => fetchShareDetail(index, 'share'),
-          },
+          // {
+          //   title: '分享配置',
+          //   type: 'shareImg',
+          //   click: () => fetchShareDetail(index, 'share'),
+          // },
         ];
       },
     },
   ];
+
+  // 设置
+  const fetchGetRate = (payload) => {
+    const { type, record = {} } = payload;
+    const { momentId, ownerId } = record;
+    dispatch({
+      type: 'videoPlatform/fetchVideoFakeList',
+      payload: {
+        momentId,
+        ownerId,
+      },
+      callback: (detail) => {
+        const initialValues = {
+          ...record,
+          ...detail,
+          listPayload: payload,
+        };
+        setVisibleSet({ type, show: true, initialValues });
+      },
+    });
+  };
 
   // 获取行业选择项
   const fetchTradeList = () => {
@@ -311,7 +319,7 @@ const VideoPlatform = (props) => {
   };
 
   // 获取详情
-  const fetchShareDetail = (index, type) => {
+  const fetchShareDetail = (index, type, momentType) => {
     const { momentId, ownerId } = list[index];
     dispatch({
       type: 'videoPlatform/fetchNewShareDetail',
@@ -319,6 +327,7 @@ const VideoPlatform = (props) => {
         momentId,
         ownerId,
         type,
+        momentType,
       },
       callback: (detail) => setVisible({ show: true, index, type, detail }),
     });
@@ -393,12 +402,13 @@ const VideoPlatform = (props) => {
         loading={loadingRefuse}
       ></RefuseModal>
       {/* 设置 */}
-      <ShareImg
-        visible={visibleImg}
-        childRef={childRef}
+      <VideoSet
         onSubmit={fetchNewShareNoAudit}
-        onClose={() => setVisibleImg(false)}
-      ></ShareImg>
+        childRef={childRef}
+        visible={visibleSet}
+        fetchGetRate={fetchGetRate}
+        onClose={() => setVisibleSet(false)}
+      ></VideoSet>
       {/* 打赏设置 */}
       <RewardSet visible={visibleReward} onClose={() => setVisibleReward(false)}></RewardSet>
     </>

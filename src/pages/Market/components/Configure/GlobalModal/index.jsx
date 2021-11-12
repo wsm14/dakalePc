@@ -93,6 +93,7 @@ const Index = (props) => {
             noCard={false}
             cRef={childRef}
             loading={loading}
+            pagination={false}
             columns={getColumns}
             btnExtra={cardBtnList}
             rowKey={(record) => `${record.configGlobalPopUpId}`}

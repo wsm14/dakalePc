@@ -125,14 +125,14 @@ export function fetchWalkManageVaneList(params) {
 
 // get 风向标配置 - 详情
 export function fetchWalkManageVaneDetail(params) {
-  return request('/admin/windVane/getConfigWindVaneById', {
+  return request('/admin/configWindVane/getConfigWindVaneManagementById', {
     params,
   });
 }
 
 // post 风向标配置 - 编辑删除
 export function fetchWalkManageVaneEditDel(data) {
-  return request('/admin/windVane/updateConfigWindVane', {
+  return request('/admin/configWindVane/updateConfigWindVaneManagement', {
     method: 'POST',
     data,
   });
@@ -140,7 +140,7 @@ export function fetchWalkManageVaneEditDel(data) {
 
 // post 风向标配置 - 排序
 export function fetchWalkManageVaneSort(data) {
-  return request('/admin/windVane/sortConfigWindVane', {
+  return request('/admin/configWindVane/sortConfigWindVane', {
     method: 'POST',
     data,
   });
@@ -253,6 +253,29 @@ export function fetchUpdateWanderAroundModule(data) {
 export function fetchGetWanderAroundModuleById(params) {
   return request('/admin/wanderAroundModule/getWanderAroundModuleById', {
     params,
+  });
+}
+
+//逛逛模块化配置-风向标配置-版本列表-城市列表-风向标列表
+export function fetchGetWindVaneManagementList(params) {
+  return request('/admin/configWindVane/listConfigWindVaneManagement', {
+    params,
+  });
+}
+
+//逛逛模块化配置-风向标配置-版本新增-新增城市
+export function fetchGetWindVaneManagementAdd(data) {
+  return request('/admin/configWindVane/saveConfigWindVaneManagement', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-风向标配置-版本修改
+export function fetchGetWindVaneManagementEdit(data) {
+  return request('/admin/configWindVane/updateConfigWindVaneManagement', {
+    method: 'POST',
+    data,
   });
 }
 

@@ -81,7 +81,7 @@ const GlobalModalDrawerSet = (props) => {
       type: 'upload',
       name: 'windowImage',
       maxFile: 1,
-      extra: '请上传165*147px png、jpeg、gif图片',
+      extra: '请上传165*165px png、jpeg、gif图片',
       imgRatio: FLOAT_IMG,
     },
     {

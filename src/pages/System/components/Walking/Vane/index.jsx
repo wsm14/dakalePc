@@ -24,7 +24,7 @@ const TabConfigure = (props) => {
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configIndexTabId',
+      dataIndex: 'configWindVaneId',
       render: (val, row) => [
         {
           type: 'edit',
@@ -71,7 +71,7 @@ const TabConfigure = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat') {
-      childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
+      childRef?.current?.fetchGetData({ userOs: key, areaType: 'all', isAutomatic: 1 });
     }
   };
 
@@ -91,9 +91,10 @@ const TabConfigure = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
-            rowKey={(record) => `${record.configWanderAroundModuleId}`}
-            params={{ userOs: tabKey, area: 'all' }}
-            dispatchType="walkingManage/fetchAroundModuleList"
+            pagination={false}
+            rowKey={(record) => `${record.configWindVaneId}`}
+            params={{ userOs: tabKey, areaType: 'all', isAutomatic: 1 }}
+            dispatchType="walkingManage/fetchGetWindVaneEditionList"
             {...editionList}
           />
         ) : (
@@ -119,6 +120,9 @@ const TabConfigure = (props) => {
 };
 
 export default connect(({ loading, walkingManage }) => ({
-  editionList: walkingManage.editionList,
-  loading: loading.effects['walkingManage/fetchAroundModuleList'],
+  editionList: walkingManage.vaneEditionList,
+  loading:
+    loading.effects['walkingManage/fetchGetWindVaneEditionList'] ||
+    loading.effects['walkingManage/fetchGetWindVaneManagementAdd'] ||
+    loading.effects['walkingManage/fetchGetWindVaneManagementEdit'],
 }))(TabConfigure);

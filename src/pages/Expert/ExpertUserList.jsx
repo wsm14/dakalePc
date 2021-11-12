@@ -138,8 +138,8 @@ const ExpertUserList = (props) => {
       title: '关联BD',
       align: 'center',
       fixed: 'right',
-      dataIndex: 'unlockTime',
-      render: (val, row) => `${val}\n${row.beanCode}`,
+      dataIndex: 'sellName',
+      render: (val, row) => `${val}\n${row.sellMobile}`,
     },
     {
       title: '状态',
@@ -264,7 +264,7 @@ const ExpertUserList = (props) => {
         onClose={() => setVisibleRecommend(false)}
       ></RecommendModal>
       {/* 关联BD */}
-      <BDSet visible={visibleBD} onClose={() => setVisibleBD(false)}></BDSet>
+      <BDSet visible={visibleBD} childRef={childRef} onClose={() => setVisibleBD(false)}></BDSet>
       {/* 设置哒人标识 */}
       <DarenTagSet
         visible={visibleSet}
