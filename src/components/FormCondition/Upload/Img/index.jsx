@@ -241,12 +241,7 @@ const UploadBlock = (props) => {
           const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
           // 是否传入时裁剪
           if ((imgRatio || isCut) && fileExtr !== '.gif') {
-            imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
-              blob.uid = value.file.uid;
-              blob.name = value.file.name;
-              handlePreview(blob);
-              return;
-            });
+            handlePreview(value.file.originFileObj || value.file);
             return;
           }
           setFileLists(newFileList.slice(0, maxFile || 999));

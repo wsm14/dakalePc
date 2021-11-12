@@ -18,8 +18,8 @@ const imageCompress = (files) => {
       img.src = fr.result;
       img.onload = () => {
         // 默认按比例压缩
-        const w = img.width;
-        const h = img.height;
+        const w = img.width / 2;
+        const h = img.height / 2;
 
         // 创建属性节点
         const anw = document.createAttribute('width');
@@ -31,8 +31,8 @@ const imageCompress = (files) => {
         ctx.drawImage(img, 0, 0, w, h);
 
         // 值越小，所绘制出的图像越模糊 默认 0.7
-        base64 = canvas.toDataURL(files.type || 'image/jpeg', 0.7);
-        //  console.log(`压缩后：${base64.length / 1024}kb`);
+        base64 = canvas.toDataURL(files.type || 'image/jpeg', 0.3);
+        console.log(`压缩后：${base64.length / 1024}kb`);
         // base64转换blob
         const arr = base64.split(',');
         const mime = arr[0].match(/:(.*?);/)[1];
