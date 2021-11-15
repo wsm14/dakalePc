@@ -88,6 +88,7 @@ const VideoContentSet = (props) => {
       label: '微信好友分享图',
       name: 'friendShareImg',
       type: 'upload',
+      isCut: false,
       maxFile: 1,
       maxSize: 128,
       imgRatio: WXFRIEND_SHARE_IMG,

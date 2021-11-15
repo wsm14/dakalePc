@@ -7,10 +7,15 @@ const ctx = canvas.getContext('2d');
  * @param {*} files 本地文件流
  * @param {*} return 返回Promise对象 .then返回压缩后的 blob对象 base64对象
  */
-const imageCompress = (files) => {
+const imageCompress = (files, maxSize) => {
+  console.log(`压缩前：${files.size / 1024}kb`);
   let fileblob = {};
   let base64 = '';
   return new Promise((resolve) => {
+    if (maxSize && files.size / 1024 < maxSize) {
+      resolve({ file: files, blob: files, base64: '' });
+      return;
+    }
     const fr = new FileReader();
     fr.readAsDataURL(files);
     fr.onload = () => {
@@ -32,6 +37,7 @@ const imageCompress = (files) => {
 
         // 值越小，所绘制出的图像越模糊 默认 0.7
         base64 = canvas.toDataURL(files.type || 'image/jpeg', 0.3);
+        console.log(`压缩后：${base64.length / 1024}kb`);
         // base64转换blob
         const arr = base64.split(',');
         const mime = arr[0].match(/:(.*?);/)[1];

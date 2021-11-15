@@ -95,6 +95,7 @@ const ShareContentSet = (props) => {
       type: 'upload',
       maxFile: 1,
       maxSize: 128,
+      isCut: false,
       imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],
       extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
