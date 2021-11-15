@@ -100,7 +100,6 @@ const VideoSet = (props) => {
       maxFile: 1,
       maxSize: 128,
       isCut: false,
-      imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],
       extra: (
         <>
