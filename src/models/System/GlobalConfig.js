@@ -78,18 +78,20 @@ export default {
       const { configFestivalDTO = {} } = content;
       const { configFestivalDetailDTOS = [], beginDay = '', endDay = '' } = configFestivalDTO;
       // topType
-      // pickUpBeans 捡豆 // wanderAround 逛逛 // bottomIcon 底部icon
+      // pickUpBeans 捡豆 // wanderAround 逛逛 // bottomIcon 底部icon 顶部topTab
       // type
-      // ["upperLeftCorner","lowerRightCornerCountdown","lowerRightCornerCountdownDynamic","topBackground","pickUpBeans","wanderAround","order","main"]
+      // ["pickUp","lifeFun","upperLeftCorner","lowerRightCornerCountdown","lowerRightCornerCountdownDynamic","topBackground","pickUpBeans","wanderAround","order","main"]
 
       const pickUpBeans = configFestivalDetailDTOS.filter((item) => item.topType === 'pickUpBeans');
       const wanderAround = configFestivalDetailDTOS.filter(
         (item) => item.topType == 'wanderAround',
       );
       const bottomIcon = configFestivalDetailDTOS.filter((item) => item.topType == 'bottomIcon');
+      const topTab = configFestivalDetailDTOS.filter((item) => item.topType == 'topTab');
       let pickObj = {};
       let wanderAObj = {};
       let bottomIconObj = {};
+      let topTabObj = {};
       //捡豆
       pickUpBeans.map((pickItem) => {
         switch (pickItem.type) {
@@ -144,6 +146,23 @@ export default {
             break;
         }
       });
+      // topTab
+      topTab.map((topItem) => {
+        switch (topItem.type) {
+          case 'pickUp':
+            topTabObj.findFile = topItem.file;
+            topTabObj.findImagePrefix = topItem.imagePrefix;
+            topTabObj.find = topItem.image;
+            topTabObj.findId = topItem.configFestivalDetailId;
+            break;
+          case 'lifeFun':
+            topTabObj.lifeFile = topItem.file;
+            topTabObj.lifeImagePrefix = topItem.imagePrefix;
+            topTabObj.life = topItem.image;
+            topTabObj.lifeId = topItem.configFestivalDetailId;
+            break;
+        }
+      });
 
       const dateFormat = 'YYYY-MM-DD';
       const newDetails = {
@@ -151,6 +170,7 @@ export default {
         pickUpBeans: pickObj,
         wanderAround: wanderAObj,
         bottomIcon: bottomIconObj,
+        topTab: topTabObj,
         showTime: [moment(beginDay, dateFormat), moment(endDay, dateFormat)],
       };
       callback && callback(newDetails);
