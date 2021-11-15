@@ -179,9 +179,8 @@ const ExpertUserAchievement = (props) => {
       <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
-        keepData
         cardProps={{
-          title: <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>,
+          title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
         btnExtra={extraBtn}
         cRef={childRef}
