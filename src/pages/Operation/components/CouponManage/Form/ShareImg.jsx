@@ -30,6 +30,7 @@ const ShareImg = (props) => {
       label: '微信好友分享图',
       name: 'friendShareImg',
       type: 'upload',
+      compress: true,
       maxFile: 1,
       imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],

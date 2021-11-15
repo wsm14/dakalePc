@@ -112,6 +112,7 @@ const UploadBlock = (props) => {
     imgRatio,
     disabled,
     multiple = true,
+    compress = false,
   } = props;
 
   const fileKeyName = Array.isArray(name) ? name[1] : name;
@@ -138,7 +139,8 @@ const UploadBlock = (props) => {
 
   // 查看图片视频
   const handlePreview = async (file) => {
-    const fileExtr = file.name.replace(/.+\./, '.').toLowerCase();
+    const { originFileObj } = file;
+    const fileExtr = (originFileObj || file).name.replace(/.+\./, '.').toLowerCase();
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
@@ -161,7 +163,7 @@ const UploadBlock = (props) => {
       : previewTitle.key;
     const uid = previewTitle.uid;
     let newimg = fileLists || [];
-    imageCompress(file).then(({ file }) => {
+    imageCompress(file, compress, maxSize).then(({ file }) => {
       const thumbUrl = URL.createObjectURL(file);
       if (newimg.findIndex((i) => i.uid == uid) === -1) {
         newimg = [...newimg, { uid, url: thumbUrl, thumbUrl, originFileObj: file }];
