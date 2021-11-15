@@ -112,7 +112,6 @@ const UploadBlock = (props) => {
     imgRatio,
     disabled,
     multiple = true,
-    compress = false,
   } = props;
 
   const fileKeyName = Array.isArray(name) ? name[1] : name;
@@ -163,7 +162,7 @@ const UploadBlock = (props) => {
       : previewTitle.key;
     const uid = previewTitle.uid;
     let newimg = fileLists || [];
-    imageCompress(file, compress, maxSize).then(({ file }) => {
+    imageCompress(file, imgRatio).then(({ file }) => {
       const thumbUrl = URL.createObjectURL(file);
       if (newimg.findIndex((i) => i.uid == uid) === -1) {
         newimg = [...newimg, { uid, url: thumbUrl, thumbUrl, originFileObj: file }];

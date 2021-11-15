@@ -5,17 +5,11 @@ const ctx = canvas.getContext('2d');
 /**
  * 图片压缩
  * @param {*} files 本地文件流
- * @param {Boolean} compress 是否缩小图片比例
- * @param {Number} maxSize 最大图片大小
  * @param {*} return 返回Promise对象 .then返回压缩后的 blob对象 base64对象
  */
-const imageCompress = (files, compress = false, maxSize) => {
+const imageCompress = (files) => {
   let fileblob = {};
   let base64 = '';
-  let compressNum = 1;
-  if (maxSize && compress && files.size / 1024 > maxSize) {
-    compressNum = 2;
-  }
   return new Promise((resolve) => {
     const fr = new FileReader();
     fr.readAsDataURL(files);
@@ -23,10 +17,9 @@ const imageCompress = (files, compress = false, maxSize) => {
       const img = new Image();
       img.src = fr.result;
       img.onload = () => {
-        console.log(img, files);
         // 默认按比例压缩
-        const w = img.width / compressNum;
-        const h = img.height / compressNum;
+        const w = img.width;
+        const h = img.height;
 
         // 创建属性节点
         const anw = document.createAttribute('width');
