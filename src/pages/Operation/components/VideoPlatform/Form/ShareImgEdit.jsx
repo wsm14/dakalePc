@@ -14,10 +14,11 @@ const ShareImg = (props) => {
       rules: [{ required: false }],
     },
     {
-      label: '好友分享图',
+      label: '微信好友分享图',
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
+      isCut: false,
       imgRatio: WXFRIEND_SHARE_IMG,
       rules: [{ required: false }],
       extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
