@@ -170,7 +170,7 @@ const ExpertUserAchievement = (props) => {
     {
       type: 'excel',
       dispatch: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
-      data: { type: 'performanceStatistics', ...searchData, ...get() },
+      data: { type: 'performanceStatistics', communityConsumeObject: { ...searchData }, ...get() },
     },
   ];
 
@@ -181,7 +181,7 @@ const ExpertUserAchievement = (props) => {
         order
         keepData
         cardProps={{
-          title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
+          title: <SearchCard searchData={searchData} setSearchData={handleSearchData}></SearchCard>,
         }}
         btnExtra={extraBtn}
         cRef={childRef}

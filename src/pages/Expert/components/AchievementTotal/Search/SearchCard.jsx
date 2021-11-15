@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Tag, DatePicker, Space } from 'antd';
 import styles from './style.less';
 
 const disTime = moment().subtract(1, 'day');
 
-const SearchCard = ({ setSearchData }) => {
+const SearchCard = ({ setSearchData, searchData }) => {
   const [selectedTime, setSelectedTime] = useState([disTime, disTime]);
+
+  useEffect(() => {
+    isActive('昨日');
+  }, [searchData]);
 
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), disTime];
