@@ -143,7 +143,7 @@ const UploadBlock = (props) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
-
+    console.log('isCut', isCut);
     const showFile =
       fileExtr === '.gif' || !isCut
         ? file.url || file.preview
@@ -293,17 +293,17 @@ const UploadBlock = (props) => {
       </DragAndDropHOC>
       <Modal
         destroyOnClose
-        title={previewTitle.fileType === '.gif' || !previewImage.isCut ? '查看图片' : '编辑图片'}
+        title={previewTitle.fileType === '.gif' || !previewTitle.isCut ? '查看图片' : '编辑图片'}
         width={950}
         visible={previewVisible}
-        maskClosable={previewTitle.fileType === '.gif' || !previewImage.isCut}
+        maskClosable={previewTitle.fileType === '.gif' || !previewTitle.isCut}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
         zIndex={100000}
       >
-        {previewTitle.fileType === '.gif' || !previewImage.isCut ? (
+        {previewTitle.fileType === '.gif' || !previewTitle.isCut ? (
           <div style={{ textAlign: 'center' }}>
-            <img src={previewImage} alt="" srcset="" />
+            <img src={previewImage} alt="" srcset="" style={{ width: '100%' }} />
           </div>
         ) : (
           <ImgCutView
