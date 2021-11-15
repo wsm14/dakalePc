@@ -24,7 +24,7 @@ const TabConfigure = (props) => {
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configWindVaneId',
+      dataIndex: 'configSelfTourGoodsId',
       render: (val, row) => [
         {
           type: 'edit',
@@ -71,7 +71,7 @@ const TabConfigure = (props) => {
   const handleTabChange = (key) => {
     setTabKey(key);
     if (key !== 'weChat') {
-      childRef?.current?.fetchGetData({ userOs: key, areaType: 'all', isAutomatic: 1 });
+      childRef?.current?.fetchGetData({ userOs: key, area: 'all', isAutomatic: 1 });
     }
   };
 
@@ -92,9 +92,9 @@ const TabConfigure = (props) => {
             columns={getColumns}
             btnExtra={cardBtnList}
             pagination={false}
-            rowKey={(record) => `${record.configWindVaneId}`}
-            params={{ userOs: tabKey, areaType: 'all', isAutomatic: 1 }}
-            dispatchType="walkingManage/fetchGetWindVaneEditionList"
+            rowKey={(record) => `${record.configSelfTourGoodsId}`}
+            params={{ userOs: tabKey, area: 'all', isAutomatic: 1 }}
+            dispatchType="walkingManage/fetchGetSelfTourGoodsEditionList"
             {...editionList}
           />
         ) : (
@@ -120,9 +120,9 @@ const TabConfigure = (props) => {
 };
 
 export default connect(({ loading, walkingManage }) => ({
-  editionList: walkingManage.vaneEditionList,
+  editionList: walkingManage.selfEditionList,
   loading:
-    loading.effects['walkingManage/fetchGetWindVaneEditionList'] ||
+    loading.effects['walkingManage/fetchGetSelfTourGoodsEditionList'] ||
     loading.effects['walkingManage/fetchGetWindVaneManagementAdd'] ||
     loading.effects['walkingManage/fetchGetWindVaneManagementEdit'],
 }))(TabConfigure);

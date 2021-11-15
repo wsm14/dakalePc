@@ -6,15 +6,31 @@ import FormCondition from '@/components/FormCondition';
 import ShareCoupon from './ShareCoupon';
 
 const SelfDrawer = (props) => {
-  const { dispatch, cRef, visible, onClose, loading } = props;
+  const { dispatch, childRef, visible, onClose, loading } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
+  const { configSelfTourGoodsId } = detail;
   const [form] = Form.useForm();
 
   const fetchGetFormData = () => {
     form.validateFields().then((values) => {
       console.log(values);
-      // specialGoodsIds: specialGoods.map((item) => item.specialGoodsId).toString(),
+      const { specialGoods } = values;
+      dispatch({
+        type: 'walkingManage/fetchGetSelfTourGoodsEdit',
+        payload: {
+          configSelfTourGoodsId,
+          activityGoodsObjectList: specialGoods.map((item) => ({
+            activityGoodsId: item.specialGoodsId,
+            ownerId: item.ownerIdString,
+          })),
+          flag: 'updateConfig',
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 

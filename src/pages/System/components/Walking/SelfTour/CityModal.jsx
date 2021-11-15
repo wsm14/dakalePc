@@ -25,5 +25,5 @@ const TabModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['walkingManage/fetchGetWindVaneCityList'],
+  loading: loading.effects['walkingManage/fetchGetSelfTourCityList'],
 }))(TabModal);

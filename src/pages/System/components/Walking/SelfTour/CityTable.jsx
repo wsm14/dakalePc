@@ -6,7 +6,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import CityDrawerSet from './components/CityDrawerSet';
 import SelfDrawer from './components/SelfDrawer';
 const TabTable = (props) => {
-  const { dispatch, loading, vaneCityList, tabKey, version, fetchTable } = props;
+  const { dispatch, loading, cityList, tabKey, version, fetchTable } = props;
   const [visible, setVisible] = useState(false);
   const [visibleConfigure, setVisibleConfigure] = useState({ show: false });
   const childRef = useRef();
@@ -19,28 +19,38 @@ const TabTable = (props) => {
     {
       title: '城市',
       align: 'center',
-      dataIndex: 'areaType',
-      render: (val, row) => (val === 'all' ? '通用' : getCityName(row?.areaCode)),
+      dataIndex: 'area',
+      render: (val, row) => (val === 'all' ? '通用' : getCityName(row?.cityCode)),
     },
     {
       type: 'handle',
       align: 'center',
-      dataIndex: 'configWindVaneId',
+      dataIndex: 'configSelfTourGoodsId',
       render: (val, row) => [
         {
           type: 'edit',
           title: '编辑',
-          click: () => handleEdit(row),
+          click: () => handleEdit(val),
           auth: true,
         },
       ],
     },
   ];
 
-  const handleEdit = (detail) => {
+  const handleEdit = (configSelfTourGoodsId) => {
+    // dispatch({
+    //   type: 'walkingManage/fetchGetSelfTourGoodsDetail',
+    //   payload: { configSelfTourGoodsId },
+    //   callback: (detail) => {
+    //     setVisibleConfigure({
+    //       show: true,
+    //       detail: { configSelfTourGoodsId, specialGoods: detail },
+    //     });
+    //   },
+    // });
     setVisibleConfigure({
       show: true,
-      detail: detail,
+      detail: { configSelfTourGoodsId },
     });
   };
 
@@ -67,10 +77,10 @@ const TabTable = (props) => {
         columns={getColumns}
         pagination={false}
         btnExtra={cardBtnList}
-        rowKey={(record) => `${record.configWindVaneId}`}
+        rowKey={(record) => `${record.configSelfTourGoodsId}`}
         params={{ userOs: tabKey, version, isAutomatic: 1 }}
-        dispatchType="walkingManage/fetchGetWindVaneCityList"
-        {...vaneCityList}
+        dispatchType="walkingManage/fetchGetSelfTourCityList"
+        {...cityList}
       ></TableDataBlock>
       {/* 新增弹窗 */}
       <CityDrawerSet
@@ -83,6 +93,7 @@ const TabTable = (props) => {
       {/* 编辑弹窗 */}
       <SelfDrawer
         visible={visibleConfigure}
+        childRef={childRef}
         onClose={() => setVisibleConfigure(false)}
       ></SelfDrawer>
     </>
@@ -90,6 +101,6 @@ const TabTable = (props) => {
 };
 
 export default connect(({ loading, walkingManage }) => ({
-  vaneCityList: walkingManage.vaneCityList,
-  loading: loading.effects['walkingManage/fetchGetWindVaneCityList'],
+  cityList: walkingManage.selfCityList,
+  loading: loading.effects['walkingManage/fetchGetSelfTourCityList'],
 }))(TabTable);

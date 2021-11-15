@@ -383,6 +383,7 @@ const bannerType = {
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundGoodMerchant: '逛逛周边好店',
   wanderAroundRecharge: '逛逛话费充值',
+  wanderAroundBean: '逛逛卡豆专区',
 };
 
 // Banner类型

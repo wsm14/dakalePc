@@ -24,8 +24,12 @@ import {
   fetchGetWindVaneManagementList,
   fetchGetWindVaneManagementAdd,
   fetchGetWindVaneManagementEdit,
+  fetchGetSelfTourGoodsList,
+  fetchGetSelfTourGoodsAdd,
+  fetchGetSelfTourGoodsEdit,
+  fetchGetSelfTourGoodsDetail,
 } from '@/services/SystemServices';
-
+import { fetchAddNewActivityDetailCheck } from '@/services/MarketServices';
 export default {
   namespace: 'walkingManage',
 
@@ -41,6 +45,9 @@ export default {
     vaneEditionList: { list: [] },
     vaneCityList: { list: [] },
     vaneConfigureList: { list: [] },
+    selfEditionList: { list: [] },
+    selfCityList: { list: [] },
+    selfConfigureList: { list: [] },
   },
 
   reducers: {
@@ -367,6 +374,81 @@ export default {
         description: '编辑成功',
       });
       callback();
+    },
+    //逛逛模块化配置-自我游商品配置-版本列表
+    *fetchGetSelfTourGoodsEditionList({ payload }, { call, put }) {
+      const response = yield call(fetchGetSelfTourGoodsList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          selfEditionList: { list: content.configSelfTourGoodsDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-自我游商品配置-城市列表
+    *fetchGetSelfTourCityList({ payload }, { call, put }) {
+      const response = yield call(fetchGetSelfTourGoodsList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          selfCityList: { list: content.configSelfTourGoodsDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-自我游商品配置-配置列表
+    *fetchGetSelfTourGoodsConfigureList({ payload }, { call, put }) {
+      const response = yield call(fetchGetSelfTourGoodsList, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          selfConfigureList: { list: content.configWindVaneDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-自我游商品配置-版本新增-新增城市
+    *fetchGetSelfTourGoodsAdd({ payload, callback }, { call }) {
+      const response = yield call(fetchGetSelfTourGoodsAdd, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    //逛逛模块化配置-自我游商品配置-版本修改-配置修改
+    *fetchGetSelfTourGoodsEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchGetSelfTourGoodsEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
+    },
+    //逛逛模块化配置-自我游商品配置-版本修改-配置修改
+    *fetchGetSelfTourGoodsDetail({ payload, callback }, { call }) {
+      const response = yield call(fetchGetSelfTourGoodsDetail, payload);
+      if (!response) return;
+      const { content } = response;
+      const { configSelfTourGoodsDTO = {} } = content;
+      const { activityGoodsObjectList = [] } = configSelfTourGoodsDTO;
+
+      let specialGoods = [];
+      if (activityGoodsObjectList) {
+        const activityGoodsIds = activityGoodsObjectList.map((item) => item.activityGoodsId);
+        const response1 = yield call(fetchAddNewActivityDetailCheck, {
+          activityIds: activityGoodsIds.toString(),
+        });
+        const { activityGoodsDTOS = [] } = response1;
+        specialGoods = activityGoodsDTOS;
+      }
+      callback(specialGoods);
     },
   },
 };

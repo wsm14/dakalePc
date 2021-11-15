@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-// import { notification } from 'antd';
 import { Form, Button } from 'antd';
 import GoodsSelectModal from './GoodsSelectModal';
 import FormList from './FormList';
-
 import './coupon.less';
 
 const ShareCoupon = (props) => {

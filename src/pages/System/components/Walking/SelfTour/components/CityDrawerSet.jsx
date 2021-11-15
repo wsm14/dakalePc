@@ -7,21 +7,21 @@ import FormComponents from '@/components/FormCondition';
 
 const CityDrawerSet = (props) => {
   const { visible, onClose, dispatch, loading, childRef, tabKey, version } = props;
-  const { show = false, type = 'add', detail = { areaType: 'all' } } = visible;
+  const { show = false, type = 'add', detail = { area: 'all' } } = visible;
   const [form] = Form.useForm();
   const [areaType, setAreaType] = useState();
 
   //保存
   const handleSave = () => {
     form.validateFields().then((values) => {
-      const { areaCode, defaultTags = [], tags = [], ...ohter } = values;
+      const { cityCode, defaultTags = [], tags = [], ...ohter } = values;
       dispatch({
-        type: 'walkingManage/fetchGetWindVaneManagementAdd',
+        type: 'walkingManage/fetchGetSelfTourGoodsAdd',
         payload: {
           ...ohter,
           userOs: tabKey,
           version: version,
-          areaCode: areaCode && areaCode[1],
+          cityCode: cityCode && cityCode[1],
           flag: {
             add: 'addCity',
             edit: 'updateTag',
@@ -39,13 +39,13 @@ const CityDrawerSet = (props) => {
     title: type === 'edit' ? '编辑' : '新增',
     onClose,
     afterCallBack: () => {
-      setAreaType(detail.areaType);
+      setAreaType(detail.area);
     },
     footer: (
       <Button
         type="primary"
         onClick={handleSave}
-        loading={loading.effects['walkingManage/fetchGetWindVaneManagementAdd']}
+        loading={loading.effects['walkingManage/fetchGetSelfTourGoodsAdd']}
       >
         保存
       </Button>
@@ -55,7 +55,7 @@ const CityDrawerSet = (props) => {
   const formItems = [
     {
       label: '城市类型',
-      name: 'areaType',
+      name: 'area',
       type: 'radio',
       select: TABINDEX_VANE_TYPE,
       onChange: (val) => {
@@ -64,7 +64,7 @@ const CityDrawerSet = (props) => {
     },
     {
       label: '城市',
-      name: 'areaCode',
+      name: 'cityCode',
       type: 'cascader',
       cityType: 'city',
       visible: areaType === 'city',

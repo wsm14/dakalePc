@@ -279,6 +279,36 @@ export function fetchGetWindVaneManagementEdit(data) {
   });
 }
 
+//逛逛模块化配置-自我游商品配置-版本列表-城市列表-配置列表
+export function fetchGetSelfTourGoodsList(params) {
+  return request('/admin/configSelfTourGoods/listConfigSelfTourGoods', {
+    params,
+  });
+}
+
+//逛逛模块化配置-自我游商品配置-版本新增-新增城市
+export function fetchGetSelfTourGoodsAdd(data) {
+  return request('/admin/configSelfTourGoods/saveConfigSelfTourGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-自我游商品配置-版本修改-配置修改
+export function fetchGetSelfTourGoodsEdit(data) {
+  return request('/admin/configSelfTourGoods/updateConfigSelfTourGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+//逛逛模块化配置-自我游商品配置-配置详情
+export function fetchGetSelfTourGoodsDetail(params) {
+  return request('/admin/configSelfTourGoods/getConfigSelfTourGoodsById', {
+    params,
+  });
+}
+
 // 逛逛页面配置 end
 
 // 新人下单配置 start

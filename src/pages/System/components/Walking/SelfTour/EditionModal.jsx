@@ -6,19 +6,19 @@ import FormCondition from '@/components/FormCondition';
 const EditionModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef, tabKey } = props;
   const { show = false, type, detail = {} } = visible;
-  const { configWindVaneId } = detail;
+  const { configSelfTourGoodsId } = detail;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
         type: {
-          add: 'walkingManage/fetchGetWindVaneManagementAdd',
-          edit: 'walkingManage/fetchGetWindVaneManagementEdit',
+          add: 'walkingManage/fetchGetSelfTourGoodsAdd',
+          edit: 'walkingManage/fetchGetSelfTourGoodsEdit',
         }[type],
         payload: {
           userOs: tabKey,
-          configWindVaneId,
+          configSelfTourGoodsId,
           flag: {
             add: 'addVersion',
             edit: 'updateVersion',
@@ -56,6 +56,6 @@ const EditionModal = (props) => {
 };
 export default connect(({ loading }) => ({
   loading:
-    loading.effects['walkingManage/fetchGetWindVaneManagementAdd'] ||
-    loading.effects['walkingManage/fetchGetWindVaneManagementEdit'],
+    loading.effects['walkingManage/fetchGetSelfTourGoodsAdd'] ||
+    loading.effects['walkingManage/fetchGetSelfTourGoodsEdit'],
 }))(EditionModal);
