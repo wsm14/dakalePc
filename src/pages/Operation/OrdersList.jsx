@@ -48,8 +48,8 @@ const OrdersList = () => {
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,
     virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
-    commerceOrder: <OtherOrders {...listProps}></OtherOrders>,
-    groupBuyOrder: <VirtualOrders {...listProps}></VirtualOrders>,
+    // commerceOrder: <OtherOrders {...listProps}></OtherOrders>,
+    // groupBuyOrder: <VirtualOrders {...listProps}></VirtualOrders>,
   };
 
   return (

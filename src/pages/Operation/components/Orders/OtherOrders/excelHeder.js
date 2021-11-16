@@ -37,6 +37,10 @@ export default [
     render: (val) => Number(val),
   },
   {
+    title: '用户实付现金',
+    dataIndex: 'payFee',
+  },
+  {
     title: '商户实收',
     dataIndex: 'actualCashFee',
     render: (val, record) => {
@@ -76,6 +80,14 @@ export default [
   {
     title: '所属商圈',
     dataIndex: 'businessHub',
+  },
+  {
+    title: '一级行业',
+    dataIndex: 'topCategoryName',
+  },
+  {
+    title: '二级行业',
+    dataIndex: 'categoryName',
   },
   {
     title: '详细地址',
