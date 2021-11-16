@@ -282,7 +282,7 @@ const HolidayConfigSet = (props) => {
           topType: 'topTab',
           type: 'pickUp',
           image: topTab.find,
-          file: topTab.findFile,
+          file: { ...topTab.findFile },
           imagePrefix: topTab.findImagePrefix,
         },
       ];
@@ -291,7 +291,7 @@ const HolidayConfigSet = (props) => {
           topType: 'topTab',
           type: 'lifeFun',
           image: topTab.life,
-          file: topTab.lifeFile,
+          file: { ...topTab.lifeFile },
           imagePrefix: topTab.lifeImagePrefix,
         },
       ];

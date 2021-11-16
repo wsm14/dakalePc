@@ -21,6 +21,7 @@ const CommerceGoodsAdd = (props) => {
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [buyFlag, setBuyFlag] = useState('0'); // 商品购买类型
+
   //   const [saveData, setSaveData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
@@ -43,7 +44,9 @@ const CommerceGoodsAdd = (props) => {
 
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
-    formRuleAdd.validateFields().then((values) => {});
+    form.validateFields().then((values) => {
+      console.log('values', values);
+    });
   };
 
   // 下一步
