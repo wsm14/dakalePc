@@ -33,7 +33,7 @@ const PlatformEquitySet = ({
   const editDisabled = ['edit'].includes(editActive);
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
+  // const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
   const [goodsTaglist, setGoodsTaglist] = useState([]); // 商家商品标签
   const [manualList, setManualList] = useState([]); // 分佣模版字段
   const [mreList, setMreList] = useState({
@@ -51,7 +51,7 @@ const PlatformEquitySet = ({
     .map((key) => key.configGoodsTagId);
   initialValues.goodsTags = goodsTags;
 
-  const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
+  // const goodsTypeName = GOODS_CLASS_TYPE[radioData.goodsType];
   useEffect(() => {
     if (initialValues.relateName) {
       setMreList({
@@ -59,7 +59,7 @@ const PlatformEquitySet = ({
         groupId: initialValues.relateId,
       });
       setBuyFlag(initialValues.buyFlag);
-      setRadioData({ goodsType: initialValues.goodsType });
+      // setRadioData({ goodsType: initialValues.goodsType });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
@@ -109,7 +109,7 @@ const PlatformEquitySet = ({
 
   const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
-  const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
+  // const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
   //获取商家商品标签
   const getTagsPlat = (categoryId) => {
@@ -173,28 +173,7 @@ const PlatformEquitySet = ({
   // 信息
   const formItems = [
     {
-      title: '设置参与活动的店铺',
-      label: '选择店铺类型',
-      type: 'radio',
-      disabled: commonDisabled,
-      name: 'relateType',
-      select: BUSINESS_TYPE,
-      onChange: (e) => {
-        setCommissionShow(false);
-        saveSelectData({ shopType: '0' });
-        saveMreData({
-          type: e.target.value,
-          groupId: null,
-          ratio: 0,
-          keys: [],
-          list: [],
-        }); // 重置已选店铺数据
-        form.setFieldsValue({ relateId: undefined }); // 重置数据
-        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
-      },
-    },
-    {
-      label: `选择${BUSINESS_TYPE[mreList.type]}`,
+      label: `店铺`,
       type: 'select',
       name: 'relateId',
       placeholder: '请输入搜索',
@@ -212,60 +191,31 @@ const PlatformEquitySet = ({
       },
     },
     {
-      label: '适用店铺',
-      name: 'merchantIds',
-      type: 'formItem',
-      visible: mreList.type == 'group',
-      rules: [{ required: true, message: '请选择店铺' }],
-      formItem: (
-        <Button type="primary" ghost onClick={() => setVisible(true)} disabled={commonDisabled}>
-          选择店铺
-        </Button>
-      ),
-    },
-    {
-      type: 'noForm',
-      visible: mreList.type === 'group',
-      formItem: (
-        <MreSelectShow
-          key="MreTable"
-          form={form}
-          disabled={commonDisabled}
-          rowKey="merchantId"
-          columns={getColumns}
-          {...mreList}
-          setMreList={(val) => {
-            saveMreData(val);
-            form.setFieldsValue({ merchantIds: val.keys });
-          }}
-        ></MreSelectShow>
-      ),
-    },
-    {
-      title: '设置商品信息',
-      label: '商品类型',
-      name: 'goodsType',
-      disabled: commonDisabled,
-      type: 'radio',
-      select: GOODS_CLASS_TYPE,
-      onChange: (e) => saveSelectData({ goodsType: e.target.value }),
-    },
-    {
-      label: `${goodsTypeName}轮播图`,
+      label: `商品轮播图`,
       name: 'activityGoodsImg',
       type: 'upload',
       maxFile: 5,
       maxSize: 500,
     },
     {
-      label: `${goodsTypeName}名称`,
+      label: `商品名称`,
       name: 'goodsName',
       maxLength: 80,
     },
     {
-      type: 'noForm',
-      visible: radioData.goodsType == 'package',
-      formItem: <GoodsGroupSet key="packageGroupObjects" form={form}></GoodsGroupSet>,
+      label: `商品库存`,
+      name: '',
+      maxLength: 80,
+    },
+    {
+      label: `购买上限`,
+      name: '',
+      maxLength: 80,
+    },
+    {
+      label: `每人领取份数`,
+      name: '',
+      maxLength: 80,
     },
     {
       title: '设置商品价格',
@@ -279,7 +229,17 @@ const PlatformEquitySet = ({
       formatter: (value) => `￥ ${value}`,
     },
     {
-      label: '售卖类型',
+      label: '成本价',
+      name: ['paymentModeObject', 'cash'],
+      type: 'number',
+      precision: 2,
+      min: 0.01,
+      max: 999999.99,
+      formatter: (value) => `￥ ${value}`,
+      disabled: commonDisabled,
+    },
+    {
+      label: '售卖价格',
       name: 'buyFlag',
       type: 'radio',
       disabled: commonDisabled,
@@ -314,14 +274,13 @@ const PlatformEquitySet = ({
       disabled: commonDisabled,
     },
     {
-      label: '平台结算价',
+      label: '商家结算价',
       name: 'merchantPrice',
       type: 'number',
       precision: 2,
       disabled: editDisabled,
       min: 0,
       max: 999999.99,
-      visible: buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       addRules: [
         {
@@ -342,14 +301,13 @@ const PlatformEquitySet = ({
       ],
     },
     {
-      label: '佣金总额', // 手动分佣需要展示
+      label: '哒人分佣', // 手动分佣需要展示
       name: 'commission',
       type: 'number',
       precision: 2,
       min: 0,
       max: 999999.99,
       disabled: true,
-      visible: commissionShow == '1' && buyFlag == '1',
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
     },
@@ -377,32 +335,12 @@ const PlatformEquitySet = ({
       },
     })),
     {
-      label: '店铺商品标签',
-      name: 'goodsTags',
-      type: 'select',
-      mode: 'multiple',
-      placeholder: '请选择店铺商品标签',
-      select: goodsTaglist,
-      fieldNames: { label: 'tagName', value: 'configGoodsTagId' },
-      rules: [{ required: false }],
-      addRules: [
-        {
-          validator: (rule, value) => {
-            if (value.length > 3) {
-              return Promise.reject('最多选择3个标签');
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
-    {
       label: '介绍类型',
       name: 'goodsDescType',
       hidden: true,
     },
     {
-      title: '设置单品介绍',
+      title: '设置商品介绍',
       type: 'noForm',
       formItem: (
         <EditorForm

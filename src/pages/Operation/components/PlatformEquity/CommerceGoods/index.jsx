@@ -343,7 +343,7 @@ const PlatformEquityGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ adminFlag: 1 }}
+        params={{ adminFlag: 1, activityType: 'commerceGoods' }}
         rowKey={(record) => `${record.specialGoodsId}`}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
