@@ -90,6 +90,7 @@ const TabConfigure = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
+            pagination={false}
             rowKey={(record) => `${record.configIndexTabId}`}
             params={{ userOs: tabKey, area: 'all' }}
             dispatchType="globalConfig/fetchIndexTabList"

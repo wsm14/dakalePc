@@ -16,6 +16,7 @@ import {
   fetchAllOwnerRate, //查询商家服务费
   fetchUpdateManualRate, //修改商家服务费
   fetchMerchantProhibitCheck, // 禁用检查提示
+  fetchBusinessShareEdit, // 分享配置
 } from '@/services/BusinessServices';
 
 export default {
@@ -46,6 +47,16 @@ export default {
   },
 
   effects: {
+    // 修改分享配置
+    *fetchBusinessShareEdit({ payload, callback }, { call }) {
+      const response = yield call(fetchBusinessShareEdit, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '门店分享设置成功',
+      });
+      callback();
+    },
     *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchMerchantList, payload);
       if (!response) return;
@@ -231,6 +242,7 @@ export default {
       const { content } = response;
       const { manualMap = {}, verificationRate, scanRate, promotionRate } = content;
       const { scan = [], verification = [], promotion = [] } = manualMap;
+      console.log('content', content);
       const d = new Date();
       const today = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
 

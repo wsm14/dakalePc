@@ -8,6 +8,7 @@ import uploadLive from '@/utils/uploadLive';
 import GoodsEdit from './GoodsEdit';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import QuestionTooltip from '@/components/QuestionTooltip';
 
 const VideoDetail = (props) => {
   const {
@@ -60,14 +61,14 @@ const VideoDetail = (props) => {
       label: '内容详情',
       name: 'message',
     },
-    {
-      label: `收藏数`,
-      name: 'collectionAmount',
-    },
-    {
-      label: `分享数`,
-      name: 'shareAmount',
-    },
+    // {
+    //   label: `收藏数`,
+    //   name: 'collectionAmount',
+    // },
+    // {
+    //   label: `分享数`,
+    //   name: 'shareAmount',
+    // },
     {
       label: '推荐带货',
       name: 'promotionList',
@@ -103,6 +104,54 @@ const VideoDetail = (props) => {
         </>
       ),
     },
+  ];
+
+  const formItemsData = [
+    {
+      label: '浏览量',
+      name: 'onlookersNum',
+    },
+    {
+      label: '完播量',
+      name: 'viewNum',
+    },
+    {
+      label: '完播率',
+      // name: '',
+      render: (val, row) =>
+        row.onlookersNum === 0 ? '0' : `${((row.viewNum / row.onlookersNum) * 100).toFixed(2)}%`,
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="收藏数"
+          content="视频收藏数为初始数据+真实数据"
+        ></QuestionTooltip>
+      ),
+      name: 'collectionSimulationNum',
+      render: (val, row) => `${val}+${row.collectionRealNum}`,
+    },
+    {
+      label: (
+        <QuestionTooltip
+          type="quest"
+          title="分享数"
+          content="视频分享数为初始数据+真实数据"
+        ></QuestionTooltip>
+      ),
+      name: 'shareSimulationNum',
+      render: (val, row) => `${val}+${row.shareRealNum}`,
+    },
+    // {
+    //   label: '累计打赏卡豆数',
+    //   name: '',
+    // },
+
+    // {
+    //   label: '领豆人次',
+    //   name: '',
+    // },
   ];
 
   const handleUpdataSava = () => {
@@ -207,10 +256,17 @@ const VideoDetail = (props) => {
         {
           // 详情
           info: (
-            <DescriptionsCondition
-              formItems={formItems}
-              initialValues={detail}
-            ></DescriptionsCondition>
+            <>
+              <DescriptionsCondition
+                formItems={formItems}
+                initialValues={detail}
+              ></DescriptionsCondition>
+              <DescriptionsCondition
+                title="数据统计"
+                formItems={formItemsData}
+                initialValues={detail}
+              ></DescriptionsCondition>
+            </>
           ),
           // 修改
           edit: (

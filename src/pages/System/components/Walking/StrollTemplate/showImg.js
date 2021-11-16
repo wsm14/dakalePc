@@ -11,6 +11,8 @@ import explosive from './Img/explosive.png';
 import member from './Img/member.png';
 import selfTour from './Img/selfTour.png';
 import specialRecommend from './Img/specialRecommend.png';
+import selfTourResource from './Img/selfTourResource.png';
+import newProductRecommend from './Img/newProductRecommend.png';
 
 /**
  * 组件库
@@ -104,5 +106,19 @@ export default {
     moduleName: 'specialRecommend',
     drop: true,
     defaultImg: specialRecommend,
+  },
+  selfTourResource: {
+    name: '自我游',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    moduleName: 'selfTourResource',
+    drop: true,
+    defaultImg: selfTourResource,
+  },
+  newProductRecommend: {
+    name: '新品推荐',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    moduleName: 'newProductRecommend',
+    drop: true,
+    defaultImg: newProductRecommend,
   },
 };

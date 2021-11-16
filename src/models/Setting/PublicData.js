@@ -34,6 +34,7 @@ import {
   fetchGetGoodsSearch,
   fetchListImportSubsidyRole,
   fetchListUserByIds,
+  fetchGetPlatformEquitySelect,
 } from '@/services/PublicServices';
 
 export default {
@@ -59,6 +60,7 @@ export default {
     skuMerchantList: { list: [], total: 0 },
     CouponListSearch: [],
     goodsList: [],
+    platformEquity: { list: [], total: 0 },
   },
 
   reducers: {
@@ -78,6 +80,12 @@ export default {
       return {
         ...state,
         groupMreList: [],
+      };
+    },
+    clearPlatformEquity(state) {
+      return {
+        ...state,
+        platformEquity: { list: [], total: 0 },
       };
     },
   },
@@ -283,6 +291,7 @@ export default {
         },
       });
     },
+    // 特惠商品
     *fetchGetSpecialGoodsSelect({ payload }, { call, put }) {
       const response = yield call(fetchGetSpecialGoodsSelect, payload);
       if (!response) return;
@@ -291,6 +300,23 @@ export default {
         type: 'save',
         payload: {
           specialGoods: { list: content.specialGoodsList, total: content.total },
+        },
+      });
+    },
+    // 权益商品
+    *fetchGetPlatformEquitySelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetPlatformEquitySelect, {
+        ...payload,
+        goodsStatus: 1,
+        status: 1,
+        adminFlag: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          platformEquity: { list: content.recordList, total: content.total },
         },
       });
     },

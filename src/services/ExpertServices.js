@@ -16,6 +16,36 @@ export function fetchExpertUserList(params) {
   });
 }
 
+// get 达人列表 - 获取哒人标识
+export function fetchDarenTag(params) {
+  return request('/admin/dictionaryAdmin/getDictionaryAdmin', {
+    params,
+  });
+}
+
+// get 达人列表 - 获取BD列表
+export function fetchGetBDList(params) {
+  return request('/admin/sell/getSell', {
+    params,
+  });
+}
+
+// post 达人列表 - 设置BD
+export function fetchGetBDSet(data) {
+  return request('/admin/userManagement/updateUserSellId', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 达人列表 - 设置哒人标识
+export function fetchDarenTagSet(data) {
+  return request('/admin/kol/setUserIdentification', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 达人列表 - 封停哒人
 export function fetchExpertStop(data) {
   return request('/admin/kol/suspendKol', {
@@ -149,6 +179,25 @@ export function fetchExpertUserAchievementTotalList(params) {
 }
 
 // 哒人业绩 end
+
+// 团购业绩
+
+// get 团购业绩 - 团购业绩统计列表
+export function fetchCombineBuyList(params) {
+  return request('/admin/communityConsume/performanceStatistics', {
+    params,
+  });
+}
+
+// post 团购业绩 - 导出
+export function fetchCombineBuyImportExcel(data) {
+  return request('/admin/excelImport/importExcel', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 团购业绩 end
 
 // 哒人分销明细
 

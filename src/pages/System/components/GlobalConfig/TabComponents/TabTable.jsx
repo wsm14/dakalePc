@@ -87,6 +87,7 @@ const TabTable = (props) => {
         cRef={childRef}
         loading={loading}
         columns={getColumns}
+        pagination={false}
         btnExtra={cardBtnList}
         rowKey={(record) => `${record.configIndexTabId}`}
         params={{ userOs: tabKey, version }}

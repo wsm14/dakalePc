@@ -51,6 +51,7 @@ export const EXPORT_TYPE = {
 export const EXPORT_LIST_TYPE = {
   momentCollarBean: '视频领豆明细',
   verificationList: '核销列表',
+  performanceStatistics: '团购业绩统计',
 };
 
 // 加盟申请状态
@@ -185,6 +186,25 @@ export const BANNER_LOOK_AREA = {
   user: '仅用户可见',
 };
 
+// 全局弹窗配置 - 弹窗频率
+export const MODAL_FREQUENCY = { day: '每天一次', times: '每次进入页面', only: '仅弹一次' };
+
+// 全局弹窗配置 - 弹窗类型
+export const MARKET_MODAL_TYPE = { image: '图片', url: '链接' };
+
+// 全局弹窗配置 - 活动状态
+export const MARKET_STATUS_TYPE = ['即将开始', '展示中', '已结束'];
+
+//全局弹窗配置 - 跳转类型
+export const MARKET_JUMP_TYPE = { '': '无', h5: 'H5', native: '原生页面' };
+
+// 全局弹窗配置 - 可见范围
+export const MARKET_LOOK_AREA = {
+  all: '全部',
+  kol: '仅哒人可见',
+  user: '仅用户可见',
+};
+
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
 export const SPECIAL_STATUS = ['已下架', '活动中'];
@@ -230,7 +250,12 @@ export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, fals
 export const EXPRET_DISTRIBUTION_PAY_STATUS = ['付款', '核销', false, false, '退款'];
 
 // 用户来源
-export const USER_SOURCE = { weChat: '小程序', app: 'APP' };
+export const USER_SOURCE = {
+  weChat: '小程序',
+  app: 'APP',
+  communityWeChat: '哒小团',
+  markWeChat: '打卡乐',
+};
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
@@ -284,6 +309,7 @@ export const SUBSIDY_TYPE = {
   pushVideo: '打赏补贴',
   momentStop: '打赏回收',
   watchMoment: '看分享',
+  beanGame: '卡豆游戏',
 };
 
 // 补贴管理 补贴卡豆类型
@@ -467,6 +493,7 @@ export const SPECIAL_RECOMMEND_TYPE = {
   dayPush: '每日必推',
   aroundSpecial: '特惠推荐',
   selfTour: '自我游',
+  newProductRecommend: '新品推荐',
 };
 
 // 特惠活动 - 是否删除
@@ -704,6 +731,12 @@ export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程�
 export const TABINDEX_VIDEO_TYPE = {
   all: '通用',
   detail: '城市',
+};
+
+// 全局配置 - 风向标 - 标签类型
+export const TABINDEX_VANE_TYPE = {
+  all: '通用',
+  city: '城市',
 };
 
 // 是否已打赏

@@ -168,6 +168,7 @@ export default [
           'bussinessStatus',
           'diary',
           'rate',
+          'shareImg',
         ],
       },
       {
@@ -233,7 +234,7 @@ export default [
         path: '/expert/uaerlist',
         name: '哒人列表',
         component: './Expert/ExpertUserList',
-        buttons: ['status', 'recommendList', 'statistics', 'BDSet', 'diary'],
+        buttons: ['status', 'recommendList', 'statistics', 'BDSet', 'diary', 'set'],
       },
       {
         path: '/expert/level',
@@ -264,6 +265,12 @@ export default [
         name: '哒人业绩统计',
         component: './Expert/ExpertUserAchievementTotal',
         // buttons: ['exportList'],
+      },
+      {
+        path: '/expert/combineBuyAchievementTotal',
+        name: '团购业绩',
+        component: './Expert/CombineBuyAchievementTotal',
+        buttons: ['exportList'],
       },
       {
         path: '/expert/distribution',
@@ -322,6 +329,21 @@ export default [
         buttons: ['exportList'],
       },
       // 广告营销 market
+      {
+        path: '/market/addNewActivity',
+        name: '拉新活动',
+        component: './Market/AddNewActivity',
+        buttons: [
+          'save',
+          'eye',
+          'edit',
+          'down',
+          'couponAdd',
+          'destoryDetail',
+          'orderDetail',
+          'couponDetail',
+        ],
+      },
       {
         path: '/market/areaQuery',
         name: '合伙查询系统',
@@ -393,6 +415,12 @@ export default [
         buttons: ['save', 'del', 'edit', 'up', 'down'],
       },
       {
+        path: '/market/markConfigure',
+        name: '营销功能配置',
+        component: './Market/MarketConfigure',
+        buttons: ['save', 'del', 'edit', 'up', 'down'],
+      },
+      {
         path: '/market/videoAd',
         name: '新手视频',
         component: './Market/NoviceAdvert',
@@ -423,7 +451,7 @@ export default [
           'down',
           'info',
           'rewardPeo',
-          // 'shareImg',
+          'shareImg',
           'commerceSet',
           'portraitEdit',
         ],
@@ -442,7 +470,7 @@ export default [
           'rewardPeo',
           'rewardInfo',
           'config',
-          // 'shareImg',
+          'shareImg',
           'commerceSet',
           'portraitEdit',
         ],
@@ -497,6 +525,7 @@ export default [
           'exportList',
           'diary',
           'addRemain',
+          'shareImg',
         ],
       },
       {
@@ -679,7 +708,7 @@ export default [
         path: '/redEnvelopes/beanRedEnvelopes',
         name: '卡豆红包',
         component: './RedEnvelopes/BeanRedEnvelopes',
-        buttons: ['authEdit', 'getRecord'],
+        buttons: ['authEdit', 'getRecord', 'del'],
       },
     ],
   },

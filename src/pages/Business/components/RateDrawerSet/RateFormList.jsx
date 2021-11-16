@@ -159,7 +159,7 @@ const RateFormList = (props) => {
 
               {/* 过期无操作按钮 */}
               {!checkArr[index]?.isExpired && (
-                <a onClick={() => handleSave(name, checkArr[index]?.time[0]? 'edit' : 'save')}>
+                <a onClick={() => handleSave(name, checkArr[index]?.time[0] ? 'edit' : 'save')}>
                   {checkEditType(index) && checkArr[index]?.time[0] != '' ? '编辑' : '保存'}
                 </a>
               )}

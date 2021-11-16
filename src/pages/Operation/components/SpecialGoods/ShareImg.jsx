@@ -20,26 +20,42 @@ const ShareImg = (props) => {
   const [form] = Form.useForm();
   const formItems = [
     {
-      label: '朋友圈分享图',
+      label: '分享海报图',
       name: 'shareImg',
       type: 'upload',
       maxFile: 1,
       rules: [{ required: false }],
     },
     {
-      label: '好友分享图',
+      label: '微信好友分享图',
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
       maxSize: 128,
-      imgRatio: WXFRIEND_SHARE_IMG,
+      isCut: false,
       rules: [{ required: false }],
       extra: '请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上）',
+    },
+    {
+      label: '推荐理由',
+      name: 'recommendReason',
+      type: 'textArea',
+      maxLength: 100,
+      rows: 3,
+      rules: [{ required: false }],
+    },
+    {
+      label: '自定义标题',
+      name: 'customTitle',
+      type: 'textArea',
+      maxLength: 50,
+      rows: 3,
+      rules: [{ required: false }],
     },
   ];
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      const { shareImg = '', friendShareImg = '' } = values;
+      const { shareImg = '', friendShareImg = '', recommendReason, customTitle } = values;
       const sImg = await aliOssUpload(shareImg);
       const fImg = await aliOssUpload(friendShareImg);
       dispatch({
@@ -49,6 +65,8 @@ const ShareImg = (props) => {
           ownerId: ownerIdString,
           shareImg: sImg.toString(),
           friendShareImg: fImg.toString(),
+          recommendReason,
+          customTitle,
         },
         callback: onClose,
       });

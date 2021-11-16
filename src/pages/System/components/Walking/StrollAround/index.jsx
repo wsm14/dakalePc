@@ -91,6 +91,7 @@ const TabConfigure = (props) => {
             loading={loading}
             columns={getColumns}
             btnExtra={cardBtnList}
+            pagination={false}
             rowKey={(record) => `${record.configWanderAroundModuleId}`}
             params={{ userOs: tabKey, area: 'all' }}
             dispatchType="walkingManage/fetchAroundModuleList"

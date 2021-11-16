@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { EditOutlined, CheckOutlined } from '@ant-design/icons';
 import { Form, InputNumber, Button } from 'antd';
@@ -30,6 +30,9 @@ const ShareWeightSet = ({ detail, onSubmit, loading }) => {
       );
     });
   };
+  useEffect(() => {
+    weight && form.setFieldsValue({ weight: Number(weight) });
+  }, [weight]);
 
   return (
     <Form initialValues={{ weight: Number(weight) }} form={form}>
