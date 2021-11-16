@@ -124,6 +124,7 @@ const PlatformEquitySet = ({
     {
       label: `商品库存`,
       name: 'total',
+      type: 'number',
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
       suffix: '份',
     },
@@ -158,7 +159,7 @@ const PlatformEquitySet = ({
       name: 'costPrice',
       type: 'number',
       precision: 2,
-      min: 0.01,
+      min: 0,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
@@ -168,7 +169,14 @@ const PlatformEquitySet = ({
       name: 'buyFlag',
       type: 'radio',
       select: COMMERCE_GOODSBUY_TYPE,
-      onChange: (e) => setBuyFlag(e.target.value),
+      onChange: (e) => {
+        form.setFieldsValue({
+          paymentModeObject: {
+            bean: 0,
+          },
+        });
+        setBuyFlag(e.target.value);
+      },
     },
     {
       label: '售卖',
@@ -182,7 +190,7 @@ const PlatformEquitySet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      visible: buyFlag == '0',
+      visible: buyFlag == '1',
       suffix: '卡豆',
     },
     {
