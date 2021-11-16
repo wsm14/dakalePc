@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import { Button, Form, Steps } from 'antd';
 import uploadLive from '@/utils/uploadLive';
 import aliOssUpload from '@/utils/aliOssUpload';
@@ -61,6 +62,7 @@ const ShareDrawer = (props) => {
                     promotionIdStr:
                       contact[{ coupon: 'ownerCouponIdString', goods: 'specialGoodsId' }[cType]],
                     promotionType: { coupon: 'reduce', goods: 'special' }[cType],
+                    createTime: moment().format('YYYY-MM-DD HH:mm:ss'),
                   },
                   callback: () => {
                     onClose();
