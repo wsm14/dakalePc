@@ -27,6 +27,14 @@ const tabList = [
     key: 'virtualProduct',
     tab: '虚拟商品',
   },
+  {
+    key: 'commerceOrder',
+    tab: '电商订单',
+  },
+  {
+    key: 'groupBuyOrder',
+    tab: '团购订单',
+  },
 ];
 
 const OrdersList = () => {
@@ -40,6 +48,8 @@ const OrdersList = () => {
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,
     virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
+    commerceOrder: <OtherOrders {...listProps}></OtherOrders>,
+    groupBuyOrder: <VirtualOrders {...listProps}></VirtualOrders>,
   };
 
   return (
