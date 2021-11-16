@@ -90,7 +90,7 @@ const ShareCoupon = (props) => {
           onClose={() => setVisibleContact(false)}
         ></BuyContactModal>
       ) : (
-        //  特惠商品
+        //  特惠商品、权益商品
         <GoodsSelectModal
           typeGoods={type}
           form={form}

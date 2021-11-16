@@ -7,7 +7,7 @@ import './index.less';
 
 const { TabPane } = Tabs;
 /**
- * 选择特惠商品（多选）
+ * 选择特惠/权益商品（多选）
  */
 const GoodsSelectModal = (props) => {
   const {
@@ -117,7 +117,9 @@ const GoodsSelectModal = (props) => {
 
   return (
     <Modal
-      title={`选择特惠商品（已选 ${selectItem.length}）`}
+      title={`选择${typeGoods === 'specialGoods' ? '特惠' : '权益'}商品（已选 ${
+        selectItem.length
+      }）`}
       width={1125}
       visible={visible}
       afterClose={() => setTabKey('goods')}
@@ -137,7 +139,7 @@ const GoodsSelectModal = (props) => {
         handleSearch={fetchSpecialGoodsList}
       ></SearchCondition>
       <Tabs type="card" onChange={setTabKey} style={{ overflow: 'initial' }}>
-        <TabPane tab="特惠商品" key="goods">
+        <TabPane tab={`${typeGoods === 'specialGoods' ? '特惠' : '权益'}商品`} key="goods">
           {listDom}
         </TabPane>
       </Tabs>
