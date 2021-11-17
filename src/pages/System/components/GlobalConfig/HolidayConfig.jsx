@@ -107,6 +107,7 @@ const HolidayConfig = (props) => {
         dispatchType="globalConfig/fetchListFestivalConfig"
         {...festivalConfigList}
       ></TableDataBlock>
+      {/* 新增 */}
       <HolidayConfigSet
         visible={visible}
         onClose={() => setVisible(false)}

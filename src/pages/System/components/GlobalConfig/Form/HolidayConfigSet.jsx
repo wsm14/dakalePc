@@ -30,6 +30,7 @@ const HolidayConfigSet = (props) => {
     {
       label: '节日名称',
       name: 'name',
+      maxLength: 20,
       // style: { flex: 0.8 },
       // labelCol: { span: 7 },
     },
