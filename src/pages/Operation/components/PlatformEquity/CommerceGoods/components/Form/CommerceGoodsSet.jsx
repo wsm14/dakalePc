@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'umi';
-import { Button } from 'antd';
 import { NUM_INT_MAXEIGHT } from '@/common/regExp';
 import { COMMERCE_GOODSBUY_TYPE, COUPON_BUY_RULE, COMMISSION_TYPE } from '@/common/constant';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 
-const PlatformEquitySet = ({
+const CommerceGoodsSet = ({
   form,
   editActive,
   loading,
@@ -18,23 +17,17 @@ const PlatformEquitySet = ({
   commissionShow,
   setCommissionShow,
   initialValues = {},
-  skuMerchantList,
   setContent,
 }) => {
   // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
   const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive);
+
   const [radioData, setRadioData] = useState({
     buyRule: 'unlimited', // 购买上限规则
   });
   const [manualList, setManualList] = useState([]); // 分佣模版字段
-  const [mreList, setMreList] = useState({
-    groupId: null,
-    type: 'merchant',
-    keys: [],
-    list: [],
-  }); // 店铺备选参数，选择店铺后回显的数据
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
@@ -48,11 +41,8 @@ const PlatformEquitySet = ({
 
   useEffect(() => {
     if (initialValues.relateName) {
-      setMreList({
-        type: initialValues.relateType,
-        groupId: initialValues.relateId,
-      });
       setBuyFlag(initialValues.buyFlag);
+      saveSelectData({ buyRule: initialValues.buyRule });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
@@ -85,7 +75,7 @@ const PlatformEquitySet = ({
     dispatch({
       type: 'baseData/fetchGoodsIsCommission',
       payload: {
-        serviceType: 'rightGoods',
+        serviceType: 'commerceGoods',
         categoryId: categoryId,
       },
       callback: ({ manuallyFlag, manualDivisions }) => {
@@ -260,6 +250,7 @@ const PlatformEquitySet = ({
       max: 999999,
       visible: commissionShow === '1',
       suffix: '卡豆',
+      disabled: commonDisabled,
       onChange: () => {
         const keyArr = manualList.map((i) => [
           'serviceDivisionDTO',
@@ -297,22 +288,6 @@ const PlatformEquitySet = ({
         formItems={formItems}
         initialValues={initialValues}
       ></FormCondition>
-      {/* <MreSelect
-        dispatchType={'baseData/fetchSkuAvailableMerchant'}
-        rowKey="merchantId"
-        keys={mreList.keys}
-        visible={visible}
-        mreList={mreList.list}
-        params={{ groupId: mreList.groupId }}
-        onOk={(val) => {
-          saveMreData(val);
-          form.setFieldsValue({ merchantIds: val.keys });
-        }}
-        onCancel={() => setVisible(false)}
-        columns={getColumns}
-        searchShow={false}
-        list={skuMerchantList}
-      ></MreSelect> */}
     </>
   );
 };
@@ -322,4 +297,4 @@ export default connect(({ baseData, loading, specialGoods }) => ({
   skuMerchantList: baseData.skuMerchantList,
   selectList: baseData.groupMreList,
   loading: loading.effects['baseData/fetchGetGroupMreList'],
-}))(PlatformEquitySet);
+}))(CommerceGoodsSet);

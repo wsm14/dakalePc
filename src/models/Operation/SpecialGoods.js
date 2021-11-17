@@ -35,7 +35,10 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchSpecialGoodsList, payload);
+      const response = yield call(fetchSpecialGoodsList, {
+        activityType: 'specialGoods',
+        ...payload,
+      });
       if (!response) return;
       const { content } = response;
       yield put({
