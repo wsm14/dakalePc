@@ -474,7 +474,7 @@ export function fetchOrdersList(params) {
 
 // get 订单列表 - 导出
 export function fetchOrdersImport(params) {
-  return request('/admin/orderManagement/listOrderImport', {
+  return request('/admin/orderManagement/listOrderExport', {
     params,
   });
 }

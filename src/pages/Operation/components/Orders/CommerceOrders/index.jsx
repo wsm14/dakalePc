@@ -1,32 +1,28 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag, Badge, Avatar } from 'antd';
 import {
   ORDERS_STATUS,
-  ORDER_CLOSE_TYPE,
   ORDER_TYPE_PROPS,
+  ORDER_CLOSE_TYPE,
   ORDER_PAY_LOGO,
-  GOODS_CLASS_TYPE,
 } from '@/common/constant';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
-import PopImgShow from '@/components/PopImgShow';
 import Ellipsis from '@/components/Ellipsis';
-import coupon from '@public/coupon.png';
 import excelHeder from './excelHeder';
+import OrderDrawer from './OrderDrawer';
 import styles from '../style.less';
 
-const VirtualOrders = (props) => {
+const CommerceOrders = (props) => {
   const { ordersList, loading, loadings, dispatch, tabkey } = props;
   const { list } = ordersList;
 
   const [visible, setVisible] = useState(false);
+  const [visivleSet, setVisivleSet] = useState(false);
 
   const childRef = useRef();
-
-  useEffect(() => {
-    childRef.current.fetchGetData();
-  }, [tabkey]);
 
   //详情
   const fetchGoodsDetail = (index) => {
@@ -44,15 +40,20 @@ const VirtualOrders = (props) => {
     });
   };
 
+  //发货和查看详情
+
+  const fetchOderDrawer = (type, index) => {
+    setVisivleSet({
+      type,
+      show: true,
+    });
+  };
+
   // 搜索参数
   const searchItems = [
     {
       label: '订单号',
       name: 'orderSn',
-    },
-    {
-      label: '商品名称',
-      name: 'virtualProductName',
     },
     {
       label: '商品/券名称',
@@ -63,6 +64,17 @@ const VirtualOrders = (props) => {
       label: '下单人',
       name: 'userId',
       type: 'user',
+    },
+    {
+      label: '店铺/集团',
+      name: 'merchantId',
+      type: 'merchant',
+    },
+    {
+      label: '订单属性',
+      type: 'select',
+      name: 'orderType',
+      select: ORDER_TYPE_PROPS,
     },
     {
       label: '状态',
@@ -77,6 +89,12 @@ const VirtualOrders = (props) => {
       end: 'orderTimeEnd',
     },
     {
+      label: '核销日期',
+      type: 'rangePicker',
+      name: 'verificationTimeStart',
+      end: 'verificationTimeEnd',
+    },
+    {
       label: '地区',
       name: 'city',
       type: 'cascader',
@@ -88,26 +106,12 @@ const VirtualOrders = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商品',
-      dataIndex: 'goodsImg',
+      title: '商品名称',
+      dataIndex: 'goodsName',
       render: (val, row) => (
-        <Badge.Ribbon text={ORDER_TYPE_PROPS[row.orderType]} color="cyan" placement="start">
-          <PopImgShow url={row.goodsImg || coupon} onClick={row.goodsImg ? null : () => {}}>
-            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                {row.goodsType && row.goodsType !== 'reduce' && (
-                  <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
-                )}
-                <Ellipsis length={10} tooltip>
-                  {row.goodsName}
-                </Ellipsis>
-              </div>
-              <div style={{ marginTop: 5 }} className={styles.specFont}>
-                订单号：{row.orderSn}
-              </div>
-            </div>
-          </PopImgShow>
-        </Badge.Ribbon>
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
       ),
     },
     {
@@ -117,14 +121,9 @@ const VirtualOrders = (props) => {
       render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
-      title: '充值帐号',
-      dataIndex: 'virtualProductAccount',
-    },
-    {
       title: '单价/数量',
       align: 'center',
-      dataIndex: 'realPrice',
-      render: (val, row) => `￥${val || 0}\n×${row.goodsCount || 0}`,
+      dataIndex: 'goodsCount',
     },
     {
       title: '用户实付',
@@ -144,9 +143,34 @@ const VirtualOrders = (props) => {
       },
     },
     {
-      title: '下单时间',
+      title: '商户实收',
+      align: 'center',
+      dataIndex: 'actualCashFee',
+      render: (val, record) => {
+        const actualBean = record.actualBeanFee ? record.actualBeanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + actualBean ? (Number(val) + actualBean).toFixed(2) : 0}`}</div>
+
+            {/* <div className={styles.fontColor}>
+              {record.actualBeanFee ? `(${record.actualBeanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div> */}
+          </div>
+        );
+      },
+    },
+    {
+      title: '下单/核销时间',
       dataIndex: 'createTime',
       align: 'center',
+      render: (val, row) => (
+        <div style={{ textAlign: 'center' }}>
+          <div>{val}</div>
+          <div className={styles.fontColor}>已核销：{row.verificationCount}</div>
+          <div className={styles.fontColor}>{row.verificationTime}</div>
+        </div>
+      ),
     },
     {
       title: '状态',
@@ -177,6 +201,14 @@ const VirtualOrders = (props) => {
           type: 'info',
           click: () => fetchGoodsDetail(index),
         },
+        {
+          type: 'goodsDeliver',
+          click: () => fetchOderDrawer('add', index),
+        },
+        {
+          type: 'goodsView',
+          click: () => fetchOderDrawer('info', index),
+        },
       ],
     },
   ];
@@ -185,7 +217,7 @@ const VirtualOrders = (props) => {
     {
       type: 'excel',
       dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get(), orderType: tabkey },
+      data: { ...get(), goodsOrScanFlag: tabkey },
       exportProps: { header: excelHeder },
     },
   ];
@@ -194,17 +226,17 @@ const VirtualOrders = (props) => {
     <>
       <TableDataBlock
         btnExtra={extraBtn}
-        firstFetch={false}
         noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ orderType: tabkey }}
+        params={{ goodsOrScanFlag: tabkey }}
         rowKey={(record) => `${record.orderId}`}
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
       ></TableDataBlock>
+      {/* 详情 */}
       <OrderDetailDraw
         childRef={childRef}
         visible={visible}
@@ -214,6 +246,9 @@ const VirtualOrders = (props) => {
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
+      {/* 发货 */}
+      {/*  查看物流*/}
+      <OrderDrawer childRef={childRef} visible={visivleSet} onClose={() => setVisivleSet(false)} />
     </>
   );
 };
@@ -223,4 +258,4 @@ export default connect(({ ordersList, baseData, loading }) => ({
   ordersList,
   hubData: baseData.hubData,
   loading: loading.models.ordersList,
-}))(VirtualOrders);
+}))(CommerceOrders);

@@ -8,7 +8,7 @@ export default [
   {
     header: '广告营销',
     type: 'public',
-    children: ['mainBanner', 'capsulePosition', 'recharge', 'notify'],
+    children: ['mainBanner', 'capsulePosition', 'recharge', 'beanSpecialArea', 'notify'],
   },
   {
     header: '功能区',

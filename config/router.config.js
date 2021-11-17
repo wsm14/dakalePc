@@ -497,7 +497,7 @@ export default [
         path: '/operation/orders',
         name: '订单列表',
         component: './Operation/OrdersList',
-        buttons: ['info', 'exportList'],
+        buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver'],
       },
       {
         path: '/operation/verificationList',
