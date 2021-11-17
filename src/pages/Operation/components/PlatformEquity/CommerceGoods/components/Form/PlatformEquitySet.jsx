@@ -21,7 +21,10 @@ const PlatformEquitySet = ({
   skuMerchantList,
   setContent,
 }) => {
-  // const [radioData, setRadioData] = useState({ goodsType: 'single' }); // 商品类型 goodsType
+  // 是否 editActive = 'againUp' || 'again' || 'edit'三种都隐藏的数据
+  const commonDisabled = ['againUp', 'again', 'edit'].includes(editActive);
+  //活动中隐藏的编辑项//edit 独有不展示
+  const editDisabled = ['edit'].includes(editActive);
   const [radioData, setRadioData] = useState({
     buyRule: 'unlimited', // 购买上限规则
   });
@@ -101,6 +104,7 @@ const PlatformEquitySet = ({
       placeholder: '请输入搜索',
       loading,
       select: selectList,
+      disabled: commonDisabled,
       onSearch: fetchGetMre,
       onChange: (val, data) => {
         const { option } = data;
@@ -125,6 +129,7 @@ const PlatformEquitySet = ({
       label: `商品库存`,
       name: 'total',
       type: 'number',
+      disabled: editDisabled,
       addRules: [{ pattern: NUM_INT_MAXEIGHT, message: '投放总量必须为整数，且不可为0' }],
       suffix: '份',
     },
@@ -148,6 +153,7 @@ const PlatformEquitySet = ({
       label: '原价',
       name: 'oriPrice',
       type: 'number',
+      disabled: editDisabled,
       precision: 2,
       min: 0,
       max: 999999.99,
@@ -158,6 +164,7 @@ const PlatformEquitySet = ({
       label: '成本价',
       name: 'costPrice',
       type: 'number',
+      disabled: editDisabled,
       precision: 2,
       min: 0,
       max: 999999.99,
@@ -168,6 +175,7 @@ const PlatformEquitySet = ({
       label: '售卖价格',
       name: 'buyFlag',
       type: 'radio',
+      disabled: commonDisabled,
       select: COMMERCE_GOODSBUY_TYPE,
       onChange: (e) => {
         form.setFieldsValue({
@@ -187,6 +195,7 @@ const PlatformEquitySet = ({
       label: '卡豆数',
       name: ['paymentModeObject', 'bean'],
       type: 'number',
+      disabled: commonDisabled,
       precision: 0,
       min: 0,
       max: 999999,
@@ -197,6 +206,7 @@ const PlatformEquitySet = ({
       label: '现金',
       name: ['paymentModeObject', 'cash'],
       type: 'number',
+      disabled: commonDisabled,
       precision: 2,
       min: 0.01,
       max: 999999.99,
@@ -208,8 +218,9 @@ const PlatformEquitySet = ({
       label: '商家结算价',
       name: 'merchantPrice',
       type: 'number',
+      disabled: editDisabled,
       precision: 2,
-      min: 0,
+      min: 0.01,
       max: 999999.99,
       formatter: (value) => `￥ ${value}`,
       suffix: '元',

@@ -151,13 +151,13 @@ export default {
         switch (topItem.type) {
           case 'pickUp':
             topTabObj.findFile = topItem.file;
-            topTabObj.findImagePrefix = topItem.imagePrefix;
+            topTabObj.findWidth = topItem.width;
             topTabObj.find = topItem.image;
             topTabObj.findId = topItem.configFestivalDetailId;
             break;
           case 'lifeFun':
             topTabObj.lifeFile = topItem.file;
-            topTabObj.lifeImagePrefix = topItem.imagePrefix;
+            topTabObj.lifeWidth = topItem.width;
             topTabObj.life = topItem.image;
             topTabObj.lifeId = topItem.configFestivalDetailId;
             break;

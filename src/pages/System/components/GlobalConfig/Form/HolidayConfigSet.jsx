@@ -52,12 +52,15 @@ const HolidayConfigSet = (props) => {
       rules: [{ required: false }],
     },
     {
-      label: '“发现”动效前缀名',
-      maxSize: 100,
-      name: ['topTab', 'findImagePrefix'],
+      label: '“发现”动效图宽度',
+      name: ['topTab', 'findWidth'],
+      type: 'number',
+      placeholder: '请输入数字',
+      precision: 0,
       // labelCol: { span: 7 },
       // style: { flex: 1 },
       rules: [{ required: false }],
+      suffix: 'px',
     },
     {
       label: '“发现”动效图',
@@ -79,12 +82,15 @@ const HolidayConfigSet = (props) => {
       rules: [{ required: false }],
     },
     {
-      label: '“生活”动效前缀名',
-      maxSize: 100,
-      name: ['topTab', 'lifeImagePrefix'],
+      label: '“生活”动效图宽度',
+      name: ['topTab', 'lifeWidth'],
+      type: 'number',
+      placeholder: '请输入数字',
+      precision: 0,
       // labelCol: { span: 7 },
       // style: { flex: 1 },
       rules: [{ required: false }],
+      suffix: 'px',
     },
     {
       label: '“生活”动效图',
@@ -229,10 +235,8 @@ const HolidayConfigSet = (props) => {
       const bottomOImg = checkFileData(bottomIcon.order);
       const bottomMImg = checkFileData(bottomIcon.main);
       const findFiles = checkFileData(topTab.findFile);
-      // const findImagePrefix = checkFileData(topTab.findImagePrefix);
       const findImgs = checkFileData(topTab.find);
       const lifeFiles = checkFileData(topTab.lifeFile);
-      // const lifeImagePrefix = checkFileData(topTab.lifeImagePrefix);
       const lifeImgs = checkFileData(topTab.life);
 
       // const res = await aliOssUpload([
@@ -286,7 +290,7 @@ const HolidayConfigSet = (props) => {
           type: 'pickUp',
           image: topTab.find,
           file: topTab.findFile,
-          imagePrefix: topTab.findImagePrefix,
+          width: topTab.findWidth.toString(),
           configFestivalDetailId: tObj.findId,
         },
       ];
@@ -296,7 +300,7 @@ const HolidayConfigSet = (props) => {
           type: 'lifeFun',
           image: topTab.life,
           file: topTab.lifeFile,
-          imagePrefix: topTab.lifeImagePrefix,
+          width: topTab.lifeWidth.toString(),
           configFestivalDetailId: tObj.lifeId,
         },
       ];

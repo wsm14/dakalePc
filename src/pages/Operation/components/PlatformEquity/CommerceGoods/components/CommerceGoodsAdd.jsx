@@ -20,7 +20,7 @@ const CommerceGoodsAdd = (props) => {
   //   const [formRuleAdd] = Form.useForm(); // 规则 数据表单
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
-  const [buyFlag, setBuyFlag] = useState('0'); // 商品购买类型
+  const [buyFlag, setBuyFlag] = useState('1'); // 商品购买类型
 
   //   const [saveData, setSaveData] = useState(null);
   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
@@ -46,6 +46,34 @@ const CommerceGoodsAdd = (props) => {
   const handleUpData = () => {
     form.validateFields().then((values) => {
       console.log('values', values);
+      const { activityGoodsImg, ...other } = values;
+      const aimg = checkFileData(activityGoodsImg);
+      aliOssUpload(aimg).then((res) => {
+        // console.log('res', res);
+        // return;
+        dispatch({
+          type: {
+            add: 'specialGoods/fetchPlatformEquityGoodsSave',
+            edit: 'specialGoods/fetchPlatformEquityGoodsEdit',
+            again: 'specialGoods/fetchPlatformEquityGoodsSave',
+            againUp: 'specialGoods/fetchPlatformEquityGoodsEdit',
+          }[type],
+          payload: {
+            ...other,
+            rightFlag: 0,
+            ownerType: 'admin',
+            ownerId: -1,
+            richText: content, // 富文本
+            activityGoodsImg: res.toString(),
+            activityType: 'commerceGoods',
+          },
+          callback: () => {
+            onClose();
+            // setVisibleRule(false);
+            childRef.current.fetchGetData();
+          },
+        });
+      });
     });
   };
 
