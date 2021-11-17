@@ -60,6 +60,8 @@ const CommerceGoodsAdd = (props) => {
           }[type],
           payload: {
             ...other,
+            goodsType: 'single',
+            relateType: 'merchant',
             rightFlag: 0,
             ownerType: 'admin',
             ownerId: -1,

@@ -7,6 +7,7 @@ import {
   SPECIAL_STATUS,
   GOODS_CLASS_TYPE,
   SPECIAL_USERTIME_TYPE,
+  COMMERCEGOODS_STATUS,
 } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import { RefuseModal } from '@/components/PublicComponents';
@@ -52,7 +53,7 @@ const PlatformEquityGoods = (props) => {
       label: '活动状态',
       name: 'status',
       type: 'select',
-      select: SPECIAL_STATUS,
+      select: COMMERCEGOODS_STATUS,
     },
     {
       label: '活动时间',
@@ -110,41 +111,12 @@ const PlatformEquityGoods = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '商品/店铺名称',
+      title: '商品名称',
       fixed: 'left',
-      dataIndex: 'goodsImg',
-      render: (val, row) => (
-        <div style={{ display: 'flex' }}>
-          <PopImgShow url={val} />
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              flex: 1,
-              marginLeft: 5,
-            }}
-          >
-            <div style={{ display: 'flex' }}>
-              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
-                {GOODS_CLASS_TYPE[row.goodsType]}
-              </Tag>
-              <Ellipsis length={10} tooltip>
-                {row.goodsName}
-              </Ellipsis>
-            </div>
-            <div style={{ display: 'flex', marginTop: 5 }}>
-              <Tag>{BUSINESS_TYPE[row.relateType]}</Tag>
-              <Ellipsis length={10} tooltip>
-                {row.relateName}
-              </Ellipsis>
-            </div>
-          </div>
-        </div>
-      ),
+      dataIndex: 'goodsName',
     },
     {
-      title: '原价/售价',
+      title: '商品价值/售价',
       align: 'right',
       dataIndex: 'paymentModeObject',
       render: (val = {}, row) => (
@@ -161,57 +133,22 @@ const PlatformEquityGoods = (props) => {
       ),
     },
     {
-      title: '使用有效期',
-      dataIndex: 'useStartTime',
-      render: (val, row) => {
-        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
-        if (!useTimeRule) return '';
-        if (useTimeRule === 'fixed') {
-          return useStartTime + '~' + useEndTime;
-        } else {
-          if (delayDays === '0') {
-            return `领取后立即生效\n有效期${activeDays}天`;
-          }
-          return `领取后${delayDays}天生效\n有效期${activeDays}天`;
-        }
-      },
-    },
-    {
-      title: '活动时间',
-      align: 'center',
-      dataIndex: 'activityStartTime',
-      render: (val, row) => (
-        <>
-          {row.activityTimeRule === 'infinite'
-            ? `${row.createTime} ~ 长期`
-            : `${val} ~ ${row.activityEndTime}`}
-          <div>{SPECIAL_STATUS[row.status]}</div>
-        </>
-      ),
-    },
-    {
-      title: '剩余数量',
+      title: '剩余库存',
       align: 'right',
       dataIndex: 'remain',
       sorter: (a, b) => a.remain - b.remain,
     },
     {
-      title: '下单数量',
+      title: '累计销售',
       align: 'right',
       dataIndex: 'soldGoodsCount',
       sorter: (a, b) => a.soldGoodsCount - b.soldGoodsCount,
     },
     {
-      title: '核销数量',
+      title: '状态',
       align: 'right',
-      dataIndex: 'writeOffGoodsCount',
-      sorter: (a, b) => a.writeOffGoodsCount - b.writeOffGoodsCount,
-    },
-    {
-      title: '商家所属地区/行业',
-      align: 'center',
-      dataIndex: 'districtCode',
-      render: (val, row) => `${checkCityName(val)}\n${row.topCategoryName}/${row.categoryName}`,
+      dataIndex: 'status',
+      render: (val) => COMMERCEGOODS_STATUS[val],
     },
     {
       title: '创建时间',
@@ -343,7 +280,7 @@ const PlatformEquityGoods = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ adminFlag: 1, activityType: 'commerceGoods' }}
+        params={{ activityType: 'commerceGoods' }}
         rowKey={(record) => `${record.specialGoodsId}`}
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}

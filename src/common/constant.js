@@ -126,6 +126,9 @@ export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
 
+// 电商商品状态
+export const COMMERCEGOODS_STATUS = ['已下架', '活动中', '即将开始'];
+
 // 新人下单配置福利状态
 export const WELFARE_STATUS = ['未开始', '进行中', '已结束'];
 
