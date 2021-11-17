@@ -38,19 +38,15 @@ const TabTable = (props) => {
   ];
 
   const handleEdit = (configSelfTourGoodsId) => {
-    // dispatch({
-    //   type: 'walkingManage/fetchGetSelfTourGoodsDetail',
-    //   payload: { configSelfTourGoodsId },
-    //   callback: (detail) => {
-    //     setVisibleConfigure({
-    //       show: true,
-    //       detail: { configSelfTourGoodsId, specialGoods: detail },
-    //     });
-    //   },
-    // });
-    setVisibleConfigure({
-      show: true,
-      detail: { configSelfTourGoodsId },
+    dispatch({
+      type: 'walkingManage/fetchGetSelfTourGoodsDetail',
+      payload: { configSelfTourGoodsId },
+      callback: (detail) => {
+        setVisibleConfigure({
+          show: true,
+          detail: { configSelfTourGoodsId, specialGoods: detail },
+        });
+      },
     });
   };
 

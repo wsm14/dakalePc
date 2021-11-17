@@ -85,6 +85,11 @@ const OrderDetailDraw = (props) => {
       label: '联系电话',
       name: 'userMobile',
     },
+    {
+      label: '收货信息',
+      name: 'address',
+      visible: tabkey === 'commerceOrders',
+    },
   ];
   //店铺信息
   const merchartItem = [

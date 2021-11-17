@@ -445,7 +445,8 @@ export default {
         const response1 = yield call(fetchAddNewActivityDetailCheck, {
           activityIds: activityGoodsIds.toString(),
         });
-        const { activityGoodsDTOS = [] } = response1;
+        const { content = {} } = response1;
+        const { activityGoodsDTOS = [] } = content;
         specialGoods = activityGoodsDTOS;
       }
       callback(specialGoods);
