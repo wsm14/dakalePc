@@ -440,7 +440,7 @@ export default {
       const { activityGoodsObjectList = [] } = configSelfTourGoodsDTO;
 
       let specialGoods = [];
-      if (activityGoodsObjectList) {
+      if (activityGoodsObjectList.length > 0) {
         const activityGoodsIds = activityGoodsObjectList.map((item) => item.activityGoodsId);
         const response1 = yield call(fetchAddNewActivityDetailCheck, {
           activityIds: activityGoodsIds.toString(),
