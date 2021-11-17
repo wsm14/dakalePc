@@ -3,6 +3,7 @@ import { Card, Result } from 'antd';
 import { authCheck } from '@/layouts/AuthConsumer';
 import Goods from './components/PlatformEquity/Goods';
 import Coupon from './components/PlatformEquity/Coupon';
+import CommerceGoods from './components/PlatformEquity/CommerceGoods';
 
 /**
  * 平台权益
@@ -17,6 +18,11 @@ const tabList = [
     tab: '权益券',
     key: 'coupon',
     auth: 'equityCoupon',
+  },
+  {
+    tab: '电商商品',
+    key: 'commerceGoods',
+    auth: 'equityCommerceGoods',
   },
 ];
 
