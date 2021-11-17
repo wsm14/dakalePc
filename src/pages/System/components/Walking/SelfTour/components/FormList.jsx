@@ -11,9 +11,11 @@ const FormList = (props) => {
   console.log('goodsItem', goodsItem);
   return (
     <div className={styles.productContent}>
-      <Ellipsis length={10} tooltip>
-        {goodsItem.ownerName}
-      </Ellipsis>
+      <div className={styles.ownerName}>
+        <Ellipsis length={10} tooltip>
+          {goodsItem.ownerName}
+        </Ellipsis>
+      </div>
       <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
         <div className={styles.ifame_btnArr}>
           <UpSquareOutlined

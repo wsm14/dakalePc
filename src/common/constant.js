@@ -257,7 +257,7 @@ export const USER_SOURCE = {
   weChat: '小程序',
   app: 'APP',
   communityWeChat: '哒小团',
-  markWeChat: '打卡乐',
+  markWeChat: '哒小卡',
 };
 
 // 合作意向类型
