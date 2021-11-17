@@ -18,9 +18,7 @@ const GroupBuyOrders = (props) => {
   const { list } = ordersList;
 
   const [visible, setVisible] = useState(false);
-  const [rowKey, setRowKey] = useState([]);
   const [cityList, setCityList] = useState([]);
-  const [visivleSet, setVisivleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -155,7 +153,7 @@ const GroupBuyOrders = (props) => {
     },
   ];
 
-  const expandedRowRender = (columns) => {
+  const expandedRowRender = (columns, record) => {
     return (
       <TableDataBlock
         noCard={false}
@@ -165,7 +163,7 @@ const GroupBuyOrders = (props) => {
         columns={columns}
         loading={loading}
         rowKey={(record) => `${record.id}`}
-        list={cityList}
+        list={record}
       ></TableDataBlock>
     );
   };
@@ -191,15 +189,8 @@ const GroupBuyOrders = (props) => {
         rowKey={(record) => `${record.orderId}`}
         dispatchType="ordersList/fetchGetList"
         expandable={{
-          expandedRowKeys: rowKey,
-          onExpand: (expanded, row) => {
-            console.log(expanded, row);
-            if (expanded) {
-              fetchAreaQueryOrderInfo({ pid: row.id });
-              setRowKey([`${row.id}`]);
-            } else setRowKey([]);
-          },
-          expandedRowRender: () => expandedRowRender(getColumns),
+          // expandedRowKeys: rowKey,
+          expandedRowRender: (record) => expandedRowRender(getColumns, record),
         }}
         {...ordersList}
       ></TableDataBlock>

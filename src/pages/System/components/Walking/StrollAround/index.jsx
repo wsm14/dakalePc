@@ -24,7 +24,7 @@ const TabConfigure = (props) => {
     {
       type: 'handle',
       // align: 'center',
-      dataIndex: 'configIndexTabId',
+      dataIndex: 'configWanderAroundModuleId',
       render: (val, row) => [
         {
           type: 'edit',
