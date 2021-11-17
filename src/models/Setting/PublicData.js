@@ -310,6 +310,7 @@ export default {
         goodsStatus: 1,
         status: 1,
         adminFlag: 1,
+        activityType: 'specialGoods',
       });
       if (!response) return;
       const { content } = response;

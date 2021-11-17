@@ -51,6 +51,7 @@ export const EXPORT_TYPE = {
 export const EXPORT_LIST_TYPE = {
   momentCollarBean: '视频领豆明细',
   verificationList: '核销列表',
+  performanceStatistics: '团购业绩统计',
 };
 
 // 加盟申请状态
@@ -124,6 +125,9 @@ export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
 
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
+
+// 电商商品状态
+export const COMMERCEGOODS_STATUS = ['已下架', '活动中', '即将开始'];
 
 // 新人下单配置福利状态
 export const WELFARE_STATUS = ['未开始', '进行中', '已结束'];
@@ -249,7 +253,12 @@ export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, fals
 export const EXPRET_DISTRIBUTION_PAY_STATUS = ['付款', '核销', false, false, '退款'];
 
 // 用户来源
-export const USER_SOURCE = { weChat: '小程序', app: 'APP' };
+export const USER_SOURCE = {
+  weChat: '小程序',
+  app: 'APP',
+  communityWeChat: '哒小团',
+  markWeChat: '打卡乐',
+};
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };
@@ -560,6 +569,7 @@ export const SERVICE_TYPE = {
   reduceCoupon: '优惠券',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  commerceGoods: '电商品',
 };
 
 // 模板类型 divisionTemplateType
@@ -683,6 +693,9 @@ export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
 
 // 平台权益 - 商品售卖类型
 export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
+
+// 平台权益 - 电商商品售卖类型
+export const COMMERCE_GOODSBUY_TYPE = { 1: '卡豆+现金', 2: '现金' };
 
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];

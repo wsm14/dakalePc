@@ -3,11 +3,11 @@ import { connect, Link } from 'umi';
 import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
 import { checkCityName } from '@/utils/utils';
 import excelHeder from './components/AchievementTotal/excelHeder';
-import debounce from 'lodash/debounce';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch, loadings } = props;
@@ -53,11 +53,11 @@ const ExpertUserAchievement = (props) => {
     },
     {
       label: '关联BD',
-      loadings,
+      loading: loadings,
       name: 'sellId',
       type: 'select',
       select: selectList,
-      onSearch: fetchGetSearch,
+      onSearch: (val) => fetchGetSearch(val),
       placeholder: '请输入BD姓名',
       fieldNames: { label: 'sellName', value: 'sellId' },
     },
@@ -207,7 +207,6 @@ const ExpertUserAchievement = (props) => {
       <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
-        keepData
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}

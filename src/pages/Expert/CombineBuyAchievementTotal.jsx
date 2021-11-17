@@ -3,11 +3,11 @@ import { connect, Link } from 'umi';
 import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
-import { checkCityName } from '@/utils/utils';
-import excelHeder from './components/AchievementTotal/excelHeder';
-import debounce from 'lodash/debounce';
+// import excelHeder from './components/AchievementTotal/excelHeder';
 
 const ExpertUserAchievement = (props) => {
   const { list, kolLevel, loading, dispatch, loadings } = props;
@@ -53,11 +53,11 @@ const ExpertUserAchievement = (props) => {
     },
     {
       label: '关联BD',
-      loadings,
+      loading: loadings,
       name: 'sellId',
       type: 'select',
       select: selectList,
-      onSearch: fetchGetSearch,
+      onSearch: (val) => fetchGetSearch(val),
       placeholder: '请输入BD姓名',
       fieldNames: { label: 'sellName', value: 'sellId' },
     },
@@ -65,6 +65,7 @@ const ExpertUserAchievement = (props) => {
 
   // 搜索BD
   const fetchGetSearch = debounce((content) => {
+    console.log(content);
     if (!content.replace(/'/g, '')) return;
     dispatch({
       type: 'expertUserList/fetchGetBDList',
@@ -122,6 +123,7 @@ const ExpertUserAchievement = (props) => {
       title: '团购销售额',
       align: 'center',
       dataIndex: 'communitySaleVolume',
+      render: (val) => `${Number(val).toFixed(2)}`,
     },
     {
       title: '团购订单数',
@@ -156,12 +158,20 @@ const ExpertUserAchievement = (props) => {
     });
   };
 
+  // const extraBtn = ({ get }) => [
+  //   {
+  //     type: 'excel',
+  //     dispatch: 'ordersList/fetchOrdersImport',
+  //     data: { ...get() },
+  //     exportProps: { header: excelHeder(kolLevel) },
+  //   },
+  // ];
+
   const extraBtn = ({ get }) => [
     {
       type: 'excel',
-      dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get() },
-      exportProps: { header: excelHeder(kolLevel) },
+      dispatch: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
+      data: { type: 'performanceStatistics', communityConsumeObject: { ...searchData }, ...get() },
     },
   ];
 
@@ -170,11 +180,10 @@ const ExpertUserAchievement = (props) => {
       <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
-        keepData
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
-        // btnExtra={extraBtn}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

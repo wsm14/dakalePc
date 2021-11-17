@@ -44,7 +44,7 @@ const VideoPutInSet = (props) => {
     setTastetype(detail.taste);
     setBrowseTypes(detail.browse || 'All');
     if (detail.browse != 'other') {
-      form.setFieldsValue({ browseType: Object.keys(tagList) });
+      form.setFieldsValue({ momentTags: Object.keys(tagList) });
     }
   }, []);
 
@@ -138,13 +138,13 @@ const VideoPutInSet = (props) => {
       type: 'radio',
       select: { All: '全部', other: '自定义' },
       onChange: (e) => {
-        form.setFieldsValue({ browseType: Object.keys(tagList) });
+        form.setFieldsValue({ momentTags: Object.keys(tagList) });
         setBrowseTypes(e.target.value);
       },
     },
     {
       label: '位置选择',
-      name: 'browseType',
+      name: 'momentTags',
       type: 'checkbox',
       disabled: browseTypes === 'All',
       select: tagList,

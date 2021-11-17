@@ -270,6 +270,7 @@ export default [
         path: '/expert/combineBuyAchievementTotal',
         name: '团购业绩',
         component: './Expert/CombineBuyAchievementTotal',
+        buttons: ['exportList'],
       },
       {
         path: '/expert/distribution',

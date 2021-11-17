@@ -28,7 +28,7 @@
 //       rules: [{ required: false }],
 //     },
 //     {
-//       label: '好友分享图',
+//       label: '微信好友分享图',
 //       name: 'friendShareImg',
 //       type: 'upload',
 //       maxFile: 1,

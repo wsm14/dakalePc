@@ -6,7 +6,7 @@ import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
 const BDSet = (props) => {
-  const { visible = {}, onClose, dispatch, loading } = props;
+  const { visible = {}, onClose, dispatch, loading, childRef } = props;
 
   const { show = '', detail = {} } = visible;
 
@@ -19,7 +19,10 @@ const BDSet = (props) => {
       dispatch({
         type: 'expertUserList/fetchGetBDSet',
         payload: { userId: detail.kolUserId, ...values },
-        callback: onClose,
+        callback: () => {
+          childRef.current.fetchGetData();
+          onClose();
+        },
       });
     });
   };

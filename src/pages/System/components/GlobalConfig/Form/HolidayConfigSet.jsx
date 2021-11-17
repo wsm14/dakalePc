@@ -11,6 +11,7 @@ import aliOssUpload from '@/utils/aliOssUpload';
 const HolidayConfigSet = (props) => {
   const { visible, onClose, childRef, dispatch, loading } = props;
   const { show, type, initialValues = {} } = visible;
+  console.log(visible, 'visible');
   const [form] = Form.useForm();
 
   const {
@@ -18,43 +19,108 @@ const HolidayConfigSet = (props) => {
     bottomIcon: bObj = {},
     pickUpBeans: pObj = {},
     wanderAround: wObj = {},
+    topTab: tObj = {},
   } = initialValues;
 
   const disabledDate = (current) => {
-    return current && current < moment().endOf('day').subtract(1,'day');
+    return current && current < moment().endOf('day').subtract(1, 'day');
   };
 
   const formItems = [
     {
       label: '节日名称',
       name: 'name',
-      style: { flex: 0.8 },
-      labelCol: { span: 7 },
+      maxLength: 20,
+      // style: { flex: 0.8 },
+      // labelCol: { span: 7 },
     },
     {
       label: '展示时间',
       type: 'rangePicker',
       name: 'showTime',
       disabledDate: disabledDate,
-      style: { flex: 1 },
-      labelCol: { span: 6 },
+      // style: { flex: 1 },
+      // labelCol: { span: 6 },
     },
+    {
+      title: '顶部tab',
+      label: '“发现”动效json文件',
+      type: 'otherUpload',
+      extra: '请上传动效zip文件',
+      name: ['topTab', 'findFile'],
+      // labelCol: { span: 8 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
+    },
+    {
+      label: '“发现”动效图宽度',
+      name: ['topTab', 'findWidth'],
+      type: 'number',
+      placeholder: '请输入数字',
+      precision: 0,
+      // labelCol: { span: 7 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
+      suffix: 'px',
+    },
+    {
+      label: '“发现”动效图',
+      type: 'upload',
+      extra: '请上传100kb的png格式图片',
+      maxSize: 100,
+      name: ['topTab', 'find'],
+      // labelCol: { span: 7 },
+      // style: { width: '100%' },
+      rules: [{ required: false }],
+    },
+    {
+      label: '“生活”动效json文件',
+      type: 'otherUpload',
+      extra: '请上传动效zip文件',
+      name: ['topTab', 'lifeFile'],
+      // labelCol: { span: 6 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
+    },
+    {
+      label: '“生活”动效图宽度',
+      name: ['topTab', 'lifeWidth'],
+      type: 'number',
+      placeholder: '请输入数字',
+      precision: 0,
+      // labelCol: { span: 7 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
+      suffix: 'px',
+    },
+    {
+      label: '“生活”动效图',
+      type: 'upload',
+      extra: '请上传100kb的png格式图片',
+      maxSize: 100,
+      name: ['topTab', 'life'],
+      // labelCol: { span: 7 },
+      // style: { width: '100%' },
+      rules: [{ required: false }],
+    },
+    // {
+    //   title: '捡豆',
+    //   label: '左上角',
+    //   type: 'upload',
+    //   maxFile: 1,
+    //   extra: '请上传140*48px的png格式图片',
+    //   imgRatio: LEFT_TOP_ICON,
+    //   name: ['pickUpBeans', 'upperLeftCorner'],
+    // },
     {
       title: '捡豆',
-      label: '左上角',
-      type: 'upload',
-      maxFile: 1,
-      extra: '请上传140*48px的png格式图片',
-      imgRatio: LEFT_TOP_ICON,
-      name: ['pickUpBeans', 'upperLeftCorner'],
-    },
-    {
       label: '右下角倒计时（未领取）',
       type: 'upload',
       maxFile: 1,
       extra: '请上传84*84px的png格式图片',
       imgRatio: RIGHT_COUNT_DWON,
       name: ['pickUpBeans', 'lowerRightCornerCountdown'],
+      rules: [{ required: false }],
     },
     {
       label: '右下角倒计时（已领取）',
@@ -63,6 +129,7 @@ const HolidayConfigSet = (props) => {
       extra: '请上传84*84px的png格式图片',
       imgRatio: RIGHT_COUNT_DWON,
       name: ['pickUpBeans', 'lowerRightCornerCountdownDraw'],
+      rules: [{ required: false }],
     },
     {
       label: '右下角倒计时动效',
@@ -70,15 +137,17 @@ const HolidayConfigSet = (props) => {
       extra: '请上传100kb的png格式图片',
       maxSize: 100,
       name: ['pickUpBeans', 'lowerRightCornerCountdownDynamic'],
-      labelCol: { span: 7 },
-      style: { width: '100%' },
+      // labelCol: { span: 7 },
+      // style: { width: '100%' },
+      rules: [{ required: false }],
     },
     {
       label: '倒计时动效前缀名',
       maxSize: 100,
       name: ['pickUpBeans', 'imagePrefix'],
-      labelCol: { span: 7 },
-      style: { flex: 1 },
+      // labelCol: { span: 7 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
     },
     {
       title: '逛逛',
@@ -88,8 +157,9 @@ const HolidayConfigSet = (props) => {
       extra: '请上传750*360px的png格式图片',
       imgRatio: TOP_BGIMG,
       name: ['wanderAround', 'topBackground'],
-      labelCol: { span: 5 },
-      style: { flex: 1 },
+      // labelCol: { span: 5 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
     },
     {
       title: '底部icon',
@@ -99,6 +169,7 @@ const HolidayConfigSet = (props) => {
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
       name: ['bottomIcon', 'pickUpBeans'],
+      rules: [{ required: false }],
     },
     {
       label: '逛逛',
@@ -107,6 +178,7 @@ const HolidayConfigSet = (props) => {
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
       name: ['bottomIcon', 'wanderAround'],
+      rules: [{ required: false }],
     },
     {
       label: '订单',
@@ -115,6 +187,7 @@ const HolidayConfigSet = (props) => {
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
       name: ['bottomIcon', 'order'],
+      rules: [{ required: false }],
     },
     {
       label: '我的',
@@ -123,6 +196,7 @@ const HolidayConfigSet = (props) => {
       extra: '请上传88*88px的png格式图片',
       imgRatio: TABBAR_ICON,
       name: ['bottomIcon', 'main'],
+      rules: [{ required: false }],
     },
     {
       title: '配置文件',
@@ -130,18 +204,28 @@ const HolidayConfigSet = (props) => {
       type: 'otherUpload',
       extra: '请上传动效zip文件',
       name: ['pickUpBeans', 'file'],
-      labelCol: { span: 6 },
-      style: { flex: 1 },
+      // labelCol: { span: 6 },
+      // style: { flex: 1 },
+      rules: [{ required: false }],
     },
   ];
 
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      let { pickUpBeans = {}, wanderAround = {}, bottomIcon = {}, showTime, name = '' } = values;
+      // console.log(values, 'values');
+      // return;
+      let {
+        topTab = {},
+        pickUpBeans = {},
+        wanderAround = {},
+        bottomIcon = {},
+        showTime,
+        name = '',
+      } = values;
       const beginDay = showTime[0].format('YYYY-MM-DD');
       const endDay = showTime[1].format('YYYY-MM-DD');
 
-      const pickTopimg = checkFileData(pickUpBeans.upperLeftCorner);
+      // const pickTopimg = checkFileData(pickUpBeans.upperLeftCorner);
       const pickBimg = checkFileData(pickUpBeans.lowerRightCornerCountdown);
       const pickBimgDraw = checkFileData(pickUpBeans.lowerRightCornerCountdownDraw);
       const pickBnamicimg = checkFileData(pickUpBeans.lowerRightCornerCountdownDynamic);
@@ -151,30 +235,78 @@ const HolidayConfigSet = (props) => {
       const bottomWImg = checkFileData(bottomIcon.wanderAround);
       const bottomOImg = checkFileData(bottomIcon.order);
       const bottomMImg = checkFileData(bottomIcon.main);
+      const findFiles = checkFileData(topTab.findFile);
+      const findImgs = checkFileData(topTab.find);
+      const lifeFiles = checkFileData(topTab.lifeFile);
+      const lifeImgs = checkFileData(topTab.life);
 
-      const res = await aliOssUpload([
-        ...pickTopimg,
-        ...pickBimg,
-        ...files,
-        ...wandTopImg,
-        ...bottomPImg,
-        ...bottomWImg,
-        ...bottomOImg,
-        ...bottomMImg,
-        ...pickBimgDraw,
-        ...pickBnamicimg,
-      ]);
+      // const res = await aliOssUpload([
+      //   ...pickTopimg,
+      //   ...pickBimg,
+      //   ...files,
+      //   ...wandTopImg,
+      //   ...bottomPImg,
+      //   ...bottomWImg,
+      //   ...bottomOImg,
+      //   ...bottomMImg,
+      //   ...pickBimgDraw,
+      //   ...pickBnamicimg,
+      // ]);
 
-      pickUpBeans.upperLeftCorner = res.slice(0, 1).toString();
-      pickUpBeans.lowerRightCornerCountdown = res.slice(1, 2).toString();
-      pickUpBeans.file = res.slice(2, 3).toString();
-      wanderAround.topBackground = res.slice(3, 4).toString();
-      bottomIcon.pickUpBeans = res.slice(4, 5).toString();
-      bottomIcon.wanderAround = res.slice(5, 6).toString();
-      bottomIcon.order = res.slice(6, 7).toString();
-      bottomIcon.main = res.slice(7, 8).toString();
-      pickUpBeans.lowerRightCornerCountdownDraw = res.slice(8, 9).toString();
-      pickUpBeans.lowerRightCornerCountdownDynamic = res.slice(9).toString();
+      const lowerRightCornerCountdownImg = await aliOssUpload(pickBimg);
+      const fileFiles = await aliOssUpload(files);
+      const topBackgroundImg = await aliOssUpload(wandTopImg);
+      const pickUpBeansImg = await aliOssUpload(bottomPImg);
+      const wanderAroundImg = await aliOssUpload(bottomWImg);
+      const orderImg = await aliOssUpload(bottomOImg);
+      const mainImg = await aliOssUpload(bottomMImg);
+      const lowerRightCornerCountdownDrawImg = await aliOssUpload(pickBimgDraw);
+      const lowerRightCornerCountdownDynamicImg = await aliOssUpload(pickBnamicimg);
+      const findFileFiles = await aliOssUpload(findFiles);
+      const findImg = await aliOssUpload(findImgs);
+      const lifeFileFiles = await aliOssUpload(lifeFiles);
+      const lifeImg = await aliOssUpload(lifeImgs);
+
+      // pickUpBeans.upperLeftCorner = await aliOssUpload(pickTopimg).toString();
+      pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdownImg.toString();
+      pickUpBeans.file = fileFiles.toString();
+      wanderAround.topBackground = topBackgroundImg.toString();
+      bottomIcon.pickUpBeans = pickUpBeansImg.toString();
+      bottomIcon.wanderAround = wanderAroundImg.toString();
+      bottomIcon.order = orderImg.toString();
+      bottomIcon.main = mainImg.toString();
+      pickUpBeans.lowerRightCornerCountdownDraw = lowerRightCornerCountdownDrawImg.toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic = lowerRightCornerCountdownDynamicImg.toString();
+      topTab.findFile = findFileFiles.toString();
+      topTab.find = findImg.toString();
+      topTab.lifeFile = lifeFileFiles.toString();
+      topTab.life = lifeImg.toString();
+
+      // console.log(topTab.findFile);
+      // return;
+
+      const findArr = [
+        {
+          topType: 'topTab',
+          type: 'pickUp',
+          image: topTab.find,
+          file: topTab.findFile,
+          width: topTab.findWidth.toString(),
+          configFestivalDetailId: tObj.findId,
+        },
+      ];
+      const lifeArr = [
+        {
+          topType: 'topTab',
+          type: 'lifeFun',
+          image: topTab.life,
+          file: topTab.lifeFile,
+          width: topTab.lifeWidth.toString(),
+          configFestivalDetailId: tObj.lifeId,
+        },
+      ];
+      // console.log(findArr);
+      // return;
 
       const { file, imagePrefix, ...other } = pickUpBeans;
       const pickArr = Object.keys(other).map((key) => {
@@ -218,7 +350,13 @@ const HolidayConfigSet = (props) => {
           name,
           beginDay,
           endDay,
-          configFestivalDetailDTOS: [...pickArr, ...wanderArr, ...bottomArr],
+          configFestivalDetailDTOS: [
+            ...findArr,
+            ...lifeArr,
+            ...pickArr,
+            ...wanderArr,
+            ...bottomArr,
+          ],
         },
         callback: () => {
           onClose();
@@ -243,8 +381,8 @@ const HolidayConfigSet = (props) => {
   return (
     <DrawerCondition {...modalProps}>
       <FormCondition
-        labelCol={{ span: 12 }}
-        style={{ display: 'flex', flexWrap: 'wrap' }}
+        // labelCol={{ span: 12 }}
+        // style={{ display: 'flex', flexWrap: 'wrap' }}
         formItems={formItems}
         initialValues={initialValues}
         form={form}
