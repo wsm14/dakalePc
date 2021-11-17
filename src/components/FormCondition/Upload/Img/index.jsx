@@ -112,7 +112,6 @@ const UploadBlock = (props) => {
     imgRatio,
     disabled,
     multiple = true,
-    compress = false,
   } = props;
 
   const fileKeyName = Array.isArray(name) ? name[1] : name;
@@ -144,9 +143,8 @@ const UploadBlock = (props) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj || file);
     }
-
     const showFile =
-      fileExtr === '.gif'
+      fileExtr === '.gif' || !isCut
         ? file.url || file.preview
         : file.originFileObj
         ? file.originFileObj
@@ -163,7 +161,7 @@ const UploadBlock = (props) => {
       : previewTitle.key;
     const uid = previewTitle.uid;
     let newimg = fileLists || [];
-    imageCompress(file, compress, maxSize).then(({ file }) => {
+    imageCompress(file, maxSize).then(({ file }) => {
       const thumbUrl = URL.createObjectURL(file);
       if (newimg.findIndex((i) => i.uid == uid) === -1) {
         newimg = [...newimg, { uid, url: thumbUrl, thumbUrl, originFileObj: file }];
@@ -241,7 +239,7 @@ const UploadBlock = (props) => {
             fileList.filter((file) => file.dklFileStatus !== 'out');
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
-          // 是否传入时裁剪
+          // 是否传入时裁剪 git不允许裁剪
           if ((imgRatio || isCut) && fileExtr !== '.gif') {
             imageCompress(value.file.originFileObj || value.file).then(({ blob }) => {
               blob.uid = value.file.uid;
@@ -294,17 +292,17 @@ const UploadBlock = (props) => {
       </DragAndDropHOC>
       <Modal
         destroyOnClose
-        title={previewTitle.fileType === '.gif' ? '查看图片' : '编辑图片'}
+        title={previewTitle.fileType === '.gif' || isCut === false ? '查看图片' : '编辑图片'}
         width={950}
         visible={previewVisible}
-        maskClosable={previewTitle.fileType === '.gif'}
+        maskClosable={previewTitle.fileType === '.gif' || isCut === false}
         onCancel={() => setPreviewVisible(false)}
         footer={null}
         zIndex={100000}
       >
-        {previewTitle.fileType === '.gif' ? (
+        {previewTitle.fileType === '.gif' || isCut === false ? (
           <div style={{ textAlign: 'center' }}>
-            <img src={previewImage} alt="" srcset="" />
+            <img src={previewImage} alt="" srcset="" style={{ width: '100%' }} />
           </div>
         ) : (
           <ImgCutView

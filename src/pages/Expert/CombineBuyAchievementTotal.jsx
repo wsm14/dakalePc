@@ -123,6 +123,7 @@ const ExpertUserAchievement = (props) => {
       title: '团购销售额',
       align: 'center',
       dataIndex: 'communitySaleVolume',
+      render: (val) => `${Number(val).toFixed(2)}`,
     },
     {
       title: '团购订单数',

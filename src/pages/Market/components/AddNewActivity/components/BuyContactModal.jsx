@@ -92,7 +92,7 @@ const FreeContactSelectModal = (props) => {
         handleSearch={fetchPlatformEquityList}
       ></SearchCondition>
       <Tabs type="card" style={{ overflow: 'initial' }}>
-        <TabPane tab="特惠商品" key="goods">
+        <TabPane tab="权益商品" key="goods">
           {listDom}
         </TabPane>
       </Tabs>

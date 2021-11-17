@@ -253,7 +253,12 @@ export const EXPRET_DISTRIBUTION_STATUS = ['待分佣', '已分佣', false, fals
 export const EXPRET_DISTRIBUTION_PAY_STATUS = ['付款', '核销', false, false, '退款'];
 
 // 用户来源
-export const USER_SOURCE = { weChat: '小程序', app: 'APP' };
+export const USER_SOURCE = {
+  weChat: '小程序',
+  app: 'APP',
+  communityWeChat: '哒小团',
+  markWeChat: '打卡乐',
+};
 
 // 合作意向类型
 export const FRANCHISE_COOPERATION_TYPE = { company: '省公司', partner: '区县代理' };

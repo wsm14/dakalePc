@@ -94,17 +94,18 @@ const VideoSet = (props) => {
 
   const formItems = [
     {
-      label: '好友分享图',
+      label: '微信好友分享图',
       name: 'friendShareImg',
       type: 'upload',
       maxFile: 1,
-      imgRatio: WXFRIEND_SHARE_IMG,
+      maxSize: 128,
+      isCut: false,
       rules: [{ required: false }],
       extra: (
         <>
           <span>{`请上传比例为 5 * 4，大小128kb以内的jpg图片（375 * 300以上`}</span>
           <br />
-          <span>{`底部确认按钮只对好友分享图有效`}</span>
+          <span>{`底部确认按钮只对微信好友分享图有效`}</span>
         </>
       ),
     },

@@ -3,7 +3,7 @@
  * 分类图片 108 / 108
  * 品牌logo 50 / 50
  */
-export const SQUARE_ICON = 1 / 1;
+export const SQUARE_ICON = 108 / 108;
 
 // 等级图标
 export const LEVEL_ICON = 50 / 40;
@@ -18,7 +18,7 @@ export const OPEN_ADVERT = 750 / 1624;
 export const VIDEO_ADVERT = 544 / 960;
 
 // 品牌宣传视频封面
-export const BRAND_VIDEO_ADVERT = 16 / 9;
+export const BRAND_VIDEO_ADVERT = 640 / 360;
 
 // 风向标
 export const VANE_ICON = 80 / 80;
