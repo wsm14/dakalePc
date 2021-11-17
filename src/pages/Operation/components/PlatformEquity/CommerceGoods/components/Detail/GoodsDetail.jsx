@@ -1,24 +1,21 @@
 import React from 'react';
-import { connect } from 'umi';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
-import SetMealTable from './SetMealTable';
-import MerchantListTable from './MerchantListTable';
 import {
   BUSINESS_TYPE,
   GOODS_CLASS_TYPE,
   SPECIAL_DESC_TYPE,
-  PEQUITY_GOODSBUY_TYPE,
   COMMISSION_TYPE,
+  COMMERCE_GOODSBUY_TYPE,
+  COUPON_BUY_RULE,
 } from '@/common/constant';
 
 const GoodsDetail = (props) => {
-  const { detail, merchantList } = props;
+  const { detail } = props;
   const { goodsType, relateType, goodsDescType, buyFlag, serviceDivisionDTO = {} } = detail;
   const { divisionTemplateType, ...other } = serviceDivisionDTO; // 分佣
 
   const ActiveformItems = [
     {
-      title: '参与活动的店铺',
       name: 'relateType',
       label: '店铺类型',
       render: (val) => BUSINESS_TYPE[val],
@@ -31,11 +28,6 @@ const GoodsDetail = (props) => {
 
   const GoodFormItem = [
     {
-      name: 'goodsType',
-      label: '商品类型',
-      render: (val) => GOODS_CLASS_TYPE[val],
-    },
-    {
       name: 'activityGoodsImg',
       label: `${GOODS_CLASS_TYPE[goodsType]}轮播图`,
       type: 'upload',
@@ -44,21 +36,13 @@ const GoodsDetail = (props) => {
       name: 'goodsName',
       label: `${GOODS_CLASS_TYPE[goodsType]}名称`,
     },
-    {
-      name: 'goodsType',
-      label: '套餐单品',
-      show: goodsType == 'package',
-      render: (val, row) => (
-        <SetMealTable packageGroupObjects={row.packageGroupObjects || []}></SetMealTable>
-      ),
-    },
   ];
 
   const GoodPriceItem = [
     {
       name: 'buyFlag',
       label: '售卖类型',
-      render: (val) => PEQUITY_GOODSBUY_TYPE[val],
+      render: (val) => COMMERCE_GOODSBUY_TYPE[val],
     },
     {
       name: 'oriPrice',
@@ -69,6 +53,12 @@ const GoodsDetail = (props) => {
       show: buyFlag === '1',
       name: 'paymentModeObject',
       render: (val) => `${val.bean || 0} 卡豆 + ${val.cash} 元`,
+    },
+    {
+      label: '现金',
+      show: buyFlag === '2',
+      name: 'paymentModeObject',
+      render: (val) => `${val.cash} 元`,
     },
   ];
 
@@ -84,58 +74,53 @@ const GoodsDetail = (props) => {
       show: goodsDescType === '1',
       render: (val) => <div dangerouslySetInnerHTML={{ __html: val }}></div>,
     },
+  ];
+
+  const BuyRegularItem = [
     {
-      label: `${GOODS_CLASS_TYPE[goodsType]}介绍`,
-      name: 'goodsDesc',
-      show: goodsDescType === '0',
-      type: 'textArea',
+      name: 'buyRule',
+      label: '购买上限',
+      render: (val) => COUPON_BUY_RULE[val],
     },
     {
-      label: `${GOODS_CLASS_TYPE[goodsType]}介绍图片`,
-      name: 'goodsDescImg',
-      show: goodsDescType === '0',
-      type: 'upload',
+      label: `单人${
+        { personLimit: '每人', dayLimit: '每天', unlimited: '不限' }[detail.buyRule]
+      }购买份数`,
+      name: { personLimit: 'maxBuyAmount', dayLimit: 'dayMaxBuyAmount' }[detail.buyRule],
+      render: (val) => (val ? `${val}份` : '--'),
     },
+    // {
+    //   name: 'needOrder',
+    //   label: '是否需要预约购买',
+    //   render: (val) => (val == 1 ? '是' : '否'),
+    // },
+    // {
+    //   name: 'buyDesc',
+    //   label: '购买须知',
+    //   render: (val) => val.map((items, ins) => <div key={ins}>{items}</div>),
+    // },
+    // {
+    //   name: 'allowRefund',
+    //   label: '退款规则',
+    //   render: (val, row) => (
+    //     <>
+    //       <div>
+    //         <span style={{ marginRight: '8px' }}>是否允许随时退款:</span>
+    //         <span>{val == 1 ? '是' : '否'}</span>
+    //       </div>
+    //       <div>
+    //         <span style={{ marginRight: '8px' }}>是否允许过期退款: </span>
+    //         <span>{row.allowExpireRefund == 1 ? '是' : '否'}</span>
+    //       </div>
+    //     </>
+    //   ),
+    // },
   ];
 
   const formItemComiss = Object.keys(other).map((i) => ({
     label: `${COMMISSION_TYPE[i.replace('Bean', '')]}卡豆`,
     name: ['serviceDivisionDTO', i],
   }));
-
-  const TagCell = ({ children }) => (
-    <span
-      style={{
-        display: 'inline-block',
-        padding: 8,
-        margin: '5px',
-        border: '1px solid #ddd',
-      }}
-    >
-      {children}
-    </span>
-  );
-
-  const formItemTag = [
-    {
-      label: '商家商品标签',
-      name: 'goodsTagList',
-      render: (val, row) => {
-        const { goodsTagList = [] } = row;
-        const tags = goodsTagList.filter((items) => items.tagType === 'merchant');
-        return tags.map((tag) => <TagCell key={tag.configGoodsTagId}>{tag.tagName}</TagCell>);
-      },
-    },
-    {
-      label: '平台商品标签',
-      name: 'platformGoodsTagList',
-      render: (val, row) => {
-        const { platformGoodsTagList = [] } = row;
-        const tags = platformGoodsTagList.filter((items) => items.tagType === 'platform');
-        return tags.map((tag) => <TagCell key={tag.configGoodsTagId}>{tag.tagName}</TagCell>);
-      },
-    },
-  ];
 
   return (
     <>
@@ -144,11 +129,6 @@ const GoodsDetail = (props) => {
         formItems={ActiveformItems}
         initialValues={detail}
       ></DescriptionsCondition>
-      {relateType === 'group' && (
-        <div style={{ margin: '10px' }}>
-          <MerchantListTable merchantList={merchantList || []}></MerchantListTable>
-        </div>
-      )}
       <DescriptionsCondition
         title="商品信息"
         formItems={GoodFormItem}
@@ -164,6 +144,11 @@ const GoodsDetail = (props) => {
         formItems={GoodDecItem}
         initialValues={detail}
       ></DescriptionsCondition>
+      <DescriptionsCondition
+        title="购买规则"
+        formItems={BuyRegularItem}
+        initialValues={detail}
+      ></DescriptionsCondition>
       {/* 当分佣方式为自定义佣金和手动分佣时才显示 */}
       {detail.divisionFlag === '1' && buyFlag == '1' && (
         <DescriptionsCondition
@@ -172,11 +157,6 @@ const GoodsDetail = (props) => {
           initialValues={detail}
         ></DescriptionsCondition>
       )}
-      <DescriptionsCondition
-        title="商品标签"
-        formItems={formItemTag}
-        initialValues={detail}
-      ></DescriptionsCondition>
     </>
   );
 };

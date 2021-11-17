@@ -1,25 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
-import {
-  SUBMIT_TYPE,
-  BUSINESS_TYPE,
-  SPECIAL_STATUS,
-  GOODS_CLASS_TYPE,
-  SPECIAL_USERTIME_TYPE,
-  COMMERCEGOODS_STATUS,
-} from '@/common/constant';
-import { checkCityName } from '@/utils/utils';
+import { SUBMIT_TYPE, COMMERCEGOODS_STATUS } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
-import Ellipsis from '@/components/Ellipsis';
-import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import CommerceGoodsAdd from './components/CommerceGoodsAdd';
-import PlatformEquityGoodsDetail from './components/PlatformEquityGoodsDetail';
+import CommerceGoodsDetail from './components/CommerceGoodsDetail';
 import RemainModal from './components/Detail/RemainModal';
 
 /**
- * 权益商品
+ * 电商商品
  */
 const PlatformEquityGoods = (props) => {
   const { specialGoods, loading, dispatch } = props;
@@ -27,7 +16,6 @@ const PlatformEquityGoods = (props) => {
 
   const childRef = useRef();
   const [visibleSet, setVisibleSet] = useState(false); // 新增特惠活动
-  const [searchType, setSearchType] = useState(null); // 搜索类型
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 审核拒绝 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false);
@@ -45,56 +33,10 @@ const PlatformEquityGoods = (props) => {
       name: 'goodsName',
     },
     {
-      label: '集团/店铺名',
-      name: 'relateId',
-      type: 'merchant',
-    },
-    {
       label: '活动状态',
       name: 'status',
       type: 'select',
       select: COMMERCEGOODS_STATUS,
-    },
-    {
-      label: '活动时间',
-      type: 'rangePicker',
-      name: 'activityStartTime',
-      end: 'activityEndTime',
-      disabledDate: () => false,
-    },
-    {
-      label: '使用有效期',
-      type: 'select',
-      name: 'useTimeRule',
-      allItem: false,
-      select: SPECIAL_USERTIME_TYPE,
-      handle: (form) => ({
-        onChange: (val) => {
-          setSearchType(val);
-          form.setFieldsValue({ gain: undefined });
-        },
-      }),
-    },
-    {
-      label: '有效期',
-      name: { gain: 'activeDays', fixed: 'useStartTime' }[searchType],
-      disabled: !searchType,
-      disabledDate: () => false,
-      type: { gain: 'number', fixed: 'rangePicker' }[searchType],
-      end: 'useEndTime',
-    },
-    {
-      label: '商家所属地区',
-      name: 'city',
-      type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
-    },
-    {
-      label: '店铺类型',
-      name: 'relateType',
-      type: 'select',
-      select: BUSINESS_TYPE,
     },
     {
       label: '创建时间',
@@ -193,10 +135,10 @@ const PlatformEquityGoods = (props) => {
             visible: ['0'].includes(status) && deleteFlag == '1', // 已下架 && 未删除
             click: () => fetchSpecialGoodsDetail(index, 'againUp'),
           },
-          {
-            type: 'diary',
-            click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
-          },
+          // {
+          //   type: 'diary',
+          //   click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
+          // },
           {
             title: '增加库存',
             type: 'addRemain',
@@ -230,12 +172,12 @@ const PlatformEquityGoods = (props) => {
   };
 
   // 获取日志信息
-  const fetchGetLogData = (payload) => {
-    dispatch({
-      type: 'baseData/fetchGetLogDetail',
-      payload,
-    });
-  };
+  // const fetchGetLogData = (payload) => {
+  //   dispatch({
+  //     type: 'baseData/fetchGetLogDetail',
+  //     payload,
+  //   });
+  // };
 
   // 增加库存
   const fetAddRemain = (id, remain) => {
@@ -285,14 +227,14 @@ const PlatformEquityGoods = (props) => {
         dispatchType="specialGoods/fetchGetList"
         {...specialGoods}
       ></TableDataBlock>
-      {/* 新增 编辑 详情*/}
+      {/* 新增 编辑 */}
       <CommerceGoodsAdd
         childRef={childRef}
         visible={visibleSet}
         onClose={() => setVisibleSet({ show: false })}
       ></CommerceGoodsAdd>
       {/* 详情 */}
-      <PlatformEquityGoodsDetail
+      <CommerceGoodsDetail
         visible={visibleInfo}
         total={list.length}
         getDetail={fetchSpecialGoodsDetail}
@@ -306,7 +248,7 @@ const PlatformEquityGoods = (props) => {
           })
         }
         onClose={() => setVisibleInfo(false)}
-      ></PlatformEquityGoodsDetail>
+      ></CommerceGoodsDetail>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}

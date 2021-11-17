@@ -4,7 +4,7 @@ import { Button, Form } from 'antd';
 import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
-import PreferentialSet from './Form/PlatformEquitySet';
+import CommerceGoodsSet from './Form/CommerceGoodsSet';
 // import PreferentialRuleSet from './Form/PlatformEquityRuleSet';
 
 const CommerceGoodsAdd = (props) => {
@@ -14,16 +14,12 @@ const CommerceGoodsAdd = (props) => {
   const { type = 'add', show = false, detail = {} } = visible;
 
   const [form] = Form.useForm(); // add
-  const [formEdit] = Form.useForm(); // edit
-  const [formAgain] = Form.useForm(); // again 数据表单
-  const [formAgainUp] = Form.useForm(); // againUp 数据表单
-  //   const [formRuleAdd] = Form.useForm(); // 规则 数据表单
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
   const [buyFlag, setBuyFlag] = useState('1'); // 商品购买类型
 
   //   const [saveData, setSaveData] = useState(null);
-  const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
+  //   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
 
   // 搜索店铺
   const fetchGetMre = () => {
@@ -46,6 +42,7 @@ const CommerceGoodsAdd = (props) => {
   const handleUpData = () => {
     form.validateFields().then((values) => {
       console.log('values', values);
+      const { id } = detail;
       const { activityGoodsImg, ...other } = values;
       const aimg = checkFileData(activityGoodsImg);
       aliOssUpload(aimg).then((res) => {
@@ -59,6 +56,7 @@ const CommerceGoodsAdd = (props) => {
             againUp: 'specialGoods/fetchPlatformEquityGoodsEdit',
           }[type],
           payload: {
+            id,
             ...other,
             goodsType: 'single',
             relateType: 'merchant',
@@ -79,15 +77,6 @@ const CommerceGoodsAdd = (props) => {
     });
   };
 
-  // 下一步
-  //   const handleUpAudit = () => {
-  //     ({ add: form, again: formAgain, edit: formEdit, againUp: formAgainUp }[type]
-  //       .validateFields()
-  //       .then((values) => {
-  //         setVisibleRule({ show: true, preData: values });
-  //       }));
-  //   };
-
   const listProp = {
     commissionShow,
     setCommissionShow,
@@ -102,7 +91,7 @@ const CommerceGoodsAdd = (props) => {
     add: {
       title: '新增活动',
       children: (
-        <PreferentialSet
+        <CommerceGoodsSet
           {...listProp}
           form={form}
           initialValues={{
@@ -112,25 +101,25 @@ const CommerceGoodsAdd = (props) => {
             paymentModeObject: { type: 'self' },
             packageGoodsObjects: [{}],
           }}
-        ></PreferentialSet>
+        ></CommerceGoodsSet>
       ),
     },
     again: {
       title: '重新发布活动',
       children: (
-        <PreferentialSet {...listProp} form={formAgain} initialValues={detail}></PreferentialSet>
+        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
       ),
     },
     againUp: {
       title: '编辑',
       children: (
-        <PreferentialSet {...listProp} form={formAgainUp} initialValues={detail}></PreferentialSet>
+        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
       ),
     },
     edit: {
       title: '修改活动',
       children: (
-        <PreferentialSet {...listProp} form={formEdit} initialValues={detail}></PreferentialSet>
+        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
       ),
     },
   }[type];
@@ -143,38 +132,13 @@ const CommerceGoodsAdd = (props) => {
     afterCallBack: () => fetchGetMre(),
     closeCallBack: () => {
       dispatch({ type: 'baseData/clearGroupMre' }); // 关闭清空搜索的商家数据
-      //   setSaveData(null);
     },
     footer: (
-      //   <Button
-      //     onClick={handleUpAudit}
-      //     disabled={{ 0: false, 1: !commissionShow }[buyFlag]}
-      //     type="primary"
-      //   >
-      //     下一步
-      //   </Button>
       <Button type="primary" onClick={handleUpData} loading={loading}>
         发布商品
       </Button>
     ),
   };
-
-  // 下一步：规则弹窗属性
-  //   const ruleModalProps = {
-  //     title: '规则设置',
-  //     visible: visibleRule.show,
-  //     afterCallBack: () => fetchGetMre(),
-  //     onClose: () => {
-  //       setSaveData(formRuleAdd.getFieldsValue());
-  //       setVisibleRule(false);
-  //     },
-  //     maskShow: false,
-  //     footer: (
-  //       <Button type="primary" onClick={handleUpData} loading={loading}>
-  //         发布商品
-  //       </Button>
-  //     ),
-  //   };
 
   return <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>;
 };
