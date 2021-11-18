@@ -172,7 +172,11 @@ const VideoDetail = (props) => {
         const newCoupon = [
           ...contact.map((item) => ({
             ...item,
-            promotionType: item.ownerCouponIdString ? 'coupon' : 'goods',
+            promotionType: item.ownerCouponIdString
+              ? 'coupon'
+              : item.promotionType === 'commerceGoods'
+              ? 'commerceGoods'
+              : 'goods',
           })),
           ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
         ];
@@ -186,12 +190,14 @@ const VideoDetail = (props) => {
                     {
                       free: 'ownerCouponIdString', // 免费
                       coupon: 'ownerCouponIdString', // 有价
+                      commerceGoods: 'specialGoodsId', // 电商商品
                     }[item.promotionType]
                   ],
             relateType: {
               goods: 'specialGoods',
               coupon: 'reduceCoupon',
               free: 'freeReduceCoupon',
+              commerceGoods: 'commerceGoods',
             }[item.promotionType],
             relateShardingKey: ownerId,
           })),

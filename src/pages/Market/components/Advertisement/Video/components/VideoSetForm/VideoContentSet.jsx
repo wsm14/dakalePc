@@ -137,7 +137,7 @@ const VideoContentSet = (props) => {
     {
       label: '跳转链接',
       name: 'jumpUrl',
-      rules: [{ required: relateType === 'brand' }],
+      rules: [{ required: false }],
     },
     {
       label: '免费券',

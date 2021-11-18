@@ -28,7 +28,7 @@ export default {
   effects: {
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchSpecialGoodsList, {
-        activityType: 'specialGoods',
+        activityType: 'specialGoods', // 限制特惠商品搜索到电商商品
         ...payload,
       });
       if (!response) return;

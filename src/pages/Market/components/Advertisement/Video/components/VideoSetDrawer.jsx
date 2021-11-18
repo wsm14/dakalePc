@@ -24,6 +24,7 @@ const ShareDrawer = (props) => {
       const { age, tagsId = [], ageData, cityList = [], area, areaType, ...otherValus } = values;
       const { free = {}, contact = [] } = couponData;
       let goodsList = {};
+      // console.log('contact', contact);
       if (dataStorage.relateType !== 'brand') {
         // 自选商品数据整理
         const newCoupon = [
@@ -38,12 +39,14 @@ const ShareDrawer = (props) => {
                   goods: 'specialGoodsId', // 特惠
                   free: 'ownerCouponIdString', // 免费
                   coupon: 'ownerCouponIdString', // 有价
+                  commerceGoods: 'specialGoodsId', // 电商商品
                 }[item.promotionType]
               ],
             relateType: {
               goods: 'specialGoods',
               coupon: 'reduceCoupon',
               free: 'freeReduceCoupon',
+              commerceGoods: 'commerceGoods',
             }[item.promotionType],
             relateShardingKey: relateId,
           })),
@@ -52,6 +55,8 @@ const ShareDrawer = (props) => {
         // 品牌行业信息
         goodsList = { topCategoryId: categoryId[0], categoryId: categoryId[1] };
       }
+      // console.log('goodsList', goodsList);
+      // return;
 
       uploadLive({
         data: frontImage, // 上传封面

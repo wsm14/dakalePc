@@ -146,6 +146,8 @@ export default {
       });
       if (!response && !response2) return;
       const { content = {} } = response;
+
+      console.log('content', content);
       const { content: content2 } = response2;
       const {
         age,

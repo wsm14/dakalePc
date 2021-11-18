@@ -79,6 +79,7 @@ export const goodsDom = (item = {}, id, setSelectItem, onDel) => {
     activityStartTime,
     activityEndTime,
   } = item;
+
   return (
     <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
       <Badge.Ribbon text={{ single: '单品', package: '套餐' }[goodsType]}>
