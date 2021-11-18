@@ -10,16 +10,8 @@ const { Search } = Input;
  * 选择优惠内容（单选）
  */
 const FreeContactSelectModal = (props) => {
-  const {
-    couponList,
-    specialGoodsList,
-    merchantId,
-    dispatch,
-    visible,
-    onClose,
-    onOk,
-    loading,
-  } = props;
+  const { couponList, specialGoodsList, merchantId, dispatch, visible, onClose, onOk, loading } =
+    props;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
   const [tabKey, setTabKey] = useState('coupon'); // tab类型
@@ -31,6 +23,7 @@ const FreeContactSelectModal = (props) => {
     if (visible) {
       if (tabKey === 'coupon') fetchGetBuyCouponSelect(1);
       if (tabKey === 'goods') fetchSpecialGoodsList(1);
+      if (tabKey === 'commerceGoods') fetchCommerceGoodsList(1);
     }
   }, [visible, page, tabKey, searchValue]);
 
@@ -42,6 +35,12 @@ const FreeContactSelectModal = (props) => {
       loading: loading.effects['baseData/fetchGetBuyCouponSelect'],
     },
     goods: {
+      list: specialGoodsList.list,
+      total: specialGoodsList.total,
+      key: 'specialGoodsId',
+      loading: loading.effects['baseData/fetchGetSpecialGoodsSelect'],
+    },
+    commerceGoods: {
       list: specialGoodsList.list,
       total: specialGoodsList.total,
       key: 'specialGoodsId',
@@ -78,6 +77,22 @@ const FreeContactSelectModal = (props) => {
     });
   };
 
+  // 获取电商商品
+  const fetchCommerceGoodsList = (num) => {
+    dispatch({
+      type: 'baseData/fetchGetSpecialGoodsSelect',
+      payload: {
+        activityType: 'commerceGoods',
+        relateId: merchantId,
+        merchantId: merchantId,
+        goodsName: searchValue,
+        goodsStatus: 1,
+        page: num || page,
+        limit: 999,
+      },
+    });
+  };
+
   const listDom = (
     <Spin spinning={listProps.loading}>
       {listProps.list.length ? (
@@ -87,6 +102,7 @@ const FreeContactSelectModal = (props) => {
               ({
                 coupon: couponsDom(item, selectItem.ownerCouponIdString, setSelectItem, 'valuable'),
                 goods: goodsDom(item, selectItem.specialGoodsId, setSelectItem),
+                commerceGoods: goodsDom(item, selectItem.specialGoodsId, setSelectItem),
               }[tabKey]),
           )}
         </div>
@@ -129,6 +145,9 @@ const FreeContactSelectModal = (props) => {
           {listDom}
         </TabPane>
         <TabPane tab="特惠商品" key="goods">
+          {listDom}
+        </TabPane>
+        <TabPane tab="电商商品" key="commerceGoods">
           {listDom}
         </TabPane>
       </Tabs>

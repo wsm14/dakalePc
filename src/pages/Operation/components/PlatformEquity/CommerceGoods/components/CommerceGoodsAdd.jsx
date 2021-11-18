@@ -43,7 +43,7 @@ const CommerceGoodsAdd = (props) => {
     form.validateFields().then((values) => {
       console.log('values', values);
       const { id } = detail;
-      const { activityGoodsImg, ...other } = values;
+      const { activityGoodsImg, relateId, ...other } = values;
       const aimg = checkFileData(activityGoodsImg);
       aliOssUpload(aimg).then((res) => {
         // console.log('res', res);
@@ -59,10 +59,9 @@ const CommerceGoodsAdd = (props) => {
             id,
             ...other,
             goodsType: 'single',
-            relateType: 'merchant',
             rightFlag: 0,
-            ownerType: 'admin',
-            ownerId: -1,
+            ownerType: 'merchant',
+            ownerId: relateId,
             richText: content, // 富文本
             activityGoodsImg: res.toString(),
             activityType: 'commerceGoods',

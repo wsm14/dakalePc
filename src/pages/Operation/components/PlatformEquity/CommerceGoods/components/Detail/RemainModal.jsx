@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef } = props;
-  const { show = false, id, remain } = visible;
+  const { show = false, id, remain, ownerIdString } = visible;
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -14,7 +14,7 @@ const RemainModal = (props) => {
         type: 'specialGoods/fetchSpecialGoodsAddRemain',
         payload: {
           id,
-          ownerId: -1,
+          ownerId: ownerIdString,
           ...values,
         },
         callback: () => {

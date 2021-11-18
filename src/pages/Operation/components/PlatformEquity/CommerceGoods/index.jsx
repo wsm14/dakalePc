@@ -143,7 +143,7 @@ const PlatformEquityGoods = (props) => {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status) && deleteFlag == '1',
-            click: () => fetAddRemain(specialGoodsId, record.remain),
+            click: () => fetAddRemain(specialGoodsId, record.remain, record.ownerIdString),
           },
         ];
       },
@@ -152,10 +152,10 @@ const PlatformEquityGoods = (props) => {
 
   // 获取详情
   const fetchSpecialGoodsDetail = (index, type) => {
-    const { specialGoodsId, relateName, relateType } = list[index];
+    const { specialGoodsId, relateName, relateType, ownerIdString } = list[index];
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsDetail',
-      payload: { specialGoodsId, ownerId: -1, type },
+      payload: { specialGoodsId, ownerId: ownerIdString, type },
       callback: (val) => {
         const { status } = val;
         const newProps = {
@@ -180,23 +180,24 @@ const PlatformEquityGoods = (props) => {
   // };
 
   // 增加库存
-  const fetAddRemain = (id, remain) => {
+  const fetAddRemain = (id, remain, ownerIdString) => {
     setVisibleRemain({
       show: true,
       id,
       remain,
+      ownerIdString,
     });
   };
 
   // 下架
   const fetchSpecialGoodsStatus = (values) => {
-    const { specialGoodsId } = visibleRefuse.detail;
+    const { specialGoodsId, ownerIdString } = visibleRefuse.detail;
     dispatch({
       type: 'specialGoods/fetchSpecialGoodsStatus',
       payload: {
         ...values,
         id: specialGoodsId,
-        ownerId: -1,
+        ownerId: ownerIdString,
       },
       callback: () => {
         setVisibleRefuse({ show: false, detail: {} });
