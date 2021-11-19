@@ -178,8 +178,9 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
             </div> */}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div className="share_tip">
-                ¥{paymentModeObject.cash}
-                {paymentModeObject.bean == 0 ? '' : <span>+{paymentModeObject.bean}卡豆</span>}
+                {paymentModeObject.type === 'self'
+                  ? `¥${paymentModeObject.cash}+${paymentModeObject.bean}卡豆`
+                  : `¥${realPrice}元`}
               </div>
               <div className="share_tip" style={{ color: '#b1b1b1' }}>
                 剩余{remain}张

@@ -68,11 +68,9 @@ const PlatformEquityGoods = (props) => {
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div>
-              {row.buyFlag === '0'
-                ? '免费'
-                : val.bean !== 0
+              {val.type === 'self'
                 ? `${val.bean || 0} 卡豆 + ${val.cash || 0} 元`
-                : `${val.cash || 0} 元`}
+                : `${row.realPrice || 0} 元`}
             </div>
           </div>
         </div>

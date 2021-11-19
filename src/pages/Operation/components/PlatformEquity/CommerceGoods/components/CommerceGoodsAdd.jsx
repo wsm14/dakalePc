@@ -16,7 +16,6 @@ const CommerceGoodsAdd = (props) => {
   const [form] = Form.useForm(); // add
   const [content, setContent] = useState(''); // 输入的富文本内容
   const [commissionShow, setCommissionShow] = useState(false); // 佣金设置显示隐藏
-  const [buyFlag, setBuyFlag] = useState('1'); // 商品购买类型
 
   //   const [saveData, setSaveData] = useState(null);
   //   const [visibleRule, setVisibleRule] = useState({ show: false, preData: {} });
@@ -59,6 +58,9 @@ const CommerceGoodsAdd = (props) => {
           payload: {
             id,
             ...other,
+            needOrder: '0',
+            allowRefund: '0',
+            allowExpireRefund: '0',
             relateId,
             relateType: 'merchant',
             useTimeRule: 'gain',
@@ -86,8 +88,6 @@ const CommerceGoodsAdd = (props) => {
   const listProp = {
     commissionShow,
     setCommissionShow,
-    buyFlag,
-    setBuyFlag,
     editActive: type,
     setContent,
   };
@@ -106,7 +106,6 @@ const CommerceGoodsAdd = (props) => {
             goodsDescType: '1',
             paymentModeObject: { type: 'self', bean: 0 },
             packageGoodsObjects: [{}],
-            buyPriceType: '1',
           }}
         ></CommerceGoodsSet>
       ),
@@ -114,40 +113,19 @@ const CommerceGoodsAdd = (props) => {
     again: {
       title: '重新发布活动',
       children: (
-        <CommerceGoodsSet
-          {...listProp}
-          form={form}
-          initialValues={{
-            buyPriceType: detail.paymentModeObject?.bean === 0 ? '2' : '1',
-            ...detail,
-          }}
-        ></CommerceGoodsSet>
+        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
       ),
     },
     againUp: {
       title: '编辑',
       children: (
-        <CommerceGoodsSet
-          {...listProp}
-          form={form}
-          initialValues={{
-            buyPriceType: detail.paymentModeObject?.bean === 0 ? '2' : '1',
-            ...detail,
-          }}
-        ></CommerceGoodsSet>
+        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
       ),
     },
     edit: {
       title: '修改活动',
       children: (
-        <CommerceGoodsSet
-          {...listProp}
-          form={form}
-          initialValues={{
-            buyPriceType: detail.paymentModeObject?.bean === 0 ? '2' : '1',
-            ...detail,
-          }}
-        ></CommerceGoodsSet>
+        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
       ),
     },
   }[type];

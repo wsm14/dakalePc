@@ -12,8 +12,6 @@ const CommerceGoodsSet = ({
   loading,
   selectList,
   dispatch,
-  buyFlag,
-  setBuyFlag, // 售卖价格
   commissionShow,
   setCommissionShow,
   initialValues = {},
@@ -27,7 +25,7 @@ const CommerceGoodsSet = ({
   const [manualList, setManualList] = useState([]); // 分佣模版字段
   const [radioData, setRadioData] = useState({
     buyRule: 'unlimited', // 购买上限规则
-    buyType: '1', // 购买类型
+    buyType: 'self', // 购买类型
   });
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
@@ -44,7 +42,7 @@ const CommerceGoodsSet = ({
     if (initialValues.relateName) {
       saveSelectData({
         buyRule: initialValues.buyRule,
-        buyType: initialValues.buyPriceType == '2' ? '2' : '1',
+        buyType: initialValues.paymentModeObject.type,
       });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
@@ -166,24 +164,24 @@ const CommerceGoodsSet = ({
     },
     {
       label: '售卖价格',
-      name: 'buyPriceType',
+      name: ['paymentModeObject', 'type'],
       type: 'radio',
       disabled: commonDisabled,
       select: COMMERCE_GOODSBUY_TYPE,
       onChange: (e) => {
-        form.setFieldsValue({
-          paymentModeObject: {
-            bean: 0,
-          },
-        });
+        // form.setFieldsValue({
+        //   paymentModeObject: {
+        //     bean: 0,
+        //   },
+        // });
         saveSelectData({ buyType: e.target.value });
       },
     },
-    {
-      label: '售卖',
-      name: ['paymentModeObject', 'type'],
-      hidden: true,
-    },
+    // {
+    //   label: '售卖',
+    //   name: ['paymentModeObject', 'type'],
+    //   hidden: true,
+    // },
     {
       label: '卡豆数',
       name: ['paymentModeObject', 'bean'],
@@ -192,7 +190,7 @@ const CommerceGoodsSet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      hidden: radioData.buyType == '2',
+      visible: radioData.buyType == 'self',
       suffix: '卡豆',
     },
     {
@@ -203,6 +201,19 @@ const CommerceGoodsSet = ({
       precision: 2,
       min: 0.01,
       max: 999999.99,
+      visible: radioData.buyType == 'self',
+      formatter: (value) => `￥ ${value}`,
+      suffix: '元',
+    },
+    {
+      label: '现金',
+      name: 'realPrice',
+      type: 'number',
+      disabled: commonDisabled,
+      precision: 2,
+      min: 0.01,
+      max: 999999.99,
+      visible: radioData.buyType == 'defaultMode',
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
     },

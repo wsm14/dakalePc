@@ -11,7 +11,14 @@ import {
 
 const GoodsDetail = (props) => {
   const { detail } = props;
-  const { goodsType, relateType, goodsDescType, buyFlag, serviceDivisionDTO = {} } = detail;
+  const {
+    goodsType,
+    relateType,
+    goodsDescType,
+    buyFlag,
+    serviceDivisionDTO = {},
+    paymentModeObject = { type: '' },
+  } = detail;
   const { divisionTemplateType, ...other } = serviceDivisionDTO; // 分佣
 
   const ActiveformItems = [
@@ -40,9 +47,9 @@ const GoodsDetail = (props) => {
 
   const GoodPriceItem = [
     {
-      name: 'buyFlag',
+      name: 'paymentModeObject',
       label: '售卖类型',
-      render: (val) => COMMERCE_GOODSBUY_TYPE[val],
+      render: (val) => COMMERCE_GOODSBUY_TYPE[val.type],
     },
     {
       name: 'oriPrice',
@@ -50,16 +57,15 @@ const GoodsDetail = (props) => {
     },
     {
       label: '卡豆+现金',
-      show: buyFlag === '1',
+      show: paymentModeObject.type === 'self',
       name: 'paymentModeObject',
-      render: (val) =>
-        val.bean !== 0 ? `${val.bean || 0} 卡豆 + ${val.cash} 元` : `${val.cash}元`,
+      render: (val) => `${val.bean || 0} 卡豆 + ${val.cash} 元`,
     },
     {
       label: '现金',
-      show: buyFlag === '2',
-      name: 'paymentModeObject',
-      render: (val) => `${val.cash} 元`,
+      show: paymentModeObject.type === 'defaultMode',
+      name: 'realPrice',
+      render: (val) => `${val} 元`,
     },
   ];
 

@@ -20,6 +20,8 @@ const ShareCoupon = (props) => {
     form,
   } = props;
 
+  console.log('data', data);
+
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
   const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
 
@@ -42,7 +44,7 @@ const ShareCoupon = (props) => {
       {type === 'coupon' && couponName ? (
         couponsDom(data, '', '', buyFlag == 0 ? 'free' : 'valuable', onDel)
       ) : type === 'goods' && goodsName ? (
-        data.paymentModeObject.type === 'self' ? (
+        data.activityType === 'commerceGoods' ? (
           commerceDom(data, '', '', onDel)
         ) : (
           goodsDom(data, '', '', onDel)
