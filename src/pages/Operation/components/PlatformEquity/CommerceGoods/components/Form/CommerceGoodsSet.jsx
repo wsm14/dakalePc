@@ -24,10 +24,11 @@ const CommerceGoodsSet = ({
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive);
 
+  const [manualList, setManualList] = useState([]); // 分佣模版字段
   const [radioData, setRadioData] = useState({
     buyRule: 'unlimited', // 购买上限规则
+    buyType: '1', // 购买类型
   });
-  const [manualList, setManualList] = useState([]); // 分佣模版字段
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
@@ -41,8 +42,10 @@ const CommerceGoodsSet = ({
 
   useEffect(() => {
     if (initialValues.relateName) {
-      setBuyFlag(initialValues.buyFlag);
-      saveSelectData({ buyRule: initialValues.buyRule });
+      saveSelectData({
+        buyRule: initialValues.buyRule,
+        buyType: initialValues.buyPriceType == '2' ? '2' : '1',
+      });
       // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
@@ -55,9 +58,9 @@ const CommerceGoodsSet = ({
 
   // 搜索店铺
   const fetchGetMre = debounce((name, type, callback) => {
-    console.log('name', name);
-    console.log('type', type);
-    console.log('callback', callback);
+    // console.log('name', name);
+    // console.log('type', type);
+    // console.log('callback', callback);
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
@@ -163,7 +166,7 @@ const CommerceGoodsSet = ({
     },
     {
       label: '售卖价格',
-      name: 'buyFlag',
+      name: 'buyPriceType',
       type: 'radio',
       disabled: commonDisabled,
       select: COMMERCE_GOODSBUY_TYPE,
@@ -173,7 +176,7 @@ const CommerceGoodsSet = ({
             bean: 0,
           },
         });
-        setBuyFlag(e.target.value);
+        saveSelectData({ buyType: e.target.value });
       },
     },
     {
@@ -189,7 +192,7 @@ const CommerceGoodsSet = ({
       precision: 0,
       min: 0,
       max: 999999,
-      visible: buyFlag == '1',
+      hidden: radioData.buyType == '2',
       suffix: '卡豆',
     },
     {
@@ -200,7 +203,6 @@ const CommerceGoodsSet = ({
       precision: 2,
       min: 0.01,
       max: 999999.99,
-      // visible: buyFlag == '0',
       formatter: (value) => `￥ ${value}`,
       suffix: '元',
     },
