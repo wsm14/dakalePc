@@ -59,11 +59,16 @@ const CommerceGoodsAdd = (props) => {
           payload: {
             id,
             ...other,
+            relateId,
+            relateType: 'merchant',
+            useTimeRule: 'gain',
+            delayDays: 0,
+            activeDays: 1,
             buyFlag: '1',
             goodsType: 'single',
             rightFlag: 0,
-            ownerType: 'merchant',
-            ownerId: relateId,
+            ownerType: 'admin',
+            ownerId: -1,
             richText: content, // 富文本
             activityGoodsImg: res.toString(),
             activityType: 'commerceGoods',

@@ -84,7 +84,7 @@ const FreeContactSelectModal = (props) => {
       payload: {
         activityType: 'commerceGoods',
         relateId: merchantId,
-        merchantId: merchantId,
+        merchantId: -1,
         goodsName: searchValue,
         goodsStatus: 1,
         page: num || page,
