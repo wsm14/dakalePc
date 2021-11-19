@@ -535,6 +535,7 @@ export default [
         buttons: [
           'equityCoupon',
           'equityGoods',
+          'equityCommerceGoods',
           'save',
           'edit',
           'down',
