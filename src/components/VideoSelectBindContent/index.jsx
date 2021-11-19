@@ -42,7 +42,7 @@ const ShareCoupon = (props) => {
       {type === 'coupon' && couponName ? (
         couponsDom(data, '', '', buyFlag == 0 ? 'free' : 'valuable', onDel)
       ) : type === 'goods' && goodsName ? (
-        data.paymentModeObject ? (
+        data.paymentModeObject.type === 'self' ? (
           commerceDom(data, '', '', onDel)
         ) : (
           goodsDom(data, '', '', onDel)

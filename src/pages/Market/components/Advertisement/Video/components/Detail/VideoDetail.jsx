@@ -79,7 +79,7 @@ const VideoDetail = (props) => {
       render: (val, row) =>
         val.map((item) =>
           item.type === 'special'
-            ? item.paymentModeObject
+            ? item.paymentModeObject.type === 'self'
               ? commerceDom(item)
               : goodsDom(item)
             : couponsDom(item, '', '', item.type),
