@@ -41,7 +41,8 @@ const CommerceGoodsAdd = (props) => {
   // 确认提交数据 - add 新增 /  edit 修改所有数据 / again 重新发布
   const handleUpData = () => {
     form.validateFields().then((values) => {
-      console.log('values', values);
+      // console.log('values', values);
+      // return;
       const { id } = detail;
       const { activityGoodsImg, relateId, ...other } = values;
       const aimg = checkFileData(activityGoodsImg);
@@ -58,6 +59,7 @@ const CommerceGoodsAdd = (props) => {
           payload: {
             id,
             ...other,
+            buyFlag: '1',
             goodsType: 'single',
             rightFlag: 0,
             ownerType: 'merchant',
@@ -97,8 +99,9 @@ const CommerceGoodsAdd = (props) => {
             relateType: 'merchant',
             goodsType: 'single',
             goodsDescType: '1',
-            paymentModeObject: { type: 'self' },
+            paymentModeObject: { type: 'self', bean: 0 },
             packageGoodsObjects: [{}],
+            buyPriceType: '1',
           }}
         ></CommerceGoodsSet>
       ),
@@ -106,19 +109,40 @@ const CommerceGoodsAdd = (props) => {
     again: {
       title: '重新发布活动',
       children: (
-        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
+        <CommerceGoodsSet
+          {...listProp}
+          form={form}
+          initialValues={{
+            buyPriceType: detail.paymentModeObject?.bean === 0 ? '2' : '1',
+            ...detail,
+          }}
+        ></CommerceGoodsSet>
       ),
     },
     againUp: {
       title: '编辑',
       children: (
-        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
+        <CommerceGoodsSet
+          {...listProp}
+          form={form}
+          initialValues={{
+            buyPriceType: detail.paymentModeObject?.bean === 0 ? '2' : '1',
+            ...detail,
+          }}
+        ></CommerceGoodsSet>
       ),
     },
     edit: {
       title: '修改活动',
       children: (
-        <CommerceGoodsSet {...listProp} form={form} initialValues={detail}></CommerceGoodsSet>
+        <CommerceGoodsSet
+          {...listProp}
+          form={form}
+          initialValues={{
+            buyPriceType: detail.paymentModeObject?.bean === 0 ? '2' : '1',
+            ...detail,
+          }}
+        ></CommerceGoodsSet>
       ),
     },
   }[type];

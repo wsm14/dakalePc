@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Input, Modal, Empty, Spin, Tabs } from 'antd';
-import { couponsDom, goodsDom } from './CouponFreeDom';
+import { couponsDom, goodsDom, commerceDom } from './CouponFreeDom';
 import './coupon.less';
 
 const { TabPane } = Tabs;
@@ -102,7 +102,7 @@ const FreeContactSelectModal = (props) => {
               ({
                 coupon: couponsDom(item, selectItem.ownerCouponIdString, setSelectItem, 'valuable'),
                 goods: goodsDom(item, selectItem.specialGoodsId, setSelectItem),
-                commerceGoods: goodsDom(item, selectItem.specialGoodsId, setSelectItem),
+                commerceGoods: commerceDom(item, selectItem.specialGoodsId, setSelectItem),
               }[tabKey]),
           )}
         </div>

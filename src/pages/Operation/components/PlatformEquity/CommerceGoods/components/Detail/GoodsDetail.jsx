@@ -52,7 +52,8 @@ const GoodsDetail = (props) => {
       label: '卡豆+现金',
       show: buyFlag === '1',
       name: 'paymentModeObject',
-      render: (val) => `${val.bean || 0} 卡豆 + ${val.cash} 元`,
+      render: (val) =>
+        val.bean !== 0 ? `${val.bean || 0} 卡豆 + ${val.cash} 元` : `${val.cash}元`,
     },
     {
       label: '现金',

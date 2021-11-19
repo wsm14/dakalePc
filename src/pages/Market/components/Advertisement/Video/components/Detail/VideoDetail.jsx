@@ -3,7 +3,11 @@ import { connect } from 'umi';
 import { Form, Button, notification } from 'antd';
 import { VIDEO_ADVERT_TYPE, SHARE_SEX_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
-import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import {
+  couponsDom,
+  goodsDom,
+  commerceDom,
+} from '@/components/VideoSelectBindContent/CouponFreeDom';
 import uploadLive from '@/utils/uploadLive';
 import GoodsEdit from './GoodsEdit';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -74,7 +78,11 @@ const VideoDetail = (props) => {
       name: 'promotionList',
       render: (val, row) =>
         val.map((item) =>
-          item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
+          item.type === 'special'
+            ? item.paymentModeObject.type === 'self'
+              ? commerceDom(item)
+              : goodsDom(item)
+            : couponsDom(item, '', '', item.type),
         ),
     },
     {

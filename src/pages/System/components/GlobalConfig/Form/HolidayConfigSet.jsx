@@ -66,12 +66,13 @@ const HolidayConfigSet = (props) => {
     {
       label: '“发现”动效图',
       type: 'upload',
-      extra: '请上传100kb的png格式图片',
+      extra: `请上传100kb的png格式图片`,
       maxSize: 100,
       name: ['topTab', 'find'],
       // labelCol: { span: 7 },
       // style: { width: '100%' },
       rules: [{ required: false }],
+      extra: '请上传移动端UI尺寸宽度',
     },
     {
       label: '“生活”动效json文件',
@@ -92,6 +93,7 @@ const HolidayConfigSet = (props) => {
       // style: { flex: 1 },
       rules: [{ required: false }],
       suffix: 'px',
+      extra: '请上传移动端UI尺寸宽度',
     },
     {
       label: '“生活”动效图',
