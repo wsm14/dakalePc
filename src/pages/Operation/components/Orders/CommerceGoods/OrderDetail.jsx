@@ -11,11 +11,15 @@ const OrderDetail = (props) => {
     },
     {
       label: '物流单号',
-      name: 'logisticsNum',
+      name: 'logisticsCode',
     },
     {
       label: '发货时间',
       name: 'deliveryTime',
+    },
+    {
+      label: '发货人',
+      name: 'consignor',
     },
   ];
   return (

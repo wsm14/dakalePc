@@ -4,6 +4,8 @@ import {
   fetchOrdersImport,
   fetchOrdersDetail,
   fetchOrderRefundOwn,
+  fetchOrderDeliverGoods,
+  fetchOrdersListActionLog,
 } from '@/services/OperationServices';
 
 export default {
@@ -63,6 +65,29 @@ export default {
           orderDetail: content.order,
         },
       });
+    },
+    *fetchOrderDeliverGoods({ payload, callback }, { call }) {
+      const response = yield call(fetchOrderDeliverGoods, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '保存成功',
+      });
+      callback();
+    },
+    *fetchOrdersListActionLog({ payload, callback }, { call, put }) {
+      const response = yield call(fetchOrdersListActionLog, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { recordList = [] } = content;
+      if (!recordList.length) {
+        notification.info({
+          message: '温馨提示',
+          description: '暂无日志记录',
+        });
+        return;
+      }
+      callback(recordList);
     },
   },
 };

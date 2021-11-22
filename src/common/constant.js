@@ -235,6 +235,9 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
+// 订单状态
+export const COMMERCE_ORDERS_STATUS = ['待支付', '待发货', '已退款', '已完成'];
+
 // 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
   unpaidExpiredCancel: '待付款超时自动关闭',
@@ -569,7 +572,6 @@ export const SERVICE_TYPE = {
   reduceCoupon: '优惠券',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
-  commerceGoods: '电商品',
 };
 
 // 模板类型 divisionTemplateType

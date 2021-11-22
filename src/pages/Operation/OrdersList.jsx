@@ -5,8 +5,8 @@ import CodeOrders from './components/Orders/CodeOrders';
 import GoodsOrders from './components/Orders/GoodsOrders';
 import OtherOrders from './components/Orders/OtherOrders';
 import VirtualOrders from './components/Orders/VirtualOrders';
-import CommerceOrders from './components/Orders/CommerceOrders';
-import GroupBuyOrders from './components/Orders/GroupBuyOrders';
+import CommerceGoods from './components/Orders/CommerceGoods';
+import CommunityGoods from './components/Orders/CommunityGoods';
 
 const tabList = [
   {
@@ -30,11 +30,11 @@ const tabList = [
     tab: '虚拟商品',
   },
   {
-    key: 'commerceOrders',
+    key: 'commerceGoods',
     tab: '电商订单',
   },
   {
-    key: 'groupBuyOrders',
+    key: 'communityGoods',
     tab: '团购订单',
   },
 ];
@@ -50,8 +50,8 @@ const OrdersList = () => {
     rightGoods: <OtherOrders {...listProps}></OtherOrders>,
     rightCoupon: <OtherOrders {...listProps}></OtherOrders>,
     virtualProduct: <VirtualOrders {...listProps}></VirtualOrders>,
-    commerceOrders: <CommerceOrders {...listProps}></CommerceOrders>,
-    groupBuyOrders: <GroupBuyOrders {...listProps}></GroupBuyOrders>,
+    commerceGoods: <CommerceGoods {...listProps}></CommerceGoods>,
+    communityGoods: <CommunityGoods {...listProps}></CommunityGoods>,
   };
 
   return (

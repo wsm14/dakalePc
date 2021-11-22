@@ -6,6 +6,7 @@ import {
   USER_SOURCE,
   ORDERS_STATUS,
 } from '@/common/constant';
+import { connect } from 'umi';
 import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
@@ -13,15 +14,24 @@ import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import QuestionTooltip from '@/components/QuestionTooltip';
 import OrderRefund from './OrderRefund';
+import OrderJournal from './OrderJournal';
 import styles from './style.less';
 
 const OrderDetailDraw = (props) => {
-  const { visible, onClose, getDetail, childRef, total, tabkey, loading } = props;
+  const { visible, onClose, getDetail, childRef, total, tabkey, loading, dispatch } = props;
   const { detail = {}, show = false, index } = visible;
-  const { status, closeType, orderGoodsVerifications = [] } = detail;
+  const {
+    status,
+    closeType,
+    orderGoodsVerifications = [],
+    organizationGoodsOrderDescObject = {},
+    orderLogistics = {},
+  } = detail;
+  const { communityGoodsList = [] } = organizationGoodsOrderDescObject; //核销明细
   const [isShow, setIsShow] = useState(true);
   const [isShow1, setIsShow1] = useState(true);
   const [refund, setRefund] = useState(true);
+  const [journal, setJournal] = useState(false);
 
   // 订单状态检查内容显示
   /* 订单状态0-待支付；1-已支付待核销；2-订单关闭 3-交易完成 4-已确认，5-预支付 6-退款中 */
@@ -41,6 +51,17 @@ const OrderDetailDraw = (props) => {
         setIsShow1(!isShow1);
         break;
     }
+  };
+
+  const getJournal = () => {
+    const { orderId } = detail;
+    dispatch({
+      type: 'ordersList/fetchOrdersListActionLog',
+      payload: { page: 1, limit: 10, type: 'order', orderId },
+      callback: (detail) => {
+        setJournal({ show: true, detail });
+      },
+    });
   };
 
   const couponItem = (item) => [
@@ -70,7 +91,17 @@ const OrderDetailDraw = (props) => {
       span: 3,
     },
   ];
-
+  const writeOffDetail = [
+    {
+      label: '商品名称',
+      name: 'goodsName',
+    },
+    {
+      label: '核销数',
+      name: 'goodsCount',
+      render: (val, row) => val - row?.remainCount,
+    },
+  ];
   const userFormItem = [
     {
       label: '用户昵称',
@@ -88,7 +119,21 @@ const OrderDetailDraw = (props) => {
     {
       label: '收货信息',
       name: 'address',
-      visible: tabkey === 'commerceOrders',
+      show: tabkey === 'commerceGoods',
+      render: () => {
+        return (
+          <div>
+            {`${orderLogistics?.addressName || '--'}，${
+              orderLogistics?.mobile || '--'
+            }，${checkCityName(orderLogistics?.districtCode)}${orderLogistics?.address}，${
+              orderLogistics?.logisticsCode
+            }`}
+            <Button type="link" onClick={getJournal}>
+              日志
+            </Button>
+          </div>
+        );
+      },
     },
   ];
   //店铺信息
@@ -124,12 +169,40 @@ const OrderDetailDraw = (props) => {
     //   name: 'groupName',
     // },
   ];
-
+  //团长信息
+  const relateOwnerInfo = [
+    {
+      label: '团长昵称 ',
+      name: 'organizationGoodsOrderDescObject',
+      span: 2,
+      render: (val) => val?.relateOwnerName,
+    },
+    {
+      label: '团长豆号',
+      name: 'relateOwnerBeanCode',
+    },
+    {
+      label: '团长联系电话',
+      name: 'relateOwnerMobile',
+    },
+    {
+      label: '自提点',
+      name: 'organizationGoodsOrderDescObject',
+      span: 2,
+      render: (val) => val?.liftingAddress,
+    },
+  ];
   //订单信息
   const orderItem = [
     {
       label: '订单号',
       name: 'orderSn',
+    },
+    {
+      label: '团购信息标题',
+      name: 'organizationGoodsOrderDescObject',
+      show: tabkey === 'communityGoods',
+      render: (val) => val?.title,
     },
     {
       label: '订单类型',
@@ -203,7 +276,8 @@ const OrderDetailDraw = (props) => {
       total,
       onChange: (size) => getDetail(size),
     },
-    footer: detail.status === '1' && (
+    footer: (detail.status === '1' ||
+      (tabkey === 'communityGoods' && (detail.status === '1' || detail.status === '3'))) && (
       <Button
         type="primary"
         onClick={() =>
@@ -265,6 +339,19 @@ const OrderDetailDraw = (props) => {
             column={3}
           ></DescriptionsCondition>
         ))}
+        {tabkey === 'communityGoods' && (
+          <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>核销明细</div>
+        )}
+        {tabkey === 'communityGoods' &&
+          communityGoodsList.map((item, index) => (
+            <DescriptionsCondition
+              labelStyle={{ width: 100 }}
+              key={`${item?.communityOrganizationGoodsId}${index}`}
+              formItems={writeOffDetail}
+              initialValues={item}
+              column={3}
+            ></DescriptionsCondition>
+          ))}
         <DescriptionsCondition
           title="用户信息"
           labelStyle={{ width: 120 }}
@@ -279,6 +366,15 @@ const OrderDetailDraw = (props) => {
           column={2}
           initialValues={detail}
         ></DescriptionsCondition>
+        {tabkey === 'communityGoods' && (
+          <DescriptionsCondition
+            title="团长信息"
+            labelStyle={{ width: 120 }}
+            formItems={relateOwnerInfo}
+            column={2}
+            initialValues={detail}
+          ></DescriptionsCondition>
+        )}
         <DescriptionsCondition
           title="订单信息"
           labelStyle={{ width: 120 }}
@@ -405,7 +501,9 @@ const OrderDetailDraw = (props) => {
         }}
         onClose={() => setRefund(false)}
       ></OrderRefund>
+      <OrderJournal visible={journal} onClose={() => setJournal(false)} />
     </>
   );
 };
-export default OrderDetailDraw;
+
+export default connect()(OrderDetailDraw);
