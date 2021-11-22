@@ -214,7 +214,7 @@ const HolidayConfigSet = (props) => {
 
   const handleSave = () => {
     form.validateFields().then(async (values) => {
-      // console.log(values, 'values');
+      // console.log('节日', values);
       // return;
       let {
         topTab = {},

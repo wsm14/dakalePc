@@ -182,23 +182,22 @@ const VideoDetail = (props) => {
             ...item,
             promotionType: item.ownerCouponIdString
               ? 'coupon'
-              : item.promotionType === 'commerceGoods'
+              : item.activityType === 'commerceGoods'
               ? 'commerceGoods'
               : 'goods',
           })),
           ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
         ];
-
+        console.log('newCoupon', newCoupon);
         goodsList = {
           momentRelateList: newCoupon.map((item) => ({
             relateId:
-              item.promotionType === 'goods' // 特惠
+              item.promotionType === 'goods' || 'commerceGoods' // 特惠  || 电商商品
                 ? item.specialGoodsId || item.activityGoodsId
                 : item[
                     {
                       free: 'ownerCouponIdString', // 免费
                       coupon: 'ownerCouponIdString', // 有价
-                      commerceGoods: 'specialGoodsId', // 电商商品
                     }[item.promotionType]
                   ],
             relateType: {

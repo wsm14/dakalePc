@@ -20,7 +20,7 @@ const ShareCoupon = (props) => {
     form,
   } = props;
 
-  console.log('data', data);
+  // console.log('data', data);
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
   const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
