@@ -61,11 +61,15 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
+          form.setFieldsValue({
+            bankBindingInfo: {
+              openAccountPermit: imgUrl[0],
+            },
+          });
           fetchGetOcrBankLicense({ imageUrl: imgUrl[0] }, (res) => {
             const { enterpriseNameCH = '', enterpriseBankId = '', enterpriseBankName } = res;
             form.setFieldsValue({
               bankBindingInfo: {
-                openAccountPermit: imgUrl[0],
                 cardName: enterpriseNameCH,
                 bankBranchName: enterpriseBankName,
                 cardNo: enterpriseBankId,
@@ -119,11 +123,15 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
+          form.setFieldsValue({
+            bankBindingInfo: {
+              bankPhoto: imgUrl[0],
+            },
+          });
           fetchGetOcrIdBankCard({ pic: imgUrl[0] }, (res) => {
             const { number, enterpriseBankName = '' } = res;
             form.setFieldsValue({
               bankBindingInfo: {
-                bankPhoto: imgUrl[0],
                 cardNo: number,
                 bankBranchName: enterpriseBankName,
               },
@@ -174,10 +182,13 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
+          form.setFieldsValue({
+            bankBindingInfo: { certFrontPhoto: imgUrl[0] },
+          });
           fetchGetOcrIdCardFront({ imageUrl: imgUrl[0] }, (res) => {
             const { name = '', num = '' } = res;
             form.setFieldsValue({
-              bankBindingInfo: { certFrontPhoto: imgUrl[0], legalPerson: name, legalCertId: num },
+              bankBindingInfo: { legalPerson: name, legalCertId: num },
             });
           });
         }
@@ -193,15 +204,15 @@ const AccountInfo = ({ form, dispatch, loading, initialValues, bankAccount }) =>
       onChange: async (val) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
+          form.setFieldsValue({
+            bankBindingInfo: { certReversePhoto: imgUrl[0] },
+          });
           fetchGetOcrIdCardBack({ imageUrl: imgUrl[0] }, (res) => {
             let { startDate, endDate } = res;
             if (endDate == '长期' || !endDate) {
               endDate = '20991231';
             }
             form.setFieldsValue({
-              bankBindingInfo: {
-                certReversePhoto: imgUrl[0],
-              },
               activeBeginDate: [moment(startDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
             });
           });
