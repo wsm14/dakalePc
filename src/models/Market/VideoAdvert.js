@@ -10,6 +10,7 @@ import {
   fetchVideoListMomentTag,
 } from '@/services/MarketServices';
 
+import { fetchNewShareStatisticsList } from '@/services/OperationServices';
 export default {
   namespace: 'videoAdvert',
 
@@ -135,10 +136,17 @@ export default {
       callback();
     },
     *fetchVideoAdvertDetail({ payload, callback }, { call }) {
-      const { type = 'info', ...cell } = payload;
+      const { type = 'info', momentType, relateId, ...cell } = payload;
       const response = yield call(fetchVideoAdvertDetail, cell);
-      if (!response) return;
+      // 查询视频统计信息
+      const response2 = yield call(fetchNewShareStatisticsList, {
+        momentType,
+        ownerId: relateId,
+        momentId: cell.platformMomentId,
+      });
+      if (!response && !response2) return;
       const { content = {} } = response;
+      const { content: content2 } = response2;
       const {
         age,
         area,
@@ -161,6 +169,7 @@ export default {
           : {};
       const newObj = {
         ...ohter,
+        ...content2,
         age,
         area,
         areaType,

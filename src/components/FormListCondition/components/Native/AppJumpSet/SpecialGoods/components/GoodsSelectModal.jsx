@@ -68,6 +68,7 @@ const GoodsSelectModal = (props) => {
       title={`选择特惠商品（单选）`}
       width={780}
       visible={visible}
+      zIndex={1002}
       afterClose={() => setTabKey('goods')}
       maskStyle={{ background: 'none' }}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}

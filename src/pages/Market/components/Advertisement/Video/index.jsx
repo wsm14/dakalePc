@@ -17,7 +17,7 @@ import VideoAdRoot from './components/VideoAdRoot';
 import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
-import VideoSet from './components/VideoSet';
+import VideoSet from '@/pages/Operation/components/VideoPlatform/VideoSet';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, tagList, dispatch } = props;
@@ -122,25 +122,25 @@ const ShareManage = (props) => {
           ),
         }[val]),
     },
-    {
-      title: '观看人数',
-      align: 'right',
-      dataIndex: 'viewAmount',
-      sorter: (a, b) => a.viewAmount - b.viewAmount,
-    },
-    {
-      title: '领卡豆人数',
-      align: 'right',
-      dataIndex: 'personAmount',
-      sorter: (a, b) => a.personAmount - b.personAmount,
-    },
+    // {
+    //   title: '观看人数',
+    //   align: 'right',
+    //   dataIndex: 'viewAmount',
+    //   sorter: (a, b) => a.viewAmount - b.viewAmount,
+    // },
+    // {
+    //   title: '领卡豆人数',
+    //   align: 'right',
+    //   dataIndex: 'personAmount',
+    //   sorter: (a, b) => a.personAmount - b.personAmount,
+    // },
 
-    {
-      title: '累计打赏卡豆数',
-      align: 'right',
-      dataIndex: 'beanAmount',
-      sorter: (a, b) => a.beanAmount - b.beanAmount,
-    },
+    // {
+    //   title: '累计打赏卡豆数',
+    //   align: 'right',
+    //   dataIndex: 'beanAmount',
+    //   sorter: (a, b) => a.beanAmount - b.beanAmount,
+    // },
     {
       title: '推荐位置',
       align: 'right',
@@ -185,9 +185,7 @@ const ShareManage = (props) => {
           },
           {
             type: 'set', // 设置
-            click: () => {
-              setVisibleSet({ show: true, detail: record });
-            },
+            click: () => fetchGetRate({ type: 'videoAD', record }),
           },
           {
             type: 'down', // 下架
@@ -204,6 +202,29 @@ const ShareManage = (props) => {
       },
     },
   ];
+
+  // 设置
+  const fetchGetRate = (payload) => {
+    const { type, record = {} } = payload;
+    const { platformMomentId, relateId } = record;
+    dispatch({
+      type: 'videoPlatform/fetchVideoFakeList',
+      payload: {
+        momentId: platformMomentId,
+        ownerId: relateId,
+      },
+      callback: (detail) => {
+        const initialValues = {
+          ...record,
+          ...detail,
+          listPayload: payload,
+          momentId: platformMomentId,
+          ownerId: relateId,
+        };
+        setVisibleSet({ type, show: true, initialValues });
+      },
+    });
+  };
 
   // 获取推荐位置ugc标签
   const fetchGetUgcTag = () => {
@@ -223,10 +244,11 @@ const ShareManage = (props) => {
 
   // 获取详情
   const fetchVideoAdvertDetail = (index, type) => {
-    const { platformMomentId } = list[index];
+    const { platformMomentId, relateId } = list[index];
     dispatch({
       type: 'videoAdvert/fetchVideoAdvertDetail',
       payload: {
+        relateId,
         platformMomentId,
         type,
       },
@@ -293,7 +315,7 @@ const ShareManage = (props) => {
       {/* 设置 */}
       <VideoSet
         visible={visibleSet}
-        childRef={childRef}
+        fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}
       ></VideoSet>
     </>

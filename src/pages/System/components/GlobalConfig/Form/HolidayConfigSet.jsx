@@ -21,7 +21,7 @@ const HolidayConfigSet = (props) => {
   } = initialValues;
 
   const disabledDate = (current) => {
-    return current && current < moment().endOf('day').subtract(1,'day');
+    return current && current < moment().endOf('day').subtract(1, 'day');
   };
 
   const formItems = [
@@ -39,16 +39,17 @@ const HolidayConfigSet = (props) => {
       style: { flex: 1 },
       labelCol: { span: 6 },
     },
+    // {
+    //   title: '捡豆',
+    //   label: '左上角',
+    //   type: 'upload',
+    //   maxFile: 1,
+    //   extra: '请上传140*48px的png格式图片',
+    //   imgRatio: LEFT_TOP_ICON,
+    //   name: ['pickUpBeans', 'upperLeftCorner'],
+    // },
     {
       title: '捡豆',
-      label: '左上角',
-      type: 'upload',
-      maxFile: 1,
-      extra: '请上传140*48px的png格式图片',
-      imgRatio: LEFT_TOP_ICON,
-      name: ['pickUpBeans', 'upperLeftCorner'],
-    },
-    {
       label: '右下角倒计时（未领取）',
       type: 'upload',
       maxFile: 1,

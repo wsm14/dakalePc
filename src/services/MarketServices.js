@@ -44,6 +44,51 @@ export function fetchMarketNoticeSet(data) {
   });
 }
 
+// get 营销活动 - 拉新活动列表
+export async function fetchMarketAddNewActivity(params) {
+  return request('/admin/configFissionTemplate/listConfigFissionTemplate', {
+    params,
+  });
+}
+
+// get 营销活动 - 拉新活动详情
+export async function fetchMarketAddNewActivityDetail(params) {
+  return request('/admin/configFissionTemplate/getConfigFissionTemplateById', {
+    params,
+  });
+}
+
+// get 营销活动 - 拉新活动多选商品详情
+export async function fetchAddNewActivityDetailCheck(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsByIds', {
+    params,
+  });
+}
+
+// post 营销活动 - 拉新活动新增
+export function fetchMarketAddNewActivityAdd(data) {
+  return request('/admin/configFissionTemplate/saveConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 拉新活动编辑
+export function fetchMarketAddNewActivityEdit(data) {
+  return request('/admin/configFissionTemplate/updateConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 营销活动 - 拉新活动下架
+export function fetchMarketAddNewActivityCancel(data) {
+  return request('/admin/configFissionTemplate/offShelfConfigFissionTemplate', {
+    method: 'POST',
+    data,
+  });
+}
+
 // get 营销活动 - 营销活动列表
 export async function fetchMarketActivity(params) {
   return request('/admin/marketingActivity/listActivity', {
@@ -447,3 +492,64 @@ export function fetchAreaQueryInfoSet(data) {
 }
 
 // 区域查询系统 end
+
+//营销功能配置
+// get 全局弹窗配置 - 版本列表
+export function fetchGlobalPopUpList(params) {
+  return request('/admin/configGlobalPopUp/listConfigGlobalPopUp', {
+    params,
+  });
+}
+
+// post 全局弹窗配置-新增版本-新增城市-新增版本-新增配置
+export function fetchGlobalPopUpAdd(data) {
+  return request('/admin/configGlobalPopUp/saveConfigGlobalPopUp', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-修改版本-编辑配置-编辑权重-下架-删除
+export function fetchGlobalPopUpEdit(data) {
+  return request('/admin/configGlobalPopUp/updateConfigGlobalPopUp', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-详情
+export function fetchGlobalPopUpConfigureDetail(params) {
+  return request('/admin/configGlobalPopUp/getConfigGlobalPopUpById', {
+    params,
+  });
+}
+
+// get 浮窗配置 - 版本列表
+export function fetchFloatingWindowList(params) {
+  return request('/admin/configFloatingWindow/listConfigFloatingWindowManagement', {
+    params,
+  });
+}
+
+// post 浮窗配置-新增版本-新增城市-新增版本-新增配置
+export function fetchFloatingWindowAdd(data) {
+  return request('/admin/configFloatingWindow/saveConfigFloatingWindow', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-修改版本-编辑配置-编辑权重-下架-删除
+export function fetchFloatingWindowEdit(data) {
+  return request('/admin/configFloatingWindow/updateConfigFloatingWindow', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 全局弹窗配置-详情
+export function fetchFloatingWindowDetail(params) {
+  return request('/admin/configFloatingWindow/getConfigFloatingWindowById', {
+    params,
+  });
+}

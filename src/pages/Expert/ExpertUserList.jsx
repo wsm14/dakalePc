@@ -7,21 +7,25 @@ import ExpertUserLog from './components/UserList/ExpertUserLog';
 import SubCommissionStatistics from './components/UserList/SubCommissionStatistics';
 import RecommendModal from './components/UserList/RecommendModal';
 import BDSet from './components/UserList/BDSet';
+import DarenTagSet from './components/UserList/DarenTagSet';
 import { checkCityName } from '@/utils/utils';
 
 const ExpertUserList = (props) => {
   const { expertUserList, kolLevel, loading, dispatch } = props;
+  const { darenTag } = expertUserList;
 
   const [visible, setVisible] = useState(false); // 封停理由
   const [visibleLog, setVisibleLog] = useState(false); // 操作日志
   const [visibleCommission, setVisibleCommission] = useState(false); // 分佣统计
   const [visibleRecommend, setVisibleRecommend] = useState(false); // 推荐列表
   const [visibleBD, setVisibleBD] = useState(false); // 关联bd
+  const [visibleSet, setVisibleSet] = useState(false); // 设置哒人标识
 
   const childRef = useRef();
 
   useEffect(() => {
     fetchGetKolLevel();
+    fetchDarenTag();
   }, []);
 
   // 搜索参数
@@ -30,6 +34,12 @@ const ExpertUserList = (props) => {
       label: '哒人',
       name: 'userNameOrBeanCodeOrMobile',
       placeholder: '请输入昵称、豆号或手机号',
+    },
+    {
+      label: '哒人标识',
+      name: 'userIdentification',
+      type: 'select',
+      select: darenTag.extraParam?.split(',').map((item) => ({ name: item, value: item })),
     },
     {
       label: '级别',
@@ -69,6 +79,10 @@ const ExpertUserList = (props) => {
       title: '手机号/豆号',
       dataIndex: 'mobile',
       render: (val, row) => `${val}\n${row.beanCode}`,
+    },
+    {
+      title: '哒人标识',
+      dataIndex: 'userIdentification',
     },
     {
       title: '级别',
@@ -124,8 +138,8 @@ const ExpertUserList = (props) => {
       title: '关联BD',
       align: 'center',
       fixed: 'right',
-      dataIndex: 'unlockTime',
-      render: (val, row) => `${val}\n${row.beanCode}`,
+      dataIndex: 'sellName',
+      render: (val, row) => `${val}\n${row.sellMobile}`,
     },
     {
       title: '状态',
@@ -170,9 +184,24 @@ const ExpertUserList = (props) => {
           type: 'diary', // 日志
           click: () => fetchGetKolLog(val, detail),
         },
+        {
+          type: 'set', // 设置哒人标识
+          click: () => setVisibleSet({ show: true, detail, darenTag }),
+        },
       ],
     },
   ];
+
+  // 获取哒人标识
+  const fetchDarenTag = () => {
+    dispatch({
+      type: 'expertUserList/fetchDarenTag',
+      payload: {
+        parent: 'user',
+        child: 'userIdentification',
+      },
+    });
+  };
 
   // 获取哒人等级数据
   const fetchGetKolLevel = () => {
@@ -235,7 +264,13 @@ const ExpertUserList = (props) => {
         onClose={() => setVisibleRecommend(false)}
       ></RecommendModal>
       {/* 关联BD */}
-      <BDSet visible={visibleBD} onClose={() => setVisibleBD(false)}></BDSet>
+      <BDSet visible={visibleBD} childRef={childRef} onClose={() => setVisibleBD(false)}></BDSet>
+      {/* 设置哒人标识 */}
+      <DarenTagSet
+        visible={visibleSet}
+        childRef={childRef}
+        onClose={() => setVisibleSet(false)}
+      ></DarenTagSet>
     </>
   );
 };

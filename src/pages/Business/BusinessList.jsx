@@ -13,6 +13,7 @@ import BusinessEdit from './components/BusinessList/BusinessEdit';
 import BusinessQrCodeBag from './components/BusinessList/BusinessQrCodeBag';
 import BusinessVerificationCodeSet from './components/BusinessList/BusinessVerificationCodeSet';
 import ReteDrawerSet from './components/RateDrawerSet';
+import ShareImg from './components/BusinessList/Form/ShareImg';
 import { checkCityName } from '@/utils/utils';
 
 const BusinessListComponent = (props) => {
@@ -29,6 +30,7 @@ const BusinessListComponent = (props) => {
   const [sceneList, setSceneList] = useState(false); // 场景checkbox列表
   const [qrCodeBag, setQrCodeBag] = useState({ show: false }); // 二维码背景图
   const [visibleRate, setVisibleRate] = useState(false);
+  const [visibleShare, setVisibleShare] = useState(false); // 分享配置
 
   // 搜索参数
   const searchItems = [
@@ -225,9 +227,37 @@ const BusinessListComponent = (props) => {
           click: () => fetchGetRate({ type: 'merchant', record }),
           visible: record.bankStatus === '3' && !record.groupId,
         },
+        // {
+        //   title: '分享配置',
+        //   type: 'shareImg',
+        //   click: () => fetchShareImg(record),
+        // },
       ],
     },
   ];
+
+  // 分享配置
+  const fetchShareImg = (record) => {
+    const { userMerchantIdString, merchantName } = record;
+    dispatch({
+      type: 'businessList/fetchMerchantDetail',
+      payload: { merchantId: userMerchantIdString },
+      callback: (val) => {
+        const { shareImg, friendShareImg, customTitle } = val;
+        const initialValues = {
+          shareImg,
+          friendShareImg,
+          customTitle,
+        };
+        setVisibleShare({
+          show: true,
+          merchantName,
+          userMerchantIdString,
+          initialValues,
+        });
+      },
+    });
+  };
 
   // 费率
   const fetchGetRate = (payload) => {
@@ -383,6 +413,8 @@ const BusinessListComponent = (props) => {
         fetchGetRate={fetchGetRate}
         onClose={() => setVisibleRate(false)}
       ></ReteDrawerSet>
+      {/* 分享配置 */}
+      <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
     </>
   );
 };

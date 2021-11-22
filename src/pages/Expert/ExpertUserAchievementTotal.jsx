@@ -3,13 +3,16 @@ import { connect, Link } from 'umi';
 import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
+import debounce from 'lodash/debounce';
 import TableDataBlock from '@/components/TableDataBlock';
 import SearchCard from './components/AchievementTotal/Search/SearchCard';
 import { checkCityName } from '@/utils/utils';
 import excelHeder from './components/AchievementTotal/excelHeder';
 
 const ExpertUserAchievement = (props) => {
-  const { list, kolLevel, loading, dispatch } = props;
+  const { list, kolLevel, loading, dispatch, loadings } = props;
+
+  const [selectList, setSelectList] = useState([]);
 
   const [searchData, setSearchData] = useState({
     beginDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
@@ -48,7 +51,29 @@ const ExpertUserAchievement = (props) => {
       changeOnSelect: true,
       valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
     },
+    {
+      label: '关联BD',
+      loading: loadings,
+      name: 'sellId',
+      type: 'select',
+      select: selectList,
+      onSearch: (val) => fetchGetSearch(val),
+      placeholder: '请输入BD姓名',
+      fieldNames: { label: 'sellName', value: 'sellId' },
+    },
   ];
+
+  // 搜索BD
+  const fetchGetSearch = debounce((content) => {
+    if (!content.replace(/'/g, '')) return;
+    dispatch({
+      type: 'expertUserList/fetchGetBDList',
+      payload: {
+        sellName: content.replace(/'/g, ''),
+      },
+      callback: setSelectList,
+    });
+  }, 500);
 
   // table 表头
   const getColumns = [
@@ -140,6 +165,13 @@ const ExpertUserAchievement = (props) => {
       dataIndex: 'statisticTotalFee',
       render: (val, row) => `¥ ${val ? val : '0'}`,
     },
+    {
+      title: '关联BD',
+      align: 'center',
+      // fixed: 'right',
+      dataIndex: 'sellName',
+      render: (val, row) => `${val}\n${row.sellMobile}`,
+    },
   ];
 
   useEffect(() => {
@@ -175,7 +207,6 @@ const ExpertUserAchievement = (props) => {
       <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
-        keepData
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
@@ -197,4 +228,5 @@ export default connect(({ expertUserAchievementTotal, baseData, loading }) => ({
   list: expertUserAchievementTotal.list,
   kolLevel: baseData.kolLevel,
   loading: loading.effects['expertUserAchievementTotal/fetchGetList'],
+  loadings: loading.models.expertUserList,
 }))(ExpertUserAchievement);

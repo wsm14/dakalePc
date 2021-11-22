@@ -35,6 +35,7 @@ const ImgCutModal = ({
 
   const [src, setSrc] = useState(null);
   const [cropper, setCropper] = useState();
+  const [imgData, setImgData] = useState({});
 
   useEffect(() => {
     if (uploadedImageFile) {
@@ -52,9 +53,18 @@ const ImgCutModal = ({
   const handleSubmit = () => {
     const filename = uploadedImageFile;
     // TODO: 这里可以尝试修改上传图片的尺寸
-    cropper.getCroppedCanvas().toBlob(async (blob) => {
+    const { width, height } = cropper.getCropBoxData();
+    console.log(cropper.getCropBoxData());
+    // 存在裁剪输出宽高
+    let option = {};
+    if (imgRatio !== NaN) {
+      option = { width, height };
+    }
+    cropper.getCroppedCanvas(option).toBlob(async (blob) => {
       // 把选中裁切好的的图片传出去
-      const file = new File([blob], filename.name || 'a.png', { type: filename.type || 'image/png' });
+      const file = new File([blob], filename.name || 'a.png', {
+        type: filename.type || 'image/png',
+      });
       onSubmit(file);
       // 关闭弹窗
       onClose(true);
@@ -98,9 +108,22 @@ const ImgCutModal = ({
             onInitialized={(instance) => {
               setCropper(instance);
             }}
+            crop={(e) => {
+              setImgData(
+                imgRatio == NaN || !imgRatio
+                  ? e.detail
+                  : e?.target?.cropper?.getCropBoxData() || {},
+              );
+            }}
           />
         </div>
         <div className={styles.preview_container}>
+          <div style={{ flex: 1 }}>
+            <div>限制比例情况下默认输出为显示区域宽高，无影响</div>
+            <div>输出图片宽：{imgData?.width || 0}</div>
+            <div>输出图片高：{imgData?.height || 0}</div>
+            <div>输出图片比例：{imgRatio || imgData?.width / imgData?.height || '暂无'}</div>
+          </div>
           <div className={styles.cropper_preview_set_box}>
             <div className={`cropper_preview ${styles.cropper_preview}`} />
             <div>
