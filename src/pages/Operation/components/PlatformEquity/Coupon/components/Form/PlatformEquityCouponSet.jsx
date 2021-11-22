@@ -168,7 +168,7 @@ const PlatformEquityCouponSet = (props) => {
         serviceType: 'rightCoupon',
         categoryId: categoryId,
       },
-      callback: ({ manuallyFlag, manualDivisions }) => {
+      callback: ({ manuallyFlag, manualDivisions = [] }) => {
         setCommissionShow(manuallyFlag);
         setManualList(manualDivisions);
       },

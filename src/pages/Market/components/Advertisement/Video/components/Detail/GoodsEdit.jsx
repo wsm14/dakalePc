@@ -11,7 +11,7 @@ const GoodsEdit = (props) => {
 
   const { free, contact } = couponData;
 
-  console.log('contact', contact);
+  // console.log('contact', contact);
 
   // 暂存券数据
   const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
