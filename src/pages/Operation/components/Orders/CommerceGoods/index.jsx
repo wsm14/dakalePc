@@ -1,24 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag, Badge, Avatar } from 'antd';
-import {
-  ORDERS_STATUS,
-  ORDER_TYPE_PROPS,
-  ORDER_CLOSE_TYPE,
-  ORDER_PAY_LOGO,
-} from '@/common/constant';
-import { checkCityName } from '@/utils/utils';
+import { Avatar } from 'antd';
+import { COMMERCE_ORDERS_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
+import excelHeder from './excelHeder';
+import OrderDrawer from './OrderDrawer';
 import styles from '../style.less';
 
-const GroupBuyOrders = (props) => {
+const CommerceGoods = (props) => {
   const { ordersList, loading, loadings, dispatch, tabkey } = props;
   const { list } = ordersList;
 
   const [visible, setVisible] = useState(false);
-  const [cityList, setCityList] = useState([]);
+  const [visivleSet, setVisivleSet] = useState(false);
 
   const childRef = useRef();
 
@@ -40,10 +36,15 @@ const GroupBuyOrders = (props) => {
 
   //发货和查看详情
 
-  const fetchOderDrawer = (type, index) => {
+  const fetchOderDrawer = (type, record) => {
+    const { orderLogistics = {}, orderId } = record;
     setVisivleSet({
       type,
       show: true,
+      detail: {
+        ...orderLogistics,
+        orderId,
+      },
     });
   };
 
@@ -54,7 +55,7 @@ const GroupBuyOrders = (props) => {
       name: 'orderSn',
     },
     {
-      label: '商品/券名称',
+      label: '商品',
       name: 'goodsId',
       type: 'good',
     },
@@ -64,21 +65,10 @@ const GroupBuyOrders = (props) => {
       type: 'user',
     },
     {
-      label: '团长',
-      name: 'merchantId',
-      type: 'merchant',
-    },
-    {
-      label: '订单属性',
-      type: 'select',
-      name: 'orderType',
-      select: ORDER_TYPE_PROPS,
-    },
-    {
-      label: '状态',
+      label: '订单状态',
       name: 'status',
       type: 'select',
-      select: ORDERS_STATUS,
+      select: COMMERCE_ORDERS_STATUS,
     },
     {
       label: '下单日期',
@@ -106,9 +96,26 @@ const GroupBuyOrders = (props) => {
       render: (val, row) => `${row.userName}\n${val}\n${row.beanCode}`,
     },
     {
-      title: '单价/数量',
+      title: '数量',
       align: 'center',
       dataIndex: 'goodsCount',
+    },
+    {
+      title: '用户实付',
+      align: 'center',
+      dataIndex: 'payFee',
+      render: (val, record) => {
+        const cashBean = record.beanFee ? record.beanFee / 100 : 0;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div>{`￥${Number(val) + cashBean > 0 ? (Number(val) + cashBean).toFixed(2) : 0}`}</div>
+            <div className={styles.fontColor}>
+              {record.beanFee ? `(${record.beanFee}卡豆` : '(' + '0卡豆'}
+            </div>
+            <div className={styles.fontColor}>{(val ? `+ ￥${val}` : 0) + ')'}</div>
+          </div>
+        );
+      },
     },
     {
       title: '商户实收',
@@ -124,22 +131,30 @@ const GroupBuyOrders = (props) => {
       },
     },
     {
-      title: '下单/核销时间',
+      title: '下单时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (val, row) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{val}</div>
-          <div className={styles.fontColor}>已核销：{row.verificationCount}</div>
-          <div className={styles.fontColor}>{row.verificationTime}</div>
-        </div>
-      ),
     },
     {
-      title: '状态',
+      title: '订单状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val, row) => ORDERS_STATUS[val],
+      render: (val, row) => (
+        <>
+          <span style={{ display: 'inline-flex', marginBottom: 5 }}>
+            {COMMERCE_ORDERS_STATUS[val]}
+            <Avatar
+              src={ORDER_PAY_LOGO[row.orderSource]}
+              size="small"
+              shape="square"
+              style={{ marginLeft: 5 }}
+            />
+          </span>
+          {(val === 2 || val === 6) && (
+            <div style={{ color: '#999' }}>{ORDER_CLOSE_TYPE[row.closeType]}</div>
+          )}
+        </>
+      ),
     },
     {
       type: 'handle',
@@ -149,49 +164,41 @@ const GroupBuyOrders = (props) => {
           type: 'info',
           click: () => fetchGoodsDetail(index),
         },
+        {
+          type: 'goodsDeliver',
+          visible: ['1'].includes(record.status),
+          click: () => fetchOderDrawer('add', record),
+        },
+        {
+          type: 'goodsView',
+          visible: ['3'].includes(record.status),
+          click: () => fetchOderDrawer('info', record),
+        },
       ],
     },
   ];
 
-  const expandedRowRender = (columns, record) => {
-    return (
-      <TableDataBlock
-        noCard={false}
-        pagination={false}
-        size="middle"
-        tableSize="small"
-        columns={columns}
-        loading={loading}
-        rowKey={(record) => `${record.id}`}
-        list={record}
-      ></TableDataBlock>
-    );
-  };
-
-  // 获取详情
-  const fetchAreaQueryOrderInfo = (payload) => {
-    dispatch({
-      type: 'areaQuery/fetchAreaQueryCityInfo',
-      payload,
-      callback: setCityList,
-    });
-  };
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get(), orderType: tabkey },
+      exportProps: { header: excelHeder },
+    },
+  ];
 
   return (
     <>
       <TableDataBlock
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        params={{ goodsOrScanFlag: tabkey }}
+        params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
         dispatchType="ordersList/fetchGetList"
-        expandable={{
-          // expandedRowKeys: rowKey,
-          expandedRowRender: (record) => expandedRowRender(getColumns, record),
-        }}
         {...ordersList}
       ></TableDataBlock>
       {/* 详情 */}
@@ -204,6 +211,9 @@ const GroupBuyOrders = (props) => {
         onClose={() => setVisible(false)}
         getDetail={fetchGoodsDetail}
       ></OrderDetailDraw>
+      {/* 发货 */}
+      {/*  查看物流*/}
+      <OrderDrawer childRef={childRef} visible={visivleSet} onClose={() => setVisivleSet(false)} />
     </>
   );
 };
@@ -212,5 +222,6 @@ export default connect(({ ordersList, baseData, loading }) => ({
   loadings: loading,
   ordersList,
   hubData: baseData.hubData,
-  loading: loading.models.ordersList,
-}))(GroupBuyOrders);
+  loading:
+    loading.effects['ordersList/fetchGetList'] || loading.effects['ordersList/fetchOrdersImport'],
+}))(CommerceGoods);

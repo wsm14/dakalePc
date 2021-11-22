@@ -12,13 +12,15 @@ const OrderDrawer = (props) => {
   const [form] = Form.useForm();
 
   //提交发货
-  const handleUpAudit = (now) => {
+  const handleUpAudit = () => {
     form.validateFields().then((value) => {
+      const { orderId } = detail;
       dispatch({
-        type: 'boxLottery/fetchBoxAddAndPush',
+        type: 'ordersList/fetchOrderDeliverGoods',
         payload: {
+          orderId,
+          isDelivery: 1,
           ...value,
-          blindBoxRewardId: detail.blindBoxRewardId,
         },
         callback: () => {
           onClose();

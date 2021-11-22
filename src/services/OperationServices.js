@@ -494,6 +494,21 @@ export function fetchOrderRefundOwn(data) {
   });
 }
 
+// post 电商订单-发货
+export function fetchOrderDeliverGoods(data) {
+  return request('/admin/orderManagement/deliverGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 电商订单-日志
+export function fetchOrdersListActionLog(params) {
+  return request('/admin/actionLog/listActionLog', {
+    params,
+  });
+}
+
 // 订单列表 end
 
 // 核销列表
