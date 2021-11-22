@@ -36,6 +36,7 @@ const CommerceGoodsSet = ({
   const goodsTags = goodsTagList
     .filter((item) => item.tagType === 'merchant')
     .map((key) => key.configGoodsTagId);
+
   initialValues.goodsTags = goodsTags;
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const CommerceGoodsSet = ({
         buyRule: initialValues.buyRule,
         buyType: initialValues.paymentModeObject.type,
       });
-      // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/商家商品标签
+      // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣
       fetchGetMre(initialValues.relateName, initialValues.relateType, (list = []) => {
         const mreFindIndex = list.findIndex((item) => item.value === initialValues.relateId);
         const topCategoryId = list[mreFindIndex].topCategoryId[0];
@@ -79,7 +80,7 @@ const CommerceGoodsSet = ({
         serviceType: 'commerceGoods',
         categoryId: categoryId,
       },
-      callback: ({ manuallyFlag, manualDivisions }) => {
+      callback: ({ manuallyFlag, manualDivisions = [] }) => {
         setCommissionShow(manuallyFlag);
         setManualList(manualDivisions);
       },

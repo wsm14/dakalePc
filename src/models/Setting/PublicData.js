@@ -466,6 +466,7 @@ export default {
       const response = yield call(fetchGoodsIsCommission, payload);
       if (!response) return;
       const { content } = response;
+      console.log('11', content);
       callback(content);
     },
     *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {
