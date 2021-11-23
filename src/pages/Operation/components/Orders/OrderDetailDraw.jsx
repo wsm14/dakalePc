@@ -57,7 +57,7 @@ const OrderDetailDraw = (props) => {
     const { orderId } = detail;
     dispatch({
       type: 'ordersList/fetchOrdersListActionLog',
-      payload: { page: 1, limit: 10, type: 'order', orderId },
+      payload: { page: 1, limit: 10, type: 'order', identificationId: orderId },
       callback: (detail) => {
         setJournal({ show: true, detail });
       },

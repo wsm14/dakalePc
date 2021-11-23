@@ -55,11 +55,12 @@ const OrderDrawer = (props) => {
     visible: show,
     onClose,
     footer: drawerProps.footer,
+    loding: loading,
   };
 
   return <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>;
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['boxlottery/fetchBoxAddAndPush'],
+  loading: loading.effects['ordersList/fetchOrderDetail'],
 }))(OrderDrawer);
