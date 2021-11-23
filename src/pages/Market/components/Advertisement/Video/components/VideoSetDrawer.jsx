@@ -20,11 +20,10 @@ const ShareDrawer = (props) => {
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const { title, videoId, url, frontImage, relateId, categoryId = [], ...other } = dataStorage;
+      const { videoId, url, frontImage, relateId, categoryId = [], ...other } = dataStorage;
       const { age, tagsId = [], ageData, cityList = [], area, areaType, ...otherValus } = values;
       const { free = {}, contact = [] } = couponData;
       let goodsList = {};
-      // console.log('contact', contact);
       if (dataStorage.relateType !== 'brand') {
         // 自选商品数据整理
         const newCoupon = [
@@ -55,15 +54,13 @@ const ShareDrawer = (props) => {
         // 品牌行业信息
         goodsList = { topCategoryId: categoryId[0], categoryId: categoryId[1] };
       }
-      // console.log('goodsList', goodsList);
-      // return;
-
+      console.log(dataStorage, values);
       uploadLive({
         data: frontImage, // 上传封面
         callback: (imgs) => {
+          console.log('3');
           uploadLive({
             data: videoId ? videoId : url, // 上传视频
-            title,
             callback: (videos) => {
               dispatch({
                 type: 'videoAdvert/fetchVideoAdvertCreate',
@@ -72,7 +69,6 @@ const ShareDrawer = (props) => {
                   ...otherValus,
                   momentTags: values.momentTags.join(','),
                   scope: 'all',
-                  title,
                   relateId,
                   areaType,
                   frontImageWidth: 544, // 封面宽

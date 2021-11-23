@@ -406,6 +406,7 @@ export default [
           'down',
           'adRoot',
           'rewardPeo',
+          'peasDetail',
         ],
       },
       {
