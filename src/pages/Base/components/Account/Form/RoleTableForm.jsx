@@ -103,6 +103,7 @@ const RoleTableForm = (props) => {
 
   return (
     <>
+      <div style={{ marginBottom: 10 }}>操作权限设置：</div>
       <Table
         size="small"
         loading={loading}
