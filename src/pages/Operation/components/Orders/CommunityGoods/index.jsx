@@ -22,7 +22,6 @@ const CommunityGoods = (props) => {
 
   //详情
   const fetchGoodsDetail = (index) => {
-    console.log(list, index);
     const { orderId } = list[index];
     dispatch({
       type: 'ordersList/fetchOrderDetail',
@@ -156,7 +155,6 @@ const CommunityGoods = (props) => {
         const { specificationData = {} } = row;
         const { specificationMap = {} } = specificationData;
         const arrKeys = Object.keys(specificationMap);
-        console.log(arrKeys.length);
         return (
           <PopImgShow url={row.goodsImg || coupon} onClick={row.goodsImg ? null : () => {}}>
             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
