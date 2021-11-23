@@ -24,7 +24,7 @@ const UserSelect = (props) => {
 
   // 获取用户搜索
   const fetchGetUser = debounce((content) => {
-    if (!content || content.length < 2) return;
+    if (!content) return;
     dispatch({
       type: 'baseData/fetchGetUsersSearch',
       payload: {

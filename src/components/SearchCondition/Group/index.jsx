@@ -24,7 +24,7 @@ const GroupSelect = (props) => {
 
   // 搜索店铺
   const fetchGetMre = debounce((content) => {
-    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
+    if (!content.replace(/'/g, '')) return;
     dispatch({
       type: 'baseData/fetchGetGroupForSearch',
       payload: {
