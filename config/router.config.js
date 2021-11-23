@@ -454,6 +454,7 @@ export default [
           'shareImg',
           'commerceSet',
           'portraitEdit',
+          'peasDetail',
         ],
       },
       {

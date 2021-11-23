@@ -7,7 +7,7 @@ const VideoPeasDetail = (props) => {
   const { beanDetal, loading, visible, onClose, dispatch } = props;
   const { show = false, detail = {} } = visible;
 
-  const { momentId: userMomentIdString, ownerName } = detail;
+  const { platformMomentId: userMomentIdString, relateName } = detail;
 
   // 关闭清除数据
   const fetchCloseModal = () => {
@@ -18,7 +18,7 @@ const VideoPeasDetail = (props) => {
 
   // 搜索参数
   const propItem = {
-    title: `领豆明细 - ${ownerName}`,
+    title: `领豆明细 - ${relateName}`,
     dispatchType: 'shareManage/fetchShareGetBeanDetail',
     rowKey: 'beanDetailNewId',
     searchItems: [

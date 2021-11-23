@@ -18,6 +18,7 @@ import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
 import VideoSet from '@/pages/Operation/components/VideoPlatform/VideoSet';
+import VideoPeasDetail from './components/Detail/VideoPeasDetail';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, tagList, dispatch } = props;
@@ -29,6 +30,7 @@ const ShareManage = (props) => {
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   const [visibleSet, setVisibleSet] = useState(false); // 设置
+  const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
 
   useEffect(() => {
     fetchGetUgcTag();
@@ -198,6 +200,11 @@ const ShareManage = (props) => {
             click: () =>
               setVisibleReward({ show: true, detail: { ...record, momentId: val, ownerId: -1 } }),
           },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            click: () => setVisiblePeas({ show: true, detail: record }),
+          },
         ];
       },
     },
@@ -318,6 +325,11 @@ const ShareManage = (props) => {
         fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}
       ></VideoSet>
+      {/* 领豆明细 */}
+      <VideoPeasDetail
+        visible={visiblePeas}
+        onClose={() => setVisiblePeas(false)}
+      ></VideoPeasDetail>
     </>
   );
 };
