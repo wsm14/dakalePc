@@ -8,7 +8,8 @@ const uploadLive = ({ data, title, callback }) => {
     callback(data || undefined);
     return;
   }
-  const { file } = data;
+  const { fileList = [] } = data;
+  const file = fileList[0].originFileObj || fileList[0].url;
   const uploader = new AliyunUpload.Vod({
     userId: '202991694203247151', // 阿里账号ID，必须有值
     partSize: 1048576, // 分片大小默认1 MB，不能小于100 KB
@@ -39,17 +40,22 @@ const uploadLive = ({ data, title, callback }) => {
       // 如果 uploadInfo.videoId 存在, 调用 刷新视频上传凭证接口(https://help.aliyun.com/document_detail/55408.html)
       // 如果 uploadInfo.videoId 不存在,调用 获取视频上传地址和凭证接口(https://help.aliyun.com/document_detail/55407.html)
       // 上传方式1，需要根据uploadInfo.videoId是否有值，调用视频点播的不同接口获取uploadauth和uploadAddress，如果videoId有值，调用刷新视频上传凭证接口，否则调用创建视频上传凭证接口
+      const fileName = uuid();
       const apiProps = {
         false: {
           api: '/common/vod/getVideoUploadAuth',
           params: {
-            title,
-            fileName: `${uuid()}${uploadInfo.file.name.replace(/.+\./, '.')}`,
+            title: title || fileName,
+            fileName: `${fileName}${uploadInfo.file.name.replace(/.+\./, '.')}`,
           },
         },
         true: { api: '/common/vod/getImageUploadAuth', params: {} },
       }[isImage];
       request(apiProps.api, { params: apiProps.params }).then(({ content }) => {
+        if (!content) {
+          message.destroy();
+          return;
+        }
         const uploadAuth = content.uploadAuth;
         const uploadAddress = content.uploadAddress;
         const videoId = content.videoId || content.imageId;
