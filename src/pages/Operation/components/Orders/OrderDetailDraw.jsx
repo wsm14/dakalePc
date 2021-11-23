@@ -189,7 +189,10 @@ const OrderDetailDraw = (props) => {
       label: '自提点',
       name: 'organizationGoodsOrderDescObject',
       span: 2,
-      render: (val) => val?.liftingAddress,
+      render: (val) =>
+        `${val?.liftingContentPerson || '--'}，${val?.liftingMobile || '--'}，${
+          val?.liftingAddress || '--'
+        }，${val?.liftingName || '--'}`,
     },
   ];
   //订单信息
