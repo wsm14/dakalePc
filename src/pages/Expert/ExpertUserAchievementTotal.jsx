@@ -199,8 +199,7 @@ const ExpertUserAchievement = (props) => {
       dispatch: 'expertUserAchievementTotal/fetchExcelImportExcel',
       data: {
         type: 'darenPerformanceStatistics',
-        darenPerformanceObject: { ...searchData },
-        ...get(),
+        darenPerformanceObject: { ...searchData, ...get() },
       },
       // exportProps: { header: excelHeder(kolLevel) },
     },
