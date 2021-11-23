@@ -112,11 +112,11 @@ const ShareContentSet = (props) => {
       name: 'length',
       hidden: true,
     },
-    {
-      label: '视频标题',
-      name: 'title',
-      maxLength: 20,
-    },
+    // {
+    //   label: '视频标题',
+    //   name: 'title',
+    //   maxLength: 20,
+    // },
     {
       label: '分享内容',
       name: 'message',

@@ -21,10 +21,10 @@ const DetailForm = (props) => {
       label: '视频',
       type: 'videoUpload',
     },
-    {
-      name: 'title',
-      label: '标题',
-    },
+    // {
+    //   name: 'title',
+    //   label: '标题',
+    // },
     {
       name: 'message',
       label: '内容详情',

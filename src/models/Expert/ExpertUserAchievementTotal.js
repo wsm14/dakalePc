@@ -3,6 +3,7 @@ import {
   fetchExpertUserAchievementTotalList,
   fetchCombineBuyList,
   fetchCombineBuyImportExcel,
+  fetchExcelImportExcel,
 } from '@/services/ExpertServices';
 
 export default {
@@ -43,7 +44,16 @@ export default {
         },
       });
     },
-    // 团购业绩统计列表
+    // 哒人业绩列表 - 导出
+    *fetchExcelImportExcel({ payload }, { call, put }) {
+      const response = yield call(fetchExcelImportExcel, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '导出成功',
+      });
+    },
+    // 团购业绩统计 - 列表
     *fetchCombineBuyList({ payload }, { call, put }) {
       const response = yield call(fetchCombineBuyList, payload);
       if (!response) return;
@@ -55,7 +65,7 @@ export default {
         },
       });
     },
-    // 导出团购业绩列表
+    // 团购业绩列表 - 导出
     *fetchCombineBuyImportExcel({ payload }, { call, put }) {
       const response = yield call(fetchCombineBuyImportExcel, payload);
       if (!response) return;

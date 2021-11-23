@@ -264,7 +264,7 @@ export default [
         path: '/expert/achievementTotal',
         name: '哒人业绩统计',
         component: './Expert/ExpertUserAchievementTotal',
-        // buttons: ['exportList'],
+        buttons: ['exportList'],
       },
       {
         path: '/expert/combineBuyAchievementTotal',
