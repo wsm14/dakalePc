@@ -52,6 +52,7 @@ export const EXPORT_LIST_TYPE = {
   momentCollarBean: '视频领豆明细',
   verificationList: '核销列表',
   performanceStatistics: '团购业绩统计',
+  darenPerformanceStatistics: '哒人业绩统计',
 };
 
 // 加盟申请状态
@@ -572,6 +573,7 @@ export const SERVICE_TYPE = {
   reduceCoupon: '优惠券',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  commerceGoods: '电商品',
 };
 
 // 模板类型 divisionTemplateType

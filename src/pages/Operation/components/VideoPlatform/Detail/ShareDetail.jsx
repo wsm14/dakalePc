@@ -70,10 +70,10 @@ const ShareDetail = (props) => {
       name: ['videoContent', 'url'],
       type: 'videoUpload',
     },
-    {
-      label: '标题',
-      name: 'title',
-    },
+    // {
+    //   label: '标题',
+    //   name: 'title',
+    // },
     {
       label: '内容详情',
       name: 'message',

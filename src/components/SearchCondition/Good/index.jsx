@@ -26,7 +26,7 @@ const GoodSelect = (props) => {
 
   // 搜索店铺
   const fetchGetMre = debounce((activityName) => {
-    if (!activityName.replace(/'/g, '') || activityName.replace(/'/g, '').length < 2) return;
+    if (!activityName.replace(/'/g, '')) return;
     dispatch({
       type: 'baseData/fetchGetGoodsSearch',
       payload: {

@@ -44,7 +44,7 @@ const CommunityGoods = (props) => {
     },
     {
       label: '商品名称',
-      name: 'goodsId',
+      name: 'goodsName',
     },
     {
       label: '下单人',

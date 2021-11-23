@@ -88,6 +88,33 @@ const getArrKeyVal = (key, value) => {
   return newVal;
 };
 
+/**
+ * 还原数组对象
+ * @param {*} keyArr 键名
+ * @param {*} val 键值
+ * @param {*} maxFile 最大文件数默认999
+ * @param {*} valueKey 最后一层值键名 不传递则 返回原始值 传递返回 { [valueKey]: val }
+ * @returns
+ */
+const checkArrKeyVal = (keyArr, val, maxFile, valueKey) => {
+  if (!keyArr) return;
+  const newObj = {};
+  let newVal = valueKey ? { [valueKey]: val.slice(0, maxFile || 999) } : val;
+  if (Array.isArray(keyArr)) {
+    for (let index = keyArr.length - 1; index >= 0; index--) {
+      if (index === keyArr.length - 1) {
+        newVal = { [`${keyArr[index]}`]: newVal };
+      } else {
+        newObj[keyArr[index]] = newVal;
+      }
+    }
+    return newObj;
+  } else {
+    newObj[keyArr] = newVal;
+    return newObj;
+  }
+};
+
 // 图片数据数组还原
 const uploadValues = (fileArr) => {
   return !Array.isArray(fileArr)
@@ -176,12 +203,8 @@ const UploadBlock = (props) => {
         });
       }
       setFileLists(newimg);
-      let onwFile = { [fName]: { file, fileList: newimg } };
-      if (Array.isArray(previewTitle.key)) {
-        onwFile = { [previewTitle.key[0]]: { [previewTitle.key[1]]: { file, fileList: newimg } } };
-      }
       onChange && onChange(file);
-      form.setFieldsValue({ ...onwFile });
+      form.setFieldsValue(checkArrKeyVal(name, newimg, maxFile, 'fileList'));
     });
   };
 
@@ -196,16 +219,11 @@ const UploadBlock = (props) => {
       ],
     });
     setFileLists(movefile);
-    const urlValue = form.getFieldValue(fileKeyName);
+    const urlValue = form.getFieldValue(name);
     if (typeof urlValue === 'string') {
-      form.setFieldsValue({ [fileKeyName]: movefile.map((i) => i.url).toString() });
+      form.setFieldsValue(checkArrKeyVal(name, movefile.map((i) => i.url).toString()));
     } else {
-      form.setFieldsValue({
-        [fileKeyName]: {
-          file: urlValue.file,
-          fileList: movefile,
-        },
-      });
+      form.setFieldsValue(checkArrKeyVal(name, movefile, maxFile, 'fileList'));
     }
   };
 
@@ -237,6 +255,7 @@ const UploadBlock = (props) => {
           ? fileList
           : // dklFileStatus  === out 的值 不允许上传
             fileList.filter((file) => file.dklFileStatus !== 'out');
+        console.log(newFileList);
         if ((!value.file.status || value.file.status === 'done') && newFileList.length) {
           const fileExtr = value.file.name.replace(/.+\./, '.').toLowerCase();
           // 是否传入时裁剪 git不允许裁剪
@@ -250,13 +269,12 @@ const UploadBlock = (props) => {
             return;
           }
           setFileLists(newFileList.slice(0, maxFile || 999));
-          form.setFieldsValue({
-            [fileKeyName]: { ...value, fileList: newFileList.slice(0, maxFile || 999) },
-          });
+          console.log('check', checkArrKeyVal(name, newFileList, maxFile));
+          form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
           if (onChange) onChange(value);
         } else {
-          if (!newFileList.length) form.setFieldsValue({ [fileKeyName]: undefined });
-          else form.setFieldsValue({ [fileKeyName]: value });
+          if (!newFileList.length) form.setFieldsValue(checkArrKeyVal(name, undefined));
+          else form.setFieldsValue(checkArrKeyVal(name, newFileList, maxFile, 'fileList'));
           setFileLists(newFileList);
         }
       },

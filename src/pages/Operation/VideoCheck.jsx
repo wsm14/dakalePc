@@ -60,7 +60,7 @@ const VideoCheck = (props) => {
   //组建公用的搜索条件
   const globalSearch = [
     {
-      label: '分享标题',
+      label: '分享内容',
       name: 'marketingName',
     },
     {
@@ -103,7 +103,7 @@ const VideoCheck = (props) => {
   //tab自组件Table公用的colum数据部分
   const globalColum = [
     {
-      title: '视频/标题',
+      title: '视频/内容详情',
       fixed: 'left',
       dataIndex: 'momentDTO',
       width: 280,
@@ -111,8 +111,8 @@ const VideoCheck = (props) => {
         const { momentDTO = {} } = row;
         return (
           <PopImgShow url={momentDTO.frontImage}>
-            <Ellipsis length={10} tooltip lines={3}>
-              {momentDTO.title}
+            <Ellipsis length={8} tooltip lines={1}>
+              {momentDTO.message}
             </Ellipsis>
           </PopImgShow>
         );
