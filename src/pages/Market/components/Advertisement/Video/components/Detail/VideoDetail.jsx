@@ -151,15 +151,15 @@ const VideoDetail = (props) => {
       name: 'shareSimulationNum',
       render: (val, row) => `${val}+${row.shareRealNum}`,
     },
-    // {
-    //   label: '累计打赏卡豆数',
-    //   name: '',
-    // },
+    {
+      label: '累计打赏卡豆数',
+      name: 'rewardBeanSum',
+    },
 
-    // {
-    //   label: '领豆人次',
-    //   name: '',
-    // },
+    {
+      label: '领豆人次',
+      name: 'rewardPersonSum',
+    },
   ];
 
   const handleUpdataSava = () => {
