@@ -6,7 +6,7 @@ import { Modal, Steps } from 'antd';
  * 订单退款
  */
 const OrderJournal = (props) => {
-  const { visible = {}, onClose, getDetail, dispatch, loading } = props;
+  const { visible = {}, onClose, loading } = props;
   const { show = false, detail = [] } = visible;
 
   const modalProps = {
@@ -18,10 +18,12 @@ const OrderJournal = (props) => {
     zIndex: 1001,
     confirmLoading: loading,
     bodyStyle: { overflowY: 'auto', maxHeight: 600 },
+    onCancel: onClose,
+    onOk: onClose,
   };
 
   return (
-    <Modal {...modalProps} onCancel={onClose}>
+    <Modal {...modalProps}>
       <Steps direction="vertical" progressDot current={detail.length}>
         {detail.map((item) => (
           <Steps.Step
