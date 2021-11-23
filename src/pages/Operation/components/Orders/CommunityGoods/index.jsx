@@ -66,7 +66,7 @@ const CommunityGoods = (props) => {
     },
     {
       label: '团购信息',
-      name: 'goodsName',
+      name: 'title',
     },
     {
       label: '下单日期',
