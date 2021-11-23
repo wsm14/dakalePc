@@ -54,8 +54,8 @@ const ShareManage = (props) => {
       select: tagList,
     },
     {
-      label: '分享标题',
-      name: 'title',
+      label: '分享内容',
+      name: 'message',
     },
     {
       label: '卡豆余额',
@@ -75,14 +75,14 @@ const ShareManage = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '视频/标题',
+      title: '视频/内容详情',
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
       render: (val, row) => (
         <PopImgShow url={val}>
-          <Ellipsis length={10} tooltip lines={3}>
-            {row.title}
+          <Ellipsis length={8} tooltip lines={1}>
+            {row.message}
           </Ellipsis>
           <span style={{ color: '#999999' }}>{row.platformMomentId}</span>
         </PopImgShow>

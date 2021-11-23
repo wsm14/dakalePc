@@ -38,8 +38,8 @@ const VideoAdvert = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '视频标题',
-      name: 'title',
+      label: '分享内容',
+      name: 'message',
     },
     {
       label: '店铺名称',
@@ -82,7 +82,7 @@ const VideoAdvert = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '视频/标题',
+      title: '视频/内容详情',
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
@@ -95,8 +95,8 @@ const VideoAdvert = (props) => {
             ></PopImgShow>
           </div>
           <div style={{ marginLeft: '15px' }}>
-            <Ellipsis length={10} tooltip lines={2}>
-              {row.title}
+            <Ellipsis length={8} tooltip lines={1}>
+              {row.message}
             </Ellipsis>
           </div>
         </div>

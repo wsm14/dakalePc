@@ -17,10 +17,10 @@ const VideoNoviceDetail = (props) => {
       name: ['videoContentOb', 'url'],
       type: 'videoUpload',
     },
-    {
-      label: '标题',
-      name: 'title',
-    },
+    // {
+    //   label: '标题',
+    //   name: 'title',
+    // },
     {
       label: '内容详情',
       name: 'message',
