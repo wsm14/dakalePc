@@ -178,6 +178,14 @@ export function fetchExpertUserAchievementTotalList(params) {
   });
 }
 
+// post 哒人业绩统计 - 导出
+export function fetchExcelImportExcel(data) {
+  return request('/admin/excelImport/importExcel', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 哒人业绩 end
 
 // 团购业绩
