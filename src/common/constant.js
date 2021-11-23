@@ -572,6 +572,7 @@ export const SERVICE_TYPE = {
   reduceCoupon: '优惠券',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  commerceGoods: '电商品',
 };
 
 // 模板类型 divisionTemplateType
