@@ -476,6 +476,8 @@ export const ORDER_TYPE_PROPS = {
   rightCoupon: '权益券',
   virtualProduct: '虚拟商品',
   communityGoods: '团购商品',
+  commerceGoods: '电商商品',
+  communityGoods: '团购商品',
 };
 
 // 哒人核销订单类型

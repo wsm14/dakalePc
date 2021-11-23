@@ -126,7 +126,7 @@ const OrderDetailDraw = (props) => {
             {`${orderLogistics?.addressName || '--'}，${
               orderLogistics?.mobile || '--'
             }，${checkCityName(orderLogistics?.districtCode)}${orderLogistics?.address}，${
-              orderLogistics?.logisticsCode
+              orderLogistics?.postalCode
             }`}
             <Button type="link" onClick={getJournal}>
               日志
