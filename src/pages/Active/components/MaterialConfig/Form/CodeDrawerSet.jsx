@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Space } from 'antd';
 import { MreSelect, MreSelectShow, UserSelectShow } from '@/components/MerUserSelectTable';
+import { MATERIAL_JUMP_TYPE } from '@/common/constant';
 import { createZip } from '../downZip';
 import ImportDataModal from './ImportDataModal';
 import ZipCreateLoading from '../ZipCreateLoading';
@@ -58,9 +59,9 @@ const CodeDrawerSet = (props) => {
   const handleSave = () => {
     form.validateFields().then((values) => {
       setPercent({ show: true, percent: 0, text: '文件绘制中......' });
-      const { userObjectList, page } = values;
+      const { userObjectList, page, urlType } = values;
       if (tabKey === 'user') {
-        handleGetUserCode({ userObjectList, page }, (val) =>
+        handleGetUserCode({ userObjectList, page, urlType }, (val) =>
           createZip({ ...values, userObjectList: val }, tabKey, setPercent, (res, data) => {
             handleUpData(res, data);
           }),
@@ -300,6 +301,13 @@ const CodeDrawerSet = (props) => {
       min: 0,
       max: 1,
       precision: 1,
+    },
+    {
+      label: '跳转类型',
+      name: 'urlType',
+      type: 'radio',
+      select: MATERIAL_JUMP_TYPE,
+      visible: tabKey === 'user',
     },
     {
       label: '跳转链接',

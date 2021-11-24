@@ -758,3 +758,10 @@ export const BEANFLAG_TYPE = ['未打赏', '已打赏'];
 
 //账户类型
 export const ACCOUNT_TYPE = ['现金账户', '卡豆账户'];
+
+//营销物料配置-跳转类型
+export const MATERIAL_JUMP_TYPE = {
+  main: '哒卡乐小程序',
+  community: '哒小团小程序',
+  mark: '哒小卡小程序',
+};
