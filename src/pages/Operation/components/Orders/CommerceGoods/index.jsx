@@ -85,9 +85,14 @@ const CommerceGoods = (props) => {
       dataIndex: 'goodsName',
       render: (val, row) => (
         <>
-          <Ellipsis length={10} tooltip>
+          <Ellipsis length={15} tooltip>
             {val}
           </Ellipsis>
+          <div style={{ marginTop: 5 }} className={styles.specFont}>
+            <Ellipsis length={12} tooltip>
+              {`备注：${row?.remark}`}
+            </Ellipsis>
+          </div>
           <div style={{ marginTop: 5 }} className={styles.specFont}>
             订单号：{row.orderSn}
           </div>

@@ -54,11 +54,11 @@ const VirtualOrders = (props) => {
       label: '商品名称',
       name: 'virtualProductName',
     },
-    {
-      label: '商品/券名称',
-      name: 'goodsId',
-      type: 'good',
-    },
+    // {
+    //   label: '商品/券名称',
+    //   name: 'goodsId',
+    //   type: 'good',
+    // },
     {
       label: '下单人',
       name: 'userId',

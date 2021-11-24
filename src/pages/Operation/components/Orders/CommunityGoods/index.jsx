@@ -160,7 +160,7 @@ const CommunityGoods = (props) => {
           <PopImgShow url={row.goodsImg || coupon} onClick={row.goodsImg ? null : () => {}}>
             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: 5 }}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Ellipsis length={10} tooltip>
+                <Ellipsis length={15} tooltip>
                   {val}
                 </Ellipsis>
               </div>

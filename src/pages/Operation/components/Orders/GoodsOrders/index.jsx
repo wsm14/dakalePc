@@ -109,7 +109,7 @@ const GoodsOrders = (props) => {
                 {row.goodsType && row.goodsType !== 'reduce' && (
                   <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
                 )}
-                <Ellipsis length={10} tooltip>
+                <Ellipsis length={12} tooltip>
                   {row.goodsName}
                 </Ellipsis>
               </div>

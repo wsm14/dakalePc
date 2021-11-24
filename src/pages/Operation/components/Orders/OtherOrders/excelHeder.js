@@ -81,14 +81,14 @@ export default [
     title: '所属商圈',
     dataIndex: 'businessHub',
   },
-  {
-    title: '一级行业',
-    dataIndex: 'topCategoryName',
-  },
-  {
-    title: '二级行业',
-    dataIndex: 'categoryName',
-  },
+  // {
+  //   title: '一级行业',
+  //   dataIndex: 'topCategoryName',
+  // },
+  // {
+  //   title: '二级行业',
+  //   dataIndex: 'categoryName',
+  // },
   {
     title: '详细地址',
     dataIndex: 'address',
