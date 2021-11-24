@@ -44,6 +44,11 @@ export default [
     dataIndex: 'createTime',
   },
   {
+    title: '发货时间',
+    dataIndex: 'orderLogistics',
+    render: (val) => val.deliveryTime,
+  },
+  {
     title: '订单状态',
     dataIndex: 'status',
     render: (val) => COMMERCE_ORDERS_STATUS[val],
