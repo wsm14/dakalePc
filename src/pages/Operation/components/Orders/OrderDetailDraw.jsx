@@ -8,6 +8,7 @@ import {
 } from '@/common/constant';
 import { connect } from 'umi';
 import { Button } from 'antd';
+import TableDataBlock from '@/components/TableDataBlock';
 import { DownOutlined } from '@ant-design/icons';
 import { checkCityName } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -93,12 +94,13 @@ const OrderDetailDraw = (props) => {
   ];
   const writeOffDetail = [
     {
-      label: '商品名称',
-      name: 'goodsName',
+      title: '商品名称',
+      dataIndex: 'goodsName',
     },
     {
-      label: '核销数',
-      name: 'goodsCount',
+      title: '核销数',
+      align: 'center',
+      dataIndex: 'goodsCount',
       render: (val, row) => val - row?.remainCount,
     },
   ];
@@ -305,15 +307,16 @@ const OrderDetailDraw = (props) => {
             <span className={styles.orderDetail_span}>创建时间</span>
             <span>{detail.createTime}</span>
           </div>
-          {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
-            <>
-              <div className={styles.lineClass_con}></div>
-              <div className={styles.item_detail_con}>
-                <span className={styles.orderDetail_span}>支付时间</span>
-                <span>{detail.payTime}</span>
-              </div>
-            </>
-          )}
+          {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) &&
+            tabkey != 'communityGoods' && (
+              <>
+                <div className={styles.lineClass_con}></div>
+                <div className={styles.item_detail_con}>
+                  <span className={styles.orderDetail_span}>支付时间</span>
+                  <span>{detail.payTime}</span>
+                </div>
+              </>
+            )}
 
           {status === '2' &&
             (closeType === 'unpaidManualCancel' || closeType === 'unpaidExpiredCancel') && (
@@ -345,16 +348,17 @@ const OrderDetailDraw = (props) => {
         {tabkey === 'communityGoods' && (
           <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>核销明细</div>
         )}
-        {tabkey === 'communityGoods' &&
-          communityGoodsList.map((item, index) => (
-            <DescriptionsCondition
-              labelStyle={{ width: 100 }}
-              key={`${item?.communityOrganizationGoodsId}${index}`}
-              formItems={writeOffDetail}
-              initialValues={item}
-              column={3}
-            ></DescriptionsCondition>
-          ))}
+        {tabkey === 'communityGoods' && (
+          <TableDataBlock
+            noCard={false}
+            pagination={false}
+            columns={writeOffDetail}
+            rowKey={(record) => `${record.communityOrganizationGoodsId}`}
+            list={communityGoodsList}
+            style={{ marginBottom: 10 }}
+          ></TableDataBlock>
+        )}
+
         <DescriptionsCondition
           title="用户信息"
           labelStyle={{ width: 120 }}
