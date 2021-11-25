@@ -282,7 +282,9 @@ const OrderDetailDraw = (props) => {
       onChange: (size) => getDetail(size),
     },
     footer: (detail.status === '1' ||
-      (tabkey !== 'virtualProduct' && (detail.status === '1' || detail.status === '3'))) && (
+      (tabkey !== 'virtualProduct' &&
+        tabkey !== 'scan' &&
+        (detail.status === '1' || detail.status === '3'))) && (
       <Button
         type="primary"
         onClick={() =>
