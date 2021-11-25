@@ -80,30 +80,28 @@ const CommunityGoods = (props) => {
   //table 表头
   const columns = [
     {
-      title: '下单时间',
+      title: '下单时间/订单号',
+      align: 'center',
       dataIndex: 'createTime',
-    },
-    {
-      title: '订单号',
-      dataIndex: 'orderSn',
+      render: (val, row) => `${val}\n${row.orderSn}`,
     },
     {
       title: '团购信息标题 跟团号',
       dataIndex: 'organizationGoodsOrderDescObject',
       render: (val) => (
-        <Ellipsis length={10} tooltip>
-          {`${val?.title}\n${val?.organizationNumber}`}
-        </Ellipsis>
+        <>
+          <Ellipsis length={10} tooltip>
+            {`${val?.title}`}
+          </Ellipsis>
+          <div>{val?.organizationNumber}</div>
+        </>
       ),
     },
     {
-      title: '团长手机号',
+      title: '团长',
+      align: 'center',
       dataIndex: 'relateOwnerMobile',
-    },
-    {
-      title: '团长昵称',
-      dataIndex: 'organizationGoodsOrderDescObject',
-      render: (val) => val?.relateOwnerName,
+      render: (val, row) => `${row?.organizationGoodsOrderDescObject?.relateOwnerName}\n${val}`,
     },
     {
       title: '买家',
