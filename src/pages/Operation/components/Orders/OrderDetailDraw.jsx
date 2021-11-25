@@ -282,7 +282,7 @@ const OrderDetailDraw = (props) => {
       onChange: (size) => getDetail(size),
     },
     footer: (detail.status === '1' ||
-      (tabkey === 'communityGoods' && (detail.status === '1' || detail.status === '3'))) && (
+      (tabkey !== 'virtualProduct' && (detail.status === '1' || detail.status === '3'))) && (
       <Button
         type="primary"
         onClick={() =>
@@ -333,9 +333,10 @@ const OrderDetailDraw = (props) => {
             <span className={styles.orderDetail_span}>{ORDERS_STATUS[status]}</span>
           </div>
         </div>
-        {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) && (
-          <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
-        )}
+        {(orderStatusCheck || (status === '2' && orderCloseStatusCheck)) &&
+          tabkey !== 'communityGoods' && (
+            <div style={{ fontWeight: 'bold', fontSize: '16px', lineHeight: '50px' }}>券码</div>
+          )}
         {orderGoodsVerifications.map((item) => (
           <DescriptionsCondition
             labelStyle={{ width: 100 }}
