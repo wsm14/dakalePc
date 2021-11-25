@@ -21,6 +21,7 @@ const MreSelect = ({
   columns = null,
   subsidyList = [],
   dispatchType = 'businessList/fetchGetList',
+  pagination,
   params = {},
   list = null,
   rowKey = 'userMerchantIdString',
@@ -112,6 +113,7 @@ const MreSelect = ({
         loading={loading.effects[dispatchType]}
         rowKey={(record) => `${record[rowKey]}`}
         dispatchType={dispatchType}
+        pagination={pagination}
         params={{ ...params, bankStatus: 3 }}
         rowSelection={type === 'select' ? rowSelection : undefined}
         {...(list ? list : subsidyList)}
