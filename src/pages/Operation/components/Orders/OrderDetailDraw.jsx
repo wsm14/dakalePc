@@ -362,13 +362,15 @@ const OrderDetailDraw = (props) => {
           initialValues={detail}
           column={2}
         ></DescriptionsCondition>
-        <DescriptionsCondition
-          title="商家信息"
-          labelStyle={{ width: 120 }}
-          formItems={merchartItem}
-          column={2}
-          initialValues={detail}
-        ></DescriptionsCondition>
+        {tabkey !== 'communityGoods' && (
+          <DescriptionsCondition
+            title="商家信息"
+            labelStyle={{ width: 120 }}
+            formItems={merchartItem}
+            column={2}
+            initialValues={detail}
+          ></DescriptionsCondition>
+        )}
         {tabkey === 'communityGoods' && (
           <DescriptionsCondition
             title="团长信息"
@@ -405,12 +407,15 @@ const OrderDetailDraw = (props) => {
             paddingTop: 30,
           }}
         >
-          <div>
-            <DescriptionsCondition
-              formItems={orderImgItem}
-              initialValues={detail}
-            ></DescriptionsCondition>
-          </div>
+          {tabkey !== 'communityGoods' && (
+            <div>
+              x
+              <DescriptionsCondition
+                formItems={orderImgItem}
+                initialValues={detail}
+              ></DescriptionsCondition>
+            </div>
+          )}
           <div>
             <div className={styles.detail_last_div} style={{ color: '#333' }}>
               <span>订单金额</span>
