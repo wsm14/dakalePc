@@ -193,7 +193,7 @@ const CommunityGoods = (props) => {
       title: '商品状态',
       align: 'center',
       dataIndex: 'remainCount',
-      render: (val) => (['0'].includes(val) ? '已核销' : '待核销'),
+      render: (val) => ([0].includes(val) ? '已核销' : '待核销'),
     },
   ];
 

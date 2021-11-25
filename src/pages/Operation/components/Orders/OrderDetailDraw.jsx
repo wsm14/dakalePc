@@ -469,42 +469,47 @@ const OrderDetailDraw = (props) => {
                 </div>
               </>
             )}
-            <div className={styles.detail_last_div} style={{ color: '#333' }}>
-              <span>
-                <QuestionTooltip
-                  title="平台服务费"
-                  content="交易成功后平台所收取的服务费"
-                  type="quest"
-                ></QuestionTooltip>
-              </span>
+            {tabkey !== 'communityGoods' && (
+              <div className={styles.detail_last_div} style={{ color: '#333' }}>
+                <span>
+                  <QuestionTooltip
+                    title="平台服务费"
+                    content="交易成功后平台所收取的服务费"
+                    type="quest"
+                  ></QuestionTooltip>
+                </span>
 
-              <span>
-                ￥
-                {`${(Number(detail.cashCommission) + Number(detail.beanCommission / 100)).toFixed(
-                  2,
-                )}`}
-                (含{detail.beanCommission}卡豆)
-                {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
-              </span>
-            </div>
-            <div className={styles.detail_last_div} style={{ color: '#333' }}>
-              <span>
-                <QuestionTooltip
-                  title="商户实收"
-                  content="商家实际收到的金额，包含卡豆和现金金额"
-                  type="quest"
-                ></QuestionTooltip>
-              </span>
-              <span>
-                ￥
-                {`${(Number(detail.actualCashFee) + Number(detail.actualBeanFee / 100)).toFixed(
-                  2,
-                )}`}
-                (含{detail.actualBeanFee}卡豆)
-                {/* {`￥${detail.actualCashFee}
+                <span>
+                  ￥
+                  {`${(Number(detail.cashCommission) + Number(detail.beanCommission / 100)).toFixed(
+                    2,
+                  )}`}
+                  (含{detail.beanCommission}卡豆)
+                  {/* ￥{detail.cashCommission}({detail.beanCommission}卡豆) */}
+                </span>
+              </div>
+            )}
+
+            {tabkey !== 'communityGoods' && (
+              <div className={styles.detail_last_div} style={{ color: '#333' }}>
+                <span>
+                  <QuestionTooltip
+                    title="商户实收"
+                    content="商家实际收到的金额，包含卡豆和现金金额"
+                    type="quest"
+                  ></QuestionTooltip>
+                </span>
+                <span>
+                  ￥
+                  {`${(Number(detail.actualCashFee) + Number(detail.actualBeanFee / 100)).toFixed(
+                    2,
+                  )}`}
+                  (含{detail.actualBeanFee}卡豆)
+                  {/* {`￥${detail.actualCashFee}
             (${detail.actualBeanFee ? detail.actualBeanFee : 0}卡豆)`} */}
-              </span>
-            </div>
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </DrawerCondition>
