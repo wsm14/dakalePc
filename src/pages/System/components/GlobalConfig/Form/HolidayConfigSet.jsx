@@ -270,19 +270,20 @@ const HolidayConfigSet = (props) => {
       const lifeImg = await aliOssUpload(lifeImgs);
 
       // pickUpBeans.upperLeftCorner = await aliOssUpload(pickTopimg).toString();
-      pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdownImg.toString();
-      pickUpBeans.file = fileFiles.toString();
-      wanderAround.topBackground = topBackgroundImg.toString();
-      bottomIcon.pickUpBeans = pickUpBeansImg.toString();
-      bottomIcon.wanderAround = wanderAroundImg.toString();
-      bottomIcon.order = orderImg.toString();
-      bottomIcon.main = mainImg.toString();
-      pickUpBeans.lowerRightCornerCountdownDraw = lowerRightCornerCountdownDrawImg.toString();
-      pickUpBeans.lowerRightCornerCountdownDynamic = lowerRightCornerCountdownDynamicImg.toString();
-      topTab.findFile = findFileFiles.toString();
-      topTab.find = findImg.toString();
-      topTab.lifeFile = lifeFileFiles.toString();
-      topTab.life = lifeImg.toString();
+      pickUpBeans.lowerRightCornerCountdown = lowerRightCornerCountdownImg?.toString();
+      pickUpBeans.file = fileFiles?.toString();
+      wanderAround.topBackground = topBackgroundImg?.toString();
+      bottomIcon.pickUpBeans = pickUpBeansImg?.toString();
+      bottomIcon.wanderAround = wanderAroundImg?.toString();
+      bottomIcon.order = orderImg?.toString();
+      bottomIcon.main = mainImg?.toString();
+      pickUpBeans.lowerRightCornerCountdownDraw = lowerRightCornerCountdownDrawImg?.toString();
+      pickUpBeans.lowerRightCornerCountdownDynamic =
+        lowerRightCornerCountdownDynamicImg?.toString();
+      topTab.findFile = findFileFiles?.toString();
+      topTab.find = findImg?.toString();
+      topTab.lifeFile = lifeFileFiles?.toString();
+      topTab.life = lifeImg?.toString();
 
       // console.log(topTab.findFile);
       // return;
@@ -293,7 +294,7 @@ const HolidayConfigSet = (props) => {
           type: 'pickUp',
           image: topTab.find,
           file: topTab.findFile,
-          width: topTab.findWidth.toString(),
+          width: topTab.findWidth?.toString(),
           configFestivalDetailId: tObj.findId,
         },
       ];
@@ -303,7 +304,7 @@ const HolidayConfigSet = (props) => {
           type: 'lifeFun',
           image: topTab.life,
           file: topTab.lifeFile,
-          width: topTab.lifeWidth.toString(),
+          width: topTab.lifeWidth?.toString(),
           configFestivalDetailId: tObj.lifeId,
         },
       ];
