@@ -56,6 +56,10 @@ const GoodsDetail = (props) => {
       label: `原价`,
     },
     {
+      name: 'costPrice',
+      label: `成本价`,
+    },
+    {
       label: '卡豆+现金',
       show: paymentModeObject.type === 'self',
       name: 'paymentModeObject',
@@ -66,6 +70,10 @@ const GoodsDetail = (props) => {
       show: paymentModeObject.type === 'defaultMode',
       name: 'realPrice',
       render: (val) => `${val} 元`,
+    },
+    {
+      name: 'merchantPrice',
+      label: `商家结算价`,
     },
   ];
 
