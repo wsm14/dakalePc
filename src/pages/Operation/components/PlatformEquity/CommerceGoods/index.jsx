@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { SUBMIT_TYPE, COMMERCEGOODS_STATUS } from '@/common/constant';
+import Ellipsis from '@/components/Ellipsis';
 import { RefuseModal } from '@/components/PublicComponents';
 import TableDataBlock from '@/components/TableDataBlock';
 import CommerceGoodsAdd from './components/CommerceGoodsAdd';
@@ -56,6 +57,11 @@ const PlatformEquityGoods = (props) => {
       title: '商品名称',
       fixed: 'left',
       dataIndex: 'goodsName',
+      render: (val) => (
+        <Ellipsis length={10} tooltip>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       title: '商品价值/售价',
