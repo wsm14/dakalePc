@@ -426,6 +426,7 @@ const PlatformEquitySet = ({
         keys={mreList.keys}
         visible={visible}
         mreList={mreList.list}
+        pagination={false}
         params={{ groupId: mreList.groupId }}
         onOk={(val) => {
           saveMreData(val);

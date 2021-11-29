@@ -50,11 +50,15 @@ const BusinessLicense = ({ form, dispatch, loading, initialValues }) => {
         let imgUrl = await aliOssUpload(val);
         if (imgUrl) {
           closeBusinessInfo();
+          form.setFieldsValue({
+            businessLicenseObject: {
+              businessLicenseImg: imgUrl[0],
+            },
+          });
           fetchGetOcrBusinessLicense({ imageUrl: imgUrl[0] }, (res) => {
             const { address, business, establishDate, name, regNum, validPeriod, person } = res;
             form.setFieldsValue({
               businessLicenseObject: {
-                businessLicenseImg: imgUrl[0],
                 socialCreditCode: regNum || '',
                 businessName: name || '',
                 signInAddress: address || '',
