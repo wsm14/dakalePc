@@ -1,4 +1,5 @@
 import moment from 'moment';
+import Ellipsis from '@/components/Ellipsis';
 import { ADD_AND_MINUS, SUBSIDY_TASK_ROLE, SUBSIDY_TYPE } from '@/common/constant';
 
 const infoHandle = (click) => [
@@ -97,6 +98,11 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
           title: '任务名称',
           align: 'center',
           dataIndex: 'taskName',
+          render: (val) => (
+            <Ellipsis tooltip length={10}>
+              {val}
+            </Ellipsis>
+          ),
         },
         {
           title: '卡豆',
@@ -106,8 +112,7 @@ const tableColums = ({ type, searchData, setSearchData, fetchGetDetail }) => {
         {
           type: 'handle',
           dataIndex: 'time',
-          render: (val, row) =>
-            infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
+          render: (val, row) => infoHandle(() => fetchGetDetail(row.subsidyRole, row)),
         },
       ];
     // 按日显示
