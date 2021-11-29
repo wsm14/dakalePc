@@ -185,7 +185,7 @@ const VirtualOrders = (props) => {
     {
       type: 'excel',
       dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get(), goodsOrScanFlag: tabkey },
+      data: { ...get(), orderType: tabkey },
       exportProps: { header: excelHeder },
     },
   ];
