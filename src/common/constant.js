@@ -38,6 +38,7 @@ export const PAY_TYPE = {
   wechat: '微信支付',
   alipay: '支付宝支付',
   wx_lite: '微信小程序',
+  JSAPI: '微信支付',
 };
 
 // 导出excel枚举
