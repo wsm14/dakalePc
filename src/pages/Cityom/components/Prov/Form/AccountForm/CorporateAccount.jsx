@@ -25,6 +25,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        businessLicenseObject: {
+          businessLicenseImg: res.toString(),
+        },
+      });
       dispatch({
         type: 'provCompany/fetchGetOcrLicense',
         payload: {
@@ -51,6 +56,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        bankBindingObject: {
+          openAccountPermit: res.toString(),
+        },
+      });
       dispatch({
         type: 'provCompany/fetchGetOcrBank',
         payload: {
@@ -75,6 +85,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        bankBindingObject: {
+          certFrontPhoto: res.toString(),
+        },
+      });
       dispatch({
         type: 'provCompany/fetchGetOcrFront',
         payload: {
@@ -98,6 +113,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        bankBindingObject: {
+          certReversePhoto: res.toString(),
+        },
+      });
       dispatch({
         type: 'provCompany/fetchGetOcrBefor',
         payload: {
