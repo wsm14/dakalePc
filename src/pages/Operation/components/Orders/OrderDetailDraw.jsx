@@ -127,7 +127,7 @@ const OrderDetailDraw = (props) => {
           <div>
             {`${orderLogistics?.addressName || '--'}，${
               orderLogistics?.mobile || '--'
-            }，${checkCityName(orderLogistics?.districtCode)}${orderLogistics?.address}，${
+            }，${checkCityName(orderLogistics?.districtCode)}，${orderLogistics?.address}，${
               orderLogistics?.postalCode
             }`}
             <Button type="link" onClick={getJournal}>

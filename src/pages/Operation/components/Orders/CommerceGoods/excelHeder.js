@@ -56,7 +56,8 @@ export default [
   {
     title: '收货信息',
     dataIndex: 'orderLogistics',
-    render: (val) => `${checkCityName(val?.districtCode)}${val?.address}`,
+    render: (val) =>
+      `${val?.addressName},${val?.mobile},${checkCityName(val?.districtCode)},${val?.address}`,
   },
   {
     title: '物流公司',
