@@ -27,7 +27,7 @@ const OpenAdForm = (props) => {
     dispatch({
       type: 'videoAdvert/fetchVideoAdvertSearch',
       payload: {
-        title: content.replace(/'/g, ''),
+        message: content.replace(/'/g, ''),
         ...(id || {}),
       },
       callback: setSelectList,
@@ -64,7 +64,7 @@ const OpenAdForm = (props) => {
       placeholder: '请输入视频名称搜索',
       visible: mediaType === 'video',
       onSearch: fetchGetSearch,
-      fieldNames: { label: 'title', value: 'platformMomentId' },
+      fieldNames: { label: 'message', value: 'platformMomentId' },
     },
     {
       label: '广告说明',
