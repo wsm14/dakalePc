@@ -8,6 +8,7 @@ import {
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
   BUSINESS_TYPE,
+  ORDER_ORDERTYPE,
 } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -67,7 +68,7 @@ const GoodsOrders = (props) => {
       label: '订单属性',
       type: 'select',
       name: 'orderType',
-      select: ORDER_TYPE_PROPS,
+      select: ORDER_ORDERTYPE,
     },
     {
       label: '状态',

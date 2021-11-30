@@ -481,6 +481,11 @@ export const ORDER_TYPE_PROPS = {
   communityGoods: '团购商品',
 };
 
+export const ORDER_ORDERTYPE = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '优惠券',
+};
+
 // 哒人核销订单类型
 export const EXPRET_DISTRIBUTION_TYPE = {
   scan: '扫码支付',
