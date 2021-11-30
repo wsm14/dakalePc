@@ -84,6 +84,7 @@ export const ROLE_BUTTON_TYPE = {
   equityCoupon: '权益券',
   equityGoods: '权益商品',
   equityDummy: '虚拟权益',
+  equityCommerceGoods: '电商商品',
 
   qrCode: '获取二维码',
 

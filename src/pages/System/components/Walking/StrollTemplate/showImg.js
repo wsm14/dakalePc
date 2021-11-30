@@ -13,6 +13,7 @@ import selfTour from './Img/selfTour.png';
 import specialRecommend from './Img/specialRecommend.png';
 import selfTourResource from './Img/selfTourResource.png';
 import newProductRecommend from './Img/newProductRecommend.png';
+import beanSpecialArea from './Img/beanSpecialArea.png';
 
 /**
  * 组件库
@@ -43,6 +44,13 @@ export default {
     moduleName: 'recharge',
     drop: true,
     defaultImg: recharge,
+  },
+  beanSpecialArea: {
+    name: '逛逛卡豆位',
+    icon: <PictureOutlined style={{ fontSize: 24 }} />,
+    moduleName: 'beanSpecialArea',
+    drop: true,
+    defaultImg: beanSpecialArea,
   },
   notify: {
     name: '通知位',

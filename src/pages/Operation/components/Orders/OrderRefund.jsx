@@ -42,6 +42,11 @@ const OrderRefund = (props) => {
       select: select,
       onChange: (val) => setRefund(val),
     },
+    // {
+    //   label: '退款卡豆数',
+    //   name: 'refundNumber',
+    //   type: 'number',
+    // },
     {
       label: `具体退款原因`,
       name: 'refundReason',

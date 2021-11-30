@@ -27,7 +27,10 @@ export default {
 
   effects: {
     *fetchGetList({ payload }, { call, put }) {
-      const response = yield call(fetchSpecialGoodsList, payload);
+      const response = yield call(fetchSpecialGoodsList, {
+        activityType: 'specialGoods', // 限制特惠商品搜索到电商商品
+        ...payload,
+      });
       if (!response) return;
       const { content } = response;
       yield put({

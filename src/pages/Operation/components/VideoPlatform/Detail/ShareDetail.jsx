@@ -70,10 +70,10 @@ const ShareDetail = (props) => {
       name: ['videoContent', 'url'],
       type: 'videoUpload',
     },
-    {
-      label: '标题',
-      name: 'title',
-    },
+    // {
+    //   label: '标题',
+    //   name: 'title',
+    // },
     {
       label: '内容详情',
       name: 'message',
@@ -221,17 +221,15 @@ const ShareDetail = (props) => {
       name: 'ugcRewardPerson',
       show: tabKey !== '0' && tabKey !== '1',
     },
-    // {
-    //   label: '累计打赏卡豆数',
-    //   name: '',
-    //   show: tabKey === '0' || tabKey === '1',
-    // },
+    {
+      label: '累计打赏卡豆数',
+      name: 'rewardBeanSum',
+    },
 
-    // {
-    //   label: '领豆人次',
-    //   name: '',
-    //   show: tabKey === '0' || tabKey === '1',
-    // },
+    {
+      label: '领豆人次',
+      name: 'rewardPersonSum',
+    },
   ];
 
   // 修改审核提交

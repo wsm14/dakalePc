@@ -11,6 +11,8 @@ const GoodsEdit = (props) => {
 
   const { free, contact } = couponData;
 
+  // console.log('contact', contact);
+
   // 暂存券数据
   const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
 
@@ -58,11 +60,6 @@ const GoodsEdit = (props) => {
       label: '商户id',
       name: 'ownerId',
       hidden: true,
-    },
-    {
-      label: '视频标题',
-      name: 'title',
-      maxLength: 20,
     },
     {
       label: '分享内容',

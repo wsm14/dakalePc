@@ -123,11 +123,11 @@ const VideoContentSet = (props) => {
       name: 'length',
       hidden: true,
     },
-    {
-      label: '视频标题',
-      name: 'title',
-      maxLength: 20,
-    },
+    // {
+    //   label: '视频标题',
+    //   name: 'title',
+    //   maxLength: 20,
+    // },
     {
       label: '分享内容',
       name: 'message',
@@ -137,7 +137,7 @@ const VideoContentSet = (props) => {
     {
       label: '跳转链接',
       name: 'jumpUrl',
-      rules: [{ required: relateType === 'brand' }],
+      rules: [{ required: false }],
     },
     {
       label: '免费券',

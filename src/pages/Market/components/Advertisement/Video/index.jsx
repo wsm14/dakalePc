@@ -18,6 +18,7 @@ import VideoSetDrawer from './components/VideoSetDrawer';
 import VideoDetail from './components/Detail/VideoDetail';
 import RewardSet from '@/pages/Operation/components/VideoPlatform/RewardSet';
 import VideoSet from '@/pages/Operation/components/VideoPlatform/VideoSet';
+import VideoPeasDetail from './components/Detail/VideoPeasDetail';
 
 const ShareManage = (props) => {
   const { videoAdvert, loading, tagList, dispatch } = props;
@@ -29,6 +30,7 @@ const ShareManage = (props) => {
   const [visibleRoot, setVisibleRoot] = useState(false); // 广告设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
   const [visibleSet, setVisibleSet] = useState(false); // 设置
+  const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
 
   useEffect(() => {
     fetchGetUgcTag();
@@ -54,8 +56,8 @@ const ShareManage = (props) => {
       select: tagList,
     },
     {
-      label: '分享标题',
-      name: 'title',
+      label: '分享内容',
+      name: 'message',
     },
     {
       label: '卡豆余额',
@@ -75,14 +77,14 @@ const ShareManage = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '视频/标题',
+      title: '视频/内容详情',
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
       render: (val, row) => (
         <PopImgShow url={val}>
-          <Ellipsis length={10} tooltip lines={3}>
-            {row.title}
+          <Ellipsis length={8} tooltip lines={1}>
+            {row.message}
           </Ellipsis>
           <span style={{ color: '#999999' }}>{row.platformMomentId}</span>
         </PopImgShow>
@@ -197,6 +199,11 @@ const ShareManage = (props) => {
             visible: status != 0,
             click: () =>
               setVisibleReward({ show: true, detail: { ...record, momentId: val, ownerId: -1 } }),
+          },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            click: () => setVisiblePeas({ show: true, detail: record }),
           },
         ];
       },
@@ -318,6 +325,11 @@ const ShareManage = (props) => {
         fetchGetRate={fetchGetRate}
         onClose={() => setVisibleSet(false)}
       ></VideoSet>
+      {/* 领豆明细 */}
+      <VideoPeasDetail
+        visible={visiblePeas}
+        onClose={() => setVisiblePeas(false)}
+      ></VideoPeasDetail>
     </>
   );
 };

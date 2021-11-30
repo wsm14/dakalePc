@@ -196,9 +196,12 @@ const ExpertUserAchievement = (props) => {
   const extraBtn = ({ get }) => [
     {
       type: 'excel',
-      dispatch: 'ordersList/fetchOrdersImport',
-      data: { ...get() },
-      exportProps: { header: excelHeder(kolLevel) },
+      dispatch: 'expertUserAchievementTotal/fetchExcelImportExcel',
+      data: {
+        type: 'darenPerformanceStatistics',
+        darenPerformanceObject: { ...searchData, ...get() },
+      },
+      // exportProps: { header: excelHeder(kolLevel) },
     },
   ];
 
@@ -210,7 +213,7 @@ const ExpertUserAchievement = (props) => {
         cardProps={{
           title: <SearchCard setSearchData={handleSearchData}></SearchCard>,
         }}
-        // btnExtra={extraBtn}
+        btnExtra={extraBtn}
         cRef={childRef}
         loading={loading}
         columns={getColumns}

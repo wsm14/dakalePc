@@ -264,7 +264,7 @@ export default [
         path: '/expert/achievementTotal',
         name: '哒人业绩统计',
         component: './Expert/ExpertUserAchievementTotal',
-        // buttons: ['exportList'],
+        buttons: ['exportList'],
       },
       {
         path: '/expert/combineBuyAchievementTotal',
@@ -406,6 +406,7 @@ export default [
           'down',
           'adRoot',
           'rewardPeo',
+          'peasDetail',
         ],
       },
       {
@@ -454,6 +455,7 @@ export default [
           'shareImg',
           'commerceSet',
           'portraitEdit',
+          'peasDetail',
         ],
       },
       {
@@ -497,7 +499,7 @@ export default [
         path: '/operation/orders',
         name: '订单列表',
         component: './Operation/OrdersList',
-        buttons: ['info', 'exportList'],
+        buttons: ['info', 'exportList', 'goodsView', 'goodsDeliver'],
       },
       {
         path: '/operation/verificationList',
@@ -535,6 +537,7 @@ export default [
         buttons: [
           'equityCoupon',
           'equityGoods',
+          'equityCommerceGoods',
           'save',
           'edit',
           'down',

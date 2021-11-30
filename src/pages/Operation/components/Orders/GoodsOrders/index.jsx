@@ -8,6 +8,7 @@ import {
   ORDER_PAY_LOGO,
   GOODS_CLASS_TYPE,
   BUSINESS_TYPE,
+  ORDER_ORDERTYPE,
 } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -67,7 +68,7 @@ const GoodsOrders = (props) => {
       label: '订单属性',
       type: 'select',
       name: 'orderType',
-      select: ORDER_TYPE_PROPS,
+      select: ORDER_ORDERTYPE,
     },
     {
       label: '状态',
@@ -109,7 +110,7 @@ const GoodsOrders = (props) => {
                 {row.goodsType && row.goodsType !== 'reduce' && (
                   <Tag color="magenta">{GOODS_CLASS_TYPE[row.goodsType]}</Tag>
                 )}
-                <Ellipsis length={10} tooltip>
+                <Ellipsis length={12} tooltip>
                   {row.goodsName}
                 </Ellipsis>
               </div>

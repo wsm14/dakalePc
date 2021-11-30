@@ -3,7 +3,11 @@ import { connect } from 'umi';
 import { Form, Button, notification } from 'antd';
 import { VIDEO_ADVERT_TYPE, SHARE_SEX_TYPE } from '@/common/constant';
 import { checkCityName } from '@/utils/utils';
-import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import {
+  couponsDom,
+  goodsDom,
+  commerceDom,
+} from '@/components/VideoSelectBindContent/CouponFreeDom';
 import uploadLive from '@/utils/uploadLive';
 import GoodsEdit from './GoodsEdit';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -53,10 +57,10 @@ const VideoDetail = (props) => {
       name: ['videoContent', 'url'],
       type: 'videoUpload',
     },
-    {
-      label: '标题',
-      name: 'title',
-    },
+    // {
+    //   label: '标题',
+    //   name: 'title',
+    // },
     {
       label: '内容详情',
       name: 'message',
@@ -74,7 +78,11 @@ const VideoDetail = (props) => {
       name: 'promotionList',
       render: (val, row) =>
         val.map((item) =>
-          item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
+          item.type === 'special'
+            ? item.activityType === 'commerceGoods'
+              ? commerceDom(item)
+              : goodsDom(item)
+            : couponsDom(item, '', '', item.type),
         ),
     },
     {
@@ -143,15 +151,15 @@ const VideoDetail = (props) => {
       name: 'shareSimulationNum',
       render: (val, row) => `${val}+${row.shareRealNum}`,
     },
-    // {
-    //   label: '累计打赏卡豆数',
-    //   name: '',
-    // },
+    {
+      label: '累计打赏卡豆数',
+      name: 'rewardBeanSum',
+    },
 
-    // {
-    //   label: '领豆人次',
-    //   name: '',
-    // },
+    {
+      label: '领豆人次',
+      name: 'rewardPersonSum',
+    },
   ];
 
   const handleUpdataSava = () => {
@@ -172,15 +180,19 @@ const VideoDetail = (props) => {
         const newCoupon = [
           ...contact.map((item) => ({
             ...item,
-            promotionType: item.ownerCouponIdString ? 'coupon' : 'goods',
+            promotionType: item.ownerCouponIdString
+              ? 'coupon'
+              : item.activityType === 'commerceGoods'
+              ? 'commerceGoods'
+              : 'goods',
           })),
           ...(free.ownerCouponIdString ? [{ ...free, promotionType: 'free' }] : []),
         ];
-
+        console.log('newCoupon', newCoupon);
         goodsList = {
           momentRelateList: newCoupon.map((item) => ({
             relateId:
-              item.promotionType === 'goods' // 特惠
+              item.promotionType === 'goods' || 'commerceGoods' // 特惠  || 电商商品
                 ? item.specialGoodsId || item.activityGoodsId
                 : item[
                     {
@@ -192,6 +204,7 @@ const VideoDetail = (props) => {
               goods: 'specialGoods',
               coupon: 'reduceCoupon',
               free: 'freeReduceCoupon',
+              commerceGoods: 'commerceGoods',
             }[item.promotionType],
             relateShardingKey: ownerId,
           })),

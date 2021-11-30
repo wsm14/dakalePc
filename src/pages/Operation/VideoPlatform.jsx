@@ -20,6 +20,7 @@ import RewardSet from './components/VideoPlatform/RewardSet';
 import ShareDrawer from './components/VideoPlatform/ShareDrawer';
 import ShareWeightSet from './components/VideoPlatform/ShareWeightSet';
 import ShareDetail from './components/VideoPlatform/Detail/ShareDetail';
+import VideoPeasDetail from './components/ShareManage/Detail/VideoPeasDetail';
 
 const tabList = [
   {
@@ -44,6 +45,7 @@ const VideoPlatform = (props) => {
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleSet, setVisibleSet] = useState(false); // 设置
   const [visibleReward, setVisibleReward] = useState(false); // 打赏设置
+  const [visiblePeas, setVisiblePeas] = useState(false); // 领豆明细
   // const [visibleShareEdit, setVisibleShareEdit] = useState(false); // 分享配置
 
   useEffect(() => {
@@ -58,8 +60,8 @@ const VideoPlatform = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '分享标题',
-      name: 'title',
+      label: '分享内容',
+      name: 'message',
     },
     {
       label: '行业',
@@ -121,14 +123,14 @@ const VideoPlatform = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '视频/标题',
+      title: '视频/内容详情',
       fixed: 'left',
       dataIndex: 'frontImage',
       width: 280,
       render: (val, row) => (
         <PopImgShow url={val}>
-          <Ellipsis length={10} tooltip lines={3}>
-            {row.title}
+          <Ellipsis length={8} tooltip lines={1}>
+            {row.message}
           </Ellipsis>
           <span style={{ color: '#999999' }}>{row.momentId}</span>
         </PopImgShow>
@@ -249,6 +251,11 @@ const VideoPlatform = (props) => {
             type: 'portraitEdit', // 编辑画像
             visible: typeUser,
             click: () => fetchShareDetail(index, 'portrait'),
+          },
+          {
+            type: 'peasDetail',
+            title: '领豆明细',
+            click: () => setVisiblePeas({ show: true, detail: record }),
           },
           // {
           //   title: '分享配置',
@@ -411,6 +418,11 @@ const VideoPlatform = (props) => {
       ></VideoSet>
       {/* 打赏设置 */}
       <RewardSet visible={visibleReward} onClose={() => setVisibleReward(false)}></RewardSet>
+      {/* 领豆明细 */}
+      <VideoPeasDetail
+        visible={visiblePeas}
+        onClose={() => setVisiblePeas(false)}
+      ></VideoPeasDetail>
     </>
   );
 };

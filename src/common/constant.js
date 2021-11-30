@@ -38,6 +38,7 @@ export const PAY_TYPE = {
   wechat: '微信支付',
   alipay: '支付宝支付',
   wx_lite: '微信小程序',
+  JSAPI: '微信支付',
 };
 
 // 导出excel枚举
@@ -52,6 +53,7 @@ export const EXPORT_LIST_TYPE = {
   momentCollarBean: '视频领豆明细',
   verificationList: '核销列表',
   performanceStatistics: '团购业绩统计',
+  darenPerformanceStatistics: '哒人业绩统计',
 };
 
 // 加盟申请状态
@@ -125,6 +127,9 @@ export const EXPERT_TEMP_STATUS = ['未开始', '实习中', '实习结束'];
 
 // 活动状态
 export const ACTIVITY_STATUS = ['待开始', '进行中', '已下架'];
+
+// 电商商品状态
+export const COMMERCEGOODS_STATUS = ['已下架', '活动中', '即将开始'];
 
 // 新人下单配置福利状态
 export const WELFARE_STATUS = ['未开始', '进行中', '已结束'];
@@ -232,6 +237,9 @@ export const ORDERS_STATUS = [
   '退款中',
 ];
 
+// 订单状态
+export const COMMERCE_ORDERS_STATUS = ['待支付', '待发货', '已退款', '已完成', '', '', '退款中'];
+
 // 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
   unpaidExpiredCancel: '待付款超时自动关闭',
@@ -254,7 +262,7 @@ export const USER_SOURCE = {
   weChat: '小程序',
   app: 'APP',
   communityWeChat: '哒小团',
-  markWeChat: '打卡乐',
+  markWeChat: '哒小卡',
 };
 
 // 合作意向类型
@@ -316,7 +324,7 @@ export const SUBSIDY_TYPE = {
 export const SUBSIDY_BEAN_TYPE = { out: '补贴', in: '回收' };
 
 // 补贴管理 任务列表 补贴角色
-export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', group: '集团' };
+export const SUBSIDY_TASK_ROLE = { user: '用户', merchant: '店铺', group: '集团', brand: '品牌' };
 
 // 补贴管理 行为管理 补贴角色
 export const SUBSIDY_ACTION_ROLE = { user: '用户', merchant: '店铺', group: '集团', brand: '品牌' };
@@ -389,6 +397,7 @@ const bannerType = {
   wanderAroundMainBanner: '逛逛主Banner',
   wanderAroundGoodMerchant: '逛逛周边好店',
   wanderAroundRecharge: '逛逛话费充值',
+  wanderAroundBean: '逛逛卡豆专区',
 };
 
 // Banner类型
@@ -468,6 +477,13 @@ export const ORDER_TYPE_PROPS = {
   rightCoupon: '权益券',
   virtualProduct: '虚拟商品',
   communityGoods: '团购商品',
+  commerceGoods: '电商商品',
+  communityGoods: '团购商品',
+};
+
+export const ORDER_ORDERTYPE = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '优惠券',
 };
 
 // 哒人核销订单类型
@@ -565,6 +581,7 @@ export const SERVICE_TYPE = {
   reduceCoupon: '优惠券',
   rightGoods: '权益商品',
   rightCoupon: '权益券',
+  commerceGoods: '电商品',
 };
 
 // 模板类型 divisionTemplateType
@@ -689,6 +706,9 @@ export const VIDEO_ADVERT_STATUS = ['下架', '发布中'];
 // 平台权益 - 商品售卖类型
 export const PEQUITY_GOODSBUY_TYPE = ['免费', '卡豆+现金'];
 
+// 平台权益 - 电商商品售卖类型
+export const COMMERCE_GOODSBUY_TYPE = { self: '卡豆+现金', defaultMode: '现金' };
+
 //评论状态
 export const COMMENT_DELETFLAG = ['已删除', '正常'];
 
@@ -744,3 +764,10 @@ export const BEANFLAG_TYPE = ['未打赏', '已打赏'];
 
 //账户类型
 export const ACCOUNT_TYPE = ['现金账户', '卡豆账户'];
+
+//营销物料配置-跳转类型
+export const MATERIAL_JUMP_TYPE = {
+  main: '哒卡乐小程序',
+  community: '哒小团小程序',
+  mark: '哒小卡小程序',
+};

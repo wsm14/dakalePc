@@ -293,7 +293,10 @@ export default {
     },
     // 特惠商品
     *fetchGetSpecialGoodsSelect({ payload }, { call, put }) {
-      const response = yield call(fetchGetSpecialGoodsSelect, payload);
+      const response = yield call(fetchGetSpecialGoodsSelect, {
+        activityType: 'specialGoods',
+        ...payload,
+      });
       if (!response) return;
       const { content } = response;
       yield put({
@@ -306,6 +309,7 @@ export default {
     // 权益商品
     *fetchGetPlatformEquitySelect({ payload }, { call, put }) {
       const response = yield call(fetchGetPlatformEquitySelect, {
+        activityType: 'specialGoods', // 限制特惠商品搜索到电商商品
         ...payload,
         goodsStatus: 1,
         status: 1,
@@ -462,6 +466,7 @@ export default {
       const response = yield call(fetchGoodsIsCommission, payload);
       if (!response) return;
       const { content } = response;
+      console.log('11', content);
       callback(content);
     },
     *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {

@@ -171,7 +171,7 @@ const ExpertUserAchievement = (props) => {
     {
       type: 'excel',
       dispatch: 'expertUserAchievementTotal/fetchCombineBuyImportExcel',
-      data: { type: 'performanceStatistics', communityConsumeObject: { ...searchData }, ...get() },
+      data: { type: 'performanceStatistics', communityConsumeObject: { ...searchData, ...get() } },
     },
   ];
 

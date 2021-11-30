@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { notification } from 'antd';
-import { couponsDom, goodsDom } from './CouponFreeDom';
+import { couponsDom, goodsDom, commerceDom } from './CouponFreeDom';
 import BuyContactModal from './BuyContactModal';
 import FreeCouponModal from './FreeCouponModal';
 import './coupon.less';
@@ -19,6 +19,8 @@ const ShareCoupon = (props) => {
     onOk,
     form,
   } = props;
+
+  // console.log('data', data);
 
   const [visibleSelect, setVisibleSelect] = useState(false); // 免费券选择
   const [visibleContact, setVisibleContact] = useState(false); // 优惠选择
@@ -42,7 +44,11 @@ const ShareCoupon = (props) => {
       {type === 'coupon' && couponName ? (
         couponsDom(data, '', '', buyFlag == 0 ? 'free' : 'valuable', onDel)
       ) : type === 'goods' && goodsName ? (
-        goodsDom(data, '', '', onDel)
+        data.activityType === 'commerceGoods' ? (
+          commerceDom(data, '', '', onDel)
+        ) : (
+          goodsDom(data, '', '', onDel)
+        )
       ) : (
         <div
           className="share_Coupon share_add"
