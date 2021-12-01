@@ -139,16 +139,19 @@ export default {
       const { type = 'info', momentType, relateId, ...cell } = payload;
       const response = yield call(fetchVideoAdvertDetail, cell);
       // 查询视频统计信息
-      const response2 = yield call(fetchNewShareStatisticsList, {
-        momentType,
-        ownerId: relateId,
-        momentId: cell.platformMomentId,
-      });
-      if (!response && !response2) return;
+      let content2 = {};
+      if (type === 'info') {
+        const response2 = yield call(fetchNewShareStatisticsList, {
+          momentType,
+          ownerId: relateId,
+          momentId: cell.platformMomentId,
+        });
+        if (!response2) return;
+        const { content } = response2;
+        content2 = content;
+      }
+      if (!response) return;
       const { content = {} } = response;
-
-      console.log('content', content);
-      const { content: content2 } = response2;
       const {
         age,
         area,

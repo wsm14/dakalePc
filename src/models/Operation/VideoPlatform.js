@@ -284,10 +284,15 @@ export default {
       const { type = 'info', momentType, ...cell } = payload;
       const response = yield call(fetchNewShareDetail, cell);
       // 查询视频统计信息
-      const response2 = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
-      if (!response && !response2) return;
+      let content2 = {};
+      if (type === 'info') {
+        const response2 = yield call(fetchNewShareStatisticsList, { momentType, ...cell });
+        if (!response2) return;
+        const { content } = response2;
+        content2 = content;
+      }
+      if (!response) return;
       const { content } = response;
-      const { content: content2 } = response2;
       // console.log(content, 'content');
       const {
         age,
