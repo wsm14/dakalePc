@@ -55,12 +55,12 @@ const ImgCutModal = ({
     // TODO: 这里可以尝试修改上传图片的尺寸
     const { width, height } = cropper.getCropBoxData();
     console.log(cropper.getCropBoxData());
-    // 存在裁剪输出宽高
-    let option = {};
-    if (imgRatio !== NaN) {
-      option = { width, height };
-    }
-    cropper.getCroppedCanvas(option).toBlob(async (blob) => {
+    // // 存在裁剪输出宽高
+    // let option = {};
+    // if (imgRatio !== NaN) {
+    //   option = { width, height };
+    // }
+    cropper.getCroppedCanvas().toBlob(async (blob) => {
       // 把选中裁切好的的图片传出去
       const file = new File([blob], filename.name || 'a.png', {
         type: filename.type || 'image/png',
@@ -118,12 +118,12 @@ const ImgCutModal = ({
           />
         </div>
         <div className={styles.preview_container}>
-          <div style={{ flex: 1 }}>
+          {/* <div style={{ flex: 1 }}>
             <div>限制比例情况下默认输出为显示区域宽高，无影响</div>
             <div>输出图片宽：{imgData?.width || 0}</div>
             <div>输出图片高：{imgData?.height || 0}</div>
             <div>输出图片比例：{imgRatio || imgData?.width / imgData?.height || '暂无'}</div>
-          </div>
+          </div> */}
           <div className={styles.cropper_preview_set_box}>
             <div className={`cropper_preview ${styles.cropper_preview}`} />
             <div>
