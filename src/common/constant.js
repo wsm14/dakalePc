@@ -386,7 +386,7 @@ export const BANNER_PORT_TYPE = {
   user: '用户端',
   merchant: '商家端',
   weChat: '微信小程序',
-  mark: '哒卡主页',
+  mark: '哒小卡小程序',
 };
 
 const bannerType = {
