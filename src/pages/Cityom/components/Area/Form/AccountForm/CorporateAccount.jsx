@@ -25,6 +25,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        businessLicenseObject: {
+          businessLicenseImg: res.toString(),
+        },
+      });
       dispatch({
         type: 'areaCenter/fetchGetOcrLicense',
         payload: {
@@ -33,7 +38,6 @@ const CorporateAccount = (props) => {
         callback: (val) => {
           form.setFieldsValue({
             businessLicenseObject: {
-              businessLicenseImg: res.toString(),
               socialCreditCode: val.regNum,
               businessName: val.name,
               signInAddress: val.address,
@@ -51,6 +55,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        bankBindingObject: {
+          openAccountPermit: res.toString(),
+        },
+      });
       dispatch({
         type: 'areaCenter/fetchGetOcrBank',
         payload: {
@@ -60,7 +69,6 @@ const CorporateAccount = (props) => {
           form.setFieldsValue({
             bankBindingObject: {
               cardName: val.enterpriseNameCH,
-              openAccountPermit: res.toString(),
               cardNo: val.enterpriseBankId,
               bankBranchName: val.enterpriseBankName,
             },
@@ -75,6 +83,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        bankBindingObject: {
+          certFrontPhoto: res.toString(),
+        },
+      });
       dispatch({
         type: 'areaCenter/fetchGetOcrFront',
         payload: {
@@ -83,7 +96,6 @@ const CorporateAccount = (props) => {
         callback: (val) => {
           form.setFieldsValue({
             bankBindingObject: {
-              certFrontPhoto: res.toString(),
               legalPerson: val.name,
               legalCertId: val.num,
             },
@@ -98,6 +110,11 @@ const CorporateAccount = (props) => {
     setDisabledInfo(true);
     aliOssUpload(file).then((res) => {
       setDisabledInfo(false);
+      form.setFieldsValue({
+        bankBindingObject: {
+          certReversePhoto: res.toString(),
+        },
+      });
       dispatch({
         type: 'areaCenter/fetchGetOcrBefor',
         payload: {
