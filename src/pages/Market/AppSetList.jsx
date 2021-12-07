@@ -173,8 +173,14 @@ const SysAppSet = (props) => {
 
   const btnList = [
     {
-      onClick: () =>
-        setVisibleSet({ show: true, type: 'add', detail: { visibleRange: 'user,kol' } }),
+      onClick: () => {
+        const type = tabKey === 'mark' ? 'markMain' : null;
+        setVisibleSet({
+          show: true,
+          type: 'add',
+          detail: { visibleRange: 'user,kol', bannerType: type },
+        });
+      },
     },
   ];
 
