@@ -57,7 +57,7 @@ const JumpFormBlock = ({ detail = {}, port = 'user', getJumpType, form, dispatch
       >
         <Radio
           select={
-            port === 'merchant' // 商家端进入时映射
+            ['mark', 'merchant'].includes(port)
               ? (({ inside, ...other }) => other)(BANNER_JUMP_TYPE)
               : BANNER_JUMP_TYPE // 默认进入映射
           }

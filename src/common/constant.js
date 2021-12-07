@@ -413,7 +413,9 @@ export const BANNER_PORT_LINK = {
   merchant: {
     merchantMain: '商家工作台',
   },
-  mark: bannerType,
+  mark: {
+    markMain: '哒卡主页',
+  },
 };
 
 // Banner跳转类型
