@@ -111,8 +111,9 @@ const SpecialGoodCheckDetail = (props) => {
       const payload = {
         submitterType,
         divisionFlag,
-        allowExpireRefund: allowExpireRefund || detail.allowExpireRefund,
-        allowRefund: allowRefund || detail.allowRefund,
+        allowExpireRefund:
+          allowExpireRefund === undefined ? detail.allowExpireRefund : allowExpireRefund,
+        allowRefund: allowRefund === undefined ? detail.allowRefund : allowRefund,
         auditId: auditIdString,
         ownerId: ownerIdString,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
