@@ -87,11 +87,11 @@ const RegularDetail = (props) => {
         <>
           <div>
             <span style={{ marginRight: '8px' }}>是否允许随时退款:</span>
-            <span>{val == 1 || val == '' ? '是' : '否'}</span>
+            <span>{val == 1 || val === '' ? '是' : '否'}</span>
           </div>
           <div>
-            <span style={{ marginRight: '8px' }}>是否允许过期退款: </span>
-            <span>{row.allowExpireRefund == 1 || val == '' ? '是' : '否'}</span>
+            <span style={{ marginRight: '8px' }}>是否允许过期退款:</span>
+            <span>{row.allowExpireRefund == 1 || row.allowExpireRefund === '' ? '是' : '否'}</span>
           </div>
         </>
       ),
