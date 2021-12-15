@@ -99,11 +99,20 @@ const SpecialGoodCheckDetail = (props) => {
       });
     }
     form.validateFields().then((values) => {
-      const { otherPlatformPrice, merTags, platTags, serviceDivisionDTO = {} } = values;
+      const {
+        otherPlatformPrice,
+        merTags,
+        platTags,
+        serviceDivisionDTO = {},
+        allowExpireRefund,
+        allowRefund,
+      } = values;
 
       const payload = {
         submitterType,
         divisionFlag,
+        allowExpireRefund: allowExpireRefund || detail.allowExpireRefund,
+        allowRefund: allowRefund || detail.allowRefund,
         auditId: auditIdString,
         ownerId: ownerIdString,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
@@ -299,13 +308,12 @@ const SpecialGoodCheckDetail = (props) => {
         <Tabs.TabPane tab="商品信息" key="1">
           <GoodsDetailForm
             detail={detail}
-            form={form}
             tabkey={tabkey}
             merchantList={merchantList}
           ></GoodsDetailForm>
         </Tabs.TabPane>
         <Tabs.TabPane tab="投放规则" key="2">
-          <RegularDetail detail={detail}></RegularDetail>
+          <RegularDetail detail={detail} form={form}></RegularDetail>
         </Tabs.TabPane>
         <Tabs.TabPane tab="审核记录" key="3">
           <CheckRecord recordList={recordList}></CheckRecord>

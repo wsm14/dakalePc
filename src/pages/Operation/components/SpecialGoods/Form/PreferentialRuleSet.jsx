@@ -178,11 +178,13 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
       title: '设置退款规则',
       label: '是否允许随时退款',
       type: 'switch',
+      hidden: true,
       name: 'allowRefund',
     },
     {
       label: '是否允许过期退款',
       type: 'switch',
+      hidden: true,
       name: 'allowExpireRefund',
     },
   ];
@@ -191,7 +193,7 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
     <FormCondition
       form={form}
       formItems={formItems}
-      initialValues={{ needOrder: 0, allowRefund: 0, allowExpireRefund: 0, ...initialValues }}
+      initialValues={{ needOrder: 0, allowRefund: 1, allowExpireRefund: 1, ...initialValues }}
     ></FormCondition>
   );
 };
