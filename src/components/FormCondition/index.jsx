@@ -33,6 +33,7 @@ const FormComponents = ({
   layout = 'horizontal',
   initialValues = {},
   formItemLayouts = {},
+  formItemStyle = {},
   children,
   ...other
 }) => {
@@ -47,9 +48,17 @@ const FormComponents = ({
   const getFields = () => {
     const formItemArr = [];
     formItems.forEach((item, i) => {
-      const { title = '', label = '', name = '', type = 'input', addRules, visible = true } = item;
+      const {
+        title = '',
+        label = '',
+        name = '',
+        type = 'input',
+        addRules,
+        visible = true,
+        hidden = false,
+      } = item;
       // 标题
-      if (title && visible) {
+      if (title && visible && !hidden) {
         formItemArr.push(
           <Divider orientation="left" key={`${type}${label}${i}`}>
             {title}
@@ -91,6 +100,7 @@ const FormComponents = ({
           <FormItem
             name={name}
             key={`${label}${name}${type}`}
+            style={formItemStyle}
             {...formProps}
             {...switchProps}
             rules={[...rules, ...(addRules || [])]}

@@ -1,10 +1,23 @@
 import React from 'react';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
+import FormCondition from '@/components/FormCondition';
 import { COUPON_BUY_RULE, COUPON_WEEK_TIME } from '@/common/constant';
 
 const RegularDetail = (props) => {
-  const { detail } = props;
-  const { useTime } = detail;
+  const { detail, form } = props;
+
+  const formItems = [
+    {
+      label: '允许随时退款',
+      type: 'switch',
+      name: 'allowRefund',
+    },
+    {
+      label: '允许过期退款',
+      type: 'switch',
+      name: 'allowExpireRefund',
+    },
+  ];
 
   const RegularItems = [
     {
@@ -83,17 +96,13 @@ const RegularDetail = (props) => {
     {
       name: 'allowRefund',
       label: '退款规则',
-      render: (val, row) => (
-        <>
-          <div>
-            <span style={{ marginRight: '8px' }}>是否允许随时退款:</span>
-            <span>{Number(val) == 1 || val === '' ? '是' : '否'}</span>
-          </div>
-          <div>
-            <span style={{ marginRight: '8px' }}>是否允许过期退款:</span>
-            <span>{Number(row.allowExpireRefund) == 1 || row.allowExpireRefund === '' ? '是' : '否'}</span>
-          </div>
-        </>
+      render: () => (
+        <FormCondition
+          form={form}
+          formItems={formItems}
+          initialValues={detail}
+          formItemStyle={{ marginBottom: 0 }}
+          ></FormCondition>
       ),
     },
   ];
