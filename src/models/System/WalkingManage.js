@@ -28,6 +28,9 @@ import {
   fetchGetSelfTourGoodsAdd,
   fetchGetSelfTourGoodsEdit,
   fetchGetSelfTourGoodsDetail,
+  fetchListConfigSpecialGoodsCategory,
+  fetchSaveConfigSpecialGoodsCategory,
+  fetchUpdateConfigSpecialGoodsCategory,
 } from '@/services/SystemServices';
 import { fetchAddNewActivityDetailCheck } from '@/services/MarketServices';
 export default {
@@ -48,6 +51,9 @@ export default {
     selfEditionList: { list: [] },
     selfCityList: { list: [] },
     selfConfigureList: { list: [] },
+    gratiaClassList: { list: [] },
+    gratiaClassCityList: { list: [] },
+    gratiaClassInfoList: { list: [] },
   },
 
   reducers: {
@@ -450,6 +456,62 @@ export default {
         specialGoods = activityGoodsDTOS;
       }
       callback(specialGoods);
+    },
+    //逛逛模块化配置-特惠商品类目配置 - 版本列表
+    *fetchListConfigSpecialGoodsCategory({ payload }, { call, put }) {
+      const response = yield call(fetchListConfigSpecialGoodsCategory, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          gratiaClassList: { list: content.configSpecialGoodsCategoryDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-特惠商品类目配置 - 城市列表
+    *fetchListConfigSpecialGoodsCategoryCity({ payload }, { call, put }) {
+      const response = yield call(fetchListConfigSpecialGoodsCategory, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          gratiaClassCityList: { list: content.configSpecialGoodsCategoryDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-特惠商品类目配置 - 配置列表
+    *fetchListConfigSpecialGoodsCategoryInfo({ payload }, { call, put }) {
+      const response = yield call(fetchListConfigSpecialGoodsCategory, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          gratiaClassInfoList: { list: content.configSpecialGoodsCategoryDTOS },
+        },
+      });
+    },
+    //逛逛模块化配置-特惠商品类目配置 - 新增版本 / 新增城市
+    *fetchSaveConfigSpecialGoodsCategory({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveConfigSpecialGoodsCategory, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback();
+    },
+    //逛逛模块化配置-特惠商品类目配置 - 版本修改 / 修改配置
+    *fetchUpdateConfigSpecialGoodsCategory({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateConfigSpecialGoodsCategory, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback();
     },
   },
 };

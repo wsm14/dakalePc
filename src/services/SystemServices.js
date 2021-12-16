@@ -1,5 +1,32 @@
 import request from '@/utils/request';
 
+// 特惠商品类目配置
+
+// get 特惠商品类目配置 - 版本列表 / 城市列表 / 配置列表
+export function fetchListConfigSpecialGoodsCategory(params) {
+  return request('/admin/configSpecialGoodsCategory/listConfigSpecialGoodsCategory', {
+    params,
+  });
+}
+
+// post 特惠商品类目配置 - 新增版本 / 新增城市
+export function fetchSaveConfigSpecialGoodsCategory(data) {
+  return request('/admin/configSpecialGoodsCategory/saveConfigSpecialGoodsCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 特惠商品类目配置 - 修改版本 / 修改配置
+export function fetchUpdateConfigSpecialGoodsCategory(data) {
+  return request('/admin/configSpecialGoodsCategory/updateConfigSpecialGoodsCategory', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 特惠商品类目配置  end
+
 // 菜单设置
 
 // get 菜单设置 - 菜单 - 获取菜单

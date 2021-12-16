@@ -130,7 +130,6 @@ const VaneManage = (props) => {
           params={{ userOs, version, areaType, areaCode, isAutomatic: 0, deleteFlag: 1 }}
           rowKey={(record) => `${record.configWindVaneId}`}
           dispatchType="walkingManage/fetchGetWindVaneConfigureList"
-          pagination={false}
           {...list}
         ></TableDataBlock>
       </Modal>
