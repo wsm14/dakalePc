@@ -106,6 +106,12 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
       titleKey: 'merchantName',
       formulaDom: () => formulaDom('推广费=店铺结算卡豆*推广费比例'),
     },
+    expiredOrder: {
+      type: '过期不可退订单',
+      icon: <ShoppingOutlined />,
+      merchantName: true,
+      titleKey: 'goodsName',
+    },
   }[type];
 
   const oderDom = (
@@ -131,12 +137,20 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           {type === 'kolGoods' ||
           type === 'reduceCoupon' ||
           type === 'specialGoods' ||
-          type === 'writeOff'
+          type === 'writeOff' ||
+          type === 'expiredOrder'
             ? '平台佣金=商品佣金-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣-哒人带货分佣-豆长团队分佣'
             : '平台佣金=店铺服务费-区县分佣-省公司分佣-用户家主分佣-店铺家主分佣'}
         </span>
       </div>
       <div className={styles.income_order_detail}>
+        {/* 过期不可退订单 */}
+        {type === 'expiredOrder' && (
+          <>
+            <div className={styles.detail_item}>用户实付：￥{detail.payFee || 0}</div>
+            <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
+          </>
+        )}
         {/* 哒人带货,优惠券商品显示字段 */}
         {(type === 'kolGoods' ||
           type === 'reduceCoupon' ||
@@ -151,7 +165,8 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         {type !== 'kolGoods' &&
           type !== 'reduceCoupon' &&
           type !== 'specialGoods' &&
-          type !== 'writeOff' && (
+          type !== 'writeOff' &&
+          type !== 'expiredOrder' && (
             <>
               <div className={styles.detail_item}>店铺实收：￥{detail.totalFee || 0}</div>
               <div className={styles.detail_item}>服务费比例：{detail.commissionRatio || 0}%</div>
@@ -176,7 +191,8 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         {(type === 'kolGoods' ||
           type === 'reduceCoupon' ||
           type === 'specialGoods' ||
-          type === 'writeOff') && (
+          type === 'writeOff' ||
+          type === 'expiredOrder') && (
           <>
             <div className={styles.detail_item_class}>
               哒人带货分佣：{detail.kolProfitBean || 0}卡豆 （分佣比例：{detail.kolProfitProportion}
@@ -192,11 +208,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
           {type === 'kolGoods' ||
           type === 'reduceCoupon' ||
           type === 'specialGoods' ||
-          type === 'writeOff' ? (
+          type === 'writeOff' ||
+          type === 'expiredOrder' ? (
             <></>
-            // <Popover content={detailProps.kolFormDom()} placement="left">
-            //   <a>查看计算公式</a>
-            // </Popover>
           ) : (
             <Popover content={detailProps.formulaDom()} placement="left">
               <a>查看计算公式</a>
@@ -211,6 +225,9 @@ const IncomeOrderDetail = ({ visible, onClose }) => {
         <div className={styles.detail_item}>支付时间：{detail.payTime}</div>
         {detail.verificationTime && (
           <div className={styles.detail_item}>核销时间：{detail.verificationTime}</div>
+        )}
+        {detail.expireTime && (
+          <div className={styles.detail_item}>过期时间：{detail.expireTime}</div>
         )}
       </div>
     </div>

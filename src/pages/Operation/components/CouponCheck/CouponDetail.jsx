@@ -40,14 +40,18 @@ const GoodsDetail = (props) => {
   // 审核通过
   const handleVerifyAllow = () => {
     form.validateFields().then((values) => {
-      const { serviceDivisionDTO = {} } = values;
+      const { serviceDivisionDTO = {}, reduceObject = {} } = values;
+      const { anytimeRefund, expireRefund } = reduceObject;
       const payload = {
+        allowRefund: anytimeRefund,
+        allowExpireRefund: expireRefund,
         auditId: auditIdString,
         ownerId: ownerIdString,
         submitterType,
         divisionFlag,
         serviceDivisionDTO: detail.divisionFlag === '1' ? serviceDivisionDTO : '',
       };
+
       dispatch({
         type: 'specialGoodsCheck/fetchSpecialGoodsAudit',
         payload: payload,
@@ -92,6 +96,19 @@ const GoodsDetail = (props) => {
       }
     }
   };
+
+  const formItems = [
+    {
+      label: '允许随时退款',
+      type: 'switch',
+      name: ['reduceObject', 'anytimeRefund'],
+    },
+    {
+      label: '允许过期退款',
+      type: 'switch',
+      name: ['reduceObject', 'expireRefund'],
+    },
+  ];
 
   // 参与活动的店铺
   const mreFormItems = [
@@ -211,13 +228,25 @@ const GoodsDetail = (props) => {
       label: '使用说明',
       name: 'couponDescString',
     },
+    // {
+    //   label: '退款规则',
+    //   name: ['reduceObject', 'anytimeRefund'],
+    //   render: (val) =>
+    //     `${val === '1' ? '' : '不'}允许随时退款 \n ${
+    //       detail?.reduceObject?.expireRefund === '1' ? '' : '不'
+    //     }允许过期退款`,
+    // },
     {
       label: '退款规则',
       name: ['reduceObject', 'anytimeRefund'],
-      render: (val) =>
-        `${val === '1' ? '' : '不'}允许随时退款 \n ${
-          detail?.reduceObject?.expireRefund === '1' ? '' : '不'
-        }允许过期退款`,
+      render: () => (
+        <FormCondition
+          form={form}
+          formItems={formItems}
+          initialValues={detail}
+          formItemStyle={{ marginBottom: 0 }}
+        ></FormCondition>
+      ),
     },
   ];
 

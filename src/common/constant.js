@@ -235,6 +235,7 @@ export const ORDERS_STATUS = [
   '已确认',
   '预支付',
   '退款中',
+  '已过期',
 ];
 
 // 订单状态
@@ -367,6 +368,7 @@ export const ORDERS_TYPE = {
 export const PLATFORM_INCOME_ORDERS_TYPE = {
   scan: '扫码订单',
   writeOff: '核销订单',
+  expiredOrder: '过期不可退订单',
 };
 
 // 账户激活状态

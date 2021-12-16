@@ -59,6 +59,7 @@ const SearchCard = ({ tabkey, searchData, setSearchData }) => {
     { label: '扫码支付', value: 'scan' },
     { label: '核销订单', value: 'writeOff' },
     { label: '看分享', value: 'moment' },
+    { label: '过期不可退订单', value: 'expiredOrder' },
   ];
 
   return (
