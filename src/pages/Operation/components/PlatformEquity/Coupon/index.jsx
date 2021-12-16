@@ -229,10 +229,12 @@ const PlatformEquityCoupon = (props) => {
 
   // 获取详情
   const fetchCouponDetail = (index, type) => {
-    const { ownerCouponIdString: ownerCouponId, ownerCouponStatus: status } = list[index];
+    const { ownerCouponIdString: ownerCouponId, ownerIdString, ownerCouponStatus: status } = list[
+      index
+    ];
     dispatch({
       type: 'couponManage/fetchCouponDetail',
-      payload: { ownerCouponId, ownerId: -1, type },
+      payload: { ownerCouponId, ownerId: ownerIdString, type },
       callback: (detail) =>
         setVisibleSet({ type, show: true, index, detail, ownerCouponId, status }),
     });

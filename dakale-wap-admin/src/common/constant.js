@@ -350,6 +350,7 @@ export const BANNER_PORT_LINK = {
   merchant: {
     merchantMain: '商家工作台',
   },
+  markMain: bannerType,
 };
 
 // Banner跳转类型

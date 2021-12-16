@@ -382,7 +382,12 @@ export const OPEN_ADVERT_TYPE = { image: '图片广告', video: '视频广告' }
 export const OPEN_ADVERT_STATUS = ['待展示', '展示中', '已下架'];
 
 // Banner端口
-export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
+export const BANNER_PORT_TYPE = {
+  user: '用户端',
+  merchant: '商家端',
+  weChat: '微信小程序',
+  mark: '哒小卡小程序',
+};
 
 const bannerType = {
   person: '个人',
@@ -398,6 +403,7 @@ const bannerType = {
   wanderAroundGoodMerchant: '逛逛周边好店',
   wanderAroundRecharge: '逛逛话费充值',
   wanderAroundBean: '逛逛卡豆专区',
+  markMain: '哒卡主页',
 };
 
 // Banner类型
@@ -406,6 +412,9 @@ export const BANNER_PORT_LINK = {
   weChat: bannerType,
   merchant: {
     merchantMain: '商家工作台',
+  },
+  mark: {
+    markMain: '哒卡主页',
   },
 };
 
