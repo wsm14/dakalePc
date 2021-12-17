@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Form, Modal } from 'antd';
 import debounce from 'lodash/debounce';
 import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {
-  const { visible = {}, onClose, userList, dispatch, loading } = props;
+  const { visible = {}, onClose, dispatch, loading } = props;
   const { show = false, prizeData = {} } = visible;
 
   const [form] = Form.useForm();
+  const [userList, setUserList] = useState(false);
 
   // 获取用户搜索
   const fetchGetUser = debounce((content) => {
@@ -17,6 +18,13 @@ const RemainModal = (props) => {
       type: 'baseData/fetchGetUsersSearch',
       payload: {
         content,
+      },
+      callback: (useList) => {
+        const list = useList.map((item) => ({
+          ...item,
+          tipInfo: `${item.mobile} ${item.beanCode}`,
+        }));
+        setUserList(list);
       },
     });
   }, 500);
@@ -36,8 +44,6 @@ const RemainModal = (props) => {
       });
     });
   };
-
-  console.log(userList)
 
   const formItems = [
     {
@@ -64,8 +70,7 @@ const RemainModal = (props) => {
     </Modal>
   );
 };
-export default connect(({ baseData, loading }) => ({
-  userList: baseData.userList,
+export default connect(({ loading }) => ({
   loading:
     loading.effects['baseData/fetchGetUsersSearch'] ||
     loading.effects['platformEquity/fetchGiveGoods'],
