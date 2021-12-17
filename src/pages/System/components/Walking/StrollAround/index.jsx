@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Card } from 'antd';
-import { TAB_INDEX_TYPE } from '@/common/constant';
+import { STROLLAROUND_TAB_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import EditionModal from './EditionModal';
 import TabModal from './TabModal';
@@ -70,7 +70,7 @@ const TabConfigure = (props) => {
 
   const handleTabChange = (key) => {
     setTabKey(key);
-    if (key !== 'weChat') {
+    if (key !== 'weChat' && key !== 'mark') {
       childRef?.current?.fetchGetData({ userOs: key, area: 'all' });
     }
   };
@@ -79,11 +79,14 @@ const TabConfigure = (props) => {
     <>
       <Card
         title="逛逛页面配置"
-        tabList={Object.keys(TAB_INDEX_TYPE).map((i) => ({ key: i, tab: TAB_INDEX_TYPE[i] }))}
+        tabList={Object.keys(STROLLAROUND_TAB_TYPE).map((i) => ({
+          key: i,
+          tab: STROLLAROUND_TAB_TYPE[i],
+        }))}
         activeTabKey={tabKey}
         onTabChange={handleTabChange}
       >
-        {tabKey !== 'weChat' ? (
+        {tabKey !== 'weChat' && tabKey !== 'mark' ? (
           <TableDataBlock
             order
             noCard={false}

@@ -760,6 +760,14 @@ export const BOXLOTTERY_TYPE = {
   invitation: '邀请',
 };
 
+// 全局配置 - 逛逛页面配置
+export const STROLLAROUND_TAB_TYPE = {
+  iOS: 'iOS',
+  android: 'Android',
+  weChat: '小程序',
+  mark: '哒小卡',
+};
+
 // 全局配置 - 首页tab配置
 export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
 

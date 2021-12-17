@@ -1,20 +1,34 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { connect } from 'umi';
-import { TAB_INDEX_TYPE } from '@/common/constant';
+import { STROLLAROUND_TAB_TYPE } from '@/common/constant';
 import { getCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import TabDrawerSet from './TabDrawerSet';
 import StrollTemplateEdit from '../StrollTemplate/StrollTemplateEdit';
 
 const TabTable = (props) => {
-  const { dispatch, loading, configureList, tabKey, version, fetchTable } = props;
+  const {
+    dispatch,
+    loading,
+    configureList,
+    tabKey,
+    version,
+    // fetchTable
+  } = props;
   const [visible, setVisible] = useState(false);
   const [visibleConfigure, setVisibleConfigure] = useState({ show: false, info: {} });
+
   const childRef = useRef();
 
+  // useEffect(() => {
+  //   fetchTable && fetchTable(childRef);
+  // }, []);
+
   useEffect(() => {
-    fetchTable && fetchTable(childRef);
-  }, []);
+    if (tabKey === 'weChat' || tabKey === 'mark') {
+      childRef?.current?.fetchGetData({ userOs: tabKey });
+    }
+  }, [tabKey]);
 
   const getColumns = [
     {
@@ -46,9 +60,9 @@ const TabTable = (props) => {
       },
       callback: (detail) => {
         const info = {
-          activityName: `逛逛页面配置-${TAB_INDEX_TYPE[row?.userOs]}${row?.version ? '-' : ''}${
-            row?.version
-          }`,
+          activityName: `逛逛页面配置-${STROLLAROUND_TAB_TYPE[row?.userOs]}${
+            row?.version ? '-' : ''
+          }${row?.version}`,
           handle: 'edit',
           configWanderAroundModuleId,
           params: { ...detail, dataList: detail?.wanderAroundModuleObjects || [] },

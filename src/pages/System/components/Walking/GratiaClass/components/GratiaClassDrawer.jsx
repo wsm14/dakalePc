@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
-import { VANE_URL_TYPE } from '@/common/constant';
-import { VANE_ICON } from '@/common/imgRatio';
-import { checkFileData } from '@/utils/utils';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormCondition from '@/components/FormCondition';
 
