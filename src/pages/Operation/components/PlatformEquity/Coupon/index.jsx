@@ -13,7 +13,7 @@ import RemainModal from './components/Detail/RemainModal';
  * 权益券
  */
 const PlatformEquityCoupon = (props) => {
-  const { couponManage, loading, dispatch } = props;
+  const { couponManage, loading, dispatch, handleGivePrize } = props;
   const { list } = couponManage;
 
   const childRef = useRef();
@@ -163,7 +163,7 @@ const PlatformEquityCoupon = (props) => {
       dataIndex: 'ownerCouponIdString',
       width: 150,
       render: (ownerCouponId, record, index) => {
-        const { ownerCouponStatus: status } = record; // 1 上架 2 下架
+        const { ownerCouponStatus: status, couponName } = record; // 1 上架 2 下架
         return [
           {
             type: 'info',
@@ -188,6 +188,16 @@ const PlatformEquityCoupon = (props) => {
                 show: true,
                 detail: { ownerCouponId },
                 formProps: { type: 'down', key: 'offShelfReason' },
+              }),
+          },
+          {
+            type: 'givePrize',
+            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
+            click: () =>
+              handleGivePrize({
+                goodsName: couponName,
+                ownerCouponId,
+                couponType: 'rightCoupon',
               }),
           },
           {

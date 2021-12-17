@@ -21,7 +21,7 @@ import RemainModal from './components/Detail/RemainModal';
  * 权益商品
  */
 const PlatformEquityGoods = (props) => {
-  const { specialGoods, loading, dispatch } = props;
+  const { specialGoods, loading, dispatch, handleGivePrize } = props;
   const { list } = specialGoods;
 
   const childRef = useRef();
@@ -224,7 +224,7 @@ const PlatformEquityGoods = (props) => {
       dataIndex: 'specialGoodsId',
       width: 150,
       render: (val, record, index) => {
-        const { specialGoodsId, status, deleteFlag } = record;
+        const { specialGoodsId, status, deleteFlag, goodsName } = record;
         return [
           {
             type: 'info',
@@ -261,9 +261,19 @@ const PlatformEquityGoods = (props) => {
             click: () => fetchGetLogData({ type: 'specialGoods', identificationId: val }),
           },
           {
+            type: 'givePrize',
+            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
+            click: () =>
+              handleGivePrize({
+                goodsName,
+                ownerCouponId: specialGoodsId,
+                couponType: 'rightGoods',
+              }),
+          },
+          {
             title: '增加库存',
             type: 'addRemain',
-            visible: ['1'].includes(status) && deleteFlag == '1',
+            visible: ['1'].includes(status) && deleteFlag == '1', // 上架 && 未删除
             click: () => fetAddRemain(specialGoodsId, record.remain),
           },
         ];

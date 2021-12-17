@@ -186,7 +186,7 @@ export function fetchGetMerchantsSearch(params) {
   });
 }
 
-// get 用户列表 - 用于搜索
+// get 用户列表 - 用于搜索 所有状态用户
 export function fetchGetUsersSearch(params) {
   return request('/admin/userManagement/listUserUsedToSearch', {
     params,
