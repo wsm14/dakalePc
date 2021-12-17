@@ -37,6 +37,8 @@ const RemainModal = (props) => {
     });
   };
 
+  console.log(userList)
+
   const formItems = [
     {
       label: `选择用户`,

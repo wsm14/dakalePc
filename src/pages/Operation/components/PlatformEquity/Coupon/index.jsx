@@ -192,7 +192,7 @@ const PlatformEquityCoupon = (props) => {
           },
           {
             type: 'givePrize',
-            visible: ['1'].includes(status) && deleteFlag == '1', // 活动中 && 未删除
+            visible: ['1'].includes(status), // 活动中 && 未删除
             click: () =>
               handleGivePrize({
                 goodsName: couponName,
