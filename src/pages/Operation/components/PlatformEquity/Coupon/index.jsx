@@ -191,16 +191,6 @@ const PlatformEquityCoupon = (props) => {
               }),
           },
           {
-            type: 'givePrize',
-            visible: ['1'].includes(status), // 活动中 && 未删除
-            click: () =>
-              handleGivePrize({
-                goodsName: couponName,
-                ownerCouponId,
-                couponType: 'rightCoupon',
-              }),
-          },
-          {
             title: '增加库存',
             type: 'addRemain',
             visible: ['1'].includes(status),
