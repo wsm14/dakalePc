@@ -9,7 +9,7 @@ export function fetchListConfigSpecialGoodsCategory(params) {
   });
 }
 
-// post 特惠商品类目配置 - 新增版本 / 新增城市
+// post 特惠商品类目配置 - 新增版本 / 新增城市 / 新增配置
 export function fetchSaveConfigSpecialGoodsCategory(data) {
   return request('/admin/configSpecialGoodsCategory/saveConfigSpecialGoodsCategory', {
     method: 'POST',
@@ -22,6 +22,13 @@ export function fetchUpdateConfigSpecialGoodsCategory(data) {
   return request('/admin/configSpecialGoodsCategory/updateConfigSpecialGoodsCategory', {
     method: 'POST',
     data,
+  });
+}
+
+// get 特惠商品类目配置 - 配置详情
+export function fetchGetConfigSpecialGoodsCategoryById(params) {
+  return request('/admin/configSpecialGoodsCategory/getConfigSpecialGoodsCategoryById', {
+    params,
   });
 }
 

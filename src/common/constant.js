@@ -37,8 +37,13 @@ export const PAY_TYPE = {
   beanPay: '卡豆支付',
   wechat: '微信支付',
   alipay: '支付宝支付',
-  wx_lite: '微信小程序',
+  wx_lite: '小程序支付',
+  // wx_lite: '微信小程序',
   JSAPI: '微信支付',
+  couponPay: '券支付',
+  APP: 'APP支付',
+  apple_pay: '苹果支付',
+  balancePay: '余额支付',
 };
 
 // 导出excel枚举

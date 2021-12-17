@@ -31,6 +31,7 @@ import {
   fetchListConfigSpecialGoodsCategory,
   fetchSaveConfigSpecialGoodsCategory,
   fetchUpdateConfigSpecialGoodsCategory,
+  fetchGetConfigSpecialGoodsCategoryById,
 } from '@/services/SystemServices';
 import { fetchAddNewActivityDetailCheck } from '@/services/MarketServices';
 export default {
@@ -493,7 +494,7 @@ export default {
         },
       });
     },
-    //逛逛模块化配置-特惠商品类目配置 - 新增版本 / 新增城市
+    //逛逛模块化配置-特惠商品类目配置 - 新增版本 / 新增城市 / 新增配置
     *fetchSaveConfigSpecialGoodsCategory({ payload, callback }, { call }) {
       const response = yield call(fetchSaveConfigSpecialGoodsCategory, payload);
       if (!response) return;
@@ -512,6 +513,13 @@ export default {
         description: '编辑成功',
       });
       callback();
+    },
+    //逛逛模块化配置-特惠商品类目配置 - 配置详情
+    *fetchGetConfigSpecialGoodsCategoryById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetConfigSpecialGoodsCategoryById, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content.configSpecialGoodsCategoryDTO);
     },
   },
 };

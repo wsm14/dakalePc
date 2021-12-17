@@ -2,11 +2,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import { Button, Modal } from 'antd';
 import TableDataBlock from '@/components/TableDataBlock';
+import GratiaClassDrawer from './components/GratiaClassDrawer';
 
 const GratiaClassManage = (props) => {
   const { loading, dispatch, visible = {}, onClose, gratiaClassInfoList } = props;
   const { show, detail = {} } = visible;
   const { userOs, version, area, cityCode } = detail;
+
+  const [visibleDrawer, setVisibleDrawer] = useState(false); // 新增 编辑
 
   const childRef = useRef();
 
@@ -19,6 +22,17 @@ const GratiaClassManage = (props) => {
         flag: 'delete',
       },
       callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 获取详情
+  const fetchGetDetail = (val, record, type) => {
+    dispatch({
+      type: 'walkingManage/fetchGetConfigSpecialGoodsCategoryById',
+      payload: {
+        configSpecialGoodsCategoryId: val,
+      },
+      callback: (detail) => setVisibleDrawer({ show: true, type, detail }),
     });
   };
 
@@ -52,7 +66,7 @@ const GratiaClassManage = (props) => {
           {
             type: 'edit',
             auth: true,
-            click: () => {},
+            click: () => fetchGetDetail(val, record, 'edit'),
           },
           {
             type: 'del',
@@ -78,25 +92,33 @@ const GratiaClassManage = (props) => {
       text: '新增',
       className: 'dkl_blue_btn',
       onClick: () => {
-        setVisibleDrawer({ type: 'add', show: true, detail: { userOs, version, areaType } });
+        setVisibleDrawer({ type: 'add', show: true, detail: { cityCode, userOs, version, area } });
       },
     },
   ];
   return (
-    <Modal destroyOnClose {...modalProps}>
-      <TableDataBlock
-        noCard={false}
-        btnExtra={cardBtnList}
+    <>
+      <Modal destroyOnClose {...modalProps}>
+        <TableDataBlock
+          noCard={false}
+          btnExtra={cardBtnList}
+          cRef={childRef}
+          loading={loading}
+          pagination={false}
+          columns={getColumns}
+          rowKey={(record) => `${record.categoryId}`}
+          params={{ userOs, version, area, cityCode, isAutomatic: 0, deleteFlag: 1 }}
+          dispatchType="walkingManage/fetchListConfigSpecialGoodsCategoryInfo"
+          {...gratiaClassInfoList}
+        ></TableDataBlock>
+      </Modal>
+      {/* 新增 编辑 */}
+      <GratiaClassDrawer
         cRef={childRef}
-        loading={loading}
-        pagination={false}
-        columns={getColumns}
-        rowKey={(record) => `${record.categoryId}`}
-        params={{ userOs, version, area, cityCode, isAutomatic: 0, deleteFlag: 1 }}
-        dispatchType="walkingManage/fetchListConfigSpecialGoodsCategoryInfo"
-        {...gratiaClassInfoList}
-      ></TableDataBlock>
-    </Modal>
+        visible={visibleDrawer}
+        onClose={() => setVisibleDrawer(false)}
+      ></GratiaClassDrawer>
+    </>
   );
 };
 
