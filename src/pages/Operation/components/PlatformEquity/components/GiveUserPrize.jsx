@@ -21,8 +21,9 @@ const RemainModal = (props) => {
       },
       callback: (useList) => {
         const list = useList.map((item) => ({
-          ...item,
-          tipInfo: `${item.mobile} ${item.beanCode}`,
+          label: `${item.username} ${item.mobile}`,
+          value: item.userIdString,
+          tip: `${item.beanCode}`,
         }));
         setUserList(list);
       },
@@ -49,12 +50,11 @@ const RemainModal = (props) => {
     {
       label: `选择用户`,
       name: 'userId',
-      placeholder: '请输入昵称、手机号或豆号',
+      placeholder: '请输入昵称、手机号',
       type: 'select',
       loading,
       select: userList,
       onSearch: fetchGetUser,
-      fieldNames: { label: 'username', value: 'userIdString', tip: 'tipInfo' },
     },
   ];
 
