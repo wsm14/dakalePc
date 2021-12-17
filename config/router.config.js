@@ -149,6 +149,12 @@ export default [
         component: './Business/BusinessRegister',
       },
       {
+        path: '/business/bankChangeCheck',
+        name: '银行卡变更审核',
+        component: './Business/BankChangeCheck',
+        buttons: ['info', 'check', 'close'],
+      },
+      {
         path: '/business/audit',
         name: '新店审核',
         component: './Business/BusinessAudit',

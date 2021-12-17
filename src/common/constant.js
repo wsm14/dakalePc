@@ -563,6 +563,9 @@ export const GOODS_CHECK_RESSTATUS = [false, '已通过', '已驳回', '已关�
 // 审核结果
 export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];
 
+// 银行卡变更审核结果
+export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
+
 // 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
