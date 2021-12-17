@@ -21,9 +21,9 @@ const RemainModal = (props) => {
       },
       callback: (useList) => {
         const list = useList.map((item) => ({
-          label: `${item.username} ${item.mobile}`,
+          name: `${item.username} ${item.mobile}`,
           value: item.userIdString,
-          tip: `${item.beanCode}`,
+          otherData: `${item.beanCode}`,
         }));
         setUserList(list);
       },
