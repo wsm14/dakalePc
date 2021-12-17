@@ -2,6 +2,14 @@ import request from '@/utils/request';
 
 //平台权益
 
+// post 平台权益 - 赠送霸王餐
+export function fetchGiveGoods(data) {
+  return request('/admin/coupon/saveFreeUserCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
 //平台权益end
 
 // 周边特惠
