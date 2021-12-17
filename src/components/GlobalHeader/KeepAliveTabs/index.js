@@ -41,15 +41,17 @@ export default function KeepAliveTabs() {
       activeKey={location.pathname}
       onEdit={dropTab}
     >
-      {cachingNodes.map((pane, index) => (
-        <Tabs.TabPane
-          className={`${pageTabStyle.tabPage}`}
-          style={{ background: 'transparent', paddingLeft: 0, paddingRight: 0 }}
-          tab={pane.name}
-          key={`${pane.url}`}
-          closable={closable}
-        />
-      ))}
+      {cachingNodes
+        .filter((i) => i.url)
+        .map((pane, index) => (
+          <Tabs.TabPane
+            className={`${pageTabStyle.tabPage}`}
+            style={{ background: 'transparent', paddingLeft: 0, paddingRight: 0 }}
+            tab={pane.name}
+            key={`${pane.url}`}
+            closable={closable}
+          />
+        ))}
     </Tabs>
   );
 }

@@ -542,6 +542,7 @@ export default [
           'edit',
           'down',
           'info',
+          'givePrize',
           'again',
           'againUp',
           'addRemain',

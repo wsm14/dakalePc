@@ -47,6 +47,7 @@ export const ROLE_BUTTON_TYPE = {
   exportList: '导出',
 
   goodsCode: '商品码',
+  givePrize: '赠送',
   getRecord: '领取记录',
   goodsDeliver: '发货',
   goodsView: '查看物流',
