@@ -26,6 +26,7 @@ export default {
   },
 
   effects: {
+    // 银行卡变更审核 - 审核列表
     *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchBankBindingInfoList, payload);
       if (!response) return;
@@ -40,12 +41,14 @@ export default {
         },
       });
     },
+    // 银行卡变更审核 - 审核详情
     *fetchGetBankBindingInfoRecordById({ payload, callback }, { call }) {
       const response = yield call(fetchGetBankBindingInfoRecordById, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content.ownerBankBindingInfoRecordDTO);
     },
+    // 银行卡变更审核 - 银行卡变更审核
     *fetchAuditBankBindingInfo({ payload, callback }, { call }) {
       const response = yield call(fetchAuditBankBindingInfo, payload);
       if (!response) return;

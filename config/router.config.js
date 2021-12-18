@@ -152,7 +152,7 @@ export default [
         path: '/business/bankChangeCheck',
         name: '银行卡变更审核',
         component: './Business/BankChangeCheck',
-        buttons: ['info', 'check', 'close'],
+        buttons: ['info', 'check'],
       },
       {
         path: '/business/audit',

@@ -125,6 +125,11 @@ const SpecialGoodCheck = (props) => {
       title: '驳回原因',
       dataIndex: 'rejectReason',
       show: tabkey === '1',
+      render: (val) => (
+        <Ellipsis tooltip length={10}>
+          {val}
+        </Ellipsis>
+      ),
     },
     {
       type: 'handle',
@@ -178,7 +183,7 @@ const SpecialGoodCheck = (props) => {
           {...list}
         ></TableDataBlock>
       </Card>
-      {/* 详情 */}
+      {/* 详情 审核 */}
       <BankChangeCheckDetail
         visible={visibleInfo}
         cRef={tableRef}
