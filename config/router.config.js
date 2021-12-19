@@ -534,6 +534,7 @@ export default [
           'diary',
           'addRemain',
           'shareImg',
+          'getRecord',
         ],
       },
       {

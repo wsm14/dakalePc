@@ -763,7 +763,7 @@ export function fetchCouponDelete(data) {
 
 // get 优惠券导出
 export function fetchCouponToImport(params) {
-  return request('/admin/coupon/listOwnerCouponToActionImport', {
+  return request('/admin/coupon/listOwnerCouponToActionExport', {
     params,
   });
 }
@@ -786,6 +786,13 @@ export function fetchCouponAddRemain(data) {
   return request('/admin/coupon/addGoodsRemain', {
     method: 'POST',
     data,
+  });
+}
+
+// get 优惠券管理 - 免费券 - 领取核销记录 - 列表
+export function fetchListFreeReduceCouponReceiveVerificationRecord(params) {
+  return request('/admin/coupon/listFreeReduceCouponReceiveVerificationRecord', {
+    params,
   });
 }
 

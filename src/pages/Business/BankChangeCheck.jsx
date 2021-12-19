@@ -25,10 +25,6 @@ const SpecialGoodCheck = (props) => {
   const [tabkey, setTabKey] = useState('0');
   const [visibleInfo, setVisibleInfo] = useState(false); // 详情展示
 
-  //   useEffect(() => {
-  //     tableRef.current.fetchGetData();
-  //   }, [tabkey]);
-
   //组建公用的搜索条件
   const searchItems = [
     {

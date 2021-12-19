@@ -460,6 +460,16 @@ export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
 // 优惠券管理 - 优惠券状态
 export const COUPON_STATUS = [false, '上架中', '已下架'];
 
+// 优惠券管理 - 免费券领取核销记录 - 状态
+export const FREE_COUPON_STATUS = ['未使用', '已过期', '已核销', '关闭'];
+
+// 优惠券管理 - 免费券领取核销记录 - 场景
+export const FREE_COUPON_SCENE = {
+  moment: '视频',
+  consume: '消费',
+  mark: '打卡',
+};
+
 // 优惠券管理 - 优惠券类型
 export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
 
