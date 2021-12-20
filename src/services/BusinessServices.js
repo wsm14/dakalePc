@@ -1,5 +1,31 @@
 import request from '@/utils/request';
 
+// 银行卡变更审核
+
+// get 银行卡变更审核 - 审核列表
+export function fetchBankBindingInfoList(params) {
+  return request('/admin/bankBindingInfo/listBankBindingInfoRecord', {
+    params,
+  });
+}
+
+// get 银行卡变更审核 - 审核详情
+export function fetchGetBankBindingInfoRecordById(params) {
+  return request('/admin/bankBindingInfo/getBankBindingInfoRecordById', {
+    params,
+  });
+}
+
+// post 银行卡变更审核 - 银行卡变更审核
+export function fetchAuditBankBindingInfo(data) {
+  return request('/admin/bankBindingInfo/auditBankBindingInfo', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 银行卡变更审核 end
+
 // 店铺数据
 
 // get 店铺数据 - 店铺列表

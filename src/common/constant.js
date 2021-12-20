@@ -460,6 +460,16 @@ export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
 // 优惠券管理 - 优惠券状态
 export const COUPON_STATUS = [false, '上架中', '已下架'];
 
+// 优惠券管理 - 免费券领取核销记录 - 状态
+export const FREE_COUPON_STATUS = ['未使用', '已过期', '已核销', '关闭'];
+
+// 优惠券管理 - 免费券领取核销记录 - 场景
+export const FREE_COUPON_SCENE = {
+  moment: '视频',
+  consume: '消费',
+  mark: '打卡',
+};
+
 // 优惠券管理 - 优惠券类型
 export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
 
@@ -562,6 +572,9 @@ export const GOODS_CHECK_RESSTATUS = [false, '已通过', '已驳回', '已关�
 
 // 审核结果
 export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];
+
+// 银行卡变更审核结果
+export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
 
 // 标签类型
 export const TAG_TYPE = {
@@ -743,6 +756,19 @@ export const FOLLOW_MANNER = {
   applets: '小程序',
   public: '公众号',
   other: '其他',
+};
+
+//盲盒抽奖记录 - 签到游戏 - 发放状态
+export const GAME_SIGN_STATUS = ['未领取', '待发货', '已完成', '已过期', '未完善地址'];
+
+//盲盒抽奖记录 - 免费领商品 - 发放状态
+export const GAME_FREE_STATUS = ['未领取', '待发货', '已完成'];
+
+//盲盒抽奖记录 - 签到游戏 - 奖品类型
+export const GAME_SIGN_PACKAGE_TYPE = {
+  bean: '卡豆',
+  onlineGoods: '电商商品',
+  actualGoods: '实物商品',
 };
 
 // 盲盒商品类型枚举

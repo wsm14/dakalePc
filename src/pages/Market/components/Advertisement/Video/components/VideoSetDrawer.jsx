@@ -16,11 +16,21 @@ const ShareDrawer = (props) => {
   const [current, setCurrent] = useState(0);
   const [dataStorage, setDataStorage] = useState({ relateType: 'merchant' }); // 数据暂存
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
+  const [showTitle, setShowTitle] = useState(null); // 是否显示标题
 
   // 确认发布
   const handleVideoPush = () => {
     form.validateFields().then((values) => {
-      const { videoId, url, frontImage, relateId, categoryId = [], ...other } = dataStorage;
+      const {
+        jumpUrlType,
+        // hideTitle = false,
+        videoId,
+        url,
+        frontImage,
+        relateId,
+        categoryId = [],
+        ...other
+      } = dataStorage;
       const { age, tagsId = [], ageData, cityList = [], area, areaType, ...otherValus } = values;
       const { free = {}, contact = [] } = couponData;
       let goodsList = {};
@@ -67,6 +77,8 @@ const ShareDrawer = (props) => {
                 payload: {
                   ...other,
                   ...otherValus,
+                  // hideTitle: Number(!hideTitle),
+                  jumpUrlType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
                   momentTags: values.momentTags.join(','),
                   scope: 'all',
                   relateId,
@@ -112,6 +124,7 @@ const ShareDrawer = (props) => {
   const handleNextStep = (buttonType) => {
     if (buttonType === 'next') {
       form.validateFields().then((values) => {
+        console.log(values);
         // const { free, contact } = couponData;
         // if (current == 0 && !values.jumpUrl && !contact.length && !free.goodsName) {
         //   notification.info({
@@ -125,6 +138,7 @@ const ShareDrawer = (props) => {
       });
     } else {
       const data = form.getFieldsValue();
+      setShowTitle(dataStorage.jumpUrlType);
       saveDataStorage({ ...dataStorage, ...data });
       setCurrent(current - 1);
     }
@@ -144,7 +158,7 @@ const ShareDrawer = (props) => {
   const stepProps = { form, detail: dataStorage, saveDataStorage };
 
   // 内容设置props
-  const conentProps = { couponData, setCouponData };
+  const conentProps = { couponData, setCouponData, showTitle, setShowTitle };
 
   const steps = [
     {

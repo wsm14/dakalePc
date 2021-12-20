@@ -170,9 +170,38 @@ export function fetchBoxDetail(params) {
   });
 }
 
-// get 盲盒中奖记录 - 查看物流
+// get 盲盒中奖记录 - 发货
 export function fetchBoxAddAndPush(data) {
   return request('/admin/config/blindBox/deliverGoods', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 盲盒中奖记录 - 签到游戏 - 列表
+export function fetchListUserPackageManagement(params) {
+  return request('/admin/package/listUserPackageManagement', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 签到游戏 - 列表导出
+export function fetchListUserPackageManagementExport(params) {
+  return request('/admin/package/listUserPackageManagementExport', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 签到游戏 - 查看物流
+export function fetchGetUserPackageById(params) {
+  return request('/admin/package/getUserPackageById', {
+    params,
+  });
+}
+
+// post 盲盒中奖记录 - 签到游戏 - 发货
+export function fetchDeliveryUserPackage(data) {
+  return request('/admin/package/deliveryUserPackage', {
     method: 'POST',
     data,
   });
