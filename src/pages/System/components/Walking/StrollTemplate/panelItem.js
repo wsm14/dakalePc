@@ -30,6 +30,6 @@ export default [
   {
     header: '商品推荐流',
     type: 'video',
-    children: ['selfTour', 'specialRecommend', 'ecommerce'],
+    children: ['selfTour', 'specialRecommend', 'commerceGoods'],
   },
 ];

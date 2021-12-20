@@ -18,8 +18,13 @@ const ActiveTemplate = () => {
   const cardItem = [
     {
       img: template1,
-      type: 'public',
+      type: 'active',
       title: '支持定制各类节日、主题活动，包括商品类，券类，店铺类以及组合模板',
+    },
+    {
+      img: template1,
+      type: 'rule',
+      title: '规则模版',
     },
   ];
 
@@ -35,13 +40,13 @@ const ActiveTemplate = () => {
   return (
     <>
       <Card>
-        <Row gutter={[75, 28]}>
+        <Row gutter={[20, 28]}>
           {cardItem.map((item) => (
             <Col key={item.type}>
               <Card
                 cover={<img alt="example" src={item.img} style={{ width: 266, height: 160 }} />}
                 actions={[<div onClick={() => handleSelectActive(item)}>使用模版</div>]}
-                bodyStyle={{ maxWidth: 265 }}
+                bodyStyle={{ maxWidth: 265, minHeight: 114 }}
               >
                 {item.title}
               </Card>

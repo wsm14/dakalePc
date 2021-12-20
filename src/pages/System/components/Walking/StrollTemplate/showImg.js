@@ -14,7 +14,7 @@ import specialRecommend from './Img/specialRecommend.png';
 import selfTourResource from './Img/selfTourResource.png';
 import newProductRecommend from './Img/newProductRecommend.png';
 import beanSpecialArea from './Img/beanSpecialArea.png';
-import ecommerce from './Img/ecommerce.png';
+import commerceGoods from './Img/commerceGoods.png';
 
 /**
  * 组件库
@@ -130,11 +130,11 @@ export default {
     drop: true,
     defaultImg: newProductRecommend,
   },
-  ecommerce: {
+  commerceGoods: {
     name: '电商品',
     icon: <PictureOutlined style={{ fontSize: 24 }} />,
-    moduleName: 'ecommerce',
+    moduleName: 'commerceGoods',
     drop: true,
-    defaultImg: ecommerce,
+    defaultImg: commerceGoods,
   },
 };
