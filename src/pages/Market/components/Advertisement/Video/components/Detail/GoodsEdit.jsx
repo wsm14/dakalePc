@@ -82,12 +82,12 @@ const GoodsEdit = (props) => {
         ></NativeFormSet>
       ),
     },
-    {
-      label: '是否显示标题',
-      type: 'switch',
-      name: 'hideTitle',
-      visible: showTitle === 'H5',
-    },
+    // {
+    //   label: '是否显示标题',
+    //   type: 'switch',
+    //   name: 'hideTitle',
+    //   visible: showTitle === 'H5',
+    // },
     {
       label: '免费券',
       type: 'formItem',

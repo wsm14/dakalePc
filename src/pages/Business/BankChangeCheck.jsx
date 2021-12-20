@@ -31,6 +31,7 @@ const SpecialGoodCheck = (props) => {
       label: '集团/店铺名',
       name: 'ownerId',
       type: 'merchant',
+      placeholder: '请输入集团或店铺名称',
     },
     {
       label: '所在城市',

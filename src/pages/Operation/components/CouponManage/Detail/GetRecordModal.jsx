@@ -8,7 +8,6 @@ const GetRecordModal = (props) => {
   const { visible, onClose, loading, getRecordList } = props;
   const { show = false, detail = {} } = visible;
   const { ownerCouponIdString = '' } = detail;
-  console.log(detail);
 
   // 搜索参数
   const searchItems = [
