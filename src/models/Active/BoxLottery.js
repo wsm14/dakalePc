@@ -89,10 +89,8 @@ export default {
     *fetchGetGameExcel({ payload, callback }, { call }) {
       const response = yield call(fetchListUserPackageManagementExport, payload);
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '导出成功',
-      });
+      const { content } = response;
+      callback && callback(content.userPackageDTOList);
     },
     // post 盲盒中奖记录 - 签到游戏 - 查看物流
     *fetchGetUserPackageByIdDetail({ payload, callback }, { call }) {

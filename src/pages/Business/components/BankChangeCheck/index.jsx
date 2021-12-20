@@ -105,6 +105,7 @@ const SpecialGoodCheckDetail = (props) => {
     {
       label: '凭证',
       name: ['bankBindingObject', 'additionalVoucher'],
+      render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
       label: '申请人姓名',

@@ -4,7 +4,7 @@ import { GAME_SIGN_STATUS, GAME_FREE_STATUS, GAME_SIGN_PACKAGE_TYPE } from '@/co
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import GameSignDrawer from './components/GameSign/GameSignDrawer';
-// import excelProps from './components/BoxLotteryBean/ExcelProps';
+import excelProps from './components/GameSign/ExcelProps';
 
 const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
   const tableRef = useRef();
@@ -156,7 +156,7 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
         ...get(),
         channel: tabkey,
       },
-      // exportProps: excelProps,
+      exportProps: excelProps,
     },
   ];
 
