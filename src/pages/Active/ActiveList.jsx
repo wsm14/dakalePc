@@ -12,6 +12,7 @@ const ActiveListComponent = (props) => {
   const { activeList, loading, dispatch } = props;
 
   const childRef = useRef();
+  const [tabKey, setTabKey] = useState('active');
   const [visible, setVisible] = useState({ show: false, info: {} });
   const [visibleName, setVisibleName] = useState({ show: false, info: { activityName: '' } });
   const [visibleShare, setVisibleShare] = useState(false);
@@ -19,7 +20,7 @@ const ActiveListComponent = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '活动名称',
+      title: '模版名称',
       fixed: 'left',
       dataIndex: 'activityName',
     },
@@ -29,18 +30,12 @@ const ActiveListComponent = (props) => {
       dataIndex: 'createTime',
     },
     {
-      title: '模板类型',
-      fixed: 'left',
-      dataIndex: 'templateType',
-      render: (val) => ACTIVE_TEMPLATE_TYPE[val],
-    },
-    {
       title: '创建人',
       fixed: 'left',
       dataIndex: 'creator',
     },
     {
-      title: '活动链接',
+      title: '模版链接',
       align: 'right',
       dataIndex: 'jumpUrl',
       render: (val) => (
@@ -139,13 +134,27 @@ const ActiveListComponent = (props) => {
     });
   };
 
+  const tabList = Object.keys(ACTIVE_TEMPLATE_TYPE).map((item) => ({
+    key: item,
+    tab: ACTIVE_TEMPLATE_TYPE[item],
+  }));
+
   return (
     <>
       <TableDataBlock
+        cardProps={{
+          tabList: tabList,
+          activeTabKey: tabKey,
+          onTabChange: (key) => {
+            setTabKey(key);
+            childRef.current.fetchGetData({ templateType: key, page: 1 });
+          },
+        }}
         cRef={childRef}
         loading={loading}
         columns={getColumns}
         rowKey={(record) => `${record.activityTemplateId}`}
+        params={{ templateType: tabKey }}
         dispatchType="activeList/fetchGetList"
         {...activeList}
       ></TableDataBlock>
