@@ -6,8 +6,9 @@ import TableDataBlock from '@/components/TableDataBlock';
 
 const GetRecordModal = (props) => {
   const { visible, onClose, loading, getRecordList } = props;
-  const { show = false, detail } = visible;
-  //   const { ownerCouponIdString } = detail;
+  const { show = false, detail = {} } = visible;
+  const { ownerCouponIdString = '' } = detail;
+  console.log(detail);
 
   // 搜索参数
   const searchItems = [
@@ -104,7 +105,7 @@ const GetRecordModal = (props) => {
           columns={getColumns}
           searchItems={searchItems}
           rowKey={(record) => `${record.userCouponIdString}`}
-          //   params={{ ownerCouponIdString: ownerCouponIdString }}
+          params={{ ownerCouponIdString: ownerCouponIdString }}
           dispatchType="couponManage/fetchListFreeReduceCouponReceiveVerificationRecord"
           {...getRecordList}
         ></TableDataBlock>
