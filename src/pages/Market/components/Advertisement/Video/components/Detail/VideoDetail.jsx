@@ -169,15 +169,7 @@ const VideoDetail = (props) => {
 
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
-      const {
-        jumpUrlType,
-        //  hideTitle = false,
-        frontImage,
-        url,
-        title,
-        videoId,
-        ...other
-      } = values;
+      const { jumpUrlType, frontImage, url, title, videoId, ...other } = values;
       const { free = {}, contact = [] } = couponData;
       // if (!values.jumpUrl && !contact.length && !free.goodsName) {
       //   notification.info({
@@ -235,7 +227,6 @@ const VideoDetail = (props) => {
                 type: 'videoAdvert/fetchVideoAdvertEdit',
                 payload: {
                   ...other,
-                  // hideTitle: Number(!hideTitle),
                   jumpUrlType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
                   platformMomentId,
                   title,

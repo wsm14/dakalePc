@@ -61,7 +61,7 @@ const SpecialGoodCheckDetail = (props) => {
     },
     {
       label: '开户银行',
-      name: ['bankBindingObject', 'bankName'],
+      name: ['bankBindingObject', 'bankBranchName'],
     },
     {
       label: '开户城市',
