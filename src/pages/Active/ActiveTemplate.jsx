@@ -18,12 +18,12 @@ const ActiveTemplate = () => {
   const cardItem = [
     {
       img: template1,
-      type: 'active',
+      type: 'active', // oss 上传文件夹同名
       title: '支持定制各类节日、主题活动，包括商品类，券类，店铺类以及组合模板',
     },
     {
       img: template1,
-      type: 'rule',
+      type: 'rule', // oss 上传文件夹同名
       title: '规则模版',
     },
   ];
