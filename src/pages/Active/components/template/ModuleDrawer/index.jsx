@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useDrag } from 'react-dnd';
 import { Collapse } from 'antd';
-import panelItem from './panelItem';
+import MenuConfig from '../MenuConfig';
 import editor from '../Editor';
 import styles from './style.less';
 
@@ -12,7 +12,7 @@ const { Panel } = Collapse;
  */
 const ModuleDrawer = (props) => {
   const { context, setStyBasket } = props;
-  const { dispatchData, moduleData } = useContext(context);
+  const { dispatchData, moduleData, info = {} } = useContext(context);
 
   // 显示对应的模块编辑内容
   const handleShowEditor = (cell) => {
@@ -71,14 +71,19 @@ const ModuleDrawer = (props) => {
 
   return (
     <div className={styles.active_Template_Left}>
-      <Collapse bordered={false}>
-        {panelItem.map((item) => (
-          <Panel forceRender header={item.header} key={item.type}>
-            <div className={styles.module_group}>
-              {item.children.map((editorType) => dropItem(editor[editorType]))}
-            </div>
-          </Panel>
-        ))}
+      <Collapse bordered={false} defaultActiveKey={['img']}>
+        {MenuConfig(info.type).map(
+          (item) =>
+            item.show && (
+              <Panel forceRender header={item.header} key={item.type}>
+                <div className={styles.module_group}>
+                  {item.children.map(
+                    (editorType) => editorType.show && dropItem(editor[editorType.type]),
+                  )}
+                </div>
+              </Panel>
+            ),
+        )}
       </Collapse>
     </div>
   );

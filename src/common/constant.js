@@ -643,7 +643,8 @@ export const COMMISSION_TYPE = {
 
 // 活动模版类型
 export const ACTIVE_TEMPLATE_TYPE = {
-  public: '通用模版',
+  active: '活动模版',
+  rule: '规则模版',
 };
 
 // 新闻分类
