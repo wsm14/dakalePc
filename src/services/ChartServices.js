@@ -112,3 +112,14 @@ export function fetchChartMapHubMreDeatil(params) {
 }
 
 // 数据概览 end
+
+// 视频看板
+
+// get 视频看板 - 获取数据对象
+export function fetchMomentKanBan(params) {
+  return request('/admin/momentStatistic/momentKanBan', {
+    params,
+  });
+}
+
+// 视频看板 end
