@@ -35,13 +35,21 @@ const RankingTotal = (props) => {
         <div className={styles.box}>
           <div className={styles.tit_c}>PGC视频</div>
           <div className={styles.content}>
-            <div>探店视频：{probeShopMomentCount || 0}</div>
-            <div>带货视频：{commerceMomentCount || 0}</div>
+            <div>
+              探店视频：<span className={styles.num}>{probeShopMomentCount || 0}</span>
+            </div>
+            <div>
+              带货视频：<span className={styles.num}>{commerceMomentCount || 0}</span>
+            </div>
           </div>
           <div className={styles.tit_c}>UGC视频</div>
           <div className={styles.content}>
             {Object.keys(ugcMap).map((item) => {
-              return <div key={item}>{`${item}：${ugcMap[item] || 0}`}</div>;
+              return (
+                <div key={item}>
+                  {item}：<span className={styles.num}>{ugcMap[item] || 0}</span>
+                </div>
+              );
             })}
           </div>
         </div>

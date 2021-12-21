@@ -143,14 +143,14 @@ const CouponManageComponent = (props) => {
       sorter: (a, b) => a.remain - b.remain,
     },
     {
-      title: '销量',
+      title: tabkey === '1' ? '销量' : '已领取',
       dataIndex: 'total',
       align: 'right',
       render: (val, row) => val - row.remain,
       sorter: (a, b) => a.total - a.remain - (b.total - b.remain),
     },
     {
-      title: '核销数量',
+      title: tabkey === '1' ? '核销数量' : '已使用',
       align: 'right',
       dataIndex: 'verifiedCount',
       sorter: (a, b) => a.verifiedCount - b.verifiedCount,
