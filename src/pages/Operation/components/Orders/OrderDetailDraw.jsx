@@ -223,7 +223,7 @@ const OrderDetailDraw = (props) => {
       label: '现金支付渠道',
       name: 'payType',
       render: (val) => PAY_TYPE[val],
-      show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
+      // show: orderStatusCheck || (status === '2' && orderCloseStatusCheck),
     },
     {
       label: '付款编号',
@@ -461,7 +461,7 @@ const OrderDetailDraw = (props) => {
                   </span>
                 </div>
                 <div className={styles.detail_last_div}>
-                  <span>{PAY_TYPE[detail.payType] || '支付宝'}</span>
+                  <span>{PAY_TYPE[detail.payType] || '支付'}</span>
                   <span>{detail.payFee ? `￥${detail.payFee}` : 0}</span>
                 </div>
               </>

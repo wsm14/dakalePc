@@ -7,11 +7,12 @@ import styles from './style.less';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ setSearchData, cityData, bucket }) => {
+const SearchCard = ({ setSearchData }) => {
   const [selectedTime, setSelectedTime] = useState([
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
-  ]);
+  ]); // 暂存时间
+  const [selectedCity, setSelectedCity] = useState([]); // 暂存城市
 
   const params = useLocation();
 
@@ -35,14 +36,18 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
     近1月: returnDay(1, 'month'),
   };
 
+  const cityObj = {
+    杭州: ['33', '3301'],
+    湘西: ['43', '4331'],
+  };
   // 选择时间
   const handleSearchData = (time, areaCode) => {
-    console.log(time, areaCode);
     setSearchData(time, areaCode);
     setSelectedTime(time);
+    setSelectedCity(areaCode);
   };
 
-  // 激活tag
+  // 激活时间tag
   const isActive = (tag) => {
     const value = timeObj[tag];
     if (!selectedTime[0] || !selectedTime[1]) {
@@ -54,6 +59,14 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
     return false;
   };
 
+  // 激活城市tag
+  const isCity = (tag) => {
+    const value = cityObj[tag];
+    if (selectedCity[0] == value[0] && selectedCity[1] == value[1]) {
+      return true;
+    }
+    return false;
+  };
   return (
     <Space>
       <div className={styles.salesExtra}>
@@ -61,7 +74,7 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
           <Tag.CheckableTag
             key={tag}
             checked={isActive(tag)}
-            onChange={() => handleSearchData(timeObj[tag], Object.values(cityData))}
+            onChange={() => handleSearchData(timeObj[tag], selectedCity)}
           >
             {tag}
           </Tag.CheckableTag>
@@ -70,12 +83,23 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
       <DatePicker.RangePicker
         allowClear={false}
         value={selectedTime}
-        onChange={(val) => handleSearchData(val, Object.values(cityData))}
+        onChange={(val) => handleSearchData(val, selectedCity)}
         disabledDate={disabledDate}
         style={{ width: 256 }}
       />
+      <div className={styles.salesExtra}>
+        {Object.keys(cityObj).map((tag) => (
+          <Tag.CheckableTag
+            key={tag}
+            checked={isCity(tag)}
+            onChange={() => handleSearchData(selectedTime, cityObj[tag])}
+          >
+            {tag}
+          </Tag.CheckableTag>
+        ))}
+      </div>
       <Cascader
-        defaultValue={bucket ? [bucket] : []}
+        value={selectedCity}
         changeOnSelect
         expandTrigger="hover"
         options={CITYJSON}

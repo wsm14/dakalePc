@@ -19,7 +19,7 @@ const ActiveTemplateNameSet = (props) => {
 
   const formItems = [
     {
-      label: '活动名称',
+      label: '模版名称',
       name: 'activityName',
       onPressEnter: (e) => fetchGetFormData(e.target.value),
     },
@@ -27,7 +27,7 @@ const ActiveTemplateNameSet = (props) => {
 
   return (
     <Modal
-      title={`活动名称设置 - ${ACTIVE_TEMPLATE_TYPE[info.type]}`}
+      title={`模版名称设置 - ${ACTIVE_TEMPLATE_TYPE[info.type]}`}
       width={548}
       destroyOnClose
       visible={show}

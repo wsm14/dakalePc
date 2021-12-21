@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Card, Row, Col } from 'antd';
 import template1 from './components/Img/template1.png';
+import template2 from './components/Img/template2.png';
 import ActiveTemplateEdit from './components/template/ActiveTemplateEdit';
 import ActiveTemplateNameSet from './components/template/ActiveTemplateNameSet';
 
@@ -18,8 +19,13 @@ const ActiveTemplate = () => {
   const cardItem = [
     {
       img: template1,
-      type: 'public',
+      type: 'active', // oss 上传文件夹同名
       title: '支持定制各类节日、主题活动，包括商品类，券类，店铺类以及组合模板',
+    },
+    {
+      img: template2,
+      type: 'rule', // oss 上传文件夹同名
+      title: '配置平台内各类活动规则、说明等模板内容',
     },
   ];
 
@@ -35,13 +41,13 @@ const ActiveTemplate = () => {
   return (
     <>
       <Card>
-        <Row gutter={[75, 28]}>
+        <Row gutter={[20, 28]}>
           {cardItem.map((item) => (
             <Col key={item.type}>
               <Card
                 cover={<img alt="example" src={item.img} style={{ width: 266, height: 160 }} />}
                 actions={[<div onClick={() => handleSelectActive(item)}>使用模版</div>]}
-                bodyStyle={{ maxWidth: 265 }}
+                bodyStyle={{ maxWidth: 265, minHeight: 114 }}
               >
                 {item.title}
               </Card>

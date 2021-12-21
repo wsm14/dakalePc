@@ -34,6 +34,7 @@ const SideMenu = (props) => {
     const blob = new Blob(
       [
         init({
+          templateType: type,
           ...moduleData,
           dataList: newData,
           activityName,
@@ -126,7 +127,7 @@ const SideMenu = (props) => {
           >
             关闭
           </Button>
-          <Button type="primary" loading={loading} onClick={() => fetchSaveModuleData('active')}>
+          <Button type="primary" loading={loading} onClick={() => fetchSaveModuleData(type)}>
             保存
           </Button>
         </Space>

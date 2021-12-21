@@ -496,12 +496,14 @@ const CouponSet = (props) => {
     {
       label: '是否允许随时退款',
       visible: radioData.buyFlag === '1',
+      hidden: true,
       type: 'switch',
       name: ['reduceObject', 'anytimeRefund'],
     },
     {
       label: '是否允许过期退款',
       visible: radioData.buyFlag === '1',
+      hidden: true,
       type: 'switch',
       name: ['reduceObject', 'expireRefund'],
     },
@@ -519,7 +521,22 @@ const CouponSet = (props) => {
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={initialValues || { ownerType: 'merchant', couponDetailType: '0' }}
+        initialValues={
+          {
+            reduceObject: {
+              anytimeRefund: 1,
+              expireRefund: 1,
+            },
+            ...initialValues,
+          } || {
+            reduceObject: {
+              anytimeRefund: 1,
+              expireRefund: 1,
+            },
+            ownerType: 'merchant',
+            couponDetailType: '0',
+          }
+        }
       ></FormCondition>
       <MreSelect
         dispatchType={'baseData/fetchSkuAvailableMerchant'}

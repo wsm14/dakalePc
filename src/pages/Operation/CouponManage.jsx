@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Card, Tag } from 'antd';
 import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
@@ -9,16 +9,30 @@ import CouponDrawer from './components/CouponManage/CouponDrawer';
 import excelProps from './components/CouponManage/excelProps';
 import RemainModal from './components/CouponManage/Detail/RemainModal';
 import ShareImg from './components/CouponManage/Form/ShareImg';
+import GetRecordModal from './components/CouponManage/Detail/GetRecordModal';
 import { checkCityName } from '@/utils/utils';
+
+const tabList = [
+  {
+    key: '1',
+    tab: '有价券',
+  },
+  {
+    key: '0',
+    tab: '免费券',
+  },
+];
 
 const CouponManageComponent = (props) => {
   const { couponManage, loading, dispatch, loadings } = props;
   const { list } = couponManage;
 
   const childRef = useRef();
+  const [tabkey, setTabKey] = useState('1');
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
   const [visibleShare, setVisibleShare] = useState(false); // 分享配置
+  const [visibleCancelRecord, setVisibleCancelRecord] = useState(false); // 领取核销记录
 
   //下架原因框
   const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
@@ -129,14 +143,14 @@ const CouponManageComponent = (props) => {
       sorter: (a, b) => a.remain - b.remain,
     },
     {
-      title: '销量',
+      title: tabkey === '1' ? '销量' : '已领取',
       dataIndex: 'total',
       align: 'right',
       render: (val, row) => val - row.remain,
       sorter: (a, b) => a.total - a.remain - (b.total - b.remain),
     },
     {
-      title: '核销数量',
+      title: tabkey === '1' ? '核销数量' : '已使用',
       align: 'right',
       dataIndex: 'verifiedCount',
       sorter: (a, b) => a.verifiedCount - b.verifiedCount,
@@ -232,10 +246,19 @@ const CouponManageComponent = (props) => {
           //   type: 'shareImg',
           //   click: () => fetchShareImg(record),
           // },
+          {
+            title: '领取核销记录',
+            type: 'getRecord',
+            visible: tabkey === '0',
+            click: () => setVisibleCancelRecord({ show: true, detail: record }),
+          },
         ];
       },
     },
   ];
+
+  // 领取核销记录
+  const fetchGetRecordModal = () => {};
 
   // 分享配置
   const fetchShareImg = (record) => {
@@ -342,7 +365,10 @@ const CouponManageComponent = (props) => {
     {
       type: 'excel',
       dispatch: 'couponManage/fetchCouponToImport',
-      data: get(),
+      data: {
+        ...get(),
+        buyFlag: tabkey,
+      },
       exportProps: excelProps,
     },
     {
@@ -351,21 +377,29 @@ const CouponManageComponent = (props) => {
       onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];
-
+  // 切换tab
+  const handleTabChange = (key) => {
+    setTabKey(key);
+    childRef?.current?.fetchGetData({ buyFlag: key });
+  };
   return (
     <>
-      <TableDataBlock
-        order
-        keepData
-        btnExtra={btnList}
-        cRef={childRef}
-        loading={loading}
-        columns={getColumns}
-        searchItems={searchItems}
-        rowKey={(record) => `${record.ownerCouponIdString}`}
-        dispatchType="couponManage/fetchGetList"
-        {...couponManage}
-      ></TableDataBlock>
+      <Card tabList={tabList} activeTabKey={tabkey} onTabChange={handleTabChange}>
+        <TableDataBlock
+          order
+          noCard={false}
+          keepData
+          btnExtra={btnList}
+          cRef={childRef}
+          loading={loading}
+          columns={getColumns}
+          searchItems={searchItems}
+          params={{ buyFlag: tabkey }}
+          rowKey={(record) => `${record.ownerCouponIdString}`}
+          dispatchType="couponManage/fetchGetList"
+          {...couponManage}
+        ></TableDataBlock>
+      </Card>
       <CouponDrawer
         childRef={childRef}
         visible={visible}
@@ -389,6 +423,11 @@ const CouponManageComponent = (props) => {
       ></RemainModal>
       {/* 分享配置 */}
       <ShareImg visible={visibleShare} onClose={() => setVisibleShare(false)}></ShareImg>
+      {/* 领取核销记录 */}
+      <GetRecordModal
+        visible={visibleCancelRecord}
+        onClose={() => setVisibleCancelRecord(false)}
+      ></GetRecordModal>
     </>
   );
 };

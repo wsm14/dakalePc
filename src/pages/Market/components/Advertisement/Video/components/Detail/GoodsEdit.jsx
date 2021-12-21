@@ -1,17 +1,16 @@
 import React from 'react';
 import { VIDEO_ADVERT } from '@/common/imgRatio';
 import FormCondition from '@/components/FormCondition';
+import { NativeFormSet } from '@/components/FormListCondition';
 import ShareCoupon from '@/components/VideoSelectBindContent';
 
 /**
  * 带货修改
  */
 const GoodsEdit = (props) => {
-  const { form, detail, couponData, setCouponData } = props;
+  const { form, detail, couponData, setCouponData, showTitle, setShowTitle } = props;
 
   const { free, contact } = couponData;
-
-  // console.log('contact', contact);
 
   // 暂存券数据
   const saveCouponStorage = (val) => setCouponData({ ...couponData, ...val });
@@ -67,11 +66,28 @@ const GoodsEdit = (props) => {
       type: 'textArea',
       maxLength: 50,
     },
+    // {
+    //   label: '跳转链接',
+    //   name: 'jumpUrl',
+    //   rules: [{ required: detail.relateType === 'brand' }],
+    // },
     {
-      label: '跳转链接',
-      name: 'jumpUrl',
-      rules: [{ required: detail.relateType === 'brand' }],
+      type: 'noForm',
+      formItem: (
+        <NativeFormSet
+          form={form}
+          detail={detail}
+          // port={tabKey}
+          getJumpType={setShowTitle}
+        ></NativeFormSet>
+      ),
     },
+    // {
+    //   label: '是否显示标题',
+    //   type: 'switch',
+    //   name: 'hideTitle',
+    //   visible: showTitle === 'H5',
+    // },
     {
       label: '免费券',
       type: 'formItem',

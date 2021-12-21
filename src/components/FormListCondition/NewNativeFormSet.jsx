@@ -12,7 +12,7 @@ const FormItem = Form.Item;
  * 全局跳转app h5 设置表单
  * @param {Object} detail 表单回填参数
  * jumpType 链接类型, nativeJumpType app打开的页面类型, param = {} app 跳转需要的参数键
- * @param {String} port 进入端口 user 用户 merchant 商家
+ * @param {String} port 进入端口 user 用户 merchant 商家 mark 哒卡小程序
  * @param {Function} getJumpType 外围获取跳转类型 回调
  * @returns
  */
@@ -65,8 +65,8 @@ const NewNativeFormSet = ({ detail = {}, port = 'user', getJumpType, form, dispa
       >
         <Radio
           select={
-            port === 'merchant' // 商家端进入时映射
-              ? (({ native, ...other }) => other)(MARKET_JUMP_TYPE)
+            ['mark', 'merchant'].includes(port)
+              ? (({ native, ...other }) => other)(MARKET_JUMP_TYPE) // 商家端 哒卡小程序进入时映射
               : MARKET_JUMP_TYPE // 默认进入映射
           }
           onChange={(e) => {

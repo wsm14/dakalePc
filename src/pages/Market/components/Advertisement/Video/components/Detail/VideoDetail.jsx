@@ -29,10 +29,15 @@ const VideoDetail = (props) => {
 
   const { index, show = false, type = 'info', detail = {} } = visible;
 
-  const { platformMomentId, relateId: ownerId } = detail;
+  const { platformMomentId, relateId: ownerId, jumpUrlType } = detail;
+  const newDetail = {
+    ...detail,
+    jumpUrlType: { '': '', h5: 'H5', native: 'inside' }[jumpUrlType],
+  };
 
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
+  const [showTitle, setShowTitle] = useState(null); // 是否显示标题
 
   useEffect(() => {
     if (type !== 'info') {
@@ -164,7 +169,7 @@ const VideoDetail = (props) => {
 
   const handleUpdataSava = () => {
     form.validateFields().then((values) => {
-      const { frontImage, url, title, videoId, ...other } = values;
+      const { jumpUrlType, frontImage, url, title, videoId, ...other } = values;
       const { free = {}, contact = [] } = couponData;
       // if (!values.jumpUrl && !contact.length && !free.goodsName) {
       //   notification.info({
@@ -222,6 +227,7 @@ const VideoDetail = (props) => {
                 type: 'videoAdvert/fetchVideoAdvertEdit',
                 payload: {
                   ...other,
+                  jumpUrlType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
                   platformMomentId,
                   title,
                   frontImageWidth: 544, // 封面宽
@@ -251,6 +257,9 @@ const VideoDetail = (props) => {
       current: index,
       total,
       onChange: (size) => getDetail(size, 'info'),
+    },
+    afterCallBack: () => {
+      setShowTitle(newDetail.jumpUrlType);
     },
     footer: (
       <>
@@ -285,9 +294,11 @@ const VideoDetail = (props) => {
           edit: (
             <GoodsEdit
               form={form}
-              detail={detail}
+              detail={newDetail}
               couponData={couponData}
               setCouponData={setCouponData}
+              showTitle={showTitle}
+              setShowTitle={setShowTitle}
             ></GoodsEdit>
           ),
         }[type]

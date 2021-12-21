@@ -15,7 +15,7 @@ export default {
   state: {
     list: [],
     total: 0,
-    radioType: { user: {}, merchant: {}, weChat: {} },
+    radioType: { user: {}, merchant: {}, weChat: {}, markMain: {} },
   },
 
   reducers: {

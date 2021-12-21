@@ -75,6 +75,7 @@ const TableBlockComponent = (props) => {
   const [first, setFirst] = useState(firstFetch); // first No search
   const [tableParems, setTableParems] = useState({
     page: 1, // 页码
+    limit: 10, // 页数
     sortOrder: '', // 排序字段
     sortField: '', // 排序规则 升降
     searchData: {},
@@ -115,7 +116,7 @@ const TableBlockComponent = (props) => {
         ...tableParems.searchData, // 搜索参数
         ...tableParems, // 表格参数
         ...data, // 传递的搜索参数
-        limit: pagination === false ? 999 : 10, // 每页条数
+        limit: pagination === false ? 999 : tableParems.limit, // 每页条数
       };
       delete payload['searchData'];
       dispatch({
@@ -144,9 +145,8 @@ const TableBlockComponent = (props) => {
     current: tableParems.page,
     pageSize: tableParems.limit,
     showTotal: () => `共${total}项`,
-    showQuickJumper: tableParems.limit > 100 ? false : true,
-    hideOnSinglePage: true,
-    showSizeChanger: tableParems.limit > 100 ? false : true,
+    showQuickJumper: true,
+    showSizeChanger: true,
   };
 
   // table change

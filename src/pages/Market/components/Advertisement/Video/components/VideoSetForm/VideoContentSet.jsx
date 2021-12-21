@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import debounce from 'lodash/debounce';
 import { VIDEO_ADVERT_TYPE } from '@/common/constant';
 import { VIDEO_ADVERT } from '@/common/imgRatio';
+import { NativeFormSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 import ShareCoupon from '@/components/VideoSelectBindContent';
 
@@ -20,6 +21,8 @@ const VideoContentSet = (props) => {
     dispatch,
     detail,
     loading,
+    showTitle,
+    setShowTitle,
   } = props;
 
   const { free, contact = [] } = couponData;
@@ -134,11 +137,28 @@ const VideoContentSet = (props) => {
       type: 'textArea',
       maxLength: 50,
     },
+    // {
+    //   label: '跳转链接',
+    //   name: 'jumpUrl',
+    //   rules: [{ required: false }],
+    // },
     {
-      label: '跳转链接',
-      name: 'jumpUrl',
-      rules: [{ required: false }],
+      type: 'noForm',
+      formItem: (
+        <NativeFormSet
+          form={form}
+          detail={detail}
+          // port={tabKey}
+          getJumpType={setShowTitle}
+        ></NativeFormSet>
+      ),
     },
+    // {
+    //   label: '是否显示标题',
+    //   type: 'switch',
+    //   name: 'hideTitle',
+    //   visible: showTitle === 'H5',
+    // },
     {
       label: '免费券',
       type: 'formItem',

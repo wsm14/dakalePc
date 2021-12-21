@@ -37,8 +37,13 @@ export const PAY_TYPE = {
   beanPay: '卡豆支付',
   wechat: '微信支付',
   alipay: '支付宝支付',
-  wx_lite: '微信小程序',
+  wx_lite: '小程序支付',
+  // wx_lite: '微信小程序',
   JSAPI: '微信支付',
+  couponPay: '券支付',
+  APP: 'APP支付',
+  apple_pay: '苹果支付',
+  balancePay: '余额支付',
 };
 
 // 导出excel枚举
@@ -235,6 +240,7 @@ export const ORDERS_STATUS = [
   '已确认',
   '预支付',
   '退款中',
+  '已过期',
 ];
 
 // 订单状态
@@ -367,6 +373,7 @@ export const ORDERS_TYPE = {
 export const PLATFORM_INCOME_ORDERS_TYPE = {
   scan: '扫码订单',
   writeOff: '核销订单',
+  expiredOrder: '过期不可退订单',
 };
 
 // 账户激活状态
@@ -382,7 +389,12 @@ export const OPEN_ADVERT_TYPE = { image: '图片广告', video: '视频广告' }
 export const OPEN_ADVERT_STATUS = ['待展示', '展示中', '已下架'];
 
 // Banner端口
-export const BANNER_PORT_TYPE = { user: '用户端', merchant: '商家端', weChat: '微信小程序' };
+export const BANNER_PORT_TYPE = {
+  user: '用户端',
+  merchant: '商家端',
+  weChat: '微信小程序',
+  mark: '哒小卡小程序',
+};
 
 const bannerType = {
   person: '个人',
@@ -398,6 +410,7 @@ const bannerType = {
   wanderAroundGoodMerchant: '逛逛周边好店',
   wanderAroundRecharge: '逛逛话费充值',
   wanderAroundBean: '逛逛卡豆专区',
+  markMain: '哒卡主页',
 };
 
 // Banner类型
@@ -406,6 +419,9 @@ export const BANNER_PORT_LINK = {
   weChat: bannerType,
   merchant: {
     merchantMain: '商家工作台',
+  },
+  mark: {
+    markMain: '哒卡主页',
   },
 };
 
@@ -443,6 +459,16 @@ export const SHARE_TIME_TYPE = ['扣完为止', '固定时间'];
 
 // 优惠券管理 - 优惠券状态
 export const COUPON_STATUS = [false, '上架中', '已下架'];
+
+// 优惠券管理 - 免费券领取核销记录 - 状态
+export const FREE_COUPON_STATUS = ['未使用', '已过期', '已核销', '关闭'];
+
+// 优惠券管理 - 免费券领取核销记录 - 场景
+export const FREE_COUPON_SCENE = {
+  moment: '视频',
+  consume: '消费',
+  mark: '打卡',
+};
 
 // 优惠券管理 - 优惠券类型
 export const COUPON_TYPE = { exchange: '兑换券', reduce: '抵扣券' };
@@ -547,6 +573,9 @@ export const GOODS_CHECK_RESSTATUS = [false, '已通过', '已驳回', '已关�
 // 审核结果
 export const CHECK_STATUS = ['审核通过', '审核驳回', '商家已确认', '商家驳回'];
 
+// 银行卡变更审核结果
+export const BANK_CHECK_STATUS = ['审核驳回', '审核通过'];
+
 // 标签类型
 export const TAG_TYPE = {
   platform: '平台商品标签',
@@ -614,7 +643,8 @@ export const COMMISSION_TYPE = {
 
 // 活动模版类型
 export const ACTIVE_TEMPLATE_TYPE = {
-  public: '通用模版',
+  active: '活动模版',
+  rule: '规则模版',
 };
 
 // 新闻分类
@@ -729,6 +759,18 @@ export const FOLLOW_MANNER = {
   other: '其他',
 };
 
+//盲盒抽奖记录 - 签到游戏 - 发放状态
+// export const GAME_SIGN_STATUS = ['未领取', '待发货', '已完成', '已过期', '未完善地址'];
+
+//盲盒抽奖记录 - 免费领商品 - 发放状态
+export const GAME_FREE_STATUS = ['未领取', '待发货', '已完成'];
+
+//盲盒抽奖记录 - 签到游戏 - 奖品类型
+export const GAME_SIGN_PACKAGE_TYPE = {
+  onlineGoods: '电商商品',
+  actualGoods: '实物商品',
+};
+
 // 盲盒商品类型枚举
 export const BLINDBOX_PRIZE_TYPE = {
   bean: '卡豆',
@@ -742,6 +784,14 @@ export const BOXLOTTERY_STATUS = ['未完善地址', '待发货', '已发货'];
 export const BOXLOTTERY_TYPE = {
   bean: '卡豆',
   invitation: '邀请',
+};
+
+// 全局配置 - 逛逛页面配置
+export const STROLLAROUND_TAB_TYPE = {
+  iOS: 'iOS',
+  android: 'Android',
+  weChat: '小程序',
+  mark: '哒小卡',
 };
 
 // 全局配置 - 首页tab配置

@@ -149,6 +149,12 @@ export default [
         component: './Business/BusinessRegister',
       },
       {
+        path: '/business/bankChangeCheck',
+        name: '银行卡变更审核',
+        component: './Business/BankChangeCheck',
+        buttons: ['info', 'check'],
+      },
+      {
         path: '/business/audit',
         name: '新店审核',
         component: './Business/BusinessAudit',
@@ -198,6 +204,11 @@ export default [
         path: '/chart/block',
         name: '数据概况',
         component: './Chart/ChartBlock',
+      },
+      {
+        path: '/chart/videoBoard',
+        name: '视频看板',
+        component: './Chart/VideoBoard',
       },
       {
         path: '/chart/dataGatherExport',
@@ -528,6 +539,7 @@ export default [
           'diary',
           'addRemain',
           'shareImg',
+          'getRecord',
         ],
       },
       {

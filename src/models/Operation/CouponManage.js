@@ -9,6 +9,7 @@ import {
   fetchCouponDelete, //全删除
   fetchCouponAddRemain,
   fetchCouponManageShareEdit, // 分享配置
+  fetchListFreeReduceCouponReceiveVerificationRecord, // 领取核销记录
 } from '@/services/OperationServices';
 import moment from 'moment';
 
@@ -18,6 +19,10 @@ export default {
   state: {
     list: [],
     total: 0,
+    getRecordList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -164,6 +169,20 @@ export default {
         description: '投放总量修改成功',
       });
       callback();
+    },
+    *fetchListFreeReduceCouponReceiveVerificationRecord({ payload }, { call, put }) {
+      const response = yield call(fetchListFreeReduceCouponReceiveVerificationRecord, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          getRecordList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
     },
   },
 };
