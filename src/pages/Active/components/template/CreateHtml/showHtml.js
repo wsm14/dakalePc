@@ -103,7 +103,7 @@ const htmlDom = {
 const createHtml = (data = []) => {
   let body = [];
   data
-    .filter((i) => i.data || Object.values(i.data || {}).length > 0)
+    .filter((i) => i.data && Object.values(i.data || {}).length > 0)
     .forEach(({ editorType, data }, index) => {
       const uid = `${uuid()}${index}`;
       body.push(htmlDom[editorType](data, uid));
