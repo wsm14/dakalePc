@@ -206,6 +206,11 @@ export default [
         component: './Chart/ChartBlock',
       },
       {
+        path: '/chart/videoBoard',
+        name: '视频看板',
+        component: './Chart/VideoBoard',
+      },
+      {
         path: '/chart/dataGatherExport',
         name: '数据明细查询',
         component: './Chart/DataGatherExport',

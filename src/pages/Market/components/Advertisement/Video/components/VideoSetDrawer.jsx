@@ -23,7 +23,6 @@ const ShareDrawer = (props) => {
     form.validateFields().then((values) => {
       const {
         jumpUrlType,
-        // hideTitle = false,
         videoId,
         url,
         frontImage,
@@ -77,7 +76,6 @@ const ShareDrawer = (props) => {
                 payload: {
                   ...other,
                   ...otherValus,
-                  // hideTitle: Number(!hideTitle),
                   jumpUrlType: { '': '', H5: 'h5', inside: 'native' }[jumpUrlType],
                   momentTags: values.momentTags.join(','),
                   scope: 'all',

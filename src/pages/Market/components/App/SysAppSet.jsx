@@ -129,7 +129,7 @@ const SysAppSet = (props) => {
     onClose,
     afterCallBack: () => {
       setShowTitle(detail.jumpUrlType);
-      setShowRadio(!!detail.bannerType);
+      setShowRadio(detail.bannerType);
       setShowArea(detail.deliveryAreaType === 'detail');
     },
     footer: (

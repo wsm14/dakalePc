@@ -61,7 +61,7 @@ const SpecialGoodCheckDetail = (props) => {
     },
     {
       label: '开户银行',
-      name: ['bankBindingObject', 'bankName'],
+      name: ['bankBindingObject', 'bankBranchName'],
     },
     {
       label: '开户城市',
@@ -105,6 +105,7 @@ const SpecialGoodCheckDetail = (props) => {
     {
       label: '凭证',
       name: ['bankBindingObject', 'additionalVoucher'],
+      render: (val) => <PopImgShow url={val}></PopImgShow>,
     },
     {
       label: '申请人姓名',

@@ -4,13 +4,13 @@ import { GAME_SIGN_STATUS, GAME_FREE_STATUS, GAME_SIGN_PACKAGE_TYPE } from '@/co
 import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import GameSignDrawer from './components/GameSign/GameSignDrawer';
-// import excelProps from './components/BoxLotteryBean/ExcelProps';
+import excelProps from './components/GameSign/ExcelProps';
 
 const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
   const tableRef = useRef();
 
   useEffect(() => {
-    tableRef.current.fetchGetData();
+    tableRef.current.fetchGetData({ channel: tabkey });
   }, [tabkey]);
   // 设置 发货 详情（查看物流）
   const [visible, setVisible] = useState(false);
@@ -30,7 +30,7 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       label: '发放状态',
       type: 'select',
       name: 'status',
-      select: tabkey === 'gameSign' ? GAME_SIGN_STATUS : GAME_FREE_STATUS,
+      select: GAME_FREE_STATUS,
     },
     {
       label: '奖品类型',
@@ -96,7 +96,7 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
     {
       title: '发放状态',
       dataIndex: 'status',
-      render: (val, row) => (tabkey === 'gameSign' ? GAME_SIGN_STATUS[val] : GAME_FREE_STATUS[val]),
+      render: (val, row) => GAME_FREE_STATUS[val],
     },
     {
       type: 'handle',
@@ -156,7 +156,7 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
         ...get(),
         channel: tabkey,
       },
-      // exportProps: excelProps,
+      exportProps: excelProps,
     },
   ];
 

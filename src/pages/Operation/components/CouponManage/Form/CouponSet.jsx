@@ -522,7 +522,13 @@ const CouponSet = (props) => {
         form={form}
         formItems={formItems}
         initialValues={
-          initialValues || {
+          {
+            reduceObject: {
+              anytimeRefund: 1,
+              expireRefund: 1,
+            },
+            ...initialValues,
+          } || {
             reduceObject: {
               anytimeRefund: 1,
               expireRefund: 1,

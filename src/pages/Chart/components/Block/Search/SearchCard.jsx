@@ -7,7 +7,7 @@ import styles from './style.less';
 
 const disTime = moment('2020-03-01');
 
-const SearchCard = ({ setSearchData, cityData, bucket }) => {
+const SearchCard = ({ setSearchData, timeData, cityData, bucket }) => {
   const [selectedTime, setSelectedTime] = useState([
     moment().subtract(1, 'day'),
     moment().subtract(1, 'day'),
@@ -33,6 +33,11 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
     昨日: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
     近7日: returnDay(6, 'day'),
     近1月: returnDay(1, 'month'),
+  };
+
+  const cityObj = {
+    杭州: ['33', '3301'],
+    湘西: ['43', '4331'],
   };
 
   // 选择时间
@@ -74,6 +79,17 @@ const SearchCard = ({ setSearchData, cityData, bucket }) => {
         disabledDate={disabledDate}
         style={{ width: 256 }}
       />
+      <div className={styles.salesExtra}>
+        {Object.keys(cityObj).map((tag) => (
+          <Tag.CheckableTag
+            key={tag}
+            // checked={isActive(tag)}
+            // onChange={() => handleSearchData(timeObj[tag], Object.values(cityData))}
+          >
+            {tag}
+          </Tag.CheckableTag>
+        ))}
+      </div>
       <Cascader
         defaultValue={bucket ? [bucket] : []}
         changeOnSelect
