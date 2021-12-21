@@ -61,6 +61,20 @@ export const EXPORT_LIST_TYPE = {
   darenPerformanceStatistics: '哒人业绩统计',
 };
 
+// 数据概况 - 营业数据相关 - GMV等type
+export const GMV_DATA_TYPE = {
+  scan: '扫码订单',
+  topUp: '充值订单',
+  specialGoods: '特价商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  commerceGoods: '电商商品',
+  expiredOrder: '过期不可退',
+};
+
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 

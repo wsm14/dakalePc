@@ -12,12 +12,14 @@ import {
   fetchChartMapHub,
   fetchChartMapHubMre,
   fetchChartMapHubMreDeatil,
+  fetchChartBusinessStatistic,
 } from '@/services/ChartServices';
 
 export default {
   namespace: 'chartBlock',
 
   state: {
+    GMVObject: {},
     orderInfo: {},
     userInfo: {},
     mreShareTotal: {},
@@ -45,6 +47,18 @@ export default {
   },
 
   effects: {
+    *fetchChartBusinessStatistic({ payload }, { call, put }) {
+      const response = yield call(fetchChartBusinessStatistic, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          GMVObject: content,
+        },
+      });
+    },
+
     *fetchChartBlockOrder({ payload }, { call, put }) {
       const response = yield call(fetchChartBlockOrder, payload);
       if (!response) return;
@@ -193,9 +207,8 @@ export default {
             const { verificationFee = 0, scan = 0, merchantName = 0 } = item;
             const totalFree = verificationFee + scan;
             const allTotal = totalFree.toFixed(2);
-            const verificationFeeNum = (totalFree === 0
-              ? 0
-              : (verificationFee / totalFree) * 100
+            const verificationFeeNum = (
+              totalFree === 0 ? 0 : (verificationFee / totalFree) * 100
             ).toFixed(2);
             return {
               merchantName,

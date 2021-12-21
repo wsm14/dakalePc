@@ -65,7 +65,7 @@ const ChartBlockComponent = ({
             ></SearchCard>
           </Card>
         </Affix>
-        {/* 营收统计 */}
+        {/* 平台GMV */}
         <OrderChart searchData={searchData}></OrderChart>
         {/* 用户数据统计 */}
         <UserChart searchData={searchData}></UserChart>
