@@ -38,6 +38,7 @@ const ChartBlockComponent = ({
       area = { provinceCode: areaCode[0], cityCode: areaCode[1], districtCode: areaCode[2] };
       setCityData(area);
     } else {
+      area = { provinceCode: undefined, cityCode: undefined, districtCode: undefined };
       setCityData({});
     }
     const timeObj = {

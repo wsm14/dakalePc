@@ -38,12 +38,12 @@ const GetRecordModal = (props) => {
       name: 'verificationTimeBegin',
       end: 'verificationTimeEnd',
     },
-    // {
-    //   label: '领取场景',
-    //   name: 'couponChannel',
-    //   type: 'select',
-    //   select: FREE_COUPON_SCENE,
-    // },
+    {
+      label: '领取场景',
+      name: 'couponChannel',
+      type: 'select',
+      select: FREE_COUPON_SCENE,
+    },
   ];
 
   // table 表头
@@ -70,12 +70,12 @@ const GetRecordModal = (props) => {
       align: 'center',
       dataIndex: 'verificationTime',
     },
-    // {
-    //   title: '领取场景',
-    //   align: 'center',
-    //   dataIndex: 'couponChannel',
-    //   render: (val) => FREE_COUPON_SCENE[val],
-    // },
+    {
+      title: '领取场景',
+      align: 'center',
+      dataIndex: 'couponChannel',
+      render: (val) => FREE_COUPON_SCENE[val],
+    },
     {
       title: '关联视频ID',
       align: 'center',
