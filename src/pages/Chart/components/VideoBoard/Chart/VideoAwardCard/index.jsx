@@ -9,11 +9,12 @@ import styles from './style.less';
 const RankingTotal = (props) => {
   const { data, loading } = props;
   const { PGCMomentRewardStatistic = {}, UGCMomentRewardStatistic = {} } = data;
+  const coloffLeft = { xs: 17, sm: 17, md: 17, lg: 17, xl: 10, xxl: 10 };
 
   return (
-    <Col span={10}>
+    <Col {...coloffLeft}>
       <Card
-        style={{ marginTop: 20, width: '100%', height: '680px' }}
+        style={{ marginTop: 20, width: '100%', height: '480px' }}
         bordered={false}
         loading={loading}
         bodyStyle={{

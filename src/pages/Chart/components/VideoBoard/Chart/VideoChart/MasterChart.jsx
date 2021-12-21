@@ -14,6 +14,7 @@ const MasterChart = ({ styles, PGCData, UGCData, dispatch }) => {
     angleField: 'count',
     colorField: 'type',
     legend: {
+      itemSpacing: 5,
       position: 'bottom',
     },
   };
@@ -31,7 +32,7 @@ const MasterChart = ({ styles, PGCData, UGCData, dispatch }) => {
   return (
     <>
       <div style={{ color: '#ccc' }}>该区域统计内容为当前时间下的数据，与时间筛选无关</div>
-      <Radio.Group onChange={onChange} defaultValue="1">
+      <Radio.Group onChange={onChange} defaultValue="1" buttonStyle="solid">
         <Radio.Button value="1">上架中视频数</Radio.Button>
         <Radio.Button value="">视频库总数</Radio.Button>
       </Radio.Group>

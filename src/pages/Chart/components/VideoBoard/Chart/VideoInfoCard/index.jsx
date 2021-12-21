@@ -12,14 +12,15 @@ const RankingTotal = (props) => {
   const { momentStatistic = {} } = data;
   const { addMomentMap = {} } = momentStatistic;
   const { probeShopMomentCount, commerceMomentCount, ugcMap = {} } = addMomentMap;
+  const coloffLeft = { xs: 7, sm: 7, md: 7, lg: 7, xl: 4, xxl: 4 };
   return (
-    <Col span={4}>
+    <Col {...coloffLeft}>
       <Card
         loading={loading}
         style={{
           marginTop: 20,
           width: '100%',
-          height: '680px',
+          height: '480px',
         }}
         bordered={false}
         bodyStyle={{
@@ -35,10 +36,10 @@ const RankingTotal = (props) => {
         <div className={styles.box}>
           <div className={styles.tit_c}>PGC视频</div>
           <div className={styles.content}>
-            <div>
+            <div className={styles.c_tit}>
               探店视频：<span className={styles.num}>{probeShopMomentCount || 0}</span>
             </div>
-            <div>
+            <div className={styles.c_tit}>
               带货视频：<span className={styles.num}>{commerceMomentCount || 0}</span>
             </div>
           </div>
@@ -46,7 +47,7 @@ const RankingTotal = (props) => {
           <div className={styles.content}>
             {Object.keys(ugcMap).map((item) => {
               return (
-                <div key={item}>
+                <div className={styles.c_tit} key={item}>
                   {item}：<span className={styles.num}>{ugcMap[item] || 0}</span>
                 </div>
               );
