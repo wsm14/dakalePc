@@ -51,10 +51,19 @@ export default {
       const response = yield call(fetchChartBusinessStatistic, payload);
       if (!response) return;
       const { content } = response;
+      const { GMVStatisticList, refundStatisticList, verificationStatisticList } = content;
+      const sortArr = (arr) => {
+        return arr.sort((a, b) => Number(b.totalFee) - Number(a.totalFee));
+      };
       yield put({
         type: 'save',
         payload: {
-          GMVObject: content,
+          GMVObject: {
+            ...content,
+            GMVStatisticList: sortArr(GMVStatisticList),
+            refundStatisticList: sortArr(refundStatisticList),
+            verificationStatisticList: sortArr(verificationStatisticList),
+          },
         },
       });
     },

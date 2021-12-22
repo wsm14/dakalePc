@@ -65,7 +65,7 @@ export const EXPORT_LIST_TYPE = {
 export const GMV_DATA_TYPE = {
   scan: '扫码订单',
   topUp: '充值订单',
-  specialGoods: '特价商品',
+  specialGoods: '特惠商品',
   reduceCoupon: '有价券',
   communityGoods: '团购商品',
   virtualProduct: '虚拟商品',
