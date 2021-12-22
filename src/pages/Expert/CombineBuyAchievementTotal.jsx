@@ -120,15 +120,41 @@ const ExpertUserAchievement = (props) => {
       render: (val) => checkCityName(val) || '--',
     },
     {
+      title: '总家人数',
+      align: 'center',
+      dataIndex: 'headTotalFamilyUserCount',
+    },
+    {
+      title: '新增家人数',
+      align: 'center',
+      dataIndex: 'headNewAddFamilyUserCount',
+    },
+    {
+      title: '下单用户数',
+      align: 'center',
+      dataIndex: 'orderUserCount',
+    },
+    {
+      title: '团购订单数',
+      align: 'center',
+      dataIndex: 'communityOrderNum',
+    },
+    {
+      title: '卡豆抵扣订单数',
+      align: 'center',
+      dataIndex: 'beanDeductionOrderCount',
+    },
+
+    {
       title: '团购销售额',
       align: 'center',
       dataIndex: 'communitySaleVolume',
       render: (val) => `${Number(val).toFixed(2)}`,
     },
     {
-      title: '团购订单数',
+      title: '卡豆抵扣金额',
       align: 'center',
-      dataIndex: 'communityOrderNum',
+      dataIndex: 'beanDeductionSum',
     },
     {
       title: '关联BD',
