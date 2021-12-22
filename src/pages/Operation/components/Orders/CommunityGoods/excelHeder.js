@@ -19,14 +19,16 @@ export default [
   },
   {
     title: '商品详情',
-    dataIndex: ['organizationGoodsOrderDescObject', 'communityGoodsList'],
+    dataIndex: 'organizationGoodsOrderDescObject',
     render: (val) =>
-      val.reduce(
+      val?.communityGoodsList?.reduce(
         (preValue, curValue) =>
           preValue +
-          `名称：${curValue?.goodsName} 规格：${curValue?.specificationData?.specificationMap['尺码']} 数量：${curValue?.goodsCount}； `,
+          `商品名称：${curValue?.goodsName || ''} 规格：${
+            curValue?.specificationData?.specificationMap['尺码'] || ''
+          } 数量：${curValue?.goodsCount || ''}； `,
         '',
-      ),
+      ) || '',
   },
   {
     title: '订单总金额',
@@ -52,16 +54,16 @@ export default [
     render: (val) => val?.relateOwnerName,
   },
   {
-    title: '下单人ID????',
-    dataIndex: '',
+    title: '下单人ID',
+    dataIndex: 'userIdString',
   },
   {
     title: '下单人昵称',
     dataIndex: 'userName',
   },
   {
-    title: '买家姓名????',
-    dataIndex: '',
+    title: '买家姓名',
+    dataIndex: 'userName',
   },
   {
     title: '买家手机号',
@@ -77,23 +79,23 @@ export default [
     dataIndex: 'createTime',
   },
   {
-    title: '订单支付时间??',
-    dataIndex: '',
+    title: '订单支付时间',
+    dataIndex: 'payTime',
   },
   {
     title: '订单完成时间',
-    dataIndex: '',
+    dataIndex: 'verificationTime',
   },
   {
     title: '订单关闭时间',
-    dataIndex: '',
+    dataIndex: 'closeTime',
   },
   {
     title: '订单关闭原因',
-    dataIndex: '',
+    dataIndex: 'closeReason',
   },
   {
     title: '订单备注',
-    dataIndex: '',
+    dataIndex: 'remark',
   },
 ];
