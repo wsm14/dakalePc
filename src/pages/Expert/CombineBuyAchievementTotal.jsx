@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect, Link } from 'umi';
-import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
@@ -15,8 +14,8 @@ const ExpertUserAchievement = (props) => {
   const [selectList, setSelectList] = useState([]);
 
   const [searchData, setSearchData] = useState({
-    beginDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-    endDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+    beginDate: moment().format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
   });
 
   const childRef = useRef();
@@ -203,7 +202,6 @@ const ExpertUserAchievement = (props) => {
 
   return (
     <>
-      <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
         cardProps={{
@@ -226,6 +224,6 @@ const ExpertUserAchievement = (props) => {
 export default connect(({ expertUserAchievementTotal, baseData, loading }) => ({
   list: expertUserAchievementTotal.combineBuyList,
   kolLevel: baseData.kolLevel,
-  loading: loading.effects['expertUserAchievementTotal/fetchGetList'],
+  loading: loading.effects['expertUserAchievementTotal/fetchCombineBuyList'],
   loadings: loading.models.expertUserList,
 }))(ExpertUserAchievement);

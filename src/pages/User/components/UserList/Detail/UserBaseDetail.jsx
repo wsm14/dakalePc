@@ -27,7 +27,9 @@ const UserBaseDetail = (props) => {
     { label: '学校', name: 'school', render: (val) => val || '--' },
     { label: '学历', name: 'education', render: (val) => val || '--' },
     { label: '注册时间', name: 'createTime' },
-    { label: '最后登录时间', name: 'lastLoginTimeString' },
+    { label: '最后登录日期', name: 'lastLoginTime' },
+    { label: '最后行为时间', name: 'finalActTime' },
+    { label: '最后下单时间', name: 'lastOrderTime' },
     { label: '账号状态', name: 'status', render: (val) => ACCOUNT_STATUS[val] },
     {
       label: '兴趣标签',

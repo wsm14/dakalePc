@@ -5,6 +5,7 @@ import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
 import Ellipsis from '@/components/Ellipsis';
 import PopImgShow from '@/components/PopImgShow';
+import excelHeder from './excelHeder';
 import coupon from '@public/coupon.png';
 import styles from '../style.less';
 
@@ -213,9 +214,18 @@ const CommunityGoods = (props) => {
     );
   };
 
+  const extraBtn = ({ get }) => [
+    {
+      type: 'excel',
+      dispatch: 'ordersList/fetchOrdersImport',
+      data: { ...get(), orderType: tabkey },
+      exportProps: { header: excelHeder },
+    },
+  ];
   return (
     <>
       <TableDataBlock
+        btnExtra={extraBtn}
         noCard={false}
         cRef={childRef}
         loading={loading}

@@ -85,7 +85,7 @@ export const WITHDRAW_STATUS = [false, '发起提现', '处理中', '成功', '�
 export const FEEDBACK_STATUS = [false, '处理中', '已解答'];
 
 // 用户状态
-export const ACCOUNT_STATUS = ['禁用', '启用'];
+export const ACCOUNT_STATUS = ['禁用', '正常', '已注销'];
 
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
