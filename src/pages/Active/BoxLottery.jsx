@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Card } from 'antd';
 import BoxLotteryBean from './components/BoxLottery/BoxLotteryBean';
-import GameSign from './components/BoxLottery/GameSign';
+import GameType from './components/BoxLottery/GameType';
 
 const tabList = [
   {
@@ -28,8 +28,8 @@ const BoxLottery = () => {
 
   const contentList = {
     boxLotteryBean: <BoxLotteryBean {...listProps}></BoxLotteryBean>,
-    gameSign: <GameSign {...listProps}></GameSign>,
-    gameFree: <GameSign {...listProps}></GameSign>,
+    gameSign: <GameType {...listProps}></GameType>,
+    gameFree: <GameType {...listProps}></GameType>,
     // mark: <GameSign {...listProps}></GameSign>,
   };
 

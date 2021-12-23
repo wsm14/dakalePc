@@ -32,12 +32,12 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       name: 'status',
       select: GAME_FREE_STATUS,
     },
-    {
-      label: '奖品类型',
-      type: 'select',
-      name: 'packageType',
-      select: GAME_SIGN_PACKAGE_TYPE,
-    },
+    // {
+    //   label: '奖品类型',
+    //   type: 'select',
+    //   name: 'packageType',
+    //   select: GAME_SIGN_PACKAGE_TYPE,
+    // },
     {
       label: '中奖结果',
       name: 'packageName',
@@ -164,6 +164,8 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
     <>
       <TableDataBlock
         order
+        firstFetch={false}
+        noCard={false}
         btnExtra={btnList}
         cRef={tableRef}
         loading={loading}

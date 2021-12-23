@@ -11,9 +11,13 @@ import TagModal from './TagModal';
 import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 
 const UserFollowSet = (props) => {
-  const { visible, onClose, childRef, dispatch } = props;
+  const { currentUser, visible, onClose, childRef, dispatch } = props;
   const { show = false, type, detail = {} } = visible;
+
+  // console.log('currentUser', currentUser);
+
   const [form] = Form.useForm();
+
   const [tagList, setTagList] = useState([]);
   const [userList, setUserList] = useState([]);
   const [detailInfo, setDetailInfo] = useState({});
@@ -33,6 +37,8 @@ const UserFollowSet = (props) => {
 
   //获取用户列表数据
   const getUserList = (content) => {
+    console.log('content', content);
+    return;
     if (!content || content.length < 2) return;
     dispatch({
       type: 'baseData/fetchGetUsersSearch',
@@ -50,8 +56,10 @@ const UserFollowSet = (props) => {
     });
   };
 
+  // 提交表单
   const handleSave = () => {
     form.validateFields().then((values) => {
+      console.log('values', values);
       const apiUrl = {
         add: 'userFollow/fetchSaveUserFollowUp',
         edit: 'userFollow/fetchUpdateUserFollowUp',
@@ -138,13 +146,15 @@ const UserFollowSet = (props) => {
     {
       label: '跟进内容',
       name: 'content',
+      type: 'textArea',
+      maxLength: 500,
       span: 2,
     },
     {
       label: '跟进标签',
       name: 'tags',
       type: 'formItem',
-      rules: [{ required: true }],
+      // rules: [{ required: true }],
       formItem: (
         <>
           {tagList.map((tag, index) => (
@@ -172,6 +182,8 @@ const UserFollowSet = (props) => {
       label: '跟进结果',
       name: 'result',
       span: 2,
+      type: 'textArea',
+      maxLength: 200,
     },
     {
       label: '跟进人',
@@ -179,7 +191,9 @@ const UserFollowSet = (props) => {
     },
     {
       label: '跟进时间',
+      type: 'dataPicker',
       name: 'followTime',
+      showTime: 'true',
     },
   ];
 
@@ -238,9 +252,14 @@ const UserFollowSet = (props) => {
           ></DescriptionsCondition>
         )}
         <div>
-          <a style={{ float: 'right', marginTop: 5 }} onClick={handleOpenRecord}>
+          <Button
+            style={{ float: 'right', marginTop: 5 }}
+            disabled={userList.length === 0}
+            type="link"
+            onClick={handleOpenRecord}
+          >
             历史跟进情况
-          </a>
+          </Button>
           <FormCondition
             formItems={followwItem}
             form={form}
@@ -260,4 +279,6 @@ const UserFollowSet = (props) => {
   );
 };
 
-export default connect()(UserFollowSet);
+export default connect((userInfo) => ({
+  currentUser: userInfo.currentUser,
+}))(UserFollowSet);
