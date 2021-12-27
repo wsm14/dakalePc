@@ -5,6 +5,7 @@ import { Tag } from 'antd';
 import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 import UserFollowDetail from './components/UserFollow/UserFollowDetail';
 import UserFollowSet from './components/UserFollow/UserFollowSet';
+import excelProps from './components/UserFollow/ExcelProps';
 
 const UserFollow = (props) => {
   const { userFollow, dispatch, loading } = props;
@@ -24,6 +25,7 @@ const UserFollow = (props) => {
       callback: (tag) => {
         const { extraParam = '' } = tag;
         const tagArr = extraParam ? extraParam.split(',') : [];
+        console.log(tagArr);
         setTags(tagArr);
       },
     });
@@ -44,7 +46,7 @@ const UserFollow = (props) => {
       label: '跟进标签',
       name: 'tags',
       type: 'multiple',
-      select: tags,
+      select: tags.map((i) => ({ name: i, value: i })),
     },
     {
       label: '跟进方式',
@@ -94,6 +96,7 @@ const UserFollow = (props) => {
     {
       title: '跟进内容',
       dataIndex: 'content',
+      ellipsis: { length: 2, lines: 30 },
     },
     {
       title: '跟进标签',
@@ -111,6 +114,7 @@ const UserFollow = (props) => {
     {
       title: '跟进结果',
       dataIndex: 'result',
+      ellipsis: { length: 2, lines: 16 },
     },
     {
       title: '跟进人',
@@ -173,10 +177,18 @@ const UserFollow = (props) => {
   };
 
   // 表格额外按钮
-  const extraBtn = [
+  const extraBtn = ({ get }) => [
     {
       auth: 'save',
       onClick: () => setVisible({ show: true, type: 'add', detail: { tagArr: tags } }),
+    },
+    {
+      type: 'excel',
+      dispatch: 'userFollow/fetchListUserFollowUpImport',
+      data: {
+        ...get(),
+      },
+      exportProps: excelProps,
     },
   ];
 
@@ -209,7 +221,7 @@ const UserFollow = (props) => {
 };
 export default connect(({ userFollow, loading }) => {
   return {
-    userFollow,
+    userFollow: userFollow.list,
     loading: loading.models.userFollow,
   };
 })(UserFollow);

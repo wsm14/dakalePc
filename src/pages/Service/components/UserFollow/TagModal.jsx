@@ -1,39 +1,77 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { connect } from 'umi';
 import { Tag, Input, Tooltip, Modal, Form, Button } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import AuthConsumer from '@/layouts/AuthConsumer';
 import FormCondition from '@/components/FormCondition';
 import './index.less';
 
 const { CheckableTag } = Tag;
 
 const TagModal = (props) => {
-  const { visible, onClose } = props;
-  const { show = false, tagArr = [], setTagList = null, oldTag = [] } = visible;
+  const { visible, onClose, dispatch } = props;
+  const { show = false, setTagList = null, oldTag = [] } = visible;
+
   const [form] = Form.useForm();
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]); // 所有标签
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [editInputIndex, setEditInputIndex] = useState('-1');
   const [editInputValue, setEditInputValue] = useState('');
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]); // 已选中tag
+
   useEffect(() => {
     if (show) {
-      setTags(tagArr);
+      // setTags(tagArr);
+      handleGetTags();
+      setSelectedTags(oldTag);
     }
   }, [show]);
 
   const saveEditInputRef = useRef();
   const saveInputRef = useRef();
 
+  // 获取标签列表
+  const handleGetTags = () => {
+    dispatch({
+      type: 'userFollow/fetchGetDictionaryAdmin',
+      payload: {
+        parent: 'userFollowUp',
+        child: 'tags',
+      },
+      callback: (tag) => {
+        const { extraParam = '' } = tag;
+        const tagArr = extraParam ? extraParam.split(',') : [];
+        setTags(tagArr);
+      },
+    });
+  };
+
+  // 新增标签列表
+  const handleSetTags = (val) => {
+    dispatch({
+      type: 'userFollow/fetchSetUserFollowUpTags',
+      payload: {
+        dictionaryId: '1417829187663585300',
+        extraParam: val,
+      },
+      callback: () => {
+        handleGetTags();
+      },
+    });
+  };
+
+  //  确定
   const handleFinish = () => {
     form.validateFields().then((values) => {
       const { extraParam = [] } = values;
-      const newTags = Array.from(new Set([...oldTag, ...extraParam]));
-      setTagList(newTags);
+      // const newTags = Array.from(new Set([...oldTag, ...extraParam]));
+      // setTagList(newTags);
+      setTagList(extraParam);
       onClose();
     });
   };
 
+  // 点击选择标签
   const handleChange = (tag, checked) => {
     const nextSelectedTags = checked
       ? [...selectedTags, tag]
@@ -56,13 +94,17 @@ const TagModal = (props) => {
     setInputValue(e.target.value);
   };
 
+  // 脱标时新增标签
   const handleInputConfirm = () => {
     console.log(inputValue, tags, 'handleInputConfirm');
     let newTag = [...tags];
     if (inputValue && tags.indexOf(inputValue) === -1) {
       newTag = [...tags, inputValue];
     }
-    setTags(newTag);
+    // setTags(newTag);
+    handleSetTags(newTag.join(','));
+    // handleSetTags('品类问题,视频问题,商家问题');
+    // handleGetTags();
     setInputValue('');
     setInputVisible(false);
     // form.setFieldsValue({ extraParam: newTag });
@@ -122,7 +164,7 @@ const TagModal = (props) => {
             const isLongTag = tag.length > 20;
             const tagElem = (
               <CheckableTag
-                className="edit-tag"
+                className="edit-tag-modal"
                 key={tag}
                 checked={selectedTags.indexOf(tag) > -1}
                 onChange={(checked) => handleChange(tag, checked)}
@@ -162,9 +204,12 @@ const TagModal = (props) => {
             />
           )}
           {!inputVisible && (
-            <Tag className="site-tag-plus" onClick={showInput}>
-              <PlusOutlined /> New Tag
-            </Tag>
+            <AuthConsumer auth="addTags">
+              <Tag className="site-tag-plus" onClick={showInput}>
+                {/* <PlusOutlined /> New Tag */}
+                新增
+              </Tag>
+            </AuthConsumer>
           )}
         </>
       ),
@@ -176,4 +221,7 @@ const TagModal = (props) => {
     </Modal>
   );
 };
-export default TagModal;
+
+export default connect(({ loading }) => ({
+  loading: loading.models.userFollow,
+}))(TagModal);

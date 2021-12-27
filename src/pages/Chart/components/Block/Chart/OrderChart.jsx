@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Card, Statistic, Row, Col, Descriptions, Progress } from 'antd';
+import { Card, Row, Col, Descriptions, Progress } from 'antd';
 import { GMV_DATA_TYPE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
@@ -222,10 +222,18 @@ const OrderChart = ({ dispatch, searchData = {}, GMVObject, loading }) => {
             bordered
             column={2}
           >
-            <Descriptions.Item label="销售额">{`￥${displaceGoodGMVStatistic?.GMVTotalFee}`}</Descriptions.Item>
-            <Descriptions.Item label="订单数">{`${displaceGoodGMVStatistic?.GMVCount}`}</Descriptions.Item>
-            <Descriptions.Item label="核销额">{`￥${displaceGoodVerificationStatistic?.verificationTotalFee}`}</Descriptions.Item>
-            <Descriptions.Item label="核销数">{`${displaceGoodVerificationStatistic?.verificationCount}`}</Descriptions.Item>
+            <Descriptions.Item label="销售额">{`￥${
+              displaceGoodGMVStatistic?.GMVTotalFee || 0.0
+            }`}</Descriptions.Item>
+            <Descriptions.Item label="订单数">{`${
+              displaceGoodGMVStatistic?.GMVCount || 0
+            }`}</Descriptions.Item>
+            <Descriptions.Item label="核销额">{`￥${
+              displaceGoodVerificationStatistic?.verificationTotalFee || 0.0
+            }`}</Descriptions.Item>
+            <Descriptions.Item label="核销数">{`${
+              displaceGoodVerificationStatistic?.verificationCount || 0
+            }`}</Descriptions.Item>
           </Descriptions>
         </Col>
         <Col flex={1}>

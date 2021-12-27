@@ -6,14 +6,19 @@ import {
   fetchGetUserDetail,
   fetchUpdateUserFollowUp,
   fetchSaveUserFollowUp,
+  fetchSetUserFollowUpTags,
+  fetchListUserFollowUpImport,
 } from '@/services/ServiceServices';
 
 export default {
   namespace: 'userFollow',
 
   state: {
-    list: [],
-    total: 0,
+    list: {
+      list: [],
+      total: 0,
+    },
+    allTags: [],
   },
 
   reducers: {
@@ -33,14 +38,18 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          list: content.recordList,
-          total: content.total,
+          list: {
+            list: content.recordList,
+            total: content.total,
+          },
         },
       });
       callback &&
         callback({
-          list: content.recordList,
-          total: content.total,
+          list: {
+            list: content.recordList,
+            total: content.total,
+          },
         });
     },
     *fetchGetUserFollowUp({ payload, callback }, { call }) {
@@ -49,11 +58,20 @@ export default {
       const { content } = response;
       callback(content.userFollowUp);
     },
-    *fetchGetDictionaryAdmin({ payload, callback }, { call }) {
+    *fetchGetDictionaryAdmin({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetDictionaryAdmin, payload);
       if (!response) return;
       const { content } = response;
-      callback(content.dictionary);
+      const { dictionary } = content;
+      const { extraParam = '' } = dictionary;
+      const tagArr = extraParam ? extraParam.split(',') : [];
+      yield put({
+        type: 'save',
+        payload: {
+          allTags: tagArr,
+        },
+      });
+      callback && callback(dictionary);
     },
     *fetchGetUserDetail({ payload, callback }, { call }) {
       const response = yield call(fetchGetUserDetail, payload);
@@ -78,6 +96,23 @@ export default {
         description: '新增成功',
       });
       callback();
+    },
+    //  post 运营后台-用户跟进-设置跟进标签
+    *fetchSetUserFollowUpTags({ payload, callback }, { call }) {
+      const response = yield call(fetchSetUserFollowUpTags, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增标签成功',
+      });
+      callback && callback();
+    },
+    // get 运营后台-用户跟进 - 导出
+    *fetchListUserFollowUpImport({ payload, callback }, { call }) {
+      const response = yield call(fetchListUserFollowUpImport, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content.userFollowUpDTOS);
     },
   },
 };

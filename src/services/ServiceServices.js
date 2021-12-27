@@ -286,37 +286,52 @@ export function fetchUpdateCommentsDeleteFlag(data) {
 
 //用户跟进 start
 
-// 用户跟进列表
+//  get 用户跟进列表
 export function fetchListUserFollowUp(params) {
   return request('/admin/userFollowUp/listUserFollowUp', {
     params,
   });
 }
 
-// 用户跟进详情
+//  get 用户跟进详情
 export function fetchGetUserFollowUp(params) {
   return request('/admin/userFollowUp/getUserFollowUp', {
     params,
   });
 }
 
-// 运营后台-用户详情
+//  get 运营后台-用户详情
 export function fetchGetUserDetail(params) {
   return request('/admin/userManagement/getUserDetail', {
     params,
   });
 }
-// 运营后台-用户跟进-编辑
+//  post 运营后台-用户跟进-编辑
 export function fetchUpdateUserFollowUp(data) {
   return request('/admin/userFollowUp/updateUserFollowUp', {
     method: 'POST',
     data,
   });
 }
-// 运营后台-用户跟进-新增
+//  post 运营后台-用户跟进-新增
 export function fetchSaveUserFollowUp(data) {
   return request('/admin/userFollowUp/saveUserFollowUp', {
     method: 'POST',
     data,
+  });
+}
+
+//  post 运营后台-用户跟进-设置跟进标签
+export function fetchSetUserFollowUpTags(data) {
+  return request('/admin/userFollowUp/setUserFollowUpTags', {
+    method: 'POST',
+    data,
+  });
+}
+
+//  get 运营后台-用户跟进 - 导出
+export function fetchListUserFollowUpImport(params) {
+  return request('/admin/userFollowUp/listUserFollowUpImport', {
+    params,
   });
 }

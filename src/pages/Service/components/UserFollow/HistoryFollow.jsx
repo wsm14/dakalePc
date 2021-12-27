@@ -25,8 +25,8 @@ const HistoryFollow = (props) => {
         limit: 10,
       },
       callback: (details) => {
-        setTotal(details.total);
-        setList(details.list);
+        setTotal(details.list.total);
+        setList(details.list.list);
       },
     });
   };
