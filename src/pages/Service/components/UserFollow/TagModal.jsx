@@ -96,6 +96,8 @@ const TagModal = (props) => {
 
   // 脱标时新增标签
   const handleInputConfirm = () => {
+    setInputVisible(false);
+    if (inputValue === '') return;
     console.log(inputValue, tags, 'handleInputConfirm');
     let newTag = [...tags];
     if (inputValue && tags.indexOf(inputValue) === -1) {
@@ -106,7 +108,6 @@ const TagModal = (props) => {
     // handleSetTags('品类问题,视频问题,商家问题');
     // handleGetTags();
     setInputValue('');
-    setInputVisible(false);
     // form.setFieldsValue({ extraParam: newTag });
   };
 
