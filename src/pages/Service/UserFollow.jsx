@@ -96,7 +96,8 @@ const UserFollow = (props) => {
     {
       title: '跟进内容',
       dataIndex: 'content',
-      ellipsis: { length: 2, lines: 30 },
+      width: 255,
+      ellipsis: { length: 30, lines: 2 },
     },
     {
       title: '跟进标签',
@@ -114,7 +115,8 @@ const UserFollow = (props) => {
     {
       title: '跟进结果',
       dataIndex: 'result',
-      ellipsis: { length: 2, lines: 16 },
+      width: 155,
+      ellipsis: { length: 16, lines: 2 },
     },
     {
       title: '跟进人',
