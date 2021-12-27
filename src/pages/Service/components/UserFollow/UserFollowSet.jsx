@@ -121,6 +121,7 @@ const UserFollowSet = (props) => {
       type: 'select',
       select: userList,
       placeholder: '请输入用户手机号、昵称或ID',
+      rules: [{ required: true, message: '请选择用户' }],
       loading: loading.effects['baseData/fetchGetUsersSearch'],
       hidden: type == 'edit',
       fieldNames: { label: 'label', value: 'value' },
@@ -159,7 +160,16 @@ const UserFollowSet = (props) => {
       label: '跟进标签',
       name: 'tags',
       type: 'formItem',
-      // rules: [{ required: true }],
+      addRules: [
+        {
+          validator: () => {
+            if (tagList.length == 0) {
+              return Promise.reject('请选择跟进标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       formItem: (
         <>
           {tagList.map((tag, index) => (

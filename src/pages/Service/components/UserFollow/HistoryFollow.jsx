@@ -18,15 +18,15 @@ const HistoryFollow = (props) => {
 
   const fetchList = (page) => {
     dispatch({
-      type: 'userFollow/fetchGetList',
+      type: 'userFollow/fetchGetListInfo',
       payload: {
         userId,
         page,
         limit: 10,
       },
       callback: (details) => {
-        setTotal(details.list.total);
-        setList(details.list.list);
+        setTotal(details.total);
+        setList(details.list);
       },
     });
   };

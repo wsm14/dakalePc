@@ -31,7 +31,7 @@ export default {
   },
 
   effects: {
-    *fetchGetList({ payload, callback }, { call, put }) {
+    *fetchGetList({ payload }, { call, put }) {
       const response = yield call(fetchListUserFollowUp, payload);
       if (!response) return;
       const { content } = response;
@@ -44,12 +44,15 @@ export default {
           },
         },
       });
+    },
+    *fetchGetListInfo({ payload, callback }, { call }) {
+      const response = yield call(fetchListUserFollowUp, payload);
+      if (!response) return;
+      const { content } = response;
       callback &&
         callback({
-          list: {
-            list: content.recordList,
-            total: content.total,
-          },
+          list: content.recordList,
+          total: content.total,
         });
     },
     *fetchGetUserFollowUp({ payload, callback }, { call }) {
