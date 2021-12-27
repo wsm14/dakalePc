@@ -226,7 +226,7 @@ const UserFollowSet = (props) => {
     },
     {
       label: '身份',
-      name: 'content',
+      name: 'levelName',
     },
     {
       label: '性别',
