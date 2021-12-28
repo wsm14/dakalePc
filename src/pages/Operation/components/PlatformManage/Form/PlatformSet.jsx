@@ -161,23 +161,6 @@ const CouponSet = (props) => {
       label: '使用门槛',
       name: 'aaaf',
     },
-
-    {
-      title: '设置使用规则',
-      label: '使用门槛',
-      type: 'radio',
-      select: ['无限制', '有限制'],
-      name: 'restrictions',
-      onChange: (e) => saveSelectData({ userFlag: e.target.value }),
-    },
-    {
-      label: '门槛金额',
-      name: ['reduceObject', 'thresholdPrice'],
-      prefix: '￥',
-      suffix: '元可使用',
-      addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
-      visible: radioData.userFlag === '1',
-    },
     {
       label: '使用有效期',
       type: 'radio',
@@ -205,14 +188,36 @@ const CouponSet = (props) => {
       visible: radioData.effectTime === 'gain',
     },
     {
-      label: '有效期天数',
-      name: 'activeDays',
-      type: 'number',
+      label: '投放总量',
+      name: 'total',
       disabled: editDisabled,
-      max: 999,
-      min: 0,
-      precision: 0,
-      visible: radioData.effectTime === 'gain',
+      addRules: [{ pattern: NUM_INT, message: '投放总量必须为整数，且不可为0' }],
+      suffix: '张',
+    },
+    {
+      label: '使用有效期',
+      type: 'radio',
+      disabled: editDisabled,
+      select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
+      name: 'useTimeRule',
+      onChange: (e) => saveSelectData({ effectTime: e.target.value }),
+    },
+
+    {
+      title: '设置使用规则',
+      label: '使用门槛',
+      type: 'radio',
+      select: ['无限制', '有限制'],
+      name: 'restrictions',
+      onChange: (e) => saveSelectData({ userFlag: e.target.value }),
+    },
+    {
+      label: '门槛金额',
+      name: ['reduceObject', 'thresholdPrice'],
+      prefix: '￥',
+      suffix: '元可使用',
+      addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
+      visible: radioData.userFlag === '1',
     },
     {
       label: '适用时段',
@@ -228,6 +233,18 @@ const CouponSet = (props) => {
       name: 'useWeek',
       visible: radioData.timeSplit === 'part',
     },
+
+    {
+      label: '有效期天数',
+      name: 'activeDays',
+      type: 'number',
+      disabled: editDisabled,
+      max: 999,
+      min: 0,
+      precision: 0,
+      visible: radioData.effectTime === 'gain',
+    },
+
     {
       label: '时间选择',
       type: 'radio',
@@ -242,48 +259,7 @@ const CouponSet = (props) => {
       order: false,
       visible: radioData.timeType === 'part',
     },
-    {
-      label: '投放总量',
-      name: 'total',
-      disabled: editDisabled,
-      addRules: [{ pattern: NUM_INT, message: '投放总量必须为整数，且不可为0' }],
-      suffix: '张',
-    },
-    {
-      label: `${['领取', '购买'][radioData.buyFlag]}上限`,
-      type: 'radio',
-      name: 'buyRule',
-      select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
-      onChange: (e) => saveSelectData({ buyRule: e.target.value }),
-    },
-    {
-      label: `单人每人${['领取', '购买'][radioData.buyFlag]}份数`,
-      name: 'personLimit',
-      suffix: '份',
-      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
-      visible: radioData.buyRule === 'personLimit',
-    },
-    {
-      label: `单人每天${['领取', '购买'][radioData.buyFlag]}份数`,
-      name: 'dayMaxBuyAmount',
-      suffix: '份',
-      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
-      visible: radioData.buyRule === 'dayLimit',
-    },
-    {
-      label: '是否允许随时退款',
-      visible: radioData.buyFlag === '1',
-      hidden: true,
-      type: 'switch',
-      name: ['reduceObject', 'anytimeRefund'],
-    },
-    {
-      label: '是否允许过期退款',
-      visible: radioData.buyFlag === '1',
-      hidden: true,
-      type: 'switch',
-      name: ['reduceObject', 'expireRefund'],
-    },
+
     {
       title: '使用说明',
       label: '使用说明',
