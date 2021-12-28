@@ -147,7 +147,7 @@ const CommunityGoods = (props) => {
   ];
 
   // 展开table 表头
-  const getColumns = [
+  const getColumns = (status) => [
     {
       title: '商品名称',
       dataIndex: 'goodsName',
@@ -194,7 +194,12 @@ const CommunityGoods = (props) => {
       title: '商品状态',
       align: 'center',
       dataIndex: 'remainCount',
-      render: (val) => ([0].includes(val) ? '已核销' : '待核销'),
+      render: (val) =>
+        ['0', '2'].includes(status)
+          ? ORDERS_STATUS[status]
+          : [0].includes(val)
+          ? '已核销'
+          : '待核销',
     },
   ];
 
@@ -205,7 +210,7 @@ const CommunityGoods = (props) => {
         pagination={false}
         size="middle"
         tableSize="small"
-        columns={columns}
+        columns={columns(record.status)}
         list={record?.organizationGoodsOrderDescObject?.communityGoodsList || []}
         rowKey={(record) =>
           `${record.communityOrganizationGoodsId}${Math.ceil(Math.random() * 1000) + 1}`
