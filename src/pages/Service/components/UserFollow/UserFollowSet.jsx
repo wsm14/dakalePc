@@ -4,7 +4,6 @@ import { checkCityName } from '@/utils/utils';
 import { connect } from 'umi';
 import { Button, Form, Tag } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import QuestionTooltip from '@/components/QuestionTooltip';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -108,15 +107,7 @@ const UserFollowSet = (props) => {
 
   const useItem = [
     {
-      label: (
-        <QuestionTooltip
-          type="quest"
-          title="用户"
-          content={
-            '请输入用户手机号、昵称或ID输入后下方列出符合的内容，选择一个，然后带出用户信息、用户标签，未选择时不显示。'
-          }
-        ></QuestionTooltip>
-      ),
+      label: '用户',
       name: 'userId',
       type: 'select',
       select: userList,
