@@ -206,7 +206,7 @@ const TagModal = (props) => {
           )}
           {!inputVisible && (
             <AuthConsumer auth="addTags">
-              <Tag className="site-tag-plus" onClick={showInput}>
+              <Tag color="#108ee9" className="site-tag-plus" onClick={showInput}>
                 {/* <PlusOutlined /> New Tag */}
                 新增
               </Tag>
