@@ -1,13 +1,32 @@
-.btn_box {
-  width: 140px;
-  height: 60px;
-  margin-right: 10px;
-}
-
 .btn_all {
   :global {
     .ant-col-sm-17 {
-      max-width: 100%;
+      max-width: 95%;
+    }
+  }
+}
+.btn_Bbox {
+  display: flex;
+  justify-content: space-around;
+  margin-left: 50px;
+}
+.btn_box {
+  width: 140px;
+  height: 60px;
+  padding-right: 0;
+  span {
+    &:nth-last-child(1) {
+      display: flex;
+      flex-direction: column;
+      padding-top: 10px;
+      div {
+        height: 14px;
+        line-height: 14px;
+        &:nth-child(2) {
+          color: #ccc;
+          font-size: 12px;
+        }
+      }
     }
   }
 }

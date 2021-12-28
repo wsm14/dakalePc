@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import debounce from 'lodash/debounce';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Button, Radio } from 'antd';
+import { Radio } from 'antd';
 import {
-  BUSINESS_TYPE,
-  COUPON_BUY_FLAG,
   COUPON_USER_TIME,
   COUPON_TIME_TYPE,
   COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
-  SPECIAL_DESC_TYPE,
   SPECIAL_USERTIME_TYPE,
+  PLATFORM_TICKET_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
-import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
-import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
 import styles from './index.less';
 
@@ -37,6 +32,8 @@ const CouponSet = (props) => {
     setContent,
   } = props;
 
+  const [ticket, setTicket] = useState('horizontal'); // 券种类
+
   // 是否 编辑重新发布（上架，下架）都隐藏的数据
   const commonDisabled = ['edit', 'again'].includes(type) && ['1', '2'].includes(status);
   //活动中隐藏的编辑项//edit 且为上架中 独有不展示
@@ -44,13 +41,7 @@ const CouponSet = (props) => {
 
   const [visible, setVisible] = useState(false); // 选择店铺弹窗
   const [couponDetailType, setCouponDetailType] = useState('0'); // 商品介绍类型
-  // 店铺备选参数，选择店铺后回显的数据
-  const [mreList, setMreList] = useState({
-    groupId: null,
-    type: 'merchant',
-    keys: [],
-    list: [],
-  }); // 店铺备选参数，选择店铺后回显的数据
+
   const [radioData, setRadioData] = useState({
     buyFlag: '0', // 是否售卖
     userFlag: '0', // 使用门槛
@@ -108,89 +99,9 @@ const CouponSet = (props) => {
     }
   }, [initialValues]);
 
-  // 设置form表单值 店铺id
-  useEffect(() => {
-    form.setFieldsValue({ merchantIds: mreList.keys });
-  }, [mreList.keys]);
-
-  //sku通用-sku挂靠商家列表
-  const getMerchantList = () => {
-    dispatch({
-      type: 'baseData/fetchSkuDetailMerchantList',
-      payload: {
-        ownerServiceId: ownerCouponId,
-        ownerId: ownerId,
-        serviceType: 'reduceCoupon',
-      },
-      callback: (list) => {
-        const keys = list.map((item) => item.merchantId);
-        saveMreData({ keys: keys, list: list });
-        form.setFieldsValue({ merchantIds: keys });
-      },
-    });
-  };
-
-  // 搜索店铺
-  const fetchGetMre = debounce((name, type, callback) => {
-    if (!name) return;
-    dispatch({
-      type: 'baseData/fetchGetGroupMreList',
-      payload: {
-        name,
-        type: type || mreList.type,
-        groupFlag: 0, // 不允许选择子门店
-      },
-      callback,
-    });
-  }, 100);
-
   const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
-
-  // 查询店铺主体的费率
-  const fetchCheckMreRate = (ownerId, type) => {
-    dispatch({
-      type: 'specialGoods/fetchCheckMreRate',
-      payload: {
-        ownerId,
-        ownerType: type || mreList.type,
-      },
-      callback: ({ commissionRatio = 0 }) =>
-        saveMreData({
-          groupId: ownerId,
-          ratio: commissionRatio,
-          keys: [],
-          list: [],
-        }),
-    });
-  };
-
-  //sku通用-是否需要设置佣金
-  const getCommissionFlag = (categoryId) => {
-    dispatch({
-      type: 'baseData/fetchGoodsIsCommission',
-      payload: {
-        serviceType: 'specialGoods',
-        categoryId: categoryId,
-      },
-      callback: ({ manuallyFlag, manualDivisions }) => setCommissionShow(manuallyFlag),
-    });
-  };
-
-  // table 表头
-  const getColumns = [
-    {
-      title: '店铺名称',
-      dataIndex: 'merchantName',
-      ellipsis: true,
-    },
-    {
-      title: '详细地址',
-      dataIndex: 'address',
-      ellipsis: true,
-    },
-  ];
 
   // 信息
   const formItems = [
@@ -202,15 +113,22 @@ const CouponSet = (props) => {
       className: styles.btn_all,
       formItem: (
         <>
-          <Radio.Group style={{ marginLeft: 50 }}>
+          <Radio.Group
+            value={ticket}
+            onChange={(e) => setTicket(e.target.value)}
+            className={styles.btn_Bbox}
+          >
             <Radio.Button className={styles.btn_box} value="horizontal">
-              Horizontal
+              <div>商品券</div>
+              <div>特惠商品/优惠券可用</div>
             </Radio.Button>
             <Radio.Button className={styles.btn_box} value="vertical">
-              Vertical
+              <div>虚拟品券</div>
+              <div>购买虚拟商品可用</div>
             </Radio.Button>
             <Radio.Button className={styles.btn_box} value="inline">
-              Inline
+              <div>电商品券</div>
+              <div>购买电商品可用</div>
             </Radio.Button>
           </Radio.Group>
         </>
@@ -220,201 +138,30 @@ const CouponSet = (props) => {
       label: '券类型',
       name: 'aaab',
       type: 'radio',
-      select: BUSINESS_TYPE,
-      maxLength: 80,
+      select: PLATFORM_TICKET_TYPE,
     },
     {
-      label: '选择店铺类型',
-      type: 'radio',
-      name: 'ownerType',
-      select: BUSINESS_TYPE,
-      disabled: commonDisabled,
-      onChange: (e) => {
-        setCommissionShow(false);
-        saveMreData({
-          type: e.target.value,
-          groupId: null,
-          ratio: 0,
-          keys: [],
-          list: [],
-        }); // 重置已选店铺数据
-        form.setFieldsValue({ ownerId: undefined }); // 重置数据
-        dispatch({ type: 'baseData/clearGroupMre' }); // 清空选择数据
-      },
+      title: '基本信息',
+      label: '券标题',
+      name: 'aaac',
+      maxLength: 15,
     },
     {
-      label: `选择${BUSINESS_TYPE[mreList.type]}`,
-      type: 'select',
-      name: 'ownerId',
-      placeholder: '请输入搜索',
-      select: selectList,
-      disabled: commonDisabled,
-      loading,
-      onSearch: fetchGetMre,
-      onChange: (val, data) => {
-        const { option } = data;
-        console.log(option, 'option');
-        const { businessStatus, status } = option;
-        form.setFieldsValue({ merchantIds: undefined, businessStatus, status });
-        setCommissionShow(false);
-        //是否分佣
-        getCommissionFlag(option.topCategoryId[0]);
-        fetchCheckMreRate(val);
-      },
-      addRules: [
-        {
-          validator: () => {
-            const statusVal = form.getFieldsValue(['businessStatus', 'status']);
-            const { businessStatus, status } = statusVal;
-            if (businessStatus === '0' || status === '0') {
-              return Promise.reject(
-                '该店铺已禁用/已暂停营业，请先将店铺状态改成正常营业再进行发布。',
-              );
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
-    {
-      label: `商家状态`,
-      name: 'status',
-      hidden: true,
-    },
-    {
-      label: `商家营业状态`,
-      name: 'businessStatus',
-      hidden: true,
-    },
-    {
-      label: '适用店铺',
-      name: 'merchantIds',
-      type: 'formItem',
-      visible: mreList.type == 'group',
-      rules: [{ required: true, message: '请选择店铺' }],
-      formItem: (
-        <Button type="primary" ghost disabled={commonDisabled} onClick={() => setVisible(true)}>
-          选择店铺
-        </Button>
-      ),
-    },
-    {
-      type: 'noForm',
-      visible: mreList.type == 'group',
-      formItem: (
-        <MreSelectShow
-          key="MreTable"
-          form={form}
-          rowKey="merchantId"
-          disabled={commonDisabled}
-          columns={getColumns}
-          {...mreList}
-          setMreList={(val) => {
-            saveMreData(val);
-            form.setFieldsValue({ merchantIds: val.keys });
-          }}
-        ></MreSelectShow>
-      ),
-    },
-    {
-      title: '设置券信息',
-      label: '券名称',
-      name: 'couponName',
-      maxLength: 80,
+      label: '券描述',
+      name: 'aaad',
+      rules: [{ required: false }],
     },
     {
       label: '券价值',
-      name: ['reduceObject', 'couponPrice'],
+      name: 'aaae',
       prefix: '￥',
       addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
     },
     {
-      label: '售卖',
-      name: 'buyFlag',
-      type: 'radio',
-      disabled: editDisabled,
-      select: COUPON_BUY_FLAG, // ['关闭', '开启'] 0--1
-      onChange: (e) => saveSelectData({ buyFlag: e.target.value }),
+      label: '使用门槛',
+      name: 'aaaf',
     },
-    {
-      label: '售卖价格',
-      name: 'buyPrice',
-      prefix: '￥',
-      disabled: editDisabled,
-      visible: radioData.buyFlag === '1',
-      addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
-    },
-    {
-      label: '商家结算价',
-      name: 'merchantPrice',
-      prefix: '￥',
-      disabled: editDisabled,
-      visible: radioData.buyFlag === '1',
-      addRules: [
-        { pattern: NUM_ALL, message: '价格必须为数字，且大于0' },
-        {
-          validator: (rule, value) => {
-            const merchantPrice = Number(value);
-            const buyPrice = Number(form.getFieldValue('buyPrice'));
-            if (merchantPrice > buyPrice) {
-              return Promise.reject('商家结算价不可超过售卖价格');
-            }
-            // “商家结算价不可超过N（结算价≤特惠价格*（1-费率））”
-            const getPrice = buyPrice * (1 - mreList.ratio / 100);
-            if (merchantPrice > getPrice) {
-              return Promise.reject(`商家结算价不可超过${getPrice}`);
-            }
-            return Promise.resolve();
-          },
-        },
-      ],
-    },
-    {
-      label: '佣金总额', // 手动分佣需要展示
-      name: 'commission',
-      type: 'number',
-      precision: 2,
-      min: 0,
-      max: 999999.99,
-      visible: commissionShow == '1',
-      disabled: commonDisabled,
-      formatter: (value) => `￥ ${value}`,
-      // rules: [{ required: false }],
-    },
-    {
-      title: `设置优惠券介绍`,
-      label: '选择介绍类型',
-      type: 'radio',
-      name: 'couponDetailType',
-      select: SPECIAL_DESC_TYPE,
-      onChange: (e) => setCouponDetailType(e.target.value),
-    },
-    {
-      label: `优惠券介绍`,
-      type: 'textArea',
-      name: 'couponDetail',
-      hidden: couponDetailType !== '0',
-      rules: [{ required: false }],
-      maxLength: 200,
-    },
-    {
-      label: `优惠券图片`,
-      name: 'couponDetailImg',
-      type: 'upload',
-      maxFile: 20,
-      hidden: couponDetailType !== '0',
-      rules: [{ required: false }],
-    },
-    {
-      type: 'noForm',
-      visible: couponDetailType === '1',
-      formItem: (
-        <EditorForm
-          content={initialValues.richText}
-          editCallback={(val) => setContent(val)}
-        ></EditorForm>
-      ),
-    },
+
     {
       title: '设置使用规则',
       label: '使用门槛',
@@ -568,23 +315,6 @@ const CouponSet = (props) => {
           }
         }
       ></FormCondition>
-      <MreSelect
-        dispatchType={'baseData/fetchSkuAvailableMerchant'}
-        rowKey="merchantId"
-        keys={mreList.keys}
-        visible={visible}
-        mreList={mreList.list}
-        pagination={false}
-        params={{ groupId: mreList.groupId }}
-        onOk={(val) => {
-          saveMreData(val);
-          form.setFieldsValue({ merchantIds: val.keys });
-        }}
-        onCancel={() => setVisible(false)}
-        columns={getColumns}
-        searchShow={false}
-        list={skuMerchantList}
-      ></MreSelect>
     </>
   );
 };

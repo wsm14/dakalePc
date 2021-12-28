@@ -835,3 +835,8 @@ export const MATERIAL_JUMP_TYPE = {
   community: '哒小团小程序',
   mark: '哒小卡小程序',
 };
+
+// 平台券管理 - 券类型
+export const PLATFORM_TICKET_TYPE = {
+  aaa: '通用券',
+};
