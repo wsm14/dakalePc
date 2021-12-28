@@ -5,9 +5,9 @@ import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import CouponDrawer from './components/CouponManage/CouponDrawer';
-import RemainModal from './components/CouponManage/Detail/RemainModal';
 import { checkCityName } from '@/utils/utils';
+import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
+import RemainModal from './components/PlatformManage/Detail/RemainModal';
 
 const PlatformManage = (props) => {
   const { couponManage, loading, dispatch, loadings } = props;
@@ -286,13 +286,14 @@ const PlatformManage = (props) => {
         dispatchType="couponManage/fetchGetList"
         {...couponManage}
       ></TableDataBlock>
-      <CouponDrawer
+      {/* 新增 编辑 详情 */}
+      <PlatformDrawer
         childRef={childRef}
         visible={visible}
         total={list.length}
         getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
-      ></CouponDrawer>
+      ></PlatformDrawer>
       {/* 下架原因 */}
       <RefuseModal
         visible={visibleRefuse}

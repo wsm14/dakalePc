@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import CouponDetail from './Detail/CouponDetail';
-import CouponSet from './Form/CouponSet';
 import aliOssUpload from '@/utils/aliOssUpload';
+import CouponDetail from './Detail/CouponDetail';
+import PlatformSet from './Form/PlatformSet';
 
 const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
@@ -25,6 +25,9 @@ const CouponDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
+      console.log('values', values);
+      return;
+
       const {
         activeDate,
         restrictions,
@@ -87,16 +90,16 @@ const CouponDrawer = (props) => {
       children: <CouponDetail detail={detail}></CouponDetail>,
     },
     add: {
-      title: '新建券',
-      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+      title: '新建平台券',
+      children: <PlatformSet {...listProp} form={form} initialValues={detail}></PlatformSet>,
     },
     edit: {
       title: '编辑券',
-      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+      children: <PlatformSet {...listProp} form={form} initialValues={detail}></PlatformSet>,
     },
     again: {
       title: '重新发布',
-      children: <CouponSet {...listProp} form={form} initialValues={detail}></CouponSet>,
+      children: <PlatformSet {...listProp} form={form} initialValues={detail}></PlatformSet>,
     },
   }[type];
 

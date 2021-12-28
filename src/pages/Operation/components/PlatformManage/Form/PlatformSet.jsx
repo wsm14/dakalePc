@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Button } from 'antd';
+import { Button, Radio } from 'antd';
 import {
   BUSINESS_TYPE,
   COUPON_BUY_FLAG,
@@ -18,6 +18,7 @@ import { MreSelect, MreSelectShow } from '@/components/MerUserSelectTable';
 import { DescSet } from '@/components/FormListCondition';
 import EditorForm from '@/components/EditorForm';
 import FormCondition from '@/components/FormCondition';
+import styles from './index.less';
 
 const CouponSet = (props) => {
   const {
@@ -193,6 +194,35 @@ const CouponSet = (props) => {
 
   // 信息
   const formItems = [
+    {
+      title: '券类型',
+      type: 'formItem',
+      name: 'aaa',
+      rules: [{ required: true, message: 'Please pick an item!' }],
+      className: styles.btn_all,
+      formItem: (
+        <>
+          <Radio.Group style={{ marginLeft: 50 }}>
+            <Radio.Button className={styles.btn_box} value="horizontal">
+              Horizontal
+            </Radio.Button>
+            <Radio.Button className={styles.btn_box} value="vertical">
+              Vertical
+            </Radio.Button>
+            <Radio.Button className={styles.btn_box} value="inline">
+              Inline
+            </Radio.Button>
+          </Radio.Group>
+        </>
+      ),
+    },
+    {
+      label: '券类型',
+      name: 'aaab',
+      type: 'radio',
+      select: BUSINESS_TYPE,
+      maxLength: 80,
+    },
     {
       label: '选择店铺类型',
       type: 'radio',
