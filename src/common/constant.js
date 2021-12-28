@@ -840,3 +840,6 @@ export const MATERIAL_JUMP_TYPE = {
 export const PLATFORM_TICKET_TYPE = {
   aaa: '通用券',
 };
+
+// 平台券管理 - 使用时间
+export const PLATFORM_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' };

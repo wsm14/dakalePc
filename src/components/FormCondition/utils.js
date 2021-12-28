@@ -23,6 +23,7 @@ export const delectProps = (data) => {
   delete divProps.isCut;
   delete divProps.imgRatio;
   delete divProps.addonAfter;
+  delete divProps.addonBefore;
   delete divProps.render;
   delete divProps.show;
   delete divProps.label;
@@ -32,7 +33,6 @@ export const delectProps = (data) => {
   delete divProps.showTitle;
   delete divProps.wrapperCol;
   delete divProps.labelCol;
-
 
   return divProps;
 };
@@ -62,6 +62,7 @@ export const delectFormProps = (data) => {
   delete divProps.isCut;
   delete divProps.imgRatio;
   delete divProps.addonAfter;
+  delete divProps.addonBefore;
   delete divProps.render;
   delete divProps.show;
   delete divProps.onChange;

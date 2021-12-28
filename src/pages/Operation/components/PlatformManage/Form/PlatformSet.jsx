@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Radio } from 'antd';
+import { Radio, Form, InputNumber } from 'antd';
 import {
   COUPON_USER_TIME,
   COUPON_TIME_TYPE,
@@ -9,6 +9,7 @@ import {
   COUPON_BUY_RULE,
   SPECIAL_USERTIME_TYPE,
   PLATFORM_TICKET_TYPE,
+  PLATFORM_USERTIME_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import { DescSet } from '@/components/FormListCondition';
@@ -109,13 +110,15 @@ const CouponSet = (props) => {
       title: '券类型',
       type: 'formItem',
       name: 'aaa',
-      rules: [{ required: true, message: 'Please pick an item!' }],
+      rules: [{ required: true, message: '请选择券类型' }],
       className: styles.btn_all,
       formItem: (
         <>
           <Radio.Group
             value={ticket}
-            onChange={(e) => setTicket(e.target.value)}
+            onChange={(e) => {
+              setTicket(e.target.value);
+            }}
             className={styles.btn_Bbox}
           >
             <Radio.Button className={styles.btn_box} value="horizontal">
@@ -150,122 +153,135 @@ const CouponSet = (props) => {
       label: '券描述',
       name: 'aaad',
       rules: [{ required: false }],
+      maxLength: 30,
     },
     {
       label: '券价值',
       name: 'aaae',
-      prefix: '￥',
+      type: 'number',
+      addonBefore: '￥',
+      max: 999999,
+      min: 0,
+      precision: 2,
       addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
     },
     {
       label: '使用门槛',
+      type: 'number',
       name: 'aaaf',
+      max: 999999,
+      min: 0,
+      precision: 2,
+      rules: [{ required: true, message: `请输入使用门槛价格` }],
+      addonBefore: '满',
+      addonAfter: '元可用',
     },
     {
-      label: '使用有效期',
+      label: '券有效期',
       type: 'radio',
-      disabled: editDisabled,
-      select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
-      name: 'useTimeRule',
+      select: PLATFORM_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
+      name: 'aaag',
       onChange: (e) => saveSelectData({ effectTime: e.target.value }),
     },
     {
       label: '固定时间',
-      name: 'activeDate',
-      disabled: editDisabled,
+      name: 'aaaga',
       type: 'rangePicker',
       visible: radioData.effectTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '领取后生效天数',
-      name: 'delayDays',
+      name: 'aaagb',
       type: 'number',
-      disabled: editDisabled,
+      addonBefore: '领取后',
+      addonAfter: '天生效',
       max: 999,
       min: 0,
       precision: 0,
+      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
+
       visible: radioData.effectTime === 'gain',
     },
     {
-      label: '投放总量',
-      name: 'total',
-      disabled: editDisabled,
-      addRules: [{ pattern: NUM_INT, message: '投放总量必须为整数，且不可为0' }],
-      suffix: '张',
+      label: '有效期天数',
+      name: 'aaagc',
+      type: 'number',
+      addonAfter: '日内有效',
+      max: 999,
+      min: 0,
+      precision: 0,
+      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
+
+      visible: radioData.effectTime === 'gain',
     },
     {
-      label: '使用有效期',
-      type: 'radio',
-      disabled: editDisabled,
-      select: SPECIAL_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
-      name: 'useTimeRule',
-      onChange: (e) => saveSelectData({ effectTime: e.target.value }),
+      label: '发放总量',
+      name: 'total',
+      type: 'number',
+      addonAfter: '张',
+      extra: '修改优惠券总量时只能增加不能减少，请谨慎设置',
     },
 
     {
-      title: '设置使用规则',
-      label: '使用门槛',
+      label: '领取上限',
+      type: 'radio',
+      name: 'buyRule',
+      select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+      onChange: (e) => saveSelectData({ buyRule: e.target.value }),
+    },
+    {
+      label: `单人每人限制领取`,
+      name: 'personLimit',
+      type: 'number',
+      addonBefore: '每人限制领取',
+      addonAfter: '张',
+      precision: 0,
+      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
+      visible: radioData.buyRule === 'personLimit',
+    },
+    {
+      label: `单人每天限制领取`,
+      name: 'dayMaxBuyAmount',
+      type: 'number',
+      addonBefore: '每人每天限制领取',
+      addonAfter: '张',
+      precision: 0,
+      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
+      visible: radioData.buyRule === 'dayLimit',
+    },
+
+    {
+      label: '使用地区限制',
       type: 'radio',
       select: ['无限制', '有限制'],
       name: 'restrictions',
       onChange: (e) => saveSelectData({ userFlag: e.target.value }),
     },
     {
-      label: '门槛金额',
-      name: ['reduceObject', 'thresholdPrice'],
-      prefix: '￥',
-      suffix: '元可使用',
-      addRules: [{ pattern: NUM_ALL, message: '价格必须为数字，且大于0' }],
-      visible: radioData.userFlag === '1',
+      label: '适用人群',
+      type: 'radio',
+      select: COUPON_TIME_TYPE, // { '00:00-23:59': '全天', part: '固定时间' };
+      name: 'timeType',
     },
     {
-      label: '适用时段',
+      label: '适用端口',
       type: 'radio',
       select: COUPON_USER_TIME, //1,2,3,4,5,6,7': '每天', part: '部分'
       name: 'timeSplit',
       onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
     },
     {
-      label: '每周',
       type: 'checkbox',
       select: COUPON_WEEK_TIME,
       name: 'useWeek',
       visible: radioData.timeSplit === 'part',
     },
-
     {
-      label: '有效期天数',
-      name: 'activeDays',
-      type: 'number',
-      disabled: editDisabled,
-      max: 999,
-      min: 0,
-      precision: 0,
-      visible: radioData.effectTime === 'gain',
-    },
-
-    {
-      label: '时间选择',
-      type: 'radio',
-      select: COUPON_TIME_TYPE, // { '00:00-23:59': '全天', part: '固定时间' };
-      name: 'timeType',
-      onChange: (e) => saveSelectData({ timeType: e.target.value }),
-    },
-    {
-      label: '设置时间段',
-      name: 'useTime',
-      type: 'timePicker',
-      order: false,
-      visible: radioData.timeType === 'part',
-    },
-
-    {
-      title: '使用说明',
-      label: '使用说明',
-      name: 'couponDesc',
-      type: 'formItem',
-      formItem: <DescSet name={'couponDesc'} form={form}></DescSet>,
+      label: '其他说明',
+      type: 'textArea',
+      name: 'useWeek',
+      rules: [{ required: false }],
     },
   ];
 
