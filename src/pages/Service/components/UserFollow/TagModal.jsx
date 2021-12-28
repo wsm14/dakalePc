@@ -115,10 +115,12 @@ const TagModal = (props) => {
     setEditInputValue(e.target.value);
   };
 
+  // 双击修改
   const handleEditInputConfirm = () => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
-    setTags(newTags);
+    // setTags(newTags);
+    handleSetTags(newTags.join(','));
     // form.setFieldsValue({ extraParam: newTags });
     setEditInputIndex('-1');
     setEditInputValue('');
