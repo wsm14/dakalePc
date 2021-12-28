@@ -446,6 +446,12 @@ export default [
       },
       // 店铺运营 operation
       {
+        path: '/operation/platformTicketManage',
+        name: '平台券管理',
+        component: './Operation/PlatformTicketManage',
+        buttons: ['addnum', 'info', 'edit', 'down', 'save'],
+      },
+      {
         path: '/operation/share',
         name: '视频管理',
         component: './Operation/ShareManage',

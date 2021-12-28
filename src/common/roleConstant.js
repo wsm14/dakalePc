@@ -12,6 +12,7 @@ export const ROLE_BUTTON_TYPE = {
   authEdit: '权限设置',
   assistanceInfo: '助力详情',
   addTags: '新增标签',
+  addnum: '增加数量',
 
   BDSet: '关联BD',
   batchEdit: '批量修改',
