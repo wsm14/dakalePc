@@ -160,8 +160,8 @@ const UserFollowSet = (props) => {
       label: '跟进标签',
       name: 'tags',
       type: 'formItem',
-      rules: [{ required: true }],
-      addRules: [
+      required: true,
+      rules: [
         {
           validator: () => {
             if (tagList.length == 0) {
