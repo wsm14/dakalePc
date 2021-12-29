@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Tag } from 'antd';
+import { Tag, Tooltip } from 'antd';
 import {
   COUPON_STATUS,
   COUPON_TYPE,
@@ -13,7 +13,7 @@ import {
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
-import { checkCityName } from '@/utils/utils';
+import { getCityName } from '@/utils/utils';
 import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
 import RemainModal from './components/PlatformManage/Detail/RemainModal';
 
@@ -123,9 +123,27 @@ const PlatformManage = (props) => {
         if (arr[0].condition == 'all') {
           return '全国可用';
         } else if (val[0].ruleType === 'availableAreaRule') {
-          return '部分地区可用';
+          return (
+            <Tooltip
+              placement="topLeft"
+              title={arr.map((item) => {
+                return <span key={item.ruleIdString}>{`${getCityName(item.condition)}、`}</span>;
+              })}
+            >
+              部分地区可用
+            </Tooltip>
+          );
         } else {
-          return '部分地区可用';
+          return (
+            <Tooltip
+              placement="topLeft"
+              title={arr.map((item) => {
+                return <span key={item.ruleIdString}>{`${getCityName(item.condition)}、`}</span>;
+              })}
+            >
+              部分地区不可用
+            </Tooltip>
+          );
         }
       },
     },
@@ -205,27 +223,11 @@ const PlatformManage = (props) => {
   };
 
   // 获取详情
-  const fetchCouponDetail = (id, type) => {
-    if (type === 'edit') {
-      dispatch({
-        type: 'specialGoods/fetchEditCurrentStatus',
-        payload: {
-          ownerId,
-          ownerServiceId: id,
-          ownerType,
-        },
-        callback: (val) => {
-          if (val !== '1') {
-            return;
-          }
-        },
-      });
-    }
+  const fetchCouponDetail = (platformCouponId, type) => {
     dispatch({
-      type: 'couponManage/fetchCouponDetail',
-      payload: { ownerCouponId, ownerId, type },
-      callback: (detail) =>
-        setVisible({ type, show: true, detail, ownerCouponId, ownerId, status }),
+      type: 'platformCoupon/fetchGetPlatformCouponDetail',
+      payload: { platformCouponId },
+      callback: (detail) => setVisible({ type, show: true, detail, platformCouponId }),
     });
   };
 

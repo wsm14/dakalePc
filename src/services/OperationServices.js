@@ -839,6 +839,13 @@ export function fetchPagePlatformCoupon(params) {
   });
 }
 
+// get 平台券 - 详情
+export function fetchGetPlatformCouponDetail(params) {
+  return request('/admin/platform/coupon/getPlatformCouponDetail', {
+    params,
+  });
+}
+
 // post 平台券 - 创建平台券 - 新增
 export function fetchPlatformCouponSave(data) {
   return request('/admin/platform/coupon/createPlatformCoupon', {

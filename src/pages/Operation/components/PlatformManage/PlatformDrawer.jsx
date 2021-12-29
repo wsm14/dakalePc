@@ -9,15 +9,7 @@ import PlatformSet from './Form/PlatformSet';
 const CouponDrawer = (props) => {
   const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
 
-  const {
-    type = 'info',
-
-    show = false,
-    detail = {},
-    ownerCouponId,
-    ownerId,
-    status,
-  } = visible;
+  const { type = 'info', platformCouponId, show = false, detail = {} } = visible;
   const [ticket, setTicket] = useState('goodsBuy'); // 券使用场景类型
   const [citys, setCitys] = useState([]);
 
@@ -36,6 +28,7 @@ const CouponDrawer = (props) => {
         ruleCondition,
         consortUserOs,
         apply = [],
+        cityCode,
         ...other
       } = values;
 
@@ -44,9 +37,10 @@ const CouponDrawer = (props) => {
         type: {
           add: 'platformCoupon/fetchPlatformCouponSave',
           edit: 'couponManage/fetchCouponUpdate',
-          again: 'couponManage/fetchCouponSave',
         }[type],
         payload: {
+          platformCouponId,
+          ...other,
           couponType: 'fullReduce',
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
@@ -70,7 +64,6 @@ const CouponDrawer = (props) => {
             },
           ],
           consortUserOs: apply.join(',') || consortUserOs,
-          ...other,
         },
         callback: () => {
           onClose();
@@ -112,11 +105,6 @@ const CouponDrawer = (props) => {
     onClose,
     loading: loadingDetail,
     closeCallBack: () => dispatch({ type: 'baseData/clearGroupMre' }), // 关闭清空搜索的商家数据
-    dataPage: type === 'info' && {
-      // current: index,
-      total,
-      onChange: (size) => getDetail(size, 'info'),
-    },
     footer: ['add', 'edit', 'again'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         发布
