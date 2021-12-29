@@ -17,6 +17,7 @@ const MerchantListTable = (props) => {
   ];
   return (
     <TableDataBlock
+      pagination={false}
       order
       columns={getColumns}
       rowKey={(record) => `${record.merchantName}` + (0.5 - Math.random()).toString()}
