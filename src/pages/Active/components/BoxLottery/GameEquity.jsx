@@ -5,7 +5,7 @@ import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
 import excelProps from './components/GameSign/ExcelPropsEquity';
 
-const GameSign = ({ gameSignList, loading, tabkey, twoTabkey }) => {
+const GameSign = ({ gameEquityList, loading, tabkey, twoTabkey }) => {
   const twoType = {
     gameSign: 'signGame',
     gameFree: 'freeGoodGame',
@@ -36,7 +36,8 @@ const GameSign = ({ gameSignList, loading, tabkey, twoTabkey }) => {
     {
       label: '中奖结果',
       name: 'prize',
-      placeholder: '请输入卡豆数或权益商品id',
+      // placeholder: '请输入卡豆数或权益商品id',
+      placeholder: '请输入卡豆数',
     },
     {
       label: '抽奖时间',
@@ -117,12 +118,12 @@ const GameSign = ({ gameSignList, loading, tabkey, twoTabkey }) => {
         rowKey={(record) => `${record.gameRecordId}`}
         params={{ gameName: twoType[tabkey] }}
         dispatchType="boxLottery/fetchListUserPackageManagementBean"
-        {...gameSignList}
+        {...gameEquityList}
       ></TableDataBlock>
     </>
   );
 };
 export default connect(({ boxLottery, loading }) => ({
-  gameSignList: boxLottery.gameSignList,
+  gameEquityList: boxLottery.gameEquityList,
   loading: loading.models.boxLottery,
 }))(GameSign);
