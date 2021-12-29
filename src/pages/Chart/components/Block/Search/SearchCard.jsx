@@ -7,12 +7,10 @@ import styles from './style.less';
 
 const disTime = moment('2020-03-01');
 
+// 数据概况 + 视频看板 公用
 const SearchCard = ({ setSearchData }) => {
-  const [selectedTime, setSelectedTime] = useState([
-    moment().subtract(1, 'day'),
-    moment().subtract(1, 'day'),
-  ]); // 暂存时间
-  const [selectedCity, setSelectedCity] = useState([]); // 暂存城市
+  const [selectedTime, setSelectedTime] = useState([moment(), moment()]); // 暂存时间
+  const [selectedCity, setSelectedCity] = useState(null); // 暂存城市
 
   const params = useLocation();
 
@@ -31,6 +29,7 @@ const SearchCard = ({ setSearchData }) => {
     (current && current > moment().endOf('day').subtract(1, 'day')) || current < disTime;
 
   const timeObj = {
+    今日: [moment(), moment()],
     昨日: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
     近7日: returnDay(6, 'day'),
     近1月: returnDay(1, 'month'),
@@ -62,7 +61,7 @@ const SearchCard = ({ setSearchData }) => {
   // 激活城市tag
   const isCity = (tag) => {
     const value = cityObj[tag];
-    if (selectedCity[0] == value[0] && selectedCity[1] == value[1]) {
+    if (selectedCity && selectedCity[0] == value[0] && selectedCity[1] == value[1]) {
       return true;
     }
     return false;
@@ -106,7 +105,7 @@ const SearchCard = ({ setSearchData }) => {
         style={{
           width: 256,
         }}
-        placeholder={`请选择省市区`}
+        placeholder="请选择省市区"
         showSearch={{
           filter: (inputValue, path) => {
             return path.some((option) => option.label.indexOf(inputValue) > -1);

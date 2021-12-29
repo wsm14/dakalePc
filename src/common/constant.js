@@ -61,6 +61,20 @@ export const EXPORT_LIST_TYPE = {
   darenPerformanceStatistics: '哒人业绩统计',
 };
 
+// 数据概况 - 营业数据相关 - GMV等type
+export const GMV_DATA_TYPE = {
+  scan: '扫码订单',
+  topUp: '充值订单',
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  communityGoods: '团购商品',
+  virtualProduct: '虚拟商品',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+  commerceGoods: '电商商品',
+  expiredOrder: '过期不可退',
+};
+
 // 加盟申请状态
 export const FRANCHISE_APP_STATUS = ['未处理', '已处理'];
 
@@ -71,7 +85,7 @@ export const WITHDRAW_STATUS = [false, '发起提现', '处理中', '成功', '�
 export const FEEDBACK_STATUS = [false, '处理中', '已解答'];
 
 // 用户状态
-export const ACCOUNT_STATUS = ['禁用', '启用'];
+export const ACCOUNT_STATUS = ['禁用', '正常', '已注销'];
 
 // 实名状态
 export const REAL_NAME_STATUS = ['未实名', '认证中', '已经实名', '审核拒绝'];
@@ -767,8 +781,8 @@ export const GAME_FREE_STATUS = ['未领取', '待发货', '已完成'];
 
 //盲盒抽奖记录 - 签到游戏 - 奖品类型
 export const GAME_SIGN_PACKAGE_TYPE = {
-  onlineGoods: '电商商品',
-  actualGoods: '实物商品',
+  bean: '卡豆',
+  rightGood: '权益品',
 };
 
 // 盲盒商品类型枚举

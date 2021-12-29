@@ -6,7 +6,7 @@ import styles from './style.less';
 const disTime = moment().subtract(1, 'day');
 
 const SearchCard = ({ setSearchData }) => {
-  const [selectedTime, setSelectedTime] = useState([disTime, disTime]);
+  const [selectedTime, setSelectedTime] = useState([moment(), moment()]);
 
   // 时间计算
   const returnDay = (day, type) => [moment().subtract(day, type), disTime];
@@ -15,6 +15,7 @@ const SearchCard = ({ setSearchData }) => {
   const disabledDate = (current) => current && current > moment().subtract(1, 'day').endOf('day');
 
   const timeObj = {
+    今日: [moment(), moment()],
     昨日: [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
     近7日: returnDay(7, 'day'),
     近1月: returnDay(1, 'month'),

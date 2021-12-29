@@ -65,12 +65,12 @@ const ChartBlockComponent = ({
             ></SearchCard>
           </Card>
         </Affix>
-        {/* 营收统计 */}
+        {/* 平台GMV */}
         <OrderChart searchData={searchData}></OrderChart>
         {/* 用户数据统计 */}
         <UserChart searchData={searchData}></UserChart>
         {/* 销售情况 & 拜访情况 & 店铺情况（截止昨日）& 店铺视频统计*/}
-        <ActiveChart></ActiveChart>
+        <ActiveChart searchData={searchData} timeData={timeData}></ActiveChart>
         {/* 圈层情况 & 圈层推荐情况 */}
         <MasterChart searchData={searchData}></MasterChart>
         {/* 入驻店铺行业分布 */}
@@ -78,7 +78,7 @@ const ChartBlockComponent = ({
         {/* 商圈地图 */}
         <TradeAreaMap></TradeAreaMap>
         {/* 店铺营收排行 & 销售排行 */}
-        <RankingTotal searchData={searchData} timeData={timeData}></RankingTotal>
+        {/* <RankingTotal searchData={searchData} timeData={timeData}></RankingTotal> */}
       </div>
     </ChartContext.Provider>
   );

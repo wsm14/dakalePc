@@ -29,9 +29,9 @@ const RankingTotal = (props) => {
         <div className={styles.box}>
           <div className={styles.s_box}>
             <div className={styles.tit}>PGC视频</div>
-            <div className={styles.left}>打赏卡豆数：</div>
+            <div className={styles.left}>领取卡豆数：</div>
             <div className={styles.center}>{PGCMomentRewardStatistic.PGCRewardBeanSum || 0}</div>
-            <div className={styles.left}>打赏人数：</div>
+            <div className={styles.left}>领取人数：</div>
             <div className={styles.center}>{PGCMomentRewardStatistic.PGCRewardPersonSum || 0}</div>
           </div>
           <div className={styles.s_box}>

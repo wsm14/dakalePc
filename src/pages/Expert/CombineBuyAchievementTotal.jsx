@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect, Link } from 'umi';
-import { Alert } from 'antd';
 import { DAREN_TEMP_FLAG } from '@/common/constant';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
@@ -15,8 +14,8 @@ const ExpertUserAchievement = (props) => {
   const [selectList, setSelectList] = useState([]);
 
   const [searchData, setSearchData] = useState({
-    beginDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
-    endDate: moment().subtract(1, 'day').format('YYYY-MM-DD'),
+    beginDate: moment().format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
   });
 
   const childRef = useRef();
@@ -120,15 +119,42 @@ const ExpertUserAchievement = (props) => {
       render: (val) => checkCityName(val) || '--',
     },
     {
+      title: '总家人数',
+      align: 'center',
+      dataIndex: 'headTotalFamilyUserCount',
+    },
+    {
+      title: '新增家人数',
+      align: 'center',
+      dataIndex: 'headNewAddFamilyUserCount',
+    },
+    {
+      title: '下单用户数',
+      align: 'center',
+      dataIndex: 'orderUserCount',
+    },
+    {
+      title: '团购订单数',
+      align: 'center',
+      dataIndex: 'communityOrderNum',
+    },
+    {
+      title: '卡豆抵扣订单数',
+      align: 'center',
+      dataIndex: 'beanDeductionOrderCount',
+    },
+
+    {
       title: '团购销售额',
       align: 'center',
       dataIndex: 'communitySaleVolume',
       render: (val) => `${Number(val).toFixed(2)}`,
     },
     {
-      title: '团购订单数',
+      title: '卡豆抵扣金额',
       align: 'center',
-      dataIndex: 'communityOrderNum',
+      dataIndex: 'beanDeductionSum',
+      render: (val) => `${(Number(val) / 100).toFixed(2)}`,
     },
     {
       title: '关联BD',
@@ -177,7 +203,6 @@ const ExpertUserAchievement = (props) => {
 
   return (
     <>
-      <Alert message="当前数据统计到昨日" type="info" banner />
       <TableDataBlock
         order
         cardProps={{
@@ -200,6 +225,6 @@ const ExpertUserAchievement = (props) => {
 export default connect(({ expertUserAchievementTotal, baseData, loading }) => ({
   list: expertUserAchievementTotal.combineBuyList,
   kolLevel: baseData.kolLevel,
-  loading: loading.effects['expertUserAchievementTotal/fetchGetList'],
+  loading: loading.effects['expertUserAchievementTotal/fetchCombineBuyList'],
   loadings: loading.models.expertUserList,
 }))(ExpertUserAchievement);

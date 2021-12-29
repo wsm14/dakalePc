@@ -20,9 +20,16 @@ export function fetchAreaTotalList(params) {
 
 // 数据概览
 
-// get 顶部 - 订单统计
+// get 顶部 - 订单统计（旧的）
 export function fetchChartBlockOrder(params) {
   return request('/admin/areaStatistic/orderStatistic', {
+    params,
+  });
+}
+
+// get 顶部 - GMV等各项数据统计
+export function fetchChartBusinessStatistic(params) {
+  return request('/admin/dataStatistic/businessStatistic', {
     params,
   });
 }

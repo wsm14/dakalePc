@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { checkCityName } from '@/utils/utils';
 import { connect } from 'umi';
 import { Button, Form, Tag } from 'antd';
@@ -11,12 +12,14 @@ import TagModal from './TagModal';
 import { FOLLOW_TYPE, FOLLOW_MANNER, SHARE_SEX_TYPE } from '@/common/constant';
 
 const UserFollowSet = (props) => {
-  const { visible, onClose, childRef, dispatch } = props;
+  const { currentUser, visible, onClose, childRef, dispatch, loading } = props;
   const { show = false, type, detail = {} } = visible;
+
   const [form] = Form.useForm();
-  const [tagList, setTagList] = useState([]);
-  const [userList, setUserList] = useState([]);
-  const [detailInfo, setDetailInfo] = useState({});
+
+  const [tagList, setTagList] = useState([]); //  标签列表
+  const [userList, setUserList] = useState([]); //  用户列表
+  const [detailInfo, setDetailInfo] = useState({}); // 用户详情
 
   const [visibleTag, setVisibleTag] = useState(false); //tag选择弹框
   const [visibleHistory, setVisibleHistory] = useState(false); //跟进记录
@@ -26,13 +29,18 @@ const UserFollowSet = (props) => {
       const { tags = '' } = detail;
       const list = tags ? tags.split(',') : [];
       setTagList(list);
-      getUserList(detail.userIdString);
+      type === 'edit' && getUserList(detail?.userIdString);
     }
-    setDetailInfo(detail);
+    if (type === 'edit') {
+      setDetailInfo({ ...detail, followTime: moment(detail.followTime, 'YYYY-MM-DD HH:mm:ss') });
+    } else {
+      setDetailInfo(detail);
+    }
   }, [show]);
 
   //获取用户列表数据
   const getUserList = (content) => {
+    if (type === 'edit') return;
     if (!content || content.length < 2) return;
     dispatch({
       type: 'baseData/fetchGetUsersSearch',
@@ -40,16 +48,19 @@ const UserFollowSet = (props) => {
         content,
       },
       callback: (useList) => {
-        const list = useList.map((item) => ({
-          ...item,
-          value: item.userIdString,
-          label: item.mobile + '-' + item.username + '-' + item.userIdString,
-        }));
+        const list = useList
+          .map((item) => ({
+            ...item,
+            value: item.userIdString,
+            label: item.mobile + '-' + item.username + '-' + item.userIdString,
+          }))
+          .splice(0, 100);
         setUserList(list);
       },
     });
   };
 
+  // 提交表单
   const handleSave = () => {
     form.validateFields().then((values) => {
       const apiUrl = {
@@ -62,6 +73,7 @@ const UserFollowSet = (props) => {
           userFollowUpId: detail.userFollowUpId,
           ...values,
           tags: tagList.toString(),
+          followTime: values.followTime.format('YYYY-MM-DD HH:mm:ss'),
         },
         callback: () => {
           childRef.current.fetchGetData();
@@ -69,17 +81,6 @@ const UserFollowSet = (props) => {
         },
       });
     });
-  };
-
-  const modalProps = {
-    title: { add: '新增', edit: '编辑' }[type],
-    visible: show,
-    onClose,
-    footer: (
-      <Button type="primary" onClick={handleSave}>
-        确定
-      </Button>
-    ),
   };
 
   const handleClose = (removedTag) => {
@@ -90,6 +91,7 @@ const UserFollowSet = (props) => {
     });
   };
 
+  // 获取用户详情
   const handleUseInfo = (userId) => {
     dispatch({
       type: 'userFollow/fetchGetUserDetail',
@@ -97,7 +99,7 @@ const UserFollowSet = (props) => {
         userId,
       },
       callback: (Info) => {
-        setDetailInfo(Info);
+        setDetailInfo({ userId, ...Info });
         setTagList([]);
       },
     });
@@ -109,7 +111,10 @@ const UserFollowSet = (props) => {
       name: 'userId',
       type: 'select',
       select: userList,
-      disabled: type == 'edit',
+      placeholder: '请输入用户手机号、昵称或ID',
+      rules: [{ required: true, message: '请选择用户' }],
+      loading: loading.effects['baseData/fetchGetUsersSearch'],
+      hidden: type == 'edit',
       fieldNames: { label: 'label', value: 'value' },
       onSearch: (val) => getUserList(val),
       onChange: (val) => handleUseInfo(val),
@@ -138,13 +143,25 @@ const UserFollowSet = (props) => {
     {
       label: '跟进内容',
       name: 'content',
+      type: 'textArea',
+      maxLength: 500,
       span: 2,
     },
     {
       label: '跟进标签',
       name: 'tags',
       type: 'formItem',
-      rules: [{ required: true }],
+      required: true,
+      rules: [
+        {
+          validator: () => {
+            if (tagList.length == 0) {
+              return Promise.reject('请选择跟进标签');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       formItem: (
         <>
           {tagList.map((tag, index) => (
@@ -157,7 +174,6 @@ const UserFollowSet = (props) => {
             onClick={() =>
               setVisibleTag({
                 show: true,
-                tagArr: detail.tagArr,
                 oldTag: tagList,
                 setTagList,
               })
@@ -172,14 +188,28 @@ const UserFollowSet = (props) => {
       label: '跟进结果',
       name: 'result',
       span: 2,
+      type: 'textArea',
+      maxLength: 200,
     },
     {
       label: '跟进人',
       name: 'follower',
+      type: 'noForm',
+      formItem: (
+        <div style={{ marginLeft: 98, marginBottom: 10, display: 'flex', alignItems: 'center' }}>
+          跟进人: <div style={{ marginLeft: '5px' }}>{currentUser.username}</div>
+        </div>
+      ),
     },
     {
       label: '跟进时间',
+      type: 'dataPicker',
       name: 'followTime',
+      showTime: 'true',
+      disabledDate: (current) => {
+        console.log(moment().endOf('day'));
+        return current && current > moment().endOf('day');
+      },
     },
   ];
 
@@ -198,7 +228,7 @@ const UserFollowSet = (props) => {
     },
     {
       label: '身份',
-      name: 'content',
+      name: 'levelName',
     },
     {
       label: '性别',
@@ -224,9 +254,24 @@ const UserFollowSet = (props) => {
     setVisibleHistory(true);
   };
 
+  const modalProps = {
+    title: { add: '新增', edit: '编辑' }[type],
+    visible: show,
+    onClose,
+    closeCallBack: () => {
+      setDetailInfo({});
+      setTagList([]);
+    },
+    footer: (
+      <Button type="primary" onClick={handleSave}>
+        确定
+      </Button>
+    ),
+  };
   return (
     <>
       <DrawerCondition {...modalProps}>
+        {/* 选择用户 */}
         <FormCondition formItems={useItem} form={form} initialValues={detailInfo}></FormCondition>
         {/* 编辑或者有用户详情 */}
         {detailInfo.userIdString && (
@@ -238,13 +283,19 @@ const UserFollowSet = (props) => {
           ></DescriptionsCondition>
         )}
         <div>
-          <a style={{ float: 'right', marginTop: 5 }} onClick={handleOpenRecord}>
+          <Button
+            style={{ float: 'right', marginTop: 5 }}
+            disabled={Object.keys(detailInfo).length === 1}
+            type="link"
+            onClick={handleOpenRecord}
+          >
             历史跟进情况
-          </a>
+          </Button>
+          {/* 下方的表单 */}
           <FormCondition
             formItems={followwItem}
             form={form}
-            initialValues={detailInfo}
+            initialValues={{ followTime: moment(), ...detailInfo }}
           ></FormCondition>
         </div>
       </DrawerCondition>
@@ -255,9 +306,13 @@ const UserFollowSet = (props) => {
         onClose={() => setVisibleHistory(false)}
         userId={detailInfo.userIdString}
       ></HistoryFollow>
+      {/* 标签Modal */}
       <TagModal visible={visibleTag} onClose={() => setVisibleTag(false)}></TagModal>
     </>
   );
 };
 
-export default connect()(UserFollowSet);
+export default connect(({ userInfo, loading }) => ({
+  currentUser: userInfo.currentUser,
+  loading,
+}))(UserFollowSet);

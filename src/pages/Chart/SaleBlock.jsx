@@ -99,32 +99,32 @@ const SaleBlockComponent = ({}) => {
       keyName: 'SGXiangxi',
       api: 'saleTotal/fetchSGXiangxi',
     },
-    {
-      title: '杭州上架中视频数',
-      tip: '指杭州的店铺当前上架中的视频数',
-      keyName: 'momentOnHangzou',
-      api: 'saleTotal/fetchMomentOnHangzou',
-      timeSearch: false,
-    },
-    {
-      title: '杭州发布视频数',
-      tip: '指杭州新发布的视频数',
-      keyName: 'momentHangzou',
-      api: 'saleTotal/fetchMomentHangzou',
-    },
-    {
-      title: '湘西上架中视频数',
-      tip: '指湘西的店铺当前上架中的视频数',
-      keyName: 'momentOnXiangxi',
-      api: 'saleTotal/fetchMomentOnXiangxi',
-      timeSearch: false,
-    },
-    {
-      title: '湘西发布视频数',
-      tip: '指湘西新发布的视频数',
-      keyName: 'momentXiangxi',
-      api: 'saleTotal/fetchMomentXiangxi',
-    },
+    // {
+    //   title: '杭州上架中视频数',
+    //   tip: '指杭州的店铺当前上架中的视频数',
+    //   keyName: 'momentOnHangzou',
+    //   api: 'saleTotal/fetchMomentOnHangzou',
+    //   timeSearch: false,
+    // },
+    // {
+    //   title: '杭州发布视频数',
+    //   tip: '指杭州新发布的视频数',
+    //   keyName: 'momentHangzou',
+    //   api: 'saleTotal/fetchMomentHangzou',
+    // },
+    // {
+    //   title: '湘西上架中视频数',
+    //   tip: '指湘西的店铺当前上架中的视频数',
+    //   keyName: 'momentOnXiangxi',
+    //   api: 'saleTotal/fetchMomentOnXiangxi',
+    //   timeSearch: false,
+    // },
+    // {
+    //   title: '湘西发布视频数',
+    //   tip: '指湘西新发布的视频数',
+    //   keyName: 'momentXiangxi',
+    //   api: 'saleTotal/fetchMomentXiangxi',
+    // },
     {
       title: '用户看视频获取卡豆数', // userAcquireWatchBeanZJ 浙江的 userAcquireWatchBeanHN 湖南的
       tip: '指用户通过看视频获取的卡豆数区县同步增加，看所属自己区的用户',

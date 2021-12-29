@@ -1,12 +1,23 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Card, Statistic } from 'antd';
+import { Card, Row, Col, Descriptions, Progress } from 'antd';
+import { GMV_DATA_TYPE } from '@/common/constant';
+import TableDataBlock from '@/components/TableDataBlock';
 import QuestionTooltip from '@/components/QuestionTooltip';
+import style from './OrderChart.less';
 
 /**
  * 营收统计
  */
-const OrderChart = ({ dispatch, searchData = {}, totalData, loading }) => {
+const OrderChart = ({ dispatch, searchData = {}, GMVObject, loading }) => {
+  const {
+    GMVStatisticList = [],
+    verificationStatisticList = [],
+    refundStatisticList = [],
+    displaceGoodGMVStatistic = {},
+    displaceGoodVerificationStatistic = {},
+  } = GMVObject;
+
   useEffect(() => {
     fetchGetTotalData();
   }, [searchData]);
@@ -14,111 +25,236 @@ const OrderChart = ({ dispatch, searchData = {}, totalData, loading }) => {
   // 获取统计数据
   const fetchGetTotalData = () => {
     dispatch({
-      type: 'chartBlock/fetchChartBlockOrder',
+      type: 'chartBlock/fetchChartBusinessStatistic',
       payload: searchData,
     });
   };
 
-  const orderArr = [
+  // 平台GMV表头
+  const GMVGetColumns = [
     {
-      title: '店铺总营收金额',
-      info: '店铺通过扫码支付或核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
-      key: 'allTotal',
-      numName: false,
+      title: '订单类型',
+      align: 'right',
+      dataIndex: 'orderType',
+      width: 100,
+      render: (val) => GMV_DATA_TYPE[val],
     },
     {
-      title: '扫码付金额',
-      info: '店铺通过扫码支付收到的金额，包括现金收入、平台服务费、卡豆收入',
-      key: 'scan',
+      title: 'GMV',
+      align: 'right',
+      dataIndex: 'totalFee',
+      render: (val) => {
+        return (
+          <div>
+            <div>{val}</div>
+            <Progress
+              percent={
+                ((Number(val) / Number(GMVStatisticList[0]?.totalFee)) * 100).toFixed(0) || 0
+              }
+              showInfo={false}
+            />
+          </div>
+        );
+      },
+    },
+    {
+      title: '订单数',
+      align: 'right',
+      dataIndex: 'count',
+      width: 90,
+    },
+  ];
+  // 核销总额表头
+  const cancelGetColumns = [
+    {
+      title: '订单类型',
+      align: 'right',
+      dataIndex: 'orderType',
+      width: 110,
+      render: (val) =>
+        val === 'expiredOrder' ? (
+          <QuestionTooltip
+            title="过期不可退"
+            content="指发布商品/券时选了过期不可退，但是到期后仍未核销的订单金额（按用户支付总金额），统计特惠商品、优惠券、权益商品、权益券的订单总金额。"
+            type="quest"
+          ></QuestionTooltip>
+        ) : (
+          GMV_DATA_TYPE[val]
+        ),
     },
     {
       title: '核销金额',
-      info: '店铺核销券码实际收到的金额，包括现金收入、平台服务费、卡豆收入',
-      key: 'heTotal',
-      numName: '核销数量',
+      align: 'right',
+      dataIndex: 'totalFee',
+      render: (val) => {
+        return (
+          <div>
+            <div>{val}</div>
+            <Progress
+              percent={
+                val === '0.00'
+                  ? 0
+                  : ((Number(val) / Number(verificationStatisticList[0]?.totalFee)) * 100).toFixed(
+                      0,
+                    ) || 0
+              }
+              showInfo={false}
+            />
+          </div>
+        );
+      },
     },
     {
-      title: '客单价',
-      info: '总营收金额（扫码付+核销）/付款人数',
-      key: 'distinctPerson',
-      numName: '付款人数',
+      title: '核销数',
+      align: 'right',
+      dataIndex: 'count',
+      width: 90,
     },
-    // {
-    //   title: '哒人带货销售额',
-    //   info: '通过哒人带货成交的订单金额',
-    //   key: 'kolGoods',
-    // },
+  ];
+  // 退款总额表头
+  const refundGetColumns = [
     {
-      title: '特惠商品销售额',
-      info: '用户通过特惠商品购买商品的实付金额',
-      key: 'specialGoodsSale',
-    },
-    {
-      title: '优惠券销售额',
-      info: '用户购买抵扣券的实付金额',
-      key: 'reduceCouponSale',
+      title: '订单类型',
+      align: 'right',
+      dataIndex: 'orderType',
+      width: 100,
+      render: (val) => GMV_DATA_TYPE[val],
     },
     {
       title: '退款金额',
-      info: '用户发起退款申请后，实际退款成功的金额',
-      key: 'refund',
+      align: 'right',
+      dataIndex: 'totalFee',
+      render: (val) => {
+        return (
+          <div>
+            <div>{val}</div>
+            <Progress
+              percent={
+                ((Number(val) / Number(refundStatisticList[0]?.totalFee)) * 100).toFixed(0) || 0
+              }
+              showInfo={false}
+            />
+          </div>
+        );
+      },
     },
     {
-      title: '团购金额',
-      info: '',
-      key: 'communityGoods',
+      title: '退款订单数',
+      align: 'right',
+      dataIndex: 'count',
+      width: 90,
     },
   ];
 
-  const gridStyle = {
-    width: '25%',
-    minHeight: 137,
-    textAlign: 'center',
+  // 计算总金额
+  const addNum = (arr = []) => {
+    return arr.reduce((preValue, curValue) => preValue + Number(curValue.totalFee), 0);
   };
-
-  const allStyle = {
-    display: 'inline-block',
-    marginTop: 4,
-    color: '#8f8f8f',
+  // 表格头部标题内容方法
+  const content = (title, money) => {
+    return (
+      <div
+        style={{
+          height: 40,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '16px',
+        }}
+      >
+        <span style={{ fontWeight: 'bold' }}>{title}</span>
+        <span style={{ color: '#1890ff', fontWeight: 'bold' }}>{`￥${money.toFixed(2)}`}</span>
+      </div>
+    );
   };
-
-  const checkData = (checkData, key, reData = 0) => {
-    return checkData ? checkData[key] : reData;
-  };
-
   return (
     <Card
-      bodyStyle={{ padding: 0 }}
+      bodyStyle={{ padding: '0 12px 12px' }}
       loading={loading}
       bordered={false}
-      style={{ marginTop: 20, height: 274 }}
+      style={{ marginTop: 20, height: '100%' }}
     >
-      {orderArr.map((item) => (
-        <Card.Grid style={gridStyle} key={item.title}>
-          <Statistic
+      <Row gutter={24}>
+        <Col flex={1}>
+          <TableDataBlock
+            tableSize="small"
+            bordered={true}
+            pagination={false}
+            content={content('平台GMV：', addNum(GMVStatisticList))}
+            noCard={false}
+            loading={loading}
+            columns={GMVGetColumns}
+            rowKey={(record) => `${record.orderType}`}
+            list={GMVStatisticList}
+          ></TableDataBlock>
+        </Col>
+        <Col flex={1}>
+          <TableDataBlock
+            tableSize="small"
+            bordered={true}
+            pagination={false}
+            content={content('核销总额：', addNum(verificationStatisticList))}
+            noCard={false}
+            loading={loading}
+            columns={cancelGetColumns}
+            rowKey={(record) => `${record.orderType}`}
+            list={verificationStatisticList}
+          ></TableDataBlock>
+          <Descriptions
+            size="small"
+            className={style.descriptions}
             title={
-              <QuestionTooltip
-                title={item.title}
-                content={item.info}
-                type="quest"
-              ></QuestionTooltip>
+              <div
+                style={{
+                  height: 40,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <QuestionTooltip
+                  title="置换商品"
+                  content="指特惠商品和平台权益商品中打了“福利商品”标签的商品的销售额。"
+                  type="quest"
+                ></QuestionTooltip>
+              </div>
             }
-            valueStyle={item.key === 'allTotal' ? { fontSize: 40 } : {}}
-            value={checkData(totalData[item.key], 'totalFee')}
-            precision={2}
-          />
-          {item.numName !== false && (
-            <span style={allStyle}>
-              {item.numName ? item.numName : '订单数'}：{checkData(totalData[item.key], 'docCount')}
-            </span>
-          )}
-        </Card.Grid>
-      ))}
+            bordered
+            column={2}
+          >
+            <Descriptions.Item label="销售额">{`￥${
+              displaceGoodGMVStatistic?.GMVTotalFee || 0.0
+            }`}</Descriptions.Item>
+            <Descriptions.Item label="订单数">{`${
+              displaceGoodGMVStatistic?.GMVCount || 0
+            }`}</Descriptions.Item>
+            <Descriptions.Item label="核销额">{`￥${
+              displaceGoodVerificationStatistic?.verificationTotalFee || 0.0
+            }`}</Descriptions.Item>
+            <Descriptions.Item label="核销数">{`${
+              displaceGoodVerificationStatistic?.verificationCount || 0
+            }`}</Descriptions.Item>
+          </Descriptions>
+        </Col>
+        <Col flex={1}>
+          <TableDataBlock
+            tableSize="small"
+            bordered={true}
+            pagination={false}
+            content={content('退款总额：', addNum(refundStatisticList))}
+            noCard={false}
+            loading={loading}
+            columns={refundGetColumns}
+            rowKey={(record) => `${record.orderType}`}
+            list={refundStatisticList}
+          ></TableDataBlock>
+        </Col>
+      </Row>
     </Card>
   );
 };
 
 export default connect(({ chartBlock, loading }) => ({
-  totalData: chartBlock.orderInfo,
-  loading: loading.effects['chartBlock/fetchChartBlockOrder'],
+  GMVObject: chartBlock.GMVObject,
+  loading: loading.effects['chartBlock/fetchChartBusinessStatistic'],
 }))(OrderChart);

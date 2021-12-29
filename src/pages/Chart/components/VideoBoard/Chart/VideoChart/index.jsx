@@ -15,7 +15,6 @@ const MasterChartIndex = ({}) => {
         style={{ marginTop: 20, width: '100%', height: '480px' }}
         bodyStyle={{ paddingTop: 5 }}
       >
-        {/* 圈层情况 */}
         <MasterChart styles={styles}></MasterChart>
       </Card>
     </Col>

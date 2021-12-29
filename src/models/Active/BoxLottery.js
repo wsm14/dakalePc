@@ -8,6 +8,8 @@ import {
   fetchListUserPackageManagementExport,
   fetchGetUserPackageById,
   fetchDeliveryUserPackage,
+  fetchListUserPackageManagementBean,
+  fetchListUserPackageManagementBeanExport,
 } from '@/services/ActiveServices';
 
 export default {
@@ -19,6 +21,10 @@ export default {
       total: 0,
     },
     gameSignList: {
+      list: [],
+      total: 0,
+    },
+    gameEquityList: {
       list: [],
       total: 0,
     },
@@ -70,7 +76,7 @@ export default {
       });
       callback();
     },
-    // get 盲盒中奖记录 - 签到游戏 - 列表
+    // get 盲盒中奖记录 - 签到游戏/免费领商品(电商品) - 列表
     *fetchListUserPackageManagement({ payload }, { call, put }) {
       const response = yield call(fetchListUserPackageManagement, payload);
       if (!response) return;
@@ -85,14 +91,36 @@ export default {
         },
       });
     },
-    // get 盲盒中奖记录 - 签到游戏 - 列表导出
+    // get 盲盒中奖记录 - 签到游戏/免费领商品(卡豆权益品) - 列表
+    *fetchListUserPackageManagementBean({ payload }, { call, put }) {
+      const response = yield call(fetchListUserPackageManagementBean, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          gameEquityList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    // get 盲盒中奖记录 - 签到游戏/免费领商品(电商品) - 列表导出
     *fetchGetGameExcel({ payload, callback }, { call }) {
       const response = yield call(fetchListUserPackageManagementExport, payload);
       if (!response) return;
       const { content } = response;
       callback && callback(content.userPackageDTOList);
     },
-    // post 盲盒中奖记录 - 签到游戏 - 查看物流
+    // get 盲盒中奖记录 - 签到游戏/免费领商品(卡豆权益品) - 列表导出
+    *fetchListUserPackageManagementBeanExport({ payload, callback }, { call }) {
+      const response = yield call(fetchListUserPackageManagementBeanExport, payload);
+      if (!response) return;
+      const { content } = response;
+      callback && callback(content.gameRecordDTOList);
+    },
+    // post 盲盒中奖记录 - 免费领商品 - 查看物流
     *fetchGetUserPackageByIdDetail({ payload, callback }, { call }) {
       const response = yield call(fetchGetUserPackageById, payload);
       if (!response) return;
@@ -105,7 +133,7 @@ export default {
       };
       callback && callback(data);
     },
-    // post 盲盒中奖记录 - 签到游戏 - 发货
+    // post 盲盒中奖记录 - 免费领商品 - 发货
     *fetchDeliveryUserPackage({ payload, callback }, { call }) {
       const response = yield call(fetchDeliveryUserPackage, payload);
       if (!response) return;

@@ -615,7 +615,7 @@ export default [
         path: '/service/userFollow',
         name: '用户跟进',
         component: './Service/UserFollow',
-        buttons: ['save', 'edit', 'info'],
+        buttons: ['save', 'edit', 'info', 'exportList', 'addTags'],
       },
       {
         path: '/service/feedback',

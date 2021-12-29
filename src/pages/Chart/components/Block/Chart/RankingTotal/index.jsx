@@ -11,7 +11,7 @@ const RankingTotal = ({
   timeData, // 销售排行搜索参数
   dispatch,
   incomeRank,
-  saleRank,
+  // saleRank,
   loading,
   loadingSale,
 }) => {
@@ -19,19 +19,19 @@ const RankingTotal = ({
     fetchChartBlockIncomeLeft(searchData);
   }, [searchData]);
 
-  useEffect(() => {
-    fetchChartBlockSaleRight(timeData);
-  }, [timeData]);
+  // useEffect(() => {
+  //   fetchChartBlockSaleRight(timeData);
+  // }, [timeData]);
 
-  // 获取统计数据
-  const fetchChartBlockSaleRight = (payload = {}) => {
-    dispatch({
-      type: 'chartBlock/fetchChartBlockSaleRight',
-      payload,
-    });
-  };
+  // 获取统计数据  销售排行
+  // const fetchChartBlockSaleRight = (payload = {}) => {
+  //   dispatch({
+  //     type: 'chartBlock/fetchChartBlockSaleRight',
+  //     payload,
+  //   });
+  // };
 
-  // 获取统计数据
+  // 获取统计数据  营收排行
   const fetchChartBlockIncomeLeft = (payload = {}) => {
     dispatch({
       type: 'chartBlock/fetchChartBlockIncomeLeft',
@@ -68,27 +68,27 @@ const RankingTotal = ({
   ];
 
   // table 表头
-  const getColumnsSale = [
-    {
-      title: '姓名',
-      dataIndex: 'sellName',
-    },
-    {
-      title: '拜访次数',
-      align: 'right',
-      dataIndex: 'visitTimes',
-    },
-    {
-      title: '入驻店铺数',
-      align: 'right',
-      dataIndex: 'settleCount',
-    },
-    {
-      title: '激活店铺数',
-      align: 'right',
-      dataIndex: 'activeCount',
-    },
-  ];
+  // const getColumnsSale = [
+  //   {
+  //     title: '姓名',
+  //     dataIndex: 'sellName',
+  //   },
+  //   {
+  //     title: '拜访次数',
+  //     align: 'right',
+  //     dataIndex: 'visitTimes',
+  //   },
+  //   {
+  //     title: '入驻店铺数',
+  //     align: 'right',
+  //     dataIndex: 'settleCount',
+  //   },
+  //   {
+  //     title: '激活店铺数',
+  //     align: 'right',
+  //     dataIndex: 'activeCount',
+  //   },
+  // ];
 
   const tableArr = [
     {
@@ -98,23 +98,23 @@ const RankingTotal = ({
       loading: loading,
       list: incomeRank,
     },
-    {
-      title: '销售排行 TOP10（按入驻店铺排行）',
-      columns: getColumnsSale,
-      rowKey: 'name',
-      loading: loadingSale,
-      list: saleRank,
-    },
+    // {
+    //   title: '销售排行 TOP10（按入驻店铺排行）',
+    //   columns: getColumnsSale,
+    //   rowKey: 'name',
+    //   loading: loadingSale,
+    //   list: saleRank,
+    // },
   ];
 
   return (
-    <Row gutter={20}>
+    <Row gutter={20} style={{ height: '100%' }}>
       {tableArr.map((item) => (
-        <Col span={12} key={item.title}>
+        <Col span={24} key={item.title}>
           <Card
             bordered={false}
             loading={item.loading}
-            style={{ marginTop: 20, width: '100%' }}
+            style={{ width: '100%', height: '100%' }}
             bodyStyle={{ paddingBottom: item.loading ? 24 : 16 }}
           >
             <Typography.Title level={5}>{item.title}</Typography.Title>

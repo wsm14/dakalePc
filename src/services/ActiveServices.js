@@ -178,16 +178,30 @@ export function fetchBoxAddAndPush(data) {
   });
 }
 
-// get 盲盒中奖记录 - 签到游戏 - 列表
+// get 盲盒中奖记录 - 签到游戏/免费领商品(电商品) - 列表
 export function fetchListUserPackageManagement(params) {
   return request('/admin/package/listUserPackageManagement', {
     params,
   });
 }
 
-// get 盲盒中奖记录 - 签到游戏 - 列表导出
+// get 盲盒中奖记录 - 签到游戏/免费领商品(电商品) - 列表导出
 export function fetchListUserPackageManagementExport(params) {
   return request('/admin/package/listUserPackageManagementExport', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 签到游戏/免费领商品(卡豆权益品) - 列表
+export function fetchListUserPackageManagementBean(params) {
+  return request('/admin/gameRecord/listGameRecordManagement', {
+    params,
+  });
+}
+
+// get 盲盒中奖记录 - 签到游戏/免费领商品(卡豆权益品) - 列表导出
+export function fetchListUserPackageManagementBeanExport(params) {
+  return request('/admin/gameRecord/listGameRecordManagementExport', {
     params,
   });
 }

@@ -18,7 +18,7 @@ const HistoryFollow = (props) => {
 
   const fetchList = (page) => {
     dispatch({
-      type: 'userFollow/fetchGetList',
+      type: 'userFollow/fetchGetListInfo',
       payload: {
         userId,
         page,

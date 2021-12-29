@@ -33,6 +33,10 @@ const UserListComponent = (props) => {
       name: 'username',
     },
     {
+      label: '用户id',
+      name: 'userIdString',
+    },
+    {
       label: '注册时间',
       type: 'rangePicker',
       name: 'createTimeStart',
@@ -106,7 +110,12 @@ const UserListComponent = (props) => {
       title: '账户状态',
       align: 'center',
       dataIndex: 'status',
-      render: (val) => ACCOUNT_STATUS[val],
+      render: (val, row) => (
+        <>
+          <div>{ACCOUNT_STATUS[val]}</div>
+          {val == '2' ? <div>{`注销时间：${row.cancellationTime || ''}`}</div> : null}
+        </>
+      ),
     },
     {
       title: '用户来源',
