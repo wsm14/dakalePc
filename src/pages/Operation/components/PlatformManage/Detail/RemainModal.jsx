@@ -5,16 +5,15 @@ import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef } = props;
-  const { show = false, ownerCouponId, ownerId, remain } = visible;
+  const { show = false, platformCouponId, remain } = visible;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'couponManage/fetchCouponAddRemain',
+        type: 'platformCoupon/fetchAddTotalPlatformCoupon',
         payload: {
-          ownerCouponId,
-          ownerId,
+          platformCouponId,
           ...values,
         },
         callback: () => {
@@ -27,8 +26,8 @@ const RemainModal = (props) => {
 
   const formItems = [
     {
-      label: `增加库存`,
-      name: 'remainIncrement',
+      label: `增加数量`,
+      name: 'amount',
       extra: `剩余${remain}`,
       maxLength: 6,
       addRules: [
@@ -48,7 +47,7 @@ const RemainModal = (props) => {
   ];
 
   const modalProps = {
-    title: '调整库存',
+    title: '增加数量',
     visible: show,
     onCancel: onClose,
     onOk: handleOk,
@@ -60,5 +59,5 @@ const RemainModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['couponManage/fetchCouponAddRemain'],
+  loading: loading.effects['platformCoupon/fetchAddTotalPlatformCoupon'],
 }))(RemainModal);

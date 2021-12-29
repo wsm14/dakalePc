@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import moment from 'moment';
 import { Tag, Tooltip } from 'antd';
 import {
   COUPON_STATUS,
@@ -32,29 +33,43 @@ const PlatformManage = (props) => {
   // 搜索参数
   const searchItems = [
     {
-      label: '状态',
+      label: '券名称',
+      name: 'couponName',
+    },
+    {
+      label: '券编号',
+      name: 'platformCouponId',
+    },
+    {
+      label: '券类型',
       type: 'select',
       name: 'ownerCouponStatus',
       select: COUPON_STATUS,
     },
     {
-      label: '适用人群',
-      name: 'ownerType',
+      label: '状态',
       type: 'select',
-      select: BUSINESS_TYPE,
+      name: 'couponStatus',
+      select: COUPON_STATUS,
+    },
+    {
+      label: '适用人群',
+      name: 'consortUser',
+      type: 'select',
+      select: PLATFORM_COUPON_PEOPLE,
     },
     {
       label: '最后修改时间',
       type: 'rangePicker',
-      name: 'beginDate',
-      end: 'endDate',
+      name: 'updateTimeBegin',
+      end: 'updateTimeEnd',
     },
     {
       label: '最后修改人',
-      name: 'couponName',
+      name: 'updater',
     },
     {
-      label: '用户所属地区',
+      label: '可使用区域',
       name: 'city',
       type: 'cascader',
       changeOnSelect: true,
@@ -76,9 +91,9 @@ const PlatformManage = (props) => {
       render: (val, row) => (
         <div>
           <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag>{`${PLATFORM_TICKET_SCENE[row.useScenesType]}${
-              PLATFORM_TICKET_TYPE[row.classType]
-            }`}</Tag>
+            <Tag style={{ borderRadius: 11 }} color="#87d068">{`${
+              PLATFORM_TICKET_SCENE[row.useScenesType]
+            }${PLATFORM_TICKET_TYPE[row.classType]}`}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
@@ -163,7 +178,7 @@ const PlatformManage = (props) => {
       dataIndex: 'platformCouponId',
       render: (platformCouponId, record) => {
         // 1 上架 2 下架
-        const { couponStatus: status } = record;
+        const { couponStatus: status, endDate } = record;
         return [
           {
             type: 'info',
@@ -177,18 +192,20 @@ const PlatformManage = (props) => {
             title: '下架',
             auth: 'down',
             visible: ['1'].includes(status),
-            click: () =>
-              setVisibleRefuse({
-                show: true,
-                detail: { ownerCouponId, ownerId },
-                formProps: { type: 'down', key: 'offShelfReason' },
-              }),
+            click: () => fetchDownCoupon(platformCouponId, 'down'),
+          },
+          {
+            title: '上架',
+            auth: 'up',
+            pop: true,
+            visible: ['2'].includes(status) && (endDate ? moment().isBefore(endDate) : true),
+            click: () => fetchDownCoupon(platformCouponId, 'up'),
           },
           {
             title: '增加数量',
             type: 'addnum',
             visible: ['1'].includes(status),
-            click: () => fetAddRemain(ownerCouponId, ownerId, record.remain),
+            click: () => fetAddRemain(platformCouponId, record.remain),
           },
         ];
       },
@@ -196,29 +213,26 @@ const PlatformManage = (props) => {
   ];
 
   // 增加库存
-  const fetAddRemain = (ownerCouponId, ownerId, remain) => {
+  const fetAddRemain = (platformCouponId, remain) => {
     setVisibleRemain({
       show: true,
-      ownerCouponId,
-      ownerId,
+      platformCouponId,
       remain,
     });
   };
 
-  // 下架
-  const fetchDownCoupon = (values) => {
-    const { ownerCouponId, ownerId } = visibleRefuse.detail;
+  // 下架、上架
+  const fetchDownCoupon = (platformCouponId, type) => {
+    const url = {
+      down: 'platformCoupon/fetchPlatformCouponOff',
+      up: 'platformCoupon/fetchPlatformCouponOn',
+    };
     dispatch({
-      type: 'couponManage/fetchCouponOff',
+      type: url[type],
       payload: {
-        ...values,
-        ownerCouponId,
-        ownerId,
+        platformCouponId,
       },
-      callback: () => {
-        setVisibleRefuse({ show: false, detail: {} });
-        childRef.current.fetchGetData();
-      },
+      callback: () => childRef.current.fetchGetData(),
     });
   };
 
@@ -243,7 +257,6 @@ const PlatformManage = (props) => {
   return (
     <>
       <TableDataBlock
-        order
         keepData
         btnExtra={btnList}
         cRef={childRef}
@@ -262,14 +275,6 @@ const PlatformManage = (props) => {
         getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
       ></PlatformDrawer>
-      {/* 下架原因 */}
-      <RefuseModal
-        visible={visibleRefuse}
-        onClose={() => setVisibleRefuse({ show: false, detail: {} })}
-        handleUpData={fetchDownCoupon}
-        loading={loadings.models.couponManage}
-        extra={'下架后不影响已购买的用户使用'}
-      ></RefuseModal>
       {/* 增加数量 */}
       <RemainModal
         childRef={childRef}

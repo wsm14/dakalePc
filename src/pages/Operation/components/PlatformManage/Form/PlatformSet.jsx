@@ -4,11 +4,7 @@ import { connect } from 'umi';
 import CITYJSON from '@/common/cityJson';
 import { Radio, Form, Row, Col, Select, Button } from 'antd';
 import {
-  COUPON_USER_TIME,
-  COUPON_TIME_TYPE,
-  COUPON_WEEK_TIME,
   COUPON_BUY_RULE,
-  SPECIAL_USERTIME_TYPE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_USERTIME_TYPE,
   PLATFORM_COUPON_PEOPLE,
@@ -16,7 +12,6 @@ import {
   PLATFORM_APPLY_PORT_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
-import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 import { getCityName } from '@/utils/utils';
 import styles from './index.less';
@@ -24,7 +19,8 @@ import styles from './index.less';
 const { Option } = Select;
 
 const CouponSet = (props) => {
-  const { form, ticket, setTicket, initialValues, citys, setCitys } = props;
+  const { form, type, ticket, setTicket, initialValues, citys, setCitys } = props;
+
   const cityList = CITYJSON.filter((item) => item.level === '2');
 
   const [radioData, setRadioData] = useState({
@@ -33,56 +29,26 @@ const CouponSet = (props) => {
     getLimit: 'unlimited', // 领取上限
     applyPort: 'all', // 适用端口
   });
-  const {
-    useTimeRule = '', //使用有效期
-    getLimit = 'all', // 购买规则
-    timeTypeCheck = '',
-    useWeekCheck = '',
-    reduceObject = {},
-  } = initialValues;
+  const { ruleCondition, useTimeRule, ruleType, consortUserOs, citys: initCitys } = initialValues;
 
   useEffect(() => {
-    if (initialValues.ownerCouponIdString) {
-      const userFlagCheck = !reduceObject.thresholdPrice ? '0' : '1'; // 使用门槛
-      initialValues.restrictions = userFlagCheck; // 使用门槛
-      initialValues.timeSplit = useWeekCheck; // 适用时段
-
-      // 适用时段
+    if (initialValues.platformCouponId) {
       setRadioData({
-        effectTime: useTimeRule ? useTimeRule : '',
-        timeSplit: useWeekCheck,
-        getLimit,
+        areaFlag: ruleCondition, // 地区限制
+        effectTime: useTimeRule, // 券有效期
+        getLimit: ruleType, // 领取上限
+        applyPort: consortUserOs, // 适用端口
       });
-
-      if (initialValues.ownerName || initialValues.ownerType) {
-        setMreList({
-          type: initialValues.ownerType,
-          groupId: initialValues.ownerId,
-        });
-        // 重新发布回显 所选集团/店铺数据 回调获取 是否分佣/平台标签
-        fetchGetMre(initialValues.ownerName, initialValues.ownerType, (list = []) => {
-          const mreFindIndex = list.findIndex((item) => item.value === initialValues.ownerId);
-          const topCategoryId = list[mreFindIndex].topCategoryId[0];
-          const { businessStatus, status } = list[mreFindIndex];
-          // 是否分佣
-          getCommissionFlag(topCategoryId);
-          // 商家状态
-          form.setFieldsValue({ businessStatus, status });
-        });
-        if (initialValues.ownerType === 'group') {
-          getMerchantList();
-        }
-      }
+      setCitys(initCitys);
     }
   }, [initialValues]);
-
-  const saveMreData = (data) => setMreList((old) => ({ ...old, ...data }));
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
   // 添加城市
   const addCity = () => {
     const code = form.getFieldValue('cityCode');
+    if (code == undefined) return;
     if (citys.indexOf(code) > -1) {
       return;
     }
@@ -99,6 +65,7 @@ const CouponSet = (props) => {
       formItem: (
         <>
           <Radio.Group
+            disabled={type === 'edit'}
             value={ticket}
             onChange={(e) => {
               setTicket(e.target.value);
@@ -136,6 +103,7 @@ const CouponSet = (props) => {
       label: '券类型',
       name: 'classType',
       type: 'radio',
+      disabled: type === 'edit',
       select: PLATFORM_TICKET_TYPE,
     },
     {
@@ -154,6 +122,7 @@ const CouponSet = (props) => {
       label: '券价值',
       name: 'couponValue',
       type: 'number',
+      disabled: type === 'edit',
       addonBefore: '￥',
       max: 999999,
       min: 0,
@@ -163,6 +132,7 @@ const CouponSet = (props) => {
     {
       label: '使用门槛',
       type: 'number',
+      disabled: type === 'edit',
       name: 'thresholdPrice',
       max: 999999,
       min: 0,
@@ -173,6 +143,7 @@ const CouponSet = (props) => {
     },
     {
       label: '券有效期',
+      disabled: type === 'edit',
       type: 'radio',
       select: PLATFORM_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
       name: 'useTimeRule',
@@ -180,6 +151,7 @@ const CouponSet = (props) => {
     },
     {
       label: '固定时间',
+      disabled: type === 'edit',
       name: 'activeDate',
       type: 'rangePicker',
       visible: radioData.effectTime === 'fixed',
@@ -189,6 +161,7 @@ const CouponSet = (props) => {
       label: '领取后生效天数',
       name: 'delayDays',
       type: 'number',
+      disabled: type === 'edit',
       addonBefore: '领取后',
       addonAfter: '天生效',
       max: 999,
@@ -201,6 +174,7 @@ const CouponSet = (props) => {
       label: '有效期天数',
       name: 'activeDays',
       type: 'number',
+      disabled: type === 'edit',
       addonAfter: '日内有效',
       max: 999,
       min: 0,
@@ -212,6 +186,7 @@ const CouponSet = (props) => {
       label: '发放总量',
       name: 'total',
       type: 'number',
+      disabled: type === 'edit',
       addonAfter: '张',
       extra: '修改优惠券总量时只能增加不能减少，请谨慎设置',
     },
@@ -246,6 +221,7 @@ const CouponSet = (props) => {
 
     {
       label: '使用地区限制',
+      disabled: type === 'edit',
       type: 'radio',
       select: ['全国可用', '部分地区可用', '部分地区不可用'],
       name: 'ruleCondition',
@@ -259,7 +235,7 @@ const CouponSet = (props) => {
         <Row gutter={8}>
           <Col span={18}>
             <Form.Item name="cityCode" noStyle>
-              <Select placeholder="请选择城市" allowClear>
+              <Select disabled={type === 'edit'} placeholder="请选择城市" allowClear>
                 {cityList.map((item) => {
                   return (
                     <Option key={item.id} value={item.id}>
@@ -271,7 +247,7 @@ const CouponSet = (props) => {
             </Form.Item>
           </Col>
           <Col span={6}>
-            <Button type="primary" onClick={addCity}>
+            <Button disabled={type === 'edit'} type="primary" onClick={addCity}>
               添加
             </Button>
           </Col>
@@ -295,12 +271,14 @@ const CouponSet = (props) => {
     {
       label: '适用人群',
       type: 'radio',
+      disabled: type === 'edit',
       name: 'consortUser',
       select: PLATFORM_COUPON_PEOPLE,
     },
     {
       label: '适用端口',
       type: 'radio',
+      disabled: type === 'edit',
       select: PLATFORM_APPLY_PORT,
       name: 'consortUserOs',
       onChange: (e) => saveSelectData({ applyPort: e.target.value }),
@@ -308,6 +286,7 @@ const CouponSet = (props) => {
     {
       label: '平台',
       type: 'checkbox',
+      disabled: type === 'edit',
       select: PLATFORM_APPLY_PORT_TYPE,
       name: 'apply',
       visible: radioData.applyPort === 'noAll',
@@ -340,8 +319,4 @@ const CouponSet = (props) => {
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  selectList: baseData.groupMreList,
-  skuMerchantList: baseData.skuMerchantList,
-  loading: loading.effects['baseData/fetchGetGroupMreList'],
-}))(CouponSet);
+export default connect(({}) => ({}))(CouponSet);

@@ -2,23 +2,22 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import aliOssUpload from '@/utils/aliOssUpload';
-import CouponDetail from './Detail/CouponDetail';
+import PlatformDetail from './Detail/PlatformDetail';
 import PlatformSet from './Form/PlatformSet';
 
 const CouponDrawer = (props) => {
-  const { visible, dispatch, total, childRef, onClose, getDetail, loading, loadingDetail } = props;
+  const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
   const { type = 'info', platformCouponId, show = false, detail = {} } = visible;
   const [ticket, setTicket] = useState('goodsBuy'); // 券使用场景类型
-  const [citys, setCitys] = useState([]);
+  const [citys, setCitys] = useState([]); // 暂存选择的所有城市
 
   const [form] = Form.useForm();
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      console.log('values', values);
+      // console.log('values', values);
 
       const {
         activeDate,
@@ -32,11 +31,11 @@ const CouponDrawer = (props) => {
         ...other
       } = values;
 
-      return;
+      // return;
       dispatch({
         type: {
           add: 'platformCoupon/fetchPlatformCouponSave',
-          edit: 'couponManage/fetchCouponUpdate',
+          edit: 'platformCoupon/fetchPlatformCouponUpdate',
         }[type],
         payload: {
           platformCouponId,
@@ -72,7 +71,9 @@ const CouponDrawer = (props) => {
       });
     });
   };
+
   const listProp = {
+    type,
     ticket,
     setTicket,
     citys,
@@ -81,19 +82,15 @@ const CouponDrawer = (props) => {
   // 统一处理弹窗
   const drawerProps = {
     info: {
-      title: '查看详情',
-      children: <CouponDetail detail={detail}></CouponDetail>,
+      title: '平台券详情',
+      children: <PlatformDetail detail={detail}></PlatformDetail>,
     },
     add: {
       title: '新建平台券',
       children: <PlatformSet {...listProp} form={form} initialValues={detail}></PlatformSet>,
     },
     edit: {
-      title: '编辑券',
-      children: <PlatformSet {...listProp} form={form} initialValues={detail}></PlatformSet>,
-    },
-    again: {
-      title: '重新发布',
+      title: '编辑平台券',
       children: <PlatformSet {...listProp} form={form} initialValues={detail}></PlatformSet>,
     },
   }[type];
@@ -104,8 +101,7 @@ const CouponDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
-    closeCallBack: () => dispatch({ type: 'baseData/clearGroupMre' }), // 关闭清空搜索的商家数据
-    footer: ['add', 'edit', 'again'].includes(type) && (
+    footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         发布
       </Button>
@@ -116,6 +112,6 @@ const CouponDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['couponManage/fetchCouponSave'],
-  loadingDetail: loading.effects['couponManage/fetchCouponDetail'],
+  loading: loading.effects['platformCoupon/fetchPlatformCouponSave'],
+  loadingDetail: loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
 }))(CouponDrawer);

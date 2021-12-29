@@ -854,4 +854,36 @@ export function fetchPlatformCouponSave(data) {
   });
 }
 
+// post 平台券 - 创建平台券 - 编辑
+export function fetchPlatformCouponUpdate(data) {
+  return request('/admin/platform/coupon/updatePlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 下架
+export function fetchPlatformCouponOff(data) {
+  return request('/admin/platform/coupon/offShelfPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 上架
+export function fetchPlatformCouponOn(data) {
+  return request('/admin/platform/coupon/onShelfPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 增加库存
+export function fetchAddTotalPlatformCoupon(data) {
+  return request('/admin/platform/coupon/addTotalPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 平台券 end
