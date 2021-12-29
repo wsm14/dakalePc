@@ -829,3 +829,22 @@ export function fetchAuditMomentDetail(params) {
 }
 
 // 视频审核 end
+
+// 平台券
+
+// get 平台券 - 分页列表
+export function fetchPagePlatformCoupon(params) {
+  return request('/admin/platform/coupon/pagePlatformCoupon', {
+    params,
+  });
+}
+
+// post 平台券 - 创建平台券 - 新增
+export function fetchPlatformCouponSave(data) {
+  return request('/admin/platform/coupon/createPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 平台券 end

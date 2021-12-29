@@ -11,61 +11,66 @@ const CouponDrawer = (props) => {
 
   const {
     type = 'info',
-    index,
+
     show = false,
     detail = {},
     ownerCouponId,
     ownerId,
     status,
   } = visible;
-  const [commissionShow, setCommissionShow] = useState(false);
-  const [content, setContent] = useState(''); // 输入的富文本内容
+  const [ticket, setTicket] = useState('goodsBuy'); // 券使用场景类型
+  const [citys, setCitys] = useState([]);
+
   const [form] = Form.useForm();
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
       console.log('values', values);
-      return;
 
       const {
         activeDate,
-        restrictions,
-        couponDesc = [],
-        timeSplit,
-        timeType,
-        useWeek,
-        useTime,
-        merchantIds = [],
-        couponDetailImg,
-        businessStatus,
-        status,
+        ruleType,
+        personLimit,
+        dayMaxBuyAmount,
+        ruleCondition,
+        consortUserOs,
+        apply = [],
         ...other
       } = values;
-      const coupoImg = await aliOssUpload(couponDetailImg);
 
+      return;
       dispatch({
         type: {
-          add: 'couponManage/fetchCouponSave',
+          add: 'platformCoupon/fetchPlatformCouponSave',
           edit: 'couponManage/fetchCouponUpdate',
           again: 'couponManage/fetchCouponSave',
         }[type],
         payload: {
-          ownerCouponId,
-          ownerId,
-          ...other,
-          richText: content, // 富文本内容
-          couponDetailImg: coupoImg.toString(),
-          couponType: 'reduce',
-          merchantIds: merchantIds.toString(),
+          couponType: 'fullReduce',
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
-          useWeek: timeSplit !== 'part' ? timeSplit : useWeek.toString(),
-          couponDesc: couponDesc.filter((i) => i),
-          useTime:
-            timeType !== 'part'
-              ? timeType
-              : `${useTime[0].format('HH:mm')}-${useTime[1].format('HH:mm')}`,
+          getRuleObject: {
+            ruleType,
+            personLimit,
+            dayMaxBuyAmount,
+          },
+          ruleConditionObjects: [
+            {
+              ruleType:
+                ruleCondition == '0' || ruleCondition == '1'
+                  ? 'availableAreaRule'
+                  : 'unavailableAreaRule',
+              ruleConditionList:
+                ruleCondition == '0'
+                  ? { condition: 'all' }
+                  : citys.map((item) => ({
+                      condition: item,
+                    })),
+            },
+          ],
+          consortUserOs: apply.join(',') || consortUserOs,
+          ...other,
         },
         callback: () => {
           onClose();
@@ -75,13 +80,10 @@ const CouponDrawer = (props) => {
     });
   };
   const listProp = {
-    commissionShow,
-    setCommissionShow,
-    type,
-    status,
-    ownerCouponId,
-    ownerId,
-    setContent,
+    ticket,
+    setTicket,
+    citys,
+    setCitys,
   };
   // 统一处理弹窗
   const drawerProps = {
@@ -111,7 +113,7 @@ const CouponDrawer = (props) => {
     loading: loadingDetail,
     closeCallBack: () => dispatch({ type: 'baseData/clearGroupMre' }), // 关闭清空搜索的商家数据
     dataPage: type === 'info' && {
-      current: index,
+      // current: index,
       total,
       onChange: (size) => getDetail(size, 'info'),
     },

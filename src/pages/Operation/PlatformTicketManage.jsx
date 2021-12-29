@@ -1,7 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import { Tag } from 'antd';
-import { COUPON_STATUS, COUPON_TYPE, BUSINESS_TYPE, SUBMIT_TYPE } from '@/common/constant';
+import {
+  COUPON_STATUS,
+  COUPON_TYPE,
+  BUSINESS_TYPE,
+  SUBMIT_TYPE,
+  PLATFORM_TICKET_SCENE,
+  PLATFORM_TICKET_TYPE,
+  PLATFORM_COUPON_PEOPLE,
+} from '@/common/constant';
 import { RefuseModal } from '@/components/PublicComponents';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
@@ -10,8 +18,8 @@ import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
 import RemainModal from './components/PlatformManage/Detail/RemainModal';
 
 const PlatformManage = (props) => {
-  const { couponManage, loading, dispatch, loadings } = props;
-  const { list } = couponManage;
+  const { platformCouponList, loading, dispatch, loadings } = props;
+  const { list } = platformCouponList;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
@@ -57,48 +65,35 @@ const PlatformManage = (props) => {
   // table 表头
   const getColumns = [
     {
-      title: '券/店铺名称',
+      title: '券编号',
+      fixed: 'left',
+      dataIndex: 'platformCouponId',
+    },
+    {
+      title: '券类型/名称',
       fixed: 'left',
       dataIndex: 'couponName',
       render: (val, row) => (
         <div>
-          <div>
-            <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Tag>{`${PLATFORM_TICKET_SCENE[row.useScenesType]}${
+              PLATFORM_TICKET_TYPE[row.classType]
+            }`}</Tag>
             <Ellipsis length={10} tooltip>
               {val}
             </Ellipsis>
           </div>
-          <div style={{ display: 'flex', marginTop: 5 }}>
-            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
-            <Ellipsis length={10} tooltip>
-              {row.ownerName}
-            </Ellipsis>
-          </div>
         </div>
       ),
     },
     {
-      title: '券价值/售价',
-      align: 'right',
-      dataIndex: ['reduceObject', 'couponPrice'],
-      render: (val, row) => (
-        <div>
-          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-            ￥{Number(val).toFixed(2)}
-          </div>
-          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
-        </div>
-      ),
+      title: '券价值/使用门槛',
+      dataIndex: 'couponValue',
+      render: (val, row) => <div>{`￥${val}（满${row.thresholdPrice}元可用）`}</div>,
     },
     {
-      title: '使用门槛',
-      align: 'center',
-      dataIndex: ['reduceObject', 'thresholdPrice'],
-      render: (val) => (val === '0' || !val ? '无门槛' : `满${val}元可使用`),
-    },
-    {
-      title: '使用有效期',
-      dataIndex: 'activeDate',
+      title: '券有效期',
+      dataIndex: 'useTimeRule',
       render: (val, row) => {
         const { activeDate, endDate, delayDays, activeDays } = row;
         if (activeDate && endDate) {
@@ -113,75 +108,52 @@ const PlatformManage = (props) => {
     },
     {
       title: '剩余数量',
-      align: 'right',
       dataIndex: 'remain',
-      sorter: (a, b) => a.remain - b.remain,
     },
     {
-      title: '销量',
-      dataIndex: 'total',
-      align: 'right',
-      render: (val, row) => val - row.remain,
-      sorter: (a, b) => a.total - a.remain - (b.total - b.remain),
+      title: '适用人群',
+      dataIndex: 'consortUser',
+      render: (val) => PLATFORM_COUPON_PEOPLE[val],
     },
     {
-      title: '核销数量',
-      align: 'right',
-      dataIndex: 'verifiedCount',
-      sorter: (a, b) => a.verifiedCount - b.verifiedCount,
+      title: '使用地区限制',
+      dataIndex: 'ruleConditionObjects',
+      render: (val, row) => {
+        const arr = val[0].ruleConditionList;
+        if (arr[0].condition == 'all') {
+          return '全国可用';
+        } else if (val[0].ruleType === 'availableAreaRule') {
+          return '部分地区可用';
+        } else {
+          return '部分地区可用';
+        }
+      },
     },
     {
-      title: '地区/行业',
-      align: 'center',
-      dataIndex: 'districtCode',
-      render: (val, row) => (
-        <>
-          <div> {checkCityName(val) || '--'} </div>
-          <div>
-            {row.topCategoryName} / {row.categoryName}
-          </div>
-        </>
-      ),
+      title: '状态',
+      dataIndex: 'couponStatus',
+      render: (val) => (val === '1' ? '上架中' : '已下架'),
     },
     {
-      title: '创建时间',
-      align: 'right',
-      dataIndex: 'createTime',
-      render: (val, record) => (
-        <div style={{ textAlign: 'center' }}>
-          <div>{val}</div>
-          <div>
-            {SUBMIT_TYPE[record.creatorType]}--{record.creatorName}
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: '发布时间',
-      align: 'right',
+      title: '最后修改',
       dataIndex: 'updateTime',
-      render: (val, row) => (
-        <div>
-          {val}
-          <div>{COUPON_STATUS[row.ownerCouponStatus]}</div>
-        </div>
-      ),
+      render: (val, row) => `${val}\n${row.updater}`,
     },
     {
       type: 'handle',
       width: 150,
-      dataIndex: 'ownerCouponIdString',
-      render: (ownerCouponId, record, index) => {
+      dataIndex: 'platformCouponId',
+      render: (platformCouponId, record) => {
         // 1 上架 2 下架
-        const { ownerCouponStatus: status, ownerIdString: ownerId } = record;
+        const { couponStatus: status } = record;
         return [
           {
             type: 'info',
-            click: () => fetchCouponDetail(index, 'info'),
+            click: () => fetchCouponDetail(platformCouponId, 'info'),
           },
           {
             type: 'edit',
-            click: () => fetchCouponDetail(index, 'edit'),
+            click: () => fetchCouponDetail(platformCouponId, 'edit'),
           },
           {
             title: '下架',
@@ -233,19 +205,13 @@ const PlatformManage = (props) => {
   };
 
   // 获取详情
-  const fetchCouponDetail = (index, type) => {
-    const {
-      ownerCouponIdString: ownerCouponId,
-      ownerIdString: ownerId,
-      ownerCouponStatus: status,
-      ownerType,
-    } = list[index];
-    if (type === 'edit' && status === '1') {
+  const fetchCouponDetail = (id, type) => {
+    if (type === 'edit') {
       dispatch({
         type: 'specialGoods/fetchEditCurrentStatus',
         payload: {
           ownerId,
-          ownerServiceId: ownerCouponId,
+          ownerServiceId: id,
           ownerType,
         },
         callback: (val) => {
@@ -259,7 +225,7 @@ const PlatformManage = (props) => {
       type: 'couponManage/fetchCouponDetail',
       payload: { ownerCouponId, ownerId, type },
       callback: (detail) =>
-        setVisible({ type, show: true, index, detail, ownerCouponId, ownerId, status }),
+        setVisible({ type, show: true, detail, ownerCouponId, ownerId, status }),
     });
   };
 
@@ -282,9 +248,9 @@ const PlatformManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.ownerCouponIdString}`}
-        dispatchType="couponManage/fetchGetList"
-        {...couponManage}
+        rowKey={(record) => `${record.platformCouponId}`}
+        dispatchType="platformCoupon/fetchGetList"
+        {...platformCouponList}
       ></TableDataBlock>
       {/* 新增 编辑 详情 */}
       <PlatformDrawer
@@ -312,11 +278,11 @@ const PlatformManage = (props) => {
   );
 };
 
-export default connect(({ couponManage, loading }) => ({
-  couponManage,
+export default connect(({ platformCoupon, loading }) => ({
+  platformCouponList: platformCoupon.list,
   loadings: loading,
   loading:
-    loading.effects['couponManage/fetchGetList'] ||
+    loading.effects['platformCoupon/fetchGetList'] ||
     loading.effects['couponManage/fetchCouponSet'] ||
     loading.effects['couponManage/fetchCouponDetail'],
 }))(PlatformManage);

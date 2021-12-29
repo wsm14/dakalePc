@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
-import { Radio, Form, InputNumber } from 'antd';
+import CITYJSON from '@/common/cityJson';
+import { Radio, Form, Row, Col, Select, Button } from 'antd';
 import {
   COUPON_USER_TIME,
   COUPON_TIME_TYPE,
@@ -10,51 +11,31 @@ import {
   SPECIAL_USERTIME_TYPE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_USERTIME_TYPE,
+  PLATFORM_COUPON_PEOPLE,
+  PLATFORM_APPLY_PORT,
+  PLATFORM_APPLY_PORT_TYPE,
 } from '@/common/constant';
 import { NUM_ALL, NUM_INT } from '@/common/regExp';
 import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
+import { getCityName } from '@/utils/utils';
 import styles from './index.less';
 
+const { Option } = Select;
+
 const CouponSet = (props) => {
-  const {
-    form,
-    loading,
-    selectList,
-    skuMerchantList,
-    dispatch,
-    commissionShow,
-    setCommissionShow,
-    ownerCouponId,
-    ownerId,
-    initialValues,
-    type,
-    status,
-    setContent,
-  } = props;
-
-  const [ticket, setTicket] = useState('horizontal'); // 券种类
-
-  // 是否 编辑重新发布（上架，下架）都隐藏的数据
-  const commonDisabled = ['edit', 'again'].includes(type) && ['1', '2'].includes(status);
-  //活动中隐藏的编辑项//edit 且为上架中 独有不展示
-  const editDisabled = type === 'edit' && status === '1';
-
-  const [visible, setVisible] = useState(false); // 选择店铺弹窗
-  const [couponDetailType, setCouponDetailType] = useState('0'); // 商品介绍类型
+  const { form, ticket, setTicket, initialValues, citys, setCitys } = props;
+  const cityList = CITYJSON.filter((item) => item.level === '2');
 
   const [radioData, setRadioData] = useState({
-    buyFlag: '0', // 是否售卖
-    userFlag: '0', // 使用门槛
-    effectTime: '', // 使用有效期
-    timeSplit: '', // 适用时段
-    timeType: 'all', // 时段内时间选择
-    buyRule: 'all', // 购买规则
+    areaFlag: '0', // 地区限制
+    effectTime: 'fixed', // 券有效期
+    getLimit: 'unlimited', // 领取上限
+    applyPort: 'all', // 适用端口
   });
   const {
-    buyFlag,
     useTimeRule = '', //使用有效期
-    buyRule = 'all', // 购买规则
+    getLimit = 'all', // 购买规则
     timeTypeCheck = '',
     useWeekCheck = '',
     reduceObject = {},
@@ -65,17 +46,12 @@ const CouponSet = (props) => {
       const userFlagCheck = !reduceObject.thresholdPrice ? '0' : '1'; // 使用门槛
       initialValues.restrictions = userFlagCheck; // 使用门槛
       initialValues.timeSplit = useWeekCheck; // 适用时段
-      initialValues.timeType = timeTypeCheck; // 使用时间 小时
-      // 图文介绍类型
-      setCouponDetailType(initialValues.couponDetailType);
+
       // 适用时段
       setRadioData({
-        buyFlag,
-        userFlag: userFlagCheck, //详情无返回//使用门槛
         effectTime: useTimeRule ? useTimeRule : '',
         timeSplit: useWeekCheck,
-        timeType: timeTypeCheck,
-        buyRule,
+        getLimit,
       });
 
       if (initialValues.ownerName || initialValues.ownerType) {
@@ -104,13 +80,21 @@ const CouponSet = (props) => {
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
+  // 添加城市
+  const addCity = () => {
+    const code = form.getFieldValue('cityCode');
+    if (citys.indexOf(code) > -1) {
+      return;
+    }
+    setCitys([...citys, code]);
+  };
   // 信息
   const formItems = [
     {
       title: '券类型',
       type: 'formItem',
-      name: 'aaa',
-      rules: [{ required: true, message: '请选择券类型' }],
+      name: 'useScenesType',
+      rules: [{ required: true, message: '请选择使用场景类型' }],
       className: styles.btn_all,
       formItem: (
         <>
@@ -118,46 +102,57 @@ const CouponSet = (props) => {
             value={ticket}
             onChange={(e) => {
               setTicket(e.target.value);
+              form.setFieldsValue({
+                useScenesType: e.target.value,
+              });
             }}
             className={styles.btn_Bbox}
           >
-            <Radio.Button className={styles.btn_box} value="horizontal">
+            <Radio.Button className={styles.btn_box} value="goodsBuy">
               <div>商品券</div>
               <div>特惠商品/优惠券可用</div>
             </Radio.Button>
-            <Radio.Button className={styles.btn_box} value="vertical">
-              <div>虚拟品券</div>
+            {/* <Radio.Button className={styles.btn_box} value="scan">
+              <div>扫码券</div>
+              <div>特惠商品/优惠券可用</div>
+            </Radio.Button> */}
+            <Radio.Button className={styles.btn_box} value="virtual">
+              <div>虚拟券</div>
               <div>购买虚拟商品可用</div>
             </Radio.Button>
-            <Radio.Button className={styles.btn_box} value="inline">
-              <div>电商品券</div>
+            <Radio.Button className={styles.btn_box} value="commerce">
+              <div>电商券</div>
               <div>购买电商品可用</div>
             </Radio.Button>
+            {/* <Radio.Button className={styles.btn_box} value="community">
+              <div>团购券</div>
+              <div>特惠商品/优惠券可用</div>
+            </Radio.Button> */}
           </Radio.Group>
         </>
       ),
     },
     {
       label: '券类型',
-      name: 'aaab',
+      name: 'classType',
       type: 'radio',
       select: PLATFORM_TICKET_TYPE,
     },
     {
       title: '基本信息',
       label: '券标题',
-      name: 'aaac',
+      name: 'couponName',
       maxLength: 15,
     },
     {
       label: '券描述',
-      name: 'aaad',
+      name: 'couponDesc',
       rules: [{ required: false }],
       maxLength: 30,
     },
     {
       label: '券价值',
-      name: 'aaae',
+      name: 'couponValue',
       type: 'number',
       addonBefore: '￥',
       max: 999999,
@@ -168,7 +163,7 @@ const CouponSet = (props) => {
     {
       label: '使用门槛',
       type: 'number',
-      name: 'aaaf',
+      name: 'thresholdPrice',
       max: 999999,
       min: 0,
       precision: 2,
@@ -180,19 +175,19 @@ const CouponSet = (props) => {
       label: '券有效期',
       type: 'radio',
       select: PLATFORM_USERTIME_TYPE, //{ fixed: '固定时间', gain: '领取后' }
-      name: 'aaag',
+      name: 'useTimeRule',
       onChange: (e) => saveSelectData({ effectTime: e.target.value }),
     },
     {
       label: '固定时间',
-      name: 'aaaga',
+      name: 'activeDate',
       type: 'rangePicker',
       visible: radioData.effectTime === 'fixed',
       disabledDate: (time) => time && time < moment().endOf('day').subtract(1, 'day'),
     },
     {
       label: '领取后生效天数',
-      name: 'aaagb',
+      name: 'delayDays',
       type: 'number',
       addonBefore: '领取后',
       addonAfter: '天生效',
@@ -200,19 +195,17 @@ const CouponSet = (props) => {
       min: 0,
       precision: 0,
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
-
       visible: radioData.effectTime === 'gain',
     },
     {
       label: '有效期天数',
-      name: 'aaagc',
+      name: 'activeDays',
       type: 'number',
       addonAfter: '日内有效',
       max: 999,
       min: 0,
       precision: 0,
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
-
       visible: radioData.effectTime === 'gain',
     },
     {
@@ -226,9 +219,9 @@ const CouponSet = (props) => {
     {
       label: '领取上限',
       type: 'radio',
-      name: 'buyRule',
+      name: 'ruleType',
       select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
-      onChange: (e) => saveSelectData({ buyRule: e.target.value }),
+      onChange: (e) => saveSelectData({ getLimit: e.target.value }),
     },
     {
       label: `单人每人限制领取`,
@@ -238,7 +231,7 @@ const CouponSet = (props) => {
       addonAfter: '张',
       precision: 0,
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
-      visible: radioData.buyRule === 'personLimit',
+      visible: radioData.getLimit === 'personLimit',
     },
     {
       label: `单人每天限制领取`,
@@ -248,64 +241,100 @@ const CouponSet = (props) => {
       addonAfter: '张',
       precision: 0,
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
-      visible: radioData.buyRule === 'dayLimit',
+      visible: radioData.getLimit === 'dayLimit',
     },
 
     {
       label: '使用地区限制',
       type: 'radio',
-      select: ['无限制', '有限制'],
-      name: 'restrictions',
-      onChange: (e) => saveSelectData({ userFlag: e.target.value }),
+      select: ['全国可用', '部分地区可用', '部分地区不可用'],
+      name: 'ruleCondition',
+      onChange: (e) => (saveSelectData({ areaFlag: e.target.value }), setCitys([])),
     },
+    {
+      type: 'formItem',
+      style: { paddingLeft: 150 },
+      visible: radioData.areaFlag != '0',
+      formItem: (
+        <Row gutter={8}>
+          <Col span={18}>
+            <Form.Item name="cityCode" noStyle>
+              <Select placeholder="请选择城市" allowClear>
+                {cityList.map((item) => {
+                  return (
+                    <Option key={item.id} value={item.id}>
+                      {item.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Button type="primary" onClick={addCity}>
+              添加
+            </Button>
+          </Col>
+        </Row>
+      ),
+    },
+    {
+      label: '选择城市',
+      type: 'noForm',
+      name: 'cityCodeName',
+      visible: radioData.areaFlag != '0',
+      formItem: (
+        <div className={styles.city_box}>
+          {citys.map((item) => {
+            return <span key={item}>{`${getCityName(item)}；`}</span>;
+          })}
+        </div>
+      ),
+    },
+
     {
       label: '适用人群',
       type: 'radio',
-      select: COUPON_TIME_TYPE, // { '00:00-23:59': '全天', part: '固定时间' };
-      name: 'timeType',
+      name: 'consortUser',
+      select: PLATFORM_COUPON_PEOPLE,
     },
     {
       label: '适用端口',
       type: 'radio',
-      select: COUPON_USER_TIME, //1,2,3,4,5,6,7': '每天', part: '部分'
-      name: 'timeSplit',
-      onChange: (e) => saveSelectData({ timeSplit: e.target.value }),
+      select: PLATFORM_APPLY_PORT,
+      name: 'consortUserOs',
+      onChange: (e) => saveSelectData({ applyPort: e.target.value }),
     },
     {
+      label: '平台',
       type: 'checkbox',
-      select: COUPON_WEEK_TIME,
-      name: 'useWeek',
-      visible: radioData.timeSplit === 'part',
+      select: PLATFORM_APPLY_PORT_TYPE,
+      name: 'apply',
+      visible: radioData.applyPort === 'noAll',
     },
     {
       label: '其他说明',
       type: 'textArea',
-      name: 'useWeek',
+      name: 'otherDesc',
       rules: [{ required: false }],
     },
   ];
 
+  const formProps = {
+    classType: 'universal',
+    useScenesType: 'goodsBuy',
+    useTimeRule: 'fixed',
+    ruleType: 'unlimited',
+    ruleCondition: '0',
+    consortUser: 'all',
+    consortUserOs: 'all',
+  };
   return (
     <>
       <FormCondition
         form={form}
         formItems={formItems}
-        initialValues={
-          {
-            reduceObject: {
-              anytimeRefund: 1,
-              expireRefund: 1,
-            },
-            ...initialValues,
-          } || {
-            reduceObject: {
-              anytimeRefund: 1,
-              expireRefund: 1,
-            },
-            ownerType: 'merchant',
-            couponDetailType: '0',
-          }
-        }
+        initialValues={{ ...formProps, ...initialValues }}
       ></FormCondition>
     </>
   );
