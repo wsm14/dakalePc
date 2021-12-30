@@ -19,15 +19,13 @@ import PlatformDrawer from './components/PlatformManage/PlatformDrawer';
 import RemainModal from './components/PlatformManage/Detail/RemainModal';
 
 const PlatformManage = (props) => {
-  const { platformCouponList, loading, dispatch, loadings } = props;
+  const { platformCouponList, loading, dispatch } = props;
   const { list } = platformCouponList;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
 
-  //下架原因框
-  const [visibleRefuse, setVisibleRefuse] = useState({ detail: {}, show: false }); // 下架原因
   const [visibleRemain, setVisibleRemain] = useState(false); //增加库存
 
   // 搜索参数
@@ -43,8 +41,8 @@ const PlatformManage = (props) => {
     {
       label: '券类型',
       type: 'select',
-      name: 'ownerCouponStatus',
-      select: COUPON_STATUS,
+      name: 'useScenesTypeOrclassType',
+      select: { ...PLATFORM_TICKET_SCENE, ...PLATFORM_TICKET_TYPE },
     },
     {
       label: '状态',
