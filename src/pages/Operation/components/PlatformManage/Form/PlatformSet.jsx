@@ -188,6 +188,7 @@ const CouponSet = (props) => {
       type: 'number',
       disabled: type === 'edit',
       addonAfter: '张',
+      max: 999999999,
       extra: '修改优惠券总量时只能增加不能减少，请谨慎设置',
     },
 
