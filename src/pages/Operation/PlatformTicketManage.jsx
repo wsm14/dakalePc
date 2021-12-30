@@ -41,8 +41,14 @@ const PlatformManage = (props) => {
     {
       label: '券类型',
       type: 'select',
-      name: 'useScenesTypeOrclassType',
-      select: { ...PLATFORM_TICKET_SCENE, ...PLATFORM_TICKET_TYPE },
+      name: 'useScenesType',
+      select: {
+        goodsBuy: '商品券',
+        // scan: '扫码',
+        virtual: '虚拟品券',
+        commerce: '电商品券',
+        // community: '团购',
+      },
     },
     {
       label: '状态',

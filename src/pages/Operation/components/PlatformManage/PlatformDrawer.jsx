@@ -103,7 +103,7 @@ const CouponDrawer = (props) => {
     loading: loadingDetail,
     footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
-        发布
+        新增
       </Button>
     ),
   };

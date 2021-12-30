@@ -223,7 +223,10 @@ const CouponSet = (props) => {
       label: '使用地区限制',
       disabled: type === 'edit',
       type: 'radio',
-      select: ['全国可用', '部分地区可用', '部分地区不可用'],
+      select:
+        ticket === 'virtual' || ticket === 'commerce'
+          ? ['全国可用']
+          : ['全国可用', '部分地区可用', '部分地区不可用'],
       name: 'ruleCondition',
       onChange: (e) => (saveSelectData({ areaFlag: e.target.value }), setCitys([])),
     },

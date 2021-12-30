@@ -839,10 +839,10 @@ export const MATERIAL_JUMP_TYPE = {
 // 平台券管理 - 券使用场景类型
 export const PLATFORM_TICKET_SCENE = {
   goodsBuy: '商品',
-  scan: '扫码',
-  virtual: '虚拟',
-  commerce: '电商',
-  community: '团购',
+  // scan: '扫码',
+  virtual: '虚拟品',
+  commerce: '电商品',
+  // community: '团购',
 };
 
 // 平台券管理 - 券类型
