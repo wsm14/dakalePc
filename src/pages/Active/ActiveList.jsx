@@ -70,7 +70,12 @@ const ActiveListComponent = (props) => {
         {
           title: '复制链接',
           type: 'copy',
-          click: () => handleCopy(`${row.jumpUrl}?shareKey=${row.activityTemplateId}&newPage=true&showTitle=true`),
+          click: () =>
+            handleCopy(
+              `${row.jumpUrl}?newPage=true&shareKey=${row.activityTemplateId}${
+                tabKey !== 'globalModal' ? '&showTitle=true' : ''
+              }`,
+            ),
         },
         {
           type: 'shareImg',
