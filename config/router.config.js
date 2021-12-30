@@ -438,12 +438,6 @@ export default [
         component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
-      {
-        path: '/market/globalPop',
-        name: '全局弹框',
-        component: './Market/GlobalPop',
-        buttons: ['save', 'edit', 'down'],
-      },
       // 店铺运营 operation
       {
         path: '/operation/share',
