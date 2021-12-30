@@ -4,14 +4,11 @@ import moment from 'moment';
 import { Tag, Tooltip } from 'antd';
 import {
   COUPON_STATUS,
-  COUPON_TYPE,
-  BUSINESS_TYPE,
-  SUBMIT_TYPE,
   PLATFORM_TICKET_SCENE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_COUPON_PEOPLE,
 } from '@/common/constant';
-import { RefuseModal } from '@/components/PublicComponents';
+import CITYJSON from '@/common/cityJson';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 import { getCityName } from '@/utils/utils';
@@ -76,8 +73,12 @@ const PlatformManage = (props) => {
       label: '可使用区域',
       name: 'city',
       type: 'cascader',
-      changeOnSelect: true,
-      valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+      select: CITYJSON.filter((item) => item.level === '1').map((item) => ({
+        ...item,
+        children: CITYJSON.filter((items) => items.pid === item.id),
+      })),
+      fieldNames: { label: 'name', value: 'id' },
+      valuesKey: ['provinceCode', 'cityCode'],
     },
   ];
 
