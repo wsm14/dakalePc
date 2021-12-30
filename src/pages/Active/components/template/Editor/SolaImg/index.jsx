@@ -31,6 +31,16 @@ const SolaImg = (props) => {
       maxFile: 1,
     },
     {
+      label: '图片宽度',
+      name: 'width',
+      type: 'number',
+    },
+    {
+      label: '图片高度',
+      name: 'height',
+      type: 'number',
+    },
+    {
       type: 'noForm',
       children: <NativeForm key="native" form={form}></NativeForm>,
     },
@@ -40,7 +50,7 @@ const SolaImg = (props) => {
     <div className="active_template_editor_group">
       <div className="active_title">基础配置</div>
       <div className="active_title_msg">
-        图片默认宽度100%，高度自适应，图片大小建议不大于200kb左右，图片过大影响页面访问速度
+        图片默认宽度100%，高度自适应，设计稿宽度为750px为基准，图片大小建议不大于200kb左右，图片过大影响页面访问速度
       </div>
       <EditorForm formItems={formItems} id={id} initialValues={value || {}} form={form} />
     </div>

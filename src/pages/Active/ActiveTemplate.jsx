@@ -27,6 +27,11 @@ const ActiveTemplate = () => {
       type: 'rule', // oss 上传文件夹同名
       title: '配置平台内各类活动规则、说明等模板内容',
     },
+    {
+      img: template2,
+      type: 'globalModal', // oss 上传文件夹同名
+      title: '配置app、小程序内全局弹窗',
+    },
   ];
 
   // 选择活动 设置活动名称

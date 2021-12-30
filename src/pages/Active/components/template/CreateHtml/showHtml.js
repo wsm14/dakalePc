@@ -38,12 +38,15 @@ const htmlDom = {
   },
   // 单张图片
   solaImg: (data, uid) => {
-    const dom = ({ img, linkType, url, path }, uid) => {
+    const dom = ({ img, linkType, url, path, width, height }, uid) => {
+      const vw = (px) => (px / 375) * 100 + 'vw';
       document.getElementById(
         uid,
       ).innerHTML = `<img src="${img}" data-linkType="${linkType}" data-path="${
         url || path
-      }" style="width: 100vw;display: block;" class="handleGoNative"></img>`;
+      }" style="width: ${width ? vw(width / 2) : '100vw'};height: ${
+        height ? vw(height / 2) : 'auto'
+      };display: block;" class="handleGoNative"></img>`;
     };
 
     return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;

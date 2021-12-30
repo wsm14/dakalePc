@@ -8,14 +8,14 @@
  * @children 组件选项 Editor 内定义的 控件键名
  */
 export default (type = '') => {
-  const moduleAllShow = ['active', 'rule'].includes(type); // 全都展示
+  const moduleAllShow = ['active', 'rule', 'globalModal'].includes(type); // 全都展示
   const moduleActiveShow = ['active'].includes(type); // 只有活动展示
 
   return [
     {
       header: '通用配置',
       type: 'public',
-      show: moduleAllShow,
+      show: type !== 'globalModal',
       children: [
         { type: 'backgroundColor', show: true },
         { type: 'share', show: moduleActiveShow },
