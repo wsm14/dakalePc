@@ -28,10 +28,13 @@ const htmlDom = {
   },
   // 视频
   normalVideo: (data, uid) => {
-    const dom = ({ url }, uid) => {
+    const dom = ({ url, poster }, uid) => {
+      const vw = (px) => (px / 375) * 100 + 'vw';
       document.getElementById(
         uid,
-      ).innerHTML = `<video src="${url}" preload="preload" controls="controls" style="width: 100vw;display: block;"></video>`;
+      ).innerHTML = `<video src="${url}" preload="preload" poster="${poster}" controls="controls" style="width: 100vw;display: block;height: ${vw(
+        215,
+      )};background-image: url(${poster});background-position: center center;"></video>`;
     };
 
     return `<div id="${uid}"></div>${scriptTag(dom, data, uid)}`;
@@ -64,7 +67,7 @@ const htmlDom = {
     const dom = (list, uid) => {
       document.getElementById(
         uid,
-      ).innerHTML = `<div class="swiper-container"><div class="swiper-wrapper">${list
+      ).innerHTML = `<div class="swiper-container" style="position: relative;"><div class="swiper-wrapper">${list
         .map(
           ({ img, linkType, url, path }) =>
             `<div class="swiper-slide"><img src="${img}" data-linkType="${linkType}" data-path="${

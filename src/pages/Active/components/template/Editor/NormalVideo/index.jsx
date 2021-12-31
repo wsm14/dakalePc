@@ -13,10 +13,10 @@ const SolaImg = (props) => {
   // 向父组件暴露方法
   useImperativeHandle(cRef, () => ({
     getContent: () => {
-      return form.validateFields().then((content) => {
-        return aliOssUpload(content.url).then((res) => {
-          return { ...content, editorType, url: res.toString() };
-        });
+      return form.validateFields().then(async (content) => {
+        const sVideo = await aliOssUpload(content.url);
+        const fImg = await aliOssUpload(content.poster);
+        return { editorType, url: sVideo.toString(), poster: fImg.toString() };
       });
     },
   }));
@@ -29,6 +29,14 @@ const SolaImg = (props) => {
       required: true,
       maxFile: 1,
       accept: 'video/mp4,.mp4',
+    },
+    {
+      label: '视频封面',
+      name: 'poster',
+      type: 'upload',
+      required: true,
+      maxFile: 1,
+      extra: '请上传尺寸为16:9的jpg、png图片',
     },
   ];
 
