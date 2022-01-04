@@ -869,3 +869,10 @@ export const PLATFORM_APPLY_PORT_TYPE = {
   markWechat: '哒小卡小程序',
   communityWechat: '哒小团小程序',
 };
+
+// 礼包管理 - 卡券类型
+export const SPREE_MANAGE_TYPE = {
+  platformCoupon: '平台券',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+};

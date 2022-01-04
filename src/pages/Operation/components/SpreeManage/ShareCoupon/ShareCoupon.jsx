@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 // import { notification } from 'antd';
 import { Form, Button } from 'antd';
-import { couponsDom, goodsDom } from './CouponFreeDom';
-import BuyContactModal from './BuyContactModal';
+import { platformCouponsDom, couponsDom, goodsDom } from './CouponFreeDom';
 import GoodsSelectModal from './GoodsSelectModal';
 import FormList from './FormList';
 
 import './coupon.less';
 
 const ShareCoupon = (props) => {
-  const { type, form } = props;
+  const { type = '', form, data = [], handleType } = props;
 
-  const [visible, setVisible] = useState(false); // 特惠和权益商品多选
+  const [visible, setVisible] = useState(false); // 平台券、权益商品和权益券多选
 
   // 券
   return (
     <>
-      {
+      {data.length !== 0 ? (
+        data.map((item) => {
+          return {
+            platformCoupon: platformCouponsDom(item, item?.platformCouponId),
+            rightGoods: goodsDom(item, item?.specialGoodsId),
+            rightCoupon: couponsDom(item, item?.ownerCouponIdString),
+          }[item?.tagType || 'platformCoupon'];
+        })
+      ) : (
         <Form.List
           name={type}
           rules={[
@@ -33,9 +40,19 @@ const ShareCoupon = (props) => {
             // console.log(fields);
             return (
               <>
+                <Form.ErrorList errors={errors} />
+                {handleType !== 'edit' && (
+                  <Form.Item>
+                    <Button type="link" onClick={() => setVisible(true)}>
+                      {'+ 新增'}
+                    </Button>
+                  </Form.Item>
+                )}
+
                 {fields.map((field, i) => (
                   <FormList
                     type={type}
+                    handleType={handleType}
                     key={field.fieldKey}
                     form={form}
                     fields={fields}
@@ -44,17 +61,11 @@ const ShareCoupon = (props) => {
                     move={move}
                   ></FormList>
                 ))}
-                <Form.ErrorList errors={errors} />
-                <Form.Item>
-                  <Button type="link" onClick={() => setVisible(true)}>
-                    {'+ 新增'}
-                  </Button>
-                </Form.Item>
               </>
             );
           }}
         </Form.List>
-      }
+      )}
       {
         //  平台券、权益商品、权益券
         <GoodsSelectModal

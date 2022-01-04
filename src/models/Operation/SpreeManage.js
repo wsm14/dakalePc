@@ -8,11 +8,16 @@ import {
   fetchUpdatePlatformGiftPack,
   fetchPagePlatformGiftPack,
   fetchGetPlatformGiftPackDetail,
+  fetchShelfPlatformGiftPackOn,
+  fetchShelfPlatformGiftPackOff,
+  fetchAddTotalPlatformGiftPack,
+  fetchListUserGiftReceiveByPage,
+  fetchListUserCouponByGift,
 } from '@/services/OperationServices';
 import moment from 'moment';
 
 export default {
-  namespace: 'SpreeManage',
+  namespace: 'spreeManage',
 
   state: {
     list: {
@@ -20,6 +25,14 @@ export default {
       total: 0,
     },
     giftTypeList: [],
+    getRecordList: {
+      list: [],
+      total: 0,
+    },
+    getUseInfoList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -116,22 +129,92 @@ export default {
       const response = yield call(fetchGetPlatformGiftPackDetail, payload);
       if (!response) return;
       const { content } = response;
-      const { platformGiftPackDetail } = content;
-      const { getRuleObject, activeDate, paymentModeObject, buyFlag, ...other } =
-        platformGiftPackDetail;
-
+      const { platformGiftPackDetail = {} } = content;
+      const {
+        getRuleObject,
+        activeDate,
+        endDate,
+        paymentModeObject = {},
+        buyFlag,
+        platformGiftPackRelateList = [],
+        ...other
+      } = platformGiftPackDetail;
       const data = {
         ...other,
         ...getRuleObject,
-        activeDate: [moment(activeDate, 'YYYY-DD-MM'), moment(endDate, 'YYYY-DD-MM')],
+        activeDate: [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         buyFlagType: paymentModeObject.type === 'self' ? '2' : buyFlag == '0' ? '0' : '1',
         bean: paymentModeObject.type === 'self' && paymentModeObject.bean,
         buyPrice: paymentModeObject.type === 'self' && paymentModeObject.cash,
+        platformGiftPackRelateList: platformGiftPackRelateList.map((item) => ({
+          tagType: item.relateType,
+          ...(item.platformCoupon || item.activityGoods || item.ownerCoupon || {}),
+        })),
       };
 
-      console.log(content.platformGiftPackDetail);
-      return;
-      callback && callback(content.platformGiftPackDetail);
+      // console.log(data);
+      // return;
+      callback && callback(data);
+    },
+    // 礼包 - 下架
+    *fetchShelfPlatformGiftPackOff({ payload, callback }, { call }) {
+      const response = yield call(fetchShelfPlatformGiftPackOff, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '礼包下架成功',
+      });
+      callback && callback();
+    },
+    // 礼包 - 上架
+    *fetchShelfPlatformGiftPackOn({ payload, callback }, { call }) {
+      const response = yield call(fetchShelfPlatformGiftPackOn, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '礼包上架成功',
+      });
+      callback && callback();
+    },
+    // 礼包 - 增加库存
+    *fetchAddTotalPlatformGiftPack({ payload, callback }, { call }) {
+      const response = yield call(fetchAddTotalPlatformGiftPack, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '增加库存成功',
+      });
+      callback && callback();
+    },
+    // 领取明细
+    *fetchListUserGiftReceiveByPage({ payload }, { call, put }) {
+      const response = yield call(fetchListUserGiftReceiveByPage, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          getRecordList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
+    },
+    // get 礼包管理 - 礼包 - 领取明细 - 用户券明细
+    *fetchListUserCouponByGift({ payload }, { call, put }) {
+      const response = yield call(fetchListUserCouponByGift, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          getUseInfoList: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
     },
   },
 };

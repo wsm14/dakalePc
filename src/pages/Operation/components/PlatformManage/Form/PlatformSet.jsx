@@ -71,7 +71,9 @@ const CouponSet = (props) => {
               setTicket(e.target.value);
               form.setFieldsValue({
                 useScenesType: e.target.value,
+                ruleCondition: '0',
               });
+              saveSelectData({ areaFlag: '0' });
             }}
             className={styles.btn_Bbox}
           >
@@ -138,7 +140,19 @@ const CouponSet = (props) => {
       max: 999999,
       min: 0,
       precision: 2,
-      rules: [{ required: true, message: `请输入使用门槛价格` }],
+      rules: [
+        { required: true, message: `请输入使用门槛价格` },
+        {
+          validator: (rule, value) => {
+            const thresholdPrice = Number(value);
+            const couponValue = Number(form.getFieldValue('couponValue'));
+            if (couponValue > thresholdPrice) {
+              return Promise.reject('使用门槛须高于券价值');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       addonBefore: '满',
       addonAfter: '元可用',
     },
@@ -230,6 +244,16 @@ const CouponSet = (props) => {
           ? ['全国可用']
           : ['全国可用', '部分地区可用', '部分地区不可用'],
       name: 'ruleCondition',
+      addRules: [
+        {
+          validator: (rule, value) => {
+            if (value != '0' && citys.length == 0) {
+              return Promise.reject('请选择城市');
+            }
+            return Promise.resolve();
+          },
+        },
+      ],
       onChange: (e) => (saveSelectData({ areaFlag: e.target.value }), setCitys([])),
     },
     {

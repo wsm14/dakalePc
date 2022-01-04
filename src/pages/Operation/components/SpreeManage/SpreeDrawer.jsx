@@ -9,14 +9,13 @@ const CouponDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail, giftTypeList } = props;
 
   const { type = 'info', platformGiftId, show = false, detail = {} } = visible;
-  const [spreeList, setSpreeList] = useState([]); // 暂存选择的所有城市
 
   const [form] = Form.useForm();
 
   useEffect(() => {
     if (show) {
       dispatch({
-        type: 'SpreeManage/fetchListGiftType',
+        type: 'spreeManage/fetchListGiftType',
       });
     }
   }, [show]);
@@ -24,7 +23,7 @@ const CouponDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      console.log('values', values);
+      // console.log('values', values);
       // return;
       const {
         giftTypeId,
@@ -40,8 +39,8 @@ const CouponDrawer = (props) => {
       } = values;
       dispatch({
         type: {
-          add: 'SpreeManage/fetchCreatePlatformGiftPack',
-          edit: 'SpreeManage/fetchUpdatePlatformGiftPack',
+          add: 'spreeManage/fetchCreatePlatformGiftPack',
+          edit: 'spreeManage/fetchUpdatePlatformGiftPack',
         }[type],
         payload: {
           platformGiftId,
@@ -49,7 +48,12 @@ const CouponDrawer = (props) => {
           giftTypeId,
           giftType: giftTypeList.filter((i) => i.giftTypeId == giftTypeId)[0]?.type,
           buyFlag: buyFlagType === '0' ? '0' : '1',
-          buyPrice: buyFlagType === '1' ? buyPrice : bean / 100 + buyPrice,
+          buyPrice:
+            buyFlagType === '0'
+              ? undefined
+              : buyFlagType === '1'
+              ? buyPrice
+              : bean / 100 + buyPrice,
           paymentModeObject:
             buyFlagType === '2' ? { type: 'self', bean, cash: buyPrice } : { type: 'defaultMode' },
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
@@ -79,15 +83,13 @@ const CouponDrawer = (props) => {
 
   const listProp = {
     type,
-    spreeList,
-    setSpreeList,
     giftTypeList,
   };
   // 统一处理弹窗
   const drawerProps = {
     info: {
       title: '礼包详情',
-      children: <SpreeDetail detail={detail}></SpreeDetail>,
+      children: <SpreeDetail giftTypeList={giftTypeList} detail={detail}></SpreeDetail>,
     },
     add: {
       title: '新建礼包',
@@ -115,10 +117,10 @@ const CouponDrawer = (props) => {
   return <DrawerCondition {...modalProps}>{drawerProps.children}</DrawerCondition>;
 };
 
-export default connect(({ SpreeManage, loading }) => ({
-  giftTypeList: SpreeManage.giftTypeList,
+export default connect(({ spreeManage, loading }) => ({
+  giftTypeList: spreeManage.giftTypeList,
   loading:
-    loading.effects['SpreeManage/fetchCreatePlatformGiftPack'] ||
-    loading.effects['SpreeManage/fetchUpdatePlatformGiftPack'],
-  loadingDetail: loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
+    loading.effects['spreeManage/fetchCreatePlatformGiftPack'] ||
+    loading.effects['spreeManage/fetchUpdatePlatformGiftPack'],
+  loadingDetail: loading.effects['spreeManage/fetchGetPlatformGiftPackDetail'],
 }))(CouponDrawer);

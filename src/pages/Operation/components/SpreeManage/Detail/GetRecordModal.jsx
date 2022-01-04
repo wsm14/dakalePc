@@ -1,96 +1,71 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'umi';
 import { Modal } from 'antd';
-import { FREE_COUPON_STATUS, FREE_COUPON_SCENE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
+import SpreeUserUseInfo from './SpreeUserUseInfo';
 
 const GetRecordModal = (props) => {
   const { visible, onClose, loading, getRecordList } = props;
   const { show = false, detail = {} } = visible;
-  const { ownerCouponIdString = '' } = detail;
+  const { platformGiftId = '' } = detail;
+
+  const childRef = useRef();
+  const [state, setState] = useState(false); // 使用情况
 
   // 搜索参数
   const searchItems = [
     {
-      label: '领取人',
-      name: 'userId',
+      label: '领取用户',
       type: 'user',
+      name: 'userId',
     },
     {
-      label: '状态',
-      type: 'select',
-      name: 'couponStatus',
-      select: FREE_COUPON_STATUS,
-    },
-    {
-      label: '视频ID',
-      name: 'momentId',
-    },
-    {
-      label: '领取日期',
+      label: '领取时间',
       type: 'rangePicker',
-      name: 'receiveTimeBegin',
-      end: 'receiveTimeEnd',
-    },
-    {
-      label: '核销/使用日期',
-      type: 'rangePicker',
-      name: 'verificationTimeBegin',
-      end: 'verificationTimeEnd',
-    },
-    {
-      label: '领取场景',
-      name: 'couponChannel',
-      type: 'select',
-      select: FREE_COUPON_SCENE,
+      name: 'createTimeBegin',
+      end: 'createTimeEnd',
     },
   ];
 
   // table 表头
   const getColumns = [
     {
-      title: '领取人',
+      title: '领取用户昵称',
       align: 'center',
       dataIndex: 'username',
-      render: (val, record) => (
-        <div>
-          <div>{val}</div>
-          <div>{record.userMobile}</div>
-          <div>{record.userBeanCode}</div>
-        </div>
-      ),
+    },
+    {
+      title: '用户手机号',
+      align: 'center',
+      dataIndex: 'mobile',
+    },
+    {
+      title: '用户豆号',
+      align: 'center',
+      dataIndex: 'beanCode',
     },
     {
       title: '领取时间',
       align: 'center',
-      dataIndex: 'receiveTime',
+      dataIndex: 'createTime',
     },
     {
-      title: '核销/使用时间',
+      type: 'handle',
       align: 'center',
-      dataIndex: 'verificationTime',
-    },
-    {
-      title: '领取场景',
-      align: 'center',
-      dataIndex: 'couponChannel',
-      render: (val) => FREE_COUPON_SCENE[val],
-    },
-    {
-      title: '关联视频ID',
-      align: 'center',
-      dataIndex: 'momentId',
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'couponStatus',
-      render: (val) => FREE_COUPON_STATUS[val],
+      dataIndex: 'userPlatformGiftReceiveId',
+      render: (val, detail) => {
+        return [
+          {
+            type: 'useInfo',
+            click: () => setState({ show: true, detail }),
+          },
+        ];
+      },
     },
   ];
 
   const modalProps = {
-    title: '领取核销记录',
+    title: '领取明细',
     visible: show,
     width: 1000,
     onCancel: onClose,
@@ -100,20 +75,27 @@ const GetRecordModal = (props) => {
       <Modal {...modalProps} destroyOnClose>
         <TableDataBlock
           noCard={false}
+          cRef={childRef}
           loading={loading}
           columns={getColumns}
           searchItems={searchItems}
-          rowKey={(record) => `${record.userCouponIdString}`}
-          params={{ ownerCouponIdString: ownerCouponIdString }}
-          dispatchType="couponManage/fetchListFreeReduceCouponReceiveVerificationRecord"
+          rowKey={(record) => `${record.userPlatformGiftReceiveId}`}
+          params={{ platformGiftId: platformGiftId }}
+          dispatchType="spreeManage/fetchListUserGiftReceiveByPage"
           {...getRecordList}
         ></TableDataBlock>
       </Modal>
+      {/* 使用情况 */}
+      <SpreeUserUseInfo
+        visible={state}
+        childRef={childRef}
+        onClose={() => setState(false)}
+      ></SpreeUserUseInfo>
     </>
   );
 };
 
-export default connect(({ couponManage, loading }) => ({
-  getRecordList: couponManage.getRecordList,
-  loading: loading.effects['couponManage/fetchListFreeReduceCouponReceiveVerificationRecord'],
+export default connect(({ spreeManage, loading }) => ({
+  getRecordList: spreeManage.getRecordList,
+  loading: loading.effects['spreeManage/fetchListUserGiftReceiveByPage'],
 }))(GetRecordModal);

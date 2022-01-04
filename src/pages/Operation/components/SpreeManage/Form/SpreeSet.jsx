@@ -7,18 +7,19 @@ import FormCondition from '@/components/FormCondition';
 import ShareCoupon from '../ShareCoupon/ShareCoupon';
 
 const CouponSet = (props) => {
-  const { form, type, spreeList, setSpreeList, initialValues, giftTypeList } = props;
+  const { form, type, initialValues, giftTypeList } = props;
 
   const [radioData, setRadioData] = useState({
     getLimit: 'unlimited', // 领取上限
     spreePrice: '0', // 礼包价格
   });
-  const { ruleType } = initialValues;
+  const { ruleType, buyFlagType } = initialValues;
 
   useEffect(() => {
-    if (initialValues.platformCouponId) {
+    if (initialValues.platformGiftId) {
       setRadioData({
         getLimit: ruleType, // 领取上限
+        spreePrice: buyFlagType, // 礼包价格
       });
     }
   }, [initialValues]);
@@ -31,6 +32,7 @@ const CouponSet = (props) => {
       label: '礼包类型',
       type: 'select',
       name: 'giftTypeId',
+      disabled: type === 'edit',
       select: giftTypeList,
       fieldNames: {
         label: 'typeValue',
@@ -45,6 +47,7 @@ const CouponSet = (props) => {
     {
       label: '领取价格',
       type: 'radio',
+      disabled: type === 'edit',
       name: 'buyFlagType',
       select: ['免费', '有价', '卡豆+现金'],
       onChange: (e) => saveSelectData({ spreePrice: e.target.value }),
@@ -52,6 +55,7 @@ const CouponSet = (props) => {
     {
       label: '卡豆数',
       name: 'bean',
+      disabled: type === 'edit',
       type: 'number',
       visible: radioData.spreePrice == '2',
       max: 999999,
@@ -63,6 +67,7 @@ const CouponSet = (props) => {
       label: '现金数',
       name: 'buyPrice',
       type: 'number',
+      disabled: type === 'edit',
       visible: radioData.spreePrice != '0',
       addonBefore: '￥',
       max: 999999,
@@ -85,11 +90,16 @@ const CouponSet = (props) => {
     {
       label: '礼包内容',
       name: 'platformGiftPackRelateList',
+      disabled: type === 'edit',
       type: 'formItem',
       required: true,
       formItem: (
         <>
-          <ShareCoupon type="platformGiftPackRelateList" form={form}></ShareCoupon>
+          <ShareCoupon
+            type="platformGiftPackRelateList"
+            handleType={type}
+            form={form}
+          ></ShareCoupon>
         </>
       ),
     },
@@ -112,6 +122,7 @@ const CouponSet = (props) => {
       type: 'radio',
       name: 'ruleType',
       select: COUPON_BUY_RULE, // { unlimited: '不限', personLimit: '每人限制', dayLimit: '每天限制' };
+      disabled: type === 'edit',
       onChange: (e) => saveSelectData({ getLimit: e.target.value }),
     },
     {
@@ -123,6 +134,7 @@ const CouponSet = (props) => {
       precision: 0,
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.getLimit === 'personLimit',
+      disabled: type === 'edit',
     },
     {
       label: `单人每天限制领取`,
@@ -133,6 +145,7 @@ const CouponSet = (props) => {
       precision: 0,
       addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.getLimit === 'dayLimit',
+      disabled: type === 'edit',
     },
     {
       label: '其他说明',

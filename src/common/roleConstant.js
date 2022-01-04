@@ -149,6 +149,7 @@ export const ROLE_BUTTON_TYPE = {
   userAdd: '新增用户',
   userEdit: '用户编辑',
   userStatus: '用户状态',
+  useInfo: '使用情况',
 
   videoAd: '视频广告',
 

@@ -209,7 +209,6 @@ const PlatformManage = (props) => {
           {
             title: '增加数量',
             type: 'addnum',
-            visible: ['1'].includes(status),
             click: () => fetAddRemain(platformCouponId, record.remain),
           },
         ];

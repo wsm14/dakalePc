@@ -29,7 +29,7 @@ const RemainModal = (props) => {
       label: `增加数量`,
       name: 'amount',
       extra: `剩余${remain}`,
-      maxLength: 6,
+      maxLength: 9,
       addRules: [
         {
           validator: (rule, value) => {

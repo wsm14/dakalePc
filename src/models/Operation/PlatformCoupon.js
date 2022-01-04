@@ -83,7 +83,7 @@ export default {
       const data = {
         ...other,
         ...getRuleObject,
-        activeDate: [moment(activeDate, 'YYYY-DD-MM'), moment(endDate, 'YYYY-DD-MM')],
+        activeDate: [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         ruleCondition:
           ruleConditionObjects[0].ruleConditionList[0].condition === 'all'
             ? '0'

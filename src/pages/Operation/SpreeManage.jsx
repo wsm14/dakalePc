@@ -1,17 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
-import { Tag, Tooltip } from 'antd';
-import {
-  COUPON_STATUS,
-  PLATFORM_TICKET_SCENE,
-  PLATFORM_TICKET_TYPE,
-  PLATFORM_COUPON_PEOPLE,
-} from '@/common/constant';
-import CITYJSON from '@/common/cityJson';
-import Ellipsis from '@/components/Ellipsis';
+import { COUPON_STATUS } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
-import { getCityName } from '@/utils/utils';
 import SpreeDrawer from './components/SpreeManage/SpreeDrawer';
 import RemainModal from './components/SpreeManage/Detail/RemainModal';
 import GetRecordModal from './components/SpreeManage/Detail/GetRecordModal';
@@ -30,7 +21,7 @@ const SpreeManage = (props) => {
 
   useEffect(() => {
     dispatch({
-      type: 'SpreeManage/fetchListGiftType',
+      type: 'spreeManage/fetchListGiftType',
     });
   }, []);
 
@@ -151,7 +142,6 @@ const SpreeManage = (props) => {
           {
             title: '增加数量',
             type: 'addnum',
-            visible: ['1'].includes(status),
             click: () => fetAddRemain(platformGiftId, record.remain),
           },
           {
@@ -176,8 +166,8 @@ const SpreeManage = (props) => {
   // 下架、上架
   const fetchDownCoupon = (platformGiftId, type) => {
     const url = {
-      down: 'platformCoupon/fetchPlatformCouponOff',
-      up: 'platformCoupon/fetchPlatformCouponOn',
+      down: 'spreeManage/fetchShelfPlatformGiftPackOff',
+      up: 'spreeManage/fetchShelfPlatformGiftPackOn',
     };
     dispatch({
       type: url[type],
@@ -191,7 +181,7 @@ const SpreeManage = (props) => {
   // 获取详情
   const fetchCouponDetail = (platformGiftId, type) => {
     dispatch({
-      type: 'SpreeManage/fetchGetPlatformGiftPackDetail',
+      type: 'spreeManage/fetchGetPlatformGiftPackDetail',
       payload: { platformGiftId },
       callback: (detail) => setVisible({ type, show: true, detail, platformGiftId }),
     });
@@ -220,7 +210,7 @@ const SpreeManage = (props) => {
         columns={getColumns}
         searchItems={searchItems}
         rowKey={(record) => `${record.platformGiftId}`}
-        dispatchType="SpreeManage/fetchGetList"
+        dispatchType="spreeManage/fetchGetList"
         {...spreeManageList}
       ></TableDataBlock>
       {/* 新增 编辑 详情 */}
@@ -246,10 +236,10 @@ const SpreeManage = (props) => {
   );
 };
 
-export default connect(({ SpreeManage, loading }) => ({
-  spreeManageList: SpreeManage.list,
-  giftTypeList: SpreeManage.giftTypeList,
+export default connect(({ spreeManage, loading }) => ({
+  spreeManageList: spreeManage.list,
+  giftTypeList: spreeManage.giftTypeList,
   loading:
-    loading.effects['SpreeManage/fetchGetList'] ||
-    loading.effects['SpreeManage/fetchGetPlatformGiftPackDetail'],
+    loading.effects['spreeManage/fetchGetList'] ||
+    loading.effects['spreeManage/fetchGetPlatformGiftPackDetail'],
 }))(SpreeManage);

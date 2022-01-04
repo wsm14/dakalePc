@@ -35,7 +35,7 @@ const TagModal = (props) => {
   // 获取礼包类型
   const handleGetTags = () => {
     dispatch({
-      type: 'SpreeManage/fetchListGiftType',
+      type: 'spreeManage/fetchListGiftType',
       callback: (tag) => {
         setTags(tag);
       },
@@ -45,8 +45,8 @@ const TagModal = (props) => {
   // 新增/修改礼包类型
   const handleSetTags = (val, type) => {
     const url = {
-      add: 'SpreeManage/fetchCreateGiftType',
-      edit: 'SpreeManage/fetchUpdateGiftType',
+      add: 'spreeManage/fetchCreateGiftType',
+      edit: 'spreeManage/fetchUpdateGiftType',
     };
     dispatch({
       type: url[type],
@@ -71,25 +71,26 @@ const TagModal = (props) => {
 
   // 回车时新增标签
   const handleInputConfirm = () => {
+    console.log(inputValue);
     setInputVisible(false);
     if (inputValue === '') return;
     // console.log(inputValue, tags, 'handleInputConfirm');
-    if (tags.some((item) => item.typeName === inputValue)) {
-      setInputValue('');
-      return;
-    }
+    // if (tags.some((item) => item.typeName === inputValue)) {
+    //   setInputValue('');
+    //   return;
+    // }
     handleSetTags({ typeName: inputValue }, 'add');
     setInputValue('');
   };
 
   // 回车修改时
   const handleEditInputConfirm = () => {
-    setInputVisible(false);
+    setEditInputId('');
     if (inputValue === '') return;
-    if (tags.some((item) => item.typeName === inputValue)) {
-      setInputValue('');
-      return;
-    }
+    // if (tags.some((item) => item.typeName === inputValue)) {
+    //   setInputValue('');
+    //   return;
+    // }
     handleSetTags({ typeName: inputValue, giftTypeId: editInputId }, 'edit');
     setInputValue('');
   };

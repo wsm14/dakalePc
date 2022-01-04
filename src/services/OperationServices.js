@@ -950,4 +950,42 @@ export function fetchGetPlatformGiftPackDetail(params) {
   });
 }
 
+// post 礼包管理 - 礼包 - 下架
+export function fetchShelfPlatformGiftPackOff(data) {
+  return request('/admin/platform/gift/pack/offShelfPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 礼包管理 - 礼包 - 上架
+export function fetchShelfPlatformGiftPackOn(data) {
+  return request('/admin/platform/gift/pack/onShelfPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 礼包管理 - 礼包 - 增加库存
+export function fetchAddTotalPlatformGiftPack(data) {
+  return request('/admin/platform/gift/pack/addTotalPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 礼包管理 - 礼包 - 领取明细
+export function fetchListUserGiftReceiveByPage(params) {
+  return request('/admin/platform/gift/pack/listUserGiftReceiveByPage', {
+    params,
+  });
+}
+
+// get 礼包管理 - 礼包 - 领取明细 - 用户券明细
+export function fetchListUserCouponByGift(params) {
+  return request('/admin/platform/gift/pack/listUserCouponByGift', {
+    params,
+  });
+}
+
 // 礼包管理 end

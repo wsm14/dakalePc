@@ -5,7 +5,7 @@ import { goodsDom, couponsDom, platformCouponsDom } from './CouponFreeDom';
 import styles from './index.less';
 
 const FormList = (props) => {
-  const { type, form, fields, field, remove, move } = props;
+  const { type, form, fields, field, remove, move, handleType } = props;
 
   return (
     <Space key={field.key} className={styles.ifame_carouseal} align="baseline">
@@ -44,7 +44,7 @@ const FormList = (props) => {
         //   </>
         // );
       })()}
-      {<DeleteOutlined onClick={() => remove(field.name)} />}
+      {handleType !== 'edit' && <DeleteOutlined onClick={() => remove(field.name)} />}
     </Space>
   );
 };

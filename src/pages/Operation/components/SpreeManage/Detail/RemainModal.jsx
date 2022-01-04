@@ -5,15 +5,15 @@ import FormCondition from '@/components/FormCondition';
 
 const RemainModal = (props) => {
   const { visible = {}, onClose, dispatch, loading, childRef } = props;
-  const { show = false, platformCouponId, remain } = visible;
+  const { show = false, platformGiftId, remain } = visible;
   const [form] = Form.useForm();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
       dispatch({
-        type: 'platformCoupon/fetchAddTotalPlatformCoupon',
+        type: 'spreeManage/fetchAddTotalPlatformGiftPack',
         payload: {
-          platformCouponId,
+          platformGiftId,
           ...values,
         },
         callback: () => {
@@ -29,7 +29,7 @@ const RemainModal = (props) => {
       label: `增加数量`,
       name: 'amount',
       extra: `剩余${remain}`,
-      maxLength: 6,
+      maxLength: 9,
       addRules: [
         {
           validator: (rule, value) => {
@@ -59,5 +59,5 @@ const RemainModal = (props) => {
   );
 };
 export default connect(({ loading }) => ({
-  loading: loading.effects['platformCoupon/fetchAddTotalPlatformCoupon'],
+  loading: loading.effects['spreeManage/fetchAddTotalPlatformGiftPack'],
 }))(RemainModal);
