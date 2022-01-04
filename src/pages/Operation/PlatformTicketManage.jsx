@@ -147,7 +147,7 @@ const PlatformManage = (props) => {
             <Tooltip
               placement="topLeft"
               title={arr.map((item) => {
-                return <span key={item.ruleIdString}>{`${getCityName(item.condition)}、`}</span>;
+                return <span key={item.condition}>{`${getCityName(item.condition)}、`}</span>;
               })}
             >
               部分地区可用
@@ -158,7 +158,7 @@ const PlatformManage = (props) => {
             <Tooltip
               placement="topLeft"
               title={arr.map((item) => {
-                return <span key={item.ruleIdString}>{`${getCityName(item.condition)}、`}</span>;
+                return <span key={item.condition}>{`${getCityName(item.condition)}、`}</span>;
               })}
             >
               部分地区不可用
@@ -276,8 +276,6 @@ const PlatformManage = (props) => {
       <PlatformDrawer
         childRef={childRef}
         visible={visible}
-        total={list.length}
-        getDetail={fetchCouponDetail}
         onClose={() => setVisible(false)}
       ></PlatformDrawer>
       {/* 增加数量 */}
@@ -292,9 +290,7 @@ const PlatformManage = (props) => {
 
 export default connect(({ platformCoupon, loading }) => ({
   platformCouponList: platformCoupon.list,
-  loadings: loading,
   loading:
     loading.effects['platformCoupon/fetchGetList'] ||
-    loading.effects['couponManage/fetchCouponSet'] ||
-    loading.effects['couponManage/fetchCouponDetail'],
+    loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
 }))(PlatformManage);

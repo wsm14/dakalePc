@@ -53,6 +53,7 @@ export const delectFormProps = (data) => {
   delete divProps.formItem;
   delete divProps.name;
   delete divProps.select;
+  delete divProps.style;
   delete divProps.visible;
   delete divProps.addRules;
   delete divProps.loading;

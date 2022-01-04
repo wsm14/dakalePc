@@ -35,6 +35,8 @@ import {
   fetchListImportSubsidyRole,
   fetchListUserByIds,
   fetchGetPlatformEquitySelect,
+  fetchGetEquityCouponSelect,
+  fetchPlatformCouponSelect,
 } from '@/services/PublicServices';
 
 export default {
@@ -61,6 +63,8 @@ export default {
     CouponListSearch: [],
     goodsList: [],
     platformEquity: { list: [], total: 0 },
+    EquityCoupon: { list: [], total: 0 },
+    PlatformCoupon: { list: [], total: 0 },
   },
 
   reducers: {
@@ -321,6 +325,37 @@ export default {
         type: 'save',
         payload: {
           platformEquity: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+    // 权益券
+    *fetchGetEquityCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetEquityCouponSelect, {
+        ...payload,
+        adminFlag: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          EquityCoupon: { list: content.recordList, total: content.total },
+        },
+      });
+    },
+
+    // 平台券
+    *fetchPlatformCouponSelect({ payload }, { call, put }) {
+      const response = yield call(fetchPlatformCouponSelect, {
+        ...payload,
+        adminFlag: 1,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          PlatformCoupon: { list: content.recordList, total: content.total },
         },
       });
     },

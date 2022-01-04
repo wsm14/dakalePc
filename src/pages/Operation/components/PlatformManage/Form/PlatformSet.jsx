@@ -117,6 +117,7 @@ const CouponSet = (props) => {
       name: 'couponDesc',
       rules: [{ required: false }],
       maxLength: 30,
+      placeholder: '仅内部可见，最多30字',
     },
     {
       label: '券价值',
@@ -233,29 +234,30 @@ const CouponSet = (props) => {
     },
     {
       type: 'formItem',
-      style: { paddingLeft: 150 },
       visible: radioData.areaFlag != '0',
       formItem: (
-        <Row gutter={8}>
-          <Col span={18}>
-            <Form.Item name="cityCode" noStyle>
-              <Select disabled={type === 'edit'} placeholder="请选择城市" allowClear>
-                {cityList.map((item) => {
-                  return (
-                    <Option key={item.id} value={item.id}>
-                      {item.name}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={6}>
-            <Button disabled={type === 'edit'} type="primary" onClick={addCity}>
-              添加
-            </Button>
-          </Col>
-        </Row>
+        <div style={{ paddingLeft: 150 }}>
+          <Row gutter={8}>
+            <Col span={18}>
+              <Form.Item name="cityCode" noStyle>
+                <Select disabled={type === 'edit'} placeholder="请选择城市" allowClear>
+                  {cityList.map((item) => {
+                    return (
+                      <Option key={item.id} value={item.id}>
+                        {item.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Button disabled={type === 'edit'} type="primary" onClick={addCity}>
+                添加
+              </Button>
+            </Col>
+          </Row>
+        </div>
       ),
     },
     {
@@ -299,6 +301,7 @@ const CouponSet = (props) => {
       label: '其他说明',
       type: 'textArea',
       name: 'otherDesc',
+      maxLength: 100,
       rules: [{ required: false }],
     },
   ];
