@@ -24,6 +24,10 @@ export default {
       list: [],
       total: 0,
     },
+    gameEquityList: {
+      list: [],
+      total: 0,
+    },
   },
 
   reducers: {
@@ -95,7 +99,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          gameSignList: {
+          gameEquityList: {
             list: content.recordList,
             total: content.total,
           },

@@ -23,9 +23,11 @@ const ActiveTemplate = (props) => {
 
   useEffect(() => {
     if (visible.show) {
-      const { params, handle } = info;
+      const { params, handle, type } = info;
       // 初始化数据
       dispatchData({ type: 'initialize' });
+      if (type === 'globalModal')
+        dispatchData({ type: 'saveModuleData', payload: { backgroundColor: 'rgba(0,0,0,0.8)' } });
       handle === 'edit' && dispatchData({ type: 'saveModuleData', payload: params });
       // 拦截页面关闭刷新
       const listener = (ev) => {

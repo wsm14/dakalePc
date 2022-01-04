@@ -154,6 +154,7 @@ const ExpertUserAchievement = (props) => {
       title: '卡豆抵扣金额',
       align: 'center',
       dataIndex: 'beanDeductionSum',
+      render: (val) => `${(Number(val) / 100).toFixed(2)}`,
     },
     {
       title: '关联BD',

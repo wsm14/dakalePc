@@ -22,9 +22,15 @@
     min-height: 100%;
     line-height: 1.15;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    &.gloadModal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
     .previewer_cell {
       position: relative;
-      width: 375px;
+      width: auto;
       cursor: pointer;
       transition: all 200ms ease 0s;
       &:hover {
@@ -83,10 +89,18 @@
         }
       }
     }
+    .model_close {
+      width: 25px;
+      height: 25px;
+      margin: 24px auto 0;
+      background: url('https://wechat-config.dakale.net/miniprogram/image/icon778.png') no-repeat;
+      background-size: 100% 100%;
+    }
     .previewer_basket {
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 375px;
       height: 0px;
       overflow: hidden;
       color: rgb(61, 127, 255);

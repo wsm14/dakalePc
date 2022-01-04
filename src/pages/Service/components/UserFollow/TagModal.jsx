@@ -115,10 +115,12 @@ const TagModal = (props) => {
     setEditInputValue(e.target.value);
   };
 
+  // 双击修改
   const handleEditInputConfirm = () => {
     const newTags = [...tags];
     newTags[editInputIndex] = editInputValue;
-    setTags(newTags);
+    // setTags(newTags);
+    handleSetTags(newTags.join(','));
     // form.setFieldsValue({ extraParam: newTags });
     setEditInputIndex('-1');
     setEditInputValue('');
@@ -206,7 +208,7 @@ const TagModal = (props) => {
           )}
           {!inputVisible && (
             <AuthConsumer auth="addTags">
-              <Tag className="site-tag-plus" onClick={showInput}>
+              <Tag color="#108ee9" className="site-tag-plus" onClick={showInput}>
                 {/* <PlusOutlined /> New Tag */}
                 新增
               </Tag>

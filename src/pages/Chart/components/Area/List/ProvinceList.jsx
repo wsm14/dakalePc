@@ -96,6 +96,7 @@ const ProvinceTotalComponent = (props) => {
 
   return (
     <TableDataBlock
+      pagination={false}
       firstFetch={false}
       noCard={false}
       cRef={childRef}

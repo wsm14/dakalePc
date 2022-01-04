@@ -62,7 +62,8 @@ const BasketDom = ({
  */
 const ActiveTemplateIframe = (props) => {
   const { context, styBasket, setStyBasket } = props;
-  const { dispatchData, showPanel, moduleData } = useContext(context);
+  const { dispatchData, showPanel, moduleData, info = {} } = useContext(context);
+  const { type } = info;
 
   const { dataList } = moduleData;
 
@@ -94,12 +95,12 @@ const ActiveTemplateIframe = (props) => {
   return (
     <div className={styles.active_Template_content}>
       <div className={styles.previewer_component}>
+        {moduleData['share'] && <ShareShowDom data={moduleData['share']}></ShareShowDom>}
         <div
           id="previewer_wrap"
-          className={styles.previewer_wrap}
+          className={`${styles.previewer_wrap} ${type === 'globalModal' && styles.gloadModal}`}
           style={{ backgroundColor: moduleData['backgroundColor'] }}
         >
-          {moduleData['share'] && <ShareShowDom data={moduleData['share']}></ShareShowDom>}
           <BasketDom index={0} {...dropProps}></BasketDom>
           {dataList.map((item, index) => (
             <React.Fragment key={`${index}`}>
@@ -117,6 +118,7 @@ const ActiveTemplateIframe = (props) => {
               <BasketDom index={index + 1} {...dropProps}></BasketDom>
             </React.Fragment>
           ))}
+          {type === 'globalModal' && <div className={styles.model_close}></div>}
         </div>
       </div>
     </div>

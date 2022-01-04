@@ -13,6 +13,7 @@ import { DescSet } from '@/components/FormListCondition';
 import FormCondition from '@/components/FormCondition';
 
 const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
+  console.log('initialValues', initialValues);
   //活动中隐藏的编辑项//edit 独有不展示
   const editDisabled = ['edit'].includes(editActive);
 
@@ -190,11 +191,7 @@ const PreferentialRuleSet = ({ form, editActive, initialValues = {} }) => {
   ];
 
   return (
-    <FormCondition
-      form={form}
-      formItems={formItems}
-      initialValues={{ needOrder: 0, allowRefund: 1, allowExpireRefund: 1, ...initialValues }}
-    ></FormCondition>
+    <FormCondition form={form} formItems={formItems} initialValues={initialValues}></FormCondition>
   );
 };
 

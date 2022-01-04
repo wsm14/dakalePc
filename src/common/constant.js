@@ -657,8 +657,9 @@ export const COMMISSION_TYPE = {
 
 // 活动模版类型
 export const ACTIVE_TEMPLATE_TYPE = {
-  active: '活动模版',
-  rule: '规则模版',
+  active: '活动',
+  rule: '规则',
+  globalModal: '全局弹窗',
 };
 
 // 新闻分类

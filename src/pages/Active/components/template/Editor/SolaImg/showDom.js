@@ -1,6 +1,11 @@
 import React from 'react';
 
 // 回显dom
-export default ({ img }) => {
-  return <img src={img} style={{ width: '100%' }}></img>;
+export default ({ img, width, height }) => {
+  return (
+    <img
+      src={img}
+      style={{ width: width ? width / 2 : '100%', height: height ? height / 2 : 'auto' }}
+    ></img>
+  );
 };

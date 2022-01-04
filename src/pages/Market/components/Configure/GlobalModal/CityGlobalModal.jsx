@@ -6,7 +6,6 @@ import TableDataBlock from '@/components/TableDataBlock';
 import ShareWeightSet from './components/ShareWeightSet';
 import GlobalModalDrawerSet from './components/GlobalModalDrawerSet';
 import { MODAL_FREQUENCY, MARKET_LOOK_AREA, MARKET_STATUS_TYPE } from '@/common/constant';
-import moment from 'moment';
 
 const tabList = [
   {
@@ -28,7 +27,8 @@ const tabList = [
 ];
 
 const CityGlobalModal = (props) => {
-  const { modalConfigureList, loading, visible, onClose, dispatch } = props;
+  const { modalConfigureList, userOs, loading, visible, onClose, dispatch } = props;
+
   const { show, detail = {} } = visible;
   const childRef = useRef();
   //tab切换
@@ -214,6 +214,7 @@ const CityGlobalModal = (props) => {
       </Modal>
       {/* 新增/编辑 */}
       <GlobalModalDrawerSet
+        userOs={userOs}
         visible={visibleSet}
         childRef={childRef}
         onClose={() => setVisibleSet(false)}
