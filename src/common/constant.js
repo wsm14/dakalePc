@@ -836,3 +836,44 @@ export const MATERIAL_JUMP_TYPE = {
   community: '哒小团小程序',
   mark: '哒小卡小程序',
 };
+
+// 平台券管理 - 券使用场景类型
+export const PLATFORM_TICKET_SCENE = {
+  goodsBuy: '商品',
+  // scan: '扫码',
+  virtual: '虚拟品',
+  commerce: '电商品',
+  // community: '团购',
+};
+
+// 平台券管理 - 券类型
+export const PLATFORM_TICKET_TYPE = {
+  universal: '通用券',
+  // category:'行业券',
+  // merchant:'店铺券',
+  // goods:'商品券',
+};
+
+// 平台券管理 - 使用时间
+export const PLATFORM_USERTIME_TYPE = { fixed: '固定时间', gain: '领取后' };
+
+// 平台券管理 - 适用人群
+export const PLATFORM_COUPON_PEOPLE = { all: '全部', daren: '哒人' };
+
+// 平台券管理 - 适用端口
+export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
+
+// 平台券管理 - 适用端口type
+export const PLATFORM_APPLY_PORT_TYPE = {
+  app: 'APP',
+  wechat: '哒卡乐小程序',
+  markWechat: '哒小卡小程序',
+  communityWechat: '哒小团小程序',
+};
+
+// 礼包管理 - 卡券类型
+export const SPREE_MANAGE_TYPE = {
+  platformCoupon: '平台券',
+  rightGoods: '权益商品',
+  rightCoupon: '权益券',
+};

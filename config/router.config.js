@@ -440,6 +440,18 @@ export default [
       },
       // 店铺运营 operation
       {
+        path: '/operation/spreeManage',
+        name: '礼包管理',
+        component: './Operation/SpreeManage',
+        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up', 'set'],
+      },
+      {
+        path: '/operation/platformTicketManage',
+        name: '平台券管理',
+        component: './Operation/PlatformTicketManage',
+        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up'],
+      },
+      {
         path: '/operation/share',
         name: '视频管理',
         component: './Operation/ShareManage',

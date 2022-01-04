@@ -829,3 +829,163 @@ export function fetchAuditMomentDetail(params) {
 }
 
 // 视频审核 end
+
+// 平台券
+
+// get 平台券 - 分页列表
+export function fetchPagePlatformCoupon(params) {
+  return request('/admin/platform/coupon/pagePlatformCoupon', {
+    params,
+  });
+}
+
+// get 平台券 - 详情
+export function fetchGetPlatformCouponDetail(params) {
+  return request('/admin/platform/coupon/getPlatformCouponDetail', {
+    params,
+  });
+}
+
+// post 平台券 - 创建平台券 - 新增
+export function fetchPlatformCouponSave(data) {
+  return request('/admin/platform/coupon/createPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 创建平台券 - 编辑
+export function fetchPlatformCouponUpdate(data) {
+  return request('/admin/platform/coupon/updatePlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 下架
+export function fetchPlatformCouponOff(data) {
+  return request('/admin/platform/coupon/offShelfPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 上架
+export function fetchPlatformCouponOn(data) {
+  return request('/admin/platform/coupon/onShelfPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 平台券 - 增加库存
+export function fetchAddTotalPlatformCoupon(data) {
+  return request('/admin/platform/coupon/addTotalPlatformCoupon', {
+    method: 'POST',
+    data,
+  });
+}
+
+// 平台券 end
+
+// 礼包管理
+
+// get 礼包管理 - 礼包类型 - 列表 - 不分页
+export function fetchListGiftType(params) {
+  return request('/admin/gift/type/listGiftType', {
+    params,
+  });
+}
+
+// post 礼包管理 - 礼包类型 - 新增
+export function fetchCreateGiftType(data) {
+  return request('/admin/gift/type/createGiftType', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 礼包管理 - 礼包类型 - 修改
+export function fetchUpdateGiftType(data) {
+  return request('/admin/gift/type/updateGiftType', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 礼包管理 - 礼包类型 - 详情
+export function fetchGetGiftTypeById(params) {
+  return request('/admin/gift/type/getGiftTypeById', {
+    params,
+  });
+}
+
+// post 礼包管理 - 礼包 - 新增
+export function fetchCreatePlatformGiftPack(data) {
+  return request('/admin/platform/gift/pack/createPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 礼包管理 - 礼包 - 编辑
+export function fetchUpdatePlatformGiftPack(data) {
+  return request('/admin/platform/gift/pack/updatePlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 礼包管理 - 礼包 - 列表
+export function fetchPagePlatformGiftPack(params) {
+  return request('/admin/platform/gift/pack/pagePlatformGiftPack', {
+    params,
+  });
+}
+
+// get 礼包管理 - 礼包 - 详情
+export function fetchGetPlatformGiftPackDetail(params) {
+  return request('/admin/platform/gift/pack/getPlatformGiftPackDetail', {
+    params,
+  });
+}
+
+// post 礼包管理 - 礼包 - 下架
+export function fetchShelfPlatformGiftPackOff(data) {
+  return request('/admin/platform/gift/pack/offShelfPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 礼包管理 - 礼包 - 上架
+export function fetchShelfPlatformGiftPackOn(data) {
+  return request('/admin/platform/gift/pack/onShelfPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 礼包管理 - 礼包 - 增加库存
+export function fetchAddTotalPlatformGiftPack(data) {
+  return request('/admin/platform/gift/pack/addTotalPlatformGiftPack', {
+    method: 'POST',
+    data,
+  });
+}
+
+// get 礼包管理 - 礼包 - 领取明细
+export function fetchListUserGiftReceiveByPage(params) {
+  return request('/admin/platform/gift/pack/listUserGiftReceiveByPage', {
+    params,
+  });
+}
+
+// get 礼包管理 - 礼包 - 领取明细 - 用户券明细
+export function fetchListUserCouponByGift(params) {
+  return request('/admin/platform/gift/pack/listUserCouponByGift', {
+    params,
+  });
+}
+
+// 礼包管理 end

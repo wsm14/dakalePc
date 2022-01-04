@@ -30,6 +30,20 @@ export function fetchGetFreeCouponSelect(params) {
   });
 }
 
+// get 店铺选择权益券列表
+export function fetchGetEquityCouponSelect(params) {
+  return request('/admin/coupon/listOwnerCouponToAction', {
+    params,
+  });
+}
+
+// get 平台券列表
+export function fetchPlatformCouponSelect(params) {
+  return request('/admin/platform/coupon/pagePlatformCoupon', {
+    params,
+  });
+}
+
 // get 店铺选择有价券列表
 export function fetchGetBuyCouponSelect(params) {
   return request('/admin/coupon/listOwnerCouponNeedBuy', {
