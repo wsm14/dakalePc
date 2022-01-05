@@ -25,13 +25,17 @@ export default [
       'member',
       'selfTourResource',
       'newProductRecommend',
-      'specialAndSelfTourAndCommerce',
-      'selfTourAndCommerce',
     ],
   },
   {
     header: '商品推荐流',
     type: 'video',
-    children: ['selfTour', 'specialRecommend', 'commerceGoods'],
+    children: [
+      'selfTour',
+      'specialRecommend',
+      'commerceGoods',
+      'specialAndSelfTourAndCommerce',
+      'selfTourAndCommerce',
+    ],
   },
 ];
