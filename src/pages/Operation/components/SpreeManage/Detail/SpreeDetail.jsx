@@ -19,8 +19,13 @@ const GoodsDetail = (props) => {
     },
     {
       label: '礼包价格',
-      name: 'buyPrice',
-      render: (val, row) => (val == '' ? '免费' : `￥${Number(val).toFixed(2)}`),
+      name: 'buyFlagType',
+      render: (val, row) =>
+        val === '0'
+          ? '免费'
+          : val === '1'
+          ? `￥${Number(row.buyPrice).toFixed(2)}`
+          : `${row.bean}卡豆+${Number(row.buyPriceCash).toFixed(2)}元`,
     },
     {
       label: '礼包价值',
