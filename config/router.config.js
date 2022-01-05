@@ -438,6 +438,12 @@ export default [
         component: './Market/NoviceAdvert',
         buttons: ['save', 'info', 'down', 'peasDetail', 'again', 'diary'],
       },
+      // 哒小卡 daMarkCard
+      {
+        path: '/daMarkCard/pointManage',
+        name: '点位管理',
+        // component: './DaMarkCard/PointManage',
+      },
       // 店铺运营 operation
       {
         path: '/operation/spreeManage',
