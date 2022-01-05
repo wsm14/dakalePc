@@ -13,7 +13,7 @@ export default [
   {
     header: '功能区',
     type: 'img',
-    children: ['windVane', 'resource'],
+    children: ['windVane', 'resource', 'beanEducation'],
   },
   {
     header: '商品推荐',
@@ -25,6 +25,8 @@ export default [
       'member',
       'selfTourResource',
       'newProductRecommend',
+      'specialAndSelfTourAndCommerce',
+      'selfTourAndCommerce',
     ],
   },
   {

@@ -8,12 +8,6 @@ import { DatePicker } from 'antd';
 
 const { RangePicker } = DatePicker;
 
-// 起始时间限制
-const disTime = moment('2020-03-01');
-
-// 限制选择时间
-const disabledDate = (current) => (current && current > moment().endOf('day')) || current < disTime;
-
 // 时间计算
 const returnDay = (day, type) => [moment().subtract(day, type), moment()];
 
@@ -48,7 +42,7 @@ const DatePickerBlock = (props) => {
           moment(moment().startOf('month')).subtract(1, 'month'),
           moment(moment().startOf('month')).subtract(1, 'day'),
         ]}
-        disabledDate={pDisabledDate || disabledDate}
+        disabledDate={pDisabledDate}
         ranges={pRanges || pDisabledDate ? '' : ranges}
         {...other}
       />

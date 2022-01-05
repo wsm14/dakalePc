@@ -129,6 +129,12 @@ const SpreeManage = (props) => {
           {
             title: '下架',
             auth: 'down',
+            pop: true,
+            popText: (
+              <div style={{ width: 200 }}>
+                {'确定要下架吗？请确认该礼包未投放到资源位，否则用户将无法领取或购买。'}
+              </div>
+            ),
             visible: ['1'].includes(status),
             click: () => fetchDownCoupon(platformGiftId, 'down'),
           },
