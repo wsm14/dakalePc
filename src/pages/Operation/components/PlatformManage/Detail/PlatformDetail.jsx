@@ -4,6 +4,7 @@ import {
   PLATFORM_TICKET_SCENE,
   PLATFORM_TICKET_TYPE,
   PLATFORM_COUPON_PEOPLE,
+  PLATFORM_APPLY_PORT_TYPE,
 } from '@/common/constant';
 import { getCityName } from '@/utils/utils';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -89,7 +90,8 @@ const GoodsDetail = (props) => {
     {
       label: '适用端口',
       name: 'consortUserOs',
-      render: (val, row) => (val === 'all' ? '全平台' : row.apply.join(',')),
+      render: (val, row) =>
+        val === 'all' ? '全平台' : row.apply.map((item) => `${PLATFORM_APPLY_PORT_TYPE[item]},`),
     },
     {
       label: '其他说明',

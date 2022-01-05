@@ -204,9 +204,9 @@ const CommerceGoods = (props) => {
   //  批量分账
   const handleOk = () => {
     dispatch({
-      type: 'ordersList/fetchOrderDeliverGoods',
+      type: 'ordersList/fetchBatchSplitAccount',
       payload: {
-        orderIdList: goodsList.join(','),
+        orderIdList: goodsList,
       },
       callback: () => {
         childRef.current.fetchGetData();
