@@ -189,21 +189,23 @@ const CommerceGoods = (props) => {
         {
           title: record?.status === '3' ? '已分账' : '分账',
           type: 'routing',
-          pop: record?.status !== '3' ? true : false,
+          pop: ['8'].includes(record.status) && true,
+          popText: '确定要进行分账吗？分账后无法取消。',
           visible: ['3', '8'].includes(record.status),
-          disabled: ['8'].includes(record.status),
-          click: () => console.log(['8'].includes(record.status)),
+          disabled: ['3'].includes(record.status),
+          click: () => handleOk(val.split(','), 'one'),
         },
       ],
     },
   ];
 
   //  批量分账
-  const handleOk = () => {
+  const handleOk = (id, type = '') => {
     dispatch({
       type: 'ordersList/fetchBatchSplitAccount',
       payload: {
-        orderIdList: goodsList,
+        orderIdList: type === 'one' ? id : goodsList,
+        type,
       },
       callback: () => {
         childRef.current.fetchGetData();

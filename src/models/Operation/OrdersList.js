@@ -92,12 +92,20 @@ export default {
     },
     // post 订单列表 - 批量分账
     *fetchBatchSplitAccount({ payload, callback }, { call }) {
-      const response = yield call(fetchBatchSplitAccount, payload);
+      const { type, ...other } = payload;
+      const response = yield call(fetchBatchSplitAccount, { ...other });
       if (!response) return;
-      notification.success({
-        message: '温馨提示',
-        description: '批量分账成功',
-      });
+      if (type === 'one') {
+        notification.success({
+          message: '温馨提示',
+          description: '分账成功',
+        });
+      } else {
+        notification.success({
+          message: '温馨提示',
+          description: '批量分账成功',
+        });
+      }
       callback && callback();
     },
   },

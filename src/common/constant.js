@@ -258,17 +258,7 @@ export const ORDERS_STATUS = [
 ];
 
 // 电商订单状态
-export const COMMERCE_ORDERS_STATUS = [
-  '待支付',
-  '待发货',
-  '已退款',
-  '已完成',
-  '',
-  '',
-  '退款中',
-  '',
-  '已发货',
-];
+export const COMMERCE_ORDERS_STATUS = ['', '待发货', '已退款', '已完成', '', '', '', '', '已发货'];
 
 // 订单关闭状态 ---原来的“已关闭”状态 ORDERS_STATUS 进行了拆分：
 export const ORDER_CLOSE_TYPE = {
