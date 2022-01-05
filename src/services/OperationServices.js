@@ -502,6 +502,14 @@ export function fetchOrderRefundOwn(data) {
   });
 }
 
+// post 订单列表 - 批量分账
+export function fetchBatchSplitAccount(data) {
+  return request('/admin/orderManagement/batchSplitAccount', {
+    method: 'POST',
+    data,
+  });
+}
+
 // post 电商订单-发货
 export function fetchOrderDeliverGoods(data) {
   return request('/admin/orderManagement/deliverGoods', {

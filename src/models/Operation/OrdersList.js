@@ -6,6 +6,7 @@ import {
   fetchOrderRefundOwn,
   fetchOrderDeliverGoods,
   fetchOrdersListActionLog,
+  fetchBatchSplitAccount,
 } from '@/services/OperationServices';
 
 export default {
@@ -88,6 +89,24 @@ export default {
         return;
       }
       callback(recordList);
+    },
+    // post 订单列表 - 批量分账
+    *fetchBatchSplitAccount({ payload, callback }, { call }) {
+      const { type, ...other } = payload;
+      const response = yield call(fetchBatchSplitAccount, { ...other });
+      if (!response) return;
+      if (type === 'one') {
+        notification.success({
+          message: '温馨提示',
+          description: '分账成功',
+        });
+      } else {
+        notification.success({
+          message: '温馨提示',
+          description: '批量分账成功',
+        });
+      }
+      callback && callback();
     },
   },
 };

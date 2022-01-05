@@ -65,7 +65,7 @@ const CouponSet = (props) => {
     },
     {
       label: '现金数',
-      name: 'buyPrice',
+      name: 'buyPriceCash',
       type: 'number',
       disabled: type === 'edit',
       visible: radioData.spreePrice != '0',

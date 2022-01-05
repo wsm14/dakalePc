@@ -5,6 +5,8 @@ import DescriptionsCondition from '@/components/DescriptionsCondition';
 const GoodsDetail = (props) => {
   const { detail = {}, giftTypeList = [] } = props;
 
+  console.log('detail', detail);
+
   const mreFormItems = [
     {
       label: '礼包类型',
@@ -17,13 +19,18 @@ const GoodsDetail = (props) => {
     },
     {
       label: '礼包价格',
-      name: 'buyPrice',
-      render: (val) => (val == '' ? '免费' : `￥${val}`),
+      name: 'buyFlagType',
+      render: (val, row) =>
+        val === '0'
+          ? '免费'
+          : val === '1'
+          ? `￥${Number(row.buyPrice).toFixed(2)}`
+          : `${row.bean}卡豆+${Number(row.buyPriceCash).toFixed(2)}元`,
     },
     {
       label: '礼包价值',
       name: 'giftValue',
-      render: (val) => `￥${val}`,
+      render: (val) => `￥${Number(val).toFixed(2)}`,
     },
     {
       label: '礼包内容',

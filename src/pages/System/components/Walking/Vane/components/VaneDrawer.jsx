@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
-import { VANE_ICON, VANE_BANNER } from '@/common/imgRatio';
+import { VANE_ICON, VANE_BANNER, VANE_BEAN_ICON } from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
@@ -13,8 +13,8 @@ const VaneDrawer = (props) => {
   const { dispatch, cRef, visible, onClose, loading, tradeList, cityCode } = props;
 
   const { show = false, type = 'add', detail = {} } = visible;
-  const { topCategoryId, version, userOs, areaType } = detail;
-  console.log(detail);
+  const { topCategoryId, version, userOs, areaType, type: tabKey } = detail;
+
   const [form] = Form.useForm();
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
@@ -68,6 +68,7 @@ const VaneDrawer = (props) => {
         dispatch({
           type: allProps.api,
           payload: {
+            type: tabKey,
             areaType: areaType,
             flag: allProps.flag,
             userOs,
@@ -122,8 +123,11 @@ const VaneDrawer = (props) => {
       type: 'upload',
       name: 'image',
       maxFile: 1,
-      extra: '请上传80*80尺寸png、jpeg格式图片',
-      imgRatio: VANE_ICON,
+      extra:
+        tabKey === 'windVane'
+          ? '请上传80*80尺寸png、jpeg格式图片'
+          : '请上传335*160尺寸png、jpeg、gif格式图片',
+      imgRatio: tabKey === 'windVane' ? VANE_ICON : VANE_BEAN_ICON,
     },
     {
       label: '显示气泡',

@@ -30,6 +30,7 @@ const CouponDrawer = (props) => {
         buyFlagType,
         bean,
         buyPrice,
+        buyPriceCash,
         activeDate,
         ruleType,
         personLimit,
@@ -37,6 +38,7 @@ const CouponDrawer = (props) => {
         platformGiftPackRelateList,
         ...other
       } = values;
+
       dispatch({
         type: {
           add: 'spreeManage/fetchCreatePlatformGiftPack',
@@ -52,10 +54,14 @@ const CouponDrawer = (props) => {
             buyFlagType === '0'
               ? undefined
               : buyFlagType === '1'
-              ? buyPrice
-              : bean / 100 + buyPrice,
+              ? buyPriceCash
+              : bean / 100 + buyPriceCash,
           paymentModeObject:
-            buyFlagType === '2' ? { type: 'self', bean, cash: buyPrice } : { type: 'defaultMode' },
+            buyFlagType === '2'
+              ? { type: 'self', bean, cash: buyPriceCash }
+              : buyFlagType === '1'
+              ? { type: 'defaultMode' }
+              : undefined,
           activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
           endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
           getRuleObject: {

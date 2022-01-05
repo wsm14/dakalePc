@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
-import { Avatar } from 'antd';
+import { Avatar, Modal } from 'antd';
 import { COMMERCE_ORDERS_STATUS, ORDER_CLOSE_TYPE, ORDER_PAY_LOGO } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import OrderDetailDraw from '../OrderDetailDraw';
@@ -15,6 +15,8 @@ const CommerceGoods = (props) => {
 
   const [visible, setVisible] = useState(false);
   const [visivleSet, setVisivleSet] = useState(false);
+  const [goodsList, setGoodsList] = useState([]); // 选中的列表
+  const [visibleRouting, setVisibleRouting] = useState(false);
 
   const childRef = useRef();
 
@@ -181,12 +183,36 @@ const CommerceGoods = (props) => {
         },
         {
           type: 'goodsView',
-          visible: ['3'].includes(record.status),
+          visible: ['3', '8'].includes(record.status),
           click: () => fetchOderDrawer('info', record),
+        },
+        {
+          title: record?.status === '3' ? '已分账' : '分账',
+          type: 'routing',
+          pop: ['8'].includes(record.status) && true,
+          popText: '确定要进行分账吗？分账后无法取消。',
+          visible: ['3', '8'].includes(record.status),
+          disabled: ['3'].includes(record.status),
+          click: () => handleOk(val.split(','), 'one'),
         },
       ],
     },
   ];
+
+  //  批量分账
+  const handleOk = (id, type = '') => {
+    dispatch({
+      type: 'ordersList/fetchBatchSplitAccount',
+      payload: {
+        orderIdList: type === 'one' ? id : goodsList,
+        type,
+      },
+      callback: () => {
+        childRef.current.fetchGetData();
+        setVisibleRouting(false);
+      },
+    });
+  };
 
   const extraBtn = ({ get }) => [
     {
@@ -194,6 +220,11 @@ const CommerceGoods = (props) => {
       dispatch: 'ordersList/fetchOrdersImport',
       data: { ...get(), orderType: tabkey },
       exportProps: { header: excelHeder },
+    },
+    {
+      text: '批量分账',
+      auth: 'batchRouting',
+      onClick: () => setVisibleRouting(true),
     },
   ];
 
@@ -208,6 +239,12 @@ const CommerceGoods = (props) => {
         searchItems={searchItems}
         params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
+        rowSelection={{
+          // getCheckboxProps: ({ status }) => ({
+          //   disabled: ['1', '8'].includes(status),
+          // }),
+          onChange: setGoodsList,
+        }}
         dispatchType="ordersList/fetchGetList"
         {...ordersList}
       ></TableDataBlock>
@@ -224,6 +261,15 @@ const CommerceGoods = (props) => {
       {/* 发货 */}
       {/*  查看物流*/}
       <OrderDrawer childRef={childRef} visible={visivleSet} onClose={() => setVisivleSet(false)} />
+      {/* 确认分账 */}
+      <Modal
+        title="提示"
+        visible={visibleRouting}
+        onOk={handleOk}
+        onCancel={() => setVisibleRouting(false)}
+      >
+        确定要进行分账吗？分账后无法取消。
+      </Modal>
     </>
   );
 };

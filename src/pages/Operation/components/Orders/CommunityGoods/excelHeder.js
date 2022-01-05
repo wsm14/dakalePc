@@ -1,5 +1,4 @@
-import { checkCityName } from '@/utils/utils';
-import { COMMERCE_ORDERS_STATUS, ORDERS_STATUS } from '@/common/constant';
+import { ORDERS_STATUS } from '@/common/constant';
 
 // 导出表头
 export default [

@@ -196,6 +196,7 @@ const PlatformManage = (props) => {
           {
             title: '下架',
             auth: 'down',
+            pop: true,
             visible: ['1'].includes(status),
             click: () => fetchDownCoupon(platformCouponId, 'down'),
           },

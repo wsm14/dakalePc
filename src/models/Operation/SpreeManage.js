@@ -137,6 +137,7 @@ export default {
         paymentModeObject = {},
         buyFlag,
         platformGiftPackRelateList = [],
+        buyPrice,
         ...other
       } = platformGiftPackDetail;
       const data = {
@@ -145,7 +146,8 @@ export default {
         activeDate: [moment(activeDate, 'YYYY-MM-DD'), moment(endDate, 'YYYY-MM-DD')],
         buyFlagType: paymentModeObject.type === 'self' ? '2' : buyFlag == '0' ? '0' : '1',
         bean: paymentModeObject.type === 'self' && paymentModeObject.bean,
-        buyPrice: paymentModeObject.type === 'self' && paymentModeObject.cash,
+        buyPrice,
+        buyPriceCash: (paymentModeObject.type === 'self' && paymentModeObject.cash) || buyPrice,
         platformGiftPackRelateList: platformGiftPackRelateList.map((item) => ({
           tagType: item.relateType,
           ...(item.platformCoupon || item.activityGoods || item.ownerCoupon || {}),
