@@ -44,9 +44,9 @@ const GoodsDetail = (props) => {
       label: '券有效期',
       name: 'useTimeRule',
       render: (val, row) => {
-        const { activeDate, endDate, delayDays, activeDays } = row;
-        if (activeDate && endDate) {
-          return activeDate + '~' + endDate;
+        const { activeDate, delayDays, activeDays } = row;
+        if (val == 'fixed') {
+          return activeDate[0].format('YYYY-MM-DD') + '~' + activeDate[1].format('YYYY-MM-DD');
         } else {
           if (delayDays === '0') {
             return `领取后立即生效,有效期${activeDays}天`;
@@ -77,7 +77,7 @@ const GoodsDetail = (props) => {
         return (
           <div>
             <div>{['全国可用', '部分地区可用', '部分地区不可用'][val]}</div>
-            <div>{row.citys.map((item) => `${getCityName(item)}、`)}</div>
+            {val != 0 && <div>{row.citys.map((item) => `${getCityName(item)}、`)}</div>}
           </div>
         );
       },

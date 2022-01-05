@@ -59,13 +59,14 @@ export default {
       callback && callback();
     },
     // post 平台券 - 编辑平台券 - 编辑
-    *fetchPlatformCouponUpdate({ payload }, { call }) {
+    *fetchPlatformCouponUpdate({ payload, callback }, { call }) {
       const response = yield call(fetchPlatformCouponUpdate, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '平台券编辑成功',
       });
+      callback && callback();
     },
     // get 平台券 - 详情
     *fetchGetPlatformCouponDetail({ payload, callback }, { call }) {
