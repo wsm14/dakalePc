@@ -15,9 +15,9 @@ import selfTourResource from './Img/selfTourResource.png';
 import newProductRecommend from './Img/newProductRecommend.png';
 import beanSpecialArea from './Img/beanSpecialArea.png';
 import commerceGoods from './Img/commerceGoods.png';
-import beanEducation from './Img/commerceGoods.png';
-import specialAndSelfTourAndCommerce from './Img/commerceGoods.png';
-import selfTourAndCommerce from './Img/commerceGoods.png';
+import beanEducation from './Img/beanEducation.png';
+import specialAndSelfTourAndCommerce from './Img/specialAndSelfTourAndCommerce.png';
+import selfTourAndCommerce from './Img/selfTourAndCommerce.png';
 
 /**
  * 组件库
