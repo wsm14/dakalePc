@@ -6,6 +6,11 @@ import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
 import VaneDrawer from './components/VaneDrawer';
 
+const tabList = [
+  { key: 'windVane', tab: '风向标' },
+  { key: 'beanEducation', tab: '卡豆教育' },
+];
+
 const VaneManage = (props) => {
   const { list, loading, dispatch, visible = {}, onClose } = props;
   const { show, detail = {} } = visible;
@@ -13,6 +18,7 @@ const VaneManage = (props) => {
 
   const childRef = useRef();
   const [visibleDrawer, setVisibleDrawer] = useState(false);
+  const [tabKey, setTabKey] = useState('windVane');
 
   // 获取详情
   const fetchGetDetail = (val, record, type) => {
@@ -112,22 +118,46 @@ const VaneManage = (props) => {
       text: '新增',
       className: 'dkl_blue_btn',
       onClick: () => {
-        setVisibleDrawer({ type: 'add', show: true, detail: { userOs, version, areaType } });
+        setVisibleDrawer({
+          type: 'add',
+          show: true,
+          detail: { userOs, version, areaType, type: tabKey },
+        });
       },
     },
   ];
+  const handleTabChange = (key) => {
+    setTabKey(key);
+    childRef?.current?.fetchGetData({
+      type: key,
+      userOs,
+      version,
+      areaType,
+      areaCode,
+      isAutomatic: 0,
+      deleteFlag: 1,
+    });
+  };
   return (
     <>
       <Modal destroyOnClose {...modalProps}>
         <TableDataBlock
           tableSort={{ key: 'configWindVaneId', onSortEnd: fetchDetailSort }}
-          noCard={false}
+          cardProps={{ tabList, activeTabKey: tabKey, onTabChange: handleTabChange }}
           cRef={childRef}
           btnExtra={cardBtnList}
           loading={loading}
           pagination={false}
           columns={getColumns}
-          params={{ userOs, version, areaType, areaCode, isAutomatic: 0, deleteFlag: 1 }}
+          params={{
+            type: tabKey,
+            userOs,
+            version,
+            areaType,
+            areaCode,
+            isAutomatic: 0,
+            deleteFlag: 1,
+          }}
           rowKey={(record) => `${record.configWindVaneId}`}
           dispatchType="walkingManage/fetchGetWindVaneConfigureList"
           {...list}
