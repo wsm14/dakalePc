@@ -443,7 +443,7 @@ export default [
         path: '/operation/spreeManage',
         name: '礼包管理',
         component: './Operation/SpreeManage',
-        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up', 'set'],
+        buttons: ['addnum', 'info', 'edit', 'down', 'save', 'up', 'set', 'getRecord'],
       },
       {
         path: '/operation/platformTicketManage',

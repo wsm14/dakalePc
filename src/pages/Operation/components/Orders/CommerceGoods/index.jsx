@@ -70,7 +70,7 @@ const CommerceGoods = (props) => {
       label: '订单状态',
       name: 'status',
       type: 'select',
-      select: [...COMMERCE_ORDERS_STATUS, '', '已分账'],
+      select: COMMERCE_ORDERS_STATUS,
     },
     {
       label: '下单日期',
@@ -154,7 +154,7 @@ const CommerceGoods = (props) => {
       render: (val, row) => (
         <>
           <span style={{ display: 'inline-flex', marginBottom: 5 }}>
-            {[...COMMERCE_ORDERS_STATUS, '', '已分账'][val]}
+            {COMMERCE_ORDERS_STATUS[val]}
             <Avatar
               src={ORDER_PAY_LOGO[row.orderSource]}
               size="small"
@@ -187,12 +187,9 @@ const CommerceGoods = (props) => {
           click: () => fetchOderDrawer('info', record),
         },
         {
-          title: {
-            3: '分账',
-            8: '已分账',
-          }[record?.status],
+          title: record?.status === '3' ? '已分账' : '分账',
           type: 'routing',
-          pop: ['3'].includes(record.status) ? true : false,
+          pop: record?.status !== '3' ? true : false,
           visible: ['3', '8'].includes(record.status),
           disabled: ['8'].includes(record.status),
           click: () => console.log(['8'].includes(record.status)),
@@ -241,9 +238,9 @@ const CommerceGoods = (props) => {
         params={{ orderType: tabkey }}
         rowKey={(record) => `${record.orderId}`}
         rowSelection={{
-          getCheckboxProps: ({ status }) => ({
-            disabled: ['1', '8'].includes(status),
-          }),
+          // getCheckboxProps: ({ status }) => ({
+          //   disabled: ['1', '8'].includes(status),
+          // }),
           onChange: setGoodsList,
         }}
         dispatchType="ordersList/fetchGetList"

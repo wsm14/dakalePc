@@ -57,6 +57,7 @@ const GetRecordModal = (props) => {
         return [
           {
             type: 'useInfo',
+            auth: true,
             click: () => setState({ show: true, detail }),
           },
         ];
