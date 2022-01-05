@@ -49,13 +49,14 @@ export default {
       });
     },
     // post 平台券 - 创建平台券 - 新增
-    *fetchPlatformCouponSave({ payload }, { call }) {
+    *fetchPlatformCouponSave({ payload, callback }, { call }) {
       const response = yield call(fetchPlatformCouponSave, payload);
       if (!response) return;
       notification.success({
         message: '温馨提示',
         description: '平台券新增成功',
       });
+      callback && callback();
     },
     // post 平台券 - 编辑平台券 - 编辑
     *fetchPlatformCouponUpdate({ payload }, { call }) {

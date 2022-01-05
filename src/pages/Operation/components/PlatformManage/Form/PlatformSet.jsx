@@ -146,7 +146,7 @@ const CouponSet = (props) => {
           validator: (rule, value) => {
             const thresholdPrice = Number(value);
             const couponValue = Number(form.getFieldValue('couponValue'));
-            if (couponValue > thresholdPrice) {
+            if (couponValue >= thresholdPrice) {
               return Promise.reject('使用门槛须高于券价值');
             }
             return Promise.resolve();
@@ -182,7 +182,6 @@ const CouponSet = (props) => {
       max: 999,
       min: 0,
       precision: 0,
-      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.effectTime === 'gain',
     },
     {
@@ -194,7 +193,6 @@ const CouponSet = (props) => {
       max: 999,
       min: 0,
       precision: 0,
-      addRules: [{ pattern: NUM_INT, message: '份数必须为整数，且不可为0' }],
       visible: radioData.effectTime === 'gain',
     },
     {

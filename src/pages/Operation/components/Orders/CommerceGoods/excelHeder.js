@@ -51,7 +51,7 @@ export default [
   {
     title: '订单状态',
     dataIndex: 'status',
-    render: (val) => COMMERCE_ORDERS_STATUS[val],
+    render: (val) => [...COMMERCE_ORDERS_STATUS, '', '已分账'][val],
   },
   {
     title: '收货信息',

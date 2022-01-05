@@ -18,6 +18,7 @@ export const ROLE_BUTTON_TYPE = {
   batchEdit: '批量修改',
   baseTrade: '基础设施',
   bussinessStatus: '营业状态',
+  batchRouting: '批量分账',
 
   copy: '复制',
   check: '审核',
@@ -108,6 +109,7 @@ export const ROLE_BUTTON_TYPE = {
   rewardPeo: '打赏设置',
   recover: '恢复',
   rewardInfo: '打赏明细',
+  routing: '分账',
 
   set: '设置',
   save: '新增',

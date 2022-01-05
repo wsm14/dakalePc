@@ -112,6 +112,8 @@ const CouponDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading: loading.effects['platformCoupon/fetchPlatformCouponSave'],
+  loading:
+    loading.effects['platformCoupon/fetchPlatformCouponSave'] ||
+    loading.effects['platformCoupon/fetchPlatformCouponUpdate'],
   loadingDetail: loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
 }))(CouponDrawer);

@@ -14,7 +14,16 @@ const HandleSetTable = (props) => {
   const getFields = () => {
     const children = [];
     formItems.forEach((item, index) => {
-      const { type = 'button', title, visible = true, pop, auth = false, click, popText } = item;
+      const {
+        type = 'button',
+        title,
+        visible = true,
+        pop,
+        auth = false,
+        click,
+        popText,
+        disabled,
+      } = item;
 
       // 默认pop确认弹窗
       const popType = ['del', 'send', 'up', 'down'];
@@ -28,7 +37,7 @@ const HandleSetTable = (props) => {
         type === 'text' ? (
           btnText
         ) : (
-          <Button type="link" size="small" onClick={click}>
+          <Button disabled={disabled} type="link" size="small" onClick={click}>
             {btnText}
           </Button>
         );
@@ -50,7 +59,7 @@ const HandleSetTable = (props) => {
               okText="确认"
               cancelText="取消"
             >
-              <Button type="link" size="small">
+              <Button disabled={disabled} type="link" size="small">
                 {btnText}
               </Button>
             </Popconfirm>
