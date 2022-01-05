@@ -183,7 +183,7 @@ const CommerceGoods = (props) => {
         },
         {
           type: 'goodsView',
-          visible: ['8'].includes(record.status),
+          visible: ['3', '8'].includes(record.status),
           click: () => fetchOderDrawer('info', record),
         },
         {
