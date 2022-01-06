@@ -24,8 +24,14 @@ const PlatformSet = (props) => {
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
+  // 获取城市code
+  const handleGetDistrictCode = (lnglat) => {
+    fetch(`https://restapi.amap.com/v3/geocode/regeo?key=${AMAP_KEY}&location=${lnglat}`);
+  };
+
   // 获取城市定位
   const onSearchAddress = debounce((address = '') => {
+    if (!address) return;
     setFetching(true);
     fetch(`https://restapi.amap.com/v3/place/text?key=${AMAP_KEY}&keywords=${address}`)
       .then((res) => {
@@ -37,11 +43,6 @@ const PlatformSet = (props) => {
             else if (address) {
               console.log('高德搜索到的list', list);
               setLocalList(list);
-            } else {
-              const geocodes = list[0].location.split(',');
-              const longitude = parseFloat(geocodes[0]); // 经度
-              const latitude = parseFloat(geocodes[1]); // 纬度
-              setLocation([longitude, latitude]);
             }
           });
         }
@@ -97,7 +98,7 @@ const PlatformSet = (props) => {
             style={{ width: 300 }}
           >
             {localList.map((d, i) => (
-              <Select.Option key={d.location}>
+              <Select.Option key={i} value={d.location}>
                 {i + 1 + '、' + ' ' + d.name}
                 <div>{d.adname + d.address}</div>
               </Select.Option>
