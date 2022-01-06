@@ -62,11 +62,13 @@ export default [
   },
   {
     title: '买家姓名',
-    dataIndex: 'userName',
+    dataIndex: 'organizationGoodsOrderDescObject',
+    render: (val) => `${val?.writeContactPerson}`,
   },
   {
     title: '买家手机号',
-    dataIndex: 'userMobile',
+    dataIndex: 'organizationGoodsOrderDescObject',
+    render: (val) => `${val?.writeMobile}`,
   },
   {
     title: '订单状态',
