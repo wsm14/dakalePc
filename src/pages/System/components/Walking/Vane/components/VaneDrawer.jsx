@@ -4,6 +4,7 @@ import { Button, Form } from 'antd';
 import { VANE_URL_TYPE } from '@/common/constant';
 import { VANE_ICON, VANE_BANNER, VANE_BEAN_ICON } from '@/common/imgRatio';
 import { checkFileData } from '@/utils/utils';
+import { NewNativeFormSet } from '@/components/FormListCondition';
 import aliOssUpload from '@/utils/aliOssUpload';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -19,13 +20,6 @@ const VaneDrawer = (props) => {
   const [showPop, setShowPop] = useState(false); // 显示气泡
   const [showUrl, setShowUrl] = useState(false); // 显示选择框或者URL
   const [cateList, setCateList] = useState([]);
-
-  const NATIVE_TYPE = {
-    specialArea: '卡豆专区',
-    phoneBill: '话费充值',
-    memberRecharge: '会员充值',
-    blindBox: '盲盒',
-  };
 
   const allProps = {
     add: {
@@ -52,6 +46,7 @@ const VaneDrawer = (props) => {
         topCategoryId: tId = '',
         categoryId = '',
         windVaneParamObject = {},
+        param,
         jumpType,
         nativeJumpType,
       } = values;
@@ -83,7 +78,7 @@ const VaneDrawer = (props) => {
             windVaneParamObject:
               jumpType === 'trade'
                 ? { ...windVaneParam, bannerImage: res.slice(1).toString() }
-                : '',
+                : param,
           },
           callback: () => {
             onClose();
@@ -144,19 +139,17 @@ const VaneDrawer = (props) => {
     },
     {
       label: '跳转类型',
-      type: 'radio',
       name: 'jumpType',
-      select: VANE_URL_TYPE,
-      onChange: (e) => {
-        setShowUrl(e.target.value);
-      },
+      type: 'noForm',
+      formItem: (
+        <NewNativeFormSet
+          jumpTypeSelect={VANE_URL_TYPE}
+          form={form}
+          detail={detail}
+          getJumpType={setShowUrl}
+        ></NewNativeFormSet>
+      ),
       render: (val) => VANE_URL_TYPE[val],
-    },
-    {
-      label: '原生跳转类型',
-      name: 'nativeJumpType',
-      visible: false,
-      show: false,
     },
     {
       label: '链接',
@@ -234,15 +227,6 @@ const VaneDrawer = (props) => {
       maxFile: 1,
       imgRatio: VANE_BANNER,
       visible: showUrl === 'trade',
-    },
-    {
-      label: '跳转内容',
-      type: 'select',
-      name: 'nativeJumpType',
-      select: NATIVE_TYPE,
-      show: showUrl === 'native',
-      visible: showUrl === 'native',
-      render: (val) => NATIVE_TYPE[val],
     },
   ];
 

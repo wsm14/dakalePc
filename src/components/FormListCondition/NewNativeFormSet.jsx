@@ -10,13 +10,21 @@ const FormItem = Form.Item;
 
 /**
  * 全局跳转app h5 设置表单
+ * @param {Array} jumpTypeSelect 自定义跳转类型入参
  * @param {Object} detail 表单回填参数
  * jumpType 链接类型, nativeJumpType app打开的页面类型, param = {} app 跳转需要的参数键
  * @param {String} port 进入端口 user 用户 merchant 商家 mark 哒卡小程序
  * @param {Function} getJumpType 外围获取跳转类型 回调
  * @returns
  */
-const NewNativeFormSet = ({ detail = {}, port = 'user', getJumpType, form, dispatch }) => {
+const NewNativeFormSet = ({
+  jumpTypeSelect,
+  detail = {},
+  port = 'user',
+  getJumpType,
+  form,
+  dispatch,
+}) => {
   const [showUrl, setShowUrl] = useState(false); // 链接类型 h5 inside
   const [showApi, setShowApi] = useState(false); // 打开的页面类型
   const [paramKey, setParamKey] = useState(['paramName', 'paramValue']); // app 跳转需要的参数键
@@ -65,9 +73,10 @@ const NewNativeFormSet = ({ detail = {}, port = 'user', getJumpType, form, dispa
       >
         <Radio
           select={
-            ['mark', 'merchant'].includes(port)
+            jumpTypeSelect ||
+            (['mark', 'merchant'].includes(port)
               ? (({ native, ...other }) => other)(MARKET_JUMP_TYPE) // 商家端 哒卡小程序进入时映射
-              : MARKET_JUMP_TYPE // 默认进入映射
+              : MARKET_JUMP_TYPE) // 默认进入映射
           }
           onChange={(e) => {
             setShowUrl(e.target.value); // 设置跳转类型

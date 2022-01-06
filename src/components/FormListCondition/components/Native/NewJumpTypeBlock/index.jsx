@@ -13,7 +13,8 @@ const FormItem = Form.Item;
  * @param {Function} setParamKey inside 原生页面时 app 跳转需要的参数键
  */
 const JumpTypeBlock = ({ nativeList, showUrl = false, setShowApi, setParamKey = {} }) => {
-  if (!showUrl) return null;
+  if (!['无', 'h5', 'native'].includes(showUrl)) return null;
+
   return {
     无: null,
     h5: (
