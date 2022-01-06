@@ -86,6 +86,7 @@ const SpreeUserUseInfo = (props) => {
           noCard={false}
           loading={loading}
           columns={getColumns}
+          pagination={false}
           // searchItems={searchItems}
           rowKey={(record) => `${record.userCouponIdString}`}
           params={{ userId: userId, platformGiftId: platformGiftId }}

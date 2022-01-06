@@ -29,10 +29,7 @@ export default {
       list: [],
       total: 0,
     },
-    getUseInfoList: {
-      list: [],
-      total: 0,
-    },
+    getUseInfoList: [],
   },
 
   reducers: {
@@ -211,10 +208,7 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          getUseInfoList: {
-            list: content.recordList,
-            total: content.total,
-          },
+          getUseInfoList: content.userCouponDTOS,
         },
       });
     },
