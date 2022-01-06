@@ -139,9 +139,8 @@ const PlatformManage = (props) => {
       title: '使用地区限制',
       dataIndex: 'ruleConditionObjects',
       render: (val, row) => {
-        const ruleCondition = val.find(
-          (item) =>
-            item.ruleType === 'availableAreaRule' || item.ruleType === 'unavailableAreaRule',
+        const ruleCondition = val.find((item) =>
+          ['availableAreaRule', 'unavailableAreaRule'].includes(item.ruleType),
         );
         const arr = ruleCondition?.ruleConditionList || [];
         if (arr[0]?.condition == 'all') {

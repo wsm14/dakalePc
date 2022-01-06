@@ -82,8 +82,8 @@ export default {
         consortUserOs,
         ...other
       } = platformCouponDetail;
-      const ruleCondition = ruleConditionObjects.find(
-        (item) => item.ruleType === 'availableAreaRule' || item.ruleType === 'unavailableAreaRule',
+      const ruleCondition = ruleConditionObjects.find((item) =>
+        ['availableAreaRule', 'unavailableAreaRule'].includes(item.ruleType),
       );
       const data = {
         ...other,
