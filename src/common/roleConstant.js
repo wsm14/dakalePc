@@ -13,6 +13,8 @@ export const ROLE_BUTTON_TYPE = {
   assistanceInfo: '助力详情',
   addTags: '新增标签',
   addnum: '增加数量',
+  award: '奖励',
+  advert: '广告',
 
   BDSet: '关联BD',
   batchEdit: '批量修改',
@@ -48,6 +50,10 @@ export const ROLE_BUTTON_TYPE = {
   end: '结束',
   edit: '编辑',
   exportList: '导出',
+  equityCoupon: '权益券',
+  equityGoods: '权益商品',
+  equityDummy: '虚拟权益',
+  equityCommerceGoods: '电商商品',
 
   goodsCode: '商品码',
   givePrize: '赠送',
@@ -85,10 +91,7 @@ export const ROLE_BUTTON_TYPE = {
   peasDetail: '卡豆明细',
   preview: '预览',
   portraitEdit: '编辑画像',
-  equityCoupon: '权益券',
-  equityGoods: '权益商品',
-  equityDummy: '虚拟权益',
-  equityCommerceGoods: '电商商品',
+  point: '点位',
 
   qrCode: '获取二维码',
 

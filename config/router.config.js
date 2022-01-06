@@ -442,7 +442,7 @@ export default [
       {
         path: '/daMarkCard/pointManage',
         name: '点位管理',
-        // component: './DaMarkCard/PointManage',
+        component: './DaMarkCard/PointManage',
       },
       // 店铺运营 operation
       {

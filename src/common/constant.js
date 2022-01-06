@@ -877,3 +877,20 @@ export const SPREE_MANAGE_TYPE = {
   rightGoods: '权益商品',
   rightCoupon: '权益券',
 };
+
+// 哒小卡 - 点位管理 - 主体类型
+export const MARK_CARD_MAIN_TYPE = {
+  school: '学校',
+  officeBuilding: '写字楼',
+  factory: '工厂',
+  enterprise: '企业',
+};
+
+// 哒小卡 - 点位管理 - 启用状态
+export const MARK_CARD_OPEN_STATE = ['停用', '启用'];
+
+// 哒小卡 - 点位管理 - 家主类型
+export const MARK_CARD_PARENT_TYPE = {
+  merchant: '店铺',
+  user: '用户',
+};
