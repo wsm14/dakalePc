@@ -3,6 +3,7 @@ import { connect } from 'umi';
 import { Form } from 'antd';
 import Merchant from '../Merchant';
 import ShareCoupon from './components/index';
+import { Select } from '@/components/FormCondition/formModule';
 
 const FormItem = Form.Item;
 
@@ -12,6 +13,7 @@ const FormItem = Form.Item;
  */
 const Coupon = ({ form, dispatch, paramKey }) => {
   const [data, setData] = useState({}); // 数据
+  const [owType, setOwType] = useState(''); // 店铺类型
 
   useEffect(() => {
     const ownerCouponId = form.getFieldValue(['param', paramKey[1]]);
@@ -36,9 +38,28 @@ const Coupon = ({ form, dispatch, paramKey }) => {
 
   return (
     <>
+      <FormItem
+        label="店铺类型"
+        name={['param', paramKey[2]]}
+        key={'ownerTypeStr'}
+        rules={[{ required: true, message: `请选择店铺类型` }]}
+        style={{ maxWidth: '100%' }}
+      >
+        <Select
+          select={{
+            merchant: '单店',
+            group: '集团',
+          }}
+          placeholder={'请选择店铺类型'}
+          onChange={(val) => {
+            setOwType(val);
+          }}
+        ></Select>
+      </FormItem>
       <Merchant
         form={form}
         paramKey={paramKey}
+        owType={owType}
         onChange={(val) => {
           form.setFieldsValue({ param: { [paramKey[1]]: undefined, ownerId: val } });
           setData({});

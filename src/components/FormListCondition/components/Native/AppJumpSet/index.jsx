@@ -13,6 +13,7 @@ export default (props) => {
     shareActive: input,
     vaneWind,
     merchant,
+    merchantGroup: merchant,
     specialGoods,
     coupon,
     beanSelection,
@@ -21,5 +22,9 @@ export default (props) => {
     commerceGoodsPackage: giftType,
   }[showApi];
   if (!ShowDom) return null;
-  return <ShowDom {...props}></ShowDom>;
+  let otherProps = {};
+  if (showApi === 'merchant' || showApi === 'merchantGroup') {
+    otherProps = { owType: { merchant: 'merchant', merchantGroup: 'group' }[showApi] };
+  }
+  return <ShowDom {...props} {...otherProps}></ShowDom>;
 };

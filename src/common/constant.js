@@ -425,6 +425,7 @@ const bannerType = {
   wanderAroundRecharge: '逛逛话费充值',
   wanderAroundBean: '逛逛卡豆专区',
   markMain: '哒卡主页',
+  marketingActivities: '营销活动',
 };
 
 // Banner类型
