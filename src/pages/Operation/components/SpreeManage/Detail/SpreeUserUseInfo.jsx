@@ -10,6 +10,8 @@ const SpreeUserUseInfo = (props) => {
   const { show = false, detail = {} } = visible;
   const { platformGiftId, userId } = detail;
 
+  console.log('getUseInfoList', getUseInfoList);
+
   // table 表头
   const getColumns = [
     {
@@ -78,6 +80,10 @@ const SpreeUserUseInfo = (props) => {
     afterClose: () => {
       childRef.current.fetchGetData();
     },
+    onOk: () => {
+      childRef.current.fetchGetData();
+      onClose();
+    },
   };
   return (
     <>
@@ -91,7 +97,7 @@ const SpreeUserUseInfo = (props) => {
           rowKey={(record) => `${record.userCouponIdString}`}
           params={{ userId: userId, platformGiftId: platformGiftId }}
           dispatchType="spreeManage/fetchListUserCouponByGift"
-          {...getUseInfoList}
+          list={getUseInfoList}
         ></TableDataBlock>
       </Modal>
     </>

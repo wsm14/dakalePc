@@ -101,6 +101,10 @@ const CouponDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
+    closeCallBack: () => {
+      setTicket('goodsBuy');
+      setCitys([]);
+    },
     footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         新增

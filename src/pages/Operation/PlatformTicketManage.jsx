@@ -139,10 +139,13 @@ const PlatformManage = (props) => {
       title: '使用地区限制',
       dataIndex: 'ruleConditionObjects',
       render: (val, row) => {
-        const arr = val[0].ruleConditionList;
+        const ruleCondition = val.find(
+          (item) => item.ruleType === ('availableAreaRule' || 'unavailableAreaRule'),
+        );
+        const arr = ruleCondition.ruleConditionList;
         if (arr[0].condition == 'all') {
           return '全国可用';
-        } else if (val[0].ruleType === 'availableAreaRule') {
+        } else if (ruleCondition.ruleType === 'availableAreaRule') {
           return (
             <Tooltip
               placement="topLeft"
