@@ -44,7 +44,7 @@ export default {
     </body>
     ${footer}
     <script>
-    $('body').on('click','.active_toast1',function(){native.nativeInit('close')});$('body').on('click','.drawer_close_box',function(){native.nativeInit('close')});$('body').on('click',function(){native.nativeInit('close')});
+    $('body').on('click','.active_toast1',function(){native.nativeInit('close')});$('body').on('click','.drawer_close_box',function(){native.nativeInit('close')});
     </script></html>
     `;
   },
