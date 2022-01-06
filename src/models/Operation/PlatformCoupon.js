@@ -83,7 +83,7 @@ export default {
         ...other
       } = platformCouponDetail;
       const ruleCondition = ruleConditionObjects.find(
-        (item) => item.ruleType === ('availableAreaRule' || 'unavailableAreaRule'),
+        (item) => item.ruleType === 'availableAreaRule' || item.ruleType === 'unavailableAreaRule',
       );
       const data = {
         ...other,

@@ -140,12 +140,13 @@ const PlatformManage = (props) => {
       dataIndex: 'ruleConditionObjects',
       render: (val, row) => {
         const ruleCondition = val.find(
-          (item) => item.ruleType === ('availableAreaRule' || 'unavailableAreaRule'),
+          (item) =>
+            item.ruleType === 'availableAreaRule' || item.ruleType === 'unavailableAreaRule',
         );
-        const arr = ruleCondition.ruleConditionList;
-        if (arr[0].condition == 'all') {
+        const arr = ruleCondition?.ruleConditionList || [];
+        if (arr[0]?.condition == 'all') {
           return '全国可用';
-        } else if (ruleCondition.ruleType === 'availableAreaRule') {
+        } else if (ruleCondition?.ruleType === 'availableAreaRule') {
           return (
             <Tooltip
               placement="topLeft"

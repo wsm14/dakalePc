@@ -58,7 +58,7 @@ const SpreeUserUseInfo = (props) => {
       align: 'center',
       dataIndex: 'verificationTime',
       render: (val) => {
-        return val && '已核销';
+        return val;
       },
     },
     {
@@ -66,9 +66,16 @@ const SpreeUserUseInfo = (props) => {
       align: 'center',
       fixed: 'right',
       dataIndex: 'couponStatus',
-      render: (val) => (
-        <div style={{ color: '#1890ff' }}>{['未使用', '已过期', '已核销', false, '关闭'][val]}</div>
-      ),
+      render: (val, row) =>
+        row.couponType === 'platformCoupon' ? (
+          <div style={{ color: '#1890ff' }}>
+            {['未使用', '已过期', '已使用', false, '关闭'][val]}
+          </div>
+        ) : (
+          <div style={{ color: '#1890ff' }}>
+            {['未使用', '已过期', '已核销', false, '关闭'][val]}
+          </div>
+        ),
     },
   ];
 
