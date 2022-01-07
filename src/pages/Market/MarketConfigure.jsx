@@ -3,6 +3,7 @@ import { GridContent } from '@ant-design/pro-layout';
 import { Menu } from 'antd';
 import GlobalModal from './components/Configure/GlobalModal';
 import FloatModal from './components/Configure/FloatModal';
+import NewWelfareModal from './components/Configure/NewWelfareModal';
 
 import styles from './styles.less';
 
@@ -52,6 +53,11 @@ const MarkConfigure = () => {
       type: 'floatModal',
       menuName: '浮窗配置',
       block: <FloatModal></FloatModal>,
+    },
+    {
+      type: 'newWelfareModal',
+      menuName: '新人福利弹窗',
+      block: <NewWelfareModal></NewWelfareModal>,
     },
   ];
 

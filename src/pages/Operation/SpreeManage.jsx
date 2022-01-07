@@ -245,7 +245,7 @@ const SpreeManage = (props) => {
 export default connect(({ spreeManage, loading }) => ({
   spreeManageList: spreeManage.list,
   giftTypeList: spreeManage.giftTypeList,
-  loading:
-    loading.effects['spreeManage/fetchGetList'] ||
-    loading.effects['spreeManage/fetchGetPlatformGiftPackDetail'],
+  loading: loading.models.spreeManage,
+  // loading.effects['spreeManage/fetchGetList'] ||
+  // loading.effects['spreeManage/fetchGetPlatformGiftPackDetail'],
 }))(SpreeManage);
