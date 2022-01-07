@@ -196,14 +196,14 @@ const SpreeManage = (props) => {
   // 权限按钮
   const btnList = [
     {
-      text: '新增',
-      auth: 'save',
-      onClick: () => setVisible({ type: 'add', show: true }),
-    },
-    {
       text: '礼包类型设置',
       auth: 'set',
       onClick: () => setVisibleTag({ show: true }),
+    },
+    {
+      text: '新增',
+      auth: 'save',
+      onClick: () => setVisible({ type: 'add', show: true }),
     },
   ];
 
