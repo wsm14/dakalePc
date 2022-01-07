@@ -74,6 +74,7 @@ const GoodsSelectModal = (props) => {
       afterClose={() => setTabKey('coupon')}
       maskStyle={{ background: 'none' }}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
+      zIndex={1002}
       destroyOnClose
       okButtonProps={{
         disabled: !selectItem[listProps.key],

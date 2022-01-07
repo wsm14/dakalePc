@@ -22,6 +22,8 @@ const JumpTypeBlock = ({
 }) => {
   if (!['无', 'h5', 'native'].includes(showUrl)) return null;
 
+  console.log('detail', detail);
+
   useEffect(() => {
     // 跳转app 修改回显
     const { nativeJumpType, jumpType } = detail; // 获取详情类型
@@ -76,6 +78,7 @@ const JumpTypeBlock = ({
                 'telephoneFeeDeductionCouponPackage',
                 'platformGeneralCouponPackage',
                 'commerceGoodsPackage',
+                'beanSelection',
               ].includes(val)
             ) {
               form.setFieldsValue({
@@ -84,6 +87,7 @@ const JumpTypeBlock = ({
                     telephoneFeeDeductionCouponPackage: 'telephoneCharges',
                     platformGeneralCouponPackage: 'ecGoods',
                     commerceGoodsPackage: 'beanWelfare',
+                    beanSelection: '0',
                   }[val],
                 },
               });

@@ -16,7 +16,7 @@ export default (props) => {
     merchantGroup: merchant,
     specialGoods,
     coupon,
-    beanSelection,
+    beanSelection: giftType,
     telephoneFeeDeductionCouponPackage: giftType,
     platformGeneralCouponPackage: giftType,
     commerceGoodsPackage: giftType,

@@ -4,7 +4,8 @@ import { Form, Input } from 'antd';
 const FormItem = Form.Item;
 
 /**
- * 话费抵扣券包 / 平台通用券包 / 电商品券包
+ * 携带一个默认参数，默认值
+ * 话费抵扣券包 / 平台通用券包 / 电商品券包 / 小豆精选
  * @param {Array} paramKey app跳转参数键值
  */
 const GiftType = ({ paramKey }) => {
