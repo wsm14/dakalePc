@@ -381,6 +381,8 @@ export const ORDERS_TYPE = {
   specialGoods: '周边特惠',
   reduceCoupon: '抵扣券订单',
   // marketCoupon: '兑换券订单',
+  rightGoods: '权益商品订单',
+  rightCoupon: '权益券订单',
 };
 
 // 平台收益订单类型

@@ -19,7 +19,6 @@ const Merchant = ({
   loading,
   onChange,
 }) => {
-  console.log('owType', owType);
   useEffect(() => {
     return () => {
       dispatch({ type: 'baseData/clearGroupMre' });
@@ -28,12 +27,10 @@ const Merchant = ({
   }, []);
 
   useEffect(() => {
-    console.log('Id', form.getFieldValue(['param', paramKey[0]]));
     const merchantId = form.getFieldValue(['param', paramKey[0]]);
     if (merchantId) {
       fetchClassifyGetMre({ merchantId });
     }
-    console.log('merchantId', merchantId);
   }, [paramKey, owType]);
 
   // 搜索店铺
