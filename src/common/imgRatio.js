@@ -58,3 +58,6 @@ export const GLOBAL_MODAL_IMG = 900 / 1077;
 
 //浮窗配置图片
 export const FLOAT_IMG = 165 / 165;
+
+//新人福利弹窗配置Banner图片
+export const NEW_POP_IMG = 560 / 760;

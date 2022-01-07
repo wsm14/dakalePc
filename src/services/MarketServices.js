@@ -553,3 +553,33 @@ export function fetchFloatingWindowDetail(params) {
     params,
   });
 }
+
+// get 新人福利弹窗 - 列表
+export function fetchListConfigNewUserPopUp(params) {
+  return request('/admin/configNewUserPopUp/listConfigNewUserPopUp', {
+    params,
+  });
+}
+
+// get 新人福利弹窗 - 详情
+export function fetchGetConfigNewUserPopUpById(params) {
+  return request('/admin/configNewUserPopUp/getConfigNewUserPopUpById', {
+    params,
+  });
+}
+
+// post 新人福利弹窗 - 新增
+export function fetchSaveConfigNewUserPopUp(data) {
+  return request('/admin/configNewUserPopUp/saveConfigNewUserPopUp', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 新人福利弹窗 - 编辑
+export function fetchUpdateConfigNewUserPopUp(data) {
+  return request('/admin/configNewUserPopUp/updateConfigNewUserPopUp', {
+    method: 'POST',
+    data,
+  });
+}

@@ -329,6 +329,21 @@ export default {
         },
       });
     },
+    // 电商商品
+    *fetchGetPlatformCommerceGoodsSelect({ payload }, { call, put }) {
+      const response = yield call(fetchGetPlatformEquitySelect, {
+        activityType: 'commerceGoods',
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          platformEquity: { list: content.recordList, total: content.total },
+        },
+      });
+    },
     // 权益券
     *fetchGetEquityCouponSelect({ payload }, { call, put }) {
       const response = yield call(fetchGetEquityCouponSelect, {

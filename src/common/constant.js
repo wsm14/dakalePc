@@ -229,6 +229,9 @@ export const MARKET_LOOK_AREA = {
   user: '仅用户可见',
 };
 
+// 新人福利弹窗 - 活动状态
+export const NEWUSER_STATUS_TYPE = ['即将开始', '上架中', '已结束'];
+
 // 周边特惠 - 上架状态 0-已下架 1-活动中 2-即将开始 3-审核中 4-未通过
 // export const SPECIAL_STATUS = ['已下架', '活动中', '即将开始', '审核中', '未通过'];
 export const SPECIAL_STATUS = ['已下架', '活动中'];

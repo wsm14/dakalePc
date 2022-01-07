@@ -9,6 +9,10 @@ import {
   fetchFloatingWindowAdd,
   fetchFloatingWindowEdit,
   fetchFloatingWindowDetail,
+  fetchListConfigNewUserPopUp,
+  fetchGetConfigNewUserPopUpById,
+  fetchSaveConfigNewUserPopUp,
+  fetchUpdateConfigNewUserPopUp,
 } from '@/services/MarketServices';
 
 export default {
@@ -21,6 +25,7 @@ export default {
     floatEditionList: { list: [] },
     floatCityList: { list: [] },
     floatConfigureList: { list: [] },
+    newUserPopUpList: { list: [] },
   },
 
   reducers: {
@@ -170,6 +175,57 @@ export default {
         : '';
 
       callback({ ...configFloatingWindowDTO, activityBeginTime, param: JSON.parse(param || '{}') });
+    },
+    //新人福利弹窗 - 列表
+    *fetchListConfigNewUserPopUp({ payload }, { call, put }) {
+      const response = yield call(fetchListConfigNewUserPopUp, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          newUserPopUpList: { list: content.configNewUserPopUpDTOS },
+        },
+      });
+    },
+    //新人福利弹窗-详情
+    *fetchGetConfigNewUserPopUpById({ payload, callback }, { call }) {
+      const response = yield call(fetchGetConfigNewUserPopUpById, payload);
+      if (!response) return;
+      const { content = {} } = response;
+      const { configNewUserPopUpDTO = {} } = content;
+      const { activityBeginTime, activityEndTime, jumpUrlType, ...other } = configNewUserPopUpDTO;
+
+      const data = {
+        ...other,
+        jumpType: jumpUrlType,
+        activityBeginTime: [
+          moment(activityBeginTime, 'YYYY-MM-DD HH:mm'),
+          moment(activityEndTime, 'YYYY-MM-DD HH:mm'),
+        ],
+      };
+
+      callback && callback(data);
+    },
+    // post 新人福利弹窗 - 新增
+    *fetchSaveConfigNewUserPopUp({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveConfigNewUserPopUp, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '新增成功',
+      });
+      callback && callback();
+    },
+    // post 新人福利弹窗 - 编辑
+    *fetchUpdateConfigNewUserPopUp({ payload, callback }, { call }) {
+      const response = yield call(fetchUpdateConfigNewUserPopUp, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '编辑成功',
+      });
+      callback && callback();
     },
   },
 };
