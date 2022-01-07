@@ -9,4 +9,12 @@ export async function fetchListHittingMain(params) {
   });
 }
 
+// post 哒小卡点位管理 - 新增
+export function fetchSaveHittingMain(data) {
+  return request('/admin/hittingMain/saveHittingMain', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 哒小卡点位管理 end

@@ -17,52 +17,22 @@ const PointManageDrawer = (props) => {
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      // console.log('values', values);
-
-      const {
-        activeDate,
-        ruleType,
-        personLimit,
-        dayMaxBuyAmount,
-        ruleCondition,
-        consortUserOs,
-        apply = [],
-        cityCode,
-        ...other
-      } = values;
-
+      console.log('values', values);
       // return;
+      const { districtCode, distanceFlag, range, ...other } = values;
+
       dispatch({
         type: {
-          add: 'platformCoupon/fetchPlatformCouponSave',
+          add: 'pointManage/fetchSaveHittingMain',
           edit: 'platformCoupon/fetchPlatformCouponUpdate',
         }[type],
         payload: {
-          platformCouponId,
           ...other,
-          couponType: 'fullReduce',
-          activeDate: activeDate && activeDate[0].format('YYYY-MM-DD'),
-          endDate: activeDate && activeDate[1].format('YYYY-MM-DD'),
-          getRuleObject: {
-            ruleType,
-            personLimit,
-            dayMaxBuyAmount,
-          },
-          ruleConditionObjects: [
-            {
-              ruleType:
-                ruleCondition == '0' || ruleCondition == '1'
-                  ? 'availableAreaRule'
-                  : 'unavailableAreaRule',
-              ruleConditionList:
-                ruleCondition == '0'
-                  ? { condition: 'all' }
-                  : citys.map((item) => ({
-                      condition: item,
-                    })),
-            },
-          ],
-          consortUserOs: apply.join(',') || consortUserOs,
+          provinceCode: districtCode.slice(0, 2),
+          cityCode: districtCode.slice(0, 4),
+          districtCode,
+          distanceFlag,
+          range: distanceFlag === '0' ? '999999999' : range,
         },
         callback: () => {
           onClose();
@@ -72,13 +42,7 @@ const PointManageDrawer = (props) => {
     });
   };
 
-  const listProp = {
-    type,
-    ticket,
-    setTicket,
-    citys,
-    setCitys,
-  };
+  const listProp = {};
   // 统一处理弹窗
   const drawerProps = {
     info: {

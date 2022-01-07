@@ -13,20 +13,35 @@ import {
 import FormCondition from '@/components/FormCondition';
 
 const PlatformSet = (props) => {
-  const { form, initialValues } = props;
+  const { groupMreList = [], loading, dispatch, form, initialValues } = props;
 
-  const [radioData, setRadioData] = useState({});
+  const [radioData, setRadioData] = useState({
+    distanceFlagType: '0',
+    parentUserTypes: '',
+  });
   const [ampShow, setAmpShow] = useState(false); // 地图是否显示
   const [location, setLocation] = useState([120, 30]); // 地图显示 [经度, 纬度]
   const [fetching, setFetching] = useState(false); // 查找地址等待状态
   const [localList, setLocalList] = useState([]); // 可选地址列表
   const [selectLocal, setSelectLocal] = useState(''); // 已选地址
+  const [userList, setUserList] = useState(false); // 搜索的用户列表
 
   const saveSelectData = (data) => setRadioData({ ...radioData, ...data });
 
   // 获取城市code
   const handleGetDistrictCode = (lnglat) => {
-    fetch(`https://restapi.amap.com/v3/geocode/regeo?key=${AMAP_KEY}&location=${lnglat}`);
+    fetch(`https://restapi.amap.com/v3/geocode/regeo?key=${AMAP_KEY}&location=${lnglat}`).then(
+      (res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            console.log('高德搜索到的data', data);
+            form.setFieldsValue({
+              districtCode: data.regeocode.addressComponent.adcode,
+            });
+          });
+        }
+      },
+    );
   };
 
   // 获取城市定位
@@ -37,11 +52,11 @@ const PlatformSet = (props) => {
       .then((res) => {
         if (res.ok) {
           res.json().then((data) => {
-            console.log('高德搜索到的data', data);
+            // console.log('高德搜索到的data', data);
             const list = data.pois;
             if (list.length === 0) message.warn('未查询到地址信息', 1.5);
             else if (address) {
-              console.log('高德搜索到的list', list);
+              // console.log('高德搜索到的list', list);
               setLocalList(list);
             }
           });
@@ -89,16 +104,16 @@ const PlatformSet = (props) => {
             }
             onSearch={onSearchAddress}
             onChange={(val, option) => {
-              console.log('onChange的val', val);
+              console.log('onChange的val', val.split('+')[0].split(','));
               console.log('onChange的option', option);
-              setLocation(val.split(','));
+              setLocation(val.split('+')[0].split(','));
               setSelectLocal(option.children[1].props.children);
             }}
             filterOption={false}
             style={{ width: 300 }}
           >
             {localList.map((d, i) => (
-              <Select.Option key={i} value={d.location}>
+              <Select.Option key={i} value={`${d.location}+${i}`}>
                 {i + 1 + '、' + ' ' + d.name}
                 <div>{d.adname + d.address}</div>
               </Select.Option>
@@ -117,6 +132,7 @@ const PlatformSet = (props) => {
                 lat: location[1],
                 lnt: location[0],
               });
+              handleGetDistrictCode(location.join(','));
               setAmpShow(false);
             }}
           >
@@ -136,6 +152,36 @@ const PlatformSet = (props) => {
       </Map>
     </div>
   );
+
+  // 搜索店铺
+  const fetchGetMre = debounce((content) => {
+    if (!content.replace(/'/g, '') || content.replace(/'/g, '').length < 2) return;
+    dispatch({
+      type: 'baseData/fetchGetGroupMreList',
+      payload: {
+        name: content.replace(/'/g, ''),
+      },
+    });
+  }, 500);
+
+  // 获取用户搜索
+  const fetchGetUser = debounce((content) => {
+    if (!content) return;
+    dispatch({
+      type: 'baseData/fetchGetUsersSearch',
+      payload: {
+        content,
+      },
+      callback: (useList) => {
+        const list = useList.map((item) => ({
+          name: `${item.username}`,
+          value: item.userIdString,
+          otherData: `${item.mobile} ${item.beanCode}`,
+        }));
+        setUserList(list);
+      },
+    });
+  }, 500);
 
   // 信息
   const formItems = [
@@ -179,16 +225,27 @@ const PlatformSet = (props) => {
       hidden: true,
     },
     {
+      label: '区县',
+      name: 'districtCode',
+      hidden: true,
+    },
+    {
       label: '打卡范围',
       name: 'distanceFlag',
       type: 'radio',
       select: ['不限', '周围米数'],
+      onChange: (e) => {
+        saveSelectData({
+          distanceFlagType: e.target.value,
+        });
+      },
     },
     {
       label: '打卡范围周围米数',
       name: 'range',
       type: 'number',
       min: 0,
+      visible: radioData.distanceFlagType === '1',
     },
     {
       label: '家主',
@@ -196,6 +253,37 @@ const PlatformSet = (props) => {
       type: 'radio',
       select: MARK_CARD_PARENT_TYPE,
       rules: [{ required: false }],
+      onChange: (e) => {
+        saveSelectData({
+          parentUserTypes: e.target.value,
+        });
+      },
+    },
+    {
+      name: 'parentUserId',
+      type: 'select',
+      loading: loading.effects['baseData/fetchGetGroupMreList'],
+      placeholder: '请输入店铺名称搜索',
+      onSearch: fetchGetMre,
+      style: { marginLeft: 150 },
+      // onChange: (val, op) => {
+      //   console.log(val, op);
+      // },
+      select: groupMreList,
+      visible: radioData.parentUserTypes === 'merchant',
+    },
+    {
+      name: 'parentUserId',
+      type: 'select',
+      loading: loading.effects['baseData/fetchGetGroupMreList'],
+      placeholder: '请输入昵称、手机号或豆号',
+      onSearch: fetchGetUser,
+      style: { marginLeft: 150 },
+      // onChange: (val, op) => {
+      //   console.log(val, op);
+      // },
+      select: userList,
+      visible: radioData.parentUserTypes === 'user',
     },
     {
       label: '启用状态',
@@ -216,4 +304,7 @@ const PlatformSet = (props) => {
   );
 };
 
-export default connect(({}) => ({}))(PlatformSet);
+export default connect(({ baseData, loading }) => ({
+  groupMreList: baseData.groupMreList,
+  loading,
+}))(PlatformSet);

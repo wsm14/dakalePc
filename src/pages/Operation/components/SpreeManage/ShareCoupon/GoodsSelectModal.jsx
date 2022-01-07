@@ -161,12 +161,12 @@ const GoodsSelectModal = (props) => {
         <TabPane tab="平台券" key="platformCoupon">
           {listDom}
         </TabPane>
-        <TabPane tab="权益商品" key="rightGoods">
+        {/* <TabPane tab="权益商品" key="rightGoods">
           {listDom}
         </TabPane>
         <TabPane tab="权益券" key="rightCoupon">
           {listDom}
-        </TabPane>
+        </TabPane> */}
       </Tabs>
     </Modal>
   );

@@ -1,5 +1,5 @@
 import { notification } from 'antd';
-import { fetchListHittingMain } from '@/services/DaMarkCardServices';
+import { fetchListHittingMain, fetchSaveHittingMain } from '@/services/DaMarkCardServices';
 
 export default {
   namespace: 'pointManage',
@@ -34,6 +34,15 @@ export default {
           },
         },
       });
+    },
+    *fetchSaveHittingMain({ payload, callback }, { call }) {
+      const response = yield call(fetchSaveHittingMain, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '主体新增成功',
+      });
+      callback && callback();
     },
   },
 };
