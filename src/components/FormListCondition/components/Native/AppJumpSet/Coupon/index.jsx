@@ -21,7 +21,7 @@ const Coupon = ({ form, dispatch, paramKey }) => {
     return () => {
       form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
     };
-  }, []);
+  }, [paramKey]);
 
   // 获取详情
   const fetchCouponDetail = () => {

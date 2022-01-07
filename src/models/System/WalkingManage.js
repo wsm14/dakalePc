@@ -139,6 +139,7 @@ export default {
           native: nativeJumpType === 'windVaneCategory' ? 'trade' : 'native',
           url: jumpType,
         }[jumpType],
+        param: JSON.parse(param || '{}'),
         windVaneParamObject: JSON.parse(param || '{}'),
         bubbleFlag: Boolean(Number(bubbleFlag)),
         categoryId: categoryId ? categoryId.split(',') : [],

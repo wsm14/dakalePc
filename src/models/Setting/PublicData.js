@@ -175,7 +175,7 @@ export default {
         },
       });
     },
-    *fetchGetJumpNative({ payload }, { call, put }) {
+    *fetchGetJumpNative({ payload, callback }, { call, put }) {
       const response = yield call(fetchGetJumpNative, payload);
       if (!response) return;
       const { content } = response;
@@ -191,6 +191,7 @@ export default {
           ),
         },
       });
+      callback && callback();
     },
     *fetchGetKolLevel({ payload }, { call, put }) {
       const response = yield call(fetchGetKolLevel, payload);
@@ -501,7 +502,6 @@ export default {
       const response = yield call(fetchGoodsIsCommission, payload);
       if (!response) return;
       const { content } = response;
-      console.log('11', content);
       callback(content);
     },
     *fetchSkuDetailMerchantList({ payload, callback }, { call, put }) {

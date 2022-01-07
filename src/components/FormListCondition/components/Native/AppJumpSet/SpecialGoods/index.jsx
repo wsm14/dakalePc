@@ -16,12 +16,13 @@ const SpecialGoods = ({ form, dispatch, paramKey }) => {
   const [owType, setOwType] = useState(''); // 店铺类型
 
   useEffect(() => {
+    setOwType(form.getFieldValue(['param', paramKey[2]]));
     const specialGoodsId = form.getFieldValue(['param', paramKey[1]]);
     if (specialGoodsId) fetchSpecialGoodsDetail();
     return () => {
       form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
     };
-  }, []);
+  }, [paramKey]);
 
   // 获取详情
   const fetchSpecialGoodsDetail = () => {
@@ -50,8 +51,8 @@ const SpecialGoods = ({ form, dispatch, paramKey }) => {
             merchant: '单店',
             group: '集团',
           }}
-          onChange={(val) => {
-            setOwType(val);
+          onChange={(e) => {
+            setOwType(e.target.value);
           }}
         ></Radio>
       </FormItem>
@@ -76,7 +77,6 @@ const SpecialGoods = ({ form, dispatch, paramKey }) => {
           form={form}
           merchantIdKey={paramKey[0]}
           onOk={(free) => {
-            console.log(free);
             form.setFieldsValue({ param: { [paramKey[1]]: free.specialGoodsId } });
             setData(free);
           }}

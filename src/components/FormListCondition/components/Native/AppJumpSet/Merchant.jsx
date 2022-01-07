@@ -20,19 +20,22 @@ const Merchant = ({
   onChange,
 }) => {
   useEffect(() => {
-    const merchantId = form.getFieldValue(['param', paramKey[0]]);
-    if (merchantId) {
-      fetchClassifyGetMre({ merchantId });
-    }
     return () => {
       dispatch({ type: 'baseData/clearGroupMre' });
       form.setFieldsValue({ param: { [paramKey[0]]: undefined } });
     };
   }, []);
 
+  useEffect(() => {
+    const merchantId = form.getFieldValue(['param', paramKey[0]]);
+    if (merchantId) {
+      fetchClassifyGetMre({ merchantId });
+    }
+  }, [paramKey, owType]);
+
   // 搜索店铺
   const fetchClassifyGetMre = debounce((data) => {
-    if (!data) return;
+    if (!data || !owType) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
       payload: {

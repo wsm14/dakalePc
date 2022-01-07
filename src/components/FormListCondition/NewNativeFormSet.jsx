@@ -30,21 +30,19 @@ const NewNativeFormSet = ({
   const [paramKey, setParamKey] = useState(['paramName', 'paramValue']); // app 跳转需要的参数键
 
   useEffect(() => {
-    const { jumpType, nativeJumpType, param = {} } = detail;
-    if (!jumpType) form.setFieldsValue({ jumpType: '' });
     fetchGetJumpNative(); // 获取后端配置的 app打开的页面类型 和 参数键值对
     fetchWalkManageNavigation(); // 获取风向标
-    setShowUrl(jumpType); // 表单回填参数 链接类型
-    if (jumpType !== 'h5' && jumpType !== '') {
-      setShowApi(nativeJumpType); // 表单回填参数 app打开的页面类型
-      setParamKey(Object.keys(param)); // 表单回填参数 app 跳转需要的参数键
-    }
   }, []);
 
   // 获取后端配置的 app打开的页面类型 和 参数键值对
   const fetchGetJumpNative = () => {
     dispatch({
       type: 'baseData/fetchGetJumpNative',
+      callback: () => {
+        const { jumpType } = detail;
+        if (!jumpType) form.setFieldsValue({ jumpType: '' });
+        setShowUrl(jumpType); // 表单回填参数 链接类型
+      },
     });
   };
 
@@ -89,6 +87,7 @@ const NewNativeFormSet = ({
       {/* 选择跳转类型后展示的表单 */}
       <NewJumpTypeBlock
         form={form}
+        detail={detail}
         showUrl={showUrl}
         setShowApi={setShowApi}
         setParamKey={setParamKey}

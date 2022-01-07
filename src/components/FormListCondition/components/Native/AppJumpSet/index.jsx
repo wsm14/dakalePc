@@ -22,9 +22,12 @@ export default (props) => {
     commerceGoodsPackage: giftType,
   }[showApi];
   if (!ShowDom) return null;
+
   let otherProps = {};
+  // 选择店铺/集团时
   if (showApi === 'merchant' || showApi === 'merchantGroup') {
     otherProps = { owType: { merchant: 'merchant', merchantGroup: 'group' }[showApi] };
   }
+
   return <ShowDom {...props} {...otherProps}></ShowDom>;
 };
