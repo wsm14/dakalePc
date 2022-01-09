@@ -2,35 +2,34 @@ import React, { useState } from 'react';
 import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
-import PointManageSet from './Form/PlatformSet';
+import PointSet from './PointSet';
 
-const PointManageDrawer = (props) => {
+// 哒小卡点位   新增/编辑
+
+const PointDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'info', hittingMainId, show = false, detail = {} } = visible;
+  const { type = 'add', hittingId, show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      console.log('values', values);
-      // return;
-      const { districtCode, distanceFlag, range, ...other } = values;
+      const { districtCode, ...other } = values;
 
       dispatch({
         type: {
-          add: 'pointManage/fetchSaveHittingMain',
-          edit: 'pointManage/fetchUpdateHittingMain',
+          add: 'pointManage/fetchSaveHitting',
+          edit: 'pointManage/fetchUpdateHitting',
         }[type],
         payload: {
-          hittingMainId,
+          mainId: detail.mainId,
+          hittingId,
           ...other,
           provinceCode: districtCode.slice(0, 2),
           cityCode: districtCode.slice(0, 4),
           districtCode,
-          distanceFlag,
-          range: distanceFlag === '0' ? '999999999' : range,
         },
         callback: () => {
           onClose();
@@ -40,22 +39,16 @@ const PointManageDrawer = (props) => {
     });
   };
 
-  const listProp = {
-    type,
-  };
+  const listProp = {};
   // 统一处理弹窗
   const drawerProps = {
-    info: {
-      title: '主体详情',
-      children: <PointManageSet {...listProp} form={form} initialValues={detail}></PointManageSet>,
-    },
     add: {
-      title: '新建主体',
-      children: <PointManageSet {...listProp} form={form} initialValues={detail}></PointManageSet>,
+      title: '新增点位',
+      children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
     },
     edit: {
-      title: '编辑主体',
-      children: <PointManageSet {...listProp} form={form} initialValues={detail}></PointManageSet>,
+      title: '编辑点位',
+      children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
     },
   }[type];
 
@@ -77,7 +70,7 @@ const PointManageDrawer = (props) => {
 
 export default connect(({ loading }) => ({
   loading:
-    loading.effects['pointManage/fetchSaveHittingMain'] ||
-    loading.effects['pointManage/fetchUpdateHittingMain'],
-  loadingDetail: loading.effects['pointManage/fetchGetHittingMainById'],
-}))(PointManageDrawer);
+    loading.effects['pointManage/fetchSaveHitting'] ||
+    loading.effects['pointManage/fetchUpdateHitting'],
+  loadingDetail: loading.effects['pointManage/fetchGetHittingById'],
+}))(PointDrawer);

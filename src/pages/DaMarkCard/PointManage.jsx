@@ -5,6 +5,7 @@ import { checkCityName } from '@/utils/utils';
 import { MARK_CARD_MAIN_TYPE, MARK_CARD_OPEN_STATE } from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 import PointManageDrawer from './components/PointManage/PointManageDrawer';
+import PointManageModal from './components/PointManage/PointManageModal';
 
 const PointManage = (props) => {
   const { pointManageList, loading, dispatch } = props;
@@ -12,6 +13,7 @@ const PointManage = (props) => {
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
   const [visible, setVisible] = useState(false);
+  const [visibleModalDrawer, setVisibleModalDrawer] = useState(false);
 
   // 搜索参数
   const searchItems = [
@@ -70,11 +72,11 @@ const PointManage = (props) => {
       fixed: 'right',
       type: 'handle',
       dataIndex: 'hittingMainId',
-      render: () => {
+      render: (hittingMainId, record) => {
         return [
           {
             type: 'point',
-            click: () => fetchCouponDetail(hittingMainId, 'info'),
+            click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'point' }),
           },
           {
             type: 'award',
@@ -91,24 +93,37 @@ const PointManage = (props) => {
       type: 'handle',
       width: 150,
       dataIndex: 'hittingMainId',
-      render: (platformCouponId, record) => {
+      render: (hittingMainId, record) => {
         return [
           {
             type: 'info',
-            click: () => fetchCouponDetail(platformCouponId, 'info'),
+            click: () => fetchCouponDetail(hittingMainId, 'info'),
           },
           {
             type: 'edit',
-            click: () => fetchCouponDetail(platformCouponId, 'edit'),
+            click: () => fetchCouponDetail(hittingMainId, 'edit'),
           },
           {
             type: 'signDetail',
-            click: () => fetAddRemain(platformCouponId, record.remain),
+            click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'signDetail' }),
           },
         ];
       },
     },
   ];
+
+  // 获取主体详情
+  const fetchCouponDetail = (hittingMainId, type) => {
+    dispatch({
+      type: 'pointManage/fetchGetHittingMainById',
+      payload: {
+        hittingMainId,
+      },
+      callback: (detail) => {
+        setVisible({ type, show: true, detail });
+      },
+    });
+  };
 
   // 权限按钮
   const btnList = [
@@ -137,6 +152,11 @@ const PointManage = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></PointManageDrawer>
+      {/* 打卡明细 */}
+      <PointManageModal
+        visible={visibleModalDrawer}
+        onClose={() => setVisibleModalDrawer(false)}
+      ></PointManageModal>
     </>
   );
 };
@@ -144,6 +164,6 @@ const PointManage = (props) => {
 export default connect(({ pointManage, loading }) => ({
   pointManageList: pointManage.list,
   loading:
-    loading.effects['platformCoupon/fetchGetList'] ||
-    loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
+    loading.effects['pointManage/fetchGetList'] ||
+    loading.effects['pointManage/fetchGetHittingMainById'],
 }))(PointManage);
