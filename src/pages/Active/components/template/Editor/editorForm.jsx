@@ -36,7 +36,14 @@ const uploadButton = (
 const FormItem = Form.Item;
 const { Option } = Select;
 
-const FormCondition = ({ form, id, formItems = [], initialValues = {}, children }) => {
+const FormCondition = ({
+  form,
+  id,
+  formItems = [],
+  initialValues = {},
+  layout = 'vertical',
+  children,
+}) => {
   const [totalNum, setTotalNum] = useState({}); // 字数计算
   const [previewVisible, setPreviewVisible] = useState(false); // 图片回显
   const [previewImage, setPreviewImage] = useState(''); // 图片回显 url
@@ -362,7 +369,7 @@ const FormCondition = ({ form, id, formItems = [], initialValues = {}, children 
         form={form}
         preserve={false}
         initialValues={initialValues}
-        layout="vertical"
+        layout={layout}
         validateMessages={validateMessages}
       >
         {formItems.length ? getFields() : ''}

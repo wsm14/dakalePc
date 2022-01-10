@@ -17,6 +17,7 @@ export default {
     return `<!DOCTYPE html><html lang="zh-cmn-Hans"><head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible"content="IE=edge"/>
+    <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui, viewport-fit=cover"/>
     <title>${activityName}</title>
     <style>*{box-sizing:border-box;font-family: PingFang SC;}html,body{overflow-x: hidden;background-color:${backgroundColor};width:100vw;height:100%;margin:0;padding:0;line-height: 1.15;-webkit-overflow-scrolling: touch;}</style>

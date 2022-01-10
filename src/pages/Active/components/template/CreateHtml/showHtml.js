@@ -21,6 +21,10 @@ const requestJs = [
 const scriptTag = (dom, data, id) =>
   `<script>(${dom.toString()})(${JSON.stringify(data)}, "${id}")<\/script>`;
 
+const richTextStyle = [
+  `<style>table{border-top:1px solid#ccc;border-left:1px solid#ccc}table td,table th{padding:3px 5px;border-right:1px solid#ccc;border-bottom:1px solid#ccc}table th{text-align:center;background-color:#f1f1f1;border-bottom:2px solid#ccc}blockquote{display:block;margin:10px 0;padding:5px 10px;font-size:100%;line-height:1.4;background-color:#f1f1f1;border-left:8px solid#d0e5f2}code{display:inline-block;*display:inline;margin:0 3px;padding:3px 5px;background-color:#f1f1f1;border-radius:3px;*zoom:1}pre code{display:block}ul,ol{margin:10px 0 10px 20px}hr{display:block;height:0;margin:20px 0;border:0;border-top:3px solid#ccc}</style>`,
+];
+
 const htmlDom = {
   // 分享
   share: (data, uid) => {
@@ -103,6 +107,12 @@ const htmlDom = {
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;
+  },
+  // 富文本
+  richText: ({ richText, padding }, uid) => {
+    head = { ...head, richTextStyle };
+    const paddingVw = (padding / 375) * 100 + 'vw';
+    return `<div id="${uid}" style="padding: ${paddingVw}">${richText}</div>`;
   },
 };
 

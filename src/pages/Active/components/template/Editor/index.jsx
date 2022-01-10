@@ -6,6 +6,7 @@ import {
   MoneyCollectOutlined,
   VideoCameraAddOutlined,
   SwapOutlined,
+  FormOutlined,
 } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
@@ -15,6 +16,7 @@ import CommonList from './CommonList';
 import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
 import CouponList from './CouponList';
+import RichText from './RichText';
 import img from './Img/img.png';
 import list from './Img/list.png';
 import mrelist from './Img/mrelist.png';
@@ -101,5 +103,14 @@ export default {
     defaultData: '',
     editorDom: (props) => <NormalVideo {...props}></NormalVideo>,
     dom: (props) => NormalVideo.dom(props),
+  },
+  richText: {
+    name: '富文本',
+    icon: <FormOutlined style={{ fontSize: 24 }} />,
+    editorType: 'richText',
+    drop: true,
+    defaultImg: img,
+    editorDom: (props) => <RichText {...props}></RichText>,
+    dom: (props) => RichText.dom(props),
   },
 };
