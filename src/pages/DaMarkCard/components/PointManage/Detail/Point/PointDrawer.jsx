@@ -3,7 +3,6 @@ import { connect } from 'umi';
 import { Button, Form } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import PointSet from './PointSet';
-import PointQrCode from './PointQrCode';
 
 // 哒小卡点位   新增/编辑
 
@@ -49,10 +48,6 @@ const PointDrawer = (props) => {
     },
     edit: {
       title: '编辑点位',
-      children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
-    },
-    qrCode: {
-      title: `打卡码-${detail.name}`,
       children: <PointSet {...listProp} form={form} initialValues={detail}></PointSet>,
     },
   }[type];

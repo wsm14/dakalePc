@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
-import PointDrawer from './Point/PointDrawer';
 
 const PointListModal = (props) => {
   const { loading, pointList, detail, dispatch } = props;
@@ -9,6 +8,7 @@ const PointListModal = (props) => {
   const childRef = useRef();
 
   const [visible, setVisible] = useState(false);
+  // const [visible, setVisible] = useState(false); // 二维码
 
   // 搜索参数
   const searchItems = [
@@ -105,6 +105,7 @@ const PointListModal = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></PointDrawer>
+      <PointQrCode></PointQrCode>
     </>
   );
 };

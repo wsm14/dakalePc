@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Form } from 'antd';
 import { Input, Select } from '@/components/FormCondition/formModule';
@@ -8,12 +8,36 @@ const FormItem = Form.Item;
 /**
  * 选择跳转类型后展示的表单
  * @param {Array} nativeList 跳转原生页面后端映射
- * @param {Boolean} showUrl 展示表单类型 h5 inside
+ * @param {Boolean} showUrl 展示表单类型 H5 inside
  * @param {Function} setShowApi inside 原生页面时 获取对应参数 展示自定义表单
  * @param {Function} setParamKey inside 原生页面时 app 跳转需要的参数键
  */
-const JumpTypeBlock = ({ nativeList, showUrl = false, setShowApi, setParamKey = {} }) => {
-  if (!showUrl) return null;
+const JumpTypeBlock = ({
+  form,
+  nativeList,
+  showUrl = false,
+  detail = {},
+  setShowApi,
+  setParamKey = {},
+}) => {
+  if (!['无', 'H5', 'native', 'inside'].includes(showUrl)) return null;
+
+  useEffect(() => {
+    // 跳转app 修改回显
+    const { nativeJumpType, jumpUrlType } = detail; // 获取详情类型
+    if (
+      (showUrl === 'native' || showUrl === 'inside') &&
+      jumpUrlType !== 'h5' &&
+      jumpUrlType !== ''
+    ) {
+      const nativeIndex = nativeList.findIndex((i) => i.value === nativeJumpType);
+      setParamKey(() => {
+        setShowApi(nativeJumpType); // 表单回填参数 app打开的页面类型
+        return nativeList[nativeIndex]?.paramKey || [];
+      }); // 表单回填参数 app 跳转需要的参数键
+    }
+  }, []);
+
   return {
     无: null,
     H5: (
@@ -50,6 +74,19 @@ const JumpTypeBlock = ({ nativeList, showUrl = false, setShowApi, setParamKey = 
             console.log(val, item);
             setParamKey(item.option.paramKey);
             setShowApi(val);
+            const paramKeyObj = {
+              beanSelection: '0', // 选择小豆精选
+              commerceGoodsPackage: 'ecGoods', // 选择电商品券包
+              platformGeneralCouponPackage: 'beanWelfare', // 选择平台通用券包
+              telephoneFeeDeductionCouponPackage: 'telephoneCharges', // 选择话费抵扣券包
+            };
+            if (Object.keys(paramKeyObj).includes(val)) {
+              form.setFieldsValue({
+                param: {
+                  [item.option.paramKey[0]]: paramKeyObj[val],
+                },
+              });
+            }
           }}
         ></Select>
       </FormItem>

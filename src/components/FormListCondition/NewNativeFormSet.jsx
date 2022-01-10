@@ -60,14 +60,7 @@ const NewNativeFormSet = ({
         label="跳转类型"
         name={'jumpType'}
         style={{ maxWidth: '100%' }}
-        rules={[
-          {
-            required: true,
-            validator: () => {
-              return Promise.resolve();
-            },
-          },
-        ]}
+        rules={[{ required: true, message: `请选择跳转类型` }]}
       >
         <Radio
           select={
