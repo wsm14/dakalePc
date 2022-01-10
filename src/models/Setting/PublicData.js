@@ -472,7 +472,7 @@ export default {
       }[type];
       const response = yield call(
         { merchant: fetchMerchantList, group: fetchMerchantGroup }[type],
-        { limit: 300, page: 1, bankStatus: 3, ...newPayload, ...other },
+        { limit: 50, page: 1, bankStatus: 3, ...newPayload, ...other },
       );
       if (!response) return;
       const { content } = response;

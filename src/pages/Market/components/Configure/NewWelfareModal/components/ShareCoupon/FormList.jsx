@@ -22,7 +22,6 @@ const FormList = (props) => {
       </div>
       {(() => {
         const goodsItem = form.getFieldValue(type)[field.name];
-        console.log('goodsItem', goodsItem);
         return (
           <>
             <div className={styles.listItem_img}>

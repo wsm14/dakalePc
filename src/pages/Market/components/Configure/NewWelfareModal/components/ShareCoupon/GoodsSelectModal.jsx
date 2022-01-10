@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
+import debounce from 'lodash/debounce';
 import { Modal, Empty, Spin, Tabs } from 'antd';
 import { goodsDom } from './CouponFreeDom';
 import SearchCondition from '@/components/SearchCondition';
@@ -18,6 +19,7 @@ const GoodsSelectModal = (props) => {
     onClose,
     loading,
     typeGoods = 'commerceGoods',
+    selectList,
   } = props;
 
   const [selectItem, setSelectItem] = useState([]); // 当前选择项
@@ -34,7 +36,12 @@ const GoodsSelectModal = (props) => {
     {
       label: '选择店铺',
       name: 'id',
-      type: 'merchant',
+      type: 'select',
+      select: selectList,
+      allItem: false,
+      onSearch: (val) => fetchClassifyGetMre(val),
+      loading: loading.effects['baseData/fetchGetGroupMreList'],
+      placeholder: '请选择店铺',
       required: true,
     },
     {
@@ -43,10 +50,22 @@ const GoodsSelectModal = (props) => {
     },
   ];
 
+  // 搜索店铺
+  const fetchClassifyGetMre = debounce((name) => {
+    if (!name) return;
+    dispatch({
+      type: 'baseData/fetchGetGroupMreList',
+      payload: {
+        type: 'merchant',
+        name,
+      },
+    });
+  }, 500);
+
   const listProps = {
     list: platformEquityList.list,
     total: platformEquityList.total,
-    key: 'specialGoodsId',
+    key: 'activityGoodsId',
     loading: loading.effects['baseData/fetchGetPlatformCommerceGoodsSelect'],
   };
 
@@ -58,6 +77,7 @@ const GoodsSelectModal = (props) => {
       payload: {
         buyFlag: 1,
         relateId: data.id,
+        relateType: 'merchant',
         page: 1,
         limit: 999,
       },
@@ -80,7 +100,7 @@ const GoodsSelectModal = (props) => {
           {listProps?.list.map((item) =>
             goodsDom(
               item,
-              selectItem.map((item) => item.specialGoodsId),
+              selectItem.map((item) => item.activityGoodsId),
               handleSelect,
             ),
           )}
@@ -122,6 +142,7 @@ const GoodsSelectModal = (props) => {
 };
 
 export default connect(({ baseData, loading }) => ({
+  selectList: baseData.groupMreList,
   platformEquityList: baseData.platformEquity,
   loading,
 }))(GoodsSelectModal);

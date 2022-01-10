@@ -1,7 +1,7 @@
 import { Badge } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 
-// 商品样式
+// 电商品样式
 export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
   const {
     goodsImg,
@@ -21,7 +21,9 @@ export const goodsDom = (item = {}, id = '', setSelectItem, onDel) => {
     <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
       <Badge.Ribbon text={'电商品'}>
         <div
-          className={`share_Coupon share_item ${id.includes(specialGoodsId) && 'select'}`}
+          className={`share_Coupon share_item ${
+            id.includes(activityGoodsId || specialGoodsId) && 'select'
+          }`}
           style={{ marginBottom: 6 }}
           onClick={() => setSelectItem && setSelectItem(item)}
         >

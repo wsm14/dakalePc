@@ -24,7 +24,7 @@ const GlobalModalDrawerSet = (props) => {
     if (type === 'edit') {
       setBanType(detail.isShowBanner);
     }
-  }, []);
+  }, [type]);
 
   //保存
   const handleSave = () => {
@@ -38,6 +38,7 @@ const GlobalModalDrawerSet = (props) => {
         activityGoodsObjects,
         ...other
       } = values;
+
       // 上传图片到oss -> 提交表单
       const imgList = await aliOssUpload(bannerImage);
       dispatch({
@@ -53,7 +54,7 @@ const GlobalModalDrawerSet = (props) => {
           activityEndTime: time[1].format('YYYY-MM-DD HH:mm'),
           bannerImage: imgList.toString(),
           jumpUrlType: jumpType,
-          goodsIds: activityGoodsObjects.map((item) => item.specialGoodsId).toString(),
+          goodsIds: activityGoodsObjects.map((item) => item.activityGoodsId).toString(),
         },
         callback: () => {
           onClose();

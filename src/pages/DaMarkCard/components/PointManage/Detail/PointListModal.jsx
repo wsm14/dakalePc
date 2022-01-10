@@ -54,7 +54,7 @@ const PointListModal = (props) => {
           {
             title: '下载打卡码',
             auth: true,
-            type: 'downloadQR',
+            type: 'qrCode',
             // click: () => setVisibleModalDrawer({ show: true, detail: record, type: 'signDetail' }),
           },
         ];
@@ -70,7 +70,7 @@ const PointListModal = (props) => {
         hittingId,
       },
       callback: (detail) => {
-        setVisible({ type, show: true, detail });
+        setVisible({ type, show: true, detail, hittingId });
       },
     });
   };

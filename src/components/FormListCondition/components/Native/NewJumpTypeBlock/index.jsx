@@ -85,8 +85,8 @@ const JumpTypeBlock = ({
                 param: {
                   [item.option.paramKey[0]]: {
                     telephoneFeeDeductionCouponPackage: 'telephoneCharges',
-                    platformGeneralCouponPackage: 'ecGoods',
-                    commerceGoodsPackage: 'beanWelfare',
+                    platformGeneralCouponPackage: 'beanWelfare',
+                    commerceGoodsPackage: 'ecGoods',
                     beanSelection: '0',
                   }[val],
                 },
