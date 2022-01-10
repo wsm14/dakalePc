@@ -30,7 +30,7 @@ const ShareContentSet = (props) => {
     if (!name) return;
     dispatch({
       type: 'baseData/fetchGetGroupMreList',
-      payload: { name, type: ownerType },
+      payload: { name, type: ownerType, groupFlag: 0 },
     });
   }, 500);
 
