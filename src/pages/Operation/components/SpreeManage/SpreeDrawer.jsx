@@ -54,8 +54,8 @@ const CouponDrawer = (props) => {
             buyFlagType === '0'
               ? undefined
               : buyFlagType === '1'
-              ? buyPriceCash
-              : bean / 100 + buyPriceCash,
+              ? Number(buyPriceCash).toFixed(2)
+              : Number(bean / 100 + buyPriceCash).toFixed(2),
           paymentModeObject:
             buyFlagType === '2'
               ? { type: 'self', bean, cash: buyPriceCash }

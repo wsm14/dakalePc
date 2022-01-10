@@ -16,7 +16,7 @@ const Coupon = ({ form, dispatch, paramKey }) => {
   const [owType, setOwType] = useState(''); // 店铺类型
 
   useEffect(() => {
-    setOwType(form.getFieldValue(['param', paramKey[2]]));
+    setOwType(form.getFieldValue(['param', paramKey[3]]));
     const ownerCouponId = form.getFieldValue(['param', paramKey[1]]);
     if (ownerCouponId) fetchCouponDetail();
     return () => {
@@ -41,7 +41,7 @@ const Coupon = ({ form, dispatch, paramKey }) => {
     <>
       <FormItem
         label="店铺类型"
-        name={['param', paramKey[2]]}
+        name={['param', paramKey[3]]}
         key={'ownerTypeStr'}
         rules={[{ required: true, message: `请选择店铺类型` }]}
         style={{ maxWidth: '100%' }}
@@ -61,7 +61,7 @@ const Coupon = ({ form, dispatch, paramKey }) => {
         paramKey={paramKey}
         owType={owType}
         onChange={(val) => {
-          form.setFieldsValue({ param: { [paramKey[1]]: undefined } });
+          form.setFieldsValue({ param: { [paramKey[1]]: undefined, ownerId: val } });
           setData({});
         }}
       ></Merchant>
@@ -86,6 +86,7 @@ const Coupon = ({ form, dispatch, paramKey }) => {
             setData({});
           }}
         ></ShareCoupon>
+        <FormItem label="ownerId" name={['param', 'ownerId']} hidden></FormItem>
       </FormItem>
     </>
   );
