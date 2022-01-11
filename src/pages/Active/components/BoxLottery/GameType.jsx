@@ -25,8 +25,7 @@ const GameType = ({ tabkey }) => {
   }, [tabkey]);
   const contentList = {
     0: <GameBean {...listProps}></GameBean>,
-    1: <GameEquity {...listProps}></GameEquity>,
-    // mark: <GameSign {...listProps}></GameSign>,
+    1: tabkey !== 'mark' && <GameEquity {...listProps}></GameEquity>,
   };
   return (
     <>
