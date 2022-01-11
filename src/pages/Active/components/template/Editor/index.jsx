@@ -2,6 +2,7 @@ import {
   BgColorsOutlined,
   PictureOutlined,
   ShoppingOutlined,
+  ShoppingCartOutlined,
   ShopOutlined,
   MoneyCollectOutlined,
   VideoCameraAddOutlined,
@@ -13,6 +14,7 @@ import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
 import Share from './Share';
 import CommonList from './CommonList';
+import CommerceGoods from './CommerceGoods';
 import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
 import CouponList from './CouponList';
@@ -73,6 +75,16 @@ export default {
     defaultData: { styleIndex: 0, list: [] },
     editorDom: (props) => <CommonList {...props}></CommonList>,
     dom: (props) => CommonList.dom(props),
+  },
+  commerceGoods: {
+    icon: <ShoppingCartOutlined style={{ fontSize: 24 }} />,
+    name: '电商品列表',
+    editorType: 'commerceGoods',
+    drop: true,
+    defaultImg: list,
+    defaultData: { styleIndex: 0, list: [] },
+    editorDom: (props) => <CommerceGoods {...props}></CommerceGoods>,
+    dom: (props) => CommerceGoods.dom(props),
   },
   merchantList: {
     icon: <ShopOutlined style={{ fontSize: 24 }} />,

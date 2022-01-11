@@ -39,6 +39,7 @@ export default (type = '') => {
         { type: 'commonList', show: moduleActiveShow },
         { type: 'merchantList', show: moduleActiveShow },
         { type: 'couponList', show: moduleActiveShow },
+        { type: 'commerceGoods', show: moduleActiveShow },
       ],
     },
     {

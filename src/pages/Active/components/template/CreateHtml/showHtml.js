@@ -1,10 +1,12 @@
 import { uuid } from '@/utils/utils';
-import commonList1 from './CommonList/CommonList_1';
-import commonList2 from './CommonList/CommonList_2';
-import commonList3 from './CommonList/CommonList_3';
 import share from './Share';
 import couponList1 from './CouponList';
 import merchantList1 from './MerchantList';
+import commonList1 from './CommonList/CommonList_1';
+import commonList2 from './CommonList/CommonList_2';
+import commonList3 from './CommonList/CommonList_3';
+import commerceGoods1 from './CommerceGoods/CommerceGoods_1';
+import commerceGoods2 from './CommerceGoods/CommerceGoods_1';
 
 let head = {}; // [key]: value[]
 let footer = {}; // [key]: value
@@ -83,10 +85,19 @@ const htmlDom = {
     return `<div id="${uid}"></div>${scriptTag(dom, list, uid)}`;
   },
 
-  // 商品列表
+  // 特惠商品列表
   commonList: ({ styleIndex, list }, uid) => {
     head = { ...head, request: requestJs };
     const functionIndex = [commonList1, commonList2, commonList3][styleIndex];
+    return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
+      list,
+    )},"${uid}")<\/script>`;
+  },
+
+  // 电商品列表
+  commerceGoods: ({ styleIndex, list }, uid) => {
+    head = { ...head, request: requestJs };
+    const functionIndex = [commerceGoods1, commerceGoods2][styleIndex];
     return `<div id="${uid}"></div><script>;(${functionIndex})(${JSON.stringify(
       list,
     )},"${uid}")<\/script>`;
@@ -108,6 +119,7 @@ const htmlDom = {
       list,
     )},"${uid}")<\/script>`;
   },
+
   // 富文本
   richText: ({ richText, padding }, uid) => {
     head = { ...head, richTextStyle };
