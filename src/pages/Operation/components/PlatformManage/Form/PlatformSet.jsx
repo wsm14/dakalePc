@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'umi';
 import CITYJSON from '@/common/cityJson';
-import { Radio, Form, Row, Col, Select, Button } from 'antd';
+import { Radio, Form, Row, Col, Select, Button, Cascader } from 'antd';
 import {
   COUPON_BUY_RULE,
   PLATFORM_TICKET_TYPE,
@@ -47,7 +47,8 @@ const CouponSet = (props) => {
 
   // 添加城市
   const addCity = () => {
-    const code = form.getFieldValue('cityCode');
+    const code = form.getFieldValue('cityCode')[1];
+    console.log('123', code);
     if (code == undefined) return;
     if (citys.indexOf(code) > -1) {
       return;
@@ -262,7 +263,7 @@ const CouponSet = (props) => {
           <Row gutter={8}>
             <Col span={18}>
               <Form.Item name="cityCode" noStyle>
-                <Select disabled={type === 'edit'} placeholder="请选择城市" allowClear>
+                {/* <Select disabled={type === 'edit'} placeholder="请选择城市" allowClear>
                   {cityList.map((item) => {
                     return (
                       <Option key={item.id} value={item.id}>
@@ -270,7 +271,17 @@ const CouponSet = (props) => {
                       </Option>
                     );
                   })}
-                </Select>
+                </Select> */}
+                <Cascader
+                  disabled={type === 'edit'}
+                  options={CITYJSON.filter((item) => item.level === '1').map((item) => ({
+                    ...item,
+                    children: CITYJSON.filter((items) => items.pid === item.id),
+                  }))}
+                  placeholder="请选择城市"
+                  allowClear
+                  fieldNames={{ label: 'name', value: 'id' }}
+                ></Cascader>
               </Form.Item>
             </Col>
             <Col span={6}>
