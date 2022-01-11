@@ -61,7 +61,11 @@ const EditorPanel = ({ context }) => {
   };
 
   return (
-    <div className={`${styles.active_Template_right} ${editorType ? styles.show : ''}`}>
+    <div
+      className={`${styles.active_Template_right} ${styles[editorType]} ${
+        editorType ? styles.show : ''
+      }`}
+    >
       <div className={styles.heard}>
         {name}
         <div className={styles.divideLine}></div>

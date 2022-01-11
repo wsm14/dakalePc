@@ -2,19 +2,23 @@ import {
   BgColorsOutlined,
   PictureOutlined,
   ShoppingOutlined,
+  ShoppingCartOutlined,
   ShopOutlined,
   MoneyCollectOutlined,
   VideoCameraAddOutlined,
   SwapOutlined,
+  FormOutlined,
 } from '@ant-design/icons';
 import BackgroundColor from './BackgroundColor';
 import SolaImg from './SolaImg';
 import Carouseal from './Carouseal';
 import Share from './Share';
 import CommonList from './CommonList';
+import CommerceGoods from './CommerceGoods';
 import NormalVideo from './NormalVideo';
 import MerchantList from './MerchantList';
 import CouponList from './CouponList';
+import RichText from './RichText';
 import img from './Img/img.png';
 import list from './Img/list.png';
 import mrelist from './Img/mrelist.png';
@@ -72,6 +76,16 @@ export default {
     editorDom: (props) => <CommonList {...props}></CommonList>,
     dom: (props) => CommonList.dom(props),
   },
+  commerceGoods: {
+    icon: <ShoppingCartOutlined style={{ fontSize: 24 }} />,
+    name: '电商品列表',
+    editorType: 'commerceGoods',
+    drop: true,
+    defaultImg: list,
+    defaultData: { styleIndex: 0, list: [] },
+    editorDom: (props) => <CommerceGoods {...props}></CommerceGoods>,
+    dom: (props) => CommerceGoods.dom(props),
+  },
   merchantList: {
     icon: <ShopOutlined style={{ fontSize: 24 }} />,
     name: '店铺列表',
@@ -101,5 +115,14 @@ export default {
     defaultData: '',
     editorDom: (props) => <NormalVideo {...props}></NormalVideo>,
     dom: (props) => NormalVideo.dom(props),
+  },
+  richText: {
+    name: '富文本',
+    icon: <FormOutlined style={{ fontSize: 24 }} />,
+    editorType: 'richText',
+    drop: true,
+    defaultImg: img,
+    editorDom: (props) => <RichText {...props}></RichText>,
+    dom: (props) => RichText.dom(props),
   },
 };
