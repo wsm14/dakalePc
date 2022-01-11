@@ -130,11 +130,11 @@ const PlatformManage = (props) => {
       title: '剩余数量',
       dataIndex: 'remain',
     },
-    {
-      title: '适用人群',
-      dataIndex: 'consortUser',
-      render: (val) => PLATFORM_COUPON_PEOPLE[val],
-    },
+    // {
+    //   title: '适用人群',
+    //   dataIndex: 'consortUser',
+    //   render: (val) => PLATFORM_COUPON_PEOPLE[val],
+    // },
     {
       title: '使用地区限制',
       dataIndex: 'ruleConditionObjects',
