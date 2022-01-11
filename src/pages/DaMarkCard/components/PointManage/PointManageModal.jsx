@@ -15,7 +15,7 @@ const PointManageModal = (props) => {
       title: `打卡明细-${detail.name}`,
       children: <MarkInfoModal detail={detail}></MarkInfoModal>,
     },
-    // 打卡点位列表
+    //  点位 - 打卡点位列表
     point: {
       title: `打卡点位设置-${detail.name}`,
       children: <PointListModal detail={detail}></PointListModal>,

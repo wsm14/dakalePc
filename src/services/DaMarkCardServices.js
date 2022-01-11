@@ -69,4 +69,19 @@ export async function fetchGetHittingById(params) {
   });
 }
 
+// get 哒小卡点位主体 - 首刷视频 - 详情
+export async function fetchGetStrapContent(params) {
+  return request('/admin/hittingMain/getStrapContent', {
+    params,
+  });
+}
+
+// get 哒小卡点位主体 - 首刷视频 - 设置
+export function fetchSetStrapContent(data) {
+  return request('/admin/hittingMain/setStrapContent', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 哒小卡点位管理 end

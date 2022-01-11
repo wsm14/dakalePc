@@ -9,6 +9,8 @@ import {
   fetchSaveHitting,
   fetchUpdateHitting,
   fetchGetHittingById,
+  fetchGetStrapContent,
+  fetchSetStrapContent,
 } from '@/services/DaMarkCardServices';
 
 export default {
@@ -139,6 +141,24 @@ export default {
       const { content } = response;
 
       callback && callback(content.hittingDTO || {});
+    },
+    // 哒小卡点位主体 - 首刷视频 - 详情
+    *fetchGetStrapContent({ payload, callback }, { call }) {
+      const response = yield call(fetchGetStrapContent, payload);
+      if (!response) return;
+      const { content } = response;
+
+      callback && callback(content.videoContentObject || {});
+    },
+    // get 哒小卡点位主体 - 首刷视频 - 设置
+    *fetchSetStrapContent({ payload, callback }, { call }) {
+      const response = yield call(fetchSetStrapContent, payload);
+      if (!response) return;
+      notification.success({
+        message: '温馨提示',
+        description: '设置视频成功',
+      });
+      callback && callback();
     },
   },
 };

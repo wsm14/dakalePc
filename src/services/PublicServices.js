@@ -277,3 +277,10 @@ export function fetchListUserByIds(data) {
     data,
   });
 }
+
+//get 搜索打卡点位
+export function fetchListHitting(params) {
+  return request('/admin/hitting/listHitting', {
+    params,
+  });
+}
