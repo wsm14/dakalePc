@@ -29,6 +29,9 @@ const FreeContactSelectModal = (props) => {
   const [searchValue, setSearchValue] = useState(''); // 搜索值
 
   useEffect(() => {
+    if (isMutex) {
+      isMutexNum === '1' ? setTabKey('coupon') : setTabKey('commerceGoods');
+    }
     setPage(1);
     if (visible) {
       if (tabKey === 'coupon') fetchGetBuyCouponSelect(1);

@@ -67,6 +67,13 @@ const PointManageDrawer = (props) => {
     });
   };
 
+  // 设置奖励
+  const handleAwardUpAudit = () => {
+    form.validateFields().then(async (values) => {
+      console.log('award', values);
+    });
+  };
+
   const listProp = {
     type,
   };
@@ -106,6 +113,10 @@ const PointManageDrawer = (props) => {
       </Button>
     ) : ['advert'].includes(type) ? (
       <Button onClick={handleAdvertUpAudit} type="primary" loading={loading}>
+        保存
+      </Button>
+    ) : ['award'].includes(type) ? (
+      <Button onClick={handleAwardUpAudit} type="primary" loading={loading}>
         保存
       </Button>
     ) : null,

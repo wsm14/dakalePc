@@ -14,7 +14,6 @@ const PlatformSet = (props) => {
       addonAfter: '次',
     },
     {
-      label: '添加卡豆奖池',
       name: 'beanPoolList',
       type: 'noForm',
       formItem: <MarkAwardSet name={'beanPoolList'} form={form}></MarkAwardSet>,

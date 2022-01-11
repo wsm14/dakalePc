@@ -29,35 +29,41 @@ const MarkAwardSet = ({ name, form }) => {
       >
         {(fields, { add, remove }, { errors }) => (
           <>
-            <Form.Item>
+            <Form.Item label={'添加卡豆奖池'}>
               <Button
                 type="dashed"
                 onClick={() => add()}
-                style={{ width: '60%', marginLeft: 150 }}
+                style={{ width: '60%' }}
                 icon={<PlusOutlined />}
               >
                 添加
               </Button>
             </Form.Item>
             {fields.map((field, index) => (
-              <Form.Item key={field.key}>
-                <Form.Item
-                  label={`每次打卡领取卡豆数池${index + 1}`}
-                  {...field}
-                  // validateTrigger={['onChange', 'onBlur']}
-                >
-                  <Input.Group size="small">
+              <React.Fragment key={field.key}>
+                <Input.Group size="small">
+                  <Form.Item
+                    label={`每次打卡领取卡豆数池${index + 1}`}
+                    // {...field}
+                    // validateTrigger={['onChange', 'onBlur']}
+                  >
                     <Row gutter={8}>
                       <Col span={5}>
-                        <Input></Input>
+                        <Form.Item name={[name, 'minBean']} noStyle>
+                          <Input></Input>
+                        </Form.Item>
                       </Col>
                       <Col span={1}>至</Col>
                       <Col span={8}>
-                        <Input addonAfter={'卡豆'}></Input>
+                        <Form.Item name={[name, 'maxBean']} noStyle>
+                          <Input addonAfter={'卡豆'}></Input>
+                        </Form.Item>
                       </Col>
                       <Col span={2}>概率</Col>
                       <Col span={6}>
-                        <Input addonAfter={'%'}></Input>
+                        <Form.Item name={[name, 'countRate']} noStyle>
+                          <Input addonAfter={'%'}></Input>
+                        </Form.Item>
                       </Col>
                       <Col span={2}>
                         {fields.length > 1 ? (
@@ -71,9 +77,9 @@ const MarkAwardSet = ({ name, form }) => {
                         ) : null}
                       </Col>
                     </Row>
-                  </Input.Group>
-                </Form.Item>
-              </Form.Item>
+                  </Form.Item>
+                </Input.Group>
+              </React.Fragment>
             ))}
             <Form.ErrorList errors={errors} />
             {/* {fields.length > 0 && <div style={totalStyle}>{total}/200</div>} */}
