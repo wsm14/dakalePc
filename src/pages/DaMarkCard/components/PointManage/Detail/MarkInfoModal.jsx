@@ -1,10 +1,23 @@
 import React from 'react';
 import { connect } from 'umi';
+import debounce from 'lodash/debounce';
 import Ellipsis from '@/components/Ellipsis';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const MarkInfoModal = (props) => {
-  const { loading, markInfoList, detail } = props;
+  const { loading, markInfoList, detail, pointList, loadingSearch, dispatch } = props;
+
+  // 搜索打卡点位
+  const fetchGetMre = debounce((name) => {
+    if (!name) return;
+    dispatch({
+      type: 'baseData/fetchListHitting',
+      payload: {
+        mainId: detail.hittingMainId,
+        name,
+      },
+    });
+  }, 500);
 
   // 搜索参数
   const searchItems = [
@@ -19,11 +32,16 @@ const MarkInfoModal = (props) => {
       name: 'createTimeBegin',
       end: 'createTimeEnd',
     },
-    // {
-    //   label: '打卡点位',
-    //   name: 'hittingId',
-    //   type: 'select',
-    // },
+    {
+      label: '打卡点位',
+      name: 'hittingId',
+      type: 'select',
+      allItem: false,
+      select: pointList,
+      onSearch: (val) => fetchGetMre(val),
+      loading: loadingSearch.effects['baseData/fetchListHitting'],
+      placeholder: '请选择打卡点位',
+    },
     {
       label: '获得奖励',
       name: 'rewardName',
@@ -68,7 +86,8 @@ const MarkInfoModal = (props) => {
       dataIndex: 'rewardName',
       render: (val) => (
         <Ellipsis tooltip length={10}>
-          {val.split(',').length === 1 ? val : val.split(',').map((item) => `${item},`)}
+          {val}
+          {/* {val.split(',').length === 1 ? val : val.split(',').map((item) => `${item},`)} */}
         </Ellipsis>
       ),
     },
@@ -89,7 +108,9 @@ const MarkInfoModal = (props) => {
   );
 };
 
-export default connect(({ pointManage, loading }) => ({
+export default connect(({ baseData, pointManage, loading }) => ({
+  pointList: baseData.pointList.list,
   markInfoList: pointManage.markInfoList,
+  loadingSearch: loading,
   loading: loading.effects['pointManage/fetchListHittingRecordManagement'],
 }))(MarkInfoModal);

@@ -80,11 +80,12 @@ const PointManage = (props) => {
           },
           {
             type: 'award',
-            click: () => fetchCouponDetail(hittingMainId, 'info'),
+            click: () => fetchCouponDetail(hittingMainId, 'award'),
           },
           {
             type: 'advert',
-            click: () => fetchCouponDetail(hittingMainId, 'info'),
+            // click: () => fetchCouponDetail(hittingMainId, 'advert'),
+            click: () => setVisible({ type: 'advert', show: true, detail: record }),
           },
         ];
       },
@@ -115,7 +116,10 @@ const PointManage = (props) => {
   // 获取主体详情
   const fetchCouponDetail = (hittingMainId, type) => {
     dispatch({
-      type: 'pointManage/fetchGetHittingMainById',
+      type:
+        type === 'advert'
+          ? 'pointManage/fetchGetStrapContent'
+          : 'pointManage/fetchGetHittingMainById',
       payload: {
         hittingMainId,
       },
@@ -146,13 +150,13 @@ const PointManage = (props) => {
         dispatchType="pointManage/fetchGetList"
         {...pointManageList}
       ></TableDataBlock>
-      {/* 新增 编辑 详情 */}
+      {/* 新增 编辑 详情 广告 奖励*/}
       <PointManageDrawer
         childRef={childRef}
         visible={visible}
         onClose={() => setVisible(false)}
       ></PointManageDrawer>
-      {/* 打卡明细 */}
+      {/* 打卡明细  点位 */}
       <PointManageModal
         visible={visibleModalDrawer}
         onClose={() => setVisibleModalDrawer(false)}
@@ -163,7 +167,5 @@ const PointManage = (props) => {
 
 export default connect(({ pointManage, loading }) => ({
   pointManageList: pointManage.list,
-  loading:
-    loading.effects['pointManage/fetchGetList'] ||
-    loading.effects['pointManage/fetchGetHittingMainById'],
+  loading: loading.effects['pointManage/fetchGetList'],
 }))(PointManage);

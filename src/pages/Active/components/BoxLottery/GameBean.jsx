@@ -81,12 +81,13 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
       render: (val) => checkCityName(val),
     },
     {
-      title: '抽奖时间',
+      title: tabkey === 'mark' ? '中奖时间' : '抽奖时间',
       dataIndex: 'createTime',
     },
     {
       title: '奖品类型',
       dataIndex: 'packageType',
+      show: tabkey !== 'mark',
       render: (val) => GAME_SIGN_PACKAGE_TYPE[val],
     },
     {

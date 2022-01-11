@@ -37,6 +37,7 @@ import {
   fetchGetPlatformEquitySelect,
   fetchGetEquityCouponSelect,
   fetchPlatformCouponSelect,
+  fetchListHitting,
 } from '@/services/PublicServices';
 
 export default {
@@ -65,6 +66,7 @@ export default {
     platformEquity: { list: [], total: 0 },
     EquityCoupon: { list: [], total: 0 },
     PlatformCoupon: { list: [], total: 0 },
+    pointList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -570,6 +572,24 @@ export default {
       if (!response) return;
       const { content } = response;
       callback && callback(content.userDTOS);
+    },
+    //get 搜索打卡点位
+    *fetchListHitting({ payload }, { put, call }) {
+      const response = yield call(fetchListHitting, { page: 1, limit: 10, ...payload });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          pointList: {
+            list: content.recordList.map((item) => ({
+              name: `${item.name}`,
+              value: item.hittingId,
+            })),
+            total: content.total,
+          },
+        },
+      });
     },
   },
 };

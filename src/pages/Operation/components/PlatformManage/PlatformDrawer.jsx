@@ -107,7 +107,7 @@ const CouponDrawer = (props) => {
     },
     footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
-        新增
+        保存
       </Button>
     ),
   };

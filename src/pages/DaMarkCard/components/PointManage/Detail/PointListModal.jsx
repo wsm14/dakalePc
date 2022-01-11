@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
+import { checkCityName } from '@/utils/utils';
 import TableDataBlock from '@/components/TableDataBlock';
+import PointQrCode from './Point/PointQrCode';
+import PointDrawer from './Point/PointDrawer';
 
 const PointListModal = (props) => {
   const { loading, pointList, detail, dispatch } = props;
@@ -8,7 +11,7 @@ const PointListModal = (props) => {
   const childRef = useRef();
 
   const [visible, setVisible] = useState(false);
-  // const [visible, setVisible] = useState(false); // 二维码
+  const [visibleQrCode, setVisibleQrCode] = useState(false); // 二维码
 
   // 搜索参数
   const searchItems = [
@@ -17,6 +20,13 @@ const PointListModal = (props) => {
       name: 'name',
       placeholder: '请输入点位名称',
     },
+    // {
+    //   label: '所属地区',
+    //   name: 'city',
+    //   type: 'cascader',
+    //   changeOnSelect: true,
+    //   valuesKey: ['provinceCode', 'cityCode', 'districtCode'],
+    // },
   ];
 
   // 表头
@@ -31,6 +41,12 @@ const PointListModal = (props) => {
       align: 'center',
       dataIndex: 'name',
     },
+    // {
+    //   title: '所属地区',
+    //   dataIndex: 'districtCode',
+    //   align: 'center',
+    //   render: (val) => checkCityName(val),
+    // },
     {
       title: '点位地址',
       align: 'center',
@@ -55,7 +71,8 @@ const PointListModal = (props) => {
             title: '下载打卡码',
             auth: true,
             type: 'qrCode',
-            click: () => setVisible({ type: 'qrCode', show: true, detail: record }),
+            click: () =>
+              setVisibleQrCode({ show: true, detail: { mainName: detail.name, ...record } }),
           },
         ];
       },
@@ -105,7 +122,7 @@ const PointListModal = (props) => {
         visible={visible}
         onClose={() => setVisible(false)}
       ></PointDrawer>
-      <PointQrCode></PointQrCode>
+      <PointQrCode visible={visibleQrCode} onClose={() => setVisibleQrCode(false)}></PointQrCode>
     </>
   );
 };

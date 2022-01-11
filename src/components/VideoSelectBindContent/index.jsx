@@ -18,6 +18,8 @@ const ShareCoupon = (props) => {
     onDel,
     onOk,
     form,
+    isMutex,
+    isMutexNum,
   } = props;
 
   // console.log('data', data);
@@ -78,6 +80,8 @@ const ShareCoupon = (props) => {
       {/* 优惠选择 */}
       <BuyContactModal
         {...selectProps}
+        isMutex={isMutex}
+        isMutexNum={isMutexNum}
         visible={visibleContact}
         onOk={onOk}
         onClose={() => setVisibleContact(false)}
