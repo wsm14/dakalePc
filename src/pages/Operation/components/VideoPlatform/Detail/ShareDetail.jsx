@@ -8,7 +8,11 @@ import {
   SHARE_SEX_TYPE,
   SHARE_AREA_TYPE,
 } from '@/common/constant';
-import { couponsDom, goodsDom } from '@/components/VideoSelectBindContent/CouponFreeDom';
+import {
+  couponsDom,
+  goodsDom,
+  commerceDom,
+} from '@/components/VideoSelectBindContent/CouponFreeDom';
 import { checkCityName } from '@/utils/utils';
 import aliOssUpload from '@/utils/aliOssUpload';
 import uploadLive from '@/utils/uploadLive';
@@ -38,7 +42,7 @@ const ShareDetail = (props) => {
 
   const { index, show = false, type = 'info', detail = {} } = visible;
   // console.log(detail, 'detail');
-  const { ownerId, momentId, ownerName } = detail;
+  const { ownerId, momentId, ownerName, ownerType } = detail;
 
   const [form] = Form.useForm();
   const [couponData, setCouponData] = useState({ free: {}, contact: [] }); // 选择券的信息
@@ -101,7 +105,11 @@ const ShareDetail = (props) => {
       show: tabKey === '1',
       render: (val, row) =>
         val.map((item) =>
-          item.type === 'special' ? goodsDom(item) : couponsDom(item, '', '', item.type),
+          item.type === 'special'
+            ? goodsDom(item)
+            : item.type === 'commer'
+            ? commerceDom(item)
+            : couponsDom(item, '', '', item.type),
         ),
     },
     {
@@ -294,6 +302,7 @@ const ShareDetail = (props) => {
           {
             ...other,
             ownerId,
+            ownerType,
             momentId,
             areaType,
             age: age === 'age' ? ageData.toString() : age,
@@ -319,7 +328,11 @@ const ShareDetail = (props) => {
             : [],
           activityGoodsList: contact
             .filter((i) => i.goodsName)
-            .map((i) => ({ activityGoodsId: i.specialGoodsId || i.activityGoodsId, ownerId })),
+            .map((i) => ({
+              activityGoodsId: i.specialGoodsId || i.activityGoodsId,
+              ownerId,
+              activityType: i.activityType,
+            })),
           ownerCouponList: contact
             .filter((i) => i.couponName)
             .map((i) => ({ ownerCouponId: i.ownerCouponIdString, ownerId })),

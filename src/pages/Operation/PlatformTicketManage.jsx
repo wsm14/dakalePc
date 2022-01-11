@@ -53,12 +53,12 @@ const PlatformManage = (props) => {
       name: 'couponStatus',
       select: COUPON_STATUS,
     },
-    {
-      label: '适用人群',
-      name: 'consortUser',
-      type: 'select',
-      select: PLATFORM_COUPON_PEOPLE,
-    },
+    // {
+    //   label: '适用人群',
+    //   name: 'consortUser',
+    //   type: 'select',
+    //   select: PLATFORM_COUPON_PEOPLE,
+    // },
     {
       label: '最后修改时间',
       type: 'rangePicker',

@@ -119,13 +119,15 @@ const GameSign = ({ gameSignList, loading, dispatch, tabkey }) => {
 
   // 获取详情 type：info 查看
   const fetchBoxDeatil = (id, row, type) => {
-    const { userAddressObject, userId } = row;
+    const { userAddressObject = {}, userId } = row;
     let userAddressContent = {};
     if (userAddressObject) {
       // const contentObj = JSON.parse(row.contentParam);
-      userAddressContent = `${userAddressObject.addressName || '-'},${
-        userAddressObject.mobile || '-'
-      },${checkCityName(userAddressObject.districtCode) || '-'}${userAddressObject.address || '-'}`;
+      userAddressContent = `${userAddressObject?.addressName || '-'},${
+        userAddressObject?.mobile || '-'
+      },${checkCityName(userAddressObject?.districtCode) || '-'}${
+        userAddressObject?.address || '-'
+      }`;
     }
 
     if (type === 'add') {

@@ -17,7 +17,7 @@ const FormItem = Form.Item;
  * @param {Function} getJumpType 外围获取跳转类型 回调
  * @returns
  */
-const NewNativeFormSet = ({
+const NativeFormSet = ({
   jumpTypeSelect,
   detail = {},
   port = 'user',
@@ -60,7 +60,15 @@ const NewNativeFormSet = ({
         label="跳转类型"
         name={'jumpUrlType'}
         style={{ maxWidth: '100%' }}
-        rules={[{ required: true, message: `请选择跳转类型` }]}
+        // rules={[{ required: true, message: `请选择跳转类型` }]}
+        rules={[
+          {
+            required: true,
+            validator: () => {
+              return Promise.resolve();
+            },
+          },
+        ]}
       >
         <Radio
           select={
@@ -91,4 +99,4 @@ const NewNativeFormSet = ({
   );
 };
 
-export default connect()(NewNativeFormSet);
+export default connect()(NativeFormSet);

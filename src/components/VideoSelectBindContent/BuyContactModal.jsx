@@ -10,18 +10,8 @@ const { Search } = Input;
  * 选择优惠内容（单选）
  */
 const FreeContactSelectModal = (props) => {
-  const {
-    couponList,
-    specialGoodsList,
-    merchantId,
-    dispatch,
-    visible,
-    onClose,
-    onOk,
-    isMutex = false,
-    isMutexNum = '0',
-    loading,
-  } = props;
+  const { couponList, specialGoodsList, merchantId, dispatch, visible, onClose, onOk, loading } =
+    props;
 
   const [selectItem, setSelectItem] = useState({}); // 当前选择项
   const [tabKey, setTabKey] = useState('coupon'); // tab类型
@@ -29,9 +19,6 @@ const FreeContactSelectModal = (props) => {
   const [searchValue, setSearchValue] = useState(''); // 搜索值
 
   useEffect(() => {
-    if (isMutex) {
-      isMutexNum === '1' ? setTabKey('coupon') : setTabKey('commerceGoods');
-    }
     setPage(1);
     if (visible) {
       if (tabKey === 'coupon') fetchGetBuyCouponSelect(1);
@@ -155,37 +142,15 @@ const FreeContactSelectModal = (props) => {
           <Search placeholder="请输入名称" enterButton allowClear onSearch={setSearchValue} />
         }
       >
-        {(isMutex && isMutexNum === '0') || isMutex === false ? (
-          <>
-            <TabPane tab="有价券" key="coupon">
-              {listDom}
-            </TabPane>
-            <TabPane tab="特惠商品" key="goods">
-              {listDom}
-            </TabPane>
-            <TabPane tab="电商商品" key="commerceGoods">
-              {listDom}
-            </TabPane>
-          </>
-        ) : (
-          {
-            1: (
-              <>
-                <TabPane tab="有价券" key="coupon">
-                  {listDom}
-                </TabPane>
-                <TabPane tab="特惠商品" key="goods">
-                  {listDom}
-                </TabPane>
-              </>
-            ),
-            2: (
-              <TabPane tab="电商商品" key="commerceGoods">
-                {listDom}
-              </TabPane>
-            ),
-          }[isMutexNum]
-        )}
+        <TabPane tab="有价券" key="coupon">
+          {listDom}
+        </TabPane>
+        <TabPane tab="特惠商品" key="goods">
+          {listDom}
+        </TabPane>
+        <TabPane tab="电商商品" key="commerceGoods">
+          {listDom}
+        </TabPane>
       </Tabs>
       {/* <div style={{ textAlign: 'right', marginTop: 10 }}>
         <Pagination
