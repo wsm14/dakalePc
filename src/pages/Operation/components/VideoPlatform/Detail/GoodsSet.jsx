@@ -41,6 +41,8 @@ const ShareContentSet = (props) => {
       formItem: (
         <>
           <ShareCoupon
+            isMutex={true}
+            isMutexNum="0"
             show="active"
             merchantIdKey="ownerId"
             type={contact[0]?.couponName ? 'coupon' : 'goods'}
@@ -50,6 +52,7 @@ const ShareContentSet = (props) => {
             onOk={(data) => saveCouponStorage({ contact: [data] })}
           ></ShareCoupon>
           <ShareCoupon
+            isMutex={true}
             show="active"
             merchantIdKey="ownerId"
             type={contact[1]?.couponName ? 'coupon' : 'goods'}
@@ -59,6 +62,7 @@ const ShareContentSet = (props) => {
             onOk={(data) => saveCouponStorage({ contact: [...contact, data] })}
           ></ShareCoupon>
           <ShareCoupon
+            isMutex={true}
             show="active"
             merchantIdKey="ownerId"
             type={contact[2]?.couponName ? 'coupon' : 'goods'}

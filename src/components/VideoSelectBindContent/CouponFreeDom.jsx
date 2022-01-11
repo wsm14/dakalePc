@@ -152,7 +152,7 @@ export const commerceDom = (item = {}, id, setSelectItem, onDel) => {
 
   return (
     <div style={{ width: 350 }} key={activityGoodsId || specialGoodsId}>
-      <Badge.Ribbon text={{ single: '单品', package: '套餐' }[goodsType]}>
+      <Badge.Ribbon text={'电商商品'}>
         <div
           className={`share_Coupon share_item ${id === specialGoodsId && 'select'}`}
           style={{ marginBottom: 6 }}

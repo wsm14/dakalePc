@@ -150,7 +150,7 @@ const PointManage = (props) => {
         dispatchType="pointManage/fetchGetList"
         {...pointManageList}
       ></TableDataBlock>
-      {/* 新增 编辑 详情 */}
+      {/* 新增 编辑 详情 广告 奖励*/}
       <PointManageDrawer
         childRef={childRef}
         visible={visible}

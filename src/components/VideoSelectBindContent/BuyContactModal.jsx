@@ -120,6 +120,7 @@ const FreeContactSelectModal = (props) => {
       afterClose={() => {
         setPage(1);
         setTabKey('coupon');
+        setSelectItem({});
       }}
       maskStyle={{ background: 'none' }}
       bodyStyle={{ overflowY: 'auto', maxHeight: 500 }}
