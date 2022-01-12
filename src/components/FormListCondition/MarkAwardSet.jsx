@@ -1,32 +1,13 @@
 import React, { useState } from 'react';
-import update from 'immutability-helper';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Form, Input, Button, Row, Col } from 'antd';
 
-const { TextArea } = Input;
-
-const MarkAwardSet = ({ name, form }) => {
+const MarkAwardSet = ({ name }) => {
   const [textArr, setTextArr] = useState([]);
-
-  // const totalStyle = { textAlign: 'right', paddingRight: 44, marginBottom: 10, marginTop: -16 };
-
-  const total = textArr.reduce((n, p) => n + p, 0);
 
   return (
     <div style={{ marginBottom: 24 }}>
-      <Form.List
-        name={name}
-        // rules={[
-        //   {
-        //     validator: () => {
-        //       if (total > 1000) {
-        //         return Promise.reject(new Error('介绍长度文案不能超过1000字'));
-        //       }
-        //       return Promise.resolve();
-        //     },
-        //   },
-        // ]}
-      >
+      <Form.List name={name}>
         {(fields, { add, remove }, { errors }) => (
           <>
             <Form.Item label={'添加卡豆奖池'}>
@@ -82,7 +63,6 @@ const MarkAwardSet = ({ name, form }) => {
               </React.Fragment>
             ))}
             <Form.ErrorList errors={errors} />
-            {/* {fields.length > 0 && <div style={totalStyle}>{total}/200</div>} */}
           </>
         )}
       </Form.List>

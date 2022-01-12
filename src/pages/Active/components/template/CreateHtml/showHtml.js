@@ -6,7 +6,7 @@ import commonList1 from './CommonList/CommonList_1';
 import commonList2 from './CommonList/CommonList_2';
 import commonList3 from './CommonList/CommonList_3';
 import commerceGoods1 from './CommerceGoods/CommerceGoods_1';
-import commerceGoods2 from './CommerceGoods/CommerceGoods_1';
+import commerceGoods2 from './CommerceGoods/CommerceGoods_2';
 
 let head = {}; // [key]: value[]
 let footer = {}; // [key]: value

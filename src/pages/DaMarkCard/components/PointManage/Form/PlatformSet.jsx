@@ -278,7 +278,6 @@ const PlatformSet = (props) => {
         saveSelectData({
           parentUserTypes: e.target.value,
         });
-        e.target.value;
       },
       disabled: type === 'info',
     },
