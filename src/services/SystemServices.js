@@ -555,4 +555,34 @@ export function fetchSaveRechargeShareImg(data) {
   });
 }
 
+// get 虚拟商品优惠比例配置 -  分页列表
+export function fetchPagePreferentialActivity(params) {
+  return request('/admin/preferentialActivity/pagePreferentialActivity', {
+    params,
+  });
+}
+
+// get 虚拟商品优惠比例配置-详情
+export function fetchGetPreferentialActivityById(params) {
+  return request('/admin/preferentialActivity/getPreferentialActivityById', {
+    params,
+  });
+}
+
+// post 虚拟商品优惠比例配置-编辑
+export function fetchUpdatePreferentialActivity(data) {
+  return request('/admin/preferentialActivity/updatePreferentialActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
+// post 虚拟商品优惠比例配置-新增
+export function fetchSavePreferentialActivity(data) {
+  return request('/admin/preferentialActivity/savePreferentialActivity', {
+    method: 'POST',
+    data,
+  });
+}
+
 // 全局配置 end

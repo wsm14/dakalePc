@@ -3,8 +3,8 @@ import vaneWind from './VaneWind';
 import merchant from './Merchant';
 import specialGoods from './SpecialGoods';
 import coupon from './Coupon';
-import beanSelection from './BeanSelection';
-import giftType from './GiftType';
+import selection from './Selection';
+import giftType from './GiftType'; // 固定写死携带默认值，选择类型时赋值
 
 export default (props) => {
   const { showApi } = props;
@@ -20,6 +20,8 @@ export default (props) => {
     telephoneFeeDeductionCouponPackage: giftType,
     platformGeneralCouponPackage: giftType,
     commerceGoodsPackage: giftType,
+    phoneBill: selection, // 话费
+    memberRecharge: selection, // 会员充值
   }[showApi];
   if (!ShowDom) return null;
 

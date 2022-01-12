@@ -38,6 +38,7 @@ import {
   fetchGetEquityCouponSelect,
   fetchPlatformCouponSelect,
   fetchListHitting,
+  fetchPagePreferentialActivity,
 } from '@/services/PublicServices';
 
 export default {
@@ -67,6 +68,7 @@ export default {
     EquityCoupon: { list: [], total: 0 },
     PlatformCoupon: { list: [], total: 0 },
     pointList: { list: [], total: 0 },
+    virtualList: { list: [], total: 0 },
   },
 
   reducers: {
@@ -92,6 +94,12 @@ export default {
       return {
         ...state,
         platformEquity: { list: [], total: 0 },
+      };
+    },
+    clearVirtual(state) {
+      return {
+        ...state,
+        virtualList: { list: [], total: 0 },
       };
     },
   },
@@ -575,7 +583,7 @@ export default {
     },
     //get 搜索打卡点位
     *fetchListHitting({ payload }, { put, call }) {
-      const response = yield call(fetchListHitting, { page: 1, limit: 10, ...payload });
+      const response = yield call(fetchListHitting, { page: 1, limit: 100, ...payload });
       if (!response) return;
       const { content } = response;
       yield put({
@@ -585,6 +593,28 @@ export default {
             list: content.recordList.map((item) => ({
               name: `${item.name}`,
               value: item.hittingId,
+            })),
+            total: content.total,
+          },
+        },
+      });
+    },
+    //get 虚拟商品优惠比例配置-分页列表
+    *fetchPagePreferentialActivity({ payload }, { put, call }) {
+      const response = yield call(fetchPagePreferentialActivity, {
+        page: 1,
+        limit: 999,
+        ...payload,
+      });
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          virtualList: {
+            list: content.recordList.map((item) => ({
+              name: `${item.activityName}`,
+              value: item.identification,
             })),
             total: content.total,
           },

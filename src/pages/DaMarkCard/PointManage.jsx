@@ -84,8 +84,8 @@ const PointManage = (props) => {
           },
           {
             type: 'advert',
-            // click: () => fetchCouponDetail(hittingMainId, 'advert'),
-            click: () => setVisible({ type: 'advert', show: true, detail: record }),
+            click: () => fetchCouponDetail(hittingMainId, 'advert'),
+            // click: () => setVisible({ type: 'advert', show: true, detail: record }),
           },
         ];
       },
