@@ -7,6 +7,7 @@ import HolidayConfig from './components/GlobalConfig/HolidayConfig';
 import RechargeShare from './components/GlobalConfig/RechargeShare';
 import UgcLabel from './components/GlobalConfig/UgcLabel';
 import TabConfigure from './components/GlobalConfig/TabConfigure';
+import VirtualRatioConfig from './components/GlobalConfig/VirtualRatioConfig';
 
 const GlobalConfig = (props) => {
   let main = undefined;
@@ -69,6 +70,11 @@ const GlobalConfig = (props) => {
       type: 'tabConfigure',
       menuName: '首页tab配置',
       block: <TabConfigure></TabConfigure>,
+    },
+    {
+      type: 'virtualRatioConfig',
+      menuName: '虚拟商品优惠比例配置',
+      block: <VirtualRatioConfig></VirtualRatioConfig>,
     },
   ];
   // 显示内容判断

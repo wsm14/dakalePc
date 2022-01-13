@@ -284,3 +284,10 @@ export function fetchListHitting(params) {
     params,
   });
 }
+
+//get 虚拟商品优惠比例配置-分页列表
+export function fetchPagePreferentialActivity(params) {
+  return request('/admin/preferentialActivity/pagePreferentialActivity', {
+    params,
+  });
+}

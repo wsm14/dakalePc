@@ -818,6 +818,9 @@ export const STROLLAROUND_TAB_TYPE = {
 // 全局配置 - 首页tab配置
 export const TAB_INDEX_TYPE = { iOS: 'iOS', android: 'Android', weChat: '小程序' };
 
+// 全局配置 - 虚拟商品优惠比例配置
+export const VIRTUAL_CONFIG_TYPE = { phoneBill: '话费优惠', memberRecharge: '会员优惠' };
+
 // 全局配置 - 首页tab配置 - 标签类型
 export const TABINDEX_VIDEO_TYPE = {
   all: '通用',
@@ -872,7 +875,7 @@ export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
 // 平台券管理 - 适用端口type
 export const PLATFORM_APPLY_PORT_TYPE = {
   app: 'APP',
-  wechat: '哒卡乐小程序',
+  weChat: '哒卡乐小程序',
   markWechat: '哒小卡小程序',
   communityWechat: '哒小团小程序',
 };
@@ -900,3 +903,6 @@ export const MARK_CARD_PARENT_TYPE = {
   merchant: '店铺',
   user: '用户',
 };
+
+// 全局配置 - 虚拟商品优惠比例配置 - 启用状态
+export const VIR_OPEN_STATE = ['禁用', '启用', '已过期'];
