@@ -15,6 +15,8 @@ const VirtualConfigSet = (props) => {
 
   const [form] = Form.useForm();
 
+  console.log(initialValues);
+
   useEffect(() => {
     if (type === 'edit' || type === 'info') {
       setRuleTypes(initialValues?.ruleType);
