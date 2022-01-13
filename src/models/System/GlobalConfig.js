@@ -391,8 +391,8 @@ export default {
       } = preferentialActivityDTO;
       const data = {
         ...other,
-        buyLimit: preferentialActivityRuleObject.buyLimit,
-        maxBeanAndCoupon: (Number(preferentialActivityRuleObject.maxBeanAndCoupon) * 100).toFixed(
+        buyLimit: preferentialActivityRuleObject?.buyLimit,
+        maxBeanAndCoupon: (Number(preferentialActivityRuleObject?.maxBeanAndCoupon) * 100).toFixed(
           0,
         ),
         startDate,
