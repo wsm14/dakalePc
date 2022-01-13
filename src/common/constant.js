@@ -906,3 +906,6 @@ export const MARK_CARD_PARENT_TYPE = {
 
 // 全局配置 - 虚拟商品优惠比例配置 - 启用状态
 export const VIR_OPEN_STATE = ['禁用', '启用', '已过期'];
+
+// 全局配置 - 虚拟商品优惠比例配置 - 限优惠次数类型
+export const VIR_OPEN_TYPE = ['不限', '每人限制'];

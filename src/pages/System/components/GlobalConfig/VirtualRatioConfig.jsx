@@ -100,7 +100,7 @@ const TabConfigure = (props) => {
         setVisible({
           show: true,
           type: 'add',
-          initialValues: { type: tabKey, ruleType: '0' },
+          initialValues: { type: tabKey, ruleType: '0', status: 0 },
         });
       },
     },

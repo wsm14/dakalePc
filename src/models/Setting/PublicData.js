@@ -603,6 +603,7 @@ export default {
     *fetchPagePreferentialActivity({ payload }, { put, call }) {
       const response = yield call(fetchPagePreferentialActivity, {
         page: 1,
+        status: 1,
         limit: 999,
         ...payload,
       });

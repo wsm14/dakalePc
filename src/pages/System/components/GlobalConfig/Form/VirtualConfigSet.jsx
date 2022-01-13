@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
 import moment from 'moment';
 import { Form, Button } from 'antd';
-import { VIRTUAL_CONFIG_TYPE, VIR_OPEN_STATE } from '@/common/constant';
+import { VIRTUAL_CONFIG_TYPE, VIR_OPEN_STATE, VIR_OPEN_TYPE } from '@/common/constant';
 import DescriptionsCondition from '@/components/DescriptionsCondition';
 import FormCondition from '@/components/FormCondition';
 import DrawerCondition from '@/components/DrawerCondition';
@@ -11,13 +11,13 @@ const VirtualConfigSet = (props) => {
   const { visible, onClose, childRef, dispatch, loading } = props;
   const { show, type, initialValues = {} } = visible;
 
-  const [ruleType, setRuleType] = useState('0'); // 优惠次数类型
+  const [ruleTypes, setRuleTypes] = useState('0'); // 优惠次数类型
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (type !== 'add') {
-      setRuleType(initialValues?.ruleType);
+    if (type === 'edit' || type === 'info') {
+      setRuleTypes(initialValues?.ruleType);
     }
   }, [type]);
 
@@ -49,22 +49,22 @@ const VirtualConfigSet = (props) => {
       label: '限优惠次数',
       name: 'ruleType',
       type: 'radio',
-      select: ['不限', '每人限制'],
+      select: VIR_OPEN_TYPE,
       onChange: (e) => {
-        setRuleType(e.target.value);
+        setRuleTypes(e.target.value);
       },
       disabled: type === 'info' || type === 'edit',
-      render: (val) => ['不限', '每人限制'][val],
+      render: (val) => VIR_OPEN_TYPE[val],
     },
     {
       label: '每人限优惠次数',
       name: 'buyLimit',
       type: 'number',
-      visible: ruleType !== '0',
+      visible: ruleTypes !== '0',
       addonAfter: '次',
       min: 1,
       disabled: type === 'info' || type === 'edit',
-      show: ruleType !== '0',
+      show: ruleTypes !== '0',
       render: (val) => `${val}次`,
     },
     {
@@ -123,7 +123,7 @@ const VirtualConfigSet = (props) => {
     width: 700,
     onClose,
     closeCallBack: () => {
-      setRuleType('0');
+      setRuleTypes('0');
     },
     footer: type !== 'info' && (
       <Button type="primary" onClick={handleSave} loading={loading}>
