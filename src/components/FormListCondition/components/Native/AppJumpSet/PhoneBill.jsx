@@ -7,11 +7,11 @@ import { Select } from '@/components/FormCondition/formModule';
 const FormItem = Form.Item;
 
 /**
- * 话费 / 会员充值
+ * 话费
  * @param {Array} paramKey app跳转参数键值
  * @param {String} showApi app跳转类型
  */
-const Selection = ({ form, paramKey, showApi, virtualList, loading, dispatch }) => {
+const PhoneBill = ({ form, paramKey, showApi, virtualList, loading, dispatch }) => {
   useEffect(() => {
     return () => {
       dispatch({ type: 'baseData/clearVirtual' });
@@ -28,7 +28,6 @@ const Selection = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
 
   // 搜索虚拟商品折扣
   const fetchClassifyGetMre = debounce((data) => {
-    console.log('data', data);
     if (!data) return;
     dispatch({
       type: 'baseData/fetchPagePreferentialActivity',
@@ -60,4 +59,4 @@ const Selection = ({ form, paramKey, showApi, virtualList, loading, dispatch }) 
 export default connect(({ baseData, loading }) => ({
   virtualList: baseData.virtualList.list,
   loading: loading.effects['baseData/fetchPagePreferentialActivity'],
-}))(Selection);
+}))(PhoneBill);
