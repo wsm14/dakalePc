@@ -90,6 +90,7 @@ const VirtualConfigSet = (props) => {
     },
   ];
 
+  //   提交
   const handleSave = () => {
     form.validateFields().then(async (values) => {
       const { buyLimit = 0, maxBeanAndCoupon, activityDate, ruleType, ...other } = values;

@@ -875,7 +875,7 @@ export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
 // 平台券管理 - 适用端口type
 export const PLATFORM_APPLY_PORT_TYPE = {
   app: 'APP',
-  wechat: '哒卡乐小程序',
+  weChat: '哒卡乐小程序',
   markWechat: '哒小卡小程序',
   communityWechat: '哒小团小程序',
 };
