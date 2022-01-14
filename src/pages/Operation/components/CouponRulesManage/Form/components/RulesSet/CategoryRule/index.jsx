@@ -13,7 +13,7 @@ const FormItem = Form.Item;
 const index = ({ categoryCascaderList, dispatch }) => {
   useEffect(() => {
     dispatch({
-      type: 'sysTradeList/fetchCascaderList',
+      type: 'couponRulesManage/fetchConponListCategory',
     });
   }, []);
 
@@ -66,18 +66,9 @@ const index = ({ categoryCascaderList, dispatch }) => {
         )}
       </Form.List>
     </FormItem>
-    // <FormItem
-    //   key={`aaaaaaaaaaa`}
-    //   label="请输入参数"
-    //   name={['param', 'aaaaaaaaaa']}
-    //   rules={[{ required: true, message: `请输入参数` }]}
-    //   style={{ maxWidth: '100%' }}
-    // >
-    //   <Select placeholder={'请输入参数'}></Select>
-    // </FormItem>
   );
 };
 
-export default connect(({ sysTradeList }) => ({
-  categoryCascaderList: sysTradeList.categoryCascaderList,
+export default connect(({ couponRulesManage }) => ({
+  categoryCascaderList: couponRulesManage.categoryCascaderList,
 }))(index);

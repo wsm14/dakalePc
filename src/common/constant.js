@@ -892,6 +892,9 @@ export const CONPON_RULES_TYPE = {
   userOsRule: '端口',
 };
 
+// 券规则管理  店铺 类型
+export const CONPON_RULES_BUSINESS_TYPE = { merchant: '单店/子门店', group: '集团' };
+
 // 礼包管理 - 卡券类型
 export const SPREE_MANAGE_TYPE = {
   platformCoupon: '平台券',

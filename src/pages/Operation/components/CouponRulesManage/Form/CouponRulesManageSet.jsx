@@ -27,7 +27,7 @@ const CouponRulesManageSet = (props) => {
     },
     {
       type: 'noForm',
-      formItem: <RulesSet form={form} ruleShowApi={ruleShowApi}></RulesSet>,
+      formItem: <RulesSet detail={initialValues} form={form} ruleShowApi={ruleShowApi}></RulesSet>,
     },
   ];
 

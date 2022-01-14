@@ -997,3 +997,28 @@ export function fetchListUserCouponByGift(params) {
 }
 
 // 礼包管理 end
+
+// 券规则管理
+
+// get 券规则管理 - 行业设置 - 列表
+export function fetchConponListCategory(params) {
+  return request('/admin/systemIndustry/listCategory', {
+    params,
+  });
+}
+
+// get 券规则管理 - 店铺数据 - 店铺列表
+export function fetchConponListMerchant(params) {
+  return request('/admin/merchantManagement/listMerchant', {
+    params,
+  });
+}
+
+// get 券规则管理 - 集团列表 - 列表
+export function fetchConponListMerchantGroup(params) {
+  return request('/admin/merchantGroup/listMerchantGroup', {
+    params,
+  });
+}
+
+// 券规则管理 end

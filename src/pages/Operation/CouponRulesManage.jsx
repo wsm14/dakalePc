@@ -98,7 +98,6 @@ const PlatformManage = (props) => {
   return (
     <>
       <TableDataBlock
-        keepData
         btnExtra={btnList}
         cRef={childRef}
         loading={loading}
