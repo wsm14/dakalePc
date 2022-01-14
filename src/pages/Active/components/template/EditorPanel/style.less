@@ -9,6 +9,9 @@
   border-right: 1px solid #d9d9d9;
   border-left: 1px solid rgb(215, 219, 224);
   transition: margin 200ms ease 0s;
+  &.richText {
+    width: 600px;
+  }
   &.show {
     margin-right: 0;
   }
@@ -25,9 +28,9 @@
     padding: 0px 22px;
     .divideLine {
       position: absolute;
+      right: 8px;
       bottom: 0px;
       left: 8px;
-      width: 392px;
       border-bottom: 1px solid rgb(230, 230, 230);
     }
   }
@@ -45,7 +48,7 @@
     position: absolute;
     bottom: 0px;
     left: 0px;
-    z-index: 5;
+    z-index: 101;
     display: flex;
     align-items: center;
     width: 100%;

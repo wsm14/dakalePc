@@ -14,6 +14,13 @@ export async function fetchSpecialGoodsSelect(params) {
   });
 }
 
+// get 获取电商商品选择列表
+export function fetchCommerceGoodsSelect(params) {
+  return request('/admin/specialGoodsManagement/listSpecialGoodsManagement', {
+    params,
+  });
+}
+
 // get 获取优惠券选择列表
 export async function fetchCouponSelect(params) {
   return request('/admin/coupon/listCouponForActivityTemp', {
