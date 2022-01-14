@@ -23,21 +23,21 @@ const CityGlobalModal = (props) => {
   const formItems = [
     {
       label: '周卡名称',
-      dataIndex: 'name',
+      name: 'name',
     },
     {
       label: '原价',
-      dataIndex: 'originalPrice',
+      name: 'originalPrice',
       render: (val) => `￥${val}`,
     },
     {
       label: '售价',
-      dataIndex: 'price',
+      name: 'price',
       render: (val) => `￥${val}`,
     },
     {
       label: '奖励卡豆数',
-      dataIndex: 'firstReceiveBean',
+      name: 'firstReceiveBean',
       render: (val, row) => (
         <div>
           <div>{`首次领取${val}卡豆`}</div>
@@ -47,13 +47,13 @@ const CityGlobalModal = (props) => {
     },
     {
       label: '续费规则',
-      dataIndex: 'day',
+      name: 'day',
       render: (val) => `到期前${val}天可购买下一周周卡。`,
     },
     {
       label: '启用状态',
-      dataIndex: 'status',
-      render: (val) => (val === '0' ? `已关闭` : '已开启'),
+      name: 'status',
+      render: (val) => (val == '0' ? `已关闭` : '已开启'),
     },
   ];
 

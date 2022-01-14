@@ -880,6 +880,18 @@ export const PLATFORM_APPLY_PORT_TYPE = {
   communityWechat: '哒小团小程序',
 };
 
+// 券规则管理 - 规则类型
+export const CONPON_RULES_TYPE = {
+  categoryRule: '行业',
+  merchantRule: '店铺',
+  goodsRule: '商品',
+  tagRule: '标签',
+  availableAreaRule: '可用区域',
+  unavailableAreaRule: '不可用区域',
+  userRule: '用户',
+  userOsRule: '端口',
+};
+
 // 礼包管理 - 卡券类型
 export const SPREE_MANAGE_TYPE = {
   platformCoupon: '平台券',

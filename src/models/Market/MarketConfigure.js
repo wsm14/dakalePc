@@ -46,7 +46,8 @@ export default {
       const response = yield call(fetchGetWeeklyCard, payload);
       if (!response) return;
       const { content } = response;
-      const { status, ...other } = content;
+      const { weeklyCard = {} } = content;
+      const { status, ...other } = weeklyCard;
 
       yield put({
         type: 'save',

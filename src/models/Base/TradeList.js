@@ -28,6 +28,7 @@ export default {
     platFormList: { list: [], total: 0 },
     sceneList: { list: [], total: 0 },
     cateList: [], //一级行业类目
+    categoryCascaderList: [],
   },
 
   reducers: {
@@ -47,6 +48,19 @@ export default {
   },
 
   effects: {
+    *fetchCascaderList({ payload }, { call, put }) {
+      const response = yield call(fetchTradeList, payload);
+      if (!response) return;
+      const { content } = response;
+
+      yield put({
+        type: 'save',
+        payload: {
+          categoryCascaderList: content.categoryDTOList,
+        },
+      });
+    },
+
     *fetchGetList({ payload, callback }, { call, put }) {
       const response = yield call(fetchTradeList, payload);
       if (!response) return;
@@ -97,9 +111,9 @@ export default {
         type: 'save',
         payload: {
           detailList: {
-            list: content[
-              { base: 'infrastructures', special: 'specialService' }[type]
-            ].map((item) => ({ name: item, value: item })),
+            list: content[{ base: 'infrastructures', special: 'specialService' }[type]].map(
+              (item) => ({ name: item, value: item }),
+            ),
           },
         },
       });

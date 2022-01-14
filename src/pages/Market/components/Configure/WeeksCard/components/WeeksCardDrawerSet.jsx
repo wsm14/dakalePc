@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button, InputNumber } from 'antd';
+import { Form, Button, InputNumber, Input } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import FormComponents from '@/components/FormCondition';
 
@@ -60,29 +60,46 @@ const GlobalModalDrawerSet = (props) => {
     {
       type: 'noForm',
       formItem: (
-        <div style={{ marginLeft: 150, marginBottom: 24 }}>
-          <Form.Item
-            name={'otherMinBean'}
-            noStyle
-            rules={[{ required: true, message: '请输入奖励卡豆' }]}
-            placeholder="请输入卡豆数"
-          >
-            <InputNumber
-              min={0}
-              precision={0}
-              addonBefore="其余天数"
-              addonAfter="卡豆"
-              style={{ width: '50%' }}
-            />
-          </Form.Item>
-          <span>---</span>
-          <Form.Item
-            name={'otherMaxBean'}
-            noStyle
-            rules={[{ required: true, message: '请输入奖励卡豆' }]}
-            placeholder="请输入卡豆数"
-          >
-            <InputNumber min={0} precision={0} addonAfter="卡豆" style={{ width: '40%' }} />
+        <div style={{ marginLeft: 95 }}>
+          <Form.Item label="剩余天数">
+            <Input.Group compact>
+              <Form.Item
+                name={'otherMinBean'}
+                noStyle
+                rules={[{ required: true, message: '请输入最小奖励卡豆' }]}
+              >
+                <InputNumber
+                  min={0}
+                  precision={0}
+                  addonAfter="卡豆"
+                  style={{ width: 160 }}
+                  placeholder="请输入卡豆数"
+                />
+              </Form.Item>
+              <div
+                style={{
+                  height: 32,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  margin: '0 5px',
+                }}
+              >
+                ~
+              </div>
+              <Form.Item
+                name={'otherMaxBean'}
+                noStyle
+                rules={[{ required: true, message: '请输入最大奖励卡豆' }]}
+              >
+                <InputNumber
+                  placeholder="请输入卡豆数"
+                  min={0}
+                  precision={0}
+                  addonAfter="卡豆"
+                  style={{ width: 160 }}
+                />
+              </Form.Item>
+            </Input.Group>
           </Form.Item>
         </div>
       ),
@@ -100,6 +117,7 @@ const GlobalModalDrawerSet = (props) => {
       label: '启用状态',
       name: 'status',
       type: 'switch',
+      rules: [{ required: true }],
     },
   ];
 
