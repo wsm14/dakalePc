@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button, Input } from 'antd';
-import { checkCityName } from '@/utils/utils';
+import { Form, Button, Input, Tag } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
+import PopImgShow from '@/components/PopImgShow';
 import TableDataBlock from '@/components/TableDataBlock';
-import { CONPON_RULES_BUSINESS_TYPE } from '@/common/constant';
+import { SPECIAL_RECOMMEND_DELSTATUS, SPECIAL_STATUS } from '@/common/constant';
 import MerchantModal from './MerchantModal';
 
 const FormItem = Form.Item;
@@ -14,30 +15,61 @@ const FormItem = Form.Item;
  */
 const index = ({ form, ruleShowApi, dispatch }) => {
   const [visible, setVisible] = useState(false); // 选择店铺Modal
-  const [shopData, setShopData] = useState({ subRuleType: 'merchant', list: [] }); // 暂存数据
+  const [shopData, setShopData] = useState({ subRuleType: 'specialGoods', list: [] }); // 暂存数据
 
   const getColumns = [
     {
-      title: '店铺类型',
-      dataIndex: 'groupType',
+      title: '商品信息',
+      fixed: 'left',
+      dataIndex: 'goodsImg',
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <PopImgShow url={val} />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
+                {GOODS_CLASS_TYPE[row.goodsType]}
+              </Tag>
+              <Ellipsis length={10} tooltip>
+                {row.goodsName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+              <Ellipsis length={10} tooltip>
+                {row.ownerName}
+              </Ellipsis>
+            </div>
+            <div style={{ marginTop: 5 }}>{54516541654156}</div>
+          </div>
+        </div>
+      ),
     },
     {
-      title: '店铺名称',
-      dataIndex: 'name',
-    },
-    {
-      title: '店铺ID',
-      dataIndex: 'id',
-    },
-    {
-      title: '经营类目',
-      dataIndex: 'topCategoryName',
-      render: (val, row) => `${val}/${row.categoryName}`,
-    },
-    {
-      title: '地区',
-      dataIndex: 'districtCode',
-      render: (val) => checkCityName(val),
+      title: '售价',
+      dataIndex: 'oriPrice',
+      render: (val, row) => {
+        const zhe = (Number(row.realPrice) / Number(val)) * 10;
+        return (
+          <div>
+            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+              ￥{Number(val).toFixed(2)}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
+              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+            </div>
+          </div>
+        );
+      },
     },
     {
       type: 'handle',

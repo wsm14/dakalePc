@@ -880,7 +880,7 @@ export const PLATFORM_APPLY_PORT_TYPE = {
   communityWechat: '哒小团小程序',
 };
 
-// 券规则管理 - 规则类型
+// 券规则管理 - 父规则类型
 export const CONPON_RULES_TYPE = {
   categoryRule: '行业',
   merchantRule: '店铺',
@@ -890,6 +890,24 @@ export const CONPON_RULES_TYPE = {
   unavailableAreaRule: '不可用区域',
   userRule: '用户',
   userOsRule: '端口',
+};
+
+// 券规则管理 - 子规则类型
+export const CONPON_RULES_SON_TYPE = {
+  category: '行业',
+  merchant: '店铺',
+  group: '店铺',
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  commerceGoods: '电商品',
+  phoneBill: '话费',
+  member: '会员',
+  platformGoodsTags: '平台商品标签',
+  merchantTags: '商家标签',
+  availableArea: '可用区域',
+  unavailableArea: '不可用区域',
+  user: '用户',
+  userOs: '端口',
 };
 
 // 券规则管理  店铺 类型

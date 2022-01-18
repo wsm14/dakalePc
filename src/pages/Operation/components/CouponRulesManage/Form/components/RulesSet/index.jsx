@@ -1,7 +1,7 @@
 import React from 'react';
 import categoryRule from './CategoryRule';
 import merchantRule from './MerchantRule';
-import goodsRule from './goodsRule/ShareCoupon/ShareCoupon';
+import goodsRule from './goodsRule';
 
 export default (props) => {
   const { ruleShowApi } = props;

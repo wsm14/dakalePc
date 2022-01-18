@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { connect } from 'umi';
 import TableDataBlock from '@/components/TableDataBlock';
+import { CONPON_RULES_TYPE } from '@/common/constant';
 import CouponRulesManageDrawer from './components/CouponRulesManage/CouponRulesManageDrawer';
 
 const PlatformManage = (props) => {
@@ -21,13 +22,7 @@ const PlatformManage = (props) => {
       label: '规则类型',
       type: 'select',
       name: 'useScenesType',
-      select: {
-        goodsBuy: '商品券',
-        // scan: '扫码',
-        virtual: '虚拟品券',
-        commerce: '电商品券',
-        // community: '团购',
-      },
+      select: CONPON_RULES_TYPE,
     },
   ];
 
