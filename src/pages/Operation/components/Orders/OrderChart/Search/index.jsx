@@ -13,7 +13,7 @@ const SearchCard = ({ fetchGetTotalData, selectList, dispatch, mreSelect, loadin
   const [city, setCity] = useState([]);
 
   useEffect(() => {
-    const [provinceCode, cityCode, districtCode] = city;
+    const [provinceCode, cityCode, districtCode] = city || [];
 
     fetchGetTotalData({
       beginDate: selectedTime[0].format('YYYY-MM-DD'),
@@ -84,7 +84,7 @@ const SearchCard = ({ fetchGetTotalData, selectList, dispatch, mreSelect, loadin
             return path.some((option) => option.label.indexOf(inputValue) > -1);
           },
         }}
-        onChange={(val) => setCity(val)}
+        onChange={(val) => setCity(val || [])}
       ></Cascader>
     </Space>
   );
