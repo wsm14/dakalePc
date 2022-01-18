@@ -9,21 +9,12 @@ import MerchantModal from './MerchantModal';
 const FormItem = Form.Item;
 
 /**
- * 店铺
+ * 商品
  * @param {String} ruleShowApi 选择的规则类型
  */
-const index = ({ type = 'add', detail = {}, form, ruleShowApi, dispatch }) => {
+const index = ({ form, ruleShowApi, dispatch }) => {
   const [visible, setVisible] = useState(false); // 选择店铺Modal
   const [shopData, setShopData] = useState({ subRuleType: 'merchant', list: [] }); // 暂存数据
-
-  // useEffect(() => {
-  //   if (type === 'edit') {
-  //     setShopData({
-  //       subRuleType: form.getFieldValue('subRuleType'),
-  //       list: form.getFieldValue('ruleConditions'),
-  //     });
-  //   }
-  // }, []);
 
   const getColumns = [
     {
@@ -65,20 +56,18 @@ const index = ({ type = 'add', detail = {}, form, ruleShowApi, dispatch }) => {
     const newList = shopData.list.filter((item) => item.id !== id);
     setShopData({ ...shopData, list: newList });
     form.setFieldsValue({
-      remark: `（已选${newList.length}个${CONPON_RULES_BUSINESS_TYPE[shopData.subRuleType]}）`,
+      remark: `（已选${newList.length}个单店/子门店）`,
       ruleConditions: newList,
     });
   };
 
   return (
     <>
-      <FormItem label="指定店铺" required>
+      <FormItem label="指定商品" required>
         <Button type="link" onClick={() => setVisible(true)}>
           选择
         </Button>
-        {shopData.list.length > 0
-          ? `（已选${shopData.list.length}个${CONPON_RULES_BUSINESS_TYPE[shopData.subRuleType]}）`
-          : ''}
+        {shopData.list.length > 0 ? `（已选${shopData.list.length}个单店/子门店）` : ''}
       </FormItem>
       <TableDataBlock
         noCard={false}

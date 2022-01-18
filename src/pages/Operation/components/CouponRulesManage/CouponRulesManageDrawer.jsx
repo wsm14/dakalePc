@@ -19,7 +19,9 @@ const CouponDrawer = (props) => {
     });
   };
 
-  const listProp = {};
+  const listProp = {
+    type,
+  };
   // 统一处理弹窗
   const drawerProps = {
     info: {

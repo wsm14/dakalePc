@@ -895,6 +895,15 @@ export const CONPON_RULES_TYPE = {
 // 券规则管理  店铺 类型
 export const CONPON_RULES_BUSINESS_TYPE = { merchant: '单店/子门店', group: '集团' };
 
+// 券规则管理  商品 类型
+export const CONPON_RULES_GOODS_TYPE = {
+  specialGoods: '特惠商品',
+  reduceCoupon: '有价券',
+  commerceGoods: '电商品',
+  phoneBill: '话费',
+  member: '会员',
+};
+
 // 礼包管理 - 卡券类型
 export const SPREE_MANAGE_TYPE = {
   platformCoupon: '平台券',

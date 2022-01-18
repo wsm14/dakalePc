@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'umi';
-import { Form, Button, Cascader } from 'antd';
+import { Form, Button, Cascader, Input } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { Select } from '@/components/FormCondition/formModule';
 
@@ -10,8 +10,9 @@ const FormItem = Form.Item;
  * 行业
  * @param {String} ruleShowApi 选择的规则类型
  */
-const index = ({ categoryCascaderList, dispatch }) => {
+const index = ({ categoryCascaderList, dispatch, form }) => {
   useEffect(() => {
+    form.setFieldsValue({ subRuleType: 'category' });
     dispatch({
       type: 'couponRulesManage/fetchConponListCategory',
     });
@@ -20,7 +21,7 @@ const index = ({ categoryCascaderList, dispatch }) => {
   return (
     <FormItem label="指定行业" required>
       <Form.List
-        name="categoryRule"
+        name="ruleConditions"
         rules={[
           {
             validator: (rule, value) => {
@@ -65,6 +66,9 @@ const index = ({ categoryCascaderList, dispatch }) => {
           </>
         )}
       </Form.List>
+      <FormItem label="subRuleType" hidden name="subRuleType">
+        <Input />
+      </FormItem>
     </FormItem>
   );
 };

@@ -5,7 +5,7 @@ import FormCondition from '@/components/FormCondition';
 import RulesSet from './components/RulesSet';
 
 const CouponRulesManageSet = (props) => {
-  const { form, initialValues } = props;
+  const { form, initialValues, type } = props;
 
   const [ruleShowApi, setRuleShowApi] = useState(false); // 规则类型
 
@@ -13,7 +13,7 @@ const CouponRulesManageSet = (props) => {
   const formItems = [
     {
       label: '规则类型',
-      name: 'classType',
+      name: 'ruleType',
       type: 'select',
       select: CONPON_RULES_TYPE,
       onChange: (val) => {
@@ -22,12 +22,19 @@ const CouponRulesManageSet = (props) => {
     },
     {
       label: '规则名称',
-      name: 'total',
+      name: 'ruleName',
       maxLength: 50,
     },
     {
       type: 'noForm',
-      formItem: <RulesSet detail={initialValues} form={form} ruleShowApi={ruleShowApi}></RulesSet>,
+      formItem: (
+        <RulesSet
+          type={type}
+          detail={initialValues}
+          form={form}
+          ruleShowApi={ruleShowApi}
+        ></RulesSet>
+      ),
     },
   ];
 
