@@ -60,7 +60,6 @@ const NativeFormSet = ({
         label="跳转类型"
         name={'jumpUrlType'}
         style={{ maxWidth: '100%' }}
-        rules={[{ required: true, message: `请选择跳转类型` }]}
       >
         <Radio
           select={
