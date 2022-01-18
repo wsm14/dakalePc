@@ -872,6 +872,7 @@ export const PLATFORM_COUPON_PEOPLE = { all: '全部', daren: '哒人' };
 // 平台券管理 - 适用端口
 export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
 
+// 券规则管理  端口类型
 // 平台券管理 - 适用端口type
 export const PLATFORM_APPLY_PORT_TYPE = {
   app: 'APP',
@@ -896,7 +897,7 @@ export const CONPON_RULES_TYPE = {
 export const CONPON_RULES_SON_TYPE = {
   category: '行业',
   merchant: '店铺',
-  group: '店铺',
+  group: '集团',
   specialGoods: '特惠商品',
   reduceCoupon: '有价券',
   commerceGoods: '电商品',
@@ -920,6 +921,11 @@ export const CONPON_RULES_GOODS_TYPE = {
   commerceGoods: '电商品',
   phoneBill: '话费',
   member: '会员',
+};
+
+// 券规则管理  用户类型  适用人群
+export const CONPON_RULES_USER_TYPE = {
+  daren: '仅限哒人',
 };
 
 // 礼包管理 - 卡券类型

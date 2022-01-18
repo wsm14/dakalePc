@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { connect } from 'umi';
 import { Form, Button, Cascader, Input } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { Select } from '@/components/FormCondition/formModule';
 
 const FormItem = Form.Item;
 
@@ -12,7 +11,10 @@ const FormItem = Form.Item;
  */
 const index = ({ categoryCascaderList, dispatch, form }) => {
   useEffect(() => {
-    form.setFieldsValue({ subRuleType: 'category' });
+    form.setFieldsValue({
+      subRuleType: 'category',
+      ruleConditions: [],
+    });
     dispatch({
       type: 'couponRulesManage/fetchConponListCategory',
     });
@@ -37,8 +39,8 @@ const index = ({ categoryCascaderList, dispatch, form }) => {
         {(fields, { add, remove }, { errors }) => (
           <>
             {fields.map((field) => (
-              <div style={{ marginBottom: 24 }}>
-                <FormItem noStyle key={field.key} {...field}>
+              <div key={field.key} style={{ marginBottom: 24 }}>
+                <FormItem noStyle {...field}>
                   <Cascader
                     changeOnSelect={true}
                     expandTrigger="hover"

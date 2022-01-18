@@ -105,7 +105,9 @@ const VaneDrawer = (props) => {
     onOk: () => {
       form.setFieldsValue({
         remark: `已选${selectItem.length}个${CONPON_RULES_BUSINESS_TYPE[tabKey]}`,
-        ruleConditions: selectItem,
+        ruleConditions: selectItem.map((item) => ({
+          condition: item.id,
+        })),
         subRuleType: tabKey,
       });
       setShopData({ subRuleType: tabKey, list: selectItem });

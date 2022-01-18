@@ -5,8 +5,7 @@ import { CONPON_RULES_TYPE } from '@/common/constant';
 import CouponRulesManageDrawer from './components/CouponRulesManage/CouponRulesManageDrawer';
 
 const PlatformManage = (props) => {
-  const { platformCouponList, loading, dispatch } = props;
-  const { list } = platformCouponList;
+  const { couponRuleslist, loading, dispatch } = props;
 
   const childRef = useRef();
   // 操作弹窗{ type: info 详情 show 显示隐藏 detail 详情 }
@@ -16,12 +15,12 @@ const PlatformManage = (props) => {
   const searchItems = [
     {
       label: '规则名称',
-      name: 'couponName',
+      name: 'ruleName',
     },
     {
       label: '规则类型',
       type: 'select',
-      name: 'useScenesType',
+      name: 'ruleType',
       select: CONPON_RULES_TYPE,
     },
   ];
@@ -31,53 +30,69 @@ const PlatformManage = (props) => {
     {
       title: '规则类型',
       fixed: 'left',
-      dataIndex: 'platformCouponId',
+      dataIndex: 'ruleType',
+      render: (val) => CONPON_RULES_TYPE[val],
     },
     {
       title: '规则名称',
       fixed: 'left',
-      dataIndex: 'couponName',
+      dataIndex: 'ruleName',
     },
     {
       title: '最后修改人',
-      dataIndex: 'updateTime',
+      dataIndex: 'updater',
     },
     {
       title: '最后修改时间',
-      dataIndex: 'remain',
+      dataIndex: 'updateTime',
     },
     {
       title: '启用状态',
-      dataIndex: 'couponStatus',
+      dataIndex: 'status',
       type: 'switch',
+      render: (val, row) => {
+        return {
+          auth: 'status',
+          show: !!val,
+          checked: val === '1',
+          onClick: () => fetchStatus({ ruleId: row.ruleId, status: 1 ^ Number(val) }),
+        };
+      },
     },
     {
       type: 'handle',
       width: 150,
-      dataIndex: 'platformCouponId',
-      render: (platformCouponId, record) => {
-        // 1 上架 2 下架
-        const { couponStatus: status, endDate } = record;
+      dataIndex: 'ruleId',
+      render: (ruleId, record) => {
         return [
           {
             type: 'info',
-            click: () => fetchCouponDetail(platformCouponId, 'info'),
+            click: () => fetchCouponDetail(ruleId, 'info'),
           },
-          {
-            type: 'edit',
-            click: () => fetchCouponDetail(platformCouponId, 'edit'),
-          },
+          // {
+          //   type: 'edit',
+          //   click: () => fetchCouponDetail(platformCouponId, 'edit'),
+          // },
         ];
       },
     },
   ];
 
-  // 获取详情
-  const fetchCouponDetail = (platformCouponId, type) => {
+  // 开关
+  const fetchStatus = (payload) => {
     dispatch({
-      type: 'platformCoupon/fetchGetPlatformCouponDetail',
-      payload: { platformCouponId },
-      callback: (detail) => setVisible({ type, show: true, detail, platformCouponId }),
+      type: 'couponRulesManage/fetchUpdateRuleStatus',
+      payload,
+      callback: childRef.current.fetchGetData,
+    });
+  };
+
+  // 获取详情
+  const fetchCouponDetail = (ruleId, type) => {
+    dispatch({
+      type: 'couponRulesManage/fetchRuleDetailPage',
+      payload: { ruleId },
+      callback: (detail) => setVisible({ type, show: true, detail, ruleId }),
     });
   };
 
@@ -98,9 +113,9 @@ const PlatformManage = (props) => {
         loading={loading}
         columns={getColumns}
         searchItems={searchItems}
-        rowKey={(record) => `${record.platformCouponId}`}
-        dispatchType="platformCoupon/fetchGetList"
-        {...platformCouponList}
+        rowKey={(record) => `${record.ruleId}`}
+        dispatchType="couponRulesManage/fetchGetList"
+        {...couponRuleslist}
       ></TableDataBlock>
       {/* 新增 编辑 详情 */}
       <CouponRulesManageDrawer
@@ -112,8 +127,8 @@ const PlatformManage = (props) => {
   );
 };
 
-export default connect(({ platformCoupon, loading }) => ({
-  platformCouponList: platformCoupon.list,
+export default connect(({ couponRulesManage, loading }) => ({
+  couponRuleslist: couponRulesManage.list,
   loading:
     loading.effects['platformCoupon/fetchGetList'] ||
     loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],

@@ -12,18 +12,17 @@ const FormItem = Form.Item;
  * 店铺
  * @param {String} ruleShowApi 选择的规则类型
  */
-const index = ({ type = 'add', detail = {}, form, ruleShowApi, dispatch }) => {
+const index = ({ form }) => {
   const [visible, setVisible] = useState(false); // 选择店铺Modal
   const [shopData, setShopData] = useState({ subRuleType: 'merchant', list: [] }); // 暂存数据
 
-  // useEffect(() => {
-  //   if (type === 'edit') {
-  //     setShopData({
-  //       subRuleType: form.getFieldValue('subRuleType'),
-  //       list: form.getFieldValue('ruleConditions'),
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    form.setFieldsValue({ ruleConditions: [] });
+    setShopData({
+      subRuleType: 'merchant',
+      list: [],
+    });
+  }, []);
 
   const getColumns = [
     {
@@ -66,7 +65,9 @@ const index = ({ type = 'add', detail = {}, form, ruleShowApi, dispatch }) => {
     setShopData({ ...shopData, list: newList });
     form.setFieldsValue({
       remark: `（已选${newList.length}个${CONPON_RULES_BUSINESS_TYPE[shopData.subRuleType]}）`,
-      ruleConditions: newList,
+      ruleConditions: newList.map((item) => ({
+        condition: item.id,
+      })),
     });
   };
 

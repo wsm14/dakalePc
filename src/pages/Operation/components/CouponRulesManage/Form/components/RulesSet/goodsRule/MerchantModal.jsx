@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'umi';
-import { Card, Modal } from 'antd';
-import { checkCityName } from '@/utils/utils';
-import { CONPON_RULES_GOODS_TYPE, SPECIAL_STATUS } from '@/common/constant';
+import { Card, Modal, Tag } from 'antd';
+import Ellipsis from '@/components/Ellipsis';
+import PopImgShow from '@/components/PopImgShow';
+import {
+  CONPON_RULES_GOODS_TYPE,
+  SPECIAL_STATUS,
+  SPECIAL_RECOMMEND_DELSTATUS,
+  GOODS_CLASS_TYPE,
+  BUSINESS_TYPE,
+  COUPON_TYPE,
+  COUPON_STATUS,
+  COMMERCEGOODS_STATUS,
+} from '@/common/constant';
 import TableDataBlock from '@/components/TableDataBlock';
 
 const VaneDrawer = (props) => {
@@ -12,8 +22,6 @@ const VaneDrawer = (props) => {
     dispatch,
     onClose,
     loading,
-    merGroList,
-    categoryCascaderList,
     shopData,
     setShopData,
     specialGoodsList = {},
@@ -33,17 +41,6 @@ const VaneDrawer = (props) => {
     }
   }, [visible]);
 
-  useEffect(() => {
-    fetchTradeList();
-  }, []);
-
-  // 经营类目
-  const fetchTradeList = () => {
-    dispatch({
-      type: 'couponRulesManage/fetchConponListCategory',
-    });
-  };
-
   // 搜索参数
   const searchItems = [
     {
@@ -61,70 +58,260 @@ const VaneDrawer = (props) => {
     },
     {
       label: '活动状态',
-      name: 'status',
+      name: {
+        specialGoods: 'status',
+        reduceCoupon: 'ownerCouponStatus',
+        commerceGoods: 'status',
+      }[tabKey],
       type: 'select',
       select: SPECIAL_STATUS,
     },
   ];
 
-  //   表头
-  const getColumns = [
+  //  特惠商品/电商品 表头
+  const specialGoodsColumns = [
     {
-      title: '店铺类型',
-      dataIndex: 'groupType',
+      title: '商品/店铺名称',
+      fixed: 'left',
+      dataIndex: 'goodsImg',
+      show: ['specialGoods'].includes(tabKey),
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <PopImgShow url={val} />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Tag color={row.goodsType === 'single' ? 'orange' : 'magenta'}>
+                {GOODS_CLASS_TYPE[row.goodsType]}
+              </Tag>
+              <Ellipsis length={10} tooltip>
+                {row.goodsName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>
+              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+              <Ellipsis length={10} tooltip>
+                {row.ownerName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>{`ID:${row.specialGoodsId}`}</div>
+          </div>
+        </div>
+      ),
     },
     {
-      title: '店铺名称',
-      dataIndex: 'name',
+      title: '商品信息',
+      fixed: 'left',
+      dataIndex: 'goodsImg',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val, row) => (
+        <div style={{ display: 'flex' }}>
+          <PopImgShow url={val} />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              flex: 1,
+              marginLeft: 5,
+            }}
+          >
+            <div style={{ display: 'flex' }}>
+              <Ellipsis length={10} tooltip>
+                {row.goodsName}
+              </Ellipsis>
+            </div>
+            <div style={{ display: 'flex', marginTop: 5 }}>{`ID:${row.specialGoodsId}`}</div>
+          </div>
+        </div>
+      ),
     },
     {
-      title: '店铺ID',
-      dataIndex: 'id',
+      title: '原价/售价',
+      align: 'right',
+      dataIndex: 'oriPrice',
+      render: (val, row) => {
+        const zhe = (Number(row.realPrice) / Number(val)) * 10;
+        return (
+          <div>
+            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+              ￥{Number(val).toFixed(2)}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div>￥{Number(row.realPrice).toFixed(2)}</div>
+            </div>
+          </div>
+        );
+      },
     },
     {
-      title: '经营类目',
-      dataIndex: 'topCategoryName',
+      title: '使用有效期',
+      dataIndex: 'useStartTime',
+      show: ['specialGoods'].includes(tabKey),
+      render: (val, row) => {
+        const { useStartTime, useEndTime, useTimeRule, delayDays, activeDays } = row;
+        if (!useTimeRule) return '';
+        if (useTimeRule === 'fixed') {
+          return useStartTime + '~' + useEndTime;
+        } else {
+          if (delayDays === '0') {
+            return `领取后立即生效\n有效期${activeDays}天`;
+          }
+          return `领取后${delayDays}天生效\n有效期${activeDays}天`;
+        }
+      },
     },
     {
-      title: '地区',
-      dataIndex: 'districtCode',
-      render: (val) => checkCityName(val),
+      title: '活动时间',
+      align: 'center',
+      dataIndex: 'activityStartTime',
+      show: ['specialGoods'].includes(tabKey),
+      render: (val, row) => (
+        <>
+          {row.activityTimeRule === 'infinite'
+            ? `${row.createTime} ~ 长期`
+            : `${val} ~ ${row.activityEndTime}`}
+          <div>
+            {row.deleteFlag === '0'
+              ? SPECIAL_RECOMMEND_DELSTATUS[row.deleteFlag]
+              : SPECIAL_STATUS[row.status]}
+          </div>
+        </>
+      ),
     },
     {
-      title: '详细地址',
-      dataIndex: 'address',
+      title: '活动状态',
+      align: 'right',
+      dataIndex: 'status',
+      show: ['commerceGoods'].includes(tabKey),
+      render: (val) => COMMERCEGOODS_STATUS[val],
+    },
+    {
+      title: '剩余库存',
+      align: 'right',
+      dataIndex: 'remain',
+    },
+  ];
+
+  //  有价券 表头
+  const ownerCouponColumns = [
+    {
+      title: '券/店铺名称',
+      fixed: 'left',
+      dataIndex: 'couponName',
+      render: (val, row) => (
+        <div>
+          <div>
+            <Tag color="magenta">{COUPON_TYPE[row.couponType]}</Tag>
+            <Ellipsis length={10} tooltip>
+              {val}
+            </Ellipsis>
+          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>
+            <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
+            <Ellipsis length={10} tooltip>
+              {row.ownerName}
+            </Ellipsis>
+          </div>
+          <div style={{ display: 'flex', marginTop: 5 }}>{`ID:${row.ownerCouponIdString}`}</div>
+        </div>
+      ),
+    },
+    {
+      title: '券价值/售价',
+      align: 'right',
+      dataIndex: ['reduceObject', 'couponPrice'],
+      render: (val, row) => (
+        <div>
+          <div style={{ textDecoration: 'line-through', color: '#999999' }}>
+            ￥{Number(val).toFixed(2)}
+          </div>
+          <div>￥{Number(row.buyPrice).toFixed(2)}</div>
+        </div>
+      ),
+    },
+    {
+      title: '使用有效期',
+      dataIndex: 'activeDate',
+      render: (val, row) => {
+        const { activeDate, endDate, delayDays, activeDays } = row;
+        if (activeDate && endDate) {
+          return activeDate + '~' + endDate;
+        } else {
+          if (delayDays === '0') {
+            return `领取后立即生效\n有效期${activeDays}天`;
+          }
+          return `领取后${delayDays}天生效\n有效期${activeDays}天`;
+        }
+      },
+    },
+    {
+      title: '发布时间',
+      align: 'right',
+      dataIndex: 'ownerCouponStatus',
+      render: (val) => COUPON_STATUS[val],
+    },
+    {
+      title: '剩余库存',
+      align: 'right',
+      dataIndex: 'remain',
     },
   ];
 
   const listProps = {
     specialGoods: {
-      dispatchType: 'baseData/fetchGetSpecialGoodsSelect',
+      dispatchType: 'couponRulesManage/fetchListSpecialGoodsManagement',
       totalList: specialGoodsList,
       params: { activityType: 'specialGoods', deleteFlag: 1 },
+      getColumns: specialGoodsColumns,
+      id: 'specialGoodsId',
     },
     reduceCoupon: {
-      dispatchType: 'baseData/fetchGetBuyCouponSelect',
+      dispatchType: 'baseData/fetchGetAllCouponSelect',
       totalList: couponList,
       params: { buyFlag: 1 },
+      getColumns: ownerCouponColumns,
+      id: 'ownerCouponIdString',
     },
     commerceGoods: {
       dispatchType: 'baseData/fetchGetPlatformCommerceGoodsSelect',
       totalList: platformEquityList,
       params: { activityType: 'commerceGoods' },
+      getColumns: specialGoodsColumns,
+      id: 'specialGoodsId',
     },
   }[tabKey];
 
   const modalProps = {
-    title: '选择店铺（未激活、暂停营业、禁用不显示）',
+    title: '选择指定商品',
     destroyOnClose: true,
     width: 1000,
     visible,
-    okText: `确定（已选${selectItem.length || 0}项）`,
-    bodyStyle: { overflowY: 'auto', maxHeight: 800 },
+    okText: ['phoneBill', 'member'].includes(tabKey)
+      ? '确定'
+      : `确定（已选${selectItem.length || 0}项）`,
+    bodyStyle: { overflowY: 'auto', maxHeight: 600 },
     onOk: () => {
       form.setFieldsValue({
-        remark: `已选${selectItem.length}个${CONPON_RULES_GOODS_TYPE[tabKey]}`,
-        ruleConditions: selectItem,
+        remark: ['phoneBill', 'member'].includes(tabKey)
+          ? `已选${CONPON_RULES_GOODS_TYPE[tabKey]}充值`
+          : `已选${selectItem.length}个${CONPON_RULES_GOODS_TYPE[tabKey]}`,
+        ruleConditions: ['phoneBill', 'member'].includes(tabKey)
+          ? [
+              {
+                condition: 'all',
+              },
+            ]
+          : selectItem.map((item) => ({
+              condition: item[listProps.id],
+            })),
         subRuleType: tabKey,
       });
       setShopData({ subRuleType: tabKey, list: selectItem });
@@ -155,15 +342,15 @@ const VaneDrawer = (props) => {
           <TableDataBlock
             noCard={false}
             rowSelection={{
-              selectedRowKeys: selectItem.map((i) => i.id),
+              selectedRowKeys: selectItem.map((i) => i[listProps.id]),
               onChange: (val, list) => {
                 // 先去重处理 排除重复已选数据
                 // 再对 已选的数据和最新数据进行去重处理 获得去重后结果
                 const obj = {};
                 const newSelectList = [...selectItem, ...list].reduce((item, next) => {
-                  next && obj[next['id']]
+                  next && obj[next[listProps.id]]
                     ? ''
-                    : next && (obj[next['id']] = true && item.push(next));
+                    : next && (obj[next[listProps.id]] = true && item.push(next));
                   return item;
                 }, []);
                 // .filter((item) => item && val.includes(item['id']));
@@ -173,24 +360,38 @@ const VaneDrawer = (props) => {
             cRef={childRef}
             loading={loading}
             searchItems={searchItems}
-            columns={getColumns}
-            rowKey={(record) => `${record.id}`}
+            columns={listProps.getColumns}
+            rowKey={(record) => `${record[listProps.id]}`}
             params={listProps.params}
             dispatchType={listProps.dispatchType}
             {...listProps.totalList}
           ></TableDataBlock>
-        ) : null}
+        ) : (
+          <div
+            style={{
+              width: '100%',
+              height: 340,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <div></div>
+            <div>{`选择所有${CONPON_RULES_GOODS_TYPE[tabKey]}充值商品参与`}</div>
+          </div>
+        )}
       </Card>
     </Modal>
   );
 };
 
-export default connect(({ baseData, loading }) => ({
-  specialGoodsList: baseData.specialGoods,
-  couponList: baseData.buyCoupon,
+export default connect(({ couponRulesManage, baseData, loading }) => ({
+  specialGoodsList: couponRulesManage.specialGoodsList,
+  couponList: baseData.allCouponList,
   platformEquityList: baseData.platformEquity,
   loading:
-    loading.effects['baseData/fetchGetSpecialGoodsSelect'] ||
-    loading.effects['baseData/fetchGetBuyCouponSelect'] ||
+    loading.effects['couponRulesManage/fetchListSpecialGoodsManagement'] ||
+    loading.effects['baseData/fetchGetAllCouponSelect'] ||
     loading.effects['baseData/fetchGetPlatformCommerceGoodsSelect'],
 }))(VaneDrawer);

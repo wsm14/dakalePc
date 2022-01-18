@@ -8,14 +8,45 @@ import CouponRulesManageSet from './Form/CouponRulesManageSet';
 const CouponDrawer = (props) => {
   const { visible, dispatch, childRef, onClose, loading, loadingDetail } = props;
 
-  const { type = 'info', platformCouponId, show = false, detail = {} } = visible;
+  const { type = 'info', ruleId, show = false, detail = {} } = visible;
 
   const [form] = Form.useForm();
 
   // 确认提交
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
-      console.log('values', values);
+      const { ruleType, ruleConditions } = values;
+
+      let data = {};
+      // 行业
+      if (ruleType === 'categoryRule') {
+        data = {
+          ruleConditions: ruleConditions.map((item) => ({
+            condition: item[item.length - 1],
+          })),
+          remark: `已选${ruleConditions.length}个行业`,
+        };
+      }
+      // 标签
+      if (ruleType === 'tagRule') {
+        data = {
+          ruleConditions: ruleConditions.map((item) => ({
+            condition: item,
+          })),
+        };
+      }
+
+      dispatch({
+        type: 'couponRulesManage/fetchCreateRule',
+        payload: {
+          ...values,
+          ...data,
+        },
+        callback: () => {
+          onClose();
+          childRef.current.fetchGetData();
+        },
+      });
     });
   };
 
@@ -38,16 +69,16 @@ const CouponDrawer = (props) => {
         ></CouponRulesManageSet>
       ),
     },
-    edit: {
-      title: '编辑规则',
-      children: (
-        <CouponRulesManageSet
-          {...listProp}
-          form={form}
-          initialValues={detail}
-        ></CouponRulesManageSet>
-      ),
-    },
+    // edit: {
+    //   title: '编辑规则',
+    //   children: (
+    //     <CouponRulesManageSet
+    //       {...listProp}
+    //       form={form}
+    //       initialValues={detail}
+    //     ></CouponRulesManageSet>
+    //   ),
+    // },
   }[type];
 
   // 弹窗属性
@@ -56,8 +87,7 @@ const CouponDrawer = (props) => {
     visible: show,
     onClose,
     loading: loadingDetail,
-    closeCallBack: () => {},
-    footer: (
+    footer: ['add', 'edit'].includes(type) && (
       <Button onClick={handleUpAudit} type="primary" loading={loading}>
         确定
       </Button>
