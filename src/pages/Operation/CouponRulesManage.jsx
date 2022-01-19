@@ -67,7 +67,8 @@ const PlatformManage = (props) => {
         return [
           {
             type: 'info',
-            click: () => fetchCouponDetail(ruleId, 'info'),
+            click: () => fetchCouponDetail(ruleId, 'info', record),
+            // click: () => setVisible({ type: 'info', show: true, ruleId }),
           },
           // {
           //   type: 'edit',
@@ -88,9 +89,12 @@ const PlatformManage = (props) => {
   };
 
   // 获取详情
-  const fetchCouponDetail = (ruleId, type) => {
+  const fetchCouponDetail = (ruleId, type, record) => {
     dispatch({
-      type: 'couponRulesManage/fetchRuleDetailPage',
+      type:
+        record.ruleType === 'tagRule'
+          ? 'couponRulesManage/fetchRuleDetailPage'
+          : 'couponRulesManage/fetchRuleDetail',
       payload: { ruleId },
       callback: (detail) => setVisible({ type, show: true, detail, ruleId }),
     });

@@ -47,13 +47,7 @@ const index = ({ form, ruleShowApi, dispatch }) => {
                 {row.goodsName}
               </Ellipsis>
             </div>
-            <div style={{ display: 'flex', marginTop: 5 }}>
-              <Tag>{BUSINESS_TYPE[row.ownerType]}</Tag>
-              <Ellipsis length={10} tooltip>
-                {row.ownerName}
-              </Ellipsis>
-            </div>
-            <div style={{ marginTop: 5 }}>{54516541654156}</div>
+            <div style={{ marginTop: 5 }}>{row[listProps.id]}</div>
           </div>
         </div>
       ),
@@ -62,18 +56,7 @@ const index = ({ form, ruleShowApi, dispatch }) => {
       title: '售价',
       dataIndex: 'oriPrice',
       render: (val, row) => {
-        const zhe = (Number(row.realPrice) / Number(val)) * 10;
-        return (
-          <div>
-            <div style={{ textDecoration: 'line-through', color: '#999999' }}>
-              ￥{Number(val).toFixed(2)}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Tag color={'red'}>{`${zhe}`.substring(0, 4)}折</Tag>
-              <div>￥{Number(row.realPrice).toFixed(2)}</div>
-            </div>
-          </div>
-        );
+        return <div>￥{Number(row.realPrice).toFixed(2)}</div>;
       },
     },
     {

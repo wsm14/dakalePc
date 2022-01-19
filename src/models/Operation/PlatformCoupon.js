@@ -7,6 +7,7 @@ import {
   fetchPlatformCouponOn,
   fetchPlatformCouponUpdate,
   fetchAddTotalPlatformCoupon,
+  fetchListRuleByPage,
 } from '@/services/OperationServices';
 import moment from 'moment';
 
@@ -22,6 +23,7 @@ export default {
       list: [],
       total: 0,
     },
+    ruleByPagelist: { list: [], total: 0 },
   },
 
   reducers: {
@@ -143,6 +145,21 @@ export default {
         description: '增加数量成功',
       });
       callback && callback();
+    },
+    //  get 券规则管理 - 列表
+    *fetchListRuleByPage({ payload }, { call, put }) {
+      const response = yield call(fetchListRuleByPage, payload);
+      if (!response) return;
+      const { content } = response;
+      yield put({
+        type: 'save',
+        payload: {
+          ruleByPagelist: {
+            list: content.recordList,
+            total: content.total,
+          },
+        },
+      });
     },
   },
 };

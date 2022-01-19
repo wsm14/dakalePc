@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'umi';
-import { Button, Form } from 'antd';
+import { Button, Form, notification } from 'antd';
 import DrawerCondition from '@/components/DrawerCondition';
 import CouponRulesManageDetail from './Detail/CouponRulesManageDetail';
 import CouponRulesManageSet from './Form/CouponRulesManageSet';
@@ -16,6 +16,14 @@ const CouponDrawer = (props) => {
   const handleUpAudit = () => {
     form.validateFields().then(async (values) => {
       const { ruleType, ruleConditions } = values;
+
+      if (ruleConditions.length === 0) {
+        notification.info({
+          message: '温馨提示',
+          description: '请选择必填数据',
+        });
+        return;
+      }
 
       let data = {};
       // 行业
@@ -57,7 +65,7 @@ const CouponDrawer = (props) => {
   const drawerProps = {
     info: {
       title: '查看规则',
-      children: <CouponRulesManageDetail detail={detail}></CouponRulesManageDetail>,
+      children: <CouponRulesManageDetail ruleId={ruleId} detail={detail}></CouponRulesManageDetail>,
     },
     add: {
       title: '新建规则',
@@ -98,8 +106,6 @@ const CouponDrawer = (props) => {
 };
 
 export default connect(({ loading }) => ({
-  loading:
-    loading.effects['platformCoupon/fetchPlatformCouponSave'] ||
-    loading.effects['platformCoupon/fetchPlatformCouponUpdate'],
-  loadingDetail: loading.effects['platformCoupon/fetchGetPlatformCouponDetail'],
+  loading: loading.effects['couponRulesManage/fetchCreateRule'],
+  loadingDetail: loading.effects['couponRulesManage/fetchRuleDetail'],
 }))(CouponDrawer);

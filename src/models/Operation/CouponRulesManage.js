@@ -141,13 +141,43 @@ export default {
       const response = yield call(fetchRuleDetailPage, payload);
       if (!response) return;
       const { content } = response;
+
+      const {
+        userMerchantList, // 店铺列表
+        merchantGroupList, // 集团列表
+        specialGoodsList, // 特惠
+        reduceCouponList, // 有价券
+        commerceGoodsList, // 电商品
+        platformGoodsTagsList, // 平台商品标签
+        merchantTagsList, // 商家标签
+        subRuleType, // 子规则
+      } = content.ruleDetail;
+
+      const data = {
+        ruleConditionsList:
+          userMerchantList ||
+          merchantGroupList ||
+          reduceCouponList ||
+          commerceGoodsList ||
+          platformGoodsTagsList ||
+          merchantTagsList ||
+          specialGoodsList,
+      };
+
       yield put({
         type: 'save',
         payload: {
-          ruleDetailListObj: content.ruleDetail,
+          ruleDetailListObj: {
+            ...content.ruleDetail,
+            ...data,
+          },
         },
       });
-      callback && callback(content.ruleDetail);
+      callback &&
+        callback({
+          ...content.ruleDetail,
+          ...data,
+        });
     },
   },
 };

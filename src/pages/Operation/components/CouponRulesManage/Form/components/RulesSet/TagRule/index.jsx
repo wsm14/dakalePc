@@ -45,7 +45,7 @@ const index = ({ configGoodsTagList, dispatch, form }) => {
 
   return (
     <>
-      <FormItem label="标签类型">
+      <FormItem label="标签类型" required>
         <Radio.Group value={sonType} onChange={handleTagChange}>
           {Object.keys(TAG_TYPE).map((item) => (
             <Radio key={item} value={item}>

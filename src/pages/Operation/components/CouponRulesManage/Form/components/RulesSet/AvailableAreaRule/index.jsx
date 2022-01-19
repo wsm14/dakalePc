@@ -43,7 +43,7 @@ const index = ({ ruleShowApi, form }) => {
 
   return (
     <>
-      <FormItem label="可用区域">
+      <FormItem label="可用区域" required>
         <Row gutter={8}>
           <Col span={18}>
             <Cascader

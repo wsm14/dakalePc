@@ -872,6 +872,9 @@ export const PLATFORM_COUPON_PEOPLE = { all: '全部', daren: '哒人' };
 // 平台券管理 - 适用端口
 export const PLATFORM_APPLY_PORT = { all: '全部', noAll: '部分平台' };
 
+// 平台券管理 - 是否可膨胀
+export const PLATFORM_INCREASE_RULE = ['不可膨胀', '可膨胀'];
+
 // 券规则管理  端口类型
 // 平台券管理 - 适用端口type
 export const PLATFORM_APPLY_PORT_TYPE = {
